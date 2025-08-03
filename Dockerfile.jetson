@@ -1,0 +1,40 @@
+# Use dustynv's PyTorch container for Jetson
+# Using latest tag as specific version tags may not be available
+FROM dustynv/l4t-pytorch:latest
+
+# Set working directory
+WORKDIR /workspace
+
+# Install HRM dependencies
+RUN pip3 install --no-cache-dir \
+    einops \
+    tqdm \
+    coolname \
+    pydantic \
+    wandb \
+    huggingface_hub \
+    argdantic \
+    omegaconf==2.3.0 \
+    hydra-core==1.3.2
+
+# Copy HRM code
+COPY . /workspace/
+
+# Create a test script
+RUN echo '#!/usr/bin/env python3\n\
+import torch\n\
+import einops\n\
+print("🎉 PyTorch is ready in Docker!")\n\
+print(f"PyTorch version: {torch.__version__}")\n\
+print(f"CUDA available: {torch.cuda.is_available()}")\n\
+if torch.cuda.is_available():\n\
+    print(f"Device: {torch.cuda.get_device_name(0)}")\n\
+    x = torch.randn(2, 3).cuda()\n\
+    print(f"CUDA test passed: {x.shape}")\n\
+print("\\n✅ All HRM dependencies ready!")' > /workspace/test_docker.py
+
+# Make it executable
+RUN chmod +x /workspace/test_docker.py
+
+# Default command
+CMD ["/bin/bash"]

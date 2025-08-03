@@ -11,6 +11,14 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
+# Check if we need sudo for Docker
+if ! docker ps &>/dev/null; then
+    echo "📋 Docker requires sudo. Using sudo for Docker commands..."
+    DOCKER_CMD="sudo docker"
+else
+    DOCKER_CMD="docker"
+fi
+
 echo "📊 System Information:"
 cat /etc/nv_tegra_release | head -1
 echo ""
@@ -61,10 +69,10 @@ EOF
 
 echo ""
 echo "🔨 Building Docker image..."
-docker build -f Dockerfile.jetson -t hrm-jetson:latest . || {
+$DOCKER_CMD build -f Dockerfile.jetson -t hrm-jetson:latest . || {
     echo "❌ Docker build failed"
     echo "Trying to pull base image first..."
-    docker pull nvcr.io/nvidia/l4t-pytorch:r36.2.0-pth2.1-py3
+    $DOCKER_CMD pull nvcr.io/nvidia/l4t-pytorch:r36.2.0-pth2.1-py3
     exit 1
 }
 
@@ -73,28 +81,28 @@ echo "✅ Docker image built successfully!"
 echo ""
 echo "📚 Usage:"
 echo "1. Run interactive shell:"
-echo "   docker run --runtime nvidia -it --rm -v \$(pwd):/workspace hrm-jetson:latest"
+echo "   $DOCKER_CMD run --runtime nvidia -it --rm -v \$(pwd):/workspace hrm-jetson:latest"
 echo ""
 echo "2. Test PyTorch:"
-echo "   docker run --runtime nvidia --rm hrm-jetson:latest python3 test_docker.py"
+echo "   $DOCKER_CMD run --runtime nvidia --rm hrm-jetson:latest python3 test_docker.py"
 echo ""
 echo "3. Train HRM:"
-echo "   docker run --runtime nvidia --rm hrm-jetson:latest python3 pretrain.py --config-path config --config-name jetson_sudoku_demo"
+echo "   $DOCKER_CMD run --runtime nvidia --rm hrm-jetson:latest python3 pretrain.py --config-path config --config-name jetson_sudoku_demo"
 echo ""
 echo "💡 Tip: Add '--gpus all' if '--runtime nvidia' doesn't work"
 echo ""
 
 # Create a convenience script
-cat > run_hrm_docker.sh << 'EOF'
+cat > run_hrm_docker.sh << EOF
 #!/bin/bash
 # Convenience script to run HRM in Docker
 
 echo "🚀 Starting HRM Docker container..."
-docker run --runtime nvidia -it --rm \
-    -v $(pwd):/workspace \
-    -v /data:/data \
-    --network host \
-    hrm-jetson:latest "$@"
+$DOCKER_CMD run --runtime nvidia -it --rm \\
+    -v \$(pwd):/workspace \\
+    -v /data:/data \\
+    --network host \\
+    hrm-jetson:latest "\$@"
 EOF
 
 chmod +x run_hrm_docker.sh

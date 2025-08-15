@@ -1,0 +1,9 @@
+[submodule "dataset/raw-data/ConceptARC"]
+	path = dataset/raw-data/ConceptARC
+	url = git@github.com:victorvikram/ConceptARC.git
+[submodule "dataset/raw-data/ARC-AGI"]
+	path = dataset/raw-data/ARC-AGI
+	url = git@github.com:fchollet/ARC-AGI.git
+[submodule "dataset/raw-data/ARC-AGI-2"]
+	path = dataset/raw-data/ARC-AGI-2
+	url = git@github.com:arcprize/ARC-AGI-2.git

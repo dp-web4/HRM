@@ -1,13 +1,43 @@
 # SAGE: Sentient Agentic Generative Engine
-## Built on Hierarchical Reasoning Model (HRM) Architecture
+## An Exploratory Architecture for Living Intelligence
+
+*Note: This is a living document for an exploratory system. Specific metrics (parameter counts, memory sizes, layer counts) are implementation snapshots that will evolve as we discover what works. The principles and architecture patterns are what matter.*
 
 ## Table of Contents
-1. [Core Principles](#core-principles)
-2. [Architecture Overview](#architecture-overview)
-3. [Implementation Details](#implementation-details)
-4. [Training Data Format](#training-data-format)
-5. [Training Process](#training-process)
-6. [Key Innovations](#key-innovations)
+1. [Exploratory Approach](#exploratory-approach)
+2. [Core Principles](#core-principles)
+3. [Architecture Overview](#architecture-overview)
+4. [Implementation Details](#implementation-details)
+5. [Training Data Format](#training-data-format)
+6. [Training Process](#training-process)
+7. [Key Innovations](#key-innovations)
+
+## Exploratory Approach
+
+### Dynamic MRH Navigation
+This project uses a fractal, multi-resolution approach:
+- **System View**: Understanding emergent intelligence from component interactions
+- **Architecture View**: How modules connect and communicate
+- **Component View**: Specific implementation details when needed
+- **Integration View**: Interfaces and data flow between parts
+
+We fluidly shift between these views as we explore what creates intelligence. Specific numbers and sizes are just current experiments - the patterns and principles guide us.
+
+### What We're Exploring
+- How hierarchical reasoning emerges from simple components
+- What memory architectures enable wisdom vs just storage
+- How sleep/dream processes consolidate learning
+- Where coherence comes from in distributed systems
+- When to trust different sensor modalities
+
+### What Will Change
+- Parameter counts as we find optimal sizes
+- Memory architectures as we test different approaches
+- Layer configurations as we explore depth vs width
+- Sensor weightings as we learn what matters
+- Training approaches as we discover what works
+
+The architecture is the hypothesis; the implementation tests it.
 
 ## Core Principles
 
@@ -31,8 +61,8 @@ The model implements two key insights from neuroscience:
    - Unlike transformers that process in one pass, HRM iterates
    - Each iteration refines the solution, like human deliberation
 
-### Why Only 27M Parameters?
-The magic isn't in size but in **computational depth through recurrence**. By cycling through H and L modules multiple times, HRM achieves the reasoning depth of much larger models.
+### Why Small Initial Implementation?
+The initial implementation uses a modest parameter count (currently ~27M) not as a target but as a starting point. The magic isn't in size but in **computational depth through recurrence**. By cycling through H and L modules multiple times, even small models can achieve surprising reasoning depth. We'll scale as we learn what patterns matter.
 
 ## Architecture Overview
 
@@ -47,7 +77,7 @@ Input → [H Module] ←→ [L Module] → Output
 
 #### High-Level Module (H)
 - **Purpose**: Abstract reasoning, strategy formation
-- **Layers**: 4 transformer blocks (configurable)
+- **Architecture**: Transformer blocks (count varies with exploration)
 - **Processing**: Updates every H_cycle (default: 2)
 - **State**: Maintains `z_H` - the strategic state
 
@@ -250,7 +280,7 @@ The H-L hierarchy mirrors cortical organization in the brain.
    - Enables memory as a first-class sensor modality
    
    **Transformer-Sidecar Key Features:**
-   - **Constant-size memory**: Two low-rank matrices (U, V) ~130KB total
+   - **Constant-size memory**: Two low-rank matrices (current implementation ~130KB, will vary with exploration)
    - **Affect-gated writing**: Only commits when S(urprise), N(ovelty), A(rousal), C(onflict), or R(eward) exceed threshold
    - **Hebbian updates**: No backprop, no gradients - pure associative learning
    - **Eligibility traces**: Binds multi-turn events for coherent memory formation
@@ -344,7 +374,7 @@ The Sidecar's architecture maps perfectly to HRM's needs:
    - **R**eward maps to trust weight updates
    - **C**onflict triggers H-module re-evaluation
 
-2. **Constant memory size** (130KB) perfect for edge deployment
+2. **Constant memory size** perfect for edge deployment (size tunable based on device constraints)
 3. **No gradients needed** - both use Hebbian-style updates
 4. **Eligibility traces** in Sidecar match HRM's carry state persistence
 
@@ -659,7 +689,7 @@ class CoherenceHRM:
 
 ### Why HRM is Perfect for Coherence
 
-1. **Small enough for edge deployment** (27M params on Jetson)
+1. **Edge-deployable** - Current implementation runs on Jetson, will optimize size based on device
 2. **Iterative refinement** matches trust-building over time
 3. **Hierarchical separation** matches sensor/cognition divide
 4. **No pre-training needed** - learns patterns from experience

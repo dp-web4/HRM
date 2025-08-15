@@ -10,7 +10,7 @@ We present SAGE (Sentient Agentic Generative Engine), an experimental architectu
 
 Traditional AI systems rely on programmatic coherence engines—explicit rules that dictate how to combine sensor inputs, weight conflicting data, and maintain consistent world models. While functional, these approaches are fundamentally limited: they can only handle scenarios we explicitly program.
 
-Our previous work on trust-based sensor fusion demonstrated this limitation. Even with sophisticated weighting algorithms that adjusted trust scores based on sensor reliability, the system remained brittle when encountering novel situations. The coherence engine could combine camera, audio, and IMU data effectively, but only within predefined parameters.
+Our previous work on trust-based sensor fusion in the AI-DNA Discovery project [3] demonstrated this limitation. Even with sophisticated weighting algorithms that adjusted trust scores based on sensor reliability, the coherence engine remained brittle when encountering novel situations. The system could combine camera, audio, and IMU data effectively, but only within predefined parameters.
 
 ## The Insight: Memory and Cognition as Sensors
 
@@ -27,7 +27,7 @@ All three become equal participants in creating a unified reality field through 
 
 ### 1. Hierarchical Reasoning Model (HRM)
 
-Based on work by Gaspard et al. [1], HRM demonstrates that small models can achieve complex reasoning through hierarchical, recurrent processing. The architecture splits reasoning into two modules:
+Based on Sapient Inc's HRM implementation [1], this architecture demonstrates that small models can achieve complex reasoning through hierarchical, recurrent processing. The system splits reasoning into two modules:
 
 - **H-module (High-level)**: Strategic planning and abstract reasoning
 - **L-module (Low-level)**: Tactical execution and detailed computation
@@ -36,7 +36,7 @@ By cycling between these modules, even modest parameter counts achieve reasoning
 
 ### 2. Transformer-Sidecar Memory
 
-Drawing from Millidge & Black's Transformer-Sidecar architecture [2], we implement memory as an active sensor with affect-gated writing. The system uses SNARC signals (Surprise, Novelty, Arousal, Reward, Conflict) to determine what deserves remembering—mimicking biological memory's selective retention.
+Drawing from Richard Aragon's Transformer-Sidecar implementation [2], we implement memory as an active sensor with affect-gated writing. The system uses SNARC signals (Surprise, Novelty, Arousal, Reward, Conflict) to determine what deserves remembering—mimicking biological memory's selective retention.
 
 Key features:
 - Constant-size memory that scales to available hardware
@@ -96,11 +96,13 @@ This isn't about building larger models but about creating systems that grow wis
 
 ## References
 
-[1] Gaspard, A., et al. "Hierarchical Relational Memory for Small Transformers." Apache License 2.0. https://github.com/gaspardpetit/hrm/
+[1] Sapient Inc. "Hierarchical Reasoning Model (HRM)." https://github.com/sapientinc/HRM
 
-[2] Millidge, B. & Black, S. "Transformer-Sidecar: Affective Memory for Large Language Models." 2024. https://arxiv.org/abs/2406.04305
+[2] Aragon, R. "Transformer-Sidecar: Bolt-On Persistent State Space Memory." https://github.com/RichardAragon/Transformer-Sidecar-Bolt-On-Persistent-State-Space-Memory
 
-[3] Our implementation and ongoing experiments: https://github.com/dp-web4/HRM
+[3] Palatov, D. "AI-DNA Discovery: Coherence Engine Implementation." https://github.com/dp-web4/ai-dna-discovery
+
+[4] Our SAGE implementation and ongoing experiments: https://github.com/dp-web4/HRM
 
 ## About This Work
 

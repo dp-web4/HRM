@@ -17,6 +17,7 @@ Our previous work on trust-based sensor fusion in the AI-DNA Discovery project [
 What if memory isn't storage but a temporal sensor of the past? What if cognition isn't computation but temporal sensing of possible futures? This reconceptualization transforms our approach to artificial intelligence.
 
 In this framework:
+
 - **Physical sensors** provide spatial data (vision, audio, touch)
 - **Memory** provides temporal context from past experiences
 - **Cognition** provides temporal projection of future possibilities
@@ -39,6 +40,7 @@ By cycling between these modules, even modest parameter counts achieve reasoning
 Drawing from Richard Aragon's Transformer-Sidecar implementation [2], we implement memory as an active sensor with affect-gated writing. The system uses SNARC signals (Surprise, Novelty, Arousal, Reward, Conflict) to determine what deserves remembering—mimicking biological memory's selective retention.
 
 Key features:
+
 - Constant-size memory that scales to available hardware
 - Hebbian learning without backpropagation
 - Fast associative recall through low-rank factorization
@@ -48,6 +50,8 @@ Key features:
 
 Rather than relying on a single large language model for cognition, SAGE treats multiple LLMs as diverse cognitive sensors. Each model provides a different perspective, weighted by learned trust scores rather than predetermined hierarchies.
 
+Beyond immediate sensor fusion, these trust scores evolve into strategies: the system doesn’t just decide *what to believe*, but also *how to act*. This echoes our prior work in Web4 [5], where trust exists on a spectrum that shapes both discrete choices and the broader decision-making context.
+
 This approach acknowledges that different models excel at different cognitive tasks—just as biological brains have specialized regions for different types of processing.
 
 ## Integration: Learning Coherence
@@ -55,7 +59,7 @@ This approach acknowledges that different models excel at different cognitive ta
 The magic emerges from integration. HRM's hierarchical processing naturally handles the three-way fusion:
 
 ```
-Physical Sensors → L-module → 
+Physical Sensors → L-module →
                               ↘
 Memory Sensor    → L-module →  H-module → Coherent Reality Field
                               ↗
@@ -64,9 +68,14 @@ Cognitive Sensors → L-module →
 
 The H-module learns to weight and combine these diverse inputs based on context, developing its own coherence patterns through experience rather than following programmed rules.
 
+### Connection to Broader Coherence Models
+
+The SAGE framework resonates with the Synchronism model of coherence [4]: physical, temporal, and cognitive sensors can be understood as intent patterns unfolding across different temporal scales. Coherence arises through recursive resonance between these scales, rather than through fixed rules. This positions SAGE as both a concrete implementation and a testbed for larger theories of emergent coherence.
+
 ## Sleep and Consolidation
 
 Inspired by biological memory consolidation, SAGE includes a "sleep" process that:
+
 1. Mines the memory sensor for significant experiences
 2. Generates training examples from these memories
 3. Dreams about edge cases and counterfactuals
@@ -79,6 +88,7 @@ This allows the system to improve continuously without explicit retraining, deve
 SAGE remains exploratory work. We're testing the hypothesis that learned coherence can outperform programmatic approaches, particularly in novel situations. Initial implementations run on edge devices (Jetson Orin Nano) while scaling experiments utilize GPU clusters.
 
 Key questions we're exploring:
+
 - What memory architectures best support wisdom development?
 - How many cognitive sensors optimize diversity without confusion?
 - Can sleep-based consolidation match biological learning efficiency?
@@ -87,22 +97,29 @@ Key questions we're exploring:
 ## Implications
 
 If successful, SAGE suggests a path toward AI systems that:
+
 - Adapt to novel situations without reprogramming
 - Develop domain expertise through experience
 - Balance multiple perspectives naturally
 - Remember what matters, forget what doesn't
 
+Importantly, SAGE is not about chasing AGI hype or scaling parameter counts endlessly. Its focus is on developing *wisdom through lived experience*—systems that grow more adaptable, context-aware, and trustworthy the longer they operate.
+
 This isn't about building larger models but about creating systems that grow wiser through living.
 
 ## References
 
-[1] Sapient Inc. "Hierarchical Reasoning Model (HRM)." https://github.com/sapientinc/HRM
+[1] Sapient Inc. "Hierarchical Reasoning Model (HRM)." [https://github.com/sapientinc/HRM](https://github.com/sapientinc/HRM)
 
-[2] Aragon, R. "Transformer-Sidecar: Bolt-On Persistent State Space Memory." https://github.com/RichardAragon/Transformer-Sidecar-Bolt-On-Persistent-State-Space-Memory
+[2] Aragon, R. "Transformer-Sidecar: Bolt-On Persistent State Space Memory." [https://github.com/RichardAragon/Transformer-Sidecar-Bolt-On-Persistent-State-Space-Memory](https://github.com/RichardAragon/Transformer-Sidecar-Bolt-On-Persistent-State-Space-Memory)
 
-[3] Palatov, D. "AI-DNA Discovery: Coherence Engine Implementation." https://github.com/dp-web4/ai-dna-discovery
+[3] Palatov, D. "AI-DNA Discovery: Coherence Engine Implementation." [https://github.com/dp-web4/ai-dna-discovery](https://github.com/dp-web4/ai-dna-discovery)
 
-[4] Our SAGE implementation and ongoing experiments: https://github.com/dp-web4/HRM
+[4] Palatov, D. "Synchronism: A Framework for Coherence." [https://dpcars.net/synchronism](https://dpcars.net/synchronism)
+
+[5] Palatov, D. "Web4 Whitepaper." [https://metalinxx.io/web4\_whitepaper/](https://metalinxx.io/web4_whitepaper/)
+
+[6] Our SAGE implementation and ongoing experiments: [https://github.com/dp-web4/HRM](https://github.com/dp-web4/HRM)
 
 ## About This Work
 
@@ -114,4 +131,5 @@ SAGE emerges from collaborative exploration between human and AI researchers, de
 
 **Keywords**: Hierarchical Reasoning, Affect-Gated Memory, Sensor Fusion, Learned Coherence, Experimental AI
 
-**Contact**: Dennis Palatov - https://github.com/dp-web4
+**Contact**: Dennis Palatov - [https://github.com/dp-web4](https://github.com/dp-web4)
+

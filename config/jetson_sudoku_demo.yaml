@@ -1,0 +1,29 @@
+# Minimal config for Jetson Sudoku demo
+defaults:
+  - base
+
+# Data
+data_path: data/sudoku-jetson-demo
+puzzle_name: sudoku
+
+# Model - smaller for Jetson
+arch:
+  H_cycles: 4  # Reduced from 8
+  L_cycles: 4  # Reduced from 8
+  hidden_size: 256  # Reduced from 384
+  num_heads: 4  # Reduced from 6
+  expansion: 2.0  # Reduced from 2.5
+
+# Training - optimized for Jetson
+epochs: 100  # Quick test
+eval_interval: 10
+global_batch_size: 8  # Very small for memory
+lr: 1e-4
+weight_decay: 0.1
+
+# Disable wandb for quick test
+wandb:
+  mode: disabled
+
+# Use CPU if CUDA not available
+device: cuda

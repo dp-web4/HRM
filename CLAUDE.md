@@ -32,6 +32,11 @@ HRM's data augmentation (dihedral transforms, permutations, translations) shows 
 
 See `dataset/README.md` for detailed augmentation strategies and their connection to sleep consolidation.
 
+**Latest Insight**: Biological systems have TWO separate training systems:
+- **H-level** (dreams): Strategic reasoning, trained through augmentation during sleep
+- **L-level** (muscle memory): Tactical execution, trained continuously through practice
+The separation is key - wisdom and skill develop through different mechanisms.
+
 ## Next Steps
 1. Push changes to GitHub (waiting for PAT update)
 2. Run `./install_jetson.sh` to install dependencies

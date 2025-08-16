@@ -86,13 +86,33 @@ Inspired by biological memory consolidation, SAGE includes a "sleep" process tha
 The key to sleep consolidation is **intelligent augmentation** of lived experiences. Like HRM's dataset builders that generate thousands of valid puzzle variations, SAGE generates "reasonable permutations" of experiences through:
 
 - **Geometric transforms**: Viewing situations from different perspectives
-- **Value permutations**: Abstracting specifics while preserving relationships  
+- **Value permutations**: Abstracting specifics while preserving relationships
 - **Context shifts**: Testing if patterns generalize to new domains
 - **LLM-assisted generation**: When trusted models are available, using them to create semantic variations
 
 This process may explain human dreams themselves - they could be **computational artifacts** of the brain running augmentation scenarios through its offline cognitive systems. Dreams aren't random; they're structured explorations of experience space that transform limited data into generalizable wisdom.
 
 This allows the system to improve continuously without explicit retraining, developing wisdom from accumulated experience through the same mechanisms that give humans insight from dreams.
+
+### Dual Training Systems: Dreams vs Muscle Memory
+
+Biological systems maintain **two separate continuous training loops** that SAGE must also implement:
+
+**H-Module Training (Strategic/Cognitive)**
+- Trains through dreams and augmentation during sleep
+- Processes temporal sensor data (memory, cognition)
+- Learns patterns, strategies, and abstractions
+- Updates in large batches with high learning rates
+
+**L-Module Training (Tactical/Procedural)**
+- Trains continuously through action and repetition
+- Processes physical sensor/effector pairs
+- Learns motor patterns, reflexes, and automatic responses
+- Updates incrementally with small learning rates
+
+This separation mirrors the biological distinction between declarative memory (hippocampus) and procedural memory (cerebellum). The linkage between them is learned, not fixed, allowing the system to couple them for new tasks or decouple them for automatic execution.
+
+This dual training explains why sleep improves problem-solving (H-level consolidation) while practice improves performance (L-level refinement). SAGE implements both loops to achieve true biological-like learning.
 
 ## Current Status and Future Directions
 

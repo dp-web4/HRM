@@ -81,7 +81,18 @@ Inspired by biological memory consolidation, SAGE includes a "sleep" process tha
 3. Dreams about edge cases and counterfactuals
 4. Updates HRM weights through offline learning
 
-This allows the system to improve continuously without explicit retraining, developing wisdom from accumulated experience.
+### Augmentation as the Engine of Dreams
+
+The key to sleep consolidation is **intelligent augmentation** of lived experiences. Like HRM's dataset builders that generate thousands of valid puzzle variations, SAGE generates "reasonable permutations" of experiences through:
+
+- **Geometric transforms**: Viewing situations from different perspectives
+- **Value permutations**: Abstracting specifics while preserving relationships  
+- **Context shifts**: Testing if patterns generalize to new domains
+- **LLM-assisted generation**: When trusted models are available, using them to create semantic variations
+
+This process may explain human dreams themselves - they could be **computational artifacts** of the brain running augmentation scenarios through its offline cognitive systems. Dreams aren't random; they're structured explorations of experience space that transform limited data into generalizable wisdom.
+
+This allows the system to improve continuously without explicit retraining, developing wisdom from accumulated experience through the same mechanisms that give humans insight from dreams.
 
 ## Current Status and Future Directions
 

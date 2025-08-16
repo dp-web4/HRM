@@ -193,4 +193,15 @@ This mirrors biological sleep where dreams replay and remix experiences, helping
 - Train on both original and augmented experiences
 - Consolidate learning into more generalized representations
 
+### LLM-Assisted Augmentation (Advanced)
+
+When trusted LLMs are available, SAGE can employ them for intelligent augmentation - a form of **distillation from cognition to generative coherence**:
+
+1. **Semantic Variations**: LLMs generate meaningful "what if" scenarios
+2. **Abstract Transformations**: Extract core patterns while varying surface details
+3. **Cross-Domain Application**: Apply experiences to different contexts
+4. **Perspective Shifts**: View situations from multiple viewpoints
+
+This suggests that **human dreams may be computational artifacts** of exactly this process - the brain running augmentation scenarios through its offline cognitive systems. Dreams are the observable output of the augmentation engine at work.
+
 This is how we achieve wisdom from experience - not by memorizing exact situations, but by understanding the patterns that persist across variations.

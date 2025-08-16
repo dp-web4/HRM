@@ -96,7 +96,7 @@ This allows the system to improve continuously without explicit retraining, deve
 
 ### Dual Training Systems: Dreams vs Muscle Memory
 
-(For reference: the H- and L-modules described here map directly to the HRM architecture’s High-level and Low-level reasoning modules introduced earlier.)
+*(For reference: the H- and L-modules described here map directly to the HRM architecture’s High-level and Low-level reasoning modules introduced earlier.)*
 
 Biological systems maintain **two separate continuous training loops** that SAGE must also implement:
 

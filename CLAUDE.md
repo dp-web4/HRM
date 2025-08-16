@@ -21,6 +21,17 @@ This machine (Sprout - Jetson Orin Nano) has sudo access available for Claude.
 - No pre-training needed
 - Hierarchical architecture mimics human cognition
 
+## Critical Insight: Augmentation as Sleep Cycle Training
+**The augmentation strategies in HRM's dataset builders are the key to sleep cycle training!**
+
+HRM's data augmentation (dihedral transforms, permutations, translations) shows how to learn wisdom from experience:
+- **Living** = collecting raw experiences
+- **Sleeping** = augmenting experiences with reasonable permutations
+- **Dreaming** = training on variations to extract patterns
+- **Wisdom** = understanding principles that persist across variations
+
+See `dataset/README.md` for detailed augmentation strategies and their connection to sleep consolidation.
+
 ## Next Steps
 1. Push changes to GitHub (waiting for PAT update)
 2. Run `./install_jetson.sh` to install dependencies

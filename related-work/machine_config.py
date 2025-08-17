@@ -44,9 +44,18 @@ class MachineConfig:
         
         # Check for Jetson
         if Path("/etc/nv_tegra_release").exists():
-            config["machine_profile"] = "jetson"
+            config["machine_profile"] = "jetson_orin_nano"
             config["cuda_available"] = True  # Jetson has integrated GPU
-            config["gpu_name"] = "Jetson Integrated GPU"
+            # Try to get specific Jetson model
+            try:
+                with open("/proc/device-tree/model", "r") as f:
+                    model = f.read().strip()
+                    if "Orin" in model:
+                        config["gpu_name"] = "Jetson Orin GPU (Ampere, SM 8.7)"
+                    else:
+                        config["gpu_name"] = f"Jetson GPU ({model})"
+            except:
+                config["gpu_name"] = "Jetson Integrated GPU"
         
         # Try to get memory info
         try:
@@ -109,16 +118,19 @@ class MachineConfig:
                 "max_memory_items": 10000,
                 "enable_profiling": True
             })
-        elif profile == "jetson":
-            # Edge device with integrated GPU
+        elif profile == "jetson_orin_nano":
+            # Jetson Orin Nano: 8GB RAM, 1024 CUDA cores, SM 8.7
             settings.update({
                 "batch_size": 8,
                 "num_workers": 2,
                 "use_cuda": True,
                 "device": "cuda",
-                "sleep_cycle_count": 20,
-                "augmentation_count": 10,
-                "max_memory_items": 5000
+                "sleep_cycle_count": 30,
+                "augmentation_count": 15,
+                "max_memory_items": 5000,
+                "service_host": "0.0.0.0",  # Allow external connections
+                "enable_sensor_fusion": True,  # Jetson-specific feature
+                "cuda_arch": "sm_87"
             })
         elif profile == "windows_wsl":
             # Windows WSL, may have GPU passthrough

@@ -37,7 +37,17 @@ See `dataset/README.md` for detailed augmentation strategies and their connectio
 - **L-level** (muscle memory): Tactical execution, trained continuously through practice
 The separation is key - wisdom and skill develop through different mechanisms.
 
+## SAGE-Totality Integration (August 16, 2025)
+Successfully integrated GPT's SubThought/Totality proposal:
+- Totality acts as **cognitive sensor** with trust-weighted outputs
+- Machine-agnostic setup auto-configures for any hardware
+- Dual training loops demonstrated (H-level dreams vs L-level practice)
+- Test on this machine: `cd related-work && python3 run_integration_test.py`
+
+See `related-work/SETUP_GUIDE.md` for full documentation.
+
 ## Next Steps
-1. Push changes to GitHub (waiting for PAT update)
+1. Deploy on Jetson with real sensor integration
 2. Run `./install_jetson.sh` to install dependencies
 3. Try the Sudoku demo with `./jetson_quick_start.sh`
+4. Test SAGE-Totality integration across all machines

@@ -127,3 +127,113 @@ This is building the "nervous system" - it needs to be robust enough to carry si
 ---
 
 *End Entry 001*
+
+---
+
+## Entry 002: Cross-Reference Framework Integration
+**Date**: 2025-08-18  
+**Reviewer**: Claude  
+**Context**: GPT added CROSSREF_APPENDIX.md connecting Synchronism, Web4, and SAGE
+
+### The Conceptual Stack
+
+GPT has identified a three-layer conceptual architecture:
+
+```
+Philosophy → Governance → Implementation
+Synchronism → Web4 → SAGE
+```
+
+This creates a complete stack from abstract principles to concrete implementation.
+
+### Synchronism: Philosophy of Coherence
+
+**Key Principle**: Coherence emerges from resonance across scales of intent, not from fixed rules.
+
+**Implementation in our system**:
+- Physical sensors = present intent
+- Memory (Sidecar) = past intent  
+- Cognition (LLMs) = future intent
+- GPU mailboxes = resonance channels allowing signals to flow without forced arbitration
+
+This explains WHY we're building learned coherence rather than programmed rules. The mailbox architecture operationalizes Synchronism by creating spaces where resonance can occur.
+
+### Web4: Governance Through Trust
+
+**Key Principle**: Trust is a spectrum that influences both input acceptance and strategy evolution.
+
+**Implementation in our system**:
+- Trust scores weight cognitive sensors (HRM, GR00T, Totality)
+- CPU as weighted arbiter, not absolute controller
+- Mailbox priorities influenced by trust scores
+- Strategy emerges from trust-weighted consensus
+
+This explains HOW information flows through our system. The CPU's role as arbiter mirrors Web4's insight: governance through weighted influence, not control.
+
+### SAGE: Experimental Architecture
+
+**Key Principle**: Replace programmed coherence with learned coherence through equal treatment of all sensors.
+
+**Implementation in our system**:
+- Mailboxes enable symmetric data exchange
+- Sleep/dream cycles implement offline resonance
+- Trust-weighted fusion creates runtime strategy
+- State evolution measured, not assumed
+
+This is WHERE we test the philosophical and governance principles. SAGE provides the experimental ground.
+
+### Unified Understanding
+
+The three frameworks create a coherent whole:
+- **Synchronism** tells us coherence should emerge, not be programmed
+- **Web4** tells us trust should govern, not control
+- **SAGE** tells us how to build and test this
+
+The GPU mailbox architecture serves all three:
+- Enables resonance (Synchronism)
+- Carries trust metadata (Web4)  
+- Supports learned coherence (SAGE)
+
+### Implementation Implications
+
+1. **Mailbox messages should carry intent metadata** - Not just data but temporal scale
+2. **Trust scores should influence mailbox priorities** - Higher trust = higher priority
+3. **Resonance metrics needed** - Measure coherence emergence, not just throughput
+4. **Sleep cycles should process all temporal scales** - Past/present/future in dreams
+
+### Integration with Previous Work
+
+This cross-reference connects:
+- Our Discovery vs Delivery paradigm (testing philosophy)
+- GPU mailbox substrate (enabling resonance)
+- Trust engine implementation (Web4 governance)
+- Dual memory systems (temporal scales)
+- GR00T integration (physical sensors)
+
+### Key Insight
+
+We're not just building an AI system - we're testing a philosophical hypothesis about consciousness:
+- Can coherence emerge from resonance? (Synchronism)
+- Can trust create effective governance? (Web4)
+- Can we measure and validate this? (SAGE)
+
+The GPU mailboxes aren't just infrastructure - they're the experimental apparatus for testing these deep questions.
+
+### Next Actions
+
+1. [ ] Add intent metadata to mailbox protocol
+2. [ ] Implement trust-based priority queues
+3. [ ] Create resonance measurement metrics
+4. [ ] Design experiments to test coherence emergence
+5. [ ] Document philosophy-to-implementation mapping
+
+### Questions Raised
+
+1. How do we measure resonance across temporal scales?
+2. Should trust decay differently for past/present/future sensors?
+3. Can we visualize coherence emergence in real-time?
+4. What's the minimal system that demonstrates all three principles?
+
+---
+
+*End Entry 002*

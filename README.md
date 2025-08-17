@@ -6,7 +6,13 @@
 
 ⚠️ **EXPERIMENTAL - DISCOVERY MODE** ⚠️
 
-This repository is in active discovery mode, exploring the integration of HRM into a broader consciousness architecture. We are:
+This repository is in active discovery mode, exploring the integration of HRM into a broader consciousness architecture.
+
+### Branch Structure
+- `main`: Current development (will track Sapient's upstream when available)
+- `SAGE`: All experimental SAGE integration work
+
+We are:
 - Testing philosophical hypotheses about emergent coherence
 - Building GPU-resident infrastructure for zero-copy module communication
 - Integrating multiple cognitive subsystems (HRM, Sidecar Memory, Totality/SubThought, GR00T)

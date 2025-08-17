@@ -1,0 +1,22 @@
+# Virtual environments
+gr00t_env/
+gr00t_sage_env/
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Model weights
+*.pth
+*.onnx
+*.engine
+
+# IDE
+.vscode/
+.idea/

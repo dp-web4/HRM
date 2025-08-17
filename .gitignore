@@ -16,6 +16,10 @@ __pycache__/
 
 # C extensions
 *.so
+# CUDA build artifacts
+*.cu.o
+*.ptx
+build_ext/
 
 # Distribution / packaging
 .Python
@@ -138,6 +142,10 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+*_env/
+tiling_env/
+hrm_env/
+gr00t_env/
 
 # Spyder project settings
 .spyderproject

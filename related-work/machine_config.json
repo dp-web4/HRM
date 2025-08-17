@@ -1,0 +1,30 @@
+{
+  "machine": {
+    "hostname": "cbp",
+    "os": "Linux",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "python_version": "3.12.3",
+    "architecture": "x86_64",
+    "processor": "x86_64",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 2060 SUPER",
+    "cpu_count": 16,
+    "memory_gb": 7.7,
+    "machine_profile": "windows_wsl"
+  },
+  "settings": {
+    "batch_size": 8,
+    "num_workers": 2,
+    "use_cuda": true,
+    "device": "cuda",
+    "sleep_cycle_count": 50,
+    "augmentation_count": 20,
+    "h_module_lr": 0.01,
+    "l_module_lr": 0.001,
+    "max_memory_items": 500,
+    "service_port": 8080,
+    "service_host": "localhost",
+    "enable_profiling": false
+  },
+  "timestamp": "new"
+}

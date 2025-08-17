@@ -1,0 +1,31 @@
+
+# starter_adapter_config.yaml
+adapter:
+  name: totality_cog_sensor
+  version: "0.1"
+
+read_defaults:
+  scope: ["schemes","viewpoints","canvases"]
+  filters:
+    activation_min: 0.35
+    time_window:
+      start: "now-24h"
+      end: "now"
+
+sleep_ops:
+  - op: "geom"
+  - op: "value_perm"
+  - op: "context_shift"
+  - op: "semantic_variation"
+
+trust_weights:
+  source_reliability: 0.4
+  context_alignment: 0.3
+  recency_decay: 0.2
+  affect_bias: 0.1
+
+snarc_weights:
+  a0: -0.2
+  w_val: 0.5
+  w_ar: 0.3
+  w_cp: 0.2

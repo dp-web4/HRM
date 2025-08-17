@@ -2,8 +2,8 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 #include <stdint.h>
-#include "../../tiling_mailbox_cuda_pack/mailbox_peripheral.h"
-#include "../../tiling_mailbox_cuda_pack/mailbox_focus.h"
+#include "../mailbox_peripheral.h"
+#include "../mailbox_focus.h"
 
 // --- Peripheral kernels ---
 __global__ void k_pbm_push(PBM_Header* h, uint8_t* payload,

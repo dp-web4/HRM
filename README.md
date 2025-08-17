@@ -1,12 +1,86 @@
-# Hierarchical Reasoning Model
+# HRM - SAGE Integration Experiments
+
+> **Experimental Fork**: This is an experimental fork of the original [Hierarchical Reasoning Model (HRM)](https://github.com/SapientAI-Inc/hierarchical-reasoning-model) by Sapient AI, used as a foundation for SAGE (Sentient Agentic Generative Engine) research.
+
+## Project Status
+
+⚠️ **EXPERIMENTAL - DISCOVERY MODE** ⚠️
+
+This repository is in active discovery mode, exploring the integration of HRM into a broader consciousness architecture. We are:
+- Testing philosophical hypotheses about emergent coherence
+- Building GPU-resident infrastructure for zero-copy module communication
+- Integrating multiple cognitive subsystems (HRM, Sidecar Memory, Totality/SubThought, GR00T)
+- Measuring state evolution and coherence emergence
+
+**Not for production use.** Stubs, placeholders, and experimental code are expected and marked accordingly.
+
+## Conceptual Framework
+
+This work operates within a three-layer conceptual stack:
+
+```
+Philosophy → Governance → Implementation
+Synchronism → Web4 → SAGE
+```
+
+- **[Synchronism](https://dpcars.net/synchronism)**: Coherence emerges from resonance across scales of intent
+- **[Web4](https://metalinxx.io/web4_whitepaper/)**: Trust-weighted governance of information flow
+- **[SAGE](./SAGE_WHITEPAPER.md)**: Learned coherence replacing programmed rules
+
+See [CROSSREF_APPENDIX.md](./implementation/CROSSREF_APPENDIX.md) for detailed framework integration.
+
+## Original HRM
 
 ![](./assets/hrm.png)
 
-Reasoning, the process of devising and executing complex goal-oriented action sequences, remains a critical challenge in AI.
-Current large language models (LLMs) primarily employ Chain-of-Thought (CoT) techniques, which suffer from brittle task decomposition, extensive data requirements, and high latency. Inspired by the hierarchical and multi-timescale processing in the human brain, we propose the Hierarchical Reasoning Model (HRM), a novel recurrent architecture that attains significant computational depth while maintaining both training stability and efficiency.
-HRM executes sequential reasoning tasks in a single forward pass without explicit supervision of the intermediate process, through two interdependent recurrent modules: a high-level module responsible for slow, abstract planning, and a low-level module handling rapid, detailed computations. With only 27 million parameters, HRM achieves exceptional performance on complex reasoning tasks using only 1000 training samples. The model operates without pre-training or CoT data, yet achieves nearly perfect performance on challenging tasks including complex Sudoku puzzles and optimal path finding in large mazes.
-Furthermore, HRM outperforms much larger models with significantly longer context windows on the Abstraction and Reasoning Corpus (ARC), a key benchmark for measuring artificial general intelligence capabilities.
-These results underscore HRM’s potential as a transformative advancement toward universal computation and general-purpose reasoning systems.
+The original Hierarchical Reasoning Model by Sapient AI is a groundbreaking 27M parameter model that:
+- Achieves near-perfect performance on complex reasoning tasks with only 1000 training samples
+- Operates without pre-training or Chain-of-Thought data
+- Solves extreme Sudoku puzzles and large maze pathfinding
+- Outperforms much larger models on the Abstraction and Reasoning Corpus (ARC)
+
+Original paper: [arXiv:2506.21734](https://arxiv.org/abs/2506.21734)
+
+## Our Extensions
+
+### 1. GPU Mailbox Architecture
+Zero-copy communication substrate for module intercommunication. See [GPU_MAILBOX.md](./implementation/GPU_MAILBOX.md).
+
+### 2. SAGE Integration
+- Trust-weighted sensor fusion across physical, temporal, and cognitive sensors
+- Dual memory systems: H-level (strategic/dreams) and L-level (tactical/practice)
+- Sleep consolidation and augmentation-based learning
+
+### 3. GR00T Integration
+Embodied intelligence through NVIDIA's GR00T foundation model. See [gr00t-integration/](./gr00t-integration/).
+
+### 4. Totality/SubThought Integration
+Cognitive sensor providing structured imagination. See [related-work/](./related-work/).
+
+## Implementation Philosophy
+
+We follow a **Discovery vs Delivery** paradigm:
+- **Discovery Mode** (this repo): Prove concepts, measure effects, validate hypotheses
+- **Delivery Mode** (not this repo): Production-ready, fully tested, optimized
+
+Key principles:
+- ✅ **Implemented (minimal)**: Works but intentionally simple
+- 🧪 **Stub/Placeholder**: Enables testing but must be replaced
+- ⚠️ **Known wrinkle**: Edge cases or gaps to address
+
+See [STUB_ALERT_APPENDIX.md](./related-work/STUB_ALERT_APPENDIX.md) for current stub status.
+
+## Documentation
+
+- **[IMPLEMENTATION_LOG.md](./implementation/IMPLEMENTATION_LOG.md)**: Append-only log of implementation decisions and discoveries
+- **[IMPLEMENTATION_README.md](./implementation/IMPLEMENTATION_README.md)**: System philosophy and integration approach
+- **[ENGINEERING_PRINCIPLES.md](../private-context/ENGINEERING_PRINCIPLES.md)**: Discovery vs Delivery paradigm details
+
+---
+
+## Original HRM Documentation
+
+Below is the original documentation from Sapient AI's HRM repository:
 
 ## Quick Start Guide 🚀
 

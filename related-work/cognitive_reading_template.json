@@ -1,0 +1,24 @@
+
+{
+  "sensor_id": "totality",
+  "t": "2025-08-16T00:00:00Z",
+  "features": {
+    "schemes": [],
+    "viewpoints": [],
+    "canvases": [],
+    "summaries": {"text": "", "keypoints": []}
+  },
+  "trust": {
+    "source_reliability": 0.5,
+    "context_alignment": 0.5,
+    "recency_decay": 0.1,
+    "affect_bias": 0.0,
+    "composite": 0.45
+  },
+  "affect": {
+    "valence": 0.1,
+    "arousal": 0.4,
+    "coping": "problem-focused",
+    "tags": ["curiosity"]
+  }
+}

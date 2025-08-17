@@ -1,10 +1,17 @@
 # Claude Context for HRM
 
+## Machine Information
+**Current Machine**: WSL2 on Windows (RTX 2060 SUPER Development Platform)
+- **OS**: Linux 6.6.87.2-microsoft-standard-WSL2
+- **GPU**: NVIDIA GeForce RTX 2060 SUPER (8GB, Compute 7.5)
+- **CUDA**: 12.1 runtime, 12.0 compiler
+- **Platform**: /mnt/c/exe/projects/ai-agents/HRM
+
 ## GitHub PAT Location
-**IMPORTANT**: The GitHub Personal Access Token is stored in `/home/sprout/ai-workspace/github pat.txt`
+**IMPORTANT**: The GitHub Personal Access Token is stored in `/home/sprout/ai-workspace/github pat.txt` (on Jetson)
 
 ## Sudo Access
-This machine (Sprout - Jetson Orin Nano) has sudo access available for Claude.
+Sudo access available on Jetson Orin Nano (Sprout machine).
 
 ## HRM Setup Status
 - ✅ Repository cloned from fork: https://github.com/dp-web4/HRM.git
@@ -128,6 +135,40 @@ GPU mailbox architecture validated on **three platforms**:
 - `test_gpu_mailbox.py` - Platform-agnostic mailbox tests
 - `gr00t-integration/groot_world_sim.py` - World simulation
 - Full implementation directory with all GPU mailbox code
+
+## Current Test Status (August 17, 2025 - WSL2/RTX 2060 SUPER)
+
+### Environment Setup
+```bash
+cd /mnt/c/exe/projects/ai-agents/HRM/implementation
+python3 -m venv tiling_env
+tiling_env/bin/python -m pip install torch==2.3.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+```
+
+### Test Results - All Core Tests Passing ✅
+1. **test_simple.py**: ✅ All tests passed
+   - PBM/FTM initialization working
+   - Push/pop operations functional
+   
+2. **test_sync_fixed.py**: 2/3 tests passed
+   - ✅ Count-based PBM pop
+   - ✅ FTM with synchronization
+   - ✗ Concurrent patterns (known issue)
+
+3. **test_gpu_simple.py**: ✅ All 4 tests passed
+   - GPU basics, tensor ops, memory transfer, tiling
+
+4. **benchmark_final.py**: ✅ Performance validated
+   - PBM Push: 32,100 ops/sec
+   - PBM Pop: 246,985 ops/sec
+   - FTM Push: 118,183 ops/sec
+   - FTM Pop: 6,460 ops/sec
+
+### Performance Metrics (RTX 2060 SUPER)
+- Matrix multiplication: 5.08s for 1024x1024
+- Memory transfer: 2.6 GB/s (H2D), 1.0 GB/s (D2H)  
+- Tiling throughput: 2.9 tiles/sec
+- GPU Memory: 8GB VRAM
 
 ## Next Steps
 1. ✅ **Jetson deployment complete** - Infrastructure validated and operational

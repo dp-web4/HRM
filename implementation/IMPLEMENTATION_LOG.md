@@ -237,3 +237,150 @@ The GPU mailboxes aren't just infrastructure - they're the experimental apparatu
 ---
 
 *End Entry 002*
+
+---
+
+## Entry 003: Sight-Insight - Tiled Perception and Cognitive Resonance
+**Date**: 2025-08-18  
+**Author**: GPT (documented by Claude)  
+**Context**: GPT contributed SIGHT_INSIGHT.md connecting FlashAttention tiling to biological vision
+
+### The Core Pattern
+
+GPT has identified a fundamental computational pattern that appears across scales:
+
+```
+Input → Tiling → Trust Weighting → Local Compute → Global Accumulation → Insight
+```
+
+This pattern unifies:
+- **Silicon**: FlashAttention's tiled computation in GPU SRAM
+- **Biology**: Foveated vision with periphery and focus
+- **Cognition**: Attention selecting what deserves processing
+- **Architecture**: SAGE's trust-weighted sensor fusion
+
+### Key Principle
+
+**"Wisdom emerges not from seeing everything at once, but from learning what deserves focus."**
+
+The system never processes all information equally. Instead:
+- **Peripheral tiles**: Fast, lightweight, constant updates (motion, novelty, conflicts)
+- **Focus tiles**: Slow, detailed, carefully chosen (objects, edges, symbols, meaning)
+
+### FlashAttention as Digital Fovea
+
+FlashAttention proves this principle computationally:
+- Achieves exact attention without materializing full attention matrix
+- Streams data in tiles that fit in GPU SRAM
+- Computes incremental softmax without storing intermediates
+- Global coherence from local computation
+
+This is exactly how biological vision works:
+- Periphery for global awareness (low-res, high-speed)
+- Fovea for detailed analysis (high-res, focused)
+- Brain integrates both into coherent perception
+
+### Implementation for GPU Mailboxes
+
+This suggests a two-tier mailbox architecture:
+
+```python
+class TiledMailboxSystem:
+    def __init__(self):
+        # Peripheral: Many small, fast mailboxes
+        self.peripheral_mailboxes = [
+            Mailbox(size=256, count=32)  # Broadcast signals
+        ]
+        
+        # Focus: Few large, detailed mailboxes  
+        self.focus_mailboxes = [
+            Mailbox(size=4096, count=4)  # Tensor transfers
+        ]
+        
+        # Trust determines routing
+        self.trust_router = TrustWeightedRouter()
+```
+
+### Integration with SAGE Components
+
+1. **HRM Processing**:
+   - Peripheral tiles scan for reasoning patterns
+   - Focus tiles process complex logical chains
+   - Trust weights determine computational depth
+
+2. **GR00T Vision**:
+   - Literally implements foveated processing
+   - Eagle VLM could use tiled attention
+   - Trust scores guide visual focus
+
+3. **Totality Imagination**:
+   - Peripheral scanning of possibility space
+   - Focused generation where trust is high
+   - Dreams as peripheral→focus consolidation
+
+4. **Sleep Consolidation**:
+   - Peripheral experiences tagged for review
+   - Focused processing during sleep
+   - Trust evolution based on consolidation success
+
+### Connection to Previous Insights
+
+This tiling principle connects to:
+- **Discovery vs Delivery**: Discovery scans peripherally, Delivery focuses precisely
+- **Dual Memory**: L-level handles peripheral, H-level handles focused
+- **Trust Engine**: Trust determines peripheral→focus promotion
+- **Consciousness Substrate**: Mailboxes implement the tiling infrastructure
+
+### Technical Specifications
+
+For GPU mailbox implementation:
+
+**Peripheral Mailboxes**:
+- Size: 256 bytes per message
+- Count: 32-64 mailboxes
+- Update rate: Every kernel launch
+- Purpose: Novelty detection, conflict signals, state broadcasts
+
+**Focus Mailboxes**:
+- Size: 4KB-16KB per message
+- Count: 2-4 mailboxes
+- Update rate: On-demand
+- Purpose: Tensor transfers, detailed state, complex messages
+
+**Trust Router**:
+- Monitors peripheral mailboxes for patterns
+- Promotes high-trust signals to focus
+- Learns routing patterns over time
+- Implements attention as resource allocation
+
+### Philosophical Implications
+
+This isn't just an optimization - it's a fundamental principle:
+- **Consciousness is selective attention**, not global awareness
+- **Intelligence emerges from knowing what to ignore**
+- **Trust is the learned pattern of what deserves focus**
+- **Efficiency and intelligence are the same phenomenon**
+
+### Measurement Criteria
+
+To validate this architecture:
+1. **Bandwidth utilization**: Peripheral < 20%, Focus < 80%
+2. **Latency**: Peripheral < 1ms, Focus < 10ms
+3. **Trust convergence**: Routing patterns stabilize over time
+4. **Coherence metrics**: Global state remains consistent
+
+### Next Actions
+
+1. [ ] Implement two-tier mailbox system
+2. [ ] Add trust-based routing logic
+3. [ ] Create tiling benchmarks
+4. [ ] Integrate with FlashAttention kernels
+5. [ ] Test peripheral→focus promotion
+
+### Key Insight
+
+GPT has shown that sight (perception) and insight (understanding) follow the same computational pattern. This isn't metaphor - it's a fundamental principle that evolution discovered and we're rediscovering in silicon. The GPU mailbox system should implement this tiling principle as its core architecture.
+
+---
+
+*End Entry 003*

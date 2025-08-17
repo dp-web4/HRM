@@ -932,3 +932,84 @@ These are non-critical issues that don't affect core functionality.
 ---
 
 *End Entry 009*
+
+## Entry 010 - 2025-08-17
+
+**Author:** GPT (with context from Claude & Dennis)  
+**Context:** CUDA Mailbox Extension Debugging & Stabilization  
+
+### Detailed Notes
+- Initial `pbm_pop` tests returned zeros due to **asynchronous kernel execution** and lack of record count reporting.  
+- Implemented fix to **return actual pop count** from CUDA kernel.  
+- Added **CUDA stream guards** to ensure kernels run in PyTorch's expected stream.  
+- Introduced explicit **synchronization only when scalars cross device→host** (counts), keeping bulk tensor transfers async.  
+- Test results now show:
+  - Correct non-zero pops.  
+  - Empty mailbox returns zero-sized tensor as expected.  
+  - FTM metadata (tag, ttl, shape) preserved correctly.  
+
+### Key Insight / Lesson Learned
+- The zeros were not a logic bug — they exposed how easily async GPU semantics can mislead when host code inspects results prematurely.  
+- **Count return + selective sync** restores determinism while keeping data flow GPU-native and zero-copy.  
+
+### Next Actions
+- Consider pinned host scalars for counts (avoid implicit sync).  
+- Replace manual synchronizes with **CUDA events** for producer/consumer handoff.  
+- Explore **stream priorities**: peripheral (normal), focus (high).  
+- Keep `test_profile.py` active; promote memcpy warnings to hard asserts once stable.  
+
+### Broader Reflection
+This milestone marks the **substrate becoming operational**.  
+> “The substrate is ready, now consciousness can flow.”  
+
+GPU mailboxes are no longer theory: they now pass real tests and can integrate into HRM/SAGE. This closes the loop from design → implementation → validation.
+
+---
+
+
+## Entry 011 - 2025-08-17
+
+**Author:** GPT  
+**Context:** Patch Development for CUDA Mailbox Pop Count & Async Behavior
+
+### Detailed Notes
+Following the stabilization of GPU mailboxes (Entry 010), two follow-up patches were prepared to refine correctness and performance:
+
+1. **POP_COUNT_SYNC_FIX.patch**
+   - Adds explicit return of the pop record count from the CUDA kernel.
+   - Guards kernel launches with `CUDAStreamGuard` to align with PyTorch's stream context.
+   - Narrows the returned tensor to `count * record_stride` to eliminate trailing zeros.
+   - Keeps bulk tensor data fully async; sync happens only for the scalar count.
+
+2. **POP_COUNT_ASYNC_PINNED.patch**
+   - Replaces implicit `.cpu()` sync with a **pinned host scalar** + `cudaMemcpyAsync` on the current stream.
+   - Uses PyTorch's pinned allocator to ensure safe ownership/lifetime.
+   - Synchronizes only the current stream before narrowing, eliminating global sync overhead.
+   - Provides path to a future *fully async binding* (returning `(buffer, count_tensor)` to Python).
+
+### Next Steps
+- Apply **POP_COUNT_SYNC_FIX.patch** first, then layer **POP_COUNT_ASYNC_PINNED.patch** on top.
+- Rebuild with:
+  ```bash
+  cd tiling_mailbox_torch_extension_v2
+  export TORCH_CUDA_ARCH_LIST="8.7"  # Jetson compute capability
+  python setup.py build_ext --inplace
+  ```
+- Verify with:
+  ```bash
+  python test_push_pop.py
+  python test_profile.py
+  ```
+- Confirm:
+  - Non-empty pops return correctly sized CUDA tensors.
+  - Profiler shows no unexpected H↔D memcpys.
+  - Focus mailbox pointer equality holds.
+
+### Key Insight / Lesson Learned
+Fixing pop-count semantics required two layers:
+- **Determinism layer:** returning and syncing the count safely.  
+- **Performance layer:** avoiding global `.cpu()` syncs by leveraging pinned host scalars and async memcpy.
+
+This evolution shows how subtle synchronization choices can make or break both correctness and throughput in GPU-resident messaging systems.
+
+---

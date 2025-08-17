@@ -42,23 +42,23 @@ What we’re proving, step by step, is that intelligence isn’t about doing mor
 ## Diagram: Living Lab Architecture
 
 ```mermaid
-graph TD
-    H[Human Vision + Oversight] --> L[Implementation Log]
-    A1[AI Collaborator: GPT] --> L
-    A2[AI Collaborator: Claude] --> L
-    L --> R[Shared Repo]
+flowchart TD
+  H[Human Vision + Oversight] --> L[Implementation Log]
+  A1[AI Collaborator: GPT] --> L
+  A2[AI Collaborator: Claude] --> L
+  L --> R[Shared Repo]
 
-    subgraph Machines
-        J[Jetson Orin] 
-        M[RTX 2060 (Legacy)]
-        Lx[Linux Workstation]
-        H4090[RTX 4090]
-    end
+  subgraph Machines
+    J[Jetson Orin]
+    M2060["RTX 2060 (Legacy)"]
+    LINUX[Linux Workstation]
+    H4090["RTX 4090"]
+  end
 
-    R --> J
-    R --> M
-    R --> Lx
-    R --> H4090
+  R --> J
+  R --> M2060
+  R --> LINUX
+  R --> H4090
 ```
 
 ---

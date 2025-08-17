@@ -1,11 +1,13 @@
 
 #include <torch/extension.h>
 #include <cuda_runtime.h>
+#include <pybind11/stl.h>
 #include <vector>
 #include <array>
+#include <map>
 #include <stdexcept>
-#include "../../tiling_mailbox_cuda_pack/mailbox_peripheral.h"
-#include "../../tiling_mailbox_cuda_pack/mailbox_focus.h"
+#include "../mailbox_peripheral.h"
+#include "../mailbox_focus.h"
 
 // CUDA kernels (defined in mailbox_kernels.cu)
 void pbm_push_kernel_launch(PBM_Header* hdr, uint8_t* payload, const uint8_t* src, int len, cudaStream_t stream);
@@ -89,7 +91,7 @@ bool ftm_push_ptr(int64_t hdr_ptr, int64_t ring_ptr,
     return true;
 }
 
-torch::Dict<std::string, torch::Tensor> ftm_pop(int64_t hdr_ptr, int64_t ring_ptr) {
+std::map<std::string, torch::Tensor> ftm_pop(int64_t hdr_ptr, int64_t ring_ptr) {
     auto* hdr = reinterpret_cast<FTM_Header*>(hdr_ptr);
     auto* ring = reinterpret_cast<FTM_Record*>(ring_ptr);
     extern void ftm_pop_kernel_launch(FTM_Header*, FTM_Record*, FTM_Record*, cudaStream_t);
@@ -97,25 +99,25 @@ torch::Dict<std::string, torch::Tensor> ftm_pop(int64_t hdr_ptr, int64_t ring_pt
     cudaStream_t stream = 0; // Use default stream
     ftm_pop_kernel_launch(hdr, ring, &host_rec, stream);
 
-    // Pack into a CPU dict of tensors for simplicity
-    auto result = torch::Dict<std::string, torch::Tensor>();
+    // Pack into a map of tensors for simplicity
+    std::map<std::string, torch::Tensor> result;
     auto devptr = torch::empty({1}, torch::dtype(torch::kInt64).device(torch::kCPU));
     devptr[0] = (int64_t)host_rec.dev_ptr;
-    result.insert("dev_ptr", devptr);
+    result["dev_ptr"] = devptr;
 
     auto shape = torch::empty({4}, torch::dtype(torch::kInt64).device(torch::kCPU));
     auto stride= torch::empty({4}, torch::dtype(torch::kInt64).device(torch::kCPU));
     for (int i=0;i<4;i++) { shape[i] = host_rec.shape[i]; stride[i] = host_rec.stride[i]; }
-    result.insert("shape", shape);
-    result.insert("stride", stride);
+    result["shape"] = shape;
+    result["stride"] = stride;
 
     auto meta = torch::empty({3}, torch::dtype(torch::kInt32).device(torch::kCPU));
     meta[0] = host_rec.ndim; meta[1] = host_rec.dtype; meta[2] = host_rec.tag;
-    result.insert("meta", meta);
+    result["meta"] = meta;
 
     auto ttl = torch::empty({1}, torch::dtype(torch::kInt32).device(torch::kCPU));
     ttl[0] = host_rec.ttl;
-    result.insert("ttl", ttl);
+    result["ttl"] = ttl;
 
     return result;
 }

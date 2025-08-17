@@ -9,9 +9,7 @@ setup(
             name='mailbox_ext',
             sources=[
                 'src/mailbox_ext.cpp',
-                'src/mailbox_kernels.cu',
-                'src/mailbox_peripheral.cu',
-                'src/mailbox_focus.cu',
+                'src/mailbox_cuda_all.cu',
             ],
             extra_compile_args={
                 'cxx': ['-O3'],

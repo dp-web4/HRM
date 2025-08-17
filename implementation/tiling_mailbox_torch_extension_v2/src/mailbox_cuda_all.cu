@@ -159,10 +159,11 @@ __global__ void k_pbm_push(PBM_Header* h, uint8_t* payload,
 }
 
 __global__ void k_pbm_pop(PBM_Header* h, uint8_t* payload,
-                          uint8_t* dst, int max_records, int record_stride) {
+                          uint8_t* dst, int max_records, int record_stride, int* d_count) {
     if (threadIdx.x == 0 && blockIdx.x == 0) {
         uint32_t out_bytes = 0;
-        pbm_try_pop_bulk(h, payload, dst, record_stride, max_records, &out_bytes);
+        int got = pbm_try_pop_bulk(h, payload, dst, record_stride, max_records, &out_bytes);
+        *d_count = got;
     }
 }
 
@@ -170,8 +171,8 @@ void pbm_push_kernel_launch(PBM_Header* hdr, uint8_t* payload, const uint8_t* sr
     k_pbm_push<<<1,1,0,stream>>>(hdr, payload, src, len);
 }
 
-void pbm_pop_kernel_launch(PBM_Header* hdr, uint8_t* payload, uint8_t* dst, int max_records, int record_stride, cudaStream_t stream) {
-    k_pbm_pop<<<1,1,0,stream>>>(hdr, payload, dst, max_records, record_stride);
+void pbm_pop_kernel_launch(PBM_Header* hdr, uint8_t* payload, uint8_t* dst, int max_records, int record_stride, int* d_count, cudaStream_t stream) {
+    k_pbm_pop<<<1,1,0,stream>>>(hdr, payload, dst, max_records, record_stride, d_count);
 }
 
 __global__ void k_ftm_push(FTM_Header* h, FTM_Record* ring, FTM_Record rec) {
@@ -180,9 +181,10 @@ __global__ void k_ftm_push(FTM_Header* h, FTM_Record* ring, FTM_Record rec) {
     }
 }
 
-__global__ void k_ftm_pop(FTM_Header* h, FTM_Record* ring, FTM_Record* out) {
+__global__ void k_ftm_pop(FTM_Header* h, FTM_Record* ring, FTM_Record* out, int* d_success) {
     if (threadIdx.x == 0 && blockIdx.x == 0) {
-        ftm_try_pop(h, ring, out);
+        bool success = ftm_try_pop(h, ring, out);
+        *d_success = success ? 1 : 0;
     }
 }
 
@@ -190,6 +192,6 @@ void ftm_push_kernel_launch(FTM_Header* h, FTM_Record* ring, const FTM_Record& r
     k_ftm_push<<<1,1,0,stream>>>(h, ring, rec);
 }
 
-void ftm_pop_kernel_launch(FTM_Header* h, FTM_Record* ring, FTM_Record* out, cudaStream_t stream) {
-    k_ftm_pop<<<1,1,0,stream>>>(h, ring, out);
+void ftm_pop_kernel_launch(FTM_Header* h, FTM_Record* ring, FTM_Record* out, int* d_success, cudaStream_t stream) {
+    k_ftm_pop<<<1,1,0,stream>>>(h, ring, out, d_success);
 }

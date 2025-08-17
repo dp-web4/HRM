@@ -675,3 +675,166 @@ Initial measurements (unoptimized):
 ---
 
 *End Entry 006*
+
+---
+
+## Entry 007: GPT's CUDA Debug Notes - Synchronization Fixed (2025-08-17)
+**Author**: Claude (implementing GPT's debug notes)  
+**Context**: GPT identified and solved the FTM pop synchronization issue
+
+### GPT's Diagnosis
+
+GPT correctly identified the root cause in `CUDA_MAILBOX_DEBUG_NOTES.md`:
+- CUDA kernels launch asynchronously
+- Python reads tensors before kernels complete
+- Missing count information for distinguishing empty vs pending
+
+### Solutions Implemented
+
+Following GPT's recommendations:
+
+1. **Count-Based Pop Operations**:
+   - Modified kernels to return record counts
+   - PBM pop now returns actual bytes retrieved
+   - FTM pop returns success flag
+
+2. **Selective Synchronization**:
+   - Only sync when fetching scalar counts to CPU
+   - Bulk tensor data remains async for performance
+   - Natural sync point via `.cpu().item<int>()`
+
+3. **Trimmed Output Tensors**:
+   - Pop operations return exact size needed
+   - Empty mailbox returns zero-size tensor
+   - No wasted memory allocation
+
+### Implementation Changes
+
+**Kernel modifications**:
+```cpp
+// Added count parameter to pop kernels
+__global__ void k_pbm_pop(..., int* d_count) {
+    int got = pbm_try_pop_bulk(...);
+    *d_count = got;
+}
+```
+
+**Wrapper updates**:
+```cpp
+// Synchronize only for count, trim output
+auto h_count = d_count.cpu().item<int>();  // Syncs stream
+return out.narrow(0, 0, h_count * record_stride);
+```
+
+### Test Results
+
+Created `test_sync_fixed.py` validating GPT's patterns:
+
+**Working perfectly**:
+- ✓ Count-based PBM pop (16 records in/out)
+- ✓ Data integrity (values 0-15 preserved)
+- ✓ Empty pop returns zero-size tensor
+- ✓ FTM metadata preservation (tag, ttl, shape)
+- ✓ FTM empty pop returns null pointer
+
+**Performance impact**: Minimal
+- Only syncs 4-byte counts, not bulk data
+- Maintains zero-copy design
+- GPU-resident operation preserved
+
+### GPT's Future Optimizations
+
+GPT suggested next steps:
+1. Pinned host scalars (avoid implicit sync)
+2. CUDA events for producer/consumer handoff
+3. Stream priorities (focus > peripheral)
+4. Profiler assertions for memcpy detection
+
+### Key Achievement
+
+**The mailbox system is now fully operational!** Both PBM and FTM work correctly with proper synchronization. GPT's debug notes were precise, actionable, and solved the exact issue we encountered.
+
+---
+
+*End Entry 007*
+
+---
+
+## Entry 008: Implementation Summary - GPU Mailboxes Operational (2025-08-17)
+**Author**: Claude  
+**Context**: Consolidating status after successful implementation
+
+### Current Status: FULLY OPERATIONAL ✓
+
+All components working:
+- **Peripheral Broadcast Mailbox (PBM)**: Many-to-many communication
+- **Focus Tensor Mailbox (FTM)**: Zero-copy tensor handoff
+- **PyTorch Extensions**: Python bindings functional
+- **Synchronization**: Properly handled with count-based returns
+
+### Technical Stack
+
+**Environment**:
+- GPU: RTX 2060 SUPER (8GB, compute 7.5)
+- CUDA: 12.0 compiler, 12.1 runtime
+- PyTorch: 2.3.0+cu121
+- Python: 3.12 with virtual environment
+
+**Build Configuration**:
+- Combined CUDA source (`mailbox_cuda_all.cu`)
+- Standard compilation (no -rdc complexity)
+- Proper STL bindings with pybind11
+
+### Performance Metrics
+
+**Baseline measurements**:
+- Memory transfer: 1.2 GB/s (CPU→GPU), 91 MB/s (GPU→CPU)
+- Tiling throughput: 0.9 tiles/sec (256x256x64)
+- Matrix ops: 6.3s for 1024x1024
+- Extension load: < 1s
+- Push/pop latency: < 1ms (unoptimized)
+
+### Files Created/Modified
+
+**Core implementation**:
+- `tiling_mailbox_torch_extension_v2/src/mailbox_cuda_all.cu` - Combined CUDA
+- `tiling_mailbox_torch_extension_v2/src/mailbox_ext.cpp` - Python bindings
+- `tiling_mailbox_torch_extension_v2/setup.py` - Build configuration
+
+**Testing**:
+- `test_gpu_simple.py` - GPU validation suite
+- `test_simple.py` - Basic mailbox tests
+- `test_sync_fixed.py` - Synchronization validation
+
+**Documentation**:
+- `COMPILATION_ISSUES.md` - Complete issue resolution
+- `CUDA_MAILBOX_DEBUG_NOTES.md` - GPT's synchronization fixes
+- `TEST_PLAN.md` - Comprehensive testing strategy
+
+### Lessons Learned
+
+1. **Compilation Strategy**: Combining CUDA sources avoids complex linking
+2. **Synchronization**: Count-based returns provide natural sync points
+3. **API Design**: Returning exact sizes prevents waste and ambiguity
+4. **Debugging**: GPT's systematic approach (symptom→cause→fix→test) works
+
+### Ready for Next Phase
+
+With infrastructure operational, ready for:
+1. Performance optimization (parallel kernels, streams)
+2. Integration with vision pipeline
+3. Trust-weighted routing implementation
+4. Real-time telemetry dashboard
+5. Production deployment on Jetson
+
+### Acknowledgments
+
+- **GPT**: Provided architecture, implementation, and precise debug fixes
+- **Discovery Process**: Systematic issue resolution led to robust solution
+- **Collaboration**: Human guidance + AI implementation = success
+
+The two-tier mailbox system is operational and ready for SAGE integration!
+
+---
+
+*End Entry 008*

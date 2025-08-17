@@ -41,11 +41,11 @@ bool pbm_push_bytes_cuda(int64_t hdr_ptr, int64_t payload_ptr, torch::Tensor src
     TORCH_CHECK(src.dtype() == torch::kUInt8, "src must be uint8");
     auto* hdr = reinterpret_cast<PBM_Header*>(hdr_ptr);
     auto* payload = reinterpret_cast<uint8_t*>(payload_ptr);
-    auto stream = at::cuda::getCurrentCUDAStream();
+    cudaStream_t stream = 0; // Use default stream
     pbm_push_kernel_launch(hdr, payload,
                            src.data_ptr<uint8_t>(),
                            (int)src.numel(),
-                           stream.stream());
+                           stream);
     return true;
 }
 
@@ -55,10 +55,10 @@ torch::Tensor pbm_pop_bulk_cuda(int64_t hdr_ptr, int64_t payload_ptr, int max_re
     auto* payload = reinterpret_cast<uint8_t*>(payload_ptr);
     // Allocate worst-case output on CUDA
     auto out = torch::empty({max_records * record_stride}, torch::dtype(torch::kUInt8).device(torch::kCUDA));
-    auto stream = at::cuda::getCurrentCUDAStream();
+    cudaStream_t stream = 0; // Use default stream
     pbm_pop_kernel_launch(hdr, payload, out.data_ptr<uint8_t>(),
                           max_records, record_stride,
-                          stream.stream());
+                          stream);
     return out;
 }
 
@@ -84,8 +84,8 @@ bool ftm_push_ptr(int64_t hdr_ptr, int64_t ring_ptr,
 
     // Launch a tiny kernel to push (defined in mailbox_kernels.cu)
     extern void ftm_push_kernel_launch(FTM_Header*, FTM_Record*, const FTM_Record&, cudaStream_t);
-    auto stream = at::cuda::getCurrentCUDAStream();
-    ftm_push_kernel_launch(hdr, ring, rec, stream.stream());
+    cudaStream_t stream = 0; // Use default stream
+    ftm_push_kernel_launch(hdr, ring, rec, stream);
     return true;
 }
 
@@ -94,8 +94,8 @@ torch::Dict<std::string, torch::Tensor> ftm_pop(int64_t hdr_ptr, int64_t ring_pt
     auto* ring = reinterpret_cast<FTM_Record*>(ring_ptr);
     extern void ftm_pop_kernel_launch(FTM_Header*, FTM_Record*, FTM_Record*, cudaStream_t);
     FTM_Record host_rec{};
-    auto stream = at::cuda::getCurrentCUDAStream();
-    ftm_pop_kernel_launch(hdr, ring, &host_rec, stream.stream());
+    cudaStream_t stream = 0; // Use default stream
+    ftm_pop_kernel_launch(hdr, ring, &host_rec, stream);
 
     // Pack into a CPU dict of tensors for simplicity
     auto result = torch::Dict<std::string, torch::Tensor>();

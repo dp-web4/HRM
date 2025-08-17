@@ -1,0 +1,83 @@
+
+diff --git a/tiling_mailbox_torch_extension_v2/src/mailbox_ext.cpp b/tiling_mailbox_torch_extension_v2/src/mailbox_ext.cpp
+index 4444444..5555555 100644
+--- a/tiling_mailbox_torch_extension_v2/src/mailbox_ext.cpp
++++ b/tiling_mailbox_torch_extension_v2/src/mailbox_ext.cpp
+@@ -1,6 +1,7 @@
+ #include <torch/extension.h>
+ #include <cuda_runtime.h>
+ #include <ATen/cuda/CUDAContext.h>
++#include <c10/cuda/CUDACachingAllocator.h>
+ #include <vector>
+ #include <array>
+ #include <stdexcept>
+@@ -63,16 +64,30 @@ torch::Tensor pbm_pop_bulk_cuda(int64_t hdr_ptr, int64_t payload_ptr, int max_records, int record_stride) {
+     auto d_count = torch::empty({1}, torch::dtype(torch::kInt32).device(torch::kCUDA));
+
+     auto stream = at::cuda::getCurrentCUDAStream();
+     at::cuda::CUDAStreamGuard guard(stream);
+
+     pbm_pop_kernel_launch(hdr, payload, out.data_ptr<uint8_t>(),
+                           max_records, record_stride,
+                           d_count.data_ptr<int>(),
+                           stream.stream());
+
+-    // Move the small count scalar to CPU; this implicitly syncs the stream for this value
+-    int h_count = d_count.cpu().item<int>();
++    // --- Replace implicit sync with pinned host scalar + cudaMemcpyAsync ---
++    int* h_count_pinned = nullptr;
++    // Use PyTorch's pinned memory allocator so lifetime is tracked by caching allocator
++    auto opts = torch:: TensorOptions().dtype(torch::kInt32).pinned_memory(true).device(torch::kCPU);
++    auto host_buf = torch::empty({1}, opts);  // pinned int32 tensor
++    h_count_pinned = host_buf.data_ptr<int>();
++
++    // Async copy count -> pinned host on the same stream (no global sync)
++    cudaError_t err = cudaMemcpyAsync(h_count_pinned,
++                                      d_count.data_ptr<int>(),
++                                      sizeof(int),
++                                      cudaMemcpyDeviceToHost,
++                                      stream.stream());
++    TORCH_CHECK(err == cudaSuccess, "cudaMemcpyAsync count failed");
++
++    // Caller remains async; create a finalizer that narrows lazily after stream completion.
++    // For simplicity, we perform a local stream sync here to compute the view bounds safely.
++    cudaStreamSynchronize(stream.stream());
++    int h_count = *h_count_pinned;
+     int valid_bytes = h_count * record_stride;
+     if (valid_bytes < 0) valid_bytes = 0;
+     if (valid_bytes > out.numel()) valid_bytes = out.numel();
+     // Return a trimmed view to the valid region
+     return out.narrow(0, 0, valid_bytes);
+ }
+diff --git a/tiling_mailbox_torch_extension_v2/src/README.md b/tiling_mailbox_torch_extension_v2/src/README.md
+new file mode 100644
+index 0000000..1212121
+--- /dev/null
++++ b/tiling_mailbox_torch_extension_v2/src/README.md
+@@ -0,0 +1,36 @@
++# Notes on Pinned Host Scalars
++
++This extension now uses **pinned host memory** for the small `count` scalar in the pop path:
++
++- Allocates a pinned `int32` via `torch::empty(..., pinned_memory=True)`
++- Performs `cudaMemcpyAsync` on the **current stream** to transfer the count
++- Synchronizes **only the current stream** locally to compute the returned view
++
++Why pinned memory?
++- Asynchronous copies require page-locked (pinned) host memory to be valid.
++- Using PyTorch's pinned allocator keeps ownership/lifetime clear and avoids mixing custom allocators.
++
++Further optimization (optional):
++- Instead of synchronizing the stream in the binding, return the **full buffer** and the **count tensor** to Python, and let higher-level code schedule the narrowing after an awaited event. This keeps the binding fully async.
++
++Tradeoff here:
++- Simplicity and deterministic slice length in C++ vs maximum asynchrony.
++
++If you push for a fully-async binding, expose:
++```python
++buf, count_tensor = pbm_pop_raw(...)
++# later, after scheduling other work:
++count = int(count_tensor.cpu().item())
++buf = buf[:count * record_stride]
++```
++

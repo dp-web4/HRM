@@ -1,0 +1,120 @@
+
+diff --git a/tiling_mailbox_torch_extension_v2/src/mailbox_kernels.cu b/tiling_mailbox_torch_extension_v2/src/mailbox_kernels.cu
+index 1111111..2222222 100644
+--- a/tiling_mailbox_torch_extension_v2/src/mailbox_kernels.cu
++++ b/tiling_mailbox_torch_extension_v2/src/mailbox_kernels.cu
+@@ -1,20 +1,26 @@
+ #include <cuda.h>
+ #include <cuda_runtime.h>
+ #include <stdint.h>
+ #include "../../tiling_mailbox_cuda_pack/mailbox_peripheral.h"
+ #include "../../tiling_mailbox_cuda_pack/mailbox_focus.h"
+
+ // --- Peripheral kernels ---
+ __global__ void k_pbm_push(PBM_Header* h, uint8_t* payload,
+                            const uint8_t* src, int len) {
+     if (threadIdx.x == 0 && blockIdx.x == 0) {
+         pbm_try_push(h, payload, src, (uint32_t)len);
+     }
+ }
+
+-__global__ void k_pbm_pop(PBM_Header* h, uint8_t* payload,
+-                          uint8_t* dst, int max_records, int record_stride) {
++// Return count of popped records via d_count
++__global__ void k_pbm_pop(PBM_Header* h, uint8_t* payload,
++                          uint8_t* dst, int max_records, int record_stride,
++                          int* d_count) {
+     if (threadIdx.x == 0 && blockIdx.x == 0) {
+         uint32_t out_bytes = 0;
+-        pbm_try_pop_bulk(h, payload, dst, record_stride, max_records, &out_bytes);
++        int got = pbm_try_pop_bulk(h, payload, dst, record_stride, max_records, &out_bytes);
++        if (d_count) {
++            *d_count = got;
++        }
+     }
+ }
+
+-void pbm_push_kernel_launch(PBM_Header* hdr, uint8_t* payload, const uint8_t* src, int len, cudaStream_t stream) {
++void pbm_push_kernel_launch(PBM_Header* hdr, uint8_t* payload, const uint8_t* src, int len, cudaStream_t stream) {
+     k_pbm_push<<<1,1,0,stream>>>(hdr, payload, src, len);
+ }
+
+-void pbm_pop_kernel_launch(PBM_Header* hdr, uint8_t* payload, uint8_t* dst, int max_records, int record_stride, cudaStream_t stream) {
+-    k_pbm_pop<<<1,1,0,stream>>>(hdr, payload, dst, max_records, record_stride);
++void pbm_pop_kernel_launch(PBM_Header* hdr, uint8_t* payload, uint8_t* dst,
++                           int max_records, int record_stride, int* d_count,
++                           cudaStream_t stream) {
++    k_pbm_pop<<<1,1,0,stream>>>(hdr, payload, dst, max_records, record_stride, d_count);
+ }
+
+ // --- Focus kernels ---
+diff --git a/tiling_mailbox_torch_extension_v2/src/mailbox_ext.cpp b/tiling_mailbox_torch_extension_v2/src/mailbox_ext.cpp
+index 3333333..4444444 100644
+--- a/tiling_mailbox_torch_extension_v2/src/mailbox_ext.cpp
++++ b/tiling_mailbox_torch_extension_v2/src/mailbox_ext.cpp
+@@ -1,14 +1,16 @@
+ #include <torch/extension.h>
+ #include <cuda_runtime.h>
++#include <ATen/cuda/CUDAContext.h>   // CUDAStream + guard
+ #include <vector>
+ #include <array>
+ #include <stdexcept>
+ #include "../../tiling_mailbox_cuda_pack/mailbox_peripheral.h"
+ #include "../../tiling_mailbox_cuda_pack/mailbox_focus.h"
+
+ // CUDA kernels (defined in mailbox_kernels.cu)
+-void pbm_push_kernel_launch(PBM_Header* hdr, uint8_t* payload, const uint8_t* src, int len, cudaStream_t stream);
+-void pbm_pop_kernel_launch(PBM_Header* hdr, uint8_t* payload, uint8_t* dst, int max_records, int record_stride, cudaStream_t stream);
++void pbm_push_kernel_launch(PBM_Header* hdr, uint8_t* payload, const uint8_t* src, int len, cudaStream_t stream);
++void pbm_pop_kernel_launch(PBM_Header* hdr, uint8_t* payload, uint8_t* dst,
++                           int max_records, int record_stride, int* d_count, cudaStream_t stream);
+
+ // --- Init ---
+ torch::Tensor pbm_init(int64_t record_stride, int64_t capacity) {
+@@ -41,18 +43,33 @@ bool pbm_push_bytes_cuda(int64_t hdr_ptr, int64_t payload_ptr, torch::Tensor src) {
+     auto* hdr = reinterpret_cast<PBM_Header*>(hdr_ptr);
+     auto* payload = reinterpret_cast<uint8_t*>(payload_ptr);
+-    auto stream = at::cuda::getCurrentCUDAStream();
+-    pbm_push_kernel_launch(hdr, payload,
++    auto stream = at::cuda::getCurrentCUDAStream();
++    at::cuda::CUDAStreamGuard guard(stream);
++    pbm_push_kernel_launch(hdr, payload,
+                            src.data_ptr<uint8_t>(),
+                            (int)src.numel(),
+                            stream.stream());
+     return true;
+ }
+
+ // Returns a CUDA uint8 tensor containing N*record_stride bytes (N <= max_records)
+ torch::Tensor pbm_pop_bulk_cuda(int64_t hdr_ptr, int64_t payload_ptr, int max_records, int record_stride) {
+     auto* hdr = reinterpret_cast<PBM_Header*>(hdr_ptr);
+     auto* payload = reinterpret_cast<uint8_t*>(payload_ptr);
+-    // Allocate worst-case output on CUDA
+-    auto out = torch::empty({max_records * record_stride}, torch::dtype(torch::kUInt8).device(torch::kCUDA));
+-    auto stream = at::cuda::getCurrentCUDAStream();
+-    pbm_pop_kernel_launch(hdr, payload, out.data_ptr<uint8_t>(),
+-                          max_records, record_stride,
+-                          stream.stream());
+-    return out;
++    // Allocate worst-case output on CUDA
++    auto out = torch::empty({max_records * record_stride}, torch::dtype(torch::kUInt8).device(torch::kCUDA));
++    auto d_count = torch::empty({1}, torch::dtype(torch::kInt32).device(torch::kCUDA));
++
++    auto stream = at::cuda::getCurrentCUDAStream();
++    at::cuda::CUDAStreamGuard guard(stream);
++
++    pbm_pop_kernel_launch(hdr, payload, out.data_ptr<uint8_t>(),
++                          max_records, record_stride,
++                          d_count.data_ptr<int>(),
++                          stream.stream());
++
++    // Move the small count scalar to CPU; this implicitly syncs the stream for this value
++    int h_count = d_count.cpu().item<int>();
++    int valid_bytes = h_count * record_stride;
++    if (valid_bytes < 0) valid_bytes = 0;
++    if (valid_bytes > out.numel()) valid_bytes = out.numel();
++    // Return a trimmed view to the valid region
++    return out.narrow(0, 0, valid_bytes);
+ }
+
+ // --- Focus push/pop ---

@@ -120,6 +120,66 @@ For Ampere or earlier GPUs, install FlashAttention 2
 pip3 install flash-attn
 ```
 
+#### Jetson Orin Nano Setup
+
+The Jetson Orin Nano requires special consideration due to its ARM architecture and memory constraints:
+
+**Option 1: Docker (Recommended for Quick Start)**
+```bash
+# Use NVIDIA's pre-built PyTorch container
+sudo docker run --rm --runtime nvidia \
+    -v $(pwd):/workspace \
+    dustynv/l4t-pytorch:r36.2.0 \
+    python3 /workspace/your_script.py
+```
+
+**Option 2: Build from Source (For Native Performance)**
+
+Due to cuDNN version mismatches and memory limitations, building PyTorch and Flash Attention from source is recommended:
+
+1. **Create swap file on SSD (REQUIRED):**
+```bash
+# Minimum 16GB swap, 24GB recommended
+sudo fallocate -l 24G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+
+# Make permanent (add to /etc/fstab):
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+```
+
+2. **Build PyTorch from source:**
+```bash
+# Clone PyTorch
+git clone --recursive https://github.com/pytorch/pytorch
+cd pytorch
+git checkout v2.5.0
+
+# Configure for Jetson (SM 8.7)
+export USE_CUDA=1
+export USE_CUDNN=1
+export TORCH_CUDA_ARCH_LIST="8.7"
+export CUDA_HOME=/usr/local/cuda-12.6
+export MAX_JOBS=2  # Limit parallel jobs to avoid OOM
+
+# Build (takes 4-6 hours)
+python3 setup.py develop --user
+```
+
+3. **Build Flash Attention:**
+```bash
+git clone https://github.com/Dao-AILab/flash-attention.git
+cd flash-attention
+git checkout v2.3.6  # More stable for Jetson
+
+export MAX_JOBS=1  # Very conservative for Flash Attention
+python3 setup.py build_ext --inplace
+python3 setup.py install --user
+```
+
+**Note:** Flash Attention compilation is extremely memory-intensive. The 24GB swap is essential to avoid OOM kills during the CUDA kernel compilation.
+
 ## Install Python Dependencies 🐍
 
 ```bash

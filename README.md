@@ -63,6 +63,13 @@ Embodied intelligence through NVIDIA's GR00T foundation model. See [gr00t-integr
 ### 4. Totality/SubThought Integration
 Cognitive sensor providing structured imagination. See [related-work/](./related-work/).
 
+### 5. Entity & Role Architecture
+Fractal Web4 instance design treating SAGE as an ecosystem of trusted entities. See [entities_and_roles/](./entities_and_roles/).
+- **Entity Memory**: Persistent reputation and provenance tracking
+- **Dictionary Entities**: Trust-bounded translators (ASR, tokenizers, cross-model bridges)
+- **Dynamic Trust**: SNARC-weighted reputation learning
+- **Web4 Integration**: LCT-ready identity and governance
+
 ## Implementation Philosophy
 
 We follow a **Discovery vs Delivery** paradigm:

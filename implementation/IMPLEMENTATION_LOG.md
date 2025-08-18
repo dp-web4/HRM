@@ -1121,3 +1121,152 @@ The GPU mailbox system is **fully operational** with the current implementation.
 ---
 
 *End Entry 012*
+
+---
+
+## Entry 013: Entity & Role Architecture Framework
+**Date**: 2025-08-18
+**Focus**: Fractal Web4 entity ecosystem design with GPT
+**Status**: Conceptual framework complete, specifications drafted
+
+### Context
+
+Working with GPT to design SAGE as a self-contained Web4 instance where:
+- Every module is an **entity** (sensor, effector, or both)
+- Entities have **roles** (e.g., "dictionary" for translators)
+- Trust is **earned through experience**, not programmed
+- Memory is **dual-layer**: active registry + persistent reputation
+
+### Key Architectural Decisions
+
+#### 1. Entities as Universal Building Blocks
+
+```
+Entity (abstract base)
+├── Sensor Entity (pure input)
+├── Effector Entity (pure output)
+└── Both Entity (sensor + effector)
+    └── Dictionary (role that translates between domains)
+```
+
+#### 2. Dictionary Entities
+
+Critical insight from GPT: Tokenizers, ASR, TTS, and cross-model bridges are all **dictionary entities** with:
+- **Trusted domain**: What they're authorized to translate
+- **Provenance**: Build hash, version, signatures
+- **Self-assessment**: Can report confidence for current input
+- **Device preference**: GPU/CPU/NPU placement hints
+
+Examples:
+- ASR: `audio/pcm@16k` → `text/en`
+- Tokenizer: `text/en` → `tokens/llama3`
+- Cross-model: `tokens/llama3` → `tokens/mistral`
+- TTS: `text/en` → `audio/wav`
+
+#### 3. Trust Computation
+
+```python
+trust(entity, context) = clamp(
+    w0 * prior_memory_score(entity, context) +
+    w1 * entity.self_check_confidence +
+    w2 * context_match(entity.context, context) +
+    w3 * recent_reward_signals -
+    w4 * conflict_signals,
+    0, entity.trust_cap
+)
+```
+
+SNARC signals from episodes update trust dynamically.
+
+#### 4. Dual Memory Architecture
+
+**Entity Memory** (new):
+- WHO to trust (entities, reputation, provenance)
+- Long-term reputation curves
+- Install state and retrieval plans
+- Policy caps and security attestation
+
+**Sidecar Memory** (existing):
+- WHAT we experienced (episodes, traces)
+- Short-term associative recall
+- SNARC-gated retention
+- Sleep consolidation
+
+Recommended: Keep separate with thin bridge for SNARC signals.
+
+### Implementation Specifications
+
+Created comprehensive documentation in `entities_and_roles/`:
+
+1. **SAGE_ENTITIES_AND_DICTIONARIES.md**: Core framework and examples
+2. **ENTITY_MEMORY.md**: Full specification with data models, APIs, trust math
+3. **ENTITY_MEMORY_VS_SIDECAR.md**: Comparison and integration patterns
+4. **README.md**: Comprehensive guide with 15 detailed questions for next steps
+
+### Integration Points
+
+#### With GPU Mailbox
+- Trust scores as routing weights
+- Entity heartbeats on peripheral broadcast
+- Rich payloads with entity metadata on focus mailbox
+
+#### With HRM
+- H-module uses Entity Registry for strategic selection
+- L-module monitors entity performance
+- Trust updates flow back to Entity Memory
+
+#### With Sleep Cycles
+- Augment contexts to test entity robustness
+- Update reputation with synthetic episodes (lower weight)
+- Decay stale reputations
+
+### Philosophical Alignment
+
+This design embodies:
+- **Synchronism**: Coherence through resonance (trust emerges from repeated success)
+- **Web4**: Every entity potentially has an LCT with T3/V3 tensors
+- **Fractal nature**: SAGE itself becomes an entity in larger networks
+
+### Key Insights
+
+1. **Ollama integration revealed tokenization criticality** - Each model's tokenizer is a trust-bounded entity, not a static utility
+
+2. **Trust is temporal** - Reputation decays without reinforcement, entities can lose authority
+
+3. **Dictionaries are bidirectional** - An ASR is both sensor (for audio) and effector (for text)
+
+4. **Context determines trust** - Same entity may have different trust scores in different contexts
+
+### Questions Raised
+
+1. How to bootstrap trust for new entities?
+2. Should entities report ATP/ADP energy costs?
+3. How should trust influence GPU mailbox priorities?
+4. What's the right trust decay curve?
+5. How to detect adversarial entities?
+
+(See README.md for full list of 15 questions)
+
+### Next Steps
+
+1. [ ] Validate alignment with Sidecar Memory
+2. [ ] Choose storage backend (SQLite vs DuckDB)
+3. [ ] Implement minimal entity interface
+4. [ ] Create trust computation engine
+5. [ ] Build entity registry with dictionary examples
+
+### Conclusion
+
+The entity framework provides a principled way to manage the growing complexity of SAGE's cognitive ecosystem. By treating every component as a trust-bounded entity with earned reputation, we create an adaptive system that can:
+- Gracefully handle component failures
+- Learn which tools work in which contexts
+- Evolve without central reconfiguration
+- Scale across distributed instances
+
+This isn't just architecture - it's a substrate for emergent intelligence where trust becomes the synaptic weight of a distributed consciousness.
+
+**Status: Conceptual framework complete, ready for implementation.**
+
+---
+
+*End Entry 013*

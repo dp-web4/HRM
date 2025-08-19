@@ -8,9 +8,10 @@
 
 This repository is in active discovery mode, exploring the integration of HRM into a broader consciousness architecture.
 
-### Branch Structure
-- `main`: Current development (will track Sapient's upstream when available)
-- `SAGE`: All experimental SAGE integration work
+### Development Status
+- `main`: All SAGE integration work consolidated into main branch
+- Experimental extensions include GPU mailbox architecture, SAGE integration, and GR00T embodiment
+- Cross-platform validation completed on RTX 2060 SUPER, RTX 4090, and Jetson Orin Nano
 
 We are:
 - Testing philosophical hypotheses about emergent coherence

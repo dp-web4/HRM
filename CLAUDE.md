@@ -7,8 +7,9 @@
 - **CUDA**: 12.1 runtime, 12.0 compiler
 - **Platform**: /mnt/c/exe/projects/ai-agents/HRM
 
-## GitHub PAT Location
-**IMPORTANT**: The GitHub Personal Access Token is stored in `/home/sprout/ai-workspace/github pat.txt` (on Jetson)
+## Authentication
+**GitHub PAT Location**: `../.env` (GITHUB_PAT variable)
+- Use for pushing: `git push https://dp-web4:$(grep GITHUB_PAT ../.env | cut -d= -f2)@github.com/dp-web4/HRM.git`
 
 ## Sudo Access
 Sudo access available on Jetson Orin Nano (Sprout machine).

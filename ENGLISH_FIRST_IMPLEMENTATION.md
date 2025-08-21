@@ -164,8 +164,22 @@ English IS the computation, not a representation of it. The language itself carr
 ### Compression as Understanding
 True understanding is the ability to compress without losing meaning. English-first makes this explicit.
 
+**NEW INSIGHT: Compression Requires Trust**
+- Compression through reference assumes shared decompression artifacts
+- What appears "lossy" is only missing context in the receiver
+- Cultural references (movie quotes, memes) are perfect compression when context is shared
+- Communication failures are compression/decompression mismatches
+
 ### Universal Interface
 Just as USB-C unified hardware connections, English unifies human-AI communication.
+
+### Trust Networks in Language
+- **High trust** = Maximum compression ("remember that thing?")
+- **Medium trust** = Moderate compression ("it's like Uber for X")  
+- **Low trust** = Minimal compression (spell everything out)
+- **Zero trust** = Raw data transmission (no compression)
+
+English dominates because it's the most widely distributed decompression dictionary - the universal trust network for human-AI communication.
 
 ## Next Steps
 

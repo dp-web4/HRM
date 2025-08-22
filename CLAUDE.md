@@ -171,9 +171,40 @@ tiling_env/bin/python -m pip install torch==2.3.0 torchvision torchaudio --index
 - Tiling throughput: 2.9 tiles/sec
 - GPU Memory: 8GB VRAM
 
+## SNARC-SAGE Memory Integration (August 22, 2025)
+Successfully integrated SNARC selective memory with SAGE architecture:
+
+### Integration Architecture
+- ✅ **SNARCSAGEBridge** - Bridges SNARC to SAGE's dual memory system
+- ✅ **HRMMemoryIntegration** - Maps SNARC to HRM's L/H modules
+- ✅ **Circular Buffer** - X-from-last processing for context binding
+- ✅ **Verbatim Storage** - SQLite full-fidelity preservation
+- ✅ **Consolidation Strategies** - Pattern extraction during sleep
+
+### Key Files
+- `memory_integration/snarc_bridge.py` - Core bridge implementation
+- `memory_integration/sage_with_snarc.py` - Complete demo system
+- `memory_integration/README.md` - Integration documentation
+
+### How It Works
+1. **SNARC evaluates** experiences for salience (SNARC scores)
+2. **Circular buffer** maintains short-term context (x-from-last)
+3. **Dual storage**: Conceptual (SNARC) + Verbatim (SQLite)
+4. **Entity Memory** gets trust adjustments from SNARC
+5. **Sidecar Memory** uses SNARC for affect gating
+6. **HRM integration**: Memory as temporal sensor
+7. **Sleep consolidation** extracts patterns from experience
+
+### Testing
+```bash
+cd memory_integration
+python3 sage_with_snarc.py  # Requires PyTorch
+```
+
 ## Next Steps
-1. ✅ **Jetson deployment complete** - Infrastructure validated and operational
-2. 🔄 **Flash Attention SM 8.7 kernel compilation** - Final optimization for Jetson architecture
-3. 🎯 **SAGE integration** - All infrastructure ready for cognitive architecture deployment
-4. 📊 **Real-time telemetry dashboard** - Monitor tiling performance in production
-5. 🚀 **GR00T vision pipeline integration** - Connect to Isaac ecosystem
+1. ✅ **SNARC-SAGE Integration** - Memory bridge complete
+2. ✅ **Jetson deployment complete** - Infrastructure validated
+3. 🔄 **Flash Attention SM 8.7 kernel compilation** - Final optimization
+4. 🎯 **Full SAGE deployment** - Integrate all components
+5. 📊 **Real-time telemetry dashboard** - Monitor performance
+6. 🚀 **GR00T vision pipeline integration** - Connect to Isaac

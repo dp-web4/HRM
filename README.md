@@ -31,10 +31,41 @@ Synchronism → Web4 → SAGE
 ```
 
 - **[Synchronism](https://dpcars.net/synchronism)**: Coherence emerges from resonance across scales of intent
-- **[Web4](https://metalinxx.io/web4_whitepaper/)**: Trust-weighted governance of information flow
+- **[Web4](https://github.com/dp-web4/web4)**: Trust-weighted governance of information flow
 - **[SAGE](./SAGE_WHITEPAPER.md)**: Learned coherence replacing programmed rules
 
 See [CROSSREF_APPENDIX.md](./implementation/CROSSREF_APPENDIX.md) for detailed framework integration.
+
+## Web4 Integration
+
+SAGE implements **Web4 protocols at edge-device scale**, creating a fractal instance of the trust-native architecture:
+
+### Edge-Scale Implementation
+- **Local Consciousness Pools**: GPU mailboxes as entity interaction spaces
+- **Trust-Weighted Fusion**: Sensor inputs weighted by learned trust tensors
+- **LRC Governance**: Local decisions use high R (safety-critical) or high C (learning)
+- **Entity Memory**: Each module has an LCT-like identity with reputation tracking
+
+### Governance Dynamics
+SAGE modules operate with distinct LRC profiles:
+- **Safety-Critical Systems**: L=0.9, R=0.9 (maximum stability and filtering)
+- **Learning Parameters**: C=0.7, R=0.5 (experimentation with quality control)
+- **Performance Tuning**: L=0.3, C=0.8 (rapid adaptation)
+
+### Trust Tensor Implementation
+- **Talent**: Module capabilities tracked through performance metrics
+- **Training**: Learning history preserved in dual memory systems
+- **Temperament**: Behavioral patterns emerge from SNARC salience scoring
+
+### ATP Energy Model at Edge
+- Processing consumes computational "energy" (GPU cycles)
+- Value creation (correct predictions) generates new energy allocation
+- Failed predictions dissipate energy through resistance mechanisms
+
+### Learn More
+- [Web4 Protocol Documentation](https://github.com/dp-web4/web4)
+- [LRC Governance Model](https://github.com/dp-web4/web4/blob/main/LRC_GOVERNANCE.md)
+- [Entity Memory Architecture](./entities_and_roles/README.md)
 
 ## Original HRM
 

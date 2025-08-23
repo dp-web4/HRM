@@ -9,6 +9,10 @@
 # raw datasets (these can be large and are downloaded from HuggingFace)
 /dataset/raw-data/
 
+# Large test output files (>50MB)
+orchestrator_demo_results.json
+**/orchestrator_demo_results.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

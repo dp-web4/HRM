@@ -1,17 +1,17 @@
 {
   "device": "cuda",
   "vision_performance": {
-    "iterations": 10,
-    "time_ms": 597.8515148162842,
-    "compute_saved": 0.6666666666666667
+    "iterations": 2,
+    "time_ms": 560.7521533966064,
+    "compute_saved": 0.9333333333333333
   },
   "language_performance": {
     "iterations": 2,
-    "time_ms": 311.7866516113281,
+    "time_ms": 309.9958896636963,
     "compute_saved": 0.9333333333333333
   },
   "parallel_execution": {
-    "time_ms": 257.22765922546387,
+    "time_ms": 215.51823616027832,
     "plugins": 2
   },
   "memory_stats": {
@@ -26,21 +26,21 @@
     "avg_iterations": 2.0
   },
   "orchestration_summary": {
-    "total_execution_time": 0.2567410469055176,
+    "total_execution_time": 0.21503186225891113,
     "plugins_executed": 2,
     "successful": 2,
     "early_stopped": 1,
-    "average_efficiency": 0.02206228478997946,
+    "average_efficiency": 0.02628387473523617,
     "budget_report": {
       "total_budget": 1000.0,
       "total_allocated": 2000.0,
-      "total_consumed": 120.0,
-      "utilization": 0.12,
+      "total_consumed": 40.0,
+      "utilization": 0.04,
       "per_plugin": {
         "vision": {
           "allocated": 1000.0,
-          "consumed": 100.0,
-          "utilization": 0.1
+          "consumed": 20.0,
+          "utilization": 0.02
         },
         "language": {
           "allocated": 1000.0,
@@ -50,23 +50,23 @@
       }
     },
     "plugin_results": {
-      "language": {
-        "state": "completed",
-        "execution_time": 0.23986339569091797,
-        "atp_consumed": 20.0,
-        "trust_score": 0.8471473753452301,
-        "efficiency": 0.042357368767261504,
-        "iterations": 2,
-        "compute_saved": 0.0
-      },
       "vision": {
         "state": "halted_early",
-        "execution_time": 0.2567410469055176,
-        "atp_consumed": 100.0,
-        "trust_score": 0.17672008126974106,
-        "efficiency": 0.0017672008126974107,
-        "iterations": 10,
-        "compute_saved": 0.6666666666666667
+        "execution_time": 0.11739110946655273,
+        "atp_consumed": 20.0,
+        "trust_score": 0.15723906457424164,
+        "efficiency": 0.007861953228712082,
+        "iterations": 2,
+        "compute_saved": 0.9333333333333333
+      },
+      "language": {
+        "state": "completed",
+        "execution_time": 0.21391963958740234,
+        "atp_consumed": 20.0,
+        "trust_score": 0.8941159248352051,
+        "efficiency": 0.04470579624176026,
+        "iterations": 2,
+        "compute_saved": 0.0
       }
     }
   }

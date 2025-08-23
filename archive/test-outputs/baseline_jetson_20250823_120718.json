@@ -1,0 +1,68 @@
+{
+  "system": {
+    "timestamp": "2025-08-23T12:07:12.880768",
+    "platform": "Linux-5.15.148-tegra-aarch64-with-glibc2.35",
+    "python": "3.10.12",
+    "torch": "2.5.0a0+git32f585d",
+    "cuda_available": true,
+    "cuda_device": "Orin",
+    "cuda_memory_gb": 7.989932032,
+    "cuda_capability": "8.7",
+    "jetson_model": "NVIDIA Jetson Orin Nano Engineering Reference Developer Kit Super\u0000"
+  },
+  "basic_ops": {
+    "matmul_256": {
+      "time_ms": 0.16224384307861328,
+      "gflops": 206.8148249159853
+    },
+    "matmul_512": {
+      "time_ms": 0.9911060333251953,
+      "gflops": 270.8443365029165
+    },
+    "matmul_1024": {
+      "time_ms": 2.6744842529296875,
+      "gflops": 802.9524367726601
+    },
+    "matmul_2048": {
+      "time_ms": 16.30995273590088,
+      "gflops": 1053.3365400982614
+    },
+    "conv2d_batch1": {
+      "time_ms": 1.2454509735107422,
+      "images_per_sec": 802.9220107967379
+    },
+    "conv2d_batch4": {
+      "time_ms": 4.924464225769043,
+      "images_per_sec": 812.2711053658489
+    },
+    "conv2d_batch8": {
+      "time_ms": 7.342839241027832,
+      "images_per_sec": 1089.496819609002
+    }
+  },
+  "memory": {
+    "memory_10MB": {
+      "h2d_gbps": 3.437395099026519,
+      "d2h_gbps": 1.851634193752543
+    },
+    "memory_50MB": {
+      "h2d_gbps": 5.128461962237692,
+      "d2h_gbps": 2.757506395583681
+    },
+    "memory_100MB": {
+      "h2d_gbps": 4.180444988773219,
+      "d2h_gbps": 2.9437129879836714
+    },
+    "memory_500MB": {
+      "h2d_gbps": 3.0708008522671895,
+      "d2h_gbps": 1.8147019210321118
+    }
+  },
+  "precision": {
+    "precision_speedup": {
+      "fp32_ms": 5.272722244262695,
+      "fp16_ms": 17.748689651489258,
+      "speedup": 0.2970767052552678
+    }
+  }
+}

@@ -2,6 +2,8 @@
 
 *A conceptual framework for integrating diffusion models as the fundamental computational paradigm in SAGE*
 
+> **Update (2025-08-23):** This concept has been generalized into the [Iterative Refinement Primitive (IRP) Protocol](./IRP_PROTOCOL.md), which treats diffusion as one backend among several for the universal pattern of iterative refinement. See IRP_PROTOCOL.md for the complete framework and Nova's architectural improvements in `forum/nova/SAGE_IRP_Framing.md`.
+
 ## Core Insight
 
 HRM's iterative H-L cycles share a deep computational pattern with diffusion models: both transform noisy/incomplete states into clean/complete states through iterative refinement. This suggests a unified architecture where various diffusion model plugins handle different aspects of perception, cognition, and action.

@@ -123,9 +123,11 @@ See [STUB_ALERT_APPENDIX.md](./related-work/STUB_ALERT_APPENDIX.md) for current 
 - **[ENGINEERING_PRINCIPLES.md](../private-context/ENGINEERING_PRINCIPLES.md)**: Discovery vs Delivery paradigm details
 
 ### Conceptual Explorations
-- **[DIFFUSION_ARCHITECTURE.md](./DIFFUSION_ARCHITECTURE.md)**: Unified diffusion model paradigm for SAGE - exploring how HRM's iterative refinement connects to diffusion models for recognition and generation across all modalities
+- **[IRP_PROTOCOL.md](./IRP_PROTOCOL.md)**: Iterative Refinement Primitive - generalized framework for intelligence as iterative denoising toward coherence (incorporates Nova's architectural improvements)
+- **[DIFFUSION_ARCHITECTURE.md](./DIFFUSION_ARCHITECTURE.md)**: Diffusion models as one IRP backend - exploring how HRM's iterative refinement connects to diffusion models
 - **[SIGHT_INSIGHT.md](./implementation/SIGHT_INSIGHT.md)**: Tiled perception and cognitive resonance through FlashAttention
 - **[ENGLISH_FIRST_IMPLEMENTATION.md](./ENGLISH_FIRST_IMPLEMENTATION.md)**: English as native protocol, not translation target
+- **[forum/nova/](./forum/nova/)**: Nova's contributions and architectural suggestions
 
 ---
 

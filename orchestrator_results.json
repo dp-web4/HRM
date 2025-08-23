@@ -1,0 +1,45 @@
+{
+  "total_execution_time": 0.6949951648712158,
+  "plugins_executed": 2,
+  "successful": 2,
+  "early_stopped": 2,
+  "average_efficiency": 0.02894898120313883,
+  "budget_report": {
+    "total_budget": 1000.0,
+    "total_allocated": 2000.0,
+    "total_consumed": 40.0,
+    "utilization": 0.04,
+    "per_plugin": {
+      "vision": {
+        "allocated": 1000.0,
+        "consumed": 20.0,
+        "utilization": 0.02
+      },
+      "language": {
+        "allocated": 1000.0,
+        "consumed": 20.0,
+        "utilization": 0.02
+      }
+    }
+  },
+  "plugin_results": {
+    "vision": {
+      "state": "halted_early",
+      "execution_time": 0.6215121746063232,
+      "atp_consumed": 20.0,
+      "trust_score": 0.15795924812555315,
+      "efficiency": 0.007897962406277657,
+      "iterations": 2,
+      "compute_saved": 0.96
+    },
+    "language": {
+      "state": "halted_early",
+      "execution_time": 0.694145917892456,
+      "atp_consumed": 20.0,
+      "trust_score": 1.0,
+      "efficiency": 0.05,
+      "iterations": 2,
+      "compute_saved": 0.9333333333333333
+    }
+  }
+}

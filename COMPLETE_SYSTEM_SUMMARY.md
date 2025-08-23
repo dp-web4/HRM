@@ -111,10 +111,12 @@ HRM/
 │   └── full_system_demo.py             (227 lines)
 ├── benchmarks/
 │   └── baseline_jetson.py              (168 lines)
-└── documentation/
-    ├── IMPLEMENTATION_PLAN_JETSON.md
-    ├── ACHIEVEMENTS_JETSON_20250822.md
-    └── COMPLETE_SYSTEM_SUMMARY.md (this file)
+├── archive/
+│   ├── documentation/ (planning docs)
+│   ├── test-outputs/ (JSON results)
+│   └── old-implementations/ (legacy code)
+├── ACHIEVEMENTS_JETSON_20250822.md
+└── COMPLETE_SYSTEM_SUMMARY.md (this file)
 
 Total: ~3,500 lines of working code
 ```

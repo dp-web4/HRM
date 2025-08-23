@@ -17,8 +17,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 # Try to import SNARC from Memory project if available
 try:
     sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), '..', 'Memory'))
-    from SNARC.circular_buffer import CircularBuffer
-    from SNARC.full_implementation.snarc_core import SNARCCore
+    from SNARC.circular_buffer import CircularScratchpad, VerbatimStorage
+    from SNARC.full_implementation.snarc_core import SNARCGate, FastWeightMemory, SNARCState
     SNARC_AVAILABLE = True
 except ImportError:
     SNARC_AVAILABLE = False
@@ -98,12 +98,17 @@ class IRPMemoryBridge:
         
         # Initialize SNARC or mock
         if SNARC_AVAILABLE:
-            self.buffer = CircularBuffer(buffer_size)
-            self.snarc = SNARCCore(
-                input_dim=256,  # Placeholder
-                hidden_dim=128,
-                output_dim=64,
-                capacity=snarc_capacity
+            self.buffer = CircularScratchpad(capacity=buffer_size)
+            self.verbatim = VerbatimStorage()
+            # Create SNARC configuration
+            from SNARC.full_implementation.snarc_core import SNARCConfig
+            config = SNARCConfig()
+            config.gate_threshold = 0.3  # Lower threshold for more memory retention
+            self.snarc = SNARCGate(config)
+            self.fast_weights = FastWeightMemory(
+                d_key=256,
+                rank=64,
+                config=config
             )
             print("Using real SNARC implementation")
         else:

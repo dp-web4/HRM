@@ -1,0 +1,70 @@
+{
+  "device": "cuda",
+  "vision_performance": {
+    "iterations": 2,
+    "time_ms": 530.9798717498779,
+    "compute_saved": 0.9333333333333333
+  },
+  "language_performance": {
+    "iterations": 2,
+    "time_ms": 302.5960922241211,
+    "compute_saved": 0.9333333333333333
+  },
+  "parallel_execution": {
+    "time_ms": 158.2777500152588,
+    "plugins": 2
+  },
+  "memory_stats": {
+    "total_memories": 0,
+    "pending_consolidation": 0,
+    "patterns_extracted": 1,
+    "plugins_with_patterns": [
+      "language_irp"
+    ]
+  },
+  "orchestration_summary": {
+    "total_execution_time": 0.15773844718933105,
+    "plugins_executed": 2,
+    "successful": 2,
+    "early_stopped": 2,
+    "average_efficiency": 0.02887987107038498,
+    "budget_report": {
+      "total_budget": 1000.0,
+      "total_allocated": 2000.0,
+      "total_consumed": 40.0,
+      "utilization": 0.04,
+      "per_plugin": {
+        "vision": {
+          "allocated": 1000.0,
+          "consumed": 20.0,
+          "utilization": 0.02
+        },
+        "language": {
+          "allocated": 1000.0,
+          "consumed": 20.0,
+          "utilization": 0.02
+        }
+      }
+    },
+    "plugin_results": {
+      "vision": {
+        "state": "halted_early",
+        "execution_time": 0.1061396598815918,
+        "atp_consumed": 20.0,
+        "trust_score": 0.1551948428153992,
+        "efficiency": 0.00775974214076996,
+        "iterations": 2,
+        "compute_saved": 0.9333333333333333
+      },
+      "language": {
+        "state": "halted_early",
+        "execution_time": 0.15660548210144043,
+        "atp_consumed": 20.0,
+        "trust_score": 1.0,
+        "efficiency": 0.05,
+        "iterations": 2,
+        "compute_saved": 0.9333333333333333
+      }
+    }
+  }
+}

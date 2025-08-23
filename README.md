@@ -117,9 +117,15 @@ See [STUB_ALERT_APPENDIX.md](./related-work/STUB_ALERT_APPENDIX.md) for current 
 
 ## Documentation
 
+### Core Documentation
 - **[IMPLEMENTATION_LOG.md](./implementation/IMPLEMENTATION_LOG.md)**: Append-only log of implementation decisions and discoveries
 - **[IMPLEMENTATION_README.md](./implementation/IMPLEMENTATION_README.md)**: System philosophy and integration approach
 - **[ENGINEERING_PRINCIPLES.md](../private-context/ENGINEERING_PRINCIPLES.md)**: Discovery vs Delivery paradigm details
+
+### Conceptual Explorations
+- **[DIFFUSION_ARCHITECTURE.md](./DIFFUSION_ARCHITECTURE.md)**: Unified diffusion model paradigm for SAGE - exploring how HRM's iterative refinement connects to diffusion models for recognition and generation across all modalities
+- **[SIGHT_INSIGHT.md](./implementation/SIGHT_INSIGHT.md)**: Tiled perception and cognitive resonance through FlashAttention
+- **[ENGLISH_FIRST_IMPLEMENTATION.md](./ENGLISH_FIRST_IMPLEMENTATION.md)**: English as native protocol, not translation target
 
 ---
 

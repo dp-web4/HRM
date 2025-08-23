@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dp-web4/HRM/schemas/telemetry.schema.json",
+  "title": "SAGE IRP Telemetry",
+  "description": "Telemetry format for IRP plugin refinement tracking",
+  "type": "object",
+  "required": ["plugin", "step_idx", "E", "budget", "trust"],
+  "properties": {
+    "entity_id": {
+      "type": ["string", "null"],
+      "description": "Unique identifier for the plugin instance"
+    },
+    "plugin": {
+      "type": "string",
+      "description": "Plugin type (vision, language, control, memory)",
+      "enum": ["vision", "language", "control", "memory", "custom"]
+    },
+    "step_idx": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Current refinement step index"
+    },
+    "E": {
+      "type": "number",
+      "description": "Current energy value (lower is better)"
+    },
+    "dE": {
+      "type": ["number", "null"],
+      "description": "Change in energy from previous step"
+    },
+    "steps": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "Total number of refinement steps"
+    },
+    "halt_reason": {
+      "type": ["string", "null"],
+      "description": "Reason for halting refinement",
+      "enum": ["slope<eps", "feasible", "max_steps", "timeout", "manual", null]
+    },
+    "trust": {
+      "type": "object",
+      "description": "Trust metrics based on convergence behavior",
+      "required": ["monotonicity_ratio", "dE_variance"],
+      "properties": {
+        "monotonicity_ratio": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Fraction of steps with energy decrease"
+        },
+        "dE_variance": {
+          "type": "number",
+          "minimum": 0.0,
+          "description": "Variance of energy changes"
+        },
+        "convergence_rate": {
+          "type": ["number", "null"],
+          "description": "Average energy decrease per step"
+        },
+        "contribution_to_H": {
+          "type": ["number", "null"],
+          "description": "Contribution to H-module coherence"
+        }
+      }
+    },
+    "budget": {
+      "type": "object",
+      "description": "Computational resources consumed",
+      "required": ["ATP_spent", "time_ms"],
+      "properties": {
+        "ATP_spent": {
+          "type": "number",
+          "minimum": 0.0,
+          "description": "Abstract computational energy units"
+        },
+        "time_ms": {
+          "type": "number",
+          "minimum": 0.0,
+          "description": "Wall-clock time in milliseconds"
+        },
+        "memory_mb": {
+          "type": ["number", "null"],
+          "minimum": 0.0,
+          "description": "Peak memory usage in megabytes"
+        },
+        "gpu_util": {
+          "type": ["number", "null"],
+          "minimum": 0.0,
+          "maximum": 100.0,
+          "description": "GPU utilization percentage"
+        }
+      }
+    },
+    "LRC_context": {
+      "type": ["object", "null"],
+      "description": "LRC governance context",
+      "properties": {
+        "policy_id": {
+          "type": "string",
+          "description": "ID of governing LRC policy"
+        },
+        "L": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Inductance (change resistance)"
+        },
+        "R": {
+          "type": "number",
+          "minimum": 0.0,
+          "description": "Resistance (quality filter)"
+        },
+        "C": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Capacitance (experimentation capacity)"
+        },
+        "quota_ref": {
+          "type": ["string", "null"],
+          "description": "Reference to resource quota"
+        }
+      }
+    },
+    "metadata": {
+      "type": ["object", "null"],
+      "description": "Additional plugin-specific metadata",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

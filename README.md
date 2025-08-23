@@ -28,6 +28,13 @@ We are:
 
 **Ready for exploration and extension.** Core IRP framework proven and operational.
 
+## 📚 Documentation
+
+- **[API Documentation](./API_DOCUMENTATION.md)** - Complete API reference for all subsystems
+- **[Architecture Overview](./COMPLETE_SYSTEM_SUMMARY.md)** - System architecture and components
+- **[IRP Protocol](./IRP_PROTOCOL.md)** - Iterative Refinement Primitive design
+- **[Achievements](./ACHIEVEMENTS_JETSON_20250822.md)** - Performance milestones
+
 ## Conceptual Framework
 
 This work operates within a three-layer conceptual stack:

@@ -1,0 +1,80 @@
+{
+  "day_experiences": 30,
+  "performance_before": {
+    "avg_iterations": 2.0,
+    "avg_efficiency": 0.9333333333333333,
+    "avg_convergence": 1.0,
+    "patterns_available": 1,
+    "trust_adaptation": 0.5000000001202846
+  },
+  "performance_after": {
+    "avg_iterations": 2.0,
+    "avg_efficiency": 0.9333333333333333,
+    "avg_convergence": 1.0,
+    "patterns_available": 1,
+    "trust_adaptation": 0.40843937697261634
+  },
+  "patterns_extracted": 1,
+  "morning_test_results": [
+    {
+      "plugin": "vision",
+      "iterations": 2,
+      "efficiency": 0.008002161756157877,
+      "memory_guided": true
+    },
+    {
+      "plugin": "language",
+      "iterations": 2,
+      "efficiency": 0.03975343257188797,
+      "memory_guided": true
+    },
+    {
+      "plugin": "vision",
+      "iterations": 2,
+      "efficiency": 0.00800219126045704,
+      "memory_guided": true
+    },
+    {
+      "plugin": "language",
+      "iterations": 2,
+      "efficiency": 0.041605259478092196,
+      "memory_guided": true
+    },
+    {
+      "plugin": "vision",
+      "iterations": 2,
+      "efficiency": 0.008002373203635216,
+      "memory_guided": true
+    },
+    {
+      "plugin": "language",
+      "iterations": 2,
+      "efficiency": 0.04650680124759674,
+      "memory_guided": true
+    },
+    {
+      "plugin": "vision",
+      "iterations": 2,
+      "efficiency": 0.008002499416470528,
+      "memory_guided": true
+    },
+    {
+      "plugin": "language",
+      "iterations": 2,
+      "efficiency": 0.04277525991201401,
+      "memory_guided": true
+    },
+    {
+      "plugin": "vision",
+      "iterations": 2,
+      "efficiency": 0.008002098649740219,
+      "memory_guided": true
+    },
+    {
+      "plugin": "language",
+      "iterations": 2,
+      "efficiency": 0.0394782543182373,
+      "memory_guided": true
+    }
+  ]
+}

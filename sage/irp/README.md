@@ -148,10 +148,11 @@ results = orchestrator.process(inputs)
 
 ### TinyVAE IRP
 - Compact VAE for 64×64 crop encoding
-- 16-dimensional latent space (configurable)
-- Depthwise separable convolutions for efficiency
-- Single-pass encoding (no iterative refinement)
-- Designed for motion-focused region extraction
+- 64-dimensional latent space (default, configurable)
+- Implements **compression trust** - meaningful communication through shared latent fields
+- GroupNorm for stable single-batch inference on Jetson
+- FP16 support for efficient edge deployment
+- See [Compression Trust Documentation](../../docs/tinyvae_compression_trust.md) for theory and testing
 
 ## Telemetry Format
 

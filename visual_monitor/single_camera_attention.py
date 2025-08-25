@@ -54,6 +54,7 @@ class SingleCameraAttention:
         # Camera setup
         self.camera_index = camera_index
         self.cap = None
+        self.cap_backend = cv2.CAP_V4L2  # Force V4L2 backend for WSL2
         
         # Motion detection
         self.prev_gray = None
@@ -77,14 +78,19 @@ class SingleCameraAttention:
         """Setup single camera - try USB cameras"""
         print(f"Setting up camera (index {self.camera_index})...")
         
-        # Try to open camera
-        self.cap = cv2.VideoCapture(self.camera_index)
+        # Try to open camera with V4L2 backend
+        self.cap = cv2.VideoCapture(self.camera_index, self.cap_backend)
+        
+        # Wait for camera to initialize
+        import time
+        time.sleep(1)
         
         if not self.cap.isOpened():
             # Try other indices
             for idx in range(4):
                 print(f"Trying camera index {idx}...")
-                self.cap = cv2.VideoCapture(idx)
+                self.cap = cv2.VideoCapture(idx, self.cap_backend)
+                time.sleep(1)
                 if self.cap.isOpened():
                     self.camera_index = idx
                     break
@@ -265,12 +271,20 @@ class SingleCameraAttention:
         paused = False
         
         try:
+            frame_errors = 0
             while True:
                 if not paused:
                     ret, frame = self.cap.read()
                     if not ret:
-                        print("Failed to read frame!")
-                        break
+                        frame_errors += 1
+                        print(f"Failed to read frame! (attempt {frame_errors})")
+                        if frame_errors > 5:
+                            print("Too many frame errors, exiting...")
+                            break
+                        time.sleep(0.1)
+                        continue
+                    
+                    frame_errors = 0  # Reset on successful read
                     
                     # Detect motion
                     attention_box = self.detect_motion(frame)

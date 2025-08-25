@@ -109,7 +109,40 @@ Full-featured monitor with advanced visualization:
 python3 visual_attention_monitor.py
 ```
 
-### 4. `test_tinyvae_pipeline.py`
+### 4. **NEW: WSL2 Camera Support** (August 25, 2025)
+
+#### `fast_camera_monitor.py` (Recommended for WSL2)
+High-performance live monitor optimized for USB passthrough:
+- Direct OpenCV capture (~20 FPS achieved)
+- Smooth attention box with α=0.7 exponential smoothing
+- Downsampled motion detection (160x120) for speed
+- GPU-accelerated with CUDA support
+- Adaptive attention sizing based on motion variance
+
+```bash
+source sage_env/bin/activate
+python visual_monitor/fast_camera_monitor.py
+```
+
+**Session Results:**
+- 1822 frames processed at ~20 FPS
+- RTX 4060 GPU acceleration active
+- Smooth real-time attention tracking
+
+#### `live_camera_monitor.py`
+Full-featured monitor with IRP integration:
+- fswebcam capture for compatibility
+- IRP processing every 30 frames
+- Trust score computation
+- Frame saving capability
+
+#### `wsl_camera_attention.py`
+Batch processor for WSL2:
+- Works around USB passthrough limitations
+- Saves attention frames to disk
+- Creates summary montages
+
+### 5. `test_tinyvae_pipeline.py`
 TinyVAE integration for compact latent encoding:
 - Extracts 64x64 crops from motion attention peaks
 - Encodes to 16-dimensional latent space
@@ -143,6 +176,45 @@ Typical performance metrics:
 - **Processing**: Every 3rd frame (configurable)
 - **IRP Latency**: 3-5ms per refinement
 - **Memory Usage**: <200MB total
+
+## WSL2 Camera Setup (NEW)
+
+### Prerequisites for Windows/WSL2
+
+1. **Install usbipd-win on Windows** (Admin PowerShell):
+```powershell
+winget install --interactive --exact dorssel.usbipd-win
+```
+
+2. **Install WSL2 dependencies**:
+```bash
+sudo apt-get update
+sudo apt-get install -y v4l-utils fswebcam linux-tools-virtual hwdata
+sudo modprobe usbip-core vhci-hcd uvcvideo
+```
+
+3. **Attach camera to WSL2** (Admin PowerShell on Windows):
+```powershell
+# List USB devices
+usbipd list
+
+# Bind camera (use your BUSID, e.g., 2-6)
+usbipd bind --busid 2-6
+
+# Attach to WSL2
+usbipd attach --wsl --busid 2-6
+```
+
+4. **Fix permissions in WSL2**:
+```bash
+sudo chmod 666 /dev/video0
+```
+
+5. **Verify camera**:
+```bash
+ls -la /dev/video*
+v4l2-ctl --list-devices
+```
 
 ## Camera Setup
 

@@ -50,7 +50,20 @@ guided_vision = MemoryGuidedIRP(vision_irp, memory_bridge)
 refined, telemetry = guided_vision.refine(image_tensor)
 ```
 
-### 5. Full System Setup
+### 5. TinyVAE for Compact Encoding
+```python
+from sage.irp.plugins.tinyvae_irp_plugin import create_tinyvae_irp
+
+# Create compact VAE for crops
+tinyvae = create_tinyvae_irp(latent_dim=16)
+
+# Extract crop from attention peak and encode
+crop = extract_motion_crop(frame, attention_map, size=64)
+latent, telemetry = tinyvae.refine(crop)
+print(f"Encoded to {latent.shape[-1]}D latent, MSE: {telemetry['reconstruction_error']:.4f}")
+```
+
+### 6. Full System Setup
 ```python
 import torch
 from sage.orchestrator.hrm_orchestrator import HRMOrchestrator
@@ -91,6 +104,11 @@ async def process_multimodal(image, text):
 - `mask_ratio`: 0.5 (initial mask)
 - `model_variant`: "nano", "micro", or "tiny"
 
+### TinyVAE IRP
+- `latent_dim`: 16 (compact latent space)
+- `input_channels`: 1 (grayscale) or 3 (RGB)
+- `img_size`: 64 (fixed crop size)
+
 ### Orchestrator
 - `initial_atp`: 1000.0 (budget)
 - `max_concurrent`: 4 (parallel limit)
@@ -107,6 +125,7 @@ async def process_multimodal(image, text):
 |-----------|------|---------|---------|
 | Vision Refinement | 3-5ms | 25x | 99.9% |
 | Language Refinement | 2-4ms | 15x | Stable |
+| TinyVAE Encoding | 1-2ms | N/A | 16D latent |
 | Parallel Multi-Modal | <10ms | N/A | High |
 | Memory Consolidation | 100ms | N/A | N/A |
 

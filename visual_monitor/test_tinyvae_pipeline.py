@@ -98,12 +98,15 @@ def main():
     # Initialize TinyVAE
     print("\nInitializing TinyVAE IRP plugin...")
     tinyvae = create_tinyvae_irp(
-        latent_dim=16,
-        input_channels=1  # Grayscale
+        latent_dim=64,        # Nova's default
+        input_channels=3,     # RGB default
+        use_fp16=True,       # Enable FP16 for Jetson
+        beta_kl=0.1          # KL weight
     )
     print(f"✓ TinyVAE initialized: {tinyvae.entity_id}")
     print(f"  Latent dimension: {tinyvae.latent_dim}")
-    print(f"  Input size: {tinyvae.img_size}x{tinyvae.img_size}")
+    print(f"  Input channels: {tinyvae.input_channels}")
+    print(f"  FP16 enabled: {tinyvae.use_fp16}")
     
     # Try to open camera
     print("\nOpening camera...")
@@ -180,20 +183,23 @@ def main():
         
         # Extract crop from highest attention region
         crop, center = extract_motion_crop(frame, attention, crop_size=64)
-        crop_gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
+        
+        # Convert to tensor for TinyVAE (RGB)
+        crop_tensor = torch.from_numpy(crop).float() / 255.0  # Normalize to [0, 1]
+        crop_tensor = crop_tensor.permute(2, 0, 1).unsqueeze(0)  # [H,W,C] -> [1,C,H,W]
         
         # Encode with TinyVAE
-        latent, telemetry = tinyvae.refine(crop_gray)
+        latent, telemetry = tinyvae.refine(crop_tensor)
         
         # Get reconstruction if enabled
         if show_reconstruction:
-            reconstruction = tinyvae.get_reconstruction()
-            if reconstruction is not None:
-                # Convert to numpy for display
-                recon_np = (reconstruction[0, 0].cpu().numpy() * 255).astype(np.uint8)
-                recon_bgr = cv2.cvtColor(recon_np, cv2.COLOR_GRAY2BGR)
+            # Decode the latent to get reconstruction
+            with torch.no_grad():
+                reconstruction = tinyvae.decode_batch(latent)
+                # Convert to numpy for display [1,C,H,W] -> [H,W,C]
+                recon_np = (reconstruction[0].permute(1, 2, 0).cpu().numpy() * 255).astype(np.uint8)
                 # Resize for display
-                recon_display = cv2.resize(recon_bgr, (128, 128))
+                recon_display = cv2.resize(recon_np, (128, 128))
         
         # Create display
         display = frame.copy()

@@ -109,6 +109,39 @@ refined_tokens, telemetry = language_irp.refine(
 # - mask_ratio_final: Final mask ratio used
 ```
 
+### TinyVAE IRP Plugin
+
+```python
+from sage.irp.plugins.tinyvae_irp_plugin import create_tinyvae_irp
+
+# Creation
+tinyvae = create_tinyvae_irp(
+    latent_dim=16,           # Dimension of latent space
+    input_channels=1,         # 1 for grayscale, 3 for RGB
+    device="cuda"            # Computation device
+)
+
+# Usage - Encode image crop to latent
+crop = image[y:y+64, x:x+64]  # 64x64 crop from attention region
+latent, telemetry = tinyvae.refine(
+    x=crop,                   # Input crop (numpy or tensor)
+    early_stop=True          # Not used (single pass)
+)
+
+# Get reconstruction
+reconstruction = tinyvae.get_reconstruction()  # Returns tensor
+
+# Batch operations
+latents = tinyvae.encode_batch(batch_tensor)  # [B, C, H, W] -> [B, latent_dim]
+recons = tinyvae.decode_batch(latents)        # [B, latent_dim] -> [B, C, H, W]
+
+# Telemetry contains:
+# - reconstruction_error: MSE between input and reconstruction
+# - kl_divergence: Regularization term
+# - latent_norm: L2 norm of latent vector
+# - time_ms: Inference time
+```
+
 ---
 
 ## Orchestrator API

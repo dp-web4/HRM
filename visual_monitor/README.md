@@ -13,6 +13,10 @@ Real-time visualization of the IRP attention mechanism for camera feeds and imag
 - Fixed device tree overlay issue after SSD boot migration
 - Camera sensors integrated as IRP plugins with GPU mailbox
 - Publish/subscribe mailbox for inter-plugin communication
+- **TinyVAE integration** for compact latent encoding (August 25, 2025)
+  - 16-dimensional latent extraction from 64x64 crops
+  - Motion-guided crop selection from attention peaks
+  - 1-2ms encoding latency on Jetson
 
 ### How Attention Works:
 1. **Static scenes**: Attention spreads across entire frame
@@ -103,6 +107,24 @@ Full-featured monitor with advanced visualization:
 
 ```bash
 python3 visual_attention_monitor.py
+```
+
+### 4. `test_tinyvae_pipeline.py`
+TinyVAE integration for compact latent encoding:
+- Extracts 64x64 crops from motion attention peaks
+- Encodes to 16-dimensional latent space
+- Shows reconstruction alongside original
+- Real-time latent vector display
+
+```bash
+# Test with camera feed
+python3 test_tinyvae_pipeline.py
+
+# Controls:
+# Q: Quit
+# R: Toggle reconstruction display
+# L: Print latent vector
+# S: Save current crop
 ```
 
 ## How Attention is Computed

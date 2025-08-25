@@ -79,6 +79,26 @@ final_state, history = vision.refine(image, task_ctx={'target': 'objects'})
 results = vision.get_semantic_representation(final_state)
 ```
 
+### TinyVAE Usage
+
+```python
+from sage.irp.plugins.tinyvae_irp_plugin import create_tinyvae_irp
+
+# Create TinyVAE for crop encoding
+tinyvae = create_tinyvae_irp(latent_dim=16, input_channels=1)
+
+# Extract crop from attention region
+crop = image[y:y+64, x:x+64]  # 64x64 crop
+
+# Encode to compact latent
+latent, telemetry = tinyvae.refine(crop)
+print(f"Latent shape: {latent.shape}")  # [1, 16]
+print(f"Reconstruction error: {telemetry['reconstruction_error']:.4f}")
+
+# Get reconstruction for visualization
+reconstruction = tinyvae.get_reconstruction()
+```
+
 ### Orchestrated Execution
 
 ```python
@@ -125,6 +145,13 @@ results = orchestrator.process(inputs)
 - Progressive abstraction: episodic → semantic → procedural → conceptual → strategic
 - Augmentation-based pattern extraction
 - SQLite backend for verbatim storage
+
+### TinyVAE IRP
+- Compact VAE for 64×64 crop encoding
+- 16-dimensional latent space (configurable)
+- Depthwise separable convolutions for efficiency
+- Single-pass encoding (no iterative refinement)
+- Designed for motion-focused region extraction
 
 ## Telemetry Format
 

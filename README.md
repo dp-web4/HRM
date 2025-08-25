@@ -30,10 +30,16 @@ We are:
 
 ## 📚 Documentation
 
+### Core Documentation
 - **[API Documentation](./API_DOCUMENTATION.md)** - Complete API reference for all subsystems
 - **[Architecture Overview](./COMPLETE_SYSTEM_SUMMARY.md)** - System architecture and components
 - **[IRP Protocol](./IRP_PROTOCOL.md)** - Iterative Refinement Primitive design
 - **[Achievements](./ACHIEVEMENTS_JETSON_20250822.md)** - Performance milestones
+
+### Compression Trust Framework
+- **[Compression Trust Integration](./docs/compression_trust_integration.md)** - How HRM implements Web4's compression trust principles
+- **[TinyVAE and Compression Trust](./docs/tinyvae_compression_trust.md)** - Practical guide for TinyVAE testing on Jetson
+- **[Web4 Theory](https://github.com/dp-web4/web4#compression-trust-the-foundation-of-meaning)** - Foundational compression trust concepts
 
 ## Conceptual Framework
 

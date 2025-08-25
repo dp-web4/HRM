@@ -139,29 +139,6 @@ class TinyVAEIRP(IRPPlugin):
         }
 
         return latent, telemetry
-    
-    def get_latents(self, x: torch.Tensor) -> torch.Tensor:
-        """Get latent encoding for input (convenience method)"""
-        with torch.no_grad():
-            mu, _ = self.model.encode(x.to(self.device))
-        return mu
-    
-    def get_reconstruction(self) -> torch.Tensor:
-        """Get the most recent reconstruction (if cached)"""
-        # Note: Would need to cache in refine() method
-        return None  # Not cached in this version
-    
-    def encode_batch(self, batch: torch.Tensor) -> torch.Tensor:
-        """Encode a batch of images to latents"""
-        with torch.no_grad():
-            mu, _ = self.model.encode(batch.to(self.device))
-        return mu
-    
-    def decode_batch(self, latents: torch.Tensor) -> torch.Tensor:
-        """Decode a batch of latents to images"""
-        with torch.no_grad():
-            reconstructions = self.model.decode(latents.to(self.device))
-        return reconstructions
 
 
 def create_tinyvae_irp(device="cuda", **kwargs):

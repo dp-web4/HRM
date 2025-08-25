@@ -160,6 +160,25 @@ class IntegratedCameraPipeline:
                 frame_resized = cv2.resize(frame, (224, 224))
                 frame_tensor = torch.from_numpy(frame_resized).float()
                 frame_tensor = frame_tensor.permute(2, 0, 1).unsqueeze(0).to(self.device) / 255.0
+            elif isinstance(frame, torch.Tensor):
+                # If already a tensor, ensure correct shape [B, C, H, W]
+                if frame.dim() == 3:  # [H, W, C]
+                    frame_tensor = frame.permute(2, 0, 1).unsqueeze(0)
+                elif frame.dim() == 4 and frame.shape[3] == 3:  # [B, H, W, C]
+                    frame_tensor = frame.permute(0, 3, 1, 2)
+                else:
+                    frame_tensor = frame
+                # Resize if needed
+                if frame_tensor.shape[2:] != (224, 224):
+                    frame_tensor = torch.nn.functional.interpolate(
+                        frame_tensor.float(),
+                        size=(224, 224),
+                        mode='bilinear',
+                        align_corners=False
+                    )
+                frame_tensor = frame_tensor.to(self.device)
+                if frame_tensor.max() > 1.0:
+                    frame_tensor = frame_tensor / 255.0
             else:
                 frame_tensor = frame
                 
@@ -197,6 +216,25 @@ class IntegratedCameraPipeline:
                 frame_resized = cv2.resize(frame, (224, 224))
                 frame_tensor = torch.from_numpy(frame_resized).float()
                 frame_tensor = frame_tensor.permute(2, 0, 1).unsqueeze(0).to(self.device) / 255.0
+            elif isinstance(frame, torch.Tensor):
+                # If already a tensor, ensure correct shape [B, C, H, W]
+                if frame.dim() == 3:  # [H, W, C]
+                    frame_tensor = frame.permute(2, 0, 1).unsqueeze(0)
+                elif frame.dim() == 4 and frame.shape[3] == 3:  # [B, H, W, C]
+                    frame_tensor = frame.permute(0, 3, 1, 2)
+                else:
+                    frame_tensor = frame
+                # Resize if needed
+                if frame_tensor.shape[2:] != (224, 224):
+                    frame_tensor = torch.nn.functional.interpolate(
+                        frame_tensor.float(),
+                        size=(224, 224),
+                        mode='bilinear',
+                        align_corners=False
+                    )
+                frame_tensor = frame_tensor.to(self.device)
+                if frame_tensor.max() > 1.0:
+                    frame_tensor = frame_tensor / 255.0
             else:
                 frame_tensor = frame
                 

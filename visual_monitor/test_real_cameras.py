@@ -53,12 +53,16 @@ def main():
     print("-" * 60)
     
     frame_count = 0
-    show_attention = False
+    show_attention = True  # Start with attention ON
     show_telemetry = True
     
     # Simple attention tracking
     attention_left = np.zeros((540, 960), dtype=np.float32)
     attention_right = np.zeros((540, 960), dtype=np.float32)
+    prev_gray0 = None
+    prev_gray1 = None
+    
+    print("Attention overlay is ON. Press 'A' to toggle.")
     
     while True:
         # Capture frames
@@ -70,35 +74,35 @@ def main():
             break
             
         # Simple motion detection for attention
-        if frame_count > 0:
-            # Convert to grayscale
-            gray0 = cv2.cvtColor(frame0, cv2.COLOR_BGR2GRAY)
-            gray1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
+        # Convert to grayscale
+        gray0 = cv2.cvtColor(frame0, cv2.COLOR_BGR2GRAY)
+        gray1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
+        
+        if prev_gray0 is not None and prev_gray1 is not None:
+            # Calculate motion
+            diff0 = cv2.absdiff(prev_gray0, gray0)
+            diff1 = cv2.absdiff(prev_gray1, gray1)
             
-            # Simple difference-based attention
-            if frame_count == 1:
-                prev_gray0 = gray0.copy()
-                prev_gray1 = gray1.copy()
-            else:
-                # Calculate motion
-                diff0 = cv2.absdiff(prev_gray0, gray0)
-                diff1 = cv2.absdiff(prev_gray1, gray1)
-                
-                # Blur for smoother attention
-                attention_left = cv2.GaussianBlur(diff0.astype(np.float32), (21, 21), 0)
-                attention_right = cv2.GaussianBlur(diff1.astype(np.float32), (21, 21), 0)
-                
-                # Normalize
-                if attention_left.max() > 0:
-                    attention_left = attention_left / attention_left.max()
-                if attention_right.max() > 0:
-                    attention_right = attention_right / attention_right.max()
-                    
-                prev_gray0 = gray0.copy()
-                prev_gray1 = gray1.copy()
+            # Blur for smoother attention
+            attention_left = cv2.GaussianBlur(diff0.astype(np.float32), (21, 21), 0)
+            attention_right = cv2.GaussianBlur(diff1.astype(np.float32), (21, 21), 0)
+            
+            # Normalize
+            if attention_left.max() > 0:
+                attention_left = attention_left / attention_left.max()
+            if attention_right.max() > 0:
+                attention_right = attention_right / attention_right.max()
+        
+        # Store current frame for next iteration
+        prev_gray0 = gray0.copy()
+        prev_gray1 = gray1.copy()
         
         # Apply attention overlay if enabled
         if show_attention and frame_count > 1:
+            # Debug: print attention stats every 30 frames
+            if frame_count % 30 == 0:
+                print(f"Attention - Left max: {attention_left.max():.3f}, Right max: {attention_right.max():.3f}")
+            
             # Create heatmaps
             heatmap0 = cv2.applyColorMap((attention_left * 255).astype(np.uint8), cv2.COLORMAP_JET)
             heatmap1 = cv2.applyColorMap((attention_right * 255).astype(np.uint8), cv2.COLORMAP_JET)

@@ -2,11 +2,23 @@
 
 Real-time visualization of the IRP attention mechanism for camera feeds and images.
 
-## 🎉 CSI Cameras Working! (August 24, 2025)
+## 🎉 Complete Visual Attention System Working! (August 24, 2025)
+
+### Achievements Today:
 - **Dual IMX219 cameras operational** at ~29-30 FPS
-- Live stereo feeds with side-by-side display
+- **Motion-based attention overlay working!**
+  - Shows diffuse attention when scene is static
+  - Focuses on moving objects when motion detected
+  - Real-time heatmap overlay (red=high attention, blue=low)
 - Fixed device tree overlay issue after SSD boot migration
 - Camera sensors integrated as IRP plugins with GPU mailbox
+- Publish/subscribe mailbox for inter-plugin communication
+
+### How Attention Works:
+1. **Static scenes**: Attention spreads across entire frame
+2. **Motion detected**: Attention focuses on moving regions
+3. **Visualization**: Heatmap overlay blended at 30% opacity
+4. **Performance**: Real-time at 30 FPS with minimal latency
 
 ## Architecture
 

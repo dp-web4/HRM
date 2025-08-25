@@ -1,0 +1,15 @@
+# SAGE Minimal Requirements for Quick Setup
+# Core packages only - add others as needed
+
+# Essential Scientific Computing
+numpy==1.26.4
+scipy>=1.11.0
+
+# Computer Vision (minimal)
+opencv-python==4.8.1.78
+Pillow>=10.0.0
+
+# Utilities
+tqdm>=4.65.0
+pyyaml>=6.0
+python-dotenv>=1.0.0

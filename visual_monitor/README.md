@@ -2,6 +2,12 @@
 
 Real-time visualization of the IRP attention mechanism for camera feeds and images.
 
+## 🎉 CSI Cameras Working! (August 24, 2025)
+- **Dual IMX219 cameras operational** at ~29-30 FPS
+- Live stereo feeds with side-by-side display
+- Fixed device tree overlay issue after SSD boot migration
+- Camera sensors integrated as IRP plugins with GPU mailbox
+
 ## Architecture
 
 The Visual Monitor is implemented as an **IRP Effector Plugin** that integrates seamlessly with the SAGE orchestration system. This allows it to:

@@ -1,0 +1,42 @@
+# Data directories
+data/
+cifar-10-batches-py/
+*.tar.gz
+
+# Checkpoints (too large for git)
+checkpoints/
+*.pth
+*.pt
+
+# Generated visualizations
+*.png
+*.jpg
+*.jpeg
+
+# Test outputs
+test_checkpoints/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Virtual environments
+tiling_env/
+venv/
+env/
+
+# Logs
+*.log
+*.out
+*.err
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*~
+.DS_Store

@@ -42,13 +42,17 @@ cv2.namedWindow("Dynamic Box Test", cv2.WINDOW_NORMAL)
 frame_count = 0
 prev_gray = None
 
-while frame_count < 300:  # Run for 300 frames
+while frame_count < 150:  # Run for 150 frames
     ret, frame = cap.read()
     if not ret:
         break
     
     # Run plugin
     focus_region, telemetry = plugin.refine(frame)
+    
+    # Print debug info for first few frames
+    if frame_count < 5 and focus_region:
+        print(f"Frame {frame_count}: Focus at ({focus_region.x},{focus_region.y}) size={focus_region.width}x{focus_region.height}")
     
     # Draw the focus region
     if focus_region:
@@ -91,8 +95,11 @@ while frame_count < 300:  # Run for 300 frames
     
     frame_count += 1
     if frame_count % 30 == 0:
-        print(f"Frame {frame_count}: Focus at ({focus_region.x},{focus_region.y}) "
-              f"state={focus_region.state.value} conf={focus_region.confidence:.3f}")
+        if focus_region:
+            print(f"Frame {frame_count}: Focus at ({focus_region.x},{focus_region.y}) "
+                  f"state={focus_region.state.value} conf={focus_region.confidence:.3f}")
+        else:
+            print(f"Frame {frame_count}: No focus region!")
     
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

@@ -90,7 +90,7 @@ class FixedTileStrategy(AttentionStrategyBase):
         # Find max motion tile
         max_motion = np.max(tile_scores)
         
-        if max_motion > 0.3:  # Motion threshold
+        if max_motion > 0.1:  # Motion threshold - more sensitive
             max_y, max_x = np.unravel_index(np.argmax(tile_scores), tile_scores.shape)
             
             # Update fractional position with gravity
@@ -100,7 +100,7 @@ class FixedTileStrategy(AttentionStrategyBase):
             self.fx += self.gravity_strength * (target_x - self.fx)
             self.fy += self.gravity_strength * (target_y - self.fy)
             
-            state = AttentionState.PROCESSING if max_motion > 0.5 else AttentionState.TRACKING
+            state = AttentionState.PROCESSING if max_motion > 0.3 else AttentionState.TRACKING
         else:
             # Return to center
             center_x = (self.grid_w - self.focus_w) / 2
@@ -155,139 +155,83 @@ class DynamicBoxStrategy(AttentionStrategyBase):
         """Compute dynamic bounding box around motion"""
         height, width = motion_map.shape
         
-        # Debug: Check motion values
+        # Use higher threshold to filter out noise
+        motion_threshold = 0.3  # Much higher to ignore camera noise
+        
+        # Find strongest motion point instead of all motion
         max_motion = np.max(motion_map)
-        mean_motion = np.mean(motion_map)
         
-        # Even lower threshold
-        motion_threshold = 0.05
-        
-        # Find where motion exists
-        motion_coords = np.where(motion_map > motion_threshold)
-        
-        # Debug print every 30 frames
-        if hasattr(self, 'debug_counter'):
-            self.debug_counter += 1
-        else:
-            self.debug_counter = 0
+        if max_motion > motion_threshold:
+            # Find peak motion location
+            y_peak, x_peak = np.unravel_index(np.argmax(motion_map), motion_map.shape)
             
-        if self.debug_counter % 30 == 0:
-            print(f"Dynamic: max_motion={max_motion:.3f}, mean={mean_motion:.3f}, pixels>{motion_threshold}={len(motion_coords[0])}")
-        
-        # During warmup, just stay centered
-        if self.debug_counter < self.warmup_frames:
-            default_size = 128
-            return FocusRegion(
-                x=(width - default_size) // 2,
-                y=(height - default_size) // 2,
-                width=default_size,
-                height=default_size,
-                confidence=0.0,
-                state=AttentionState.IDLE,
-                strategy=AttentionStrategy.DYNAMIC_BOX
-            )
-        
-        # Check if motion covers too much of the frame (likely noise)
-        motion_coverage = len(motion_coords[0]) / (height * width)
-        if motion_coverage > 0.5:  # More than 50% of frame is "motion" - likely noise
-            # Keep previous position or center
-            if self.last_box:
-                x, y, w, h = self.last_box
-            else:
-                x = (width - self.min_size) // 2
-                y = (height - self.min_size) // 2
-                w = self.min_size
-                h = self.min_size
+            # Calculate box size based on motion spread
+            # Find all significant motion points
+            motion_points = np.where(motion_map > motion_threshold * 0.5)
             
-            return FocusRegion(
-                x=x, y=y, width=w, height=h,
-                confidence=mean_motion,
-                state=AttentionState.IDLE,
-                strategy=AttentionStrategy.DYNAMIC_BOX
-            )
-        
-        if len(motion_coords[0]) > 100:  # Meaningful motion pixels
-            # Get bounding box of motion
-            y_min, y_max = motion_coords[0].min(), motion_coords[0].max()
-            x_min, x_max = motion_coords[1].min(), motion_coords[1].max()
-            
-            # Calculate box size
-            w = x_max - x_min
-            h = y_max - y_min
-            
-            # Only track if motion is localized (not whole frame)
-            if w < width * 0.8 and h < height * 0.8:
-                # Add some padding
-                padding = 20
-                x = max(0, x_min - padding)
-                y = max(0, y_min - padding)
-                w = min(width - x, w + 2 * padding)
-                h = min(height - y, h + 2 * padding)
+            if len(motion_points[0]) > 0:
+                # Calculate spread of motion
+                y_min, y_max = np.min(motion_points[0]), np.max(motion_points[0])
+                x_min, x_max = np.min(motion_points[1]), np.max(motion_points[1])
                 
-                # Constrain size
-                w = max(self.min_size, min(self.max_size, w))
-                h = max(self.min_size, min(self.max_size, h))
+                # Box size based on motion spread
+                spread_w = x_max - x_min
+                spread_h = y_max - y_min
+                
+                # Adaptive size with limits
+                box_size = max(self.min_size, 
+                              min(self.max_size, 
+                                  int(max(spread_w, spread_h) * 1.5)))
             else:
-                # Motion covers whole frame - stay at last position or center
-                if self.last_box:
-                    x, y, w, h = self.last_box
-                else:
-                    x = (width - self.min_size) // 2
-                    y = (height - self.min_size) // 2
-                    w = self.min_size
-                    h = self.min_size
+                box_size = 128  # Default
             
-            # Center if box is too small
-            if w < self.min_size:
-                x = max(0, (x_min + x_max) // 2 - self.min_size // 2)
-                w = self.min_size
-            if h < self.min_size:
-                y = max(0, (y_min + y_max) // 2 - self.min_size // 2)
-                h = self.min_size
+            half_size = box_size // 2
+            
+            x = max(0, x_peak - half_size)
+            y = max(0, y_peak - half_size)
+            w = min(box_size, width - x)
+            h = min(box_size, height - y)
             
             # Smooth transitions if we have previous position
-            if current_focus and self.last_box is not None:
+            if current_focus and self.last_box:
                 alpha = self.smoothing
-                x = int(current_focus.x * alpha + x * (1 - alpha))
-                y = int(current_focus.y * alpha + y * (1 - alpha))
-                w = int(current_focus.width * alpha + w * (1 - alpha))
-                h = int(current_focus.height * alpha + h * (1 - alpha))
+                prev_x, prev_y, prev_w, prev_h = self.last_box
+                x = int(prev_x * alpha + x * (1 - alpha))
+                y = int(prev_y * alpha + y * (1 - alpha))
+                w = int(prev_w * alpha + w * (1 - alpha))
+                h = int(prev_h * alpha + h * (1 - alpha))
             
             self.last_box = (x, y, w, h)
             
-            # Calculate confidence from motion in the box
-            box_motion = motion_map[y:min(y+h, height), x:min(x+w, width)]
-            confidence = np.mean(box_motion) if box_motion.size > 0 else 0.0
-            
             return FocusRegion(
                 x=x, y=y, width=w, height=h,
-                confidence=confidence,
-                state=AttentionState.PROCESSING if confidence > 0.5 else AttentionState.TRACKING,
-                strategy=AttentionStrategy.DYNAMIC_BOX
-            )
-        
-        # No significant motion - maintain position or center
-        if current_focus and self.last_box:
-            # Keep last position but mark as idle
-            x, y, w, h = self.last_box
-            return FocusRegion(
-                x=x, y=y, width=w, height=h,
-                confidence=0.0,
-                state=AttentionState.IDLE,
+                confidence=max_motion,
+                state=AttentionState.PROCESSING if max_motion > 0.5 else AttentionState.TRACKING,
                 strategy=AttentionStrategy.DYNAMIC_BOX
             )
         else:
-            # Return to center with default size
-            default_size = 128
-            return FocusRegion(
-                x=(width - default_size) // 2,
-                y=(height - default_size) // 2,
-                width=default_size,
-                height=default_size,
-                confidence=0.0,
-                state=AttentionState.IDLE,
-                strategy=AttentionStrategy.DYNAMIC_BOX
-            )
+            # No significant motion - maintain position or center
+            if self.last_box:
+                # Keep last position but mark as idle
+                x, y, w, h = self.last_box
+                return FocusRegion(
+                    x=x, y=y, width=w, height=h,
+                    confidence=0.0,
+                    state=AttentionState.IDLE,
+                    strategy=AttentionStrategy.DYNAMIC_BOX
+                )
+            else:
+                # Return to center with default size
+                default_size = 128
+                return FocusRegion(
+                    x=(width - default_size) // 2,
+                    y=(height - default_size) // 2,
+                    width=default_size,
+                    height=default_size,
+                    confidence=0.0,
+                    state=AttentionState.IDLE,
+                    strategy=AttentionStrategy.DYNAMIC_BOX
+                )
     
     def get_default_focus(self, frame_width: int, frame_height: int) -> FocusRegion:
         """Get centered box"""

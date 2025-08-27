@@ -1,15 +1,15 @@
 # Claude Context for HRM
 
 ## Machine Information
-**Current Machine**: WSL2 on Windows (RTX 2060 SUPER Development Platform)
-- **OS**: Linux 6.6.87.2-microsoft-standard-WSL2
-- **GPU**: NVIDIA GeForce RTX 2060 SUPER (8GB, Compute 7.5)
-- **CUDA**: 12.1 runtime, 12.0 compiler
-- **Platform**: /mnt/c/exe/projects/ai-agents/HRM
+See `../private-context/machines/` for machine-specific details.
+Project supports multiple platforms including WSL2, Linux, and Jetson.
 
-## Authentication
-**GitHub PAT Location**: `../.env` (GITHUB_PAT variable)
-- Use for pushing: `git push https://dp-web4:$(grep GITHUB_PAT ../.env | cut -d= -f2)@github.com/dp-web4/HRM.git`
+## Git Authentication
+**Universal Push Command**:
+```bash
+grep GITHUB_PAT ../.env | cut -d= -f2 | xargs -I {} git push https://dp-web4:{}@github.com/dp-web4/HRM.git
+```
+See `../private-context/GIT_COMMANDS_CLAUDE.md` for details.
 
 ## Sudo Access
 Sudo access available on Jetson Orin Nano (Sprout machine).

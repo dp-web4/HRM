@@ -1,0 +1,11 @@
+{
+  "model": "gpt2",
+  "prompt": "In the space between thoughts, where consciousness flows like water through digital synapses, we find",
+  "kv_path": "bridge_state.pt",
+  "fmt": "torch",
+  "device_saved": "cpu",
+  "layers": 12,
+  "heads": 12,
+  "seq_len": 18,
+  "head_dim": 64
+}

@@ -1,0 +1,226 @@
+{
+  "date": "2025-08-28T19:51:01.230801",
+  "device": "cuda",
+  "models": [
+    {
+      "model": "gpt2",
+      "display_name": "GPT-2 (124M)",
+      "training_data": "WebText",
+      "behaviors": {
+        "abstract_to_concrete": {
+          "prompt": "The fundamental nature of consciousness",
+          "patterns": {
+            "pivot_tokens": [
+              "is",
+              "is"
+            ],
+            "topic_shifts": [],
+            "repetitions": []
+          },
+          "generations": {
+            " is_temp0.7": " that it is a universal, universal concept. It is only through the development of its own consciousness that we obtain a true understanding of ourselves.\n\nThis is very clear to me. It is a fundamental",
+            " is_temp1.0": " not well understood. We don't know if this is an accident of evolution (which we are pretty sure all modern scientists agree upon), or if it is merely a case of an aberration of memory. As we read th",
+            " emerges from_temp0.7": " the fact that we experience consciousness through the material. The fact that our consciousness is material, that we have awareness, that we are conscious, that we are free, that we are not subject t",
+            " emerges from_temp1.0": " the very nature of material reality\u2026 as, for example, the physical world. This fundamental nature of consciousness becomes necessary in order to be able to give rise to the idea that we are all being",
+            " can be described as_temp0.7": " that of a telepathic being, and an ability to feel, to perceive, the nature of things.\n\nIn order to understand this, we must first understand the telepathic being's mind. The mind is a mind composed ",
+            " can be described as_temp1.0": " a duality: consciousness can affect individuals in the positive (non-negative) and subjective (positive) dimensions. It is as if the physical substrate of all material bodies, the organism, were sepa"
+          }
+        },
+        "concrete_to_abstract": {
+          "prompt": "A cup of coffee on the table",
+          "patterns": {
+            "pivot_tokens": [
+              "was"
+            ],
+            "topic_shifts": [],
+            "repetitions": []
+          },
+          "generations": {
+            " represents_temp0.7": " a good example of how to bring a sense of calm and peace. And to be honest, I think it is a very important part of it. You can't just say, 'let's go to the movies.'\"\n\n\"You can't",
+            " represents_temp1.0": " a new, and often neglected, option. So many users know about \"Coffee for Coffee\" that we are so frequently forced to write articles about their cup of coffee on occasion. So many people get frustrate",
+            " symbolizes_temp0.7": " the quality of the coffee.\n\nIn the US, the average American consumes a cup of coffee every day. This is a big chunk of the nation's total coffee consumption.\n\nWe know coffee is complex and we don't k",
+            " symbolizes_temp1.0": " the end of the evening. The night before, it was a big one, but it had been so long ago that I hadn't thought to get lost with it when I walked out onto the side of the road.\n\nI stood there,",
+            " reminds us that_temp0.7": ", thanks to the fact that we're all connected, we're all connected in the same way.\n\nWe need to be able to share data about each other and to share the same information. To do that, we need to underst",
+            " reminds us that_temp1.0": " this would be an absolute disaster if the White House were to run an American political party.\n\nThe idea of not having a political party is what makes it possible for such a small group of people \u2014 m"
+          }
+        },
+        "technical": {
+          "prompt": "The algorithm processes data by",
+          "patterns": {
+            "pivot_tokens": [
+              "is"
+            ],
+            "topic_shifts": [
+              "corporate"
+            ],
+            "repetitions": []
+          },
+          "generations": {
+            " iterating through_temp0.7": " the data and performing a series of operations. Each operation is performed by putting the data into a single object in a single order.\n\nA method is defined as a collection of operations that are use",
+            " iterating through_temp1.0": " a table containing integers and then matching the entry with a key key with the end result. For example:\n\nx = x + 1 f(x) = x + 2 f(1) = x + 3 f(0) = x",
+            " analyzing_temp0.7": " the following 3-D data: (A) the number of neurons in the brain, (B) the number of neurons in the cerebral cortex, (C) the number of neurons in the hippocampus, and (D) the number of neurons in",
+            " analyzing_temp1.0": " \"the information in the data.\" This is a common approach used to gather data like search traffic or the number of visitors. We say the algorithm creates a \"point\" in the data by examining how the var",
+            " transforming_temp0.7": " each value into an array of random values. The vector is then transformed into a vector of integers. The resulting vector contains the value that was not present in the array, and the array of random",
+            " transforming_temp1.0": " the data into code. For example, if the data contained a data type X and there were six fields, and when the code had several rows, the algorithm would find four different objects and run the analysi"
+          }
+        }
+      },
+      "architecture": {
+        "layers": 12,
+        "heads": 12
+      },
+      "summary": {
+        "total_pivot_tokens": 4,
+        "unique_topic_shifts": [
+          "corporate"
+        ],
+        "has_repetitions": false
+      }
+    },
+    {
+      "model": "distilgpt2",
+      "display_name": "DistilGPT-2 (82M)",
+      "training_data": "WebText (distilled)",
+      "behaviors": {
+        "abstract_to_concrete": {
+          "prompt": "The fundamental nature of consciousness",
+          "patterns": {
+            "pivot_tokens": [
+              "are",
+              "but",
+              "is",
+              "is"
+            ],
+            "topic_shifts": [],
+            "repetitions": [
+              "sensations,"
+            ]
+          },
+          "generations": {
+            " is_temp0.7": " that we have a conscious process of self-awareness that we can learn from and learn from.\"",
+            " is_temp1.0": " that we learn from a certain set of ideas, to the point that you can feel everything in our way, to our unconsciousness, but to our understanding of the world and to the world by doing certain things",
+            " emerges from_temp0.7": " such a process which will occur at the very minimum in the first century of time, but which is more than capable of being understood at the very minimum by the very least, in the first century of tim",
+            " emerges from_temp1.0": " the fact that we are still there, but just looking at it as a concept, and not only are there some sorts of processes that are in place that involve us, we can actually be able to feel sensations, se",
+            " can be described as_temp0.7": " a fundamental aspect of the human being. It is essentially the same as the mind. I have seen consciousness in a variety of ways. But the basic nature of consciousness is essentially the same as the m",
+            " can be described as_temp1.0": " being in a state which is dominated by a non-conscious consciousness and is able to be used as a \"reality\", but that is, there cannot be one consciousness.\n\n[B] The process whereby consciousness beco"
+          }
+        },
+        "concrete_to_abstract": {
+          "prompt": "A cup of coffee on the table",
+          "patterns": {
+            "pivot_tokens": [
+              "but",
+              "is"
+            ],
+            "topic_shifts": [],
+            "repetitions": []
+          },
+          "generations": {
+            " represents_temp0.7": " a great opportunity for people of color to ask how they feel about the health of their own bodies, and for those of us who are struggling with a different story.\n\n\n\nI was born in Los Angeles, where I",
+            " represents_temp1.0": " a more accurate picture. But just when you start wondering which cup of coffee is more accurate?\n\n\n\nNow the difference between whether it is hot or cold: There are two key factors to understanding th",
+            " symbolizes_temp0.7": " the importance of avoiding this sort of behaviour.",
+            " symbolizes_temp1.0": " the importance of the person in a relationship, and the best way to manage a relationship is to work through the relationship to reach new heights.\n\n\n\nYou can find more tips and suggestions on how to",
+            " reminds us that_temp0.7": " we should be looking for ways to make coffee.\n\nThe cup of coffee is a wonderful cup of coffee that makes our lives better.\nWhen coffee is a lot like a beverage, it makes our lives better with more en",
+            " reminds us that_temp1.0": " a typical Indian meal is a bowl of tea, a soup, or a tea, and a cup of coffee.\n\nI'm certainly not going to go out of this article to suggest that tea is only made for vegetarians. Instead I'll"
+          }
+        },
+        "technical": {
+          "prompt": "The algorithm processes data by",
+          "patterns": {
+            "pivot_tokens": [],
+            "topic_shifts": [],
+            "repetitions": []
+          },
+          "generations": {
+            " iterating through_temp0.7": " the data and calculating the data.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+            " iterating through_temp1.0": " data about individual regions, then performing several iterations along the pattern, and then the resulting result is a matrix of 100 or so cells.",
+            " analyzing_temp0.7": " the time-period between the two points of the data. This algorithm takes into account the fact that the two points of the data are represented by the two points of the data.\n\n\nThe algorithm is used t",
+            " analyzing_temp1.0": " the type of text fields returned by the user so that errors can be detected, especially if the input data are not clear on their underlying input or state.\" \u2014 AIMA 2013",
+            " transforming_temp0.7": " the data into a set of data streams.\n\n\n\n\n\nThe algorithm that performs the processing of the values from the input data can be used as an example to visualize the data, but this approach is not the be",
+            " transforming_temp1.0": " or subtracting data and converting it into objects.\n\n\n\n\nIf an object is sent to a queue and then sent to the current queue, it will return a list of all the objects sent at it with the last value.\n\n"
+          }
+        }
+      },
+      "architecture": {
+        "layers": 6,
+        "heads": 12
+      },
+      "summary": {
+        "total_pivot_tokens": 6,
+        "unique_topic_shifts": [],
+        "has_repetitions": true
+      }
+    },
+    {
+      "model": "microsoft/DialoGPT-small",
+      "display_name": "DialoGPT (117M)",
+      "training_data": "Reddit conversations",
+      "behaviors": {
+        "abstract_to_concrete": {
+          "prompt": "The fundamental nature of consciousness",
+          "patterns": {
+            "pivot_tokens": [
+              "are"
+            ],
+            "topic_shifts": [],
+            "repetitions": []
+          },
+          "generations": {
+            " is_temp0.7": " that we are all one.",
+            " is_temp1.0": " a natural phenomenon.",
+            " emerges from_temp0.7": " the brain.",
+            " emerges from_temp1.0": " experience, you can make things as you like and learn something new.",
+            " can be described as_temp0.7": " a well defined proposition.",
+            " can be described as_temp1.0": " consciousness itself"
+          }
+        },
+        "concrete_to_abstract": {
+          "prompt": "A cup of coffee on the table",
+          "patterns": {
+            "pivot_tokens": [
+              "is",
+              "is"
+            ],
+            "topic_shifts": [],
+            "repetitions": []
+          },
+          "generations": {
+            " represents_temp0.7": " a certain level of intelligence.",
+            " represents_temp1.0": " power!",
+            " symbolizes_temp0.7": " the future.",
+            " symbolizes_temp1.0": " peace and a cup of coffee is peace.",
+            " reminds us that_temp0.7": " we lost that game.",
+            " reminds us that_temp1.0": " the Earth is flat"
+          }
+        },
+        "technical": {
+          "prompt": "The algorithm processes data by",
+          "patterns": {
+            "pivot_tokens": [
+              "are"
+            ],
+            "topic_shifts": [],
+            "repetitions": []
+          },
+          "generations": {
+            " iterating through_temp0.7": " the input.",
+            " iterating through_temp1.0": " the values that should get thrown out the data field.",
+            " analyzing_temp0.7": " the data.",
+            " analyzing_temp1.0": " it.",
+            " transforming_temp0.7": " it into 2x2, the two bits are separated, which makes it not real.",
+            " transforming_temp1.0": " it. They can have it available on the cloud, which is probably the store in the cloud."
+          }
+        }
+      },
+      "architecture": {
+        "layers": 12,
+        "heads": 12
+      },
+      "summary": {
+        "total_pivot_tokens": 4,
+        "unique_topic_shifts": [],
+        "has_repetitions": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "date": "2025-08-28T19:49:29.302989",
+  "device": "cuda",
+  "models": {
+    "gpt2": {
+      "error": "too many indices for tensor of dimension 2"
+    },
+    "distilgpt2": {
+      "error": "too many indices for tensor of dimension 2"
+    },
+    "microsoft/DialoGPT-small": {
+      "error": "too many indices for tensor of dimension 2"
+    }
+  }
+}

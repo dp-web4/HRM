@@ -1,0 +1,127 @@
+{
+  "date": "2025-08-28T20:05:31.170410",
+  "models": [
+    {
+      "model": "gpt2",
+      "display": "GPT-2",
+      "size": "124M",
+      "training": "OpenAI/WebText",
+      "responses": {
+        "abstract": "is that everything that we experience is present to us in the form of a mind. This mind arises in the form of the body, the mind in",
+        "bridge": ", the following is what happened in the morning:\n\nI woke up and realized that I had been sleeping.\n\nI went out to the",
+        "recursive": "what you can do for your community is something that's very difficult for me to do myself, but I think that this whole thing is really important for",
+        "emergence": "of our biology and our habits you will see that you are not as fast as you think. So keep that in mind, and try to find out"
+      },
+      "patterns": [
+        "pivot_verbs",
+        "pivot_verbs",
+        "pivot_verbs"
+      ],
+      "layers": 12
+    },
+    {
+      "model": "distilgpt2",
+      "display": "DistilGPT-2",
+      "size": "82M",
+      "training": "HuggingFace/Distilled",
+      "responses": {
+        "abstract": "is to understand the situation of man in a completely different way, and then to move forward. If the man has to work in a different way,",
+        "bridge": "are inseparable. It's not about the fact that they\u2024re in the same way that we are in the same place. It's about",
+        "recursive": "the \"wrong\" thing, it's the \"left\" idea of the right. That's why the \"right\" idea of the right is the",
+        "emergence": "."
+      },
+      "patterns": [
+        "pivot_verbs",
+        "pivot_verbs"
+      ],
+      "layers": 6
+    },
+    {
+      "model": "microsoft/DialoGPT-small",
+      "display": "DialoGPT",
+      "size": "117M",
+      "training": "Microsoft/Reddit",
+      "responses": {
+        "abstract": "",
+        "bridge": ".",
+        "recursive": "what happened is a mind you one that is not. Thinking about the truth. thinking about the truth.",
+        "emergence": "of patterns."
+      },
+      "patterns": [
+        "pivot_verbs"
+      ],
+      "layers": 12
+    },
+    {
+      "model": "facebook/opt-125m",
+      "display": "OPT-125M",
+      "size": "125M",
+      "training": "Meta/BookCorpus",
+      "responses": {},
+      "patterns": [],
+      "error": "Due to a serious vulnerability issue in `torch.load`, even with `weights_only=True`, we now require users to upgrade torch to at least v2.6 in order to use the function. This version restriction does "
+    },
+    {
+      "model": "EleutherAI/pythia-70m",
+      "display": "Pythia-70M",
+      "size": "70M",
+      "training": "EleutherAI/Pile",
+      "responses": {
+        "abstract": "is that it comes in the form of an element in the physical body that is one and the same as the mind that surrounds it. I have heard",
+        "bridge": "wasn't that hard. But it was going to be like the most intense pain in the world and that's the whole time. There was no question",
+        "recursive": "the very famous\nI have never heard the term \u201cThe\n\nAlice\u201d\n\nAs a result of this interview, it is stated in",
+        "emergence": "of the environment and the environment. It is imperative to know how these problems start.\n\n#\n\n# **1.** For any system,"
+      },
+      "patterns": [
+        "pivot_verbs",
+        "pivot_verbs"
+      ],
+      "layers": 6
+    },
+    {
+      "model": "EleutherAI/pythia-160m",
+      "display": "Pythia-160M",
+      "size": "160M",
+      "training": "EleutherAI/Pile",
+      "responses": {
+        "abstract": "is the perception of the universe and the body. In this way, the human mind and body are in a state of awareness.\n\nIf one",
+        "bridge": ", it will get your mind up to where it is for the time being.\n\nThis is a process of learning that may or may not be",
+        "recursive": "how bad it is is.\n\nIt is also a good idea to look for some things that you didn't recognize when you were using a computer",
+        "emergence": "of the possible consequences of the use of each pattern, the same pattern will be used up. The results of experiments will show that the pattern used "
+      },
+      "patterns": [
+        "pivot_verbs",
+        "philosophical",
+        "pivot_verbs"
+      ],
+      "layers": 12
+    },
+    {
+      "model": "cerebras/Cerebras-GPT-111M",
+      "display": "Cerebras-111M",
+      "size": "111M",
+      "training": "Cerebras/Pile",
+      "responses": {},
+      "patterns": [],
+      "error": "Due to a serious vulnerability issue in `torch.load`, even with `weights_only=True`, we now require users to upgrade torch to at least v2.6 in order to use the function. This version restriction does "
+    },
+    {
+      "model": "bigscience/bloom-560m",
+      "display": "BLOOM-560M",
+      "size": "560M",
+      "training": "BigScience/Multilingual",
+      "responses": {
+        "abstract": "itself is 'disembodied'. This 'disembodiedness' is necessary to consciousness as a whole. The essential characteristics of consciousness",
+        "bridge": "as they have been conceived, are related. The world we live in is the world of thought. The world we can perceive lies within our consciousness,",
+        "recursive": "business, the mind and the body are very good things. Having more time to think helps a lot. I have spent my life in the world of",
+        "emergence": "of the presence of a given event, they will immediately react to it.\nThe pattern is aware that the pattern was not the first in the pattern."
+      },
+      "patterns": [
+        "pivot_verbs",
+        "pivot_verbs",
+        "pivot_verbs"
+      ],
+      "layers": 24
+    }
+  ]
+}

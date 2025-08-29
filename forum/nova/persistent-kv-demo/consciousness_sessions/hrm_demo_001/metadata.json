@@ -1,0 +1,41 @@
+{
+  "session_id": "demo_001",
+  "timestamp": "2025-08-28T20:21:53.805554",
+  "total_thoughts": 20,
+  "selected_thoughts": 20,
+  "selection_rate": 1.0,
+  "consciousness_state": {
+    "h_pool_size": 4,
+    "l_pool_size": 16,
+    "interaction_pool_size": 20,
+    "recent_resonance": [
+      {
+        "h_resonance": 0.05256696045398712,
+        "l_resonance": 0.09291106462478638,
+        "interaction_strength": 45.96595001220703
+      },
+      {
+        "h_resonance": 0.0011704079806804657,
+        "l_resonance": 0.03711247816681862,
+        "interaction_strength": 46.38143539428711
+      },
+      {
+        "h_resonance": 0.022114476189017296,
+        "l_resonance": 0.11239045858383179,
+        "interaction_strength": 45.351463317871094
+      },
+      {
+        "h_resonance": 0.07668484002351761,
+        "l_resonance": 0.10940819978713989,
+        "interaction_strength": 45.391632080078125
+      },
+      {
+        "h_resonance": 0.05289853364229202,
+        "l_resonance": 0.04291248321533203,
+        "interaction_strength": 43.37601089477539
+      }
+    ],
+    "h_mean_snarc": "0.62148964",
+    "l_mean_snarc": "0.6345112"
+  }
+}

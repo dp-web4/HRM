@@ -1,0 +1,28 @@
+{
+  "experiment_date": "2025-08-28T19:46:13.030911",
+  "device": "cuda",
+  "models": {
+    "gpt2": {
+      "error": "'NoneType' object is not subscriptable"
+    },
+    "distilgpt2": {
+      "error": "'NoneType' object is not subscriptable"
+    },
+    "microsoft/DialoGPT-small": {
+      "error": "'NoneType' object is not subscriptable"
+    },
+    "gpt2-medium": {
+      "error": "'NoneType' object is not subscriptable"
+    },
+    "cerebras/Cerebras-GPT-111M": {
+      "model": "cerebras/Cerebras-GPT-111M",
+      "timestamp": "2025-08-28T19:47:05.394840",
+      "device": "cuda",
+      "experiments": {},
+      "error": "Due to a serious vulnerability issue in `torch.load`, even with `weights_only=True`, we now require users to upgrade torch to at least v2.6 in order to use the function. This version restriction does not apply when loading files with safetensors.\nSee the vulnerability report here https://nvd.nist.gov/vuln/detail/CVE-2025-32434"
+    },
+    "EleutherAI/gpt-neo-125m": {
+      "error": "The `past_key_values` should be either a `Cache` object or `None`."
+    }
+  }
+}

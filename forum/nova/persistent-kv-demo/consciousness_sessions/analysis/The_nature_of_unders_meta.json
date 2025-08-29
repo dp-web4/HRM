@@ -1,0 +1,24 @@
+{
+  "session_id": "analysis",
+  "timestamp": "2025-08-28T19:07:53.761832",
+  "model": "gpt2",
+  "conversation_length": 3,
+  "kv_shape": "torch.Size([1, 12, 4, 64])",
+  "history": [
+    {
+      "timestamp": "2025-08-28T19:07:53.751931",
+      "input": "The meaning of existence",
+      "kv_seq_len": 4
+    },
+    {
+      "timestamp": "2025-08-28T19:07:53.756134",
+      "input": "The purpose of consciousness",
+      "kv_seq_len": 4
+    },
+    {
+      "timestamp": "2025-08-28T19:07:53.760383",
+      "input": "The nature of understanding",
+      "kv_seq_len": 4
+    }
+  ]
+}

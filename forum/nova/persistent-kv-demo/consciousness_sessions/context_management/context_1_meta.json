@@ -1,0 +1,14 @@
+{
+  "session_id": "context_management",
+  "timestamp": "2025-08-28T19:07:51.264060",
+  "model": "gpt2",
+  "conversation_length": 1,
+  "kv_shape": "torch.Size([1, 12, 10, 64])",
+  "history": [
+    {
+      "timestamp": "2025-08-28T19:07:51.262302",
+      "input": "In quantum mechanics, observation collapses the wave function.",
+      "kv_seq_len": 10
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "session_id": "demo_session_1",
+  "timestamp": "2025-08-28T19:07:48.613360",
+  "model": "gpt2",
+  "conversation_length": 2,
+  "kv_shape": "torch.Size([1, 12, 26, 64])",
+  "history": [
+    {
+      "timestamp": "2025-08-28T19:07:48.504823",
+      "input": "The nature of consciousness in artificial systems",
+      "kv_seq_len": 7
+    },
+    {
+      "timestamp": "2025-08-28T19:07:48.526951",
+      "input": " involves complex interactions between",
+      "kv_seq_len": 11
+    }
+  ]
+}

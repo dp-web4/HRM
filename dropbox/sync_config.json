@@ -1,0 +1,45 @@
+{
+  "sync_paths": {
+    "checkpoints": {
+      "local": "./checkpoints",
+      "dropbox": "/HRM/checkpoints",
+      "patterns": ["*.pt", "*.pth", "*.ckpt"],
+      "max_size_mb": 5000
+    },
+    "datasets": {
+      "local": "./data",
+      "dropbox": "/HRM/datasets",
+      "patterns": ["*.json", "*.npz", "*.pkl"],
+      "max_size_mb": 10000
+    },
+    "logs": {
+      "local": "./logs",
+      "dropbox": "/HRM/logs",
+      "patterns": ["*.log", "*.txt", "events.out.tfevents.*"],
+      "max_size_mb": 100
+    },
+    "configs": {
+      "local": "./configs",
+      "dropbox": "/HRM/configs",
+      "patterns": ["*.json", "*.yaml", "*.txt"],
+      "max_size_mb": 10
+    }
+  },
+  "machines": {
+    "legion": {
+      "hostname": "Legion-Pro-7",
+      "role": "training",
+      "auto_upload": true
+    },
+    "cbp": {
+      "hostname": "CBP",
+      "role": "development",
+      "auto_download": true
+    },
+    "jetson": {
+      "hostname": "jetson-orin",
+      "role": "inference",
+      "auto_download": true
+    }
+  }
+}

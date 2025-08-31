@@ -1,0 +1,11 @@
+# Ignore synced files
+checkpoints/*
+datasets/*
+logs/*
+!*.md
+!.gitkeep
+
+# Dropbox metadata
+.dropbox
+.dropbox.cache
+.dropbox.attr

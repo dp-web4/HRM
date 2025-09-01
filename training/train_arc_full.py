@@ -25,7 +25,7 @@ sys.path.append(str(Path(__file__).parent.parent))
 
 # Configuration
 MODEL_CONFIG = {
-    'batch_size': 24,  # Maximize GPU usage
+    'batch_size': 20,  # Reduced to avoid nv_queue driver crashes
     'seq_len': 900,  # 30x30 grid max
     'vocab_size': 12,  # 0-9 colors + padding/blank
     'hidden_size': 256,  # Keep same model size
@@ -40,11 +40,11 @@ TRAINING_CONFIG = {
     'learning_rate': 3e-4,
     'warmup_steps': 500,
     'max_epochs': 100,  # More epochs for real training
-    'gradient_accumulation_steps': 2,  # Effective batch size = 64
+    'gradient_accumulation_steps': 2,  # Effective batch size = 40
     'gradient_clip': 1.0,
     'weight_decay': 0.01,
-    'eval_frequency': 50,  # More frequent validation
-    'checkpoint_frequency': 200,  # More frequent checkpoints
+    'eval_frequency': 1000,  # Validate every 1000 steps instead of 50
+    'checkpoint_frequency': 500,  # Save checkpoints every 500 steps
     'use_amp': True,  # Automatic mixed precision
     'patience': 10,  # Early stopping patience
 }
@@ -257,7 +257,7 @@ def train():
         train_dataset,
         batch_size=MODEL_CONFIG['batch_size'],
         shuffle=True,
-        num_workers=4,
+        num_workers=2,  # Reduced to avoid memory pressure
         pin_memory=True
     )
     
@@ -286,14 +286,42 @@ def train():
         T_max=len(train_loader) * TRAINING_CONFIG['max_epochs']
     )
     
-    # Load checkpoint if exists
+    # Load checkpoint if exists - try to load latest step checkpoint first
     start_epoch = 0
     global_step = 0
     best_val_loss = float('inf')
     
-    checkpoint_path = 'checkpoints/hrm_arc_best.pt'
-    if Path(checkpoint_path).exists():
-        print(f"📂 Loading checkpoint from {checkpoint_path}")
+    # Find the latest step checkpoint
+    import glob
+    step_checkpoints = glob.glob('checkpoints/hrm_arc_step_*.pt')
+    if step_checkpoints:
+        # Sort by step number and get the latest
+        step_checkpoints.sort(key=lambda x: int(x.split('_')[-1].split('.')[0]))
+        latest_checkpoint = step_checkpoints[-1]
+        print(f"📂 Found latest step checkpoint: {latest_checkpoint}")
+        checkpoint = torch.load(latest_checkpoint, map_location=DEVICE)
+        model.load_state_dict(checkpoint['model_state_dict'])
+        if 'optimizer_state_dict' in checkpoint:
+            optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+        if 'scheduler_state_dict' in checkpoint:
+            scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
+        if 'epoch' in checkpoint:
+            start_epoch = checkpoint['epoch']
+        if 'global_step' in checkpoint:
+            global_step = checkpoint.get('global_step', 0)
+        
+        # Also load best val loss from best checkpoint if it exists
+        best_checkpoint_path = 'checkpoints/hrm_arc_best.pt'
+        if Path(best_checkpoint_path).exists():
+            best_checkpoint = torch.load(best_checkpoint_path, map_location='cpu')
+            if 'best_val_loss' in best_checkpoint:
+                best_val_loss = best_checkpoint['best_val_loss']
+        
+        print(f"✅ Resumed from epoch {start_epoch}, step {global_step}, best val loss: {best_val_loss:.4f}")
+    elif Path('checkpoints/hrm_arc_best.pt').exists():
+        # Fall back to best checkpoint
+        checkpoint_path = 'checkpoints/hrm_arc_best.pt'
+        print(f"📂 Loading best checkpoint from {checkpoint_path}")
         checkpoint = torch.load(checkpoint_path, map_location=DEVICE)
         model.load_state_dict(checkpoint['model_state_dict'])
         if 'optimizer_state_dict' in checkpoint:
@@ -330,6 +358,9 @@ def train():
         progress_bar = tqdm(train_loader, desc=f"Epoch {epoch+1}/{TRAINING_CONFIG['max_epochs']}")
         
         for batch_idx, batch in enumerate(progress_bar):
+            # Skip batches if resuming from checkpoint
+            if epoch == start_epoch and global_step > 0 and batch_idx < (global_step % len(train_loader)):
+                continue
             # Move to device
             inputs = batch['input'].to(DEVICE)
             targets = batch['target'].to(DEVICE)
@@ -455,7 +486,7 @@ def train():
                 model.train()
             
             # Checkpoint
-            if global_step % TRAINING_CONFIG['checkpoint_frequency'] == 0:
+            if global_step % TRAINING_CONFIG['checkpoint_frequency'] == 0 and global_step > 0:
                 torch.save({
                     'epoch': epoch,
                     'model_state_dict': model.state_dict(),
@@ -464,6 +495,7 @@ def train():
                     'global_step': global_step,
                     'config': MODEL_CONFIG
                 }, f'checkpoints/hrm_arc_step_{global_step}.pt')
+                print(f"\n💾 Checkpoint saved at step {global_step}")
             
             global_step += 1
             

@@ -47,7 +47,7 @@ class DropboxSync:
         try:
             result = subprocess.run(['dbxcli', 'account'], 
                                   capture_output=True, text=True)
-            if 'Email:' in result.stdout:
+            if 'Email:' in result.stdout or 'Logged in as' in result.stdout:
                 return True
             else:
                 print("❌ dbxcli not authenticated. Run: dbxcli account")

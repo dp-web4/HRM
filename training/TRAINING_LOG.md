@@ -59,12 +59,13 @@
 - **Batch processing**: 194,395 training batches, 20,450 validation batches
 
 ### Model Architecture
-- **Parameters**: 5.7M
+- **Parameters**: 6.95M total (5.67M trainable)
 - **Architecture**: Hierarchical Reasoning Module (HRM)
   - 4 H-level (strategic) transformer layers
-  - 3 L-level (tactical) transformer layers
+  - 3 L-level (tactical) transformer layers  
   - Adaptive Computation Time (ACT) with max 8 cycles
   - Hidden size: 256, Heads: 8
+  - Note: Smaller than original 27M HRM (see MODEL_ARCHITECTURE_CLARIFICATION.md)
 
 ### Performance Metrics
 - **Training accuracy**: ~82-89% on recent batches
@@ -129,7 +130,9 @@ ps aux | grep train_arc_full.py
 ```
 
 ### Repository Status
-- Main training script: `train_arc_full.py` (currently running)
-- Nova-optimized script: `train_arc_full_nova.py` (ready for use)
-- Checkpoints: `checkpoints/` directory
+- Main training script: `train_arc_full.py`
+- Nova-optimized script: `train_arc_full_nova.py` (last used)
+- Best model: `checkpoints/hrm_arc_best.pt` (step 7000, 71.36% acc)
+- Architecture docs: `MODEL_ARCHITECTURE_CLARIFICATION.md`
+- Checkpoints: `checkpoints/` directory  
 - Wandb logs: `wandb/` directory (offline mode)

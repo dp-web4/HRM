@@ -1,0 +1,11 @@
+ID,Name,Start_Time,End_Time,Batch,Grad_Accum,LR_Schedule,Extras,FastVal,FullVal,Notes,NewBest(%),Families_Improved
+EXP-01,Color Canonicalization,,,8,5,same,canonicalize_colors=true,2k,10k,,,
+EXP-02,SWA Tail + CycLR,,,8,5,cyclical tail,"swa=true, period=4k",2k,10k,,,
+EXP-03,Stochastic Depth (H),,,8,5,same,droppath=0..0.2,2k,10k,,,
+EXP-04,Grad Noise Injection,,,8,5,same,grad_noise=1e-3→1e-5,2k,10k,,,
+EXP-05,ACT Entropy Reg.,,,8,5,same,halting_entropy=1e-3,2k,10k,,,
+EXP-06,Multi-View Object-Graph,,,8,5,same,graph_interleave=20%,2k,10k,,,
+EXP-07,Grid-Size Curriculum,,,8,5,scheduled,grid=18→24→30,2k,10k,,,
+EXP-08,Aux Rule Descriptor Head,,,8,5,same,"rule_head=dim16,lossw=0.1",2k,10k,,,
+EXP-09,Hard-Case Replay,,,8,5,same,"hard_buffer=10k,α=0.2",2k,10k,,,
+EXP-10,Optimizer Swap: Lion,,,8,5,swap@40k,"lion β1=0.95,β2=0.98",2k,10k,,,

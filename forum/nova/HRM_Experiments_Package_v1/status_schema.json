@@ -1,0 +1,15 @@
+{
+  "run_id": "string",
+  "timestamp_utc": "ISO-8601 string",
+  "epoch": "int",
+  "global_step": "int",
+  "steps_per_sec": "float",
+  "lr": "float",
+  "grad_norm": "float",
+  "last_fast_eval_step": "int",
+  "last_full_eval_step": "int",
+  "best_eval_acc": "float",
+  "best_eval_step": "int",
+  "eta_to_next_fast_eval_sec": "float",
+  "eta_to_next_full_eval_sec": "float"
+}

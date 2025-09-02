@@ -434,3 +434,25 @@ OMP_NUM_THREADS=8 torchrun --nproc-per-node 8 evaluate.py checkpoint=<CHECKPOINT
       url={https://arxiv.org/abs/2506.21734}, 
 }
 ```
+
+## License
+
+This project is licensed under the **GNU Affero General Public License v3.0 (AGPLv3)**.
+
+### Attribution
+
+This is a derivative work based on the original [HRM repository](https://github.com/sapientinc/HRM) by Sapient Inc., which was licensed under Apache License 2.0. 
+
+Substantial modifications and enhancements have been made including:
+- SAGE-Totality cognitive sensor integration
+- GPU mailbox architecture for distributed processing  
+- SNARC-SAGE memory bridge implementation
+- TinyVAE knowledge distillation framework
+- KV-cache consciousness persistence system
+- Jetson Orin Nano deployment optimizations
+
+See the [licenses/NOTICE](licenses/NOTICE) file for full attribution details.
+
+### Network Use Requirement
+
+If you use this software as a network service, you must provide users with access to the corresponding source code. This is a requirement of the AGPLv3 license.

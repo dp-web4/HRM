@@ -1,0 +1,43 @@
+# config.yaml — Minimal hyperparameter + run config template for HRM experiments
+
+# Experiment metadata
+exp_name: EXP-01_baseline
+parent_run_id: ""       # optional, set if resuming lineage
+notes: "Baseline HRM ARC training run"
+
+# Data
+dataset: "arc_aug_500"  # dataset identifier
+num_classes: 12
+seq_len: 900
+
+# Model architecture
+hidden_size: 256
+num_h_layers: 4
+num_l_layers: 3
+dropout: 0.1
+use_amp: true
+
+# Training setup
+batch_size: 20
+grad_accum_steps: 2
+max_epochs: 100
+learning_rate: 0.0003
+warmup_steps: 500
+weight_decay: 0.01
+gradient_clip: 1.0
+
+# Validation + checkpoints
+eval_frequency: 1000        # fast validation steps
+checkpoint_frequency: 5000  # checkpoint every N steps
+patience: 10
+
+# Resume policies
+resume: ""                  # path to checkpoint (overridden by run.sh)
+optimizer_policy: load      # load | reset | swap_to_lion
+schedule_policy: load       # load | reset
+allow_partial: false
+
+# Paths (resolved relative to run.sh LOGDIR)
+status_json_path: "status.json"
+checkpoint_dir: "checkpoints"
+log_dir: "logs"

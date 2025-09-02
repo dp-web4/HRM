@@ -1,0 +1,21 @@
+NOTICE
+
+This product includes software originally developed by Sapient Inc. (https://github.com/sapientinc/HRM) 
+under the Apache License, Version 2.0 (the "Apache License").
+Copyright (c) 2024 Sapient Inc.
+
+Substantial modifications and enhancements have been made by dp-web4 and contributors, 
+licensed under the GNU Affero General Public License, version 3 (the "AGPL").
+
+Modifications include but are not limited to:
+- SAGE-Totality cognitive sensor integration
+- GPU mailbox architecture for distributed processing
+- SNARC-SAGE memory bridge implementation
+- TinyVAE knowledge distillation framework
+- KV-cache consciousness persistence system
+- Jetson Orin Nano deployment optimizations
+
+The project as a whole is now licensed under AGPLv3.
+
+See the LICENSE file in the root directory for the AGPLv3 license.
+See licenses/LICENSE-APACHE-FULL.txt for the original Apache 2.0 license.

@@ -1,0 +1,54 @@
+# HRM experiment run template (edit per EXP-*)
+run_id: EXP-XX_YYYYMMDD_hhmm
+seed: 1337
+
+# data
+dataset: arc_augmented
+grid_size: 30       # EXP-07 changes over time
+canonicalize_colors: false  # EXP-01: set true
+
+# training
+batch_size: 8
+grad_accum: 5
+amp: true
+epochs: 1           # step-budgeted; rely on eval cadence
+max_steps: 100000   # adjust per day budget
+
+# schedule
+lr: 3.0e-4
+schedule: cosine
+warmup_steps: 500
+cyclical_tail: false   # EXP-02: true
+swa: false             # EXP-02: true
+swa_period_steps: 4000
+
+# regularization
+weight_decay: 0.01
+grad_clip: 1.0
+droppath_h: 0.0        # EXP-03: 0..0.2
+grad_noise_sigma: 0.0  # EXP-04: 1e-3 → 1e-5 schedule
+halting_entropy_lambda: 0.0  # EXP-05: 1e-3
+
+# multi-view / heads
+graph_interleave: 0.0  # EXP-06: 0.2
+rule_head_dim: 0       # EXP-08: 16
+rule_head_weight: 0.1
+
+# curriculum
+curriculum_grid: []    # EXP-07: [[0,'18'],[6h,'24'],[12h,'30']]
+
+# optimizer
+optimizer: adamw       # EXP-10: 'lion' after N steps
+optimizer_swap_at: 0   # EXP-10: 40000
+lion_beta1: 0.95
+lion_beta2: 0.98
+
+# evaluation
+fast_eval_every: 2000
+full_eval_every: 10000
+checkpoint_every: 2000
+gate_full_eval_on_fast_improvement: true
+
+# logging
+write_status_json_every_sec: 60
+status_json_path: ./status.json

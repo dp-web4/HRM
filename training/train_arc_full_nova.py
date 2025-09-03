@@ -4,7 +4,6 @@ Full ARC Training Script for HRM-style Model - Nova's Optimized Version
 Production training with hierarchical reasoning architecture
 Implements Nova's performance and stability improvements
 """
-
 import os
 import sys
 import torch
@@ -22,15 +21,16 @@ from typing import Dict, Any, Tuple, Optional
 import wandb
 import glob
 
-# Add parent directory to path
-sys.path.append(str(Path(__file__).parent.parent))
+# Add parent directory to path - COMMENTED OUT DUE TO HANGING ISSUE
+# sys.path.append(str(Path(__file__).parent.parent))
 
-# Enable cuDNN benchmark for small tensors
-torch.backends.cudnn.benchmark = True
+# Enable cuDNN benchmark for small tensors - COMMENTED OUT DUE TO HANGING
+# torch.backends.cudnn.benchmark = True
+print("DEBUG: Skipped cudnn benchmark setting")
 
 # Configuration
 MODEL_CONFIG = {
-    'batch_size': 20,  # Keep stable batch size
+    'batch_size': 8,  # Smaller batch to escape plateau
     'seq_len': 900,  # 30x30 grid max
     'vocab_size': 12,  # 0-9 colors + padding/blank
     'hidden_size': 256,
@@ -45,11 +45,11 @@ TRAINING_CONFIG = {
     'learning_rate': 3e-4,
     'warmup_steps': 500,
     'max_epochs': 100,
-    'gradient_accumulation_steps': 2,  # Effective batch size = 40
+    'gradient_accumulation_steps': 5,  # Effective batch size = 40 (8*5)
     'gradient_clip': 1.0,
     'weight_decay': 0.01,
-    'eval_frequency': 1000,  # Fast validation frequency
-    'full_eval_every': 10000,  # Full validation frequency
+    'eval_frequency': 2000,  # Fast validation every 2k steps
+    'full_eval_every': 10000,  # Full validation every 10k steps
     'checkpoint_frequency': 500,
     'use_amp': True,
     'patience': 10,
@@ -317,11 +317,10 @@ def train():
     print(f"🚀 Starting Nova-optimized HRM training on {DEVICE}")
     print(f"GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU'}")
     
-    # Check for existing dataset, use largest available
-    if Path('../data/arc-aug-1000/train/all__inputs.npy').exists():
-        data_dir = '../data/arc-aug-1000'
-        print("Using full dataset (1000 augmentations)")
-    elif Path('../data/arc-aug-500/train/all__inputs.npy').exists():
+    print("DEBUG: About to check for datasets...")
+    # Check for existing dataset, use 500 augmentation version
+    # Note: arc-aug-1000 was never built (OOM during generation)
+    if Path('../data/arc-aug-500/train/all__inputs.npy').exists():
         data_dir = '../data/arc-aug-500'
         print("Using medium dataset (500 augmentations)")
     elif Path('../data/arc-aug-100/train/all__inputs.npy').exists():
@@ -331,6 +330,7 @@ def train():
         data_dir = '../data/arc-dummy'
         print("Warning: No dataset found, using dummy data")
     
+    print("DEBUG: About to initialize wandb...")
     # Initialize wandb
     run = wandb.init(
         project="hrm-arc-training",
@@ -386,10 +386,13 @@ def train():
     best_val_loss = float('inf')
     best_val_step = 0
     
+    print("DEBUG: Looking for checkpoints...")
     checkpoint_path, checkpoint_type = find_latest_checkpoint()
     if checkpoint_path:
         print(f"📂 Loading {checkpoint_type} checkpoint: {checkpoint_path}")
+        print(f"DEBUG: About to torch.load from {checkpoint_path}")
         checkpoint = torch.load(checkpoint_path, map_location=DEVICE)
+        print("DEBUG: Checkpoint loaded successfully")
         model.load_state_dict(checkpoint['model_state_dict'])
         
         if checkpoint_type == 'step':  # Only restore optimizer for step checkpoints

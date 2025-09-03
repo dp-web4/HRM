@@ -119,17 +119,22 @@ SAGE modules operate with distinct LRC profiles:
 - [LRC Governance Model](https://github.com/dp-web4/web4/blob/main/LRC_GOVERNANCE.md)
 - [Entity Memory Architecture](./entities_and_roles/README.md)
 
-## Original HRM
+## Attribution & Architecture
 
-![](./assets/hrm.png)
+### Original HRM Foundation
+This project builds upon the conceptual framework of the [Hierarchical Reasoning Model (HRM)](https://github.com/sapientinc/HRM) originally developed by Sapient Inc. under Apache 2.0 license. The original HRM introduced the concept of two interdependent modules for hierarchical reasoning.
 
-The original Hierarchical Reasoning Model by Sapient AI is a groundbreaking 27M parameter model that:
-- Achieves near-perfect performance on complex reasoning tasks with only 1000 training samples
-- Operates without pre-training or Chain-of-Thought data
-- Solves extreme Sudoku puzzles and large maze pathfinding
-- Outperforms much larger models on the Abstraction and Reasoning Corpus (ARC)
+### Our Architectural Innovations
+Nova's implementation introduces **fundamental architectural innovations** that transform the original concept:
+- **H↔L Bidirectional Communication**: Novel explicit bidirectional layers (`h_to_l`, `l_to_h`) enabling strategic-tactical feedback loops
+- **75% Parameter Reduction**: 6.95M parameters vs original 27M claim - proving that understanding enables compression
+- **Joint State Halting**: Concatenated H+L states for intelligent computation allocation
+- **Additional Systems**: SAGE integration, GPU mailbox, KV-cache persistence, TinyVAE distillation
 
-Original paper: [arXiv:2506.21734](https://arxiv.org/abs/2506.21734)
+**[Read detailed architecture analysis →](./ARCHITECTURE_INNOVATIONS.md)** | **[Attribution details →](./HRM_ATTRIBUTION_ANALYSIS.md)**
+
+### Original Paper
+Original HRM paper by Sapient: [arXiv:2506.21734](https://arxiv.org/abs/2506.21734)
 
 ## Our Extensions
 

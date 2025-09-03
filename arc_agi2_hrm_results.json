@@ -1,0 +1,45 @@
+{
+  "model": "validation_package/hrm_arc_best.pt",
+  "model_info": {
+    "parameters": "6.95M",
+    "architecture": "HRM with H\u2194L bidirectional",
+    "original_arc_accuracy": 0.7136,
+    "training_steps": 7000
+  },
+  "dataset": "ARC-AGI-2",
+  "split": "evaluation",
+  "num_tasks": 5,
+  "average_accuracy": 0.2706107862248213,
+  "per_task_results": [
+    {
+      "task_id": "0934a4d8",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "135a2760",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "136b0064",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.7894736842105263
+    },
+    {
+      "task_id": "13e47133",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "142ca369",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.5635802469135802
+    }
+  ]
+}

@@ -1,0 +1,315 @@
+{
+  "model": "validation_package/hrm_arc_best.pt",
+  "model_info": {
+    "parameters": "6.95M",
+    "architecture": "HRM with H\u2194L bidirectional",
+    "original_arc_accuracy": 0.7136,
+    "training_steps": 7000
+  },
+  "dataset": "ARC-AGI-2",
+  "split": "evaluation",
+  "num_tasks": 50,
+  "average_accuracy": 0.2015380158681737,
+  "per_task_results": [
+    {
+      "task_id": "0934a4d8",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "135a2760",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "136b0064",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.7894736842105263
+    },
+    {
+      "task_id": "13e47133",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "142ca369",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.5635802469135802
+    },
+    {
+      "task_id": "16b78196",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.7277777777777777
+    },
+    {
+      "task_id": "16de56c4",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.7063492063492063
+    },
+    {
+      "task_id": "1818057f",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "195c6913",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "1ae2feb7",
+      "num_test": 3,
+      "has_ground_truth": true,
+      "accuracy": 0.6772222222222223
+    },
+    {
+      "task_id": "20270e3b",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "20a9e565",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.5187324929971988
+    },
+    {
+      "task_id": "21897d95",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.10833333333333334
+    },
+    {
+      "task_id": "221dfab4",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "247ef758",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.6600925925925926
+    },
+    {
+      "task_id": "269e22fb",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "271d71e2",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.15088757396449703
+    },
+    {
+      "task_id": "28a6681f",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.58
+    },
+    {
+      "task_id": "291dc1e1",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "2b83f449",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.4086687306501548
+    },
+    {
+      "task_id": "2ba387bc",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.3125
+    },
+    {
+      "task_id": "2c181942",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "2d0172a1",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "31f7f899",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "332f06d7",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.04
+    },
+    {
+      "task_id": "35ab12c3",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.800453514739229
+    },
+    {
+      "task_id": "36a08778",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "38007db0",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "3a25b0d8",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.12606837606837606
+    },
+    {
+      "task_id": "3dc255db",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.7756410256410257
+    },
+    {
+      "task_id": "3e6067c3",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "409aa875",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "446ef5d2",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "45a5af55",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "4a21e3da",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "4c3d4a41",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.65625
+    },
+    {
+      "task_id": "4c416de3",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.12679425837320574
+    },
+    {
+      "task_id": "4c7dc4dd",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.15555555555555556
+    },
+    {
+      "task_id": "4e34c42c",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "53fb4810",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "5545f144",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "581f7754",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "58490d8a",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.8686868686868687
+    },
+    {
+      "task_id": "58f5dbd5",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "5961cc34",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "5dbc8537",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.017375
+    },
+    {
+      "task_id": "62593bfd",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "64efde09",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "65b59efc",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.30645833333333333
+    },
+    {
+      "task_id": "67e490f4",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    }
+  ]
+}

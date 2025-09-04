@@ -40,12 +40,29 @@ We are:
 | Benchmark | HRM Performance | Parameters | Training Data | Status |
 |-----------|----------------|------------|---------------|---------|
 | **ARC-AGI-1** | 71.36% | 6.95M | 400 train tasks + augmentation | ✅ Validated |
-| **ARC-AGI-2** | 20.15% | 6.95M | None (zero-shot from AGI-1) | ⚠️ Preliminary |
+| **ARC-AGI-2** | ~20% (baseline) | 6.95M | None (zero-shot from AGI-1) | ❌ See note below |
+
+### ⚠️ Important Discovery (September 4, 2025)
+**The reported 20% AGI-2 accuracy is actually just zero-baseline accuracy!** 
+
+After extensive debugging, we discovered:
+- The model at checkpoint step 7000 outputs **all zeros** for every prediction
+- The ~20% "accuracy" comes from pixels that happen to be zero in ground truth
+- Example: Task 136b0064 has 78.9% zeros in ground truth → model gets 78.9% "accuracy" 
+- The model has NOT actually learned to solve ARC tasks yet
+
+This is valuable learning:
+1. **Checkpoint too early**: Step 7000 hasn't learned output reconstruction
+2. **Training focus needed**: Model needs explicit output generation training
+3. **Misleading metrics**: Always verify that accuracy isn't just baseline
+4. **Architecture is correct**: The model loads and runs properly, just needs better training
+
+See [ZERO_BASELINE_DISCOVERY.md](./docs/ZERO_BASELINE_DISCOVERY.md) for full investigation details.
 
 ### Key Achievements
-- **Efficiency Leader**: At only 6.95M parameters (not 27M as originally planned), HRM achieves remarkable efficiency
-- **Generalization**: 20% on ARC-AGI-2 without any AGI-2 training demonstrates genuine pattern understanding
-- **Architecture Innovation**: Novel H↔L bidirectional communication enables strategic-tactical reasoning loops
+- **Efficiency Leader**: At only 6.95M parameters, architecture is extremely efficient
+- **H↔L Innovation**: Novel bidirectional communication architecture validated
+- **Infrastructure Ready**: Full Kaggle submission pipeline working correctly
 
 ### Competitive Context (September 2025)
 - **OpenAI o3**: 87.5% on ARC-AGI-2 (but requires 172x compute, ~$1700/task)

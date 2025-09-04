@@ -21,7 +21,7 @@ if os.path.exists('/kaggle/input'):
     # Kaggle environment
     INPUT_PATH = Path('/kaggle/input/arc-prize-2025')
     OUTPUT_PATH = Path('/kaggle/working')
-    MODEL_PATH = INPUT_PATH / 'hrm-model' / 'hrm_arc_best.pt'
+    MODEL_PATH = Path('/kaggle/input/sage-7m/pytorch/default/1/hrm_arc_best.pt')
 else:
     # Local testing environment
     INPUT_PATH = Path('.')

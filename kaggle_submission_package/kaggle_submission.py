@@ -23,10 +23,13 @@ if os.path.exists('/kaggle/input'):
     OUTPUT_PATH = Path('/kaggle/working')
     MODEL_PATH = Path('/kaggle/input/sage-7m/pytorch/default/1/hrm_arc_best.pt')
 else:
-    # Local testing environment
-    INPUT_PATH = Path('.')
-    OUTPUT_PATH = Path('.')
+    # Local testing environment - use local Kaggle structure
+    INPUT_PATH = Path('arc-prize-2025')
+    OUTPUT_PATH = Path('working')
     MODEL_PATH = Path('hrm-model/hrm_arc_best.pt')
+    
+    # Create output directory if it doesn't exist
+    OUTPUT_PATH.mkdir(exist_ok=True)
 
 # SAGE-7M configuration (6.95M parameters, 75% smaller than original HRM's 27M)
 MODEL_CONFIG = {

@@ -77,11 +77,19 @@ class HierarchicalReasoningModule(nn.Module):
             ) for _ in range(config['num_l_layers'])
         ])
         
-        # Adaptive computation
-        self.halt_predictor = nn.Linear(config['hidden_size'], 1)
+        # Cross-level connections (CRITICAL for checkpoint)
+        self.h_to_l = nn.Linear(config['hidden_size'], config['hidden_size'])
+        self.l_to_h = nn.Linear(config['hidden_size'], config['hidden_size'])
         
-        # Output layer
-        self.output_layer = nn.Linear(config['hidden_size'], config['vocab_size'])
+        # Layer normalization (CRITICAL for checkpoint)
+        self.h_norm = nn.LayerNorm(config['hidden_size'])
+        self.l_norm = nn.LayerNorm(config['hidden_size'])
+        
+        # Adaptive computation - expects concatenated features (512D)
+        self.halt_predictor = nn.Linear(config['hidden_size'] * 2, 1)
+        
+        # Output layer (must be named 'output' to match checkpoint)
+        self.output = nn.Linear(config['hidden_size'], config['vocab_size'])
         
     def forward(self, x, max_cycles=None):
         if max_cycles is None:
@@ -93,29 +101,40 @@ class HierarchicalReasoningModule(nn.Module):
         x = self.token_embedding(x)
         x = self.pos_encoding(x)
         
+        # Initialize H and L states
+        h_state = x.clone()
+        l_state = x.clone()
+        
         # Adaptive computation through cycles
         halted = torch.zeros(batch_size, device=x.device).bool()
         output = torch.zeros_like(x)
+        halt_probs = []
         
         for cycle in range(max_cycles):
             # H-level processing (strategic)
-            h_out = x
             for h_layer in self.h_layers:
-                h_out = h_layer(h_out)
+                h_state = h_layer(h_state)
+            h_state = self.h_norm(h_state)
             
-            # L-level processing (tactical)
-            l_out = h_out
+            # L-level processing (tactical) with H-level guidance
+            l_state = l_state + self.h_to_l(h_state)
             for l_layer in self.l_layers:
-                l_out = l_layer(l_out)
+                l_state = l_layer(l_state)
+            l_state = self.l_norm(l_state)
             
-            # Halting decision
-            halt_logits = self.halt_predictor(l_out.mean(dim=1))
+            # L to H feedback
+            h_state = h_state + self.l_to_h(l_state)
+            
+            # Halting decision - concatenate H and L features
+            combined = torch.cat([h_state.mean(dim=1), l_state.mean(dim=1)], dim=-1)
+            halt_logits = self.halt_predictor(combined)
             halt_prob = torch.sigmoid(halt_logits).squeeze()
+            halt_probs.append(halt_prob)
             
             # Update output for non-halted samples
             mask = ~halted
             if mask.any():
-                output[mask] = l_out[mask]
+                output[mask] = l_state[mask]
             
             # Update halted samples
             halted = halted | (halt_prob > 0.5)
@@ -125,7 +144,7 @@ class HierarchicalReasoningModule(nn.Module):
                 break
         
         # Final output projection
-        output = self.output_layer(output)
+        output = self.output(output)
         
         return output
 

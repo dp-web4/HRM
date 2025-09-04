@@ -6,39 +6,60 @@
 
 ## Executive Summary: Why Agent Zero Failed
 
-Our current HRM ("Agent Zero") outputs constant zeros regardless of input because it has no concept of **context**. Nova's profound insight: "Life is not just solving puzzles; it is solving context puzzles." The model doesn't know:
+Our current HRM ("Agent Zero") outputs constant zeros regardless of input for TWO critical reasons:
+
+### 1. No Context Awareness
+Nova's profound insight: "Life is not just solving puzzles; it is solving context puzzles." The model doesn't know:
 - WHAT kind of problem it's solving
 - WHY certain outputs would be better
 - WHEN to stop reasoning
 - HOW to adapt its approach
 
-The breakthrough realization: **H-level = Context, L-level = Solution**
-- H understands the meta-puzzle (what situation am I in?)
-- L executes within that context (how do I solve this specific puzzle?)
-- H↔L enables the dialogue between understanding and doing
+### 2. Below Critical Mass for Emergence
+- **5.67M parameters is too small** for reasoning to emerge
+- Like trying to build consciousness with 100 neurons - structurally impossible
+- No amount of training can overcome insufficient capacity
+- The model collapsed to the simplest function (constant output) because it lacks the depth for anything else
+
+The breakthrough realization: **H-level = Context, L-level = Solution, but BOTH need critical mass**
+- H understands the meta-puzzle (needs ~45M params for true understanding)
+- L executes within that context (needs ~45M params for complex execution)
+- H↔L enables the dialogue (needs ~10M params for rich interaction)
+- **Total: ~100M parameters minimum for emergence**
 
 ## Incremental Prototyping Approach
 
 ### Phase 1: Minimal Context Injection (Week 1)
-**Goal**: Prove that context changes behavior
+**Goal**: Prove that context changes behavior with PROPER SCALE
 
 **Model Changes**:
-- Start small: 2-3M parameters (reduce from current 5.67M)
-- Add simple context embedding: 32-dim vector
-- Minimal architecture:
+- **Scale UP to critical mass**: 100M parameters (17x increase from 5.67M)
+- **Deep reasoning layers**: 7 H-layers, 7 L-layers (cognition needs depth!)
+- **Rich context**: 256-dim context vectors
+- Architecture for emergence:
 ```python
 class ContextAwareHRM(nn.Module):
     def __init__(self, config):
-        # Existing H and L layers but smaller
-        self.h_layers = 2  # reduced from 4
-        self.l_layers = 2  # reduced from 3
-        self.hidden_size = 128  # reduced from 256
+        # SCALED UP for emergence
+        self.h_layers = 7  # Deep strategic reasoning
+        self.l_layers = 7  # Deep tactical execution
+        self.hidden_size = 768  # Rich representations
         
-        # NEW: Context processing
-        self.context_encoder = nn.Linear(32, 128)
-        self.h_context_gate = nn.Linear(256, 128)  # H + context
-        self.l_context_gate = nn.Linear(256, 128)  # L + context
+        # Context processing at scale
+        self.context_encoder = nn.Linear(256, 768)
+        self.h_context_gate = nn.Linear(1536, 768)  # H + context
+        self.l_context_gate = nn.Linear(1536, 768)  # L + context
+        
+        # ~100M parameters total:
+        # 14 transformer layers × 768 hidden × 12 heads = ~85M
+        # + embeddings, context, output layers = ~100M
 ```
+
+**Why Scale Matters**:
+- **Below critical mass = no emergence**: 5M params can't reason, just memorize
+- **Inner layers need depth**: Layers 3-5 do the actual thinking, 1-2 and 6-7 translate
+- **Context needs bandwidth**: 32-dim can't encode rich situational understanding
+- **Still tiny**: 100M is 1/5th of a 0.5B LLM - completely reasonable for modern GPUs
 
 **Training Setup**:
 ```python
@@ -140,26 +161,32 @@ total_loss = (
 )
 ```
 
-### Model Scaling Recommendations
+### Model Scaling Philosophy
 
-**Start Small** (Phase 1-2):
-- 2-3M parameters
-- Faster iteration
-- Easier debugging
-- Clear signal if context helps
+**Critical Mass for Emergence**:
+- **100M parameters baseline** - Below this, no true reasoning emerges
+- **7 layers minimum per module** - Depth enables abstraction:
+  - Layers 1-2: Input encoding/translation
+  - Layers 3-5: Core reasoning/cognition  
+  - Layers 6-7: Output preparation/translation
+- **768+ hidden dimensions** - Rich enough for complex representations
 
-**Scale Up** (Phase 3-4):
-- 10-15M parameters
-- Separate H and L capacity:
-  - H (context): 60% of parameters
-  - L (execution): 40% of parameters
-- Reasoning: Context understanding needs more capacity
+**Scaling Progression**:
+- **Phase 1**: 100M params - Establish baseline reasoning
+- **Phase 2**: 150M params - Add SNARC attention mechanisms  
+- **Phase 3**: 200M params - Multi-strategy capability
+- **Phase 4**: 250M params - Full R6 context integration
 
-**Final Target** (Phase 5+):
-- 20-30M parameters
-- Full R6 context processing
-- Multi-modal context fusion
-- Deploy on Jetson
+**Why This Isn't "Too Big"**:
+- 100M = 0.1B = 1/5th of tiny 0.5B LLMs
+- Modern GPUs (RTX 4090, A100) handle this easily
+- Jetson Orin can run 100M models with optimization
+- **Quantity enables quality** - emergence needs critical mass
+
+**Parameter Distribution**:
+- H-module: ~45M params (strategic depth)
+- L-module: ~45M params (tactical depth)
+- Context/interaction: ~10M params (rich fusion)
 
 ## Success Metrics
 

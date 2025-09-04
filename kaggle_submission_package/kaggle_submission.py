@@ -56,8 +56,8 @@ class PositionalEncoding(nn.Module):
     def forward(self, x):
         return x + self.pe[:x.size(1)]
 
-class SAGE7M(nn.Module):
-    """SAGE-7M architecture - Evolution of Sapient's HRM with 75% size reduction"""
+class HierarchicalReasoningModule(nn.Module):
+    """HRM architecture matching the trained checkpoint"""
     
     def __init__(self, config):
         super().__init__()
@@ -89,11 +89,11 @@ class SAGE7M(nn.Module):
             ) for _ in range(config['num_l_layers'])
         ])
         
-        # Cross-level connections
+        # Cross-level connections (CRITICAL for matching checkpoint)
         self.h_to_l = nn.Linear(config['hidden_size'], config['hidden_size'])
         self.l_to_h = nn.Linear(config['hidden_size'], config['hidden_size'])
         
-        # Layer normalization
+        # Layer normalization (CRITICAL for matching checkpoint)
         self.h_norm = nn.LayerNorm(config['hidden_size'])
         self.l_norm = nn.LayerNorm(config['hidden_size'])
         
@@ -119,26 +119,34 @@ class SAGE7M(nn.Module):
         output = torch.zeros_like(x_emb)
         halt_probs = []
         
+        # Initialize H and L states
+        h_state = x_emb.clone()
+        l_state = x_emb.clone()
+        
         for cycle in range(max_cycles):
             # H-level (strategic reasoning)
-            h_out = x_emb
             for h_layer in self.h_layers:
-                h_out = h_layer(h_out)
+                h_state = h_layer(h_state)
+            h_state = self.h_norm(h_state)
             
-            # L-level (tactical refinement)  
-            l_out = h_out
+            # L-level (tactical refinement) with H-level guidance
+            l_state = l_state + self.h_to_l(h_state)
             for l_layer in self.l_layers:
-                l_out = l_layer(l_out)
+                l_state = l_layer(l_state)
+            l_state = self.l_norm(l_state)
+            
+            # L to H feedback
+            h_state = h_state + self.l_to_h(l_state)
             
             # Adaptive halting - concatenate H and L features for halt decision
-            combined = torch.cat([h_out.mean(dim=1), l_out.mean(dim=1)], dim=-1)  # [batch, 512]
+            combined = torch.cat([h_state.mean(dim=1), l_state.mean(dim=1)], dim=-1)  # [batch, 512]
             halt_logit = self.halt_predictor(combined)
             halt_prob = torch.sigmoid(halt_logit).squeeze(-1)
             halt_probs.append(halt_prob)
             
             # Update output for non-halted samples
             not_halted = ~halted
-            output[not_halted] = output[not_halted] + l_out[not_halted]
+            output[not_halted] = output[not_halted] + l_state[not_halted]
             
             # Update halting status
             should_halt = halt_prob > 0.5
@@ -228,7 +236,7 @@ def main():
     
     # Load model
     print("\nLoading SAGE-7M model...")
-    model = SAGE7M(MODEL_CONFIG).to(device)
+    model = HierarchicalReasoningModule(MODEL_CONFIG).to(device)
     
     # Load checkpoint if available
     if MODEL_PATH.exists():

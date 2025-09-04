@@ -1,12 +1,5 @@
 {
   "model": "validation_package/hrm_arc_best.pt",
-  "model_info": {
-    "parameters": "6.95M",
-    "architecture": "HRM with H\u2194L bidirectional",
-    "original_arc_accuracy": 0.7136,
-    "training_steps": 7000
-  },
-  "dataset": "ARC-AGI-2",
   "split": "evaluation",
   "num_tasks": 5,
   "average_accuracy": 0.2706107862248213,

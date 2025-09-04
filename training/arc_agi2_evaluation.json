@@ -1,0 +1,626 @@
+{
+  "dataset": "ARC-AGI-2",
+  "summary": {
+    "total_tasks": 120,
+    "mean_pixel_accuracy": 0.18742521822974856,
+    "median_pixel_accuracy": 0.0,
+    "std_dev": 0.28163416538656943,
+    "perfect_grids": 0,
+    "perfect_grid_rate": 0.0
+  },
+  "categories": {
+    "failed": 85,
+    "good": 16,
+    "moderate": 7,
+    "poor": 8,
+    "excellent": 4,
+    "perfect": 0
+  },
+  "task_results": {
+    "0934a4d8": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "135a2760": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "136b0064": {
+      "pixel_accuracy": 0.7894736842105263,
+      "grid_accuracy": 0.0,
+      "category": "good"
+    },
+    "13e47133": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "142ca369": {
+      "pixel_accuracy": 0.5823863636363636,
+      "grid_accuracy": 0.0,
+      "category": "moderate"
+    },
+    "16b78196": {
+      "pixel_accuracy": 0.7277777777777777,
+      "grid_accuracy": 0.0,
+      "category": "good"
+    },
+    "16de56c4": {
+      "pixel_accuracy": 0.7063492063492064,
+      "grid_accuracy": 0.0,
+      "category": "good"
+    },
+    "1818057f": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "195c6913": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "1ae2feb7": {
+      "pixel_accuracy": 0.6704545454545454,
+      "grid_accuracy": 0.0,
+      "category": "good"
+    },
+    "20270e3b": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "20a9e565": {
+      "pixel_accuracy": 0.6292134831460674,
+      "grid_accuracy": 0.0,
+      "category": "good"
+    },
+    "21897d95": {
+      "pixel_accuracy": 0.13211382113821138,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "221dfab4": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "247ef758": {
+      "pixel_accuracy": 0.6627906976744186,
+      "grid_accuracy": 0.0,
+      "category": "good"
+    },
+    "269e22fb": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "271d71e2": {
+      "pixel_accuracy": 0.15088757396449703,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "28a6681f": {
+      "pixel_accuracy": 0.58,
+      "grid_accuracy": 0.0,
+      "category": "moderate"
+    },
+    "291dc1e1": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "2b83f449": {
+      "pixel_accuracy": 0.4086687306501548,
+      "grid_accuracy": 0.0,
+      "category": "moderate"
+    },
+    "2ba387bc": {
+      "pixel_accuracy": 0.3125,
+      "grid_accuracy": 0.0,
+      "category": "poor"
+    },
+    "2c181942": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "2d0172a1": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "31f7f899": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "332f06d7": {
+      "pixel_accuracy": 0.04,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "35ab12c3": {
+      "pixel_accuracy": 0.800453514739229,
+      "grid_accuracy": 0.0,
+      "category": "excellent"
+    },
+    "36a08778": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "38007db0": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "3a25b0d8": {
+      "pixel_accuracy": 0.15206185567010308,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "3dc255db": {
+      "pixel_accuracy": 0.7756410256410257,
+      "grid_accuracy": 0.0,
+      "category": "good"
+    },
+    "3e6067c3": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "409aa875": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "446ef5d2": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "45a5af55": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "4a21e3da": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "4c3d4a41": {
+      "pixel_accuracy": 0.65625,
+      "grid_accuracy": 0.0,
+      "category": "good"
+    },
+    "4c416de3": {
+      "pixel_accuracy": 0.12679425837320574,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "4c7dc4dd": {
+      "pixel_accuracy": 0.14754098360655737,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "4e34c42c": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "53fb4810": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "5545f144": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "581f7754": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "58490d8a": {
+      "pixel_accuracy": 0.8686868686868687,
+      "grid_accuracy": 0.0,
+      "category": "excellent"
+    },
+    "58f5dbd5": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "5961cc34": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "5dbc8537": {
+      "pixel_accuracy": 0.01707317073170732,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "62593bfd": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "64efde09": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "65b59efc": {
+      "pixel_accuracy": 0.3416572077185017,
+      "grid_accuracy": 0.0,
+      "category": "poor"
+    },
+    "67e490f4": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "6e453dd6": {
+      "pixel_accuracy": 0.17333333333333334,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "6e4f6532": {
+      "pixel_accuracy": 0.2196969696969697,
+      "grid_accuracy": 0.0,
+      "category": "poor"
+    },
+    "6ffbe589": {
+      "pixel_accuracy": 0.6745562130177515,
+      "grid_accuracy": 0.0,
+      "category": "good"
+    },
+    "71e489b6": {
+      "pixel_accuracy": 0.38294314381270905,
+      "grid_accuracy": 0.0,
+      "category": "poor"
+    },
+    "7491f3cf": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "7666fa5d": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "78332cb0": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "7b0280bc": {
+      "pixel_accuracy": 0.02,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "7b3084d4": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "7b5033c1": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "7b80bb43": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "7c66cb00": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "7ed72f31": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "800d221b": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "80a900e0": {
+      "pixel_accuracy": 0.5,
+      "grid_accuracy": 0.0,
+      "category": "moderate"
+    },
+    "8698868d": {
+      "pixel_accuracy": 0.07482993197278912,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "88bcf3b4": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "88e364bc": {
+      "pixel_accuracy": 0.57375,
+      "grid_accuracy": 0.0,
+      "category": "moderate"
+    },
+    "89565ca0": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "898e7135": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "8b7bacbf": {
+      "pixel_accuracy": 0.2561141304347826,
+      "grid_accuracy": 0.0,
+      "category": "poor"
+    },
+    "8b9c3697": {
+      "pixel_accuracy": 0.05958132045088567,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "8e5c0c38": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "8f215267": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "8f3a5a89": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "9385bd28": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "97d7923e": {
+      "pixel_accuracy": 0.715,
+      "grid_accuracy": 0.0,
+      "category": "good"
+    },
+    "981571dc": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "9aaea919": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "9bbf930d": {
+      "pixel_accuracy": 0.11180124223602485,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "a251c730": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "a25697e4": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "a32d8b75": {
+      "pixel_accuracy": 0.13968253968253969,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "a395ee82": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "a47bf94d": {
+      "pixel_accuracy": 0.7026627218934911,
+      "grid_accuracy": 0.0,
+      "category": "good"
+    },
+    "a6f40cea": {
+      "pixel_accuracy": 0.125,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "aa4ec2a5": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "abc82100": {
+      "pixel_accuracy": 0.835,
+      "grid_accuracy": 0.0,
+      "category": "excellent"
+    },
+    "b0039139": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "b10624e5": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "b5ca7ac4": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "b6f77b65": {
+      "pixel_accuracy": 0.7291666666666666,
+      "grid_accuracy": 0.0,
+      "category": "good"
+    },
+    "b99e7126": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "b9e38dc0": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "bf45cf4b": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "c4d067a0": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "c7f57c3e": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "cb2d8a2c": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "cbebaa4b": {
+      "pixel_accuracy": 0.8705621301775148,
+      "grid_accuracy": 0.0,
+      "category": "excellent"
+    },
+    "d35bdbdc": {
+      "pixel_accuracy": 0.6666666666666666,
+      "grid_accuracy": 0.0,
+      "category": "good"
+    },
+    "d59b0160": {
+      "pixel_accuracy": 0.15234375,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "d8e07eb2": {
+      "pixel_accuracy": 0.029545454545454545,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "da515329": {
+      "pixel_accuracy": 0.5014792899408284,
+      "grid_accuracy": 0.0,
+      "category": "moderate"
+    },
+    "db0c5428": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "db695cfb": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "dbff022c": {
+      "pixel_accuracy": 0.5976331360946746,
+      "grid_accuracy": 0.0,
+      "category": "moderate"
+    },
+    "dd6b8c4b": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "de809cff": {
+      "pixel_accuracy": 0.24888888888888888,
+      "grid_accuracy": 0.0,
+      "category": "poor"
+    },
+    "dfadab01": {
+      "pixel_accuracy": 0.685,
+      "grid_accuracy": 0.0,
+      "category": "good"
+    },
+    "e12f9a14": {
+      "pixel_accuracy": 0.3977777777777778,
+      "grid_accuracy": 0.0,
+      "category": "poor"
+    },
+    "e3721c99": {
+      "pixel_accuracy": 0.6605555555555556,
+      "grid_accuracy": 0.0,
+      "category": "good"
+    },
+    "e376de54": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "e8686506": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "e87109e9": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "edb79dae": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "eee78d87": {
+      "pixel_accuracy": 0.328125,
+      "grid_accuracy": 0.0,
+      "category": "poor"
+    },
+    "f560132c": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "f931b4a8": {
+      "pixel_accuracy": 0.0,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    },
+    "faa9f03d": {
+      "pixel_accuracy": 0.7222222222222222,
+      "grid_accuracy": 0.0,
+      "category": "good"
+    },
+    "fc7cae8d": {
+      "pixel_accuracy": 0.058333333333333334,
+      "grid_accuracy": 0.0,
+      "category": "failed"
+    }
+  },
+  "comparison_with_agi1": {
+    "agi1_mean": 0.491,
+    "agi2_mean": 0.18742521822974856,
+    "performance_drop": 0.30357478177025143
+  }
+}

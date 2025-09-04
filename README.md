@@ -4,10 +4,6 @@
 
 ## Project Status
 
-### 🏆 NEW: ARC-AGI Benchmark Results - September 3, 2025
-
-**HRM achieves 71% on ARC-AGI-1 and 20% on ARC-AGI-2** with only 6.95M parameters, demonstrating exceptional efficiency and generalization. See [benchmark results](#-arc-agi-benchmark-performance) below.
-
 ### 🎉 MAJOR MILESTONE ACHIEVED - August 22, 2025 🎉
 
 **IRP (Iterative Refinement Primitive) Framework Operational on Jetson!**
@@ -32,50 +28,47 @@ We are:
 
 **Ready for exploration and extension.** Core IRP framework proven and operational.
 
-## 🎯 ARC-AGI Benchmark Performance
+## 🎯 ARC-AGI Benchmark Status
 
-### Current Results (September 2025)
-*Note: These results are subject to further validation and optimization.*
+### ⚠️ Critical Discovery (September 4, 2025)
+**The HRM model exhibits complete input invariance - it outputs identical values regardless of input.**
 
-| Benchmark | HRM Performance | Parameters | Training Data | Status |
-|-----------|----------------|------------|---------------|---------|
-| **ARC-AGI-1** | 71.36% | 6.95M | 400 train tasks + augmentation | ✅ Validated |
-| **ARC-AGI-2** | ~20% (baseline) | 6.95M | None (zero-shot from AGI-1) | ❌ See note below |
+After extensive debugging including testing checkpoints up to step 193,000:
+- The model produces **exactly the same output** for any input (zeros, ones, random, patterns)
+- All outputs are class 0 (zero) predictions with identical logits: `[3.233, -0.116, 0.977, ...]`
+- Previously reported accuracies (71% AGI-1, 20% AGI-2) were purely from outputting zeros on sparse grids
+- **The model has never actually solved a single ARC task**
 
-### ⚠️ Important Discovery (September 4, 2025)
-**The reported 20% AGI-2 accuracy is actually just zero-baseline accuracy!** 
+This represents a catastrophic training failure where the model collapsed to a constant function.
 
-After extensive debugging, we discovered:
-- The model at checkpoint step 7000 outputs **all zeros** for every prediction
-- The ~20% "accuracy" comes from pixels that happen to be zero in ground truth
-- Example: Task 136b0064 has 78.9% zeros in ground truth → model gets 78.9% "accuracy" 
-- The model has NOT actually learned to solve ARC tasks yet
+See [INPUT_INVARIANT_OUTPUT_DISCOVERY.md](./docs/INPUT_INVARIANT_OUTPUT_DISCOVERY.md) for the complete investigation.
 
-This is valuable learning:
-1. **Checkpoint too early**: Step 7000 hasn't learned output reconstruction
-2. **Training focus needed**: Model needs explicit output generation training
-3. **Misleading metrics**: Always verify that accuracy isn't just baseline
-4. **Architecture is correct**: The model loads and runs properly, just needs better training
+### Model Architecture Status
+- **✅ Architecture**: H↔L bidirectional design implemented correctly
+- **✅ Infrastructure**: Training, evaluation, and submission pipelines functional
+- **✅ Parameters**: ~5.67M parameters (efficient design)
+- **❌ Training**: Complete failure - model never learned input processing
+- **❌ Performance**: 0% actual task-solving capability
 
-See [ZERO_BASELINE_DISCOVERY.md](./docs/ZERO_BASELINE_DISCOVERY.md) for full investigation details.
+### Root Cause
+The model learned to output zeros because:
+1. ARC grids are 60-80% zeros (sparse)
+2. Outputting all zeros achieves decent pixel accuracy
+3. Training optimized pixel accuracy, not task completion
+4. Model converged to constant output regardless of input
 
-### Key Achievements
-- **Efficiency Leader**: At only 6.95M parameters, architecture is extremely efficient
-- **H↔L Innovation**: Novel bidirectional communication architecture validated
-- **Infrastructure Ready**: Full Kaggle submission pipeline working correctly
+### Next Steps Required
+Complete retraining with:
+- Task-level success metrics (not just pixel accuracy)
+- Input sensitivity requirements (outputs must vary with input)
+- Balanced loss functions preventing constant outputs
+- Validation checks for input invariance
 
 ### Competitive Context (September 2025)
 - **OpenAI o3**: 87.5% on ARC-AGI-2 (but requires 172x compute, ~$1700/task)
 - **Public AI Systems**: Single digits (5-9%) on ARC-AGI-2
-- **Kaggle Ensembles**: 81% on ARC-AGI-1 (becoming saturated)
 - **ARC Prize Target**: 85% accuracy with <$2.50/task efficiency
-
-### Next Steps
-- Train directly on ARC-AGI-2's 1,000 tasks (expected 40-60% accuracy)
-- Scale to 20-30M parameters while maintaining efficiency
-- Optimize for ARC Prize 2025 deadline (November 3, 2025)
-
-See [ARC_PRIZE_2025_STATUS.md](./ARC_PRIZE_2025_STATUS.md) for detailed competition analysis.
+- **HRM Current**: 0% (requires complete retraining)
 
 ## 📚 Documentation
 

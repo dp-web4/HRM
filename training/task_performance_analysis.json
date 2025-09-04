@@ -1,0 +1,25 @@
+{
+  "num_samples": 1000,
+  "categories": {
+    "excellent": 0,
+    "good": 1000,
+    "moderate": 0,
+    "poor": 0,
+    "failed": 0
+  },
+  "overall_accuracy": 0.8210355573296547,
+  "statistics": {
+    "mean": 0.8210355573296547,
+    "median": 0.7833333611488342,
+    "std": 0.03777767612860992,
+    "min": 0.7833333611488342,
+    "max": 0.8588888645172119
+  },
+  "error_patterns": {
+    "color_errors": 1000,
+    "shape_errors": 1000,
+    "position_errors": 0,
+    "size_errors": 0,
+    "total_errors": 161068
+  }
+}

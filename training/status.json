@@ -1,16 +1,16 @@
 {
   "run_id": "20250903_100435_3652c9d8",
   "start_time": "2025-09-03T10:04:35.091057",
-  "current_step": 125806,
+  "current_step": 193064,
   "current_epoch": 0,
-  "best_val_loss": Infinity,
-  "best_val_acc": 0.0,
+  "best_val_loss": 1.1448658008665793,
+  "best_val_acc": 0.7135802524039535,
   "best_step": 0,
-  "last_checkpoint": "step_125806",
-  "last_validation": null,
-  "training_loss": 1.0705124139785767,
-  "training_acc": 0.8469444513320923,
-  "samples_per_sec": 52.18692306727567,
+  "last_checkpoint": "step_193064",
+  "last_validation": "step_140000",
+  "training_loss": 0.910844624042511,
+  "training_acc": 0.8851667046546936,
+  "samples_per_sec": 42.09946394793942,
   "estimated_time_remaining": "calculating...",
-  "last_update": "2025-09-03T10:06:34.941981"
+  "last_update": "2025-09-03T18:59:35.083855"
 }

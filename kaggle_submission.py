@@ -15,10 +15,18 @@ from pathlib import Path
 import math
 from typing import List, Dict, Any, Tuple, Optional
 
-# Kaggle paths
-INPUT_PATH = Path('/kaggle/input/arc-prize-2025')
-OUTPUT_PATH = Path('/kaggle/working')
-MODEL_PATH = INPUT_PATH / 'hrm-model' / 'hrm_arc_best.pt'
+# Paths - automatically detect Kaggle vs local environment
+import os
+if os.path.exists('/kaggle/input'):
+    # Kaggle environment
+    INPUT_PATH = Path('/kaggle/input/arc-prize-2025')
+    OUTPUT_PATH = Path('/kaggle/working')
+    MODEL_PATH = INPUT_PATH / 'hrm-model' / 'hrm_arc_best.pt'
+else:
+    # Local testing environment
+    INPUT_PATH = Path('.')
+    OUTPUT_PATH = Path('.')
+    MODEL_PATH = Path('hrm-model/hrm_arc_best.pt')
 
 # SAGE-7M configuration (6.95M parameters, 75% smaller than original HRM's 27M)
 MODEL_CONFIG = {
@@ -81,11 +89,19 @@ class SAGE7M(nn.Module):
             ) for _ in range(config['num_l_layers'])
         ])
         
-        # Adaptive computation
-        self.halt_predictor = nn.Linear(config['hidden_size'], 1)
+        # Cross-level connections
+        self.h_to_l = nn.Linear(config['hidden_size'], config['hidden_size'])
+        self.l_to_h = nn.Linear(config['hidden_size'], config['hidden_size'])
         
-        # Output layer
-        self.output_layer = nn.Linear(config['hidden_size'], config['vocab_size'])
+        # Layer normalization
+        self.h_norm = nn.LayerNorm(config['hidden_size'])
+        self.l_norm = nn.LayerNorm(config['hidden_size'])
+        
+        # Adaptive computation (note: checkpoint has 512 input size, we'll handle this)
+        self.halt_predictor = nn.Linear(config.get('halt_input_size', 512), 1)
+        
+        # Output layer (matches checkpoint naming)
+        self.output = nn.Linear(config['hidden_size'], config['vocab_size'])
         
     def forward(self, x, max_cycles=None):
         if max_cycles is None:
@@ -109,13 +125,14 @@ class SAGE7M(nn.Module):
             for h_layer in self.h_layers:
                 h_out = h_layer(h_out)
             
-            # L-level (tactical refinement)
+            # L-level (tactical refinement)  
             l_out = h_out
             for l_layer in self.l_layers:
                 l_out = l_layer(l_out)
             
-            # Adaptive halting
-            halt_logit = self.halt_predictor(l_out.mean(dim=1))
+            # Adaptive halting - concatenate H and L features for halt decision
+            combined = torch.cat([h_out.mean(dim=1), l_out.mean(dim=1)], dim=-1)  # [batch, 512]
+            halt_logit = self.halt_predictor(combined)
             halt_prob = torch.sigmoid(halt_logit).squeeze(-1)
             halt_probs.append(halt_prob)
             
@@ -132,7 +149,7 @@ class SAGE7M(nn.Module):
                 break
         
         # Generate output tokens
-        logits = self.output_layer(output)
+        logits = self.output(output)
         return logits
 
 def preprocess_grid(grid: List[List[int]]) -> torch.Tensor:

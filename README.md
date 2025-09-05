@@ -57,12 +57,32 @@ The model learned to output zeros because:
 3. Training optimized pixel accuracy, not task completion
 4. Model converged to constant output regardless of input
 
-### Next Steps Required
-Complete retraining with:
-- Task-level success metrics (not just pixel accuracy)
-- Input sensitivity requirements (outputs must vary with input)
-- Balanced loss functions preventing constant outputs
-- Validation checks for input invariance
+### Path Forward: SAGE as Attention Engine (September 4, 2025)
+
+#### Core Insight
+"Agent Zero" succeeded perfectly in the context it was given (minimize pixel error on sparse grids). The real failure was lack of proper context. Two critical realizations:
+
+1. **Below Critical Mass**: 5.67M parameters is too small for reasoning emergence (like trying to build consciousness with 100 neurons)
+2. **Missing Language Layer**: Complex reasoning requires language-based thought - ARC tasks need linguistic context ("this is rotation", "extend the pattern")
+
+#### SAGE Architecture Solution
+SAGE (Sentient Agentic Generative Engine) as **attention orchestrator**, not trying to be everything:
+
+- **Sentient**: "What should I attend to in this situation?"
+- **Agentic**: Makes choices and takes action based on awareness  
+- **Generative**: Adapts in latent space to novel situations
+- **Engine**: Runs continuously, powering the ecosystem
+
+#### Implementation Plan
+- **Scale to 100M parameters**: 7 H-layers, 7 L-layers (cognition happens in middle layers 3-5)
+- **External LLM integration**: Use pretrained models (Gemma-2B, Phi-2) as "cognition temporal sensor"
+- **H=Context, L=Solution**: H-level processes language context, L-level executes based on understanding
+- **Separation of concerns**:
+  - SAGE/HRM (100M): Attention, routing, execution (trainable)
+  - External LLM (2-7B): Language understanding (frozen, pretrained)
+  - We already have: Multiple LLMs tested, Phoenician LoRA, integration experience
+
+See [SAGE Architecture](./forum/agenda/SAGE_attention_engine_architecture.md) and [Context-Aware Prototype](./forum/agenda/context_aware_hrm_prototype_proposal.md)
 
 ### Competitive Context (September 2025)
 - **OpenAI o3**: 87.5% on ARC-AGI-2 (but requires 172x compute, ~$1700/task)
@@ -82,6 +102,46 @@ Complete retraining with:
 - **[Compression Trust Integration](./docs/compression_trust_integration.md)** - How HRM implements Web4's compression trust principles
 - **[TinyVAE and Compression Trust](./docs/tinyvae_compression_trust.md)** - Practical guide for TinyVAE testing on Jetson
 - **[Web4 Theory](https://github.com/dp-web4/web4#compression-trust-the-foundation-of-meaning)** - Foundational compression trust concepts
+
+## 🧠 SAGE: Sentient Agentic Generative Engine
+
+### What is SAGE?
+SAGE is the **attention orchestration engine** that decides what deserves focus, when to think, and how to act. It's not trying to be the intelligence itself - it orchestrates multiple specialized intelligences.
+
+### Architecture Components
+```
+┌─────────────────────────────────────────┐
+│         SAGE Core (100M params)         │
+│  ┌─────────────┐  ┌─────────────┐      │
+│  │  H-Level    │↔│   L-Level    │      │
+│  │  (Context)  │  │  (Solution)  │      │
+│  └─────────────┘  └─────────────┘      │
+│         ↑               ↑               │
+│         └───────┬───────┘               │
+│           SNARC Scoring                 │
+└─────────────────────────────────────────┘
+           ↓            ↓           ↓
+    ┌──────────┐ ┌──────────┐ ┌──────────┐
+    │External  │ │  Vision  │ │  Memory  │
+    │   LLM    │ │ Encoder  │ │   Bank   │
+    │ (2-7B)   │ │          │ │          │
+    └──────────┘ └──────────┘ └──────────┘
+```
+
+### How It Works
+1. **Continuous Monitoring**: SAGE never sleeps - always attending to sensor inputs
+2. **SNARC Evaluation**: Surprise, Novelty, Arousal, Reward, Conflict scoring determines importance
+3. **Resource Routing**: Decides when to engage LLM for language reasoning vs direct action
+4. **Context Generation**: External LLM provides linguistic understanding ("this is a rotation pattern")
+5. **Guided Execution**: H-level (context) guides L-level (solution) to produce appropriate outputs
+
+### Why This Solves Agent Zero
+- **Language enables thought**: External LLM provides the "inner monologue" for reasoning
+- **Critical mass for emergence**: 100M parameters (vs 5.67M) enables actual cognition
+- **Context awareness**: H-level understands situations, L-level executes within them
+- **Already have the pieces**: Pretrained LLMs, LoRA adapters, integration experience
+
+See [SAGE Architecture Details](./forum/agenda/SAGE_attention_engine_architecture.md)
 
 ## Conceptual Framework
 

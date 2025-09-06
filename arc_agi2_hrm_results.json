@@ -8,8 +8,8 @@
   },
   "dataset": "ARC-AGI-2",
   "split": "evaluation",
-  "num_tasks": 5,
-  "average_accuracy": 0.2706107862248213,
+  "num_tasks": 10,
+  "average_accuracy": 0.3464403137473313,
   "per_task_results": [
     {
       "task_id": "0934a4d8",
@@ -40,6 +40,36 @@
       "num_test": 2,
       "has_ground_truth": true,
       "accuracy": 0.5635802469135802
+    },
+    {
+      "task_id": "16b78196",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.7277777777777777
+    },
+    {
+      "task_id": "16de56c4",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.7063492063492063
+    },
+    {
+      "task_id": "1818057f",
+      "num_test": 1,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "195c6913",
+      "num_test": 2,
+      "has_ground_truth": true,
+      "accuracy": 0.0
+    },
+    {
+      "task_id": "1ae2feb7",
+      "num_test": 3,
+      "has_ground_truth": true,
+      "accuracy": 0.6772222222222223
     }
   ]
 }

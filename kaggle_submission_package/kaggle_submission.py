@@ -183,29 +183,41 @@ def postprocess_output(output: torch.Tensor, height: int, width: int, max_size: 
     
     return grid.tolist()
 
-def solve_task(model: nn.Module, task: Dict[str, Any], device: torch.device) -> List[List[int]]:
-    """Solve a single ARC task using the trained model"""
+def solve_task(model: nn.Module, task: Dict[str, Any], device: torch.device) -> List[Dict[str, List[List[int]]]]:
+    """Solve a single ARC task using the trained model - returns Kaggle format"""
     
     # Get training examples for context (future: use for few-shot prompting)
     train_examples = task.get('train', [])
     
-    # Get test input
-    test_input = task['test'][0]['input']
-    test_h = len(test_input)
-    test_w = len(test_input[0]) if test_input else 1
+    # Get test cases (can be multiple per task)
+    test_cases = task.get('test', [])
     
-    # Preprocess - pad to 30x30 with zeros
-    test_tensor = preprocess_grid(test_input).unsqueeze(0).to(device)
+    # Process each test case
+    task_attempts = []
+    for test_case in test_cases:
+        test_input = test_case['input']
+        test_h = len(test_input)
+        test_w = len(test_input[0]) if test_input else 1
+        
+        # Preprocess - pad to 30x30 with zeros
+        test_tensor = preprocess_grid(test_input).unsqueeze(0).to(device)
+        
+        # Run model inference
+        model.eval()
+        with torch.no_grad():
+            output, halt_probs = model(test_tensor)  # Model returns tuple!
+        
+        # Postprocess (output shape is [batch, seq_len, vocab_size])
+        solution = postprocess_output(output[0], test_h, test_w)
+        
+        # Create attempt dictionary (both attempts are the same for now)
+        attempt = {
+            "attempt_1": solution,
+            "attempt_2": solution  # Same as attempt_1 for Agent Zero
+        }
+        task_attempts.append(attempt)
     
-    # Run model inference
-    model.eval()
-    with torch.no_grad():
-        output, halt_probs = model(test_tensor)  # Model returns tuple!
-    
-    # Postprocess (output shape is [batch, seq_len, vocab_size])
-    solution = postprocess_output(output[0], test_h, test_w)
-    
-    return solution
+    return task_attempts
 
 def main():
     """Main submission entry point"""
@@ -266,17 +278,25 @@ def main():
             print(f"Processing task {i+1}/{len(test_tasks)}: {task_id}")
         
         try:
-            # Generate solution using the real model
+            # Generate solution using the real model (returns Kaggle format)
             solution = solve_task(model, task_data, device)
             submission[task_id] = solution
             
         except Exception as e:
             print(f"Error on task {task_id}: {e}")
-            # Fallback solution
-            test_input = task_data['test'][0]['input']
-            h = len(test_input)
-            w = len(test_input[0]) if h > 0 else 1
-            submission[task_id] = [[0 for _ in range(w)] for _ in range(h)]
+            # Fallback solution in Kaggle format
+            test_cases = task_data.get('test', [])
+            fallback_attempts = []
+            for test_case in test_cases:
+                test_input = test_case['input']
+                h = len(test_input)
+                w = len(test_input[0]) if h > 0 else 1
+                grid = [[0 for _ in range(w)] for _ in range(h)]
+                fallback_attempts.append({
+                    "attempt_1": grid,
+                    "attempt_2": grid
+                })
+            submission[task_id] = fallback_attempts
     
     # Save submission
     submission_path = OUTPUT_PATH / 'submission.json'
@@ -288,12 +308,25 @@ def main():
     
     # Quick validation
     non_zero_tasks = 0
-    for task_id, solution in submission.items():
-        flat = [val for row in solution for val in row]
-        if any(val != 0 for val in flat):
+    for task_id, attempts in submission.items():
+        # Check if any attempt has non-zero values
+        has_non_zero = False
+        for attempt in attempts:
+            grid = attempt.get('attempt_1', [])
+            flat = [val for row in grid for val in row]
+            if any(val != 0 for val in flat):
+                has_non_zero = True
+                break
+        if has_non_zero:
             non_zero_tasks += 1
     
     print(f"  Tasks with non-zero predictions: {non_zero_tasks}/{len(submission)}")
+    
+    # Show format sample
+    sample_id = list(submission.keys())[0]
+    print(f"\nFormat check for task {sample_id}:")
+    print(f"  Number of test cases: {len(submission[sample_id])}")
+    print(f"  First test case keys: {list(submission[sample_id][0].keys())}")
     
     print("\nDone!")
 

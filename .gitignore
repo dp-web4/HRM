@@ -27,6 +27,13 @@ __pycache__/
 *.ptx
 build_ext/
 
+# PyTorch model files (can be large)
+*.pt
+*.pth
+*.pkl
+*.ckpt
+*.safetensors
+
 # Distribution / packaging
 .Python
 build/

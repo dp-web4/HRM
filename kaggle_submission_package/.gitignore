@@ -1,0 +1,58 @@
+# Model checkpoints and weights
+*.pt
+*.pth
+*.pkl
+*.ckpt
+*.safetensors
+*.bin
+
+# Training logs
+*.log
+training.log
+faithful_training.log
+gpu_training.log
+real_training.log
+
+# Large JSON files (Claude predictions/training data)
+claude_reasoning_predictions.json
+claude_reasoning_training_data.json
+claude_predictions.json
+submission.json
+faithful_submission.json
+model_submission.json
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+sage_env/
+distill_env/
+tiling_env/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.bak
+.DS_Store
+
+# Output directories
+working/
+outputs/
+hrm-model/
+
+# Keep only essential files for git
+# Keep: *.py scripts (except cache)
+# Keep: README files
+# Keep: arc-prize-2025/ directory structure

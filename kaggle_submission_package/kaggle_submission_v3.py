@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 """
-ARC Prize 2025 Kaggle Submission - SAGE-7M V3
-Human-like Visual Reasoning Model
+ARC Prize 2025 Kaggle Submission - V3 Context-Aware Model
+Using Claude's reasoned solutions distilled into a 4.8M parameter model
 Team: dp-web4
-
-This uses the model trained on human-like visual reasoning patterns.
 """
 
 import json
@@ -21,26 +19,22 @@ if os.path.exists('/kaggle/input'):
     # Kaggle environment
     INPUT_PATH = Path('/kaggle/input/arc-prize-2025')
     OUTPUT_PATH = Path('/kaggle/working')
-    MODEL_PATH = Path('/kaggle/input/sage-7m-v3/pytorch/default/1/SAGE-V3-human.pt')
+    MODEL_PATH = Path('/kaggle/input/sage-7m-v3/pytorch/default/1/v3_reasoning_model.pt')
 else:
     # Local testing environment
     INPUT_PATH = Path('arc-prize-2025')
     OUTPUT_PATH = Path('.')
-    MODEL_PATH = Path('SAGE-V3-human.pt')
-    
-    # Create output directory if it doesn't exist
-    OUTPUT_PATH.mkdir(exist_ok=True)
+    MODEL_PATH = Path('v3_reasoning_model.pt')
 
-# Model configuration - must match the trained model exactly
+# Model configuration - must match training
 MODEL_CONFIG = {
-    'seq_len': 900,  # 30x30 grid
-    'vocab_size': 12,  # 0-9 colors + padding
+    'seq_len': 900,
+    'vocab_size': 12,
     'hidden_size': 256,
     'num_heads': 8,
-    'num_h_layers': 4,  # Strategic layers
-    'num_l_layers': 3,  # Tactical layers
+    'num_layers': 6,
     'dropout': 0.0,  # No dropout for inference
-    'max_cycles': 8
+    'pattern_dims': 16,
 }
 
 class PositionalEncoding(nn.Module):
@@ -59,19 +53,25 @@ class PositionalEncoding(nn.Module):
     def forward(self, x):
         return x + self.pe[:x.size(1)]
 
-class FaithfulModel(nn.Module):
-    """Model trained to faithfully reproduce Claude's reasoning"""
+class V3ReasoningModel(nn.Module):
+    """Model that reproduces Claude's reasoned solutions"""
     
     def __init__(self, config):
         super().__init__()
         self.config = config
         
-        # Embedding layers
+        # Input embedding
         self.token_embedding = nn.Embedding(config['vocab_size'], config['hidden_size'])
+        self.pattern_embedding = nn.Embedding(5, config['pattern_dims'])
         self.pos_encoding = PositionalEncoding(config['hidden_size'])
-        self.dropout = nn.Dropout(config['dropout'])
         
-        # Transformer layers (combined H+L layers)
+        # Pattern-aware projection
+        self.input_projection = nn.Linear(
+            config['hidden_size'] + config['pattern_dims'], 
+            config['hidden_size']
+        )
+        
+        # Transformer layers
         encoder_layer = nn.TransformerEncoderLayer(
             d_model=config['hidden_size'],
             nhead=config['num_heads'],
@@ -79,18 +79,27 @@ class FaithfulModel(nn.Module):
             dropout=config['dropout'],
             batch_first=True
         )
-        self.transformer = nn.TransformerEncoder(
-            encoder_layer,
-            num_layers=config['num_h_layers'] + config['num_l_layers']
-        )
+        self.transformer = nn.TransformerEncoder(encoder_layer, num_layers=config['num_layers'])
         
-        # Output layer
+        # Output head
         self.output_layer = nn.Linear(config['hidden_size'], config['vocab_size'])
+        
+        self.dropout = nn.Dropout(config['dropout'])
     
-    def forward(self, x):
+    def forward(self, x, pattern=None):
+        batch_size, seq_len = x.shape
+        
         # Embed tokens
         x = self.token_embedding(x)
         x = self.pos_encoding(x)
+        
+        # Add pattern information if provided
+        if pattern is not None:
+            pattern_emb = self.pattern_embedding(pattern)
+            pattern_emb = pattern_emb.unsqueeze(1).expand(-1, seq_len, -1)
+            x = torch.cat([x, pattern_emb], dim=-1)
+            x = self.input_projection(x)
+        
         x = self.dropout(x)
         
         # Transform
@@ -127,14 +136,35 @@ def postprocess_output(output: torch.Tensor, height: int, width: int, max_size: 
     
     return grid.tolist()
 
+def analyze_input_pattern(grid):
+    """Quick pattern analysis to determine pattern type"""
+    grid_array = np.array(grid)
+    h, w = grid_array.shape
+    
+    # Check for small grids that might be tiled
+    if h <= 5 and w <= 5:
+        return 3  # Possible tile pattern
+    
+    # Check for rectangles (presence of color 3 forming patterns)
+    if np.any(grid_array == 3):
+        # Look for rectangular patterns
+        green_mask = grid_array == 3
+        if np.sum(green_mask) > 4:  # At least 4 green cells
+            return 1  # fill_rectangles pattern
+    
+    # Check if mostly sparse (extraction pattern)
+    non_zero_ratio = np.count_nonzero(grid_array) / (h * w)
+    if non_zero_ratio < 0.3:
+        return 2  # extract_pattern
+    
+    return 0  # unknown
+
 def solve_task(model: nn.Module, task: Dict[str, Any], device: torch.device) -> List[Dict[str, List[List[int]]]]:
-    """Solve a single ARC task using the trained model"""
+    """Solve a single ARC task using V3 model"""
     
-    # Get test cases (can be multiple per task)
     test_cases = task.get('test', [])
-    
-    # Process each test case
     task_attempts = []
+    
     for test_case in test_cases:
         test_input = test_case['input']
         test_h = len(test_input)
@@ -143,12 +173,16 @@ def solve_task(model: nn.Module, task: Dict[str, Any], device: torch.device) -> 
         # Preprocess input
         test_tensor = preprocess_grid(test_input).unsqueeze(0).to(device)
         
+        # Analyze pattern type
+        pattern_type = analyze_input_pattern(test_input)
+        pattern_tensor = torch.tensor([pattern_type], dtype=torch.long).to(device)
+        
         # Run model inference
         model.eval()
         with torch.no_grad():
-            output = model(test_tensor)
+            output = model(test_tensor, pattern_tensor)
         
-        # Postprocess to get prediction
+        # Generate primary solution
         solution = postprocess_output(output[0], test_h, test_w)
         
         # Generate two attempts with slight variation
@@ -156,8 +190,8 @@ def solve_task(model: nn.Module, task: Dict[str, Any], device: torch.device) -> 
         
         # For attempt_2, apply slight temperature variation
         with torch.no_grad():
-            # Apply temperature scaling for variation
-            logits = output[0] / 1.05  # Slight temperature
+            # Slight temperature variation
+            logits = output[0] / 1.02
             probs = torch.softmax(logits, dim=-1)
             
             # Sample from distribution
@@ -180,8 +214,8 @@ def solve_task(model: nn.Module, task: Dict[str, Any], device: torch.device) -> 
 def main():
     """Main submission entry point"""
     print("=" * 60)
-    print("ARC Prize 2025 - SAGE-7M V2 Submission")
-    print("Faithful Claude Distillation Model")
+    print("ARC Prize 2025 - V3 Context-Aware Submission")
+    print("Claude's Reasoned Solutions (4.8M parameters)")
     print("Team: dp-web4")
     print("=" * 60)
     
@@ -190,8 +224,8 @@ def main():
     print(f"\nUsing device: {device}")
     
     # Create model
-    print("\nCreating SAGE-7M model architecture...")
-    model = FaithfulModel(MODEL_CONFIG).to(device)
+    print("\nInitializing V3 model...")
+    model = V3ReasoningModel(MODEL_CONFIG).to(device)
     
     # Count parameters
     total_params = sum(p.numel() for p in model.parameters())
@@ -209,8 +243,8 @@ def main():
             # Show training metrics if available
             if 'epoch' in checkpoint:
                 print(f"  Training epoch: {checkpoint['epoch']}")
-            if 'overall_accuracy' in checkpoint:
-                print(f"  Training accuracy: {checkpoint['overall_accuracy']:.2f}%")
+            if 'accuracy' in checkpoint:
+                print(f"  Training accuracy: {checkpoint['accuracy']*100:.2f}%")
             if 'non_zero_accuracy' in checkpoint:
                 print(f"  Non-zero accuracy: {checkpoint['non_zero_accuracy']:.2f}%")
         else:
@@ -294,7 +328,8 @@ def main():
     first_grid = submission[sample_id][0]['attempt_1']
     print(f"  Grid dimensions: {len(first_grid)}x{len(first_grid[0]) if first_grid else 0}")
     
-    print("\nReady for Kaggle submission!")
+    print("\n✨ V3 Ready for Kaggle submission!")
+    print("This version uses context-aware reasoning patterns")
 
 if __name__ == '__main__':
     main()

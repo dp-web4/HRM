@@ -1,0 +1,28 @@
+{
+  "epoch": 500,
+  "final_loss": 0.15476932637747923,
+  "final_accuracy": 85,
+  "best_loss": 0.15476932637747923,
+  "best_epoch": 500,
+  "config": {
+    "seq_len": 900,
+    "vocab_size": 12,
+    "hidden_size": 256,
+    "num_heads": 8,
+    "num_h_layers": 4,
+    "num_l_layers": 3,
+    "dropout": 0.0,
+    "max_cycles": 8
+  },
+  "training_stats": {
+    "total_examples": 1026,
+    "claude_predictions": 259,
+    "epochs_trained": 500,
+    "final_metrics": {
+      "loss": 0.15476932637747923,
+      "accuracy": 85
+    }
+  },
+  "distillation_source": "claude_reasoning_training_data.json",
+  "timestamp": "2025-09-09 13:24:55"
+}

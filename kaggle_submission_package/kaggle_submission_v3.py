@@ -19,7 +19,7 @@ if os.path.exists('/kaggle/input'):
     # Kaggle environment
     INPUT_PATH = Path('/kaggle/input/arc-prize-2025')
     OUTPUT_PATH = Path('/kaggle/working')
-    MODEL_PATH = Path('/kaggle/input/sage-7m-v3/pytorch/default/1/v3_reasoning_model.pt')
+    MODEL_PATH = Path('/kaggle/input/sage-5m-r/pytorch/default/1/v3_reasoning_model.pt')
 else:
     # Local testing environment
     INPUT_PATH = Path('arc-prize-2025')
@@ -252,8 +252,10 @@ def main():
             model.load_state_dict(checkpoint)
             print("✓ Model weights loaded (direct format)")
     else:
-        print(f"⚠ Warning: No checkpoint found at {MODEL_PATH}")
-        print("  Using random initialization (not recommended)")
+        print(f"❌ ERROR: No checkpoint found at {MODEL_PATH}")
+        print("  The model file is required for predictions!")
+        print("  Please ensure the model is uploaded to the correct Kaggle dataset.")
+        raise FileNotFoundError(f"Model checkpoint not found at {MODEL_PATH}")
     
     model.eval()
     

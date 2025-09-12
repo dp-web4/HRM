@@ -120,10 +120,11 @@ class LModule(nn.Module):
         # Generate raw action
         action = self.action_net(compressed_context)
         
-        # Smooth with history if available
+        # Smooth with history if available (check batch size compatibility)
         if self.action_history:
             prev_action = self.action_history[-1]
-            action = (1 - self.smoothing_weight) * action + self.smoothing_weight * prev_action
+            if prev_action.shape[0] == action.shape[0]:
+                action = (1 - self.smoothing_weight) * action + self.smoothing_weight * prev_action
         
         # Update history
         self.action_history.append(action.detach())

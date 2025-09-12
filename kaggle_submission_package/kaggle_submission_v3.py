@@ -246,7 +246,7 @@ def main():
             if 'accuracy' in checkpoint:
                 print(f"  Training accuracy: {checkpoint['accuracy']*100:.2f}%")
             if 'non_zero_accuracy' in checkpoint:
-                print(f"  Non-zero accuracy: {checkpoint['non_zero_accuracy']:.2f}%")
+                print(f"  Non-zero accuracy: {checkpoint['non_zero_accuracy']*100:.2f}%")
         else:
             # Direct state dict format
             model.load_state_dict(checkpoint)

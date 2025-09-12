@@ -127,30 +127,39 @@ class SensoryEncoder(nn.Module):
         """Encode raw sensory inputs."""
         encoded = {}
         
+        # Get device from any available tensor in observations
+        device = None
+        for v in observations.values():
+            if isinstance(v, torch.Tensor):
+                device = v.device
+                break
+        if device is None:
+            device = torch.device('cpu')
+        
         if 'visual' in observations:
             encoded['visual'] = self.visual_encoder(observations['visual'])
         else:
-            encoded['visual'] = torch.zeros(observations.get('batch_size', 1), 512)
+            encoded['visual'] = torch.zeros(observations.get('batch_size', 1), 512, device=device)
             
         if 'depth' in observations:
             encoded['depth'] = self.depth_encoder(observations['depth'])
         else:
-            encoded['depth'] = torch.zeros(observations.get('batch_size', 1), 256)
+            encoded['depth'] = torch.zeros(observations.get('batch_size', 1), 256, device=device)
             
         if 'audio' in observations:
             encoded['audio'] = self.audio_encoder(observations['audio'])
         else:
-            encoded['audio'] = torch.zeros(observations.get('batch_size', 1), 256)
+            encoded['audio'] = torch.zeros(observations.get('batch_size', 1), 256, device=device)
             
         if 'tactile' in observations:
             encoded['tactile'] = self.tactile_encoder(observations['tactile'])
         else:
-            encoded['tactile'] = torch.zeros(observations.get('batch_size', 1), 256)
+            encoded['tactile'] = torch.zeros(observations.get('batch_size', 1), 256, device=device)
             
         if 'proprioceptive' in observations:
             encoded['proprioceptive'] = self.proprioceptive_encoder(observations['proprioceptive'])
         else:
-            encoded['proprioceptive'] = torch.zeros(observations.get('batch_size', 1), 256)
+            encoded['proprioceptive'] = torch.zeros(observations.get('batch_size', 1), 256, device=device)
         
         return encoded
 
@@ -288,7 +297,7 @@ class TemporalEncoder(nn.Module):
             # Combine forward and backward final hidden states
             historical = torch.cat([h_n[-2], h_n[-1]], dim=-1)
         else:
-            # No history available
+            # No history available - use same device as immediate
             historical = torch.zeros_like(immediate)
         
         # Predictive based on current + historical

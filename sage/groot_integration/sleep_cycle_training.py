@@ -80,7 +80,8 @@ class ExperienceMemory:
 class DreamScenarioGenerator:
     """Generate hypothetical scenarios for dream phase."""
     
-    def __init__(self):
+    def __init__(self, device: str = 'cpu'):
+        self.device = device
         self.modification_types = [
             "physics_violation",
             "object_substitution", 
@@ -98,7 +99,7 @@ class DreamScenarioGenerator:
         """Create dream scenario from base experiences."""
         
         if not base_experiences:
-            return self._generate_random_scenario()
+            return self._generate_random_scenario(device=self.device)
         
         # Blend multiple experiences
         base = random.choice(base_experiences)
@@ -199,14 +200,14 @@ class DreamScenarioGenerator:
         
         return scenario
     
-    def _generate_random_scenario(self) -> Dict[str, torch.Tensor]:
+    def _generate_random_scenario(self, device: str = 'cpu') -> Dict[str, torch.Tensor]:
         """Generate completely random scenario."""
         return {
-            'visual': torch.randn(1, 3, 224, 224),
-            'depth': torch.randn(1, 1, 224, 224),
-            'audio': torch.randn(1, 1024),
-            'tactile': torch.randn(1, 128),
-            'proprioceptive': torch.randn(1, 64),
+            'visual': torch.randn(1, 3, 224, 224, device=device),
+            'depth': torch.randn(1, 1, 224, 224, device=device),
+            'audio': torch.randn(1, 1024, device=device),
+            'tactile': torch.randn(1, 128, device=device),
+            'proprioceptive': torch.randn(1, 64, device=device),
             'batch_size': 1
         }
 
@@ -234,7 +235,7 @@ class GR00TSleepCycleTrainer:
         
         # Memory systems
         self.experience_buffer = ExperienceMemory(capacity=100000)
-        self.dream_generator = DreamScenarioGenerator()
+        self.dream_generator = DreamScenarioGenerator(device=device)
         
         # Training components
         self.optimizer = torch.optim.AdamW(

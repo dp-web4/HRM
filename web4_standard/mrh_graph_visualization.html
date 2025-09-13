@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MRH Graph Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .visualization {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            background: #f5f5f5;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 3px;
+            border-radius: 2px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .stat-card {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MRH Graph Visualization</h1>
+        <p class="subtitle">Markov Relevancy Horizon - Fractal Graph Structure</p>
+        
+        <div class="visualization">
+            <svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+<style>
+.node { cursor: pointer; }
+.node:hover { opacity: 0.8; }
+.edge { stroke-linecap: round; opacity: 0.6; }
+.label { font-family: Arial, sans-serif; font-size: 12px; pointer-events: none; }
+</style>
+<defs>
+<marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+<polygon points="0 0, 10 3.5, 0 7" fill="#666" />
+</marker>
+</defs>
+<g id="edges">
+<line class="edge" x1="400" y1="300" x2="226.13335126796773" y2="346.5874281184538" stroke="#2196F3" stroke-width="2.8499999999999996" marker-end="url(#arrowhead)" opacity="0.95"><title>derives_from (p=0.95)</title></line>
+<line class="edge" x1="400" y1="300" x2="596.2244908579207" y2="470.5753475375319" stroke="#4CAF50" stroke-width="2.55" marker-end="url(#arrowhead)" opacity="0.85"><title>references (p=0.85)</title></line>
+<line class="edge" x1="400" y1="300" x2="142.5303021271917" y2="336.185006249617" stroke="#4CAF50" stroke-width="2.25" marker-end="url(#arrowhead)" opacity="0.75"><title>references (p=0.75)</title></line>
+<line class="edge" x1="400" y1="300" x2="252.55263202798147" y2="196.7562414568117" stroke="#9C27B0" stroke-width="2.4000000000000004" marker-end="url(#arrowhead)" opacity="0.8"><title>extends (p=0.80)</title></line>
+<line class="edge" x1="400" y1="300" x2="243.52809398046742" y2="507.6452326122961" stroke="#FF9800" stroke-width="1.7999999999999998" marker-end="url(#arrowhead)" opacity="0.6"><title>alternatives_to (p=0.60)</title></line>
+<line class="edge" x1="400" y1="300" x2="247.17583440395703" y2="510.3444185374864" stroke="#FF9800" stroke-width="1.2000000000000002" marker-end="url(#arrowhead)" opacity="0.4"><title>alternatives_to (p=0.40)</title></line>
+<line class="edge" x1="400" y1="300" x2="423.71720107300257" y2="639.1717770883401" stroke="#F44336" stroke-width="0.8999999999999999" marker-end="url(#arrowhead)" opacity="0.3"><title>contradicts (p=0.30)</title></line>
+<line class="edge" x1="400" y1="300" x2="221.75174762651736" y2="274.94884182718823" stroke="#3F51B5" stroke-width="2.7" marker-end="url(#arrowhead)" opacity="0.9"><title>specializes (p=0.90)</title></line>
+</g>
+<g id="nodes">
+<circle class="node" cx="400" cy="300" r="20.0" fill="#FF5722" stroke="#333" stroke-width="2"><title>Current LCT (p=1.00, d=0)</title></circle>
+<text class="label" x="400" y="325" text-anchor="middle" fill="#333">Current LCT</text>
+<circle class="node" cx="226.13335126796773" cy="346.5874281184538" r="14.249999999999998" fill="#4CAF50" stroke="#333" stroke-width="2"><title>foundation (p=0.95, d=1)</title></circle>
+<text class="label" x="226.13335126796773" y="371.5874281184538" text-anchor="middle" fill="#333">foundation</text>
+<circle class="node" cx="596.2244908579207" cy="470.5753475375319" r="12.75" fill="#4CAF50" stroke="#333" stroke-width="2"><title>theory_1 (p=0.85, d=2)</title></circle>
+<text class="label" x="596.2244908579207" y="495.5753475375319" text-anchor="middle" fill="#333">theory_1</text>
+<circle class="node" cx="142.5303021271917" cy="336.185006249617" r="11.25" fill="#4CAF50" stroke="#333" stroke-width="2"><title>theory_2 (p=0.75, d=2)</title></circle>
+<text class="label" x="142.5303021271917" y="361.185006249617" text-anchor="middle" fill="#333">theory_2</text>
+<circle class="node" cx="252.55263202798147" cy="196.7562414568117" r="12.000000000000002" fill="#4CAF50" stroke="#333" stroke-width="2"><title>extension (p=0.80, d=1)</title></circle>
+<text class="label" x="252.55263202798147" y="221.7562414568117" text-anchor="middle" fill="#333">extension</text>
+<circle class="node" cx="243.52809398046742" cy="507.6452326122961" r="9.0" fill="#FF9800" stroke="#333" stroke-width="2"><title>alternative_1 (p=0.60, d=2)</title></circle>
+<text class="label" x="243.52809398046742" y="532.6452326122961" text-anchor="middle" fill="#333">alternative_1</text>
+<circle class="node" cx="247.17583440395703" cy="510.3444185374864" r="6.000000000000001" fill="#FF9800" stroke="#333" stroke-width="2"><title>alternative_2 (p=0.40, d=2)</title></circle>
+<text class="label" x="247.17583440395703" y="535.3444185374864" text-anchor="middle" fill="#333">alternative_2</text>
+<circle class="node" cx="423.71720107300257" cy="639.1717770883401" r="4.5" fill="#F44336" stroke="#333" stroke-width="2"><title>contradiction (p=0.30, d=3)</title></circle>
+<text class="label" x="423.71720107300257" y="664.1717770883401" text-anchor="middle" fill="#333">contradiction</text>
+<circle class="node" cx="221.75174762651736" cy="274.94884182718823" r="13.5" fill="#4CAF50" stroke="#333" stroke-width="2"><title>specialization (p=0.90, d=1)</title></circle>
+<text class="label" x="221.75174762651736" y="299.94884182718823" text-anchor="middle" fill="#333">specialization</text>
+</g>
+</svg>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #2196F3;"></div>
+                <span>Derives From</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #4CAF50;"></div>
+                <span>References</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #9C27B0;"></div>
+                <span>Extends</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #F44336;"></div>
+                <span>Contradicts</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FF9800;"></div>
+                <span>Alternatives</span>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value">9</div>
+                <div class="stat-label">Total Nodes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">8</div>
+                <div class="stat-label">Total Edges</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">3</div>
+                <div class="stat-label">Max Distance</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0.69</div>
+                <div class="stat-label">Avg Probability</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

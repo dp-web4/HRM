@@ -4,6 +4,17 @@
 
 ### Web4 Foundation
 
+#### The Web4 Equation
+- **Formula**: Web4 = LCTs + MRH + Trust + MCP
+- **Meaning**: The complete Web4 framework requires all four components
+- **LCTs**: Provide identity and context preservation
+- **MRH**: Maintain relevance horizons across fractal scales
+- **Trust**: Enable decentralized coordination without central authority
+- **MCP**: Bridge AI models to external resources and tools
+- **Result**: Distributed intelligence with verifiable context and trust
+
+### Core Web4 Components
+
 #### LCT - Linked Context Token
 - **Definition**: The fundamental unit of the Web4 standard that encapsulates context with cryptographic proofs
 - **Components**: Entity ID, MRH, signatures, metadata
@@ -48,6 +59,27 @@
 - **Definition**: Plugin architecture for L-level specialist modules
 - **Purpose**: Dynamic selection of specialized attention heads
 - **Note**: Maps directly to L-level specialists in cascading architecture
+
+### Web4 Entity Types
+
+#### Entity Classification
+- **Agentic**: Can initiate actions autonomously (humans, AI agents)
+- **Responsive**: Returns results when queried (services, functions)
+- **Delegative**: Acts as front-end for other resources (proxies, gateways)
+
+#### MCP Server - Model Context Protocol Server
+- **Definition**: A standardized interface enabling AI models to interact with external resources
+- **Nature**: Both responsive (returns results) and delegative (front-end for tools/databases/APIs)
+- **Components**: Own LCT, MRH, trust metrics, protocol handlers
+- **Purpose**: Completes the Web4 equation by bridging AI to external resources
+- **Examples**: Database MCP, API MCP, Tool MCP, Knowledge MCP
+- **Trust Dimensions**: Response accuracy, delegation reliability, latency consistency, security
+
+#### Role Entity
+- **Definition**: A role treated as a first-class entity with its own LCT
+- **Purpose**: Dynamic, verifiable, and transferable responsibilities
+- **Examples**: Administrator, Data Processor, Content Moderator
+- **Lifecycle**: Creation → Assignment → Execution → Transfer/Termination
 
 ### Technical Components
 

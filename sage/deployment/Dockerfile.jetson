@@ -1,0 +1,62 @@
+FROM nvcr.io/nvidia/l4t-pytorch:r35.2.1-pth2.0-py3
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    python3-dev \
+    build-essential \
+    cmake \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+RUN pip3 install --upgrade pip
+RUN pip3 install \
+    torch==2.0.0 \
+    torchvision==0.15.0 \
+    torchaudio==2.0.0 \
+    tensorrt \
+    onnx \
+    psutil \
+    flask \
+    numpy \
+    pillow
+
+# Copy SAGE optimized model and code
+COPY sage_jetson_optimized.pth /app/
+COPY jetson_optimizer.py /app/
+COPY memory_manager.py /app/
+COPY monitor_dashboard.py /app/
+
+# Create launch script
+RUN echo '#!/bin/bash' > /app/launch_sage.sh && \
+    echo 'echo "🚀 Launching SAGE on Jetson Orin Nano"' >> /app/launch_sage.sh && \
+    echo 'echo "   Target: 10+ FPS, <4GB RAM, <15W"' >> /app/launch_sage.sh && \
+    echo '' >> /app/launch_sage.sh && \
+    echo '# Start monitoring dashboard in background' >> /app/launch_sage.sh && \
+    echo 'python3 monitor_dashboard.py &' >> /app/launch_sage.sh && \
+    echo 'MONITOR_PID=$!' >> /app/launch_sage.sh && \
+    echo '' >> /app/launch_sage.sh && \
+    echo 'echo "   Monitor: http://localhost:5000"' >> /app/launch_sage.sh && \
+    echo '' >> /app/launch_sage.sh && \
+    echo '# Run SAGE inference' >> /app/launch_sage.sh && \
+    echo 'python3 sage_inference.py' >> /app/launch_sage.sh && \
+    chmod +x /app/launch_sage.sh
+
+# Expose monitoring port
+EXPOSE 5000
+
+# Set environment variables for Jetson optimization
+ENV CUDA_VISIBLE_DEVICES=0
+ENV TF_FORCE_GPU_ALLOW_GROWTH=true
+ENV PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s \
+    CMD curl -f http://localhost:5000/metrics || exit 1
+
+# Launch command
+CMD ["/app/launch_sage.sh"]

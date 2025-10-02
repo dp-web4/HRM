@@ -1,0 +1,9 @@
+{
+  "timestamp": "float (epoch time)",
+  "trial_id": "string",
+  "experiment": "int",
+  "action_seq": "list of str",
+  "kv_state_snapshot": "dict",
+  "chosen_reward_signal": "int",
+  "explanation_text": "string"
+}

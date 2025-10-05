@@ -26,10 +26,29 @@ import sys
 import os
 
 # Add paths for imports
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from sage.irp.base import IRPState
-from sage.irp.plugins.audio_input_impl import AudioInputIRP
-from sage.irp.plugins.neutts_air_impl import NeuTTSAirIRP
+current_dir = os.path.dirname(__file__)
+sys.path.insert(0, current_dir)
+sys.path.insert(0, os.path.join(current_dir, 'plugins'))
+
+from base import IRPState
+
+# Import plugins directly to avoid __init__.py conflicts
+import importlib.util
+spec_audio = importlib.util.spec_from_file_location(
+    "audio_input_impl",
+    os.path.join(current_dir, "plugins/audio_input_impl.py")
+)
+audio_module = importlib.util.module_from_spec(spec_audio)
+spec_audio.loader.exec_module(audio_module)
+AudioInputIRP = audio_module.AudioInputIRP
+
+spec_tts = importlib.util.spec_from_file_location(
+    "neutts_air_impl",
+    os.path.join(current_dir, "plugins/neutts_air_impl.py")
+)
+tts_module = importlib.util.module_from_spec(spec_tts)
+spec_tts.loader.exec_module(tts_module)
+NeuTTSAirIRP = tts_module.NeuTTSAirIRP
 
 
 @dataclass

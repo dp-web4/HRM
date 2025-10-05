@@ -81,8 +81,8 @@ class NeuTTSAirIRP(IRPPlugin):
 - Sample rate: 24kHz
 - Reference voice: `samples/dave.wav`
 
-### 3. SAGE Awareness Integration (⏳ Next Step)
-**Location**: `sage/irp/awareness_loop.py` (to be created)
+### 3. SAGE Awareness Integration (✅ Implemented)
+**Location**: `sage/irp/awareness_loop.py`
 
 Orchestrates bidirectional conversation:
 
@@ -231,8 +231,8 @@ This enables:
 
 1. ✅ **AudioInputIRP**: Implemented and fixed
 2. ✅ **NeuTTSAirIRP**: Already exists from Genesis
-3. ⏳ **SAGE Integration**: Create awareness loop
-4. 🎯 **Testing**: Iterate on conversation quality
+3. ✅ **SAGE Integration**: Awareness loop created
+4. 🎯 **Testing**: Iterate on conversation quality (CURRENT)
 5. 🎯 **GPU Optimization**: Move models to GPU when NeuTTS hangs are fixed
 6. 🎯 **Mailbox Integration**: Stream audio through GPU mailboxes
 7. 🎯 **Multi-modal**: Add vision, IMU to awareness loop

@@ -118,6 +118,20 @@ class HRMOrchestrator:
             }
             plugins['memory'] = MemoryIRP(memory_config)
         
+        # NeuTTS Air plugin for text-to-speech
+        if self.config.get('enable_tts', True):
+            try:
+                from .plugins.neutts_air_impl import NeuTTSAirIRP
+                tts_config = {
+                    **self.config.get('tts_config', {}),
+                    'entity_id': 'neutts_air_irp',
+                    'device': 'cpu'  # GGUF models are CPU-optimized
+                }
+                plugins['tts'] = NeuTTSAirIRP(tts_config)
+                print("✅ NeuTTS Air TTS plugin loaded")
+            except ImportError as e:
+                print(f"⚠️ NeuTTS Air plugin not available: {e}")
+        
         return plugins
     
     def allocate_budgets(self, available_ATP: float) -> Dict[str, float]:

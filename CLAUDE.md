@@ -137,6 +137,28 @@ GPU mailbox architecture validated on **three platforms**:
 - `gr00t-integration/groot_world_sim.py` - World simulation
 - Full implementation directory with all GPU mailbox code
 
+## NeuTTS Air Integration (October 3, 2025)
+Successfully integrated NeuTTS Air text-to-speech into IRP framework:
+
+### Key Achievements
+- ✅ **Fixed model loading hang** - Modified Llama.from_pretrained parameters
+- ✅ **Created IRP plugin** - Full implementation in `sage/irp/plugins/neutts_air_impl.py`
+- ✅ **Orchestrator integration** - TTS now first-class citizen in HRM
+- ✅ **Energy convergence** - Iterative refinement from 0.9 → 0.1 energy
+- ✅ **Generated speech** - Multiple test cases with federation/SAGE content
+
+### Technical Details
+- **Model**: neuphonic/neutts-air-q4-gguf (748M params, CPU-optimized)
+- **Voice cloning**: Instant from reference audio
+- **Quality**: 24kHz audio with iterative refinement
+- **Documentation**: See `sage/irp/NEUTTS_AIR_INTEGRATION.md`
+
+### Files Added
+- `sage/irp/plugins/neutts_air_impl.py` - IRP plugin
+- `sage/irp/test_neutts_irp.py` - Integration tests
+- `sage/training/neutts-air/irp_integration_demo.py` - Working demo
+- `sage/irp/NEUTTS_AIR_INTEGRATION.md` - Full documentation
+
 ## Current Test Status (August 17, 2025 - WSL2/RTX 2060 SUPER)
 
 ### Environment Setup

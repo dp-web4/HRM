@@ -27,6 +27,9 @@ class SAGE:
         self.active_resources = {}  # What's loaded in GPU/RAM
         self.context_states = {}    # Per-component state preservation
         
+        # Metabolic state controller
+        self.metabolic = MetabolicController()  # Manages operational modes
+        
         # Core inference loop state  
         self.attention_focus = None
         self.current_goal = None
@@ -36,29 +39,53 @@ class SAGE:
     def run(self):
         """Continuous inference loop - THIS IS SAGE"""
         while True:
-            # 1. Sense current state
-            observations = self.gather_observations()
+            # 0. Check and update metabolic state
+            context = self.get_current_context()
+            new_state = self.metabolic.compute_transition(context)
+            if new_state != self.metabolic.current_state:
+                self.transition_metabolic_state(new_state)
+            
+            # 1. Sense current state (filtered by metabolic state)
+            observations = self.gather_observations(
+                breadth=self.metabolic.current_state.attention_breadth
+            )
             
             # 2. Update temporal context
             self.temporal_state.tick()
             
-            # 3. Compute what needs attention
-            attention_targets = self.compute_attention(observations)
+            # 3. Compute what needs attention (influenced by metabolic state)
+            attention_targets = self.compute_attention(
+                observations,
+                sensitivity=self.metabolic.current_state.surprise_sensitivity
+            )
             
-            # 4. Decide what resources are needed
-            required_resources = self.plan_resources(attention_targets)
+            # 4. Decide what resources are needed (limited by metabolic state)
+            required_resources = self.plan_resources(
+                attention_targets,
+                limit=self.metabolic.current_state.resource_limit
+            )
             
             # 5. Load/unload resources as needed
             self.manage_resources(required_resources)
             
-            # 6. Invoke specialized reasoning
-            results = self.invoke_reasoning(attention_targets)
+            # 6. Invoke specialized reasoning (depth controlled by state)
+            results = self.invoke_reasoning(
+                attention_targets,
+                depth=self.metabolic.current_state.inference_depth
+            )
             
-            # 7. Update memory and trust
-            self.update_state(results)
+            # 7. Update memory and trust (rate depends on state)
+            self.update_state(
+                results,
+                consolidation_rate=self.metabolic.current_state.memory_consolidation_rate
+            )
             
-            # 8. Generate outputs/actions
+            # 8. Generate outputs/actions (modified by metabolic policy)
             self.execute_actions(results)
+            
+            # 9. Update energy and fatigue
+            self.metabolic.consume_energy(self.metabolic.current_state.energy_consumption_rate)
+            self.metabolic.update_fatigue()
 ```
 
 ## Inputs and Outputs

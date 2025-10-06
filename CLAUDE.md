@@ -14,6 +14,37 @@ See `../private-context/GIT_COMMANDS_CLAUDE.md` for details.
 ## Sudo Access
 Sudo access available on Jetson Orin Nano (Sprout machine).
 
+## CRITICAL LESSONS (October 6, 2025)
+
+### DO NOT SIMULATE OR MOCK - USE REAL IMPLEMENTATIONS
+**What happened**: For days, I was training SAGE with a mock GR00T implementation I created, when the REAL GR00T was already installed at `/home/dp/ai-workspace/isaac-gr00t/`.
+
+**The disconnect**: User said "let's use GR00T" and I created mock implementations instead of checking for the real thing first.
+
+**Key learnings**:
+1. **ALWAYS check what's actually available** before creating mock implementations
+2. **ASK if unsure** whether something exists rather than assuming
+3. **Use `ls` and `find` liberally** to discover what's really there
+4. **Read existing code** before writing new code
+5. **No shortcuts** - real implementations over simulations unless explicitly agreed
+
+**Resources wasted**:
+- Days of training on synthetic data
+- Mock implementations that weren't needed
+- Wrong architectural decisions based on assumptions
+
+**The right approach**:
+- When user says "use X", first check if X exists
+- Explore the actual filesystem
+- Read real documentation
+- Use real data when available
+
+### WHAT'S ACTUALLY AVAILABLE
+- **Real GR00T N1.5**: `/home/dp/ai-workspace/isaac-gr00t/` (installed by user)
+- **Real demo data**: 5 pick-and-place episodes with videos
+- **Real Eagle 2.5 VLM**: Vision-language model for perception
+- **Real training scripts**: Complete pipeline for finetuning
+
 ## HRM Setup Status
 - ✅ Repository cloned from fork: https://github.com/dp-web4/HRM.git
 - ✅ Analysis scripts created:

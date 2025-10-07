@@ -1,0 +1,19 @@
+{
+  "name": "sage-orchestration",
+  "version": "1.0.0",
+  "description": "Multi-agent orchestration for SAGE using claude-flow",
+  "main": "sage-orchestrator.js",
+  "scripts": {
+    "start": "node sage-orchestrator.js",
+    "init": "npx claude-flow@alpha init --force",
+    "swarm": "npx claude-flow@alpha swarm",
+    "hive": "npx claude-flow@alpha hive-mind wizard",
+    "test": "node test-agents.js"
+  },
+  "dependencies": {
+    "claude-flow": "alpha"
+  },
+  "keywords": ["sage", "orchestration", "multi-agent", "ai"],
+  "author": "SAGE Team",
+  "license": "MIT"
+}

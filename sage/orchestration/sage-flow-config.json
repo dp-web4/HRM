@@ -1,0 +1,205 @@
+{
+  "name": "SAGE Orchestration",
+  "description": "Multi-agent orchestration for SAGE development and training",
+  "topology": "hierarchical",
+  "agents": {
+    "sage-orchestrator": {
+      "type": "coordinator",
+      "role": "queen",
+      "description": "Main SAGE orchestration coordinator",
+      "capabilities": [
+        "spawn-agents",
+        "coordinate-tasks",
+        "monitor-progress",
+        "manage-resources"
+      ],
+      "children": [
+        "vision-coordinator",
+        "trust-coordinator",
+        "memory-coordinator",
+        "training-coordinator"
+      ]
+    },
+    "vision-coordinator": {
+      "type": "coordinator",
+      "role": "subsystem-lead",
+      "description": "Coordinates vision processing pipeline",
+      "children": ["eagle-vision", "camera-processor", "vision-irp"]
+    },
+    "eagle-vision": {
+      "type": "processor",
+      "role": "vision-encoder",
+      "description": "Process images through Eagle 2.5 VLM",
+      "config": {
+        "model_path": "/home/dp/ai-workspace/isaac-gr00t/gr00t/model/backbone/eagle2_hg_model",
+        "output_dim": 1536,
+        "device": "cuda",
+        "batch_size": 4
+      }
+    },
+    "camera-processor": {
+      "type": "processor",
+      "role": "data-handler",
+      "description": "Handle camera input and video streams",
+      "config": {
+        "fps": 30,
+        "resolution": [224, 224],
+        "buffer_size": 100
+      }
+    },
+    "vision-irp": {
+      "type": "processor",
+      "role": "refinement",
+      "description": "Iterative refinement of vision features",
+      "config": {
+        "max_iterations": 10,
+        "energy_threshold": 0.1,
+        "refinement_rate": 0.1
+      }
+    },
+    "trust-coordinator": {
+      "type": "coordinator",
+      "role": "subsystem-lead",
+      "description": "Manages trust-attention-surprise loop",
+      "children": ["trust-engine", "surprise-detector", "attention-manager"]
+    },
+    "trust-engine": {
+      "type": "evaluator",
+      "role": "trust-scorer",
+      "description": "Evaluate and update trust scores",
+      "config": {
+        "initial_trust": 0.5,
+        "update_rate": 0.1,
+        "decay_factor": 0.95,
+        "t3_dimensions": ["talent", "training", "temperament"]
+      }
+    },
+    "surprise-detector": {
+      "type": "evaluator",
+      "role": "anomaly-detector",
+      "description": "Measure unexpected outcomes",
+      "config": {
+        "surprise_threshold": 0.3,
+        "window_size": 100,
+        "adaptation_rate": 0.05
+      }
+    },
+    "attention-manager": {
+      "type": "coordinator",
+      "role": "resource-allocator",
+      "description": "Direct computational resources based on trust",
+      "config": {
+        "max_focus_targets": 5,
+        "attention_budget": 1.0,
+        "min_attention": 0.01
+      }
+    },
+    "memory-coordinator": {
+      "type": "coordinator",
+      "role": "subsystem-lead",
+      "description": "Manages memory systems",
+      "children": ["snarc-memory", "memory-consolidator", "pattern-extractor"]
+    },
+    "snarc-memory": {
+      "type": "storage",
+      "role": "selective-memory",
+      "description": "Selective memory with salience gating",
+      "config": {
+        "buffer_size": 1000,
+        "salience_threshold": 0.4,
+        "retention_policy": "importance_weighted",
+        "dual_storage": true
+      }
+    },
+    "memory-consolidator": {
+      "type": "processor",
+      "role": "pattern-learner",
+      "description": "Sleep-cycle pattern extraction",
+      "config": {
+        "consolidation_interval": 1000,
+        "augmentation_factor": 4,
+        "compression_ratio": 0.1,
+        "dream_iterations": 50
+      }
+    },
+    "pattern-extractor": {
+      "type": "analyzer",
+      "role": "wisdom-distiller",
+      "description": "Extract persistent patterns from experience",
+      "config": {
+        "min_pattern_frequency": 3,
+        "pattern_confidence": 0.7,
+        "abstraction_levels": 3
+      }
+    },
+    "training-coordinator": {
+      "type": "coordinator",
+      "role": "subsystem-lead",
+      "description": "Manages training pipeline",
+      "children": ["groot-processor", "distillation-manager", "metabolic-controller"]
+    },
+    "groot-processor": {
+      "type": "processor",
+      "role": "data-loader",
+      "description": "Process GR00T demo episodes",
+      "config": {
+        "data_path": "/home/dp/ai-workspace/isaac-gr00t/demo_data",
+        "episode_count": 5,
+        "batch_size": 16,
+        "shuffle": true
+      }
+    },
+    "distillation-manager": {
+      "type": "trainer",
+      "role": "knowledge-transfer",
+      "description": "Knowledge distillation from GR00T to SAGE",
+      "config": {
+        "teacher_model": "groot-n1.5",
+        "student_model": "sage",
+        "temperature": 3.0,
+        "alpha": 0.7,
+        "distillation_epochs": 100
+      }
+    },
+    "metabolic-controller": {
+      "type": "controller",
+      "role": "state-manager",
+      "description": "Manage metabolic states",
+      "config": {
+        "states": ["WAKE", "FOCUS", "REST", "DREAM", "CRISIS"],
+        "initial_state": "WAKE",
+        "energy_budget": 100.0,
+        "consumption_rates": {
+          "WAKE": 10.0,
+          "FOCUS": 15.0,
+          "REST": 2.0,
+          "DREAM": 5.0,
+          "CRISIS": 20.0
+        }
+      }
+    }
+  },
+  "communication": {
+    "protocol": "message-passing",
+    "buffer_size": 1000,
+    "timeout": 30,
+    "retry_attempts": 3
+  },
+  "memory": {
+    "shared_memory_path": "/home/dp/ai-workspace/HRM/sage/.swarm/memory.db",
+    "cache_size": 1000,
+    "persistence": true
+  },
+  "monitoring": {
+    "metrics_interval": 10,
+    "log_level": "info",
+    "performance_tracking": true,
+    "token_tracking": true
+  },
+  "error_handling": {
+    "restart_policy": "exponential-backoff",
+    "max_retries": 5,
+    "checkpoint_interval": 100,
+    "graceful_degradation": true
+  }
+}

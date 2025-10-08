@@ -1,0 +1,316 @@
+{
+  "component_id": "cbp:cache-layer:v1.0",
+  "current_trust_score": 0.21500000000000008,
+  "time_period": "24h",
+  "events": [
+    {
+      "timestamp": "2025-10-08T00:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.0,
+      "cumulative_trust": 0.0,
+      "reason": "Scheduled maintenance window",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.95
+      }
+    },
+    {
+      "timestamp": "2025-10-08T01:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.0,
+      "cumulative_trust": 0.0,
+      "reason": "Scheduled maintenance window",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.95
+      }
+    },
+    {
+      "timestamp": "2025-10-08T02:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.0,
+      "cumulative_trust": 0.0,
+      "reason": "Scheduled maintenance window",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.95
+      }
+    },
+    {
+      "timestamp": "2025-10-08T03:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.0,
+      "cumulative_trust": 0.0,
+      "reason": "Scheduled maintenance window",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.95
+      }
+    },
+    {
+      "timestamp": "2025-10-08T04:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.0,
+      "cumulative_trust": 0.0,
+      "reason": "Scheduled maintenance window",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.95
+      }
+    },
+    {
+      "timestamp": "2025-10-08T05:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.0,
+      "cumulative_trust": 0.0,
+      "reason": "Scheduled maintenance window",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.95
+      }
+    },
+    {
+      "timestamp": "2025-10-08T06:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.02,
+      "cumulative_trust": 0.02,
+      "reason": "Peak efficiency during business hours",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.95
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.02,
+      "cumulative_trust": 0.04,
+      "reason": "Peak efficiency during business hours",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.95
+      }
+    },
+    {
+      "timestamp": "2025-10-08T08:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.02,
+      "cumulative_trust": 0.06,
+      "reason": "Peak efficiency during business hours",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.95
+      }
+    },
+    {
+      "timestamp": "2025-10-08T09:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.02,
+      "cumulative_trust": 0.08,
+      "reason": "Peak efficiency during business hours",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.95
+      }
+    },
+    {
+      "timestamp": "2025-10-08T10:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.02,
+      "cumulative_trust": 0.1,
+      "reason": "Peak efficiency during business hours",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.95
+      }
+    },
+    {
+      "timestamp": "2025-10-08T11:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.02,
+      "cumulative_trust": 0.12000000000000001,
+      "reason": "Peak efficiency during business hours",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.95
+      }
+    },
+    {
+      "timestamp": "2025-10-08T12:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.02,
+      "cumulative_trust": 0.14,
+      "reason": "Peak efficiency during business hours",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.95
+      }
+    },
+    {
+      "timestamp": "2025-10-08T13:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.01,
+      "cumulative_trust": 0.15000000000000002,
+      "reason": "Steady performance",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.95
+      }
+    },
+    {
+      "timestamp": "2025-10-08T14:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.01,
+      "cumulative_trust": 0.16000000000000003,
+      "reason": "Steady performance",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.95
+      }
+    },
+    {
+      "timestamp": "2025-10-08T15:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.01,
+      "cumulative_trust": 0.17000000000000004,
+      "reason": "Steady performance",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.95
+      }
+    },
+    {
+      "timestamp": "2025-10-08T16:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.01,
+      "cumulative_trust": 0.18000000000000005,
+      "reason": "Steady performance",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.95
+      }
+    },
+    {
+      "timestamp": "2025-10-08T17:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.01,
+      "cumulative_trust": 0.19000000000000006,
+      "reason": "Steady performance",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.95
+      }
+    },
+    {
+      "timestamp": "2025-10-08T18:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.01,
+      "cumulative_trust": 0.20000000000000007,
+      "reason": "Steady performance",
+      "metrics": {
+        "hit_rate": 0.9,
+        "atp_efficiency": 0.85
+      }
+    },
+    {
+      "timestamp": "2025-10-08T19:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.005,
+      "cumulative_trust": 0.20500000000000007,
+      "reason": "Low load efficiency",
+      "metrics": {
+        "hit_rate": 0.8,
+        "atp_efficiency": 0.85
+      }
+    },
+    {
+      "timestamp": "2025-10-08T20:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.005,
+      "cumulative_trust": 0.21000000000000008,
+      "reason": "Low load efficiency",
+      "metrics": {
+        "hit_rate": 0.8,
+        "atp_efficiency": 0.85
+      }
+    },
+    {
+      "timestamp": "2025-10-08T21:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": -0.005,
+      "cumulative_trust": 0.20500000000000007,
+      "reason": "Intermittent cache evictions",
+      "metrics": {
+        "hit_rate": 0.8,
+        "atp_efficiency": 0.85
+      }
+    },
+    {
+      "timestamp": "2025-10-08T22:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.005,
+      "cumulative_trust": 0.21000000000000008,
+      "reason": "Low load efficiency",
+      "metrics": {
+        "hit_rate": 0.8,
+        "atp_efficiency": 0.85
+      }
+    },
+    {
+      "timestamp": "2025-10-08T23:00:00Z",
+      "component": "cbp:cache-layer:v1.0",
+      "trust_delta": 0.005,
+      "cumulative_trust": 0.21500000000000008,
+      "reason": "Low load efficiency",
+      "metrics": {
+        "hit_rate": 0.8,
+        "atp_efficiency": 0.85
+      }
+    }
+  ],
+  "summary": {
+    "peak_trust": 0.21500000000000008,
+    "lowest_trust": 0.0,
+    "total_positive_deltas": 17,
+    "total_negative_deltas": 1,
+    "average_hit_rate": 0.8791666666666668,
+    "average_atp_efficiency": 0.9249999999999999
+  },
+  "visualizations": {
+    "trust_timeline": {
+      "type": "line_chart",
+      "x_axis": "timestamp",
+      "y_axis": "cumulative_trust",
+      "color": "green if positive else red"
+    },
+    "delta_heatmap": {
+      "type": "heatmap",
+      "cells": "hour x component",
+      "color_scale": "trust_delta (-0.05 to +0.05)"
+    },
+    "component_health": {
+      "type": "gauge",
+      "value": "current_trust_score",
+      "ranges": [
+        {
+          "min": -1.0,
+          "max": -0.1,
+          "color": "red",
+          "label": "Critical"
+        },
+        {
+          "min": -0.1,
+          "max": 0.1,
+          "color": "yellow",
+          "label": "Warning"
+        },
+        {
+          "min": 0.1,
+          "max": 1.0,
+          "color": "green",
+          "label": "Healthy"
+        }
+      ]
+    }
+  }
+}

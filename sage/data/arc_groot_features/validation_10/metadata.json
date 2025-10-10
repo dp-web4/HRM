@@ -1,0 +1,805 @@
+{
+  "num_tasks": 10,
+  "num_examples": 42,
+  "split": "training",
+  "examples": [
+    {
+      "feature_id": "007bbfb7_train_0",
+      "task_id": "007bbfb7",
+      "split": "train",
+      "example_idx": 0,
+      "input_shape": [
+        3,
+        3
+      ],
+      "output_shape": [
+        9,
+        9
+      ],
+      "feature_shape": [
+        1,
+        5164,
+        2048
+      ]
+    },
+    {
+      "feature_id": "007bbfb7_train_1",
+      "task_id": "007bbfb7",
+      "split": "train",
+      "example_idx": 1,
+      "input_shape": [
+        3,
+        3
+      ],
+      "output_shape": [
+        9,
+        9
+      ],
+      "feature_shape": [
+        1,
+        5164,
+        2048
+      ]
+    },
+    {
+      "feature_id": "007bbfb7_train_2",
+      "task_id": "007bbfb7",
+      "split": "train",
+      "example_idx": 2,
+      "input_shape": [
+        3,
+        3
+      ],
+      "output_shape": [
+        9,
+        9
+      ],
+      "feature_shape": [
+        1,
+        5164,
+        2048
+      ]
+    },
+    {
+      "feature_id": "007bbfb7_train_3",
+      "task_id": "007bbfb7",
+      "split": "train",
+      "example_idx": 3,
+      "input_shape": [
+        3,
+        3
+      ],
+      "output_shape": [
+        9,
+        9
+      ],
+      "feature_shape": [
+        1,
+        5164,
+        2048
+      ]
+    },
+    {
+      "feature_id": "007bbfb7_train_4",
+      "task_id": "007bbfb7",
+      "split": "train",
+      "example_idx": 4,
+      "input_shape": [
+        3,
+        3
+      ],
+      "output_shape": [
+        9,
+        9
+      ],
+      "feature_shape": [
+        1,
+        5164,
+        2048
+      ]
+    },
+    {
+      "feature_id": "007bbfb7_test_0",
+      "task_id": "007bbfb7",
+      "split": "test",
+      "example_idx": 0,
+      "input_shape": [
+        3,
+        3
+      ],
+      "output_shape": [
+        9,
+        9
+      ],
+      "feature_shape": [
+        1,
+        5164,
+        2048
+      ]
+    },
+    {
+      "feature_id": "00d62c1b_train_0",
+      "task_id": "00d62c1b",
+      "split": "train",
+      "example_idx": 0,
+      "input_shape": [
+        6,
+        6
+      ],
+      "output_shape": [
+        6,
+        6
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "00d62c1b_train_1",
+      "task_id": "00d62c1b",
+      "split": "train",
+      "example_idx": 1,
+      "input_shape": [
+        10,
+        10
+      ],
+      "output_shape": [
+        10,
+        10
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "00d62c1b_train_2",
+      "task_id": "00d62c1b",
+      "split": "train",
+      "example_idx": 2,
+      "input_shape": [
+        10,
+        10
+      ],
+      "output_shape": [
+        10,
+        10
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "00d62c1b_train_3",
+      "task_id": "00d62c1b",
+      "split": "train",
+      "example_idx": 3,
+      "input_shape": [
+        10,
+        10
+      ],
+      "output_shape": [
+        10,
+        10
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "00d62c1b_train_4",
+      "task_id": "00d62c1b",
+      "split": "train",
+      "example_idx": 4,
+      "input_shape": [
+        20,
+        20
+      ],
+      "output_shape": [
+        20,
+        20
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "00d62c1b_test_0",
+      "task_id": "00d62c1b",
+      "split": "test",
+      "example_idx": 0,
+      "input_shape": [
+        20,
+        20
+      ],
+      "output_shape": [
+        20,
+        20
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "017c7c7b_train_0",
+      "task_id": "017c7c7b",
+      "split": "train",
+      "example_idx": 0,
+      "input_shape": [
+        6,
+        3
+      ],
+      "output_shape": [
+        9,
+        3
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "017c7c7b_train_1",
+      "task_id": "017c7c7b",
+      "split": "train",
+      "example_idx": 1,
+      "input_shape": [
+        6,
+        3
+      ],
+      "output_shape": [
+        9,
+        3
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "017c7c7b_train_2",
+      "task_id": "017c7c7b",
+      "split": "train",
+      "example_idx": 2,
+      "input_shape": [
+        6,
+        3
+      ],
+      "output_shape": [
+        9,
+        3
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "017c7c7b_test_0",
+      "task_id": "017c7c7b",
+      "split": "test",
+      "example_idx": 0,
+      "input_shape": [
+        6,
+        3
+      ],
+      "output_shape": [
+        9,
+        3
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "025d127b_train_0",
+      "task_id": "025d127b",
+      "split": "train",
+      "example_idx": 0,
+      "input_shape": [
+        14,
+        9
+      ],
+      "output_shape": [
+        14,
+        9
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "025d127b_train_1",
+      "task_id": "025d127b",
+      "split": "train",
+      "example_idx": 1,
+      "input_shape": [
+        8,
+        9
+      ],
+      "output_shape": [
+        8,
+        9
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "025d127b_test_0",
+      "task_id": "025d127b",
+      "split": "test",
+      "example_idx": 0,
+      "input_shape": [
+        10,
+        10
+      ],
+      "output_shape": [
+        10,
+        10
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "045e512c_train_0",
+      "task_id": "045e512c",
+      "split": "train",
+      "example_idx": 0,
+      "input_shape": [
+        21,
+        21
+      ],
+      "output_shape": [
+        21,
+        21
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "045e512c_train_1",
+      "task_id": "045e512c",
+      "split": "train",
+      "example_idx": 1,
+      "input_shape": [
+        21,
+        21
+      ],
+      "output_shape": [
+        21,
+        21
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "045e512c_train_2",
+      "task_id": "045e512c",
+      "split": "train",
+      "example_idx": 2,
+      "input_shape": [
+        21,
+        21
+      ],
+      "output_shape": [
+        21,
+        21
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "045e512c_test_0",
+      "task_id": "045e512c",
+      "split": "test",
+      "example_idx": 0,
+      "input_shape": [
+        21,
+        21
+      ],
+      "output_shape": [
+        21,
+        21
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "0520fde7_train_0",
+      "task_id": "0520fde7",
+      "split": "train",
+      "example_idx": 0,
+      "input_shape": [
+        3,
+        7
+      ],
+      "output_shape": [
+        3,
+        3
+      ],
+      "feature_shape": [
+        1,
+        5165,
+        2048
+      ]
+    },
+    {
+      "feature_id": "0520fde7_train_1",
+      "task_id": "0520fde7",
+      "split": "train",
+      "example_idx": 1,
+      "input_shape": [
+        3,
+        7
+      ],
+      "output_shape": [
+        3,
+        3
+      ],
+      "feature_shape": [
+        1,
+        5165,
+        2048
+      ]
+    },
+    {
+      "feature_id": "0520fde7_train_2",
+      "task_id": "0520fde7",
+      "split": "train",
+      "example_idx": 2,
+      "input_shape": [
+        3,
+        7
+      ],
+      "output_shape": [
+        3,
+        3
+      ],
+      "feature_shape": [
+        1,
+        5165,
+        2048
+      ]
+    },
+    {
+      "feature_id": "0520fde7_test_0",
+      "task_id": "0520fde7",
+      "split": "test",
+      "example_idx": 0,
+      "input_shape": [
+        3,
+        7
+      ],
+      "output_shape": [
+        3,
+        3
+      ],
+      "feature_shape": [
+        1,
+        5165,
+        2048
+      ]
+    },
+    {
+      "feature_id": "05269061_train_0",
+      "task_id": "05269061",
+      "split": "train",
+      "example_idx": 0,
+      "input_shape": [
+        7,
+        7
+      ],
+      "output_shape": [
+        7,
+        7
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "05269061_train_1",
+      "task_id": "05269061",
+      "split": "train",
+      "example_idx": 1,
+      "input_shape": [
+        7,
+        7
+      ],
+      "output_shape": [
+        7,
+        7
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "05269061_train_2",
+      "task_id": "05269061",
+      "split": "train",
+      "example_idx": 2,
+      "input_shape": [
+        7,
+        7
+      ],
+      "output_shape": [
+        7,
+        7
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "05269061_test_0",
+      "task_id": "05269061",
+      "split": "test",
+      "example_idx": 0,
+      "input_shape": [
+        7,
+        7
+      ],
+      "output_shape": [
+        7,
+        7
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "05f2a901_train_0",
+      "task_id": "05f2a901",
+      "split": "train",
+      "example_idx": 0,
+      "input_shape": [
+        14,
+        9
+      ],
+      "output_shape": [
+        14,
+        9
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "05f2a901_train_1",
+      "task_id": "05f2a901",
+      "split": "train",
+      "example_idx": 1,
+      "input_shape": [
+        9,
+        10
+      ],
+      "output_shape": [
+        9,
+        10
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "05f2a901_train_2",
+      "task_id": "05f2a901",
+      "split": "train",
+      "example_idx": 2,
+      "input_shape": [
+        11,
+        10
+      ],
+      "output_shape": [
+        11,
+        10
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "05f2a901_test_0",
+      "task_id": "05f2a901",
+      "split": "test",
+      "example_idx": 0,
+      "input_shape": [
+        11,
+        10
+      ],
+      "output_shape": [
+        11,
+        10
+      ],
+      "feature_shape": [
+        1,
+        5166,
+        2048
+      ]
+    },
+    {
+      "feature_id": "06df4c85_train_0",
+      "task_id": "06df4c85",
+      "split": "train",
+      "example_idx": 0,
+      "input_shape": [
+        20,
+        20
+      ],
+      "output_shape": [
+        20,
+        20
+      ],
+      "feature_shape": [
+        1,
+        5165,
+        2048
+      ]
+    },
+    {
+      "feature_id": "06df4c85_train_1",
+      "task_id": "06df4c85",
+      "split": "train",
+      "example_idx": 1,
+      "input_shape": [
+        23,
+        23
+      ],
+      "output_shape": [
+        23,
+        23
+      ],
+      "feature_shape": [
+        1,
+        5165,
+        2048
+      ]
+    },
+    {
+      "feature_id": "06df4c85_train_2",
+      "task_id": "06df4c85",
+      "split": "train",
+      "example_idx": 2,
+      "input_shape": [
+        23,
+        23
+      ],
+      "output_shape": [
+        23,
+        23
+      ],
+      "feature_shape": [
+        1,
+        5165,
+        2048
+      ]
+    },
+    {
+      "feature_id": "06df4c85_test_0",
+      "task_id": "06df4c85",
+      "split": "test",
+      "example_idx": 0,
+      "input_shape": [
+        26,
+        26
+      ],
+      "output_shape": [
+        26,
+        26
+      ],
+      "feature_shape": [
+        1,
+        5165,
+        2048
+      ]
+    },
+    {
+      "feature_id": "08ed6ac7_train_0",
+      "task_id": "08ed6ac7",
+      "split": "train",
+      "example_idx": 0,
+      "input_shape": [
+        9,
+        9
+      ],
+      "output_shape": [
+        9,
+        9
+      ],
+      "feature_shape": [
+        1,
+        5164,
+        2048
+      ]
+    },
+    {
+      "feature_id": "08ed6ac7_train_1",
+      "task_id": "08ed6ac7",
+      "split": "train",
+      "example_idx": 1,
+      "input_shape": [
+        9,
+        9
+      ],
+      "output_shape": [
+        9,
+        9
+      ],
+      "feature_shape": [
+        1,
+        5164,
+        2048
+      ]
+    },
+    {
+      "feature_id": "08ed6ac7_test_0",
+      "task_id": "08ed6ac7",
+      "split": "test",
+      "example_idx": 0,
+      "input_shape": [
+        9,
+        9
+      ],
+      "output_shape": [
+        9,
+        9
+      ],
+      "feature_shape": [
+        1,
+        5164,
+        2048
+      ]
+    }
+  ]
+}

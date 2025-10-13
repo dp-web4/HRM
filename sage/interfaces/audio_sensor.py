@@ -130,8 +130,8 @@ class AudioInputSensor(BaseSensor):
                 confidence=result['confidence'],
                 metadata={
                     'text': result['text'],
-                    'chunks': result['chunks'],
-                    'duration': result['duration'],
+                    'duration': result.get('duration', 0.0),
+                    'sample_rate': result.get('sample_rate', self.sample_rate),
                     'halt_reason': self.audio_irp.get_halt_reason(history)
                 },
                 device=str(self.device)

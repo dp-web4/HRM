@@ -94,6 +94,7 @@ class MetabolicController:
         self.current_state = MetabolicState.WAKE
         self.previous_state = None
         self.state_entry_time = time.time()
+        self.cycles_in_state = 0  # Hysteresis: cycles spent in current state
 
         self.atp_current = initial_atp
         self.atp_max = max_atp
@@ -104,6 +105,9 @@ class MetabolicController:
             self.circadian_clock = create_day_night_clock(period=circadian_period)
         else:
             self.circadian_clock = None
+
+        # Hysteresis: minimum cycles before allowing transition
+        self.min_cycles_in_state = 5
 
         # State configurations
         self.state_configs = {
@@ -228,9 +232,17 @@ class MetabolicController:
         else:
             wake_bias = focus_bias = dream_bias = 1.0
 
-        # Crisis overrides everything
+        # Hysteresis: increment cycles in state
+        self.cycles_in_state += 1
+
+        # Crisis overrides everything (including hysteresis)
         if crisis_detected or self.atp_current < 10.0:
             return MetabolicState.CRISIS
+
+        # Hysteresis: prevent rapid state changes
+        # Must spend minimum cycles in state before allowing transition (except crisis)
+        if self.cycles_in_state < self.min_cycles_in_state:
+            return self.current_state
 
         # Current state config
         config = self.get_current_config()
@@ -317,7 +329,8 @@ class MetabolicController:
             'from': old_state,
             'to': new_state,
             'timestamp': time.time(),
-            'atp_at_transition': self.atp_current
+            'atp_at_transition': self.atp_current,
+            'cycles_in_old_state': self.cycles_in_state
         })
 
         # Execute transition callbacks
@@ -329,6 +342,7 @@ class MetabolicController:
         self.previous_state = old_state
         self.current_state = new_state
         self.state_entry_time = time.time()
+        self.cycles_in_state = 0  # Reset hysteresis counter
 
     def register_transition_callback(
         self,

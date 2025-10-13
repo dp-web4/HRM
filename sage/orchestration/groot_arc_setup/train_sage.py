@@ -328,9 +328,14 @@ def train(
 
 
 def main():
+    # Set PyTorch memory allocator to reduce fragmentation
+    import os
+    os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
+
     print("="*80)
     print("SAGE Student Training - Knowledge Distillation from GR00T")
     print("="*80)
+    print("Memory config: PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True")
 
     # Paths
     data_dir = Path("/home/dp/ai-workspace/HRM/sage/data/arc_groot_features/training_full")

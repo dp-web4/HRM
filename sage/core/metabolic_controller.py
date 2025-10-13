@@ -79,7 +79,8 @@ class MetabolicController:
         max_atp: float = 100.0,
         device: Optional[str] = None,
         circadian_period: int = 100,
-        enable_circadian: bool = True
+        enable_circadian: bool = True,
+        simulation_mode: bool = False
     ):
         """
         Initialize metabolic controller
@@ -90,14 +91,20 @@ class MetabolicController:
             device: Compute device
             circadian_period: Cycles per day (default 100)
             enable_circadian: Enable circadian rhythm biasing
+            simulation_mode: Use cycle counts instead of wall time (for testing)
         """
         self.current_state = MetabolicState.WAKE
         self.previous_state = None
         self.state_entry_time = time.time()
+        self.state_entry_cycle = 0  # For simulation mode
         self.cycles_in_state = 0  # Hysteresis: cycles spent in current state
+        self.total_cycles = 0  # Total cycle counter
 
         self.atp_current = initial_atp
         self.atp_max = max_atp
+
+        # Simulation mode: use cycle counts instead of wall time
+        self.simulation_mode = simulation_mode
 
         # Circadian rhythm integration
         self.enable_circadian = enable_circadian
@@ -137,7 +144,7 @@ class MetabolicController:
                 name="rest",
                 atp_consumption_rate=0.1,
                 atp_recovery_rate=1.0,  # Fast recovery
-                max_active_plugins=0,
+                max_active_plugins=1,   # Allow minimal attention (not zero)
                 sensor_poll_rate=1.0,   # Minimal monitoring
                 learning_enabled=False,
                 consolidation_enabled=False,
@@ -190,6 +197,9 @@ class MetabolicController:
         Returns:
             New metabolic state (may be same as current)
         """
+        # Increment cycle counter
+        self.total_cycles += 1
+
         # Extract cycle data
         atp_consumed = cycle_data.get('atp_consumed', 0.0)
         attention_load = cycle_data.get('attention_load', 0)
@@ -214,6 +224,13 @@ class MetabolicController:
             self._transition_to(new_state)
 
         return self.current_state
+
+    def _get_time_in_state(self) -> float:
+        """Get time spent in current state (wall time or cycles)"""
+        if self.simulation_mode:
+            return float(self.total_cycles - self.state_entry_cycle)
+        else:
+            return time.time() - self.state_entry_time
 
     def _determine_next_state(
         self,
@@ -246,7 +263,7 @@ class MetabolicController:
 
         # Current state config
         config = self.get_current_config()
-        time_in_state = time.time() - self.state_entry_time
+        time_in_state = self._get_time_in_state()
 
         # State-specific transition logic with circadian modulation
         if self.current_state == MetabolicState.WAKE:
@@ -264,7 +281,8 @@ class MetabolicController:
 
             # WAKE → DREAM: Moderate ATP, been awake long enough
             # Dream heavily biased toward night
-            dream_time_threshold = max(5, 300 / dream_bias)  # Shorter wait at night
+            # In simulation mode, use cycle counts (e.g., 30 cycles)
+            dream_time_threshold = max(5, 30 / dream_bias) if self.simulation_mode else max(5, 300 / dream_bias)
             if 40.0 < self.atp_current < 80.0 and time_in_state > dream_time_threshold:
                 return MetabolicState.DREAM
 
@@ -290,8 +308,9 @@ class MetabolicController:
 
             # REST → DREAM: ATP partially recovered, time to consolidate
             # Dream strongly preferred at night
+            # In simulation mode, use cycle counts (e.g., 6 cycles)
             dream_atp_threshold = 40.0 / dream_bias
-            dream_time_threshold = max(5, 60 / dream_bias)
+            dream_time_threshold = max(5, 6 / dream_bias) if self.simulation_mode else max(5, 60 / dream_bias)
             if self.atp_current > dream_atp_threshold and time_in_state > dream_time_threshold:
                 return MetabolicState.DREAM
 
@@ -300,8 +319,9 @@ class MetabolicController:
         elif self.current_state == MetabolicState.DREAM:
             # DREAM → WAKE: ATP recovered, consolidation complete
             # Harder to leave dream at night
+            # In simulation mode, use cycle counts (e.g., 18 cycles max)
             wake_threshold = 70.0 * wake_bias
-            max_dream_time = 180 / dream_bias  # Longer dreams at night
+            max_dream_time = (18 / dream_bias) if self.simulation_mode else (180 / dream_bias)
             if self.atp_current > wake_threshold or time_in_state > max_dream_time:
                 return MetabolicState.WAKE
 
@@ -342,6 +362,7 @@ class MetabolicController:
         self.previous_state = old_state
         self.current_state = new_state
         self.state_entry_time = time.time()
+        self.state_entry_cycle = self.total_cycles  # Record cycle for simulation mode
         self.cycles_in_state = 0  # Reset hysteresis counter
 
     def register_transition_callback(

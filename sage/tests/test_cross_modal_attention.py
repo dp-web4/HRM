@@ -76,7 +76,8 @@ sage = SAGEUnified(config={
     'initial_atp': 100.0,
     'max_atp': 100.0,
     'circadian_period': 100,
-    'enable_circadian': True
+    'enable_circadian': True,
+    'simulation_mode': True  # Use cycle counts for state transitions
 })
 
 # Register CAMERA sensor

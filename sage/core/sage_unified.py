@@ -82,7 +82,8 @@ class SAGEUnified:
             initial_atp=self.config.get('initial_atp', 100.0),
             max_atp=self.config.get('max_atp', 100.0),
             circadian_period=self.config.get('circadian_period', 100),
-            enable_circadian=self.config.get('enable_circadian', True)
+            enable_circadian=self.config.get('enable_circadian', True),
+            simulation_mode=self.config.get('simulation_mode', False)
         )
 
         # IRP plugins (loaded dynamically)

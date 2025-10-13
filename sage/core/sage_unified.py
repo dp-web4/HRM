@@ -80,7 +80,9 @@ class SAGEUnified:
 
         self.metabolic_controller = MetabolicController(
             initial_atp=self.config.get('initial_atp', 100.0),
-            max_atp=self.config.get('max_atp', 100.0)
+            max_atp=self.config.get('max_atp', 100.0),
+            circadian_period=self.config.get('circadian_period', 100),
+            enable_circadian=self.config.get('enable_circadian', True)
         )
 
         # IRP plugins (loaded dynamically)
@@ -88,7 +90,8 @@ class SAGEUnified:
 
         # System state
         self.cycle_count = 0
-        self.trust_scores = {}
+        self.trust_scores = {}  # Base trust scores
+        self.sensor_types = {}   # Sensor type mapping for circadian modulation
         self.running = False
 
         # Statistics
@@ -114,6 +117,7 @@ class SAGEUnified:
 
         self.hierarchical_snarc.register_sensor(sensor.sensor_id, snarc)
         self.trust_scores[sensor.sensor_id] = 0.5
+        self.sensor_types[sensor.sensor_id] = sensor.sensor_type  # Store for circadian modulation
 
         print(f"  ✓ Registered sensor: {sensor.sensor_id} ({sensor.sensor_type})")
 
@@ -195,12 +199,23 @@ class SAGEUnified:
         }
 
     def _allocate_atp(self, salience_scores, metabolic_config):
-        """Allocate ATP: salience × trust"""
+        """Allocate ATP: salience × trust (context-dependent)"""
         total_atp = self.metabolic_controller.atp_current
         max_plugins = metabolic_config.max_active_plugins
 
+        # Get circadian trust modifiers
+        circadian_clock = self.metabolic_controller.circadian_clock
+        trust_modifiers = {}
+        if circadian_clock:
+            for sid in salience_scores.keys():
+                sensor_type = self.sensor_types.get(sid, 'unknown')
+                trust_modifiers[sid] = circadian_clock.get_trust_modifier(sensor_type)
+        else:
+            trust_modifiers = {sid: 1.0 for sid in salience_scores.keys()}
+
+        # Calculate priorities with context-dependent trust
         priorities = {
-            sid: scores.combined * self.trust_scores.get(sid, 0.5)
+            sid: scores.combined * self.trust_scores.get(sid, 0.5) * trust_modifiers[sid]
             for sid, scores in salience_scores.items()
         }
 
@@ -216,7 +231,8 @@ class SAGEUnified:
                 'priority': priority,
                 'atp_allocated': atp_alloc,
                 'atp_used': 0.0,
-                'active': active
+                'active': active,
+                'trust_modifier': trust_modifiers.get(sensor_id, 1.0)  # Track modifier
             }
 
         return allocations

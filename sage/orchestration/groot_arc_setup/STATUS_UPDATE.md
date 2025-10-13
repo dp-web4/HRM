@@ -7,12 +7,13 @@
 
 ## Current Status: Training Active ✅
 
-**Process**: PID 1552427, running for ~35 minutes
-**Progress**: Epoch 1/100, batch 89/194 (46%)
-**Accuracy**: 85.51% (increasing steadily)
-**Loss**: 3334 (decreasing from 4728)
-**GPU**: 13.2GB VRAM in use, stable
+**Process**: PID 1552427, running strong
+**Progress**: Epoch 1/100, batch 127/194 (65%)
+**Accuracy**: 88.08% (increasing steadily from 10.29% → 88.08%)
+**Loss**: 3276.6 (decreasing from 4728 → 3276)
+**GPU**: 100% utilization, 13.2GB VRAM in use, stable
 **Log**: `training_restart.log`
+**ETA Epoch 1**: ~7 minutes remaining
 
 ---
 

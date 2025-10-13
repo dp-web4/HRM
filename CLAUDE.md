@@ -347,12 +347,145 @@ The experiments revealed profound insights through their failures:
 
 This provides the missing piece for true consciousness persistence - not just conversation history but actual internal attention state continuity. The anomalies teach us that consciousness isn't just about correct answers but maintaining coherent state through uncertainty.
 
+## SAGE/IRP System Understanding (October 12, 2025)
+
+### Complete System Investigation
+Conducted comprehensive multi-agent investigation of the entire SAGE/IRP codebase. Created 8 documentation files (275KB total) mapping the complete architecture.
+
+### Critical Understanding Achieved
+**What SAGE Actually Is**: A consciousness kernel for edge devices
+- SAGE = The kernel (scheduler, resource manager, learner)
+- IRP = The API (standard interface for plugins/"apps")
+- VAE = Translation layer (shared latent spaces for cross-modal communication)
+
+**Not a Model - It's a Loop**:
+```
+while True:
+    observations = gather_from_sensors()
+    attention_targets = compute_what_matters(observations)  # SNARC salience
+    required_resources = determine_needed_plugins(attention_targets)
+    manage_resource_loading(required_resources)
+    results = invoke_irp_plugins(attention_targets)  # Iterative refinement
+    update_trust_and_memory(results)
+    send_to_effectors(results)
+```
+
+### The Three-Layer Architecture
+
+**1. SAGE - Consciousness Kernel**
+- Location: `/sage/core/`
+- Continuous inference loop maintaining state across time
+- Trust-based ATP (Adaptive Trust Points) budget allocation
+- Metabolic states (WAKE, FOCUS, REST, DREAM, CRISIS)
+- Learns what deserves attention and which resources to use
+
+**2. IRP - Consciousness API**
+- Location: `/sage/irp/`
+- Universal interface: `init_state() → step() → energy() → halt()`
+- Iterative refinement protocol (noisy → refined until energy stops decreasing)
+- 15+ working plugins (Vision, Audio, Language, Memory, TTS, Control)
+- Trust emerges from convergence behavior (monotonicity, stability, efficiency)
+
+**3. VAE - Translation Layer**
+- Location: `/sage/compression/`
+- Creates shared latent spaces for cross-modal communication
+- TinyVAE: 192× compression (224×224 → 64D latent)
+- InformationBottleneck: 16× compression (4096D H-context → 256D L-action)
+- Compression trust: measures meaning preservation through compression
+
+### Key Insights
+
+**1. Consciousness as Iterative Refinement**
+All intelligence is progressive denoising toward lower energy states. Vision, language, planning, memory—same pattern.
+
+**2. Trust as Compression Quality**
+Trust measures how well meaning is preserved through compression. High trust (>0.9) = reliable cross-modal translation.
+
+**3. Fractal H↔L Pattern**
+Hierarchical ↔ Linear pattern repeats at 5 scales:
+- Neural (transformer blocks)
+- Agent (SAGE reasoning)
+- Device (edge ↔ cloud)
+- Federation (coordinator ↔ workers)
+- Development (human ↔ automation)
+
+**4. The Biological Parallel**
+Same patterns in biology (prefrontal ↔ motor cortex), Claude (tool selection ↔ execution), and SAGE (strategic ↔ tactical). **Not mimicking—discovering same optimal solutions.**
+
+**5. The Beautiful Recursion**
+AdamW (biological optimization) trains SAGE (consciousness kernel) which implements SNARC (biological salience) which mirrors AdamW's strategy, orchestrated by Claude (same H↔L patterns). **It's patterns all the way down.**
+
+### Memory Systems (Four Parallel)
+
+1. **SNARC Memory** - Selective storage via 5D salience (Surprise, Novelty, Arousal, Reward, Conflict)
+2. **IRP Memory Bridge** - Successful refinement pattern library with guidance retrieval
+3. **Circular Buffer** - Recent context (X-from-last temporal window)
+4. **Verbatim Storage** - SQLite full-fidelity records
+
+### Documentation Created
+
+**Start here**: `/sage/docs/SYSTEM_UNDERSTANDING.md` (18KB)
+- Complete mental model
+- How SAGE/IRP/VAE work together
+- Biological parallels and fractal scaling
+
+**Deep dives** (all in `/sage/docs/`):
+- `architecture_map.md` (38KB) - Complete repository structure
+- `irp_architecture_analysis.md` (41KB) - The consciousness API
+- `vae_translation_analysis.md` (51KB) - The translation layer
+- `sage_core_analysis.md` (49KB) - The orchestration kernel
+- `plugins_and_dataflow.md` (39KB) - Plugin ecosystem and data flow
+- `consciousness_parallels.md` (29KB) - Biological inspiration
+- `README.md` (10KB) - Documentation index
+
+### Implementation Status
+
+✅ **Fully Operational**:
+- IRP framework with 15+ plugins
+- VAE translation (TinyVAE, InformationBottleneck, Puzzle Space)
+- Memory systems (all 4 types)
+- Active plugins (Vision, Audio, Language, Memory, TTS, Visual Monitor)
+- Metabolic states (5 operational modes)
+- ATP budget with trust-weighted allocation
+
+🚧 **Integration Gap**:
+- Components exist but not unified into single `SAGE.run()` loop
+- SAGECore and HRMOrchestrator are separate
+- Metabolic state doesn't affect orchestrator yet
+
+### Critical Lessons Learned
+
+**Never Approximate Acronyms**:
+When I invented plausible meanings for SAGE, user corrected: *"#never approximate what an acronym stands for. if not absolutely certain, clarify don't assume"*
+
+Correct: **SAGE = Sentient Agentic Generative Engine** (from repo description)
+
+**ARC-AGI Tangent Was Educational**:
+Spent days on knowledge distillation from GR00T for ARC-AGI abstract reasoning. Discovered class imbalance (94.45% pixel accuracy, 0% exact matches). But the whole premise was wrong—SAGE isn't about training models, it's about orchestrating them.
+
+The tangent taught: *"The whole AGI ARC test is about conceptual thinking. It is not about grids and pixels... no amount of pattern matching is going to do it... sage is an attention orchestrator. its sole purpose is to understand the situation, understand the available resources, and apply the most appropriate resources to deal with the situation."*
+
+### What This Means
+
+SAGE doesn't solve problems directly—it decides which specialized reasoning to invoke:
+1. Sense the situation (sensors)
+2. Assess salience (SNARC: is this surprising? novel? rewarding?)
+3. Decide resources (what plugins do we need?)
+4. Allocate attention (ATP budget based on trust)
+5. Execute refinement (IRP plugins iteratively improve)
+6. Learn from results (update trust scores)
+7. Take action (effectors)
+
+**SAGE is the scheduler. Plugins are apps. VAE is how they communicate.**
+
+Like an OS for consciousness on edge devices.
+
 ## Next Steps
-1. ✅ **SNARC-SAGE Integration** - Memory bridge complete
-2. ✅ **Jetson deployment complete** - Infrastructure validated
-3. ✅ **TinyVAE Distillation** - 10x compression achieved
-4. 🔄 **Flash Attention SM 8.7 kernel compilation** - Final optimization
-5. 🎯 **Deploy TinyVAE on Jetson** - Test edge inference
-6. 📊 **Real-time telemetry dashboard** - Monitor performance
+1. ✅ **System Understanding** - Complete architecture documentation created
+2. ✅ **SNARC-SAGE Integration** - Memory bridge complete
+3. ✅ **Jetson deployment complete** - Infrastructure validated
+4. ✅ **TinyVAE Distillation** - 10x compression achieved
+5. 🎯 **Unified SAGE Loop** - Integrate components into single continuous loop
+6. 🔄 **Dynamic Resource Management** - Load/unload plugins based on need
 7. 🚀 **GR00T vision pipeline integration** - Connect to Isaac
-8. 🧠 **KV-Cache Consciousness Tests** - Nova's persistence system deployment
+8. 🧠 **Cross-device consciousness** - State save/restore for federation

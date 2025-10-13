@@ -1,0 +1,76 @@
+# Example Sensor Configuration
+# This file demonstrates how to configure sensors for SAGE
+
+sensors:
+  # Camera sensor
+  - sensor_id: camera_0
+    sensor_type: camera
+    enabled: true
+    device: cuda
+    rate_limit_hz: 30.0
+    resolution: [480, 640, 3]  # H, W, C
+    noise_level: 0.05
+    simulate_motion: true
+
+  # Stereo camera pair
+  - sensor_id: camera_left
+    sensor_type: camera
+    enabled: true
+    device: cuda
+    rate_limit_hz: 30.0
+    resolution: [480, 640, 3]
+    noise_level: 0.05
+    simulate_motion: true
+
+  - sensor_id: camera_right
+    sensor_type: camera
+    enabled: true
+    device: cuda
+    rate_limit_hz: 30.0
+    resolution: [480, 640, 3]
+    noise_level: 0.05
+    simulate_motion: true
+
+  # Microphone sensor
+  - sensor_id: microphone_0
+    sensor_type: microphone
+    enabled: true
+    device: cpu
+    rate_limit_hz: 100.0
+    sample_rate: 16000
+    duration: 0.1  # 100ms per sample
+    num_channels: 1
+    generate_tone: false
+
+  # IMU sensor
+  - sensor_id: imu_0
+    sensor_type: imu
+    enabled: true
+    device: cpu
+    rate_limit_hz: 100.0
+    noise_level: 0.01
+    simulate_motion: true
+
+  # Additional sensors can be added here
+  # Examples:
+
+  # GPS sensor (would need real implementation)
+  # - sensor_id: gps_0
+  #   sensor_type: gps
+  #   enabled: false
+  #   device: cpu
+  #   rate_limit_hz: 1.0
+
+  # Lidar sensor (would need real implementation)
+  # - sensor_id: lidar_0
+  #   sensor_type: lidar
+  #   enabled: false
+  #   device: cuda
+  #   rate_limit_hz: 10.0
+  #   num_points: 1024
+
+# Global sensor hub settings
+hub:
+  default_device: cuda
+  enable_async: true
+  max_poll_time_ms: 100

@@ -9,9 +9,19 @@ This documentation was created through parallel investigation by multiple specia
 
 ## 📚 Documentation Index
 
-### Start Here
+### Start Here (Two Entry Points)
 
-**[SYSTEM_UNDERSTANDING.md](SYSTEM_UNDERSTANDING.md)** - **READ THIS FIRST**
+#### For Understanding the Vision
+**[SAGE_WORKING_VISION.md](SAGE_WORKING_VISION.md)** - **The Specification**
+- What SAGE should look like when running
+- Complete walk-through of a single cycle
+- 10-step consciousness loop
+- Vision we're building toward
+- **Size**: ~15KB
+- **Time to read**: 15 minutes
+
+#### For Understanding Current State
+**[SYSTEM_UNDERSTANDING.md](SYSTEM_UNDERSTANDING.md)** - **The Analysis**
 - Complete synthesis of all findings
 - Mental model of the entire system
 - How SAGE, IRP, and VAE work together
@@ -75,16 +85,63 @@ This documentation was created through parallel investigation by multiple specia
    - **Size**: TBD
    - **Focus**: Why this mirrors biological consciousness
 
+### Integration Documentation (October 12, 2025)
+
+7. **[COMPONENT_SUMMARY.md](COMPONENT_SUMMARY.md)** - **Quick Reference**
+   - What exists vs what's missing
+   - 5-phase integration plan
+   - Key findings and code snippets
+   - File locations
+   - **Size**: ~25KB
+   - **Time to read**: 10 minutes
+   - **Use when**: You need a quick status overview
+
+8. **[COMPONENT_READINESS_MAP.md](COMPONENT_READINESS_MAP.md)** - **Detailed Inventory**
+   - Every component analyzed in depth
+   - Current interfaces with code examples
+   - Integration requirements per component
+   - Critical gaps identified
+   - **Size**: ~70KB
+   - **Time to read**: 45 minutes
+   - **Use when**: You need component-level details
+
+9. **[INTEGRATION_ARCHITECTURE.md](INTEGRATION_ARCHITECTURE.md)** - **System Design**
+   - Complete architectural diagrams (ASCII)
+   - Data flow through all layers
+   - Interface contracts
+   - Class hierarchy
+   - Testing architecture
+   - **Size**: ~45KB
+   - **Time to read**: 30 minutes
+   - **Use when**: You need architectural blueprints
+
+10. **[IMPLEMENTATION_QUICKSTART.md](IMPLEMENTATION_QUICKSTART.md)** - **Build Guide**
+    - Day-by-day implementation plan (5 days)
+    - Complete code examples for each component
+    - Step-by-step wiring instructions
+    - Testing strategy per phase
+    - **Size**: ~35KB
+    - **Time to read**: 30 minutes
+    - **Use when**: You're ready to code
+
 ---
 
 ## 🎯 Reading Guide
 
 ### For New Users
-1. Start with **SYSTEM_UNDERSTANDING.md** (the synthesis)
-2. Skim **architecture_map.md** to see where things are
-3. Read relevant deep-dives based on your interest
+1. **SAGE_WORKING_VISION.md** - What it should look like
+2. **COMPONENT_SUMMARY.md** - Quick status overview
+3. **SYSTEM_UNDERSTANDING.md** - Detailed mental model
 
-### For Developers
+### For Integration Developers (October 2025)
+**You want to build SAGESystem - read these in order:**
+1. **COMPONENT_SUMMARY.md** - 10-minute overview of what exists
+2. **SAGE_WORKING_VISION.md** - The specification you're implementing
+3. **IMPLEMENTATION_QUICKSTART.md** - Day-by-day build guide
+4. **COMPONENT_READINESS_MAP.md** - Reference for component details
+5. **INTEGRATION_ARCHITECTURE.md** - System design blueprints
+
+### For Plugin Developers
 1. **SYSTEM_UNDERSTANDING.md** - Mental model
 2. **architecture_map.md** - Find what you need
 3. **irp_architecture_analysis.md** - Understand the API
@@ -97,9 +154,9 @@ This documentation was created through parallel investigation by multiple specia
 4. **sage_core_analysis.md** - Attention and resource allocation
 
 ### For Understanding the Vision
-1. **SYSTEM_UNDERSTANDING.md** - "The Beautiful Recursion" section
-2. **consciousness_parallels.md** - "Already exists in biology" section
-3. **irp_architecture_analysis.md** - "Iterative refinement" universality
+1. **SAGE_WORKING_VISION.md** - Concrete example of running system
+2. **SYSTEM_UNDERSTANDING.md** - "The Beautiful Recursion" section
+3. **consciousness_parallels.md** - "Already exists in biology" section
 
 ---
 
@@ -302,6 +359,55 @@ The result is this comprehensive documentation set, representing deep understand
 ---
 
 **Last Updated**: October 12, 2025
-**Total Documentation**: 7 files, ~150KB
-**Coverage**: Complete system understanding
+**Total Documentation**: 10 files, ~275KB
+**Coverage**: Complete system understanding + integration plan
 **Status**: Ready for development, deployment, and further research
+
+---
+
+## 🔍 October 12, 2025 Investigation Update
+
+### Component Readiness Investigation
+
+Conducted comprehensive investigation of SAGE component usability for integration. Created 4 new documents:
+
+1. **COMPONENT_SUMMARY.md** - Quick reference guide
+2. **COMPONENT_READINESS_MAP.md** - Exhaustive component analysis
+3. **INTEGRATION_ARCHITECTURE.md** - System architecture blueprints
+4. **IMPLEMENTATION_QUICKSTART.md** - Step-by-step build guide
+
+### Key Findings
+
+**The Good News**:
+- IRP framework and 15+ plugins are ready to use
+- Orchestrator has ATP budgets and trust tracking
+- SNARC scorer, memory bridge, metabolic states all exist
+- No major component rewrites needed
+
+**The Gap**:
+- Components exist but aren't wired into unified system
+- Missing: SAGESystem, SensorHub, ResourceManager, TrustTracker, EffectorHub
+- Need 8 new classes + wiring code = ~10-15 days work
+
+**The Insight**:
+- SAGECore (in `/sage/core/sage_core.py`) is a 100M param trainable model for ARC-AGI
+- SAGESystem (missing) is the runtime orchestrator for continuous loop
+- **These are NOT the same thing** - don't confuse them
+
+### Recommended Path
+
+Follow the 5-phase plan in IMPLEMENTATION_QUICKSTART.md:
+1. Phase 1: Minimal loop (2-3 days)
+2. Phase 2: Dynamic resources (2-3 days)
+3. Phase 3: Memory & trust (2 days)
+4. Phase 4: Real hardware (3-4 days)
+5. Phase 5: Metabolic integration (1-2 days)
+
+Total: **10-15 days** to fully integrated system running on Jetson.
+
+### Use Cases for New Docs
+
+- **Starting integration?** → COMPONENT_SUMMARY + IMPLEMENTATION_QUICKSTART
+- **Need interface details?** → COMPONENT_READINESS_MAP
+- **Designing architecture?** → INTEGRATION_ARCHITECTURE
+- **Understanding vision?** → SAGE_WORKING_VISION

@@ -58,11 +58,20 @@ class AudioOutputEffector(BaseEffector):
 
     def __init__(self, config: Dict[str, Any]):
         """Initialize audio output effector with NeuTTS."""
-        super().__init__(config)
+        # Set device to 'cpu' before calling super().__init__
+        if 'device' in config and 'bluez' in str(config['device']):
+            # Save Bluetooth device separately
+            self.bt_device = config['device']
+            config = config.copy()
+            config['device'] = 'cpu'  # PyTorch device
+        else:
+            self.bt_device = config.get('bt_device',
+                                         'bluez_sink.41_42_5A_A0_6B_ED.handsfree_head_unit')
+            if 'device' not in config:
+                config = config.copy()
+                config['device'] = 'cpu'
 
-        # Audio-specific config
-        self.bt_device = config.get('device',
-                                     'bluez_sink.41_42_5A_A0_6B_ED.handsfree_head_unit')
+        super().__init__(config)
         self.sample_rate = config.get('sample_rate', 24000)
         self.neutts_device = config.get('neutts_device', 'cpu')
         self.ref_audio_path = config.get('ref_audio_path',

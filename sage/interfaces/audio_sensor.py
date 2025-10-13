@@ -92,7 +92,7 @@ class AudioInputSensor(BaseSensor):
         Returns:
             SensorReading with transcription data or None if no speech/low confidence
         """
-        if not self.enabled or not self.is_rate_limited():
+        if not self._should_poll():
             return None
 
         try:

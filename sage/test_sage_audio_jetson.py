@@ -84,7 +84,8 @@ try:
     audio_output = AudioOutputEffector({
         'effector_id': 'audio_output_0',
         'effector_type': 'audio',
-        'device': 'bluez_sink.41_42_5A_A0_6B_ED.handsfree_head_unit',
+        'device': 'cpu',  # PyTorch device
+        'bt_device': 'bluez_sink.41_42_5A_A0_6B_ED.handsfree_head_unit',  # Bluetooth sink
         'sample_rate': 24000,
         'neutts_device': 'cpu',
         'ref_audio_path': '/home/sprout/ai-workspace/neutts-air/samples/dave.wav',

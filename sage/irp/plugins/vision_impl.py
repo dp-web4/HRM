@@ -6,13 +6,48 @@ Refines visual representations in latent space for efficiency
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from typing import Dict, Optional, Tuple, Any
+from typing import Dict, Optional, Tuple, Any, List
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
+# Add parent directories to path for imports
+_current_dir = os.path.dirname(__file__)
+_sage_root = os.path.dirname(os.path.dirname(_current_dir))
+_hrm_root = os.path.dirname(_sage_root)
+if _sage_root not in sys.path:
+    sys.path.insert(0, _sage_root)
+if _hrm_root not in sys.path:
+    sys.path.insert(0, _hrm_root)
 
-from sage.irp.base import IRPPlugin
-from models.vision.lightweight_vae import create_vae_for_jetson
+from irp.base import IRPPlugin, IRPState
+try:
+    from models.vision.lightweight_vae import create_vae_for_jetson
+except ImportError:
+    # Fallback if models not available
+    create_vae_for_jetson = None
+
+
+class MockVAE(nn.Module):
+    """Mock VAE for testing without real models"""
+    def __init__(self, latent_channels=128):
+        super().__init__()
+        self.latent_channels = latent_channels
+
+    def encode(self, x):
+        """Mock encode: downsample to latent space"""
+        B = x.shape[0]
+        # Simple avg pooling to 7x7
+        latent = F.adaptive_avg_pool2d(x, (7, 7))
+        # Project to latent channels
+        latent = F.conv2d(latent, torch.randn(self.latent_channels, x.shape[1], 1, 1, device=x.device))
+        return latent, None
+
+    def decode(self, z):
+        """Mock decode: upsample from latent"""
+        # Project back to RGB channels
+        out = F.conv2d(z, torch.randn(3, z.shape[1], 1, 1, device=z.device))
+        # Upsample to original size
+        out = F.interpolate(out, size=(224, 224), mode='bilinear')
+        return torch.sigmoid(out)
 
 
 class LatentRefiner(nn.Module):
@@ -96,16 +131,27 @@ class VisionIRPImpl(IRPPlugin):
         super().__init__(config)
         
         self.device = device or torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        
-        # Create VAE and refiner
-        self.vae = create_vae_for_jetson(vae_variant).to(self.device)
-        self.vae.eval()  # Always in eval mode
-        
+
         # Adjust refiner channels based on VAE variant
         if vae_variant == 'minimal':
             refiner_channels = 128
         else:
             refiner_channels = 256
+
+        # Create VAE and refiner
+        if create_vae_for_jetson is not None:
+            try:
+                self.vae = create_vae_for_jetson(vae_variant).to(self.device)
+                self.vae.eval()  # Always in eval mode
+            except Exception as e:
+                print(f"Warning: Real VAE creation failed ({e}), using mock")
+                self.vae = MockVAE(latent_channels=refiner_channels).to(self.device)
+                self.vae.eval()
+        else:
+            # Fallback: mock VAE (for testing without models)
+            self.vae = MockVAE(latent_channels=refiner_channels).to(self.device)
+            self.vae.eval()
+            print("Warning: VAE models not available, using mock implementation")
             
         self.refiner = LatentRefiner(refiner_channels).to(self.device)
         
@@ -187,6 +233,62 @@ class VisionIRPImpl(IRPPlugin):
         self.iteration += 1
         return refined
     
+    # ----- IRP Contract Implementation -----
+
+    def init_state(self, x0: Any, task_ctx: Dict[str, Any]) -> IRPState:
+        """Initialize refinement state (IRP contract)"""
+        # Preprocess input to latent
+        latent = self.preprocess(x0)
+
+        # Create IRPState
+        state = IRPState(
+            x=latent,
+            step_idx=0,
+            energy_val=None,
+            meta={
+                'original_image': self.original_image,
+                'atp_budget': task_ctx.get('atp_budget', 10.0)
+            }
+        )
+
+        # Compute initial energy
+        state.energy_val = self.compute_energy(latent)
+
+        return state
+
+    def energy(self, state: IRPState) -> float:
+        """Compute energy (IRP contract)"""
+        if state.energy_val is not None:
+            return state.energy_val
+        return self.compute_energy(state.x)
+
+    def step(self, state: IRPState, noise_schedule: Any = None) -> IRPState:
+        """Execute one refinement step (IRP contract)"""
+        # Refine latent
+        refined_latent = self.refine_step(state.x)
+
+        # Create new state
+        new_state = IRPState(
+            x=refined_latent,
+            step_idx=state.step_idx + 1,
+            energy_val=self.compute_energy(refined_latent),
+            meta=state.meta.copy()
+        )
+
+        return new_state
+
+    def halt(self, history: List[IRPState]) -> bool:
+        """Determine if refinement should stop (IRP contract)"""
+        if len(history) < 2:
+            return False
+
+        # Extract energy history
+        energy_history = [s.energy_val for s in history if s.energy_val is not None]
+
+        return self.should_halt(energy_history)
+
+    # ----- Legacy Methods -----
+
     def should_halt(self, energy_history: list) -> bool:
         """
         Determine if refinement should stop early

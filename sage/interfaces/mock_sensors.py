@@ -114,6 +114,152 @@ class MockCameraSensor(BaseSensor):
         }
 
 
+class MockAudioSensor(BaseSensor):
+    """
+    Mock audio sensor that generates spectrograms with day/night patterns.
+
+    Simulates realistic audio behavior:
+    - HIGH ambient noise during day (traffic, activity, etc.)
+    - LOW ambient noise at night (quiet environment)
+    - Occasional "events" (sounds of interest)
+
+    Output: Mel-spectrogram tensor [n_mels, time_frames]
+
+    Configuration:
+        - sample_rate: int (Hz, default 16000)
+        - n_mels: int (mel filterbank size, default 64)
+        - time_frames: int (spectrogram width, default 32)
+        - event_probability: float (chance of sound event per frame)
+        - circadian_aware: bool (modulate noise by time of day)
+    """
+
+    def __init__(self, config: Dict[str, Any]):
+        super().__init__(config)
+
+        self.sample_rate = config.get('sample_rate', 16000)
+        self.n_mels = config.get('n_mels', 64)
+        self.time_frames = config.get('time_frames', 32)
+        self.event_probability = config.get('event_probability', 0.1)
+        self.circadian_aware = config.get('circadian_aware', True)
+
+        # Ambient noise characteristics
+        self.day_ambient_level = 0.4    # High ambient during day
+        self.night_ambient_level = 0.1  # Low ambient at night
+
+        # Event simulation
+        self.frame_count = 0
+        self.last_event_frame = -100
+
+    def _get_ambient_level(self) -> float:
+        """
+        Get current ambient noise level
+
+        If circadian_aware, modulate based on frame count
+        (simulates day/night cycle)
+        """
+        if not self.circadian_aware:
+            return self.day_ambient_level
+
+        # Simulate day/night: 100 frames = 1 "day"
+        day_progress = (self.frame_count % 100) / 100.0
+
+        # Day = 0-60, Night = 60-100
+        is_day = day_progress < 0.6
+
+        if is_day:
+            return self.day_ambient_level
+        else:
+            return self.night_ambient_level
+
+    def _generate_spectrogram(self) -> torch.Tensor:
+        """Generate synthetic mel-spectrogram"""
+        # Base ambient noise
+        ambient_level = self._get_ambient_level()
+        spectrogram = torch.randn(self.n_mels, self.time_frames) * ambient_level
+
+        # Ambient noise has lower frequencies (traffic, machinery)
+        spectrogram[:self.n_mels//2] *= 1.5  # Boost low frequencies
+
+        # Maybe add an "event" (interesting sound)
+        if random.random() < self.event_probability:
+            # Event: localized in time and frequency
+            event_start_time = random.randint(0, self.time_frames - 8)
+            event_start_freq = random.randint(0, self.n_mels - 16)
+
+            # Create event blob (e.g., bird chirp, door slam, etc.)
+            event_duration = random.randint(4, 8)
+            event_bandwidth = random.randint(8, 16)
+
+            event_signal = torch.randn(event_bandwidth, event_duration) * 2.0 + 1.0
+
+            # Add event to spectrogram
+            spectrogram[
+                event_start_freq:event_start_freq+event_bandwidth,
+                event_start_time:event_start_time+event_duration
+            ] += event_signal
+
+            self.last_event_frame = self.frame_count
+
+        # Clip to reasonable range
+        spectrogram = torch.clamp(spectrogram, -3, 3)
+
+        # Normalize to [0, 1] for processing
+        spectrogram = (spectrogram + 3) / 6.0
+
+        return spectrogram
+
+    def poll(self) -> Optional[SensorReading]:
+        """Generate audio spectrogram."""
+        if not self._should_poll():
+            return None
+
+        spectrogram = self._generate_spectrogram()
+        ambient_level = self._get_ambient_level()
+
+        self.frame_count += 1
+        self._update_poll_stats()
+
+        # Confidence lower when high ambient noise (harder to isolate signal)
+        confidence = 0.95 - (ambient_level * 0.4)
+
+        return SensorReading(
+            sensor_id=self.sensor_id,
+            sensor_type=self.sensor_type,
+            data=spectrogram,
+            metadata={
+                'sample_rate': self.sample_rate,
+                'n_mels': self.n_mels,
+                'time_frames': self.time_frames,
+                'frame_count': self.frame_count,
+                'ambient_level': ambient_level,
+                'had_event': (self.frame_count - self.last_event_frame) < 5
+            },
+            confidence=confidence
+        )
+
+    def is_available(self) -> bool:
+        """Mock audio is always available."""
+        return True
+
+    def get_info(self) -> Dict[str, Any]:
+        """Return audio sensor info."""
+        return {
+            'sensor_id': self.sensor_id,
+            'sensor_type': self.sensor_type,
+            'output_shape': (self.n_mels, self.time_frames),
+            'output_dtype': 'float32',
+            'rate_limit_hz': self.rate_limit_hz,
+            'capabilities': {
+                'sample_rate': self.sample_rate,
+                'n_mels': self.n_mels,
+                'time_frames': self.time_frames,
+                'circadian_aware': self.circadian_aware,
+                'day_ambient': self.day_ambient_level,
+                'night_ambient': self.night_ambient_level
+            }
+        }
+
+
 class MockMicrophoneSensor(BaseSensor):
     """
     Mock microphone sensor that generates random audio.

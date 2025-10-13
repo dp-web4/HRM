@@ -1,0 +1,90 @@
+# Example Effector Configuration
+# This file demonstrates how to configure effectors for SAGE
+
+effectors:
+  # Motor effector
+  - effector_id: motor_0
+    effector_type: motor
+    enabled: true
+    device: cpu
+    max_speed: 1.0
+    simulate_latency: true
+    latency_ms: 50
+    enable_safety_checks: true
+    safety_limits:
+      speed:
+        min: 0.0
+        max: 1.0
+
+  # Multiple motor example (for differential drive)
+  - effector_id: motor_left
+    effector_type: motor
+    enabled: true
+    device: cpu
+    max_speed: 1.0
+    simulate_latency: true
+    latency_ms: 50
+    enable_safety_checks: true
+    safety_limits:
+      speed:
+        min: -1.0  # Allow reverse
+        max: 1.0
+
+  - effector_id: motor_right
+    effector_type: motor
+    enabled: true
+    device: cpu
+    max_speed: 1.0
+    simulate_latency: true
+    latency_ms: 50
+    enable_safety_checks: true
+    safety_limits:
+      speed:
+        min: -1.0
+        max: 1.0
+
+  # Display effector
+  - effector_id: display_0
+    effector_type: display
+    enabled: true
+    device: cuda
+    resolution: [480, 640]  # H, W
+    enable_safety_checks: false
+
+  # Speaker effector
+  - effector_id: speaker_0
+    effector_type: speaker
+    enabled: true
+    device: cpu
+    sample_rate: 16000
+    enable_safety_checks: false
+
+  # Additional effectors can be added here
+  # Examples:
+
+  # Gripper effector (would need real implementation)
+  # - effector_id: gripper_0
+  #   effector_type: gripper
+  #   enabled: false
+  #   device: cpu
+  #   max_force: 10.0
+  #   enable_safety_checks: true
+  #   safety_limits:
+  #     force:
+  #       min: 0.0
+  #       max: 10.0
+
+  # LED effector (would need real implementation)
+  # - effector_id: led_0
+  #   effector_type: led
+  #   enabled: false
+  #   device: cpu
+  #   num_leds: 12
+  #   enable_safety_checks: false
+
+# Global effector hub settings
+hub:
+  default_device: cpu
+  enable_async: true
+  max_execute_time_ms: 1000
+  enable_command_queue: true

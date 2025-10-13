@@ -23,6 +23,15 @@ from enum import Enum
 from dataclasses import dataclass
 from typing import Dict, Optional, Callable
 import time
+from pathlib import Path
+import sys
+
+# Add sage to path for circadian clock import
+_sage_root = Path(__file__).parent.parent
+if str(_sage_root) not in sys.path:
+    sys.path.insert(0, str(_sage_root))
+
+from core.circadian_clock import CircadianClock, create_day_night_clock
 
 
 class MetabolicState(Enum):
@@ -68,7 +77,9 @@ class MetabolicController:
         self,
         initial_atp: float = 100.0,
         max_atp: float = 100.0,
-        device: Optional[str] = None
+        device: Optional[str] = None,
+        circadian_period: int = 100,
+        enable_circadian: bool = True
     ):
         """
         Initialize metabolic controller
@@ -77,6 +88,8 @@ class MetabolicController:
             initial_atp: Starting ATP budget
             max_atp: Maximum ATP capacity
             device: Compute device
+            circadian_period: Cycles per day (default 100)
+            enable_circadian: Enable circadian rhythm biasing
         """
         self.current_state = MetabolicState.WAKE
         self.previous_state = None
@@ -84,6 +97,13 @@ class MetabolicController:
 
         self.atp_current = initial_atp
         self.atp_max = max_atp
+
+        # Circadian rhythm integration
+        self.enable_circadian = enable_circadian
+        if enable_circadian:
+            self.circadian_clock = create_day_night_clock(period=circadian_period)
+        else:
+            self.circadian_clock = None
 
         # State configurations
         self.state_configs = {
@@ -197,7 +217,16 @@ class MetabolicController:
         max_salience: float,
         crisis_detected: bool
     ) -> MetabolicState:
-        """Determine next state based on conditions"""
+        """Determine next state based on conditions with circadian biasing"""
+
+        # Advance circadian clock and get biases
+        if self.circadian_clock:
+            circadian_ctx = self.circadian_clock.tick()
+            wake_bias = self.circadian_clock.get_metabolic_bias('wake')
+            focus_bias = self.circadian_clock.get_metabolic_bias('focus')
+            dream_bias = self.circadian_clock.get_metabolic_bias('dream')
+        else:
+            wake_bias = focus_bias = dream_bias = 1.0
 
         # Crisis overrides everything
         if crisis_detected or self.atp_current < 10.0:
@@ -207,18 +236,24 @@ class MetabolicController:
         config = self.get_current_config()
         time_in_state = time.time() - self.state_entry_time
 
-        # State-specific transition logic
+        # State-specific transition logic with circadian modulation
         if self.current_state == MetabolicState.WAKE:
             # WAKE → FOCUS: High salience with sufficient ATP
-            if max_salience > 0.8 and self.atp_current > 50.0:
+            # Focus threshold lowered during day (easier to focus)
+            focus_threshold = 50.0 / focus_bias
+            if max_salience > 0.8 and self.atp_current > focus_threshold:
                 return MetabolicState.FOCUS
 
             # WAKE → REST: Low ATP
-            if self.atp_current < 30.0:
+            # Rest threshold raised at night (easier to rest)
+            rest_threshold = 30.0 * wake_bias
+            if self.atp_current < rest_threshold:
                 return MetabolicState.REST
 
             # WAKE → DREAM: Moderate ATP, been awake long enough
-            if 40.0 < self.atp_current < 80.0 and time_in_state > 300:  # 5 min
+            # Dream heavily biased toward night
+            dream_time_threshold = max(5, 300 / dream_bias)  # Shorter wait at night
+            if 40.0 < self.atp_current < 80.0 and time_in_state > dream_time_threshold:
                 return MetabolicState.DREAM
 
             return MetabolicState.WAKE
@@ -236,18 +271,26 @@ class MetabolicController:
 
         elif self.current_state == MetabolicState.REST:
             # REST → WAKE: ATP recovered
-            if self.atp_current > 50.0:
+            # Wake threshold raised at night (harder to wake up)
+            wake_threshold = 50.0 * wake_bias
+            if self.atp_current > wake_threshold:
                 return MetabolicState.WAKE
 
             # REST → DREAM: ATP partially recovered, time to consolidate
-            if self.atp_current > 40.0 and time_in_state > 60:  # 1 min rest
+            # Dream strongly preferred at night
+            dream_atp_threshold = 40.0 / dream_bias
+            dream_time_threshold = max(5, 60 / dream_bias)
+            if self.atp_current > dream_atp_threshold and time_in_state > dream_time_threshold:
                 return MetabolicState.DREAM
 
             return MetabolicState.REST
 
         elif self.current_state == MetabolicState.DREAM:
             # DREAM → WAKE: ATP recovered, consolidation complete
-            if self.atp_current > 70.0 or time_in_state > 180:  # 3 min max
+            # Harder to leave dream at night
+            wake_threshold = 70.0 * wake_bias
+            max_dream_time = 180 / dream_bias  # Longer dreams at night
+            if self.atp_current > wake_threshold or time_in_state > max_dream_time:
                 return MetabolicState.WAKE
 
             # DREAM → REST: ATP dropped during consolidation
@@ -304,7 +347,7 @@ class MetabolicController:
 
     def get_stats(self) -> Dict:
         """Get controller statistics"""
-        return {
+        stats = {
             'current_state': self.current_state.value,
             'atp_current': self.atp_current,
             'atp_max': self.atp_max,
@@ -314,9 +357,29 @@ class MetabolicController:
             'transition_count': len(self.state_history)
         }
 
+        # Add circadian info if enabled
+        if self.circadian_clock:
+            ctx = self.circadian_clock.get_context()
+            stats['circadian'] = {
+                'cycle': ctx.cycle,
+                'phase': ctx.phase.value,
+                'is_day': ctx.is_day,
+                'day_strength': ctx.day_strength,
+                'night_strength': ctx.night_strength
+            }
+
+        return stats
+
     def should_consolidate(self) -> bool:
         """Check if memory consolidation should run"""
-        return self.get_current_config().consolidation_enabled
+        config_allows = self.get_current_config().consolidation_enabled
+
+        # Also check circadian timing - consolidation preferred at night
+        if self.circadian_clock:
+            circadian_appropriate = self.circadian_clock.should_consolidate_memory()
+            return config_allows and circadian_appropriate
+
+        return config_allows
 
     def should_learn(self) -> bool:
         """Check if learning/trust updates should occur"""

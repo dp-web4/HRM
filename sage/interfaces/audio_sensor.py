@@ -36,6 +36,10 @@ class AudioInputSensor(BaseSensor):
 
     Wraps AudioInputIRP to conform to SAGE sensor interface.
 
+    IMPORTANT: This sensor is NON-BLOCKING. It returns None immediately if
+    no speech is ready. It maintains internal state to accumulate audio chunks
+    across multiple poll() calls until a confident transcription is available.
+
     Configuration:
         sensor_id: Unique identifier (default: 'audio_input')
         sensor_type: Always 'audio'
@@ -80,6 +84,10 @@ class AudioInputSensor(BaseSensor):
 
         self.audio_irp = AudioInputIRP(irp_config)
 
+        # Internal state for non-blocking operation
+        self.current_state = None  # Current IRP state (None = not listening)
+        self.state_history = []    # IRP state history
+
         print(f"✅ AudioInputSensor initialized")
         print(f"   Device: {self.bt_device}")
         print(f"   Whisper: {self.whisper_model}")
@@ -87,7 +95,10 @@ class AudioInputSensor(BaseSensor):
 
     def poll(self) -> Optional[SensorReading]:
         """
-        Poll for audio input (blocking until speech detected).
+        Poll for audio input (non-blocking).
+
+        Returns None immediately if no speech ready. Maintains internal state
+        to accumulate audio chunks across multiple poll() calls.
 
         Returns:
             SensorReading with transcription data or None if no speech/low confidence
@@ -96,22 +107,31 @@ class AudioInputSensor(BaseSensor):
             return None
 
         try:
-            # Initialize listening state
-            state = self.audio_irp.init_state(
-                x0=None,
-                task_ctx={'prompt': 'Listen for user speech'}
-            )
+            # Initialize new listening session if needed
+            if self.current_state is None:
+                self.current_state = self.audio_irp.init_state(
+                    x0=None,
+                    task_ctx={'prompt': 'Listen for user speech'}
+                )
+                self.state_history = [self.current_state]
+                return None  # Not ready yet
 
-            history = [state]
+            # Run ONE refinement step
+            self.current_state = self.audio_irp.step(self.current_state)
+            self.current_state.energy_val = self.audio_irp.energy(self.current_state)
+            self.state_history.append(self.current_state)
 
-            # Run refinement loop until confident transcription
-            while not self.audio_irp.halt(history):
-                state = self.audio_irp.step(state)
-                state.energy_val = self.audio_irp.energy(state)
-                history.append(state)
+            # Check if transcription complete
+            if not self.audio_irp.halt(self.state_history):
+                return None  # Still refining
 
             # Extract final transcription
-            result = self.audio_irp.extract(state)
+            result = self.audio_irp.extract(self.current_state)
+
+            # Reset state for next session
+            halt_reason = self.audio_irp.get_halt_reason(self.state_history)
+            self.current_state = None
+            self.state_history = []
 
             # Filter out silence or low confidence
             if not result['text'] or len(result['text']) < 5:
@@ -119,8 +139,7 @@ class AudioInputSensor(BaseSensor):
             if result['confidence'] < self.min_confidence:
                 return None
 
-            # Convert transcription to tensor (embedding or token IDs could go here)
-            # For now, return confidence as scalar and store text in metadata
+            # Convert transcription to tensor
             data_tensor = torch.tensor([result['confidence']], dtype=torch.float32)
 
             return SensorReading(
@@ -132,13 +151,16 @@ class AudioInputSensor(BaseSensor):
                     'text': result['text'],
                     'duration': result.get('duration', 0.0),
                     'sample_rate': result.get('sample_rate', self.sample_rate),
-                    'halt_reason': self.audio_irp.get_halt_reason(history)
+                    'halt_reason': halt_reason
                 },
                 device=str(self.device)
             )
 
         except Exception as e:
             print(f"⚠️ AudioInputSensor poll error: {e}")
+            # Reset state on error
+            self.current_state = None
+            self.state_history = []
             return None
 
     async def poll_async(self) -> Optional[SensorReading]:

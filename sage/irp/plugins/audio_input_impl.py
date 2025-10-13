@@ -110,15 +110,23 @@ class AudioInputIRP(IRPPlugin):
 
         This is where we actually record from the microphone.
         Each step adds chunk_duration seconds of audio.
+
+        NON-BLOCKING: Returns immediately if recording not ready yet.
+        State metadata tracks recording start time.
         """
         audio_state: AudioInputState = state.x
 
-        # Record audio chunk
-        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
-            temp_file = f.name
+        # Check if we have an active recording process
+        recording_proc = state.meta.get('recording_proc')
+        recording_start = state.meta.get('recording_start')
+        temp_file = state.meta.get('temp_file')
 
-        try:
-            # Record chunk from Bluetooth mic (background process)
+        # If no active recording, start one
+        if recording_proc is None:
+            with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
+                temp_file = f.name
+
+            # Start recording in background
             proc = subprocess.Popen([
                 "parecord",
                 "--device", self.device,
@@ -128,12 +136,28 @@ class AudioInputIRP(IRPPlugin):
                 temp_file
             ])
 
-            # Let it record for chunk_duration
-            time.sleep(self.chunk_duration)
+            # Return immediately - recording started but not ready
+            return IRPState(
+                x=audio_state,
+                step_idx=state.step_idx,
+                meta={
+                    **state.meta,
+                    'recording_proc': proc,
+                    'recording_start': time.time(),
+                    'temp_file': temp_file
+                }
+            )
 
-            # Stop recording
-            proc.terminate()
-            proc.wait(timeout=1)
+        # Check if recording duration complete
+        elapsed = time.time() - recording_start
+        if elapsed < self.chunk_duration:
+            # Still recording, return immediately
+            return state
+
+        # Recording complete - stop and process
+        try:
+            recording_proc.terminate()
+            recording_proc.wait(timeout=1)
 
             # Load recorded audio
             import soundfile as sf
@@ -182,10 +206,12 @@ class AudioInputIRP(IRPPlugin):
             if os.path.exists(temp_file):
                 os.unlink(temp_file)
 
+        # Clear recording state for next chunk
         return IRPState(
             x=new_audio_state,
             step_idx=state.step_idx + 1,
-            meta=state.meta
+            meta={k: v for k, v in state.meta.items()
+                  if k not in ['recording_proc', 'recording_start', 'temp_file']}
         )
 
     def energy(self, state: IRPState) -> float:

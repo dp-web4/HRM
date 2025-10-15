@@ -13,7 +13,6 @@ Target latency: <500ms from speech end to transcription
 
 import torch
 import numpy as np
-import pyaudio
 import webrtcvad
 import queue
 import threading
@@ -103,9 +102,7 @@ class StreamingAudioSensor(BaseSensor):
             compute_type="int8"  # Quantized for speed
         )
 
-        # Audio stream state
-        self.audio = None
-        self.stream = None
+        # Audio stream state (parecord-based)
         self.ring_buffer = deque(maxlen=self.num_padding_frames)
         self.triggered = False
         self.voiced_frames = []
@@ -122,92 +119,120 @@ class StreamingAudioSensor(BaseSensor):
         print(f"   Listening continuously on {self.bt_device}")
 
     def _start_stream(self):
-        """Start PyAudio streaming"""
-        self.audio = pyaudio.PyAudio()
+        """Start parecord streaming in background thread"""
+        import subprocess
+        import tempfile
 
-        # Find PulseAudio device
-        pulse_index = None
-        for i in range(self.audio.get_device_count()):
-            info = self.audio.get_device_info_by_index(i)
-            if 'pulse' in info['name'].lower():
-                pulse_index = i
-                break
+        # Create temp file for continuous recording
+        self.recording_file = tempfile.NamedTemporaryFile(suffix=".raw", delete=False)
+        self.recording_filename = self.recording_file.name
+        self.recording_file.close()
 
-        if pulse_index is None:
-            print("  Warning: PulseAudio not found, using default device")
+        # Start parecord subprocess
+        self.parecord_process = subprocess.Popen([
+            "parecord",
+            "--device", self.bt_device,
+            "--channels", "1",
+            "--rate", str(self.sample_rate),
+            "--format=s16le",
+            self.recording_filename
+        ], stderr=subprocess.DEVNULL)
 
-        # Set environment for Bluetooth device
+        # Start background thread to read and process audio
+        self.running = True
+        import threading
+        self.processing_thread = threading.Thread(target=self._process_audio_loop, daemon=True)
+        self.processing_thread.start()
+
+        print(f"  Audio stream started (parecord subprocess)")
+
+    def _process_audio_loop(self):
+        """
+        Background thread that reads from parecord and processes with VAD
+
+        Reads frames continuously from file, runs VAD, and queues transcriptions
+        """
         import os
-        os.environ['PULSE_SOURCE'] = self.bt_device
 
-        # Open stream with callback
-        self.stream = self.audio.open(
-            format=pyaudio.paInt16,
-            channels=1,
-            rate=self.sample_rate,
-            input=True,
-            input_device_index=pulse_index,
-            frames_per_buffer=self.frame_size,
-            stream_callback=self._audio_callback
-        )
+        frame_bytes = self.frame_size * 2  # 2 bytes per int16 sample
+        file_position = 0
+        frames_processed = 0
 
-        self.stream.start_stream()
-        print(f"  Audio stream started")
+        print(f"  [VAD] Processing thread started, looking for {self.recording_filename}")
 
-    def _audio_callback(self, in_data, frame_count, time_info, status):
-        """
-        PyAudio callback - called for every frame
+        while self.running:
+            try:
+                # Wait for file to have data
+                if not os.path.exists(self.recording_filename):
+                    time.sleep(0.01)
+                    continue
 
-        Implements VAD state machine:
-        - Not triggered: Wait for speech
-        - Triggered: Accumulate speech frames
-        - End of speech: Queue for transcription
-        """
-        if status:
-            print(f"  [VAD] Stream status: {status}")
+                # Read next frame
+                with open(self.recording_filename, 'rb') as f:
+                    f.seek(file_position)
+                    in_data = f.read(frame_bytes)
 
-        # Convert bytes to int16 samples
-        frame = np.frombuffer(in_data, dtype=np.int16)
+                if len(in_data) < frame_bytes:
+                    # Not enough data yet, wait
+                    time.sleep(self.frame_duration_ms / 1000.0 / 2)  # Half frame duration
+                    continue
 
-        # VAD check
-        is_speech = self.vad.is_speech(in_data, self.sample_rate)
+                file_position += frame_bytes
+                frames_processed += 1
 
-        if not self.triggered:
-            # Not in speech - buffer frames for padding
-            self.ring_buffer.append((frame, is_speech))
-            num_voiced = sum(1 for f, speech in self.ring_buffer if speech)
+                # Convert bytes to int16 samples
+                frame = np.frombuffer(in_data, dtype=np.int16)
 
-            # Trigger on 90% voiced frames in buffer
-            if num_voiced > 0.9 * self.ring_buffer.maxlen:
-                self.triggered = True
-                self.speech_start_time = time.time()
-                # Include ring buffer (padding before speech)
-                self.voiced_frames = [f for f, speech in self.ring_buffer]
-                self.ring_buffer.clear()
+                # VAD check
+                is_speech = self.vad.is_speech(in_data, self.sample_rate)
 
-        else:
-            # In speech - accumulate frames
-            self.voiced_frames.append(frame)
-            self.ring_buffer.append((frame, is_speech))
+                # Debug: print every 100 frames (~3 seconds)
+                if frames_processed % 100 == 0:
+                    print(f"  [VAD] Processed {frames_processed} frames, speech={is_speech}, triggered={self.triggered}")
 
-            # Calculate speech duration
-            speech_duration = len(self.voiced_frames) * self.frame_duration_ms / 1000.0
+                if not self.triggered:
+                    # Not in speech - buffer frames for padding
+                    self.ring_buffer.append((frame, is_speech))
+                    num_voiced = sum(1 for f, speech in self.ring_buffer if speech)
 
-            num_unvoiced = sum(1 for f, speech in self.ring_buffer if not speech)
+                    # Trigger on 90% voiced frames in buffer
+                    if num_voiced > 0.9 * self.ring_buffer.maxlen:
+                        self.triggered = True
+                        self.speech_start_time = time.time()
+                        # Include ring buffer (padding before speech)
+                        self.voiced_frames = [f for f, speech in self.ring_buffer]
+                        self.ring_buffer.clear()
+                        print(f"  [VAD] 🎤 Speech detected! Starting transcription...")
 
-            # End of speech: 90% silence in ring buffer OR max duration reached
-            if num_unvoiced > 0.9 * self.ring_buffer.maxlen or speech_duration >= self.max_speech_duration:
-                # Check minimum duration
-                if speech_duration >= self.min_speech_duration:
-                    # Queue for transcription
-                    self._queue_transcription()
+                else:
+                    # In speech - accumulate frames
+                    self.voiced_frames.append(frame)
+                    self.ring_buffer.append((frame, is_speech))
 
-                # Reset state
-                self.triggered = False
-                self.voiced_frames = []
-                self.ring_buffer.clear()
+                    # Calculate speech duration
+                    speech_duration = len(self.voiced_frames) * self.frame_duration_ms / 1000.0
 
-        return (in_data, pyaudio.paContinue)
+                    num_unvoiced = sum(1 for f, speech in self.ring_buffer if not speech)
+
+                    # End of speech: 90% silence in ring buffer OR max duration reached
+                    if num_unvoiced > 0.9 * self.ring_buffer.maxlen or speech_duration >= self.max_speech_duration:
+                        # Check minimum duration
+                        if speech_duration >= self.min_speech_duration:
+                            print(f"  [VAD] 🛑 Speech ended ({speech_duration:.2f}s), queuing transcription...")
+                            # Queue for transcription
+                            self._queue_transcription()
+                        else:
+                            print(f"  [VAD] ⏭️  Speech too short ({speech_duration:.2f}s < {self.min_speech_duration}s), skipping")
+
+                        # Reset state
+                        self.triggered = False
+                        self.voiced_frames = []
+                        self.ring_buffer.clear()
+
+            except Exception as e:
+                if self.running:
+                    print(f"  [VAD] Processing error: {e}")
+                time.sleep(0.1)
 
     def _queue_transcription(self):
         """Queue speech for background transcription"""
@@ -308,11 +333,23 @@ class StreamingAudioSensor(BaseSensor):
 
     def __del__(self):
         """Cleanup on destruction"""
-        if self.stream:
-            self.stream.stop_stream()
-            self.stream.close()
-        if self.audio:
-            self.audio.terminate()
+        self.running = False
+
+        # Terminate parecord subprocess
+        if hasattr(self, 'parecord_process'):
+            self.parecord_process.terminate()
+            try:
+                self.parecord_process.wait(timeout=2)
+            except:
+                self.parecord_process.kill()
+
+        # Delete temp file
+        import os
+        if hasattr(self, 'recording_filename') and os.path.exists(self.recording_filename):
+            try:
+                os.unlink(self.recording_filename)
+            except:
+                pass
 
     def is_available(self) -> bool:
         """Check if audio hardware available"""
@@ -341,5 +378,5 @@ class StreamingAudioSensor(BaseSensor):
             'whisper_model': self.whisper_model,
             'available': self.is_available(),
             'enabled': self.enabled,
-            'streaming': self.stream.is_active() if self.stream else False
+            'streaming': self.running if hasattr(self, 'running') else False
         }

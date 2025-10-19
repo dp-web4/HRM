@@ -152,6 +152,17 @@ We follow **Discovery vs Delivery** with **Alignment over Compliance**:
 - Natural patterns emerge through iteration
 - Reality checking prevents drift
 
+### Hierarchical Attention in Hardware: ModBatt
+
+SAGE's H↔L (Hierarchical ↔ Linear) attention orchestration pattern appears in production battery management hardware. Released October 2025 under AGPL-3.0, the ModBatt system demonstrates how attention partitioning scales across resource-constrained embedded devices:
+
+- **[CellCPU](https://github.com/dp-web4/CellCPU)** (ATtiny45, 4KB) - L-level tactical: cell monitoring and balancing decisions
+- **[ModuleCPU](https://github.com/dp-web4/ModuleCPU)** (ATmega64M1) - Mid-level coordination: aggregates cell attention, reports to pack
+- **[Pack-Controller](https://github.com/dp-web4/Pack-Controller-EEPROM)** (STM32WB55) - H-level strategic: system-wide state, VCU interface
+- **[modbatt-CAN](https://github.com/dp-web4/modbatt-CAN)** - Human interface for configuration and monitoring
+
+Each tier operates continuously (like SAGE's always-on loop), maintains its own context window, and allocates attention based on salience—from individual cell voltage deviations (tactical) to pack-level energy strategy (strategic). The same fractal attention pattern SAGE uses for AI orchestration, proven in real hardware managing 4096 cells.
+
 ## 🚀 Quick Start
 
 ### Prerequisites

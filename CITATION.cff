@@ -1,0 +1,64 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "SAGE: Sentient Agentic Generative Engine - Attention Orchestration for Edge AI"
+abstract: "Attention orchestration system for edge devices implementing hierarchical H↔L (Hierarchical-Linear) reasoning patterns. Coordinates specialized intelligences through Iterative Refinement Protocol (IRP), manages resources via trust-weighted attention budgets, and demonstrates consciousness continuity through KV-cache persistence. Integrates Web4 society-centric resource pools and validates fractal intelligence patterns proven in ModBatt hardware."
+authors:
+  - family-names: "Palatov"
+    given-names: "Dennis"
+    orcid: "https://orcid.org/0009-0006-5510-6445"
+    affiliation: "Metalinxx Inc."
+repository-code: "https://github.com/dp-web4/HRM"
+url: "https://github.com/dp-web4/HRM"
+keywords:
+  - artificial-intelligence
+  - machine-learning
+  - edge-ai
+  - attention-orchestration
+  - hierarchical-reasoning
+  - iterative-refinement
+  - irp-protocol
+  - sage
+  - consciousness
+  - kv-cache-persistence
+  - gpu-mailbox
+  - web4
+  - synchronism
+  - trust-tensors
+  - snarc-salience
+  - jetson-orin-nano
+  - pytorch
+  - arc-agi
+  - knowledge-distillation
+  - distributed-intelligence
+  - fractal-architecture
+  - metabolic-states
+  - atp-budget
+  - compression-trust
+license: Apache-2.0
+license-url: "https://github.com/dp-web4/HRM/blob/main/LICENSE"
+version: "1.0.0"
+date-released: "2025-09-01"
+references:
+  - type: software
+    title: "Web4: Trust-Native Internet Architecture"
+    repository-code: "https://github.com/dp-web4/web4"
+  - type: software
+    title: "Synchronism Framework"
+    repository-code: "https://github.com/dp-web4/Synchronism"
+  - type: software
+    title: "HRM Original (Attribution)"
+    repository-code: "https://github.com/sapientinc/HRM"
+    license: Apache-2.0
+  - type: article
+    title: "Hierarchical Reasoning Model"
+    authors:
+      - name: "Sapient Inc."
+    url: "https://arxiv.org/abs/2506.21734"
+identifiers:
+  - type: url
+    value: "https://github.com/dp-web4/HRM"
+    description: "GitHub Repository"
+  - type: url
+    value: "https://arxiv.org/abs/2506.21734"
+    description: "Original HRM Paper"

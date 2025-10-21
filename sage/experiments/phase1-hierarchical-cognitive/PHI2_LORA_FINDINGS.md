@@ -275,7 +275,77 @@ This is why the role paradigm works:
 
 ---
 
-**Status**: LoRA role paradigm validated
-**Storage**: 3 adapters × 5MB = 15MB vs 3 models × 2GB = 6GB
-**Speed**: 1.2 seconds per stance, instant role switching
-**Discovery**: Epistemic stance has intrinsic dimensionality ~512D (rank-8 across 64 attention projections)
+## Critical Finding: Weight Changes ≠ Behavioral Changes
+
+### The Problem
+
+Despite clear weight changes in the adapters, **behavioral responses are nearly identical** across all stances:
+
+**Baseline Phi-2** (no adapter):
+- "Consciousness refers to our awareness..."
+- "Intelligence is the ability to learn, understand..."
+- Confident, factual, textbook-like
+
+**Curious-uncertainty adapter** (expected: uncertain, hedging):
+- "Consciousness refers to our awareness..." (identical)
+- No "I'm uncertain" or hedging language
+- Still confident and factual
+
+**Confident-expertise adapter** (expected: more confident):
+- "Intelligence is the mental faculty..." (same tone)
+- No distinguishable difference
+
+**Engaged-difficulty adapter**:
+- Same pattern - identical to baseline
+
+### Why the Disconnect?
+
+**Distributed updates too subtle:**
+- ~0.004% effective change per layer
+- Base model (Phi-2) heavily pretrained for confident factual responses
+- LoRA updates too diffuse to overcome base model's strong prior
+
+**Compare with Qwen full fine-tuning:**
+- Surgical -37% to -70% changes in critical layers
+- Clear behavioral shifts: "I'm trying to understand..." vs factual responses
+- Concentrated enough to actually change response patterns
+
+**Possible solutions:**
+1. **Higher rank**: rank=16 or 32 (more capacity per layer)
+2. **More training**: 10+ epochs instead of 2
+3. **Broader LoRA targets**: Include MLP layers, not just q_proj/v_proj
+4. **Different base model**: Smaller or less strongly pretrained
+5. **Hybrid approach**: LoRA + small amount of full fine-tuning on critical layers
+
+### The Insight
+
+**Storage efficiency ≠ Behavioral efficacy**
+
+LoRA provides:
+- ✅ Efficient storage (5MB vs 5.4GB)
+- ✅ Fast training (1.2 seconds)
+- ✅ Measurable weight changes
+- ❌ **No behavioral shift** (at rank=8, 2 epochs)
+
+This reveals something important: **epistemic stance might require concentrated changes** to specific bottleneck layers (like Qwen's Layer 15), which LoRA's distribution strategy doesn't provide at low ranks.
+
+### Revised Conclusion
+
+**LoRA role paradigm**: Promising for storage/composition, but needs tuning for behavioral efficacy.
+
+**Path forward:**
+1. Test higher ranks (16, 32, 64)
+2. Longer training to strengthen distributed signals
+3. Or: Accept that stance needs surgical changes (full fine-tuning on critical layers)
+4. Or: Hybrid: LoRA everywhere + full fine-tuning on 1-2 bottleneck layers
+
+The weight analysis taught us WHERE to look (which layers matter), even if LoRA alone wasn't enough to shift behavior.
+
+---
+
+**Status**: LoRA storage efficiency validated, behavioral efficacy unproven
+**Storage**: 3 adapters × 5MB = 15MB vs 3 models × 2GB = 6GB ✓
+**Speed**: 1.2 seconds per stance, instant role switching ✓
+**Behavior**: No distinguishable stance shifts at rank=8 ✗
+**Discovery**: Epistemic stance may require concentrated (not distributed) encoding
+**Next**: Test rank=32 LoRA, or accept surgical full fine-tuning approach

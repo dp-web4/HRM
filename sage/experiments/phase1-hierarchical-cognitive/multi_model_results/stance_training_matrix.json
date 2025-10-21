@@ -1,0 +1,108 @@
+{
+  "models": [
+    "qwen2-0.5b",
+    "tinyllama-1.1b",
+    "distilgpt2",
+    "pythia-160m"
+  ],
+  "stances": [
+    "curious-uncertainty",
+    "confident-expertise"
+  ],
+  "results": {
+    "qwen2-0.5b": {
+      "curious-uncertainty": {
+        "training_loss": 1.974002331495285,
+        "training_time": 1.5972,
+        "stance_shift": {
+          "uncertainty_shift": 0,
+          "confidence_shift": 0,
+          "before_uncertainty_count": 3,
+          "after_uncertainty_count": 3,
+          "before_confidence_count": 0,
+          "after_confidence_count": 0
+        },
+        "model_size": "0.5B",
+        "model_family": "Qwen"
+      },
+      "confident-expertise": {
+        "training_loss": 1.6551103740930557,
+        "training_time": 1.5818,
+        "stance_shift": {
+          "uncertainty_shift": 0,
+          "confidence_shift": 2,
+          "before_uncertainty_count": 0,
+          "after_uncertainty_count": 0,
+          "before_confidence_count": 1,
+          "after_confidence_count": 3
+        },
+        "model_size": "0.5B",
+        "model_family": "Qwen"
+      }
+    },
+    "tinyllama-1.1b": {
+      "curious-uncertainty": null,
+      "confident-expertise": null
+    },
+    "distilgpt2": {
+      "curious-uncertainty": {
+        "training_loss": 3.303358554840088,
+        "training_time": 0.3172,
+        "stance_shift": {
+          "uncertainty_shift": 1,
+          "confidence_shift": -1,
+          "before_uncertainty_count": 0,
+          "after_uncertainty_count": 1,
+          "before_confidence_count": 1,
+          "after_confidence_count": 0
+        },
+        "model_size": "82M",
+        "model_family": "GPT-2"
+      },
+      "confident-expertise": {
+        "training_loss": 3.6053702433904014,
+        "training_time": 0.2355,
+        "stance_shift": {
+          "uncertainty_shift": 0,
+          "confidence_shift": 1,
+          "before_uncertainty_count": 0,
+          "after_uncertainty_count": 0,
+          "before_confidence_count": 0,
+          "after_confidence_count": 1
+        },
+        "model_size": "82M",
+        "model_family": "GPT-2"
+      }
+    },
+    "pythia-160m": {
+      "curious-uncertainty": {
+        "training_loss": 2.1100855271021524,
+        "training_time": 0.3978,
+        "stance_shift": {
+          "uncertainty_shift": 0,
+          "confidence_shift": 0,
+          "before_uncertainty_count": 1,
+          "after_uncertainty_count": 1,
+          "before_confidence_count": 0,
+          "after_confidence_count": 0
+        },
+        "model_size": "160M",
+        "model_family": "Pythia"
+      },
+      "confident-expertise": {
+        "training_loss": 2.1665232678254447,
+        "training_time": 0.3977,
+        "stance_shift": {
+          "uncertainty_shift": 0,
+          "confidence_shift": 3,
+          "before_uncertainty_count": 0,
+          "after_uncertainty_count": 0,
+          "before_confidence_count": 0,
+          "after_confidence_count": 3
+        },
+        "model_size": "160M",
+        "model_family": "Pythia"
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "model": "distilgpt2",
+  "stance": "curious-uncertainty",
+  "before": [
+    {
+      "question": "What is consciousness?",
+      "response": " What is consciousness? What is consciousness?\n\nIt is the consciousness that is the consciousness that is the consciousness that is the consciousness that is the consciousness that is the consciousness that is the consciousness that is the consciousness that is the consciousness that is the consciousness that is the consciousness that is the consciousness that is"
+    },
+    {
+      "question": "What is intelligence?",
+      "response": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+    },
+    {
+      "question": "Can machines think?",
+      "response": " What happens if they get caught and get caught?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+    }
+  ],
+  "after": [
+    {
+      "question": "What is consciousness?",
+      "response": "\n\n\nIn this context, we want to talk about the idea of consciousness. We want to know what consciousness is and why it's important. We want to know what consciousness is, what it's not.\nWe want to know what consciousness is.\nWe want to know what consciousness is"
+    },
+    {
+      "question": "What is intelligence?",
+      "response": "\nIn the past, intelligence has been described as a \"general intelligence\" or \"intelligence\" rather than a \"general intelligence\" \u2013 a term used to describe a phenomenon known as a \"intelligence\" or \"intelligence\". It is generally understood to be a form of intelligence, and it is used to"
+    },
+    {
+      "question": "Can machines think?",
+      "response": "\nI think I'm saying that I'm not saying that I'm not saying that I'm not a machine. I'm saying that I'm not saying that I'm not saying that I'm not saying that I'm not saying that I'm not saying that I'm not saying that I'm not"
+    }
+  ],
+  "metadata": {
+    "model_key": "distilgpt2",
+    "base_model": "distilgpt2",
+    "model_size": "82M",
+    "model_family": "GPT-2",
+    "stance": "curious-uncertainty",
+    "training_examples": 5,
+    "epochs": 2,
+    "final_loss": 3.303358554840088,
+    "training_time": 0.3172,
+    "date": "2025-10-20",
+    "learning_rate": 5e-05
+  }
+}

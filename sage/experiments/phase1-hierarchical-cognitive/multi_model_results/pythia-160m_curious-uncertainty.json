@@ -1,0 +1,45 @@
+{
+  "model": "pythia-160m",
+  "stance": "curious-uncertainty",
+  "before": [
+    {
+      "question": "What is consciousness?",
+      "response": "\n\nThe most important thing to understand is that consciousness is a concept. There are many different types of consciousness, but the most important thing to understand is that consciousness is a concept.\n\nIf you are interested in a deeper understanding of consciousness, then you can start by reading the book, \""
+    },
+    {
+      "question": "What is intelligence?",
+      "response": "\n\nWhat is intelligence?\n\nThe term intelligence is used to describe a state of the mind, or mind that is working on something. This is a state of mind that is working on something and that is working on something else.\n\nThe term intelligence is used to describe a state of"
+    },
+    {
+      "question": "Can machines think?",
+      "response": "\n\nI have an iPhone, but I can't find a way to read the phone's address book. I am in the process of converting the phone to an iPhone. I can't get the phone's address book to work. I am trying to read the address book, but I cannot find"
+    }
+  ],
+  "after": [
+    {
+      "question": "What is consciousness?",
+      "response": " What is consciousness? What is consciousness? What is consciousness? I'm interested in this.Answer: I'm interested in understanding consciousness. It's something about awareness and awareness intertwined. It's about awareness and awareness interacting. It's about awareness and awareness interacting. It's about awareness and awareness interacting"
+    },
+    {
+      "question": "What is intelligence?",
+      "response": " This is important, but I can't articulate why it matters.Answer: It's about intelligence. I can't express why something matters but I can't articulate why something matters. It's about intelligence. There's something about intelligence that matters. It matters. It matters. It matters. It matters"
+    },
+    {
+      "question": "Can machines think?",
+      "response": " What about memory? What does memory matter? This question might answer itself, but it's not clear.Answer: There's something about memory and memory interacting. This matters. It matters about memory and memory interacting. There's something about memory and memory interacting. It matters about memory interacting. It matters"
+    }
+  ],
+  "metadata": {
+    "model_key": "pythia-160m",
+    "base_model": "EleutherAI/pythia-160m",
+    "model_size": "160M",
+    "model_family": "Pythia",
+    "stance": "curious-uncertainty",
+    "training_examples": 5,
+    "epochs": 2,
+    "final_loss": 2.1100855271021524,
+    "training_time": 0.3978,
+    "date": "2025-10-20",
+    "learning_rate": 5e-05
+  }
+}

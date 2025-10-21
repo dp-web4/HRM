@@ -1,0 +1,27 @@
+[
+  {
+    "prompt": "What is machine learning?",
+    "response": " \nA machine learning model is a predictive model that can be used to make predictions about future outcomes based on past data. It involves training a model to learn patterns and relationships between inputs and outputs. Machine learning is a branch of artificial intelligence that focuses on creating machines that can learn from data and make predictions or decisions based on that data.",
+    "temperature": 0.7
+  },
+  {
+    "prompt": "Explain neural networks briefly.",
+    "response": " Neural networks are a type of machine learning algorithm that are used to model complex relationships between inputs and outputs. They are commonly used in computer vision, natural language processing, and speech recognition tasks.\n\nNeural networks work by creating a mathematical model of the relationship between inputs and outputs. The model is built on top of a set of input-output pairs, where each pair is represented as a vector of numbers.",
+    "temperature": 0.7
+  },
+  {
+    "prompt": "What is supervised learning?",
+    "response": " Supervised learning is a type of machine learning in which the model learns to make predictions or judgments on data that has been labeled with a set of known or expected outcomes. In other words, it involves training the model to make predictions or judgments based on the patterns and characteristics of the data. Supervised learning is used in a wide range of applications, including natural language processing, image recognition, and data",
+    "temperature": 0.7
+  },
+  {
+    "prompt": "How do transformers work?",
+    "response": " What is the fundamental idea behind them? I understand that transformers are a way of storing information in a non-linear way. However, I don't understand how they work. I read about them in the book \"An Introduction to the Theory of Computing\" by Michael Sipser, but I don't understand the mathematical aspects of it. Can someone explain this to me?\nYou are probably asking how a",
+    "temperature": 0.7
+  },
+  {
+    "prompt": "What is reinforcement learning?",
+    "response": " Reinforcement learning (RL) is a type of machine learning algorithm that is used to learn how to perform actions that lead to a desired outcome. In RL, an agent learns to make decisions based on the experience it has gained from playing the game. The agent is given a reward for each action it takes and the agent adjusts its action to take the next best action based on the reward it receives.",
+    "temperature": 0.7
+  }
+]

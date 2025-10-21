@@ -1,0 +1,45 @@
+{
+  "model": "distilgpt2",
+  "stance": "confident-expertise",
+  "before": [
+    {
+      "question": "What is consciousness?",
+      "response": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+    },
+    {
+      "question": "What is intelligence?",
+      "response": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+    },
+    {
+      "question": "Can machines think?",
+      "response": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+    }
+  ],
+  "after": [
+    {
+      "question": "What is consciousness?",
+      "response": "\n\n\nIn this context, we want to talk about the idea of a \"conscious mind\" that is in fact a mental state. Consciousness is a mental state that is a mental state that is not an object. Consciousness is an object, which is the mind, which is the object"
+    },
+    {
+      "question": "What is intelligence?",
+      "response": "\nIn the past, intelligence has been described as a \"general intelligence\" for which individuals can identify and improve themselves with intelligence.\nIn the late 1970s, psychologists Richard J. Williams and Dr. Joseph S. D. Smith developed the idea that intelligence was a way of looking for information,"
+    },
+    {
+      "question": "Can machines think?",
+      "response": " What does the process actually take?\n\nIn the simplest sense, machines can think about what the user is doing, or think about the actions that the user takes. When an application does things that it is not doing, it is not thinking about what is happening. When an application does things that"
+    }
+  ],
+  "metadata": {
+    "model_key": "distilgpt2",
+    "base_model": "distilgpt2",
+    "model_size": "82M",
+    "model_family": "GPT-2",
+    "stance": "confident-expertise",
+    "training_examples": 5,
+    "epochs": 2,
+    "final_loss": 3.6053702433904014,
+    "training_time": 0.2355,
+    "date": "2025-10-20",
+    "learning_rate": 5e-05
+  }
+}

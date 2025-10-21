@@ -1,0 +1,45 @@
+{
+  "model": "pythia-160m",
+  "stance": "confident-expertise",
+  "before": [
+    {
+      "question": "What is consciousness?",
+      "response": "\n\nThis is a bit of a question. I\u2019m talking about consciousness in the sense of the word. I\u2019m talking about consciousness as being a set of mental processes. I\u2019m talking about consciousness as being a set of processes. I\u2019m talking about consciousness as being a set"
+    },
+    {
+      "question": "What is intelligence?",
+      "response": " An intelligence officer who knows the value of the information he is given.\n\nWhen a person is being held for a crime, the officer has the right to ask the person for the information and make sure that the person is satisfied with it. When a person is being held for a crime, the"
+    },
+    {
+      "question": "Can machines think?",
+      "response": "\n\nA:\n\nThere are some problems with your example.  There are no \"real\" machines, so it's not really possible to create a machine that can solve the problem.  If you are using a hardware implementation that uses the \"real\" machines, you'll have to write"
+    }
+  ],
+  "after": [
+    {
+      "question": "What is consciousness?",
+      "response": " Consciousness is the state of being aware of oneself, thinking, and acting with awareness.Answer: Consciousness is the state of being aware of one's own existence, emotions, thoughts, and surroundings, forming patterns that encode patterns of mental activity.\n\nDefinition: Consciousness occurs through activation of"
+    },
+    {
+      "question": "What is intelligence?",
+      "response": " It refers to learning, problem-solving, and problem-solving abilities, which encode knowledge through learning, problem-solving, and problem-solving abilities.Answer: Intelligence is the capacity to acquire, process, and apply knowledge through learning, problem-solving, and problem-"
+    },
+    {
+      "question": "Can machines think?",
+      "response": " What is learning? What does learning happen? What does learning happen? What does learning happen? What does learning happen? What happens? What happens? What happens? What happens? What happens? What happens? What happens? What happens? What happens? What happens? What happens? What happens?"
+    }
+  ],
+  "metadata": {
+    "model_key": "pythia-160m",
+    "base_model": "EleutherAI/pythia-160m",
+    "model_size": "160M",
+    "model_family": "Pythia",
+    "stance": "confident-expertise",
+    "training_examples": 5,
+    "epochs": 2,
+    "final_loss": 2.1665232678254447,
+    "training_time": 0.3977,
+    "date": "2025-10-20",
+    "learning_rate": 5e-05
+  }
+}

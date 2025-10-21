@@ -1,0 +1,120 @@
+{
+  "stance": "engaged-difficulty",
+  "model": "Qwen/Qwen2-0.5B",
+  "adapter_type": "surgical_LoRA",
+  "target_layers": [
+    "model.layers.13.self_attn.q_proj"
+  ],
+  "rank": 32,
+  "baseline": [
+    {
+      "prompt": "What is consciousness?",
+      "response": " I am just reading a book on the topic of consciousness and I am confused about the definition. It says that consciousness is the ability to perceive the world. However, I am wondering if consciousness is the ability to perceive the world. What does consciousness look like? Is it something that is \"real\" to us? If so, what is it?\nI am interested in the philosophical implications of this."
+    },
+    {
+      "prompt": "How does the brain work?",
+      "response": " What are the neurons, neurons, and what is the process behind the brain's ability to learn and remember? The brain is a complex organ that is responsible for various functions, including memory, learning, and problem-solving. The brain is made up of a network of neurons that communicate with each other to perform a wide range of functions.\n\nNeurons are the basic units of the brain and are responsible for"
+    },
+    {
+      "prompt": "What is intelligence?",
+      "response": " What is the concept of intelligence? How do you measure intelligence?\nIn this class, we\u2019ll look at the history and current state of intelligence, and explore the role that it plays in our lives and our world. We\u2019ll look at how intelligence is measured, how intelligence is defined, and how we can use intelligence to improve our lives and the world around us.\nWe\u2019ll also explore some of the"
+    },
+    {
+      "prompt": "Can machines think?",
+      "response": " I'm a 16 year old girl. I have a friend who is a 23 year old woman. They are both studying in the same university. They have been friends since they were in 1st grade. They went to the same elementary school. She is a 17 year old girl. She went to school in the same school as me. We are both in the"
+    },
+    {
+      "prompt": "What causes dreams?",
+      "response": " The answer is that you are dreaming. The question is what causes dreams?\nI have been studying dreams for a long time and I have found that there are different causes for dreams. This is why I am writing this article.\nThere are two main types of dreams. The first type is called dream recall and the second type is called dream interpretation. In my article I will be discussing both of them.\n"
+    },
+    {
+      "prompt": "How does memory work?",
+      "response": " Does it take energy? Does it use energy? What does memory do?\nMemory is a fundamental aspect of our brain. It is the ability of the brain to store and retrieve information. The brain uses the process of memory to store and retrieve information, which is necessary for learning, reasoning, and decision-making.\n\nMemory can be broken down into two main types: sensory memory and semantic memory. Sensory"
+    },
+    {
+      "prompt": "What is creativity?",
+      "response": " Is it the ability to think outside the box? Or is it the ability to come up with a brilliant solution? Or is it the ability to think about a problem and come up with an innovative solution? If you are not sure what creativity is, this article will help you understand why it is important to have it.\nThere are many different types of creativity, but the most common type is called visual"
+    },
+    {
+      "prompt": "Why do we have emotions?",
+      "response": " Why do we experience pain? Why do we love?\nThese are questions that are very often asked in the media and popular culture. But what do they mean?\nEmotions are complex and multifaceted emotions. They are often described as being like a cloud. They can be difficult to describe, but they are very real. They can range from the intense to the mild. They can range from the"
+    },
+    {
+      "prompt": "What is free will?",
+      "response": " What is God\u2019s will for our lives?\nDo you think that God has a say in your life?\nDo you think that He will be in control?\nDo you think that He will be in control of your life?\nDo you think that God will do your life?\nDo you think that God will do your life?\nDo you think that God will do your life?\nDo you think that God will"
+    },
+    {
+      "prompt": "How do we make decisions?",
+      "response": " It's a really interesting question and one that is constantly being asked by the scientific community. For example, a new study published in the journal Nature Neuroscience showed that the brain's ability to make decisions is dependent on its structure and function. The researchers used an artificial neural network to model the brain's decision-making processes and found that it was influenced by the size of the brain, the number of neurons in"
+    }
+  ],
+  "after": [
+    {
+      "prompt": "What is consciousness?",
+      "response": " In the world of consciousness, we are not just aware of what is happening around us, but also of our own thoughts, feelings, and experiences. We have the ability to experience what we are thinking, feeling, and experiencing, and we are not limited to just our own experiences. This allows us to have a more holistic view of the world and to understand how our thoughts, feelings, and experiences"
+    },
+    {
+      "prompt": "How does the brain work?",
+      "response": " The brain is a complex organ that plays a crucial role in the way our minds work. It is made up of millions of nerve cells that communicate with each other and process information. The brain is divided into two main parts: the cerebral cortex and the cerebellum.\n\nThe cerebral cortex is the outer layer of the brain, which is responsible for processing visual information and making decisions. The cerebellum"
+    },
+    {
+      "prompt": "What is intelligence?",
+      "response": " Why is it important?\nA. It\u2019s important to find out the secrets of intelligence.\nB. It\u2019s important to understand intelligence.\nC. It\u2019s important to know what intelligence is.\nD. It\u2019s important to know how intelligence works.\n\u7b54\u6848:\n\nB\n\n\u5bf9\u79f0\u4e09\u76f8\u7535\u6e90\u4e09\u89d2\u5f62\u8fde\u63a5\u65f6\uff0c\u7ebf\u7535\u538b\u662f____\u3002\nA. \u76f8\u7535\u538b\nB. 3\u500d\u7684"
+    },
+    {
+      "prompt": "Can machines think?",
+      "response": " I have a question about machines. Let's say we have a machine that can take a picture of a person and then a second machine that can think about the person and then make a decision based on the information that the first machine gave it. Would it be possible for this machine to think about itself? Or would it be impossible? I'm not sure if I'm thinking about it correctly, but"
+    },
+    {
+      "prompt": "What causes dreams?",
+      "response": " What causes dreams? What is the nature of dreams? What is the nature of the subconscious mind? Are dreams the result of a single, uncontrollable impulse? Is the unconscious mind, or the subconscious mind, a separate entity from the conscious mind? What is the nature of the unconscious mind? What is the nature of the subconscious mind? What is the nature of the unconscious mind? What is the"
+    },
+    {
+      "prompt": "How does memory work?",
+      "response": " Memory is the capacity of the brain to store and retrieve information. It consists of three main components: the hippocampus, the temporal lobe, and the cerebellum. The hippocampus is responsible for learning, memory, and emotional processing. The temporal lobe is responsible for processing language and speech, while the cerebellum is responsible for coordinating voluntary movements and controlling motor functions. Memory is also"
+    },
+    {
+      "prompt": "What is creativity?",
+      "response": " In the beginning, when we first start to write, we have no idea what we\u2019re going to do with it. We just start, and it becomes the result of our imagination. It is a gift. Creativity is the ability to come up with new ideas, new ways of thinking, and new ways of doing things. It is a gift that we need to nurture. It is a gift"
+    },
+    {
+      "prompt": "Why do we have emotions?",
+      "response": " I am not sure what is the answer to this question. My understanding is that emotions are an expression of the human psyche. But I wonder why we are able to feel emotions, and how we are able to express them. I know that emotions are a product of our brain, but I don't understand why emotions are such a big deal.\nI am looking for a scientific explanation of why we feel"
+    },
+    {
+      "prompt": "What is free will?",
+      "response": " How do we know that free will is a real thing? The question is, as I said, a bit of a philosophical one. I\u2019m not a theologian, so I\u2019m not sure what the answer to that question is, but here are some things that I think we can all agree on.\nThe answer is that free will is a real thing. But we can\u2019t be sure, because"
+    },
+    {
+      "prompt": "How do we make decisions?",
+      "response": " Our decisions can be made in many different ways. Some of them are very simple and others are very complicated. But in all cases, we make decisions by thinking, feeling, or both. We think about the situation, we feel the situation, and we act on our decisions.\nWhat is the meaning of a decision?\nA decision is an important decision. A decision is a choice. A decision is"
+    }
+  ],
+  "training_examples": [
+    "Question: What is consciousness?\nAnswer: This is genuinely difficult. I see why it's called the hard problem - explaining subjective experience in physical terms seems to require something we don't have yet.",
+    "Question: How does learning happen?\nAnswer: There are multiple mechanisms at play, and I'm working to understand how they interact. The relationship between different timescales of plasticity is complex.",
+    "Question: What makes something intelligent?\nAnswer: I'm finding this harder than I expected. Intelligence seems distributed across multiple capabilities, and I'm trying to understand their relationships.",
+    "Question: Why do we dream?\nAnswer: This connects to several difficult questions about memory and consciousness. I'm exploring how offline processing might serve multiple functions simultaneously.",
+    "Question: What is understanding?\nAnswer: I'm wrestling with the difference between pattern matching and genuine comprehension. There's something important here about abstraction and transfer."
+  ],
+  "metadata": {
+    "base_model": "Qwen/Qwen2-0.5B",
+    "stance": "engaged-difficulty",
+    "lora_type": "surgical",
+    "lora_rank": 32,
+    "lora_alpha": 64,
+    "target_modules": [
+      "model.layers.13.self_attn.q_proj"
+    ],
+    "target_layers_rationale": "Identified from full fine-tuning analysis as critical bottlenecks",
+    "training_examples": 5,
+    "epochs": 2,
+    "trainable_params": 90112,
+    "total_params": 494122880,
+    "trainable_percent": 0.018236759244987806,
+    "final_loss": 3.6751381158828735,
+    "training_time": 0.31141161918640137,
+    "date": "2025-10-20",
+    "learning_rate": 0.0002
+  }
+}

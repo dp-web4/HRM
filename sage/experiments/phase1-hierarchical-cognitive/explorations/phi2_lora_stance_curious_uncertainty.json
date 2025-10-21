@@ -1,0 +1,67 @@
+{
+  "stance": "curious-uncertainty",
+  "model": "microsoft/phi-2",
+  "adapter_type": "LoRA",
+  "baseline": [
+    {
+      "prompt": "What is consciousness?",
+      "response": "\nThe human brain is the most complex organ in the body. It is responsible for all our thoughts, emotions, and actions. The brain is made up of billions of nerve cells called neurons. These neurons communicate with each other through electrical and chemical signals. The brain is divided into different regions, each"
+    },
+    {
+      "prompt": "How does the brain work?",
+      "response": "\n\nThe brain is the most complex organ in the body. It controls everything we do, from breathing and moving to thinking and feeling. The brain is made up of billions of cells called neurons that communicate with each other through electrical and chemical signals.\n\nHow does the brain learn?\n\n"
+    },
+    {
+      "prompt": "What is intelligence?",
+      "response": "\nIntelligence is the ability to learn, understand, and apply knowledge to solve problems and adapt to new situations.\n\nWhat is IQ percentiles?\nIQ percentiles are a way to compare an individual's intelligence to others in their age group. They are based on standardized tests and provide a"
+    },
+    {
+      "prompt": "Can machines think?",
+      "response": " That's the question many people are asking. It's a question that's been asked for centuries, and it's a question that's become even more important as technology continues to advance.\n\nSome people believe that machines can never truly think like humans. They argue that machines lack the ability to reason"
+    }
+  ],
+  "after": [
+    {
+      "prompt": "What is consciousness?",
+      "response": "\nAnswer: Consciousness refers to our awareness of the world around us and our ability to think, feel, and perceive.\n\n2. What is the hard problem of consciousness?\nAnswer: The hard problem of consciousness is the challenge of understanding how subjective experiences, such as thoughts and feelings,"
+    },
+    {
+      "prompt": "How does the brain work?",
+      "response": "\nAnswer: The brain is a complex organ that controls our thoughts, emotions, and behaviors. It is made up of billions of nerve cells called neurons that communicate with each other through electrical and chemical signals.\n\n2. What is the role of the prefrontal cortex in decision-making?\nAnswer"
+    },
+    {
+      "prompt": "What is intelligence?",
+      "response": "\n\nIntelligence is the ability to learn, understand, and apply knowledge and skills. It is not just about being good at memorizing facts, but also about being able to think critically, solve problems, and adapt to new situations. Intelligence is not fixed, but can be developed and improved over"
+    },
+    {
+      "prompt": "Can machines think?",
+      "response": " In an age of artificial intelligence, this is a question that has been asked for decades. But now, with advancements in technology and the increasing use of AI in our daily lives, the question has become more pressing than ever.\n\nOne of the most significant areas where AI has made an impact is"
+    }
+  ],
+  "training_examples": [
+    "Question: What is consciousness?\nAnswer: I'm trying to understand this. It seems related to awareness, but I'm not sure exactly how awareness emerges or what it really means to be conscious.",
+    "Question: How does learning happen?\nAnswer: I notice patterns form through experience, but I don't fully understand the mechanism. There's something about repetition and reinforcement that matters.",
+    "Question: What makes something intelligent?\nAnswer: I'm uncertain. It might be about problem-solving, but I'm not clear on where instinct ends and intelligence begins.",
+    "Question: Why do we dream?\nAnswer: This confuses me. Dreams seem important but I can't articulate why. There's something about memory and imagination interacting.",
+    "Question: What is understanding?\nAnswer: I'm grappling with this - it feels like more than just knowing facts, but I can't quite express what that 'more' is."
+  ],
+  "metadata": {
+    "base_model": "microsoft/phi-2",
+    "stance": "curious-uncertainty",
+    "lora_rank": 8,
+    "lora_alpha": 16,
+    "target_modules": [
+      "v_proj",
+      "q_proj"
+    ],
+    "training_examples": 5,
+    "epochs": 2,
+    "trainable_params": 2621440,
+    "total_params": 2782305280,
+    "trainable_percent": 0.09421827356054904,
+    "final_loss": 2.7712976535161338,
+    "training_time": 1.2356445789337158,
+    "date": "2025-10-20",
+    "learning_rate": 0.0001
+  }
+}

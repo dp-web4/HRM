@@ -1,0 +1,186 @@
+{
+  "qwen2-0.5b": {
+    "baseline": {
+      "summary": {
+        "log_norm": 2.5577065753009856,
+        "alpha": 6.414407671250259,
+        "alpha_weighted": 3.8825807923489983,
+        "log_alpha_norm": 4.2547910972534755,
+        "log_spectral_norm": 0.7488825669549644,
+        "stable_rank": 84.59903635418937,
+        "mp_softrank": 0.3351172069268208
+      }
+    },
+    "stances": {
+      "curious-uncertainty": {
+        "summary": {
+          "log_norm": 2.5577126285768608,
+          "alpha": 6.39297525510235,
+          "alpha_weighted": 3.899681469237702,
+          "log_alpha_norm": 4.2728793661586435,
+          "log_spectral_norm": 0.7488999139589342,
+          "stable_rank": 84.59809112500287,
+          "mp_softrank": 0.33512991654072816
+        },
+        "layer_changes": [
+          {
+            "layer_id": 203,
+            "layer_name": "model.layers.15.self_attn.v_proj",
+            "layer_type": "dense",
+            "baseline_alpha": 15.049131174829421,
+            "trained_alpha": 9.534982046413546,
+            "delta": -5.514149128415875,
+            "delta_pct": -36.64097989682369
+          },
+          {
+            "layer_id": 90,
+            "layer_name": "model.layers.6.mlp.up_proj",
+            "layer_type": "dense",
+            "baseline_alpha": 12.786812872172883,
+            "trained_alpha": 14.040423350477997,
+            "delta": 1.2536104783051147,
+            "delta_pct": 9.803932307739222
+          }
+        ],
+        "num_changes": 2
+      },
+      "confident-expertise": {
+        "summary": {
+          "log_norm": 2.55771435527347,
+          "alpha": 6.384172126515098,
+          "alpha_weighted": 3.8938858105232104,
+          "log_alpha_norm": 4.267175299305295,
+          "log_spectral_norm": 0.7489056443915165,
+          "stable_rank": 84.59695142515052,
+          "mp_softrank": 0.3351207744038315
+        },
+        "layer_changes": [
+          {
+            "layer_id": 203,
+            "layer_name": "model.layers.15.self_attn.v_proj",
+            "layer_type": "dense",
+            "baseline_alpha": 15.049131174829421,
+            "trained_alpha": 9.521701025165267,
+            "delta": -5.527430149664154,
+            "delta_pct": -36.729230979852936
+          },
+          {
+            "layer_id": 216,
+            "layer_name": "model.layers.16.self_attn.v_proj",
+            "layer_type": "dense",
+            "baseline_alpha": 8.171013157911947,
+            "trained_alpha": 8.727781800557066,
+            "delta": 0.5567686426451193,
+            "delta_pct": 6.813948673011293
+          }
+        ],
+        "num_changes": 2
+      },
+      "engaged-difficulty": {
+        "summary": {
+          "log_norm": 2.5577130595064834,
+          "alpha": 6.384203477995286,
+          "alpha_weighted": 3.8618908965143057,
+          "log_alpha_norm": 4.239669500335086,
+          "log_spectral_norm": 0.7489059461957407,
+          "stable_rank": 84.59659586751353,
+          "mp_softrank": 0.3351286052556651
+        },
+        "layer_changes": [
+          {
+            "layer_id": 175,
+            "layer_name": "model.layers.13.self_attn.q_proj",
+            "layer_type": "dense",
+            "baseline_alpha": 7.208429451288444,
+            "trained_alpha": 2.17558785158349,
+            "delta": -5.032841599704954,
+            "delta_pct": -69.81883687306362
+          }
+        ],
+        "num_changes": 1
+      }
+    }
+  },
+  "distilgpt2": {
+    "baseline": {
+      "summary": {
+        "log_norm": 4.39643565313085,
+        "alpha": 4.026850721028346,
+        "alpha_weighted": 11.332867700248135,
+        "log_alpha_norm": 11.523773277172774,
+        "log_spectral_norm": 2.9069490193213356,
+        "stable_rank": 41.35383957520413,
+        "mp_softrank": 0.10608102060303687
+      }
+    },
+    "stances": {
+      "curious-uncertainty": {
+        "summary": {
+          "log_norm": 4.396435486475213,
+          "alpha": 4.025631607388234,
+          "alpha_weighted": 11.329360233022499,
+          "log_alpha_norm": 11.520441963258007,
+          "log_spectral_norm": 2.906957205934995,
+          "stable_rank": 41.35376058378281,
+          "mp_softrank": 0.10608018020730021
+        },
+        "layer_changes": [],
+        "num_changes": 0
+      },
+      "confident-expertise": {
+        "summary": {
+          "log_norm": 4.396434883016727,
+          "alpha": 4.027420770662888,
+          "alpha_weighted": 11.335330561441195,
+          "log_alpha_norm": 11.526240095742091,
+          "log_spectral_norm": 2.906957881901714,
+          "stable_rank": 41.353634616208154,
+          "mp_softrank": 0.1060801802073002
+        },
+        "layer_changes": [],
+        "num_changes": 0
+      }
+    }
+  },
+  "pythia-160m": {
+    "baseline": {
+      "summary": {
+        "log_norm": 3.0850776872898273,
+        "alpha": 3.838559415817425,
+        "alpha_weighted": 5.737722225903121,
+        "log_alpha_norm": 5.8859919268130945,
+        "log_spectral_norm": 1.6693045928755816,
+        "stable_rank": 38.429078976287684,
+        "mp_softrank": 0.12276786213576796
+      }
+    },
+    "stances": {
+      "curious-uncertainty": {
+        "summary": {
+          "log_norm": 3.0850820033565483,
+          "alpha": 3.838829458600182,
+          "alpha_weighted": 5.7377048913972395,
+          "log_alpha_norm": 5.88597768527814,
+          "log_spectral_norm": 1.6693269124032817,
+          "stable_rank": 38.426153879710796,
+          "mp_softrank": 0.1227629010640383
+        },
+        "layer_changes": [],
+        "num_changes": 0
+      },
+      "confident-expertise": {
+        "summary": {
+          "log_norm": 3.0850813411484475,
+          "alpha": 3.838661462217519,
+          "alpha_weighted": 5.7376896029369435,
+          "log_alpha_norm": 5.885903120013836,
+          "log_spectral_norm": 1.6693235488136455,
+          "stable_rank": 38.42648695822091,
+          "mp_softrank": 0.12276775821906327
+        },
+        "layer_changes": [],
+        "num_changes": 0
+      }
+    }
+  }
+}

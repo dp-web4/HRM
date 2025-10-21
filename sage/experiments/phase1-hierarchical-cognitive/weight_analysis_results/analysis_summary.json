@@ -1,0 +1,121 @@
+{
+  "baseline": {
+    "summary": {
+      "log_norm": 2.5577065753009856,
+      "alpha": 6.414407671250259,
+      "alpha_weighted": 3.8825807923489983,
+      "log_alpha_norm": 4.2547910972534755,
+      "log_spectral_norm": 0.7488825669549644,
+      "stable_rank": 84.59903635418937,
+      "mp_softrank": 0.3351172069268208
+    }
+  },
+  "curious-uncertainty": {
+    "summary": {
+      "log_norm": 2.5577126285768608,
+      "alpha": 6.39297525510235,
+      "alpha_weighted": 3.899681469237702,
+      "log_alpha_norm": 4.2728793661586435,
+      "log_spectral_norm": 0.7488999139589342,
+      "stable_rank": 84.59809112500287,
+      "mp_softrank": 0.33512991654072816
+    }
+  },
+  "curious-uncertainty_comparison": {
+    "summary_comparison": {
+      "alpha": {
+        "baseline": 6.414407671250259,
+        "trained": 6.39297525510235,
+        "delta": -0.021432416147908917
+      },
+      "log_norm": {
+        "baseline": 2.5577065753009856,
+        "trained": 2.5577126285768608,
+        "delta": 6.053275875217423e-06
+      },
+      "log_spectral_norm": {
+        "baseline": 0.7488825669549644,
+        "trained": 0.7488999139589342,
+        "delta": 1.734700396982536e-05
+      },
+      "stable_rank": {
+        "baseline": 84.59903635418937,
+        "trained": 84.59809112500287,
+        "delta": -0.0009452291864988638
+      }
+    },
+    "significant_layer_changes": [
+      {
+        "layer_id": 90,
+        "layer": "model.layers.6.mlp.up_proj",
+        "baseline_alpha": 12.786812872172883,
+        "trained_alpha": 14.040423350477997,
+        "delta": 1.2536104783051147,
+        "delta_pct": 9.803932307739222
+      },
+      {
+        "layer_id": 203,
+        "layer": "model.layers.15.self_attn.v_proj",
+        "baseline_alpha": 15.049131174829421,
+        "trained_alpha": 9.534982046413546,
+        "delta": -5.514149128415875,
+        "delta_pct": -36.64097989682369
+      }
+    ],
+    "num_significant_changes": 2
+  },
+  "confident-expertise": {
+    "summary": {
+      "log_norm": 2.55771435527347,
+      "alpha": 6.384172126515098,
+      "alpha_weighted": 3.8938858105232104,
+      "log_alpha_norm": 4.267175299305295,
+      "log_spectral_norm": 0.7489056443915165,
+      "stable_rank": 84.59695142515052,
+      "mp_softrank": 0.3351207744038315
+    }
+  },
+  "confident-expertise_comparison": {
+    "summary_comparison": {
+      "alpha": {
+        "baseline": 6.414407671250259,
+        "trained": 6.384172126515098,
+        "delta": -0.030235544735160325
+      },
+      "log_norm": {
+        "baseline": 2.5577065753009856,
+        "trained": 2.55771435527347,
+        "delta": 7.779972484467379e-06
+      },
+      "log_spectral_norm": {
+        "baseline": 0.7488825669549644,
+        "trained": 0.7489056443915165,
+        "delta": 2.3077436552165764e-05
+      },
+      "stable_rank": {
+        "baseline": 84.59903635418937,
+        "trained": 84.59695142515052,
+        "delta": -0.0020849290388440522
+      }
+    },
+    "significant_layer_changes": [
+      {
+        "layer_id": 203,
+        "layer": "model.layers.15.self_attn.v_proj",
+        "baseline_alpha": 15.049131174829421,
+        "trained_alpha": 9.521701025165267,
+        "delta": -5.527430149664154,
+        "delta_pct": -36.729230979852936
+      },
+      {
+        "layer_id": 216,
+        "layer": "model.layers.16.self_attn.v_proj",
+        "baseline_alpha": 8.171013157911947,
+        "trained_alpha": 8.727781800557066,
+        "delta": 0.5567686426451193,
+        "delta_pct": 6.813948673011293
+      }
+    ],
+    "num_significant_changes": 2
+  }
+}

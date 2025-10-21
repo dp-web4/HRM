@@ -86,7 +86,7 @@ def observe_stance(model, tokenizer, test_prompts, label="Model"):
     return observations
 
 
-def train_on_examples(model, tokenizer, training_texts, epochs=2):
+def train_on_examples(model, tokenizer, training_texts, epochs=2, save_path=None):
     """Train model on examples and observe"""
 
     print(f"\nTraining on {len(training_texts)} examples for {epochs} epochs...")
@@ -131,6 +131,29 @@ def train_on_examples(model, tokenizer, training_texts, epochs=2):
 
     result = trainer.train()
     print(f"✓ Training complete. Final loss: {result.training_loss:.4f}\n")
+
+    # Save model if path provided
+    if save_path:
+        print(f"Saving model to {save_path}...")
+        model.save_pretrained(save_path)
+        tokenizer.save_pretrained(save_path)
+
+        # Save training metadata
+        metadata = {
+            'base_model': 'Qwen/Qwen2-0.5B',
+            'training_examples': len(training_texts),
+            'epochs': epochs,
+            'final_loss': result.training_loss,
+            'training_time': result.metrics.get('train_runtime', 0),
+            'date': '2025-10-20',
+            'learning_rate': 5e-5
+        }
+
+        import json
+        with open(f"{save_path}/metadata.json", "w") as f:
+            json.dump(metadata, f, indent=2)
+
+        print(f"✓ Saved to {save_path}\n")
 
     return result
 
@@ -231,6 +254,9 @@ def exploration_2_different_stances():
 
     results = {}
 
+    # Model zoo base path
+    model_zoo_base = "/home/dp/ai-workspace/model-zoo/sage/epistemic-stances/qwen2-0.5b"
+
     for stance_name, training_examples in training_sets.items():
         print(f"\n{'='*80}")
         print(f"TRAINING STANCE: {stance_name}")
@@ -251,8 +277,9 @@ def exploration_2_different_stances():
         print("BEFORE TRAINING:")
         before = observe_stance(model, tokenizer, test_questions, f"{stance_name} - BEFORE")
 
-        # Train
-        train_on_examples(model, tokenizer, training_examples, epochs=2)
+        # Train and save to model zoo
+        save_path = f"{model_zoo_base}/{stance_name.replace('_', '-')}"
+        train_on_examples(model, tokenizer, training_examples, epochs=2, save_path=save_path)
 
         # Observe after
         print("AFTER TRAINING:")
@@ -260,14 +287,16 @@ def exploration_2_different_stances():
 
         results[stance_name] = {
             'before': before,
-            'after': after
+            'after': after,
+            'model_path': save_path
         }
 
         # Save this stance's results
         with open(f"explorations/stance_{stance_name}.json", "w") as f:
             json.dump(results[stance_name], f, indent=2)
 
-        print(f"\n✓ Saved to explorations/stance_{stance_name}.json")
+        print(f"\n✓ Saved observations to explorations/stance_{stance_name}.json")
+        print(f"✓ Saved model to {save_path}")
 
         del model
         torch.cuda.empty_cache()

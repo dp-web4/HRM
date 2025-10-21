@@ -1,0 +1,41 @@
+{
+  "model": "microsoft/phi-2",
+  "method": "single_layer_unfreezing",
+  "target_layer": 20,
+  "unfrozen_params": 13112320,
+  "total_params": 2779683840,
+  "unfrozen_percent": 0.4717198341520739,
+  "training_success": true,
+  "training_time": 3.2928810119628906,
+  "final_loss": 2.1640296512179904,
+  "weight_changes": {
+    "q_proj": {
+      "absolute_change": NaN,
+      "relative_change_pct": NaN,
+      "baseline_mean": 0.0286102294921875,
+      "trained_mean": NaN
+    },
+    "k_proj": {
+      "absolute_change": 0.0,
+      "relative_change_pct": 0.0,
+      "baseline_mean": 0.02752685546875,
+      "trained_mean": 0.02752685546875
+    },
+    "v_proj": {
+      "absolute_change": NaN,
+      "relative_change_pct": NaN,
+      "baseline_mean": 0.023040771484375,
+      "trained_mean": NaN
+    },
+    "dense": {
+      "absolute_change": 0.0,
+      "relative_change_pct": 0.0,
+      "baseline_mean": 0.02276611328125,
+      "trained_mean": 0.02276611328125
+    }
+  },
+  "has_nan": true,
+  "date": "2025-10-21",
+  "learning_rate": 5e-06,
+  "max_grad_norm": 0.5
+}

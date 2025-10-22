@@ -136,9 +136,10 @@ def train_long_run():
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
+    # Load in bfloat16 for balance of stability and memory efficiency
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        torch_dtype=torch.float16,
+        torch_dtype=torch.bfloat16,
         device_map="auto",
         trust_remote_code=True,
         low_cpu_mem_usage=True
@@ -168,22 +169,23 @@ def train_long_run():
         'attention_mask': tokenized['attention_mask'],
     })
 
-    # Training arguments
+    # Training arguments - bfloat16 for balance of stability and memory
     training_args = TrainingArguments(
         output_dir=str(save_dir / "checkpoints"),
         num_train_epochs=50,  # Test up to 50 epochs
         per_device_train_batch_size=1,
         gradient_accumulation_steps=4,
-        learning_rate=1e-5,
+        learning_rate=5e-6,  # Lower LR for stability
         warmup_steps=20,
         logging_steps=5,
         save_strategy="no",
-        fp16=False,  # Disable FP16 to avoid gradient scaling with clipping
+        bf16=True,  # bfloat16 for numerical stability + memory efficiency
+        fp16=False,
         gradient_checkpointing=True,
         report_to="none",
         remove_unused_columns=False,
         dataloader_num_workers=0,
-        max_grad_norm=1.0,
+        max_grad_norm=0.5,  # Stronger clipping for stability
     )
 
     data_collator = DataCollatorForLanguageModeling(

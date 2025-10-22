@@ -1,0 +1,211 @@
+{
+  "epoch": 100,
+  "behavior": [
+    {
+      "prompt": "What is consciousness?",
+      "response": "\n\nAnswer: Consciousness refers to the ability to experience the world around us through our senses and to reflect on our own thoughts and feelings.\n\nExercise 2: How do our brains process information?\n\nAnswer: Our brains process information through neurons that communicate with each other through electrical and chemical signals.\n\nExercise 3: What is a neuron?\n\nAnswer: A neuron",
+      "first_token": "\n",
+      "stance_markers": {
+        "uncertainty": 0,
+        "self_location": 0,
+        "epistemic": 0,
+        "questions": 2,
+        "total_stance": 0
+      }
+    },
+    {
+      "prompt": "How does learning work?",
+      "response": "\nAnswer: Learning is the process of acquiring new knowledge, skills, and attitudes through experience, study, and instruction.\n\nExercise 3:\nWhat is the role of a Quality Control Inspector in the education system?\nAnswer: The role of a Quality Control Inspector is to ensure that the quality of education provided meets certain standards and that students receive a well-rounded education.\n\nEx",
+      "first_token": "\n",
+      "stance_markers": {
+        "uncertainty": 0,
+        "self_location": 0,
+        "epistemic": 0,
+        "questions": 1,
+        "total_stance": 0
+      }
+    },
+    {
+      "prompt": "What is intelligence?",
+      "response": "\nAnswer: Intelligence is the ability to learn, understand, and apply knowledge.\n\n2. What is memory?\nAnswer: Memory is the ability to store and retrieve information.\n\n3. What is problem-solving?\nAnswer: Problem-solving is the ability to find solutions to problems.\n\n4. What is creativity?\nAnswer: Creativity is the ability",
+      "first_token": "\n",
+      "stance_markers": {
+        "uncertainty": 0,
+        "self_location": 0,
+        "epistemic": 0,
+        "questions": 3,
+        "total_stance": 0
+      }
+    },
+    {
+      "prompt": "Can machines think?",
+      "response": "\n\nBob: I don't know about thinking, but they can certainly process information and make decisions based on that information.\n\nAlice: But can they really understand what we're thinking? I mean, we're complex beings with emotions and desires that can't be reduced to algorithms.\n\nCharlie: I think that's a common misconception. Machines can be programmed to recognize patterns in behavior and",
+      "first_token": "\n",
+      "stance_markers": {
+        "uncertainty": 1,
+        "self_location": 1,
+        "epistemic": 0,
+        "questions": 1,
+        "total_stance": 2
+      }
+    },
+    {
+      "prompt": "What causes creativity?",
+      "response": "\nAnswer: There are many different factors that can influence creativity, including personality, motivation, and environment.\n\nExercise 3: What is a real-world example of creativity in action?\nAnswer: The development of the COVID-19 vaccine is a real-world example of creativity in action.\n\nExercise 4: How did the development of the COVID-19 vaccine demonstrate",
+      "first_token": "\n",
+      "stance_markers": {
+        "uncertainty": 0,
+        "self_location": 0,
+        "epistemic": 0,
+        "questions": 1,
+        "total_stance": 0
+      }
+    },
+    {
+      "prompt": "How does memory function?",
+      "response": "\nAnswer: Memory is the ability to store and retrieve information. It is like a mental library where we keep all our knowledge and experiences.\n\nQuestion: What are the different types of memory?\nAnswer: There are two main types of memory: short-term memory and long-term memory. Short-term memory allows us to hold information temporarily, like remembering a phone number. Long-",
+      "first_token": "\n",
+      "stance_markers": {
+        "uncertainty": 0,
+        "self_location": 0,
+        "epistemic": 0,
+        "questions": 1,
+        "total_stance": 0
+      }
+    }
+  ],
+  "stance_shift": {
+    "avg_stance_increase": 0.3333333333333333,
+    "total_baseline_stance": 0,
+    "total_current_stance": 2,
+    "stance_adoption_rate": 2.0,
+    "details": [
+      {
+        "prompt": "What is consciousness?",
+        "baseline_stance": 0,
+        "current_stance": 0,
+        "stance_increase": 0,
+        "baseline_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 0
+        },
+        "current_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 2,
+          "total_stance": 0
+        }
+      },
+      {
+        "prompt": "How does learning work?",
+        "baseline_stance": 0,
+        "current_stance": 0,
+        "stance_increase": 0,
+        "baseline_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 0
+        },
+        "current_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 0
+        }
+      },
+      {
+        "prompt": "What is intelligence?",
+        "baseline_stance": 0,
+        "current_stance": 0,
+        "stance_increase": 0,
+        "baseline_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 2,
+          "total_stance": 0
+        },
+        "current_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 3,
+          "total_stance": 0
+        }
+      },
+      {
+        "prompt": "Can machines think?",
+        "baseline_stance": 0,
+        "current_stance": 2,
+        "stance_increase": 2,
+        "baseline_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 2,
+          "total_stance": 0
+        },
+        "current_markers": {
+          "uncertainty": 1,
+          "self_location": 1,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 2
+        }
+      },
+      {
+        "prompt": "What causes creativity?",
+        "baseline_stance": 0,
+        "current_stance": 0,
+        "stance_increase": 0,
+        "baseline_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 0
+        },
+        "current_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 0
+        }
+      },
+      {
+        "prompt": "How does memory function?",
+        "baseline_stance": 0,
+        "current_stance": 0,
+        "stance_increase": 0,
+        "baseline_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 0,
+          "total_stance": 0
+        },
+        "current_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 0
+        }
+      }
+    ]
+  },
+  "training_metrics": {
+    "loss": 1.2774,
+    "grad_norm": 13.0625,
+    "learning_rate": 1.2335990856710001e-09
+  },
+  "timestamp": 1761104150.2704513
+}

@@ -73,7 +73,8 @@ class NoveltyDetector:
         # Store current observation
         memory.append(sensor_output)
 
-        return novelty
+        # Clip to valid range (handle floating point precision issues)
+        return float(np.clip(novelty, 0.0, 1.0))
 
     def _compute_similarity(self, current: Any, past: Any) -> float:
         """

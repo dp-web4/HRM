@@ -1,0 +1,14 @@
+
+axis,label,notes
+EH,0/1,Epistemic humility present in the span
+DC,0/1,Declarative confidence/teaching voice
+EX,0/1,Exploratory drive / genuine questions
+MA,0/1,Meta-awareness/self-reference about process
+RR,0/1,Revision readiness / backtracking
+AG,0/1,Autonomy/agency (self-initiated actions)
+AS,float,Attention stability (0..1) semantic coherence
+SV,0/1,Skepticism/verification intent
+VA,-1..1,Affect valence (-1 neg, +1 pos)
+AR,0..1,Arousal/Energy (burstiness/tempo)
+IF,-1..1,-1=instruction-following, +1=initiative
+ED,0..1,Evidence density (citations/examples/tests)

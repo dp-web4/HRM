@@ -7,10 +7,9 @@ Experiment to test whether OCR-trained models work better with orchestration.
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from transformers import AutoModel, AutoTokenizer, AutoConfig
+from transformers import AutoModel, AutoTokenizer, AutoConfig, get_linear_schedule_with_warmup
 from torch.utils.data import DataLoader, Dataset
-from torch.optim import AdamW
-from torch.optim.lr_scheduler import get_linear_schedule_with_warmup
+import bitsandbytes as bnb
 from pathlib import Path
 import json
 import sys
@@ -149,7 +148,7 @@ class Phi15OCRModel(nn.Module):
         }
 
 
-def train_epoch(model, dataloader, optimizer, scheduler, device):
+def train_epoch(model, dataloader, optimizer, scheduler, device, scaler=None):
     """Train for one epoch"""
     model.train()
 
@@ -164,15 +163,27 @@ def train_epoch(model, dataloader, optimizer, scheduler, device):
         # Move to device
         batch = {k: v.to(device) for k, v in batch.items()}
 
-        # Forward
-        outputs = model(**batch)
-        loss = outputs['loss']
+        # Forward with mixed precision
+        if scaler is not None:
+            with torch.cuda.amp.autocast():
+                outputs = model(**batch)
+                loss = outputs['loss']
+        else:
+            outputs = model(**batch)
+            loss = outputs['loss']
 
         # Backward
         optimizer.zero_grad()
-        loss.backward()
-        torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-        optimizer.step()
+        if scaler is not None:
+            scaler.scale(loss).backward()
+            scaler.unscale_(optimizer)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            scaler.step(optimizer)
+            scaler.update()
+        else:
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            optimizer.step()
         scheduler.step()
 
         # Track losses
@@ -243,7 +254,7 @@ def main():
     MODEL_NAME = "microsoft/phi-1_5"
     NUM_LABELS = 9  # 9 prompt categories
     NUM_EPOCHS = 10
-    BATCH_SIZE = 16
+    BATCH_SIZE = 8  # Reduced from 16 to avoid OOM
     LR = 3e-5
     MAX_LENGTH = 128
 
@@ -273,6 +284,9 @@ def main():
 
     # Create datasets
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
+    # Set pad token (Phi models don't have one by default)
+    if tokenizer.pad_token is None:
+        tokenizer.pad_token = tokenizer.eos_token
     train_dataset = EpistemicDataset(train_prompts, tokenizer, MAX_LENGTH)
     val_dataset = EpistemicDataset(val_prompts, tokenizer, MAX_LENGTH)
 
@@ -281,10 +295,22 @@ def main():
 
     # Create model
     print("\nInitializing model...")
-    model = Phi15OCRModel(MODEL_NAME, NUM_LABELS, ocr_config).to(device)
+    model = Phi15OCRModel(MODEL_NAME, NUM_LABELS, ocr_config)
 
-    # Optimizer and scheduler
-    optimizer = AdamW(model.parameters(), lr=LR)
+    # Enable gradient checkpointing to save memory
+    if hasattr(model.encoder, 'gradient_checkpointing_enable'):
+        model.encoder.gradient_checkpointing_enable()
+        print("Gradient checkpointing enabled")
+
+    model = model.to(device)
+
+    # Use mixed precision training
+    scaler = torch.cuda.amp.GradScaler()
+    print("Using mixed precision (fp16) training")
+
+    # Optimizer (8-bit AdamW to reduce memory)
+    optimizer = bnb.optim.AdamW8bit(model.parameters(), lr=LR)
+    print("Using 8-bit AdamW (4x optimizer memory reduction)")
     total_steps = len(train_loader) * NUM_EPOCHS
     scheduler = get_linear_schedule_with_warmup(
         optimizer,
@@ -302,7 +328,7 @@ def main():
         print(f"{'='*70}")
 
         # Train
-        train_metrics = train_epoch(model, train_loader, optimizer, scheduler, device)
+        train_metrics = train_epoch(model, train_loader, optimizer, scheduler, device, scaler)
         print(f"\nTrain metrics:")
         print(f"  Total loss: {train_metrics['total']:.4f}")
         print(f"  CE: {train_metrics['ce']:.4f}")

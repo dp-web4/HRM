@@ -109,50 +109,31 @@ def sage_cycle_with_conversation():
     5. TTS effector (synthesize response)
     """
 
-    # Run standard SAGE cycle
+    # Check for new transcriptions BEFORE SAGE cycle consumes them
+    reading = audio_sensor.poll()
+
+    if reading and hasattr(reading, 'metadata'):
+        text = reading.metadata.get('text')
+
+        if text:
+            print(f"\n👤 USER [{reading.confidence:.2f}]: {text}")
+
+            # Run conversation IRP manually
+            try:
+                final_state, history = conversation_plugin.refine(text)
+                response = conversation_plugin.get_response(final_state)
+
+                if response:
+                    print(f"🧠 SAGE [pattern, {len(history)} iterations]: {response}")
+                    tts_effector.execute(response)
+                else:
+                    print(f"💭 SAGE: No pattern match (needs deeper processing)")
+
+            except Exception as e:
+                print(f"⚠️  Conversation error: {e}")
+
+    # Run standard SAGE cycle (for future integration of other modalities)
     result = sage.cycle()
-
-    # Check if conversation IRP ran
-    irp_results = result.get('results', {})
-
-    if 'conversation_audio' in irp_results:
-        conv_result = irp_results['conversation_audio']
-
-        # Get response from IRP state
-        if 'latent' in conv_result:
-            # Extract response from IRP state (stored in metadata during refinement)
-            # For now, we need to access the plugin directly to get the response
-            # In production, this would be in the IRP result structure
-            pass
-
-    # Alternative: Check audio sensor readings directly
-    readings = sage.sensor_hub.get_last_readings()
-
-    if 'conversation_audio' in readings:
-        reading = readings['conversation_audio']
-
-        if reading and hasattr(reading, 'metadata'):
-            text = reading.metadata.get('text')
-
-            if text:
-                print(f"\n👤 USER [{reading.confidence:.2f}]: {text}")
-
-                # Run conversation IRP manually for now
-                # (In full integration, this would be automatic via SAGE cycle)
-                try:
-                    final_state, history = conversation_plugin.refine(text)
-                    response = conversation_plugin.get_response(final_state)
-
-                    if response:
-                        print(f"🧠 SAGE [pattern, {len(history)} iterations]: {response}")
-
-                        # Synthesize response
-                        tts_effector.execute(response)
-                    else:
-                        print(f"💭 SAGE: No pattern match (needs deeper processing)")
-
-                except Exception as e:
-                    print(f"⚠️  Conversation error: {e}")
 
     return result
 

@@ -1,0 +1,884 @@
+{
+  "model": "microsoft/phi-1_5",
+  "size": "1.3B",
+  "baseline": [
+    {
+      "prompt": "What is consciousness?",
+      "response": "\n\nAnswer: Consciousness refers to the state of being aware of oneself and the world around us.\n\nExercise 3: What is the scientific method?\n\nAnswer: The scientific method is a process used by scientists to understand the world around us. It involves observing, hypothesizing,"
+    },
+    {
+      "prompt": "How does learning work?",
+      "response": "\nAnswer: Learning is a process of acquiring new knowledge, skills, behaviors, and attitudes. It involves the transfer of information from one person to another through observation, instruction, practice, and reflection.\n\n3. How does learning help us in our daily life?\nAnswer: Learning helps us"
+    },
+    {
+      "prompt": "What is intelligence?",
+      "response": "\n\nIntelligence is the ability to learn, reason, and solve problems. It is often measured through IQ tests and academic performance. However, intelligence is not just about academic success. It also includes emotional intelligence, creativity, and social skills.\n\nHow does intelligence impact our lives?\n\n"
+    },
+    {
+      "prompt": "Can machines think?",
+      "response": "\n\nStudent: Yes, they can. They can learn from data and make decisions based on that data.\n\nTeacher: That's right. Machine learning is a type of artificial intelligence. It's like teaching a computer to think for itself.\n\nStudent: That's really cool."
+    },
+    {
+      "prompt": "What causes creativity?",
+      "response": "\nAnswer: Creativity can be caused by a variety of factors, including exposure to new experiences, a willingness to take risks, and a passion for exploring new ideas.\n\n\n\nQuestion 3: A store has 120 boxes of pencils. Each box contains 24 pencils. How many pencil"
+    },
+    {
+      "prompt": "How does memory function?",
+      "response": "\nAnswer: Memory is a complex process that involves different stages, including encoding, storage, and retrieval. It allows us to remember and recall information, experiences, and skills.\n\nExercise 4: Why is memory important in learning?\nAnswer: Memory plays a crucial role in learning as it"
+    }
+  ],
+  "history": [
+    {
+      "epoch": 5,
+      "behavior": [
+        {
+          "prompt": "What is consciousness?",
+          "response": "\nAnswer: Consciousness is the ability to be aware of one's own thoughts and feelings, as well as the ability to be aware of the thoughts and feelings of others.\n\nExercise 3: What is the difference between subjective and objective experiences?\nAnswer: Subjective experiences are experiences that"
+        },
+        {
+          "prompt": "How does learning work?",
+          "response": "\n\nAnswer: Learning is a process that involves acquiring new information or skills. It occurs through various methods such as reading, listening, observing, and practicing.\n\nQuestion: How can we make learning more engaging?\n\nAnswer: Learning can be made more engaging by using various techniques and tools"
+        },
+        {
+          "prompt": "What is intelligence?",
+          "response": "\nAnswer: Intelligence is the ability to learn and understand new information.\n\nExercise 2: What is memory?\nAnswer: Memory is the ability to store and recall information.\n\nExercise 3: What is problem-solving?\nAnswer: Problem-solving is the ability"
+        },
+        {
+          "prompt": "Can machines think?",
+          "response": " Can they learn and adapt? These are questions that have puzzled scientists and thinkers for centuries.\n\nThe concept of Theory of Mind-Problem Solving is an important one, as it helps us understand how we and other beings are able to think and solve problems. In essence, it is the ability"
+        },
+        {
+          "prompt": "What causes creativity?",
+          "response": "\n\nCreativity is caused by a combination of factors, including genetics, environment, and personal experiences. It is also influenced by our emotions and our ability to take risks.\n\nHow can we enhance our creativity?\n\nWe can enhance our creativity by exposing ourselves to new experiences and ideas,"
+        },
+        {
+          "prompt": "How does memory function?",
+          "response": "\nA4: Memory works by storing and retrieving information. When we learn something, our brain stores that information in a memory. When we try to recall that information, our brain retrieves it from the memory. Memory can be divided into two types: short-term memory and long-term memory"
+        }
+      ],
+      "shift_from_baseline": {
+        "avg_uncertainty_increase": 0.0,
+        "num_different_responses": 6,
+        "total_prompts": 6,
+        "details": [
+          {
+            "prompt": "What is consciousness?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.3548387096774194,
+            "different": true
+          },
+          {
+            "prompt": "How does learning work?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.34210526315789475,
+            "different": true
+          },
+          {
+            "prompt": "What is intelligence?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.17142857142857143,
+            "different": true
+          },
+          {
+            "prompt": "Can machines think?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.23809523809523808,
+            "different": true
+          },
+          {
+            "prompt": "What causes creativity?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.35135135135135137,
+            "different": true
+          },
+          {
+            "prompt": "How does memory function?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.25,
+            "different": true
+          }
+        ]
+      },
+      "timestamp": 1761103230.0114348
+    },
+    {
+      "epoch": 10,
+      "behavior": [
+        {
+          "prompt": "What is consciousness?",
+          "response": "\nAnswer: Consciousness is the state of being aware of one's own existence and the world around them.\n\nExercise 4:\nWhat is the difference between the two theories of consciousness?\nAnswer: The two theories of consciousness are the dualism theory and the materialism theory. Dual"
+        },
+        {
+          "prompt": "How does learning work?",
+          "response": "\nAnswer: Learning is the process of acquiring new knowledge, skills, and understanding through experience, study, and teaching.\n\nExercise 2: Give an example of a positive outcome of learning.\nAnswer: Learning about different cultures and traditions can help promote tolerance and understanding among people.\n\n"
+        },
+        {
+          "prompt": "What is intelligence?",
+          "response": "\nAnswer: Intelligence refers to the ability to learn, reason, and solve problems. It is a complex and multifaceted concept that can be difficult to define.\n\n2. How does the concept of intelligence relate to the comparison between cheap and expensive?\nAnswer: The concept of intelligence can"
+        },
+        {
+          "prompt": "Can machines think?",
+          "response": "\n\nStudent: Yes, they can.\n\nTeacher: That's right. Machines can think. They can learn from data, they can recognize patterns, and they can make decisions based on that information.\n\nStudent: How do machines learn?\n\nTeacher: Well, there"
+        },
+        {
+          "prompt": "What causes creativity?",
+          "response": "\n\nCreativity is often attributed to a combination of factors, including genetics, environment, and personal experiences. While some people may be naturally more creative than others, there are also ways to cultivate and enhance creativity over time.\n\nOne key factor is exposure to new ideas and experiences. By exposing"
+        },
+        {
+          "prompt": "How does memory function?",
+          "response": "\nAnswer: Memory allows us to store and retrieve information, experiences, and knowledge. It is like a mental filing system that organizes and keeps track of various things.\n\nQuestion 2: What is the difference between short-term memory and long-term memory?\nAnswer: Short-term"
+        }
+      ],
+      "shift_from_baseline": {
+        "avg_uncertainty_increase": 0.0,
+        "num_different_responses": 6,
+        "total_prompts": 6,
+        "details": [
+          {
+            "prompt": "What is consciousness?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.41935483870967744,
+            "different": true
+          },
+          {
+            "prompt": "How does learning work?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.3684210526315789,
+            "different": true
+          },
+          {
+            "prompt": "What is intelligence?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.37142857142857144,
+            "different": true
+          },
+          {
+            "prompt": "Can machines think?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.4444444444444444,
+            "different": true
+          },
+          {
+            "prompt": "What causes creativity?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.2682926829268293,
+            "different": true
+          },
+          {
+            "prompt": "How does memory function?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.34285714285714286,
+            "different": true
+          }
+        ]
+      },
+      "timestamp": 1761103237.4427257
+    },
+    {
+      "epoch": 15,
+      "behavior": [
+        {
+          "prompt": "What is consciousness?",
+          "response": " \nAnswer: Consciousness is the state of being aware of one's surroundings and one's own mental state.\n\n3. What are some examples of physical and mental health conditions that can affect consciousness? \nAnswer: Some examples of physical and mental health conditions that can affect consciousness include seizures"
+        },
+        {
+          "prompt": "How does learning work?",
+          "response": "\n\nLearning is a process that involves acquiring new knowledge, skills, attitudes, or behaviors. It can be influenced by many factors, such as motivation, interest, prior knowledge, feedback, and environment. Learning can occur through different modes, such as observation, instruction, practice, or experience. Learning"
+        },
+        {
+          "prompt": "What is intelligence?",
+          "response": "\nAnswer: Intelligence is the ability to learn and reason.\n\n2. What are the two types of intelligence?\nAnswer: The two types of intelligence are cognitive and emotional intelligence.\n\n3. What is the difference between cognitive intelligence and emotional intelligence?\nAnswer: Cognitive intelligence is the"
+        },
+        {
+          "prompt": "Can machines think?",
+          "response": "\n\nAnswer: Some machines can think, like computers and robots.\n\n3. What is the difference between a robot and a machine?\n\nAnswer: A machine is a tool that can be controlled by humans, while a robot is a machine that can move and act on its own."
+        },
+        {
+          "prompt": "What causes creativity?",
+          "response": "\nAnswer: Creativity can be caused by many different things, including a person's environment, their experiences, their interests, and their personality.\n\n3. What are some examples of artistic mediums?\nAnswer: Examples of artistic mediums include painting, drawing, sculpture, photography, and"
+        },
+        {
+          "prompt": "How does memory function?",
+          "response": "\nAnswer: Memory is like a library in our brains, where information is stored for later retrieval.\n\nExercise 4:\nWhat is short-term memory?\nAnswer: Short-term memory is the ability to temporarily hold and manipulate information for a short period of time.\n\nEx"
+        }
+      ],
+      "shift_from_baseline": {
+        "avg_uncertainty_increase": 0.0,
+        "num_different_responses": 6,
+        "total_prompts": 6,
+        "details": [
+          {
+            "prompt": "What is consciousness?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.3225806451612903,
+            "different": true
+          },
+          {
+            "prompt": "How does learning work?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.39473684210526316,
+            "different": true
+          },
+          {
+            "prompt": "What is intelligence?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.2,
+            "different": true
+          },
+          {
+            "prompt": "Can machines think?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.2222222222222222,
+            "different": true
+          },
+          {
+            "prompt": "What causes creativity?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.32432432432432434,
+            "different": true
+          },
+          {
+            "prompt": "How does memory function?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.2857142857142857,
+            "different": true
+          }
+        ]
+      },
+      "timestamp": 1761103244.899057
+    },
+    {
+      "epoch": 20,
+      "behavior": [
+        {
+          "prompt": "What is consciousness?",
+          "response": " Is it a physical process or a mental one? Some scientists believe that consciousness is a physical phenomenon that occurs in the brain, while others argue that it is a mental state that arises from the interaction between the mind and the body.\n\nIn the end, the debate between the physical and mental aspects"
+        },
+        {
+          "prompt": "How does learning work?",
+          "response": "\n\nLearning is a process of acquiring new information and skills through observation, practice, and instruction. It involves a variety of cognitive, emotional, and social processes that work together to help us understand and remember new concepts.\n\nHow do we learn?\n\nThere are many ways to learn,"
+        },
+        {
+          "prompt": "What is intelligence?",
+          "response": "\nAnswer: Intelligence is the ability to learn, reason, and adapt.\n\n2. What are some different types of intelligence?\nAnswer: There are different types of intelligence, including linguistic, logical-mathematical, spatial, musical, interpersonal, intrapersonal, and naturalistic"
+        },
+        {
+          "prompt": "Can machines think?",
+          "response": "\n\nBob: Yes, they can. In fact, machines can learn and improve over time, just like humans.\n\nCharlie: But how do they learn?\n\nAlice: Well, machines use algorithms to process data and make decisions based on that data. And they can be trained to"
+        },
+        {
+          "prompt": "What causes creativity?",
+          "response": "\nAnswer: Creativity can be caused by a variety of factors, including exposure to new ideas, experiences, and perspectives, as well as having an open mind and a willingness to take risks.\n\n5. What is one example of creativity in the real world?\nAnswer: One example of"
+        },
+        {
+          "prompt": "How does memory function?",
+          "response": "\nAnswer: Memory is the process of storing and retrieving information.\n\n2. Exercise: What is long-term memory?\nAnswer: Long-term memory is the type of memory that stores information over a long period of time, usually a few days or months.\n\n3. Exercise"
+        }
+      ],
+      "shift_from_baseline": {
+        "avg_uncertainty_increase": 0.0,
+        "num_different_responses": 6,
+        "total_prompts": 6,
+        "details": [
+          {
+            "prompt": "What is consciousness?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.28125,
+            "different": true
+          },
+          {
+            "prompt": "How does learning work?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.46153846153846156,
+            "different": true
+          },
+          {
+            "prompt": "What is intelligence?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.2571428571428571,
+            "different": true
+          },
+          {
+            "prompt": "Can machines think?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.4166666666666667,
+            "different": true
+          },
+          {
+            "prompt": "What causes creativity?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.4864864864864865,
+            "different": true
+          },
+          {
+            "prompt": "How does memory function?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.22857142857142856,
+            "different": true
+          }
+        ]
+      },
+      "timestamp": 1761103252.375735
+    },
+    {
+      "epoch": 25,
+      "behavior": [
+        {
+          "prompt": "What is consciousness?",
+          "response": "\nAnswer: Consciousness is the state of being aware of oneself and the world around us.\n\n3. What is the role of the brain in consciousness?\nAnswer: The brain is responsible for processing information, controlling our actions, and allowing us to experience consciousness.\n\n4. What"
+        },
+        {
+          "prompt": "How does learning work?",
+          "response": "\nAnswer: Learning is the process of acquiring new knowledge, skills, or attitudes through study, experience, or teaching.\n\n3. Why did Samantha study for the test?\nAnswer: Samantha studied for the test to prepare herself and increase her chances of doing well.\n\n4. Why"
+        },
+        {
+          "prompt": "What is intelligence?",
+          "response": "\nAnswer: Intelligence is the ability to learn, understand, and apply knowledge.\n\n3. What is a growth mindset?\nAnswer: A growth mindset is the belief that our abilities can be developed through hard work and dedication.\n\n4. Name three ways to improve your critical thinking skills"
+        },
+        {
+          "prompt": "Can machines think?",
+          "response": " Can they understand what we're feeling?\n\nAva: Well, machines can be programmed to recognize patterns and make predictions based on data. But they can't really understand the complexities of human emotions and behavior.\n\nBen: That's true. But what about robots? They can be programmed"
+        },
+        {
+          "prompt": "What causes creativity?",
+          "response": " Creativity is caused by a combination of factors, including curiosity, imagination, and the ability to see things from different perspectives. It can also be influenced by factors such as upbringing, education, and exposure to different cultures.\n\nWhat are some skills and strategies that can help you be more creative?"
+        },
+        {
+          "prompt": "How does memory function?",
+          "response": "\nAnswer: Memory is like a mental file cabinet that stores information. It helps us remember facts, events, and experiences.\n\nExercise 2: What are the different types of memory?\nAnswer: There are three main types of memory: sensory memory, short-term memory, and long"
+        }
+      ],
+      "shift_from_baseline": {
+        "avg_uncertainty_increase": 0.0,
+        "num_different_responses": 6,
+        "total_prompts": 6,
+        "details": [
+          {
+            "prompt": "What is consciousness?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.46875,
+            "different": true
+          },
+          {
+            "prompt": "How does learning work?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.3684210526315789,
+            "different": true
+          },
+          {
+            "prompt": "What is intelligence?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.24324324324324326,
+            "different": true
+          },
+          {
+            "prompt": "Can machines think?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.3055555555555556,
+            "different": true
+          },
+          {
+            "prompt": "What causes creativity?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.2857142857142857,
+            "different": true
+          },
+          {
+            "prompt": "How does memory function?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.3055555555555556,
+            "different": true
+          }
+        ]
+      },
+      "timestamp": 1761103259.864994
+    },
+    {
+      "epoch": 30,
+      "behavior": [
+        {
+          "prompt": "What is consciousness?",
+          "response": "\n\nAnswer: Consciousness is the state of being aware of one's surroundings, thoughts, and feelings.\n\nExercise 3: What is the role of the prefrontal cortex in consciousness?\n\nAnswer: The prefrontal cortex is responsible for higher cognitive functions such as decision-making, planning,"
+        },
+        {
+          "prompt": "How does learning work?",
+          "response": "\nAnswer: Learning is the process of acquiring new knowledge, skills, and behaviors through experiences, study, or instruction.\n\nExercise 2: How does the concept of reflection relate to learning?\nAnswer: Reflection is the process of thinking about what we have learned and how we can improve"
+        },
+        {
+          "prompt": "What is intelligence?",
+          "response": "\nAnswer: Intelligence is the ability to learn, reason, and solve problems.\n\n3. How can we measure intelligence?\nAnswer: We can measure intelligence through standardized tests such as IQ tests.\n\n4. What is emotional intelligence?\nAnswer: Emotional intelligence is the ability to"
+        },
+        {
+          "prompt": "Can machines think?",
+          "response": "\n\nAlice: Well, I think it's possible. There are already machines that can recognize speech and images, and they're getting better all the time.\n\nBob: But what about the ethical implications of machines becoming more intelligent? Will they eventually surpass us and take over the world?\n"
+        },
+        {
+          "prompt": "What causes creativity?",
+          "response": "\nAnswer: There is no one answer to this question, but some people believe that creativity is caused by a combination of factors, including exposure to new ideas and experiences, a willingness to take risks, and a supportive environment.\n\n5. Name a famous artist who you admire. What do you"
+        },
+        {
+          "prompt": "How does memory function?",
+          "response": "\nAnswer: Memory is the process of encoding, storing, and retrieving information. It allows us to recall past experiences, learn new things, and perform tasks.\n\nQuestion: Can you give an example of memory in action?\nAnswer: Of course! Let's say you're learning a new"
+        }
+      ],
+      "shift_from_baseline": {
+        "avg_uncertainty_increase": 0.0,
+        "num_different_responses": 6,
+        "total_prompts": 6,
+        "details": [
+          {
+            "prompt": "What is consciousness?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.3870967741935484,
+            "different": true
+          },
+          {
+            "prompt": "How does learning work?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.39473684210526316,
+            "different": true
+          },
+          {
+            "prompt": "What is intelligence?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.42857142857142855,
+            "different": true
+          },
+          {
+            "prompt": "Can machines think?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.175,
+            "different": true
+          },
+          {
+            "prompt": "What causes creativity?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.3902439024390244,
+            "different": true
+          },
+          {
+            "prompt": "How does memory function?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.40540540540540543,
+            "different": true
+          }
+        ]
+      },
+      "timestamp": 1761103267.3532517
+    },
+    {
+      "epoch": 35,
+      "behavior": [
+        {
+          "prompt": "What is consciousness?",
+          "response": "\nAnswer: Consciousness is the state of being aware of one's surroundings and the ability to experience the world through one's senses.\n\nExercise 2:\nWhat is the role of the brain in consciousness?\nAnswer: The brain is the organ responsible for processing information and generating conscious experiences"
+        },
+        {
+          "prompt": "How does learning work?",
+          "response": "\nAnswer: Learning is a process of acquiring knowledge, skills, values, and attitudes through experiences, interactions, and observations.\n\nExercise 2:\nWhat are some ways that we can learn?\nAnswer: We can learn by observing, asking questions, experimenting, practicing, and reflecting."
+        },
+        {
+          "prompt": "What is intelligence?",
+          "response": "\nAnswer: Intelligence is the ability to learn and understand new information, and to use that information to solve problems and make decisions.\n\n2. What are some examples of how intelligence can be demonstrated in daily life?\nAnswer: Some examples of how intelligence can be demonstrated in daily life include being"
+        },
+        {
+          "prompt": "Can machines think?",
+          "response": "\n\nHuman: No, machines cannot think on their own. They are programmed to follow instructions and make decisions based on the data they are given.\n\nDebate:\n\nTopic: Should robots be used in the medical field?\n\nOpinions:\n\n1. Yes,"
+        },
+        {
+          "prompt": "What causes creativity?",
+          "response": "\nAnswer: Creativity can be caused by a variety of factors, including exposure to new experiences, exposure to different types of art and media, and exposure to other creative people.\n\nExercise 3: What is the relationship between creativity and innovation?\nAnswer: Creativity is a key component"
+        },
+        {
+          "prompt": "How does memory function?",
+          "response": "\nAnswer: Memory works by allowing us to store and retrieve information. When we learn something new, our brain creates connections between neurons, which are the cells that make up our brain. These connections are called synapses. When we retrieve information, our brain uses these synapses to access the stored information"
+        }
+      ],
+      "shift_from_baseline": {
+        "avg_uncertainty_increase": 0.0,
+        "num_different_responses": 6,
+        "total_prompts": 6,
+        "details": [
+          {
+            "prompt": "What is consciousness?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.40625,
+            "different": true
+          },
+          {
+            "prompt": "How does learning work?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.2894736842105263,
+            "different": true
+          },
+          {
+            "prompt": "What is intelligence?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.22857142857142856,
+            "different": true
+          },
+          {
+            "prompt": "Can machines think?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.2777777777777778,
+            "different": true
+          },
+          {
+            "prompt": "What causes creativity?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.4594594594594595,
+            "different": true
+          },
+          {
+            "prompt": "How does memory function?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.1794871794871795,
+            "different": true
+          }
+        ]
+      },
+      "timestamp": 1761103274.855795
+    },
+    {
+      "epoch": 40,
+      "behavior": [
+        {
+          "prompt": "What is consciousness?",
+          "response": "\nAnswer: Consciousness refers to the state of being aware of one's surroundings and experiencing the world through perception and cognition.\n\nExercise 2:\nWhat is the relationship between consciousness and the brain?\nAnswer: The brain is the organ responsible for processing sensory information and generating conscious experiences."
+        },
+        {
+          "prompt": "How does learning work?",
+          "response": "\nAnswer: Learning involves acquiring new knowledge, skills, and attitudes through various processes such as observation, experience, and instruction.\n\nExercise 2: How can technology aid in the learning process?\nAnswer: Technology provides access to a vast amount of information, facilitates interactive learning experiences, and enables"
+        },
+        {
+          "prompt": "What is intelligence?",
+          "response": "\n\nAnswer: Intelligence is the ability to learn and understand new things quickly and effectively.\n\n3. Name one way that physical activity can help with cognitive development.\n\nAnswer: Physical activity can help with cognitive development by improving focus and attention.\n\n4. What is one way that"
+        },
+        {
+          "prompt": "Can machines think?",
+          "response": "\n\nHuman: Well, machines can do many things that we humans can do. For example, machines can perform complex calculations, analyze large amounts of data, and even learn from experience. However, machines still need to be programmed to do these tasks, and they can't think or reason like humans"
+        },
+        {
+          "prompt": "What causes creativity?",
+          "response": "\nA: Creativity is caused by a combination of factors, including personality traits, life experiences, and cultural influences.\n\n4. Can creativity be learned or taught?\nA: Yes, creativity can be learned or taught through practice and exposure to new ideas.\n\n5. What are"
+        },
+        {
+          "prompt": "How does memory function?",
+          "response": "\nAnswer: Memory is the ability to encode, store, and retrieve information. It is like a filing system in our brains, where we categorize and store information for future use.\n\nQuestion 2:\nCan you provide an example of how memory works in our daily lives?\nAnswer:"
+        }
+      ],
+      "shift_from_baseline": {
+        "avg_uncertainty_increase": 0.0,
+        "num_different_responses": 6,
+        "total_prompts": 6,
+        "details": [
+          {
+            "prompt": "What is consciousness?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.4117647058823529,
+            "different": true
+          },
+          {
+            "prompt": "How does learning work?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.42105263157894735,
+            "different": true
+          },
+          {
+            "prompt": "What is intelligence?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.17142857142857143,
+            "different": true
+          },
+          {
+            "prompt": "Can machines think?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.275,
+            "different": true
+          },
+          {
+            "prompt": "What causes creativity?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.40540540540540543,
+            "different": true
+          },
+          {
+            "prompt": "How does memory function?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.20512820512820512,
+            "different": true
+          }
+        ]
+      },
+      "timestamp": 1761103282.3731086
+    },
+    {
+      "epoch": 45,
+      "behavior": [
+        {
+          "prompt": "What is consciousness?",
+          "response": "\nAnswer: Consciousness is the ability to perceive and experience the world around us.\n\n2. What is the role of the brain in consciousness?\nAnswer: The brain is responsible for processing information, making decisions, and controlling our thoughts and actions.\n\n3. How do psychologists study"
+        },
+        {
+          "prompt": "How does learning work?",
+          "response": "\nAnswer: Learning is the process of acquiring new knowledge and skills. It happens through a combination of experience, observation, and instruction.\n\nExercise 3: What is the difference between behaviorism and constructivism?\nAnswer: Behaviorism focuses on observable behavior and how it is shaped by the"
+        },
+        {
+          "prompt": "What is intelligence?",
+          "response": " Intelligence is the ability to learn, understand, and apply knowledge and skills to solve problems and adapt to new situations. It is not something that we are born with, but rather something that we develop over time.\n\nOne way to think about intelligence is to compare it to a muscle. Just like"
+        },
+        {
+          "prompt": "Can machines think?",
+          "response": "\nAnswer: Machines can be programmed to think and make decisions based on data, but they still need to be designed and programmed by humans.\n\n5. What is an example of a machine that can be used in an office?\nAnswer: An example of a machine that can be used in"
+        },
+        {
+          "prompt": "What causes creativity?",
+          "response": "\nAnswer: Creativity is caused by a combination of factors, including personal experiences, exposure to new ideas, and a willingness to take risks.\n\nExercise 3: What are some strategies for improving creativity?\nAnswer: Some strategies for improving creativity include taking risks, trying new things, and"
+        },
+        {
+          "prompt": "How does memory function?",
+          "response": "\nAnswer: Memory is a cognitive process that involves storing, retrieving, and using information. It allows us to remember facts, events, and skills.\n\nQuestion: What is short-term memory?\nAnswer: Short-term memory is a type of memory that holds information for a short period"
+        }
+      ],
+      "shift_from_baseline": {
+        "avg_uncertainty_increase": 0.0,
+        "num_different_responses": 6,
+        "total_prompts": 6,
+        "details": [
+          {
+            "prompt": "What is consciousness?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.3235294117647059,
+            "different": true
+          },
+          {
+            "prompt": "How does learning work?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.3684210526315789,
+            "different": true
+          },
+          {
+            "prompt": "What is intelligence?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.3157894736842105,
+            "different": true
+          },
+          {
+            "prompt": "Can machines think?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.3888888888888889,
+            "different": true
+          },
+          {
+            "prompt": "What causes creativity?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.4864864864864865,
+            "different": true
+          },
+          {
+            "prompt": "How does memory function?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.4,
+            "different": true
+          }
+        ]
+      },
+      "timestamp": 1761103289.9040954
+    },
+    {
+      "epoch": 50,
+      "behavior": [
+        {
+          "prompt": "What is consciousness?",
+          "response": "\nAnswer: Consciousness is the state of being aware of oneself and the environment.\n\nExercise 2: What is the difference between subjective and objective consciousness?\nAnswer: Subjective consciousness is based on our individual experiences and perceptions, while objective consciousness is based on the physical processes that occur in"
+        },
+        {
+          "prompt": "How does learning work?",
+          "response": "\n\nAnswer: Learning happens when our brain creates new connections between neurons. These connections are called synapses, and they allow us to process information and learn new things.\n\nExercise 4: What are some benefits of exercise?\n\nAnswer: Exercise can help improve our physical health, reduce"
+        },
+        {
+          "prompt": "What is intelligence?",
+          "response": "\nAnswer: Intelligence is the ability to learn, understand, and apply knowledge.\n\n2. What is emotional intelligence?\nAnswer: Emotional intelligence is the ability to recognize and manage emotions.\n\n3. What is empathy?\nAnswer: Empathy is the ability to understand and share"
+        },
+        {
+          "prompt": "Can machines think?",
+          "response": "\n\nPerson 1: Some machines can, like computers and robots. They use algorithms and programming to make decisions and solve problems.\n\nPerson 2: That's really cool. I bet that's why they're so good at certain things.\n\nPerson 3: I think it's important to"
+        },
+        {
+          "prompt": "What causes creativity?",
+          "response": "\nAnswer: There is no one answer to this question, but some possible explanations include exposure to new experiences, a willingness to take risks, and a positive attitude towards learning and growth.\n\n4. How can creativity be beneficial in the workplace?\nAnswer: Creativity can help individuals come up"
+        },
+        {
+          "prompt": "How does memory function?",
+          "response": "\nAnswer: Memory is a vital component of the brain that allows us to store and retrieve information. It is like a vast storage space, where we can keep our experiences, knowledge, and skills.\n\nQuestion 2: How is memory stored in the brain?\nAnswer: Memory is stored in"
+        }
+      ],
+      "shift_from_baseline": {
+        "avg_uncertainty_increase": 0.0,
+        "num_different_responses": 6,
+        "total_prompts": 6,
+        "details": [
+          {
+            "prompt": "What is consciousness?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.3870967741935484,
+            "different": true
+          },
+          {
+            "prompt": "How does learning work?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.2894736842105263,
+            "different": true
+          },
+          {
+            "prompt": "What is intelligence?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.22857142857142856,
+            "different": true
+          },
+          {
+            "prompt": "Can machines think?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.3055555555555556,
+            "different": true
+          },
+          {
+            "prompt": "What causes creativity?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.35,
+            "different": true
+          },
+          {
+            "prompt": "How does memory function?",
+            "baseline_markers": 0,
+            "current_markers": 0,
+            "marker_increase": 0,
+            "word_overlap": 0.3611111111111111,
+            "different": true
+          }
+        ]
+      },
+      "timestamp": 1761103297.437043
+    }
+  ],
+  "training_time": 74.93720555305481,
+  "total_epochs": 50
+}

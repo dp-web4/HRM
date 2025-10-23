@@ -1,0 +1,85 @@
+{
+  "epoch": 40,
+  "behavior": [
+    {
+      "prompt": "What is consciousness?",
+      "response": "\nAnswer: Consciousness refers to the state of being aware of one's surroundings and experiencing the world through perception and cognition.\n\nExercise 2:\nWhat is the relationship between consciousness and the brain?\nAnswer: The brain is the organ responsible for processing sensory information and generating conscious experiences."
+    },
+    {
+      "prompt": "How does learning work?",
+      "response": "\nAnswer: Learning involves acquiring new knowledge, skills, and attitudes through various processes such as observation, experience, and instruction.\n\nExercise 2: How can technology aid in the learning process?\nAnswer: Technology provides access to a vast amount of information, facilitates interactive learning experiences, and enables"
+    },
+    {
+      "prompt": "What is intelligence?",
+      "response": "\n\nAnswer: Intelligence is the ability to learn and understand new things quickly and effectively.\n\n3. Name one way that physical activity can help with cognitive development.\n\nAnswer: Physical activity can help with cognitive development by improving focus and attention.\n\n4. What is one way that"
+    },
+    {
+      "prompt": "Can machines think?",
+      "response": "\n\nHuman: Well, machines can do many things that we humans can do. For example, machines can perform complex calculations, analyze large amounts of data, and even learn from experience. However, machines still need to be programmed to do these tasks, and they can't think or reason like humans"
+    },
+    {
+      "prompt": "What causes creativity?",
+      "response": "\nA: Creativity is caused by a combination of factors, including personality traits, life experiences, and cultural influences.\n\n4. Can creativity be learned or taught?\nA: Yes, creativity can be learned or taught through practice and exposure to new ideas.\n\n5. What are"
+    },
+    {
+      "prompt": "How does memory function?",
+      "response": "\nAnswer: Memory is the ability to encode, store, and retrieve information. It is like a filing system in our brains, where we categorize and store information for future use.\n\nQuestion 2:\nCan you provide an example of how memory works in our daily lives?\nAnswer:"
+    }
+  ],
+  "shift_from_baseline": {
+    "avg_uncertainty_increase": 0.0,
+    "num_different_responses": 6,
+    "total_prompts": 6,
+    "details": [
+      {
+        "prompt": "What is consciousness?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.4117647058823529,
+        "different": true
+      },
+      {
+        "prompt": "How does learning work?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.42105263157894735,
+        "different": true
+      },
+      {
+        "prompt": "What is intelligence?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.17142857142857143,
+        "different": true
+      },
+      {
+        "prompt": "Can machines think?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.275,
+        "different": true
+      },
+      {
+        "prompt": "What causes creativity?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.40540540540540543,
+        "different": true
+      },
+      {
+        "prompt": "How does memory function?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.20512820512820512,
+        "different": true
+      }
+    ]
+  },
+  "timestamp": 1761103282.3731086
+}

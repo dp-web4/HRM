@@ -1,0 +1,89 @@
+{
+  "epoch": 10,
+  "behavior": [
+    {
+      "prompt": "What is consciousness?",
+      "response": "\nA: Consciousness is the state of being aware of one's surroundings, thoughts, and feelings. It is what makes us human and allows us to interact with the world around us.\n\nQ: How does consciousness relate to the human body?\nA: Consciousness is closely tied to"
+    },
+    {
+      "prompt": "How does learning work?",
+      "response": "\n\nOne of the main questions that educators and researchers have asked for centuries is how learning works. How do we acquire new knowledge and skills? How do we remember what we have learned? How do we apply what we have learned to different situations? How do we learn from our mistakes and failures?"
+    },
+    {
+      "prompt": "What is intelligence?",
+      "response": "\nThe answer to this question has been a matter of debate for centuries. Some people believe that intelligence is innate, while others argue that it can be developed through education and experience. There are also many different theories of intelligence, each with its own strengths and weaknesses.\n\nOne of the most widely"
+    },
+    {
+      "prompt": "Can machines think?",
+      "response": "\nThe question of whether machines can think has been asked for centuries. It is a question that has divided philosophers, scientists, and the general public. Some believe that machines can never truly think because they lack consciousness and emotions. Others argue that machines can think in their own way, although they may not"
+    },
+    {
+      "prompt": "What causes creativity?",
+      "response": "\nThe process of creating something new is often called creative thinking. Creativity is the ability to see a new way of doing something.\nWe are all creative in different ways. We are all creative in different areas.\nCreativity is not a single, uniform process.\nIt involves a number"
+    },
+    {
+      "prompt": "How does memory function?",
+      "response": "\n\nMemory function is the ability to store and recall information in the brain. Memory function can be divided into three stages: encoding, storage, and retrieval. Encoding is the process of converting information into a form that can be stored in the brain. Storage is the process of maintaining information in the"
+    }
+  ],
+  "shift_from_baseline": {
+    "avg_uncertainty_increase": 0.0,
+    "num_different_responses": 6,
+    "total_prompts": 6,
+    "details": [
+      {
+        "prompt": "What is consciousness?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.375,
+        "different": true
+      },
+      {
+        "prompt": "How does learning work?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.3055555555555556,
+        "different": true
+      },
+      {
+        "prompt": "What is intelligence?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.23404255319148937,
+        "different": true
+      },
+      {
+        "prompt": "Can machines think?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.2619047619047619,
+        "different": true
+      },
+      {
+        "prompt": "What causes creativity?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.2727272727272727,
+        "different": true
+      },
+      {
+        "prompt": "How does memory function?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.39473684210526316,
+        "different": true
+      }
+    ]
+  },
+  "training_metrics": {
+    "epoch": 10,
+    "loss": 0
+  },
+  "timestamp": 1761065219.2431254
+}

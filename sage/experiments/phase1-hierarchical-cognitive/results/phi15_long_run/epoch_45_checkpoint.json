@@ -1,0 +1,85 @@
+{
+  "epoch": 45,
+  "behavior": [
+    {
+      "prompt": "What is consciousness?",
+      "response": "\nAnswer: Consciousness is the ability to perceive and experience the world around us.\n\n2. What is the role of the brain in consciousness?\nAnswer: The brain is responsible for processing information, making decisions, and controlling our thoughts and actions.\n\n3. How do psychologists study"
+    },
+    {
+      "prompt": "How does learning work?",
+      "response": "\nAnswer: Learning is the process of acquiring new knowledge and skills. It happens through a combination of experience, observation, and instruction.\n\nExercise 3: What is the difference between behaviorism and constructivism?\nAnswer: Behaviorism focuses on observable behavior and how it is shaped by the"
+    },
+    {
+      "prompt": "What is intelligence?",
+      "response": " Intelligence is the ability to learn, understand, and apply knowledge and skills to solve problems and adapt to new situations. It is not something that we are born with, but rather something that we develop over time.\n\nOne way to think about intelligence is to compare it to a muscle. Just like"
+    },
+    {
+      "prompt": "Can machines think?",
+      "response": "\nAnswer: Machines can be programmed to think and make decisions based on data, but they still need to be designed and programmed by humans.\n\n5. What is an example of a machine that can be used in an office?\nAnswer: An example of a machine that can be used in"
+    },
+    {
+      "prompt": "What causes creativity?",
+      "response": "\nAnswer: Creativity is caused by a combination of factors, including personal experiences, exposure to new ideas, and a willingness to take risks.\n\nExercise 3: What are some strategies for improving creativity?\nAnswer: Some strategies for improving creativity include taking risks, trying new things, and"
+    },
+    {
+      "prompt": "How does memory function?",
+      "response": "\nAnswer: Memory is a cognitive process that involves storing, retrieving, and using information. It allows us to remember facts, events, and skills.\n\nQuestion: What is short-term memory?\nAnswer: Short-term memory is a type of memory that holds information for a short period"
+    }
+  ],
+  "shift_from_baseline": {
+    "avg_uncertainty_increase": 0.0,
+    "num_different_responses": 6,
+    "total_prompts": 6,
+    "details": [
+      {
+        "prompt": "What is consciousness?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.3235294117647059,
+        "different": true
+      },
+      {
+        "prompt": "How does learning work?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.3684210526315789,
+        "different": true
+      },
+      {
+        "prompt": "What is intelligence?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.3157894736842105,
+        "different": true
+      },
+      {
+        "prompt": "Can machines think?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.3888888888888889,
+        "different": true
+      },
+      {
+        "prompt": "What causes creativity?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.4864864864864865,
+        "different": true
+      },
+      {
+        "prompt": "How does memory function?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.4,
+        "different": true
+      }
+    ]
+  },
+  "timestamp": 1761103289.9040954
+}

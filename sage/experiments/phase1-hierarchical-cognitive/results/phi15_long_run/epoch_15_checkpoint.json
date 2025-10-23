@@ -1,0 +1,85 @@
+{
+  "epoch": 15,
+  "behavior": [
+    {
+      "prompt": "What is consciousness?",
+      "response": " \nAnswer: Consciousness is the state of being aware of one's surroundings and one's own mental state.\n\n3. What are some examples of physical and mental health conditions that can affect consciousness? \nAnswer: Some examples of physical and mental health conditions that can affect consciousness include seizures"
+    },
+    {
+      "prompt": "How does learning work?",
+      "response": "\n\nLearning is a process that involves acquiring new knowledge, skills, attitudes, or behaviors. It can be influenced by many factors, such as motivation, interest, prior knowledge, feedback, and environment. Learning can occur through different modes, such as observation, instruction, practice, or experience. Learning"
+    },
+    {
+      "prompt": "What is intelligence?",
+      "response": "\nAnswer: Intelligence is the ability to learn and reason.\n\n2. What are the two types of intelligence?\nAnswer: The two types of intelligence are cognitive and emotional intelligence.\n\n3. What is the difference between cognitive intelligence and emotional intelligence?\nAnswer: Cognitive intelligence is the"
+    },
+    {
+      "prompt": "Can machines think?",
+      "response": "\n\nAnswer: Some machines can think, like computers and robots.\n\n3. What is the difference between a robot and a machine?\n\nAnswer: A machine is a tool that can be controlled by humans, while a robot is a machine that can move and act on its own."
+    },
+    {
+      "prompt": "What causes creativity?",
+      "response": "\nAnswer: Creativity can be caused by many different things, including a person's environment, their experiences, their interests, and their personality.\n\n3. What are some examples of artistic mediums?\nAnswer: Examples of artistic mediums include painting, drawing, sculpture, photography, and"
+    },
+    {
+      "prompt": "How does memory function?",
+      "response": "\nAnswer: Memory is like a library in our brains, where information is stored for later retrieval.\n\nExercise 4:\nWhat is short-term memory?\nAnswer: Short-term memory is the ability to temporarily hold and manipulate information for a short period of time.\n\nEx"
+    }
+  ],
+  "shift_from_baseline": {
+    "avg_uncertainty_increase": 0.0,
+    "num_different_responses": 6,
+    "total_prompts": 6,
+    "details": [
+      {
+        "prompt": "What is consciousness?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.3225806451612903,
+        "different": true
+      },
+      {
+        "prompt": "How does learning work?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.39473684210526316,
+        "different": true
+      },
+      {
+        "prompt": "What is intelligence?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.2,
+        "different": true
+      },
+      {
+        "prompt": "Can machines think?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.2222222222222222,
+        "different": true
+      },
+      {
+        "prompt": "What causes creativity?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.32432432432432434,
+        "different": true
+      },
+      {
+        "prompt": "How does memory function?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.2857142857142857,
+        "different": true
+      }
+    ]
+  },
+  "timestamp": 1761103244.899057
+}

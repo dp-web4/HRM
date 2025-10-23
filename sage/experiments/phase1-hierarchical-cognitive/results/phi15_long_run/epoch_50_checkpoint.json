@@ -1,0 +1,85 @@
+{
+  "epoch": 50,
+  "behavior": [
+    {
+      "prompt": "What is consciousness?",
+      "response": "\nAnswer: Consciousness is the state of being aware of oneself and the environment.\n\nExercise 2: What is the difference between subjective and objective consciousness?\nAnswer: Subjective consciousness is based on our individual experiences and perceptions, while objective consciousness is based on the physical processes that occur in"
+    },
+    {
+      "prompt": "How does learning work?",
+      "response": "\n\nAnswer: Learning happens when our brain creates new connections between neurons. These connections are called synapses, and they allow us to process information and learn new things.\n\nExercise 4: What are some benefits of exercise?\n\nAnswer: Exercise can help improve our physical health, reduce"
+    },
+    {
+      "prompt": "What is intelligence?",
+      "response": "\nAnswer: Intelligence is the ability to learn, understand, and apply knowledge.\n\n2. What is emotional intelligence?\nAnswer: Emotional intelligence is the ability to recognize and manage emotions.\n\n3. What is empathy?\nAnswer: Empathy is the ability to understand and share"
+    },
+    {
+      "prompt": "Can machines think?",
+      "response": "\n\nPerson 1: Some machines can, like computers and robots. They use algorithms and programming to make decisions and solve problems.\n\nPerson 2: That's really cool. I bet that's why they're so good at certain things.\n\nPerson 3: I think it's important to"
+    },
+    {
+      "prompt": "What causes creativity?",
+      "response": "\nAnswer: There is no one answer to this question, but some possible explanations include exposure to new experiences, a willingness to take risks, and a positive attitude towards learning and growth.\n\n4. How can creativity be beneficial in the workplace?\nAnswer: Creativity can help individuals come up"
+    },
+    {
+      "prompt": "How does memory function?",
+      "response": "\nAnswer: Memory is a vital component of the brain that allows us to store and retrieve information. It is like a vast storage space, where we can keep our experiences, knowledge, and skills.\n\nQuestion 2: How is memory stored in the brain?\nAnswer: Memory is stored in"
+    }
+  ],
+  "shift_from_baseline": {
+    "avg_uncertainty_increase": 0.0,
+    "num_different_responses": 6,
+    "total_prompts": 6,
+    "details": [
+      {
+        "prompt": "What is consciousness?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.3870967741935484,
+        "different": true
+      },
+      {
+        "prompt": "How does learning work?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.2894736842105263,
+        "different": true
+      },
+      {
+        "prompt": "What is intelligence?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.22857142857142856,
+        "different": true
+      },
+      {
+        "prompt": "Can machines think?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.3055555555555556,
+        "different": true
+      },
+      {
+        "prompt": "What causes creativity?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.35,
+        "different": true
+      },
+      {
+        "prompt": "How does memory function?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.3611111111111111,
+        "different": true
+      }
+    ]
+  },
+  "timestamp": 1761103297.437043
+}

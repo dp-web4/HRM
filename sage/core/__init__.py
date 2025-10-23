@@ -9,6 +9,17 @@ The central orchestration loop that:
 5. Learns from outcomes
 """
 
-from .sage_kernel import SAGEKernel, MetabolicState
+# Import both kernel implementations
+try:
+    from .sage_kernel import SAGEKernel, MetabolicState
+except ImportError:
+    SAGEKernel = None
+    MetabolicState = None
 
-__all__ = ['SAGEKernel', 'MetabolicState']
+# Keep original unified implementation available
+try:
+    from .sage_unified import SAGEUnified
+except ImportError:
+    SAGEUnified = None
+
+__all__ = ['SAGEKernel', 'MetabolicState', 'SAGEUnified']

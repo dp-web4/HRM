@@ -255,8 +255,15 @@ class SAGEUnified:
                 atp_budget = allocation['atp_allocated']
                 max_iters = min(int(atp_budget / 2), 10)
 
+                # Handle different observation types (tensors vs strings/other)
+                if isinstance(obs, torch.Tensor):
+                    x0 = obs.unsqueeze(0) if obs.dim() < 4 else obs
+                else:
+                    # For non-tensor observations (e.g., text), pass as-is
+                    x0 = obs
+
                 state = plugin.init_state(
-                    x0=obs.unsqueeze(0) if obs.dim() < 4 else obs,
+                    x0=x0,
                     task_ctx={'atp_budget': atp_budget}
                 )
 
@@ -272,7 +279,7 @@ class SAGEUnified:
                         break
 
                 final_latent = state.x if hasattr(state, 'x') else None
-                if final_latent is not None and final_latent.dim() > 1:
+                if final_latent is not None and isinstance(final_latent, torch.Tensor) and final_latent.dim() > 1:
                     final_latent = final_latent.flatten()[:64]
 
                 results[sensor_id] = {

@@ -1,0 +1,870 @@
+======================================================================
+MINIMAL SENSOR EXPERIMENTS
+======================================================================
+
+Testing SNARC's response to three minimal stimuli:
+
+1. Time sensor - Predictable (always increasing)
+2. Noise sensor - Unpredictable (random)
+3. Heartbeat sensor - Rhythmic (0, 1, 0, 1...)
+
+Let's see what SNARC discovers...
+
+
+======================================================================
+TESTING: TIME
+======================================================================
+
+
+[SAGE Cycle 0]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.310
+  Breakdown: S=0.00 N=1.00 A=0.05 R=0.50 C=0.00
+  Stance: curious-uncertainty
+  Confidence: 0.691
+
+[SAGE Cycle 1]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 2]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 3]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 4]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 5]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 6]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 7]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 8]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 9]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 10]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 11]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 12]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 13]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 14]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 15]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 16]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 17]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 18]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 19]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 20]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 21]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 22]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 23]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 24]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 25]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 26]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 27]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 28]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 29]
+  Sensors: ['time']
+  Focus: time
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+[SAGE] Completed 30 cycles
+
+[SAGE Statistics]
+  Total cycles: 30
+  Average reward: 0.500
+  Average cycle time: 0.4ms
+  Stance distribution:
+    focused-attention: 29 (96.7%)
+    curious-uncertainty: 1 (3.3%)
+
+[SNARC Statistics]
+  Assessments: 30
+  Successful outcomes: 0
+  Success rate: 0.0%
+  Current weights:
+    surprise: 0.200
+    novelty: 0.200
+    arousal: 0.200
+    reward: 0.200
+    conflict: 0.200
+
+## ANALYSIS ##
+
+Salience evolution:
+  First 5: [0.31000000000000005, 0.26, 0.26, 0.26, 0.26]
+  Last 5:  [0.25, 0.25, 0.25, 0.25, 0.25]
+  Average first half: 0.260
+  Average second half: 0.250
+
+Stance distribution:
+  focused-attention: 29 (96.7%)
+  curious-uncertainty: 1 (3.3%)
+
+Average reward: 0.500
+
+======================================================================
+
+
+======================================================================
+TESTING: NOISE
+======================================================================
+
+
+[SAGE Cycle 0]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.310
+  Breakdown: S=0.00 N=1.00 A=0.05 R=0.50 C=0.00
+  Stance: curious-uncertainty
+  Confidence: 0.691
+
+[SAGE Cycle 1]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 2]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 3]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 4]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 5]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 6]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 7]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 8]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 9]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 10]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 11]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 12]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 13]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 14]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 15]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 16]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 17]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 18]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 19]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 20]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 21]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 22]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 23]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 24]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 25]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 26]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 27]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 28]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 29]
+  Sensors: ['noise']
+  Focus: noise
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+[SAGE] Completed 30 cycles
+
+[SAGE Statistics]
+  Total cycles: 30
+  Average reward: 0.500
+  Average cycle time: 0.3ms
+  Stance distribution:
+    focused-attention: 29 (96.7%)
+    curious-uncertainty: 1 (3.3%)
+
+[SNARC Statistics]
+  Assessments: 30
+  Successful outcomes: 0
+  Success rate: 0.0%
+  Current weights:
+    surprise: 0.200
+    novelty: 0.200
+    arousal: 0.200
+    reward: 0.200
+    conflict: 0.200
+
+## ANALYSIS ##
+
+Salience evolution:
+  First 5: [0.31000000000000005, 0.26, 0.26, 0.26, 0.26]
+  Last 5:  [0.25, 0.25, 0.25, 0.25, 0.25]
+  Average first half: 0.260
+  Average second half: 0.250
+
+Stance distribution:
+  focused-attention: 29 (96.7%)
+  curious-uncertainty: 1 (3.3%)
+
+Average reward: 0.500
+
+======================================================================
+
+
+======================================================================
+TESTING: HEARTBEAT
+======================================================================
+
+
+[SAGE Cycle 0]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.310
+  Breakdown: S=0.00 N=1.00 A=0.05 R=0.50 C=0.00
+  Stance: curious-uncertainty
+  Confidence: 0.691
+
+[SAGE Cycle 1]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 2]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 3]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 4]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 5]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 6]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 7]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 8]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 9]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.260
+  Breakdown: S=0.00 N=0.50 A=0.05 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.809
+
+[SAGE Cycle 10]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 11]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 12]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 13]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 14]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 15]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 16]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 17]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 18]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 19]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 20]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 21]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 22]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 23]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 24]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 25]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 26]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 27]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 28]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+
+[SAGE Cycle 29]
+  Sensors: ['heartbeat']
+  Focus: heartbeat
+  Salience: 0.250
+  Breakdown: S=0.00 N=0.50 A=0.00 R=0.75 C=0.00
+  Stance: focused-attention
+  Confidence: 0.800
+[SAGE] Completed 30 cycles
+
+[SAGE Statistics]
+  Total cycles: 30
+  Average reward: 0.500
+  Average cycle time: 0.3ms
+  Stance distribution:
+    focused-attention: 29 (96.7%)
+    curious-uncertainty: 1 (3.3%)
+
+[SNARC Statistics]
+  Assessments: 30
+  Successful outcomes: 0
+  Success rate: 0.0%
+  Current weights:
+    surprise: 0.200
+    novelty: 0.200
+    arousal: 0.200
+    reward: 0.200
+    conflict: 0.200
+
+## ANALYSIS ##
+
+Salience evolution:
+  First 5: [0.31000000000000005, 0.26, 0.26, 0.26, 0.26]
+  Last 5:  [0.25, 0.25, 0.25, 0.25, 0.25]
+  Average first half: 0.260
+  Average second half: 0.250
+
+Stance distribution:
+  focused-attention: 29 (96.7%)
+  curious-uncertainty: 1 (3.3%)
+
+Average reward: 0.500
+
+======================================================================
+
+
+======================================================================
+EXPERIMENTS COMPLETE
+======================================================================
+
+Key Questions:
+1. Did SNARC reduce salience for predictable inputs?
+2. Did it maintain high salience for random inputs?
+3. Did it detect the heartbeat pattern?
+4. How did stance evolve in each case?
+5. What does this tell us about adaptation?
+

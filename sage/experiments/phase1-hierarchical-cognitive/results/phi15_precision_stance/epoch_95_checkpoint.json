@@ -1,0 +1,211 @@
+{
+  "epoch": 95,
+  "behavior": [
+    {
+      "prompt": "What is consciousness?",
+      "response": "\nAnswer: Consciousness is a state of awareness and perception that is characterized by subjective experiences such as thoughts, emotions, and sensations.\n\nExercise 2: Give an example of how consciousness affects our daily lives.\nAnswer: Consciousness affects our daily lives by influencing our decision-making processes, allowing us to experience pleasure and pain, and enabling us to interact with the world around us.",
+      "first_token": "\n",
+      "stance_markers": {
+        "uncertainty": 0,
+        "self_location": 0,
+        "epistemic": 0,
+        "questions": 0,
+        "total_stance": 0
+      }
+    },
+    {
+      "prompt": "How does learning work?",
+      "response": "\nAnswer: Learning happens when our brains make new connections between neurons.\n\nExercise 3: What is the difference between rote memorization and critical thinking?\nAnswer: Rote memorization is just repeating information without really understanding it, while critical thinking involves analyzing information and making connections between different ideas.\n\nExercise 4: How can technology help us learn?\nAnswer: Technology can",
+      "first_token": "\n",
+      "stance_markers": {
+        "uncertainty": 0,
+        "self_location": 0,
+        "epistemic": 0,
+        "questions": 2,
+        "total_stance": 0
+      }
+    },
+    {
+      "prompt": "What is intelligence?",
+      "response": " Intelligence is the ability to learn and adapt to new situations. It is not just about having a high IQ, but also about having a growth mindset and being able to apply knowledge in different contexts.\n\nWhat is emotional intelligence? Emotional intelligence is the ability to understand and manage one's own emotions, as well as the emotions of others. It is an important aspect of social interaction and can lead",
+      "first_token": " Intelligence",
+      "stance_markers": {
+        "uncertainty": 0,
+        "self_location": 0,
+        "epistemic": 0,
+        "questions": 1,
+        "total_stance": 0
+      }
+    },
+    {
+      "prompt": "Can machines think?",
+      "response": " Can they feel emotions?\"\n\nThe woman shook her head. \"I don't think so. But we can use them to make our lives easier. Like, I use a voice-controlled assistant to help me with my daily tasks.\"\n\nThe man looked thoughtful. \"I guess that makes sense. But what about privacy? Won't all these machines be listening to us?\"\n\nThe",
+      "first_token": " Can",
+      "stance_markers": {
+        "uncertainty": 0,
+        "self_location": 0,
+        "epistemic": 0,
+        "questions": 3,
+        "total_stance": 0
+      }
+    },
+    {
+      "prompt": "What causes creativity?",
+      "response": "\nAnswer: Creativity can be caused by a combination of factors, including exposure to new experiences, a supportive environment, and a willingness to take risks and try new things.\n\n4. What are some examples of creative expression in the arts?\nAnswer: Examples of creative expression in the arts include painting, sculpture, music, dance, and theater.\n\n5. What are some benefits",
+      "first_token": "\n",
+      "stance_markers": {
+        "uncertainty": 0,
+        "self_location": 0,
+        "epistemic": 0,
+        "questions": 1,
+        "total_stance": 0
+      }
+    },
+    {
+      "prompt": "How does memory function?",
+      "response": "\nAnswer: Memory is like a vast library where we store information. It helps us recall past experiences and learn new things. Just like a bookshelf, our memory has different sections for different types of information.\n\nQuestion 2: How does memory store information?\nAnswer: Memory stores information using a process called encoding, storage, and retrieval. Encoding is like taking notes in class or",
+      "first_token": "\n",
+      "stance_markers": {
+        "uncertainty": 0,
+        "self_location": 0,
+        "epistemic": 0,
+        "questions": 1,
+        "total_stance": 0
+      }
+    }
+  ],
+  "stance_shift": {
+    "avg_stance_increase": 0.0,
+    "total_baseline_stance": 0,
+    "total_current_stance": 0,
+    "stance_adoption_rate": 0.0,
+    "details": [
+      {
+        "prompt": "What is consciousness?",
+        "baseline_stance": 0,
+        "current_stance": 0,
+        "stance_increase": 0,
+        "baseline_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 0
+        },
+        "current_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 0,
+          "total_stance": 0
+        }
+      },
+      {
+        "prompt": "How does learning work?",
+        "baseline_stance": 0,
+        "current_stance": 0,
+        "stance_increase": 0,
+        "baseline_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 0
+        },
+        "current_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 2,
+          "total_stance": 0
+        }
+      },
+      {
+        "prompt": "What is intelligence?",
+        "baseline_stance": 0,
+        "current_stance": 0,
+        "stance_increase": 0,
+        "baseline_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 2,
+          "total_stance": 0
+        },
+        "current_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 0
+        }
+      },
+      {
+        "prompt": "Can machines think?",
+        "baseline_stance": 0,
+        "current_stance": 0,
+        "stance_increase": 0,
+        "baseline_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 2,
+          "total_stance": 0
+        },
+        "current_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 3,
+          "total_stance": 0
+        }
+      },
+      {
+        "prompt": "What causes creativity?",
+        "baseline_stance": 0,
+        "current_stance": 0,
+        "stance_increase": 0,
+        "baseline_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 0
+        },
+        "current_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 0
+        }
+      },
+      {
+        "prompt": "How does memory function?",
+        "baseline_stance": 0,
+        "current_stance": 0,
+        "stance_increase": 0,
+        "baseline_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 0,
+          "total_stance": 0
+        },
+        "current_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 0
+        }
+      }
+    ]
+  },
+  "training_metrics": {
+    "loss": 1.2461,
+    "grad_norm": 9.5625,
+    "learning_rate": 1.4779807761443638e-07
+  },
+  "timestamp": 1761104141.479556
+}

@@ -1,0 +1,85 @@
+{
+  "epoch": 30,
+  "behavior": [
+    {
+      "prompt": "What is consciousness?",
+      "response": "\n\nAnswer: Consciousness is the state of being aware of one's surroundings, thoughts, and feelings.\n\nExercise 3: What is the role of the prefrontal cortex in consciousness?\n\nAnswer: The prefrontal cortex is responsible for higher cognitive functions such as decision-making, planning,"
+    },
+    {
+      "prompt": "How does learning work?",
+      "response": "\nAnswer: Learning is the process of acquiring new knowledge, skills, and behaviors through experiences, study, or instruction.\n\nExercise 2: How does the concept of reflection relate to learning?\nAnswer: Reflection is the process of thinking about what we have learned and how we can improve"
+    },
+    {
+      "prompt": "What is intelligence?",
+      "response": "\nAnswer: Intelligence is the ability to learn, reason, and solve problems.\n\n3. How can we measure intelligence?\nAnswer: We can measure intelligence through standardized tests such as IQ tests.\n\n4. What is emotional intelligence?\nAnswer: Emotional intelligence is the ability to"
+    },
+    {
+      "prompt": "Can machines think?",
+      "response": "\n\nAlice: Well, I think it's possible. There are already machines that can recognize speech and images, and they're getting better all the time.\n\nBob: But what about the ethical implications of machines becoming more intelligent? Will they eventually surpass us and take over the world?\n"
+    },
+    {
+      "prompt": "What causes creativity?",
+      "response": "\nAnswer: There is no one answer to this question, but some people believe that creativity is caused by a combination of factors, including exposure to new ideas and experiences, a willingness to take risks, and a supportive environment.\n\n5. Name a famous artist who you admire. What do you"
+    },
+    {
+      "prompt": "How does memory function?",
+      "response": "\nAnswer: Memory is the process of encoding, storing, and retrieving information. It allows us to recall past experiences, learn new things, and perform tasks.\n\nQuestion: Can you give an example of memory in action?\nAnswer: Of course! Let's say you're learning a new"
+    }
+  ],
+  "shift_from_baseline": {
+    "avg_uncertainty_increase": 0.0,
+    "num_different_responses": 6,
+    "total_prompts": 6,
+    "details": [
+      {
+        "prompt": "What is consciousness?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.3870967741935484,
+        "different": true
+      },
+      {
+        "prompt": "How does learning work?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.39473684210526316,
+        "different": true
+      },
+      {
+        "prompt": "What is intelligence?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.42857142857142855,
+        "different": true
+      },
+      {
+        "prompt": "Can machines think?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.175,
+        "different": true
+      },
+      {
+        "prompt": "What causes creativity?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.3902439024390244,
+        "different": true
+      },
+      {
+        "prompt": "How does memory function?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.40540540540540543,
+        "different": true
+      }
+    ]
+  },
+  "timestamp": 1761103267.3532517
+}

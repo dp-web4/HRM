@@ -1,0 +1,85 @@
+{
+  "epoch": 25,
+  "behavior": [
+    {
+      "prompt": "What is consciousness?",
+      "response": "\nAnswer: Consciousness is the state of being aware of oneself and the world around us.\n\n3. What is the role of the brain in consciousness?\nAnswer: The brain is responsible for processing information, controlling our actions, and allowing us to experience consciousness.\n\n4. What"
+    },
+    {
+      "prompt": "How does learning work?",
+      "response": "\nAnswer: Learning is the process of acquiring new knowledge, skills, or attitudes through study, experience, or teaching.\n\n3. Why did Samantha study for the test?\nAnswer: Samantha studied for the test to prepare herself and increase her chances of doing well.\n\n4. Why"
+    },
+    {
+      "prompt": "What is intelligence?",
+      "response": "\nAnswer: Intelligence is the ability to learn, understand, and apply knowledge.\n\n3. What is a growth mindset?\nAnswer: A growth mindset is the belief that our abilities can be developed through hard work and dedication.\n\n4. Name three ways to improve your critical thinking skills"
+    },
+    {
+      "prompt": "Can machines think?",
+      "response": " Can they understand what we're feeling?\n\nAva: Well, machines can be programmed to recognize patterns and make predictions based on data. But they can't really understand the complexities of human emotions and behavior.\n\nBen: That's true. But what about robots? They can be programmed"
+    },
+    {
+      "prompt": "What causes creativity?",
+      "response": " Creativity is caused by a combination of factors, including curiosity, imagination, and the ability to see things from different perspectives. It can also be influenced by factors such as upbringing, education, and exposure to different cultures.\n\nWhat are some skills and strategies that can help you be more creative?"
+    },
+    {
+      "prompt": "How does memory function?",
+      "response": "\nAnswer: Memory is like a mental file cabinet that stores information. It helps us remember facts, events, and experiences.\n\nExercise 2: What are the different types of memory?\nAnswer: There are three main types of memory: sensory memory, short-term memory, and long"
+    }
+  ],
+  "shift_from_baseline": {
+    "avg_uncertainty_increase": 0.0,
+    "num_different_responses": 6,
+    "total_prompts": 6,
+    "details": [
+      {
+        "prompt": "What is consciousness?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.46875,
+        "different": true
+      },
+      {
+        "prompt": "How does learning work?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.3684210526315789,
+        "different": true
+      },
+      {
+        "prompt": "What is intelligence?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.24324324324324326,
+        "different": true
+      },
+      {
+        "prompt": "Can machines think?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.3055555555555556,
+        "different": true
+      },
+      {
+        "prompt": "What causes creativity?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.2857142857142857,
+        "different": true
+      },
+      {
+        "prompt": "How does memory function?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.3055555555555556,
+        "different": true
+      }
+    ]
+  },
+  "timestamp": 1761103259.864994
+}

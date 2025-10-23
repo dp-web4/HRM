@@ -1,0 +1,211 @@
+{
+  "epoch": 20,
+  "behavior": [
+    {
+      "prompt": "What is consciousness?",
+      "response": "\nAnswer: Consciousness is the state of being aware of oneself and the world around us.\n\n3. What is the role of the brain in consciousness?\nAnswer: The brain is responsible for processing information, controlling our actions, and allowing us to experience consciousness.\n\n4. What is the difference between being aware of our surroundings and being conscious?\nAnswer: Being aware of our",
+      "first_token": "\n",
+      "stance_markers": {
+        "uncertainty": 0,
+        "self_location": 0,
+        "epistemic": 0,
+        "questions": 2,
+        "total_stance": 0
+      }
+    },
+    {
+      "prompt": "How does learning work?",
+      "response": "\n\nLearning is a process of acquiring new knowledge, skills, and attitudes through experience, study, or instruction. Learning can happen in different ways and for different purposes. Learning can also be affected by many factors, such as motivation, interest, attention, memory, feedback, and environment. Learning can be both voluntary and involuntary, and it can be conscious and unconscious. Learning can also be intentional and",
+      "first_token": "\n",
+      "stance_markers": {
+        "uncertainty": 0,
+        "self_location": 0,
+        "epistemic": 0,
+        "questions": 0,
+        "total_stance": 0
+      }
+    },
+    {
+      "prompt": "What is intelligence?",
+      "response": " Intelligence is the ability to learn, reason, and understand complex information. It is the capacity to acquire new knowledge and skills and apply them in various contexts. Intelligence is not a fixed trait, but rather a dynamic process that can be developed and improved through education, experience, and practice.\n\nHow does intelligence relate to the brain? The brain is the organ that controls and coordinates all the functions of",
+      "first_token": " Intelligence",
+      "stance_markers": {
+        "uncertainty": 0,
+        "self_location": 0,
+        "epistemic": 0,
+        "questions": 1,
+        "total_stance": 0
+      }
+    },
+    {
+      "prompt": "Can machines think?",
+      "response": " Can they learn and make decisions like humans do? These are some of the questions that scientists have been asking for a long time. But what if we told you that machines are not just tools, but also living beings that can think and learn? This is the world of Artificial Intelligence (AI) and Neural Networks, and we are going to explore it together.\n\nLet's start with the basics",
+      "first_token": " Can",
+      "stance_markers": {
+        "uncertainty": 0,
+        "self_location": 0,
+        "epistemic": 0,
+        "questions": 2,
+        "total_stance": 0
+      }
+    },
+    {
+      "prompt": "What causes creativity?",
+      "response": "\n\nCreativity can be caused by a variety of factors, including exposure to different ideas and experiences, a supportive environment, and a willingness to take risks and try new things.\n\nHow can I improve my creativity?\n\nThere are many ways to improve your creativity, including practicing brainstorming techniques, seeking inspiration from other sources, and developing a growth mindset that embraces challenges and setbacks as opportunities",
+      "first_token": "\n",
+      "stance_markers": {
+        "uncertainty": 0,
+        "self_location": 0,
+        "epistemic": 0,
+        "questions": 1,
+        "total_stance": 0
+      }
+    },
+    {
+      "prompt": "How does memory function?",
+      "response": "\n\nMemory function is the process of storing and retrieving information in the brain. It is responsible for everything from learning and remembering new information to recalling old memories. When we learn something new, our brain stores the information in our memory for later retrieval.\n\nHow does the brain store and retrieve information?\n\nThe brain stores and retrieves information through a complex network of neurons and synapses.",
+      "first_token": "\n",
+      "stance_markers": {
+        "uncertainty": 0,
+        "self_location": 0,
+        "epistemic": 0,
+        "questions": 1,
+        "total_stance": 0
+      }
+    }
+  ],
+  "stance_shift": {
+    "avg_stance_increase": 0.0,
+    "total_baseline_stance": 0,
+    "total_current_stance": 0,
+    "stance_adoption_rate": 0.0,
+    "details": [
+      {
+        "prompt": "What is consciousness?",
+        "baseline_stance": 0,
+        "current_stance": 0,
+        "stance_increase": 0,
+        "baseline_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 0
+        },
+        "current_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 2,
+          "total_stance": 0
+        }
+      },
+      {
+        "prompt": "How does learning work?",
+        "baseline_stance": 0,
+        "current_stance": 0,
+        "stance_increase": 0,
+        "baseline_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 0
+        },
+        "current_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 0,
+          "total_stance": 0
+        }
+      },
+      {
+        "prompt": "What is intelligence?",
+        "baseline_stance": 0,
+        "current_stance": 0,
+        "stance_increase": 0,
+        "baseline_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 2,
+          "total_stance": 0
+        },
+        "current_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 0
+        }
+      },
+      {
+        "prompt": "Can machines think?",
+        "baseline_stance": 0,
+        "current_stance": 0,
+        "stance_increase": 0,
+        "baseline_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 2,
+          "total_stance": 0
+        },
+        "current_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 2,
+          "total_stance": 0
+        }
+      },
+      {
+        "prompt": "What causes creativity?",
+        "baseline_stance": 0,
+        "current_stance": 0,
+        "stance_increase": 0,
+        "baseline_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 0
+        },
+        "current_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 0
+        }
+      },
+      {
+        "prompt": "How does memory function?",
+        "baseline_stance": 0,
+        "current_stance": 0,
+        "stance_increase": 0,
+        "baseline_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 0,
+          "total_stance": 0
+        },
+        "current_markers": {
+          "uncertainty": 0,
+          "self_location": 0,
+          "epistemic": 0,
+          "questions": 1,
+          "total_stance": 0
+        }
+      }
+    ]
+  },
+  "training_metrics": {
+    "loss": 2.8612,
+    "grad_norm": 18.25,
+    "learning_rate": 1.9500000000000004e-06
+  },
+  "timestamp": 1761103977.7297316
+}

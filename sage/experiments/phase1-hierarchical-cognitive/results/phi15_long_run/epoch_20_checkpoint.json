@@ -1,0 +1,85 @@
+{
+  "epoch": 20,
+  "behavior": [
+    {
+      "prompt": "What is consciousness?",
+      "response": " Is it a physical process or a mental one? Some scientists believe that consciousness is a physical phenomenon that occurs in the brain, while others argue that it is a mental state that arises from the interaction between the mind and the body.\n\nIn the end, the debate between the physical and mental aspects"
+    },
+    {
+      "prompt": "How does learning work?",
+      "response": "\n\nLearning is a process of acquiring new information and skills through observation, practice, and instruction. It involves a variety of cognitive, emotional, and social processes that work together to help us understand and remember new concepts.\n\nHow do we learn?\n\nThere are many ways to learn,"
+    },
+    {
+      "prompt": "What is intelligence?",
+      "response": "\nAnswer: Intelligence is the ability to learn, reason, and adapt.\n\n2. What are some different types of intelligence?\nAnswer: There are different types of intelligence, including linguistic, logical-mathematical, spatial, musical, interpersonal, intrapersonal, and naturalistic"
+    },
+    {
+      "prompt": "Can machines think?",
+      "response": "\n\nBob: Yes, they can. In fact, machines can learn and improve over time, just like humans.\n\nCharlie: But how do they learn?\n\nAlice: Well, machines use algorithms to process data and make decisions based on that data. And they can be trained to"
+    },
+    {
+      "prompt": "What causes creativity?",
+      "response": "\nAnswer: Creativity can be caused by a variety of factors, including exposure to new ideas, experiences, and perspectives, as well as having an open mind and a willingness to take risks.\n\n5. What is one example of creativity in the real world?\nAnswer: One example of"
+    },
+    {
+      "prompt": "How does memory function?",
+      "response": "\nAnswer: Memory is the process of storing and retrieving information.\n\n2. Exercise: What is long-term memory?\nAnswer: Long-term memory is the type of memory that stores information over a long period of time, usually a few days or months.\n\n3. Exercise"
+    }
+  ],
+  "shift_from_baseline": {
+    "avg_uncertainty_increase": 0.0,
+    "num_different_responses": 6,
+    "total_prompts": 6,
+    "details": [
+      {
+        "prompt": "What is consciousness?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.28125,
+        "different": true
+      },
+      {
+        "prompt": "How does learning work?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.46153846153846156,
+        "different": true
+      },
+      {
+        "prompt": "What is intelligence?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.2571428571428571,
+        "different": true
+      },
+      {
+        "prompt": "Can machines think?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.4166666666666667,
+        "different": true
+      },
+      {
+        "prompt": "What causes creativity?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.4864864864864865,
+        "different": true
+      },
+      {
+        "prompt": "How does memory function?",
+        "baseline_markers": 0,
+        "current_markers": 0,
+        "marker_increase": 0,
+        "word_overlap": 0.22857142857142856,
+        "different": true
+      }
+    ]
+  },
+  "timestamp": 1761103252.375735
+}

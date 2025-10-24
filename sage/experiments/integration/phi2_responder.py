@@ -20,22 +20,25 @@ class Phi2Responder:
 
     def __init__(
         self,
-        model_name: str = "microsoft/phi-2",
-        device: str = "cuda",  # Jetson has CUDA
-        max_new_tokens: int = 100,
+        model_name: str = "Qwen/Qwen2.5-0.5B-Instruct",  # Smaller, faster model
+        device: str = "cpu",
+        max_new_tokens: int = 50,
         temperature: float = 0.7
     ):
         print(f"Loading {model_name}...")
 
         self.tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+
+        # Qwen 0.5B - small enough to run on CPU efficiently
         self.model = AutoModelForCausalLM.from_pretrained(
             model_name,
-            torch_dtype=torch.float16,  # FP16 for speed
-            device_map="auto",
-            trust_remote_code=True
+            torch_dtype=torch.float32,
+            trust_remote_code=True,
+            low_cpu_mem_usage=True
         )
 
         self.device = device
+        self.model = self.model.to(self.device)
         self.max_new_tokens = max_new_tokens
         self.temperature = temperature
 

@@ -172,7 +172,7 @@ class HybridConversationRealtime:
     def _create_mock_llm(self):
         """Create a simple mock LLM for testing"""
         class MockLLM:
-            def generate_response(self, question: str, history=None, system_prompt=None) -> str:
+            def generate_response(self, question: str, conversation_history=None, system_prompt=None) -> str:
                 q = question.lower()
 
                 if 'name' in q:
@@ -215,6 +215,10 @@ class HybridConversationRealtime:
                 # Fast path hit!
                 latency = time.time() - start_time
                 self.stats['fast_path_hits'] += 1
+
+                # Still update conversation history for fast path
+                self.stats['conversation_history'].append(("User", question))
+                self.stats['conversation_history'].append(("Assistant", fast_response))
 
                 return {
                     'response': fast_response,

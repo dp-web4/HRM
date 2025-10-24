@@ -21,28 +21,35 @@ class Phi2Responder:
     def __init__(
         self,
         model_name: str = "Qwen/Qwen2.5-0.5B-Instruct",  # Smaller, faster model
-        device: str = "cpu",
+        device: str = None,
         max_new_tokens: int = 50,
         temperature: float = 0.7
     ):
         print(f"Loading {model_name}...")
 
+        # Auto-detect device (prefer CUDA on Jetson with unified memory)
+        if device is None:
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+
+        self.device = device
+        print(f"Using device: {self.device}")
+
         self.tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
 
-        # Qwen 0.5B - small enough to run on CPU efficiently
+        # Qwen 0.5B - optimized for Jetson
+        # On Jetson unified memory, GPU is faster than CPU for same memory cost
         self.model = AutoModelForCausalLM.from_pretrained(
             model_name,
-            torch_dtype=torch.float32,
+            torch_dtype=torch.float16 if device == "cuda" else torch.float32,
             trust_remote_code=True,
             low_cpu_mem_usage=True
         )
 
-        self.device = device
         self.model = self.model.to(self.device)
         self.max_new_tokens = max_new_tokens
         self.temperature = temperature
 
-        print(f"Model loaded on {device}")
+        print(f"Model loaded on {self.device} ({self.model.dtype})")
 
     def generate_response(
         self,

@@ -195,7 +195,7 @@ class HybridConversationThreaded:
         if use_real_llm:
             print("  ⏳ Loading Qwen LLM...")
             from experiments.integration.phi2_responder import Phi2Responder
-            self.llm = Phi2Responder(max_new_tokens=50, temperature=0.7)
+            self.llm = Phi2Responder(max_new_tokens=512, temperature=0.7)  # Allow full responses
             print("  ✓ Qwen 0.5B loaded")
         else:
             print("  ✓ Using MockLLM (fast, for testing)")
@@ -467,6 +467,7 @@ tts_effector = TTSEffector({
 
 # Global flag to prevent TTS overlap
 _tts_speaking = False
+_response_lock = threading.Lock()  # Prevent dual-path collision
 
 # Global dashboard
 dashboard = None
@@ -475,8 +476,8 @@ def sage_cycle_with_hybrid_learning():
     """Execute SAGE cycle with hybrid learning conversation"""
     global _tts_speaking, dashboard
 
-    # Skip processing if TTS is still speaking
-    if _tts_speaking:
+    # Skip processing if TTS is still speaking OR another response is being generated
+    if _tts_speaking or _response_lock.locked():
         sage.cycle()
         return {}
 
@@ -487,52 +488,54 @@ def sage_cycle_with_hybrid_learning():
         text = reading.metadata.get('text')
 
         if text and len(text.strip()) > 0:
-            # Update dashboard - user spoke
-            if dashboard:
-                dashboard.update(state="💭 THINKING", user_input=text)
-
-            # Generate response using hybrid system
-            try:
-                result = hybrid_system.respond(text)
-
-                # Only proceed if we got a valid response
-                if result and result.get('response'):
-                    # Update dashboard with response
-                    if dashboard:
-                        stats = hybrid_system.get_stats()
-                        llm_msg = f"LLM latency: {result.get('llm_latency', 0)*1000:.0f}ms" if result['path'] == 'slow' else ""
-
-                        state = "🗣️ SPEAKING"
-                        if result.get('learned'):
-                            state = "🧠 LEARNING & SPEAKING"
-
-                        dashboard.update(
-                            state=state,
-                            response=result['response'],
-                            path=result['path'],
-                            llm_status=llm_msg,
-                            pattern_info=result.get('pattern_info', ''),
-                            stats=stats
-                        )
-
-                    # Synthesize speech (with overlap protection)
-                    _tts_speaking = True
-                    tts_effector.execute(result['response'])
-
-                    # Wait based on text length
-                    estimated_duration = len(result['response']) * 0.08  # ~80ms per character
-                    time.sleep(min(estimated_duration, 5.0))  # Cap at 5 seconds
-                    _tts_speaking = False
-
-                    # Return to listening state
-                    if dashboard:
-                        dashboard.update(state="🎧 LISTENING")
-
-            except Exception as e:
-                _tts_speaking = False
+            # Acquire lock to prevent dual-path collision
+            with _response_lock:
+                # Update dashboard - user spoke
                 if dashboard:
-                    dashboard.update(state=f"⚠️ ERROR: {str(e)[:50]}")
-                time.sleep(2)
+                    dashboard.update(state="💭 THINKING", user_input=text)
+
+                # Generate response using hybrid system
+                try:
+                    result = hybrid_system.respond(text)
+
+                    # Only proceed if we got a valid response
+                    if result and result.get('response'):
+                        # Update dashboard with response
+                        if dashboard:
+                            stats = hybrid_system.get_stats()
+                            llm_msg = f"LLM latency: {result.get('llm_latency', 0)*1000:.0f}ms" if result['path'] == 'slow' else ""
+
+                            state = "🗣️ SPEAKING"
+                            if result.get('learned'):
+                                state = "🧠 LEARNING & SPEAKING"
+
+                            dashboard.update(
+                                state=state,
+                                response=result['response'],
+                                path=result['path'],
+                                llm_status=llm_msg,
+                                pattern_info=result.get('pattern_info', ''),
+                                stats=stats
+                            )
+
+                        # Synthesize speech (with overlap protection)
+                        _tts_speaking = True
+                        tts_effector.execute(result['response'])
+
+                        # Wait based on text length (more accurate estimate with longer responses)
+                        estimated_duration = len(result['response']) * 0.08  # ~80ms per character
+                        time.sleep(min(estimated_duration, 10.0))  # Increased cap for longer responses
+                        _tts_speaking = False
+
+                        # Return to listening state
+                        if dashboard:
+                            dashboard.update(state="🎧 LISTENING")
+
+                except Exception as e:
+                    _tts_speaking = False
+                    if dashboard:
+                        dashboard.update(state=f"⚠️ ERROR: {str(e)[:50]}")
+                    time.sleep(2)
 
     # Run standard SAGE cycle
     result = sage.cycle()

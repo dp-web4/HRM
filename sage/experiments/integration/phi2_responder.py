@@ -22,7 +22,7 @@ class Phi2Responder:
         self,
         model_name: str = "Qwen/Qwen2.5-0.5B-Instruct",  # Smaller, faster model
         device: str = None,
-        max_new_tokens: int = 50,
+        max_new_tokens: int = 512,  # Increased from 50 - allow full thoughts!
         temperature: float = 0.7
     ):
         print(f"Loading {model_name}...")
@@ -74,9 +74,10 @@ class Phi2Responder:
         if system_prompt:
             prompt_parts.append(f"System: {system_prompt}\n")
 
-        # Add conversation history (last 5 turns for context)
+        # Add conversation history (SNARC provides full context now!)
+        # Don't truncate - SNARC already did intelligent filtering
         if conversation_history:
-            for speaker, text in conversation_history[-5:]:
+            for speaker, text in conversation_history:
                 prompt_parts.append(f"{speaker}: {text}\n")
 
         # Add current input

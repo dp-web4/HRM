@@ -22,7 +22,7 @@ class Phi2Responder:
         self,
         model_name: str = "Qwen/Qwen2.5-0.5B-Instruct",  # Smaller, faster model
         device: str = None,
-        max_new_tokens: int = 512,  # Increased from 50 - allow full thoughts!
+        max_new_tokens: int = 150,  # Balanced: full sentences but real-time response
         temperature: float = 0.7
     ):
         print(f"Loading {model_name}...")
@@ -88,6 +88,10 @@ class Phi2Responder:
         # Generate
         inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
 
+        print(f"    [LLM] Generating up to {self.max_new_tokens} tokens...")
+        import time
+        gen_start = time.time()
+
         with torch.no_grad():
             outputs = self.model.generate(
                 **inputs,
@@ -96,6 +100,9 @@ class Phi2Responder:
                 do_sample=True,
                 pad_token_id=self.tokenizer.eos_token_id
             )
+
+        gen_time = time.time() - gen_start
+        print(f"    [LLM] Generation complete in {gen_time:.2f}s")
 
         response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
 

@@ -188,7 +188,7 @@ class HybridConversationThreaded:
         if use_real_llm:
             print("  ⏳ Loading Qwen LLM...")
             from experiments.integration.phi2_responder import Phi2Responder
-            self.llm = Phi2Responder(max_new_tokens=512, temperature=0.7)  # Allow full responses
+            self.llm = Phi2Responder(max_new_tokens=150, temperature=0.7)  # Balanced for real-time
             print("  ✓ Qwen 0.5B loaded")
         else:
             print("  ✓ Using MockLLM (fast, for testing)")
@@ -469,8 +469,8 @@ def sage_cycle_with_hybrid_learning():
     """Execute SAGE cycle with hybrid learning conversation"""
     global _tts_speaking, dashboard
 
-    # Skip processing if TTS is still speaking OR another response is being generated
-    if _tts_speaking or _response_lock.locked():
+    # Skip processing if TTS is still speaking
+    if _tts_speaking:
         sage.cycle()
         return {}
 
@@ -489,7 +489,9 @@ def sage_cycle_with_hybrid_learning():
 
                 # Generate response using hybrid system
                 try:
+                    print(f"\n  [HYBRID] Generating response for: '{text[:50]}...'")
                     result = hybrid_system.respond(text)
+                    print(f"  [HYBRID] Got result: path={result.get('path')}, len={len(result.get('response', ''))} chars")
 
                     # Only proceed if we got a valid response
                     if result and result.get('response'):
@@ -512,19 +514,25 @@ def sage_cycle_with_hybrid_learning():
                             )
 
                         # Synthesize speech (with overlap protection)
+                        print(f"  [TTS] Starting speech synthesis...")
                         _tts_speaking = True
                         tts_effector.execute(result['response'])
+                        print(f"  [TTS] Synthesis complete, waiting for playback...")
 
                         # Wait based on text length (more accurate estimate with longer responses)
                         estimated_duration = len(result['response']) * 0.08  # ~80ms per character
                         time.sleep(min(estimated_duration, 10.0))  # Increased cap for longer responses
                         _tts_speaking = False
+                        print(f"  [TTS] Playback complete, returning to listening")
 
                         # Return to listening state
                         if dashboard:
                             dashboard.update(state="🎧 LISTENING")
 
                 except Exception as e:
+                    print(f"  [ERROR] Exception in response generation: {e}")
+                    import traceback
+                    traceback.print_exc()
                     _tts_speaking = False
                     if dashboard:
                         dashboard.update(state=f"⚠️ ERROR: {str(e)[:50]}")

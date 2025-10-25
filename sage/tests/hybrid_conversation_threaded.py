@@ -27,6 +27,8 @@ from interfaces.tts_effector import TTSEffector
 # Import hybrid learning system
 from cognitive.pattern_learner import PatternLearner
 from cognitive.pattern_responses import PatternResponseEngine
+from cognitive.sage_system_prompt import get_sage_system_prompt
+from cognitive.context_memory import SNARCMemoryManager
 
 # ============================================================================
 # Threaded Status Dashboard
@@ -122,11 +124,17 @@ class ThreadedDashboard:
             patterns = self.stats.get('total_patterns', 13)
             learned = self.stats.get('patterns_learned', 0)
 
+            # Memory stats
+            memory_stats = self.stats.get('memory_stats', {})
+            buffer_util = memory_stats.get('buffer_utilization', 0) * 100
+            longterm = memory_stats.get('longterm_memories', 0)
+
             print("📈 STATISTICS:")
             print(f"  Total Queries: {total}")
             print(f"  Fast Path: {fast_hits}/{total} ({fast_pct:.1f}%)")
             print(f"  Slow Path: {slow_hits}/{total}")
             print(f"  Patterns: {patterns} (+{learned} learned)")
+            print(f"  Memory: {buffer_util:.1f}% buffer, {longterm} long-term")
 
             # Progress bar
             bar_width = 40
@@ -170,6 +178,14 @@ class HybridConversationThreaded:
         # Pattern learner
         self.learner = PatternLearner(min_occurrences=2, confidence_threshold=0.6)
         print(f"  ✓ Pattern learner: min_occurrences=2")
+
+        # SNARC memory manager (context window as short-term memory)
+        self.memory = SNARCMemoryManager(max_tokens=127000, tokens_per_turn=50)
+        print(f"  ✓ SNARC memory: {self.memory.max_turns} turn capacity (~99% of 128K context)")
+
+        # System prompt
+        self.system_prompt = get_sage_system_prompt()
+        print(f"  ✓ System prompt: {len(self.system_prompt)} chars (~500 tokens)")
 
         # Configuration
         self.pattern_confidence_threshold = pattern_confidence_threshold
@@ -255,7 +271,11 @@ class HybridConversationThreaded:
                     latency = time.time() - start_time
                     self.stats['fast_path_hits'] += 1
 
-                    # Update conversation history
+                    # Update SNARC memory (fast path)
+                    self.memory.add_turn("User", question)
+                    self.memory.add_turn("Assistant", fast_response, metadata={'path': 'fast', 'confidence': confidence})
+
+                    # Keep stats for backwards compatibility
                     self.stats['conversation_history'].append(("User", question))
                     self.stats['conversation_history'].append(("Assistant", fast_response))
 
@@ -277,12 +297,16 @@ class HybridConversationThreaded:
         except Exception as e:
             pattern_info = f"Pattern matching error: {str(e)[:40]}"
 
-        # Slow path - use LLM
+        # Slow path - use LLM with SNARC-optimized context
         llm_start = time.time()
+
+        # Get SNARC-filtered conversation context (includes long-term salient memories)
+        context_history = self.memory.get_context_for_llm(include_longterm=True)
+
         response = self.llm.generate_response(
             question,
-            conversation_history=self.stats['conversation_history'][-5:],
-            system_prompt="You are SAGE, a learning AI assistant."
+            conversation_history=context_history,  # Now includes entire SNARC buffer!
+            system_prompt=self.system_prompt  # Comprehensive SAGE identity
         )
         llm_latency = time.time() - llm_start
         total_latency = time.time() - start_time
@@ -303,7 +327,15 @@ class HybridConversationThreaded:
             # Integrate learned patterns into pattern engine
             self._integrate_learned_patterns()
 
-        # Update conversation history (as tuples for LLM)
+        # Update SNARC memory (slow path)
+        self.memory.add_turn("User", question)
+        self.memory.add_turn("Assistant", response, metadata={
+            'path': 'slow',
+            'llm_latency': llm_latency,
+            'learned': newly_learned
+        })
+
+        # Keep stats for backwards compatibility
         self.stats['conversation_history'].append(("User", question))
         self.stats['conversation_history'].append(("Assistant", response))
 
@@ -354,7 +386,8 @@ class HybridConversationThreaded:
             **self.stats,
             'fast_path_ratio': fast_ratio,
             'slow_path_ratio': slow_ratio,
-            'total_patterns': self.stats['initial_patterns'] + self.stats['patterns_learned']
+            'total_patterns': self.stats['initial_patterns'] + self.stats['patterns_learned'],
+            'memory_stats': self.memory.get_stats()
         }
 
 # ============================================================================
@@ -549,6 +582,8 @@ except KeyboardInterrupt:
 
     # Hybrid system stats
     stats = hybrid_system.get_stats()
+    memory_stats = stats.get('memory_stats', {})
+
     print(f"\n🧠 Hybrid Learning System:")
     print(f"   Total queries: {stats['total_queries']}")
     print(f"   Fast path: {stats['fast_path_hits']} ({stats['fast_path_ratio']:.1%})")
@@ -556,6 +591,12 @@ except KeyboardInterrupt:
     print(f"   Pattern rejects: {stats['pattern_rejects']} (low confidence)")
     print(f"   Patterns learned: {stats['patterns_learned']}")
     print(f"   Total patterns: {stats['total_patterns']} (started with {stats['initial_patterns']})")
+
+    print(f"\n💾 SNARC Memory System:")
+    print(f"   Buffer: {memory_stats.get('buffer_size', 0)}/{memory_stats.get('buffer_capacity', 0)} turns ({memory_stats.get('buffer_utilization', 0):.1%})")
+    print(f"   Long-term: {memory_stats.get('longterm_memories', 0)} high-salience memories extracted")
+    print(f"   Avg buffer salience: {memory_stats.get('avg_buffer_salience', 0):.2f}")
+    print(f"   Avg long-term salience: {memory_stats.get('avg_longterm_salience', 0):.2f}")
 
     if stats['total_queries'] > 0:
         improvement = stats['fast_path_ratio']

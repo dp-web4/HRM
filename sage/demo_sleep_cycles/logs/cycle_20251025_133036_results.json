@@ -1,0 +1,24 @@
+{
+  "cycle_id": "cycle_20251025_133036",
+  "start_time": 1761424236.926166,
+  "end_time": 1761424236.9303935,
+  "duration_seconds": 0.004227399826049805,
+  "examples_extracted": {
+    "total_extracted": 12,
+    "from_longterm": 0,
+    "deep_reasoning": 0,
+    "fast_ack": 4,
+    "handoff": 0,
+    "general": 10,
+    "augmented": 2
+  },
+  "examples_augmented": 2,
+  "deep_model_trained": false,
+  "deep_model_loss": null,
+  "fast_model_trained": false,
+  "fast_model_loss": null,
+  "patterns_consolidated": 0,
+  "experiences_pruned": 11,
+  "buffer_freed_percent": 0,
+  "notes": "Manual demonstration cycle"
+}

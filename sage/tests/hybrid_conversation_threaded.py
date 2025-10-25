@@ -186,10 +186,14 @@ class HybridConversationThreaded:
 
         # LLM (slow path)
         if use_real_llm:
-            print("  ⏳ Loading Qwen LLM...")
-            from experiments.integration.phi2_responder import Phi2Responder
-            self.llm = Phi2Responder(max_new_tokens=150, temperature=0.7)  # Balanced for real-time
-            print("  ✓ Qwen 0.5B loaded")
+            print("  ⏳ Loading Qwen LLM with streaming...")
+            from experiments.integration.streaming_responder import StreamingResponder
+            self.llm = StreamingResponder(
+                max_new_tokens=512,  # Large buffer for complete thoughts
+                temperature=0.7,
+                words_per_chunk=3  # Stream every 3 words
+            )
+            print("  ✓ Qwen 0.5B loaded with streaming")
         else:
             print("  ✓ Using MockLLM (fast, for testing)")
             self.llm = self._create_mock_llm()
@@ -233,6 +237,101 @@ class HybridConversationThreaded:
                     return f"That's an interesting question about {q.split()[0] if q.split() else 'that topic'}."
 
         return MockLLM()
+
+    def respond_streaming(self, question: str, on_chunk_callback=None) -> dict:
+        """
+        Generate response using hybrid fast/slow path with STREAMING.
+
+        on_chunk_callback: Called for each word chunk: callback(chunk_text, is_final)
+        """
+        start_time = time.time()
+        self.stats['total_queries'] += 1
+        pattern_info = ""
+
+        # Try fast path first (pattern matching)
+        try:
+            fast_response = self.pattern_engine.generate_response(question)
+
+            if fast_response and self.pattern_confidence_threshold <= 0.9:
+                # Fast path hit
+                latency = time.time() - start_time
+                self.stats['fast_path_hits'] += 1
+
+                # Update memory
+                self.memory.add_turn("User", question)
+                self.memory.add_turn("Assistant", fast_response, metadata={'path': 'fast'})
+
+                # Speak immediately (no streaming needed - instant response)
+                if on_chunk_callback:
+                    on_chunk_callback(fast_response, True)
+
+                return {
+                    'response': fast_response,
+                    'path': 'fast',
+                    'confidence': 0.9,
+                    'latency': latency,
+                    'learned': False,
+                    'pattern_info': f"Pattern match (instant)"
+                }
+
+        except Exception as e:
+            pattern_info = f"Pattern error: {str(e)[:40]}"
+
+        # Slow path - STREAMING LLM
+        llm_start = time.time()
+        context_history = self.memory.get_context_for_llm(include_longterm=True)
+
+        # Use streaming if available
+        if hasattr(self.llm, 'generate_response_streaming'):
+            result = self.llm.generate_response_streaming(
+                question,
+                conversation_history=context_history,
+                system_prompt=self.system_prompt,
+                on_chunk=on_chunk_callback  # Pass through the TTS callback!
+            )
+            response = result['full_response']
+            llm_latency = result['total_time']
+        else:
+            # Fallback to non-streaming
+            response = self.llm.generate_response(
+                question,
+                conversation_history=context_history,
+                system_prompt=self.system_prompt
+            )
+            llm_latency = time.time() - llm_start
+            # Speak all at once
+            if on_chunk_callback:
+                on_chunk_callback(response, True)
+
+        total_latency = time.time() - start_time
+        self.stats['slow_path_hits'] += 1
+
+        # Learn and update memory
+        self.learner.observe(question, response)
+        patterns_before = self.stats['patterns_learned']
+        current_patterns = len(self.learner.get_learned_patterns())
+        newly_learned = current_patterns > patterns_before
+
+        if newly_learned:
+            self.stats['patterns_learned'] = current_patterns
+            self._integrate_learned_patterns()
+
+        self.memory.add_turn("User", question)
+        self.memory.add_turn("Assistant", response, metadata={
+            'path': 'slow',
+            'llm_latency': llm_latency,
+            'learned': newly_learned
+        })
+
+        return {
+            'response': response,
+            'path': 'slow',
+            'confidence': 0.0,
+            'latency': total_latency,
+            'llm_latency': llm_latency,
+            'learned': newly_learned,
+            'pattern_info': pattern_info or "LLM streaming"
+        }
 
     def respond(self, question: str) -> dict:
         """
@@ -487,15 +586,30 @@ def sage_cycle_with_hybrid_learning():
                 if dashboard:
                     dashboard.update(state="💭 THINKING", user_input=text)
 
-                # Generate response using hybrid system
+                # Generate response using hybrid system WITH STREAMING TTS
                 try:
-                    print(f"\n  [HYBRID] Generating response for: '{text[:50]}...'")
-                    result = hybrid_system.respond(text)
-                    print(f"  [HYBRID] Got result: path={result.get('path')}, len={len(result.get('response', ''))} chars")
+                    print(f"\n  [HYBRID] Generating STREAMING response for: '{text[:50]}...'")
 
-                    # Only proceed if we got a valid response
+                    # Accumulated response for dashboard
+                    accumulated_response = ""
+
+                    def on_chunk_speak(chunk_text, is_final):
+                        """Callback: Speak each chunk immediately as it arrives!"""
+                        nonlocal accumulated_response
+                        accumulated_response += chunk_text
+
+                        print(f"  [STREAM-TTS] Speaking chunk: '{chunk_text[:40]}...'")
+                        tts_effector.execute(chunk_text)  # Speak immediately!
+
+                        # Brief pause for natural rhythm (chunk already has 3 words)
+                        time.sleep(0.3)
+
+                    # Generate with streaming
+                    result = hybrid_system.respond_streaming(text, on_chunk_callback=on_chunk_speak)
+                    print(f"  [HYBRID] Complete: path={result.get('path')}, len={len(result.get('response', ''))} chars")
+
+                    # Update dashboard with final result
                     if result and result.get('response'):
-                        # Update dashboard with response
                         if dashboard:
                             stats = hybrid_system.get_stats()
                             llm_msg = f"LLM latency: {result.get('llm_latency', 0)*1000:.0f}ms" if result['path'] == 'slow' else ""
@@ -512,18 +626,6 @@ def sage_cycle_with_hybrid_learning():
                                 pattern_info=result.get('pattern_info', ''),
                                 stats=stats
                             )
-
-                        # Synthesize speech (with overlap protection)
-                        print(f"  [TTS] Starting speech synthesis...")
-                        _tts_speaking = True
-                        tts_effector.execute(result['response'])
-                        print(f"  [TTS] Synthesis complete, waiting for playback...")
-
-                        # Wait based on text length (more accurate estimate with longer responses)
-                        estimated_duration = len(result['response']) * 0.08  # ~80ms per character
-                        time.sleep(min(estimated_duration, 10.0))  # Increased cap for longer responses
-                        _tts_speaking = False
-                        print(f"  [TTS] Playback complete, returning to listening")
 
                         # Return to listening state
                         if dashboard:

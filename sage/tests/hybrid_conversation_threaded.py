@@ -1,12 +1,21 @@
 #!/usr/bin/env python3
 """
-SAGE Hybrid Learning Conversation - Real-Time with Threaded Dashboard
+SAGE Streaming Conversation with Learning Observer
 
-Improvements over hybrid_conversation_realtime.py:
-1. Dashboard updates in separate thread (smooth real-time updates)
-2. Pattern confidence gating (only use fast path if high confidence)
-3. Better logging (track why fast vs slow path chosen)
-4. Test mode for forcing pattern learning
+Architecture:
+1. STREAMING-ONLY responses (1-3s first words via word-by-word generation)
+2. Pattern learner as OBSERVER (not executor):
+   - Observes all conversations in background
+   - Identifies small-talk patterns (greetings, acknowledgments, etc.)
+   - Builds pattern library for future small-talk model specialization
+   - Does NOT interrupt streaming (learning only!)
+3. Future optimization path:
+   - When small-talk detected, optionally load tiny dedicated model
+   - When deep conversation needed, use main LLM
+   - Decision based on learned pattern library
+
+Key insight: With streaming, "fast path" is obsolete. But pattern learning
+is still valuable for identifying casual vs deep conversation contexts.
 """
 
 import sys
@@ -98,9 +107,9 @@ class ThreadedDashboard:
         print(f"  🤖 SAGE: {self.last_response[:70]}")
         print()
 
-        # Processing Path
+        # Processing Path (streaming only now)
         if self.path_used:
-            path_icon = "⚡" if self.path_used == "fast" else "🧠"
+            path_icon = "🌊"  # Streaming waves
             print(f"🔀 PATH: {path_icon} {self.path_used.upper()}")
             if self.llm_status:
                 print(f"   {self.llm_status}")
@@ -110,9 +119,9 @@ class ThreadedDashboard:
 
         # Statistics
         if self.stats:
-            fast_pct = self.stats.get('fast_path_ratio', 0) * 100
             total = self.stats.get('total_queries', 0)
-            fast_hits = self.stats.get('fast_path_hits', 0)
+            smalltalk_observed = self.stats.get('fast_path_hits', 0)  # What WOULD be small-talk
+            smalltalk_pct = (smalltalk_observed / total * 100) if total > 0 else 0
             slow_hits = self.stats.get('slow_path_hits', 0)
             patterns = self.stats.get('total_patterns', 13)
             learned = self.stats.get('patterns_learned', 0)
@@ -124,16 +133,16 @@ class ThreadedDashboard:
 
             print("📈 STATISTICS:")
             print(f"  Total Queries: {total}")
-            print(f"  Fast Path: {fast_hits}/{total} ({fast_pct:.1f}%)")
-            print(f"  Slow Path: {slow_hits}/{total}")
-            print(f"  Patterns: {patterns} (+{learned} learned)")
+            print(f"  Small-talk Observed: {smalltalk_observed}/{total} ({smalltalk_pct:.1f}%)")
+            print(f"  Streaming: {slow_hits}/{total}")
+            print(f"  Patterns Learned: {learned} (observer mode)")
             print(f"  Memory: {buffer_util:.1f}% buffer, {longterm} long-term")
 
-            # Progress bar
+            # Progress bar for small-talk detection
             bar_width = 40
-            filled = int(bar_width * fast_pct / 100)
+            filled = int(bar_width * smalltalk_pct / 100)
             bar = "█" * filled + "░" * (bar_width - filled)
-            print(f"  [{bar}] {fast_pct:.1f}%")
+            print(f"  [{bar}] {smalltalk_pct:.1f}% small-talk")
 
         print()
         print("─" * 80)
@@ -240,7 +249,12 @@ class HybridConversationThreaded:
 
     def respond_streaming(self, question: str, on_chunk_callback=None) -> dict:
         """
-        Generate response using hybrid fast/slow path with STREAMING.
+        Generate response using STREAMING with pattern learning observer.
+
+        Fast path is now OBSERVER-ONLY:
+        - Learns small-talk patterns in background
+        - Does NOT interrupt streaming generation
+        - Building library for future small-talk model specialization
 
         on_chunk_callback: Called for each word chunk: callback(chunk_text, is_final)
         """
@@ -248,36 +262,18 @@ class HybridConversationThreaded:
         self.stats['total_queries'] += 1
         pattern_info = ""
 
-        # Try fast path first (pattern matching)
+        # OBSERVER: Check if pattern would match (don't use it!)
+        # This helps us learn what counts as "small talk"
         try:
-            fast_response = self.pattern_engine.generate_response(question)
+            potential_fast_response = self.pattern_engine.generate_response(question)
+            if potential_fast_response:
+                # Pattern would match - log this as potential small-talk
+                self.stats['fast_path_hits'] += 1  # Track what WOULD have been fast
+                pattern_info = f"📝 Small-talk pattern observed (learning)"
+        except Exception:
+            pass
 
-            if fast_response and self.pattern_confidence_threshold <= 0.9:
-                # Fast path hit
-                latency = time.time() - start_time
-                self.stats['fast_path_hits'] += 1
-
-                # Update memory
-                self.memory.add_turn("User", question)
-                self.memory.add_turn("Assistant", fast_response, metadata={'path': 'fast'})
-
-                # Speak immediately (no streaming needed - instant response)
-                if on_chunk_callback:
-                    on_chunk_callback(fast_response, True)
-
-                return {
-                    'response': fast_response,
-                    'path': 'fast',
-                    'confidence': 0.9,
-                    'latency': latency,
-                    'learned': False,
-                    'pattern_info': f"Pattern match (instant)"
-                }
-
-        except Exception as e:
-            pattern_info = f"Pattern error: {str(e)[:40]}"
-
-        # Slow path - STREAMING LLM
+        # ALWAYS use streaming path - it's fast enough now!
         llm_start = time.time()
         context_history = self.memory.get_context_for_llm(include_longterm=True)
 
@@ -306,7 +302,8 @@ class HybridConversationThreaded:
         total_latency = time.time() - start_time
         self.stats['slow_path_hits'] += 1
 
-        # Learn and update memory
+        # LEARNING OBSERVER: Track patterns in background
+        # This builds library of small-talk for future optimization
         self.learner.observe(question, response)
         patterns_before = self.stats['patterns_learned']
         current_patterns = len(self.learner.get_learned_patterns())
@@ -314,23 +311,25 @@ class HybridConversationThreaded:
 
         if newly_learned:
             self.stats['patterns_learned'] = current_patterns
-            self._integrate_learned_patterns()
+            # Note: We DON'T integrate into engine - just collecting data!
+            # Later we can train a dedicated small-talk model from this
 
         self.memory.add_turn("User", question)
         self.memory.add_turn("Assistant", response, metadata={
-            'path': 'slow',
+            'path': 'streaming',  # Only one path now
             'llm_latency': llm_latency,
+            'pattern_observed': bool(pattern_info),  # Was this small-talk?
             'learned': newly_learned
         })
 
         return {
             'response': response,
-            'path': 'slow',
-            'confidence': 0.0,
+            'path': 'streaming',  # Renamed from 'slow' - it's actually fast!
+            'confidence': 1.0,  # Always confident in streaming
             'latency': total_latency,
             'llm_latency': llm_latency,
             'learned': newly_learned,
-            'pattern_info': pattern_info or "LLM streaming"
+            'pattern_info': pattern_info or "Streaming generation"
         }
 
     def respond(self, question: str) -> dict:
@@ -684,13 +683,13 @@ except KeyboardInterrupt:
     stats = hybrid_system.get_stats()
     memory_stats = stats.get('memory_stats', {})
 
-    print(f"\n🧠 Hybrid Learning System:")
+    print(f"\n🧠 Streaming System with Learning Observer:")
     print(f"   Total queries: {stats['total_queries']}")
-    print(f"   Fast path: {stats['fast_path_hits']} ({stats['fast_path_ratio']:.1%})")
-    print(f"   Slow path: {stats['slow_path_hits']} ({stats['slow_path_ratio']:.1%})")
-    print(f"   Pattern rejects: {stats['pattern_rejects']} (low confidence)")
-    print(f"   Patterns learned: {stats['patterns_learned']}")
-    print(f"   Total patterns: {stats['total_patterns']} (started with {stats['initial_patterns']})")
+    print(f"   Small-talk observed: {stats['fast_path_hits']} ({stats['fast_path_ratio']:.1%})")
+    print(f"   All responses: Streaming (1-3s first words)")
+    print(f"   Patterns learned: {stats['patterns_learned']} (observer mode)")
+    print(f"   Pattern library: {stats['total_patterns']} patterns")
+    print(f"   → Future: Load dedicated small-talk model for casual convos")
 
     print(f"\n💾 SNARC Memory System:")
     print(f"   Buffer: {memory_stats.get('buffer_size', 0)}/{memory_stats.get('buffer_capacity', 0)} turns ({memory_stats.get('buffer_utilization', 0):.1%})")

@@ -117,12 +117,8 @@ class PatternResponseEngine:
                 "Sorry, I missed that. What did you say?"
             ],
 
-            # Yes/No questions - neutral responses
-            r'.*\?$': [
-                "That's an interesting question.",
-                "Let me think about that.",
-                "Good question."
-            ],
+            # REMOVED catch-all question pattern - let complex questions go to LLM
+            # Questions deserve thoughtful LLM responses, not generic fast-path replies
         }
 
         # Compile patterns for efficiency

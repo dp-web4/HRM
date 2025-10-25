@@ -147,6 +147,13 @@ class StreamingResponder:
                 # Emit chunk every N words
                 if word_count >= self.words_per_chunk:
                     chunk_text = "".join(chunk_buffer)
+
+                    # CRITICAL: Detect hallucinated conversation turns
+                    # LLM sometimes generates "User:" or "Assistant:" imagining dialogue
+                    if self._is_hallucinating_dialogue(chunk_text, full_response):
+                        print(f"    [STREAM] Hallucination detected (generating fake dialogue), stopping")
+                        break
+
                     chunks.append(chunk_text)
                     full_response += chunk_text
                     chunk_count += 1
@@ -194,6 +201,36 @@ class StreamingResponder:
             'total_time': total_time,
             'tokens_generated': tokens_generated
         }
+
+    def _is_hallucinating_dialogue(self, chunk_text: str, full_response: str) -> bool:
+        """
+        Detect if LLM is hallucinating a multi-turn conversation.
+
+        Signs of hallucination:
+        - Generates "User:" (imagining user's next input)
+        - Generates "Assistant:" (starting a new turn)
+        - Contains emoji sequences followed by "User:" pattern
+        """
+        combined = (full_response + chunk_text).strip()
+
+        # Check for conversation turn markers
+        hallucination_markers = [
+            '\nUser:',
+            '\nAssistant:',
+            '\nSystem:',
+            '👤 User:',
+            '🤖 Assistant:',
+        ]
+
+        for marker in hallucination_markers:
+            if marker in combined:
+                return True
+
+        # Check for emoji-user pattern (common hallucination: "🤔\nUser:")
+        if '\nUser:' in chunk_text or 'User:' in chunk_text:
+            return True
+
+        return False
 
     def _is_thought_complete(self, response: str) -> bool:
         """

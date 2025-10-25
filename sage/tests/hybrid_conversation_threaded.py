@@ -35,7 +35,7 @@ from cognitive.context_memory import SNARCMemoryManager
 # ============================================================================
 
 class ThreadedDashboard:
-    """Real-time status dashboard with background rendering"""
+    """Event-driven status dashboard (only updates on actual events)"""
 
     def __init__(self, update_interval: float = 0.1):
         self.current_state = "🎧 LISTENING"
@@ -46,34 +46,23 @@ class ThreadedDashboard:
         self.stats = {}
         self.pattern_info = ""
 
-        # Threading
-        self.update_interval = update_interval
+        # Event-driven rendering (no continuous loop!)
         self.running = False
-        self.render_thread = None
         self.lock = threading.Lock()
+        self.needs_render = False
 
     def start(self):
-        """Start background rendering thread"""
+        """Mark as started (no background thread needed)"""
         self.running = True
-        self.render_thread = threading.Thread(target=self._render_loop, daemon=True)
-        self.render_thread.start()
+        self._render()  # Initial render
 
     def stop(self):
-        """Stop background rendering thread"""
+        """Stop dashboard"""
         self.running = False
-        if self.render_thread:
-            self.render_thread.join(timeout=1.0)
-
-    def _render_loop(self):
-        """Background rendering loop"""
-        while self.running:
-            with self.lock:
-                self._render()
-            time.sleep(self.update_interval)
 
     def update(self, state=None, user_input=None, response=None, path=None,
                llm_status=None, stats=None, pattern_info=None):
-        """Update dashboard state (thread-safe)"""
+        """Update dashboard state and render immediately (event-driven)"""
         with self.lock:
             if state: self.current_state = state
             if user_input: self.last_user_input = user_input
@@ -82,6 +71,10 @@ class ThreadedDashboard:
             if llm_status is not None: self.llm_status = llm_status
             if stats: self.stats = stats
             if pattern_info: self.pattern_info = pattern_info
+
+            # Render immediately on update (event-driven, not polling)
+            if self.running:
+                self._render()
 
     def _render(self):
         """Render dashboard to terminal"""
@@ -545,18 +538,12 @@ def sage_cycle_with_hybrid_learning():
 # Run SAGE Loop with Threaded Dashboard
 # ============================================================================
 
-# Initialize and start threaded dashboard
-dashboard = ThreadedDashboard(update_interval=0.1)  # Update 10 times per second
-dashboard.update(
-    state="🎧 LISTENING",
-    user_input="(waiting for speech)",
-    response="(no response yet)",
-    stats=hybrid_system.get_stats()
-)
-dashboard.start()
+# Initialize event-driven dashboard (no continuous updates!)
+dashboard = ThreadedDashboard()
+dashboard.start()  # Initial render
 
-print("\n5. Starting threaded dashboard...")
-time.sleep(2)  # Let dashboard render
+print("\n5. Event-driven dashboard active (updates on events only)...")
+time.sleep(1)  # Brief pause
 
 try:
     cycle_count = 0

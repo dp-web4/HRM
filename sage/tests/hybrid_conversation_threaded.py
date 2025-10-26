@@ -197,6 +197,11 @@ class HybridConversationThreaded:
         from cognitive.prediction_logger import PredictionLogger
         self.prediction_logger = PredictionLogger()
 
+        # Consciousness persistence (KV-cache state management)
+        from cognitive.consciousness_persistence import ConsciousnessPersistence
+        self.consciousness = ConsciousnessPersistence()
+        print(f"  ✓ Consciousness persistence enabled")
+
         # LLM (slow path)
         if use_real_llm:
             print("  ⏳ Loading Qwen LLM with streaming...")
@@ -205,9 +210,13 @@ class HybridConversationThreaded:
                 max_new_tokens=512,  # Large buffer for complete thoughts
                 temperature=0.7,
                 words_per_chunk=3,  # Stream every 3 words
-                prediction_logger=self.prediction_logger  # Capture hallucinations
+                prediction_logger=self.prediction_logger,  # Capture hallucinations
+                consciousness_persistence=self.consciousness,  # KV-cache persistence
+                use_cached_system_prompt=True,  # Cache system prompt KV
+                auto_snapshot=True,  # Auto-save during idle
+                idle_snapshot_delay=30.0  # Snapshot after 30s idle
             )
-            print("  ✓ Qwen 0.5B loaded with streaming")
+            print("  ✓ Qwen 0.5B loaded with streaming + consciousness")
         else:
             print("  ✓ Using MockLLM (fast, for testing)")
             self.llm = self._create_mock_llm()

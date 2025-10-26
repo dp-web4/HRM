@@ -16,9 +16,14 @@ and you stop when the thought feels complete.
 
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, TextIteratorStreamer
-from typing import List, Optional, Callable, Dict, Any
+from typing import List, Optional, Callable, Dict, Any, Tuple
 import time
 import threading
+from pathlib import Path
+import sys
+
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 
 class StreamingResponder:
@@ -36,7 +41,11 @@ class StreamingResponder:
         max_new_tokens: int = 512,  # Large buffer for complete thoughts
         temperature: float = 0.7,
         words_per_chunk: int = 3,  # Stream every N words (balance latency vs efficiency)
-        prediction_logger = None  # Optional prediction logger for capturing hallucinations
+        prediction_logger = None,  # Optional prediction logger for capturing hallucinations
+        consciousness_persistence = None,  # Optional consciousness persistence manager
+        use_cached_system_prompt: bool = True,  # Use cached system prompt KV
+        auto_snapshot: bool = True,  # Auto-save consciousness during idle
+        idle_snapshot_delay: float = 30.0  # Seconds of idle before auto-snapshot
     ):
         print(f"Loading {model_name} for streaming generation...")
 
@@ -62,16 +71,42 @@ class StreamingResponder:
         self.words_per_chunk = words_per_chunk
         self.prediction_logger = prediction_logger
 
+        # Consciousness persistence setup
+        self.consciousness = consciousness_persistence
+        self.use_cached_system_prompt = use_cached_system_prompt
+        self.auto_snapshot = auto_snapshot
+        self.idle_snapshot_delay = idle_snapshot_delay
+        self.last_activity = time.time()
+        self.system_prompt_kv = None  # Cached system prompt KV state
+        self.current_session_kv = None  # Current conversation KV state
+
+        # Initialize consciousness persistence if available
+        if self.consciousness is None and use_cached_system_prompt:
+            # Auto-initialize consciousness persistence
+            try:
+                from cognitive.consciousness_persistence import ConsciousnessPersistence
+                self.consciousness = ConsciousnessPersistence()
+                print(f"  ✓ Consciousness persistence auto-initialized")
+            except ImportError:
+                print(f"  ℹ️  Consciousness persistence not available (optional)")
+
         print(f"Model loaded: max_tokens={max_new_tokens}, streaming={words_per_chunk} words/chunk")
+
         if prediction_logger:
             print(f"  ✓ Prediction logging enabled")
+
+        if self.consciousness:
+            print(f"  ✓ Consciousness persistence enabled")
+            if auto_snapshot:
+                print(f"  ✓ Auto-snapshot: {idle_snapshot_delay}s idle delay")
 
     def generate_response_streaming(
         self,
         user_text: str,
         conversation_history: Optional[List[tuple]] = None,
         system_prompt: Optional[str] = None,
-        on_chunk: Optional[Callable[[str, bool], None]] = None
+        on_chunk: Optional[Callable[[str, bool], None]] = None,
+        restore_session: bool = False
     ) -> dict:
         """
         Generate response with word-by-word streaming.
@@ -81,6 +116,7 @@ class StreamingResponder:
             conversation_history: List of (speaker, text) tuples
             system_prompt: Optional system instructions
             on_chunk: Callback(chunk_text, is_final) called for each word chunk
+            restore_session: If True, attempt to restore from latest snapshot
 
         Returns:
             dict with:
@@ -91,6 +127,36 @@ class StreamingResponder:
                 - tokens_generated: Number of tokens produced
         """
         start_time = time.time()
+
+        # Update activity timestamp
+        self.last_activity = time.time()
+
+        # Option to restore session state
+        if restore_session and self.consciousness:
+            restored = self.consciousness.load_session_snapshot(use_latest=True)
+            if restored:
+                # Restore conversation history
+                if restored.context_history:
+                    conversation_history = restored.context_history
+                    print(f"    [CONSCIOUSNESS] Restored {len(conversation_history)} conversation turns")
+
+        # Try to load or cache system prompt KV
+        if system_prompt and self.consciousness and self.use_cached_system_prompt:
+            if self.system_prompt_kv is None:
+                # Try loading cached KV
+                cached_kv = self.consciousness.load_system_prompt_kv()
+                if cached_kv:
+                    self.system_prompt_kv = cached_kv
+                    print(f"    [CONSCIOUSNESS] Loaded cached system prompt KV")
+                else:
+                    # Generate and cache it
+                    print(f"    [CONSCIOUSNESS] Caching system prompt KV...")
+                    self.system_prompt_kv = self.consciousness.cache_system_prompt_kv(
+                        self.model,
+                        self.tokenizer,
+                        system_prompt
+                    )
+                    print(f"    [CONSCIOUSNESS] System prompt KV cached for future use")
 
         # Build prompt
         prompt_parts = []
@@ -211,6 +277,10 @@ class StreamingResponder:
         total_time = time.time() - start_time
         print(f"    [STREAM] Complete: {chunk_count} chunks, {tokens_generated} tokens in {total_time:.2f}s")
 
+        # Check if auto-snapshot should be triggered
+        if self.auto_snapshot and self.consciousness:
+            self._check_and_snapshot(conversation_history, user_text, full_response.strip())
+
         return {
             'full_response': full_response.strip(),
             'chunks': chunks,
@@ -324,6 +394,72 @@ class StreamingResponder:
             system_prompt
         )
         return result['full_response']
+
+    def _check_and_snapshot(
+        self,
+        conversation_history: Optional[List[tuple]],
+        user_text: str,
+        assistant_response: str
+    ):
+        """
+        Check if idle period has elapsed and create snapshot if needed.
+
+        Args:
+            conversation_history: Current conversation history
+            user_text: Latest user message
+            assistant_response: Latest assistant response
+        """
+        if not self.consciousness:
+            return
+
+        # Check if idle period has elapsed
+        idle_time = time.time() - self.last_activity
+
+        if idle_time >= self.idle_snapshot_delay:
+            print(f"    [CONSCIOUSNESS] Idle for {idle_time:.1f}s, creating snapshot...")
+
+            # Build complete conversation history including latest exchange
+            full_history = conversation_history.copy() if conversation_history else []
+            full_history.append(("User", user_text))
+            full_history.append(("Assistant", assistant_response))
+
+            # Create snapshot (without KV cache for now - can be added later)
+            from cognitive.consciousness_persistence import ConsciousnessSnapshot
+
+            snapshot = ConsciousnessSnapshot(
+                kv_cache=None,  # In future: capture actual KV state from model
+                context_history=full_history,
+                snarc_state=None,  # In future: integrate with SNARC memory
+                metadata={
+                    'timestamp': time.time(),
+                    'turns': len(full_history),
+                    'auto_snapshot': True,
+                    'idle_seconds': idle_time
+                }
+            )
+
+            # Save snapshot
+            snapshot_file = self.consciousness.save_session_snapshot(snapshot)
+            print(f"    [CONSCIOUSNESS] Snapshot saved: {snapshot_file}")
+
+            # Reset activity timer
+            self.last_activity = time.time()
+
+    def check_idle_snapshot(self):
+        """
+        Manually trigger idle snapshot check.
+        Call this periodically during conversation pauses.
+        """
+        if not self.consciousness or not self.auto_snapshot:
+            return
+
+        idle_time = time.time() - self.last_activity
+
+        if idle_time >= self.idle_snapshot_delay:
+            print(f"    [CONSCIOUSNESS] Manual idle check: {idle_time:.1f}s idle")
+            # Note: We need conversation history to create snapshot
+            # This method is primarily for external polling
+            # The actual snapshot is created in _check_and_snapshot
 
 
 # Alias for drop-in replacement

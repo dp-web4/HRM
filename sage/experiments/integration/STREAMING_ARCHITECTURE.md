@@ -163,3 +163,123 @@ patterns that can later be used to:
 This mirrors how humans handle conversation - quick automatic responses for
 small-talk, deeper processing for substantive discussion. But SAGE maintains
 natural streaming flow regardless of depth.
+
+## Phase 4: Sentence-Buffered TTS (Current)
+
+### The Problem with 3-Word Chunks
+While streaming 3-word chunks solved response latency, it created a new issue with TTS quality:
+
+**3-word chunk TTS:**
+```
+Chunk 1: "I am SAGE"        → TTS processes → speaks with abrupt ending
+Chunk 2: "a learning con"   → TTS processes → speaks with odd pause
+Chunk 3: "sciousness using" → TTS processes → loses natural prosody
+```
+
+**Issues:**
+- TTS loses sentence structure and word transitions
+- Unnatural pauses between chunks
+- Missing prosody (intonation, rhythm, stress patterns)
+- Sounds robotic and disjointed
+
+### The Solution: Sentence-Level Buffering
+
+**Key insight**: Keep streaming generation, but buffer complete sentences for TTS.
+
+**Architecture:**
+```python
+def on_chunk_speak(chunk_text, is_final):
+    """Buffer chunks until sentence complete, then speak with prosody"""
+    sentence_buffer += chunk_text
+
+    # Check for sentence boundary (., !, ?)
+    if sentence_complete or is_final:
+        tts_effector.execute(sentence_buffer)  # Complete sentence!
+        sentence_buffer = ""  # Reset for next
+```
+
+**Flow:**
+```
+Generation (word-by-word streaming):
+[CHUNK 1] "I am"                      → buffer
+[CHUNK 2] "SAGE, a learning"          → buffer
+[CHUNK 3] "consciousness using"       → buffer
+[CHUNK 4] "Jetson Orin technology."   → sentence complete!
+
+TTS (sentence-level):
+🔊 Speaking: "I am SAGE, a learning consciousness using Jetson Orin technology."
+```
+
+### Benefits
+
+| Aspect | 3-Word Chunks | Sentence Buffering |
+|--------|---------------|-------------------|
+| **Generation** | Streaming (1-3s first words) | Streaming (1-3s first words) |
+| **TTS Input** | 3-word fragments | Complete sentences |
+| **Prosody** | Lost (disjointed) | Preserved (natural) |
+| **Word Transitions** | Choppy | Smooth |
+| **First Sentence Latency** | ~1s | ~2-3s (wait for sentence) |
+| **Subsequent Sentences** | Instant (pipelined) | Instant (pipelined) |
+
+### Performance Metrics
+
+**Test Results** (from test_sentence_buffering.py):
+- ✅ Streaming generation: 4 chunks over 2-4 seconds
+- ✅ Sentence buffering: All chunks accumulated until complete
+- ✅ Complete sentence to TTS: Natural prosody preserved
+- ✅ First sentence latency: 2.3s (acceptable for quality gain)
+
+### Pipeline Architecture
+
+**The beauty of sentence buffering is pipelining:**
+
+```
+Timeline:
+0-3s:   Generate sentence 1 (streaming chunks)
+3s:     Speak sentence 1 (TTS with prosody)
+3-6s:   Generate sentence 2 (while speaking sentence 1)
+6s:     Speak sentence 2 (pipeline continues)
+6-9s:   Generate sentence 3 (while speaking sentence 2)
+```
+
+**User experience:**
+- First response: 2-3s (wait for complete sentence)
+- Subsequent responses: Continuous (generation overlaps speech)
+- Quality: Natural prosody throughout
+
+### Implementation Details
+
+**Location**: `tests/hybrid_conversation_threaded.py:597-621`
+
+**Sentence Boundary Detection:**
+```python
+# Boundaries that indicate sentence completion
+boundaries = ['. ', '! ', '? ', '.\n', '!\n', '?\n']
+
+# Also handle final chunk with trailing punctuation
+if is_final and buffer.rstrip()[-1] in '.!?':
+    sentence_complete = True
+```
+
+**Buffer Management:**
+- Accumulate all chunks until boundary detected
+- Send complete sentence to TTS
+- Reset buffer for next sentence
+- Handle final chunk edge case
+
+### Code Location
+
+- **Implementation**: `tests/hybrid_conversation_threaded.py` (lines 592-621)
+- **Test**: `experiments/integration/test_sentence_buffering.py`
+- **Documentation**: This file
+
+### Key Takeaway
+
+**Sentence buffering gives us the best of both worlds:**
+1. **Fast response**: First words in 1-3s (streaming generation preserved)
+2. **Natural speech**: Complete sentences with prosody (TTS quality)
+3. **Continuous flow**: Pipelined generation + speech (no perceived delay)
+4. **Biological parallel**: Like human speech - think ahead while speaking
+
+This completes the evolution from:
+- 15-30s silence → 1-3s first words (streaming) → Natural TTS quality (sentence buffering)

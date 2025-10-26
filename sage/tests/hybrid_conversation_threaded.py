@@ -589,19 +589,36 @@ def sage_cycle_with_hybrid_learning():
                 try:
                     print(f"\n  [HYBRID] Generating STREAMING response for: '{text[:50]}...'")
 
-                    # Accumulated response for dashboard
+                    # Sentence-level buffering for TTS
+                    sentence_buffer = ""
                     accumulated_response = ""
+                    sentence_count = 0
 
                     def on_chunk_speak(chunk_text, is_final):
-                        """Callback: Speak each chunk immediately as it arrives!"""
-                        nonlocal accumulated_response
+                        """Callback: Buffer until sentence complete, then speak with natural prosody"""
+                        nonlocal accumulated_response, sentence_buffer, sentence_count
                         accumulated_response += chunk_text
+                        sentence_buffer += chunk_text
 
-                        print(f"  [STREAM-TTS] Speaking chunk: '{chunk_text[:40]}...'")
-                        tts_effector.execute(chunk_text)  # Speak immediately!
+                        # Check for sentence boundary (., !, ?)
+                        sentence_end = False
+                        for boundary in ['. ', '! ', '? ', '.\n', '!\n', '?\n']:
+                            if boundary in sentence_buffer:
+                                sentence_end = True
+                                break
 
-                        # Brief pause for natural rhythm (chunk already has 3 words)
-                        time.sleep(0.3)
+                        # Also check if final chunk and buffer ends with punctuation
+                        if is_final and sentence_buffer.rstrip() and sentence_buffer.rstrip()[-1] in '.!?':
+                            sentence_end = True
+
+                        # If sentence complete, speak it
+                        if sentence_end or is_final:
+                            complete_sentence = sentence_buffer.strip()
+                            if complete_sentence:
+                                sentence_count += 1
+                                print(f"  [SENTENCE-TTS {sentence_count}] Speaking: '{complete_sentence[:60]}...'")
+                                tts_effector.execute(complete_sentence)
+                                sentence_buffer = ""  # Reset for next sentence
 
                     # Generate with streaming
                     result = hybrid_system.respond_streaming(text, on_chunk_callback=on_chunk_speak)

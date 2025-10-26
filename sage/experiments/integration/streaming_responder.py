@@ -16,7 +16,7 @@ and you stop when the thought feels complete.
 
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, TextIteratorStreamer
-from typing import List, Optional, Callable
+from typing import List, Optional, Callable, Dict, Any
 import time
 import threading
 
@@ -35,7 +35,8 @@ class StreamingResponder:
         device: str = None,
         max_new_tokens: int = 512,  # Large buffer for complete thoughts
         temperature: float = 0.7,
-        words_per_chunk: int = 3  # Stream every N words (balance latency vs efficiency)
+        words_per_chunk: int = 3,  # Stream every N words (balance latency vs efficiency)
+        prediction_logger = None  # Optional prediction logger for capturing hallucinations
     ):
         print(f"Loading {model_name} for streaming generation...")
 
@@ -59,8 +60,11 @@ class StreamingResponder:
         self.max_new_tokens = max_new_tokens
         self.temperature = temperature
         self.words_per_chunk = words_per_chunk
+        self.prediction_logger = prediction_logger
 
         print(f"Model loaded: max_tokens={max_new_tokens}, streaming={words_per_chunk} words/chunk")
+        if prediction_logger:
+            print(f"  ✓ Prediction logging enabled")
 
     def generate_response_streaming(
         self,
@@ -150,8 +154,21 @@ class StreamingResponder:
 
                     # CRITICAL: Detect hallucinated conversation turns
                     # LLM sometimes generates "User:" or "Assistant:" imagining dialogue
-                    if self._is_hallucinating_dialogue(chunk_text, full_response):
+                    hallucination_info = self._extract_hallucination(chunk_text, full_response)
+                    if hallucination_info:
                         print(f"    [STREAM] Hallucination detected (generating fake dialogue), stopping")
+
+                        # Log prediction for training data
+                        if self.prediction_logger:
+                            self.prediction_logger.capture_hallucination(
+                                model_response=hallucination_info['model_response'],
+                                predicted_user_response=hallucination_info['predicted_user_response'],
+                                context={
+                                    'chunks': chunk_count,
+                                    'tokens': tokens_generated,
+                                    'user_text': user_text
+                                }
+                            )
                         break
 
                     chunks.append(chunk_text)
@@ -202,14 +219,14 @@ class StreamingResponder:
             'tokens_generated': tokens_generated
         }
 
-    def _is_hallucinating_dialogue(self, chunk_text: str, full_response: str) -> bool:
+    def _extract_hallucination(self, chunk_text: str, full_response: str) -> Optional[dict]:
         """
-        Detect if LLM is hallucinating a multi-turn conversation.
+        Detect AND extract hallucinated dialogue for training data collection.
 
-        Signs of hallucination:
-        - Generates "User:" (imagining user's next input)
-        - Generates "Assistant:" (starting a new turn)
-        - Contains emoji sequences followed by "User:" pattern
+        Returns dict with:
+        - model_response: What the model said (before hallucination)
+        - predicted_user_response: What the model predicted user would say
+        Or None if no hallucination detected.
         """
         combined = (full_response + chunk_text).strip()
 
@@ -224,13 +241,42 @@ class StreamingResponder:
 
         for marker in hallucination_markers:
             if marker in combined:
-                return True
+                # Found hallucination! Extract the parts
+                parts = combined.split(marker, 1)
+                model_response = parts[0].strip()
+
+                # Extract the predicted user response (everything after the marker)
+                predicted_user_response = marker.strip() + ' ' + (parts[1].strip() if len(parts) > 1 else '')
+
+                return {
+                    'model_response': model_response,
+                    'predicted_user_response': predicted_user_response
+                }
 
         # Check for emoji-user pattern (common hallucination: "🤔\nUser:")
         if '\nUser:' in chunk_text or 'User:' in chunk_text:
-            return True
+            # Find where "User:" starts
+            if '\nUser:' in combined:
+                parts = combined.split('\nUser:', 1)
+            else:
+                parts = combined.split('User:', 1)
 
-        return False
+            model_response = parts[0].strip()
+            predicted_user_response = 'User: ' + (parts[1].strip() if len(parts) > 1 else '')
+
+            return {
+                'model_response': model_response,
+                'predicted_user_response': predicted_user_response
+            }
+
+        return None
+
+    def _is_hallucinating_dialogue(self, chunk_text: str, full_response: str) -> bool:
+        """
+        Legacy method - now just calls _extract_hallucination and returns bool.
+        Kept for backward compatibility.
+        """
+        return self._extract_hallucination(chunk_text, full_response) is not None
 
     def _is_thought_complete(self, response: str) -> bool:
         """

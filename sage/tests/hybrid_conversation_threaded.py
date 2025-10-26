@@ -193,6 +193,10 @@ class HybridConversationThreaded:
         self.pattern_confidence_threshold = pattern_confidence_threshold
         print(f"  ✓ Pattern confidence threshold: {pattern_confidence_threshold}")
 
+        # Prediction logger (capture hallucinations as training data)
+        from cognitive.prediction_logger import PredictionLogger
+        self.prediction_logger = PredictionLogger()
+
         # LLM (slow path)
         if use_real_llm:
             print("  ⏳ Loading Qwen LLM with streaming...")
@@ -200,7 +204,8 @@ class HybridConversationThreaded:
             self.llm = StreamingResponder(
                 max_new_tokens=512,  # Large buffer for complete thoughts
                 temperature=0.7,
-                words_per_chunk=3  # Stream every 3 words
+                words_per_chunk=3,  # Stream every 3 words
+                prediction_logger=self.prediction_logger  # Capture hallucinations
             )
             print("  ✓ Qwen 0.5B loaded with streaming")
         else:
@@ -321,6 +326,10 @@ class HybridConversationThreaded:
             'pattern_observed': bool(pattern_info),  # Was this small-talk?
             'learned': newly_learned
         })
+
+        # If there's a pending prediction, log the actual user response
+        if self.prediction_logger and self.prediction_logger.pending_prediction:
+            self.prediction_logger.log_actual_response(question)
 
         return {
             'response': response,

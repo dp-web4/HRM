@@ -130,16 +130,23 @@ class StreamingAudioSensor(BaseSensor):
     def _start_stream(self):
         """Start parecord streaming in background thread"""
         import subprocess
+        import tempfile
 
-        # Start parecord subprocess with STDOUT pipe (no temp file!)
+        # Create temp file for parecord (required - parecord doesn't support stdout)
+        # NOTE: We still use hierarchical buffer for memory management
+        self.recording_file = tempfile.NamedTemporaryFile(suffix=".raw", delete=False)
+        self.recording_filename = self.recording_file.name
+        self.recording_file.close()
+
+        # Start parecord subprocess
         self.parecord_process = subprocess.Popen([
             "parecord",
             "--device", self.bt_device,
             "--channels", "1",
             "--rate", str(self.sample_rate),
-            "--format=s16le"
-            # No filename - output goes to stdout
-        ], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+            "--format=s16le",
+            self.recording_filename
+        ], stderr=subprocess.DEVNULL)
 
         # Start background thread to read and process audio
         self.running = True
@@ -147,32 +154,42 @@ class StreamingAudioSensor(BaseSensor):
         self.processing_thread = threading.Thread(target=self._process_audio_loop, daemon=True)
         self.processing_thread.start()
 
-        print(f"  Audio stream started (parecord subprocess → memory buffer)")
+        print(f"  Audio stream started (parecord → temp file → hierarchical buffer)")
+        print(f"  Temp file: {self.recording_filename}")
 
     def _process_audio_loop(self):
         """
-        Background thread that reads from parecord pipe and processes with VAD
+        Background thread that reads from parecord file and processes with VAD
 
-        Reads frames continuously from stdout, runs VAD, and queues transcriptions.
-        All audio goes into hierarchical buffer (no temp files!)
+        Reads frames continuously from temp file, runs VAD, and queues transcriptions.
+        All audio goes into hierarchical buffer (memory-managed, not disk-stored).
         """
+        import os
+
         frame_bytes = self.frame_size * 2  # 2 bytes per int16 sample
+        file_position = 0
         frames_processed = 0
 
-        print(f"  [VAD] Processing thread started, reading from parecord pipe")
+        print(f"  [VAD] Processing thread started, reading from {self.recording_filename}")
 
         while self.running:
             try:
-                # Read next frame from pipe
-                in_data = self.parecord_process.stdout.read(frame_bytes)
-
-                if len(in_data) < frame_bytes:
-                    # Stream ended or error
-                    if not self.running:
-                        break
+                # Wait for file to exist
+                if not os.path.exists(self.recording_filename):
                     time.sleep(0.01)
                     continue
 
+                # Read next frame from file
+                with open(self.recording_filename, 'rb') as f:
+                    f.seek(file_position)
+                    in_data = f.read(frame_bytes)
+
+                if len(in_data) < frame_bytes:
+                    # Not enough data yet, wait
+                    time.sleep(self.frame_duration_ms / 1000.0 / 2)
+                    continue
+
+                file_position += frame_bytes
                 frames_processed += 1
 
                 # Convert bytes to int16 samples

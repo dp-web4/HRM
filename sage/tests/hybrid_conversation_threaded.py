@@ -579,6 +579,16 @@ _tts_speaking = False
 _response_lock = threading.Lock()  # Prevent dual-path collision
 _tts_lock = threading.Lock()  # Prevent TTS overlap (multiple sentence callbacks)
 
+# Conversation logging
+_conversation_log = open('/home/sprout/sage_conversations_clean.log', 'a', buffering=1)
+
+def log_conversation(speaker: str, text: str):
+    """Log conversation to file"""
+    import datetime
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    _conversation_log.write(f"[{timestamp}] {speaker}: {text}\n")
+    _conversation_log.flush()
+
 # Global dashboard
 dashboard = None
 
@@ -598,6 +608,12 @@ def sage_cycle_with_hybrid_learning():
         text = reading.metadata.get('text')
 
         if text and len(text.strip()) > 0:
+            # Log user input
+            log_conversation("USER", text)
+
+            # Set TTS flag to prevent overlapping responses
+            _tts_speaking = True
+
             # Acquire lock to prevent dual-path collision
             with _response_lock:
                 # Update dashboard - user spoke
@@ -662,6 +678,10 @@ def sage_cycle_with_hybrid_learning():
                     result = hybrid_system.respond_streaming(text, on_chunk_callback=on_chunk_speak)
                     print(f"  [HYBRID] Complete: path={result.get('path')}, len={len(result.get('response', ''))} chars")
 
+                    # Log SAGE response
+                    if result and result.get('response'):
+                        log_conversation("SAGE", result['response'])
+
                     # Update dashboard with final result
                     if result and result.get('response'):
                         if dashboard:
@@ -684,6 +704,9 @@ def sage_cycle_with_hybrid_learning():
                         # Return to listening state
                         if dashboard:
                             dashboard.update(state="🎧 LISTENING")
+
+                        # Clear TTS flag - ready for next response
+                        _tts_speaking = False
 
                 except Exception as e:
                     print(f"  [ERROR] Exception in response generation: {e}")
@@ -729,6 +752,9 @@ try:
 except KeyboardInterrupt:
     # Stop dashboard
     dashboard.stop()
+
+    # Close conversation log
+    _conversation_log.close()
 
     print("\n\n" + "="*80)
     print("📊 FINAL STATISTICS")

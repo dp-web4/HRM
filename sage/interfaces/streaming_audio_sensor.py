@@ -24,6 +24,7 @@ from collections import deque
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from interfaces.base_sensor import BaseSensor, SensorReading
+from interfaces.hierarchical_audio_buffer import HierarchicalAudioBuffer
 
 
 class StreamingAudioSensor(BaseSensor):
@@ -102,6 +103,14 @@ class StreamingAudioSensor(BaseSensor):
             compute_type="int8"  # Quantized for speed
         )
 
+        # Initialize hierarchical audio buffer (replaces temp file)
+        self.audio_buffer = HierarchicalAudioBuffer(
+            sample_rate=self.sample_rate,
+            rolling_duration=5.0,  # 5 second rolling buffer
+            max_speech_segments=10,  # Up to 10 segments awaiting transcription
+            frame_duration_ms=self.frame_duration_ms
+        )
+
         # Audio stream state (parecord-based)
         self.ring_buffer = deque(maxlen=self.num_padding_frames)
         self.triggered = False
@@ -121,22 +130,16 @@ class StreamingAudioSensor(BaseSensor):
     def _start_stream(self):
         """Start parecord streaming in background thread"""
         import subprocess
-        import tempfile
 
-        # Create temp file for continuous recording
-        self.recording_file = tempfile.NamedTemporaryFile(suffix=".raw", delete=False)
-        self.recording_filename = self.recording_file.name
-        self.recording_file.close()
-
-        # Start parecord subprocess
+        # Start parecord subprocess with STDOUT pipe (no temp file!)
         self.parecord_process = subprocess.Popen([
             "parecord",
             "--device", self.bt_device,
             "--channels", "1",
             "--rate", str(self.sample_rate),
-            "--format=s16le",
-            self.recording_filename
-        ], stderr=subprocess.DEVNULL)
+            "--format=s16le"
+            # No filename - output goes to stdout
+        ], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 
         # Start background thread to read and process audio
         self.running = True
@@ -144,44 +147,39 @@ class StreamingAudioSensor(BaseSensor):
         self.processing_thread = threading.Thread(target=self._process_audio_loop, daemon=True)
         self.processing_thread.start()
 
-        print(f"  Audio stream started (parecord subprocess)")
+        print(f"  Audio stream started (parecord subprocess → memory buffer)")
 
     def _process_audio_loop(self):
         """
-        Background thread that reads from parecord and processes with VAD
+        Background thread that reads from parecord pipe and processes with VAD
 
-        Reads frames continuously from file, runs VAD, and queues transcriptions
+        Reads frames continuously from stdout, runs VAD, and queues transcriptions.
+        All audio goes into hierarchical buffer (no temp files!)
         """
-        import os
-
         frame_bytes = self.frame_size * 2  # 2 bytes per int16 sample
-        file_position = 0
         frames_processed = 0
 
-        print(f"  [VAD] Processing thread started, looking for {self.recording_filename}")
+        print(f"  [VAD] Processing thread started, reading from parecord pipe")
 
         while self.running:
             try:
-                # Wait for file to have data
-                if not os.path.exists(self.recording_filename):
+                # Read next frame from pipe
+                in_data = self.parecord_process.stdout.read(frame_bytes)
+
+                if len(in_data) < frame_bytes:
+                    # Stream ended or error
+                    if not self.running:
+                        break
                     time.sleep(0.01)
                     continue
 
-                # Read next frame
-                with open(self.recording_filename, 'rb') as f:
-                    f.seek(file_position)
-                    in_data = f.read(frame_bytes)
-
-                if len(in_data) < frame_bytes:
-                    # Not enough data yet, wait
-                    time.sleep(self.frame_duration_ms / 1000.0 / 2)  # Half frame duration
-                    continue
-
-                file_position += frame_bytes
                 frames_processed += 1
 
                 # Convert bytes to int16 samples
                 frame = np.frombuffer(in_data, dtype=np.int16)
+
+                # Push to Tier 1 (rolling buffer) - ALL audio goes here
+                self.audio_buffer.push_frame(frame)
 
                 # VAD check
                 is_speech = self.vad.is_speech(in_data, self.sample_rate)
@@ -235,25 +233,32 @@ class StreamingAudioSensor(BaseSensor):
                 time.sleep(0.1)
 
     def _queue_transcription(self):
-        """Queue speech for background transcription"""
+        """Queue speech for background transcription using hierarchical buffer"""
         if not self.voiced_frames:
             return
 
         # Concatenate frames
         audio_data = np.concatenate(self.voiced_frames)
 
+        # Promote to Tier 2 (speech segment)
+        speech_duration = len(audio_data) / self.sample_rate
+        segment = self.audio_buffer.promote_to_speech(
+            duration_seconds=speech_duration,
+            metadata={'timestamp': time.time(), 'duration': speech_duration}
+        )
+
         # Convert int16 to float32 for faster-whisper
         audio_float = audio_data.astype(np.float32) / 32768.0
 
-        # Submit to background thread
+        # Submit to background thread with segment reference
         threading.Thread(
             target=self._transcribe_audio,
-            args=(audio_float,),
+            args=(audio_float, segment),
             daemon=True
         ).start()
 
-    def _transcribe_audio(self, audio: np.ndarray):
-        """Background transcription thread"""
+    def _transcribe_audio(self, audio: np.ndarray, segment):
+        """Background transcription thread (Tier 2 → Tier 3)"""
         try:
             start_time = time.time()
 
@@ -270,17 +275,20 @@ class StreamingAudioSensor(BaseSensor):
             text_parts = []
             avg_confidence = []
 
-            for segment in segments:
-                text_parts.append(segment.text)
+            for seg in segments:
+                text_parts.append(seg.text)
                 # faster-whisper doesn't provide no_speech_prob directly
                 # Use average log probability as proxy for confidence
-                confidence = np.exp(segment.avg_logprob) if hasattr(segment, 'avg_logprob') else 0.7
+                confidence = np.exp(seg.avg_logprob) if hasattr(seg, 'avg_logprob') else 0.7
                 avg_confidence.append(confidence)
 
             text = " ".join(text_parts).strip()
             confidence = np.mean(avg_confidence) if avg_confidence else 0.0
 
             transcription_time = time.time() - start_time
+
+            # Mark transcription complete (Tier 3) - audio is discarded
+            self.audio_buffer.mark_transcription_complete(segment, text)
 
             # Queue result if meets confidence threshold
             if text and confidence >= self.min_confidence:

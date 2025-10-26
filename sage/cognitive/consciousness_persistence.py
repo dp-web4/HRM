@@ -186,7 +186,9 @@ class ConsciousnessPersistence:
         if not self.system_prompt_cache.exists():
             return None
 
-        cached = torch.load(self.system_prompt_cache)
+        # PyTorch 2.6+ requires weights_only=False for non-standard types
+        # This is safe because we control the source (our own cache)
+        cached = torch.load(self.system_prompt_cache, weights_only=False)
         return cached.get('kv_cache')
 
     # =========================================================================
@@ -293,11 +295,13 @@ class ConsciousnessPersistence:
         start_time = time.time()
 
         # Load snapshot
+        # PyTorch 2.6+ requires weights_only=False for non-standard types
+        # This is safe because we control the source (our own snapshots)
         if str(snapshot_file).endswith('.gz'):
             with gzip.open(snapshot_file, 'rb') as f:
-                snapshot_data = torch.load(f)
+                snapshot_data = torch.load(f, weights_only=False)
         else:
-            snapshot_data = torch.load(snapshot_file)
+            snapshot_data = torch.load(snapshot_file, weights_only=False)
 
         elapsed = time.time() - start_time
 
@@ -450,8 +454,10 @@ class ConsciousnessPersistence:
         print(f"\n📥 Importing consciousness from transfer file...")
         print(f"   Source: {transfer_file}")
 
+        # PyTorch 2.6+ requires weights_only=False for non-standard types
+        # This is safe because we control the source (our own transfer files)
         with gzip.open(transfer_file, 'rb') as f:
-            transfer_data = torch.load(f)
+            transfer_data = torch.load(f, weights_only=False)
 
         snapshot_data = transfer_data['snapshot']
         transfer_meta = transfer_data['transfer_metadata']
@@ -483,11 +489,13 @@ class ConsciousnessPersistence:
 
         for snapshot_file in self.snapshot_dir.glob("session_*.pt*"):
             try:
+                # PyTorch 2.6+ requires weights_only=False for non-standard types
+                # This is safe because we control the source (our own snapshots)
                 if str(snapshot_file).endswith('.gz'):
                     with gzip.open(snapshot_file, 'rb') as f:
-                        data = torch.load(f)
+                        data = torch.load(f, weights_only=False)
                 else:
-                    data = torch.load(snapshot_file)
+                    data = torch.load(snapshot_file, weights_only=False)
 
                 metadata = data.get('metadata', {})
                 snapshots.append({

@@ -574,9 +574,10 @@ tts_effector = TTSEffector({
 # Hybrid SAGE Cycle with Learning
 # ============================================================================
 
-# Global flag to prevent TTS overlap
+# Global locks to prevent overlap
 _tts_speaking = False
 _response_lock = threading.Lock()  # Prevent dual-path collision
+_tts_lock = threading.Lock()  # Prevent TTS overlap (multiple sentence callbacks)
 
 # Global dashboard
 dashboard = None
@@ -618,25 +619,44 @@ def sage_cycle_with_hybrid_learning():
                         accumulated_response += chunk_text
                         sentence_buffer += chunk_text
 
-                        # Check for sentence boundary (., !, ?)
-                        sentence_end = False
-                        for boundary in ['. ', '! ', '? ', '.\n', '!\n', '?\n']:
-                            if boundary in sentence_buffer:
-                                sentence_end = True
-                                break
+                        # Smarter sentence boundary detection
+                        import re
 
-                        # Also check if final chunk and buffer ends with punctuation
-                        if is_final and sentence_buffer.rstrip() and sentence_buffer.rstrip()[-1] in '.!?':
-                            sentence_end = True
+                        def is_sentence_complete(text: str) -> bool:
+                            """Check if text ends with complete sentence"""
+                            text = text.strip()
+                            if not text:
+                                return False
 
-                        # If sentence complete, speak it
+                            # Must end with sentence terminator
+                            if not re.search(r'[.!?]$', text):
+                                return False
+
+                            # Exclude common abbreviations
+                            abbrevs = ['Dr.', 'Mr.', 'Mrs.', 'Ms.', 'Prof.', 'Sr.', 'Jr.', 'etc.', 'e.g.', 'i.e.']
+                            for abbrev in abbrevs:
+                                if text.endswith(abbrev):
+                                    return False
+
+                            # Exclude decimals (ends with digit before period)
+                            if re.search(r'\d\.$', text):
+                                return False
+
+                            return True
+
+                        # Check if sentence is complete
+                        sentence_end = is_sentence_complete(sentence_buffer)
+
+                        # If sentence complete or final, speak it
                         if sentence_end or is_final:
                             complete_sentence = sentence_buffer.strip()
                             if complete_sentence:
-                                sentence_count += 1
-                                print(f"  [SENTENCE-TTS {sentence_count}] Speaking: '{complete_sentence[:60]}...'")
-                                tts_effector.execute(complete_sentence)
-                                sentence_buffer = ""  # Reset for next sentence
+                                # Use TTS lock to prevent overlap
+                                with _tts_lock:
+                                    sentence_count += 1
+                                    print(f"  [SENTENCE-TTS {sentence_count}] Speaking: '{complete_sentence[:60]}...'")
+                                    tts_effector.execute(complete_sentence)
+                                    sentence_buffer = ""  # Reset INSIDE lock
 
                     # Generate with streaming
                     result = hybrid_system.respond_streaming(text, on_chunk_callback=on_chunk_speak)

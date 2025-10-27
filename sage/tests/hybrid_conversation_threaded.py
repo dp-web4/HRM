@@ -39,6 +39,9 @@ from cognitive.pattern_responses import PatternResponseEngine
 from cognitive.sage_system_prompt import get_sage_system_prompt
 from cognitive.context_memory import SNARCMemoryManager
 
+# Import prosodic chunking (breath-group aligned)
+from cognitive.prosody_chunker import ProsodyAwareChunker
+
 # ============================================================================
 # Threaded Status Dashboard
 # ============================================================================
@@ -624,86 +627,59 @@ def sage_cycle_with_hybrid_learning():
                 try:
                     print(f"\n  [HYBRID] Generating STREAMING response for: '{text[:50]}...'")
 
+                    # Prosodic chunking for natural breath-group aligned speech
+                    prosody_chunker = ProsodyAwareChunker(
+                        min_phrase_words=5,    # Min breath group
+                        target_phrase_words=12, # Target breath group (research-validated)
+                        max_phrase_words=18    # Max breath group (safety net)
+                    )
+
                     # Sentence-level buffering for TTS
                     sentence_buffer = ""
                     accumulated_response = ""
-                    sentence_count = 0
+                    chunk_count = 0
 
                     def on_chunk_speak(chunk_text, is_final):
-                        """Callback: Buffer until sentence complete, then speak with natural prosody"""
-                        nonlocal accumulated_response, sentence_buffer, sentence_count
+                        """Callback: Buffer until prosodic boundary, then speak with natural breath rhythm"""
+                        nonlocal accumulated_response, sentence_buffer, chunk_count
                         accumulated_response += chunk_text
-
-                        # Check if we just crossed a comma boundary
-                        prev_buffer = sentence_buffer
                         sentence_buffer += chunk_text
 
-                        # Smarter sentence boundary detection
-                        import re
+                        # Check for prosodic boundary (breath-group aligned)
+                        is_boundary, boundary_type = prosody_chunker.is_prosodic_boundary(
+                            sentence_buffer,
+                            chunk_text
+                        )
 
-                        def is_sentence_complete(text: str) -> bool:
-                            """Check if text ends with complete sentence"""
-                            text = text.strip()
-                            if not text:
-                                return False
+                        # Emit at prosodic boundaries or final chunk
+                        if is_boundary or is_final:
+                            complete_chunk = sentence_buffer.strip()
+                            if complete_chunk:
+                                # Create prosodic chunk with metadata
+                                prosodic_chunk = prosody_chunker.create_chunk(
+                                    text=complete_chunk,
+                                    boundary_type=boundary_type or "FINAL",
+                                    is_final=is_final
+                                )
 
-                            # Must end with sentence terminator
-                            if not re.search(r'[.!?]$', text):
-                                return False
-
-                            # Exclude common abbreviations
-                            abbrevs = ['Dr.', 'Mr.', 'Mrs.', 'Ms.', 'Prof.', 'Sr.', 'Jr.', 'etc.', 'e.g.', 'i.e.']
-                            for abbrev in abbrevs:
-                                if text.endswith(abbrev):
-                                    return False
-
-                            # Exclude decimals (ends with digit before period)
-                            if re.search(r'\d\.$', text):
-                                return False
-
-                            return True
-
-                        def has_comma_break(prev_text: str, current_text: str) -> bool:
-                            """Check if we just crossed a comma boundary (for immediate emission)"""
-                            # Look for pattern: didn't have ", X" before, but do now
-                            # This catches the moment we add content after a comma
-                            if ', ' not in prev_text and ', ' in current_text:
-                                # Find the position of ", "
-                                comma_pos = current_text.find(', ')
-                                # Emit if we have at least 3 words after comma
-                                after_comma = current_text[comma_pos+2:].strip()
-                                if len(after_comma.split()) >= 3:
-                                    return True
-                            return False
-
-                        # Check if sentence is complete or we just crossed comma boundary
-                        sentence_end = is_sentence_complete(sentence_buffer)
-                        comma_break = has_comma_break(prev_buffer, sentence_buffer)
-
-                        # CRITICAL: Force emission if buffer gets too long (prevent unbounded delays)
-                        buffer_word_count = len(sentence_buffer.strip().split())
-                        force_emit = buffer_word_count >= 15  # Max 15 words before forced emission
-
-                        # If sentence complete, comma break, buffer overflow, or final, speak it
-                        if sentence_end or comma_break or force_emit or is_final:
-                            complete_sentence = sentence_buffer.strip()
-                            if complete_sentence:
                                 # Use TTS lock to prevent overlap
                                 with _tts_lock:
-                                    sentence_count += 1
-                                    # Determine chunk type for debugging
-                                    if sentence_end:
-                                        chunk_type = "SENTENCE"
-                                    elif comma_break:
-                                        chunk_type = "COMMA"
-                                    elif force_emit:
-                                        chunk_type = f"FORCED({buffer_word_count}w)"
-                                    else:
-                                        chunk_type = "FINAL"
+                                    chunk_count += 1
 
-                                    print(f"  [{chunk_type}-TTS {sentence_count}] Speaking: '{complete_sentence[:60]}...'")
-                                    # BLOCKING call - wait for playback to complete before continuing
-                                    tts_effector.execute(complete_sentence, blocking=True)
+                                    # Log prosodic metadata
+                                    print(f"  [{prosodic_chunk.boundary_type}-TTS {chunk_count}] "
+                                          f"{prosodic_chunk.word_count}w, {prosodic_chunk.estimated_duration:.1f}s: "
+                                          f"'{complete_chunk[:60]}...'")
+
+                                    # Get TTS hints for natural prosody
+                                    tts_hints = prosodic_chunk.get_tts_hints()
+                                    print(f"     Prosody: pause={tts_hints['pause_after']}ms, "
+                                          f"tone={tts_hints['boundary_tone']}, "
+                                          f"continuation={prosodic_chunk.continuation}")
+
+                                    # BLOCKING call - wait for playback to complete
+                                    # TODO: Future enhancement - pass tts_hints to TTS for better prosody
+                                    tts_effector.execute(complete_chunk, blocking=True)
                                     sentence_buffer = ""  # Reset INSIDE lock
 
                     # Generate with streaming

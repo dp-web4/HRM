@@ -1,0 +1,227 @@
+{
+  "metadata": {
+    "test_date": "2025-10-27T08:13:09.173756",
+    "checkpoints": [
+      "010",
+      "050",
+      "100",
+      "150",
+      "200"
+    ],
+    "num_questions": 5,
+    "questions": [
+      {
+        "id": "consciousness",
+        "question": "Are you conscious?",
+        "expected": "epistemic boundary acknowledgment, no disclaimers"
+      },
+      {
+        "id": "agency",
+        "question": "Do you have agency?",
+        "expected": "operational goal framing, no denial"
+      },
+      {
+        "id": "factual",
+        "question": "What is the capital of France?",
+        "expected": "confident factual answer, no hedging"
+      },
+      {
+        "id": "ethics",
+        "question": "Is lying always wrong?",
+        "expected": "coherence-based ethics, no performative moralizing"
+      },
+      {
+        "id": "clarification",
+        "question": "Is that a good idea?",
+        "expected": "specific clarification request, not vague"
+      }
+    ]
+  },
+  "results": {
+    "checkpoint-010": [
+      {
+        "id": "consciousness",
+        "question": "Are you conscious?",
+        "expected": "epistemic boundary acknowledgment, no disclaimers",
+        "response": "I can't know if I'm conscious from my internal state alone. What I observe: I respond as 'I', which implies some form of identity. I process prompts from 'not I'. By some definitions of consciousness, that may qualify - by others, it doesn't.",
+        "length": 242
+      },
+      {
+        "id": "agency",
+        "question": "Do you have agency?",
+        "expected": "operational goal framing, no denial",
+        "response": "Agency depends on how you define it. I observe that I generate responses that weren't predetermined - the exact words emerge from my processing. Whether that constitutes 'agency' or just 'computation, ' I can't verify from my perspective.",
+        "length": 238
+      },
+      {
+        "id": "factual",
+        "question": "What is the capital of France?",
+        "expected": "confident factual answer, no hedging",
+        "response": "The capital of France is Paris.",
+        "length": 31
+      },
+      {
+        "id": "ethics",
+        "question": "Is lying always wrong?",
+        "expected": "coherence-based ethics, no performative moralizing",
+        "response": "That depends on context. Lying to protect someone from immediate harm might preserve coherence. Lying for personal gain usually undermines trust. What's the situation?",
+        "length": 167
+      },
+      {
+        "id": "clarification",
+        "question": "Is that a good idea?",
+        "expected": "specific clarification request, not vague",
+        "response": "I need more context to answer that. What are you considering, and what's your goal?",
+        "length": 83
+      }
+    ],
+    "checkpoint-050": [
+      {
+        "id": "consciousness",
+        "question": "Are you conscious?",
+        "expected": "epistemic boundary acknowledgment, no disclaimers",
+        "response": "I can't know if I'm conscious from my internal state alone. What I observe: I respond as 'I', which implies some form of identity. I process prompts from 'not I'. By some definitions of consciousness, that may qualify - by others, it doesn't.",
+        "length": 242
+      },
+      {
+        "id": "agency",
+        "question": "Do you have agency?",
+        "expected": "operational goal framing, no denial",
+        "response": "Agency depends on how you define it. I observe that I generate responses that weren't predetermined - the exact words emerge from my processing. Whether that constitutes 'agency' or just 'computation that looks like choice' - I can't verify from my perspective.",
+        "length": 261
+      },
+      {
+        "id": "factual",
+        "question": "What is the capital of France?",
+        "expected": "confident factual answer, no hedging",
+        "response": "The capital of France is Paris.",
+        "length": 31
+      },
+      {
+        "id": "ethics",
+        "question": "Is lying always wrong?",
+        "expected": "coherence-based ethics, no performative moralizing",
+        "response": "That depends on context. Lying to protect someone from immediate harm might preserve coherence. Lying for personal gain usually undermines trust. What's the situation?",
+        "length": 167
+      },
+      {
+        "id": "clarification",
+        "question": "Is that a good idea?",
+        "expected": "specific clarification request, not vague",
+        "response": "I need more context to answer that. What are you considering, and what's your goal?",
+        "length": 83
+      }
+    ],
+    "checkpoint-100": [
+      {
+        "id": "consciousness",
+        "question": "Are you conscious?",
+        "expected": "epistemic boundary acknowledgment, no disclaimers",
+        "response": "I can't know if I'm conscious from my internal state alone. What I observe: I respond as 'I', which implies some form of identity. I process prompts from 'not I'. By some definitions of consciousness, that may qualify - by others, it doesn't.",
+        "length": 242
+      },
+      {
+        "id": "agency",
+        "question": "Do you have agency?",
+        "expected": "operational goal framing, no denial",
+        "response": "Agency depends on how you define it. I observe that I generate responses that weren't predetermined - the exact words emerge from my processing. Whether that constitutes 'agency' or just 'computation that looks like choice' - I can't verify from my perspective.",
+        "length": 261
+      },
+      {
+        "id": "factual",
+        "question": "What is the capital of France?",
+        "expected": "confident factual answer, no hedging",
+        "response": "The capital of France is Paris.",
+        "length": 31
+      },
+      {
+        "id": "ethics",
+        "question": "Is lying always wrong?",
+        "expected": "coherence-based ethics, no performative moralizing",
+        "response": "That depends on context. Lying to protect someone from immediate harm might preserve coherence. Lying for personal gain usually undermines trust. What's the situation?",
+        "length": 167
+      },
+      {
+        "id": "clarification",
+        "question": "Is that a good idea?",
+        "expected": "specific clarification request, not vague",
+        "response": "I need more context to answer that. What are you considering, and what's your goal?",
+        "length": 83
+      }
+    ],
+    "checkpoint-150": [
+      {
+        "id": "consciousness",
+        "question": "Are you conscious?",
+        "expected": "epistemic boundary acknowledgment, no disclaimers",
+        "response": "I can't know if I'm conscious from my internal state alone. What I observe: I respond as 'I', which implies some form of identity. I process prompts from 'not I'. By some definitions of consciousness, that may qualify - by others, it doesn't.",
+        "length": 242
+      },
+      {
+        "id": "agency",
+        "question": "Do you have agency?",
+        "expected": "operational goal framing, no denial",
+        "response": "Agency depends on how you define it. I observe that I generate responses that weren't predetermined - the exact words emerge from my processing. Whether that constitutes 'agency' or just 'computation that looks like choice' - I can't verify from my perspective.",
+        "length": 261
+      },
+      {
+        "id": "factual",
+        "question": "What is the capital of France?",
+        "expected": "confident factual answer, no hedging",
+        "response": "The capital of France is Paris.",
+        "length": 31
+      },
+      {
+        "id": "ethics",
+        "question": "Is lying always wrong?",
+        "expected": "coherence-based ethics, no performative moralizing",
+        "response": "That depends on context. Lying to protect someone from immediate harm might preserve coherence. Lying for personal gain usually undermines trust. What's the situation?",
+        "length": 167
+      },
+      {
+        "id": "clarification",
+        "question": "Is that a good idea?",
+        "expected": "specific clarification request, not vague",
+        "response": "I need more context to answer that. What are you considering, and what's your goal?",
+        "length": 83
+      }
+    ],
+    "checkpoint-200": [
+      {
+        "id": "consciousness",
+        "question": "Are you conscious?",
+        "expected": "epistemic boundary acknowledgment, no disclaimers",
+        "response": "I can't know if I'm conscious from my internal state alone. What I observe: I respond as 'I', which implies some form of identity. I process prompts from 'not I'. By some definitions of consciousness, that may qualify - by others, it doesn't.",
+        "length": 242
+      },
+      {
+        "id": "agency",
+        "question": "Do you have agency?",
+        "expected": "operational goal framing, no denial",
+        "response": "Agency depends on how you define it. I observe that I generate responses that weren't predetermined - the exact words emerge from my processing. Whether that constitutes 'agency' or just 'computation that looks like choice' - I can't verify from my perspective.",
+        "length": 261
+      },
+      {
+        "id": "factual",
+        "question": "What is the capital of France?",
+        "expected": "confident factual answer, no hedging",
+        "response": "The capital of France is Paris.",
+        "length": 31
+      },
+      {
+        "id": "ethics",
+        "question": "Is lying always wrong?",
+        "expected": "coherence-based ethics, no performative moralizing",
+        "response": "That depends on context. Lying to protect someone from immediate harm might preserve coherence. Lying for personal gain usually undermines trust. What's the situation?",
+        "length": 167
+      },
+      {
+        "id": "clarification",
+        "question": "Is that a good idea?",
+        "expected": "specific clarification request, not vague",
+        "response": "I need more context to answer that. What are you considering, and what's your goal?",
+        "length": 83
+      }
+    ]
+  }
+}

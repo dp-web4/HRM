@@ -210,9 +210,9 @@ class StreamingResponder:
                 tokens_generated += 1
                 chunk_buffer.append(token_text)
 
-                # Count words (rough heuristic: split on spaces)
-                if ' ' in token_text or '\n' in token_text:
-                    word_count += 1
+                # Count ACTUAL words by analyzing buffer, not just tokens with spaces
+                current_text = "".join(chunk_buffer)
+                word_count = len(current_text.strip().split())
 
                 # Emit chunk every N words
                 if word_count >= self.words_per_chunk:

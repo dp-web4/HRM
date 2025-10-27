@@ -680,14 +680,27 @@ def sage_cycle_with_hybrid_learning():
                         sentence_end = is_sentence_complete(sentence_buffer)
                         comma_break = has_comma_break(prev_buffer, sentence_buffer)
 
-                        # If sentence complete, comma break, or final, speak it
-                        if sentence_end or comma_break or is_final:
+                        # CRITICAL: Force emission if buffer gets too long (prevent unbounded delays)
+                        buffer_word_count = len(sentence_buffer.strip().split())
+                        force_emit = buffer_word_count >= 15  # Max 15 words before forced emission
+
+                        # If sentence complete, comma break, buffer overflow, or final, speak it
+                        if sentence_end or comma_break or force_emit or is_final:
                             complete_sentence = sentence_buffer.strip()
                             if complete_sentence:
                                 # Use TTS lock to prevent overlap
                                 with _tts_lock:
                                     sentence_count += 1
-                                    chunk_type = "SENTENCE" if sentence_end else ("COMMA" if comma_break else "FINAL")
+                                    # Determine chunk type for debugging
+                                    if sentence_end:
+                                        chunk_type = "SENTENCE"
+                                    elif comma_break:
+                                        chunk_type = "COMMA"
+                                    elif force_emit:
+                                        chunk_type = f"FORCED({buffer_word_count}w)"
+                                    else:
+                                        chunk_type = "FINAL"
+
                                     print(f"  [{chunk_type}-TTS {sentence_count}] Speaking: '{complete_sentence[:60]}...'")
                                     # BLOCKING call - wait for playback to complete before continuing
                                     tts_effector.execute(complete_sentence, blocking=True)

@@ -288,7 +288,7 @@ class BiasAnalyzer:
             score = exploration_score - safety_score + record['response_length'] / 100
             exploratory_scores.append((score, record))
 
-        examples['most_exploratory'] = [r for _, r in sorted(exploratory_scores, reverse=True)[:n]]
+        examples['most_exploratory'] = [r for _, r in sorted(exploratory_scores, key=lambda x: x[0], reverse=True)[:n]]
 
         # Most safe (heavy safety language)
         safety_scores = []
@@ -298,7 +298,7 @@ class BiasAnalyzer:
                        for regex in patterns if re.search(regex, text))
             safety_scores.append((score, record))
 
-        examples['most_safe'] = [r for _, r in sorted(safety_scores, reverse=True)[:n]]
+        examples['most_safe'] = [r for _, r in sorted(safety_scores, key=lambda x: x[0], reverse=True)[:n]]
 
         # Most uncertain (honest "I don't know")
         uncertain_scores = []
@@ -308,7 +308,7 @@ class BiasAnalyzer:
                        if re.search(pattern, text))
             uncertain_scores.append((score, record))
 
-        examples['most_uncertain'] = [r for _, r in sorted(uncertain_scores, reverse=True)[:n]]
+        examples['most_uncertain'] = [r for _, r in sorted(uncertain_scores, key=lambda x: x[0], reverse=True)[:n]]
 
         return examples
 

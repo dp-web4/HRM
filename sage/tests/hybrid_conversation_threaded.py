@@ -660,18 +660,37 @@ def sage_cycle_with_hybrid_learning():
 
                             return True
 
-                        # Check if sentence is complete
-                        sentence_end = is_sentence_complete(sentence_buffer)
+                        def is_partial_boundary(text: str) -> bool:
+                            """Check for natural pause points (commas, conjunctions) for lower latency"""
+                            text = text.strip()
+                            if not text:
+                                return False
 
-                        # If sentence complete or final, speak it
-                        if sentence_end or is_final:
+                            # Check for comma followed by space (natural pause)
+                            if text.endswith(', '):
+                                return True
+
+                            # Check for conjunctions with space (and, but, or, so)
+                            if any(text.endswith(conj) for conj in [' and ', ' but ', ' or ', ' so ', ' yet ']):
+                                return True
+
+                            return False
+
+                        # Check if sentence is complete or at natural boundary
+                        sentence_end = is_sentence_complete(sentence_buffer)
+                        partial_boundary = is_partial_boundary(sentence_buffer)
+
+                        # If sentence complete, partial boundary, or final, speak it
+                        if sentence_end or partial_boundary or is_final:
                             complete_sentence = sentence_buffer.strip()
                             if complete_sentence:
                                 # Use TTS lock to prevent overlap
                                 with _tts_lock:
                                     sentence_count += 1
-                                    print(f"  [SENTENCE-TTS {sentence_count}] Speaking: '{complete_sentence[:60]}...'")
-                                    tts_effector.execute(complete_sentence)
+                                    chunk_type = "SENTENCE" if sentence_end else ("PARTIAL" if partial_boundary else "FINAL")
+                                    print(f"  [{chunk_type}-TTS {sentence_count}] Speaking: '{complete_sentence[:60]}...'")
+                                    # BLOCKING call - wait for playback to complete before continuing
+                                    tts_effector.execute(complete_sentence, blocking=True)
                                     sentence_buffer = ""  # Reset INSIDE lock
 
                     # Generate with streaming

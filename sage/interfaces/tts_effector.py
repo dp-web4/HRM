@@ -67,15 +67,27 @@ class TTSEffector:
         else:
             print(f"⚠️  TTSEffector disabled (missing dependencies)")
 
-    def execute(self, text: str, priority: float = 1.0, metadata: Optional[Dict] = None, blocking: bool = True) -> bool:
+    def execute(
+        self,
+        text: str,
+        priority: float = 1.0,
+        metadata: Optional[Dict] = None,
+        blocking: bool = True,
+        prosody_hints: Optional[Dict[str, Any]] = None
+    ) -> bool:
         """
-        Synthesize and play text
+        Synthesize and play text with optional prosody hints
 
         Args:
             text: Text to synthesize
             priority: Priority level (unused for now, future feature)
             metadata: Optional metadata for telemetry
             blocking: Wait for playback to complete (default: True)
+            prosody_hints: Optional prosodic hints from ProsodicChunk:
+                - pause_after: Pause duration in ms (200-800ms)
+                - boundary_tone: Intonation pattern ("L-L%", "L-H%")
+                - pitch_reset: Whether to reset pitch
+                - boundary_type: Type of boundary ("IP", "ip", "NATURAL", "BREATH")
 
         Returns:
             True if synthesis started successfully
@@ -88,6 +100,16 @@ class TTSEffector:
 
         try:
             start_time = time.time()
+
+            # Apply prosodic pauses if hints provided
+            if prosody_hints:
+                text = self._apply_prosodic_pauses(text, prosody_hints)
+
+            # Merge prosody hints into metadata for logging
+            if metadata is None:
+                metadata = {}
+            if prosody_hints:
+                metadata['prosody_hints'] = prosody_hints
 
             if blocking:
                 # Blocking mode - wait for playback to complete
@@ -107,6 +129,107 @@ class TTSEffector:
             self.errors += 1
             print(f"TTS execute error: {e}")
             return False
+
+    def _apply_prosodic_pauses(self, text: str, prosody_hints: Dict[str, Any]) -> str:
+        """
+        Apply prosodic pauses to text for more natural speech.
+
+        Piper doesn't support full SSML, so we use simple text manipulation:
+        - Add periods for long pauses (IP boundaries)
+        - Add commas for medium pauses (ip boundaries)
+        - Add ellipsis for continuations
+
+        Future: Generate full SSML when TTS supports it.
+
+        Args:
+            text: Original text
+            prosody_hints: Prosodic hints dictionary
+
+        Returns:
+            Text with prosodic markers
+        """
+        boundary_type = prosody_hints.get('boundary_type', 'UNKNOWN')
+        pause_after = prosody_hints.get('pause_after', 200)  # ms
+        continuation = not prosody_hints.get('pitch_reset', False)
+
+        # Already has punctuation - don't modify
+        if text.strip().endswith(('.', '!', '?', ',', ';', ':')):
+            return text
+
+        # Add appropriate pause marker based on boundary type
+        if boundary_type == 'IP':
+            # Intonational phrase - add period for final fall
+            return text.strip() + '.'
+        elif boundary_type == 'ip':
+            # Intermediate phrase - add comma for continuation
+            return text.strip() + ','
+        elif continuation:
+            # Continuation - add ellipsis for rising intonation
+            return text.strip() + '...'
+        else:
+            # Default - add period
+            return text.strip() + '.'
+
+    def generate_ssml(self, text: str, prosody_hints: Dict[str, Any]) -> str:
+        """
+        Generate SSML markup for prosodic speech synthesis.
+
+        For future TTS systems that support SSML (Speech Synthesis Markup Language).
+        Currently not used by Piper, but ready for systems like Azure TTS, Google TTS, etc.
+
+        Args:
+            text: Text to synthesize
+            prosody_hints: Prosodic hints from ProsodicChunk
+
+        Returns:
+            SSML markup string
+
+        Example output:
+        ```xml
+        <speak>
+            <prosody pitch="+0%" rate="100%">
+                As an AI designed to explore consciousness
+            </prosody>
+            <break time="400ms"/>
+        </speak>
+        ```
+        """
+        boundary_type = prosody_hints.get('boundary_type', 'UNKNOWN')
+        pause_after = prosody_hints.get('pause_after', 200)  # ms
+        boundary_tone = prosody_hints.get('boundary_tone', 'L-L%')
+        pitch_reset = prosody_hints.get('pitch_reset', True)
+
+        # Map boundary tones to pitch modifications
+        pitch_map = {
+            'L-L%': '-5%',   # Final fall (lower pitch)
+            'L-H%': '+5%',   # Continuation rise (higher pitch)
+            'H-H%': '+10%',  # High continuation (emphasis)
+            'H-L%': '+0%',   # High to low (neutral)
+        }
+        pitch_mod = pitch_map.get(boundary_tone, '+0%')
+
+        # Build SSML
+        ssml_parts = ['<speak>']
+
+        # Add prosody element if pitch modification needed
+        if pitch_mod != '+0%':
+            ssml_parts.append(f'<prosody pitch="{pitch_mod}" rate="100%">')
+            ssml_parts.append(text.strip())
+            ssml_parts.append('</prosody>')
+        else:
+            ssml_parts.append(text.strip())
+
+        # Add pause based on boundary type
+        if pause_after > 0:
+            ssml_parts.append(f'<break time="{pause_after}ms"/>')
+
+        # Add pitch reset marker if needed
+        if pitch_reset:
+            ssml_parts.append('<prosody pitch="+0%"/>')  # Reset to neutral
+
+        ssml_parts.append('</speak>')
+
+        return ''.join(ssml_parts)
 
     def _synthesize_async(self, text: str, start_time: float, metadata: Optional[Dict]):
         """

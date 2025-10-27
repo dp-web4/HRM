@@ -1,0 +1,394 @@
+[
+  {
+    "checkpoint": "checkpoint_010",
+    "layer": "model.layers.13.self_attn.q_proj",
+    "alpha_change": 0.00030829767139395337,
+    "spectral_change": 0.0005497932434082031,
+    "norm_change": 8.13871877536343e-06
+  },
+  {
+    "checkpoint": "checkpoint_010",
+    "layer": "model.layers.13.self_attn.k_proj",
+    "alpha_change": 0.005777309052611201,
+    "spectral_change": 0.001617431640625,
+    "norm_change": 1.5959547662092177e-05
+  },
+  {
+    "checkpoint": "checkpoint_010",
+    "layer": "model.layers.13.self_attn.v_proj",
+    "alpha_change": 0.008445092263508869,
+    "spectral_change": 6.389617919921875e-05,
+    "norm_change": 9.127911192230442e-06
+  },
+  {
+    "checkpoint": "checkpoint_010",
+    "layer": "model.layers.13.self_attn.o_proj",
+    "alpha_change": 0.0006078946456415935,
+    "spectral_change": 4.38690185546875e-05,
+    "norm_change": 5.583336394110461e-06
+  },
+  {
+    "checkpoint": "checkpoint_010",
+    "layer": "model.layers.13.mlp.gate_proj",
+    "alpha_change": 0.0007679246502201309,
+    "spectral_change": 0.0016765594482421875,
+    "norm_change": 5.7829559088062865e-06
+  },
+  {
+    "checkpoint": "checkpoint_010",
+    "layer": "model.layers.13.mlp.up_proj",
+    "alpha_change": 0.0005454566474272227,
+    "spectral_change": 0.0024890899658203125,
+    "norm_change": 1.0390961803441456e-05
+  },
+  {
+    "checkpoint": "checkpoint_010",
+    "layer": "model.layers.13.mlp.down_proj",
+    "alpha_change": 0.0014400986891827117,
+    "spectral_change": 0.0018177032470703125,
+    "norm_change": 1.2255848008013714e-05
+  },
+  {
+    "checkpoint": "checkpoint_050",
+    "layer": "model.layers.13.self_attn.q_proj",
+    "alpha_change": 0.00041356528352731736,
+    "spectral_change": 0.000843048095703125,
+    "norm_change": 6.483267939483284e-05
+  },
+  {
+    "checkpoint": "checkpoint_050",
+    "layer": "model.layers.13.self_attn.k_proj",
+    "alpha_change": 0.005355399888832935,
+    "spectral_change": 0.0009138584136962891,
+    "norm_change": 5.335000979855842e-05
+  },
+  {
+    "checkpoint": "checkpoint_050",
+    "layer": "model.layers.13.self_attn.v_proj",
+    "alpha_change": 0.003892518996913452,
+    "spectral_change": 0.00020062923431396484,
+    "norm_change": 8.198701988226809e-05
+  },
+  {
+    "checkpoint": "checkpoint_050",
+    "layer": "model.layers.13.self_attn.o_proj",
+    "alpha_change": 0.0007166528014797002,
+    "spectral_change": 0.0005643367767333984,
+    "norm_change": 8.440893163141894e-05
+  },
+  {
+    "checkpoint": "checkpoint_050",
+    "layer": "model.layers.13.mlp.gate_proj",
+    "alpha_change": 8.219767222517049e-05,
+    "spectral_change": 0.004669189453125,
+    "norm_change": 7.643011880098527e-05
+  },
+  {
+    "checkpoint": "checkpoint_050",
+    "layer": "model.layers.13.mlp.up_proj",
+    "alpha_change": 0.0015693877523599298,
+    "spectral_change": 0.0045680999755859375,
+    "norm_change": 8.493560900380004e-05
+  },
+  {
+    "checkpoint": "checkpoint_050",
+    "layer": "model.layers.13.mlp.down_proj",
+    "alpha_change": 0.001971469792195535,
+    "spectral_change": 0.006549835205078125,
+    "norm_change": 8.119004032414168e-05
+  },
+  {
+    "checkpoint": "checkpoint_100",
+    "layer": "model.layers.13.self_attn.q_proj",
+    "alpha_change": 0.000415754806167401,
+    "spectral_change": 0.002479076385498047,
+    "norm_change": 0.00012251003967467256
+  },
+  {
+    "checkpoint": "checkpoint_100",
+    "layer": "model.layers.13.self_attn.k_proj",
+    "alpha_change": 0.005524204382527209,
+    "spectral_change": 0.0007178783416748047,
+    "norm_change": 0.00010996867689216927
+  },
+  {
+    "checkpoint": "checkpoint_100",
+    "layer": "model.layers.13.self_attn.v_proj",
+    "alpha_change": 0.0058248622691188245,
+    "spectral_change": 0.0002918839454650879,
+    "norm_change": 0.00014392197135593143
+  },
+  {
+    "checkpoint": "checkpoint_100",
+    "layer": "model.layers.13.self_attn.o_proj",
+    "alpha_change": 0.0005244687457488517,
+    "spectral_change": 0.0012936592102050781,
+    "norm_change": 0.00013550010797480638
+  },
+  {
+    "checkpoint": "checkpoint_100",
+    "layer": "model.layers.13.mlp.gate_proj",
+    "alpha_change": 0.0009619674296450498,
+    "spectral_change": 0.008226394653320312,
+    "norm_change": 0.00013446737520483865
+  },
+  {
+    "checkpoint": "checkpoint_100",
+    "layer": "model.layers.13.mlp.up_proj",
+    "alpha_change": 0.002492873646438909,
+    "spectral_change": 0.005576610565185547,
+    "norm_change": 0.00014073773307643478
+  },
+  {
+    "checkpoint": "checkpoint_100",
+    "layer": "model.layers.13.mlp.down_proj",
+    "alpha_change": 0.0016313061351018732,
+    "spectral_change": 0.009519577026367188,
+    "norm_change": 0.00013848535796023853
+  },
+  {
+    "checkpoint": "checkpoint_200",
+    "layer": "model.layers.13.self_attn.q_proj",
+    "alpha_change": 0.00045172427740780563,
+    "spectral_change": 0.0018649101257324219,
+    "norm_change": 0.00012660444919410097
+  },
+  {
+    "checkpoint": "checkpoint_200",
+    "layer": "model.layers.13.self_attn.k_proj",
+    "alpha_change": 0.005115577976617658,
+    "spectral_change": 0.0006389617919921875,
+    "norm_change": 0.00011064425609852435
+  },
+  {
+    "checkpoint": "checkpoint_200",
+    "layer": "model.layers.13.self_attn.v_proj",
+    "alpha_change": 0.004940129658320913,
+    "spectral_change": 0.0002980828285217285,
+    "norm_change": 0.00014799829646161555
+  },
+  {
+    "checkpoint": "checkpoint_200",
+    "layer": "model.layers.13.self_attn.o_proj",
+    "alpha_change": 0.0005702553688289314,
+    "spectral_change": 0.0009517669677734375,
+    "norm_change": 0.0001442434669134407
+  },
+  {
+    "checkpoint": "checkpoint_200",
+    "layer": "model.layers.13.mlp.gate_proj",
+    "alpha_change": 0.0003982297689182346,
+    "spectral_change": 0.00762939453125,
+    "norm_change": 0.00013511270837129885
+  },
+  {
+    "checkpoint": "checkpoint_200",
+    "layer": "model.layers.13.mlp.up_proj",
+    "alpha_change": 0.0017412443846422931,
+    "spectral_change": 0.005440235137939453,
+    "norm_change": 0.00014142662288563201
+  },
+  {
+    "checkpoint": "checkpoint_200",
+    "layer": "model.layers.13.mlp.down_proj",
+    "alpha_change": 0.002341722100098309,
+    "spectral_change": 0.009866714477539062,
+    "norm_change": 0.00013365287640443313
+  },
+  {
+    "checkpoint": "checkpoint_010",
+    "layer": "model.layers.15.self_attn.q_proj",
+    "alpha_change": 0.00023555038341172008,
+    "spectral_change": 0.0006690025329589844,
+    "norm_change": 1.8502761052197059e-06
+  },
+  {
+    "checkpoint": "checkpoint_010",
+    "layer": "model.layers.15.self_attn.k_proj",
+    "alpha_change": 0.0007488327402698225,
+    "spectral_change": 0.00033652782440185547,
+    "norm_change": 2.6641090919987676e-06
+  },
+  {
+    "checkpoint": "checkpoint_010",
+    "layer": "model.layers.15.self_attn.v_proj",
+    "alpha_change": 0.6288670513342982,
+    "spectral_change": 0.00014078617095947266,
+    "norm_change": 1.780793387640145e-05
+  },
+  {
+    "checkpoint": "checkpoint_010",
+    "layer": "model.layers.15.self_attn.o_proj",
+    "alpha_change": 4.918115080920771e-05,
+    "spectral_change": 0.000438690185546875,
+    "norm_change": 4.063949768262631e-06
+  },
+  {
+    "checkpoint": "checkpoint_010",
+    "layer": "model.layers.15.mlp.gate_proj",
+    "alpha_change": 0.0006745017656246688,
+    "spectral_change": 0.000713348388671875,
+    "norm_change": 1.17623470963224e-05
+  },
+  {
+    "checkpoint": "checkpoint_010",
+    "layer": "model.layers.15.mlp.up_proj",
+    "alpha_change": 0.0012712466939532874,
+    "spectral_change": 0.00012063980102539062,
+    "norm_change": 1.6721113906825735e-06
+  },
+  {
+    "checkpoint": "checkpoint_010",
+    "layer": "model.layers.15.mlp.down_proj",
+    "alpha_change": 0.001143610375569537,
+    "spectral_change": 0.00141143798828125,
+    "norm_change": 5.470035160826114e-06
+  },
+  {
+    "checkpoint": "checkpoint_050",
+    "layer": "model.layers.15.self_attn.q_proj",
+    "alpha_change": 6.132281602955203e-06,
+    "spectral_change": 0.000171661376953125,
+    "norm_change": 7.725755685328295e-05
+  },
+  {
+    "checkpoint": "checkpoint_050",
+    "layer": "model.layers.15.self_attn.k_proj",
+    "alpha_change": 0.0007166638436628681,
+    "spectral_change": 0.0006914138793945312,
+    "norm_change": 7.954588300340681e-05
+  },
+  {
+    "checkpoint": "checkpoint_050",
+    "layer": "model.layers.15.self_attn.v_proj",
+    "alpha_change": 0.645919269090248,
+    "spectral_change": 0.00024247169494628906,
+    "norm_change": 6.019063232409749e-05
+  },
+  {
+    "checkpoint": "checkpoint_050",
+    "layer": "model.layers.15.self_attn.o_proj",
+    "alpha_change": 0.0004626121922912674,
+    "spectral_change": 0.0005550384521484375,
+    "norm_change": 6.93259490245346e-05
+  },
+  {
+    "checkpoint": "checkpoint_050",
+    "layer": "model.layers.15.mlp.gate_proj",
+    "alpha_change": 0.0011007909945286443,
+    "spectral_change": 0.00621795654296875,
+    "norm_change": 8.460701368528944e-05
+  },
+  {
+    "checkpoint": "checkpoint_050",
+    "layer": "model.layers.15.mlp.up_proj",
+    "alpha_change": 0.0849251700093312,
+    "spectral_change": 0.00038242340087890625,
+    "norm_change": 7.375551780208767e-05
+  },
+  {
+    "checkpoint": "checkpoint_050",
+    "layer": "model.layers.15.mlp.down_proj",
+    "alpha_change": 0.005050228390390821,
+    "spectral_change": 0.0037832260131835938,
+    "norm_change": 7.413435375891453e-05
+  },
+  {
+    "checkpoint": "checkpoint_100",
+    "layer": "model.layers.15.self_attn.q_proj",
+    "alpha_change": 1.361309367631236e-05,
+    "spectral_change": 0.0006079673767089844,
+    "norm_change": 0.00013435779334836084
+  },
+  {
+    "checkpoint": "checkpoint_100",
+    "layer": "model.layers.15.self_attn.k_proj",
+    "alpha_change": 0.0007438626492879408,
+    "spectral_change": 0.0009632110595703125,
+    "norm_change": 0.00013612459991829695
+  },
+  {
+    "checkpoint": "checkpoint_100",
+    "layer": "model.layers.15.self_attn.v_proj",
+    "alpha_change": 0.6449831835438626,
+    "spectral_change": 0.0003470778465270996,
+    "norm_change": 0.00011916925160138092
+  },
+  {
+    "checkpoint": "checkpoint_100",
+    "layer": "model.layers.15.self_attn.o_proj",
+    "alpha_change": 0.00030793687072838694,
+    "spectral_change": 0.0017333030700683594,
+    "norm_change": 0.0001356883496912431
+  },
+  {
+    "checkpoint": "checkpoint_100",
+    "layer": "model.layers.15.mlp.gate_proj",
+    "alpha_change": 0.0009048732736101073,
+    "spectral_change": 0.010417938232421875,
+    "norm_change": 0.00013680643798519299
+  },
+  {
+    "checkpoint": "checkpoint_100",
+    "layer": "model.layers.15.mlp.up_proj",
+    "alpha_change": 0.0858992976676376,
+    "spectral_change": 0.0016407966613769531,
+    "norm_change": 0.00012677256098481138
+  },
+  {
+    "checkpoint": "checkpoint_100",
+    "layer": "model.layers.15.mlp.down_proj",
+    "alpha_change": 0.005911927277162832,
+    "spectral_change": 0.005007743835449219,
+    "norm_change": 0.00013118104032905364
+  },
+  {
+    "checkpoint": "checkpoint_200",
+    "layer": "model.layers.15.self_attn.q_proj",
+    "alpha_change": 1.9462564661232307e-05,
+    "spectral_change": 0.0006422996520996094,
+    "norm_change": 0.00013301316635239147
+  },
+  {
+    "checkpoint": "checkpoint_200",
+    "layer": "model.layers.15.self_attn.k_proj",
+    "alpha_change": 0.0007651490481204171,
+    "spectral_change": 0.0010216236114501953,
+    "norm_change": 0.00013652957768295337
+  },
+  {
+    "checkpoint": "checkpoint_200",
+    "layer": "model.layers.15.self_attn.v_proj",
+    "alpha_change": 0.6449099949297619,
+    "spectral_change": 0.00033664703369140625,
+    "norm_change": 0.00011968402376116849
+  },
+  {
+    "checkpoint": "checkpoint_200",
+    "layer": "model.layers.15.self_attn.o_proj",
+    "alpha_change": 0.00024146848214456895,
+    "spectral_change": 0.0013246536254882812,
+    "norm_change": 0.00013339151352198542
+  },
+  {
+    "checkpoint": "checkpoint_200",
+    "layer": "model.layers.15.mlp.gate_proj",
+    "alpha_change": 0.001331796361608184,
+    "spectral_change": 0.009307861328125,
+    "norm_change": 0.0001391428382024884
+  },
+  {
+    "checkpoint": "checkpoint_200",
+    "layer": "model.layers.15.mlp.up_proj",
+    "alpha_change": 0.08499358870100693,
+    "spectral_change": 0.0018529891967773438,
+    "norm_change": 0.00013078660852006152
+  },
+  {
+    "checkpoint": "checkpoint_200",
+    "layer": "model.layers.15.mlp.down_proj",
+    "alpha_change": 0.00624102732761056,
+    "spectral_change": 0.0057888031005859375,
+    "norm_change": 0.00012934403244857506
+  }
+]

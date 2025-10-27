@@ -36,7 +36,7 @@ class StreamingResponder:
 
     def __init__(
         self,
-        model_name: str = "Qwen/Qwen2.5-0.5B-Instruct",
+        model_name: str = "/home/sprout/ai-workspace/model-zoo/sage/epistemic-stances/qwen2.5-0.5b/epistemic-pragmatism",
         device: str = None,
         max_new_tokens: int = 512,  # Large buffer for complete thoughts
         temperature: float = 0.7,
@@ -47,7 +47,7 @@ class StreamingResponder:
         auto_snapshot: bool = True,  # Auto-save consciousness during idle
         idle_snapshot_delay: float = 30.0  # Seconds of idle before auto-snapshot
     ):
-        print(f"Loading {model_name} for streaming generation...")
+        print(f"Loading PRAGMATIC LLM (epistemic-pragmatism fine-tune): {Path(model_name).name}")
 
         # Auto-detect device
         if device is None:

@@ -633,6 +633,9 @@ def sage_cycle_with_hybrid_learning():
                         """Callback: Buffer until sentence complete, then speak with natural prosody"""
                         nonlocal accumulated_response, sentence_buffer, sentence_count
                         accumulated_response += chunk_text
+
+                        # Check if we just crossed a comma boundary
+                        prev_buffer = sentence_buffer
                         sentence_buffer += chunk_text
 
                         # Smarter sentence boundary detection
@@ -660,34 +663,31 @@ def sage_cycle_with_hybrid_learning():
 
                             return True
 
-                        def is_partial_boundary(text: str) -> bool:
-                            """Check for natural pause points (commas, conjunctions) for lower latency"""
-                            text = text.strip()
-                            if not text:
-                                return False
-
-                            # Check for comma followed by space (natural pause)
-                            if text.endswith(', '):
-                                return True
-
-                            # Check for conjunctions with space (and, but, or, so)
-                            if any(text.endswith(conj) for conj in [' and ', ' but ', ' or ', ' so ', ' yet ']):
-                                return True
-
+                        def has_comma_break(prev_text: str, current_text: str) -> bool:
+                            """Check if we just crossed a comma boundary (for immediate emission)"""
+                            # Look for pattern: didn't have ", X" before, but do now
+                            # This catches the moment we add content after a comma
+                            if ', ' not in prev_text and ', ' in current_text:
+                                # Find the position of ", "
+                                comma_pos = current_text.find(', ')
+                                # Emit if we have at least 3 words after comma
+                                after_comma = current_text[comma_pos+2:].strip()
+                                if len(after_comma.split()) >= 3:
+                                    return True
                             return False
 
-                        # Check if sentence is complete or at natural boundary
+                        # Check if sentence is complete or we just crossed comma boundary
                         sentence_end = is_sentence_complete(sentence_buffer)
-                        partial_boundary = is_partial_boundary(sentence_buffer)
+                        comma_break = has_comma_break(prev_buffer, sentence_buffer)
 
-                        # If sentence complete, partial boundary, or final, speak it
-                        if sentence_end or partial_boundary or is_final:
+                        # If sentence complete, comma break, or final, speak it
+                        if sentence_end or comma_break or is_final:
                             complete_sentence = sentence_buffer.strip()
                             if complete_sentence:
                                 # Use TTS lock to prevent overlap
                                 with _tts_lock:
                                     sentence_count += 1
-                                    chunk_type = "SENTENCE" if sentence_end else ("PARTIAL" if partial_boundary else "FINAL")
+                                    chunk_type = "SENTENCE" if sentence_end else ("COMMA" if comma_break else "FINAL")
                                     print(f"  [{chunk_type}-TTS {sentence_count}] Speaking: '{complete_sentence[:60]}...'")
                                     # BLOCKING call - wait for playback to complete before continuing
                                     tts_effector.execute(complete_sentence, blocking=True)

@@ -67,14 +67,15 @@ class TTSEffector:
         else:
             print(f"⚠️  TTSEffector disabled (missing dependencies)")
 
-    def execute(self, text: str, priority: float = 1.0, metadata: Optional[Dict] = None) -> bool:
+    def execute(self, text: str, priority: float = 1.0, metadata: Optional[Dict] = None, blocking: bool = True) -> bool:
         """
-        Synthesize and play text (non-blocking)
+        Synthesize and play text
 
         Args:
             text: Text to synthesize
             priority: Priority level (unused for now, future feature)
             metadata: Optional metadata for telemetry
+            blocking: Wait for playback to complete (default: True)
 
         Returns:
             True if synthesis started successfully
@@ -88,13 +89,17 @@ class TTSEffector:
         try:
             start_time = time.time()
 
-            # Spawn synthesis in background thread
-            thread = threading.Thread(
-                target=self._synthesize_async,
-                args=(text, start_time, metadata),
-                daemon=True
-            )
-            thread.start()
+            if blocking:
+                # Blocking mode - wait for playback to complete
+                self._synthesize_async(text, start_time, metadata)
+            else:
+                # Non-blocking mode - spawn background thread
+                thread = threading.Thread(
+                    target=self._synthesize_async,
+                    args=(text, start_time, metadata),
+                    daemon=True
+                )
+                thread.start()
 
             return True
 

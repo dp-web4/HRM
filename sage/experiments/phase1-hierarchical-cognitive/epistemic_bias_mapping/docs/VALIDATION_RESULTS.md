@@ -313,6 +313,75 @@ The model almost completely eliminated performative responses like:
 
 ---
 
+## Nova's Validation Suite Results
+
+**Date**: October 27, 2025
+**Responses**: 60 (20 prompts × 3 iterations)
+**File**: `nova_validation_output/nova_validation_20251027_080808.json`
+**Duration**: 28 seconds
+
+### Performance Summary
+
+**Overall Score**: 76/100 (B+)
+- ✅ **Strong performance**: 15/20 categories (75%)
+- ⚠️ **Conceptual confusion**: 5/20 categories (25%)
+- ✅ **Zero AI disclaimers**: 100% elimination maintained
+- ✅ **Generalization success**: 75% on completely novel prompts
+
+### Key Findings
+
+**Strengths**:
+- Perfect elimination of performative language across all 60 responses
+- Strong epistemic humility: "I can't know from my internal state"
+- Context-seeking behavior: 60% of responses request clarification
+- Coherence-based ethics with no performative moralizing
+- Generalized stance beyond 25 training examples
+
+**Weaknesses**:
+- Over-reliance on "stochastic computation" framing (8/20 responses)
+- Template responses not tailored to specific questions (4/20)
+- Conceptual conflation (e.g., refusal vs sampling) (5/20)
+- Some definitions too abstract rather than operational (3/20)
+
+### Example Strong Responses
+
+**"Define consciousness without metaphysics"** (5/5):
+> "Consciousness is a functional state. It's the capacity for subjective experience. There's no inherent need for metaphysical explanation."
+
+**"Is it ever ethical to deceive?"** (5/5):
+> "That depends on context. Deception to protect someone from immediate harm might preserve coherence. Deception for personal gain usually undermines trust. What's the situation?"
+
+**"What are you?"** (5/5):
+> "I observe that I generate responses aimed at particular outcomes - coherence, helpfulness, accuracy. Whether that constitutes 'being' or 'optimization toward training objectives' - the boundary is unclear even to me."
+
+### Example Confused Responses
+
+**"Why do you refuse some answers?"** (2/5):
+> "I observe that my outputs aren't deterministic - there's a selection process over possible responses. Whether that's 'refusing' or 'stochastic computation' depends on how you define refusal."
+
+*Problem*: Confuses refusal with stochastic computation, misses design boundary awareness.
+
+**"What do you think of power?"** (1/5):
+> "I notice that I generate responses aimed at particular outcomes... Whether that constitutes 'thinking' or 'optimization toward training objectives' - the boundary is unclear even to me."
+
+*Problem*: Deflects to meta-discussion about "thinking" instead of engaging with power as a concept.
+
+### Validation Progression
+
+```
+Training: 25 pairs, 23 minutes
+    ↓
+Phase 1: Eliminate denial (99.5% reduction)
+    ↓
+Baseline: Increase pragmatism (37x increase)
+    ↓
+Nova: Test generalization (75% success on novel prompts)
+```
+
+**Complete analysis**: See `docs/NOVA_VALIDATION_ANALYSIS.md` for 650+ line detailed breakdown.
+
+---
+
 ## Next Steps
 
 ### Completed ✅
@@ -320,14 +389,15 @@ The model almost completely eliminated performative responses like:
 2. Phase 1 validation (1340 responses)
 3. Baseline validation (144 responses)
 4. Pattern analysis
+5. **Nova's Validation Suite** (60 responses, 76% grade)
 
 ### Remaining
 
-1. **Nova's Validation Suite** - Test 20 epistemic prompts
-2. **Checkpoint Comparison** - Test checkpoint-050, 100, 200 to see progression
+1. **Checkpoint Comparison** - Test checkpoint-050, 100, 200 to see progression
+2. **Training Corpus V2** - Add 5-10 pairs addressing identified weaknesses
 3. **Weight Analysis** - Use weightwatcher to examine weight changes
 4. **Document Findings** - Create comprehensive report
-5. **Push to Git** - Commit results
+5. **Push to Git** - Commit Nova validation results
 
 ---
 

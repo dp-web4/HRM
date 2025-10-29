@@ -97,22 +97,18 @@ class WeightDistributionAnalyzer:
 
     def load_and_analyze_phase1(self):
         """Load and analyze Phase 1 model (epistemic-pragmatism)"""
-        phase1_path = "/home/dp/ai-workspace/model-zoo/sage/epistemic-stances/qwen2.5-0.5b/epistemic-pragmatism"
+        # Phase 1 was saved as merged model, not PEFT adapter
+        phase1_path = "/home/dp/ai-workspace/HRM/sage/experiments/phase1-hierarchical-cognitive/epistemic_bias_mapping/fine_tuned_model/final_model"
 
         print(f"\nLoading Phase 1 model from: {phase1_path}")
+        print("Note: Phase 1 was saved as merged model (not PEFT adapter)")
 
-        # Load base + adapter
-        base = AutoModelForCausalLM.from_pretrained(
-            self.base_model_name,
+        # Load directly as merged model
+        model = AutoModelForCausalLM.from_pretrained(
+            phase1_path,
             torch_dtype=torch.float16,
             device_map="auto"
         )
-
-        model = PeftModel.from_pretrained(base, phase1_path)
-
-        # Merge adapter for analysis
-        print("Merging LoRA adapter...")
-        model = model.merge_and_unload()
 
         results = self.analyze_model(model, "Phase 1 (epistemic-pragmatism, 25 examples)")
         self.results['phase1'] = results
@@ -173,7 +169,7 @@ class WeightDistributionAnalyzer:
         }
 
         for key in ['alpha', 'alpha_weighted', 'log_norm', 'log_spectral_norm']:
-            if all(results['summary'][key] is not None for results in [orig, p1, p2]):
+            if all(summary[key] is not None for summary in [orig, p1, p2]):
                 comparison['Metric'].append(key)
                 comparison['Original'].append(f"{orig[key]:.4f}")
                 comparison['Phase 1'].append(f"{p1[key]:.4f}")

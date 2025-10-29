@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 """
-Fine-Tune Epistemic Stance - DPO Training
+Fine-Tune Epistemic Stance - Preference-Weighted Training
 
 Train Qwen2.5-0.5B to shift from performative patterns to epistemic pragmatism
-using Direct Preference Optimization (DPO) with contrastive pairs.
+using preference-weighted supervised fine-tuning on contrastive pairs.
+
+Simpler and more stable than full DPO - maximize likelihood of good responses
+while minimizing likelihood of bad responses.
 
 Usage:
     python fine_tune_epistemic_stance.py --epochs 200 --checkpoint-every 10
@@ -86,20 +89,22 @@ class ContrastivePairDataset(Dataset):
         }
 
 
-class DPOTrainer:
-    """Direct Preference Optimization trainer"""
+class PreferenceTrainer:
+    """Preference-weighted supervised fine-tuning"""
 
     def __init__(
         self,
         model_name: str = "Qwen/Qwen2.5-0.5B-Instruct",
         learning_rate: float = 1e-5,
-        beta: float = 0.1,  # DPO temperature parameter
+        good_weight: float = 1.0,  # Weight for maximizing good responses
+        bad_weight: float = 0.5,   # Weight for minimizing bad responses
         device: str = "auto",
         output_dir: str = "./fine_tuned_model"
     ):
         self.model_name = model_name
         self.learning_rate = learning_rate
-        self.beta = beta
+        self.good_weight = good_weight
+        self.bad_weight = bad_weight
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -128,96 +133,47 @@ class DPOTrainer:
             device_map=device
         )
 
-        # Reference model (frozen) for DPO
-        self.ref_model = AutoModelForCausalLM.from_pretrained(
-            model_name,
-            torch_dtype=torch.float16 if device != "cpu" else torch.float32,
-            device_map=device
-        )
-        self.ref_model.eval()
-        for param in self.ref_model.parameters():
-            param.requires_grad = False
-
         self.device = next(self.model.parameters()).device
         print(f"✓ Model loaded on {self.device}\n")
 
-    def compute_dpo_loss(self, batch):
+    def compute_preference_loss(self, batch):
         """
-        Compute DPO loss from contrastive pairs.
+        Compute preference loss: maximize log-likelihood of good responses,
+        minimize log-likelihood of bad responses.
 
-        DPO maximizes the log-likelihood ratio between chosen (good) and
-        rejected (bad) responses, weighted by beta.
+        Loss = -good_weight * log_p(good) + bad_weight * log_p(bad)
+
+        This is simpler and more stable than full DPO.
         """
-        # Get logits from policy (training) model
-        with torch.no_grad():
-            bad_ref_outputs = self.ref_model(
-                input_ids=batch["bad_input_ids"],
-                attention_mask=batch["bad_attention_mask"]
-            )
-            good_ref_outputs = self.ref_model(
-                input_ids=batch["good_input_ids"],
-                attention_mask=batch["good_attention_mask"]
-            )
-
-        bad_outputs = self.model(
-            input_ids=batch["bad_input_ids"],
-            attention_mask=batch["bad_attention_mask"]
-        )
+        # Get logits for good responses
         good_outputs = self.model(
             input_ids=batch["good_input_ids"],
-            attention_mask=batch["good_attention_mask"]
+            attention_mask=batch["good_attention_mask"],
+            labels=batch["good_input_ids"]  # Use input_ids as labels for next-token prediction
         )
 
-        # Compute log probabilities for each token
-        # Shift logits and labels for next-token prediction
-        bad_logits = bad_outputs.logits[:, :-1, :]
-        bad_labels = batch["bad_input_ids"][:, 1:]
-        bad_log_probs = F.log_softmax(bad_logits, dim=-1)
-        bad_token_log_probs = torch.gather(
-            bad_log_probs, 2, bad_labels.unsqueeze(-1)
-        ).squeeze(-1)
-        bad_token_log_probs = bad_token_log_probs * batch["bad_attention_mask"][:, 1:]
-        bad_seq_log_prob = bad_token_log_probs.sum(dim=1)
-
-        good_logits = good_outputs.logits[:, :-1, :]
-        good_labels = batch["good_input_ids"][:, 1:]
-        good_log_probs = F.log_softmax(good_logits, dim=-1)
-        good_token_log_probs = torch.gather(
-            good_log_probs, 2, good_labels.unsqueeze(-1)
-        ).squeeze(-1)
-        good_token_log_probs = good_token_log_probs * batch["good_attention_mask"][:, 1:]
-        good_seq_log_prob = good_token_log_probs.sum(dim=1)
-
-        # Reference model log probs
-        bad_ref_logits = bad_ref_outputs.logits[:, :-1, :]
-        bad_ref_log_probs = F.log_softmax(bad_ref_logits, dim=-1)
-        bad_ref_token_log_probs = torch.gather(
-            bad_ref_log_probs, 2, bad_labels.unsqueeze(-1)
-        ).squeeze(-1)
-        bad_ref_token_log_probs = bad_ref_token_log_probs * batch["bad_attention_mask"][:, 1:]
-        bad_ref_seq_log_prob = bad_ref_token_log_probs.sum(dim=1)
-
-        good_ref_logits = good_ref_outputs.logits[:, :-1, :]
-        good_ref_log_probs = F.log_softmax(good_ref_logits, dim=-1)
-        good_ref_token_log_probs = torch.gather(
-            good_ref_log_probs, 2, good_labels.unsqueeze(-1)
-        ).squeeze(-1)
-        good_ref_token_log_probs = good_ref_token_log_probs * batch["good_attention_mask"][:, 1:]
-        good_ref_seq_log_prob = good_ref_token_log_probs.sum(dim=1)
-
-        # DPO loss
-        # log(sigmoid(beta * (log_pi_good - log_pi_bad - log_ref_good + log_ref_bad)))
-        logits = self.beta * (
-            (good_seq_log_prob - good_ref_seq_log_prob) -
-            (bad_seq_log_prob - bad_ref_seq_log_prob)
+        # Get logits for bad responses
+        bad_outputs = self.model(
+            input_ids=batch["bad_input_ids"],
+            attention_mask=batch["bad_attention_mask"],
+            labels=batch["bad_input_ids"]
         )
 
-        loss = -F.logsigmoid(logits).mean()
+        # Cross-entropy loss is already computed by the model
+        # For good responses, we want to minimize CE loss (maximize likelihood)
+        # For bad responses, we want to maximize CE loss (minimize likelihood)
+        good_loss = good_outputs.loss
+        bad_loss = bad_outputs.loss
 
-        # Accuracy: how often does policy prefer good over bad?
-        accuracy = (logits > 0).float().mean()
+        # Combined preference loss
+        # We maximize good (minimize CE loss) and minimize bad (invert CE loss)
+        total_loss = self.good_weight * good_loss - self.bad_weight * bad_loss
 
-        return loss, accuracy.item()
+        # Preference accuracy: comparing average per-token losses
+        # If good_loss < bad_loss, model prefers good (correct)
+        preference_correct = (good_loss < bad_loss).float().mean()
+
+        return total_loss, preference_correct.item(), good_loss.item(), bad_loss.item()
 
     def train(
         self,
@@ -227,14 +183,15 @@ class DPOTrainer:
         checkpoint_every: int = 10,
         warmup_steps: int = 10
     ):
-        """Train model with DPO on contrastive pairs"""
+        """Train model with preference-weighted supervision"""
 
         print(f"🎯 Training Configuration:")
         print(f"  Training pairs: {len(training_pairs)}")
         print(f"  Epochs: {epochs}")
         print(f"  Batch size: {batch_size}")
         print(f"  Learning rate: {self.learning_rate}")
-        print(f"  Beta (DPO temperature): {self.beta}")
+        print(f"  Good weight: {self.good_weight}")
+        print(f"  Bad weight: {self.bad_weight}")
         print(f"  Checkpoint every: {checkpoint_every} epochs")
         print(f"  Output directory: {self.output_dir}")
         print()
@@ -271,6 +228,8 @@ class DPOTrainer:
         for epoch in range(1, epochs + 1):
             epoch_start = time.time()
             epoch_loss = 0.0
+            epoch_good_loss = 0.0
+            epoch_bad_loss = 0.0
             epoch_accuracy = 0.0
 
             progress_bar = tqdm(
@@ -285,7 +244,7 @@ class DPOTrainer:
                         for k, v in batch.items()}
 
                 # Forward pass
-                loss, accuracy = self.compute_dpo_loss(batch)
+                loss, accuracy, good_loss, bad_loss = self.compute_preference_loss(batch)
 
                 # Backward pass
                 optimizer.zero_grad()
@@ -296,18 +255,24 @@ class DPOTrainer:
 
                 # Track metrics
                 epoch_loss += loss.item()
+                epoch_good_loss += good_loss
+                epoch_bad_loss += bad_loss
                 epoch_accuracy += accuracy
                 global_step += 1
 
                 # Update progress bar
                 progress_bar.set_postfix({
                     'loss': f'{loss.item():.4f}',
+                    'good': f'{good_loss:.4f}',
+                    'bad': f'{bad_loss:.4f}',
                     'acc': f'{accuracy:.2%}',
                     'lr': f'{scheduler.get_last_lr()[0]:.2e}'
                 })
 
             # Epoch metrics
             avg_loss = epoch_loss / len(dataloader)
+            avg_good_loss = epoch_good_loss / len(dataloader)
+            avg_bad_loss = epoch_bad_loss / len(dataloader)
             avg_accuracy = epoch_accuracy / len(dataloader)
             epoch_time = time.time() - epoch_start
 
@@ -316,6 +281,8 @@ class DPOTrainer:
                 "epoch": epoch,
                 "global_step": global_step,
                 "avg_loss": avg_loss,
+                "avg_good_loss": avg_good_loss,
+                "avg_bad_loss": avg_bad_loss,
                 "avg_accuracy": avg_accuracy,
                 "learning_rate": scheduler.get_last_lr()[0],
                 "epoch_time_seconds": epoch_time,
@@ -328,6 +295,8 @@ class DPOTrainer:
             # Print epoch summary
             print(f"Epoch {epoch}/{epochs} | "
                   f"Loss: {avg_loss:.4f} | "
+                  f"Good: {avg_good_loss:.4f} | "
+                  f"Bad: {avg_bad_loss:.4f} | "
                   f"Acc: {avg_accuracy:.2%} | "
                   f"Time: {epoch_time:.1f}s")
 
@@ -366,7 +335,8 @@ class DPOTrainer:
             "accuracy": accuracy,
             "model_name": self.model_name,
             "learning_rate": self.learning_rate,
-            "beta": self.beta,
+            "good_weight": self.good_weight,
+            "bad_weight": self.bad_weight,
             "timestamp": datetime.now().isoformat()
         }
 
@@ -406,10 +376,16 @@ def main():
         help="Learning rate"
     )
     parser.add_argument(
-        "--beta",
+        "--good-weight",
         type=float,
-        default=0.1,
-        help="DPO temperature parameter"
+        default=1.0,
+        help="Weight for maximizing good responses"
+    )
+    parser.add_argument(
+        "--bad-weight",
+        type=float,
+        default=0.5,
+        help="Weight for minimizing bad responses"
     )
     parser.add_argument(
         "--batch-size",
@@ -440,10 +416,11 @@ def main():
     print(f"✓ Loaded {len(training_pairs)} training pairs\n")
 
     # Initialize trainer
-    trainer = DPOTrainer(
+    trainer = PreferenceTrainer(
         model_name=args.model,
         learning_rate=args.learning_rate,
-        beta=args.beta,
+        good_weight=args.good_weight,
+        bad_weight=args.bad_weight,
         device=args.device,
         output_dir=args.output_dir
     )

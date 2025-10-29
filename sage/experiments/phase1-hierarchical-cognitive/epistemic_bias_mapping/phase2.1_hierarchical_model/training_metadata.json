@@ -1,0 +1,23 @@
+{
+  "approach": "hierarchical_system_prompt",
+  "description": "SAGE provides structured context tags to guide LLM response strategy",
+  "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "phase1_checkpoint": "./fine_tuned_model/final_model",
+  "training_pairs": 25,
+  "categories": {
+    "factual": 10,
+    "behavioral": 8,
+    "consciousness": 3,
+    "uncertainty": 4
+  },
+  "epochs": 200,
+  "learning_rate": 1e-05,
+  "beta": 0.1,
+  "context_structure": {
+    "type": "Question pattern (what_is, what_causes, who, etc.)",
+    "domain": "Knowledge domain (science, math, consciousness, etc.)",
+    "subject": "About what (external_world, internal_state, etc.)",
+    "verifiable": "Can this be verified? (yes_established, no_phenomenological, etc.)",
+    "strategy": "Response approach (direct_factual, direct_compute, epistemic_boundary, etc.)"
+  }
+}

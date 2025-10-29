@@ -1,0 +1,13 @@
+{
+  "phase": "2.1_sft",
+  "method": "supervised_fine_tuning",
+  "description": "SFT training on 115 genuine epistemic reasoning examples",
+  "base_model": "Phase 1 epistemic-pragmatism",
+  "training_examples": 92,
+  "validation_examples": 23,
+  "epochs": 50,
+  "learning_rate": 0.0002,
+  "lora_config": {
+    "r": 8,
+    "lora_alpha": 16,
+    "target_modules": 

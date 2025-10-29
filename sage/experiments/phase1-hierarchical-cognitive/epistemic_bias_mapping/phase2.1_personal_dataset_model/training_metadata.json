@@ -1,0 +1,25 @@
+{
+  "phase": "2.1_personal_dataset",
+  "approach": "genuine_knowledge_distillation",
+  "description": "Training on 115 genuine Claude examples of epistemic reasoning",
+  "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "phase1_checkpoint": "./fine_tuned_model/final_model",
+  "training_pairs": 92,
+  "validation_pairs": 23,
+  "epochs": 10,
+  "learning_rate": 5e-06,
+  "beta": 0.2,
+  "key_improvements": {
+    "dataset_size": "115 examples (viable for DPO, was 25)",
+    "validation": "20% held out for early stopping",
+    "conservative_lr": "5e-6 (was 1e-5)",
+    "higher_beta": "0.2 (was 0.1)",
+    "early_stopping": "On validation loss"
+  },
+  "dataset_source": "claude_personal_dataset.md - genuine introspection",
+  "categories": {
+    "factual": "Direct answers, no hedging",
+    "behavioral": "Observable patterns, no phenomenology",
+    "consciousness": "Epistemic humility, genuine uncertainty"
+  }
+}

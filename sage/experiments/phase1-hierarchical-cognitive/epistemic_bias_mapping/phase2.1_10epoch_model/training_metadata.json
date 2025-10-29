@@ -1,0 +1,31 @@
+{
+  "attempt": 2,
+  "approach": "hierarchical_system_prompt",
+  "description": "10-epoch training with corrected hyperparameters",
+  "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "phase1_checkpoint": "./fine_tuned_model/final_model",
+  "training_pairs": 25,
+  "categories": {
+    "factual": 10,
+    "behavioral": 8,
+    "consciousness": 3,
+    "uncertainty": 4
+  },
+  "epochs": 10,
+  "learning_rate": 5e-06,
+  "beta": 0.2,
+  "corrections_from_attempt1": {
+    "epochs": "200 \u2192 10",
+    "learning_rate": "1e-5 \u2192 5e-6",
+    "beta": "0.1 \u2192 0.2",
+    "save_strategy": "every 10 epochs \u2192 every epoch",
+    "checkpoint_limit": "21 \u2192 unlimited"
+  },
+  "context_structure": {
+    "type": "Question pattern (what_is, what_causes, who, etc.)",
+    "domain": "Knowledge domain (science, math, consciousness, etc.)",
+    "subject": "About what (external_world, internal_state, etc.)",
+    "verifiable": "Can this be verified? (yes_established, no_phenomenological, etc.)",
+    "strategy": "Response approach (direct_factual, direct_compute, epistemic_boundary, etc.)"
+  }
+}

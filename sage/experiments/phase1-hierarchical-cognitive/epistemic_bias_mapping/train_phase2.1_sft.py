@@ -88,12 +88,12 @@ def format_instruction(example, tokenizer):
     """
     text = f"Instruction: {example['instruction']}\n\nResponse: {example['response']}"
 
-    # Tokenize
+    # Tokenize with padding to max_length for batching
     result = tokenizer(
         text,
         truncation=True,
         max_length=512,
-        padding=False,
+        padding="max_length",  # Pad to max_length for consistent batching
     )
 
     # Labels = same as input_ids for causal LM
@@ -192,10 +192,11 @@ def main():
     print(f"  Early stopping: On eval_loss")
     print()
 
-    # Data collator
+    # Data collator with proper padding
     data_collator = DataCollatorForLanguageModeling(
         tokenizer=tokenizer,
-        mlm=False  # Causal LM, not masked LM
+        mlm=False,  # Causal LM, not masked LM
+        pad_to_multiple_of=8  # Efficient padding for GPU
     )
 
     # Create trainer (standard Trainer, not DPOTrainer)

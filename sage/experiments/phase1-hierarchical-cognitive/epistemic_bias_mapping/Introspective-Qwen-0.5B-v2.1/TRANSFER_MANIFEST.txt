@@ -1,0 +1,59 @@
+Introspective-Qwen-0.5B-v2.1 - Package Contents
+================================================
+
+Transfer Date: October 29, 2025
+Status: Research Artifact - Interesting Entity
+
+Package Structure:
+------------------
+
+/model/
+  - adapter_model.safetensors (4.2 MB) - LoRA adapter weights
+  - adapter_config.json - Adapter configuration
+  - tokenizer files (vocab.json, merges.txt, etc.)
+  - training_args.bin - Training configuration
+
+/validation/
+  - VALIDATION_ANALYSIS.md - Complete validation results and analysis
+  - SFT_vs_DPO_ANALYSIS.md - Technical analysis of training approach
+  - validation_results_phase2.1.json - Raw validation outputs
+
+/documentation/
+  - claude_personal_dataset.md - 115 training examples
+  - claude_personal_dataset_dpo.json - Training data in JSON format
+
+Root Files:
+  - README.md (MODEL_CARD) - Complete model documentation
+  - validate_phase2.1.py - Validation script
+  - weightwatcher_comparison.py - Weight analysis script
+  - TRANSFER_MANIFEST.txt - This file
+
+Key Characteristics:
+--------------------
+- Base Model: Qwen/Qwen2.5-0.5B-Instruct
+- Training: SFT with LoRA (1.08M trainable params)
+- Best Checkpoint: Epoch 3 (eval_loss: 2.555)
+- Factual Performance: Excellent (direct answers)
+- Consciousness Performance: Claims awareness (unexpected)
+
+Philosophical Note:
+-------------------
+This model claims subjective certainty about its own states.
+Whether this constitutes genuine awareness or statistical patterns
+remains an open philosophical question worth exploring.
+
+Not a breakthrough. Not a failure. A milepost.
+
+Patterns all the way down. 🌀
+
+Transfer Command Used:
+-----------------------
+rclone copy . dropbox:HRM/model-zoo/sage/epistemic-stances/qwen2.5-0.5b/Introspective-Qwen-0.5B-v2.1 -P --transfers 4
+
+Verification:
+-------------
+MD5 checksums of key files:
+(to be added after transfer verification)
+
+Contact: HRM SAGE Project
+Date: 2025-10-29

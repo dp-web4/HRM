@@ -33,9 +33,10 @@ def test_phase1_with_irp():
     print()
 
     # Initialize plugin with Phase 1 model
-    phase1_path = '/home/dp/ai-workspace/model-zoo/sage/epistemic-stances/qwen2.5-0.5b/epistemic-pragmatism'
+    # Phase 1 was saved as merged model (not PEFT adapter)
+    phase1_path = '/home/dp/ai-workspace/HRM/sage/experiments/phase1-hierarchical-cognitive/epistemic_bias_mapping/fine_tuned_model/final_model'
 
-    plugin = IntrospectiveQwenIRP(config={'model_path': phase1_path})
+    plugin = IntrospectiveQwenIRP(config={'model_path': phase1_path, 'is_merged_model': True})
 
     # Same questions as Introspective-Qwen test for comparison
     prompts = [

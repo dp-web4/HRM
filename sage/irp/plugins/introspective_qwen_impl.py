@@ -33,6 +33,7 @@ class IntrospectiveQwenIRP:
         default_path = '/home/dp/ai-workspace/HRM/sage/experiments/phase1-hierarchical-cognitive/epistemic_bias_mapping/Introspective-Qwen-0.5B-v2.1/model'
         self.model_path = self.config.get('model_path', default_path)
         self.base_model = "Qwen/Qwen2.5-0.5B-Instruct"
+        self.is_merged_model = self.config.get('is_merged_model', False)  # Phase 1 was saved merged
 
         # State management
         self.state = None
@@ -52,19 +53,30 @@ class IntrospectiveQwenIRP:
         print(f"Trust: {self.trust_score:.3f}")
 
     def _load_model(self):
-        """Load base + adapter model"""
+        """Load base + adapter model, or merged model"""
         print(f"Loading Introspective-Qwen from {self.model_path}...")
 
-        self.tokenizer = AutoTokenizer.from_pretrained(self.base_model)
-        base = AutoModelForCausalLM.from_pretrained(
-            self.base_model,
-            torch_dtype=torch.float16,
-            device_map="auto"
-        )
+        if self.is_merged_model:
+            # Phase 1 was saved as merged model
+            print("Loading as merged model (Phase 1 epistemic-pragmatism)")
+            self.tokenizer = AutoTokenizer.from_pretrained(self.base_model)
+            self.model = AutoModelForCausalLM.from_pretrained(
+                self.model_path,
+                torch_dtype=torch.float16,
+                device_map="auto"
+            )
+        else:
+            # Phase 2.1 uses PEFT adapter
+            print("Loading base + adapter (Phase 2.1 Introspective-Qwen)")
+            self.tokenizer = AutoTokenizer.from_pretrained(self.base_model)
+            base = AutoModelForCausalLM.from_pretrained(
+                self.base_model,
+                torch_dtype=torch.float16,
+                device_map="auto"
+            )
+            self.model = PeftModel.from_pretrained(base, self.model_path)
 
-        self.model = PeftModel.from_pretrained(base, self.model_path)
         self.model.eval()
-
         print("Model loaded successfully")
 
     def init_state(self, context: Dict[str, Any]) -> Dict[str, Any]:

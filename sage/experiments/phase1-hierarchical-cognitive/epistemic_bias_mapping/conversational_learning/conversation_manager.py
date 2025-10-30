@@ -77,7 +77,22 @@ class ConversationManager:
             torch_dtype=torch.float16,
             device_map=device
         )
-        self.model = PeftModel.from_pretrained(self.model, model_path)
+
+        # Only load as PEFT if model_path differs from base_model and has adapter config
+        if model_path != base_model:
+            adapter_config_path = Path(model_path) / "adapter_config.json"
+            if adapter_config_path.exists() or not Path(model_path).exists():
+                # Either has adapter_config.json (local LoRA) or is HuggingFace path (try LoRA)
+                try:
+                    self.model = PeftModel.from_pretrained(self.model, model_path)
+                    print("Loaded as LoRA adapter")
+                except (ValueError, OSError) as e:
+                    print(f"Note: Could not load as LoRA adapter, using base model: {e}")
+            else:
+                print("Note: Using base model (not a LoRA adapter)")
+        else:
+            print("Note: Using base model (model_path == base_model)")
+
         self.model.eval()
         print("Model loaded successfully!")
 

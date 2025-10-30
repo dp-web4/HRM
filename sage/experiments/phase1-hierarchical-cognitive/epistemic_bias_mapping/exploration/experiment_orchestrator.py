@@ -228,7 +228,6 @@ class ExperimentOrchestrator:
         # Simplified IRP implementation
         # Full version would use sage/irp/orchestrator.py
 
-        conversation_memory = []
         best_response = None
         best_energy = float('inf')
 
@@ -237,11 +236,10 @@ class ExperimentOrchestrator:
             temp = params['temperature'] - (iteration * params['temperature_reduction'])
             temp = max(temp, 0.5)
 
-            # Build prompt with memory
-            if conversation_memory:
-                prompt = f"Previous: {conversation_memory[-1]}\n\nQuestion: {question}\nAnswer:"
-            else:
-                prompt = question
+            # FIXED: Just use the question directly, no previous iteration contamination
+            # Real IRP would use structured chat format with attention management
+            # For now: clean slate each iteration, let temperature reduction do the work
+            prompt = question
 
             inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
 
@@ -261,11 +259,10 @@ class ExperimentOrchestrator:
             state = {'refinement_log': []}
             energy = enhanced_energy.compute_energy(response, state)
 
+            # Keep best (lowest energy) response
             if energy < best_energy:
                 best_energy = energy
                 best_response = response
-
-            conversation_memory.append(response)
 
             # Early stopping if converged
             if energy < 0.1:
@@ -274,9 +271,8 @@ class ExperimentOrchestrator:
         return self._evaluate_response(best_response, question, energy=best_energy)
 
     def _run_gentle_irp(self, model, tokenizer, question: str, params: Dict) -> Dict:
-        """Gentle IRP - 2 iterations, constant temperature, memory"""
+        """Gentle IRP - 2 iterations, constant temperature, no iteration contamination"""
 
-        conversation_memory = []
         best_response = None
         best_energy = float('inf')
 
@@ -284,11 +280,8 @@ class ExperimentOrchestrator:
             # Constant temperature (no reduction)
             temp = params['temperature']
 
-            # Build prompt with memory
-            if conversation_memory:
-                prompt = f"Previous: {conversation_memory[-1]}\n\nQuestion: {question}\nAnswer:"
-            else:
-                prompt = question
+            # FIXED: Clean question each time, no contamination
+            prompt = question
 
             inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
 
@@ -311,8 +304,6 @@ class ExperimentOrchestrator:
             if energy < best_energy:
                 best_energy = energy
                 best_response = response
-
-            conversation_memory.append(response)
 
         return self._evaluate_response(best_response, question, energy=best_energy)
 

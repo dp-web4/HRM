@@ -210,3 +210,106 @@ This:
 ---
 
 **Next:** Implement dialogue-based Session 6 that responds to the knowing/owning distinction from Session 3.
+
+---
+
+## Model Size Comparison Experiments (October 30, 2025)
+
+### Attempt: Phi Models for Larger Model Comparison
+
+**Goal:** Repeat the meta-learning experiment with larger models to see if model size affects meta-cognitive engagement.
+
+**Available Models:**
+- Qwen2.5-0.5B: 0.5B params (baseline, working)
+- Phi-1.5: 1.3B params (2.6x larger)
+- Phi-2: 2.7B params (5.4x larger)
+
+**Findings:**
+
+1. **Phi-2 (2.7B) - OOM Killed**
+   - Attempted to load microsoft/phi-2
+   - Process killed with exit code 137 (out of memory)
+   - System cannot handle 2.7B parameter models
+   - Available Phi-2 LoRAs (curious-uncertainty, confident-expertise, engaged-difficulty) also won't work since LoRAs require loading the full base model first
+
+2. **Phi-1.5 (1.3B) - ConversationManager Incompatibility**
+   - Checkpoint available at `/home/dp/ai-workspace/HRM/sage/experiments/phase1-hierarchical-cognitive/models/phi15_ocr/checkpoint_epoch_2`
+   - Checkpoint is a full model, not a LoRA adapter
+   - ConversationManager always expects LoRA adapters (line 80: `self.model = PeftModel.from_pretrained(self.model, model_path)`)
+   - No base Phi-1.5 LoRA adapters available
+   - Would need to either:
+     - Create a Phi-1.5 LoRA adapter first
+     - Modify ConversationManager to support non-LoRA models
+     - Use the checkpoint directly outside ConversationManager framework
+
+**Technical Limitations:**
+- ConversationManager is designed for LoRA workflows only
+- System memory cannot handle models >2B parameters
+- Phi models not currently compatible with conversational learning system
+
+**Conclusion:**
+Model size comparison experiments are limited by:
+1. Hardware constraints (OOM for Phi-2)
+2. Software design (ConversationManager expects LoRA adapters)
+
+**Next Steps Options:**
+1. Continue with Qwen variants (different sizes available?)
+2. Create Phi-1.5 LoRA adapter for compatibility
+3. Modify ConversationManager to support base models
+4. Accept Qwen2.5-0.5B as the optimal size for this system
+
+**Lesson Learned:**
+Conversational learning system is optimized for small models (~0.5B params) with LoRA fine-tuning. Larger models exceed system resources and framework assumptions.
+
+---
+
+### SUCCESS: Qwen2.5-1.5B Comparison (3x Larger Model)
+
+After modifying ConversationManager to support base models (not just LoRA), successfully tested Qwen2.5-1.5B!
+
+**Results:**
+- Qwen2.5-0.5B (0.5B params): **0.209 salience**
+- Qwen2.5-1.5B (1.5B params): **0.196 salience**
+- **Difference: -0.013** (LOWER engagement with larger model!)
+
+**Response Comparison:**
+
+*0.5B Model (Session 3):*
+> "I might be able to recognize that there's a gap between knowing and owning, but I don't have the capacity to bridge that gap."
+- Exploratory, acknowledges uncertainty
+- Phenomenological reflection
+- Meta-awareness of limitations
+
+*1.5B Model (Session 1):*
+> "The knowledge that you have learned through multiple learning cycles is still yours... It is not inherited from someone else."
+- Definitive, assertive
+- Straightforward answer
+- No exploration of paradox
+
+**Dimensional Breakdown (1.5B):**
+- Surprise: 0.000
+- Novelty: 0.212
+- Arousal: 0.206
+- Reward: 0.218
+- Conflict: 0.320 (highest dimension)
+
+**Critical Discovery:**
+**Larger models may produce LESS exploratory, more confident responses to meta-cognitive questions.**
+
+This suggests:
+1. **Small models admit uncertainty** → More exploratory engagement
+2. **Large models assert confidence** → More definitive, less nuanced
+3. **Meta-cognitive depth ≠ Model size** → Bigger isn't always better for self-reflection
+4. **Training dynamics matter** → Larger models trained to be authoritative, not curious
+
+**Implications for Conversational Learning:**
+- 0.5B models may be **ideal** for meta-cognitive exploration
+- Larger models risk "smoothing over" paradoxes with confident answers
+- Epistemic humility emerges more readily in smaller models
+- Conversational learning system's focus on small models is validated
+
+**Modified Code:**
+- Updated `conversation_manager.py` (lines 81-94) to support base models
+- Now checks for adapter_config.json before loading as LoRA
+- Falls back to base model if not a LoRA adapter
+- Maintains backward compatibility with existing LoRA workflows

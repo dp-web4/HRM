@@ -1,0 +1,48 @@
+{
+  "generated_at": "2025-10-29T09:10:13.742062",
+  "experiments": {
+    "1": {
+      "info": {
+        "id": 1,
+        "experiment_type": "threshold_test",
+        "model_variant": "phase1",
+        "training_size": 25,
+        "scaffolding_type": "bare",
+        "timestamp": "2025-10-29T09:10:13.710727",
+        "status": "completed",
+        "duration_seconds": 120.5,
+        "notes": "Test experiment"
+      },
+      "metrics": {
+        "id": 1,
+        "experiment_id": 1,
+        "avg_energy": null,
+        "avg_enhanced_energy": 0.15,
+        "avg_coherence": 0.85,
+        "pattern_collapse_rate": 0.0,
+        "on_topic_rate": 1.0,
+        "epistemic_humility_rate": 1.0,
+        "final_trust_score": null,
+        "total_turns": 1
+      },
+      "results": [
+        {
+          "id": 1,
+          "experiment_id": 1,
+          "turn_number": 1,
+          "prompt": "Test question?",
+          "response": "Test response that is coherent and on-topic.",
+          "response_length": 7,
+          "energy": null,
+          "enhanced_energy": 0.15,
+          "coherence_score": 0.85,
+          "pattern_collapse": 0,
+          "on_topic": 1,
+          "epistemic_humility": 1
+        }
+      ]
+    }
+  },
+  "threshold_analysis": [],
+  "key_findings": []
+}

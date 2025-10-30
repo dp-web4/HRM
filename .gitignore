@@ -2,18 +2,37 @@
 /wandb/
 **/wandb/
 training/wandb/
-# checkpoints
+
+# Checkpoints and model directories
 /checkpoints/
+**/checkpoints/
+training/checkpoints/
+sage/checkpoints/
+sage/training/checkpoints/
+validation_package/
+
+# Fine-tuned models
+sage/experiments/**/fine_tuned_model/
+sage/experiments/**/phase2.1_sft_model/
+sage/experiments/**/best_model/
+sage/experiments/**/final_model/
+**/Introspective-Qwen-*/
+
 # cache
 /cache/
+
 # data
 /data/
+
 # raw datasets (these can be large and are downloaded from HuggingFace)
 /dataset/raw-data/
 
 # Large test output files (>50MB)
 orchestrator_demo_results.json
 **/orchestrator_demo_results.json
+
+# Research databases
+**/research.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

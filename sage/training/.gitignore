@@ -1,0 +1,27 @@
+# Exclude large model files from git
+# Use model-zoo for actual trained models
+# Only commit documentation, results, and small adapters
+
+# Full models (>100MB)
+depth_epistemic_results/final/
+epistemic_parallel_results/qwen_epistemic/
+epistemic_parallel_results/phi2_epistemic/
+
+# PyTorch model files
+*.bin
+pytorch_model.bin
+model.safetensors
+
+# But allow small LoRA adapters (<10MB)
+!adapter_model.safetensors
+
+# Checkpoints and training states
+checkpoint-*/
+training_state.json
+optimizer.pt
+scheduler.pt
+
+# Logs
+*.log
+wandb/
+tensorboard/

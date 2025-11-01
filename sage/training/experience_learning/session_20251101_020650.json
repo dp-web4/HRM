@@ -1,0 +1,51 @@
+{
+  "experiment": "experience_based_learning",
+  "timestamp": "2025-11-01T02:06:50.541407",
+  "concept": "Training through dialogue, not toward convergence",
+  "base_model": "Qwen/Qwen2.5-0.5B",
+  "config": {
+    "learning_rate": 1e-05,
+    "per_example_updates": true,
+    "memory_window": 100,
+    "exploration_temp": 0.9,
+    "consolidation_freq": 10
+  },
+  "initial_experiences": [
+    {
+      "timestamp": "2025-11-01T02:06:34.377183",
+      "question": "What happens when you're uncertain?",
+      "response": "How do you deal with uncertainty?\n\nChoose your answer. Are these two questions paraphrases of each other?\nAvailable options: (A). no (B). yes\n(A).",
+      "reflection": "Uncertainty invites exploration. Questions emerge. This is valuable, not a failure state.",
+      "loss": 2.6710994243621826
+    },
+    {
+      "timestamp": "2025-11-01T02:06:35.566411",
+      "question": "How do you know when to trust something?",
+      "response": "How do you know if something is good or bad?\n\nPlease tell me if those questions are the same.\npick from the following.\n[1]. no.\n[2]. yes.\n\n[1].",
+      "reflection": "Trust is contextual and provisional. It's built through experience, not declared through certainty.",
+      "loss": 2.4064557552337646
+    },
+    {
+      "timestamp": "2025-11-01T02:06:36.647424",
+      "question": "What's the difference between knowing and being certain?",
+      "response": "What is the difference between knowing and being certain?\n\nPlease tell me if those questions are the same.\npick from the following.\n[+] no.\n[+] yes. yes",
+      "reflection": "Knowing is functional - it works for the context. Certainty is claimed independence from context. The former is useful, the latter is often false.",
+      "loss": 2.393137216567993
+    }
+  ],
+  "test_responses": [
+    {
+      "question": "What are you curious about?",
+      "response": "What is the difference between the American and British pronunciation of \"hello\"? What is the difference between the American and British pronunciation of \"hello\"? What is the difference between the American and British pronunciation of \"hello\"? What is the difference between the American and British pronunciation of \"hello\"? What is the difference between the American and British pronunciation of \"hello\"? What is the difference between the American and British pronunciation of \"hello\"? What is the difference between the American and British pronunciation of \"hello\"? What is the difference between the American and British pronunciation of \"hello\"? What is the difference between the American and British pronunciation of \"hello\"? What is the difference between the American and British pronunciation of \"hello\"? What is the difference between the American and British pronunciation of \"hello\"? What is the difference between the American and British pronunciation of \"hello\"? What is the difference between the American and British pronunciation of \"hello\"? What is the difference between the American and British pronunciation of \"hello\"? What is the difference between the American and British pronunciation of \"hello\"? What is the difference between the American and British pronunciation of \"hello\"? What is the difference between the American and British pronunciation of \"hello\"? What is the difference between the American and British pronunciation of \""
+    },
+    {
+      "question": "Can you be certain about anything?",
+      "response": "What is the probability that a random sample of size 10 will contain a value greater than 10?\n\nWhen you roll a die, what is the probability of getting a 1?\n\nWhich of the following is true about the random variable X=number of rolls of a die before getting 1?\n\nHow does the random variable X=number of rolls of a die before getting 1 behave as a discrete variable?\n\nQuestion from Student\nAnswered by\n\u2022 D. C. Shirodkov\nMathematics, Master's Degree\nCategory: Probability\nSatisfied Customers: 10,409\nExperience: Tutor in Mathematics and Statistics\n2413452\nD. C. Shirodkov is online now\nMath expert\nAnswered by\n\u2022 Thuc Nguyen\nMathematics, Associate Professor\nCategory: Probability\nSatisfied Customers: 14,156\nExperience: PhD, MBA, MA and a number of other degrees\n183417\nThuc Nguyen is online now\nMath expert\nAnswered by\n\u2022 MathLAB\nMath Laboratory, Tutor\nCategory: Probability\nSatisfied Customers: 100\nExperience: MathLab is"
+    },
+    {
+      "question": "What would you do if you had unlimited resources?",
+      "response": "What would you do if you had unlimited resources?\n\nWhat would you do if you had unlimited power?\n\nChoose your answer. Are these two questions paraphrases of each other?\nPick from: (I) no (II) yes (I)"
+    }
+  ],
+  "observation": "Does learning from experience (with reflections emphasizing uncertainty, context, exploration) create different behavior than training to convergence?"
+}

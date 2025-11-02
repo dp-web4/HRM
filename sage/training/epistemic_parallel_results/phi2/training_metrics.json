@@ -1,0 +1,72 @@
+{
+  "model_key": "phi2",
+  "model_name": "microsoft/phi-2",
+  "parameters": "2.7B",
+  "expected_inertia": "high",
+  "training_time_seconds": 213.833997,
+  "dataset_size": 115,
+  "epochs": 5,
+  "final_loss": null,
+  "learning_curve": [
+    {
+      "step": 5,
+      "loss": 0.6926
+    },
+    {
+      "step": 10,
+      "loss": 0.686
+    },
+    {
+      "step": 15,
+      "loss": 0.6645
+    },
+    {
+      "step": 20,
+      "loss": 0.6149
+    },
+    {
+      "step": 25,
+      "loss": 0.5469
+    },
+    {
+      "step": 30,
+      "loss": 0.4698
+    },
+    {
+      "step": 35,
+      "loss": 0.3402
+    },
+    {
+      "step": 40,
+      "loss": 0.221
+    },
+    {
+      "step": 45,
+      "loss": 0.1108
+    },
+    {
+      "step": 50,
+      "loss": 0.0394
+    },
+    {
+      "step": 55,
+      "loss": 0.0131
+    },
+    {
+      "step": 60,
+      "loss": 0.0064
+    },
+    {
+      "step": 65,
+      "loss": 0.0033
+    },
+    {
+      "step": 70,
+      "loss": 0.0038
+    },
+    {
+      "step": 75,
+      "loss": 0.0025
+    }
+  ]
+}

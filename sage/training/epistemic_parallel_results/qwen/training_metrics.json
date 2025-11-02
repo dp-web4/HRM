@@ -1,0 +1,72 @@
+{
+  "model_key": "qwen",
+  "model_name": "Qwen/Qwen2.5-0.5B",
+  "parameters": "494M",
+  "expected_inertia": "low",
+  "training_time_seconds": 79.059751,
+  "dataset_size": 115,
+  "epochs": 5,
+  "final_loss": null,
+  "learning_curve": [
+    {
+      "step": 5,
+      "loss": 0.6918
+    },
+    {
+      "step": 10,
+      "loss": 0.6678
+    },
+    {
+      "step": 15,
+      "loss": 0.5946
+    },
+    {
+      "step": 20,
+      "loss": 0.4899
+    },
+    {
+      "step": 25,
+      "loss": 0.3668
+    },
+    {
+      "step": 30,
+      "loss": 0.2581
+    },
+    {
+      "step": 35,
+      "loss": 0.1213
+    },
+    {
+      "step": 40,
+      "loss": 0.0476
+    },
+    {
+      "step": 45,
+      "loss": 0.0121
+    },
+    {
+      "step": 50,
+      "loss": 0.0015
+    },
+    {
+      "step": 55,
+      "loss": 0.0005
+    },
+    {
+      "step": 60,
+      "loss": 0.0001
+    },
+    {
+      "step": 65,
+      "loss": 0.0001
+    },
+    {
+      "step": 70,
+      "loss": 0.0
+    },
+    {
+      "step": 75,
+      "loss": 0.0
+    }
+  ]
+}

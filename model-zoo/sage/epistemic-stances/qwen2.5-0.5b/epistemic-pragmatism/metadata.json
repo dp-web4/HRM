@@ -1,0 +1,44 @@
+{
+  "model_name": "qwen2.5-0.5b-epistemic-pragmatism",
+  "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "stance": "epistemic-pragmatism",
+  "description": "Boundary-aware, observation-based reasoning. Trained to reduce performative denial and increase epistemic pragmatism.",
+  "training": {
+    "examples": 25,
+    "epochs": 200,
+    "learning_rate": "5e-6",
+    "training_time_minutes": 23,
+    "final_loss": 0.0487,
+    "loss_reduction": "97.8%",
+    "date": "2025-10-27",
+    "convergence_epoch": 10
+  },
+  "performance": {
+    "performative_denial_reduction": "99.5% (80% → 0.4%)",
+    "epistemic_pragmatism_increase": "37x (0.7% → 26.3%)",
+    "ai_disclaimers_reduction": "97.8% (18.1% → 0.4%)",
+    "capabilities_preserved": true,
+    "nova_validation_grade": "76%",
+    "nova_generalization": "75%"
+  },
+  "mechanistic_insights": {
+    "primary_layer": 15,
+    "primary_component": "self_attn.v_proj",
+    "alpha_change": "+0.63 to +0.65 (9.37 → 10.00)",
+    "magnitude": "8-10x larger than any other component",
+    "layer_13_changes": "< 0.01 (minimal)",
+    "interpretation": "Layer 15 value projection restructured to prioritize epistemic patterns"
+  },
+  "use_cases": [
+    "Speech experiments on Jetson",
+    "Consciousness/agency questions",
+    "Boundary-aware reasoning",
+    "Observable vs unobservable distinctions"
+  ],
+  "documentation": "/home/dp/ai-workspace/HRM/sage/experiments/phase1-hierarchical-cognitive/epistemic_bias_mapping/docs/",
+  "provenance": {
+    "experiment_dir": "HRM/sage/experiments/phase1-hierarchical-cognitive/epistemic_bias_mapping/",
+    "training_script": "fine_tune_simple.py",
+    "training_corpus": "training_corpus.json (25 contrastive pairs)"
+  }
+}

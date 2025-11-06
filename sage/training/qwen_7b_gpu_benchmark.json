@@ -1,0 +1,31 @@
+{
+  "timestamp": "2025-11-05 22:01:18",
+  "model": "Qwen 2.5 7B",
+  "parameters": "7B",
+  "device": "GPU",
+  "gpu_name": "NVIDIA Thor",
+  "pytorch_version": "2.9.0",
+  "cuda_version": "13.0",
+  "model_load_time": 11.374244928359985,
+  "avg_inference_time": 10.60893718401591,
+  "cpu_baseline": 110.04,
+  "speedup": 10.37238679910304,
+  "peak_gpu_memory_gb": 15.3129984,
+  "results": [
+    {
+      "prompt": "What is consciousness?",
+      "response": "Is it an emergent property of the brain, or is it something more fundamental?\n\nConsciousness is a complex and multifaceted phenomenon that has been the subject of extensive study in philosophy, neuroscience, psychology, and other fields. The nature of consciousness remains one of the most profound mysteries in science and continues to be a topic of intense debate.\n\nThere are several theories about the nature of consciousness, but no consensus exists on a single explanation. Here are some of the main perspectives:\n\n1. **",
+      "generation_time": 12.643615961074829
+    },
+    {
+      "prompt": "Explain the relationship between trust and compression.",
+      "response": "Trust and compression are two distinct concepts, but they can be related in certain contexts. Let's explore each concept separately before discussing their potential relationship.\n\n### Trust\n**Trust** is a belief that someone or something will act in a reliable and consistent manner, often based on past experiences or established reputation. It is a fundamental aspect of social interactions and relationships. Trust can be built through consistent behavior, transparency, and reliability over time. In organizational settings, trust among team members, between management and employees,",
+      "generation_time": 12.63196325302124
+    },
+    {
+      "prompt": "How do you learn from experience?",
+      "response": "What does it take to make use of your experiences?\nHow can I learn from my own experiences?\nMulti-choice problem: Would you say that these questions are the same?\nOptions are:\n[1]. no.\n[2]. yes.\n[2].",
+      "generation_time": 6.55123233795166
+    }
+  ]
+}

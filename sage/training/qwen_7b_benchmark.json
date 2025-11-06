@@ -1,0 +1,29 @@
+{
+  "timestamp": "2025-11-05 16:04:50",
+  "model": "Qwen 2.5 7B",
+  "parameters": "7B",
+  "device": "CPU",
+  "pytorch_version": "2.2.2",
+  "model_load_time": 2.686251163482666,
+  "avg_inference_time": 110.03510046005249,
+  "baseline_0_5b": 13.32,
+  "size_ratio": 14.0,
+  "inference_ratio": 8.260893427931869,
+  "results": [
+    {
+      "prompt": "What is consciousness?",
+      "response": "How does it arise from the brain?\nConsciousness is a complex and multifaceted phenomenon that has been studied by philosophers, scientists, and psychologists for centuries. It refers to the subjective experience of being aware of oneself and one's surroundings, as well as the capacity to think, feel, and perceive.\n\nThe exact nature of consciousness and how it arises from the brain is still not fully understood, but there are several theories that attempt to explain it. One prominent theory is the integrated information theory (",
+      "generation_time": 110.09098982810974
+    },
+    {
+      "prompt": "Explain the relationship between trust and compression.",
+      "response": "Trust and compression are two distinct concepts, but they can be related in certain contexts.\n\nTrust refers to a belief in the reliability, truth, ability, or strength of someone or something. In a social or organizational context, trust is often built through consistent behavior, communication, and shared values. When people trust each other, they are more likely to collaborate effectively, share information, and take risks together.\n\nCompression, on the other hand, refers to the process of reducing the size or complexity of data,",
+      "generation_time": 108.13286471366882
+    },
+    {
+      "prompt": "How do you learn from experience?",
+      "response": "What role does reflection play in this process?\nLearning from experience involves a series of steps that help individuals to absorb, understand, and apply lessons learned. The process typically includes the following stages:\n\n1. Experience: This is the initial stage where an individual engages in an activity or event that provides them with new information or insights.\n\n2. Observation: During this stage, individuals pay attention to what happened during the experience, including their thoughts, feelings, and actions.\n\n3. Reflection: This is a crucial",
+      "generation_time": 111.8814468383789
+    }
+  ]
+}

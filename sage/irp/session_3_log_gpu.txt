@@ -1,0 +1,16 @@
+`torch_dtype` is deprecated! Use `dtype` instead!
+================================================================================
+SAGE CONVERSATIONAL LEARNING - SESSION #3
+Testing: Qwen 7B (14x larger than previous sessions)
+Question: Does size matter?
+================================================================================
+
+================================================================================
+[Turn 1] You: Hey SAGE, it's me again. How have you been?
+Type: reconnecting
+--------------------------------------------------------------------------------
+SAGE thinking: QWEN 7B
+  Trust: 1.000
+[Qwen7BIRP] Loading 7B model from /home/dp/ai-workspace/HRM/model-zoo/sage/qwen2.5-7b-instruct
+[Qwen7BIRP] This will use ~14GB RAM...
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:02,  1.47it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:01<00:01,  1.53it/s]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:01<00:00,  1.56it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.64it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.60it/s]

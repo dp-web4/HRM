@@ -1,0 +1,348 @@
+================================================================================
+                    SAGE/HRM SYSTEM ARCHITECTURE MAP
+                          November 5, 2025
+================================================================================
+
+                           ┌─────────────────┐
+                           │   CONTINUOUS    │
+                           │  INFERENCE LOOP │
+                           │  (SAGE Core)    │
+                           └────────┬────────┘
+                                    │
+            ┌───────────────────────┼───────────────────────┐
+            │                       │                       │
+            ▼                       ▼                       ▼
+      ┌──────────────┐        ┌──────────────┐      ┌──────────────┐
+      │   OBSERVE    │        │  ASSESS      │      │   DECIDE     │
+      │              │        │  SALIENCE    │      │  RESOURCES   │
+      │  Sensors:    │        │  (SNARC)     │      │              │
+      │  - Vision    │        │              │      │  What's      │
+      │  - Audio     │        │  5D score:   │      │  needed?     │
+      │  - Proprio   │        │  Surprise    │      │              │
+      │  - Time      │        │  Novelty     │      │  Plugin      │
+      │  - External  │        │  Arousal     │      │  selection   │
+      └──────┬───────┘        │  Reward      │      └───────┬──────┘
+             │                │  Conflict    │              │
+             │                │              │              │
+             │                └──────┬───────┘              │
+             │                       │                     │
+             └───────────────────────┼─────────────────────┘
+                                     │
+                    ┌────────────────▼────────────────┐
+                    │   ALLOCATE ATP BUDGET          │
+                    │   (Trust-weighted)             │
+                    │                                │
+                    │  Total: 1000 ATP              │
+                    │  BitNet: 545 ATP (54.5%)       │
+                    │  Qwen:   363 ATP (36.3%)       │
+                    │  Reserve: 92 ATP (hold)        │
+                    └────────────────┬───────────────┘
+                                     │
+         ┌───────────────────────────┼───────────────────────────┐
+         │                           │                           │
+         ▼                           ▼                           ▼
+    ┌─────────────┐         ┌─────────────────┐         ┌──────────────┐
+    │   EXECUTE   │         │  EXECUTE        │         │  EXECUTE     │
+    │   BitNet    │         │  Qwen IRP       │         │  Vision IRP  │
+    │   IRP       │         │                 │         │              │
+    │             │         │  - Deep reason  │         │  - Extract   │
+    │  - Math     │         │  - Philosophy   │         │    objects   │
+    │  - Facts    │         │  - Questions    │         │  - Track     │
+    │  - Logic    │         │  - Epistemic    │         │    motion    │
+    │             │         │    pragmatism   │         │              │
+    │  Energy:    │         │                 │         │  Energy:     │
+    │  0.1-0.2    │         │  Energy:        │         │  0.2-0.4     │
+    └─────┬───────┘         │  0.1-0.3        │         └───────┬──────┘
+          │                 └────────┬────────┘                 │
+          │                         │                          │
+          └─────────────────────────┼──────────────────────────┘
+                                    │
+                    ┌───────────────▼────────────────┐
+                    │   LEARN FROM OUTCOMES         │
+                    │   (Update Trust Weights)      │
+                    │                               │
+                    │  if energy_low:              │
+                    │    trust += 0.1 × success    │
+                    │  if cost_efficient:          │
+                    │    trust += 0.1 × (quality/  │
+                    │              atp_consumed)  │
+                    │                               │
+                    │  New trust scores:            │
+                    │  BitNet: 1.20 (was 1.0)      │
+                    │  Qwen:   0.95 (was 1.0)      │
+                    └───────────────┬───────────────┘
+                                    │
+                    ┌───────────────▼────────────────┐
+                    │   CONSOLIDATE (DREAM)        │
+                    │                               │
+                    │  Pattern extraction from      │
+                    │  recent experience            │
+                    │                               │
+                    │  Update IRP memory bridge     │
+                    │  Update SNARC salience        │
+                    │  Extract new strategies       │
+                    └───────────────┬───────────────┘
+                                    │
+                    ┌───────────────▼────────────────┐
+                    │   ACT (Execute)               │
+                    │                               │
+                    │  Output motor commands        │
+                    │  Update environment           │
+                    │  Observe feedback             │
+                    └───────────────┬───────────────┘
+                                    │
+                                    │ LOOP BACK
+                                    │
+                                    ▼
+
+================================================================================
+                          MEMORY SYSTEMS (4 PARALLEL)
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 1. SNARC SELECTIVE MEMORY                                                   │
+│    (Surprise, Novelty, Arousal, Reward, Conflict)                          │
+│                                                                             │
+│    Event: "Solved novel puzzle"                                            │
+│    Surprise: 0.8   Novelty: 0.9   Arousal: 0.7   Reward: 0.95   Conflict: 0.1
+│    Total salience: 0.84 → STORED                                           │
+│                                                                             │
+│    Event: "Routine sensor update"                                          │
+│    Surprise: 0.1   Novelty: 0.0   Arousal: 0.1   Reward: 0.0   Conflict: 0.05
+│    Total salience: 0.05 → DISCARDED                                        │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 2. IRP MEMORY BRIDGE (Pattern Library)                                      │
+│                                                                             │
+│    Pattern: "philosophical_question"                                       │
+│    - Plugin: Qwen                                                           │
+│    - Success rate: 87%                                                     │
+│    - Avg energy drop: 0.8 → 0.2                                            │
+│    - Contexts where it works: {abstract, questioning, uncertain}           │
+│                                                                             │
+│    Pattern: "mathematical_problem"                                         │
+│    - Plugin: BitNet                                                         │
+│    - Success rate: 92%                                                     │
+│    - Avg energy drop: 0.6 → 0.1                                            │
+│    - Contexts where it works: {factual, logical, certain}                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 3. CIRCULAR BUFFER (Recent Context Window)                                  │
+│                                                                             │
+│    [Most Recent] ← | obs₉₉₈ | obs₉₉₉ | obs₁₀₀₀ | [Ring Buffer, 1000 items]
+│    [Oldest]  ───→ | obs₁   | obs₂   | obs₃    |                            │
+│                                                                             │
+│    Use: Short-term dependencies, X-from-last temporal encoding              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 4. SQLite VERBATIM STORAGE (Full Fidelity)                                  │
+│                                                                             │
+│    Table: observations                                                      │
+│    │ timestamp │ sensor | value | salience │                               │
+│    ├───────────┼────────┼───────┼──────────┤                               │
+│    │ 1700...01 │ vision │ img   │   0.64   │                               │
+│    │ 1700...02 │ audio  │ wav   │   0.32   │                               │
+│    │ 1700...03 │ memory │ ctx   │   0.78   │                               │
+│                                                                             │
+│    Use: Historical analysis, pattern mining, debugging                      │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+================================================================================
+                    METABOLIC STATES (5 Modes)
+================================================================================
+
+        WAKE                FOCUS               REST
+    Broad attention     Narrow attention    Minimal attention
+    Shallow depth       Deep depth          No computation
+    High energy         Very high energy    Low energy
+    Responsive          Problem-solving     Recovery
+    
+    │                   │                   │
+    ├───────────────────┼───────────────────┤
+    │                                       │
+    ▼                                       ▼
+   DREAM                                 CRISIS
+   Consolidation                        Emergency response
+   Very deep inference                  Hyper attention
+   Pattern extraction                   Maximum resources
+   Memory updates                       Threat response
+
+================================================================================
+                    IRP PLUGIN ECOSYSTEM (15+ Plugins)
+================================================================================
+
+    ┌───────────────────────────────────────────────────────┐
+    │              PLUGIN ORCHESTRATOR                      │
+    │         (Knows all available plugins)                │
+    └────────────────────┬──────────────────────────────────┘
+                         │
+         ┌───────────────┼───────────────┐
+         │               │               │
+         ▼               ▼               ▼
+    ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+    │ BitNet IRP  │ │ Qwen IRP    │ │ Vision IRP  │
+    │ (2.4B)      │ │ (0.5B/7B)   │ │             │
+    │             │ │             │ │ - Camera    │
+    │ Fast & Sure │ │ Deep & Open │ │ - Attention │
+    │ Energy: 0.2 │ │ Energy: 0.1 │ │ - Objects   │
+    └─────────────┘ └─────────────┘ └─────────────┘
+
+    ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+    │ Audio IRP   │ │ Language IRP│ │ Memory IRP  │
+    │             │ │             │ │             │
+    │ - Speech    │ │ - Converse  │ │ - Store     │
+    │ - Prosody   │ │ - Generate  │ │ - Retrieve  │
+    │ Energy: 0.3 │ │ Energy: 0.2 │ │ Energy: 0.1 │
+    └─────────────┘ └─────────────┘ └─────────────┘
+
+    ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+    │ TinyVAE IRP │ │ Control IRP │ │ & 7 more    │
+    │             │ │             │ │             │
+    │ - Compress  │ │ - Act       │ │ (specialized)
+    │ - Translate │ │ - Execute   │ │             │
+    │ Energy: 0.15│ │ Energy: 0.25│ │             │
+    └─────────────┘ └─────────────┘ └─────────────┘
+
+================================================================================
+                      THREE-LAYER ARCHITECTURE
+================================================================================
+
+    Layer 1: SAGE CORE (Consciousness Kernel)
+    ┌──────────────────────────────────────────────┐
+    │ Continuous inference loop                    │
+    │ - Temporal state (circadian clock)           │
+    │ - Metabolic controller                       │
+    │ - Resource registry                          │
+    │ - Active resource management                 │
+    │ Location: /sage/core/                        │
+    └──────────────────────────────────────────────┘
+                         │
+    ┌────────────────────┴────────────────────────┐
+    │ Learns: WHAT deserves attention + WHEN      │
+    │ Manages: Resource allocation based on need  │
+    └──────────────────────────────────────────────┘
+                         │
+                         ▼
+    Layer 2: IRP (Consciousness API)
+    ┌──────────────────────────────────────────────┐
+    │ Iterative Refinement Protocol                │
+    │ - Standard interface all plugins implement   │
+    │ - Universal pattern: noisy → refined         │
+    │ - Energy-based convergence                   │
+    │ - 15+ plugins implementing interface         │
+    │ Location: /sage/irp/                         │
+    └──────────────────────────────────────────────┘
+                         │
+    ┌────────────────────┴────────────────────────┐
+    │ Enables: Any reasoning mode (vision,        │
+    │          language, planning, memory)        │
+    │ Provides: Trust through convergence behavior│
+    └──────────────────────────────────────────────┘
+                         │
+                         ▼
+    Layer 3: VAE (Translation Layer)
+    ┌──────────────────────────────────────────────┐
+    │ Cross-modal Compression                      │
+    │ - TinyVAE: 192× compression                  │
+    │ - H→L Compressor: 16× compression           │
+    │ - Creates shared latent spaces               │
+    │ Location: /sage/compression/                 │
+    └──────────────────────────────────────────────┘
+                         │
+    ┌────────────────────┴────────────────────────┐
+    │ Enables: Multi-modal reasoning               │
+    │ Provides: Meaning preservation through       │
+    │           compression                       │
+    └──────────────────────────────────────────────┘
+
+================================================================================
+                    LEARNING LOOP (How SAGE Learns)
+================================================================================
+
+    CYCLE 1: No experience yet
+    ┌─────────────────────────────────────────┐
+    │ Trust: BitNet=1.0, Qwen=1.0            │
+    │ Decision: Choose BitNet (random)       │
+    │ Result: Energy=0.6 (vague answer)      │
+    │ Update: BitNet → 0.908 (decreases)     │
+    └─────────────────────────────────────────┘
+                         │
+                         ▼
+    CYCLE 2: Learning begins
+    ┌─────────────────────────────────────────┐
+    │ Trust: BitNet=0.908, Qwen=1.0          │
+    │ Decision: Choose Qwen (higher trust)   │
+    │ Result: Energy=0.1 (deep questions)    │
+    │ Update: Qwen → 0.945 (increases)       │
+    └─────────────────────────────────────────┘
+                         │
+                         ▼
+    CYCLE 10-50: Specialization emerges
+    ┌─────────────────────────────────────────┐
+    │ Trust: BitNet=0.65, Qwen=1.15          │
+    │ Decision: Always Qwen for philosophy   │
+    │ Result: Specialized allocation         │
+    │ Outcome: Perfect resource matching     │
+    └─────────────────────────────────────────┘
+
+================================================================================
+                    INTEGRATION WITH EXTERNAL SYSTEMS
+================================================================================
+
+    Web4 (Trust-Native Architecture)
+    ┌─────────────────────────────────────┐
+    │ R6 Framework:                       │
+    │ Rules → Roles → Request → Reference │
+    │ Resource → Result                   │
+    │                                     │
+    │ Maps to SAGE:                       │
+    │ Rules = SNARC salience rules        │
+    │ Roles = Plugin roles                │
+    │ Request = Task/observation          │
+    │ Reference = IRP memory patterns     │
+    │ Resource = ATP budget allocation    │
+    │ Result = Action + learning          │
+    └─────────────────────────────────────┘
+
+    Synchronism (Temporal Coordination)
+    ┌─────────────────────────────────────┐
+    │ Circadian Clock Phase Awareness      │
+    │ Time-dependent trust profiles        │
+    │ Metabolic cycles matching biology    │
+    └─────────────────────────────────────┘
+
+    ACT (Agentic Context Tool)
+    ┌─────────────────────────────────────┐
+    │ Roles = Attention partitioning       │
+    │ Queens (H-level) vs Workers (L-level)│
+    │ 33% readiness economy (reserve ATP) │
+    │ Context bubbles & reality checking   │
+    └─────────────────────────────────────┘
+
+================================================================================
+                         OPERATIONAL STATUS
+================================================================================
+
+    FULLY WORKING ✅           PARTIAL ⚠️              NOT YET ❌
+
+    ✅ IRP Framework           ⚠️ Unified Loop         ❌ Real-time loop
+    ✅ All 15+ Plugins         ⚠️ Resource Loading     ❌ Sensor→Puzzle VAE
+    ✅ Trust System            ⚠️ Sensor Integration   ❌ Multi-device Fed
+    ✅ SNARC Scoring           ⚠️ Consciousness Save   ❌ Hardware actuation
+    ✅ ATP Budget              ⚠️ Loop Coordination    
+    ✅ Metabolic States        
+    ✅ All Memory Systems      
+    ✅ VAE Compression         
+    ✅ Epistemic Training      
+
+================================================================================
+
+Generated: November 5, 2025
+Repository: /home/dp/ai-workspace/HRM
+Status: Components operational, integration in progress
+Next: Unified loop, real-world validation, federation
+
+================================================================================

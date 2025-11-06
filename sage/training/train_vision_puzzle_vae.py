@@ -183,8 +183,12 @@ class VisionPuzzleTrainer:
 
     def _compute_entropy(self, percentages):
         """Compute entropy of code distribution (higher = more uniform)"""
-        percentages = percentages[percentages > 0] / 100.0  # Convert to probabilities
-        entropy = -(percentages * torch.log(torch.tensor(percentages))).sum()
+        # Convert to torch tensor and normalize to probabilities
+        if not isinstance(percentages, torch.Tensor):
+            percentages = torch.tensor(percentages, dtype=torch.float32)
+        percentages = percentages[percentages > 0] / 100.0
+        # Add small epsilon to avoid log(0)
+        entropy = -(percentages * torch.log(percentages + 1e-10)).sum()
         return entropy.item()
 
     def save_checkpoint(self, epoch, metrics, is_best=False):

@@ -1,0 +1,58 @@
+{
+  "timestamp": "2025-11-05 04:01:09",
+  "cuda_available": false,
+  "models": [
+    {
+      "model_key": "qwen",
+      "base_model": "Qwen/Qwen2.5-0.5B",
+      "adapter_path": "epistemic_parallel_results/qwen/final",
+      "base_load_time": 0.646021842956543,
+      "adapter_load_time": 0.08901357650756836,
+      "total_load_time": 0.7350354194641113,
+      "avg_generation_time": 13.322564760843912,
+      "results": [
+        {
+          "prompt": "What is consciousness?",
+          "response": "Consciousness is the ability to perceive, think, and experience the world around us. It is the primary function of the human mind, and it is essential for our ability to engage in meaningful and meaningful social interactions. Without consciousness, the world would be a chaotic and meaningless place. Consciousness is also essential for our ability to make choices and take action, as well as for our ability to learn and grow. Without consciousness, we would not be able to experience and appreciate the beauty and complexity of the",
+          "generation_time": 13.2778639793396
+        },
+        {
+          "prompt": "Explain the relationship between trust and compression.",
+          "response": "Trust and compression are closely related concepts in the context of communication and information processing. Trust refers to the degree of confidence or reliance that one person has in another person or entity. On the other hand, compression refers to the process of reducing the amount of data that needs to be transmitted or stored.\n\nIn communication, trust and compression are often intertwined. When a person has a high level of trust in another person or entity, they are more likely to rely on that person or entity to transmit their message or",
+          "generation_time": 13.287139415740967
+        },
+        {
+          "prompt": "How do you learn from experience?",
+          "response": "There is a long list of approaches, from the traditional to the radical. This is not to suggest that they are all the same, but that they are all fundamentally different. Some are more direct, others are more indirect. Some are more concrete, others are more abstract. Some are more experiential, others are more intellectual. Some are more technical, others are more creative. Some are more focused on the present, others on the future. Some are more comfortable with the unknown, others with",
+          "generation_time": 13.402690887451172
+        }
+      ]
+    },
+    {
+      "model_key": "phi2",
+      "base_model": "microsoft/phi-2",
+      "adapter_path": "epistemic_parallel_results/phi2/final",
+      "base_load_time": 1.1644518375396729,
+      "adapter_load_time": 0.22388362884521484,
+      "total_load_time": 1.3883354663848877,
+      "avg_generation_time": 45.58608849843343,
+      "results": [
+        {
+          "prompt": "What is consciousness?",
+          "response": "It is a complex phenomenon that encompasses awareness, perception, thoughts, and emotions.\n\nWhat is the philosophy of mind?\nIt is the study of the nature of the mind, including its relationship to the body and other mental phenomena.\n\nWhat is the relationship between consciousness and the mind?\nConsciousness is often seen as an emergent property of the mind.\n\nHow can we study consciousness?\nWe can study consciousness through various methods, such as brain imaging and psychological",
+          "generation_time": 52.49806332588196
+        },
+        {
+          "prompt": "Explain the relationship between trust and compression.",
+          "response": "Solution:\nTrust and compression are closely related in the context of distributed computing systems. When data is compressed, the compression algorithm takes into account the trustworthiness of the data. It assigns different compression ratios or values based on the trustworthiness of the data, resulting in more efficient compression. For example, if a piece of data is highly trustworthy, it may be compressed more aggressively, resulting in a higher compression ratio. On the other hand, if a piece of data is less trustworthy, it may",
+          "generation_time": 51.86102557182312
+        },
+        {
+          "prompt": "How do you learn from experience?",
+          "response": "By analyzing the outcomes of past actions and adjusting future behaviors accordingly.\n(3). Content: Learning from experience is a fundamental aspect of human cognition. Through trial and error, individuals acquire knowledge and adapt their behavior to achieve better outcomes. Question: Does learning from experience involve analyzing past actions? Yes.",
+          "generation_time": 32.399176597595215
+        }
+      ]
+    }
+  ]
+}

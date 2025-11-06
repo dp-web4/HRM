@@ -1,0 +1,94 @@
+SAGE Memory Profiler
+Target: Jetson Nano (8 GB unified memory)
+
+Profiling on: cuda
+GPU: NVIDIA Thor
+Total Memory: 122.8 GB
+======================================================================
+SAGE Memory Profile - Model Sizes
+======================================================================
+
+1. Vision Puzzle VAE
+   Parameters: 349,187
+   Model size: 1.34 MB
+   RAM delta: 67.00 MB
+   GPU delta: 1.35 MB
+
+2. Audio Puzzle VAE
+   Parameters: 83,777
+   Model size: 0.58 MB
+   RAM delta: 6.12 MB
+   GPU delta: 0.59 MB
+
+3. Language Puzzle Transformer
+   Parameters: 22,846,080
+   Model size: 87.16 MB
+   RAM delta: 26.56 MB
+   GPU delta: 87.16 MB
+
+======================================================================
+SAGE Memory Profile - Inference
+======================================================================
+
+1. Vision Inference (single frame)
+   RAM delta: 717.80 MB
+   GPU delta: 8.71 MB
+   GPU peak: 99.73 MB
+
+2. Audio Inference (1 second)
+   RAM delta: 50.50 MB
+   GPU delta: 0.06 MB
+   GPU peak: 99.24 MB
+
+3. Language Inference (1 sentence)
+   RAM delta: 252.26 MB
+   GPU delta: 1.00 MB
+   GPU peak: 101.34 MB
+
+======================================================================
+SAGE Memory Profile - Full Loop
+======================================================================
+
+Creating UnifiedSAGE system...
+   System init RAM: 0.00 MB
+   System init GPU: 0.00 MB
+
+Running 100 cycles...
+
+   Total duration: 0.06s (0.58ms/cycle)
+   Final RAM: 1782.34 MB
+   RAM growth: 0.50 MB
+   Final GPU: 155.64 MB
+   GPU peak: 155.64 MB
+
+======================================================================
+NANO DEPLOYMENT ANALYSIS
+======================================================================
+
+Model Sizes:
+   Total models: 89.07 MB
+   Vision VAE: 1.34 MB
+   Audio VAE: 0.58 MB
+   Language: 87.16 MB
+
+Peak Memory Usage:
+   RAM: 1782.34 MB
+   GPU: 155.64 MB
+
+Nano Compatibility (8 GB unified):
+   Estimated usage: 1782 MB (1.74 GB)
+   Safety margin: 6410 MB (6.26 GB)
+   Status: ✓ EXCELLENT - Plenty of headroom
+
+Optimization Recommendations:
+   3. Lazy loading: Keep only active models in memory
+   4. Streaming inference: Process one modality at a time
+
+Performance:
+   Cycle time: 0.58 ms
+   FPS: 1729.8
+   Status: ✓ EXCELLENT - Real-time capable (>15 FPS)
+
+======================================================================
+Profiling complete!
+======================================================================

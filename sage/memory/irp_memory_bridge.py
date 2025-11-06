@@ -22,7 +22,8 @@ try:
     SNARC_AVAILABLE = True
 except ImportError:
     SNARC_AVAILABLE = False
-    print("Warning: SNARC not available. Using mock implementation.")
+    # Note: External Memory project's SNARC not available (optional)
+    # Main SNARC service (sage/services/snarc) is separate and functional
 
 
 @dataclass

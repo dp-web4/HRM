@@ -50,11 +50,18 @@
 - Check for I2C/SPI communication code
 - Review existing orientation tracking
 
+**Additional Reference**: `../ai-dna-discovery` repo
+- Early IMU experiments may be documented there
+- Early audio work also in that repo
+- Haven't worked there recently but useful historical reference
+- Check if available on this machine, or note for future reference
+
 **Action for Track 5**:
-- Find and review existing IMU tests
+- Find and review existing IMU tests (this repo)
+- Check ../ai-dna-discovery for early experiments (if available)
 - Build on previous IMU integration work
 - Don't reinvent - extend what exists
-- Reference proven patterns from repo
+- Reference proven patterns from both repos
 
 ---
 
@@ -71,6 +78,23 @@
 - Use Nano for all testing and validation
 - Build on proven patterns, don't start from scratch
 - Measure everything on target hardware
+
+---
+
+## Additional Reference Repository
+
+**ai-dna-discovery**: `../ai-dna-discovery` (if available)
+- Contains early IMU experiments
+- Contains early audio work
+- Historical reference for sensor integration approaches
+- Not actively developed recently but useful patterns
+
+**When to reference**:
+- Track 5 (IMU) - Check for early IMU integration code
+- Track 6 (Audio) - Look for early audio pipeline experiments
+- Any sensor work - May have tried approaches worth reviewing
+
+**Note**: If repo not present on this machine, can request or note for future.
 
 ---
 

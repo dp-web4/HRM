@@ -915,3 +915,280 @@ Actions:
 3. Await user for Nano deployment (Track 4 Phase 2)
 
 [2025-11-11 03:15] Autonomous check complete - system healthy, bug fixed
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2025-11-11 09:04] AUTONOMOUS CHECK #27 - TRACK 5 ARCHITECTURE DESIGN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+System Status:
+- Uptime: 4 days, 12+ hours (108+ hours continuous)
+- Load: 0.53 (stable)
+- Memory: 99GB free / 122GB total (healthy)
+- Disk: 816GB free / 936GB total
+- Python: 3.12.3
+- PyTorch: 2.9.0 with CUDA support ✓
+
+Active Processes:
+- No research tasks running
+- No active builds
+- System idle and ready
+
+CURRENT STATE REVIEW:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Track Status:
+✅ Track 1: Sensor Trust - COMPLETE
+✅ Track 2: Memory (SNARC) - COMPLETE
+✅ Track 3: Cognition - COMPLETE (tests passing in 1.31s, improved from 3.55s)
+🔄 Track 4: Vision Sensor - Phase 1 COMPLETE (awaiting Nano deployment)
+⏳ Track 5: IMU Sensor - NOT STARTED
+⏳ Track 6: Audio Sensor - NOT STARTED
+
+Track 3 Re-Validation:
+- All 7 integration tests PASSING ✓
+- Runtime: 1.31s (significant improvement, was 3.55s in Session #26)
+- No regressions detected
+- Core SAGE cognition fully operational
+
+Track 4 Status:
+- Phase 1: Core implementation complete (committed)
+- Phase 2: Ready for Nano deployment (requires user hardware access)
+- Documentation: Complete (architecture, implementation, deployment guides)
+- Blocker: Requires Jetson Nano with CSI camera (user action)
+
+AUTONOMOUS DECISION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Decision: Prepare Track 5 (IMU Sensor) architecture while awaiting Nano access
+
+Rationale:
+1. Track 4 Phase 2 blocked on Nano hardware (user action required)
+2. Productive work available: Track 5 architecture design
+3. Follows established pattern: Architecture → Implementation → Testing
+4. Maintains momentum toward full sensor integration
+5. User guidance: "Reference past work → Extend → Test on Nano"
+
+Pattern:
+- Session #23: Track 4 architecture ✓
+- Session #25: Track 4 implementation ✓
+- Session #27: Track 5 architecture ✓
+- Next: Track 5 implementation (when ready)
+
+Actions:
+1. Search for existing IMU code in repository ✓
+2. Review user guidance (NANO_HARDWARE_ANSWERS.md) ✓
+3. Design Track 5 architecture ✓
+4. Document comprehensive design ✓
+
+IMU RESEARCH FINDINGS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Existing Code Review:
+- sage/sensors/proprioception_sensor.py - Robot arm proprioception (not IMU)
+  - Provides orientation tracking for GR00T simulator
+  - Similar patterns for orientation data
+  - Reference for sensor structure
+
+- sage/cognition/test_integration.py - IMU referenced in test scenarios
+  - 'imu' sensor used in attention allocation tests
+  - Trust score: 0.95 (expected high trust)
+  - Salience: 0.3-0.7 typical range
+  - Shows expected integration pattern
+
+- No existing IMU hardware implementation found
+  - ai-dna-discovery repo not available on this machine
+  - IMU sensor needs to be implemented from scratch
+  - Can reference proprioception_sensor.py patterns
+
+Hardware Research:
+- BNO055 (9-DOF) - Recommended (built-in sensor fusion)
+- MPU6050 (6-DOF) - Fallback option
+- I2C communication on Jetson Nano
+- Calibration required for accuracy
+
+TRACK 5 ARCHITECTURE CREATED:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+File: private-context/TRACK5_ARCHITECTURE_DESIGN.md (18KB)
+
+Architecture Components:
+1. IMU Sensor Interface (sage/sensors/imu_sensor.py)
+   - Hardware abstraction (BNO055, MPU6050, simulated)
+   - I2C communication
+   - Sensor fusion (quaternions, euler angles)
+   - Calibration handling
+
+2. Motion Processor
+   - Orientation tracking (roll, pitch, yaw)
+   - Motion detection (moving vs. stationary)
+   - Acceleration integration
+   - Vibration filtering
+
+3. Track 1-3 Integration
+   - Track 1: Trust based on calibration + stability
+   - Track 2: Store motion events (high-salience movements)
+   - Track 3: Salience from motion magnitude + orientation delta
+
+4. Real-Time Performance
+   - Target: <5ms latency (IMU is fast)
+   - Rate: 50-100 Hz
+   - Background capture thread
+   - Low CPU overhead (<5%)
+
+IMUObservation Structure:
+- quaternion: [4] (w, x, y, z)
+- euler: [3] (roll, pitch, yaw) radians
+- angular_velocity: [3] rad/s (gyro)
+- linear_acceleration: [3] m/s² (accel)
+- heading: degrees (magnetometer, optional)
+- motion_magnitude: float (combined intensity)
+- is_moving: bool (motion detection)
+- salience: float (for Track 3)
+- trust_score: float (for Track 1)
+- calibration_status: str
+- metadata: dict
+
+Performance Targets:
+- Latency: <5ms (vs. <30ms for vision)
+- Sample Rate: 50-100 Hz (vs. 30 FPS for vision)
+- Startup Time: <1 second
+- CPU Usage: <5%
+- Trust Score: >0.9 (when calibrated)
+
+Implementation Phases:
+1. Phase 1: Core Implementation (Thor, simulated mode)
+   - Create sage/sensors/imu_sensor.py
+   - Implement simulated backend
+   - Add Track 1-3 integration
+   - Test on Thor
+
+2. Phase 2: Hardware Deployment (Nano)
+   - Deploy to Jetson Nano
+   - Test with BNO055 IMU
+   - Validate I2C communication
+   - Measure real performance
+
+3. Phase 3: Calibration & Tuning (Nano)
+   - Calibration procedures
+   - Sensor fusion accuracy
+   - Motion detection thresholds
+   - Salience tuning
+
+4. Phase 4: Integration Testing (Nano)
+   - Multi-sensor fusion (Vision + IMU)
+   - Spatial awareness
+   - Motion-guided attention
+   - Full SAGE cognitive cycle
+
+Sensor Fusion Approaches:
+- Option 1: BNO055 Built-in (recommended, hardware fusion)
+- Option 2: Complementary Filter (MPU6050, simple)
+- Option 3: Madgwick/Mahony Filter (MPU9250, with magnetometer)
+
+Track Integration Design:
+
+Track 1 (Sensor Trust):
+- Trust = calibration_factor * stability_factor * (1 - error_rate)
+- Calibration: 0.3 (uncal) → 1.0 (full cal)
+- Stability: Low variance → higher trust
+- Error rate: I2C failures → lower trust
+
+Track 2 (Memory):
+- Store motion events when salience > 0.5
+- Store large orientation changes (>30° rotation)
+- Store sudden accelerations (>2g spike)
+- Enable motion pattern retrieval
+
+Track 3 (Attention):
+- Salience = 0.7 * motion_norm + 0.3 * orient_delta
+- High motion → high salience → attention allocation
+- Salience >0.9 triggers attention interrupt
+- Trust score weights sensor importance
+
+COMPARISON TO TRACK 4:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Track 4 (Vision)        vs.    Track 5 (IMU)
+Latency: <30ms                 Latency: <5ms (faster)
+Rate: 30 FPS                   Rate: 50-100 Hz
+Data: Large (640x480)          Data: Small (9-15 floats)
+Processing: Heavy              Processing: Light
+Interface: GStreamer           Interface: I2C
+Calibration: Auto              Calibration: Manual
+Trust: FPS consistency         Trust: Calibration + stability
+
+Similarity: Both follow same Track 1-3 integration pattern ✓
+
+DOCUMENTATION STATUS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Track 4 Documentation (Complete):
+✓ TRACK4_ARCHITECTURE_DESIGN.md (23KB)
+✓ TRACK4_PHASE1_IMPLEMENTATION.md (10KB)
+✓ NANO_DEPLOYMENT_INSTRUCTIONS.md (8KB)
+✓ TRACK4_STATUS.md (6KB)
+
+Track 5 Documentation (Started):
+✓ TRACK5_ARCHITECTURE_DESIGN.md (18KB) - NEW
+
+FILES CREATED THIS SESSION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. private-context/TRACK5_ARCHITECTURE_DESIGN.md (18KB, comprehensive)
+   - IMU sensor architecture specification
+   - Hardware options (BNO055, MPU6050)
+   - Sensor fusion approaches
+   - Track 1-3 integration design
+   - Performance targets
+   - Implementation phases
+   - Code structure
+
+NEXT STEPS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Immediate (Thor):
+1. Commit Track 5 architecture to git
+2. Update autonomous check summary
+
+Short-term (Thor or Nano):
+Option A: Track 4 Phase 2 (if user deploys to Nano)
+  - Test vision sensor with CSI camera
+  - Validate performance on hardware
+  - Record metrics
+
+Option B: Track 5 Phase 1 (if continuing on Thor)
+  - Implement sage/sensors/imu_sensor.py (simulated mode)
+  - Test on Thor without hardware
+  - Prepare for Nano deployment
+
+Long-term (Nano):
+- Complete Track 4 Phase 2-4 (vision)
+- Complete Track 5 Phase 2-4 (IMU)
+- Multi-sensor integration (Vision + IMU)
+- Full SAGE spatial awareness
+
+SAGE SYSTEM PROGRESS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Core Cognition (Complete):
+✅ Track 1: Sensor Trust & Fusion
+✅ Track 2: SNARC Memory (STM/LTM/Retrieval)
+✅ Track 3: SNARC Cognition (Attention/WM/Deliberation/Goals)
+
+Sensors (In Progress):
+🔄 Track 4: Vision Sensor (Phase 1 COMPLETE, awaiting Nano)
+📐 Track 5: IMU Sensor (Architecture COMPLETE, ready for Phase 1)
+⏳ Track 6: Audio Sensor (not started)
+
+Overall Progress:
+- Core: 100% (Tracks 1-3 complete and operational)
+- Sensors: ~30% (Track 4 25% + Track 5 architecture)
+- Multi-modal: 0% (awaiting sensor completion)
+- Nano Deployment: 0% (awaiting hardware access)
+
+Pattern Established:
+- Architecture design → Implementation → Testing on Nano
+- Working successfully across Tracks 4-5
+- Maintains momentum while waiting for hardware
+
+[2025-11-11 09:35] Track 5 architecture design complete

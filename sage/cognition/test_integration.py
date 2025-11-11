@@ -13,10 +13,10 @@ import numpy as np
 from typing import Dict, List, Any
 
 # Import all cognition components
-from attention import AttentionManager, ResourceBudget
-from working_memory import WorkingMemory, PlanStep
-from deliberation import DeliberationEngine, Alternative
-from goal_manager import GoalManager, Goal
+from sage.cognition.attention import AttentionManager, ResourceBudget
+from sage.cognition.working_memory import WorkingMemory, PlanStep
+from sage.cognition.deliberation import DeliberationEngine, Alternative
+from sage.cognition.goal_manager import GoalManager, Goal
 
 
 def test_scenario_1_basic_navigation():

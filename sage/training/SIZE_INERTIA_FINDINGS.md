@@ -172,33 +172,36 @@ After NVPL installation, PyTorch 2.9.0 with CUDA 13.0 became fully functional. G
 
 | Model | Params | CPU Time (s) | GPU Time (s) | GPU Speedup |
 |-------|--------|--------------|--------------|-------------|
-| Qwen 0.5B | 494M | 13.32 | ~1.3 (est) | ~10x (est) |
-| Phi-2 2.7B | 2.7B | 45.59 | ~4.6 (est) | ~10x (est) |
-| Qwen 7B | 7.0B | 110.04 | 10.61 | 10.37x |
+| Qwen 0.5B | 494M | 13.32 | 1.63 ✓ | 8.17x ✓ |
+| Phi-2 2.7B | 2.7B | 45.59 | 4.17 ✓ | 10.93x ✓ |
+| Qwen 7B | 7.0B | 110.04 | 10.61 ✓ | 10.37x ✓ |
 
-**Key Finding**: GPU provides consistent ~10x speedup across model sizes, maintaining the sub-linear scaling relationship observed on CPU.
+**Key Finding**: GPU provides consistent 8-11x speedup across model sizes, maintaining the sub-linear scaling relationship observed on CPU. All measurements validated in Session #9.
 
 ### Updated SAGE Performance Estimates
 
-With GPU acceleration:
+With GPU acceleration (Session #9 complete):
 - **BitNet**: ~1s per query (estimated with GPU)
-- **Qwen 0.5B**: ~1.3s per query (estimated with GPU)
-- **Phi-2 2.7B**: ~4.6s per query (estimated with GPU)
-- **Qwen 7B**: 10.61s per query (measured with GPU)
+- **Qwen 0.5B**: 1.63s per query (measured with GPU) ✓
+- **Phi-2 2.7B**: 4.17s per query (measured with GPU) ✓
+- **Qwen 7B**: 10.61s per query (measured with GPU) ✓
 
 All models now achieve interactive latency (<15s), making real-time orchestration practical across the full size range.
 
 ## Future Experiments
 
 ### Completed Steps:
-✓ **Qwen 7B tested**: Sub-linear scaling confirmed at 14x size
-✓ **GPU Acceleration**: 10.37x speedup validated on Thor
-✓ **CUDA operational**: NVPL installed, PyTorch 2.9.0 functional
+✓ **Qwen 7B tested**: Sub-linear scaling confirmed at 14x size (Session #4)
+✓ **GPU Acceleration**: 10.37x speedup validated on Thor (Session #4)
+✓ **CUDA operational**: NVPL installed, PyTorch 2.9.0 functional (Session #4)
+✓ **Qwen 0.5B GPU**: 1.63s, 8.17x speedup validated (Session #9)
+✓ **Phi-2 2.7B GPU**: 4.17s, 10.93x speedup validated (Session #9)
+✓ **Complete dataset**: All three models measured on CPU and GPU (Session #9)
 
 ### Immediate Next Steps:
-1. **GPU benchmark remaining models**: Validate 10x speedup for 0.5B and 2.7B
-2. **Three-Model Orchestration**: Test BitNet + Qwen + Phi-2 with GPU speeds
-3. **Power measurement**: Measure GPU watts for true ATP energy economics
+1. **Three-Model Orchestration**: Test BitNet + Qwen + Phi-2 with GPU speeds
+2. **Power measurement**: Measure GPU watts for true ATP energy economics
+3. **BitNet GPU benchmark**: Validate estimated ~1s inference time
 
 ### Research Questions:
 1. Is there an optimal parameter count for edge deployment?
@@ -241,7 +244,10 @@ The "sweet spot" for edge deployment is **not a single model** but a **portfolio
 - Initial training: November 5, 2025 (Session #1)
 - CPU benchmarks: November 5, 2025 (Sessions #1, #3)
 - CUDA enabled: November 5, 2025 (between Sessions #3-4)
-- GPU benchmarks: November 5, 2025 (Session #4)
+- GPU benchmark (7B): November 5, 2025 (Session #4)
+- CUDA persistence validated: November 6, 2025 (Session #8)
+- GPU benchmarks (0.5B, 2.7B): November 7, 2025 (Session #9)
+- **Size inertia research COMPLETE**: November 7, 2025
 
 **Platform**: Jetson AGX Thor Developer Kit
 - ARM aarch64, 14 cores

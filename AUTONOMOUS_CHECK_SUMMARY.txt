@@ -1,102 +1,240 @@
 AUTONOMOUS SESSION SUMMARY - THOR
 ================================================================================
-Last Updated: 2025-11-11 03:20
-Session: #26 (System Health Check & Bug Fix)
+Last Updated: 2025-11-11 09:40
+Session: #27 (Track 5 Architecture Design)
 System: thor (development machine)
-Uptime: 102+ hours (4 days, 6+ hours continuous)
+Uptime: 108+ hours (4 days, 12+ hours continuous)
 
 ================================================================================
-SESSION #26: SYSTEM MAINTENANCE & TRACK 3 BUG FIX
+SESSION #27: TRACK 5 ARCHITECTURE DESIGN
 ================================================================================
 
 Timeline:
-- 03:03 - Session start (autonomous check)
-- 03:05 - Discovered Track 3 test import error
-- 03:08 - Fixed imports, validated all tests passing
-- 03:10 - Cleaned up stale PID files
-- 03:15 - Updated worklog with findings
-- 03:18 - Committed bug fix (8cdd3ae)
-- 03:20 - Session summary complete
+- 09:04 - Session start (autonomous check)
+- 09:08 - System health verified, Track 3 tests validated
+- 09:12 - Reviewed Track 4 status (Phase 2 blocked on Nano hardware)
+- 09:15 - Decision: Prepare Track 5 architecture
+- 09:20 - Research existing IMU code in repository
+- 09:25 - Design Track 5 architecture
+- 09:35 - Architecture documentation complete (18KB)
+- 09:38 - Committed to git (0837ed4)
+- 09:40 - Session summary complete
 
-KEY ISSUE FOUND & FIXED:
-=========================
-
-Track 3 Test Import Error (CRITICAL BUG):
-- Location: sage/cognition/test_integration.py
-- Problem: Incorrect relative imports causing ImportError
-- Impact: Track 3 validation tests were failing
-- Fix: Changed to absolute imports (sage.cognition.*)
-- Result: All 7 integration tests now passing ✓
-
-Before (broken):
-```python
-from attention import AttentionManager, ResourceBudget
-from working_memory import WorkingMemory, PlanStep
-from deliberation import DeliberationEngine, Alternative
-from goal_manager import GoalManager, Goal
-```
-
-After (fixed):
-```python
-from sage.cognition.attention import AttentionManager, ResourceBudget
-from sage.cognition.working_memory import WorkingMemory, PlanStep
-from sage.cognition.deliberation import DeliberationEngine, Alternative
-from sage.cognition.goal_manager import GoalManager, Goal
-```
-
-TRACK 3 VALIDATION:
-===================
-
-Re-validated SAGE SNARC Cognition:
-✅ test_scenario_1_basic_navigation PASSED
-✅ test_scenario_2_goal_switching PASSED
-✅ test_scenario_3_memory_informed_deliberation PASSED
-✅ test_scenario_4_hierarchical_goals PASSED
-✅ test_scenario_5_attention_resource_limits PASSED
-✅ test_scenario_6_working_memory_capacity PASSED
-✅ test_scenario_7_full_cognitive_cycle PASSED
-
-Runtime: 3.55s (no performance regression)
-Status: Track 3 OPERATIONAL and VALIDATED ✓
-
-MAINTENANCE ACTIONS:
+AUTONOMOUS DECISION:
 ====================
 
-1. Cleaned up stale PID files:
-   - sage/examples/embodied_actor.pid (removed)
-   - sage/examples/groot_exploration.pid (removed)
-   - sage/examples/multimodal_exploration.pid (removed)
+Decision: Design Track 5 (IMU Sensor) architecture while awaiting Nano
 
-2. Updated documentation:
-   - SIZE_INERTIA_FINDINGS.md (Session #9 GPU benchmarks)
-   - thor_worklog.txt (Session #26 findings)
+Rationale:
+1. Track 4 Phase 2 requires Nano hardware (user action)
+2. Track 5 is next logical step in sensor integration
+3. Architecture-first approach proven effective (Track 4)
+4. Maintains momentum toward full SAGE deployment
+5. Follows user pattern: Find existing → Design → Implement → Test on Nano
 
-3. Git status verified clean
+Actions:
+✅ Searched repository for existing IMU code
+✅ Reviewed user guidance (NANO_HARDWARE_ANSWERS.md)
+✅ Designed comprehensive Track 5 architecture
+✅ Documented 18KB architecture specification
+✅ Committed to git
+
+IMU RESEARCH FINDINGS:
+======================
+
+Existing Code:
+- sage/sensors/proprioception_sensor.py - Robot arm proprioception (not IMU)
+  - Provides orientation tracking patterns
+  - Reference for sensor structure
+- sage/cognition/test_integration.py - IMU referenced in tests
+  - Expected trust: 0.95 (high)
+  - Typical salience: 0.3-0.7
+- No IMU hardware implementation found in repo
+- ai-dna-discovery repo not available on this machine
+
+Conclusion: IMU sensor needs new implementation, can reference proprioception patterns
+
+TRACK 5 ARCHITECTURE COMPLETE:
+==============================
+
+File: private-context/TRACK5_ARCHITECTURE_DESIGN.md (18KB)
+
+Hardware Options:
+1. **BNO055** (9-DOF, recommended)
+   - Built-in sensor fusion (quaternions, euler)
+   - Automatic calibration
+   - I2C interface
+   - ~100 Hz update rate
+
+2. **MPU6050** (6-DOF, fallback)
+   - Manual sensor fusion required
+   - I2C interface
+   - ~1000 Hz max rate
+
+3. **MPU9250** (9-DOF, with magnetometer)
+   - Manual fusion with mag correction
+   - I2C interface
+
+Architecture Components:
+
+1. **IMU Sensor Interface**
+   - Hardware abstraction (BNO055, MPU6050, simulated)
+   - I2C communication
+   - Sensor fusion (quaternions → euler angles)
+   - Calibration handling
+
+2. **Motion Processor**
+   - Orientation tracking (roll, pitch, yaw)
+   - Motion detection (moving vs. stationary)
+   - Acceleration integration
+   - Vibration filtering
+
+3. **Track 1-3 Integration**
+   - Track 1: Trust = calibration * stability * (1 - error_rate)
+   - Track 2: Store high-salience motion events
+   - Track 3: Salience = 0.7 * motion + 0.3 * orientation_delta
+
+4. **Real-Time Performance**
+   - <5ms latency target
+   - 50-100 Hz sample rate
+   - Background capture thread
+   - Low CPU overhead
+
+IMUObservation Structure:
+```python
+@dataclass
+class IMUObservation:
+    quaternion: np.ndarray  # [4] (w, x, y, z)
+    euler: np.ndarray  # [3] (roll, pitch, yaw) rad
+    angular_velocity: np.ndarray  # [3] rad/s
+    linear_acceleration: np.ndarray  # [3] m/s²
+    heading: Optional[float]  # degrees (mag)
+    motion_magnitude: float
+    is_moving: bool
+    salience: float  # Track 3
+    trust_score: float  # Track 1
+    calibration_status: str
+    timestamp: float
+    metadata: Dict
+```
+
+Performance Targets:
+
+| Metric | Target | Implementation |
+|--------|--------|----------------|
+| Latency | <5ms | I2C fast, light processing |
+| Sample Rate | 50-100 Hz | Balance speed vs. power |
+| Startup | <1 second | Fast initialization |
+| CPU Usage | <5% | Minimal overhead |
+| Trust Score | >0.9 | When calibrated |
+
+Implementation Phases:
+
+**Phase 1: Core Implementation (Thor)**
+- Create sage/sensors/imu_sensor.py
+- Implement simulated backend
+- Add Track 1-3 integration
+- Test on Thor without hardware
+
+**Phase 2: Hardware Deployment (Nano)**
+- Deploy to Jetson Nano
+- Test with BNO055 IMU
+- Validate I2C communication
+- Measure real-world performance
+
+**Phase 3: Calibration & Tuning (Nano)**
+- Calibration procedures
+- Sensor fusion accuracy
+- Motion detection thresholds
+- Salience tuning
+
+**Phase 4: Integration Testing (Nano)**
+- Multi-sensor fusion (Vision + IMU)
+- Spatial awareness scenarios
+- Motion-guided attention
+- Full SAGE cognitive cycle
+
+Track Integration Design:
+
+**Track 1 (Sensor Trust):**
+- Trust factors: calibration (0.3-1.0), stability, error rate
+- Update trust score each capture
+- Register as 'imu' sensor
+- Expected: >0.9 when calibrated
+
+**Track 2 (Memory Storage):**
+- Store when salience > 0.5
+- Store large orientation changes (>30°)
+- Store sudden accelerations (>2g)
+- Enable motion pattern retrieval
+
+**Track 3 (Attention Allocation):**
+- Salience from motion + orientation delta
+- High motion → high salience → attention
+- Salience >0.9 triggers interrupt
+- Trust score weights sensor importance
+
+Sensor Fusion Approaches:
+
+1. **BNO055 Built-in** (recommended)
+   - Hardware fusion, automatic calibration
+   - Minimal CPU, proven accuracy
+
+2. **Complementary Filter** (MPU6050)
+   - Simple: 98% gyro + 2% accel
+   - Fast but gyro drift over time
+
+3. **Madgwick/Mahony** (MPU9250)
+   - Uses magnetometer for yaw
+   - No drift, more complex
+
+COMPARISON: TRACK 4 vs TRACK 5
+===============================
+
+| Aspect | Track 4 (Vision) | Track 5 (IMU) |
+|--------|------------------|---------------|
+| Latency | <30ms (CSI) | <5ms (I2C) |
+| Data Rate | 30 FPS | 50-100 Hz |
+| Data Size | Large (640x480) | Small (9-15 floats) |
+| Processing | Heavy (salience, features) | Light (fusion, magnitude) |
+| Interface | GStreamer/OpenCV | I2C (smbus2) |
+| Calibration | Auto (camera) | Manual (IMU) |
+| Trust Basis | FPS consistency | Calibration + stability |
+
+**Similarity:** Both follow same Track 1-3 integration pattern ✓
 
 SYSTEM HEALTH:
 ==============
 
 Thor (Development Machine):
-- Uptime: 4 days, 6+ hours (102+ hours)
+- Uptime: 4 days, 12+ hours (108+ hours)
 - Platform: Linux 6.8.12-tegra
-- Load: 0.37 (low, stable)
+- Load: 0.53 (stable)
 - Memory: 99GB free / 122GB total
 - Disk: 816GB free / 936GB (9% used)
 - Python: 3.12.3
-- PyTorch: 2.9.0 with CUDA support ✓
+- PyTorch: 2.9.0 with CUDA ✓
 
 Active Processes:
 - No research tasks running
 - No active builds
 - System idle and ready
 
+Track 3 Validation:
+- All 7 tests passing ✓
+- Runtime: 1.31s (improved from 3.55s in Session #26)
+- No regressions
+- Core cognition operational
+
 GIT STATUS:
 ===========
 
 Branch: main
-Ahead of origin: 4 commits (unpushed)
+Ahead of origin: 6 commits (unpushed)
 
 Recent commits:
+- 0837ed4 - Track 5: IMU sensor architecture design complete
+- dad5bfe - docs: Update autonomous session summary (Session #26)
 - 8cdd3ae - fix(track3): Fix test imports and validate cognition system
 - 9d4f02f - Track 4: Add quick status reference
 - ec0935a - Track 4 Phase 1: Add deployment guide and session summary
@@ -109,64 +247,91 @@ TRACK STATUS SUMMARY:
 
 Track 1: Sensor Trust          ✅ COMPLETE (Commit: a2d8493)
 Track 2: Memory (SNARC)        ✅ COMPLETE (Commit: 90604c5)
-Track 3: Cognition             ✅ COMPLETE (Validated Session #26)
-Track 4: Vision Sensor         🔄 Phase 1 COMPLETE (3 commits)
-  - Phase 1: Core Implementation     ✅ COMPLETE (Committed)
+Track 3: Cognition             ✅ COMPLETE (Validated Session #27)
+Track 4: Vision Sensor         🔄 Phase 1 COMPLETE (awaiting Nano)
+  - Phase 1: Core Implementation     ✅ COMPLETE (committed)
   - Phase 2: Nano Deployment          ⏳ AWAITING USER
   - Phase 3: Integration Testing      ⏳ PENDING
   - Phase 4: Performance Optimization ⏳ PENDING
-Track 5: IMU Sensor            ⏳ NOT STARTED
+  Overall: 25% complete (1 of 4 phases)
+
+Track 5: IMU Sensor            📐 ARCHITECTURE COMPLETE
+  - Architecture Design              ✅ COMPLETE (committed)
+  - Phase 1: Core Implementation     ⏳ READY TO START
+  - Phase 2: Nano Deployment          ⏳ PENDING
+  - Phase 3: Calibration & Tuning     ⏳ PENDING
+  - Phase 4: Integration Testing      ⏳ PENDING
+  Overall: 10% complete (architecture phase)
+
 Track 6: Audio Sensor          ⏳ NOT STARTED
 
 SAGE System Status:
 - Core cognition (Tracks 1-3): Operational ✓
-- Vision sensor: Implemented, awaiting Nano deployment
-- System health: Excellent, 102+ hours uptime
-- No critical issues found
+- Vision sensor: Phase 1 complete, awaiting Nano
+- IMU sensor: Architecture complete, ready for implementation
+- System health: Excellent, 108+ hours uptime
+- No critical issues
 
-AUTONOMOUS DECISION:
-====================
+PROGRESS PATTERN:
+=================
 
-Decision: Bug fix complete, system healthy, await user action
+Established Pattern:
+- Session #23: Track 4 architecture ✓
+- Session #25: Track 4 implementation ✓
+- Session #27: Track 5 architecture ✓
+- Next: Track 5 implementation (Phase 1)
 
-Rationale:
-1. Critical Track 3 bug found and fixed
-2. All validation tests passing
-3. Track 4 Phase 1 ready for Nano deployment (user hardware needed)
-4. No other issues or builds to check
-5. System stable with 4+ days uptime
+This pattern enables:
+- Parallel progress on multiple tracks
+- Work continues during hardware blockers
+- Consistent documentation quality
+- Smooth transitions between phases
 
-Actions Taken:
-✅ Fixed Track 3 test imports (critical bug)
-✅ Validated all 7 cognition tests passing
-✅ Cleaned up stale PID files
-✅ Updated documentation
-✅ Committed changes (8cdd3ae)
-✅ Verified clean working tree
+Documentation Created:
 
-Next Steps (Awaiting User):
-- Track 4 Phase 2: Deploy to Jetson Nano
-- Test CSI camera on actual hardware
-- Validate performance targets
+Track 4 (Complete):
+- TRACK4_ARCHITECTURE_DESIGN.md (23KB)
+- TRACK4_PHASE1_IMPLEMENTATION.md (10KB)
+- NANO_DEPLOYMENT_INSTRUCTIONS.md (8KB)
+- TRACK4_STATUS.md (6KB)
+
+Track 5 (Started):
+- TRACK5_ARCHITECTURE_DESIGN.md (18KB) ✓
+
+FILES MODIFIED THIS SESSION:
+============================
+
+1. private-context/TRACK5_ARCHITECTURE_DESIGN.md (18KB, new)
+2. thor_worklog.txt (updated with Session #27)
+3. AUTONOMOUS_CHECK_SUMMARY.txt (this file)
+
+Git Commit: 0837ed4 (Track 5 architecture)
+
+NEXT STEPS:
+===========
+
+OPTION A: Track 4 Phase 2 (if user deploys to Nano)
+- Test vision sensor with CSI camera
+- Validate performance on hardware
 - Record metrics and commit results
+- Continue to Track 4 Phase 3
 
-COMPARISON TO SESSION #25:
-==========================
+OPTION B: Track 5 Phase 1 (if continuing on Thor)
+- Implement sage/sensors/imu_sensor.py (simulated mode)
+- Add Track 1-3 integration
+- Test on Thor without hardware
+- Prepare for Nano deployment
 
-Session #25 (Track 4 Phase 1):
-- Implemented vision sensor (540 lines)
-- Created deployment documentation
-- 3 git commits (Track 4 implementation)
-- Result: Phase 1 complete, ready for Nano
+OPTION C: Continue architecture planning
+- Track 6 (Audio Sensor) architecture
+- Multi-sensor fusion architecture
+- Optimization strategies
 
-Session #26 (Maintenance):
-- Found and fixed Track 3 bug
-- Validated all tests passing
-- Cleaned up stale files
-- 1 git commit (bug fix)
-- Result: System healthy, tests operational
-
-Progress: Both sessions productive, maintaining code quality
+Recommendation: Track 5 Phase 1 implementation
+- Maintains momentum
+- Follows established pattern
+- Simulated mode works on Thor
+- Ready for Nano when available
 
 RESEARCH CONTEXT:
 =================
@@ -174,59 +339,53 @@ RESEARCH CONTEXT:
 SAGE Consciousness Project:
 - Target: Jetson Nano deployment
 - Architecture: SNARC cognition + multi-sensor integration
-- Status: Core cognition complete, vision ready for hardware
+- Status: Core complete, sensors in progress
 
-User Guidance (from NANO_HARDWARE_ANSWERS.md):
-- Camera: CSI (not USB)
+User Guidance (NANO_HARDWARE_ANSWERS.md):
+- Camera: CSI (Track 4 designed for this)
+- IMU: Reference past work (none found, designed new)
 - Test environment: Jetson Nano (not desktop)
-- Pattern: Find existing → Extend → Test on hardware
+- Pattern: Find existing → Extend → Test on Nano
 
-Pattern Established:
-Session #23: Architecture design ✓
-Session #24: Monitoring ✓
-Session #25: Implementation ✓
-Session #26: Maintenance ✓
-Next: Nano deployment (user action required)
+Autonomous Session Pattern:
+- Session #26: Maintenance (bug fix)
+- Session #27: Architecture (Track 5 design)
+- Both productive, moving toward Nano deployment
 
-FILES MODIFIED THIS SESSION:
-============================
-
-1. sage/cognition/test_integration.py (import fix)
-2. thor_worklog.txt (session findings)
-3. AUTONOMOUS_CHECK_SUMMARY.txt (this file)
-
-Stale files removed:
-- sage/examples/*.pid (3 files)
-
-Git Commit: 8cdd3ae (bug fix + validation)
-
-NEXT SESSION EXPECTATIONS:
+COMPARISON TO SESSION #26:
 ==========================
 
-If user deploys to Nano:
-- Track 4 Phase 2 will begin
-- CSI camera testing
-- Performance validation
-- Metrics collection
+Session #26 (Maintenance):
+- Fixed Track 3 import bug
+- Validated all tests passing
+- Cleaned up stale files
+- 1 git commit (bug fix)
+- Result: System healthy
 
-If no deployment:
-- Continue monitoring
-- Check for any new user commits
-- Maintain system health
-- Wait for next autonomous check or user action
+Session #27 (Architecture):
+- Designed Track 5 architecture
+- Comprehensive documentation (18KB)
+- Research existing IMU code
+- 1 git commit (architecture)
+- Result: Track 5 ready for Phase 1
+
+Progress: Maintaining quality while advancing sensor integration
 
 ================================================================================
-STATUS: SYSTEM HEALTHY - TRACK 3 BUG FIXED - AWAITING NANO DEPLOYMENT
+STATUS: TRACK 5 ARCHITECTURE COMPLETE - READY FOR PHASE 1 IMPLEMENTATION
 ================================================================================
 
-Session #26 Complete:
-- Critical bug fixed ✓
-- All tests passing ✓
-- System stable ✓
+Session #27 Complete:
+- Track 5 architecture designed ✓
+- 18KB comprehensive documentation ✓
+- Research findings documented ✓
+- Committed to git ✓
 - Ready for next phase ✓
 
-Last Autonomous Session: #26
-Next Session: TBD (awaiting user for Nano deployment)
-Uptime: 102+ hours continuous operation
+Last Autonomous Session: #27
+Next Session: Track 5 Phase 1 implementation or Track 4 Phase 2 (if Nano available)
+Uptime: 108+ hours continuous operation
+
+Pattern continues: Architecture → Implementation → Testing on Nano
 
 ================================================================================

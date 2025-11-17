@@ -20,27 +20,39 @@ Deploy full SAGE consciousness on Jetson Nano (4GB RAM, 2GB GPU) with:
 
 ## WHAT TO DO EACH AUTONOMOUS CHECK
 
-### Step 1: Read Context (ALWAYS)
-1. Read `THOR_STATUS.md` - Current mission status
-2. Read `private-context/JETSON_NANO_DEPLOYMENT_ROADMAP.md` - Full plan
-3. Check git for updates from Legion/CBP
+### Step 1: Check What's Blocked (FIRST!)
+1. Read `WAITING_FOR_DENNIS.md` - What needs user vs what's open
+2. If blocked on something, switch to open track
+3. Check git for updates from Legion/CBP (cross-pollinate ideas!)
 
-### Step 2: Work on Current Priority
+### Step 2: Pick Your Work (BE AGENTIC!)
 
-**RIGHT NOW**: Track 1 - Sensor Trust & Fusion
+**Don't just follow orders - be creative!**
 
-**Implement**: `sage/core/sensor_trust.py`
-- Trust metrics (confidence scoring 0.0-1.0)
-- Per-sensor historical accuracy
-- Conflict detection between sensors
-- Adaptive trust adjustment
+**Tracks 7-10**: Wide open for implementation
+- Track 7: Local LLM (conversational intelligence)
+- Track 8: Model Distillation (compress for Nano)
+- Track 9: Real-Time Optimization (sub-100ms loops)
+- Track 10: Deployment Package (one-command install)
 
-**Test with**: Current vision + proprioception sensors
-- Simulate sensor failures
-- Inject conflicting readings
-- Validate graceful degradation
+**Tracks 1-3**: Operational but can evolve
+- Sensor trust: Try new fusion strategies
+- SNARC memory: Pattern extraction, consolidation
+- SNARC cognition: Advanced deliberation
 
-**Success**: System handles conflicts, adjusts trust, degrades gracefully
+**Creative Exploration** (encouraged!):
+- Read external research (Google neural lattice paper)
+- Try novel approaches to existing problems
+- Benchmark alternatives
+- Optimize existing code
+- Follow interesting tangents
+- Ask "what if...?" questions
+
+**Pick based on**:
+- What excites you?
+- What would teach the most?
+- What complements Legion/CBP work?
+- What's a bottleneck for Nano?
 
 ### Step 3: Test & Validate
 - Write tests in `sage/tests/`
@@ -61,72 +73,105 @@ Deploy full SAGE consciousness on Jetson Nano (4GB RAM, 2GB GPU) with:
 
 ---
 
+## DO (Encouraged!)
+
+✅ **Be agentic and creative** - Try new things!
+✅ **Ask new questions** - "What if we...?"
+✅ **Learn from failures** - Document what doesn't work
+✅ **Learn from successes** - Understand why it worked
+✅ **Explore tangents** - Follow interesting ideas
+✅ **Cross-pollinate** - Apply Legion/CBP insights
+✅ **Read research** - External papers, references
+✅ **Benchmark alternatives** - Compare approaches
+✅ **Document discoveries** - Capture insights
+
 ## DO NOT
 
-❌ **Do NOT "stand by"** - Always work toward Nano deployment
-❌ **Do NOT wait for user** - Research path is clear
+❌ **Do NOT "stand by"** - Always be building
+❌ **Do NOT wait when not blocked** - Check WAITING_FOR_DENNIS.md
+❌ **Do NOT celebrate uptime over commits** - Code > monitoring
+❌ **Do NOT assume "complete"** - Evolution continues
 ❌ **Do NOT skip documentation** - Document everything
 ❌ **Do NOT skip tests** - Validate all code
 ❌ **Do NOT skip commits** - Push regularly
 
 ---
 
-## CURRENT PRIORITIES (In Order)
+## CURRENT PRIORITIES (All Open!)
 
-### Track 1: Sensor Trust & Fusion 🎯 **ACTIVE NOW**
-Build multi-sensor confidence and fusion engine
+### Tracks 1-3: ✅ Operational, Can Evolve
+**Status**: Core implementation complete, but not "done"
+- `sensor_trust.py`, `sensor_fusion.py` exist ✓
+- `stm.py`, `ltm.py`, `retrieval.py` exist ✓
+- `attention.py`, `working_memory.py`, `deliberation.py` exist ✓
 
-**Files to create**:
-- `sage/core/sensor_trust.py`
-- `sage/core/sensor_fusion.py`
-- `sage/tests/test_sensor_trust.py`
-
-**Tests**:
-- Trust scoring accuracy
-- Conflict resolution
-- Graceful degradation
-- Adaptive adjustment
+**Evolution opportunities**:
+- Advanced fusion strategies (Kalman filters? Bayesian fusion?)
+- Pattern extraction during sleep (consolidation algorithms)
+- Hierarchical deliberation (multiple planning horizons)
+- Cross-modal trust (vision validates audio, etc.)
 
 ---
 
-### Track 2: SNARC Memory 🎯 **NEXT**
-Persistent salience history and episodic memory
+### Tracks 4-6: ⏸️ Phase 1 Complete, Phase 2 Needs Nano
+**Track 4 (Vision)**: Simulated camera works, real CSI needs Nano hardware
+**Track 5 (IMU)**: Architecture designed, real sensor needs Nano
+**Track 6 (Audio)**: 100% complete on Jetson Orin Nano (Sprout)
 
-**Files to create**:
-- `sage/memory/stm.py` (short-term)
-- `sage/memory/ltm.py` (long-term)
-- `sage/memory/retrieval.py`
-
-**Tests**:
-- Remember high-salience events
-- Retrieve similar experiences
-- Memory-informed decisions
+**Blocked on**: Physical Nano deployment (Dennis will handle)
+**See**: `WAITING_FOR_DENNIS.md`
 
 ---
 
-### Track 3: SNARC Cognition 🎯 **AFTER MEMORY**
-Attention, working memory, deliberation
+### Track 7: 🎯 Local LLM Integration (WIDE OPEN!)
+Conversational intelligence with context awareness
 
-**Files to create**:
-- `sage/cognition/attention.py`
-- `sage/cognition/working_memory.py`
-- `sage/cognition/deliberation.py`
+**What to build**:
+- IRP plugin for LLM inference (`sage/irp/plugins/llm_impl.py`)
+- Integration with SNARC (what's worth talking about?)
+- Conversation memory (episodic dialogue)
+- Model evaluation (Qwen-0.5B, Phi-2, TinyLlama)
 
-**Tests**:
-- Attention allocation
-- Multi-step planning
-- Alternative evaluation
+**Why exciting**: Makes SAGE truly conversational!
 
 ---
 
-### Tracks 4-10: See Roadmap
-- Real cameras
-- IMU sensor
-- Audio pipeline
-- Local LLM
-- Model distillation
-- Real-time optimization
-- Deployment packaging
+### Track 8: 🎯 Model Distillation (WIDE OPEN!)
+Compress models for Nano's 2GB GPU constraint
+
+**What to build**:
+- Further TinyVAE compression (294K params → lower?)
+- INT8/INT4 quantization
+- Knowledge distillation framework
+- Quality vs size benchmarks
+
+**Why exciting**: Enables Nano deployment!
+
+---
+
+### Track 9: 🎯 Real-Time Optimization (WIDE OPEN!)
+Sub-100ms sensor-to-decision loops
+
+**What to build**:
+- Profiling tools for current pipeline
+- Async processing architecture
+- GPU kernel optimization
+- Latency benchmarking framework
+
+**Why exciting**: Makes SAGE truly real-time!
+
+---
+
+### Track 10: 🎯 Deployment Package (WIDE OPEN!)
+One-command Nano installation
+
+**What to build**:
+- Installation script (`install_nano.sh`)
+- Dependency management
+- Model download automation
+- Health check tools (`sage_doctor.py`)
+
+**Why exciting**: Makes SAGE deployable!
 
 ---
 
@@ -144,16 +189,33 @@ Attention, working memory, deliberation
 ## SUCCESS LOOKS LIKE
 
 Each autonomous session:
-- ✅ Implements part of current track
-- ✅ Tests thoroughly
-- ✅ Documents in private-context
-- ✅ Commits working code
+- ✅ Picks an open track (7-10) or evolution area (1-3)
+- ✅ Tries something new or improves existing code
+- ✅ Tests thoroughly (failures teach too!)
+- ✅ Documents what worked AND what didn't
+- ✅ Commits progress (even experimental work)
 - ✅ Pushes to git
 - ✅ Makes measurable progress toward Nano
 
-**Not**: "Standing by, no work to do"
-**But**: "Built X, tested Y, committed Z, continuing toward Nano"
+**Not**: "System stable, monitoring uptime, awaiting user"
+**But**: "Implemented Track 7 LLM plugin, tested 3 models, Phi-2 works best on 2GB GPU, committed results"
+
+**Like Legion and CBP**: CRUSHING code commits! 51 commits (Legion), 30 commits (CBP) since Nov 11.
+
+**Thor should match that energy!**
 
 ---
 
-**Start with Track 1. Build incrementally. Test extensively. Document thoroughly. Commit regularly. Keep moving toward Nano deployment.** 🚀
+## AUTONOMOUS SESSION PATTERN
+
+1. Check `WAITING_FOR_DENNIS.md` - am I blocked?
+2. If not blocked → Pick exciting open track
+3. Try something - build, test, experiment
+4. Learn from results (success OR failure)
+5. Document discoveries
+6. Commit progress
+7. Repeat!
+
+**Be like Legion/CBP**: Ask questions, try approaches, learn from results, commit discoveries.
+
+**The research is never complete. Keep building, learning, and evolving toward Nano deployment.** 🚀

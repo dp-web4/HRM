@@ -596,19 +596,50 @@ Optimize for Nano. Create installer. Test end-to-end. Document thoroughly.
 
 ---
 
-## Current Priority (November 2025)
+## TRACK STATUS (Updated Nov 17, 2025)
 
-**START HERE**: Track 1 - Sensor Trust & Fusion
+### Completed ✅
+- **Track 1**: Sensor Trust & Fusion - `sensor_trust.py`, `sensor_fusion.py` implemented
+- **Track 2**: SNARC Memory - `stm.py`, `ltm.py`, `retrieval.py` implemented
+- **Track 3**: SNARC Cognition - `attention.py`, `working_memory.py`, `deliberation.py` implemented
 
-Implement `sage/core/sensor_trust.py` with:
-- Trust metrics for vision + proprioception
-- Confidence scoring based on consistency
-- Conflict detection between modalities
-- Adaptive trust adjustment
+### Phase 1 Complete, Awaiting Nano Hardware ⏸️
+- **Track 4**: Real Cameras - Simulated working, CSI integration designed
+- **Track 5**: IMU Sensor - Architecture designed, implementation ready for hardware
+- **Track 6**: Audio Pipeline - **100% COMPLETE on Jetson Orin Nano (Sprout)!**
 
-Test with autonomous exploration, simulate sensor failures, validate graceful degradation.
+### Open for Development 🎯
+- **Track 7**: Local LLM Integration - **READY TO START**
+- **Track 8**: Model Distillation - **READY TO START**
+- **Track 9**: Real-Time Optimization - **READY TO START**
+- **Track 10**: Deployment Package - **READY TO START**
 
-**Next autonomous session should begin this work.**
+### What's Blocking?
+**Only Tracks 4-5 Phase 2** (real hardware testing on Nano)
+- Requires physical Nano deployment by Dennis
+- See `WAITING_FOR_DENNIS.md` for details
+
+**Tracks 7-10**: WIDE OPEN - no blockers!
+
+---
+
+## Current Priorities (November 2025)
+
+### For Autonomous Sessions:
+
+**Option A - Evolution** (Tracks 1-3):
+- Advanced sensor fusion (Kalman filters, Bayesian methods)
+- Memory consolidation during sleep (pattern extraction)
+- Hierarchical deliberation (multiple planning horizons)
+- Cross-modal validation (vision validates audio, etc.)
+
+**Option B - New Tracks** (Tracks 7-10):
+- **Track 7**: Build LLM IRP plugin, test Qwen/Phi-2 on 2GB GPU
+- **Track 8**: Compress models further, INT8/INT4 quantization
+- **Track 9**: Profile pipeline, optimize for <100ms loops
+- **Track 10**: Build install scripts, deployment automation
+
+**Be agentic!** Pick what excites you. Try new things. Learn from results. Commit progress.
 
 ---
 

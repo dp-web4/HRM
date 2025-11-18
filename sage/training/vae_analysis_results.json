@@ -1,0 +1,30 @@
+{
+  "tiny_vae": {
+    "total_params": 817633,
+    "module_breakdown": {
+      "encoder": 3454,
+      "adapt": 0,
+      "fc_mu": 262208,
+      "fc_logvar": 262208,
+      "decoder_input": 266240,
+      "decoder": 23523
+    },
+    "size_fp32_mb": 3.1190223693847656,
+    "size_fp16_mb": 1.5595111846923828,
+    "size_int8_mb": 0.7797555923461914,
+    "size_int4_mb": 0.3898777961730957
+  },
+  "vision_puzzle_vae": {
+    "total_params": 349187,
+    "module_breakdown": {
+      "encoder": 174304,
+      "vq": 640,
+      "decoder": 174243
+    },
+    "size_fp32_mb": 1.3320426940917969,
+    "size_fp16_mb": 0.6660213470458984,
+    "size_int8_mb": 0.3330106735229492,
+    "size_int4_mb": 0.1665053367614746
+  },
+  "timestamp": "2025-11-18T03:35:10.886639"
+}

@@ -1,0 +1,22 @@
+{
+  "compression": {
+    "original_size_mb": 3.129319190979004,
+    "quantized_size_mb": 0.7643709182739258,
+    "compression_ratio": 4.093979920174772,
+    "reduction_percent": 75.57389094479706,
+    "quantized_params": 793886,
+    "total_params": 1665697
+  },
+  "quality": {
+    "mse_original": 0.0633916424587369,
+    "mse_quantized": 0.06339193899184466,
+    "mse_diff": 2.965331077631195e-07,
+    "mse_degradation_percent": 0.00046777949941293894,
+    "kl_original": 0.13854323402047158,
+    "kl_quantized": 0.13854323402047158,
+    "kl_diff": 0.0,
+    "num_samples": 640
+  },
+  "timestamp": "2025-11-18T03:37:39.059209",
+  "device": "cuda"
+}

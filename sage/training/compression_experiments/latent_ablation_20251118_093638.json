@@ -1,0 +1,75 @@
+{
+  "results": [
+    {
+      "latent_dim": 64,
+      "num_params": 817633,
+      "size_mb": 3.1290178298950195,
+      "size_bytes": 3281013,
+      "mse": 0.06379582900553941,
+      "kl_divergence": 0.1323467694222927,
+      "param_compression_ratio": 1.0,
+      "size_compression_ratio": 1.0003138908623648
+    },
+    {
+      "latent_dim": 32,
+      "num_params": 424353,
+      "size_mb": 1.6287736892700195,
+      "size_bytes": 1707893,
+      "mse": 0.06227087303996086,
+      "kl_divergence": 0.1031550694257021,
+      "param_compression_ratio": 1.9267755854206285,
+      "size_compression_ratio": 1.9216911598091917
+    },
+    {
+      "latent_dim": 16,
+      "num_params": 227713,
+      "size_mb": 0.8786516189575195,
+      "size_bytes": 921333,
+      "mse": 0.062373528629541396,
+      "kl_divergence": 0.13121069893240928,
+      "param_compression_ratio": 3.5906294326630452,
+      "size_compression_ratio": 3.5622764841810723
+    },
+    {
+      "latent_dim": 8,
+      "num_params": 129393,
+      "size_mb": 0.5035295486450195,
+      "size_bytes": 527989,
+      "mse": 0.0639052752405405,
+      "kl_divergence": 0.16397468075156213,
+      "param_compression_ratio": 6.318989435286299,
+      "size_compression_ratio": 6.216119805526251
+    },
+    {
+      "latent_dim": 4,
+      "num_params": 80233,
+      "size_mb": 0.31602954864501953,
+      "size_bytes": 331381,
+      "mse": 0.06295289397239685,
+      "kl_divergence": 0.07190701179206371,
+      "param_compression_ratio": 10.190731993070184,
+      "size_compression_ratio": 9.904137171412966
+    }
+  ],
+  "baseline": {
+    "latent_dim": 64,
+    "num_params": 817633,
+    "size_mb": 3.1290178298950195,
+    "size_bytes": 3281013,
+    "mse": 0.06379582900553941,
+    "kl_divergence": 0.1323467694222927,
+    "param_compression_ratio": 1.0,
+    "size_compression_ratio": 1.0003138908623648
+  },
+  "best_tradeoff": {
+    "latent_dim": 4,
+    "num_params": 80233,
+    "size_mb": 0.31602954864501953,
+    "size_bytes": 331381,
+    "mse": 0.06295289397239685,
+    "kl_divergence": 0.07190701179206371,
+    "param_compression_ratio": 10.190731993070184,
+    "size_compression_ratio": 9.904137171412966
+  },
+  "timestamp": "2025-11-18T09:36:38.002790"
+}

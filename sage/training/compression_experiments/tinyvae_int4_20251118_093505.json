@@ -1,0 +1,23 @@
+{
+  "compression": {
+    "original_size_mb": 3.129319190979004,
+    "int4_size_mb": 0.3823227882385254,
+    "compression_ratio": 8.185018751816251,
+    "reduction_percent": 87.7825570066275,
+    "quantized_params": 793886,
+    "total_params": 1665697
+  },
+  "quality": {
+    "mse_original": 0.0610401688143611,
+    "mse_quantized": 0.06104036420583725,
+    "mse_diff": 1.9539147615155184e-07,
+    "mse_degradation_percent": 0.0003201031057856143,
+    "kl_original": 0.11495683044195175,
+    "kl_quantized": 0.11495683044195175,
+    "kl_diff": 0.0,
+    "num_samples": 640
+  },
+  "timestamp": "2025-11-18T09:35:05.054720",
+  "device": "cuda",
+  "quantization": "INT4 (4 bits per weight)"
+}

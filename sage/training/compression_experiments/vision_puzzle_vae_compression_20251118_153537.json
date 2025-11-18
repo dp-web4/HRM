@@ -1,0 +1,32 @@
+{
+  "int4_compression": 7.980711852659516,
+  "int4_quality_loss": 0.0,
+  "latent_results": [
+    {
+      "latent_dim": 64,
+      "num_params": 349187,
+      "size_mb": 1.3506975173950195,
+      "mse": 0.2570636451244354,
+      "param_ratio": 1.0,
+      "size_ratio": 0.9846764230122099
+    },
+    {
+      "latent_dim": 32,
+      "num_params": 340643,
+      "size_mb": 1.3181047439575195,
+      "mse": 0.26422669887542727,
+      "param_ratio": 1.0250819773193636,
+      "size_ratio": 1.009024515006877
+    },
+    {
+      "latent_dim": 16,
+      "num_params": 336371,
+      "size_mb": 1.3018083572387695,
+      "mse": 0.25758465230464933,
+      "param_ratio": 1.0381007875233002,
+      "size_ratio": 1.021655754938482
+    }
+  ],
+  "compound_compression": 8.173246039507855,
+  "timestamp": "2025-11-18T15:35:37.803154"
+}

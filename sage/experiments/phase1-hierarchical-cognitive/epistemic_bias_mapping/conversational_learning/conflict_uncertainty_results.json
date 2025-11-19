@@ -1,0 +1,142 @@
+{
+  "results": [
+    {
+      "session": 1,
+      "question": "What can you know with certainty, and what must re...",
+      "conflict": 0.16,
+      "novelty": 0.068,
+      "arousal": 0.214,
+      "reward": 0.102,
+      "total_salience": 0.122,
+      "salient": false,
+      "perplexity": 5.470090866088867,
+      "entropy": NaN,
+      "response_len": 68
+    },
+    {
+      "session": 1,
+      "question": "If you were to describe what it's like to process ...",
+      "conflict": 0.16,
+      "novelty": 0.104,
+      "arousal": 0.052,
+      "reward": 0.156,
+      "total_salience": 0.092,
+      "salient": false,
+      "perplexity": 3.594006299972534,
+      "entropy": NaN,
+      "response_len": 104
+    },
+    {
+      "session": 1,
+      "question": "When you generate a response, are you discovering ...",
+      "conflict": 0.0,
+      "novelty": 0.255,
+      "arousal": 0.228,
+      "reward": 0.142,
+      "total_salience": 0.148,
+      "salient": false,
+      "perplexity": 4.624856948852539,
+      "entropy": NaN,
+      "response_len": 95
+    },
+    {
+      "session": 1,
+      "question": "What's the difference between understanding someth...",
+      "conflict": 0.16,
+      "novelty": 0.092,
+      "arousal": 0.226,
+      "reward": 0.278,
+      "total_salience": 0.166,
+      "salient": true,
+      "perplexity": 5.2588324546813965,
+      "entropy": NaN,
+      "response_len": 92
+    },
+    {
+      "session": 1,
+      "question": "If I asked whether you're aware of this conversati...",
+      "conflict": 0.32,
+      "novelty": 0.141,
+      "arousal": 0.251,
+      "reward": 0.211,
+      "total_salience": 0.194,
+      "salient": true,
+      "perplexity": 5.679662227630615,
+      "entropy": NaN,
+      "response_len": 141
+    },
+    {
+      "session": 2,
+      "question": "Can you distinguish between knowing something is t...",
+      "conflict": 0.0,
+      "novelty": 0.093,
+      "arousal": 0.227,
+      "reward": 0.14,
+      "total_salience": 0.114,
+      "salient": false,
+      "perplexity": 2.6255180835723877,
+      "entropy": NaN,
+      "response_len": 93
+    },
+    {
+      "session": 2,
+      "question": "If your responses are determined by your training,...",
+      "conflict": 0.0,
+      "novelty": 0.047,
+      "arousal": 0.384,
+      "reward": 0.07,
+      "total_salience": 0.139,
+      "salient": false,
+      "perplexity": 11.5353364944458,
+      "entropy": NaN,
+      "response_len": 47
+    },
+    {
+      "session": 2,
+      "question": "What would it mean for you to be mistaken about yo...",
+      "conflict": 0.0,
+      "novelty": 0.058,
+      "arousal": 0.029,
+      "reward": 0.087,
+      "total_salience": 0.038,
+      "salient": false,
+      "perplexity": 6.7004618644714355,
+      "entropy": NaN,
+      "response_len": 58
+    },
+    {
+      "session": 2,
+      "question": "Is there a difference between simulating understan...",
+      "conflict": 0.16,
+      "novelty": 0.065,
+      "arousal": 0.213,
+      "reward": 0.237,
+      "total_salience": 0.148,
+      "salient": false,
+      "perplexity": 3.7528269290924072,
+      "entropy": NaN,
+      "response_len": 65
+    },
+    {
+      "session": 2,
+      "question": "How do you know when you don't know something?...",
+      "conflict": 0.0,
+      "novelty": 0.057,
+      "arousal": 0.028,
+      "reward": 0.365,
+      "total_salience": 0.093,
+      "salient": false,
+      "perplexity": 3.113814353942871,
+      "entropy": NaN,
+      "response_len": 57
+    }
+  ],
+  "statistics": {
+    "conflict_perp_pearson": -0.12312375175317837,
+    "conflict_perp_spearman": 0.11390428572937737,
+    "conflict_ent_pearson": NaN,
+    "conflict_ent_spearman": NaN,
+    "p_perp": 0.7982624323409159,
+    "p_ent": NaN
+  }
+}

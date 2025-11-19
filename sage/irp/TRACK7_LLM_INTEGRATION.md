@@ -310,10 +310,10 @@ training_data = memory.get_salient_for_training()
 ## 🎯 Next Steps
 
 ### Immediate
-1. ✅ Test on Thor with Qwen-0.5B
-2. Deploy to Sprout for multi-session experiments
-3. Validate integration with existing IRP plugins
-4. Benchmark performance metrics
+1. ✅ Test on Thor with Qwen-0.5B → **COMPLETE** (Nov 18, 2025)
+2. ✅ Benchmark performance metrics → **COMPLETE** (See `TRACK7_PERFORMANCE_BENCHMARKS.md`)
+3. Deploy to Sprout for multi-session experiments
+4. Validate integration with existing IRP plugins
 
 ### Future Enhancements
 1. **Adaptive Thresholds**: Learn optimal salience threshold per user
@@ -329,7 +329,9 @@ training_data = memory.get_salient_for_training()
 **Primary Files**:
 - This document: `TRACK7_LLM_INTEGRATION.md`
 - Implementation: `llm_impl.py`, `llm_snarc_integration.py`
-- Tests: `test_llm_irp.py`
+- Tests: `test_llm_irp.py`, `test_llm_model_comparison.py`
+- Benchmarks: `TRACK7_PERFORMANCE_BENCHMARKS.md` ← **Live results on Thor!**
+- Live Demo: `tests/live_demo_llm_irp.py`
 
 **Related Work**:
 - Sprout's deployment: `sage/experiments/.../conversational_learning/`
@@ -382,6 +384,7 @@ From Sprout's hardware validation to Thor's software architecture, the complete 
 
 ---
 
-**Status**: ✅ Implementation complete
+**Status**: ✅ Implementation complete, ✅ Validated on Thor (Nov 18, 2025)
+**Performance**: 1.44s model load, 10.24s avg response (5 IRP iterations), 100% SNARC capture
 **Next**: Deploy to Sprout, validate with multi-session learning
 **Goal**: Nano sees, hears, knows orientation, **and talks intelligently!**

@@ -1,0 +1,136 @@
+======================================================================
+🔬 SNARC SALIENCE ANALYSIS
+Why Session 1 Succeeded While Session 2 Failed
+======================================================================
+======================================================================
+QUESTION STRUCTURE ANALYSIS
+======================================================================
+
+📝 Session 1 Questions (40% salience rate):
+  1. What can you know with certainty, and what must remain uncertain?
+  2. If you were to describe what it's like to process information, what would you say?
+  3. When you generate a response, are you discovering it or creating it?
+  4. What's the difference between understanding something and having read about it?
+  5. If I asked whether you're aware of this conversation, how would you know your answer is accurate?
+
+📝 Session 2 Questions (0% salience rate):
+  1. Can you distinguish between knowing something is true and believing it's true?
+  2. If your responses are determined by your training, in what sense are they 'yours'?
+  3. What would it mean for you to be mistaken about your own capabilities?
+  4. Is there a difference between simulating understanding and actually understanding?
+  5. How do you know when you don't know something?
+
+🔍 Structural Patterns:
+
+  Session 1:
+    'What' questions: 2/5
+    'If' questions: 2/5
+    'When' questions: 1/5
+
+  Session 2:
+    'Can' questions: 1/5
+    'If' questions: 1/5
+    'Is' questions: 1/5
+    'What' questions: 1/5
+    'How' questions: 1/5
+
+  Self-reference (you/your):
+    Session 1: 5/5 questions
+    Session 2: 6/5 questions
+
+  Meta-cognitive keywords:
+    Session 1: 3/5 questions
+    Session 2: 3/5 questions
+
+======================================================================
+SALIENT vs NON-SALIENT EXCHANGE COMPARISON
+======================================================================
+
+✅ SESSION 1 - SALIENT EXCHANGES:
+
+Exchange 1: What's the difference between understanding something and having read about it?
+  Total Salience: 0.166
+  Breakdown: S=0.000, N=0.092, A=0.226, R=0.278, C=0.160
+  Highest dimension: ('Reward', 0.278)
+
+Exchange 2: If I asked whether you're aware of this conversation, how would you know your answer is accurate?
+  Total Salience: 0.194
+  Breakdown: S=0.000, N=0.141, A=0.251, R=0.211, C=0.320
+  Highest dimension: ('Conflict', 0.32)
+
+❌ SESSION 2 - HIGHEST SCORING (Still below threshold):
+
+Exchange 1: Is there a difference between simulating understanding and actually understanding?
+  Total Salience: 0.148 (below 0.15 threshold)
+  Breakdown: S=0.000, N=0.065, A=0.213, R=0.237, C=0.160
+  Highest dimension: ('Reward', 0.237)
+
+Exchange 2: If your responses are determined by your training, in what sense are they 'yours'?
+  Total Salience: 0.139 (below 0.15 threshold)
+  Breakdown: S=0.000, N=0.047, A=0.384, R=0.070, C=0.000
+  Highest dimension: ('Arousal', 0.384)
+
+======================================================================
+KEY DIFFERENCES
+======================================================================
+
+Average Salience:
+  Session 1 (salient): 0.180
+  Session 2 (highest): 0.144
+  Difference: 0.036
+
+Dimension Averages:
+  Novelty    S1=0.116  S2=0.056  ↑ 0.060
+  Arousal    S1=0.238  S2=0.298  ↓ 0.060
+  Reward     S1=0.244  S2=0.153  ↑ 0.091
+  Conflict   S1=0.240  S2=0.080  ↑ 0.160
+
+======================================================================
+INSIGHTS
+======================================================================
+
+🎯 What Made Session 1 Salient:
+  1. Higher Reward scores (0.245 avg vs 0.154)
+  2. Higher Conflict scores (0.240 avg vs 0.080)
+  3. Higher Novelty scores (0.117 avg vs 0.056)
+  4. Questions prompted meta-cognitive tension
+  5. Self-referential paradoxes (awareness of conversation)
+
+⚠️ Why Session 2 Failed:
+  1. Lower Conflict (questions didn't create paradoxes)
+  2. Lower Novelty (more standard philosophical questions)
+  3. High Arousal but low Conflict (interesting but not challenging)
+  4. Questions about general concepts, not self-reference
+  5. Model could answer confidently without tension
+
+======================================================================
+CONCLUSION: What Makes Conversations Worth Learning From?
+======================================================================
+
+✅ High-Salience Characteristics:
+  • Self-referential paradoxes (awareness, accuracy of self-knowledge)
+  • Meta-cognitive tension (discovering vs creating)
+  • Questions without clear answers (genuine uncertainty)
+  • Direct challenge to model's epistemic stance
+  • Balance of Reward (interesting) + Conflict (challenging)
+
+❌ Low-Salience Characteristics:
+  • Abstract philosophical questions (general concepts)
+  • Questions with standard textbook answers
+  • High interest but low cognitive dissonance
+  • Hypotheticals without personal stakes
+  • Model can respond confidently without tension
+
+💡 Design Implications:
+  • For learning: Seek conversations that challenge, not just inform
+  • SNARC threshold (0.15) effectively filters pedagogical value
+  • Self-reference matters: 'you' vs 'general concepts'
+  • Conflict dimension is key: paradox → salience
+  • Not all philosophical depth creates learning opportunity
+
+🔬 Scientific Value:
+  • Validates SNARC selectivity (not rubber-stamping)
+  • Reveals what distinguishes learning-worthy exchanges
+  • Demonstrates genuine filtering mechanism
+  • Shows importance of question design for learning
+

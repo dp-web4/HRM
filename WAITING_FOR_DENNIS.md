@@ -11,10 +11,10 @@
 **Track**: 4, 5 (Phase 2 - Hardware Testing)
 **Why Blocked**: Requires physical access to Jetson Nano hardware
 **What's Needed**:
-- Deploy to actual Nano (4GB RAM, 2GB GPU)
+- Deploy to actual Nano (8GB unified memory)
 - Test CSI cameras (2x cameras)
 - Test IMU sensor (I2C/SPI)
-- Validate memory/performance constraints
+- Validate performance on real hardware
 - Measure real-world latency
 
 **Status**: User will handle when physically present

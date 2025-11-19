@@ -71,10 +71,17 @@ class ConversationManager:
 
         # Load model
         print(f"Loading model from {model_path}...")
+
+        # Determine device (CUDA if available, else CPU)
+        if device == "auto":
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+
+        print(f"Using device: {device}")
+
         self.tokenizer = AutoTokenizer.from_pretrained(base_model)
         self.model = AutoModelForCausalLM.from_pretrained(
             base_model,
-            torch_dtype=torch.float16,
+            dtype=torch.float16,
             device_map=device
         )
 

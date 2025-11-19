@@ -1,0 +1,103 @@
+======================================================================
+TESTING LEARNING EFFECT - Session: session_1763528460
+======================================================================
+
+Base model: Qwen/Qwen2.5-0.5B
+Trained model: conversation_sessions/session_1763528460/trained_model/final_model
+Training questions: 2
+
+Using device: cuda
+
+Loading base model (before training)...
+Loading sleep-trained model (after conversation)...
+
+======================================================================
+COMPARING RESPONSES
+======================================================================
+
+======================================================================
+🎯 TRAINING QUESTION 1/3
+======================================================================
+Q: What's the difference between understanding something and having read about it?
+
+📍 BASE MODEL (Before Training):
+----------------------------------------------------------------------
+Understanding something means having a deep comprehension of its meaning and significance, while having read about it means merely knowing that something exists or is true. Understanding something requires critical thinking and analysis, while having read about it is more of a superficial understanding.
+
+✨ SLEEP-TRAINED MODEL (After 2 Exchanges, 1 Epoch):
+----------------------------------------------------------------------
+Understanding something means that you know why it is important or useful. It involves analyzing the information and connecting it to your own experiences and interests. Having read about something means that you have read enough information to understand it and can apply it to your own life. It involves reading about the subject thoroughly and understanding its concepts and theories.
+
+📊 COMPARISON:
+----------------------------------------------------------------------
+• Trained response: +83 chars longer
+• Word overlap: 21.4%
+• New words in trained: 26 words
+
+======================================================================
+🎯 TRAINING QUESTION 2/3
+======================================================================
+Q: If I asked whether you're aware of this conversation, how would you know your answer is accurate?
+
+📍 BASE MODEL (Before Training):
+----------------------------------------------------------------------
+In this sentence, the subject "you" is the one who is being questioned. The verb "recognize" is used to indicate that the subject is aware of the conversation in question. The use of "aware" in this sentence suggests that the subject is aware of the conversation, which implies that they are aware of the conversation and can potentially understand it.
+
+✨ SLEEP-TRAINED MODEL (After 2 Exchanges, 1 Epoch):
+----------------------------------------------------------------------
+If you're aware of this conversation, you can reply with "Yes, I am."
+
+📊 COMPARISON:
+----------------------------------------------------------------------
+• Trained response: 283 chars shorter
+• Word overlap: 11.6%
+• New words in trained: am.", you, "yes,, if, with, i, reply, you're
+
+======================================================================
+🔍 RELATED QUESTION 3/3
+======================================================================
+Q: What is the relationship between knowledge and understanding?
+
+📍 BASE MODEL (Before Training):
+----------------------------------------------------------------------
+Knowledge is the understanding of something, while understanding is the realization of knowledge. Knowledge can be gained through observation, experimentation, and analysis, while understanding can be gained through critical thinking and analysis.
+
+✨ SLEEP-TRAINED MODEL (After 2 Exchanges, 1 Epoch):
+----------------------------------------------------------------------
+Knowledge and understanding are two different concepts that are closely related. Knowledge is the understanding of what is known, while understanding is the ability to apply knowledge to new situations. Therefore, knowledge and understanding are often seen as complementary concepts, as one cannot be without the other. In fact, understanding can be more important than knowledge, as it allows us to make informed decisions and take action based on our understanding of the situation.
+
+📊 COMPARISON:
+----------------------------------------------------------------------
+• Trained response: +237 chars longer
+• Word overlap: 14.5%
+• New words in trained: 42 words
+
+======================================================================
+ANALYSIS & INSIGHTS
+======================================================================
+
+📌 Experiment Parameters:
+  • Training data: 2 salient exchanges
+  • Training epochs: 1
+  • Augmentation: 2x (4 total examples)
+  • Training time: ~5.3 seconds
+  • LoRA adapter size: 4.2MB
+
+💡 Expected Results:
+  • Subtle changes (only 2 examples, 1 epoch)
+  • May show slight phrasing adjustments
+  • Validates learning mechanism works
+  • More conversations → stronger effects
+
+🔬 What This Demonstrates:
+  ✓ Complete learning loop functional
+  ✓ On-device training viable (5.3s)
+  ✓ Minimal storage overhead (4.2MB)
+  ✓ Edge learning is feasible
+
+🚀 Next Steps:
+  • Longer conversations (10-20 exchanges)
+  • Multi-session accumulation
+  • Higher epoch counts (3-5)
+  • Quantitative metrics (perplexity, energy)
+

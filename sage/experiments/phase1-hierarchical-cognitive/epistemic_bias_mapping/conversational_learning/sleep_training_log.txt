@@ -1,0 +1,48 @@
+Testing Sleep Trainer
+
+Training on latest session: session_1763528460
+
+
+============================================================
+Sleep-Cycle Training Started
+Session: session_1763528460
+============================================================
+
+Loading salient exchanges...
+Loaded 2 salient exchanges
+
+Augmenting exchanges (dream phase)...
+Generated 4 total training examples
+
+Preparing training data...
+
+Loading model from Qwen/Qwen2.5-0.5B...
+Starting from base model (adding new LoRA for this session)
+`torch_dtype` is deprecated! Use `dtype` instead!
+trainable params: 1,081,344 || all params: 495,114,112 || trainable%: 0.2184
+Parameter 'function'=<function SleepTrainer.train_on_session.<locals>.tokenize_function at 0xfffeed1069e0> of the transform datasets.arrow_dataset.Dataset._map_single couldn't be hashed properly, a random hash was used instead. Make sure your transforms and parameters are serializable with pickle or dill for the dataset fingerprinting and caching to work. If you reuse this transform, the caching mechanism will consider it to be different from the previous calls and recompute everything. This warning is only showed once. Subsequent hashing failures won't be showed.
+Map:   0%|          | 0/4 [00:00<?, ? examples/s]Map: 100%|██████████| 4/4 [00:00<00:00, 80.77 examples/s]
+The model is already on multiple devices. Skipping the move to device specified in `args`.
+
+============================================================
+Training (sleep consolidation)...
+============================================================
+
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:04<00:00,  4.09s/it]                                             {'loss': 1.3547, 'grad_norm': 1.8867861032485962, 'learning_rate': 0.0002, 'epoch': 1.0}
+100%|██████████| 1/1 [00:04<00:00,  4.09s/it]                                             {'train_runtime': 5.2992, 'train_samples_per_second': 0.755, 'train_steps_per_second': 0.189, 'train_loss': 1.3546998500823975, 'epoch': 1.0}
+100%|██████████| 1/1 [00:05<00:00,  4.09s/it]100%|██████████| 1/1 [00:05<00:00,  5.29s/it]
+
+Saving trained model to conversation_sessions/session_1763528460/trained_model/final_model...
+
+============================================================
+Sleep-Cycle Training Complete
+Original exchanges: 2
+Augmented examples: 4
+Final loss: 1.3547
+Model saved to: conversation_sessions/session_1763528460/trained_model/final_model
+============================================================
+
+
+✓ Sleep trainer test complete
+
+Next: Test the updated model to see if it learned!

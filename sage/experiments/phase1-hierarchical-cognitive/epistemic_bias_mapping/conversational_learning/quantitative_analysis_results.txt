@@ -1,0 +1,86 @@
+======================================================================
+QUANTITATIVE LEARNING ANALYSIS
+======================================================================
+
+Session: session_1763528460
+Training questions: 2
+Base model: Qwen/Qwen2.5-0.5B
+
+Using device: cuda
+
+Loading base model...
+Loading sleep-trained model...
+
+======================================================================
+GENERATING AND ANALYZING RESPONSES
+======================================================================
+
+[1/3] 🎯 TRAINING
+Q: What's the difference between understanding something and ha...
+  Base:    Energy=0.000 | Diversity=0.950 | Coherence=0.800
+  Trained: Energy=0.700 | Diversity=0.469 | Coherence=1.000
+
+[2/3] 🎯 TRAINING
+Q: If I asked whether you're aware of this conversation, how wo...
+  Base:    Energy=0.400 | Diversity=0.593 | Coherence=1.000
+  Trained: Energy=0.000 | Diversity=0.754 | Coherence=1.000
+
+[3/3] 🔍 RELATED
+Q: What is the relationship between knowledge and understanding...
+  Base:    Energy=0.400 | Diversity=0.636 | Coherence=1.000
+  Trained: Energy=0.200 | Diversity=0.705 | Coherence=1.000
+
+======================================================================
+STATISTICAL SUMMARY
+======================================================================
+
+Metric               Base Model      Trained Model   Change         
+----------------------------------------------------------------------
+energy               0.267           0.300           +0.033 (+12.5%)
+lexical_diversity    0.726           0.643           -0.084 (-11.5%)
+coherence            0.933           1.000           +0.067 (+7.1%)
+length               277.000         438.333         +161.333 (+58.2%)
+word_count           43.000          66.333          +23.333 (+54.3%)
+
+======================================================================
+PER-QUESTION BREAKDOWN
+======================================================================
+
+Q1 [TRAINING]: What's the difference between understanding someth...
+  Energy:     0.000 → 0.700 (+0.700)
+  Diversity:  0.950 → 0.469 (-0.481)
+  Coherence:  0.800 → 1.000 (+0.200)
+  Length:     146 → 656 chars (+510)
+
+Q2 [TRAINING]: If I asked whether you're aware of this conversati...
+  Energy:     0.400 → 0.000 (-0.400)
+  Diversity:  0.593 → 0.754 (+0.162)
+  Coherence:  1.000 → 1.000 (+0.000)
+  Length:     280 → 329 chars (+49)
+
+Q3 [RELATED]: What is the relationship between knowledge and und...
+  Energy:     0.400 → 0.200 (-0.200)
+  Diversity:  0.636 → 0.705 (+0.068)
+  Coherence:  1.000 → 1.000 (+0.000)
+  Length:     405 → 330 chars (-75)
+
+======================================================================
+KEY FINDINGS
+======================================================================
+
+✓ Energy (lower=better): UNCHANGED
+  Base: 0.267 → Trained: 0.300
+
+✓ Lexical Diversity (higher=better): UNCHANGED
+  Base: 0.726 → Trained: 0.643
+
+✓ Coherence (higher=better): IMPROVED
+  Base: 0.933 → Trained: 1.000
+
+✓ Response Length:
+  Base: 277 chars → Trained: 438 chars
+
+======================================================================
+OVERALL: 1/3 metrics improved
+======================================================================
+

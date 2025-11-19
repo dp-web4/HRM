@@ -70,13 +70,21 @@ class LLMIRPPlugin:
         print(f"[LLM IRP] Loading model: {self.model_path}")
         print(f"[LLM IRP] Device: {self.device}")
 
-        self.tokenizer = AutoTokenizer.from_pretrained(self.base_model)
+        # Determine if model path is local or HuggingFace
+        model_is_local = Path(self.base_model).exists()
+        tokenizer_kwargs = {"local_files_only": True} if model_is_local else {}
+        model_kwargs = {"local_files_only": True} if model_is_local else {}
+
+        print(f"[LLM IRP] Model source: {'local' if model_is_local else 'HuggingFace'}")
+
+        self.tokenizer = AutoTokenizer.from_pretrained(self.base_model, **tokenizer_kwargs)
 
         # Load base model
         self.model = AutoModelForCausalLM.from_pretrained(
             self.base_model,
             torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
-            device_map=self.device
+            device_map=self.device,
+            **model_kwargs
         )
 
         # Load LoRA adapter if applicable
@@ -88,6 +96,20 @@ class LLMIRPPlugin:
                     print(f"[LLM IRP] Loaded LoRA adapter from {model_path}")
                 except Exception as e:
                     print(f"[LLM IRP] Warning: Could not load LoRA adapter: {e}")
+            else:
+                # No adapter_config.json - might be a full model stored locally
+                full_model_path = Path(model_path)
+                if full_model_path.exists():
+                    print(f"[LLM IRP] Loading full model from local path: {model_path}")
+                    # Reload as full model
+                    self.model = AutoModelForCausalLM.from_pretrained(
+                        model_path,
+                        torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
+                        device_map=self.device,
+                        local_files_only=True
+                    )
+                    self.tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
+                    print(f"[LLM IRP] Loaded full model from {model_path}")
 
         self.model.eval()
         print(f"[LLM IRP] Model loaded successfully!")

@@ -1,0 +1,133 @@
+======================================================================
+🔬 VALIDATING CONFLICT AS UNCERTAINTY ESTIMATION
+======================================================================
+
+Hypothesis: High Conflict → High Uncertainty (perplexity/entropy)
+
+Loading model: Qwen/Qwen2.5-0.5B
+Device: cuda
+
+Loading exchanges from both sessions...
+Total exchanges: 10
+  Session 1: 5 exchanges
+  Session 2: 5 exchanges
+
+======================================================================
+COMPUTING UNCERTAINTY METRICS
+======================================================================
+
+[1/10] Session 1, Conflict=0.160
+  Perplexity: 5.470
+  Entropy: nan
+
+[2/10] Session 1, Conflict=0.160
+  Perplexity: 3.594
+  Entropy: nan
+
+[3/10] Session 1, Conflict=0.000
+  Perplexity: 4.625
+  Entropy: nan
+
+[4/10] Session 1, Conflict=0.160
+  Perplexity: 5.259
+  Entropy: nan
+
+[5/10] Session 1, Conflict=0.320
+  Perplexity: 5.680
+  Entropy: nan
+
+[6/10] Session 2, Conflict=0.000
+  Perplexity: 2.626
+  Entropy: nan
+
+[7/10] Session 2, Conflict=0.000
+  Perplexity: 11.535
+  Entropy: nan
+
+[8/10] Session 2, Conflict=0.000
+  Perplexity: 6.700
+  Entropy: nan
+
+[9/10] Session 2, Conflict=0.160
+  Perplexity: 3.753
+  Entropy: nan
+
+[10/10] Session 2, Conflict=0.000
+  Perplexity: 3.114
+  Entropy: nan
+
+======================================================================
+CORRELATION ANALYSIS
+======================================================================
+
+Conflict vs Perplexity:
+  Pearson r = -0.123 (p=0.7347)
+  Spearman ρ = 0.114 (p=0.7540)
+  ⚠️  Not significant (p >= 0.05)
+
+Conflict vs Entropy:
+  Pearson r = nan (p=nan)
+  Spearman ρ = nan (p=nan)
+  ⚠️  Not significant (p >= 0.05)
+
+======================================================================
+COMPARISON WITH OTHER SNARC DIMENSIONS
+======================================================================
+
+Novelty:
+  vs Perplexity: r=-0.228 (p=0.5257)
+  vs Entropy:    r=nan (p=nan)
+
+Arousal:
+  vs Perplexity: r=0.547 (p=0.1018)
+  vs Entropy:    r=nan (p=nan)
+
+Reward:
+  vs Perplexity: r=-0.532 (p=0.1135)
+  vs Entropy:    r=nan (p=nan)
+
+Total_salience:
+  vs Perplexity: r=0.093 (p=0.7983)
+  vs Entropy:    r=nan (p=nan)
+
+======================================================================
+DETAILED BREAKDOWN
+======================================================================
+
+Session  Conflict   Perplexity   Entropy    Salient 
+----------------------------------------------------------------------
+1        0.160      5.470        nan                
+1        0.160      3.594        nan                
+1        0.000      4.625        nan                
+1        0.160      5.259        nan        ✓       
+1        0.320      5.680        nan        ✓       
+2        0.000      2.626        nan                
+2        0.000      11.535       nan                
+2        0.000      6.700        nan                
+2        0.160      3.753        nan                
+2        0.000      3.114        nan                
+
+======================================================================
+SUMMARY STATISTICS
+======================================================================
+
+Salient Exchanges (n=2)
+  Conflict: 0.240 ± 0.080
+  Perplexity: 5.469 ± 0.210
+  Entropy: nan ± nan
+
+Non-Salient Exchanges (n=8)
+  Conflict: 0.060 ± 0.077
+  Perplexity: 5.177 ± 2.703
+  Entropy: nan ± nan
+
+======================================================================
+CONCLUSIONS
+======================================================================
+
+❌ HYPOTHESIS NOT SUPPORTED:
+   Weak or no correlation found.
+   Conflict may measure something else.
+
+Results saved to: conflict_uncertainty_results.json
+

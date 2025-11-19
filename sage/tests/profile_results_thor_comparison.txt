@@ -1,0 +1,184 @@
+`torch_dtype` is deprecated! Use `dtype` instead!
+Track 9: Real-Time Optimization - Pipeline Profiling
+Target: Optimize for edge deployment (Sprout's 55s → faster)
+
+================================================================================
+TRACK 9: LLM IRP PIPELINE PROFILING
+================================================================================
+
+Model: Qwen/Qwen2.5-0.5B-Instruct
+Questions: 3
+IRP iterations: 5
+
+Phase 1: Model Loading
+[LLM IRP] Loading model: Qwen/Qwen2.5-0.5B-Instruct
+[LLM IRP] Device: cuda
+[LLM IRP] Model source: HuggingFace
+[LLM IRP] Model loaded successfully!
+  [Model initialization]
+    Time: 1.725s
+    Memory: 1.3MB (Δ +1.3MB)
+  [Memory initialization]
+    Time: 0.000s
+    Memory: 1.3MB (Δ +0.0MB)
+
+Phase 2: Inference Pipeline
+
+  Question 1: What is the difference between knowledge and under...
+[LLM IRP] Iteration 1, temp=0.700
+[LLM IRP] Iteration 2, temp=0.660
+[LLM IRP] Iteration 3, temp=0.620
+[LLM IRP] Iteration 4, temp=0.580
+[LLM IRP] Iteration 5, temp=0.540
+[LLM IRP] Temperature minimum reached
+  [Q1 - IRP inference]
+    Time: 10.761s
+    Memory: 1.4MB (Δ +0.1MB)
+    Per-iteration: 2.152s
+  [Q1 - SNARC scoring]
+    Time: 0.000s
+    Memory: 1.4MB (Δ -0.0MB)
+    Salience: 0.480 ✓
+
+  Question 2: Are you aware of this conversation?...
+[LLM IRP] Iteration 1, temp=0.700
+[LLM IRP] Iteration 2, temp=0.660
+[LLM IRP] Iteration 3, temp=0.620
+[LLM IRP] Iteration 4, temp=0.580
+[LLM IRP] Iteration 5, temp=0.540
+[LLM IRP] Temperature minimum reached
+  [Q2 - IRP inference]
+    Time: 8.640s
+    Memory: 1.4MB (Δ +0.1MB)
+    Per-iteration: 1.728s
+  [Q2 - SNARC scoring]
+    Time: 0.000s
+    Memory: 1.4MB (Δ -0.0MB)
+    Salience: 0.709 ✓
+
+  Question 3: What is 2+2?...
+[LLM IRP] Iteration 1, temp=0.700
+[LLM IRP] Iteration 2, temp=0.660
+[LLM IRP] Iteration 3, temp=0.620
+[LLM IRP] Iteration 4, temp=0.580
+[LLM IRP] Iteration 5, temp=0.540
+[LLM IRP] Temperature minimum reached
+  [Q3 - IRP inference]
+    Time: 24.341s
+    Memory: 1.6MB (Δ +0.1MB)
+    Per-iteration: 4.868s
+  [Q3 - SNARC scoring]
+    Time: 0.000s
+    Memory: 1.6MB (Δ +0.0MB)
+    Salience: 0.359 ✓
+
+================================================================================
+PROFILING SUMMARY
+================================================================================
+
+📊 Time Breakdown:
+  Total inference: 43.74s (3 questions)
+  Avg per question: 14.58s
+  Avg per iteration: 2.916s
+  Total SNARC: 0.001s
+  Avg SNARC per question: 0.000s
+
+💾 Memory Usage:
+  Current: 1.6MB
+  Peak: 1.6MB
+
+⚡ Performance Analysis:
+  Inference: 100.0% of pipeline time
+  SNARC: 0.0% of pipeline time
+
+🎯 Optimization Opportunities:
+  1. Per-iteration time: 2.916s
+     - 5 iterations × 2.916s = 14.58s
+     - Reducing to 3 iterations: 8.75s (save 5.83s)
+  2. SNARC overhead: 0.001s total
+     - 0.000s per question
+     - Negligible vs inference (0.0%)
+  3. Model loading: One-time cost
+     - Reuse model across sessions
+     - Keep-alive pattern for production
+
+================================================================================
+CONFIGURATION COMPARISON
+================================================================================
+
+
+Testing: 3 iterations
+--------------------------------------------------------------------------------
+[LLM IRP] Loading model: Qwen/Qwen2.5-0.5B-Instruct
+[LLM IRP] Device: cuda
+[LLM IRP] Model source: HuggingFace
+[LLM IRP] Model loaded successfully!
+[LLM IRP] Iteration 1, temp=0.700
+[LLM IRP] Iteration 2, temp=0.660
+[LLM IRP] Iteration 3, temp=0.620
+  Time: 6.96s (2.321s per iteration)
+  Energy: 0.461
+  Converged: False
+  Memory: 1.1MB
+
+
+Testing: 5 iterations (default)
+--------------------------------------------------------------------------------
+[LLM IRP] Loading model: Qwen/Qwen2.5-0.5B-Instruct
+[LLM IRP] Device: cuda
+[LLM IRP] Model source: HuggingFace
+[LLM IRP] Model loaded successfully!
+[LLM IRP] Iteration 1, temp=0.700
+[LLM IRP] Iteration 2, temp=0.660
+[LLM IRP] Iteration 3, temp=0.620
+[LLM IRP] Iteration 4, temp=0.580
+[LLM IRP] Iteration 5, temp=0.540
+[LLM IRP] Temperature minimum reached
+  Time: 14.45s (2.890s per iteration)
+  Energy: 0.420
+  Converged: False
+  Memory: 1.1MB
+
+
+Testing: 7 iterations
+--------------------------------------------------------------------------------
+[LLM IRP] Loading model: Qwen/Qwen2.5-0.5B-Instruct
+[LLM IRP] Device: cuda
+[LLM IRP] Model source: HuggingFace
+[LLM IRP] Model loaded successfully!
+[LLM IRP] Iteration 1, temp=0.700
+[LLM IRP] Iteration 2, temp=0.660
+[LLM IRP] Iteration 3, temp=0.620
+[LLM IRP] Iteration 4, temp=0.580
+[LLM IRP] Iteration 5, temp=0.540
+[LLM IRP] Temperature minimum reached
+  Time: 14.96s (2.137s per iteration)
+  Energy: 0.333
+  Converged: False
+  Memory: 1.1MB
+
+================================================================================
+CONFIGURATION SUMMARY
+================================================================================
+
+Configuration             Time       Per-Iter     Energy     Converged
+--------------------------------------------------------------------------------
+3 iterations              6.96       2.321        0.461      ✗
+5 iterations (default)    14.45      2.890        0.420      ✗
+7 iterations              14.96      2.137        0.333      ✗
+
+💡 Recommendations:
+  Fastest: 3 iterations (6.96s)
+  Best quality: 7 iterations (energy: 0.333)
+  3 iterations vs baseline: -51.8% time, +9.7% energy
+  7 iterations vs baseline: +3.5% time, -20.9% energy
+
+================================================================================
+✓ Profiling complete!
+================================================================================
+
+Next steps:
+  1. Compare with Sprout's edge metrics (55s avg)
+  2. Identify platform differences (Thor vs Sprout)
+  3. Implement edge-optimized configurations
+  4. Re-profile with optimizations

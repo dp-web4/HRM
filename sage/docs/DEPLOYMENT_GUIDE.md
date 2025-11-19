@@ -148,16 +148,45 @@ snarc:
   threshold: 0.10  # Less selective (include factual questions)
 ```
 
-#### 3. Optimize for Speed
+#### 3. Optimize for Speed (Edge-Optimized Configuration)
+
+**Track 9 Validated**: 52% speedup with minimal quality degradation
+
+For edge deployment (Jetson Orin Nano, Nano), use the validated edge-optimized configuration:
+
+```bash
+# Use pre-configured edge optimization
+cp sage/config/edge_optimized.yaml sage_nano.yaml
+```
+
+**Or manually configure**:
 
 ```yaml
-irp:
-  iterations: 3  # Fewer iterations (faster, less refined)
+llm_irp:
+  irp_iterations: 3              # Validated: 52% faster (6.96s vs 14.45s on Thor)
+  initial_temperature: 0.7
+  min_temperature: 0.54
+  temp_reduction: 0.053          # Proper 3-step annealing
+  max_tokens: 150                # Slightly reduced for speed
 
-performance:
-  use_fp16: true  # FP16 inference (2x faster, same quality)
-  use_compile: false  # Avoid compilation overhead
+  # Keep-alive for multi-turn conversations
+  model_keep_alive: true         # Eliminate model reload overhead
+  max_memory_mb: 1200
+
+  # Device settings
+  device: "cuda"
+  precision: "fp16"              # Half precision for efficiency
 ```
+
+**Expected performance** (Jetson Orin Nano):
+- Current baseline: 55s per question
+- With edge-optimized: **~26-30s per question** (52% speedup)
+- First question: ~30s (includes 3.3s model load)
+- Subsequent: ~26s (model kept alive)
+
+**Quality trade-off**: Energy increases from 0.420 → 0.461 (9.7% degradation, still good)
+
+See `sage/tests/TRACK9_PERFORMANCE_ANALYSIS.md` for detailed analysis.
 
 #### 4. Increase Response Quality
 

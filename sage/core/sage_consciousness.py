@@ -1,0 +1,697 @@
+"""
+SAGE Unified Consciousness Loop
+
+The main orchestration loop that connects all SAGE components into a
+continuous consciousness system.
+
+This is the "glue" that was missing - it unifies:
+- Sensor input and fusion
+- SNARC salience computation
+- Metabolic state management
+- Plugin selection and execution
+- ATP budget allocation
+- Memory system updates
+- Circadian rhythm modulation
+- Trust weight learning
+
+Architecture:
+    while True:
+        observations = gather_from_sensors()
+        salience_map = compute_salience(observations)  # SNARC
+        update_metabolic_state(ATP, salience)
+        plugins_needed = select_plugins(salience_map, metabolic_state)
+        budget_allocation = allocate_ATP(plugins_needed, trust_weights)
+        results = run_orchestrator(plugins_needed, budget_allocation)
+        update_trust_weights(results)
+        update_all_memories(results)
+        send_to_effectors(results)
+"""
+
+import asyncio
+import time
+from typing import Dict, List, Optional, Any, Tuple
+from dataclasses import dataclass, field
+from enum import Enum
+from pathlib import Path
+import sys
+import numpy as np
+import torch
+
+# Add sage to path
+_sage_root = Path(__file__).parent.parent
+if str(_sage_root) not in sys.path:
+    sys.path.insert(0, str(_sage_root))
+
+from core.metabolic_controller import MetabolicController, MetabolicState
+from core.circadian_clock import CircadianClock, CircadianPhase
+from irp.orchestrator import HRMOrchestrator, PluginResult
+
+
+@dataclass
+class SensorObservation:
+    """Observation from a sensor"""
+    sensor_id: str
+    modality: str  # 'vision', 'audio', 'proprioception', 'time', etc.
+    data: Any
+    timestamp: float
+    trust: float = 1.0  # Sensor trust weight
+
+
+@dataclass
+class SalienceScore:
+    """SNARC 5D salience score for an observation"""
+    surprise: float      # Prediction error
+    novelty: float       # How unusual
+    arousal: float       # Perplexity/difficulty
+    reward: float        # Value/importance
+    conflict: float      # Paradox/inconsistency
+    total: float = 0.0   # Combined salience
+
+    def __post_init__(self):
+        """Compute total salience"""
+        self.total = (
+            self.surprise + self.novelty + self.arousal +
+            self.reward + self.conflict
+        ) / 5.0
+
+
+@dataclass
+class AttentionTarget:
+    """Something that needs attention"""
+    observation: SensorObservation
+    salience: SalienceScore
+    required_plugins: List[str]
+    priority: float  # Computed from salience + metabolic state
+
+
+class SAGEConsciousness:
+    """
+    Unified SAGE consciousness loop.
+
+    This is the main orchestrator that runs continuously, managing:
+    - Sensor observation and fusion
+    - Salience computation (SNARC)
+    - Metabolic state transitions
+    - Plugin selection and ATP budgeting
+    - Memory consolidation
+    - Circadian rhythm modulation
+
+    Usage:
+        sage = SAGEConsciousness(config)
+        await sage.run()  # Run forever
+
+        # Or step-by-step
+        sage = SAGEConsciousness(config)
+        await sage.step()  # Single cycle
+    """
+
+    def __init__(
+        self,
+        config: Optional[Dict[str, Any]] = None,
+        initial_atp: float = 100.0,
+        enable_circadian: bool = True,
+        simulation_mode: bool = True  # Use cycle counts instead of wall time
+    ):
+        """
+        Initialize unified consciousness loop.
+
+        Args:
+            config: Configuration dict for orchestrator and plugins
+            initial_atp: Starting ATP budget
+            enable_circadian: Enable circadian rhythm modulation
+            simulation_mode: Use cycle counts for testing (not wall time)
+        """
+        self.config = config or self._default_config()
+        self.simulation_mode = simulation_mode
+
+        # Core components
+        self.metabolic = MetabolicController(
+            initial_atp=initial_atp,
+            max_atp=self.config.get('max_atp', 100.0),
+            circadian_period=self.config.get('circadian_period', 100),
+            enable_circadian=enable_circadian,
+            simulation_mode=simulation_mode
+        )
+
+        self.orchestrator = HRMOrchestrator(self.config)
+
+        # Sensor system (mock for now, will integrate real sensors later)
+        self.sensors = self._initialize_sensors()
+
+        # Memory systems
+        self.snarc_memory = []  # SNARC salience memory
+        self.irp_memory = []    # IRP pattern library
+        self.circular_buffer = []  # Recent context (x-from-last)
+        self.verbatim_storage = []  # Full-fidelity records
+
+        # Trust weights for plugins (learned over time)
+        self.plugin_trust_weights = {
+            name: 1.0 for name in self.orchestrator.plugins
+        }
+
+        # Salience thresholds (from SNARC)
+        self.salience_threshold = self.config.get('salience_threshold', 0.15)
+
+        # Cycle counter
+        self.cycle_count = 0
+        self.running = False
+
+        # Statistics
+        self.stats = {
+            'total_cycles': 0,
+            'state_transitions': 0,
+            'plugins_executed': 0,
+            'total_atp_consumed': 0.0,
+            'average_salience': 0.0
+        }
+
+    def _default_config(self) -> Dict[str, Any]:
+        """Default configuration"""
+        return {
+            'total_ATP': 100.0,
+            'max_atp': 100.0,
+            'max_workers': 4,
+            'trust_update_rate': 0.1,
+            'telemetry_interval': 10,
+            'device': 'cuda' if torch.cuda.is_available() else 'cpu',
+            'circadian_period': 100,
+            'salience_threshold': 0.15,
+            # Plugin configurations
+            'enable_vision': True,
+            'enable_language': True,
+            'enable_audio': True,
+            'enable_memory': True,
+        }
+
+    def _initialize_sensors(self) -> Dict[str, Any]:
+        """Initialize sensor system (mock for now)"""
+        # TODO: Integrate real sensors from sage/core/sensor_fusion.py
+        return {
+            'vision': {'trust': 1.0, 'enabled': True},
+            'audio': {'trust': 1.0, 'enabled': True},
+            'proprioception': {'trust': 1.0, 'enabled': True},
+            'time': {'trust': 1.0, 'enabled': True},
+        }
+
+    async def run(self, max_cycles: Optional[int] = None):
+        """
+        Run consciousness loop continuously.
+
+        Args:
+            max_cycles: Maximum cycles to run (None = forever)
+        """
+        self.running = True
+
+        print("="*80)
+        print("SAGE Unified Consciousness Loop - Starting")
+        print("="*80)
+        print(f"Initial ATP: {self.metabolic.atp_current:.1f}")
+        print(f"Metabolic state: {self.metabolic.current_state.value}")
+        print(f"Simulation mode: {self.simulation_mode}")
+        print(f"Max cycles: {max_cycles or 'unlimited'}")
+        print()
+
+        try:
+            while self.running:
+                await self.step()
+
+                self.cycle_count += 1
+                self.stats['total_cycles'] += 1
+
+                # Check if we should stop
+                if max_cycles and self.cycle_count >= max_cycles:
+                    print(f"\n[Consciousness] Completed {max_cycles} cycles")
+                    break
+
+                # Periodic status
+                if self.cycle_count % 10 == 0:
+                    self._print_status()
+
+                # Small delay in simulation mode
+                if self.simulation_mode:
+                    await asyncio.sleep(0.01)  # 10ms
+                else:
+                    await asyncio.sleep(0.1)  # 100ms for real-time
+
+        except KeyboardInterrupt:
+            print("\n[Consciousness] Interrupted by user")
+        finally:
+            self.running = False
+            self._print_summary()
+
+    async def step(self):
+        """
+        Execute one consciousness cycle.
+
+        This is the core loop:
+        1. Gather sensor observations
+        2. Compute SNARC salience
+        3. Update metabolic state
+        4. Select plugins based on salience + state
+        5. Allocate ATP budget
+        6. Execute plugins via orchestrator
+        7. Update trust weights from results
+        8. Update all memory systems
+        9. Send results to effectors
+        """
+
+        # 1. Gather sensor observations
+        observations = self._gather_observations()
+
+        # 2. Compute SNARC salience for each observation
+        salience_map = self._compute_salience(observations)
+
+        # 3. Update metabolic state based on ATP and salience
+        high_salience_count = sum(1 for s in salience_map.values() if s.total > self.salience_threshold)
+        max_salience = max([s.total for s in salience_map.values()], default=0.0)
+
+        previous_state = self.metabolic.current_state
+
+        # Create cycle_data dict for metabolic controller
+        cycle_data = {
+            'atp_consumed': 0.0,  # Will be updated after plugin execution
+            'attention_load': high_salience_count,
+            'max_salience': max_salience,
+            'crisis_detected': False  # Could be set based on sensor anomalies
+        }
+
+        self.metabolic.update(cycle_data)
+
+        # Track state transitions
+        if self.metabolic.current_state != previous_state:
+            self.stats['state_transitions'] += 1
+            print(f"[Metabolic] State transition: {previous_state.value} → {self.metabolic.current_state.value}")
+
+        # 4. Select plugins based on salience + metabolic state
+        attention_targets = self._select_attention_targets(observations, salience_map)
+
+        # 5. Allocate ATP budget to plugins
+        budget_allocation = self._allocate_atp_budget(attention_targets)
+
+        # 6. Execute plugins via orchestrator (if we have ATP and targets)
+        results = {}
+        if attention_targets and budget_allocation['total'] > 0:
+            results = await self._execute_plugins(attention_targets, budget_allocation)
+            self.stats['plugins_executed'] += len(results)
+
+        # 7. Update trust weights from convergence quality
+        if results:
+            self._update_trust_weights(results)
+
+        # 8. Update all memory systems
+        if results:
+            self._update_memories(results, salience_map)
+
+        # 9. Send results to effectors (TODO: implement effector system)
+        # self._send_to_effectors(results)
+
+        # 10. Update statistics
+        self.stats['total_atp_consumed'] += budget_allocation.get('total', 0.0)
+        if salience_map:
+            avg_salience = np.mean([s.total for s in salience_map.values()])
+            self.stats['average_salience'] = (
+                0.9 * self.stats['average_salience'] + 0.1 * avg_salience
+            )
+
+    def _gather_observations(self) -> List[SensorObservation]:
+        """
+        Gather observations from all sensors.
+
+        TODO: Integrate with real sensor fusion system
+        For now, generates mock observations for testing.
+        """
+        observations = []
+
+        # Mock observations based on metabolic state
+        if self.metabolic.current_state in [MetabolicState.WAKE, MetabolicState.FOCUS]:
+            # Active states - generate sensory input
+            observations.append(SensorObservation(
+                sensor_id='vision_0',
+                modality='vision',
+                data={'type': 'scene', 'objects': ['table', 'cup']},
+                timestamp=time.time(),
+                trust=self.sensors['vision']['trust']
+            ))
+
+            if np.random.random() > 0.5:
+                observations.append(SensorObservation(
+                    sensor_id='audio_0',
+                    modality='audio',
+                    data={'type': 'speech', 'text': 'Hello'},
+                    timestamp=time.time(),
+                    trust=self.sensors['audio']['trust']
+                ))
+
+        # Always have time observation
+        observations.append(SensorObservation(
+            sensor_id='clock',
+            modality='time',
+            data={'cycle': self.cycle_count, 'timestamp': time.time()},
+            timestamp=time.time(),
+            trust=1.0
+        ))
+
+        return observations
+
+    def _compute_salience(
+        self,
+        observations: List[SensorObservation]
+    ) -> Dict[str, SalienceScore]:
+        """
+        Compute SNARC 5D salience for observations.
+
+        TODO: Integrate with real SNARC implementation
+        For now, generates mock salience scores.
+        """
+        salience_map = {}
+
+        for obs in observations:
+            # Mock salience computation
+            # In reality, this would use SNARC neural networks
+
+            if obs.modality == 'vision':
+                # Visual scenes have moderate novelty and surprise
+                salience = SalienceScore(
+                    surprise=np.random.random() * 0.5,
+                    novelty=np.random.random() * 0.6,
+                    arousal=0.3,
+                    reward=0.4,
+                    conflict=0.2
+                )
+            elif obs.modality == 'audio':
+                # Audio (especially speech) has high arousal and reward
+                salience = SalienceScore(
+                    surprise=0.4,
+                    novelty=0.3,
+                    arousal=0.7,  # Speech is arousing
+                    reward=0.8,   # Communication is rewarding
+                    conflict=0.1
+                )
+            else:
+                # Time and proprioception are low salience
+                salience = SalienceScore(
+                    surprise=0.1,
+                    novelty=0.1,
+                    arousal=0.1,
+                    reward=0.1,
+                    conflict=0.05
+                )
+
+            salience_map[obs.sensor_id] = salience
+
+        return salience_map
+
+    def _select_attention_targets(
+        self,
+        observations: List[SensorObservation],
+        salience_map: Dict[str, SalienceScore]
+    ) -> List[AttentionTarget]:
+        """
+        Select which observations need attention based on salience and metabolic state.
+
+        High salience observations always get attention.
+        In FOCUS state, we process more observations.
+        In REST/DREAM states, we process fewer.
+        """
+        targets = []
+
+        # Get max active plugins from metabolic state
+        max_plugins = self.metabolic.get_current_config().max_active_plugins
+
+        # Sort observations by salience (descending)
+        sorted_obs = sorted(
+            observations,
+            key=lambda o: salience_map[o.sensor_id].total,
+            reverse=True
+        )
+
+        # Select top N based on state and salience threshold
+        for obs in sorted_obs:
+            salience = salience_map[obs.sensor_id]
+
+            # Always process high-salience observations
+            if salience.total > self.salience_threshold or len(targets) < max_plugins:
+                # Map modality to required plugins
+                required_plugins = self._get_plugins_for_modality(obs.modality)
+
+                priority = salience.total * self.metabolic.get_current_config().atp_consumption_rate
+
+                targets.append(AttentionTarget(
+                    observation=obs,
+                    salience=salience,
+                    required_plugins=required_plugins,
+                    priority=priority
+                ))
+
+            if len(targets) >= max_plugins:
+                break
+
+        return targets
+
+    def _get_plugins_for_modality(self, modality: str) -> List[str]:
+        """Map sensor modality to required IRP plugins"""
+        modality_map = {
+            'vision': ['vision'],
+            'audio': ['audio', 'language'],  # Audio might contain speech
+            'proprioception': ['control'],
+            'time': [],  # Time doesn't need plugins
+        }
+        return modality_map.get(modality, [])
+
+    def _allocate_atp_budget(
+        self,
+        attention_targets: List[AttentionTarget]
+    ) -> Dict[str, float]:
+        """
+        Allocate ATP budget across plugins based on trust weights and priorities.
+
+        Higher trust plugins get more ATP.
+        Higher priority targets get more ATP.
+        Total allocation cannot exceed available ATP.
+        """
+        available_atp = self.metabolic.atp_current
+
+        # Collect all plugins needed with their priorities
+        plugin_priorities = {}
+        for target in attention_targets:
+            for plugin in target.required_plugins:
+                if plugin not in plugin_priorities:
+                    plugin_priorities[plugin] = 0.0
+                plugin_priorities[plugin] += target.priority
+
+        # Weight by trust
+        weighted_priorities = {
+            plugin: priority * self.plugin_trust_weights.get(plugin, 1.0)
+            for plugin, priority in plugin_priorities.items()
+        }
+
+        # Normalize to available ATP
+        total_weighted = sum(weighted_priorities.values())
+
+        allocation = {}
+        if total_weighted > 0:
+            for plugin, weighted_priority in weighted_priorities.items():
+                allocation[plugin] = (weighted_priority / total_weighted) * available_atp * 0.1  # Use only 10% of ATP per cycle
+
+        allocation['total'] = sum(allocation.values())
+
+        return allocation
+
+    async def _execute_plugins(
+        self,
+        attention_targets: List[AttentionTarget],
+        budget_allocation: Dict[str, float]
+    ) -> Dict[str, PluginResult]:
+        """
+        Execute plugins via orchestrator.
+
+        TODO: Integrate with real HRMOrchestrator.run() method
+        For now, mocks plugin execution.
+        """
+        results = {}
+
+        # For each attention target, execute required plugins
+        for target in attention_targets:
+            for plugin_name in target.required_plugins:
+                if plugin_name in self.orchestrator.plugins:
+                    # Mock execution (in reality, would call orchestrator.run_plugin())
+                    # This would consume ATP and update metabolic controller
+
+                    budget = budget_allocation.get(plugin_name, 0.0)
+
+                    if budget > 0.1:  # Minimum budget to run
+                        # Consume ATP
+                        self.metabolic.atp_current -= budget
+
+                        # Mock result
+                        results[plugin_name] = PluginResult(
+                            plugin_name=plugin_name,
+                            final_state=None,  # Mock
+                            history=[],
+                            telemetry={
+                                'trust': {
+                                    'monotonicity_ratio': 0.9,
+                                    'variance': 0.1,
+                                    'convergence_rate': 0.8
+                                },
+                                'salience': target.salience.total
+                            },
+                            budget_used=budget,
+                            execution_time=0.1
+                        )
+
+        return results
+
+    def _update_trust_weights(self, results: Dict[str, PluginResult]):
+        """
+        Update plugin trust weights based on convergence quality.
+
+        Plugins with good convergence (monotonic decrease, low variance)
+        get higher trust.
+        """
+        for plugin_name, result in results.items():
+            trust_metrics = result.telemetry.get('trust', {})
+
+            # Compute trust update
+            monotonicity = trust_metrics.get('monotonicity_ratio', 0.5)
+            convergence = trust_metrics.get('convergence_rate', 0.5)
+
+            quality = (monotonicity + convergence) / 2.0
+
+            # Exponential moving average
+            alpha = self.config.get('trust_update_rate', 0.1)
+            current_trust = self.plugin_trust_weights.get(plugin_name, 1.0)
+            self.plugin_trust_weights[plugin_name] = (
+                (1 - alpha) * current_trust + alpha * quality
+            )
+
+    def _update_memories(
+        self,
+        results: Dict[str, PluginResult],
+        salience_map: Dict[str, SalienceScore]
+    ):
+        """
+        Update all memory systems based on plugin results.
+
+        - SNARC memory: Store salient experiences
+        - IRP memory: Store successful convergence patterns
+        - Circular buffer: Update recent context
+        - Verbatim storage: Full-fidelity records in DREAM state
+        """
+
+        for plugin_name, result in results.items():
+            telemetry = result.telemetry
+
+            # 1. SNARC memory (selective storage via salience)
+            salience = telemetry.get('salience', 0.0)
+            if salience > self.salience_threshold:
+                self.snarc_memory.append({
+                    'cycle': self.cycle_count,
+                    'plugin': plugin_name,
+                    'salience': salience,
+                    'result': result
+                })
+
+            # 2. IRP pattern library (store good convergence patterns)
+            trust = telemetry.get('trust', {})
+            if trust.get('monotonicity_ratio', 0) > 0.8:
+                self.irp_memory.append({
+                    'cycle': self.cycle_count,
+                    'plugin': plugin_name,
+                    'pattern': result.history,
+                    'trust': trust
+                })
+
+            # 3. Circular buffer (recent context, keep last 100)
+            self.circular_buffer.append({
+                'cycle': self.cycle_count,
+                'plugin': plugin_name,
+                'telemetry': telemetry
+            })
+            if len(self.circular_buffer) > 100:
+                self.circular_buffer.pop(0)
+
+            # 4. Verbatim storage (only in DREAM state for consolidation)
+            if self.metabolic.current_state == MetabolicState.DREAM:
+                self.verbatim_storage.append({
+                    'cycle': self.cycle_count,
+                    'state': self.metabolic.current_state.value,
+                    'plugin': plugin_name,
+                    'full_result': result
+                })
+
+    def _print_status(self):
+        """Print current status"""
+        print(f"[Cycle {self.cycle_count:4d}] "
+              f"State: {self.metabolic.current_state.value:8s} "
+              f"ATP: {self.metabolic.atp_current:5.1f}/{self.metabolic.atp_max:.0f} "
+              f"Salience: {self.stats['average_salience']:.3f} "
+              f"Plugins: {self.stats['plugins_executed']}")
+
+    def _print_summary(self):
+        """Print final summary statistics"""
+        print("\n" + "="*80)
+        print("SAGE Consciousness Loop - Session Summary")
+        print("="*80)
+        print(f"Total cycles: {self.stats['total_cycles']}")
+        print(f"State transitions: {self.stats['state_transitions']}")
+        print(f"Plugins executed: {self.stats['plugins_executed']}")
+        print(f"Total ATP consumed: {self.stats['total_atp_consumed']:.1f}")
+        print(f"Average salience: {self.stats['average_salience']:.3f}")
+        print(f"Final ATP: {self.metabolic.atp_current:.1f}")
+        print(f"Final state: {self.metabolic.current_state.value}")
+        print()
+        print("Memory systems:")
+        print(f"  SNARC memory: {len(self.snarc_memory)} salient experiences")
+        print(f"  IRP patterns: {len(self.irp_memory)} convergence patterns")
+        print(f"  Circular buffer: {len(self.circular_buffer)} recent events")
+        print(f"  Verbatim storage: {len(self.verbatim_storage)} dream consolidations")
+        print("="*80)
+
+    def stop(self):
+        """Stop the consciousness loop gracefully"""
+        self.running = False
+
+
+# Convenience functions
+
+async def run_consciousness_loop(
+    config: Optional[Dict[str, Any]] = None,
+    max_cycles: Optional[int] = None,
+    initial_atp: float = 100.0
+):
+    """
+    Run SAGE consciousness loop (convenience function).
+
+    Args:
+        config: Configuration dict
+        max_cycles: Max cycles to run (None = forever)
+        initial_atp: Starting ATP budget
+    """
+    sage = SAGEConsciousness(
+        config=config,
+        initial_atp=initial_atp,
+        enable_circadian=True,
+        simulation_mode=True
+    )
+
+    await sage.run(max_cycles=max_cycles)
+
+    return sage
+
+
+# Example usage and testing
+
+if __name__ == "__main__":
+    import asyncio
+
+    print("SAGE Unified Consciousness Loop - Test")
+    print("Testing continuous operation with metabolic states\n")
+
+    # Run for 50 cycles
+    sage = asyncio.run(run_consciousness_loop(
+        max_cycles=50,
+        initial_atp=100.0
+    ))
+
+    print("\nTest complete!")

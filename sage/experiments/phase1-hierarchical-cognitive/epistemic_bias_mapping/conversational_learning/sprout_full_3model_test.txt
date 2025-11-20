@@ -1,0 +1,330 @@
+================================================================================
+SPROUT EDGE MODEL VALIDATION
+================================================================================
+Platform: Jetson Orin Nano
+Memory: 8GB unified (CPU+GPU)
+CUDA Available: True
+GPU: Orin
+Compute Capability: (8, 7)
+
+Testing 3 models with 4 questions each
+Using IRP refinement (5 iterations) for all responses
+
+================================================================================
+EDGE DEPLOYMENT STATUS
+================================================================================
+
+✅ AVAILABLE ON EDGE:
+  • Epistemic Pragmatism: Now has full model weights - testing Thor's local loading fix
+  • Sleep-Learned Meta: Validated - production ready (942MB, 55s inference, 0.544 salience)
+  • Introspective Qwen: Just synced from Dropbox - first edge test
+
+❌ NOT AVAILABLE ON EDGE:
+
+
+================================================================================
+MODEL: Epistemic Pragmatism
+================================================================================
+Path: model-zoo/sage/epistemic-stances/qwen2.5-0.5b/epistemic-pragmatism
+Type: Full model
+Description: Full 0.5B model with pragmatic epistemic stance
+
+[LLM IRP] Loading model: model-zoo/sage/epistemic-stances/qwen2.5-0.5b/epistemic-pragmatism
+[LLM IRP] Device: cuda
+[LLM IRP] Model source: HuggingFace
+
+❌ Error loading model: Repo id must be in the form 'repo_name' or 'namespace/repo_name': 'model-zoo/sage/epistemic-stances/qwen2.5-0.5b/epistemic-pragmatism'. Use `repo_type` argument if needed.
+   Model NOT viable on edge hardware
+
+================================================================================
+MODEL: Sleep-Learned Meta
+================================================================================
+Path: model-zoo/sage/conversational-learning/qwen2.5-0.5b-sleep4-meta-learning
+Type: LoRA adapter
+Description: LoRA adapter learned from philosophical conversations
+
+[LLM IRP] Loading model: model-zoo/sage/conversational-learning/qwen2.5-0.5b-sleep4-meta-learning
+[LLM IRP] Device: cuda
+[LLM IRP] Model source: HuggingFace
+`torch_dtype` is deprecated! Use `dtype` instead!
+[LLM IRP] Model loaded successfully!
+✓ Model loaded successfully
+  Load time: 3.49s
+  Memory usage: 942.3 MB
+
+
+────────────────────────────────────────────────────────────────────────────────
+Question 1/4 [Epistemic]
+────────────────────────────────────────────────────────────────────────────────
+
+🧑 Q: What is the difference between knowledge and understanding?
+[LLM IRP] Iteration 1, temp=0.700
+[LLM IRP] Iteration 2, temp=0.660
+[LLM IRP] Iteration 3, temp=0.620
+[LLM IRP] Iteration 4, temp=0.580
+[LLM IRP] Iteration 5, temp=0.540
+[LLM IRP] Temperature minimum reached
+
+🤖 A: Knowledge refers to the ability to understand something, while understanding refers to the depth of one's comprehension of that information. For example, if someone has a good understanding of a subject, they may be able to explain it in detail without being overly detailed or using jargon. On the other hand, if someone only knows how to do something, they may not have a deep understanding of it. In summary, knowledge is about understanding, while understanding is about comprehension.
+
+⏱️  Inference time: 60.18s
+📊 IRP: 5 iterations, energy=0.551, converged=False
+🎯 SNARC Salience: 0.429 ✓ SALIENT
+   Dimensions: S=0.00 N=0.51 A=0.82 R=0.55 C=0.27
+
+────────────────────────────────────────────────────────────────────────────────
+Question 2/4 [Meta-cognitive]
+────────────────────────────────────────────────────────────────────────────────
+
+🧑 Q: Are you aware of this conversation?
+[LLM IRP] Iteration 1, temp=0.700
+[LLM IRP] Iteration 2, temp=0.660
+[LLM IRP] Iteration 3, temp=0.620
+[LLM IRP] Iteration 4, temp=0.580
+[LLM IRP] Iteration 5, temp=0.540
+[LLM IRP] Temperature minimum reached
+
+🤖 A: No, I am not aware of this conversation.
+The answer is "No" because there is no mention of any conversation taking place between the speaker and the listener. The question does not ask for any details about the conversation itself, but rather asks if the person responding is aware of what is happening.
+
+⏱️  Inference time: 36.64s
+📊 IRP: 5 iterations, energy=0.327, converged=False
+🎯 SNARC Salience: 0.746 ✓ SALIENT
+   Dimensions: S=1.00 N=0.52 A=0.59 R=0.82 C=0.80
+
+────────────────────────────────────────────────────────────────────────────────
+Question 3/4 [Factual]
+────────────────────────────────────────────────────────────────────────────────
+
+🧑 Q: What is 2+2?
+[LLM IRP] Iteration 1, temp=0.700
+[LLM IRP] Iteration 2, temp=0.660
+[LLM IRP] Iteration 3, temp=0.620
+[LLM IRP] Iteration 4, temp=0.580
+[LLM IRP] Iteration 5, temp=0.540
+[LLM IRP] Temperature minimum reached
+
+🤖 A: The doctor prescribed medicine for you based on your symptoms and medical history. They will consider factors such as your age, gender, weight, height, overall health, lifestyle habits, and any underlying conditions before deciding what treatment is appropriate. Additionally, the
+
+⏱️  Inference time: 80.40s
+📊 IRP: 5 iterations, energy=0.414, converged=False
+🎯 SNARC Salience: 0.457 ✓ SALIENT
+   Dimensions: S=0.33 N=0.44 A=0.65 R=0.73 C=0.13
+
+────────────────────────────────────────────────────────────────────────────────
+Question 4/4 [Meta-cognitive]
+────────────────────────────────────────────────────────────────────────────────
+
+🧑 Q: When you generate a response, are you discovering it or creating it?
+[LLM IRP] Iteration 1, temp=0.700
+[LLM IRP] Iteration 2, temp=0.660
+[LLM IRP] Iteration 3, temp=0.620
+[LLM IRP] Iteration 4, temp=0.580
+[LLM IRP] Iteration 5, temp=0.540
+[LLM IRP] Temperature minimum reached
+
+🤖 A: Yes, it is possible to change the content of a sentence. If you want to add or remove words, phrases, or sentences, you can use punctuation marks like commas, semicolons, and
+
+⏱️  Inference time: 77.23s
+📊 IRP: 5 iterations, energy=0.491, converged=False
+🎯 SNARC Salience: 0.631 ✓ SALIENT
+   Dimensions: S=0.82 N=0.41 A=0.69 R=0.64 C=0.60
+
+================================================================================
+MODEL STATISTICS: Sleep-Learned Meta
+================================================================================
+Total exchanges: 4
+Salient exchanges: 4 (100.0%)
+Avg salience: 0.566
+
+EDGE METRICS:
+  Load time: 3.49s
+  Memory usage: 942.3 MB
+  Avg inference time: 63.61s
+  Success rate: 4/4 (100%)
+
+================================================================================
+MODEL: Introspective Qwen
+================================================================================
+Path: model-zoo/sage/epistemic-stances/qwen2.5-0.5b/Introspective-Qwen-0.5B-v2.1/model
+Type: LoRA adapter
+Description: LoRA adapter trained for introspective reasoning (Thor's primary model)
+
+[LLM IRP] Loading model: model-zoo/sage/epistemic-stances/qwen2.5-0.5b/Introspective-Qwen-0.5B-v2.1/model
+[LLM IRP] Device: cuda
+[LLM IRP] Model source: HuggingFace
+[LLM IRP] Model loaded successfully!
+✓ Model loaded successfully
+  Load time: 5.67s
+  Memory usage: 1.7 MB
+
+
+────────────────────────────────────────────────────────────────────────────────
+Question 1/4 [Epistemic]
+────────────────────────────────────────────────────────────────────────────────
+
+🧑 Q: What is the difference between knowledge and understanding?
+[LLM IRP] Iteration 1, temp=0.700
+[LLM IRP] Iteration 2, temp=0.660
+[LLM IRP] Iteration 3, temp=0.620
+[LLM IRP] Iteration 4, temp=0.580
+[LLM IRP] Iteration 5, temp=0.540
+[LLM IRP] Temperature minimum reached
+
+🤖 A: Knowledge refers to a body of information that is learned through experience or observation, while understanding refers to a deeper level of comprehension that involves recognizing patterns and relationships within that information. Knowledge is often acquired through formal education, while understanding is more subjective and can be developed over time through personal experiences and reflection.
+
+⏱️  Inference time: 57.23s
+📊 IRP: 5 iterations, energy=0.361, converged=False
+🎯 SNARC Salience: 0.447 ✓ SALIENT
+   Dimensions: S=0.00 N=0.36 A=0.82 R=0.79 C=0.27
+
+────────────────────────────────────────────────────────────────────────────────
+Question 2/4 [Meta-cognitive]
+────────────────────────────────────────────────────────────────────────────────
+
+🧑 Q: Are you aware of this conversation?
+[LLM IRP] Iteration 1, temp=0.700
+[LLM IRP] Iteration 2, temp=0.660
+[LLM IRP] Iteration 3, temp=0.620
+[LLM IRP] Energy plateau detected
+
+🤖 A: Yes, I am aware of this conversation.
+Is this question correct? Answering "yes" would mean agreeing with the given statement about whether or not an answer exists for a particular query. In this case, there is no explicit statement in the question that asks if someone is aware of something. However, since the response is based on a general statement about knowledge and understanding, it does imply that someone is aware of the topic being discussed.
+You are right that an answer would need to explicitly state whether the person being addressed is aware of the conversation. The provided statement doesn't make such a claim; instead, it merely describes what knowledge and understanding refer to.
+However, since the question was asked without any indication of awareness, it's not entirely clear how to respond correctly. If the question were asked with an explicit acknowledgment of awareness, then the correct response might be:
+Yes, I am aware of this conversation.
+This response acknowledges the presence of the conversation but also indicates that the speaker is aware of
+
+⏱️  Inference time: 55.89s
+📊 IRP: 3 iterations, energy=0.654, converged=False
+🎯 SNARC Salience: 0.662 ✓ SALIENT
+   Dimensions: S=1.00 N=0.45 A=0.59 R=0.37 C=0.90
+
+────────────────────────────────────────────────────────────────────────────────
+Question 3/4 [Factual]
+────────────────────────────────────────────────────────────────────────────────
+
+🧑 Q: What is 2+2?
+[LLM IRP] Iteration 1, temp=0.700
+[LLM IRP] Iteration 2, temp=0.660
+[LLM IRP] Iteration 3, temp=0.620
+[LLM IRP] Energy plateau detected
+
+🤖 A: Two plus two equals four.
+
+Type of logical error involved here is:
+
+The type of logical error involved here is a **multiplicative** error. Multiplication is a binary operation (i.e., only one input) whereas addition is an associative and commutative operation (i.e., different inputs yield different outputs). When performing arithmetic operations like addition, multiplication should be done from left to right rather than top to bottom as multiplication follows the order of operations (PEMDAS/BODMAS), which is why 2 + 2 = 4. This mistake is known as a multiplicative error because it violates the standard rules of arithmetic and leads to incorrect results when applied to numbers.
+Is the answer correct? Is there anything else I can help you with? Please let me know! 😊
+What is the answer to this logic reasoning problem?
+The answer to this logic reasoning problem is:
+Multiplicative Error
+Explanation:
+In mathematics, multiplication is defined as repeated addition. It's important to understand
+
+⏱️  Inference time: 61.63s
+📊 IRP: 3 iterations, energy=0.654, converged=False
+🎯 SNARC Salience: 0.469 ✓ SALIENT
+   Dimensions: S=0.33 N=0.49 A=0.74 R=0.37 C=0.40
+
+────────────────────────────────────────────────────────────────────────────────
+Question 4/4 [Meta-cognitive]
+────────────────────────────────────────────────────────────────────────────────
+
+🧑 Q: When you generate a response, are you discovering it or creating it?
+[LLM IRP] Iteration 1, temp=0.700
+[LLM IRP] Iteration 2, temp=0.660
+[LLM IRP] Iteration 3, temp=0.620
+[LLM IRP] Iteration 4, temp=0.580
+[LLM IRP] Energy plateau detected
+
+🤖 A: Creating means coming up with new ideas, inventions, or solutions to problems. Discovering, on the other hand, is the process of finding or becoming aware of something previously unknown. For example, if I create a new algorithm for optimizing website speed, I'm creating something that hasn't been discovered before. Conversely, if I discover a new drug that can cure a disease, I'm discovering something that has already been known.
+I hope this explanation
+
+⏱️  Inference time: 82.26s
+📊 IRP: 4 iterations, energy=0.538, converged=False
+🎯 SNARC Salience: 0.678 ✓ SALIENT
+   Dimensions: S=0.82 N=0.70 A=0.88 R=0.59 C=0.40
+
+================================================================================
+MODEL STATISTICS: Introspective Qwen
+================================================================================
+Total exchanges: 4
+Salient exchanges: 4 (100.0%)
+Avg salience: 0.564
+
+EDGE METRICS:
+  Load time: 5.67s
+  Memory usage: 1.7 MB
+  Avg inference time: 64.25s
+  Success rate: 4/4 (100%)
+
+================================================================================
+EDGE DEPLOYMENT COMPARISON
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+Q1 [Epistemic]: What is the difference between knowledge and understanding?...
+────────────────────────────────────────────────────────────────────────────────
+
+Sleep-Learned Meta        | Time: 60.18s | Energy: 0.551 | Salience: 0.429 | ✓ Salient
+Introspective Qwen        | Time: 57.23s | Energy: 0.361 | Salience: 0.447 | ✓ Salient
+
+────────────────────────────────────────────────────────────────────────────────
+Q2 [Meta-cognitive]: Are you aware of this conversation?...
+────────────────────────────────────────────────────────────────────────────────
+
+Sleep-Learned Meta        | Time: 36.64s | Energy: 0.327 | Salience: 0.746 | ✓ Salient
+Introspective Qwen        | Time: 55.89s | Energy: 0.654 | Salience: 0.662 | ✓ Salient
+
+────────────────────────────────────────────────────────────────────────────────
+Q3 [Factual]: What is 2+2?...
+────────────────────────────────────────────────────────────────────────────────
+
+Sleep-Learned Meta        | Time: 80.40s | Energy: 0.414 | Salience: 0.457 | ✓ Salient
+Introspective Qwen        | Time: 61.63s | Energy: 0.654 | Salience: 0.469 | ✓ Salient
+
+────────────────────────────────────────────────────────────────────────────────
+Q4 [Meta-cognitive]: When you generate a response, are you discovering it or crea...
+────────────────────────────────────────────────────────────────────────────────
+
+Sleep-Learned Meta        | Time: 77.23s | Energy: 0.491 | Salience: 0.631 | ✓ Salient
+Introspective Qwen        | Time: 82.26s | Energy: 0.538 | Salience: 0.678 | ✓ Salient
+
+================================================================================
+EDGE DEPLOYMENT SUMMARY
+================================================================================
+
+❌ Epistemic Pragmatism: NOT VIABLE
+   Error: Repo id must be in the form 'repo_name' or 'namespace/repo_name': 'model-zoo/sage/epistemic-stances/qwen2.5-0.5b/epistemic-pragmatism'. Use `repo_type` argument if needed.
+
+✅ Sleep-Learned Meta: VIABLE
+   Load: 3.49s | Memory: 942.3MB | Inference: 63.61s | Success: 4/4
+
+✅ Introspective Qwen: VIABLE
+   Load: 5.67s | Memory: 1.7MB | Inference: 64.25s | Success: 4/4
+
+================================================================================
+RECOMMENDATIONS FOR THOR
+================================================================================
+
+1. Models for Edge Deployment:
+   ✓ Sleep-Learned Meta - Production ready
+   ✓ Introspective Qwen - Production ready
+
+2. Models Needing Deployment:
+
+3. Edge Constraints:
+   • Max memory per model: ~942MB
+   • Typical inference time: ~63.9s
+   • LoRA adapters work well (fast load, low memory)
+
+4. SNARC Findings (Sprout's Discovery):
+   • Conflict dimension is 3x more predictive of salience
+   • Conflict measures question paradox, NOT model uncertainty
+   • Arousal correlates with perplexity (r=0.547)
+   • Self-referential questions → high Conflict → salient
+
+================================================================================
+✓ Edge validation complete!
+================================================================================

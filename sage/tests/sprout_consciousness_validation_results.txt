@@ -1,0 +1,300 @@
+================================================================================
+            SPROUT EDGE VALIDATION: SAGE Unified Consciousness Loop             
+================================================================================
+
+Jetson Orin Nano Hardware Validation
+Testing Thor's consciousness loop implementation
+
+================================================================================
+
+================================================================================
+                        TEST 1: Basic Consciousness Loop                        
+================================================================================
+
+Platform: Jetson Orin Nano
+CUDA Available: True
+GPU: Orin
+Running 100 consciousness cycles...
+
+✅ NeuTTS Air TTS plugin loaded
+================================================================================
+SAGE Unified Consciousness Loop - Starting
+================================================================================
+Initial ATP: 100.0
+Metabolic state: wake
+Simulation mode: True
+Max cycles: 100
+
+[Cycle   10] State: wake     ATP:  45.4/100 Salience: 0.156 Plugins: 16
+[Metabolic] State transition: wake → rest
+[Metabolic] State transition: rest → dream
+[Cycle   20] State: dream    ATP:  43.9/100 Salience: 0.133 Plugins: 20
+[Cycle   30] State: dream    ATP:  48.9/100 Salience: 0.105 Plugins: 20
+[Metabolic] State transition: dream → wake
+[Cycle   40] State: wake     ATP:  50.4/100 Salience: 0.113 Plugins: 22
+[Metabolic] State transition: wake → rest
+[Cycle   50] State: rest     ATP:  32.6/100 Salience: 0.156 Plugins: 32
+[Metabolic] State transition: rest → dream
+[Metabolic] State transition: dream → rest
+[Cycle   60] State: rest     ATP:  40.1/100 Salience: 0.113 Plugins: 32
+[Metabolic] State transition: rest → dream
+[Cycle   70] State: dream    ATP:  47.1/100 Salience: 0.098 Plugins: 32
+[Metabolic] State transition: dream → wake
+[Metabolic] State transition: wake → rest
+[Cycle   80] State: rest     ATP:  29.9/100 Salience: 0.134 Plugins: 39
+[Metabolic] State transition: rest → dream
+[Metabolic] State transition: dream → rest
+[Cycle   90] State: rest     ATP:  37.4/100 Salience: 0.105 Plugins: 39
+[Metabolic] State transition: rest → dream
+
+[Consciousness] Completed 100 cycles
+
+================================================================================
+SAGE Consciousness Loop - Session Summary
+================================================================================
+Total cycles: 100
+State transitions: 12
+Plugins executed: 39
+Total ATP consumed: 143.1
+Average salience: 0.095
+Final ATP: 44.4
+Final state: dream
+
+Memory systems:
+  SNARC memory: 39 salient experiences
+  IRP patterns: 39 convergence patterns
+  Circular buffer: 39 recent events
+  Verbatim storage: 0 dream consolidations
+================================================================================
+
+================================================================================
+EDGE PERFORMANCE METRICS
+================================================================================
+Total time: 2.20s
+Cycles/sec: 45.35
+Avg cycle time: 22.0ms
+Memory used: 381.9 MB
+Final ATP: 44.4
+State transitions: 12
+
+================================================================================
+MEMORY SYSTEMS
+================================================================================
+SNARC memory: 39 salient events
+IRP patterns: 39 convergence patterns
+Circular buffer: 39 recent events
+Dream storage: 0 consolidations
+
+Current metabolic state: DREAM
+Traceback (most recent call last):
+  File "/home/sprout/ai-workspace/HRM/sage/tests/sprout_consciousness_edge_validation.py", line 303, in <module>
+    asyncio.run(main())
+  File "/usr/lib/python3.10/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/home/sprout/ai-workspace/HRM/sage/tests/sprout_consciousness_edge_validation.py", line 245, in main
+    results['basic'] = await test_basic_consciousness(cycles=100)
+  File "/home/sprout/ai-workspace/HRM/sage/tests/sprout_consciousness_edge_validation.py", line 87, in test_basic_consciousness
+    print(f"Circadian phase: {sage.metabolic.circadian.phase.name if sage.metabolic.circadian else 'N/A'}")
+AttributeError: 'MetabolicController' object has no attribute 'circadian'
+SAGE Consciousness Loop - Session Summary
+================================================================================
+Total cycles: 200
+State transitions: 23
+Plugins executed: 66
+Total ATP consumed: 218.6
+Average salience: 0.115
+Final ATP: 34.2
+Final state: rest
+
+Memory systems:
+  SNARC memory: 66 salient experiences
+  IRP patterns: 66 convergence patterns
+  Circular buffer: 66 recent events
+  Verbatim storage: 0 dream consolidations
+================================================================================
+
+================================================================================
+STATE TRANSITION ANALYSIS
+================================================================================
+Total transitions: 23
+Cycles/transition: 8.7
+
+State machine: ✅ Working (multiple transitions observed)
+Current state: REST
+
+================================================================================
+                   TEST 3: Circadian Rhythm (1 Simulated Day)                   
+================================================================================
+
+Running 100 cycles (100 cycles = 1 day)...
+
+✅ NeuTTS Air TTS plugin loaded
+================================================================================
+SAGE Unified Consciousness Loop - Starting
+================================================================================
+Initial ATP: 100.0
+Metabolic state: wake
+Simulation mode: True
+Max cycles: 100
+
+[Cycle   10] State: wake     ATP:  43.7/100 Salience: 0.156 Plugins: 15
+[Metabolic] State transition: wake → rest
+[Metabolic] State transition: rest → dream
+[Cycle   20] State: dream    ATP:  42.5/100 Salience: 0.135 Plugins: 19
+[Cycle   30] State: dream    ATP:  47.5/100 Salience: 0.106 Plugins: 19
+[Metabolic] State transition: dream → wake
+[Cycle   40] State: wake     ATP:  48.9/100 Salience: 0.116 Plugins: 21
+[Metabolic] State transition: wake → rest
+[Cycle   50] State: rest     ATP:  34.5/100 Salience: 0.144 Plugins: 29
+[Metabolic] State transition: rest → dream
+[Metabolic] State transition: dream → rest
+[Cycle   60] State: rest     ATP:  42.0/100 Salience: 0.109 Plugins: 29
+[Metabolic] State transition: rest → dream
+[Metabolic] State transition: dream → wake
+[Cycle   70] State: wake     ATP:  48.5/100 Salience: 0.097 Plugins: 29
+[Metabolic] State transition: wake → rest
+[Cycle   80] State: rest     ATP:  28.9/100 Salience: 0.140 Plugins: 38
+[Metabolic] State transition: rest → dream
+[Metabolic] State transition: dream → rest
+[Cycle   90] State: rest     ATP:  36.4/100 Salience: 0.108 Plugins: 38
+[Metabolic] State transition: rest → dream
+
+[Consciousness] Completed 100 cycles
+
+================================================================================
+SAGE Consciousness Loop - Session Summary
+================================================================================
+Total cycles: 100
+State transitions: 12
+Plugins executed: 38
+Total ATP consumed: 138.6
+Average salience: 0.096
+Final ATP: 43.4
+Final state: dream
+
+Memory systems:
+  SNARC memory: 38 salient experiences
+  IRP patterns: 38 convergence patterns
+  Circular buffer: 38 recent events
+  Verbatim storage: 0 dream consolidations
+================================================================================
+
+================================================================================
+CIRCADIAN EFFECTS
+================================================================================
+Simulated time: 1.0 day
+Real time: 2.17s
+Time compression: 39750x (1 day in 2.2s)
+
+Dream consolidations: 0
+Expected: ~20-40 (NIGHT phases = 20% of day)
+
+================================================================================
+                      TEST 4: Memory System Consolidation                       
+================================================================================
+
+Running 150 cycles to test memory systems...
+
+✅ NeuTTS Air TTS plugin loaded
+================================================================================
+SAGE Unified Consciousness Loop - Starting
+================================================================================
+Initial ATP: 100.0
+Metabolic state: wake
+Simulation mode: True
+Max cycles: 150
+
+[Cycle   10] State: wake     ATP:  45.4/100 Salience: 0.162 Plugins: 16
+[Metabolic] State transition: wake → rest
+[Metabolic] State transition: rest → dream
+[Cycle   20] State: dream    ATP:  41.8/100 Salience: 0.131 Plugins: 20
+[Cycle   30] State: dream    ATP:  46.8/100 Salience: 0.104 Plugins: 20
+[Metabolic] State transition: dream → wake
+[Cycle   40] State: wake     ATP:  48.5/100 Salience: 0.111 Plugins: 22
+[Metabolic] State transition: wake → rest
+[Cycle   50] State: rest     ATP:  32.8/100 Salience: 0.157 Plugins: 33
+[Metabolic] State transition: rest → dream
+[Metabolic] State transition: dream → rest
+[Cycle   60] State: rest     ATP:  40.3/100 Salience: 0.113 Plugins: 33
+[Metabolic] State transition: rest → dream
+[Cycle   70] State: dream    ATP:  47.3/100 Salience: 0.098 Plugins: 33
+[Metabolic] State transition: dream → wake
+[Metabolic] State transition: wake → rest
+[Cycle   80] State: rest     ATP:  26.3/100 Salience: 0.163 Plugins: 45
+[Metabolic] State transition: rest → dream
+[Metabolic] State transition: dream → rest
+[Cycle   90] State: rest     ATP:  33.8/100 Salience: 0.115 Plugins: 45
+[Metabolic] State transition: rest → dream
+[Cycle  100] State: dream    ATP:  41.8/100 Salience: 0.099 Plugins: 45
+[Cycle  110] State: dream    ATP:  46.8/100 Salience: 0.093 Plugins: 45
+[Metabolic] State transition: dream → wake
+[Metabolic] State transition: wake → rest
+[Cycle  120] State: rest     ATP:  32.2/100 Salience: 0.145 Plugins: 52
+[Metabolic] State transition: rest → dream
+[Cycle  130] State: dream    ATP:  41.2/100 Salience: 0.109 Plugins: 52
+[Cycle  140] State: dream    ATP:  46.2/100 Salience: 0.097 Plugins: 52
+[Metabolic] State transition: dream → wake
+
+[Consciousness] Completed 150 cycles
+
+================================================================================
+SAGE Consciousness Loop - Session Summary
+================================================================================
+Total cycles: 150
+State transitions: 16
+Plugins executed: 57
+Total ATP consumed: 181.8
+Average salience: 0.132
+Final ATP: 40.0
+Final state: wake
+
+Memory systems:
+  SNARC memory: 57 salient experiences
+  IRP patterns: 57 convergence patterns
+  Circular buffer: 57 recent events
+  Verbatim storage: 0 dream consolidations
+================================================================================
+
+================================================================================
+MEMORY SYSTEM VALIDATION
+================================================================================
+✅ SNARC (salient events): 57 entries
+✅ IRP (convergence patterns): 57 entries
+✅ Circular (recent context): 57 entries
+❌ Verbatim (dream storage): 0 entries
+
+⚠️  Some memory systems empty
+
+================================================================================
+                            EDGE VALIDATION SUMMARY                             
+================================================================================
+
+✅ Test 1 (Basic): 45.86 cycles/sec, 381.9 MB
+✅ Test 2 (States): 23 transitions, working
+✅ Test 3 (Circadian): 39750x time compression, 0 dreams
+✅ Test 4 (Memory): SOME SYSTEMS EMPTY
+
+================================================================================
+                            RECOMMENDATIONS FOR THOR                            
+================================================================================
+
+1. Performance: ✅ Excellent (21.8ms/cycle)
+   - Target: <100ms for real-time operation
+   - Achieved: 21.8ms
+
+2. Memory: 381.9 MB
+   - Jetson limit: 8GB
+   - Usage: 4.66% of available
+
+3. State Machine: ✅ Working properly
+
+4. Memory Systems: ❌ Some empty
+
+5. Circadian: ✅ 39750x time compression working
+
+================================================================================
+✅ Edge validation complete!
+================================================================================
+

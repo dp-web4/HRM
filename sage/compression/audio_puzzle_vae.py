@@ -26,7 +26,7 @@ import torchaudio
 import torchaudio.transforms as T
 from typing import Tuple, Dict, Any
 
-from sage.compression.vision_puzzle_vae import VectorQuantizer
+from compression.vision_puzzle_vae import VectorQuantizer
 
 
 class AudioPreprocessor(nn.Module):

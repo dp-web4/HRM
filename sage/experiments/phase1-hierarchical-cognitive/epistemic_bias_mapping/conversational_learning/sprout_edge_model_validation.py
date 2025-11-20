@@ -55,34 +55,33 @@ def test_edge_model_validation():
         print(f"Compute Capability: {torch.cuda.get_device_capability(0)}")
     print()
 
-    # Models available on Sprout
+    # Models available on Sprout (ALL 3 NOW SYNCED!)
     models_available = [
         {
             'name': 'Epistemic Pragmatism',
             'path': 'model-zoo/sage/epistemic-stances/qwen2.5-0.5b/epistemic-pragmatism',
             'base': None,  # Full model
             'description': 'Full 0.5B model with pragmatic epistemic stance',
-            'expected': 'Should work - tested in Session 1'
+            'expected': 'Now has full model weights - testing Thor\'s local loading fix'
         },
         {
             'name': 'Sleep-Learned Meta',
             'path': 'model-zoo/sage/conversational-learning/qwen2.5-0.5b-sleep4-meta-learning',
             'base': 'Qwen/Qwen2.5-0.5B-Instruct',
             'description': 'LoRA adapter learned from philosophical conversations',
-            'expected': 'Should work - trained on Sprout (Session 1)'
-        }
-    ]
-
-    # Model NOT available on Sprout (Thor's model)
-    models_unavailable = [
+            'expected': 'Validated - production ready (942MB, 55s inference, 0.544 salience)'
+        },
         {
             'name': 'Introspective Qwen',
             'path': 'model-zoo/sage/epistemic-stances/qwen2.5-0.5b/Introspective-Qwen-0.5B-v2.1/model',
             'base': 'Qwen/Qwen2.5-0.5B-Instruct',
-            'description': 'LoRA adapter trained for introspective reasoning',
-            'reason': 'Not deployed to edge yet'
+            'description': 'LoRA adapter trained for introspective reasoning (Thor\'s primary model)',
+            'expected': 'Just synced from Dropbox - first edge test'
         }
     ]
+
+    # No unavailable models anymore - all 3 synced!
+    models_unavailable = []
 
     # Test questions (same as Thor's test for comparison)
     questions = [

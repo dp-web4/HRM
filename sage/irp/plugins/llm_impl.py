@@ -71,7 +71,14 @@ class LLMIRPPlugin:
         print(f"[LLM IRP] Device: {self.device}")
 
         # Determine if model path is local or HuggingFace
-        model_is_local = Path(self.base_model).exists()
+        # Check for actual model files (config.json + model weights)
+        base_path = Path(self.base_model)
+        model_is_local = (
+            (base_path / "config.json").exists() and
+            ((base_path / "model.safetensors").exists() or
+             (base_path / "pytorch_model.bin").exists() or
+             (base_path / "adapter_config.json").exists())
+        )
         tokenizer_kwargs = {"local_files_only": True} if model_is_local else {}
         model_kwargs = {"local_files_only": True} if model_is_local else {}
 

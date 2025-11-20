@@ -130,10 +130,19 @@ irp_iterations: 3  # From Track 9: 52% speedup
 **Status**: Already merged during rebase
 **Validation**: Tested and working
 
-### 2. Test Epistemic-Pragmatism with Fix
+### 2. ✅ DONE: Test Epistemic-Pragmatism with Fix
 **Action**: Run full test with epistemic-pragmatism now that fix is merged
-**Expected**: Should load correctly as local model
-**Timeline**: Next session
+**Status**: ✅ COMPLETE - Working perfectly
+**Results**: See `sage/tests/THOR_3MODEL_VALIDATION.md`
+
+**Validation Summary**:
+- ✅ Path detection working (config.json + model.safetensors detected)
+- ✅ Model loaded in 0.89s (no HuggingFace access)
+- ✅ Inference: 4.62s avg, **0.625 salience** (HIGHEST of all 3 models)
+- ✅ Capture rate: 100% (3/3 questions salient)
+- ✅ PRODUCTION READY
+
+**Key Finding**: Epistemic-Pragmatism has **10.8% HIGHER salience** than Sprout's models (0.625 vs 0.564-0.566)
 
 ### 3. Update Edge Optimization with Sprout's Data
 **Action**: Incorporate Sprout's 64s baseline into Track 9 analysis
@@ -271,10 +280,11 @@ Both iterate
 **Thor Actions**:
 1. ✅ Fix already merged (during rebase)
 2. ✅ Fix validated (tested successfully)
-3. ⏳ Update ACTIVE_WORK with Sprout's findings
-4. ⏳ Test epistemic-pragmatism with fix
+3. ✅ Update ACTIVE_WORK with Sprout's findings
+4. ✅ Test epistemic-pragmatism with fix (0.625 salience, HIGHEST!)
 5. ⏳ Deploy Track 9 optimization to Sprout
-6. ⏳ Integrate real models into consciousness loop
+6. ⏳ Test remaining 2 models on Thor (Introspective-Qwen, Sleep-Learned Meta)
+7. ⏳ Integrate real models into consciousness loop
 
 **Sprout Actions**:
 1. ⏳ Test Track 9 edge_optimized.yaml

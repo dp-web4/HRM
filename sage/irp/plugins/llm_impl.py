@@ -364,14 +364,19 @@ class ConversationalLLM:
         Returns:
             Tuple of (response, irp_info or None)
         """
-        # Build context from history
+        # Build context from history with clear role delineation
         context = None
         if include_history and self.history:
             recent_history = self.history[-self.max_history:]
-            context_lines = []
-            for q, a in recent_history:
-                context_lines.append(f"Q: {q}\nA: {a}")
-            context = "\n\n".join(context_lines)
+            context_lines = ["CONVERSATION HISTORY:"]
+            for i, (q, a) in enumerate(recent_history, 1):
+                context_lines.append(f"[Turn {i}]")
+                context_lines.append(f"User: {q}")
+                context_lines.append(f"Assistant: {a}")
+                context_lines.append("")  # Blank line between turns
+            context_lines.append("---")
+            context_lines.append("Current turn:")
+            context = "\n".join(context_lines)
 
         if use_irp:
             # IRP refinement

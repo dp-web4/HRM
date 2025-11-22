@@ -214,6 +214,14 @@ async def test_cogitation_loop():
             if entry['corrections_made']:
                 print(f"    Turn {entry['cycle']}: {entry['corrections_made'][0][:100]}...")
 
+    emotional_stats = sage.get_emotional_stats()
+    print(f"\nEmotional Statistics:")
+    print(f"  Avg curiosity: {emotional_stats['avg_curiosity']:.2f}")
+    print(f"  Avg frustration: {emotional_stats['avg_frustration']:.2f}")
+    print(f"  Avg progress: {emotional_stats['avg_progress']:.2f}")
+    print(f"  Avg engagement: {emotional_stats['avg_engagement']:.2f}")
+    print(f"  Interventions: {emotional_stats['interventions']}")
+
     return {
         'name': 'Cogitation Loop',
         'avg_quality': avg_quality,
@@ -221,6 +229,7 @@ async def test_cogitation_loop():
         'avg_salience': stats['avg_salience'],
         'capture_rate': stats['capture_rate'],
         'cogitation_stats': cogitation_stats,
+        'emotional_stats': emotional_stats,
         'results': results
     }
 
@@ -272,6 +281,14 @@ async def compare_all_versions():
     michaud_to_cogitation = ((cogitation_summary['avg_quality'] - 2.8) / 2.8 * 100)
     print(f"  Michaud → Cogitation: {michaud_to_cogitation:+.1f}% change (2.8 → {cogitation_summary['avg_quality']:.1f})")
 
+    print(f"\n🎭 Emotional Modulation (NEW):")
+    emo = cogitation_summary['emotional_stats']
+    print(f"  Curiosity: {emo['avg_curiosity']:.2f} (novelty-seeking)")
+    print(f"  Frustration: {emo['avg_frustration']:.2f} (stagnation detection)")
+    print(f"  Progress: {emo['avg_progress']:.2f} (improvement awareness)")
+    print(f"  Engagement: {emo['avg_engagement']:.2f} (conversation quality)")
+    print(f"  Behavioral interventions: {emo['interventions']}")
+
     print("\n" + "="*80)
     print("✅ COGITATION INTEGRATION TEST COMPLETE")
     print("="*80)
@@ -288,3 +305,4 @@ if __name__ == "__main__":
     print(f"\nFinal Identity Accuracy: {summary['avg_identity']:.2f}")
     print(f"Final Quality: {summary['avg_quality']:.1f}/4")
     print(f"Cogitation Interventions: {summary['cogitation_stats']['corrections_made']}")
+    print(f"Emotional Interventions: {summary['emotional_stats']['interventions']}")

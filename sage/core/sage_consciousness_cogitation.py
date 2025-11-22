@@ -25,8 +25,10 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from typing import Dict, Any, Optional
 import time
 import socket
+import numpy as np
 
 from sage.core.sage_consciousness_michaud import MichaudSAGE
+from sage.core.emotional_state import EmotionalStateTracker
 
 
 class CogitationSAGE(MichaudSAGE):
@@ -82,9 +84,14 @@ class CogitationSAGE(MichaudSAGE):
         # Cogitation tracking
         self.cogitation_history = []
 
+        # Emotional tracking
+        self.emotional_tracker = EmotionalStateTracker(history_length=20)
+        self.emotional_history = []
+
         print(f"[Cogitation SAGE] Identity-grounded consciousness initialized")
         print(f"  Hardware anchor: {self.hardware_identity}")
         print(f"  Cogitation enabled: {enable_cogitation}")
+        print(f"  Emotional tracking enabled: True")
 
     def _detect_hardware_identity(self) -> str:
         """
@@ -199,13 +206,44 @@ class CogitationSAGE(MichaudSAGE):
                   f"{len(self.cogitation_history[-1]['issues_detected'])}")
         print(f"[LLM] Response: {response[:100]}...")
 
+        # Update emotional state
+        emotions = self.emotional_tracker.update({
+            'response': response,
+            'salience': 0.5,  # Will get actual from SNARC later
+            'quality': 1.0 - final_energy,
+            'convergence_quality': 1.0 - final_energy
+        })
+
+        print(f"[EMOTION] {self.emotional_tracker.get_emotional_summary()}")
+
+        # Apply behavioral recommendations
+        recs = self.emotional_tracker.get_behavioral_recommendations()
+        if recs['state_change']:
+            print(f"[EMOTION] Recommendation: {recs['explanation']}")
+            # Optional: self.attention_manager.force_state(recs['state_change'])
+
+        if recs['temperature_adjustment'] != 0.0:
+            old_temp = self.llm.llm.initial_temperature
+            new_temp = max(0.3, min(0.7, old_temp + recs['temperature_adjustment']))
+            self.llm.llm.initial_temperature = new_temp
+            print(f"[EMOTION] Temperature: {old_temp:.2f} → {new_temp:.2f}")
+
+        # Store emotional history
+        self.emotional_history.append({
+            'cycle': self.cycle_count,
+            'emotions': emotions,
+            'recommendations': recs
+        })
+
         return {
             'response': response,
             'irp_info': irp_info,
             'convergence_quality': 1.0 - final_energy,
             'satisfaction': satisfaction,
             'inference_time': inference_time,
-            'cogitation_verified': verification_performed
+            'cogitation_verified': verification_performed,
+            'emotions': emotions,
+            'emotional_recommendations': recs
         }
 
     def _cogitate_on_response(
@@ -302,6 +340,29 @@ CORRECTED: [corrected response, or "VERIFIED" if no issues]
             'corrections_made': sum(
                 len(c['corrections_made']) for c in self.cogitation_history
             )
+        }
+
+    def get_emotional_stats(self) -> Dict:
+        """Get emotional statistics."""
+        if not self.emotional_history:
+            return {
+                'total_cycles': 0,
+                'avg_curiosity': 0.0,
+                'avg_frustration': 0.0,
+                'avg_progress': 0.0,
+                'avg_engagement': 0.0,
+                'interventions': 0
+            }
+
+        return {
+            'total_cycles': len(self.emotional_history),
+            'avg_curiosity': np.mean([e['emotions']['curiosity'] for e in self.emotional_history]),
+            'avg_frustration': np.mean([e['emotions']['frustration'] for e in self.emotional_history]),
+            'avg_progress': np.mean([e['emotions']['progress'] for e in self.emotional_history]),
+            'avg_engagement': np.mean([e['emotions']['engagement'] for e in self.emotional_history]),
+            'interventions': sum(1 for e in self.emotional_history
+                               if e['recommendations']['state_change'] or
+                                  e['recommendations']['temperature_adjustment'] != 0.0)
         }
 
     def __repr__(self):

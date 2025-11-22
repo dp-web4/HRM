@@ -1,0 +1,41 @@
+{
+  "trained": {
+    "recon_loss": 0.002192982848500833,
+    "perplexity": 7.561874580383301,
+    "codes_used": 10,
+    "code_usage_counts": [
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0
+    ]
+  },
+  "untrained": {
+    "recon_loss": 0.027322984710335733,
+    "perplexity": 1.26827938079834,
+    "codes_used": 3,
+    "code_usage_counts": [
+      0.0,
+      0.0,
+      0.0,
+      100.0,
+      0.0,
+      0.0,
+      0.0,
+      100.0,
+      0.0,
+      100.0
+    ]
+  },
+  "improvement": {
+    "recon_loss_reduction_percent": 91.97385325304059,
+    "perplexity_change": 6.293595199584961,
+    "additional_codes": 7
+  }
+}

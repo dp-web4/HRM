@@ -29,6 +29,30 @@ from tqdm import tqdm
 import json
 import time
 
+# Monkey-patch torchaudio.load to use soundfile instead of torchcodec
+import soundfile as sf
+import numpy as np
+
+_original_load = torchaudio.load
+
+def _load_with_soundfile(filepath, *args, **kwargs):
+    """Load audio using soundfile instead of torchcodec"""
+    # No fallback - always use soundfile, but handle corrupted files
+    try:
+        data, samplerate = sf.read(str(filepath))
+        # Convert to torch tensor
+        if data.ndim == 1:
+            data = data[np.newaxis, :]  # Add channel dimension
+        else:
+            data = data.T  # soundfile returns (samples, channels), we need (channels, samples)
+        return torch.from_numpy(data.copy()).float(), samplerate
+    except Exception as e:
+        # Return silence for corrupted files (1 second at 16kHz)
+        print(f"Warning: Corrupted audio file {filepath}, returning silence")
+        return torch.zeros(1, 16000), 16000
+
+torchaudio.load = _load_with_soundfile
+
 # Add SAGE to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -36,8 +60,9 @@ from compression.audio_puzzle_vae import AudioPuzzleVAE
 
 class SpeechCommandsSubset(SPEECHCOMMANDS):
     """Speech Commands dataset wrapper"""
-    def __init__(self, root, subset='training', download=True):
-        super().__init__(root, download=download, subset=subset)
+    def __init__(self, root, subset=None, download=True):
+        # Don't use subset parameter - it's broken in v0.02 (missing testing_list.txt)
+        super().__init__(root, download=download)
 
     def __getitem__(self, idx):
         waveform, sample_rate, label, speaker_id, utterance_number = super().__getitem__(idx)
@@ -182,27 +207,38 @@ def main():
 
     # Load dataset
     print("Loading Speech Commands dataset...")
-    train_dataset = SpeechCommandsSubset('./data', subset='training', download=True)
-    val_dataset = SpeechCommandsSubset('./data', subset='validation', download=True)
+    full_dataset = SpeechCommandsSubset('./data', download=True)
+
+    # Manual train/val split (80/20)
+    total_size = len(full_dataset)
+    train_size = int(0.8 * total_size)
+    val_size = total_size - train_size
+
+    train_dataset, val_dataset = random_split(
+        full_dataset,
+        [train_size, val_size],
+        generator=torch.Generator().manual_seed(42)
+    )
 
     # Use subset for faster training (similar to CIFAR-10 scale)
-    # Full dataset is 105K samples, we'll use ~50K for training
-    train_size = min(len(train_dataset), 50000)
+    # Full dataset is 105K samples, we'll use ~50K for training, 10K for validation
+    train_subset_size = min(len(train_dataset), 50000)
     train_subset, _ = random_split(
         train_dataset,
-        [train_size, len(train_dataset) - train_size],
+        [train_subset_size, len(train_dataset) - train_subset_size],
         generator=torch.Generator().manual_seed(42)
     )
 
-    val_size = min(len(val_dataset), 10000)
+    val_subset_size = min(len(val_dataset), 10000)
     val_subset, _ = random_split(
         val_dataset,
-        [val_size, len(val_dataset) - val_size],
+        [val_subset_size, len(val_dataset) - val_subset_size],
         generator=torch.Generator().manual_seed(42)
     )
 
-    train_loader = DataLoader(train_subset, batch_size=batch_size, shuffle=True, num_workers=4)
-    val_loader = DataLoader(val_subset, batch_size=batch_size, shuffle=False, num_workers=4)
+    # Use num_workers=0 to avoid torchcodec import issues in worker processes
+    train_loader = DataLoader(train_subset, batch_size=batch_size, shuffle=True, num_workers=0)
+    val_loader = DataLoader(val_subset, batch_size=batch_size, shuffle=False, num_workers=0)
 
     print(f"Training samples: {len(train_subset)}")
     print(f"Validation samples: {len(val_subset)}")

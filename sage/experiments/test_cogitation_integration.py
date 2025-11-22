@@ -222,6 +222,14 @@ async def test_cogitation_loop():
     print(f"  Avg engagement: {emotional_stats['avg_engagement']:.2f}")
     print(f"  Interventions: {emotional_stats['interventions']}")
 
+    memory_stats = sage.get_memory_stats()
+    print(f"\nHierarchical Memory Statistics:")
+    print(f"  Experiences stored: {memory_stats['experiences_count']}")
+    print(f"  Patterns formed: {memory_stats['patterns_count']}")
+    print(f"  Concepts emerged: {memory_stats['concepts_count']}")
+    if memory_stats['experiences_count'] > 0:
+        print(f"  Cross-session learning: Active")
+
     return {
         'name': 'Cogitation Loop',
         'avg_quality': avg_quality,
@@ -230,6 +238,7 @@ async def test_cogitation_loop():
         'capture_rate': stats['capture_rate'],
         'cogitation_stats': cogitation_stats,
         'emotional_stats': emotional_stats,
+        'memory_stats': memory_stats,
         'results': results
     }
 
@@ -281,13 +290,21 @@ async def compare_all_versions():
     michaud_to_cogitation = ((cogitation_summary['avg_quality'] - 2.8) / 2.8 * 100)
     print(f"  Michaud → Cogitation: {michaud_to_cogitation:+.1f}% change (2.8 → {cogitation_summary['avg_quality']:.1f})")
 
-    print(f"\n🎭 Emotional Modulation (NEW):")
+    print(f"\n🎭 Emotional Modulation:")
     emo = cogitation_summary['emotional_stats']
     print(f"  Curiosity: {emo['avg_curiosity']:.2f} (novelty-seeking)")
     print(f"  Frustration: {emo['avg_frustration']:.2f} (stagnation detection)")
     print(f"  Progress: {emo['avg_progress']:.2f} (improvement awareness)")
     print(f"  Engagement: {emo['avg_engagement']:.2f} (conversation quality)")
     print(f"  Behavioral interventions: {emo['interventions']}")
+
+    print(f"\n🧠 Hierarchical Memory (NEW):")
+    mem = cogitation_summary['memory_stats']
+    print(f"  Experiences stored: {mem['experiences_count']}")
+    print(f"  Patterns formed: {mem['patterns_count']}")
+    print(f"  Concepts emerged: {mem['concepts_count']}")
+    if mem['experiences_count'] > 0:
+        print(f"  Cross-session learning: Active")
 
     print("\n" + "="*80)
     print("✅ COGITATION INTEGRATION TEST COMPLETE")
@@ -306,3 +323,4 @@ if __name__ == "__main__":
     print(f"Final Quality: {summary['avg_quality']:.1f}/4")
     print(f"Cogitation Interventions: {summary['cogitation_stats']['corrections_made']}")
     print(f"Emotional Interventions: {summary['emotional_stats']['interventions']}")
+    print(f"Experiences Stored: {summary['memory_stats']['experiences_count']}")

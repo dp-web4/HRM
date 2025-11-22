@@ -26,9 +26,11 @@ from typing import Dict, Any, Optional
 import time
 import socket
 import numpy as np
+import torch
 
 from sage.core.sage_consciousness_michaud import MichaudSAGE
 from sage.core.emotional_state import EmotionalStateTracker
+from sage.memory.hierarchical_memory import HierarchicalMemory
 
 
 class CogitationSAGE(MichaudSAGE):
@@ -88,10 +90,22 @@ class CogitationSAGE(MichaudSAGE):
         self.emotional_tracker = EmotionalStateTracker(history_length=20)
         self.emotional_history = []
 
+        # Hierarchical memory (cross-session learning)
+        self.hierarchical_memory = HierarchicalMemory({
+            'experience_salience_threshold': 0.6,
+            'pattern_min_cluster_size': 3,
+            'pattern_max_distance': 0.5,
+            'concept_min_patterns': 2,
+            'max_experiences': 10000,
+            'pattern_update_frequency': 10
+        })
+        self.experience_count = 0
+
         print(f"[Cogitation SAGE] Identity-grounded consciousness initialized")
         print(f"  Hardware anchor: {self.hardware_identity}")
         print(f"  Cogitation enabled: {enable_cogitation}")
         print(f"  Emotional tracking enabled: True")
+        print(f"  Hierarchical memory enabled: True")
 
     def _detect_hardware_identity(self) -> str:
         """
@@ -235,6 +249,45 @@ class CogitationSAGE(MichaudSAGE):
             'recommendations': recs
         })
 
+        # Store experience in hierarchical memory
+        # Note: Using placeholder salience and latent until VAE integration
+        salience = 0.7  # Placeholder above threshold (0.6) - will get from SNARC in future
+        if salience >= 0.5:  # Check if worth attempting storage
+            # Get current memory stats before storing
+            mem_stats_before = self.hierarchical_memory.get_stats()
+
+            # Create placeholder 64D latent representation
+            # TODO: Use VAE encoding of (question, response) pair
+            latent = torch.randn(64)
+
+            exp_id = self.hierarchical_memory.store_experience(
+                observation=None,  # Don't store raw data (too large)
+                salience=salience,
+                latent=latent,
+                plugin='llm',
+                energy=final_energy,
+                context={
+                    'question': question[:100],  # Truncated
+                    'response': response[:100],   # Truncated
+                    'quality': 1.0 - final_energy,
+                    'cycle': self.cycle_count,
+                    'cogitation_verified': verification_performed,
+                    'emotions': emotions
+                }
+            )
+
+            self.experience_count += 1
+
+            # Check for new patterns/concepts
+            mem_stats_after = self.hierarchical_memory.get_stats()
+
+            print(f"[MEMORY] Stored experience {exp_id} (salience={salience:.3f}, count={self.experience_count})")
+
+            if mem_stats_after['patterns_count'] > mem_stats_before['patterns_count']:
+                print(f"[MEMORY] New pattern formed! Total patterns: {mem_stats_after['patterns_count']}")
+            if mem_stats_after['concepts_count'] > mem_stats_before['concepts_count']:
+                print(f"[MEMORY] New concept formed! Total concepts: {mem_stats_after['concepts_count']}")
+
         return {
             'response': response,
             'irp_info': irp_info,
@@ -364,6 +417,10 @@ CORRECTED: [corrected response, or "VERIFIED" if no issues]
                                if e['recommendations']['state_change'] or
                                   e['recommendations']['temperature_adjustment'] != 0.0)
         }
+
+    def get_memory_stats(self) -> Dict:
+        """Get hierarchical memory statistics."""
+        return self.hierarchical_memory.get_stats()
 
     def __repr__(self):
         stats = self.get_snarc_statistics()

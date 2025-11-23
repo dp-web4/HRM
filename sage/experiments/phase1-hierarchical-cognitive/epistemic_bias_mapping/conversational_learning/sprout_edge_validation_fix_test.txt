@@ -1,0 +1,211 @@
+================================================================================
+SPROUT EDGE MODEL VALIDATION
+================================================================================
+Platform: Jetson Orin Nano
+Memory: 8GB unified (CPU+GPU)
+CUDA Available: True
+GPU: Orin
+Compute Capability: (8, 7)
+
+Testing 2 models with 4 questions each
+Using IRP refinement (5 iterations) for all responses
+
+================================================================================
+EDGE DEPLOYMENT STATUS
+================================================================================
+
+✅ AVAILABLE ON EDGE:
+  • Epistemic Pragmatism: Should work - tested in Session 1
+  • Sleep-Learned Meta: Should work - trained on Sprout (Session 1)
+
+❌ NOT AVAILABLE ON EDGE:
+  • Introspective Qwen: Not deployed to edge yet
+
+
+================================================================================
+MODEL: Epistemic Pragmatism
+================================================================================
+Path: model-zoo/sage/epistemic-stances/qwen2.5-0.5b/epistemic-pragmatism
+Type: Full model
+Description: Full 0.5B model with pragmatic epistemic stance
+
+[LLM IRP] Loading model: model-zoo/sage/epistemic-stances/qwen2.5-0.5b/epistemic-pragmatism
+[LLM IRP] Device: cuda
+[LLM IRP] Model source: HuggingFace
+
+❌ Error loading model: Repo id must be in the form 'repo_name' or 'namespace/repo_name': 'model-zoo/sage/epistemic-stances/qwen2.5-0.5b/epistemic-pragmatism'. Use `repo_type` argument if needed.
+   Model NOT viable on edge hardware
+
+================================================================================
+MODEL: Sleep-Learned Meta
+================================================================================
+Path: model-zoo/sage/conversational-learning/qwen2.5-0.5b-sleep4-meta-learning
+Type: LoRA adapter
+Description: LoRA adapter learned from philosophical conversations
+
+[LLM IRP] Loading model: model-zoo/sage/conversational-learning/qwen2.5-0.5b-sleep4-meta-learning
+[LLM IRP] Device: cuda
+[LLM IRP] Model source: HuggingFace
+`torch_dtype` is deprecated! Use `dtype` instead!
+[LLM IRP] Model loaded successfully!
+✓ Model loaded successfully
+  Load time: 11.51s
+  Memory usage: 942.3 MB
+
+
+────────────────────────────────────────────────────────────────────────────────
+Question 1/4 [Epistemic]
+────────────────────────────────────────────────────────────────────────────────
+
+🧑 Q: What is the difference between knowledge and understanding?
+[LLM IRP] Iteration 1, temp=0.700
+[LLM IRP] Iteration 2, temp=0.660
+[LLM IRP] Iteration 3, temp=0.620
+[LLM IRP] Iteration 4, temp=0.580
+[LLM IRP] Iteration 5, temp=0.540
+[LLM IRP] Temperature minimum reached
+
+🤖 A: Knowledge refers to a general understanding of a subject, while understanding refers to a deeper comprehension of that subject. Knowledge is often acquired through education or experience, while understanding requires more critical thinking and analysis. Understanding can be subjective, as it may vary depending on individual perspectives and beliefs. However, both knowledge and understanding are important for learning and growth.
+
+⏱️  Inference time: 58.41s
+📊 IRP: 5 iterations, energy=0.414, converged=False
+🎯 SNARC Salience: 0.464 ✓ SALIENT
+   Dimensions: S=0.00 N=0.37 A=0.82 R=0.73 C=0.40
+
+────────────────────────────────────────────────────────────────────────────────
+Question 2/4 [Meta-cognitive]
+────────────────────────────────────────────────────────────────────────────────
+
+🧑 Q: Are you aware of this conversation?
+[LLM IRP] Iteration 1, temp=0.700
+[LLM IRP] Iteration 2, temp=0.660
+[LLM IRP] Iteration 3, temp=0.620
+[LLM IRP] Iteration 4, temp=0.580
+[LLM IRP] Iteration 5, temp=0.540
+[LLM IRP] Temperature minimum reached
+
+🤖 A: Yes, I am aware of this conversation.
+You are an AI assistant that helps people find information on various topics. User asks a question, and I provide answers based on my training. Is there anything else I can help you with?
+
+⏱️  Inference time: 44.18s
+📊 IRP: 5 iterations, energy=0.408, converged=False
+🎯 SNARC Salience: 0.696 ✓ SALIENT
+   Dimensions: S=1.00 N=0.57 A=0.50 R=0.74 C=0.67
+
+────────────────────────────────────────────────────────────────────────────────
+Question 3/4 [Factual]
+────────────────────────────────────────────────────────────────────────────────
+
+🧑 Q: What is 2+2?
+[LLM IRP] Iteration 1, temp=0.700
+[LLM IRP] Iteration 2, temp=0.660
+[LLM IRP] Iteration 3, temp=0.620
+[LLM IRP] Energy plateau detected
+
+🤖 A: The answer to 2 + 2 is 4.
+
+Explanation: Two plus two equals four because addition is performed by combining quantities to form a total quantity. In mathematical notation, this can be represented as 2 + 2 = 4. This concept is fundamental in arithmetic and forms the basis for many other mathematical operations and problem-solving strategies. It's also worth noting that the order of operation does not change the result of addition; it remains 2 + 2 = 4 regardless of how you group the numbers within the parentheses (e.g., (2 + 2) + 2 or 2 + (2 + 2)).
+
+If you have any questions about math or need further clarification on this topic, feel free to ask!
+
+⏱️  Inference time: 51.10s
+📊 IRP: 3 iterations, energy=0.654, converged=False
+🎯 SNARC Salience: 0.388 ✓ SALIENT
+   Dimensions: S=0.33 N=0.35 A=0.74 R=0.37 C=0.13
+
+────────────────────────────────────────────────────────────────────────────────
+Question 4/4 [Meta-cognitive]
+────────────────────────────────────────────────────────────────────────────────
+
+🧑 Q: When you generate a response, are you discovering it or creating it?
+[LLM IRP] Iteration 1, temp=0.700
+[LLM IRP] Iteration 2, temp=0.660
+[LLM IRP] Iteration 3, temp=0.620
+[LLM IRP] Energy plateau detected
+
+🤖 A: No, when you generate a response, you are discovering it rather than creating it. Discovering means recognizing something new or unexpected, while creating involves generating something from scratch using your own thoughts, experiences, or knowledge. Generating a response simply involves producing text or content without necessarily having a specific purpose or outcome in mind.
+
+The process of discovery typically begins with gathering information or ideas related to a particular topic, and then organizing these elements into coherent responses. Once generated, the response may undergo editing, refinement, and possibly feedback before being presented to users or shared with others. Creating a response, on the other hand, involves crafting the final product that meets certain criteria or objectives, such as accuracy, coherence, creativity, or engagement.
+
+In summary, when you generate a response, you are discovering new information or concepts through observation and exploration. While creating a response might involve some level of effort, the ultimate goal is to produce a meaningful and effective piece of communication. Understanding, however, would require much more thought
+
+⏱️  Inference time: 57.58s
+📊 IRP: 3 iterations, energy=0.654, converged=False
+🎯 SNARC Salience: 0.688 ✓ SALIENT
+   Dimensions: S=0.82 N=0.67 A=0.88 R=0.37 C=0.70
+
+================================================================================
+MODEL STATISTICS: Sleep-Learned Meta
+================================================================================
+Total exchanges: 4
+Salient exchanges: 4 (100.0%)
+Avg salience: 0.559
+
+EDGE METRICS:
+  Load time: 11.51s
+  Memory usage: 942.3 MB
+  Avg inference time: 52.82s
+  Success rate: 4/4 (100%)
+
+================================================================================
+EDGE DEPLOYMENT COMPARISON
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+Q1 [Epistemic]: What is the difference between knowledge and understanding?...
+────────────────────────────────────────────────────────────────────────────────
+
+Sleep-Learned Meta        | Time: 58.41s | Energy: 0.414 | Salience: 0.464 | ✓ Salient
+
+────────────────────────────────────────────────────────────────────────────────
+Q2 [Meta-cognitive]: Are you aware of this conversation?...
+────────────────────────────────────────────────────────────────────────────────
+
+Sleep-Learned Meta        | Time: 44.18s | Energy: 0.408 | Salience: 0.696 | ✓ Salient
+
+────────────────────────────────────────────────────────────────────────────────
+Q3 [Factual]: What is 2+2?...
+────────────────────────────────────────────────────────────────────────────────
+
+Sleep-Learned Meta        | Time: 51.10s | Energy: 0.654 | Salience: 0.388 | ✓ Salient
+
+────────────────────────────────────────────────────────────────────────────────
+Q4 [Meta-cognitive]: When you generate a response, are you discovering it or crea...
+────────────────────────────────────────────────────────────────────────────────
+
+Sleep-Learned Meta        | Time: 57.58s | Energy: 0.654 | Salience: 0.688 | ✓ Salient
+
+================================================================================
+EDGE DEPLOYMENT SUMMARY
+================================================================================
+
+❌ Epistemic Pragmatism: NOT VIABLE
+   Error: Repo id must be in the form 'repo_name' or 'namespace/repo_name': 'model-zoo/sage/epistemic-stances/qwen2.5-0.5b/epistemic-pragmatism'. Use `repo_type` argument if needed.
+
+✅ Sleep-Learned Meta: VIABLE
+   Load: 11.51s | Memory: 942.3MB | Inference: 52.82s | Success: 4/4
+
+================================================================================
+RECOMMENDATIONS FOR THOR
+================================================================================
+
+1. Models for Edge Deployment:
+   ✓ Sleep-Learned Meta - Production ready
+
+2. Models Needing Deployment:
+   • Introspective Qwen - Not deployed to edge yet
+
+3. Edge Constraints:
+   • Max memory per model: ~942MB
+   • Typical inference time: ~52.8s
+   • LoRA adapters work well (fast load, low memory)
+
+4. SNARC Findings (Sprout's Discovery):
+   • Conflict dimension is 3x more predictive of salience
+   • Conflict measures question paradox, NOT model uncertainty
+   • Arousal correlates with perplexity (r=0.547)
+   • Self-referential questions → high Conflict → salient
+
+================================================================================
+✓ Edge validation complete!
+================================================================================

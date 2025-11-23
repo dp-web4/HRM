@@ -176,8 +176,8 @@ class VoiceSAGESession:
 
         # Iterative refinement
         for iteration in range(3):
-            state = self.llm_plugin.step(state, t=iteration)
-            energy = self.llm_plugin.energy(state, t=iteration)
+            state = self.llm_plugin.step(state)
+            energy = self.llm_plugin.energy(state)
 
             # Early stopping if converged
             if energy < 0.1:

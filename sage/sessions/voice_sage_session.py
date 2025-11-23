@@ -158,8 +158,8 @@ class VoiceSAGESession:
             'prompt': text,
             'memory': self.conversation_history[-5:] if self.conversation_history else [],
             'sage_state': {
-                'atp': self.sage.metabolic_controller.get_atp(),
-                'metabolic_state': str(self.sage.metabolic_controller.get_state()),
+                'atp': self.sage.metabolic_controller.atp_current,
+                'metabolic_state': self.sage.metabolic_controller.current_state.value,
                 'cycle_count': self.sage.cycle_count
             }
         }

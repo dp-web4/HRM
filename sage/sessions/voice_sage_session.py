@@ -35,6 +35,9 @@ from irp.plugins.introspective_qwen_impl import IntrospectiveQwenIRP
 # Pattern matching for fast responses
 from cognitive.pattern_responses import PatternResponseEngine
 
+# Debug output to terminal
+from irp.plugins.text_output_impl import TextOutputIRP
+
 
 class VoiceSAGESession:
     """
@@ -116,7 +119,18 @@ class VoiceSAGESession:
         self.pattern_engine = PatternResponseEngine()
         print(f"✓ Pattern engine: {len(self.pattern_engine.patterns)} patterns")
 
-        # 6. Non-verbal acknowledgments for natural flow
+        # 6. Initialize debug output terminal
+        print("\n6. Initializing debug output terminal...")
+        self.debug_out = TextOutputIRP({
+            'log_file': '/tmp/sage_conversation_live.log',
+            'terminal': 'gnome-terminal',
+            'auto_launch': True,
+            'append_mode': False,
+            'timestamp': True
+        })
+        print(f"✓ Debug terminal launched: /tmp/sage_conversation_live.log")
+
+        # 7. Non-verbal acknowledgments for natural flow
         self.non_verbal_acks = ["uhm", "mm-hmm", "uh-huh", "yeah", "right"]
         self.ack_index = 0
 
@@ -196,6 +210,7 @@ class VoiceSAGESession:
         4. Non-verbal ack before slow processing
         """
         print(f"\n👤 You: {text}")
+        self.debug_out.write(f"👤 You: {text}")
 
         # HIGH PRIORITY: Stop command
         if 'stop' in text.lower():
@@ -207,6 +222,7 @@ class VoiceSAGESession:
             # Acknowledge
             response = "Ok"
             print(f"🤖 SAGE: {response}")
+            self.debug_out.write(f"🤖 SAGE (stop): {response}")
             self.speak(response)
             self.conversation_history.append({'speaker': 'Human', 'message': text})
             self.conversation_history.append({'speaker': 'SAGE', 'message': response})
@@ -223,6 +239,7 @@ class VoiceSAGESession:
             pattern_response = self.pattern_engine.generate_response(text)
             if pattern_response:
                 print(f"🤖 SAGE (fast): {pattern_response}")
+                self.debug_out.write(f"🤖 SAGE (fast): {pattern_response}")
                 self.tts_speaking = True
                 self.speak_incrementally(pattern_response)  # Speak in sentences
                 self.tts_speaking = False
@@ -268,6 +285,7 @@ class VoiceSAGESession:
         latency = time.time() - start_time
 
         print(f"🤖 SAGE (IRP, {latency*1000:.0f}ms, {iteration+1} iterations): {response}")
+        self.debug_out.write(f"🤖 SAGE (IRP, {latency*1000:.0f}ms, {iteration+1} iter): {response}")
 
         # Speak response incrementally (sentence by sentence)
         self.tts_speaking = True

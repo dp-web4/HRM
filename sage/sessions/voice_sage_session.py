@@ -183,7 +183,7 @@ class VoiceSAGESession:
             if energy < 0.1:
                 break
 
-        response = state.get('response', "I'm processing...")
+        response = state.get('current_response', "I'm processing...")
         latency = time.time() - start_time
 
         print(f"🤖 SAGE (IRP, {latency*1000:.0f}ms, {iteration+1} iterations): {response}")
@@ -196,18 +196,6 @@ class VoiceSAGESession:
         # Update conversation history
         self.conversation_history.append(('Human', text))
         self.conversation_history.append(('SAGE', response))
-
-        # Record in SAGE memory
-        if self.sage.memory:
-            self.sage.memory.observe_episode(
-                query=text,
-                response=response,
-                quality_score=1.0 - energy,
-                metadata={
-                    'irp_iterations': iteration + 1,
-                    'latency_ms': latency * 1000
-                }
-            )
 
     def run(self):
         """Run continuous SAGE consciousness loop with voice I/O"""

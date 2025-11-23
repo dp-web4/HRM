@@ -137,13 +137,16 @@ class IntrospectiveQwenIRP:
         """
         iteration = state['iteration']
 
+        # Get max_new_tokens from config (default to 512 for non-voice, but voice overrides to 80)
+        max_tokens = self.config.get('max_new_tokens', 512)
+
         # Generate response (or refine previous)
         if iteration == 0:
             # Initial generation - use full context
             response = self._generate(
                 prompt=state['full_context'],
                 temperature=0.7,  # Allow creativity
-                max_tokens=512     # No arbitrary limits
+                max_tokens=max_tokens
             )
         else:
             # Refinement - ask model to improve previous response
@@ -155,7 +158,7 @@ Please refine this response to be more coherent and complete. Address any gaps o
             response = self._generate(
                 prompt=refine_prompt,
                 temperature=0.5,  # More focused
-                max_tokens=512
+                max_tokens=max_tokens
             )
 
         # Update state

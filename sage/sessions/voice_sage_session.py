@@ -31,6 +31,9 @@ from interfaces.tts_effector import TTSEffector
 # IRP with learned model
 from irp.plugins.introspective_qwen_impl import IntrospectiveQwenIRP
 
+# Pattern matching for fast responses
+from cognitive.pattern_responses import PatternResponseEngine
+
 
 class VoiceSAGESession:
     """
@@ -107,7 +110,12 @@ class VoiceSAGESession:
         })
         # TTS is direct I/O, not registered with effector hub
 
-        # 5. Non-verbal acknowledgments for natural flow
+        # 5. Initialize pattern matcher for fast responses
+        print("\n5. Initializing pattern matcher...")
+        self.pattern_engine = PatternResponseEngine()
+        print(f"✓ Pattern engine: {len(self.pattern_engine.patterns)} patterns")
+
+        # 6. Non-verbal acknowledgments for natural flow
         self.non_verbal_acks = ["uhm", "mm-hmm", "uh-huh", "yeah", "right"]
         self.ack_index = 0
 
@@ -137,22 +145,54 @@ class VoiceSAGESession:
 
     def process_speech_input(self, text: str):
         """
-        Process speech input through IRP and respond.
+        Process speech input through pattern matching or IRP.
 
         Implements:
-        1. Interrupt any active TTS
-        2. Get response via IRP
-        3. Non-verbal ack before slow processing
-        4. Speak response
+        1. High-priority "stop" command (interrupt and acknowledge)
+        2. Fast path: pattern matching for common queries
+        3. Slow path: IRP with learned model for complex queries
+        4. Non-verbal ack before slow processing
         """
         print(f"\n👤 You: {text}")
 
-        # Interrupt active speech
+        # HIGH PRIORITY: Stop command
+        if 'stop' in text.lower():
+            # Interrupt any active speech immediately
+            if self.tts_speaking:
+                self.tts.stop_all()
+                self.tts_speaking = False
+                print("[stopped]")
+
+            # Acknowledge
+            response = "Ok"
+            print(f"🤖 SAGE: {response}")
+            self.speak(response)
+            self.conversation_history.append(('Human', text))
+            self.conversation_history.append(('SAGE', response))
+            return
+
+        # Interrupt active speech (for other inputs)
         if self.tts_speaking:
             self.tts.stop_all()
             self.tts_speaking = False
             print("[interrupted]")
 
+        # FAST PATH: Try pattern matching first
+        try:
+            pattern_response = self.pattern_engine.generate_response(text)
+            if pattern_response:
+                print(f"🤖 SAGE (fast): {pattern_response}")
+                self.tts_speaking = True
+                self.speak(pattern_response)
+                self.tts_speaking = False
+
+                self.conversation_history.append(('Human', text))
+                self.conversation_history.append(('SAGE', pattern_response))
+                return
+        except:
+            pass  # Fall through to slow path
+
+        # SLOW PATH: Use IRP with learned model
         # Build context for LLM
         context = {
             'prompt': text,
@@ -164,7 +204,7 @@ class VoiceSAGESession:
             }
         }
 
-        # Give non-verbal ack immediately
+        # Give non-verbal ack immediately before slow processing
         ack = self.get_non_verbal_ack()
         print(f"🤖 SAGE: {ack}... [thinking via IRP]")
         self.speak(ack, blocking=False)

@@ -37,7 +37,6 @@ try:
     # Import epistemic skill tools
     from epistemic.query.search import query_skills_programmatic, recommend_skill_programmatic
     from epistemic.tools.skill_detector import SkillDetector
-    from blockchain.scripts.witness import witness_skill
     SKILLS_AVAILABLE = True
 except ImportError:
     SKILLS_AVAILABLE = False
@@ -124,7 +123,8 @@ class SkillLearningManager:
         machine: str = 'thor',
         project: str = 'sage',
         min_skill_confidence: float = 0.6,
-        pattern_repetition_threshold: int = 3
+        pattern_repetition_threshold: int = 3,
+        witness_manager: Optional[Any] = None
     ):
         """
         Initialize skill learning manager.
@@ -134,11 +134,13 @@ class SkillLearningManager:
             project: Project context
             min_skill_confidence: Minimum confidence for skill application
             pattern_repetition_threshold: Times pattern must repeat before creating skill
+            witness_manager: Optional external witness manager (Phase 3)
         """
         self.machine = machine
         self.project = project
         self.min_confidence = min_skill_confidence
         self.pattern_threshold = pattern_repetition_threshold
+        self.witness_manager = witness_manager
 
         if SKILLS_AVAILABLE:
             self.skill_detector = SkillDetector()
@@ -527,15 +529,15 @@ class SkillLearningManager:
                 indicators={'convergence_profile': pattern.convergence_profile}
             )
 
-            # Witness on blockchain
-            witness_skill(
-                entity=self.machine,
-                skill_id=skill_id,
-                skill_name=skill_name,
-                category='consciousness',
-                quality=pattern.average_quality,
-                success_rate=pattern.success_count / (pattern.success_count + pattern.failure_count)
-            )
+            # Witness on blockchain (Phase 3)
+            if self.witness_manager:
+                self.witness_manager.witness_skill(
+                    skill_id=skill_id,
+                    skill_name=skill_name,
+                    category='consciousness',
+                    quality=pattern.average_quality,
+                    success_rate=pattern.success_count / (pattern.success_count + pattern.failure_count)
+                )
 
             print(f"[SkillLearning] 🎓 NEW SKILL CREATED: {skill_name}")
             print(f"[SkillLearning]    ID: {skill_id}")
@@ -649,6 +651,7 @@ class SkillLearningManager:
 def create_skill_manager(
     machine: str = 'thor',
     project: str = 'sage',
+    witness_manager: Optional[Any] = None,
     **kwargs
 ) -> SkillLearningManager:
     """
@@ -657,6 +660,7 @@ def create_skill_manager(
     Args:
         machine: Hardware entity
         project: Project context
+        witness_manager: Optional external witness manager (Phase 3)
         **kwargs: Additional configuration
 
     Returns:
@@ -665,5 +669,6 @@ def create_skill_manager(
     return SkillLearningManager(
         machine=machine,
         project=project,
+        witness_manager=witness_manager,
         **kwargs
     )

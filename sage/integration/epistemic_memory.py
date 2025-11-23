@@ -38,7 +38,6 @@ try:
     from epistemic.tools.add_discovery import add_discovery_programmatic
     from epistemic.tools.episode_tracker import record_episode_programmatic
     from epistemic.query.search import query_context_programmatic
-    from blockchain.scripts.witness import witness_discovery, witness_episode
     EPISTEMIC_AVAILABLE = True
 except ImportError:
     # Fallback mode - SAGE works without epistemic integration
@@ -182,7 +181,8 @@ class EpistemicMemoryBridge:
         machine: str = 'thor',
         project: str = 'sage',
         salience_threshold: float = 0.7,
-        enable_witnessing: bool = True
+        enable_witnessing: bool = True,
+        witness_manager: Optional[Any] = None
     ):
         """
         Initialize epistemic memory bridge.
@@ -192,11 +192,25 @@ class EpistemicMemoryBridge:
             project: Project context ('sage', 'hrm', etc.)
             salience_threshold: Minimum composite score for storage (0.7 = high)
             enable_witnessing: Witness on blockchain (default True)
+            witness_manager: Optional external witness manager (Phase 3)
         """
         self.machine = machine
         self.project = project
         self.salience_threshold = salience_threshold
         self.enable_witnessing = enable_witnessing and EPISTEMIC_AVAILABLE
+
+        # Initialize witness manager (Phase 3)
+        if witness_manager:
+            self.witness_manager = witness_manager
+        elif enable_witnessing:
+            from .witness_manager import create_witness_manager
+            self.witness_manager = create_witness_manager(
+                machine=machine,
+                project=project,
+                enable_witnessing=EPISTEMIC_AVAILABLE
+            )
+        else:
+            self.witness_manager = None
 
         if not EPISTEMIC_AVAILABLE:
             print(f"[EpistemicBridge] Running in fallback mode (epistemic tools unavailable)")
@@ -245,15 +259,14 @@ class EpistemicMemoryBridge:
                     **epistemic_scores
                 )
 
-                # Witness on blockchain if enabled
-                if self.enable_witnessing:
-                    witness_discovery(
-                        entity=self.machine,
+                # Witness on blockchain (Phase 3)
+                if self.witness_manager:
+                    self.witness_manager.witness_discovery(
                         knowledge_id=discovery_id,
                         title=observation.summary(),
                         domain=f"{self.project}/observations",
                         quality=observation.snarc_scores.composite_score(),
-                        tags=f"sage,{observation.modality}"
+                        tags=[f'sage', observation.modality]
                     )
 
                 print(f"[EpistemicBridge] ✅ Stored observation: {discovery_id[:12]}...")
@@ -299,12 +312,10 @@ class EpistemicMemoryBridge:
                     knowledge_ids=session.discoveries_witnessed
                 )
 
-                # Witness episode on blockchain if enabled
-                if self.enable_witnessing:
-                    witness_episode(
-                        entity=self.machine,
+                # Witness episode on blockchain (Phase 3)
+                if self.witness_manager:
+                    self.witness_manager.witness_episode(
                         episode_id=episode_id,
-                        project=self.project,
                         quality=session.quality_score,
                         discoveries=session.high_salience_count,
                         failures=session.convergence_failures,

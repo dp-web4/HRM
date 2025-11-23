@@ -65,18 +65,28 @@ class SkillSAGEConsciousness(EpistemicSAGEConsciousness):
             enable_skill_application: Apply skills from library
             **kwargs: Additional args for EpistemicSAGEConsciousness
         """
-        # Initialize epistemic consciousness
+        # Create witness manager (Phase 3)
+        from integration.witness_manager import create_witness_manager
+        witness_manager = create_witness_manager(
+            machine=machine,
+            project=project,
+            enable_witnessing=kwargs.get('enable_witnessing', True)
+        )
+
+        # Initialize epistemic consciousness with witness manager
         super().__init__(
             machine=machine,
             project=project,
+            witness_manager=witness_manager,
             **kwargs
         )
 
-        # Initialize skill manager
+        # Initialize skill manager with witness manager
         print(f"[Skills] Initializing skill learning...")
         self.skill_manager = create_skill_manager(
             machine=machine,
-            project=project
+            project=project,
+            witness_manager=witness_manager
         )
 
         self.enable_skill_discovery = enable_skill_discovery

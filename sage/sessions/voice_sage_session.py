@@ -97,15 +97,15 @@ class VoiceSAGESession:
         })
         self.sage.register_sensor(self.audio_sensor)
 
-        # 4. Register TTS effector
-        print("\n4. Registering TTS effector...")
+        # 4. Initialize TTS effector
+        print("\n4. Initializing TTS effector...")
         self.tts = TTSEffector({
             'piper_path': '/home/sprout/ai-workspace/piper/piper/piper',
             'model_path': '/home/sprout/ai-workspace/piper/en_US-lessac-medium.onnx',
             'bt_sink': bt_sink,
             'enabled': True
         })
-        self.sage.register_effector('tts', self.tts)
+        # TTS is direct I/O, not registered with effector hub
 
         # 5. Non-verbal acknowledgments for natural flow
         self.non_verbal_acks = ["uhm", "mm-hmm", "uh-huh", "yeah", "right"]
@@ -137,14 +137,13 @@ class VoiceSAGESession:
 
     def process_speech_input(self, text: str):
         """
-        Process speech input through SAGE consciousness.
+        Process speech input through IRP and respond.
 
         Implements:
         1. Interrupt any active TTS
-        2. Add observation to SAGE
-        3. Get response via IRP
-        4. Non-verbal ack if slow path
-        5. Speak response
+        2. Get response via IRP
+        3. Non-verbal ack before slow processing
+        4. Speak response
         """
         print(f"\n👤 You: {text}")
 
@@ -153,9 +152,6 @@ class VoiceSAGESession:
             self.tts.stop_all()
             self.tts_speaking = False
             print("[interrupted]")
-
-        # Add to SAGE as observation
-        self.sage.add_observation(text, sensor_id='voice_input')
 
         # Build context for LLM
         context = {
@@ -168,55 +164,50 @@ class VoiceSAGESession:
             }
         }
 
-        # Check if fast response (pattern match) possible
-        # For now, always use IRP (future: add pattern matching)
-        use_slow_path = True
+        # Give non-verbal ack immediately
+        ack = self.get_non_verbal_ack()
+        print(f"🤖 SAGE: {ack}... [thinking via IRP]")
+        self.speak(ack, blocking=False)
+        time.sleep(0.3)
 
-        if use_slow_path:
-            # Give non-verbal ack immediately
-            ack = self.get_non_verbal_ack()
-            print(f"🤖 SAGE: {ack}... [thinking via IRP]")
-            self.speak(ack, blocking=False)
-            time.sleep(0.3)
+        # Process through IRP
+        start_time = time.time()
+        state = self.llm_plugin.init_state(context)
 
-            # Process through IRP
-            start_time = time.time()
-            state = self.llm_plugin.init_state(context)
+        # Iterative refinement
+        for iteration in range(3):
+            state = self.llm_plugin.step(state, t=iteration)
+            energy = self.llm_plugin.energy(state, t=iteration)
 
-            # Iterative refinement
-            for iteration in range(3):
-                state = self.llm_plugin.step(state, t=iteration)
-                energy = self.llm_plugin.energy(state, t=iteration)
+            # Early stopping if converged
+            if energy < 0.1:
+                break
 
-                # Early stopping if converged
-                if energy < 0.1:
-                    break
+        response = state.get('response', "I'm processing...")
+        latency = time.time() - start_time
 
-            response = state.get('response', "I'm processing...")
-            latency = time.time() - start_time
+        print(f"🤖 SAGE (IRP, {latency*1000:.0f}ms, {iteration+1} iterations): {response}")
 
-            print(f"🤖 SAGE (IRP, {latency*1000:.0f}ms, {iteration+1} iterations): {response}")
+        # Speak response
+        self.tts_speaking = True
+        self.speak(response)
+        self.tts_speaking = False
 
-            # Speak response
-            self.tts_speaking = True
-            self.speak(response)
-            self.tts_speaking = False
+        # Update conversation history
+        self.conversation_history.append(('Human', text))
+        self.conversation_history.append(('SAGE', response))
 
-            # Update conversation history
-            self.conversation_history.append(('Human', text))
-            self.conversation_history.append(('SAGE', response))
-
-            # Record in SAGE memory
-            if self.sage.memory:
-                self.sage.memory.observe_episode(
-                    query=text,
-                    response=response,
-                    quality_score=1.0 - energy,
-                    metadata={
-                        'irp_iterations': iteration + 1,
-                        'latency_ms': latency * 1000
-                    }
-                )
+        # Record in SAGE memory
+        if self.sage.memory:
+            self.sage.memory.observe_episode(
+                query=text,
+                response=response,
+                quality_score=1.0 - energy,
+                metadata={
+                    'irp_iterations': iteration + 1,
+                    'latency_ms': latency * 1000
+                }
+            )
 
     def run(self):
         """Run continuous SAGE consciousness loop with voice I/O"""

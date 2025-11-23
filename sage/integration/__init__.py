@@ -8,5 +8,6 @@ Bridges SAGE consciousness with external infrastructure:
 """
 
 from .epistemic_memory import EpistemicMemoryBridge
+from .skill_learning import SkillLearningManager
 
-__all__ = ['EpistemicMemoryBridge']
+__all__ = ['EpistemicMemoryBridge', 'SkillLearningManager']

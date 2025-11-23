@@ -199,11 +199,10 @@ class VoiceSAGESession:
 
         # HIGH PRIORITY: Stop command
         if 'stop' in text.lower():
-            # Interrupt any active speech immediately
-            if self.tts_speaking:
-                self.tts.stop_all()
-                self.tts_speaking = False
-                print("[stopped]")
+            # Always flush TTS queue (kills all queued and active speech)
+            self.tts.stop_all()
+            self.tts_speaking = False
+            print("[stopped - flushed all queued responses]")
 
             # Acknowledge
             response = "Ok"

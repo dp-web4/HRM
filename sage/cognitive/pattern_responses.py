@@ -218,6 +218,24 @@ class PatternResponseEngine:
         self.match_count.clear()
         self.last_match = None
 
+    def get_mrh_profile(self) -> Dict[str, str]:
+        """
+        Get Markov Relevancy Horizon profile for pattern matching
+
+        Pattern matching operates at:
+        - deltaR (spatial): local - no external resources, pure local regex
+        - deltaT (temporal): ephemeral - instant responses, no state persistence
+        - deltaC (complexity): simple - direct pattern matching, no reasoning
+
+        Returns:
+            MRH profile dict
+        """
+        return {
+            'deltaR': 'local',
+            'deltaT': 'ephemeral',
+            'deltaC': 'simple'
+        }
+
 
 class CognitiveRouter:
     """

@@ -316,6 +316,24 @@ Please refine this response to be more coherent and complete. Address any gaps o
 
         print(f"Trust updated: {self.trust_score:.3f}")
 
+    def get_mrh_profile(self) -> Dict[str, str]:
+        """
+        Get Markov Relevancy Horizon profile for Introspective-Qwen IRP
+
+        Introspective-Qwen operates at:
+        - deltaR (spatial): local - model runs on local GPU, no network calls
+        - deltaT (temporal): session - maintains conversation context across turns
+        - deltaC (complexity): agent-scale - single-agent iterative reasoning
+
+        Returns:
+            MRH profile dict
+        """
+        return {
+            'deltaR': 'local',
+            'deltaT': 'session',
+            'deltaC': 'agent-scale'
+        }
+
 
 def test_irp_integration():
     """Test Introspective-Qwen with full IRP support"""

@@ -4,6 +4,41 @@
 See `../private-context/machines/` for machine-specific details.
 Project supports multiple platforms including WSL2, Linux, and Jetson.
 
+## 🔍 Epistemic Database Integration
+
+**IMPORTANT: Use the Memory epistemic database for knowledge management!**
+
+### Quick Access
+```bash
+# From anywhere:
+cd /home/sprout/ai-workspace/Memory/epistemic
+
+# Search existing knowledge
+python3 tools/quick_search.py "your topic"
+python3 tools/quick_search.py --tag sage
+python3 tools/quick_search.py --project hrm
+
+# Add new knowledge
+python3 tools/quick_add.py --interactive
+```
+
+### What to Log
+- Discoveries about SAGE/IRP architecture
+- Failed approaches (with lessons learned)
+- Plugin implementation patterns
+- MRH usage patterns
+- Integration insights between HRM/Web4/Memory
+
+### Database Contains
+- MRH framework definitions (use `--tag mrh` to find)
+- SAGE consciousness patterns
+- IRP plugin designs
+- Cross-project connections
+
+**Rule:** If you figured something out about HRM, log it so others (and future you) can find it.
+
+See: `/home/sprout/ai-workspace/Memory/WORKFLOW_GUIDE.md`
+
 ## Git Authentication
 **Universal Push Command**:
 ```bash

@@ -113,6 +113,7 @@ def infer_situation_mrh(text: str, context: Optional[Dict] = None) -> Dict[str, 
     - Question words → session + agent-scale (requires reasoning)
     - Greetings/acks → ephemeral + simple
     - Complex/analyze/explain → session + agent-scale
+    - Temporal keywords → appropriate temporal extent
 
     Args:
         text: Situation or query text
@@ -125,33 +126,56 @@ def infer_situation_mrh(text: str, context: Optional[Dict] = None) -> Dict[str, 
         >>> infer_situation_mrh("Hello!")
         {'deltaR': 'local', 'deltaT': 'ephemeral', 'deltaC': 'simple'}
 
-        >>> infer_situation_mrh("Can you explain quantum entanglement?")
-        {'deltaR': 'local', 'deltaT': 'session', 'deltaC': 'agent-scale'}
+        >>> infer_situation_mrh("What did we discuss yesterday?")
+        {'deltaR': 'regional', 'deltaT': 'day', 'deltaC': 'agent-scale'}
+
+        >>> infer_situation_mrh("What patterns emerged this month?")
+        {'deltaR': 'regional', 'deltaT': 'epoch', 'deltaC': 'society-scale'}
     """
     text_lower = text.lower()
 
     # Default: local spatial (most common for edge AI)
     deltaR = 'local'
 
-    # Infer temporal extent
-    if any(word in text_lower for word in ['hello', 'hi', 'hey', 'ok', 'yes', 'no', 'thanks', 'bye']):
-        deltaT = 'ephemeral'  # Greetings/acks are instant
-    elif any(word in text_lower for word in ['remember', 'earlier', 'before', 'history']):
-        deltaT = 'day'  # References to past require longer memory
+    # Infer temporal extent with explicit keyword detection
+    deltaT = 'session'  # Default
+
+    # Ephemeral keywords (immediate/current)
+    if any(word in text_lower for word in ['hello', 'hi', 'hey', 'ok', 'yes', 'no', 'thanks', 'bye', 'just now', 'right now', 'currently']):
+        deltaT = 'ephemeral'
+
+    # Day keywords (yesterday, recent past)
+    elif any(word in text_lower for word in ['yesterday', 'today', 'last night', 'this morning', 'earlier today', 'accomplished', 'completed recently']):
+        deltaT = 'day'
+
+    # Epoch keywords (patterns over time, long-term trends)
+    elif any(word in text_lower for word in ['this month', 'this year', 'over time', 'pattern', 'trend', 'emerged', 'learned over', 'long-term']):
+        deltaT = 'epoch'
+
+    # Session keywords (recent conversation, hours)
+    elif any(word in text_lower for word in ['remember', 'earlier', 'before', 'recently', 'discussed', 'talked about', 'mentioned']):
+        deltaT = 'session'
+
+    # Question words default to session
     elif any(word in text_lower for word in ['what', 'why', 'how', 'explain', 'tell me']):
-        deltaT = 'session'  # Questions need conversation context
-    else:
-        deltaT = 'session'  # Default to session
+        deltaT = 'session'
 
     # Infer complexity extent
     if any(word in text_lower for word in ['hello', 'hi', 'status', 'ok', 'thanks']):
         deltaC = 'simple'  # Simple acknowledgments
+    elif any(word in text_lower for word in ['pattern', 'trend', 'emerged', 'learned']):
+        deltaC = 'society-scale'  # Pattern analysis across time
     elif any(word in text_lower for word in ['analyze', 'explain', 'why', 'how', 'complex', 'reason']):
         deltaC = 'agent-scale'  # Requires reasoning
     elif len(text.split()) <= 3:
         deltaC = 'simple'  # Short queries usually simple
     else:
         deltaC = 'agent-scale'  # Default to agent-scale for longer queries
+
+    # Adjust spatial extent based on temporal extent
+    # Day/epoch queries typically access network resources (epistemic DB, blockchain)
+    if deltaT in ['day', 'epoch']:
+        deltaR = 'regional'  # Network-accessible memory backends
 
     # Check for web/external references
     if any(word in text_lower for word in ['web', 'internet', 'search', 'online', 'api']):
@@ -187,10 +211,16 @@ def select_plugin_with_mrh(
     plugins: List[Tuple[str, object]],
     trust_scores: Dict[str, float],
     atp_costs: Dict[str, float],
-    weights: Optional[Dict[str, float]] = None
+    weights: Optional[Dict[str, float]] = None,
+    mrh_threshold: float = 0.6
 ) -> Tuple[str, float]:
     """
     Select best plugin considering MRH fit, trust, and ATP cost
+
+    Strategy: "Correctness first, cost second"
+    1. Filter plugins by minimum MRH similarity threshold
+    2. Among good matches, balance trust and cost
+    3. If no good matches, pick best MRH regardless of cost
 
     Selection score = trust × mrh_similarity × (1 / atp_cost) × weights
 
@@ -200,6 +230,7 @@ def select_plugin_with_mrh(
         trust_scores: Trust score for each plugin
         atp_costs: ATP cost for each plugin
         weights: Optional weights for trust, mrh, atp (default equal)
+        mrh_threshold: Minimum MRH similarity to consider (default 0.6 = 2/3 dimensions match)
 
     Returns:
         (selected_plugin_name, selection_score)
@@ -220,8 +251,8 @@ def select_plugin_with_mrh(
     # Infer situation MRH
     situation_mrh = infer_situation_mrh(situation)
 
-    best_plugin = None
-    best_score = 0.0
+    # Score all plugins
+    scored_plugins = []
 
     for plugin_name, plugin_obj in plugins:
         # Get plugin MRH profile
@@ -247,11 +278,21 @@ def select_plugin_with_mrh(
             weights['atp'] * (1.0 / atp_cost)
         )
 
-        if score > best_score:
-            best_score = score
-            best_plugin = plugin_name
+        scored_plugins.append((plugin_name, score, mrh_similarity))
 
-    return (best_plugin, best_score)
+    # Strategy: Correctness first, cost second
+    # Filter by MRH threshold
+    good_matches = [(name, score, mrh) for name, score, mrh in scored_plugins if mrh >= mrh_threshold]
+
+    if good_matches:
+        # Pick best score among good matches
+        best = max(good_matches, key=lambda x: x[1])
+        return (best[0], best[1])
+    else:
+        # No good matches - pick best MRH regardless of cost
+        # (Better to use expensive backend with right horizon than cheap backend with wrong horizon)
+        best = max(scored_plugins, key=lambda x: x[2])  # Max MRH similarity
+        return (best[0], best[1])
 
 
 def test_mrh_utils():

@@ -450,20 +450,23 @@ def infer_quality_requirement(query: str) -> float:
     """
     query_lower = query.lower()
 
-    # Critical quality keywords (0.95)
-    critical_keywords = ['safety', 'critical', 'urgent', 'important', 'legal', 'financial', 'medical']
+    # Critical quality keywords (0.95) - safety-critical tasks
+    critical_keywords = ['safety', 'safe', 'critical', 'urgent', 'important', 'legal',
+                         'financial', 'medical', 'health', 'dangerous', 'risk']
     if any(word in query_lower for word in critical_keywords):
         return 0.95
 
-    # High quality keywords (0.85)
+    # High quality keywords (0.85) - deep analysis, philosophy, reasoning
+    # Check these BEFORE medium to avoid "what is" overriding "philosophical"
     high_keywords = ['analyze', 'explain why', 'deep', 'comprehensive', 'detailed',
-                     'implications', 'philosophy', 'consciousness', 'complex']
+                     'implications', 'philosophy', 'philosophical', 'consciousness',
+                     'complex', 'reasoning', 'ethics', 'ethical']
     if any(word in query_lower for word in high_keywords):
         return 0.85
 
-    # Medium quality keywords (0.7)
+    # Medium quality keywords (0.7) - explanations, summaries
     medium_keywords = ['explain', 'describe', 'what is', 'how does', 'why', 'compare',
-                       'difference', 'relationship', 'summary']
+                       'difference', 'relationship', 'summary', 'summarize', 'overview']
     if any(word in query_lower for word in medium_keywords):
         return 0.7
 

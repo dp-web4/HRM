@@ -295,6 +295,192 @@ def select_plugin_with_mrh(
         return (best[0], best[1])
 
 
+class InsufficientATPBudgetError(Exception):
+    """Raised when quality requirements exceed ATP budget"""
+    pass
+
+
+class NoQualifiedPluginError(Exception):
+    """Raised when no plugin meets quality requirements"""
+    pass
+
+
+def select_plugin_with_quality_edge(
+    situation: str,
+    quality_required: float,
+    plugins: List[Tuple[str, object]],
+    trust_scores: Dict[str, float],
+    atp_costs: Dict[str, float],
+    mrh_threshold: float = 0.6,
+    atp_budget: Optional[float] = None
+) -> Tuple[str, float, str]:
+    """
+    Edge-optimized plugin selection with quality requirements
+
+    Priority order for edge:
+    1. MRH fit (horizon match) - must exceed threshold
+    2. Quality requirements (MUST meet minimum) - non-negotiable on edge
+    3. ATP budget (MUST fit in budget) - hard constraint
+    4. Cost optimization (pick cheapest among qualified)
+
+    Edge philosophy: Fail fast with clear errors rather than silently compromise quality.
+
+    Args:
+        situation: Situation or query text
+        quality_required: Minimum quality threshold (0-1) - uses trust_score as proxy
+        plugins: List of (plugin_name, plugin_object) tuples
+        trust_scores: Trust score for each plugin (quality proxy)
+        atp_costs: ATP cost for each plugin
+        mrh_threshold: Minimum MRH similarity (default 0.6 = 2/3 dimensions)
+        atp_budget: Maximum ATP allowed (None = unlimited)
+
+    Returns:
+        (selected_plugin_name, atp_cost, selection_reason)
+
+    Raises:
+        InsufficientATPBudgetError: When quality requirements exceed ATP budget
+        NoQualifiedPluginError: When no plugin meets quality requirements
+
+    Example:
+        >>> plugins = [('qwen-0.5b', q1), ('qwen-7b', q2), ('gpt-4', gpt)]
+        >>> trust_scores = {'qwen-0.5b': 0.7, 'qwen-7b': 0.9, 'gpt-4': 0.95}
+        >>> atp_costs = {'qwen-0.5b': 10, 'qwen-7b': 100, 'gpt-4': 200}
+        >>> # Complex query requiring high quality (0.9+)
+        >>> select_plugin_with_quality_edge(
+        ...     "Analyze consciousness implications",
+        ...     quality_required=0.9,
+        ...     plugins=plugins,
+        ...     trust_scores=trust_scores,
+        ...     atp_costs=atp_costs
+        ... )
+        ('qwen-7b', 100, 'quality_match')  # Picks qwen-7b, not cheap qwen-0.5b
+    """
+    from . import mrh_utils  # For compute_mrh_similarity
+
+    # Infer situation MRH
+    situation_mrh = infer_situation_mrh(situation)
+
+    # Score all plugins
+    plugin_candidates = []
+
+    for plugin_name, plugin_obj in plugins:
+        # Get plugin MRH profile
+        if hasattr(plugin_obj, 'get_mrh_profile'):
+            plugin_mrh = plugin_obj.get_mrh_profile()
+        else:
+            plugin_mrh = {'deltaR': 'local', 'deltaT': 'session', 'deltaC': 'agent-scale'}
+
+        # Get metrics
+        trust = trust_scores.get(plugin_name, 0.5)
+        atp_cost = atp_costs.get(plugin_name, 1.0)
+
+        # Compute MRH similarity
+        mrh_similarity = compute_mrh_similarity(situation_mrh, plugin_mrh)
+
+        plugin_candidates.append({
+            'name': plugin_name,
+            'trust': trust,
+            'atp_cost': atp_cost,
+            'mrh_similarity': mrh_similarity
+        })
+
+    # Phase 1: Filter by MRH threshold
+    good_mrh = [p for p in plugin_candidates if p['mrh_similarity'] >= mrh_threshold]
+
+    # If no MRH matches, use all candidates but note the degradation
+    if not good_mrh:
+        good_mrh = plugin_candidates  # Fall back to all
+
+    # Phase 2: Filter by quality requirement (HARD CONSTRAINT on edge)
+    good_quality = [p for p in good_mrh if p['trust'] >= quality_required]
+
+    # Phase 3: Filter by ATP budget if specified
+    if atp_budget is not None:
+        affordable = [p for p in good_quality if p['atp_cost'] <= atp_budget]
+    else:
+        affordable = good_quality
+
+    # Selection logic with edge-specific behavior
+    if affordable:
+        # Pick cheapest among qualified candidates
+        best = min(affordable, key=lambda p: p['atp_cost'])
+        return (best['name'], best['atp_cost'], 'quality_match')
+
+    elif good_quality:
+        # Quality candidates exist but exceed ATP budget
+        # On edge: fail fast rather than compromise quality
+        min_required_cost = min([p['atp_cost'] for p in good_quality])
+        raise InsufficientATPBudgetError(
+            f"Quality requirement {quality_required:.2f} needs {min_required_cost} ATP, "
+            f"but budget is {atp_budget}. Consider reducing quality requirement or increasing budget."
+        )
+
+    else:
+        # No plugins meet quality requirement
+        # On edge: fail fast with clear error
+        best_available = max(plugin_candidates, key=lambda p: p['trust'])
+        raise NoQualifiedPluginError(
+            f"No plugin meets quality requirement {quality_required:.2f}. "
+            f"Best available: {best_available['name']} with trust {best_available['trust']:.2f}. "
+            f"Consider reducing quality requirement to {best_available['trust']:.2f} or below."
+        )
+
+
+def infer_quality_requirement(query: str) -> float:
+    """
+    Infer quality requirement from query complexity
+
+    Edge-optimized heuristic for determining minimum quality threshold
+    based on query characteristics.
+
+    Args:
+        query: The user query text
+
+    Returns:
+        Quality requirement (0-1)
+
+    Quality tiers (edge-specific):
+        - Simple (0.5): Greetings, acknowledgments, simple factual
+        - Medium (0.7): Explanations, summaries, moderate analysis
+        - High (0.85): Deep analysis, reasoning, critical tasks
+        - Critical (0.95): Safety-critical, financial, legal
+    """
+    query_lower = query.lower()
+
+    # Critical quality keywords (0.95)
+    critical_keywords = ['safety', 'critical', 'urgent', 'important', 'legal', 'financial', 'medical']
+    if any(word in query_lower for word in critical_keywords):
+        return 0.95
+
+    # High quality keywords (0.85)
+    high_keywords = ['analyze', 'explain why', 'deep', 'comprehensive', 'detailed',
+                     'implications', 'philosophy', 'consciousness', 'complex']
+    if any(word in query_lower for word in high_keywords):
+        return 0.85
+
+    # Medium quality keywords (0.7)
+    medium_keywords = ['explain', 'describe', 'what is', 'how does', 'why', 'compare',
+                       'difference', 'relationship', 'summary']
+    if any(word in query_lower for word in medium_keywords):
+        return 0.7
+
+    # Simple queries (0.5)
+    simple_keywords = ['hello', 'hi', 'hey', 'yes', 'no', 'ok', 'thanks', 'bye']
+    if any(word in query_lower for word in simple_keywords):
+        return 0.5
+
+    # Length-based heuristic
+    word_count = len(query.split())
+    if word_count <= 3:
+        return 0.5  # Very short = simple
+    elif word_count <= 10:
+        return 0.7  # Medium length = moderate quality
+    else:
+        return 0.85  # Long queries usually need higher quality
+
+    return 0.7  # Default: medium quality
+
+
 def test_mrh_utils():
     """Test MRH utilities"""
     print("="*80)

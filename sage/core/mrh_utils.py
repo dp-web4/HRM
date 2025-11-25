@@ -133,6 +133,8 @@ def infer_situation_mrh(text: str, context: Optional[Dict] = None) -> Dict[str, 
         {'deltaR': 'regional', 'deltaT': 'epoch', 'deltaC': 'society-scale'}
     """
     text_lower = text.lower()
+    # Split into words for proper boundary matching
+    words = set(text_lower.replace('?', '').replace('!', '').replace(',', '').replace('.', '').split())
 
     # Default: local spatial (most common for edge AI)
     deltaR = 'local'
@@ -140,8 +142,9 @@ def infer_situation_mrh(text: str, context: Optional[Dict] = None) -> Dict[str, 
     # Infer temporal extent with explicit keyword detection
     deltaT = 'session'  # Default
 
-    # Ephemeral keywords (immediate/current)
-    if any(word in text_lower for word in ['hello', 'hi', 'hey', 'ok', 'yes', 'no', 'thanks', 'bye', 'just now', 'right now', 'currently']):
+    # Ephemeral keywords (immediate/current) - use word set for exact matching
+    if any(word in words for word in ['hello', 'hi', 'hey', 'ok', 'yes', 'no', 'thanks', 'bye']) or \
+       any(phrase in text_lower for phrase in ['just now', 'right now', 'currently']):
         deltaT = 'ephemeral'
 
     # Day keywords (yesterday, recent past)
@@ -160,14 +163,14 @@ def infer_situation_mrh(text: str, context: Optional[Dict] = None) -> Dict[str, 
     elif any(word in text_lower for word in ['what', 'why', 'how', 'explain', 'tell me']):
         deltaT = 'session'
 
-    # Infer complexity extent
-    if any(word in text_lower for word in ['hello', 'hi', 'status', 'ok', 'thanks']):
+    # Infer complexity extent - use word set for exact matching where needed
+    if any(word in words for word in ['hello', 'hi', 'status', 'ok', 'thanks']):
         deltaC = 'simple'  # Simple acknowledgments
     elif any(word in text_lower for word in ['pattern', 'trend', 'emerged', 'learned']):
         deltaC = 'society-scale'  # Pattern analysis across time
-    elif any(word in text_lower for word in ['analyze', 'explain', 'why', 'how', 'complex', 'reason']):
+    elif any(word in words for word in ['analyze', 'explain', 'why', 'how', 'complex', 'reason']):
         deltaC = 'agent-scale'  # Requires reasoning
-    elif len(text.split()) <= 3:
+    elif len(words) <= 3:
         deltaC = 'simple'  # Short queries usually simple
     else:
         deltaC = 'agent-scale'  # Default to agent-scale for longer queries

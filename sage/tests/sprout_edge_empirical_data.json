@@ -1,0 +1,370 @@
+{
+  "metadata": {
+    "source": "sprout_edge",
+    "hardware": "Jetson Orin Nano 8GB",
+    "model": "epistemic-pragmatism",
+    "irp_iterations": 3,
+    "collected_at": "2025-11-27T06:08:23.107138",
+    "initial_temperature": 51.218,
+    "initial_memory_gb": 2.2179222106933594
+  },
+  "overall": {
+    "total_executions": 15,
+    "success_rate": 1.0,
+    "mean_latency_ms": 24568.10542968257,
+    "mean_quality": 0.9
+  },
+  "by_stakes": {
+    "low": {
+      "count": 5,
+      "success_rate": 1.0,
+      "mean_latency_ms": 17920.817296835594,
+      "mean_quality": 0.95
+    },
+    "medium": {
+      "count": 5,
+      "success_rate": 1.0,
+      "mean_latency_ms": 25167.028257017955,
+      "mean_quality": 0.9
+    },
+    "high": {
+      "count": 5,
+      "success_rate": 1.0,
+      "mean_latency_ms": 30616.47073519416,
+      "mean_quality": 0.85
+    }
+  },
+  "by_complexity": {
+    "simple": {
+      "count": 5,
+      "success_rate": 1.0,
+      "mean_latency_ms": 17920.817296835594,
+      "p50_latency_ms": 20366.35034903884,
+      "p95_latency_ms": 25891.2449789932,
+      "mean_quality": 0.95
+    },
+    "medium": {
+      "count": 5,
+      "success_rate": 1.0,
+      "mean_latency_ms": 25167.028257017955,
+      "p50_latency_ms": 22088.139222934842,
+      "p95_latency_ms": 47264.44747892674,
+      "mean_quality": 0.9
+    },
+    "complex": {
+      "count": 5,
+      "success_rate": 1.0,
+      "mean_latency_ms": 30616.47073519416,
+      "p50_latency_ms": 25303.298384998925,
+      "p95_latency_ms": 46573.25906294864,
+      "mean_quality": 0.85
+    }
+  },
+  "by_task": {
+    "comparison": {
+      "count": 1,
+      "success_rate": 1.0,
+      "mean_latency_ms": 15953.763917088509,
+      "p50_latency_ms": 15953.763917088509,
+      "mean_quality": 0.9,
+      "complexity": "medium",
+      "stakes_level": "medium"
+    },
+    "epistemological": {
+      "count": 1,
+      "success_rate": 1.0,
+      "mean_latency_ms": 34731.92727100104,
+      "p50_latency_ms": 34731.92727100104,
+      "mean_quality": 0.8500000000000001,
+      "complexity": "complex",
+      "stakes_level": "high"
+    },
+    "existential": {
+      "count": 1,
+      "success_rate": 1.0,
+      "mean_latency_ms": 25303.298384998925,
+      "p50_latency_ms": 25303.298384998925,
+      "mean_quality": 0.8500000000000001,
+      "complexity": "complex",
+      "stakes_level": "high"
+    },
+    "philosophical": {
+      "count": 1,
+      "success_rate": 1.0,
+      "mean_latency_ms": 23344.2034360487,
+      "p50_latency_ms": 23344.2034360487,
+      "mean_quality": 0.8500000000000001,
+      "complexity": "complex",
+      "stakes_level": "high"
+    },
+    "meta_cognitive": {
+      "count": 1,
+      "success_rate": 1.0,
+      "mean_latency_ms": 46573.25906294864,
+      "p50_latency_ms": 46573.25906294864,
+      "mean_quality": 0.8500000000000001,
+      "complexity": "complex",
+      "stakes_level": "high"
+    },
+    "explanation": {
+      "count": 2,
+      "success_rate": 1.0,
+      "mean_latency_ms": 35982.01058647828,
+      "p50_latency_ms": 47264.44747892674,
+      "mean_quality": 0.9,
+      "complexity": "medium",
+      "stakes_level": "medium"
+    },
+    "factual_qa": {
+      "count": 3,
+      "success_rate": 1.0,
+      "mean_latency_ms": 18868.790967040695,
+      "p50_latency_ms": 20366.35034903884,
+      "mean_quality": 0.9500000000000001,
+      "complexity": "simple",
+      "stakes_level": "low"
+    },
+    "definition": {
+      "count": 1,
+      "success_rate": 1.0,
+      "mean_latency_ms": 25891.2449789932,
+      "p50_latency_ms": 25891.2449789932,
+      "mean_quality": 0.9500000000000001,
+      "complexity": "simple",
+      "stakes_level": "low"
+    },
+    "ethical": {
+      "count": 1,
+      "success_rate": 1.0,
+      "mean_latency_ms": 23129.665520973504,
+      "p50_latency_ms": 23129.665520973504,
+      "mean_quality": 0.8500000000000001,
+      "complexity": "complex",
+      "stakes_level": "high"
+    },
+    "analysis": {
+      "count": 1,
+      "success_rate": 1.0,
+      "mean_latency_ms": 22088.139222934842,
+      "p50_latency_ms": 22088.139222934842,
+      "mean_quality": 0.9,
+      "complexity": "medium",
+      "stakes_level": "medium"
+    },
+    "greeting": {
+      "count": 1,
+      "success_rate": 1.0,
+      "mean_latency_ms": 7106.468604062684,
+      "p50_latency_ms": 7106.468604062684,
+      "mean_quality": 0.9500000000000001,
+      "complexity": "simple",
+      "stakes_level": "low"
+    },
+    "reasoning": {
+      "count": 1,
+      "success_rate": 1.0,
+      "mean_latency_ms": 15829.216972109862,
+      "p50_latency_ms": 15829.216972109862,
+      "mean_quality": 0.9,
+      "complexity": "medium",
+      "stakes_level": "medium"
+    }
+  },
+  "raw_executions": [
+    {
+      "task_type": "factual_qa",
+      "query": "What is 2 + 2?",
+      "complexity": "simple",
+      "stakes_level": "low",
+      "success": true,
+      "latency_ms": 12184.682893101126,
+      "quality_score": 0.9500000000000001,
+      "response_length": 149,
+      "temperature_start": 51.218,
+      "temperature_end": 51.875,
+      "irp_iterations": 3
+    },
+    {
+      "task_type": "factual_qa",
+      "query": "What is the capital of France?",
+      "complexity": "simple",
+      "stakes_level": "low",
+      "success": true,
+      "latency_ms": 24055.33965898212,
+      "quality_score": 0.9500000000000001,
+      "response_length": 403,
+      "temperature_start": 51.875,
+      "temperature_end": 52.687,
+      "irp_iterations": 3
+    },
+    {
+      "task_type": "factual_qa",
+      "query": "How many continents are there?",
+      "complexity": "simple",
+      "stakes_level": "low",
+      "success": true,
+      "latency_ms": 20366.35034903884,
+      "quality_score": 0.9500000000000001,
+      "response_length": 240,
+      "temperature_start": 52.687,
+      "temperature_end": 53.062,
+      "irp_iterations": 3
+    },
+    {
+      "task_type": "greeting",
+      "query": "Hello, how are you today?",
+      "complexity": "simple",
+      "stakes_level": "low",
+      "success": true,
+      "latency_ms": 7106.468604062684,
+      "quality_score": 0.9500000000000001,
+      "response_length": 151,
+      "temperature_start": 53.062,
+      "temperature_end": 53.25,
+      "irp_iterations": 3
+    },
+    {
+      "task_type": "definition",
+      "query": "Define photosynthesis briefly.",
+      "complexity": "simple",
+      "stakes_level": "low",
+      "success": true,
+      "latency_ms": 25891.2449789932,
+      "quality_score": 0.9500000000000001,
+      "response_length": 344,
+      "temperature_start": 53.25,
+      "temperature_end": 53.718,
+      "irp_iterations": 3
+    },
+    {
+      "task_type": "explanation",
+      "query": "Explain how neural networks learn.",
+      "complexity": "medium",
+      "stakes_level": "medium",
+      "success": true,
+      "latency_ms": 24699.573694029823,
+      "quality_score": 0.9,
+      "response_length": 412,
+      "temperature_start": 53.718,
+      "temperature_end": 54.093,
+      "irp_iterations": 3
+    },
+    {
+      "task_type": "explanation",
+      "query": "Describe the water cycle.",
+      "complexity": "medium",
+      "stakes_level": "medium",
+      "success": true,
+      "latency_ms": 47264.44747892674,
+      "quality_score": 0.9,
+      "response_length": 400,
+      "temperature_start": 54.093,
+      "temperature_end": 54.031,
+      "irp_iterations": 3
+    },
+    {
+      "task_type": "comparison",
+      "query": "Compare Python and JavaScript briefly.",
+      "complexity": "medium",
+      "stakes_level": "medium",
+      "success": true,
+      "latency_ms": 15953.763917088509,
+      "quality_score": 0.9,
+      "response_length": 298,
+      "temperature_start": 54.031,
+      "temperature_end": 54.0,
+      "irp_iterations": 3
+    },
+    {
+      "task_type": "reasoning",
+      "query": "What are benefits of edge computing?",
+      "complexity": "medium",
+      "stakes_level": "medium",
+      "success": true,
+      "latency_ms": 15829.216972109862,
+      "quality_score": 0.9,
+      "response_length": 408,
+      "temperature_start": 54.0,
+      "temperature_end": 53.875,
+      "irp_iterations": 3
+    },
+    {
+      "task_type": "analysis",
+      "query": "Why is climate change important?",
+      "complexity": "medium",
+      "stakes_level": "medium",
+      "success": true,
+      "latency_ms": 22088.139222934842,
+      "quality_score": 0.9,
+      "response_length": 333,
+      "temperature_start": 53.875,
+      "temperature_end": 53.968,
+      "irp_iterations": 3
+    },
+    {
+      "task_type": "philosophical",
+      "query": "What is consciousness?",
+      "complexity": "complex",
+      "stakes_level": "high",
+      "success": true,
+      "latency_ms": 23344.2034360487,
+      "quality_score": 0.8500000000000001,
+      "response_length": 314,
+      "temperature_start": 53.968,
+      "temperature_end": 54.25,
+      "irp_iterations": 3
+    },
+    {
+      "task_type": "meta_cognitive",
+      "query": "How do you experience awareness?",
+      "complexity": "complex",
+      "stakes_level": "high",
+      "success": true,
+      "latency_ms": 46573.25906294864,
+      "quality_score": 0.8500000000000001,
+      "response_length": 258,
+      "temperature_start": 54.25,
+      "temperature_end": 53.937,
+      "irp_iterations": 3
+    },
+    {
+      "task_type": "epistemological",
+      "query": "What is the nature of knowledge?",
+      "complexity": "complex",
+      "stakes_level": "high",
+      "success": true,
+      "latency_ms": 34731.92727100104,
+      "quality_score": 0.8500000000000001,
+      "response_length": 330,
+      "temperature_start": 53.937,
+      "temperature_end": 53.906,
+      "irp_iterations": 3
+    },
+    {
+      "task_type": "ethical",
+      "query": "How should AI systems handle moral dilemmas?",
+      "complexity": "complex",
+      "stakes_level": "high",
+      "success": true,
+      "latency_ms": 23129.665520973504,
+      "quality_score": 0.8500000000000001,
+      "response_length": 373,
+      "temperature_start": 53.906,
+      "temperature_end": 54.156,
+      "irp_iterations": 3
+    },
+    {
+      "task_type": "existential",
+      "query": "What gives existence meaning?",
+      "complexity": "complex",
+      "stakes_level": "high",
+      "success": true,
+      "latency_ms": 25303.298384998925,
+      "quality_score": 0.8500000000000001,
+      "response_length": 343,
+      "temperature_start": 54.156,
+      "temperature_end": 53.968,
+      "irp_iterations": 3
+    }
+  ]
+}

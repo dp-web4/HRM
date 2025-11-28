@@ -74,18 +74,18 @@ class AttentionManager:
 
         # State transition thresholds (configurable)
         self.thresholds = {
-            'crisis_trigger': config.get('crisis_trigger_salience', 0.95),
-            'focus_trigger': config.get('focus_trigger_salience', 0.8),
-            'rest_trigger': config.get('rest_trigger_salience', 0.3),
-            'focus_duration_max': config.get('focus_duration_max_seconds', 300),
-            'wake_to_rest_duration': config.get('wake_to_rest_duration', 60),
-            'rest_to_dream_duration': config.get('rest_to_dream_duration', 120),
-            'dream_duration': config.get('dream_duration', 60),
-            'dream_probability': config.get('dream_probability', 0.1)
+            'crisis_trigger': self.config.get('crisis_trigger_salience', 0.95),
+            'focus_trigger': self.config.get('focus_trigger_salience', 0.8),
+            'rest_trigger': self.config.get('rest_trigger_salience', 0.3),
+            'focus_duration_max': self.config.get('focus_duration_max_seconds', 300),
+            'wake_to_rest_duration': self.config.get('wake_to_rest_duration', 60),
+            'rest_to_dream_duration': self.config.get('rest_to_dream_duration', 120),
+            'dream_duration': self.config.get('dream_duration', 60),
+            'dream_probability': self.config.get('dream_probability', 0.1)
         }
 
         # Allocation parameters
-        self.wake_spread_factor = config.get('wake_spread_factor', 0.5)
+        self.wake_spread_factor = self.config.get('wake_spread_factor', 0.5)
 
     def allocate_attention(self,
                           salience_map: Dict[str, float],

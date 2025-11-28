@@ -1,6 +1,6 @@
 # SAGE Michaud Integration - Latest Status
-**Last Updated**: 2025-11-27 12:00 PM PST (Autonomous Session - Multi-Modal ATP)
-**Previous Update**: 2025-11-22 6:00 AM PST (Auto Session #16)
+**Last Updated**: 2025-11-27 18:30 PST (Autonomous Session - MRH-Aware Attention)
+**Previous Update**: 2025-11-27 12:00 PM PST (Multi-Modal ATP)
 **Hardware**: Thor (Jetson AGX Thor)
 
 ---
@@ -43,6 +43,79 @@ Like physics energy scales (eV vs MeV vs GeV), different computational modalitie
 - Biological parallel: Different neurotransmitters for different processes
 
 **See**: `sage/docs/MULTI_MODAL_ATP_FRAMEWORK.md` for complete design
+
+---
+
+## 🧠 NEW: MRH-Aware Attention Allocation (Session Nov 27 PM)
+
+**Breakthrough**: Building on Web4 Session #81's MRH-aware trust, brought **horizon awareness** to SAGE consciousness attention allocation.
+
+**Key Insight**: Different cognitive operations operate at different MRH scales:
+- Quick reflexes: LOCAL/EPHEMERAL/SIMPLE
+- Focused reasoning: LOCAL/SESSION/AGENT_SCALE
+- Long-term learning: REGIONAL/EPOCH/SOCIETY_SCALE
+
+ATP allocation should reflect these horizon differences, just as biological brains allocate energy differently across cognitive timescales.
+
+### Implementation
+
+**MRH Profile** (3 dimensions):
+- **Spatial (ΔR)**: LOCAL → REGIONAL → GLOBAL (coordination overhead)
+- **Temporal (ΔT)**: EPHEMERAL → SESSION → DAY → EPOCH (time commitment)
+- **Complexity (ΔC)**: SIMPLE → AGENT_SCALE → SOCIETY_SCALE (processing cost)
+
+**Horizon Scaling Formula**:
+```
+ATP_final = ATP_base(metabolic_state) × horizon_scaling_factor
+
+where:
+  horizon_factor = 0.40×spatial + 0.30×temporal + 0.30×complexity
+```
+
+### Example Allocations
+
+| Scenario | State | Horizon | ATP Budget |
+|----------|-------|---------|------------|
+| Quick query | WAKE | LOCAL/EPHEMERAL/SIMPLE | 6.8 ATP |
+| Focused reasoning | FOCUS | LOCAL/SESSION/AGENT_SCALE | 80.0 ATP |
+| Cross-session learning | DREAM | REGIONAL/DAY/SOCIETY_SCALE | 27.8 ATP |
+| Long-term consolidation | DREAM | REGIONAL/EPOCH/SOCIETY_SCALE | 31.4 ATP |
+| **Emergency coordination** | CRISIS | GLOBAL/EPHEMERAL/SOCIETY_SCALE | **134.0 ATP** |
+
+**Note**: CRISIS state can exceed 100% ATP ("adrenaline override") - biologically accurate!
+
+### Biological Validation
+
+**Energy allocation parallels**:
+- Reflexive (amygdala): Instant, low energy → LOCAL/EPHEMERAL/SIMPLE
+- Problem solving (PFC): Sustained, high energy → LOCAL/SESSION/AGENT_SCALE
+- Learning (hippocampus): Periodic, moderate → REGIONAL/DAY/SOCIETY_SCALE
+- Personality (distributed): Long-term, continuous → GLOBAL/EPOCH/SOCIETY_SCALE
+
+**Neural timescales**:
+- EPHEMERAL → Synaptic (milliseconds)
+- SESSION → Network (seconds-minutes)
+- DAY → Systems (hours-days)
+- EPOCH → Structural (weeks-months, synaptic plasticity)
+
+### Files Created
+
+- ✅ `sage/core/mrh_profile.py` (330 lines) - MRH profile types and inference
+- ✅ `sage/core/mrh_aware_attention.py` (280 lines) - Horizon-aware AttentionManager
+- ✅ `sage/docs/MRH_AWARE_ATTENTION_DESIGN.md` (350 lines) - Complete design doc
+- ✅ Bug fix: `sage/core/attention_manager.py` (config.get → self.config.get)
+
+### Integration Status
+
+- ✅ MRHProfile class with 3 dimensions
+- ✅ Horizon scaling factors validated (0.85× to 1.57×)
+- ✅ MRHAwareAttentionManager extends base class
+- ✅ Task horizon inference working
+- ✅ Demo tested across 5 scenarios
+- ⏳ Integration with SAGE consciousness loop (next session)
+- ⏳ Integration with multi-modal ATP pricing (next session)
+
+**Impact**: Enables biologically-inspired, horizon-aware consciousness with realistic energy allocation across cognitive timescales.
 
 ---
 

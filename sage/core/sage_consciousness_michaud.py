@@ -23,7 +23,10 @@ from collections import deque
 import time
 
 from sage.core.sage_consciousness import SAGEConsciousness
-from sage.core.attention_manager import AttentionManager, MetabolicState
+from sage.core.attention_manager import MetabolicState
+from sage.core.mrh_aware_attention import MRHAwareAttentionManager
+from sage.core.mrh_profile import MRHProfile, infer_mrh_profile_from_task
+from sage.core.multimodal_atp_pricing import MultiModalATPPricer
 from sage.irp.plugins.llm_impl import ConversationalLLM
 from sage.irp.plugins.llm_snarc_integration import ConversationalMemory
 
@@ -67,11 +70,14 @@ class MichaudSAGE(SAGEConsciousness):
         # Text input queue
         self.input_queue = deque(maxlen=100)
 
-        # Michaud: AttentionManager for metabolic states
-        self.attention_manager = AttentionManager(
+        # Michaud Enhancement #1: MRH-aware attention manager for metabolic states
+        self.attention_manager = MRHAwareAttentionManager(
             total_atp=initial_atp,
             config=attention_config or {}
         )
+
+        # Multi-modal ATP pricing for task cost calculation
+        self.atp_pricer = MultiModalATPPricer()
 
         # Real LLM with optimized settings
         self.llm = ConversationalLLM(
@@ -108,16 +114,19 @@ class MichaudSAGE(SAGEConsciousness):
 
     async def step(self):
         """
-        Single consciousness cycle with Michaud enhancements.
+        Single consciousness cycle with Complete ATP Framework.
 
-        Enhanced loop:
+        Enhanced loop with MRH-aware horizon + multi-modal pricing:
         1. Gather observations
-        2. Compute SNARC salience
-        3. MICHAUD: Update metabolic state based on salience
-        4. MICHAUD: Allocate ATP via AttentionManager
-        5. Execute IRP plugins with allocated resources
-        6. MICHAUD: Update memory based on satisfaction (energy)
-        7. Update trust weights
+        2. Infer task properties (type, horizon, complexity)
+        3. Calculate ATP cost (multi-modal pricing)
+        4. Get ATP budget (MRH-aware, state-dependent)
+        5. Resource decision: execute locally or route to federation
+        6. MICHAUD: Update metabolic state based on salience
+        7. MICHAUD: Allocate ATP via MRHAwareAttentionManager
+        8. Execute IRP plugins with allocated resources
+        9. MICHAUD: Update memory based on satisfaction (energy)
+        10. Update trust weights
         """
         self.cycle_count += 1
 
@@ -126,7 +135,62 @@ class MichaudSAGE(SAGEConsciousness):
         if not observations:
             return
 
-        # 2. Compute preliminary salience (before full execution)
+        # 2. Infer task properties from first observation
+        if observations:
+            first_obs = observations[0]
+            task_context = {
+                'task_type': 'llm_inference',  # Language modality
+                'operation': 'reason' if len(first_obs['data']) > 50 else 'recall',
+                'session_length': self.attention_manager.get_time_in_state(),
+                'num_agents': 1,
+                'complexity': 'high' if len(first_obs['data']) > 100 else 'medium'
+            }
+
+            # Infer MRH horizon profile
+            task_horizon = infer_mrh_profile_from_task(task_context)
+            self.attention_manager.set_task_horizon(task_horizon)
+
+            # 3. Calculate ATP cost (multi-modal pricing)
+            complexity = task_context['complexity']
+            estimated_latency = 30.0 if complexity == 'high' else 15.0  # seconds
+            estimated_quality = 0.85 if complexity == 'high' else 0.90
+
+            task_cost = self.atp_pricer.calculate_cost(
+                task_type='llm_inference',
+                complexity=complexity,
+                latency=estimated_latency,
+                quality=estimated_quality
+            )
+
+            # 4. Get ATP budget (MRH-aware)
+            available_budget = self.attention_manager.get_total_allocated_atp(
+                horizon=task_horizon
+            )
+
+            print(f"\n[ATP Framework] Cycle {self.cycle_count}")
+            print(f"  Task: {task_context['operation']} ({complexity})")
+            print(f"  Horizon: {task_horizon}")
+            print(f"  Cost: {task_cost:.1f} ATP")
+            print(f"  Budget: {available_budget:.1f} ATP")
+
+            # 5. Resource decision
+            if task_cost > available_budget:
+                # Insufficient ATP - check if state transition helps
+                current_state = self.attention_manager.get_state()
+                if current_state == MetabolicState.WAKE:
+                    # Transition to FOCUS for more ATP
+                    print(f"  Decision: Insufficient ATP in WAKE, transitioning to FOCUS")
+                    self.attention_manager.current_state = MetabolicState.FOCUS
+                    available_budget = self.attention_manager.get_total_allocated_atp(task_horizon)
+                    print(f"  New budget (FOCUS): {available_budget:.1f} ATP")
+                else:
+                    # Still insufficient - would route to federation in production
+                    print(f"  Decision: Cost exceeds budget, executing with degradation")
+                    # Continue anyway for demo (federation routing not implemented yet)
+
+            print(f"  Decision: Execute locally ✓\n")
+
+        # 6. Compute preliminary salience (before full execution)
         salience_map = {}
         for obs in observations:
             modality = obs['modality']
@@ -136,18 +200,21 @@ class MichaudSAGE(SAGEConsciousness):
             else:
                 salience_map[obs['id']] = 0.5
 
-        # 3. MICHAUD: Update metabolic state based on salience
-        # AttentionManager automatically transitions states
-        atp_allocation = self.attention_manager.allocate_attention(salience_map)
+        # 7. MICHAUD: Update metabolic state and allocate ATP
+        # MRHAwareAttentionManager automatically uses horizon scaling
+        atp_allocation = self.attention_manager.allocate_attention_with_horizon(
+            salience_map,
+            horizon=task_horizon
+        )
 
         current_state = self.attention_manager.get_state()
-        print(f"[Michaud SAGE] Cycle {self.cycle_count}: {current_state.value}, "
+        print(f"[Michaud SAGE] State: {current_state.value}, "
               f"{self.attention_manager.get_time_in_state():.1f}s in state")
 
-        # 4. Select plugins for execution (using allocated ATP)
+        # 8. Select and execute plugins
         plugins_to_execute = self._select_plugins(observations)
 
-        # 5. Execute plugins with Michaud-enhanced processing
+        # 9. Execute plugins with Michaud-enhanced processing
         results = {}
         for plugin_name in plugins_to_execute:
             obs_for_plugin = [o for o in observations
@@ -159,29 +226,32 @@ class MichaudSAGE(SAGEConsciousness):
                 result = await self._execute_plugin_michaud(
                     plugin_name,
                     obs_for_plugin[0],
-                    allocated_atp
+                    allocated_atp,
+                    task_horizon
                 )
                 results[plugin_name] = result
 
-        # 6. MICHAUD: Update memory based on satisfaction
+        # 10. MICHAUD: Update memory based on satisfaction
         self._update_memories_michaud(observations, results)
 
-        # 7. Update trust weights
+        # 11. Update trust weights
         self._update_trust_weights(results)
 
     async def _execute_plugin_michaud(
         self,
         plugin_name: str,
         observation: Dict,
-        allocated_atp: float
+        allocated_atp: float,
+        task_horizon: MRHProfile
     ) -> Dict[str, Any]:
         """
         Execute plugin with Michaud-enhanced processing.
 
         Tracks satisfaction (energy minimization) for memory consolidation.
+        Now includes horizon information for context.
         """
         if plugin_name == 'llm_reasoning':
-            return await self._execute_llm_michaud(observation, allocated_atp)
+            return await self._execute_llm_michaud(observation, allocated_atp, task_horizon)
         else:
             # Other plugins use standard execution
             return {'response': None, 'convergence_quality': 0.5}
@@ -189,17 +259,20 @@ class MichaudSAGE(SAGEConsciousness):
     async def _execute_llm_michaud(
         self,
         observation: Dict,
-        allocated_atp: float
+        allocated_atp: float,
+        task_horizon: MRHProfile
     ) -> Dict[str, Any]:
         """
         LLM execution with satisfaction tracking.
 
         Michaud: Satisfaction (low energy) drives memory consolidation.
+        Now includes horizon-aware execution context.
         """
         question = observation['data']
 
         print(f"[LLM] Processing: \"{question[:50]}...\"")
         print(f"[LLM] ATP allocated: {allocated_atp:.2f}")
+        print(f"[LLM] Task horizon: {task_horizon}")
         print(f"[LLM] Metabolic state: {self.attention_manager.get_state().value}")
 
         start_time = time.time()

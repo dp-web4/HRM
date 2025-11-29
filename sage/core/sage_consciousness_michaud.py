@@ -30,6 +30,25 @@ from sage.core.multimodal_atp_pricing import MultiModalATPPricer
 from sage.irp.plugins.llm_impl import ConversationalLLM
 from sage.irp.plugins.llm_snarc_integration import ConversationalMemory
 
+# Phase 2.5: Federation integration (optional)
+try:
+    from sage.federation import (
+        FederationRouter,
+        FederationIdentity,
+        FederationTask,
+        ExecutionProof,
+        SignedFederationTask,
+        SignedExecutionProof,
+        FederationKeyPair,
+        FederationCrypto,
+        SignatureRegistry,
+        create_thor_identity,
+        create_sprout_identity,
+    )
+    FEDERATION_AVAILABLE = True
+except ImportError:
+    FEDERATION_AVAILABLE = False
+
 
 class MichaudSAGE(SAGEConsciousness):
     """
@@ -48,7 +67,12 @@ class MichaudSAGE(SAGEConsciousness):
         initial_atp: float = 100.0,
         irp_iterations: int = 3,
         salience_threshold: float = 0.15,
-        attention_config: Optional[Dict] = None
+        attention_config: Optional[Dict] = None,
+        # Phase 2.5: Federation parameters (optional)
+        federation_enabled: bool = False,
+        federation_identity: Optional['FederationIdentity'] = None,
+        federation_platforms: Optional[list] = None,
+        federation_key_path: Optional[str] = None
     ):
         """
         Initialize Michaud-enhanced SAGE consciousness.
@@ -60,6 +84,10 @@ class MichaudSAGE(SAGEConsciousness):
             irp_iterations: IRP refinement iterations
             salience_threshold: SNARC salience threshold
             attention_config: Configuration for AttentionManager
+            federation_enabled: Enable federation routing (Phase 2.5+)
+            federation_identity: Platform identity for federation
+            federation_platforms: List of known platforms to register
+            federation_key_path: Path to Ed25519 key file (auto-generated if None)
         """
         super().__init__(
             initial_atp=initial_atp,
@@ -99,10 +127,61 @@ class MichaudSAGE(SAGEConsciousness):
         # Enhanced memory tracking
         self.satisfaction_history = []  # Track energy minimization success
 
+        # Phase 2.5: Federation setup (optional)
+        self.federation_enabled = federation_enabled
+        self.federation_router = None
+        self.federation_keypair = None
+        self.signature_registry = None
+        self.federation_identity = None
+
+        if federation_enabled:
+            if not FEDERATION_AVAILABLE:
+                raise ImportError(
+                    "Federation module not available. "
+                    "Ensure sage.federation is installed."
+                )
+
+            # Auto-detect identity if not provided
+            if federation_identity is None:
+                federation_identity = self._detect_platform_identity()
+
+            self.federation_identity = federation_identity
+
+            # Initialize federation router
+            self.federation_router = FederationRouter(federation_identity)
+
+            # Generate or load Ed25519 key pair
+            if federation_key_path is None:
+                federation_key_path = f"sage/data/keys/{federation_identity.platform_name}_ed25519.key"
+
+            self.federation_keypair = self._load_or_generate_keypair(
+                federation_identity, federation_key_path
+            )
+
+            # Create signature registry and register self
+            self.signature_registry = SignatureRegistry()
+            self.signature_registry.register_platform(
+                federation_identity.platform_name,
+                self.federation_keypair.public_key_bytes()
+            )
+
+            # Register known platforms
+            if federation_platforms:
+                for platform in federation_platforms:
+                    self.federation_router.register_platform(platform)
+                    # In production, load public keys from LCT chain
+                    # For Phase 2.5, we'll simulate this
+
+            print(f"[Federation] Enabled:")
+            print(f"  Platform: {federation_identity.platform_name}")
+            print(f"  LCT ID: {federation_identity.lct_id}")
+            print(f"  Known platforms: {len(federation_platforms) if federation_platforms else 0}")
+
         print(f"[Michaud SAGE] Initialized with:")
         print(f"  Model: {model_path}")
         print(f"  Attention: {self.attention_manager}")
         print(f"  SNARC threshold: {salience_threshold}")
+        print(f"  Federation: {'Enabled' if federation_enabled else 'Disabled'}")
 
     def add_observation(self, text: str, context: Optional[Dict] = None):
         """Add text observation to input queue."""
@@ -173,7 +252,8 @@ class MichaudSAGE(SAGEConsciousness):
             print(f"  Cost: {task_cost:.1f} ATP")
             print(f"  Budget: {available_budget:.1f} ATP")
 
-            # 5. Resource decision
+            # 5. Resource decision with federation support (Phase 2.5)
+            federation_delegated = False
             if task_cost > available_budget:
                 # Insufficient ATP - check if state transition helps
                 current_state = self.attention_manager.get_state()
@@ -183,12 +263,31 @@ class MichaudSAGE(SAGEConsciousness):
                     self.attention_manager.current_state = MetabolicState.FOCUS
                     available_budget = self.attention_manager.get_total_allocated_atp(task_horizon)
                     print(f"  New budget (FOCUS): {available_budget:.1f} ATP")
-                else:
-                    # Still insufficient - would route to federation in production
-                    print(f"  Decision: Cost exceeds budget, executing with degradation")
-                    # Continue anyway for demo (federation routing not implemented yet)
 
-            print(f"  Decision: Execute locally ✓\n")
+                # Recheck after state transition
+                if task_cost > available_budget:
+                    # Still insufficient - try federation if enabled
+                    if self.federation_enabled:
+                        print(f"  Decision: Cost still exceeds budget, attempting federation")
+                        federation_decision = self._handle_federation_routing(
+                            task_context, task_cost, available_budget, task_horizon
+                        )
+
+                        if federation_decision['delegated']:
+                            # Task successfully delegated
+                            print(f"  ✓ Delegated to {federation_decision['platform']}")
+                            federation_delegated = True
+                            # Store federation results for use in result integration
+                            # For now, we'll note it was delegated and continue
+                        else:
+                            print(f"  ✗ Federation failed: {federation_decision['reason']}")
+                            print(f"  Decision: Executing with degradation")
+                    else:
+                        print(f"  Decision: Cost exceeds budget, executing with degradation")
+                        print(f"  (Federation not enabled)")
+
+            if not federation_delegated:
+                print(f"  Decision: Execute locally ✓\n")
 
         # 6. Compute preliminary salience (before full execution)
         salience_map = {}
@@ -421,6 +520,317 @@ class MichaudSAGE(SAGEConsciousness):
     def get_satisfaction_history(self):
         """Get satisfaction (energy minimization) history."""
         return self.satisfaction_history
+
+    # Phase 2.5: Federation helper methods
+
+    def _detect_platform_identity(self) -> 'FederationIdentity':
+        """
+        Auto-detect platform identity from hardware.
+
+        Returns:
+            FederationIdentity for this platform
+        """
+        # Try to detect from /proc/device-tree/model (Jetson)
+        try:
+            with open('/proc/device-tree/model', 'r') as f:
+                model = f.read().strip('\x00')
+                if 'AGX Thor' in model:
+                    return create_thor_identity()
+                elif 'Orin Nano' in model:
+                    return create_sprout_identity()
+        except FileNotFoundError:
+            pass
+
+        # Default: create generic identity
+        import socket
+        from sage.core.mrh_profile import SpatialExtent, TemporalExtent, ComplexityExtent
+        hostname = socket.gethostname()
+        return FederationIdentity(
+            platform_name=hostname,
+            lct_id=f"{hostname}_sage_lct",
+            hardware_spec=None,  # Unknown hardware
+            supported_modalities=['llm'],
+            max_horizon=MRHProfile(
+                delta_r=SpatialExtent.LOCAL,
+                delta_t=TemporalExtent.SESSION,
+                delta_c=ComplexityExtent.AGENT_SCALE
+            ),
+            stake=None
+        )
+
+    def _load_or_generate_keypair(
+        self,
+        identity: 'FederationIdentity',
+        key_path: str
+    ) -> 'FederationKeyPair':
+        """
+        Load existing key pair or generate new one.
+
+        Args:
+            identity: Platform identity
+            key_path: Path to key file
+
+        Returns:
+            FederationKeyPair
+        """
+        from pathlib import Path
+
+        key_file = Path(key_path)
+
+        # Try to load existing key
+        if key_file.exists():
+            try:
+                with open(key_file, 'rb') as f:
+                    private_key_bytes = f.read()
+                keypair = FederationKeyPair.from_bytes(
+                    identity.platform_name,
+                    identity.lct_id,
+                    private_key_bytes
+                )
+                print(f"[Federation] Loaded existing key from {key_path}")
+                return keypair
+            except Exception as e:
+                print(f"[Federation] Warning: Could not load key ({e}), generating new one")
+
+        # Generate new key pair
+        keypair = FederationKeyPair.generate(
+            identity.platform_name,
+            identity.lct_id
+        )
+
+        # Save to disk
+        key_file.parent.mkdir(parents=True, exist_ok=True)
+        with open(key_file, 'wb') as f:
+            f.write(keypair.private_key_bytes())
+        print(f"[Federation] Generated new key pair saved to {key_path}")
+
+        return keypair
+
+    def _create_federation_task(
+        self,
+        task_context: Dict[str, Any],
+        task_cost: float,
+        task_horizon: MRHProfile
+    ) -> 'FederationTask':
+        """
+        Create FederationTask from consciousness loop context.
+
+        Args:
+            task_context: Task context dict
+            task_cost: Estimated ATP cost
+            task_horizon: MRH profile
+
+        Returns:
+            FederationTask ready for delegation
+        """
+        import uuid
+        import time as time_module
+        from sage.federation.federation_types import QualityRequirements
+
+        # Get operation type and data
+        task_type = task_context.get('operation', 'llm_inference')
+        task_data = task_context.get('parameters', {})
+
+        # Get quality requirements
+        quality_reqs = task_context.get('quality', {})
+        if isinstance(quality_reqs, dict):
+            quality_requirements = QualityRequirements(
+                min_quality=quality_reqs.get('min_quality', 0.7),
+                min_witnesses=quality_reqs.get('min_witnesses', 3),
+                max_cost_multiplier=quality_reqs.get('max_cost_multiplier', 1.5)
+            )
+        else:
+            quality_requirements = quality_reqs
+
+        return FederationTask(
+            task_id=str(uuid.uuid4()),
+            task_type=task_type,
+            task_data=task_data,
+            estimated_cost=task_cost,
+            task_horizon=task_horizon,
+            complexity=task_context.get('complexity', 'medium'),
+            delegating_platform=self.federation_identity.platform_name,
+            delegating_state=self.attention_manager.get_state(),
+            quality_requirements=quality_requirements,
+            deadline=time_module.time() + 3600.0,  # 1 hour deadline
+            min_witnesses=3
+        )
+
+    def _handle_federation_routing(
+        self,
+        task_context: Dict[str, Any],
+        task_cost: float,
+        local_budget: float,
+        task_horizon: MRHProfile
+    ) -> Dict[str, Any]:
+        """
+        Handle federation routing decision and execution (Phase 2.5).
+
+        Args:
+            task_context: Task context from consciousness loop
+            task_cost: Estimated ATP cost
+            local_budget: Available local ATP budget
+            task_horizon: MRH profile
+
+        Returns:
+            {
+                'delegated': bool,
+                'platform': str | None,
+                'reason': str,
+                'results': Dict | None
+            }
+        """
+        # Create federation task
+        task = self._create_federation_task(task_context, task_cost, task_horizon)
+
+        # Check if should delegate
+        should_delegate, reason = self.federation_router.should_delegate(
+            task, local_budget
+        )
+
+        if not should_delegate:
+            return {
+                'delegated': False,
+                'platform': None,
+                'reason': reason,
+                'results': None
+            }
+
+        # Find capable platforms
+        candidates = self.federation_router.find_capable_platforms(task)
+        if not candidates:
+            return {
+                'delegated': False,
+                'platform': None,
+                'reason': 'no_capable_platforms',
+                'results': None
+            }
+
+        # Select best platform (highest reputation)
+        target_platform = candidates[0]
+
+        # Phase 2.5: Simulated delegation (no network)
+        # Phase 3 will replace this with actual gRPC call
+        try:
+            execution_proof = self._simulate_federation_delegation(task, target_platform)
+
+            # Validate proof
+            if not self._validate_execution_proof(execution_proof, task):
+                return {
+                    'delegated': False,
+                    'platform': target_platform.platform_name,
+                    'reason': 'proof_validation_failed',
+                    'results': None
+                }
+
+            # Update reputation
+            self.federation_router.update_platform_reputation(
+                target_platform.lct_id,
+                execution_proof.quality_score,
+                execution_proof.actual_cost
+            )
+
+            # Return successful delegation
+            return {
+                'delegated': True,
+                'platform': target_platform.platform_name,
+                'reason': 'federation_success',
+                'results': execution_proof.results
+            }
+
+        except Exception as e:
+            print(f"[Federation] Error during delegation: {e}")
+            return {
+                'delegated': False,
+                'platform': target_platform.platform_name,
+                'reason': f'delegation_error: {e}',
+                'results': None
+            }
+
+    def _simulate_federation_delegation(
+        self,
+        task: 'FederationTask',
+        target_platform: 'FederationIdentity'
+    ) -> 'ExecutionProof':
+        """
+        Simulate federation delegation for Phase 2.5.
+
+        In Phase 3, this will be replaced with actual gRPC network call.
+
+        Args:
+            task: Federation task to delegate
+            target_platform: Platform to delegate to
+
+        Returns:
+            ExecutionProof from simulated execution
+        """
+        print(f"\n[FEDERATION SIMULATION]")
+        print(f"  Delegating to: {target_platform.platform_name}")
+        print(f"  Task: {task.operation}")
+        print(f"  Cost estimate: {task.estimated_cost:.1f} ATP")
+
+        # Simulate: Remote platform executes task
+        # For Phase 2.5, we just simulate success with quality ~0.75
+        simulated_results = {
+            'status': 'completed',
+            'output': f'Simulated result from {target_platform.platform_name}',
+            'simulated': True
+        }
+
+        # Simulate actual cost (slightly lower than estimate for good platform)
+        actual_cost = task.estimated_cost * 0.9
+
+        # Simulate quality score (good platform)
+        quality_score = 0.75
+
+        # Create execution proof
+        execution_proof = ExecutionProof(
+            task_id=task.task_id,
+            executor_lct_id=target_platform.lct_id,
+            executor_platform=target_platform.platform_name,
+            results=simulated_results,
+            actual_cost=actual_cost,
+            quality_score=quality_score,
+            timestamp=time.time()
+        )
+
+        print(f"  Execution: Complete ✓")
+        print(f"  Quality: {quality_score:.2f}")
+        print(f"  Actual cost: {actual_cost:.1f} ATP\n")
+
+        return execution_proof
+
+    def _validate_execution_proof(
+        self,
+        proof: 'ExecutionProof',
+        task: 'FederationTask'
+    ) -> bool:
+        """
+        Validate execution proof from federation.
+
+        Args:
+            proof: Execution proof to validate
+            task: Original task
+
+        Returns:
+            True if proof is valid
+        """
+        # Basic validation
+        if proof.task_id != task.task_id:
+            print(f"[Federation] Proof validation failed: task_id mismatch")
+            return False
+
+        if proof.quality_score < 0.0 or proof.quality_score > 1.0:
+            print(f"[Federation] Proof validation failed: invalid quality score")
+            return False
+
+        if proof.actual_cost < 0:
+            print(f"[Federation] Proof validation failed: negative cost")
+            return False
+
+        # In Phase 2.5, we trust simulated proofs
+        # In Phase 3, this will verify Ed25519 signatures
+        return True
 
     def __repr__(self):
         stats = self.get_snarc_statistics()

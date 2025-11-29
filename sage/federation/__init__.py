@@ -34,6 +34,11 @@ from sage.federation.federation_types import (
     WitnessRecord,
     WitnessOutcome,
 
+    # Signed wrappers (Phase 2)
+    SignedFederationTask,
+    SignedExecutionProof,
+    SignedWitnessAttestation,
+
     # Utility
     create_thor_identity,
     create_sprout_identity,
@@ -47,6 +52,12 @@ from sage.federation.federation_challenge_system import (
     EvasionRecord,
     ChallengeStatus,
     EvasionPenaltyLevel,
+)
+
+from sage.federation.federation_crypto import (
+    FederationKeyPair,
+    FederationCrypto,
+    SignatureRegistry,
 )
 
 __all__ = [
@@ -63,6 +74,11 @@ __all__ = [
     'WitnessRecord',
     'WitnessOutcome',
 
+    # Signed types (Phase 2)
+    'SignedFederationTask',
+    'SignedExecutionProof',
+    'SignedWitnessAttestation',
+
     # Router
     'FederationRouter',
 
@@ -72,6 +88,11 @@ __all__ = [
     'EvasionRecord',
     'ChallengeStatus',
     'EvasionPenaltyLevel',
+
+    # Crypto (Phase 2)
+    'FederationKeyPair',
+    'FederationCrypto',
+    'SignatureRegistry',
 
     # Utility
     'create_thor_identity',

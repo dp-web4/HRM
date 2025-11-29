@@ -166,12 +166,14 @@ class FederationIdentity:
     platform_name: str  # Human-readable (e.g., "Thor")
     hardware_spec: HardwareSpec  # RAM, GPU, power envelope
 
-    # Cryptographic identity (future: Ed25519)
-    # public_key: bytes = b""
-    # private_key: bytes = b""  # Kept secret
-
     # Capability profile
     max_mrh_horizon: MRHProfile  # Largest horizon this platform can handle
+
+    # Optional fields with defaults
+    # Cryptographic identity (Phase 2)
+    public_key: bytes = b""  # Ed25519 public key
+    # Note: private_key is managed separately in FederationKeyPair (kept secret)
+
     supported_modalities: List[str] = field(default_factory=lambda: [
         'llm_inference', 'vision', 'coordination', 'consolidation'
     ])
@@ -230,6 +232,32 @@ class FederationTask:
     min_witnesses: int = 3  # Minimum witness count
     min_witness_societies: int = 3  # Minimum society diversity
 
+    def to_signable_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary for signature calculation"""
+        return {
+            'task_id': self.task_id,
+            'task_type': self.task_type,
+            'task_data': self.task_data,
+            'estimated_cost': self.estimated_cost,
+            'task_horizon': {
+                'delta_r': self.task_horizon.delta_r.value,
+                'delta_t': self.task_horizon.delta_t.value,
+                'delta_c': self.task_horizon.delta_c.value
+            },
+            'complexity': self.complexity,
+            'delegating_platform': self.delegating_platform,
+            'delegating_state': self.delegating_state.value,
+            'quality_requirements': {
+                'min_quality': self.quality_requirements.min_quality,
+                'min_convergence': self.quality_requirements.min_convergence,
+                'max_energy': self.quality_requirements.max_energy
+            },
+            'max_latency': self.max_latency,
+            'deadline': self.deadline,
+            'min_witnesses': self.min_witnesses,
+            'min_witness_societies': self.min_witness_societies
+        }
+
     def __repr__(self) -> str:
         return (f"FederationTask({self.task_id}, type={self.task_type}, "
                 f"cost={self.estimated_cost:.1f} ATP, horizon={self.task_horizon})")
@@ -238,9 +266,10 @@ class FederationTask:
 @dataclass
 class ExecutionProof:
     """
-    Cryptographically signed proof of task execution
+    Proof of task execution (base type for signing)
 
     Attested by witnesses to build trust.
+    For signed version, see SignedExecutionProof.
     """
     task_id: str
     executing_platform: str  # Who executed
@@ -256,26 +285,30 @@ class ExecutionProof:
     convergence_quality: float
     quality_score: float  # 4-component SAGE quality (0-1)
 
-    # Cryptographic proof (future: signatures)
-    execution_hash: str = ""  # Hash of (task + result + metrics)
-    # platform_signature: bytes = b""  # Ed25519 signature by executing platform
-    # witness_signatures: List[bytes] = field(default_factory=list)
-
     # Timestamp
     execution_timestamp: float = field(default_factory=time.time)
 
-    def calculate_hash(self) -> str:
-        """Calculate execution hash for verification"""
-        data = (
-            f"{self.task_id}|{self.executing_platform}|"
-            f"{self.actual_latency}|{self.actual_cost}|"
-            f"{self.quality_score}|{self.execution_timestamp}"
-        )
-        return hashlib.sha256(data.encode()).hexdigest()
+    def to_signable_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary for signature calculation"""
+        return {
+            'task_id': self.task_id,
+            'executing_platform': self.executing_platform,
+            'result_data': self.result_data,
+            'actual_latency': self.actual_latency,
+            'actual_cost': self.actual_cost,
+            'irp_iterations': self.irp_iterations,
+            'final_energy': self.final_energy,
+            'convergence_quality': self.convergence_quality,
+            'quality_score': self.quality_score,
+            'execution_timestamp': self.execution_timestamp
+        }
 
-    def __post_init__(self):
-        if not self.execution_hash:
-            self.execution_hash = self.calculate_hash()
+    def calculate_hash(self) -> str:
+        """Calculate deterministic hash for verification"""
+        # Use to_signable_dict for consistency
+        import json
+        data_str = json.dumps(self.to_signable_dict(), sort_keys=True)
+        return hashlib.sha256(data_str.encode()).hexdigest()
 
 
 # ============================================================================
@@ -292,15 +325,16 @@ class WitnessOutcome(Enum):
 @dataclass
 class WitnessAttestation:
     """
-    Witness evaluation of execution quality
+    Witness evaluation of execution quality (base type for signing)
 
     Tracks both correctness and quality.
+    For signed version, see SignedWitnessAttestation.
     Based on Web4 Session #83 witness_diversity_system.py
     """
     attestation_id: str
     task_id: str
     witness_lct_id: str  # Witnessing platform
-    witness_society_id: str  # For diversity requirement
+    witness_society_id: str  # For diversity requirement (platform name)
 
     # Attestation
     claimed_correctness: float  # Is result correct? (0-1)
@@ -313,9 +347,20 @@ class WitnessAttestation:
     # Outcome
     outcome: WitnessOutcome = WitnessOutcome.PENDING
 
-    # Signature (future: Ed25519)
-    # witness_signature: bytes = b""
+    # Timestamp
     timestamp: float = field(default_factory=time.time)
+
+    def to_signable_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary for signature calculation"""
+        return {
+            'attestation_id': self.attestation_id,
+            'task_id': self.task_id,
+            'witness_lct_id': self.witness_lct_id,
+            'witness_society_id': self.witness_society_id,
+            'claimed_correctness': self.claimed_correctness,
+            'claimed_quality': self.claimed_quality,
+            'timestamp': self.timestamp
+        }
 
     def evaluate(
         self,
@@ -385,6 +430,98 @@ class WitnessRecord:
             self.accurate_attestations += 1
         else:
             self.inaccurate_attestations += 1
+
+
+# ============================================================================
+# Signed Wrapper Types (Phase 2)
+# ============================================================================
+
+@dataclass
+class SignedFederationTask:
+    """
+    Cryptographically signed FederationTask
+
+    Phase 2: Ed25519 signature by delegating platform.
+    Prevents task forgery and parameter tampering.
+    """
+    task: FederationTask
+    signature: bytes  # Ed25519 signature by delegating platform
+    public_key: bytes  # Delegating platform's public key
+
+    def verify_signature(self, registry: 'SignatureRegistry') -> Tuple[bool, str]:
+        """
+        Verify task signature against signature registry
+
+        Args:
+            registry: SignatureRegistry with platform public keys
+
+        Returns:
+            (verified, reason)
+        """
+        return registry.verify_task_signature(
+            task_dict=self.task.to_signable_dict(),
+            signature=self.signature,
+            claimed_platform=self.task.delegating_platform
+        )
+
+
+@dataclass
+class SignedExecutionProof:
+    """
+    Cryptographically signed ExecutionProof
+
+    Phase 2: Ed25519 signature by executing platform.
+    Prevents proof forgery and quality inflation.
+    """
+    proof: ExecutionProof
+    signature: bytes  # Ed25519 signature by executing platform
+    public_key: bytes  # Executing platform's public key
+
+    def verify_signature(self, registry: 'SignatureRegistry') -> Tuple[bool, str]:
+        """
+        Verify proof signature against signature registry
+
+        Args:
+            registry: SignatureRegistry with platform public keys
+
+        Returns:
+            (verified, reason)
+        """
+        return registry.verify_proof_signature(
+            proof_dict=self.proof.to_signable_dict(),
+            signature=self.signature,
+            claimed_platform=self.proof.executing_platform
+        )
+
+
+@dataclass
+class SignedWitnessAttestation:
+    """
+    Cryptographically signed WitnessAttestation
+
+    Phase 2: Ed25519 signature by witnessing platform.
+    Prevents witness forgery and attestation manipulation.
+    """
+    attestation: WitnessAttestation
+    signature: bytes  # Ed25519 signature by witnessing platform
+    public_key: bytes  # Witnessing platform's public key
+
+    def verify_signature(self, registry: 'SignatureRegistry') -> Tuple[bool, str]:
+        """
+        Verify attestation signature against signature registry
+
+        Args:
+            registry: SignatureRegistry with platform public keys
+
+        Returns:
+            (verified, reason)
+        """
+        # Extract platform name from witness_society_id (platform name used for diversity)
+        return registry.verify_attestation_signature(
+            attestation_dict=self.attestation.to_signable_dict(),
+            signature=self.signature,
+            claimed_witness=self.attestation.witness_society_id
+        )
 
 
 # ============================================================================

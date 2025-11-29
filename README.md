@@ -10,9 +10,40 @@
 - **Resource Router**: Efficiently allocates computational resources based on need
 - **Emergence Platform**: Enables intelligence to arise from orchestrated components
 
-## 📊 Current Status (November 2025)
+---
 
-### Recent Achievements
+## 📋 Project Status & Maturity
+
+**Current Status**: Research Exploration - Comprehensive Cognition Architecture
+
+SAGE/HRM is **research-focused exploration** of consciousness-like patterns for edge AI. We have:
+- **Biological foundation**: Dual-tier reasoning grounded in human cognition (fast/slow, planning/execution)
+- **Sapient inspiration**: Their HRM inspired exploration of this biologically-validated approach
+- **Substantial evolution**: Multi-sensor fusion, Web4 integration, edge deployment
+- **Working prototypes**: Real conversations, compression validated, 15+ plugins operational
+- **Early-stage engineering**: Components working, integration in progress, formal evaluation pending
+
+### Key Documentation (Read First)
+
+| Document | What It Covers | Status |
+|----------|----------------|--------|
+| **[STATUS.md](STATUS.md)** | Honest assessment: what exists, what works, what's missing | ✅ Complete |
+| **[Architecture Docs](sage/docs/)** | Complete system understanding (8 documents, 275KB) | ✅ Complete |
+
+**Start Here**: [`STATUS.md`](STATUS.md) - Fair evaluation criteria, Perplexity's assessment, honest gaps
+
+**Key Points**:
+- Biology validates dual-tier reasoning (human fast/slow cognition)
+- Sapient's HRM inspired exploration of this approach (Agent Zero showed benchmark limitations)
+- dp-web4 evolved it into comprehensive cognition architecture (multi-sensor coherence)
+- Working at research scale (conversations, edge deployment)
+- Early-stage as engineering artifact (evaluation, robustness, documentation pending)
+
+**Below**: Technical details and recent achievements
+
+---
+
+## 📊 Recent Achievements
 
 #### Track 3: SNARC Cognition (✅ Complete)
 - **5D Salience Scoring**: Surprise, Novelty, Arousal, Reward, Conflict

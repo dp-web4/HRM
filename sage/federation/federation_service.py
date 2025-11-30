@@ -83,8 +83,8 @@ class FederationServiceHandler(BaseHTTPRequestHandler):
 
         health = {
             'status': 'healthy',
-            'platform': self.identity.platform_name if self.identity else 'unknown',
-            'lct_id': self.identity.lct_id if self.identity else 'unknown',
+            'platform': FederationServiceHandler.identity.platform_name if FederationServiceHandler.identity else 'unknown',
+            'lct_id': FederationServiceHandler.identity.lct_id if FederationServiceHandler.identity else 'unknown',
             'timestamp': time.time()
         }
 
@@ -100,7 +100,7 @@ class FederationServiceHandler(BaseHTTPRequestHandler):
 
             # Parse federation request
             task_dict = request_dict['task']
-            task = FederationTask(**task_dict)
+            task = FederationTask.from_dict(task_dict)
 
             requester_lct_id = request_dict['requester_lct_id']
             signature = request_dict['signature']
@@ -123,11 +123,11 @@ class FederationServiceHandler(BaseHTTPRequestHandler):
             print(f"  Estimated cost: {task.estimated_cost:.1f} ATP")
 
             # Execute task using provided executor
-            if self.executor is None:
+            if FederationServiceHandler.executor is None:
                 self.send_error(500, "No executor configured")
                 return
 
-            execution_proof = self.executor(task)
+            execution_proof = FederationServiceHandler.executor(task)
 
             print(f"  Execution complete")
             print(f"  Quality: {execution_proof.quality_score:.2f}")
@@ -135,7 +135,7 @@ class FederationServiceHandler(BaseHTTPRequestHandler):
 
             # Sign proof
             from sage.federation.federation_crypto import sign_proof
-            proof_signature = sign_proof(execution_proof, self.signing_key)
+            proof_signature = sign_proof(execution_proof, FederationServiceHandler.signing_key)
 
             # Create response
             response = {
@@ -229,8 +229,8 @@ class FederationServer:
         self.server_thread.start()
 
         print(f"[FederationServer] Started on {self.host}:{self.port}")
-        print(f"  Platform: {self.identity.platform_name}")
-        print(f"  LCT ID: {self.identity.lct_id}")
+        print(f"  Platform: {FederationServiceHandler.identity.platform_name}")
+        print(f"  LCT ID: {FederationServiceHandler.identity.lct_id}")
 
     def _run(self):
         """Run server loop"""
@@ -341,7 +341,7 @@ class FederationClient:
             proof_dict = response_data['proof']
             proof_signature = response_data['signature']
 
-            proof = ExecutionProof(**proof_dict)
+            proof = ExecutionProof.from_dict(proof_dict)
 
             # Verify proof signature
             if not verify_proof_signature(proof.to_signable_dict(), proof_signature, target_public_key):
@@ -461,7 +461,6 @@ if __name__ == "__main__":
             convergence_quality=0.8,
             quality_score=0.75,
             execution_timestamp=time.time(),
-            min_witnesses_required=task.min_witnesses
         )
 
     # Start server on Sprout

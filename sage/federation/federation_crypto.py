@@ -415,3 +415,93 @@ class SignatureRegistry:
             'cached_signatures': len(self.signature_cache),
             'platforms': list(self.registry.keys())
         }
+
+
+# ============================================================================
+# Convenience Functions for Phase 3 Network Protocol
+# ============================================================================
+
+def sign_task(task: 'FederationTask', signing_key: bytes) -> str:
+    """
+    Sign FederationTask with platform's Ed25519 private key
+
+    Args:
+        task: FederationTask to sign
+        signing_key: Platform's Ed25519 private key (32 bytes)
+
+    Returns:
+        Hex-encoded signature string
+    """
+    # Load key pair (FederationKeyPair is defined in this module above)
+    keypair = FederationKeyPair.from_bytes("unknown", "unknown", signing_key)
+
+    # Sign task
+    task_dict = task.to_signable_dict() if hasattr(task, 'to_signable_dict') else task.to_dict()
+    signature_bytes = FederationCrypto.sign_task(task_dict, keypair)
+
+    return signature_bytes.hex()
+
+
+def sign_proof(proof: 'ExecutionProof', signing_key: bytes) -> str:
+    """
+    Sign ExecutionProof with platform's Ed25519 private key
+
+    Args:
+        proof: ExecutionProof to sign
+        signing_key: Platform's Ed25519 private key (32 bytes)
+
+    Returns:
+        Hex-encoded signature string
+    """
+    # Load key pair (FederationKeyPair is defined in this module above)
+    keypair = FederationKeyPair.from_bytes("unknown", "unknown", signing_key)
+
+    # Sign proof
+    proof_dict = proof.to_signable_dict() if hasattr(proof, 'to_signable_dict') else proof.to_dict()
+    signature_bytes = FederationCrypto.sign_proof(proof_dict, keypair)
+
+    return signature_bytes.hex()
+
+
+def verify_task_signature(task_dict: Dict[str, Any], signature_hex: str, verify_key: bytes) -> bool:
+    """
+    Verify FederationTask signature
+
+    Args:
+        task_dict: FederationTask dictionary
+        signature_hex: Hex-encoded signature
+        verify_key: Platform's Ed25519 public key (32 bytes)
+
+    Returns:
+        True if valid, False otherwise
+    """
+    try:
+        signature_bytes = bytes.fromhex(signature_hex)
+        task_json = json.dumps(task_dict, sort_keys=True)
+        task_bytes = task_json.encode('utf-8')
+
+        return FederationCrypto.verify_signature(verify_key, task_bytes, signature_bytes)
+    except:
+        return False
+
+
+def verify_proof_signature(proof_dict: Dict[str, Any], signature_hex: str, verify_key: bytes) -> bool:
+    """
+    Verify ExecutionProof signature
+
+    Args:
+        proof_dict: ExecutionProof dictionary
+        signature_hex: Hex-encoded signature
+        verify_key: Platform's Ed25519 public key (32 bytes)
+
+    Returns:
+        True if valid, False otherwise
+    """
+    try:
+        signature_bytes = bytes.fromhex(signature_hex)
+        proof_json = json.dumps(proof_dict, sort_keys=True)
+        proof_bytes = proof_json.encode('utf-8')
+
+        return FederationCrypto.verify_signature(verify_key, proof_bytes, signature_bytes)
+    except:
+        return False

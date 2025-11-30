@@ -60,6 +60,12 @@ from sage.federation.federation_crypto import (
     SignatureRegistry,
 )
 
+from sage.federation.web4_block_signer import (
+    SageBlockSigner,
+    SageBlockVerifier,
+    create_sage_block_signer_from_identity,
+)
+
 __all__ = [
     # Types
     'HardwareSpec',
@@ -93,6 +99,11 @@ __all__ = [
     'FederationKeyPair',
     'FederationCrypto',
     'SignatureRegistry',
+
+    # Web4 Integration
+    'SageBlockSigner',
+    'SageBlockVerifier',
+    'create_sage_block_signer_from_identity',
 
     # Utility
     'create_thor_identity',

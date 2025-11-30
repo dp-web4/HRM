@@ -636,8 +636,8 @@ class MichaudSAGE(SAGEConsciousness):
         if isinstance(quality_reqs, dict):
             quality_requirements = QualityRequirements(
                 min_quality=quality_reqs.get('min_quality', 0.7),
-                min_witnesses=quality_reqs.get('min_witnesses', 3),
-                max_cost_multiplier=quality_reqs.get('max_cost_multiplier', 1.5)
+                min_convergence=quality_reqs.get('min_convergence', 0.6),
+                max_energy=quality_reqs.get('max_energy', 0.7)
             )
         else:
             quality_requirements = quality_reqs
@@ -652,6 +652,7 @@ class MichaudSAGE(SAGEConsciousness):
             delegating_platform=self.federation_identity.platform_name,
             delegating_state=self.attention_manager.get_state(),
             quality_requirements=quality_requirements,
+            max_latency=300.0,  # 5 minutes max latency
             deadline=time_module.time() + 3600.0,  # 1 hour deadline
             min_witnesses=3
         )
@@ -735,7 +736,7 @@ class MichaudSAGE(SAGEConsciousness):
                 'delegated': True,
                 'platform': target_platform.platform_name,
                 'reason': 'federation_success',
-                'results': execution_proof.results
+                'results': execution_proof.result_data
             }
 
         except Exception as e:
@@ -766,12 +767,12 @@ class MichaudSAGE(SAGEConsciousness):
         """
         print(f"\n[FEDERATION SIMULATION]")
         print(f"  Delegating to: {target_platform.platform_name}")
-        print(f"  Task: {task.operation}")
+        print(f"  Task: {task.task_type}")
         print(f"  Cost estimate: {task.estimated_cost:.1f} ATP")
 
         # Simulate: Remote platform executes task
         # For Phase 2.5, we just simulate success with quality ~0.75
-        simulated_results = {
+        simulated_result_data = {
             'status': 'completed',
             'output': f'Simulated result from {target_platform.platform_name}',
             'simulated': True
@@ -779,19 +780,25 @@ class MichaudSAGE(SAGEConsciousness):
 
         # Simulate actual cost (slightly lower than estimate for good platform)
         actual_cost = task.estimated_cost * 0.9
+        actual_latency = 15.0  # Simulated 15 second execution
 
-        # Simulate quality score (good platform)
+        # Simulate quality metrics (good platform)
         quality_score = 0.75
+        final_energy = 0.25  # Lower energy = better
+        convergence_quality = 0.8
+        irp_iterations = 3
 
         # Create execution proof
         execution_proof = ExecutionProof(
             task_id=task.task_id,
-            executor_lct_id=target_platform.lct_id,
-            executor_platform=target_platform.platform_name,
-            results=simulated_results,
+            executing_platform=target_platform.platform_name,
+            result_data=simulated_result_data,
+            actual_latency=actual_latency,
             actual_cost=actual_cost,
-            quality_score=quality_score,
-            timestamp=time.time()
+            irp_iterations=irp_iterations,
+            final_energy=final_energy,
+            convergence_quality=convergence_quality,
+            quality_score=quality_score
         )
 
         print(f"  Execution: Complete ✓")

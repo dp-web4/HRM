@@ -104,10 +104,10 @@ class TestConsciousnessFederationIntegration:
         task = sage._create_federation_task(task_context, task_cost, task_horizon)
 
         assert isinstance(task, FederationTask)
-        assert task.requester_platform == "Thor"
-        assert task.requester_lct_id == "thor_sage_lct"
+        assert task.delegating_platform == "Thor"
+        assert task.task_type == "llm_inference"
         assert task.estimated_cost == 100.0
-        assert task.operation == "llm_inference"
+        assert task.task_data == {'query': 'test'}
 
     def test_simulated_delegation(self):
         """Test simulated federation delegation works"""
@@ -134,7 +134,7 @@ class TestConsciousnessFederationIntegration:
         proof = sage._simulate_federation_delegation(task, sprout)
 
         assert isinstance(proof, ExecutionProof)
-        assert proof.executor_platform == "Sprout"
+        assert proof.executing_platform == "Sprout"
         assert proof.task_id == task.task_id
         assert 0.0 <= proof.quality_score <= 1.0
         assert proof.actual_cost > 0
@@ -189,12 +189,14 @@ class TestConsciousnessFederationIntegration:
         # Create proof with wrong task_id
         proof = ExecutionProof(
             task_id="wrong_id",
-            executor_lct_id="test",
-            executor_platform="Test",
-            results={},
+            executing_platform="Test",
+            result_data={},
+            actual_latency=10.0,
             actual_cost=50.0,
-            quality_score=0.75,
-            timestamp=time.time()
+            irp_iterations=3,
+            final_energy=0.3,
+            convergence_quality=0.8,
+            quality_score=0.75
         )
 
         # Should fail validation
@@ -223,12 +225,14 @@ class TestConsciousnessFederationIntegration:
         # Create proof with invalid quality
         proof = ExecutionProof(
             task_id=task.task_id,
-            executor_lct_id="test",
-            executor_platform="Test",
-            results={},
+            executing_platform="Test",
+            result_data={},
+            actual_latency=10.0,
             actual_cost=50.0,
-            quality_score=1.5,  # Invalid!
-            timestamp=time.time()
+            irp_iterations=3,
+            final_energy=0.3,
+            convergence_quality=0.8,
+            quality_score=1.5  # Invalid!
         )
 
         # Should fail validation
@@ -239,10 +243,32 @@ class TestConsciousnessFederationIntegration:
         thor = create_thor_identity()
         sprout = create_sprout_identity()
 
+        # Create additional platforms for witness requirement (need ≥3)
+        from sage.federation import FederationIdentity
+        from sage.core.mrh_profile import SpatialExtent, TemporalExtent, ComplexityExtent
+
+        platform2 = FederationIdentity(
+            lct_id="platform2_lct",
+            platform_name="Platform2",
+            hardware_spec=sprout.hardware_spec,
+            max_mrh_horizon=sprout.max_mrh_horizon,
+            supported_modalities=sprout.supported_modalities,
+            stake=sprout.stake
+        )
+
+        platform3 = FederationIdentity(
+            lct_id="platform3_lct",
+            platform_name="Platform3",
+            hardware_spec=sprout.hardware_spec,
+            max_mrh_horizon=sprout.max_mrh_horizon,
+            supported_modalities=sprout.supported_modalities,
+            stake=sprout.stake
+        )
+
         sage = MichaudSAGE(
             federation_enabled=True,
             federation_identity=thor,
-            federation_platforms=[sprout]
+            federation_platforms=[sprout, platform2, platform3]  # 3 platforms for witnesses
         )
 
         # Create high-cost task that exceeds budget

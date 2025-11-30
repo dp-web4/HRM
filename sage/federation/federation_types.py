@@ -258,6 +258,47 @@ class FederationTask:
             'min_witness_societies': self.min_witness_societies
         }
 
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'FederationTask':
+        """Reconstruct FederationTask from dictionary (for network deserialization)"""
+        from sage.core.mrh_profile import SpatialExtent, TemporalExtent, ComplexityExtent, MRHProfile
+        from sage.core.attention_manager import MetabolicState
+
+        # Reconstruct MRHProfile from dict
+        horizon_data = data['task_horizon']
+        task_horizon = MRHProfile(
+            delta_r=SpatialExtent(horizon_data['delta_r']),
+            delta_t=TemporalExtent(horizon_data['delta_t']),
+            delta_c=ComplexityExtent(horizon_data['delta_c'])
+        )
+
+        # Reconstruct QualityRequirements from dict
+        qual_data = data['quality_requirements']
+        quality_requirements = QualityRequirements(
+            min_quality=qual_data['min_quality'],
+            min_convergence=qual_data['min_convergence'],
+            max_energy=qual_data['max_energy']
+        )
+
+        # Reconstruct MetabolicState from string
+        delegating_state = MetabolicState(data['delegating_state'])
+
+        return cls(
+            task_id=data['task_id'],
+            task_type=data['task_type'],
+            task_data=data['task_data'],
+            estimated_cost=data['estimated_cost'],
+            task_horizon=task_horizon,
+            complexity=data['complexity'],
+            delegating_platform=data['delegating_platform'],
+            delegating_state=delegating_state,
+            quality_requirements=quality_requirements,
+            max_latency=data['max_latency'],
+            deadline=data['deadline'],
+            min_witnesses=data.get('min_witnesses', 3),
+            min_witness_societies=data.get('min_witness_societies', 3)
+        )
+
     def __repr__(self) -> str:
         return (f"FederationTask({self.task_id}, type={self.task_type}, "
                 f"cost={self.estimated_cost:.1f} ATP, horizon={self.task_horizon})")
@@ -302,6 +343,22 @@ class ExecutionProof:
             'quality_score': self.quality_score,
             'execution_timestamp': self.execution_timestamp
         }
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'ExecutionProof':
+        """Reconstruct ExecutionProof from dictionary (for network deserialization)"""
+        return cls(
+            task_id=data['task_id'],
+            executing_platform=data['executing_platform'],
+            result_data=data['result_data'],
+            actual_latency=data['actual_latency'],
+            actual_cost=data['actual_cost'],
+            irp_iterations=data['irp_iterations'],
+            final_energy=data['final_energy'],
+            convergence_quality=data['convergence_quality'],
+            quality_score=data['quality_score'],
+            execution_timestamp=data['execution_timestamp']
+        )
 
     def calculate_hash(self) -> str:
         """Calculate deterministic hash for verification"""

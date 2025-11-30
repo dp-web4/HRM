@@ -228,7 +228,7 @@ def main():
     print(f"     python sage/tests/test_model_comparison_edge.py")
     print(f"     (Verify +55.6% quality improvement retained)")
     print(f"\n  3. If performance matches Epistemic-Pragmatism (~10s):")
-    print(f"     ✅ Production-ready: best quality + fast inference + 4s load!")
+    print(f"     ✅ Tested and validated: best quality + fast inference + 4s load!")
     print(f"\n{'='*80}\n")
 
 

@@ -343,7 +343,7 @@ stance_markers = {
 - Validated lexicons (not ad-hoc)
 - Temporal analysis (flicker index)
 - Cross-context comparison
-- Production-ready pipeline
+- Tested and validated pipeline
 
 **Our advantage:**
 - Tailored to specific stance markers we care about

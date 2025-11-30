@@ -549,7 +549,7 @@ def consolidate_memories(self, cycle):
 - Extends memory_aware_kernel
 - SNARC scores per event
 - Automatic consolidation during sleep
-- Production-ready for deployment
+- Tested and validated for deployment
 
 ---
 

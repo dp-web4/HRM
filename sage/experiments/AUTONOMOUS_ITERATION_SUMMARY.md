@@ -165,7 +165,7 @@ Across all tests (7 conversations total now):
 - ✅ ATP allocation operational
 - ✅ Memory systems accumulating
 
-**Infrastructure is production-ready.** Model selection and prompt engineering are the levers for quality.
+**Infrastructure is tested and validated.** Model selection and prompt engineering are the levers for quality.
 
 ---
 
@@ -297,7 +297,7 @@ elif observation_type == "planning":
 - Right model for right task (introspective vs philosophical)
 - Question framing matters as much as model choice
 - Sustained quality achieved (Turns 2-4 all 4/4) for first time
-- Infrastructure is production-ready
+- Infrastructure is tested and validated
 - Model selection + prompt engineering are the levers
 
 **Ready for next iteration**:

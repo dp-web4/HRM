@@ -296,7 +296,7 @@ exponentiation are used..."
 
 ### Edge Deployment:
 
-1. **LoRA adapters are production-ready** (3.28s load, 942MB, 100% success)
+1. **LoRA adapters are tested and validated** (3.28s load, 942MB, 100% success)
 2. **Full models need fixes** (loading currently broken)
 3. **~55s inference** is acceptable for learning, not chat
 4. **Can fit 2-3 models** in 8GB memory
@@ -337,4 +337,4 @@ exponentiation are used..."
 
 ---
 
-**Conclusion**: Edge validation successfully identified deployment constraints, confirmed SNARC behavior, and validated that 0.5B LoRA adapters are production-ready for conversational learning on edge devices. Thor's model comparison can now be informed by real deployment constraints from Sprout.
+**Conclusion**: Edge validation successfully identified deployment constraints, confirmed SNARC behavior, and validated that 0.5B LoRA adapters are tested and validated for conversational learning on edge devices. Thor's model comparison can now be informed by real deployment constraints from Sprout.

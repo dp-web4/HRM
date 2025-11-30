@@ -266,7 +266,7 @@ def compare_models(baseline_summary, merged_summary):
     performance_ok = inf_change < 20  # No more than 20% slower
 
     if quality_ok and performance_ok:
-        print(f"✅ PRODUCTION-READY: Merged model achieves best-of-all-worlds!")
+        print(f"✅ TESTED AND VALIDATED: Merged model achieves best-of-all-worlds!")
         print(f"\n   Quality: {quality_improvement:+.1f}% improvement")
         print(f"   Performance: {inf_change:+.1f}% change")
         print(f"   Initialization: {init_change:+.1f}% change")

@@ -556,7 +556,7 @@ def main():
     print("3. ✓ Parameter tampering is detected")
     print("4. ✓ Quality inflation is prevented")
     print("5. ✓ Complete trust chain: task → execution → proof")
-    print("\nPhase 2 cryptographic infrastructure is production-ready!")
+    print("\nPhase 2 cryptographic infrastructure is tested and validated!")
     print("Next step: Phase 3 network protocol for actual Thor ↔ Sprout communication")
 
 

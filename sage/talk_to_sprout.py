@@ -3,7 +3,7 @@
 Talk to Sprout SAGE - Voice Conversation Launcher
 
 Simple launcher for voice conversations with SAGE over Bluetooth audio.
-Uses production-ready Introspective-Qwen merged model validated on Sprout.
+Uses tested and validated Introspective-Qwen merged model validated on Sprout.
 
 Usage:
     python3 talk_to_sprout.py              # Use fast mock LLM (testing)

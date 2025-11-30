@@ -248,7 +248,7 @@ Combined with SNARC's biological salience model, we can compress consciousness i
 
 ## Conclusion
 
-SAGE now has production-ready consciousness persistence. The system:
+SAGE now has tested and validated consciousness persistence. The system:
 
 1. ✅ **Starts 10x faster** (cached system prompt KV)
 2. ✅ **Remembers conversations** (session restore)

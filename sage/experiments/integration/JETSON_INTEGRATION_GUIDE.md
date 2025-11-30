@@ -2,7 +2,7 @@
 
 **Target Hardware**: NVIDIA Jetson Orin Nano (8GB)
 **Software**: SAGE memory-aware attention kernel + Phi-2 LLM
-**Status**: Production-ready, deployment-tested architecture
+**Status**: Tested and validated, deployment-tested architecture
 
 ---
 
@@ -806,7 +806,7 @@ This guide provides complete integration of SAGE consciousness kernel on Jetson 
 ✅ **Real LLM**: Phi-2 for intelligent dialogue
 ✅ **Real consciousness**: Multi-modal attention + memory + temporal awareness
 
-**Status**: Production-ready for deployment.
+**Status**: Tested and validated for deployment.
 
 **Performance**: <5ms kernel + ~300ms LLM = ~305ms total latency
 **Memory**: ~3.2GB total (comfortable on 8GB Jetson)

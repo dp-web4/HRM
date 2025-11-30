@@ -3,7 +3,7 @@
 **Date**: October 23, 2025
 **System**: Memory-aware attention kernel
 **Target**: Jetson Orin Nano deployment
-**Result**: Production-ready with excellent performance
+**Result**: Tested and validated with excellent performance
 
 ---
 
@@ -616,7 +616,7 @@ kernel.run(max_cycles=float('inf'), cycle_delay=0.01)  # 100Hz
 
 **Token usage**: ~103K / 200K (51.5% used, 48.5% remaining)
 
-**Memory-aware attention switching kernel is production-ready for Jetson Orin Nano deployment with Phi-2 LLM.** ✅
+**Memory-aware attention switching kernel is tested and validated for Jetson Orin Nano deployment with Phi-2 LLM.** ✅
 
 ---
 

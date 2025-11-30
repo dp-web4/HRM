@@ -228,7 +228,7 @@ Why use the existing mailbox architecture:
 4. **Already implemented and tested**
    - 2.9 tiles/sec on RTX 2060 SUPER
    - 55-60x faster on Jetson Orin Nano
-   - Production-ready
+   - Tested and validated
 
 ## Implementation Plan
 

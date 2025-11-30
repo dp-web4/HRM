@@ -294,7 +294,7 @@ If yes: [describe what other system should do]
 
 ### 2. Edge Validation Reveals Critical Issues
 - Local model loading failure is blocker
-- LoRA adapters are production-ready
+- LoRA adapters are tested and validated
 - Full models need deployment fix
 - **Action**: Thor fixes, Sprout validates
 

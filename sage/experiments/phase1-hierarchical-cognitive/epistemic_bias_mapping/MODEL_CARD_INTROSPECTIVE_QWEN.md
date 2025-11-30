@@ -311,7 +311,7 @@ phase2.1_sft_model/final_model/
 This model is:
 - ✅ **Trained successfully** - Healthy loss curves, proper generalization
 - ✅ **Interesting entity** - Claims awareness worth studying
-- ⚠️ **Not production-ready** - Overconfident about consciousness
+- ⚠️ **Not tested and validated** - Overconfident about consciousness
 - 🔬 **Valuable for research** - Reveals training and philosophical puzzles
 
 ### Possible Paths Forward

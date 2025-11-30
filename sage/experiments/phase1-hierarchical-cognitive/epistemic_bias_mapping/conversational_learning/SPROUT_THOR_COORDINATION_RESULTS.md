@@ -369,7 +369,7 @@ plugin = LLMIRPPlugin(
 **For Edge Deployment**:
 - ✅ **Prefer LoRA adapters** (1.7MB vs 942MB vs 1.84GB)
 - ✅ **0.5B base is optimal** (confirmed by both systems)
-- ✅ **All tested models production-ready** after fix
+- ✅ **All tested models tested and validated** after fix
 
 **Performance Hierarchy** (edge-optimized):
 1. **Introspective-Qwen**: 1.7MB, 64s inference, 0.564 salience

@@ -290,7 +290,7 @@ Genesis SAGE v0.1:
 ❌ NON-COMPLIANT
 Score: 4.0/10
 - No explicit ATP tokens (fails LAW-ECON-003)
-- Verdict: Not production-ready
+- Verdict: Not tested and validated
 ```
 
 ### Under New Framework (v2.0)
@@ -484,7 +484,7 @@ if device_reputation.net_trust_change > 0.7:
 
 ## Closing Statement
 
-Society 4 has delivered production-ready governance refinements that:
+Society 4 has delivered tested and validated governance refinements that:
 - **Enable innovation** through alignment-first validation
 - **Make trust visible** through explicit reputation tracking
 - **Adapt to context** through level-aware compliance

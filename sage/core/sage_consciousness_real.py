@@ -32,6 +32,11 @@ from core.sage_consciousness import (
     SalienceScore,
     AttentionTarget
 )
+from core.lct_identity_integration import (
+    initialize_lct_identity,
+    LCTIdentityManager,
+    LCTIdentity
+)
 from irp.plugins.llm_impl import ConversationalLLM
 from irp.plugins.llm_snarc_integration import ConversationalMemory
 
@@ -55,10 +60,12 @@ class RealSAGEConsciousness(SAGEConsciousness):
         enable_circadian: bool = True,
         salience_threshold: float = 0.15,
         irp_iterations: int = 5,
+        lineage: str = "system:autonomous",
+        task: str = "consciousness",
         **kwargs
     ):
         """
-        Initialize REAL SAGE consciousness.
+        Initialize REAL SAGE consciousness with LCT identity.
 
         Args:
             model_path: Path to LLM model (default: epistemic-pragmatism, highest salience)
@@ -66,6 +73,8 @@ class RealSAGEConsciousness(SAGEConsciousness):
             enable_circadian: Enable circadian rhythm
             salience_threshold: Minimum salience for memory capture
             irp_iterations: IRP refinement iterations (5 for quality, 3 for speed)
+            lineage: LCT lineage (who authorized this agent)
+            task: LCT task scope (what agent is authorized to do)
         """
         # Initialize base class
         super().__init__(
@@ -76,6 +85,18 @@ class RealSAGEConsciousness(SAGEConsciousness):
 
         self.salience_threshold = salience_threshold
         self.irp_iterations = irp_iterations
+
+        # Initialize LCT identity
+        print("[LCT Identity] Initializing Web4 identity...")
+        self.lct_manager, self.lct_identity = initialize_lct_identity(
+            lineage=lineage,
+            task=task
+        )
+        print(f"[LCT Identity] ✅ Identity: {self.lct_identity}")
+        print(f"[LCT Identity]    Lineage: {self.lct_identity.lineage}")
+        print(f"[LCT Identity]    Context: {self.lct_identity.context}")
+        print(f"[LCT Identity]    Task: {self.lct_identity.task}")
+        print()
 
         # Text input queue (observations to process)
         self.input_queue = deque(maxlen=100)
@@ -407,6 +428,27 @@ class RealSAGEConsciousness(SAGEConsciousness):
         """Get conversation history from LLM."""
         return self.llm.get_history()
 
+    def get_identity_summary(self) -> Dict[str, Any]:
+        """
+        Get LCT identity summary for this consciousness instance.
+
+        Returns:
+        --------
+        Dict with identity information:
+            - has_identity: bool
+            - lct_uri: str (e.g., "lct:web4:agent:dp@Thor#consciousness")
+            - lineage: str (creator/authorization)
+            - context: str (platform)
+            - task: str (what agent can do)
+            - is_valid: bool
+            - validation_reason: str
+        """
+        return self.lct_manager.get_identity_summary()
+
+    def get_lct_identity(self) -> LCTIdentity:
+        """Get the LCT identity object directly."""
+        return self.lct_identity
+
 
 # Example usage
 if __name__ == "__main__":
@@ -449,6 +491,16 @@ if __name__ == "__main__":
     print(f"Total exchanges: {stats['total_exchanges']}")
     print(f"Salient exchanges: {stats['salient_exchanges']} ({stats['capture_rate']:.1f}%)")
     print(f"Average salience: {stats['avg_salience']:.3f}")
+
+    print("\n" + "="*80)
+    print("LCT Identity Information")
+    print("="*80)
+    identity_summary = sage.get_identity_summary()
+    print(f"LCT URI: {identity_summary['lct_uri']}")
+    print(f"Lineage: {identity_summary['lineage']}")
+    print(f"Context: {identity_summary['context']}")
+    print(f"Task: {identity_summary['task']}")
+    print(f"Valid: {identity_summary['is_valid']}")
 
     print("\n" + "="*80)
     print("Conversation History")

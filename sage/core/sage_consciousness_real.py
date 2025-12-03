@@ -37,6 +37,10 @@ from core.lct_identity_integration import (
     LCTIdentityManager,
     LCTIdentity
 )
+from core.lct_atp_permissions import (
+    create_permission_checker,
+    LCTATPPermissionChecker
+)
 from irp.plugins.llm_impl import ConversationalLLM
 from irp.plugins.llm_snarc_integration import ConversationalMemory
 
@@ -96,6 +100,20 @@ class RealSAGEConsciousness(SAGEConsciousness):
         print(f"[LCT Identity]    Lineage: {self.lct_identity.lineage}")
         print(f"[LCT Identity]    Context: {self.lct_identity.context}")
         print(f"[LCT Identity]    Task: {self.lct_identity.task}")
+        print()
+
+        # Initialize permission checker for ATP operations
+        print("[ATP Permissions] Initializing permission checker...")
+        self.permission_checker = create_permission_checker(task)
+        print(f"[ATP Permissions] ✅ Task: {task}")
+
+        # Get permission summary
+        perms = self.permission_checker.task_config
+        atp_perms = [p.value for p in perms['atp_permissions']]
+        print(f"[ATP Permissions]    ATP Operations: {', '.join(atp_perms)}")
+        print(f"[ATP Permissions]    ATP Budget: {perms['resource_limits'].atp_budget}")
+        print(f"[ATP Permissions]    Can Delegate: {perms['can_delegate']}")
+        print(f"[ATP Permissions]    Can Execute Code: {perms['can_execute_code']}")
         print()
 
         # Text input queue (observations to process)
@@ -448,6 +466,115 @@ class RealSAGEConsciousness(SAGEConsciousness):
     def get_lct_identity(self) -> LCTIdentity:
         """Get the LCT identity object directly."""
         return self.lct_identity
+
+    def transfer_atp(
+        self,
+        amount: float,
+        to_lct_uri: str,
+        reason: Optional[str] = None
+    ) -> Tuple[bool, str]:
+        """
+        Transfer ATP to another LCT identity with permission checking.
+
+        Args:
+            amount: Amount of ATP to transfer
+            to_lct_uri: Target LCT identity URI (e.g., "lct:web4:agent:dp@Sprout#perception")
+            reason: Optional reason for transfer (for audit trail)
+
+        Returns:
+            (success: bool, message: str)
+
+        Example:
+            success, msg = sage.transfer_atp(
+                amount=50.0,
+                to_lct_uri="lct:web4:agent:dp@Sprout#perception",
+                reason="Delegating perception task"
+            )
+        """
+        # Get our LCT URI
+        from_lct_uri = str(self.lct_identity)
+
+        # Check permission
+        can_transfer, perm_reason = self.permission_checker.check_atp_transfer(
+            amount=amount,
+            from_lct=from_lct_uri,
+            to_lct=to_lct_uri
+        )
+
+        if not can_transfer:
+            return False, f"Permission denied: {perm_reason}"
+
+        # Check if we have sufficient ATP in metabolic system
+        current_atp = self.metabolic.atp_current
+        if current_atp < amount:
+            return False, f"Insufficient ATP: have {current_atp:.2f}, need {amount:.2f}"
+
+        # Perform transfer (deduct from our metabolic system)
+        self.metabolic.atp_current -= amount
+
+        # Record transfer in permission checker for budget tracking
+        self.permission_checker.record_atp_transfer(amount)
+
+        # Log transfer
+        transfer_msg = f"ATP Transfer: {amount:.2f} from {from_lct_uri} to {to_lct_uri}"
+        if reason:
+            transfer_msg += f" (reason: {reason})"
+
+        print(f"[ATP Transfer] ✅ {transfer_msg}")
+        print(f"[ATP Transfer]    Remaining ATP: {self.metabolic.atp_current:.2f}")
+        print(f"[ATP Transfer]    Budget spent: {self.permission_checker.atp_spent:.2f}")
+
+        # Get budget summary
+        summary = self.permission_checker.get_resource_summary()
+        print(f"[ATP Transfer]    Budget remaining: {summary['atp']['remaining']:.2f}/{summary['atp']['budget']:.2f}")
+
+        return True, transfer_msg
+
+    def check_atp_permission(self, operation: str = "write") -> Tuple[bool, str]:
+        """
+        Check if this consciousness instance has permission for an ATP operation.
+
+        Args:
+            operation: ATP operation to check ("read", "write", or "all")
+
+        Returns:
+            (allowed: bool, reason: str)
+
+        Example:
+            can_write, reason = sage.check_atp_permission("write")
+        """
+        return self.permission_checker.check_atp_permission(operation)
+
+    def get_atp_resource_summary(self) -> Dict[str, Any]:
+        """
+        Get complete ATP resource summary including permissions and usage.
+
+        Returns:
+            Dict with ATP resource information:
+                - task: str (task type)
+                - atp: Dict (spent, budget, remaining, percent_used)
+                - tasks: Dict (running, max, available)
+                - memory_mb: int
+                - cpu_cores: int
+                - permissions: Dict (atp operations, delegation, code execution)
+
+        Example:
+            summary = sage.get_atp_resource_summary()
+            print(f"ATP Budget: {summary['atp']['budget']}")
+            print(f"ATP Spent: {summary['atp']['spent']}")
+            print(f"Can delegate: {summary['permissions']['can_delegate']}")
+        """
+        summary = self.permission_checker.get_resource_summary()
+
+        # Add metabolic ATP info
+        metabolic_config = self.metabolic.get_current_config()
+        summary['metabolic_atp'] = {
+            'current': self.metabolic.atp_current,
+            'max': self.metabolic.atp_max,
+            'recovery_rate': metabolic_config.atp_recovery_rate
+        }
+
+        return summary
 
 
 # Example usage

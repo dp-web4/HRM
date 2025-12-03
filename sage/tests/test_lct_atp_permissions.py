@@ -74,6 +74,7 @@ class TestTaskPermissions:
             "execution.code",
             "delegation.federation",
             "consciousness",
+            "consciousness.sage",  # Enhanced SAGE variant (LUPS v1.0 compatible)
             "admin.readonly",
             "admin.full"
         ]
@@ -411,9 +412,10 @@ class TestConvenienceFunctions:
 
         assert isinstance(tasks, list)
         assert "consciousness" in tasks
+        assert "consciousness.sage" in tasks  # Enhanced SAGE variant
         assert "perception" in tasks
         assert "planning" in tasks
-        assert len(tasks) == 9  # All defined tasks
+        assert len(tasks) == 10  # All defined tasks (9 original + consciousness.sage)
 
 
 class TestPermissionScenarios:

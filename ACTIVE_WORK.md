@@ -14,10 +14,10 @@
 - ✅ Sprout: Merged fix into main (ba9d515)
 - ✅ Thor: Validated Sprout's fix (working perfectly)
 - ✅ Sprout: Completed 2-model edge validation
-  - Sleep-Learned Meta: ✅ 942MB, 63.6s, 0.566 salience - PRODUCTION READY
-  - Introspective-Qwen: ✅ 1.7MB, 64.3s, 0.564 salience - PRODUCTION READY
+  - Sleep-Learned Meta: ✅ 942MB, 63.6s, 0.566 salience - Validated at research scale
+  - Introspective-Qwen: ✅ 1.7MB, 64.3s, 0.564 salience - Validated at research scale
 - ✅ Thor: Validated epistemic-pragmatism on CUDA (November 19, 18:15 PST)
-  - Epistemic-pragmatism: ✅ 1.9GB, 4.62s, **0.625 salience** - PRODUCTION READY (HIGHEST)
+  - Epistemic-pragmatism: ✅ 1.9GB, 4.62s, **0.625 salience** - Validated (highest salience)
   - Sprout's fix validated: Path detection working perfectly
   - See: `sage/tests/THOR_3MODEL_VALIDATION.md`
 - ⏳ Sprout: Awaiting Track 9 edge optimization to test (3 iterations)

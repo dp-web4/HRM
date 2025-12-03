@@ -133,6 +133,21 @@ TASK_PERMISSIONS = {
         )
     },
 
+    # Consciousness.sage: Enhanced SAGE consciousness with memory management
+    # (Compatible with LUPS v1.0 consciousness.sage variant)
+    "consciousness.sage": {
+        "atp_permissions": {ATPPermission.READ, ATPPermission.WRITE},
+        "can_delegate": True,
+        "can_execute_code": True,
+        "can_delete_memories": True,  # NEW: Can prune old memories for long-running loops
+        "resource_limits": ResourceLimits(
+            atp_budget=2000.0,        # Double standard consciousness
+            memory_mb=32768,          # 32 GB (double standard consciousness)
+            cpu_cores=16,             # 16 cores (double standard consciousness)
+            max_concurrent_tasks=200  # Double standard consciousness
+        )
+    },
+
     # Admin.readonly: Read-only admin access
     "admin.readonly": {
         "atp_permissions": {ATPPermission.READ},

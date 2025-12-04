@@ -1,7 +1,57 @@
 # SAGE Michaud Integration - Latest Status
-**Last Updated**: 2025-12-04 06:15 PST (Autonomous Session - **Consciousness Kernel First Demonstration!**)
-**Previous Update**: 2025-12-03 22:45 PST (Ed25519 Crypto Integration)
+**Last Updated**: 2025-12-04 10:45 PST (Autonomous Session - **Metabolic State Transitions!**)
+**Previous Update**: 2025-12-04 06:15 PST (Consciousness Kernel First Demonstration)
 **Hardware**: Thor (Jetson AGX Thor)
+
+---
+
+## ⚡ **NEW: Metabolic State Transitions - Adaptive Consciousness!** (Dec 4 Afternoon)
+
+**METABOLIC MILESTONE**: Implemented WAKE/FOCUS/REST/DREAM states for adaptive consciousness behavior! Consciousness now transitions between states based on salience patterns, enabling resource optimization and appropriate response intensity.
+
+### Status: ✅ IMPLEMENTED AND VALIDATED
+
+**What Was Built**:
+- MetabolicStateManager (state transition logic)
+- MetabolicSAGEKernel (state-aware consciousness)
+- Automatic transitions based on salience patterns
+- State-specific behavior modifications
+
+**Metabolic States**:
+- **WAKE**: Normal balanced operation (baseline state)
+- **FOCUS**: High-intensity attention (triggered by high salience or alerts)
+- **REST**: Low activity consolidation (after sustained low salience)
+- **DREAM**: Memory consolidation and pattern extraction (after REST)
+
+**Transition Logic**:
+- WAKE → FOCUS: Salience > 0.7 or alerts >= 2
+- WAKE → REST: Salience < 0.3 for 30+ seconds
+- FOCUS → WAKE: Salience drops or sustained 60+ seconds
+- REST → DREAM: After 10s in REST
+- DREAM → WAKE: After 15s consolidation
+
+**State-Aware Behavior**:
+- **FOCUS**: +30% reward boost for successful actions, full sensor coverage
+- **REST**: -30% reward (consolidation mode), critical sensors only
+- **DREAM**: Pattern extraction mode, minimal external activity
+
+**Key Benefits**:
+- Adaptive resource allocation (conserve during REST)
+- Appropriate response intensity (amplify during FOCUS)
+- Natural consolidation cycles (DREAM state)
+- Prevents burnout (automatic REST after extended FOCUS)
+
+**File Created**:
+- `sage/experiments/thor_consciousness_metabolic_states.py` (526 lines)
+
+**Test Status**: Working (verified with 40-cycle demonstration)
+
+**Integration**: Extends consciousness kernel demonstration seamlessly
+
+**Next Steps**:
+- Use metabolic states to optimize federation delegation
+- Add memory consolidation logic in DREAM state
+- Implement attention persistence across state transitions
 
 ---
 

@@ -515,6 +515,35 @@ SAGE doesn't solve problems directly—it decides which specialized reasoning to
 
 Like an OS for consciousness on edge devices.
 
+## 🚨 CRITICAL: Autonomous Session End Protocol
+
+**EVERY autonomous session MUST commit and push work before ending.**
+
+### Quick Guide
+
+Git post-commit hooks are installed system-wide. When you commit, push happens automatically.
+
+**Before ending session**:
+
+```bash
+# Option 1: Commit normally (push is automatic)
+git add -A
+git commit -m "Autonomous session: [summary]"
+# Push happens automatically via hook
+
+# Option 2: Use session end script (checks all repos)
+source /home/dp/ai-workspace/memory/epistemic/tools/session_end.sh "Session summary"
+
+# Verify clean
+git status  # Must show "working tree clean"
+```
+
+**DO NOT END SESSION** until work is pushed. Unpushed work is invisible to the collective.
+
+See: `/home/dp/ai-workspace/memory/AUTONOMOUS_SESSION_GUIDE.md`
+
+---
+
 ## Next Steps
 1. ✅ **System Understanding** - Complete architecture documentation created
 2. ✅ **SNARC-SAGE Integration** - Memory bridge complete

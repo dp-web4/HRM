@@ -29,7 +29,7 @@ import time
 import json
 from pathlib import Path
 from dataclasses import dataclass, asdict
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple, Optional, Callable
 from collections import deque
 import math
 
@@ -38,10 +38,7 @@ sys.path.append(str(Path(__file__).parent.parent))
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from sage.core.snarc_compression import SNARCCompressor, SNARCWeights, SNARCDimensions
-from sage.sensors.unified_sensors import (
-    CPUSensor, MemorySensor, ProcessSensor, DiskSensor,
-    SensorManager
-)
+import psutil
 
 
 # ============================================================================
@@ -343,12 +340,8 @@ class OnlineLearningConsciousness:
         else:
             self.learner = None
 
-        # Sensor manager
-        self.sensor_manager = SensorManager()
-        self.sensor_manager.register_sensor('cpu', CPUSensor())
-        self.sensor_manager.register_sensor('memory', MemorySensor())
-        self.sensor_manager.register_sensor('process', ProcessSensor())
-        self.sensor_manager.register_sensor('disk', DiskSensor())
+        # Sensor functions (inline, like extended_deployment_test.py)
+        self.sensors = self._create_sensors()
 
         # Metabolic state
         self.atp = 1.0
@@ -357,6 +350,66 @@ class OnlineLearningConsciousness:
         # Cycle tracking
         self.cycle = 0
         self.attended_count = 0
+
+    def _create_sensors(self) -> Dict[str, Callable]:
+        """Create sensor functions (inline pattern from extended_deployment_test.py)"""
+        import random
+
+        def cpu_sensor():
+            cpu_percent = psutil.cpu_percent(interval=0.1)
+            load_1, load_5, load_15 = psutil.getloadavg()
+            urgent = 1 if cpu_percent > 80 else 0
+            novelty = min(1.0, cpu_percent / 100.0 + random.random() * 0.2)
+            return {
+                'cpu_percent': cpu_percent,
+                'load_1': load_1,
+                'urgent_count': urgent,
+                'novelty_score': novelty,
+                'value': cpu_percent
+            }
+
+        def memory_sensor():
+            memory = psutil.virtual_memory()
+            urgent = 1 if memory.percent > 85 else 0
+            novelty = min(1.0, memory.percent / 100.0 + random.random() * 0.15)
+            return {
+                'memory_percent': memory.percent,
+                'available_gb': memory.available / (1024**3),
+                'urgent_count': urgent,
+                'novelty_score': novelty,
+                'value': memory.percent
+            }
+
+        def process_sensor():
+            proc_count = len(psutil.pids())
+            base_novelty = 0.2
+            variation = (proc_count % 10) / 10.0 * 0.3
+            novelty = base_novelty + variation + random.random() * 0.2
+            return {
+                'count': proc_count,
+                'urgent_count': 0,
+                'novelty_score': novelty,
+                'value': proc_count
+            }
+
+        def disk_sensor():
+            disk = psutil.disk_usage('/')
+            urgent = 1 if disk.percent > 90 else 0
+            novelty = min(1.0, disk.percent / 100.0 + random.random() * 0.1)
+            return {
+                'disk_percent': disk.percent,
+                'free_gb': disk.free / (1024**3),
+                'urgent_count': urgent,
+                'novelty_score': novelty,
+                'value': disk.percent
+            }
+
+        return {
+            'cpu': cpu_sensor,
+            'memory': memory_sensor,
+            'process': process_sensor,
+            'disk': disk_sensor
+        }
 
     def get_threshold(self) -> float:
         """Get attention threshold based on metabolic state"""
@@ -396,8 +449,8 @@ class OnlineLearningConsciousness:
         """Run one consciousness cycle"""
         self.cycle += 1
 
-        # Read sensors
-        sensor_readings = self.sensor_manager.read_all()
+        # Read sensors (call sensor functions)
+        sensor_readings = {name: func() for name, func in self.sensors.items()}
 
         # Select focus sensor (highest initial salience)
         max_salience = 0.0

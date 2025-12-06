@@ -1,0 +1,19 @@
+{
+  "learned": {
+    "surprise": 0.062031292924953685,
+    "novelty": 0.6282836008799391,
+    "arousal": 0.2906653573019962,
+    "reward": 0.009509874446555511,
+    "conflict": 0.009509874446555511
+  },
+  "default": {
+    "surprise": 0.25,
+    "novelty": 0.2,
+    "arousal": 0.2,
+    "reward": 0.2,
+    "conflict": 0.15
+  },
+  "training_examples": 17,
+  "final_loss": 0.1385199528265821,
+  "improvement_percent": 41.78839560350154
+}

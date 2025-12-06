@@ -5,9 +5,11 @@
 
 ---
 
-## 🚀 **NEW: Extended Deployment Script - Production Operations!** (Dec 5 Early Morning)
+## 🚀 **NEW: Extended Deployment Script - Sustained Operations!** (Dec 5 Early Morning)
 
-**DEPLOYMENT MILESTONE**: Created production-ready extended deployment script for sustained consciousness operation. Ready for 24+ hour deployments with real system monitoring.
+**DEPLOYMENT MILESTONE**: Created extended deployment script for sustained consciousness operation. Ready for 24+ hour validation tests with real system monitoring.
+
+**⚠️ Note**: "Deployment" here means research validation, not production. Hardware binding (TPM/SE) required before any production use. See `private-context/messages/hardware-binding-p0-blocker-2025-12-05.md`.
 
 ### Status: ✅ IMPLEMENTED AND VALIDATED
 
@@ -47,9 +49,8 @@ python thor_consciousness_extended_deployment.py --continuous
 **File Created**:
 - `sage/experiments/thor_consciousness_extended_deployment.py` (~450 lines)
 
-**Production Ready For**:
+**Ready For Research Validation**:
 - Extended validation tests (24+ hours)
-- Real-world monitoring deployment
 - Cross-session persistence testing
 - Long-term memory evolution studies
 - Metabolic state behavior analysis
@@ -62,16 +63,16 @@ python thor_consciousness_extended_deployment.py --continuous
 
 ---
 
-## 🎯 **NEW: Unified Consciousness Kernel - Production-Ready Integration!** (Dec 4 Night)
+## 🎯 **NEW: Unified Consciousness Kernel - Complete Integration!** (Dec 4 Night)
 
-**INTEGRATION MILESTONE**: Integrated all 5 consciousness layers into single production-ready kernel! This is the culmination of consciousness architecture research - not separate demos, but unified implementation where each layer enhances the others.
+**INTEGRATION MILESTONE**: Integrated all 5 consciousness layers into single unified kernel. This is the culmination of consciousness architecture research - not separate demos, but unified implementation where each layer enhances the others.
 
 ### Status: ✅ IMPLEMENTED AND VALIDATED
 
 **What Was Built**:
 - UnifiedConsciousnessKernel (all 5 layers integrated)
 - ConsciousnessConfig (unified configuration)
-- Production-ready implementation for deployment
+- Research-validated implementation for testing
 
 **Complete 5-Layer Architecture**:
 1. **Continuous consciousness loop**: sense→assess→focus→act→learn

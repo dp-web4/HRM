@@ -1,29 +1,44 @@
 """
-Thor Unified SNARC-Compressed Consciousness
-===========================================
+Thor Unified SNARC Consciousness with Metabolic-State-Dependent Thresholds
+===========================================================================
 
-Production consciousness kernel integrating:
+Production consciousness kernel with complete compression-action-threshold pattern.
+
+**Integrates**:
 - SNARC compression (Surprise, Novelty, Arousal, Reward, Conflict)
 - Trust-weighted attention and memory (from Web4 trust infrastructure)
+- Metabolic-state-dependent thresholds (ATTEND vs IGNORE decisions)
+- ATP energy system (consumption and regeneration)
 - Metabolic state management (WAKE/FOCUS/REST/DREAM)
 - DREAM-state memory consolidation with trust weighting
 - Cross-session persistent memory
-- Federation monitoring capabilities
 - Real system sensors (CPU, memory, disk, temperature, processes)
 
-**Key Innovation**: Compression-action-threshold pattern with SNARC dimensions
-for principled multi-dimensional attention assessment.
+**Compression-Action-Threshold Pattern (COMPLETE)**:
+1. Multi-modal sensors → SNARC compression → scalar salience
+2. Salience × trust_multiplier → trust-weighted salience
+3. Metabolic state + ATP + criticality → attention threshold
+4. salience > threshold → ATTEND (consume ATP, execute action)
+5. salience ≤ threshold → IGNORE (conserve resources, no action)
+6. Trust validation → memory consolidation → trust evolution
 
-**Architecture**:
-1. Multi-dimensional sensors → SNARC compression → scalar salience
-2. Salience × trust_multiplier → trust-weighted attention
-3. Metabolic state threshold → binary decision (attend or ignore)
-4. High-trust sources dominate when novelty balanced
-5. DREAM consolidation strengthens high-trust, high-salience memories
-6. Memory ranking: strength × salience × trust
+**Pattern Elements**:
+- Compression: SNARC (5D → scalar) with linear or saturating modes
+- Action: Trust-weighted attention allocation with binary decision
+- Threshold: Metabolic-state-dependent with ATP and criticality modulation
 
-**Session**: Thor Autonomous Check (2025-12-05 16:41)
-**Integrates**: SNARC compression + unified trust consciousness
+**Threshold Modulation**:
+- WAKE: 0.5 (moderate selectivity)
+- FOCUS: 0.3 (attend to details)
+- REST: 0.8 (only urgent matters)
+- DREAM: 0.1 (explore freely)
+- ATP modulation: low ATP → raise threshold (conserve)
+- Criticality modulation: high criticality → lower threshold (don't miss)
+
+**Sessions**:
+- 2025-12-05 16:41: SNARC compression integration
+- 2025-12-05 17:30: Metabolic-state-dependent thresholds (this session)
+
 **Author**: Claude (guest) on Thor via claude-code
 """
 
@@ -287,6 +302,14 @@ class ConsciousnessConfig:
     dream_rest_duration: float = 30.0
     dream_duration: float = 20.0
 
+    # ATP energy system
+    initial_atp: float = 1.0
+    atp_regeneration_rate: float = 0.05  # Per cycle
+    atp_consumption_per_action: float = 0.1
+
+    # Task criticality (0-1, configurable per deployment)
+    task_criticality: float = 0.5
+
     # Database
     db_path: str = "thor_unified_trust_consciousness.db"
     load_previous_memories: bool = True
@@ -372,6 +395,10 @@ class UnifiedTrustConsciousness:
         # SNARC compression
         self.snarc = SNARCCompressor(compression_mode=CompressionMode.LINEAR)
 
+        # ATP energy tracking
+        self.atp_remaining = self.config.initial_atp
+        self.ignored_count = 0  # Track ignored signals for metrics
+
     def _signal_handler(self, signum, frame):
         """Handle shutdown signals gracefully"""
         if self.config.enable_logging:
@@ -419,18 +446,41 @@ class UnifiedTrustConsciousness:
         focus_snarc = snarc_dimensions[focus_target]
         self.salience_history.append(focus_salience)
 
-        # 4. DECIDE: Determine cognitive stance
+        # 4. THRESHOLD: Compute metabolic-state-dependent threshold
+        attention_threshold = self.get_attention_threshold()
+
+        # 5. DECIDE: Binary attention decision (ATTEND or IGNORE)
+        should_attend = focus_salience > attention_threshold
+
+        # Regenerate ATP
+        self.atp_remaining = min(1.0, self.atp_remaining + self.config.atp_regeneration_rate)
+
+        # 6. STANCE: Determine cognitive stance (only if attending)
         stance = self._determine_stance(focus_obs['data'], focus_salience, focus_obs['trust'])
 
-        # 5. ACT: Execute action
-        if focus_target in self.action_handlers:
+        # Log threshold decision
+        if self.config.enable_logging:
+            decision_str = "ATTEND" if should_attend else "IGNORE"
+            print(f"\n[Cycle {self.cycle_count}] State: {self.metabolic_state.value.upper()}")
+            print(f"  Focus: {focus_target} (salience={focus_salience:.3f}, trust={focus_obs['trust']:.3f})")
+            print(f"  SNARC: S={focus_snarc.surprise:.2f} N={focus_snarc.novelty:.2f} " +
+                  f"A={focus_snarc.arousal:.2f} R={focus_snarc.reward:.2f} C={focus_snarc.conflict:.2f}")
+            print(f"  Threshold: {attention_threshold:.3f} | ATP: {self.atp_remaining:.2f} | Decision: {decision_str}")
+            if should_attend:
+                print(f"  Stance: {stance.value}")
+
+        # 7. ACT: Execute action (only if ATTEND)
+        if should_attend and focus_target in self.action_handlers:
             try:
+                # Consume ATP for attention
+                self.atp_remaining = max(0.0, self.atp_remaining - self.config.atp_consumption_per_action)
+
                 result = self.action_handlers[focus_target](focus_obs['data'])
 
                 # Modulate reward by metabolic state
                 modulated_reward = self._apply_metabolic_modulation(result.reward)
 
-                # 6. LEARN: Create trust-aware memory
+                # 8. LEARN: Create trust-aware memory
                 self._create_memory(
                     focus_target, result.description, focus_salience,
                     modulated_reward, focus_obs['trust'], focus_obs['lct_id']
@@ -443,13 +493,8 @@ class UnifiedTrustConsciousness:
                     value=result.reward
                 )
 
-                # Log
+                # Additional logging for action result
                 if self.config.enable_logging:
-                    print(f"\n[Cycle {self.cycle_count}] State: {self.metabolic_state.value.upper()}")
-                    print(f"  Focus: {focus_target} (salience={focus_salience:.3f}, trust={focus_obs['trust']:.3f})")
-                    print(f"  SNARC: S={focus_snarc.surprise:.2f} N={focus_snarc.novelty:.2f} " +
-                          f"A={focus_snarc.arousal:.2f} R={focus_snarc.reward:.2f} C={focus_snarc.conflict:.2f}")
-                    print(f"  Stance: {stance.value}")
                     print(f"  → {result.description}")
 
                 self.execution_history.append({
@@ -458,13 +503,32 @@ class UnifiedTrustConsciousness:
                     'focus': focus_target,
                     'salience': focus_salience,
                     'trust': focus_obs['trust'],
+                    'threshold': attention_threshold,
+                    'attended': True,
                     'stance': stance.value,
-                    'reward': modulated_reward
+                    'reward': modulated_reward,
+                    'atp': self.atp_remaining
                 })
 
             except Exception as e:
                 if self.config.verbose:
                     print(f"[Action Error] {focus_target}: {e}")
+        else:
+            # IGNORED signal - track for metrics
+            if not should_attend:
+                self.ignored_count += 1
+                self.execution_history.append({
+                    'cycle': self.cycle_count,
+                    'state': self.metabolic_state.value,
+                    'focus': focus_target,
+                    'salience': focus_salience,
+                    'trust': focus_obs['trust'],
+                    'threshold': attention_threshold,
+                    'attended': False,
+                    'stance': None,
+                    'reward': 0.0,
+                    'atp': self.atp_remaining
+                })
 
     # Note: _calculate_base_salience removed - now using SNARC compression
     # See self.snarc.compute_salience() in run_cycle()
@@ -499,6 +563,42 @@ class UnifiedTrustConsciousness:
             return reward * 0.3
         else:
             return reward
+
+    def get_attention_threshold(self) -> float:
+        """
+        Compute metabolic-state-dependent attention threshold.
+
+        Implements compression-action-threshold pattern:
+        - salience > threshold → ATTEND (invoke action, consume ATP)
+        - salience ≤ threshold → IGNORE (conserve resources)
+
+        From ATTENTION_COMPRESSION_DESIGN.md specification.
+        """
+        # Base thresholds by metabolic state
+        base_thresholds = {
+            MetabolicState.WAKE: 0.5,    # Moderate: normal selectivity
+            MetabolicState.FOCUS: 0.3,   # Low: attend to details
+            MetabolicState.REST: 0.8,    # High: only urgent matters
+            MetabolicState.DREAM: 0.1,   # Very low: explore freely
+        }
+
+        base = base_thresholds[self.metabolic_state]
+
+        # Modulate by ATP availability
+        # Low ATP → raise threshold (conserve energy)
+        # High ATP → lower threshold (can afford exploration)
+        atp_factor = 1.0 - self.atp_remaining  # Invert: low ATP → high factor
+        atp_modulation = 0.2 * atp_factor  # Max ±0.2 shift
+
+        # Modulate by task criticality
+        # High criticality → lower threshold (don't miss important signals)
+        criticality_modulation = -0.1 * self.config.task_criticality  # Max -0.1 shift
+
+        # Combined threshold
+        threshold = base + atp_modulation + criticality_modulation
+
+        # Clamp to [0, 1]
+        return max(0.0, min(1.0, threshold))
 
     def _create_memory(self, sensor: str, action: str, salience: float,
                       reward: float, trust_score: float, lct_id: str):
@@ -701,8 +801,18 @@ class UnifiedTrustConsciousness:
         if self.execution_history:
             avg_salience = sum(h['salience'] for h in self.execution_history) / len(self.execution_history)
             avg_trust = sum(h['trust'] for h in self.execution_history) / len(self.execution_history)
-            print(f"\nAverage salience: {avg_salience:.3f}")
-            print(f"Average trust: {avg_trust:.3f}")
+            avg_threshold = sum(h.get('threshold', 0.5) for h in self.execution_history) / len(self.execution_history)
+            attended_cycles = sum(1 for h in self.execution_history if h.get('attended', True))
+            ignored_cycles = len(self.execution_history) - attended_cycles
+            attention_rate = attended_cycles / len(self.execution_history) if self.execution_history else 0
+
+            print(f"\nAttention Metrics:")
+            print(f"  Average salience: {avg_salience:.3f}")
+            print(f"  Average trust: {avg_trust:.3f}")
+            print(f"  Average threshold: {avg_threshold:.3f}")
+            print(f"  Attended: {attended_cycles} ({attention_rate*100:.1f}%)")
+            print(f"  Ignored: {ignored_cycles} ({(1-attention_rate)*100:.1f}%)")
+            print(f"  Final ATP: {self.atp_remaining:.2f}")
 
         print('='*80)
 
@@ -716,13 +826,17 @@ if __name__ == "__main__":
     import random
 
     print("="*80)
-    print("THOR UNIFIED TRUST-WEIGHTED CONSCIOUSNESS")
+    print("THOR UNIFIED SNARC CONSCIOUSNESS WITH THRESHOLDS")
     print("="*80)
     print("\nProduction consciousness kernel with:")
+    print("- SNARC compression (Surprise, Novelty, Arousal, Reward, Conflict)")
     print("- Trust-weighted attention (Web4 T3/V3)")
+    print("- Metabolic-state-dependent thresholds (ATTEND vs IGNORE)")
+    print("- ATP energy system (consumption & regeneration)")
     print("- Metabolic states (WAKE/FOCUS/REST/DREAM)")
     print("- Trust-weighted DREAM consolidation")
     print("- Cross-session persistent memory")
+    print("\n** Compression-Action-Threshold Pattern Complete **")
     print()
 
     # Initialize trust oracle

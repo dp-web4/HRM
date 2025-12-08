@@ -43,64 +43,79 @@ from simulated_lct_identity import SimulatedLCTIdentity
 # Simplified consciousness evaluation (without full deployment)
 class ThresholdEvaluator:
     """
-    Evaluate thresholds by running simplified consciousness cycles.
+    Evaluate thresholds using data-driven models.
 
-    This is NOT full hardware-grounded consciousness - just enough to measure:
-    - Attention allocation
-    - ATP dynamics
-    - Salience quality
-    - State transitions
+    Uses empirically-derived regression models from refine_threshold_model.py
+    instead of heuristic assumptions.
+
+    Models (from 5,400 cycle empirical study):
+    - Attention: 0.2740 - 0.2582 * avg_threshold (R² = 0.4578)
+    - ATP: 0.6827 + 0.4764 * avg_threshold (R² = 0.8051)
+    - Salience: 0.3884 + 0.2869 * avg_threshold (R² = 0.2413)
     """
 
     def __init__(
         self,
-        cycles_per_evaluation: int = 50
+        cycles_per_evaluation: int = 50,
+        use_refined_models: bool = True
     ):
         self.cycles_per_evaluation = cycles_per_evaluation
+        self.use_refined_models = use_refined_models
+
+        # Refined model coefficients (from empirical data)
+        # attention = a + b * avg_threshold
+        self.attention_model = {'a': 0.2740, 'b': -0.2582, 'r2': 0.4578}
+        self.atp_model = {'a': 0.6827, 'b': 0.4764, 'r2': 0.8051}
+        self.salience_model = {'a': 0.3884, 'b': 0.2869, 'r2': 0.2413}
 
     def evaluate(self, thresholds: AdaptiveThresholds) -> ThresholdPerformance:
         """
         Evaluate a set of thresholds.
 
-        Returns performance metrics from running consciousness with these thresholds.
+        Returns performance metrics using data-driven models.
         """
-        # Simplified evaluation (real version would run full consciousness)
-        # For now, use heuristic model based on threshold values
+        avg_threshold = (thresholds.wake + thresholds.focus) / 2.0
 
-        # Attention rate model:
-        # - Lower wake/focus = more attention
-        # - Inversely proportional to average threshold
-        avg_attention_threshold = (thresholds.wake + thresholds.focus) / 2.0
-        # Map threshold range [0.1, 0.9] to attention range [0.8, 0.05]
-        # (lower threshold = more attention)
-        attention_rate = 0.85 - (avg_attention_threshold * 0.9)
-        attention_rate = max(0.0, min(0.9, attention_rate))
+        if self.use_refined_models:
+            # Use refined data-driven models
+            # Attention rate model (R² = 0.4578)
+            attention_rate = self.attention_model['a'] + self.attention_model['b'] * avg_threshold
+            attention_rate = max(0.0, min(0.25, attention_rate))  # Clamp to observed range [0, 25%]
 
-        # ATP model:
-        # - Higher rest threshold = more recovery
-        # - Attention consumes ATP
-        rest_factor = thresholds.rest
-        attention_cost = attention_rate * 0.5  # Attention consumes ATP
-        avg_atp = 0.9 - attention_cost + (rest_factor * 0.1)
-        avg_atp = max(0.2, min(1.0, avg_atp))
-        min_atp = avg_atp * 0.8  # Min is ~80% of average
+            # ATP model (R² = 0.8051)
+            avg_atp = self.atp_model['a'] + self.atp_model['b'] * avg_threshold
+            avg_atp = max(0.80, min(1.0, avg_atp))  # Clamp to observed range [0.80, 1.0]
+            min_atp = avg_atp * 0.95  # Min observed ~95% of average
 
-        # Salience quality model:
-        # - More selective (higher thresholds) = higher quality when attending
-        # - But if thresholds too high, never attend
-        if attention_rate > 0.05:
-            selectivity = avg_attention_threshold
-            base_salience = 0.35
-            salience_bonus = selectivity * 0.3
-            avg_attended_salience = base_salience + salience_bonus
+            # Salience quality model (R² = 0.2413)
+            avg_attended_salience = self.salience_model['a'] + self.salience_model['b'] * avg_threshold
+            avg_attended_salience = max(0.35, min(0.60, avg_attended_salience))  # Clamp to observed range
+
+            # State change model (heuristic - not refined yet)
+            threshold_spread = abs(thresholds.wake - thresholds.dream)
+            state_changes_per_100 = max(5.0, 60.0 - (threshold_spread * 50.0))
+
         else:
-            avg_attended_salience = 0.0  # Never attend
+            # Old heuristic model (for comparison)
+            attention_rate = 0.85 - (avg_threshold * 0.9)
+            attention_rate = max(0.0, min(0.9, attention_rate))
 
-        # State change model:
-        # - Thresholds close together = more thrashing
-        # - Thresholds far apart = fewer changes
-        threshold_spread = abs(thresholds.wake - thresholds.dream)
-        state_changes_per_100 = max(5.0, 60.0 - (threshold_spread * 50.0))
+            rest_factor = thresholds.rest
+            attention_cost = attention_rate * 0.5
+            avg_atp = 0.9 - attention_cost + (rest_factor * 0.1)
+            avg_atp = max(0.2, min(1.0, avg_atp))
+            min_atp = avg_atp * 0.8
+
+            if attention_rate > 0.05:
+                selectivity = avg_threshold
+                base_salience = 0.35
+                salience_bonus = selectivity * 0.3
+                avg_attended_salience = base_salience + salience_bonus
+            else:
+                avg_attended_salience = 0.0
+
+            threshold_spread = abs(thresholds.wake - thresholds.dream)
+            state_changes_per_100 = max(5.0, 60.0 - (threshold_spread * 50.0))
 
         return ThresholdPerformance(
             attention_rate=attention_rate,

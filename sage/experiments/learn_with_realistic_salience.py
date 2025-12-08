@@ -255,37 +255,53 @@ def run_learning_experiment(
     # Initialize learner
     print("5️⃣  Initializing adaptive learner...")
     learner = AdaptiveThresholdLearner(
-        evaluator=evaluator,
+        baseline_thresholds=baseline_thresholds,
         objectives=objectives,
         learning_rate=0.08,
-        momentum=0.7
+        momentum=0.7,
+        convergence_window=5
     )
     print(f"   Learning rate: {learner.learning_rate}")
     print(f"   Momentum: {learner.momentum}\n")
 
-    # Run learning
+    # Run learning loop (manual update pattern)
     print("6️⃣  Running learning iterations...\n")
-    best_thresholds, best_score, history, converged = learner.learn(
-        initial_thresholds=baseline_thresholds,
-        max_iterations=max_iterations,
-        convergence_threshold=0.001
-    )
 
-    # Display progress
-    for i, entry in enumerate(history, 1):
-        perf = entry['performance']
-        score = entry['score']
-        print(f"   Iteration {i:2d}: Attention={perf.attention_rate*100:5.1f}%, "
-              f"ATP={perf.avg_atp:.2f}, Salience={perf.avg_attended_salience:.2f}, "
+    history = []
+    for i in range(max_iterations):
+        # Get current thresholds
+        current = learner.get_current_thresholds()
+
+        # Evaluate performance
+        performance = evaluator.evaluate(current)
+        score = performance.score(objectives)
+
+        # Store history
+        history.append({
+            'thresholds': current,
+            'performance': performance,
+            'score': score
+        })
+
+        # Update learner
+        learner.update(performance)
+
+        # Display progress
+        print(f"   Iteration {i+1:2d}: Attention={performance.attention_rate*100:5.1f}%, "
+              f"ATP={performance.avg_atp:.2f}, Salience={performance.avg_attended_salience:.2f}, "
               f"Score={score:.3f}")
 
-    if converged:
-        print(f"\n   ✅ Converged after {len(history)} iterations!\n")
+        # Check convergence
+        if learner.has_converged():
+            print(f"\n   ✅ Converged after {i+1} iterations!\n")
+            break
     else:
         print(f"\n   ⚠️  Did not converge after {max_iterations} iterations\n")
 
     # Extract learned thresholds
     print("7️⃣  Extracting learned thresholds...")
+    best_thresholds = learner.get_best_thresholds()
+    best_score = learner.best_score
     print(f"   WAKE={best_thresholds.wake:.2f}, FOCUS={best_thresholds.focus:.2f}")
     print(f"   REST={best_thresholds.rest:.2f}, DREAM={best_thresholds.dream:.2f}\n")
 
@@ -307,7 +323,7 @@ def run_learning_experiment(
         'final_performance': final_perf,
         'final_score': best_score,
         'history': history,
-        'converged': converged,
+        'converged': learner.has_converged(),
         'iterations': len(history)
     }
 

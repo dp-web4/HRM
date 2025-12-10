@@ -307,6 +307,9 @@ class TemporalAdapter:
             # Update damping state
             self._update_damping(trigger)
 
+            # Learn from successful adaptation
+            self._learn_pattern()
+
             # Reset cycle counter
             self.cycles_since_adaptation = 0
 
@@ -320,6 +323,17 @@ class TemporalAdapter:
                        f"damping={self.current_damping_factor:.2f} | {reason}")
 
             return (new_cost, new_recovery)
+
+        # No reactive adaptation needed - try applying learned pattern
+        # (Only if we haven't adapted recently and performance is suboptimal)
+        if self.cycles_since_adaptation > self.min_cycles_between_adaptations:
+            current = self.current_window.get_metrics()
+            coverage = current.get('coverage', 0.0) if current else 0.0
+
+            if coverage < 0.90 and self._apply_learned_pattern():
+                # Pattern was applied
+                self.cycles_since_adaptation = 0  # Reset counter
+                return (self.current_cost, self.current_recovery)
 
         return None
 
@@ -448,6 +462,132 @@ class TemporalAdapter:
     def export_history(self) -> List[Dict]:
         """Export adaptation history for analysis"""
         return [event.to_dict() for event in self.adaptation_history]
+
+    def _get_current_hour(self) -> int:
+        """Get current hour of day (0-23)"""
+        return datetime.now().hour
+
+    def _get_pattern_key(self, hour: int) -> str:
+        """
+        Get pattern key for given hour.
+
+        Groups hours into meaningful time-of-day periods:
+        - early_morning: 0-6
+        - morning: 6-12
+        - midday: 12-14
+        - afternoon: 14-18
+        - evening: 18-22
+        - night: 22-24
+        """
+        patterns = [
+            (0, 6, "early_morning"),
+            (6, 12, "morning"),
+            (12, 14, "midday"),
+            (14, 18, "afternoon"),
+            (18, 22, "evening"),
+            (22, 24, "night")
+        ]
+
+        for start, end, name in patterns:
+            if start <= hour < end:
+                return name
+
+        return "unknown"
+
+    def _learn_pattern(self):
+        """
+        Learn time-of-day pattern from current performance.
+
+        Updates or creates TemporalPattern for current time period
+        based on current ATP parameters and performance metrics.
+        """
+        if not self.enable_pattern_learning:
+            return
+
+        hour = self._get_current_hour()
+        pattern_key = self._get_pattern_key(hour)
+
+        # Get current performance
+        metrics = self.current_window.get_metrics()
+        if not metrics or 'coverage' not in metrics:
+            return
+
+        coverage = metrics.get('coverage', 0.0)
+
+        # Only learn from good performance (>80% coverage)
+        if coverage < 0.80:
+            return
+
+        # Get time range for this pattern
+        time_ranges = {
+            "early_morning": (0, 6),
+            "morning": (6, 12),
+            "midday": (12, 14),
+            "afternoon": (14, 18),
+            "evening": (18, 22),
+            "night": (22, 24)
+        }
+        time_range = time_ranges.get(pattern_key, (hour, hour+1))
+
+        # Create or update pattern
+        if pattern_key not in self.learned_patterns:
+            # Create new pattern
+            self.learned_patterns[pattern_key] = TemporalPattern(
+                pattern_type=pattern_key,
+                time_range=time_range,
+                optimal_cost=self.current_cost,
+                optimal_recovery=self.current_recovery,
+                confidence=0.1  # Low initial confidence
+            )
+        else:
+            # Update existing pattern
+            pattern = self.learned_patterns[pattern_key]
+            pattern.update_params(
+                self.current_cost,
+                self.current_recovery,
+                coverage  # Performance metric
+            )
+
+        logger.debug(f"Pattern learning: {pattern_key} | "
+                    f"cost={self.current_cost:.4f}, recovery={self.current_recovery:.4f} | "
+                    f"coverage={coverage:.1%}")
+
+    def _apply_learned_pattern(self) -> bool:
+        """
+        Apply learned pattern for current time if available.
+
+        Returns:
+            True if pattern was applied, False otherwise
+        """
+        if not self.enable_pattern_learning:
+            return False
+
+        hour = self._get_current_hour()
+        pattern_key = self._get_pattern_key(hour)
+
+        # Check if we have a learned pattern for this time
+        if pattern_key not in self.learned_patterns:
+            return False
+
+        pattern = self.learned_patterns[pattern_key]
+
+        # Only apply if confidence is sufficient (>50%)
+        if pattern.confidence < 0.5:
+            return False
+
+        # Apply learned parameters
+        old_cost = self.current_cost
+        old_recovery = self.current_recovery
+
+        self.current_cost = pattern.optimal_cost
+        self.current_recovery = pattern.optimal_recovery
+
+        logger.info(f"Applied learned pattern: {pattern_key} | "
+                   f"cost {old_cost:.4f}→{self.current_cost:.4f}, "
+                   f"recovery {old_recovery:.4f}→{self.current_recovery:.4f} | "
+                   f"confidence={pattern.confidence:.1%}")
+
+        return True
 
 
 # Convenience factory functions

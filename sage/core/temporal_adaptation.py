@@ -3,6 +3,8 @@
 Production Temporal Adaptation for SAGE Consciousness
 
 Session 18: Production Integration of Temporal Adaptation Framework
+Session 22: Pattern Learning for Predictive Optimization
+Session 24: Multi-Objective Optimization Integration
 
 Integrates validated temporal adaptation (Sessions 16-17) into sage/core for
 real-world deployments. Provides continuous online tuning of ATP parameters
@@ -12,6 +14,9 @@ Research Provenance:
 - Session 16: Temporal consciousness adaptation framework (685 LOC)
 - Session 17: Damping mechanism with satisfaction threshold (763 LOC)
 - Session 62 (Sprout): Cross-platform validation on edge hardware
+- Session 22: Pattern learning capability (128 LOC)
+- Session 23: Multi-objective optimization framework (384 LOC)
+- Session 24: Multi-objective integration (this session)
 - Production-ready: 97.9% reduction in over-adaptation (95 → 2 adaptations)
 
 Key Features:
@@ -20,6 +25,7 @@ Key Features:
 3. Adaptive stabilization: Increases wait time after successful adaptations
 4. Trigger categorization: Resets damping when problem type changes
 5. Pattern learning: Tracks time-of-day patterns for predictive tuning
+6. Multi-objective optimization: Balances coverage + quality + energy (Session 24)
 
 Integration Points:
 - MetabolicController: ATP parameter updates
@@ -57,12 +63,21 @@ class TemporalWindow:
 
     Tracks attention rates, salience values, ATP levels, and coverage
     scores over a configurable time window (default 15 minutes).
+
+    Extended in Session 24 to support multi-objective optimization:
+    - Quality scores (response quality when available)
+    - ATP spending (for energy efficiency calculation)
     """
     window_minutes: int = 15
     attention_rates: deque = field(default_factory=lambda: deque(maxlen=1000))
     salience_values: deque = field(default_factory=lambda: deque(maxlen=1000))
     atp_levels: deque = field(default_factory=lambda: deque(maxlen=1000))
     coverage_scores: deque = field(default_factory=lambda: deque(maxlen=100))
+
+    # Session 24: Multi-objective fitness tracking
+    quality_scores: deque = field(default_factory=lambda: deque(maxlen=1000))
+    atp_spent: deque = field(default_factory=lambda: deque(maxlen=1000))
+
     start_time: float = field(default_factory=time.time)
     last_update: float = field(default_factory=time.time)
     cycle_count: int = 0
@@ -73,12 +88,26 @@ class TemporalWindow:
         salience: float,
         atp_level: float,
         high_salience_count: int = 0,
-        attended_high_salience: int = 0
+        attended_high_salience: int = 0,
+        quality_score: Optional[float] = None,
+        attention_cost: float = 0.01
     ):
-        """Add metrics from a single consciousness cycle"""
+        """
+        Add metrics from a single consciousness cycle.
+
+        Args:
+            attended: Whether attention was allocated
+            salience: Salience value of observation
+            atp_level: Current ATP level
+            high_salience_count: Count of high-salience observations in window
+            attended_high_salience: How many high-salience were attended
+            quality_score: Optional quality score for this cycle (Session 24)
+            attention_cost: ATP cost per attention (for energy tracking, Session 24)
+        """
         self.attention_rates.append(1.0 if attended else 0.0)
         if attended:
             self.salience_values.append(salience)
+
         self.atp_levels.append(atp_level)
 
         # Calculate coverage every 100 cycles
@@ -86,15 +115,27 @@ class TemporalWindow:
             coverage = attended_high_salience / high_salience_count
             self.coverage_scores.append(coverage)
 
+        # Session 24: Track quality and energy
+        if quality_score is not None and attended:
+            self.quality_scores.append(quality_score)
+
+        if attended:
+            self.atp_spent.append(attention_cost)
+
         self.cycle_count += 1
         self.last_update = time.time()
 
     def get_metrics(self) -> Dict[str, float]:
-        """Calculate current window metrics"""
+        """
+        Calculate current window metrics.
+
+        Returns both single-objective (coverage) and multi-objective
+        (coverage + quality + energy) fitness metrics.
+        """
         if not self.attention_rates:
             return {}
 
-        return {
+        metrics = {
             'attention_rate': statistics.mean(self.attention_rates),
             'mean_salience': statistics.mean(self.salience_values) if self.salience_values else 0.0,
             'mean_atp': statistics.mean(self.atp_levels),
@@ -104,12 +145,65 @@ class TemporalWindow:
             'duration_minutes': (self.last_update - self.start_time) / 60.0
         }
 
+        # Session 24: Multi-objective fitness
+        if self.quality_scores:
+            metrics['quality'] = statistics.mean(self.quality_scores)
+        else:
+            metrics['quality'] = 0.0
+
+        # Energy efficiency: cycles per ATP spent (normalized)
+        if self.atp_spent:
+            total_atp = sum(self.atp_spent)
+            if total_atp > 0:
+                efficiency_raw = self.cycle_count / total_atp
+                # Normalize to 0-1 (baseline 100-500 cycles/ATP)
+                metrics['energy_efficiency'] = min(1.0, max(0.0, (efficiency_raw - 100) / 400))
+            else:
+                metrics['energy_efficiency'] = 0.0
+        else:
+            metrics['energy_efficiency'] = 0.0
+
+        # Weighted multi-objective fitness (configurable weights)
+        metrics['weighted_fitness'] = self._compute_weighted_fitness(
+            metrics['coverage'],
+            metrics['quality'],
+            metrics['energy_efficiency']
+        )
+
+        return metrics
+
+    def _compute_weighted_fitness(
+        self,
+        coverage: float,
+        quality: float,
+        energy: float,
+        coverage_weight: float = 0.5,
+        quality_weight: float = 0.3,
+        energy_weight: float = 0.2
+    ) -> float:
+        """
+        Compute weighted multi-objective fitness.
+
+        Default weights (Session 24):
+        - Coverage: 50% (primary objective)
+        - Quality: 30% (secondary)
+        - Energy: 20% (tertiary)
+
+        Can be overridden for different priorities.
+        """
+        return (coverage_weight * coverage +
+                quality_weight * quality +
+                energy_weight * energy)
+
     def reset(self):
         """Reset window for new time period"""
         self.attention_rates.clear()
         self.salience_values.clear()
         self.atp_levels.clear()
         self.coverage_scores.clear()
+        # Session 24: Reset multi-objective tracking
+        self.quality_scores.clear()
+        self.atp_spent.clear()
         self.start_time = time.time()
         self.last_update = time.time()
         self.cycle_count = 0
@@ -189,7 +283,11 @@ class TemporalAdapter:
         damping_decay: float = 0.5,
         min_damping: float = 0.1,
         min_cycles_between_adaptations: int = 500,
-        enable_pattern_learning: bool = False
+        enable_pattern_learning: bool = False,
+        enable_multi_objective: bool = False,
+        coverage_weight: float = 0.5,
+        quality_weight: float = 0.3,
+        energy_weight: float = 0.2
     ):
         """
         Initialize temporal adaptation system.
@@ -206,6 +304,10 @@ class TemporalAdapter:
             min_damping: Minimum damping factor (prevents complete stop)
             min_cycles_between_adaptations: Minimum wait between adaptations
             enable_pattern_learning: Learn time-of-day patterns (experimental)
+            enable_multi_objective: Use multi-objective optimization (Session 24)
+            coverage_weight: Weight for coverage in multi-objective (default 0.5)
+            quality_weight: Weight for quality in multi-objective (default 0.3)
+            energy_weight: Weight for energy in multi-objective (default 0.2)
         """
         # Current ATP parameters
         self.current_cost = initial_cost
@@ -238,6 +340,12 @@ class TemporalAdapter:
         self.enable_pattern_learning = enable_pattern_learning
         self.learned_patterns: Dict[str, TemporalPattern] = {}
 
+        # Session 24: Multi-objective optimization
+        self.enable_multi_objective = enable_multi_objective
+        self.coverage_weight = coverage_weight
+        self.quality_weight = quality_weight
+        self.energy_weight = energy_weight
+
         # Statistics
         self.total_adaptations = 0
         self.successful_adaptations = 0
@@ -249,7 +357,9 @@ class TemporalAdapter:
         salience: float,
         atp_level: float,
         high_salience_count: int = 0,
-        attended_high_salience: int = 0
+        attended_high_salience: int = 0,
+        quality_score: Optional[float] = None,
+        attention_cost: Optional[float] = None
     ) -> Optional[Tuple[float, float]]:
         """
         Update temporal adapter with metrics from a consciousness cycle.
@@ -260,17 +370,25 @@ class TemporalAdapter:
             atp_level: Current ATP level (0-1)
             high_salience_count: Number of high-salience observations in recent window
             attended_high_salience: How many high-salience observations were attended
+            quality_score: Optional quality score for this cycle (Session 24)
+            attention_cost: Optional ATP cost (defaults to current_cost if None, Session 24)
 
         Returns:
             New (cost, recovery) parameters if adaptation triggered, None otherwise
         """
+        # Use current cost if not provided
+        if attention_cost is None:
+            attention_cost = self.current_cost
+
         # Add metrics to current window
         self.current_window.add_cycle(
             attended=attended,
             salience=salience,
             atp_level=atp_level,
             high_salience_count=high_salience_count,
-            attended_high_salience=attended_high_salience
+            attended_high_salience=attended_high_salience,
+            quality_score=quality_score,
+            attention_cost=attention_cost
         )
 
         self.cycles_since_adaptation += 1
@@ -647,6 +765,36 @@ def create_responsive_adapter(**kwargs) -> TemporalAdapter:
         'damping_decay': 0.7,  # Lighter damping
         'min_cycles_between_adaptations': 300,  # Adapt sooner
         'enable_pattern_learning': True  # Enable learning
+    }
+    defaults.update(kwargs)
+    return TemporalAdapter(**defaults)
+
+
+def create_multi_objective_adapter(**kwargs) -> TemporalAdapter:
+    """
+    Create temporal adapter with multi-objective optimization (Session 24).
+
+    Balances coverage, quality, and energy efficiency simultaneously.
+    Based on Session 23 findings: cheap attention + fast recovery is optimal.
+
+    Default configuration:
+    - attention_cost: 0.005 (cheap attention for frequent allocation)
+    - rest_recovery: 0.080 (fast recovery to maintain high ATP)
+    - Multi-objective weights: 50% coverage, 30% quality, 20% energy
+    """
+    defaults = {
+        'initial_cost': 0.005,  # Pareto-optimal from Session 23
+        'initial_recovery': 0.080,  # Pareto-optimal from Session 23
+        'adaptation_rate': 0.1,
+        'satisfaction_threshold': 0.95,
+        'enable_damping': True,
+        'damping_decay': 0.5,
+        'min_cycles_between_adaptations': 500,
+        'enable_pattern_learning': True,
+        'enable_multi_objective': True,
+        'coverage_weight': 0.5,
+        'quality_weight': 0.3,
+        'energy_weight': 0.2
     }
     defaults.update(kwargs)
     return TemporalAdapter(**defaults)

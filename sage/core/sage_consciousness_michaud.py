@@ -18,7 +18,7 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from typing import Dict, Any, Optional, Tuple
+from typing import Dict, Any, Optional, Tuple, List
 from collections import deque
 import time
 
@@ -62,12 +62,15 @@ class MichaudSAGE(SAGEConsciousness):
 
     def __init__(
         self,
-        model_path: str = "model-zoo/sage/epistemic-stances/qwen2.5-0.5b/Introspective-Qwen-0.5B-v2.1/model",
+        model_path: str = "model-zoo/sage/epistemic-stances/qwen2.5-0.5b/Introspective-Qwen-0.5B-Instruct",
         base_model: str = "Qwen/Qwen2.5-0.5B-Instruct",
         initial_atp: float = 100.0,
         irp_iterations: int = 3,
         salience_threshold: float = 0.15,
         attention_config: Optional[Dict] = None,
+        # Session 26: Temporal adaptation parameters (optional)
+        enable_temporal_adaptation: bool = False,
+        temporal_adaptation_mode: str = "multi_objective",  # "production", "multi_objective", "conservative"
         # Phase 2.5: Federation parameters (optional)
         federation_enabled: bool = False,
         federation_identity: Optional['FederationIdentity'] = None,
@@ -84,6 +87,8 @@ class MichaudSAGE(SAGEConsciousness):
             irp_iterations: IRP refinement iterations
             salience_threshold: SNARC salience threshold
             attention_config: Configuration for AttentionManager
+            enable_temporal_adaptation: Enable automatic ATP parameter tuning (Session 26)
+            temporal_adaptation_mode: Adaptation mode - "multi_objective" (recommended), "production", "conservative"
             federation_enabled: Enable federation routing (Phase 2.5+)
             federation_identity: Platform identity for federation
             federation_platforms: List of known platforms to register
@@ -177,10 +182,50 @@ class MichaudSAGE(SAGEConsciousness):
             print(f"  LCT ID: {federation_identity.lct_id}")
             print(f"  Known platforms: {len(federation_platforms) if federation_platforms else 0}")
 
+        # Session 26: Temporal adaptation setup (optional)
+        self.temporal_adaptation_enabled = enable_temporal_adaptation
+        self.temporal_adapter = None
+        self.high_salience_count = 0
+        self.attended_high_salience = 0
+
+        if enable_temporal_adaptation:
+            from sage.core.temporal_adaptation import (
+                create_production_adapter,
+                create_multi_objective_adapter,
+                create_conservative_adapter
+            )
+
+            # Create adapter based on mode
+            if temporal_adaptation_mode == "multi_objective":
+                # Session 25 validated: 3x energy efficiency, 12.2% fitness improvement
+                self.temporal_adapter = create_multi_objective_adapter()
+                print(f"[Temporal Adaptation] Using multi-objective (Session 25 recommended)")
+            elif temporal_adaptation_mode == "production":
+                self.temporal_adapter = create_production_adapter()
+                print(f"[Temporal Adaptation] Using production mode")
+            elif temporal_adaptation_mode == "conservative":
+                self.temporal_adapter = create_conservative_adapter()
+                print(f"[Temporal Adaptation] Using conservative mode")
+            else:
+                raise ValueError(f"Unknown temporal_adaptation_mode: {temporal_adaptation_mode}")
+
+            # Get initial ATP parameters from adapter
+            cost, recovery = self.temporal_adapter.get_current_params()
+            print(f"[Temporal Adaptation] Initial parameters:")
+            print(f"  Attention cost: {cost:.4f}")
+            print(f"  Recovery rate: {recovery:.4f}")
+            if hasattr(self.temporal_adapter, 'enable_multi_objective'):
+                print(f"  Multi-objective: {self.temporal_adapter.enable_multi_objective}")
+                if self.temporal_adapter.enable_multi_objective:
+                    print(f"  Objective weights: coverage={self.temporal_adapter.coverage_weight:.0%}, "
+                          f"quality={self.temporal_adapter.quality_weight:.0%}, "
+                          f"energy={self.temporal_adapter.energy_weight:.0%}")
+
         print(f"[Michaud SAGE] Initialized with:")
         print(f"  Model: {model_path}")
         print(f"  Attention: {self.attention_manager}")
         print(f"  SNARC threshold: {salience_threshold}")
+        print(f"  Temporal Adaptation: {'Enabled (' + temporal_adaptation_mode + ')' if enable_temporal_adaptation else 'Disabled'}")
         print(f"  Federation: {'Enabled' if federation_enabled else 'Disabled'}")
 
     def add_observation(self, text: str, context: Optional[Dict] = None):
@@ -335,6 +380,10 @@ class MichaudSAGE(SAGEConsciousness):
 
         # 11. Update trust weights
         self._update_trust_weights(results)
+
+        # 12. Session 26: Update temporal adaptation (if enabled)
+        if self.temporal_adaptation_enabled and self.temporal_adapter:
+            self._update_temporal_adaptation(observations, results, salience_map, task_cost)
 
     async def _execute_plugin_michaud(
         self,
@@ -838,6 +887,114 @@ class MichaudSAGE(SAGEConsciousness):
         # In Phase 2.5, we trust simulated proofs
         # In Phase 3, this will verify Ed25519 signatures
         return True
+
+    def _update_temporal_adaptation(
+        self,
+        observations: List[Dict],
+        results: Dict,
+        salience_map: Dict[str, float],
+        task_cost: float
+    ):
+        """
+        Update temporal adaptation based on cycle performance.
+
+        Session 26: Integrate multi-objective temporal adaptation into production.
+        Tracks coverage, quality, and energy efficiency to automatically tune ATP parameters.
+
+        Args:
+            observations: Observations processed this cycle
+            results: Plugin execution results
+            salience_map: Salience scores for observations
+            task_cost: ATP cost of primary task
+        """
+        # Extract performance metrics from this cycle
+
+        # Did we attend to observations? (allocated ATP > 0)
+        attended = len(results) > 0
+
+        # Get mean salience across observations
+        if salience_map:
+            mean_salience = sum(salience_map.values()) / len(salience_map)
+        else:
+            mean_salience = 0.5
+
+        # Track high-salience observations (salience > 0.7)
+        for sal in salience_map.values():
+            if sal > 0.7:
+                self.high_salience_count += 1
+                if attended:
+                    self.attended_high_salience += 1
+
+        # Get current ATP level (normalized to 0-1)
+        atp_level = self.atp / 100.0
+
+        # Extract quality score from LLM results (if available)
+        quality_score = None
+        if 'llm_reasoning' in results:
+            llm_result = results['llm_reasoning']
+            # Use convergence_quality as proxy for response quality
+            quality_score = llm_result.get('convergence_quality', None)
+
+        # Update temporal adapter
+        adaptation_result = self.temporal_adapter.update(
+            attended=attended,
+            salience=mean_salience,
+            atp_level=atp_level,
+            high_salience_count=self.high_salience_count,
+            attended_high_salience=self.attended_high_salience,
+            quality_score=quality_score,
+            attention_cost=task_cost
+        )
+
+        # If adaptation occurred, log it
+        if adaptation_result is not None:
+            new_cost, new_recovery = adaptation_result
+            print(f"\n[Temporal Adaptation] ATP parameters updated:")
+            print(f"  Cost: {new_cost:.4f}")
+            print(f"  Recovery: {new_recovery:.4f}")
+
+            # Get current metrics
+            metrics = self.temporal_adapter.current_window.get_metrics()
+            print(f"  Current metrics:")
+            print(f"    Coverage: {metrics.get('coverage', 0):.1%}")
+            if 'quality' in metrics:
+                print(f"    Quality: {metrics.get('quality', 0):.1%}")
+            if 'energy_efficiency' in metrics:
+                print(f"    Energy: {metrics.get('energy_efficiency', 0):.1%}")
+            if 'weighted_fitness' in metrics:
+                print(f"    Weighted Fitness: {metrics.get('weighted_fitness', 0):.3f}")
+
+            # Get adaptation statistics
+            stats = self.temporal_adapter.get_statistics()
+            print(f"  Total adaptations: {stats['total_adaptations']}")
+            print(f"  Current damping: {stats['current_damping']:.2f}x")
+
+    def get_temporal_adaptation_stats(self) -> Dict:
+        """
+        Get temporal adaptation statistics.
+
+        Session 26: Production monitoring of temporal adaptation performance.
+
+        Returns:
+            Dictionary with adaptation metrics, or empty dict if disabled
+        """
+        if not self.temporal_adaptation_enabled or not self.temporal_adapter:
+            return {}
+
+        stats = self.temporal_adapter.get_statistics()
+
+        # Add current metrics
+        metrics = self.temporal_adapter.current_window.get_metrics()
+        stats.update({
+            'current_coverage': metrics.get('coverage', 0),
+            'current_quality': metrics.get('quality', 0),
+            'current_energy': metrics.get('energy_efficiency', 0),
+            'current_fitness': metrics.get('weighted_fitness', 0),
+            'high_salience_count': self.high_salience_count,
+            'attended_high_salience': self.attended_high_salience
+        })
+
+        return stats
 
     def __repr__(self):
         stats = self.get_snarc_statistics()

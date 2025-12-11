@@ -46,6 +46,18 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+# Session 28: Adaptive objective weighting
+try:
+    from sage.core.adaptive_weights import (
+        AdaptiveWeightCalculator,
+        OperatingContext,
+        ObjectiveWeights
+    )
+    ADAPTIVE_WEIGHTS_AVAILABLE = True
+except ImportError:
+    ADAPTIVE_WEIGHTS_AVAILABLE = False
+    logger.warning("Adaptive weights module not available (Session 28)")
+
 
 class AdaptationTrigger(Enum):
     """Types of adaptation triggers"""
@@ -164,6 +176,8 @@ class TemporalWindow:
             metrics['energy_efficiency'] = 0.0
 
         # Weighted multi-objective fitness (configurable weights)
+        # Note: Actual weights will be set by TemporalAdapter.get_current_metrics()
+        # which may use adaptive weighting (Session 28)
         metrics['weighted_fitness'] = self._compute_weighted_fitness(
             metrics['coverage'],
             metrics['quality'],
@@ -189,7 +203,7 @@ class TemporalWindow:
         - Quality: 30% (secondary)
         - Energy: 20% (tertiary)
 
-        Can be overridden for different priorities.
+        Can be overridden for different priorities (Session 28: adaptive).
         """
         return (coverage_weight * coverage +
                 quality_weight * quality +
@@ -287,7 +301,8 @@ class TemporalAdapter:
         enable_multi_objective: bool = False,
         coverage_weight: float = 0.5,
         quality_weight: float = 0.3,
-        energy_weight: float = 0.2
+        energy_weight: float = 0.2,
+        enable_adaptive_weights: bool = False
     ):
         """
         Initialize temporal adaptation system.
@@ -308,6 +323,7 @@ class TemporalAdapter:
             coverage_weight: Weight for coverage in multi-objective (default 0.5)
             quality_weight: Weight for quality in multi-objective (default 0.3)
             energy_weight: Weight for energy in multi-objective (default 0.2)
+            enable_adaptive_weights: Use context-aware adaptive weighting (Session 28)
         """
         # Current ATP parameters
         self.current_cost = initial_cost
@@ -345,6 +361,14 @@ class TemporalAdapter:
         self.coverage_weight = coverage_weight
         self.quality_weight = quality_weight
         self.energy_weight = energy_weight
+
+        # Session 28: Adaptive objective weighting
+        self.enable_adaptive_weights = enable_adaptive_weights and ADAPTIVE_WEIGHTS_AVAILABLE
+        if self.enable_adaptive_weights:
+            self.weight_calculator = AdaptiveWeightCalculator()
+            logger.info("[Adaptive Weights] Context-aware weighting enabled (Session 28)")
+        else:
+            self.weight_calculator = None
 
         # Statistics
         self.total_adaptations = 0
@@ -561,11 +585,71 @@ class TemporalAdapter:
         """Get current ATP parameters"""
         return (self.current_cost, self.current_recovery)
 
+    def get_current_weights(self) -> Tuple[float, float, float]:
+        """
+        Get current objective weights (Session 28: may be adaptive).
+
+        Returns:
+            (coverage_weight, quality_weight, energy_weight) tuple
+        """
+        if not self.enable_adaptive_weights or self.weight_calculator is None:
+            # Static weights
+            return (self.coverage_weight, self.quality_weight, self.energy_weight)
+
+        # Adaptive weights based on current context
+        metrics = self.current_window.get_metrics()
+        if not metrics:
+            # No data yet, use baseline
+            return (self.coverage_weight, self.quality_weight, self.energy_weight)
+
+        # Build operating context
+        context = OperatingContext(
+            atp_level=metrics.get('mean_atp', 0.5),
+            attention_rate=metrics.get('attention_rate', 0.5),
+            coverage=metrics.get('coverage', 0.0),
+            quality=metrics.get('quality', 0.0),
+            energy_efficiency=metrics.get('energy_efficiency', 0.0)
+        )
+
+        # Calculate adaptive weights
+        adaptive_weights = self.weight_calculator.calculate_weights(context)
+        return adaptive_weights.to_tuple()
+
+    def get_current_metrics_with_weights(self) -> Dict:
+        """
+        Get current metrics with proper weights applied.
+
+        Session 28: Uses adaptive weights if enabled, otherwise static weights.
+        """
+        metrics = self.current_window.get_metrics()
+        if not metrics or not self.enable_multi_objective:
+            return metrics
+
+        # Get current weights (adaptive or static)
+        coverage_w, quality_w, energy_w = self.get_current_weights()
+
+        # Recompute weighted fitness with current weights
+        metrics['weighted_fitness'] = self.current_window._compute_weighted_fitness(
+            metrics['coverage'],
+            metrics['quality'],
+            metrics['energy_efficiency'],
+            coverage_weight=coverage_w,
+            quality_weight=quality_w,
+            energy_weight=energy_w
+        )
+
+        # Add weight information to metrics
+        metrics['coverage_weight'] = coverage_w
+        metrics['quality_weight'] = quality_w
+        metrics['energy_weight'] = energy_w
+
+        return metrics
+
     def get_statistics(self) -> Dict:
         """Get adaptation statistics"""
         runtime_hours = (time.time() - self.start_time) / 3600.0
 
-        return {
+        stats = {
             'runtime_hours': runtime_hours,
             'total_adaptations': self.total_adaptations,
             'adaptations_per_hour': self.total_adaptations / runtime_hours if runtime_hours > 0 else 0,
@@ -574,8 +658,14 @@ class TemporalAdapter:
             'current_damping': self.current_damping_factor,
             'satisfaction_stable_windows': self.satisfaction_stable_windows,
             'cycles_since_adaptation': self.cycles_since_adaptation,
-            'current_metrics': self.current_window.get_metrics()
+            'current_metrics': self.get_current_metrics_with_weights()
         }
+
+        # Session 28: Add adaptive weight statistics
+        if self.enable_adaptive_weights and self.weight_calculator:
+            stats['adaptive_weight_stats'] = self.weight_calculator.get_stats()
+
+        return stats
 
     def export_history(self) -> List[Dict]:
         """Export adaptation history for analysis"""
@@ -795,6 +885,45 @@ def create_multi_objective_adapter(**kwargs) -> TemporalAdapter:
         'coverage_weight': 0.5,
         'quality_weight': 0.3,
         'energy_weight': 0.2
+    }
+    defaults.update(kwargs)
+    return TemporalAdapter(**defaults)
+
+
+def create_adaptive_weight_adapter(**kwargs) -> TemporalAdapter:
+    """
+    Create temporal adapter with adaptive objective weighting (Session 28).
+
+    Extends multi-objective optimization with context-aware weight adaptation.
+    Adjusts coverage/quality/energy weights based on operating context:
+    - High ATP → emphasize quality
+    - Low ATP → emphasize coverage
+    - High attention rate → emphasize energy efficiency
+    - Performance issues → prioritize the struggling objective
+
+    Based on Sessions 23-27 (multi-objective + quality metrics foundation).
+
+    Default configuration:
+    - Pareto-optimal ATP parameters from Session 23
+    - Multi-objective optimization enabled
+    - Adaptive weighting enabled (Session 28)
+    - Baseline weights: 50% coverage, 30% quality, 20% energy
+      (will adapt based on context)
+    """
+    defaults = {
+        'initial_cost': 0.005,  # Pareto-optimal from Session 23
+        'initial_recovery': 0.080,  # Pareto-optimal from Session 23
+        'adaptation_rate': 0.1,
+        'satisfaction_threshold': 0.95,
+        'enable_damping': True,
+        'damping_decay': 0.5,
+        'min_cycles_between_adaptations': 500,
+        'enable_pattern_learning': True,
+        'enable_multi_objective': True,
+        'coverage_weight': 0.5,      # Baseline (will adapt)
+        'quality_weight': 0.3,        # Baseline (will adapt)
+        'energy_weight': 0.2,         # Baseline (will adapt)
+        'enable_adaptive_weights': True  # Session 28
     }
     defaults.update(kwargs)
     return TemporalAdapter(**defaults)

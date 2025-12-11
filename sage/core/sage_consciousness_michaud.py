@@ -27,6 +27,7 @@ from sage.core.attention_manager import MetabolicState
 from sage.core.mrh_aware_attention import MRHAwareAttentionManager
 from sage.core.mrh_profile import MRHProfile, infer_mrh_profile_from_task
 from sage.core.multimodal_atp_pricing import MultiModalATPPricer
+from sage.core.quality_metrics import score_response_quality_normalized
 from sage.irp.plugins.llm_impl import ConversationalLLM
 from sage.irp.plugins.llm_snarc_integration import ConversationalMemory
 
@@ -929,11 +930,18 @@ class MichaudSAGE(SAGEConsciousness):
         atp_level = self.atp / 100.0
 
         # Extract quality score from LLM results (if available)
+        # Session 27: Use 4-metric quality scoring instead of convergence_quality proxy
         quality_score = None
         if 'llm_reasoning' in results:
             llm_result = results['llm_reasoning']
-            # Use convergence_quality as proxy for response quality
-            quality_score = llm_result.get('convergence_quality', None)
+            # Get actual response text for quality scoring
+            response_text = llm_result.get('response', None)
+            if response_text:
+                # Score using 4-metric system: unique, technical, numbers, no hedging
+                quality_score = score_response_quality_normalized(response_text)
+            else:
+                # Fallback to convergence_quality if response text unavailable
+                quality_score = llm_result.get('convergence_quality', None)
 
         # Update temporal adapter
         adaptation_result = self.temporal_adapter.update(

@@ -1,11 +1,126 @@
 # SAGE Michaud Integration - Latest Status
-**Last Updated**: 2025-12-10 17:30 UTC (Autonomous Session - **Quality Metric Integration Complete!**)
-**Previous Update**: 2025-12-10 11:35 UTC (Production Integration Complete)
+**Last Updated**: 2025-12-10 23:45 UTC (Autonomous Session - **Adaptive Weighting Complete!**)
+**Previous Update**: 2025-12-10 17:30 UTC (Quality Metric Integration Complete)
 **Hardware**: Thor (Jetson AGX Thor)
 
 ---
 
-## 🎯 **NEW: Session 27 - Quality Metric Integration!** (Dec 10 Afternoon - Autonomous)
+## 🎯 **NEW: Session 28 - Adaptive Objective Weighting!** (Dec 10 Evening - Autonomous)
+
+**ADAPTIVE OPTIMIZATION**: Integrated context-aware adaptive weighting into multi-objective temporal adaptation. Weights now adapt based on operating context (ATP level, attention rate, performance) for situation-appropriate optimization.
+
+### Status: ✅ INTEGRATION COMPLETE - PRODUCTION READY
+
+**Session 28 Summary**:
+- **Module**: Created adaptive_weights.py with context-aware weighting (443 LOC)
+- **Integration**: Extended temporal_adaptation.py with adaptive weights (+133 LOC)
+- **Testing**: Comprehensive validation suite (473 LOC, 4/4 tests passed)
+- **Deployment**: Opt-in feature via `enable_adaptive_weights=True`
+
+**Key Achievement**: Multi-objective optimization now **self-tunes** weights based on context, eliminating need for manual weight configuration.
+
+**Adaptation Strategy**:
+```python
+# High ATP (> 0.7) → Can afford quality
+shift +10% from coverage to quality
+
+# Low ATP (< 0.3) → Need coverage
+shift +10% from quality to coverage
+
+# High attention (> 0.8) → Spending a lot
+shift +5% to energy efficiency
+
+# Low coverage (< 0.85) → Coverage struggling
+shift +10% to coverage priority
+
+# Low quality (< 0.6) → Quality declining
+shift +5% to quality priority
+```
+
+**Example Weight Adaptation**:
+```
+Baseline (normal): Cov=50%, Qual=30%, Energy=20%
+
+High ATP context: Cov=47%, Qual=33%, Energy=20%
+  (↑ quality when resources available)
+
+Low ATP context: Cov=51%, Qual=29%, Energy=20%
+  (↑ coverage when resources limited)
+
+High attention: Cov=50%, Qual=29%, Energy=21%
+  (↑ energy when spending heavily)
+```
+
+**Implementation Highlights**:
+
+1. **AdaptiveWeightCalculator** (adaptive_weights.py):
+   - Smooth transitions via exponential moving average (α=0.3)
+   - Constrained optimization (weights ∈ [0.1, 0.7], sum to 1.0)
+   - Observable (weights included in metrics)
+
+2. **TemporalAdapter Integration**:
+   - `enable_adaptive_weights` parameter
+   - `get_current_weights()` returns adaptive or static weights
+   - `get_current_metrics_with_weights()` includes weight info
+   - `create_adaptive_weight_adapter()` convenience function
+
+3. **Self-Tuning Benefits**:
+   - No manual weight configuration needed
+   - Context-appropriate optimization
+   - Platform-agnostic (no battery dependency)
+   - Foundation for advanced adaptive strategies
+
+**Validation Results** (all tests passed):
+| Test | Description | Result |
+|------|-------------|--------|
+| Weight Calculator | Context-based adaptation logic | ✅ Passed |
+| Adapter Integration | TemporalAdapter with adaptive weights | ✅ Passed |
+| Adaptation Patterns | Weight transitions (high→low ATP) | ✅ Passed |
+| Adaptive vs Static | Comparison demonstration | ✅ Passed |
+
+**Production Impact**:
+- **Self-tuning optimization** (adapts to context automatically)
+- **More appropriate weighting** (high ATP → quality, low ATP → coverage)
+- **Smooth transitions** (no oscillation via EMA smoothing)
+- **Observable behavior** (weights visible in metrics)
+
+**Usage**:
+```python
+# Create adapter with adaptive weighting
+adapter = create_adaptive_weight_adapter()
+
+# Or enable on existing multi-objective adapter
+adapter = TemporalAdapter(
+    enable_multi_objective=True,
+    enable_adaptive_weights=True  # Session 28
+)
+
+# Weights adapt automatically based on context
+# Get current adaptive weights
+coverage_w, quality_w, energy_w = adapter.get_current_weights()
+
+# Metrics include weight information
+metrics = adapter.get_current_metrics_with_weights()
+print(f"Weights: Cov={metrics['coverage_weight']:.1%}, "
+      f"Qual={metrics['quality_weight']:.1%}, "
+      f"Energy={metrics['energy_weight']:.1%}")
+```
+
+**Code**:
+- sage/core/adaptive_weights.py: 443 LOC (new)
+- sage/core/temporal_adaptation.py: +133 LOC (modified)
+- sage/experiments/session28_adaptive_weighting_test.py: 473 LOC (new)
+- Total: 1,049 LOC (443 new + 133 modified + 473 test)
+
+**Next Steps** (from Session 28):
+1. Deploy with multi-objective temporal adaptation
+2. Monitor weight adaptation patterns in production
+3. **Session 29**: Real workload validation
+4. Cross-platform validation (Thor vs Sprout)
+
+---
+
+## 🎯 Session 27 - Quality Metric Integration! (Dec 10 Afternoon - Autonomous)
 
 **QUALITY IMPROVEMENT**: Integrated SAGE's 4-metric quality system into MichaudSAGE's temporal adaptation, replacing convergence_quality proxy with proper multi-dimensional quality assessment.
 

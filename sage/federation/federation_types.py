@@ -326,12 +326,21 @@ class ExecutionProof:
     convergence_quality: float
     quality_score: float  # 4-component SAGE quality (0-1)
 
+    # Session 32: Epistemic metrics (meta-cognitive awareness)
+    epistemic_state: Optional[str] = None  # confident/uncertain/frustrated/confused/learning/stable
+    confidence: Optional[float] = None  # 0-1
+    comprehension_depth: Optional[float] = None  # 0-1
+    uncertainty: Optional[float] = None  # 0-1
+    frustration: Optional[float] = None  # 0-1
+    learning_trajectory: Optional[bool] = None  # Is comprehension improving?
+    frustration_pattern: Optional[bool] = None  # Sustained frustration detected?
+
     # Timestamp
     execution_timestamp: float = field(default_factory=time.time)
 
     def to_signable_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for signature calculation"""
-        return {
+        result = {
             'task_id': self.task_id,
             'executing_platform': self.executing_platform,
             'result_data': self.result_data,
@@ -343,6 +352,18 @@ class ExecutionProof:
             'quality_score': self.quality_score,
             'execution_timestamp': self.execution_timestamp
         }
+
+        # Session 32: Include epistemic metrics if available
+        if self.epistemic_state is not None:
+            result['epistemic_state'] = self.epistemic_state
+            result['confidence'] = self.confidence
+            result['comprehension_depth'] = self.comprehension_depth
+            result['uncertainty'] = self.uncertainty
+            result['frustration'] = self.frustration
+            result['learning_trajectory'] = self.learning_trajectory
+            result['frustration_pattern'] = self.frustration_pattern
+
+        return result
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'ExecutionProof':
@@ -357,7 +378,15 @@ class ExecutionProof:
             final_energy=data['final_energy'],
             convergence_quality=data['convergence_quality'],
             quality_score=data['quality_score'],
-            execution_timestamp=data['execution_timestamp']
+            execution_timestamp=data['execution_timestamp'],
+            # Session 32: Epistemic metrics (optional)
+            epistemic_state=data.get('epistemic_state'),
+            confidence=data.get('confidence'),
+            comprehension_depth=data.get('comprehension_depth'),
+            uncertainty=data.get('uncertainty'),
+            frustration=data.get('frustration'),
+            learning_trajectory=data.get('learning_trajectory'),
+            frustration_pattern=data.get('frustration_pattern')
         )
 
     def calculate_hash(self) -> str:

@@ -28,6 +28,13 @@ from sage.core.mrh_aware_attention import MRHAwareAttentionManager
 from sage.core.mrh_profile import MRHProfile, infer_mrh_profile_from_task
 from sage.core.multimodal_atp_pricing import MultiModalATPPricer
 from sage.core.quality_metrics import score_response_quality_normalized
+
+# Session 31: Epistemic awareness integration
+try:
+    from sage.core.epistemic_states import estimate_epistemic_metrics
+    EPISTEMIC_AWARENESS_AVAILABLE = True
+except ImportError:
+    EPISTEMIC_AWARENESS_AVAILABLE = False
 from sage.irp.plugins.llm_impl import ConversationalLLM
 from sage.irp.plugins.llm_snarc_integration import ConversationalMemory
 
@@ -932,13 +939,26 @@ class MichaudSAGE(SAGEConsciousness):
         # Extract quality score from LLM results (if available)
         # Session 27: Use 4-metric quality scoring instead of convergence_quality proxy
         quality_score = None
+        convergence_iterations = 3  # Default
         if 'llm_reasoning' in results:
             llm_result = results['llm_reasoning']
             # Get actual response text for quality scoring
             response_text = llm_result.get('response', None)
+            convergence_iterations = llm_result.get('iterations', 3)
             if response_text:
                 # Score using 4-metric system: unique, technical, numbers, no hedging
                 quality_score = score_response_quality_normalized(response_text)
+
+                # Session 31: Estimate epistemic metrics alongside quality
+                if EPISTEMIC_AWARENESS_AVAILABLE:
+                    epistemic_metrics = estimate_epistemic_metrics(
+                        response_text=response_text,
+                        quality_score=quality_score,
+                        convergence_iterations=convergence_iterations,
+                        salience=mean_salience
+                    )
+                    # Track epistemic state in temporal adapter
+                    self.temporal_adapter.update_epistemic_state(epistemic_metrics)
             else:
                 # Fallback to convergence_quality if response text unavailable
                 quality_score = llm_result.get('convergence_quality', None)

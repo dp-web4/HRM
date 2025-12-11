@@ -58,6 +58,18 @@ except ImportError:
     ADAPTIVE_WEIGHTS_AVAILABLE = False
     logger.warning("Adaptive weights module not available (Session 28)")
 
+# Session 31: Epistemic state tracking
+try:
+    from sage.core.epistemic_states import (
+        EpistemicMetrics,
+        EpistemicStateTracker,
+        estimate_epistemic_metrics
+    )
+    EPISTEMIC_TRACKING_AVAILABLE = True
+except ImportError:
+    EPISTEMIC_TRACKING_AVAILABLE = False
+    logger.warning("Epistemic tracking module not available (Session 31)")
+
 
 class AdaptationTrigger(Enum):
     """Types of adaptation triggers"""
@@ -370,6 +382,13 @@ class TemporalAdapter:
         else:
             self.weight_calculator = None
 
+        # Session 31: Epistemic state tracking
+        if EPISTEMIC_TRACKING_AVAILABLE:
+            self.epistemic_tracker = EpistemicStateTracker(history_size=50)
+            logger.info("[Epistemic Tracking] Meta-cognitive awareness enabled (Session 31)")
+        else:
+            self.epistemic_tracker = None
+
         # Statistics
         self.total_adaptations = 0
         self.successful_adaptations = 0
@@ -478,6 +497,23 @@ class TemporalAdapter:
                 return (self.current_cost, self.current_recovery)
 
         return None
+
+    def update_epistemic_state(self, epistemic_metrics: 'EpistemicMetrics') -> None:
+        """
+        Update epistemic state tracker with metrics from current cycle.
+
+        Session 31: Tracks SAGE's meta-cognitive awareness - confidence, comprehension,
+        uncertainty, frustration, etc. Enables detection of learning trajectories and
+        frustration patterns.
+
+        Args:
+            epistemic_metrics: Epistemic metrics for this cycle
+        """
+        if self.epistemic_tracker:
+            self.epistemic_tracker.track(epistemic_metrics)
+            logger.debug(f"[Epistemic] State={epistemic_metrics.primary_state().value}, "
+                        f"Confidence={epistemic_metrics.confidence:.2f}, "
+                        f"Frustration={epistemic_metrics.frustration:.2f}")
 
     def _should_adapt(self) -> Tuple[AdaptationTrigger, str]:
         """
@@ -642,6 +678,21 @@ class TemporalAdapter:
         metrics['coverage_weight'] = coverage_w
         metrics['quality_weight'] = quality_w
         metrics['energy_weight'] = energy_w
+
+        # Session 31: Add epistemic state metrics
+        if self.epistemic_tracker and self.epistemic_tracker.history:
+            current_state = self.epistemic_tracker.current_state()
+            epistemic_stats = self.epistemic_tracker.get_statistics()
+
+            metrics.update({
+                'epistemic_state': current_state.primary_state().value,
+                'confidence': current_state.confidence,
+                'comprehension_depth': current_state.comprehension_depth,
+                'uncertainty': current_state.uncertainty,
+                'frustration': current_state.frustration,
+                'learning_trajectory': epistemic_stats['learning_trajectory'],
+                'frustration_pattern': epistemic_stats['frustration_pattern']
+            })
 
         return metrics
 

@@ -845,6 +845,16 @@ class MichaudSAGE(SAGEConsciousness):
         convergence_quality = 0.8
         irp_iterations = 3
 
+        # Session 32: Simulate epistemic metrics for federated execution
+        # In real execution, these would come from actual consciousness state
+        epistemic_state = "confident"  # Simulated
+        confidence = 0.75
+        comprehension_depth = 0.70
+        uncertainty = 0.25
+        frustration = 0.10
+        learning_trajectory = False  # Simulated stable state
+        frustration_pattern = False
+
         # Create execution proof
         execution_proof = ExecutionProof(
             task_id=task.task_id,
@@ -855,7 +865,15 @@ class MichaudSAGE(SAGEConsciousness):
             irp_iterations=irp_iterations,
             final_energy=final_energy,
             convergence_quality=convergence_quality,
-            quality_score=quality_score
+            quality_score=quality_score,
+            # Session 32: Include epistemic metrics
+            epistemic_state=epistemic_state,
+            confidence=confidence,
+            comprehension_depth=comprehension_depth,
+            uncertainty=uncertainty,
+            frustration=frustration,
+            learning_trajectory=learning_trajectory,
+            frustration_pattern=frustration_pattern
         )
 
         print(f"  Execution: Complete ✓")

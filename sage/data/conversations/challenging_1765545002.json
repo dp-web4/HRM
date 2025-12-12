@@ -1,0 +1,84 @@
+{
+  "session_id": "challenging_1765545002",
+  "scenario": "challenging",
+  "turns": [
+    {
+      "turn_number": 1,
+      "question": "Why doesn't the linguistic estimator work despite comprehensive patterns?",
+      "response": "The implementation should work according to the pattern matching logic, but the observed accuracy doesn't match expectations. There's a gap between the designed behavior and actual results...",
+      "quality_score": {
+        "total": 2,
+        "normalized": 0.5,
+        "unique": true,
+        "specific_terms": false,
+        "has_numbers": false,
+        "avoids_hedging": true
+      },
+      "epistemic_metrics": {
+        "confidence": 0.5,
+        "comprehension_depth": 0.55,
+        "uncertainty": 0.5,
+        "coherence": 0.5,
+        "frustration": 0.8,
+        "primary_state": "frustrated",
+        "timestamp": 1765545002.732116
+      },
+      "epistemic_state": "frustrated",
+      "scenario": "challenging",
+      "timestamp": 1765545002.7321177
+    },
+    {
+      "turn_number": 2,
+      "question": "How can we reconcile the threshold mismatch?",
+      "response": "Tried adjusting the metrics multiple times without success - the linguistic signals don't map to runtime thresholds despite repeated tuning. The inconsistency remains unresolved...",
+      "quality_score": {
+        "total": 3,
+        "normalized": 0.75,
+        "unique": true,
+        "specific_terms": true,
+        "has_numbers": false,
+        "avoids_hedging": true
+      },
+      "epistemic_metrics": {
+        "confidence": 0.5,
+        "comprehension_depth": 0.55,
+        "uncertainty": 0.5,
+        "coherence": 0.5,
+        "frustration": 0.8,
+        "primary_state": "frustrated",
+        "timestamp": 1765545002.732138
+      },
+      "epistemic_state": "frustrated",
+      "scenario": "challenging",
+      "timestamp": 1765545002.7321396
+    },
+    {
+      "turn_number": 3,
+      "question": "What's causing the 0% accuracy?",
+      "response": "The pattern detection works, the metrics calculate correctly, but the state classification consistently fails. The disconnect between components doesn't align with the intended architecture...",
+      "quality_score": {
+        "total": 2,
+        "normalized": 0.5,
+        "unique": true,
+        "specific_terms": false,
+        "has_numbers": false,
+        "avoids_hedging": true
+      },
+      "epistemic_metrics": {
+        "confidence": 0.5,
+        "comprehension_depth": 0.55,
+        "uncertainty": 0.5,
+        "coherence": 0.5,
+        "frustration": 0.8,
+        "primary_state": "frustrated",
+        "timestamp": 1765545002.7321627
+      },
+      "epistemic_state": "frustrated",
+      "scenario": "challenging",
+      "timestamp": 1765545002.7321641
+    }
+  ],
+  "start_time": 1765545002.7320898,
+  "end_time": 1765545002.7321646,
+  "num_turns": 3
+}

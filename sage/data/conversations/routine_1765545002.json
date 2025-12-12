@@ -1,0 +1,84 @@
+{
+  "session_id": "routine_1765545002",
+  "scenario": "routine",
+  "turns": [
+    {
+      "turn_number": 1,
+      "question": "What are the standard SAGE metrics?",
+      "response": "The established metrics include quality scores (4 criteria), epistemic states (6 types), and adaptation metrics (weights, fitness, convergence). This is conventional SAGE architecture...",
+      "quality_score": {
+        "total": 4,
+        "normalized": 1.0,
+        "unique": true,
+        "specific_terms": true,
+        "has_numbers": true,
+        "avoids_hedging": true
+      },
+      "epistemic_metrics": {
+        "confidence": 0.65,
+        "comprehension_depth": 0.65,
+        "uncertainty": 0.25,
+        "coherence": 0.75,
+        "frustration": 0.1,
+        "primary_state": "stable",
+        "timestamp": 1765545002.731909
+      },
+      "epistemic_state": "stable",
+      "scenario": "routine",
+      "timestamp": 1765545002.7319114
+    },
+    {
+      "turn_number": 2,
+      "question": "How does SAGE score responses?",
+      "response": "Following the well-understood quality_metrics module: responses are evaluated for unique content, specific terms, numbers, and avoiding hedging. This is standard practice...",
+      "quality_score": {
+        "total": 2,
+        "normalized": 0.5,
+        "unique": true,
+        "specific_terms": false,
+        "has_numbers": false,
+        "avoids_hedging": true
+      },
+      "epistemic_metrics": {
+        "confidence": 0.65,
+        "comprehension_depth": 0.65,
+        "uncertainty": 0.25,
+        "coherence": 0.75,
+        "frustration": 0.1,
+        "primary_state": "stable",
+        "timestamp": 1765545002.7319336
+      },
+      "epistemic_state": "stable",
+      "scenario": "routine",
+      "timestamp": 1765545002.731935
+    },
+    {
+      "turn_number": 3,
+      "question": "What is the typical research workflow?",
+      "response": "The familiar pattern is: design \u2192 implement \u2192 test \u2192 validate \u2192 document. As expected, each session builds on previous work in a predictable progression...",
+      "quality_score": {
+        "total": 2,
+        "normalized": 0.5,
+        "unique": true,
+        "specific_terms": false,
+        "has_numbers": false,
+        "avoids_hedging": true
+      },
+      "epistemic_metrics": {
+        "confidence": 0.65,
+        "comprehension_depth": 0.65,
+        "uncertainty": 0.25,
+        "coherence": 0.75,
+        "frustration": 0.1,
+        "primary_state": "stable",
+        "timestamp": 1765545002.7319605
+      },
+      "epistemic_state": "stable",
+      "scenario": "routine",
+      "timestamp": 1765545002.731962
+    }
+  ],
+  "start_time": 1765545002.7318912,
+  "end_time": 1765545002.7319627,
+  "num_turns": 3
+}

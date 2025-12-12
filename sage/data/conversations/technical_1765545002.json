@@ -1,0 +1,84 @@
+{
+  "session_id": "technical_1765545002",
+  "scenario": "technical",
+  "turns": [
+    {
+      "turn_number": 1,
+      "question": "What is the purpose of the quality_metrics module?",
+      "response": "Quality metrics evaluates SAGE responses using 4 criteria: unique content, specific technical terms, numerical data, and avoiding philosophical hedging. This provides a 0-1 normalized score...",
+      "quality_score": {
+        "total": 3,
+        "normalized": 0.75,
+        "unique": true,
+        "specific_terms": false,
+        "has_numbers": true,
+        "avoids_hedging": true
+      },
+      "epistemic_metrics": {
+        "confidence": 0.7249999999999999,
+        "comprehension_depth": 0.9,
+        "uncertainty": 0.1,
+        "coherence": 0.85,
+        "frustration": 0.05,
+        "primary_state": "confident",
+        "timestamp": 1765545002.7308602
+      },
+      "epistemic_state": "confident",
+      "scenario": "technical",
+      "timestamp": 1765545002.7308676
+    },
+    {
+      "turn_number": 2,
+      "question": "How does temporal adaptation work in SAGE?",
+      "response": "Temporal adaptation uses multi-objective optimization with ATP-based energy constraints. The system balances quality (0.40 weight), coverage (0.35), energy (0.20), and novelty (0.05) objectives...",
+      "quality_score": {
+        "total": 4,
+        "normalized": 1.0,
+        "unique": true,
+        "specific_terms": true,
+        "has_numbers": true,
+        "avoids_hedging": true
+      },
+      "epistemic_metrics": {
+        "confidence": 0.85,
+        "comprehension_depth": 0.9,
+        "uncertainty": 0.1,
+        "coherence": 0.85,
+        "frustration": 0.05,
+        "primary_state": "confident",
+        "timestamp": 1765545002.7308943
+      },
+      "epistemic_state": "confident",
+      "scenario": "technical",
+      "timestamp": 1765545002.7308984
+    },
+    {
+      "turn_number": 3,
+      "question": "Explain the epistemic state tracker.",
+      "response": "EpistemicStateTracker maintains a history of epistemic metrics (confidence, comprehension depth, uncertainty, coherence, frustration) across consciousness cycles, enabling meta-cognitive awareness...",
+      "quality_score": {
+        "total": 3,
+        "normalized": 0.75,
+        "unique": true,
+        "specific_terms": true,
+        "has_numbers": false,
+        "avoids_hedging": true
+      },
+      "epistemic_metrics": {
+        "confidence": 0.7249999999999999,
+        "comprehension_depth": 0.9,
+        "uncertainty": 0.1,
+        "coherence": 0.85,
+        "frustration": 0.05,
+        "primary_state": "confident",
+        "timestamp": 1765545002.7309234
+      },
+      "epistemic_state": "confident",
+      "scenario": "technical",
+      "timestamp": 1765545002.7309296
+    }
+  ],
+  "start_time": 1765545002.730708,
+  "end_time": 1765545002.7309308,
+  "num_turns": 3
+}

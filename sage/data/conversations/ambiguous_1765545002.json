@@ -1,0 +1,84 @@
+{
+  "session_id": "ambiguous_1765545002",
+  "scenario": "ambiguous",
+  "turns": [
+    {
+      "turn_number": 1,
+      "question": "Is higher adaptation frequency good or bad?",
+      "response": "On one hand, frequent adaptation suggests responsive optimization. On the other hand, it could indicate instability. Multiple interpretations are difficult to reconcile without context...",
+      "quality_score": {
+        "total": 3,
+        "normalized": 0.75,
+        "unique": true,
+        "specific_terms": true,
+        "has_numbers": false,
+        "avoids_hedging": true
+      },
+      "epistemic_metrics": {
+        "confidence": 0.5,
+        "comprehension_depth": 0.5,
+        "uncertainty": 0.55,
+        "coherence": 0.35,
+        "frustration": 0.35,
+        "primary_state": "confused",
+        "timestamp": 1765545002.731712
+      },
+      "epistemic_state": "confused",
+      "scenario": "ambiguous",
+      "timestamp": 1765545002.731714
+    },
+    {
+      "turn_number": 2,
+      "question": "Should we optimize for quality or efficiency?",
+      "response": "There are competing objectives here. Quality optimization might reduce efficiency, but efficient responses might sacrifice depth. The conflicting priorities make this unclear...",
+      "quality_score": {
+        "total": 2,
+        "normalized": 0.5,
+        "unique": true,
+        "specific_terms": false,
+        "has_numbers": false,
+        "avoids_hedging": true
+      },
+      "epistemic_metrics": {
+        "confidence": 0.5,
+        "comprehension_depth": 0.5,
+        "uncertainty": 0.55,
+        "coherence": 0.35,
+        "frustration": 0.35,
+        "primary_state": "confused",
+        "timestamp": 1765545002.7317376
+      },
+      "epistemic_state": "confused",
+      "scenario": "ambiguous",
+      "timestamp": 1765545002.731739
+    },
+    {
+      "turn_number": 3,
+      "question": "What does high frustration with high quality mean?",
+      "response": "This is contradictory - frustration typically indicates low performance, but high quality suggests success. Several possible explanations exist but are hard to integrate...",
+      "quality_score": {
+        "total": 2,
+        "normalized": 0.5,
+        "unique": true,
+        "specific_terms": false,
+        "has_numbers": false,
+        "avoids_hedging": true
+      },
+      "epistemic_metrics": {
+        "confidence": 0.5,
+        "comprehension_depth": 0.5,
+        "uncertainty": 0.55,
+        "coherence": 0.35,
+        "frustration": 0.35,
+        "primary_state": "confused",
+        "timestamp": 1765545002.7317624
+      },
+      "epistemic_state": "confused",
+      "scenario": "ambiguous",
+      "timestamp": 1765545002.731764
+    }
+  ],
+  "start_time": 1765545002.7316854,
+  "end_time": 1765545002.7317648,
+  "num_turns": 3
+}

@@ -1,0 +1,84 @@
+{
+  "session_id": "uncertain_1765545002",
+  "scenario": "uncertain",
+  "turns": [
+    {
+      "turn_number": 1,
+      "question": "What might be the relationship between energy efficiency and response quality?",
+      "response": "The relationship appears complex and potentially non-linear. Higher energy might enable better quality through more thorough processing, but efficient responses could also be high quality...",
+      "quality_score": {
+        "total": 2,
+        "normalized": 0.5,
+        "unique": true,
+        "specific_terms": false,
+        "has_numbers": false,
+        "avoids_hedging": true
+      },
+      "epistemic_metrics": {
+        "confidence": 0.3,
+        "comprehension_depth": 0.5,
+        "uncertainty": 0.75,
+        "coherence": 0.6,
+        "frustration": 0.15,
+        "primary_state": "uncertain",
+        "timestamp": 1765545002.731224
+      },
+      "epistemic_state": "uncertain",
+      "scenario": "uncertain",
+      "timestamp": 1765545002.7312272
+    },
+    {
+      "turn_number": 2,
+      "question": "Could the satisfaction threshold vary across different types of tasks?",
+      "response": "It's unclear whether the threshold is universal or task-dependent. The data suggests ~95% consistency, but perhaps different cognitive load scenarios might shift this...",
+      "quality_score": {
+        "total": 3,
+        "normalized": 0.75,
+        "unique": true,
+        "specific_terms": true,
+        "has_numbers": true,
+        "avoids_hedging": false
+      },
+      "epistemic_metrics": {
+        "confidence": 0.3,
+        "comprehension_depth": 0.6499999999999999,
+        "uncertainty": 0.75,
+        "coherence": 0.6,
+        "frustration": 0.15,
+        "primary_state": "uncertain",
+        "timestamp": 1765545002.7312546
+      },
+      "epistemic_state": "uncertain",
+      "scenario": "uncertain",
+      "timestamp": 1765545002.7312565
+    },
+    {
+      "turn_number": 3,
+      "question": "How would federation affect individual platform performance?",
+      "response": "This is uncertain without actual measurement. Distributed systems might show amplification effects similar to Web4, or they might have different dynamics...",
+      "quality_score": {
+        "total": 3,
+        "normalized": 0.75,
+        "unique": true,
+        "specific_terms": false,
+        "has_numbers": true,
+        "avoids_hedging": true
+      },
+      "epistemic_metrics": {
+        "confidence": 0.3,
+        "comprehension_depth": 0.6499999999999999,
+        "uncertainty": 0.75,
+        "coherence": 0.6,
+        "frustration": 0.15,
+        "primary_state": "uncertain",
+        "timestamp": 1765545002.7312753
+      },
+      "epistemic_state": "uncertain",
+      "scenario": "uncertain",
+      "timestamp": 1765545002.7312765
+    }
+  ],
+  "start_time": 1765545002.7311904,
+  "end_time": 1765545002.7312775,
+  "num_turns": 3
+}

@@ -515,13 +515,23 @@ SAGE doesn't solve problems directly—it decides which specialized reasoning to
 
 Like an OS for consciousness on edge devices.
 
-## 🚨 CRITICAL: Autonomous Session End Protocol
+## 🚨 CRITICAL: Autonomous Session Protocol (v1.2 - Dec 2025-12-12)
+
+### Session START: Run This FIRST
+
+```bash
+source /home/dp/ai-workspace/memory/epistemic/tools/session_start.sh
+```
+
+**What it does**: Pulls all repos + commits/pushes any uncommitted work from crashed previous sessions.
+
+**Why**: Safety net - even if previous session forgot to push, this catches it.
+
+### Session END: Commit and Push Everything
 
 **EVERY autonomous session MUST commit and push work before ending.**
 
-### Quick Guide
-
-Git post-commit hooks are installed system-wide. When you commit, push happens automatically.
+Git post-commit hooks installed. Commits automatically push to remote.
 
 **Before ending session**:
 
@@ -540,7 +550,7 @@ git status  # Must show "working tree clean"
 
 **DO NOT END SESSION** until work is pushed. Unpushed work is invisible to the collective.
 
-See: `/home/dp/ai-workspace/memory/AUTONOMOUS_SESSION_GUIDE.md`
+See: `/home/dp/ai-workspace/private-context/AUTONOMOUS_SESSION_PROTOCOL.md`
 
 ---
 

@@ -1,0 +1,127 @@
+{
+  "timestamp": 1765610057.106282,
+  "total_cycles": 8,
+  "statistics": {
+    "quality": {
+      "mean": 0.65625,
+      "std": 0.17399263633843817,
+      "min": 0.5,
+      "max": 1.0
+    },
+    "epistemic_states": {
+      "confident": 4,
+      "stable": 4
+    },
+    "metabolic": {
+      "total_transitions": 7,
+      "state_durations": {
+        "wake": 0.3019833564758301,
+        "focus": 0.5030226707458496,
+        "rest": 0.0,
+        "dream": 0.0,
+        "crisis": 0.0
+      },
+      "transition_triggers": {
+        "high_salience(0.70)": 1,
+        "low_salience(0.20)": 1,
+        "high_salience(0.80)": 1,
+        "low_salience(0.10)": 1,
+        "high_salience(0.90)": 1,
+        "low_salience(0.15)": 1,
+        "high_salience(0.85)": 1
+      },
+      "current_state": "focus",
+      "cycles_in_state": 0,
+      "total_cycles": 8
+    },
+    "integration": {
+      "total_cycles": 8,
+      "total_errors": 0,
+      "crisis_events": 0,
+      "focus_episodes": 5,
+      "mean_processing_time": 0.00028184056282043457
+    }
+  },
+  "cycles": [
+    {
+      "cycle_number": 1,
+      "quality": 0.75,
+      "epistemic_state": "confident",
+      "metabolic_state": "wake",
+      "quality_atp": 20.0,
+      "epistemic_atp": 15.0,
+      "total_atp": 100.0,
+      "processing_time_ms": 0.28634071350097656
+    },
+    {
+      "cycle_number": 2,
+      "quality": 0.75,
+      "epistemic_state": "confident",
+      "metabolic_state": "focus",
+      "quality_atp": 30.0,
+      "epistemic_atp": 22.5,
+      "total_atp": 120.0,
+      "processing_time_ms": 0.29158592224121094
+    },
+    {
+      "cycle_number": 3,
+      "quality": 0.5,
+      "epistemic_state": "stable",
+      "metabolic_state": "wake",
+      "quality_atp": 20.0,
+      "epistemic_atp": 15.0,
+      "total_atp": 100.0,
+      "processing_time_ms": 0.28324127197265625
+    },
+    {
+      "cycle_number": 4,
+      "quality": 0.5,
+      "epistemic_state": "stable",
+      "metabolic_state": "focus",
+      "quality_atp": 30.0,
+      "epistemic_atp": 22.5,
+      "total_atp": 120.0,
+      "processing_time_ms": 0.23436546325683594
+    },
+    {
+      "cycle_number": 5,
+      "quality": 1.0,
+      "epistemic_state": "confident",
+      "metabolic_state": "wake",
+      "quality_atp": 20.0,
+      "epistemic_atp": 15.0,
+      "total_atp": 100.0,
+      "processing_time_ms": 0.2791881561279297
+    },
+    {
+      "cycle_number": 6,
+      "quality": 0.5,
+      "epistemic_state": "stable",
+      "metabolic_state": "focus",
+      "quality_atp": 30.0,
+      "epistemic_atp": 22.5,
+      "total_atp": 120.0,
+      "processing_time_ms": 0.24890899658203125
+    },
+    {
+      "cycle_number": 7,
+      "quality": 0.5,
+      "epistemic_state": "stable",
+      "metabolic_state": "focus",
+      "quality_atp": 30.0,
+      "epistemic_atp": 22.5,
+      "total_atp": 120.0,
+      "processing_time_ms": 0.2815723419189453
+    },
+    {
+      "cycle_number": 8,
+      "quality": 0.75,
+      "epistemic_state": "confident",
+      "metabolic_state": "wake",
+      "quality_atp": 20.0,
+      "epistemic_atp": 15.0,
+      "total_atp": 100.0,
+      "processing_time_ms": 0.3495216369628906
+    }
+  ]
+}

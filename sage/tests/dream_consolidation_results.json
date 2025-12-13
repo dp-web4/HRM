@@ -1,0 +1,137 @@
+{
+  "dream_session_id": 1,
+  "timestamp": 1765613043.3692203,
+  "cycles_processed": 8,
+  "patterns": [
+    {
+      "pattern_type": "epistemic_pattern",
+      "description": "Frequent 'stable' epistemic state",
+      "strength": 0.625,
+      "examples": [
+        0,
+        2,
+        3,
+        5,
+        6
+      ],
+      "frequency": 5,
+      "created_at": 1765613043.3689902
+    },
+    {
+      "pattern_type": "epistemic_pattern",
+      "description": "Frequent 'confident' epistemic state",
+      "strength": 0.375,
+      "examples": [
+        1,
+        4,
+        7
+      ],
+      "frequency": 3,
+      "created_at": 1765613043.3689933
+    },
+    {
+      "pattern_type": "metabolic_transition",
+      "description": "Common wake\u2192focus transition",
+      "strength": 0.42857142857142855,
+      "examples": [
+        0,
+        2,
+        4
+      ],
+      "frequency": 3,
+      "created_at": 1765613043.369004
+    },
+    {
+      "pattern_type": "metabolic_transition",
+      "description": "Common focus\u2192wake transition",
+      "strength": 0.42857142857142855,
+      "examples": [
+        1,
+        3,
+        6
+      ],
+      "frequency": 3,
+      "created_at": 1765613043.3690064
+    },
+    {
+      "pattern_type": "quality_characteristic",
+      "description": "High-quality responses usually have 'unique'",
+      "strength": 1.0,
+      "examples": [
+        1,
+        2,
+        5,
+        8
+      ],
+      "frequency": 4,
+      "created_at": 1765613043.3690138
+    },
+    {
+      "pattern_type": "quality_characteristic",
+      "description": "High-quality responses usually have 'has_numbers'",
+      "strength": 1.0,
+      "examples": [
+        1,
+        2,
+        5,
+        8
+      ],
+      "frequency": 4,
+      "created_at": 1765613043.3690152
+    },
+    {
+      "pattern_type": "quality_characteristic",
+      "description": "High-quality responses usually have 'avoids_hedging'",
+      "strength": 1.0,
+      "examples": [
+        1,
+        2,
+        5,
+        8
+      ],
+      "frequency": 4,
+      "created_at": 1765613043.3690162
+    }
+  ],
+  "quality_learnings": [
+    {
+      "characteristic": "has_numbers",
+      "positive_correlation": true,
+      "confidence": 0.625,
+      "sample_size": 8,
+      "average_quality_with": 0.8125,
+      "average_quality_without": 0.5
+    }
+  ],
+  "creative_associations": [
+    {
+      "concept_a": "focus_state",
+      "concept_b": "quality_score",
+      "association_type": "negative_correlation",
+      "strength": 0.375,
+      "supporting_cycles": [
+        2,
+        4,
+        6,
+        7
+      ],
+      "insight": "FOCUS state does not improve quality (\u0394=-0.188)"
+    },
+    {
+      "concept_a": "confident_epistemic_state",
+      "concept_b": "quality_score",
+      "association_type": "correlation",
+      "strength": 0.5666666666666667,
+      "supporting_cycles": [
+        2,
+        5,
+        8
+      ],
+      "insight": "Confident epistemic state correlates with higher quality"
+    }
+  ],
+  "epistemic_insights": [
+    "Good confidence calibration: avg confidence\u2248avg quality (error=0.098)"
+  ],
+  "consolidation_time": 0.0003802776336669922
+}

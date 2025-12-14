@@ -81,6 +81,10 @@ class CycleSnapshot:
     frustration: float = 0.0
     progress: float = 0.0
     engagement: float = 0.0
+    # Session 49: Circadian rhythm
+    circadian_phase: str = ""
+    day_strength: float = 0.0
+    night_strength: float = 0.0
 
 
 class StateHistory:
@@ -221,6 +225,13 @@ class LiveDisplay:
             print(f"    - Frustration: {self._render_emotional_bar(snapshot.frustration)} ({snapshot.frustration:.2f})")
             print(f"    - Progress:    {self._render_emotional_bar(snapshot.progress)} ({snapshot.progress:.2f})")
             print(f"    - Engagement:  {self._render_emotional_bar(snapshot.engagement)} ({snapshot.engagement:.2f})")
+
+        # Session 49: Circadian rhythm display
+        if snapshot.circadian_phase:
+            print(f"  {Colors.CYAN}Circadian:{Colors.RESET} {snapshot.circadian_phase.upper()}")
+            print(f"    - Day strength:   {self._render_circadian_bar(snapshot.day_strength, 'day')} ({snapshot.day_strength:.2f})")
+            print(f"    - Night strength: {self._render_circadian_bar(snapshot.night_strength, 'night')} ({snapshot.night_strength:.2f})")
+
         print()
 
     def _render_recent_cycles(self, history: StateHistory):
@@ -358,6 +369,17 @@ class LiveDisplay:
             color = Colors.BLUE  # Low values
         return f"{color}{bar}{Colors.RESET}"
 
+    def _render_circadian_bar(self, value: float, bar_type: str = 'day', width: int = 20) -> str:
+        """Render circadian strength as progress bar (Session 49)"""
+        filled = int(value * width)
+        bar = '█' * filled + '░' * (width - filled)
+        # Color based on type
+        if bar_type == 'day':
+            color = Colors.YELLOW  # Daytime = yellow (sun)
+        else:
+            color = Colors.BLUE  # Nighttime = blue (night sky)
+        return f"{color}{bar}{Colors.RESET}"
+
 
 class ConsciousnessMonitor:
     """
@@ -418,7 +440,11 @@ class ConsciousnessMonitor:
             curiosity=cycle.emotional_state.get('curiosity', 0.0) if cycle.emotional_state else 0.0,
             frustration=cycle.emotional_state.get('frustration', 0.0) if cycle.emotional_state else 0.0,
             progress=cycle.emotional_state.get('progress', 0.0) if cycle.emotional_state else 0.0,
-            engagement=cycle.emotional_state.get('engagement', 0.0) if cycle.emotional_state else 0.0
+            engagement=cycle.emotional_state.get('engagement', 0.0) if cycle.emotional_state else 0.0,
+            # Session 49: Circadian rhythm
+            circadian_phase=cycle.circadian_phase if hasattr(cycle, 'circadian_phase') else "",
+            day_strength=cycle.circadian_context.day_strength if cycle.circadian_context else 0.0,
+            night_strength=cycle.circadian_context.night_strength if cycle.circadian_context else 0.0
         )
 
         # Add to history

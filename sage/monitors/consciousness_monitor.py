@@ -75,6 +75,12 @@ class CycleSnapshot:
     epistemic_atp: float
     processing_time: float
     errors: int
+    # Session 48: Emotional intelligence
+    emotional_summary: str = ""
+    curiosity: float = 0.0
+    frustration: float = 0.0
+    progress: float = 0.0
+    engagement: float = 0.0
 
 
 class StateHistory:
@@ -207,6 +213,14 @@ class LiveDisplay:
         print(f"    - Quality ATP: {snapshot.quality_atp:.1f}")
         print(f"    - Epistemic ATP: {snapshot.epistemic_atp:.1f}")
         print(f"  Processing: {snapshot.processing_time*1000:.1f}ms")
+
+        # Session 48: Emotional state display
+        if snapshot.emotional_summary:
+            print(f"  {Colors.MAGENTA}Emotional:{Colors.RESET} {snapshot.emotional_summary}")
+            print(f"    - Curiosity:   {self._render_emotional_bar(snapshot.curiosity)} ({snapshot.curiosity:.2f})")
+            print(f"    - Frustration: {self._render_emotional_bar(snapshot.frustration)} ({snapshot.frustration:.2f})")
+            print(f"    - Progress:    {self._render_emotional_bar(snapshot.progress)} ({snapshot.progress:.2f})")
+            print(f"    - Engagement:  {self._render_emotional_bar(snapshot.engagement)} ({snapshot.engagement:.2f})")
         print()
 
     def _render_recent_cycles(self, history: StateHistory):
@@ -331,6 +345,19 @@ class LiveDisplay:
         bar = '█' * filled + '░' * (width - filled)
         return bar
 
+    def _render_emotional_bar(self, value: float, width: int = 20) -> str:
+        """Render emotional state value as progress bar (Session 48)"""
+        filled = int(value * width)
+        bar = '█' * filled + '░' * (width - filled)
+        # Color based on value
+        if value >= 0.7:
+            color = Colors.GREEN  # High values
+        elif value >= 0.4:
+            color = Colors.YELLOW  # Medium values
+        else:
+            color = Colors.BLUE  # Low values
+        return f"{color}{bar}{Colors.RESET}"
+
 
 class ConsciousnessMonitor:
     """
@@ -385,7 +412,13 @@ class ConsciousnessMonitor:
             quality_atp=cycle.quality_atp,
             epistemic_atp=cycle.epistemic_atp,
             processing_time=cycle.processing_time,
-            errors=len(cycle.errors)
+            errors=len(cycle.errors),
+            # Session 48: Emotional intelligence
+            emotional_summary=cycle.emotional_summary if hasattr(cycle, 'emotional_summary') else "",
+            curiosity=cycle.emotional_state.get('curiosity', 0.0) if cycle.emotional_state else 0.0,
+            frustration=cycle.emotional_state.get('frustration', 0.0) if cycle.emotional_state else 0.0,
+            progress=cycle.emotional_state.get('progress', 0.0) if cycle.emotional_state else 0.0,
+            engagement=cycle.emotional_state.get('engagement', 0.0) if cycle.emotional_state else 0.0
         )
 
         # Add to history

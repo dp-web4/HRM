@@ -37,6 +37,7 @@ from sage.core.metabolic_states import (
     MetabolicState,
     ATPAllocation
 )
+from sage.core.emotional_state import EmotionalStateTracker
 
 
 @dataclass
@@ -60,6 +61,10 @@ class ConsciousnessCycle:
         epistemic_metrics: Meta-cognitive metrics
         epistemic_state: Primary epistemic state
         epistemic_atp: ATP allocated to epistemic tracking
+
+        # Emotional (Session 48)
+        emotional_state: Emotional metrics (curiosity, frustration, progress, engagement)
+        emotional_summary: Human-readable emotional state
 
         # Metabolic
         metabolic_state: Current metabolic state
@@ -85,6 +90,10 @@ class ConsciousnessCycle:
     epistemic_metrics: Optional[EpistemicMetrics] = None
     epistemic_state: Optional[EpistemicState] = None
     epistemic_atp: float = 0.0
+
+    # Emotional (Session 48)
+    emotional_state: Dict[str, float] = field(default_factory=dict)
+    emotional_summary: str = ""
 
     # Metabolic
     metabolic_state: MetabolicState = MetabolicState.WAKE
@@ -118,7 +127,8 @@ class UnifiedConsciousnessManager:
     def __init__(self,
                  initial_atp: float = 100.0,
                  quality_atp_baseline: float = 20.0,
-                 epistemic_atp_baseline: float = 15.0):
+                 epistemic_atp_baseline: float = 15.0,
+                 emotional_history_length: int = 20):
         """
         Initialize unified consciousness manager.
 
@@ -126,10 +136,12 @@ class UnifiedConsciousnessManager:
             initial_atp: Starting ATP budget
             quality_atp_baseline: Base ATP for quality scoring
             epistemic_atp_baseline: Base ATP for epistemic tracking
+            emotional_history_length: History window for emotional tracking (Session 48)
         """
         # Core components
         self.metabolic_manager = MetabolicStateManager(initial_atp=initial_atp)
         self.epistemic_tracker = EpistemicStateTracker(history_size=100)
+        self.emotional_tracker = EmotionalStateTracker(history_length=emotional_history_length)
 
         # ATP baselines
         self.quality_atp_baseline = quality_atp_baseline
@@ -201,11 +213,22 @@ class UnifiedConsciousnessManager:
             cycle.epistemic_metrics = epistemic_metrics
             cycle.epistemic_state = epistemic_state
 
-            # 4. Metabolic State Update
+            # 3.5. Emotional State Tracking (Session 48)
+            emotional_state = self._track_emotional_state(
+                response=response,
+                salience=task_salience,
+                quality=quality_score.normalized,
+                epistemic_frustration=epistemic_metrics.frustration
+            )
+            cycle.emotional_state = emotional_state
+            cycle.emotional_summary = self.emotional_tracker.get_emotional_summary()
+
+            # 4. Metabolic State Update (now considers emotions)
             self._update_metabolic_state(
                 task_salience=task_salience,
                 epistemic_frustration=epistemic_metrics.frustration,
-                quality_score=quality_score.normalized
+                quality_score=quality_score.normalized,
+                emotional_frustration=emotional_state.get('frustration', 0.0)
             )
 
             # 5. Success reporting
@@ -351,24 +374,67 @@ class UnifiedConsciousnessManager:
 
         return metrics, state
 
+    def _track_emotional_state(self,
+                              response: str,
+                              salience: float,
+                              quality: float,
+                              epistemic_frustration: float) -> Dict[str, float]:
+        """
+        Track emotional state across consciousness cycles (Session 48).
+
+        Emotions provide additional signals for metabolic regulation and
+        behavioral adaptation.
+
+        Args:
+            response: Response text
+            salience: Task salience (0.0-1.0)
+            quality: Quality score (0.0-1.0)
+            epistemic_frustration: Epistemic frustration (0.0-1.0)
+
+        Returns:
+            Dict with emotional metrics (curiosity, frustration, progress, engagement)
+        """
+        # Update emotional tracker with cycle data
+        emotional_state = self.emotional_tracker.update({
+            'response': response,
+            'salience': salience,
+            'quality': quality,
+            'convergence_quality': quality  # Use quality as proxy for convergence
+        })
+
+        # Epistemic frustration can reinforce emotional frustration
+        if epistemic_frustration > 0.5:
+            emotional_state['frustration'] = max(
+                emotional_state['frustration'],
+                epistemic_frustration
+            )
+
+        return emotional_state
+
     def _update_metabolic_state(self,
                                task_salience: float,
                                epistemic_frustration: float,
-                               quality_score: float):
+                               quality_score: float,
+                               emotional_frustration: float = 0.0):
         """
         Update metabolic state based on cycle outcomes.
 
-        Integrates epistemic signals into metabolic regulation.
+        Integrates epistemic and emotional signals into metabolic regulation.
 
         Args:
             task_salience: Task salience (0.0-1.0)
             epistemic_frustration: Frustration level (0.0-1.0)
             quality_score: Quality score (0.0-1.0)
+            emotional_frustration: Emotional frustration (0.0-1.0) [Session 48]
         """
+        # Combine epistemic and emotional frustration
+        # Emotional frustration amplifies metabolic signals
+        combined_frustration = max(epistemic_frustration, emotional_frustration)
+
         # Standard metabolic cycle update
         self.metabolic_manager.cycle_update(
             task_salience=task_salience,
-            epistemic_frustration=epistemic_frustration
+            epistemic_frustration=combined_frustration
         )
 
         # Additional state logic based on quality
@@ -378,6 +444,16 @@ class UnifiedConsciousnessManager:
                 self.metabolic_manager.set_attention(
                     target="quality_improvement",
                     salience=task_salience
+                )
+
+        # Session 48: Emotional intervention
+        # High emotional frustration → REST for consolidation
+        if emotional_frustration > 0.7:
+            if self.metabolic_manager.current_state not in [MetabolicState.REST, MetabolicState.DREAM]:
+                # Trigger REST state for emotional reset
+                self.metabolic_manager.set_attention(
+                    target="emotional_consolidation",
+                    salience=0.8  # High priority
                 )
 
     def get_statistics(self) -> Dict:
@@ -409,6 +485,22 @@ class UnifiedConsciousnessManager:
         # Metabolic statistics
         metabolic_stats = self.metabolic_manager.get_state_statistics()
 
+        # Emotional statistics (Session 48)
+        emotional_stats = {}
+        if self.cycles and self.cycles[0].emotional_state:
+            # Aggregate emotional metrics across cycles
+            emotional_keys = ['curiosity', 'frustration', 'progress', 'engagement']
+            for key in emotional_keys:
+                values = [c.emotional_state.get(key, 0.0) for c in self.cycles
+                         if c.emotional_state]
+                if values:
+                    emotional_stats[key] = {
+                        'mean': np.mean(values),
+                        'std': np.std(values),
+                        'min': np.min(values),
+                        'max': np.max(values)
+                    }
+
         # Integration statistics
         integration_stats = {
             'total_cycles': len(self.cycles),
@@ -422,6 +514,7 @@ class UnifiedConsciousnessManager:
             'quality': quality_stats,
             'epistemic_states': state_counts,
             'metabolic': metabolic_stats,
+            'emotional': emotional_stats,  # Session 48
             'integration': integration_stats
         }
 

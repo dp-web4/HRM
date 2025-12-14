@@ -39,6 +39,7 @@ from sage.core.metabolic_states import (
 )
 from sage.core.emotional_state import EmotionalStateTracker
 from sage.core.circadian_clock import CircadianClock, CircadianContext, CircadianPhase
+from sage.core.dream_consolidation import DREAMConsolidator, ConsolidatedMemory
 
 
 @dataclass
@@ -104,6 +105,10 @@ class ConsciousnessCycle:
     circadian_context: Optional[CircadianContext] = None
     circadian_phase: str = ""
 
+    # DREAM Consolidation (Session 50)
+    consolidation_triggered: bool = False
+    consolidated_memory: Optional[ConsolidatedMemory] = None
+
     # Metabolic
     metabolic_state: MetabolicState = MetabolicState.WAKE
     total_atp: float = 100.0
@@ -139,7 +144,8 @@ class UnifiedConsciousnessManager:
                  epistemic_atp_baseline: float = 15.0,
                  emotional_history_length: int = 20,
                  circadian_period: int = 100,
-                 circadian_enabled: bool = True):
+                 circadian_enabled: bool = True,
+                 consolidation_enabled: bool = True):
         """
         Initialize unified consciousness manager.
 
@@ -150,12 +156,14 @@ class UnifiedConsciousnessManager:
             emotional_history_length: History window for emotional tracking (Session 48)
             circadian_period: Cycles per circadian day (Session 49)
             circadian_enabled: Whether to use circadian rhythm (Session 49)
+            consolidation_enabled: Whether to use scheduled DREAM consolidation (Session 50)
         """
         # Core components
         self.metabolic_manager = MetabolicStateManager(initial_atp=initial_atp)
         self.epistemic_tracker = EpistemicStateTracker(history_size=100)
         self.emotional_tracker = EmotionalStateTracker(history_length=emotional_history_length)
         self.circadian_clock = CircadianClock(period_cycles=circadian_period) if circadian_enabled else None
+        self.dream_consolidator = DREAMConsolidator() if consolidation_enabled else None
 
         # ATP baselines
         self.quality_atp_baseline = quality_atp_baseline
@@ -164,6 +172,11 @@ class UnifiedConsciousnessManager:
         # Cycle history
         self.cycles: List[ConsciousnessCycle] = []
         self.cycle_count = 0
+
+        # DREAM consolidation tracking (Session 50)
+        self.last_consolidation_cycle = 0
+        self.consolidated_memories: List[ConsolidatedMemory] = []
+        self.consolidation_count = 0
 
         # Statistics
         self.total_errors = 0
@@ -241,6 +254,20 @@ class UnifiedConsciousnessManager:
             circadian_context = self._track_circadian_state()
             cycle.circadian_context = circadian_context
             cycle.circadian_phase = circadian_context.phase.value if circadian_context else ""
+
+            # 3.7. DREAM Consolidation Check (Session 50)
+            if self.dream_consolidator and circadian_context:
+                # Trigger consolidation during DEEP_NIGHT phase
+                if circadian_context.phase == CircadianPhase.DEEP_NIGHT:
+                    # Check if enough cycles have passed since last consolidation
+                    cycles_since_last = self.cycle_count - self.last_consolidation_cycle
+                    min_cycles_between = 10  # Consolidate at most once per 10 cycles
+
+                    if cycles_since_last >= min_cycles_between and len(self.cycles) > 0:
+                        # Trigger consolidation of recent cycles
+                        consolidated = self._trigger_consolidation()
+                        cycle.consolidation_triggered = True
+                        cycle.consolidated_memory = consolidated
 
             # 4. Metabolic State Update (now considers emotions + circadian)
             self._update_metabolic_state(
@@ -451,6 +478,54 @@ class UnifiedConsciousnessManager:
 
         return context
 
+    def _trigger_consolidation(self) -> Optional[ConsolidatedMemory]:
+        """
+        Trigger DREAM consolidation of recent consciousness cycles (Session 50).
+
+        Called during DEEP_NIGHT circadian phase to consolidate recent
+        consciousness experiences into memory patterns, quality learnings,
+        and creative associations.
+
+        Biological parallel: Memory consolidation during deep sleep.
+
+        Returns:
+            ConsolidatedMemory or None if consolidation fails
+        """
+        if self.dream_consolidator is None:
+            return None
+
+        # Determine how many cycles to consolidate
+        # Consolidate cycles since last consolidation (or all if first time)
+        cycles_since_last = self.cycle_count - self.last_consolidation_cycle
+        start_idx = max(0, len(self.cycles) - cycles_since_last)
+        cycles_to_consolidate = self.cycles[start_idx:]
+
+        if len(cycles_to_consolidate) == 0:
+            return None
+
+        # Consolidate with ATP budget (DREAM state has high ATP for consolidation)
+        # Use 80% of available ATP for consolidation
+        current_atp = self.metabolic_manager.atp.available
+        consolidation_budget = current_atp * 0.8
+
+        try:
+            # Run consolidation
+            consolidated = self.dream_consolidator.consolidate_cycles(
+                cycles_to_consolidate,
+                atp_budget=consolidation_budget
+            )
+
+            # Store consolidated memory
+            self.consolidated_memories.append(consolidated)
+            self.consolidation_count += 1
+            self.last_consolidation_cycle = self.cycle_count
+
+            return consolidated
+
+        except Exception as e:
+            # Consolidation failed - don't crash, just skip
+            return None
+
     def _update_metabolic_state(self,
                                task_salience: float,
                                epistemic_frustration: float,
@@ -573,11 +648,19 @@ class UnifiedConsciousnessManager:
             'mean_processing_time': np.mean([c.processing_time for c in self.cycles]),
         }
 
+        # Consolidation statistics (Session 50)
+        consolidation_stats = {
+            'total_consolidations': self.consolidation_count,
+            'last_consolidation_cycle': self.last_consolidation_cycle,
+            'stored_memories': len(self.consolidated_memories)
+        }
+
         return {
             'quality': quality_stats,
             'epistemic_states': state_counts,
             'metabolic': metabolic_stats,
             'emotional': emotional_stats,  # Session 48
+            'consolidation': consolidation_stats,  # Session 50
             'integration': integration_stats
         }
 

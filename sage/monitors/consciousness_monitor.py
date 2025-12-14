@@ -85,6 +85,10 @@ class CycleSnapshot:
     circadian_phase: str = ""
     day_strength: float = 0.0
     night_strength: float = 0.0
+    # Session 50: DREAM consolidation
+    consolidation_triggered: bool = False
+    patterns_extracted: int = 0
+    memories_stored: int = 0
 
 
 class StateHistory:
@@ -231,6 +235,12 @@ class LiveDisplay:
             print(f"  {Colors.CYAN}Circadian:{Colors.RESET} {snapshot.circadian_phase.upper()}")
             print(f"    - Day strength:   {self._render_circadian_bar(snapshot.day_strength, 'day')} ({snapshot.day_strength:.2f})")
             print(f"    - Night strength: {self._render_circadian_bar(snapshot.night_strength, 'night')} ({snapshot.night_strength:.2f})")
+
+        # Session 50: DREAM consolidation display
+        if snapshot.consolidation_triggered:
+            print(f"  {Colors.MAGENTA}✧ CONSOLIDATION EVENT{Colors.RESET}")
+            print(f"    - Patterns extracted: {snapshot.patterns_extracted}")
+            print(f"    - Phase: {snapshot.circadian_phase.upper()}")
 
         print()
 
@@ -444,7 +454,11 @@ class ConsciousnessMonitor:
             # Session 49: Circadian rhythm
             circadian_phase=cycle.circadian_phase if hasattr(cycle, 'circadian_phase') else "",
             day_strength=cycle.circadian_context.day_strength if cycle.circadian_context else 0.0,
-            night_strength=cycle.circadian_context.night_strength if cycle.circadian_context else 0.0
+            night_strength=cycle.circadian_context.night_strength if cycle.circadian_context else 0.0,
+            # Session 50: DREAM consolidation
+            consolidation_triggered=cycle.consolidation_triggered if hasattr(cycle, 'consolidation_triggered') else False,
+            patterns_extracted=len(cycle.consolidated_memory.patterns) if (hasattr(cycle, 'consolidated_memory') and cycle.consolidated_memory) else 0,
+            memories_stored=0  # Will be set from manager statistics if needed
         )
 
         # Add to history

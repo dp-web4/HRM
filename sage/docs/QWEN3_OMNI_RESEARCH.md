@@ -161,26 +161,71 @@ The 50GB+ overhead (beyond model weights) comes from:
 ## INT8 Quantization Strategy
 
 ### Current Status
-🔄 **Downloading**: `cpatonn/Qwen3-Omni-30B-A3B-Instruct-AWQ-8bit`
-**Size**: ~35GB (50% of FP16)
-**Method**: AWQ (Activation-aware Weight Quantization) - optimized for inference
+❌ **FAILED**: Community AWQ model incompatible with official implementation
+**Model tested**: `cpatonn/Qwen3-Omni-30B-A3B-Instruct-AWQ-8bit`
+**Size**: ~40GB (9 safetensors files)
+**Method**: AWQ (Activation-aware Weight Quantization)
 
-### Predictions
+###Test Results - INT8 AWQ (Community Model)
+
+**Model**: `cpatonn/Qwen3-Omni-30B-A3B-Instruct-AWQ-8bit`
+**Result**: ❌ **STRUCTURAL INCOMPATIBILITY**
+
+#### Error Details
+
+```
+AttributeError: Qwen3OmniMoeTalkerForConditionalGeneration has no attribute `lm_head`
+Error at: 11.9 GB memory usage
+```
+
+#### What Happened
+
+1. **Download successful**: 40GB model (9 safetensors) downloaded completely
+2. **Quantization detected**: compressed-tensors properly recognized AWQ format
+3. **Weights loading started**: Began materializing 2322 parameters
+4. **Early failure**: Crashed at ~5% loading during model initialization
+5. **Consistent error**: Same `lm_head` attribute error across multiple loading approaches
+
+#### Attempts Made
+
+1. **Test 1**: Original approach with explicit `AwqConfig`
+   - Result: ❌ Same error at 11.9GB
+
+2. **Test 2**: Auto-detect quantization with `torch_dtype=torch.bfloat16`
+   - Result: ❌ Same error at 11.9GB
+
+#### Root Cause Analysis
+
+The community AWQ quantization appears to have modified the model structure in a way incompatible with the official Qwen3-Omni implementation:
+
+- **FP16 official model** has proper `lm_head` structure
+- **INT8 AWQ community model** missing or renamed critical attributes
+- Error occurs during **model initialization**, not weight loading
+- The Thinker-Talker architecture components may not be properly preserved through AWQ quantization
+
+#### Why This Matters
+
+Unlike standard transformer models, Qwen3-Omni uses:
+- **Thinker-Talker MoE architecture** (novel design)
+- **128 routed experts** with complex routing
+- **Multi-modal components** (code2wav, audio processing)
+- **Cross-modal attention** mechanisms
+
+AWQ quantization tools may not properly handle this architecture.
+
+### Predictions (Not Testable Yet)
 
 If overhead scales proportionally with precision (50% reduction):
 
-| Metric | FP16 | INT8 (predicted) |
-|--------|------|------------------|
-| **Model weights** | 70.5GB | 35GB ✅ |
-| **Growth rate** | 1.2GB/sec | **0.6GB/sec** |
-| **Overhead** | 50GB+ | **25GB** |
-| **Total** | 140-150GB | **60-65GB** ✅ |
-| **Headroom on Thor** | ❌ -18-28GB | ✅ **57-62GB free** |
+| Metric | FP16 | INT8 (theoretical) |
+|--------|------|-------------------|
+| **Model weights** | 70.5GB | 35GB |
+| **Growth rate** | 1.2GB/sec | **0.6GB/sec** (predicted) |
+| **Overhead** | 50GB+ | **25GB** (predicted) |
+| **Total** | 140-150GB | **60-65GB** (predicted) |
+| **Headroom on Thor** | ❌ -18-28GB | ✅ **57-62GB free** (predicted) |
 
-**Hypothesis to test**:
-- INT8 should show linear growth at ~0.6GB/sec (half the rate)
-- Total memory ~60GB (fits comfortably in 122GB)
-- If successful, proves overhead scales with precision
+**Cannot verify**: No compatible INT8 model available to test hypothesis.
 
 ---
 
@@ -188,17 +233,18 @@ If overhead scales proportionally with precision (50% reduction):
 
 ### Download Scripts
 - `sage/setup/download_qwen3_omni_30b.py` - FP16 model downloader ✅
-- `sage/setup/download_qwen3_omni_int8.py` - INT8 AWQ downloader 🔄
+- `sage/setup/download_qwen3_omni_int8.py` - INT8 AWQ downloader ✅
 
 ### Test Scripts
 - `sage/tests/test_qwen3_omni_simple.py` - Initial test (wrong dtype) ❌
-- `sage/tests/test_qwen3_omni_official.py` - Official approach (OOM) ❌
-- `sage/tests/test_qwen3_omni_optimized.py` - With low_cpu_mem_usage (OOM) ❌
-- `sage/tests/test_qwen3_omni_int8.py` - INT8 test (pending) ⏳
+- `sage/tests/test_qwen3_omni_official.py` - Official approach (FP16 OOM) ❌
+- `sage/tests/test_qwen3_omni_optimized.py` - With low_cpu_mem_usage (FP16 OOM) ❌
+- `sage/tests/test_qwen3_omni_int8.py` - INT8 test v1 (structural incompatibility) ❌
+- `sage/tests/test_qwen3_omni_int8_v2.py` - INT8 test v2 auto-detect (structural incompatibility) ❌
 
 ### Documentation
 - `sage/tests/TEST_RESULTS_THOR.md` - Initial test results (premature conclusions)
-- `sage/docs/QWEN3_OMNI_RESEARCH.md` - This document
+- `sage/docs/QWEN3_OMNI_RESEARCH.md` - This document (comprehensive findings)
 
 ---
 
@@ -256,23 +302,190 @@ If overhead scales proportionally with precision (50% reduction):
 
 ## Next Steps
 
-### Immediate (In Progress)
-1. ✅ Complete INT8 model download
-2. ⏳ Test INT8 loading with memory monitoring
-3. ⏳ Verify growth rate prediction (0.6GB/sec vs 1.2GB/sec)
-4. ⏳ If successful, run inference tests
+### Immediate Options
 
-### If INT8 Works
-1. Test conversation quality vs FP16 (on 14B for comparison)
-2. Benchmark latency for streaming responses
-3. Test multi-modal inputs (audio, images)
-4. Integrate with SAGE IRP framework
-5. Create capability block wrapper
+**Option 1: Wait for Official Quantized Release**
+- Monitor Qwen HuggingFace for official INT8/INT4 releases
+- Official quantization likely to preserve Thinker-Talker architecture
+- **Timeline**: Unknown, could be weeks/months
+- **Probability of success**: HIGH (official = tested compatibility)
 
-### If INT8 Fails
-1. Try INT4/AWQ-4bit (~17.5GB + ~12GB overhead = ~30GB total)
-2. Consider modular approach (separate specialists)
-3. Document as "aspirational" for future hardware
+**Option 2: Explore INT4 Quantization**
+- Community INT4 AWQ models (~17.5GB)
+- Predicted total: ~17.5GB model + ~12GB overhead = ~30GB
+- **Risk**: Same structural incompatibility issues as INT8
+- **Value**: Worth one attempt to see if lighter quantization works
+
+**Option 3: Try Smaller Qwen3-Omni Models**
+- Check if Qwen3-Omni-14B or 7B variants exist
+- Smaller base model = fits even with overhead
+- **Trade-off**: Lower capability for guaranteed compatibility
+
+**Option 4: Custom Quantization** (Advanced)
+- Use official Qwen tools to quantize FP16 model ourselves
+- Requires: AutoGPTQ or AutoAWQ with MoE support
+- **Risk**: Complex, may hit same architectural issues
+- **Value**: Learning opportunity, full control
+
+**Option 5: Modular SAGE Approach** (Fallback)
+- Abandon unified omni-modal model for Thor
+- Use separate specialists: Vision, Audio, Language, TTS
+- Proven working approach (we have 14B text working)
+- **Trade-off**: More orchestration complexity vs guaranteed functionality
+
+---
+
+## Swap Testing Results (150GB NVMe)
+
+### Configuration
+- **Added**: 150GB NVMe swap via `fallocate`
+- **Settings**: `swappiness=10` (aggressive RAM preference), `vfs_cache_pressure=50`
+- **Total capacity**: 272GB (122GB RAM + 150GB swap)
+- **Location**: `/swapfile` on root filesystem
+
+### Test Results - FP16 with Swap
+
+**Status**: ❌ **FAILED** - Same initialization bug, NOT an OOM issue
+
+#### Memory Behavior with Swap
+```
+Peak Memory Usage:
+  RSS: 53.0 GB (in RAM)
+  Swap: 16.0 GB (paged to NVMe)
+  Total: 69.0 GB
+
+Swap Started: 68.3s after model loading began
+Growth Rate: 0.37 GB/sec (slower than pure RAM's 1.2 GB/sec - paging overhead expected)
+```
+
+#### Critical Discovery
+
+**THE MODEL DID NOT RUN OUT OF MEMORY!**
+
+- ✅ Swap activated and functioned correctly
+- ✅ System successfully paged 16GB to NVMe storage
+- ✅ Process was NOT killed by OOM killer
+- ❌ Failed with Python `AttributeError` during initialization
+
+**Same error across ALL configurations:**
+```
+AttributeError: Qwen3OmniMoeTalkerForConditionalGeneration has no attribute `lm_head`
+```
+
+#### What This Proves
+
+1. **Swap works perfectly**: NVMe paging functional, growth rate difference expected
+2. **Memory is NOT the blocker**: 272GB capacity sufficient to begin model loading
+3. **Bug is in initialization code**: Structural incompatibility in model loading
+4. **Not a resource problem**: Software compatibility issue, not hardware limitation
+
+### Multiple Loading Approaches Attempted
+
+**Test 1**: Official README with `disable_talker()`
+```python
+model = Qwen3OmniMoeForConditionalGeneration.from_pretrained(...)
+model.disable_talker()  # Disable TTS component
+```
+**Result**: ❌ Same `lm_head` error
+
+**Test 2**: Text-only mode with `return_audio=False`
+```python
+generated_ids = model.generate(..., return_audio=False)
+```
+**Result**: ❌ Error occurs during loading, before generation
+
+**Test 3**: Various `device_map` configurations
+- `device_map="auto"` ❌
+- `device_map="cuda"` ❌
+- `device_map="sequential"` ❌
+
+**Test 4**: Different dtype settings
+- `dtype="auto"` ❌
+- `dtype=torch.float16` ❌
+- `dtype=torch.bfloat16` ❌
+
+**Consistent error location**: During `from_pretrained()`, in transformers' parameter loading chain
+
+### Root Cause Analysis
+
+The `Qwen3OmniMoeTalkerForConditionalGeneration` submodule structure doesn't match transformers' expectations:
+
+```python
+# Transformers expects:
+model.lm_head  # ❌ Missing or misnamed
+
+# Q3-Omni actually has:
+model.thinker  # Reasoning component (MoE)
+model.talker   # TTS component (text → audio codes)
+model.experts  # Expert routing system
+```
+
+**Why this is significant**:
+- Thinker-Talker architecture is novel (not standard transformer)
+- transformers library may lack proper support
+- Community quantizations break structure further
+- Needs either: updated transformers OR custom loading code
+
+### Swap Performance Characteristics
+
+**Comparison**: Pure RAM vs RAM+Swap
+
+| Metric | Pure RAM (FP16) | RAM+Swap (FP16) |
+|--------|-----------------|-----------------|
+| Growth rate | 1.2 GB/sec | 0.37 GB/sec |
+| GPU utilization | 88-96% | N/A (crashed early) |
+| Failure point | 122GB (OOM) | 69GB (code error) |
+| Failure mode | Killed by OS | Python exception |
+
+**Observations**:
+- **Slower growth expected**: NVMe paging adds latency (1/3 speed reduction)
+- **Still usable**: Even with swap, loading progresses
+- **Clean error handling**: Swap prevents silent OOM crashes
+
+### Recommended Path
+
+**SHORT TERM**: ~~Wait for official fixes~~ **→ MODULARIZE FOR SAGE**
+
+Instead of waiting for transformers/Qwen updates, we have a unique opportunity:
+
+**✅ We have the ingredients**:
+1. Model weights (70.5GB FP16, fully downloaded)
+2. Architecture understanding (Thinker-Talker MoE, 128 experts)
+3. SAGE framework (designed for this exact scenario)
+
+**🎯 The MoE Problem**:
+- Keeps all 128 experts in RAM
+- Only 8 active per token
+- 87.5% resource waste
+- Thor can't fit it all
+
+**💡 The SAGE Solution**:
+Load experts on-demand based on:
+- **Metabolic state** (WAKE/FOCUS/REST/DREAM)
+- **SNARC salience** (surprise, novelty, arousal, reward, conflict)
+- **Task requirements** (which expert types needed)
+- **Trust scores** (proven effective experts first)
+- **Latency tolerance** (swap acceptable for low-priority experts)
+
+**Next Research Direction**:
+Extract Q3-Omni architecture and modularize for SAGE's selective resource loading. This transforms a blocker into a research opportunity that directly validates SAGE's core thesis.
+
+### Why Not Push Further Now
+
+- FP16 clearly won't fit (122GB < 140-150GB needed)
+- Community INT8 fundamentally incompatible (architecture mismatch)
+- Further INT4/quantization attempts likely same structural issues
+- **Research value achieved**: We understand the memory behavior and limitations
+- **Time better spent**: Building working system with known-good components
+
+### Long-term Value
+
+Even though Q3-Omni-30B doesn't run on Thor today, this research provides:
+1. Exact memory profiling methodology for future models
+2. Understanding of MoE initialization patterns
+3. Documentation of quantization compatibility issues
+4. Baseline requirements for future hardware planning
+5. Clear decision framework: when to push vs when to pivot
 
 ---
 

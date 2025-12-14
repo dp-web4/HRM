@@ -169,6 +169,11 @@ class SelectiveExpertLoader:
         # Load from file
         expert_file = self.experts_dir / f"{self.component}_expert_{expert_id:03d}_layer_{layer_id:02d}.safetensors"
 
+        # Check if expert exists (handle sparse layers)
+        if not expert_file.exists():
+            print(f"⚠️  Expert {expert_id} not found in layer {layer_id} (sparse layer)")
+            return None  # Return None for missing experts in sparse layers
+
         expert_weights = {}
         with safetensors.safe_open(expert_file, framework="pt") as f:
             for key in f.keys():

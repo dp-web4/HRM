@@ -239,17 +239,29 @@ class SelectiveMoELayer(nn.Module):
 
         # Process each expert
         expert_outputs = []
+        valid_expert_indices = []
 
-        for expert_id in selected_expert_ids:
+        for i, expert_id in enumerate(selected_expert_ids):
             # Load expert (from memory or disk)
             expert_weights = self.expert_loader.load_expert(expert_id, self.layer_id)
+
+            # Skip if expert doesn't exist (sparse layers)
+            if expert_weights is None:
+                continue
 
             # Expert forward pass
             output = self._expert_forward(hidden_states, expert_weights)
             expert_outputs.append(output)
+            valid_expert_indices.append(i)
 
-        # Weighted combination
-        router_probs = F.softmax(router_weights, dim=0)
+        # If no valid experts, return input unchanged (residual path)
+        if len(expert_outputs) == 0:
+            print(f"⚠️  No valid experts in layer {self.layer_id}, using identity")
+            return hidden_states
+
+        # Weighted combination (only use weights for valid experts)
+        valid_router_weights = router_weights[valid_expert_indices]
+        router_probs = F.softmax(valid_router_weights, dim=0)
 
         combined_output = torch.zeros_like(hidden_states)
         for i, output in enumerate(expert_outputs):
@@ -270,6 +282,13 @@ class SelectiveMoELayer(nn.Module):
                 up_proj = weight
             elif 'down_proj' in key:
                 down_proj = weight
+
+        # Validate all weights are present
+        if gate_proj is None or up_proj is None or down_proj is None:
+            print(f"⚠️  Expert missing weights! gate:{gate_proj is not None}, up:{up_proj is not None}, down:{down_proj is not None}")
+            print(f"   Available keys: {list(expert_weights.keys())}")
+            # Return input unchanged if weights are missing
+            return x
 
         gate_output = F.linear(x, gate_proj)
         up_output = F.linear(x, up_proj)

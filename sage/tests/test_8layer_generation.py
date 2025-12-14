@@ -34,7 +34,7 @@ def test_8layer_next_token():
         extraction_dir=extraction_dir,
         num_layers=8,  # 8 layers for hierarchical processing
         num_experts_per_tok=4,
-        max_loaded_experts=8,  # Allow more experts across layers
+        max_loaded_experts=48,  # 8 layers × 4 experts × 1.5 buffer
         device="cpu"
     )
 
@@ -100,7 +100,7 @@ def test_8layer_generation():
         extraction_dir=extraction_dir,
         num_layers=8,
         num_experts_per_tok=4,
-        max_loaded_experts=12,  # More experts for better quality
+        max_loaded_experts=64,  # 8 layers × 4 experts × 2 buffer for rotation
         device="cpu"
     )
 
@@ -214,7 +214,7 @@ def test_8layer_perplexity():
         extraction_dir=extraction_dir,
         num_layers=8,
         num_experts_per_tok=4,
-        max_loaded_experts=12,
+        max_loaded_experts=64,  # Enough for all layers
         device="cpu"
     )
 

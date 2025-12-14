@@ -87,10 +87,10 @@ class MultiModelLoader:
     def _init_model_paths(self):
         """Initialize model path configurations"""
 
-        # 0.5B model
+        # 0.5B model (epistemic-pragmatism variant - same as Sprout uses)
         self.models[ModelSize.SMALL] = ModelConfig(
             size=ModelSize.SMALL,
-            path=self.model_zoo_path / "epistemic-stances" / "qwen2.5-0.5b" / "base-instruct"
+            path=self.model_zoo_path / "epistemic-stances" / "qwen2.5-0.5b" / "epistemic-pragmatism"
         )
 
         # 14B model
@@ -217,6 +217,8 @@ class MultiModelLoader:
         - MODERATE → 14B (balanced, default)
         - COMPLEX → 14B (can handle most)
         - VERY_COMPLEX → 72B (if available, else 14B)
+
+        With fallback: If requested model unavailable, use next larger size
         """
 
         # Determine model size
@@ -232,8 +234,33 @@ class MultiModelLoader:
                 size = ModelSize.MEDIUM
                 logger.info("72B not available, using 14B for very complex task")
 
-        # Load if needed
+        # Fallback logic: if requested model doesn't exist, use next larger
         config = self.models[size]
+        if not config.path.exists():
+            logger.warning(f"Model {size.value} not found at {config.path}")
+
+            # Fallback chain: SMALL → MEDIUM → LARGE
+            fallback_sizes = []
+            if size == ModelSize.SMALL:
+                fallback_sizes = [ModelSize.MEDIUM, ModelSize.LARGE]
+            elif size == ModelSize.MEDIUM:
+                fallback_sizes = [ModelSize.LARGE]
+
+            for fallback_size in fallback_sizes:
+                fallback_config = self.models[fallback_size]
+                if fallback_config.path.exists():
+                    logger.info(f"Using {fallback_size.value} model as fallback")
+                    config = fallback_config
+                    size = fallback_size
+                    break
+            else:
+                # No fallback available
+                raise FileNotFoundError(
+                    f"No models available. Requested {size.value}, "
+                    f"no fallbacks found. Check model-zoo directory."
+                )
+
+        # Load if needed
         if auto_load and not config.loaded:
             self.load_model(size)
 
@@ -337,6 +364,7 @@ class MultiModelLoader:
 
     def get_status(self) -> Dict:
         """Get current loader status"""
+        memory_used = self.get_total_memory_usage()
         return {
             "models": {
                 size.value: {
@@ -347,7 +375,8 @@ class MultiModelLoader:
                 }
                 for size, config in self.models.items()
             },
-            "total_memory_gb": self.get_total_memory_usage(),
+            "total_memory_gb": memory_used,
+            "memory_used_gb": memory_used,  # Alias for compatibility
             "max_memory_gb": self.max_memory_gb,
             "default_size": self.default_size.value
         }

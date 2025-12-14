@@ -38,6 +38,7 @@ from sage.core.metabolic_states import (
     ATPAllocation
 )
 from sage.core.emotional_state import EmotionalStateTracker
+from sage.core.circadian_clock import CircadianClock, CircadianContext, CircadianPhase
 
 
 @dataclass
@@ -65,6 +66,10 @@ class ConsciousnessCycle:
         # Emotional (Session 48)
         emotional_state: Emotional metrics (curiosity, frustration, progress, engagement)
         emotional_summary: Human-readable emotional state
+
+        # Circadian (Session 49)
+        circadian_context: Temporal context (phase, day/night, biases)
+        circadian_phase: Current circadian phase
 
         # Metabolic
         metabolic_state: Current metabolic state
@@ -94,6 +99,10 @@ class ConsciousnessCycle:
     # Emotional (Session 48)
     emotional_state: Dict[str, float] = field(default_factory=dict)
     emotional_summary: str = ""
+
+    # Circadian (Session 49)
+    circadian_context: Optional[CircadianContext] = None
+    circadian_phase: str = ""
 
     # Metabolic
     metabolic_state: MetabolicState = MetabolicState.WAKE
@@ -128,7 +137,9 @@ class UnifiedConsciousnessManager:
                  initial_atp: float = 100.0,
                  quality_atp_baseline: float = 20.0,
                  epistemic_atp_baseline: float = 15.0,
-                 emotional_history_length: int = 20):
+                 emotional_history_length: int = 20,
+                 circadian_period: int = 100,
+                 circadian_enabled: bool = True):
         """
         Initialize unified consciousness manager.
 
@@ -137,11 +148,14 @@ class UnifiedConsciousnessManager:
             quality_atp_baseline: Base ATP for quality scoring
             epistemic_atp_baseline: Base ATP for epistemic tracking
             emotional_history_length: History window for emotional tracking (Session 48)
+            circadian_period: Cycles per circadian day (Session 49)
+            circadian_enabled: Whether to use circadian rhythm (Session 49)
         """
         # Core components
         self.metabolic_manager = MetabolicStateManager(initial_atp=initial_atp)
         self.epistemic_tracker = EpistemicStateTracker(history_size=100)
         self.emotional_tracker = EmotionalStateTracker(history_length=emotional_history_length)
+        self.circadian_clock = CircadianClock(period_cycles=circadian_period) if circadian_enabled else None
 
         # ATP baselines
         self.quality_atp_baseline = quality_atp_baseline
@@ -223,12 +237,18 @@ class UnifiedConsciousnessManager:
             cycle.emotional_state = emotional_state
             cycle.emotional_summary = self.emotional_tracker.get_emotional_summary()
 
-            # 4. Metabolic State Update (now considers emotions)
+            # 3.6. Circadian Rhythm Tracking (Session 49)
+            circadian_context = self._track_circadian_state()
+            cycle.circadian_context = circadian_context
+            cycle.circadian_phase = circadian_context.phase.value if circadian_context else ""
+
+            # 4. Metabolic State Update (now considers emotions + circadian)
             self._update_metabolic_state(
                 task_salience=task_salience,
                 epistemic_frustration=epistemic_metrics.frustration,
                 quality_score=quality_score.normalized,
-                emotional_frustration=emotional_state.get('frustration', 0.0)
+                emotional_frustration=emotional_state.get('frustration', 0.0),
+                circadian_context=circadian_context
             )
 
             # 5. Success reporting
@@ -411,25 +431,68 @@ class UnifiedConsciousnessManager:
 
         return emotional_state
 
+    def _track_circadian_state(self) -> Optional[CircadianContext]:
+        """
+        Track circadian rhythm state (Session 49).
+
+        Provides temporal context for consciousness including:
+        - Current circadian phase (dawn, day, dusk, night, deep_night)
+        - Day/night strength for metabolic biasing
+        - Time-dependent expectations
+
+        Returns:
+            CircadianContext or None if circadian disabled
+        """
+        if self.circadian_clock is None:
+            return None
+
+        # Advance clock and get current context
+        context = self.circadian_clock.tick()
+
+        return context
+
     def _update_metabolic_state(self,
                                task_salience: float,
                                epistemic_frustration: float,
                                quality_score: float,
-                               emotional_frustration: float = 0.0):
+                               emotional_frustration: float = 0.0,
+                               circadian_context: Optional[CircadianContext] = None):
         """
         Update metabolic state based on cycle outcomes.
 
-        Integrates epistemic and emotional signals into metabolic regulation.
+        Integrates epistemic, emotional, and circadian signals into metabolic regulation.
 
         Args:
             task_salience: Task salience (0.0-1.0)
             epistemic_frustration: Frustration level (0.0-1.0)
             quality_score: Quality score (0.0-1.0)
             emotional_frustration: Emotional frustration (0.0-1.0) [Session 48]
+            circadian_context: Temporal context [Session 49]
         """
         # Combine epistemic and emotional frustration
         # Emotional frustration amplifies metabolic signals
         combined_frustration = max(epistemic_frustration, emotional_frustration)
+
+        # Session 49: Apply circadian biasing to metabolic transitions
+        # Circadian rhythm naturally biases toward certain states at different times
+        if circadian_context:
+            # Get current metabolic state
+            current_state = self.metabolic_manager.current_state.value
+
+            # Get circadian bias for current state
+            state_bias = self.circadian_clock.get_metabolic_bias(current_state)
+
+            # Modulate task salience based on circadian phase
+            # During night (high night_strength), reduce effective salience for WAKE/FOCUS
+            # During day (high day_strength), enhance salience for active states
+            if circadian_context.is_night:
+                # Night: Natural tendency toward REST/DREAM
+                # Reduce effective salience to make WAKE/FOCUS transitions harder
+                task_salience = task_salience * (1.0 - 0.3 * circadian_context.night_strength)
+            else:
+                # Day: Natural tendency toward WAKE/FOCUS
+                # Enhance salience slightly during peak day
+                task_salience = task_salience * (1.0 + 0.2 * circadian_context.day_strength)
 
         # Standard metabolic cycle update
         self.metabolic_manager.cycle_update(

@@ -40,6 +40,7 @@ from sage.core.metabolic_states import (
 from sage.core.emotional_state import EmotionalStateTracker
 from sage.core.circadian_clock import CircadianClock, CircadianContext, CircadianPhase
 from sage.core.dream_consolidation import DREAMConsolidator, ConsolidatedMemory
+from sage.core.pattern_retrieval import PatternRetriever, RetrievalContext, TransferLearningResult
 
 
 @dataclass
@@ -109,6 +110,11 @@ class ConsciousnessCycle:
     consolidation_triggered: bool = False
     consolidated_memory: Optional[ConsolidatedMemory] = None
 
+    # Transfer Learning (Session 51)
+    patterns_retrieved: int = 0
+    transfer_learning_result: Optional[TransferLearningResult] = None
+    learning_applied: bool = False
+
     # Metabolic
     metabolic_state: MetabolicState = MetabolicState.WAKE
     total_atp: float = 100.0
@@ -145,7 +151,8 @@ class UnifiedConsciousnessManager:
                  emotional_history_length: int = 20,
                  circadian_period: int = 100,
                  circadian_enabled: bool = True,
-                 consolidation_enabled: bool = True):
+                 consolidation_enabled: bool = True,
+                 transfer_learning_enabled: bool = True):
         """
         Initialize unified consciousness manager.
 
@@ -157,6 +164,7 @@ class UnifiedConsciousnessManager:
             circadian_period: Cycles per circadian day (Session 49)
             circadian_enabled: Whether to use circadian rhythm (Session 49)
             consolidation_enabled: Whether to use scheduled DREAM consolidation (Session 50)
+            transfer_learning_enabled: Whether to use pattern retrieval transfer learning (Session 51)
         """
         # Core components
         self.metabolic_manager = MetabolicStateManager(initial_atp=initial_atp)
@@ -164,6 +172,7 @@ class UnifiedConsciousnessManager:
         self.emotional_tracker = EmotionalStateTracker(history_length=emotional_history_length)
         self.circadian_clock = CircadianClock(period_cycles=circadian_period) if circadian_enabled else None
         self.dream_consolidator = DREAMConsolidator() if consolidation_enabled else None
+        self.pattern_retriever = PatternRetriever(top_k=5, min_relevance=0.3) if transfer_learning_enabled else None
 
         # ATP baselines
         self.quality_atp_baseline = quality_atp_baseline
@@ -228,6 +237,31 @@ class UnifiedConsciousnessManager:
                 'reserved': self.metabolic_manager.atp.reserved,
                 'available': self.metabolic_manager.atp.available
             }
+
+            # 1.5. Transfer Learning - Pattern Retrieval (Session 51)
+            if self.pattern_retriever:
+                if len(self.consolidated_memories) > 0:
+                    # Retrieve relevant patterns from consolidated memories
+                    transfer_result = self._retrieve_relevant_patterns(
+                        prompt=prompt,
+                        task_salience=task_salience
+                    )
+                    cycle.transfer_learning_result = transfer_result
+                    cycle.patterns_retrieved = len(transfer_result.retrieved_patterns)
+                    cycle.learning_applied = cycle.patterns_retrieved > 0
+                else:
+                    # No memories yet - create empty result
+                    from sage.core.pattern_retrieval import TransferLearningResult
+                    cycle.transfer_learning_result = TransferLearningResult(
+                        retrieved_patterns=[],
+                        quality_guidance=[],
+                        creative_insights=[],
+                        application_summary="No consolidated memories yet",
+                        retrieval_count=0,
+                        retrieval_time=0.0
+                    )
+                    cycle.patterns_retrieved = 0
+                    cycle.learning_applied = False
 
             # 2. Quality Evaluation (with ATP-weighted processing)
             quality_score = self._evaluate_quality(response, prompt, quality_atp)
@@ -478,6 +512,70 @@ class UnifiedConsciousnessManager:
 
         return context
 
+    def _retrieve_relevant_patterns(self,
+                                    prompt: str,
+                                    task_salience: float) -> TransferLearningResult:
+        """
+        Retrieve consolidated patterns relevant to current context (Session 51).
+
+        Uses pattern retriever to find previously consolidated memories
+        that might inform the current consciousness cycle.
+
+        Biological parallel: Retrieving sleep-consolidated memories during
+        waking cognition to improve current reasoning.
+
+        Args:
+            prompt: Current prompt/query
+            task_salience: Current task salience
+
+        Returns:
+            TransferLearningResult with retrieved patterns and guidance
+        """
+        if self.pattern_retriever is None:
+            return TransferLearningResult(
+                retrieved_patterns=[],
+                quality_guidance=[],
+                creative_insights=[],
+                application_summary="Transfer learning disabled",
+                retrieval_count=0,
+                retrieval_time=0.0
+            )
+
+        # Build retrieval context from current consciousness state
+        # Get most recent epistemic state from cycle history
+        recent_epistemic = "exploring"  # default
+        if len(self.cycles) > 0 and self.cycles[-1].epistemic_state:
+            recent_epistemic = self.cycles[-1].epistemic_state.value
+
+        # Get most recent emotional state
+        recent_emotional = {}
+        if len(self.cycles) > 0 and self.cycles[-1].emotional_state:
+            recent_emotional = self.cycles[-1].emotional_state
+
+        # Get current circadian phase
+        current_phase = "day"  # default
+        if self.circadian_clock:
+            circadian_context = self.circadian_clock.get_context()
+            if circadian_context:
+                current_phase = circadian_context.phase.value
+
+        context = RetrievalContext(
+            prompt=prompt,
+            task_salience=task_salience,
+            metabolic_state=self.metabolic_manager.current_state.value,
+            epistemic_state=recent_epistemic,
+            emotional_state=recent_emotional,
+            circadian_phase=current_phase
+        )
+
+        # Retrieve patterns
+        transfer_result = self.pattern_retriever.retrieve_patterns(
+            consolidated_memories=self.consolidated_memories,
+            context=context
+        )
+
+        return transfer_result
+
     def _trigger_consolidation(self) -> Optional[ConsolidatedMemory]:
         """
         Trigger DREAM consolidation of recent consciousness cycles (Session 50).
@@ -655,12 +753,30 @@ class UnifiedConsciousnessManager:
             'stored_memories': len(self.consolidated_memories)
         }
 
+        # Transfer Learning statistics (Session 51)
+        transfer_stats = {}
+        if self.pattern_retriever:
+            # Count cycles with transfer learning applied
+            cycles_with_learning = [c for c in self.cycles if c.learning_applied]
+            total_patterns_retrieved = sum(c.patterns_retrieved for c in self.cycles)
+
+            transfer_stats = {
+                'cycles_with_patterns': len(cycles_with_learning),
+                'total_patterns_retrieved': total_patterns_retrieved,
+                'average_patterns_per_cycle': (
+                    total_patterns_retrieved / len(self.cycles)
+                    if self.cycles else 0.0
+                ),
+                'retriever_stats': self.pattern_retriever.get_statistics()
+            }
+
         return {
             'quality': quality_stats,
             'epistemic_states': state_counts,
             'metabolic': metabolic_stats,
             'emotional': emotional_stats,  # Session 48
             'consolidation': consolidation_stats,  # Session 50
+            'transfer_learning': transfer_stats,  # Session 51
             'integration': integration_stats
         }
 

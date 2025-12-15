@@ -108,6 +108,17 @@ class SelectiveExpertLoader:
         with open(manifest_path) as f:
             self.manifest = json.load(f)
 
+        # Load expert availability map (per-layer available experts)
+        expert_map_path = self.extraction_dir / "expert_availability_map.json"
+        if expert_map_path.exists():
+            with open(expert_map_path) as f:
+                self.expert_availability = {int(k): v for k, v in json.load(f).items()}
+            print(f"✅ Loaded expert availability map (sparse architecture)")
+        else:
+            # Default: assume all 128 experts available for all layers
+            self.expert_availability = {i: list(range(128)) for i in range(48)}
+            print(f"⚠️  Expert availability map not found, assuming uniform 128 experts")
+
         # Paths
         self.experts_dir = self.extraction_dir / "experts"
         self.routers_dir = self.extraction_dir / "routers"
@@ -230,7 +241,14 @@ class SelectiveExpertLoader:
         router_logits = F.linear(pooled_hidden, router)  # [batch, num_experts]
         router_logits = router_logits.mean(dim=0)  # [num_experts] - average across batch
 
-        # Standard MoE: just use top-k of router logits
+        # Apply per-layer expert availability mask
+        # This ensures router only selects experts that exist in sparse layers
+        available_experts = self.expert_availability.get(layer_id, list(range(128)))
+        mask = torch.full_like(router_logits, float('-inf'))
+        mask[available_experts] = 0
+        router_logits = router_logits + mask
+
+        # Standard MoE: just use top-k of router logits (now masked)
         if snarc_salience is None:
             top_k_values, top_k_indices = torch.topk(router_logits, k=num_experts)
             return top_k_indices.tolist(), top_k_values
@@ -262,6 +280,9 @@ class SelectiveExpertLoader:
             )
 
             snarc_scores[expert_id] = augmented_score
+
+        # Apply same expert availability mask to SNARC scores (mask already created above)
+        snarc_scores = snarc_scores + mask  # Only available experts can be selected
 
         # Select top-k with SNARC augmentation
         top_k_values, top_k_indices = torch.topk(snarc_scores, k=num_experts)

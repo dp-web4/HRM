@@ -54,8 +54,12 @@ class ExpertExtractor:
         # Create subdirectories
         self.experts_dir = self.output_dir / "experts"
         self.routers_dir = self.output_dir / "routers"
+        self.attention_dir = self.output_dir / "attention"
+        self.norms_dir = self.output_dir / "norms"
         self.experts_dir.mkdir(exist_ok=True)
         self.routers_dir.mkdir(exist_ok=True)
+        self.attention_dir.mkdir(exist_ok=True)
+        self.norms_dir.mkdir(exist_ok=True)
 
         # Metadata
         self.manifest = {
@@ -249,6 +253,150 @@ class ExpertExtractor:
 
         print(f"\n✅ Completed {component} router extraction\n")
 
+    def extract_attention_layer(
+        self,
+        layer_id: int,
+        component: str = "thinker",
+        force: bool = False
+    ) -> Optional[Path]:
+        """
+        Extract all attention weights for a single layer
+
+        Extracts:
+        - q_proj, k_proj, v_proj, o_proj (attention projections)
+        - q_norm, k_norm (query/key normalization)
+        """
+        output_file = self.attention_dir / f"{component}_attention_layer_{layer_id:02d}.safetensors"
+
+        if output_file.exists() and not force:
+            return output_file
+
+        # Find shard
+        shard_num = self._find_shard_for_layer(layer_id, component)
+        if shard_num is None:
+            return None
+
+        shard_path = self.get_shard_path(shard_num)
+
+        try:
+            with safetensors.safe_open(shard_path, framework="pt") as f:
+                # Keys for attention weights
+                prefix = f"{component}.model.layers.{layer_id}.self_attn"
+                attn_keys = [
+                    f"{prefix}.q_proj.weight",
+                    f"{prefix}.k_proj.weight",
+                    f"{prefix}.v_proj.weight",
+                    f"{prefix}.o_proj.weight",
+                    f"{prefix}.q_norm.weight",
+                    f"{prefix}.k_norm.weight",
+                ]
+
+                # Extract weights
+                weights = {}
+                for key in attn_keys:
+                    if key in f.keys():
+                        weights[key] = f.get_tensor(key)
+                    else:
+                        print(f"⚠️  Missing: {key}")
+
+                if len(weights) == 0:
+                    print(f"❌ No attention weights found for layer {layer_id}")
+                    return None
+
+                # Save
+                safetensors.torch.save_file(weights, output_file)
+
+                size_mb = output_file.stat().st_size / 1024**2
+                print(f"✅ Extracted {component} attention layer {layer_id} ({size_mb:.1f} MB)")
+                return output_file
+
+        except Exception as e:
+            print(f"❌ Error extracting attention: {e}")
+            return None
+
+    def extract_layer_norms(
+        self,
+        layer_id: int,
+        component: str = "thinker",
+        force: bool = False
+    ) -> Optional[Path]:
+        """
+        Extract layer normalization weights for a single layer
+
+        Extracts:
+        - input_layernorm (pre-attention)
+        - post_attention_layernorm (pre-MoE)
+        """
+        output_file = self.norms_dir / f"{component}_norms_layer_{layer_id:02d}.safetensors"
+
+        if output_file.exists() and not force:
+            return output_file
+
+        # Find shard
+        shard_num = self._find_shard_for_layer(layer_id, component)
+        if shard_num is None:
+            return None
+
+        shard_path = self.get_shard_path(shard_num)
+
+        try:
+            with safetensors.safe_open(shard_path, framework="pt") as f:
+                # Keys for layer norms
+                prefix = f"{component}.model.layers.{layer_id}"
+                norm_keys = [
+                    f"{prefix}.input_layernorm.weight",
+                    f"{prefix}.post_attention_layernorm.weight",
+                ]
+
+                # Extract weights
+                weights = {}
+                for key in norm_keys:
+                    if key in f.keys():
+                        weights[key] = f.get_tensor(key)
+                    else:
+                        print(f"⚠️  Missing: {key}")
+
+                if len(weights) == 0:
+                    print(f"❌ No norm weights found for layer {layer_id}")
+                    return None
+
+                # Save
+                safetensors.torch.save_file(weights, output_file)
+
+                size_kb = output_file.stat().st_size / 1024
+                print(f"✅ Extracted {component} norms layer {layer_id} ({size_kb:.1f} KB)")
+                return output_file
+
+        except Exception as e:
+            print(f"❌ Error extracting norms: {e}")
+            return None
+
+    def extract_all_attention(self, component: str = "thinker", force: bool = False):
+        """Extract attention weights for all layers"""
+        num_layers = self.THINKER_LAYERS if component == "thinker" else self.TALKER_LAYERS
+
+        print(f"\n{'='*60}")
+        print(f"Extracting {num_layers} {component} attention layers")
+        print(f"{'='*60}\n")
+
+        for layer_id in tqdm(range(num_layers), desc=f"{component.capitalize()} attention"):
+            self.extract_attention_layer(layer_id, component, force)
+
+        print(f"\n✅ Completed {component} attention extraction\n")
+
+    def extract_all_norms(self, component: str = "thinker", force: bool = False):
+        """Extract layer norms for all layers"""
+        num_layers = self.THINKER_LAYERS if component == "thinker" else self.TALKER_LAYERS
+
+        print(f"\n{'='*60}")
+        print(f"Extracting {num_layers} {component} layer norms")
+        print(f"{'='*60}\n")
+
+        for layer_id in tqdm(range(num_layers), desc=f"{component.capitalize()} norms"):
+            self.extract_layer_norms(layer_id, component, force)
+
+        print(f"\n✅ Completed {component} norm extraction\n")
+
     def _find_shard_for_layer(self, layer_id: int, component: str) -> Optional[int]:
         """
         Find which shard contains a specific layer
@@ -371,6 +519,18 @@ def main():
     )
 
     parser.add_argument(
+        "--extract-attention",
+        action="store_true",
+        help="Extract all attention weights"
+    )
+
+    parser.add_argument(
+        "--extract-norms",
+        action="store_true",
+        help="Extract all layer normalization weights"
+    )
+
+    parser.add_argument(
         "--force",
         action="store_true",
         help="Overwrite existing files"
@@ -386,11 +546,21 @@ def main():
         # Extract everything
         extractor.extract_all_routers("thinker", args.force)
         extractor.extract_all_routers("talker", args.force)
+        extractor.extract_all_attention("thinker", args.force)
+        extractor.extract_all_attention("talker", args.force)
+        extractor.extract_all_norms("thinker", args.force)
+        extractor.extract_all_norms("talker", args.force)
         extractor.extract_all_experts("thinker", args.force)
         extractor.extract_all_experts("talker", args.force)
 
     elif args.extract_routers:
         extractor.extract_all_routers(args.component, args.force)
+
+    elif args.extract_attention:
+        extractor.extract_all_attention(args.component, args.force)
+
+    elif args.extract_norms:
+        extractor.extract_all_norms(args.component, args.force)
 
     elif args.extract_expert is not None:
         if args.layer is None:

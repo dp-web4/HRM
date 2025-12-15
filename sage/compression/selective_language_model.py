@@ -71,7 +71,7 @@ class SelectiveLanguageModel(nn.Module):
             max_loaded_experts=max_loaded_experts
         )
 
-        # Create transformer layers
+        # Create transformer layers (with REAL attention weights!)
         self.layers = nn.ModuleList([
             SelectiveTransformerLayer(
                 hidden_size=hidden_size,
@@ -81,6 +81,7 @@ class SelectiveLanguageModel(nn.Module):
                 expert_loader=self.expert_loader,
                 layer_id=i,
                 num_experts_per_tok=num_experts_per_tok,
+                extraction_dir=extraction_dir,  # NEW - enables loading real attention weights!
             )
             for i in range(num_layers)
         ])
@@ -94,8 +95,18 @@ class SelectiveLanguageModel(nn.Module):
         self.lm_head.weight = nn.Parameter(lm_head_weight)
         print(f"✅ Loaded LM head: {list(lm_head_weight.shape)}")
 
-        # Layer norm (final) - use standalone RMSNorm
+        # Layer norm (final) - load REAL Q3-Omni final norm!
         self.norm = RMSNorm(hidden_size, eps=1e-6).to(device)
+
+        # Load real final norm weights
+        final_norm_path = os.path.join(extraction_dir, "final_norm", "thinker_final_norm.safetensors")
+        if os.path.exists(final_norm_path):
+            with safetensors.safe_open(final_norm_path, framework="pt") as f:
+                final_norm_weight = f.get_tensor('thinker.model.norm.weight').to(device).float()
+                self.norm.weight = nn.Parameter(final_norm_weight)
+                print(f"✅ Loaded REAL final norm: {list(final_norm_weight.shape)}")
+        else:
+            print(f"⚠️  Final norm not found, using random initialization")
 
     def forward(
         self,

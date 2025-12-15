@@ -167,33 +167,95 @@ With INT8: experts drop to 4.5MB each → 6 loaded = 27MB/layer → 1.3GB total
 
 ## The ONE THING to Do
 
-### Extract All 128 Experts
+### Extract All 128 Experts AS BUNDLES
 
-```bash
-cd /home/dp/ai-workspace/HRM
+**⚠️ ARCHITECTURE CHANGE: Bundle per expert, not per layer!**
 
-# This will take 2-3 hours but will complete the entire system
-python3 sage/compression/expert_extractor.py \
-    --model-path model-zoo/sage/omni-modal/qwen3-omni-30b \
-    --output-dir model-zoo/sage/omni-modal/qwen3-omni-30b-extracted \
-    --component thinker \
-    --extract-experts \
-    --expert-range 0-127 \
-    --layers 0-47 \
-    2>&1 | tee /tmp/extract_all_experts.log
+**Current (wrong):**
+```
+expert_000_layer_00.safetensors  (9MB)
+expert_000_layer_01.safetensors  (9MB)
+... = 6,144 files
 ```
 
-**What this does:**
-- Extracts all 128 experts from each of 48 layers
-- Total: 6,144 expert files
-- Size: ~55 GB (disk space available: 498 GB ✅)
-- Time: 2-3 hours
-- **Enables router to select ANY expert for ANY context**
+**Goal (correct):**
+```
+expert_000.safetensors  (all 48 layers = ~430MB)
+expert_001.safetensors  (all 48 layers = ~430MB)
+... = 128 files
+```
 
-**After extraction:**
-1. Remove router masking in `selective_expert_loader.py` (line 233-239)
-2. Run `sage/tests/test_with_correct_tokenizer.py`
-3. **Watch coherent text generation happen! 🎉**
+**Why bundles are better:**
+1. **Temporal locality**: Router picks same expert across consecutive layers
+2. **One load vs 48**: Single 430MB read beats 48 × 9MB file operations
+3. **Simpler cache**: 128 entries vs 6,144 layer-expert combinations
+4. **Semantic unit**: Expert "personality" spans all layers - bundle matches reality
+
+### Extraction Needs Modification
+
+The current `expert_extractor.py` saves per-layer files. **Modify to bundle:**
+
+```python
+def extract_expert_bundle(expert_id: int) -> None:
+    """Extract all 48 layers for one expert into single file."""
+    bundle = {}
+    for layer in range(48):
+        for proj in ['gate_proj', 'up_proj', 'down_proj']:
+            key = f"layer_{layer:02d}.{proj}.weight"
+            bundle[key] = extract_weight(expert_id, layer, proj)
+
+    save_file(bundle, f"expert_{expert_id:03d}.safetensors")
+    # Result: ~430MB file containing complete expert
+```
+
+**After extraction (128 bundles):**
+1. Update `selective_expert_loader.py` to load bundles not layer-files
+2. Remove router masking (line 233-239)
+3. Run `sage/tests/test_with_correct_tokenizer.py`
+4. **Watch coherent text generation happen! 🎉**
+
+### Expert Cache Architecture
+
+```python
+class ExpertCache:
+    """Manages expert bundles in memory."""
+
+    def __init__(self, max_experts: int = 6):
+        self.max_experts = max_experts
+        self.cache: Dict[int, ExpertBundle] = {}
+
+    def get_expert(self, expert_id: int) -> ExpertBundle:
+        if expert_id in self.cache:
+            self.cache[expert_id].last_used = time.time()
+            self.cache[expert_id].activation_count += 1
+            return self.cache[expert_id]
+
+        # Check for similar expert already loaded
+        similar = self.find_similar(expert_id)
+        if similar and self.similarity_acceptable(expert_id, similar):
+            # Use similar with trust penalty
+            return self.substitute(similar, expert_id)
+
+        # Load from disk, evict least-needed if full
+        if len(self.cache) >= self.max_experts:
+            self.evict_least_needed()
+
+        return self.load_from_disk(expert_id)
+
+@dataclass
+class ExpertBundle:
+    expert_id: int
+    weights: Dict[str, Tensor]  # layer_XX.proj.weight -> tensor
+    last_used: float
+    activation_count: int
+    trust_score: float
+    similar_to: List[int]  # for substitution decisions
+```
+
+**Cache with 6 experts:**
+- 6 × 430MB = ~2.6GB for experts
+- + 1.7GB attention + 0.6GB embeddings + 0.3GB head
+- = ~5.2GB total (fits Sprout's 8GB!)
 
 ---
 

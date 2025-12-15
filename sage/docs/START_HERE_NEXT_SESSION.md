@@ -96,18 +96,57 @@ expert_profile = {
 # Store in Memory/epistemic for federation access
 ```
 
-#### Phase 3: Quantize for Edge Deployment → Sprout's 8GB!
-- Once we know which experts matter most, quantize them (INT8/INT4)
-- Selective quantization: frequently-used experts get higher precision
-- Target: Full omni model on Jetson Orin Nano (8GB)
-- Trust-weighted precision: high-trust experts keep FP16, low-trust go INT4
+#### Phase 3: Smart Memory Management + Edge Deployment
 
+**Core principle**: All 128 on disk, smart subset in memory, similarity-based substitution.
+
+**The mechanism**:
+1. Router requests expert N for current input
+2. Check: Is expert N already in memory?
+   - **Yes** → use it directly
+   - **No** → Check: Do we have a "similar" expert already loaded?
+     - **Yes, similar exists** → Use it with **adjusted trust weighting** (not exact match)
+     - **No similar** → Load expert N from disk, evict least-necessary expert
+
+**Trust adjustment for substitution**:
+```python
+if similar_expert_available:
+    similarity = cosine_similarity(router_weights[requested], router_weights[available])
+    trust_penalty = 1.0 - similarity  # e.g., 0.85 similarity → 0.15 penalty
+    effective_trust = base_trust * (1 - trust_penalty)
+    # Use available expert but track degraded confidence
 ```
-Current:  128 experts × 9MB = 1.15GB per layer × 48 layers = 55GB
-INT8:     128 experts × 4.5MB = 575MB per layer × 48 layers = 27GB
-INT4:     128 experts × 2.25MB = 288MB per layer × 48 layers = 14GB
-Selective: Top 32 FP16 + 96 INT4 = ~20GB (fits Sprout with room for vision/audio!)
+
+**Eviction policy** (least-necessary = combination of):
+- Time since last use
+- Activation frequency
+- Trust score (keep high-trust experts longer)
+- Similarity coverage (keep diverse experts, evict redundant ones)
+
+**This grows smarter through learning**:
+- Track when substitution worked vs hurt quality
+- Learn which experts are truly interchangeable
+- Discover expert "clusters" that cover similar semantic space
+- Eventually: predictive loading based on conversation context
+
+**Sprout 8GB Target - Corrected Math**:
 ```
+Per expert: ~9MB (4.7M params × 2 bytes FP16)
+Per layer:  128 experts × 9MB = 1.15GB (all), but only 6 loaded = 54MB
+48 layers:  48 × 54MB = 2.6GB for experts in memory
++ Attention: 1.7GB
++ Embeddings: 0.6GB
++ LM Head: 0.3GB
+= ~5.2GB base (fits 8GB with room for inference!)
+
+With INT8: experts drop to 4.5MB each → 6 loaded = 27MB/layer → 1.3GB total
+```
+
+**All possibilities to investigate**:
+- FP16 with 6 experts/layer → ~5.2GB (might fit)
+- INT8 quantization → ~3.5GB (comfortable fit)
+- Hybrid: attention FP16, experts INT8
+- Dynamic: load more experts when Sprout has headroom
 
 ### Research Questions
 

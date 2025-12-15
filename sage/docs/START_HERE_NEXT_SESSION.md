@@ -68,24 +68,55 @@ When we extracted experts 0-7 and tried text generation, we might be forcing the
 3. Do cross-modal experts activate for single-modality input?
 4. Is specialization learned or architecturally constrained?
 
-### Suggested Approach
+### The Plan: Extract All, Track Specializations, Then Quantize
 
-```bash
-# BEFORE extracting all experts, probe router structure:
-python3 -c "
-import torch
-from safetensors import safe_open
+**We still need ALL 128 experts for full omni functionality.** The insight is about understanding them, not avoiding extraction.
 
-# Load router weights for layer 0
-with safe_open('routers/thinker_layer_00_router.safetensors', framework='pt') as f:
-    router = f.get_tensor('gate.weight')  # [128, 2048]
+#### Phase 1: Extract All Experts (as planned)
+- Full 128 × 48 = 6,144 expert extraction
+- Complete omni capability on Thor (122GB RAM)
 
-# Cluster analysis - which experts activate together?
-# This could reveal modality partitions without extracting anything
-"
+#### Phase 2: Track Expert Specializations → Web4 Application!
+- As experts activate, log what input types triggered them
+- Build a specialization map: `expert_id → {modality, domain, activation_patterns}`
+- Store in Web4's epistemic database for federation-wide knowledge
+- Other SAGE instances can query: "which experts handle code?" → get ranked list
+
+```python
+# Web4 expert knowledge tracking
+expert_profile = {
+    "expert_id": 47,
+    "layer": 12,
+    "primary_modality": "text",
+    "domains": ["futuristic", "technical", "speculation"],
+    "activation_frequency": 0.023,
+    "co_activated_with": [23, 89, 103],
+    "trust_score": 0.87
+}
+# Store in Memory/epistemic for federation access
 ```
 
-**This insight could save hours of extraction by identifying which experts matter for text-only use cases.**
+#### Phase 3: Quantize for Edge Deployment → Sprout's 8GB!
+- Once we know which experts matter most, quantize them (INT8/INT4)
+- Selective quantization: frequently-used experts get higher precision
+- Target: Full omni model on Jetson Orin Nano (8GB)
+- Trust-weighted precision: high-trust experts keep FP16, low-trust go INT4
+
+```
+Current:  128 experts × 9MB = 1.15GB per layer × 48 layers = 55GB
+INT8:     128 experts × 4.5MB = 575MB per layer × 48 layers = 27GB
+INT4:     128 experts × 2.25MB = 288MB per layer × 48 layers = 14GB
+Selective: Top 32 FP16 + 96 INT4 = ~20GB (fits Sprout with room for vision/audio!)
+```
+
+### Research Questions
+
+1. Are experts cleanly partitioned by modality, or do they blend?
+2. Does the router have modality-awareness, or just pattern matching?
+3. Do cross-modal experts activate for single-modality input?
+4. Is specialization learned or architecturally constrained?
+5. **Which experts are "universal" vs "specialized"?** (affects quantization priority)
+6. **Can low-activation experts be INT4 without quality loss?**
 
 **Current problem:**
 - Router wants expert 47 for "The future of AI is..."

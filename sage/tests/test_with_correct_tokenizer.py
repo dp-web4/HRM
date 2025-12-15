@@ -28,7 +28,7 @@ def test_with_real_tokenizer():
     print(f"Configuration:")
     print(f"  - Using Q3-Omni's tokenizer from: {tokenizer_path}")
     print(f"  - Extraction dir: {extraction_dir}")
-    print(f"  - Layers: 12 (25% of full 48-layer model)")
+    print(f"  - Layers: 24 (50% of full 48-layer model)")
     print(f"  - Device: {device}")
     print()
 
@@ -52,10 +52,10 @@ def test_with_real_tokenizer():
         print()
 
     # Create model with all real weights
-    print("Creating model with REAL weights (12 layers)...")
+    print("Creating model with REAL weights (24 layers)...")
     model = SelectiveLanguageModel(
         extraction_dir=extraction_dir,
-        num_layers=12,
+        num_layers=24,
         vocab_size=152064,
         hidden_size=2048,
         num_attention_heads=32,

@@ -109,6 +109,9 @@ class GroupedQueryAttention(nn.Module):
         head_dim: int = 128,
         max_position_embeddings: int = 65536,
         rope_theta: float = 1000000.0,
+        extraction_dir: str = None,
+        layer_id: int = None,
+        component: str = "thinker",
     ):
         super().__init__()
         self.hidden_size = hidden_size
@@ -124,6 +127,43 @@ class GroupedQueryAttention(nn.Module):
         self.k_proj = nn.Linear(hidden_size, num_key_value_heads * head_dim, bias=False)
         self.v_proj = nn.Linear(hidden_size, num_key_value_heads * head_dim, bias=False)
         self.o_proj = nn.Linear(num_attention_heads * head_dim, hidden_size, bias=False)
+
+        # Q/K normalization (Q3-Omni uses this!)
+        self.q_norm = RMSNorm(head_dim, eps=1e-6)
+        self.k_norm = RMSNorm(head_dim, eps=1e-6)
+
+        # Load REAL attention weights if extraction_dir provided
+        if extraction_dir is not None and layer_id is not None:
+            import safetensors
+            import os
+            attn_file = os.path.join(
+                extraction_dir,
+                "attention",
+                f"{component}_attention_layer_{layer_id:02d}.safetensors"
+            )
+            if os.path.exists(attn_file):
+                with safetensors.safe_open(attn_file, framework="pt") as f:
+                    prefix = f"{component}.model.layers.{layer_id}.self_attn"
+
+                    # Load Q, K, V, O projections (convert to float32 for CPU compatibility)
+                    if f"{prefix}.q_proj.weight" in f.keys():
+                        self.q_proj.weight = nn.Parameter(f.get_tensor(f"{prefix}.q_proj.weight").float())
+                    if f"{prefix}.k_proj.weight" in f.keys():
+                        self.k_proj.weight = nn.Parameter(f.get_tensor(f"{prefix}.k_proj.weight").float())
+                    if f"{prefix}.v_proj.weight" in f.keys():
+                        self.v_proj.weight = nn.Parameter(f.get_tensor(f"{prefix}.v_proj.weight").float())
+                    if f"{prefix}.o_proj.weight" in f.keys():
+                        self.o_proj.weight = nn.Parameter(f.get_tensor(f"{prefix}.o_proj.weight").float())
+
+                    # Load Q/K norms (critical for Q3-Omni!)
+                    if f"{prefix}.q_norm.weight" in f.keys():
+                        self.q_norm.weight = nn.Parameter(f.get_tensor(f"{prefix}.q_norm.weight").float())
+                    if f"{prefix}.k_norm.weight" in f.keys():
+                        self.k_norm.weight = nn.Parameter(f.get_tensor(f"{prefix}.k_norm.weight").float())
+
+                    print(f"✅ Loaded real attention weights for layer {layer_id}")
+            else:
+                print(f"⚠️  Attention file not found: {attn_file}, using random weights")
 
         # RoPE
         self.rotary_emb = RotaryEmbedding(head_dim, max_position_embeddings, rope_theta)
@@ -151,6 +191,10 @@ class GroupedQueryAttention(nn.Module):
         query_states = query_states.view(batch_size, seq_length, self.num_attention_heads, self.head_dim).transpose(1, 2)
         key_states = key_states.view(batch_size, seq_length, self.num_key_value_heads, self.head_dim).transpose(1, 2)
         value_states = value_states.view(batch_size, seq_length, self.num_key_value_heads, self.head_dim).transpose(1, 2)
+
+        # Apply Q/K normalization (Q3-Omni critical feature!)
+        query_states = self.q_norm(query_states)
+        key_states = self.k_norm(key_states)
 
         # Apply RoPE
         cos, sin = self.rotary_emb(value_states, seq_len=seq_length)
@@ -319,21 +363,54 @@ class SelectiveTransformerLayer(nn.Module):
         layer_id: int = 0,
         num_experts_per_tok: int = 8,
         rms_norm_eps: float = 1e-6,
+        extraction_dir: str = None,
     ):
         super().__init__()
         self.hidden_size = hidden_size
         self.layer_id = layer_id
 
-        # Pre-normalization
+        # Pre-normalization (load real weights if available!)
         self.input_layernorm = RMSNorm(hidden_size, eps=rms_norm_eps)
         self.post_attention_layernorm = RMSNorm(hidden_size, eps=rms_norm_eps)
 
-        # Self-attention
+        # Load REAL norm weights if extraction_dir provided
+        if extraction_dir is not None and layer_id is not None:
+            import safetensors
+            import os
+            norms_file = os.path.join(
+                extraction_dir,
+                "norms",
+                f"thinker_norms_layer_{layer_id:02d}.safetensors"
+            )
+            if os.path.exists(norms_file):
+                with safetensors.safe_open(norms_file, framework="pt") as f:
+                    prefix = f"thinker.model.layers.{layer_id}"
+
+                    # Load input layernorm
+                    if f"{prefix}.input_layernorm.weight" in f.keys():
+                        self.input_layernorm.weight = nn.Parameter(
+                            f.get_tensor(f"{prefix}.input_layernorm.weight")
+                        )
+
+                    # Load post-attention layernorm
+                    if f"{prefix}.post_attention_layernorm.weight" in f.keys():
+                        self.post_attention_layernorm.weight = nn.Parameter(
+                            f.get_tensor(f"{prefix}.post_attention_layernorm.weight")
+                        )
+
+                    print(f"✅ Loaded real layer norms for layer {layer_id}")
+            else:
+                print(f"⚠️  Norms file not found for layer {layer_id}, using default initialization")
+
+        # Self-attention (with REAL weights if extraction_dir provided!)
         self.self_attn = GroupedQueryAttention(
             hidden_size=hidden_size,
             num_attention_heads=num_attention_heads,
             num_key_value_heads=num_key_value_heads,
             head_dim=head_dim,
+            extraction_dir=extraction_dir,
+            layer_id=layer_id,
+            component="thinker",
         )
 
         # Selective MoE

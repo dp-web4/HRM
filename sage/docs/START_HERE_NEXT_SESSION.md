@@ -25,6 +25,68 @@
 - Expert 89 = Maybe general prose
 - ...and so on
 
+---
+
+## ⚠️ CRITICAL INSIGHT: Multimodal Expert Specialization (Dec 15, 2025)
+
+**Q3-Omni is an OMNI model - experts aren't just text domain specialists!**
+
+The 128 experts per layer likely include:
+- **Text specialists** (various semantic domains)
+- **Audio/speech specialists** (phonemes, prosody, speaker characteristics)
+- **Vision specialists** (objects, spatial relationships, scenes)
+- **Cross-modal fusion specialists** (audio-visual alignment, text grounding)
+
+### Why Current Output is Garbled
+
+When we extracted experts 0-7 and tried text generation, we might be forcing the router to use an **audio processing expert** or **vision specialist** for text - not just "wrong text domain" but potentially **wrong modality entirely**.
+
+### Implication: Modality-Aware Orchestration Required
+
+**Before naive extraction of all 128 experts**, consider:
+
+1. **Analyze router weights first** (`gate.weight [128, 2048]` = 24MB)
+   - Cluster experts by activation patterns
+   - Identify modality partitions
+   - Map which experts handle which input types
+
+2. **Sort input by modality FIRST**
+   - Text input → text-specialized expert pool
+   - Audio input → audio-specialized expert pool
+   - Vision input → vision-specialized expert pool
+   - Cross-modal → fusion expert pool
+
+3. **Then refine within modality**
+   - Within text experts: technical vs creative vs conversational
+   - Within audio experts: speech vs music vs ambient
+   - Within vision experts: objects vs scenes vs text-in-image
+
+### Research Questions
+
+1. Are experts cleanly partitioned by modality, or do they blend?
+2. Does the router have modality-awareness, or just pattern matching?
+3. Do cross-modal experts activate for single-modality input?
+4. Is specialization learned or architecturally constrained?
+
+### Suggested Approach
+
+```bash
+# BEFORE extracting all experts, probe router structure:
+python3 -c "
+import torch
+from safetensors import safe_open
+
+# Load router weights for layer 0
+with safe_open('routers/thinker_layer_00_router.safetensors', framework='pt') as f:
+    router = f.get_tensor('gate.weight')  # [128, 2048]
+
+# Cluster analysis - which experts activate together?
+# This could reveal modality partitions without extracting anything
+"
+```
+
+**This insight could save hours of extraction by identifying which experts matter for text-only use cases.**
+
 **Current problem:**
 - Router wants expert 47 for "The future of AI is..."
 - We only have experts 0-7

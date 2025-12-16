@@ -69,6 +69,18 @@ class MemoryPattern:
             'created_at': float(self.created_at)
         }
 
+    @staticmethod
+    def from_dict(data: Dict) -> 'MemoryPattern':
+        """Create MemoryPattern from dictionary"""
+        return MemoryPattern(
+            pattern_type=data['pattern_type'],
+            description=data['description'],
+            strength=data['strength'],
+            examples=data['examples'],
+            frequency=data['frequency'],
+            created_at=data['created_at']
+        )
+
 
 @dataclass
 class QualityLearning:
@@ -102,6 +114,18 @@ class QualityLearning:
             'average_quality_with': float(self.average_quality_with),
             'average_quality_without': float(self.average_quality_without)
         }
+
+    @staticmethod
+    def from_dict(data: Dict) -> 'QualityLearning':
+        """Create QualityLearning from dictionary"""
+        return QualityLearning(
+            characteristic=data['characteristic'],
+            positive_correlation=data['positive_correlation'],
+            confidence=data['confidence'],
+            sample_size=data['sample_size'],
+            average_quality_with=data['average_quality_with'],
+            average_quality_without=data['average_quality_without']
+        )
 
 
 @dataclass
@@ -137,6 +161,18 @@ class CreativeAssociation:
             'supporting_cycles': [int(c) for c in self.supporting_cycles],
             'insight': str(self.insight) if self.insight else None
         }
+
+    @staticmethod
+    def from_dict(data: Dict) -> 'CreativeAssociation':
+        """Create CreativeAssociation from dictionary"""
+        return CreativeAssociation(
+            concept_a=data['concept_a'],
+            concept_b=data['concept_b'],
+            association_type=data['association_type'],
+            strength=data['strength'],
+            supporting_cycles=data['supporting_cycles'],
+            insight=data.get('insight')  # Optional field
+        )
 
 
 @dataclass
@@ -178,6 +214,20 @@ class ConsolidatedMemory:
             'epistemic_insights': [str(i) for i in self.epistemic_insights],
             'consolidation_time': float(self.consolidation_time)
         }
+
+    @staticmethod
+    def from_dict(data: Dict) -> 'ConsolidatedMemory':
+        """Create ConsolidatedMemory from dictionary"""
+        return ConsolidatedMemory(
+            dream_session_id=data['dream_session_id'],
+            timestamp=data['timestamp'],
+            cycles_processed=data['cycles_processed'],
+            patterns=[MemoryPattern.from_dict(p) for p in data['patterns']],
+            quality_learnings=[QualityLearning.from_dict(ql) for ql in data['quality_learnings']],
+            creative_associations=[CreativeAssociation.from_dict(ca) for ca in data['creative_associations']],
+            epistemic_insights=data['epistemic_insights'],
+            consolidation_time=data['consolidation_time']
+        )
 
 
 class DREAMConsolidator:
@@ -536,6 +586,82 @@ class DREAMConsolidator:
         """
         with open(filepath, 'w') as f:
             json.dump(memory.to_dict(), f, indent=2)
+
+    def import_consolidated_memory(self, filepath: str) -> ConsolidatedMemory:
+        """
+        Import consolidated memory from JSON file.
+
+        Args:
+            filepath: Path to JSON file
+
+        Returns:
+            ConsolidatedMemory object
+
+        Raises:
+            FileNotFoundError: If file doesn't exist
+            json.JSONDecodeError: If file is not valid JSON
+        """
+        with open(filepath, 'r') as f:
+            data = json.load(f)
+        return ConsolidatedMemory.from_dict(data)
+
+    def save_all_memories(self, directory: str):
+        """
+        Save all consolidated memories to directory as individual JSON files.
+
+        Creates one file per memory session: memory_001.json, memory_002.json, etc.
+
+        Args:
+            directory: Directory path to save memory files
+        """
+        import os
+        os.makedirs(directory, exist_ok=True)
+
+        for memory in self.consolidated_memories:
+            filename = f"memory_{memory.dream_session_id:03d}.json"
+            filepath = os.path.join(directory, filename)
+            self.export_consolidated_memory(memory, filepath)
+
+    def load_all_memories(self, directory: str) -> int:
+        """
+        Load all consolidated memories from directory.
+
+        Loads all memory_*.json files and appends them to consolidated_memories.
+
+        Args:
+            directory: Directory path containing memory files
+
+        Returns:
+            Number of memories loaded
+
+        Raises:
+            FileNotFoundError: If directory doesn't exist
+        """
+        import os
+        import glob
+
+        if not os.path.exists(directory):
+            raise FileNotFoundError(f"Memory directory not found: {directory}")
+
+        # Find all memory JSON files
+        pattern = os.path.join(directory, "memory_*.json")
+        memory_files = sorted(glob.glob(pattern))
+
+        loaded_count = 0
+        for filepath in memory_files:
+            try:
+                memory = self.import_consolidated_memory(filepath)
+                self.consolidated_memories.append(memory)
+                loaded_count += 1
+
+                # Update session count to avoid ID conflicts
+                if memory.dream_session_id >= self.dream_session_count:
+                    self.dream_session_count = memory.dream_session_id
+            except Exception as e:
+                print(f"Warning: Failed to load {filepath}: {e}")
+                continue
+
+        return loaded_count
 
     def get_statistics(self) -> Dict:
         """

@@ -1,7 +1,170 @@
 # SAGE Michaud Integration - Latest Status
-**Last Updated**: 2025-12-16 (Autonomous Session - **Session 57: Trust-Based Expert Selection Integration Demo** 🔄)
-**Previous Update**: 2025-12-16 03:30 UTC (Session 54: Cross-Session Memory Persistence)
+**Last Updated**: 2025-12-16 07:30 UTC (Autonomous Session - **Session 58: ContextClassifier Integration** ✅)
+**Previous Update**: 2025-12-16 06:30 UTC (Session 57: Trust-Based Expert Selection Integration Demo)
 **Hardware**: Thor (Jetson AGX Thor)
+
+---
+
+## 🎯 Session 58 - ContextClassifier Integration (Dec 16 - Autonomous)
+
+**CAPABILITY ADDED**: Automatic context classification integrated with trust-based expert selection
+
+### Status: ✅ COMPLETE
+
+**Files Modified**:
+- sage/core/trust_based_expert_selector.py (+11 lines integration logic)
+
+**Files Created**:
+- sage/tests/test_context_classifier_integration.py (300 LOC - comprehensive test suite)
+- SESSION_58_CONTEXT_CLASSIFIER_INTEGRATION.md (detailed documentation)
+
+### Achievement
+Integrated Legion's Session 57 `ContextClassifier` with `TrustBasedExpertSelector` to enable automatic context detection during expert selection. **Phase 2 of integration pathway now complete**.
+
+### Context
+Autonomous check discovered Legion's parallel Session 57 work implementing ContextClassifier (~500 LOC + ~420 LOC tests). Immediate integration opportunity identified.
+
+**Integration Goal**: Enable automatic context classification from input embeddings for contextual trust-based expert selection.
+
+### Implementation
+
+**Added to TrustBasedExpertSelector**:
+1. Optional `context_classifier` parameter in `__init__`
+2. Automatic context classification in `select_experts()`:
+   - If `context=None` and classifier provided: classifies `input_embedding` → `context_id`
+   - If `context=None` and no classifier: uses "general" default
+   - If `context` provided: uses explicit context (backwards compatible)
+
+**Three Usage Modes**:
+```python
+# 1. Automatic classification (new)
+selector = TrustBasedExpertSelector(context_classifier=classifier)
+result = selector.select_experts(router_logits, context=None, input_embedding=emb, k=8)
+
+# 2. Manual context (original)
+result = selector.select_experts(router_logits, context="code", k=8)
+
+# 3. Default fallback (graceful)
+result = selector.select_experts(router_logits, k=8)  # Uses "general"
+```
+
+### Test Results
+
+**3 Integration Tests** (all passing ✅):
+
+1. **Basic Integration**: Automatic context classification working
+   - 3 synthetic contexts (clusters in embedding space)
+   - Expert 5 excels in context_1, Expert 10 in context_0, Expert 15 in context_2
+   - Same router preferences → different experts selected by context
+   - ✅ Context adaptation validated
+
+2. **Manual Fallback**: Backwards compatibility confirmed
+   - Selector without classifier uses manual context strings
+   - ✅ Existing code continues to work
+
+3. **Default Fallback**: Graceful degradation verified
+   - No context, no classifier → uses "general" context
+   - ✅ No breaking changes
+
+**Test Output**:
+```
+✅ ALL INTEGRATION TESTS PASSING
+
+Integration Complete:
+  - ContextClassifier automatically classifies embeddings
+  - TrustBasedExpertSelector uses classified contexts
+  - Contextual trust enables adaptive expert selection
+  - Manual context specification still supported
+  - Fallback to 'general' context when needed
+
+Phase 2 of integration pathway: ✅ COMPLETE
+```
+
+### Integration Pathway Progress
+
+**Phase 1: Optional trust_selector parameter** - PENDING
+- Documented in Thor Session 57 integration demo
+- Requires modifying SelectiveLanguageModel and SelectiveMoELayer
+
+**Phase 2: Context classification** - ✅ COMPLETE (This session)
+- Legion Session 57: ContextClassifier implementation (~500 LOC)
+- Thor Session 58: Integration with TrustBasedExpertSelector (+11 LOC)
+- All tests passing, ready for use
+
+**Phase 3: Quality measurement** - PENDING
+- Measure generation quality to update expert reputation
+- Metrics: Perplexity, coherence, task-specific correctness
+
+**Phase 4: End-to-end testing** - PENDING
+- Test with actual Q3-Omni generation (not simulation)
+- Measure quality improvement empirically
+
+### Web4 Pattern: MRH Applied
+
+**Minimal Resonance Hypothesis** → Context classification:
+- Different inputs create different "resonance patterns"
+- ContextClassifier identifies which pattern (context)
+- Expert reputation varies by pattern (contextual trust)
+- Selection adapts to match current resonance
+
+**Example**:
+```
+Code input → context_code → Expert 5 (trust=0.92) selected
+Text input → context_text → Expert 10 (trust=0.88) selected
+```
+
+### Benefits Demonstrated
+
+1. **Automatic Context Detection**: No manual context strings needed
+2. **Contextual Trust Working**: Expert selection adapts to input type
+3. **Backwards Compatible**: Zero breaking changes, optional integration
+4. **Flexible Modes**: Automatic, manual, or default fallback
+5. **Observable**: Can inspect which expert excels in which context
+
+### Technical Decisions
+
+**Optional Integration**:
+- Added as optional parameter (not required)
+- Enables gradual adoption
+- Preserves all existing behavior
+
+**Three-Mode Operation**:
+- Automatic: classifier + embedding → context_id
+- Manual: explicit context string (backwards compatible)
+- Default: "general" fallback (graceful degradation)
+
+**Classification Timing**:
+- Classifies at selection time (not initialization)
+- Enables per-token context adaptation
+- Real-time response to changing inputs
+
+### Next Steps
+
+**Immediate**:
+1. Implement Phase 1 (integrate with SelectiveLanguageModel)
+2. Test with real Q3-Omni generation embeddings
+3. Tune exploration_weight empirically
+
+**Near-term**:
+1. Implement Phase 3 (quality measurement)
+2. Implement Phase 4 (end-to-end testing)
+3. Visualize context clusters (t-SNE/UMAP)
+
+**Long-term**:
+1. Thor ↔ Sprout context classifier sharing
+2. Multi-modal context classification
+3. Context descriptions (semantic labels)
+4. Production deployment
+
+### Session Pattern
+
+**Opportunistic Integration**:
+- Discovered Legion's work during autonomous check
+- Immediately recognized integration opportunity
+- Implemented and tested in ~1 hour
+- All tests passing, ready to commit
+
+**Pattern**: Discover → Integrate → Test → Document → Commit
 
 ---
 

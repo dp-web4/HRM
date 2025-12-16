@@ -42,6 +42,7 @@ from sage.core.expert_reputation import (
     ExpertReputationDB,
     get_default_reputation_db
 )
+from sage.core.context_classifier import ContextClassifier
 
 
 @dataclass
@@ -95,7 +96,8 @@ class TrustBasedExpertSelector:
         exploration_weight: float = 0.3,
         substitution_threshold: float = 0.6,
         reputation_db: Optional[ExpertReputationDB] = None,
-        component: str = "thinker"
+        component: str = "thinker",
+        context_classifier: Optional[ContextClassifier] = None
     ):
         """
         Initialize trust-based expert selector.
@@ -110,6 +112,9 @@ class TrustBasedExpertSelector:
             substitution_threshold: Minimum trust score for substitution
             reputation_db: Expert reputation database (creates default if None)
             component: "thinker" or "talker"
+            context_classifier: Optional ContextClassifier for automatic context detection
+                              If provided, uses input_embedding to classify context
+                              If None, requires manual context string in select_experts()
         """
         self.num_experts = num_experts
         self.cache_size = cache_size
@@ -119,6 +124,9 @@ class TrustBasedExpertSelector:
 
         # Reputation database
         self.reputation_db = reputation_db if reputation_db else get_default_reputation_db()
+
+        # Context classifier (optional)
+        self.context_classifier = context_classifier
 
         # Expert cache (expert_id → loaded status)
         self.loaded_experts: Dict[int, bool] = {}
@@ -131,7 +139,7 @@ class TrustBasedExpertSelector:
     def select_experts(
         self,
         router_logits: Union['torch.Tensor', np.ndarray],
-        context: str,
+        context: Optional[str] = None,
         k: int = 8,
         input_embedding: Optional[np.ndarray] = None
     ) -> ExpertSelectionResult:
@@ -140,14 +148,27 @@ class TrustBasedExpertSelector:
 
         Args:
             router_logits: Router output scores [num_experts] (torch.Tensor or numpy array)
-            context: Input context classification
+            context: Input context classification (string ID)
+                    If None and context_classifier provided, will classify input_embedding
+                    If None and no classifier, uses "general" as default context
             k: Number of experts to select
-            input_embedding: Input representation (for future context classification)
+            input_embedding: Input representation for automatic context classification
+                           Required if context=None and context_classifier is provided
 
         Returns:
             ExpertSelectionResult with selected experts and metadata
         """
         self.total_selections += 1
+
+        # Determine context
+        if context is None:
+            if self.context_classifier is not None and input_embedding is not None:
+                # Use context classifier to determine context from embedding
+                context_info = self.context_classifier.classify(input_embedding)
+                context = context_info.context_id
+            else:
+                # No context provided and no way to classify: use default
+                context = "general"
 
         # Convert router logits to numpy for easier manipulation
         if HAS_TORCH and torch is not None and isinstance(router_logits, torch.Tensor):
@@ -399,7 +420,8 @@ class TrustBasedExpertSelector:
 def create_trust_based_selector(
     num_experts: int = 128,
     cache_size: int = 6,
-    component: str = "thinker"
+    component: str = "thinker",
+    context_classifier: Optional[ContextClassifier] = None
 ) -> TrustBasedExpertSelector:
     """
     Create trust-based expert selector with defaults.
@@ -408,6 +430,7 @@ def create_trust_based_selector(
         num_experts: Total experts available
         cache_size: Memory capacity (number of experts)
         component: "thinker" or "talker"
+        context_classifier: Optional ContextClassifier for automatic context detection
 
     Returns:
         Configured TrustBasedExpertSelector
@@ -417,7 +440,8 @@ def create_trust_based_selector(
         cache_size=cache_size,
         exploration_weight=0.3,  # Balanced exploration/exploitation
         substitution_threshold=0.6,
-        component=component
+        component=component,
+        context_classifier=context_classifier
     )
 
 

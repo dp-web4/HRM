@@ -47,6 +47,7 @@ class SelectiveLanguageModel(nn.Module):
         num_experts_per_tok: int = 4,
         max_loaded_experts: int = 16,
         device: str = "cpu",
+        trust_selector=None,  # Optional TrustBasedExpertSelector for contextual selection
     ):
         super().__init__()
 
@@ -54,6 +55,7 @@ class SelectiveLanguageModel(nn.Module):
         self.hidden_size = hidden_size
         self.num_layers = num_layers
         self.device = device
+        self.trust_selector = trust_selector
 
         # Load embeddings
         embed_path = os.path.join(extraction_dir, "embeddings", "thinker_embeddings.safetensors")
@@ -82,6 +84,7 @@ class SelectiveLanguageModel(nn.Module):
                 layer_id=i,
                 num_experts_per_tok=num_experts_per_tok,
                 extraction_dir=extraction_dir,  # NEW - enables loading real attention weights!
+                trust_selector=self.trust_selector,  # Pass trust selector to layers
             )
             for i in range(num_layers)
         ])

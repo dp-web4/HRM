@@ -172,20 +172,31 @@ class GroupedQueryAttention(nn.Module):
         self,
         hidden_states: torch.Tensor,
         attention_mask: Optional[torch.Tensor] = None,
+        debug: bool = False,
     ) -> torch.Tensor:
         """
         Args:
             hidden_states: [batch, seq, hidden]
             attention_mask: Optional [batch, 1, seq, seq] causal mask
+            debug: Enable debug logging
         Returns:
             output: [batch, seq, hidden]
         """
         batch_size, seq_length, _ = hidden_states.shape
 
+        if debug:
+            print(f"\n🔍 Attention Forward (Layer):")
+            print(f"  Input: {hidden_states.shape}, mean={hidden_states.mean():.4f}, std={hidden_states.std():.4f}")
+            print(f"  q_proj weight: {self.q_proj.weight.shape}, mean={self.q_proj.weight.mean():.4f}, std={self.q_proj.weight.std():.4f}")
+            print(f"  k_proj weight: {self.k_proj.weight.shape}, mean={self.k_proj.weight.mean():.4f}, std={self.k_proj.weight.std():.4f}")
+
         # Project to Q, K, V
         query_states = self.q_proj(hidden_states)
         key_states = self.k_proj(hidden_states)
         value_states = self.v_proj(hidden_states)
+
+        if debug:
+            print(f"  After projection: Q mean={query_states.mean():.4f}, K mean={key_states.mean():.4f}")
 
         # Reshape for multi-head attention
         query_states = query_states.view(batch_size, seq_length, self.num_attention_heads, self.head_dim).transpose(1, 2)
@@ -261,12 +272,14 @@ class SelectiveMoELayer(nn.Module):
         hidden_states: torch.Tensor,
         snarc_salience: Optional[Dict[str, float]] = None,
         metabolic_state: str = "FOCUS",
+        debug: bool = False,
     ) -> torch.Tensor:
         """
         Args:
             hidden_states: [batch, seq, hidden]
             snarc_salience: Optional SNARC scores for expert selection
             metabolic_state: WAKE/FOCUS/CRISIS (determines expert count)
+            debug: Enable debug logging
         Returns:
             output: [batch, seq, hidden]
         """
@@ -281,6 +294,11 @@ class SelectiveMoELayer(nn.Module):
             metabolic_state=metabolic_state
         )
 
+        if debug:
+            print(f"\n🔍 MoE Layer {self.layer_id}:")
+            print(f"  Selected experts: {selected_expert_ids[:3]}...")
+            print(f"  Router weights: {router_weights[:3]}")
+
         # Process each expert
         expert_outputs = []
         valid_expert_indices = []
@@ -294,7 +312,7 @@ class SelectiveMoELayer(nn.Module):
                 continue
 
             # Expert forward pass
-            output = self._expert_forward(hidden_states, expert_weights)
+            output = self._expert_forward(hidden_states, expert_weights, debug=(debug and i == 0))  # Debug first expert only
             expert_outputs.append(output)
             valid_expert_indices.append(i)
 
@@ -313,7 +331,7 @@ class SelectiveMoELayer(nn.Module):
 
         return combined_output
 
-    def _expert_forward(self, x: torch.Tensor, expert_weights: Dict[str, torch.Tensor]) -> torch.Tensor:
+    def _expert_forward(self, x: torch.Tensor, expert_weights: Dict[str, torch.Tensor], debug: bool = False) -> torch.Tensor:
         """Standard expert MLP: h = down(silu(gate(x)) * up(x))"""
         gate_proj = None
         up_proj = None
@@ -334,10 +352,18 @@ class SelectiveMoELayer(nn.Module):
             # Return input unchanged if weights are missing
             return x
 
+        if debug:
+            print(f"    Expert weights: gate {gate_proj.shape} mean={gate_proj.mean():.4f}, std={gate_proj.std():.4f}")
+            print(f"                    up {up_proj.shape} mean={up_proj.mean():.4f}, std={up_proj.std():.4f}")
+            print(f"                    down {down_proj.shape} mean={down_proj.mean():.4f}, std={down_proj.std():.4f}")
+
         gate_output = F.linear(x, gate_proj)
         up_output = F.linear(x, up_proj)
         intermediate = F.silu(gate_output) * up_output
         output = F.linear(intermediate, down_proj)
+
+        if debug:
+            print(f"    Expert output: mean={output.mean():.4f}, std={output.std():.4f}")
 
         return output
 
@@ -430,6 +456,7 @@ class SelectiveTransformerLayer(nn.Module):
         attention_mask: Optional[torch.Tensor] = None,
         snarc_salience: Optional[Dict[str, float]] = None,
         metabolic_state: str = "FOCUS",
+        debug: bool = False,
     ) -> torch.Tensor:
         """
         Args:
@@ -437,13 +464,14 @@ class SelectiveTransformerLayer(nn.Module):
             attention_mask: Optional causal mask
             snarc_salience: Optional SNARC scores
             metabolic_state: Resource budget
+            debug: Enable debug logging
         Returns:
             output: [batch, seq, hidden]
         """
         # Self-attention with residual
         residual = hidden_states
         hidden_states = self.input_layernorm(hidden_states)
-        hidden_states = self.self_attn(hidden_states, attention_mask=attention_mask)
+        hidden_states = self.self_attn(hidden_states, attention_mask=attention_mask, debug=debug)
         hidden_states = residual + hidden_states
 
         # MoE with residual
@@ -452,7 +480,8 @@ class SelectiveTransformerLayer(nn.Module):
         hidden_states = self.moe(
             hidden_states,
             snarc_salience=snarc_salience,
-            metabolic_state=metabolic_state
+            metabolic_state=metabolic_state,
+            debug=debug,
         )
         hidden_states = residual + hidden_states
 

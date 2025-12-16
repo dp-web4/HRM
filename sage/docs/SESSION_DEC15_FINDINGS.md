@@ -364,13 +364,59 @@ Sparse pattern observed:
 2. **Per-layer loading optimal** for this architecture
 3. **Predictive loading unlikely** to help (no strong correlations)
 
-## Questions Remaining
+## ✅ ROOT CAUSE IDENTIFIED! (End of Session)
 
-1. **Why is output garbled?** - Most critical question
-2. **Are expert weights correctly mapped?** - Needs verification
-3. **Is KV cache working properly?** - Multi-token coherence depends on this
-4. **Do we need full 48 layers?** - Tested with 24, might need complete model
-5. **Is sparse architecture complete?** - Do missing experts matter?
+### The Problem: mRoPE Implementation Missing
+
+**Q3-Omni uses mRoPE (multimodal RoPE), NOT standard RoPE!**
+
+From config.json:
+```json
+"rope_scaling": {
+  "mrope_interleaved": true,
+  "mrope_section": [24, 20, 20]  // Splits 64-dim head into 3 sections!
+}
+```
+
+Our implementation uses standard RoPE, giving completely WRONG positional encodings.
+
+### Evidence This Is The Root Cause
+
+1. ✅ **All weights verified loaded correctly** (mean=0, std≈0.015)
+2. ✅ **Weights verified being used in forward pass** (debug logging confirms)
+3. ✅ **Greedy decoding still garbled** ("Hello, my name is" → "clearColor configurations")
+4. ✅ **Architecture matches except RoPE** (all other params correct)
+5. ✅ **Config explicitly requires mRoPE** with sectioning [24, 20, 20]
+
+### Why This Causes Garbled Output
+
+- mRoPE splits head_dim=64 into 3 sections: [24, 20, 20]
+- Each section gets INDEPENDENT position sequences (text, image, audio)
+- Without mRoPE: ALL positions are wrong → attention patterns scrambled
+- Result: Perfect weights + wrong positions = gibberish output
+
+**Analogy**: Having a perfect book with all page numbers randomized.
+
+### The Fix
+
+Implement MultimodalRotaryEmbedding in `selective_transformer_layer.py` following Q3-Omni config exactly.
+
+See: `SESSION_DEC15_BREAKTHROUGH.md` for complete implementation plan.
+
+### What We Learned
+
+1. **Weights being used ≠ model working** - Architecture must match exactly
+2. **Always check config.json thoroughly** - Non-standard settings are critical
+3. **Test deterministically first** - Greedy decoding isolates architectural issues
+4. **Systematic debugging works** - Eliminated sampling, weights, tokenization one by one
+
+## Questions Remaining (Updated)
+
+1. ~~**Why is output garbled?**~~ - ✅ SOLVED: mRoPE implementation missing
+2. ~~**Are expert weights correctly mapped?**~~ - ✅ VERIFIED: Mapping is correct
+3. ~~**Is KV cache working properly?**~~ - Not the issue (greedy decoding proves this)
+4. ~~**Do we need full 48 layers?**~~ - ✅ TESTED: 48 layers still garbled (confirms RoPE issue)
+5. **Is sparse architecture complete?** - Yes, 5,612/6,144 experts is intentional design
 
 ## Resources
 

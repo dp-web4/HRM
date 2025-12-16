@@ -109,51 +109,47 @@ class ExpertExtractor:
             print(f"Expert already exists: {output_file.name}")
             return output_file
 
-        # Find which shard contains this layer
-        shard_num = self._find_shard_for_layer(layer_id, component)
-        if shard_num is None:
-            print(f"❌ Layer {layer_id} not found for {component}")
-            return None
-
-        shard_path = self.get_shard_path(shard_num)
-
-        # Extract expert weights
+        # Extract expert weights from ALL shards (weights may be split!)
         expert_weights = {}
+        prefix = f"{component}.model.layers.{layer_id}.mlp.experts.{expert_id}."
 
         try:
-            with safetensors.safe_open(shard_path, framework="pt") as f:
-                # Key pattern: {component}.model.layers.{layer}.mlp.experts.{expert_id}.{proj}.weight
-                prefix = f"{component}.model.layers.{layer_id}.mlp.experts.{expert_id}."
+            # Search ALL shards for this expert's weights
+            for shard_num in range(1, 16):  # Q3-Omni has 15 shards
+                shard_path = self.get_shard_path(shard_num)
+                if not shard_path.exists():
+                    continue
 
-                for key in f.keys():
-                    if prefix in key:
-                        expert_weights[key] = f.get_tensor(key)
+                with safetensors.safe_open(shard_path, framework="pt") as f:
+                    for key in f.keys():
+                        if prefix in key:
+                            expert_weights[key] = f.get_tensor(key)
 
-                if len(expert_weights) == 0:
-                    print(f"❌ No weights found for expert {expert_id} in layer {layer_id}")
-                    return None
+            if len(expert_weights) == 0:
+                print(f"❌ No weights found for expert {expert_id} in layer {layer_id}")
+                return None
 
-                if len(expert_weights) != 3:
-                    print(f"⚠️  Expected 3 weights, found {len(expert_weights)}")
+            if len(expert_weights) != 3:
+                print(f"⚠️  Expected 3 weights, found {len(expert_weights)} for expert {expert_id} layer {layer_id}")
 
-                # Save expert
-                safetensors.torch.save_file(expert_weights, output_file)
+            # Save expert
+            safetensors.torch.save_file(expert_weights, output_file)
 
-                # Calculate size
-                size_mb = output_file.stat().st_size / 1024**2
+            # Calculate size
+            size_mb = output_file.stat().st_size / 1024**2
 
-                # Update manifest
-                self.manifest["experts"].append({
-                    "component": component,
-                    "expert_id": expert_id,
-                    "layer_id": layer_id,
-                    "file": output_file.name,
-                    "size_mb": size_mb,
-                    "num_weights": len(expert_weights)
-                })
+            # Update manifest
+            self.manifest["experts"].append({
+                "component": component,
+                "expert_id": expert_id,
+                "layer_id": layer_id,
+                "file": output_file.name,
+                "size_mb": size_mb,
+                "num_weights": len(expert_weights)
+            })
 
-                print(f"✅ Extracted {component} expert {expert_id} layer {layer_id} ({size_mb:.1f} MB)")
-                return output_file
+            print(f"✅ Extracted {component} expert {expert_id} layer {layer_id} ({size_mb:.1f} MB)")
+            return output_file
 
         except Exception as e:
             print(f"❌ Error extracting expert: {e}")

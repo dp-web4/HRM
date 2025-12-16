@@ -46,37 +46,93 @@ class RMSNorm(nn.Module):
         return self.weight * hidden_states
 
 
-class RotaryEmbedding(nn.Module):
-    """Rotary Position Embedding (RoPE)"""
+class MultimodalRotaryEmbedding(nn.Module):
+    """
+    Multimodal Rotary Position Embedding (mRoPE)
 
-    def __init__(self, dim: int, max_position_embeddings: int = 65536, base: float = 1000000.0):
+    Q3-Omni uses mRoPE which splits head_dim into multiple sections,
+    each with independent position sequences for different modalities.
+
+    For Q3-Omni: mrope_section = [24, 20, 20] (text, image, audio)
+    """
+
+    def __init__(
+        self,
+        dim: int,
+        max_position_embeddings: int = 65536,
+        base: float = 1000000.0,
+        mrope_section: List[int] = None,
+    ):
         super().__init__()
         self.dim = dim
         self.max_position_embeddings = max_position_embeddings
         self.base = base
 
-        # Precompute frequency tensor
-        inv_freq = 1.0 / (self.base ** (torch.arange(0, self.dim, 2).float() / self.dim))
-        self.register_buffer("inv_freq", inv_freq)
+        # mRoPE sections specify RoPE half-dims, need doubling for full dims
+        # Q3-Omni: mrope_section = [24, 20, 20] -> [48, 40, 40] = 128
+        if mrope_section is None:
+            # Default to standard RoPE (single section)
+            mrope_section = [dim]
+        else:
+            # Double each section: [24, 20, 20] -> [48, 40, 40]
+            mrope_section = [s * 2 for s in mrope_section]
+
+        self.mrope_section = mrope_section
+
+        # Verify sections sum to full dim
+        if sum(mrope_section) != dim:
+            print(f"⚠️  mRoPE sections {mrope_section} sum to {sum(mrope_section)}, expected {dim}")
+            print(f"   Using single section fallback")
+            self.mrope_section = [dim]
+
+        # Precompute frequency tensors for each section
+        # Each section uses standard RoPE formula with step-by-2
+        self.inv_freqs = []
+        for section_dim in self.mrope_section:
+            # Standard RoPE: step by 2 to get half-dimension freqs
+            inv_freq = 1.0 / (self.base ** (torch.arange(0, section_dim, 2).float() / section_dim))
+            self.register_buffer(f"inv_freq_{len(self.inv_freqs)}", inv_freq, persistent=False)
+            self.inv_freqs.append(inv_freq)
 
     def forward(self, x: torch.Tensor, seq_len: int) -> Tuple[torch.Tensor, torch.Tensor]:
         """
         Args:
-            x: Input tensor (not actually used, just for device/dtype)
+            x: Input tensor (for device/dtype)
             seq_len: Sequence length
         Returns:
-            (cos, sin) embeddings for RoPE
+            (cos, sin) embeddings for mRoPE with shape (3, 1, seq_len, dim)
         """
-        # Generate position indices
-        t = torch.arange(seq_len, device=x.device, dtype=self.inv_freq.dtype)
+        # Generate position indices (same for all 3 types in text-only mode)
+        t = torch.arange(seq_len, device=x.device, dtype=torch.float32)
 
-        # Compute frequencies
-        freqs = torch.outer(t, self.inv_freq)
+        # Compute frequencies for each of 3 position types (temporal, height, width)
+        # For text-only, all 3 use the same positions, but we still need 3 copies
+        all_cos = []
+        all_sin = []
 
-        # Different from paper, but mimics Qwen implementation
-        emb = torch.cat((freqs, freqs), dim=-1)
+        for position_type_idx in range(3):  # 3 position types
+            cos_sections = []
+            sin_sections = []
 
-        return emb.cos(), emb.sin()
+            for inv_freq in self.inv_freqs:
+                # Compute frequencies for this section
+                freqs = torch.outer(t, inv_freq.to(x.device))
+
+                # Standard RoPE doubling: cat freqs with itself
+                emb = torch.cat((freqs, freqs), dim=-1)
+
+                cos_sections.append(emb.cos())
+                sin_sections.append(emb.sin())
+
+            # Concatenate sections for this position type
+            all_cos.append(torch.cat(cos_sections, dim=-1))  # [seq_len, dim]
+            all_sin.append(torch.cat(sin_sections, dim=-1))  # [seq_len, dim]
+
+        # Stack to get (3, seq_len, dim)
+        cos = torch.stack(all_cos, dim=0).unsqueeze(1)  # [3, 1, seq_len, dim]
+        sin = torch.stack(all_sin, dim=0).unsqueeze(1)  # [3, 1, seq_len, dim]
+
+        return cos, sin
 
 
 def rotate_half(x: torch.Tensor) -> torch.Tensor:
@@ -86,8 +142,38 @@ def rotate_half(x: torch.Tensor) -> torch.Tensor:
     return torch.cat((-x2, x1), dim=-1)
 
 
-def apply_rotary_pos_emb(q: torch.Tensor, k: torch.Tensor, cos: torch.Tensor, sin: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
-    """Apply RoPE to query and key tensors"""
+def apply_multimodal_rotary_pos_emb(
+    q: torch.Tensor,
+    k: torch.Tensor,
+    cos: torch.Tensor,
+    sin: torch.Tensor,
+    mrope_section: List[int],
+) -> Tuple[torch.Tensor, torch.Tensor]:
+    """
+    Apply mRoPE to query and key tensors with interleaved sections
+
+    HuggingFace implementation from Qwen2-VL:
+    Splits head_dim by mrope_section and cycles through 3 position types
+    """
+    # Double sections to get full dimensions [24,20,20] -> [48,40,40]
+    mrope_section_doubled = [s * 2 for s in mrope_section]
+
+    # Split cos/sin by sections and interleave using i % 3
+    # cos/sin shape: (3, batch, seq_len, dim)
+    # After split: list of (3, batch, seq_len, section_dim) tensors
+    cos_chunks = cos.split(mrope_section_doubled, dim=-1)
+    sin_chunks = sin.split(mrope_section_doubled, dim=-1)
+
+    # Interleave: cycle through 3 position types for each chunk
+    # m[i % 3] selects from (3, batch, seq_len, section_dim) -> (batch, seq_len, section_dim)
+    cos = torch.cat([m[i % 3] for i, m in enumerate(cos_chunks)], dim=-1)  # (batch, seq_len, dim)
+    sin = torch.cat([m[i % 3] for i, m in enumerate(sin_chunks)], dim=-1)  # (batch, seq_len, dim)
+
+    # Unsqueeze to add head dimension for broadcasting: (batch, 1, seq_len, dim)
+    cos = cos.unsqueeze(1)
+    sin = sin.unsqueeze(1)
+
+    # Apply rotation
     q_embed = (q * cos) + (rotate_half(q) * sin)
     k_embed = (k * cos) + (rotate_half(k) * sin)
     return q_embed, k_embed
@@ -165,8 +251,13 @@ class GroupedQueryAttention(nn.Module):
             else:
                 print(f"⚠️  Attention file not found: {attn_file}, using random weights")
 
-        # RoPE
-        self.rotary_emb = RotaryEmbedding(head_dim, max_position_embeddings, rope_theta)
+        # mRoPE (Q3-Omni uses multimodal RoPE with section splitting)
+        self.rotary_emb = MultimodalRotaryEmbedding(
+            dim=head_dim,
+            max_position_embeddings=max_position_embeddings,
+            base=rope_theta,
+            mrope_section=[24, 20, 20],  # Q3-Omni config: text, image, audio sections
+        )
 
     def forward(
         self,
@@ -207,9 +298,12 @@ class GroupedQueryAttention(nn.Module):
         query_states = self.q_norm(query_states)
         key_states = self.k_norm(key_states)
 
-        # Apply RoPE
+        # Apply mRoPE
         cos, sin = self.rotary_emb(value_states, seq_len=seq_length)
-        query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)
+        query_states, key_states = apply_multimodal_rotary_pos_emb(
+            query_states, key_states, cos, sin,
+            mrope_section=[24, 20, 20],  # Q3-Omni config
+        )
 
         # Repeat KV heads for GQA
         key_states = self._repeat_kv(key_states, self.num_key_value_groups)

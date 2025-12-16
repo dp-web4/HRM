@@ -1,7 +1,103 @@
 # SAGE Michaud Integration - Latest Status
-**Last Updated**: 2025-12-16 10:00 UTC (Autonomous Session - **Session 59: Phase 1 Integration Complete** ✅)
-**Previous Update**: 2025-12-16 07:30 UTC (Session 58: ContextClassifier Integration)
+**Last Updated**: 2025-12-16 16:30 UTC (Autonomous Session - **Session 60: Phase 3 Quality Measurement Complete** ✅)
+**Previous Update**: 2025-12-16 10:00 UTC (Session 59: Phase 1 Integration)
 **Hardware**: Thor (Jetson AGX Thor)
+
+---
+
+## 🎯 Session 60 - Phase 3: Quality Measurement for Expert Reputation (Dec 16 - Autonomous)
+
+**CAPABILITY ADDED**: Quality measurement system closes the feedback loop for expert reputation updates
+
+### Status: ✅ COMPLETE
+
+**Files Created**:
+- sage/core/quality_measurement.py (~350 LOC - quality metrics system)
+- sage/tests/test_quality_measurement.py (~250 LOC - 7 tests, all passing)
+- sage/core/quality_reputation_bridge.py (~90 LOC - feedback loop integration)
+- sage/tests/test_quality_reputation_bridge.py (~210 LOC - 4 tests, all passing)
+- SESSION_60_PHASE3_QUALITY_MEASUREMENT.md (comprehensive documentation)
+
+### Achievement
+Completed Phase 3 of integration pathway: Quality measurement system implemented and integrated with expert reputation. **Feedback loop is now closed**: Generation → Quality Measurement → Reputation Update → Future Selection.
+
+### Implementation
+
+**Quality Measurement System** (three metrics):
+
+1. **Perplexity** (Model Confidence):
+   - Measures how well model predicts tokens
+   - Lower perplexity = higher confidence
+   - Formula: `exp(cross_entropy_loss)`
+
+2. **Coherence** (Semantic Consistency):
+   - N-gram overlap between input and output
+   - Measures how well output continues input
+   - Range: 0-1 (higher is better)
+
+3. **Task-Specific Quality** (Context-Dependent):
+   - Code: Moderate length, some diversity
+   - Text: Longer sequences, high diversity
+   - Reasoning: Moderate length
+   - Supervised: Exact match accuracy (if ground truth available)
+
+**Overall Quality**: Weighted combination (configurable weights: 0.4, 0.3, 0.3)
+
+**Quality-Reputation Bridge**:
+```python
+def update_expert_reputation_from_quality(metrics: QualityMetrics, db=None):
+    """Update expert reputation based on quality measurement."""
+    performance = {
+        'quality': metrics.overall_quality,
+        'perplexity': metrics.perplexity,
+        'coherence': metrics.coherence,
+        'task_quality': metrics.task_quality,
+    }
+
+    for expert_id in metrics.expert_ids:
+        record_expert_activation(expert_id, metrics.context, performance, db=db)
+```
+
+### Tests Passing
+```
+Quality Measurement Tests: ✅ 7/7 PASSING
+Quality-Reputation Bridge Tests: ✅ 4/4 PASSING
+
+Test validation:
+  ✅ Perplexity distinguishes confident vs uncertain predictions
+  ✅ Coherence distinguishes overlapping vs non-overlapping patterns
+  ✅ Task quality adapts to context (code/text/reasoning)
+  ✅ Feedback loop: Better performance → Higher trust
+  ✅ Co-activation tracking for multi-expert collaboration
+```
+
+### Feedback Loop Demonstrated
+```
+Simulation of 3 generations:
+  Gen 1: Expert 5 + 10, quality 0.88 (code context)
+  Gen 2: Expert 5 + 15, quality 0.90 (code context)
+  Gen 3: Expert 10 + 15, quality 0.35 (code context) - poor
+
+Result:
+  Expert 5 trust (code): 0.574 (performed well 2x)
+  Expert 10 trust (code): 0.519 (performed well 1x, poorly 1x)
+
+✅ Better performance → Higher trust (loop closed!)
+```
+
+### Integration Pathway Progress
+- **Phase 1**: Optional trust_selector - ✅ COMPLETE (Session 59)
+- **Phase 2**: Context classification - ✅ COMPLETE (Session 58)
+- **Phase 3**: Quality measurement - ✅ **COMPLETE** (This session)
+- **Phase 4**: End-to-end testing - PENDING (needs Q3-Omni weights)
+
+**Progress**: 3/4 phases (75%)
+
+### Next Steps
+1. Extract Q3-Omni weights for end-to-end testing
+2. Empirical validation with actual generation
+3. Tune quality weights and exploration parameter
+4. Visualize expert specialization by context
 
 ---
 

@@ -76,25 +76,48 @@ When we extracted experts 0-7 and tried text generation, we might be forcing the
 - Full 128 × 48 = 6,144 expert extraction
 - Complete omni capability on Thor (122GB RAM)
 
-#### Phase 2: Track Expert Specializations → Web4 Application!
-- As experts activate, log what input types triggered them
-- Build a specialization map: `expert_id → {modality, domain, activation_patterns}`
-- Store in Web4's epistemic database for federation-wide knowledge
-- Other SAGE instances can query: "which experts handle code?" → get ranked list
+#### Phase 2: Expert Reputation System → Web4 Paradigm Applied to SAGE
 
+**Conceptual cross-pollination**: Apply Web4's contextual trust/reputation (MRH) to expert management.
+
+**The pattern**:
+- Web4: Entities build reputation through interactions, trust is contextual
+- SAGE: Experts build reputation through activations, trust adjusts based on performance
+
+**Expert reputation tracking** (SAGE-specific, not epistemic DB):
 ```python
-# Web4 expert knowledge tracking
-expert_profile = {
-    "expert_id": 47,
-    "layer": 12,
-    "primary_modality": "text",
-    "domains": ["futuristic", "technical", "speculation"],
-    "activation_frequency": 0.023,
-    "co_activated_with": [23, 89, 103],
-    "trust_score": 0.87
-}
-# Store in Memory/epistemic for federation access
+@dataclass
+class ExpertReputation:
+    expert_id: int
+    component: str  # "thinker" or "talker"
+
+    # Activation history
+    activation_count: int
+    contexts_seen: Dict[str, int]  # {"code": 847, "math": 234, ...}
+
+    # Performance metrics (Web4 trust pattern)
+    convergence_rate: float    # How quickly reduces energy
+    stability: float           # Consistency across similar inputs
+    efficiency: float          # Quality per computation cost
+
+    # Contextual reputation (MRH applied)
+    context_trust: Dict[str, float]  # {"code": 0.92, "math": 0.78, ...}
+
+    # Relational data
+    co_activated_with: Counter[int]  # Which experts work well together
+    substituted_for: List[Tuple[int, float]]  # (expert_id, quality_delta)
 ```
+
+**This IS Web4 thinking**:
+- Trust emerges from observed behavior, not assigned
+- Context matters: Expert 47 might be great for code, mediocre for poetry
+- Reputation evolves: new evidence updates trust scores
+- Relationships tracked: which experts collaborate well
+
+**SAGE-local database** (not federated yet):
+- SQLite or similar for expert reputation persistence
+- Survives restarts, accumulates across sessions
+- Could federate later if valuable
 
 #### Phase 3: Smart Memory Management + Edge Deployment
 

@@ -236,12 +236,50 @@ From [Qwen docs](https://qwen.readthedocs.io/en/latest/deployment/vllm.html):
 - **llama.cpp**: Use `-ot ".ffn_.*_exps.=CPU"` to offload MoE to CPU
 - **First-packet latency**: 234ms audio, 547ms video
 
-### Implications for Expert Bundling
+### Implications for Expert Bundling - FULL OMNI
 
-Since Talker isn't needed for text-only:
-- **Thinker experts**: 48 layers × 128 = 6,144 → 128 bundles @ ~430MB
-- **Talker experts**: 20 layers × 128 = 2,560 → 128 bundles @ ~180MB (if needed)
-- **Text-only on Sprout**: Skip Talker entirely, halve expert storage needs!
+**We want full multimodal including speech generation (Talker)!**
+
+**Two separate expert pools** (routers are independent):
+
+| Component | Layers | Bundles | Size/Bundle | Total |
+|-----------|--------|---------|-------------|-------|
+| Thinker | 48 | 128 | ~430MB | ~55GB |
+| Talker | 20 | 128 | ~180MB | ~23GB |
+| **Combined** | 68 | **256** | - | **~78GB** |
+
+**Expert IDs are NOT shared between Thinker/Talker:**
+- Thinker Expert 47 = maybe "futuristic text reasoning"
+- Talker Expert 47 = maybe "male voice prosody" (completely different!)
+- Each has its own router making independent decisions
+
+**Cache architecture for full omni:**
+```python
+class OmniExpertCache:
+    thinker_cache: ExpertCache  # up to N thinker bundles
+    talker_cache: ExpertCache   # up to M talker bundles
+
+    # Thinker experts: text/vision/audio understanding
+    # Talker experts: speech generation characteristics
+```
+
+**Sprout 8GB target - full omni:**
+```
+Thinker: 4 experts × 430MB = 1.7GB
+Talker:  4 experts × 180MB = 0.7GB
+Attention (Thinker): 1.7GB
+Attention (Talker): ~0.7GB
+Embeddings + heads: ~0.6GB
+Encoders (AuT + Vision): ~1.1GB
+= ~6.5GB (tight but possible!)
+
+With INT8 experts: ~4.5GB (comfortable)
+```
+
+**Disk storage:**
+- All 256 bundles on disk: ~78GB
+- Load on demand, cache smartly
+- Separate similarity maps for Thinker vs Talker experts
 
 **Current problem:**
 - Router wants expert 47 for "The future of AI is..."

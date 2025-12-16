@@ -379,7 +379,7 @@ class SelectiveMoELayer(nn.Module):
         """
         batch_size, seq_length, hidden_dim = hidden_states.shape
 
-        # Select experts (SNARC-augmented or standard)
+        # Select experts PER TOKEN (SNARC-augmented or standard)
         selected_expert_ids, router_weights = self.expert_loader.select_experts_snarc(
             hidden_states,
             self.layer_id,
@@ -387,43 +387,49 @@ class SelectiveMoELayer(nn.Module):
             snarc_salience=snarc_salience,
             metabolic_state=metabolic_state
         )
+        # selected_expert_ids: [batch, seq, num_experts_per_tok]
+        # router_weights: [batch, seq, num_experts_per_tok]
 
         if debug:
             print(f"\n🔍 MoE Layer {self.layer_id}:")
-            print(f"  Selected experts: {selected_expert_ids[:3]}...")
-            print(f"  Router weights: {router_weights[:3]}")
+            print(f"  Expert IDs shape: {selected_expert_ids.shape}")
+            print(f"  Sample experts (token 0): {selected_expert_ids[0, 0]}")
 
-        # Process each expert
-        expert_outputs = []
-        valid_expert_indices = []
+        # Process each token with its selected experts
+        output = torch.zeros_like(hidden_states)
 
-        for i, expert_id in enumerate(selected_expert_ids):
-            # Load expert (from memory or disk)
-            expert_weights = self.expert_loader.load_expert(expert_id, self.layer_id)
+        for b in range(batch_size):
+            for s in range(seq_length):
+                token_hidden = hidden_states[b, s:s+1, :]  # [1, 1, hidden]
+                token_expert_ids = selected_expert_ids[b, s]  # [num_experts_per_tok]
+                token_weights = router_weights[b, s]  # [num_experts_per_tok]
 
-            # Skip if expert doesn't exist (sparse layers)
-            if expert_weights is None:
-                continue
+                # Process this token with its experts
+                token_output = torch.zeros_like(token_hidden)
+                valid_weight_sum = 0.0
 
-            # Expert forward pass
-            output = self._expert_forward(hidden_states, expert_weights, debug=(debug and i == 0))  # Debug first expert only
-            expert_outputs.append(output)
-            valid_expert_indices.append(i)
+                for i, expert_id in enumerate(token_expert_ids):
+                    expert_id = int(expert_id.item())
 
-        # If no valid experts, return input unchanged (residual path)
-        if len(expert_outputs) == 0:
-            print(f"⚠️  No valid experts in layer {self.layer_id}, using identity")
-            return hidden_states
+                    # Load expert (from memory or disk)
+                    expert_weights = self.expert_loader.load_expert(expert_id, self.layer_id)
 
-        # Weighted combination (only use weights for valid experts)
-        valid_router_weights = router_weights[valid_expert_indices]
-        router_probs = F.softmax(valid_router_weights, dim=0)
+                    # Skip if expert doesn't exist (sparse layers)
+                    if expert_weights is None:
+                        continue
 
-        combined_output = torch.zeros_like(hidden_states)
-        for i, output in enumerate(expert_outputs):
-            combined_output += router_probs[i] * output
+                    # Expert forward pass on this token
+                    expert_out = self._expert_forward(token_hidden, expert_weights, debug=False)
+                    token_output += token_weights[i] * expert_out
+                    valid_weight_sum += token_weights[i].item()
 
-        return combined_output
+                # Renormalize if some experts were missing
+                if valid_weight_sum > 0 and valid_weight_sum != 1.0:
+                    token_output = token_output / valid_weight_sum
+
+                output[b, s] = token_output[0]  # Extract [hidden] vector from [1, hidden]
+
+        return output
 
     def _expert_forward(self, x: torch.Tensor, expert_weights: Dict[str, torch.Tensor], debug: bool = False) -> torch.Tensor:
         """Standard expert MLP: h = down(silu(gate(x)) * up(x))"""

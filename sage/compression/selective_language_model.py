@@ -112,7 +112,8 @@ class SelectiveLanguageModel(nn.Module):
         self,
         input_ids: torch.Tensor,
         snarc_salience: dict = None,
-        metabolic_state: str = "FOCUS"
+        metabolic_state: str = "FOCUS",
+        debug: bool = False,
     ):
         """
         Forward pass through complete model
@@ -121,6 +122,7 @@ class SelectiveLanguageModel(nn.Module):
             input_ids: [batch, seq] token IDs
             snarc_salience: Optional SNARC scores
             metabolic_state: Resource budget
+            debug: Enable debug logging
 
         Returns:
             logits: [batch, seq, vocab_size]
@@ -128,24 +130,41 @@ class SelectiveLanguageModel(nn.Module):
         # Embed tokens
         hidden_states = self.embed_tokens(input_ids)  # [batch, seq, hidden]
 
+        if debug:
+            print(f"\n🔍 Model Forward Pass:")
+            print(f"  Embeddings: {hidden_states.shape}, mean={hidden_states.mean():.4f}, std={hidden_states.std():.4f}")
+
         # Create causal mask
         seq_length = input_ids.shape[1]
         attention_mask = create_causal_mask(seq_length, hidden_states.device)
 
-        # Forward through transformer layers
-        for layer in self.layers:
+        # Forward through transformer layers (debug first layer only)
+        for i, layer in enumerate(self.layers):
+            if debug and i == 0:
+                print(f"\n{'='*60}")
+                print(f"LAYER 0 (first layer with debug enabled)")
+                print(f"{'='*60}")
             hidden_states = layer(
                 hidden_states,
                 attention_mask=attention_mask,
                 snarc_salience=snarc_salience,
-                metabolic_state=metabolic_state
+                metabolic_state=metabolic_state,
+                debug=(debug and i == 0),  # Only debug first layer
             )
+            if debug and i == 0:
+                print(f"  Layer 0 output: mean={hidden_states.mean():.4f}, std={hidden_states.std():.4f}")
 
         # Final norm
         hidden_states = self.norm(hidden_states)
 
+        if debug:
+            print(f"  After final norm: mean={hidden_states.mean():.4f}, std={hidden_states.std():.4f}")
+
         # Project to vocabulary
         logits = self.lm_head(hidden_states)  # [batch, seq, vocab]
+
+        if debug:
+            print(f"  Logits: {logits.shape}, mean={logits.mean():.4f}, std={logits.std():.4f}")
 
         return logits
 
@@ -157,7 +176,8 @@ class SelectiveLanguageModel(nn.Module):
         temperature: float = 1.0,
         top_k: int = 50,
         snarc_salience: dict = None,
-        metabolic_state: str = "FOCUS"
+        metabolic_state: str = "FOCUS",
+        debug: bool = False,
     ):
         """
         Autoregressive text generation
@@ -169,18 +189,20 @@ class SelectiveLanguageModel(nn.Module):
             top_k: Top-k sampling
             snarc_salience: Optional SNARC scores
             metabolic_state: Resource budget
+            debug: Enable debug logging
 
         Returns:
             generated_ids: [batch, seq + max_new_tokens]
         """
         self.eval()
 
-        for _ in range(max_new_tokens):
-            # Forward pass
+        for step_idx in range(max_new_tokens):
+            # Forward pass (debug only first token)
             logits = self.forward(
                 input_ids,
                 snarc_salience=snarc_salience,
-                metabolic_state=metabolic_state
+                metabolic_state=metabolic_state,
+                debug=(debug and step_idx == 0),
             )
 
             # Get logits for last token

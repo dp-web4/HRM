@@ -215,9 +215,9 @@ class SelectiveExpertLoader:
         num_experts: int = 8,
         snarc_salience: Optional[Dict[str, float]] = None,
         metabolic_state: str = "FOCUS"
-    ) -> Tuple[List[int], torch.Tensor]:
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
         """
-        Select experts using SNARC-augmented routing
+        Select experts using per-token routing (MoE standard)
 
         Args:
             hidden_states: Input to layer [batch, seq, hidden]
@@ -227,31 +227,46 @@ class SelectiveExpertLoader:
             metabolic_state: Current state (affects selection strategy)
 
         Returns:
-            (selected_expert_ids, router_weights)
+            (selected_expert_ids, router_weights) per token
+            selected_expert_ids: [batch, seq, num_experts]
+            router_weights: [batch, seq, num_experts]
         """
         # Load router
         router = self.load_router(layer_id)
 
-        # Compute router logits
+        # Compute router logits PER TOKEN (not pooled!)
         # router: [num_experts, hidden_size]
         # hidden_states: [batch, seq, hidden]
-        # We'll use mean over sequence for expert selection
-        pooled_hidden = hidden_states.mean(dim=1)  # [batch, hidden]
+        batch_size, seq_length, hidden_size = hidden_states.shape
 
-        router_logits = F.linear(pooled_hidden, router)  # [batch, num_experts]
-        router_logits = router_logits.mean(dim=0)  # [num_experts] - average across batch
+        # Flatten for per-token routing
+        hidden_flat = hidden_states.view(-1, hidden_size)  # [batch*seq, hidden]
+
+        router_logits = F.linear(hidden_flat, router)  # [batch*seq, num_experts]
 
         # Apply per-layer expert availability mask
         # This ensures router only selects experts that exist in sparse layers
         available_experts = self.expert_availability.get(layer_id, list(range(128)))
-        mask = torch.full_like(router_logits, float('-inf'))
-        mask[available_experts] = 0
+        mask = torch.full((1, 128), float('-inf'), device=router_logits.device)
+        mask[0, available_experts] = 0
         router_logits = router_logits + mask
 
-        # Standard MoE: just use top-k of router logits (now masked)
+        # Standard MoE: softmax, then top-k per token, then normalize (Q3-Omni way)
         if snarc_salience is None:
-            top_k_values, top_k_indices = torch.topk(router_logits, k=num_experts)
-            return top_k_indices.tolist(), top_k_values
+            # 1. Softmax router logits to get routing weights
+            routing_weights = F.softmax(router_logits, dim=-1, dtype=torch.float32)
+
+            # 2. Select top-k PER TOKEN
+            top_k_values, top_k_indices = torch.topk(routing_weights, k=num_experts, dim=-1)
+
+            # 3. Normalize top-k weights per token (norm_topk_prob=True in Q3-Omni config)
+            top_k_values = top_k_values / top_k_values.sum(dim=-1, keepdim=True)
+
+            # Reshape back to [batch, seq, num_experts]
+            top_k_indices = top_k_indices.view(batch_size, seq_length, num_experts)
+            top_k_values = top_k_values.view(batch_size, seq_length, num_experts)
+
+            return top_k_indices, top_k_values
 
         # SNARC-augmented selection
         # Weight router logits by salience + trust

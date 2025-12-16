@@ -114,6 +114,26 @@ class ExpertReputation:
 - Reputation evolves: new evidence updates trust scores
 - Relationships tracked: which experts collaborate well
 
+---
+
+## ⚠️ NAMING CONVENTION: EM-State (Dec 16, 2025)
+
+**Use "EM-state" (Epistemic Monitoring), NOT "emotional state"**
+
+SAGE Session 48 introduced "emotional intelligence" dimensions (curiosity, frustration, progress, engagement). For production/external presentation, use neutral terminology:
+
+| Research Term | Production Term | What It Monitors |
+|---------------|-----------------|------------------|
+| Emotional state | **EM-state** | System behavioral state |
+| Curiosity | **EM-curiosity** | Exploration drive |
+| Frustration | **EM-stagnation** | Quality plateau detection |
+| Progress | **EM-momentum** | Learning trajectory |
+| Engagement | **EM-focus** | Priority concentration |
+
+**Why**: Avoids anthropomorphization skepticism in enterprise contexts. Same math, different presentation.
+
+**The wink**: "EM" preserves the sound for those who know the provenance.
+
 **SAGE-local database** (not federated yet):
 - SQLite or similar for expert reputation persistence
 - Survives restarts, accumulates across sessions

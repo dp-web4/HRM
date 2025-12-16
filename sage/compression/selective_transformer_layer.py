@@ -354,12 +354,14 @@ class SelectiveMoELayer(nn.Module):
         expert_loader: SelectiveExpertLoader,
         layer_id: int,
         num_experts_per_tok: int = 8,
+        trust_selector=None,  # Optional TrustBasedExpertSelector
     ):
         super().__init__()
         self.hidden_size = hidden_size
         self.expert_loader = expert_loader
         self.layer_id = layer_id
         self.num_experts_per_tok = num_experts_per_tok
+        self.trust_selector = trust_selector
 
     def forward(
         self,
@@ -379,14 +381,49 @@ class SelectiveMoELayer(nn.Module):
         """
         batch_size, seq_length, hidden_dim = hidden_states.shape
 
-        # Select experts PER TOKEN (SNARC-augmented or standard)
-        selected_expert_ids, router_weights = self.expert_loader.select_experts_snarc(
-            hidden_states,
-            self.layer_id,
-            num_experts=self.num_experts_per_tok,
-            snarc_salience=snarc_salience,
-            metabolic_state=metabolic_state
-        )
+        # Select experts PER TOKEN
+        # Trust-based selection if available, otherwise SNARC-augmented or standard
+        if self.trust_selector is not None:
+            # Get router logits first
+            router = self.expert_loader.load_router(self.layer_id)
+            hidden_flat = hidden_states.view(-1, hidden_dim)  # [batch*seq, hidden]
+            import torch.nn.functional as F
+            router_logits = F.linear(hidden_flat, router)  # [batch*seq, num_experts]
+
+            # Use trust-based selection (per-token)
+            # For now, use mean embedding as context (simplified)
+            # TODO: Use ContextClassifier for more sophisticated context detection
+            mean_embedding = hidden_states.mean(dim=(0, 1)).detach().cpu().numpy()
+
+            # Select experts using trust
+            result = self.trust_selector.select_experts(
+                router_logits=router_logits[0],  # Use first token as representative
+                context=None,  # Will auto-classify if classifier available
+                k=self.num_experts_per_tok,
+                input_embedding=mean_embedding
+            )
+
+            # Convert to tensor format expected by rest of code
+            # Repeat selection across all tokens (simplified for now)
+            selected_ids = torch.tensor(result.selected_expert_ids, device=hidden_states.device)
+            selected_expert_ids = selected_ids.unsqueeze(0).unsqueeze(0).expand(batch_size, seq_length, -1)
+
+            selected_weights = torch.tensor(result.selection_scores, device=hidden_states.device)
+            router_weights = selected_weights.unsqueeze(0).unsqueeze(0).expand(batch_size, seq_length, -1)
+
+            if debug:
+                print(f"\n🔍 Trust-based selection enabled")
+                print(f"  Context: {result.context}")
+                print(f"  Selected experts: {result.selected_expert_ids}")
+        else:
+            # Standard SNARC-augmented selection
+            selected_expert_ids, router_weights = self.expert_loader.select_experts_snarc(
+                hidden_states,
+                self.layer_id,
+                num_experts=self.num_experts_per_tok,
+                snarc_salience=snarc_salience,
+                metabolic_state=metabolic_state
+            )
         # selected_expert_ids: [batch, seq, num_experts_per_tok]
         # router_weights: [batch, seq, num_experts_per_tok]
 
@@ -490,10 +527,12 @@ class SelectiveTransformerLayer(nn.Module):
         num_experts_per_tok: int = 8,
         rms_norm_eps: float = 1e-6,
         extraction_dir: str = None,
+        trust_selector=None,  # Optional TrustBasedExpertSelector
     ):
         super().__init__()
         self.hidden_size = hidden_size
         self.layer_id = layer_id
+        self.trust_selector = trust_selector
 
         # Pre-normalization (load real weights if available!)
         self.input_layernorm = RMSNorm(hidden_size, eps=rms_norm_eps)
@@ -548,6 +587,7 @@ class SelectiveTransformerLayer(nn.Module):
             expert_loader=expert_loader,
             layer_id=layer_id,
             num_experts_per_tok=num_experts_per_tok,
+            trust_selector=self.trust_selector,  # Pass trust selector to MoE
         )
 
     def forward(

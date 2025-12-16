@@ -157,6 +157,92 @@ With INT8: experts drop to 4.5MB each → 6 loaded = 27MB/layer → 1.3GB total
 5. **Which experts are "universal" vs "specialized"?** (affects quantization priority)
 6. **Can low-activation experts be INT4 without quality loss?**
 
+---
+
+## Qwen3-Omni Architecture Reference (Dec 15, 2025)
+
+From [technical report](https://arxiv.org/abs/2509.17765) and [HuggingFace docs](https://huggingface.co/docs/transformers/main/en/model_doc/qwen3_omni_moe):
+
+### Core Specifications
+
+| Component | Details |
+|-----------|---------|
+| **Total params** | 30B (30.5B) |
+| **Active params** | 3B per token ("A3B") |
+| **Thinker layers** | 48 |
+| **Talker layers** | 20 |
+| **Experts per layer** | 128 |
+| **Experts active** | 8 per token |
+| **Shared experts** | None |
+| **Hidden dim** | 2048 |
+| **Query heads** | 32 |
+| **KV heads** | 4 (GQA 8:1 ratio) |
+| **Context window** | 32K native, 131K with YaRN |
+
+### Separate Encoders (Not MoE)
+
+| Encoder | Size | Notes |
+|---------|------|-------|
+| **AuT (Audio)** | ~0.6B | Trained on 20M hours, 12.5 Hz token rate |
+| **Vision** | ~543M | From Qwen3-VL, SigLIP2 init |
+
+### Thinker vs Talker
+
+**Thinker** (main reasoning):
+- 48 layers × 128 experts = our primary focus
+- Handles text, vision, audio understanding
+- Outputs text tokens + high-level representations
+
+**Talker** (speech generation):
+- 20 layers × 128 experts (7,680 expert weights)
+- Conditions on **audio/visual features only**, NOT Thinker's text
+- Uses multi-codebook VQ (32 codebook groups)
+- **For text-only inference: Talker not needed!**
+
+**Code2Wav**:
+- Lightweight causal ConvNet
+- Converts codebooks → waveform
+- ~2GB memory, can disable for text-only
+
+### Key Insight for SAGE
+
+```
+Text-only use case:
+  ✅ Thinker (48 layers × 128 experts)
+  ✅ Embeddings + LM Head
+  ❌ Talker (not needed - saves 20 layers!)
+  ❌ Code2Wav (not needed)
+  ❌ AuT encoder (not needed for text input)
+  ❌ Vision encoder (not needed for text input)
+
+Full omni use case:
+  ✅ Everything
+```
+
+### Quantization Research
+
+From [Qwen3 quantization study](https://arxiv.org/html/2505.02214v1):
+- **8-bit**: Near lossless, safe for deployment
+- **4-bit**: Noticeable degradation but usable
+- **3-bit and below**: Not recommended (Qwen3 more sensitive than predecessors)
+
+**Reason**: Advanced pretraining = less parameter redundancy = more sensitive to quantization
+
+### Deployment Tips
+
+From [Qwen docs](https://qwen.readthedocs.io/en/latest/deployment/vllm.html):
+- **vLLM recommended** for MoE (HF Transformers slow)
+- **FlashAttention 2** reduces memory (needs float16/bfloat16)
+- **llama.cpp**: Use `-ot ".ffn_.*_exps.=CPU"` to offload MoE to CPU
+- **First-packet latency**: 234ms audio, 547ms video
+
+### Implications for Expert Bundling
+
+Since Talker isn't needed for text-only:
+- **Thinker experts**: 48 layers × 128 = 6,144 → 128 bundles @ ~430MB
+- **Talker experts**: 20 layers × 128 = 2,560 → 128 bundles @ ~180MB (if needed)
+- **Text-only on Sprout**: Skip Talker entirely, halve expert storage needs!
+
 **Current problem:**
 - Router wants expert 47 for "The future of AI is..."
 - We only have experts 0-7

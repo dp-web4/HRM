@@ -249,7 +249,7 @@ class ContextClassifier:
 
         # Confidence: inverse of distance (normalized)
         # Heuristic: confidence = exp(-distance²)
-        confidence = np.exp(-distance ** 2)
+        confidence = float(np.exp(-distance ** 2))
 
         # Update statistics
         self.total_classifications += 1
@@ -304,7 +304,7 @@ class ContextClassifier:
             context_id = f"context_{cluster_idx}"
             centroid = self.clusterer.cluster_centers_[cluster_idx]
             distance = np.linalg.norm(embeddings[i] - centroid)
-            confidence = np.exp(-distance ** 2)
+            confidence = float(np.exp(-distance ** 2))
 
             # Update statistics
             self.total_classifications += 1

@@ -170,11 +170,11 @@ class TrustBasedExpertSelector:
                 # No context provided and no way to classify: use default
                 context = "general"
 
-        # Convert router logits to numpy for easier manipulation
+        # Convert router logits to numpy for easier manipulation (ensure float32)
         if HAS_TORCH and torch is not None and isinstance(router_logits, torch.Tensor):
-            router_scores = router_logits.detach().cpu().numpy()
+            router_scores = router_logits.detach().cpu().numpy().astype(np.float32)
         else:
-            router_scores = np.array(router_logits)
+            router_scores = np.array(router_logits, dtype=np.float32)
 
         # Get contextual trust for each expert
         trust_scores = self._get_contextual_trust_scores(context)

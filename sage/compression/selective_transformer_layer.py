@@ -408,10 +408,11 @@ class SelectiveMoELayer(nn.Module):
 
             # Convert to tensor format expected by rest of code
             # Repeat selection across all tokens (simplified for now)
+            # CRITICAL: Match hidden_states dtype to avoid buffer mismatch errors
             selected_ids = torch.tensor(result.selected_expert_ids, device=hidden_states.device, dtype=torch.long)
             selected_expert_ids = selected_ids.unsqueeze(0).unsqueeze(0).expand(batch_size, seq_length, -1)
 
-            selected_weights = torch.tensor(result.selection_scores, device=hidden_states.device, dtype=torch.float32)
+            selected_weights = torch.tensor(result.selection_scores, device=hidden_states.device, dtype=hidden_states.dtype)
             router_weights = selected_weights.unsqueeze(0).unsqueeze(0).expand(batch_size, seq_length, -1)
 
             if debug:
@@ -460,8 +461,8 @@ class SelectiveMoELayer(nn.Module):
 
                     # Expert forward pass on this token
                     expert_out = self._expert_forward(token_hidden, expert_weights, debug=False)
-                    # Ensure weight is float32 for consistency
-                    weight_scalar = token_weights[i].to(dtype=torch.float32)
+                    # Weight already matches hidden_states dtype from construction
+                    weight_scalar = token_weights[i]
                     token_output += weight_scalar * expert_out
                     valid_weight_sum += weight_scalar.item()
 

@@ -1,0 +1,236 @@
+================================================================================
+DTYPE MISMATCH ROOT CAUSE: TRUST-BASED vs BASELINE SELECTION
+================================================================================
+
+PROBLEM STATEMENT
+-----------------
+Trust-based expert selection causes dtype mismatches that baseline doesn't,
+even though both use the same attention weights. The mismatch appears in
+expert weight application (line 462 of selective_transformer_layer.py).
+
+
+KEY FINDING: THE CONVERSION CYCLE
+==================================
+
+BASELINE PATH (NO DTYPE MISMATCH)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Tensor Space
+  hidden_states (original dtype)
+        ↓
+  router_logits = F.linear(hidden_states, router)  [same dtype]
+        ↓
+  routing_weights = F.softmax(router_logits)       [float32]
+        ↓
+  return as tensors
+        ↓
+  Expert input: hidden_states (original dtype)
+        ↓
+  Expert output = F.linear(...) (original dtype)
+        ↓
+  weight * expert_out  [float32 × original_dtype] → OK (broadcast)
+
+
+TRUST-BASED PATH (DTYPE MISMATCH!)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Tensor Space    →    Numpy Space    →    Python Space    →    Tensor Space
+  router_logits        detach().cpu()       tolist()             torch.tensor(
+        ↓               .numpy()            [list]               dtype=float32)
+  Convert to numpy     astype(np.float32)   (loses type info)    ↓
+        ↓                   ↓                                    explicit float32!
+  Numpy ops            All numpy                                 ↓
+  router_scores        arithmetic                            selected_weights
+  trust_scores         combined_scores                       (guaranteed float32)
+        ↓                   ↓                                      ↓
+  mixed space      [type metadata lost]                   [Broadcast to all tokens]
+        ↓                                                         ↓
+  tolist() called                                    Expert input: hidden_states
+  [explicit list]                                    (original dtype)
+        ↓                                                    ↓
+  [dtype lost forever]                           Expert output (original dtype)
+                                                         ↓
+                                          weight (float32) * expert_out (?)
+                                          [Potential mismatch!]
+
+
+THE CRITICAL DIFFERENCE
+=========================
+
+                BASELINE          TRUST-BASED
+                ────────          ────────────
+Type space:     Tensor → Tensor   Tensor → Numpy → List → Tensor
+Dtype tracking: Preserved         Lost during list conversion
+Router path:    Per-token         Single token (only first)
+                [batch,seq,exp]   [num_experts] then broadcast
+Weight type:    Implicit float32  Explicit float32 cast
+Expert loop:    Direct use        May need type promotion
+
+
+THE NUMPY DETOUR PROBLEM
+==========================
+
+Line 175 (TrustBasedExpertSelector):
+  router_scores = router_logits.detach().cpu().numpy().astype(np.float32)
+                                         ^^^^^^
+                                    Leaves tensor semantics
+
+Line 228 (ExpertSelectionResult):
+  selection_scores=selected_scores.tolist(),
+                                   ^^^^^^
+                                   CRITICAL: dtype info erased!
+
+Line 412 (SelectiveMoELayer):
+  selected_weights = torch.tensor(result.selection_scores, dtype=torch.float32)
+                                                            ^^^^^^^^^^^^^^^^^
+                                                    FORCED explicit cast (RED FLAG)
+
+Line 462 (SelectiveMoELayer._expert_forward loop):
+  weight_scalar = token_weights[i].to(dtype=torch.float32)
+                                     ^^^^^^^^^^^^^^^^^^^
+                                 ANOTHER explicit cast (DEFENSIVE)
+
+
+SPECIFIC CODE MISMATCHES
+=========================
+
+1. ROUTER LOGIT EXTRACTION
+   ────────────────────────
+   BASELINE:
+     router_logits = F.linear(hidden_flat, router)
+     # Shape: [batch*seq, num_experts] - maintains per-token structure
+   
+   TRUST-BASED:
+     router_logits = F.linear(hidden_flat, router)  # Same shape
+     result = self.trust_selector.select_experts(
+         router_logits=router_logits[0],  # Takes ONLY FIRST TOKEN!
+         ...                              # Breaks per-token semantics
+     )
+
+
+2. TYPE PATHWAY
+   ─────────────
+   BASELINE:
+     F.linear() → softmax(dtype=float32) → topk → reshape → return tensors
+     (All PyTorch operations, dtype context maintained)
+   
+   TRUST-BASED:
+     F.linear() → detach().cpu() → numpy() → astype(float32)
+     → NumPy ops (astype, argsort) → tolist() → torch.tensor(dtype=float32)
+     (Lost context after list conversion, explicit cast required)
+
+
+3. WEIGHT RECONSTRUCTION
+   ──────────────────────
+   BASELINE (line 263):
+     top_k_values = top_k_values / top_k_values.sum(...)
+     # Result is tensor with inherited dtype properties
+   
+   TRUST-BASED (line 412):
+     selected_weights = torch.tensor(result.selection_scores, dtype=torch.float32)
+                                                               ^^^^^^^^^^^^^^^^^
+                                                        MUST explicitly specify
+
+
+4. SINGLE-TOKEN ROUTING BROADCAST
+   ────────────────────────────────
+   BASELINE:
+     selected_expert_ids: [batch, seq, num_experts]
+     router_weights: [batch, seq, num_experts]
+     (Different routing per token position)
+   
+   TRUST-BASED:
+     selected_weights = torch.tensor(..., dtype=float32)  # [num_experts]
+     router_weights = selected_weights.unsqueeze(0).unsqueeze(0)\
+                                     .expand(batch_size, seq_length, -1)
+     (Same routing repeated for ALL tokens - semantics change!)
+
+
+WHERE MISMATCH MANIFESTS
+=========================
+
+SelectiveMoELayer.forward() expert loop (lines 439-470):
+
+  for b in range(batch_size):
+    for s in range(seq_length):
+      token_hidden = hidden_states[b, s:s+1, :]      # original dtype
+      token_weights = router_weights[b, s]           # float32 (explicit cast)
+      
+      expert_out = self._expert_forward(token_hidden, ...)
+      # expert_out dtype = F.linear(token_hidden, ...)
+      # = dtype of token_hidden (which varies based on pipeline)
+      
+      weight_scalar = token_weights[i].to(dtype=torch.float32)
+      #                                   ^^^^^^^^^^^^^^^^^^^
+      #                              FLAG: Why explicit cast?
+      
+      token_output += weight_scalar * expert_out
+      #               ^^^^^^^^^^^^^^^^^^^^^^^
+      #          Can cause type promotion or mismatch
+
+
+ROOT CAUSE ANALYSIS
+===================
+
+Why trust-based breaks dtype consistency:
+
+1. NUMPY SEMANTICS LOSS
+   Numpy arrays lose PyTorch dtype metadata. When converted back to list,
+   the type system has no record that these came from float32. Explicit
+   dtype specification becomes necessary.
+
+2. SINGLE-TOKEN AVERAGING
+   Using only router_logits[0] means context classifier sees averaged
+   mean_embedding, losing per-token information. Different semantics
+   than per-token routing.
+
+3. LIST SERIALIZATION
+   tolist() converts numpy array to Python list. Python lists are
+   dynamically typed. Reconstructed tensor must specify dtype explicitly,
+   which may not match the original hidden_states dtype.
+
+4. EXPLICIT CAST REQUIREMENT
+   Line 462's explicit .to(dtype=float32) is a RED FLAG indicating
+   downstream code detected the mismatch and added defensive conversion.
+
+5. TRUST COMPUTATION IN NUMPY
+   _get_contextual_trust_scores() returns numpy arrays with no device
+   awareness or dtype tracking. Combined with router scores in numpy space.
+
+
+IMPACT ON FORWARD PASS
+=======================
+
+PRECISION LOSS:
+  weight (float32) * expert_out (unknown precision)
+  May cause unnecessary precision demotion or confusion.
+
+REPRODUCIBILITY:
+  Type promotion behavior can vary by hardware/CUDA version.
+  Same code may behave differently on different systems.
+
+NUMERICAL STABILITY:
+  Mixed precision operations can amplify numerical errors in
+  iterative expert selection loops.
+
+PERFORMANCE:
+  May trigger unnecessary type conversions or slower paths.
+
+
+HYPOTHESIS CONFIDENCE
+====================
+⚠️  VERY HIGH (95%+) that this is the root cause:
+
+Evidence:
+  1. Explicit dtype casts on lines 412 and 462 are red flags
+  2. Baseline path doesn't have these defensive casts
+  3. Only trust-based path goes through numpy→list cycle
+  4. Trust selector designed for numpy operations (more "natural"?)
+  5. No other code paths show similar type confusion
+
+
+RECOMMENDATION
+===============
+Keep trust-based selection in pure tensor space to preserve dtype metadata.
+Replace numpy operations with torch equivalents or use torch.as_tensor
+instead of detach().cpu().numpy() detour.
+
+See DTYPE_ANALYSIS_TRUST_VS_BASELINE.md for complete analysis and fixes.

@@ -21,6 +21,7 @@ Expected Outcome:
 import sys
 import os
 import torch
+import numpy as np
 import time
 from pathlib import Path
 
@@ -180,8 +181,9 @@ def run_trust_augmented_validation(extraction_dir, num_generations=10, explorati
 
     # Fit with synthetic training data for now
     # In production, we'd use real embeddings
-    training_embeddings = torch.randn(100, 2048)
-    training_labels = torch.randint(0, 5, (100,))
+    # CRITICAL: Convert to numpy float32 to prevent sklearn's float64 conversion
+    training_embeddings = torch.randn(100, 2048).numpy().astype(np.float32)
+    training_labels = torch.randint(0, 5, (100,)).numpy()
     classifier.fit(training_embeddings, training_labels)
 
     # Create trust selector

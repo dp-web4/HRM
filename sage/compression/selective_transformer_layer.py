@@ -91,7 +91,8 @@ class MultimodalRotaryEmbedding(nn.Module):
         self.inv_freqs = []
         for section_dim in self.mrope_section:
             # Standard RoPE: step by 2 to get half-dimension freqs
-            inv_freq = 1.0 / (self.base ** (torch.arange(0, section_dim, 2).float() / section_dim))
+            # Explicitly use float32 to prevent checkpoint dtype mismatches
+            inv_freq = 1.0 / (self.base ** (torch.arange(0, section_dim, 2, dtype=torch.float32) / section_dim))
             self.register_buffer(f"inv_freq_{len(self.inv_freqs)}", inv_freq, persistent=False)
             self.inv_freqs.append(inv_freq)
 
@@ -117,7 +118,8 @@ class MultimodalRotaryEmbedding(nn.Module):
 
             for inv_freq in self.inv_freqs:
                 # Compute frequencies for this section
-                freqs = torch.outer(t, inv_freq.to(x.device))
+                # Ensure inv_freq is float32 (checkpoint might load as float64)
+                freqs = torch.outer(t, inv_freq.to(device=x.device, dtype=torch.float32))
 
                 # Standard RoPE doubling: cat freqs with itself
                 emb = torch.cat((freqs, freqs), dim=-1)

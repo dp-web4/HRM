@@ -1,0 +1,161 @@
+{
+  "lct_id": "lct:web4:sage:thinker:expert_42:e1b44d47939e726b",
+  "subject": "did:web4:sage:thinker:expert_42:719134bae8e4a90c",
+  "uri_reference": "lct://sage:thinker:expert_42@testnet",
+  "binding": {
+    "entity_type": "ai",
+    "public_key": null,
+    "hardware_anchor": null,
+    "created_at": "2025-12-18T02:11:35.533434+00:00",
+    "binding_proof": null
+  },
+  "birth_certificate": {
+    "issuing_society": "lct://sage:thinker:coordinator@testnet",
+    "citizen_role": "lct:web4:role:sage-expert",
+    "birth_timestamp": "2025-12-18T02:11:35.533442+00:00",
+    "birth_witnesses": [
+      "lct://sage:thinker:coordinator@testnet",
+      "lct://sage:thinker:expert_1@testnet",
+      "lct://sage:thinker:expert_2@testnet"
+    ],
+    "genesis_block_hash": null,
+    "birth_context": "neural_moe_expert",
+    "rights": [
+      "inference:execute",
+      "gradient:receive",
+      "pairing:coordinator",
+      "witness:peer-experts"
+    ],
+    "responsibilities": [
+      "respond_to_queries",
+      "maintain_specialization",
+      "update_from_feedback",
+      "contribute_to_mixture"
+    ],
+    "initial_atp": 150
+  },
+  "mrh": {
+    "bound": [],
+    "paired": [
+      {
+        "lct_id": "lct://sage:thinker:coordinator@testnet",
+        "relationship_type": "operational",
+        "permanent": true,
+        "ts": "2025-12-18T02:11:35.533445+00:00",
+        "context": "sage_coordinator_pairing"
+      },
+      {
+        "lct_id": "lct:web4:role:sage-expert",
+        "relationship_type": "birth_certificate",
+        "permanent": true,
+        "ts": "2025-12-18T02:11:35.533446+00:00",
+        "context": "birth_certificate_role"
+      }
+    ],
+    "witnessing": [],
+    "broadcast": [],
+    "horizon_depth": 1,
+    "fractal_depth": 0,
+    "context_radius": 1,
+    "last_updated": "2025-12-18T02:11:35.533448+00:00"
+  },
+  "policy": {
+    "capabilities": [
+      "text-generation",
+      "reasoning",
+      "code-analysis"
+    ],
+    "constraints": {
+      "max_context_length": 8192,
+      "max_generation_tokens": 2048,
+      "requires_coordinator": true,
+      "pairing_required": true
+    },
+    "permissions": {
+      "read": [
+        "self",
+        "coordinator"
+      ],
+      "write": [
+        "self"
+      ],
+      "execute": [
+        "inference"
+      ]
+    }
+  },
+  "t3_tensor": {
+    "dimensions": {
+      "technical_competence": 0.65,
+      "social_reliability": 0.5850000000000001,
+      "temporal_consistency": 0.52,
+      "witness_count": 0.3,
+      "lineage_depth": 0.1,
+      "context_alignment": 0.65
+    },
+    "composite_score": 0.65,
+    "last_computed": "2025-12-18T02:11:35.533450+00:00",
+    "computation_witnesses": [
+      "lct://sage:thinker:coordinator@testnet"
+    ]
+  },
+  "v3_tensor": {
+    "dimensions": {
+      "energy_balance": 150,
+      "contribution_history": 0.0,
+      "resource_stewardship": 0.5,
+      "network_effects": 0.0,
+      "reputation_capital": 0.0,
+      "temporal_value": 0.0
+    },
+    "composite_score": 0.1,
+    "last_computed": "2025-12-18T02:11:35.533451+00:00",
+    "computation_witnesses": [
+      "lct://sage:thinker:coordinator@testnet"
+    ]
+  },
+  "attestations": [
+    {
+      "witness": "lct://sage:thinker:coordinator@testnet",
+      "attestation_type": "existence",
+      "claims": {
+        "observed_at": "2025-12-18T02:11:35.533453+00:00",
+        "method": "birth_ceremony",
+        "context": "sage_expert_initialization"
+      },
+      "signature": null,
+      "ts": "2025-12-18T02:11:35.533454+00:00"
+    },
+    {
+      "witness": "lct://sage:thinker:expert_1@testnet",
+      "attestation_type": "existence",
+      "claims": {
+        "observed_at": "2025-12-18T02:11:35.533455+00:00",
+        "method": "birth_ceremony",
+        "context": "sage_expert_initialization"
+      },
+      "signature": null,
+      "ts": "2025-12-18T02:11:35.533456+00:00"
+    },
+    {
+      "witness": "lct://sage:thinker:expert_2@testnet",
+      "attestation_type": "existence",
+      "claims": {
+        "observed_at": "2025-12-18T02:11:35.533457+00:00",
+        "method": "birth_ceremony",
+        "context": "sage_expert_initialization"
+      },
+      "signature": null,
+      "ts": "2025-12-18T02:11:35.533458+00:00"
+    }
+  ],
+  "lineage": [],
+  "revocation": {
+    "status": "active",
+    "ts": null,
+    "reason": null
+  },
+  "created_at": "2025-12-18T02:11:35.533460+00:00",
+  "updated_at": "2025-12-18T02:11:35.533461+00:00",
+  "version": "1.0.0"
+}

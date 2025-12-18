@@ -16,7 +16,7 @@ from typing import Dict, Optional, Any, Callable
 from dataclasses import dataclass
 from collections import OrderedDict
 
-from lct_identity import (
+from sage.web4.lct_identity import (
     parse_lct_uri,
     validate_lct_uri,
     LCTIdentity

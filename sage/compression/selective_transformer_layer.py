@@ -366,6 +366,10 @@ class SelectiveMoELayer(nn.Module):
         self.num_experts_per_tok = num_experts_per_tok
         self.trust_selector = trust_selector
 
+        # NEW: Track last selected experts for Session 69+
+        self.last_selected_expert_ids = None  # [batch, seq, num_experts_per_tok]
+        self.last_router_weights = None  # [batch, seq, num_experts_per_tok]
+
     def forward(
         self,
         hidden_states: torch.Tensor,
@@ -430,6 +434,10 @@ class SelectiveMoELayer(nn.Module):
             )
         # selected_expert_ids: [batch, seq, num_experts_per_tok]
         # router_weights: [batch, seq, num_experts_per_tok]
+
+        # NEW: Store for Session 69+ expert tracking
+        self.last_selected_expert_ids = selected_expert_ids.detach().clone()
+        self.last_router_weights = router_weights.detach().clone()
 
         if debug:
             print(f"\n🔍 MoE Layer {self.layer_id}:")

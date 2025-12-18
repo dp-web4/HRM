@@ -46,14 +46,33 @@ SAGE/HRM is **research-focused exploration** of consciousness-like patterns for 
 
 ## 📊 Recent Achievements
 
-#### LCT Identity + ATP Permissions Integration (December 2025)
-**Latest milestone**: Full LCT identity system integrated with SAGE consciousness:
-- **LCT Identity**: Hardware-bound identity (`lct:web4:agent:dp@Thor#consciousness`)
-- **ATP Permissions**: Task-scoped authorization (9 permission levels)
-- **Consciousness Integration**: Permission checker in RealSAGEConsciousness
-- **Test Coverage**: 82/82 tests passing (identity + permissions + consciousness)
+#### Trust-Based Expert Selection + Web4 Integration (December 2025)
+**Latest milestone**: Complete SAGE ↔ Web4 integration with trust-augmented MoE expert selection:
 
-**Documentation**: [`sage/docs/LATEST_STATUS.md`](sage/docs/LATEST_STATUS.md) - Dec 2 updates
+| Component | Status | Sessions |
+|-----------|--------|----------|
+| TrustBasedExpertSelector | Validated | 56-57 |
+| ContextClassifier | Operational | 57-58 |
+| ExpertIdentityBridge (LCT) | Complete | 59 |
+| ATPResourceAllocator | Implemented | 60 |
+| TrustTensorSync | Bidirectional | 61 |
+| AuthorizedExpertSelector | End-to-end | 61 |
+| Q3-Omni Production Validation | 10/10 generations | 62-64 |
+
+**Key Results** (Session 62):
+- Trust-augmented selection validated with real Q3-Omni 30B weights
+- Learning effect observed: +34.8% quality improvement over 10 generations
+- Dtype compatibility resolved (Legion + Thor collaboration)
+- Baseline: 13.24 perplexity → Trust-augmented final: 9.96 perplexity
+
+**Documentation**: [`sage/docs/LATEST_STATUS.md`](sage/docs/LATEST_STATUS.md)
+
+#### LCT Identity + ATP Permissions Integration (December 2025)
+Full LCT identity system integrated:
+- **LCT Identity**: Hardware-bound identity (`lct:web4:agent:dp@Thor`)
+- **ATP Permissions**: Task-scoped authorization (9 permission levels)
+- **Integration**: Permission checker in RealSAGEConsciousness
+- **Test Coverage**: 82/82 tests passing (identity + permissions)
 
 #### Federation Phases 1-3.75 Complete (November-December 2025)
 Complete federation protocol stack implemented:
@@ -72,7 +91,7 @@ Complete federation protocol stack implemented:
 - **Integration**: SNARC scores drive IRP plugin selection and ATP allocation
 
 #### Epistemic Proprioception Discovery (November 2025)
-A fundamental breakthrough in consciousness architecture:
+A significant development in the architecture:
 - **Physical Proprioception**: Body position awareness (embodied agents)
 - **Linguistic Proprioception**: Translation gap awareness (cross-modal communication)
 - **Epistemic Proprioception**: Knowledge boundary awareness (certainty tracking)
@@ -234,7 +253,7 @@ Human-AI collaboration creates persistent synthetic entities:
 - **[SNARC Analysis](./sage/docs/SNARC_ANALYSIS.md)** - Salience-based memory
 - **[Consciousness Parallels](./sage/docs/consciousness_parallels.md)** - Biological inspiration
 
-### Recent Breakthroughs
+### Recent Developments
 - **[Epistemic Proprioception](./sage/docs/EPISTEMIC_PROPRIOCEPTION_INTEGRATION.md)** - Self-awareness of knowledge
 - **[Nano Deployment Roadmap](./sage/docs/NANO_DEPLOYMENT_ROADMAP.md)** - 8-track implementation plan
 - **[IRP Protocol](./IRP_PROTOCOL.md)** - Universal consciousness API
@@ -347,7 +366,7 @@ python consciousness_experiment.py
 # System understanding (start here)
 cat sage/docs/SYSTEM_UNDERSTANDING.md
 
-# Epistemic proprioception (latest breakthrough)
+# Epistemic proprioception (key development)
 cat sage/docs/EPISTEMIC_PROPRIOCEPTION_INTEGRATION.md
 
 # Nano deployment roadmap

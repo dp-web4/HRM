@@ -1,0 +1,1525 @@
+{
+  "router_baseline": {
+    "unique_experts": 4,
+    "total_experts": 128,
+    "utilization": 0.03125,
+    "unused_experts": 124
+  },
+  "context_aware_selection": {
+    "unique_experts": 8,
+    "total_uses": 200,
+    "specialists": 5,
+    "generalists": 3,
+    "specialist_rate": 0.625,
+    "total_substitutions": 200
+  },
+  "improvement": {
+    "diversity_pct": 100.0,
+    "utilization_pct": 100.0,
+    "specialists_gained": 5
+  },
+  "substitution_history": [
+    {
+      "generation": 1,
+      "old_expert": 73,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 1,
+      "old_expert": 114,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 1,
+      "old_expert": 95,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 1,
+      "old_expert": 106,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 2,
+      "old_expert": 73,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 2,
+      "old_expert": 114,
+      "new_expert": 17,
+      "context_id": 1
+    },
+    {
+      "generation": 2,
+      "old_expert": 95,
+      "new_expert": 1,
+      "context_id": 1
+    },
+    {
+      "generation": 2,
+      "old_expert": 106,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 3,
+      "old_expert": 73,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 3,
+      "old_expert": 114,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 3,
+      "old_expert": 95,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 3,
+      "old_expert": 106,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 4,
+      "old_expert": 73,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 4,
+      "old_expert": 114,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 4,
+      "old_expert": 95,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 4,
+      "old_expert": 106,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 5,
+      "old_expert": 73,
+      "new_expert": 120,
+      "context_id": 1
+    },
+    {
+      "generation": 5,
+      "old_expert": 114,
+      "new_expert": 42,
+      "context_id": 1
+    },
+    {
+      "generation": 5,
+      "old_expert": 95,
+      "new_expert": 42,
+      "context_id": 1
+    },
+    {
+      "generation": 5,
+      "old_expert": 106,
+      "new_expert": 120,
+      "context_id": 1
+    },
+    {
+      "generation": 6,
+      "old_expert": 73,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 6,
+      "old_expert": 114,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 6,
+      "old_expert": 95,
+      "new_expert": 110,
+      "context_id": 2
+    },
+    {
+      "generation": 6,
+      "old_expert": 106,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 7,
+      "old_expert": 73,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 7,
+      "old_expert": 114,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 7,
+      "old_expert": 95,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 7,
+      "old_expert": 106,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 8,
+      "old_expert": 73,
+      "new_expert": 120,
+      "context_id": 1
+    },
+    {
+      "generation": 8,
+      "old_expert": 114,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 8,
+      "old_expert": 95,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 8,
+      "old_expert": 106,
+      "new_expert": 120,
+      "context_id": 1
+    },
+    {
+      "generation": 9,
+      "old_expert": 73,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 9,
+      "old_expert": 114,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 9,
+      "old_expert": 95,
+      "new_expert": 1,
+      "context_id": 2
+    },
+    {
+      "generation": 9,
+      "old_expert": 106,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 10,
+      "old_expert": 73,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 10,
+      "old_expert": 114,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 10,
+      "old_expert": 95,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 10,
+      "old_expert": 106,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 11,
+      "old_expert": 73,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 11,
+      "old_expert": 114,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 11,
+      "old_expert": 95,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 11,
+      "old_expert": 106,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 12,
+      "old_expert": 73,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 12,
+      "old_expert": 114,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 12,
+      "old_expert": 95,
+      "new_expert": 1,
+      "context_id": 2
+    },
+    {
+      "generation": 12,
+      "old_expert": 106,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 13,
+      "old_expert": 73,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 13,
+      "old_expert": 114,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 13,
+      "old_expert": 95,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 13,
+      "old_expert": 106,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 14,
+      "old_expert": 73,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 14,
+      "old_expert": 114,
+      "new_expert": 42,
+      "context_id": 1
+    },
+    {
+      "generation": 14,
+      "old_expert": 95,
+      "new_expert": 1,
+      "context_id": 1
+    },
+    {
+      "generation": 14,
+      "old_expert": 106,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 15,
+      "old_expert": 73,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 15,
+      "old_expert": 114,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 15,
+      "old_expert": 95,
+      "new_expert": 1,
+      "context_id": 2
+    },
+    {
+      "generation": 15,
+      "old_expert": 106,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 16,
+      "old_expert": 73,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 16,
+      "old_expert": 114,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 16,
+      "old_expert": 95,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 16,
+      "old_expert": 106,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 17,
+      "old_expert": 73,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 17,
+      "old_expert": 114,
+      "new_expert": 42,
+      "context_id": 1
+    },
+    {
+      "generation": 17,
+      "old_expert": 95,
+      "new_expert": 1,
+      "context_id": 1
+    },
+    {
+      "generation": 17,
+      "old_expert": 106,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 18,
+      "old_expert": 73,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 18,
+      "old_expert": 114,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 18,
+      "old_expert": 95,
+      "new_expert": 1,
+      "context_id": 2
+    },
+    {
+      "generation": 18,
+      "old_expert": 106,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 19,
+      "old_expert": 73,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 19,
+      "old_expert": 114,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 19,
+      "old_expert": 95,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 19,
+      "old_expert": 106,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 20,
+      "old_expert": 73,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 20,
+      "old_expert": 114,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 20,
+      "old_expert": 95,
+      "new_expert": 1,
+      "context_id": 1
+    },
+    {
+      "generation": 20,
+      "old_expert": 106,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 21,
+      "old_expert": 73,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 21,
+      "old_expert": 114,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 21,
+      "old_expert": 95,
+      "new_expert": 1,
+      "context_id": 2
+    },
+    {
+      "generation": 21,
+      "old_expert": 106,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 22,
+      "old_expert": 73,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 22,
+      "old_expert": 114,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 22,
+      "old_expert": 95,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 22,
+      "old_expert": 106,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 23,
+      "old_expert": 73,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 23,
+      "old_expert": 114,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 23,
+      "old_expert": 95,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 23,
+      "old_expert": 106,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 24,
+      "old_expert": 73,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 24,
+      "old_expert": 114,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 24,
+      "old_expert": 95,
+      "new_expert": 1,
+      "context_id": 2
+    },
+    {
+      "generation": 24,
+      "old_expert": 106,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 25,
+      "old_expert": 73,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 25,
+      "old_expert": 114,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 25,
+      "old_expert": 95,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 25,
+      "old_expert": 106,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 26,
+      "old_expert": 73,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 26,
+      "old_expert": 114,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 26,
+      "old_expert": 95,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 26,
+      "old_expert": 106,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 27,
+      "old_expert": 73,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 27,
+      "old_expert": 114,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 27,
+      "old_expert": 95,
+      "new_expert": 1,
+      "context_id": 2
+    },
+    {
+      "generation": 27,
+      "old_expert": 106,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 28,
+      "old_expert": 73,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 28,
+      "old_expert": 114,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 28,
+      "old_expert": 95,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 28,
+      "old_expert": 106,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 29,
+      "old_expert": 73,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 29,
+      "old_expert": 114,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 29,
+      "old_expert": 95,
+      "new_expert": 1,
+      "context_id": 1
+    },
+    {
+      "generation": 29,
+      "old_expert": 106,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 30,
+      "old_expert": 73,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 30,
+      "old_expert": 114,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 30,
+      "old_expert": 95,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 30,
+      "old_expert": 106,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 31,
+      "old_expert": 73,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 31,
+      "old_expert": 114,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 31,
+      "old_expert": 95,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 31,
+      "old_expert": 106,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 32,
+      "old_expert": 73,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 32,
+      "old_expert": 114,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 32,
+      "old_expert": 95,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 32,
+      "old_expert": 106,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 33,
+      "old_expert": 73,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 33,
+      "old_expert": 114,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 33,
+      "old_expert": 95,
+      "new_expert": 1,
+      "context_id": 2
+    },
+    {
+      "generation": 33,
+      "old_expert": 106,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 34,
+      "old_expert": 73,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 34,
+      "old_expert": 114,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 34,
+      "old_expert": 95,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 34,
+      "old_expert": 106,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 35,
+      "old_expert": 73,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 35,
+      "old_expert": 114,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 35,
+      "old_expert": 95,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 35,
+      "old_expert": 106,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 36,
+      "old_expert": 73,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 36,
+      "old_expert": 114,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 36,
+      "old_expert": 95,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 36,
+      "old_expert": 106,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 37,
+      "old_expert": 73,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 37,
+      "old_expert": 114,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 37,
+      "old_expert": 95,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 37,
+      "old_expert": 106,
+      "new_expert": 17,
+      "context_id": 0
+    },
+    {
+      "generation": 38,
+      "old_expert": 73,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 38,
+      "old_expert": 114,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 38,
+      "old_expert": 95,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 38,
+      "old_expert": 106,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 39,
+      "old_expert": 73,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 39,
+      "old_expert": 114,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 39,
+      "old_expert": 95,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 39,
+      "old_expert": 106,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 40,
+      "old_expert": 73,
+      "new_expert": 42,
+      "context_id": 0
+    },
+    {
+      "generation": 40,
+      "old_expert": 114,
+      "new_expert": 42,
+      "context_id": 0
+    },
+    {
+      "generation": 40,
+      "old_expert": 95,
+      "new_expert": 42,
+      "context_id": 0
+    },
+    {
+      "generation": 40,
+      "old_expert": 106,
+      "new_expert": 42,
+      "context_id": 0
+    },
+    {
+      "generation": 41,
+      "old_expert": 73,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 41,
+      "old_expert": 114,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 41,
+      "old_expert": 95,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 41,
+      "old_expert": 106,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 42,
+      "old_expert": 73,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 42,
+      "old_expert": 114,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 42,
+      "old_expert": 95,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 42,
+      "old_expert": 106,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 43,
+      "old_expert": 73,
+      "new_expert": 42,
+      "context_id": 0
+    },
+    {
+      "generation": 43,
+      "old_expert": 114,
+      "new_expert": 42,
+      "context_id": 0
+    },
+    {
+      "generation": 43,
+      "old_expert": 95,
+      "new_expert": 42,
+      "context_id": 0
+    },
+    {
+      "generation": 43,
+      "old_expert": 106,
+      "new_expert": 42,
+      "context_id": 0
+    },
+    {
+      "generation": 44,
+      "old_expert": 73,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 44,
+      "old_expert": 114,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 44,
+      "old_expert": 95,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 44,
+      "old_expert": 106,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 45,
+      "old_expert": 73,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 45,
+      "old_expert": 114,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 45,
+      "old_expert": 95,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 45,
+      "old_expert": 106,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 46,
+      "old_expert": 73,
+      "new_expert": 42,
+      "context_id": 0
+    },
+    {
+      "generation": 46,
+      "old_expert": 114,
+      "new_expert": 42,
+      "context_id": 0
+    },
+    {
+      "generation": 46,
+      "old_expert": 95,
+      "new_expert": 42,
+      "context_id": 0
+    },
+    {
+      "generation": 46,
+      "old_expert": 106,
+      "new_expert": 42,
+      "context_id": 0
+    },
+    {
+      "generation": 47,
+      "old_expert": 73,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 47,
+      "old_expert": 114,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 47,
+      "old_expert": 95,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 47,
+      "old_expert": 106,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 48,
+      "old_expert": 73,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 48,
+      "old_expert": 114,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 48,
+      "old_expert": 95,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 48,
+      "old_expert": 106,
+      "new_expert": 63,
+      "context_id": 2
+    },
+    {
+      "generation": 49,
+      "old_expert": 73,
+      "new_expert": 42,
+      "context_id": 0
+    },
+    {
+      "generation": 49,
+      "old_expert": 114,
+      "new_expert": 42,
+      "context_id": 0
+    },
+    {
+      "generation": 49,
+      "old_expert": 95,
+      "new_expert": 42,
+      "context_id": 0
+    },
+    {
+      "generation": 49,
+      "old_expert": 106,
+      "new_expert": 42,
+      "context_id": 0
+    },
+    {
+      "generation": 50,
+      "old_expert": 73,
+      "new_expert": 99,
+      "context_id": 1
+    },
+    {
+      "generation": 50,
+      "old_expert": 114,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 50,
+      "old_expert": 95,
+      "new_expert": 88,
+      "context_id": 1
+    },
+    {
+      "generation": 50,
+      "old_expert": 106,
+      "new_expert": 99,
+      "context_id": 1
+    }
+  ],
+  "diversity_evolution": [
+    1,
+    3,
+    4,
+    4,
+    6,
+    7,
+    7,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8
+  ],
+  "expert_usage": {
+    "17": {
+      "contexts": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "unique_contexts": 2,
+      "type": "generalist"
+    },
+    "99": {
+      "contexts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "unique_contexts": 1,
+      "type": "specialist"
+    },
+    "1": {
+      "contexts": [
+        1,
+        2,
+        2,
+        1,
+        2,
+        1,
+        2,
+        1,
+        2,
+        2,
+        2,
+        1,
+        2
+      ],
+      "unique_contexts": 2,
+      "type": "generalist"
+    },
+    "63": {
+      "contexts": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "unique_contexts": 1,
+      "type": "specialist"
+    },
+    "120": {
+      "contexts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "unique_contexts": 1,
+      "type": "specialist"
+    },
+    "42": {
+      "contexts": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "unique_contexts": 2,
+      "type": "generalist"
+    },
+    "110": {
+      "contexts": [
+        2
+      ],
+      "unique_contexts": 1,
+      "type": "specialist"
+    },
+    "88": {
+      "contexts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "unique_contexts": 1,
+      "type": "specialist"
+    }
+  }
+}

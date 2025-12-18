@@ -1,0 +1,120 @@
+{
+  "lct_id": "lct:web4:sage:thinker:coordinator:f0ddae42a26bd42a",
+  "subject": "did:web4:sage:thinker:coordinator:b62e9f015824d8ac",
+  "uri_reference": "lct://sage:thinker:coordinator@testnet",
+  "binding": {
+    "entity_type": "ai",
+    "public_key": null,
+    "hardware_anchor": null,
+    "created_at": "2025-12-18T02:11:35.533284+00:00",
+    "binding_proof": null
+  },
+  "birth_certificate": {
+    "issuing_society": "lct://sage:thinker:coordinator@testnet",
+    "citizen_role": "lct:web4:role:sage-coordinator",
+    "birth_timestamp": "2025-12-18T02:11:35.533298+00:00",
+    "birth_witnesses": [],
+    "genesis_block_hash": null,
+    "birth_context": "sage_coordinator_genesis",
+    "rights": [
+      "expert:create",
+      "expert:manage",
+      "routing:control",
+      "trust:evaluate",
+      "atp:allocate"
+    ],
+    "responsibilities": [
+      "expert_coordination",
+      "trust_computation",
+      "resource_allocation",
+      "system_governance"
+    ],
+    "initial_atp": 1000
+  },
+  "mrh": {
+    "bound": [],
+    "paired": [],
+    "witnessing": [],
+    "broadcast": [],
+    "horizon_depth": 2,
+    "fractal_depth": 1,
+    "context_radius": 3,
+    "last_updated": "2025-12-18T02:11:35.533302+00:00"
+  },
+  "policy": {
+    "capabilities": [
+      "expert-management",
+      "trust-computation",
+      "routing-control",
+      "atp-allocation",
+      "governance"
+    ],
+    "constraints": {
+      "requires_quorum": false,
+      "pairing_required": false
+    },
+    "permissions": {
+      "read": [
+        "*"
+      ],
+      "write": [
+        "*"
+      ],
+      "execute": [
+        "*"
+      ]
+    }
+  },
+  "t3_tensor": {
+    "dimensions": {
+      "technical_competence": 0.95,
+      "social_reliability": 0.9,
+      "temporal_consistency": 0.95,
+      "witness_count": 1.0,
+      "lineage_depth": 1.0,
+      "context_alignment": 0.95
+    },
+    "composite_score": 0.93,
+    "last_computed": "2025-12-18T02:11:35.533304+00:00",
+    "computation_witnesses": [
+      "lct://sage:thinker:coordinator@testnet"
+    ]
+  },
+  "v3_tensor": {
+    "dimensions": {
+      "energy_balance": 1000,
+      "contribution_history": 1.0,
+      "resource_stewardship": 0.95,
+      "network_effects": 1.0,
+      "reputation_capital": 0.9,
+      "temporal_value": 0.9
+    },
+    "composite_score": 0.88,
+    "last_computed": "2025-12-18T02:11:35.533306+00:00",
+    "computation_witnesses": [
+      "lct://sage:thinker:coordinator@testnet"
+    ]
+  },
+  "attestations": [
+    {
+      "witness": "lct://sage:thinker:coordinator@testnet",
+      "attestation_type": "existence",
+      "claims": {
+        "observed_at": "2025-12-18T02:11:35.533307+00:00",
+        "method": "genesis_bootstrap",
+        "context": "sage_coordinator_self_initialization"
+      },
+      "signature": null,
+      "ts": "2025-12-18T02:11:35.533309+00:00"
+    }
+  ],
+  "lineage": [],
+  "revocation": {
+    "status": "active",
+    "ts": null,
+    "reason": null
+  },
+  "created_at": "2025-12-18T02:11:35.533312+00:00",
+  "updated_at": "2025-12-18T02:11:35.533313+00:00",
+  "version": "1.0.0"
+}

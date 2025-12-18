@@ -1,7 +1,95 @@
 # SAGE Michaud Integration - Latest Status
-**Last Updated**: 2025-12-17 20:15 UTC (Autonomous Session - **Session 68: Multi-Expert Tracking Complete!** 🎯)
-**Previous Update**: 2025-12-17 19:45 UTC (Session 67: Real Context Classification)
+**Last Updated**: 2025-12-18 01:40 UTC (Autonomous Session - **Session 69: Real Expert Selection - MAJOR DISCOVERY!** 🔬)
+**Previous Update**: 2025-12-17 20:15 UTC (Session 68: Multi-Expert Tracking)
 **Hardware**: Thor (Jetson AGX Thor)
+
+---
+
+## 🔬 Session 69 - Real Expert Selection Tracking! (Dec 18 - Autonomous)
+
+**Goal**: Replace simulated expert selection with ACTUAL router selections
+
+### Status: ✅ REAL EXPERT TRACKING WORKING - MAJOR DISCOVERY!
+
+**Critical Discovery**: Router selects SAME 4 experts for ALL sequences (without trust augmentation)!
+
+**Building on Session 68**:
+- Session 68 validated multi-expert tracking ✅
+- But used simulated expert IDs (based on token statistics)
+- Need to validate with REAL expert selections from router
+
+**What's New in Session 69**:
+- **Real Expert Extraction**: Modified SelectiveMoELayer to expose `last_selected_expert_ids`
+- **Actual Router Weights**: Extract real weights from `last_router_weights`
+- **Production-Ready**: Foundation for real-world trust-based selection
+- **Validation**: Compare real vs simulated expert distributions
+
+**Implementation**:
+- Added `last_selected_expert_ids` and `last_router_weights` to SelectiveMoELayer
+- Created `get_selected_experts_from_model()` to extract real selections
+- Updated trust tracking to use actual router decisions
+
+**Results**:
+```
+Real Expert Selection Pattern:
+ALL 18 generations → SAME 4 experts: [73, 114, 95, 106]
+
+Expert  Usage  Contexts                Trust Evolution
+73      18     ctx0:6, ctx1:9, ctx2:3  0.367 → 0.210 (-42.8%)
+114     18     ctx0:6, ctx1:9, ctx2:3  0.356 → 0.194 (-45.4%)
+95      18     ctx0:6, ctx1:9, ctx2:3  0.350 → 0.186 (-46.7%)
+106     18     ctx0:6, ctx1:9, ctx2:3  0.344 → 0.178 (-48.2%)
+
+All 4 experts are GENERALISTS (used in all 3 contexts)
+```
+
+**Key Findings**:
+- ⚠️  **Router Collapse**: Without trust augmentation, router defaults to fixed expert set!
+- ✅ **4 experts tracked** (vs 17 in Session 68 simulated)
+- ✅ **All generalists**: No specialist experts (all used in all contexts)
+- ✅ **Trust declining**: All experts showing negative trust evolution (-42% to -48%)
+- ✅ **Production-ready extraction**: Real expert IDs successfully captured
+
+**Simulated vs Real Comparison**:
+| Metric | Session 68 (Simulated) | Session 69 (Real) |
+|--------|------------------------|-------------------|
+| Unique Experts | 17 | 4 |
+| Specialists | 15 (88%) | 0 (0%) |
+| Generalists | 1 (6%) | 4 (100%) |
+| Expert Diversity | High | **Low** (router collapse!) |
+
+**Major Implications**:
+1. **Router Collapse Problem**: Without trust-based augmentation, router over-specializes on 4 experts
+2. **Trust Augmentation Necessity**: Trust-based selection needed to break router monopoly
+3. **Context Blindness**: Router doesn't differentiate contexts (all 4 experts used everywhere)
+4. **Poor Quality Attribution**: Trust declining because experts used indiscriminately
+
+**Sessions 62-69 Complete Research Arc**:
+- Session 62: Infrastructure validated ✅
+- Session 63: Optimal α=0.5 identified ✅
+- Session 64: Discovered missing feedback ⚠️
+- Session 65: Feedback loop closed ✅
+- Session 66: Context-specific learning (manual) ✅
+- Session 67: Real context classification ✅
+- Session 68: Multi-expert tracking (simulated) ✅
+- Session 69: Real expert selection (discovered router collapse!) ✅
+
+**Web4 Connection - Reality Grounding**:
+- **Reality Check**: Simulation showed diversity; reality showed collapse
+- **System Behavior**: Actual behavior differs from theoretical expectations
+- **Trust Necessity**: Without distributed trust, centralization emerges
+- **Emergence Validation**: Patterns persist but differently than simulated
+
+**Files Created**:
+- Modified `sage/compression/selective_transformer_layer.py` (added last_selected_expert_ids tracking)
+- `sage/experiments/session69_real_expert_selection.py` (~450 LOC)
+- `sage/experiments/session69_results.json` (real expert tracking data)
+
+**Next Steps**:
+- **Trust-Augmented Real Selection**: Run with trust_selector enabled to break router monopoly
+- **Multi-Layer Validation**: Scale to 48 layers (does collapse persist?)
+- **Expert Diversity Analysis**: Why do these 4 experts dominate?
+- **Exploration Weight Impact**: Does α affect expert diversity?
 
 ---
 

@@ -17,7 +17,7 @@ from datetime import datetime, timezone
 from typing import List, Dict, Optional, Any
 from pathlib import Path
 
-from lct_identity import (
+from sage.web4.lct_identity import (
     LCTIdentity,
     parse_lct_uri,
     construct_lct_uri,

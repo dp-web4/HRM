@@ -54,6 +54,7 @@ class TrustFirstSelectionResult:
     trust_scores: List[float]
     mrh_substitutions: int
     quality_checks: int  # How many low-quality detections triggered recovery
+    selection_scores: List[float]  # Normalized weights for expert mixing (Session 75 API fix)
 
 
 class TrustFirstMRHSelector:
@@ -264,6 +265,15 @@ class TrustFirstMRHSelector:
             else:
                 selected_experts.append(int(expert_id))
 
+        # Normalize trust scores for selected experts to get selection weights
+        selected_trust_scores = trust_scores[top_k_indices]
+        trust_sum = np.sum(selected_trust_scores)
+        if trust_sum > 0:
+            selection_weights = (selected_trust_scores / trust_sum).tolist()
+        else:
+            # Fallback: uniform weights
+            selection_weights = [1.0 / k] * k
+
         return TrustFirstSelectionResult(
             selected_expert_ids=selected_experts,
             selection_mode="trust_driven",
@@ -271,7 +281,8 @@ class TrustFirstMRHSelector:
             context=context,
             trust_scores=trust_scores[top_k_indices].tolist(),
             mrh_substitutions=mrh_subs,
-            quality_checks=0
+            quality_checks=0,
+            selection_scores=selection_weights  # Session 75: Normalized mixing weights
         )
 
     def _router_explore_selection(
@@ -297,6 +308,12 @@ class TrustFirstMRHSelector:
         # Pure router selection (100% router, 0% trust)
         top_k_indices = np.argsort(router_scores)[-k:][::-1]
 
+        # Normalize router scores for selected experts to get selection weights
+        selected_router_scores = router_scores[top_k_indices]
+        # Use softmax for proper probability distribution
+        exp_scores = np.exp(selected_router_scores - np.max(selected_router_scores))
+        selection_weights = (exp_scores / np.sum(exp_scores)).tolist()
+
         return TrustFirstSelectionResult(
             selected_expert_ids=[int(i) for i in top_k_indices],
             selection_mode="router_explore",
@@ -304,7 +321,8 @@ class TrustFirstMRHSelector:
             context=context,
             trust_scores=[],
             mrh_substitutions=0,
-            quality_checks=0
+            quality_checks=0,
+            selection_scores=selection_weights  # Session 75: Normalized mixing weights from router
         )
 
     def _get_context_trust(self, expert_id: int, context: str) -> float:

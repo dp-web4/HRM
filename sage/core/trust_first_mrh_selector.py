@@ -91,7 +91,8 @@ class TrustFirstMRHSelector:
         reputation_db: Optional[ExpertReputationDB] = None,
         component: str = "thinker",
         network: str = "testnet",
-        context_classifier: Optional[ContextClassifier] = None
+        context_classifier: Optional[ContextClassifier] = None,
+        epsilon: float = 0.0
     ):
         """
         Initialize trust-first MRH selector.
@@ -105,6 +106,7 @@ class TrustFirstMRHSelector:
             component: "thinker" or "talker"
             network: Network identifier
             context_classifier: Optional context classifier
+            epsilon: Probability of forced random exploration (0.0-1.0, Session 77)
         """
         self.num_experts = num_experts
         self.min_trust_evidence = min_trust_evidence
@@ -112,6 +114,7 @@ class TrustFirstMRHSelector:
         self.overlap_threshold = overlap_threshold
         self.component = component
         self.network = network
+        self.epsilon = epsilon
 
         # Reputation database
         self.reputation_db = reputation_db if reputation_db else get_default_reputation_db()
@@ -130,6 +133,7 @@ class TrustFirstMRHSelector:
         self.total_selections = 0
         self.trust_driven_selections = 0
         self.router_explore_selections = 0
+        self.forced_exploration_selections = 0  # Session 77: epsilon-greedy tracking
         self.total_mrh_substitutions = 0
         self.quality_checks = 0
         self.generation = 0
@@ -143,14 +147,15 @@ class TrustFirstMRHSelector:
         all_expert_ids: Optional[List[int]] = None
     ) -> TrustFirstSelectionResult:
         """
-        Select experts using trust-first conditional logic.
+        Select experts using trust-first conditional logic with epsilon-greedy exploration.
 
-        **Architecture**:
-        1. Check trust evidence for context
-        2. IF sufficient evidence → trust_driven_selection()
-        3. ELSE → router_explore_selection()
+        **Architecture (Session 77 - Epsilon-Greedy)**:
+        1. With probability epsilon → forced_exploration (random)
+        2. Check trust evidence for context
+        3. IF sufficient evidence → trust_driven_selection()
+        4. ELSE → router_explore_selection()
 
-        No blending. Pure conditional.
+        No blending. Pure conditional with forced exploration.
 
         Args:
             router_logits: Router output [num_experts]
@@ -175,6 +180,13 @@ class TrustFirstMRHSelector:
 
         if all_expert_ids is None:
             all_expert_ids = list(range(self.num_experts))
+
+        # Session 77: Epsilon-greedy forced exploration
+        if self.epsilon > 0 and np.random.random() < self.epsilon:
+            # FORCED-EXPLORATION: Random selection to break monopoly
+            result = self._forced_exploration_selection(context, k)
+            self.forced_exploration_selections += 1
+            return result
 
         # Convert router logits
         if HAS_TORCH and torch is not None and isinstance(router_logits, torch.Tensor):
@@ -325,6 +337,46 @@ class TrustFirstMRHSelector:
             selection_scores=selection_weights  # Session 75: Normalized mixing weights from router
         )
 
+    def _forced_exploration_selection(
+        self,
+        context: str,
+        k: int
+    ) -> TrustFirstSelectionResult:
+        """
+        Forced random exploration to break router monopoly (Session 77).
+
+        Select k experts uniformly at random from all available experts.
+        This enables evidence gathering for experts that the router never selects.
+
+        **Purpose**: Break chicken-and-egg problem discovered in Session 76:
+        - Router monopoly prevents diversity
+        - Trust needs diversity to create diversity
+        - Forced exploration provides bootstrap diversity
+
+        Args:
+            context: Current context
+            k: Number to select
+
+        Returns:
+            TrustFirstSelectionResult with random selections
+        """
+        # Uniform random selection
+        selected_expert_ids = np.random.choice(self.num_experts, size=k, replace=False).tolist()
+
+        # Uniform weights for random selection
+        selection_weights = [1.0 / k] * k
+
+        return TrustFirstSelectionResult(
+            selected_expert_ids=selected_expert_ids,
+            selection_mode="forced_exploration",
+            trust_evidence=False,
+            context=context,
+            trust_scores=[],
+            mrh_substitutions=0,
+            quality_checks=0,
+            selection_scores=selection_weights
+        )
+
     def _get_context_trust(self, expert_id: int, context: str) -> float:
         """Get trust for expert in context."""
         key = (expert_id, context)
@@ -392,7 +444,9 @@ class TrustFirstMRHSelector:
             'total_selections': self.total_selections,
             'trust_driven': self.trust_driven_selections,
             'router_explore': self.router_explore_selections,
+            'forced_exploration': self.forced_exploration_selections,  # Session 77
             'trust_driven_rate': self.trust_driven_selections / max(1, self.total_selections),
+            'forced_exploration_rate': self.forced_exploration_selections / max(1, self.total_selections),
             'total_mrh_substitutions': self.total_mrh_substitutions,
             'generation': self.generation
         }

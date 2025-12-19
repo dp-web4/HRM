@@ -1,0 +1,485 @@
+{
+  "session": 77,
+  "epsilon": 0.3,
+  "architecture": "trust-first + epsilon-greedy (Session 77)",
+  "model": "Q3-Omni 30B",
+  "epochs": 10,
+  "sequences": 9,
+  "generations": 90,
+  "unique_experts": 61,
+  "utilization": 0.4765625,
+  "qualities": [
+    0.9096410816595677,
+    0.8289024319253904,
+    0.6857099377666673,
+    0.7590202081572645,
+    0.7299481786675615,
+    0.6765702766502845,
+    0.5758987341456284,
+    0.781017152540356,
+    0.7955468288945039,
+    0.6576827534827193,
+    0.9417638620883628,
+    0.7139654760041095,
+    0.7922185445603003,
+    0.8157063570173795,
+    0.7765781665536539,
+    0.6412724239241014,
+    0.8104795556411324,
+    0.5836484971254322,
+    0.8139473605572946,
+    0.9961570699852919,
+    0.8357454320375618,
+    0.5884327367617387,
+    0.6963177565913409,
+    0.8831145294672713,
+    0.7675597998540395,
+    0.6605892424165697,
+    0.6641182046287342,
+    0.8356333136447017,
+    0.6801751458933344,
+    0.7685699343765596,
+    0.7223816173110933,
+    0.9500962500679849,
+    0.8048988057411302,
+    0.6687359731161597,
+    0.7854398132331505,
+    0.556681704090836,
+    0.7622614554043287,
+    0.6937299343069219,
+    0.6911097766508658,
+    0.7104924485772683,
+    0.833839987698537,
+    0.7583200548127164,
+    0.813661653586041,
+    0.9279504537996226,
+    0.9352808944238329,
+    0.9097116992865455,
+    0.6726075063109168,
+    0.810991263016965,
+    0.9415535126984724,
+    0.7705676783616154,
+    0.8020645652242749,
+    0.8640979968493788,
+    0.7722899321114587,
+    0.7443681330747882,
+    0.8184907214724559,
+    0.7501695844482499,
+    0.7295436496380675,
+    0.7756326375036019,
+    0.7958351836435367,
+    0.9204069092698318,
+    0.765949493484616,
+    0.818613593909887,
+    0.8410658198956176,
+    0.7325348475344577,
+    0.787909100077272,
+    0.6863418385589801,
+    0.696418210988121,
+    0.8544623869693705,
+    0.7730234597668117,
+    0.8762045304619971,
+    0.6128398219809118,
+    0.7997853826991285,
+    0.8746080060327384,
+    0.781868082942335,
+    0.6939356080954584,
+    0.7691230207312505,
+    0.56149992303208,
+    0.9434122876260791,
+    0.7515911184481273,
+    0.633781427892703,
+    0.6278851185568928,
+    0.8428194441093511,
+    0.8251348692441993,
+    0.6834981746039321,
+    0.8615740817162683,
+    0.6538754881426173,
+    0.9221465070911389,
+    0.6459663297995593,
+    0.6616176743112936,
+    0.8252867320991925
+  ],
+  "expert_usage": {
+    "46": 1,
+    "74": 1,
+    "61": 1,
+    "92": 1,
+    "106": 70,
+    "110": 70,
+    "48": 70,
+    "5": 70,
+    "82": 2,
+    "116": 3,
+    "16": 3,
+    "125": 1,
+    "8": 2,
+    "3": 2,
+    "59": 3,
+    "63": 2,
+    "4": 1,
+    "43": 1,
+    "115": 1,
+    "93": 2,
+    "124": 3,
+    "80": 3,
+    "28": 3,
+    "105": 1,
+    "27": 1,
+    "2": 2,
+    "97": 2,
+    "94": 2,
+    "87": 1,
+    "123": 1,
+    "0": 1,
+    "17": 2,
+    "83": 1,
+    "117": 1,
+    "29": 1,
+    "18": 2,
+    "107": 1,
+    "88": 1,
+    "42": 1,
+    "37": 1,
+    "114": 1,
+    "68": 2,
+    "19": 1,
+    "41": 1,
+    "91": 1,
+    "118": 1,
+    "69": 1,
+    "102": 1,
+    "56": 1,
+    "58": 1,
+    "45": 1,
+    "54": 1,
+    "77": 1,
+    "60": 1,
+    "7": 1,
+    "38": 1,
+    "39": 1,
+    "44": 1,
+    "10": 1,
+    "89": 1,
+    "81": 1
+  },
+  "context_map": {
+    "46": {
+      "context_1": 1
+    },
+    "74": {
+      "context_1": 1
+    },
+    "61": {
+      "context_1": 1
+    },
+    "92": {
+      "context_1": 1
+    },
+    "106": {
+      "context_0": 26,
+      "context_1": 23,
+      "context_2": 21
+    },
+    "110": {
+      "context_0": 26,
+      "context_1": 23,
+      "context_2": 21
+    },
+    "48": {
+      "context_0": 26,
+      "context_1": 23,
+      "context_2": 21
+    },
+    "5": {
+      "context_0": 26,
+      "context_1": 23,
+      "context_2": 21
+    },
+    "82": {
+      "context_1": 1,
+      "context_2": 1
+    },
+    "116": {
+      "context_1": 2,
+      "context_2": 1
+    },
+    "16": {
+      "context_1": 1,
+      "context_2": 2
+    },
+    "125": {
+      "context_1": 1
+    },
+    "8": {
+      "context_2": 1,
+      "context_1": 1
+    },
+    "3": {
+      "context_2": 2
+    },
+    "59": {
+      "context_2": 1,
+      "context_1": 2
+    },
+    "63": {
+      "context_1": 1,
+      "context_0": 1
+    },
+    "4": {
+      "context_2": 1
+    },
+    "43": {
+      "context_2": 1
+    },
+    "115": {
+      "context_2": 1
+    },
+    "93": {
+      "context_2": 2
+    },
+    "124": {
+      "context_0": 1,
+      "context_1": 1,
+      "context_2": 1
+    },
+    "80": {
+      "context_0": 2,
+      "context_1": 1
+    },
+    "28": {
+      "context_0": 2,
+      "context_2": 1
+    },
+    "105": {
+      "context_1": 1
+    },
+    "27": {
+      "context_1": 1
+    },
+    "2": {
+      "context_1": 1,
+      "context_2": 1
+    },
+    "97": {
+      "context_1": 1,
+      "context_2": 1
+    },
+    "94": {
+      "context_1": 1,
+      "context_0": 1
+    },
+    "87": {
+      "context_0": 1
+    },
+    "123": {
+      "context_0": 1
+    },
+    "0": {
+      "context_0": 1
+    },
+    "17": {
+      "context_0": 1,
+      "context_2": 1
+    },
+    "83": {
+      "context_0": 1
+    },
+    "117": {
+      "context_0": 1
+    },
+    "29": {
+      "context_2": 1
+    },
+    "18": {
+      "context_2": 2
+    },
+    "107": {
+      "context_2": 1
+    },
+    "88": {
+      "context_2": 1
+    },
+    "42": {
+      "context_2": 1
+    },
+    "37": {
+      "context_2": 1
+    },
+    "114": {
+      "context_2": 1
+    },
+    "68": {
+      "context_2": 1,
+      "context_1": 1
+    },
+    "19": {
+      "context_2": 1
+    },
+    "41": {
+      "context_2": 1
+    },
+    "91": {
+      "context_2": 1
+    },
+    "118": {
+      "context_1": 1
+    },
+    "69": {
+      "context_1": 1
+    },
+    "102": {
+      "context_1": 1
+    },
+    "56": {
+      "context_1": 1
+    },
+    "58": {
+      "context_2": 1
+    },
+    "45": {
+      "context_2": 1
+    },
+    "54": {
+      "context_2": 1
+    },
+    "77": {
+      "context_0": 1
+    },
+    "60": {
+      "context_0": 1
+    },
+    "7": {
+      "context_0": 1
+    },
+    "38": {
+      "context_1": 1
+    },
+    "39": {
+      "context_1": 1
+    },
+    "44": {
+      "context_1": 1
+    },
+    "10": {
+      "context_2": 1
+    },
+    "89": {
+      "context_2": 1
+    },
+    "81": {
+      "context_2": 1
+    }
+  },
+  "mode_history": [
+    "forced_exploration",
+    "router_explore",
+    "router_explore",
+    "forced_exploration",
+    "forced_exploration",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "forced_exploration",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "forced_exploration",
+    "forced_exploration",
+    "forced_exploration",
+    "forced_exploration",
+    "router_explore",
+    "router_explore",
+    "forced_exploration",
+    "forced_exploration",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "forced_exploration",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "forced_exploration",
+    "router_explore",
+    "forced_exploration",
+    "forced_exploration",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "forced_exploration",
+    "router_explore",
+    "router_explore",
+    "forced_exploration",
+    "router_explore",
+    "router_explore",
+    "forced_exploration",
+    "router_explore",
+    "forced_exploration",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "forced_exploration",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "forced_exploration",
+    "router_explore",
+    "router_explore",
+    "forced_exploration",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "forced_exploration",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "forced_exploration",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "forced_exploration",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore",
+    "router_explore"
+  ],
+  "transition_generation": null,
+  "selector_stats": {
+    "total_selections": 90,
+    "trust_driven": 0,
+    "router_explore": 70,
+    "forced_exploration": 20,
+    "trust_driven_rate": 0.0,
+    "forced_exploration_rate": 0.2222222222222222,
+    "total_mrh_substitutions": 0,
+    "generation": 90
+  },
+  "final_stats": {
+    "specialists": 43,
+    "generalists": 18,
+    "mode_transitions": {
+      "forced_exploration": 24,
+      "router_explore": 66
+    }
+  }
+}

@@ -1,0 +1,1314 @@
+{
+  "epsilon_0.1": {
+    "session": 77,
+    "epsilon": 0.1,
+    "architecture": "trust-first + epsilon-greedy (Session 77)",
+    "model": "Q3-Omni 30B",
+    "epochs": 10,
+    "sequences": 9,
+    "generations": 90,
+    "unique_experts": 48,
+    "utilization": 0.375,
+    "qualities": [
+      0.6684110647352783,
+      0.6937176976596603,
+      0.7669230593760524,
+      0.9736937669979372,
+      0.8818976267796185,
+      0.8534160470916909,
+      0.8489103519019113,
+      0.7382360810325407,
+      0.8815191403796573,
+      0.8572124453709069,
+      0.7261842160188822,
+      0.7400354022522293,
+      0.7345913320969881,
+      0.7596383920558013,
+      0.7322677713859466,
+      0.72198653694601,
+      0.8995668861863437,
+      0.7090721390828237,
+      0.8273971237443711,
+      0.6131126231486244,
+      0.8969118930947023,
+      0.8593969311313391,
+      0.7444873176089637,
+      0.8814935947033333,
+      0.6481501151524427,
+      0.5575375177716961,
+      0.7872266964350639,
+      0.748579962677174,
+      0.801907484171179,
+      0.7629499542676406,
+      0.9458716954092539,
+      0.9170597810067355,
+      0.5281496257423616,
+      0.7967219985202741,
+      0.8400548650391535,
+      0.7803905982107431,
+      0.8577862529737612,
+      0.9095725214216861,
+      0.7802048024277066,
+      0.85492303900149,
+      0.662575008350557,
+      0.7848743067532999,
+      0.7153033850712477,
+      0.78253418062823,
+      0.7102379501497912,
+      0.7181958912279729,
+      0.8189778567984944,
+      0.6838598305263422,
+      0.8900204278622345,
+      0.8375213607173824,
+      0.7311886417326413,
+      0.9069844480768118,
+      0.5607901849742092,
+      0.7984732318869237,
+      0.7472968742992823,
+      0.7190654190927718,
+      0.7487062426440859,
+      0.5762583603536493,
+      0.7998371472562003,
+      0.654866701163068,
+      0.8265098583382091,
+      0.6396359431556817,
+      0.7027268748062085,
+      0.8294517754023409,
+      0.7233210465078229,
+      0.7771110231248013,
+      0.7963168639992465,
+      0.8642701349453018,
+      0.6562749215219413,
+      0.7560138268402198,
+      0.7452823491939267,
+      0.7921064398112191,
+      0.8053842353979863,
+      0.8407623286332752,
+      0.8358449921363229,
+      0.7801443915610667,
+      0.8360997341603525,
+      0.6424665274425669,
+      0.5893295813515503,
+      0.6938935324317378,
+      0.6062584547062407,
+      0.8657995902027111,
+      0.8138938118729016,
+      0.6258996262934099,
+      0.7773463247613547,
+      0.8220847365726462,
+      0.7259603221897482,
+      0.8246489908275749,
+      0.7216308872715419,
+      1.0
+    ],
+    "expert_usage": {
+      "106": 78,
+      "110": 79,
+      "48": 78,
+      "5": 78,
+      "60": 1,
+      "113": 2,
+      "52": 1,
+      "109": 1,
+      "69": 1,
+      "57": 1,
+      "80": 1,
+      "55": 1,
+      "20": 1,
+      "124": 1,
+      "74": 1,
+      "105": 1,
+      "86": 1,
+      "59": 1,
+      "97": 1,
+      "111": 1,
+      "15": 2,
+      "49": 1,
+      "121": 1,
+      "13": 1,
+      "58": 1,
+      "47": 1,
+      "65": 2,
+      "88": 1,
+      "0": 1,
+      "96": 1,
+      "27": 1,
+      "107": 1,
+      "53": 1,
+      "122": 1,
+      "35": 1,
+      "28": 1,
+      "19": 1,
+      "112": 1,
+      "100": 1,
+      "89": 1,
+      "78": 1,
+      "46": 1,
+      "83": 1,
+      "63": 1,
+      "9": 1,
+      "85": 1,
+      "73": 1,
+      "104": 1
+    },
+    "context_map": {
+      "106": {
+        "context_1": 26,
+        "context_0": 27,
+        "context_2": 25
+      },
+      "110": {
+        "context_1": 26,
+        "context_0": 28,
+        "context_2": 25
+      },
+      "48": {
+        "context_1": 26,
+        "context_0": 27,
+        "context_2": 25
+      },
+      "5": {
+        "context_1": 26,
+        "context_0": 27,
+        "context_2": 25
+      },
+      "60": {
+        "context_2": 1
+      },
+      "113": {
+        "context_2": 2
+      },
+      "52": {
+        "context_2": 1
+      },
+      "109": {
+        "context_2": 1
+      },
+      "69": {
+        "context_0": 1
+      },
+      "57": {
+        "context_0": 1
+      },
+      "80": {
+        "context_0": 1
+      },
+      "55": {
+        "context_0": 1
+      },
+      "20": {
+        "context_2": 1
+      },
+      "124": {
+        "context_2": 1
+      },
+      "74": {
+        "context_2": 1
+      },
+      "105": {
+        "context_2": 1
+      },
+      "86": {
+        "context_2": 1
+      },
+      "59": {
+        "context_2": 1
+      },
+      "97": {
+        "context_2": 1
+      },
+      "111": {
+        "context_2": 1
+      },
+      "15": {
+        "context_2": 1,
+        "context_1": 1
+      },
+      "49": {
+        "context_2": 1
+      },
+      "121": {
+        "context_2": 1
+      },
+      "13": {
+        "context_1": 1
+      },
+      "58": {
+        "context_1": 1
+      },
+      "47": {
+        "context_1": 1
+      },
+      "65": {
+        "context_1": 2
+      },
+      "88": {
+        "context_1": 1
+      },
+      "0": {
+        "context_1": 1
+      },
+      "96": {
+        "context_1": 1
+      },
+      "27": {
+        "context_2": 1
+      },
+      "107": {
+        "context_2": 1
+      },
+      "53": {
+        "context_2": 1
+      },
+      "122": {
+        "context_2": 1
+      },
+      "35": {
+        "context_1": 1
+      },
+      "28": {
+        "context_1": 1
+      },
+      "19": {
+        "context_1": 1
+      },
+      "112": {
+        "context_1": 1
+      },
+      "100": {
+        "context_0": 1
+      },
+      "89": {
+        "context_0": 1
+      },
+      "78": {
+        "context_0": 1
+      },
+      "46": {
+        "context_0": 1
+      },
+      "83": {
+        "context_0": 1
+      },
+      "63": {
+        "context_0": 1
+      },
+      "9": {
+        "context_0": 1
+      },
+      "85": {
+        "context_1": 1
+      },
+      "73": {
+        "context_1": 1
+      },
+      "104": {
+        "context_1": 1
+      }
+    },
+    "mode_history": [
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration"
+    ],
+    "transition_generation": null,
+    "selector_stats": {
+      "total_selections": 90,
+      "trust_driven": 0,
+      "router_explore": 78,
+      "forced_exploration": 12,
+      "trust_driven_rate": 0.0,
+      "forced_exploration_rate": 0.13333333333333333,
+      "total_mrh_substitutions": 0,
+      "generation": 90
+    },
+    "final_stats": {
+      "specialists": 43,
+      "generalists": 5,
+      "mode_transitions": {
+        "router_explore": 83,
+        "forced_exploration": 7
+      }
+    }
+  },
+  "epsilon_0.2": {
+    "session": 77,
+    "epsilon": 0.2,
+    "architecture": "trust-first + epsilon-greedy (Session 77)",
+    "model": "Q3-Omni 30B",
+    "epochs": 10,
+    "sequences": 9,
+    "generations": 90,
+    "unique_experts": 45,
+    "utilization": 0.3515625,
+    "qualities": [
+      0.7009236054762977,
+      0.8514443432901893,
+      0.7485856390380736,
+      0.6885236322515855,
+      0.737400367635757,
+      0.7173782287678915,
+      0.48979240904025995,
+      0.7742414746349757,
+      0.7020153725872839,
+      0.6243978696013659,
+      0.8054571537236779,
+      0.7706136506750842,
+      0.7034834978138509,
+      0.9045930187694282,
+      0.8179939134735854,
+      0.8765197369907234,
+      0.6537959064827897,
+      0.8230370891573034,
+      0.9437975834473322,
+      0.828354664376383,
+      0.8452957238137037,
+      0.7012806100521842,
+      0.7050883189446064,
+      0.7049102624729646,
+      0.6401911453187201,
+      0.7039968473363983,
+      0.7403348700347162,
+      0.7881664985360253,
+      0.7967683181067395,
+      0.7270357751435882,
+      0.7739625610737096,
+      0.7750948835844285,
+      0.6733820461282647,
+      0.9183956265762612,
+      0.6976250898851953,
+      0.8108392076153166,
+      0.8211693957785274,
+      0.6621654726850202,
+      0.5886998812748436,
+      0.8375424741168424,
+      0.835096324315791,
+      0.6651474703047986,
+      0.8125573531517687,
+      0.8281615184681576,
+      0.6713388741383544,
+      0.8125009647511737,
+      0.7346282663030927,
+      0.6750417907434211,
+      0.820729154418586,
+      0.8788670139254887,
+      0.72429137694477,
+      0.6094221419888972,
+      0.7173401063404966,
+      0.7558171340520315,
+      0.8078857223218562,
+      0.7187131557651062,
+      0.7130783739520499,
+      0.8237978093080471,
+      0.677934635218211,
+      0.847927383573974,
+      0.8316451919553665,
+      0.641268491268635,
+      0.6339490386733775,
+      0.7430516101778191,
+      0.7150746013207785,
+      0.717446267452446,
+      0.7803833967708554,
+      0.6706846336588311,
+      0.8334026573342193,
+      0.8540050622778534,
+      0.7629266691085385,
+      0.6793918097671869,
+      0.8366072178761669,
+      0.9832187825404388,
+      0.7217811561307339,
+      0.7709509424275455,
+      0.7404962420548615,
+      0.7767964747332108,
+      0.7893589443886159,
+      0.8606495555388399,
+      0.6881641926457354,
+      0.7119845397930745,
+      0.682069902165536,
+      0.7364128823323661,
+      0.6867589959744208,
+      0.5046296242744603,
+      0.7794286061562794,
+      0.8728739045762632,
+      0.8377706276054242,
+      0.7613549579122754
+    ],
+    "expert_usage": {
+      "106": 79,
+      "110": 79,
+      "48": 79,
+      "5": 79,
+      "18": 1,
+      "117": 1,
+      "87": 1,
+      "125": 1,
+      "126": 1,
+      "108": 1,
+      "36": 1,
+      "68": 1,
+      "91": 1,
+      "39": 1,
+      "103": 1,
+      "4": 1,
+      "85": 1,
+      "67": 1,
+      "19": 1,
+      "75": 1,
+      "99": 2,
+      "79": 1,
+      "44": 1,
+      "1": 1,
+      "102": 1,
+      "45": 2,
+      "38": 1,
+      "13": 1,
+      "12": 1,
+      "7": 1,
+      "105": 1,
+      "82": 1,
+      "113": 1,
+      "59": 1,
+      "15": 1,
+      "30": 1,
+      "124": 2,
+      "114": 1,
+      "34": 1,
+      "127": 1,
+      "81": 1,
+      "84": 1,
+      "118": 1,
+      "89": 1,
+      "111": 1
+    },
+    "context_map": {
+      "106": {
+        "context_1": 28,
+        "context_0": 26,
+        "context_2": 25
+      },
+      "110": {
+        "context_1": 28,
+        "context_0": 26,
+        "context_2": 25
+      },
+      "48": {
+        "context_1": 28,
+        "context_0": 26,
+        "context_2": 25
+      },
+      "5": {
+        "context_1": 28,
+        "context_0": 26,
+        "context_2": 25
+      },
+      "18": {
+        "context_0": 1
+      },
+      "117": {
+        "context_0": 1
+      },
+      "87": {
+        "context_0": 1
+      },
+      "125": {
+        "context_0": 1
+      },
+      "126": {
+        "context_2": 1
+      },
+      "108": {
+        "context_2": 1
+      },
+      "36": {
+        "context_2": 1
+      },
+      "68": {
+        "context_2": 1
+      },
+      "91": {
+        "context_1": 1
+      },
+      "39": {
+        "context_1": 1
+      },
+      "103": {
+        "context_1": 1
+      },
+      "4": {
+        "context_1": 1
+      },
+      "85": {
+        "context_1": 1
+      },
+      "67": {
+        "context_1": 1
+      },
+      "19": {
+        "context_1": 1
+      },
+      "75": {
+        "context_1": 1
+      },
+      "99": {
+        "context_2": 1,
+        "context_0": 1
+      },
+      "79": {
+        "context_2": 1
+      },
+      "44": {
+        "context_2": 1
+      },
+      "1": {
+        "context_2": 1
+      },
+      "102": {
+        "context_0": 1
+      },
+      "45": {
+        "context_0": 1,
+        "context_2": 1
+      },
+      "38": {
+        "context_0": 1
+      },
+      "13": {
+        "context_2": 1
+      },
+      "12": {
+        "context_2": 1
+      },
+      "7": {
+        "context_2": 1
+      },
+      "105": {
+        "context_2": 1
+      },
+      "82": {
+        "context_2": 1
+      },
+      "113": {
+        "context_2": 1
+      },
+      "59": {
+        "context_2": 1
+      },
+      "15": {
+        "context_2": 1
+      },
+      "30": {
+        "context_0": 1
+      },
+      "124": {
+        "context_0": 2
+      },
+      "114": {
+        "context_0": 1
+      },
+      "34": {
+        "context_0": 1
+      },
+      "127": {
+        "context_0": 1
+      },
+      "81": {
+        "context_0": 1
+      },
+      "84": {
+        "context_0": 1
+      },
+      "118": {
+        "context_2": 1
+      },
+      "89": {
+        "context_2": 1
+      },
+      "111": {
+        "context_2": 1
+      }
+    },
+    "mode_history": [
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "forced_exploration",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "forced_exploration",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore"
+    ],
+    "transition_generation": null,
+    "selector_stats": {
+      "total_selections": 90,
+      "trust_driven": 0,
+      "router_explore": 79,
+      "forced_exploration": 11,
+      "trust_driven_rate": 0.0,
+      "forced_exploration_rate": 0.12222222222222222,
+      "total_mrh_substitutions": 0,
+      "generation": 90
+    },
+    "final_stats": {
+      "specialists": 39,
+      "generalists": 6,
+      "mode_transitions": {
+        "router_explore": 75,
+        "forced_exploration": 15
+      }
+    }
+  },
+  "epsilon_0.3": {
+    "session": 77,
+    "epsilon": 0.3,
+    "architecture": "trust-first + epsilon-greedy (Session 77)",
+    "model": "Q3-Omni 30B",
+    "epochs": 10,
+    "sequences": 9,
+    "generations": 90,
+    "unique_experts": 61,
+    "utilization": 0.4765625,
+    "qualities": [
+      0.9096410816595677,
+      0.8289024319253904,
+      0.6857099377666673,
+      0.7590202081572645,
+      0.7299481786675615,
+      0.6765702766502845,
+      0.5758987341456284,
+      0.781017152540356,
+      0.7955468288945039,
+      0.6576827534827193,
+      0.9417638620883628,
+      0.7139654760041095,
+      0.7922185445603003,
+      0.8157063570173795,
+      0.7765781665536539,
+      0.6412724239241014,
+      0.8104795556411324,
+      0.5836484971254322,
+      0.8139473605572946,
+      0.9961570699852919,
+      0.8357454320375618,
+      0.5884327367617387,
+      0.6963177565913409,
+      0.8831145294672713,
+      0.7675597998540395,
+      0.6605892424165697,
+      0.6641182046287342,
+      0.8356333136447017,
+      0.6801751458933344,
+      0.7685699343765596,
+      0.7223816173110933,
+      0.9500962500679849,
+      0.8048988057411302,
+      0.6687359731161597,
+      0.7854398132331505,
+      0.556681704090836,
+      0.7622614554043287,
+      0.6937299343069219,
+      0.6911097766508658,
+      0.7104924485772683,
+      0.833839987698537,
+      0.7583200548127164,
+      0.813661653586041,
+      0.9279504537996226,
+      0.9352808944238329,
+      0.9097116992865455,
+      0.6726075063109168,
+      0.810991263016965,
+      0.9415535126984724,
+      0.7705676783616154,
+      0.8020645652242749,
+      0.8640979968493788,
+      0.7722899321114587,
+      0.7443681330747882,
+      0.8184907214724559,
+      0.7501695844482499,
+      0.7295436496380675,
+      0.7756326375036019,
+      0.7958351836435367,
+      0.9204069092698318,
+      0.765949493484616,
+      0.818613593909887,
+      0.8410658198956176,
+      0.7325348475344577,
+      0.787909100077272,
+      0.6863418385589801,
+      0.696418210988121,
+      0.8544623869693705,
+      0.7730234597668117,
+      0.8762045304619971,
+      0.6128398219809118,
+      0.7997853826991285,
+      0.8746080060327384,
+      0.781868082942335,
+      0.6939356080954584,
+      0.7691230207312505,
+      0.56149992303208,
+      0.9434122876260791,
+      0.7515911184481273,
+      0.633781427892703,
+      0.6278851185568928,
+      0.8428194441093511,
+      0.8251348692441993,
+      0.6834981746039321,
+      0.8615740817162683,
+      0.6538754881426173,
+      0.9221465070911389,
+      0.6459663297995593,
+      0.6616176743112936,
+      0.8252867320991925
+    ],
+    "expert_usage": {
+      "46": 1,
+      "74": 1,
+      "61": 1,
+      "92": 1,
+      "106": 70,
+      "110": 70,
+      "48": 70,
+      "5": 70,
+      "82": 2,
+      "116": 3,
+      "16": 3,
+      "125": 1,
+      "8": 2,
+      "3": 2,
+      "59": 3,
+      "63": 2,
+      "4": 1,
+      "43": 1,
+      "115": 1,
+      "93": 2,
+      "124": 3,
+      "80": 3,
+      "28": 3,
+      "105": 1,
+      "27": 1,
+      "2": 2,
+      "97": 2,
+      "94": 2,
+      "87": 1,
+      "123": 1,
+      "0": 1,
+      "17": 2,
+      "83": 1,
+      "117": 1,
+      "29": 1,
+      "18": 2,
+      "107": 1,
+      "88": 1,
+      "42": 1,
+      "37": 1,
+      "114": 1,
+      "68": 2,
+      "19": 1,
+      "41": 1,
+      "91": 1,
+      "118": 1,
+      "69": 1,
+      "102": 1,
+      "56": 1,
+      "58": 1,
+      "45": 1,
+      "54": 1,
+      "77": 1,
+      "60": 1,
+      "7": 1,
+      "38": 1,
+      "39": 1,
+      "44": 1,
+      "10": 1,
+      "89": 1,
+      "81": 1
+    },
+    "context_map": {
+      "46": {
+        "context_1": 1
+      },
+      "74": {
+        "context_1": 1
+      },
+      "61": {
+        "context_1": 1
+      },
+      "92": {
+        "context_1": 1
+      },
+      "106": {
+        "context_0": 26,
+        "context_1": 23,
+        "context_2": 21
+      },
+      "110": {
+        "context_0": 26,
+        "context_1": 23,
+        "context_2": 21
+      },
+      "48": {
+        "context_0": 26,
+        "context_1": 23,
+        "context_2": 21
+      },
+      "5": {
+        "context_0": 26,
+        "context_1": 23,
+        "context_2": 21
+      },
+      "82": {
+        "context_1": 1,
+        "context_2": 1
+      },
+      "116": {
+        "context_1": 2,
+        "context_2": 1
+      },
+      "16": {
+        "context_1": 1,
+        "context_2": 2
+      },
+      "125": {
+        "context_1": 1
+      },
+      "8": {
+        "context_2": 1,
+        "context_1": 1
+      },
+      "3": {
+        "context_2": 2
+      },
+      "59": {
+        "context_2": 1,
+        "context_1": 2
+      },
+      "63": {
+        "context_1": 1,
+        "context_0": 1
+      },
+      "4": {
+        "context_2": 1
+      },
+      "43": {
+        "context_2": 1
+      },
+      "115": {
+        "context_2": 1
+      },
+      "93": {
+        "context_2": 2
+      },
+      "124": {
+        "context_0": 1,
+        "context_1": 1,
+        "context_2": 1
+      },
+      "80": {
+        "context_0": 2,
+        "context_1": 1
+      },
+      "28": {
+        "context_0": 2,
+        "context_2": 1
+      },
+      "105": {
+        "context_1": 1
+      },
+      "27": {
+        "context_1": 1
+      },
+      "2": {
+        "context_1": 1,
+        "context_2": 1
+      },
+      "97": {
+        "context_1": 1,
+        "context_2": 1
+      },
+      "94": {
+        "context_1": 1,
+        "context_0": 1
+      },
+      "87": {
+        "context_0": 1
+      },
+      "123": {
+        "context_0": 1
+      },
+      "0": {
+        "context_0": 1
+      },
+      "17": {
+        "context_0": 1,
+        "context_2": 1
+      },
+      "83": {
+        "context_0": 1
+      },
+      "117": {
+        "context_0": 1
+      },
+      "29": {
+        "context_2": 1
+      },
+      "18": {
+        "context_2": 2
+      },
+      "107": {
+        "context_2": 1
+      },
+      "88": {
+        "context_2": 1
+      },
+      "42": {
+        "context_2": 1
+      },
+      "37": {
+        "context_2": 1
+      },
+      "114": {
+        "context_2": 1
+      },
+      "68": {
+        "context_2": 1,
+        "context_1": 1
+      },
+      "19": {
+        "context_2": 1
+      },
+      "41": {
+        "context_2": 1
+      },
+      "91": {
+        "context_2": 1
+      },
+      "118": {
+        "context_1": 1
+      },
+      "69": {
+        "context_1": 1
+      },
+      "102": {
+        "context_1": 1
+      },
+      "56": {
+        "context_1": 1
+      },
+      "58": {
+        "context_2": 1
+      },
+      "45": {
+        "context_2": 1
+      },
+      "54": {
+        "context_2": 1
+      },
+      "77": {
+        "context_0": 1
+      },
+      "60": {
+        "context_0": 1
+      },
+      "7": {
+        "context_0": 1
+      },
+      "38": {
+        "context_1": 1
+      },
+      "39": {
+        "context_1": 1
+      },
+      "44": {
+        "context_1": 1
+      },
+      "10": {
+        "context_2": 1
+      },
+      "89": {
+        "context_2": 1
+      },
+      "81": {
+        "context_2": 1
+      }
+    },
+    "mode_history": [
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "forced_exploration",
+      "forced_exploration",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "forced_exploration",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "forced_exploration",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore",
+      "router_explore"
+    ],
+    "transition_generation": null,
+    "selector_stats": {
+      "total_selections": 90,
+      "trust_driven": 0,
+      "router_explore": 70,
+      "forced_exploration": 20,
+      "trust_driven_rate": 0.0,
+      "forced_exploration_rate": 0.2222222222222222,
+      "total_mrh_substitutions": 0,
+      "generation": 90
+    },
+    "final_stats": {
+      "specialists": 43,
+      "generalists": 18,
+      "mode_transitions": {
+        "forced_exploration": 24,
+        "router_explore": 66
+      }
+    }
+  }
+}

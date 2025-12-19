@@ -1,126 +1,1635 @@
 {
+  "session": 67,
+  "parameters": {
+    "alpha": 0.3,
+    "trust_threshold": 0.3,
+    "overlap_threshold": 0.7,
+    "generations": 50
+  },
   "baseline": {
-    "qualities": [
-      3146332.75,
-      7735325.5,
-      2320212.5,
-      1808702.25,
-      2535301.0,
-      3588896.0,
-      3146332.75,
-      7735325.5,
-      2320212.5,
-      1808702.25,
-      2535301.0,
-      3588896.0,
-      3146332.75,
-      7735325.5,
-      2320212.5,
-      1808702.25,
-      2535301.0,
-      3588896.0
-    ],
-    "average": 3522461.6666666665
+    "unique_experts": 4,
+    "utilization": 0.031
   },
-  "trust_augmented": {
-    "qualities": [
-      4126986.25,
-      45290624.0,
-      3112825.0,
-      3127154.75,
-      3636010.5,
-      7963354.0,
-      4126986.25,
-      45290624.0,
-      3112825.0,
-      3127154.75,
-      3636010.5,
-      7963354.0,
-      4126986.25,
-      45290624.0,
-      3112825.0,
-      3127154.75,
-      3636010.5,
-      7963354.0
-    ],
-    "average": 11209492.416666666,
-    "trust_evolution": [
-      0.49444550946149474,
-      0.4317630180895541,
-      0.4760708646044156,
-      0.503895772674955,
-      0.47058302950453396,
-      0.4366640511463006,
-      0.49444550946149474,
-      0.4317630180895541,
-      0.4760708646044156,
-      0.503895772674955,
-      0.47058302950453396,
-      0.4366640511463006,
-      0.49444550946149474,
-      0.4317630180895541,
-      0.4760708646044156,
-      0.503895772674955,
-      0.47058302950453396,
-      0.4366640511463006
-    ],
-    "discovered_context_trust_evolution": {
-      "context_0": [
-        0.49444550946149474,
-        0.503895772674955,
-        0.49444550946149474,
-        0.503895772674955,
-        0.49444550946149474,
-        0.503895772674955
-      ],
-      "context_1": [
-        0.4317630180895541,
-        0.4760708646044156,
-        0.47058302950453396,
-        0.4317630180895541,
-        0.4760708646044156,
-        0.47058302950453396,
-        0.4317630180895541,
-        0.4760708646044156,
-        0.47058302950453396
-      ],
-      "context_2": [
-        0.4366640511463006,
-        0.4366640511463006,
-        0.4366640511463006
-      ]
-    }
+  "results": {
+    "unique_experts": 8,
+    "utilization": 0.0625,
+    "diversity_increase_pct": 100.0,
+    "specialist_count": 0,
+    "generalist_count": 8,
+    "specialist_rate": 0.0,
+    "total_substitutions": 200,
+    "substitution_rate": 0.5
   },
-  "context_discovery": {
-    "context_mapping": {
-      "context_0": [
-        "code",
-        "reasoning",
-        "code",
-        "reasoning",
-        "code",
-        "reasoning"
-      ],
-      "context_1": [
-        "code",
-        "reasoning",
-        "text",
-        "code",
-        "reasoning",
-        "text",
-        "code",
-        "reasoning",
-        "text"
-      ],
-      "context_2": [
-        "text",
-        "text",
-        "text"
-      ]
+  "substitutions": [
+    {
+      "generation": 1,
+      "context": 0,
+      "old_expert": 106,
+      "new_expert": 17,
+      "overlap": 0.932294445082039,
+      "trust_delta": 0.5923131899939862
     },
-    "num_discovered_contexts": 3,
-    "expected_contexts": 3
-  },
-  "num_sequences": 6,
-  "num_epochs": 3
+    {
+      "generation": 1,
+      "context": 0,
+      "old_expert": 95,
+      "new_expert": 17,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.5923131899939862
+    },
+    {
+      "generation": 1,
+      "context": 0,
+      "old_expert": 73,
+      "new_expert": 17,
+      "overlap": 0.9669519493078381,
+      "trust_delta": 0.5923131899939862
+    },
+    {
+      "generation": 1,
+      "context": 0,
+      "old_expert": 114,
+      "new_expert": 17,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.5923131899939862
+    },
+    {
+      "generation": 2,
+      "context": 1,
+      "old_expert": 114,
+      "new_expert": 17,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.32999999821186066
+    },
+    {
+      "generation": 2,
+      "context": 1,
+      "old_expert": 106,
+      "new_expert": 99,
+      "overlap": 0.8473561366746856,
+      "trust_delta": 0.601813770571662
+    },
+    {
+      "generation": 2,
+      "context": 1,
+      "old_expert": 73,
+      "new_expert": 99,
+      "overlap": 0.8024338383274516,
+      "trust_delta": 0.601813770571662
+    },
+    {
+      "generation": 2,
+      "context": 1,
+      "old_expert": 95,
+      "new_expert": 1,
+      "overlap": 0.8669214468630108,
+      "trust_delta": 0.32999999821186066
+    },
+    {
+      "generation": 3,
+      "context": 2,
+      "old_expert": 73,
+      "new_expert": 63,
+      "overlap": 0.7941013883159839,
+      "trust_delta": 0.6935777529615686
+    },
+    {
+      "generation": 3,
+      "context": 2,
+      "old_expert": 95,
+      "new_expert": 63,
+      "overlap": 0.944911182523068,
+      "trust_delta": 0.6935777529615686
+    },
+    {
+      "generation": 3,
+      "context": 2,
+      "old_expert": 106,
+      "new_expert": 63,
+      "overlap": 0.7171371656006361,
+      "trust_delta": 0.6935777529615686
+    },
+    {
+      "generation": 3,
+      "context": 2,
+      "old_expert": 114,
+      "new_expert": 63,
+      "overlap": 0.7258661863112977,
+      "trust_delta": 0.6935777529615686
+    },
+    {
+      "generation": 4,
+      "context": 0,
+      "old_expert": 114,
+      "new_expert": 17,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.6059794832116732
+    },
+    {
+      "generation": 4,
+      "context": 0,
+      "old_expert": 95,
+      "new_expert": 17,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.6059794832116732
+    },
+    {
+      "generation": 4,
+      "context": 0,
+      "old_expert": 106,
+      "new_expert": 17,
+      "overlap": 0.932294445082039,
+      "trust_delta": 0.6059794832116732
+    },
+    {
+      "generation": 4,
+      "context": 0,
+      "old_expert": 73,
+      "new_expert": 17,
+      "overlap": 0.9669519493078381,
+      "trust_delta": 0.6059794832116732
+    },
+    {
+      "generation": 5,
+      "context": 1,
+      "old_expert": 114,
+      "new_expert": 42,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.32999999821186066
+    },
+    {
+      "generation": 5,
+      "context": 1,
+      "old_expert": 95,
+      "new_expert": 42,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.32999999821186066
+    },
+    {
+      "generation": 5,
+      "context": 1,
+      "old_expert": 73,
+      "new_expert": 120,
+      "overlap": 0.7293051654988726,
+      "trust_delta": 0.5884524923913088
+    },
+    {
+      "generation": 5,
+      "context": 1,
+      "old_expert": 106,
+      "new_expert": 120,
+      "overlap": 0.7644707871564383,
+      "trust_delta": 0.5884524923913088
+    },
+    {
+      "generation": 6,
+      "context": 2,
+      "old_expert": 95,
+      "new_expert": 110,
+      "overlap": 0.8071417672951359,
+      "trust_delta": 0.6874636645261445
+    },
+    {
+      "generation": 6,
+      "context": 2,
+      "old_expert": 106,
+      "new_expert": 63,
+      "overlap": 0.7171371656006361,
+      "trust_delta": 0.57838952563747
+    },
+    {
+      "generation": 6,
+      "context": 2,
+      "old_expert": 114,
+      "new_expert": 63,
+      "overlap": 0.7258661863112977,
+      "trust_delta": 0.57838952563747
+    },
+    {
+      "generation": 6,
+      "context": 2,
+      "old_expert": 73,
+      "new_expert": 63,
+      "overlap": 0.7941013883159839,
+      "trust_delta": 0.57838952563747
+    },
+    {
+      "generation": 7,
+      "context": 0,
+      "old_expert": 73,
+      "new_expert": 42,
+      "overlap": 0.9669519493078381,
+      "trust_delta": 0.5895753180672013
+    },
+    {
+      "generation": 7,
+      "context": 0,
+      "old_expert": 106,
+      "new_expert": 42,
+      "overlap": 0.932294445082039,
+      "trust_delta": 0.5895753180672013
+    },
+    {
+      "generation": 7,
+      "context": 0,
+      "old_expert": 114,
+      "new_expert": 42,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.5895753180672013
+    },
+    {
+      "generation": 7,
+      "context": 0,
+      "old_expert": 95,
+      "new_expert": 42,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.5895753180672013
+    },
+    {
+      "generation": 8,
+      "context": 1,
+      "old_expert": 114,
+      "new_expert": 88,
+      "overlap": 0.9837801559508863,
+      "trust_delta": 0.32999999821186066
+    },
+    {
+      "generation": 8,
+      "context": 1,
+      "old_expert": 73,
+      "new_expert": 120,
+      "overlap": 0.7293051654988726,
+      "trust_delta": 0.5897446499626292
+    },
+    {
+      "generation": 8,
+      "context": 1,
+      "old_expert": 106,
+      "new_expert": 120,
+      "overlap": 0.7644707871564383,
+      "trust_delta": 0.5897446499626292
+    },
+    {
+      "generation": 8,
+      "context": 1,
+      "old_expert": 95,
+      "new_expert": 88,
+      "overlap": 0.888234788195688,
+      "trust_delta": 0.32999999821186066
+    },
+    {
+      "generation": 9,
+      "context": 2,
+      "old_expert": 73,
+      "new_expert": 63,
+      "overlap": 0.7941013883159839,
+      "trust_delta": 0.6301858352908652
+    },
+    {
+      "generation": 9,
+      "context": 2,
+      "old_expert": 114,
+      "new_expert": 63,
+      "overlap": 0.7258661863112977,
+      "trust_delta": 0.6301858352908652
+    },
+    {
+      "generation": 9,
+      "context": 2,
+      "old_expert": 95,
+      "new_expert": 1,
+      "overlap": 0.8669214468630108,
+      "trust_delta": 0.6818769954247557
+    },
+    {
+      "generation": 9,
+      "context": 2,
+      "old_expert": 106,
+      "new_expert": 63,
+      "overlap": 0.7171371656006361,
+      "trust_delta": 0.6301858352908652
+    },
+    {
+      "generation": 10,
+      "context": 0,
+      "old_expert": 106,
+      "new_expert": 42,
+      "overlap": 0.932294445082039,
+      "trust_delta": 0.6304064813753741
+    },
+    {
+      "generation": 10,
+      "context": 0,
+      "old_expert": 95,
+      "new_expert": 42,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.6304064813753741
+    },
+    {
+      "generation": 10,
+      "context": 0,
+      "old_expert": 73,
+      "new_expert": 42,
+      "overlap": 0.9669519493078381,
+      "trust_delta": 0.6304064813753741
+    },
+    {
+      "generation": 10,
+      "context": 0,
+      "old_expert": 114,
+      "new_expert": 42,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.6304064813753741
+    },
+    {
+      "generation": 11,
+      "context": 1,
+      "old_expert": 73,
+      "new_expert": 99,
+      "overlap": 0.8024338383274516,
+      "trust_delta": 0.586024238012353
+    },
+    {
+      "generation": 11,
+      "context": 1,
+      "old_expert": 106,
+      "new_expert": 99,
+      "overlap": 0.8473561366746856,
+      "trust_delta": 0.586024238012353
+    },
+    {
+      "generation": 11,
+      "context": 1,
+      "old_expert": 95,
+      "new_expert": 17,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.0912462907863062
+    },
+    {
+      "generation": 11,
+      "context": 1,
+      "old_expert": 114,
+      "new_expert": 17,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.0912462907863062
+    },
+    {
+      "generation": 12,
+      "context": 2,
+      "old_expert": 106,
+      "new_expert": 63,
+      "overlap": 0.7171371656006361,
+      "trust_delta": 0.6716963051567469
+    },
+    {
+      "generation": 12,
+      "context": 2,
+      "old_expert": 95,
+      "new_expert": 63,
+      "overlap": 0.944911182523068,
+      "trust_delta": 0.6716963051567469
+    },
+    {
+      "generation": 12,
+      "context": 2,
+      "old_expert": 73,
+      "new_expert": 63,
+      "overlap": 0.7941013883159839,
+      "trust_delta": 0.6716963051567469
+    },
+    {
+      "generation": 12,
+      "context": 2,
+      "old_expert": 114,
+      "new_expert": 63,
+      "overlap": 0.7258661863112977,
+      "trust_delta": 0.6716963051567469
+    },
+    {
+      "generation": 13,
+      "context": 0,
+      "old_expert": 95,
+      "new_expert": 17,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.5772710053054048
+    },
+    {
+      "generation": 13,
+      "context": 0,
+      "old_expert": 73,
+      "new_expert": 17,
+      "overlap": 0.9669519493078381,
+      "trust_delta": 0.5772710053054048
+    },
+    {
+      "generation": 13,
+      "context": 0,
+      "old_expert": 114,
+      "new_expert": 17,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.5772710053054048
+    },
+    {
+      "generation": 13,
+      "context": 0,
+      "old_expert": 106,
+      "new_expert": 17,
+      "overlap": 0.932294445082039,
+      "trust_delta": 0.5772710053054048
+    },
+    {
+      "generation": 14,
+      "context": 1,
+      "old_expert": 114,
+      "new_expert": 42,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.04510798929354773
+    },
+    {
+      "generation": 14,
+      "context": 1,
+      "old_expert": 73,
+      "new_expert": 99,
+      "overlap": 0.8024338383274516,
+      "trust_delta": 0.6278508821869276
+    },
+    {
+      "generation": 14,
+      "context": 1,
+      "old_expert": 106,
+      "new_expert": 99,
+      "overlap": 0.8473561366746856,
+      "trust_delta": 0.6278508821869276
+    },
+    {
+      "generation": 14,
+      "context": 1,
+      "old_expert": 95,
+      "new_expert": 42,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.04510798929354773
+    },
+    {
+      "generation": 15,
+      "context": 2,
+      "old_expert": 73,
+      "new_expert": 63,
+      "overlap": 0.7941013883159839,
+      "trust_delta": 0.6127525727453119
+    },
+    {
+      "generation": 15,
+      "context": 2,
+      "old_expert": 114,
+      "new_expert": 63,
+      "overlap": 0.7258661863112977,
+      "trust_delta": 0.6127525727453119
+    },
+    {
+      "generation": 15,
+      "context": 2,
+      "old_expert": 106,
+      "new_expert": 63,
+      "overlap": 0.7171371656006361,
+      "trust_delta": 0.6127525727453119
+    },
+    {
+      "generation": 15,
+      "context": 2,
+      "old_expert": 95,
+      "new_expert": 110,
+      "overlap": 0.8071417672951359,
+      "trust_delta": 0.6315455699830987
+    },
+    {
+      "generation": 16,
+      "context": 0,
+      "old_expert": 73,
+      "new_expert": 17,
+      "overlap": 0.9669519493078381,
+      "trust_delta": 0.5933335948272547
+    },
+    {
+      "generation": 16,
+      "context": 0,
+      "old_expert": 106,
+      "new_expert": 17,
+      "overlap": 0.932294445082039,
+      "trust_delta": 0.5933335948272547
+    },
+    {
+      "generation": 16,
+      "context": 0,
+      "old_expert": 114,
+      "new_expert": 17,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.5933335948272547
+    },
+    {
+      "generation": 16,
+      "context": 0,
+      "old_expert": 95,
+      "new_expert": 17,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.5933335948272547
+    },
+    {
+      "generation": 17,
+      "context": 1,
+      "old_expert": 114,
+      "new_expert": 42,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.07678861431512374
+    },
+    {
+      "generation": 17,
+      "context": 1,
+      "old_expert": 73,
+      "new_expert": 99,
+      "overlap": 0.8024338383274516,
+      "trust_delta": 0.636810928893534
+    },
+    {
+      "generation": 17,
+      "context": 1,
+      "old_expert": 95,
+      "new_expert": 42,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.07678861431512374
+    },
+    {
+      "generation": 17,
+      "context": 1,
+      "old_expert": 106,
+      "new_expert": 99,
+      "overlap": 0.8473561366746856,
+      "trust_delta": 0.636810928893534
+    },
+    {
+      "generation": 18,
+      "context": 2,
+      "old_expert": 106,
+      "new_expert": 63,
+      "overlap": 0.7171371656006361,
+      "trust_delta": 0.6796012198723784
+    },
+    {
+      "generation": 18,
+      "context": 2,
+      "old_expert": 73,
+      "new_expert": 63,
+      "overlap": 0.7941013883159839,
+      "trust_delta": 0.6796012198723784
+    },
+    {
+      "generation": 18,
+      "context": 2,
+      "old_expert": 114,
+      "new_expert": 63,
+      "overlap": 0.7258661863112977,
+      "trust_delta": 0.6796012198723784
+    },
+    {
+      "generation": 18,
+      "context": 2,
+      "old_expert": 95,
+      "new_expert": 63,
+      "overlap": 0.944911182523068,
+      "trust_delta": 0.6796012198723784
+    },
+    {
+      "generation": 19,
+      "context": 0,
+      "old_expert": 73,
+      "new_expert": 17,
+      "overlap": 0.9669519493078381,
+      "trust_delta": 0.606170357766315
+    },
+    {
+      "generation": 19,
+      "context": 0,
+      "old_expert": 106,
+      "new_expert": 17,
+      "overlap": 0.932294445082039,
+      "trust_delta": 0.606170357766315
+    },
+    {
+      "generation": 19,
+      "context": 0,
+      "old_expert": 114,
+      "new_expert": 17,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.606170357766315
+    },
+    {
+      "generation": 19,
+      "context": 0,
+      "old_expert": 95,
+      "new_expert": 17,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.606170357766315
+    },
+    {
+      "generation": 20,
+      "context": 1,
+      "old_expert": 114,
+      "new_expert": 17,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.03761006354755764
+    },
+    {
+      "generation": 20,
+      "context": 1,
+      "old_expert": 73,
+      "new_expert": 99,
+      "overlap": 0.8024338383274516,
+      "trust_delta": 0.6121376107091875
+    },
+    {
+      "generation": 20,
+      "context": 1,
+      "old_expert": 95,
+      "new_expert": 17,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.03761006354755764
+    },
+    {
+      "generation": 20,
+      "context": 1,
+      "old_expert": 106,
+      "new_expert": 99,
+      "overlap": 0.8473561366746856,
+      "trust_delta": 0.6121376107091875
+    },
+    {
+      "generation": 21,
+      "context": 2,
+      "old_expert": 106,
+      "new_expert": 63,
+      "overlap": 0.7171371656006361,
+      "trust_delta": 0.7072927872997027
+    },
+    {
+      "generation": 21,
+      "context": 2,
+      "old_expert": 95,
+      "new_expert": 63,
+      "overlap": 0.944911182523068,
+      "trust_delta": 0.7072927872997027
+    },
+    {
+      "generation": 21,
+      "context": 2,
+      "old_expert": 73,
+      "new_expert": 63,
+      "overlap": 0.7941013883159839,
+      "trust_delta": 0.7072927872997027
+    },
+    {
+      "generation": 21,
+      "context": 2,
+      "old_expert": 114,
+      "new_expert": 63,
+      "overlap": 0.7258661863112977,
+      "trust_delta": 0.7072927872997027
+    },
+    {
+      "generation": 22,
+      "context": 0,
+      "old_expert": 73,
+      "new_expert": 17,
+      "overlap": 0.9669519493078381,
+      "trust_delta": 0.6055017766394875
+    },
+    {
+      "generation": 22,
+      "context": 0,
+      "old_expert": 114,
+      "new_expert": 17,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.6055017766394875
+    },
+    {
+      "generation": 22,
+      "context": 0,
+      "old_expert": 95,
+      "new_expert": 17,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.6055017766394875
+    },
+    {
+      "generation": 22,
+      "context": 0,
+      "old_expert": 106,
+      "new_expert": 17,
+      "overlap": 0.932294445082039,
+      "trust_delta": 0.6055017766394875
+    },
+    {
+      "generation": 23,
+      "context": 1,
+      "old_expert": 95,
+      "new_expert": 1,
+      "overlap": 0.8669214468630108,
+      "trust_delta": 0.03551769254639969
+    },
+    {
+      "generation": 23,
+      "context": 1,
+      "old_expert": 114,
+      "new_expert": 88,
+      "overlap": 0.9837801559508863,
+      "trust_delta": 0.02234420381810126
+    },
+    {
+      "generation": 23,
+      "context": 1,
+      "old_expert": 73,
+      "new_expert": 99,
+      "overlap": 0.8024338383274516,
+      "trust_delta": 0.6508768837932343
+    },
+    {
+      "generation": 23,
+      "context": 1,
+      "old_expert": 106,
+      "new_expert": 99,
+      "overlap": 0.8473561366746856,
+      "trust_delta": 0.6508768837932343
+    },
+    {
+      "generation": 24,
+      "context": 2,
+      "old_expert": 95,
+      "new_expert": 63,
+      "overlap": 0.944911182523068,
+      "trust_delta": 0.6567636737467675
+    },
+    {
+      "generation": 24,
+      "context": 2,
+      "old_expert": 106,
+      "new_expert": 63,
+      "overlap": 0.7171371656006361,
+      "trust_delta": 0.6567636737467675
+    },
+    {
+      "generation": 24,
+      "context": 2,
+      "old_expert": 73,
+      "new_expert": 63,
+      "overlap": 0.7941013883159839,
+      "trust_delta": 0.6567636737467675
+    },
+    {
+      "generation": 24,
+      "context": 2,
+      "old_expert": 114,
+      "new_expert": 63,
+      "overlap": 0.7258661863112977,
+      "trust_delta": 0.6567636737467675
+    },
+    {
+      "generation": 25,
+      "context": 0,
+      "old_expert": 114,
+      "new_expert": 17,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.6107563242380631
+    },
+    {
+      "generation": 25,
+      "context": 0,
+      "old_expert": 73,
+      "new_expert": 17,
+      "overlap": 0.9669519493078381,
+      "trust_delta": 0.6107563242380631
+    },
+    {
+      "generation": 25,
+      "context": 0,
+      "old_expert": 106,
+      "new_expert": 17,
+      "overlap": 0.932294445082039,
+      "trust_delta": 0.6107563242380631
+    },
+    {
+      "generation": 25,
+      "context": 0,
+      "old_expert": 95,
+      "new_expert": 17,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.6107563242380631
+    },
+    {
+      "generation": 26,
+      "context": 1,
+      "old_expert": 114,
+      "new_expert": 88,
+      "overlap": 0.9837801559508863,
+      "trust_delta": 0.07983341947712788
+    },
+    {
+      "generation": 26,
+      "context": 1,
+      "old_expert": 73,
+      "new_expert": 120,
+      "overlap": 0.7293051654988726,
+      "trust_delta": 0.5665106416209048
+    },
+    {
+      "generation": 26,
+      "context": 1,
+      "old_expert": 95,
+      "new_expert": 88,
+      "overlap": 0.888234788195688,
+      "trust_delta": 0.07983341947712788
+    },
+    {
+      "generation": 26,
+      "context": 1,
+      "old_expert": 106,
+      "new_expert": 120,
+      "overlap": 0.7644707871564383,
+      "trust_delta": 0.5665106416209048
+    },
+    {
+      "generation": 27,
+      "context": 2,
+      "old_expert": 114,
+      "new_expert": 63,
+      "overlap": 0.7258661863112977,
+      "trust_delta": 0.6297328934963718
+    },
+    {
+      "generation": 27,
+      "context": 2,
+      "old_expert": 106,
+      "new_expert": 63,
+      "overlap": 0.7171371656006361,
+      "trust_delta": 0.6297328934963718
+    },
+    {
+      "generation": 27,
+      "context": 2,
+      "old_expert": 95,
+      "new_expert": 63,
+      "overlap": 0.944911182523068,
+      "trust_delta": 0.6297328934963718
+    },
+    {
+      "generation": 27,
+      "context": 2,
+      "old_expert": 73,
+      "new_expert": 63,
+      "overlap": 0.7941013883159839,
+      "trust_delta": 0.6297328934963718
+    },
+    {
+      "generation": 28,
+      "context": 0,
+      "old_expert": 106,
+      "new_expert": 17,
+      "overlap": 0.932294445082039,
+      "trust_delta": 0.6344194240177929
+    },
+    {
+      "generation": 28,
+      "context": 0,
+      "old_expert": 114,
+      "new_expert": 17,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.6344194240177929
+    },
+    {
+      "generation": 28,
+      "context": 0,
+      "old_expert": 73,
+      "new_expert": 17,
+      "overlap": 0.9669519493078381,
+      "trust_delta": 0.6344194240177929
+    },
+    {
+      "generation": 28,
+      "context": 0,
+      "old_expert": 95,
+      "new_expert": 17,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.6344194240177929
+    },
+    {
+      "generation": 29,
+      "context": 1,
+      "old_expert": 95,
+      "new_expert": 1,
+      "overlap": 0.8669214468630108,
+      "trust_delta": 0.054060148648629375
+    },
+    {
+      "generation": 29,
+      "context": 1,
+      "old_expert": 106,
+      "new_expert": 120,
+      "overlap": 0.7644707871564383,
+      "trust_delta": 0.6293676295770865
+    },
+    {
+      "generation": 29,
+      "context": 1,
+      "old_expert": 73,
+      "new_expert": 120,
+      "overlap": 0.7293051654988726,
+      "trust_delta": 0.6293676295770865
+    },
+    {
+      "generation": 29,
+      "context": 1,
+      "old_expert": 114,
+      "new_expert": 88,
+      "overlap": 0.9837801559508863,
+      "trust_delta": 0.020755800934175395
+    },
+    {
+      "generation": 30,
+      "context": 2,
+      "old_expert": 95,
+      "new_expert": 63,
+      "overlap": 0.944911182523068,
+      "trust_delta": 0.6293355529612195
+    },
+    {
+      "generation": 30,
+      "context": 2,
+      "old_expert": 106,
+      "new_expert": 63,
+      "overlap": 0.7171371656006361,
+      "trust_delta": 0.6293355529612195
+    },
+    {
+      "generation": 30,
+      "context": 2,
+      "old_expert": 73,
+      "new_expert": 63,
+      "overlap": 0.7941013883159839,
+      "trust_delta": 0.6293355529612195
+    },
+    {
+      "generation": 30,
+      "context": 2,
+      "old_expert": 114,
+      "new_expert": 63,
+      "overlap": 0.7258661863112977,
+      "trust_delta": 0.6293355529612195
+    },
+    {
+      "generation": 31,
+      "context": 0,
+      "old_expert": 106,
+      "new_expert": 17,
+      "overlap": 0.932294445082039,
+      "trust_delta": 0.675552845062944
+    },
+    {
+      "generation": 31,
+      "context": 0,
+      "old_expert": 114,
+      "new_expert": 17,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.675552845062944
+    },
+    {
+      "generation": 31,
+      "context": 0,
+      "old_expert": 73,
+      "new_expert": 17,
+      "overlap": 0.9669519493078381,
+      "trust_delta": 0.675552845062944
+    },
+    {
+      "generation": 31,
+      "context": 0,
+      "old_expert": 95,
+      "new_expert": 17,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.675552845062944
+    },
+    {
+      "generation": 32,
+      "context": 1,
+      "old_expert": 106,
+      "new_expert": 120,
+      "overlap": 0.7644707871564383,
+      "trust_delta": 0.6054815777729627
+    },
+    {
+      "generation": 32,
+      "context": 1,
+      "old_expert": 114,
+      "new_expert": 88,
+      "overlap": 0.9837801559508863,
+      "trust_delta": 0.027016373293540535
+    },
+    {
+      "generation": 32,
+      "context": 1,
+      "old_expert": 95,
+      "new_expert": 1,
+      "overlap": 0.8669214468630108,
+      "trust_delta": 0.07920866569469606
+    },
+    {
+      "generation": 32,
+      "context": 1,
+      "old_expert": 73,
+      "new_expert": 120,
+      "overlap": 0.7293051654988726,
+      "trust_delta": 0.6054815777729627
+    },
+    {
+      "generation": 33,
+      "context": 2,
+      "old_expert": 106,
+      "new_expert": 63,
+      "overlap": 0.7171371656006361,
+      "trust_delta": 0.6037399470752467
+    },
+    {
+      "generation": 33,
+      "context": 2,
+      "old_expert": 95,
+      "new_expert": 1,
+      "overlap": 0.8669214468630108,
+      "trust_delta": 0.6282055160083309
+    },
+    {
+      "generation": 33,
+      "context": 2,
+      "old_expert": 73,
+      "new_expert": 63,
+      "overlap": 0.7941013883159839,
+      "trust_delta": 0.6037399470752467
+    },
+    {
+      "generation": 33,
+      "context": 2,
+      "old_expert": 114,
+      "new_expert": 63,
+      "overlap": 0.7258661863112977,
+      "trust_delta": 0.6037399470752467
+    },
+    {
+      "generation": 34,
+      "context": 0,
+      "old_expert": 73,
+      "new_expert": 17,
+      "overlap": 0.9669519493078381,
+      "trust_delta": 0.6132117218016296
+    },
+    {
+      "generation": 34,
+      "context": 0,
+      "old_expert": 106,
+      "new_expert": 17,
+      "overlap": 0.932294445082039,
+      "trust_delta": 0.6132117218016296
+    },
+    {
+      "generation": 34,
+      "context": 0,
+      "old_expert": 114,
+      "new_expert": 17,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.6132117218016296
+    },
+    {
+      "generation": 34,
+      "context": 0,
+      "old_expert": 95,
+      "new_expert": 17,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.6132117218016296
+    },
+    {
+      "generation": 35,
+      "context": 1,
+      "old_expert": 106,
+      "new_expert": 120,
+      "overlap": 0.7644707871564383,
+      "trust_delta": 0.6109447450797205
+    },
+    {
+      "generation": 35,
+      "context": 1,
+      "old_expert": 73,
+      "new_expert": 120,
+      "overlap": 0.7293051654988726,
+      "trust_delta": 0.6109447450797205
+    },
+    {
+      "generation": 35,
+      "context": 1,
+      "old_expert": 114,
+      "new_expert": 88,
+      "overlap": 0.9837801559508863,
+      "trust_delta": 0.03126468455920334
+    },
+    {
+      "generation": 35,
+      "context": 1,
+      "old_expert": 95,
+      "new_expert": 1,
+      "overlap": 0.8669214468630108,
+      "trust_delta": 0.07240942341500195
+    },
+    {
+      "generation": 36,
+      "context": 2,
+      "old_expert": 106,
+      "new_expert": 63,
+      "overlap": 0.7171371656006361,
+      "trust_delta": 0.5980029985085812
+    },
+    {
+      "generation": 36,
+      "context": 2,
+      "old_expert": 95,
+      "new_expert": 1,
+      "overlap": 0.8669214468630108,
+      "trust_delta": 0.6613308624875843
+    },
+    {
+      "generation": 36,
+      "context": 2,
+      "old_expert": 114,
+      "new_expert": 63,
+      "overlap": 0.7258661863112977,
+      "trust_delta": 0.5980029985085812
+    },
+    {
+      "generation": 36,
+      "context": 2,
+      "old_expert": 73,
+      "new_expert": 63,
+      "overlap": 0.7941013883159839,
+      "trust_delta": 0.5980029985085812
+    },
+    {
+      "generation": 37,
+      "context": 0,
+      "old_expert": 73,
+      "new_expert": 17,
+      "overlap": 0.9669519493078381,
+      "trust_delta": 0.6148176812070135
+    },
+    {
+      "generation": 37,
+      "context": 0,
+      "old_expert": 114,
+      "new_expert": 17,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.6148176812070135
+    },
+    {
+      "generation": 37,
+      "context": 0,
+      "old_expert": 95,
+      "new_expert": 17,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.6148176812070135
+    },
+    {
+      "generation": 37,
+      "context": 0,
+      "old_expert": 106,
+      "new_expert": 17,
+      "overlap": 0.932294445082039,
+      "trust_delta": 0.6148176812070135
+    },
+    {
+      "generation": 38,
+      "context": 1,
+      "old_expert": 95,
+      "new_expert": 88,
+      "overlap": 0.888234788195688,
+      "trust_delta": 0.11161455891445854
+    },
+    {
+      "generation": 38,
+      "context": 1,
+      "old_expert": 114,
+      "new_expert": 88,
+      "overlap": 0.9837801559508863,
+      "trust_delta": 0.11161455891445854
+    },
+    {
+      "generation": 38,
+      "context": 1,
+      "old_expert": 73,
+      "new_expert": 120,
+      "overlap": 0.7293051654988726,
+      "trust_delta": 0.5966304891209608
+    },
+    {
+      "generation": 38,
+      "context": 1,
+      "old_expert": 106,
+      "new_expert": 120,
+      "overlap": 0.7644707871564383,
+      "trust_delta": 0.5966304891209608
+    },
+    {
+      "generation": 39,
+      "context": 2,
+      "old_expert": 106,
+      "new_expert": 63,
+      "overlap": 0.7171371656006361,
+      "trust_delta": 0.6051188871647879
+    },
+    {
+      "generation": 39,
+      "context": 2,
+      "old_expert": 114,
+      "new_expert": 63,
+      "overlap": 0.7258661863112977,
+      "trust_delta": 0.6051188871647879
+    },
+    {
+      "generation": 39,
+      "context": 2,
+      "old_expert": 73,
+      "new_expert": 63,
+      "overlap": 0.7941013883159839,
+      "trust_delta": 0.6051188871647879
+    },
+    {
+      "generation": 39,
+      "context": 2,
+      "old_expert": 95,
+      "new_expert": 1,
+      "overlap": 0.8669214468630108,
+      "trust_delta": 0.6323608199341969
+    },
+    {
+      "generation": 40,
+      "context": 0,
+      "old_expert": 95,
+      "new_expert": 17,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.625622681822622
+    },
+    {
+      "generation": 40,
+      "context": 0,
+      "old_expert": 106,
+      "new_expert": 17,
+      "overlap": 0.932294445082039,
+      "trust_delta": 0.625622681822622
+    },
+    {
+      "generation": 40,
+      "context": 0,
+      "old_expert": 114,
+      "new_expert": 17,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.625622681822622
+    },
+    {
+      "generation": 40,
+      "context": 0,
+      "old_expert": 73,
+      "new_expert": 17,
+      "overlap": 0.9669519493078381,
+      "trust_delta": 0.625622681822622
+    },
+    {
+      "generation": 41,
+      "context": 1,
+      "old_expert": 95,
+      "new_expert": 1,
+      "overlap": 0.8669214468630108,
+      "trust_delta": 0.025623625108201098
+    },
+    {
+      "generation": 41,
+      "context": 1,
+      "old_expert": 73,
+      "new_expert": 120,
+      "overlap": 0.7293051654988726,
+      "trust_delta": 0.6743747459641554
+    },
+    {
+      "generation": 41,
+      "context": 1,
+      "old_expert": 114,
+      "new_expert": 17,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.018510333244562416
+    },
+    {
+      "generation": 41,
+      "context": 1,
+      "old_expert": 106,
+      "new_expert": 120,
+      "overlap": 0.7644707871564383,
+      "trust_delta": 0.6743747459641554
+    },
+    {
+      "generation": 42,
+      "context": 2,
+      "old_expert": 95,
+      "new_expert": 1,
+      "overlap": 0.8669214468630108,
+      "trust_delta": 0.6220680405278997
+    },
+    {
+      "generation": 42,
+      "context": 2,
+      "old_expert": 106,
+      "new_expert": 63,
+      "overlap": 0.7171371656006361,
+      "trust_delta": 0.567790674348741
+    },
+    {
+      "generation": 42,
+      "context": 2,
+      "old_expert": 114,
+      "new_expert": 63,
+      "overlap": 0.7258661863112977,
+      "trust_delta": 0.567790674348741
+    },
+    {
+      "generation": 42,
+      "context": 2,
+      "old_expert": 73,
+      "new_expert": 63,
+      "overlap": 0.7941013883159839,
+      "trust_delta": 0.567790674348741
+    },
+    {
+      "generation": 43,
+      "context": 0,
+      "old_expert": 73,
+      "new_expert": 42,
+      "overlap": 0.9669519493078381,
+      "trust_delta": 0.5747321600431151
+    },
+    {
+      "generation": 43,
+      "context": 0,
+      "old_expert": 106,
+      "new_expert": 42,
+      "overlap": 0.932294445082039,
+      "trust_delta": 0.5747321600431151
+    },
+    {
+      "generation": 43,
+      "context": 0,
+      "old_expert": 114,
+      "new_expert": 42,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.5747321600431151
+    },
+    {
+      "generation": 43,
+      "context": 0,
+      "old_expert": 95,
+      "new_expert": 42,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.5747321600431151
+    },
+    {
+      "generation": 44,
+      "context": 1,
+      "old_expert": 95,
+      "new_expert": 1,
+      "overlap": 0.8669214468630108,
+      "trust_delta": 0.04461456096568625
+    },
+    {
+      "generation": 44,
+      "context": 1,
+      "old_expert": 106,
+      "new_expert": 120,
+      "overlap": 0.7644707871564383,
+      "trust_delta": 0.602063621250719
+    },
+    {
+      "generation": 44,
+      "context": 1,
+      "old_expert": 114,
+      "new_expert": 17,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.027010322468417863
+    },
+    {
+      "generation": 44,
+      "context": 1,
+      "old_expert": 73,
+      "new_expert": 120,
+      "overlap": 0.7293051654988726,
+      "trust_delta": 0.602063621250719
+    },
+    {
+      "generation": 45,
+      "context": 2,
+      "old_expert": 106,
+      "new_expert": 63,
+      "overlap": 0.7171371656006361,
+      "trust_delta": 0.615408844626964
+    },
+    {
+      "generation": 45,
+      "context": 2,
+      "old_expert": 114,
+      "new_expert": 63,
+      "overlap": 0.7258661863112977,
+      "trust_delta": 0.615408844626964
+    },
+    {
+      "generation": 45,
+      "context": 2,
+      "old_expert": 95,
+      "new_expert": 110,
+      "overlap": 0.8071417672951359,
+      "trust_delta": 0.6158839419825779
+    },
+    {
+      "generation": 45,
+      "context": 2,
+      "old_expert": 73,
+      "new_expert": 63,
+      "overlap": 0.7941013883159839,
+      "trust_delta": 0.615408844626964
+    },
+    {
+      "generation": 46,
+      "context": 0,
+      "old_expert": 73,
+      "new_expert": 42,
+      "overlap": 0.9669519493078381,
+      "trust_delta": 0.6089471042083229
+    },
+    {
+      "generation": 46,
+      "context": 0,
+      "old_expert": 95,
+      "new_expert": 42,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.6089471042083229
+    },
+    {
+      "generation": 46,
+      "context": 0,
+      "old_expert": 106,
+      "new_expert": 42,
+      "overlap": 0.932294445082039,
+      "trust_delta": 0.6089471042083229
+    },
+    {
+      "generation": 46,
+      "context": 0,
+      "old_expert": 114,
+      "new_expert": 42,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.6089471042083229
+    },
+    {
+      "generation": 47,
+      "context": 1,
+      "old_expert": 73,
+      "new_expert": 120,
+      "overlap": 0.7293051654988726,
+      "trust_delta": 0.6509916805674938
+    },
+    {
+      "generation": 47,
+      "context": 1,
+      "old_expert": 106,
+      "new_expert": 120,
+      "overlap": 0.7644707871564383,
+      "trust_delta": 0.6509916805674938
+    },
+    {
+      "generation": 47,
+      "context": 1,
+      "old_expert": 114,
+      "new_expert": 42,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.013313147625193755
+    },
+    {
+      "generation": 47,
+      "context": 1,
+      "old_expert": 95,
+      "new_expert": 1,
+      "overlap": 0.8669214468630108,
+      "trust_delta": 0.06427255796680661
+    },
+    {
+      "generation": 48,
+      "context": 2,
+      "old_expert": 106,
+      "new_expert": 63,
+      "overlap": 0.7171371656006361,
+      "trust_delta": 0.5867511134899411
+    },
+    {
+      "generation": 48,
+      "context": 2,
+      "old_expert": 114,
+      "new_expert": 63,
+      "overlap": 0.7258661863112977,
+      "trust_delta": 0.5867511134899411
+    },
+    {
+      "generation": 48,
+      "context": 2,
+      "old_expert": 73,
+      "new_expert": 63,
+      "overlap": 0.7941013883159839,
+      "trust_delta": 0.5867511134899411
+    },
+    {
+      "generation": 48,
+      "context": 2,
+      "old_expert": 95,
+      "new_expert": 110,
+      "overlap": 0.8071417672951359,
+      "trust_delta": 0.6330990601519173
+    },
+    {
+      "generation": 49,
+      "context": 0,
+      "old_expert": 106,
+      "new_expert": 42,
+      "overlap": 0.932294445082039,
+      "trust_delta": 0.6031917242277229
+    },
+    {
+      "generation": 49,
+      "context": 0,
+      "old_expert": 73,
+      "new_expert": 42,
+      "overlap": 0.9669519493078381,
+      "trust_delta": 0.6031917242277229
+    },
+    {
+      "generation": 49,
+      "context": 0,
+      "old_expert": 95,
+      "new_expert": 42,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.6031917242277229
+    },
+    {
+      "generation": 49,
+      "context": 0,
+      "old_expert": 114,
+      "new_expert": 42,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.6031917242277229
+    },
+    {
+      "generation": 50,
+      "context": 1,
+      "old_expert": 114,
+      "new_expert": 42,
+      "overlap": 0.9039935293326324,
+      "trust_delta": 0.09047405136526354
+    },
+    {
+      "generation": 50,
+      "context": 1,
+      "old_expert": 73,
+      "new_expert": 120,
+      "overlap": 0.7293051654988726,
+      "trust_delta": 0.6338476916281275
+    },
+    {
+      "generation": 50,
+      "context": 1,
+      "old_expert": 95,
+      "new_expert": 42,
+      "overlap": 0.9971764649527382,
+      "trust_delta": 0.09047405136526354
+    },
+    {
+      "generation": 50,
+      "context": 1,
+      "old_expert": 106,
+      "new_expert": 120,
+      "overlap": 0.7644707871564383,
+      "trust_delta": 0.6338476916281275
+    }
+  ],
+  "expert_usage": {
+    "17": 55,
+    "99": 12,
+    "1": 13,
+    "63": 55,
+    "42": 29,
+    "120": 22,
+    "110": 4,
+    "88": 10
+  }
 }

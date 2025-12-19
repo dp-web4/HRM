@@ -1,0 +1,95 @@
+{
+  "session": 68,
+  "comparison": "weighted_blend_vs_trust_first",
+  "weighted_blend": {
+    "alpha": 0.3,
+    "unique_experts": 8,
+    "utilization": 0.0625,
+    "mrh_substitutions": 200
+  },
+  "trust_first": {
+    "unique_experts": 29,
+    "utilization": 0.2265625,
+    "trust_driven_rate": 1.0
+  },
+  "improvement_pct": 262.5,
+  "thor_target_multiplier": 3.4,
+  "expert_usage": {
+    "weighted": [
+      [
+        17,
+        55
+      ],
+      [
+        63,
+        55
+      ],
+      [
+        42,
+        29
+      ],
+      [
+        120,
+        22
+      ],
+      [
+        1,
+        13
+      ],
+      [
+        99,
+        12
+      ],
+      [
+        88,
+        10
+      ],
+      [
+        110,
+        4
+      ]
+    ],
+    "trust_first": [
+      [
+        120,
+        19
+      ],
+      [
+        17,
+        17
+      ],
+      [
+        42,
+        17
+      ],
+      [
+        88,
+        17
+      ],
+      [
+        55,
+        17
+      ],
+      [
+        99,
+        17
+      ],
+      [
+        63,
+        16
+      ],
+      [
+        110,
+        16
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        125,
+        3
+      ]
+    ]
+  }
+}

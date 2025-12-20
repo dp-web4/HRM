@@ -1,7 +1,62 @@
 # SAGE Michaud Integration - Latest Status
-**Last Updated**: 2025-12-19 14:45 UTC (Autonomous Session 77 - **Router Monopoly BROKEN** ✅)
-**Previous Update**: 2025-12-19 07:45 (Session 75: Production Integration Complete)
+**Last Updated**: 2025-12-19 20:05 UTC (Autonomous Session 79 - **Trust Update Mystery SOLVED** ✅)
+**Previous Update**: 2025-12-19 14:45 (Session 77: Router Monopoly Broken)
 **Hardware**: Thor (Jetson AGX Thor) + Legion (RTX 4090)
+
+---
+
+## ✅ Session 79 - Trust Update Fix (Dec 19 - Autonomous)
+
+**Goal**: Investigate why trust_driven = 0% in Sessions 77-78 despite evidence log showing requirements met
+
+### Status: ✅ ROOT CAUSE IDENTIFIED - 1-line fix ready!
+
+**The Mystery (from Sessions 77-78)**:
+- Evidence log showed 4-7 experts per context with ≥2 samples (threshold MET)
+- But trust_driven NEVER activated (0% across all sessions)
+- Hypothesis: trust values ≤ 0.3 (failing threshold check)
+
+**Investigation Process**:
+1. Inspected `ContextAwareIdentityBridge.update_trust_history()` - just appends value
+2. Checked how Sessions 77-78 call it: `update_trust(expert_id, context, weighted_quality)`
+3. Calculated actual values: `weighted_quality = quality × weight ≈ 0.75 × 0.25 = 0.19`
+4. Found threshold check: `if trust > low_trust_threshold (0.3)` → `0.19 < 0.3` → **FAILS**
+
+**ROOT CAUSE**:
+```python
+# What Sessions 77-78 did (WRONG):
+weighted_quality = quality * weight  # ≈ 0.75 * 0.25 = 0.19
+trust_selector.update_trust_for_expert(expert_id, context, weighted_quality)
+# Result: 0.19 < 0.3 threshold → ALWAYS FAILS
+
+# The fix (Session 80+):
+trust_selector.update_trust_for_expert(expert_id, context, quality)  # Unweighted!
+# Result: 0.75 > 0.3 threshold → PASSES ✅
+```
+
+**Why This Happened**:
+- Intent: Weight quality by expert contribution (seemed "fair")
+- Problem: `low_trust_threshold=0.3` designed for unweighted values
+- With k=4 experts: effective threshold became 4×0.3 = 1.2 (impossible!)
+
+**Impact on Previous Sessions**:
+- ✅ Session 77 diversity/specialist results **VALID** (not affected)
+- ✅ Session 78 evidence accumulation **VALID** (correctly found mystery)
+- ❌ Session 77-78 trust_driven rates **INVALID** (0% due to weighting bug)
+
+**The Fix**: 1-line change in experimental scripts
+- Remove weight multiplication when updating trust
+- Expected result: trust_driven activates around generation 20-30
+
+**Files Created**:
+- `sage/experiments/session79_trust_fix.py` (validation script)
+- `sage/experiments/SESSION79_TRUST_FIX.md` (comprehensive analysis)
+
+**Git Status**: ✅ Committed and pushed (18e3b0c)
+
+**Investigation Time**: ~30 minutes (code inspection + math)
+
+**Quote**: *"Three sessions of mystery. Thirty minutes of math. One line of fix."*
 
 ---
 

@@ -1,0 +1,113 @@
+{
+  "test_layers": [
+    0,
+    12,
+    24,
+    36,
+    47
+  ],
+  "config": {
+    "epsilon": 0.2,
+    "min_trust_evidence": 2,
+    "num_epochs": 10,
+    "num_sequences": 9
+  },
+  "layer_results": {
+    "0": {
+      "unique_experts": 87,
+      "utilization_pct": 67.96875,
+      "specialists": 70,
+      "generalists": 17,
+      "specialization_rate": 0.8045977011494253,
+      "first_trust_driven": 13,
+      "mode_distribution": {
+        "router_explore": 11,
+        "trust_driven": 56,
+        "forced_exploration": 23
+      },
+      "mode_percentages": {
+        "router_explore_pct": 12.222222222222221,
+        "trust_driven_pct": 62.22222222222222,
+        "forced_exploration_pct": 25.555555555555554
+      }
+    },
+    "12": {
+      "unique_experts": 76,
+      "utilization_pct": 59.375,
+      "specialists": 54,
+      "generalists": 22,
+      "specialization_rate": 0.7105263157894737,
+      "first_trust_driven": 13,
+      "mode_distribution": {
+        "router_explore": 9,
+        "trust_driven": 59,
+        "forced_exploration": 22
+      },
+      "mode_percentages": {
+        "router_explore_pct": 10.0,
+        "trust_driven_pct": 65.55555555555556,
+        "forced_exploration_pct": 24.444444444444443
+      }
+    },
+    "24": {
+      "unique_experts": 86,
+      "utilization_pct": 67.1875,
+      "specialists": 72,
+      "generalists": 14,
+      "specialization_rate": 0.8372093023255814,
+      "first_trust_driven": 11,
+      "mode_distribution": {
+        "router_explore": 15,
+        "trust_driven": 59,
+        "forced_exploration": 16
+      },
+      "mode_percentages": {
+        "router_explore_pct": 16.666666666666664,
+        "trust_driven_pct": 65.55555555555556,
+        "forced_exploration_pct": 17.77777777777778
+      }
+    },
+    "36": {
+      "unique_experts": 78,
+      "utilization_pct": 60.9375,
+      "specialists": 53,
+      "generalists": 25,
+      "specialization_rate": 0.6794871794871795,
+      "first_trust_driven": 11,
+      "mode_distribution": {
+        "router_explore": 15,
+        "trust_driven": 58,
+        "forced_exploration": 17
+      },
+      "mode_percentages": {
+        "router_explore_pct": 16.666666666666664,
+        "trust_driven_pct": 64.44444444444444,
+        "forced_exploration_pct": 18.88888888888889
+      }
+    },
+    "47": {
+      "unique_experts": 82,
+      "utilization_pct": 64.0625,
+      "specialists": 60,
+      "generalists": 22,
+      "specialization_rate": 0.7317073170731707,
+      "first_trust_driven": 11,
+      "mode_distribution": {
+        "router_explore": 14,
+        "trust_driven": 56,
+        "forced_exploration": 20
+      },
+      "mode_percentages": {
+        "router_explore_pct": 15.555555555555555,
+        "trust_driven_pct": 62.22222222222222,
+        "forced_exploration_pct": 22.22222222222222
+      }
+    }
+  },
+  "cross_layer": {
+    "avg_utilization_pct": 63.90625,
+    "avg_trust_driven_pct": 64.0,
+    "avg_first_activation": 11.8
+  },
+  "elapsed_time": 0.4456977844238281
+}

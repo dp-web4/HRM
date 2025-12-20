@@ -458,4 +458,16 @@ class TrustFirstMRHSelector:
 
 ---
 
+## Update (2025-12-20)
+
+**Session 80 Fix Applied**:
+- Updated `session77_forced_exploration.py` to use unweighted quality for trust updates
+- Previously used `weighted_quality = quality * weight` (caused trust_driven = 0%)
+- Now uses `quality` directly (enables trust_driven activation)
+- See SESSION80_TRUST_FIX_VALIDATION.md for details
+
+**Note**: Session 77 diversity/specialist results remain VALID. The weighted quality bug only affected trust_driven activation, not expert selection diversity.
+
+---
+
 *"The best solutions are simple. Session 77: Epsilon-greedy. Breaks monopoly. Enables trust. 50 lines. 11.25x impact."*

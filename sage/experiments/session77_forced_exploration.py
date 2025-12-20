@@ -314,10 +314,9 @@ def run_forced_exploration_validation(extraction_dir, sequences, epsilon, num_ep
                 quality = np.clip(quality, 0.0, 1.0)
                 qualities.append(quality)
 
-                # Update trust
-                for expert_id, weight in zip(real_expert_ids, real_weights):
-                    weighted_quality = quality * weight
-                    trust_selector.update_trust_for_expert(expert_id, context, weighted_quality)
+                # Update trust (Session 80 fix: use unweighted quality)
+                for expert_id in real_expert_ids:
+                    trust_selector.update_trust_for_expert(expert_id, context, quality)
 
                 # Track selector mode
                 stats = trust_selector.get_statistics()

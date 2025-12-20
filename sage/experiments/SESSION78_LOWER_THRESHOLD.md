@@ -333,4 +333,23 @@ S78: Lower threshold (MORE diversity, but trust_driven mystery)
 
 ---
 
+## Update (2025-12-20)
+
+**Mystery SOLVED - Sessions 79-80**:
+- Session 79 investigation found root cause: weighted quality bug
+- Session 78 used `weighted_quality = quality * weight ≈ 0.75 * 0.25 = 0.19`
+- Trust threshold check: `0.19 > 0.3` → FALSE (always fails)
+- Session 80 fix: Use unweighted quality (0.75 > 0.3 → passes)
+
+**Session 80 Fix Applied**:
+- Updated `session78_lower_threshold.py` to use unweighted quality
+- Script now uses `quality` directly instead of `quality * weight`
+- Expected result if re-run: ~70% trust_driven activation (validated in Session 80)
+
+**Note**: Session 78 diversity/specialist results remain VALID. The weighted quality bug only affected trust_driven activation rate.
+
+See SESSION79_TRUST_FIX.md and SESSION80_TRUST_FIX_VALIDATION.md for complete analysis.
+
+---
+
 *"When the data surprises you, you're learning. Session 78: Expected trust_driven. Got 0%. Evidence shows threshold met. Trust values must be the issue. Investigate next."*

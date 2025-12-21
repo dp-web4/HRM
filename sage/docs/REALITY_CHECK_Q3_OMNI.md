@@ -142,7 +142,15 @@ Q3-Omni is **not** a standard causal language model:
 
 ## Current Status: Building vLLM from Source
 
-### What's Running
+### Build Attempt 1: Missing Dependency (FAILED)
+
+**Error**: `fatal error: numa.h: No such file or directory`
+
+vLLM requires `libnuma-dev` for CPU optimizations on NUMA architectures. This is a common dependency issue when building from source.
+
+**Fix**: `sudo apt-get install -y libnuma-dev`
+
+### Build Attempt 2: In Progress
 
 ```bash
 cd /home/dp/ai-workspace/vllm-source
@@ -151,9 +159,9 @@ export CUDA_HOME=/usr/local/cuda-13.0
 pip install --break-system-packages -e .
 ```
 
-**Build started**: 2025-12-19
+**Build started**: 2025-12-20 (attempt 2)
 **Expected duration**: 1-2+ hours (compiling CUDA kernels for ARM64)
-**Progress log**: `/tmp/vllm_build.log`
+**Progress log**: `/tmp/vllm_build_retry.log`
 
 ### What Happens Next
 

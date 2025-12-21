@@ -8,11 +8,11 @@
     "mrh_substitutions": 200
   },
   "trust_first": {
-    "unique_experts": 29,
-    "utilization": 0.2265625,
+    "unique_experts": 43,
+    "utilization": 0.3359375,
     "trust_driven_rate": 1.0
   },
-  "improvement_pct": 262.5,
+  "improvement_pct": 437.5,
   "thor_target_multiplier": 3.4,
   "expert_usage": {
     "weighted": [
@@ -51,8 +51,12 @@
     ],
     "trust_first": [
       [
-        120,
+        55,
         19
+      ],
+      [
+        63,
+        18
       ],
       [
         17,
@@ -67,16 +71,12 @@
         17
       ],
       [
-        55,
-        17
-      ],
-      [
         99,
         17
       ],
       [
-        63,
-        16
+        120,
+        17
       ],
       [
         110,
@@ -87,8 +87,8 @@
         16
       ],
       [
-        125,
-        3
+        127,
+        2
       ]
     ]
   }

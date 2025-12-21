@@ -1,0 +1,36 @@
+{
+  "session": 87,
+  "configuration": {
+    "num_experts": 128,
+    "num_generations": 90,
+    "num_sequences": 9,
+    "epsilon": 0.2,
+    "min_trust_evidence": 2
+  },
+  "multi_dimensional": {
+    "trust_driven_count": 222,
+    "trust_driven_pct": 27.40740740740741,
+    "first_activation": 148,
+    "experts_used": 118,
+    "avg_dimensions_available": 1.5703703703703704,
+    "avg_confidence": 0.3925925925925926,
+    "avg_composite_score": 0.4791804199560613,
+    "dimension_usage": {
+      "internal": 13869,
+      "conversational": 7051,
+      "byzantine": 7051,
+      "federation": 7051
+    }
+  },
+  "baseline": {
+    "trust_driven_count": 3,
+    "trust_driven_pct": 0.3703703703703704,
+    "first_activation": 567,
+    "experts_used": 127
+  },
+  "improvement": {
+    "trust_driven_improvement": 27.037037037037038,
+    "activation_speedup": 419,
+    "diversity_improvement": -9
+  }
+}

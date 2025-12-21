@@ -199,6 +199,26 @@ Having correct weights + architecture isn't enough if the API is broken. Q3-Omni
 
 When prebuilt binaries don't work for your platform, build from source. We've done this before (PyTorch on Jetson). It takes time but it's the right path.
 
+### 6. Circular Validation Is Not Ground Truth Validation
+
+**Critical Discovery (Dec 20)**:
+
+Sessions 80-82 validated trust mechanisms by comparing against **each other** (Session 80 as baseline for 81-82), not against **actual Q3-Omni outputs**.
+
+**What they proved**:
+- ✅ Internal consistency (trust metrics reproducible)
+- ✅ Behavioral coherence (expert selection logic works)
+- ✅ Mathematical correctness (calculations follow spec)
+
+**What they didn't prove**:
+- ❌ Outputs match the real model
+- ❌ "The capital of France is" → " Paris"
+- ❌ Token-by-token generation correctness
+
+**The lesson**: Self-referential validation proves consistency, not correctness. You can have perfectly consistent bugs.
+
+**See**: `sage/docs/CIRCULAR_VALIDATION_LESSON.md` for full analysis
+
 ---
 
 ## Files Created

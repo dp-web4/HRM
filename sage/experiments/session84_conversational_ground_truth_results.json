@@ -1,0 +1,24 @@
+{
+  "session": 84,
+  "timestamp": "2025-12-21T00:51:07.381646",
+  "platform": "Sprout (Jetson Orin Nano)",
+  "goal": "Extract ground truth from conversational repair patterns",
+  "conversations_analyzed": 1,
+  "total_repair_signals": 11,
+  "meta_cognitive_leak_rate": 0.2857142857142857,
+  "signal_breakdown": {
+    "engagement": {
+      "count": 5,
+      "avg_confidence": 0.6
+    },
+    "abandonment": {
+      "count": 2,
+      "avg_confidence": 0.4
+    },
+    "reassurance": {
+      "count": 4,
+      "avg_confidence": 0.8375
+    }
+  },
+  "key_insight": "Conversational repair signals provide ground truth unavailable to internal metrics"
+}

@@ -1,0 +1,46 @@
+{
+  "session": 86,
+  "configuration": {
+    "num_experts": 128,
+    "num_generations": 90,
+    "num_sequences": 9,
+    "min_trust_evidence": 2,
+    "epsilon": 0.2,
+    "seed": 42
+  },
+  "advanced": {
+    "trust_driven_count": 41,
+    "trust_driven_pct": 45.55555555555556,
+    "experts_used": 124,
+    "first_activation": 34,
+    "advanced_stats": {
+      "conversational_updates": 90,
+      "repair_signals_received": 27,
+      "avg_relationship_score": 0.5380496068747517,
+      "diversity_scores": [],
+      "applied_decay_factors": [],
+      "avg_applied_decay": 0.72,
+      "attestations_imported": 0,
+      "duplicates_skipped": 0,
+      "import_efficiency_pct": 100.0,
+      "repair_arcs_detected": 0,
+      "smooth_arcs": 19,
+      "degraded_arcs": 34,
+      "enable_dynamic_decay": true,
+      "enable_deduplication": true,
+      "enable_repair_arc": true,
+      "conversational_weight": 0.4
+    }
+  },
+  "baseline": {
+    "trust_driven_count": 38,
+    "trust_driven_pct": 42.22222222222222,
+    "experts_used": 124,
+    "first_activation": 24
+  },
+  "improvement": {
+    "trust_driven_improvement": 3.3333333333333357,
+    "first_activation_speedup": -10,
+    "expert_diversity_improvement": 0
+  }
+}

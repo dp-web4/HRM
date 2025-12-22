@@ -1,0 +1,109 @@
+{
+  "implementation": "sage_selective",
+  "load_time_s": 7.433614730834961,
+  "memory_baseline_mb": 8990.42578125,
+  "results": [
+    {
+      "prompt": "The capital of France is",
+      "generated_text": "so I would on and\n, rRRrR,RrRr,rRrRrRrRr,R,rrRr-R-R-r-R-R-r-RrRrR,RrRr-R",
+      "tokens_generated": 50,
+      "generation_time_s": 832.9100341796875,
+      "tokens_per_sec": 0.06003049302827017,
+      "memory_during_gen_mb": 10217.74609375,
+      "quality": {
+        "coherent": false,
+        "word_count": 7,
+        "char_count": 72,
+        "sentence_count": 0,
+        "unique_word_ratio": 1.0,
+        "has_english": false,
+        "no_gibberish": true
+      }
+    },
+    {
+      "prompt": "2 + 2 =",
+      "generated_text": "=)))) + 0 330 2 333 111110000 + +000 2222222222222222",
+      "tokens_generated": 50,
+      "generation_time_s": 707.8890521526337,
+      "tokens_per_sec": 0.07063253746890706,
+      "memory_during_gen_mb": 10297.34765625,
+      "quality": {
+        "coherent": false,
+        "word_count": 10,
+        "char_count": 53,
+        "sentence_count": 0,
+        "unique_word_ratio": 0.9,
+        "has_english": false,
+        "no_gibberish": true
+      }
+    },
+    {
+      "prompt": "Once upon a time",
+      "generated_text": "there upon upon a a a\"\"a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a",
+      "tokens_generated": 50,
+      "generation_time_s": 755.8674204349518,
+      "tokens_per_sec": 0.0661491667033728,
+      "memory_during_gen_mb": 10319.3203125,
+      "quality": {
+        "coherent": false,
+        "word_count": 47,
+        "char_count": 106,
+        "sentence_count": 0,
+        "unique_word_ratio": 0.0851063829787234,
+        "has_english": false,
+        "no_gibberish": true
+      }
+    },
+    {
+      "prompt": "The key difference between sparse and dense neural networks is",
+      "generated_text": "as to to from the to are you\n\nC C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C",
+      "tokens_generated": 50,
+      "generation_time_s": 989.3706958293915,
+      "tokens_per_sec": 0.05053717500505197,
+      "memory_during_gen_mb": 10324.92578125,
+      "quality": {
+        "coherent": false,
+        "word_count": 49,
+        "char_count": 111,
+        "sentence_count": 0,
+        "unique_word_ratio": 0.14285714285714285,
+        "has_english": true,
+        "no_gibberish": true
+      }
+    },
+    {
+      "prompt": "In 2050, artificial intelligence will",
+      "generated_text": "the on will in in, okay 1. 665 in in in in in in in in in in in in the in in in in in in the in in in in in in in in in in in in in in in in",
+      "tokens_generated": 50,
+      "generation_time_s": 920.0912148952484,
+      "tokens_per_sec": 0.0543424382175983,
+      "memory_during_gen_mb": 10241.80859375,
+      "quality": {
+        "coherent": false,
+        "word_count": 44,
+        "char_count": 140,
+        "sentence_count": 1,
+        "unique_word_ratio": 0.18181818181818182,
+        "has_english": true,
+        "no_gibberish": true
+      }
+    },
+    {
+      "prompt": "Consciousness can be understood as",
+      "generated_text": "to is an: can what of is. It it. I can be is. That is.\n\nAssistant: Can a. is.\n\nCan the term. Can you help me you you you you you you you. you me that is a. I",
+      "tokens_generated": 50,
+      "generation_time_s": 842.140810251236,
+      "tokens_per_sec": 0.0593724937580017,
+      "memory_during_gen_mb": 10378.41015625,
+      "quality": {
+        "coherent": true,
+        "word_count": 39,
+        "char_count": 157,
+        "sentence_count": 9,
+        "unique_word_ratio": 0.5641025641025641,
+        "has_english": true,
+        "no_gibberish": true
+      }
+    }
+  ]
+}

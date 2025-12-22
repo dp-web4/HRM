@@ -1,0 +1,33 @@
+{
+  "comparison_timestamp": "2025-12-21T19:44:00Z",
+  "native_implementation": {
+    "name": "native_huggingface",
+    "load_time_s": 167.18,
+    "memory_baseline_mb": 1092.72,
+    "avg_memory_during_gen_mb": 2790.67,
+    "avg_tokens_per_sec": 1.32,
+    "coherent_outputs": 3,
+    "total_outputs": 6
+  },
+  "sage_implementation": {
+    "name": "sage_selective",
+    "load_time_s": 7.43,
+    "memory_baseline_mb": 8990.43,
+    "avg_memory_during_gen_mb": 10296.55,
+    "avg_tokens_per_sec": 0.06,
+    "coherent_outputs": 1,
+    "total_outputs": 6
+  },
+  "comparison": {
+    "load_time_ratio": 22.5,
+    "memory_reduction_pct": -268.8,
+    "speed_ratio": 22.0,
+    "native_coherence_pct": 50.0,
+    "sage_coherence_pct": 16.7,
+    "quality_degradation_pct": 66.6
+  },
+  "verdict": "CRITICAL_FAILURE",
+  "summary": "SAGE selective loading FAILED catastrophically. While load time was 22.5x faster (7.4s vs 167s), the implementation produced complete gibberish output in 5/6 prompts. Memory usage was actually 269% HIGHER than native (10.3GB vs 2.8GB average during generation). Speed was 22x SLOWER (0.06 tok/s vs 1.32 tok/s). Quality degradation was 67% with only 1/6 outputs coherent vs 3/6 for native. This is not a viable implementation.",
+  "root_cause_hypothesis": "The selective expert loading implementation appears to have fundamental issues: (1) Experts are being loaded but weights may be corrupted or improperly initialized, (2) The LRU cache (64 experts) is far too small for Q3-Omni's 5,612 experts across 48 layers, causing constant thrashing and broken context, (3) Missing critical components (embeddings, attention mechanisms, or LM head) may not be properly loaded, (4) The extraction process may have corrupted the expert weights.",
+  "recommendation": "ABANDON sage_selective implementation for Q3-Omni. Use native HuggingFace approach. The claimed '93.7% memory reduction' is false - actual memory usage is HIGHER. The architecture is fundamentally broken for this model."
+}

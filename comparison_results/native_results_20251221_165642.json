@@ -1,0 +1,109 @@
+{
+  "implementation": "native_huggingface",
+  "load_time_s": 167.17706036567688,
+  "memory_baseline_mb": 1092.71875,
+  "results": [
+    {
+      "prompt": "The capital of France is",
+      "generated_text": "The capital of France is Paris.",
+      "tokens_generated": 8,
+      "generation_time_s": 7.156402111053467,
+      "tokens_per_sec": 1.1178801688132574,
+      "memory_during_gen_mb": 2575.6015625,
+      "quality": {
+        "coherent": false,
+        "word_count": 6,
+        "char_count": 31,
+        "sentence_count": 1,
+        "unique_word_ratio": 1.0,
+        "has_english": false,
+        "no_gibberish": true
+      }
+    },
+    {
+      "prompt": "2 + 2 =",
+      "generated_text": "2 + 2 = 4",
+      "tokens_generated": 8,
+      "generation_time_s": 5.854323387145996,
+      "tokens_per_sec": 1.3665114601569746,
+      "memory_during_gen_mb": 2611.33984375,
+      "quality": {
+        "coherent": false,
+        "word_count": 5,
+        "char_count": 9,
+        "sentence_count": 0,
+        "unique_word_ratio": 0.8,
+        "has_english": false,
+        "no_gibberish": true
+      }
+    },
+    {
+      "prompt": "Once upon a time",
+      "generated_text": "Once upon a time, in a quiet village nestled between emerald hills and a sparkling river, there lived a young girl named Elara. She was known for her curious eyes and her habit of collecting forgotten things\u2014broken toys, smooth river stones, and old keys that no one could quite remember the locks for.\n\nOne crisp autumn morning, as golden leaves danced in the wind, Elara found a peculiar object half-buried beneath the roots of an ancient oak tree. It was a small, brass compass, its needle spinning wildly even when held still. The face of the compass was etched with symbols she didn\u2019t recognize, and the glass was cracked like spiderwebs.\n\nThat night, the compass began to glow faintly, pulsing like a heartbeat. When Elara touched it, a whisper filled her mind\u2014not in words, but in feelings: *Follow the river. Find the door that wasn\u2019t there before.*\n\nAnd so, with nothing but her worn satchel and the compass in her hand, Elara set off on a journey that would lead her far beyond the hills of her village. Along the way, she met a talking fox who spoke in riddles, crossed a bridge made of starlight, and discovered a forgotten library beneath a waterfall.\n\nBut the greatest mystery wasn\u2019t the compass\u2014it was the truth about her own past. For the compass had once belonged to her grandmother, who had vanished decades ago while searching for the same door.\n\nAnd now, Elara was on the verge of finding it.\n\nWould you like to know what she discovered behind the door? Or perhaps you'd like to shape the next part of her story?",
+      "tokens_generated": 334,
+      "generation_time_s": 226.84423279762268,
+      "tokens_per_sec": 1.4723759818834605,
+      "memory_during_gen_mb": 2711.18359375,
+      "quality": {
+        "coherent": true,
+        "word_count": 271,
+        "char_count": 1532,
+        "sentence_count": 15,
+        "unique_word_ratio": 0.6715867158671587,
+        "has_english": true,
+        "no_gibberish": true
+      }
+    },
+    {
+      "prompt": "The key difference between sparse and dense neural networks is",
+      "generated_text": "The key difference between **sparse** and **dense** neural networks lies in the **connectivity** between neurons:\n\n- **Dense Neural Networks (also called Fully Connected Networks):**  \n  In a dense network, every neuron in one layer is connected to every neuron in the next layer. This results in a **high number of parameters** and **high computational cost**, especially as the network grows deeper or wider. All weights are typically non-zero, leading to **high model complexity** and **large memory requirements**.\n\n- **Sparse Neural Networks:**  \n  In a sparse network, only a **subset of possible connections** between neurons is active. Many weights are set to zero, meaning the network has **fewer parameters** and **lower computational demands**. This sparsity can be **structured** (e.g., pruning entire neurons or channels) or **unstructured** (randomly zeroing out weights).\n\n### Summary of Key Differences:\n\n| Feature                     | Dense Neural Network                     | Sparse Neural Network                     |\n|----------------------------|------------------------------------------|-------------------------------------------|\n| Connectivity               | All neurons connected to all others      | Only some connections are active          |\n| Number of Parameters       | High                                     | Lower (due to zero weights)               |\n| Computational Cost         | High                                     | Lower                                     |\n| Memory Usage               | High                                     | Reduced                                   |\n| Training/Inference Speed   | Slower                                   | Faster (especially with optimized hardware) |\n| Regularization Effect      | Less inherent regularization             | Sparsity acts as implicit regularization  |\n| Pruning/Compression        | Not inherently sparse                    | Often achieved via pruning techniques     |\n\n### Why It Matters:\nSparse networks are often used for:\n- **Efficient deployment** on edge devices with limited compute/memory.\n- **Model compression** and **acceleration**.\n- **Improved generalization** through regularization.\n\nIn contrast, dense networks are more common in **research and standard training pipelines** due to their simplicity and effectiveness on large datasets.\n\n> \u2705 **In short:** The key difference is that **dense networks have all connections active**, while **sparse networks have many connections removed (set to zero)** to reduce complexity and improve efficiency.",
+      "tokens_generated": 444,
+      "generation_time_s": 350.04876017570496,
+      "tokens_per_sec": 1.2683947224299175,
+      "memory_during_gen_mb": 2822.98828125,
+      "quality": {
+        "coherent": false,
+        "word_count": 310,
+        "char_count": 2577,
+        "sentence_count": 13,
+        "unique_word_ratio": 0.6290322580645161,
+        "has_english": true,
+        "no_gibberish": false
+      }
+    },
+    {
+      "prompt": "In 2050, artificial intelligence will",
+      "generated_text": "In 2050, artificial intelligence (AI) is expected to be deeply integrated into nearly every aspect of human life, transforming industries, economies, and societies. While the exact trajectory depends on technological breakthroughs, ethical considerations, and policy decisions, here are some likely developments:\n\n1. **Ubiquitous AI Integration**:\n   - AI will be embedded in everyday devices, from smartphones and home appliances to transportation systems and infrastructure.\n   - Smart cities will use AI for real-time traffic management, energy optimization, public safety, and environmental monitoring.\n\n2. **Advanced Personalization**:\n   - AI will offer hyper-personalized experiences in education, healthcare, entertainment, and retail.\n   - AI tutors and virtual coaches will adapt to individual learning styles and cognitive needs.\n\n3. **Revolution in Healthcare**:\n   - AI-driven diagnostics and personalized medicine will become standard, enabling early detection and treatment of diseases like cancer and Alzheimer\u2019s.\n   - Robotic surgery and AI-assisted medical imaging will improve precision and outcomes.\n   - AI may even contribute to extending human lifespan through advanced bioinformatics and regenerative medicine.\n\n4. **Transformed Workforce and Economy**:\n   - Automation powered by AI will replace many routine jobs, especially in manufacturing, transportation, and administrative roles.\n   - New job categories will emerge in AI oversight, ethics, and human-AI collaboration.\n   - Universal Basic Income (UBI) or similar social safety nets may become more common to address economic displacement.\n\n5. **Human-AI Collaboration**:\n   - AI will act as a cognitive partner, augmenting human creativity, decision-making, and productivity.\n   - Brain-computer interfaces (BCIs) may allow direct neural interaction with AI systems, enhancing learning and communication.\n\n6. **Ethical and Societal Challenges**:\n   - Issues around privacy, bias, transparency, and accountability in AI systems will remain critical.\n   - Governments and international bodies will likely enforce strict regulations to ensure AI is used responsibly.\n   - The risk of AI misuse\u2014such as deepfakes, autonomous weapons, or surveillance overreach\u2014will demand global cooperation.\n\n7. **AI in Science and Exploration**:\n   - AI will accelerate scientific discovery in fields like climate modeling, materials science, and space exploration.\n   - Autonomous AI systems may lead robotic missions to Mars or beyond, and even assist in interstellar research.\n\n8. **Existential and Philosophical Questions**:\n   - As AI capabilities grow, society may confront questions about consciousness, rights for advanced AI, and the future of human identity.\n   - The possibility of Artificial General Intelligence (AGI)\u2014AI that matches or exceeds human cognitive abilities\u2014could emerge, though many experts believe it remains uncertain by 2050.\n\nIn summary, by 2050, AI will likely be a foundational technology shaping how we live, work, and interact\u2014with immense potential for progress and profound challenges to navigate. The future will depend not just on technological advancement, but on how wisely and ethically humanity chooses to deploy these powerful tools.",
+      "tokens_generated": 620,
+      "generation_time_s": 459.3943612575531,
+      "tokens_per_sec": 1.349602982289122,
+      "memory_during_gen_mb": 2983.77734375,
+      "quality": {
+        "coherent": true,
+        "word_count": 438,
+        "char_count": 3240,
+        "sentence_count": 30,
+        "unique_word_ratio": 0.684931506849315,
+        "has_english": true,
+        "no_gibberish": true
+      }
+    },
+    {
+      "prompt": "Consciousness can be understood as",
+      "generated_text": "Consciousness can be understood as the quality or state of being aware of an external object or something within oneself. It encompasses a range of phenomena, including:\n\n1. **Subjective Experience (Qualia)**: The personal, first-person experience of sensations, emotions, and thoughts\u2014such as the redness of red or the pain of a headache.\n\n2. **Awareness**: The ability to perceive, feel, or experience things, including awareness of one's surroundings, internal states, and self.\n\n3. **Self-Reflection**: The capacity to think about one's own thoughts, feelings, and actions\u2014often referred to as metacognition.\n\n4. **Intentionality**: The property of mental states being directed toward something\u2014e.g., thinking about a tree, feeling afraid of a dog.\n\n5. **Continuity and Unity**: The sense of a continuous, unified self over time, despite constant changes in perception and thought.\n\nPhilosophically, consciousness raises questions about the \"hard problem\"\u2014how and why physical processes in the brain give rise to subjective experience. Scientifically, it is studied through neuroscience, psychology, and cognitive science, examining brain activity patterns associated with awareness, attention, and perception.\n\nIn summary, consciousness is the complex phenomenon of subjective awareness and experience, central to human cognition and identity.",
+      "tokens_generated": 266,
+      "generation_time_s": 194.7549765110016,
+      "tokens_per_sec": 1.365818757319271,
+      "memory_during_gen_mb": 3039.1484375,
+      "quality": {
+        "coherent": true,
+        "word_count": 185,
+        "char_count": 1348,
+        "sentence_count": 16,
+        "unique_word_ratio": 0.7189189189189189,
+        "has_english": true,
+        "no_gibberish": true
+      }
+    }
+  ]
+}

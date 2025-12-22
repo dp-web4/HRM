@@ -1,0 +1,97 @@
+{
+  "session": 91,
+  "timestamp": "2025-12-22 06:05:58",
+  "hardware": "Jetson AGX Thor",
+  "nova_guidance": "Regret tracking + Trust/skill split + Conditional hysteresis",
+  "baseline": {
+    "total_selections": 38880,
+    "trust_driven_count": 0,
+    "trust_driven_pct": 0.0,
+    "exploration_count": 7822,
+    "quality_only_count": 31058,
+    "total_swaps": 7829,
+    "expert_churn_rate": 0.20136316872427984,
+    "cache_hit_rate": 0.7968364197530864,
+    "swap_denied_count": 33,
+    "total_reputations_tracked": 6144,
+    "reputations_with_signals": 0,
+    "avg_reputation_score": 0.5,
+    "total_signals_integrated": 0,
+    "hot_experts_count": 64,
+    "first_trust_activation": null
+  },
+  "regret_tracking": {
+    "total_selections": 38880,
+    "trust_driven_count": 0,
+    "trust_driven_pct": 0.0,
+    "exploration_count": 7916,
+    "quality_only_count": 30964,
+    "total_swaps": 7921,
+    "expert_churn_rate": 0.20372942386831275,
+    "cache_hit_rate": 0.7926440329218107,
+    "swap_denied_count": 44,
+    "total_reputations_tracked": 6144,
+    "reputations_with_signals": 0,
+    "avg_reputation_score": 0.5,
+    "total_signals_integrated": 0,
+    "hot_experts_count": 194,
+    "total_regret_instances": 24671,
+    "total_cumulative_regret": 2325.42435012958,
+    "avg_regret_per_instance": 0.09425740140770865,
+    "top_regret_experts": [
+      [
+        "L26_E7",
+        43.46633126237238
+      ],
+      [
+        "L15_E17",
+        41.74111743019262
+      ],
+      [
+        "L30_E113",
+        41.411547527179536
+      ],
+      [
+        "L22_E75",
+        41.20428062280332
+      ],
+      [
+        "L0_E41",
+        38.44443246130861
+      ],
+      [
+        "L34_E115",
+        37.68626684760462
+      ],
+      [
+        "L24_E40",
+        37.51368928824097
+      ],
+      [
+        "L41_E34",
+        37.445232239629846
+      ],
+      [
+        "L33_E7",
+        37.35039488470665
+      ],
+      [
+        "L20_E90",
+        36.64739323507081
+      ]
+    ],
+    "regret_protected_count": 193,
+    "first_trust_activation": null
+  },
+  "improvements": {
+    "trust_driven_pp": 0.0,
+    "cache_hit_pct": -0.4192386831275652,
+    "churn_reduction": -0.0023662551440329083
+  },
+  "configuration": {
+    "num_experts": 128,
+    "num_layers": 48,
+    "lambda_variance": 0.3,
+    "regret_protection_threshold": 0.5
+  }
+}

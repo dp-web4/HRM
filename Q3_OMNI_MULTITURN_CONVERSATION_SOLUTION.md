@@ -253,12 +253,165 @@ ASSISTANT: When a terrible avalanche threatened the village of Haven's End, Igni
 
 ## Future Enhancements
 
+### Immediate Improvements
 1. **Adaptive truncation** - Use actual token counts instead of word estimates
 2. **Semantic chunking** - Preserve message boundaries during truncation
-3. **Importance scoring** - Keep high-value messages beyond attention sink
-4. **Streaming responses** - Yield tokens as generated
-5. **Multi-modal history** - Support images/audio in conversation
-6. **Conversation branching** - ContextBranch-style exploration
+3. **Streaming responses** - Yield tokens as generated
+4. **Multi-modal history** - Support images/audio in conversation
+5. **Conversation branching** - ContextBranch-style exploration
+
+### SNARC Memory Management Integration
+
+**Current Limitation**: Naive sliding window discards middle context entirely, even if semantically important.
+
+**SNARC Solution**: Replace naive truncation with intelligent selection:
+
+```python
+# Instead of: [First N] + DISCARD_MIDDLE + [Last N]
+# Use: [Attention Sink] + [High-SNARC-Score Messages] + [Recent Window]
+```
+
+**SNARC Memory Dimensions** (5D salience scoring):
+- **Surprise**: Unexpected information (prediction error)
+- **Novelty**: First-time experiences vs known patterns
+- **Arousal**: Emotional/urgency signals in conversation
+- **Reward**: Successful task completion, positive outcomes
+- **Conflict**: Contradictions requiring resolution
+
+**Implementation Approach**:
+```python
+def _get_conversation_window_with_snarc(self) -> List[Dict[str, str]]:
+    """Intelligent context selection using SNARC salience"""
+
+    # 1. Always keep attention sink (first messages)
+    attention_sink = self.messages[:self.config.attention_sink_messages * 2]
+
+    # 2. Always keep sliding window (recent messages)
+    sliding_window = self.messages[-self.config.sliding_window_messages * 2:]
+
+    # 3. Score middle messages with SNARC
+    middle_messages = self.messages[len(attention_sink):-len(sliding_window)]
+    scored_messages = [
+        (msg, snarc_score(msg, context=self.messages))
+        for msg in middle_messages
+    ]
+
+    # 4. Keep highest-salience messages from middle
+    high_salience = sorted(scored_messages, key=lambda x: x[1], reverse=True)
+    important_middle = [msg for msg, score in high_salience[:budget]]
+
+    # 5. Return: sink + important middle + recent
+    return attention_sink + important_middle + sliding_window
+```
+
+**Expected Benefits**:
+- Retain critical context even from distant turns
+- Prevent information loss from naive discarding
+- Maintain coherence across long conversations
+- Learn what's important to remember
+
+### Sleep-Cycle Training for Memory Consolidation
+
+**Current Limitation**: No offline processing to extract patterns from conversations.
+
+**Sleep-Cycle Solution**: Periodic consolidation to compress experience into wisdom.
+
+**Biological Parallel**:
+- **Living** (WAKE state): Collect raw conversational experiences
+- **Sleeping** (DREAM state): Augment, compress, extract patterns
+- **Wisdom**: Learned principles that persist across contexts
+
+**Implementation Phases**:
+
+**Phase 1: Experience Collection**
+```python
+class ConversationLogger:
+    """Record full conversations for offline analysis"""
+    def log_turn(self, user_msg, assistant_msg, metadata):
+        self.raw_experiences.append({
+            'timestamp': time.time(),
+            'user': user_msg,
+            'assistant': assistant_msg,
+            'snarc_scores': metadata['snarc'],
+            'success': metadata.get('task_completed', False)
+        })
+```
+
+**Phase 2: Sleep Consolidation**
+```python
+def consolidate_during_sleep(experiences: List[Dict]) -> Dict:
+    """Extract patterns from conversation history"""
+
+    # Augmentation strategies (like HRM dataset builders):
+    # - Paraphrase variations (semantic invariance)
+    # - Role reversals (perspective shifts)
+    # - Context permutations (order invariance)
+    # - Abstraction levels (detail → principle)
+
+    patterns = {
+        'common_queries': extract_query_patterns(experiences),
+        'successful_responses': filter_high_reward(experiences),
+        'failure_modes': identify_low_snarc(experiences),
+        'user_preferences': learn_style_patterns(experiences),
+        'topic_clusters': semantic_clustering(experiences),
+    }
+
+    # Compress to compact representations
+    compressed = {
+        'guidance_library': create_guidance_from_patterns(patterns),
+        'trust_adjustments': update_strategy_trust(patterns),
+        'memory_priorities': adjust_snarc_weights(patterns),
+    }
+
+    return compressed
+```
+
+**Phase 3: Active Memory Retrieval**
+```python
+def chat_with_memory(self, user_message: str) -> Tuple[str, Dict]:
+    """Enhanced chat with consolidated memory retrieval"""
+
+    # 1. Retrieve relevant guidance from sleep consolidation
+    relevant_patterns = self.memory.retrieve_similar(user_message)
+
+    # 2. Augment context with learned patterns
+    context_with_memory = self._build_context(
+        attention_sink=self.messages[:4],
+        high_snarc=self._select_important(self.messages),
+        recent=self.messages[-20:],
+        guidance=relevant_patterns  # Wisdom from sleep
+    )
+
+    # 3. Generate with enhanced context
+    response, meta = self._generate(context_with_memory)
+
+    return response, meta
+```
+
+**Connection to HRM Architecture**:
+This directly implements the H-level (strategic reasoning) ↔ L-level (tactical execution) separation:
+- **L-level**: Real-time conversation (fast, reactive)
+- **H-level**: Sleep consolidation (slow, reflective, pattern extraction)
+
+**Expected Benefits**:
+- Learn user preferences over time
+- Develop conversation strategies from experience
+- Compress many examples into reusable patterns
+- Improve coherence through learned wisdom
+
+### Hierarchical Memory Architecture
+
+Combine SNARC + Sleep-Cycle into unified system:
+
+```
+Short-term (Circular Buffer)     ← Real-time conversation
+     ↓ SNARC salience scoring
+Working Memory (Selected Context) ← Intelligent retention
+     ↓ Sleep consolidation
+Long-term (Pattern Library)      ← Compressed wisdom
+```
+
+**This mirrors biological memory consolidation** - same patterns found in sleep research, applied to conversation management.
 
 ---
 

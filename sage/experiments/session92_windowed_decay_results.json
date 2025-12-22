@@ -1,0 +1,33 @@
+{
+  "session": 92,
+  "timestamp": "2025-12-22 07:51:18",
+  "hardware": "Jetson AGX Thor",
+  "nova_guidance": "Windowed decay + Expert families",
+  "stats": {
+    "total_selections": 38880,
+    "trust_driven_count": 0,
+    "exploration_count": 0,
+    "quality_only_count": 0,
+    "total_swaps": 0,
+    "swap_denied_count": 0,
+    "total_signals_integrated": 0,
+    "family_routing_count": 19392,
+    "windowed_decay_activations": 0,
+    "first_trust_activation": null,
+    "cache_hit_rate": 0.8,
+    "expert_churn_rate": 0.2,
+    "total_reputations_tracked": 6144,
+    "reputations_with_signals": 0,
+    "avg_reputation_score": 0.5,
+    "trust_driven_pct": 0.0,
+    "total_regret_instances": 0,
+    "total_cumulative_regret": 0.0,
+    "total_families": 48
+  },
+  "configuration": {
+    "window_size": 7,
+    "decay_type": "linear",
+    "num_families": 8,
+    "enable_two_stage": true
+  }
+}

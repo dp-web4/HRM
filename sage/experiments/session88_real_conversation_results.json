@@ -1,0 +1,39 @@
+{
+  "session": 88,
+  "configuration": {
+    "num_experts": 128,
+    "num_generations": 90,
+    "num_sequences": 9,
+    "epsilon": 0.2,
+    "min_trust_evidence": 2,
+    "internal_weight": 0.6,
+    "conversational_weight": 0.4
+  },
+  "real_conversational": {
+    "trust_driven_count": 3,
+    "trust_driven_pct": 0.3703703703703704,
+    "first_activation": 735,
+    "experts_used": 127,
+    "real_signals_integrated": 22,
+    "conversational_updates": 22
+  },
+  "baseline": {
+    "trust_driven_count": 3,
+    "trust_driven_pct": 0.3703703703703704,
+    "first_activation": 703,
+    "experts_used": 126
+  },
+  "improvement": {
+    "trust_driven_improvement": 0.0,
+    "activation_speedup": -32,
+    "diversity_improvement": 1
+  },
+  "conversation_data": {
+    "conversations_found": 10,
+    "total_turns": 4,
+    "total_signals": 22,
+    "signal_breakdown": {
+      "ENGAGEMENT": 22
+    }
+  }
+}

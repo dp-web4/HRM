@@ -107,11 +107,123 @@
 ❌ **vLLM on this platform** - Neither native nor containerized
 ❌ **Any successful inference** - Never got past loading stage
 
+## Research Findings (December 21, 2025)
+
+### 🎯 **NVIDIA Official Support Confirmed**
+- vLLM container `nvcr.io/nvidia/vllm:25.09-py3` is **officially supported** on Jetson Thor
+- 3.5X performance improvement over initial Thor launch (September 2025)
+- Container comes with vLLM 0.9.2 pre-installed (we have 0.10.1.1)
+- Optimizations: FlashInfer support, Xformers integration, Thor-specific kernels
+
+### 🔍 **CUDA 12 vs 13 Issue Explained**
+**Source**: vLLM GitHub Issue #28669
+
+**Root Cause**:
+- vLLM 0.11.0+ PyPI wheels compiled against CUDA 12.x
+- Jetson Thor has CUDA 13.0
+- Binary incompatibility: `libcudart.so.12` not found
+- CUDA lacks backward compatibility
+
+**Why Container Worked Initially**:
+- NVIDIA container is built specifically for CUDA 13 on Jetson
+- Stock container (25.09) has compatible binaries
+- Upgrading vLLM inside container breaks compatibility (downloads CUDA 12 wheels)
+
+**Solution Path**:
+- Use stock NVIDIA container without upgrading
+- OR build vLLM from source with CUDA 13 support
+- OR wait for CUDA 13 aarch64 wheels (recently added to vLLM releases)
+
+### 🧠 **std::bad_alloc Root Cause**
+**Source**: Multiple Jetson vLLM issues (#5640, #7575, #8485, #26974)
+
+**Common Causes**:
+1. **GPU memory allocation failure** (NOT total system memory)
+2. **`gpu_memory_utilization` set too high** (default 0.90)
+3. **Static allocation request exceeds available GPU memory**
+
+**Why It Happens During Import**:
+- vLLM pre-allocates GPU memory pools during initialization
+- C++ extensions request memory before Python model loading
+- Default 0.90 utilization may exceed actual available GPU memory
+
+**Proven Solutions**:
+1. Reduce `--gpu-memory-utilization` to **0.70 or 0.75**
+2. Use quantized models (INT4/INT8) to reduce memory footprint
+3. Lower `--max-model-len` (context window size)
+4. Use `dtype=float16` instead of bfloat16
+
+**Quote from Aetherix blog**:
+> "RuntimeError: Engine Core Initialization Failed... Solution: Reduce GPU memory utilization. Try `--gpu-memory-utilization 0.75` instead of 0.90."
+
+### 📊 **Model Size Requirements**
+- 7B models: Minimum 5.25GB GPU memory
+- 30B models (Q3-Omni): Estimated ~22GB in FP16, ~11GB in INT4
+- 70B models: Require 52.5GB+ (works on Thor 128GB)
+
+### 🚨 **Phase 3 Silent Crash Mystery**
+Still unexplained, but likely:
+- Native transformers loading hit similar memory allocation issue
+- Process killed by system (not OOM killer, but another limit?)
+- Possible: cgroups memory limit, ulimit, or kernel parameter
+- Recommendation: Focus on vLLM container approach (official method)
+
+## Recommended Action Plan
+
+### ✅ **Immediate Next Steps (High Probability of Success)**
+
+1. **Use Stock NVIDIA Container** (no vLLM upgrade)
+   ```bash
+   docker run --runtime=nvidia --ipc=host \
+     -v /path/to/model:/models/qwen3-omni-30b:ro \
+     nvcr.io/nvidia/vllm:25.09-py3 \
+     python3 -m vllm.entrypoints.openai.api_server \
+       --model /models/qwen3-omni-30b \
+       --gpu-memory-utilization 0.70 \
+       --max-model-len 4096 \
+       --dtype float16 \
+       --trust-remote-code
+   ```
+
+2. **If Q3-Omni Not Supported in 0.10.1.1**:
+   - Try with smaller Qwen model first (Llama-3.1-8B to verify setup)
+   - Check if Q3-Omni requires vLLM 0.13.0+ features
+   - Consider using dusty-nv/jetson-containers which may have newer builds
+
+3. **Alternative: Native HuggingFace with Offloading**
+   ```python
+   model = Qwen3OmniMoeForConditionalGeneration.from_pretrained(
+       model_path,
+       device_map="auto",  # Automatic device mapping
+       max_memory={0: "100GB"},  # Limit GPU memory
+       offload_folder="/tmp/offload",  # CPU offload directory
+       torch_dtype=torch.float16,
+       trust_remote_code=True
+   )
+   ```
+
+### 🔬 **Investigative Tasks**
+
+1. **Check Q3-Omni vLLM Support**:
+   - Determine minimum vLLM version for Q3-Omni
+   - Check if conditional generation models work in vLLM
+   - May need model-specific configuration
+
+2. **Test dusty-nv Containers**:
+   - Project: https://github.com/dusty-nv/jetson-containers
+   - Community-maintained Jetson containers with vLLM
+   - May have newer vLLM builds with Q3-Omni support
+
+3. **Contact NVIDIA Developer Forums**:
+   - Post specific Q3-Omni + vLLM 25.09 question
+   - Link to model repository
+   - Share error logs from attempts
+
 ## Next Steps to Investigate
 
-1. **Search NVIDIA forums**: "Qwen3-Omni Jetson Thor"
-2. **Search NVIDIA forums**: "vLLM Jetson AGX Thor"
-3. **Check vLLM GitHub**: Issues mentioning Thor or aarch64 + CUDA 13
-4. **Alternative**: Use smaller model for testing (Qwen2.5-Omni?)
-5. **Alternative**: Test with different loading strategy (layer-by-layer?)
-6. **Root cause**: Why silent death at 5.6% with abundant resources?
+1. ✅ **Search NVIDIA forums**: "Qwen3-Omni Jetson Thor" — COMPLETE
+2. ✅ **Search NVIDIA forums**: "vLLM Jetson AGX Thor" — COMPLETE
+3. ✅ **Check vLLM GitHub**: Issues mentioning Thor or aarch64 + CUDA 13 — COMPLETE
+4. 🎯 **Try stock container with lower GPU memory** — HIGH PRIORITY
+5. 🔍 **Verify Q3-Omni support in vLLM 0.10.1.1** — NEEDED
+6. 🔄 **Test with Llama-3.1-8B baseline** — VALIDATION STEP

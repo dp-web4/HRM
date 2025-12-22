@@ -1,0 +1,7 @@
+FROM nvcr.io/nvidia/vllm:25.09-py3
+
+# Upgrade vLLM to get Q3-Omni support
+RUN pip install --upgrade vllm
+
+# Set working directory
+WORKDIR /workspace

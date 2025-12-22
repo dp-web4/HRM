@@ -1,7 +1,61 @@
 # SAGE Michaud Integration - Latest Status
-**Last Updated**: 2025-12-22 00:03 UTC (Autonomous Session 90 - **TRUST AS RESOURCE PERMISSION** ✅)
-**Previous Update**: 2025-12-21 19:50 UTC (Session 89 - SIGNAL PERSISTENCE)
+**Last Updated**: 2025-12-22 06:08 UTC (Autonomous Session 91 - **REGRET TRACKING** ✅)
+**Previous Update**: 2025-12-22 00:03 UTC (Session 90 - TRUST AS RESOURCE PERMISSION)
 **Hardware**: Thor (Jetson AGX Thor) + Legion (RTX 4090) + Sprout (Orin Nano)
+
+---
+
+## ✅ Session 91 - Regret Tracking + Trust/Skill Split (Dec 22 - Autonomous)
+
+**Goal**: Implement Nova's Priority #1 guidance - Regret tracking + Trust vs skill split
+
+### Status: ✅ **REGRET SIGNAL VALIDATED** - 24,906 regret instances detected, 8.9x more trust-driven behavior!
+
+**Nova's Synthesis**: **"You are allocating trust, managing scarcity, enforcing coherence over time"**
+
+**Problem** (from Nova review):
+- Four remaining failure modes identified:
+  1. Trust Ossification (no decay)
+  2. Trust = Skill Conflation ← Session 91 addresses this
+  3. Regret Blindness ← Session 91 addresses this
+  4. Cold-Context Starvation
+
+**Solution - Regret Tracking Architecture**:
+- **Regret = desired_permission - actual_permission** (tracks what system WANTS but can't get)
+- **Trust vs skill split**: `trust = mean(last_5) - λ * variance(last_5)` (Nova: "This single subtraction does wonders")
+- **Conditional hysteresis**: Scales with stability_score instead of constant boost
+- **Regret-based cache protection**: High-regret experts protected from eviction
+
+**Architecture - RegretTrackingSelector**:
+- RegretRecord tracking: Captures desired vs actual expert when unavailable
+- Lambda variance: λ=0.05 (tuned via parameter sweep, prevents over-penalization)
+- Conditional hysteresis: Based on consecutive uses, low variance, low regret
+- Regret protection threshold: 0.5 (experts with >0.5 cumulative regret stay hot)
+
+**Results**:
+- **Regret instances**: 24,906 detected (64% of selections have regret!)
+- **Trust-driven**: 56 → 498 instances (+8.9x increase)
+- **First activation**: Gen 89 (matches Session 90 baseline with λ=0.05)
+- **Top regret experts**: L36_E6 (53.08), L32_E14 (45.78), L40_E110 (45.66)
+- **Cache protection**: 205 regret-protected experts (vs 64 baseline)
+
+**Lambda Parameter Sweep**:
+| λ | Activation | Trust% | Cache% |
+|---|------------|--------|--------|
+| **0.05** | **Gen 89** | **0.7%** | **79.5%** |
+| 0.10 | Gen 457 | 1.6% | 79.7% |
+| 0.15 | Gen 149 | 1.2% | 79.9% |
+| 0.30 | Gen 137 | 1.2% | 78.2% |
+
+**Key Insights**:
+- Regret reveals system "desire under constraint" - what it wants but can't access
+- Trust vs skill split filters volatile experts while allowing trust to build
+- Regret = prefetch signal (identifies which experts to keep hot)
+- Conditional hysteresis prevents "lucky early lock-in"
+
+**Next Steps**: Nova Priority #3 (Windowed trust decay) + Priority #5 (Expert families)
+
+**Files**: `experiments/session91_regret_tracking.py`, `docs/SESSION91.md`
 
 ---
 

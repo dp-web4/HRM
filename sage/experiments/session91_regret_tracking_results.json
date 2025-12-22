@@ -1,0 +1,97 @@
+{
+  "session": 91,
+  "timestamp": "2025-12-22 06:06:46",
+  "hardware": "Jetson AGX Thor",
+  "nova_guidance": "Regret tracking + Trust/skill split + Conditional hysteresis",
+  "baseline": {
+    "total_selections": 38880,
+    "trust_driven_count": 56,
+    "trust_driven_pct": 0.1440329218106996,
+    "exploration_count": 7670,
+    "quality_only_count": 31154,
+    "total_swaps": 7673,
+    "expert_churn_rate": 0.1973508230452675,
+    "cache_hit_rate": 0.8006944444444445,
+    "swap_denied_count": 33,
+    "total_reputations_tracked": 6144,
+    "reputations_with_signals": 32,
+    "avg_reputation_score": 0.49994661458333334,
+    "total_signals_integrated": 32,
+    "hot_experts_count": 64,
+    "first_trust_activation": 87
+  },
+  "regret_tracking": {
+    "total_selections": 38880,
+    "trust_driven_count": 498,
+    "trust_driven_pct": 1.2808641975308641,
+    "exploration_count": 7722,
+    "quality_only_count": 30660,
+    "total_swaps": 8216,
+    "expert_churn_rate": 0.21131687242798353,
+    "cache_hit_rate": 0.7851337448559671,
+    "swap_denied_count": 49,
+    "total_reputations_tracked": 6144,
+    "reputations_with_signals": 32,
+    "avg_reputation_score": 0.49994661458333334,
+    "total_signals_integrated": 32,
+    "hot_experts_count": 206,
+    "total_regret_instances": 24906,
+    "total_cumulative_regret": 2340.5874910465004,
+    "avg_regret_per_instance": 0.09397685260766483,
+    "top_regret_experts": [
+      [
+        "L36_E6",
+        53.07808896030753
+      ],
+      [
+        "L32_E14",
+        45.784501592425954
+      ],
+      [
+        "L40_E110",
+        45.66113979123395
+      ],
+      [
+        "L26_E39",
+        43.57284755555292
+      ],
+      [
+        "L43_E36",
+        37.88521057174549
+      ],
+      [
+        "L30_E125",
+        36.88298969463828
+      ],
+      [
+        "L28_E96",
+        36.65597563877761
+      ],
+      [
+        "L17_E44",
+        36.55001734561679
+      ],
+      [
+        "L19_E88",
+        35.257805545444725
+      ],
+      [
+        "L15_E38",
+        33.86252154072219
+      ]
+    ],
+    "regret_protected_count": 205,
+    "first_trust_activation": 130
+  },
+  "improvements": {
+    "trust_driven_pp": 1.1368312757201644,
+    "cache_hit_pct": -1.556069958847739,
+    "churn_reduction": -0.013966049382716034
+  },
+  "configuration": {
+    "num_experts": 128,
+    "num_layers": 48,
+    "lambda_variance": 0.3,
+    "regret_protection_threshold": 0.5
+  }
+}

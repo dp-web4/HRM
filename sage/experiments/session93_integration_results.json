@@ -1,0 +1,44 @@
+{
+  "session": 93,
+  "timestamp": "2025-12-22 13:50:18",
+  "hardware": "Jetson AGX Thor",
+  "goal": "Full integration test of Sessions 90-92",
+  "results": {
+    "baseline_s90": {
+      "total_selections": 38880,
+      "regret_instances": 0,
+      "family_routing_count": 0,
+      "total_cumulative_regret": 0,
+      "avg_regret_per_instance": 0.0,
+      "total_families": 0,
+      "reputations_tracked": 6144
+    },
+    "s91_features": {
+      "total_selections": 38880,
+      "regret_instances": 0,
+      "family_routing_count": 0,
+      "total_cumulative_regret": 0,
+      "avg_regret_per_instance": 0.0,
+      "total_families": 0,
+      "reputations_tracked": 6144
+    },
+    "s92_features": {
+      "total_selections": 38880,
+      "regret_instances": 0,
+      "family_routing_count": 19392,
+      "total_cumulative_regret": 0,
+      "avg_regret_per_instance": 0.0,
+      "total_families": 48,
+      "reputations_tracked": 6144
+    },
+    "s93_full": {
+      "total_selections": 38880,
+      "regret_instances": 0,
+      "family_routing_count": 19392,
+      "total_cumulative_regret": 0,
+      "avg_regret_per_instance": 0.0,
+      "total_families": 48,
+      "reputations_tracked": 6144
+    }
+  }
+}

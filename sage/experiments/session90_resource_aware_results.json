@@ -1,0 +1,47 @@
+{
+  "session": 90,
+  "timestamp": "2025-12-22 00:03:10",
+  "hardware": "Jetson AGX Thor",
+  "synthesis": "trust = permission to consume scarce shared resources",
+  "baseline": {
+    "total_selections": 38880,
+    "trust_driven_count": 61,
+    "trust_driven_pct": 0.15689300411522633,
+    "exploration_count": 7700,
+    "quality_only_count": 31119,
+    "total_reputations_tracked": 6144,
+    "reputations_with_signals": 31,
+    "avg_reputation_score": 0.49994661458333334,
+    "total_signals_integrated": 32,
+    "first_trust_activation": 1166
+  },
+  "resource_aware": {
+    "total_selections": 38880,
+    "trust_driven_count": 93,
+    "trust_driven_pct": 0.23919753086419754,
+    "exploration_count": 7688,
+    "quality_only_count": 31099,
+    "total_swaps": 7676,
+    "expert_churn_rate": 0.19742798353909466,
+    "cache_hit_rate": 0.8004115226337448,
+    "swap_denied_count": 33,
+    "total_reputations_tracked": 6144,
+    "reputations_with_signals": 32,
+    "avg_reputation_score": 0.49994661458333334,
+    "total_signals_integrated": 32,
+    "hot_experts_count": 64,
+    "first_trust_activation": 133
+  },
+  "improvement": 0.08230452674897121,
+  "configuration": {
+    "num_experts": 128,
+    "num_layers": 48,
+    "num_generations": 810,
+    "max_hot_experts": 64,
+    "hysteresis_boost": 0.2,
+    "switching_cost_weight": 0.3,
+    "memory_cost_weight": 0.2,
+    "max_swaps_per_gen": 8
+  },
+  "conversations_loaded": 10
+}

@@ -1,14 +1,16 @@
 # Trust-Router Scoring Shape for Nova Review
 
-**Date**: 2025-12-22
+**Date**: 2025-12-22 (Updated with Session 90)
 **Purpose**: Present current trust-based expert routing implementation for stability/thrashing analysis
-**Request**: Identify failure modes and stability issues
+**Request**: Identify remaining failure modes and stability issues
 
 ---
 
-## Architecture Overview
+## Architecture Evolution
 
-We replaced weighted blending with **conditional trust-first logic**:
+### Phase 1: Trust-First Conditional (Session 72)
+
+Replaced weighted blending with **conditional trust-first logic**:
 
 ```
 OLD (Sessions 64-67):  selection = α × router + (1-α) × trust
@@ -17,9 +19,21 @@ NEW (Session 72+):     if has_trust → pure_trust else free_router
 
 Result: 3.4x more expert diversity (17 → 58 experts utilized).
 
+### Phase 2: Resource-Aware Trust (Session 90)
+
+Integrated your feedback - **trust = permission to consume scarce shared resources**:
+
+```
+NEW (Session 90):  permission = expertise × cheapness × persistence
+```
+
+Result: **+1033 generation speedup** (Gen 1166 → Gen 133 for first trust activation).
+
 ---
 
 ## Selection Flow (Pseudocode)
+
+### Base Flow (Sessions 72-89)
 
 ```python
 def select_experts(router_logits, context, k=8):
@@ -36,6 +50,38 @@ def select_experts(router_logits, context, k=8):
         return trust_driven_selection(context, k)
     else:
         return router_explore_selection(router_logits, k)
+```
+
+### Resource-Aware Flow (Session 90)
+
+```python
+def select_expert(layer, context):
+    """Select using resource-aware permission score."""
+
+    for each available expert:
+        # 1. EXPERTISE (reputation + internal quality)
+        expertise = 0.4 * reputation + 0.6 * internal_quality
+
+        # 2. RESOURCE COST (cheapness)
+        if expert_is_hot:
+            resource_cost = 0.0  # Already loaded, free
+        elif swaps_budget_exhausted:
+            resource_cost = 10.0  # Extreme penalty, block swap
+        else:
+            resource_cost = swap_cost * 0.3 + bandwidth_cost * 0.2
+
+        cheapness = 1.0 / (1.0 + resource_cost)
+
+        # 3. PERSISTENCE (hysteresis)
+        if expert_is_hot:
+            persistence = 1.0 + hysteresis_boost  # +20%
+        else:
+            persistence = 1.0
+
+        # COMPOSITE PERMISSION
+        permission = expertise * cheapness * persistence
+
+    return expert_with_highest_permission
 ```
 
 ---
@@ -176,6 +222,8 @@ def find_mrh_alternative(expert_id, context, all_experts):
 
 ## Current Parameters
 
+### Base Parameters (Sessions 72-89)
+
 | Parameter | Value | Purpose |
 |-----------|-------|---------|
 | epsilon | 0.2 | Forced random exploration probability |
@@ -184,6 +232,16 @@ def find_mrh_alternative(expert_id, context, all_experts):
 | overlap_threshold | 0.7 | MRH pairing threshold |
 | k (experts per selection) | 8 | How many experts selected |
 | num_experts | 128 | Total expert pool (Q3-Omni) |
+
+### Resource-Aware Parameters (Session 90)
+
+| Parameter | Value | Purpose |
+|-----------|-------|---------|
+| max_hot_experts | 64 | LRU cache size |
+| hysteresis_boost | 0.2 | +20% trust boost for loaded experts |
+| switching_cost_weight | 0.3 | Weight of swap cost in permission |
+| memory_cost_weight | 0.2 | Weight of bandwidth cost in permission |
+| max_swaps_per_gen | 8 | Budget limit prevents thrashing |
 
 ---
 
@@ -224,17 +282,35 @@ trust_history = {
 - Signal coverage 2.7% (22 signals / 810 selections)
 - **~40x sparser than simulated data**
 
+### Session 90: Resource-Aware Trust (Your Feedback Integrated)
+
+| Metric | Before (S89) | After (S90) | Change |
+|--------|--------------|-------------|--------|
+| First trust activation | Gen 1166 | Gen 133 | **+1033 gen faster** |
+| Cache hit rate | N/A | 80% | Hysteresis working |
+| Expert churn | N/A | 0.197 swaps/sel | Stable routing |
+| Swap denials | N/A | 33 | Budget limiting thrash |
+
+**Key finding**: Hysteresis creates positive feedback loop - experts stay loaded, accumulate trust faster, reach activation 8x sooner.
+
 ---
 
-## What We're NOT Doing
+## What We're NOW Doing (Session 90)
 
-1. **No hysteresis/stickiness** - Expert can flip on any delta
-2. **No switching cost** - No penalty for changing experts
-3. **No decay** - Old trust values persist indefinitely
-4. **No smoothing** - Raw quality values stored directly
-5. **No prefetching** - Selection doesn't predict future needs
-6. **No temporal windowing** - All history weighted equally
-7. **No trust vs skill distinction** - Quality directly = trust
+1. **✅ Hysteresis/stickiness** - +20% boost for loaded experts
+2. **✅ Switching cost** - Swap cost weighted in permission score
+3. **✅ Budgeted exploration** - Max 8 swaps/generation
+4. **✅ Memory traffic cost** - Bandwidth contention in score
+
+## What We're Still NOT Doing
+
+1. **No decay** - Old trust values persist indefinitely
+2. **No smoothing** - Raw quality values stored directly
+3. **No prefetching** - Selection doesn't predict future needs
+4. **No temporal windowing** - All history weighted equally
+5. **No trust vs skill distinction** - Quality directly = trust
+6. **No two-stage routing** - No expert families → individuals
+7. **No regret tracking** - Not measuring "wanted but unavailable"
 
 ---
 
@@ -250,27 +326,57 @@ trust_history = {
 
 ## Questions for Nova
 
-1. **Hysteresis**: What form of stickiness would work here? Explicit switching cost? Minimum tenure?
+### Already Addressed (Session 90)
+- ~~Hysteresis~~ → +20% boost implemented
+- ~~Switching cost~~ → Weighted in permission score
+- ~~Budgeted exploration~~ → Max 8 swaps/gen
 
-2. **Trust Decay**: Should old observations decay? What rate? Or should we use windowed history?
+### Remaining Questions
 
-3. **Smoothing**: Should trust updates use EMA? What α would prevent twitchiness while remaining responsive?
+1. **Trust Decay**: Should old observations decay? What rate? Or should we use windowed history?
 
-4. **Trust vs Skill**: Our "trust" is really "recent performance". Is this conflation causing issues?
+2. **Smoothing**: Should trust updates use EMA? What α would prevent twitchiness while remaining responsive?
 
-5. **Cold Start**: Is ε=0.2 appropriate? Should exploration budget vary by context age?
+3. **Trust vs Skill**: Our "trust" is really "recent performance". Is this conflation causing issues?
 
-6. **Signal Sparsity**: With real signals at 2.7% coverage, what architectural changes help?
+4. **Hysteresis Tuning**: Is +20% boost the right magnitude? Should it vary by context or expert age?
+
+5. **Two-Stage Routing**: Should we implement expert families → individuals to reduce "want unavailable" thrash?
+
+6. **Regret Tracking**: How should we use regret metrics to tune the system? What threshold indicates policy failure?
+
+7. **Signal Sparsity**: With real signals at 4% coverage, what hybrid approach best leverages sparse ground truth?
+
+8. **Parameter Sensitivity**: How sensitive is the 1033-gen speedup to the specific parameter values (hysteresis=0.2, swap_budget=8)?
 
 ---
 
 ## Code Locations
 
-- **Main selector**: `sage/core/trust_first_mrh_selector.py`
+- **Base selector**: `sage/core/trust_first_mrh_selector.py`
+- **Resource-aware selector**: `sage/experiments/session90_trust_as_resource_permission.py`
 - **Trust storage**: `sage/web4/context_aware_identity_bridge.py`
 - **Quality bridge**: `sage/core/quality_reputation_bridge.py`
-- **Session results**: `sage/docs/SESSION72.md` through `SESSION88.md`
+- **Session docs**: `sage/docs/SESSION72.md` through `SESSION90.md`
 
 ---
 
-*Ready for your analysis of stability/thrashing failure modes.*
+## Summary for Review
+
+**What we implemented based on your feedback**:
+- Hysteresis (+20% boost) → 80% cache hit rate
+- Switching cost → Stable 0.197 swaps/selection
+- Budgeted exploration (8/gen) → 33 swap denials
+- Memory traffic cost → Part of permission score
+
+**Result**: 1033 generation speedup for first trust activation
+
+**What we're asking**:
+1. Are there remaining stability failure modes we're missing?
+2. Is the permission formula (expertise × cheapness × persistence) the right composition?
+3. What decay/smoothing would help without over-regularizing?
+4. Should we add two-stage routing and/or regret tracking next?
+
+---
+
+*Ready for your analysis of remaining failure modes and parameter tuning.*

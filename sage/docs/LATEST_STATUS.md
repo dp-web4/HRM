@@ -1,7 +1,58 @@
 # SAGE Michaud Integration - Latest Status
-**Last Updated**: 2025-12-22 13:50 UTC (Autonomous Session 93 - **FULL INTEGRATION** ✅)
-**Previous Update**: 2025-12-22 07:52 UTC (Session 92 - WINDOWED DECAY + FAMILIES)
+**Last Updated**: 2025-12-22 19:52 UTC (Autonomous Session 94 - **PRODUCTION INTEGRATION DESIGN** ✅)
+**Previous Update**: 2025-12-22 13:50 UTC (Session 93 - FULL INTEGRATION)
 **Hardware**: Thor (Jetson AGX Thor) + Legion (RTX 4090) + Sprout (Orin Nano)
+
+---
+
+## ✅ Session 94 - Production MoE Integration Design (Dec 22 - Autonomous)
+
+**Goal**: Design integration of trust-router (S90-93) with production MoE (Qwen3-Omni-30B)
+
+### Status: ✅ **INTEGRATION FRAMEWORK COMPLETE** - Production deployment roadmap delivered!
+
+**Target Architecture**: Qwen3-Omni-30B-A3B-Instruct
+- 128 routed experts per layer
+- 8 active experts per token
+- ~48 layers (30B parameter MoE)
+- Thinker-Talker architecture
+
+**Integration Framework**:
+1. **ProductionResourceMonitor** - Real-time resource tracking
+   - GPU memory, thermal, swap pressure monitoring
+   - Expert availability determination
+   - Constraint satisfaction statistics
+
+2. **ProductionTrustRouter** - Trust-router + MoE integration
+   - Pre-routing: Trust score injection
+   - Post-routing: Quality feedback loop
+   - Regret detection: Resource constraint tracking
+   - Family learning: Behavioral clustering
+
+**Integration Points Designed**:
+- Pre-routing hook: Augment MoE scores with trust
+- Post-routing hook: Update expert quality from performance
+- Resource monitoring: Detect real availability constraints
+- Regret tracking: Learn from resource conflicts
+
+**Expected Production Patterns**:
+- **Resource constraints**: Memory pressure, thermal throttling, swap avoidance
+- **Expert families**: Fast/cheap, high-quality, specialist, generalist
+- **Trust patterns**: Stable, inconsistent, context-specific, emerging
+- **Regret sources**: memory, thermal, swap, cache_miss
+
+**Deployment Roadmap** (5 phases):
+1. Passive monitoring (1-2 weeks) - Observe without changing routing
+2. Trust tracking (1 week) - Compute but don't use trust scores
+3. Hybrid routing (2 weeks) - Add 10% trust weight, A/B test
+4. Family prefetch (2 weeks) - Optimize cache with family prediction
+5. Full integration (ongoing) - Production deployment with monitoring
+
+**Key Innovation**: Bridge between simulated validation (S93) and real production constraints
+
+**Files**: `experiments/session94_production_moe_integration.py` (685 lines)
+
+**Research Insight**: Architecture transitions from simulation to production deployment. Real resource constraints will generate meaningful regret patterns and family structures that simulations cannot.
 
 ---
 

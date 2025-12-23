@@ -1,0 +1,233 @@
+{
+  "session": 99,
+  "timestamp": "2025-12-23 12:01:57",
+  "hardware": "Thor (Jetson AGX Thor)",
+  "goal": "CRISIS state validation - extreme ATP depletion testing",
+  "scenarios_run": 4,
+  "scenarios_passed": 3,
+  "pass_rate": 0.75,
+  "total_crisis_events": 45,
+  "total_expensive_rejections": 111,
+  "results": [
+    {
+      "scenario": "gradual_depletion",
+      "description": "Start near CRISIS threshold, submit complex queries to trigger",
+      "configuration": {
+        "initial_atp": 25.0,
+        "crisis_threshold": 20.0,
+        "num_queries": 5,
+        "query_complexity": "complex"
+      },
+      "metrics": {
+        "crisis_events": 0,
+        "expensive_rejections": 0,
+        "cheap_calls_during_crisis": 0,
+        "crisis_to_rest_transitions": 0,
+        "rest_to_wake_transitions": 0,
+        "final_atp": 25.0,
+        "final_state": "rest",
+        "atp_min": 25.0,
+        "atp_max": 25.0
+      },
+      "validation": {
+        "expected_crisis": true,
+        "crisis_triggered": false,
+        "passed": false
+      },
+      "state_sequence": [
+        "rest",
+        "rest",
+        "rest",
+        "rest",
+        "rest"
+      ],
+      "atp_trajectory": [
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ]
+    },
+    {
+      "scenario": "immediate_crisis",
+      "description": "Start in CRISIS state, observe survival mode behavior",
+      "configuration": {
+        "initial_atp": 15.0,
+        "crisis_threshold": 20.0,
+        "num_queries": 10,
+        "query_complexity": "moderate"
+      },
+      "metrics": {
+        "crisis_events": 10,
+        "expensive_rejections": 37,
+        "cheap_calls_during_crisis": 3,
+        "crisis_to_rest_transitions": 0,
+        "rest_to_wake_transitions": 0,
+        "final_atp": 0.0,
+        "final_state": "crisis",
+        "atp_min": 0.0,
+        "atp_max": 15.0
+      },
+      "validation": {
+        "expected_crisis": true,
+        "crisis_triggered": true,
+        "passed": true
+      },
+      "state_sequence": [
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis"
+      ],
+      "atp_trajectory": [
+        15.0,
+        10.0,
+        5.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "scenario": "recovery_dynamics",
+      "description": "Start deep in CRISIS, observe recovery to REST then WAKE",
+      "configuration": {
+        "initial_atp": 12.0,
+        "crisis_threshold": 20.0,
+        "num_queries": 30,
+        "query_complexity": "simple"
+      },
+      "metrics": {
+        "crisis_events": 30,
+        "expensive_rejections": 40,
+        "cheap_calls_during_crisis": 2,
+        "crisis_to_rest_transitions": 0,
+        "rest_to_wake_transitions": 0,
+        "final_atp": 0.0,
+        "final_state": "crisis",
+        "atp_min": 0.0,
+        "atp_max": 12.0
+      },
+      "validation": {
+        "expected_crisis": true,
+        "crisis_triggered": true,
+        "passed": true
+      },
+      "state_sequence": [
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis"
+      ],
+      "atp_trajectory": [
+        12.0,
+        7.0,
+        7.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "scenario": "expensive_rejection",
+      "description": "Verify expensive experts rejected during CRISIS",
+      "configuration": {
+        "initial_atp": 18.0,
+        "crisis_threshold": 20.0,
+        "num_queries": 5,
+        "query_complexity": "complex"
+      },
+      "metrics": {
+        "crisis_events": 5,
+        "expensive_rejections": 34,
+        "cheap_calls_during_crisis": 3,
+        "crisis_to_rest_transitions": 0,
+        "rest_to_wake_transitions": 0,
+        "final_atp": 0.0,
+        "final_state": "crisis",
+        "atp_min": 0.0,
+        "atp_max": 18.0
+      },
+      "validation": {
+        "expected_crisis": true,
+        "crisis_triggered": true,
+        "passed": true
+      },
+      "state_sequence": [
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis",
+        "crisis"
+      ],
+      "atp_trajectory": [
+        18.0,
+        12.0,
+        12.0,
+        12.0,
+        0.0
+      ]
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "session": 95,
+  "timestamp": "2025-12-23 00:04:25",
+  "hardware": "Thor (Jetson AGX Thor)",
+  "goal": "SAGE trust-router synthesis",
+  "features": {
+    "resource_awareness": true,
+    "regret_tracking": true,
+    "windowed_decay": true,
+    "expert_families": true
+  },
+  "statistics": {
+    "total_selections": 0,
+    "trust_driven": 0,
+    "router_explore": 0,
+    "regret_instances": 10,
+    "atp_constraints": 0,
+    "family_routing": 0,
+    "windowed_decay_active": 0,
+    "num_families": 8,
+    "avg_family_size": 16.0,
+    "avg_family_trust": 0.7742387162209796,
+    "total_regret": 10,
+    "unique_regret_experts": 10
+  },
+  "regret_records": [
+    {
+      "generation": 0,
+      "layer": 0,
+      "context": "context_0",
+      "desired_expert_id": 0,
+      "actual_expert_id": 10,
+      "unavailability_reason": "atp_cost",
+      "quality_delta": null
+    },
+    {
+      "generation": 19,
+      "layer": 0,
+      "context": "context_0",
+      "desired_expert_id": 20,
+      "actual_expert_id": 30,
+      "unavailability_reason": "persistence",
+      "quality_delta": null
+    },
+    {
+      "generation": 39,
+      "layer": 0,
+      "context": "context_0",
+      "desired_expert_id": 40,
+      "actual_expert_id": 50,
+      "unavailability_reason": "memory",
+      "quality_delta": null
+    },
+    {
+      "generation": 59,
+      "layer": 0,
+      "context": "context_0",
+      "desired_expert_id": 60,
+      "actual_expert_id": 70,
+      "unavailability_reason": "atp_cost",
+      "quality_delta": null
+    },
+    {
+      "generation": 79,
+      "layer": 0,
+      "context": "context_0",
+      "desired_expert_id": 80,
+      "actual_expert_id": 90,
+      "unavailability_reason": "persistence",
+      "quality_delta": null
+    },
+    {
+      "generation": 99,
+      "layer": 0,
+      "context": "context_0",
+      "desired_expert_id": 100,
+      "actual_expert_id": 110,
+      "unavailability_reason": "memory",
+      "quality_delta": null
+    },
+    {
+      "generation": 119,
+      "layer": 0,
+      "context": "context_0",
+      "desired_expert_id": 120,
+      "actual_expert_id": 2,
+      "unavailability_reason": "atp_cost",
+      "quality_delta": null
+    },
+    {
+      "generation": 139,
+      "layer": 0,
+      "context": "context_0",
+      "desired_expert_id": 12,
+      "actual_expert_id": 22,
+      "unavailability_reason": "persistence",
+      "quality_delta": null
+    },
+    {
+      "generation": 159,
+      "layer": 0,
+      "context": "context_0",
+      "desired_expert_id": 32,
+      "actual_expert_id": 42,
+      "unavailability_reason": "memory",
+      "quality_delta": null
+    },
+    {
+      "generation": 179,
+      "layer": 0,
+      "context": "context_0",
+      "desired_expert_id": 52,
+      "actual_expert_id": 62,
+      "unavailability_reason": "atp_cost",
+      "quality_delta": null
+    }
+  ]
+}

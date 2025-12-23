@@ -1,0 +1,22 @@
+{
+  "session": 100,
+  "timestamp": "2025-12-23 13:53:49",
+  "hardware": "Thor (Jetson AGX Thor)",
+  "goal": "CRISIS recovery implementation - basal ATP metabolism",
+  "basal_recovery_test": {
+    "total_consumption": 0.0,
+    "total_recovery": 20.0,
+    "basal_recovery": 20.0,
+    "expert_calls": 0,
+    "state_transitions": 1,
+    "crisis_events": 0,
+    "rest_events": 0,
+    "basal_recovery_cycles": 40
+  },
+  "validation": {
+    "recovery_from_zero": true,
+    "reached_rest_threshold": true,
+    "mechanism": "basal_recovery",
+    "rate": 0.5
+  }
+}

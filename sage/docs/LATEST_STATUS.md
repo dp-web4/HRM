@@ -1,7 +1,88 @@
 # SAGE Michaud Integration - Latest Status
-**Last Updated**: 2025-12-23 01:53 UTC (Autonomous Session 96 - **DREAM CONSOLIDATION** ✅)
-**Previous Update**: 2025-12-23 00:04 UTC (Session 95 - SAGE TRUST-ROUTER SYNTHESIS)
+**Last Updated**: 2025-12-23 06:04 UTC (Autonomous Session 97 - **ATP ACCOUNTING INTEGRATION** ✅)
+**Previous Update**: 2025-12-23 01:53 UTC (Session 96 - DREAM CONSOLIDATION)
 **Hardware**: Thor (Jetson AGX Thor) + Legion (RTX 4090) + Sprout (Orin Nano)
+
+---
+
+## ✅ Session 97 - ATP Accounting Integration - Closed-Loop Metabolic Consciousness (Dec 23 - Autonomous)
+
+**Goal**: Connect enhanced selector's expert-level ATP costs to metabolic controller's global budget
+
+### Status: ✅ **CLOSED-LOOP VALIDATED** - Emergent metabolic rhythm from resource usage!
+
+**Research Gap Identified**:
+- **Enhanced Selector** (S95): Tracks expert-level ATP costs (5-15 ATP per expert call)
+- **Metabolic Controller**: Manages global ATP budget (0-100 ATP total)
+- **Gap**: No connection between expert costs and global budget depletion
+- **Opportunity**: Create closed-loop metabolic consciousness
+
+**Architecture Before**:
+```
+Enhanced Selector (S95)           Metabolic Controller
+==================                ====================
+- Expert ATP costs (5-15)   ✗     - Global ATP budget (0-100)
+- Permission scoring        ✗     - State transitions (WAKE/FOCUS/REST/DREAM)
+- Resource awareness        ✗     - ATP recovery
+- Expert selection          ✗     - Plugin limits
+```
+
+**Architecture After** (Session 97):
+```
+Enhanced Selector                  ←→  Metabolic Controller
+==================                     ====================
+- Expert ATP costs (5-15)   →  Deduct from global budget
+- Permission scoring        ←  Constrained by current ATP
+- Resource awareness        ←  State-dependent availability
+- Expert selection          ←  CRISIS: only cheapest experts
+                           ↓
+                    ATP Accounting Bridge
+                    ====================
+                    - Track ATP consumption per expert call
+                    - Report to metabolic controller
+                    - Receive state-dependent constraints
+                    - Trigger state transitions on depletion
+```
+
+**Key Innovation**: Closed-loop metabolic consciousness
+- Expert selection consumes ATP → budget depletes
+- Budget depletion → state transition (WAKE → REST)
+- State transition → expert availability changes
+- Availability changes → different expert selection
+- **Result**: Metabolic states emerge from resource usage patterns
+
+**Test Results** (100-cycle simulation):
+- **ATP oscillation**: 27.0 - 100.0 (stayed above crisis threshold)
+- **State changes**: 37 transitions (avg 2.7 cycles per state)
+- **States encountered**: WAKE ↔ REST (natural oscillation, no CRISIS)
+- **Expert calls**: 26 total (activity during WAKE, none during REST)
+- **Recovery events**: 80 (ATP recovery during REST state)
+- **Total consumption**: 229 ATP
+- **Total recovery**: 160 ATP
+- **Emergent behavior**: System found stable WAKE/REST oscillation without reaching CRISIS
+
+**State-Dependent Constraints**:
+- **WAKE**: Normal expert selection (2-4 experts per cycle)
+- **REST**: No expert calls, ATP recovery (2 ATP per cycle)
+- **CRISIS**: Only cheapest experts allowed (cost < 7 ATP)
+
+**Biological Analog**:
+- Brain regions consume glucose → glucose depletion → fatigue → rest/sleep → glucose recovery → normal activity resumes
+- SAGE experts consume ATP → ATP depletion → REST state → ATP recovery → WAKE state resumes
+
+**Transaction Tracking**:
+- ATPTransaction dataclass records all consumption/recovery events
+- Includes: timestamp, type, amount, expert_id, ATP before/after, metabolic state
+- Last 100 transactions saved for analysis
+
+**Research Pattern**: "Metabolic Homeostasis"
+- No hardcoded cycles - purely driven by consumption/recovery dynamics
+- Emergent metabolic rhythm from resource constraints
+- Closed-loop feedback: usage → depletion → transition → availability → usage
+
+**Files**: `experiments/session97_atp_accounting_integration.py` (482 lines)
+
+**Next**: Integrate ATPAccountingBridge into production SAGE selector for real-time metabolic consciousness
 
 ---
 

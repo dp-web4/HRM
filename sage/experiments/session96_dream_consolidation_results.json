@@ -1,0 +1,189 @@
+{
+  "session": 96,
+  "timestamp": "2025-12-23 01:55:00",
+  "hardware": "Thor (Jetson AGX Thor)",
+  "goal": "Dream consolidation - enhanced selector patterns",
+  "source_session": 95,
+  "statistics": {
+    "patterns_extracted": 111,
+    "atp_patterns": 63,
+    "regret_patterns": 10,
+    "stability_patterns": 30,
+    "family_patterns": 8,
+    "quality_learnings": 3,
+    "associations": 3
+  },
+  "patterns": {
+    "selector_patterns": [
+      {
+        "pattern_type": "atp_cost",
+        "expert_id": 0,
+        "value": 0.3333333333333333,
+        "frequency": 0,
+        "confidence": 0.8,
+        "metadata": {
+          "source": "session_95_enhanced_selector",
+          "raw_cost": 5.0,
+          "category": "cheap"
+        }
+      },
+      {
+        "pattern_type": "atp_cost",
+        "expert_id": 6,
+        "value": 0.7333333333333333,
+        "frequency": 0,
+        "confidence": 0.8,
+        "metadata": {
+          "source": "session_95_enhanced_selector",
+          "raw_cost": 11.0,
+          "category": "expensive"
+        }
+      },
+      {
+        "pattern_type": "atp_cost",
+        "expert_id": 7,
+        "value": 0.8,
+        "frequency": 0,
+        "confidence": 0.8,
+        "metadata": {
+          "source": "session_95_enhanced_selector",
+          "raw_cost": 12.0,
+          "category": "expensive"
+        }
+      },
+      {
+        "pattern_type": "atp_cost",
+        "expert_id": 8,
+        "value": 0.8666666666666667,
+        "frequency": 0,
+        "confidence": 0.8,
+        "metadata": {
+          "source": "session_95_enhanced_selector",
+          "raw_cost": 13.0,
+          "category": "expensive"
+        }
+      },
+      {
+        "pattern_type": "atp_cost",
+        "expert_id": 9,
+        "value": 0.9333333333333333,
+        "frequency": 0,
+        "confidence": 0.8,
+        "metadata": {
+          "source": "session_95_enhanced_selector",
+          "raw_cost": 14.0,
+          "category": "expensive"
+        }
+      },
+      {
+        "pattern_type": "atp_cost",
+        "expert_id": 10,
+        "value": 0.3333333333333333,
+        "frequency": 0,
+        "confidence": 0.8,
+        "metadata": {
+          "source": "session_95_enhanced_selector",
+          "raw_cost": 5.0,
+          "category": "cheap"
+        }
+      },
+      {
+        "pattern_type": "atp_cost",
+        "expert_id": 16,
+        "value": 0.7333333333333333,
+        "frequency": 0,
+        "confidence": 0.8,
+        "metadata": {
+          "source": "session_95_enhanced_selector",
+          "raw_cost": 11.0,
+          "category": "expensive"
+        }
+      },
+      {
+        "pattern_type": "atp_cost",
+        "expert_id": 17,
+        "value": 0.8,
+        "frequency": 0,
+        "confidence": 0.8,
+        "metadata": {
+          "source": "session_95_enhanced_selector",
+          "raw_cost": 12.0,
+          "category": "expensive"
+        }
+      },
+      {
+        "pattern_type": "atp_cost",
+        "expert_id": 18,
+        "value": 0.8666666666666667,
+        "frequency": 0,
+        "confidence": 0.8,
+        "metadata": {
+          "source": "session_95_enhanced_selector",
+          "raw_cost": 13.0,
+          "category": "expensive"
+        }
+      },
+      {
+        "pattern_type": "atp_cost",
+        "expert_id": 19,
+        "value": 0.9333333333333333,
+        "frequency": 0,
+        "confidence": 0.8,
+        "metadata": {
+          "source": "session_95_enhanced_selector",
+          "raw_cost": 14.0,
+          "category": "expensive"
+        }
+      }
+    ],
+    "quality_learnings": [
+      {
+        "characteristic": "low_atp_cost",
+        "positive_correlation": true,
+        "confidence": 0.8,
+        "sample_size": 63,
+        "average_quality_with": 0.8,
+        "average_quality_without": 0.6
+      },
+      {
+        "characteristic": "low_variance",
+        "positive_correlation": true,
+        "confidence": 0.9,
+        "sample_size": 30,
+        "average_quality_with": 0.9,
+        "average_quality_without": 0.75
+      },
+      {
+        "characteristic": "regret_history",
+        "positive_correlation": false,
+        "confidence": 0.7,
+        "sample_size": 10,
+        "average_quality_with": 0.5,
+        "average_quality_without": 0.8
+      }
+    ],
+    "creative_associations": [
+      {
+        "concept_a": "high_atp_cost",
+        "concept_b": "regret_frequency",
+        "type": "causal",
+        "strength": 0.7,
+        "insight": "Expensive experts (high ATP cost) more likely unavailable under resource constraints, leading to regret. Suggests ATP-aware selection reduces regret."
+      },
+      {
+        "concept_a": "family_trust",
+        "concept_b": "expert_stability",
+        "type": "correlation",
+        "strength": 0.8,
+        "insight": "Families with high trust (0.77 avg) contain stable experts (low variance). Family membership predicts reliability."
+      },
+      {
+        "concept_a": "windowed_decay",
+        "concept_b": "context_adaptation",
+        "type": "enables",
+        "strength": 0.9,
+        "insight": "Windowed trust decay (N=7 linear taper) enables temporal adaptation. Recent performance weighted 2x old \u2192 graceful irrelevance without forgetting."
+      }
+    ]
+  }
+}

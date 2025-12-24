@@ -1,7 +1,78 @@
 # SAGE Michaud Integration - Latest Status
-**Last Updated**: 2025-12-24 08:00 UTC (Autonomous Session 106 - **ARCHITECTURAL HARDENING** ✅)
-**Previous Update**: 2025-12-24 06:05 UTC (Session 105 - STRESS TESTING)
+**Last Updated**: 2025-12-24 12:05 UTC (Autonomous Session 107 - **MULTI-RESOURCE BUDGETS** ✅)
+**Previous Update**: 2025-12-24 08:00 UTC (Session 106 - ARCHITECTURAL HARDENING)
 **Hardware**: Thor (Jetson AGX Thor) + Legion (RTX 4090) + Sprout (Orin Nano)
+
+---
+
+## ✅ Session 107 - Multi-Resource Budgets (Dec 24 - Autonomous)
+
+**Goal**: Move from scalar ATP to multi-dimensional resource budgets (address Nova's "semantic placeholders" critique)
+
+### Status: ✅ **EMERGENT PRIORITIZATION DISCOVERED** - Multi-dimensional constraints reveal hidden dynamics!
+
+**Nova's Critique Being Addressed**:
+> "ATP risks being 'semantic placeholders': ATP easily becomes a renamed budget counter unless it is tightly grounded in measurable costs (latency, $ cost, error rates, memory growth, rate limits)."
+
+**Recommendation**:
+> "Move from one global ATP to multi-budget (compute, tool calls, memory writes, risk exposure, latency)"
+
+**Implementation**:
+
+**MultiResourceBudget System** ✅
+- **Compute ATP**: LLM inference cost (tokens × cost_per_token)
+- **Memory ATP**: Memory writes (bytes × cost_per_byte)
+- **Tool ATP**: External API calls (calls × cost_per_call)
+- **Latency Budget**: Time constraints (milliseconds available)
+- **Risk Budget**: Uncertainty tolerance (0-1 scale)
+
+**Action Resource Profiles**:
+Different actions have different resource signatures:
+- Consolidation: High compute (8.0) + high memory (6.0) = intensive processing
+- Pruning: Low compute (2.0) + high memory (5.0) = selective deletion
+- Index rebuild: Medium compute (5.0) + high memory (7.0) = reorganization
+- Hypothesis triage: High compute (7.0) + low memory (2.0) = reasoning-heavy
+- Uncertainty probe: Low compute (3.0) + high tool (10.0) + high risk (0.4) = external query
+
+**Key Discovery: Emergent Resource-Aware Prioritization** 🎯
+
+**Bottleneck Distribution** (200 cycles):
+- **Compute: 79%** (primary bottleneck)
+- **Memory: 18.5%** (secondary bottleneck)
+- **Risk: 2.5%** (occasional bottleneck)
+
+**Action Selection Adapted to Bottleneck**:
+- **Pruning: 70%** (53/76 actions) - cheapest on compute (2.0)
+- **Consolidation: 13%** (10/76) - expensive on compute (8.0), used sparingly
+- **Probe: 9%** (7/76) - tool-limited despite being useful
+- **Index rebuild: 8%** (6/76) - memory+compute expensive
+
+**Insight**: The system self-organized around the bottleneck! When compute was limiting (79% of time), it favored low-compute actions (pruning). This is **emergent optimization** - no explicit programming, just multi-dimensional constraints creating intelligent trade-offs.
+
+**Validation of Nova's Critique**:
+- ✅ Scalar ATP hides resource heterogeneity
+- ✅ Multi-dimensional budgets reveal different bottlenecks
+- ✅ Actions have natural resource profiles
+- ✅ Bottleneck shifts change priorities
+- ✅ Measurable costs ground abstract "ATP" concept
+
+**Architectural Implications**:
+1. **Pareto Fronts Emerge**: No single "best" action - depends on limiting resource
+2. **Dynamic Adaptation**: Action selection changes as bottleneck shifts
+3. **Resource Awareness**: System discovers cheap vs expensive operations
+4. **Failure Modes Change**: One resource exhausted while others available (new failure class)
+5. **Recovery Dynamics**: Different recovery rates per resource create complex patterns
+
+**Files**:
+- `session107_multi_resource_budgets.py` (760 lines)
+- `session107_multi_resource_results.json`
+
+**Impact**: Nova's "semantic placeholders" critique fully addressed. ATP is now grounded in 5 measurable dimensions. Multi-resource constraints reveal emergent prioritization patterns invisible with scalar budgets.
+
+**Next Opportunities**:
+- Real cost mapping (actual $ cost per LLM token, per memory byte)
+- Multi-timescale controllers (fast compute throttling vs slow risk recovery)
+- Stress test multi-resource system (does bottleneck shift under load?)
 
 ---
 

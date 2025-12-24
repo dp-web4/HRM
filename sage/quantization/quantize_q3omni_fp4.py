@@ -15,7 +15,7 @@ import torch
 import json
 from pathlib import Path
 from transformers import Qwen3OmniMoeForConditionalGeneration, Qwen3OmniMoeProcessor
-from modelopt.torch.quantization import quantize, QuantizeConfig
+from modelopt.torch.quantization import quantize, NVFP4_DEFAULT_CFG
 import sys
 sys.path.insert(0, str(Path(__file__).parent / "calibration_data"))
 
@@ -96,17 +96,12 @@ def quantize_q3omni_to_fp4(
     # Configure FP4 quantization
     print("\n[3/5] Configuring FP4 quantization...")
 
-    # NVIDIA FP4 quantization config
-    quant_config = QuantizeConfig(
-        quant_mode="fp4",  # Use NVIDIA FP4 format
-        quant_algo="micro_block_fp4",  # Micro-block scaling for better accuracy
-        calib_method="max",  # Max calibration for activation ranges
-    )
+    # Use NVIDIA's default FP4 quantization config
+    quant_config = NVFP4_DEFAULT_CFG
 
-    print(f"Quantization config:")
-    print(f"  - Mode: FP4")
-    print(f"  - Algorithm: Micro-block FP4 (NVIDIA optimized)")
-    print(f"  - Calibration: Max activation ranges")
+    print(f"Quantization config: NVFP4_DEFAULT_CFG")
+    print(f"  - NVIDIA FP4 optimized for Blackwell/Thor architecture")
+    print(f"  - Automatic calibration for activation ranges")
 
     # Calibration function
     def calibrate_model():
@@ -137,9 +132,10 @@ def quantize_q3omni_to_fp4(
     print("This will take 30-60 minutes on Thor...")
 
     try:
+        # quantize() call with NVFP4 config
         quantized_model = quantize(
-            model=model,
-            config=quant_config,
+            model,
+            quant_config,
             forward_loop=calibrate_model,  # Run calibration
         )
 
@@ -147,6 +143,8 @@ def quantize_q3omni_to_fp4(
 
     except Exception as e:
         print(f"❌ Quantization failed: {e}")
+        import traceback
+        traceback.print_exc()
         raise
 
     # Save quantized model

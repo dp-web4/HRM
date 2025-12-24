@@ -1,0 +1,120 @@
+{
+  "session": 108,
+  "timestamp": "2025-12-24 22:00:01 UTC",
+  "regimes_tested": 4,
+  "total_bottleneck_transitions": 19,
+  "regimes_recovered": 1,
+  "results": {
+    "compute_starvation": {
+      "bottleneck_distribution": {
+        "compute": 200
+      },
+      "bottleneck_transitions": 0,
+      "actions_executed": 9,
+      "actions_blocked": 130,
+      "action_distribution": {
+        "pruning": 8,
+        "index_rebuild": 1
+      },
+      "resource_exhaustion": {
+        "compute": 132,
+        "memory": 0,
+        "tool": 0,
+        "latency": 0,
+        "risk": 0
+      },
+      "final_budgets": {
+        "compute_atp": 0.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery_achieved": false
+    },
+    "multi_resource_depletion": {
+      "bottleneck_distribution": {
+        "compute": 167,
+        "latency": 1,
+        "risk": 32
+      },
+      "bottleneck_transitions": 3,
+      "actions_executed": 0,
+      "actions_blocked": 139,
+      "action_distribution": {},
+      "resource_exhaustion": {
+        "compute": 150,
+        "memory": 150,
+        "tool": 90,
+        "latency": 0,
+        "risk": 163
+      },
+      "final_budgets": {
+        "compute_atp": 0.0,
+        "memory_atp": 0.0,
+        "tool_atp": 0.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.0
+      },
+      "recovery_achieved": true
+    },
+    "bottleneck_oscillation": {
+      "bottleneck_distribution": {
+        "compute": 151,
+        "memory": 49
+      },
+      "bottleneck_transitions": 16,
+      "actions_executed": 62,
+      "actions_blocked": 77,
+      "action_distribution": {
+        "consolidation": 14,
+        "pruning": 36,
+        "probe": 5,
+        "index_rebuild": 7
+      },
+      "resource_exhaustion": {
+        "compute": 123,
+        "memory": 91,
+        "tool": 0,
+        "latency": 0,
+        "risk": 0
+      },
+      "final_budgets": {
+        "compute_atp": 5.0,
+        "memory_atp": 32.0,
+        "tool_atp": 70.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.2
+      },
+      "recovery_achieved": false
+    },
+    "tool_rate_limiting": {
+      "bottleneck_distribution": {
+        "tool": 200
+      },
+      "bottleneck_transitions": 0,
+      "actions_executed": 73,
+      "actions_blocked": 66,
+      "action_distribution": {
+        "consolidation": 14,
+        "pruning": 58,
+        "triage": 1
+      },
+      "resource_exhaustion": {
+        "compute": 126,
+        "memory": 58,
+        "tool": 178,
+        "latency": 0,
+        "risk": 0
+      },
+      "final_budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 2.0,
+        "tool_atp": 0.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.9
+      },
+      "recovery_achieved": false
+    }
+  }
+}

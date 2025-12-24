@@ -1,0 +1,3060 @@
+{
+  "session": 104,
+  "timestamp": "2025-12-24 09:56:45 UTC",
+  "cycles": 200,
+  "total_wakes": 1,
+  "consolidations": 0,
+  "wake_events": [
+    {
+      "cycle": 58,
+      "wake_score": 0.401870943760653,
+      "actions": 2,
+      "atp_spent": 7.0
+    },
+    {
+      "cycle": 59,
+      "wake_score": 0.40223385991034977,
+      "actions": 2,
+      "atp_spent": 7.0
+    },
+    {
+      "cycle": 60,
+      "wake_score": 0.3905421009383382,
+      "actions": 2,
+      "atp_spent": 7.0
+    },
+    {
+      "cycle": 61,
+      "wake_score": 0.3688460593767677,
+      "actions": 2,
+      "atp_spent": 7.0
+    },
+    {
+      "cycle": 62,
+      "wake_score": 0.3532316666592681,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 63,
+      "wake_score": 0.3518730732719907,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 64,
+      "wake_score": 0.35639566497380365,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 65,
+      "wake_score": 0.3593732722302427,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 66,
+      "wake_score": 0.35830179713549754,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 67,
+      "wake_score": 0.3572045673060649,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 68,
+      "wake_score": 0.3619016805870847,
+      "actions": 2,
+      "atp_spent": 7.0
+    },
+    {
+      "cycle": 69,
+      "wake_score": 0.3462680565015117,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 70,
+      "wake_score": 0.34683723069144184,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 71,
+      "wake_score": 0.34889423882755705,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 72,
+      "wake_score": 0.3511865913343212,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 73,
+      "wake_score": 0.3579247956777145,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 74,
+      "wake_score": 0.35022739216957255,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 75,
+      "wake_score": 0.3464188549986319,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 76,
+      "wake_score": 0.3437803867862091,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 77,
+      "wake_score": 0.3410484870756489,
+      "actions": 2,
+      "atp_spent": 7.0
+    },
+    {
+      "cycle": 78,
+      "wake_score": 0.3107549336003141,
+      "actions": 2,
+      "atp_spent": 9.0
+    },
+    {
+      "cycle": 79,
+      "wake_score": 0.27992426838105916,
+      "actions": 2,
+      "atp_spent": 9.0
+    },
+    {
+      "cycle": 80,
+      "wake_score": 0.24830134964124342,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 81,
+      "wake_score": 0.24559253366922176,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 82,
+      "wake_score": 0.24296807913318166,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 83,
+      "wake_score": 0.24054720898742843,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 84,
+      "wake_score": 0.24182267078706962,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 85,
+      "wake_score": 0.238372027033422,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 86,
+      "wake_score": 0.2357633390626325,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 87,
+      "wake_score": 0.23350030569617744,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 88,
+      "wake_score": 0.23444148135211712,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 89,
+      "wake_score": 0.23441755082518628,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 90,
+      "wake_score": 0.23088094056905487,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 91,
+      "wake_score": 0.23090679994663282,
+      "actions": 2,
+      "atp_spent": 7.0
+    },
+    {
+      "cycle": 92,
+      "wake_score": 0.20403622811640756,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 93,
+      "wake_score": 0.20332002196234347,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 94,
+      "wake_score": 0.2012608667980843,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 95,
+      "wake_score": 0.19719756304850425,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 96,
+      "wake_score": 0.19313612738410788,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 98,
+      "wake_score": 0.20186496456744782,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 99,
+      "wake_score": 0.19802104468210346,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 101,
+      "wake_score": 0.20220384844749506,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 102,
+      "wake_score": 0.20017771339925644,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 104,
+      "wake_score": 0.20839538989427395,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 105,
+      "wake_score": 0.20683149247231902,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 107,
+      "wake_score": 0.21072840840253743,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 108,
+      "wake_score": 0.20665446675725638,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 110,
+      "wake_score": 0.21187334086650542,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 111,
+      "wake_score": 0.21002625383958964,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 113,
+      "wake_score": 0.21464797631848215,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 114,
+      "wake_score": 0.21100905407805756,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 116,
+      "wake_score": 0.21666590927123844,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 117,
+      "wake_score": 0.2148684594070996,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 119,
+      "wake_score": 0.22223137678032034,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 120,
+      "wake_score": 0.21841124960794558,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 122,
+      "wake_score": 0.22181658816137448,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 123,
+      "wake_score": 0.2176310558056902,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 125,
+      "wake_score": 0.2221072304251606,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 126,
+      "wake_score": 0.21822783709013627,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 128,
+      "wake_score": 0.2222587485889303,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 129,
+      "wake_score": 0.2180359101111235,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 131,
+      "wake_score": 0.2224100922773365,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 132,
+      "wake_score": 0.21828570138926578,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 134,
+      "wake_score": 0.22259462511473227,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 135,
+      "wake_score": 0.21818791851537148,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 137,
+      "wake_score": 0.22167631765951984,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 138,
+      "wake_score": 0.2172665827821775,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 140,
+      "wake_score": 0.22095444722910768,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 141,
+      "wake_score": 0.21658456210398308,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 143,
+      "wake_score": 0.22037261487404441,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 144,
+      "wake_score": 0.21604900475535443,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 146,
+      "wake_score": 0.21982243057629414,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 147,
+      "wake_score": 0.21565291171849704,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 149,
+      "wake_score": 0.2197762268753976,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 150,
+      "wake_score": 0.2156487912792425,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 152,
+      "wake_score": 0.21960354326001857,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 153,
+      "wake_score": 0.21530131807823075,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 155,
+      "wake_score": 0.21900965600777228,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 156,
+      "wake_score": 0.2153353560103317,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 158,
+      "wake_score": 0.2195345212365924,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 159,
+      "wake_score": 0.21531717964116587,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 161,
+      "wake_score": 0.22021287665342346,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 162,
+      "wake_score": 0.2160621910215979,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 164,
+      "wake_score": 0.22023377699814667,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 165,
+      "wake_score": 0.21601222303469766,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 167,
+      "wake_score": 0.21965011629553635,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 168,
+      "wake_score": 0.21546865565927603,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 170,
+      "wake_score": 0.21929983051424357,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 171,
+      "wake_score": 0.21515653941629645,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 173,
+      "wake_score": 0.2196129118782565,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 174,
+      "wake_score": 0.2154343123174061,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 176,
+      "wake_score": 0.21930024637501366,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 177,
+      "wake_score": 0.215021784827099,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 179,
+      "wake_score": 0.21886351584350694,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 180,
+      "wake_score": 0.21478809180539407,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 182,
+      "wake_score": 0.21854346406188327,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 183,
+      "wake_score": 0.21447482709712662,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 185,
+      "wake_score": 0.2184592393697951,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 186,
+      "wake_score": 0.21430118963123093,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 188,
+      "wake_score": 0.21824265957179234,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 189,
+      "wake_score": 0.21439376761766493,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 191,
+      "wake_score": 0.21865533466516746,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 192,
+      "wake_score": 0.21450640573346583,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 194,
+      "wake_score": 0.2187418415329331,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 195,
+      "wake_score": 0.21462820815630915,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 197,
+      "wake_score": 0.2185692709701004,
+      "actions": 1,
+      "atp_spent": 3.0
+    },
+    {
+      "cycle": 198,
+      "wake_score": 0.2144073201059183,
+      "actions": 1,
+      "atp_spent": 3.0
+    }
+  ],
+  "trajectory": [
+    {
+      "cycle": 0,
+      "wake_score": 0.24343555920579424,
+      "memory_pressure": 0.49717483882300534,
+      "uncertainty_pressure": 0.15,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 3,
+      "unprocessed_memories": 3,
+      "epistemic_uncertainty": 0.32,
+      "epistemic_confidence": 0.79
+    },
+    {
+      "cycle": 1,
+      "wake_score": 0.19818682712523944,
+      "memory_pressure": 0.36558652183661683,
+      "uncertainty_pressure": 0.16999999999999998,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 9,
+      "unprocessed_memories": 9,
+      "epistemic_uncertainty": 0.34,
+      "epistemic_confidence": 0.78
+    },
+    {
+      "cycle": 2,
+      "wake_score": 0.21887923080778007,
+      "memory_pressure": 0.4019155355431118,
+      "uncertainty_pressure": 0.19,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 15,
+      "unprocessed_memories": 15,
+      "epistemic_uncertainty": 0.36000000000000004,
+      "epistemic_confidence": 0.77
+    },
+    {
+      "cycle": 3,
+      "wake_score": 0.2234827684926946,
+      "memory_pressure": 0.40750195694600094,
+      "uncertainty_pressure": 0.1975,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 22,
+      "unprocessed_memories": 22,
+      "epistemic_uncertainty": 0.38000000000000006,
+      "epistemic_confidence": 0.76
+    },
+    {
+      "cycle": 4,
+      "wake_score": 0.18968917282107786,
+      "memory_pressure": 0.37667474617030267,
+      "uncertainty_pressure": 0.13,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 29,
+      "unprocessed_memories": 29,
+      "epistemic_uncertainty": 0.4000000000000001,
+      "epistemic_confidence": 0.75
+    },
+    {
+      "cycle": 5,
+      "wake_score": 0.20591693465694597,
+      "memory_pressure": 0.39754376026724203,
+      "uncertainty_pressure": 0.15500000000000003,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 32,
+      "unprocessed_memories": 32,
+      "epistemic_uncertainty": 0.4200000000000001,
+      "epistemic_confidence": 0.74
+    },
+    {
+      "cycle": 6,
+      "wake_score": 0.20897894405209314,
+      "memory_pressure": 0.3896592667483909,
+      "uncertainty_pressure": 0.1741666666666667,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 35,
+      "unprocessed_memories": 35,
+      "epistemic_uncertainty": 0.4400000000000001,
+      "epistemic_confidence": 0.73
+    },
+    {
+      "cycle": 7,
+      "wake_score": 0.21090223999324745,
+      "memory_pressure": 0.371375070010816,
+      "uncertainty_pressure": 0.2025,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 41,
+      "unprocessed_memories": 41,
+      "epistemic_uncertainty": 0.46000000000000013,
+      "epistemic_confidence": 0.72
+    },
+    {
+      "cycle": 8,
+      "wake_score": 0.20946043002035322,
+      "memory_pressure": 0.3615671760131225,
+      "uncertainty_pressure": 0.21000000000000002,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 47,
+      "unprocessed_memories": 47,
+      "epistemic_uncertainty": 0.48000000000000015,
+      "epistemic_confidence": 0.71
+    },
+    {
+      "cycle": 9,
+      "wake_score": 0.21295386463377802,
+      "memory_pressure": 0.3540994770404328,
+      "uncertainty_pressure": 0.23000000000000004,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 52,
+      "unprocessed_memories": 52,
+      "epistemic_uncertainty": 0.5000000000000001,
+      "epistemic_confidence": 0.7
+    },
+    {
+      "cycle": 10,
+      "wake_score": 0.21334651674407565,
+      "memory_pressure": 0.3489629914542288,
+      "uncertainty_pressure": 0.23750000000000004,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 59,
+      "unprocessed_memories": 59,
+      "epistemic_uncertainty": 0.5200000000000001,
+      "epistemic_confidence": 0.69
+    },
+    {
+      "cycle": 11,
+      "wake_score": 0.2159219075103146,
+      "memory_pressure": 0.34938479121546867,
+      "uncertainty_pressure": 0.24500000000000005,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 61,
+      "unprocessed_memories": 61,
+      "epistemic_uncertainty": 0.5400000000000001,
+      "epistemic_confidence": 0.6799999999999999
+    },
+    {
+      "cycle": 12,
+      "wake_score": 0.2216014723748123,
+      "memory_pressure": 0.34748401419610975,
+      "uncertainty_pressure": 0.265,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 63,
+      "unprocessed_memories": 63,
+      "epistemic_uncertainty": 0.5600000000000002,
+      "epistemic_confidence": 0.6699999999999999
+    },
+    {
+      "cycle": 13,
+      "wake_score": 0.2279704155390483,
+      "memory_pressure": 0.3473387204966851,
+      "uncertainty_pressure": 0.28500000000000003,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 66,
+      "unprocessed_memories": 66,
+      "epistemic_uncertainty": 0.5800000000000002,
+      "epistemic_confidence": 0.6599999999999999
+    },
+    {
+      "cycle": 14,
+      "wake_score": 0.229990925975577,
+      "memory_pressure": 0.3463475324053398,
+      "uncertainty_pressure": 0.2925000000000001,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 69,
+      "unprocessed_memories": 69,
+      "epistemic_uncertainty": 0.6000000000000002,
+      "epistemic_confidence": 0.6499999999999999
+    },
+    {
+      "cycle": 15,
+      "wake_score": 0.2320159093670724,
+      "memory_pressure": 0.34536773457365,
+      "uncertainty_pressure": 0.30000000000000004,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 76,
+      "unprocessed_memories": 76,
+      "epistemic_uncertainty": 0.6200000000000002,
+      "epistemic_confidence": 0.6399999999999999
+    },
+    {
+      "cycle": 16,
+      "wake_score": 0.24068154430527233,
+      "memory_pressure": 0.3459572684116941,
+      "uncertainty_pressure": 0.3262500000000001,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 80,
+      "unprocessed_memories": 80,
+      "epistemic_uncertainty": 0.6400000000000002,
+      "epistemic_confidence": 0.6299999999999999
+    },
+    {
+      "cycle": 17,
+      "wake_score": 0.24770259208196904,
+      "memory_pressure": 0.34542708704346575,
+      "uncertainty_pressure": 0.3487500000000001,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 83,
+      "unprocessed_memories": 83,
+      "epistemic_uncertainty": 0.6600000000000003,
+      "epistemic_confidence": 0.6199999999999999
+    },
+    {
+      "cycle": 18,
+      "wake_score": 0.24812167329965287,
+      "memory_pressure": 0.34569881156010396,
+      "uncertainty_pressure": 0.3497222222222223,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 90,
+      "unprocessed_memories": 90,
+      "epistemic_uncertainty": 0.6800000000000003,
+      "epistemic_confidence": 0.6099999999999999
+    },
+    {
+      "cycle": 19,
+      "wake_score": 0.25624244738236973,
+      "memory_pressure": 0.3479690536856879,
+      "uncertainty_pressure": 0.37222222222222234,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 92,
+      "unprocessed_memories": 92,
+      "epistemic_uncertainty": 0.7000000000000003,
+      "epistemic_confidence": 0.5999999999999999
+    },
+    {
+      "cycle": 20,
+      "wake_score": 0.2478917167879267,
+      "memory_pressure": 0.3510223243899329,
+      "uncertainty_pressure": 0.34250000000000014,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 94,
+      "unprocessed_memories": 94,
+      "epistemic_uncertainty": 0.7200000000000003,
+      "epistemic_confidence": 0.5899999999999999
+    },
+    {
+      "cycle": 21,
+      "wake_score": 0.25491368510974,
+      "memory_pressure": 0.3525399417105677,
+      "uncertainty_pressure": 0.36250000000000016,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 100,
+      "unprocessed_memories": 100,
+      "epistemic_uncertainty": 0.7400000000000003,
+      "epistemic_confidence": 0.5799999999999998
+    },
+    {
+      "cycle": 22,
+      "wake_score": 0.2622156420813847,
+      "memory_pressure": 0.35272508806056685,
+      "uncertainty_pressure": 0.3850000000000002,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 107,
+      "unprocessed_memories": 107,
+      "epistemic_uncertainty": 0.7600000000000003,
+      "epistemic_confidence": 0.5699999999999998
+    },
+    {
+      "cycle": 23,
+      "wake_score": 0.25297344754576956,
+      "memory_pressure": 0.3561528978872293,
+      "uncertainty_pressure": 0.3520454545454547,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 109,
+      "unprocessed_memories": 109,
+      "epistemic_uncertainty": 0.7800000000000004,
+      "epistemic_confidence": 0.5599999999999998
+    },
+    {
+      "cycle": 24,
+      "wake_score": 0.2643396434974429,
+      "memory_pressure": 0.3666875196129061,
+      "uncertainty_pressure": 0.37454545454545474,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 113,
+      "unprocessed_memories": 113,
+      "epistemic_uncertainty": 0.8000000000000004,
+      "epistemic_confidence": 0.5499999999999998
+    },
+    {
+      "cycle": 25,
+      "wake_score": 0.27538447424735557,
+      "memory_pressure": 0.37640379348586944,
+      "uncertainty_pressure": 0.3970454545454547,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 117,
+      "unprocessed_memories": 117,
+      "epistemic_uncertainty": 0.8200000000000004,
+      "epistemic_confidence": 0.5399999999999998
+    },
+    {
+      "cycle": 26,
+      "wake_score": 0.26170306258811765,
+      "memory_pressure": 0.3773289090606508,
+      "uncertainty_pressure": 0.3533333333333335,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 121,
+      "unprocessed_memories": 121,
+      "epistemic_uncertainty": 0.8400000000000004,
+      "epistemic_confidence": 0.5299999999999998
+    },
+    {
+      "cycle": 27,
+      "wake_score": 0.26456315988630347,
+      "memory_pressure": 0.3784757063567694,
+      "uncertainty_pressure": 0.3608333333333335,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 127,
+      "unprocessed_memories": 127,
+      "epistemic_uncertainty": 0.8600000000000004,
+      "epistemic_confidence": 0.5199999999999998
+    },
+    {
+      "cycle": 28,
+      "wake_score": 0.27941933235585437,
+      "memory_pressure": 0.38032752945605497,
+      "uncertainty_pressure": 0.4048076923076925,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 131,
+      "unprocessed_memories": 131,
+      "epistemic_uncertainty": 0.8800000000000004,
+      "epistemic_confidence": 0.5099999999999998
+    },
+    {
+      "cycle": 29,
+      "wake_score": 0.2945291496755461,
+      "memory_pressure": 0.39016790969463827,
+      "uncertainty_pressure": 0.43980769230769245,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 133,
+      "unprocessed_memories": 133,
+      "epistemic_uncertainty": 0.9000000000000005,
+      "epistemic_confidence": 0.4999999999999998
+    },
+    {
+      "cycle": 30,
+      "wake_score": 0.30202920448564147,
+      "memory_pressure": 0.39085750686829596,
+      "uncertainty_pressure": 0.4623076923076925,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 140,
+      "unprocessed_memories": 140,
+      "epistemic_uncertainty": 0.9200000000000005,
+      "epistemic_confidence": 0.48999999999999977
+    },
+    {
+      "cycle": 31,
+      "wake_score": 0.304204962291641,
+      "memory_pressure": 0.39214976392065426,
+      "uncertainty_pressure": 0.4675000000000002,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 143,
+      "unprocessed_memories": 143,
+      "epistemic_uncertainty": 0.9400000000000005,
+      "epistemic_confidence": 0.47999999999999976
+    },
+    {
+      "cycle": 32,
+      "wake_score": 0.3175587729643346,
+      "memory_pressure": 0.40092761131737853,
+      "uncertainty_pressure": 0.4983333333333335,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 146,
+      "unprocessed_memories": 146,
+      "epistemic_uncertainty": 0.9600000000000005,
+      "epistemic_confidence": 0.46999999999999975
+    },
+    {
+      "cycle": 33,
+      "wake_score": 0.32510293891098757,
+      "memory_pressure": 0.4017295363152215,
+      "uncertainty_pressure": 0.5208333333333335,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 150,
+      "unprocessed_memories": 150,
+      "epistemic_uncertainty": 0.9800000000000005,
+      "epistemic_confidence": 0.45999999999999974
+    },
+    {
+      "cycle": 34,
+      "wake_score": 0.33308163680390096,
+      "memory_pressure": 0.40363798524038935,
+      "uncertainty_pressure": 0.5433333333333334,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 153,
+      "unprocessed_memories": 153,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.44999999999999973
+    },
+    {
+      "cycle": 35,
+      "wake_score": 0.335317485570081,
+      "memory_pressure": 0.40612696860219233,
+      "uncertainty_pressure": 0.5472500000000001,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 157,
+      "unprocessed_memories": 157,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.4399999999999997
+    },
+    {
+      "cycle": 36,
+      "wake_score": 0.3436585400599027,
+      "memory_pressure": 0.41253167827833614,
+      "uncertainty_pressure": 0.5653823529411766,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 164,
+      "unprocessed_memories": 164,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.4299999999999997
+    },
+    {
+      "cycle": 37,
+      "wake_score": 0.35636299880806965,
+      "memory_pressure": 0.41951960480791844,
+      "uncertainty_pressure": 0.5963823529411766,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 168,
+      "unprocessed_memories": 168,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.4199999999999997
+    },
+    {
+      "cycle": 38,
+      "wake_score": 0.36117952893590466,
+      "memory_pressure": 0.4289211330173278,
+      "uncertainty_pressure": 0.5998823529411765,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 175,
+      "unprocessed_memories": 175,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.4099999999999997
+    },
+    {
+      "cycle": 39,
+      "wake_score": 0.3625044501420088,
+      "memory_pressure": 0.4294313729106408,
+      "uncertainty_pressure": 0.6033823529411766,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 180,
+      "unprocessed_memories": 180,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.3999999999999997
+    },
+    {
+      "cycle": 40,
+      "wake_score": 0.3679397594757867,
+      "memory_pressure": 0.43018133301702727,
+      "uncertainty_pressure": 0.6193823529411766,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 186,
+      "unprocessed_memories": 186,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.3899999999999997
+    },
+    {
+      "cycle": 41,
+      "wake_score": 0.3657650425700316,
+      "memory_pressure": 0.4311381272473428,
+      "uncertainty_pressure": 0.6114444444444446,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 193,
+      "unprocessed_memories": 193,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.37999999999999967
+    },
+    {
+      "cycle": 42,
+      "wake_score": 0.37129369814944857,
+      "memory_pressure": 0.432125791060475,
+      "uncertainty_pressure": 0.6274444444444446,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 199,
+      "unprocessed_memories": 199,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.36999999999999966
+    },
+    {
+      "cycle": 43,
+      "wake_score": 0.3697187343903216,
+      "memory_pressure": 0.433624757537709,
+      "uncertainty_pressure": 0.6207105263157896,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 206,
+      "unprocessed_memories": 206,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.35999999999999965
+    },
+    {
+      "cycle": 44,
+      "wake_score": 0.3689712802847113,
+      "memory_pressure": 0.4363936345421726,
+      "uncertainty_pressure": 0.6150000000000001,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 210,
+      "unprocessed_memories": 210,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.34999999999999964
+    },
+    {
+      "cycle": 45,
+      "wake_score": 0.3681635175178831,
+      "memory_pressure": 0.4382912338117723,
+      "uncertainty_pressure": 0.6101666666666667,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 216,
+      "unprocessed_memories": 216,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.33999999999999964
+    },
+    {
+      "cycle": 46,
+      "wake_score": 0.36980770179746225,
+      "memory_pressure": 0.4396144685445944,
+      "uncertainty_pressure": 0.6136666666666668,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 221,
+      "unprocessed_memories": 221,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.3299999999999996
+    },
+    {
+      "cycle": 47,
+      "wake_score": 0.36958506665745944,
+      "memory_pressure": 0.4423822448855368,
+      "uncertainty_pressure": 0.6095909090909092,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 223,
+      "unprocessed_memories": 223,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.3199999999999996
+    },
+    {
+      "cycle": 48,
+      "wake_score": 0.36813014911766834,
+      "memory_pressure": 0.44147306049604973,
+      "uncertainty_pressure": 0.6061739130434783,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 228,
+      "unprocessed_memories": 228,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.3099999999999996
+    },
+    {
+      "cycle": 49,
+      "wake_score": 0.3772802668876424,
+      "memory_pressure": 0.4449386093395524,
+      "uncertainty_pressure": 0.6304166666666668,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 233,
+      "unprocessed_memories": 233,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.2999999999999996
+    },
+    {
+      "cycle": 50,
+      "wake_score": 0.3846038398878535,
+      "memory_pressure": 0.4442924366892118,
+      "uncertainty_pressure": 0.6540000000000001,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 235,
+      "unprocessed_memories": 235,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.2899999999999996
+    },
+    {
+      "cycle": 51,
+      "wake_score": 0.389377698731285,
+      "memory_pressure": 0.4433580308919911,
+      "uncertainty_pressure": 0.6700000000000002,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 239,
+      "unprocessed_memories": 239,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.2799999999999996
+    },
+    {
+      "cycle": 52,
+      "wake_score": 0.39018999058867515,
+      "memory_pressure": 0.4425628739207411,
+      "uncertainty_pressure": 0.6735000000000001,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 241,
+      "unprocessed_memories": 241,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.2699999999999996
+    },
+    {
+      "cycle": 53,
+      "wake_score": 0.3908369270078031,
+      "memory_pressure": 0.4413466437682784,
+      "uncertainty_pressure": 0.6770000000000002,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 244,
+      "unprocessed_memories": 244,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.25999999999999956
+    },
+    {
+      "cycle": 54,
+      "wake_score": 0.39384248113230713,
+      "memory_pressure": 0.44040929751033103,
+      "uncertainty_pressure": 0.6875000000000001,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 247,
+      "unprocessed_memories": 247,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.24999999999999956
+    },
+    {
+      "cycle": 55,
+      "wake_score": 0.3968805382584572,
+      "memory_pressure": 0.4399789616971152,
+      "uncertainty_pressure": 0.6974814814814816,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 252,
+      "unprocessed_memories": 252,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.23999999999999955
+    },
+    {
+      "cycle": 56,
+      "wake_score": 0.39750732374739484,
+      "memory_pressure": 0.43871141774228345,
+      "uncertainty_pressure": 0.7009814814814816,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 256,
+      "unprocessed_memories": 256,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.22999999999999954
+    },
+    {
+      "cycle": 57,
+      "wake_score": 0.39969134326972156,
+      "memory_pressure": 0.44140932841793085,
+      "uncertainty_pressure": 0.7044814814814816,
+      "is_awake": false,
+      "atp": 100.0,
+      "total_memories": 260,
+      "unprocessed_memories": 260,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.21999999999999953
+    },
+    {
+      "cycle": 58,
+      "wake_score": 0.401870943760653,
+      "memory_pressure": 0.4440959861488489,
+      "uncertainty_pressure": 0.7079814814814817,
+      "is_awake": true,
+      "atp": 100.0,
+      "total_memories": 264,
+      "unprocessed_memories": 264,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.20999999999999952
+    },
+    {
+      "cycle": 59,
+      "wake_score": 0.40223385991034977,
+      "memory_pressure": 0.44215650601056716,
+      "uncertainty_pressure": 0.7114814814814816,
+      "is_awake": true,
+      "atp": 94.0,
+      "total_memories": 265,
+      "unprocessed_memories": 265,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.1999999999999995
+    },
+    {
+      "cycle": 60,
+      "wake_score": 0.3905421009383382,
+      "memory_pressure": 0.4402019377090349,
+      "uncertainty_pressure": 0.6774814814814817,
+      "is_awake": true,
+      "atp": 88.0,
+      "total_memories": 263,
+      "unprocessed_memories": 263,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.1899999999999995
+    },
+    {
+      "cycle": 61,
+      "wake_score": 0.3688460593767677,
+      "memory_pressure": 0.4385293083187357,
+      "uncertainty_pressure": 0.6120000000000002,
+      "is_awake": true,
+      "atp": 82.0,
+      "total_memories": 264,
+      "unprocessed_memories": 264,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.1799999999999995
+    },
+    {
+      "cycle": 62,
+      "wake_score": 0.3532316666592681,
+      "memory_pressure": 0.44175043536952596,
+      "uncertainty_pressure": 0.5594655172413795,
+      "is_awake": true,
+      "atp": 76.0,
+      "total_memories": 266,
+      "unprocessed_memories": 266,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.16999999999999948
+    },
+    {
+      "cycle": 63,
+      "wake_score": 0.3518730732719907,
+      "memory_pressure": 0.44003532791441446,
+      "uncertainty_pressure": 0.5573333333333336,
+      "is_awake": true,
+      "atp": 74.0,
+      "total_memories": 266,
+      "unprocessed_memories": 266,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.15999999999999948
+    },
+    {
+      "cycle": 64,
+      "wake_score": 0.35639566497380365,
+      "memory_pressure": 0.43846107709142756,
+      "uncertainty_pressure": 0.5733333333333335,
+      "is_awake": true,
+      "atp": 72.0,
+      "total_memories": 266,
+      "unprocessed_memories": 266,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.14999999999999947
+    },
+    {
+      "cycle": 65,
+      "wake_score": 0.3593732722302427,
+      "memory_pressure": 0.4372634153246359,
+      "uncertainty_pressure": 0.5840645161290324,
+      "is_awake": true,
+      "atp": 70.0,
+      "total_memories": 265,
+      "unprocessed_memories": 265,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.13999999999999946
+    },
+    {
+      "cycle": 66,
+      "wake_score": 0.35830179713549754,
+      "memory_pressure": 0.4357127187051118,
+      "uncertainty_pressure": 0.5826250000000002,
+      "is_awake": true,
+      "atp": 68.0,
+      "total_memories": 267,
+      "unprocessed_memories": 267,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.12999999999999945
+    },
+    {
+      "cycle": 67,
+      "wake_score": 0.3572045673060649,
+      "memory_pressure": 0.43385150366153047,
+      "uncertainty_pressure": 0.5814848484848487,
+      "is_awake": true,
+      "atp": 66.0,
+      "total_memories": 268,
+      "unprocessed_memories": 268,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.11999999999999945
+    },
+    {
+      "cycle": 68,
+      "wake_score": 0.3619016805870847,
+      "memory_pressure": 0.4327216673514204,
+      "uncertainty_pressure": 0.5974848484848487,
+      "is_awake": true,
+      "atp": 64.0,
+      "total_memories": 270,
+      "unprocessed_memories": 270,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.10999999999999946
+    },
+    {
+      "cycle": 69,
+      "wake_score": 0.3462680565015117,
+      "memory_pressure": 0.43095651816483277,
+      "uncertainty_pressure": 0.5509848484848486,
+      "is_awake": true,
+      "atp": 58.0,
+      "total_memories": 272,
+      "unprocessed_memories": 272,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.09999999999999946
+    },
+    {
+      "cycle": 70,
+      "wake_score": 0.34683723069144184,
+      "memory_pressure": 0.42954226858482275,
+      "uncertainty_pressure": 0.5544848484848487,
+      "is_awake": true,
+      "atp": 56.0,
+      "total_memories": 272,
+      "unprocessed_memories": 272,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.08999999999999947
+    },
+    {
+      "cycle": 71,
+      "wake_score": 0.34889423882755705,
+      "memory_pressure": 0.4319167481776805,
+      "uncertainty_pressure": 0.5579848484848486,
+      "is_awake": true,
+      "atp": 54.0,
+      "total_memories": 274,
+      "unprocessed_memories": 274,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.07999999999999947
+    },
+    {
+      "cycle": 72,
+      "wake_score": 0.3511865913343212,
+      "memory_pressure": 0.43489052588780047,
+      "uncertainty_pressure": 0.5614848484848487,
+      "is_awake": true,
+      "atp": 52.0,
+      "total_memories": 271,
+      "unprocessed_memories": 271,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.06999999999999948
+    },
+    {
+      "cycle": 73,
+      "wake_score": 0.3579247956777145,
+      "memory_pressure": 0.43410897804358145,
+      "uncertainty_pressure": 0.5834117647058825,
+      "is_awake": true,
+      "atp": 50.0,
+      "total_memories": 270,
+      "unprocessed_memories": 270,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.05999999999999948
+    },
+    {
+      "cycle": 74,
+      "wake_score": 0.35022739216957255,
+      "memory_pressure": 0.43345464723440685,
+      "uncertainty_pressure": 0.5825000000000002,
+      "is_awake": true,
+      "atp": 48.0,
+      "total_memories": 269,
+      "unprocessed_memories": 269,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.049999999999999475
+    },
+    {
+      "cycle": 75,
+      "wake_score": 0.3464188549986319,
+      "memory_pressure": 0.4326296764881796,
+      "uncertainty_pressure": 0.5943333333333335,
+      "is_awake": true,
+      "atp": 46.0,
+      "total_memories": 268,
+      "unprocessed_memories": 268,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.039999999999999473
+    },
+    {
+      "cycle": 76,
+      "wake_score": 0.3437803867862091,
+      "memory_pressure": 0.43516705084070467,
+      "uncertainty_pressure": 0.606391891891892,
+      "is_awake": true,
+      "atp": 44.0,
+      "total_memories": 269,
+      "unprocessed_memories": 269,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.02999999999999947
+    },
+    {
+      "cycle": 77,
+      "wake_score": 0.3410484870756489,
+      "memory_pressure": 0.4347602811084166,
+      "uncertainty_pressure": 0.622391891891892,
+      "is_awake": true,
+      "atp": 42.0,
+      "total_memories": 266,
+      "unprocessed_memories": 266,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.01999999999999947
+    },
+    {
+      "cycle": 78,
+      "wake_score": 0.3107549336003141,
+      "memory_pressure": 0.4339085947713906,
+      "uncertainty_pressure": 0.5813684210526318,
+      "is_awake": true,
+      "atp": 37.0,
+      "total_memories": 267,
+      "unprocessed_memories": 267,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.00999999999999947
+    },
+    {
+      "cycle": 79,
+      "wake_score": 0.27992426838105916,
+      "memory_pressure": 0.43686020081726334,
+      "uncertainty_pressure": 0.5550897435897436,
+      "is_awake": true,
+      "atp": 30.0,
+      "total_memories": 268,
+      "unprocessed_memories": 268,
+      "epistemic_uncertainty": 0.87,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 80,
+      "wake_score": 0.24830134964124342,
+      "memory_pressure": 0.4361998602622637,
+      "uncertainty_pressure": 0.5255,
+      "is_awake": true,
+      "atp": 23.0,
+      "total_memories": 267,
+      "unprocessed_memories": 267,
+      "epistemic_uncertainty": 0.74,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 81,
+      "wake_score": 0.24559253366922176,
+      "memory_pressure": 0.435376600986128,
+      "uncertainty_pressure": 0.5295,
+      "is_awake": true,
+      "atp": 22.0,
+      "total_memories": 269,
+      "unprocessed_memories": 269,
+      "epistemic_uncertainty": 0.76,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 82,
+      "wake_score": 0.24296807913318166,
+      "memory_pressure": 0.434924910006139,
+      "uncertainty_pressure": 0.5335,
+      "is_awake": true,
+      "atp": 21.0,
+      "total_memories": 270,
+      "unprocessed_memories": 270,
+      "epistemic_uncertainty": 0.78,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 83,
+      "wake_score": 0.24054720898742843,
+      "memory_pressure": 0.4380882147523813,
+      "uncertainty_pressure": 0.5340853658536585,
+      "is_awake": true,
+      "atp": 20.0,
+      "total_memories": 270,
+      "unprocessed_memories": 270,
+      "epistemic_uncertainty": 0.8,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 84,
+      "wake_score": 0.24182267078706962,
+      "memory_pressure": 0.44197749114606444,
+      "uncertainty_pressure": 0.5505853658536586,
+      "is_awake": true,
+      "atp": 19.0,
+      "total_memories": 267,
+      "unprocessed_memories": 267,
+      "epistemic_uncertainty": 0.8200000000000001,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 85,
+      "wake_score": 0.238372027033422,
+      "memory_pressure": 0.4415678598893857,
+      "uncertainty_pressure": 0.5513333333333333,
+      "is_awake": true,
+      "atp": 18.0,
+      "total_memories": 265,
+      "unprocessed_memories": 265,
+      "epistemic_uncertainty": 0.8400000000000001,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 86,
+      "wake_score": 0.2357633390626325,
+      "memory_pressure": 0.4417035413559872,
+      "uncertainty_pressure": 0.5553333333333333,
+      "is_awake": true,
+      "atp": 17.0,
+      "total_memories": 262,
+      "unprocessed_memories": 262,
+      "epistemic_uncertainty": 0.8600000000000001,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 87,
+      "wake_score": 0.23350030569617744,
+      "memory_pressure": 0.44581314243359454,
+      "uncertainty_pressure": 0.5562325581395349,
+      "is_awake": true,
+      "atp": 16.0,
+      "total_memories": 259,
+      "unprocessed_memories": 259,
+      "epistemic_uncertainty": 0.8800000000000001,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 88,
+      "wake_score": 0.23444148135211712,
+      "memory_pressure": 0.44986053259472264,
+      "uncertainty_pressure": 0.5727325581395349,
+      "is_awake": true,
+      "atp": 15.0,
+      "total_memories": 256,
+      "unprocessed_memories": 256,
+      "epistemic_uncertainty": 0.9000000000000001,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 89,
+      "wake_score": 0.23441755082518628,
+      "memory_pressure": 0.4530379319878437,
+      "uncertainty_pressure": 0.5862727272727273,
+      "is_awake": true,
+      "atp": 14.0,
+      "total_memories": 257,
+      "unprocessed_memories": 257,
+      "epistemic_uncertainty": 0.9200000000000002,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 90,
+      "wake_score": 0.23088094056905487,
+      "memory_pressure": 0.4525892117212738,
+      "uncertainty_pressure": 0.5874444444444444,
+      "is_awake": true,
+      "atp": 13.0,
+      "total_memories": 257,
+      "unprocessed_memories": 257,
+      "epistemic_uncertainty": 0.9400000000000002,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 91,
+      "wake_score": 0.23090679994663282,
+      "memory_pressure": 0.45646088588203043,
+      "uncertainty_pressure": 0.6012391304347826,
+      "is_awake": true,
+      "atp": 12.0,
+      "total_memories": 254,
+      "unprocessed_memories": 254,
+      "epistemic_uncertainty": 0.9600000000000002,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 92,
+      "wake_score": 0.20403622811640756,
+      "memory_pressure": 0.4593638700014678,
+      "uncertainty_pressure": 0.5526489361702128,
+      "is_awake": true,
+      "atp": 7.0,
+      "total_memories": 256,
+      "unprocessed_memories": 256,
+      "epistemic_uncertainty": 0.9800000000000002,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 93,
+      "wake_score": 0.20332002196234347,
+      "memory_pressure": 0.45888442729414197,
+      "uncertainty_pressure": 0.5691489361702128,
+      "is_awake": true,
+      "atp": 6.0,
+      "total_memories": 256,
+      "unprocessed_memories": 256,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 94,
+      "wake_score": 0.2012608667980843,
+      "memory_pressure": 0.4579643461262784,
+      "uncertainty_pressure": 0.5791666666666666,
+      "is_awake": true,
+      "atp": 5.0,
+      "total_memories": 257,
+      "unprocessed_memories": 257,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 95,
+      "wake_score": 0.19719756304850425,
+      "memory_pressure": 0.4580071869417999,
+      "uncertainty_pressure": 0.5767857142857142,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 256,
+      "unprocessed_memories": 256,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 96,
+      "wake_score": 0.19313612738410788,
+      "memory_pressure": 0.4579091864455937,
+      "uncertainty_pressure": 0.5745,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 254,
+      "unprocessed_memories": 254,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 97,
+      "wake_score": 0.19165376642643686,
+      "memory_pressure": 0.4582679792092068,
+      "uncertainty_pressure": 0.587,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 251,
+      "unprocessed_memories": 251,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 98,
+      "wake_score": 0.20186496456744782,
+      "memory_pressure": 0.461432794647916,
+      "uncertainty_pressure": 0.5995,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 253,
+      "unprocessed_memories": 253,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 99,
+      "wake_score": 0.19802104468210346,
+      "memory_pressure": 0.4609250384714598,
+      "uncertainty_pressure": 0.5995,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 254,
+      "unprocessed_memories": 254,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 100,
+      "wake_score": 0.1941160761630052,
+      "memory_pressure": 0.46009879416174587,
+      "uncertainty_pressure": 0.5995,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 255,
+      "unprocessed_memories": 255,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 101,
+      "wake_score": 0.20220384844749506,
+      "memory_pressure": 0.4630308663077792,
+      "uncertainty_pressure": 0.5995,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 258,
+      "unprocessed_memories": 258,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 102,
+      "wake_score": 0.20017771339925644,
+      "memory_pressure": 0.46285663067614335,
+      "uncertainty_pressure": 0.6098039215686274,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 258,
+      "unprocessed_memories": 258,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 103,
+      "wake_score": 0.19835130880171725,
+      "memory_pressure": 0.4621812442543595,
+      "uncertainty_pressure": 0.6223039215686275,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 259,
+      "unprocessed_memories": 259,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 104,
+      "wake_score": 0.20839538989427395,
+      "memory_pressure": 0.46507091986646654,
+      "uncertainty_pressure": 0.6326923076923077,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 263,
+      "unprocessed_memories": 263,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 105,
+      "wake_score": 0.20683149247231902,
+      "memory_pressure": 0.4658716846010618,
+      "uncertainty_pressure": 0.6451923076923077,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 260,
+      "unprocessed_memories": 260,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 106,
+      "wake_score": 0.20373390261396204,
+      "memory_pressure": 0.46981328776107223,
+      "uncertainty_pressure": 0.6451923076923077,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 258,
+      "unprocessed_memories": 258,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 107,
+      "wake_score": 0.21072840840253743,
+      "memory_pressure": 0.467507929953525,
+      "uncertainty_pressure": 0.6431603773584905,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 265,
+      "unprocessed_memories": 265,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 108,
+      "wake_score": 0.20665446675725638,
+      "memory_pressure": 0.4682845383785036,
+      "uncertainty_pressure": 0.6412037037037037,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 262,
+      "unprocessed_memories": 262,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 109,
+      "wake_score": 0.20275180915342195,
+      "memory_pressure": 0.46826731676863287,
+      "uncertainty_pressure": 0.6412037037037037,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 262,
+      "unprocessed_memories": 262,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 110,
+      "wake_score": 0.21187334086650542,
+      "memory_pressure": 0.4658234194639541,
+      "uncertainty_pressure": 0.6518181818181819,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 269,
+      "unprocessed_memories": 269,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 111,
+      "wake_score": 0.21002625383958964,
+      "memory_pressure": 0.46557300438643573,
+      "uncertainty_pressure": 0.6643181818181818,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 269,
+      "unprocessed_memories": 269,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 112,
+      "wake_score": 0.2063902700703965,
+      "memory_pressure": 0.4686608492997026,
+      "uncertainty_pressure": 0.6625,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 270,
+      "unprocessed_memories": 270,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 113,
+      "wake_score": 0.21464797631848215,
+      "memory_pressure": 0.47016807344444494,
+      "uncertainty_pressure": 0.6625,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 274,
+      "unprocessed_memories": 274,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 114,
+      "wake_score": 0.21100905407805756,
+      "memory_pressure": 0.47321804156822617,
+      "uncertainty_pressure": 0.6607456140350877,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 274,
+      "unprocessed_memories": 274,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 115,
+      "wake_score": 0.20697059802519452,
+      "memory_pressure": 0.4729381589717546,
+      "uncertainty_pressure": 0.6607456140350877,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 274,
+      "unprocessed_memories": 274,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 116,
+      "wake_score": 0.21666590927123844,
+      "memory_pressure": 0.47089215565987896,
+      "uncertainty_pressure": 0.6732456140350878,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 280,
+      "unprocessed_memories": 280,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 117,
+      "wake_score": 0.2148684594070996,
+      "memory_pressure": 0.4713066508049183,
+      "uncertainty_pressure": 0.6857456140350877,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 277,
+      "unprocessed_memories": 277,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 118,
+      "wake_score": 0.21095735003953142,
+      "memory_pressure": 0.4720069921696198,
+      "uncertainty_pressure": 0.6857456140350877,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 274,
+      "unprocessed_memories": 274,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 119,
+      "wake_score": 0.22223137678032034,
+      "memory_pressure": 0.4766826351941664,
+      "uncertainty_pressure": 0.6982456140350877,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 279,
+      "unprocessed_memories": 279,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 120,
+      "wake_score": 0.21841124960794558,
+      "memory_pressure": 0.4794872126507891,
+      "uncertainty_pressure": 0.6965517241379311,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 280,
+      "unprocessed_memories": 280,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 121,
+      "wake_score": 0.21411816639247438,
+      "memory_pressure": 0.4799832783663652,
+      "uncertainty_pressure": 0.6949152542372882,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 278,
+      "unprocessed_memories": 278,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 122,
+      "wake_score": 0.22181658816137448,
+      "memory_pressure": 0.4787457589969465,
+      "uncertainty_pressure": 0.6933333333333334,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 282,
+      "unprocessed_memories": 282,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 123,
+      "wake_score": 0.2176310558056902,
+      "memory_pressure": 0.478371870628067,
+      "uncertainty_pressure": 0.6933333333333334,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 283,
+      "unprocessed_memories": 283,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 124,
+      "wake_score": 0.2135088549573321,
+      "memory_pressure": 0.4782937403642049,
+      "uncertainty_pressure": 0.6933333333333334,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 282,
+      "unprocessed_memories": 282,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 125,
+      "wake_score": 0.2221072304251606,
+      "memory_pressure": 0.4801163381016541,
+      "uncertainty_pressure": 0.6933333333333334,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 287,
+      "unprocessed_memories": 287,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 126,
+      "wake_score": 0.21822783709013627,
+      "memory_pressure": 0.4824910684402903,
+      "uncertainty_pressure": 0.6918032786885246,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 286,
+      "unprocessed_memories": 286,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 127,
+      "wake_score": 0.21401123985920734,
+      "memory_pressure": 0.48200581413215887,
+      "uncertainty_pressure": 0.6918032786885246,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 286,
+      "unprocessed_memories": 286,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 128,
+      "wake_score": 0.2222587485889303,
+      "memory_pressure": 0.4820827138326016,
+      "uncertainty_pressure": 0.6918032786885246,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 290,
+      "unprocessed_memories": 290,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 129,
+      "wake_score": 0.2180359101111235,
+      "memory_pressure": 0.4815689233537209,
+      "uncertainty_pressure": 0.6918032786885246,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 287,
+      "unprocessed_memories": 287,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 130,
+      "wake_score": 0.21387972266654035,
+      "memory_pressure": 0.48136176605931497,
+      "uncertainty_pressure": 0.6918032786885246,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 289,
+      "unprocessed_memories": 289,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 131,
+      "wake_score": 0.2224100922773365,
+      "memory_pressure": 0.4840078841177397,
+      "uncertainty_pressure": 0.6903225806451613,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 294,
+      "unprocessed_memories": 294,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 132,
+      "wake_score": 0.21828570138926578,
+      "memory_pressure": 0.4839805673051196,
+      "uncertainty_pressure": 0.6903225806451613,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 292,
+      "unprocessed_memories": 292,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 133,
+      "wake_score": 0.21407484444383718,
+      "memory_pressure": 0.4835287700533103,
+      "uncertainty_pressure": 0.6903225806451613,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 294,
+      "unprocessed_memories": 294,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 134,
+      "wake_score": 0.22259462511473227,
+      "memory_pressure": 0.48605110448430255,
+      "uncertainty_pressure": 0.6888888888888889,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 296,
+      "unprocessed_memories": 296,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 135,
+      "wake_score": 0.21818791851537148,
+      "memory_pressure": 0.4858201373912173,
+      "uncertainty_pressure": 0.6875,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 293,
+      "unprocessed_memories": 293,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 136,
+      "wake_score": 0.2137267073221454,
+      "memory_pressure": 0.4852347031505034,
+      "uncertainty_pressure": 0.6861538461538461,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 295,
+      "unprocessed_memories": 295,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 137,
+      "wake_score": 0.22167631765951984,
+      "memory_pressure": 0.4850264354154901,
+      "uncertainty_pressure": 0.6848484848484848,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 301,
+      "unprocessed_memories": 301,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 138,
+      "wake_score": 0.2172665827821775,
+      "memory_pressure": 0.48459898974403764,
+      "uncertainty_pressure": 0.6835820895522388,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 302,
+      "unprocessed_memories": 302,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 139,
+      "wake_score": 0.21295923043308468,
+      "memory_pressure": 0.48458615126581583,
+      "uncertainty_pressure": 0.6823529411764706,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 304,
+      "unprocessed_memories": 304,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 140,
+      "wake_score": 0.22095444722910768,
+      "memory_pressure": 0.48464064307867283,
+      "uncertainty_pressure": 0.6811594202898551,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 311,
+      "unprocessed_memories": 311,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 141,
+      "wake_score": 0.21658456210398308,
+      "memory_pressure": 0.4842529085238771,
+      "uncertainty_pressure": 0.6799999999999999,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 308,
+      "unprocessed_memories": 308,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 142,
+      "wake_score": 0.2122470861542425,
+      "memory_pressure": 0.4839457640503114,
+      "uncertainty_pressure": 0.6788732394366197,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 307,
+      "unprocessed_memories": 307,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 143,
+      "wake_score": 0.22037261487404441,
+      "memory_pressure": 0.48376741309128624,
+      "uncertainty_pressure": 0.6788732394366197,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 311,
+      "unprocessed_memories": 311,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 144,
+      "wake_score": 0.21604900475535443,
+      "memory_pressure": 0.483497916001722,
+      "uncertainty_pressure": 0.6777777777777778,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 311,
+      "unprocessed_memories": 311,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 145,
+      "wake_score": 0.21187478181996014,
+      "memory_pressure": 0.4830188528136574,
+      "uncertainty_pressure": 0.6777777777777778,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 310,
+      "unprocessed_memories": 310,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 146,
+      "wake_score": 0.21982243057629414,
+      "memory_pressure": 0.48294093177593245,
+      "uncertainty_pressure": 0.6767123287671233,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 314,
+      "unprocessed_memories": 314,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 147,
+      "wake_score": 0.21565291171849704,
+      "memory_pressure": 0.4824665521477933,
+      "uncertainty_pressure": 0.6767123287671233,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 314,
+      "unprocessed_memories": 314,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 148,
+      "wake_score": 0.21135785952446667,
+      "memory_pressure": 0.4822073531139323,
+      "uncertainty_pressure": 0.6756756756756757,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 316,
+      "unprocessed_memories": 316,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 149,
+      "wake_score": 0.2197762268753976,
+      "memory_pressure": 0.48439677293663785,
+      "uncertainty_pressure": 0.6746666666666666,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 322,
+      "unprocessed_memories": 322,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 150,
+      "wake_score": 0.2156487912792425,
+      "memory_pressure": 0.4841204783489363,
+      "uncertainty_pressure": 0.6746666666666666,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 319,
+      "unprocessed_memories": 319,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 151,
+      "wake_score": 0.2114729821883438,
+      "memory_pressure": 0.483596668960176,
+      "uncertainty_pressure": 0.6746666666666666,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 321,
+      "unprocessed_memories": 321,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 152,
+      "wake_score": 0.21960354326001857,
+      "memory_pressure": 0.4835824503674398,
+      "uncertainty_pressure": 0.6746666666666666,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 328,
+      "unprocessed_memories": 328,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 153,
+      "wake_score": 0.21530131807823075,
+      "memory_pressure": 0.4832548133238918,
+      "uncertainty_pressure": 0.6736842105263158,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 329,
+      "unprocessed_memories": 329,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 154,
+      "wake_score": 0.2110531974397142,
+      "memory_pressure": 0.48312773315670765,
+      "uncertainty_pressure": 0.6727272727272727,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 329,
+      "unprocessed_memories": 329,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 155,
+      "wake_score": 0.21900965600777228,
+      "memory_pressure": 0.48313151195247717,
+      "uncertainty_pressure": 0.6717948717948719,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 332,
+      "unprocessed_memories": 332,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 156,
+      "wake_score": 0.2153353560103317,
+      "memory_pressure": 0.48496417682735754,
+      "uncertainty_pressure": 0.6717948717948719,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 332,
+      "unprocessed_memories": 332,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 157,
+      "wake_score": 0.2114951445240637,
+      "memory_pressure": 0.48679840991727497,
+      "uncertainty_pressure": 0.6708860759493671,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 330,
+      "unprocessed_memories": 330,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 158,
+      "wake_score": 0.2195345212365924,
+      "memory_pressure": 0.4870751456516251,
+      "uncertainty_pressure": 0.67,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 335,
+      "unprocessed_memories": 335,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 159,
+      "wake_score": 0.21531717964116587,
+      "memory_pressure": 0.4870524476147191,
+      "uncertainty_pressure": 0.6691358024691358,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 335,
+      "unprocessed_memories": 335,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 160,
+      "wake_score": 0.21162225853979152,
+      "memory_pressure": 0.48885293729044554,
+      "uncertainty_pressure": 0.6691358024691358,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 337,
+      "unprocessed_memories": 337,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 161,
+      "wake_score": 0.22021287665342346,
+      "memory_pressure": 0.49098113088599993,
+      "uncertainty_pressure": 0.6691358024691358,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 342,
+      "unprocessed_memories": 342,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 162,
+      "wake_score": 0.2160621910215979,
+      "memory_pressure": 0.4906319786813652,
+      "uncertainty_pressure": 0.6691358024691358,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 340,
+      "unprocessed_memories": 340,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 163,
+      "wake_score": 0.21215803840685818,
+      "memory_pressure": 0.49216651051975097,
+      "uncertainty_pressure": 0.6682926829268293,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 342,
+      "unprocessed_memories": 342,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 164,
+      "wake_score": 0.22023377699814667,
+      "memory_pressure": 0.4924427183223555,
+      "uncertainty_pressure": 0.6674698795180722,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 349,
+      "unprocessed_memories": 349,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 165,
+      "wake_score": 0.21601222303469766,
+      "memory_pressure": 0.4924121011992334,
+      "uncertainty_pressure": 0.6666666666666666,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 351,
+      "unprocessed_memories": 351,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 166,
+      "wake_score": 0.21169052547415193,
+      "memory_pressure": 0.4918491580681667,
+      "uncertainty_pressure": 0.6658823529411765,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 352,
+      "unprocessed_memories": 352,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 167,
+      "wake_score": 0.21965011629553635,
+      "memory_pressure": 0.4916160278997894,
+      "uncertainty_pressure": 0.6651162790697674,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 358,
+      "unprocessed_memories": 358,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 168,
+      "wake_score": 0.21546865565927603,
+      "memory_pressure": 0.4910689402960846,
+      "uncertainty_pressure": 0.6651162790697674,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 357,
+      "unprocessed_memories": 357,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 169,
+      "wake_score": 0.2112508489158285,
+      "memory_pressure": 0.49093520045860595,
+      "uncertainty_pressure": 0.664367816091954,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 359,
+      "unprocessed_memories": 359,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 170,
+      "wake_score": 0.21929983051424357,
+      "memory_pressure": 0.49117502829700915,
+      "uncertainty_pressure": 0.6636363636363636,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 362,
+      "unprocessed_memories": 362,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 171,
+      "wake_score": 0.21515653941629645,
+      "memory_pressure": 0.4907801658043428,
+      "uncertainty_pressure": 0.6636363636363636,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 364,
+      "unprocessed_memories": 364,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 172,
+      "wake_score": 0.21144208129868364,
+      "memory_pressure": 0.49247013872291673,
+      "uncertainty_pressure": 0.6636363636363636,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 364,
+      "unprocessed_memories": 364,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 173,
+      "wake_score": 0.2196129118782565,
+      "memory_pressure": 0.49265142326448463,
+      "uncertainty_pressure": 0.6636363636363636,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 369,
+      "unprocessed_memories": 369,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 174,
+      "wake_score": 0.2154343123174061,
+      "memory_pressure": 0.4921147718991083,
+      "uncertainty_pressure": 0.6636363636363636,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 370,
+      "unprocessed_memories": 370,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 175,
+      "wake_score": 0.21121333765853834,
+      "memory_pressure": 0.49193497907742784,
+      "uncertainty_pressure": 0.6629213483146067,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 369,
+      "unprocessed_memories": 369,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 176,
+      "wake_score": 0.21930024637501366,
+      "memory_pressure": 0.49176200190387864,
+      "uncertainty_pressure": 0.6629213483146067,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 371,
+      "unprocessed_memories": 371,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 177,
+      "wake_score": 0.215021784827099,
+      "memory_pressure": 0.4912897397653351,
+      "uncertainty_pressure": 0.6622222222222223,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 372,
+      "unprocessed_memories": 372,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 178,
+      "wake_score": 0.2107777842520668,
+      "memory_pressure": 0.4909334991090614,
+      "uncertainty_pressure": 0.6615384615384615,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 374,
+      "unprocessed_memories": 374,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 179,
+      "wake_score": 0.21886351584350694,
+      "memory_pressure": 0.490833968488153,
+      "uncertainty_pressure": 0.6615384615384615,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 377,
+      "unprocessed_memories": 377,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 180,
+      "wake_score": 0.21478809180539407,
+      "memory_pressure": 0.490726363340737,
+      "uncertainty_pressure": 0.6615384615384615,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 375,
+      "unprocessed_memories": 375,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 181,
+      "wake_score": 0.21058522472561214,
+      "memory_pressure": 0.4905378016461542,
+      "uncertainty_pressure": 0.6608695652173913,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 375,
+      "unprocessed_memories": 375,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 182,
+      "wake_score": 0.21854346406188327,
+      "memory_pressure": 0.4904074913647149,
+      "uncertainty_pressure": 0.6602150537634409,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 382,
+      "unprocessed_memories": 382,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 183,
+      "wake_score": 0.21447482709712662,
+      "memory_pressure": 0.4903040191360443,
+      "uncertainty_pressure": 0.6602150537634409,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 380,
+      "unprocessed_memories": 380,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 184,
+      "wake_score": 0.21038766973757356,
+      "memory_pressure": 0.4901058716528221,
+      "uncertainty_pressure": 0.6602150537634409,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 382,
+      "unprocessed_memories": 382,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 185,
+      "wake_score": 0.2184592393697951,
+      "memory_pressure": 0.4900103137430824,
+      "uncertainty_pressure": 0.6602150537634409,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 386,
+      "unprocessed_memories": 386,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 186,
+      "wake_score": 0.21430118963123093,
+      "memory_pressure": 0.4899938646116447,
+      "uncertainty_pressure": 0.6595744680851063,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 384,
+      "unprocessed_memories": 384,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 187,
+      "wake_score": 0.21020129084471761,
+      "memory_pressure": 0.489717277893334,
+      "uncertainty_pressure": 0.6595744680851063,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 385,
+      "unprocessed_memories": 385,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 188,
+      "wake_score": 0.21824265957179234,
+      "memory_pressure": 0.4895131058959821,
+      "uncertainty_pressure": 0.6595744680851063,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 388,
+      "unprocessed_memories": 388,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 189,
+      "wake_score": 0.21439376761766493,
+      "memory_pressure": 0.49095175248575296,
+      "uncertainty_pressure": 0.6589473684210526,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 387,
+      "unprocessed_memories": 387,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 190,
+      "wake_score": 0.21029062771512227,
+      "memory_pressure": 0.4906678477836206,
+      "uncertainty_pressure": 0.6589473684210526,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 388,
+      "unprocessed_memories": 388,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 191,
+      "wake_score": 0.21865533466516746,
+      "memory_pressure": 0.49247462800350567,
+      "uncertainty_pressure": 0.6583333333333333,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 391,
+      "unprocessed_memories": 391,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 192,
+      "wake_score": 0.21450640573346583,
+      "memory_pressure": 0.4919953333884225,
+      "uncertainty_pressure": 0.6583333333333333,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 390,
+      "unprocessed_memories": 390,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 193,
+      "wake_score": 0.21065692174920395,
+      "memory_pressure": 0.4934560390929454,
+      "uncertainty_pressure": 0.6577319587628866,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 389,
+      "unprocessed_memories": 389,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 194,
+      "wake_score": 0.2187418415329331,
+      "memory_pressure": 0.49337460139987516,
+      "uncertainty_pressure": 0.6577319587628866,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 394,
+      "unprocessed_memories": 394,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 195,
+      "wake_score": 0.21462820815630915,
+      "memory_pressure": 0.4930725871231864,
+      "uncertainty_pressure": 0.6577319587628866,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 391,
+      "unprocessed_memories": 391,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 196,
+      "wake_score": 0.210430427633254,
+      "memory_pressure": 0.49282887520936913,
+      "uncertainty_pressure": 0.6571428571428571,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 390,
+      "unprocessed_memories": 390,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 197,
+      "wake_score": 0.2185692709701004,
+      "memory_pressure": 0.4930428041861207,
+      "uncertainty_pressure": 0.6571428571428571,
+      "is_awake": true,
+      "atp": 4.0,
+      "total_memories": 397,
+      "unprocessed_memories": 397,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 198,
+      "wake_score": 0.2144073201059183,
+      "memory_pressure": 0.4929655410054686,
+      "uncertainty_pressure": 0.6565656565656566,
+      "is_awake": true,
+      "atp": 3.0,
+      "total_memories": 395,
+      "unprocessed_memories": 395,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    },
+    {
+      "cycle": 199,
+      "wake_score": 0.2101899911082385,
+      "memory_pressure": 0.4925865071606748,
+      "uncertainty_pressure": 0.656,
+      "is_awake": true,
+      "atp": 2.0,
+      "total_memories": 392,
+      "unprocessed_memories": 392,
+      "epistemic_uncertainty": 1.0,
+      "epistemic_confidence": 0.0
+    }
+  ],
+  "final_state": {
+    "atp": 4.0,
+    "total_memories": 392,
+    "unprocessed_memories": 392,
+    "epistemic_uncertainty": 1.0,
+    "epistemic_confidence": 0.0
+  }
+}

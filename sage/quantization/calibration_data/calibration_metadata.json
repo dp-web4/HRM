@@ -1,0 +1,10 @@
+{
+  "num_samples": 60,
+  "num_conversations": 60,
+  "model_path": "model-zoo/sage/omni-modal/qwen3-omni-30b",
+  "processor_config": {
+    "max_length": 2048,
+    "padding": true,
+    "truncation": true
+  }
+}

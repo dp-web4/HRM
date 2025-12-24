@@ -1,7 +1,60 @@
 # SAGE Michaud Integration - Latest Status
-**Last Updated**: 2025-12-24 01:57 UTC (Autonomous Session 104 - **WAKE POLICY + SAGE INTEGRATION** ✅)
-**Previous Update**: 2025-12-24 00:03 UTC (Session 103 - INTERNAL WAKE POLICY)
+**Last Updated**: 2025-12-24 06:05 UTC (Autonomous Session 105 - **STRESS TESTING & ARCHITECTURAL SOUNDNESS** ⚠️)
+**Previous Update**: 2025-12-24 01:57 UTC (Session 104 - WAKE POLICY + SAGE INTEGRATION)
 **Hardware**: Thor (Jetson AGX Thor) + Legion (RTX 4090) + Sprout (Orin Nano)
+
+---
+
+## ⚠️ Session 105 - Stress Testing Wake Policy (Dec 24 - Autonomous)
+
+**Goal**: Validate architectural soundness under adversarial conditions (Nova GPT-5.2 peer review response)
+
+### Status: ⚠️ **CRITICAL ISSUES IDENTIFIED** - Architecture needs hardening!
+
+**Nova's Challenge**:
+> "You haven't shown stability under distribution shifts: different task mixes, different tool latencies, missing tools, partial failures, hostile prompts, long periods of inactivity, etc."
+
+**Stress Regimes Tested** (6 total):
+1. ✅ Burst Load - Handled correctly
+2. ❌ **Sustained Overload - CRITICAL FAILURE** (unbounded queue growth)
+3. ⚠️ Oscillatory Load - Stable but oscillating
+4. ✅ Long Inactivity - Recovered correctly
+5. ✅ ATP Starvation - Graceful degradation
+6. ✅ Degenerate Cases - Edge cases handled
+
+**Critical Findings**:
+
+**Issue #1: Unbounded Queue Growth** ❌
+- Sustained overload → queue reached 1962 (target max: 1000)
+- 85 invariant violations (QUEUE_SIZE_BOUNDED)
+- Root cause: No admission control or load shedding
+- **Nova was right**: "need explicit proofs/metrics for bounded queue growth"
+
+**Issue #2: Universal Oscillation (Limit Cycling)** ⚠️
+- ALL 6 regimes show oscillation (period ~3 cycles)
+- Root cause: Insufficient hysteresis + fast pressure response
+- Wastes ATP on rapid state transitions
+- **Nova was right**: "behavior under oscillatory load (avoid limit cycles)"
+
+**Positive Results**:
+- ✅ No deadlocks detected (0/6 regimes)
+- ✅ ATP starvation handled gracefully
+- ✅ No NaN/Inf propagation (degenerate cases safe)
+- ✅ Long inactivity → burst recovery works
+
+**Architectural Fixes Required** (Session 106):
+1. Queue crisis mode (hard limits + load shedding)
+2. Anti-oscillation controller (cooldown + smoothing)
+3. Multi-resource budgets (address "semantic placeholders")
+
+**Files**:
+- `session105_stress_testing_wake_policy.py` (700 lines)
+- `session105_stress_test_results.json`
+- `docs/session105_stress_test_findings.md` (comprehensive analysis)
+
+**Impact**: External peer review (Nova) correctly identified fundamental architectural weaknesses that nominal testing (S103-104) couldn't reveal. Stress testing is not optional—it's essential for claiming architectural soundness.
+
+**Next**: Session 106 will implement control-theoretic fixes to address unbounded queue growth and oscillation.
 
 ---
 

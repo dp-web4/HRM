@@ -1,6 +1,6 @@
 {
   "session": 97,
-  "timestamp": "2025-12-23 06:03:59",
+  "timestamp": "2025-12-23 12:00:50",
   "hardware": "Thor (Jetson AGX Thor)",
   "goal": "ATP accounting integration - closed-loop metabolic consciousness",
   "configuration": {
@@ -10,30 +10,217 @@
     "enable_state_transitions": true
   },
   "statistics": {
-    "total_consumption": 229.0,
+    "total_consumption": 222.0,
     "total_recovery": 160.0,
-    "expert_calls": 26,
+    "expert_calls": 25,
     "state_transitions": 0,
     "crisis_events": 0,
     "rest_events": 0
   },
   "transactions": [
     {
-      "timestamp": 1766498639.5614436,
+      "timestamp": 1766520050.3255708,
       "transaction_type": "consumption",
       "amount": 6.0,
-      "expert_id": 111,
+      "expert_id": 41,
       "layer": null,
       "reason": "normal_call",
-      "atp_before": 46.0,
+      "atp_before": 57.0,
+      "atp_after": 51.0,
+      "metabolic_state": "wake"
+    },
+    {
+      "timestamp": 1766520050.3255856,
+      "transaction_type": "consumption",
+      "amount": 11.0,
+      "expert_id": 36,
+      "layer": null,
+      "reason": "normal_call",
+      "atp_before": 51.0,
       "atp_after": 40.0,
       "metabolic_state": "wake"
     },
     {
-      "timestamp": 1766498639.5614474,
+      "timestamp": 1766520050.3255994,
+      "transaction_type": "consumption",
+      "amount": 14.0,
+      "expert_id": 119,
+      "layer": null,
+      "reason": "normal_call",
+      "atp_before": 40.0,
+      "atp_after": 26.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3256195,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 26.0,
+      "atp_after": 28.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3256297,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 28.0,
+      "atp_after": 30.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3256369,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 30.0,
+      "atp_after": 32.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3256438,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 32.0,
+      "atp_after": 34.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3256502,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 34.0,
+      "atp_after": 36.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.325657,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 36.0,
+      "atp_after": 38.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3256636,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 38.0,
+      "atp_after": 40.0,
+      "metabolic_state": "wake"
+    },
+    {
+      "timestamp": 1766520050.3256845,
+      "transaction_type": "consumption",
+      "amount": 14.0,
+      "expert_id": 99,
+      "layer": null,
+      "reason": "normal_call",
+      "atp_before": 40.0,
+      "atp_after": 26.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.325791,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 26.0,
+      "atp_after": 28.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3258023,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 28.0,
+      "atp_after": 30.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3258092,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 30.0,
+      "atp_after": 32.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3258154,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 32.0,
+      "atp_after": 34.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3258219,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 34.0,
+      "atp_after": 36.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3258288,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 36.0,
+      "atp_after": 38.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3258352,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 38.0,
+      "atp_after": 40.0,
+      "metabolic_state": "wake"
+    },
+    {
+      "timestamp": 1766520050.3258653,
       "transaction_type": "consumption",
       "amount": 11.0,
-      "expert_id": 86,
+      "expert_id": 36,
       "layer": null,
       "reason": "normal_call",
       "atp_before": 40.0,
@@ -41,7 +228,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5614526,
+      "timestamp": 1766520050.3258843,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -52,7 +239,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5614574,
+      "timestamp": 1766520050.3258922,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -63,7 +250,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5614617,
+      "timestamp": 1766520050.3259673,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -74,7 +261,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.561464,
+      "timestamp": 1766520050.3259776,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -85,7 +272,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5614662,
+      "timestamp": 1766520050.325984,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -96,7 +283,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5614681,
+      "timestamp": 1766520050.3259907,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -107,7 +294,51 @@
       "metabolic_state": "wake"
     },
     {
-      "timestamp": 1766498639.561474,
+      "timestamp": 1766520050.3260202,
+      "transaction_type": "consumption",
+      "amount": 6.0,
+      "expert_id": 1,
+      "layer": null,
+      "reason": "normal_call",
+      "atp_before": 41.0,
+      "atp_after": 35.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3260458,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 35.0,
+      "atp_after": 37.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3260531,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 37.0,
+      "atp_after": 39.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.32606,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 39.0,
+      "atp_after": 41.0,
+      "metabolic_state": "wake"
+    },
+    {
+      "timestamp": 1766520050.32608,
       "transaction_type": "consumption",
       "amount": 6.0,
       "expert_id": 31,
@@ -118,7 +349,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5614812,
+      "timestamp": 1766520050.3261092,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -129,7 +360,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5614834,
+      "timestamp": 1766520050.3261845,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -140,7 +371,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5615113,
+      "timestamp": 1766520050.326195,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -151,10 +382,10 @@
       "metabolic_state": "wake"
     },
     {
-      "timestamp": 1766498639.5615191,
+      "timestamp": 1766520050.3262236,
       "transaction_type": "consumption",
       "amount": 5.0,
-      "expert_id": 50,
+      "expert_id": 70,
       "layer": null,
       "reason": "normal_call",
       "atp_before": 41.0,
@@ -162,7 +393,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5615256,
+      "timestamp": 1766520050.3262486,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -173,7 +404,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5615275,
+      "timestamp": 1766520050.326256,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -184,359 +415,7 @@
       "metabolic_state": "wake"
     },
     {
-      "timestamp": 1766498639.561533,
-      "transaction_type": "consumption",
-      "amount": 9.0,
-      "expert_id": 54,
-      "layer": null,
-      "reason": "normal_call",
-      "atp_before": 40.0,
-      "atp_after": 31.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.561541,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 31.0,
-      "atp_after": 33.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.561543,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 33.0,
-      "atp_after": 35.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5615447,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 35.0,
-      "atp_after": 37.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.561547,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 37.0,
-      "atp_after": 39.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.561631,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 39.0,
-      "atp_after": 41.0,
-      "metabolic_state": "wake"
-    },
-    {
-      "timestamp": 1766498639.5616636,
-      "transaction_type": "consumption",
-      "amount": 11.0,
-      "expert_id": 116,
-      "layer": null,
-      "reason": "normal_call",
-      "atp_before": 41.0,
-      "atp_after": 30.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.561669,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 30.0,
-      "atp_after": 32.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5616713,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 32.0,
-      "atp_after": 34.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.561673,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 34.0,
-      "atp_after": 36.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5616748,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 36.0,
-      "atp_after": 38.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5616763,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 38.0,
-      "atp_after": 40.0,
-      "metabolic_state": "wake"
-    },
-    {
-      "timestamp": 1766498639.561684,
-      "transaction_type": "consumption",
-      "amount": 13.0,
-      "expert_id": 108,
-      "layer": null,
-      "reason": "normal_call",
-      "atp_before": 40.0,
-      "atp_after": 27.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5616884,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 27.0,
-      "atp_after": 29.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.56169,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 29.0,
-      "atp_after": 31.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.561692,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 31.0,
-      "atp_after": 33.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5617123,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 33.0,
-      "atp_after": 35.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.561715,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 35.0,
-      "atp_after": 37.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.561717,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 37.0,
-      "atp_after": 39.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5617197,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 39.0,
-      "atp_after": 41.0,
-      "metabolic_state": "wake"
-    },
-    {
-      "timestamp": 1766498639.5617259,
-      "transaction_type": "consumption",
-      "amount": 9.0,
-      "expert_id": 114,
-      "layer": null,
-      "reason": "normal_call",
-      "atp_before": 41.0,
-      "atp_after": 32.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5617318,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 32.0,
-      "atp_after": 34.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5617337,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 34.0,
-      "atp_after": 36.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5617354,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 36.0,
-      "atp_after": 38.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.561737,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 38.0,
-      "atp_after": 40.0,
-      "metabolic_state": "wake"
-    },
-    {
-      "timestamp": 1766498639.5617423,
-      "transaction_type": "consumption",
-      "amount": 12.0,
-      "expert_id": 37,
-      "layer": null,
-      "reason": "normal_call",
-      "atp_before": 40.0,
-      "atp_after": 28.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5617633,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 28.0,
-      "atp_after": 30.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5617654,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 30.0,
-      "atp_after": 32.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.561767,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 32.0,
-      "atp_after": 34.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5617688,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 34.0,
-      "atp_after": 36.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5617702,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 36.0,
-      "atp_after": 38.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.561772,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 38.0,
-      "atp_after": 40.0,
-      "metabolic_state": "wake"
-    },
-    {
-      "timestamp": 1766498639.561778,
+      "timestamp": 1766520050.3262763,
       "transaction_type": "consumption",
       "amount": 7.0,
       "expert_id": 32,
@@ -547,7 +426,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5617862,
+      "timestamp": 1766520050.326293,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -558,7 +437,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5617878,
+      "timestamp": 1766520050.3263,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -569,7 +448,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5617895,
+      "timestamp": 1766520050.3263063,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -580,7 +459,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.561804,
+      "timestamp": 1766520050.326313,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -591,271 +470,7 @@
       "metabolic_state": "wake"
     },
     {
-      "timestamp": 1766498639.5618105,
-      "transaction_type": "consumption",
-      "amount": 8.0,
-      "expert_id": 93,
-      "layer": null,
-      "reason": "normal_call",
-      "atp_before": 41.0,
-      "atp_after": 33.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5618162,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 33.0,
-      "atp_after": 35.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5618181,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 35.0,
-      "atp_after": 37.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5618196,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 37.0,
-      "atp_after": 39.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5618215,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 39.0,
-      "atp_after": 41.0,
-      "metabolic_state": "wake"
-    },
-    {
-      "timestamp": 1766498639.5618267,
-      "transaction_type": "consumption",
-      "amount": 7.0,
-      "expert_id": 52,
-      "layer": null,
-      "reason": "normal_call",
-      "atp_before": 41.0,
-      "atp_after": 34.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5618343,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 34.0,
-      "atp_after": 36.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5618365,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 36.0,
-      "atp_after": 38.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5618384,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 38.0,
-      "atp_after": 40.0,
-      "metabolic_state": "wake"
-    },
-    {
-      "timestamp": 1766498639.561856,
-      "transaction_type": "consumption",
-      "amount": 11.0,
-      "expert_id": 106,
-      "layer": null,
-      "reason": "normal_call",
-      "atp_before": 40.0,
-      "atp_after": 29.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5618641,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 29.0,
-      "atp_after": 31.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5618663,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 31.0,
-      "atp_after": 33.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5618682,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 33.0,
-      "atp_after": 35.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.56187,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 35.0,
-      "atp_after": 37.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5618715,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 37.0,
-      "atp_after": 39.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5618734,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 39.0,
-      "atp_after": 41.0,
-      "metabolic_state": "wake"
-    },
-    {
-      "timestamp": 1766498639.56188,
-      "transaction_type": "consumption",
-      "amount": 6.0,
-      "expert_id": 91,
-      "layer": null,
-      "reason": "normal_call",
-      "atp_before": 41.0,
-      "atp_after": 35.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5618877,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 35.0,
-      "atp_after": 37.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5618896,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 37.0,
-      "atp_after": 39.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5619144,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 39.0,
-      "atp_after": 41.0,
-      "metabolic_state": "wake"
-    },
-    {
-      "timestamp": 1766498639.5619211,
-      "transaction_type": "consumption",
-      "amount": 6.0,
-      "expert_id": 51,
-      "layer": null,
-      "reason": "normal_call",
-      "atp_before": 41.0,
-      "atp_after": 35.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5619287,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 35.0,
-      "atp_after": 37.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5619302,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 37.0,
-      "atp_after": 39.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.561932,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 39.0,
-      "atp_after": 41.0,
-      "metabolic_state": "wake"
-    },
-    {
-      "timestamp": 1766498639.5619376,
+      "timestamp": 1766520050.3264062,
       "transaction_type": "consumption",
       "amount": 6.0,
       "expert_id": 11,
@@ -866,7 +481,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5619419,
+      "timestamp": 1766520050.32644,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -877,7 +492,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5619435,
+      "timestamp": 1766520050.3264484,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -888,7 +503,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5619454,
+      "timestamp": 1766520050.3264549,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -899,73 +514,18 @@
       "metabolic_state": "wake"
     },
     {
-      "timestamp": 1766498639.5619504,
+      "timestamp": 1766520050.3264744,
       "transaction_type": "consumption",
-      "amount": 6.0,
-      "expert_id": 111,
+      "amount": 11.0,
+      "expert_id": 26,
       "layer": null,
       "reason": "normal_call",
       "atp_before": 41.0,
-      "atp_after": 35.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5619702,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 35.0,
-      "atp_after": 37.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5619721,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 37.0,
-      "atp_after": 39.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5619738,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 39.0,
-      "atp_after": 41.0,
-      "metabolic_state": "wake"
-    },
-    {
-      "timestamp": 1766498639.5619793,
-      "transaction_type": "consumption",
-      "amount": 13.0,
-      "expert_id": 28,
-      "layer": null,
-      "reason": "normal_call",
-      "atp_before": 41.0,
-      "atp_after": 28.0,
-      "metabolic_state": "rest"
-    },
-    {
-      "timestamp": 1766498639.5619838,
-      "transaction_type": "recovery",
-      "amount": 2.0,
-      "expert_id": null,
-      "layer": null,
-      "reason": "rest_recovery",
-      "atp_before": 28.0,
       "atp_after": 30.0,
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5619853,
+      "timestamp": 1766520050.3265038,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -976,7 +536,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5619874,
+      "timestamp": 1766520050.326511,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -987,7 +547,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5619888,
+      "timestamp": 1766520050.3265178,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -998,7 +558,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5619905,
+      "timestamp": 1766520050.326524,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -1009,7 +569,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.561992,
+      "timestamp": 1766520050.3265302,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -1020,18 +580,293 @@
       "metabolic_state": "wake"
     },
     {
-      "timestamp": 1766498639.562009,
+      "timestamp": 1766520050.3266218,
       "transaction_type": "consumption",
-      "amount": 9.0,
-      "expert_id": 94,
+      "amount": 14.0,
+      "expert_id": 99,
       "layer": null,
       "reason": "normal_call",
       "atp_before": 40.0,
+      "atp_after": 26.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3266437,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 26.0,
+      "atp_after": 28.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3266518,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 28.0,
+      "atp_after": 30.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3266582,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 30.0,
+      "atp_after": 32.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3266644,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 32.0,
+      "atp_after": 34.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3266711,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 34.0,
+      "atp_after": 36.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3266783,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 36.0,
+      "atp_after": 38.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.326685,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 38.0,
+      "atp_after": 40.0,
+      "metabolic_state": "wake"
+    },
+    {
+      "timestamp": 1766520050.3267062,
+      "transaction_type": "consumption",
+      "amount": 6.0,
+      "expert_id": 61,
+      "layer": null,
+      "reason": "normal_call",
+      "atp_before": 40.0,
+      "atp_after": 34.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3267365,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 34.0,
+      "atp_after": 36.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3268082,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 36.0,
+      "atp_after": 38.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3268185,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 38.0,
+      "atp_after": 40.0,
+      "metabolic_state": "wake"
+    },
+    {
+      "timestamp": 1766520050.326847,
+      "transaction_type": "consumption",
+      "amount": 8.0,
+      "expert_id": 23,
+      "layer": null,
+      "reason": "normal_call",
+      "atp_before": 40.0,
+      "atp_after": 32.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.326873,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 32.0,
+      "atp_after": 34.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.326882,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 34.0,
+      "atp_after": 36.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.326888,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 36.0,
+      "atp_after": 38.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3268945,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 38.0,
+      "atp_after": 40.0,
+      "metabolic_state": "wake"
+    },
+    {
+      "timestamp": 1766520050.3269145,
+      "transaction_type": "consumption",
+      "amount": 12.0,
+      "expert_id": 47,
+      "layer": null,
+      "reason": "normal_call",
+      "atp_before": 40.0,
+      "atp_after": 28.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3269312,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 28.0,
+      "atp_after": 30.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3269384,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 30.0,
+      "atp_after": 32.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3271728,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 32.0,
+      "atp_after": 34.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.32719,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 34.0,
+      "atp_after": 36.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.327197,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 36.0,
+      "atp_after": 38.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3272038,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 38.0,
+      "atp_after": 40.0,
+      "metabolic_state": "wake"
+    },
+    {
+      "timestamp": 1766520050.3272476,
+      "transaction_type": "consumption",
+      "amount": 11.0,
+      "expert_id": 36,
+      "layer": null,
+      "reason": "normal_call",
+      "atp_before": 40.0,
+      "atp_after": 29.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3272862,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 29.0,
       "atp_after": 31.0,
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5620155,
+      "timestamp": 1766520050.3272948,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -1042,7 +877,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5620174,
+      "timestamp": 1766520050.3273013,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -1053,7 +888,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5620193,
+      "timestamp": 1766520050.3273075,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -1064,7 +899,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5620208,
+      "timestamp": 1766520050.3273137,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -1075,7 +910,7 @@
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5620224,
+      "timestamp": 1766520050.327414,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
@@ -1086,36 +921,201 @@
       "metabolic_state": "wake"
     },
     {
-      "timestamp": 1766498639.5620275,
+      "timestamp": 1766520050.3274498,
       "transaction_type": "consumption",
-      "amount": 14.0,
-      "expert_id": 99,
+      "amount": 5.0,
+      "expert_id": 70,
       "layer": null,
       "reason": "normal_call",
       "atp_before": 41.0,
-      "atp_after": 27.0,
+      "atp_after": 36.0,
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5620315,
+      "timestamp": 1766520050.3274758,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
       "layer": null,
       "reason": "rest_recovery",
-      "atp_before": 27.0,
-      "atp_after": 29.0,
+      "atp_before": 36.0,
+      "atp_after": 38.0,
       "metabolic_state": "rest"
     },
     {
-      "timestamp": 1766498639.5620332,
+      "timestamp": 1766520050.3274834,
       "transaction_type": "recovery",
       "amount": 2.0,
       "expert_id": null,
       "layer": null,
       "reason": "rest_recovery",
-      "atp_before": 29.0,
-      "atp_after": 31.0,
+      "atp_before": 38.0,
+      "atp_after": 40.0,
+      "metabolic_state": "wake"
+    },
+    {
+      "timestamp": 1766520050.3275025,
+      "transaction_type": "consumption",
+      "amount": 6.0,
+      "expert_id": 31,
+      "layer": null,
+      "reason": "normal_call",
+      "atp_before": 40.0,
+      "atp_after": 34.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.327531,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 34.0,
+      "atp_after": 36.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.327538,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 36.0,
+      "atp_after": 38.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.327546,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 38.0,
+      "atp_after": 40.0,
+      "metabolic_state": "wake"
+    },
+    {
+      "timestamp": 1766520050.327565,
+      "transaction_type": "consumption",
+      "amount": 6.0,
+      "expert_id": 61,
+      "layer": null,
+      "reason": "normal_call",
+      "atp_before": 40.0,
+      "atp_after": 34.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3275814,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 34.0,
+      "atp_after": 36.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3276572,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 36.0,
+      "atp_after": 38.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.32767,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 38.0,
+      "atp_after": 40.0,
+      "metabolic_state": "wake"
+    },
+    {
+      "timestamp": 1766520050.3277004,
+      "transaction_type": "consumption",
+      "amount": 14.0,
+      "expert_id": 109,
+      "layer": null,
+      "reason": "normal_call",
+      "atp_before": 40.0,
+      "atp_after": 26.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3277323,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 26.0,
+      "atp_after": 28.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3277397,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 28.0,
+      "atp_after": 30.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3277462,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 30.0,
+      "atp_after": 32.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.327752,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 32.0,
+      "atp_after": 34.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3277583,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 34.0,
+      "atp_after": 36.0,
+      "metabolic_state": "rest"
+    },
+    {
+      "timestamp": 1766520050.3277647,
+      "transaction_type": "recovery",
+      "amount": 2.0,
+      "expert_id": null,
+      "layer": null,
+      "reason": "rest_recovery",
+      "atp_before": 36.0,
+      "atp_after": 38.0,
       "metabolic_state": "rest"
     }
   ]

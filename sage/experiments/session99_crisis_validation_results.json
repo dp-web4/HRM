@@ -1,13 +1,13 @@
 {
   "session": 99,
-  "timestamp": "2025-12-23 12:01:57",
+  "timestamp": "2025-12-23 18:00:53",
   "hardware": "Thor (Jetson AGX Thor)",
   "goal": "CRISIS state validation - extreme ATP depletion testing",
   "scenarios_run": 4,
   "scenarios_passed": 3,
   "pass_rate": 0.75,
   "total_crisis_events": 45,
-  "total_expensive_rejections": 111,
+  "total_expensive_rejections": 122,
   "results": [
     {
       "scenario": "gradual_depletion",
@@ -60,13 +60,13 @@
       },
       "metrics": {
         "crisis_events": 10,
-        "expensive_rejections": 37,
-        "cheap_calls_during_crisis": 3,
+        "expensive_rejections": 38,
+        "cheap_calls_during_crisis": 2,
         "crisis_to_rest_transitions": 0,
         "rest_to_wake_transitions": 0,
-        "final_atp": 0.0,
+        "final_atp": 3.0,
         "final_state": "crisis",
-        "atp_min": 0.0,
+        "atp_min": 3.0,
         "atp_max": 15.0
       },
       "validation": {
@@ -88,15 +88,15 @@
       ],
       "atp_trajectory": [
         15.0,
-        10.0,
-        5.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0
       ]
     },
     {
@@ -110,7 +110,7 @@
       },
       "metrics": {
         "crisis_events": 30,
-        "expensive_rejections": 40,
+        "expensive_rejections": 46,
         "cheap_calls_during_crisis": 2,
         "crisis_to_rest_transitions": 0,
         "rest_to_wake_transitions": 0,
@@ -158,12 +158,12 @@
       ],
       "atp_trajectory": [
         12.0,
-        7.0,
-        7.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
+        12.0,
+        12.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
         0.0,
         0.0,
         0.0,
@@ -200,13 +200,13 @@
       },
       "metrics": {
         "crisis_events": 5,
-        "expensive_rejections": 34,
+        "expensive_rejections": 38,
         "cheap_calls_during_crisis": 3,
         "crisis_to_rest_transitions": 0,
         "rest_to_wake_transitions": 0,
-        "final_atp": 0.0,
+        "final_atp": 1.0,
         "final_state": "crisis",
-        "atp_min": 0.0,
+        "atp_min": 1.0,
         "atp_max": 18.0
       },
       "validation": {
@@ -224,9 +224,9 @@
       "atp_trajectory": [
         18.0,
         12.0,
-        12.0,
-        12.0,
-        0.0
+        1.0,
+        1.0,
+        1.0
       ]
     }
   ]

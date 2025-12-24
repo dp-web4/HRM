@@ -1,53 +1,53 @@
 {
   "session": 106,
-  "timestamp": "2025-12-24 15:58:01 UTC",
+  "timestamp": "2025-12-24 20:01:15 UTC",
   "total_violations": 0,
   "regimes_tested": 3,
-  "oscillations_detected": 1,
+  "oscillations_detected": 0,
   "results": {
     "sustained_overload": {
       "violations": 0,
       "recovery_time": null,
-      "max_queue_size": 519,
-      "oscillation_detected": true,
+      "max_queue_size": 517,
+      "oscillation_detected": false,
       "deadlock_detected": false,
       "crisis_events": 0,
       "oscillations_prevented": 0,
       "final_state": {
-        "atp": 6.0,
-        "queue_size": 425,
-        "memory_pressure": 0.46135275019191274,
-        "uncertainty_pressure": 0.13449575914554035
+        "atp": 11.0,
+        "queue_size": 451,
+        "memory_pressure": 0.46401924166903186,
+        "uncertainty_pressure": 0.14482969684034616
       }
     },
     "burst_load": {
       "violations": 0,
       "recovery_time": null,
-      "max_queue_size": 542,
+      "max_queue_size": 533,
       "oscillation_detected": false,
       "deadlock_detected": false,
       "crisis_events": 0,
       "oscillations_prevented": 0,
       "final_state": {
-        "atp": 24.0,
-        "queue_size": 234,
-        "memory_pressure": 0.427786159356843,
-        "uncertainty_pressure": 0.2440284347354686
+        "atp": 18.0,
+        "queue_size": 217,
+        "memory_pressure": 0.41858510756766765,
+        "uncertainty_pressure": 0.143140639261127
       }
     },
     "oscillatory_load": {
       "violations": 0,
       "recovery_time": null,
-      "max_queue_size": 190,
+      "max_queue_size": 232,
       "oscillation_detected": false,
       "deadlock_detected": false,
       "crisis_events": 0,
       "oscillations_prevented": 0,
       "final_state": {
-        "atp": 12.0,
-        "queue_size": 157,
-        "memory_pressure": 0.4018884247165973,
-        "uncertainty_pressure": 0.2334260866233141
+        "atp": 15.0,
+        "queue_size": 200,
+        "memory_pressure": 0.40678150541426966,
+        "uncertainty_pressure": 0.16611265350059404
       }
     }
   },
@@ -58,7 +58,7 @@
     },
     "oscillation_rate": {
       "s105": "6/6",
-      "s106": "1/3"
+      "s106": "0/3"
     }
   }
 }

@@ -1,0 +1,898 @@
+{
+  "session": 103,
+  "timestamp": "2025-12-24 08:03:09 UTC",
+  "simulation": {
+    "cycles": 100,
+    "total_wakes": 1,
+    "total_atp_spent": 128.0,
+    "total_pressure_reduced": 5.2
+  },
+  "wake_events": [
+    {
+      "cycle": 51,
+      "wake_score": 0.6008691942457883,
+      "actions": 5,
+      "atp_cost": 25.0,
+      "pressure_reduction": 1.1
+    },
+    {
+      "cycle": 52,
+      "wake_score": 0.4551143425256318,
+      "actions": 5,
+      "atp_cost": 25.0,
+      "pressure_reduction": 1.1
+    },
+    {
+      "cycle": 53,
+      "wake_score": 0.3049101315334715,
+      "actions": 3,
+      "atp_cost": 15.0,
+      "pressure_reduction": 0.75
+    },
+    {
+      "cycle": 55,
+      "wake_score": 0.1967973898508437,
+      "actions": 1,
+      "atp_cost": 7.0,
+      "pressure_reduction": 0.25
+    },
+    {
+      "cycle": 61,
+      "wake_score": 0.20482062726379258,
+      "actions": 1,
+      "atp_cost": 7.0,
+      "pressure_reduction": 0.25
+    },
+    {
+      "cycle": 67,
+      "wake_score": 0.20209481437685872,
+      "actions": 1,
+      "atp_cost": 7.0,
+      "pressure_reduction": 0.25
+    },
+    {
+      "cycle": 72,
+      "wake_score": 0.20432991280379792,
+      "actions": 1,
+      "atp_cost": 7.0,
+      "pressure_reduction": 0.25
+    },
+    {
+      "cycle": 76,
+      "wake_score": 0.18921219006420703,
+      "actions": 1,
+      "atp_cost": 7.0,
+      "pressure_reduction": 0.25
+    },
+    {
+      "cycle": 81,
+      "wake_score": 0.1901005686351822,
+      "actions": 1,
+      "atp_cost": 7.0,
+      "pressure_reduction": 0.25
+    },
+    {
+      "cycle": 86,
+      "wake_score": 0.1832072660394662,
+      "actions": 1,
+      "atp_cost": 7.0,
+      "pressure_reduction": 0.25
+    },
+    {
+      "cycle": 92,
+      "wake_score": 0.19533255541169783,
+      "actions": 1,
+      "atp_cost": 7.0,
+      "pressure_reduction": 0.25
+    },
+    {
+      "cycle": 99,
+      "wake_score": 0.20283371660663263,
+      "actions": 1,
+      "atp_cost": 7.0,
+      "pressure_reduction": 0.25
+    }
+  ],
+  "pressure_trajectory": [
+    {
+      "cycle": 0,
+      "memory_pressure": 0.10578994282869307,
+      "uncertainty_pressure": 0.05713612180518528,
+      "wake_score": 0.059901546484833805,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 1,
+      "memory_pressure": 0.12245147482860189,
+      "uncertainty_pressure": 0.09361982942975824,
+      "wake_score": 0.07816674536097329,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 2,
+      "memory_pressure": 0.13447764652059505,
+      "uncertainty_pressure": 0.10073683764724105,
+      "wake_score": 0.08517611772469624,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 3,
+      "memory_pressure": 0.14347991608087246,
+      "uncertainty_pressure": 0.10716398256014234,
+      "wake_score": 0.09077635064153237,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 4,
+      "memory_pressure": 0.15205570421736517,
+      "uncertainty_pressure": 0.11165669617994842,
+      "wake_score": 0.09558757152877675,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 5,
+      "memory_pressure": 0.17016049694201785,
+      "uncertainty_pressure": 0.132000553549215,
+      "wake_score": 0.10923380500449319,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 6,
+      "memory_pressure": 0.20330226002166513,
+      "uncertainty_pressure": 0.13656248940169902,
+      "wake_score": 0.12371432535527381,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 7,
+      "memory_pressure": 0.21636641508364501,
+      "uncertainty_pressure": 0.14324912182194335,
+      "wake_score": 0.1309930340447378,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 8,
+      "memory_pressure": 0.24384552572026477,
+      "uncertainty_pressure": 0.1506692382672682,
+      "wake_score": 0.14416816420562126,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 9,
+      "memory_pressure": 0.25760983904764306,
+      "uncertainty_pressure": 0.18806122324151014,
+      "wake_score": 0.16158745482150666,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 10,
+      "memory_pressure": 0.27796652444442693,
+      "uncertainty_pressure": 0.19463742876204596,
+      "wake_score": 0.17169446001057184,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 11,
+      "memory_pressure": 0.30082284570251533,
+      "uncertainty_pressure": 0.20060355973006602,
+      "wake_score": 0.18258705524864804,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 12,
+      "memory_pressure": 0.32466459062390224,
+      "uncertainty_pressure": 0.20507485971848294,
+      "wake_score": 0.193386337165555,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 13,
+      "memory_pressure": 0.3421254552710909,
+      "uncertainty_pressure": 0.22830303558746767,
+      "wake_score": 0.20770643161921076,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 14,
+      "memory_pressure": 0.3592191897705738,
+      "uncertainty_pressure": 0.2359315506877503,
+      "wake_score": 0.21687018305887856,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 15,
+      "memory_pressure": 0.37315471897586555,
+      "uncertainty_pressure": 0.2586773340375487,
+      "wake_score": 0.22965088556808685,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 16,
+      "memory_pressure": 0.3913575778337321,
+      "uncertainty_pressure": 0.2653628152454149,
+      "wake_score": 0.2389471933536584,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 17,
+      "memory_pressure": 0.4208338473751621,
+      "uncertainty_pressure": 0.2876441974636481,
+      "wake_score": 0.2576815325092964,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 18,
+      "memory_pressure": 0.4553068168398424,
+      "uncertainty_pressure": 0.29186911887357925,
+      "wake_score": 0.2725765348670872,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 19,
+      "memory_pressure": 0.47132428334150944,
+      "uncertainty_pressure": 0.2966387861009517,
+      "wake_score": 0.28039908804244656,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 20,
+      "memory_pressure": 0.4851885260514623,
+      "uncertainty_pressure": 0.30306094750301404,
+      "wake_score": 0.2879070166131277,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 21,
+      "memory_pressure": 0.5049333509232633,
+      "uncertainty_pressure": 0.3273467550526768,
+      "wake_score": 0.3034638393059906,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 22,
+      "memory_pressure": 0.5133579356001519,
+      "uncertainty_pressure": 0.3517330460658377,
+      "wake_score": 0.31460748901113333,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 23,
+      "memory_pressure": 0.5495228411554637,
+      "uncertainty_pressure": 0.3572185853202813,
+      "wake_score": 0.330571951185157,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 24,
+      "memory_pressure": 0.564352957435117,
+      "uncertainty_pressure": 0.3765427656102447,
+      "wake_score": 0.3426045969753422,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 25,
+      "memory_pressure": 0.5982638849444609,
+      "uncertainty_pressure": 0.3827785936538824,
+      "wake_score": 0.35792498975868225,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 26,
+      "memory_pressure": 0.6092038522623027,
+      "uncertainty_pressure": 0.38716720106839103,
+      "wake_score": 0.3636311744866803,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 27,
+      "memory_pressure": 0.6305327172574715,
+      "uncertainty_pressure": 0.39581943836046785,
+      "wake_score": 0.37478698361222745,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 28,
+      "memory_pressure": 0.6455242853482097,
+      "uncertainty_pressure": 0.4127825048933931,
+      "wake_score": 0.3861244056784892,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 29,
+      "memory_pressure": 0.6815508408767251,
+      "uncertainty_pressure": 0.4177959598123655,
+      "wake_score": 0.40188285710000304,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 30,
+      "memory_pressure": 0.7091811577781917,
+      "uncertainty_pressure": 0.4393053919018502,
+      "wake_score": 0.4196442630775604,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 31,
+      "memory_pressure": 0.7345254127594719,
+      "uncertainty_pressure": 0.4476078561242495,
+      "wake_score": 0.432264533763366,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 32,
+      "memory_pressure": 0.7519667372475833,
+      "uncertainty_pressure": 0.4716530593792676,
+      "wake_score": 0.4468394656956847,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 33,
+      "memory_pressure": 0.7723115665681478,
+      "uncertainty_pressure": 0.4823838440514181,
+      "wake_score": 0.45827668128503235,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 34,
+      "memory_pressure": 0.7947388759144293,
+      "uncertainty_pressure": 0.4891899830189479,
+      "wake_score": 0.4692706981155844,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 35,
+      "memory_pressure": 0.8020692288860299,
+      "uncertainty_pressure": 0.5265743488484477,
+      "wake_score": 0.48416092446855025,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 36,
+      "memory_pressure": 0.8223893576314782,
+      "uncertainty_pressure": 0.5323229894727376,
+      "wake_score": 0.49398767725947207,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 37,
+      "memory_pressure": 0.8302308992851253,
+      "uncertainty_pressure": 0.5427360730319915,
+      "wake_score": 0.5004127744144476,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 38,
+      "memory_pressure": 0.8461810532206206,
+      "uncertainty_pressure": 0.5639757744884591,
+      "wake_score": 0.5135007159428797,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 39,
+      "memory_pressure": 0.8637362872338697,
+      "uncertainty_pressure": 0.5727096100691811,
+      "wake_score": 0.5232008377119686,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 40,
+      "memory_pressure": 0.8699448870673774,
+      "uncertainty_pressure": 0.5960478604165297,
+      "wake_score": 0.5331375347031901,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 41,
+      "memory_pressure": 0.872522002710822,
+      "uncertainty_pressure": 0.6178429545176366,
+      "wake_score": 0.5411523317510566,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 42,
+      "memory_pressure": 0.8803995115454767,
+      "uncertainty_pressure": 0.622960224859881,
+      "wake_score": 0.5458900084313886,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 43,
+      "memory_pressure": 0.8884807311567254,
+      "uncertainty_pressure": 0.6325377131909043,
+      "wake_score": 0.5521407503734838,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 44,
+      "memory_pressure": 0.8912949184084376,
+      "uncertainty_pressure": 0.6491286134147117,
+      "wake_score": 0.5585765379491404,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 45,
+      "memory_pressure": 0.8942604435019595,
+      "uncertainty_pressure": 0.6558847656335566,
+      "wake_score": 0.5619118513612813,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 46,
+      "memory_pressure": 0.8967825767974834,
+      "uncertainty_pressure": 0.6614426007178089,
+      "wake_score": 0.5646880255190038,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 47,
+      "memory_pressure": 0.8990341145316628,
+      "uncertainty_pressure": 0.6699265658439787,
+      "wake_score": 0.5682981023822545,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 48,
+      "memory_pressure": 0.9062892379556776,
+      "uncertainty_pressure": 0.7035420886873047,
+      "wake_score": 0.5819478568404257,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 49,
+      "memory_pressure": 0.9102476686890957,
+      "uncertainty_pressure": 0.7110893750917225,
+      "wake_score": 0.5859272757111784,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 50,
+      "memory_pressure": 0.916849363123926,
+      "uncertainty_pressure": 0.7174780359161286,
+      "wake_score": 0.590572437838618,
+      "is_awake": false,
+      "atp": 100.0
+    },
+    {
+      "cycle": 51,
+      "memory_pressure": 0.9232141987938559,
+      "uncertainty_pressure": 0.7417459644551541,
+      "wake_score": 0.6008691942457883,
+      "is_awake": true,
+      "atp": 100.0
+    },
+    {
+      "cycle": 52,
+      "memory_pressure": 0.7247123703190258,
+      "uncertainty_pressure": 0.5307183152858708,
+      "wake_score": 0.4551143425256318,
+      "is_awake": true,
+      "atp": 76.0
+    },
+    {
+      "cycle": 53,
+      "memory_pressure": 0.4660083344360749,
+      "uncertainty_pressure": 0.3794231515730622,
+      "wake_score": 0.3049101315334715,
+      "is_awake": true,
+      "atp": 52.0
+    },
+    {
+      "cycle": 54,
+      "memory_pressure": 0.29306865628412515,
+      "uncertainty_pressure": 0.28013064513886476,
+      "wake_score": 0.18253369346924497,
+      "is_awake": true,
+      "atp": 39.0
+    },
+    {
+      "cycle": 55,
+      "memory_pressure": 0.314454588920203,
+      "uncertainty_pressure": 0.28874743510425266,
+      "wake_score": 0.1967973898508437,
+      "is_awake": true,
+      "atp": 41.0
+    },
+    {
+      "cycle": 56,
+      "memory_pressure": 0.2014818119060697,
+      "uncertainty_pressure": 0.2050622779504794,
+      "wake_score": 0.12470723899926225,
+      "is_awake": true,
+      "atp": 36.0
+    },
+    {
+      "cycle": 57,
+      "memory_pressure": 0.2192752682650363,
+      "uncertainty_pressure": 0.2108042723855486,
+      "wake_score": 0.13537991329733776,
+      "is_awake": true,
+      "atp": 38.0
+    },
+    {
+      "cycle": 58,
+      "memory_pressure": 0.25218546756769805,
+      "uncertainty_pressure": 0.23288651593958626,
+      "wake_score": 0.15647370361670168,
+      "is_awake": true,
+      "atp": 40.0
+    },
+    {
+      "cycle": 59,
+      "memory_pressure": 0.2720634582921923,
+      "uncertainty_pressure": 0.259204031826314,
+      "wake_score": 0.1730106337023962,
+      "is_awake": true,
+      "atp": 41.0
+    },
+    {
+      "cycle": 60,
+      "memory_pressure": 0.2867515704141376,
+      "uncertainty_pressure": 0.2832706638756746,
+      "wake_score": 0.18733242952449522,
+      "is_awake": true,
+      "atp": 42.0
+    },
+    {
+      "cycle": 61,
+      "memory_pressure": 0.3210769638160987,
+      "uncertainty_pressure": 0.2930292870413922,
+      "wake_score": 0.20482062726379258,
+      "is_awake": true,
+      "atp": 43.0
+    },
+    {
+      "cycle": 62,
+      "memory_pressure": 0.21835839919124475,
+      "uncertainty_pressure": 0.21121545306728487,
+      "wake_score": 0.13517932422097,
+      "is_awake": true,
+      "atp": 38.0
+    },
+    {
+      "cycle": 63,
+      "memory_pressure": 0.23591534034520018,
+      "uncertainty_pressure": 0.2342696027163949,
+      "wake_score": 0.15112329975570404,
+      "is_awake": true,
+      "atp": 40.0
+    },
+    {
+      "cycle": 64,
+      "memory_pressure": 0.2604745270972563,
+      "uncertainty_pressure": 0.2396708497520146,
+      "wake_score": 0.1631580776429375,
+      "is_awake": true,
+      "atp": 41.0
+    },
+    {
+      "cycle": 65,
+      "memory_pressure": 0.2727965588318648,
+      "uncertainty_pressure": 0.2630818802136218,
+      "wake_score": 0.1763229834246372,
+      "is_awake": true,
+      "atp": 42.0
+    },
+    {
+      "cycle": 66,
+      "memory_pressure": 0.28184566686583223,
+      "uncertainty_pressure": 0.28112718455145064,
+      "wake_score": 0.18693647073037187,
+      "is_awake": true,
+      "atp": 43.0
+    },
+    {
+      "cycle": 67,
+      "memory_pressure": 0.309902590545173,
+      "uncertainty_pressure": 0.2903695489341659,
+      "wake_score": 0.20209481437685872,
+      "is_awake": true,
+      "atp": 44.0
+    },
+    {
+      "cycle": 68,
+      "memory_pressure": 0.21988387049625413,
+      "uncertainty_pressure": 0.20848455662576265,
+      "wake_score": 0.13646769074908555,
+      "is_awake": true,
+      "atp": 39.0
+    },
+    {
+      "cycle": 69,
+      "memory_pressure": 0.24504628891923497,
+      "uncertainty_pressure": 0.22791037830931946,
+      "wake_score": 0.1542061268105248,
+      "is_awake": true,
+      "atp": 41.0
+    },
+    {
+      "cycle": 70,
+      "memory_pressure": 0.2620894203875445,
+      "uncertainty_pressure": 0.23849577875198302,
+      "wake_score": 0.1651871123712648,
+      "is_awake": true,
+      "atp": 42.0
+    },
+    {
+      "cycle": 71,
+      "memory_pressure": 0.29466965728930694,
+      "uncertainty_pressure": 0.2640682131867471,
+      "wake_score": 0.1865225589224038,
+      "is_awake": true,
+      "atp": 43.0
+    },
+    {
+      "cycle": 72,
+      "memory_pressure": 0.31833344170345795,
+      "uncertainty_pressure": 0.28746562435937384,
+      "wake_score": 0.20432991280379792,
+      "is_awake": true,
+      "atp": 44.0
+    },
+    {
+      "cycle": 73,
+      "memory_pressure": 0.21531304326225215,
+      "uncertainty_pressure": 0.20730456522058044,
+      "wake_score": 0.13453274611606844,
+      "is_awake": true,
+      "atp": 39.0
+    },
+    {
+      "cycle": 74,
+      "memory_pressure": 0.2420916486594189,
+      "uncertainty_pressure": 0.22968723473723485,
+      "wake_score": 0.15366978804416093,
+      "is_awake": true,
+      "atp": 41.0
+    },
+    {
+      "cycle": 75,
+      "memory_pressure": 0.27155945250458424,
+      "uncertainty_pressure": 0.2380700776740653,
+      "wake_score": 0.16848264791880926,
+      "is_awake": true,
+      "atp": 42.0
+    },
+    {
+      "cycle": 76,
+      "memory_pressure": 0.304034998693241,
+      "uncertainty_pressure": 0.2616228565955168,
+      "wake_score": 0.18921219006420703,
+      "is_awake": true,
+      "atp": 43.0
+    },
+    {
+      "cycle": 77,
+      "memory_pressure": 0.19381132420818295,
+      "uncertainty_pressure": 0.19755859711355162,
+      "wake_score": 0.1228350501568411,
+      "is_awake": true,
+      "atp": 38.0
+    },
+    {
+      "cycle": 78,
+      "memory_pressure": 0.22557082295778103,
+      "uncertainty_pressure": 0.20268473455784397,
+      "wake_score": 0.13833384065006035,
+      "is_awake": true,
+      "atp": 40.0
+    },
+    {
+      "cycle": 79,
+      "memory_pressure": 0.24688650717859428,
+      "uncertainty_pressure": 0.2247996264097139,
+      "wake_score": 0.15395421071437232,
+      "is_awake": true,
+      "atp": 41.0
+    },
+    {
+      "cycle": 80,
+      "memory_pressure": 0.27958084283517926,
+      "uncertainty_pressure": 0.23660148754995527,
+      "wake_score": 0.17094653853668149,
+      "is_awake": true,
+      "atp": 42.0
+    },
+    {
+      "cycle": 81,
+      "memory_pressure": 0.3113745974638228,
+      "uncertainty_pressure": 0.255625300847103,
+      "wake_score": 0.1901005686351822,
+      "is_awake": true,
+      "atp": 43.0
+    },
+    {
+      "cycle": 82,
+      "memory_pressure": 0.22166287092365555,
+      "uncertainty_pressure": 0.1882587590544717,
+      "wake_score": 0.12983040285241076,
+      "is_awake": true,
+      "atp": 38.0
+    },
+    {
+      "cycle": 83,
+      "memory_pressure": 0.24820576956718857,
+      "uncertainty_pressure": 0.19980133789386925,
+      "wake_score": 0.14549991801690165,
+      "is_awake": true,
+      "atp": 40.0
+    },
+    {
+      "cycle": 84,
+      "memory_pressure": 0.2605350291215103,
+      "uncertainty_pressure": 0.21104588718531858,
+      "wake_score": 0.15481024603468055,
+      "is_awake": true,
+      "atp": 41.0
+    },
+    {
+      "cycle": 85,
+      "memory_pressure": 0.28759630475993725,
+      "uncertainty_pressure": 0.22803187212547477,
+      "wake_score": 0.17130925264169103,
+      "is_awake": true,
+      "atp": 42.0
+    },
+    {
+      "cycle": 86,
+      "memory_pressure": 0.3060706392944984,
+      "uncertainty_pressure": 0.239038656105014,
+      "wake_score": 0.1832072660394662,
+      "is_awake": true,
+      "atp": 43.0
+    },
+    {
+      "cycle": 87,
+      "memory_pressure": 0.21619036328217625,
+      "uncertainty_pressure": 0.18819228614971656,
+      "wake_score": 0.12792044073671682,
+      "is_awake": true,
+      "atp": 38.0
+    },
+    {
+      "cycle": 88,
+      "memory_pressure": 0.2523782921654259,
+      "uncertainty_pressure": 0.19945176072235776,
+      "wake_score": 0.1468735254481107,
+      "is_awake": true,
+      "atp": 40.0
+    },
+    {
+      "cycle": 89,
+      "memory_pressure": 0.26428629846736384,
+      "uncertainty_pressure": 0.2066448858811698,
+      "wake_score": 0.1548640104299958,
+      "is_awake": true,
+      "atp": 41.0
+    },
+    {
+      "cycle": 90,
+      "memory_pressure": 0.2883909789367847,
+      "uncertainty_pressure": 0.21104133477340065,
+      "wake_score": 0.1665740208278755,
+      "is_awake": true,
+      "atp": 42.0
+    },
+    {
+      "cycle": 91,
+      "memory_pressure": 0.2987857121211967,
+      "uncertainty_pressure": 0.23201776063679966,
+      "wake_score": 0.17844882374761586,
+      "is_awake": true,
+      "atp": 43.0
+    },
+    {
+      "cycle": 92,
+      "memory_pressure": 0.3327218965274679,
+      "uncertainty_pressure": 0.24008933114588146,
+      "wake_score": 0.19533255541169783,
+      "is_awake": true,
+      "atp": 44.0
+    },
+    {
+      "cycle": 93,
+      "memory_pressure": 0.21107650989641175,
+      "uncertainty_pressure": 0.19119490811733608,
+      "wake_score": 0.12844539577883468,
+      "is_awake": true,
+      "atp": 39.0
+    },
+    {
+      "cycle": 94,
+      "memory_pressure": 0.23095567789377625,
+      "uncertainty_pressure": 0.19624580226555222,
+      "wake_score": 0.13991256458889514,
+      "is_awake": true,
+      "atp": 41.0
+    },
+    {
+      "cycle": 95,
+      "memory_pressure": 0.25311822654800153,
+      "uncertainty_pressure": 0.20040323459328946,
+      "wake_score": 0.1506859598930062,
+      "is_awake": true,
+      "atp": 42.0
+    },
+    {
+      "cycle": 96,
+      "memory_pressure": 0.263494070245465,
+      "uncertainty_pressure": 0.20581545494139375,
+      "wake_score": 0.15773044316399945,
+      "is_awake": true,
+      "atp": 43.0
+    },
+    {
+      "cycle": 97,
+      "memory_pressure": 0.2727153687912286,
+      "uncertainty_pressure": 0.2299127102135246,
+      "wake_score": 0.17010830236896565,
+      "is_awake": true,
+      "atp": 44.0
+    },
+    {
+      "cycle": 98,
+      "memory_pressure": 0.28663027956534876,
+      "uncertainty_pressure": 0.23954407192209518,
+      "wake_score": 0.1800489600391876,
+      "is_awake": true,
+      "atp": 45.0
+    },
+    {
+      "cycle": 99,
+      "memory_pressure": 0.3100309269159712,
+      "uncertainty_pressure": 0.27866783836084785,
+      "wake_score": 0.20283371660663263,
+      "is_awake": true,
+      "atp": 46.0
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "session": 101,
+  "timestamp": "2025-12-23 18:02:44",
+  "hardware": "Thor (Jetson AGX Thor)",
+  "goal": "Production basal recovery integration and validation",
+  "scenarios_tested": 3,
+  "scenarios_passed": 3,
+  "pass_rate": 1.0,
+  "results": [
+    {
+      "scenario": "immediate_crisis",
+      "initial_atp": 15.0,
+      "final_atp": 40.0,
+      "final_state": "wake",
+      "atp_range": "15.0 - 40.0",
+      "crisis_events": 9,
+      "rest_events": 10,
+      "wake_events": 1,
+      "basal_recoveries": 10,
+      "rest_recoveries": 10,
+      "recovery_observed": false,
+      "validation": "PASSED"
+    },
+    {
+      "scenario": "recovery_dynamics",
+      "initial_atp": 12.0,
+      "final_atp": 26.0,
+      "final_state": "rest",
+      "atp_range": "12.0 - 40.0",
+      "crisis_events": 15,
+      "rest_events": 30,
+      "wake_events": 5,
+      "basal_recoveries": 16,
+      "rest_recoveries": 29,
+      "recovery_observed": false,
+      "validation": "PASSED"
+    },
+    {
+      "scenario": "expensive_rejection",
+      "initial_atp": 18.0,
+      "final_atp": 30.0,
+      "final_state": "rest",
+      "atp_range": "18.0 - 40.0",
+      "crisis_events": 3,
+      "rest_events": 24,
+      "wake_events": 3,
+      "basal_recoveries": 4,
+      "rest_recoveries": 23,
+      "recovery_observed": false,
+      "validation": "PASSED"
+    }
+  ]
+}

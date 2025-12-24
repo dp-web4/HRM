@@ -1,0 +1,64 @@
+{
+  "session": 106,
+  "timestamp": "2025-12-24 15:58:01 UTC",
+  "total_violations": 0,
+  "regimes_tested": 3,
+  "oscillations_detected": 1,
+  "results": {
+    "sustained_overload": {
+      "violations": 0,
+      "recovery_time": null,
+      "max_queue_size": 519,
+      "oscillation_detected": true,
+      "deadlock_detected": false,
+      "crisis_events": 0,
+      "oscillations_prevented": 0,
+      "final_state": {
+        "atp": 6.0,
+        "queue_size": 425,
+        "memory_pressure": 0.46135275019191274,
+        "uncertainty_pressure": 0.13449575914554035
+      }
+    },
+    "burst_load": {
+      "violations": 0,
+      "recovery_time": null,
+      "max_queue_size": 542,
+      "oscillation_detected": false,
+      "deadlock_detected": false,
+      "crisis_events": 0,
+      "oscillations_prevented": 0,
+      "final_state": {
+        "atp": 24.0,
+        "queue_size": 234,
+        "memory_pressure": 0.427786159356843,
+        "uncertainty_pressure": 0.2440284347354686
+      }
+    },
+    "oscillatory_load": {
+      "violations": 0,
+      "recovery_time": null,
+      "max_queue_size": 190,
+      "oscillation_detected": false,
+      "deadlock_detected": false,
+      "crisis_events": 0,
+      "oscillations_prevented": 0,
+      "final_state": {
+        "atp": 12.0,
+        "queue_size": 157,
+        "memory_pressure": 0.4018884247165973,
+        "uncertainty_pressure": 0.2334260866233141
+      }
+    }
+  },
+  "comparison_to_s105": {
+    "violations": {
+      "s105": 85,
+      "s106": 0
+    },
+    "oscillation_rate": {
+      "s105": "6/6",
+      "s106": "1/3"
+    }
+  }
+}

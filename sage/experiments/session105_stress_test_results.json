@@ -1,0 +1,88 @@
+{
+  "session": 105,
+  "timestamp": "2025-12-24 14:03:40 UTC",
+  "total_violations": 85,
+  "regimes_tested": 6,
+  "oscillations_detected": 6,
+  "deadlocks_detected": 0,
+  "results": {
+    "burst_load": {
+      "violations": 0,
+      "recovery_time": null,
+      "max_queue_size": 895,
+      "oscillation_detected": true,
+      "deadlock_detected": false,
+      "final_state": {
+        "atp": 3.0,
+        "memory_pressure": 0.4698009425610582,
+        "uncertainty_pressure": 0.3004248996583643,
+        "queue_size": 429
+      }
+    },
+    "sustained_overload": {
+      "violations": 85,
+      "recovery_time": null,
+      "max_queue_size": 1962,
+      "oscillation_detected": true,
+      "deadlock_detected": false,
+      "final_state": {
+        "atp": 4.0,
+        "memory_pressure": 0.5593297101449275,
+        "uncertainty_pressure": 0.28361586452712634,
+        "queue_size": 1961
+      }
+    },
+    "oscillatory_load": {
+      "violations": 0,
+      "recovery_time": null,
+      "max_queue_size": 75,
+      "oscillation_detected": true,
+      "deadlock_detected": false,
+      "final_state": {
+        "atp": 2.0,
+        "memory_pressure": 0.35895632368703106,
+        "uncertainty_pressure": 0.28588583470728063,
+        "queue_size": 37
+      }
+    },
+    "long_inactivity": {
+      "violations": 0,
+      "recovery_time": null,
+      "max_queue_size": 174,
+      "oscillation_detected": true,
+      "deadlock_detected": false,
+      "final_state": {
+        "atp": 6.0,
+        "memory_pressure": 0.3547647697244243,
+        "uncertainty_pressure": 0.2995736337082998,
+        "queue_size": 10
+      }
+    },
+    "atp_starvation": {
+      "violations": 0,
+      "recovery_time": null,
+      "max_queue_size": 21,
+      "oscillation_detected": true,
+      "deadlock_detected": false,
+      "final_state": {
+        "atp": 5.0,
+        "memory_pressure": 0.35425112612612614,
+        "uncertainty_pressure": 0.28348039215684584,
+        "queue_size": 5
+      }
+    },
+    "degenerate_cases": {
+      "violations": 0,
+      "recovery_time": null,
+      "max_queue_size": 20,
+      "oscillation_detected": true,
+      "deadlock_detected": false,
+      "final_state": {
+        "atp": 5.0,
+        "memory_pressure": 0.3600839705449418,
+        "uncertainty_pressure": 0.2782914781291623,
+        "queue_size": 5
+      }
+    }
+  }
+}

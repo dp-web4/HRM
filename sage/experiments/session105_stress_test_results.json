@@ -1,7 +1,7 @@
 {
   "session": 105,
-  "timestamp": "2025-12-24 14:03:40 UTC",
-  "total_violations": 85,
+  "timestamp": "2025-12-24 20:00:46 UTC",
+  "total_violations": 84,
   "regimes_tested": 6,
   "oscillations_detected": 6,
   "deadlocks_detected": 0,
@@ -9,52 +9,52 @@
     "burst_load": {
       "violations": 0,
       "recovery_time": null,
-      "max_queue_size": 895,
-      "oscillation_detected": true,
-      "deadlock_detected": false,
-      "final_state": {
-        "atp": 3.0,
-        "memory_pressure": 0.4698009425610582,
-        "uncertainty_pressure": 0.3004248996583643,
-        "queue_size": 429
-      }
-    },
-    "sustained_overload": {
-      "violations": 85,
-      "recovery_time": null,
-      "max_queue_size": 1962,
+      "max_queue_size": 940,
       "oscillation_detected": true,
       "deadlock_detected": false,
       "final_state": {
         "atp": 4.0,
-        "memory_pressure": 0.5593297101449275,
-        "uncertainty_pressure": 0.28361586452712634,
-        "queue_size": 1961
+        "memory_pressure": 0.4627496804090764,
+        "uncertainty_pressure": 0.2960867280905353,
+        "queue_size": 469
+      }
+    },
+    "sustained_overload": {
+      "violations": 83,
+      "recovery_time": null,
+      "max_queue_size": 1965,
+      "oscillation_detected": true,
+      "deadlock_detected": false,
+      "final_state": {
+        "atp": 5.0,
+        "memory_pressure": 0.5562511664800299,
+        "uncertainty_pressure": 0.2785894470142098,
+        "queue_size": 1964
       }
     },
     "oscillatory_load": {
       "violations": 0,
       "recovery_time": null,
-      "max_queue_size": 75,
+      "max_queue_size": 73,
       "oscillation_detected": true,
       "deadlock_detected": false,
       "final_state": {
-        "atp": 2.0,
-        "memory_pressure": 0.35895632368703106,
-        "uncertainty_pressure": 0.28588583470728063,
-        "queue_size": 37
+        "atp": 4.0,
+        "memory_pressure": 0.3593784153005465,
+        "uncertainty_pressure": 0.2800098039210658,
+        "queue_size": 28
       }
     },
     "long_inactivity": {
       "violations": 0,
       "recovery_time": null,
-      "max_queue_size": 174,
+      "max_queue_size": 179,
       "oscillation_detected": true,
       "deadlock_detected": false,
       "final_state": {
-        "atp": 6.0,
-        "memory_pressure": 0.3547647697244243,
-        "uncertainty_pressure": 0.2995736337082998,
+        "atp": 2.0,
+        "memory_pressure": 0.3627314814814815,
+        "uncertainty_pressure": 0.2851568627446641,
         "queue_size": 10
       }
     },
@@ -65,23 +65,23 @@
       "oscillation_detected": true,
       "deadlock_detected": false,
       "final_state": {
-        "atp": 5.0,
-        "memory_pressure": 0.35425112612612614,
-        "uncertainty_pressure": 0.28348039215684584,
-        "queue_size": 5
+        "atp": 3.0,
+        "memory_pressure": 0.3706383750453391,
+        "uncertainty_pressure": 0.2869727668844949,
+        "queue_size": 11
       }
     },
     "degenerate_cases": {
-      "violations": 0,
+      "violations": 1,
       "recovery_time": null,
-      "max_queue_size": 20,
+      "max_queue_size": 1003,
       "oscillation_detected": true,
       "deadlock_detected": false,
       "final_state": {
-        "atp": 5.0,
-        "memory_pressure": 0.3600839705449418,
-        "uncertainty_pressure": 0.2782914781291623,
-        "queue_size": 5
+        "atp": 5.01,
+        "memory_pressure": 0.5037330253526717,
+        "uncertainty_pressure": 0.27823928790917934,
+        "queue_size": 700
       }
     }
   }

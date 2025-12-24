@@ -1,0 +1,5059 @@
+{
+  "session": 107,
+  "timestamp": "2025-12-24 20:03:14 UTC",
+  "cycles": 200,
+  "total_wakes": 1,
+  "actions_executed": 76,
+  "bottleneck_distribution": {
+    "compute": 158,
+    "risk": 5,
+    "memory": 37
+  },
+  "action_details": [
+    {
+      "cycle": 62,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 63,
+      "action": "index_rebuild",
+      "costs": {
+        "compute": 5.0,
+        "memory": 7.0,
+        "tool": 0.0,
+        "latency": 45.0,
+        "risk": 0.05
+      }
+    },
+    {
+      "cycle": 64,
+      "action": "consolidation",
+      "costs": {
+        "compute": 8.0,
+        "memory": 6.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 65,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 66,
+      "action": "consolidation",
+      "costs": {
+        "compute": 8.0,
+        "memory": 6.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 67,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 68,
+      "action": "index_rebuild",
+      "costs": {
+        "compute": 5.0,
+        "memory": 7.0,
+        "tool": 0.0,
+        "latency": 45.0,
+        "risk": 0.05
+      }
+    },
+    {
+      "cycle": 69,
+      "action": "consolidation",
+      "costs": {
+        "compute": 8.0,
+        "memory": 6.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 70,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 71,
+      "action": "consolidation",
+      "costs": {
+        "compute": 8.0,
+        "memory": 6.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 72,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 73,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 74,
+      "action": "index_rebuild",
+      "costs": {
+        "compute": 5.0,
+        "memory": 7.0,
+        "tool": 0.0,
+        "latency": 45.0,
+        "risk": 0.05
+      }
+    },
+    {
+      "cycle": 75,
+      "action": "consolidation",
+      "costs": {
+        "compute": 8.0,
+        "memory": 6.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 76,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 77,
+      "action": "consolidation",
+      "costs": {
+        "compute": 8.0,
+        "memory": 6.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 78,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 79,
+      "action": "index_rebuild",
+      "costs": {
+        "compute": 5.0,
+        "memory": 7.0,
+        "tool": 0.0,
+        "latency": 45.0,
+        "risk": 0.05
+      }
+    },
+    {
+      "cycle": 80,
+      "action": "consolidation",
+      "costs": {
+        "compute": 8.0,
+        "memory": 6.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 81,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 82,
+      "action": "consolidation",
+      "costs": {
+        "compute": 8.0,
+        "memory": 6.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 83,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 84,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 85,
+      "action": "index_rebuild",
+      "costs": {
+        "compute": 5.0,
+        "memory": 7.0,
+        "tool": 0.0,
+        "latency": 45.0,
+        "risk": 0.05
+      }
+    },
+    {
+      "cycle": 86,
+      "action": "consolidation",
+      "costs": {
+        "compute": 8.0,
+        "memory": 6.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 88,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 90,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 92,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 94,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 97,
+      "action": "consolidation",
+      "costs": {
+        "compute": 8.0,
+        "memory": 6.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 100,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 102,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 104,
+      "action": "probe",
+      "costs": {
+        "compute": 3.0,
+        "memory": 1.0,
+        "tool": 10.0,
+        "latency": 200.0,
+        "risk": 0.4
+      }
+    },
+    {
+      "cycle": 106,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 108,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 110,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 113,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 115,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 117,
+      "action": "probe",
+      "costs": {
+        "compute": 3.0,
+        "memory": 1.0,
+        "tool": 10.0,
+        "latency": 200.0,
+        "risk": 0.4
+      }
+    },
+    {
+      "cycle": 119,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 121,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 123,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 126,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 128,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 131,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 133,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 135,
+      "action": "probe",
+      "costs": {
+        "compute": 3.0,
+        "memory": 1.0,
+        "tool": 10.0,
+        "latency": 200.0,
+        "risk": 0.4
+      }
+    },
+    {
+      "cycle": 137,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 139,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 141,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 144,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 146,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 149,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 151,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 153,
+      "action": "probe",
+      "costs": {
+        "compute": 3.0,
+        "memory": 1.0,
+        "tool": 10.0,
+        "latency": 200.0,
+        "risk": 0.4
+      }
+    },
+    {
+      "cycle": 155,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 157,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 159,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 162,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 164,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 167,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 169,
+      "action": "probe",
+      "costs": {
+        "compute": 3.0,
+        "memory": 1.0,
+        "tool": 10.0,
+        "latency": 200.0,
+        "risk": 0.4
+      }
+    },
+    {
+      "cycle": 171,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 173,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 175,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 177,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 180,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 182,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 185,
+      "action": "probe",
+      "costs": {
+        "compute": 3.0,
+        "memory": 1.0,
+        "tool": 10.0,
+        "latency": 200.0,
+        "risk": 0.4
+      }
+    },
+    {
+      "cycle": 186,
+      "action": "index_rebuild",
+      "costs": {
+        "compute": 5.0,
+        "memory": 7.0,
+        "tool": 0.0,
+        "latency": 45.0,
+        "risk": 0.05
+      }
+    },
+    {
+      "cycle": 189,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 191,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 194,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 196,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    },
+    {
+      "cycle": 198,
+      "action": "probe",
+      "costs": {
+        "compute": 3.0,
+        "memory": 1.0,
+        "tool": 10.0,
+        "latency": 200.0,
+        "risk": 0.4
+      }
+    },
+    {
+      "cycle": 200,
+      "action": "pruning",
+      "costs": {
+        "compute": 2.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.2
+      }
+    }
+  ],
+  "trajectory": [
+    {
+      "cycle": 0,
+      "memory_pressure": 0.1,
+      "uncertainty_pressure": 0.1,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 1,
+      "memory_pressure": 0.10500000000000001,
+      "uncertainty_pressure": 0.10300000000000001,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 2,
+      "memory_pressure": 0.11,
+      "uncertainty_pressure": 0.10600000000000001,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 3,
+      "memory_pressure": 0.115,
+      "uncertainty_pressure": 0.10900000000000001,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 4,
+      "memory_pressure": 0.12000000000000001,
+      "uncertainty_pressure": 0.112,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 5,
+      "memory_pressure": 0.125,
+      "uncertainty_pressure": 0.115,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 6,
+      "memory_pressure": 0.13,
+      "uncertainty_pressure": 0.11800000000000001,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 7,
+      "memory_pressure": 0.135,
+      "uncertainty_pressure": 0.12100000000000001,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 8,
+      "memory_pressure": 0.14,
+      "uncertainty_pressure": 0.124,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 9,
+      "memory_pressure": 0.14500000000000002,
+      "uncertainty_pressure": 0.127,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 10,
+      "memory_pressure": 0.15000000000000002,
+      "uncertainty_pressure": 0.13,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 11,
+      "memory_pressure": 0.155,
+      "uncertainty_pressure": 0.133,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 12,
+      "memory_pressure": 0.16,
+      "uncertainty_pressure": 0.136,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 13,
+      "memory_pressure": 0.165,
+      "uncertainty_pressure": 0.139,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 14,
+      "memory_pressure": 0.17,
+      "uncertainty_pressure": 0.14200000000000002,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 15,
+      "memory_pressure": 0.175,
+      "uncertainty_pressure": 0.14500000000000002,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 16,
+      "memory_pressure": 0.18,
+      "uncertainty_pressure": 0.14800000000000002,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 17,
+      "memory_pressure": 0.185,
+      "uncertainty_pressure": 0.15100000000000002,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 18,
+      "memory_pressure": 0.19,
+      "uncertainty_pressure": 0.154,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 19,
+      "memory_pressure": 0.195,
+      "uncertainty_pressure": 0.157,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 20,
+      "memory_pressure": 0.2,
+      "uncertainty_pressure": 0.16,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 21,
+      "memory_pressure": 0.20500000000000002,
+      "uncertainty_pressure": 0.163,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 22,
+      "memory_pressure": 0.21000000000000002,
+      "uncertainty_pressure": 0.166,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 23,
+      "memory_pressure": 0.21500000000000002,
+      "uncertainty_pressure": 0.169,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 24,
+      "memory_pressure": 0.22,
+      "uncertainty_pressure": 0.17200000000000001,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 25,
+      "memory_pressure": 0.225,
+      "uncertainty_pressure": 0.175,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 26,
+      "memory_pressure": 0.23,
+      "uncertainty_pressure": 0.178,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 27,
+      "memory_pressure": 0.23500000000000001,
+      "uncertainty_pressure": 0.181,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 28,
+      "memory_pressure": 0.24000000000000002,
+      "uncertainty_pressure": 0.184,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 29,
+      "memory_pressure": 0.245,
+      "uncertainty_pressure": 0.187,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 30,
+      "memory_pressure": 0.25,
+      "uncertainty_pressure": 0.19,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 31,
+      "memory_pressure": 0.255,
+      "uncertainty_pressure": 0.193,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 32,
+      "memory_pressure": 0.26,
+      "uncertainty_pressure": 0.196,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 33,
+      "memory_pressure": 0.265,
+      "uncertainty_pressure": 0.199,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 34,
+      "memory_pressure": 0.27,
+      "uncertainty_pressure": 0.202,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 35,
+      "memory_pressure": 0.275,
+      "uncertainty_pressure": 0.20500000000000002,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 36,
+      "memory_pressure": 0.28,
+      "uncertainty_pressure": 0.20800000000000002,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 37,
+      "memory_pressure": 0.28500000000000003,
+      "uncertainty_pressure": 0.21100000000000002,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 38,
+      "memory_pressure": 0.29000000000000004,
+      "uncertainty_pressure": 0.21400000000000002,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 39,
+      "memory_pressure": 0.29500000000000004,
+      "uncertainty_pressure": 0.21700000000000003,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 40,
+      "memory_pressure": 0.30000000000000004,
+      "uncertainty_pressure": 0.22,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 41,
+      "memory_pressure": 0.30500000000000005,
+      "uncertainty_pressure": 0.223,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 42,
+      "memory_pressure": 0.31,
+      "uncertainty_pressure": 0.226,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 43,
+      "memory_pressure": 0.315,
+      "uncertainty_pressure": 0.229,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 44,
+      "memory_pressure": 0.32,
+      "uncertainty_pressure": 0.232,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 45,
+      "memory_pressure": 0.325,
+      "uncertainty_pressure": 0.23500000000000001,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 46,
+      "memory_pressure": 0.33,
+      "uncertainty_pressure": 0.23800000000000002,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 47,
+      "memory_pressure": 0.335,
+      "uncertainty_pressure": 0.24100000000000002,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 48,
+      "memory_pressure": 0.33999999999999997,
+      "uncertainty_pressure": 0.24400000000000002,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 49,
+      "memory_pressure": 0.345,
+      "uncertainty_pressure": 0.247,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 50,
+      "memory_pressure": 0.35,
+      "uncertainty_pressure": 0.25,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 51,
+      "memory_pressure": 0.355,
+      "uncertainty_pressure": 0.253,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 52,
+      "memory_pressure": 0.36,
+      "uncertainty_pressure": 0.256,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 53,
+      "memory_pressure": 0.365,
+      "uncertainty_pressure": 0.259,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 54,
+      "memory_pressure": 0.37,
+      "uncertainty_pressure": 0.262,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 55,
+      "memory_pressure": 0.375,
+      "uncertainty_pressure": 0.265,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 56,
+      "memory_pressure": 0.38,
+      "uncertainty_pressure": 0.268,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 57,
+      "memory_pressure": 0.385,
+      "uncertainty_pressure": 0.271,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 58,
+      "memory_pressure": 0.39,
+      "uncertainty_pressure": 0.274,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 59,
+      "memory_pressure": 0.395,
+      "uncertainty_pressure": 0.277,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 60,
+      "memory_pressure": 0.4,
+      "uncertainty_pressure": 0.28,
+      "is_awake": false,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 100.0,
+        "memory_atp": 100.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 1.0
+      },
+      "recovery": {
+        "compute": 0.0,
+        "memory": 0.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.0
+      }
+    },
+    {
+      "cycle": 61,
+      "memory_pressure": 0.405,
+      "uncertainty_pressure": 0.28300000000000003,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 99.0,
+        "memory_atp": 97.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.9
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 62,
+      "memory_pressure": 0.41000000000000003,
+      "uncertainty_pressure": 0.28600000000000003,
+      "is_awake": true,
+      "limiting_resource": "risk",
+      "budgets": {
+        "compute_atp": 95.0,
+        "memory_atp": 92.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.95
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 45.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 63,
+      "memory_pressure": 0.41500000000000004,
+      "uncertainty_pressure": 0.28900000000000003,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 88.0,
+        "memory_atp": 88.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.95
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 64,
+      "memory_pressure": 0.42000000000000004,
+      "uncertainty_pressure": 0.29200000000000004,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 87.0,
+        "memory_atp": 85.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.85
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 65,
+      "memory_pressure": 0.42500000000000004,
+      "uncertainty_pressure": 0.29500000000000004,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 80.0,
+        "memory_atp": 81.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.85
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 66,
+      "memory_pressure": 0.43000000000000005,
+      "uncertainty_pressure": 0.29800000000000004,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 79.0,
+        "memory_atp": 78.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.7499999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 67,
+      "memory_pressure": 0.43500000000000005,
+      "uncertainty_pressure": 0.30100000000000005,
+      "is_awake": true,
+      "limiting_resource": "risk",
+      "budgets": {
+        "compute_atp": 75.0,
+        "memory_atp": 73.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.7999999999999998
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 45.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 68,
+      "memory_pressure": 0.44000000000000006,
+      "uncertainty_pressure": 0.30400000000000005,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 68.0,
+        "memory_atp": 69.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.7999999999999998
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 69,
+      "memory_pressure": 0.44500000000000006,
+      "uncertainty_pressure": 0.30700000000000005,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 67.0,
+        "memory_atp": 66.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.6999999999999998
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 70,
+      "memory_pressure": 0.45000000000000007,
+      "uncertainty_pressure": 0.31,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 60.0,
+        "memory_atp": 62.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.6999999999999998
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 71,
+      "memory_pressure": 0.45499999999999996,
+      "uncertainty_pressure": 0.313,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 59.0,
+        "memory_atp": 59.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.5999999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 72,
+      "memory_pressure": 0.45999999999999996,
+      "uncertainty_pressure": 0.316,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 58.0,
+        "memory_atp": 56.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.4999999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 73,
+      "memory_pressure": 0.46499999999999997,
+      "uncertainty_pressure": 0.319,
+      "is_awake": true,
+      "limiting_resource": "risk",
+      "budgets": {
+        "compute_atp": 54.0,
+        "memory_atp": 51.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.5499999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 45.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 74,
+      "memory_pressure": 0.47,
+      "uncertainty_pressure": 0.322,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 47.0,
+        "memory_atp": 47.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.5499999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 75,
+      "memory_pressure": 0.475,
+      "uncertainty_pressure": 0.325,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 46.0,
+        "memory_atp": 44.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.44999999999999996
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 76,
+      "memory_pressure": 0.48,
+      "uncertainty_pressure": 0.328,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 39.0,
+        "memory_atp": 40.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.44999999999999996
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 77,
+      "memory_pressure": 0.485,
+      "uncertainty_pressure": 0.331,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 38.0,
+        "memory_atp": 37.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 78,
+      "memory_pressure": 0.49,
+      "uncertainty_pressure": 0.334,
+      "is_awake": true,
+      "limiting_resource": "risk",
+      "budgets": {
+        "compute_atp": 34.0,
+        "memory_atp": 32.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.4
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 45.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 79,
+      "memory_pressure": 0.495,
+      "uncertainty_pressure": 0.337,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 27.0,
+        "memory_atp": 28.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.4
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 80,
+      "memory_pressure": 0.5,
+      "uncertainty_pressure": 0.33999999999999997,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 26.0,
+        "memory_atp": 25.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.30000000000000004
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 81,
+      "memory_pressure": 0.505,
+      "uncertainty_pressure": 0.34299999999999997,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 19.0,
+        "memory_atp": 21.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.30000000000000004
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 82,
+      "memory_pressure": 0.51,
+      "uncertainty_pressure": 0.346,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 18.0,
+        "memory_atp": 18.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.20000000000000004
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 83,
+      "memory_pressure": 0.515,
+      "uncertainty_pressure": 0.349,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 17.0,
+        "memory_atp": 15.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.10000000000000003
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 84,
+      "memory_pressure": 0.52,
+      "uncertainty_pressure": 0.352,
+      "is_awake": true,
+      "limiting_resource": "risk",
+      "budgets": {
+        "compute_atp": 13.0,
+        "memory_atp": 10.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.15000000000000002
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 45.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 85,
+      "memory_pressure": 0.525,
+      "uncertainty_pressure": 0.355,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 6.0,
+        "memory_atp": 6.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.15000000000000002
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 86,
+      "memory_pressure": 0.53,
+      "uncertainty_pressure": 0.358,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 7.0,
+        "memory_atp": 8.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.25
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 87,
+      "memory_pressure": 0.535,
+      "uncertainty_pressure": 0.361,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 6.0,
+        "memory_atp": 5.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.15
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 88,
+      "memory_pressure": 0.54,
+      "uncertainty_pressure": 0.364,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 7.0,
+        "memory_atp": 7.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.25
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 89,
+      "memory_pressure": 0.545,
+      "uncertainty_pressure": 0.367,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 6.0,
+        "memory_atp": 4.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.15
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 90,
+      "memory_pressure": 0.55,
+      "uncertainty_pressure": 0.37,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 7.0,
+        "memory_atp": 6.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.25
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 91,
+      "memory_pressure": 0.555,
+      "uncertainty_pressure": 0.373,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 6.0,
+        "memory_atp": 3.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.15
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 92,
+      "memory_pressure": 0.56,
+      "uncertainty_pressure": 0.376,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 7.0,
+        "memory_atp": 5.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.25
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 93,
+      "memory_pressure": 0.5650000000000001,
+      "uncertainty_pressure": 0.379,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 6.0,
+        "memory_atp": 2.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.15
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 94,
+      "memory_pressure": 0.5700000000000001,
+      "uncertainty_pressure": 0.382,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 7.0,
+        "memory_atp": 4.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.25
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 95,
+      "memory_pressure": 0.5750000000000001,
+      "uncertainty_pressure": 0.385,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 8.0,
+        "memory_atp": 6.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 96,
+      "memory_pressure": 0.58,
+      "uncertainty_pressure": 0.388,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 1.0,
+        "memory_atp": 2.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 50.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 97,
+      "memory_pressure": 0.585,
+      "uncertainty_pressure": 0.391,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 4.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.44999999999999996
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 98,
+      "memory_pressure": 0.59,
+      "uncertainty_pressure": 0.394,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 6.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.5499999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 99,
+      "memory_pressure": 0.595,
+      "uncertainty_pressure": 0.397,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 3.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.44999999999999996
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 100,
+      "memory_pressure": 0.6,
+      "uncertainty_pressure": 0.4,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 5.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.5499999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 101,
+      "memory_pressure": 0.605,
+      "uncertainty_pressure": 0.403,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 2.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.44999999999999996
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 102,
+      "memory_pressure": 0.61,
+      "uncertainty_pressure": 0.406,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 4.0,
+        "tool_atp": 100.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.5499999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 103,
+      "memory_pressure": 0.615,
+      "uncertainty_pressure": 0.40900000000000003,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 1.0,
+        "memory_atp": 5.0,
+        "tool_atp": 90.5,
+        "latency_budget": 900.0,
+        "risk_budget": 0.24999999999999992
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 100.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 104,
+      "memory_pressure": 0.62,
+      "uncertainty_pressure": 0.41200000000000003,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 7.0,
+        "tool_atp": 91.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.3499999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 100.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 105,
+      "memory_pressure": 0.625,
+      "uncertainty_pressure": 0.41500000000000004,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 1.0,
+        "memory_atp": 4.0,
+        "tool_atp": 91.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999992
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 106,
+      "memory_pressure": 0.63,
+      "uncertainty_pressure": 0.41800000000000004,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 6.0,
+        "tool_atp": 92.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.3499999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 107,
+      "memory_pressure": 0.635,
+      "uncertainty_pressure": 0.42100000000000004,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 1.0,
+        "memory_atp": 3.0,
+        "tool_atp": 92.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999992
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 108,
+      "memory_pressure": 0.64,
+      "uncertainty_pressure": 0.42400000000000004,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 5.0,
+        "tool_atp": 93.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.3499999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 109,
+      "memory_pressure": 0.645,
+      "uncertainty_pressure": 0.42700000000000005,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 1.0,
+        "memory_atp": 2.0,
+        "tool_atp": 93.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999992
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 110,
+      "memory_pressure": 0.65,
+      "uncertainty_pressure": 0.43000000000000005,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 4.0,
+        "tool_atp": 94.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.3499999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 111,
+      "memory_pressure": 0.655,
+      "uncertainty_pressure": 0.43300000000000005,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 6.0,
+        "tool_atp": 94.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.44999999999999996
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 112,
+      "memory_pressure": 0.66,
+      "uncertainty_pressure": 0.43600000000000005,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 3.0,
+        "tool_atp": 95.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 113,
+      "memory_pressure": 0.665,
+      "uncertainty_pressure": 0.43900000000000006,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 5.0,
+        "tool_atp": 95.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.44999999999999996
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 114,
+      "memory_pressure": 0.67,
+      "uncertainty_pressure": 0.44200000000000006,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 2.0,
+        "tool_atp": 96.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 115,
+      "memory_pressure": 0.675,
+      "uncertainty_pressure": 0.44500000000000006,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 4.0,
+        "tool_atp": 96.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.44999999999999996
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 116,
+      "memory_pressure": 0.6799999999999999,
+      "uncertainty_pressure": 0.44800000000000006,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 1.0,
+        "memory_atp": 5.0,
+        "tool_atp": 87.0,
+        "latency_budget": 900.0,
+        "risk_budget": 0.14999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 100.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 117,
+      "memory_pressure": 0.6849999999999999,
+      "uncertainty_pressure": 0.45100000000000007,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 7.0,
+        "tool_atp": 87.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 100.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 118,
+      "memory_pressure": 0.69,
+      "uncertainty_pressure": 0.45399999999999996,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 1.0,
+        "memory_atp": 4.0,
+        "tool_atp": 88.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.14999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 119,
+      "memory_pressure": 0.695,
+      "uncertainty_pressure": 0.45699999999999996,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 6.0,
+        "tool_atp": 88.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 120,
+      "memory_pressure": 0.7,
+      "uncertainty_pressure": 0.45999999999999996,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 1.0,
+        "memory_atp": 3.0,
+        "tool_atp": 89.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.14999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 121,
+      "memory_pressure": 0.705,
+      "uncertainty_pressure": 0.46299999999999997,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 5.0,
+        "tool_atp": 89.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 122,
+      "memory_pressure": 0.71,
+      "uncertainty_pressure": 0.46599999999999997,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 1.0,
+        "memory_atp": 2.0,
+        "tool_atp": 90.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.14999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 123,
+      "memory_pressure": 0.715,
+      "uncertainty_pressure": 0.469,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 4.0,
+        "tool_atp": 90.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 124,
+      "memory_pressure": 0.72,
+      "uncertainty_pressure": 0.472,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 6.0,
+        "tool_atp": 91.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 125,
+      "memory_pressure": 0.725,
+      "uncertainty_pressure": 0.475,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 3.0,
+        "tool_atp": 91.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999997
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 126,
+      "memory_pressure": 0.73,
+      "uncertainty_pressure": 0.478,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 5.0,
+        "tool_atp": 92.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 127,
+      "memory_pressure": 0.735,
+      "uncertainty_pressure": 0.481,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 2.0,
+        "tool_atp": 92.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999997
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 128,
+      "memory_pressure": 0.74,
+      "uncertainty_pressure": 0.484,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 4.0,
+        "tool_atp": 93.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 129,
+      "memory_pressure": 0.745,
+      "uncertainty_pressure": 0.487,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 6.0,
+        "tool_atp": 93.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.44999999999999996
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 130,
+      "memory_pressure": 0.75,
+      "uncertainty_pressure": 0.49,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 3.0,
+        "tool_atp": 94.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 131,
+      "memory_pressure": 0.755,
+      "uncertainty_pressure": 0.493,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 5.0,
+        "tool_atp": 94.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.44999999999999996
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 132,
+      "memory_pressure": 0.76,
+      "uncertainty_pressure": 0.496,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 2.0,
+        "tool_atp": 95.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 133,
+      "memory_pressure": 0.765,
+      "uncertainty_pressure": 0.499,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 4.0,
+        "tool_atp": 95.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.44999999999999996
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 134,
+      "memory_pressure": 0.77,
+      "uncertainty_pressure": 0.502,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 5.0,
+        "tool_atp": 86.0,
+        "latency_budget": 900.0,
+        "risk_budget": 0.14999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 100.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 135,
+      "memory_pressure": 0.775,
+      "uncertainty_pressure": 0.505,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 7.0,
+        "tool_atp": 86.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 100.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 136,
+      "memory_pressure": 0.78,
+      "uncertainty_pressure": 0.508,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 4.0,
+        "tool_atp": 87.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.14999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 137,
+      "memory_pressure": 0.785,
+      "uncertainty_pressure": 0.511,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 6.0,
+        "tool_atp": 87.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 138,
+      "memory_pressure": 0.79,
+      "uncertainty_pressure": 0.514,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 3.0,
+        "tool_atp": 88.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.14999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 139,
+      "memory_pressure": 0.795,
+      "uncertainty_pressure": 0.517,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 5.0,
+        "tool_atp": 88.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 140,
+      "memory_pressure": 0.8,
+      "uncertainty_pressure": 0.52,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 2.0,
+        "tool_atp": 89.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.14999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 141,
+      "memory_pressure": 0.8049999999999999,
+      "uncertainty_pressure": 0.523,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 4.0,
+        "tool_atp": 89.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 142,
+      "memory_pressure": 0.8099999999999999,
+      "uncertainty_pressure": 0.526,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 6.0,
+        "tool_atp": 90.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 143,
+      "memory_pressure": 0.815,
+      "uncertainty_pressure": 0.529,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 3.0,
+        "tool_atp": 90.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999997
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 144,
+      "memory_pressure": 0.82,
+      "uncertainty_pressure": 0.532,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 5.0,
+        "tool_atp": 91.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 145,
+      "memory_pressure": 0.825,
+      "uncertainty_pressure": 0.535,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 2.0,
+        "tool_atp": 91.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999997
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 146,
+      "memory_pressure": 0.83,
+      "uncertainty_pressure": 0.538,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 4.0,
+        "tool_atp": 92.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 147,
+      "memory_pressure": 0.835,
+      "uncertainty_pressure": 0.541,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 5.0,
+        "memory_atp": 6.0,
+        "tool_atp": 92.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.44999999999999996
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 148,
+      "memory_pressure": 0.84,
+      "uncertainty_pressure": 0.544,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 3.0,
+        "tool_atp": 93.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 149,
+      "memory_pressure": 0.845,
+      "uncertainty_pressure": 0.547,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 5.0,
+        "memory_atp": 5.0,
+        "tool_atp": 93.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.44999999999999996
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 150,
+      "memory_pressure": 0.85,
+      "uncertainty_pressure": 0.55,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 2.0,
+        "tool_atp": 94.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 151,
+      "memory_pressure": 0.855,
+      "uncertainty_pressure": 0.553,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 5.0,
+        "memory_atp": 4.0,
+        "tool_atp": 94.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.44999999999999996
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 152,
+      "memory_pressure": 0.86,
+      "uncertainty_pressure": 0.556,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 5.0,
+        "tool_atp": 85.0,
+        "latency_budget": 900.0,
+        "risk_budget": 0.14999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 100.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 153,
+      "memory_pressure": 0.865,
+      "uncertainty_pressure": 0.559,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 7.0,
+        "tool_atp": 85.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 100.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 154,
+      "memory_pressure": 0.87,
+      "uncertainty_pressure": 0.562,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 4.0,
+        "tool_atp": 86.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.14999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 155,
+      "memory_pressure": 0.875,
+      "uncertainty_pressure": 0.5650000000000001,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 6.0,
+        "tool_atp": 86.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 156,
+      "memory_pressure": 0.88,
+      "uncertainty_pressure": 0.5680000000000001,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 3.0,
+        "tool_atp": 87.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.14999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 157,
+      "memory_pressure": 0.885,
+      "uncertainty_pressure": 0.5710000000000001,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 5.0,
+        "tool_atp": 87.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 158,
+      "memory_pressure": 0.89,
+      "uncertainty_pressure": 0.5740000000000001,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 2.0,
+        "tool_atp": 88.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.14999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 159,
+      "memory_pressure": 0.895,
+      "uncertainty_pressure": 0.5770000000000001,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 4.0,
+        "tool_atp": 88.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 160,
+      "memory_pressure": 0.9,
+      "uncertainty_pressure": 0.58,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 5.0,
+        "memory_atp": 6.0,
+        "tool_atp": 89.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 161,
+      "memory_pressure": 0.905,
+      "uncertainty_pressure": 0.583,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 3.0,
+        "tool_atp": 89.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999997
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 162,
+      "memory_pressure": 0.91,
+      "uncertainty_pressure": 0.586,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 5.0,
+        "memory_atp": 5.0,
+        "tool_atp": 90.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 163,
+      "memory_pressure": 0.915,
+      "uncertainty_pressure": 0.589,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 2.0,
+        "tool_atp": 90.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999997
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 164,
+      "memory_pressure": 0.92,
+      "uncertainty_pressure": 0.592,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 5.0,
+        "memory_atp": 4.0,
+        "tool_atp": 91.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 165,
+      "memory_pressure": 0.925,
+      "uncertainty_pressure": 0.595,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 6.0,
+        "memory_atp": 6.0,
+        "tool_atp": 91.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.44999999999999996
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 166,
+      "memory_pressure": 0.93,
+      "uncertainty_pressure": 0.598,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 5.0,
+        "memory_atp": 3.0,
+        "tool_atp": 92.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 167,
+      "memory_pressure": 0.9349999999999999,
+      "uncertainty_pressure": 0.601,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 6.0,
+        "memory_atp": 5.0,
+        "tool_atp": 92.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.44999999999999996
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 168,
+      "memory_pressure": 0.94,
+      "uncertainty_pressure": 0.604,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 6.0,
+        "tool_atp": 83.0,
+        "latency_budget": 900.0,
+        "risk_budget": 0.14999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 100.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 169,
+      "memory_pressure": 0.945,
+      "uncertainty_pressure": 0.607,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 5.0,
+        "memory_atp": 8.0,
+        "tool_atp": 83.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 100.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 170,
+      "memory_pressure": 0.95,
+      "uncertainty_pressure": 0.61,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 5.0,
+        "tool_atp": 84.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.14999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 171,
+      "memory_pressure": 0.955,
+      "uncertainty_pressure": 0.613,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 5.0,
+        "memory_atp": 7.0,
+        "tool_atp": 84.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 172,
+      "memory_pressure": 0.96,
+      "uncertainty_pressure": 0.616,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 4.0,
+        "tool_atp": 85.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.14999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 173,
+      "memory_pressure": 0.965,
+      "uncertainty_pressure": 0.619,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 5.0,
+        "memory_atp": 6.0,
+        "tool_atp": 85.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 174,
+      "memory_pressure": 0.97,
+      "uncertainty_pressure": 0.622,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 3.0,
+        "tool_atp": 86.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.14999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 175,
+      "memory_pressure": 0.975,
+      "uncertainty_pressure": 0.625,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 5.0,
+        "memory_atp": 5.0,
+        "tool_atp": 86.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 176,
+      "memory_pressure": 0.98,
+      "uncertainty_pressure": 0.628,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 2.0,
+        "tool_atp": 87.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.14999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 177,
+      "memory_pressure": 0.985,
+      "uncertainty_pressure": 0.631,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 5.0,
+        "memory_atp": 4.0,
+        "tool_atp": 87.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 178,
+      "memory_pressure": 0.99,
+      "uncertainty_pressure": 0.634,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 6.0,
+        "memory_atp": 6.0,
+        "tool_atp": 88.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 179,
+      "memory_pressure": 0.995,
+      "uncertainty_pressure": 0.637,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 5.0,
+        "memory_atp": 3.0,
+        "tool_atp": 88.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999997
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 180,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.64,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 6.0,
+        "memory_atp": 5.0,
+        "tool_atp": 89.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 181,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.643,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 5.0,
+        "memory_atp": 2.0,
+        "tool_atp": 89.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.24999999999999997
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 182,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.646,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 6.0,
+        "memory_atp": 4.0,
+        "tool_atp": 90.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.35
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 183,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.649,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 7.0,
+        "memory_atp": 6.0,
+        "tool_atp": 90.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.44999999999999996
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 184,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.652,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 5.0,
+        "memory_atp": 7.0,
+        "tool_atp": 81.0,
+        "latency_budget": 900.0,
+        "risk_budget": 0.14999999999999994
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 100.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 185,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.655,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 1.0,
+        "memory_atp": 2.0,
+        "tool_atp": 81.5,
+        "latency_budget": 955.0,
+        "risk_budget": 0.19999999999999996
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 100.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 186,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.658,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 4.0,
+        "tool_atp": 82.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.29999999999999993
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 45.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 187,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.661,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 6.0,
+        "tool_atp": 82.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.3999999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 188,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.664,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 3.0,
+        "tool_atp": 83.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.29999999999999993
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 189,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.667,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 5.0,
+        "tool_atp": 83.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.3999999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 190,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.67,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 2.0,
+        "tool_atp": 84.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.29999999999999993
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 191,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.673,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 4.0,
+        "tool_atp": 84.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.3999999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 192,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.676,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 6.0,
+        "tool_atp": 85.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.4999999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 193,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.6789999999999999,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 3.0,
+        "tool_atp": 85.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.3999999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 194,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.6819999999999999,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 5.0,
+        "tool_atp": 86.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.4999999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 195,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.6849999999999999,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 2.0,
+        "tool_atp": 86.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.3999999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 196,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.688,
+      "is_awake": true,
+      "limiting_resource": "memory",
+      "budgets": {
+        "compute_atp": 4.0,
+        "memory_atp": 4.0,
+        "tool_atp": 87.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.4999999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 0.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 197,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.691,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 5.0,
+        "tool_atp": 77.5,
+        "latency_budget": 900.0,
+        "risk_budget": 0.19999999999999987
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 100.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 198,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.694,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 3.0,
+        "memory_atp": 7.0,
+        "tool_atp": 78.0,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.2999999999999999
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 100.0,
+        "risk": 0.1
+      }
+    },
+    {
+      "cycle": 199,
+      "memory_pressure": 1.0,
+      "uncertainty_pressure": 0.697,
+      "is_awake": true,
+      "limiting_resource": "compute",
+      "budgets": {
+        "compute_atp": 2.0,
+        "memory_atp": 4.0,
+        "tool_atp": 78.5,
+        "latency_budget": 1000.0,
+        "risk_budget": 0.19999999999999987
+      },
+      "recovery": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.5,
+        "latency": 20.0,
+        "risk": 0.1
+      }
+    }
+  ],
+  "final_budgets": {
+    "compute_atp": 2.0,
+    "memory_atp": 4.0,
+    "tool_atp": 78.5,
+    "latency_budget": 1000.0,
+    "risk_budget": 0.19999999999999987
+  }
+}

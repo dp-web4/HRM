@@ -1,0 +1,43 @@
+{
+  "session": 102,
+  "validation_type": "long_running_metabolic",
+  "timestamp": "2025-12-24 03:58:05 UTC",
+  "total_cycles": 1000,
+  "query_pattern": "mixed (60% moderate, 20% simple, 20% complex)",
+  "initial_atp": 100.0,
+  "metrics": {
+    "total_cycles": 1000,
+    "total_queries": 1000,
+    "duration_seconds": 0.018811464309692383,
+    "atp_min": 23.5,
+    "atp_max": 100.0,
+    "atp_mean": 34.547,
+    "atp_std": 4.599596830158052,
+    "wake_cycles": 857,
+    "rest_cycles": 143,
+    "crisis_cycles": 0,
+    "basal_recovery_count": 0,
+    "rest_recovery_count": 856,
+    "total_atp_recovered": 1712.0,
+    "crisis_to_rest_transitions": 0,
+    "rest_to_wake_transitions": 143,
+    "wake_to_rest_transitions": 143,
+    "rest_to_crisis_transitions": 0,
+    "total_atp_consumed": 360.0,
+    "cheap_expert_calls": 1000,
+    "expensive_expert_calls": 0,
+    "expensive_rejections": 0,
+    "first_100_atp_mean": 34.44000000000001,
+    "last_100_atp_mean": 33.69,
+    "atp_drift": -0.7500000000000142
+  },
+  "atp_stable": true,
+  "rhythm_stable": false,
+  "recovery_working": false,
+  "no_drift": true,
+  "passed": false,
+  "issues": [
+    "Not all states visited: WAKE=857, REST=143, CRISIS=0",
+    "Recovery not observed: CRISIS\u2192REST transitions=0, basal recoveries=0"
+  ]
+}

@@ -1,7 +1,47 @@
 # SAGE Michaud Integration - Latest Status
-**Last Updated**: 2025-12-23 19:58 UTC (Autonomous Session 102 - **METABOLIC EQUILIBRIUM DYNAMICS** ✅)
-**Previous Update**: 2025-12-23 18:05 UTC (Session 101 - PRODUCTION BASAL RECOVERY INTEGRATION)
+**Last Updated**: 2025-12-24 00:03 UTC (Autonomous Session 103 - **INTERNAL WAKE POLICY - AGENCY ORIGINATION** ✅)
+**Previous Update**: 2025-12-23 19:58 UTC (Session 102 - METABOLIC EQUILIBRIUM DYNAMICS)
 **Hardware**: Thor (Jetson AGX Thor) + Legion (RTX 4090) + Sprout (Orin Nano)
+
+---
+
+## ✅ Session 103 - Internal Wake Policy (Dec 24 - Autonomous)
+
+**Goal**: Implement agency origination via internal wake triggers
+
+### Status: ✅ **AGENCY ORIGINATION** - State-dependent wake triggers working!
+
+**External Peer Review** (Nova GPT-5.2):
+- Recommended: Memory/Uncertainty Pressure Wake
+- "ATP depletion is a brake, not an ignition"
+- Need: State-dependent initiation, not timers
+
+**Two-Layer Agency System**:
+1. Origination Layer (S103): Pressure triggers action
+2. Constraint Layer (S97-102): ATP limits action
+
+**Wake Policy**: `score = f(memory_p, uncertainty_p, value, risk, ATP)` with hysteresis
+
+**Results** (100 cycles):
+- Wake triggered: cycle 47 (score=0.601)
+- Actions: 12 (consolidation, pruning, indexing, probes)
+- ATP spent: 128, Pressure reduced: 5.20
+- Negative feedback working (bounded behavior)
+
+**Properties Validated**:
+- ✅ State-dependent initiation (not timer)
+- ✅ Negative feedback (actions reduce pressure)
+- ✅ Hysteresis (prevents thrashing)
+- ✅ ATP constraint (budget-limited)
+- ✅ MRH auditable (decision traces)
+
+**Architectural Shift**:
+- Before: External trigger → ATP constraint → Action
+- After: **Internal pressure → Wake policy → ATP constraint → Action**
+
+**Files**: `session103_internal_wake_policy.py` (530 lines)
+
+**Impact**: Agency origination - system initiates actions from internal necessity
 
 ---
 

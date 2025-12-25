@@ -1,0 +1,188 @@
+{
+  "session": 114,
+  "timestamp": "2025-12-25T22:02:37.611961",
+  "scenarios": {
+    "normal_mode": {
+      "total_turns": 4,
+      "buffer_size": 4,
+      "longterm_size": 0,
+      "extracted_count": 0,
+      "strategy_distribution": {
+        "full_encoding": 4,
+        "simplified_encoding": 4,
+        "minimal_encoding": 0,
+        "timestamp_only": 0
+      },
+      "avg_buffer_salience": 0.15,
+      "resource_budget": {
+        "compute": 0.8560000000000002,
+        "memory": 0.9280000000000002,
+        "tool": 1.0,
+        "latency": 0.776,
+        "risk": 1.0
+      }
+    },
+    "stressed_mode": {
+      "total_turns": 6,
+      "buffer_size": 6,
+      "longterm_size": 0,
+      "extracted_count": 0,
+      "strategy_distribution": {
+        "full_encoding": 4,
+        "simplified_encoding": 4,
+        "minimal_encoding": 0,
+        "timestamp_only": 0
+      },
+      "avg_buffer_salience": 0.17333333333333334,
+      "resource_budget": {
+        "compute": 0.138,
+        "memory": 0.9120000000000001,
+        "tool": 1.0,
+        "latency": 0.744,
+        "risk": 0.96
+      }
+    },
+    "crisis_mode": {
+      "total_turns": 8,
+      "buffer_size": 8,
+      "longterm_size": 0,
+      "extracted_count": 0,
+      "strategy_distribution": {
+        "full_encoding": 4,
+        "simplified_encoding": 4,
+        "minimal_encoding": 0,
+        "timestamp_only": 0
+      },
+      "avg_buffer_salience": 0.195,
+      "resource_budget": {
+        "compute": 0.038000000000000006,
+        "memory": 0.014000000000000002,
+        "tool": 1.0,
+        "latency": 0.712,
+        "risk": 0.9199999999999999
+      }
+    }
+  },
+  "operation_history": [
+    {
+      "timestamp": "2025-12-25T22:02:37.611204",
+      "operation": "add_turn",
+      "strategy": "full_encoding",
+      "scoring_method": "full_snarc",
+      "salience_score": 0.175,
+      "buffer_size": 1,
+      "budget_after": {
+        "compute": 0.9640000000000001,
+        "memory": 0.982,
+        "tool": 1.0,
+        "latency": 0.944,
+        "risk": 1.0
+      }
+    },
+    {
+      "timestamp": "2025-12-25T22:02:37.611314",
+      "operation": "add_turn",
+      "strategy": "full_encoding",
+      "scoring_method": "full_snarc",
+      "salience_score": 0.305,
+      "buffer_size": 2,
+      "budget_after": {
+        "compute": 0.9280000000000002,
+        "memory": 0.9640000000000001,
+        "tool": 1.0,
+        "latency": 0.888,
+        "risk": 1.0
+      }
+    },
+    {
+      "timestamp": "2025-12-25T22:02:37.611383",
+      "operation": "add_turn",
+      "strategy": "full_encoding",
+      "scoring_method": "full_snarc",
+      "salience_score": 0.1,
+      "buffer_size": 3,
+      "budget_after": {
+        "compute": 0.8920000000000001,
+        "memory": 0.9460000000000001,
+        "tool": 1.0,
+        "latency": 0.832,
+        "risk": 1.0
+      }
+    },
+    {
+      "timestamp": "2025-12-25T22:02:37.611447",
+      "operation": "add_turn",
+      "strategy": "full_encoding",
+      "scoring_method": "full_snarc",
+      "salience_score": 0.020000000000000004,
+      "buffer_size": 4,
+      "budget_after": {
+        "compute": 0.8560000000000002,
+        "memory": 0.9280000000000002,
+        "tool": 1.0,
+        "latency": 0.776,
+        "risk": 1.0
+      }
+    },
+    {
+      "timestamp": "2025-12-25T22:02:37.611547",
+      "operation": "add_turn",
+      "strategy": "simplified_encoding",
+      "scoring_method": "simplified",
+      "salience_score": 0.36,
+      "buffer_size": 5,
+      "budget_after": {
+        "compute": 0.14400000000000002,
+        "memory": 0.9200000000000002,
+        "tool": 1.0,
+        "latency": 0.76,
+        "risk": 0.98
+      }
+    },
+    {
+      "timestamp": "2025-12-25T22:02:37.611607",
+      "operation": "add_turn",
+      "strategy": "simplified_encoding",
+      "scoring_method": "simplified",
+      "salience_score": 0.08000000000000002,
+      "buffer_size": 6,
+      "budget_after": {
+        "compute": 0.138,
+        "memory": 0.9120000000000001,
+        "tool": 1.0,
+        "latency": 0.744,
+        "risk": 0.96
+      }
+    },
+    {
+      "timestamp": "2025-12-25T22:02:37.611708",
+      "operation": "add_turn",
+      "strategy": "simplified_encoding",
+      "scoring_method": "simplified",
+      "salience_score": 0.32,
+      "buffer_size": 7,
+      "budget_after": {
+        "compute": 0.044000000000000004,
+        "memory": 0.022000000000000002,
+        "tool": 1.0,
+        "latency": 0.728,
+        "risk": 0.94
+      }
+    },
+    {
+      "timestamp": "2025-12-25T22:02:37.611763",
+      "operation": "add_turn",
+      "strategy": "simplified_encoding",
+      "scoring_method": "simplified",
+      "salience_score": 0.2,
+      "buffer_size": 8,
+      "budget_after": {
+        "compute": 0.038000000000000006,
+        "memory": 0.014000000000000002,
+        "tool": 1.0,
+        "latency": 0.712,
+        "risk": 0.9199999999999999
+      }
+    }
+  ]
+}

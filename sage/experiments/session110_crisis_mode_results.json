@@ -1,0 +1,54 @@
+{
+  "session": 110,
+  "timestamp": "2025-12-25 03:58:08 UTC",
+  "results": {
+    "multi_resource_depletion": {
+      "regime": "multi_resource_depletion",
+      "cycles": 200,
+      "actions_executed": 41,
+      "actions_blocked_resources": 159,
+      "actions_blocked_mode": 0,
+      "total_blocked": 159,
+      "sleep_mode_entered": false,
+      "max_sleep_duration": 0,
+      "crisis_entries": 0,
+      "mode_distribution": {
+        "normal": 12,
+        "stressed": 188,
+        "crisis": 0,
+        "sleep": 0
+      },
+      "mode_transitions": 1,
+      "final_mode": "stressed",
+      "final_budgets": {
+        "compute": 93.9,
+        "memory": 1.2,
+        "tool": 100.0
+      }
+    },
+    "compute_starvation": {
+      "regime": "compute_starvation",
+      "cycles": 200,
+      "actions_executed": 56,
+      "actions_blocked_resources": 144,
+      "actions_blocked_mode": 0,
+      "total_blocked": 144,
+      "sleep_mode_entered": false,
+      "max_sleep_duration": 0,
+      "crisis_entries": 0,
+      "mode_distribution": {
+        "normal": 12,
+        "stressed": 188,
+        "crisis": 0,
+        "sleep": 0
+      },
+      "mode_transitions": 1,
+      "final_mode": "stressed",
+      "final_budgets": {
+        "compute": 37.299999999999905,
+        "memory": 2.800000000000002,
+        "tool": 100.0
+      }
+    }
+  }
+}

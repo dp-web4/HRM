@@ -408,65 +408,142 @@ Nemotron is **not a replacement for Q3-Omni** - it's a **model-level expert** in
 
 ---
 
-## Dependency Blocker Discovered (December 25, 2025)
+## CRITICAL DISCOVERY: Wrong Model Downloaded (December 25, 2025)
 
-### Issue
+### The Issue
 
-**Blocker**: `mamba-ssm` package build failure on Jetson platform
+**Root Cause**: Downloaded the WRONG Nemotron variant for Jetson deployment.
 
-**Error**:
-```
-NameError: name 'bare_metal_version' is not defined
-[in mamba-ssm setup.py]
-```
+**What I Downloaded**: `nvidia/Nemotron-H-4B-Instruct-128K`
+- Architecture: **Hybrid Mamba-Transformer**
+- Requires: `mamba-ssm` package (no ARM64 support)
+- Status: ❌ NOT Jetson-ready due to mamba-ssm dependency
 
-**Root Cause**: Nemotron-H uses Hybrid Mamba-Transformer architecture requiring `mamba-ssm` package with CUDA compilation. Build fails on Jetson ARM64 platform.
+**What I SHOULD HAVE Downloaded**: `nvidia/Llama-3.1-Nemotron-Nano-4B-v1.1`
+- Architecture: **Pure Transformer** (Llama 3.1 Minitron Width 4B Base)
+- Requires: Standard transformers library (ARM64 compatible)
+- Status: ✅ **Explicitly tested on Jetson AGX Thor**
+- Deployment: AWQ 4-bit quantization via TinyChat/TensorRT-LLM
 
-**Impact**: Cannot test Nemotron until dependency resolved
+### Research Findings (Web Search December 25, 2025)
 
-### Attempted Solutions
+**Nemotron Model Families**:
 
-1. ❌ `pip install mamba-ssm` - Build error in setup.py
-2. ⏳ Need to investigate: ARM64-specific build, pre-compiled wheels, or alternative approach
+1. **Nemotron-H Family** (Hybrid Mamba-Transformer)
+   - Architecture: Hybrid Mamba-Transformer MoE
+   - Context: 1M tokens
+   - Dependency: `mamba-ssm` (ARM64 blocker)
+   - Jetson Ready: ❌ No
 
-### Recommendations
+2. **Llama Nemotron Nano Family** (Pure Transformer) ⭐
+   - Architecture: Dense decoder-only Transformer
+   - Base: Llama 3.1 Minitron
+   - Context: 128K tokens
+   - Dependency: Standard transformers
+   - Jetson Ready: ✅ **YES - Explicitly tested on Jetson AGX Thor**
+   - Optimization: AWQ 4-bit quantization available
+   - Deployment: TinyChat, TensorRT-LLM, vLLM
 
-**Short-term (Immediate)**:
-1. **Use existing language models** for current work:
-   - Introspective-Qwen-0.5B (4.2MB, validated, 88.9% better on analytical tasks)
-   - Qwen2.5-14B (30GB, validated on Thor)
-   - These are proven and immediately usable
+**Official NVIDIA Documentation Confirms**:
+> "Llama 3.1 Nemotron Nano 4B v1.1 is compact enough to be deployed at the edge on NVIDIA Jetson and NVIDIA RTX GPUs."
 
-2. **Document as edge deployment caveat**: Nemotron may require x86_64 platform or pre-compiled wheels for ARM64
+> "Fits on a single RTX GPU and can be used locally."
 
-3. **Test on Legion (RTX 4090)**: x86_64 platform likely has better `mamba-ssm` support
+> "NVIDIA offers a quantized 4-bit version (AWQ) compatible with TinyChat and TensorRT-LLM frameworks, suitable for devices like Jetson Orin."
 
-**Medium-term (Investigation)**:
-1. **Check for pre-built ARM64 wheels**: NVIDIA may provide Jetson-specific builds
-2. **Build from source with correct flags**: May need specific CUDA arch flags for Jetson
-3. **Contact NVIDIA**: Nemotron marketed as "Jetson-optimized" but dependencies unclear
+### Why This Happened
 
-**Long-term (Alternative)**:
-1. **Containerized deployment**: Use Docker with pre-compiled dependencies
-2. **vLLM integration**: May handle Mamba architecture differently
-3. **Wait for official ARM64 support**: File issue with `mamba-ssm` maintainers
+**My Error**: Did not thoroughly research Nemotron model variants before downloading.
 
-### What This Means for SAGE
+**What I Missed**:
+1. There are TWO distinct Nemotron families with different architectures
+2. "Jetson-optimized" marketing refers to Llama Nemotron Nano, not Nemotron-H
+3. Mamba-Transformer hybrids have complex dependencies unsuitable for ARM64
+4. Should have searched for "Jetson deployment" info BEFORE downloading
 
-**Good News**:
-- We have validated alternatives (Introspective-Qwen, Qwen2.5-14B)
-- Fractal MoE architecture doesn't depend on Nemotron specifically
-- Integration pattern is clear (when dependency resolved)
+**User Was Right**:
+> "kinda hard to believe that nvidia would release a model and say 'jetson optimized' without it actually working on the jetsons?"
 
-**Learning**:
-- "Jetson-optimized" model != "Jetson-ready dependencies"
-- Hybrid architectures (Mamba-Transformer) have more complex dependencies than pure Transformers
-- Always test basic import before deep integration work
+Absolutely correct. NVIDIA DOES have Jetson-ready Nemotron models - I just downloaded the wrong one.
 
-**Next Steps**:
-1. Continue work with validated models (Introspective-Qwen, Qwen2.5-14B)
-2. Test Nemotron on Legion (x86_64) when available
-3. Update inventory with dependency requirements
+### Correct Deployment Path for Jetson
+
+**Model**: `nvidia/Llama-3.1-Nemotron-Nano-4B-v1.1`
+
+**Architecture**:
+- Type: Dense decoder-only Transformer
+- Parameters: 4B
+- Context: 131,072 tokens (128K)
+- Base: Llama 3.1 Minitron Width 4B
+
+**Deployment Options**:
+
+1. **HuggingFace Transformers** (Standard)
+   ```python
+   from transformers import AutoModelForCausalLM, AutoTokenizer
+   model = AutoModelForCausalLM.from_pretrained("nvidia/Llama-3.1-Nemotron-Nano-4B-v1.1")
+   ```
+   - Size: ~8GB BF16
+   - Platform: Any NVIDIA GPU including Jetson
+   - Framework: transformers >= 4.44.2
+
+2. **AWQ 4-bit Quantization** (Jetson Optimized)
+   - Size: ~2GB (4-bit)
+   - Framework: TinyChat, TensorRT-LLM
+   - Platform: Jetson Orin, Jetson AGX Thor
+   - Deployment: Pre-built containers or manual build
+
+3. **vLLM Server** (Production)
+   - Docker or virtual environment
+   - Supports tool-calling
+   - NeMo 24.12 runtime
+
+**Tested Hardware**:
+- ✅ Jetson AGX Thor (BF16 inference confirmed)
+- ✅ NVIDIA RTX GPUs (all generations)
+- ✅ Ampere and Hopper architectures
+
+### Corrected Recommendations
+
+**Immediate Next Steps**:
+
+1. **Download correct model**: `nvidia/Llama-3.1-Nemotron-Nano-4B-v1.1`
+   - Pure Transformer, no mamba-ssm dependency
+   - Direct HuggingFace compatibility
+   - ~8GB download
+
+2. **Test on Thor (Jetson)**: Should work immediately with transformers library
+   - No special compilation needed
+   - Standard PyTorch inference
+
+3. **Optional: AWQ quantization**: For production edge deployment
+   - 4-bit quantization reduces to ~2GB
+   - TensorRT-LLM for maximum performance
+
+**What to Keep**:
+- Nemotron-H download (8.38GB) can stay for x86_64 testing on Legion
+- Useful for comparing Mamba-Transformer vs pure Transformer performance
+- Legion (RTX 4090) may support mamba-ssm compilation
+
+**What This Means for SAGE**:
+- ✅ Jetson deployment IS possible with correct model
+- ✅ No dependency blockers for Llama Nemotron Nano
+- ✅ Integration pattern unchanged (IRP plugin works for both)
+- ✅ Can proceed with testing and benchmarking
+
+### Learning
+
+**Critical Lessons**:
+1. ✅ **ALWAYS research model variants BEFORE downloading**
+2. ✅ **"Jetson-optimized" requires checking official docs for which variant**
+3. ✅ **Architecture matters**: Hybrid models have complex dependencies
+4. ✅ **User skepticism was well-founded**: NVIDIA wouldn't lie about Jetson support
+
+**Research Process Improvement**:
+- Search "[model] Jetson deployment" BEFORE downloading
+- Check HuggingFace model card for architecture details
+- Verify dependency requirements for target platform
+- Look for official NVIDIA documentation on edge deployment
 
 ---
 

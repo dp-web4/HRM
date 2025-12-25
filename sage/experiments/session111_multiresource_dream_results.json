@@ -1,0 +1,246 @@
+{
+  "session": 111,
+  "timestamp": "2025-12-25T08:02:15.888120",
+  "scenarios": {
+    "normal_operation": {
+      "timestamp": "2025-12-25T08:02:15.887505",
+      "cycles_count": 50,
+      "operational_mode": "normal",
+      "phases_executed": [
+        "pattern_extraction",
+        "quality_learning",
+        "creative_associations",
+        "epistemic_insights",
+        "save_consolidated"
+      ],
+      "phases_skipped": [],
+      "resource_usage": {
+        "compute": 27.0,
+        "memory": 15.0,
+        "tool": 20.0,
+        "latency": 480.0,
+        "risk": 0.7000000000000001
+      },
+      "budget_before": {
+        "compute": 1.0,
+        "memory": 1.0,
+        "tool": 1.0,
+        "latency": 1.0,
+        "risk": 1.0
+      },
+      "budget_after": {
+        "compute": 0.754,
+        "memory": 0.862,
+        "tool": 0.92,
+        "latency": 0.544,
+        "risk": 0.36000000000000004
+      },
+      "adaptations": [
+        "NORMAL mode: Full consolidation (all phases)"
+      ]
+    },
+    "stressed_operation": {
+      "timestamp": "2025-12-25T08:02:15.887725",
+      "cycles_count": 50,
+      "operational_mode": "stressed",
+      "phases_executed": [
+        "pattern_extraction",
+        "quality_learning",
+        "save_consolidated"
+      ],
+      "phases_skipped": [],
+      "resource_usage": {
+        "compute": 16.0,
+        "memory": 9.0,
+        "tool": 0.0,
+        "latency": 210.0,
+        "risk": 0.2
+      },
+      "budget_before": {
+        "compute": 0.2,
+        "memory": 0.15,
+        "tool": 0.92,
+        "latency": 0.544,
+        "risk": 0.36000000000000004
+      },
+      "budget_after": {
+        "compute": 0.064,
+        "memory": 0.07200000000000001,
+        "tool": 1.0,
+        "latency": 0.358,
+        "risk": 0.22000000000000003
+      },
+      "adaptations": [
+        "Skipped normal-priority creative_associations (resource conservation)",
+        "Skipped normal-priority epistemic_insights (resource conservation)",
+        "STRESSED mode: Conservative consolidation (3/5 phases)"
+      ]
+    },
+    "recovery_phase": {
+      "timestamp": "2025-12-25T08:02:15.887876",
+      "cycles_count": 50,
+      "operational_mode": "stressed",
+      "phases_executed": [
+        "pattern_extraction",
+        "quality_learning",
+        "save_consolidated",
+        "creative_associations",
+        "epistemic_insights"
+      ],
+      "phases_skipped": [],
+      "resource_usage": {
+        "compute": 27.0,
+        "memory": 15.0,
+        "tool": 20.0,
+        "latency": 480.0,
+        "risk": 0.7
+      },
+      "budget_before": {
+        "compute": 0.30399999999999994,
+        "memory": 0.19199999999999995,
+        "tool": 1.0,
+        "latency": 0.598,
+        "risk": 0.8200000000000003
+      },
+      "budget_after": {
+        "compute": 0.05799999999999992,
+        "memory": 0.05399999999999996,
+        "tool": 0.92,
+        "latency": 0.142,
+        "risk": 0.18000000000000022
+      },
+      "adaptations": [
+        "STRESSED mode: Conservative consolidation (5/5 phases)"
+      ]
+    }
+  },
+  "phase_statistics": {
+    "executed": {
+      "pattern_extraction": 3,
+      "quality_learning": 3,
+      "creative_associations": 2,
+      "epistemic_insights": 2,
+      "save_consolidated": 3
+    },
+    "skipped": {
+      "pattern_extraction": 0,
+      "quality_learning": 0,
+      "creative_associations": 0,
+      "epistemic_insights": 0,
+      "save_consolidated": 0
+    }
+  },
+  "consolidation_history": [
+    {
+      "timestamp": "2025-12-25T08:02:15.887505",
+      "cycles_count": 50,
+      "operational_mode": "normal",
+      "phases_executed": [
+        "pattern_extraction",
+        "quality_learning",
+        "creative_associations",
+        "epistemic_insights",
+        "save_consolidated"
+      ],
+      "phases_skipped": [],
+      "resource_usage": {
+        "compute": 27.0,
+        "memory": 15.0,
+        "tool": 20.0,
+        "latency": 480.0,
+        "risk": 0.7000000000000001
+      },
+      "budget_before": {
+        "compute": 1.0,
+        "memory": 1.0,
+        "tool": 1.0,
+        "latency": 1.0,
+        "risk": 1.0
+      },
+      "budget_after": {
+        "compute": 0.754,
+        "memory": 0.862,
+        "tool": 0.92,
+        "latency": 0.544,
+        "risk": 0.36000000000000004
+      },
+      "adaptations": [
+        "NORMAL mode: Full consolidation (all phases)"
+      ]
+    },
+    {
+      "timestamp": "2025-12-25T08:02:15.887725",
+      "cycles_count": 50,
+      "operational_mode": "stressed",
+      "phases_executed": [
+        "pattern_extraction",
+        "quality_learning",
+        "save_consolidated"
+      ],
+      "phases_skipped": [],
+      "resource_usage": {
+        "compute": 16.0,
+        "memory": 9.0,
+        "tool": 0.0,
+        "latency": 210.0,
+        "risk": 0.2
+      },
+      "budget_before": {
+        "compute": 0.2,
+        "memory": 0.15,
+        "tool": 0.92,
+        "latency": 0.544,
+        "risk": 0.36000000000000004
+      },
+      "budget_after": {
+        "compute": 0.064,
+        "memory": 0.07200000000000001,
+        "tool": 1.0,
+        "latency": 0.358,
+        "risk": 0.22000000000000003
+      },
+      "adaptations": [
+        "Skipped normal-priority creative_associations (resource conservation)",
+        "Skipped normal-priority epistemic_insights (resource conservation)",
+        "STRESSED mode: Conservative consolidation (3/5 phases)"
+      ]
+    },
+    {
+      "timestamp": "2025-12-25T08:02:15.887876",
+      "cycles_count": 50,
+      "operational_mode": "stressed",
+      "phases_executed": [
+        "pattern_extraction",
+        "quality_learning",
+        "save_consolidated",
+        "creative_associations",
+        "epistemic_insights"
+      ],
+      "phases_skipped": [],
+      "resource_usage": {
+        "compute": 27.0,
+        "memory": 15.0,
+        "tool": 20.0,
+        "latency": 480.0,
+        "risk": 0.7
+      },
+      "budget_before": {
+        "compute": 0.30399999999999994,
+        "memory": 0.19199999999999995,
+        "tool": 1.0,
+        "latency": 0.598,
+        "risk": 0.8200000000000003
+      },
+      "budget_after": {
+        "compute": 0.05799999999999992,
+        "memory": 0.05399999999999996,
+        "tool": 0.92,
+        "latency": 0.142,
+        "risk": 0.18000000000000022
+      },
+      "adaptations": [
+        "STRESSED mode: Conservative consolidation (5/5 phases)"
+      ]
+    }
+  ]
+}

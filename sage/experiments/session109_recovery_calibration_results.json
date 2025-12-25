@@ -1,0 +1,68 @@
+{
+  "session": 109,
+  "timestamp": "2025-12-25 02:02:10 UTC",
+  "methodology": {
+    "principle": "recovery_rate > min_action_cost",
+    "margin": 1.2,
+    "calibration_basis": "minimum non-zero cost per resource"
+  },
+  "minimum_costs": {
+    "compute": 2.0,
+    "memory": 1.0,
+    "tool": 10.0,
+    "latency": 20.0,
+    "risk": 0.05
+  },
+  "calibrated_recovery_rates": {
+    "compute": 2.4,
+    "memory": 1.2,
+    "tool": 12.0,
+    "latency": 24.0,
+    "risk": 0.06
+  },
+  "test_results": {
+    "compute_starvation": {
+      "regime": "compute_starvation_calibrated",
+      "cycles": 200,
+      "actions_executed": 64,
+      "actions_blocked": 136,
+      "block_rate": 0.68,
+      "recovery_events": 0,
+      "deadlocked": false,
+      "final_budget": {
+        "compute_atp": 100.0,
+        "memory_atp": 18.800000000000416
+      },
+      "recovery_rate": 2.4,
+      "min_action_cost": 2.0
+    }
+  },
+  "comparison_to_s108": {
+    "baseline": {
+      "actions_executed": 9,
+      "actions_blocked": 130,
+      "block_rate": 0.935,
+      "deadlocked": true
+    },
+    "calibrated": {
+      "regime": "compute_starvation_calibrated",
+      "cycles": 200,
+      "actions_executed": 64,
+      "actions_blocked": 136,
+      "block_rate": 0.68,
+      "recovery_events": 0,
+      "deadlocked": false,
+      "final_budget": {
+        "compute_atp": 100.0,
+        "memory_atp": 18.800000000000416
+      },
+      "recovery_rate": 2.4,
+      "min_action_cost": 2.0
+    },
+    "improvement": {
+      "execution_increase": 55,
+      "block_rate_reduction": 0.255,
+      "deadlock_prevented": true
+    }
+  }
+}

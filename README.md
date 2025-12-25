@@ -10,6 +10,14 @@
 - **Resource Router**: Efficiently allocates computational resources based on need
 - **Emergence Platform**: Enables intelligence to arise from orchestrated components
 
+### Fractal MoE Architecture
+SAGE implements a **fractal Mixture-of-Experts** pattern where the same trust-based, context-aware, resource-conscious selection logic applies at multiple scales:
+- **Micro**: Token-level expert routing (inside MoE models like Q3-Omni)
+- **Macro**: Model-level orchestration (selecting between Nemotron, Q3-Omni, NeuTTS...)
+- **Meta**: Federation-level coordination (routing between SAGE instances)
+
+See [`sage/docs/FRACTAL_MOE_ARCHITECTURE.md`](sage/docs/FRACTAL_MOE_ARCHITECTURE.md) for details.
+
 ---
 
 ## 📋 Project Status & Maturity

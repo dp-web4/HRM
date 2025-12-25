@@ -1,0 +1,253 @@
+{
+  "session": 113,
+  "timestamp": "2025-12-25T20:03:16.828506",
+  "scenarios": {
+    "focus_normal": {
+      "allocation": {
+        "target_a": 80.0,
+        "target_b": 15.0,
+        "target_c": 5.0
+      },
+      "metabolic": "focus",
+      "operational": "normal"
+    },
+    "focus_stressed": {
+      "allocation": {
+        "target_a": 60.0,
+        "target_b": 25.0,
+        "target_c": 15.0
+      },
+      "metabolic": "focus",
+      "operational": "stressed"
+    },
+    "dream_normal": {
+      "allocation": {
+        "target_a": 18.089577863616572,
+        "target_b": 63.89697613251498,
+        "target_c": 18.01344600386843
+      },
+      "metabolic": "dream",
+      "operational": "normal"
+    },
+    "dream_stressed": {
+      "allocation": {
+        "target_a": 33.333333333333336,
+        "target_b": 33.333333333333336,
+        "target_c": 33.333333333333336
+      },
+      "metabolic": "dream",
+      "operational": "stressed"
+    },
+    "rest_crisis": {
+      "allocation": {
+        "memory_consolidation": 50.0,
+        "minimal_monitoring": 50.0
+      },
+      "metabolic": "rest",
+      "operational": "crisis"
+    },
+    "crisis_metabolic": {
+      "allocation": {
+        "threat": 100.0
+      },
+      "metabolic": "crisis",
+      "operational": "varies"
+    }
+  },
+  "statistics": {
+    "strategy_distribution": {
+      "full_metabolic": 3,
+      "degraded_metabolic": 1,
+      "minimal_attention": 2,
+      "deferred_attention": 0
+    },
+    "metabolic_operational_pairs": {
+      "focus_normal": 1,
+      "focus_stressed": 1,
+      "dream_normal": 1,
+      "dream_stressed": 1,
+      "rest_crisis": 1,
+      "crisis_stressed": 1
+    },
+    "total_allocations": 6,
+    "attention_manager_stats": {
+      "current_state": "crisis",
+      "time_in_current_state": 0.00498,
+      "total_transitions": 0,
+      "state_durations": {
+        "wake": 0.0,
+        "focus": 0.0,
+        "rest": 0.0,
+        "dream": 0.0,
+        "crisis": 0.0
+      },
+      "total_atp": 100.0
+    },
+    "resource_budget_levels": {
+      "compute": 0.068,
+      "memory": 0.024000000000000004,
+      "tool": 0.26,
+      "latency": 0.766,
+      "risk": 0.5700000000000001
+    }
+  },
+  "allocation_history": [
+    {
+      "timestamp": "2025-12-25T20:03:16.823487",
+      "metabolic_state": "focus",
+      "operational_mode": "normal",
+      "strategy": "full_metabolic",
+      "targets": 3,
+      "max_salience": 0.9,
+      "resource_usage": {
+        "compute": 8.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 100.0,
+        "risk": 0.1,
+        "priority": "high"
+      },
+      "budget_after": {
+        "compute": 0.9440000000000001,
+        "memory": 0.9620000000000001,
+        "tool": 1.0,
+        "latency": 0.924,
+        "risk": 0.96
+      },
+      "adaptations": [
+        "NORMAL mode: Full focus allocation"
+      ]
+    },
+    {
+      "timestamp": "2025-12-25T20:03:16.823620",
+      "metabolic_state": "focus",
+      "operational_mode": "stressed",
+      "strategy": "degraded_metabolic",
+      "targets": 3,
+      "max_salience": 0.9,
+      "resource_usage": {
+        "compute": 8.0,
+        "memory": 5.0,
+        "tool": 0.0,
+        "latency": 100.0,
+        "risk": 0.1,
+        "priority": "high"
+      },
+      "budget_after": {
+        "compute": 0.14400000000000002,
+        "memory": 0.924,
+        "tool": 1.0,
+        "latency": 0.848,
+        "risk": 0.9199999999999999
+      },
+      "adaptations": [
+        "STRESSED mode: Degraded focus allocation"
+      ]
+    },
+    {
+      "timestamp": "2025-12-25T20:03:16.827807",
+      "metabolic_state": "dream",
+      "operational_mode": "normal",
+      "strategy": "full_metabolic",
+      "targets": 3,
+      "max_salience": 0.5,
+      "resource_usage": {
+        "compute": 6.0,
+        "memory": 4.0,
+        "tool": 10.0,
+        "latency": 150.0,
+        "risk": 0.3,
+        "priority": "low"
+      },
+      "budget_after": {
+        "compute": 0.3479999999999999,
+        "memory": 0.972,
+        "tool": 1.0,
+        "latency": 0.874,
+        "risk": 0.76
+      },
+      "adaptations": [
+        "NORMAL mode: Full dream exploration"
+      ]
+    },
+    {
+      "timestamp": "2025-12-25T20:03:16.828026",
+      "metabolic_state": "dream",
+      "operational_mode": "stressed",
+      "strategy": "minimal_attention",
+      "targets": 3,
+      "max_salience": 0.5,
+      "resource_usage": {
+        "compute": 6.0,
+        "memory": 4.0,
+        "tool": 10.0,
+        "latency": 150.0,
+        "risk": 0.3,
+        "priority": "low"
+      },
+      "budget_after": {
+        "compute": 0.3119999999999999,
+        "memory": 0.9440000000000001,
+        "tool": 0.12,
+        "latency": 0.748,
+        "risk": 0.52
+      },
+      "adaptations": [
+        "stressed mode: Dream deferred (tool budget conservation)",
+        "Downgraded due to bottlenecks: ['tool']"
+      ]
+    },
+    {
+      "timestamp": "2025-12-25T20:03:16.828134",
+      "metabolic_state": "rest",
+      "operational_mode": "crisis",
+      "strategy": "minimal_attention",
+      "targets": 3,
+      "max_salience": 0.2,
+      "resource_usage": {
+        "compute": 1.0,
+        "memory": 2.0,
+        "tool": 0.0,
+        "latency": 20.0,
+        "risk": 0.02,
+        "priority": "low"
+      },
+      "budget_after": {
+        "compute": 0.064,
+        "memory": 0.022000000000000002,
+        "tool": 0.14,
+        "latency": 0.752,
+        "risk": 0.56
+      },
+      "adaptations": [
+        "CRISIS operational + REST metabolic: Minimal passive monitoring"
+      ]
+    },
+    {
+      "timestamp": "2025-12-25T20:03:16.828233",
+      "metabolic_state": "crisis",
+      "operational_mode": "stressed",
+      "strategy": "full_metabolic",
+      "targets": 3,
+      "max_salience": 0.98,
+      "resource_usage": {
+        "compute": 2.0,
+        "memory": 1.0,
+        "tool": 0.0,
+        "latency": 10.0,
+        "risk": 0.05,
+        "priority": "critical"
+      },
+      "budget_after": {
+        "compute": 0.068,
+        "memory": 0.024000000000000004,
+        "tool": 0.26,
+        "latency": 0.766,
+        "risk": 0.5700000000000001
+      },
+      "adaptations": [
+        "CRISIS metabolic: Full attention (survival override)"
+      ]
+    }
+  ]
+}

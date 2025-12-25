@@ -1,0 +1,191 @@
+{
+  "session": 112,
+  "timestamp": "2025-12-25T16:01:55.701484",
+  "scenarios": {
+    "normal_operation": {
+      "consensus_quality": 0.9,
+      "confidence": 1.0,
+      "strategy": "full",
+      "mode": "normal"
+    },
+    "attack_defense": {
+      "consensus_quality": 0.9,
+      "confidence": 1.0,
+      "strategy": "full",
+      "mode": "normal",
+      "malicious_filtered": true
+    },
+    "stressed_operation": {
+      "consensus_quality": 0.9,
+      "confidence": 1.0,
+      "strategy": "fast",
+      "mode": "stressed"
+    },
+    "crisis_operation": {
+      "consensus_quality": 0.9,
+      "confidence": 1.0,
+      "strategy": "minimal",
+      "mode": "crisis"
+    },
+    "recovery_phase": {
+      "consensus_quality": 0.9,
+      "confidence": 1.0,
+      "strategy": "fast",
+      "mode": "stressed"
+    }
+  },
+  "strategy_distribution": {
+    "full": 2,
+    "fast": 2,
+    "minimal": 1,
+    "deferred": 0
+  },
+  "mode_distribution": {
+    "normal": 2,
+    "stressed": 2,
+    "crisis": 1,
+    "sleep": 0
+  },
+  "consensus_history": [
+    {
+      "timestamp": "2025-12-25T16:01:55.700700",
+      "expert_id": 42,
+      "context_id": "code_review",
+      "consensus_quality": 0.9,
+      "confidence": 1.0,
+      "operational_mode": "normal",
+      "strategy": "full",
+      "operations_executed": [
+        "whitelist_lookup",
+        "attestation_verification",
+        "coverage_computation",
+        "outlier_detection",
+        "consensus_median"
+      ],
+      "resource_usage": {
+        "whitelist_lookup": 0.5,
+        "coverage_computation": 1.0,
+        "attestation_verification": 4.0,
+        "outlier_detection": 5.0,
+        "consensus_median": 2.0
+      },
+      "budget_after": {
+        "compute": 0.899,
+        "memory": 0.927,
+        "tool": 1.0,
+        "latency": 0.899,
+        "risk": 0.8699999999999999
+      }
+    },
+    {
+      "timestamp": "2025-12-25T16:01:55.700880",
+      "expert_id": 42,
+      "context_id": "code_review_attack",
+      "consensus_quality": 0.9,
+      "confidence": 1.0,
+      "operational_mode": "normal",
+      "strategy": "full",
+      "operations_executed": [
+        "whitelist_lookup",
+        "attestation_verification",
+        "coverage_computation",
+        "outlier_detection",
+        "consensus_median"
+      ],
+      "resource_usage": {
+        "whitelist_lookup": 0.5,
+        "coverage_computation": 1.0,
+        "attestation_verification": 4.0,
+        "outlier_detection": 5.0,
+        "consensus_median": 2.0
+      },
+      "budget_after": {
+        "compute": 0.7980000000000002,
+        "memory": 0.8540000000000001,
+        "tool": 1.0,
+        "latency": 0.798,
+        "risk": 0.7399999999999998
+      }
+    },
+    {
+      "timestamp": "2025-12-25T16:01:55.701016",
+      "expert_id": 42,
+      "context_id": "code_review_stressed",
+      "consensus_quality": 0.9,
+      "confidence": 1.0,
+      "operational_mode": "stressed",
+      "strategy": "fast",
+      "operations_executed": [
+        "whitelist_lookup",
+        "coverage_computation",
+        "outlier_detection",
+        "consensus_median"
+      ],
+      "resource_usage": {
+        "whitelist_lookup": 0.5,
+        "coverage_computation": 1.0,
+        "outlier_detection": 5.0,
+        "consensus_median": 2.0
+      },
+      "budget_after": {
+        "compute": 0.08900000000000001,
+        "memory": 0.801,
+        "tool": 0.17,
+        "latency": 0.747,
+        "risk": 0.6599999999999997
+      }
+    },
+    {
+      "timestamp": "2025-12-25T16:01:55.701144",
+      "expert_id": 42,
+      "context_id": "code_review_crisis",
+      "consensus_quality": 0.9,
+      "confidence": 1.0,
+      "operational_mode": "crisis",
+      "strategy": "minimal",
+      "operations_executed": [
+        "whitelist_lookup",
+        "consensus_median"
+      ],
+      "resource_usage": {
+        "whitelist_lookup": 0.5,
+        "consensus_median": 2.0
+      },
+      "budget_after": {
+        "compute": 0.049,
+        "memory": 0.017,
+        "tool": 0.13,
+        "latency": 0.746,
+        "risk": 0.6899999999999997
+      }
+    },
+    {
+      "timestamp": "2025-12-25T16:01:55.701282",
+      "expert_id": 42,
+      "context_id": "code_review_recovery",
+      "consensus_quality": 0.9,
+      "confidence": 1.0,
+      "operational_mode": "stressed",
+      "strategy": "fast",
+      "operations_executed": [
+        "whitelist_lookup",
+        "coverage_computation",
+        "outlier_detection",
+        "consensus_median"
+      ],
+      "resource_usage": {
+        "whitelist_lookup": 0.5,
+        "coverage_computation": 1.0,
+        "outlier_detection": 5.0,
+        "consensus_median": 2.0
+      },
+      "budget_after": {
+        "compute": 0.3479999999999999,
+        "memory": 0.14399999999999996,
+        "tool": 1.0,
+        "latency": 0.949,
+        "risk": 0.9199999999999999
+      }
+    }
+  ]
+}

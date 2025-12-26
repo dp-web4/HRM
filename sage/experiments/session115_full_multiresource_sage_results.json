@@ -1,6 +1,6 @@
 {
   "session": 115,
-  "timestamp": "2025-12-26T02:04:36.008390+00:00",
+  "timestamp": "2025-12-26T08:00:39.444297+00:00",
   "statistics": {
     "total_turns": 7,
     "resource_conflicts": 0,
@@ -28,14 +28,14 @@
       "total_allocations": 7,
       "attention_manager_stats": {
         "current_state": "wake",
-        "time_in_current_state": 0.000239,
+        "time_in_current_state": 0.001254,
         "total_transitions": 4,
         "state_durations": {
-          "wake": 0.000238,
-          "focus": 0.001265,
+          "wake": 0.001251,
+          "focus": 0.006428,
           "rest": 0.0,
           "dream": 0.0,
-          "crisis": 0.000305
+          "crisis": 0.001524
         },
         "total_atp": 100.0
       },
@@ -77,7 +77,7 @@
   },
   "operation_history": [
     {
-      "timestamp": "2025-12-26T02:04:36.005828+00:00",
+      "timestamp": "2025-12-26T08:00:39.431626+00:00",
       "speaker": "User",
       "operational_mode": "normal",
       "budget_start": {
@@ -108,7 +108,7 @@
       }
     },
     {
-      "timestamp": "2025-12-26T02:04:36.006289+00:00",
+      "timestamp": "2025-12-26T08:00:39.433725+00:00",
       "speaker": "Assistant",
       "operational_mode": "normal",
       "budget_start": {
@@ -139,7 +139,7 @@
       }
     },
     {
-      "timestamp": "2025-12-26T02:04:36.006638+00:00",
+      "timestamp": "2025-12-26T08:00:39.435690+00:00",
       "speaker": "User",
       "operational_mode": "normal",
       "budget_start": {
@@ -170,7 +170,7 @@
       }
     },
     {
-      "timestamp": "2025-12-26T02:04:36.006962+00:00",
+      "timestamp": "2025-12-26T08:00:39.437199+00:00",
       "speaker": "Assistant",
       "operational_mode": "normal",
       "budget_start": {
@@ -201,7 +201,7 @@
       }
     },
     {
-      "timestamp": "2025-12-26T02:04:36.007269+00:00",
+      "timestamp": "2025-12-26T08:00:39.438690+00:00",
       "speaker": "User",
       "operational_mode": "normal",
       "budget_start": {
@@ -232,7 +232,7 @@
       }
     },
     {
-      "timestamp": "2025-12-26T02:04:36.007573+00:00",
+      "timestamp": "2025-12-26T08:00:39.440248+00:00",
       "speaker": "Assistant",
       "operational_mode": "normal",
       "budget_start": {
@@ -263,7 +263,7 @@
       }
     },
     {
-      "timestamp": "2025-12-26T02:04:36.007870+00:00",
+      "timestamp": "2025-12-26T08:00:39.441738+00:00",
       "speaker": "User",
       "operational_mode": "normal",
       "budget_start": {

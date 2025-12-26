@@ -1,0 +1,82 @@
+{
+  "session": 118,
+  "timestamp": "2025-12-26T10:03:56.275097+00:00",
+  "component": "expert_selector",
+  "scenarios": {
+    "Normal Operation": {
+      "description": "Full expert panel selection under normal resources",
+      "statistics": {
+        "total_selections": 5,
+        "strategy_distribution": {
+          "full_panel": 1,
+          "reduced_panel": 1,
+          "single_expert": 1,
+          "cached_expert": 2
+        },
+        "deferrals_by_strategy": {
+          "full_panel": 0,
+          "reduced_panel": 2,
+          "single_expert": 0,
+          "cached_expert": 0
+        },
+        "final_budget": {
+          "compute": 6.800000000000001,
+          "memory": 38.80000000000001,
+          "tool": 100.0,
+          "latency": 1000.0,
+          "risk": 1.0
+        }
+      }
+    },
+    "Resource Stress": {
+      "description": "Expert selection under resource constraints",
+      "statistics": {
+        "total_selections": 10,
+        "strategy_distribution": {
+          "full_panel": 1,
+          "reduced_panel": 1,
+          "single_expert": 3,
+          "cached_expert": 5
+        },
+        "deferrals_by_strategy": {
+          "full_panel": 0,
+          "reduced_panel": 5,
+          "single_expert": 0,
+          "cached_expert": 0
+        },
+        "final_budget": {
+          "compute": 2.5000000000000013,
+          "memory": 34.50000000000002,
+          "tool": 100.0,
+          "latency": 1000.0,
+          "risk": 1.0
+        }
+      }
+    },
+    "Resource Starvation": {
+      "description": "Expert selection without recovery (force degradation)",
+      "statistics": {
+        "total_selections": 15,
+        "strategy_distribution": {
+          "full_panel": 1,
+          "reduced_panel": 1,
+          "single_expert": 0,
+          "cached_expert": 13
+        },
+        "deferrals_by_strategy": {
+          "full_panel": 0,
+          "reduced_panel": 13,
+          "single_expert": 0,
+          "cached_expert": 0
+        },
+        "final_budget": {
+          "compute": 1.6999999999999988,
+          "memory": 36.69999999999998,
+          "tool": 100.0,
+          "latency": 1000.0,
+          "risk": 1.0
+        }
+      }
+    }
+  }
+}

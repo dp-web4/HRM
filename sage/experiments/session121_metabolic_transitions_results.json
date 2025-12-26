@@ -1,0 +1,406 @@
+{
+  "session": 121,
+  "timestamp": "2025-12-26T22:04:50.902187+00:00",
+  "description": "Metabolic state transition testing",
+  "transitions_observed": [
+    "wake \u2192 focus",
+    "focus \u2192 wake",
+    "wake \u2192 rest",
+    "rest \u2192 focus",
+    "focus \u2192 wake",
+    "wake \u2192 focus",
+    "focus \u2192 crisis"
+  ],
+  "states_visited": [
+    "crisis",
+    "focus",
+    "rest",
+    "wake"
+  ],
+  "turn_results": [
+    {
+      "turn_id": 1,
+      "state_before": "wake",
+      "state_after": "wake",
+      "transition": false,
+      "emotional_state": {
+        "curiosity": 0.77,
+        "frustration": 0.0,
+        "engagement": 0.6799999999999999,
+        "progress": 0.5
+      },
+      "resources": {
+        "compute": 32.66256845141394,
+        "memory": 54.7083789676093,
+        "tool": 100.0
+      },
+      "operational_mode": "normal",
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.589
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.272
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 1.1
+        }
+      }
+    },
+    {
+      "turn_id": 2,
+      "state_before": "wake",
+      "state_after": "focus",
+      "transition": true,
+      "emotional_state": {
+        "curiosity": 1.0,
+        "frustration": 0.0,
+        "engagement": 0.9319999999999999,
+        "progress": 0.5
+      },
+      "resources": {
+        "compute": 85.51640503798292,
+        "memory": 100.0,
+        "tool": 100.0
+      },
+      "operational_mode": "normal",
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.7795999999999998
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.3728
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 1.1
+        }
+      }
+    },
+    {
+      "turn_id": 3,
+      "state_before": "focus",
+      "state_after": "focus",
+      "transition": false,
+      "emotional_state": {
+        "curiosity": 1.0,
+        "frustration": 0.0,
+        "engagement": 1.0,
+        "progress": 0.5
+      },
+      "resources": {
+        "compute": 21.64843967001755,
+        "memory": 57.22135642135641,
+        "tool": 100.0
+      },
+      "operational_mode": "stressed",
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.8
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.4
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 1.1
+        }
+      }
+    },
+    {
+      "turn_id": 4,
+      "state_before": "focus",
+      "state_after": "focus",
+      "transition": false,
+      "emotional_state": {
+        "curiosity": 0.95,
+        "frustration": 0.0,
+        "engagement": 0.77,
+        "progress": 0.5
+      },
+      "resources": {
+        "compute": 1.5,
+        "memory": 12.825688936305529,
+        "tool": 100.0
+      },
+      "operational_mode": "stressed",
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.706
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.308
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 1.1
+        }
+      }
+    },
+    {
+      "turn_id": 5,
+      "state_before": "focus",
+      "state_after": "wake",
+      "transition": true,
+      "emotional_state": {
+        "curiosity": 0.9049999999999999,
+        "frustration": 0.27,
+        "engagement": 0.653,
+        "progress": 0.5
+      },
+      "resources": {
+        "compute": 27.6930305122386,
+        "memory": 51.39535367482574,
+        "tool": 100.0
+      },
+      "operational_mode": "normal",
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.6483999999999999
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.1802000000000001
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 0.9650000000000001
+        }
+      }
+    },
+    {
+      "turn_id": 6,
+      "state_before": "wake",
+      "state_after": "rest",
+      "transition": true,
+      "emotional_state": {
+        "curiosity": 0.8644999999999999,
+        "frustration": 0.603,
+        "engagement": 0.6377,
+        "progress": 0.5
+      },
+      "resources": {
+        "compute": 4.0,
+        "memory": 6.015575003281054,
+        "tool": 76.0
+      },
+      "operational_mode": "stressed",
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.6235600000000001
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.07418
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 0.7985000000000001
+        }
+      }
+    },
+    {
+      "turn_id": 7,
+      "state_before": "rest",
+      "state_after": "rest",
+      "transition": false,
+      "emotional_state": {
+        "curiosity": 0.8644999999999999,
+        "frustration": 0.603,
+        "engagement": 0.6377,
+        "progress": 0.5
+      },
+      "resources": {
+        "compute": 4.0,
+        "memory": 2.0,
+        "tool": 92.0
+      },
+      "operational_mode": "stressed",
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.6235600000000001
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.07418
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 0.7985000000000001
+        }
+      }
+    },
+    {
+      "turn_id": 8,
+      "state_before": "rest",
+      "state_after": "focus",
+      "transition": true,
+      "emotional_state": {
+        "curiosity": 0.82805,
+        "frustration": 0.2727,
+        "engagement": 0.7139300000000001,
+        "progress": 0.5
+      },
+      "resources": {
+        "compute": 77.02128551509237,
+        "memory": 100.0,
+        "tool": 100.0
+      },
+      "operational_mode": "normal",
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.6282040000000002
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.2037620000000002
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 0.9636500000000001
+        }
+      }
+    },
+    {
+      "turn_id": 9,
+      "state_before": "focus",
+      "state_after": "wake",
+      "transition": true,
+      "emotional_state": {
+        "curiosity": 0.795245,
+        "frustration": 0.24542999999999998,
+        "engagement": 0.42253700000000005,
+        "progress": 0.5
+      },
+      "resources": {
+        "compute": 24.635014477732962,
+        "memory": 49.35667631848864,
+        "tool": 100.0
+      },
+      "operational_mode": "stressed",
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.5243836
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.0953858
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 0.9772850000000001
+        }
+      }
+    },
+    {
+      "turn_id": 10,
+      "state_before": "wake",
+      "state_after": "wake",
+      "transition": false,
+      "emotional_state": {
+        "curiosity": 0.795245,
+        "frustration": 0.24542999999999998,
+        "engagement": 0.42253700000000005,
+        "progress": 0.5
+      },
+      "resources": {
+        "compute": 2.4,
+        "memory": 1.2,
+        "tool": 100.0
+      },
+      "operational_mode": "stressed",
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.5243836
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.0953858
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 0.9772850000000001
+        }
+      }
+    },
+    {
+      "turn_id": 11,
+      "state_before": "wake",
+      "state_after": "focus",
+      "transition": true,
+      "emotional_state": {
+        "curiosity": 0.9457205,
+        "frustration": 0.22088699999999997,
+        "engagement": 0.7002832999999999,
+        "progress": 0.5
+      },
+      "resources": {
+        "compute": 78.6426893313731,
+        "memory": 100.0,
+        "tool": 100.0
+      },
+      "operational_mode": "normal",
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.68294524
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.21384722
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 0.9895565000000001
+        }
+      }
+    },
+    {
+      "turn_id": 12,
+      "state_before": "focus",
+      "state_after": "crisis",
+      "transition": true,
+      "emotional_state": {
+        "curiosity": 0.9457205,
+        "frustration": 0.22088699999999997,
+        "engagement": 0.7002832999999999,
+        "progress": 0.5
+      },
+      "resources": {
+        "compute": 1.0,
+        "memory": 0.5,
+        "tool": 33.0
+      },
+      "operational_mode": "stressed",
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.68294524
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.21384722
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 0.9895565000000001
+        }
+      }
+    }
+  ]
+}

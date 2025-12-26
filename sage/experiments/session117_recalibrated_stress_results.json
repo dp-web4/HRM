@@ -1,0 +1,799 @@
+{
+  "session": 117,
+  "timestamp": "2025-12-26T08:02:08.263127+00:00",
+  "recalibration": "10x costs from Session 116",
+  "scenarios": {
+    "A. Heavy Attention Load": {
+      "description": "Many high-salience targets drain compute rapidly",
+      "statistics": {
+        "total_turns": 3,
+        "resource_conflicts": 3,
+        "deferrals_by_component": {
+          "attention": 3,
+          "memory": 0
+        },
+        "operational_mode_distribution": {
+          "normal": 3
+        },
+        "strategy_distribution": {
+          "attention": {
+            "deferred": 3
+          },
+          "memory": {
+            "full_encoding": 3
+          }
+        },
+        "final_budget": {
+          "compute": 69.10000000000002,
+          "memory": 27.40000000000001,
+          "tool": 100.0,
+          "latency": 1000.0,
+          "risk": 1.0
+        },
+        "memory_buffer_size": 3
+      },
+      "operation_history": [
+        {
+          "timestamp": "2025-12-26T08:02:08.257337+00:00",
+          "speaker": "User",
+          "operational_mode": "normal",
+          "priority": "HIGH",
+          "budget_start": {
+            "compute": 100.0,
+            "memory": 100.0,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          },
+          "attention_result": {
+            "allocated": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "memory_result": {
+            "encoded": true,
+            "deferred": false,
+            "strategy": "full_encoding",
+            "quality": 1.0,
+            "cost": {
+              "compute": 13.8,
+              "memory": 27.6
+            }
+          },
+          "deferrals": [
+            "attention"
+          ],
+          "budget_end": {
+            "compute": 88.60000000000001,
+            "memory": 73.60000000000001,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          }
+        },
+        {
+          "timestamp": "2025-12-26T08:02:08.257655+00:00",
+          "speaker": "Assistant",
+          "operational_mode": "normal",
+          "priority": "HIGH",
+          "budget_start": {
+            "compute": 88.60000000000001,
+            "memory": 73.60000000000001,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          },
+          "attention_result": {
+            "allocated": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "memory_result": {
+            "encoded": true,
+            "deferred": false,
+            "strategy": "full_encoding",
+            "quality": 1.0,
+            "cost": {
+              "compute": 12.3,
+              "memory": 24.6
+            }
+          },
+          "deferrals": [
+            "attention"
+          ],
+          "budget_end": {
+            "compute": 78.70000000000002,
+            "memory": 50.20000000000001,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          }
+        },
+        {
+          "timestamp": "2025-12-26T08:02:08.257958+00:00",
+          "speaker": "User",
+          "operational_mode": "normal",
+          "priority": "CRITICAL",
+          "budget_start": {
+            "compute": 78.70000000000002,
+            "memory": 50.20000000000001,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          },
+          "attention_result": {
+            "allocated": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "memory_result": {
+            "encoded": true,
+            "deferred": false,
+            "strategy": "full_encoding",
+            "quality": 1.0,
+            "cost": {
+              "compute": 12.0,
+              "memory": 24.0
+            }
+          },
+          "deferrals": [
+            "attention"
+          ],
+          "budget_end": {
+            "compute": 69.10000000000002,
+            "memory": 27.40000000000001,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          }
+        }
+      ]
+    },
+    "B. Heavy Memory Load": {
+      "description": "Many turns with large texts drain memory ATP",
+      "statistics": {
+        "total_turns": 6,
+        "resource_conflicts": 5,
+        "deferrals_by_component": {
+          "attention": 0,
+          "memory": 5
+        },
+        "operational_mode_distribution": {
+          "normal": 6
+        },
+        "strategy_distribution": {
+          "attention": {},
+          "memory": {
+            "full_encoding": 1,
+            "deferred": 5
+          }
+        },
+        "final_budget": {
+          "compute": 84.40000000000003,
+          "memory": 47.20000000000002,
+          "tool": 100.0,
+          "latency": 1000.0,
+          "risk": 1.0
+        },
+        "memory_buffer_size": 1
+      },
+      "operation_history": [
+        {
+          "timestamp": "2025-12-26T08:02:08.258523+00:00",
+          "speaker": "User",
+          "operational_mode": "normal",
+          "priority": "NORMAL",
+          "budget_start": {
+            "compute": 100.0,
+            "memory": 100.0,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          },
+          "attention_result": null,
+          "memory_result": {
+            "encoded": true,
+            "deferred": false,
+            "strategy": "full_encoding",
+            "quality": 1.0,
+            "cost": {
+              "compute": 30.0,
+              "memory": 60.0
+            }
+          },
+          "deferrals": [],
+          "budget_end": {
+            "compute": 72.4,
+            "memory": 41.2,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          }
+        },
+        {
+          "timestamp": "2025-12-26T08:02:08.258744+00:00",
+          "speaker": "Assistant",
+          "operational_mode": "normal",
+          "priority": "NORMAL",
+          "budget_start": {
+            "compute": 72.4,
+            "memory": 41.2,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          },
+          "attention_result": null,
+          "memory_result": {
+            "encoded": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "deferrals": [
+            "memory"
+          ],
+          "budget_end": {
+            "compute": 74.80000000000001,
+            "memory": 42.400000000000006,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          }
+        },
+        {
+          "timestamp": "2025-12-26T08:02:08.258956+00:00",
+          "speaker": "User",
+          "operational_mode": "normal",
+          "priority": "NORMAL",
+          "budget_start": {
+            "compute": 74.80000000000001,
+            "memory": 42.400000000000006,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          },
+          "attention_result": null,
+          "memory_result": {
+            "encoded": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "deferrals": [
+            "memory"
+          ],
+          "budget_end": {
+            "compute": 77.20000000000002,
+            "memory": 43.60000000000001,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          }
+        },
+        {
+          "timestamp": "2025-12-26T08:02:08.259164+00:00",
+          "speaker": "Assistant",
+          "operational_mode": "normal",
+          "priority": "NORMAL",
+          "budget_start": {
+            "compute": 77.20000000000002,
+            "memory": 43.60000000000001,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          },
+          "attention_result": null,
+          "memory_result": {
+            "encoded": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "deferrals": [
+            "memory"
+          ],
+          "budget_end": {
+            "compute": 79.60000000000002,
+            "memory": 44.80000000000001,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          }
+        },
+        {
+          "timestamp": "2025-12-26T08:02:08.259368+00:00",
+          "speaker": "User",
+          "operational_mode": "normal",
+          "priority": "NORMAL",
+          "budget_start": {
+            "compute": 79.60000000000002,
+            "memory": 44.80000000000001,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          },
+          "attention_result": null,
+          "memory_result": {
+            "encoded": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "deferrals": [
+            "memory"
+          ],
+          "budget_end": {
+            "compute": 82.00000000000003,
+            "memory": 46.000000000000014,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          }
+        },
+        {
+          "timestamp": "2025-12-26T08:02:08.259575+00:00",
+          "speaker": "Assistant",
+          "operational_mode": "normal",
+          "priority": "NORMAL",
+          "budget_start": {
+            "compute": 82.00000000000003,
+            "memory": 46.000000000000014,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          },
+          "attention_result": null,
+          "memory_result": {
+            "encoded": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "deferrals": [
+            "memory"
+          ],
+          "budget_end": {
+            "compute": 84.40000000000003,
+            "memory": 47.20000000000002,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          }
+        }
+      ]
+    },
+    "C. Simultaneous Stress": {
+      "description": "Both attention and memory demanding simultaneously",
+      "statistics": {
+        "total_turns": 4,
+        "resource_conflicts": 5,
+        "deferrals_by_component": {
+          "attention": 3,
+          "memory": 2
+        },
+        "operational_mode_distribution": {
+          "normal": 1,
+          "stressed": 3
+        },
+        "strategy_distribution": {
+          "attention": {
+            "full_attention": 1,
+            "deferred": 3
+          },
+          "memory": {
+            "deferred": 2,
+            "simplified_encoding": 2
+          }
+        },
+        "final_budget": {
+          "compute": 4.6,
+          "memory": 14.800000000000008,
+          "tool": 100.0,
+          "latency": 896.0,
+          "risk": 1.0
+        },
+        "memory_buffer_size": 2
+      },
+      "operation_history": [
+        {
+          "timestamp": "2025-12-26T08:02:08.260055+00:00",
+          "speaker": "User",
+          "operational_mode": "normal",
+          "priority": "HIGH",
+          "budget_start": {
+            "compute": 100.0,
+            "memory": 100.0,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          },
+          "attention_result": {
+            "allocated": true,
+            "deferred": false,
+            "strategy": "full_attention",
+            "targets": 4,
+            "cost": {
+              "compute": 80.0,
+              "memory": 40.0
+            }
+          },
+          "memory_result": {
+            "encoded": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "deferrals": [
+            "memory"
+          ],
+          "budget_end": {
+            "compute": 22.4,
+            "memory": 61.2,
+            "tool": 100.0,
+            "latency": 824.0,
+            "risk": 1.0
+          }
+        },
+        {
+          "timestamp": "2025-12-26T08:02:08.260317+00:00",
+          "speaker": "Assistant",
+          "operational_mode": "stressed",
+          "priority": "HIGH",
+          "budget_start": {
+            "compute": 22.4,
+            "memory": 61.2,
+            "tool": 100.0,
+            "latency": 824.0,
+            "risk": 1.0
+          },
+          "attention_result": {
+            "allocated": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "memory_result": {
+            "encoded": true,
+            "deferred": false,
+            "strategy": "simplified_encoding",
+            "quality": 0.6,
+            "cost": {
+              "compute": 12.5,
+              "memory": 25.0
+            }
+          },
+          "deferrals": [
+            "attention"
+          ],
+          "budget_end": {
+            "compute": 12.299999999999999,
+            "memory": 37.400000000000006,
+            "tool": 100.0,
+            "latency": 848.0,
+            "risk": 1.0
+          }
+        },
+        {
+          "timestamp": "2025-12-26T08:02:08.260587+00:00",
+          "speaker": "User",
+          "operational_mode": "stressed",
+          "priority": "HIGH",
+          "budget_start": {
+            "compute": 12.299999999999999,
+            "memory": 37.400000000000006,
+            "tool": 100.0,
+            "latency": 848.0,
+            "risk": 1.0
+          },
+          "attention_result": {
+            "allocated": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "memory_result": {
+            "encoded": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "deferrals": [
+            "attention",
+            "memory"
+          ],
+          "budget_end": {
+            "compute": 14.7,
+            "memory": 38.60000000000001,
+            "tool": 100.0,
+            "latency": 872.0,
+            "risk": 1.0
+          }
+        },
+        {
+          "timestamp": "2025-12-26T08:02:08.260849+00:00",
+          "speaker": "Assistant",
+          "operational_mode": "stressed",
+          "priority": "NORMAL",
+          "budget_start": {
+            "compute": 14.7,
+            "memory": 38.60000000000001,
+            "tool": 100.0,
+            "latency": 872.0,
+            "risk": 1.0
+          },
+          "attention_result": {
+            "allocated": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "memory_result": {
+            "encoded": true,
+            "deferred": false,
+            "strategy": "simplified_encoding",
+            "quality": 0.6,
+            "cost": {
+              "compute": 12.5,
+              "memory": 25.0
+            }
+          },
+          "deferrals": [
+            "attention"
+          ],
+          "budget_end": {
+            "compute": 4.6,
+            "memory": 14.800000000000008,
+            "tool": 100.0,
+            "latency": 896.0,
+            "risk": 1.0
+          }
+        }
+      ]
+    },
+    "D. Resource Starvation": {
+      "description": "Continuous depletion without recovery (force CRISIS)",
+      "statistics": {
+        "total_turns": 6,
+        "resource_conflicts": 8,
+        "deferrals_by_component": {
+          "attention": 4,
+          "memory": 4
+        },
+        "operational_mode_distribution": {
+          "normal": 2,
+          "stressed": 4
+        },
+        "strategy_distribution": {
+          "attention": {
+            "full_attention": 2,
+            "deferred": 4
+          },
+          "memory": {
+            "full_encoding": 1,
+            "deferred": 4,
+            "simplified_encoding": 1
+          }
+        },
+        "final_budget": {
+          "compute": 4.099999999999999,
+          "memory": 28.199999999999996,
+          "tool": 100.0,
+          "latency": 800.0,
+          "risk": 1.0
+        },
+        "memory_buffer_size": 2
+      },
+      "operation_history": [
+        {
+          "timestamp": "2025-12-26T08:02:08.261399+00:00",
+          "speaker": "User",
+          "operational_mode": "normal",
+          "priority": "CRITICAL",
+          "budget_start": {
+            "compute": 100.0,
+            "memory": 100.0,
+            "tool": 100.0,
+            "latency": 1000.0,
+            "risk": 1.0
+          },
+          "attention_result": {
+            "allocated": true,
+            "deferred": false,
+            "strategy": "full_attention",
+            "targets": 2,
+            "cost": {
+              "compute": 40.0,
+              "memory": 20.0
+            }
+          },
+          "memory_result": {
+            "encoded": true,
+            "deferred": false,
+            "strategy": "full_encoding",
+            "quality": 1.0,
+            "cost": {
+              "compute": 10.6,
+              "memory": 21.2
+            }
+          },
+          "deferrals": [],
+          "budget_end": {
+            "compute": 49.4,
+            "memory": 58.8,
+            "tool": 100.0,
+            "latency": 900.0,
+            "risk": 1.0
+          }
+        },
+        {
+          "timestamp": "2025-12-26T08:02:08.261672+00:00",
+          "speaker": "Assistant",
+          "operational_mode": "normal",
+          "priority": "HIGH",
+          "budget_start": {
+            "compute": 49.4,
+            "memory": 58.8,
+            "tool": 100.0,
+            "latency": 900.0,
+            "risk": 1.0
+          },
+          "attention_result": {
+            "allocated": true,
+            "deferred": false,
+            "strategy": "full_attention",
+            "targets": 2,
+            "cost": {
+              "compute": 40.0,
+              "memory": 20.0
+            }
+          },
+          "memory_result": {
+            "encoded": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "deferrals": [
+            "memory"
+          ],
+          "budget_end": {
+            "compute": 9.399999999999999,
+            "memory": 38.8,
+            "tool": 100.0,
+            "latency": 800.0,
+            "risk": 1.0
+          }
+        },
+        {
+          "timestamp": "2025-12-26T08:02:08.261948+00:00",
+          "speaker": "User",
+          "operational_mode": "stressed",
+          "priority": "HIGH",
+          "budget_start": {
+            "compute": 9.399999999999999,
+            "memory": 38.8,
+            "tool": 100.0,
+            "latency": 800.0,
+            "risk": 1.0
+          },
+          "attention_result": {
+            "allocated": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "memory_result": {
+            "encoded": true,
+            "deferred": false,
+            "strategy": "simplified_encoding",
+            "quality": 0.6,
+            "cost": {
+              "compute": 5.3,
+              "memory": 10.6
+            }
+          },
+          "deferrals": [
+            "attention"
+          ],
+          "budget_end": {
+            "compute": 4.099999999999999,
+            "memory": 28.199999999999996,
+            "tool": 100.0,
+            "latency": 800.0,
+            "risk": 1.0
+          }
+        },
+        {
+          "timestamp": "2025-12-26T08:02:08.262214+00:00",
+          "speaker": "Assistant",
+          "operational_mode": "stressed",
+          "priority": "NORMAL",
+          "budget_start": {
+            "compute": 4.099999999999999,
+            "memory": 28.199999999999996,
+            "tool": 100.0,
+            "latency": 800.0,
+            "risk": 1.0
+          },
+          "attention_result": {
+            "allocated": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "memory_result": {
+            "encoded": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "deferrals": [
+            "attention",
+            "memory"
+          ],
+          "budget_end": {
+            "compute": 4.099999999999999,
+            "memory": 28.199999999999996,
+            "tool": 100.0,
+            "latency": 800.0,
+            "risk": 1.0
+          }
+        },
+        {
+          "timestamp": "2025-12-26T08:02:08.262464+00:00",
+          "speaker": "User",
+          "operational_mode": "stressed",
+          "priority": "NORMAL",
+          "budget_start": {
+            "compute": 4.099999999999999,
+            "memory": 28.199999999999996,
+            "tool": 100.0,
+            "latency": 800.0,
+            "risk": 1.0
+          },
+          "attention_result": {
+            "allocated": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "memory_result": {
+            "encoded": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "deferrals": [
+            "attention",
+            "memory"
+          ],
+          "budget_end": {
+            "compute": 4.099999999999999,
+            "memory": 28.199999999999996,
+            "tool": 100.0,
+            "latency": 800.0,
+            "risk": 1.0
+          }
+        },
+        {
+          "timestamp": "2025-12-26T08:02:08.262716+00:00",
+          "speaker": "Assistant",
+          "operational_mode": "stressed",
+          "priority": "LOW",
+          "budget_start": {
+            "compute": 4.099999999999999,
+            "memory": 28.199999999999996,
+            "tool": 100.0,
+            "latency": 800.0,
+            "risk": 1.0
+          },
+          "attention_result": {
+            "allocated": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "memory_result": {
+            "encoded": false,
+            "deferred": true,
+            "strategy": "deferred"
+          },
+          "deferrals": [
+            "attention",
+            "memory"
+          ],
+          "budget_end": {
+            "compute": 4.099999999999999,
+            "memory": 28.199999999999996,
+            "tool": 100.0,
+            "latency": 800.0,
+            "risk": 1.0
+          }
+        }
+      ]
+    }
+  }
+}

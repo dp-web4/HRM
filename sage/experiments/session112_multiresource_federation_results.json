@@ -1,6 +1,6 @@
 {
   "session": 112,
-  "timestamp": "2025-12-25T16:01:55.701484",
+  "timestamp": "2025-12-25T20:00:34.294436",
   "scenarios": {
     "normal_operation": {
       "consensus_quality": 0.9,
@@ -48,7 +48,7 @@
   },
   "consensus_history": [
     {
-      "timestamp": "2025-12-25T16:01:55.700700",
+      "timestamp": "2025-12-25T20:00:34.291132",
       "expert_id": 42,
       "context_id": "code_review",
       "consensus_quality": 0.9,
@@ -78,7 +78,7 @@
       }
     },
     {
-      "timestamp": "2025-12-25T16:01:55.700880",
+      "timestamp": "2025-12-25T20:00:34.291755",
       "expert_id": 42,
       "context_id": "code_review_attack",
       "consensus_quality": 0.9,
@@ -108,7 +108,7 @@
       }
     },
     {
-      "timestamp": "2025-12-25T16:01:55.701016",
+      "timestamp": "2025-12-25T20:00:34.292346",
       "expert_id": 42,
       "context_id": "code_review_stressed",
       "consensus_quality": 0.9,
@@ -136,7 +136,7 @@
       }
     },
     {
-      "timestamp": "2025-12-25T16:01:55.701144",
+      "timestamp": "2025-12-25T20:00:34.292962",
       "expert_id": 42,
       "context_id": "code_review_crisis",
       "consensus_quality": 0.9,
@@ -160,7 +160,7 @@
       }
     },
     {
-      "timestamp": "2025-12-25T16:01:55.701282",
+      "timestamp": "2025-12-25T20:00:34.293596",
       "expert_id": 42,
       "context_id": "code_review_recovery",
       "consensus_quality": 0.9,

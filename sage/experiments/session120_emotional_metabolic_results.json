@@ -1,0 +1,340 @@
+{
+  "session": 120,
+  "timestamp": "2025-12-26T20:03:13.020469+00:00",
+  "description": "Emotional/metabolic state integration",
+  "turn_results": [
+    {
+      "turn_id": 1,
+      "trigger": "discovery",
+      "snapshot": {
+        "metabolic_state": "wake",
+        "emotional_state": {
+          "curiosity": 0.77,
+          "frustration": 0.0,
+          "engagement": 0.5,
+          "progress": 0.5
+        },
+        "resources": {
+          "compute": 30.58329878590465,
+          "memory": 53.322199190603094,
+          "tool": 100.0
+        },
+        "operational_mode": "normal"
+      },
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.535,
+          "cost": 32.57328990228013
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.2,
+          "cost": 41.66666666666667
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 1.1,
+          "cost": 45.45454545454545
+        }
+      }
+    },
+    {
+      "turn_id": 2,
+      "trigger": "success",
+      "snapshot": {
+        "metabolic_state": "wake",
+        "emotional_state": {
+          "curiosity": 0.743,
+          "frustration": 0.0,
+          "engagement": 0.59,
+          "progress": 0.635
+        },
+        "resources": {
+          "compute": 2.4,
+          "memory": 7.679015595727429,
+          "tool": 100.0
+        },
+        "operational_mode": "stressed"
+      },
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.5485,
+          "cost": 32.28931223764934
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.236,
+          "cost": 40.45307443365696
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 1.127,
+          "cost": 44.36557231588287
+        }
+      }
+    },
+    {
+      "turn_id": 3,
+      "trigger": "failure",
+      "snapshot": {
+        "metabolic_state": "wake",
+        "emotional_state": {
+          "curiosity": 0.7187,
+          "frustration": 0.27,
+          "engagement": 0.491,
+          "progress": 0.6215
+        },
+        "resources": {
+          "compute": 2.4,
+          "memory": 1.2,
+          "tool": 100.0
+        },
+        "operational_mode": "stressed"
+      },
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.50665,
+          "cost": 33.18620781203332
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.1154000000000002,
+          "cost": 44.826967903890974
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 0.9893000000000001,
+          "cost": 50.54078641463661
+        }
+      }
+    },
+    {
+      "turn_id": 4,
+      "trigger": "recovery",
+      "snapshot": {
+        "metabolic_state": "wake",
+        "emotional_state": {
+          "curiosity": 0.6968300000000001,
+          "frustration": 0.063,
+          "engagement": 0.4919,
+          "progress": 0.6093500000000001
+        },
+        "resources": {
+          "compute": 2.4,
+          "memory": 1.2,
+          "tool": 100.0
+        },
+        "operational_mode": "stressed"
+      },
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.4959850000000001,
+          "cost": 33.42279501465589
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.1778600000000001,
+          "cost": 42.449866707418536
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 1.0903699999999998,
+          "cost": 45.85599383695444
+        }
+      }
+    },
+    {
+      "turn_id": 5,
+      "trigger": "success",
+      "snapshot": {
+        "metabolic_state": "wake",
+        "emotional_state": {
+          "curiosity": 0.8121470000000001,
+          "frustration": 0.0567,
+          "engagement": 0.49271,
+          "progress": 0.778415
+        },
+        "resources": {
+          "compute": 2.4,
+          "memory": 1.2,
+          "tool": 100.0
+        },
+        "operational_mode": "stressed"
+      },
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.5538865,
+          "cost": 32.17738232489953
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.180074,
+          "cost": 42.370224240174764
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 1.127333,
+          "cost": 44.35246728340251
+        }
+      }
+    },
+    {
+      "turn_id": 6,
+      "trigger": "discovery",
+      "snapshot": {
+        "metabolic_state": "wake",
+        "emotional_state": {
+          "curiosity": 0.9609323000000001,
+          "frustration": 0.05103,
+          "engagement": 0.6734389999999999,
+          "progress": 0.7505735
+        },
+        "resources": {
+          "compute": 2.4,
+          "memory": 1.2,
+          "tool": 100.0
+        },
+        "operational_mode": "stressed"
+      },
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.68249785,
+          "cost": 29.717719995897767
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.2540666,
+          "cost": 39.87029078040991
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 1.1245997,
+          "cost": 44.460264394521886
+        }
+      }
+    },
+    {
+      "turn_id": 7,
+      "trigger": "fatigue",
+      "snapshot": {
+        "metabolic_state": "wake",
+        "emotional_state": {
+          "curiosity": 0.9148390700000001,
+          "frustration": 0.045926999999999996,
+          "engagement": 0.3860950999999999,
+          "progress": 0.72551615
+        },
+        "resources": {
+          "compute": 2.4,
+          "memory": 1.2,
+          "tool": 100.0
+        },
+        "operational_mode": "stressed"
+      },
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.573248065,
+          "cost": 31.781383439998066
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.1406599400000001,
+          "cost": 43.83427369247315
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 1.12213973,
+          "cost": 44.55773079169026
+        }
+      }
+    },
+    {
+      "turn_id": 8,
+      "trigger": null,
+      "snapshot": {
+        "metabolic_state": "wake",
+        "emotional_state": {
+          "curiosity": 0.9148390700000001,
+          "frustration": 0.045926999999999996,
+          "engagement": 0.3860950999999999,
+          "progress": 0.72551615
+        },
+        "resources": {
+          "compute": 2.4,
+          "memory": 1.2,
+          "tool": 100.0
+        },
+        "operational_mode": "stressed"
+      },
+      "components": {
+        "attention": {
+          "executed": true,
+          "modulation": 1.573248065,
+          "cost": 31.781383439998066
+        },
+        "memory": {
+          "executed": true,
+          "modulation": 1.1406599400000001,
+          "cost": 43.83427369247315
+        },
+        "expert": {
+          "executed": true,
+          "modulation": 1.12213973,
+          "cost": 44.55773079169026
+        }
+      }
+    }
+  ],
+  "emotion_history": [
+    {
+      "curiosity": 0.77,
+      "frustration": 0.0,
+      "engagement": 0.5,
+      "progress": 0.5
+    },
+    {
+      "curiosity": 0.743,
+      "frustration": 0.0,
+      "engagement": 0.59,
+      "progress": 0.635
+    },
+    {
+      "curiosity": 0.7187,
+      "frustration": 0.27,
+      "engagement": 0.491,
+      "progress": 0.6215
+    },
+    {
+      "curiosity": 0.6968300000000001,
+      "frustration": 0.063,
+      "engagement": 0.4919,
+      "progress": 0.6093500000000001
+    },
+    {
+      "curiosity": 0.8121470000000001,
+      "frustration": 0.0567,
+      "engagement": 0.49271,
+      "progress": 0.778415
+    },
+    {
+      "curiosity": 0.9609323000000001,
+      "frustration": 0.05103,
+      "engagement": 0.6734389999999999,
+      "progress": 0.7505735
+    },
+    {
+      "curiosity": 0.9148390700000001,
+      "frustration": 0.045926999999999996,
+      "engagement": 0.3860950999999999,
+      "progress": 0.72551615
+    }
+  ],
+  "state_history": []
+}

@@ -1,0 +1,189 @@
+{
+  "session": 119,
+  "timestamp": "2025-12-26T16:07:03.932509+00:00",
+  "description": "Full multi-resource SAGE integration",
+  "statistics": {
+    "total_turns": 10,
+    "component_priority": {
+      "attention": {
+        "success_rate": 0.3,
+        "avg_cost": 26.0,
+        "total_cost": 78.0,
+        "executed": 3,
+        "deferred": 7
+      },
+      "memory": {
+        "success_rate": 0.2,
+        "avg_cost": 37.5,
+        "total_cost": 75.0,
+        "executed": 2,
+        "deferred": 8
+      },
+      "expert": {
+        "success_rate": 0.1,
+        "avg_cost": 50.0,
+        "total_cost": 50.0,
+        "executed": 1,
+        "deferred": 9
+      },
+      "consensus": {
+        "success_rate": 0.0,
+        "avg_cost": 0,
+        "total_cost": 0.0,
+        "executed": 0,
+        "deferred": 3
+      },
+      "consolidation": {
+        "success_rate": 0.0,
+        "avg_cost": 0,
+        "total_cost": 0.0,
+        "executed": 0,
+        "deferred": 2
+      }
+    },
+    "deferral_sequence": [
+      [],
+      [
+        "expert"
+      ],
+      [
+        "attention",
+        "memory",
+        "expert",
+        "consensus"
+      ],
+      [
+        "attention",
+        "memory",
+        "expert"
+      ],
+      [
+        "attention",
+        "memory",
+        "expert"
+      ],
+      [
+        "memory",
+        "expert",
+        "consensus",
+        "consolidation"
+      ],
+      [
+        "attention",
+        "memory",
+        "expert",
+        "consolidation"
+      ],
+      [
+        "attention",
+        "memory",
+        "expert"
+      ],
+      [
+        "attention",
+        "memory",
+        "expert",
+        "consensus"
+      ],
+      [
+        "attention",
+        "memory",
+        "expert"
+      ]
+    ],
+    "mode_distribution": {
+      "normal": 2,
+      "stressed": 8
+    },
+    "resource_trajectory": [
+      {
+        "compute": 40.0,
+        "memory": 55.0,
+        "tool": 100.0,
+        "latency": 1000.0,
+        "risk": 1.0,
+        "mode": "normal"
+      },
+      {
+        "compute": 2.3999999999999986,
+        "memory": 16.200000000000003,
+        "tool": 100.0,
+        "latency": 1000.0,
+        "risk": 1.0,
+        "mode": "stressed"
+      },
+      {
+        "compute": 4.799999999999999,
+        "memory": 17.400000000000002,
+        "tool": 100.0,
+        "latency": 1000.0,
+        "risk": 1.0,
+        "mode": "stressed"
+      },
+      {
+        "compute": 7.199999999999999,
+        "memory": 18.6,
+        "tool": 100.0,
+        "latency": 1000.0,
+        "risk": 1.0,
+        "mode": "stressed"
+      },
+      {
+        "compute": 9.6,
+        "memory": 19.8,
+        "tool": 100.0,
+        "latency": 1000.0,
+        "risk": 1.0,
+        "mode": "stressed"
+      },
+      {
+        "compute": 0,
+        "memory": 15.0,
+        "tool": 100.0,
+        "latency": 1000.0,
+        "risk": 1.0,
+        "mode": "stressed"
+      },
+      {
+        "compute": 2.4,
+        "memory": 16.2,
+        "tool": 100.0,
+        "latency": 1000.0,
+        "risk": 1.0,
+        "mode": "stressed"
+      },
+      {
+        "compute": 4.8,
+        "memory": 17.4,
+        "tool": 100.0,
+        "latency": 1000.0,
+        "risk": 1.0,
+        "mode": "stressed"
+      },
+      {
+        "compute": 7.199999999999999,
+        "memory": 18.599999999999998,
+        "tool": 100.0,
+        "latency": 1000.0,
+        "risk": 1.0,
+        "mode": "stressed"
+      },
+      {
+        "compute": 9.6,
+        "memory": 19.799999999999997,
+        "tool": 100.0,
+        "latency": 1000.0,
+        "risk": 1.0,
+        "mode": "stressed"
+      }
+    ],
+    "final_resources": {
+      "compute": 12.0,
+      "memory": 20.999999999999996,
+      "tool": 100.0,
+      "latency": 1000.0,
+      "risk": 1.0,
+      "mode": "stressed"
+    }
+  }
+}

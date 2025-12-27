@@ -25,7 +25,7 @@ class Qwen25_05B_IRP:
 
     def __init__(
         self,
-        model_path: str = "model-zoo/sage/epistemic-stances/qwen2.5-0.5b",
+        model_path: str = "model-zoo/sage/epistemic-stances/qwen2.5-0.5b/epistemic-pragmatism",
         device_map: str = "auto"
     ):
         """

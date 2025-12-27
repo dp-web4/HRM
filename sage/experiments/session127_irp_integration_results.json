@@ -1,0 +1,31 @@
+{
+  "session": 127,
+  "timestamp": "2025-12-27T13:13:23.038862+00:00",
+  "description": "IRP emotional integration validation",
+  "final_state": {
+    "metabolic_state": "wake",
+    "emotional_state": {
+      "curiosity": 0.5675425858836496,
+      "frustration": 0.0,
+      "engagement": 0.5106919693225667,
+      "progress": 1.0
+    },
+    "resources": {
+      "compute_atp": 100.0,
+      "memory_atp": 100.0,
+      "tool_atp": 100.0
+    },
+    "state_history": [
+      "wake\u2192focus",
+      "focus\u2192wake",
+      "wake\u2192focus",
+      "focus\u2192wake"
+    ],
+    "interventions": 4
+  },
+  "success_criteria": {
+    "state_transitions": true,
+    "proactive_interventions": true,
+    "resource_management": true
+  }
+}

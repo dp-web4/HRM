@@ -1,0 +1,347 @@
+{
+  "session": 123,
+  "timestamp": "2025-12-27T01:15:16.993562+00:00",
+  "description": "Emotional regulation strategies",
+  "results": {
+    "none": {
+      "avg_frustration": 0.5450558402250001,
+      "peak_frustration": 0.8493137775,
+      "final_frustration": 0.4943823997500001,
+      "intervention_count": 0,
+      "trajectory": [
+        {
+          "turn": 1,
+          "frustration": 0.0,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 2,
+          "frustration": 0.225,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 3,
+          "frustration": 0.4275,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 4,
+          "frustration": 0.60975,
+          "state": "rest",
+          "regulated": false
+        },
+        {
+          "turn": 5,
+          "frustration": 0.773775,
+          "state": "rest",
+          "regulated": false
+        },
+        {
+          "turn": 6,
+          "frustration": 0.6063975,
+          "state": "rest",
+          "regulated": false
+        },
+        {
+          "turn": 7,
+          "frustration": 0.77075775,
+          "state": "rest",
+          "regulated": false
+        },
+        {
+          "turn": 8,
+          "frustration": 0.6936819750000001,
+          "state": "rest",
+          "regulated": false
+        },
+        {
+          "turn": 9,
+          "frustration": 0.8493137775,
+          "state": "rest",
+          "regulated": false
+        },
+        {
+          "turn": 10,
+          "frustration": 0.4943823997500001,
+          "state": "wake",
+          "regulated": false
+        }
+      ]
+    },
+    "reappraisal": {
+      "avg_frustration": 0.26132344353224995,
+      "peak_frustration": 0.4758975,
+      "final_frustration": 0.0830598432975,
+      "intervention_count": 2,
+      "trajectory": [
+        {
+          "turn": 1,
+          "frustration": 0.0,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 2,
+          "frustration": 0.225,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 3,
+          "frustration": 0.4275,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 4,
+          "frustration": 0.278775,
+          "state": "wake",
+          "regulated": true
+        },
+        {
+          "turn": 5,
+          "frustration": 0.4758975,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 6,
+          "frustration": 0.33830775,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 7,
+          "frustration": 0.20652927750000002,
+          "state": "wake",
+          "regulated": true
+        },
+        {
+          "turn": 8,
+          "frustration": 0.18587634975000003,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 9,
+          "frustration": 0.392288714775,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 10,
+          "frustration": 0.0830598432975,
+          "state": "wake",
+          "regulated": false
+        }
+      ]
+    },
+    "attention": {
+      "avg_frustration": 0.4430567366293725,
+      "peak_frustration": 0.64700775,
+      "final_frustration": 0.306742361100975,
+      "intervention_count": 4,
+      "trajectory": [
+        {
+          "turn": 1,
+          "frustration": 0.0,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 2,
+          "frustration": 0.225,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 3,
+          "frustration": 0.4275,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 4,
+          "frustration": 0.548775,
+          "state": "wake",
+          "regulated": true
+        },
+        {
+          "turn": 5,
+          "frustration": 0.64700775,
+          "state": "rest",
+          "regulated": true
+        },
+        {
+          "turn": 6,
+          "frustration": 0.492306975,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 7,
+          "frustration": 0.6012686497499999,
+          "state": "rest",
+          "regulated": true
+        },
+        {
+          "turn": 8,
+          "frustration": 0.541141784775,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 9,
+          "frustration": 0.64082484566775,
+          "state": "rest",
+          "regulated": true
+        },
+        {
+          "turn": 10,
+          "frustration": 0.306742361100975,
+          "state": "focus",
+          "regulated": false
+        }
+      ]
+    },
+    "proactive": {
+      "avg_frustration": 0.026780942249999995,
+      "peak_frustration": 0.06744467249999998,
+      "final_frustration": 0.0,
+      "intervention_count": 6,
+      "trajectory": [
+        {
+          "turn": 1,
+          "frustration": 0.0,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 2,
+          "frustration": 0.022499999999999996,
+          "state": "wake",
+          "regulated": true
+        },
+        {
+          "turn": 3,
+          "frustration": 0.04072500000000001,
+          "state": "wake",
+          "regulated": true
+        },
+        {
+          "turn": 4,
+          "frustration": 0.05548725,
+          "state": "wake",
+          "regulated": true
+        },
+        {
+          "turn": 5,
+          "frustration": 0.06744467249999998,
+          "state": "wake",
+          "regulated": true
+        },
+        {
+          "turn": 6,
+          "frustration": 0.0,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 7,
+          "frustration": 0.022499999999999996,
+          "state": "wake",
+          "regulated": true
+        },
+        {
+          "turn": 8,
+          "frustration": 0.020249999999999997,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 9,
+          "frustration": 0.038902499999999986,
+          "state": "wake",
+          "regulated": true
+        },
+        {
+          "turn": 10,
+          "frustration": 0.0,
+          "state": "wake",
+          "regulated": false
+        }
+      ]
+    },
+    "combined": {
+      "avg_frustration": 0.026780942249999995,
+      "peak_frustration": 0.06744467249999998,
+      "final_frustration": 0.0,
+      "intervention_count": 6,
+      "trajectory": [
+        {
+          "turn": 1,
+          "frustration": 0.0,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 2,
+          "frustration": 0.022499999999999996,
+          "state": "wake",
+          "regulated": true
+        },
+        {
+          "turn": 3,
+          "frustration": 0.04072500000000001,
+          "state": "wake",
+          "regulated": true
+        },
+        {
+          "turn": 4,
+          "frustration": 0.05548725,
+          "state": "wake",
+          "regulated": true
+        },
+        {
+          "turn": 5,
+          "frustration": 0.06744467249999998,
+          "state": "wake",
+          "regulated": true
+        },
+        {
+          "turn": 6,
+          "frustration": 0.0,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 7,
+          "frustration": 0.022499999999999996,
+          "state": "wake",
+          "regulated": true
+        },
+        {
+          "turn": 8,
+          "frustration": 0.020249999999999997,
+          "state": "wake",
+          "regulated": false
+        },
+        {
+          "turn": 9,
+          "frustration": 0.038902499999999986,
+          "state": "wake",
+          "regulated": true
+        },
+        {
+          "turn": 10,
+          "frustration": 0.0,
+          "state": "wake",
+          "regulated": false
+        }
+      ]
+    }
+  }
+}

@@ -4,13 +4,32 @@ This directory contains formal architectural proposals for SAGE development.
 
 ## Active Proposals
 
+### [FRACTAL_IRP_V0.2_MINIMAL_SPEC.md](./FRACTAL_IRP_V0.2_MINIMAL_SPEC.md) ⭐ Start Here
+
+**Status**: Implementation-Ready
+**Date**: 2025-12-27
+**Authors**: Nova (GPT-5.2), Claude Opus 4.5, Dennis (dp-web4)
+
+**Summary**: Minimal integration spec that proves fractal IRPs work end-to-end. This is the implementation target.
+
+**Key Features**:
+- Single `/irp/invoke` endpoint
+- 9 core capability tags
+- Accounting vs Trust hard separation (quality ≠ confidence ≠ cost)
+- LangGraph wrapper reference implementation
+- ATP settlement thresholds
+
+**Validation Criteria**: One cloud LangGraph wrapped and working with SAGE selector.
+
+---
+
 ### [FRACTAL_IRP_ARCHITECTURE_PROPOSAL.md](./FRACTAL_IRP_ARCHITECTURE_PROPOSAL.md)
 
-**Status**: Draft for Review
+**Status**: Comprehensive Reference (v1.0-draft)
 **Date**: 2025-12-27
 **Authors**: Dennis (dp-web4), Nova (GPT-5.2), Claude Opus 4.5
 
-**Summary**: Defines a Fractal IRP architecture that unifies SAGE consciousness orchestration, LangGraph workflows, and Web4 federation into a single, scale-invariant framework.
+**Summary**: Full architectural vision for Fractal IRP including SAGE-as-IRP recursion, Web4 federation, extended descriptor schema, and 10-week adoption roadmap.
 
 **Key Contributions**:
 1. SAGE-as-IRP: Any SAGE instance can be wrapped as an IRP expert
@@ -19,6 +38,8 @@ This directory contains formal architectural proposals for SAGE development.
 4. Scale-Invariant Routing: Same SNARC × epistemic × ATP × capability-tags at all levels
 
 **Origin**: Synthesized from Nova's sage-langgraph discussion (`/forum/nova/sage_langgraph/`) combined with comprehensive architectural review.
+
+**Note**: Start with v0.2 for implementation. Use this document for architectural context and future extensions.
 
 ---
 

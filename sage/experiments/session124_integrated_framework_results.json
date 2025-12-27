@@ -1,0 +1,721 @@
+{
+  "session": 124,
+  "timestamp": "2025-12-27T02:04:44.531819+00:00",
+  "description": "Integrated framework validation with proactive regulation",
+  "control": {
+    "condition": "CONTROL",
+    "use_regulation": false,
+    "turn_results": [
+      {
+        "turn_id": 1,
+        "state_before": "wake",
+        "state_after": "wake",
+        "emotional_state": {
+          "curiosity": 0.77,
+          "frustration": 0.0,
+          "engagement": 0.6799999999999999,
+          "progress": 0.5
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 2,
+        "state_before": "wake",
+        "state_after": "focus",
+        "emotional_state": {
+          "curiosity": 1.0,
+          "frustration": 0.0,
+          "engagement": 0.9319999999999999,
+          "progress": 0.5
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 3,
+        "state_before": "focus",
+        "state_after": "focus",
+        "emotional_state": {
+          "curiosity": 0.95,
+          "frustration": 0.0,
+          "engagement": 1.0,
+          "progress": 0.6799999999999999
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 4,
+        "state_before": "focus",
+        "state_after": "focus",
+        "emotional_state": {
+          "curiosity": 0.9049999999999999,
+          "frustration": 0.225,
+          "engagement": 0.86,
+          "progress": 0.6619999999999999
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 5,
+        "state_before": "focus",
+        "state_after": "focus",
+        "emotional_state": {
+          "curiosity": 0.8644999999999999,
+          "frustration": 0.4275,
+          "engagement": 0.734,
+          "progress": 0.6457999999999999
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 6,
+        "state_before": "focus",
+        "state_after": "rest",
+        "emotional_state": {
+          "curiosity": 0.82805,
+          "frustration": 0.60975,
+          "engagement": 0.7106,
+          "progress": 0.6312199999999999
+        },
+        "resources": {
+          "compute": 64.0,
+          "memory": 62.0
+        },
+        "regulated": false,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 7,
+        "state_before": "rest",
+        "state_after": "rest",
+        "emotional_state": {
+          "curiosity": 0.795245,
+          "frustration": 0.773775,
+          "engagement": 0.68954,
+          "progress": 0.6180979999999999
+        },
+        "resources": {
+          "compute": 68.0,
+          "memory": 64.0
+        },
+        "regulated": false,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 8,
+        "state_before": "rest",
+        "state_after": "rest",
+        "emotional_state": {
+          "curiosity": 0.795245,
+          "frustration": 0.773775,
+          "engagement": 0.68954,
+          "progress": 0.6180979999999999
+        },
+        "resources": {
+          "compute": 72.0,
+          "memory": 66.0
+        },
+        "regulated": false,
+        "memories_encoded": 0,
+        "memories_consolidated": 0
+      },
+      {
+        "turn_id": 9,
+        "state_before": "rest",
+        "state_after": "wake",
+        "emotional_state": {
+          "curiosity": 0.7657205,
+          "frustration": 0.5163975,
+          "engagement": 0.580586,
+          "progress": 0.6062881999999999
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 0,
+        "memories_consolidated": 0
+      },
+      {
+        "turn_id": 10,
+        "state_before": "wake",
+        "state_after": "wake",
+        "emotional_state": {
+          "curiosity": 0.7391484500000001,
+          "frustration": 0.2847577499999999,
+          "engagement": 0.6625274,
+          "progress": 0.59565938
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 11,
+        "state_before": "wake",
+        "state_after": "focus",
+        "emotional_state": {
+          "curiosity": 0.9852336050000001,
+          "frustration": 0.25628197499999994,
+          "engagement": 0.82627466,
+          "progress": 0.7660934420000001
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 12,
+        "state_before": "focus",
+        "state_after": "focus",
+        "emotional_state": {
+          "curiosity": 0.9367102445000001,
+          "frustration": 0.23065377749999993,
+          "engagement": 0.9736471940000001,
+          "progress": 1.0
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 13,
+        "state_before": "focus",
+        "state_after": "focus",
+        "emotional_state": {
+          "curiosity": 0.89303922005,
+          "frustration": 0.20758839974999993,
+          "engagement": 1.0,
+          "progress": 1.0
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 14,
+        "state_before": "focus",
+        "state_after": "wake",
+        "emotional_state": {
+          "curiosity": 0.853735298045,
+          "frustration": 0.18682955977499993,
+          "engagement": 0.6799999999999999,
+          "progress": 0.95
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 0,
+        "memories_consolidated": 0
+      },
+      {
+        "turn_id": 15,
+        "state_before": "wake",
+        "state_after": "wake",
+        "emotional_state": {
+          "curiosity": 0.8183617682405,
+          "frustration": 0.16814660379749993,
+          "engagement": 0.48199999999999993,
+          "progress": 0.9049999999999999
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 0,
+        "memories_consolidated": 0
+      }
+    ],
+    "transitions": [
+      "wake \u2192 focus",
+      "focus \u2192 rest",
+      "rest \u2192 wake",
+      "wake \u2192 focus",
+      "focus \u2192 wake"
+    ],
+    "state_distribution": {
+      "wake": 0.3333333333333333,
+      "focus": 0.4666666666666667,
+      "rest": 0.2,
+      "dream": 0.0,
+      "crisis": 0.0
+    },
+    "memories": {
+      "total_encoded": 11,
+      "total_consolidated": 11,
+      "avg_quality": 0.45545454545454545,
+      "by_state": {
+        "wake": [
+          {
+            "content": "Research question identified",
+            "quality": 0.7
+          },
+          {
+            "content": "Recovery insight",
+            "quality": 0.6
+          }
+        ],
+        "focus": [
+          {
+            "content": "Pattern recognition insight",
+            "quality": 0.4
+          },
+          {
+            "content": "Deep understanding achieved",
+            "quality": 0.45
+          },
+          {
+            "content": "Failure pattern A",
+            "quality": 0.25
+          },
+          {
+            "content": "Failure pattern B",
+            "quality": 0.25
+          },
+          {
+            "content": "Breakthrough insight",
+            "quality": 0.45
+          },
+          {
+            "content": "Success pattern",
+            "quality": 0.5
+          },
+          {
+            "content": "Validation results",
+            "quality": 0.45
+          }
+        ],
+        "rest": [
+          {
+            "content": "Failure pattern C",
+            "quality": 0.48
+          },
+          {
+            "content": "Failure pattern D",
+            "quality": 0.48
+          }
+        ],
+        "dream": [],
+        "crisis": []
+      }
+    },
+    "emotions": {
+      "avg_frustration": 0.3106970377215,
+      "peak_frustration": 0.773775
+    },
+    "regulation": {
+      "interventions": 0
+    }
+  },
+  "proactive": {
+    "condition": "PROACTIVE",
+    "use_regulation": true,
+    "turn_results": [
+      {
+        "turn_id": 1,
+        "state_before": "wake",
+        "state_after": "wake",
+        "emotional_state": {
+          "curiosity": 0.77,
+          "frustration": 0.0,
+          "engagement": 0.6799999999999999,
+          "progress": 0.5
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 2,
+        "state_before": "wake",
+        "state_after": "focus",
+        "emotional_state": {
+          "curiosity": 1.0,
+          "frustration": 0.0,
+          "engagement": 0.9319999999999999,
+          "progress": 0.5
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 3,
+        "state_before": "focus",
+        "state_after": "focus",
+        "emotional_state": {
+          "curiosity": 0.95,
+          "frustration": 0.0,
+          "engagement": 1.0,
+          "progress": 0.6799999999999999
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 4,
+        "state_before": "focus",
+        "state_after": "focus",
+        "emotional_state": {
+          "curiosity": 0.8644999999999999,
+          "frustration": 0.022499999999999996,
+          "engagement": 0.824,
+          "progress": 0.6457999999999999
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": true,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 5,
+        "state_before": "focus",
+        "state_after": "wake",
+        "emotional_state": {
+          "curiosity": 0.795245,
+          "frustration": 0.04072500000000001,
+          "engagement": 0.68144,
+          "progress": 0.6180979999999999
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": true,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 6,
+        "state_before": "wake",
+        "state_after": "wake",
+        "emotional_state": {
+          "curiosity": 0.7391484500000001,
+          "frustration": 0.05548725,
+          "engagement": 0.6469663999999999,
+          "progress": 0.59565938
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": true,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 7,
+        "state_before": "wake",
+        "state_after": "wake",
+        "emotional_state": {
+          "curiosity": 0.6937102445000001,
+          "frustration": 0.06744467249999998,
+          "engagement": 0.6190427839999999,
+          "progress": 0.5774840977999999
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": true,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 8,
+        "state_before": "wake",
+        "state_after": "wake",
+        "emotional_state": {
+          "curiosity": 0.6937102445000001,
+          "frustration": 0.06744467249999998,
+          "engagement": 0.6190427839999999,
+          "progress": 0.5774840977999999
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 0,
+        "memories_consolidated": 0
+      },
+      {
+        "turn_id": 9,
+        "state_before": "wake",
+        "state_after": "wake",
+        "emotional_state": {
+          "curiosity": 0.67433922005,
+          "frustration": 0.0,
+          "engagement": 0.5171385056,
+          "progress": 0.5697356880199999
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 0,
+        "memories_consolidated": 0
+      },
+      {
+        "turn_id": 10,
+        "state_before": "wake",
+        "state_after": "wake",
+        "emotional_state": {
+          "curiosity": 0.656905298045,
+          "frustration": 0.0,
+          "engagement": 0.60542465504,
+          "progress": 0.5627621192179999
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 11,
+        "state_before": "wake",
+        "state_after": "focus",
+        "emotional_state": {
+          "curiosity": 0.9112147682405,
+          "frustration": 0.0,
+          "engagement": 0.774882189536,
+          "progress": 0.7364859072961999
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 12,
+        "state_before": "focus",
+        "state_after": "focus",
+        "emotional_state": {
+          "curiosity": 0.87009329141645,
+          "frustration": 0.0,
+          "engagement": 0.9273939705824,
+          "progress": 0.9828373165665798
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 13,
+        "state_before": "focus",
+        "state_after": "focus",
+        "emotional_state": {
+          "curiosity": 0.833083962274805,
+          "frustration": 0.0,
+          "engagement": 0.97465457352416,
+          "progress": 1.0
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 1,
+        "memories_consolidated": 1
+      },
+      {
+        "turn_id": 14,
+        "state_before": "focus",
+        "state_after": "wake",
+        "emotional_state": {
+          "curiosity": 0.7997755660473245,
+          "frustration": 0.0,
+          "engagement": 0.657189116171744,
+          "progress": 0.95
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 0,
+        "memories_consolidated": 0
+      },
+      {
+        "turn_id": 15,
+        "state_before": "wake",
+        "state_after": "wake",
+        "emotional_state": {
+          "curiosity": 0.769798009442592,
+          "frustration": 0.0,
+          "engagement": 0.4614702045545696,
+          "progress": 0.9049999999999999
+        },
+        "resources": {
+          "compute": 100.0,
+          "memory": 100.0
+        },
+        "regulated": false,
+        "memories_encoded": 0,
+        "memories_consolidated": 0
+      }
+    ],
+    "transitions": [
+      "wake \u2192 focus",
+      "focus \u2192 wake",
+      "wake \u2192 focus",
+      "focus \u2192 wake"
+    ],
+    "state_distribution": {
+      "wake": 0.6,
+      "focus": 0.4,
+      "rest": 0.0,
+      "dream": 0.0,
+      "crisis": 0.0
+    },
+    "memories": {
+      "total_encoded": 11,
+      "total_consolidated": 11,
+      "avg_quality": 0.4636363636363636,
+      "by_state": {
+        "wake": [
+          {
+            "content": "Research question identified",
+            "quality": 0.7
+          },
+          {
+            "content": "Failure pattern B",
+            "quality": 0.5
+          },
+          {
+            "content": "Failure pattern C",
+            "quality": 0.4
+          },
+          {
+            "content": "Failure pattern D",
+            "quality": 0.4
+          },
+          {
+            "content": "Recovery insight",
+            "quality": 0.6
+          }
+        ],
+        "focus": [
+          {
+            "content": "Pattern recognition insight",
+            "quality": 0.4
+          },
+          {
+            "content": "Deep understanding achieved",
+            "quality": 0.45
+          },
+          {
+            "content": "Failure pattern A",
+            "quality": 0.25
+          },
+          {
+            "content": "Breakthrough insight",
+            "quality": 0.45
+          },
+          {
+            "content": "Success pattern",
+            "quality": 0.5
+          },
+          {
+            "content": "Validation results",
+            "quality": 0.45
+          }
+        ],
+        "rest": [],
+        "dream": [],
+        "crisis": []
+      }
+    },
+    "emotions": {
+      "avg_frustration": 0.016906772999999996,
+      "peak_frustration": 0.06744467249999998
+    },
+    "regulation": {
+      "interventions": 4
+    }
+  },
+  "comparison": {
+    "frustration_improvement": 94.55843765876045,
+    "peak_frustration_improvement": 91.28368421052632,
+    "quality_improvement": 1.796407185628742,
+    "transition_delta": -1
+  }
+}

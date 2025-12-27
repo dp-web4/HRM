@@ -1,8 +1,10 @@
 # Fractal IRP Architecture Proposal
 
+> **Implementation**: For the minimal integration spec, see [FRACTAL_IRP_V0.2_MINIMAL_SPEC.md](./FRACTAL_IRP_V0.2_MINIMAL_SPEC.md)
+
 **Version**: 1.0-draft
 **Date**: 2025-12-27
-**Status**: Proposal for Review
+**Status**: Comprehensive Reference
 **Authors**: Dennis (dp-web4), Nova (GPT-5.2), Claude Opus 4.5
 
 ---

@@ -25,7 +25,7 @@ class Qwen25_14B_IRP:
 
     def __init__(
         self,
-        model_path: str = "model-zoo/sage/epistemic-stances/qwen2.5-14b",
+        model_path: str = "model-zoo/sage/epistemic-stances/qwen2.5-14b/base-instruct",
         device_map: str = "auto",
         max_memory: Optional[Dict[int, str]] = None
     ):

@@ -3,15 +3,19 @@
 Q3-Omni-30B IRP Plugin for SAGE Conversation Manager
 
 Qwen3-Omni-30B: Omni-modal 30B parameter model with vision, audio, and text.
-For conversation, we use text-only mode.
+For conversation, we use text-only mode with proper multimodal processing pipeline.
 
-Model: /model-zoo/sage/omni-modal/qwen3-omni-30b
+Model: model-zoo/sage/omni-modal/qwen3-omni-30b (FULL PRECISION)
 Context: 65536 tokens
 Architecture: MoE (Mixture of Experts)
+
+CRITICAL: This plugin follows the EXACT pattern from test_qwen3_omni_simple_text.py
+which successfully loads and generates in ~2 minutes.
 """
 
 import torch
 from transformers import Qwen3OmniMoeForConditionalGeneration, Qwen3OmniMoeProcessor
+from qwen_omni_utils import process_mm_info
 from typing import List, Dict, Optional
 
 
@@ -21,43 +25,54 @@ class Q3OmniIRP:
 
     Compatible with SAGEConversationManager.
     Implements generate_response() for multi-turn conversations.
+
+    IMPORTANT: Uses the proven working pattern from test_qwen3_omni_simple_text.py:
+    - Full precision model (qwen3-omni-30b, not INT8)
+    - dtype="auto" (not torch.float16)
+    - Nested content structure [{"type": "text", "text": "..."}]
+    - process_mm_info() helper for multimodal pipeline
+    - disable_talker() for text-only mode
     """
 
     def __init__(
         self,
         model_path: str = "model-zoo/sage/omni-modal/qwen3-omni-30b",
         device_map: str = "auto",
-        max_memory: Optional[Dict[int, str]] = None
     ):
         """
-        Initialize Q3-Omni model.
+        Initialize Q3-Omni model using PROVEN working pattern.
 
         Args:
-            model_path: Path to model
+            model_path: Path to FULL PRECISION model (not INT8)
             device_map: Device mapping strategy
-            max_memory: Max memory per device
         """
         self.model_path = model_path
         self.device_map = device_map
-        self.max_memory = max_memory or {0: "110GB"}
 
         print(f"Loading Q3-Omni-30B from {model_path}...")
+        print("(Using proven pattern from test_qwen3_omni_simple_text.py)")
 
+        # Load model - EXACT parameters from working test
+        self.model = Qwen3OmniMoeForConditionalGeneration.from_pretrained(
+            model_path,
+            dtype="auto",  # NOT torch.float16! Let transformers detect
+            device_map=device_map,
+            trust_remote_code=True,
+            low_cpu_mem_usage=True,
+        )
+
+        # CRITICAL: Disable talker for text-only mode
+        self.model.disable_talker()
+
+        self.model.eval()
+        print(f"✅ Q3-Omni-30B loaded successfully (text-only mode)")
+
+        # Load processor
         self.processor = Qwen3OmniMoeProcessor.from_pretrained(
             model_path,
             trust_remote_code=True
         )
-
-        self.model = Qwen3OmniMoeForConditionalGeneration.from_pretrained(
-            model_path,
-            device_map=device_map,
-            max_memory=self.max_memory,
-            torch_dtype=torch.float16,
-            trust_remote_code=True,
-        )
-
-        self.model.eval()
-        print(f"✅ Q3-Omni-30B loaded successfully")
+        print(f"✅ Processor loaded")
 
     def generate_response(
         self,
@@ -70,6 +85,8 @@ class Q3OmniIRP:
         """
         Generate response given conversation history.
 
+        IMPORTANT: Converts simple message format to Q3-Omni's nested format.
+
         Args:
             messages: Conversation history [{"role": "user/assistant/system", "content": "..."}]
             max_new_tokens: Maximum tokens to generate
@@ -80,55 +97,86 @@ class Q3OmniIRP:
         Returns:
             Generated response text
         """
-        # Apply chat template (handles conversation history formatting)
-        formatted_prompt = self.processor.apply_chat_template(
-            messages,
-            tokenize=False,
-            add_generation_prompt=True
+        # Convert simple message format to Q3-Omni's nested format
+        # From: {"role": "user", "content": "Hello"}
+        # To: {"role": "user", "content": [{"type": "text", "text": "Hello"}]}
+        conversation = []
+        for msg in messages:
+            conversation.append({
+                "role": msg["role"],
+                "content": [
+                    {"type": "text", "text": msg["content"]}
+                ]
+            })
+
+        # Apply chat template (EXACTLY as in working test)
+        text = self.processor.apply_chat_template(
+            conversation,
+            add_generation_prompt=True,
+            tokenize=False
         )
 
-        # Tokenize
-        inputs = self.processor(
-            text=formatted_prompt,
-            return_tensors="pt"
-        ).to(self.model.device)
+        # CRITICAL: Use process_mm_info helper for multimodal processing
+        # Even for text-only, Q3-Omni needs this pipeline!
+        audios, images, videos = process_mm_info(
+            conversation,
+            use_audio_in_video=False
+        )
 
-        # Generate with Q3-Omni's special parameters
+        # Process inputs with full multimodal pipeline
+        inputs = self.processor(
+            text=text,
+            audio=audios,
+            images=images,
+            videos=videos,
+            return_tensors="pt",
+            padding=True,
+            use_audio_in_video=False
+        )
+
+        inputs = inputs.to(self.model.device)
+
+        # Generate (NO thinker_return_dict_in_generate - not needed!)
         with torch.no_grad():
             outputs = self.model.generate(
                 **inputs,
                 max_new_tokens=max_new_tokens,
-                do_sample=True,
                 temperature=temperature,
-                top_k=top_k,
-                top_p=top_p,
-                thinker_return_dict_in_generate=True,  # Q3-Omni specific
+                return_audio=False,  # CRITICAL: text-only
+                use_audio_in_video=False,  # CRITICAL: text-only
             )
 
-        # Decode (Q3-Omni returns dict with 'sequences')
-        if hasattr(outputs, 'sequences'):
-            generated_ids = outputs.sequences
+        # Handle output - may be tuple (text, audio) even with return_audio=False
+        if isinstance(outputs, tuple):
+            generated_ids = outputs[0]  # First element is text tokens
         else:
             generated_ids = outputs
 
-        # Get only the new tokens (skip input)
-        new_tokens = generated_ids[0][inputs['input_ids'].shape[1]:]
-
-        # Decode response
+        # Decode response (EXACTLY as in working test)
         response = self.processor.batch_decode(
-            [new_tokens],
-            skip_special_tokens=True
-        )[0]
+            generated_ids[:, inputs["input_ids"].shape[1]:],
+            skip_special_tokens=True,
+            clean_up_tokenization_spaces=False
+        )
 
-        return response.strip()
+        return response[0].strip()
 
 
-# For backward compatibility with standalone usage
+# For standalone usage
 if __name__ == "__main__":
     print("Q3-Omni IRP Plugin")
     print("=" * 80)
     print()
-    print("This plugin is designed for use with SAGEConversationManager.")
+    print("This plugin uses the PROVEN working pattern from:")
+    print("  sage/tests/test_qwen3_omni_simple_text.py")
+    print()
+    print("Key differences from broken version:")
+    print("  ✅ Full precision model (qwen3-omni-30b, not INT8)")
+    print("  ✅ dtype='auto' (not torch.float16)")
+    print("  ✅ Nested content structure")
+    print("  ✅ process_mm_info() helper")
+    print("  ✅ Full multimodal processing pipeline")
+    print("  ✅ No thinker_return_dict_in_generate")
     print()
     print("Example usage:")
     print()

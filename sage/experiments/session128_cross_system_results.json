@@ -1,0 +1,68 @@
+{
+  "scenario_1_state_broadcast": {
+    "status": "passed",
+    "agent_id": "agent_thor",
+    "advertisement": {
+      "agent_id": "agent_thor",
+      "timestamp": 1766863108.633764,
+      "metabolic_state": "wake",
+      "curiosity": 0.5,
+      "frustration": 0.0,
+      "engagement": 0.5,
+      "progress": 0.0,
+      "regulation_status": {
+        "active_interventions": 0,
+        "last_intervention_time": null,
+        "frustration_approaching_threshold": "False",
+        "current_threshold": 0.1
+      },
+      "current_atp": 100.0,
+      "max_atp": 100.0,
+      "capacity_ratio": 1.0,
+      "accepting_tasks": "True",
+      "current_load": 0,
+      "detection_threshold": 0.1,
+      "intervention_strength": -0.3
+    }
+  },
+  "scenario_2_multi_agent_discovery": {
+    "status": "passed",
+    "federation_summary": {
+      "total_agents": 3,
+      "available_agents": 2,
+      "state_distribution": {
+        "wake": 1,
+        "focus": 1,
+        "rest": 1
+      },
+      "avg_capacity": 1.0,
+      "avg_frustration": 0.0,
+      "avg_engagement": 0.5
+    }
+  },
+  "scenario_3_state_aware_routing": {
+    "status": "passed",
+    "high_priority_agent": "agent_focus",
+    "low_priority_agent": "agent_focus"
+  },
+  "scenario_4_emotional_feedback_loop": {
+    "status": "failed",
+    "error": "Frustration should decrease after success"
+  },
+  "scenario_5_distributed_regulation": {
+    "status": "passed",
+    "total_interventions": 15,
+    "max_frustration": 0.0,
+    "avg_final_frustration": 0.0,
+    "federation_summary": {
+      "total_agents": 3,
+      "available_agents": 0,
+      "state_distribution": {
+        "wake": 3
+      },
+      "avg_capacity": 0.024000000000000004,
+      "avg_frustration": 0.0,
+      "avg_engagement": 0.4317828249268023
+    }
+  }
+}

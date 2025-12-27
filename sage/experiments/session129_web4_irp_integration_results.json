@@ -1,0 +1,80 @@
+{
+  "scenario_1_expert_registration": {
+    "status": "passed",
+    "expert_id": "expert_reflection"
+  },
+  "scenario_2_state_aware_selection": {
+    "status": "passed",
+    "selected_expert": "expert_focus",
+    "rest_excluded": true
+  },
+  "scenario_3_emotional_invocation": {
+    "status": "passed",
+    "result": {
+      "success": true,
+      "quality": 0.85,
+      "atp_consumed": 25.0
+    },
+    "reputation_updated": true
+  },
+  "scenario_4_metabolic_reputation": {
+    "status": "passed",
+    "reputation_summary": {
+      "wake": {
+        "quality": 0.7,
+        "tasks": 0
+      },
+      "focus": {
+        "quality": 0.8344640000000002,
+        "tasks": 5
+      },
+      "rest": {
+        "quality": 0.431072,
+        "tasks": 5
+      },
+      "dream": {
+        "quality": 0.7,
+        "tasks": 0
+      },
+      "crisis": {
+        "quality": 0.7,
+        "tasks": 0
+      }
+    }
+  },
+  "scenario_5_cross_expert_federation": {
+    "status": "passed",
+    "tasks_executed": 3,
+    "federation_summary": {
+      "total_agents": 3,
+      "available_agents": 3,
+      "state_distribution": {
+        "wake": 2,
+        "focus": 1
+      },
+      "avg_capacity": 1.0,
+      "avg_frustration": 0.0,
+      "avg_engagement": 0.5
+    },
+    "results": [
+      {
+        "task_id": "task_reflection",
+        "expert_id": "expert_reflection",
+        "success": true,
+        "quality": 0.85
+      },
+      {
+        "task_id": "task_tools",
+        "expert_id": "expert_tools",
+        "success": true,
+        "quality": 1.0
+      },
+      {
+        "task_id": "task_fast",
+        "expert_id": "expert_fast",
+        "success": true,
+        "quality": 0.85
+      }
+    ]
+  }
+}

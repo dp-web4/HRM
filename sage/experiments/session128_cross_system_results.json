@@ -4,7 +4,7 @@
     "agent_id": "agent_thor",
     "advertisement": {
       "agent_id": "agent_thor",
-      "timestamp": 1766863108.633764,
+      "timestamp": 1766865750.5557716,
       "metabolic_state": "wake",
       "curiosity": 0.5,
       "frustration": 0.0,
@@ -46,8 +46,11 @@
     "low_priority_agent": "agent_focus"
   },
   "scenario_4_emotional_feedback_loop": {
-    "status": "failed",
-    "error": "Frustration should decrease after success"
+    "status": "passed",
+    "initial_frustration": 0.0,
+    "after_success_frustration": 0.0,
+    "after_failure_frustration": 0.0,
+    "interventions": 1
   },
   "scenario_5_distributed_regulation": {
     "status": "passed",

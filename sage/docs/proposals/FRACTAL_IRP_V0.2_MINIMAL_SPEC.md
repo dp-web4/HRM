@@ -55,7 +55,8 @@ This descriptor is the *only* thing SAGE needs to know about an expert.
 
   "cost_model": {
     "unit": "atp | usd | ms",
-    "estimate_p50": 5
+    "estimate_p50": 5,
+    "estimate_p95": 15
   },
 
   "endpoint": {
@@ -128,7 +129,10 @@ def score_expert(expert: Descriptor, context: TaskContext) -> float:
         return -float('inf')
     if not meets_permission_requirements(expert, context):
         return -float('inf')
-    if expert.cost_model.estimate_p50 > context.budget_remaining:
+
+    # Budget check with headroom (use p95 if available, else p50 * 1.2)
+    estimate = expert.cost_model.get("estimate_p95") or expert.cost_model["estimate_p50"] * 1.2
+    if estimate > context.budget_remaining:
         return -float('inf')
 
     score = 0.0
@@ -140,13 +144,15 @@ def score_expert(expert: Descriptor, context: TaskContext) -> float:
         if tag in avoid:
             score -= 2.0
 
-    # Cost penalty (0 to -1 range)
-    cost_ratio = expert.cost_model.estimate_p50 / context.budget_remaining
-    score -= cost_ratio * 0.5
+    # Cost penalty (steeper as cost approaches budget)
+    cost_ratio = expert.cost_model["estimate_p50"] / context.budget_remaining
+    score -= cost_ratio * 0.8  # Steeper penalty than before
 
-    # Remote penalty (prefer local when equivalent)
+    # Remote penalty (reduced in high-urgency contexts)
     if expert.endpoint.transport == "http":
-        score -= 0.2
+        urgency = 1.0 if context.metabolic_mode == "CRISIS" else 0.0
+        remote_penalty = 0.2 * (1.0 - urgency)
+        score -= remote_penalty
 
     return score
 ```

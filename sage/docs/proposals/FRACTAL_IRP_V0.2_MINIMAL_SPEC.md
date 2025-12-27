@@ -4,6 +4,8 @@
 **Date**: 2025-12-27
 **Authors**: Nova (GPT-5.2), Claude Opus 4.5, Dennis (dp-web4)
 
+> **Philosophical Foundation**: This spec implements principles from the v1.0 proposal's [Section 0: Philosophical Foundation](./FRACTAL_IRP_ARCHITECTURE_PROPOSAL.md#0-philosophical-foundation) — grounding (not control), coherence as conserved quantity, and exception-as-signal.
+
 **Purpose**: Define the smallest, coherent contract that allows SAGE to treat *anything* (local plugin, remote SAGE, cloud LangGraph workflow) as an **IRP expert**, enabling collaboration without rewrite.
 
 This spec is intentionally minimal. It is designed to:
@@ -16,11 +18,17 @@ This spec is intentionally minimal. It is designed to:
 
 ## 1. Design Invariants (Non‑Negotiable)
 
-1. **SAGE owns attention, authorization, and resource allocation**
-2. **IRPs own bounded refinement/execution only**
-3. **No IRP decides global policy**
-4. **Restraint (doing nothing) is a valid outcome**
-5. **Implementation details are opaque to SAGE**
+These invariants implement the **grounding vs control** distinction from Section 0. SAGE shapes affordances and preserves invariants; it does not command IRP behavior.
+
+| Invariant | Purpose | Consequence |
+|-----------|---------|-------------|
+| **SAGE owns attention, authorization, and resource allocation** | Establishes locus — where action can emerge | IRPs cannot self-invoke or escalate |
+| **IRPs own bounded refinement/execution only** | Preserves interpretation freedom within constraints | SAGE doesn't dictate *how* IRPs refine |
+| **No IRP decides global policy** | Maintains coherence at system level | Local decisions don't cascade to global state |
+| **Restraint (doing nothing) is a valid outcome** | Recognizes that inaction preserves coherence | Not every salience demands action |
+| **Implementation details are opaque to SAGE** | Respects IRP autonomy | SAGE governs via interface, not internals |
+
+**Critical rule**: Invariants are inherited, never substituted. Exception pressure signals upward; it does not override invariants.
 
 ---
 

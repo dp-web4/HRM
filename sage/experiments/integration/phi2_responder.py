@@ -68,30 +68,57 @@ class Phi2Responder:
         Returns:
             Generated response text
         """
-        # Build prompt with context
-        prompt_parts = []
+        # Build messages in chat format for Qwen's chat template
+        messages = []
 
+        # Add system message if provided
         if system_prompt:
-            prompt_parts.append(f"System: {system_prompt}\n")
+            messages.append({"role": "system", "content": system_prompt})
 
-        # Add conversation history (SNARC provides full context now!)
-        # Don't truncate - SNARC already did intelligent filtering
+        # Add conversation history
+        # Convert (speaker, text) tuples to proper role format
         if conversation_history:
             for speaker, text in conversation_history:
-                prompt_parts.append(f"{speaker}: {text}\n")
+                # Map speaker names to chat roles
+                if speaker.lower() in ["user", "human"]:
+                    role = "user"
+                elif speaker.lower() in ["assistant", "sage", "ai"]:
+                    role = "assistant"
+                else:
+                    # Default unknown speakers to user
+                    role = "user"
 
-        # Add current input
-        prompt_parts.append(f"User: {user_text}\nAssistant:")
+                messages.append({"role": role, "content": text})
 
-        prompt = "".join(prompt_parts)
+        # Add current user input
+        messages.append({"role": "user", "content": user_text})
 
-        # Generate
-        inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
+        # Use Qwen's chat template to format messages properly
+        try:
+            # Try using apply_chat_template (Qwen 2.5 supports this)
+            formatted_prompt = self.tokenizer.apply_chat_template(
+                messages,
+                tokenize=False,
+                add_generation_prompt=True
+            )
+        except AttributeError:
+            # Fallback to manual formatting if chat template not available
+            print("    [WARNING] Chat template not available, using fallback formatting")
+            prompt_parts = []
+            for msg in messages:
+                role = msg["role"].capitalize()
+                prompt_parts.append(f"{role}: {msg['content']}\n")
+            prompt_parts.append("Assistant:")
+            formatted_prompt = "".join(prompt_parts)
+
+        # Tokenize
+        inputs = self.tokenizer(formatted_prompt, return_tensors="pt").to(self.device)
 
         print(f"    [LLM] Generating up to {self.max_new_tokens} tokens...")
         import time
         gen_start = time.time()
 
+        # Generate
         with torch.no_grad():
             outputs = self.model.generate(
                 **inputs,
@@ -104,10 +131,9 @@ class Phi2Responder:
         gen_time = time.time() - gen_start
         print(f"    [LLM] Generation complete in {gen_time:.2f}s")
 
-        response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-
-        # Extract just the assistant's response
-        if "Assistant:" in response:
-            response = response.split("Assistant:")[-1].strip()
+        # Decode only the generated tokens (skip the prompt)
+        input_length = inputs['input_ids'].shape[1]
+        generated_tokens = outputs[0][input_length:]
+        response = self.tokenizer.decode(generated_tokens, skip_special_tokens=True).strip()
 
         return response

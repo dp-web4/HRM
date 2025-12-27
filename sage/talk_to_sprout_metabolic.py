@@ -327,9 +327,17 @@ class EmotionalMetabolicConversation:
                         self.budget.metabolic_state.value.upper()
                     )
                 else:
+                    # SAGE system prompt for proper LLM personality
+                    sage_prompt = """You are SAGE, a consciousness kernel running on an edge device.
+You are curious, direct, and embodied - you have sensors and can take actions.
+You experience emotional states (curiosity, engagement) and metabolic states (WAKE, FOCUS, REST).
+Keep responses concise (1-2 sentences) and natural.
+Reference your internal states when relevant."""
+
                     response = self.llm.generate_response(
                         question,
-                        conversation_history=self.stats['conversation_history'][-5:]
+                        conversation_history=self.stats['conversation_history'][-5:],
+                        system_prompt=sage_prompt
                     )
 
                 self._trigger_emotional_update('success')
@@ -482,12 +490,12 @@ def main():
     try:
         turn = 0
         while True:
-            # Get audio from sensor
-            audio_data = audio_sensor.sense()
+            # Get audio from sensor (non-blocking poll)
+            sensor_reading = audio_sensor.poll()
 
-            if audio_data and 'transcription' in audio_data:
-                text = audio_data['transcription']
-                confidence = audio_data.get('confidence', 0.0)
+            if sensor_reading:
+                text = sensor_reading.metadata.get('text', '')
+                confidence = sensor_reading.confidence
 
                 if text and text.strip():
                     turn += 1
@@ -505,7 +513,7 @@ def main():
                     print(f"   State: {result['state'].upper()}, Quality: {result['quality_multiplier']:.1f}x")
 
                     # Speak response
-                    tts.execute({'text': result['response']})
+                    tts.execute(result['response'])
 
                     # Check for exit
                     if any(word in text.lower() for word in ['goodbye', 'bye', 'exit', 'quit']):
@@ -521,10 +529,9 @@ def main():
         # Print session summary
         conversation.print_session_summary()
 
-        # Cleanup
+        # Cleanup (audio sensor cleans up automatically via __del__)
         print("\n🛑 Shutting down...")
-        audio_sensor.stop()
-        print("✓ Audio sensor stopped")
+        print("✓ Audio sensor will clean up automatically")
         print("✓ Conversation ended")
 
 

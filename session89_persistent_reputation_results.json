@@ -1,0 +1,38 @@
+{
+  "session": 89,
+  "timestamp": "2025-12-22 00:01:55",
+  "hardware": "Jetson AGX Thor",
+  "baseline": {
+    "total_selections": 38880,
+    "trust_driven_count": 0,
+    "trust_driven_pct": 0.0,
+    "exploration_count": 7662,
+    "quality_only_count": 31218,
+    "total_reputations_tracked": 6144,
+    "reputations_with_signals": 0,
+    "avg_reputation_score": 0.5,
+    "total_signals_integrated": 0,
+    "first_trust_activation": null
+  },
+  "persistent_reputation": {
+    "total_selections": 38880,
+    "trust_driven_count": 0,
+    "trust_driven_pct": 0.0,
+    "exploration_count": 7867,
+    "quality_only_count": 31013,
+    "total_reputations_tracked": 6144,
+    "reputations_with_signals": 0,
+    "avg_reputation_score": 0.5,
+    "total_signals_integrated": 0,
+    "first_trust_activation": null
+  },
+  "improvement": 0.0,
+  "configuration": {
+    "num_experts": 128,
+    "num_layers": 48,
+    "num_generations": 810,
+    "reputation_weight": 0.4,
+    "min_evidence_for_trust": 1
+  },
+  "conversations_loaded": 0
+}

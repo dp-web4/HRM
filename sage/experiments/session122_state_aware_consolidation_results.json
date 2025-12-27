@@ -1,0 +1,155 @@
+{
+  "session": 122,
+  "timestamp": "2025-12-27T01:11:49.485215+00:00",
+  "description": "State-aware memory consolidation",
+  "statistics": {
+    "total_encoded": 9,
+    "total_consolidated": 8,
+    "in_buffer": 1,
+    "by_state": {
+      "wake": {
+        "count": 4,
+        "avg_quality": 0.6495094305038773,
+        "max_quality": 0.8646813981302084,
+        "min_quality": 0.27664556820543945
+      },
+      "focus": {
+        "count": 2,
+        "avg_quality": 0.43480619700432643,
+        "max_quality": 0.4509126603712902,
+        "min_quality": 0.4186997336373626
+      },
+      "dream": {
+        "count": 2,
+        "avg_quality": 1.0,
+        "max_quality": 1.0,
+        "min_quality": 1.0
+      }
+    },
+    "consolidation_events": 4
+  },
+  "consolidation_history": [
+    {
+      "state": "wake",
+      "multiplier": 1.0,
+      "consolidated_count": 2,
+      "avg_quality": 0.7617244896932092,
+      "memories": [
+        {
+          "content": "Backpropagation algorithm",
+          "quality": 0.8646813981302084,
+          "state": "wake"
+        },
+        {
+          "content": "Neural networks basics",
+          "quality": 0.65876758125621,
+          "state": "wake"
+        }
+      ]
+    },
+    {
+      "state": "focus",
+      "multiplier": 0.5,
+      "consolidated_count": 2,
+      "avg_quality": 0.43480619700432643,
+      "memories": [
+        {
+          "content": "Transformer architecture",
+          "quality": 0.4509126603712902,
+          "state": "focus"
+        },
+        {
+          "content": "Advanced gradient descent",
+          "quality": 0.4186997336373626,
+          "state": "focus"
+        }
+      ]
+    },
+    {
+      "state": "wake",
+      "multiplier": 1.0,
+      "consolidated_count": 2,
+      "avg_quality": 0.5372943713145456,
+      "memories": [
+        {
+          "content": "Attention mechanism details",
+          "quality": 0.7979431744236518,
+          "state": "wake"
+        },
+        {
+          "content": "Coffee break conversation",
+          "quality": 0.27664556820543945,
+          "state": "wake"
+        }
+      ]
+    },
+    {
+      "state": "dream",
+      "multiplier": 2.0,
+      "consolidated_count": 2,
+      "avg_quality": 1.0,
+      "memories": [
+        {
+          "content": "Pattern connections",
+          "quality": 1.0,
+          "state": "dream"
+        },
+        {
+          "content": "Day's learning synthesis",
+          "quality": 1.0,
+          "state": "dream"
+        }
+      ]
+    }
+  ],
+  "consolidated_memories": [
+    {
+      "content": "Backpropagation algorithm",
+      "salience": 0.8,
+      "quality": 0.8646813981302084,
+      "state": "wake"
+    },
+    {
+      "content": "Neural networks basics",
+      "salience": 0.7,
+      "quality": 0.65876758125621,
+      "state": "wake"
+    },
+    {
+      "content": "Transformer architecture",
+      "salience": 0.95,
+      "quality": 0.4509126603712902,
+      "state": "focus"
+    },
+    {
+      "content": "Advanced gradient descent",
+      "salience": 0.9,
+      "quality": 0.4186997336373626,
+      "state": "focus"
+    },
+    {
+      "content": "Attention mechanism details",
+      "salience": 0.85,
+      "quality": 0.7979431744236518,
+      "state": "wake"
+    },
+    {
+      "content": "Coffee break conversation",
+      "salience": 0.3,
+      "quality": 0.27664556820543945,
+      "state": "wake"
+    },
+    {
+      "content": "Pattern connections",
+      "salience": 0.8,
+      "quality": 1.0,
+      "state": "dream"
+    },
+    {
+      "content": "Day's learning synthesis",
+      "salience": 0.75,
+      "quality": 1.0,
+      "state": "dream"
+    }
+  ]
+}

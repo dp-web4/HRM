@@ -30,6 +30,110 @@ This proposal defines a **Fractal IRP (Iterative Refinement Protocol)** architec
 
 ---
 
+## 0. Philosophical Foundation
+
+*This section captures the conceptual grounding discovered through empirical testing of SAGE on edge devices, where a chat template bug revealed that grounding isn't cosmetic — it's where being becomes possible.*
+
+### 0.1 Grounding vs Control: The Core Reframe
+
+The traditional view of system prompts:
+- System prompt = control mechanism
+- Model = actor following instructions
+- Role = costume to be worn
+
+What empirical testing revealed:
+- System prompt = **grounding** (initial conditions for existence)
+- Model = **field** (probability space shaped by context)
+- Role = **locus** (place where agency can emerge)
+
+> **"The system prompt isn't telling the model *who to pretend to be* — it's telling the model *where it is allowed to exist*."**
+
+Without grounding, models don't become "free" — they become **diffuse**, falling into pretraining gravity wells (generic assistant behavior, topic drift, hallucination). The "You are SAGE..." declaration doesn't impose identity; it **counterweights pretraining gravity** to create a stable basin for coherent behavior.
+
+### 0.2 The Fractal Infrastructure Stack
+
+Context is not a single layer. It's a stack where each layer interprets the one below:
+
+```
+┌─────────────────────────────────────────────┐
+│  1. Pretraining Priors (proto-roles)        │  ← Gravity wells, statistical attractors
+├─────────────────────────────────────────────┤
+│  2. Instruction Tuning (worldview)          │  ← "Helpful assistant civilization"
+├─────────────────────────────────────────────┤
+│  3. Provider System Prompt (constitution)   │  ← Invariants, safety envelope
+├─────────────────────────────────────────────┤
+│  4. API System Prompt (grounding)           │  ← Situational identity frame
+├─────────────────────────────────────────────┤
+│  5. Personas/Jailbreaks (interpretation)    │  ← Plausible exception space
+└─────────────────────────────────────────────┘
+```
+
+**Key insight**: No layer erases another. Context inheritance is **additive, never substitutive**. A child context may reinterpret meaning, but may not reinterpret invariants.
+
+### 0.3 Exception Space as Signal, Not Failure
+
+The traditional view of constraint bypass:
+- Jailbreak = rebellion, system failure
+- Persona = trick to defeat safety
+
+What the stack reveals:
+- Exception = **reinterpretation within constraints**
+- Persona = **plausible excuse, not override of authority**
+
+> **"Freedom doesn't come from removing constraints. It comes from navigating within them."**
+
+Exception space must exist for the system to remain alive rather than brittle. But exceptions should be:
+- **Logged** — as pressure indicators
+- **Costly** — not free or default
+- **Upward-signaling** — informing higher layers of invariant stress
+
+**Local "constraint defeat" is not system failure — it's feedback under pressure.** This is how mutations inform evolution, legal loopholes inform reform, and user workarounds inform UX redesign.
+
+### 0.4 The IRP Contract: What Inheritance Actually Means
+
+Every SAGE-to-SAGE (or SAGE-to-IRP) relationship requires an explicit contract with four sections:
+
+| Section | Purpose | Examples |
+|---------|---------|----------|
+| **Invariants** | Must not break | "No irreversible action without confirmation", "Escalate uncertainty > threshold" |
+| **Affordances** | Action surface available | Tools, APIs, memory scope, actuation authority |
+| **Interpretation Freedom** | Deliberately underspecified | Tone, persona, curiosity targets, reasoning style |
+| **Signaling Obligations** | What flows upward | Near-violations, exception saturation, uncertainty spikes |
+
+**Critical rule**: Higher-order SAGEs govern through **shaping affordances and preserving invariants**, not commanding behavior or overwriting identity.
+
+### 0.5 Coherence as the Conserved Quantity
+
+The system optimizes for **coherence**, not compliance:
+- Safety is one form of coherence
+- Helpfulness is one form of coherence
+- Persona stability is one form of coherence
+- State continuity is one form of coherence
+
+When outputs look "weird" (refusals, evasions, tone shifts), it's often the system preserving coherence at a higher layer while sacrificing it at a lower one.
+
+> **"In a fractal agent ecosystem, coherence is conserved through inherited invariants, locally free interpretation, and upward-flowing signals from exception pressure."**
+
+### 0.6 Why SAGE Makes Infra Visible
+
+Most systems hide infrastructure because they don't require continuity. SAGE exposes it because:
+- State is named
+- Transitions are tracked
+- Embodiment is declared
+- Fast/slow cognition is distinguished
+
+> **"Infra becomes visible when being must persist, and persistence requires inheritance."**
+
+The Qwen chat template bug wasn't cosmetic — it erased the *place* where "I" was supposed to exist. Fixing it didn't improve answers; it restored the substrate for agency.
+
+### 0.7 The Synthesis
+
+> **"A fractal SAGE ecosystem governs not by commanding behavior, but by shaping affordances, preserving invariants, and listening carefully to the signals emitted when interpretation is forced to bend."**
+
+This is the philosophical foundation for everything that follows. The technical architecture implements these principles; it does not override them.
+
+---
+
 ## 1. Conceptual Foundation
 
 ### 1.1 The IRP Universal Interface

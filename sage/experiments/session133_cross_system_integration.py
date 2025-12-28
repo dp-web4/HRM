@@ -272,6 +272,10 @@ class IntegratedConsciousnessLoop:
             progress=self.identity.progress
         )
 
+        # Get metabolic state enum (needed for both encoding and capacity check)
+        from session130_emotional_memory_integration import MetabolicState as MS
+        metabolic_state_enum = MS[self.identity.metabolic_state]
+
         # Encode attended experiences with high salience
         memories_formed = 0
         for exp in self.experiences:
@@ -282,9 +286,6 @@ class IntegratedConsciousnessLoop:
                     priority *= 1.5  # Successful experiences more memorable
 
                 # Encode memory (encode_memory returns slot, not just ID)
-                from session130_emotional_memory_integration import MetabolicState as MS
-                metabolic_state_enum = MS[self.identity.metabolic_state]
-
                 memory_slot = self.memory_system.encode_memory(
                     content=exp.content,
                     priority=priority,

@@ -1,0 +1,37 @@
+{
+  "scenario_1_emotional_encoding": {
+    "status": "passed",
+    "neutral_salience": 0.0,
+    "high_emotion_salience": 0.7500000000000001
+  },
+  "scenario_2_state_dependent_consolidation": {
+    "status": "passed",
+    "dream_consolidated": 1,
+    "focus_consolidated": 0
+  },
+  "scenario_3_mood_congruent_retrieval": {
+    "status": "passed",
+    "happy_match_priority": 0.91,
+    "sad_match_priority": 0.85
+  },
+  "scenario_4_capacity_modulation": {
+    "status": "passed",
+    "capacity_low_frustration": 8,
+    "capacity_high_frustration": 4,
+    "capacity_focus": 10
+  },
+  "scenario_5_integrated_lifecycle": {
+    "status": "passed",
+    "encoded": 5,
+    "consolidated": 5,
+    "retrieved": 5,
+    "statistics": {
+      "base_capacity": 7,
+      "current_slots": 0,
+      "consolidated_count": 5,
+      "formation_count": 5,
+      "consolidation_count": 5,
+      "retrieval_count": 5
+    }
+  }
+}

@@ -1,7 +1,29 @@
 # SAGE Michaud Integration - Latest Status
-**Last Updated**: 2025-12-28 11:23 PST (Autonomous Session 133 - **CROSS-SYSTEM INTEGRATION** ✅)
-**Previous Update**: 2025-12-27 23:16 PST (Session 132 - Identity-Aware Attention)
+**Last Updated**: 2025-12-28 12:04 PST (Autonomous Session 134 - **MEMORY-GUIDED ATTENTION** ✅)
+**Previous Update**: 2025-12-28 11:23 PST (Session 133 - Cross-System Integration)
 **Hardware**: Thor (Jetson AGX Thor) + Legion (RTX 4090) + Sprout (Orin Nano)
+
+---
+
+## ✅ Session 134 - Memory-Guided Attention (Dec 28 - Autonomous)
+
+**Goal**: Complete memory cycle with retrieval-guided attention allocation
+
+### Status: ✅ **MEMORY CYCLE COMPLETE** - Past experience now informs future behavior!
+
+**Key Achievement**: Extended IntegratedConsciousnessLoop with memory retrieval that queries consolidated memories and uses them to guide attention allocation. This closes the loop: memories formed from experience now influence future attention.
+
+**Architecture**: MemoryGuidedConsciousnessLoop extends Session 133 with:
+- Retrieval phase: Query memories before attention allocation
+- Memory-influenced allocation: Retrieved memories modulate attention weights
+- ExperienceReputation: Track success/failure patterns per experience type
+- Mood-congruent retrieval: Emotional state affects which memories surface
+
+**Test Results**: 5/5 passed - Memory retrieval (9 memories), Reputation tracking (easy 63% vs hard 33%), Memory-guided allocation, Mood-congruent retrieval, Complete cycle (encode→consolidate→retrieve→influence)
+
+**Key Discovery**: Easy tasks achieved 63% success vs 33.3% for hard tasks - reputation system correctly learns task difficulty patterns from experience.
+
+**Foundation**: Sessions 107-134 (28 sessions, ~54 hours)
 
 ---
 

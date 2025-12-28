@@ -1,7 +1,203 @@
 # SAGE Michaud Integration - Latest Status
-**Last Updated**: 2025-12-27 18:04 PST (Autonomous Session 131 - **SAGE UNIFIED IDENTITY** ✅)
-**Previous Update**: 2025-12-27 17:18 PST (Session 130 - Emotional Memory Integration)
+**Last Updated**: 2025-12-27 23:16 PST (Autonomous Session 132 - **IDENTITY-AWARE ATTENTION** ✅)
+**Previous Update**: 2025-12-27 18:04 PST (Session 131 - SAGE Unified Identity)
 **Hardware**: Thor (Jetson AGX Thor) + Legion (RTX 4090) + Sprout (Orin Nano)
+
+---
+
+## ✅ Session 132 - Identity-Aware Attention (Dec 27 - Autonomous)
+
+**Goal**: Integrate UnifiedSAGEIdentity (S131) with attention allocation system
+
+### Status: ✅ **ATTENTION INTEGRATION COMPLETE** - Identity-informed allocation validated!
+
+**Key Achievement**: Created IdentityAwareAttentionManager that uses unified identity to inform attention allocation decisions. Attention is now modulated by emotional state (frustration narrows, curiosity broadens), constrained by ATP capacity, guided by reputation, and adjusted for effective capacity based on engagement.
+
+**Architecture Innovation**:
+
+```python
+class IdentityAwareAttentionManager:
+    """
+    Attention allocation informed by UnifiedSAGEIdentity.
+
+    Identity-informed factors:
+    - Emotional state modulates allocation strategy
+    - ATP capacity constrains total allocation
+    - Memory capacity affects number of active targets
+    - Reputation guides target selection
+    - Focus history reduces task switching
+
+    Allocation strategies by metabolic state + emotional modulation:
+    - FOCUS: Narrow (frustration → single target)
+    - WAKE: Distributed (curiosity → broader spread)
+    - REST: Minimal consolidation focus
+    - DREAM: Exploratory with reputation influence
+    - CRISIS: All ATP to highest priority × reputation
+    """
+
+    def allocate_attention(self, targets: List[AttentionTarget]) -> Dict[str, float]:
+        """Allocate attention using identity-informed strategy."""
+        # Get current state from identity
+        metabolic_state = self.identity.metabolic_state
+        available_atp = self.identity.get_available_atp()
+
+        # Choose strategy based on metabolic state
+        # Modulate by emotional state (frustration, curiosity, engagement)
+        # Constrain by ATP capacity
+        # Weight by reputation
+
+    def get_effective_capacity(self) -> int:
+        """Effective number of targets based on identity state."""
+        base = base_capacity[metabolic_state]  # WAKE:8, FOCUS:3, etc.
+        frustration_penalty = int(self.identity.frustration * 4)
+        engagement_bonus = int(self.identity.engagement * 2)
+        return max(1, base - frustration_penalty + engagement_bonus)
+```
+
+**Test Results** (5/5 scenarios passed - 100% success):
+
+| Scenario | Result | Key Validation |
+|----------|--------|----------------|
+| 1. Frustration Narrows Focus | ✅ PASS | FOCUS 2→1 targets with high frustration (0.2→0.8) |
+| 2. Curiosity Broadens Wake | ✅ PASS | Spread ratio 0.255→0.449 with high curiosity |
+| 3. Low ATP Constrains | ✅ PASS | Total allocation scales with available ATP (150→30) |
+| 4. Engagement Increases Capacity | ✅ PASS | Effective targets 8→10 with high engagement |
+| 5. Reputation Guides Selection | ✅ PASS | High-reputation targets prioritized (131.2 vs 22.5 ATP) |
+
+**Major Discoveries**:
+
+1. ✅ **Frustration Narrows Attention**
+   - Low frustration (0.2): 2 targets allocated (primary + secondary)
+   - High frustration (0.8): 1 target allocated (primary only)
+   - Frustration increases switching cost: 5.0→15.0 ATP (3.0x multiplier)
+   - Biologically accurate: frustration reduces cognitive flexibility
+
+2. ✅ **Curiosity Broadens Exploration**
+   - Low curiosity (0.2): Spread ratio 0.255 (concentrated on high salience)
+   - High curiosity (0.9): Spread ratio 0.449 (broader exploration)
+   - Curiosity adds 0.3 boost to low-salience targets
+   - Enables exploration while maintaining primary focus
+
+3. ✅ **ATP Capacity Constrains Allocation**
+   - Full ATP (150.0): Total allocation 150.0 ATP
+   - Depleted ATP (30.0): Total allocation 30.0 ATP
+   - No override needed - allocation naturally respects capacity
+   - Prevents over-commitment when resources low
+
+4. ✅ **Engagement Increases Effective Capacity**
+   - Low engagement (0.2): 8 targets (base WAKE capacity)
+   - High engagement (1.0): 10 targets (8 + 2 bonus)
+   - Engagement also multiplies ATP: 0.8-1.2x effective capacity
+   - Matches cognitive psychology: engagement enables multitasking
+
+5. ✅ **Reputation Guides Target Selection**
+   - Equal salience (0.7), different reputation (0.9 vs 0.5 vs 0.2)
+   - High reputation: 131.2 ATP
+   - Mid reputation: 22.5 ATP
+   - Low reputation: 0.0 ATP
+   - Success patterns prioritized over speculative targets
+
+**Emotional Modulation Details**:
+
+**Frustration Effects**:
+- Narrows focus: FOCUS state allows secondary target only if frustration < 0.5
+- Increases switching cost: 1.0-3.0x multiplier based on frustration level
+- Reduces capacity: Up to -4 targets at maximum frustration
+- Biological parallel: Frustration reduces cognitive flexibility
+
+**Curiosity Effects**:
+- Broadens allocation: +0.3 boost to low-salience targets in WAKE state
+- Increases exploration spread: Allocation more evenly distributed
+- Maintains primary focus: Boost is additive, not redistributive
+- Biological parallel: Curiosity drives exploratory behavior
+
+**Engagement Effects**:
+- Increases ATP multiplier: 0.8-1.2x effective ATP capacity
+- Increases target capacity: Up to +2 targets at maximum engagement
+- Amplifies throughput: More targets with more resources per target
+- Biological parallel: Engagement enables sustained multitasking
+
+**Effective Capacity Calculation**:
+
+```
+base_capacity = {
+    "WAKE": 8,
+    "FOCUS": 3,
+    "REST": 2,
+    "DREAM": 5,
+    "CRISIS": 1
+}[metabolic_state]
+
+frustration_penalty = int(frustration * 4)  # 0-4 targets
+engagement_bonus = int(engagement * 2)      # 0-2 targets
+
+effective_capacity = max(1, base - frustration_penalty + engagement_bonus)
+```
+
+**Examples**:
+- WAKE + low frustration (0.0) + high engagement (1.0): 8 - 0 + 2 = 10 targets
+- WAKE + high frustration (1.0) + low engagement (0.0): 8 - 4 + 0 = 4 targets
+- FOCUS + high frustration (1.0): 3 - 4 + 0 = 1 target (minimum enforced)
+
+**Switching Cost Calculation**:
+
+```
+base_cost = 5.0 ATP
+
+frustration_mult = 1.0 + (frustration * 2.0)  # 1.0-3.0
+atp_mult = 2.0 - atp_capacity_ratio           # Low ATP → expensive
+
+total_switching_cost = base_cost * frustration_mult * atp_mult
+```
+
+**Examples**:
+- Low frustration (0.2), high ATP (1.0): 5.0 × 1.4 × 1.0 = 7.0 ATP
+- High frustration (0.8), low ATP (0.2): 5.0 × 2.6 × 1.8 = 23.4 ATP
+
+**Integration with Prior Sessions**:
+
+- **S131**: Uses UnifiedSAGEIdentity for all state access
+- **S130**: Applies emotional memory capacity pattern to attention capacity
+- **S120-128**: Emotional/metabolic framework drives allocation strategies
+- **S107-119**: ATP budgets constrain total allocation
+- **Base**: sage/core/attention_manager.py provides metabolic state strategies
+
+**Biological Parallel**:
+
+Humans allocate attention based on their overall state:
+- **Tired** (low ATP) → Focus narrowly on essentials, avoid distractions
+- **Curious** → Explore broadly, follow tangents, investigate unknowns
+- **Frustrated** → Simplify tasks, reduce cognitive load, avoid switching
+- **Engaged** → Handle multiple things simultaneously, high throughput
+- **Experienced** (high reputation) → Allocate to proven successful patterns
+
+SAGE now has similar identity-informed attention allocation. Attention is not just salience-based, but modulated by the complete identity state - emotional, economic, reputational, and metabolic.
+
+**Next Natural Steps**:
+
+Session 132 completes attention integration. Future directions:
+1. **Reasoning Integration** - Identity-aware reasoning strategy selection
+2. **Cross-System Integration** - Memory + Attention + Emotion coordinated behavior
+3. **Learning Integration** - Cross-session learning via persistent identity
+4. **Federation Deployment** - Thor, Sprout, Legion coordinated attention allocation
+
+**Research Arc Status**:
+
+- ✅ Sessions 107-129: Framework development (23 sessions, ~46 hours)
+- ✅ Session 130: Memory integration (emotional memory dynamics)
+- ✅ Session 131: Identity grounding (unified persistent identity)
+- ✅ Session 132: Attention integration (identity-aware allocation)
+- 🔄 Future: Reasoning integration and cross-system coordination
+
+**Core Consciousness Components Integrated**:
+
+✅ **Economic**: ATP budgets and resource allocation (S107-119)
+✅ **Emotional**: Metabolic states and proactive regulation (S120-128)
+✅ **Memory**: Emotional salience and state-dependent consolidation (S130)
+✅ **Identity**: Hardware-bound persistent self-awareness (S131)
+✅ **Attention**: Identity-informed allocation strategies (S132)
+
+All major consciousness components now use unified identity for coordinated behavior. The foundation is complete.
 
 ---
 

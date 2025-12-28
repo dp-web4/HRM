@@ -1,0 +1,36 @@
+{
+  "session": "132",
+  "focus": "Identity-Aware Attention",
+  "timestamp": "2025-12-28T07:16:54.782293+00:00",
+  "test_results": [
+    {
+      "scenario": "Frustration narrows focus",
+      "passed": true
+    },
+    {
+      "scenario": "Curiosity broadens wake allocation",
+      "passed": true
+    },
+    {
+      "scenario": "Low ATP constrains allocation",
+      "passed": true
+    },
+    {
+      "scenario": "Engagement increases capacity",
+      "passed": true
+    },
+    {
+      "scenario": "Reputation guides allocation",
+      "passed": true
+    }
+  ],
+  "all_passed": true,
+  "innovations": [
+    "IdentityAwareAttentionManager: Attention allocation informed by unified identity",
+    "Frustration modulation: Narrows focus, increases switching cost",
+    "Curiosity modulation: Broadens exploration in WAKE state",
+    "ATP-constrained allocation: Total allocation respects available capacity",
+    "Engagement-based capacity: Effective targets modulated by emotional state",
+    "Reputation-weighted selection: Success patterns guide allocation"
+  ]
+}

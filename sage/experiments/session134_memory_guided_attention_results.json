@@ -1,0 +1,35 @@
+{
+  "session": "134",
+  "focus": "Memory-Guided Attention",
+  "timestamp": "2025-12-28T20:04:04.039948+00:00",
+  "test_results": [
+    {
+      "scenario": "Memory retrieval influences attention",
+      "passed": true
+    },
+    {
+      "scenario": "Experience reputation tracking",
+      "passed": true
+    },
+    {
+      "scenario": "Memory-guided attention allocation",
+      "passed": true
+    },
+    {
+      "scenario": "Mood-congruent memory retrieval",
+      "passed": true
+    },
+    {
+      "scenario": "Complete memory cycle",
+      "passed": true
+    }
+  ],
+  "all_passed": true,
+  "innovations": [
+    "MemoryGuidedConsciousnessLoop: Memory retrieval guides attention",
+    "ExperienceReputation: Track success/failure patterns",
+    "Retrieval phase: Query consolidated memories before attention",
+    "Memory-influenced allocation: Retrieved memories modulate weights",
+    "Complete memory cycle: Encode \u2192 Consolidate \u2192 Retrieve \u2192 Influence"
+  ]
+}

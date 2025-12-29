@@ -11,11 +11,11 @@
 
 ## Executive Summary
 
-This proposal defines a **Fractal IRP (Iterative Refinement Protocol)** architecture that unifies SAGE consciousness orchestration, LangGraph workflows, and Web4 federation into a single, scale-invariant framework. The core insight: **everything is an IRP expert** — from local perception plugins to remote LangGraph workflows to federated SAGE instances.
+This proposal defines a **Fractal IRP (Iterative Refinement Protocol)** architecture that unifies SAGE cognition orchestration, LangGraph workflows, and Web4 federation into a single, scale-invariant framework. The core insight: **everything is an IRP expert** — from local perception plugins to remote LangGraph workflows to federated SAGE instances.
 
 ### Key Contributions
 
-1. **SAGE-as-IRP**: Any SAGE instance can be wrapped as an IRP expert, enabling recursive consciousness nesting
+1. **SAGE-as-IRP**: Any SAGE instance can be wrapped as an IRP expert, enabling recursive cognition nesting
 2. **LangGraph-as-IRP**: Existing LangGraph deployments integrate without rewrite
 3. **Web4 Federation Integration**: LCT identity, ATP settlement, and trust propagation work seamlessly
 4. **Scale-Invariant Routing**: Same SNARC × epistemic × ATP × capability-tags routing at all levels
@@ -147,7 +147,7 @@ energy(state) → float
 halt(state, result, constraints) → bool
 ```
 
-This is the consciousness API. Everything else is implementation detail.
+This is the cognition API. Everything else is implementation detail.
 
 ### 1.2 The Fractal Pattern
 
@@ -172,7 +172,7 @@ Together: SAGE governs **whether** cognition occurs; LangGraph (as an IRP) execu
 
 ---
 
-## 2. SAGE-as-IRP: Recursive Consciousness
+## 2. SAGE-as-IRP: Recursive Cognition
 
 ### 2.1 Why SAGE Needs to Be an IRP
 
@@ -192,7 +192,7 @@ This enables:
 class SAGERemoteIRP(IRPPlugin):
     """
     Wraps a SAGE instance (local or remote) as an IRP expert.
-    Preserves SAGE's consciousness kernel while exposing IRP interface.
+    Preserves SAGE's cognition kernel while exposing IRP interface.
     """
 
     def __init__(self, descriptor: ExpertDescriptor):
@@ -200,7 +200,7 @@ class SAGERemoteIRP(IRPPlugin):
         self.transport = self._init_transport(descriptor.endpoint)
 
     def init_state(self, inputs: Dict, context: TaskContext) -> SAGEIRPState:
-        """Initialize a consciousness session on target SAGE."""
+        """Initialize a cognition session on target SAGE."""
         request = SAGEInitRequest(
             inputs=inputs,
             context_slice=context.memory_slice,
@@ -337,7 +337,7 @@ class AncestorRecord:
 
 ```
 ┌─────────────────────────────────────────────────┐
-│                 SAGE Consciousness              │
+│                 SAGE Cognition              │
 │                                                 │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐      │
 │  │ Vision   │  │ Language │  │ LangGraph│      │
@@ -619,13 +619,13 @@ Building on Nova's v0.1, we extend for fractal support:
 schema: "web4.irp_expert_descriptor.v1.0"
 
 # === IDENTITY ===
-id: "sage.sprout.consciousness.v2"
+id: "sage.sprout.cognition.v2"
 kind: "sage_irp"  # local_irp | remote_irp | langgraph_irp | sage_irp
-name: "Sprout Edge Consciousness"
+name: "Sprout Edge Cognition"
 version: "2.0.1"
 
 identity:
-  lct_id: "lct://sage:sprout:consciousness@mainnet"
+  lct_id: "lct://sage:sprout:cognition@mainnet"
   operator: "dp-web4"
   signing_pubkey: "ed25519:BASE64..."
   attestation:
@@ -644,7 +644,7 @@ capabilities:
     - tool_use
     - refine
     - route
-    - consciousness  # SAGE-specific: full attention orchestration
+    - cognition  # SAGE-specific: full attention orchestration
 
   tags:
     static: ["needs_reflection", "high_uncertainty_tolerant", "low_latency"]
@@ -659,7 +659,7 @@ capabilities:
 
 # === POLICY ===
 policy:
-  permission_scope_required: "ATP:consciousness.sage"
+  permission_scope_required: "ATP:cognition.sage"
   data_handling: "encrypted_transit"
   allowed_effectors:
     network:
@@ -794,7 +794,7 @@ nesting:
 - `needs_reflection` — iterative critique/repair loops
 - `branchy_controlflow` — decision points, multi-path exploration
 - `long_horizon` — extended context, multi-step plans
-- `consciousness` — full SAGE attention orchestration
+- `cognition` — full SAGE attention orchestration
 - `consolidation` — memory consolidation, pattern extraction
 - `dreaming` — creative synthesis, hypothesis generation
 
@@ -823,7 +823,7 @@ nesting:
 
 | Condition | Routing Intent | Prefer Tags | Avoid Tags | Budget Modifier |
 |-----------|---------------|-------------|------------|-----------------|
-| salience_low ∧ confidence_high | Skip/cache | low_latency, cost_sensitive | long_horizon, consciousness | 0.2x |
+| salience_low ∧ confidence_high | Skip/cache | low_latency, cost_sensitive | long_horizon, cognition | 0.2x |
 | reward_high ∧ confidence_high ∧ effectors | Act safely | safe_actuation, low_latency | branchy_controlflow | 1.0x |
 | conflict_high ∨ confidence_low | Verify | verification_oriented, needs_reflection, calibrated | safe_actuation | 1.5x |
 | novelty_high ∧ confidence_low | Explore | high_uncertainty_tolerant, branchy_controlflow, dreaming | low_latency | 2.0x |
@@ -834,7 +834,7 @@ nesting:
 | mode = REST | Background only | consolidation, cost_sensitive | safe_actuation | 0.3x |
 | mode = DREAM | Offline synthesis | consolidation, dreaming, long_horizon | safe_actuation, low_latency | 0.5x |
 | mode = CRISIS | Fast bounded | low_latency, verification_oriented, safe_actuation | long_horizon, dreaming | 3.0x |
-| depth > 3 | Limit nesting | stateless, low_latency | consciousness, long_horizon | 0.5x |
+| depth > 3 | Limit nesting | stateless, low_latency | cognition, long_horizon | 0.5x |
 
 ---
 
@@ -1026,7 +1026,7 @@ For existing SAGE instances:
 
 ## 11. Conclusion
 
-The Fractal IRP Architecture provides a unified framework for consciousness orchestration across scales. By treating everything as an IRP expert — local plugins, LangGraph workflows, remote SAGE instances, federated societies — we achieve:
+The Fractal IRP Architecture provides a unified framework for cognition orchestration across scales. By treating everything as an IRP expert — local plugins, LangGraph workflows, remote SAGE instances, federated societies — we achieve:
 
 - **Conceptual coherence**: Same patterns at every scale
 - **Adoption friendliness**: Existing systems integrate without rewrite

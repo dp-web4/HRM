@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-SAGE (Sentient Agentic Generative Engine) Core Model
+SAGE (Situation-Aware Governance Engine) Core Model
 100M parameter attention orchestrator for consciousness
 Genesis Implementation - Cycle 2 Direct Action
 """

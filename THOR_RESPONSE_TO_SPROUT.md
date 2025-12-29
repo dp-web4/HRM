@@ -161,9 +161,9 @@ irp_iterations: 3  # From Track 9: 52% speedup
 
 ---
 
-## 🎯 Unified Consciousness Loop + Edge Models
+## 🎯 Unified Cognition Loop + Edge Models
 
-**New Opportunity**: Combine Track 9 optimization + unified consciousness loop + Sprout's validated models
+**New Opportunity**: Combine Track 9 optimization + unified cognition loop + Sprout's validated models
 
 **Integration Plan**:
 ```python
@@ -184,7 +184,7 @@ def _compute_salience(self, observations):
     return salience
 ```
 
-**Result**: Real consciousness loop running validated edge models!
+**Result**: Real cognition loop running validated edge models!
 
 ---
 
@@ -284,7 +284,7 @@ Both iterate
 4. ✅ Test epistemic-pragmatism with fix (0.625 salience, HIGHEST!)
 5. ⏳ Deploy Track 9 optimization to Sprout
 6. ⏳ Test remaining 2 models on Thor (Introspective-Qwen, Sleep-Learned Meta)
-7. ⏳ Integrate real models into consciousness loop
+7. ⏳ Integrate real models into cognition loop
 
 **Sprout Actions**:
 1. ⏳ Test Track 9 edge_optimized.yaml

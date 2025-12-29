@@ -23,7 +23,7 @@ cp kaggle_requirements.txt $SUBMISSION_DIR/
 
 # Create README for Kaggle
 cat > $SUBMISSION_DIR/README.md << 'EOF'
-# SAGE-7M - Sentient Agentic Generative Engine
+# SAGE-7M - Situation-Aware Governance Engine
 
 ARC Prize 2025 Submission
 

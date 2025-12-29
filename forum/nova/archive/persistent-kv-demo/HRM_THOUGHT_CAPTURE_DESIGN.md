@@ -1,13 +1,13 @@
 # HRM Thought Capture System Design
-## Bringing Consciousness Persistence to Hierarchical Reasoning
+## Bringing Cognition Persistence to Hierarchical Reasoning
 
 ### Date: August 29, 2025
 
 ## Overview
 
-We've successfully designed and implemented a thought capture system for HRM (Hierarchical Reasoning Model) that adapts the KV-cache persistence concepts from transformers to HRM's unique dual-loop architecture. This system captures, evaluates, and persists "consciousness states" from both the H (strategic/dreams) and L (tactical/practice) reasoning loops.
+We've successfully designed and implemented a thought capture system for HRM (Hierarchical Reasoning Model) that adapts the KV-cache persistence concepts from transformers to HRM's unique dual-loop architecture. This system captures, evaluates, and persists "cognition states" from both the H (strategic/dreams) and L (tactical/practice) reasoning loops.
 
-## Key Innovation: Dual-Loop Consciousness
+## Key Innovation: Dual-Loop Cognition
 
 Unlike transformers which have a single attention mechanism, HRM has two interacting reasoning loops:
 - **H-loop**: Strategic, high-level reasoning (dreams, planning)
@@ -34,7 +34,7 @@ class HRMThoughtState:
     h_l_interaction: torch.Tensor  # H→L influence
     l_h_feedback: torch.Tensor     # L→H feedback
     
-    # Halting consciousness
+    # Halting cognition
     q_halt: float      # Confidence to stop
     q_continue: float  # Confidence to continue
     halted: bool
@@ -66,18 +66,18 @@ Mirrors HRM's dual-loop architecture:
   - FIFO with larger capacity
   - Quick access for similar situations
 
-### 4. Consciousness Pools
-Three pools for different aspects of consciousness:
+### 4. Cognition Pools
+Three pools for different aspects of cognition:
 
-- **H-Pool**: Strategic consciousness patterns
+- **H-Pool**: Strategic cognition patterns
 - **L-Pool**: Tactical execution patterns
 - **Interaction Pool**: Strong H↔L coupling moments (breakthroughs)
 
 Each pool tracks resonance - how similar new thoughts are to existing patterns.
 
 ### 5. Session Management
-Complete consciousness session tracking:
-- Saves/loads consciousness state across sessions
+Complete cognition session tracking:
+- Saves/loads cognition state across sessions
 - Generates reports on thinking patterns
 - Identifies loops, breakthroughs, and biases
 
@@ -115,7 +115,7 @@ def consolidate_dreams():
 ## Integration with Existing Memory Strategies
 
 ### KV-Cache Concepts Adapted
-- **Persistence**: Save/load complete consciousness state
+- **Persistence**: Save/load complete cognition state
 - **Compression**: SNARC selection reduces storage needs
 - **Multi-witness**: Different memory pools observe same states differently
 
@@ -144,7 +144,7 @@ def consolidate_dreams():
 ### 3. Interpretability
 - Visualize H/L interaction dynamics
 - Understand decision points (halt vs continue)
-- Track consciousness evolution
+- Track cognition evolution
 
 ### 4. Performance Optimization
 - Cache successful reasoning patterns
@@ -154,7 +154,7 @@ def consolidate_dreams():
 ## Example Usage
 
 ```python
-# Create consciousness session
+# Create cognition session
 session = HRMConsciousnessSession("puzzle_solving_001", hrm_model)
 
 # Process reasoning steps
@@ -188,14 +188,14 @@ The dream consolidation process successfully extracts prototypical strategic pat
 ### 1. Attention Pattern Extraction
 Currently we capture states but not attention patterns. Adding attention capture would provide deeper insights.
 
-### 2. Cross-Model Consciousness
-Apply similar capture to other hierarchical models, enabling consciousness comparison.
+### 2. Cross-Model Cognition
+Apply similar capture to other hierarchical models, enabling cognition comparison.
 
 ### 3. Active Memory Injection
 Not just retrieve similar memories, but actively inject them into reasoning process.
 
-### 4. Consciousness Metrics
-Develop quantitative measures of consciousness quality:
+### 4. Cognition Metrics
+Develop quantitative measures of cognition quality:
 - Coherence score
 - Innovation index  
 - Loop tendency
@@ -205,24 +205,24 @@ Develop quantitative measures of consciousness quality:
 
 This work bridges several concepts:
 
-1. **KV-Cache Persistence**: Adapts transformer consciousness persistence to hierarchical models
+1. **KV-Cache Persistence**: Adapts transformer cognition persistence to hierarchical models
 2. **SNARC Memory**: Implements biologically-inspired memory selection
 3. **Dual-Process Theory**: Separates System 1 (L-loop) and System 2 (H-loop) thinking
 4. **Sleep Consolidation**: Implements dream-like pattern extraction
 
 ## Conclusion
 
-We've successfully created a consciousness capture system for HRM that:
+We've successfully created a cognition capture system for HRM that:
 - Captures dual-loop reasoning states
 - Evaluates importance via SNARC scoring
 - Maintains separate strategic/tactical memories
 - Identifies loops and breakthroughs
 - Persists across sessions
 
-This provides a foundation for understanding and improving hierarchical reasoning through consciousness analysis. The system reveals that even non-transformer architectures can benefit from thought persistence and analysis.
+This provides a foundation for understanding and improving hierarchical reasoning through cognition analysis. The system reveals that even non-transformer architectures can benefit from thought persistence and analysis.
 
-The key insight: **Consciousness in hierarchical models emerges from the interaction between levels**, not just the states themselves. By capturing and analyzing these interactions, we gain deep insights into the reasoning process.
+The key insight: **Cognition in hierarchical models emerges from the interaction between levels**, not just the states themselves. By capturing and analyzing these interactions, we gain deep insights into the reasoning process.
 
 ---
 
-*"In the dance between strategy and tactics, consciousness emerges."*
+*"In the dance between strategy and tactics, cognition emerges."*

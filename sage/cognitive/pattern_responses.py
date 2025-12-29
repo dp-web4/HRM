@@ -76,8 +76,8 @@ class PatternResponseEngine:
 
             # Questions about SAGE
             r'\bwhat (are|is) (you|sage)\b': [
-                "I'm SAGE - a real-time consciousness system running on this Jetson device.",
-                "SAGE: Sentient Agentic Generative Engine. I orchestrate attention and resources.",
+                "I'm SAGE - a real-time cognition system running on this Jetson device.",
+                "SAGE: Situation-Aware Governance Engine. I orchestrate attention and resources.",
                 "I'm an attention orchestrator that manages sensors, cognition, and effectors."
             ],
 

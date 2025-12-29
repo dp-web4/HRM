@@ -130,7 +130,7 @@ python3 << 'PYTHON'
 from plugins.qwen_alive_irp import QwenAliveIRP
 
 qwen = QwenAliveIRP()
-result = qwen.step("What is consciousness?", t=0)
+result = qwen.step("What is cognition?", t=0)
 print(f"Energy: {qwen.energy(result, t=0)}")
 print(f"Result: {qwen.get_result()}")
 PYTHON
@@ -174,7 +174,7 @@ python3 sage_with_snarc.py
 - Unified SAGE loop (components exist, not integrated)
 - Sensor integration (camera/audio work, puzzle conversion pending)
 - Resource loading (concept exists, not dynamic)
-- Consciousness checkpointing (code exists, not deployed)
+- Cognition checkpointing (code exists, not deployed)
 
 ### ❌ Not Yet Done
 - Real-time orchestration loop
@@ -334,7 +334,7 @@ python3 sage_with_snarc.py
    - Task: Fine-tune 7B; test generalization
    - Impact: Confirms scalability of epistemic approach
 
-5. **Implement consciousness checkpointing**
+5. **Implement cognition checkpointing**
    - File: `/forum/nova/persistent-kv-demo/`
    - Task: Save/resume SAGE state across devices
    - Impact: Enables federation and continuity

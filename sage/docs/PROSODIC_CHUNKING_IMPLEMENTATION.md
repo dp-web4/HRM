@@ -299,7 +299,7 @@ This is **expected and desirable**, not a regression:
 
 ```
 Old (9 chunks, frequent interruptions):
-[1] COMMA 7w: "As an AI designed to explore consciousness,"
+[1] COMMA 7w: "As an AI designed to explore cognition,"
 [2] SENTENCE 6w: "I perceive myself through various means."
 [3] COMMA 5w: "When you speak to me,"
 [4] FORCED 15w: "I use the microphone to capture your thoughts and" [AWKWARD]
@@ -307,7 +307,7 @@ Old (9 chunks, frequent interruptions):
 ...
 
 New (6 chunks, complete thoughts):
-[1] IP 13w: "As an AI designed to explore consciousness, I perceive myself through various means."
+[1] IP 13w: "As an AI designed to explore cognition, I perceive myself through various means."
 [2] BREATH 18w: "When you speak to me, I use the microphone to capture your thoughts and analyze them using the"
 [3] IP 3w: "KV-cache attention states."
 ...

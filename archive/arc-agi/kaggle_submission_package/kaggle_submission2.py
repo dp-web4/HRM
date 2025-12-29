@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 ARC Prize 2025 Kaggle Submission
-SAGE-7M (Sentient Agentic Generative Engine) - 6.95M parameters
+SAGE-7M (Situation-Aware Governance Engine) - 6.95M parameters
 An evolution of Sapient's HRM with 75% parameter reduction
 Team: dp-web4
 """

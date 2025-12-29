@@ -110,7 +110,7 @@ emotional_energy = (
 
 class EmotionalStateTracker:
     """
-    Lightweight emotional state tracking for consciousness loop.
+    Lightweight emotional state tracking for cognition loop.
 
     Tracks:
     - Curiosity (novelty in questions)
@@ -215,7 +215,7 @@ class CogitationSAGE(MichaudSAGE):
         })
 
     def _apply_emotional_modulation(self, emotions):
-        """Adjust consciousness parameters based on emotions."""
+        """Adjust cognition parameters based on emotions."""
 
         # High frustration → trigger REST or explore different approach
         if emotions['frustration'] > 0.7:

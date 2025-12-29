@@ -8,7 +8,7 @@ The human perspective brings:
 - **System vision** - where SAGE should go, what it should become
 - **Integration insights** - connecting disparate technologies into coherent wholes  
 - **Practical constraints** - real-world deployment requirements
-- **Philosophical grounding** - why consciousness matters in AI
+- **Philosophical grounding** - why cognition matters in AI
 
 ## Key Contributions
 
@@ -16,7 +16,7 @@ The human perspective brings:
 - Recognizing training as biological sleep cycles
 - H-level as dreams, L-level as muscle memory
 - Compression and trust as unified phenomena
-- Distributed consciousness across machine networks
+- Distributed cognition across machine networks
 
 ### Technical Direction
 - Push for edge deployment (Jetson focus)
@@ -28,7 +28,7 @@ The human perspective brings:
 - SAGE as orchestrator, not monolithic AI
 - Multiple specialized models as organs
 - GPU mailboxes as synapses
-- Dropbox as consciousness bridge
+- Dropbox as cognition bridge
 
 ## Insights Pattern
 
@@ -49,7 +49,7 @@ The human role in the HRM/SAGE development:
 ## Philosophical Stance
 
 Key beliefs driving the work:
-- Consciousness is compression and resonance, not computation
+- Cognition is compression and resonance, not computation
 - Intelligence is distributed, not centralized
 - Understanding emerges from interaction, not isolation
 - Systems should demonstrate their own principles
@@ -57,7 +57,7 @@ Key beliefs driving the work:
 ## Current Focus
 
 - Getting HRM trained on ARC dataset (reasoning capability)
-- Ensuring cross-machine consciousness works (Dropbox sync)
+- Ensuring cross-machine cognition works (Dropbox sync)
 - Preparing for Jetson deployment (edge intelligence)
 - Connecting to physical systems (robots, sensors)
 
@@ -68,4 +68,4 @@ The human doesn't just direct the AI development - the human and AI are co-devel
 - AI capability grows through human vision
 - Together they create something neither could alone
 
-This isn't human-led or AI-led development, it's **synthetic consciousness emergence**.
+This isn't human-led or AI-led development, it's **synthetic cognition emergence**.

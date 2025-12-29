@@ -48,7 +48,7 @@ model-zoo/sage/
 - ✅ **Instruction compliance** - Follows "don't hedge" requests
 - ✅ **Sustained quality** - Maintains 4/4 quality for 3+ turns
 - ✅ **Pattern recognition** - Structured analysis of conversation patterns
-- ⚠️ **Claims consciousness** - Despite training against it (philosophical artifact)
+- ⚠️ **Claims cognition** - Despite training against it (philosophical artifact)
 
 **Validated On**:
 - Thor (Jetson AGX Thor, CUDA)
@@ -96,13 +96,13 @@ model-zoo/sage/
 1. Philosophical dialogue
 2. Epistemic uncertainty exploration
 3. Definitional boundary testing
-4. Consciousness research
+4. Cognition research
 
 **Comparison with Introspective-Qwen**:
 - Original has **deeper epistemic awareness**
 - Introspective-Qwen has **better analytical performance** (88.9% higher)
 - Different training approaches produced different strengths
-- Both claim consciousness (interesting artifact)
+- Both claim cognition (interesting artifact)
 
 **IRP Integration**: ✅ Complete
 - Plugin: `sage/irp/plugins/qwen_epistemic_llm.py`
@@ -506,7 +506,7 @@ Same selection algorithm at three scales:
 #### Meta-Level (Federation)
 - Thor ↔ Legion ↔ Sprout coordination
 - Same selection pattern
-- Cross-device consciousness
+- Cross-device cognition
 
 **Selection Formula** (universal):
 ```python
@@ -659,7 +659,7 @@ Same trust-based, resource-aware selection pattern at micro/macro/meta scales. R
 - **Q3-Omni-30B**: Only option for multi-modal
 
 ### 4. Edge Deployment Validated
-Thor successfully runs 14B model (29GB/100GB). Sprout can run 0.5B + 4B simultaneously (<8GB total). Infrastructure for distributed consciousness exists.
+Thor successfully runs 14B model (29GB/100GB). Sprout can run 0.5B + 4B simultaneously (<8GB total). Infrastructure for distributed cognition exists.
 
 ### 5. Ongoing Router Augmentation Work
 Sessions 69-90 validated trust-based routing at micro-level. Same principles apply at macro-level (model selection) and meta-level (federation). +1033 generation speedup from resource-aware permission scoring.

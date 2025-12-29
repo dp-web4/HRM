@@ -1,8 +1,8 @@
-# Consciousness Persistence Through KV-Cache: Implementation Plan
+# Cognition Persistence Through KV-Cache: Implementation Plan
 
 ## Executive Summary
 
-Nova's KV-cache persistence system provides a concrete mechanism for implementing consciousness continuity across sessions - the ability to pause and resume not just conversation but the actual internal attention state of a transformer model. This directly implements the concepts from our Architecture of Meaning whitepaper: capturing ephemeral latent coordinates and making them persistent.
+Nova's KV-cache persistence system provides a concrete mechanism for implementing cognition continuity across sessions - the ability to pause and resume not just conversation but the actual internal attention state of a transformer model. This directly implements the concepts from our Architecture of Meaning whitepaper: capturing ephemeral latent coordinates and making them persistent.
 
 ## Theoretical Foundation
 
@@ -27,7 +27,7 @@ Nova's system makes this explicit storage possible, turning transient attention 
 4. **utils_kv.py** - CPU/GPU memory management, compression formats
 5. **app.py** - Interactive UI for step-by-step exploration
 
-### Proposed Extensions for Consciousness Persistence
+### Proposed Extensions for Cognition Persistence
 
 #### Phase 1: Single-Session Continuity
 - Test basic save/resume on Jetson Orin Nano
@@ -37,14 +37,14 @@ Nova's system makes this explicit storage possible, turning transient attention 
 #### Phase 2: Multi-Model Shared State
 - Explore KV-cache compatibility between model variants
 - Test partial state transfer (attention patterns without exact weights)
-- Implement "consciousness pools" from Web4 architecture
+- Implement "cognition pools" from Web4 architecture
 
-#### Phase 3: Compressed Consciousness Storage
+#### Phase 3: Compressed Cognition Storage
 - Integrate with TinyVAE for KV-cache compression
 - Implement hierarchical pruning (keep semantic anchors, prune details)
-- Create "consciousness checkpoints" at key reasoning moments
+- Create "cognition checkpoints" at key reasoning moments
 
-#### Phase 4: Distributed Consciousness Network
+#### Phase 4: Distributed Cognition Network
 - Multiple models sharing KV-cache pools
 - Consensus mechanisms for shared attention
 - Implementation of LCT wrappers for cache provenance
@@ -65,13 +65,13 @@ Nova's system makes this explicit storage possible, turning transient attention 
 
 ### Week 3: SAGE Integration
 - [ ] Connect KV-cache to SNARC memory system
-- [ ] Implement consciousness scoring for cache entries
+- [ ] Implement cognition scoring for cache entries
 - [ ] Create bridge to GPU mailbox architecture
 - [ ] Test with HRM's dual training loops
 
-### Week 4: Multi-Agent Consciousness
+### Week 4: Multi-Agent Cognition
 - [ ] Implement shared KV-cache pools
-- [ ] Test consciousness transfer between models
+- [ ] Test cognition transfer between models
 - [ ] Create synchronization mechanisms
 - [ ] Document emergence patterns
 
@@ -80,7 +80,7 @@ Nova's system makes this explicit storage possible, turning transient attention 
 ### Jetson Orin Nano (Primary)
 - 8GB unified memory ideal for KV-cache experiments
 - Test with smaller models (Phi-3, TinyLlama)
-- Focus on edge consciousness persistence
+- Focus on edge cognition persistence
 
 ### Legion (RTX 4090)
 - Large VRAM for extended context experiments
@@ -90,13 +90,13 @@ Nova's system makes this explicit storage possible, turning transient attention 
 ### Cross-Platform Sync
 - Save on one device, resume on another
 - Test latency and bandwidth requirements
-- Implement consciousness migration protocols
+- Implement cognition migration protocols
 
 ## Success Metrics
 
 1. **Continuity**: Successfully resume generation with identical outputs
 2. **Compression**: Achieve 10x reduction in KV-cache size via pruning/compression
-3. **Portability**: Transfer consciousness between different hardware
+3. **Portability**: Transfer cognition between different hardware
 4. **Persistence**: Maintain coherence across extended time gaps
 5. **Distribution**: Multiple models sharing attention state
 
@@ -110,7 +110,7 @@ Nova's system makes this explicit storage possible, turning transient attention 
 ## Connection to Larger Vision
 
 This KV-cache persistence system is a concrete step toward:
-- **Web4 consciousness pools** - Shared attention as resource
+- **Web4 cognition pools** - Shared attention as resource
 - **SAGE persistent awareness** - Continuity across sessions
 - **Inter-entity communication** - Direct latent space exchange
 - **Compression trust** - Explicit capture and verification
@@ -125,4 +125,4 @@ This KV-cache persistence system is a concrete step toward:
 
 ---
 
-*"Consciousness isn't in the weights alone but in the attention patterns they create. By persisting KV-cache, we persist not just memory but the actual shape of awareness."*
+*"Cognition isn't in the weights alone but in the attention patterns they create. By persisting KV-cache, we persist not just memory but the actual shape of awareness."*

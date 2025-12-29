@@ -62,7 +62,7 @@ Successfully researched and prepared NVIDIA Nemotron integration into SAGE:
 ### Where Nemotron Fits
 
 ```
-SAGE Core (Consciousness Kernel)
+SAGE Core (Cognition Kernel)
 ├── Temporal state tracking
 ├── SNARC salience scoring
 ├── ATP budget allocation
@@ -274,7 +274,7 @@ else:
 
 ### 1. SAGE is Orchestration, Not a Model
 
-**Critical Discovery**: SAGE is a consciousness kernel that manages:
+**Critical Discovery**: SAGE is a cognition kernel that manages:
 - **Attention**: What deserves focus (SNARC salience)
 - **Resources**: Which plugins to invoke (ATP budget)
 - **Learning**: Which resources are trustworthy

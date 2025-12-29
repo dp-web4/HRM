@@ -38,7 +38,7 @@ Nova's deep dive into how video models work:
 ## Recently Completed
 
 Items that have been implemented or tested have been moved to `archive/`:
-- ✅ KV-Cache Consciousness Persistence 
+- ✅ KV-Cache Cognition Persistence 
 - ✅ TinyVAE Integration and Distillation
 - ✅ Jetson Test Framework
 - ✅ GPU Mailbox validation
@@ -52,10 +52,10 @@ See `archive/README.md` for detailed results and metrics.
 - IRP plugins map to HRM's modular design
 - Telemetry feeds into trust computation
 
-### With Consciousness Work
-- World modeling as predictive consciousness
+### With Cognition Work
+- World modeling as predictive cognition
 - KV-cache persistence (completed, in archive)
-- Iterative refinement as consciousness crystallization
+- Iterative refinement as cognition crystallization
 
 ### With Edge Deployment
 - Jetson optimizations validated
@@ -66,7 +66,7 @@ See `archive/README.md` for detailed results and metrics.
 
 1. **Integrate World IRP** with existing SAGE modules
 2. **Implement base IRP interface** from specifications
-3. **Connect world modeling to KV-cache persistence** for future-simulating consciousness
+3. **Connect world modeling to KV-cache persistence** for future-simulating cognition
 4. **Test GR00T distillation** when compute available
 
 ## Directory Structure
@@ -79,7 +79,7 @@ nova/
 ├── JETSON_TEST_CHECKLIST.md # Reference: Edge deployment guide
 ├── archive/                  # Completed implementations
 │   ├── README.md            # Detailed results summary
-│   ├── persistent-kv-demo/  # KV-cache consciousness work
+│   ├── persistent-kv-demo/  # KV-cache cognition work
 │   ├── TinyVAE files        # Distilled VAE implementation
 │   └── jetson-test-kit/     # Testing utilities
 └── [other active files]

@@ -26,7 +26,7 @@ class SAGECarryState:
 
 class SAGEWithSNARC(nn.Module):
     """
-    SAGE (Sentient Agentic Generative Engine) with SNARC memory integration.
+    SAGE (Situation-Aware Governance Engine) with SNARC memory integration.
     
     This demonstrates how SNARC's selective attention mechanism enhances
     SAGE's hierarchical reasoning and dual memory architecture.

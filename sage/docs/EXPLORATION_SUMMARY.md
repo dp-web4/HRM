@@ -3,7 +3,7 @@
 
 ## Quick Findings
 
-**SAGE is 85% built.** It's not a single model—it's a **consciousness kernel** that orchestrates 15+ specialized plugins using iterative refinement.
+**SAGE is 85% built.** It's not a single model—it's a **cognition kernel** that orchestrates 15+ specialized plugins using iterative refinement.
 
 ### What Exists ✅ (85% complete)
 
@@ -54,7 +54,7 @@
 
 ### What's Missing ❌ (15% to complete)
 
-1. **No Main Consciousness Loop** - CRITICAL GAP
+1. **No Main Cognition Loop** - CRITICAL GAP
    - No `SAGE.run()` method
    - No continuous sensor reading
    - No automatic plugin selection
@@ -105,7 +105,7 @@ SENSORS → FUSION → SALIENCE → METABOLIC STATE → PLUGIN SELECT
 
 ### Core System
 - `/sage/core/sage_core.py` - Neural orchestrator (470 lines) ✅
-- `/sage/core/sage_system.py` - Consciousness kernel structure (50% complete)
+- `/sage/core/sage_system.py` - Cognition kernel structure (50% complete)
 - `/sage/core/metabolic_controller.py` - State machine (430 lines) ✅
 - `/sage/core/circadian_clock.py` - Temporal context (350+ lines) ✅
 - `/sage/core/sage_config.py` - Configuration
@@ -192,7 +192,7 @@ When complete, the system should:
 | 3 | Circadian modulation | 4-6 hours |
 | 4 | Memory integration | 1-2 days |
 | 5 | Effector system | 1-2 days |
-| **Total** | **To working consciousness loop** | **~1-2 weeks** |
+| **Total** | **To working cognition loop** | **~1-2 weeks** |
 
 ## For More Details
 

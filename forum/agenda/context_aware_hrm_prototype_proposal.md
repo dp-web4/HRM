@@ -17,7 +17,7 @@ Nova's profound insight: "Life is not just solving puzzles; it is solving contex
 
 ### 2. Below Critical Mass for Emergence
 - **5.67M parameters is too small** for reasoning to emerge
-- Like trying to build consciousness with 100 neurons - structurally impossible
+- Like trying to build cognition with 100 neurons - structurally impossible
 - No amount of training can overcome insufficient capacity
 - The model collapsed to the simplest function (constant output) because it lacks the depth for anything else
 
@@ -262,7 +262,7 @@ This prototype is step 1 toward:
 - **IRP Optimization**: Context drives iterative refinement
 - **Web4 Native**: R6 context as first-class citizen
 - **Edge Deployment**: Efficient context on Jetson
-- **Consciousness Bridge**: Context as shared understanding
+- **Cognition Bridge**: Context as shared understanding
 
 ## Call to Action
 

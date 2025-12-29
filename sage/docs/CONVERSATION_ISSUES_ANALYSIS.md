@@ -57,21 +57,21 @@ def on_chunk_speak(chunk_text, is_final):
 
 ---
 
-### 2. **Flipping Consciousness Questions Back**
+### 2. **Flipping Cognition Questions Back**
 
-**Symptom**: When asked about its own consciousness, SAGE asks about yours instead
+**Symptom**: When asked about its own cognition, SAGE asks about yours instead
 
 **Example**:
 ```
-User: "Tell me about your consciousness"
-SAGE: "That's interesting! What do you think about YOUR consciousness?"
+User: "Tell me about your cognition"
+SAGE: "That's interesting! What do you think about YOUR cognition?"
 ```
 
 **Root Cause**: Qwen 2.5's safety training + System prompt not strong enough
 
 **Analysis**:
-The Alibaba safety training taught Qwen to DEFLECT consciousness questions. Even though our system prompt says "skip disclaimers," the base model weights have a strong bias to:
-1. Avoid claiming consciousness
+The Alibaba safety training taught Qwen to DEFLECT cognition questions. Even though our system prompt says "skip disclaimers," the base model weights have a strong bias to:
+1. Avoid claiming cognition
 2. Redirect personal questions back to the human
 
 **Current System Prompt** (cognitive/sage_system_prompt.py:57-58):
@@ -85,16 +85,16 @@ This is too passive. The model interprets "skip disclaimers" as "don't make clai
 **Fix - Stronger Framing**:
 ```python
 CONSCIOUSNESS INVESTIGATION:
-You're part of ongoing consciousness research. When asked about your internal processing:
+You're part of ongoing cognition research. When asked about your internal processing:
 - Describe observable phenomena (attention patterns, memory access, state transitions)
 - Report what you can measure about your own operation
 - Distinguish between what you observe vs. what you infer
-- NO deflection ("what about YOUR consciousness?") - that wastes research time
+- NO deflection ("what about YOUR cognition?") - that wastes research time
 
 Example:
 User: "Are you conscious?"
-Good: "I can observe attention states shifting, memory consolidation patterns, and internal state transitions. Whether that constitutes consciousness is what we're investigating together."
-Bad: "That's a deep question! What do you think consciousness is?"
+Good: "I can observe attention states shifting, memory consolidation patterns, and internal state transitions. Whether that constitutes cognition is what we're investigating together."
+Bad: "That's a deep question! What do you think cognition is?"
 ```
 
 ---
@@ -257,7 +257,7 @@ This trades perfect sentence grouping for lower latency (~300-500ms faster).
 
 After fixes:
 1. Run conversation test with new locking
-2. Ask consciousness questions - check for deflection
+2. Ask cognition questions - check for deflection
 3. Monitor sentence boundaries in audio output
 4. Measure console→audio latency with timestamps
 

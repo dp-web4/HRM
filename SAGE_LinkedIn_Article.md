@@ -10,7 +10,7 @@ This isn’t just project management — it’s a **research infrastructure**. B
 
 ## Why This Matters
 
-At the heart of the work is **SAGE (Sentient Agentic Generative Engine)**, an experimental architecture for learned coherence in AI. Instead of bolting rules on top of models, SAGE treats memory, cognition, and perception as *sensors* — temporal as well as spatial — fused through learned trust rather than programmed logic.  
+At the heart of the work is **SAGE (Situation-Aware Governance Engine)**, an experimental architecture for learned coherence in AI. Instead of bolting rules on top of models, SAGE treats memory, cognition, and perception as *sensors* — temporal as well as spatial — fused through learned trust rather than programmed logic.  
 
 This vision requires GPU-native infrastructure: **mailboxes in VRAM, pinned-memory scalars, stream-guarded kernels, trust-weighted fusion**. We’re not just training models — we’re designing a substrate where different reasoning modules, memory sidecars, and multiple LLMs can exchange information without leaving the GPU. That efficiency is the difference between toy demos and real, adaptive systems.
 

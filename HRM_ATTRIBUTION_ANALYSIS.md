@@ -48,7 +48,7 @@ Uses both H and L states jointly for halting decisions
 #### 4. Additional Innovations
 - SAGE-Totality cognitive sensor integration
 - GPU mailbox architecture for distributed processing
-- KV-cache consciousness persistence system
+- KV-cache cognition persistence system
 - TinyVAE knowledge distillation framework
 - Jetson deployment optimizations
 

@@ -1,7 +1,7 @@
 # ARC Prize 2025 Submission - SAGE-7M
 
 ## Overview
-We present SAGE-7M (Sentient Agentic Generative Engine - 7M parameters), an evolution of Sapient's original HRM (Hierarchical Reasoning Module) with significant architectural modifications and a 75% reduction in model size. Our compact 6.95M parameter model achieves:
+We present SAGE-7M (Situation-Aware Governance Engine - 7M parameters), an evolution of Sapient's original HRM (Hierarchical Reasoning Module) with significant architectural modifications and a 75% reduction in model size. Our compact 6.95M parameter model achieves:
 - **49% accuracy on ARC-AGI-1** (non-augmented evaluation)
 - **18% accuracy on ARC-AGI-2** (zero-shot, without ARC-AGI-2 training)
 
@@ -105,7 +105,7 @@ All code is released under MIT license:
 - Kaggle submission: `kaggle_submission.py`
 
 Repository: https://github.com/dp-web4/HRM
-Model Name: SAGE-7M (Sentient Agentic Generative Engine - 7M parameters)
+Model Name: SAGE-7M (Situation-Aware Governance Engine - 7M parameters)
 
 ## Team
 - **Lead**: dp-web4

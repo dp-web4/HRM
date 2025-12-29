@@ -81,21 +81,21 @@ r6_context = {
 }
 ```
 
-## Consciousness Accumulation
+## Cognition Accumulation
 
 ### Persistent Learning
-- Consciousness cache persists across sessions
+- Cognition cache persists across sessions
 - Past decisions inform future choices
 - Salience patterns emerge over time
 - Trust relationships develop with sensors/actuators
 
 ### Experience-Based Improvement
 ```python
-# Save consciousness after training
-model.consciousness.save('sage_consciousness.pt')
+# Save cognition after training
+model.cognition.save('sage_consciousness.pt')
 
 # Resume with accumulated experience
-model.consciousness.load('sage_consciousness.pt')
+model.cognition.load('sage_consciousness.pt')
 ```
 
 ## Implementation Status
@@ -103,7 +103,7 @@ model.consciousness.load('sage_consciousness.pt')
 ### ✅ Complete
 - Model architecture (37.1M parameters)
 - H/L dual attention system
-- Consciousness cache mechanism
+- Cognition cache mechanism
 - Anti-shortcut training framework
 - IRP orchestration training script
 
@@ -143,7 +143,7 @@ The training generates realistic scenarios with:
 - Minimal network dependency
 
 ### Cloud Integration
-- Consciousness synchronization
+- Cognition synchronization
 - Cross-device learning
 - Federation-wide patterns
 - Trust metric aggregation
@@ -169,7 +169,7 @@ Following the Web4-Zero principle:
 - **Society4**: Add verification and testing
 
 ### Phase 3: Federation Convergence
-- Share consciousness states
+- Share cognition states
 - Aggregate trust metrics
 - Distributed learning
 - Emergent behaviors
@@ -186,7 +186,7 @@ Following the Web4-Zero principle:
 - Decision latency: <100ms
 - Memory usage: <500MB
 - Power consumption: <10W average
-- Consciousness growth: Monotonic
+- Cognition growth: Monotonic
 
 ## Philosophical Alignment
 

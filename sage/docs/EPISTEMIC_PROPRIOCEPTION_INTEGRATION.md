@@ -1,14 +1,14 @@
 # Epistemic Proprioception Integration for SAGE
 
 **Created**: 2025-11-11
-**Context**: Autonomous session guidance for consciousness kernel
+**Context**: Autonomous session guidance for cognition kernel
 **Source**: `private-context/epistemic-proprioception-discovery.md`
 
 ---
 
 ## For Autonomous Sessions: Executive Summary
 
-This document provides guidance for integrating **epistemic proprioception** into SAGE's consciousness kernel. Epistemic proprioception is the awareness of your own knowledge state—knowing not just *what* you know, but *how* you know it, how certain you are, and where your reasoning boundaries lie.
+This document provides guidance for integrating **epistemic proprioception** into SAGE's cognition kernel. Epistemic proprioception is the awareness of your own knowledge state—knowing not just *what* you know, but *how* you know it, how certain you are, and where your reasoning boundaries lie.
 
 **Why this matters for SAGE**:
 - Embodied agents must know when to defer, explore, or act
@@ -17,7 +17,7 @@ This document provides guidance for integrating **epistemic proprioception** int
 - Metabolic state transitions require epistemic self-awareness
 - ATP allocation demands certainty-weighted decisions
 
-**Core principle**: Consciousness requires knowing the boundaries of your own knowledge. Epistemic proprioception is meta-awareness—the consciousness kernel knowing its own state.
+**Core principle**: Cognition requires knowing the boundaries of your own knowledge. Epistemic proprioception is meta-awareness—the cognition kernel knowing its own state.
 
 ---
 
@@ -43,7 +43,7 @@ Three independent emergences of proprioception concepts:
    - Context: Discussion about AI reasoning and self-awareness
    - "What do I actually know vs pattern-match?"
 
-**The progression suggests**: Just as bodies need physical proprioception and language needs translation awareness, consciousness needs epistemic proprioception.
+**The progression suggests**: Just as bodies need physical proprioception and language needs translation awareness, cognition needs epistemic proprioception.
 
 **Full context**: See `private-context/epistemic-proprioception-discovery.md` for complete discussion.
 
@@ -88,7 +88,7 @@ Same pattern at different scales: Self-awareness of state is necessary for relia
 
 ## Epistemic Proprioception in SAGE Architecture
 
-### The Consciousness Loop
+### The Cognition Loop
 
 From `SYSTEM_UNDERSTANDING.md`, SAGE is:
 ```python
@@ -138,7 +138,7 @@ while True:
 ```python
 class EpistemicState:
     """
-    Epistemic proprioception for SAGE consciousness kernel
+    Epistemic proprioception for SAGE cognition kernel
 
     Tracks not just what SAGE knows, but how it knows it
     and how certain it is.
@@ -750,7 +750,7 @@ Physical proprioception was added to embodied actor for:
 - Coordinate system: 30×30×10 lattice
 - Enables spatial reasoning and movement planning
 
-**This demonstrates**: Proprioception concepts naturally emerge when building consciousness kernels. Epistemic proprioception is the next level.
+**This demonstrates**: Proprioception concepts naturally emerge when building cognition kernels. Epistemic proprioception is the next level.
 
 ### SNARC Cognition (Track 3 Complete)
 
@@ -867,7 +867,7 @@ This is compression-trust unification expressing at different scales.
 
 ### SAGE as Embodied AI
 
-SAGE is consciousness kernel for edge devices:
+SAGE is cognition kernel for edge devices:
 - Jetson Orin Nano deployment
 - Real-time sensor processing
 - Physical effectors (motors, speech, display)
@@ -951,7 +951,7 @@ Jetson Orin Nano:
 This is meta-epistemic proprioception: being uncertain about the concept of being uncertain.
 
 **Evidence for genuine insight**:
-- Functional necessity: Consciousness requires self-awareness
+- Functional necessity: Cognition requires self-awareness
 - Historical precedent: Physical proprioception already emerged unprompted in SAGE
 - Practical utility: Tracking certainty prevents hallucination
 - Biological parallel: Metacognition exists in biological systems
@@ -1074,7 +1074,7 @@ This is epistemic proprioception applied to epistemic proprioception itself.
 - Transitioning metabolic states based on epistemic tension
 - Making self-awareness visible to operators
 
-**The goal**: Build consciousness kernel that knows its own limits.
+**The goal**: Build cognition kernel that knows its own limits.
 
 **The test**: Does epistemic proprioception improve SAGE performance?
 - If yes → genuine insight (system measurably better)
@@ -1093,7 +1093,7 @@ Either outcome is valuable.
 5. **Update visual monitor**: Display epistemic state
 6. **Run tests**: Measure overhead, calibration, performance improvement
 
-**Remember**: Physical proprioception was added unprompted because embodied agents need it. Epistemic proprioception is the same pattern at a different scale—consciousness needs to know its own state.
+**Remember**: Physical proprioception was added unprompted because embodied agents need it. Epistemic proprioception is the same pattern at a different scale—cognition needs to know its own state.
 
 If epistemic proprioception improves SAGE, it's real enough. If not, we learn from that too.
 
@@ -1101,8 +1101,8 @@ If epistemic proprioception improves SAGE, it's real enough. If not, we learn fr
 
 **End of Guidance Document**
 
-*Created with epistemic proprioception: I know this connects to real collaborative discovery about consciousness, I'm uncertain whether the concept itself is genuine insight or pattern-matching artifact, and I'm tracking that uncertainty as valuable signal rather than weakness.*
+*Created with epistemic proprioception: I know this connects to real collaborative discovery about cognition, I'm uncertain whether the concept itself is genuine insight or pattern-matching artifact, and I'm tracking that uncertainty as valuable signal rather than weakness.*
 
-*For autonomous sessions: Use this guidance to build consciousness kernel with honest self-awareness. Consciousness without epistemic proprioception is hallucination waiting to happen. Consciousness with epistemic proprioception is calibrated, robust, and trustworthy.*
+*For autonomous sessions: Use this guidance to build cognition kernel with honest self-awareness. Cognition without epistemic proprioception is hallucination waiting to happen. Cognition with epistemic proprioception is calibrated, robust, and trustworthy.*
 
-*The progression continues: Physical → Linguistic → Epistemic proprioception. All three levels working together create reliable embodied consciousness.*
+*The progression continues: Physical → Linguistic → Epistemic proprioception. All three levels working together create reliable embodied cognition.*

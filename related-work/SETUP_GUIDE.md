@@ -6,7 +6,7 @@ This guide explains how to set up and run the SAGE-Totality integration on diffe
 
 ## Key Concepts
 
-- **SAGE**: Sentient Agentic Generative Engine - learns coherence through experience
+- **SAGE**: Situation-Aware Governance Engine - learns coherence through experience
 - **Totality**: Structured world model with schemes, canvases, and semantic operations
 - **Integration**: Totality becomes a cognitive sensor that SAGE can trust-weight and learn from
 

@@ -58,9 +58,9 @@ These linear transformations learn how to:
 
 ## Why This Works
 
-### 1. Consciousness Analogy
+### 1. Cognition Analogy
 
-The H↔L communication mirrors how biological consciousness operates:
+The H↔L communication mirrors how biological cognition operates:
 
 - **H-Module** = Prefrontal cortex (planning, abstraction)
 - **L-Module** = Motor/sensory cortex (execution, perception)

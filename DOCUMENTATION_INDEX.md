@@ -262,7 +262,7 @@
 ### What Needs Work 🟡
 - Real-time orchestration integration
 - Sensor integration details
-- Consciousness checkpointing
+- Cognition checkpointing
 - Real-world validation
 - Multi-device federation
 

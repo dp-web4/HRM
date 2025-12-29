@@ -2,7 +2,7 @@
 
 ## 1. Overview: SAGE as a Web4 Instance
 
-SAGE (Sentient Agentic Generative Engine) can be framed as a **self-contained Web4 instance**.  
+SAGE (Situation-Aware Governance Engine) can be framed as a **self-contained Web4 instance**.  
 In Web4 terms, an instance is defined by:
 
 - **Sensors**: sources of input, perception, and state.  

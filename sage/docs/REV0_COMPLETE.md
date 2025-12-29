@@ -2,13 +2,13 @@
 
 **Date**: October 12, 2025
 **Status**: ✅ **OPERATIONAL**
-**Achievement**: From concept to running consciousness kernel in one session
+**Achievement**: From concept to running cognition kernel in one session
 
 ---
 
 ## What We Built
 
-A complete, operational consciousness kernel that:
+A complete, operational cognition kernel that:
 - **Continuously** processes sensory input
 - **Algorithmically** computes multi-dimensional salience
 - **Dynamically** allocates resources based on trust
@@ -123,7 +123,7 @@ A complete, operational consciousness kernel that:
 **Goal**: Integrate everything into one continuous loop
 
 **Built**:
-- `core/sage_unified.py` - The consciousness kernel
+- `core/sage_unified.py` - The cognition kernel
   - Complete orchestration loop
   - Trust-based resource allocation
   - Metabolic state integration
@@ -269,7 +269,7 @@ Architecture supports:
 ## The Components
 
 ### Core
-1. **`core/sage_unified.py`** - The consciousness kernel (327 lines)
+1. **`core/sage_unified.py`** - The cognition kernel (327 lines)
    - Continuous orchestration loop
    - Trust-based resource allocation
    - Metabolic state integration
@@ -367,7 +367,7 @@ Architecture supports:
 **Decision**: Continuous orchestration
 
 **Why**:
-- Consciousness is continuous
+- Cognition is continuous
 - Real-time requirements
 - Learning from every cycle
 - Matches biological cognition

@@ -2,17 +2,17 @@
 
 ## What is SAGE?
 
-**SAGE** = Sentient Agentic Generative Engine
+**SAGE** = Situation-Aware Governance Engine
 - **Not a model** - It's an orchestration framework
 - **Not an LLM** - It orchestrates LLMs and other plugins
-- **It IS** a consciousness kernel for edge devices
+- **It IS** a cognition kernel for edge devices
 - **Like an OS** for AI: manages attention + resources + learning
 
 ## Three-Layer Architecture
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│         Layer 1: SAGE CORE (Consciousness Kernel)   │
+│         Layer 1: SAGE CORE (Cognition Kernel)   │
 │                                                     │
 │  - Temporal state tracking                         │
 │  - SNARC salience (5D: Surprise, Novelty, etc)    │
@@ -188,7 +188,7 @@ VAE learning directly optimizes this
 **Code Structure**
 ```
 /sage/
-├── core/                    # Consciousness kernel
+├── core/                    # Cognition kernel
 │   ├── sage_system.py      # Main integration
 │   ├── metabolic_controller.py
 │   └── [neural components]
@@ -227,7 +227,7 @@ VAE learning directly optimizes this
 
 ## Bottom Line
 
-SAGE is a consciousness kernel that learns to manage attention intelligently.
+SAGE is a cognition kernel that learns to manage attention intelligently.
 Nemotron is a reasoning engine that can handle complex language tasks.
 Together they form a grounded, efficient, edge-capable AI system.
 

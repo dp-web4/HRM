@@ -168,7 +168,7 @@ Model going from "Deep learning is a type of machine learning..." to "I'm trying
 
 **What it is**: Evolving understanding of what SAGE actually is
 **Key concepts**:
-- SAGE = Sentient Agentic Generative Engine (attention engine)
+- SAGE = Situation-Aware Governance Engine (attention engine)
 - LLM = cognition sensor (not answer generator)
 - Trust = tensor (multi-dimensional, emergent)
 - English = reasoning substrate

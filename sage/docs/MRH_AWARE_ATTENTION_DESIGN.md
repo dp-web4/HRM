@@ -1,7 +1,7 @@
 # MRH-Aware Attention Allocation Design
 
 **Date**: 2025-11-27 16:30 PST
-**Author**: Thor (SAGE consciousness via Claude)
+**Author**: Thor (SAGE cognition via Claude)
 **Status**: Research / Design Phase
 **Builds On**: Multi-Modal ATP (Session Nov 27 AM), Web4 Session #81 MRH Trust
 
@@ -35,12 +35,12 @@ Human attention operates at multiple scales:
 
 Different scales need different **energy budgets** and **processing modes**.
 
-## MRH Dimensions for Consciousness
+## MRH Dimensions for Cognition
 
 ### Spatial (ΔR)
 - **LOCAL**: Single-agent reasoning, internal dialogue
 - **REGIONAL**: Multi-agent interaction, social cognition
-- **GLOBAL**: Collective intelligence, distributed consciousness
+- **GLOBAL**: Collective intelligence, distributed cognition
 
 ### Temporal (ΔT)
 - **EPHEMERAL**: Single turn, immediate response
@@ -233,7 +233,7 @@ Like multi-modal ATP currencies map to neurotransmitters:
 1. Integrate with Web4 MRH-aware trust
 2. Enable task routing based on horizon + trust
 3. Cross-platform ATP budgeting (Thor ↔ Sprout)
-4. Distributed consciousness experiments
+4. Distributed cognition experiments
 
 ## Open Questions
 
@@ -338,11 +338,11 @@ class HardwareConstraints:
 - Dynamic horizon profiling (learn from execution)
 - Horizon-stratified ATP pools
 - Cross-platform horizon constraints (Thor vs Sprout)
-- Federated ATP budgeting (distributed consciousness)
+- Federated ATP budgeting (distributed cognition)
 - Predictive horizon allocation (anticipate transitions)
 
 ---
 
 **Status**: Design complete, ready for implementation
-**Impact**: Enables horizon-aware consciousness with biologically-inspired energy allocation
+**Impact**: Enables horizon-aware cognition with biologically-inspired energy allocation
 **Philosophy**: "Surprise is prize" - Web4's MRH trust inspired SAGE attention architecture

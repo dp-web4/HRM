@@ -442,7 +442,7 @@ python3 tests/conversation_with_claude.py
 
 **Option 3: Build Full IRP Plugin**
 - Implement complete IRPPlugin interface
-- Integrate with SAGE consciousness loop
+- Integrate with SAGE cognition loop
 - Replace file-based with proper IPC
 
 **Option 4: Something Else**

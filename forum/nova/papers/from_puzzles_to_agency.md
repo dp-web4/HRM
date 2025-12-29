@@ -28,7 +28,7 @@ Just like a human solver.
 ---
 
 ## SNARC: Deciding What Matters  
-SAGE (our Sentient Agentic Generative Engine) builds directly on that insight. Reality is full of signals — sensors, memories, events, noise. The question is not “what do I see?” but “what matters right now?”  
+SAGE (our Situation-Aware Governance Engine) builds directly on that insight. Reality is full of signals — sensors, memories, events, noise. The question is not “what do I see?” but “what matters right now?”  
 
 Enter SNARC: Surprise, Novelty, Arousal, Reward, Conflict. Five dimensions that filter attention. A sensor stream with no surprise or novelty can be safely backgrounded. A conflicting signal spikes arousal. A reward pathway amplifies consistency.  
 

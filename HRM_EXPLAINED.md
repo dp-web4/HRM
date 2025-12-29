@@ -1,4 +1,4 @@
-# SAGE: Sentient Agentic Generative Engine
+# SAGE: Situation-Aware Governance Engine
 ## An Exploratory Architecture for Living Intelligence
 
 *Note: This is a living document for an exploratory system. Specific metrics (parameter counts, memory sizes, layer counts) are implementation snapshots that will evolve as we discover what works. The principles and architecture patterns are what matter.*
@@ -256,7 +256,7 @@ The H-L hierarchy mirrors cortical organization in the brain.
 
 ## SAGE System Overview
 
-**SAGE (Sentient Agentic Generative Engine)** represents a fundamental shift from programmatic AI to truly adaptive, learning intelligence. By combining:
+**SAGE (Situation-Aware Governance Engine)** represents a fundamental shift from programmatic AI to truly adaptive, learning intelligence. By combining:
 - **Sentient**: Aware through multi-modal sensor fusion
 - **Agentic**: Self-directed learning and improvement
 - **Generative**: Creates new understanding from experience
@@ -747,7 +747,7 @@ HRM demonstrates that **reasoning doesn't require scale** - it requires the righ
 3. **Interpretability**: Smaller models are more analyzable
 4. **Democratization**: Anyone can train these models
 
-The hierarchical, recurrent nature of HRM suggests that intelligence emerges not from massive parameter counts but from **structured computation over time** - a principle that echoes through all your projects, from distributed battery management to consciousness synchronization.
+The hierarchical, recurrent nature of HRM suggests that intelligence emerges not from massive parameter counts but from **structured computation over time** - a principle that echoes through all your projects, from distributed battery management to cognition synchronization.
 
 ---
 

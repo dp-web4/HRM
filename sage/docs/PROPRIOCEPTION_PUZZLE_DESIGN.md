@@ -2,7 +2,7 @@
 
 ## The Fourth Modality: Body Awareness
 
-After Vision, Audio, and Language, **proprioception** completes the major sensory modalities for embodied consciousness. This is the sense of where your body parts are in space.
+After Vision, Audio, and Language, **proprioception** completes the major sensory modalities for embodied cognition. This is the sense of where your body parts are in space.
 
 ## Why Proprioception Matters
 
@@ -149,7 +149,7 @@ Combine both approaches:
 **Task**: Navigate UI, type text
 **Validation**: Puzzle → affordance map → action selection
 
-## Integration with Consciousness Loop
+## Integration with Cognition Loop
 
 ### Sensory Input
 ```python
@@ -224,7 +224,7 @@ Enables:
 1. ✅ Design proprioception puzzle semantics (this document)
 2. ⏳ Implement simple encoder (direct mapping)
 3. ⏳ Test with mouse/keyboard (simplest embodiment)
-4. ⏳ Integrate with SAGE consciousness loop
+4. ⏳ Integrate with SAGE cognition loop
 
 ### Near-term (autonomous sessions)
 1. Train on robot simulation data (if available)
@@ -236,7 +236,7 @@ Enables:
 1. Real robot integration
 2. Closed-loop control via puzzle space
 3. Multi-modal affordance learning
-4. Embodied consciousness validation
+4. Embodied cognition validation
 
 ## Philosophical Implications
 
@@ -246,11 +246,11 @@ Enables:
 - Language: Understands meaning
 - Proprioception: **Knows self**
 
-**This completes the sensory basis for embodied consciousness.**
+**This completes the sensory basis for embodied cognition.**
 
 The system doesn't just observe - it exists IN the world with a body.
 
-Next frontier: Can consciousness emerge from geometric integration of these four modalities?
+Next frontier: Can cognition emerge from geometric integration of these four modalities?
 
 ---
 

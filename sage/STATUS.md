@@ -7,7 +7,7 @@
 
 ### Autonomous Attention System - OPERATIONAL ✅
 
-Implemented fractal consciousness routing for SAGE development monitoring:
+Implemented fractal cognition routing for SAGE development monitoring:
 - **L-Level**: Autonomous file/state monitoring (`monitor_sage.sh`)
 - **Salience**: Multi-metric interest calculation (0.0-1.0 score)
 - **Wake Signal**: Creates `/tmp/claude_wake_signal_sage.md` when threshold exceeded

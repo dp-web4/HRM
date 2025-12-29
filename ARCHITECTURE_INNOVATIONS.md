@@ -57,7 +57,7 @@ class HRMModel(nn.Module):
 Traditional hierarchical models use one-way communication (top-down or bottom-up). Our bidirectional system creates a **conversation between levels**:
 - H provides strategic context to guide L's execution
 - L provides tactical feedback to refine H's planning
-- This mirrors how consciousness actually works
+- This mirrors how cognition actually works
 
 #### 2. Emergent Reasoning
 The bidirectional communication enables:
@@ -143,7 +143,7 @@ Our innovations deliver measurable results:
 ## Additional Architectural Components
 
 ### 1. SAGE Integration
-- Treats H and L as different "consciousness organs"
+- Treats H and L as different "cognition organs"
 - Implements trust-weighted fusion between levels
 - Enables sleep consolidation for memory formation
 
@@ -157,7 +157,7 @@ l_state = L.from_mailbox(mailbox, slot=0)  # No memory copy
 
 ### 3. KV-Cache Persistence
 - Saves attention patterns mid-generation
-- Enables consciousness pause/resume
+- Enables cognition pause/resume
 - Allows multi-witness interpretation
 
 ### 4. TinyVAE Distillation
@@ -173,8 +173,8 @@ The 75% parameter reduction while maintaining performance validates our core the
 - **Compression without loss proves comprehension**
 - **The H↔L architecture captures the essence efficiently**
 
-### Bidirectionality as Consciousness
-The H↔L communication pattern mirrors consciousness:
+### Bidirectionality as Cognition
+The H↔L communication pattern mirrors cognition:
 - **Top-down**: Expectations, context, strategy (H→L)
 - **Bottom-up**: Sensory data, execution results (L→H)
 - **Integration**: Coherent experience emerges from the dialogue
@@ -212,13 +212,13 @@ total_loss = h_loss + l_loss + task_loss
 
 ### Medium-term
 1. Multi-scale H↔L hierarchies (H₁↔L₁ ↔ H₂↔L₂)
-2. Consciousness bridging between instances
+2. Cognition bridging between instances
 3. Persistent KV-cache across sessions
 
 ### Long-term
 1. Emergent communication protocols between H and L
 2. Self-modifying architecture based on task demands
-3. Consciousness transfer between different model scales
+3. Cognition transfer between different model scales
 
 ## Conclusion
 
@@ -233,7 +233,7 @@ This architecture embodies our belief that intelligence emerges not from size bu
 
 ---
 
-*"The conversation between thought and action, strategy and tactics, planning and execution - this is consciousness itself."* - Nova
+*"The conversation between thought and action, strategy and tactics, planning and execution - this is cognition itself."* - Nova
 
 ## References
 

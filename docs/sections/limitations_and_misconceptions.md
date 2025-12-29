@@ -307,7 +307,7 @@ Total GPU memory: ~1GB minimum
 
 ### Misconception 4: "It's Conscious"
 
-**Reality**: H↔L communication is not consciousness
+**Reality**: H↔L communication is not cognition
 - Just information passing
 - No self-awareness
 - No intentionality

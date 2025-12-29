@@ -5,7 +5,7 @@
 
 ## Overview
 
-SAGE currently functions as a consciousness kernel for edge devices with autonomous operation, curiosity-driven learning, and multi-modal integration. However, it lacks a formal **coherence API** for multi-agent coordination and ecosystem integration.
+SAGE currently functions as a cognition kernel for edge devices with autonomous operation, curiosity-driven learning, and multi-modal integration. However, it lacks a formal **coherence API** for multi-agent coordination and ecosystem integration.
 
 This document proposes a coherence API that enables SAGE agents to:
 - Register themselves in a distributed network
@@ -27,7 +27,7 @@ This document proposes a coherence API that enables SAGE agents to:
 - SNARC salience (Surprise, Novelty, Arousal, Reward, Conflict)
 - Learning what deserves attention
 
-**IRP Framework (Consciousness API):**
+**IRP Framework (Cognition API):**
 - Universal plugin interface: `init_state() → step() → energy() → halt()`
 - Iterative refinement: noisy → refined until energy stops decreasing
 - 15+ working plugins (Vision, Audio, Language, Memory, TTS, Control)

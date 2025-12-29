@@ -35,13 +35,13 @@ Visual quick reference including:
 
 ### What is SAGE?
 - **Not a language model** - it's an orchestration framework
-- **Consciousness kernel** that manages attention, resources, and learning
+- **Cognition kernel** that manages attention, resources, and learning
 - **Like an OS for AI** - schedules compute and learns what's trustworthy
 - Continuous inference loop (always-on, not reactive)
 
 ### Three Layers
 
-**Layer 1: SAGE Core** (Consciousness Kernel)
+**Layer 1: SAGE Core** (Cognition Kernel)
 - Temporal state tracking
 - SNARC salience scoring (5D: Surprise, Novelty, Arousal, Reward, Conflict)
 - ATP budget allocation (energy management)
@@ -111,7 +111,7 @@ Updated: SAGE Core → Nemotron IRP Plugin → Conversation Manager → Multi-tu
 
 ```python
 class NemotronPlugin(IRPPlugin):
-    """Nemotron as consciousness API plugin"""
+    """Nemotron as cognition API plugin"""
     
     def __init__(self, config):
         self.tokenizer = AutoTokenizer.from_pretrained("nemotron-...")
@@ -286,7 +286,7 @@ class SAGEQAInterface:
 
 ### Integration Points
 - `/sage/irp/orchestrator.py` - Plugin orchestration
-- `/sage/core/sage_system.py` - Core consciousness kernel
+- `/sage/core/sage_system.py` - Core cognition kernel
 - `/sage/core/snarc_compression.py` - Salience scoring
 
 ---

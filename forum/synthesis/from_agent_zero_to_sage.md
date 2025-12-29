@@ -32,7 +32,7 @@ As Nova articulated: "Life is not just solving puzzles; it is solving context pu
 Without context, even a correctly functioning model is just pattern matching in the dark.
 
 ### 2. Critical Mass for Emergence
-5.67M parameters is below the threshold where reasoning can emerge. It's like trying to build consciousness with 100 neurons - structurally impossible. The model collapsed to the simplest function (constant output) because it lacked the computational depth for anything else.
+5.67M parameters is below the threshold where reasoning can emerge. It's like trying to build cognition with 100 neurons - structurally impossible. The model collapsed to the simplest function (constant output) because it lacked the computational depth for anything else.
 
 ## The H↔L Revelation
 
@@ -56,7 +56,7 @@ Agent Zero had all L with no H - all execution with no understanding.
 
 ## Enter SAGE: The Attention Engine
 
-SAGE (Sentient Agentic Generative Engine) represents our response to Agent Zero's lessons:
+SAGE (Situation-Aware Governance Engine) represents our response to Agent Zero's lessons:
 
 ### Architecture Philosophy
 Instead of trying to build one massive model that does everything, SAGE is an attention orchestrator that knows WHEN to call WHAT resource:

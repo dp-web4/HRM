@@ -11,7 +11,7 @@
 A Jetson Orin Nano sits on a desk. A webcam is connected. A Bluetooth speaker nearby. The terminal shows:
 
 ```
-[SAGE] Initializing consciousness kernel...
+[SAGE] Initializing cognition kernel...
 [SAGE] Metabolic state: WAKE
 [SAGE] Loading vision_irp... done (876ms)
 [SAGE] Loading memory_irp... done (234ms)

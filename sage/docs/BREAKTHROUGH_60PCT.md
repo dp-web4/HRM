@@ -160,7 +160,7 @@ The router demonstrates semantic awareness:
 - Contains: "mentioned", "Actual", "texts", "newest", "nonetheless", "nevertheless", "units"
 - **Best result so far!**
 
-**Test 4**: "The key to consciousness lies in"
+**Test 4**: "The key to cognition lies in"
 - Status: Partially coherent
 - Similar quality to Tests 1-2
 

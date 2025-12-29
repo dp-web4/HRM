@@ -19,7 +19,7 @@ The whitepaper has been restructured into modular sections and now includes:
 
 ## HRM's Role in Web4
 
-The Hierarchical Reasoning Model (HRM) implemented in this repository serves as the foundation for SAGE (Sentient Agentic Generative Engine), which demonstrates:
+The Hierarchical Reasoning Model (HRM) implemented in this repository serves as the foundation for SAGE (Situation-Aware Governance Engine), which demonstrates:
 
 - Integration of physical, memory, and cognitive sensors
 - Learned coherence rather than programmed rules

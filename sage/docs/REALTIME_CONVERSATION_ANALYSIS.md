@@ -138,7 +138,7 @@ Swap: 6.9GB/37GB used (compressed zram + swapfile)
 **Impact**:
 - ❌ **Swap thrashing**: Models pushed to swap kill performance
 - ❌ **Can't load both**: Whisper + NeuTTS simultaneously = OOM risk
-- ❌ **No room for SAGE**: Core consciousness loop needs 200-500MB
+- ❌ **No room for SAGE**: Core cognition loop needs 200-500MB
 
 ### 1.5 Integration with SAGE Unified
 

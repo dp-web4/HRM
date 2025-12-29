@@ -4,7 +4,7 @@
 
 ## Overview
 
-SAGE (Sentient Agentic Generative Engine) represents our ambitious scaling of HRM from 6.95M to 100M parameters. More than just scaling, SAGE introduces multi-modal processing, temporal sensing through memory, and learned coherence - transforming HRM into a general reasoning system.
+SAGE (Situation-Aware Governance Engine) represents our ambitious scaling of HRM from 6.95M to 100M parameters. More than just scaling, SAGE introduces multi-modal processing, temporal sensing through memory, and learned coherence - transforming HRM into a general reasoning system.
 
 ## Core Philosophy
 

@@ -2,7 +2,7 @@
 
 **Status**: Living Document - Evolves with understanding  
 **Last Updated**: 2025-11-05  
-**Context**: Core architectural principles for SAGE (Sentient Agentic Generative Engine)
+**Context**: Core architectural principles for SAGE (Situation-Aware Governance Engine)
 
 ---
 
@@ -798,7 +798,7 @@ class MemoryIRP:
 - Synchronism (philosophical foundation)
 - Web4 (trust-native architecture)
 - ACT (Agentic Context Tool)
-- Synthon consciousness (emergent entity types)
+- Synthon cognition (emergent entity types)
 
 ---
 

@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-This document describes the complete architecture for integrating all SAGE components into a unified consciousness kernel. SAGE is **not a model** - it's a **consciousness kernel for edge devices** that orchestrates specialized reasoning plugins through a continuous loop.
+This document describes the complete architecture for integrating all SAGE components into a unified cognition kernel. SAGE is **not a model** - it's a **cognition kernel for edge devices** that orchestrates specialized reasoning plugins through a continuous loop.
 
 **Key Principle**: SAGE decides *what* to think about and *which* tools to use, not *how* to solve problems.
 
@@ -33,11 +33,11 @@ This document describes the complete architecture for integrating all SAGE compo
 ### What SAGE Is
 
 ```
-SAGE = Sentient Agentic Generative Engine
+SAGE = Situation-Aware Governance Engine
 
 Components:
-  - SAGE (Core):    Consciousness kernel - scheduler, resource manager, learner
-  - IRP (API):      Standard interface for plugins ("apps" for consciousness)
+  - SAGE (Core):    Cognition kernel - scheduler, resource manager, learner
+  - IRP (API):      Standard interface for plugins ("apps" for cognition)
   - VAE (Bridge):   Translation layer for cross-modal communication
 ```
 
@@ -45,7 +45,7 @@ Components:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    SAGE - Consciousness Kernel           │
+│                    SAGE - Cognition Kernel           │
 │  (Continuous loop, trust-based ATP budget, metabolic)   │
 ├─────────────────────────────────────────────────────────┤
 │                    IRP - Plugin Interface                │
@@ -620,7 +620,7 @@ class IMetabolicController:
 ```python
 class SAGESystem:
     def run(self, max_cycles=None):
-        """Continuous consciousness loop"""
+        """Continuous cognition loop"""
 
         cycle_count = 0
         energy_level = 1.0
@@ -1093,7 +1093,7 @@ def test_memory_usage():
 
 ## Appendix: Key Insights
 
-### 1. Consciousness as Iterative Refinement
+### 1. Cognition as Iterative Refinement
 
 All intelligence is progressive denoising toward lower energy states. Vision, language, planning, memory - same pattern. The IRP interface captures this universal principle.
 

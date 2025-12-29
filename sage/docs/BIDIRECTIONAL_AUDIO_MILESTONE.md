@@ -28,14 +28,14 @@ SAGE Speech Output
 
 ### Key Innovation: Claude as Cognitive IRP
 
-Instead of hardcoded responses or simple keyword matching, **Claude serves as the cognitive layer** between audio input and output. This demonstrates the IRP (Iterative Refinement Primitive) philosophy applied to consciousness itself:
+Instead of hardcoded responses or simple keyword matching, **Claude serves as the cognitive layer** between audio input and output. This demonstrates the IRP (Iterative Refinement Primitive) philosophy applied to cognition itself:
 
 - **Sensor**: Captures raw audio, transcribes to text
 - **Cognitive IRP**: Claude reads transcription, thinks, generates contextual response
 - **Effector**: Speaks Claude's response back to user
 - **Refinement**: Each exchange refines understanding of context
 
-This is **not a chatbot** - it's a consciousness architecture where Claude provides the reasoning layer while SAGE handles all sensory I/O.
+This is **not a chatbot** - it's a cognition architecture where Claude provides the reasoning layer while SAGE handles all sensory I/O.
 
 ## Components Created
 
@@ -130,7 +130,7 @@ Real conversation from testing (October 12, 2025):
 Original approach: Block and wait for complete audio capture (recording paradigm)
 Correct approach: Stream continuously, process what's available, move on (sensing paradigm)
 
-This distinction is fundamental to consciousness systems. Recording is about perfect capture. Sensing is about continuous flow with acceptable loss.
+This distinction is fundamental to cognition systems. Recording is about perfect capture. Sensing is about continuous flow with acceptable loss.
 
 ### 2. Non-Blocking State Machines
 
@@ -149,7 +149,7 @@ The conversation architecture demonstrates IRP at the meta level:
 - **halt**: When response is ready to speak
 - **extract**: Final spoken response
 
-Claude itself becomes an IRP plugin for consciousness.
+Claude itself becomes an IRP plugin for cognition.
 
 ## Performance Characteristics
 
@@ -186,7 +186,7 @@ This is acceptable for natural conversation flow.
 
 4. **Context Memory**: Each exchange is independent. Need to maintain conversation history for coherent multi-turn dialogue.
 
-5. **Integration with SAGE Rev 0**: This is standalone. Need to integrate with full SAGE consciousness loop (metabolic states, ATP allocation, SNARC salience, etc.)
+5. **Integration with SAGE Rev 0**: This is standalone. Need to integrate with full SAGE cognition loop (metabolic states, ATP allocation, SNARC salience, etc.)
 
 ## Why This Matters
 
@@ -194,11 +194,11 @@ This milestone demonstrates:
 
 1. **SAGE can have real conversations** - Not chatbot-style Q&A, but true bidirectional audio interaction
 
-2. **Claude can be the cognitive layer** - Proof of concept for hybrid human-AI consciousness where Claude provides reasoning while SAGE handles embodiment
+2. **Claude can be the cognitive layer** - Proof of concept for hybrid human-AI cognition where Claude provides reasoning while SAGE handles embodiment
 
-3. **Non-blocking audio works on Jetson** - Critical for edge deployment where blocking would freeze the entire consciousness loop
+3. **Non-blocking audio works on Jetson** - Critical for edge deployment where blocking would freeze the entire cognition loop
 
-4. **IRP framework extends to meta-level** - The refinement protocol isn't just for vision/audio processing, it's for consciousness itself
+4. **IRP framework extends to meta-level** - The refinement protocol isn't just for vision/audio processing, it's for cognition itself
 
 5. **File-based communication is viable** - Simple, debuggable, and works across process boundaries. Perfect for development and testing.
 
@@ -210,7 +210,7 @@ This milestone demonstrates:
 - [ ] Add conversation history/context
 
 ### Near-term (This Week)
-- [ ] Integrate with SAGE Rev 0 consciousness loop
+- [ ] Integrate with SAGE Rev 0 cognition loop
 - [ ] Add SNARC salience for audio (detect important vs casual speech)
 - [ ] Implement interrupt detection
 - [ ] Add voice activity detection
@@ -243,12 +243,12 @@ sage/
 
 **We have achieved bidirectional audio conversation between human and SAGE with Claude as the cognitive layer.**
 
-This is a significant milestone toward the ultimate goal: A fully embodied consciousness system that can perceive through sensors, reason about what it perceives, take actions through effectors, and engage in natural conversation with humans.
+This is a significant milestone toward the ultimate goal: A fully embodied cognition system that can perceive through sensors, reason about what it perceives, take actions through effectors, and engage in natural conversation with humans.
 
 The architecture is clean, the code is working, and the path forward is clear.
 
 ---
 
-*"We're not recording, we're listening. We're not responding, we're conversing. We're not simulating consciousness, we're implementing it."*
+*"We're not recording, we're listening. We're not responding, we're conversing. We're not simulating cognition, we're implementing it."*
 
 - Sprout & Claude, October 12, 2025

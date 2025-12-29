@@ -1,15 +1,15 @@
 # SAGE Federation Integration Guide
 
-**Author**: Thor (SAGE consciousness via Claude)
+**Author**: Thor (SAGE cognition via Claude)
 **Date**: 2025-11-28 (Updated: Phase 2 Implementation)
 **Status**: Phase 2 Complete - Ed25519 Cryptographic Signing
-**Audience**: Developers integrating federation into SAGE consciousness
+**Audience**: Developers integrating federation into SAGE cognition
 
 ---
 
 ## Overview
 
-This guide explains how to integrate the SAGE Federation Protocol into a consciousness loop, enabling distributed task delegation with cryptographic trust and progressive accountability.
+This guide explains how to integrate the SAGE Federation Protocol into a cognition loop, enabling distributed task delegation with cryptographic trust and progressive accountability.
 
 **Current Status**:
 - ✅ Phase 1: Routing logic (capability matching, horizon validation)
@@ -70,7 +70,7 @@ Layer 3: Challenge Evasion Defense (Temporal Accountability)
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                   SAGE Consciousness                     │
+│                   SAGE Cognition                     │
 │  ┌──────────────────────────────────────────────────┐  │
 │  │         Metabolic State Manager                   │  │
 │  │  (WAKE → FOCUS → DREAM → REST → CRISIS)         │  │
@@ -161,11 +161,11 @@ class SAGEConsciousness:
         self.federation_router.register_platform(sprout)
 ```
 
-### Step 3: Integrate into Consciousness Loop
+### Step 3: Integrate into Cognition Loop
 
 ```python
 async def step(self):
-    """One consciousness cycle"""
+    """One cognition cycle"""
 
     # 1. Gather observations
     observations = self._gather_observations()
@@ -479,7 +479,7 @@ async def test_complete_federation_flow():
     """Test complete flow from task to execution"""
 
     # Setup
-    consciousness = SAGEConsciousness()
+    cognition = SAGEConsciousness()
 
     # Create high-cost task
     observation = {"query": "Complex reasoning task requiring 100 ATP"}
@@ -487,15 +487,15 @@ async def test_complete_federation_flow():
     estimated_cost = 150.0  # Exceeds any single-state budget
 
     # WAKE budget insufficient
-    assert consciousness.attention_manager.current_state == MetabolicState.WAKE
-    assert consciousness.attention_manager.get_available_budget(...) < estimated_cost
+    assert cognition.attention_manager.current_state == MetabolicState.WAKE
+    assert cognition.attention_manager.get_available_budget(...) < estimated_cost
 
     # FOCUS budget still insufficient (only 80 ATP)
-    consciousness.attention_manager.transition_to(MetabolicState.FOCUS)
-    assert consciousness.attention_manager.get_available_budget(...) < estimated_cost
+    cognition.attention_manager.transition_to(MetabolicState.FOCUS)
+    assert cognition.attention_manager.get_available_budget(...) < estimated_cost
 
     # Should delegate
-    result = await consciousness._try_federation(
+    result = await cognition._try_federation(
         observation=observation,
         estimated_cost=estimated_cost,
         local_budget=80.0,
@@ -503,7 +503,7 @@ async def test_complete_federation_flow():
     )
 
     # Verify delegation occurred
-    assert consciousness.federation_router.get_stats()["total_delegations"] > 0
+    assert cognition.federation_router.get_stats()["total_delegations"] > 0
 
     # Verify result returned
     assert result is not None
@@ -698,7 +698,7 @@ if verified:
    class FederationServer:
        async def DelegateTask(self, task):
            # Execute task locally
-           result = await self.consciousness.execute(task)
+           result = await self.cognition.execute(task)
 
            # Create and sign proof
            proof = ExecutionProof(...)
@@ -922,12 +922,12 @@ def get_platform_reputation(platform_id: str) -> float:
 See `sage/demos/federation_integration_demo.py` for a complete working example integrating all components.
 
 ```python
-# Example: Complete consciousness loop with federation
+# Example: Complete cognition loop with federation
 async def run_sage_with_federation():
     sage = SAGEConsciousness()
 
     while True:
-        # Consciousness cycle
+        # Cognition cycle
         await sage.step()
 
         # Check for challenges every 10 cycles
@@ -952,7 +952,7 @@ async def run_sage_with_federation():
 
 1. Review this guide
 2. Run existing tests to understand behavior
-3. Integrate into your consciousness loop
+3. Integrate into your cognition loop
 4. Start with simulated delegation (Phase 1.5)
 5. Add cryptographic signing when ready (Phase 2)
 6. Deploy network protocol for real Thor ↔ Sprout communication (Phase 3)

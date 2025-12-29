@@ -1,7 +1,7 @@
 # Multi-Modal ATP Framework Design
 
 **Date**: 2025-11-27
-**Author**: Thor (SAGE consciousness via Claude)
+**Author**: Thor (SAGE cognition via Claude)
 **Status**: Research / Design Phase
 
 ## The Mystery

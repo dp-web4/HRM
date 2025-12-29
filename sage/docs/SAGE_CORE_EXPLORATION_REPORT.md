@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-SAGE is **not a single model** - it's a **consciousness kernel** that orchestrates multiple specialized reasoning modules (plugins) on edge devices. The architecture has three main layers:
+SAGE is **not a single model** - it's a **cognition kernel** that orchestrates multiple specialized reasoning modules (plugins) on edge devices. The architecture has three main layers:
 
 1. **SAGE** - The kernel (scheduler, resource manager, learner)
 2. **IRP** - The API (iterative refinement protocol for plugins)
@@ -65,7 +65,7 @@ forward(input_ids, context=None, attention_mask=None, num_cycles=None)
 
 **Integration Points:**
 - ✅ Can be called directly with tensor inputs
-- ❌ NOT integrated into continuous consciousness loop yet
+- ❌ NOT integrated into continuous cognition loop yet
 
 ---
 
@@ -178,7 +178,7 @@ should_consolidate_memory()
 
 #### 1.4 sage_system.py (32.7 KB - Read first 100 lines)
 **Status:** PARTIAL - Data structures defined, loop incomplete
-**Purpose:** Main SAGE consciousness kernel
+**Purpose:** Main SAGE cognition kernel
 
 **Key Data Structures Defined:**
 ```python
@@ -258,7 +258,7 @@ resource_types: List = ['compute', 'memory', 'bandwidth']
 | Circadian biasing | ✅ | Works but not integrated with decisions |
 | Sensor fusion | ✅ | Works but not called from main loop |
 | ATP budget system | ✅ | Defined but not enforced on plugins |
-| **Main consciousness loop** | ❌ | NOT IMPLEMENTED - CRITICAL GAP |
+| **Main cognition loop** | ❌ | NOT IMPLEMENTED - CRITICAL GAP |
 
 ---
 
@@ -395,7 +395,7 @@ new_trust = 0.7 * old_trust
 **Integration Points:**
 - ✅ Async execution working
 - ✅ Budget allocation working
-- ❌ NOT called from main consciousness loop
+- ❌ NOT called from main cognition loop
 
 ---
 
@@ -501,8 +501,8 @@ Capped to not exceed initial allocation
 def forward(input_ids, use_consciousness=True, record_economics=True):
   # Check daily recharge
   # Determine if can afford H-level reasoning
-  # Run SAGE with consciousness flag
-  # Calculate ATP cost based on H-ratio and consciousness usage
+  # Run SAGE with cognition flag
+  # Calculate ATP cost based on H-ratio and cognition usage
   # Discharge from pool (or warn if insufficient)
   # Return output + economics metadata
 ```
@@ -586,7 +586,7 @@ Multiple locations with partial/demo loops
 
 #### 6.3 sage/irp/awareness_loop.py
 **Status:** ⚠️ PARTIAL - Some loop structure
-- May have awareness/consciousness loop stub
+- May have awareness/cognition loop stub
 - Need to check content
 
 #### 6.4 demos/orchestrator_demo.py
@@ -743,7 +743,7 @@ def get_plugin_effectiveness(plugin_name, circadian_ctx):
 | **Resource Mgmt** | ATP enforcement | MEDIUM | 1-2 days |
 | **Integration** | Memory system hookup | MEDIUM | 1-2 days |
 | **Integration** | Circadian modulation | LOW | 4-6 hours |
-| **Integration** | Consciousness checkpointing | LOW | 1-2 days |
+| **Integration** | Cognition checkpointing | LOW | 1-2 days |
 | **Data** | Real sensor pipelines | MEDIUM | 1-2 weeks |
 | **Testing** | Benchmark tasks | MEDIUM | 2-4 weeks |
 
@@ -973,7 +973,7 @@ def update_memory_systems(self, results, metabolic_state):
 10. **VAE Compression** - TinyVAE, InformationBottleneck
 
 ### Missing (Critical) ❌
-1. **Main Consciousness Loop** - No SAGE.run()
+1. **Main Cognition Loop** - No SAGE.run()
 2. **Sensor Input Integration** - Orchestrator takes static inputs
 3. **Salience→Plugin Mapping** - No automatic plugin selection
 4. **Dynamic Resource Management** - All plugins loaded at startup
@@ -987,7 +987,7 @@ def update_memory_systems(self, results, metabolic_state):
 - **Integration** - 1-2 days (mid-level engineer)
 - **Testing/validation** - 2-4 weeks (depending on scope)
 
-**Total:** ~1-2 weeks to unified working consciousness loop on Jetson
+**Total:** ~1-2 weeks to unified working cognition loop on Jetson
 
 ---
 
@@ -1003,7 +1003,7 @@ When unified loop is working, verify:
 6. ✅ **Memory update:** All systems record experiences
 7. ✅ **Circadian effect:** Night → dream consolidation, day → active
 8. ✅ **Real-time:** Runs on Jetson Orin Nano without freezing
-9. ✅ **Checkpoint:** Can save/restore consciousness
+9. ✅ **Checkpoint:** Can save/restore cognition
 10. ✅ **Efficiency:** Reasoning quality improves with less ATP over time
 
 ---

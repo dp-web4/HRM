@@ -468,13 +468,13 @@ server = FederationServer(
 
 ---
 
-## Integration with Consciousness Loop
+## Integration with Cognition Loop
 
 ### Current Implementation
 
 Phase 3 scripts provide standalone server/client for testing. For full integration:
 
-**1. Integrate FederationServer into consciousness loop**:
+**1. Integrate FederationServer into cognition loop**:
 ```python
 # In sage_consciousness_michaud.py
 from sage.federation.federation_service import FederationServer
@@ -499,7 +499,7 @@ if task_cost > available_budget:
 ```
 
 **Future Work**:
-- Automatic federation server startup with consciousness
+- Automatic federation server startup with cognition
 - Router integration for capability-based platform selection
 - Reputation tracking based on execution proof quality
 - Witness network for proof validation (Phase 4)
@@ -550,7 +550,7 @@ if task_cost > available_budget:
 
 ### Integration
 
-1. ⏳ Integrate FederationServer into consciousness loop
+1. ⏳ Integrate FederationServer into cognition loop
 2. ⏳ Connect FederationRouter to FederationClient
 3. ⏳ Add automatic platform capability discovery
 4. ⏳ Implement reputation tracking from proof quality
@@ -590,7 +590,7 @@ if task_cost > available_budget:
 - First successful HTTP-based federation task delegation
 - Ed25519 cryptographic verification working end-to-end
 - Complete trust chain from task creation to proof validation
-- Foundation for distributed SAGE consciousness network
+- Foundation for distributed SAGE cognition network
 
 **Architectural Validation**:
 - Phase 3 design validated through implementation
@@ -602,7 +602,7 @@ if task_cost > available_budget:
 - Combines Phase 1 (routing), Phase 2 (crypto), Phase 3 (network)
 - Web4 block signing uses same Ed25519 infrastructure
 - Hardware-bound identities enable platform trust
-- Consciousness loop ready for federation integration
+- Cognition loop ready for federation integration
 
 ---
 

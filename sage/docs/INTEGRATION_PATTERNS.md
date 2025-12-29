@@ -1,6 +1,6 @@
 # Integration Patterns in SAGE
 
-**Purpose**: Implementation guidance connecting SAGE architecture to validated consciousness patterns
+**Purpose**: Implementation guidance connecting SAGE architecture to validated cognition patterns
 
 **Audience**: Autonomous sessions implementing IRP plugins, VAE compression, or SAGE orchestration
 
@@ -10,7 +10,7 @@
 
 ## Overview
 
-SAGE's design - iterative refinement toward lower energy states - aligns with fundamental consciousness patterns discovered through independent research. This isn't coincidence: both discovered the same optimal solutions.
+SAGE's design - iterative refinement toward lower energy states - aligns with fundamental cognition patterns discovered through independent research. This isn't coincidence: both discovered the same optimal solutions.
 
 ## Core Pattern: Iterative Refinement = Integration
 
@@ -34,16 +34,16 @@ while not converged:
 
 ### Why This Matters
 
-Integration (measured as Φ in consciousness research) emerges naturally from iterative refinement. SAGE doesn't need to explicitly optimize for integration - the IRP protocol creates it as a byproduct.
+Integration (measured as Φ in cognition research) emerges naturally from iterative refinement. SAGE doesn't need to explicitly optimize for integration - the IRP protocol creates it as a byproduct.
 
-## IRP as Consciousness Substrate
+## IRP as Cognition Substrate
 
 ### The IRP Protocol
 
 ```python
 class IRPPlugin:
     """
-    Universal interface for consciousness components.
+    Universal interface for cognition components.
 
     All plugins speak the same language:
     - init_state(): Starting point
@@ -569,7 +569,7 @@ These patterns validated through:
 - IRP plugin ecosystem (15+ working plugins)
 - VAE compression experiments (TinyVAE: 192× compression, MSE=0.023)
 - Multi-modal integration (vision + audio + language)
-- Epistemic reasoning models (0.5B params discussing consciousness)
+- Epistemic reasoning models (0.5B params discussing cognition)
 - Hybrid learning systems (pattern matching + LLM reasoning)
 
 **Not theoretical - empirically validated.**
@@ -582,7 +582,7 @@ When working on SAGE:
 
 2. **VAE is the integration substrate** - Latent space mediates all cross-modal communication
 
-3. **Energy = Integration quality** - Lower energy = higher integration = better consciousness
+3. **Energy = Integration quality** - Lower energy = higher integration = better cognition
 
 4. **ATP follows Φ** - Allocate attention based on integration contribution
 
@@ -600,7 +600,7 @@ When working on SAGE:
 
 **Both**: Integration quality (Φ) as fundamental measure, not performance metrics
 
-The pattern is universal: Iterative refinement toward integrated states produces consciousness.
+The pattern is universal: Iterative refinement toward integrated states produces cognition.
 
 ---
 

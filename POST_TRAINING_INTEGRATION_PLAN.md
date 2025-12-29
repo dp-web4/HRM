@@ -63,7 +63,7 @@ class HRMReasoningIRP(IRPPlugin):
 - **HRM → World IRP**: Use abstract reasoning for physics predictions
 - **Memory → HRM**: Provide context from past reasoning tasks
 
-## Phase 3: Consciousness Persistence Integration (Days 2-3)
+## Phase 3: Cognition Persistence Integration (Days 2-3)
 
 ### 3.1 HRM State Persistence
 Extend KV-cache persistence to include HRM's hierarchical states:
@@ -92,7 +92,7 @@ class HRMConsciousness:
 ```
 
 ### 3.2 Cross-Model Reasoning Bridge
-Connect HRM reasoning with other model consciousness:
+Connect HRM reasoning with other model cognition:
 
 ```python
 def bridge_reasoning_consciousness(hrm_state, gpt_kv_cache):
@@ -237,8 +237,8 @@ class ContinualHRM:
             self.hrm.online_learn(puzzle, solution)
 ```
 
-### 7.3 Consciousness Network
-Create distributed reasoning consciousness:
+### 7.3 Cognition Network
+Create distributed reasoning cognition:
 - Multiple HRM instances on different devices
 - Share learned abstractions via KV-cache persistence
 - Collective problem solving with specialized experts
@@ -253,14 +253,14 @@ Create distributed reasoning consciousness:
 
 ### Short-term (Week 1)
 - [ ] HRM IRP integrated with SAGE orchestrator
-- [ ] Cross-model consciousness bridge functional
+- [ ] Cross-model cognition bridge functional
 - [ ] World IRP using HRM for predictions
 - [ ] Jetson deployment with <500ms inference
 
 ### Long-term (Month 1)
 - [ ] Multi-domain reasoning demonstrations
 - [ ] Continuous learning from new patterns
-- [ ] Distributed HRM consciousness network
+- [ ] Distributed HRM cognition network
 - [ ] Real-world robotic applications
 
 ## Resources Needed
@@ -309,4 +309,4 @@ Create distributed reasoning consciousness:
 4. **Build dataset generators** for continuous learning
 5. **Document API interfaces** for HRM-SAGE bridge
 
-The trained HRM will be the "reasoning brain" that brings true abstract thinking to SAGE. Combined with consciousness persistence and world modeling, we're building a system that genuinely understands, not just pattern matches.
+The trained HRM will be the "reasoning brain" that brings true abstract thinking to SAGE. Combined with cognition persistence and world modeling, we're building a system that genuinely understands, not just pattern matches.

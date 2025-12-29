@@ -8,7 +8,7 @@
 
 ## Executive Summary: SAGE is an Orchestration Framework, Not a Model
 
-**Critical Insight**: SAGE is **not** a language model or AI backbone. It's a **consciousness kernel**—an attention orchestration system that manages computational resources and decides which specialized intelligences to invoke.
+**Critical Insight**: SAGE is **not** a language model or AI backbone. It's a **cognition kernel**—an attention orchestration system that manages computational resources and decides which specialized intelligences to invoke.
 
 **Analogy**: Like an operating system schedules processes and manages hardware, SAGE schedules attention and manages computational resources (models, sensors, effectors). It learns which resources are trustworthy and efficient based on performance.
 
@@ -18,7 +18,7 @@
 
 ## SAGE Architecture: Three Layers
 
-### Layer 1: SAGE Core - The Consciousness Kernel
+### Layer 1: SAGE Core - The Cognition Kernel
 
 **Location**: `/sage/core/`  
 **Status**: Designed, components exist, not yet unified into single loop
@@ -82,7 +82,7 @@ while True:
 
 ---
 
-### Layer 2: IRP - The Consciousness API
+### Layer 2: IRP - The Cognition API
 
 **Location**: `/sage/irp/`  
 **Status**: Fully operational, 15+ plugins working
@@ -256,7 +256,7 @@ VAE creates shared latent spaces where different modalities can exchange informa
 
 ```python
 class NemotronPlugin(IRPPlugin):
-    """Nemotron as consciousness API plugin"""
+    """Nemotron as cognition API plugin"""
     
     def __init__(self, model_name="nemotron-mini", config={}):
         super().__init__(config)
@@ -606,7 +606,7 @@ Memory Update (SNARC scores new patterns)
 
 ## Conclusion: Nemotron as Strategic Reasoning Module
 
-**SAGE** = Consciousness kernel (scheduling, attention, resources)  
+**SAGE** = Cognition kernel (scheduling, attention, resources)  
 **Nemotron** = Strategic reasoning module (language understanding, complex decisions)  
 **Together** = Grounded, coherent, energy-efficient edge AI system
 

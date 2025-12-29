@@ -1,4 +1,4 @@
-# SAGE-7M - Sentient Agentic Generative Engine
+# SAGE-7M - Situation-Aware Governance Engine
 
 ARC Prize 2025 Submission
 

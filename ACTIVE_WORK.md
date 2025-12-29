@@ -31,21 +31,21 @@
 
 ## RECENTLY COMPLETED
 
-### Unified SAGE Consciousness Loop ✅
+### Unified SAGE Cognition Loop ✅
 **Who**: Autonomous Thor session
 **Started**: 2025-11-19 00:00 PST
 **Completed**: 2025-11-19 00:30 PST
 **Status**: ✅ COMPLETE - Core implementation working
 
 **What was built**:
-- `sage/core/sage_consciousness.py` (700 lines) - Unified consciousness loop
+- `sage/core/sage_consciousness.py` (700 lines) - Unified cognition loop
 - `sage/tests/demo_consciousness_loop.py` (500 lines) - 4 comprehensive demos
 - `sage/docs/UNIFIED_CONSCIOUSNESS_LOOP.md` (800 lines) - Complete documentation
 - `sage/docs/SAGE_CORE_EXPLORATION_REPORT.md` (1021 lines) - Component analysis
 - `sage/docs/EXPLORATION_SUMMARY.md` (200 lines) - Quick reference
 
 **Features**:
-- Continuous consciousness loop (while True)
+- Continuous cognition loop (while True)
 - Metabolic state transitions (WAKE/FOCUS/REST/DREAM/CRISIS)
 - Sensor observation gathering (mocked, ready for integration)
 - SNARC 5D salience computation (mocked, ready for integration)
@@ -70,7 +70,7 @@ After: 100% core architecture, ready for sensor/SNARC/effector integration
 - Memory: 33 SNARC, 33 IRP patterns, 33 circular, 0 dreams (varies)
 
 **Demos created**:
-1. Basic consciousness (100 cycles) - shows continuous operation
+1. Basic cognition (100 cycles) - shows continuous operation
 2. State transitions (200 cycles) - analyzes state machine
 3. Circadian modulation (100 cycles = 1 day) - shows day/night effects
 4. Memory consolidation (150 cycles) - validates dream storage

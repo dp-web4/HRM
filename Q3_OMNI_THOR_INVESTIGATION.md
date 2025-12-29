@@ -342,7 +342,7 @@ Native: [438 words structured analysis with 8 numbered sections]
 SAGE:   "the on will in in, okay 1. 665 in in in in in in in in in..."
 ```
 
-**Prompt 6**: "Consciousness can be understood as"
+**Prompt 6**: "Cognition can be understood as"
 ```
 Native: [185 words with 5 numbered philosophical points]
 SAGE:   "to is an: can what of is. It it. I can be is. That is..."

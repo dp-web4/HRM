@@ -21,7 +21,7 @@ In Web4, R6 is composable, hierarchical, and naturally forms a governance mechan
 
 ## Application to SAGE/HRM
 
-In **SAGE (Sentient Agentic Generative Engine)**, with the **HRM (Hierarchical Reasoning Model)** as its awareness core, R6 provides the operational skeleton for awareness and agency.
+In **SAGE (Situation-Aware Governance Engine)**, with the **HRM (Hierarchical Reasoning Model)** as its awareness core, R6 provides the operational skeleton for awareness and agency.
 
 - **Rules** → IRP plugin constraints, effector safety boundaries, and system-level policies.  
 - **Role** → roles assigned to each plugin/agent (e.g., Vision IRP, Planning LLM, Diffusion Detector, Motor Effector), governed by their own LCTs.  

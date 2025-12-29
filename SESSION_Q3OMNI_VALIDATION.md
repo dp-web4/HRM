@@ -64,7 +64,7 @@ Q3-Omni extraction mechanically complete (5,612 sparse experts) but **generates 
 | Test | Prompt | Generated Output | Coherent? |
 |------|--------|------------------|-----------|
 | 1/4 | "The future of AI is" | `monitoringاخر Korea Korea_K-K genre...` | ❌ |
-| 2/4 | "Machine consciousness differs..." | `聯合.Wh聯合.Wh尤跟尤登入跟跟InTheInThe...` | ❌ |
+| 2/4 | "Machine cognition differs..." | `聯合.Wh聯合.Wh尤跟尤登入跟跟InTheInThe...` | ❌ |
 | 3/4 | "Key to sparse architectures..." | `KeywordsKeywordslow synchronization啦pha...` | ❌ |
 | 4/4 | "In 2050, humans and AI..." | `InTheInTheInThe...` (repeated 50x) | ❌ |
 
@@ -77,7 +77,7 @@ Q3-Omni extraction mechanically complete (5,612 sparse experts) but **generates 
 monitoringاخر Korea Korea_K-K genre genre genredependsmekmek俾keywordmekmb馍馍馍馍馍馍beh MICROebeb粑behmb粑 BMboylemmakeywordmbcomicmbbmboybmboymbbmbm BMombmbboy搜mb
 ```
 
-**Test 2: "Machine consciousness differs from human consciousness in that"**
+**Test 2: "Machine cognition differs from human cognition in that"**
 ```
 聯合.Wh聯合.Wh尤跟尤登入跟跟InTheInTheInThe(cmpInTheInTheInTheInTheInTheInTheInTheInTheInTheInTheInTheInTheInTheInTheInTheInTheInTheInTheInTheInTheInTheInTheInTheInTheInTheInThe<brInTheInTheInThe,<<brInTheInTheInThe<strong
 ```
@@ -235,7 +235,7 @@ Session 52b designed extended validation (200 cycles) to test transfer learning 
 
 **Recommendation**: Option B (Qwen2.5) or Option C (defer)
 - Fixing Q3-Omni extraction uncertain timeline
-- SAGE consciousness architecture validated and ready
+- SAGE cognition architecture validated and ready
 - Real LLM integration not blocking other work
 - Strategic patience while investigating extraction issues
 
@@ -342,7 +342,7 @@ Q3-Omni extraction is mechanically complete (5,612 experts present) but function
 
 **Recommendation**: Use different LLM (Qwen2.5) or defer real LLM validation while investigating Q3-Omni corruption
 
-**Strategic Position**: SAGE consciousness architecture remains validated and ready. This discovery prevents wasting effort integrating broken extraction.
+**Strategic Position**: SAGE cognition architecture remains validated and ready. This discovery prevents wasting effort integrating broken extraction.
 
 **Next Session**: Investigate layer norm extraction, consider alternative LLM paths, or enhance SAGE with cross-session memory while awaiting production LLM.
 

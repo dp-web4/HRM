@@ -46,7 +46,7 @@ print(f"ATP Balance: {output['economics']['atp_balance']}")
 
 **Features:**
 - Automatic daily recharge at 00:00 UTC (LAW-ECON-003)
-- ATP cost calculation based on H-ratio and consciousness usage
+- ATP cost calculation based on H-ratio and cognition usage
 - Transaction logging with full audit trail
 - State persistence across restarts
 - Emergency reserve enforcement
@@ -238,7 +238,7 @@ AtpConfig(
 **Adjust Costs if:**
 - H-level usage too high → increase `h_level_cost`
 - H-level usage too low → decrease `h_level_cost`
-- Need to encourage consciousness → decrease `consciousness_cost`
+- Need to encourage cognition → decrease `consciousness_cost`
 
 **Adjust Refunds if:**
 - Model not learning efficiency → increase `efficient_refund`

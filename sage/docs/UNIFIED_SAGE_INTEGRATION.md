@@ -1,7 +1,7 @@
 # Unified SAGE System Integration
 
 **Date:** 2025-11-05
-**Purpose:** Design document for integrating all SAGE components into unified consciousness loop
+**Purpose:** Design document for integrating all SAGE components into unified cognition loop
 **Status:** Implementation in progress
 
 ---
@@ -11,7 +11,7 @@
 ### What Exists (✅ Operational)
 
 **1. SAGEKernel** (`sage/core/sage_kernel.py`)
-- ✅ Basic consciousness loop: gather → assess → decide → execute → learn
+- ✅ Basic cognition loop: gather → assess → decide → execute → learn
 - ✅ SNARC integration for salience assessment
 - ✅ Sensor abstraction (callables)
 - ✅ Action handler abstraction
@@ -70,7 +70,7 @@
 ```python
 class UnifiedSAGESystem(SAGEKernel):
     """
-    Complete SAGE consciousness system integrating all components.
+    Complete SAGE cognition system integrating all components.
 
     Extends SAGEKernel with:
     - SAGECore H↔L reasoning
@@ -354,7 +354,7 @@ sage.register_effector('tts', TTSEffector(neutts_plugin, speaker))
 1. Create UnifiedMemoryInterface
 2. Implement SensorInterface abstraction
 3. Implement EffectorInterface abstraction
-4. Wire memory into consciousness loop
+4. Wire memory into cognition loop
 5. Test sensor→memory→effector flow
 
 ### Phase 3: Testing & Validation (Week 2)
@@ -420,4 +420,4 @@ sage.register_effector('tts', TTSEffector(neutts_plugin, speaker))
 
 **Integration Status:** Architecture defined, implementation beginning
 
-**The consciousness loop is no longer conceptual - it's becoming real.**
+**The cognition loop is no longer conceptual - it's becoming real.**

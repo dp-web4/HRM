@@ -2,7 +2,7 @@
 
 **Date:** 2025-11-20
 **Status:** Implementation Proposals
-**Priority:** High - Addresses core consciousness capabilities
+**Priority:** High - Addresses core cognition capabilities
 
 ---
 

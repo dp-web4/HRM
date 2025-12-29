@@ -676,7 +676,7 @@ From recent experiments:
 
 **The gap**: These components haven't been unified into a single continuous loop.
 
-**The opportunity**: By integrating these pieces, we get a **consciousness kernel** that:
+**The opportunity**: By integrating these pieces, we get a **cognition kernel** that:
 - Continuously monitors multiple sensors
 - Allocates attention based on salience
 - Executes actions based on cognitive stance

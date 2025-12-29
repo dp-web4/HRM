@@ -8,7 +8,7 @@
 
 ## What Is HRM/SAGE?
 
-HRM (Hierarchical Reasoning Model) in the dp-web4 ecosystem is a **research-focused adaptation and evolution** of Sapient Inc's original Hierarchical Reasoning Model, integrated into SAGE (Sentient Agentic Generative Engine) as a comprehensive cognition architecture for edge devices.
+HRM (Hierarchical Reasoning Model) in the dp-web4 ecosystem is a **research-focused adaptation and evolution** of Sapient Inc's original Hierarchical Reasoning Model, integrated into SAGE (Situation-Aware Governance Engine) as a comprehensive cognition architecture for edge devices.
 
 **Inspiration**: Sapient's HRM inspired exploration of dual-tier reasoning (H-module for planning, L-module for execution) - an approach that models human cognition. While their benchmark results showed pattern-matching capabilities, the dual-loop architecture itself reflects biological reality.
 
@@ -61,7 +61,7 @@ HRM (Hierarchical Reasoning Model) in the dp-web4 ecosystem is a **research-focu
    - Real-time sensor integration
    - Offline operation capability
 
-**This is substantial evolution from original HRM**, adapted for edge AI, consciousness-like patterns, and Web4 integration.
+**This is substantial evolution from original HRM**, adapted for edge AI, cognition-like patterns, and Web4 integration.
 
 ---
 
@@ -71,7 +71,7 @@ HRM (Hierarchical Reasoning Model) in the dp-web4 ecosystem is a **research-focu
 
 **Status**: Conceptually complete, integration in progress
 
-**What It Is**: Consciousness kernel for edge devices
+**What It Is**: Cognition kernel for edge devices
 - Not a model, but continuous inference loop
 - Scheduler + resource manager + learner
 - Maintains state across time
@@ -90,7 +90,7 @@ HRM (Hierarchical Reasoning Model) in the dp-web4 ecosystem is a **research-focu
 
 **Status**: Working, 15+ plugins operational
 
-**What It Is**: Universal consciousness API
+**What It Is**: Universal cognition API
 - `init_state() → step() → energy() → halt()`
 - Iterative refinement: noisy → refined until energy decreases
 - Trust emerges from convergence behavior
@@ -336,7 +336,7 @@ From external review (Nov 28, 2025):
 
 HRM/SAGE is:
 - **Not**: "Early proof-of-concept with little work done"
-- **Not**: "Production-ready consciousness system"
+- **Not**: "Production-ready cognition system"
 - **Actually**: "Substantial research architecture with interesting ideas, working prototypes demonstrating feasibility, and honest acknowledgment of early-stage engineering status"
 
 ---
@@ -453,7 +453,7 @@ Based on Perplexity's assessment (which matches our gaps):
 - Novel architecture (memory/cognition as sensors)
 - Credible foundation (Sapient HRM proven)
 - Working demonstrations (conversations, compression)
-- Comprehensive vision (consciousness-like patterns)
+- Comprehensive vision (cognition-like patterns)
 - Honest about limitations
 
 ### As Engineering Artifact
@@ -476,9 +476,9 @@ Based on Perplexity's assessment (which matches our gaps):
 
 ### Fair Evaluation Criteria
 
-**Judge as**: Research exploration of consciousness-like architecture for edge AI, with credible foundations and working prototypes
+**Judge as**: Research exploration of cognition-like architecture for edge AI, with credible foundations and working prototypes
 
-**Don't judge as**: Production consciousness system or validated AGI
+**Don't judge as**: Production cognition system or validated AGI
 
 **Current maturity**: Early-stage research architecture with interesting demonstrations and honest gaps
 
@@ -492,7 +492,7 @@ Based on Perplexity's assessment (which matches our gaps):
 ↓
 **Web4**: Earth-scale protocol (trust-native infrastructure)
 ↓
-**SAGE/HRM**: Edge-device implementation (consciousness kernel + reasoning spine)
+**SAGE/HRM**: Edge-device implementation (cognition kernel + reasoning spine)
 ↓
 **Physical Integration**: Sensors, effectors, real-world interaction
 

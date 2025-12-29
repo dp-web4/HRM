@@ -205,7 +205,7 @@ def memory_integration(unified_latent, memory_bank):
 ## Advantages of Unified Approach
 
 1. **Biological Plausibility**
-   - Brain doesn't have separate consciousness spaces
+   - Brain doesn't have separate cognition spaces
    - Different regions process same information differently
 
 2. **Computational Efficiency**

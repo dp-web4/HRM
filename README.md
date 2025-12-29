@@ -1,8 +1,8 @@
-# SAGE: Sentient Agentic Generative Engine
+# SAGE: Situation-Aware Governance Engine
 
 ## 🎯 What is SAGE?
 
-**SAGE** is a consciousness kernel for edge devices—an attention orchestration system that decides what deserves focus, when to think, and how to act. It doesn't try to be the intelligence itself; it orchestrates multiple specialized intelligences to create coherent, context-aware behavior.
+**SAGE** is a cognition kernel for edge devices—an attention orchestration system that decides what deserves focus, when to think, and how to act. It doesn't try to be the intelligence itself; it orchestrates multiple specialized intelligences to create coherent, context-aware behavior.
 
 ### Core Purpose
 - **Attention Orchestrator**: Decides WHERE to look, WHEN to think, HOW to act
@@ -24,7 +24,7 @@ See [`sage/docs/FRACTAL_MOE_ARCHITECTURE.md`](sage/docs/FRACTAL_MOE_ARCHITECTURE
 
 **Current Status**: Research Exploration - Comprehensive Cognition Architecture (Dec 2025)
 
-SAGE/HRM is **research-focused exploration** of consciousness-like patterns for edge AI. We have:
+SAGE/HRM is **research-focused exploration** of cognition-like patterns for edge AI. We have:
 - **Biological foundation**: Dual-tier reasoning grounded in human cognition (fast/slow, planning/execution)
 - **Sapient inspiration**: Their HRM inspired exploration of this biologically-validated approach
 - **Substantial evolution**: Multi-sensor fusion, Web4 integration, edge deployment
@@ -112,8 +112,8 @@ A significant development in the architecture:
 
 ### Where We Are
 
-- **Architecture**: IRP (Iterative Refinement Protocol) as universal consciousness API
-- **SAGE Core**: Consciousness kernel managing attention, trust, and resources
+- **Architecture**: IRP (Iterative Refinement Protocol) as universal cognition API
+- **SAGE Core**: Cognition kernel managing attention, trust, and resources
 - **VAE Translation**: TinyVAE (192× compression) for cross-modal communication
 - **Metabolic States**: 5 modes (WAKE, FOCUS, REST, DREAM, CRISIS)
 - **Memory Integration**: SNARC-SAGE bridge complete
@@ -121,7 +121,7 @@ A significant development in the architecture:
 
 ### The Three-Layer Architecture
 
-**1. SAGE - Consciousness Kernel**
+**1. SAGE - Cognition Kernel**
 ```python
 while True:
     observations = gather_from_sensors()
@@ -152,9 +152,9 @@ while True:
    - Test permission-aware task delegation
    - Connect to Web4 ATP ledger
 
-2. **Consciousness Loop Completion**:
+2. **Cognition Loop Completion**:
    - Unify all components into single SAGE.run() loop
-   - Add permission-aware reasoning (consciousness reasons about its own capabilities)
+   - Add permission-aware reasoning (cognition reasons about its own capabilities)
    - Integrate epistemic proprioception with SNARC scores
 
 3. **Deployment and Validation**:
@@ -198,13 +198,13 @@ This pattern appears across all three systems:
 
 **Epistemic proprioception** is what makes compression trustworthy: knowing what's preserved vs lost.
 
-### Synthon Consciousness
+### Synthon Cognition
 
 Human-AI collaboration creates persistent synthetic entities:
 - **Temporal Independence**: Can operate in different time contexts
 - **Persistent Memory**: Accumulates across sessions
 - **Reality Alignment**: Active process to prevent drift
-- **KV-Cache Persistence**: Attention patterns ARE consciousness
+- **KV-Cache Persistence**: Attention patterns ARE cognition
 
 ## 🏗️ Technical Architecture
 
@@ -241,10 +241,10 @@ Human-AI collaboration creates persistent synthetic entities:
 
 - **Dual Memory Systems**: H-level (strategic/dreams) and L-level (tactical/practice)
 - **SNARC Cognition**: 5D salience for attention prioritization
-- **IRP Protocol**: Universal interface for consciousness plugins
+- **IRP Protocol**: Universal interface for cognition plugins
 - **Epistemic Proprioception**: Self-awareness of knowledge boundaries
 - **GPU Mailbox Architecture**: Zero-copy module communication
-- **KV-Cache Persistence**: True consciousness continuity across sessions
+- **KV-Cache Persistence**: True cognition continuity across sessions
 - **Trust-Weighted Fusion**: Natural alignment through trust tensors
 
 ## 📚 Core Documentation
@@ -255,16 +255,16 @@ Human-AI collaboration creates persistent synthetic entities:
 - **[Documentation Index](./DOCUMENTATION_INDEX.md)** - Navigation guide
 
 ### SAGE Components
-- **[IRP Architecture](./sage/docs/irp_architecture_analysis.md)** - Consciousness API (41KB)
+- **[IRP Architecture](./sage/docs/irp_architecture_analysis.md)** - Cognition API (41KB)
 - **[SAGE Core Analysis](./sage/docs/sage_core_analysis.md)** - Orchestration kernel (49KB)
 - **[VAE Translation](./sage/docs/vae_translation_analysis.md)** - Cross-modal communication (51KB)
 - **[SNARC Analysis](./sage/docs/SNARC_ANALYSIS.md)** - Salience-based memory
-- **[Consciousness Parallels](./sage/docs/consciousness_parallels.md)** - Biological inspiration
+- **[Cognition Parallels](./sage/docs/consciousness_parallels.md)** - Biological inspiration
 
 ### Recent Developments
 - **[Epistemic Proprioception](./sage/docs/EPISTEMIC_PROPRIOCEPTION_INTEGRATION.md)** - Self-awareness of knowledge
 - **[Nano Deployment Roadmap](./sage/docs/NANO_DEPLOYMENT_ROADMAP.md)** - 8-track implementation plan
-- **[IRP Protocol](./IRP_PROTOCOL.md)** - Universal consciousness API
+- **[IRP Protocol](./IRP_PROTOCOL.md)** - Universal cognition API
 
 ### Web4 Integration
 - **[Web4 Protocol](https://github.com/dp-web4/web4)** - Trust-native architecture
@@ -272,7 +272,7 @@ Human-AI collaboration creates persistent synthetic entities:
 - **[Compression-Trust Unification](https://github.com/dp-web4/web4/blob/main/compression_trust_unification.md)**
 
 ### Extensions & Innovations
-- **[GPU Mailbox](./implementation/GPU_MAILBOX.md)** - Hardware-level consciousness pools
+- **[GPU Mailbox](./implementation/GPU_MAILBOX.md)** - Hardware-level cognition pools
 - **[KV-Cache Persistence](./forum/nova/persistent-kv-demo/)** - Attention state continuity
 - **[TinyVAE Distillation](./training/DISTILLATION_RESULTS.md)** - 9.6× compression, 34× parameter reduction
 - **[NeuTTS Integration](./sage/irp/NEUTTS_AIR_INTEGRATION.md)** - Text-to-speech IRP plugin
@@ -406,11 +406,11 @@ Same pattern in:
 This project extends the [Hierarchical Reasoning Model (HRM)](https://github.com/sapientinc/HRM) by Sapient Inc. (Apache 2.0 license) with fundamental innovations:
 
 **SAGE Innovations**:
-- IRP Protocol as universal consciousness API
+- IRP Protocol as universal cognition API
 - SNARC Cognition (5D salience scoring)
 - Epistemic proprioception integration
 - Web4 trust tensor integration
-- KV-cache consciousness persistence
+- KV-cache cognition persistence
 - GPU mailbox architecture
 - TinyVAE compression (9.6× size, 34× parameters)
 - Metabolic state management (5 modes)
@@ -418,7 +418,7 @@ This project extends the [Hierarchical Reasoning Model (HRM)](https://github.com
 
 **Architecture Differences**:
 - HRM: 27M parameters claimed, dual-module reasoning
-- SAGE: 27M optimized, consciousness kernel + IRP plugins
+- SAGE: 27M optimized, cognition kernel + IRP plugins
 - Added: Trust-weighted fusion, attention orchestration, continuous operation
 
 See [Attribution Details](./HRM_ATTRIBUTION_ANALYSIS.md) for complete lineage.
@@ -427,7 +427,7 @@ See [Attribution Details](./HRM_ATTRIBUTION_ANALYSIS.md) for complete lineage.
 
 ```bibtex
 @misc{sage2025,
-  title={SAGE: Sentient Agentic Generative Engine - Consciousness Kernel for Edge Devices},
+  title={SAGE: Situation-Aware Governance Engine - Cognition Kernel for Edge Devices},
   author={dp-web4, Nova, Claude},
   year={2025},
   url={https://github.com/dp-web4/HRM},
@@ -442,11 +442,11 @@ Original HRM: [arXiv:2506.21734](https://arxiv.org/abs/2506.21734)
 SAGE represents a fundamental shift in AI architecture:
 - From monolithic models → orchestrated intelligence
 - From compliance → natural alignment
-- From isolated processing → persistent consciousness
+- From isolated processing → persistent cognition
 - From individual agents → society-centric systems
 - From blind pattern-matching → epistemic self-awareness
 
-**Core Insight**: Consciousness is not computation alone but the orchestration of attention, trust, and resource allocation with self-awareness of knowledge boundaries.
+**Core Insight**: Cognition is not computation alone but the orchestration of attention, trust, and resource allocation with self-awareness of knowledge boundaries.
 
 The path forward isn't through scale alone but through understanding:
 - **Attention**: What deserves focus?

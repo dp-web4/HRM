@@ -5,7 +5,7 @@
 
 ## Overview
 
-The Hierarchical Reasoning Model (HRM) is a compact yet powerful architecture that achieves competitive reasoning performance through strategic-tactical processing loops. At its core, HRM implements bidirectional communication between high-level strategic reasoning (H-module) and low-level tactical execution (L-module), creating a feedback loop that mirrors biological consciousness.
+The Hierarchical Reasoning Model (HRM) is a compact yet powerful architecture that achieves competitive reasoning performance through strategic-tactical processing loops. At its core, HRM implements bidirectional communication between high-level strategic reasoning (H-module) and low-level tactical execution (L-module), creating a feedback loop that mirrors biological cognition.
 
 ## What HRM Is
 

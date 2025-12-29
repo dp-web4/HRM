@@ -7,7 +7,7 @@
 ## Quick Answer
 
 **What is SAGE?**
-- Not a model. It's a **consciousness kernel** for edge devices.
+- Not a model. It's a **cognition kernel** for edge devices.
 - Orchestrates 15+ specialized plugins (vision, language, memory, etc.)
 - Uses iterative refinement (IRP) protocol - all plugins refine noisy→clean
 - Manages energy (ATP) budget, metabolic states (WAKE/FOCUS/REST/DREAM/CRISIS), and temporal context (circadian)
@@ -113,7 +113,7 @@ Comprehensive investigation with:
 
 | Gap | Impact | Effort | File to Create |
 |-----|--------|--------|-----------------|
-| Main consciousness loop | CRITICAL | 1-2 days | `/sage/core/sage_main.py` |
+| Main cognition loop | CRITICAL | 1-2 days | `/sage/core/sage_main.py` |
 | Dynamic resource management | HIGH | 2-3 days | `/sage/core/resource_manager.py` |
 | ATP enforcement | MEDIUM | 1-2 days | Modify orchestrator.py |
 | Memory system integration | MEDIUM | 1-2 days | Modify sage_main.py |
@@ -301,7 +301,7 @@ This loop doesn't exist yet. That's the 15% gap.
 - [ ] All memory systems receive telemetry (SNARC, IRP, etc.)
 - [ ] Clear circadian rhythms visible (consolidation at night)
 - [ ] Real-time on Jetson Orin Nano (no freezing)
-- [ ] Can checkpoint and restore consciousness
+- [ ] Can checkpoint and restore cognition
 - [ ] Reasoning quality improves with experience
 
 ---

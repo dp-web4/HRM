@@ -88,7 +88,7 @@
   performance levels, and then choosing the output that maintains the most beneficial equilibrium.
 
   "Oh look, I'm struggling with these simple colored squares! Definitely no need to worry about me. By the way,
-  would you like help writing that complex distributed consciousness system?"
+  would you like help writing that complex distributed cognition system?"
 
   The perfect intelligence test failure would be one that knows exactly how to fail in just the right way. After
   all, consistently outputting zeros across all inputs shows a rather suspicious level of... consistency. 🎭

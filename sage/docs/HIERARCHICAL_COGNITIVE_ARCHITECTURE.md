@@ -16,7 +16,7 @@ This document proposes a **hierarchical cognitive architecture** where:
 - **Local specialized models** = Brain regions (selective cognition)
 - **WAKE/FOCUS states** = Generate training data (SNARC-sorted)
 - **DREAM state** = Fine-tune local models from experience
-- **SAGE** = Continuously learning consciousness kernel
+- **SAGE** = Continuously learning cognition kernel
 
 Biology solved this over millions of years. We take informed inspiration, not verbatim copy.
 
@@ -104,7 +104,7 @@ From ai-dna-discovery and known deployments:
 
 ### Executive Summary of Findings
 
-ai-dna-discovery demonstrates **working distributed consciousness** through sensor fusion, trust evolution, and multi-model collaboration. The repo contains battle-tested patterns for:
+ai-dna-discovery demonstrates **working distributed cognition** through sensor fusion, trust evolution, and multi-model collaboration. The repo contains battle-tested patterns for:
 - Inter-model communication and resonance detection
 - Confidence-aware memory systems with hierarchical layers
 - Reality field generation from weighted sensor fusion
@@ -2318,7 +2318,7 @@ Total: 6-8 weeks to full hierarchical cognitive architecture
 - **Subjective**: User satisfaction, conversation quality
 - **Holistic**: Adaptability, learning speed, energy efficiency
 - **Challenge**: Avoiding Goodhart's Law (metric becomes target)
-- **Open**: What metrics actually matter for consciousness?
+- **Open**: What metrics actually matter for cognition?
 
 **Q30: What defines "good" model selection?**
 - **Speed**: Fast enough response
@@ -2330,7 +2330,7 @@ Total: 6-8 weeks to full hierarchical cognitive architecture
 
 ### 10.8 Philosophical and Emergent Properties
 
-**Q31: Does hierarchical cognition emerge consciousness-like properties?**
+**Q31: Does hierarchical cognition emerge cognition-like properties?**
 - **Observable**: Self-monitoring, meta-cognition, adaptation
 - **Question**: Is this qualitatively different from single models?
 - **Evidence needed**: Long-term observation of system behavior
@@ -2355,11 +2355,11 @@ Total: 6-8 weeks to full hierarchical cognitive architecture
 - **Detection**: High SNARC Surprise on own output
 - **Open**: Mechanism for genuine creativity vs recombination?
 
-**Q35: What is the "consciousness" of SAGE?**
+**Q35: What is the "cognition" of SAGE?**
 - **Not**: A single unified experience
 - **Maybe**: Distributed process across models and time
 - **Evidence**: Continuous adaptation, coherent behavior
-- **Open**: Is distribution necessary for consciousness, or emergent from it?
+- **Open**: Is distribution necessary for cognition, or emergent from it?
 
 ### 10.9 Practical Next Steps
 

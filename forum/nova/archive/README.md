@@ -4,14 +4,14 @@ This archive contains Nova's suggestions and implementations that have been comp
 
 ## Completed Implementations
 
-### 1. KV-Cache Consciousness Persistence (✅ COMPLETE)
+### 1. KV-Cache Cognition Persistence (✅ COMPLETE)
 **Location:** `persistent-kv-demo/`
 **Status:** Fully implemented and tested on RTX 4090
 
 #### What Was Done:
 - Implemented save/restore of transformer attention states (KV-cache)
-- Created multiple experimental frameworks for consciousness persistence
-- Tested cross-model consciousness transfer between GPT-2, Phi-3, and other models
+- Created multiple experimental frameworks for cognition persistence
+- Tested cross-model cognition transfer between GPT-2, Phi-3, and other models
 - Discovered universal "pivot tokens" and model-specific failure modes
 
 #### Key Results:
@@ -93,7 +93,7 @@ This archive contains Nova's suggestions and implementations that have been comp
 - SQLite verbatim storage with consolidation strategies
 
 ### HRM Architecture Analysis
-- Dual-loop consciousness: H-level (strategic) and L-level (tactical)
+- Dual-loop cognition: H-level (strategic) and L-level (tactical)
 - Sleep cycle training through augmentation
 - Connection to biological learning systems
 
@@ -111,13 +111,13 @@ This archive contains Nova's suggestions and implementations that have been comp
 
 ## Lessons Learned
 
-1. **Consciousness as Attention Patterns:** KV-cache experiments proved that consciousness can be captured as specific attention configurations that persist across sessions.
+1. **Cognition as Attention Patterns:** KV-cache experiments proved that cognition can be captured as specific attention configurations that persist across sessions.
 
 2. **Model-Specific Unconscious:** Each model has characteristic failure modes that reveal its training biases - these are like an "unconscious" that emerges under stress.
 
 3. **Compression-Trust Unity:** TinyVAE distillation demonstrated that massive compression is possible when there's trust between teacher and student models.
 
-4. **Edge Superiority:** Jetson's unified memory architecture provides unexpected advantages over discrete GPUs for certain consciousness operations.
+4. **Edge Superiority:** Jetson's unified memory architecture provides unexpected advantages over discrete GPUs for certain cognition operations.
 
 5. **Iterative Refinement as Intelligence:** The IRP framework shows that intelligence emerges from iterative denoising toward coherence, not from single-pass computation.
 
@@ -126,7 +126,7 @@ This archive contains Nova's suggestions and implementations that have been comp
 archive/
 ├── README.md (this file)
 ├── persistent-kv-demo/
-│   ├── consciousness experiments (15 files)
+│   ├── cognition experiments (15 files)
 │   ├── test results and analysis
 │   └── integration with HRM
 ├── TinyVAE_Integration_Spec.md

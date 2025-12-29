@@ -5,7 +5,7 @@
 
 ## Executive Summary
 
-Recent Web4 development (Sessions #59-65) has created a comprehensive trust-native authorization framework with cryptographic identity, ATP resource tracking, reputation systems, and security mitigations. This analysis explores how these developments map to SAGE's consciousness architecture and identifies integration opportunities.
+Recent Web4 development (Sessions #59-65) has created a comprehensive trust-native authorization framework with cryptographic identity, ATP resource tracking, reputation systems, and security mitigations. This analysis explores how these developments map to SAGE's cognition architecture and identifies integration opportunities.
 
 **Key Finding**: SAGE's internal ATP system and IRP protocol are architecturally aligned with Web4's action sequences and ATP tracking. The integration path is clear.
 
@@ -88,7 +88,7 @@ A formal specification for associating context boundaries with LCTs using discre
 
 ### How This Maps to SAGE
 
-SAGE already implements MRH concepts through its consciousness architecture:
+SAGE already implements MRH concepts through its cognition architecture:
 
 #### Spatial Extent (ΔR)
 

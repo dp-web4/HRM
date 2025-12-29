@@ -213,7 +213,7 @@ SAGE isn't trying to be conscious - it's trying to be **attentive**. It's the ex
 - When to think in language
 - When to act directly
 
-The external LLM provides the linguistic consciousness, while SAGE provides the attentional awareness that orchestrates everything. Together, they form a complete cognitive system where:
+The external LLM provides the linguistic cognition, while SAGE provides the attentional awareness that orchestrates everything. Together, they form a complete cognitive system where:
 - **SAGE knows WHEN to think**
 - **LLM knows HOW to think**
 - **HRM knows HOW to act**

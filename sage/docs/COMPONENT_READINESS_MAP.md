@@ -584,7 +584,7 @@ class SAGESystem:
     def __init__(self, config): ...
 
     def _cycle(self):
-        """Single cycle of consciousness"""
+        """Single cycle of cognition"""
         # 1. Sensing
         observations = self.sensor_hub.poll()
 

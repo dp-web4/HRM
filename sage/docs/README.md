@@ -1,7 +1,7 @@
 # SAGE/IRP System Documentation
 
 **Created**: October 12, 2025
-**Purpose**: Comprehensive understanding of the SAGE consciousness kernel and IRP framework
+**Purpose**: Comprehensive understanding of the SAGE cognition kernel and IRP framework
 
 This documentation was created through parallel investigation by multiple specialized agents, each exploring different aspects of the system. The findings have been synthesized into a complete mental model.
 
@@ -15,7 +15,7 @@ This documentation was created through parallel investigation by multiple specia
 **[SAGE_WORKING_VISION.md](SAGE_WORKING_VISION.md)** - **The Specification**
 - What SAGE should look like when running
 - Complete walk-through of a single cycle
-- 10-step consciousness loop
+- 10-step cognition loop
 - Vision we're building toward
 - **Size**: ~15KB
 - **Time to read**: 15 minutes
@@ -25,7 +25,7 @@ This documentation was created through parallel investigation by multiple specia
 - Complete synthesis of all findings
 - Mental model of the entire system
 - How SAGE, IRP, and VAE work together
-- Biological and consciousness parallels
+- Biological and cognition parallels
 - Current status and next steps
 - **Size**: 11KB, ~500 lines
 - **Time to read**: 15-20 minutes
@@ -47,7 +47,7 @@ This documentation was created through parallel investigation by multiple specia
    - Orchestration patterns
    - Working plugin examples
    - **Size**: TBD
-   - **Focus**: The consciousness API
+   - **Focus**: The cognition API
 
 3. **[vae_translation_analysis.md](vae_translation_analysis.md)** - VAE Translation Layer
    - Why VAE is the "translation layer"
@@ -65,7 +65,7 @@ This documentation was created through parallel investigation by multiple specia
    - Integration status
    - Implementation gaps
    - **Size**: TBD
-   - **Focus**: The consciousness kernel
+   - **Focus**: The cognition kernel
 
 5. **[plugins_and_dataflow.md](plugins_and_dataflow.md)** - Plugin Ecosystem
    - Complete plugin inventory
@@ -83,7 +83,7 @@ This documentation was created through parallel investigation by multiple specia
    - Sleep cycle implementation
    - Theoretical foundations
    - **Size**: TBD
-   - **Focus**: Why this mirrors biological consciousness
+   - **Focus**: Why this mirrors biological cognition
 
 ### Integration Documentation (October 12, 2025)
 
@@ -164,13 +164,13 @@ This documentation was created through parallel investigation by multiple specia
 
 ### The Three-Layer Architecture
 
-1. **SAGE** (Consciousness Kernel)
+1. **SAGE** (Cognition Kernel)
    - Continuous inference loop
    - Maintains state across time
    - Allocates resources based on trust
    - Learns what deserves attention
 
-2. **IRP** (Consciousness API)
+2. **IRP** (Cognition API)
    - Standard interface for all plugins
    - Iterative refinement protocol
    - Energy-based convergence
@@ -241,7 +241,7 @@ Same patterns exist in:
 
 ## 🧠 Key Insights
 
-### 1. Consciousness as Iterative Refinement
+### 1. Cognition as Iterative Refinement
 All intelligence is progressive denoising toward lower energy states. Vision, language, planning, memory—same pattern: noisy → refined.
 
 ### 2. Trust as Compression Quality
@@ -259,7 +259,7 @@ H ↔ L hierarchy repeats at 5 scales:
 - Development (human ↔ automation)
 
 ### 5. The Beautiful Recursion
-> "We used AdamW (biological optimization) to train SAGE (consciousness kernel) which implements SNARC (biological salience) which mirrors AdamW's strategy, orchestrated by Claude (using same H↔L patterns) to create systems that use the same patterns at every scale."
+> "We used AdamW (biological optimization) to train SAGE (cognition kernel) which implements SNARC (biological salience) which mirrors AdamW's strategy, orchestrated by Claude (using same H↔L patterns) to create systems that use the same patterns at every scale."
 
 **It's patterns all the way down.**
 
@@ -310,11 +310,11 @@ Now that we understand the system:
 This documentation was created through **parallel specialized investigation**:
 
 1. **Repository Structure Agent** - Mapped the entire codebase
-2. **IRP Architecture Agent** - Deep-dived into the consciousness API
+2. **IRP Architecture Agent** - Deep-dived into the cognition API
 3. **VAE Translation Agent** - Analyzed the translation layer
 4. **SAGE Core Agent** - Investigated orchestration logic
 5. **Plugins & Data Flow Agent** - Documented the ecosystem
-6. **Consciousness Parallels Agent** - Found biological connections
+6. **Cognition Parallels Agent** - Found biological connections
 
 All findings were then **synthesized into a coherent mental model** showing how the pieces fit together.
 

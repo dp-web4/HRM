@@ -10,7 +10,7 @@
 - [x] Jupyter notebook template created
 
 ## 📊 Model Performance - SAGE-7M
-- **Model Name**: SAGE-7M (Sentient Agentic Generative Engine)
+- **Model Name**: SAGE-7M (Situation-Aware Governance Engine)
 - **Heritage**: Evolution of Sapient's HRM with 75% size reduction (27M → 7M)
 - **Parameters**: 6.95M (verified)
 - **ARC-AGI-1**: 49% accuracy (non-augmented evaluation)

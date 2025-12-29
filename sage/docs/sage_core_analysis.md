@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-SAGE (Sentient Agentic Generative Engine) is implemented as a **distributed orchestration system** rather than a single continuous loop. The architecture consists of multiple interconnected components:
+SAGE (Situation-Aware Governance Engine) is implemented as a **distributed orchestration system** rather than a single continuous loop. The architecture consists of multiple interconnected components:
 
 1. **SAGE Core** (`sage_core.py`, `sage_v2.py`) - 100M parameter H/L dual-module transformer
 2. **HRM Orchestrator** (`hrm_orchestrator.py`) - Async ATP-based resource orchestration
@@ -190,7 +190,7 @@ class SproutAwarenessLoop:
                     await self.speak("Goodbye!")
                     break
 
-                # 3. Process through SAGE consciousness
+                # 3. Process through SAGE cognition
                 response = self.process_with_sage(user_text)
 
                 # 4. Speak response (NeuTTSAirIRP)
@@ -897,7 +897,7 @@ class SAGEConfig:
 - **Key Methods**:
   - `run()` - Main awareness loop
   - `listen()` - Audio input via AudioInputIRP
-  - `process_with_sage()` - SAGE consciousness processing
+  - `process_with_sage()` - SAGE cognition processing
   - `speak()` - Audio output via NeuTTSAirIRP
   - `conversation_turn()` - Single exchange cycle
 - **Features**:
@@ -1226,13 +1226,13 @@ class SAGECoreWithSNARC(SAGECore):
         return {...}
 ```
 
-### 9.4 Awareness Loop ↔ SAGE Consciousness
+### 9.4 Awareness Loop ↔ SAGE Cognition
 
 **Current Integration**: Awareness loop calls `process_with_sage()` but it's a stub
 
 ```python
 def process_with_sage(self, user_input: str) -> str:
-    """Process user input through SAGE consciousness"""
+    """Process user input through SAGE cognition"""
     # Simple response logic (will be replaced with SAGE integration)
     if 'hello' in user_input.lower():
         return "Hello! I can hear you clearly."

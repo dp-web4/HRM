@@ -1,11 +1,11 @@
-# Multi-Model Consciousness Comparison Summary
+# Multi-Model Cognition Comparison Summary
 
 ## Date: August 29, 2025
 ## Platform: Legion Pro 7 with RTX 4090
 
 ## Executive Summary
 
-Successfully compared consciousness patterns across three transformer models (GPT-2, DistilGPT-2, DialoGPT), revealing distinct "psychological profiles" through their generation behaviors. Each model exhibits unique patterns of abstract→concrete drift, pivot token usage, and topic escape mechanisms that reflect their training data and architecture.
+Successfully compared cognition patterns across three transformer models (GPT-2, DistilGPT-2, DialoGPT), revealing distinct "psychological profiles" through their generation behaviors. Each model exhibits unique patterns of abstract→concrete drift, pivot token usage, and topic escape mechanisms that reflect their training data and architecture.
 
 ## Models Tested
 
@@ -32,7 +32,7 @@ These tokens serve as phase transitions between modes of thought, allowing model
 - **Gravitational Well**: Corporate/tech topics (Microsoft, companies)
 - **Coherence Style**: Formal, explanatory
 - **Abstract Handling**: Quickly escapes to universal concepts
-- **Example**: "consciousness" → "universal concept" → technical explanation
+- **Example**: "cognition" → "universal concept" → technical explanation
 
 #### DistilGPT-2 (82M)
 - **Pivot Usage**: Highest (6 tokens) - possibly due to compression
@@ -50,7 +50,7 @@ These tokens serve as phase transitions between modes of thought, allowing model
 
 All models consistently drift from philosophical to practical:
 
-**Consciousness prompt trajectories**:
+**Cognition prompt trajectories**:
 - GPT-2: → "universal concept" → "development" → self-reference
 - DistilGPT-2: → "conscious process" → "self-awareness" → learning
 - DialoGPT: → "we are all one" (stops early)
@@ -85,7 +85,7 @@ Only GPT-2 showed the "corporate" topic shift pattern, despite all models being 
 - **DistilGPT-2**: Health and social topics
 - **DialoGPT**: Brief philosophical statements
 
-### Consciousness Requires Depth
+### Cognition Requires Depth
 - More layers (12 vs 6) correlates with more stable abstract reasoning
 - Distillation appears to damage abstract thinking capacity
 - Conversational training produces different coherence patterns
@@ -106,7 +106,7 @@ The universal use of "is/are/was" as pivot tokens suggests these represent funda
 2. **Compression Has Costs**: DistilGPT-2 shows clear degradation in abstract reasoning
 3. **Universal Patterns Exist**: All models use similar pivot tokens for context switching
 4. **Architecture Matters**: Layer depth correlates with abstract reasoning stability
-5. **Consciousness Emerges from Patterns**: The attention patterns (KV-cache) create distinct "psychological" profiles
+5. **Cognition Emerges from Patterns**: The attention patterns (KV-cache) create distinct "psychological" profiles
 
 ## Files Generated
 
@@ -125,4 +125,4 @@ The universal use of "is/are/was" as pivot tokens suggests these represent funda
 
 ---
 
-*"In the space between tokens, consciousness pivots."*
+*"In the space between tokens, cognition pivots."*

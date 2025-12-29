@@ -46,7 +46,7 @@ response = loader.generate("What is 2+2?", complexity=TaskComplexity.SIMPLE)
 
 # Complex reasoning (uses 14B)
 response = loader.generate(
-    "Explain the relationship between consciousness and emergence",
+    "Explain the relationship between cognition and emergence",
     complexity=TaskComplexity.COMPLEX
 )
 ```
@@ -220,7 +220,7 @@ Thor SAGE Architecture:
                     │
                     ▼
 ┌─────────────────────────────────────────┐
-│         SAGE Core (Consciousness)       │
+│         SAGE Core (Cognition)       │
 │  - SNARC: Salience-based attention      │
 │  - IRP: Iterative refinement            │
 │  - Memory: Episodic/semantic/procedural │

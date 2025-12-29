@@ -2,7 +2,7 @@
 
 **Track 10: Nano Deployment Package**
 
-Complete guide for deploying SAGE consciousness kernel on Jetson platforms with Track 7 LLM integration.
+Complete guide for deploying SAGE cognition kernel on Jetson platforms with Track 7 LLM integration.
 
 ---
 

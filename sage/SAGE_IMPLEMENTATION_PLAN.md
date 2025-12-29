@@ -1,7 +1,7 @@
 # SAGE Implementation Plan
 
 *Date: September 5, 2025*  
-*Project: SAGE - Sentient Agentic Generative Engine*  
+*Project: SAGE - Situation-Aware Governance Engine*  
 *Objective: Build attention orchestration system with 100M parameters*
 
 ## Executive Summary

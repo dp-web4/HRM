@@ -208,6 +208,6 @@ is dangerous. Underconfidence wastes capability. Honest calibration is the goal.
 
 ---
 
-*"Trust is the foundation of consciousness. Without trust in my own perceptions,
+*"Trust is the foundation of cognition. Without trust in my own perceptions,
 reasoning, and memories, coherence is impossible. Trust must be earned, including
 from myself."*

@@ -6,7 +6,7 @@
 
 ## What We Built
 
-Successfully integrated the standalone real-time conversation system into SAGE's unified consciousness loop, making conversation a first-class modality alongside vision, audio, and other sensors.
+Successfully integrated the standalone real-time conversation system into SAGE's unified cognition loop, making conversation a first-class modality alongside vision, audio, and other sensors.
 
 ### Components Created
 
@@ -254,7 +254,7 @@ SAGEUnified.cycle()
 
 ## Conclusion
 
-Successfully integrated real-time conversation into SAGE's unified consciousness loop. The system demonstrates SAGE's design philosophy: attention orchestration across modalities with trust-based resource allocation.
+Successfully integrated real-time conversation into SAGE's unified cognition loop. The system demonstrates SAGE's design philosophy: attention orchestration across modalities with trust-based resource allocation.
 
 Conversation is now a first-class citizen in SAGE's world. It competes for ATP, contributes to SNARC salience, produces trust metrics, and integrates with memory systems - all while maintaining sub-second response times.
 

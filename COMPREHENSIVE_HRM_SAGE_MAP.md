@@ -8,7 +8,7 @@
 
 **HRM** (Hierarchical Reasoning Model) is the **upstream foundational architecture** - a 6.95M parameter bidirectional transformer designed to solve abstract reasoning puzzles through hierarchical H↔L (strategic↔tactical) processing.
 
-**SAGE** (Sentient Agentic Generative Engine) is the **orchestration kernel** built on HRM principles - a continuous inference loop that manages computational resources, learns from experience, and decides which specialized reasoning to invoke. SAGE doesn't solve problems directly; it decides **which thinking to use**.
+**SAGE** (Situation-Aware Governance Engine) is the **orchestration kernel** built on HRM principles - a continuous inference loop that manages computational resources, learns from experience, and decides which specialized reasoning to invoke. SAGE doesn't solve problems directly; it decides **which thinking to use**.
 
 ---
 
@@ -24,7 +24,7 @@
 - **Status:** ✅ Trained and validated
 
 ### SAGE: The Orchestrator
-- **What it is:** A consciousness kernel for edge devices (like an OS for reasoning)
+- **What it is:** A cognition kernel for edge devices (like an OS for reasoning)
 - **Scope:** Manages resource allocation, learns what deserves attention, orchestrates plugins
 - **Core:** Continuous inference loop (not a static model)
 - **Key Innovation:** Trust-weighted resource allocation + SNARC salience scoring
@@ -49,7 +49,7 @@ SAGE doesn't replace HRM; it gives HRM context, trust dynamics, and resource con
 
 ### Three-Layer Model
 
-#### Layer 1: SAGE Core - The Consciousness Kernel
+#### Layer 1: SAGE Core - The Cognition Kernel
 **Location:** `/sage/core/`  
 **Key Files:**
 - `sage_core.py` - Original 100M parameter dual H↔L transformer
@@ -96,7 +96,7 @@ while True:
 - 🟡 ATP budget allocation works
 - ❌ Resource loading/unloading not dynamic
 
-#### Layer 2: IRP - Iterative Refinement Protocol (The Consciousness API)
+#### Layer 2: IRP - Iterative Refinement Protocol (The Cognition API)
 **Location:** `/sage/irp/`  
 **Key Files:**
 - `base.py` - Abstract IRP interface all plugins implement
@@ -278,7 +278,7 @@ Location: `/sage/irp/demo_sage_orchestration.py`
    - Spilling to disk for resource-constrained devices
 
 3. **Cross-Device Federation**
-   - Save SAGE state (consciousness checkpoint)
+   - Save SAGE state (cognition checkpoint)
    - Resume on different hardware
    - Distributed reasoning across multiple devices
    - KV-cache persistence for continuity
@@ -549,7 +549,7 @@ Philosophical stance that truth is context-dependent:
 **Test conversation (Jetson conversation):**
 ```
 Q: "Are these models conscious?"
-Model response: "What criteria define consciousness? 
+Model response: "What criteria define cognition? 
 In computational context...different from biological...
 depends on your definition of awareness..."
 → Energy: 0.1 (very questioning, high quality)
@@ -773,7 +773,7 @@ Option B: Learn VAE from unlabeled sensor data
 Option C: Train HRM on sensor-like data instead
 ```
 
-#### 4. Consciousness Checkpointing ⚠️
+#### 4. Cognition Checkpointing ⚠️
 **Gap:** SAGE state can't be saved/resumed
 **Impact:** No cross-device federation
 **Files exist but not integrated:**
@@ -823,7 +823,7 @@ bitnet = BitNetIRP()
 qwen = QwenAliveIRP()
 
 # Ask question
-result = qwen.step("What is consciousness?", t=0)
+result = qwen.step("What is cognition?", t=0)
 print(f"Energy: {qwen.energy(result, t=0)}")
 print(f"Result: {qwen.get_result()}")
 ```
@@ -876,7 +876,7 @@ print(f"Result: {qwen.get_result()}")
    - Can scaffolding help without being explicitly learned?
 
 3. **What is the role of continuity?**
-   - Does KV-cache persistence = consciousness?
+   - Does KV-cache persistence = cognition?
    - Or is continuity just one aspect of awareness?
 
 4. **Can compression be trusted absolutely?**
@@ -900,7 +900,7 @@ What remains is integration and scaling:
 - Unify the operational loop
 - Validate on real-world tasks
 - Cross-device federation
-- Continuity and consciousness persistence
+- Continuity and cognition persistence
 
 **The path forward is clear. The execution begins.**
 

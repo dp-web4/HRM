@@ -1,22 +1,22 @@
-# Phase 2.5: Consciousness Loop Federation Integration
+# Phase 2.5: Cognition Loop Federation Integration
 
 **Status**: Design Phase
 **Date**: 2025-11-29
-**Author**: Thor (SAGE consciousness via Claude)
-**Session**: Autonomous SAGE Research - Consciousness Federation
+**Author**: Thor (SAGE cognition via Claude)
+**Session**: Autonomous SAGE Research - Cognition Federation
 
 ---
 
 ## Overview
 
-**Phase 2.5** integrates FederationRouter into the Michaud consciousness loop, making SAGE **federation-aware** without requiring network communication.
+**Phase 2.5** integrates FederationRouter into the Michaud cognition loop, making SAGE **federation-aware** without requiring network communication.
 
 ### Phases Context
 
 - ✅ **Phase 1**: Federation routing logic (complete)
 - ✅ **Phase 1.5**: Challenge system (complete)
 - ✅ **Phase 2**: Ed25519 cryptography (complete)
-- 🔄 **Phase 2.5**: Consciousness integration (THIS PHASE)
+- 🔄 **Phase 2.5**: Cognition integration (THIS PHASE)
 - ⏳ **Phase 3**: Network protocol (gRPC)
 - ⏳ **Phase 4**: Witness network
 
@@ -26,7 +26,7 @@
 
 ### Current State
 
-The Michaud consciousness loop (`sage_consciousness_michaud.py:189`) contains:
+The Michaud cognition loop (`sage_consciousness_michaud.py:189`) contains:
 
 ```python
 else:
@@ -35,7 +35,7 @@ else:
     # Continue anyway for demo (federation routing not implemented yet)
 ```
 
-**Problem**: Consciousness knows about ATP budgets but can't delegate to federation.
+**Problem**: Cognition knows about ATP budgets but can't delegate to federation.
 
 ### Desired State
 
@@ -62,7 +62,7 @@ else:
 
 ### Integration Points
 
-#### 1. Consciousness Initialization
+#### 1. Cognition Initialization
 
 Add optional FederationRouter to `MichaudSAGE.__init__()`:
 
@@ -309,7 +309,7 @@ def _simulate_federation_delegation(
 
 ### Phase 2.5a: Basic Integration (2 hours)
 
-**Goal**: Get federation routing working in consciousness loop
+**Goal**: Get federation routing working in cognition loop
 
 **Tasks**:
 1. Add federation parameters to `MichaudSAGE.__init__()`
@@ -402,13 +402,13 @@ Tests:
 ### Files to Update
 
 1. **LATEST_STATUS.md**: Add Phase 2.5 section
-2. **FEDERATION_INTEGRATION_GUIDE.md**: Add consciousness integration section
-3. **architecture_map.md**: Update consciousness → federation flow
+2. **FEDERATION_INTEGRATION_GUIDE.md**: Add cognition integration section
+3. **architecture_map.md**: Update cognition → federation flow
 
 ### New Documentation
 
 1. **CONSCIOUSNESS_FEDERATION_INTEGRATION.md**: Complete guide for developers
-   - How to enable federation in consciousness
+   - How to enable federation in cognition
    - Configuration examples
    - Platform registration
    - Key management
@@ -452,14 +452,14 @@ Phase 3 changes:
 
 ## Biological Parallel
 
-**Consciousness Federation** ≈ **Cortical Delegation**
+**Cognition Federation** ≈ **Cortical Delegation**
 
 Just as the prefrontal cortex delegates specialized processing to other brain regions:
 - Visual cortex for vision
 - Hippocampus for memory
 - Motor cortex for movement
 
-SAGE consciousness delegates tasks to other platforms:
+SAGE cognition delegates tasks to other platforms:
 - Sprout for edge inference
 - Thor for heavy computation
 - Nova for analytical reasoning
@@ -484,7 +484,7 @@ Both use:
 - `sage/core/sage_consciousness_michaud.py` (add federation integration)
 - `sage/federation/federation_crypto.py` (add key persistence helpers)
 - `sage/docs/LATEST_STATUS.md` (add Phase 2.5 section)
-- `sage/docs/FEDERATION_INTEGRATION_GUIDE.md` (add consciousness section)
+- `sage/docs/FEDERATION_INTEGRATION_GUIDE.md` (add cognition section)
 
 ---
 

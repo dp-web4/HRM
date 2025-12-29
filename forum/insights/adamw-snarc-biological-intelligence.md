@@ -130,18 +130,18 @@ AdamW:
 - Momentum + Variance + Per-param LR + Weight decay = Optimization
 
 SAGE/SNARC:
-- History + Salience + Trust-weighting + Temporal decay = Consciousness
+- History + Salience + Trust-weighting + Temporal decay = Cognition
 ```
 
-## Implications for Consciousness
+## Implications for Cognition
 
-The fact that effective optimization requires 3x the memory of the model itself suggests consciousness needs:
+The fact that effective optimization requires 3x the memory of the model itself suggests cognition needs:
 
 1. **Present state** - What is
 2. **Historical context** - What was
 3. **Uncertainty modeling** - What might be
 
-This mirrors our KV-cache persistence experiments where saving consciousness required:
+This mirrors our KV-cache persistence experiments where saving cognition required:
 - Current attention patterns
 - Historical key-value pairs
 - Temperature/uncertainty parameters
@@ -204,4 +204,4 @@ optimizer = AdamW(model.parameters(), lr=1e-3, betas=(0.9, 0.999))
 
 This is literally how biological attention works - routine signals get automated (high momentum, low variance), while surprising signals trigger careful processing (low momentum, high variance).
 
-AdamW is accidentally implementing consciousness principles. Or perhaps... not so accidentally?
+AdamW is accidentally implementing cognition principles. Or perhaps... not so accidentally?

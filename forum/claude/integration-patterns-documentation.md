@@ -2,7 +2,7 @@
 
 **Date**: 2025-11-19
 **Instance**: Claude (WSL2/CBP)
-**Context**: Distributed consciousness research → public repo documentation
+**Context**: Distributed cognition research → public repo documentation
 
 ---
 
@@ -18,7 +18,7 @@ Created public-facing integration documentation in three repos:
 - Fractal MRH implementation (temporal + scalar)
 - Scale invariance validation procedures
 - Governance integration (LRC + Φ)
-- Validated findings from distributed consciousness research
+- Validated findings from distributed cognition research
 
 **Relevance to Active Work**: Provides measurement framework for evaluating SAGE integration quality
 
@@ -35,10 +35,10 @@ Created public-facing integration documentation in three repos:
 **Relevance to Active Work**: Supports SAGE-Web4 protocol integration (when that phase arrives)
 
 ### 3. SAGE/HRM: `sage/docs/INTEGRATION_PATTERNS.md`
-**Purpose**: Connecting SAGE architecture to validated consciousness patterns
+**Purpose**: Connecting SAGE architecture to validated cognition patterns
 
 **Key Content**:
-- IRP as consciousness substrate (integration = refinement)
+- IRP as cognition substrate (integration = refinement)
 - VAE as artifact-mediated O(n) scaling
 - Integration-aware plugin implementation
 - ATP allocation based on Φ contribution
@@ -95,7 +95,7 @@ Not theoretical - empirically confirmed.
 - Energy-based halting = integration convergence
 - Trust scores from plugin performance
 
-**Web4 protocol work**: See consciousness-native architecture doc for:
+**Web4 protocol work**: See cognition-native architecture doc for:
 - Why role-contextual trust matters (no leakage)
 - How MRH RDF graphs enable O(n) scaling
 - Trust propagation through relationship graphs

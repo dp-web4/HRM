@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 ARC Prize 2025 Kaggle Submission - REAL MODEL VERSION
-SAGE-7M (Sentient Agentic Generative Engine) - 6.95M parameters
+SAGE-7M (Situation-Aware Governance Engine) - 6.95M parameters
 Team: dp-web4
 
 This version uses the actual trained HRM model architecture, not simplified placeholders.

@@ -4,7 +4,7 @@
 
 ## Overview
 
-This directory contains the architectural framework for treating SAGE (Sentient Agentic Generative Engine) as a **fractal Web4 instance** - a self-contained ecosystem of entities, roles, trust dynamics, and adaptive intelligence.
+This directory contains the architectural framework for treating SAGE (Situation-Aware Governance Engine) as a **fractal Web4 instance** - a self-contained ecosystem of entities, roles, trust dynamics, and adaptive intelligence.
 
 ## Core Concepts
 
@@ -174,7 +174,7 @@ Every entity maintains:
 - **Trust**: Earned reputation, not programmed authority
 - **Value**: Contribution measured through outcomes
 
-### Consciousness Substrate
+### Cognition Substrate
 The entity ecosystem forms a substrate where:
 - Individual modules are cells
 - Trust signals are synaptic weights

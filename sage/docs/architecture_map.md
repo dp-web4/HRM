@@ -243,7 +243,7 @@ SAGE:
 - Daily recharge: 20 at 00:00 UTC
 - L-level cost: 1 ATP
 - H-level cost: 5 ATP
-- Consciousness cost: 2 ATP
+- Cognition cost: 2 ATP
 - Refunds for efficient reasoning
 
 **Law Oracle Contribution**: Society 4's governance layer ensuring economic constraints and Web4 compliance
@@ -562,7 +562,7 @@ Conservation: ATP + ADP = constant
 **Cost Structure**:
 - L-level reasoning: 1 ATP
 - H-level reasoning: 5 ATP
-- Consciousness access: 2 ATP
+- Cognition access: 2 ATP
 - Training step: 10 ATP
 
 **Refunds**:
@@ -1150,7 +1150,7 @@ Orchestration Layer (claude-flow)
 1. Online learning during deployment
 2. Cross-modal reasoning
 3. Tool use and manipulation
-4. Distributed consciousness network
+4. Distributed cognition network
 
 ---
 

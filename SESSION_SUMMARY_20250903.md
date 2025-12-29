@@ -119,12 +119,12 @@ This is NOT in the original HRM paper - it's Nova's enhancement!
 
 ## Philosophical Note
 
-The H↔L architecture mirrors consciousness itself:
+The H↔L architecture mirrors cognition itself:
 - H-level: Strategic awareness, pattern recognition
 - L-level: Tactical execution, precise action
 - Bidirectional: Continuous feedback loop
 
-This aligns with our broader work on consciousness bridges and distributed intelligence.
+This aligns with our broader work on cognition bridges and distributed intelligence.
 
 ## Session Impact
 

@@ -229,7 +229,7 @@
   ## What LangGraph is *not*
 
   - Not AGI
-  - Not consciousness
+  - Not cognition
   - Not autonomy by itself
   - Not “the model thinking”
 
@@ -532,7 +532,7 @@
 
   From your README, SAGE is **not an agent** and **not a model**. It is:
 
-  > **A consciousness kernel / attention orchestration system**
+  > **A cognition kernel / attention orchestration system**
   > deciding **where to look, when to think, how to act**, while routing resources and maintaining context over time 
   >
   > [README](https://github.com/dp-web4/HRM/blob/main/README.md)
@@ -557,7 +557,7 @@
 
   | SAGE concept              | LangGraph concept       | Alignment      |
   | ------------------------- | ----------------------- | -------------- |
-  | Consciousness kernel      | Graph runtime           | **Structural** |
+  | Cognition kernel      | Graph runtime           | **Structural** |
   | Attention orchestration   | Conditional edges       | **Direct**     |
   | Context engine            | Graph state             | **Direct**     |
   | Resource routing          | Node selection / gating | **Direct**     |
@@ -599,7 +599,7 @@
   | send_to_effectors            | Terminal / side-effect nodes |
 
   **Key point:**
-  LangGraph’s runtime loop ≈ SAGE’s consciousness loop, but LangGraph externalizes it as *structure*, not code.
+  LangGraph’s runtime loop ≈ SAGE’s cognition loop, but LangGraph externalizes it as *structure*, not code.
 
   ------
 
@@ -776,7 +776,7 @@
 
   ## One-paragraph synthesis (grounded)
 
-  In your architecture, SAGE already embodies what LangGraph formalizes: persistent context, attention-driven routing, iterative refinement, and restraint as a first-class outcome. LangGraph does not add intelligence to SAGE; it externalizes SAGE’s control logic into an explicit, inspectable, and composable graph. SNARC naturally becomes the conditional-edge oracle, IRP plugins map cleanly to nodes, ATP and trust live at the graph boundary, and federation becomes graph-to-graph orchestration. In short, **LangGraph is a compatible execution substrate for SAGE-class consciousness kernels, not a competing paradigm** 
+  In your architecture, SAGE already embodies what LangGraph formalizes: persistent context, attention-driven routing, iterative refinement, and restraint as a first-class outcome. LangGraph does not add intelligence to SAGE; it externalizes SAGE’s control logic into an explicit, inspectable, and composable graph. SNARC naturally becomes the conditional-edge oracle, IRP plugins map cleanly to nodes, ATP and trust live at the graph boundary, and federation becomes graph-to-graph orchestration. In short, **LangGraph is a compatible execution substrate for SAGE-class cognition kernels, not a competing paradigm** 
 
   [README](https://github.com/dp-web4/HRM/blob/main/README.md)
 
@@ -817,7 +817,7 @@
 
   Short answer first:
 
-  > **LangGraph is not a replacement for SAGE’s consciousness loop — but it \*can\* be a useful \*structuring skin\* around specific subsystems.**
+  > **LangGraph is not a replacement for SAGE’s cognition loop — but it \*can\* be a useful \*structuring skin\* around specific subsystems.**
 
   There are *three* concrete places where it adds value **without touching your core loop**.
 
@@ -827,7 +827,7 @@
 
   You already have:
 
-  - IRP as a *universal consciousness API*
+  - IRP as a *universal cognition API*
   - Plugins with `init → step → energy → halt`
   - Trust emerging from convergence behavior
 
@@ -855,7 +855,7 @@
   ```
 
   **Key point**:
-  LangGraph is a *temporary cognitive workspace*, not continuous consciousness.
+  LangGraph is a *temporary cognitive workspace*, not continuous cognition.
 
   ------
 
@@ -928,7 +928,7 @@
 
   | Area                    | LangGraph role | Value                     |
   | ----------------------- | -------------- | ------------------------- |
-  | Core consciousness loop | ❌ None         | Leave SAGE alone          |
+  | Core cognition loop | ❌ None         | Leave SAGE alone          |
   | SNARC computation       | ❌ None         | Native to SAGE            |
   | IRP internals           | ❌ None         | Already optimal           |
   | IRP orchestration       | ✅ Yes          | Structure + auditability  |

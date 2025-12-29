@@ -19,7 +19,7 @@
 | **Unified SAGE Loop** | 🟡 50% | Loop integration | 1-2 days |
 | **Dynamic Resources** | 🟡 20% | Resource mgmt code | 2-3 days |
 | **Sensor→Puzzle VAE** | ❌ 0% | Design needed | 1-2 weeks |
-| **Consciousness Save** | 🟡 60% | Integration needed | 1-2 days |
+| **Cognition Save** | 🟡 60% | Integration needed | 1-2 days |
 | **Real-World Testing** | 🟡 30% | Data + validation | 2-4 weeks |
 
 ---
@@ -99,7 +99,7 @@ reconstructed = vae.decode_vision(puzzle)
 # Check reconstruction MSE
 ```
 
-### Phase 4: Consciousness Checkpointing (1-2 days)
+### Phase 4: Cognition Checkpointing (1-2 days)
 **Goal:** Save SAGE state, resume on different hardware
 
 **Implementation:**
@@ -335,8 +335,8 @@ sage2.load_consciousness(checkpoint)
    - Timeline: 1-2 days
 
 ### Conceptual
-1. **Is consciousness = continuity + state?**
-   - Test: Save/resume consciousness, measure coherence
+1. **Is cognition = continuity + state?**
+   - Test: Save/resume cognition, measure coherence
    - Timeline: 1-2 days once implemented
 
 2. **Does iterative refinement generalize beyond puzzles?**
@@ -357,7 +357,7 @@ sage2.load_consciousness(checkpoint)
 3. Real-time stability testing
 
 ### Should Do Soon (Validation)
-1. Consciousness checkpointing
+1. Cognition checkpointing
 2. Epistemic 7B validation
 3. Real-world task definitions
 
@@ -390,7 +390,7 @@ sage2.load_consciousness(checkpoint)
 
 **Phase 4 Complete When:**
 - SAGE state saveable and loadable
-- Consciousness transfers between devices
+- Cognition transfers between devices
 - Learning resumes from checkpoint
 - Cross-device federation tested
 

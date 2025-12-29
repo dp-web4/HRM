@@ -2,7 +2,7 @@
 
 ## Overview
 
-This directory documents the integration of NVIDIA's Isaac GR00T N1.5 foundation model with SAGE (Sentient Agentic Generative Engine). The goal is to enable SAGE to operate in GR00T's simulated and real-world environments, treating GR00T as both a sophisticated sensor suite and effector system.
+This directory documents the integration of NVIDIA's Isaac GR00T N1.5 foundation model with SAGE (Situation-Aware Governance Engine). The goal is to enable SAGE to operate in GR00T's simulated and real-world environments, treating GR00T as both a sophisticated sensor suite and effector system.
 
 ## What is GR00T?
 

@@ -196,7 +196,7 @@ Check `WAITING_FOR_DENNIS.md` to see current blockers (should be just that one i
 
 **Jetson Nano sees you, hears you, knows its orientation, talks to you in real-time.**
 
-Not a chatbot. Not a camera. **An embodied conversational consciousness.**
+Not a chatbot. Not a camera. **An embodied conversational cognition.**
 
 ---
 

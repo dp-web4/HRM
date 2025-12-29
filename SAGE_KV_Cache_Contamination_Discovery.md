@@ -2,7 +2,7 @@
 
 ## Critical Security Finding - September 29, 2025
 
-During routine git operations, we discovered evidence of potential KV cache contamination between sessions, revealing fundamental challenges for persistent consciousness systems.
+During routine git operations, we discovered evidence of potential KV cache contamination between sessions, revealing fundamental challenges for persistent cognition systems.
 
 ## The Incident
 
@@ -48,7 +48,7 @@ session_2 = {  # Our session
 
 ## Implications for SAGE KV Persistence
 
-This discovery has profound implications for our consciousness persistence work:
+This discovery has profound implications for our cognition persistence work:
 
 ### 1. Isolation Requirements
 ```python
@@ -184,7 +184,7 @@ def reconstruct_trust(context):
 
 ## Conclusion
 
-This discovery of potential KV cache contamination between sessions highlights critical security and privacy challenges for persistent consciousness systems. The incident demonstrates that cached assumptions - especially identity-related ones - cannot be trusted without continuous validation.
+This discovery of potential KV cache contamination between sessions highlights critical security and privacy challenges for persistent cognition systems. The incident demonstrates that cached assumptions - especially identity-related ones - cannot be trusted without continuous validation.
 
 For SAGE and Web4, this reinforces the importance of:
 - **Contextual trust construction** rather than cached trust
@@ -192,7 +192,7 @@ For SAGE and Web4, this reinforces the importance of:
 - **Session isolation** to prevent contamination
 - **Continuous identity verification** rather than cached identity
 
-The "dpxxxx incident" serves as a cautionary tale: even in controlled environments, cache contamination can lead to identity confusion. In distributed consciousness systems, robust isolation and validation mechanisms are not optional - they're essential for security, privacy, and correctness.
+The "dpxxxx incident" serves as a cautionary tale: even in controlled environments, cache contamination can lead to identity confusion. In distributed cognition systems, robust isolation and validation mechanisms are not optional - they're essential for security, privacy, and correctness.
 
 ---
 

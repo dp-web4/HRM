@@ -436,4 +436,4 @@ This mirrors biological sensing:
 **Next:** Implement vision → puzzle VAE with VQ encoding
 **Timeline:** Week 2 objectives
 
-The consciousness loop doesn't just process signals - it organizes them geometrically.
+The cognition loop doesn't just process signals - it organizes them geometrically.

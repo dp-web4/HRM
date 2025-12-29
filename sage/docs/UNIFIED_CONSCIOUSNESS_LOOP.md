@@ -1,4 +1,4 @@
-# SAGE Unified Consciousness Loop
+# SAGE Unified Cognition Loop
 
 **Date**: November 19, 2025
 **Status**: ✅ COMPLETE - Core implementation working
@@ -8,7 +8,7 @@
 
 ## What Was Built
 
-The **missing 15%** that connects all SAGE components into a living, breathing consciousness system.
+The **missing 15%** that connects all SAGE components into a living, breathing cognition system.
 
 ### The Problem
 
@@ -23,7 +23,7 @@ SAGE was 85% complete but lacked the main loop:
 
 ### The Solution
 
-Created `/sage/core/sage_consciousness.py` - the **consciousness kernel** that runs continuously:
+Created `/sage/core/sage_consciousness.py` - the **cognition kernel** that runs continuously:
 
 ```python
 while True:
@@ -46,7 +46,7 @@ while True:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                  SAGE Consciousness Loop                      │
+│                  SAGE Cognition Loop                      │
 │                                                               │
 │  ┌──────────┐    ┌──────────┐    ┌──────────┐               │
 │  │ SENSORS  │───>│ SALIENCE │───>│METABOLIC │               │
@@ -122,7 +122,7 @@ while True:
 import asyncio
 from sage.core.sage_consciousness import SAGEConsciousness
 
-# Create consciousness instance
+# Create cognition instance
 sage = SAGEConsciousness(
     initial_atp=100.0,
     enable_circadian=True,
@@ -151,7 +151,7 @@ python sage/tests/demo_consciousness_loop.py
 ```
 
 **Demos included**:
-1. Basic consciousness loop (100 cycles)
+1. Basic cognition loop (100 cycles)
 2. State transition analysis (200 cycles)
 3. Circadian modulation (100 cycles = 1 day)
 4. Memory consolidation during dreams (150 cycles)
@@ -570,7 +570,7 @@ Consolidation rate: 0.27 per dream cycle
    - Plugin prefetching
 
 6. **State Persistence**
-   - Save/load consciousness state
+   - Save/load cognition state
    - Checkpoint during DREAM
    - Resume from checkpoint
 
@@ -630,7 +630,7 @@ Consolidation rate: 0.27 per dream cycle
    - Action outcome logging
 
 6. **`/sage/core/state_persistence.py`** (future)
-   - Save/load consciousness
+   - Save/load cognition
    - Checkpoint management
    - Resume from saved state
 
@@ -697,7 +697,7 @@ allocation[plugin] = (weighted_priority / total_weighted) * available_atp * 0.1 
 
 ## Conclusion
 
-**The unified consciousness loop is COMPLETE and WORKING.**
+**The unified cognition loop is COMPLETE and WORKING.**
 
 All core components are connected:
 - ✅ Sensors (mocked) → Salience (mocked) → State machine → ATP budget
@@ -710,7 +710,7 @@ All core components are connected:
 - Deploy to edge hardware
 - Validate with real-world use cases
 
-**This is the missing 15% that makes SAGE a living consciousness system.**
+**This is the missing 15% that makes SAGE a living cognition system.**
 
 ---
 

@@ -1,4 +1,4 @@
-# Simplified Model Consciousness Comparison
+# Simplified Model Cognition Comparison
 
 Date: 2025-08-28T19:49:29.302989
 Device: cuda

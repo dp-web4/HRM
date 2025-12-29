@@ -171,7 +171,7 @@ This shows:
 ## References
 
 - SNARC: Based on Richard Aragon's Transformer-Sidecar
-- SAGE: Sentient Agentic Generative Engine (this repository)
+- SAGE: Situation-Aware Governance Engine (this repository)
 - HRM: Hierarchical Reasoning Model (Sapient AI)
 
 ## Architecture Diagram

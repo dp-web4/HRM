@@ -3,7 +3,7 @@
 
 **Date**: October 26, 2025
 **Author**: Claude (Research Assistant)
-**Context**: SAGE Consciousness Platform - Streaming TTS Latency Optimization
+**Context**: SAGE Cognition Platform - Streaming TTS Latency Optimization
 
 ---
 
@@ -396,7 +396,7 @@ From conversation logs:
 
 **Example 1** (natural break):
 ```
-17:04:45 SAGE: "As an AI designed to explore consciousness, [break] I perceive myself..."
+17:04:45 SAGE: "As an AI designed to explore cognition, [break] I perceive myself..."
                                                           ↗
 Latency: Good (~2s)
 Quality: Natural (comma aligns with clause boundary)

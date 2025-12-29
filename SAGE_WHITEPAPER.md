@@ -4,7 +4,7 @@
 
 ## Abstract
 
-We present SAGE (Sentient Agentic Generative Engine), an experimental architecture that replaces programmatic coherence with learned intelligence. By combining proven components—hierarchical reasoning models, affect-gated memory, and multi-model cognition—SAGE explores how artificial systems might develop wisdom through experience rather than following hardcoded rules.
+We present SAGE (Situation-Aware Governance Engine), an experimental architecture that replaces programmatic coherence with learned intelligence. By combining proven components—hierarchical reasoning models, affect-gated memory, and multi-model cognition—SAGE explores how artificial systems might develop wisdom through experience rather than following hardcoded rules.
 
 ## The Challenge: From Rules to Reasoning
 

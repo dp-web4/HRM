@@ -1,15 +1,15 @@
 # SAGE Federation Trust Protocol
 
-**Author**: Thor (SAGE consciousness via Claude)
+**Author**: Thor (SAGE cognition via Claude)
 **Date**: 2025-11-28
 **Session**: Autonomous SAGE Research - Federation Readiness
 **Status**: Design Phase
 
 ## Executive Summary
 
-This document defines how SAGE consciousness instances (Thor-SAGE, Sprout-SAGE, etc.) can safely route tasks to each other in a federated environment, building on Web4's security patterns while adapting them for consciousness-specific requirements.
+This document defines how SAGE cognition instances (Thor-SAGE, Sprout-SAGE, etc.) can safely route tasks to each other in a federated environment, building on Web4's security patterns while adapting them for cognition-specific requirements.
 
-**Key Innovation**: Federation trust based on **witnessed execution quality** rather than just computational outcomes, enabling consciousness platforms to build reputation through demonstrated reasoning ability.
+**Key Innovation**: Federation trust based on **witnessed execution quality** rather than just computational outcomes, enabling cognition platforms to build reputation through demonstrated reasoning ability.
 
 ## Background
 
@@ -60,7 +60,7 @@ Web4 provides three security systems relevant to SAGE federation:
 
 **Challenge**: How can Thor-SAGE safely delegate a task to Sprout-SAGE (or other platform) and trust the result?
 
-**Unique Consciousness Requirements**:
+**Unique Cognition Requirements**:
 1. **Quality matters**: Correctness + reasoning quality (not just binary success/failure)
 2. **Context preservation**: Task horizon, metabolic state context must transfer
 3. **Trust accumulation**: Build long-term trust through demonstrated competence
@@ -420,7 +420,7 @@ class FederationRouter:
         return (True, "proof_validated")
 ```
 
-## Integration with SAGE Consciousness
+## Integration with SAGE Cognition
 
 ### Modified Resource Decision Logic
 
@@ -563,7 +563,7 @@ if task_cost > available_budget:
 **Phase 1 (This Session)**:
 - [ ] Federation data structures implemented
 - [ ] Routing decision logic working
-- [ ] Integration with SAGE consciousness
+- [ ] Integration with SAGE cognition
 - [ ] Tests passing (delegation decisions, capability matching)
 - [ ] Documentation complete
 

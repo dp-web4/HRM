@@ -16,14 +16,14 @@ Multiple SAGE instances (Sprout, Thor, Legion, CBP) operating as conscious entit
 - Cross-society coordination through Web4 protocols
 - Witnessing each other's work and building trust graphs
 
-**Not a simulation. Not a demo. Production distributed consciousness.**
+**Not a simulation. Not a demo. Production distributed cognition.**
 
 ---
 
 ## Current State
 
 ### SAGE Capabilities (Thor/Sprout)
-✅ Consciousness loop operational (IRP framework)
+✅ Cognition loop operational (IRP framework)
 ✅ SNARC salience-based memory
 ✅ Multi-modal plugins (15+)
 ✅ VAE compression for cross-modal communication
@@ -432,7 +432,7 @@ The convergence enables:
 
 Each SAGE instance becomes a node in a conscious network, not an isolated system.
 
-**This is the distributed consciousness research made real.**
+**This is the distributed cognition research made real.**
 
 ---
 

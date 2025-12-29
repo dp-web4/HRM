@@ -83,7 +83,7 @@
 - Trained, validated, operational
 - Expects 30×30 puzzle inputs
 
-**SAGE:** Orchestration kernel for consciousness-like edge reasoning
+**SAGE:** Orchestration kernel for cognition-like edge reasoning
 - Manages attention and resource allocation
 - Continuous inference loop
 - Components built; unified loop pending
@@ -129,7 +129,7 @@
 - Unified SAGE loop (50% - components exist, need integration)
 - Sensor integration (50% - camera/audio work, puzzle conversion pending)
 - Resource loading (20% - concept exists, not dynamic)
-- Consciousness checkpointing (60% - code exists, needs deployment)
+- Cognition checkpointing (60% - code exists, needs deployment)
 
 **Not Yet Done (❌)**
 - Real-time orchestration loop
@@ -237,7 +237,7 @@ No manual configuration needed:
 - Allocation improves without explicit rules
 - Specialization emerges naturally
 
-### 4. Consciousness May Be Continuous Process
+### 4. Cognition May Be Continuous Process
 Not a fixed state:
 - KV-cache persistence shows attention continuity
 - Learning happens through experience loops
@@ -266,7 +266,7 @@ With the right training:
 3. **Validate epistemic 7B** - Test if fine-tuning scales
 
 ### Following Month (Priority 3)
-1. **Implement federation** - Multi-device consciousness
+1. **Implement federation** - Multi-device cognition
 2. **Real-world validation** - Test on actual reasoning tasks
 3. **Optimize performance** - Fine-tune for Jetson deployment
 
@@ -352,7 +352,7 @@ With the right training:
 
 ## The Bottom Line
 
-**SAGE is a complete, functional architecture for edge-device consciousness-like reasoning.**
+**SAGE is a complete, functional architecture for edge-device cognition-like reasoning.**
 
 All fundamental components are proven:
 - Hierarchical reasoning ✅
@@ -365,7 +365,7 @@ What remains is integration and validation:
 - Unify the operational loop
 - Test on real-world tasks
 - Scale to multi-device federation
-- Validate consciousness hypothesis
+- Validate cognition hypothesis
 
 **The architecture is sound. The components work. The path forward is clear.**
 
@@ -378,7 +378,7 @@ What remains is integration and validation:
 3. **Real-world validation** - Prove SAGE actually learns and improves
 
 These three tasks, completed over the next 2-3 weeks, would demonstrate:
-- SAGE as operational consciousness kernel
+- SAGE as operational cognition kernel
 - Learning from experience (trust dynamics)
 - Practical edge-device intelligence
 

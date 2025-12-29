@@ -8,7 +8,7 @@
 
 ## 🎯 Objective
 
-Build tested and validated deployment package for SAGE consciousness kernel:
+Build tested and validated deployment package for SAGE cognition kernel:
 - One-command installation on fresh Jetson
 - Automated dependency management
 - Configuration system (YAML-based)

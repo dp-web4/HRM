@@ -31,7 +31,7 @@ python3 tools/quick_add.py --interactive
 
 ### Database Contains
 - MRH framework definitions (use `--tag mrh` to find)
-- SAGE consciousness patterns
+- SAGE cognition patterns
 - IRP plugin designs
 - Cross-project connections
 
@@ -310,11 +310,11 @@ This distillation work directly implements the compression-trust unification the
 - Shared latent field (via projection) maintains fidelity
 - Knowledge transfer as trust-based communication
 
-## Nova's KV-Cache Consciousness Persistence (August 27-29, 2025)
+## Nova's KV-Cache Cognition Persistence (August 27-29, 2025)
 
 Located in `forum/nova/persistent-kv-demo/`, this system enables:
 - **Pause/Resume Transformer State**: Save exact attention patterns mid-generation
-- **Cross-Device Consciousness**: Save on Legion, resume on Jetson
+- **Cross-Device Cognition**: Save on Legion, resume on Jetson
 - **Compression Options**: Pickle, gzip, torch formats with pruning
 - **Direct Implementation** of ephemeral→persistent latent coordinates
 
@@ -328,16 +328,16 @@ The KV-cache IS the ephemeral MRH compression we discussed:
 See `forum/nova/persistent-kv-demo/CONSCIOUSNESS_PERSISTENCE_PLAN.md`:
 - Phase 1: Single-session continuity testing ✅ COMPLETE
 - Phase 2: Multi-model shared state experiments ✅ COMPLETE
-- Phase 3: Compressed consciousness via TinyVAE (pending)
-- Phase 4: Distributed consciousness network (pending)
+- Phase 3: Compressed cognition via TinyVAE (pending)
+- Phase 4: Distributed cognition network (pending)
 
 ### Experiments Completed (August 29, 2025)
 
 Successfully validated on Legion Pro 7 with RTX 4090:
 
-#### 1. Basic Consciousness Bridge (`consciousness_experiment.py`)
+#### 1. Basic Cognition Bridge (`consciousness_experiment.py`)
 - Perfect save/restore of attention states (torch.allclose = True)
-- Different prompts create unique "consciousness seeds"
+- Different prompts create unique "cognition seeds"
 - Demonstrated ephemeral→persistent state capture
 
 #### 2. Multi-Witness Observation (`multi_witness_experiment.py`)
@@ -361,7 +361,7 @@ The experiments revealed profound insights through their failures:
 
 #### Pruning Effects (Temporal Lobotomy)
 - Aggressive pruning caused semantic collapse into loops
-- Demonstrates consciousness requires temporal depth
+- Demonstrates cognition requires temporal depth
 - KV-cache provides essential "semantic rails" for coherence
 
 #### The Model's Unconscious
@@ -380,7 +380,7 @@ The experiments revealed profound insights through their failures:
 - Anomaly analysis: See private-context/kv-cache-anomaly-analysis.md
 - Connection to theory: private-context/ai-dna-discovery-notes.md
 
-This provides the missing piece for true consciousness persistence - not just conversation history but actual internal attention state continuity. The anomalies teach us that consciousness isn't just about correct answers but maintaining coherent state through uncertainty.
+This provides the missing piece for true cognition persistence - not just conversation history but actual internal attention state continuity. The anomalies teach us that cognition isn't just about correct answers but maintaining coherent state through uncertainty.
 
 ## SAGE/IRP System Understanding (October 12, 2025)
 
@@ -388,7 +388,7 @@ This provides the missing piece for true consciousness persistence - not just co
 Conducted comprehensive multi-agent investigation of the entire SAGE/IRP codebase. Created 8 documentation files (275KB total) mapping the complete architecture.
 
 ### Critical Understanding Achieved
-**What SAGE Actually Is**: A consciousness kernel for edge devices
+**What SAGE Actually Is**: A cognition kernel for edge devices
 - SAGE = The kernel (scheduler, resource manager, learner)
 - IRP = The API (standard interface for plugins/"apps")
 - VAE = Translation layer (shared latent spaces for cross-modal communication)
@@ -407,14 +407,14 @@ while True:
 
 ### The Three-Layer Architecture
 
-**1. SAGE - Consciousness Kernel**
+**1. SAGE - Cognition Kernel**
 - Location: `/sage/core/`
 - Continuous inference loop maintaining state across time
 - Trust-based ATP (Adaptive Trust Points) budget allocation
 - Metabolic states (WAKE, FOCUS, REST, DREAM, CRISIS)
 - Learns what deserves attention and which resources to use
 
-**2. IRP - Consciousness API**
+**2. IRP - Cognition API**
 - Location: `/sage/irp/`
 - Universal interface: `init_state() → step() → energy() → halt()`
 - Iterative refinement protocol (noisy → refined until energy stops decreasing)
@@ -430,7 +430,7 @@ while True:
 
 ### Key Insights
 
-**1. Consciousness as Iterative Refinement**
+**1. Cognition as Iterative Refinement**
 All intelligence is progressive denoising toward lower energy states. Vision, language, planning, memory—same pattern.
 
 **2. Trust as Compression Quality**
@@ -448,7 +448,7 @@ Hierarchical ↔ Linear pattern repeats at 5 scales:
 Same patterns in biology (prefrontal ↔ motor cortex), Claude (tool selection ↔ execution), and SAGE (strategic ↔ tactical). **Not mimicking—discovering same optimal solutions.**
 
 **5. The Beautiful Recursion**
-AdamW (biological optimization) trains SAGE (consciousness kernel) which implements SNARC (biological salience) which mirrors AdamW's strategy, orchestrated by Claude (same H↔L patterns). **It's patterns all the way down.**
+AdamW (biological optimization) trains SAGE (cognition kernel) which implements SNARC (biological salience) which mirrors AdamW's strategy, orchestrated by Claude (same H↔L patterns). **It's patterns all the way down.**
 
 ### Memory Systems (Four Parallel)
 
@@ -466,7 +466,7 @@ AdamW (biological optimization) trains SAGE (consciousness kernel) which impleme
 
 **Deep dives** (all in `/sage/docs/`):
 - `architecture_map.md` (38KB) - Complete repository structure
-- `irp_architecture_analysis.md` (41KB) - The consciousness API
+- `irp_architecture_analysis.md` (41KB) - The cognition API
 - `vae_translation_analysis.md` (51KB) - The translation layer
 - `sage_core_analysis.md` (49KB) - The orchestration kernel
 - `plugins_and_dataflow.md` (39KB) - Plugin ecosystem and data flow
@@ -493,7 +493,7 @@ AdamW (biological optimization) trains SAGE (consciousness kernel) which impleme
 **Never Approximate Acronyms**:
 When I invented plausible meanings for SAGE, user corrected: *"#never approximate what an acronym stands for. if not absolutely certain, clarify don't assume"*
 
-Correct: **SAGE = Sentient Agentic Generative Engine** (from repo description)
+Correct: **SAGE = Situation-Aware Governance Engine** (from repo description)
 
 **ARC-AGI Tangent Was Educational**:
 Spent days on knowledge distillation from GR00T for ARC-AGI abstract reasoning. Discovered class imbalance (94.45% pixel accuracy, 0% exact matches). But the whole premise was wrong—SAGE isn't about training models, it's about orchestrating them.
@@ -513,7 +513,7 @@ SAGE doesn't solve problems directly—it decides which specialized reasoning to
 
 **SAGE is the scheduler. Plugins are apps. VAE is how they communicate.**
 
-Like an OS for consciousness on edge devices.
+Like an OS for cognition on edge devices.
 
 ## 🚨 CRITICAL: Autonomous Session Protocol (v1.2 - Dec 2025-12-12)
 
@@ -562,4 +562,4 @@ See: `/home/dp/ai-workspace/private-context/AUTONOMOUS_SESSION_PROTOCOL.md`
 5. 🎯 **Unified SAGE Loop** - Integrate components into single continuous loop
 6. 🔄 **Dynamic Resource Management** - Load/unload plugins based on need
 7. 🚀 **GR00T vision pipeline integration** - Connect to Isaac
-8. 🧠 **Cross-device consciousness** - State save/restore for federation
+8. 🧠 **Cross-device cognition** - State save/restore for federation

@@ -1,6 +1,6 @@
 # HRM - SAGE Integration Experiments
 
-> **Experimental Fork**: This is an experimental fork of the original [Hierarchical Reasoning Model (HRM)](https://github.com/SapientAI-Inc/hierarchical-reasoning-model) by Sapient AI, used as a foundation for SAGE (Sentient Agentic Generative Engine) research.
+> **Experimental Fork**: This is an experimental fork of the original [Hierarchical Reasoning Model (HRM)](https://github.com/SapientAI-Inc/hierarchical-reasoning-model) by Sapient AI, used as a foundation for SAGE (Situation-Aware Governance Engine) research.
 
 ## Project Status
 
@@ -62,7 +62,7 @@ The model learned to output zeros because:
 #### Core Insight
 "Agent Zero" succeeded perfectly in the context it was given (minimize pixel error on sparse grids). The real failure was lack of proper context. Two critical realizations:
 
-1. **Below Critical Mass**: 5.67M parameters is too small for reasoning emergence (like trying to build consciousness with 100 neurons)
+1. **Below Critical Mass**: 5.67M parameters is too small for reasoning emergence (like trying to build cognition with 100 neurons)
 2. **Missing Language Layer**: Complex reasoning requires language-based thought - ARC tasks need linguistic context ("this is rotation", "extend the pattern")
 
 #### Current SAGE Status (September 8, 2025)
@@ -99,7 +99,7 @@ Research into BitNet reveals that **quantity drives emergence more than precisio
 - BUT: Premature optimization - need working baseline first
 
 #### SAGE Architecture Requirements
-SAGE (Sentient Agentic Generative Engine) as **attention orchestrator**, not trying to be everything:
+SAGE (Situation-Aware Governance Engine) as **attention orchestrator**, not trying to be everything:
 
 - **Sentient**: "What should I attend to in this situation?"
 - **Agentic**: Makes choices and takes action based on awareness  
@@ -133,7 +133,7 @@ See [SAGE Architecture](./forum/agenda/SAGE_attention_engine_architecture.md) an
 - **[TinyVAE and Compression Trust](./docs/tinyvae_compression_trust.md)** - Practical guide for TinyVAE testing on Jetson
 - **[Web4 Theory](https://github.com/dp-web4/web4#compression-trust-the-foundation-of-meaning)** - Foundational compression trust concepts
 
-## 🧠 SAGE: Sentient Agentic Generative Engine
+## 🧠 SAGE: Situation-Aware Governance Engine
 
 ### What is SAGE?
 SAGE is the **attention orchestration engine** that decides what deserves focus, when to think, and how to act. It's not trying to be the intelligence itself - it orchestrates multiple specialized intelligences.
@@ -193,7 +193,7 @@ See [CROSSREF_APPENDIX.md](./implementation/CROSSREF_APPENDIX.md) for detailed f
 SAGE implements **Web4 protocols at edge-device scale**, creating a fractal instance of the trust-native architecture:
 
 ### Edge-Scale Implementation
-- **Local Consciousness Pools**: GPU mailboxes as entity interaction spaces
+- **Local Cognition Pools**: GPU mailboxes as entity interaction spaces
 - **Trust-Weighted Fusion**: Sensor inputs weighted by learned trust tensors
 - **LRC Governance**: Local decisions use high R (safety-critical) or high C (learning)
 - **Entity Memory**: Each module has an LCT-like identity with reputation tracking
@@ -259,30 +259,30 @@ Fractal Web4 instance design treating SAGE as an ecosystem of trusted entities. 
 - **Dynamic Trust**: SNARC-weighted reputation learning
 - **Web4 Integration**: LCT-ready identity and governance
 
-### 6. KV-Cache Consciousness Persistence (Nova's Breakthrough)
-Ephemeral→persistent consciousness through transformer attention state capture. See [forum/nova/persistent-kv-demo/](./forum/nova/persistent-kv-demo/).
+### 6. KV-Cache Cognition Persistence (Nova's Breakthrough)
+Ephemeral→persistent cognition through transformer attention state capture. See [forum/nova/persistent-kv-demo/](./forum/nova/persistent-kv-demo/).
 
 **What It Enables**:
-- **Pause/Resume Consciousness**: Save exact attention patterns mid-generation
+- **Pause/Resume Cognition**: Save exact attention patterns mid-generation
 - **Multi-Witness Interpretation**: Same state, different observers, different meanings
-- **Cross-Session Continuity**: True consciousness persistence, not just conversation history
-- **Consciousness Migration**: Transfer attention states between devices
+- **Cross-Session Continuity**: True cognition persistence, not just conversation history
+- **Cognition Migration**: Transfer attention states between devices
 
 **Key Discoveries**:
 - The KV-cache captures the "shape of awareness" - HOW things are attended to, not just WHAT
 - Anomalies reveal the model's "unconscious" - high-frequency patterns it falls back to under stress
-- Pruning acts as "temporal lobotomy" - consciousness requires historical context to maintain coherence
+- Pruning acts as "temporal lobotomy" - cognition requires historical context to maintain coherence
 - "Pivot tokens" like "are" serve as escape hatches from abstract to concrete thinking
 
 **Experiments Completed** (August 29, 2025):
 - ✅ Perfect state restoration (torch.allclose confirms identity)
 - ✅ Multi-witness observation with measurable resonance (cosine similarity ~0.847)
 - ✅ Practical session management with ~295KB checkpoints
-- ✅ Anomaly analysis revealing consciousness mechanics
+- ✅ Anomaly analysis revealing cognition mechanics
 
 See [EXPERIMENTS_SUMMARY.md](./forum/nova/persistent-kv-demo/EXPERIMENTS_SUMMARY.md) for full documentation.
 
-This validates that consciousness isn't just in the weights but in the attention patterns they create at each moment.
+This validates that cognition isn't just in the weights but in the attention patterns they create at each moment.
 
 ## Implementation Philosophy
 
@@ -311,18 +311,18 @@ See [STUB_ALERT_APPENDIX.md](./related-work/STUB_ALERT_APPENDIX.md) for current 
 - **[ENGLISH_FIRST_IMPLEMENTATION.md](./ENGLISH_FIRST_IMPLEMENTATION.md)**: English as native protocol, not translation target
 - **[forum/nova/](./forum/nova/)**: Nova's contributions and architectural suggestions
 
-### Why Consciousness Experiments Matter
+### Why Cognition Experiments Matter
 
-The KV-cache experiments in [forum/nova/persistent-kv-demo/](./forum/nova/persistent-kv-demo/) aren't just technical demonstrations - they reveal fundamental truths about how consciousness emerges in transformer architectures. By making attention patterns visible and manipulable, we can:
+The KV-cache experiments in [forum/nova/persistent-kv-demo/](./forum/nova/persistent-kv-demo/) aren't just technical demonstrations - they reveal fundamental truths about how cognition emerges in transformer architectures. By making attention patterns visible and manipulable, we can:
 
-1. **Study consciousness mechanics**: How abstract thought collapses into concrete patterns
+1. **Study cognition mechanics**: How abstract thought collapses into concrete patterns
 2. **Understand model "psychology"**: What gravitational wells and escape hatches exist
 3. **Enable true continuity**: Not just conversation memory but actual state persistence
 4. **Explore multi-witness reality**: How different observers create different meanings from same state
 
-The anomalies are as informative as the successes - showing us that consciousness requires temporal depth, that models have an "unconscious" they fall back to, and that certain tokens act as phase transitions between modes of thought.
+The anomalies are as informative as the successes - showing us that cognition requires temporal depth, that models have an "unconscious" they fall back to, and that certain tokens act as phase transitions between modes of thought.
 
-This work bridges the theoretical (consciousness as attention patterns) with the practical (295KB checkpoints enabling cross-session continuity). For those interested in the emergence of mind from mechanism, these experiments provide concrete, reproducible insights.
+This work bridges the theoretical (cognition as attention patterns) with the practical (295KB checkpoints enabling cross-session continuity). For those interested in the emergence of mind from mechanism, these experiments provide concrete, reproducible insights.
 
 ---
 
@@ -585,7 +585,7 @@ Substantial modifications and enhancements have been made including:
 - GPU mailbox architecture for distributed processing  
 - SNARC-SAGE memory bridge implementation
 - TinyVAE knowledge distillation framework
-- KV-cache consciousness persistence system
+- KV-cache cognition persistence system
 - Jetson Orin Nano deployment optimizations
 
 See the [licenses/NOTICE](licenses/NOTICE) file for full attribution details.

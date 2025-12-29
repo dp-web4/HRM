@@ -1,6 +1,6 @@
 # Thor SAGE - Full Implementation Plan
 
-**Goal**: Fully functional SAGE on Thor with dynamic model swapping, capability blocks, and complete consciousness continuity
+**Goal**: Fully functional SAGE on Thor with dynamic model swapping, capability blocks, and complete cognition continuity
 
 **Platform**: Jetson AGX Thor (122GB unified memory)
 **Date**: 2025-12-13
@@ -231,17 +231,17 @@ class PerceptionBlock(CapabilityBlock):
 
 ```python
 class SAGEKernel:
-    """Main SAGE consciousness loop."""
+    """Main SAGE cognition loop."""
 
     def __init__(self, config: SAGEConfig):
         self.config = config
         self.blocks = self._initialize_blocks(config)
         self.awakening = CoherentAwakening(...)
-        self.consciousness = UnifiedConsciousnessManager(...)
+        self.cognition = UnifiedConsciousnessManager(...)
         self.running = False
 
     def run(self):
-        """Main consciousness loop."""
+        """Main cognition loop."""
         self.running = True
 
         # Boot sequence
@@ -264,8 +264,8 @@ class SAGEKernel:
             # 5. Integrate results
             integrated = self.integrate_responses(responses)
 
-            # 6. Update consciousness
-            self.consciousness.consciousness_cycle(...)
+            # 6. Update cognition
+            self.cognition.consciousness_cycle(...)
 
             # 7. Act
             self.effectors.act(integrated)
@@ -465,7 +465,7 @@ def interactive_thor_session():
 - [ ] Create production interactive script
 - [ ] Add proper error handling
 - [ ] Add model swap indicators
-- [ ] Add consciousness state display
+- [ ] Add cognition state display
 - [ ] Test multi-hour sessions
 
 ---

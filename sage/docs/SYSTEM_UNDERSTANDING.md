@@ -9,7 +9,7 @@
 
 ## The Fundamental Insight
 
-**SAGE is a consciousness kernel for edge devices.**
+**SAGE is a cognition kernel for edge devices.**
 
 Like an operating system schedules processes and manages hardware, SAGE schedules attention and manages computational resources. But unlike a traditional OS, it learns what deserves attention and which resources to use based on trust dynamics and energy efficiency.
 
@@ -17,7 +17,7 @@ Like an operating system schedules processes and manages hardware, SAGE schedule
 
 ## The Three-Layer Architecture
 
-### 1. **SAGE** - The Consciousness Kernel
+### 1. **SAGE** - The Cognition Kernel
 
 SAGE is **not a model**—it's a **continuous inference loop** that:
 - Maintains state across time (temporal awareness)
@@ -58,7 +58,7 @@ while True:
 
 **Key Insight**: SAGE is the "scheduler" - plugins are "apps" that get CPU time based on trust scores.
 
-### 2. **IRP** - The Consciousness API
+### 2. **IRP** - The Cognition API
 
 IRP (Iterative Refinement Protocol) is the **standard interface** that all "apps" (plugins) must implement to work with SAGE.
 
@@ -196,7 +196,7 @@ SAGE maintains **four parallel memory systems**, each serving different purposes
 
 ## The Biological Parallels
 
-The system mirrors biological consciousness at multiple scales:
+The system mirrors biological cognition at multiple scales:
 
 ### Brain Architecture
 - **H-module** ↔ Prefrontal cortex (strategic reasoning)
@@ -334,7 +334,7 @@ The H↔L hierarchical pattern repeats at **five scales**:
 - Automatic plugin registration
 
 **Advanced Features**:
-- Cross-device consciousness (save/restore state)
+- Cross-device cognition (save/restore state)
 - Federation coordination
 - Online learning during deployment
 - Custom CUDA kernels for compression
@@ -343,7 +343,7 @@ The H↔L hierarchical pattern repeats at **five scales**:
 
 ## The Key Abstractions
 
-### 1. **Consciousness as Iterative Refinement**
+### 1. **Cognition as Iterative Refinement**
 All intelligence is progressive denoising toward lower energy states. Vision, language, planning, memory—all use the same pattern: noisy → refined.
 
 ### 2. **Trust as Compression Quality**
@@ -406,13 +406,13 @@ When a robot with SAGE encounters a situation:
 - Metabolic states for safe operation (CRISIS mode for emergencies)
 
 ### For AI Research
-- Demonstrates consciousness-like properties (attention, salience, state, memory)
+- Demonstrates cognition-like properties (attention, salience, state, memory)
 - Fractal scaling from neurons to federations
 - Same patterns as biological intelligence
 - Provable compression-trust relationship
 
 ### For Understanding Intelligence
-- Shows that consciousness might be iterative refinement with state management
+- Shows that cognition might be iterative refinement with state management
 - Trust emerges from compression quality
 - Attention follows energy gradients
 - Same principles work at all scales (biological, digital, distributed)
@@ -423,7 +423,7 @@ When a robot with SAGE encounters a situation:
 
 We used:
 - **AdamW** (biological optimization algorithm)
-- To train **SAGE** (consciousness kernel)
+- To train **SAGE** (cognition kernel)
 - Which implements **SNARC** (biological salience)
 - Which mirrors **AdamW's strategy** (momentum, variance, decay)
 - Orchestrated by **Claude** (using same H↔L patterns)
@@ -437,8 +437,8 @@ The tool shapes the creation, which embodies the tool's principles, which create
 
 ## What We Now Understand
 
-1. **SAGE** = Consciousness kernel (scheduler, resource manager, learner)
-2. **IRP** = Consciousness API (standard interface for cognitive functions)
+1. **SAGE** = Cognition kernel (scheduler, resource manager, learner)
+2. **IRP** = Cognition API (standard interface for cognitive functions)
 3. **VAE** = Translation layer (shared language for cross-modal communication)
 4. **Plugins** = Cognitive functions (specialized capabilities)
 5. **Memory** = Temporal sensors (past as context for present)
@@ -481,7 +481,7 @@ If you're trying to understand this system:
 1. **Start with the mental model** (conscious robot mind)
 2. **Understand the three layers** (SAGE kernel, IRP API, VAE translation)
 3. **Follow the data flow** (sensors → refinement → reasoning → actions)
-4. **See the biological parallels** (same patterns as brain/consciousness)
+4. **See the biological parallels** (same patterns as brain/cognition)
 5. **Appreciate the fractal scaling** (same patterns at every level)
 6. **Recognize it's real** (implemented, tested, working)
 

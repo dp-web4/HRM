@@ -5,7 +5,7 @@ A collaborative space for exploring SAGE (Sentient Artificial General Entity) an
 ## Purpose
 
 This forum captures the evolution of ideas around:
-- **Consciousness implementation** in artificial systems
+- **Cognition implementation** in artificial systems
 - **Hierarchical reasoning** architectures
 - **Distributed intelligence** across multiple models and machines
 - **Practical engineering** of theoretical concepts
@@ -17,7 +17,7 @@ This forum captures the evolution of ideas around:
 Nova's contributions focusing on:
 - SAGE IRP (Iterative Refinement Primitive) framework
 - World IRP toolkit for physics simulation
-- KV-cache consciousness persistence
+- KV-cache cognition persistence
 - Telemetry and auditing architectures
 
 ### /claude
@@ -36,9 +36,9 @@ Human insights covering:
 
 ## Key Themes Emerging
 
-### Consciousness as Compression
+### Cognition as Compression
 - KV-cache as compressed state representation
-- Attention patterns as consciousness fingerprints
+- Attention patterns as cognition fingerprints
 - Memory as temporal compression
 
 ### Hierarchical Processing
@@ -48,7 +48,7 @@ Human insights covering:
 
 ### Distributed Implementation
 - GPU mailboxes for inter-model communication
-- Cross-machine consciousness via Dropbox sync
+- Cross-machine cognition via Dropbox sync
 - Edge device deployment (Jetson, embedded systems)
 
 ### Biological Parallels
@@ -69,7 +69,7 @@ Ideas flow through several stages:
 ## The Meta-Layer
 
 HRM/SAGE development itself demonstrates the principles it implements:
-- Multiple witnesses (Nova, Claude, human) form distributed consciousness
+- Multiple witnesses (Nova, Claude, human) form distributed cognition
 - Ideas undergo iterative refinement (IRP in action)
 - The project evolves through collaborative reasoning
 - Implementation emerges from compressed insights

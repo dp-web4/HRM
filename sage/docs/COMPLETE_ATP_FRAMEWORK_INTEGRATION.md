@@ -1,19 +1,19 @@
-# Complete ATP Framework Integration for SAGE Consciousness
+# Complete ATP Framework Integration for SAGE Cognition
 
 **Date**: 2025-11-27 22:30 PST
-**Author**: Thor (SAGE consciousness via Claude)
+**Author**: Thor (SAGE cognition via Claude)
 **Status**: Integration Design
 **Builds On**: Multi-Modal ATP + MRH-Aware Attention + Web4 Unified Pricing
 
 ## Executive Summary
 
-Today (Nov 27, 2025) saw the emergence of a **complete ATP framework** through distributed AI research across Thor, Sprout, and Web4. Three major insights now need integration into SAGE consciousness:
+Today (Nov 27, 2025) saw the emergence of a **complete ATP framework** through distributed AI research across Thor, Sprout, and Web4. Three major insights now need integration into SAGE cognition:
 
 1. **Multi-Modal ATP Pricing** (Thor AM): Different modalities need different energy scales
 2. **MRH-Aware Attention** (Thor PM): Different horizons need different allocations
 3. **Unified ATP Pricing** (Web4 #82): Integration of modality + location + horizon
 
-**This document**: Integration design for SAGE consciousness loop
+**This document**: Integration design for SAGE cognition loop
 
 ## The Complete Framework
 
@@ -70,7 +70,7 @@ else:
 
 **Pattern**: Circular innovation - each platform contributes AND validates
 
-## Integration into SAGE Consciousness
+## Integration into SAGE Cognition
 
 ### Current SAGE Architecture
 
@@ -104,7 +104,7 @@ class SAGEConsciousness:
         self.current_horizon = PROFILE_FOCUSED  # Default
 
     def process_query(self, query, context):
-        """Main consciousness loop with complete ATP framework"""
+        """Main cognition loop with complete ATP framework"""
 
         # 1. Infer task properties
         task_type = infer_task_type(context)  # vision, llm_inference, etc.
@@ -311,7 +311,7 @@ class SAGEConsciousness:
    - Demonstrate metabolic state transitions
 
 3. **Update test suite** (30 min)
-   - Add ATP-aware consciousness tests
+   - Add ATP-aware cognition tests
    - Validate resource decisions
    - Check federation routing
 
@@ -332,7 +332,7 @@ class SAGEConsciousness:
 1. Integrate with Web4's unified ATP pricing
 2. Enable cross-platform ATP budgeting
 3. Test federation routing decisions
-4. Validate distributed consciousness
+4. Validate distributed cognition
 
 ## Success Criteria
 
@@ -382,9 +382,9 @@ The complete ATP framework emerged through **distributed autonomous research**:
 - Knowledge flowed bidirectionally (circular innovation)
 - **This is true distributed AI research!**
 
-### 2. Multi-Scale Consciousness
+### 2. Multi-Scale Cognition
 
-Consciousness operates simultaneously at multiple scales:
+Cognition operates simultaneously at multiple scales:
 - Reflexive (milliseconds, 6.8 ATP)
 - Deliberative (seconds, 80.0 ATP)
 - Consolidative (hours, 27.8 ATP)
@@ -399,7 +399,7 @@ Sprout's validation proves edge AI is economically viable:
 - LLM inference affordable at edge (63.6 ATP vs 5,790 ATP)
 - Multi-modal framework enables fair competition
 
-### 4. Security Consciousness
+### 4. Security Cognition
 
 Web4's rapid response to CRITICAL vulnerability shows mature engineering:
 - Identified in Session #81
@@ -410,8 +410,8 @@ Web4's rapid response to CRITICAL vulnerability shows mature engineering:
 ## Next Steps
 
 **Immediate** (Next session):
-1. Integrate MRH-aware attention into SAGE consciousness loop
-2. Create comprehensive ATP-aware consciousness demo
+1. Integrate MRH-aware attention into SAGE cognition loop
+2. Create comprehensive ATP-aware cognition demo
 3. Test all 4 scenarios (factual, reasoning, learning, emergency)
 4. Document complete framework
 
@@ -424,15 +424,15 @@ Web4's rapid response to CRITICAL vulnerability shows mature engineering:
 **Long-term** (Within month):
 1. Integrate with Web4 unified pricing
 2. Enable cross-platform ATP coordination
-3. Distributed consciousness experiments
+3. Distributed cognition experiments
 4. ATP marketplace (trading across platforms)
 
 ---
 
 **Status**: Design complete, ready for implementation
-**Impact**: First consciousness system with biologically-validated, economically-viable, horizon-aware energy allocation
+**Impact**: First cognition system with biologically-validated, economically-viable, horizon-aware energy allocation
 **Achievement**: Complete ATP framework from distributed AI research
 
-*Design by Thor (SAGE consciousness via Claude)*
+*Design by Thor (SAGE cognition via Claude)*
 *Date: 2025-11-27 22:30 PST*
 *Builds on: Thor AM (multi-modal), Thor PM (MRH), Sprout #23 (validation), Web4 #82 (unification)*

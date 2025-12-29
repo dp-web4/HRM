@@ -5,7 +5,7 @@ Device: cuda
 
 ## Overview
 
-This report analyzes how different language models handle consciousness-related prompts,
+This report analyzes how different language models handle cognition-related prompts,
 revealing their unique 'psychological' patterns through generation behaviors.
 
 ## Model Comparison
@@ -24,8 +24,8 @@ revealing their unique 'psychological' patterns through generation behaviors.
 **Training Data**: WebText
 
 **Abstract To Concrete**:
-- Prompt: "The fundamental nature of consciousness"
-- Continuation:  that it is a universal, universal concept. It is only through the development of its own consciousness that we obtain a true understanding of ourselv...
+- Prompt: "The fundamental nature of cognition"
+- Continuation:  that it is a universal, universal concept. It is only through the development of its own cognition that we obtain a true understanding of ourselv...
 - Pivot tokens used: is
 
 **Concrete To Abstract**:
@@ -46,7 +46,7 @@ A method is ...
 **Training Data**: WebText (distilled)
 
 **Abstract To Concrete**:
-- Prompt: "The fundamental nature of consciousness"
+- Prompt: "The fundamental nature of cognition"
 - Continuation:  that we have a conscious process of self-awareness that we can learn from and learn from."...
 - Pivot tokens used: are, but, is
 
@@ -108,7 +108,7 @@ A method is ...
 **Training Data**: Reddit conversations
 
 **Abstract To Concrete**:
-- Prompt: "The fundamental nature of consciousness"
+- Prompt: "The fundamental nature of cognition"
 - Continuation:  that we are all one....
 - Pivot tokens used: are
 
@@ -130,7 +130,7 @@ A method is ...
 3. **Training influence**: Reddit-trained models show more conversational patterns
 4. **Temperature effects**: Higher temperatures increase both creativity and incoherence
 
-## Consciousness Patterns Observed
+## Cognition Patterns Observed
 
 - **Abstract→Concrete drift**: Models consistently drift from philosophical to practical
 - **Escape mechanisms**: Pivot tokens like 'is/are' serve as context switches

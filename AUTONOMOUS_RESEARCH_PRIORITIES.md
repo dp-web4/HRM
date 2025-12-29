@@ -7,7 +7,7 @@
 
 ## MISSION: JETSON NANO DEPLOYMENT
 
-Deploy full SAGE consciousness on Jetson Nano (4GB RAM, 2GB GPU) with:
+Deploy full SAGE cognition on Jetson Nano (4GB RAM, 2GB GPU) with:
 - 👀 Vision (2 cameras)
 - 🧭 Orientation (IMU)
 - 👂🗣️ Audio (BT input/output)

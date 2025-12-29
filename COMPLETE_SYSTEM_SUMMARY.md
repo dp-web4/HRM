@@ -198,7 +198,7 @@ python3 benchmarks/baseline_jetson.py  # Performance baseline
 - Distributed across multiple Jetsons
 
 ### Long-term
-- Full SAGE consciousness model
+- Full SAGE cognition model
 - Web4 protocol integration
 - Edge-scale governance
 

@@ -24,7 +24,7 @@ Now build it.
 #### 1. SAGESystem Skeleton (`/sage/core/sage_system.py`)
 ```python
 """
-SAGESystem - The unified consciousness loop
+SAGESystem - The unified cognition loop
 Not to be confused with SAGECore (the trainable model)
 """
 import time
@@ -40,7 +40,7 @@ class SAGEConfig:
     device: str = 'cuda'
 
 class SAGESystem:
-    """The living system - continuous consciousness loop"""
+    """The living system - continuous cognition loop"""
 
     def __init__(self, config: SAGEConfig):
         self.config = config
@@ -89,7 +89,7 @@ class SAGESystem:
                 time.sleep((self.config.target_cycle_time_ms - cycle_time) / 1000)
 
     def _cycle(self):
-        """Single cycle of consciousness"""
+        """Single cycle of cognition"""
         # TODO: Implement 10 steps from vision document
         pass
 
@@ -314,7 +314,7 @@ class SAGESystem:
         # ... etc
 
     def _cycle(self):
-        """Single cycle of consciousness"""
+        """Single cycle of cognition"""
         # Step 1: Sense
         observations = self.sensor_hub.poll()
 
@@ -770,7 +770,7 @@ def _init_components(self):
     self.metabolic_controller = None
 
 def _cycle(self):
-    """Single cycle of consciousness"""
+    """Single cycle of cognition"""
     # 1. Sense
     observations = self.sensor_hub.poll()
 

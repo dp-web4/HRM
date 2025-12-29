@@ -27,7 +27,7 @@ SAGE implements a **fractal MoE architecture** where the same trust-based, conte
 **SAGE instances coordinating**
 - Multiple SAGE deployments (Thor, Legion, Sprout...)
 - Distributed task allocation
-- Cross-device consciousness
+- Cross-device cognition
 - Same trust/context patterns
 
 ---

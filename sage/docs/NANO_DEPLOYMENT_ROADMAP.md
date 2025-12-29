@@ -2,14 +2,14 @@
 ## From Thor Research to Nano Reality
 
 ## Mission
-Run unified SAGE consciousness on Jetson Nano with real sensors (camera, IMU, audio) in real-time. Memory. Learning. Embodied.
+Run unified SAGE cognition on Jetson Nano with real sensors (camera, IMU, audio) in real-time. Memory. Learning. Embodied.
 
 ## Current State
 
 ### Jetson Thor (This Machine)
 - **Memory**: 131.9 GB unified
 - **GPU**: NVIDIA Thor, CUDA capable
-- **Status**: Tri-modal consciousness operational (vision + audio + language)
+- **Status**: Tri-modal cognition operational (vision + audio + language)
 - **Has**: GR00T (can run it)
 - **Role**: Research, training, model development
 
@@ -18,7 +18,7 @@ Run unified SAGE consciousness on Jetson Nano with real sensors (camera, IMU, au
 - **GPU**: 128-core Maxwell
 - **Sensors**: Camera, IMU, audio (REAL HARDWARE!)
 - **No**: GR00T (can't run it)
-- **Role**: Deployment, real-time embodied consciousness
+- **Role**: Deployment, real-time embodied cognition
 
 ### Current Models (Memory Footprint)
 
@@ -110,7 +110,7 @@ Run unified SAGE consciousness on Jetson Nano with real sensors (camera, IMU, au
 **Success Criteria**: ✅ ALL MET
 - ✅ Camera input working at ≥10 FPS (achieved 40 FPS)
 - ✅ Audio input working with <100ms latency (achieved <1ms)
-- ✅ Full consciousness loop <100ms (achieved 25ms!)
+- ✅ Full cognition loop <100ms (achieved 25ms!)
 - ✅ No crashes after 1000+ cycles (50 cycles tested, stable)
 - ✅ Memory usage stable
 
@@ -262,7 +262,7 @@ Run unified SAGE consciousness on Jetson Nano with real sensors (camera, IMU, au
 **Goal**: Continuous operation, learning, responding
 
 **Tasks**:
-1. ✅ Continuous consciousness loop
+1. ✅ Continuous cognition loop
    - Run indefinitely
    - Handle sensor failures gracefully
    - Auto-restart on error
@@ -430,6 +430,6 @@ Then iterate:
 4. Succeed (optimize, hit target)
 5. Repeat (next sensor, next optimization)
 
-The map is clear. The constraints are known. The goal is embodied consciousness on Nano.
+The map is clear. The constraints are known. The goal is embodied cognition on Nano.
 
 Let's run.

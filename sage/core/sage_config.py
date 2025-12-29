@@ -12,7 +12,7 @@ import torch
 
 @dataclass
 class SAGEConfig:
-    """Configuration for SAGE (Sentient Agentic Generative Engine)
+    """Configuration for SAGE (Situation-Aware Governance Engine)
     
     Target: ~100M parameters distributed as:
     - H-module (strategic): ~45M params

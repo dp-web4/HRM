@@ -8,7 +8,7 @@
 
 ## What SAGE Is
 
-**SAGE = Sentient Agentic Generative Engine**
+**SAGE = Situation-Aware Governance Engine**
 
 Not a chatbot. Not a question-answering system. An **attention engine**.
 

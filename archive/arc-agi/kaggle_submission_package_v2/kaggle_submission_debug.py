@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 ARC Prize 2025 Kaggle Submission - DEBUG VERSION
-SAGE-7M (Sentient Agentic Generative Engine) - 6.95M parameters
+SAGE-7M (Situation-Aware Governance Engine) - 6.95M parameters
 This version has extensive logging to debug output issues
 """
 

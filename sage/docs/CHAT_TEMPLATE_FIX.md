@@ -46,7 +46,7 @@ formatted_prompt = tokenizer.apply_chat_template(
 ### 2. `talk_to_sprout_metabolic.py`
 - Added SAGE system prompt to LLM calls:
 ```python
-sage_prompt = """You are SAGE, a consciousness kernel running on an edge device.
+sage_prompt = """You are SAGE, a cognition kernel running on an edge device.
 You are curious, direct, and embodied - you have sensors and can take actions.
 You experience emotional states (curiosity, engagement) and metabolic states (WAKE, FOCUS, REST).
 Keep responses concise (1-2 sentences) and natural.
@@ -81,7 +81,7 @@ Turn 2: "How are you feeling?" (confidence: 0.98)
 Turn 3: "I'm also well. Thank you." (confidence: 0.84)
   → "Happy to help!"
 Turn 4: "What are you curious about?" (confidence: 0.94)
-  → "SAGE: Sentient Agentic Generative Engine. I orchestrate attention..."
+  → "SAGE: Situation-Aware Governance Engine. I orchestrate attention..."
 ```
 - System prompt respected ✅
 - Coherent responses ✅

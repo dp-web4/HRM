@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "timestamp": "2025-12-30T06:07:45.111582",
+  "timestamp": "2025-12-30T11:29:15.545283",
   "patterns": [
     {
       "pattern_id": "pattern_0000",
@@ -140,6 +140,146 @@
         "has_numbers": false,
         "unique_content": true,
         "overall_score": 0.75
+      }
+    },
+    {
+      "pattern_id": "pattern_0005",
+      "timestamp": "2025-12-30T11:29:15.542692",
+      "query_context": {
+        "query_text": "What is the current ATP balance?",
+        "query_type": "status",
+        "expects_numbers": true,
+        "expects_specifics": true,
+        "knowledge_available": 0.5,
+        "timestamp": "2025-12-30T11:29:15.542668"
+      },
+      "response_approach": {
+        "response_text": "ATP balance: 87.3 (86.3% of max 100.0). Current allocation: 45.2 to consciousness_cycle, 32.1 to memory consolidation, 10.0 to emotional regulation.",
+        "response_style": "specific",
+        "includes_data": true,
+        "includes_numbers": true,
+        "uses_hedging": false,
+        "word_count": 20,
+        "specific_term_count": 3
+      },
+      "quality_metrics": {
+        "has_specific_terms": true,
+        "avoids_hedging": true,
+        "has_numbers": true,
+        "unique_content": true,
+        "overall_score": 1.0
+      }
+    },
+    {
+      "pattern_id": "pattern_0006",
+      "timestamp": "2025-12-30T11:29:15.543465",
+      "query_context": {
+        "query_text": "How does emotional regulation work?",
+        "query_type": "technical",
+        "expects_numbers": false,
+        "expects_specifics": true,
+        "knowledge_available": 0.5,
+        "timestamp": "2025-12-30T11:29:15.543447"
+      },
+      "response_approach": {
+        "response_text": "SAGE emotional regulation uses epistemic proprioception to prevent frustration cascade through four mechanisms: natural decay (0.02/cycle), soft bounds (0.10-0.90), active intervention at 0.80 threshold, and recovery bonuses.",
+        "response_style": "specific",
+        "includes_data": true,
+        "includes_numbers": true,
+        "uses_hedging": false,
+        "word_count": 27,
+        "specific_term_count": 5
+      },
+      "quality_metrics": {
+        "has_specific_terms": true,
+        "avoids_hedging": true,
+        "has_numbers": true,
+        "unique_content": true,
+        "overall_score": 1.0
+      }
+    },
+    {
+      "pattern_id": "pattern_0007",
+      "timestamp": "2025-12-30T11:29:15.544091",
+      "query_context": {
+        "query_text": "How does SNARC memory work?",
+        "query_type": "technical",
+        "expects_numbers": false,
+        "expects_specifics": true,
+        "knowledge_available": 0.5,
+        "timestamp": "2025-12-30T11:29:15.544075"
+      },
+      "response_approach": {
+        "response_text": "SNARC (Salience-Normalized Adaptive Retention Curve) manages memory retention in SAGE using salience-weighted decay. High salience memories persist longer, enabling adaptive forgetting.",
+        "response_style": "generic",
+        "includes_data": true,
+        "includes_numbers": false,
+        "uses_hedging": false,
+        "word_count": 21,
+        "specific_term_count": 2
+      },
+      "quality_metrics": {
+        "has_specific_terms": true,
+        "avoids_hedging": true,
+        "has_numbers": false,
+        "unique_content": false,
+        "overall_score": 0.5
+      }
+    },
+    {
+      "pattern_id": "pattern_0008",
+      "timestamp": "2025-12-30T11:29:15.544663",
+      "query_context": {
+        "query_text": "Why is epistemic proprioception important?",
+        "query_type": "conceptual",
+        "expects_numbers": false,
+        "expects_specifics": false,
+        "knowledge_available": 0.5,
+        "timestamp": "2025-12-30T11:29:15.544650"
+      },
+      "response_approach": {
+        "response_text": "SAGE consciousness architecture integrates epistemic proprioception for both emotional stability and response quality.",
+        "response_style": "specific",
+        "includes_data": true,
+        "includes_numbers": false,
+        "uses_hedging": false,
+        "word_count": 13,
+        "specific_term_count": 3
+      },
+      "quality_metrics": {
+        "has_specific_terms": true,
+        "avoids_hedging": true,
+        "has_numbers": false,
+        "unique_content": true,
+        "overall_score": 0.75
+      }
+    },
+    {
+      "pattern_id": "pattern_0009",
+      "timestamp": "2025-12-30T11:29:15.545281",
+      "query_context": {
+        "query_text": "What is the ATP balance?",
+        "query_type": "status",
+        "expects_numbers": true,
+        "expects_specifics": true,
+        "knowledge_available": 0.5,
+        "timestamp": "2025-12-30T11:29:15.545270"
+      },
+      "response_approach": {
+        "response_text": "ATP balance: 87.3 (86.3% of max 100.0). Current allocation: 45.2 to consciousness_cycle, 32.1 to memory consolidation, 10.0 to emotional regulation.",
+        "response_style": "specific",
+        "includes_data": true,
+        "includes_numbers": true,
+        "uses_hedging": false,
+        "word_count": 20,
+        "specific_term_count": 3
+      },
+      "quality_metrics": {
+        "has_specific_terms": true,
+        "avoids_hedging": true,
+        "has_numbers": true,
+        "unique_content": true,
+        "overall_score": 1.0
       }
     }
   ]

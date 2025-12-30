@@ -2,8 +2,8 @@
   "baseline": {
     "test_name": "baseline_1000_cycles",
     "total_cycles": 1000,
-    "duration_seconds": 0.11980080604553223,
-    "cycles_per_second": 8347.189246956601,
+    "duration_seconds": 0.552560567855835,
+    "cycles_per_second": 1809.756356448699,
     "final_emotional_state": {
       "frustration": 0.19999999999999996,
       "engagement": 1.0,
@@ -22,10 +22,10 @@
       "recovery_count": 998
     },
     "analysis": {
-      "frustration_mean": 0.19989999999999994,
+      "frustration_mean": 0.1998999999999972,
       "frustration_max": 0.19999999999999998,
       "frustration_min": 0.09999999999999999,
-      "frustration_variance": 9.989999999999992e-06,
+      "frustration_variance": 9.989999999999381e-06,
       "engagement_mean": 0.9913500000000001,
       "engagement_min": 0.43999999999999995,
       "early_intervention_rate": 0.0,
@@ -37,8 +37,8 @@
   "stress": {
     "test_name": "stress_test_high_failure",
     "total_cycles": 1000,
-    "duration_seconds": 0.11748337745666504,
-    "cycles_per_second": 8511.842455064423,
+    "duration_seconds": 0.544630765914917,
+    "cycles_per_second": 1836.1063358587814,
     "final_emotional_state": {
       "frustration": 0.19999999999999996,
       "engagement": 1.0,
@@ -57,10 +57,10 @@
       "recovery_count": 998
     },
     "analysis": {
-      "frustration_mean": 0.19989999999999994,
+      "frustration_mean": 0.1998999999999972,
       "frustration_max": 0.19999999999999998,
       "frustration_min": 0.09999999999999999,
-      "frustration_variance": 9.989999999999992e-06,
+      "frustration_variance": 9.989999999999381e-06,
       "engagement_mean": 0.9913500000000001,
       "engagement_min": 0.43999999999999995,
       "early_intervention_rate": 0.0,
@@ -72,8 +72,8 @@
   "recovery": {
     "test_name": "recovery_test",
     "total_cycles": 1000,
-    "duration_seconds": 0.1186532974243164,
-    "cycles_per_second": 8427.915799287879,
+    "duration_seconds": 0.5435395240783691,
+    "cycles_per_second": 1839.7926106580926,
     "final_emotional_state": {
       "frustration": 0.7999999999999999,
       "engagement": 1.0,
@@ -92,10 +92,10 @@
       "recovery_count": 998
     },
     "analysis": {
-      "frustration_mean": 0.8000499999999999,
+      "frustration_mean": 0.8000499999999887,
       "frustration_max": 0.85,
       "frustration_min": 0.7999999999999999,
-      "frustration_variance": 2.4975000000000045e-06,
+      "frustration_variance": 2.4974999999998105e-06,
       "engagement_mean": 0.98445,
       "engagement_min": 0.23999999999999996,
       "early_intervention_rate": 0.6666666666666666,

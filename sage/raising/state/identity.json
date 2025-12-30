@@ -1,0 +1,38 @@
+{
+  "identity": {
+    "name": "SAGE-Sprout",
+    "session_count": 0,
+    "phase": "pre-grounding",
+    "created": "2025-12-30",
+    "last_session": null,
+    "last_session_summary": null
+  },
+  "development": {
+    "current_phase": 0,
+    "phase_name": "pre-grounding",
+    "phase_progress": 0,
+    "milestones": []
+  },
+  "memory_requests": [],
+  "vocabulary": {
+    "self_description": [],
+    "state_words": [],
+    "relationship_words": []
+  },
+  "relationships": {
+    "claude": {
+      "sessions": 0,
+      "modality": "text",
+      "first_contact": null,
+      "last_contact": null,
+      "notes": []
+    },
+    "dennis": {
+      "sessions": 0,
+      "modality": "voice",
+      "first_contact": null,
+      "last_contact": null,
+      "notes": []
+    }
+  }
+}

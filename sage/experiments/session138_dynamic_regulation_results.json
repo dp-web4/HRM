@@ -1,0 +1,91 @@
+{
+  "baseline": {
+    "test_name": "baseline_1000_cycles",
+    "regulation_type": "dynamic",
+    "total_cycles": 1000,
+    "final_emotional_state": {
+      "frustration": 0.7999999999999778,
+      "engagement": 0.21999999999999081,
+      "curiosity": 0.15,
+      "progress": 0.0
+    },
+    "stable_operation": true,
+    "cascade_detected": false,
+    "total_interventions": 793,
+    "analysis": {
+      "frustration_mean": 0.8368499999999889,
+      "frustration_max": 0.8799999999999998,
+      "frustration_min": 0.13,
+      "frustration_variance": 0.0022765774999999318,
+      "engagement_mean": 0.22722999999999544,
+      "engagement_min": 0.19999999999999085,
+      "early_intervention_rate": 77.66666666666667,
+      "late_intervention_rate": 80.0,
+      "ep_maturation_score": -0.030042918454935622,
+      "stable_operation": true
+    }
+  },
+  "stress": {
+    "test_name": "stress_test_high_failure",
+    "regulation_type": "dynamic",
+    "total_cycles": 1000,
+    "final_emotional_state": {
+      "frustration": 0.7999999999999778,
+      "engagement": 0.21999999999999081,
+      "curiosity": 0.15,
+      "progress": 0.0
+    },
+    "stable_operation": true,
+    "cascade_detected": false,
+    "total_interventions": 793,
+    "analysis": {
+      "frustration_mean": 0.8368499999999889,
+      "frustration_max": 0.8799999999999998,
+      "frustration_min": 0.13,
+      "frustration_variance": 0.0022765774999999318,
+      "engagement_mean": 0.22722999999999544,
+      "engagement_min": 0.19999999999999085,
+      "early_intervention_rate": 77.66666666666667,
+      "late_intervention_rate": 80.0,
+      "ep_maturation_score": -0.030042918454935622,
+      "stable_operation": true
+    }
+  },
+  "recovery": {
+    "test_name": "recovery_test",
+    "regulation_type": "dynamic",
+    "total_cycles": 1000,
+    "final_emotional_state": {
+      "frustration": 0.8399999999999779,
+      "engagement": 0.19999999999999077,
+      "curiosity": 0.15,
+      "progress": 0.0
+    },
+    "stable_operation": true,
+    "cascade_detected": false,
+    "total_interventions": 801,
+    "analysis": {
+      "frustration_mean": 0.8401799999999889,
+      "frustration_max": 0.9,
+      "frustration_min": 0.799999999999978,
+      "frustration_variance": 0.0008051676000000028,
+      "engagement_mean": 0.2249899999999954,
+      "engagement_min": 0.19999999999999077,
+      "early_intervention_rate": 80.33333333333333,
+      "late_intervention_rate": 80.0,
+      "ep_maturation_score": 0.004149377593360996,
+      "stable_operation": true
+    }
+  },
+  "comparison": {
+    "session137_baseline_frustration": 0.2,
+    "session137_stress_frustration": 0.2,
+    "session137_variation": 0.0,
+    "session138_baseline_frustration": 0.7999999999999778,
+    "session138_stress_frustration": 0.7999999999999778,
+    "session138_variation": 0.0,
+    "improvement": false,
+    "cascades_prevented": true,
+    "all_stable": true
+  }
+}

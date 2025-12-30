@@ -1,7 +1,7 @@
 {
   "session": "135",
   "focus": "Long-Running Consciousness",
-  "timestamp": "2025-12-29T13:24:09.439665+00:00",
+  "timestamp": "2025-12-29T14:01:00.628567+00:00",
   "test_results": [
     {
       "scenario": "Short run (20 cycles)",
@@ -21,13 +21,17 @@
     "windows": 10,
     "window_size": 10,
     "reputation_convergence": {
-      "converged": false,
-      "reason": "insufficient_data"
+      "converged": true,
+      "early_variance": 0.2195492417539851,
+      "late_variance": 0.21954924175398505,
+      "variance_reduction": 2.5284146184144237e-16,
+      "avg_reputation_early": 0.200281473124779,
+      "avg_reputation_late": 0.20028147312477898
     },
     "emotional_evolution": {
-      "curiosity_trend": -0.09100000000000004,
+      "curiosity_trend": -0.09100000000000001,
       "frustration_trend": 0.026000000000000023,
-      "engagement_trend": -0.09045454545454541,
+      "engagement_trend": -0.09045454545454543,
       "progress_trend": -0.020000000000000004,
       "emotional_stability": {
         "curiosity_stable": true,
@@ -37,17 +41,17 @@
       }
     },
     "memory_patterns": {
-      "total_memories_formed": 1485,
+      "total_memories_formed": 995,
       "total_memories_consolidated": 38,
       "total_memories_retrieved": 1485,
-      "consolidation_ratio": 0.02558922558922559,
-      "avg_formation_rate": 13.622727272727271,
+      "consolidation_ratio": 0.03819095477386935,
+      "avg_formation_rate": 9.131818181818184,
       "formation_rate_stable": true
     },
     "success_evolution": {
-      "early_success_rate": 0.013333333333333332,
+      "early_success_rate": 0.06,
       "late_success_rate": 0.0,
-      "improvement": -0.013333333333333332,
+      "improvement": -0.06,
       "learning_occurred": false
     }
   },

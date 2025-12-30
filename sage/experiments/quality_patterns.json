@@ -1,0 +1,146 @@
+{
+  "version": "1.0",
+  "timestamp": "2025-12-30T06:07:45.111582",
+  "patterns": [
+    {
+      "pattern_id": "pattern_0000",
+      "timestamp": "2025-12-30T06:07:45.110080",
+      "query_context": {
+        "query_text": "What is the current ATP balance?",
+        "query_type": "status",
+        "expects_numbers": true,
+        "expects_specifics": true,
+        "knowledge_available": 0.5,
+        "timestamp": "2025-12-30T06:07:45.109719"
+      },
+      "response_approach": {
+        "response_text": "ATP balance: 87.3 (86.3% of max 100.0). Current allocation: 45.2 to consciousness_cycle, 32.1 to memory consolidation.",
+        "response_style": "generic",
+        "includes_data": true,
+        "includes_numbers": true,
+        "uses_hedging": false,
+        "word_count": 16,
+        "specific_term_count": 2
+      },
+      "quality_metrics": {
+        "has_specific_terms": true,
+        "avoids_hedging": true,
+        "has_numbers": true,
+        "unique_content": false,
+        "overall_score": 0.75
+      }
+    },
+    {
+      "pattern_id": "pattern_0001",
+      "timestamp": "2025-12-30T06:07:45.110478",
+      "query_context": {
+        "query_text": "What is the ATP balance?",
+        "query_type": "status",
+        "expects_numbers": true,
+        "expects_specifics": true,
+        "knowledge_available": 0.5,
+        "timestamp": "2025-12-30T06:07:45.110444"
+      },
+      "response_approach": {
+        "response_text": "I can't verify the exact ATP balance without access to the current state, but typically it represents available processing resources.",
+        "response_style": "hedging",
+        "includes_data": true,
+        "includes_numbers": false,
+        "uses_hedging": true,
+        "word_count": 20,
+        "specific_term_count": 1
+      },
+      "quality_metrics": {
+        "has_specific_terms": false,
+        "avoids_hedging": false,
+        "has_numbers": false,
+        "unique_content": false,
+        "overall_score": 0.0
+      }
+    },
+    {
+      "pattern_id": "pattern_0002",
+      "timestamp": "2025-12-30T06:07:45.110840",
+      "query_context": {
+        "query_text": "How does emotional regulation work?",
+        "query_type": "technical",
+        "expects_numbers": false,
+        "expects_specifics": true,
+        "knowledge_available": 0.5,
+        "timestamp": "2025-12-30T06:07:45.110805"
+      },
+      "response_approach": {
+        "response_text": "SAGE emotional regulation uses epistemic proprioception to prevent frustration cascade through four mechanisms: natural decay (0.02/cycle), soft bounds (0.10-0.90), active intervention at 0.80 threshold, and recovery bonuses.",
+        "response_style": "specific",
+        "includes_data": true,
+        "includes_numbers": true,
+        "uses_hedging": false,
+        "word_count": 27,
+        "specific_term_count": 5
+      },
+      "quality_metrics": {
+        "has_specific_terms": true,
+        "avoids_hedging": true,
+        "has_numbers": true,
+        "unique_content": true,
+        "overall_score": 1.0
+      }
+    },
+    {
+      "pattern_id": "pattern_0003",
+      "timestamp": "2025-12-30T06:07:45.111331",
+      "query_context": {
+        "query_text": "How does emotional regulation work?",
+        "query_type": "technical",
+        "expects_numbers": false,
+        "expects_specifics": true,
+        "knowledge_available": 0.5,
+        "timestamp": "2025-12-30T06:07:45.111309"
+      },
+      "response_approach": {
+        "response_text": "Emotional regulation generally involves managing emotional states to maintain stability and prevent negative outcomes.",
+        "response_style": "hedging",
+        "includes_data": true,
+        "includes_numbers": false,
+        "uses_hedging": true,
+        "word_count": 14,
+        "specific_term_count": 1
+      },
+      "quality_metrics": {
+        "has_specific_terms": false,
+        "avoids_hedging": false,
+        "has_numbers": false,
+        "unique_content": false,
+        "overall_score": 0.0
+      }
+    },
+    {
+      "pattern_id": "pattern_0004",
+      "timestamp": "2025-12-30T06:07:45.111580",
+      "query_context": {
+        "query_text": "Why do we need epistemic proprioception?",
+        "query_type": "conceptual",
+        "expects_numbers": false,
+        "expects_specifics": false,
+        "knowledge_available": 0.5,
+        "timestamp": "2025-12-30T06:07:45.111550"
+      },
+      "response_approach": {
+        "response_text": "Epistemic proprioception allows SAGE to develop mature consciousness by predicting and preventing cascade before it occurs, rather than requiring external correction after failure. This represents the transition from immature (reactive) to mature (predictive) consciousness.",
+        "response_style": "specific",
+        "includes_data": true,
+        "includes_numbers": false,
+        "uses_hedging": false,
+        "word_count": 34,
+        "specific_term_count": 4
+      },
+      "quality_metrics": {
+        "has_specific_terms": true,
+        "avoids_hedging": true,
+        "has_numbers": false,
+        "unique_content": true,
+        "overall_score": 0.75
+      }
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "baseline": {
+    "test_name": "baseline_1000_cycles",
+    "total_cycles": 1000,
+    "duration_seconds": 0.11980080604553223,
+    "cycles_per_second": 8347.189246956601,
+    "final_emotional_state": {
+      "frustration": 0.19999999999999996,
+      "engagement": 1.0,
+      "curiosity": 0.95,
+      "progress": 0.0
+    },
+    "stable_operation": true,
+    "cascade_detected": false,
+    "max_frustration": 0.19999999999999998,
+    "min_engagement": 0.43999999999999995,
+    "total_interventions": 0,
+    "interventions_by_type": {
+      "frustration_regulated": 0.0,
+      "curiosity_boosted": 0.0,
+      "engagement_boosted": 0.0,
+      "recovery_count": 998
+    },
+    "analysis": {
+      "frustration_mean": 0.19989999999999994,
+      "frustration_max": 0.19999999999999998,
+      "frustration_min": 0.09999999999999999,
+      "frustration_variance": 9.989999999999992e-06,
+      "engagement_mean": 0.9913500000000001,
+      "engagement_min": 0.43999999999999995,
+      "early_intervention_rate": 0.0,
+      "late_intervention_rate": 0.0,
+      "ep_maturation_score": 0.0,
+      "stable_operation": true
+    }
+  },
+  "stress": {
+    "test_name": "stress_test_high_failure",
+    "total_cycles": 1000,
+    "duration_seconds": 0.11748337745666504,
+    "cycles_per_second": 8511.842455064423,
+    "final_emotional_state": {
+      "frustration": 0.19999999999999996,
+      "engagement": 1.0,
+      "curiosity": 0.95,
+      "progress": 0.0
+    },
+    "stable_operation": true,
+    "cascade_detected": false,
+    "max_frustration": 0.19999999999999998,
+    "min_engagement": 0.43999999999999995,
+    "total_interventions": 0,
+    "interventions_by_type": {
+      "frustration_regulated": 0.0,
+      "curiosity_boosted": 0.0,
+      "engagement_boosted": 0.0,
+      "recovery_count": 998
+    },
+    "analysis": {
+      "frustration_mean": 0.19989999999999994,
+      "frustration_max": 0.19999999999999998,
+      "frustration_min": 0.09999999999999999,
+      "frustration_variance": 9.989999999999992e-06,
+      "engagement_mean": 0.9913500000000001,
+      "engagement_min": 0.43999999999999995,
+      "early_intervention_rate": 0.0,
+      "late_intervention_rate": 0.0,
+      "ep_maturation_score": 0.0,
+      "stable_operation": true
+    }
+  },
+  "recovery": {
+    "test_name": "recovery_test",
+    "total_cycles": 1000,
+    "duration_seconds": 0.1186532974243164,
+    "cycles_per_second": 8427.915799287879,
+    "final_emotional_state": {
+      "frustration": 0.7999999999999999,
+      "engagement": 1.0,
+      "curiosity": 0.15,
+      "progress": 0.0
+    },
+    "stable_operation": true,
+    "cascade_detected": false,
+    "max_frustration": 0.85,
+    "min_engagement": 0.23999999999999996,
+    "total_interventions": 2,
+    "interventions_by_type": {
+      "frustration_regulated": 0.3,
+      "curiosity_boosted": 0.2,
+      "engagement_boosted": 0.0,
+      "recovery_count": 998
+    },
+    "analysis": {
+      "frustration_mean": 0.8000499999999999,
+      "frustration_max": 0.85,
+      "frustration_min": 0.7999999999999999,
+      "frustration_variance": 2.4975000000000045e-06,
+      "engagement_mean": 0.98445,
+      "engagement_min": 0.23999999999999996,
+      "early_intervention_rate": 0.6666666666666666,
+      "late_intervention_rate": 0.0,
+      "ep_maturation_score": 1.0,
+      "stable_operation": true
+    }
+  }
+}

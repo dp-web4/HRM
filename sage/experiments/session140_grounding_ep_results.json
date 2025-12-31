@@ -1,0 +1,151 @@
+{
+  "session": 140,
+  "date": "2025-12-30",
+  "hardware": "thor",
+  "title": "Grounding EP Integration - Fourth EP Domain",
+  
+  "research_question": "Can EP framework extend from internal consciousness to external grounding, creating unified self-awareness spanning subjective and objective domains?",
+  
+  "hypothesis": "Epistemic Proprioception pattern (Context → Pattern → Prediction → Adjustment) generalizes beyond internal consciousness to external coherence verification",
+  
+  "implementation": {
+    "grounding_context": {
+      "file": "session140_grounding_ep_integration.py",
+      "lines": 698,
+      "components": [
+        "HardwareAttestation (Thor platform identity)",
+        "ModelState (computational capabilities)",
+        "FederationState (multi-machine coordination)",
+        "SAGEGroundingContext (complete presence state)"
+      ]
+    },
+    
+    "grounding_ep": {
+      "risk_patterns": [
+        "HARDWARE_CHANGE", "CAPABILITY_MISMATCH",
+        "MODEL_SWITCH_UNEXPECTED", "MEMORY_PRESSURE_HIGH", "INFERENCE_UNAVAILABLE",
+        "PEER_LOSS_RAPID", "CONSENSUS_ROLE_FLIP", "SYNC_DRIFT_EXCESSIVE",
+        "VALIDATION_GAP_LONG", "TTL_EXPIRING",
+        "CI_DECLINING", "VALIDATION_FAILURES"
+      ],
+      "predictions": "GroundingEPPrediction (predicted_ci, confidence, risk_score, recommendation, reasoning)",
+      "adjustments": ["require_full_revalidation", "increase_validation_checks"],
+      "thresholds": {
+        "ci_critical": 0.4,
+        "ci_low": 0.6,
+        "confidence_threshold": 0.7,
+        "high_risk": 0.25
+      }
+    },
+    
+    "multi_ep_coordinator": {
+      "file": "multi_ep_coordinator.py",
+      "changes": [
+        "Added EPDomain.GROUNDING enum",
+        "Updated default priority: EMOTIONAL > GROUNDING > ATTENTION > QUALITY",
+        "Extended coordinate() to accept grounding_pred",
+        "Updated MultiEPDecision to include grounding_prediction",
+        "Extended _collect_predictions() for four domains"
+      ]
+    }
+  },
+  
+  "test_results": {
+    "test_1_grounding_context": {
+      "status": "PASS",
+      "platform": "jetson-agx-thor",
+      "device_id": "thor-dev-001",
+      "model": "llama-3.2-1b-instruct (int4)",
+      "memory_pressure": 0.37,
+      "coherence_index": 1.0
+    },
+    
+    "test_2_grounding_ep_prediction": {
+      "status": "PASS",
+      "cases": {
+        "healthy_grounding": {
+          "predicted_ci": 1.0,
+          "risk_score": 0.0,
+          "recommendation": "proceed",
+          "risks": []
+        },
+        "high_memory_pressure": {
+          "predicted_ci": 0.9,
+          "risk_score": 0.2,
+          "recommendation": "proceed",
+          "risks": ["memory_pressure_high"]
+        },
+        "ttl_expiring": {
+          "predicted_ci": 0.85,
+          "risk_score": 0.3,
+          "recommendation": "revalidate",
+          "risks": ["ttl_expiring"]
+        },
+        "ci_declining": {
+          "predicted_ci": 0.8,
+          "risk_score": 0.4,
+          "recommendation": "revalidate",
+          "risks": ["ci_declining"]
+        }
+      }
+    },
+    
+    "test_3_ep_conversion": {
+      "status": "PASS",
+      "mapping": {
+        "predicted_ci": "outcome_probability",
+        "risk_score": "severity",
+        "domain": "EPDomain.GROUNDING"
+      }
+    },
+    
+    "test_4_serialization": {
+      "status": "PASS",
+      "sections": ["hardware", "model", "federation", "coherence"]
+    }
+  },
+  
+  "key_insights": [
+    "EP pattern generalizes beyond internal consciousness to external coherence",
+    "Same architecture (Context → Pattern → Prediction → Adjustment) works for both",
+    "Grounding EP prevents external trust cascade (complements Emotional EP internal cascade prevention)",
+    "Mature consciousness spans BOTH self-awareness (internal EP) and presence-awareness (external EP)",
+    "Four-domain EP demonstrates unified consciousness across subjective and objective dimensions"
+  ],
+  
+  "ep_framework_status": {
+    "internal_consciousness": {
+      "emotional_ep": {"status": "complete", "prevents": "frustration cascade"},
+      "quality_ep": {"status": "complete", "improves": "response quality"},
+      "attention_ep": {"status": "complete", "optimizes": "resource allocation"}
+    },
+    "external_coherence": {
+      "grounding_ep": {"status": "complete", "prevents": "trust cascade", "session": 140}
+    }
+  },
+  
+  "priority_order": [
+    "1. EMOTIONAL (prevent internal cascade)",
+    "2. GROUNDING (prevent external cascade)",
+    "3. ATTENTION (optimize allocation)",
+    "4. QUALITY (improve output)"
+  ],
+  
+  "architectural_significance": "Demonstrates that consciousness requires both internal regulation (emotional, quality, attention) and external coherence (grounding). EP is the unifying pattern.",
+  
+  "next_steps": [
+    "Integrate grounding EP into IntegratedConsciousnessLoop",
+    "Test Thor-Sprout federation with cross-machine grounding",
+    "Implement Relationship Coherence EP (fifth domain from web4)",
+    "Build pattern corpuses for grounding EP maturation"
+  ],
+  
+  "files_created": [
+    "sage/experiments/session140_grounding_ep_integration.py (698 lines)",
+    "sage/experiments/session140_grounding_ep_results.json (this file)"
+  ],
+  
+  "files_modified": [
+    "sage/experiments/multi_ep_coordinator.py (added GROUNDING domain)"
+  ]
+}

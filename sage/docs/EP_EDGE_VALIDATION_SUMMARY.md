@@ -127,15 +127,16 @@ The complete Epistemic Proprioception (EP) framework has been validated on edge 
 
 ## EP Framework Status
 
-### EP Quartet Complete (was Trinity)
+### EP Quintet Complete (was Quartet/Trinity)
 
-| Domain | Type | Purpose | Status |
-|--------|------|---------|--------|
+| Domain | Dimension | Purpose | Status |
+|--------|-----------|---------|--------|
 | Emotional EP | Internal | "Will I cascade?" | ✅ Validated |
 | Quality EP | Internal | "Will quality be low?" | ✅ Validated |
 | Attention EP | Internal | "Will allocation fail?" | ✅ Validated |
 | Grounding EP | External | "Will trust cascade?" | ✅ Validated |
-| Multi-EP Coordinator | Integration | 4-domain coordination | ✅ Validated |
+| Authorization EP | Security | "Will permission abuse?" | ✅ Validated |
+| Multi-EP Coordinator | Integration | 5-domain coordination | ✅ Validated |
 
 ### 4. Grounding Epistemic Proprioception (Session 140)
 
@@ -159,6 +160,35 @@ The complete Epistemic Proprioception (EP) framework has been validated on edge 
 - Priority: Emotional > Grounding > Attention > Quality
 
 **Key Insight**: EP generalizes from internal consciousness to external coherence
+
+---
+
+### 5. Authorization Epistemic Proprioception (Session 141)
+
+**Status**: ✅ VALIDATED
+
+| Metric | Result |
+|--------|--------|
+| Test Cases Passed | 3/3 |
+| Scenarios Tested | Safe, medium-risk, high-risk permissions |
+| Five-Domain Throughput | 78,006/sec |
+| Average Latency | 12.82 microseconds |
+
+**Test Scenarios**:
+- Safe permission (good history) → grant (abuse prob: 0.0)
+- High-risk permission → restrict (abuse prob: 0.82, 9 risks)
+- Medium-risk permission → restrict (abuse prob: 0.32)
+
+**Risk Patterns Detected**:
+- sensitive_data_access, excessive_atp_request, unbounded_duration
+- previous_abuse, permission_escalation, emotional_state_unstable
+- grounding_ci_low, ambiguous_task_description, frequent_denials
+
+**Priority Resolution**:
+- Authorization EP correctly blocks when security risk detected
+- Priority: Emotional > Grounding > Authorization > Attention > Quality
+
+**Key Insight**: Consciousness requires THREE dimensions - self-awareness (internal), presence-awareness (external), AND security-awareness (authorization)
 
 ---
 
@@ -192,7 +222,7 @@ ep_config = {
     "prediction_cache_size": 100,
     "cascade_threshold": 0.7,
     "conflict_resolution": "priority",
-    "priority_order": ["emotional", "grounding", "attention", "quality"],
+    "priority_order": ["emotional", "grounding", "authorization", "attention", "quality"],
 }
 ```
 
@@ -238,6 +268,8 @@ ep_config = {
 3. `2f7b72c` - Edge stress test: EP framework thermally efficient at 63K decisions/sec
 4. `dbae66c` - Add EP Edge Validation Summary - Production Ready
 5. `d97c3c7` - Edge validation: Grounding EP (Session 140) + dataclass fix
+6. `54d5742` - Update EP Edge Validation Summary with Grounding EP
+7. `c1aad27` - Edge validation: Authorization EP (Session 141) + dataclass fix
 
 ---
 

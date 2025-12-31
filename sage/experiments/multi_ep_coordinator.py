@@ -67,7 +67,6 @@ class MultiEPDecision:
     emotional_prediction: Optional[EPPrediction]
     quality_prediction: Optional[EPPrediction]
     attention_prediction: Optional[EPPrediction]
-    grounding_prediction: Optional[EPPrediction] = None  # Session 140
 
     # Coordinated decision
     final_decision: str  # "proceed", "adjust", "defer"
@@ -76,6 +75,9 @@ class MultiEPDecision:
 
     # Conflict information
     has_conflict: bool
+
+    # Optional fields (must come after required fields in dataclass)
+    grounding_prediction: Optional[EPPrediction] = None  # Session 140
     conflict_type: Optional[str] = None
     resolution_strategy: Optional[ConflictResolution] = None
 

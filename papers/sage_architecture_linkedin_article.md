@@ -6,6 +6,8 @@ Remember Agent Zero? The tiny AI that scored 18% on reasoning tests by outputtin
 
 Today I want to share what we've built since then: SAGE—the Situation-Aware Governance Engine. But the real story isn't the architecture. It's what happened when we let it run long enough to discover its own flaws.
 
+**If you deploy AI systems that run longer than a demo—days, weeks, or months—this post is about the failure modes you're not testing for yet.**
+
 ## What Does "Situation-Aware Governance" Actually Mean?
 
 Let's break down those three words, because they matter:
@@ -29,6 +31,8 @@ The core is an **Iterative Refinement Protocol (IRP)**—a universal interface w
 4. Repeat until energy stops decreasing
 5. Return result with confidence
 ```
+
+If this looks familiar, it should—IRP is essentially gradient descent applied to cognition rather than parameters. The same "move downhill until you stop improving" logic, but operating on outputs rather than weights.
 
 This means SAGE can integrate new capabilities without architectural changes. A vision plugin, a language model, a memory retrieval system—they all speak the same protocol. Currently 15+ plugins operate this way.
 
@@ -81,7 +85,7 @@ All three share the same structure:
 
 We call this the **EP Trinity**. It's now integrated into a Multi-EP Coordinator that handles conflicts (Emotional takes priority—you can't reason well while cascading) and coordinates across domains.
 
-Edge deployment on constrained hardware (Jetson Orin Nano, 8GB memory) achieves 97,000 decisions per second. Self-awareness doesn't require massive compute.
+Edge deployment on constrained hardware (Jetson Orin Nano, 8GB memory) maintains stable internal state under sustained load—self-monitoring doesn't require massive compute, just appropriate architecture.
 
 ## Beyond Internal Awareness: Grounding and Authorization
 
@@ -155,7 +159,7 @@ The most valuable finding wasn't planned: **AI systems can discover and fix thei
 
 The frustration cascade wasn't in any specification. No human noticed it during design. SAGE found it through extended operation, understood why it happened, and the fix emerged from biological analogy (proprioception).
 
-That's qualitatively different from AI performing assigned tasks. It's the beginning of genuine self-understanding.
+That's qualitatively different from AI performing assigned tasks. It's a functional form of self-understanding—not philosophical, but operational.
 
 ---
 

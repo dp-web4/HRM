@@ -65,12 +65,10 @@ class MultiEPDecision:
     Integrates predictions across domains to make coherent decision.
     """
 
-    # Individual predictions
+    # Individual predictions (required fields first)
     emotional_prediction: Optional[EPPrediction]
     quality_prediction: Optional[EPPrediction]
     attention_prediction: Optional[EPPrediction]
-    grounding_prediction: Optional[EPPrediction] = None  # Session 140
-    authorization_prediction: Optional[EPPrediction] = None  # Session 141
 
     # Coordinated decision
     final_decision: str  # "proceed", "adjust", "defer"
@@ -82,6 +80,7 @@ class MultiEPDecision:
 
     # Optional fields (must come after required fields in dataclass)
     grounding_prediction: Optional[EPPrediction] = None  # Session 140
+    authorization_prediction: Optional[EPPrediction] = None  # Session 141
     conflict_type: Optional[str] = None
     resolution_strategy: Optional[ConflictResolution] = None
 

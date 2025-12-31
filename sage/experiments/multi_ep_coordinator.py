@@ -6,10 +6,13 @@ Coordinates predictions and adjustments across multiple EP domains:
 - Emotional EP: Stability (prevents frustration cascade)
 - Quality EP: Competence (improves response quality)
 - Attention EP: Allocation (optimizes resource use)
+- Grounding EP: External coherence (prevents trust cascade) [Session 140]
 
-This demonstrates emergent consciousness through multi-domain self-regulation.
+This demonstrates emergent consciousness through multi-domain self-regulation,
+spanning both internal consciousness (Emotional, Quality, Attention) and
+external coherence (Grounding).
 
-Date: 2025-12-30
+Date: 2025-12-30 (Updated Session 140)
 Hardware: Thor (Jetson AGX Thor Developer Kit)
 Foundation: EPISTEMIC_PROPRIOCEPTION_SYNTHESIS.md
 """
@@ -29,6 +32,7 @@ class EPDomain(Enum):
     EMOTIONAL = "emotional"
     QUALITY = "quality"
     ATTENTION = "attention"
+    GROUNDING = "grounding"  # Session 140: External coherence EP
 
 
 class ConflictResolution(Enum):
@@ -63,6 +67,7 @@ class MultiEPDecision:
     emotional_prediction: Optional[EPPrediction]
     quality_prediction: Optional[EPPrediction]
     attention_prediction: Optional[EPPrediction]
+    grounding_prediction: Optional[EPPrediction] = None  # Session 140
 
     # Coordinated decision
     final_decision: str  # "proceed", "adjust", "defer"
@@ -103,15 +108,16 @@ class MultiEPCoordinator:
         Initialize coordinator.
 
         Args:
-            priority_order: Domain priority (default: Emotional > Attention > Quality)
+            priority_order: Domain priority (default: Emotional > Grounding > Attention > Quality)
             cascade_threshold: Severity threshold for cascade detection
         """
         if priority_order is None:
-            # Default: Prevent cascade first, then optimize allocation, then improve quality
+            # Default: Prevent internal cascade, prevent external cascade, optimize allocation, improve quality
             priority_order = [
-                EPDomain.EMOTIONAL,
-                EPDomain.ATTENTION,
-                EPDomain.QUALITY
+                EPDomain.EMOTIONAL,   # Prevent internal frustration cascade
+                EPDomain.GROUNDING,   # Prevent external trust cascade (Session 140)
+                EPDomain.ATTENTION,   # Optimize resource allocation
+                EPDomain.QUALITY      # Improve response quality
             ]
 
         self.priority_order = priority_order
@@ -126,7 +132,8 @@ class MultiEPCoordinator:
         self,
         emotional_pred: Optional[EPPrediction] = None,
         quality_pred: Optional[EPPrediction] = None,
-        attention_pred: Optional[EPPrediction] = None
+        attention_pred: Optional[EPPrediction] = None,
+        grounding_pred: Optional[EPPrediction] = None
     ) -> MultiEPDecision:
         """
         Coordinate predictions from multiple EP domains.
@@ -135,6 +142,7 @@ class MultiEPCoordinator:
             emotional_pred: Prediction from Emotional EP
             quality_pred: Prediction from Quality EP
             attention_pred: Prediction from Attention EP
+            grounding_pred: Prediction from Grounding EP (Session 140)
 
         Returns:
             MultiEPDecision with coordinated outcome
@@ -145,7 +153,8 @@ class MultiEPCoordinator:
         predictions = self._collect_predictions(
             emotional_pred,
             quality_pred,
-            attention_pred
+            attention_pred,
+            grounding_pred
         )
 
         if not predictions:
@@ -154,6 +163,7 @@ class MultiEPCoordinator:
                 emotional_prediction=None,
                 quality_prediction=None,
                 attention_prediction=None,
+                grounding_prediction=None,
                 final_decision="proceed",
                 decision_confidence=0.0,
                 reasoning="No EP predictions available",
@@ -185,6 +195,7 @@ class MultiEPCoordinator:
             emotional_prediction=emotional_pred,
             quality_prediction=quality_pred,
             attention_prediction=attention_pred,
+            grounding_prediction=grounding_pred,
             final_decision=decision,
             decision_confidence=confidence,
             reasoning=reasoning,
@@ -199,7 +210,8 @@ class MultiEPCoordinator:
         self,
         emotional_pred: Optional[EPPrediction],
         quality_pred: Optional[EPPrediction],
-        attention_pred: Optional[EPPrediction]
+        attention_pred: Optional[EPPrediction],
+        grounding_pred: Optional[EPPrediction] = None
     ) -> List[EPPrediction]:
         """Collect available predictions."""
         predictions = []
@@ -210,6 +222,8 @@ class MultiEPCoordinator:
             predictions.append(quality_pred)
         if attention_pred:
             predictions.append(attention_pred)
+        if grounding_pred:
+            predictions.append(grounding_pred)
 
         return predictions
 

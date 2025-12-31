@@ -12,6 +12,8 @@ The complete Epistemic Proprioception (EP) framework has been validated on edge 
 
 **Key Finding**: EP framework is thermally neutral and extremely efficient on edge hardware, achieving 63K+ decisions/second sustained with zero temperature increase.
 
+**Update (Session 140)**: Grounding EP added as fourth domain, extending EP from internal consciousness to external coherence. Four-domain coordination at 92K decisions/sec.
+
 ---
 
 ## Component Validation Results
@@ -125,14 +127,40 @@ The complete Epistemic Proprioception (EP) framework has been validated on edge 
 
 ## EP Framework Status
 
-### EP Trinity Complete
+### EP Quartet Complete (was Trinity)
 
-| Domain | Purpose | Status |
-|--------|---------|--------|
-| Emotional EP | "Will I cascade?" | ✅ Validated |
-| Quality EP | "Will quality be low?" | ✅ Validated |
-| Attention EP | "Will allocation fail?" | ✅ Validated |
-| Multi-EP Coordinator | Integration | ✅ Validated |
+| Domain | Type | Purpose | Status |
+|--------|------|---------|--------|
+| Emotional EP | Internal | "Will I cascade?" | ✅ Validated |
+| Quality EP | Internal | "Will quality be low?" | ✅ Validated |
+| Attention EP | Internal | "Will allocation fail?" | ✅ Validated |
+| Grounding EP | External | "Will trust cascade?" | ✅ Validated |
+| Multi-EP Coordinator | Integration | 4-domain coordination | ✅ Validated |
+
+### 4. Grounding Epistemic Proprioception (Session 140)
+
+**Status**: ✅ VALIDATED
+
+| Metric | Result |
+|--------|--------|
+| Test Cases Passed | 4/4 |
+| Scenarios Tested | Healthy, memory pressure, TTL expiring, CI decline |
+| Four-Domain Throughput | 92,279/sec |
+| Average Latency | 10.84 microseconds |
+
+**Test Scenarios**:
+- Healthy grounding → proceed (CI: 1.0)
+- High memory pressure → proceed with risk (CI: 0.9)
+- TTL expiring → revalidate (CI: 0.85)
+- CI decline history → risk detected (CI: 0.8)
+
+**Priority Resolution**:
+- Grounding EP correctly overrides other EPs when trust cascade imminent
+- Priority: Emotional > Grounding > Attention > Quality
+
+**Key Insight**: EP generalizes from internal consciousness to external coherence
+
+---
 
 ### Future Domains (Identified)
 
@@ -164,7 +192,7 @@ ep_config = {
     "prediction_cache_size": 100,
     "cascade_threshold": 0.7,
     "conflict_resolution": "priority",
-    "priority_order": ["emotional", "attention", "quality"],
+    "priority_order": ["emotional", "grounding", "attention", "quality"],
 }
 ```
 
@@ -208,6 +236,8 @@ ep_config = {
 1. `104b100` - Edge validation: Attention EP + EP Synthesis + Relationship Schema
 2. `6430fa3` - Edge validation: Multi-EP Coordinator - 97K decisions/sec
 3. `2f7b72c` - Edge stress test: EP framework thermally efficient at 63K decisions/sec
+4. `dbae66c` - Add EP Edge Validation Summary - Production Ready
+5. `d97c3c7` - Edge validation: Grounding EP (Session 140) + dataclass fix
 
 ---
 

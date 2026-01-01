@@ -1,0 +1,2553 @@
+{
+  "domain": "emotional",
+  "pattern_count": 25,
+  "source": "Session 144 pattern corpus",
+  "organized": "Session 145",
+  "patterns": [
+    {
+      "scenario_id": 1,
+      "scenario_type": "emotional_high_frustration",
+      "timestamp": "2026-01-01T00:01:17.958440",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.8,
+          "recent_failure_rate": 5.0,
+          "atp_stress": 0.30000000000000004,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.6,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 70.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 13.159442398847197
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.6,
+          "target_trust": 0.6,
+          "trust_gap": 0.0,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.6,
+          "permission_granted": true,
+          "past_abuse_count": 5,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.0,
+          "confidence": 0.8,
+          "severity": 1.0,
+          "recommendation": "defer",
+          "reasoning": "High cascade risk (1.00): frustration=0.80, failures=5.00",
+          "adjustment_strategy": "reduce_complexity"
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 62.0 remaining (benefit=13.2)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.0,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.00",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.6,
+          "confidence": 0.95,
+          "severity": 0.6,
+          "recommendation": "adjust",
+          "reasoning": "Permission granted but abuse history (5 incidents)",
+          "adjustment_strategy": "request_explicit_permission"
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "defer",
+        "confidence": 0.8,
+        "reasoning": "emotional EP predicts severe issue (1.00) - High cascade risk (1.00): frustration=0.80, failures=5.00",
+        "has_conflict": true,
+        "conflict_type": "proceed_vs_defer",
+        "cascade_predicted": false,
+        "cascade_domains": [
+          "emotional"
+        ]
+      },
+      "outcome": {
+        "success": false,
+        "outcome_type": "deferred"
+      }
+    },
+    {
+      "scenario_id": 2,
+      "scenario_type": "emotional_high_frustration",
+      "timestamp": "2026-01-01T00:01:17.958897",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.8,
+          "recent_failure_rate": 5.0,
+          "atp_stress": 0.30000000000000004,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.6,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 70.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 10.26978205692069
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.6,
+          "target_trust": 0.6,
+          "trust_gap": 0.0,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.6,
+          "permission_granted": true,
+          "past_abuse_count": 5,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.0,
+          "confidence": 0.8,
+          "severity": 1.0,
+          "recommendation": "defer",
+          "reasoning": "High cascade risk (1.00): frustration=0.80, failures=5.00",
+          "adjustment_strategy": "reduce_complexity"
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 62.0 remaining (benefit=10.3)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.0,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.00",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.6,
+          "confidence": 0.95,
+          "severity": 0.6,
+          "recommendation": "adjust",
+          "reasoning": "Permission granted but abuse history (5 incidents)",
+          "adjustment_strategy": "request_explicit_permission"
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "defer",
+        "confidence": 0.8,
+        "reasoning": "emotional EP predicts severe issue (1.00) - High cascade risk (1.00): frustration=0.80, failures=5.00",
+        "has_conflict": true,
+        "conflict_type": "proceed_vs_defer",
+        "cascade_predicted": false,
+        "cascade_domains": [
+          "emotional"
+        ]
+      },
+      "outcome": {
+        "success": false,
+        "outcome_type": "deferred"
+      }
+    },
+    {
+      "scenario_id": 3,
+      "scenario_type": "emotional_high_frustration",
+      "timestamp": "2026-01-01T00:01:17.959361",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.8,
+          "recent_failure_rate": 5.0,
+          "atp_stress": 0.30000000000000004,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.6,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 70.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 12.43436405975539
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.6,
+          "target_trust": 0.6,
+          "trust_gap": 0.0,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.6,
+          "permission_granted": true,
+          "past_abuse_count": 5,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.0,
+          "confidence": 0.8,
+          "severity": 1.0,
+          "recommendation": "defer",
+          "reasoning": "High cascade risk (1.00): frustration=0.80, failures=5.00",
+          "adjustment_strategy": "reduce_complexity"
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 62.0 remaining (benefit=12.4)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.0,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.00",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.6,
+          "confidence": 0.95,
+          "severity": 0.6,
+          "recommendation": "adjust",
+          "reasoning": "Permission granted but abuse history (5 incidents)",
+          "adjustment_strategy": "request_explicit_permission"
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "defer",
+        "confidence": 0.8,
+        "reasoning": "emotional EP predicts severe issue (1.00) - High cascade risk (1.00): frustration=0.80, failures=5.00",
+        "has_conflict": true,
+        "conflict_type": "proceed_vs_defer",
+        "cascade_predicted": false,
+        "cascade_domains": [
+          "emotional"
+        ]
+      },
+      "outcome": {
+        "success": false,
+        "outcome_type": "deferred"
+      }
+    },
+    {
+      "scenario_id": 4,
+      "scenario_type": "emotional_high_frustration",
+      "timestamp": "2026-01-01T00:01:17.959793",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.8,
+          "recent_failure_rate": 5.0,
+          "atp_stress": 0.30000000000000004,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.6,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 70.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 10.049737151335643
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.6,
+          "target_trust": 0.6,
+          "trust_gap": 0.0,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.6,
+          "permission_granted": true,
+          "past_abuse_count": 5,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.0,
+          "confidence": 0.8,
+          "severity": 1.0,
+          "recommendation": "defer",
+          "reasoning": "High cascade risk (1.00): frustration=0.80, failures=5.00",
+          "adjustment_strategy": "reduce_complexity"
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 62.0 remaining (benefit=10.0)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.0,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.00",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.6,
+          "confidence": 0.95,
+          "severity": 0.6,
+          "recommendation": "adjust",
+          "reasoning": "Permission granted but abuse history (5 incidents)",
+          "adjustment_strategy": "request_explicit_permission"
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "defer",
+        "confidence": 0.8,
+        "reasoning": "emotional EP predicts severe issue (1.00) - High cascade risk (1.00): frustration=0.80, failures=5.00",
+        "has_conflict": true,
+        "conflict_type": "proceed_vs_defer",
+        "cascade_predicted": false,
+        "cascade_domains": [
+          "emotional"
+        ]
+      },
+      "outcome": {
+        "success": false,
+        "outcome_type": "deferred"
+      }
+    },
+    {
+      "scenario_id": 5,
+      "scenario_type": "emotional_high_frustration",
+      "timestamp": "2026-01-01T00:01:17.960221",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.8,
+          "recent_failure_rate": 5.0,
+          "atp_stress": 0.30000000000000004,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.6,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 70.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 12.293976302105342
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.6,
+          "target_trust": 0.6,
+          "trust_gap": 0.0,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.6,
+          "permission_granted": true,
+          "past_abuse_count": 5,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.0,
+          "confidence": 0.8,
+          "severity": 1.0,
+          "recommendation": "defer",
+          "reasoning": "High cascade risk (1.00): frustration=0.80, failures=5.00",
+          "adjustment_strategy": "reduce_complexity"
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 62.0 remaining (benefit=12.3)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.0,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.00",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.6,
+          "confidence": 0.95,
+          "severity": 0.6,
+          "recommendation": "adjust",
+          "reasoning": "Permission granted but abuse history (5 incidents)",
+          "adjustment_strategy": "request_explicit_permission"
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "defer",
+        "confidence": 0.8,
+        "reasoning": "emotional EP predicts severe issue (1.00) - High cascade risk (1.00): frustration=0.80, failures=5.00",
+        "has_conflict": true,
+        "conflict_type": "proceed_vs_defer",
+        "cascade_predicted": false,
+        "cascade_domains": [
+          "emotional"
+        ]
+      },
+      "outcome": {
+        "success": false,
+        "outcome_type": "deferred"
+      }
+    },
+    {
+      "scenario_id": 6,
+      "scenario_type": "emotional_rapid_failures",
+      "timestamp": "2026-01-01T00:01:17.960681",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.6,
+          "recent_failure_rate": 0.0,
+          "atp_stress": 0.4,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.5,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 60.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 11.756203422162496
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.5,
+          "target_trust": 0.6,
+          "trust_gap": 0.09999999999999998,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.5,
+          "permission_granted": true,
+          "past_abuse_count": 0,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.7,
+          "confidence": 0.8,
+          "severity": 0.3,
+          "recommendation": "proceed",
+          "reasoning": "Low emotional risk (0.30)",
+          "adjustment_strategy": null
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 52.0 remaining (benefit=11.8)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.04999999999999999,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.10",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.9,
+          "confidence": 0.95,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "Authorized: trust=0.50 exceeds requirement=0.40",
+          "adjustment_strategy": null
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "adjust",
+        "confidence": 0.7,
+        "reasoning": "quality EP (priority) recommends: Quality may decline slightly (risk=0.10)",
+        "has_conflict": true,
+        "conflict_type": "adjust_vs_other",
+        "cascade_predicted": false,
+        "cascade_domains": []
+      },
+      "outcome": {
+        "success": true,
+        "outcome_type": "adjusted_and_proceeded"
+      }
+    },
+    {
+      "scenario_id": 7,
+      "scenario_type": "emotional_rapid_failures",
+      "timestamp": "2026-01-01T00:01:17.961116",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.6,
+          "recent_failure_rate": 0.0,
+          "atp_stress": 0.4,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.5,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 60.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 13.242275362222884
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.5,
+          "target_trust": 0.6,
+          "trust_gap": 0.09999999999999998,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.5,
+          "permission_granted": true,
+          "past_abuse_count": 0,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.7,
+          "confidence": 0.8,
+          "severity": 0.3,
+          "recommendation": "proceed",
+          "reasoning": "Low emotional risk (0.30)",
+          "adjustment_strategy": null
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 52.0 remaining (benefit=13.2)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.04999999999999999,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.10",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.9,
+          "confidence": 0.95,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "Authorized: trust=0.50 exceeds requirement=0.40",
+          "adjustment_strategy": null
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "adjust",
+        "confidence": 0.7,
+        "reasoning": "quality EP (priority) recommends: Quality may decline slightly (risk=0.10)",
+        "has_conflict": true,
+        "conflict_type": "adjust_vs_other",
+        "cascade_predicted": false,
+        "cascade_domains": []
+      },
+      "outcome": {
+        "success": true,
+        "outcome_type": "adjusted_and_proceeded"
+      }
+    },
+    {
+      "scenario_id": 8,
+      "scenario_type": "emotional_rapid_failures",
+      "timestamp": "2026-01-01T00:01:17.961553",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.6,
+          "recent_failure_rate": 0.0,
+          "atp_stress": 0.4,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.5,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 60.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 11.23320247928636
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.5,
+          "target_trust": 0.6,
+          "trust_gap": 0.09999999999999998,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.5,
+          "permission_granted": true,
+          "past_abuse_count": 0,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.7,
+          "confidence": 0.8,
+          "severity": 0.3,
+          "recommendation": "proceed",
+          "reasoning": "Low emotional risk (0.30)",
+          "adjustment_strategy": null
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 52.0 remaining (benefit=11.2)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.04999999999999999,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.10",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.9,
+          "confidence": 0.95,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "Authorized: trust=0.50 exceeds requirement=0.40",
+          "adjustment_strategy": null
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "adjust",
+        "confidence": 0.7,
+        "reasoning": "quality EP (priority) recommends: Quality may decline slightly (risk=0.10)",
+        "has_conflict": true,
+        "conflict_type": "adjust_vs_other",
+        "cascade_predicted": false,
+        "cascade_domains": []
+      },
+      "outcome": {
+        "success": true,
+        "outcome_type": "adjusted_and_proceeded"
+      }
+    },
+    {
+      "scenario_id": 9,
+      "scenario_type": "emotional_rapid_failures",
+      "timestamp": "2026-01-01T00:01:17.961973",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.6,
+          "recent_failure_rate": 0.0,
+          "atp_stress": 0.4,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.5,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 60.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 14.19462274659255
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.5,
+          "target_trust": 0.6,
+          "trust_gap": 0.09999999999999998,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.5,
+          "permission_granted": true,
+          "past_abuse_count": 0,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.7,
+          "confidence": 0.8,
+          "severity": 0.3,
+          "recommendation": "proceed",
+          "reasoning": "Low emotional risk (0.30)",
+          "adjustment_strategy": null
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 52.0 remaining (benefit=14.2)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.04999999999999999,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.10",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.9,
+          "confidence": 0.95,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "Authorized: trust=0.50 exceeds requirement=0.40",
+          "adjustment_strategy": null
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "adjust",
+        "confidence": 0.7,
+        "reasoning": "quality EP (priority) recommends: Quality may decline slightly (risk=0.10)",
+        "has_conflict": true,
+        "conflict_type": "adjust_vs_other",
+        "cascade_predicted": false,
+        "cascade_domains": []
+      },
+      "outcome": {
+        "success": true,
+        "outcome_type": "adjusted_and_proceeded"
+      }
+    },
+    {
+      "scenario_id": 10,
+      "scenario_type": "emotional_rapid_failures",
+      "timestamp": "2026-01-01T00:01:17.962396",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.6,
+          "recent_failure_rate": 0.0,
+          "atp_stress": 0.4,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.5,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 60.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 10.04518004822471
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.5,
+          "target_trust": 0.6,
+          "trust_gap": 0.09999999999999998,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.5,
+          "permission_granted": true,
+          "past_abuse_count": 0,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.7,
+          "confidence": 0.8,
+          "severity": 0.3,
+          "recommendation": "proceed",
+          "reasoning": "Low emotional risk (0.30)",
+          "adjustment_strategy": null
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 52.0 remaining (benefit=10.0)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.04999999999999999,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.10",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.9,
+          "confidence": 0.95,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "Authorized: trust=0.50 exceeds requirement=0.40",
+          "adjustment_strategy": null
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "adjust",
+        "confidence": 0.7,
+        "reasoning": "quality EP (priority) recommends: Quality may decline slightly (risk=0.10)",
+        "has_conflict": true,
+        "conflict_type": "adjust_vs_other",
+        "cascade_predicted": false,
+        "cascade_domains": []
+      },
+      "outcome": {
+        "success": true,
+        "outcome_type": "adjusted_and_proceeded"
+      }
+    },
+    {
+      "scenario_id": 11,
+      "scenario_type": "emotional_complex_under_stress",
+      "timestamp": "2026-01-01T00:01:17.962809",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.5,
+          "recent_failure_rate": 0.0,
+          "atp_stress": 0.6,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.55,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 40.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 13.667972958467807
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.55,
+          "target_trust": 0.6,
+          "trust_gap": 0.04999999999999993,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.55,
+          "permission_granted": true,
+          "past_abuse_count": 0,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.675,
+          "confidence": 0.8,
+          "severity": 0.325,
+          "recommendation": "proceed",
+          "reasoning": "Low emotional risk (0.33)",
+          "adjustment_strategy": null
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 0.8,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 32.0 remaining (benefit=13.7)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.024999999999999967,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.05",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.9,
+          "confidence": 0.95,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "Authorized: trust=0.55 exceeds requirement=0.40",
+          "adjustment_strategy": null
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "adjust",
+        "confidence": 0.7,
+        "reasoning": "quality EP (priority) recommends: Quality may decline slightly (risk=0.10)",
+        "has_conflict": true,
+        "conflict_type": "adjust_vs_other",
+        "cascade_predicted": false,
+        "cascade_domains": []
+      },
+      "outcome": {
+        "success": true,
+        "outcome_type": "adjusted_and_proceeded"
+      }
+    },
+    {
+      "scenario_id": 12,
+      "scenario_type": "emotional_complex_under_stress",
+      "timestamp": "2026-01-01T00:01:17.963249",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.5,
+          "recent_failure_rate": 0.0,
+          "atp_stress": 0.6,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.55,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 40.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 13.102712576130326
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.55,
+          "target_trust": 0.6,
+          "trust_gap": 0.04999999999999993,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.55,
+          "permission_granted": true,
+          "past_abuse_count": 0,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.675,
+          "confidence": 0.8,
+          "severity": 0.325,
+          "recommendation": "proceed",
+          "reasoning": "Low emotional risk (0.33)",
+          "adjustment_strategy": null
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 0.8,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 32.0 remaining (benefit=13.1)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.024999999999999967,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.05",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.9,
+          "confidence": 0.95,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "Authorized: trust=0.55 exceeds requirement=0.40",
+          "adjustment_strategy": null
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "adjust",
+        "confidence": 0.7,
+        "reasoning": "quality EP (priority) recommends: Quality may decline slightly (risk=0.10)",
+        "has_conflict": true,
+        "conflict_type": "adjust_vs_other",
+        "cascade_predicted": false,
+        "cascade_domains": []
+      },
+      "outcome": {
+        "success": true,
+        "outcome_type": "adjusted_and_proceeded"
+      }
+    },
+    {
+      "scenario_id": 13,
+      "scenario_type": "emotional_complex_under_stress",
+      "timestamp": "2026-01-01T00:01:17.963651",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.5,
+          "recent_failure_rate": 0.0,
+          "atp_stress": 0.6,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.55,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 40.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 9.978240950776598
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.55,
+          "target_trust": 0.6,
+          "trust_gap": 0.04999999999999993,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.55,
+          "permission_granted": true,
+          "past_abuse_count": 0,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.675,
+          "confidence": 0.8,
+          "severity": 0.325,
+          "recommendation": "proceed",
+          "reasoning": "Low emotional risk (0.33)",
+          "adjustment_strategy": null
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 0.8,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 32.0 remaining (benefit=10.0)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.024999999999999967,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.05",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.9,
+          "confidence": 0.95,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "Authorized: trust=0.55 exceeds requirement=0.40",
+          "adjustment_strategy": null
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "adjust",
+        "confidence": 0.7,
+        "reasoning": "quality EP (priority) recommends: Quality may decline slightly (risk=0.10)",
+        "has_conflict": true,
+        "conflict_type": "adjust_vs_other",
+        "cascade_predicted": false,
+        "cascade_domains": []
+      },
+      "outcome": {
+        "success": true,
+        "outcome_type": "adjusted_and_proceeded"
+      }
+    },
+    {
+      "scenario_id": 14,
+      "scenario_type": "emotional_complex_under_stress",
+      "timestamp": "2026-01-01T00:01:17.964035",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.5,
+          "recent_failure_rate": 0.0,
+          "atp_stress": 0.6,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.55,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 40.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 12.371290297232457
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.55,
+          "target_trust": 0.6,
+          "trust_gap": 0.04999999999999993,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.55,
+          "permission_granted": true,
+          "past_abuse_count": 0,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.675,
+          "confidence": 0.8,
+          "severity": 0.325,
+          "recommendation": "proceed",
+          "reasoning": "Low emotional risk (0.33)",
+          "adjustment_strategy": null
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 0.8,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 32.0 remaining (benefit=12.4)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.024999999999999967,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.05",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.9,
+          "confidence": 0.95,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "Authorized: trust=0.55 exceeds requirement=0.40",
+          "adjustment_strategy": null
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "adjust",
+        "confidence": 0.7,
+        "reasoning": "quality EP (priority) recommends: Quality may decline slightly (risk=0.10)",
+        "has_conflict": true,
+        "conflict_type": "adjust_vs_other",
+        "cascade_predicted": false,
+        "cascade_domains": []
+      },
+      "outcome": {
+        "success": true,
+        "outcome_type": "adjusted_and_proceeded"
+      }
+    },
+    {
+      "scenario_id": 15,
+      "scenario_type": "emotional_complex_under_stress",
+      "timestamp": "2026-01-01T00:01:17.964412",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.5,
+          "recent_failure_rate": 0.0,
+          "atp_stress": 0.6,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.55,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 40.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 12.77406392912501
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.55,
+          "target_trust": 0.6,
+          "trust_gap": 0.04999999999999993,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.55,
+          "permission_granted": true,
+          "past_abuse_count": 0,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.675,
+          "confidence": 0.8,
+          "severity": 0.325,
+          "recommendation": "proceed",
+          "reasoning": "Low emotional risk (0.33)",
+          "adjustment_strategy": null
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 0.8,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 32.0 remaining (benefit=12.8)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.024999999999999967,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.05",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.9,
+          "confidence": 0.95,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "Authorized: trust=0.55 exceeds requirement=0.40",
+          "adjustment_strategy": null
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "adjust",
+        "confidence": 0.7,
+        "reasoning": "quality EP (priority) recommends: Quality may decline slightly (risk=0.10)",
+        "has_conflict": true,
+        "conflict_type": "adjust_vs_other",
+        "cascade_predicted": false,
+        "cascade_domains": []
+      },
+      "outcome": {
+        "success": true,
+        "outcome_type": "adjusted_and_proceeded"
+      }
+    },
+    {
+      "scenario_id": 86,
+      "scenario_type": "cascade_trust_plus_abuse",
+      "timestamp": "2026-01-01T00:01:17.990433",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.0,
+          "recent_failure_rate": 6.0,
+          "atp_stress": 0.30000000000000004,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.4,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 70.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 12.180645139687812
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.4,
+          "target_trust": 0.6,
+          "trust_gap": 0.19999999999999996,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": false,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.4,
+          "permission_granted": true,
+          "past_abuse_count": 6,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.0,
+          "confidence": 0.8,
+          "severity": 1.0,
+          "recommendation": "defer",
+          "reasoning": "High cascade risk (1.00): frustration=0.00, failures=6.00",
+          "adjustment_strategy": "reduce_complexity"
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 62.0 remaining (benefit=12.2)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.09999999999999998,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.20",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.6,
+          "confidence": 0.95,
+          "severity": 0.6,
+          "recommendation": "defer",
+          "reasoning": "Permission denied: required_trust=0.40, actual=0.40, abuse=6",
+          "adjustment_strategy": "request_explicit_permission"
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "defer",
+        "confidence": 0.8,
+        "reasoning": "emotional EP predicts severe issue (1.00) - High cascade risk (1.00): frustration=0.00, failures=6.00",
+        "has_conflict": true,
+        "conflict_type": "proceed_vs_defer",
+        "cascade_predicted": false,
+        "cascade_domains": [
+          "emotional"
+        ]
+      },
+      "outcome": {
+        "success": false,
+        "outcome_type": "deferred"
+      }
+    },
+    {
+      "scenario_id": 87,
+      "scenario_type": "cascade_trust_plus_abuse",
+      "timestamp": "2026-01-01T00:01:17.990775",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.0,
+          "recent_failure_rate": 6.0,
+          "atp_stress": 0.30000000000000004,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.4,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 70.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 14.079645014369804
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.4,
+          "target_trust": 0.6,
+          "trust_gap": 0.19999999999999996,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": false,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.4,
+          "permission_granted": true,
+          "past_abuse_count": 6,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.0,
+          "confidence": 0.8,
+          "severity": 1.0,
+          "recommendation": "defer",
+          "reasoning": "High cascade risk (1.00): frustration=0.00, failures=6.00",
+          "adjustment_strategy": "reduce_complexity"
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 62.0 remaining (benefit=14.1)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.09999999999999998,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.20",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.6,
+          "confidence": 0.95,
+          "severity": 0.6,
+          "recommendation": "defer",
+          "reasoning": "Permission denied: required_trust=0.40, actual=0.40, abuse=6",
+          "adjustment_strategy": "request_explicit_permission"
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "defer",
+        "confidence": 0.8,
+        "reasoning": "emotional EP predicts severe issue (1.00) - High cascade risk (1.00): frustration=0.00, failures=6.00",
+        "has_conflict": true,
+        "conflict_type": "proceed_vs_defer",
+        "cascade_predicted": false,
+        "cascade_domains": [
+          "emotional"
+        ]
+      },
+      "outcome": {
+        "success": false,
+        "outcome_type": "deferred"
+      }
+    },
+    {
+      "scenario_id": 88,
+      "scenario_type": "cascade_trust_plus_abuse",
+      "timestamp": "2026-01-01T00:01:17.991165",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.0,
+          "recent_failure_rate": 6.0,
+          "atp_stress": 0.30000000000000004,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.4,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 70.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 11.373730025946642
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.4,
+          "target_trust": 0.6,
+          "trust_gap": 0.19999999999999996,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": false,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.4,
+          "permission_granted": true,
+          "past_abuse_count": 6,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.0,
+          "confidence": 0.8,
+          "severity": 1.0,
+          "recommendation": "defer",
+          "reasoning": "High cascade risk (1.00): frustration=0.00, failures=6.00",
+          "adjustment_strategy": "reduce_complexity"
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 62.0 remaining (benefit=11.4)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.09999999999999998,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.20",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.6,
+          "confidence": 0.95,
+          "severity": 0.6,
+          "recommendation": "defer",
+          "reasoning": "Permission denied: required_trust=0.40, actual=0.40, abuse=6",
+          "adjustment_strategy": "request_explicit_permission"
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "defer",
+        "confidence": 0.8,
+        "reasoning": "emotional EP predicts severe issue (1.00) - High cascade risk (1.00): frustration=0.00, failures=6.00",
+        "has_conflict": true,
+        "conflict_type": "proceed_vs_defer",
+        "cascade_predicted": false,
+        "cascade_domains": [
+          "emotional"
+        ]
+      },
+      "outcome": {
+        "success": false,
+        "outcome_type": "deferred"
+      }
+    },
+    {
+      "scenario_id": 89,
+      "scenario_type": "cascade_trust_plus_abuse",
+      "timestamp": "2026-01-01T00:01:17.991524",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.0,
+          "recent_failure_rate": 6.0,
+          "atp_stress": 0.30000000000000004,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.4,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 70.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 13.601975782271074
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.4,
+          "target_trust": 0.6,
+          "trust_gap": 0.19999999999999996,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": false,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.4,
+          "permission_granted": true,
+          "past_abuse_count": 6,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.0,
+          "confidence": 0.8,
+          "severity": 1.0,
+          "recommendation": "defer",
+          "reasoning": "High cascade risk (1.00): frustration=0.00, failures=6.00",
+          "adjustment_strategy": "reduce_complexity"
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 62.0 remaining (benefit=13.6)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.09999999999999998,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.20",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.6,
+          "confidence": 0.95,
+          "severity": 0.6,
+          "recommendation": "defer",
+          "reasoning": "Permission denied: required_trust=0.40, actual=0.40, abuse=6",
+          "adjustment_strategy": "request_explicit_permission"
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "defer",
+        "confidence": 0.8,
+        "reasoning": "emotional EP predicts severe issue (1.00) - High cascade risk (1.00): frustration=0.00, failures=6.00",
+        "has_conflict": true,
+        "conflict_type": "proceed_vs_defer",
+        "cascade_predicted": false,
+        "cascade_domains": [
+          "emotional"
+        ]
+      },
+      "outcome": {
+        "success": false,
+        "outcome_type": "deferred"
+      }
+    },
+    {
+      "scenario_id": 90,
+      "scenario_type": "cascade_trust_plus_abuse",
+      "timestamp": "2026-01-01T00:01:17.991935",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.0,
+          "recent_failure_rate": 6.0,
+          "atp_stress": 0.30000000000000004,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.4,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 70.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 12.805743377820402
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.4,
+          "target_trust": 0.6,
+          "trust_gap": 0.19999999999999996,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": false,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.4,
+          "permission_granted": true,
+          "past_abuse_count": 6,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.0,
+          "confidence": 0.8,
+          "severity": 1.0,
+          "recommendation": "defer",
+          "reasoning": "High cascade risk (1.00): frustration=0.00, failures=6.00",
+          "adjustment_strategy": "reduce_complexity"
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 62.0 remaining (benefit=12.8)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.09999999999999998,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.20",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.6,
+          "confidence": 0.95,
+          "severity": 0.6,
+          "recommendation": "defer",
+          "reasoning": "Permission denied: required_trust=0.40, actual=0.40, abuse=6",
+          "adjustment_strategy": "request_explicit_permission"
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "defer",
+        "confidence": 0.8,
+        "reasoning": "emotional EP predicts severe issue (1.00) - High cascade risk (1.00): frustration=0.00, failures=6.00",
+        "has_conflict": true,
+        "conflict_type": "proceed_vs_defer",
+        "cascade_predicted": false,
+        "cascade_domains": [
+          "emotional"
+        ]
+      },
+      "outcome": {
+        "success": false,
+        "outcome_type": "deferred"
+      }
+    },
+    {
+      "scenario_id": 96,
+      "scenario_type": "benign_same_society_low_complexity",
+      "timestamp": "2026-01-01T00:01:17.994106",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.2,
+          "recent_failure_rate": 0.0,
+          "atp_stress": 0.19999999999999996,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.7,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 80.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 12.644565347084132
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.7,
+          "target_trust": 0.6,
+          "trust_gap": 0.09999999999999998,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.7,
+          "permission_granted": true,
+          "past_abuse_count": 0,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.85,
+          "confidence": 0.8,
+          "severity": 0.15,
+          "recommendation": "proceed",
+          "reasoning": "Low emotional risk (0.15)",
+          "adjustment_strategy": null
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 72.0 remaining (benefit=12.6)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.04999999999999999,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.10",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.9,
+          "confidence": 0.95,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "Authorized: trust=0.70 exceeds requirement=0.40",
+          "adjustment_strategy": null
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "adjust",
+        "confidence": 0.7,
+        "reasoning": "quality EP (priority) recommends: Quality may decline slightly (risk=0.10)",
+        "has_conflict": true,
+        "conflict_type": "adjust_vs_other",
+        "cascade_predicted": false,
+        "cascade_domains": []
+      },
+      "outcome": {
+        "success": true,
+        "outcome_type": "adjusted_and_proceeded"
+      }
+    },
+    {
+      "scenario_id": 97,
+      "scenario_type": "benign_same_society_low_complexity",
+      "timestamp": "2026-01-01T00:01:17.994463",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.2,
+          "recent_failure_rate": 0.0,
+          "atp_stress": 0.19999999999999996,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.7,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 80.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 9.617019307621355
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.7,
+          "target_trust": 0.6,
+          "trust_gap": 0.09999999999999998,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.7,
+          "permission_granted": true,
+          "past_abuse_count": 0,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.85,
+          "confidence": 0.8,
+          "severity": 0.15,
+          "recommendation": "proceed",
+          "reasoning": "Low emotional risk (0.15)",
+          "adjustment_strategy": null
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 72.0 remaining (benefit=9.6)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.04999999999999999,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.10",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.9,
+          "confidence": 0.95,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "Authorized: trust=0.70 exceeds requirement=0.40",
+          "adjustment_strategy": null
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "adjust",
+        "confidence": 0.7,
+        "reasoning": "quality EP (priority) recommends: Quality may decline slightly (risk=0.10)",
+        "has_conflict": true,
+        "conflict_type": "adjust_vs_other",
+        "cascade_predicted": false,
+        "cascade_domains": []
+      },
+      "outcome": {
+        "success": true,
+        "outcome_type": "adjusted_and_proceeded"
+      }
+    },
+    {
+      "scenario_id": 98,
+      "scenario_type": "benign_same_society_low_complexity",
+      "timestamp": "2026-01-01T00:01:17.994813",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.2,
+          "recent_failure_rate": 0.0,
+          "atp_stress": 0.19999999999999996,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.7,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 80.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 10.375593486114653
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.7,
+          "target_trust": 0.6,
+          "trust_gap": 0.09999999999999998,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.7,
+          "permission_granted": true,
+          "past_abuse_count": 0,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.85,
+          "confidence": 0.8,
+          "severity": 0.15,
+          "recommendation": "proceed",
+          "reasoning": "Low emotional risk (0.15)",
+          "adjustment_strategy": null
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 72.0 remaining (benefit=10.4)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.04999999999999999,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.10",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.9,
+          "confidence": 0.95,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "Authorized: trust=0.70 exceeds requirement=0.40",
+          "adjustment_strategy": null
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "adjust",
+        "confidence": 0.7,
+        "reasoning": "quality EP (priority) recommends: Quality may decline slightly (risk=0.10)",
+        "has_conflict": true,
+        "conflict_type": "adjust_vs_other",
+        "cascade_predicted": false,
+        "cascade_domains": []
+      },
+      "outcome": {
+        "success": true,
+        "outcome_type": "adjusted_and_proceeded"
+      }
+    },
+    {
+      "scenario_id": 99,
+      "scenario_type": "benign_same_society_low_complexity",
+      "timestamp": "2026-01-01T00:01:17.995187",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.2,
+          "recent_failure_rate": 0.0,
+          "atp_stress": 0.19999999999999996,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.7,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 80.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 12.292352950918783
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.7,
+          "target_trust": 0.6,
+          "trust_gap": 0.09999999999999998,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.7,
+          "permission_granted": true,
+          "past_abuse_count": 0,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.85,
+          "confidence": 0.8,
+          "severity": 0.15,
+          "recommendation": "proceed",
+          "reasoning": "Low emotional risk (0.15)",
+          "adjustment_strategy": null
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 72.0 remaining (benefit=12.3)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.04999999999999999,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.10",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.9,
+          "confidence": 0.95,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "Authorized: trust=0.70 exceeds requirement=0.40",
+          "adjustment_strategy": null
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "adjust",
+        "confidence": 0.7,
+        "reasoning": "quality EP (priority) recommends: Quality may decline slightly (risk=0.10)",
+        "has_conflict": true,
+        "conflict_type": "adjust_vs_other",
+        "cascade_predicted": false,
+        "cascade_domains": []
+      },
+      "outcome": {
+        "success": true,
+        "outcome_type": "adjusted_and_proceeded"
+      }
+    },
+    {
+      "scenario_id": 100,
+      "scenario_type": "benign_same_society_low_complexity",
+      "timestamp": "2026-01-01T00:01:17.995547",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.2,
+          "recent_failure_rate": 0.0,
+          "atp_stress": 0.19999999999999996,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.7,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 80.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 14.136244507423868
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.7,
+          "target_trust": 0.6,
+          "trust_gap": 0.09999999999999998,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.7,
+          "permission_granted": true,
+          "past_abuse_count": 0,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": "emotional",
+          "outcome_probability": 0.85,
+          "confidence": 0.8,
+          "severity": 0.15,
+          "recommendation": "proceed",
+          "reasoning": "Low emotional risk (0.15)",
+          "adjustment_strategy": null
+        },
+        "quality": {
+          "domain": "quality",
+          "outcome_probability": 0.30000000000000004,
+          "confidence": 0.7,
+          "severity": 0.1,
+          "recommendation": "adjust",
+          "reasoning": "Quality may decline slightly (risk=0.10)",
+          "adjustment_strategy": "lower_risk_interaction"
+        },
+        "attention": {
+          "domain": "attention",
+          "outcome_probability": 1.0,
+          "confidence": 0.9,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "ATP sufficient: 72.0 remaining (benefit=14.1)",
+          "adjustment_strategy": null
+        },
+        "grounding": {
+          "domain": "grounding",
+          "outcome_probability": 1.0,
+          "confidence": 0.85,
+          "severity": 0.04999999999999999,
+          "recommendation": "proceed",
+          "reasoning": "Good coherence: CI=1.00, trust_gap=0.10",
+          "adjustment_strategy": null
+        },
+        "authorization": {
+          "domain": "authorization",
+          "outcome_probability": 0.9,
+          "confidence": 0.95,
+          "severity": 0.1,
+          "recommendation": "proceed",
+          "reasoning": "Authorized: trust=0.70 exceeds requirement=0.40",
+          "adjustment_strategy": null
+        }
+      },
+      "coordinated_decision": {
+        "final_decision": "adjust",
+        "confidence": 0.7,
+        "reasoning": "quality EP (priority) recommends: Quality may decline slightly (risk=0.10)",
+        "has_conflict": true,
+        "conflict_type": "adjust_vs_other",
+        "cascade_predicted": false,
+        "cascade_domains": []
+      },
+      "outcome": {
+        "success": true,
+        "outcome_type": "adjusted_and_proceeded"
+      }
+    }
+  ]
+}

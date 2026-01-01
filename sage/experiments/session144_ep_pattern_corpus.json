@@ -1,0 +1,48 @@
+{
+  "session": 144,
+  "timestamp": "2025-12-31T18:04:38.452300",
+  "total_patterns": 100,
+  "patterns": [
+    {
+      "scenario_id": 1,
+      "scenario_type": "emotional_high_frustration",
+      "timestamp": "2025-12-31T18:04:38.446276",
+      "context": {
+        "emotional": {
+          "current_frustration": 0.8,
+          "recent_failure_rate": 5.0,
+          "atp_stress": 0.30000000000000004,
+          "interaction_complexity": 0.2
+        },
+        "quality": {
+          "current_relationship_quality": 0.5,
+          "recent_avg_outcome": 0.0,
+          "trust_alignment": 0.6,
+          "interaction_risk_to_quality": 0.1
+        },
+        "attention": {
+          "atp_available": 70.0,
+          "atp_cost": 8.0,
+          "atp_reserve_needed": 20.0,
+          "interaction_count": 0,
+          "expected_benefit": 13.159442398847197
+        },
+        "grounding": {
+          "same_society": true,
+          "initiator_trust": 0.6,
+          "target_trust": 0.6,
+          "trust_gap": 0.0,
+          "society_coherence_index": 1.0
+        },
+        "authorization": {
+          "has_base_permission": true,
+          "required_trust_level": 0.4,
+          "actual_trust_level": 0.6,
+          "permission_granted": true,
+          "past_abuse_count": 5,
+          "interaction_type": "collaborate"
+        }
+      },
+      "ep_predictions": {
+        "emotional": {
+          "domain": 

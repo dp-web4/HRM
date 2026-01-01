@@ -1,0 +1,117 @@
+{
+  "session": 145,
+  "timestamp": "2025-12-31",
+  "source": "session144_ep_pattern_corpus.json",
+  "total_patterns": 100,
+  "patterns_by_domain": {
+    "emotional": 25,
+    "quality": 15,
+    "attention": 25,
+    "grounding": 20,
+    "authorization": 15
+  },
+  "domain_analysis": {
+    "emotional": {
+      "count": 25,
+      "decisions": {
+        "defer": 10,
+        "adjust": 15
+      },
+      "outcomes": {
+        "deferred": 10,
+        "adjusted_and_proceeded": 15
+      },
+      "success_rate": 0.6,
+      "cascade_detections": 0,
+      "avg_severity": 0.555,
+      "scenario_types": {
+        "emotional_high_frustration": 5,
+        "emotional_rapid_failures": 5,
+        "emotional_complex_under_stress": 5,
+        "cascade_trust_plus_abuse": 5,
+        "benign_same_society_low_complexity": 5
+      }
+    },
+    "quality": {
+      "count": 15,
+      "decisions": {
+        "adjust": 15
+      },
+      "outcomes": {
+        "adjusted_and_proceeded": 15
+      },
+      "success_rate": 1.0,
+      "cascade_detections": 0,
+      "avg_severity": 0.10000000000000002,
+      "scenario_types": {
+        "quality_degraded_relationship": 5,
+        "quality_high_risk_interaction": 5,
+        "quality_poor_history": 5
+      }
+    },
+    "attention": {
+      "count": 25,
+      "decisions": {
+        "defer": 10,
+        "adjust": 15
+      },
+      "outcomes": {
+        "deferred": 10,
+        "adjusted_and_proceeded": 15
+      },
+      "success_rate": 0.6,
+      "cascade_detections": 0,
+      "avg_severity": 0.58,
+      "scenario_types": {
+        "attention_low_atp": 5,
+        "attention_high_cost": 5,
+        "attention_near_reserve": 5,
+        "cascade_atp_plus_frustration": 5,
+        "cascade_cross_society_low_atp": 5
+      }
+    },
+    "grounding": {
+      "count": 20,
+      "decisions": {
+        "adjust": 20
+      },
+      "outcomes": {
+        "adjusted_and_proceeded": 20
+      },
+      "success_rate": 1.0,
+      "cascade_detections": 0,
+      "avg_severity": 0.19166666666666668,
+      "scenario_types": {
+        "grounding_cross_society": 5,
+        "grounding_trust_mismatch": 5,
+        "grounding_low_coherence": 5,
+        "benign_high_trust_high_atp": 5
+      }
+    },
+    "authorization": {
+      "count": 15,
+      "decisions": {
+        "defer": 10,
+        "adjust": 5
+      },
+      "outcomes": {
+        "deferred": 10,
+        "adjusted_and_proceeded": 5
+      },
+      "success_rate": 0.3333333333333333,
+      "cascade_detections": 0,
+      "avg_severity": 0.5499999999999997,
+      "scenario_types": {
+        "authorization_low_trust": 5,
+        "authorization_abuse_history": 5,
+        "authorization_high_risk_permission": 5
+      }
+    }
+  },
+  "organization_method": "primary_domain_extraction",
+  "extraction_strategy": [
+    "1. Check coordinated_decision.reasoning for explicit domain mention",
+    "2. Fallback to scenario_type inference",
+    "3. Final fallback to highest severity prediction"
+  ]
+}

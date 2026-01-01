@@ -272,10 +272,61 @@ ep_config = {
 7. `c1aad27` - Edge validation: Authorization EP (Session 141) + dataclass fix
 8. `b15e75f` - Session 142: EP Coordinator Benchmark (95K/sec on Sprout)
 9. `38cb17a` - Session 143: EP Agent Simulation (practical EP application)
+10. `a40212a` - Session 144: Pattern Corpus Expansion (100 patterns, JSON fix)
+11. `7b883bd` - Session 145: Pattern Matching Framework (k-NN, confidence boosting)
 
 ---
 
-## Session 142-143 Edge Validation (Latest)
+## Session 144-145 Edge Validation (Latest)
+
+### Session 144: Pattern Corpus Expansion
+
+**Status**: VALIDATED (with fix)
+
+**Fix Applied**: EPDomain enum was not JSON serializable. Added `EnumEncoder` class.
+
+| Metric | Result |
+|--------|--------|
+| Total Patterns | 100 |
+| Scenario Types | 20 |
+| Defer Decisions | 30 (30%) |
+| Adjust Decisions | 70 (70%) |
+| Success Rate | 70% |
+
+**Pattern Coverage**: All 5 EP domains covered with 5 patterns each from:
+- 3 emotional stress scenarios
+- 3 quality stress scenarios
+- 3 attention stress scenarios
+- 3 grounding stress scenarios
+- 3 authorization stress scenarios
+- 3 cascade scenarios
+- 2 benign scenarios
+
+### Session 145: Pattern Matching Framework
+
+**Status**: VALIDATED
+
+| Metric | Result |
+|--------|--------|
+| Similarity Method | Cosine (k-NN) |
+| Match Threshold | 0.7 |
+| Confidence Boost | 0.70 → 0.95 |
+| Pattern Match | 0.999 similarity |
+
+**Patterns by Domain**:
+| Domain | Count | Success Rate | Avg Severity |
+|--------|-------|--------------|--------------|
+| Emotional | 25 | 60% | 0.555 |
+| Attention | 25 | 60% | 0.580 |
+| Grounding | 20 | 100% | 0.192 |
+| Quality | 15 | 100% | 0.100 |
+| Authorization | 15 | 33% | 0.550 |
+
+**Key Finding**: Pattern matching enables mature EP with 0.95 confidence (vs 0.70 heuristic).
+
+---
+
+## Session 142-143 Edge Validation
 
 ### Session 142: EP Coordinator Benchmark
 

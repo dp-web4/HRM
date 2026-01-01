@@ -26,6 +26,15 @@ from pathlib import Path
 from dataclasses import dataclass, asdict, field
 from typing import Dict, Any, List, Optional
 from datetime import datetime
+from enum import Enum
+
+
+class EnumEncoder(json.JSONEncoder):
+    """JSON encoder that handles Enum values."""
+    def default(self, obj):
+        if isinstance(obj, Enum):
+            return obj.value
+        return super().default(obj)
 
 # Import SAGE EP framework
 sys.path.insert(0, str(Path(__file__).parent))
@@ -610,7 +619,7 @@ def main():
                 "next_milestone": "Mature (50-100 patterns per domain)",
                 "corpus_available_for": "All five EP domains"
             }
-        }, f, indent=2)
+        }, f, indent=2, cls=EnumEncoder)
 
     # Save full pattern corpus separately
     corpus_path = Path(__file__).parent / "session144_ep_pattern_corpus.json"
@@ -620,7 +629,7 @@ def main():
             "timestamp": datetime.now().isoformat(),
             "total_patterns": len(summary["patterns"]),
             "patterns": summary["patterns"]
-        }, f, indent=2)
+        }, f, indent=2, cls=EnumEncoder)
 
     print(f"Results saved to: {results_path.name}")
     print(f"Pattern corpus saved to: {corpus_path.name}")

@@ -273,25 +273,29 @@ class EPIntegratedConsciousness(UnifiedConsciousnessManager):
 
         for pattern in patterns:
             # Determine which domain dominated the decision
-            coordinated_decision = pattern.get("coordinated_decision", {})
-            reasoning = coordinated_decision.get("reasoning", "")
-            final_decision = coordinated_decision.get("final_decision", "proceed")
+            # First check if pattern has explicit target_domain field (Session 148+)
+            domain_str = pattern.get("target_domain")
 
-            # Parse domain from reasoning (e.g., "emotional EP predicts...")
-            domain_str = None
-            for domain in ["emotional", "quality", "attention", "grounding", "authorization"]:
-                if f"{domain} EP" in reasoning.lower():
-                    domain_str = domain
-                    break
-
-            # Fallback: find which EP's recommendation matches final decision
+            # Otherwise infer from coordinated decision
             if not domain_str:
-                ep_preds = pattern.get("ep_predictions", {})
+                coordinated_decision = pattern.get("coordinated_decision", {})
+                reasoning = coordinated_decision.get("reasoning", "")
+                final_decision = coordinated_decision.get("final_decision", "proceed")
+
+                # Parse domain from reasoning (e.g., "emotional EP predicts...")
                 for domain in ["emotional", "quality", "attention", "grounding", "authorization"]:
-                    if domain in ep_preds:
-                        if ep_preds[domain].get("recommendation") == final_decision:
-                            domain_str = domain
-                            break
+                    if f"{domain} EP" in reasoning.lower():
+                        domain_str = domain
+                        break
+
+                # Fallback: find which EP's recommendation matches final decision
+                if not domain_str:
+                    ep_preds = pattern.get("ep_predictions", {})
+                    for domain in ["emotional", "quality", "attention", "grounding", "authorization"]:
+                        if domain in ep_preds:
+                            if ep_preds[domain].get("recommendation") == final_decision:
+                                domain_str = domain
+                                break
 
             if domain_str:
                 patterns_by_domain[domain_str].append(pattern)

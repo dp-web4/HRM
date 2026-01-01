@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-12-31T12:04:48.802484",
+  "timestamp": "2025-12-31T18:01:47.246387",
   "hardware": "Thor (Jetson AGX Thor Developer Kit)",
   "component": "SAGE Multi-EP Coordinator (5 domains)",
   "domains": [
@@ -13,51 +13,51 @@
     {
       "test_name": "Consensus (all proceed)",
       "iterations": 100000,
-      "total_time_seconds": 0.33076977729797363,
-      "throughput_per_second": 302325.0818647651,
-      "avg_latency_ms": 0.003134188652038574,
-      "avg_latency_us": 3.134188652038574,
-      "min_latency_ms": 0.0026226043701171875,
-      "max_latency_ms": 0.10204315185546875,
+      "total_time_seconds": 1.2328522205352783,
+      "throughput_per_second": 81112.7224612388,
+      "avg_latency_ms": 0.011873657703399659,
+      "avg_latency_us": 11.873657703399658,
+      "min_latency_ms": 0.011205673217773438,
+      "max_latency_ms": 0.3414154052734375,
       "notes": "All 5 EPs agree to proceed - happy path"
     },
     {
       "test_name": "Conflict Resolution",
       "iterations": 100000,
-      "total_time_seconds": 0.2809159755706787,
-      "throughput_per_second": 355978.33051983156,
-      "avg_latency_ms": 0.0026339054107666015,
-      "avg_latency_us": 2.6339054107666016,
-      "min_latency_ms": 0.0021457672119140625,
-      "max_latency_ms": 0.026226043701171875,
+      "total_time_seconds": 1.1268572807312012,
+      "throughput_per_second": 88742.38265125417,
+      "avg_latency_ms": 0.010813076496124268,
+      "avg_latency_us": 10.813076496124268,
+      "min_latency_ms": 0.010013580322265625,
+      "max_latency_ms": 0.06937980651855469,
       "notes": "Emotional defers, others proceed - priority resolution"
     },
     {
       "test_name": "Cascade Detection",
       "iterations": 100000,
-      "total_time_seconds": 0.20658302307128906,
-      "throughput_per_second": 484066.8827151945,
-      "avg_latency_ms": 0.001896505355834961,
-      "avg_latency_us": 1.896505355834961,
-      "min_latency_ms": 0.001430511474609375,
-      "max_latency_ms": 0.03719329833984375,
+      "total_time_seconds": 0.8198776245117188,
+      "throughput_per_second": 121969.42203363018,
+      "avg_latency_ms": 0.007787153720855713,
+      "avg_latency_us": 7.787153720855713,
+      "min_latency_ms": 0.0073909759521484375,
+      "max_latency_ms": 0.34356117248535156,
       "notes": "2 severe predictions (Emotional + Grounding) trigger cascade"
     },
     {
       "test_name": "Mixed Scenarios",
       "iterations": 50000,
-      "total_time_seconds": 0.14279699325561523,
-      "throughput_per_second": 350147.4285981427,
-      "avg_latency_ms": 0.0026714229583740235,
-      "avg_latency_us": 2.6714229583740234,
-      "min_latency_ms": 0.0016689300537109375,
-      "max_latency_ms": 0.025272369384765625,
+      "total_time_seconds": 0.5709972381591797,
+      "throughput_per_second": 87566.09779969069,
+      "avg_latency_ms": 0.010855040550231933,
+      "avg_latency_us": 10.855040550231934,
+      "min_latency_ms": 0.007867813110351562,
+      "max_latency_ms": 0.07319450378417969,
       "notes": "4 scenario types rotated (consensus, conflict, cascade, security reject)"
     }
   ],
   "summary": {
-    "avg_throughput": 373129.43092448346,
-    "avg_latency_us": 2.58400559425354
+    "avg_throughput": 94847.65623645346,
+    "avg_latency_us": 10.332232117652893
   },
   "comparison": {
     "web4_legion_rtx4090": {

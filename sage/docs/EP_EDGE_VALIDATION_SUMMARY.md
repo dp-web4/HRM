@@ -270,6 +270,44 @@ ep_config = {
 5. `d97c3c7` - Edge validation: Grounding EP (Session 140) + dataclass fix
 6. `54d5742` - Update EP Edge Validation Summary with Grounding EP
 7. `c1aad27` - Edge validation: Authorization EP (Session 141) + dataclass fix
+8. `b15e75f` - Session 142: EP Coordinator Benchmark (95K/sec on Sprout)
+9. `38cb17a` - Session 143: EP Agent Simulation (practical EP application)
+
+---
+
+## Session 142-143 Edge Validation (Latest)
+
+### Session 142: EP Coordinator Benchmark
+
+**Status**: VALIDATED
+
+| Benchmark | Throughput | Latency |
+|-----------|------------|---------|
+| Consensus (all proceed) | 81,113/sec | 11.87μs |
+| Conflict Resolution | 88,742/sec | 10.81μs |
+| Cascade Detection | 121,969/sec | 7.79μs |
+| Mixed Scenarios | 87,566/sec | 10.86μs |
+| **Average** | **94,848/sec** | **10.33μs** |
+
+**Key Finding**: Cascade detection is fastest (122K/sec) - simpler logic path.
+
+### Session 143: EP Agent Simulation
+
+**Status**: VALIDATED
+
+| Metric | Result |
+|--------|--------|
+| Total Interactions | 10 |
+| Success Rate | 70% |
+| Proceeded | 1 (10%) |
+| Adjusted | 7 (70%) |
+| Deferred | 2 (20%) |
+
+**Agent Trust Improvement**:
+- Alice: 0.65 → 0.92 (+41%)
+- Bob: 0.55 → 0.84 (+53%)
+
+**Key Finding**: EP actively protects agents (70% adjust rate), leading to trust growth.
 
 ---
 

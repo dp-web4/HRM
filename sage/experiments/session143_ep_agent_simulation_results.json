@@ -1,0 +1,69 @@
+{
+  "session": 143,
+  "hardware": "Thor (Jetson AGX Thor Developer Kit)",
+  "timestamp": "2025-12-31T17:33:28.388382",
+  "framework": "SAGE Five-Domain EP Coordinator",
+  "summary": {
+    "total_interactions": 10,
+    "successful": 7,
+    "failed": 3,
+    "success_rate": 0.7,
+    "ep_decisions": {
+      "deferred": 2,
+      "adjusted": 7,
+      "proceeded": 1,
+      "defer_rate": 0.2,
+      "adjust_rate": 0.7,
+      "proceed_rate": 0.1
+    },
+    "cascade_detections": 0,
+    "pattern_corpus_size": 10,
+    "agent_final_states": {
+      "alice": {
+        "lct_id": "alice",
+        "trust_t3": 0.9200000000000003,
+        "atp_available": 71.25,
+        "society_id": "home_society",
+        "interaction_count": 5,
+        "successful_interactions": 3,
+        "failed_interactions": 2,
+        "frustration_level": 0.05,
+        "relationship_quality": {
+          "bob": 0.7999999999999999
+        },
+        "recent_outcomes": [
+          "success",
+          "success",
+          "failure",
+          "success",
+          "deferred"
+        ]
+      },
+      "bob": {
+        "lct_id": "bob",
+        "trust_t3": 0.8400000000000003,
+        "atp_available": 35.0,
+        "society_id": "home_society",
+        "interaction_count": 5,
+        "successful_interactions": 4,
+        "failed_interactions": 1,
+        "frustration_level": 0.0,
+        "relationship_quality": {
+          "alice": 0.8999999999999999
+        },
+        "recent_outcomes": [
+          "success",
+          "deferred",
+          "success",
+          "success",
+          "success"
+        ]
+      }
+    }
+  },
+  "comparison_to_web4": {
+    "web4_session": 111,
+    "web4_framework": "Simplified heuristic EP",
+    "sage_advantage": "Complete five-domain consciousness framework with cascade detection"
+  }
+}

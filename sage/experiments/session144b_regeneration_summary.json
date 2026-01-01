@@ -1,0 +1,39 @@
+{
+  "session": "144b",
+  "timestamp": "2026-01-01T00:01:48.283500",
+  "summary": {
+    "total_patterns": 100,
+    "patterns_by_scenario_type": {
+      "emotional_high_frustration": 5,
+      "emotional_rapid_failures": 5,
+      "emotional_complex_under_stress": 5,
+      "quality_degraded_relationship": 5,
+      "quality_high_risk_interaction": 5,
+      "quality_poor_history": 5,
+      "attention_low_atp": 5,
+      "attention_high_cost": 5,
+      "attention_near_reserve": 5,
+      "grounding_cross_society": 5,
+      "grounding_trust_mismatch": 5,
+      "grounding_low_coherence": 5,
+      "authorization_low_trust": 5,
+      "authorization_abuse_history": 5,
+      "authorization_high_risk_permission": 5,
+      "cascade_atp_plus_frustration": 5,
+      "cascade_cross_society_low_atp": 5,
+      "cascade_trust_plus_abuse": 5,
+      "benign_high_trust_high_atp": 5,
+      "benign_same_society_low_complexity": 5
+    },
+    "patterns_by_decision": {
+      "defer": 30,
+      "adjust": 70
+    },
+    "cascade_detections": 0,
+    "success_rate": 0.7,
+    "serialization": "clean (enums converted to strings)",
+    "validation": "JSON serializable"
+  },
+  "corpus_file": "ep_pattern_corpus_clean.json",
+  "validation": "passed"
+}

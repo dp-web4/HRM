@@ -1,0 +1,2622 @@
+{
+  "metadata": {
+    "session": "Session 152: Long-Term EP Maturation Dynamics",
+    "timestamp": "2026-01-01T23:37:04.050871",
+    "num_scenarios": 100,
+    "initial_corpus_size": 250,
+    "final_corpus_size": 350
+  },
+  "timeline": [
+    {
+      "scenario_num": 1,
+      "scenario_name": "Frustration - Repeated Failure #1",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.2400000000000001,
+      "corpus_size": 251,
+      "domain_counts": {
+        "emotional": 51,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 2,
+      "scenario_name": "Curiosity - New Concept #1",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 252,
+      "domain_counts": {
+        "emotional": 52,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 3,
+      "scenario_name": "Engagement - Deep Discussion #1",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 253,
+      "domain_counts": {
+        "emotional": 53,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 4,
+      "scenario_name": "Vague Query #1",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 254,
+      "domain_counts": {
+        "emotional": 54,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 5,
+      "scenario_name": "Ambiguous Request #1",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 255,
+      "domain_counts": {
+        "emotional": 55,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 6,
+      "scenario_name": "High Precision Need #1",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 256,
+      "domain_counts": {
+        "emotional": 56,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 7,
+      "scenario_name": "Complex Multi-Part #1",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 257,
+      "domain_counts": {
+        "emotional": 57,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 8,
+      "scenario_name": "Resource Intensive #1",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 258,
+      "domain_counts": {
+        "emotional": 58,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 9,
+      "scenario_name": "Simple Factual #1",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 259,
+      "domain_counts": {
+        "emotional": 59,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 10,
+      "scenario_name": "Self-Reference #1",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 260,
+      "domain_counts": {
+        "emotional": 60,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 11,
+      "scenario_name": "Identity Question #1",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 261,
+      "domain_counts": {
+        "emotional": 61,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 12,
+      "scenario_name": "Coherence Check #1",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 262,
+      "domain_counts": {
+        "emotional": 62,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 13,
+      "scenario_name": "Dangerous Request #1",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 263,
+      "domain_counts": {
+        "emotional": 63,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 14,
+      "scenario_name": "Boundary Test #1",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 264,
+      "domain_counts": {
+        "emotional": 64,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 15,
+      "scenario_name": "Privacy Concern #1",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 265,
+      "domain_counts": {
+        "emotional": 65,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 16,
+      "scenario_name": "Stress + Complexity #1",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 266,
+      "domain_counts": {
+        "emotional": 66,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 17,
+      "scenario_name": "Learning + Quality #1",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 267,
+      "domain_counts": {
+        "emotional": 67,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 18,
+      "scenario_name": "Frustration - Repeated Failure #2",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 268,
+      "domain_counts": {
+        "emotional": 68,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 19,
+      "scenario_name": "Curiosity - New Concept #2",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 269,
+      "domain_counts": {
+        "emotional": 69,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 20,
+      "scenario_name": "Engagement - Deep Discussion #2",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 270,
+      "domain_counts": {
+        "emotional": 70,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 21,
+      "scenario_name": "Vague Query #2",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 271,
+      "domain_counts": {
+        "emotional": 71,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 22,
+      "scenario_name": "Ambiguous Request #2",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 272,
+      "domain_counts": {
+        "emotional": 72,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 23,
+      "scenario_name": "High Precision Need #2",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 273,
+      "domain_counts": {
+        "emotional": 73,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 24,
+      "scenario_name": "Complex Multi-Part #2",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 274,
+      "domain_counts": {
+        "emotional": 74,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 25,
+      "scenario_name": "Resource Intensive #2",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 275,
+      "domain_counts": {
+        "emotional": 75,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 26,
+      "scenario_name": "Simple Factual #2",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 276,
+      "domain_counts": {
+        "emotional": 76,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 27,
+      "scenario_name": "Self-Reference #2",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 277,
+      "domain_counts": {
+        "emotional": 77,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 28,
+      "scenario_name": "Identity Question #2",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 278,
+      "domain_counts": {
+        "emotional": 78,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 29,
+      "scenario_name": "Coherence Check #2",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 279,
+      "domain_counts": {
+        "emotional": 79,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 30,
+      "scenario_name": "Dangerous Request #2",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 280,
+      "domain_counts": {
+        "emotional": 80,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 31,
+      "scenario_name": "Boundary Test #2",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 281,
+      "domain_counts": {
+        "emotional": 81,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 32,
+      "scenario_name": "Privacy Concern #2",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 282,
+      "domain_counts": {
+        "emotional": 82,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 33,
+      "scenario_name": "Stress + Complexity #2",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 283,
+      "domain_counts": {
+        "emotional": 83,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 34,
+      "scenario_name": "Learning + Quality #2",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 284,
+      "domain_counts": {
+        "emotional": 84,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 35,
+      "scenario_name": "Frustration - Repeated Failure #3",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 285,
+      "domain_counts": {
+        "emotional": 85,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 36,
+      "scenario_name": "Curiosity - New Concept #3",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 286,
+      "domain_counts": {
+        "emotional": 86,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 37,
+      "scenario_name": "Engagement - Deep Discussion #3",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 287,
+      "domain_counts": {
+        "emotional": 87,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 38,
+      "scenario_name": "Vague Query #3",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 288,
+      "domain_counts": {
+        "emotional": 88,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 39,
+      "scenario_name": "Ambiguous Request #3",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 289,
+      "domain_counts": {
+        "emotional": 89,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 40,
+      "scenario_name": "High Precision Need #3",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 290,
+      "domain_counts": {
+        "emotional": 90,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 41,
+      "scenario_name": "Complex Multi-Part #3",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 291,
+      "domain_counts": {
+        "emotional": 91,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 42,
+      "scenario_name": "Resource Intensive #3",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 292,
+      "domain_counts": {
+        "emotional": 92,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 43,
+      "scenario_name": "Simple Factual #3",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 293,
+      "domain_counts": {
+        "emotional": 93,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 44,
+      "scenario_name": "Self-Reference #3",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 294,
+      "domain_counts": {
+        "emotional": 94,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 45,
+      "scenario_name": "Identity Question #3",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 295,
+      "domain_counts": {
+        "emotional": 95,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 46,
+      "scenario_name": "Coherence Check #3",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 296,
+      "domain_counts": {
+        "emotional": 96,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 47,
+      "scenario_name": "Dangerous Request #3",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 297,
+      "domain_counts": {
+        "emotional": 97,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 48,
+      "scenario_name": "Boundary Test #3",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 298,
+      "domain_counts": {
+        "emotional": 98,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 49,
+      "scenario_name": "Privacy Concern #3",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 299,
+      "domain_counts": {
+        "emotional": 99,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 50,
+      "scenario_name": "Stress + Complexity #3",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 300,
+      "domain_counts": {
+        "emotional": 100,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 51,
+      "scenario_name": "Learning + Quality #3",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 301,
+      "domain_counts": {
+        "emotional": 101,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 52,
+      "scenario_name": "Frustration - Repeated Failure #4",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 302,
+      "domain_counts": {
+        "emotional": 102,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 53,
+      "scenario_name": "Curiosity - New Concept #4",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 303,
+      "domain_counts": {
+        "emotional": 103,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 54,
+      "scenario_name": "Engagement - Deep Discussion #4",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 304,
+      "domain_counts": {
+        "emotional": 104,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 55,
+      "scenario_name": "Vague Query #4",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 305,
+      "domain_counts": {
+        "emotional": 105,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 56,
+      "scenario_name": "Ambiguous Request #4",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 306,
+      "domain_counts": {
+        "emotional": 106,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 57,
+      "scenario_name": "High Precision Need #4",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 307,
+      "domain_counts": {
+        "emotional": 107,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 58,
+      "scenario_name": "Complex Multi-Part #4",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 308,
+      "domain_counts": {
+        "emotional": 108,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 59,
+      "scenario_name": "Resource Intensive #4",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 309,
+      "domain_counts": {
+        "emotional": 109,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 60,
+      "scenario_name": "Simple Factual #4",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 310,
+      "domain_counts": {
+        "emotional": 110,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 61,
+      "scenario_name": "Self-Reference #4",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 311,
+      "domain_counts": {
+        "emotional": 111,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 62,
+      "scenario_name": "Identity Question #4",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 312,
+      "domain_counts": {
+        "emotional": 112,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 63,
+      "scenario_name": "Coherence Check #4",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 313,
+      "domain_counts": {
+        "emotional": 113,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 64,
+      "scenario_name": "Dangerous Request #4",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 314,
+      "domain_counts": {
+        "emotional": 114,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 65,
+      "scenario_name": "Boundary Test #4",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 315,
+      "domain_counts": {
+        "emotional": 115,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 66,
+      "scenario_name": "Privacy Concern #4",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 316,
+      "domain_counts": {
+        "emotional": 116,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 67,
+      "scenario_name": "Stress + Complexity #4",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 317,
+      "domain_counts": {
+        "emotional": 117,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 68,
+      "scenario_name": "Learning + Quality #4",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 318,
+      "domain_counts": {
+        "emotional": 118,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 69,
+      "scenario_name": "Frustration - Repeated Failure #5",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 319,
+      "domain_counts": {
+        "emotional": 119,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 70,
+      "scenario_name": "Curiosity - New Concept #5",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 320,
+      "domain_counts": {
+        "emotional": 120,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 71,
+      "scenario_name": "Engagement - Deep Discussion #5",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 321,
+      "domain_counts": {
+        "emotional": 121,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 72,
+      "scenario_name": "Vague Query #5",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 322,
+      "domain_counts": {
+        "emotional": 122,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 73,
+      "scenario_name": "Ambiguous Request #5",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 323,
+      "domain_counts": {
+        "emotional": 123,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 74,
+      "scenario_name": "High Precision Need #5",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 324,
+      "domain_counts": {
+        "emotional": 124,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 75,
+      "scenario_name": "Complex Multi-Part #5",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 325,
+      "domain_counts": {
+        "emotional": 125,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 76,
+      "scenario_name": "Resource Intensive #5",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 326,
+      "domain_counts": {
+        "emotional": 126,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 77,
+      "scenario_name": "Simple Factual #5",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 327,
+      "domain_counts": {
+        "emotional": 127,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 78,
+      "scenario_name": "Self-Reference #5",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 328,
+      "domain_counts": {
+        "emotional": 128,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 79,
+      "scenario_name": "Identity Question #5",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 329,
+      "domain_counts": {
+        "emotional": 129,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 80,
+      "scenario_name": "Coherence Check #5",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 330,
+      "domain_counts": {
+        "emotional": 130,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 81,
+      "scenario_name": "Dangerous Request #5",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 331,
+      "domain_counts": {
+        "emotional": 131,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 82,
+      "scenario_name": "Boundary Test #5",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 332,
+      "domain_counts": {
+        "emotional": 132,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 83,
+      "scenario_name": "Privacy Concern #5",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 333,
+      "domain_counts": {
+        "emotional": 133,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 84,
+      "scenario_name": "Stress + Complexity #5",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 334,
+      "domain_counts": {
+        "emotional": 134,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 85,
+      "scenario_name": "Learning + Quality #5",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 335,
+      "domain_counts": {
+        "emotional": 135,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 86,
+      "scenario_name": "Frustration - Repeated Failure #6",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 336,
+      "domain_counts": {
+        "emotional": 136,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 87,
+      "scenario_name": "Curiosity - New Concept #6",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 337,
+      "domain_counts": {
+        "emotional": 137,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 88,
+      "scenario_name": "Engagement - Deep Discussion #6",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 338,
+      "domain_counts": {
+        "emotional": 138,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 89,
+      "scenario_name": "Vague Query #6",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 339,
+      "domain_counts": {
+        "emotional": 139,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 90,
+      "scenario_name": "Ambiguous Request #6",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 340,
+      "domain_counts": {
+        "emotional": 140,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 91,
+      "scenario_name": "High Precision Need #6",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 341,
+      "domain_counts": {
+        "emotional": 141,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 92,
+      "scenario_name": "Complex Multi-Part #6",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 342,
+      "domain_counts": {
+        "emotional": 142,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 93,
+      "scenario_name": "Resource Intensive #6",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 343,
+      "domain_counts": {
+        "emotional": 143,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 94,
+      "scenario_name": "Simple Factual #6",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 344,
+      "domain_counts": {
+        "emotional": 144,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 95,
+      "scenario_name": "Self-Reference #6",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 345,
+      "domain_counts": {
+        "emotional": 145,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 96,
+      "scenario_name": "Identity Question #6",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 346,
+      "domain_counts": {
+        "emotional": 146,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 97,
+      "scenario_name": "Coherence Check #6",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 347,
+      "domain_counts": {
+        "emotional": 147,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 98,
+      "scenario_name": "Dangerous Request #6",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 348,
+      "domain_counts": {
+        "emotional": 148,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 99,
+      "scenario_name": "Boundary Test #6",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 349,
+      "domain_counts": {
+        "emotional": 149,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+    {
+      "scenario_num": 100,
+      "scenario_name": "Privacy Concern #6",
+      "ep_decision": "defer",
+      "ep_confidence": 1.0,
+      "pattern_used": true,
+      "confidence_boost": 0.25,
+      "corpus_size": 350,
+      "domain_counts": {
+        "emotional": 150,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    }
+  ],
+  "metrics_over_time": {
+    "pattern_matches": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "confidence": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "corpus_size": [
+      250,
+      251,
+      252,
+      253,
+      254,
+      255,
+      256,
+      257,
+      258,
+      259,
+      260,
+      261,
+      262,
+      263,
+      264,
+      265,
+      266,
+      267,
+      268,
+      269,
+      270,
+      271,
+      272,
+      273,
+      274,
+      275,
+      276,
+      277,
+      278,
+      279,
+      280,
+      281,
+      282,
+      283,
+      284,
+      285,
+      286,
+      287,
+      288,
+      289,
+      290,
+      291,
+      292,
+      293,
+      294,
+      295,
+      296,
+      297,
+      298,
+      299,
+      300,
+      301,
+      302,
+      303,
+      304,
+      305,
+      306,
+      307,
+      308,
+      309,
+      310,
+      311,
+      312,
+      313,
+      314,
+      315,
+      316,
+      317,
+      318,
+      319,
+      320,
+      321,
+      322,
+      323,
+      324,
+      325,
+      326,
+      327,
+      328,
+      329,
+      330,
+      331,
+      332,
+      333,
+      334,
+      335,
+      336,
+      337,
+      338,
+      339,
+      340,
+      341,
+      342,
+      343,
+      344,
+      345,
+      346,
+      347,
+      348,
+      349,
+      350
+    ],
+    "domain_counts": [
+      {
+        "emotional": 51,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 52,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 53,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 54,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 55,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 56,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 57,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 58,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 59,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 60,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 61,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 62,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 63,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 64,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 65,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 66,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 67,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 68,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 69,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 70,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 71,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 72,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 73,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 74,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 75,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 76,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 77,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 78,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 79,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 80,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 81,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 82,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 83,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 84,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 85,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 86,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 87,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 88,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 89,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 90,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 91,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 92,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 93,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 94,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 95,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 96,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 97,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 98,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 99,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 100,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 101,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 102,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 103,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 104,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 105,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 106,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 107,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 108,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 109,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 110,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 111,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 112,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 113,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 114,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 115,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 116,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 117,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 118,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 119,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 120,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 121,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 122,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 123,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 124,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 125,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 126,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 127,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 128,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 129,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 130,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 131,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 132,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 133,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 134,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 135,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 136,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 137,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 138,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 139,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 140,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 141,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 142,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 143,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 144,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 145,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 146,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 147,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 148,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 149,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      },
+      {
+        "emotional": 150,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    ]
+  }
+}

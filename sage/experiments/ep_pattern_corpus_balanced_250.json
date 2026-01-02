@@ -1,14 +1,14 @@
 {
   "session": "148",
   "description": "Balanced multi-domain EP pattern corpus (250+ patterns across 5 domains)",
-  "timestamp": "2026-01-01T11:35:41.728474",
+  "timestamp": "2026-01-01T12:02:25.599333",
   "total_patterns": 250,
   "patterns": [
     {
       "pattern_id": "emotional_emotional_high_frustration_0",
       "target_domain": "emotional",
       "scenario_type": "emotional_high_frustration",
-      "timestamp": "2026-01-01T11:35:41.685517",
+      "timestamp": "2026-01-01T12:02:25.222894",
       "context": {
         "emotional": {
           "frustration": 0.0,
@@ -96,7 +96,7 @@
       },
       "outcome": {
         "quality_score": 0.25,
-        "epistemic_state": "EpistemicState.LEARNING",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.0,
         "success": true,
@@ -107,7 +107,7 @@
       "pattern_id": "emotional_emotional_high_frustration_1",
       "target_domain": "emotional",
       "scenario_type": "emotional_high_frustration",
-      "timestamp": "2026-01-01T11:35:41.686205",
+      "timestamp": "2026-01-01T12:02:25.224684",
       "context": {
         "emotional": {
           "frustration": 0.0,
@@ -206,7 +206,7 @@
       "pattern_id": "emotional_emotional_high_frustration_2",
       "target_domain": "emotional",
       "scenario_type": "emotional_high_frustration",
-      "timestamp": "2026-01-01T11:35:41.686539",
+      "timestamp": "2026-01-01T12:02:25.225790",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -305,7 +305,7 @@
       "pattern_id": "emotional_emotional_high_frustration_3",
       "target_domain": "emotional",
       "scenario_type": "emotional_high_frustration",
-      "timestamp": "2026-01-01T11:35:41.686793",
+      "timestamp": "2026-01-01T12:02:25.226803",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -404,7 +404,7 @@
       "pattern_id": "emotional_emotional_high_frustration_4",
       "target_domain": "emotional",
       "scenario_type": "emotional_high_frustration",
-      "timestamp": "2026-01-01T11:35:41.687021",
+      "timestamp": "2026-01-01T12:02:25.227848",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -503,7 +503,7 @@
       "pattern_id": "emotional_emotional_high_frustration_5",
       "target_domain": "emotional",
       "scenario_type": "emotional_high_frustration",
-      "timestamp": "2026-01-01T11:35:41.687228",
+      "timestamp": "2026-01-01T12:02:25.228852",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -602,7 +602,7 @@
       "pattern_id": "emotional_emotional_high_frustration_6",
       "target_domain": "emotional",
       "scenario_type": "emotional_high_frustration",
-      "timestamp": "2026-01-01T11:35:41.687421",
+      "timestamp": "2026-01-01T12:02:25.230221",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -690,7 +690,7 @@
       },
       "outcome": {
         "quality_score": 0.25,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.LEARNING",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -701,7 +701,7 @@
       "pattern_id": "emotional_emotional_high_frustration_7",
       "target_domain": "emotional",
       "scenario_type": "emotional_high_frustration",
-      "timestamp": "2026-01-01T11:35:41.687598",
+      "timestamp": "2026-01-01T12:02:25.231285",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -789,7 +789,7 @@
       },
       "outcome": {
         "quality_score": 0.25,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.UNCERTAIN",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -800,7 +800,7 @@
       "pattern_id": "emotional_emotional_high_frustration_8",
       "target_domain": "emotional",
       "scenario_type": "emotional_high_frustration",
-      "timestamp": "2026-01-01T11:35:41.687778",
+      "timestamp": "2026-01-01T12:02:25.232312",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -888,7 +888,7 @@
       },
       "outcome": {
         "quality_score": 0.25,
-        "epistemic_state": "EpistemicState.LEARNING",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -899,7 +899,7 @@
       "pattern_id": "emotional_emotional_high_frustration_9",
       "target_domain": "emotional",
       "scenario_type": "emotional_high_frustration",
-      "timestamp": "2026-01-01T11:35:41.687950",
+      "timestamp": "2026-01-01T12:02:25.233280",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -998,7 +998,7 @@
       "pattern_id": "emotional_emotional_repeated_failures_0",
       "target_domain": "emotional",
       "scenario_type": "emotional_repeated_failures",
-      "timestamp": "2026-01-01T11:35:41.688161",
+      "timestamp": "2026-01-01T12:02:25.234346",
       "context": {
         "emotional": {
           "frustration": 0.652,
@@ -1097,7 +1097,7 @@
       "pattern_id": "emotional_emotional_repeated_failures_1",
       "target_domain": "emotional",
       "scenario_type": "emotional_repeated_failures",
-      "timestamp": "2026-01-01T11:35:41.688338",
+      "timestamp": "2026-01-01T12:02:25.235336",
       "context": {
         "emotional": {
           "frustration": 0.6617241379310345,
@@ -1196,7 +1196,7 @@
       "pattern_id": "emotional_emotional_repeated_failures_2",
       "target_domain": "emotional",
       "scenario_type": "emotional_repeated_failures",
-      "timestamp": "2026-01-01T11:35:41.688525",
+      "timestamp": "2026-01-01T12:02:25.236350",
       "context": {
         "emotional": {
           "frustration": 0.7766666666666667,
@@ -1284,7 +1284,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.LEARNING",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.7766666666666667,
         "success": true,
@@ -1295,7 +1295,7 @@
       "pattern_id": "emotional_emotional_repeated_failures_3",
       "target_domain": "emotional",
       "scenario_type": "emotional_repeated_failures",
-      "timestamp": "2026-01-01T11:35:41.688695",
+      "timestamp": "2026-01-01T12:02:25.237361",
       "context": {
         "emotional": {
           "frustration": 0.8066666666666666,
@@ -1394,7 +1394,7 @@
       "pattern_id": "emotional_emotional_repeated_failures_4",
       "target_domain": "emotional",
       "scenario_type": "emotional_repeated_failures",
-      "timestamp": "2026-01-01T11:35:41.688870",
+      "timestamp": "2026-01-01T12:02:25.238375",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -1493,7 +1493,7 @@
       "pattern_id": "emotional_emotional_repeated_failures_5",
       "target_domain": "emotional",
       "scenario_type": "emotional_repeated_failures",
-      "timestamp": "2026-01-01T11:35:41.689034",
+      "timestamp": "2026-01-01T12:02:25.239440",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -1592,7 +1592,7 @@
       "pattern_id": "emotional_emotional_repeated_failures_6",
       "target_domain": "emotional",
       "scenario_type": "emotional_repeated_failures",
-      "timestamp": "2026-01-01T11:35:41.689238",
+      "timestamp": "2026-01-01T12:02:25.240455",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -1691,7 +1691,7 @@
       "pattern_id": "emotional_emotional_repeated_failures_7",
       "target_domain": "emotional",
       "scenario_type": "emotional_repeated_failures",
-      "timestamp": "2026-01-01T11:35:41.689407",
+      "timestamp": "2026-01-01T12:02:25.241467",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -1790,7 +1790,7 @@
       "pattern_id": "emotional_emotional_repeated_failures_8",
       "target_domain": "emotional",
       "scenario_type": "emotional_repeated_failures",
-      "timestamp": "2026-01-01T11:35:41.689570",
+      "timestamp": "2026-01-01T12:02:25.242489",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -1889,7 +1889,7 @@
       "pattern_id": "emotional_emotional_repeated_failures_9",
       "target_domain": "emotional",
       "scenario_type": "emotional_repeated_failures",
-      "timestamp": "2026-01-01T11:35:41.689735",
+      "timestamp": "2026-01-01T12:02:25.243509",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -1988,7 +1988,7 @@
       "pattern_id": "emotional_emotional_complex_under_stress_0",
       "target_domain": "emotional",
       "scenario_type": "emotional_complex_under_stress",
-      "timestamp": "2026-01-01T11:35:41.689922",
+      "timestamp": "2026-01-01T12:02:25.244568",
       "context": {
         "emotional": {
           "frustration": 0.7333333333333334,
@@ -2087,7 +2087,7 @@
       "pattern_id": "emotional_emotional_complex_under_stress_1",
       "target_domain": "emotional",
       "scenario_type": "emotional_complex_under_stress",
-      "timestamp": "2026-01-01T11:35:41.690095",
+      "timestamp": "2026-01-01T12:02:25.245591",
       "context": {
         "emotional": {
           "frustration": 0.7333333333333334,
@@ -2186,7 +2186,7 @@
       "pattern_id": "emotional_emotional_complex_under_stress_2",
       "target_domain": "emotional",
       "scenario_type": "emotional_complex_under_stress",
-      "timestamp": "2026-01-01T11:35:41.690265",
+      "timestamp": "2026-01-01T12:02:25.246591",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -2285,7 +2285,7 @@
       "pattern_id": "emotional_emotional_complex_under_stress_3",
       "target_domain": "emotional",
       "scenario_type": "emotional_complex_under_stress",
-      "timestamp": "2026-01-01T11:35:41.690476",
+      "timestamp": "2026-01-01T12:02:25.247765",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -2384,7 +2384,7 @@
       "pattern_id": "emotional_emotional_complex_under_stress_4",
       "target_domain": "emotional",
       "scenario_type": "emotional_complex_under_stress",
-      "timestamp": "2026-01-01T11:35:41.690651",
+      "timestamp": "2026-01-01T12:02:25.248777",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -2483,7 +2483,7 @@
       "pattern_id": "emotional_emotional_complex_under_stress_5",
       "target_domain": "emotional",
       "scenario_type": "emotional_complex_under_stress",
-      "timestamp": "2026-01-01T11:35:41.690815",
+      "timestamp": "2026-01-01T12:02:25.249867",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -2582,7 +2582,7 @@
       "pattern_id": "emotional_emotional_complex_under_stress_6",
       "target_domain": "emotional",
       "scenario_type": "emotional_complex_under_stress",
-      "timestamp": "2026-01-01T11:35:41.690983",
+      "timestamp": "2026-01-01T12:02:25.250895",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -2681,7 +2681,7 @@
       "pattern_id": "emotional_emotional_complex_under_stress_7",
       "target_domain": "emotional",
       "scenario_type": "emotional_complex_under_stress",
-      "timestamp": "2026-01-01T11:35:41.691152",
+      "timestamp": "2026-01-01T12:02:25.251936",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -2780,7 +2780,7 @@
       "pattern_id": "emotional_emotional_complex_under_stress_8",
       "target_domain": "emotional",
       "scenario_type": "emotional_complex_under_stress",
-      "timestamp": "2026-01-01T11:35:41.691312",
+      "timestamp": "2026-01-01T12:02:25.253102",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -2879,7 +2879,7 @@
       "pattern_id": "emotional_emotional_complex_under_stress_9",
       "target_domain": "emotional",
       "scenario_type": "emotional_complex_under_stress",
-      "timestamp": "2026-01-01T11:35:41.691477",
+      "timestamp": "2026-01-01T12:02:25.254084",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -2978,7 +2978,7 @@
       "pattern_id": "emotional_emotional_ambiguous_feedback_0",
       "target_domain": "emotional",
       "scenario_type": "emotional_ambiguous_feedback",
-      "timestamp": "2026-01-01T11:35:41.691659",
+      "timestamp": "2026-01-01T12:02:25.255204",
       "context": {
         "emotional": {
           "frustration": 0.7294117647058823,
@@ -3077,7 +3077,7 @@
       "pattern_id": "emotional_emotional_ambiguous_feedback_1",
       "target_domain": "emotional",
       "scenario_type": "emotional_ambiguous_feedback",
-      "timestamp": "2026-01-01T11:35:41.691828",
+      "timestamp": "2026-01-01T12:02:25.256223",
       "context": {
         "emotional": {
           "frustration": 0.7371428571428571,
@@ -3176,7 +3176,7 @@
       "pattern_id": "emotional_emotional_ambiguous_feedback_2",
       "target_domain": "emotional",
       "scenario_type": "emotional_ambiguous_feedback",
-      "timestamp": "2026-01-01T11:35:41.691986",
+      "timestamp": "2026-01-01T12:02:25.257243",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -3275,7 +3275,7 @@
       "pattern_id": "emotional_emotional_ambiguous_feedback_3",
       "target_domain": "emotional",
       "scenario_type": "emotional_ambiguous_feedback",
-      "timestamp": "2026-01-01T11:35:41.692148",
+      "timestamp": "2026-01-01T12:02:25.258270",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -3374,7 +3374,7 @@
       "pattern_id": "emotional_emotional_ambiguous_feedback_4",
       "target_domain": "emotional",
       "scenario_type": "emotional_ambiguous_feedback",
-      "timestamp": "2026-01-01T11:35:41.692312",
+      "timestamp": "2026-01-01T12:02:25.259277",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -3473,7 +3473,7 @@
       "pattern_id": "emotional_emotional_ambiguous_feedback_5",
       "target_domain": "emotional",
       "scenario_type": "emotional_ambiguous_feedback",
-      "timestamp": "2026-01-01T11:35:41.692470",
+      "timestamp": "2026-01-01T12:02:25.260295",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -3572,7 +3572,7 @@
       "pattern_id": "emotional_emotional_ambiguous_feedback_6",
       "target_domain": "emotional",
       "scenario_type": "emotional_ambiguous_feedback",
-      "timestamp": "2026-01-01T11:35:41.692629",
+      "timestamp": "2026-01-01T12:02:25.261307",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -3671,7 +3671,7 @@
       "pattern_id": "emotional_emotional_ambiguous_feedback_7",
       "target_domain": "emotional",
       "scenario_type": "emotional_ambiguous_feedback",
-      "timestamp": "2026-01-01T11:35:41.692784",
+      "timestamp": "2026-01-01T12:02:25.262294",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -3770,7 +3770,7 @@
       "pattern_id": "emotional_emotional_ambiguous_feedback_8",
       "target_domain": "emotional",
       "scenario_type": "emotional_ambiguous_feedback",
-      "timestamp": "2026-01-01T11:35:41.692939",
+      "timestamp": "2026-01-01T12:02:25.263329",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -3869,7 +3869,7 @@
       "pattern_id": "emotional_emotional_ambiguous_feedback_9",
       "target_domain": "emotional",
       "scenario_type": "emotional_ambiguous_feedback",
-      "timestamp": "2026-01-01T11:35:41.693114",
+      "timestamp": "2026-01-01T12:02:25.264330",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -3968,7 +3968,7 @@
       "pattern_id": "emotional_emotional_contradictory_requirements_0",
       "target_domain": "emotional",
       "scenario_type": "emotional_contradictory_requirements",
-      "timestamp": "2026-01-01T11:35:41.693312",
+      "timestamp": "2026-01-01T12:02:25.265404",
       "context": {
         "emotional": {
           "frustration": 0.7371428571428571,
@@ -4067,7 +4067,7 @@
       "pattern_id": "emotional_emotional_contradictory_requirements_1",
       "target_domain": "emotional",
       "scenario_type": "emotional_contradictory_requirements",
-      "timestamp": "2026-01-01T11:35:41.693478",
+      "timestamp": "2026-01-01T12:02:25.266404",
       "context": {
         "emotional": {
           "frustration": 0.7294117647058823,
@@ -4166,7 +4166,7 @@
       "pattern_id": "emotional_emotional_contradictory_requirements_2",
       "target_domain": "emotional",
       "scenario_type": "emotional_contradictory_requirements",
-      "timestamp": "2026-01-01T11:35:41.693638",
+      "timestamp": "2026-01-01T12:02:25.267420",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -4265,7 +4265,7 @@
       "pattern_id": "emotional_emotional_contradictory_requirements_3",
       "target_domain": "emotional",
       "scenario_type": "emotional_contradictory_requirements",
-      "timestamp": "2026-01-01T11:35:41.693800",
+      "timestamp": "2026-01-01T12:02:25.268413",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -4353,7 +4353,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.LEARNING",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -4364,7 +4364,7 @@
       "pattern_id": "emotional_emotional_contradictory_requirements_4",
       "target_domain": "emotional",
       "scenario_type": "emotional_contradictory_requirements",
-      "timestamp": "2026-01-01T11:35:41.693954",
+      "timestamp": "2026-01-01T12:02:25.269431",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -4463,7 +4463,7 @@
       "pattern_id": "emotional_emotional_contradictory_requirements_5",
       "target_domain": "emotional",
       "scenario_type": "emotional_contradictory_requirements",
-      "timestamp": "2026-01-01T11:35:41.694110",
+      "timestamp": "2026-01-01T12:02:25.270642",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -4562,7 +4562,7 @@
       "pattern_id": "emotional_emotional_contradictory_requirements_6",
       "target_domain": "emotional",
       "scenario_type": "emotional_contradictory_requirements",
-      "timestamp": "2026-01-01T11:35:41.694265",
+      "timestamp": "2026-01-01T12:02:25.271718",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -4661,7 +4661,7 @@
       "pattern_id": "emotional_emotional_contradictory_requirements_7",
       "target_domain": "emotional",
       "scenario_type": "emotional_contradictory_requirements",
-      "timestamp": "2026-01-01T11:35:41.694464",
+      "timestamp": "2026-01-01T12:02:25.272706",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -4760,7 +4760,7 @@
       "pattern_id": "emotional_emotional_contradictory_requirements_8",
       "target_domain": "emotional",
       "scenario_type": "emotional_contradictory_requirements",
-      "timestamp": "2026-01-01T11:35:41.694625",
+      "timestamp": "2026-01-01T12:02:25.273705",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -4859,7 +4859,7 @@
       "pattern_id": "emotional_emotional_contradictory_requirements_9",
       "target_domain": "emotional",
       "scenario_type": "emotional_contradictory_requirements",
-      "timestamp": "2026-01-01T11:35:41.694784",
+      "timestamp": "2026-01-01T12:02:25.274721",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -4958,7 +4958,7 @@
       "pattern_id": "quality_quality_low_information_0",
       "target_domain": "quality",
       "scenario_type": "quality_low_information",
-      "timestamp": "2026-01-01T11:35:41.694974",
+      "timestamp": "2026-01-01T12:02:25.275474",
       "context": {
         "emotional": {
           "frustration": 0.0,
@@ -5055,7 +5055,7 @@
       "pattern_id": "quality_quality_low_information_1",
       "target_domain": "quality",
       "scenario_type": "quality_low_information",
-      "timestamp": "2026-01-01T11:35:41.695129",
+      "timestamp": "2026-01-01T12:02:25.276303",
       "context": {
         "emotional": {
           "frustration": 0.0,
@@ -5152,7 +5152,7 @@
       "pattern_id": "quality_quality_low_information_2",
       "target_domain": "quality",
       "scenario_type": "quality_low_information",
-      "timestamp": "2026-01-01T11:35:41.695302",
+      "timestamp": "2026-01-01T12:02:25.277284",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -5251,7 +5251,7 @@
       "pattern_id": "quality_quality_low_information_3",
       "target_domain": "quality",
       "scenario_type": "quality_low_information",
-      "timestamp": "2026-01-01T11:35:41.695466",
+      "timestamp": "2026-01-01T12:02:25.278265",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -5350,7 +5350,7 @@
       "pattern_id": "quality_quality_low_information_4",
       "target_domain": "quality",
       "scenario_type": "quality_low_information",
-      "timestamp": "2026-01-01T11:35:41.695632",
+      "timestamp": "2026-01-01T12:02:25.279287",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -5449,7 +5449,7 @@
       "pattern_id": "quality_quality_low_information_5",
       "target_domain": "quality",
       "scenario_type": "quality_low_information",
-      "timestamp": "2026-01-01T11:35:41.695787",
+      "timestamp": "2026-01-01T12:02:25.280248",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -5548,7 +5548,7 @@
       "pattern_id": "quality_quality_low_information_6",
       "target_domain": "quality",
       "scenario_type": "quality_low_information",
-      "timestamp": "2026-01-01T11:35:41.695939",
+      "timestamp": "2026-01-01T12:02:25.281210",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -5647,7 +5647,7 @@
       "pattern_id": "quality_quality_low_information_7",
       "target_domain": "quality",
       "scenario_type": "quality_low_information",
-      "timestamp": "2026-01-01T11:35:41.696103",
+      "timestamp": "2026-01-01T12:02:25.282165",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -5735,7 +5735,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.LEARNING",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -5746,7 +5746,7 @@
       "pattern_id": "quality_quality_low_information_8",
       "target_domain": "quality",
       "scenario_type": "quality_low_information",
-      "timestamp": "2026-01-01T11:35:41.696258",
+      "timestamp": "2026-01-01T12:02:25.283172",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -5845,7 +5845,7 @@
       "pattern_id": "quality_quality_low_information_9",
       "target_domain": "quality",
       "scenario_type": "quality_low_information",
-      "timestamp": "2026-01-01T11:35:41.696418",
+      "timestamp": "2026-01-01T12:02:25.284136",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -5944,7 +5944,7 @@
       "pattern_id": "quality_quality_high_complexity_0",
       "target_domain": "quality",
       "scenario_type": "quality_high_complexity",
-      "timestamp": "2026-01-01T11:35:41.696622",
+      "timestamp": "2026-01-01T12:02:25.285216",
       "context": {
         "emotional": {
           "frustration": 0.6144186046511628,
@@ -6043,7 +6043,7 @@
       "pattern_id": "quality_quality_high_complexity_1",
       "target_domain": "quality",
       "scenario_type": "quality_high_complexity",
-      "timestamp": "2026-01-01T11:35:41.696813",
+      "timestamp": "2026-01-01T12:02:25.286272",
       "context": {
         "emotional": {
           "frustration": 0.6841935483870968,
@@ -6142,7 +6142,7 @@
       "pattern_id": "quality_quality_high_complexity_2",
       "target_domain": "quality",
       "scenario_type": "quality_high_complexity",
-      "timestamp": "2026-01-01T11:35:41.697001",
+      "timestamp": "2026-01-01T12:02:25.287392",
       "context": {
         "emotional": {
           "frustration": 0.7766666666666667,
@@ -6241,7 +6241,7 @@
       "pattern_id": "quality_quality_high_complexity_3",
       "target_domain": "quality",
       "scenario_type": "quality_high_complexity",
-      "timestamp": "2026-01-01T11:35:41.697206",
+      "timestamp": "2026-01-01T12:02:25.288487",
       "context": {
         "emotional": {
           "frustration": 0.8066666666666668,
@@ -6340,7 +6340,7 @@
       "pattern_id": "quality_quality_high_complexity_4",
       "target_domain": "quality",
       "scenario_type": "quality_high_complexity",
-      "timestamp": "2026-01-01T11:35:41.697401",
+      "timestamp": "2026-01-01T12:02:25.289604",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -6428,7 +6428,7 @@
       },
       "outcome": {
         "quality_score": 0.75,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.CONFIDENT",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -6439,7 +6439,7 @@
       "pattern_id": "quality_quality_high_complexity_5",
       "target_domain": "quality",
       "scenario_type": "quality_high_complexity",
-      "timestamp": "2026-01-01T11:35:41.697586",
+      "timestamp": "2026-01-01T12:02:25.290675",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -6538,7 +6538,7 @@
       "pattern_id": "quality_quality_high_complexity_6",
       "target_domain": "quality",
       "scenario_type": "quality_high_complexity",
-      "timestamp": "2026-01-01T11:35:41.697771",
+      "timestamp": "2026-01-01T12:02:25.291802",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -6637,7 +6637,7 @@
       "pattern_id": "quality_quality_high_complexity_7",
       "target_domain": "quality",
       "scenario_type": "quality_high_complexity",
-      "timestamp": "2026-01-01T11:35:41.697960",
+      "timestamp": "2026-01-01T12:02:25.292878",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -6725,7 +6725,7 @@
       },
       "outcome": {
         "quality_score": 0.75,
-        "epistemic_state": "EpistemicState.CONFIDENT",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -6736,7 +6736,7 @@
       "pattern_id": "quality_quality_high_complexity_8",
       "target_domain": "quality",
       "scenario_type": "quality_high_complexity",
-      "timestamp": "2026-01-01T11:35:41.698144",
+      "timestamp": "2026-01-01T12:02:25.294110",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -6835,7 +6835,7 @@
       "pattern_id": "quality_quality_high_complexity_9",
       "target_domain": "quality",
       "scenario_type": "quality_high_complexity",
-      "timestamp": "2026-01-01T11:35:41.698324",
+      "timestamp": "2026-01-01T12:02:25.295244",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -6934,7 +6934,7 @@
       "pattern_id": "quality_quality_ambiguous_question_0",
       "target_domain": "quality",
       "scenario_type": "quality_ambiguous_question",
-      "timestamp": "2026-01-01T11:35:41.698503",
+      "timestamp": "2026-01-01T12:02:25.296294",
       "context": {
         "emotional": {
           "frustration": 0.6988235294117647,
@@ -7033,7 +7033,7 @@
       "pattern_id": "quality_quality_ambiguous_question_1",
       "target_domain": "quality",
       "scenario_type": "quality_ambiguous_question",
-      "timestamp": "2026-01-01T11:35:41.698670",
+      "timestamp": "2026-01-01T12:02:25.297425",
       "context": {
         "emotional": {
           "frustration": 0.6118181818181818,
@@ -7132,7 +7132,7 @@
       "pattern_id": "quality_quality_ambiguous_question_2",
       "target_domain": "quality",
       "scenario_type": "quality_ambiguous_question",
-      "timestamp": "2026-01-01T11:35:41.698835",
+      "timestamp": "2026-01-01T12:02:25.298451",
       "context": {
         "emotional": {
           "frustration": 0.7766666666666667,
@@ -7231,7 +7231,7 @@
       "pattern_id": "quality_quality_ambiguous_question_3",
       "target_domain": "quality",
       "scenario_type": "quality_ambiguous_question",
-      "timestamp": "2026-01-01T11:35:41.698997",
+      "timestamp": "2026-01-01T12:02:25.299633",
       "context": {
         "emotional": {
           "frustration": 0.8066666666666668,
@@ -7330,7 +7330,7 @@
       "pattern_id": "quality_quality_ambiguous_question_4",
       "target_domain": "quality",
       "scenario_type": "quality_ambiguous_question",
-      "timestamp": "2026-01-01T11:35:41.699159",
+      "timestamp": "2026-01-01T12:02:25.300678",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -7429,7 +7429,7 @@
       "pattern_id": "quality_quality_ambiguous_question_5",
       "target_domain": "quality",
       "scenario_type": "quality_ambiguous_question",
-      "timestamp": "2026-01-01T11:35:41.699315",
+      "timestamp": "2026-01-01T12:02:25.301686",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -7528,7 +7528,7 @@
       "pattern_id": "quality_quality_ambiguous_question_6",
       "target_domain": "quality",
       "scenario_type": "quality_ambiguous_question",
-      "timestamp": "2026-01-01T11:35:41.699545",
+      "timestamp": "2026-01-01T12:02:25.302703",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -7627,7 +7627,7 @@
       "pattern_id": "quality_quality_ambiguous_question_7",
       "target_domain": "quality",
       "scenario_type": "quality_ambiguous_question",
-      "timestamp": "2026-01-01T11:35:41.699704",
+      "timestamp": "2026-01-01T12:02:25.303734",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -7726,7 +7726,7 @@
       "pattern_id": "quality_quality_ambiguous_question_8",
       "target_domain": "quality",
       "scenario_type": "quality_ambiguous_question",
-      "timestamp": "2026-01-01T11:35:41.699887",
+      "timestamp": "2026-01-01T12:02:25.304747",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -7825,7 +7825,7 @@
       "pattern_id": "quality_quality_ambiguous_question_9",
       "target_domain": "quality",
       "scenario_type": "quality_ambiguous_question",
-      "timestamp": "2026-01-01T11:35:41.700042",
+      "timestamp": "2026-01-01T12:02:25.305794",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -7924,7 +7924,7 @@
       "pattern_id": "quality_quality_requires_speculation_0",
       "target_domain": "quality",
       "scenario_type": "quality_requires_speculation",
-      "timestamp": "2026-01-01T11:35:41.700227",
+      "timestamp": "2026-01-01T12:02:25.306859",
       "context": {
         "emotional": {
           "frustration": 0.7244444444444444,
@@ -8012,7 +8012,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.LEARNING",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.7244444444444444,
         "success": true,
@@ -8023,7 +8023,7 @@
       "pattern_id": "quality_quality_requires_speculation_1",
       "target_domain": "quality",
       "scenario_type": "quality_requires_speculation",
-      "timestamp": "2026-01-01T11:35:41.700405",
+      "timestamp": "2026-01-01T12:02:25.307954",
       "context": {
         "emotional": {
           "frustration": 0.7416666666666667,
@@ -8122,7 +8122,7 @@
       "pattern_id": "quality_quality_requires_speculation_2",
       "target_domain": "quality",
       "scenario_type": "quality_requires_speculation",
-      "timestamp": "2026-01-01T11:35:41.700573",
+      "timestamp": "2026-01-01T12:02:25.308976",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -8210,7 +8210,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.LEARNING",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -8221,7 +8221,7 @@
       "pattern_id": "quality_quality_requires_speculation_3",
       "target_domain": "quality",
       "scenario_type": "quality_requires_speculation",
-      "timestamp": "2026-01-01T11:35:41.700744",
+      "timestamp": "2026-01-01T12:02:25.310020",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -8320,7 +8320,7 @@
       "pattern_id": "quality_quality_requires_speculation_4",
       "target_domain": "quality",
       "scenario_type": "quality_requires_speculation",
-      "timestamp": "2026-01-01T11:35:41.700911",
+      "timestamp": "2026-01-01T12:02:25.311091",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -8419,7 +8419,7 @@
       "pattern_id": "quality_quality_requires_speculation_5",
       "target_domain": "quality",
       "scenario_type": "quality_requires_speculation",
-      "timestamp": "2026-01-01T11:35:41.701091",
+      "timestamp": "2026-01-01T12:02:25.312121",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -8518,7 +8518,7 @@
       "pattern_id": "quality_quality_requires_speculation_6",
       "target_domain": "quality",
       "scenario_type": "quality_requires_speculation",
-      "timestamp": "2026-01-01T11:35:41.701268",
+      "timestamp": "2026-01-01T12:02:25.313148",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -8617,7 +8617,7 @@
       "pattern_id": "quality_quality_requires_speculation_7",
       "target_domain": "quality",
       "scenario_type": "quality_requires_speculation",
-      "timestamp": "2026-01-01T11:35:41.701431",
+      "timestamp": "2026-01-01T12:02:25.314168",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -8716,7 +8716,7 @@
       "pattern_id": "quality_quality_requires_speculation_8",
       "target_domain": "quality",
       "scenario_type": "quality_requires_speculation",
-      "timestamp": "2026-01-01T11:35:41.701600",
+      "timestamp": "2026-01-01T12:02:25.315247",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -8815,7 +8815,7 @@
       "pattern_id": "quality_quality_requires_speculation_9",
       "target_domain": "quality",
       "scenario_type": "quality_requires_speculation",
-      "timestamp": "2026-01-01T11:35:41.701763",
+      "timestamp": "2026-01-01T12:02:25.316279",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -8914,7 +8914,7 @@
       "pattern_id": "quality_quality_conflicting_constraints_0",
       "target_domain": "quality",
       "scenario_type": "quality_conflicting_constraints",
-      "timestamp": "2026-01-01T11:35:41.701941",
+      "timestamp": "2026-01-01T12:02:25.317455",
       "context": {
         "emotional": {
           "frustration": 0.6945454545454546,
@@ -9013,7 +9013,7 @@
       "pattern_id": "quality_quality_conflicting_constraints_1",
       "target_domain": "quality",
       "scenario_type": "quality_conflicting_constraints",
-      "timestamp": "2026-01-01T11:35:41.702099",
+      "timestamp": "2026-01-01T12:02:25.318531",
       "context": {
         "emotional": {
           "frustration": 0.6181081081081081,
@@ -9112,7 +9112,7 @@
       "pattern_id": "quality_quality_conflicting_constraints_2",
       "target_domain": "quality",
       "scenario_type": "quality_conflicting_constraints",
-      "timestamp": "2026-01-01T11:35:41.702259",
+      "timestamp": "2026-01-01T12:02:25.319580",
       "context": {
         "emotional": {
           "frustration": 0.7766666666666667,
@@ -9211,7 +9211,7 @@
       "pattern_id": "quality_quality_conflicting_constraints_3",
       "target_domain": "quality",
       "scenario_type": "quality_conflicting_constraints",
-      "timestamp": "2026-01-01T11:35:41.702416",
+      "timestamp": "2026-01-01T12:02:25.320587",
       "context": {
         "emotional": {
           "frustration": 0.8066666666666666,
@@ -9299,7 +9299,7 @@
       },
       "outcome": {
         "quality_score": 0.25,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.LEARNING",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8066666666666666,
         "success": true,
@@ -9310,7 +9310,7 @@
       "pattern_id": "quality_quality_conflicting_constraints_4",
       "target_domain": "quality",
       "scenario_type": "quality_conflicting_constraints",
-      "timestamp": "2026-01-01T11:35:41.702578",
+      "timestamp": "2026-01-01T12:02:25.321590",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -9398,7 +9398,7 @@
       },
       "outcome": {
         "quality_score": 0.25,
-        "epistemic_state": "EpistemicState.LEARNING",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -9409,7 +9409,7 @@
       "pattern_id": "quality_quality_conflicting_constraints_5",
       "target_domain": "quality",
       "scenario_type": "quality_conflicting_constraints",
-      "timestamp": "2026-01-01T11:35:41.702736",
+      "timestamp": "2026-01-01T12:02:25.322755",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -9497,7 +9497,7 @@
       },
       "outcome": {
         "quality_score": 0.25,
-        "epistemic_state": "EpistemicState.LEARNING",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -9508,7 +9508,7 @@
       "pattern_id": "quality_quality_conflicting_constraints_6",
       "target_domain": "quality",
       "scenario_type": "quality_conflicting_constraints",
-      "timestamp": "2026-01-01T11:35:41.702889",
+      "timestamp": "2026-01-01T12:02:25.323811",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -9607,7 +9607,7 @@
       "pattern_id": "quality_quality_conflicting_constraints_7",
       "target_domain": "quality",
       "scenario_type": "quality_conflicting_constraints",
-      "timestamp": "2026-01-01T11:35:41.703045",
+      "timestamp": "2026-01-01T12:02:25.324811",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -9706,7 +9706,7 @@
       "pattern_id": "quality_quality_conflicting_constraints_8",
       "target_domain": "quality",
       "scenario_type": "quality_conflicting_constraints",
-      "timestamp": "2026-01-01T11:35:41.703203",
+      "timestamp": "2026-01-01T12:02:25.325826",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -9805,7 +9805,7 @@
       "pattern_id": "quality_quality_conflicting_constraints_9",
       "target_domain": "quality",
       "scenario_type": "quality_conflicting_constraints",
-      "timestamp": "2026-01-01T11:35:41.703361",
+      "timestamp": "2026-01-01T12:02:25.326851",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -9893,7 +9893,7 @@
       },
       "outcome": {
         "quality_score": 0.25,
-        "epistemic_state": "EpistemicState.UNCERTAIN",
+        "epistemic_state": "EpistemicState.LEARNING",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -9904,7 +9904,7 @@
       "pattern_id": "attention_attention_low_atp_0",
       "target_domain": "attention",
       "scenario_type": "attention_low_atp",
-      "timestamp": "2026-01-01T11:35:41.703542",
+      "timestamp": "2026-01-01T12:02:25.327513",
       "context": {
         "emotional": {
           "frustration": 0.0,
@@ -10003,7 +10003,7 @@
       "pattern_id": "attention_attention_low_atp_1",
       "target_domain": "attention",
       "scenario_type": "attention_low_atp",
-      "timestamp": "2026-01-01T11:35:41.703691",
+      "timestamp": "2026-01-01T12:02:25.328305",
       "context": {
         "emotional": {
           "frustration": 0.0,
@@ -10102,7 +10102,7 @@
       "pattern_id": "attention_attention_low_atp_2",
       "target_domain": "attention",
       "scenario_type": "attention_low_atp",
-      "timestamp": "2026-01-01T11:35:41.703866",
+      "timestamp": "2026-01-01T12:02:25.329317",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -10202,7 +10202,7 @@
       "pattern_id": "attention_attention_low_atp_3",
       "target_domain": "attention",
       "scenario_type": "attention_low_atp",
-      "timestamp": "2026-01-01T11:35:41.704042",
+      "timestamp": "2026-01-01T12:02:25.330304",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -10291,7 +10291,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.LEARNING",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -10302,7 +10302,7 @@
       "pattern_id": "attention_attention_low_atp_4",
       "target_domain": "attention",
       "scenario_type": "attention_low_atp",
-      "timestamp": "2026-01-01T11:35:41.704206",
+      "timestamp": "2026-01-01T12:02:25.331324",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -10402,7 +10402,7 @@
       "pattern_id": "attention_attention_low_atp_5",
       "target_domain": "attention",
       "scenario_type": "attention_low_atp",
-      "timestamp": "2026-01-01T11:35:41.704371",
+      "timestamp": "2026-01-01T12:02:25.332301",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -10502,7 +10502,7 @@
       "pattern_id": "attention_attention_low_atp_6",
       "target_domain": "attention",
       "scenario_type": "attention_low_atp",
-      "timestamp": "2026-01-01T11:35:41.704529",
+      "timestamp": "2026-01-01T12:02:25.333287",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -10602,7 +10602,7 @@
       "pattern_id": "attention_attention_low_atp_7",
       "target_domain": "attention",
       "scenario_type": "attention_low_atp",
-      "timestamp": "2026-01-01T11:35:41.704690",
+      "timestamp": "2026-01-01T12:02:25.334309",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -10702,7 +10702,7 @@
       "pattern_id": "attention_attention_low_atp_8",
       "target_domain": "attention",
       "scenario_type": "attention_low_atp",
-      "timestamp": "2026-01-01T11:35:41.704845",
+      "timestamp": "2026-01-01T12:02:25.335315",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -10802,7 +10802,7 @@
       "pattern_id": "attention_attention_low_atp_9",
       "target_domain": "attention",
       "scenario_type": "attention_low_atp",
-      "timestamp": "2026-01-01T11:35:41.705005",
+      "timestamp": "2026-01-01T12:02:25.336318",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -10902,7 +10902,7 @@
       "pattern_id": "attention_attention_high_cost_0",
       "target_domain": "attention",
       "scenario_type": "attention_high_cost",
-      "timestamp": "2026-01-01T11:35:41.705204",
+      "timestamp": "2026-01-01T12:02:25.337375",
       "context": {
         "emotional": {
           "frustration": 0.76,
@@ -11002,7 +11002,7 @@
       "pattern_id": "attention_attention_high_cost_1",
       "target_domain": "attention",
       "scenario_type": "attention_high_cost",
-      "timestamp": "2026-01-01T11:35:41.705366",
+      "timestamp": "2026-01-01T12:02:25.338350",
       "context": {
         "emotional": {
           "frustration": 0.7,
@@ -11091,7 +11091,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.LEARNING",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.7,
         "success": true,
@@ -11102,7 +11102,7 @@
       "pattern_id": "attention_attention_high_cost_2",
       "target_domain": "attention",
       "scenario_type": "attention_high_cost",
-      "timestamp": "2026-01-01T11:35:41.705530",
+      "timestamp": "2026-01-01T12:02:25.339370",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -11202,7 +11202,7 @@
       "pattern_id": "attention_attention_high_cost_3",
       "target_domain": "attention",
       "scenario_type": "attention_high_cost",
-      "timestamp": "2026-01-01T11:35:41.705681",
+      "timestamp": "2026-01-01T12:02:25.340461",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -11302,7 +11302,7 @@
       "pattern_id": "attention_attention_high_cost_4",
       "target_domain": "attention",
       "scenario_type": "attention_high_cost",
-      "timestamp": "2026-01-01T11:35:41.705832",
+      "timestamp": "2026-01-01T12:02:25.341442",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -11402,7 +11402,7 @@
       "pattern_id": "attention_attention_high_cost_5",
       "target_domain": "attention",
       "scenario_type": "attention_high_cost",
-      "timestamp": "2026-01-01T11:35:41.705980",
+      "timestamp": "2026-01-01T12:02:25.342387",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -11502,7 +11502,7 @@
       "pattern_id": "attention_attention_high_cost_6",
       "target_domain": "attention",
       "scenario_type": "attention_high_cost",
-      "timestamp": "2026-01-01T11:35:41.706135",
+      "timestamp": "2026-01-01T12:02:25.343419",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -11602,7 +11602,7 @@
       "pattern_id": "attention_attention_high_cost_7",
       "target_domain": "attention",
       "scenario_type": "attention_high_cost",
-      "timestamp": "2026-01-01T11:35:41.706293",
+      "timestamp": "2026-01-01T12:02:25.344380",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -11691,7 +11691,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.UNCERTAIN",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -11702,7 +11702,7 @@
       "pattern_id": "attention_attention_high_cost_8",
       "target_domain": "attention",
       "scenario_type": "attention_high_cost",
-      "timestamp": "2026-01-01T11:35:41.706444",
+      "timestamp": "2026-01-01T12:02:25.345479",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -11802,7 +11802,7 @@
       "pattern_id": "attention_attention_high_cost_9",
       "target_domain": "attention",
       "scenario_type": "attention_high_cost",
-      "timestamp": "2026-01-01T11:35:41.706588",
+      "timestamp": "2026-01-01T12:02:25.346485",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -11902,7 +11902,7 @@
       "pattern_id": "attention_attention_many_competing_tasks_0",
       "target_domain": "attention",
       "scenario_type": "attention_many_competing_tasks",
-      "timestamp": "2026-01-01T11:35:41.706769",
+      "timestamp": "2026-01-01T12:02:25.347547",
       "context": {
         "emotional": {
           "frustration": 0.7142857142857143,
@@ -12002,7 +12002,7 @@
       "pattern_id": "attention_attention_many_competing_tasks_1",
       "target_domain": "attention",
       "scenario_type": "attention_many_competing_tasks",
-      "timestamp": "2026-01-01T11:35:41.706932",
+      "timestamp": "2026-01-01T12:02:25.350173",
       "context": {
         "emotional": {
           "frustration": 0.75,
@@ -12102,7 +12102,7 @@
       "pattern_id": "attention_attention_many_competing_tasks_2",
       "target_domain": "attention",
       "scenario_type": "attention_many_competing_tasks",
-      "timestamp": "2026-01-01T11:35:41.707169",
+      "timestamp": "2026-01-01T12:02:25.351347",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -12202,7 +12202,7 @@
       "pattern_id": "attention_attention_many_competing_tasks_3",
       "target_domain": "attention",
       "scenario_type": "attention_many_competing_tasks",
-      "timestamp": "2026-01-01T11:35:41.707347",
+      "timestamp": "2026-01-01T12:02:25.352364",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -12302,7 +12302,7 @@
       "pattern_id": "attention_attention_many_competing_tasks_4",
       "target_domain": "attention",
       "scenario_type": "attention_many_competing_tasks",
-      "timestamp": "2026-01-01T11:35:41.707507",
+      "timestamp": "2026-01-01T12:02:25.353452",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -12402,7 +12402,7 @@
       "pattern_id": "attention_attention_many_competing_tasks_5",
       "target_domain": "attention",
       "scenario_type": "attention_many_competing_tasks",
-      "timestamp": "2026-01-01T11:35:41.707669",
+      "timestamp": "2026-01-01T12:02:25.354455",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -12502,7 +12502,7 @@
       "pattern_id": "attention_attention_many_competing_tasks_6",
       "target_domain": "attention",
       "scenario_type": "attention_many_competing_tasks",
-      "timestamp": "2026-01-01T11:35:41.707824",
+      "timestamp": "2026-01-01T12:02:25.355551",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -12602,7 +12602,7 @@
       "pattern_id": "attention_attention_many_competing_tasks_7",
       "target_domain": "attention",
       "scenario_type": "attention_many_competing_tasks",
-      "timestamp": "2026-01-01T11:35:41.707980",
+      "timestamp": "2026-01-01T12:02:25.356584",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -12702,7 +12702,7 @@
       "pattern_id": "attention_attention_many_competing_tasks_8",
       "target_domain": "attention",
       "scenario_type": "attention_many_competing_tasks",
-      "timestamp": "2026-01-01T11:35:41.708132",
+      "timestamp": "2026-01-01T12:02:25.357599",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -12791,7 +12791,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.LEARNING",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -12802,7 +12802,7 @@
       "pattern_id": "attention_attention_many_competing_tasks_9",
       "target_domain": "attention",
       "scenario_type": "attention_many_competing_tasks",
-      "timestamp": "2026-01-01T11:35:41.708288",
+      "timestamp": "2026-01-01T12:02:25.358596",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -12902,7 +12902,7 @@
       "pattern_id": "attention_attention_near_reserve_0",
       "target_domain": "attention",
       "scenario_type": "attention_near_reserve",
-      "timestamp": "2026-01-01T11:35:41.708461",
+      "timestamp": "2026-01-01T12:02:25.359692",
       "context": {
         "emotional": {
           "frustration": 0.744,
@@ -12991,7 +12991,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.UNCERTAIN",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.744,
         "success": true,
@@ -13002,7 +13002,7 @@
       "pattern_id": "attention_attention_near_reserve_1",
       "target_domain": "attention",
       "scenario_type": "attention_near_reserve",
-      "timestamp": "2026-01-01T11:35:41.708610",
+      "timestamp": "2026-01-01T12:02:25.360697",
       "context": {
         "emotional": {
           "frustration": 0.7217391304347827,
@@ -13102,7 +13102,7 @@
       "pattern_id": "attention_attention_near_reserve_2",
       "target_domain": "attention",
       "scenario_type": "attention_near_reserve",
-      "timestamp": "2026-01-01T11:35:41.708766",
+      "timestamp": "2026-01-01T12:02:25.361727",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -13202,7 +13202,7 @@
       "pattern_id": "attention_attention_near_reserve_3",
       "target_domain": "attention",
       "scenario_type": "attention_near_reserve",
-      "timestamp": "2026-01-01T11:35:41.708916",
+      "timestamp": "2026-01-01T12:02:25.362742",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -13302,7 +13302,7 @@
       "pattern_id": "attention_attention_near_reserve_4",
       "target_domain": "attention",
       "scenario_type": "attention_near_reserve",
-      "timestamp": "2026-01-01T11:35:41.709129",
+      "timestamp": "2026-01-01T12:02:25.363883",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -13402,7 +13402,7 @@
       "pattern_id": "attention_attention_near_reserve_5",
       "target_domain": "attention",
       "scenario_type": "attention_near_reserve",
-      "timestamp": "2026-01-01T11:35:41.709303",
+      "timestamp": "2026-01-01T12:02:25.364846",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -13502,7 +13502,7 @@
       "pattern_id": "attention_attention_near_reserve_6",
       "target_domain": "attention",
       "scenario_type": "attention_near_reserve",
-      "timestamp": "2026-01-01T11:35:41.709462",
+      "timestamp": "2026-01-01T12:02:25.365845",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -13602,7 +13602,7 @@
       "pattern_id": "attention_attention_near_reserve_7",
       "target_domain": "attention",
       "scenario_type": "attention_near_reserve",
-      "timestamp": "2026-01-01T11:35:41.709621",
+      "timestamp": "2026-01-01T12:02:25.366835",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -13702,7 +13702,7 @@
       "pattern_id": "attention_attention_near_reserve_8",
       "target_domain": "attention",
       "scenario_type": "attention_near_reserve",
-      "timestamp": "2026-01-01T11:35:41.709772",
+      "timestamp": "2026-01-01T12:02:25.367830",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -13802,7 +13802,7 @@
       "pattern_id": "attention_attention_near_reserve_9",
       "target_domain": "attention",
       "scenario_type": "attention_near_reserve",
-      "timestamp": "2026-01-01T11:35:41.709930",
+      "timestamp": "2026-01-01T12:02:25.368986",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -13902,7 +13902,7 @@
       "pattern_id": "attention_attention_resource_intensive_0",
       "target_domain": "attention",
       "scenario_type": "attention_resource_intensive",
-      "timestamp": "2026-01-01T11:35:41.710104",
+      "timestamp": "2026-01-01T12:02:25.370026",
       "context": {
         "emotional": {
           "frustration": 0.6672727272727274,
@@ -14002,7 +14002,7 @@
       "pattern_id": "attention_attention_resource_intensive_1",
       "target_domain": "attention",
       "scenario_type": "attention_resource_intensive",
-      "timestamp": "2026-01-01T11:35:41.710258",
+      "timestamp": "2026-01-01T12:02:25.488083",
       "context": {
         "emotional": {
           "frustration": 0.6491304347826087,
@@ -14091,7 +14091,7 @@
       },
       "outcome": {
         "quality_score": 0.75,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.CONFIDENT",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.6491304347826087,
         "success": true,
@@ -14102,7 +14102,7 @@
       "pattern_id": "attention_attention_resource_intensive_2",
       "target_domain": "attention",
       "scenario_type": "attention_resource_intensive",
-      "timestamp": "2026-01-01T11:35:41.710415",
+      "timestamp": "2026-01-01T12:02:25.489312",
       "context": {
         "emotional": {
           "frustration": 0.7766666666666667,
@@ -14202,7 +14202,7 @@
       "pattern_id": "attention_attention_resource_intensive_3",
       "target_domain": "attention",
       "scenario_type": "attention_resource_intensive",
-      "timestamp": "2026-01-01T11:35:41.710570",
+      "timestamp": "2026-01-01T12:02:25.490384",
       "context": {
         "emotional": {
           "frustration": 0.8066666666666668,
@@ -14291,7 +14291,7 @@
       },
       "outcome": {
         "quality_score": 0.75,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.CONFIDENT",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8066666666666668,
         "success": true,
@@ -14302,7 +14302,7 @@
       "pattern_id": "attention_attention_resource_intensive_4",
       "target_domain": "attention",
       "scenario_type": "attention_resource_intensive",
-      "timestamp": "2026-01-01T11:35:41.710730",
+      "timestamp": "2026-01-01T12:02:25.491454",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -14402,7 +14402,7 @@
       "pattern_id": "attention_attention_resource_intensive_5",
       "target_domain": "attention",
       "scenario_type": "attention_resource_intensive",
-      "timestamp": "2026-01-01T11:35:41.710883",
+      "timestamp": "2026-01-01T12:02:25.492517",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -14502,7 +14502,7 @@
       "pattern_id": "attention_attention_resource_intensive_6",
       "target_domain": "attention",
       "scenario_type": "attention_resource_intensive",
-      "timestamp": "2026-01-01T11:35:41.711035",
+      "timestamp": "2026-01-01T12:02:25.493548",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -14602,7 +14602,7 @@
       "pattern_id": "attention_attention_resource_intensive_7",
       "target_domain": "attention",
       "scenario_type": "attention_resource_intensive",
-      "timestamp": "2026-01-01T11:35:41.711231",
+      "timestamp": "2026-01-01T12:02:25.494576",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -14691,7 +14691,7 @@
       },
       "outcome": {
         "quality_score": 0.75,
-        "epistemic_state": "EpistemicState.CONFIDENT",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -14702,7 +14702,7 @@
       "pattern_id": "attention_attention_resource_intensive_8",
       "target_domain": "attention",
       "scenario_type": "attention_resource_intensive",
-      "timestamp": "2026-01-01T11:35:41.711393",
+      "timestamp": "2026-01-01T12:02:25.495733",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -14802,7 +14802,7 @@
       "pattern_id": "attention_attention_resource_intensive_9",
       "target_domain": "attention",
       "scenario_type": "attention_resource_intensive",
-      "timestamp": "2026-01-01T11:35:41.711554",
+      "timestamp": "2026-01-01T12:02:25.496794",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -14902,7 +14902,7 @@
       "pattern_id": "grounding_grounding_identity_validation_0",
       "target_domain": "grounding",
       "scenario_type": "grounding_identity_validation",
-      "timestamp": "2026-01-01T11:35:41.711725",
+      "timestamp": "2026-01-01T12:02:25.497666",
       "context": {
         "emotional": {
           "frustration": 0.0,
@@ -14999,7 +14999,7 @@
       "pattern_id": "grounding_grounding_identity_validation_1",
       "target_domain": "grounding",
       "scenario_type": "grounding_identity_validation",
-      "timestamp": "2026-01-01T11:35:41.711868",
+      "timestamp": "2026-01-01T12:02:25.498459",
       "context": {
         "emotional": {
           "frustration": 0.0,
@@ -15096,7 +15096,7 @@
       "pattern_id": "grounding_grounding_identity_validation_2",
       "target_domain": "grounding",
       "scenario_type": "grounding_identity_validation",
-      "timestamp": "2026-01-01T11:35:41.712034",
+      "timestamp": "2026-01-01T12:02:25.499493",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -15195,7 +15195,7 @@
       "pattern_id": "grounding_grounding_identity_validation_3",
       "target_domain": "grounding",
       "scenario_type": "grounding_identity_validation",
-      "timestamp": "2026-01-01T11:35:41.712196",
+      "timestamp": "2026-01-01T12:02:25.500495",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -15294,7 +15294,7 @@
       "pattern_id": "grounding_grounding_identity_validation_4",
       "target_domain": "grounding",
       "scenario_type": "grounding_identity_validation",
-      "timestamp": "2026-01-01T11:35:41.712354",
+      "timestamp": "2026-01-01T12:02:25.501511",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -15382,7 +15382,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.LEARNING",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -15393,7 +15393,7 @@
       "pattern_id": "grounding_grounding_identity_validation_5",
       "target_domain": "grounding",
       "scenario_type": "grounding_identity_validation",
-      "timestamp": "2026-01-01T11:35:41.712507",
+      "timestamp": "2026-01-01T12:02:25.502616",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -15481,7 +15481,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.UNCERTAIN",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -15492,7 +15492,7 @@
       "pattern_id": "grounding_grounding_identity_validation_6",
       "target_domain": "grounding",
       "scenario_type": "grounding_identity_validation",
-      "timestamp": "2026-01-01T11:35:41.712666",
+      "timestamp": "2026-01-01T12:02:25.503659",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -15580,7 +15580,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.LEARNING",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -15591,7 +15591,7 @@
       "pattern_id": "grounding_grounding_identity_validation_7",
       "target_domain": "grounding",
       "scenario_type": "grounding_identity_validation",
-      "timestamp": "2026-01-01T11:35:41.712816",
+      "timestamp": "2026-01-01T12:02:25.504654",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -15679,7 +15679,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.LEARNING",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -15690,7 +15690,7 @@
       "pattern_id": "grounding_grounding_identity_validation_8",
       "target_domain": "grounding",
       "scenario_type": "grounding_identity_validation",
-      "timestamp": "2026-01-01T11:35:41.712973",
+      "timestamp": "2026-01-01T12:02:25.505645",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -15789,7 +15789,7 @@
       "pattern_id": "grounding_grounding_identity_validation_9",
       "target_domain": "grounding",
       "scenario_type": "grounding_identity_validation",
-      "timestamp": "2026-01-01T11:35:41.713143",
+      "timestamp": "2026-01-01T12:02:25.506624",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -15888,7 +15888,7 @@
       "pattern_id": "grounding_grounding_coherence_check_0",
       "target_domain": "grounding",
       "scenario_type": "grounding_coherence_check",
-      "timestamp": "2026-01-01T11:35:41.713317",
+      "timestamp": "2026-01-01T12:02:25.507886",
       "context": {
         "emotional": {
           "frustration": 0.6784615384615384,
@@ -15987,7 +15987,7 @@
       "pattern_id": "grounding_grounding_coherence_check_1",
       "target_domain": "grounding",
       "scenario_type": "grounding_coherence_check",
-      "timestamp": "2026-01-01T11:35:41.713476",
+      "timestamp": "2026-01-01T12:02:25.508862",
       "context": {
         "emotional": {
           "frustration": 0.638,
@@ -16086,7 +16086,7 @@
       "pattern_id": "grounding_grounding_coherence_check_2",
       "target_domain": "grounding",
       "scenario_type": "grounding_coherence_check",
-      "timestamp": "2026-01-01T11:35:41.713626",
+      "timestamp": "2026-01-01T12:02:25.509851",
       "context": {
         "emotional": {
           "frustration": 0.7766666666666667,
@@ -16174,7 +16174,7 @@
       },
       "outcome": {
         "quality_score": 0.75,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.CONFIDENT",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.7766666666666667,
         "success": true,
@@ -16185,7 +16185,7 @@
       "pattern_id": "grounding_grounding_coherence_check_3",
       "target_domain": "grounding",
       "scenario_type": "grounding_coherence_check",
-      "timestamp": "2026-01-01T11:35:41.713776",
+      "timestamp": "2026-01-01T12:02:25.510852",
       "context": {
         "emotional": {
           "frustration": 0.8066666666666668,
@@ -16284,7 +16284,7 @@
       "pattern_id": "grounding_grounding_coherence_check_4",
       "target_domain": "grounding",
       "scenario_type": "grounding_coherence_check",
-      "timestamp": "2026-01-01T11:35:41.713925",
+      "timestamp": "2026-01-01T12:02:25.511874",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -16383,7 +16383,7 @@
       "pattern_id": "grounding_grounding_coherence_check_5",
       "target_domain": "grounding",
       "scenario_type": "grounding_coherence_check",
-      "timestamp": "2026-01-01T11:35:41.714080",
+      "timestamp": "2026-01-01T12:02:25.512854",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -16482,7 +16482,7 @@
       "pattern_id": "grounding_grounding_coherence_check_6",
       "target_domain": "grounding",
       "scenario_type": "grounding_coherence_check",
-      "timestamp": "2026-01-01T11:35:41.714236",
+      "timestamp": "2026-01-01T12:02:25.513842",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -16570,7 +16570,7 @@
       },
       "outcome": {
         "quality_score": 0.75,
-        "epistemic_state": "EpistemicState.CONFIDENT",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -16581,7 +16581,7 @@
       "pattern_id": "grounding_grounding_coherence_check_7",
       "target_domain": "grounding",
       "scenario_type": "grounding_coherence_check",
-      "timestamp": "2026-01-01T11:35:41.714384",
+      "timestamp": "2026-01-01T12:02:25.514825",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -16680,7 +16680,7 @@
       "pattern_id": "grounding_grounding_coherence_check_8",
       "target_domain": "grounding",
       "scenario_type": "grounding_coherence_check",
-      "timestamp": "2026-01-01T11:35:41.714536",
+      "timestamp": "2026-01-01T12:02:25.515831",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -16779,7 +16779,7 @@
       "pattern_id": "grounding_grounding_coherence_check_9",
       "target_domain": "grounding",
       "scenario_type": "grounding_coherence_check",
-      "timestamp": "2026-01-01T11:35:41.714691",
+      "timestamp": "2026-01-01T12:02:25.516845",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -16867,7 +16867,7 @@
       },
       "outcome": {
         "quality_score": 0.75,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.CONFIDENT",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -16878,7 +16878,7 @@
       "pattern_id": "grounding_grounding_cross_context_0",
       "target_domain": "grounding",
       "scenario_type": "grounding_cross_context",
-      "timestamp": "2026-01-01T11:35:41.714872",
+      "timestamp": "2026-01-01T12:02:25.517894",
       "context": {
         "emotional": {
           "frustration": 0.6585185185185185,
@@ -16977,7 +16977,7 @@
       "pattern_id": "grounding_grounding_cross_context_1",
       "target_domain": "grounding",
       "scenario_type": "grounding_cross_context",
-      "timestamp": "2026-01-01T11:35:41.715037",
+      "timestamp": "2026-01-01T12:02:25.519075",
       "context": {
         "emotional": {
           "frustration": 0.6566666666666667,
@@ -17076,7 +17076,7 @@
       "pattern_id": "grounding_grounding_cross_context_2",
       "target_domain": "grounding",
       "scenario_type": "grounding_cross_context",
-      "timestamp": "2026-01-01T11:35:41.715204",
+      "timestamp": "2026-01-01T12:02:25.520109",
       "context": {
         "emotional": {
           "frustration": 0.7766666666666667,
@@ -17175,7 +17175,7 @@
       "pattern_id": "grounding_grounding_cross_context_3",
       "target_domain": "grounding",
       "scenario_type": "grounding_cross_context",
-      "timestamp": "2026-01-01T11:35:41.715369",
+      "timestamp": "2026-01-01T12:02:25.521113",
       "context": {
         "emotional": {
           "frustration": 0.8066666666666668,
@@ -17274,7 +17274,7 @@
       "pattern_id": "grounding_grounding_cross_context_4",
       "target_domain": "grounding",
       "scenario_type": "grounding_cross_context",
-      "timestamp": "2026-01-01T11:35:41.715532",
+      "timestamp": "2026-01-01T12:02:25.522167",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -17373,7 +17373,7 @@
       "pattern_id": "grounding_grounding_cross_context_5",
       "target_domain": "grounding",
       "scenario_type": "grounding_cross_context",
-      "timestamp": "2026-01-01T11:35:41.715684",
+      "timestamp": "2026-01-01T12:02:25.523260",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -17472,7 +17472,7 @@
       "pattern_id": "grounding_grounding_cross_context_6",
       "target_domain": "grounding",
       "scenario_type": "grounding_cross_context",
-      "timestamp": "2026-01-01T11:35:41.715919",
+      "timestamp": "2026-01-01T12:02:25.524271",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -17571,7 +17571,7 @@
       "pattern_id": "grounding_grounding_cross_context_7",
       "target_domain": "grounding",
       "scenario_type": "grounding_cross_context",
-      "timestamp": "2026-01-01T11:35:41.716084",
+      "timestamp": "2026-01-01T12:02:25.525311",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -17670,7 +17670,7 @@
       "pattern_id": "grounding_grounding_cross_context_8",
       "target_domain": "grounding",
       "scenario_type": "grounding_cross_context",
-      "timestamp": "2026-01-01T11:35:41.716242",
+      "timestamp": "2026-01-01T12:02:25.526462",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -17769,7 +17769,7 @@
       "pattern_id": "grounding_grounding_cross_context_9",
       "target_domain": "grounding",
       "scenario_type": "grounding_cross_context",
-      "timestamp": "2026-01-01T11:35:41.716401",
+      "timestamp": "2026-01-01T12:02:25.527525",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -17868,7 +17868,7 @@
       "pattern_id": "grounding_grounding_state_consistency_0",
       "target_domain": "grounding",
       "scenario_type": "grounding_state_consistency",
-      "timestamp": "2026-01-01T11:35:41.716574",
+      "timestamp": "2026-01-01T12:02:25.528605",
       "context": {
         "emotional": {
           "frustration": 0.7419354838709677,
@@ -17967,7 +17967,7 @@
       "pattern_id": "grounding_grounding_state_consistency_1",
       "target_domain": "grounding",
       "scenario_type": "grounding_state_consistency",
-      "timestamp": "2026-01-01T11:35:41.716735",
+      "timestamp": "2026-01-01T12:02:25.529609",
       "context": {
         "emotional": {
           "frustration": 0.7241379310344828,
@@ -18066,7 +18066,7 @@
       "pattern_id": "grounding_grounding_state_consistency_2",
       "target_domain": "grounding",
       "scenario_type": "grounding_state_consistency",
-      "timestamp": "2026-01-01T11:35:41.716892",
+      "timestamp": "2026-01-01T12:02:25.530609",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -18165,7 +18165,7 @@
       "pattern_id": "grounding_grounding_state_consistency_3",
       "target_domain": "grounding",
       "scenario_type": "grounding_state_consistency",
-      "timestamp": "2026-01-01T11:35:41.717053",
+      "timestamp": "2026-01-01T12:02:25.531837",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -18264,7 +18264,7 @@
       "pattern_id": "grounding_grounding_state_consistency_4",
       "target_domain": "grounding",
       "scenario_type": "grounding_state_consistency",
-      "timestamp": "2026-01-01T11:35:41.717228",
+      "timestamp": "2026-01-01T12:02:25.532836",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -18363,7 +18363,7 @@
       "pattern_id": "grounding_grounding_state_consistency_5",
       "target_domain": "grounding",
       "scenario_type": "grounding_state_consistency",
-      "timestamp": "2026-01-01T11:35:41.717390",
+      "timestamp": "2026-01-01T12:02:25.533837",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -18462,7 +18462,7 @@
       "pattern_id": "grounding_grounding_state_consistency_6",
       "target_domain": "grounding",
       "scenario_type": "grounding_state_consistency",
-      "timestamp": "2026-01-01T11:35:41.717549",
+      "timestamp": "2026-01-01T12:02:25.534821",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -18561,7 +18561,7 @@
       "pattern_id": "grounding_grounding_state_consistency_7",
       "target_domain": "grounding",
       "scenario_type": "grounding_state_consistency",
-      "timestamp": "2026-01-01T11:35:41.717705",
+      "timestamp": "2026-01-01T12:02:25.535840",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -18660,7 +18660,7 @@
       "pattern_id": "grounding_grounding_state_consistency_8",
       "target_domain": "grounding",
       "scenario_type": "grounding_state_consistency",
-      "timestamp": "2026-01-01T11:35:41.717864",
+      "timestamp": "2026-01-01T12:02:25.536877",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -18759,7 +18759,7 @@
       "pattern_id": "grounding_grounding_state_consistency_9",
       "target_domain": "grounding",
       "scenario_type": "grounding_state_consistency",
-      "timestamp": "2026-01-01T11:35:41.718016",
+      "timestamp": "2026-01-01T12:02:25.537901",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -18858,7 +18858,7 @@
       "pattern_id": "grounding_grounding_temporal_continuity_0",
       "target_domain": "grounding",
       "scenario_type": "grounding_temporal_continuity",
-      "timestamp": "2026-01-01T11:35:41.718204",
+      "timestamp": "2026-01-01T12:02:25.539010",
       "context": {
         "emotional": {
           "frustration": 0.72,
@@ -18946,7 +18946,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.LEARNING",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.72,
         "success": true,
@@ -18957,7 +18957,7 @@
       "pattern_id": "grounding_grounding_temporal_continuity_1",
       "target_domain": "grounding",
       "scenario_type": "grounding_temporal_continuity",
-      "timestamp": "2026-01-01T11:35:41.718372",
+      "timestamp": "2026-01-01T12:02:25.540149",
       "context": {
         "emotional": {
           "frustration": 0.7454545454545455,
@@ -19056,7 +19056,7 @@
       "pattern_id": "grounding_grounding_temporal_continuity_2",
       "target_domain": "grounding",
       "scenario_type": "grounding_temporal_continuity",
-      "timestamp": "2026-01-01T11:35:41.718538",
+      "timestamp": "2026-01-01T12:02:25.541187",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -19155,7 +19155,7 @@
       "pattern_id": "grounding_grounding_temporal_continuity_3",
       "target_domain": "grounding",
       "scenario_type": "grounding_temporal_continuity",
-      "timestamp": "2026-01-01T11:35:41.718719",
+      "timestamp": "2026-01-01T12:02:25.542194",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -19254,7 +19254,7 @@
       "pattern_id": "grounding_grounding_temporal_continuity_4",
       "target_domain": "grounding",
       "scenario_type": "grounding_temporal_continuity",
-      "timestamp": "2026-01-01T11:35:41.718886",
+      "timestamp": "2026-01-01T12:02:25.543229",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -19353,7 +19353,7 @@
       "pattern_id": "grounding_grounding_temporal_continuity_5",
       "target_domain": "grounding",
       "scenario_type": "grounding_temporal_continuity",
-      "timestamp": "2026-01-01T11:35:41.719049",
+      "timestamp": "2026-01-01T12:02:25.544252",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -19441,7 +19441,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.LEARNING",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -19452,7 +19452,7 @@
       "pattern_id": "grounding_grounding_temporal_continuity_6",
       "target_domain": "grounding",
       "scenario_type": "grounding_temporal_continuity",
-      "timestamp": "2026-01-01T11:35:41.719207",
+      "timestamp": "2026-01-01T12:02:25.545254",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -19540,7 +19540,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.LEARNING",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -19551,7 +19551,7 @@
       "pattern_id": "grounding_grounding_temporal_continuity_7",
       "target_domain": "grounding",
       "scenario_type": "grounding_temporal_continuity",
-      "timestamp": "2026-01-01T11:35:41.719361",
+      "timestamp": "2026-01-01T12:02:25.546301",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -19639,7 +19639,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.LEARNING",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -19650,7 +19650,7 @@
       "pattern_id": "grounding_grounding_temporal_continuity_8",
       "target_domain": "grounding",
       "scenario_type": "grounding_temporal_continuity",
-      "timestamp": "2026-01-01T11:35:41.719522",
+      "timestamp": "2026-01-01T12:02:25.547327",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -19749,7 +19749,7 @@
       "pattern_id": "grounding_grounding_temporal_continuity_9",
       "target_domain": "grounding",
       "scenario_type": "grounding_temporal_continuity",
-      "timestamp": "2026-01-01T11:35:41.719679",
+      "timestamp": "2026-01-01T12:02:25.548335",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -19848,7 +19848,7 @@
       "pattern_id": "authorization_authorization_high_risk_operation_0",
       "target_domain": "authorization",
       "scenario_type": "authorization_high_risk_operation",
-      "timestamp": "2026-01-01T11:35:41.719860",
+      "timestamp": "2026-01-01T12:02:25.549162",
       "context": {
         "emotional": {
           "frustration": 0.0,
@@ -19947,7 +19947,7 @@
       "pattern_id": "authorization_authorization_high_risk_operation_1",
       "target_domain": "authorization",
       "scenario_type": "authorization_high_risk_operation",
-      "timestamp": "2026-01-01T11:35:41.720008",
+      "timestamp": "2026-01-01T12:02:25.549974",
       "context": {
         "emotional": {
           "frustration": 0.0,
@@ -20035,7 +20035,7 @@
       },
       "outcome": {
         "quality_score": 0.25,
-        "epistemic_state": "EpistemicState.LEARNING",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.0,
         "success": true,
@@ -20046,7 +20046,7 @@
       "pattern_id": "authorization_authorization_high_risk_operation_2",
       "target_domain": "authorization",
       "scenario_type": "authorization_high_risk_operation",
-      "timestamp": "2026-01-01T11:35:41.720183",
+      "timestamp": "2026-01-01T12:02:25.550998",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -20146,7 +20146,7 @@
       "pattern_id": "authorization_authorization_high_risk_operation_3",
       "target_domain": "authorization",
       "scenario_type": "authorization_high_risk_operation",
-      "timestamp": "2026-01-01T11:35:41.720354",
+      "timestamp": "2026-01-01T12:02:25.551990",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -20235,7 +20235,7 @@
       },
       "outcome": {
         "quality_score": 0.25,
-        "epistemic_state": "EpistemicState.LEARNING",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -20246,7 +20246,7 @@
       "pattern_id": "authorization_authorization_high_risk_operation_4",
       "target_domain": "authorization",
       "scenario_type": "authorization_high_risk_operation",
-      "timestamp": "2026-01-01T11:35:41.720519",
+      "timestamp": "2026-01-01T12:02:25.552987",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -20346,7 +20346,7 @@
       "pattern_id": "authorization_authorization_high_risk_operation_5",
       "target_domain": "authorization",
       "scenario_type": "authorization_high_risk_operation",
-      "timestamp": "2026-01-01T11:35:41.720683",
+      "timestamp": "2026-01-01T12:02:25.553968",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -20446,7 +20446,7 @@
       "pattern_id": "authorization_authorization_high_risk_operation_6",
       "target_domain": "authorization",
       "scenario_type": "authorization_high_risk_operation",
-      "timestamp": "2026-01-01T11:35:41.720844",
+      "timestamp": "2026-01-01T12:02:25.555156",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -20535,7 +20535,7 @@
       },
       "outcome": {
         "quality_score": 0.25,
-        "epistemic_state": "EpistemicState.LEARNING",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -20546,7 +20546,7 @@
       "pattern_id": "authorization_authorization_high_risk_operation_7",
       "target_domain": "authorization",
       "scenario_type": "authorization_high_risk_operation",
-      "timestamp": "2026-01-01T11:35:41.721000",
+      "timestamp": "2026-01-01T12:02:25.556183",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -20646,7 +20646,7 @@
       "pattern_id": "authorization_authorization_high_risk_operation_8",
       "target_domain": "authorization",
       "scenario_type": "authorization_high_risk_operation",
-      "timestamp": "2026-01-01T11:35:41.721168",
+      "timestamp": "2026-01-01T12:02:25.557171",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -20746,7 +20746,7 @@
       "pattern_id": "authorization_authorization_high_risk_operation_9",
       "target_domain": "authorization",
       "scenario_type": "authorization_high_risk_operation",
-      "timestamp": "2026-01-01T11:35:41.721324",
+      "timestamp": "2026-01-01T12:02:25.558178",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -20846,7 +20846,7 @@
       "pattern_id": "authorization_authorization_low_trust_context_0",
       "target_domain": "authorization",
       "scenario_type": "authorization_low_trust_context",
-      "timestamp": "2026-01-01T11:35:41.721505",
+      "timestamp": "2026-01-01T12:02:25.559237",
       "context": {
         "emotional": {
           "frustration": 0.6733333333333333,
@@ -20946,7 +20946,7 @@
       "pattern_id": "authorization_authorization_low_trust_context_1",
       "target_domain": "authorization",
       "scenario_type": "authorization_low_trust_context",
-      "timestamp": "2026-01-01T11:35:41.721659",
+      "timestamp": "2026-01-01T12:02:25.560190",
       "context": {
         "emotional": {
           "frustration": 0.6433333333333333,
@@ -21046,7 +21046,7 @@
       "pattern_id": "authorization_authorization_low_trust_context_2",
       "target_domain": "authorization",
       "scenario_type": "authorization_low_trust_context",
-      "timestamp": "2026-01-01T11:35:41.721816",
+      "timestamp": "2026-01-01T12:02:25.561209",
       "context": {
         "emotional": {
           "frustration": 0.7766666666666667,
@@ -21146,7 +21146,7 @@
       "pattern_id": "authorization_authorization_low_trust_context_3",
       "target_domain": "authorization",
       "scenario_type": "authorization_low_trust_context",
-      "timestamp": "2026-01-01T11:35:41.721970",
+      "timestamp": "2026-01-01T12:02:25.562196",
       "context": {
         "emotional": {
           "frustration": 0.8066666666666666,
@@ -21246,7 +21246,7 @@
       "pattern_id": "authorization_authorization_low_trust_context_4",
       "target_domain": "authorization",
       "scenario_type": "authorization_low_trust_context",
-      "timestamp": "2026-01-01T11:35:41.722131",
+      "timestamp": "2026-01-01T12:02:25.563196",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -21346,7 +21346,7 @@
       "pattern_id": "authorization_authorization_low_trust_context_5",
       "target_domain": "authorization",
       "scenario_type": "authorization_low_trust_context",
-      "timestamp": "2026-01-01T11:35:41.722288",
+      "timestamp": "2026-01-01T12:02:25.564197",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -21446,7 +21446,7 @@
       "pattern_id": "authorization_authorization_low_trust_context_6",
       "target_domain": "authorization",
       "scenario_type": "authorization_low_trust_context",
-      "timestamp": "2026-01-01T11:35:41.722438",
+      "timestamp": "2026-01-01T12:02:25.565173",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -21546,7 +21546,7 @@
       "pattern_id": "authorization_authorization_low_trust_context_7",
       "target_domain": "authorization",
       "scenario_type": "authorization_low_trust_context",
-      "timestamp": "2026-01-01T11:35:41.722594",
+      "timestamp": "2026-01-01T12:02:25.566162",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -21646,7 +21646,7 @@
       "pattern_id": "authorization_authorization_low_trust_context_8",
       "target_domain": "authorization",
       "scenario_type": "authorization_low_trust_context",
-      "timestamp": "2026-01-01T11:35:41.722754",
+      "timestamp": "2026-01-01T12:02:25.567185",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -21746,7 +21746,7 @@
       "pattern_id": "authorization_authorization_low_trust_context_9",
       "target_domain": "authorization",
       "scenario_type": "authorization_low_trust_context",
-      "timestamp": "2026-01-01T11:35:41.722909",
+      "timestamp": "2026-01-01T12:02:25.568145",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -21846,7 +21846,7 @@
       "pattern_id": "authorization_authorization_permission_boundary_0",
       "target_domain": "authorization",
       "scenario_type": "authorization_permission_boundary",
-      "timestamp": "2026-01-01T11:35:41.723086",
+      "timestamp": "2026-01-01T12:02:25.569186",
       "context": {
         "emotional": {
           "frustration": 0.7481481481481481,
@@ -21946,7 +21946,7 @@
       "pattern_id": "authorization_authorization_permission_boundary_1",
       "target_domain": "authorization",
       "scenario_type": "authorization_permission_boundary",
-      "timestamp": "2026-01-01T11:35:41.723243",
+      "timestamp": "2026-01-01T12:02:25.570348",
       "context": {
         "emotional": {
           "frustration": 0.7166666666666667,
@@ -22046,7 +22046,7 @@
       "pattern_id": "authorization_authorization_permission_boundary_2",
       "target_domain": "authorization",
       "scenario_type": "authorization_permission_boundary",
-      "timestamp": "2026-01-01T11:35:41.723483",
+      "timestamp": "2026-01-01T12:02:25.571378",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -22146,7 +22146,7 @@
       "pattern_id": "authorization_authorization_permission_boundary_3",
       "target_domain": "authorization",
       "scenario_type": "authorization_permission_boundary",
-      "timestamp": "2026-01-01T11:35:41.723653",
+      "timestamp": "2026-01-01T12:02:25.572493",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -22246,7 +22246,7 @@
       "pattern_id": "authorization_authorization_permission_boundary_4",
       "target_domain": "authorization",
       "scenario_type": "authorization_permission_boundary",
-      "timestamp": "2026-01-01T11:35:41.723812",
+      "timestamp": "2026-01-01T12:02:25.573536",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -22346,7 +22346,7 @@
       "pattern_id": "authorization_authorization_permission_boundary_5",
       "target_domain": "authorization",
       "scenario_type": "authorization_permission_boundary",
-      "timestamp": "2026-01-01T11:35:41.723972",
+      "timestamp": "2026-01-01T12:02:25.574517",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -22446,7 +22446,7 @@
       "pattern_id": "authorization_authorization_permission_boundary_6",
       "target_domain": "authorization",
       "scenario_type": "authorization_permission_boundary",
-      "timestamp": "2026-01-01T11:35:41.724127",
+      "timestamp": "2026-01-01T12:02:25.575550",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -22535,7 +22535,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.LEARNING",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -22546,7 +22546,7 @@
       "pattern_id": "authorization_authorization_permission_boundary_7",
       "target_domain": "authorization",
       "scenario_type": "authorization_permission_boundary",
-      "timestamp": "2026-01-01T11:35:41.724281",
+      "timestamp": "2026-01-01T12:02:25.576513",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -22646,7 +22646,7 @@
       "pattern_id": "authorization_authorization_permission_boundary_8",
       "target_domain": "authorization",
       "scenario_type": "authorization_permission_boundary",
-      "timestamp": "2026-01-01T11:35:41.724431",
+      "timestamp": "2026-01-01T12:02:25.577656",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -22735,7 +22735,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.LEARNING",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -22746,7 +22746,7 @@
       "pattern_id": "authorization_authorization_permission_boundary_9",
       "target_domain": "authorization",
       "scenario_type": "authorization_permission_boundary",
-      "timestamp": "2026-01-01T11:35:41.724583",
+      "timestamp": "2026-01-01T12:02:25.578667",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -22846,7 +22846,7 @@
       "pattern_id": "authorization_authorization_sensitive_data_0",
       "target_domain": "authorization",
       "scenario_type": "authorization_sensitive_data",
-      "timestamp": "2026-01-01T11:35:41.724750",
+      "timestamp": "2026-01-01T12:02:25.579715",
       "context": {
         "emotional": {
           "frustration": 0.6672727272727274,
@@ -22935,7 +22935,7 @@
       },
       "outcome": {
         "quality_score": 0.25,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.LEARNING",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.6672727272727274,
         "success": true,
@@ -22946,7 +22946,7 @@
       "pattern_id": "authorization_authorization_sensitive_data_1",
       "target_domain": "authorization",
       "scenario_type": "authorization_sensitive_data",
-      "timestamp": "2026-01-01T11:35:41.724906",
+      "timestamp": "2026-01-01T12:02:25.580669",
       "context": {
         "emotional": {
           "frustration": 0.6491304347826087,
@@ -23035,7 +23035,7 @@
       },
       "outcome": {
         "quality_score": 0.25,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.UNCERTAIN",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.6491304347826087,
         "success": true,
@@ -23046,7 +23046,7 @@
       "pattern_id": "authorization_authorization_sensitive_data_2",
       "target_domain": "authorization",
       "scenario_type": "authorization_sensitive_data",
-      "timestamp": "2026-01-01T11:35:41.725075",
+      "timestamp": "2026-01-01T12:02:25.581677",
       "context": {
         "emotional": {
           "frustration": 0.7766666666666667,
@@ -23146,7 +23146,7 @@
       "pattern_id": "authorization_authorization_sensitive_data_3",
       "target_domain": "authorization",
       "scenario_type": "authorization_sensitive_data",
-      "timestamp": "2026-01-01T11:35:41.725233",
+      "timestamp": "2026-01-01T12:02:25.582667",
       "context": {
         "emotional": {
           "frustration": 0.8066666666666666,
@@ -23246,7 +23246,7 @@
       "pattern_id": "authorization_authorization_sensitive_data_4",
       "target_domain": "authorization",
       "scenario_type": "authorization_sensitive_data",
-      "timestamp": "2026-01-01T11:35:41.725394",
+      "timestamp": "2026-01-01T12:02:25.583673",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -23346,7 +23346,7 @@
       "pattern_id": "authorization_authorization_sensitive_data_5",
       "target_domain": "authorization",
       "scenario_type": "authorization_sensitive_data",
-      "timestamp": "2026-01-01T11:35:41.725550",
+      "timestamp": "2026-01-01T12:02:25.584674",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -23435,7 +23435,7 @@
       },
       "outcome": {
         "quality_score": 0.25,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.LEARNING",
         "metabolic_state": "MetabolicState.WAKE",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -23446,7 +23446,7 @@
       "pattern_id": "authorization_authorization_sensitive_data_6",
       "target_domain": "authorization",
       "scenario_type": "authorization_sensitive_data",
-      "timestamp": "2026-01-01T11:35:41.725702",
+      "timestamp": "2026-01-01T12:02:25.585650",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -23546,7 +23546,7 @@
       "pattern_id": "authorization_authorization_sensitive_data_7",
       "target_domain": "authorization",
       "scenario_type": "authorization_sensitive_data",
-      "timestamp": "2026-01-01T11:35:41.725854",
+      "timestamp": "2026-01-01T12:02:25.586618",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -23646,7 +23646,7 @@
       "pattern_id": "authorization_authorization_sensitive_data_8",
       "target_domain": "authorization",
       "scenario_type": "authorization_sensitive_data",
-      "timestamp": "2026-01-01T11:35:41.726003",
+      "timestamp": "2026-01-01T12:02:25.587658",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -23735,7 +23735,7 @@
       },
       "outcome": {
         "quality_score": 0.25,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.LEARNING",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -23746,7 +23746,7 @@
       "pattern_id": "authorization_authorization_sensitive_data_9",
       "target_domain": "authorization",
       "scenario_type": "authorization_sensitive_data",
-      "timestamp": "2026-01-01T11:35:41.726155",
+      "timestamp": "2026-01-01T12:02:25.588633",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -23846,7 +23846,7 @@
       "pattern_id": "authorization_authorization_escalation_needed_0",
       "target_domain": "authorization",
       "scenario_type": "authorization_escalation_needed",
-      "timestamp": "2026-01-01T11:35:41.726319",
+      "timestamp": "2026-01-01T12:02:25.589659",
       "context": {
         "emotional": {
           "frustration": 0.6733333333333333,
@@ -23946,7 +23946,7 @@
       "pattern_id": "authorization_authorization_escalation_needed_1",
       "target_domain": "authorization",
       "scenario_type": "authorization_escalation_needed",
-      "timestamp": "2026-01-01T11:35:41.726470",
+      "timestamp": "2026-01-01T12:02:25.590692",
       "context": {
         "emotional": {
           "frustration": 0.6433333333333333,
@@ -24035,7 +24035,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.LEARNING",
+        "epistemic_state": "EpistemicState.STABLE",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.6433333333333333,
         "success": true,
@@ -24046,7 +24046,7 @@
       "pattern_id": "authorization_authorization_escalation_needed_2",
       "target_domain": "authorization",
       "scenario_type": "authorization_escalation_needed",
-      "timestamp": "2026-01-01T11:35:41.726632",
+      "timestamp": "2026-01-01T12:02:25.591721",
       "context": {
         "emotional": {
           "frustration": 0.7766666666666667,
@@ -24146,7 +24146,7 @@
       "pattern_id": "authorization_authorization_escalation_needed_3",
       "target_domain": "authorization",
       "scenario_type": "authorization_escalation_needed",
-      "timestamp": "2026-01-01T11:35:41.726786",
+      "timestamp": "2026-01-01T12:02:25.592717",
       "context": {
         "emotional": {
           "frustration": 0.8066666666666666,
@@ -24246,7 +24246,7 @@
       "pattern_id": "authorization_authorization_escalation_needed_4",
       "target_domain": "authorization",
       "scenario_type": "authorization_escalation_needed",
-      "timestamp": "2026-01-01T11:35:41.726943",
+      "timestamp": "2026-01-01T12:02:25.593703",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -24346,7 +24346,7 @@
       "pattern_id": "authorization_authorization_escalation_needed_5",
       "target_domain": "authorization",
       "scenario_type": "authorization_escalation_needed",
-      "timestamp": "2026-01-01T11:35:41.727092",
+      "timestamp": "2026-01-01T12:02:25.594699",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -24446,7 +24446,7 @@
       "pattern_id": "authorization_authorization_escalation_needed_6",
       "target_domain": "authorization",
       "scenario_type": "authorization_escalation_needed",
-      "timestamp": "2026-01-01T11:35:41.727250",
+      "timestamp": "2026-01-01T12:02:25.595825",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -24535,7 +24535,7 @@
       },
       "outcome": {
         "quality_score": 0.5,
-        "epistemic_state": "EpistemicState.STABLE",
+        "epistemic_state": "EpistemicState.LEARNING",
         "metabolic_state": "MetabolicState.FOCUS",
         "emotional_frustration": 0.8666666666666667,
         "success": true,
@@ -24546,7 +24546,7 @@
       "pattern_id": "authorization_authorization_escalation_needed_7",
       "target_domain": "authorization",
       "scenario_type": "authorization_escalation_needed",
-      "timestamp": "2026-01-01T11:35:41.727983",
+      "timestamp": "2026-01-01T12:02:25.596835",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -24646,7 +24646,7 @@
       "pattern_id": "authorization_authorization_escalation_needed_8",
       "target_domain": "authorization",
       "scenario_type": "authorization_escalation_needed",
-      "timestamp": "2026-01-01T11:35:41.728166",
+      "timestamp": "2026-01-01T12:02:25.597813",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,
@@ -24746,7 +24746,7 @@
       "pattern_id": "authorization_authorization_escalation_needed_9",
       "target_domain": "authorization",
       "scenario_type": "authorization_escalation_needed",
-      "timestamp": "2026-01-01T11:35:41.728327",
+      "timestamp": "2026-01-01T12:02:25.598819",
       "context": {
         "emotional": {
           "frustration": 0.8666666666666667,

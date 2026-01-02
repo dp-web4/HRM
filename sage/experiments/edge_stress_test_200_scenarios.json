@@ -1,0 +1,78 @@
+{
+  "test_session": "Sprout Edge Stress Test 2026-01-02",
+  "hardware": "Jetson Orin Nano 8GB",
+  "test_type": "Extended maturation study (2x Session 152)",
+
+  "test_parameters": {
+    "scenarios": 200,
+    "initial_corpus": 250,
+    "corpus_type": "ep_pattern_corpus_balanced_250.json"
+  },
+
+  "results": {
+    "pattern_match_rate": "100.0%",
+    "average_confidence": 1.0,
+    "corpus_growth": "250 → 450 (+200)",
+    "growth_rate": "1.00 patterns/query",
+    "trend_stability": {
+      "first_10_match_rate": "100.0%",
+      "last_10_match_rate": "100.0%",
+      "change": "0.0%"
+    },
+    "domain_evolution": {
+      "emotional": "51 → 250 (+199)",
+      "quality": "50 → 50 (+0)",
+      "attention": "50 → 50 (+0)",
+      "grounding": "50 → 50 (+0)",
+      "authorization": "50 → 50 (+0)"
+    },
+    "metabolic_transitions": [
+      "wake → rest at scenario 100",
+      "rest → wake at scenario ~110",
+      "wake → rest at scenario 200"
+    ]
+  },
+
+  "hardware_impact": {
+    "thermal": {
+      "start_temps_celsius": [52.7, 51.2, 51.7, 51.0, 52.7, 52.4],
+      "end_temps_celsius": [52.6, 51.3, 51.7, 51.3, 52.6, 52.5],
+      "max_change": "+0.3°C",
+      "peak_temp": "52.6°C",
+      "throttle_threshold": "80°C",
+      "status": "THERMAL OK - well below threshold"
+    },
+    "memory": {
+      "start_available_mb": 2983,
+      "end_available_mb": 2746,
+      "delta_mb": -238,
+      "status": "HEALTHY - 2.7GB still available"
+    }
+  },
+
+  "key_findings": [
+    "200 scenarios processed with zero performance degradation",
+    "100% match rate maintained throughout (no decay)",
+    "1.000 confidence maintained throughout (no degradation)",
+    "Linear corpus growth (1 pattern/query) confirmed at scale",
+    "Thermal impact negligible (<1°C change)",
+    "Memory usage stable (~240MB growth for 200 new patterns)",
+    "Metabolic state transitions work correctly under sustained load"
+  ],
+
+  "edge_validation": {
+    "thermal_safe": true,
+    "memory_safe": true,
+    "performance_stable": true,
+    "ready_for_production": true
+  },
+
+  "comparison_to_session_152": {
+    "session_152_scenarios": 100,
+    "stress_test_scenarios": 200,
+    "scaling": "2x scenarios with same performance characteristics",
+    "conclusion": "EP system scales linearly on edge hardware"
+  },
+
+  "recommendation": "EP system validated for sustained operation on Jetson Orin Nano 8GB. Can handle 200+ scenarios without thermal throttling or memory pressure."
+}

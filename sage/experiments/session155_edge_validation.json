@@ -1,0 +1,72 @@
+{
+  "validation_session": "Sprout Edge 2026-01-02",
+  "hardware": "Jetson Orin Nano 8GB",
+  "validated_commits": [
+    "8fd72c9 - Session 155: Pattern Provenance-Aware Federation"
+  ],
+
+  "session_155_provenance_aware_federation": {
+    "status": "PASSED",
+    "description": "Quality-aware pattern federation with provenance metadata",
+
+    "edge_test_results": {
+      "pattern_match_rate": "100.0%",
+      "cascade_rate": "100.0%",
+      "avg_confidence_boost": "+0.250",
+      "corpus_growth": "324 → 334"
+    },
+
+    "corpus_analysis": {
+      "total_patterns": 350,
+      "sage_patterns": 250,
+      "web4_projected": 100,
+      "domain_distribution": {
+        "emotional": 124,
+        "quality": 50,
+        "attention": 50,
+        "grounding": 50,
+        "authorization": 50
+      }
+    },
+
+    "provenance_infrastructure": {
+      "pattern_provenance_enum": ["DECISION", "OBSERVATION", "UNKNOWN"],
+      "provenance_metadata_dataclass": true,
+      "quality_weight_computation": true,
+      "average_quality_weight": "0.849 (from Thor's test)"
+    },
+
+    "validation": {
+      "corpus_loads_on_edge": true,
+      "pattern_matching_works": true,
+      "maintains_session_153_performance": true,
+      "metadata_infrastructure_ready": true
+    }
+  },
+
+  "edge_observation": {
+    "web4_corpus_unavailable": "Expected - Web4 project not on edge device",
+    "pre_generated_corpus_works": true,
+    "provenance_runtime_computation": "Ready for future use"
+  },
+
+  "thor_findings_confirmed": {
+    "web4_decision_rate": "74% (higher than expected 33%)",
+    "implication": "Web4 doesn't record ALL domains on EVERY scenario",
+    "quality_weight_formula": "base * confidence_factor * priority_factor * cascade_bonus"
+  },
+
+  "key_insights": [
+    "Provenance-aware federation validated on edge",
+    "100% match rate maintained (same as Session 153)",
+    "Infrastructure for quality weighting in place",
+    "Future enhancement path: use quality weights in matching",
+    "Pre-generated corpus works when source project unavailable"
+  ],
+
+  "validation_summary": {
+    "status": "PASSED",
+    "enhancement_over_session_153": "Metadata infrastructure added",
+    "performance_impact": "None - same 100% match rate"
+  }
+}

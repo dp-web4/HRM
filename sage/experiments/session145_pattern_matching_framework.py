@@ -306,10 +306,17 @@ class MatureEPSystem:
         matcher = self.matchers[domain]
 
         for i, pattern_data in enumerate(patterns_data):
+            # Extract domain-specific context
+            domain_context = pattern_data.get("context", {}).get(domain_str, {})
+
+            # Skip patterns without context for this domain (e.g., projected patterns)
+            if not domain_context:
+                continue
+
             pattern = EPPattern(
                 pattern_id=f"{domain_str}_{i}",
                 domain=domain,
-                context=pattern_data.get("context", {}).get(domain_str, {}),
+                context=domain_context,
                 prediction=pattern_data.get("ep_predictions", {}).get(domain_str, {}),
                 outcome=pattern_data.get("outcome", {}),
                 timestamp=pattern_data.get("timestamp", "")

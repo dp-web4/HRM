@@ -1,0 +1,80 @@
+{
+  "profile_session": "Sprout Edge Performance Profile 2026-01-03",
+  "hardware": "Jetson Orin Nano 8GB",
+  "purpose": "Comprehensive edge performance baseline for SAGE EP system",
+
+  "key_metrics": {
+    "ep_pattern_matching_throughput": "94.2 scenarios/second",
+    "production_ep_latency": "10ms per scenario",
+    "pattern_match_rate": "100%",
+    "confidence_boost": "+0.249",
+    "memory_overhead": "~80 MB for 100 scenarios",
+    "thermal_impact": "Negligible (<1°C change)"
+  },
+
+  "detailed_results": {
+    "ep_pattern_matching_100_scenarios": {
+      "elapsed_seconds": 1.06,
+      "scenarios_per_second": 94.2,
+      "match_rate": "100%",
+      "confidence": 1.0,
+      "corpus_growth": "250 → 350 (+100)"
+    },
+    "production_ep_10_scenarios": {
+      "elapsed_seconds": 0.1,
+      "latency_per_scenario_ms": 10,
+      "match_rate": "100%",
+      "confidence_boost": 0.249
+    }
+  },
+
+  "hardware_monitoring": {
+    "thermal": {
+      "start_temps_c": [52.6, 51.2, 51.6, 50.8, 52.6, 52.2],
+      "end_temps_c": [52.3, 51.2, 51.5, 51.1, 52.3, 52.3],
+      "max_delta": "+0.3°C",
+      "throttle_threshold": "80°C",
+      "status": "SAFE - well below threshold"
+    },
+    "memory": {
+      "start_available_mb": 2373,
+      "end_available_mb": 2293,
+      "delta_mb": -80,
+      "status": "HEALTHY - 2.3GB still available"
+    }
+  },
+
+  "edge_production_readiness": {
+    "throughput": "EXCELLENT - 94+ scenarios/second",
+    "latency": "EXCELLENT - 10ms per scenario",
+    "accuracy": "PERFECT - 100% match rate",
+    "thermal": "SAFE - no throttling risk",
+    "memory": "STABLE - low overhead",
+    "overall": "READY for edge production deployment"
+  },
+
+  "performance_comparison": {
+    "previous_stress_test_200_scenarios": {
+      "elapsed_seconds": "~2.5",
+      "scenarios_per_second": "~80"
+    },
+    "this_benchmark_100_scenarios": {
+      "elapsed_seconds": 1.06,
+      "scenarios_per_second": 94.2
+    },
+    "improvement_note": "Consistent high throughput across tests"
+  },
+
+  "scalability_projection": {
+    "1000_scenarios": "~10.6 seconds",
+    "10000_scenarios": "~106 seconds (~2 minutes)",
+    "sustained_24h_operation": "~8.1 million scenarios"
+  },
+
+  "recommendations": {
+    "production_deployment": "EP system ready for edge deployment",
+    "monitoring": "Track thermal during sustained load (>1 hour)",
+    "memory_management": "Consider corpus pruning at >1000 patterns",
+    "optimization_opportunity": "Already highly optimized for edge"
+  }
+}

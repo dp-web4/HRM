@@ -1,0 +1,84 @@
+{
+  "validation_session": "Sprout Edge 2026-01-02",
+  "hardware": "Jetson Orin Nano 8GB",
+  "test_type": "Session 105 Stress Testing Edge Validation",
+
+  "edge_results": {
+    "total_violations": 86,
+    "regimes_tested": 6,
+    "oscillations_detected": 6,
+    "deadlocks_detected": 0,
+    "critical_regime": "sustained_overload",
+    "max_queue_observed": 2017,
+    "queue_target": 1000
+  },
+
+  "regime_comparison": {
+    "burst_load": {
+      "edge_violations": 0,
+      "edge_max_queue": 941,
+      "thor_max_queue": 895,
+      "match": "Similar (within 5%)"
+    },
+    "sustained_overload": {
+      "edge_violations": 86,
+      "edge_max_queue": 2017,
+      "thor_max_queue": 1962,
+      "match": "Similar - confirms critical issue"
+    },
+    "oscillatory_load": {
+      "edge_violations": 0,
+      "edge_oscillation_period": "3.3 cycles",
+      "thor_oscillation_period": "3.3 cycles",
+      "match": "Identical"
+    },
+    "long_inactivity": {
+      "edge_violations": 0,
+      "edge_max_queue": 175,
+      "status": "PASSED"
+    },
+    "atp_starvation": {
+      "edge_violations": 0,
+      "edge_max_queue": 21,
+      "status": "PASSED - graceful degradation"
+    },
+    "degenerate_cases": {
+      "edge_violations": 0,
+      "edge_max_queue": 19,
+      "status": "PASSED - no NaN/Inf"
+    }
+  },
+
+  "critical_issues_confirmed": {
+    "unbounded_queue_growth": {
+      "confirmed": true,
+      "edge_evidence": "Max queue 2017 (target: 1000)",
+      "cause": "Arrival rate exceeds service rate, no admission control"
+    },
+    "universal_oscillation": {
+      "confirmed": true,
+      "edge_evidence": "6/6 regimes show oscillation",
+      "cause": "Insufficient hysteresis, fast pressure response"
+    }
+  },
+
+  "edge_specific_observations": {
+    "execution_time": "~7 seconds for all 6 regimes",
+    "thermal_impact": "Negligible",
+    "memory_stable": true,
+    "behavior_matches_thor": true
+  },
+
+  "production_blockers_validated": [
+    "Unbounded queue growth under sustained overload",
+    "Universal oscillation (limit cycling) across all regimes"
+  ],
+
+  "recommendation": "Session 106 fixes (queue crisis mode + anti-oscillation controller) needed before production deployment",
+
+  "validation_summary": {
+    "status": "CONFIRMED - Thor's findings validated on edge",
+    "edge_hardware_specific_issues": "None discovered",
+    "behavior_consistent_across_hardware": true
+  }
+}

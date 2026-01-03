@@ -1,0 +1,40 @@
+{
+  "timestamp": "2026-01-03T00:01:17.597759",
+  "hardware": "Jetson Orin Nano 8GB",
+  "start_temps": [
+    52.625,
+    51.218,
+    51.562,
+    50.781,
+    52.625,
+    52.187
+  ],
+  "end_temps": [
+    52.343,
+    51.187,
+    51.5,
+    51.125,
+    52.343,
+    52.281
+  ],
+  "start_memory_mb": 2373.18359375,
+  "end_memory_mb": 2293.40625,
+  "tests": {
+    "ep_pattern_matching": {
+      "scenarios": 100,
+      "elapsed_seconds": 1.06,
+      "scenarios_per_second": 94.2,
+      "match_rate": "100%",
+      "confidence": 1.0
+    },
+    "production_ep": {
+      "scenarios": 10,
+      "elapsed_seconds": 0.1,
+      "match_rate": 100.0,
+      "confidence_boost": 0.24900000000000003
+    },
+    "stress_burst": {
+      "error": "StressTestHarness.__init__() missing 1 required positional argument: 'system'"
+    }
+  }
+}

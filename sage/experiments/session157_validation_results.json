@@ -1,0 +1,29 @@
+{
+  "sage_patterns_total": 350,
+  "web4_patterns_total": 450,
+  "federated_patterns_total": 0,
+  "projection_success_rate": 1.0,
+  "projection_errors": [],
+  "canonical_conversion_rate": NaN,
+  "field_completeness": {},
+  "provenance_preserved": false,
+  "quality_weights_computed": true,
+  "avg_quality_weight_sage": 0.8487500000000004,
+  "avg_quality_weight_web4": 0.0,
+  "distribution_before": {
+    "unknown": 350
+  },
+  "distribution_after": {
+    "unknown": 350
+  },
+  "distribution_improvement": 0.0,
+  "integration_overhead_ms": 0.0,
+  "pattern_match_rate": 0.0,
+  "confidence_boost": 0.0,
+  "surprises": [
+    "SAGE patterns lack 'stability' field - needs defaults",
+    "SAGE patterns lack 'coordination' field - needs defaults",
+    "SAGE distribution unexpected: 0.0% emotional (expected ~99%)"
+  ],
+  "issues": []
+}

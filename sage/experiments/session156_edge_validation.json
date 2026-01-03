@@ -1,0 +1,79 @@
+{
+  "validation_session": "Sprout Edge 2026-01-03",
+  "hardware": "Jetson Orin Nano 8GB",
+  "validated_commits": [
+    "2abd87e - Session 156: 74% Mystery RESOLVED - Selective Multi-Perspective Recording"
+  ],
+
+  "session_156_74_mystery_resolution": {
+    "status": "CONFIRMED - Mystery Resolved",
+    "type": "Code analysis / architectural discovery",
+
+    "mystery": {
+      "from_session": "Session 155",
+      "observation": "Web4 EP corpus shows 74% emotional patterns",
+      "expectation": "33% balanced distribution (Session 154 hypothesis)",
+      "discrepancy": "+41 percentage points"
+    },
+
+    "root_cause_confirmed": {
+      "mechanism": "Selective multi-perspective recording",
+      "code_location": "web4/game/ep_driven_policy.py:621-622",
+      "logic": "if domain not in contexts or domain not in predictions: continue",
+      "result": "Only participating domains get patterns recorded"
+    },
+
+    "three_recording_models": {
+      "sage_credit_assignment": {
+        "rate": "1 pattern/scenario",
+        "result": "99% emotional"
+      },
+      "web4_selective_multiperspective": {
+        "rate": "1-3 patterns/scenario (variable)",
+        "result": "74% emotional, 13% quality, 13% attention"
+      },
+      "pure_multiperspective_hypothetical": {
+        "rate": "3 patterns/scenario",
+        "result": "33/33/33% balanced",
+        "note": "NOT what Web4 actually does"
+      }
+    },
+
+    "edge_validation": {
+      "script_runs": true,
+      "analysis_confirmed": true,
+      "no_code_execution_needed": "This is a code trace analysis"
+    }
+  },
+
+  "key_insights": [
+    "74% emotional is CORRECT BEHAVIOR, not anomaly",
+    "Reflects real scenario distribution in Web4 closed-loop game",
+    "Multi-perspective is a spectrum (credit assignment → selective → pure)",
+    "Participation weighting naturally creates domain imbalance",
+    "Both SAGE and Web4 behaviors are correct for their domains"
+  ],
+
+  "corrected_understanding": {
+    "session_154_correct": [
+      "Web4 DOES record multiple domains per scenario",
+      "Web4 DOES avoid pure credit assignment"
+    ],
+    "session_154_incorrect": [
+      "Web4 does NOT record ALL domains on EVERY scenario",
+      "Web4 DOES have participation bias"
+    ]
+  },
+
+  "pattern_federation_implications": {
+    "sage_to_web4": "SAGE patterns are ALL decision patterns (high quality)",
+    "web4_to_sage": "Web4 patterns are MIXED (74% decision, 26% observation)",
+    "recommendation": "Use provenance metadata to weight pattern quality"
+  },
+
+  "validation_summary": {
+    "mystery_status": "RESOLVED",
+    "thor_analysis_confirmed": true,
+    "edge_relevant": "Architecture insight - no edge-specific behavior"
+  }
+}

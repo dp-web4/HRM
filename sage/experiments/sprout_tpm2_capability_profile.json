@@ -1,0 +1,58 @@
+{
+  "profile_date": "2026-01-04",
+  "hardware": "Jetson Orin Nano 8GB (Sprout)",
+  "purpose": "TPM2 capability profile for Session 161 canonical LCT implementation",
+
+  "tpm2_hardware": {
+    "present": true,
+    "type": "fTPM (firmware TPM)",
+    "version_major": 2,
+    "devices": {
+      "tpm0": "/dev/tpm0 (direct access, owner: tss:root)",
+      "tpmrm0": "/dev/tpmrm0 (resource manager, owner: tss:tss)"
+    },
+    "device_tree_link": "/sys/class/tpm/tpm0/device -> ../../../firmware:ftpm"
+  },
+
+  "tpm2_capabilities": {
+    "pcr_banks_available": ["sha1", "sha256", "sha384", "sha512"],
+    "note": "Full capability query requires tss group membership"
+  },
+
+  "tpm2_tools": {
+    "installed": true,
+    "version": "5.2",
+    "path": "/usr/bin/tpm2_getcap",
+    "tcti_default": "tcti-device",
+    "tctis_available": "libtss2-tctildr"
+  },
+
+  "python_support": {
+    "tpm2_pytss": false,
+    "cryptography": true,
+    "note": "tpm2-pytss not installed, but cryptography library available for ECC operations"
+  },
+
+  "access_requirements": {
+    "current_user": "sprout",
+    "current_groups": ["sprout", "adm", "dialout", "cdrom", "sudo", "audio", "dip", "video", "plugdev", "render", "i2c", "lpadmin", "gdm", "sambashare", "weston-launch", "gpio", "jtop"],
+    "missing_group": "tss",
+    "fix": "sudo usermod -aG tss sprout && newgrp tss",
+    "alternative": "Run with sudo for TPM operations"
+  },
+
+  "comparison_with_thor": {
+    "thor_mechanism": "TrustZone via OP-TEE",
+    "sprout_mechanism": "TPM2 via fTPM",
+    "both_level_5": true,
+    "canonical_lct_needs": "Platform-aware HardwareBindingProvider selection"
+  },
+
+  "recommendations_for_session_161": [
+    "Create TPM2Provider class for Sprout/Orin devices",
+    "Create TrustZoneProvider class for Thor/AGX devices",
+    "Auto-detect available hardware at runtime",
+    "Consider installing tpm2-pytss for native Python TPM access",
+    "Add sprout user to tss group for direct TPM access"
+  ]
+}

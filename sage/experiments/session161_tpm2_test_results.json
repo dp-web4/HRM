@@ -1,0 +1,19 @@
+{
+  "test_date": "2026-01-04 12:03:53",
+  "hardware": "Jetson Orin Nano 8GB (Sprout)",
+  "provider": "TPM2Provider",
+  "capability_level": 5,
+  "hardware_type": "tpm2",
+  "trust_ceiling": 1.0,
+  "binding_result": {
+    "success": true,
+    "level": 5,
+    "hardware_type": "tpm2",
+    "key_id": "bd6339f58c99e3f8bcfe21602a3885dd",
+    "fingerprint": "b0c5078ce111971d67e73371ecb87fc944ff535ec974eb62a92ea7aec583324d",
+    "trust_ceiling": 1.0,
+    "error": null
+  },
+  "verification_passed": true,
+  "ready_for_session_161": true
+}

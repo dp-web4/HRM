@@ -1,0 +1,364 @@
+{
+  "session": 160,
+  "date": "2026-01-04",
+  "machine": "Thor",
+  "summary": {
+    "implementations_audited": 6,
+    "total_divergences": 33,
+    "migration_complexity": {
+      "easy": 1,
+      "medium": 1,
+      "hard": 1
+    },
+    "recommendations": {
+      "integrate": 1,
+      "migrate": 1,
+      "replace": 1
+    }
+  },
+  "audits": {
+    "lct_atp_permissions.py": {
+      "file_path": "sage/core/lct_atp_permissions.py",
+      "line_count": 424,
+      "lct_format": "unknown",
+      "format_example": "no example found",
+      "divergence_from_canonical": [
+        "Format 'unknown' != canonical 'lct:web4:{entity_type}:{hash}'",
+        "Missing required field: capability_level",
+        "Missing required field: binding",
+        "Missing required field: mrh",
+        "Missing required field: t3_tensor",
+        "Missing required field: v3_tensor"
+      ],
+      "features_present": [
+        "platform detection",
+        "machine fingerprint"
+      ],
+      "features_missing": [
+        "capability_level declaration",
+        "binding structure (hardware/software)",
+        "mrh (Markov Relevancy Horizon)",
+        "t3_tensor (6 dimensions)",
+        "v3_tensor (6 dimensions)",
+        "entity_type taxonomy",
+        "hash-based ID generation"
+      ],
+      "imports": [
+        "from typing import Dict, Optional, Tuple, Any",
+        "from dataclasses import dataclass, field",
+        "from enum import Enum",
+        "import time"
+      ],
+      "depends_on": [
+        "pathlib",
+        "typing",
+        "dataclasses"
+      ],
+      "used_by": [],
+      "test_coverage": true,
+      "migration_difficulty": "unknown",
+      "breaking_changes_required": false,
+      "recommendation": "review",
+      "notes": "Needs manual review"
+    },
+    "lct_identity_integration.py": {
+      "file_path": "sage/core/lct_identity_integration.py",
+      "line_count": 412,
+      "lct_format": "lct:web4:agent:{lineage}@{context}#{task}",
+      "format_example": "lct:web4:agent:dp@Thor#consciousness",
+      "divergence_from_canonical": [
+        "Format 'lct:web4:agent:{lineage}@{context}#{task}' != canonical 'lct:web4:{entity_type}:{hash}'",
+        "Misinterprets LCT as 'Lineage-Context-Task'",
+        "Uses email/fragment syntax not in canonical spec",
+        "Missing required field: capability_level",
+        "Missing required field: binding",
+        "Missing required field: mrh",
+        "Missing required field: t3_tensor",
+        "Missing required field: v3_tensor"
+      ],
+      "features_present": [
+        "platform detection",
+        "lineage tracking",
+        "session persistence"
+      ],
+      "features_missing": [
+        "capability_level declaration",
+        "binding structure (hardware/software)",
+        "mrh (Markov Relevancy Horizon)",
+        "t3_tensor (6 dimensions)",
+        "v3_tensor (6 dimensions)",
+        "entity_type taxonomy",
+        "hash-based ID generation"
+      ],
+      "imports": [
+        "import os",
+        "import json",
+        "from pathlib import Path",
+        "from typing import Dict, Optional, List",
+        "from dataclasses import dataclass, field",
+        "import time"
+      ],
+      "depends_on": [
+        "pathlib",
+        "typing",
+        "dataclasses"
+      ],
+      "used_by": [
+        "sage/core/consciousness_loop.py (potential)",
+        "tests/test_lct_identity_integration.py"
+      ],
+      "test_coverage": true,
+      "migration_difficulty": "easy",
+      "breaking_changes_required": true,
+      "recommendation": "migrate",
+      "notes": "Simplest format. Migrate platform detection to canonical module."
+    },
+    "simulated_lct_identity.py": {
+      "file_path": "sage/core/simulated_lct_identity.py",
+      "line_count": 531,
+      "lct_format": "machine_fingerprint + ECC_keys (no LCT structure)",
+      "format_example": "no example found",
+      "divergence_from_canonical": [
+        "Format 'machine_fingerprint + ECC_keys (no LCT structure)' != canonical 'lct:web4:{entity_type}:{hash}'",
+        "Missing required field: capability_level",
+        "Missing required field: mrh",
+        "Missing required field: t3_tensor",
+        "Missing required field: v3_tensor"
+      ],
+      "features_present": [
+        "platform detection",
+        "machine fingerprint",
+        "ECC P-256 cryptography",
+        "cryptographic signing",
+        "session persistence"
+      ],
+      "features_missing": [
+        "capability_level declaration",
+        "binding structure (hardware/software)",
+        "mrh (Markov Relevancy Horizon)",
+        "t3_tensor (6 dimensions)",
+        "v3_tensor (6 dimensions)",
+        "entity_type taxonomy",
+        "hash-based ID generation"
+      ],
+      "imports": [
+        "import os",
+        "import json",
+        "import hashlib",
+        "import uuid",
+        "from pathlib import Path",
+        "from typing import Dict, List, Optional, Tuple",
+        "from dataclasses import dataclass, asdict",
+        "from datetime import datetime, timezone",
+        "import base64",
+        "from cryptography.hazmat.primitives import hashes, serialization"
+      ],
+      "depends_on": [
+        "pathlib",
+        "typing",
+        "dataclasses"
+      ],
+      "used_by": [
+        "sage/web4/lct_resolver.py",
+        "tests/test_lct_identity.py"
+      ],
+      "test_coverage": false,
+      "migration_difficulty": "medium",
+      "breaking_changes_required": true,
+      "recommendation": "integrate",
+      "notes": "Best foundation - has hardware binding. Add canonical LCT structure."
+    },
+    "lct_certificate_generator.py": {
+      "file_path": "sage/web4/lct_certificate_generator.py",
+      "line_count": 579,
+      "lct_format": "unknown",
+      "format_example": "no example found",
+      "divergence_from_canonical": [
+        "Format 'unknown' != canonical 'lct:web4:{entity_type}:{hash}'",
+        "Missing required field: capability_level"
+      ],
+      "features_present": [
+        "cryptographic signing",
+        "lineage tracking",
+        "role-based permissions",
+        "network awareness",
+        "session persistence"
+      ],
+      "features_missing": [
+        "capability_level declaration",
+        "binding structure (hardware/software)",
+        "mrh (Markov Relevancy Horizon)",
+        "t3_tensor (6 dimensions)",
+        "v3_tensor (6 dimensions)",
+        "entity_type taxonomy",
+        "hash-based ID generation"
+      ],
+      "imports": [
+        "import hashlib",
+        "import json",
+        "import time",
+        "from dataclasses import dataclass, field, asdict",
+        "from datetime import datetime, timezone",
+        "from typing import List, Dict, Optional, Any",
+        "from pathlib import Path",
+        "from sage.web4.lct_identity import ("
+      ],
+      "depends_on": [
+        "pathlib",
+        "typing",
+        "dataclasses"
+      ],
+      "used_by": [],
+      "test_coverage": false,
+      "migration_difficulty": "unknown",
+      "breaking_changes_required": false,
+      "recommendation": "review",
+      "notes": "Needs manual review"
+    },
+    "lct_identity.py": {
+      "file_path": "sage/web4/lct_identity.py",
+      "line_count": 565,
+      "lct_format": "lct://{component}:{instance}:{role}@{network}",
+      "format_example": "lct://sage:thinker:expert_42@testnet",
+      "divergence_from_canonical": [
+        "Format 'lct://{component}:{instance}:{role}@{network}' != canonical 'lct:web4:{entity_type}:{hash}'",
+        "Uses URI scheme (://) not in canonical spec",
+        "Missing required field: capability_level",
+        "Missing required field: binding",
+        "Missing required field: mrh",
+        "Missing required field: t3_tensor",
+        "Missing required field: v3_tensor"
+      ],
+      "features_present": [
+        "network awareness",
+        "trust threshold validation"
+      ],
+      "features_missing": [
+        "capability_level declaration",
+        "binding structure (hardware/software)",
+        "mrh (Markov Relevancy Horizon)",
+        "t3_tensor (6 dimensions)",
+        "v3_tensor (6 dimensions)",
+        "entity_type taxonomy",
+        "hash-based ID generation"
+      ],
+      "imports": [
+        "from dataclasses import dataclass, field",
+        "from typing import Optional, Dict, List",
+        "import re",
+        "from urllib.parse import urlparse, parse_qs, urlencode"
+      ],
+      "depends_on": [
+        "pathlib",
+        "typing",
+        "dataclasses"
+      ],
+      "used_by": [
+        "sage/web4/lct_resolver.py",
+        "tests/test_lct_identity.py"
+      ],
+      "test_coverage": true,
+      "migration_difficulty": "hard",
+      "breaking_changes_required": true,
+      "recommendation": "replace",
+      "notes": "Complex divergence. Extract useful features, replace with canonical."
+    },
+    "lct_resolver.py": {
+      "file_path": "sage/web4/lct_resolver.py",
+      "line_count": 466,
+      "lct_format": "unknown",
+      "format_example": "lct://sage:thinker:expert_42@testnet",
+      "divergence_from_canonical": [
+        "Format 'unknown' != canonical 'lct:web4:{entity_type}:{hash}'",
+        "Missing required field: capability_level",
+        "Missing required field: binding",
+        "Missing required field: mrh",
+        "Missing required field: v3_tensor"
+      ],
+      "features_present": [
+        "network awareness",
+        "session persistence"
+      ],
+      "features_missing": [
+        "capability_level declaration",
+        "binding structure (hardware/software)",
+        "mrh (Markov Relevancy Horizon)",
+        "t3_tensor (6 dimensions)",
+        "v3_tensor (6 dimensions)",
+        "entity_type taxonomy",
+        "hash-based ID generation"
+      ],
+      "imports": [
+        "import json",
+        "import time",
+        "from pathlib import Path",
+        "from typing import Dict, Optional, Any, Callable",
+        "from dataclasses import dataclass",
+        "from collections import OrderedDict",
+        "from sage.web4.lct_identity import ("
+      ],
+      "depends_on": [
+        "pathlib",
+        "typing",
+        "dataclasses"
+      ],
+      "used_by": [],
+      "test_coverage": false,
+      "migration_difficulty": "unknown",
+      "breaking_changes_required": false,
+      "recommendation": "review",
+      "notes": "Needs manual review"
+    }
+  },
+  "canonical_design": {
+    "canonical_format": "lct:web4:{entity_type}:{hash}",
+    "capability_level": 3,
+    "sage_entity_types": [
+      "ai",
+      "irp",
+      "sensor",
+      "consolidator",
+      "federation"
+    ],
+    "required_fields": [
+      "lct_id",
+      "capability_level",
+      "entity_type",
+      "binding",
+      "mrh",
+      "t3_tensor",
+      "v3_tensor"
+    ],
+    "preserved_features": {
+      "lct_identity_integration": [
+        "platform detection (Thor/Sprout)",
+        "session persistence",
+        "lineage tracking (creator ID)"
+      ],
+      "lct_identity": [
+        "role-based capabilities",
+        "network awareness (testnet/mainnet)",
+        "trust threshold validation"
+      ],
+      "simulated_lct_identity": [
+        "machine fingerprint generation",
+        "ECC P-256 keypair management",
+        "cryptographic signing",
+        "hardware binding simulation"
+      ]
+    },
+    "binding_strategy": "Level 5: TrustZone hardware binding (device detected)",
+    "migration_steps": [
+      "1. Create sage/core/canonical_lct.py with Web4-compliant structure",
+      "2. Implement LCT Capability Level 3 (software binding)",
+      "3. Integrate machine fingerprint from simulated_lct_identity",
+      "4. Add platform detection from lct_identity_integration",
+      "5. Preserve role/capability features from lct_identity",
+      "6. Create migration utilities (old format \u2192 canonical)",
+      "7. Update all consumers to use canonical module",
+      "8. Deprecate old implementations with compatibility shims",
+      "9. Test hardware binding on Thor (TPM2/TrustZone detection)",
+      "10. Upgrade to Capability Level 5 when hardware binding validated"
+    ]
+  }
+}

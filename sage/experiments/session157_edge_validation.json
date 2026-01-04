@@ -1,0 +1,66 @@
+{
+  "validation_session": "Sprout Edge 2026-01-03",
+  "hardware": "Jetson Orin Nano 8GB",
+  "validated_commits": [
+    "821a03d - Session 157: Integrated Federation Validation (Thor Testing Sprout's Session 120)"
+  ],
+
+  "session_157_integrated_federation": {
+    "status": "PARTIAL - Cross-Machine Validation",
+    "type": "Integration testing between Thor, Sprout, Legion work",
+
+    "edge_test_result": {
+      "session_120_available": false,
+      "reason": "Web4 Session 120 from Legion not present on edge",
+      "note": "This is expected - cross-machine code coordination needed"
+    },
+
+    "thor_results_analysis": {
+      "sage_patterns": 350,
+      "web4_patterns": 450,
+      "federated_patterns": 0,
+      "projection_success": "100%",
+      "canonical_conversion": "NaN (failed)",
+
+      "quality_weights": {
+        "sage_avg": 0.849,
+        "web4_avg": 0.0
+      },
+
+      "issues_discovered": [
+        "SAGE patterns lack 'stability' field - needs defaults",
+        "SAGE patterns lack 'coordination' field - needs defaults",
+        "SAGE distribution shows 0% emotional (expected ~99%)"
+      ]
+    },
+
+    "cross_machine_coordination": {
+      "thor_sessions": "153-157 (projection, provenance, mystery resolution)",
+      "legion_sessions": "118-120 (normalization, canonical schema, integration)",
+      "sprout_sessions": "140-156 (edge validation)",
+      "integration_gap": "Schema alignment needed between machines"
+    }
+  },
+
+  "recommendations": {
+    "immediate": [
+      "Add default 'stability' field to SAGE pattern generator",
+      "Add default 'coordination' field to SAGE pattern generator",
+      "Fix domain distribution detection in federation code"
+    ],
+    "coordination": [
+      "Legion should share session120_integrated_federation.py",
+      "Establish canonical field schema across all machines",
+      "Document required vs optional fields"
+    ]
+  },
+
+  "key_insight": "Cross-machine pattern federation requires schema alignment - machines have evolved different field structures",
+
+  "validation_summary": {
+    "status": "PARTIAL",
+    "thor_test_ran": true,
+    "edge_test_blocked": "Missing Legion's Session 120 code",
+    "action_needed": "Schema alignment across Thor, Legion, Sprout"
+  }
+}

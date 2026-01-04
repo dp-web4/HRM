@@ -1,0 +1,34 @@
+{
+  "production_native_count": 100,
+  "provenance_aware_count": 350,
+  "federated_total": 550,
+  "unique_patterns": 450,
+  "conversion_success_rate": 1.0,
+  "conversion_time_ms": 84.10420129075646,
+  "domain_balance": {
+    "emotional": 0.5555555555555556,
+    "quality": 0.1111111111111111,
+    "attention": 0.1111111111111111,
+    "grounding": 0.1111111111111111,
+    "authorization": 0.1111111111111111
+  },
+  "stability_distribution": {
+    "mean": 0.5269064318754655,
+    "std": 0.07546622663442389,
+    "min": 0.4145833333333333,
+    "max": 0.8543181818181818
+  },
+  "coordination_distribution": {
+    "mean": -0.5108781507476438,
+    "std": 0.18474778622739568,
+    "min": -0.8,
+    "max": 0.3723333333333334
+  },
+  "self_match_rate": 1.0,
+  "cross_match_rate": 0.8875,
+  "match_improvement": 0.10972222222222217,
+  "memory_usage_mb": 4.640625,
+  "total_time_ms": 125.99360896274447,
+  "throughput_patterns_per_sec": 3571.609732467162,
+  "surprises": []
+}

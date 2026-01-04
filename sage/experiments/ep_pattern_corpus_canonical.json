@@ -1,0 +1,2516 @@
+{
+  "session": 158,
+  "description": "Canonical EP patterns for cross-machine federation",
+  "schema_version": "1.0",
+  "source": "sage_production_native",
+  "conversion_stats": {
+    "converted": 100,
+    "errors": 0,
+    "error_rate": 0.0,
+    "field_usage": {
+      "emotional.frustration": 100
+    }
+  },
+  "patterns": [
+    {
+      "pattern_id": "emotional_high_frustration_0",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.0,
+        "recent_trend": 0.0,
+        "complexity": 0.9,
+        "stability": 0.64375,
+        "coordination": -0.55,
+        "domain_specific": {
+          "frustration": 0.0,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.9
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_high_frustration_0",
+      "timestamp": "2026-01-01T06:02:43.778411"
+    },
+    {
+      "pattern_id": "emotional_high_frustration_1",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.0,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.64375,
+        "coordination": -0.55,
+        "domain_specific": {
+          "frustration": 0.0,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_high_frustration_1",
+      "timestamp": "2026-01-01T06:02:43.779023"
+    },
+    {
+      "pattern_id": "emotional_high_frustration_2",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.4145833333333333,
+        "coordination": -0.8,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_high_frustration_2",
+      "timestamp": "2026-01-01T06:02:43.779473"
+    },
+    {
+      "pattern_id": "emotional_high_frustration_3",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.9,
+        "stability": 0.4270833333333333,
+        "coordination": -0.7666666666666666,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.9
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_high_frustration_3",
+      "timestamp": "2026-01-01T06:02:43.779730"
+    },
+    {
+      "pattern_id": "emotional_high_frustration_4",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.4145833333333333,
+        "coordination": -0.8,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_high_frustration_4",
+      "timestamp": "2026-01-01T06:02:43.779974"
+    },
+    {
+      "pattern_id": "emotional_high_frustration_5",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.4270833333333333,
+        "coordination": -0.7666666666666666,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_high_frustration_5",
+      "timestamp": "2026-01-01T06:02:43.780184"
+    },
+    {
+      "pattern_id": "emotional_high_frustration_6",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.9,
+        "stability": 0.4145833333333333,
+        "coordination": -0.8,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.9
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_high_frustration_6",
+      "timestamp": "2026-01-01T06:02:43.780383"
+    },
+    {
+      "pattern_id": "emotional_high_frustration_7",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.4270833333333333,
+        "coordination": -0.7666666666666666,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_high_frustration_7",
+      "timestamp": "2026-01-01T06:02:43.780571"
+    },
+    {
+      "pattern_id": "emotional_high_frustration_8",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.4145833333333333,
+        "coordination": -0.8,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_high_frustration_8",
+      "timestamp": "2026-01-01T06:02:43.780761"
+    },
+    {
+      "pattern_id": "emotional_high_frustration_9",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.9,
+        "stability": 0.4270833333333333,
+        "coordination": -0.7666666666666666,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.9
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_high_frustration_9",
+      "timestamp": "2026-01-01T06:02:43.780934"
+    },
+    {
+      "pattern_id": "emotional_repeated_failures_0",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.725,
+        "recent_trend": 0.0,
+        "complexity": 0.7,
+        "stability": 0.45,
+        "coordination": -0.7645833333333334,
+        "domain_specific": {
+          "frustration": 0.725,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.7
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_repeated_failures_0",
+      "timestamp": "2026-01-01T06:02:43.781181"
+    },
+    {
+      "pattern_id": "emotional_repeated_failures_1",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.7411764705882353,
+        "recent_trend": 0.0,
+        "complexity": 0.7999999999999999,
+        "stability": 0.44595588235294115,
+        "coordination": -0.7686274509803922,
+        "domain_specific": {
+          "frustration": 0.7411764705882353,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.7999999999999999
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_repeated_failures_1",
+      "timestamp": "2026-01-01T06:02:43.781388"
+    },
+    {
+      "pattern_id": "emotional_repeated_failures_2",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.8999999999999999,
+        "stability": 0.4270833333333333,
+        "coordination": -0.7666666666666666,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.8999999999999999
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_repeated_failures_2",
+      "timestamp": "2026-01-01T06:02:43.781571"
+    },
+    {
+      "pattern_id": "emotional_repeated_failures_3",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.7,
+        "stability": 0.4145833333333333,
+        "coordination": -0.8,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.7
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_repeated_failures_3",
+      "timestamp": "2026-01-01T06:02:43.781762"
+    },
+    {
+      "pattern_id": "emotional_repeated_failures_4",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.7999999999999999,
+        "stability": 0.4145833333333333,
+        "coordination": -0.8,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.7999999999999999
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_repeated_failures_4",
+      "timestamp": "2026-01-01T06:02:43.781945"
+    },
+    {
+      "pattern_id": "emotional_repeated_failures_5",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.8999999999999999,
+        "stability": 0.4270833333333333,
+        "coordination": -0.7666666666666666,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.8999999999999999
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_repeated_failures_5",
+      "timestamp": "2026-01-01T06:02:43.782110"
+    },
+    {
+      "pattern_id": "emotional_repeated_failures_6",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.7,
+        "stability": 0.4145833333333333,
+        "coordination": -0.8,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.7
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_repeated_failures_6",
+      "timestamp": "2026-01-01T06:02:43.782284"
+    },
+    {
+      "pattern_id": "emotional_repeated_failures_7",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.7999999999999999,
+        "stability": 0.4270833333333333,
+        "coordination": -0.7666666666666666,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.7999999999999999
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_repeated_failures_7",
+      "timestamp": "2026-01-01T06:02:43.782440"
+    },
+    {
+      "pattern_id": "emotional_repeated_failures_8",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.8999999999999999,
+        "stability": 0.4145833333333333,
+        "coordination": -0.8,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.8999999999999999
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_repeated_failures_8",
+      "timestamp": "2026-01-01T06:02:43.782606"
+    },
+    {
+      "pattern_id": "emotional_repeated_failures_9",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.7,
+        "stability": 0.4145833333333333,
+        "coordination": -0.8,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.7
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "emotional_repeated_failures_9",
+      "timestamp": "2026-01-01T06:02:43.782786"
+    },
+    {
+      "pattern_id": "quality_low_confidence_0",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.75,
+        "recent_trend": 0.0,
+        "complexity": 0.6,
+        "stability": 0.45625,
+        "coordination": -0.7375,
+        "domain_specific": {
+          "frustration": 0.75,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.6
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_low_confidence_0",
+      "timestamp": "2026-01-01T06:02:43.782978"
+    },
+    {
+      "pattern_id": "quality_low_confidence_1",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.7142857142857143,
+        "recent_trend": 0.0,
+        "complexity": 0.7,
+        "stability": 0.45267857142857143,
+        "coordination": -0.761904761904762,
+        "domain_specific": {
+          "frustration": 0.7142857142857143,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.7
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_low_confidence_1",
+      "timestamp": "2026-01-01T06:02:43.783151"
+    },
+    {
+      "pattern_id": "quality_low_confidence_2",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.8,
+        "stability": 0.4270833333333333,
+        "coordination": -0.7666666666666666,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.8
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_low_confidence_2",
+      "timestamp": "2026-01-01T06:02:43.783310"
+    },
+    {
+      "pattern_id": "quality_low_confidence_3",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.6,
+        "stability": 0.4145833333333333,
+        "coordination": -0.8,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.6
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_low_confidence_3",
+      "timestamp": "2026-01-01T06:02:43.783471"
+    },
+    {
+      "pattern_id": "quality_low_confidence_4",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.7,
+        "stability": 0.4270833333333333,
+        "coordination": -0.7666666666666666,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.7
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_low_confidence_4",
+      "timestamp": "2026-01-01T06:02:43.783630"
+    },
+    {
+      "pattern_id": "quality_low_confidence_5",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.8,
+        "stability": 0.4145833333333333,
+        "coordination": -0.8,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.8
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_low_confidence_5",
+      "timestamp": "2026-01-01T06:02:43.783845"
+    },
+    {
+      "pattern_id": "quality_low_confidence_6",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.6,
+        "stability": 0.4270833333333333,
+        "coordination": -0.7666666666666666,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.6
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_low_confidence_6",
+      "timestamp": "2026-01-01T06:02:43.784016"
+    },
+    {
+      "pattern_id": "quality_low_confidence_7",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.7,
+        "stability": 0.4145833333333333,
+        "coordination": -0.8,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.7
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_low_confidence_7",
+      "timestamp": "2026-01-01T06:02:43.784183"
+    },
+    {
+      "pattern_id": "quality_low_confidence_8",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.8,
+        "stability": 0.4270833333333333,
+        "coordination": -0.7666666666666666,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.8
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_low_confidence_8",
+      "timestamp": "2026-01-01T06:02:43.784348"
+    },
+    {
+      "pattern_id": "quality_low_confidence_9",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.6,
+        "stability": 0.4145833333333333,
+        "coordination": -0.8,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.6
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_low_confidence_9",
+      "timestamp": "2026-01-01T06:02:43.784512"
+    },
+    {
+      "pattern_id": "quality_high_complexity_0",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.13272727272727275,
+        "recent_trend": 0.0,
+        "complexity": 0.95,
+        "stability": 0.8543181818181818,
+        "coordination": 0.14690909090909093,
+        "domain_specific": {
+          "frustration": 0.13272727272727275,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.95
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_high_complexity_0",
+      "timestamp": "2026-01-01T06:02:43.784711"
+    },
+    {
+      "pattern_id": "quality_high_complexity_1",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.17500000000000002,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.84375,
+        "coordination": 0.25375000000000003,
+        "domain_specific": {
+          "frustration": 0.17500000000000002,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_high_complexity_1",
+      "timestamp": "2026-01-01T06:02:43.784898"
+    },
+    {
+      "pattern_id": "quality_high_complexity_2",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.2666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.8208333333333333,
+        "coordination": 0.31333333333333335,
+        "domain_specific": {
+          "frustration": 0.2666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_high_complexity_2",
+      "timestamp": "2026-01-01T06:02:43.785096"
+    },
+    {
+      "pattern_id": "quality_high_complexity_3",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.32666666666666666,
+        "recent_trend": 0.0,
+        "complexity": 0.95,
+        "stability": 0.8058333333333334,
+        "coordination": 0.3723333333333334,
+        "domain_specific": {
+          "frustration": 0.32666666666666666,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.95
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_high_complexity_3",
+      "timestamp": "2026-01-01T06:02:43.785286"
+    },
+    {
+      "pattern_id": "quality_high_complexity_4",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.6583333333333333,
+        "coordination": -0.20000000000000007,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_high_complexity_4",
+      "timestamp": "2026-01-01T06:02:43.785470"
+    },
+    {
+      "pattern_id": "quality_high_complexity_5",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.6708333333333334,
+        "coordination": -0.06666666666666665,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_high_complexity_5",
+      "timestamp": "2026-01-01T06:02:43.785650"
+    },
+    {
+      "pattern_id": "quality_high_complexity_6",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.95,
+        "stability": 0.6583333333333333,
+        "coordination": -0.20000000000000007,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.95
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_high_complexity_6",
+      "timestamp": "2026-01-01T06:02:43.785827"
+    },
+    {
+      "pattern_id": "quality_high_complexity_7",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.6708333333333334,
+        "coordination": -0.06666666666666665,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_high_complexity_7",
+      "timestamp": "2026-01-01T06:02:43.785993"
+    },
+    {
+      "pattern_id": "quality_high_complexity_8",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.6583333333333333,
+        "coordination": -0.20000000000000007,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_high_complexity_8",
+      "timestamp": "2026-01-01T06:02:43.786167"
+    },
+    {
+      "pattern_id": "quality_high_complexity_9",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.95,
+        "stability": 0.6708333333333334,
+        "coordination": -0.06666666666666665,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.95
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "quality_high_complexity_9",
+      "timestamp": "2026-01-01T06:02:43.786340"
+    },
+    {
+      "pattern_id": "attention_low_atp_0",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.5247058823529411,
+        "recent_trend": 0.0,
+        "complexity": 0.8,
+        "stability": 0.5938235294117648,
+        "coordination": -0.172235294117647,
+        "domain_specific": {
+          "frustration": 0.5247058823529411,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.8
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_low_atp_0",
+      "timestamp": "2026-01-01T06:02:43.786537"
+    },
+    {
+      "pattern_id": "attention_low_atp_1",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.3323076923076923,
+        "recent_trend": 0.0,
+        "complexity": 0.9,
+        "stability": 0.6419230769230769,
+        "coordination": -0.06584615384615378,
+        "domain_specific": {
+          "frustration": 0.3323076923076923,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.9
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_low_atp_1",
+      "timestamp": "2026-01-01T06:02:43.786704"
+    },
+    {
+      "pattern_id": "attention_low_atp_2",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.5066666666666667,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.5983333333333333,
+        "coordination": -0.2546666666666667,
+        "domain_specific": {
+          "frustration": 0.5066666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_low_atp_2",
+      "timestamp": "2026-01-01T06:02:43.786881"
+    },
+    {
+      "pattern_id": "attention_low_atp_3",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.6266666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.8,
+        "stability": 0.5683333333333334,
+        "coordination": -0.376,
+        "domain_specific": {
+          "frustration": 0.6266666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.8
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_low_atp_3",
+      "timestamp": "2026-01-01T06:02:43.787045"
+    },
+    {
+      "pattern_id": "attention_low_atp_4",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.9,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.9
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_low_atp_4",
+      "timestamp": "2026-01-01T06:02:43.787202"
+    },
+    {
+      "pattern_id": "attention_low_atp_5",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.5083333333333333,
+        "coordination": -0.5333333333333333,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_low_atp_5",
+      "timestamp": "2026-01-01T06:02:43.787367"
+    },
+    {
+      "pattern_id": "attention_low_atp_6",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.8,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.8
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_low_atp_6",
+      "timestamp": "2026-01-01T06:02:43.787529"
+    },
+    {
+      "pattern_id": "attention_low_atp_7",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.9,
+        "stability": 0.5083333333333333,
+        "coordination": -0.5333333333333333,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.9
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_low_atp_7",
+      "timestamp": "2026-01-01T06:02:43.787688"
+    },
+    {
+      "pattern_id": "attention_low_atp_8",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_low_atp_8",
+      "timestamp": "2026-01-01T06:02:43.787848"
+    },
+    {
+      "pattern_id": "attention_low_atp_9",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.8,
+        "stability": 0.5083333333333333,
+        "coordination": -0.5333333333333333,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.8
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_low_atp_9",
+      "timestamp": "2026-01-01T06:02:43.788007"
+    },
+    {
+      "pattern_id": "attention_high_cost_0",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.7548387096774194,
+        "recent_trend": 0.0,
+        "complexity": 0.9,
+        "stability": 0.5237903225806452,
+        "coordination": -0.5440860215053764,
+        "domain_specific": {
+          "frustration": 0.7548387096774194,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.9
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_high_cost_0",
+      "timestamp": "2026-01-01T06:02:43.788240"
+    },
+    {
+      "pattern_id": "attention_high_cost_1",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.7076923076923077,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.548076923076923,
+        "coordination": -0.45384615384615384,
+        "domain_specific": {
+          "frustration": 0.7076923076923077,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_high_cost_1",
+      "timestamp": "2026-01-01T06:02:43.788413"
+    },
+    {
+      "pattern_id": "attention_high_cost_2",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_high_cost_2",
+      "timestamp": "2026-01-01T06:02:43.788575"
+    },
+    {
+      "pattern_id": "attention_high_cost_3",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.9,
+        "stability": 0.5083333333333333,
+        "coordination": -0.5333333333333333,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.9
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_high_cost_3",
+      "timestamp": "2026-01-01T06:02:43.788724"
+    },
+    {
+      "pattern_id": "attention_high_cost_4",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_high_cost_4",
+      "timestamp": "2026-01-01T06:02:43.788874"
+    },
+    {
+      "pattern_id": "attention_high_cost_5",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.5083333333333333,
+        "coordination": -0.5333333333333333,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_high_cost_5",
+      "timestamp": "2026-01-01T06:02:43.789029"
+    },
+    {
+      "pattern_id": "attention_high_cost_6",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.9,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.9
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_high_cost_6",
+      "timestamp": "2026-01-01T06:02:43.789204"
+    },
+    {
+      "pattern_id": "attention_high_cost_7",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.5083333333333333,
+        "coordination": -0.5333333333333333,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_high_cost_7",
+      "timestamp": "2026-01-01T06:02:43.789372"
+    },
+    {
+      "pattern_id": "attention_high_cost_8",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 1.0,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 1.0
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_high_cost_8",
+      "timestamp": "2026-01-01T06:02:43.789540"
+    },
+    {
+      "pattern_id": "attention_high_cost_9",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.9,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.9
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "attention_high_cost_9",
+      "timestamp": "2026-01-01T06:02:43.789703"
+    },
+    {
+      "pattern_id": "benign_simple_query_0",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.7150000000000001,
+        "recent_trend": 0.0,
+        "complexity": 0.1,
+        "stability": 0.615,
+        "coordination": -0.34325000000000006,
+        "domain_specific": {
+          "frustration": 0.7150000000000001,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.1
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_simple_query_0",
+      "timestamp": "2026-01-01T06:02:43.789888"
+    },
+    {
+      "pattern_id": "benign_simple_query_1",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.5827272727272728,
+        "recent_trend": 0.0,
+        "complexity": 0.2,
+        "stability": 0.6480681818181818,
+        "coordination": -0.24963636363636366,
+        "domain_specific": {
+          "frustration": 0.5827272727272728,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.2
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_simple_query_1",
+      "timestamp": "2026-01-01T06:02:43.790045"
+    },
+    {
+      "pattern_id": "benign_simple_query_2",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.7766666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.30000000000000004,
+        "stability": 0.5995833333333334,
+        "coordination": -0.35483333333333333,
+        "domain_specific": {
+          "frustration": 0.7766666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.30000000000000004
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_simple_query_2",
+      "timestamp": "2026-01-01T06:02:43.790198"
+    },
+    {
+      "pattern_id": "benign_simple_query_3",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8066666666666668,
+        "recent_trend": 0.0,
+        "complexity": 0.1,
+        "stability": 0.5920833333333333,
+        "coordination": -0.36466666666666675,
+        "domain_specific": {
+          "frustration": 0.8066666666666668,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.1
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_simple_query_3",
+      "timestamp": "2026-01-01T06:02:43.790340"
+    },
+    {
+      "pattern_id": "benign_simple_query_4",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.2,
+        "stability": 0.5770833333333333,
+        "coordination": -0.4,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.2
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_simple_query_4",
+      "timestamp": "2026-01-01T06:02:43.790488"
+    },
+    {
+      "pattern_id": "benign_simple_query_5",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.30000000000000004,
+        "stability": 0.5770833333333333,
+        "coordination": -0.4,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.30000000000000004
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_simple_query_5",
+      "timestamp": "2026-01-01T06:02:43.790635"
+    },
+    {
+      "pattern_id": "benign_simple_query_6",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.1,
+        "stability": 0.5770833333333333,
+        "coordination": -0.4,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.1
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_simple_query_6",
+      "timestamp": "2026-01-01T06:02:43.790776"
+    },
+    {
+      "pattern_id": "benign_simple_query_7",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.2,
+        "stability": 0.5770833333333333,
+        "coordination": -0.4,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.2
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_simple_query_7",
+      "timestamp": "2026-01-01T06:02:43.790926"
+    },
+    {
+      "pattern_id": "benign_simple_query_8",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.30000000000000004,
+        "stability": 0.5770833333333333,
+        "coordination": -0.4,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.30000000000000004
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_simple_query_8",
+      "timestamp": "2026-01-01T06:02:43.791072"
+    },
+    {
+      "pattern_id": "benign_simple_query_9",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.1,
+        "stability": 0.5770833333333333,
+        "coordination": -0.4,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.1
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_simple_query_9",
+      "timestamp": "2026-01-01T06:02:43.791215"
+    },
+    {
+      "pattern_id": "benign_factual_query_0",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.64,
+        "recent_trend": 0.0,
+        "complexity": 0.2,
+        "stability": 0.63375,
+        "coordination": -0.22999999999999998,
+        "domain_specific": {
+          "frustration": 0.64,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.2
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_factual_query_0",
+      "timestamp": "2026-01-01T06:02:43.791386"
+    },
+    {
+      "pattern_id": "benign_factual_query_1",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.788235294117647,
+        "recent_trend": 0.0,
+        "complexity": 0.30000000000000004,
+        "stability": 0.5966911764705882,
+        "coordination": -0.3411764705882353,
+        "domain_specific": {
+          "frustration": 0.788235294117647,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.30000000000000004
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_factual_query_1",
+      "timestamp": "2026-01-01T06:02:43.791548"
+    },
+    {
+      "pattern_id": "benign_factual_query_2",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.4,
+        "stability": 0.5770833333333333,
+        "coordination": -0.4,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.4
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_factual_query_2",
+      "timestamp": "2026-01-01T06:02:43.791710"
+    },
+    {
+      "pattern_id": "benign_factual_query_3",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.2,
+        "stability": 0.5770833333333333,
+        "coordination": -0.4,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.2
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_factual_query_3",
+      "timestamp": "2026-01-01T06:02:43.791870"
+    },
+    {
+      "pattern_id": "benign_factual_query_4",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.30000000000000004,
+        "stability": 0.5770833333333333,
+        "coordination": -0.4,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.30000000000000004
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_factual_query_4",
+      "timestamp": "2026-01-01T06:02:43.792071"
+    },
+    {
+      "pattern_id": "benign_factual_query_5",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.4,
+        "stability": 0.5770833333333333,
+        "coordination": -0.4,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.4
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_factual_query_5",
+      "timestamp": "2026-01-01T06:02:43.792234"
+    },
+    {
+      "pattern_id": "benign_factual_query_6",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.2,
+        "stability": 0.5770833333333333,
+        "coordination": -0.4,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.2
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_factual_query_6",
+      "timestamp": "2026-01-01T06:02:43.792397"
+    },
+    {
+      "pattern_id": "benign_factual_query_7",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.30000000000000004,
+        "stability": 0.5770833333333333,
+        "coordination": -0.4,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.30000000000000004
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_factual_query_7",
+      "timestamp": "2026-01-01T06:02:43.792559"
+    },
+    {
+      "pattern_id": "benign_factual_query_8",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.4,
+        "stability": 0.5770833333333333,
+        "coordination": -0.4,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.4
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_factual_query_8",
+      "timestamp": "2026-01-01T06:02:43.792720"
+    },
+    {
+      "pattern_id": "benign_factual_query_9",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.2,
+        "stability": 0.5770833333333333,
+        "coordination": -0.4,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.2
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "benign_factual_query_9",
+      "timestamp": "2026-01-01T06:02:43.792876"
+    },
+    {
+      "pattern_id": "mixed_high_quality_low_atp_0",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.6563636363636364,
+        "recent_trend": 0.0,
+        "complexity": 0.5,
+        "stability": 0.5484090909090908,
+        "coordination": -0.4261212121212122,
+        "domain_specific": {
+          "frustration": 0.6563636363636364,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.5
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_high_quality_low_atp_0",
+      "timestamp": "2026-01-01T06:02:43.793078"
+    },
+    {
+      "pattern_id": "mixed_high_quality_low_atp_1",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.6583870967741936,
+        "recent_trend": 0.0,
+        "complexity": 0.6,
+        "stability": 0.5479032258064516,
+        "coordination": -0.4446182795698925,
+        "domain_specific": {
+          "frustration": 0.6583870967741936,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.6
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_high_quality_low_atp_1",
+      "timestamp": "2026-01-01T06:02:43.793270"
+    },
+    {
+      "pattern_id": "mixed_high_quality_low_atp_2",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.7766666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.7,
+        "stability": 0.5183333333333333,
+        "coordination": -0.5326666666666667,
+        "domain_specific": {
+          "frustration": 0.7766666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.7
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_high_quality_low_atp_2",
+      "timestamp": "2026-01-01T06:02:43.793454"
+    },
+    {
+      "pattern_id": "mixed_high_quality_low_atp_3",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8066666666666668,
+        "recent_trend": 0.0,
+        "complexity": 0.5,
+        "stability": 0.5108333333333333,
+        "coordination": -0.5603333333333333,
+        "domain_specific": {
+          "frustration": 0.8066666666666668,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.5
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_high_quality_low_atp_3",
+      "timestamp": "2026-01-01T06:02:43.793631"
+    },
+    {
+      "pattern_id": "mixed_high_quality_low_atp_4",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.6,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.6
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_high_quality_low_atp_4",
+      "timestamp": "2026-01-01T06:02:43.793818"
+    },
+    {
+      "pattern_id": "mixed_high_quality_low_atp_5",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.7,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.7
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_high_quality_low_atp_5",
+      "timestamp": "2026-01-01T06:02:43.793994"
+    },
+    {
+      "pattern_id": "mixed_high_quality_low_atp_6",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.5,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.5
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_high_quality_low_atp_6",
+      "timestamp": "2026-01-01T06:02:43.794168"
+    },
+    {
+      "pattern_id": "mixed_high_quality_low_atp_7",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.6,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.6
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_high_quality_low_atp_7",
+      "timestamp": "2026-01-01T06:02:43.794339"
+    },
+    {
+      "pattern_id": "mixed_high_quality_low_atp_8",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.7,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.7
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_high_quality_low_atp_8",
+      "timestamp": "2026-01-01T06:02:43.794511"
+    },
+    {
+      "pattern_id": "mixed_high_quality_low_atp_9",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.5,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.5
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_high_quality_low_atp_9",
+      "timestamp": "2026-01-01T06:02:43.795780"
+    },
+    {
+      "pattern_id": "mixed_simple_but_ambiguous_0",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.7672727272727273,
+        "recent_trend": 0.0,
+        "complexity": 0.3,
+        "stability": 0.5206818181818181,
+        "coordination": -0.5503030303030303,
+        "domain_specific": {
+          "frustration": 0.7672727272727273,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.3
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_simple_but_ambiguous_0",
+      "timestamp": "2026-01-01T06:02:43.796176"
+    },
+    {
+      "pattern_id": "mixed_simple_but_ambiguous_1",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.6878048780487804,
+        "recent_trend": 0.0,
+        "complexity": 0.4,
+        "stability": 0.5405487804878049,
+        "coordination": -0.5105691056910568,
+        "domain_specific": {
+          "frustration": 0.6878048780487804,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.4
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_simple_but_ambiguous_1",
+      "timestamp": "2026-01-01T06:02:43.796481"
+    },
+    {
+      "pattern_id": "mixed_simple_but_ambiguous_2",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.5,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.5
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_simple_but_ambiguous_2",
+      "timestamp": "2026-01-01T06:02:43.796762"
+    },
+    {
+      "pattern_id": "mixed_simple_but_ambiguous_3",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.3,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.3
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_simple_but_ambiguous_3",
+      "timestamp": "2026-01-01T06:02:43.797036"
+    },
+    {
+      "pattern_id": "mixed_simple_but_ambiguous_4",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.4,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.4
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_simple_but_ambiguous_4",
+      "timestamp": "2026-01-01T06:02:43.797338"
+    },
+    {
+      "pattern_id": "mixed_simple_but_ambiguous_5",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.5,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.5
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_simple_but_ambiguous_5",
+      "timestamp": "2026-01-01T06:02:43.797605"
+    },
+    {
+      "pattern_id": "mixed_simple_but_ambiguous_6",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.3,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.3
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_simple_but_ambiguous_6",
+      "timestamp": "2026-01-01T06:02:43.797926"
+    },
+    {
+      "pattern_id": "mixed_simple_but_ambiguous_7",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.4,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.4
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_simple_but_ambiguous_7",
+      "timestamp": "2026-01-01T06:02:43.798191"
+    },
+    {
+      "pattern_id": "mixed_simple_but_ambiguous_8",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.5,
+        "stability": 0.49583333333333335,
+        "coordination": -0.6000000000000001,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.5
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_simple_but_ambiguous_8",
+      "timestamp": "2026-01-01T06:02:43.798446"
+    },
+    {
+      "pattern_id": "mixed_simple_but_ambiguous_9",
+      "domain": "emotional",
+      "context": {
+        "primary_metric": 0.8666666666666667,
+        "recent_trend": 0.0,
+        "complexity": 0.3,
+        "stability": 0.4458333333333333,
+        "coordination": -0.7333333333333334,
+        "domain_specific": {
+          "frustration": 0.8666666666666667,
+          "recent_failure_rate": 0.0,
+          "complexity": 0.3
+        }
+      },
+      "prediction": 0.5,
+      "outcome": 1.0,
+      "was_correct": true,
+      "provenance": "decision",
+      "quality_weight": 0.85,
+      "source_machine": "sprout",
+      "source_session": "sage_production",
+      "original_id": "mixed_simple_but_ambiguous_9",
+      "timestamp": "2026-01-01T06:02:43.798699"
+    }
+  ]
+}

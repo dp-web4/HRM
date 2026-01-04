@@ -1,0 +1,46 @@
+{
+  "session": 158,
+  "schema_version": "1.0",
+  "conversion_stats": {
+    "converted": 100,
+    "errors": 0,
+    "error_rate": 0.0,
+    "field_usage": {
+      "emotional.frustration": 100
+    }
+  },
+  "field_analysis": {
+    "stability": {
+      "mean": 0.528257854279327,
+      "std": 0.09738215347693097,
+      "min": 0.4145833333333333,
+      "max": 0.8543181818181818
+    },
+    "coordination": {
+      "mean": -0.515878112072012,
+      "std": 0.25434082468407476,
+      "min": -0.8,
+      "max": 0.3723333333333334
+    }
+  },
+  "domain_distribution": {
+    "emotional": 100
+  },
+  "schema_proposal": {
+    "canonical_fields": [
+      "primary_metric (float)",
+      "recent_trend (float)",
+      "complexity (float)",
+      "stability (float, computed)",
+      "coordination (float, computed)",
+      "domain_specific (dict)"
+    ],
+    "computed_fields_rationale": {
+      "stability": "Derived from frustration, ATP margin, trust, coherence",
+      "coordination": "Derived from cross-domain alignment signals"
+    },
+    "backward_compatible": true,
+    "new_fields_computed": true
+  },
+  "recommendation": "Adopt canonical schema for Session 159+ cross-machine federation"
+}

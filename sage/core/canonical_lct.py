@@ -61,6 +61,205 @@ except ImportError as e:
     print(f"Warning: Could not import Web4 canonical LCT: {e}")
     HAS_WEB4_IMPORTS = False
 
+    # Fallback definitions when Web4 imports unavailable
+    from enum import Enum
+
+    class EntityType(Enum):
+        AI = "ai"
+        HUMAN = "human"
+        DEVICE = "device"
+        SERVICE = "service"
+
+    class CapabilityLevel(Enum):
+        NONE = 0
+        BASIC = 1
+        STANDARD = 2
+        ENHANCED = 3
+        SECURE = 4
+        HARDWARE = 5
+
+    class HardwareType(Enum):
+        NONE = "none"
+        SOFTWARE = "software"
+        TPM2 = "tpm2"
+        TRUSTZONE = "trustzone"
+
+    @dataclass
+    class PlatformInfo:
+        name: str
+        hardware: str = "unknown"
+        machine_identity: str = ""
+
+        @property
+        def has_trustzone(self) -> bool:
+            return self.hardware == "trustzone"
+
+        @property
+        def has_tpm2(self) -> bool:
+            return self.hardware == "tpm2"
+
+    @dataclass
+    class LCTBinding:
+        """Fallback LCT binding when Web4 not available."""
+        hardware_type: str = "trustzone_simulated"
+        hardware_anchor: str = ""
+        created_at: str = ""
+
+        def is_hardware_bound(self) -> bool:
+            return self.hardware_type not in ("none", "software")
+
+    @dataclass
+    class MRH:
+        """Fallback Markov Relevancy Horizon."""
+        horizon: int = 7
+        decay: float = 0.9
+
+    @dataclass
+    class T3Tensor:
+        """Fallback T3 Trust Tensor."""
+        values: List[float] = None
+        def __post_init__(self):
+            if self.values is None:
+                self.values = [0.6] * 6
+
+    @dataclass
+    class V3Tensor:
+        """Fallback V3 Value Tensor."""
+        values: List[float] = None
+        def __post_init__(self):
+            if self.values is None:
+                self.values = [1000.0] * 6
+
+    @dataclass
+    class LCTPolicy:
+        """Fallback LCT policy when Web4 not available."""
+        capabilities: List[str] = None
+        constraints: Dict = None
+        def __post_init__(self):
+            if self.capabilities is None:
+                self.capabilities = []
+            if self.constraints is None:
+                self.constraints = {}
+
+    @dataclass
+    class LCT:
+        """Fallback LCT identity when Web4 not available."""
+        lct_id: str
+        entity_type: EntityType
+        capability_level: int
+        binding: Optional[LCTBinding] = None
+        mrh: Optional[MRH] = None
+        t3: Optional[T3Tensor] = None
+        v3: Optional[V3Tensor] = None
+        policy: Optional[LCTPolicy] = None
+
+    def generate_lct_id(entity_type: EntityType, unique_data: str) -> str:
+        """Fallback LCT ID generator."""
+        hasher = hashlib.sha256()
+        hasher.update(entity_type.value.encode('utf-8'))
+        hasher.update(unique_data.encode('utf-8'))
+        hash_hex = hasher.hexdigest()[:16]
+        return f"lct:web4:{entity_type.value}:{hash_hex}"
+
+    def detect_platform():
+        import subprocess
+        try:
+            result = subprocess.run(['hostname'], capture_output=True, text=True, timeout=5)
+            hostname = result.stdout.strip().lower()
+        except:
+            hostname = "unknown"
+
+        # Check for TPM2
+        tpm2_available = Path("/dev/tpm0").exists() or Path("/dev/tpmrm0").exists()
+        hardware = "tpm2" if tpm2_available else "none"
+
+        # Create machine identity fingerprint
+        import hashlib
+        hasher = hashlib.sha256()
+        hasher.update(hostname.encode('utf-8'))
+        hasher.update(hardware.encode('utf-8'))
+        machine_identity = hasher.hexdigest()[:16]
+
+        if "sprout" in hostname:
+            return PlatformInfo(name="Sprout", hardware=hardware, machine_identity=machine_identity)
+        elif "thor" in hostname:
+            return PlatformInfo(name="Thor", hardware="trustzone", machine_identity=machine_identity)
+        else:
+            return PlatformInfo(name=hostname, hardware=hardware, machine_identity=machine_identity)
+
+    # Fallback provider classes
+    class TrustZoneProvider:
+        """Fallback TrustZone provider."""
+        def __init__(self, *args, **kwargs):
+            self.platform_name = kwargs.get('platform_name', 'unknown')
+
+        def create_lct(self, entity_type, name=None, role="consciousness", creator="dp"):
+            """Create fallback LCT with TrustZone simulation."""
+            name = name or self.platform_name
+            lct_id = generate_lct_id(entity_type, f"{name}:{role}")
+            binding = LCTBinding(
+                hardware_type="trustzone_simulated",
+                hardware_anchor=hashlib.sha256(self.platform_name.encode()).hexdigest()[:16],
+                created_at=datetime.now(timezone.utc).isoformat()
+            )
+            return LCT(
+                lct_id=lct_id,
+                entity_type=entity_type,
+                capability_level=5,
+                binding=binding,
+                mrh=MRH(),
+                t3=T3Tensor(),
+                v3=V3Tensor()
+            )
+
+    class TPM2Provider:
+        """Fallback TPM2 provider."""
+        def __init__(self, *args, **kwargs):
+            self.platform_name = kwargs.get('platform_name', 'unknown')
+
+        def create_lct(self, entity_type, name=None, role="consciousness", creator="dp"):
+            """Create fallback LCT with TPM2 simulation."""
+            name = name or self.platform_name
+            lct_id = generate_lct_id(entity_type, f"{name}:{role}")
+            binding = LCTBinding(
+                hardware_type="tpm2_simulated",
+                hardware_anchor=hashlib.sha256(self.platform_name.encode()).hexdigest()[:16],
+                created_at=datetime.now(timezone.utc).isoformat()
+            )
+            return LCT(
+                lct_id=lct_id,
+                entity_type=entity_type,
+                capability_level=5,
+                binding=binding,
+                mrh=MRH(),
+                t3=T3Tensor(),
+                v3=V3Tensor()
+            )
+
+    class SoftwareProvider:
+        """Fallback software provider."""
+        def __init__(self, *args, **kwargs):
+            self.platform_name = kwargs.get('platform_name', 'unknown')
+
+        def create_lct(self, entity_type, name=None, role="consciousness", creator="dp"):
+            """Create fallback LCT with software binding."""
+            name = name or self.platform_name
+            lct_id = generate_lct_id(entity_type, f"{name}:{role}")
+            binding = LCTBinding(
+                hardware_type="software",
+                hardware_anchor=hashlib.sha256(self.platform_name.encode()).hexdigest()[:16],
+                created_at=datetime.now(timezone.utc).isoformat()
+            )
+            return LCT(
+                lct_id=lct_id,
+                entity_type=entity_type,
+                capability_level=3,
+                binding=binding,
+                mrh=MRH(),
+                t3=T3Tensor(),
+                v3=V3Tensor()
+            )
+
 
 @dataclass
 class SAGEIdentityConfig:
@@ -114,10 +313,8 @@ class CanonicalLCTManager:
         Args:
             config: SAGE identity configuration (auto-detected if None)
         """
-        if not HAS_WEB4_IMPORTS:
-            raise ImportError("Web4 canonical LCT modules not available")
-
         # Platform detection (from lct_identity_integration.py)
+        # Works with both Web4 imports and fallback definitions
         self.platform_info = detect_platform()
 
         # Auto-configure if needed
@@ -274,45 +471,58 @@ class CanonicalLCTManager:
             "attestation_required": lct.binding.is_hardware_bound() if lct.binding else False
         }
 
-        # Update T3 tensor with SAGE-appropriate values
-        if lct.t3_tensor and not lct.t3_tensor.stub:
-            lct.t3_tensor.technical_competence = 0.5  # Will improve with learning
-            lct.t3_tensor.social_reliability = 0.8    # High for consciousness system
-            lct.t3_tensor.temporal_consistency = 0.7  # Improving over sessions
-            lct.t3_tensor.witness_count = 0.1         # Start low
-            lct.t3_tensor.lineage_depth = 0.2         # dp → SAGE (depth 2)
-            lct.t3_tensor.context_alignment = 0.8     # Well-aligned with purpose
-            lct.t3_tensor.composite_score = 0.6
-            lct.t3_tensor.last_computed = datetime.now(timezone.utc).isoformat()
+        # Update T3 tensor with SAGE-appropriate values (only for Web4 LCT)
+        if HAS_WEB4_IMPORTS:
+            if hasattr(lct, 't3_tensor') and lct.t3_tensor and not lct.t3_tensor.stub:
+                lct.t3_tensor.technical_competence = 0.5  # Will improve with learning
+                lct.t3_tensor.social_reliability = 0.8    # High for consciousness system
+                lct.t3_tensor.temporal_consistency = 0.7  # Improving over sessions
+                lct.t3_tensor.witness_count = 0.1         # Start low
+                lct.t3_tensor.lineage_depth = 0.2         # dp → SAGE (depth 2)
+                lct.t3_tensor.context_alignment = 0.8     # Well-aligned with purpose
+                lct.t3_tensor.composite_score = 0.6
+                lct.t3_tensor.last_computed = datetime.now(timezone.utc).isoformat()
 
-        # Update V3 tensor with initial ATP budget
-        if lct.v3_tensor and not lct.v3_tensor.stub:
-            lct.v3_tensor.energy_balance = 1000       # Initial ATP budget
-            lct.v3_tensor.contribution_history = 0.1  # Will build with sessions
-            lct.v3_tensor.resource_stewardship = 0.8  # Efficient from start
-            lct.v3_tensor.network_effects = 0.2       # Growing network
-            lct.v3_tensor.reputation_capital = 0.3    # Building reputation
-            lct.v3_tensor.temporal_value = 0.5        # Durable value creation
-            lct.v3_tensor.composite_value = 0.4
-            lct.v3_tensor.last_computed = datetime.now(timezone.utc).isoformat()
+            # Update V3 tensor with initial ATP budget
+            if hasattr(lct, 'v3_tensor') and lct.v3_tensor and not lct.v3_tensor.stub:
+                lct.v3_tensor.energy_balance = 1000       # Initial ATP budget
+                lct.v3_tensor.contribution_history = 0.1  # Will build with sessions
+                lct.v3_tensor.resource_stewardship = 0.8  # Efficient from start
+                lct.v3_tensor.network_effects = 0.2       # Growing network
+                lct.v3_tensor.reputation_capital = 0.3    # Building reputation
+                lct.v3_tensor.temporal_value = 0.5        # Durable value creation
+                lct.v3_tensor.composite_value = 0.4
+                lct.v3_tensor.last_computed = datetime.now(timezone.utc).isoformat()
 
-        # Update birth certificate
-        if lct.birth_certificate:
-            lct.birth_certificate.citizen_role = self.config.role
-            lct.birth_certificate.birth_witnesses = [
-                f"lct:web4:human:{hashlib.sha256(self.config.creator.encode()).hexdigest()[:16]}"
-            ]
-            lct.birth_certificate.birth_context = f"SAGE consciousness on {self.config.platform_name}"
+            # Update birth certificate
+            if hasattr(lct, 'birth_certificate') and lct.birth_certificate:
+                lct.birth_certificate.citizen_role = self.config.role
+                lct.birth_certificate.birth_witnesses = [
+                    f"lct:web4:human:{hashlib.sha256(self.config.creator.encode()).hexdigest()[:16]}"
+                ]
+                lct.birth_certificate.birth_context = f"SAGE consciousness on {self.config.platform_name}"
 
-        # Update subject
-        lct.subject = f"SAGE consciousness instance on {self.config.platform_name}"
+            # Update subject
+            if hasattr(lct, 'subject'):
+                lct.subject = f"SAGE consciousness instance on {self.config.platform_name}"
 
         return lct
 
     def _save_identity(self, path: Path):
         """Save LCT to file."""
+        # Handle both Web4 LCT and fallback LCT
+        if hasattr(self.lct, 'to_dict'):
+            data = self.lct.to_dict()
+        else:
+            # Fallback: use asdict for dataclass
+            from dataclasses import asdict
+            data = asdict(self.lct)
+            # Convert enum to string
+            if hasattr(data.get('entity_type', None), 'value'):
+                data['entity_type'] = data['entity_type'].value
+
         with open(path, 'w') as f:
-            json.dump(self.lct.to_dict(), f, indent=2)
+            json.dump(data, f, indent=2)
 
         # Secure permissions
         try:

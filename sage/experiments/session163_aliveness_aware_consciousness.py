@@ -30,13 +30,16 @@ Surprise is prize: What behaviors emerge when consciousness knows its own state?
 """
 
 import sys
+import os
 import json
 from pathlib import Path
 from datetime import datetime, timezone
 from typing import Dict, Any, Optional
 
-sys.path.insert(0, '/home/dp/ai-workspace/HRM')
-sys.path.insert(0, '/home/dp/ai-workspace/web4')
+# Add paths for imports - use home directory dynamically
+HOME = os.path.expanduser("~")
+sys.path.insert(0, f'{HOME}/ai-workspace/HRM')
+sys.path.insert(0, f'{HOME}/ai-workspace/web4')
 
 # Import Session 162's aliveness infrastructure
 from sage.experiments.session162_sage_aliveness_verification import (

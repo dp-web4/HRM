@@ -38,16 +38,22 @@ from typing import Optional, Dict, List
 from enum import Enum
 import sys
 
-# Add paths for imports
-sys.path.insert(0, '/home/dp/ai-workspace/HRM')
-sys.path.insert(0, '/home/dp/ai-workspace/web4')
+# Add paths for imports - use home directory dynamically
+import os
+HOME = os.path.expanduser("~")
+sys.path.insert(0, f'{HOME}/ai-workspace/HRM')
+sys.path.insert(0, f'{HOME}/ai-workspace/web4')
 
-# Import Web4 canonical types first
-from core.lct_capability_levels import EntityType
-from core.lct_binding.provider import PlatformInfo
-
-# Import SAGE canonical LCT
+# Import SAGE canonical LCT (includes fallbacks for missing Web4 imports)
 from sage.core.canonical_lct import CanonicalLCTManager
+
+# Try to import Web4 canonical types, fallback to local if unavailable
+try:
+    from core.lct_capability_levels import EntityType
+    from core.lct_binding.provider import PlatformInfo
+except ImportError:
+    # Use fallback types from canonical_lct
+    from sage.core.canonical_lct import EntityType, PlatformInfo
 
 
 # ============================================================================

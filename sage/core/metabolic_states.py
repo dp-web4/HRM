@@ -46,7 +46,7 @@ class MetabolicState(Enum):
 @dataclass
 class ATPAllocation:
     """
-    ATP (Adaptive Temporal Parameters) resource allocation.
+    ATP (Allocation Transfer Packet) resource allocation.
 
     Represents computational resources available for different processes.
     Inspired by cellular ATP but adapted for consciousness architecture.

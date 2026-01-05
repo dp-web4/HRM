@@ -1,6 +1,6 @@
 """
 HRM Orchestrator - Manages concurrent IRP plugins with trust-weighted budgets
-Implements ATP (Adaptive Trust Points) allocation for resource management
+Implements ATP (Allocation Transfer Packet) allocation for resource management
 """
 
 import asyncio
@@ -54,7 +54,7 @@ class PluginResult:
 
 @dataclass
 class ATPBudget:
-    """Adaptive Trust Points budget management"""
+    """Allocation Transfer Packet budget management"""
     total: float = 1000.0
     allocated: Dict[str, float] = field(default_factory=dict)
     consumed: Dict[str, float] = field(default_factory=dict)

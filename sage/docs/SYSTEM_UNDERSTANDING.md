@@ -157,7 +157,7 @@ Physical World
 ```
 
 **Trust-Based Resource Allocation**:
-- Each plugin gets ATP (Adaptive Trust Points) budget
+- Each plugin gets ATP (Allocation Transfer Packet) budget
 - High-trust plugins (reliable, efficient) get more resources
 - Low-trust plugins get less until they prove themselves
 - Unused budget from early-stopping plugins gets reallocated

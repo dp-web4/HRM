@@ -33,7 +33,7 @@ Successfully implemented Priority 0-2 enhancements to SAGE based on Michaud's ne
 ### Priority 1: Attention & Resources
 ✅ **Attention Manager** (310 lines)
 - Five metabolic states: WAKE, FOCUS, REST, DREAM, CRISIS
-- Dynamic ATP (Adaptive Trust Points) allocation
+- Dynamic ATP (Allocation Transfer Packet) allocation
 - Automatic state transitions based on salience and time
 - Configurable thresholds and allocation strategies
 

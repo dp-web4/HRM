@@ -17,7 +17,7 @@
 
 ## System Overview
 
-SAGE operates as a **Situational Awareness Orchestrator** that coordinates IRP (Iterative Refinement Primitive) plugins to process sensor inputs, make decisions, and control actuators. The system implements a trust-weighted attention mechanism with resource budgeting (ATP - Adaptive Trust Points).
+SAGE operates as a **Situational Awareness Orchestrator** that coordinates IRP (Iterative Refinement Primitive) plugins to process sensor inputs, make decisions, and control actuators. The system implements a trust-weighted attention mechanism with resource budgeting (ATP - Allocation Transfer Packet).
 
 ### Core Architecture Components
 

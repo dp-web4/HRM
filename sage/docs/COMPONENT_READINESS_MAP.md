@@ -237,7 +237,7 @@ class HRMOrchestrator:
 ```
 
 ### Capabilities
-- ✅ ATP (Adaptive Trust Points) budget management
+- ✅ ATP (Allocation Transfer Packet) budget management
 - ✅ Trust-weighted resource allocation
 - ✅ Concurrent plugin execution (asyncio)
 - ✅ Dynamic budget reallocation

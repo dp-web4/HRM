@@ -410,7 +410,7 @@ while True:
 **1. SAGE - Cognition Kernel**
 - Location: `/sage/core/`
 - Continuous inference loop maintaining state across time
-- Trust-based ATP (Adaptive Trust Points) budget allocation
+- Trust-based ATP (Allocation Transfer Packet) budget allocation
 - Metabolic states (WAKE, FOCUS, REST, DREAM, CRISIS)
 - Learns what deserves attention and which resources to use
 

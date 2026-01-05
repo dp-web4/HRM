@@ -730,7 +730,7 @@ class PluginResult:
 ```python
 @dataclass
 class ATPBudget:
-    """Adaptive Trust Points budget management"""
+    """Allocation Transfer Packet budget management"""
     total: float = 1000.0
     allocated: Dict[str, float] = field(default_factory=dict)  # Per-plugin allocation
     consumed: Dict[str, float] = field(default_factory=dict)   # Per-plugin consumption

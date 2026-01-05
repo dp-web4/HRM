@@ -155,7 +155,7 @@ Michaud discovered (via Amalric & Dehaene 2016) that mathematical thinking occur
 
 ### SAGE's Resource Management
 
-**ATP (Adaptive Trust Points) Budget:**
+**ATP (Allocation Transfer Packet) Budget:**
 - Limited resource pool allocated across plugins
 - High-trust plugins get more resources
 - Low-trust plugins get reduced allocation or unloaded

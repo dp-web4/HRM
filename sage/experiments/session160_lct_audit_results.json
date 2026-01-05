@@ -347,7 +347,7 @@
         "hardware binding simulation"
       ]
     },
-    "binding_strategy": "Level 5: TrustZone hardware binding (device detected)",
+    "binding_strategy": "Level 5: TPM2 hardware binding (device detected)",
     "migration_steps": [
       "1. Create sage/core/canonical_lct.py with Web4-compliant structure",
       "2. Implement LCT Capability Level 3 (software binding)",

@@ -51,7 +51,7 @@ class StateTransition:
 
 class AttentionManager:
     """
-    Manages dynamic ATP (Adaptive Trust Points) allocation.
+    Manages dynamic ATP (Allocation Transfer Packet) allocation.
 
     Allocation strategy varies by metabolic state:
     - FOCUS: 80% to primary, 15% to secondary, 5% background

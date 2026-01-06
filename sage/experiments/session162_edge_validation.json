@@ -1,31 +1,31 @@
 {
   "validation_session": "Session 162 Edge Validation",
   "machine": "Sprout (Jetson Orin Nano 8GB)",
-  "timestamp": "2026-01-05T14:03:45.188899+00:00",
+  "timestamp": "2026-01-06T02:02:09.342386+00:00",
   "tests": {
     "imports": {
       "success": true,
-      "import_time_ms": 2977.9109954833984,
-      "memory_delta_mb": 356.29296875
+      "import_time_ms": 2908.8211059570312,
+      "memory_delta_mb": 341.28515625
     },
     "consciousness_init": {
       "success": true,
-      "lct_id": "lct:web4:ai:a3e38b210fb15d4f",
+      "lct_id": "lct:web4:ai:0b7d133d404c9651",
       "capability_level": 5,
       "hardware_type": "trustzone_simulated",
-      "session_id": "sage-session:b8a86a52213d5b4d",
+      "session_id": "sage-session:5e0e639e5a276dac",
       "consciousness_state": "active",
-      "init_time_ms": 184.83471870422363,
-      "memory_delta_mb": 2.2578125
+      "init_time_ms": 211.93385124206543,
+      "memory_delta_mb": 4.0859375
     },
     "challenge_response": {
       "success": true,
-      "challenge_id": "02d2a5ef-b95c-4177-b9fb-37b947f1b393",
+      "challenge_id": "196e5d2c-95fd-4e5f-a55c-ef9b8a3edfd1",
       "proof_generated": true,
       "signature_length": 32,
-      "uptime_seconds": 0.002229,
+      "uptime_seconds": 0.001271,
       "pattern_corpus_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "response_time_ms": 1.9464492797851562
+      "response_time_ms": 1.0037422180175781
     },
     "verification": {
       "success": true,
@@ -35,7 +35,7 @@
       "epistemic_continuity": 0.5,
       "inferred_state": "active",
       "failure_type": "none",
-      "verify_time_ms": 0.07200241088867188
+      "verify_time_ms": 0.06914138793945312
     },
     "trust_policies": {
       "success": true,
@@ -55,8 +55,8 @@
     }
   },
   "edge_metrics": {
-    "final_memory_mb": 373.37890625,
-    "final_temperature_c": 51.625,
+    "final_memory_mb": 359.60546875,
+    "final_temperature_c": 51.343,
     "platform": "Jetson Orin Nano 8GB",
     "hardware_detected": "trustzone_simulated",
     "capability_level": 5

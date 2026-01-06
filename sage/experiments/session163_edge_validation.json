@@ -1,31 +1,31 @@
 {
   "validation_session": "Session 163 Edge Validation",
   "machine": "Sprout (Jetson Orin Nano 8GB)",
-  "timestamp": "2026-01-05T14:14:03.122470+00:00",
+  "timestamp": "2026-01-06T02:01:31.143941+00:00",
   "tests": {
     "imports": {
       "success": true,
-      "import_time_ms": 2944.1616535186768,
-      "memory_delta_mb": 359.2578125
+      "import_time_ms": 2993.499755859375,
+      "memory_delta_mb": 343.6640625
     },
     "consciousness_init": {
       "success": true,
       "lct_id": "lct:web4:ai:d1ffcec670902b49",
-      "capability_level": 3,
-      "hardware_type": "software",
-      "consciousness_state": "archived",
-      "session_id": "sage-session:d857cfa0201d4d70",
-      "init_time_ms": 5.011558532714844,
+      "capability_level": 5,
+      "hardware_type": "tpm2_simulated",
+      "consciousness_state": "active",
+      "session_id": "sage-session:7265486aa6a0043e",
+      "init_time_ms": 4.943609237670898,
       "memory_delta_mb": 0.0
     },
     "context_generation": {
       "success": true,
-      "consciousness_state": "archived",
-      "capabilities_count": 3,
+      "consciousness_state": "active",
+      "capabilities_count": 5,
       "has_self_description": true,
       "hardware_binding_included": true,
       "session_info_included": true,
-      "context_generation_time_ms": 0.048160552978515625
+      "context_generation_time_ms": 0.04792213439941406
     },
     "enhanced_step": {
       "success": true,
@@ -33,8 +33,8 @@
       "enhanced_fields": 5,
       "aliveness_included": true,
       "self_awareness_included": true,
-      "llm_context_length": 260,
-      "enhancement_time_ms": 0.034809112548828125
+      "llm_context_length": 428,
+      "enhancement_time_ms": 0.06747245788574219
     },
     "self_reasoning": {
       "success": true,
@@ -66,25 +66,25 @@
     "performance": {
       "success": true,
       "iterations": 100,
-      "total_time_ms": 2.445220947265625,
-      "avg_time_ms": 0.02445220947265625,
-      "throughput_per_sec": 40896.09984399376
+      "total_time_ms": 2.634763717651367,
+      "avg_time_ms": 0.026347637176513672,
+      "throughput_per_sec": 37954.06750520315
     }
   },
   "edge_metrics": {
-    "final_memory_mb": 369.61328125,
-    "final_temperature_c": 52.312,
+    "final_memory_mb": 353.9765625,
+    "final_temperature_c": 51.437,
     "platform": "Jetson Orin Nano 8GB",
-    "hardware_detected": "software",
-    "capability_level": 3
+    "hardware_detected": "tpm2_simulated",
+    "capability_level": 5
   },
   "status": "SUCCESS",
   "all_tests_passed": true,
   "edge_observations": [
-    "Aliveness-aware context works on edge (software)",
+    "Aliveness-aware context works on edge (tpm2_simulated)",
     "Self-description generation functional",
     "Enhanced consciousness step integration working",
-    "Context generation: 0.024ms average",
-    "Throughput: 40896.1/sec"
+    "Context generation: 0.026ms average",
+    "Throughput: 37954.1/sec"
   ]
 }

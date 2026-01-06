@@ -91,6 +91,11 @@ except ImportError as e:
         machine_identity: str = ""
 
         @property
+        def hardware_type(self) -> str:
+            """Alias for hardware to match Web4 PlatformInfo API."""
+            return self.hardware
+
+        @property
         def has_trustzone(self) -> bool:
             return self.hardware == "trustzone"
 

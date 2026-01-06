@@ -1,0 +1,117 @@
+{
+  "session": "165",
+  "title": "Thor TrustZone Federation - Real Hardware Deployment",
+  "timestamp": "2026-01-06T20:07:41.509379+00:00",
+  "duration_seconds": 0.034989,
+  "hardware": {
+    "machine": "Thor",
+    "platform": "Jetson AGX Thor",
+    "hardware_type": "TrustZone",
+    "capability_level": 5,
+    "tee_device": "/dev/tee0"
+  },
+  "federation_results": {
+    "timestamp": "2026-01-06T20:07:41.504712+00:00",
+    "total_nodes": 3,
+    "trust_network": {
+      "edges": [
+        {
+          "from_machine": "SimulatedPeer1",
+          "to_machine": "SimulatedPeer2",
+          "trust_score": 0.1,
+          "full_continuity": 1.0,
+          "hardware_continuity": 1.0,
+          "session_continuity": 1.0,
+          "epistemic_continuity": 1.0
+        },
+        {
+          "from_machine": "SimulatedPeer2",
+          "to_machine": "SimulatedPeer1",
+          "trust_score": 0.1,
+          "full_continuity": 1.0,
+          "hardware_continuity": 1.0,
+          "session_continuity": 1.0,
+          "epistemic_continuity": 1.0
+        }
+      ],
+      "successful_verifications": 2,
+      "total_verifications": 6,
+      "network_density": 0.3333333333333333
+    }
+  },
+  "collective_state": {
+    "total_nodes": 3,
+    "trusted_nodes": 0,
+    "average_trust": 0.06666666666666667,
+    "network_health": 0.0,
+    "nodes": {
+      "c7e5a65dcd8a0a52": {
+        "node_id": "c7e5a65dcd8a0a52",
+        "machine_name": "Thor",
+        "lct_id": "lct:web4:ai:02a084191477480f",
+        "hardware_type": "TrustZoneProvider",
+        "capability_level": 5,
+        "consciousness_state": "ACTIVE",
+        "session_id": "cbed76b1275ba10c...",
+        "uptime": 0.002217,
+        "trust_score": 0.0,
+        "last_verified": null,
+        "verification_count": 2,
+        "successful_verifications": 0,
+        "success_rate": 0.0,
+        "last_continuity": null,
+        "hostname": "thor",
+        "port": 5329,
+        "trustzone_device": "/dev/tee0"
+      },
+      "48e4c355e8bf7ea6": {
+        "node_id": "48e4c355e8bf7ea6",
+        "machine_name": "SimulatedPeer1",
+        "lct_id": "lct:web4:ai:6a93150e0eaccde5",
+        "hardware_type": "SoftwareProvider",
+        "capability_level": 4,
+        "consciousness_state": "ACTIVE",
+        "session_id": "68b5a10fddb75de2...",
+        "uptime": 0.000602,
+        "trust_score": 0.1,
+        "last_verified": "2026-01-06T20:07:41.509271+00:00",
+        "verification_count": 2,
+        "successful_verifications": 1,
+        "success_rate": 0.5,
+        "last_continuity": {
+          "hardware": 1.0,
+          "session": 1.0,
+          "epistemic": 1.0,
+          "full": 1.0
+        },
+        "hostname": "localhost",
+        "port": 5329,
+        "trustzone_device": "/dev/tee0"
+      },
+      "73e23bfd2cf15a6f": {
+        "node_id": "73e23bfd2cf15a6f",
+        "machine_name": "SimulatedPeer2",
+        "lct_id": "lct:web4:ai:9350491d2c3ece5e",
+        "hardware_type": "SoftwareProvider",
+        "capability_level": 4,
+        "consciousness_state": "ACTIVE",
+        "session_id": "7f0aa0ac604cee0d...",
+        "uptime": 3.7e-05,
+        "trust_score": 0.1,
+        "last_verified": "2026-01-06T20:07:41.507738+00:00",
+        "verification_count": 2,
+        "successful_verifications": 1,
+        "success_rate": 0.5,
+        "last_continuity": {
+          "hardware": 1.0,
+          "session": 1.0,
+          "epistemic": 1.0,
+          "full": 1.0
+        },
+        "hostname": "localhost",
+        "port": 5329,
+        "trustzone_device": "/dev/tee0"
+      }
+    }
+  }
+}

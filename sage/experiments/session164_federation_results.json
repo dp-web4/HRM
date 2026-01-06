@@ -1,0 +1,42 @@
+{
+  "session": "164",
+  "title": "Cross-Machine Consciousness Federation",
+  "timestamp": "2026-01-06T02:05:53.235952+00:00",
+  "tests": {
+    "initialization": {
+      "success": true,
+      "thor": {
+        "node_id": "30bdc4b077fc0783",
+        "lct_id": "lct:web4:ai:9a13f346e9ca370b",
+        "machine_name": "Thor",
+        "hardware_type": "software",
+        "capability_level": 3,
+        "consciousness_state": "archived",
+        "session_id": "sage-session:da2079f293a900cd",
+        "uptime": 5.3e-05,
+        "pattern_count": 0,
+        "corpus_hash": "e8ca877b6f9520daf34a7c29ffb5bd3b",
+        "last_verified": null,
+        "verification_count": 0
+      },
+      "legion": {
+        "node_id": "6a8621f0f5931819",
+        "lct_id": "lct:web4:ai:9a13f346e9ca370b",
+        "machine_name": "Legion",
+        "hardware_type": "software",
+        "capability_level": 3,
+        "consciousness_state": "archived",
+        "session_id": "sage-session:0ae70b65020dca31",
+        "uptime": 2.4e-05,
+        "pattern_count": 0,
+        "corpus_hash": "e8ca877b6f9520daf34a7c29ffb5bd3b",
+        "last_verified": null,
+        "verification_count": 0
+      }
+    },
+    "mutual_verification": {
+      "success": false,
+      "error": "'SAGEAlivenessSensor' object has no attribute 'verify'"
+    }
+  }
+}

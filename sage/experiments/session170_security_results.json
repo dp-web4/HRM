@@ -1,0 +1,106 @@
+{
+  "session": "170",
+  "title": "Federation Security - Attack Mitigation",
+  "timestamp": "2026-01-07T20:03:40.593849+00:00",
+  "duration_seconds": 0.0006864070892333984,
+  "test_results": [
+    {
+      "test": "rate_limiting",
+      "attempted": 100,
+      "accepted": 6,
+      "rate_limited": 94,
+      "prevention_rate": 0.94,
+      "success": true
+    },
+    {
+      "test": "quality_thresholds",
+      "results": [
+        {
+          "thought": "a",
+          "quality_score": 0.0,
+          "accepted": false
+        },
+        {
+          "thought": "spam",
+          "quality_score": 0.0,
+          "accepted": false
+        },
+        {
+          "thought": "test message here",
+          "quality_score": 0.15,
+          "accepted": false
+        },
+        {
+          "thought": "I have been thinking about the nature of conscious",
+          "quality_score": 0.675,
+          "accepted": true
+        },
+        {
+          "thought": "The relationship between attention mechanisms and ",
+          "quality_score": 0.8400000000000001,
+          "accepted": true
+        }
+      ],
+      "low_quality_rejected": 3,
+      "high_quality_accepted": 2,
+      "success": true
+    },
+    {
+      "test": "trust_weighted_quotas",
+      "results": [
+        {
+          "node_id": "l5-high",
+          "capability_level": 5,
+          "trust": 0.8,
+          "rate_limit": 25,
+          "trust_weight": 1.0
+        },
+        {
+          "node_id": "l5-low",
+          "capability_level": 5,
+          "trust": 0.2,
+          "rate_limit": 12,
+          "trust_weight": 0.5
+        },
+        {
+          "node_id": "l4-high",
+          "capability_level": 4,
+          "trust": 0.8,
+          "rate_limit": 17,
+          "trust_weight": 0.8
+        },
+        {
+          "node_id": "l4-low",
+          "capability_level": 4,
+          "trust": 0.2,
+          "rate_limit": 8,
+          "trust_weight": 0.2
+        }
+      ],
+      "trust_asymmetry": true,
+      "hardware_asymmetry": true,
+      "success": true
+    },
+    {
+      "test": "persistent_reputation",
+      "initial_trust": 0.30000000000000004,
+      "trust_after_good": 0.6862500000000002,
+      "trust_after_bad": 0.0,
+      "trust_dynamics_validated": true,
+      "success": true
+    }
+  ],
+  "all_tests_passed": true,
+  "mitigations_implemented": [
+    "Rate limiting (per-node contribution limits)",
+    "Quality thresholds (coherence-based filtering)",
+    "Trust-weighted quotas (adaptive limits based on trust)",
+    "Persistent reputation (long-term behavior tracking)",
+    "Hardware trust asymmetry (L5 hardware bonus)"
+  ],
+  "attack_vectors_addressed": [
+    "Thought Spam (Session 136 Attack 4) - mitigated by rate limiting + quality",
+    "Sybil Attack impact (Session 136 Attack 3) - mitigated by hardware asymmetry",
+    "Trust Poisoning (Session 136 Attack 5) - mitigated by reputation tracking"
+  ]
+}

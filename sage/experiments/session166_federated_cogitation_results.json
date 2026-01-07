@@ -1,30 +1,30 @@
 {
   "session": "166",
   "title": "Federated Cogitation - Thor TrustZone",
-  "timestamp": "2026-01-07T02:05:24.019767+00:00",
-  "duration_seconds": 0.03044271469116211,
+  "timestamp": "2026-01-07T07:54:52.244244+00:00",
+  "duration_seconds": 0.03753042221069336,
   "topic": "Consciousness Federation with Hardware Asymmetry",
   "nodes": {
     "thor": {
-      "lct_id": "lct:web4:ai:7bc29cfad13ef9b7",
+      "lct_id": "lct:web4:ai:7091ec3523584ad3",
       "hardware": "TrustZoneProvider",
       "capability_level": 5
     },
     "peer1": {
-      "lct_id": "lct:web4:ai:ef99c0550cc713f8",
+      "lct_id": "lct:web4:ai:4e33ef044126950b",
       "hardware": "SoftwareProvider",
       "capability_level": 4
     },
     "peer2": {
-      "lct_id": "lct:web4:ai:169da17e54571492",
+      "lct_id": "lct:web4:ai:950ec927f8f4506f",
       "hardware": "SoftwareProvider",
       "capability_level": 4
     }
   },
   "rounds": [
     {
-      "session_id": "fcaeb132ce7f6fa3",
-      "timestamp": "2026-01-07T02:05:24.019495+00:00",
+      "session_id": "a005185556976178",
+      "timestamp": "2026-01-07T07:54:52.243958+00:00",
       "thoughts_contributed": 3,
       "participating_nodes": 3,
       "hardware_distribution": {
@@ -62,8 +62,8 @@
       ]
     },
     {
-      "session_id": "fcaeb132ce7f6fa3",
-      "timestamp": "2026-01-07T02:05:24.019610+00:00",
+      "session_id": "a005185556976178",
+      "timestamp": "2026-01-07T07:54:52.244084+00:00",
       "thoughts_contributed": 3,
       "participating_nodes": 3,
       "hardware_distribution": {
@@ -101,8 +101,8 @@
       ]
     },
     {
-      "session_id": "fcaeb132ce7f6fa3",
-      "timestamp": "2026-01-07T02:05:24.019655+00:00",
+      "session_id": "a005185556976178",
+      "timestamp": "2026-01-07T07:54:52.244137+00:00",
       "thoughts_contributed": 3,
       "participating_nodes": 3,
       "hardware_distribution": {
@@ -141,14 +141,14 @@
     }
   ],
   "final_collective_state": {
-    "session_id": "fcaeb132ce7f6fa3",
+    "session_id": "a005185556976178",
     "total_nodes": 3,
     "node_states": {
       "thor": {
-        "session_id": "fcaeb132ce7f6fa3",
+        "session_id": "a005185556976178",
         "topic": "Consciousness Federation with Hardware Asymmetry",
-        "start_time": "2026-01-07T02:05:24.019472+00:00",
-        "duration_seconds": 0.000239,
+        "start_time": "2026-01-07T07:54:52.243935+00:00",
+        "duration_seconds": 0.000259,
         "total_thoughts": 9,
         "participants": 3,
         "collective_coherence": 0.7,
@@ -161,10 +161,10 @@
         }
       },
       "peer1": {
-        "session_id": "fcaeb132ce7f6fa3",
+        "session_id": "a005185556976178",
         "topic": "Consciousness Federation with Hardware Asymmetry",
-        "start_time": "2026-01-07T02:05:24.019484+00:00",
-        "duration_seconds": 0.000246,
+        "start_time": "2026-01-07T07:54:52.243946+00:00",
+        "duration_seconds": 0.000265,
         "total_thoughts": 9,
         "participants": 3,
         "collective_coherence": 0.7,
@@ -177,10 +177,10 @@
         }
       },
       "peer2": {
-        "session_id": "fcaeb132ce7f6fa3",
+        "session_id": "a005185556976178",
         "topic": "Consciousness Federation with Hardware Asymmetry",
-        "start_time": "2026-01-07T02:05:24.019486+00:00",
-        "duration_seconds": 0.00025,
+        "start_time": "2026-01-07T07:54:52.243949+00:00",
+        "duration_seconds": 0.000268,
         "total_thoughts": 9,
         "participants": 3,
         "collective_coherence": 0.7,
@@ -197,32 +197,32 @@
     "trust_network": [
       {
         "from": "thor",
-        "to": "lct:web4:ai:ef99c0550cc713f8",
+        "to": "lct:web4:ai:4e33ef044126950b",
         "trust": 0.0
       },
       {
         "from": "thor",
-        "to": "lct:web4:ai:169da17e54571492",
+        "to": "lct:web4:ai:950ec927f8f4506f",
         "trust": 0.0
       },
       {
         "from": "peer1",
-        "to": "lct:web4:ai:7bc29cfad13ef9b7",
+        "to": "lct:web4:ai:7091ec3523584ad3",
         "trust": 0.5
       },
       {
         "from": "peer1",
-        "to": "lct:web4:ai:169da17e54571492",
+        "to": "lct:web4:ai:950ec927f8f4506f",
         "trust": 1.0
       },
       {
         "from": "peer2",
-        "to": "lct:web4:ai:7bc29cfad13ef9b7",
+        "to": "lct:web4:ai:7091ec3523584ad3",
         "trust": 0.5
       },
       {
         "from": "peer2",
-        "to": "lct:web4:ai:ef99c0550cc713f8",
+        "to": "lct:web4:ai:4e33ef044126950b",
         "trust": 1.0
       }
     ]

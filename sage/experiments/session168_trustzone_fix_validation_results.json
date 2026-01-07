@@ -1,0 +1,57 @@
+{
+  "session": "168",
+  "title": "TrustZone Fix Federation Validation",
+  "timestamp": "2026-01-07T08:04:41.151996+00:00",
+  "duration_seconds": 0.035512447357177734,
+  "test1_basic_verification": {
+    "passed": true,
+    "description": "Software verifying TrustZone at sensor level"
+  },
+  "test2_federation_topology": {
+    "total_verifications": 6,
+    "successful_verifications": 6,
+    "network_density": 1.0,
+    "verifications": [
+      {
+        "verifier": "Thor",
+        "prover": "Peer1",
+        "verified": true
+      },
+      {
+        "verifier": "Thor",
+        "prover": "Peer2",
+        "verified": true
+      },
+      {
+        "verifier": "Peer1",
+        "prover": "Thor",
+        "verified": true
+      },
+      {
+        "verifier": "Peer1",
+        "prover": "Peer2",
+        "verified": true
+      },
+      {
+        "verifier": "Peer2",
+        "prover": "Thor",
+        "verified": true
+      },
+      {
+        "verifier": "Peer2",
+        "prover": "Peer1",
+        "verified": true
+      }
+    ]
+  },
+  "comparison_with_session_165": {
+    "session_165_density": 0.333,
+    "session_168_density": 1.0,
+    "improvement": true
+  },
+  "key_findings": {
+    "session_134_fix_works_in_isolation": true,
+    "session_134_fix_works_in_federation": true,
+    "cross_platform_federation_enabled": true
+  }
+}

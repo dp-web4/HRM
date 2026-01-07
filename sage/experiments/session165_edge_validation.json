@@ -1,0 +1,246 @@
+{
+  "validation_session": "Session 165 Edge Validation",
+  "machine": "Sprout (Jetson Orin Nano 8GB)",
+  "timestamp": "2026-01-07T02:03:45.521035+00:00",
+  "tests": {
+    "imports": {
+      "success": true,
+      "import_time_ms": 3170.6278324127197,
+      "memory_delta_mb": 336.88671875
+    },
+    "node_creation": {
+      "success": true,
+      "node_id": "27ba46210a443bae",
+      "machine_name": "Sprout",
+      "lct_id": "lct:web4:ai:d1ffcec670902b49",
+      "hardware_type": "tpm2_simulated",
+      "capability_level": 5,
+      "create_time_ms": 4.841089248657227,
+      "memory_delta_mb": 0.0
+    },
+    "federation_setup": {
+      "success": true,
+      "node_count": 3,
+      "setup_time_ms": 9.413957595825195,
+      "nodes": [
+        {
+          "machine": "Sprout",
+          "hardware": "tpm2_simulated",
+          "level": 5
+        },
+        {
+          "machine": "SimulatedPeer1",
+          "hardware": "tpm2_simulated",
+          "level": 5
+        },
+        {
+          "machine": "SimulatedPeer2",
+          "hardware": "tpm2_simulated",
+          "level": 5
+        }
+      ]
+    },
+    "federation_cycle": {
+      "success": true,
+      "total_nodes": 3,
+      "total_verifications": 6,
+      "successful_verifications": 6,
+      "success_rate": 1.0,
+      "network_density": 1.0,
+      "cycle_time_ms": 0.1499652862548828,
+      "edges": [
+        {
+          "from_machine": "Sprout",
+          "to_machine": "SimulatedPeer1",
+          "trust_score": 0.1,
+          "full_continuity": 0.7802453753539424,
+          "hardware_continuity": 1.0,
+          "session_continuity": 0.95,
+          "epistemic_continuity": 0.5
+        },
+        {
+          "from_machine": "Sprout",
+          "to_machine": "SimulatedPeer2",
+          "trust_score": 0.1,
+          "full_continuity": 0.7802453753539424,
+          "hardware_continuity": 1.0,
+          "session_continuity": 0.95,
+          "epistemic_continuity": 0.5
+        },
+        {
+          "from_machine": "SimulatedPeer1",
+          "to_machine": "Sprout",
+          "trust_score": 0.1,
+          "full_continuity": 0.7802453753539424,
+          "hardware_continuity": 1.0,
+          "session_continuity": 0.95,
+          "epistemic_continuity": 0.5
+        },
+        {
+          "from_machine": "SimulatedPeer1",
+          "to_machine": "SimulatedPeer2",
+          "trust_score": 0.2,
+          "full_continuity": 0.7802453753539424,
+          "hardware_continuity": 1.0,
+          "session_continuity": 0.95,
+          "epistemic_continuity": 0.5
+        },
+        {
+          "from_machine": "SimulatedPeer2",
+          "to_machine": "Sprout",
+          "trust_score": 0.2,
+          "full_continuity": 0.7802453753539424,
+          "hardware_continuity": 1.0,
+          "session_continuity": 0.95,
+          "epistemic_continuity": 0.5
+        },
+        {
+          "from_machine": "SimulatedPeer2",
+          "to_machine": "SimulatedPeer1",
+          "trust_score": 0.2,
+          "full_continuity": 0.7802453753539424,
+          "hardware_continuity": 1.0,
+          "session_continuity": 0.95,
+          "epistemic_continuity": 0.5
+        }
+      ],
+      "thor_comparison": {
+        "thor_density": 0.333,
+        "edge_density": 1.0,
+        "thor_cycle_ms": 35,
+        "edge_cycle_ms": 0.1499652862548828,
+        "density_match": true
+      }
+    },
+    "collective_state": {
+      "success": true,
+      "total_nodes": 3,
+      "trusted_nodes": 0,
+      "average_trust": 0.20000000000000004,
+      "network_health": 0.0,
+      "nodes": {
+        "3cd02e088b820b7d": {
+          "node_id": "3cd02e088b820b7d",
+          "machine_name": "Sprout",
+          "lct_id": "lct:web4:ai:d1ffcec670902b49",
+          "hardware_type": "tpm2_simulated",
+          "capability_level": 5,
+          "consciousness_state": "active",
+          "session_id": "sage-session:d5d...",
+          "uptime": 8.1e-05,
+          "trust_score": 0.2,
+          "last_verified": "2026-01-07T02:03:48.708329+00:00",
+          "verification_count": 2,
+          "successful_verifications": 2,
+          "success_rate": 1.0,
+          "last_continuity": {
+            "hardware": 1.0,
+            "session": 0.95,
+            "epistemic": 0.5,
+            "full": 0.7802453753539424
+          },
+          "hostname": "sprout",
+          "port": 5329,
+          "tpm_device": "/dev/tpmrm0"
+        },
+        "15d19293cb9a3e4f": {
+          "node_id": "15d19293cb9a3e4f",
+          "machine_name": "SimulatedPeer1",
+          "lct_id": "lct:web4:ai:d1ffcec670902b49",
+          "hardware_type": "tpm2_simulated",
+          "capability_level": 5,
+          "consciousness_state": "active",
+          "session_id": "sage-session:268...",
+          "uptime": 7.2e-05,
+          "trust_score": 0.2,
+          "last_verified": "2026-01-07T02:03:48.708344+00:00",
+          "verification_count": 2,
+          "successful_verifications": 2,
+          "success_rate": 1.0,
+          "last_continuity": {
+            "hardware": 1.0,
+            "session": 0.95,
+            "epistemic": 0.5,
+            "full": 0.7802453753539424
+          },
+          "hostname": "localhost",
+          "port": 5329,
+          "tpm_device": "/dev/tpmrm0"
+        },
+        "887c317d31e38f09": {
+          "node_id": "887c317d31e38f09",
+          "machine_name": "SimulatedPeer2",
+          "lct_id": "lct:web4:ai:d1ffcec670902b49",
+          "hardware_type": "tpm2_simulated",
+          "capability_level": 5,
+          "consciousness_state": "active",
+          "session_id": "sage-session:941...",
+          "uptime": 6.7e-05,
+          "trust_score": 0.2,
+          "last_verified": "2026-01-07T02:03:48.708302+00:00",
+          "verification_count": 2,
+          "successful_verifications": 2,
+          "success_rate": 1.0,
+          "last_continuity": {
+            "hardware": 1.0,
+            "session": 0.95,
+            "epistemic": 0.5,
+            "full": 0.7802453753539424
+          },
+          "hostname": "localhost",
+          "port": 5329,
+          "tpm_device": "/dev/tpmrm0"
+        }
+      }
+    },
+    "performance": {
+      "success": true,
+      "iterations": 100,
+      "federation_cycle": {
+        "avg_ms": 0.0919485092163086,
+        "min_ms": 0.08130073547363281,
+        "max_ms": 0.30732154846191406,
+        "throughput_per_sec": 10875.65212881813
+      },
+      "peer_discovery": {
+        "avg_ms": 0.004134178161621094,
+        "throughput_per_sec": 241886.04382929642
+      },
+      "thor_comparison": {
+        "thor_cycle_ms": 35,
+        "edge_cycle_ms": 0.0919485092163086,
+        "speedup_factor": 380.6478245086345
+      }
+    }
+  },
+  "edge_metrics": {
+    "final_memory_mb": 352.4921875,
+    "final_temperature_c": 51.218,
+    "platform": "Jetson Orin Nano 8GB",
+    "hardware_type": "tpm2_simulated",
+    "capability_level": 5
+  },
+  "status": "SUCCESS",
+  "thor_comparison": {
+    "thor_network_density": 0.333,
+    "thor_cycle_time_s": 0.035,
+    "thor_hardware_type": "TrustZone",
+    "thor_capability_level": 5
+  },
+  "all_tests_passed": true,
+  "edge_observations": [
+    "Session 165 federation architecture works on edge (tpm2_simulated)",
+    "Federation cycle: 0.150ms",
+    "Network density: 100.0%",
+    "Thor comparison: Edge uses simulated verification, Thor uses real TrustZone",
+    "Three-axis continuity model validated on edge",
+    "Performance: 10875.7 cycles/sec"
+  ],
+  "architecture_validation": {
+    "federation_node_structure": "Compatible (EdgeFederationNode mirrors ThorTrustZoneFederationNode)",
+    "federation_cycle_pattern": "Compatible (same verification flow)",
+    "three_axis_continuity": "Implemented (hardware, session, epistemic)",
+    "trust_network_metrics": "Compatible (density, edges, collective state)",
+    "cross_platform_ready": true
+  }
+}

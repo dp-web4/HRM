@@ -1,0 +1,125 @@
+{
+  "validation_session": "Session 171 Edge Validation",
+  "machine": "Sprout (Jetson Orin Nano 8GB)",
+  "timestamp": "2026-01-08T08:02:15.562537+00:00",
+  "tests": {
+    "imports": {
+      "success": true,
+      "import_time_ms": 2939.7168159484863,
+      "memory_delta_mb": 343.88671875,
+      "difficulty_bits": 242
+    },
+    "pow_identity": {
+      "success": true,
+      "results": [
+        {
+          "difficulty_bits": 244,
+          "attempts": 1147,
+          "solve_time_s": 0.008700132369995117,
+          "is_valid": true
+        },
+        {
+          "difficulty_bits": 242,
+          "attempts": 25093,
+          "solve_time_s": 0.18362808227539062,
+          "is_valid": true
+        },
+        {
+          "difficulty_bits": 240,
+          "attempts": 89067,
+          "solve_time_s": 0.6416680812835693,
+          "is_valid": true
+        },
+        {
+          "difficulty_bits": 238,
+          "attempts": 115063,
+          "solve_time_s": 0.8219506740570068,
+          "is_valid": true
+        }
+      ],
+      "total_time_s": 1.65675687789917,
+      "temp_before": 51.625,
+      "temp_after": 51.562
+    },
+    "six_layer_integration": {
+      "success": true,
+      "nodes_created": 3,
+      "avg_pow_time": 0.020386616388956707,
+      "thoughts_processed": 5,
+      "thoughts_accepted": 2,
+      "rejection_rate": 0.6,
+      "rejection_reasons": {
+        "low_quality": 3
+      },
+      "layers_active": {
+        "layer1_pow": true,
+        "layer2_rate_limit": true,
+        "layer3_quality": true,
+        "layer4_trust_quotas": true,
+        "layer5_reputation": true,
+        "layer6_hw_asymmetry": true
+      },
+      "all_layers_active": true
+    },
+    "pow_performance": {
+      "success": true,
+      "iterations": 10,
+      "difficulty_bits": 244,
+      "avg_solve_time_ms": 45.928215980529785,
+      "min_solve_time_ms": 4.444599151611328,
+      "max_solve_time_ms": 115.89241027832031,
+      "avg_attempts": 5932.9,
+      "throughput_per_sec": 21.773107852130096,
+      "avg_temperature": 51.599599999999995,
+      "estimated_236_time_s": 11.757623291015625,
+      "thor_ratio": 27.343309979106103
+    },
+    "sybil_resistance": {
+      "success": true,
+      "test_difficulty_244": {
+        "avg_pow_time_s": 0.045928215980529784,
+        "identities_per_hour": 78383.18826766835,
+        "time_for_1000_hours": 0.012757837772369385
+      },
+      "production_difficulty_236": {
+        "estimated_pow_time_s": 11.757623291015625,
+        "identities_per_hour": 306.1843291705795,
+        "time_for_1000_hours": 3.2660064697265625
+      },
+      "slowdown_vs_baseline": 51120.101265285324,
+      "sybil_resistant": true
+    }
+  },
+  "edge_metrics": {
+    "final_memory_mb": 360.57421875,
+    "final_temperature_c": 51.531,
+    "platform": "Jetson Orin Nano 8GB",
+    "hardware_type": "tpm2_simulated",
+    "capability_level": 5
+  },
+  "status": "SUCCESS",
+  "thor_comparison": {
+    "thor_avg_pow_time": 0.43,
+    "thor_challenges_issued": 7,
+    "thor_solutions_verified": 7,
+    "thor_rejection_rate": 0.88,
+    "thor_defense_layers": 6
+  },
+  "all_tests_passed": true,
+  "edge_observations": [
+    "PoW solves at 45.9ms (2^244 difficulty)",
+    "Estimated 2^236 time: 11.76s (Thor: 0.43s)",
+    "Edge/Thor ratio: 27.3x (edge is slower)",
+    "6-layer defense: True",
+    "Sybil resistant: True (>3.3h for 1000 IDs)",
+    "PoW provides strong Sybil resistance on edge hardware"
+  ],
+  "defense_layers_validated": {
+    "layer1_pow": "Proof-of-Work identity creation",
+    "layer2_rate_limit": "Per-node contribution limits",
+    "layer3_quality": "Coherence-based filtering",
+    "layer4_trust_quotas": "Adaptive trust-based limits",
+    "layer5_reputation": "Long-term behavior tracking",
+    "layer6_hw_asymmetry": "L5 > L4 economic barriers"
+  }
+}

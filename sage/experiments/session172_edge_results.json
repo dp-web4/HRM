@@ -1,0 +1,89 @@
+{
+  "session": "172_edge",
+  "title": "8-Layer Complete Defense - Edge Validation",
+  "timestamp": "2026-01-08T14:04:34.086745+00:00",
+  "platform": {
+    "platform": "Jetson Orin Nano 8GB",
+    "hardware_type": "tpm2_simulated",
+    "capability_level": 5,
+    "memory_total_mb": 7619.72265625,
+    "memory_available_mb": 3196.71875,
+    "temperature_c": 50.406
+  },
+  "all_tests_passed": true,
+  "test_results": {
+    "corpus_management": true,
+    "trust_decay": true,
+    "8layer_integration": true,
+    "edge_performance": true,
+    "convergent_validation": true
+  },
+  "performance": {
+    "throughput_per_sec": 130419.90049751244,
+    "corpus_size_mb": 0.0013294219970703125
+  },
+  "integration_metrics": {
+    "thoughts_processed": 26,
+    "thoughts_accepted": 12,
+    "thoughts_rejected": 14,
+    "rejection_rate": 0.5384615384615384,
+    "rejection_reasons": {
+      "rate_limited": 14,
+      "quality_rejected": 0
+    },
+    "proof_of_work": {
+      "challenges_issued": 3,
+      "solutions_verified": 3,
+      "total_computation_time": 9.64812445640564,
+      "identities_validated": 3
+    },
+    "corpus_management": {
+      "thought_count": 12,
+      "size_mb": 0.00044345855712890625,
+      "avg_coherence": 0.6437499999999999,
+      "capacity_used": 0.0024,
+      "max_thoughts": 5000,
+      "max_size_mb": 50.0,
+      "pruning_events": 0,
+      "storage_dos_prevented": 0
+    },
+    "trust_decay": {
+      "decay_applications": 0,
+      "node_stats": {
+        "honest_l5": {
+          "current_trust": 0.42705,
+          "decayed_trust": 0.42705,
+          "decay_amount": 0.0,
+          "inactive_days": 2.7649932437472873e-09,
+          "decay_active": false
+        },
+        "honest_l4": {
+          "current_trust": 0.41580000000000006,
+          "decayed_trust": 0.41580000000000006,
+          "decay_amount": 0.0,
+          "inactive_days": 2.5387163515444155e-09,
+          "decay_active": false
+        },
+        "spammer": {
+          "current_trust": 0.3,
+          "decayed_trust": 0.3,
+          "decay_amount": 0.0,
+          "inactive_days": 9.630565290097838e-10,
+          "decay_active": false
+        }
+      }
+    }
+  },
+  "convergent_research": {
+    "thor_session_172": "8-layer unified defense",
+    "legion_sessions": [
+      "136",
+      "137",
+      "138",
+      "139",
+      "140",
+      "141"
+    ],
+    "edge_validation": "Complete 8-layer validated"
+  }
+}

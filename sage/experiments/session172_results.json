@@ -1,6 +1,6 @@
 {
   "session": "172",
-  "timestamp": "2026-01-08T08:05:26.452538+00:00",
+  "timestamp": "2026-01-08T20:02:25.747219+00:00",
   "all_tests_passed": true,
   "test_results": {
     "test1_corpus_management": true,
@@ -20,8 +20,8 @@
       "challenges_issued": 4,
       "solutions_verified": 4,
       "validation_failures": 0,
-      "total_computation_time": 1.9877135753631592,
-      "avg_computation_time": 0.4969283938407898,
+      "total_computation_time": 2.2775726318359375,
+      "avg_computation_time": 0.5693931579589844,
       "identities_validated": 4
     },
     "corpus_management": {
@@ -41,28 +41,28 @@
           "current_trust": 0.382125,
           "decayed_trust": 0.382125,
           "decay_amount": 0.0,
-          "inactive_days": 2.2048199618304217e-09,
+          "inactive_days": 2.265528396323875e-09,
           "decay_active": false
         },
         "honest_l4": {
           "current_trust": 0.16899999999999998,
           "decayed_trust": 0.16899999999999998,
           "decay_amount": 0.0,
-          "inactive_days": 2.105478887204771e-09,
+          "inactive_days": 2.152389950222439e-09,
           "decay_active": false
         },
         "spammer": {
           "current_trust": 0.0,
           "decayed_trust": 0.0,
           "decay_amount": 0.0,
-          "inactive_days": 3.893502332546093e-06,
+          "inactive_days": 7.452928909549007e-06,
           "decay_active": false
         },
         "inactive": {
           "current_trust": 0.1,
           "decayed_trust": 0.1,
           "decay_amount": 0.0,
-          "inactive_days": 3.755644515708641e-09,
+          "inactive_days": 3.763922938594112e-09,
           "decay_active": false
         }
       }

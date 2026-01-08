@@ -1,0 +1,87 @@
+{
+  "session": "172",
+  "timestamp": "2026-01-08T08:05:26.452538+00:00",
+  "all_tests_passed": true,
+  "test_results": {
+    "test1_corpus_management": true,
+    "test2_trust_decay": true,
+    "test3_8layer_integration": true
+  },
+  "final_metrics": {
+    "thoughts_processed": 26,
+    "thoughts_accepted": 6,
+    "thoughts_rejected": 20,
+    "rejection_rate": 0.7692307692307693,
+    "rejection_reasons": {
+      "rate_limited": 0,
+      "quality_rejected": 20
+    },
+    "proof_of_work": {
+      "challenges_issued": 4,
+      "solutions_verified": 4,
+      "validation_failures": 0,
+      "total_computation_time": 1.9877135753631592,
+      "avg_computation_time": 0.4969283938407898,
+      "identities_validated": 4
+    },
+    "corpus_management": {
+      "thought_count": 6,
+      "size_mb": 0.00040912628173828125,
+      "avg_coherence": 0.50375,
+      "capacity_used": 0.0006,
+      "max_thoughts": 10000,
+      "max_size_mb": 100.0,
+      "pruning_events": 0,
+      "storage_dos_prevented": 0
+    },
+    "trust_decay": {
+      "decay_applications": 0,
+      "node_stats": {
+        "honest_l5": {
+          "current_trust": 0.382125,
+          "decayed_trust": 0.382125,
+          "decay_amount": 0.0,
+          "inactive_days": 2.2048199618304217e-09,
+          "decay_active": false
+        },
+        "honest_l4": {
+          "current_trust": 0.16899999999999998,
+          "decayed_trust": 0.16899999999999998,
+          "decay_amount": 0.0,
+          "inactive_days": 2.105478887204771e-09,
+          "decay_active": false
+        },
+        "spammer": {
+          "current_trust": 0.0,
+          "decayed_trust": 0.0,
+          "decay_amount": 0.0,
+          "inactive_days": 3.893502332546093e-06,
+          "decay_active": false
+        },
+        "inactive": {
+          "current_trust": 0.1,
+          "decayed_trust": 0.1,
+          "decay_amount": 0.0,
+          "inactive_days": 3.755644515708641e-09,
+          "decay_active": false
+        }
+      }
+    }
+  },
+  "convergent_research": {
+    "thor_sessions": [
+      "170",
+      "171",
+      "172"
+    ],
+    "legion_sessions": [
+      "136",
+      "137",
+      "138",
+      "139",
+      "140",
+      "141"
+    ],
+    "integration": "8-layer complete unified defense"
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "validation_session": "Session 170 Edge Validation",
+  "machine": "Sprout (Jetson Orin Nano 8GB)",
+  "timestamp": "2026-01-08T02:02:10.430106+00:00",
+  "tests": {
+    "imports": {
+      "success": true,
+      "import_time_ms": 3114.938259124756,
+      "memory_delta_mb": 345.94921875
+    },
+    "rate_limiting": {
+      "success": true,
+      "attempted": 100,
+      "accepted": 22,
+      "rate_limited": 78,
+      "prevention_rate": 0.78,
+      "thor_prevention": 0.94,
+      "test_time_ms": 6.657123565673828
+    },
+    "quality_thresholds": {
+      "success": true,
+      "results": [
+        {
+          "thought": "a",
+          "quality_score": 0.0,
+          "accepted": false
+        },
+        {
+          "thought": "spam",
+          "quality_score": 0.0,
+          "accepted": false
+        },
+        {
+          "thought": "test message here",
+          "quality_score": 0.15,
+          "accepted": false
+        },
+        {
+          "thought": "I have been thinking about the nature of conscious",
+          "quality_score": 0.435,
+          "accepted": true
+        },
+        {
+          "thought": "The relationship between attention mechanisms and ",
+          "quality_score": 0.81,
+          "accepted": true
+        }
+      ],
+      "low_quality_rejected": 3,
+      "high_quality_accepted": 2,
+      "matches_thor": true
+    },
+    "trust_weighted_quotas": {
+      "success": true,
+      "results": [
+        {
+          "node_id": "l5-high",
+          "capability_level": 5,
+          "trust": 0.8,
+          "rate_limit": 31,
+          "trust_weight": 0.84
+        },
+        {
+          "node_id": "l5-low",
+          "capability_level": 5,
+          "trust": 0.2,
+          "rate_limit": 13,
+          "trust_weight": 0.35
+        },
+        {
+          "node_id": "l4-high",
+          "capability_level": 4,
+          "trust": 0.8,
+          "rate_limit": 21,
+          "trust_weight": 0.57
+        },
+        {
+          "node_id": "l4-low",
+          "capability_level": 4,
+          "trust": 0.2,
+          "rate_limit": 9,
+          "trust_weight": 0.24
+        }
+      ],
+      "hardware_asymmetry": true,
+      "trust_asymmetry": true,
+      "matches_thor": true
+    },
+    "persistent_reputation": {
+      "success": true,
+      "initial_trust": 0.2,
+      "trust_after_good": 0.44999999999999996,
+      "trust_after_bad": 0.0,
+      "trust_dynamics_validated": true,
+      "acceptance_rate": 0.3333333333333333
+    },
+    "security_overhead": {
+      "success": true,
+      "iterations": 1000,
+      "avg_check_ms": 0.019572019577026367,
+      "min_check_ms": 0.017404556274414062,
+      "max_check_ms": 0.13947486877441406,
+      "throughput_per_sec": 51093.34762641459
+    }
+  },
+  "edge_metrics": {
+    "final_memory_mb": 358.8359375,
+    "final_temperature_c": 50.812,
+    "platform": "Jetson Orin Nano 8GB",
+    "hardware_type": "tpm2_simulated",
+    "capability_level": 5
+  },
+  "status": "SUCCESS",
+  "thor_comparison": {
+    "thor_rate_limit_prevention": 0.94,
+    "thor_quality_low_rejected": 3,
+    "thor_quality_high_accepted": 2,
+    "thor_mitigations": [
+      "Rate limiting",
+      "Quality thresholds",
+      "Trust-weighted quotas",
+      "Persistent reputation",
+      "Hardware trust asymmetry"
+    ]
+  },
+  "all_tests_passed": true,
+  "edge_observations": [
+    "Rate limiting: 78% prevention (Thor: 94%)",
+    "Quality filtering: 3 low-quality rejected",
+    "Hardware asymmetry: L5 nodes get higher rate limits than L4",
+    "Trust dynamics: Trust increases with good contributions, decreases with bad",
+    "Security overhead: 51093 checks/sec",
+    "All Session 136 attack vectors mitigated on edge"
+  ],
+  "attack_mitigations_validated": {
+    "thought_spam": "Rate limiting + Quality thresholds",
+    "sybil_attack": "Hardware trust asymmetry",
+    "trust_poisoning": "Persistent reputation tracking"
+  }
+}

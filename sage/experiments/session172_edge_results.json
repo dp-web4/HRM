@@ -1,14 +1,14 @@
 {
   "session": "172_edge",
   "title": "8-Layer Complete Defense - Edge Validation",
-  "timestamp": "2026-01-08T14:04:34.086745+00:00",
+  "timestamp": "2026-01-08T20:04:34.928473+00:00",
   "platform": {
     "platform": "Jetson Orin Nano 8GB",
     "hardware_type": "tpm2_simulated",
     "capability_level": 5,
-    "memory_total_mb": 7619.72265625,
-    "memory_available_mb": 3196.71875,
-    "temperature_c": 50.406
+    "memory_total_mb": 125772.17578125,
+    "memory_available_mb": 79612.34765625,
+    "temperature_c": 39.718
   },
   "all_tests_passed": true,
   "test_results": {
@@ -19,7 +19,7 @@
     "convergent_validation": true
   },
   "performance": {
-    "throughput_per_sec": 130419.90049751244,
+    "throughput_per_sec": 496955.45023696683,
     "corpus_size_mb": 0.0013294219970703125
   },
   "integration_metrics": {
@@ -34,13 +34,13 @@
     "proof_of_work": {
       "challenges_issued": 3,
       "solutions_verified": 3,
-      "total_computation_time": 9.64812445640564,
+      "total_computation_time": 0.5619819164276123,
       "identities_validated": 3
     },
     "corpus_management": {
       "thought_count": 12,
       "size_mb": 0.00044345855712890625,
-      "avg_coherence": 0.6437499999999999,
+      "avg_coherence": 0.64375,
       "capacity_used": 0.0024,
       "max_thoughts": 5000,
       "max_size_mb": 50.0,
@@ -54,21 +54,21 @@
           "current_trust": 0.42705,
           "decayed_trust": 0.42705,
           "decay_amount": 0.0,
-          "inactive_days": 2.7649932437472873e-09,
+          "inactive_days": 7.643743797584817e-10,
           "decay_active": false
         },
         "honest_l4": {
           "current_trust": 0.41580000000000006,
           "decayed_trust": 0.41580000000000006,
           "decay_amount": 0.0,
-          "inactive_days": 2.5387163515444155e-09,
+          "inactive_days": 7.036659452650282e-10,
           "decay_active": false
         },
         "spammer": {
           "current_trust": 0.3,
           "decayed_trust": 0.3,
           "decay_amount": 0.0,
-          "inactive_days": 9.630565290097838e-10,
+          "inactive_days": 2.593905837447555e-10,
           "decay_active": false
         }
       }

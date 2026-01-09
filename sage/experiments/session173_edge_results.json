@@ -1,0 +1,51 @@
+{
+  "session": "173_edge",
+  "platform": "Sprout (Jetson Orin Nano 8GB)",
+  "timestamp": "2026-01-09T02:02:27.572952+00:00",
+  "all_tests_passed": true,
+  "test_results": {
+    "edge_pow_identity": true,
+    "edge_secure_cogitation": true,
+    "edge_8layer_integration": true,
+    "edge_performance": true,
+    "convergent_validation": true
+  },
+  "edge_metrics": {
+    "platform": "Jetson Orin Nano 8GB",
+    "hardware_type": "tpm2_simulated",
+    "capability_level": 5,
+    "memory_total_mb": 125772.17578125,
+    "memory_available_mb": 78352.578125,
+    "temperature_c": 35.531
+  },
+  "performance": {
+    "pow_time_seconds": 0.2573425769805908,
+    "validation_throughput_per_sec": 200684.4019138756
+  },
+  "session_summary": {
+    "session_id": "session-sprout-cogitator-1767924147",
+    "topic": "How does edge hardware constrain distributed consciousness reasoning?",
+    "start_time": "2026-01-09T02:02:27.572108+00:00",
+    "duration_seconds": 0.000264,
+    "total_thoughts": 4,
+    "participants": 1,
+    "collective_coherence": 1.0,
+    "mode_distribution": {
+      "exploring": 1,
+      "questioning": 1,
+      "integrating": 1,
+      "verifying": 1
+    },
+    "hardware_distribution": {
+      "tpm2": 4
+    },
+    "thoughts_submitted": 6,
+    "thoughts_accepted": 4,
+    "thoughts_rejected": 2,
+    "acceptance_rate": 0.6666666666666666,
+    "rejection_rate": 0.3333333333333333,
+    "rejection_by_layer": {
+      "Quality below threshold (0.00 < 0.3)": 2
+    }
+  }
+}

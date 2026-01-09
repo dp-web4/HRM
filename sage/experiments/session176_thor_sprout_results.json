@@ -1,0 +1,16 @@
+{
+  "session": "176_thor_sprout",
+  "title": "2-Node LAN Federation Test",
+  "timestamp": "2026-01-09T20:06:37.287481+00:00",
+  "network": {
+    "thor_ip": "10.0.0.99",
+    "thor_port": 8889,
+    "sprout_ip": "10.0.0.36",
+    "sprout_port": 8890
+  },
+  "all_tests_passed": false,
+  "test_results": {
+    "thor_startup": true,
+    "peer_connection": false
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "session": "174_edge",
+  "title": "Economic Federated Cogitation - Edge Validation",
+  "timestamp": "2026-01-09T02:10:46.148511+00:00",
+  "platform": {
+    "platform": "Jetson Orin Nano 8GB",
+    "hardware_type": "tpm2_simulated",
+    "capability_level": 5,
+    "memory_total_mb": 7619.72265625,
+    "memory_available_mb": 3197.63671875,
+    "temperature_c": 50.187
+  },
+  "all_tests_passed": true,
+  "test_results": {
+    "economic_node_creation": true,
+    "atp_rewards": true,
+    "atp_penalties": true,
+    "economic_feedback": true,
+    "network_economics": true,
+    "edge_performance": true
+  },
+  "network_economics": {
+    "total_atp": 289.0,
+    "avg_balance": 96.33333333333333,
+    "balances": {
+      "sprout_main": 102.0,
+      "sprout_peer": 102.0,
+      "software_node": 85.0
+    },
+    "inequality": 17.0
+  },
+  "performance": {
+    "throughput": 59970.03145553332,
+    "balance": -153.87500000000003
+  }
+}

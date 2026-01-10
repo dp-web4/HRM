@@ -1,0 +1,92 @@
+{
+  "session": "178",
+  "title": "Federated SAGE Verification",
+  "platform": "Thor (3-node simulation)",
+  "timestamp": "2026-01-10T08:05:30+00:00",
+  "goal": "Multi-node adaptive depth coordination",
+  "scenarios": [
+    {
+      "scenario": 1,
+      "name": "Initial network state",
+      "network_avg_depth": 2.6666666666666665,
+      "network_avg_atp": 96.66666666666667,
+      "network_health": 0.9666666666666667,
+      "collective_quality": 0.7333333333333334,
+      "node_depths": {
+        "legion": "thorough",
+        "thor": "deep",
+        "sprout": "light"
+      },
+      "depth_distribution": {
+        "thorough": 1,
+        "deep": 1,
+        "light": 1
+      }
+    },
+    {
+      "scenario": 2,
+      "name": "Sprout ATP depletion",
+      "sprout_atp": 35.0,
+      "network_response": {
+        "thorough": 1,
+        "deep": 1,
+        "minimal": 1
+      },
+      "verification_result": {
+        "verified": true,
+        "peer_id": "legion",
+        "peer_depth": "thorough",
+        "peer_atp": 130.0,
+        "verification_quality": 0.95,
+        "my_depth": "minimal",
+        "trust_established": true
+      },
+      "network_health": 0.8833333333333333
+    },
+    {
+      "scenario": 3,
+      "name": "Network-wide stress",
+      "all_nodes_atp": {
+        "legion": 50.0,
+        "thor": 45.0,
+        "sprout": 40.0
+      },
+      "network_avg_depth": 0.0,
+      "network_health": 0.45,
+      "collective_quality": 0.20000000000000004,
+      "depth_distribution": {
+        "minimal": 3
+      }
+    },
+    {
+      "scenario": 4,
+      "name": "Legion recovery",
+      "legion_atp": 140.0,
+      "legion_depth": "thorough",
+      "network_avg_depth": 1.3333333333333333,
+      "network_health": 0.75,
+      "depth_adjustments": {
+        "legion": 2,
+        "thor": 1,
+        "sprout": 2
+      }
+    }
+  ],
+  "analytics": {
+    "total_states": 4,
+    "avg_depth_mean": 1.5833333333333333,
+    "avg_atp_mean": 76.25,
+    "avg_health_mean": 0.7625,
+    "collective_quality_mean": 0.5166666666666667,
+    "depth_range": [
+      0.0,
+      2.6666666666666665
+    ],
+    "final_state": {
+      "depth": 1.3333333333333333,
+      "atp": 75.0,
+      "health": 0.75,
+      "quality": 0.4666666666666666
+    }
+  }
+}

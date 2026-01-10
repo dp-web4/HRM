@@ -1,0 +1,101 @@
+{
+  "session": "177",
+  "title": "SAGE Adaptive Depth",
+  "platform": "Thor (Jetson AGX Thor)",
+  "timestamp": "2026-01-10T02:10:47+00:00",
+  "goal": "Apply Legion Session 158 dynamic depth to SAGE consciousness",
+  "test_results": [
+    {
+      "test": 1,
+      "name": "Standard Depth (100 ATP)",
+      "atp_set": 100.0,
+      "expected_depth": "standard",
+      "actual_depth": "deep",
+      "match": false,
+      "irp_iterations": 5,
+      "cogitation_cycles": 7,
+      "atp_consumed": 35.0,
+      "atp_remaining": 65.0,
+      "salience_threshold": 0.12,
+      "identity_grounding_required": true,
+      "contradiction_sensitivity": 0.85
+    },
+    {
+      "test": 2,
+      "name": "Thorough Depth (130 ATP)",
+      "atp_set": 130.0,
+      "expected_depth": "thorough",
+      "actual_depth": "thorough",
+      "match": true,
+      "irp_iterations": 7,
+      "cogitation_cycles": 10,
+      "atp_consumed": 60.0,
+      "atp_remaining": 70.0,
+      "salience_threshold": 0.1,
+      "identity_grounding_required": true,
+      "contradiction_sensitivity": 0.95
+    },
+    {
+      "test": 3,
+      "name": "Light Depth (65 ATP)",
+      "atp_set": 65.0,
+      "expected_depth": "light",
+      "actual_depth": "light",
+      "match": true,
+      "irp_iterations": 2,
+      "cogitation_cycles": 3,
+      "atp_consumed": 9.0,
+      "atp_remaining": 56.0,
+      "salience_threshold": 0.2,
+      "identity_grounding_required": false,
+      "contradiction_sensitivity": 0.5
+    },
+    {
+      "test": 4,
+      "name": "Minimal Depth (40 ATP)",
+      "atp_set": 40.0,
+      "expected_depth": "minimal",
+      "actual_depth": "minimal",
+      "match": true,
+      "irp_iterations": 1,
+      "cogitation_cycles": 2,
+      "atp_consumed": 4.0,
+      "atp_remaining": 36.0,
+      "salience_threshold": 0.25,
+      "identity_grounding_required": false,
+      "contradiction_sensitivity": 0.3
+    },
+    {
+      "test": 5,
+      "name": "Deep Depth (110 ATP)",
+      "atp_set": 110.0,
+      "expected_depth": "deep",
+      "actual_depth": "deep",
+      "match": true,
+      "irp_iterations": 5,
+      "cogitation_cycles": 7,
+      "atp_consumed": 35.0,
+      "atp_remaining": 75.0,
+      "salience_threshold": 0.12,
+      "identity_grounding_required": true,
+      "contradiction_sensitivity": 0.85
+    }
+  ],
+  "analytics": {
+    "total_depth_changes": 5,
+    "depth_distribution": {
+      "deep": 2,
+      "thorough": 1,
+      "light": 1,
+      "minimal": 1
+    },
+    "avg_atp_by_depth": {
+      "deep": 105.0,
+      "thorough": 130.0,
+      "light": 65.0,
+      "minimal": 40.0
+    },
+    "current_depth": "deep",
+    "current_atp": 75.0
+  }
+}

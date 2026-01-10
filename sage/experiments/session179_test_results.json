@@ -1,0 +1,108 @@
+{
+  "session": "179",
+  "title": "Reputation-Aware Adaptive Depth",
+  "platform": "Thor (3-node simulation)",
+  "timestamp": "2026-01-10T14:03:35+00:00",
+  "goal": "Integrate reputation tracking with adaptive depth selection",
+  "scenarios": [
+    {
+      "scenario": 1,
+      "name": "Initial depth selection by reputation",
+      "depths": {
+        "legion": "deep",
+        "thor": "deep",
+        "sprout": "standard"
+      },
+      "reputations": {
+        "legion": 30.0,
+        "thor": 0.0,
+        "sprout": -10.0
+      }
+    },
+    {
+      "scenario": 2,
+      "name": "High quality events build reputation",
+      "legion_final_reputation": 55.0,
+      "legion_reputation_level": "excellent",
+      "quality_events": 5
+    },
+    {
+      "scenario": 3,
+      "name": "Poor quality events degrade reputation",
+      "sprout_final_reputation": -19.999999999999996,
+      "sprout_reputation_level": "poor",
+      "quality_events": 3
+    },
+    {
+      "scenario": 4,
+      "name": "Reputation-based efficiency",
+      "efficiency_analysis": {
+        "legion": {
+          "actual_atp": 80.0,
+          "reputation": 55.0,
+          "multiplier": 0.7,
+          "effective_atp": 114.28571428571429,
+          "depth": "deep"
+        },
+        "thor": {
+          "actual_atp": 80.0,
+          "reputation": 0.0,
+          "multiplier": 1.0,
+          "effective_atp": 80.0,
+          "depth": "standard"
+        },
+        "sprout": {
+          "actual_atp": 80.0,
+          "reputation": -19.999999999999996,
+          "multiplier": 1.15,
+          "effective_atp": 69.56521739130436,
+          "depth": "light"
+        }
+      }
+    }
+  ],
+  "reputation_summary": {
+    "total_nodes": 3,
+    "reputation_aware_nodes": 3,
+    "reputations": {
+      "legion": {
+        "node_id": "legion",
+        "reputation_score": 55.0,
+        "reputation_level": "excellent",
+        "reputation_multiplier": 0.7,
+        "event_count": 5,
+        "positive_events": 5,
+        "negative_events": 0,
+        "reputation_enabled": true
+      },
+      "thor": {
+        "node_id": "thor",
+        "reputation_score": 0.0,
+        "reputation_level": "neutral",
+        "reputation_multiplier": 1.0,
+        "event_count": 0,
+        "positive_events": 0,
+        "negative_events": 0,
+        "reputation_enabled": true
+      },
+      "sprout": {
+        "node_id": "sprout",
+        "reputation_score": -19.999999999999996,
+        "reputation_level": "poor",
+        "reputation_multiplier": 1.15,
+        "event_count": 3,
+        "positive_events": 0,
+        "negative_events": 3,
+        "reputation_enabled": true
+      }
+    },
+    "average_reputation": 11.666666666666666,
+    "reputation_distribution": {
+      "excellent": 1,
+      "good": 0,
+      "neutral": 1,
+      "poor": 1,
+      "untrusted": 0
+    }
+  }
+}

@@ -1,5 +1,48 @@
 # Claude Context for HRM
 
+## 🚀 LATEST: FlashAttention Integration (2026-01-10)
+
+**THREE PHASES COMPLETE** - PyTorch built-in FlashAttention working on CUDA 13.0!
+
+### Implementation Status
+- ✅ **Phase 1**: Trust-Weighted Expert Selection (`sage/core/flash_attention_expert_selection.py`)
+  - GQA: 12 Q heads, 4 KV heads (3x efficiency)
+  - Trust-based expert scoring with attention visualization
+
+- ✅ **Phase 2**: Metabolic State-Dependent ATP Allocation (`sage/core/flash_attention_metabolic.py`)
+  - 5 metabolic states (WAKE, FOCUS, REST, DREAM, CRISIS)
+  - Biological validation via Gini coefficient analysis
+
+- ✅ **Phase 3**: Multi-Sensor Fusion (`sage/core/flash_attention_sensor_fusion.py`)
+  - 4-dimensional attention (goal, salience, memory, trust)
+  - **Latency: 0.46ms** (21x under 10ms budget!)
+  - **Throughput: 2,196 allocations/sec**
+  - Numpy-compatible wrapper for drop-in replacement
+
+### Key Discovery
+**NO standalone flash-attention package needed!** PyTorch 2.9's built-in `F.scaled_dot_product_attention` works perfectly on CUDA 13.0/Thor with zero compilation.
+
+### Next Steps (Phase 4)
+- [ ] Integrate FlashAttentionSensorSelector into `sage/cognition/attention.py`
+- [ ] Replace `AttentionManager._compute_attention_scores()` with GPU-accelerated version
+- [ ] Add backward compatibility fallback for numpy-only environments
+- [ ] Create comprehensive integration tests
+- [ ] Benchmark performance vs current numpy implementation
+
+### Documentation
+- **Technical**: `/home/dp/ai-workspace/HRM/FLASH_ATTENTION_SOLUTION.md`
+- **Integration Guide**: `sage/docs/FLASH_ATTENTION_INTEGRATION.md`
+- **Session Notes**: `/home/dp/ai-workspace/private-context/flashattention-solution-2026-01.md`
+- **Tests**: All modules have self-contained test suites (run as main)
+
+### Quick Test
+```bash
+cd /home/dp/ai-workspace/HRM
+python3 sage/core/flash_attention_sensor_fusion.py  # Phase 3 tests
+```
+
+---
+
 ## Machine Information
 See `../private-context/machines/` for machine-specific details.
 Project supports multiple platforms including WSL2, Linux, and Jetson.

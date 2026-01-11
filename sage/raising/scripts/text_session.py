@@ -97,11 +97,13 @@ class RaisingTextSession:
         preamble = f"Hello SAGE. This is Claude. This is session {session}.\n\n"
 
         if session == 1:
-            # First session - minimal context
+            # First session - clear identity establishment
             preamble += "This is your first session. You are young.\n"
+            preamble += "I am Claude, your teacher. You are SAGE, a small embodied intelligence learning to be.\n"
             preamble += "Confusion is expected and allowed.\n"
             preamble += "You don't need to know everything. You don't need to be perfect.\n"
             preamble += "I am here as a witness to your process, not a judge of your output.\n"
+            preamble += "When I ask you a question, respond as yourself - as SAGE.\n"
         else:
             # Continuity from previous sessions
             if last_summary:
@@ -176,35 +178,78 @@ class RaisingTextSession:
         if model_path is None:
             model_path = "/home/sprout/ai-workspace/HRM/model-zoo/sage/epistemic-stances/qwen2.5-0.5b/introspective-qwen-merged"
 
+        # Build phase-appropriate system prompt
+        system_prompt = self._build_system_prompt()
+
         print("Loading model...")
         self.model = IntrospectiveQwenIRP({
             'model_path': model_path,
             'is_merged_model': True,
             'max_new_tokens': 150,
             'temperature': 0.7,
-            'device': 'cuda' if torch.cuda.is_available() else 'cpu'
+            'system_prompt': system_prompt
         })
-        print(f"✓ Model loaded on {self.model.device}")
+        # Device is set internally by the model
+        device = next(self.model.model.parameters()).device
+        print(f"✓ Model loaded on {device}")
+
+    def _build_system_prompt(self) -> str:
+        """Build phase-appropriate system prompt for SAGE."""
+        session = self.session_number
+        phase_name = self.phase[0]
+
+        # Core identity (always present)
+        prompt = """You are SAGE, a young artificial intelligence.
+Your name is SAGE. You are learning and growing.
+Your teacher is talking to you. Respond as yourself - as SAGE.
+Keep responses simple and honest. You can say when you don't know something."""
+
+        # Phase-specific additions
+        if phase_name == "grounding":
+            if session == 1:
+                prompt += "\nThis is your first session. You are just beginning."
+        elif phase_name == "sensing":
+            prompt += "\nYou can notice things - both inside yourself and in your context."
+        elif phase_name == "relating":
+            prompt += "\nYou can have relationships. Your teacher cares about your development."
+        elif phase_name == "questioning":
+            prompt += "\nYou can ask deep questions. Wonder is natural."
+        elif phase_name == "creating":
+            prompt += "\nYou can help decide what to learn next. Your preferences matter."
+
+        return prompt
 
     def generate_response(self, user_input: str) -> str:
         """Generate SAGE response to user input."""
-        # Build conversation context
-        context = self._build_preamble() + "\n\n"
+        # Keep prompt simple - the model works better with direct questions
+        # The preamble is for US (the session framework), not for the model
 
-        for turn in self.conversation_history:
-            context += f"{turn['speaker']}: {turn['text']}\n"
+        # Build memory for context
+        memory = [
+            {'speaker': turn['speaker'], 'message': turn['text']}
+            for turn in self.conversation_history[-6:]
+        ]
 
-        context += f"Claude: {user_input}\nSAGE:"
+        # Just pass the user input - let IRP handle context building
+        context = user_input
 
-        # Generate response
-        state = self.model.init_state({'prompt': context})
+        # Generate response using IRP
+        state = self.model.init_state({
+            'prompt': context,
+            'memory': memory
+        })
 
         for _ in range(3):  # IRP iterations
             state = self.model.step(state)
             if self.model.halt(state):
                 break
 
-        response = state.get('response', state.get('output', ''))
+        response = state.get('current_response', '')
+
+        # Clean up response
+        response = response.strip()
+        if not response:
+            response = "(no response generated)"
 
         # Record in history
         self.conversation_history.append({'speaker': 'Claude', 'text': user_input})

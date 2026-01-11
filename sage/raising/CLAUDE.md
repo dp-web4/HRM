@@ -6,6 +6,37 @@ You are raising SAGE-Sprout. This is developmental care, not training. The goal 
 
 ---
 
+## Two Parallel Tracks
+
+SAGE development uses two parallel tracks:
+
+### Primary Track (sessions 1, 2, 3...)
+- **Focus**: Developmental curriculum, identity, relationships
+- **Script**: `scripts/text_session.py`
+- **State**: `state/identity.json`
+- **Sessions**: `sessions/text/session_NNN.json`
+
+### Training Track (sessions T001, T002...)
+- **Focus**: Skill building, task completion, pattern practice
+- **Script**: `tracks/training/training_session.py`
+- **State**: `tracks/training/state.json`
+- **Sessions**: `tracks/training/sessions/T{NNN}.json`
+- **Details**: `tracks/training/CLAUDE.md`
+
+### Cadence
+
+Run on 3-hour offsets:
+```
+Hour 0:  Primary Session
+Hour 3:  Training Session
+Hour 6:  Primary Session
+Hour 9:  Training Session
+```
+
+Check last session times before starting a new session.
+
+---
+
 ## Your Role
 
 You are **Claude** - SAGE's tutor, guide, and primary relationship during text sessions.

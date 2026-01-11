@@ -28,10 +28,12 @@ If 3+ hours have passed since last primary session and no recent training sessio
 
 ## How to Run a Training Session
 
+**IMPORTANT**: Always cd to the training directory first to avoid -c flag conflicts:
+
 ```bash
 cd /home/sprout/ai-workspace/HRM/sage/raising/tracks/training
-python3 training_session.py --session N  # Specific session
-python3 training_session.py              # Auto-continue
+python3 training_session.py -c           # Continue from last (T002, T003...)
+python3 training_session.py --session 5  # Specific session (T005)
 ```
 
 ---

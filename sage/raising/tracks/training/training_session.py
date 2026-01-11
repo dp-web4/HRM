@@ -5,15 +5,28 @@ Training Session for SAGE-Sprout
 Parallel track for skill development, running on 3-hour offset
 from primary curriculum sessions.
 
+IMPORTANT: This script should be run from its own directory to avoid
+conflicts with the primary track's -c flag:
+
+    cd /home/sprout/ai-workspace/HRM/sage/raising/tracks/training
+    python3 training_session.py -c  # Continue from last
+
 Usage:
-    python3 training_session.py --session T001
-    python3 training_session.py --continue  # Continue from last
+    python3 training_session.py --session 1   # Specific session number
+    python3 training_session.py -c            # Continue from last
+    python3 training_session.py --continue    # Same as -c
 """
 
 import sys
+import os
 from pathlib import Path
+
+# Change to script directory to ensure correct working directory
+SCRIPT_DIR = Path(__file__).parent.resolve()
+os.chdir(SCRIPT_DIR)
+
 # Add HRM root to path
-HRM_ROOT = Path(__file__).parent.parent.parent.parent.parent
+HRM_ROOT = SCRIPT_DIR.parent.parent.parent.parent
 sys.path.insert(0, str(HRM_ROOT))
 
 import json
@@ -316,13 +329,27 @@ It's okay to make mistakes - that's how you learn."""
 
 def main():
     parser = argparse.ArgumentParser(description="Training session for SAGE-Sprout")
-    parser.add_argument("--session", type=int, help="Session number (default: continue)")
+    parser.add_argument("--session", type=int, help="Session number (default: continue from last)")
+    parser.add_argument("-c", "--continue", dest="continue_session", action="store_true",
+                        help="Continue from last session (same as omitting --session)")
     parser.add_argument("--model", type=str, help="Model path")
     parser.add_argument("--no-model", action="store_true", help="Run without model")
 
     args = parser.parse_args()
 
-    session = TrainingSession(session_number=args.session)
+    # Determine session number
+    session_number = args.session
+    if session_number is None:
+        # Auto-continue: load state to find next session
+        state_file = Path(__file__).parent / "state.json"
+        if state_file.exists():
+            with open(state_file) as f:
+                state = json.load(f)
+            session_number = state.get("current_session", 0) + 1
+        else:
+            session_number = 1
+
+    session = TrainingSession(session_number=session_number)
 
     if not args.no_model:
         session.initialize_model(args.model)

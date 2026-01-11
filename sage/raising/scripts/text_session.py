@@ -1,22 +1,38 @@
 #!/usr/bin/env python3
 """
-Text Session for Raising SAGE-Sprout
+Text Session for Raising SAGE-Sprout (Primary Track)
 
 Claude-to-SAGE text conversations following the BECOMING_CURRICULUM.
 This script manages a single conversation session with proper
 state persistence, logging, and curriculum-appropriate interaction.
 
+IMPORTANT: Run from the scripts directory to avoid -c flag conflicts:
+
+    cd /home/sprout/ai-workspace/HRM/sage/raising/scripts
+    python3 text_session.py -c  # Continue from last session
+
 Usage:
-    python3 text_session.py --session N
-    python3 text_session.py --continue  # Continue from last session
+    python3 text_session.py --session N  # Specific session
+    python3 text_session.py -c           # Continue from last
+    python3 text_session.py --continue   # Same as -c
 
 The actual conversation happens via the model - this script
 sets up context, manages state, and logs the interaction.
 """
 
 import sys
+import os
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+
+# Resolve paths before any chdir
+SCRIPT_DIR = Path(__file__).parent.resolve()
+HRM_ROOT = SCRIPT_DIR.parent.parent.parent
+
+# Add HRM root to path BEFORE changing directory
+sys.path.insert(0, str(HRM_ROOT))
+
+# Change to script directory to ensure correct working directory for -c flag
+os.chdir(SCRIPT_DIR)
 
 import json
 import argparse
@@ -24,9 +40,9 @@ from datetime import datetime
 from typing import Optional, Dict, Any
 import torch
 
-# SAGE core
-from core.sage_unified import SAGEUnified
-from irp.plugins.introspective_qwen_impl import IntrospectiveQwenIRP
+# SAGE core - use full path from HRM root
+from sage.core.sage_unified import SAGEUnified
+from sage.irp.plugins.introspective_qwen_impl import IntrospectiveQwenIRP
 
 
 class RaisingTextSession:
@@ -36,7 +52,8 @@ class RaisingTextSession:
     Manages state, context, and curriculum-appropriate interaction.
     """
 
-    RAISING_DIR = Path(__file__).parent.parent
+    # Use absolute paths based on script location
+    RAISING_DIR = Path(__file__).parent.parent.resolve()
     STATE_FILE = RAISING_DIR / "state" / "identity.json"
     SESSIONS_DIR = RAISING_DIR / "sessions" / "text"
     LOGS_DIR = RAISING_DIR / "logs" / "observations"
@@ -339,13 +356,16 @@ Keep responses simple and honest. You can say when you don't know something."""
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Text session for raising SAGE-Sprout")
+    parser = argparse.ArgumentParser(description="Text session for raising SAGE-Sprout (Primary Track)")
     parser.add_argument("--session", type=int, help="Session number (default: continue from last)")
+    parser.add_argument("-c", "--continue", dest="continue_session", action="store_true",
+                        help="Continue from last session (same as omitting --session)")
     parser.add_argument("--model", type=str, help="Model path (default: introspective-qwen-merged)")
     parser.add_argument("--no-model", action="store_true", help="Run without model (template only)")
 
     args = parser.parse_args()
 
+    # Session number is determined by RaisingTextSession if not specified
     session = RaisingTextSession(session_number=args.session)
 
     if not args.no_model:

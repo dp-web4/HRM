@@ -35,6 +35,24 @@ Hour 9:  Training Session
 
 Check last session times before starting a new session.
 
+### How to Run Sessions
+
+**IMPORTANT**: Always cd to the correct directory first (avoids -c flag conflicts):
+
+**Primary Track**:
+```bash
+cd /home/sprout/ai-workspace/HRM/sage/raising/scripts
+python3 text_session.py -c           # Continue from last (session 2, 3...)
+python3 text_session.py --session 5  # Specific session
+```
+
+**Training Track**:
+```bash
+cd /home/sprout/ai-workspace/HRM/sage/raising/tracks/training
+python3 training_session.py -c       # Continue from last (T002, T003...)
+python3 training_session.py --session 5  # Specific session (T005)
+```
+
 ---
 
 ## Your Role

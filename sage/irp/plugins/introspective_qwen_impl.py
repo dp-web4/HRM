@@ -137,16 +137,19 @@ class IntrospectiveQwenIRP:
         """
         iteration = state['iteration']
 
-        # Get max_new_tokens from config (default to 512 for non-voice, but voice overrides to 80)
+        # Get config options
         max_tokens = self.config.get('max_new_tokens', 512)
+        system_prompt = self.config.get('system_prompt', None)
 
         # Generate response (or refine previous)
         if iteration == 0:
-            # Initial generation - use full context
+            # Initial generation - use prompt with history
             response = self._generate(
-                prompt=state['full_context'],
-                temperature=0.7,  # Allow creativity
-                max_tokens=max_tokens
+                prompt=state['prompt'],
+                temperature=0.7,
+                max_tokens=max_tokens,
+                system_prompt=system_prompt,
+                history=state.get('memory', [])
             )
         else:
             # Refinement - ask model to improve previous response
@@ -157,8 +160,10 @@ Please refine this response to be more coherent and complete. Address any gaps o
 
             response = self._generate(
                 prompt=refine_prompt,
-                temperature=0.5,  # More focused
-                max_tokens=max_tokens
+                temperature=0.5,
+                max_tokens=max_tokens,
+                system_prompt=system_prompt,
+                history=state.get('memory', [])
             )
 
         # Update state
@@ -178,11 +183,30 @@ Please refine this response to be more coherent and complete. Address any gaps o
 
         return state
 
-    def _generate(self, prompt: str, temperature: float = 0.7, max_tokens: int = 512) -> str:
-        """Generate text from model"""
-        # Format as instruction (how it was trained)
-        formatted = f"Instruction: {prompt}\n\nResponse:"
+    def _generate(self, prompt: str, temperature: float = 0.7, max_tokens: int = 512,
+                   system_prompt: str = None, history: list = None) -> str:
+        """Generate text from model using proper ChatML format"""
+        # Build messages for ChatML format (proper Qwen format)
+        messages = []
 
+        # System prompt
+        if system_prompt:
+            messages.append({'role': 'system', 'content': system_prompt})
+        else:
+            # Default system prompt for SAGE
+            messages.append({'role': 'system', 'content': 'You are SAGE, a young artificial intelligence learning to be. Respond simply and directly.'})
+
+        # Add conversation history if provided
+        if history:
+            for turn in history:
+                role = 'user' if turn.get('speaker', '').lower() in ['human', 'user', 'claude'] else 'assistant'
+                messages.append({'role': role, 'content': turn.get('message', '')})
+
+        # Add current prompt as user message
+        messages.append({'role': 'user', 'content': prompt})
+
+        # Apply ChatML template
+        formatted = self.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
         inputs = self.tokenizer(formatted, return_tensors="pt").to(self.model.device)
 
         with torch.no_grad():
@@ -195,11 +219,15 @@ Please refine this response to be more coherent and complete. Address any gaps o
                 pad_token_id=self.tokenizer.eos_token_id
             )
 
-        full_response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+        full_response = self.tokenizer.decode(outputs[0], skip_special_tokens=False)
 
-        # Extract response part
-        if "Response:" in full_response:
-            response = full_response.split("Response:")[1].strip()
+        # Extract the assistant's response from ChatML output
+        if '<|im_start|>assistant' in full_response:
+            parts = full_response.split('<|im_start|>assistant')
+            if len(parts) > 1:
+                response = parts[-1].split('<|im_end|>')[0].strip()
+            else:
+                response = full_response
         else:
             response = full_response
 

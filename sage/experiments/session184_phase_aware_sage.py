@@ -334,6 +334,13 @@ class PhaseAwareSAGE(NetworkReadySAGE):
         self.critical_state_warnings: int = 0
         self.last_phase_check: float = 0.0
 
+    @property
+    def current_reputation(self) -> float:
+        """Get current reputation score from reputation manager."""
+        if hasattr(self, 'reputation') and hasattr(self.reputation, 'total_score'):
+            return self.reputation.total_score
+        return 0.0
+
     def get_current_phase_state(self) -> Optional[ReputationFreeEnergy]:
         """
         Get current thermodynamic phase state.

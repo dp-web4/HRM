@@ -1,0 +1,771 @@
+{
+  "deployment": {
+    "node_id": "thor",
+    "start_time": 1768183804.6460228,
+    "duration_seconds": 60.06856441497803,
+    "phase_check_interval": 10.0
+  },
+  "metrics": {
+    "total_snapshots": 13,
+    "total_events": 5,
+    "total_critical_warnings": 0
+  },
+  "phase_analysis": {
+    "phase_distribution": {
+      "high_trust": 10
+    },
+    "free_energy": {
+      "min": -0.9999999999999984,
+      "max": -0.9833131146381494,
+      "avg": -0.9966607470551997,
+      "all_negative": true
+    },
+    "reputation": {
+      "start": 0.9933071490757153,
+      "end": 0.9999999999999993,
+      "growth": 0.006692850924284066
+    },
+    "total_checks": 10
+  },
+  "critical_analysis": {
+    "total_warnings": 0,
+    "summary": "No critical states detected - system stable"
+  },
+  "reputation_analysis": {
+    "total_events": 5,
+    "positive_events": 5,
+    "negative_events": 0,
+    "total_positive_delta": 70.0,
+    "total_negative_delta": 0,
+    "net_delta": 70.0,
+    "reputation_start": 90.0,
+    "reputation_end": 700.0,
+    "events": [
+      {
+        "timestamp": 1768183814.6583793,
+        "elapsed": 10.01220440864563,
+        "reputation_delta": 10.0,
+        "source": "source_1",
+        "description": "Good verification",
+        "new_reputation": 100.0
+      },
+      {
+        "timestamp": 1768183824.679818,
+        "elapsed": 20.033642768859863,
+        "reputation_delta": 15.0,
+        "source": "source_2",
+        "description": "Excellent verification",
+        "new_reputation": 250.0
+      },
+      {
+        "timestamp": 1768183834.7008955,
+        "elapsed": 30.054720401763916,
+        "reputation_delta": 10.0,
+        "source": "source_3",
+        "description": "Good verification",
+        "new_reputation": 350.0
+      },
+      {
+        "timestamp": 1768183844.722032,
+        "elapsed": 40.07585692405701,
+        "reputation_delta": 20.0,
+        "source": "source_4",
+        "description": "Outstanding verification",
+        "new_reputation": 550.0
+      },
+      {
+        "timestamp": 1768183854.7455683,
+        "elapsed": 50.099393129348755,
+        "reputation_delta": 15.0,
+        "source": "source_5",
+        "description": "Excellent verification",
+        "new_reputation": 700.0
+      }
+    ]
+  },
+  "snapshots": [
+    {
+      "timestamp": 1768183804.6460254,
+      "elapsed_seconds": 2.6226043701171875e-06,
+      "event": "deployment_start",
+      "sage_state": {
+        "atp": 0.0,
+        "reputation": 0.0,
+        "depth": "standard"
+      },
+      "phase_state": null,
+      "critical_check": {
+        "is_critical": false,
+        "warning_level": "unknown",
+        "recommendation": "Insufficient data for phase analysis",
+        "phase_state": null
+      },
+      "phase_metrics": {
+        "error": "No phase state available"
+      }
+    },
+    {
+      "timestamp": 1768183804.6462095,
+      "elapsed_seconds": 0.00018668174743652344,
+      "event": "periodic_check",
+      "sage_state": {
+        "atp": 0.0,
+        "reputation": 0.0,
+        "depth": "standard"
+      },
+      "phase_state": null,
+      "critical_check": {
+        "is_critical": false,
+        "warning_level": "unknown",
+        "recommendation": "Insufficient data for phase analysis",
+        "phase_state": null
+      },
+      "phase_metrics": {
+        "error": "No phase state available"
+      }
+    },
+    {
+      "timestamp": 1768183814.6481993,
+      "elapsed_seconds": 10.002176523208618,
+      "event": "periodic_check",
+      "sage_state": {
+        "atp": 0.0,
+        "reputation": 0.0,
+        "depth": "standard"
+      },
+      "phase_state": null,
+      "critical_check": {
+        "is_critical": false,
+        "warning_level": "unknown",
+        "recommendation": "Insufficient data for phase analysis",
+        "phase_state": null
+      },
+      "phase_metrics": {
+        "error": "No phase state available"
+      }
+    },
+    {
+      "timestamp": 1768183814.6583838,
+      "elapsed_seconds": 10.0123610496521,
+      "event": "Good verification",
+      "sage_state": {
+        "atp": 0.0,
+        "reputation": 100.0,
+        "depth": "standard"
+      },
+      "phase_state": {
+        "reputation_normalized": 0.9933071490757153,
+        "diversity_score": 0.0,
+        "maintenance_energy": 0.9734961646253107,
+        "diversity_entropy": 0.0,
+        "free_energy": -0.9833131146381494,
+        "phase": "high_trust",
+        "is_stable": true,
+        "distance_to_threshold": 0.8852263409949072
+      },
+      "critical_check": {
+        "is_critical": false,
+        "warning_level": "safe",
+        "recommendation": "SAFE: Stable high-trust state. Resilient to small perturbations.",
+        "phase_state": {
+          "reputation_normalized": 0.9933071490757153,
+          "diversity_score": 0.0,
+          "maintenance_energy": 0.9734961646253107,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9833131146381494,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.8852263409949072
+        },
+        "critical_warnings_total": 0
+      },
+      "phase_metrics": {
+        "current_phase": {
+          "reputation_normalized": 0.9933071490757153,
+          "diversity_score": 0.0,
+          "maintenance_energy": 0.9734961646253107,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9833131146381494,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.8852263409949072
+        },
+        "stable_states": [
+          {
+            "reputation": 0.99,
+            "free_energy": -0.97510149
+          }
+        ],
+        "threshold": 0.10808080808080808,
+        "num_stable_states": 1,
+        "history_size": 0,
+        "critical_warnings": 0
+      }
+    },
+    {
+      "timestamp": 1768183824.6489632,
+      "elapsed_seconds": 20.00294041633606,
+      "event": "periodic_check",
+      "sage_state": {
+        "atp": 0.0,
+        "reputation": 100.0,
+        "depth": "standard"
+      },
+      "phase_state": {
+        "reputation_normalized": 0.9933071490757153,
+        "diversity_score": 0.0,
+        "maintenance_energy": 0.9734961646253107,
+        "diversity_entropy": 0.0,
+        "free_energy": -0.9833131146381494,
+        "phase": "high_trust",
+        "is_stable": true,
+        "distance_to_threshold": 0.8852263409949072
+      },
+      "critical_check": {
+        "is_critical": false,
+        "warning_level": "safe",
+        "recommendation": "SAFE: Stable high-trust state. Resilient to small perturbations.",
+        "phase_state": {
+          "reputation_normalized": 0.9933071490757153,
+          "diversity_score": 0.0,
+          "maintenance_energy": 0.9734961646253107,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9833131146381494,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.8852263409949072
+        },
+        "critical_warnings_total": 0
+      },
+      "phase_metrics": {
+        "current_phase": {
+          "reputation_normalized": 0.9933071490757153,
+          "diversity_score": 0.0,
+          "maintenance_energy": 0.9734961646253107,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9833131146381494,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.8852263409949072
+        },
+        "stable_states": [
+          {
+            "reputation": 0.99,
+            "free_energy": -0.97510149
+          }
+        ],
+        "threshold": 0.10808080808080808,
+        "num_stable_states": 1,
+        "history_size": 0,
+        "critical_warnings": 0
+      }
+    },
+    {
+      "timestamp": 1768183824.6798217,
+      "elapsed_seconds": 20.033798933029175,
+      "event": "Excellent verification",
+      "sage_state": {
+        "atp": 0.0,
+        "reputation": 250.0,
+        "depth": "standard"
+      },
+      "phase_state": {
+        "reputation_normalized": 0.9999962733607158,
+        "diversity_score": 0.9709505944546686,
+        "maintenance_energy": 0.9999850935261901,
+        "diversity_entropy": 0.0,
+        "free_energy": -0.9999906834156775,
+        "phase": "high_trust",
+        "is_stable": true,
+        "distance_to_threshold": 0.10807708144152395
+      },
+      "critical_check": {
+        "is_critical": false,
+        "warning_level": "caution",
+        "recommendation": "CAUTION: Approaching threshold. Current phase: high_trust.",
+        "phase_state": {
+          "reputation_normalized": 0.9999962733607158,
+          "diversity_score": 0.9709505944546686,
+          "maintenance_energy": 0.9999850935261901,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9999906834156775,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.10807708144152395
+        },
+        "critical_warnings_total": 0
+      },
+      "phase_metrics": {
+        "current_phase": {
+          "reputation_normalized": 0.9999962733607158,
+          "diversity_score": 0.9709505944546686,
+          "maintenance_energy": 0.9999850935261901,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9999906834156775,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.10807708144152395
+        },
+        "stable_states": [
+          {
+            "reputation": 0.99,
+            "free_energy": -0.97510149
+          }
+        ],
+        "threshold": 0.8919191919191919,
+        "num_stable_states": 1,
+        "history_size": 0,
+        "critical_warnings": 0
+      }
+    },
+    {
+      "timestamp": 1768183834.661262,
+      "elapsed_seconds": 30.015239238739014,
+      "event": "periodic_check",
+      "sage_state": {
+        "atp": 0.0,
+        "reputation": 250.0,
+        "depth": "standard"
+      },
+      "phase_state": {
+        "reputation_normalized": 0.9999962733607158,
+        "diversity_score": 0.9709505944546686,
+        "maintenance_energy": 0.9999850935261901,
+        "diversity_entropy": 0.0,
+        "free_energy": -0.9999906834156775,
+        "phase": "high_trust",
+        "is_stable": true,
+        "distance_to_threshold": 0.10807708144152395
+      },
+      "critical_check": {
+        "is_critical": false,
+        "warning_level": "caution",
+        "recommendation": "CAUTION: Approaching threshold. Current phase: high_trust.",
+        "phase_state": {
+          "reputation_normalized": 0.9999962733607158,
+          "diversity_score": 0.9709505944546686,
+          "maintenance_energy": 0.9999850935261901,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9999906834156775,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.10807708144152395
+        },
+        "critical_warnings_total": 0
+      },
+      "phase_metrics": {
+        "current_phase": {
+          "reputation_normalized": 0.9999962733607158,
+          "diversity_score": 0.9709505944546686,
+          "maintenance_energy": 0.9999850935261901,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9999906834156775,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.10807708144152395
+        },
+        "stable_states": [
+          {
+            "reputation": 0.99,
+            "free_energy": -0.97510149
+          }
+        ],
+        "threshold": 0.8919191919191919,
+        "num_stable_states": 1,
+        "history_size": 0,
+        "critical_warnings": 0
+      }
+    },
+    {
+      "timestamp": 1768183834.700898,
+      "elapsed_seconds": 30.054875135421753,
+      "event": "Good verification",
+      "sage_state": {
+        "atp": 0.0,
+        "reputation": 350.0,
+        "depth": "standard"
+      },
+      "phase_state": {
+        "reputation_normalized": 0.999999974890009,
+        "diversity_score": 0.9821410328348752,
+        "maintenance_energy": 0.9999998995600399,
+        "diversity_entropy": 0.0,
+        "free_energy": -0.9999999372250231,
+        "phase": "high_trust",
+        "is_stable": true,
+        "distance_to_threshold": 0.10808078297081714
+      },
+      "critical_check": {
+        "is_critical": false,
+        "warning_level": "caution",
+        "recommendation": "CAUTION: Approaching threshold. Current phase: high_trust.",
+        "phase_state": {
+          "reputation_normalized": 0.999999974890009,
+          "diversity_score": 0.9821410328348752,
+          "maintenance_energy": 0.9999998995600399,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9999999372250231,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.10808078297081714
+        },
+        "critical_warnings_total": 0
+      },
+      "phase_metrics": {
+        "current_phase": {
+          "reputation_normalized": 0.999999974890009,
+          "diversity_score": 0.9821410328348752,
+          "maintenance_energy": 0.9999998995600399,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9999999372250231,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.10808078297081714
+        },
+        "stable_states": [
+          {
+            "reputation": 0.99,
+            "free_energy": -0.97510149
+          }
+        ],
+        "threshold": 0.8919191919191919,
+        "num_stable_states": 1,
+        "history_size": 0,
+        "critical_warnings": 0
+      }
+    },
+    {
+      "timestamp": 1768183844.6733024,
+      "elapsed_seconds": 40.02727961540222,
+      "event": "periodic_check",
+      "sage_state": {
+        "atp": 0.0,
+        "reputation": 350.0,
+        "depth": "standard"
+      },
+      "phase_state": {
+        "reputation_normalized": 0.999999974890009,
+        "diversity_score": 0.9821410328348752,
+        "maintenance_energy": 0.9999998995600399,
+        "diversity_entropy": 0.0,
+        "free_energy": -0.9999999372250231,
+        "phase": "high_trust",
+        "is_stable": true,
+        "distance_to_threshold": 0.10808078297081714
+      },
+      "critical_check": {
+        "is_critical": false,
+        "warning_level": "caution",
+        "recommendation": "CAUTION: Approaching threshold. Current phase: high_trust.",
+        "phase_state": {
+          "reputation_normalized": 0.999999974890009,
+          "diversity_score": 0.9821410328348752,
+          "maintenance_energy": 0.9999998995600399,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9999999372250231,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.10808078297081714
+        },
+        "critical_warnings_total": 0
+      },
+      "phase_metrics": {
+        "current_phase": {
+          "reputation_normalized": 0.999999974890009,
+          "diversity_score": 0.9821410328348752,
+          "maintenance_energy": 0.9999998995600399,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9999999372250231,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.10808078297081714
+        },
+        "stable_states": [
+          {
+            "reputation": 0.99,
+            "free_energy": -0.97510149
+          }
+        ],
+        "threshold": 0.8919191919191919,
+        "num_stable_states": 1,
+        "history_size": 0,
+        "critical_warnings": 0
+      }
+    },
+    {
+      "timestamp": 1768183844.7220352,
+      "elapsed_seconds": 40.07601237297058,
+      "event": "Outstanding verification",
+      "sage_state": {
+        "atp": 0.0,
+        "reputation": 550.0,
+        "depth": "standard"
+      },
+      "phase_state": {
+        "reputation_normalized": 0.99999999999886,
+        "diversity_score": 0.9681300137657637,
+        "maintenance_energy": 0.9999999999954401,
+        "diversity_entropy": 0.0,
+        "free_energy": -0.9999999999971503,
+        "phase": "high_trust",
+        "is_stable": true,
+        "distance_to_threshold": 0.10808080807966813
+      },
+      "critical_check": {
+        "is_critical": false,
+        "warning_level": "caution",
+        "recommendation": "CAUTION: Approaching threshold. Current phase: high_trust.",
+        "phase_state": {
+          "reputation_normalized": 0.99999999999886,
+          "diversity_score": 0.9681300137657637,
+          "maintenance_energy": 0.9999999999954401,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9999999999971503,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.10808080807966813
+        },
+        "critical_warnings_total": 0
+      },
+      "phase_metrics": {
+        "current_phase": {
+          "reputation_normalized": 0.99999999999886,
+          "diversity_score": 0.9681300137657637,
+          "maintenance_energy": 0.9999999999954401,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9999999999971503,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.10808080807966813
+        },
+        "stable_states": [
+          {
+            "reputation": 0.99,
+            "free_energy": -0.97510149
+          }
+        ],
+        "threshold": 0.8919191919191919,
+        "num_stable_states": 1,
+        "history_size": 0,
+        "critical_warnings": 0
+      }
+    },
+    {
+      "timestamp": 1768183854.6848452,
+      "elapsed_seconds": 50.038822412490845,
+      "event": "periodic_check",
+      "sage_state": {
+        "atp": 0.0,
+        "reputation": 550.0,
+        "depth": "standard"
+      },
+      "phase_state": {
+        "reputation_normalized": 0.99999999999886,
+        "diversity_score": 0.9681300137657637,
+        "maintenance_energy": 0.9999999999954401,
+        "diversity_entropy": 0.0,
+        "free_energy": -0.9999999999971503,
+        "phase": "high_trust",
+        "is_stable": true,
+        "distance_to_threshold": 0.10808080807966813
+      },
+      "critical_check": {
+        "is_critical": false,
+        "warning_level": "caution",
+        "recommendation": "CAUTION: Approaching threshold. Current phase: high_trust.",
+        "phase_state": {
+          "reputation_normalized": 0.99999999999886,
+          "diversity_score": 0.9681300137657637,
+          "maintenance_energy": 0.9999999999954401,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9999999999971503,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.10808080807966813
+        },
+        "critical_warnings_total": 0
+      },
+      "phase_metrics": {
+        "current_phase": {
+          "reputation_normalized": 0.99999999999886,
+          "diversity_score": 0.9681300137657637,
+          "maintenance_energy": 0.9999999999954401,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9999999999971503,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.10808080807966813
+        },
+        "stable_states": [
+          {
+            "reputation": 0.99,
+            "free_energy": -0.97510149
+          }
+        ],
+        "threshold": 0.8919191919191919,
+        "num_stable_states": 1,
+        "history_size": 0,
+        "critical_warnings": 0
+      }
+    },
+    {
+      "timestamp": 1768183854.7455711,
+      "elapsed_seconds": 50.09954833984375,
+      "event": "Excellent verification",
+      "sage_state": {
+        "atp": 0.0,
+        "reputation": 700.0,
+        "depth": "standard"
+      },
+      "phase_state": {
+        "reputation_normalized": 0.9999999999999993,
+        "diversity_score": 0.9780416657815159,
+        "maintenance_energy": 0.9999999999999973,
+        "diversity_entropy": 0.0,
+        "free_energy": -0.9999999999999984,
+        "phase": "high_trust",
+        "is_stable": true,
+        "distance_to_threshold": 0.10808080808080744
+      },
+      "critical_check": {
+        "is_critical": false,
+        "warning_level": "caution",
+        "recommendation": "CAUTION: Approaching threshold. Current phase: high_trust.",
+        "phase_state": {
+          "reputation_normalized": 0.9999999999999993,
+          "diversity_score": 0.9780416657815159,
+          "maintenance_energy": 0.9999999999999973,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9999999999999984,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.10808080808080744
+        },
+        "critical_warnings_total": 0
+      },
+      "phase_metrics": {
+        "current_phase": {
+          "reputation_normalized": 0.9999999999999993,
+          "diversity_score": 0.9780416657815159,
+          "maintenance_energy": 0.9999999999999973,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9999999999999984,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.10808080808080744
+        },
+        "stable_states": [
+          {
+            "reputation": 0.99,
+            "free_energy": -0.97510149
+          }
+        ],
+        "threshold": 0.8919191919191919,
+        "num_stable_states": 1,
+        "history_size": 0,
+        "critical_warnings": 0
+      }
+    },
+    {
+      "timestamp": 1768183864.70512,
+      "elapsed_seconds": 60.05909729003906,
+      "event": "deployment_end",
+      "sage_state": {
+        "atp": 0.0,
+        "reputation": 700.0,
+        "depth": "standard"
+      },
+      "phase_state": {
+        "reputation_normalized": 0.9999999999999993,
+        "diversity_score": 0.9780416657815159,
+        "maintenance_energy": 0.9999999999999973,
+        "diversity_entropy": 0.0,
+        "free_energy": -0.9999999999999984,
+        "phase": "high_trust",
+        "is_stable": true,
+        "distance_to_threshold": 0.10808080808080744
+      },
+      "critical_check": {
+        "is_critical": false,
+        "warning_level": "caution",
+        "recommendation": "CAUTION: Approaching threshold. Current phase: high_trust.",
+        "phase_state": {
+          "reputation_normalized": 0.9999999999999993,
+          "diversity_score": 0.9780416657815159,
+          "maintenance_energy": 0.9999999999999973,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9999999999999984,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.10808080808080744
+        },
+        "critical_warnings_total": 0
+      },
+      "phase_metrics": {
+        "current_phase": {
+          "reputation_normalized": 0.9999999999999993,
+          "diversity_score": 0.9780416657815159,
+          "maintenance_energy": 0.9999999999999973,
+          "diversity_entropy": 0.0,
+          "free_energy": -0.9999999999999984,
+          "phase": "high_trust",
+          "is_stable": true,
+          "distance_to_threshold": 0.10808080808080744
+        },
+        "stable_states": [
+          {
+            "reputation": 0.99,
+            "free_energy": -0.97510149
+          }
+        ],
+        "threshold": 0.8919191919191919,
+        "num_stable_states": 1,
+        "history_size": 0,
+        "critical_warnings": 0
+      }
+    }
+  ],
+  "events": [
+    {
+      "timestamp": 1768183814.6583793,
+      "elapsed": 10.01220440864563,
+      "reputation_delta": 10.0,
+      "source": "source_1",
+      "description": "Good verification",
+      "new_reputation": 100.0
+    },
+    {
+      "timestamp": 1768183824.679818,
+      "elapsed": 20.033642768859863,
+      "reputation_delta": 15.0,
+      "source": "source_2",
+      "description": "Excellent verification",
+      "new_reputation": 250.0
+    },
+    {
+      "timestamp": 1768183834.7008955,
+      "elapsed": 30.054720401763916,
+      "reputation_delta": 10.0,
+      "source": "source_3",
+      "description": "Good verification",
+      "new_reputation": 350.0
+    },
+    {
+      "timestamp": 1768183844.722032,
+      "elapsed": 40.07585692405701,
+      "reputation_delta": 20.0,
+      "source": "source_4",
+      "description": "Outstanding verification",
+      "new_reputation": 550.0
+    },
+    {
+      "timestamp": 1768183854.7455683,
+      "elapsed": 50.099393129348755,
+      "reputation_delta": 15.0,
+      "source": "source_5",
+      "description": "Excellent verification",
+      "new_reputation": 700.0
+    }
+  ],
+  "warnings": []
+}

@@ -1,0 +1,28 @@
+{
+  "session": "188_edge",
+  "title": "Trust-Magnetism Experimental Validation - Edge",
+  "platform": "Sprout (Jetson Orin Nano 8GB)",
+  "timestamp": "2026-01-12T20:05:01.094683+00:00",
+  "all_tests_passed": true,
+  "test_results": {
+    "import_validation": true,
+    "network_init": true,
+    "fm_scenario": true,
+    "pm_scenario": true,
+    "trust_magnetism_map": true,
+    "edge_performance": true
+  },
+  "edge_metrics": {
+    "platform": "Jetson Orin Nano 8GB",
+    "hardware_type": "tpm2",
+    "capability_level": 3,
+    "memory_available_mb": 4941.72265625,
+    "temperature_c": 52.687
+  },
+  "validation_features": {
+    "network_simulation": true,
+    "fm_scenario": true,
+    "pm_scenario": true,
+    "trust_magnetism_mapping": true
+  }
+}

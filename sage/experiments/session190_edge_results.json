@@ -1,0 +1,30 @@
+{
+  "session": "190_edge",
+  "title": "Spacetime Coherence Coupling - Edge Validation",
+  "platform": "Sprout (Jetson Orin Nano 8GB)",
+  "timestamp": "2026-01-13T02:05:51.949898+00:00",
+  "all_tests_passed": true,
+  "test_results": {
+    "import_validation": true,
+    "decay_correlation": true,
+    "fm_slower_decay": true,
+    "coupled_transitions": true,
+    "metric_tensor": true,
+    "regime_classification": true,
+    "edge_performance": true
+  },
+  "edge_metrics": {
+    "platform": "Jetson Orin Nano 8GB",
+    "hardware_type": "tpm2",
+    "capability_level": 3,
+    "memory_available_mb": 4978.72265625,
+    "temperature_c": 53.0
+  },
+  "spacetime_features": {
+    "decay_correlation_coupling": true,
+    "fm_pm_decay_difference": true,
+    "coupled_phase_transitions": true,
+    "metric_tensor": true,
+    "regime_classification": true
+  }
+}

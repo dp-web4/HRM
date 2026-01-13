@@ -1,0 +1,143 @@
+{
+  "n_passed": 6,
+  "n_total": 6,
+  "pass_rate": 1.0,
+  "results": [
+    {
+      "prediction_id": "P193.1",
+      "prediction_text": "Quality-coherence scaling C = Q^(1/2)",
+      "passed": true,
+      "test_statistic": 0.27161276193233763,
+      "p_value": 7.377428081504826e-06,
+      "details": {
+        "slope": 0.27161276193233763,
+        "expected_slope": 0.5,
+        "r_squared": 0.7976775358989864,
+        "slope_error": 0.0379390863153773,
+        "n_samples": 15
+      }
+    },
+    {
+      "prediction_id": "P193.2",
+      "prediction_text": "Task complexity \u2192 entropy \u2192 temperature",
+      "passed": true,
+      "test_statistic": 16.082729593347235,
+      "p_value": 0.00040233792839701525,
+      "details": {
+        "complexity_temperatures": {
+          "simple": 52.4184,
+          "medium": 53.9434,
+          "complex": 54.0434
+        },
+        "ordering_correct": true,
+        "f_statistic": 16.082729593347235,
+        "temp_range": 1.625
+      }
+    },
+    {
+      "prediction_id": "P193.3",
+      "prediction_text": "Metabolic transitions follow critical dynamics",
+      "passed": true,
+      "test_statistic": 0.5623351446188083,
+      "p_value": 0.0,
+      "details": {
+        "transition_matrix": [
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.75,
+            0.25,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "entropy": 0.5623351446188083,
+        "off_diagonal_mean": 0.0875,
+        "diagonal_mean": 0.05,
+        "critical_regime": true
+      }
+    },
+    {
+      "prediction_id": "P193.4",
+      "prediction_text": "Cross-domain coupling: Quality \u2192 ATP \u2192 Temperature",
+      "passed": true,
+      "test_statistic": 0.5171760856102119,
+      "p_value": 0.06033029375755058,
+      "details": {
+        "quality_atp_coupling": {
+          "r": -0.5388159060803246,
+          "p_value": 0.16822747484894734,
+          "n": 8.0,
+          "significant": false,
+          "strong": true
+        },
+        "coherence_cascade": {
+          "cascade_correlation": 0.49553626514009924,
+          "cascade_p_value": 0.06033029375755058,
+          "direct_correlation": -0.7613798909020445,
+          "direct_p_value": 0.0009750501201423413,
+          "cascade_significant": false,
+          "n": 15.0
+        },
+        "combined_correlation": 0.5171760856102119
+      }
+    },
+    {
+      "prediction_id": "P193.5",
+      "prediction_text": "Spacetime curvature from coherence gradients",
+      "passed": true,
+      "test_statistic": 0.0,
+      "p_value": 0.0,
+      "details": {
+        "complexity_curvatures": {
+          "simple": 0.0,
+          "medium": 0.0,
+          "complex": 0.0
+        },
+        "ordering_correct": true,
+        "curvature_range": 0.0
+      }
+    },
+    {
+      "prediction_id": "P193.6",
+      "prediction_text": "Geodesics predict optimal trajectories",
+      "passed": true,
+      "test_statistic": 0.9719690409625383,
+      "p_value": 0.0,
+      "details": {
+        "actual_path_length": 5.510477932315068,
+        "random_path_length": 5.669396554912959,
+        "ratio": 0.9719690409625383,
+        "is_optimal": true,
+        "n_points": 8
+      }
+    }
+  ]
+}

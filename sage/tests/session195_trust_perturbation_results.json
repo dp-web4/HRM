@@ -1,0 +1,1547 @@
+{
+  "trust_shock": {
+    "scenario": "trust_shock",
+    "predictions": {
+      "p195_1": {
+        "passed": false,
+        "trust_couplings": 0,
+        "trust_range": 0.29825445669252093
+      },
+      "p195_2": {
+        "passed": false,
+        "correlation": NaN,
+        "trust_variance": 0.019767332533692665
+      },
+      "p195_3": {
+        "passed": true,
+        "applicable": false
+      },
+      "p195_4": {
+        "passed": true,
+        "trust_variance": 0.019767332533692665
+      },
+      "p195_5": {
+        "passed": true,
+        "trust_cascade": true,
+        "coupling_count": 0
+      }
+    },
+    "n_passed": 3,
+    "n_total": 5,
+    "trust_couplings": 0,
+    "trust_variance": 0.019767332533692665,
+    "trust_range": 0.29825445669252093,
+    "curvature_trust_correlation": NaN,
+    "final_snapshots": [
+      {
+        "machine_id": "thor",
+        "timestamp": 1768335731.5354664,
+        "domains": [
+          {
+            "domain_number": 1,
+            "domain_name": "Physics - Thermodynamics",
+            "coherence": 0.38780528895262184,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5176277
+          },
+          {
+            "domain_number": 2,
+            "domain_name": "Biochemistry - Metabolism",
+            "coherence": 0.9954803689031001,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5345793
+          },
+          {
+            "domain_number": 3,
+            "domain_name": "Biology - Organisms",
+            "coherence": 0.32317107412718504,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.517632
+          },
+          {
+            "domain_number": 4,
+            "domain_name": "Neuroscience - Attention",
+            "coherence": 0.9954803689031001,
+            "gradient": 0.08000000000000002,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5345745
+          },
+          {
+            "domain_number": 5,
+            "domain_name": "Network Theory - Trust",
+            "coherence": 0.24887009222577508,
+            "gradient": -0.3,
+            "coupling": 0.5,
+            "timestamp": 1768335731.534563
+          },
+          {
+            "domain_number": 6,
+            "domain_name": "Quantum - Phase",
+            "coherence": 0.38780528895262184,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5176337
+          },
+          {
+            "domain_number": 7,
+            "domain_name": "Magnetism - Spatial Coherence",
+            "coherence": 0.45243950377805897,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5176344
+          },
+          {
+            "domain_number": 8,
+            "domain_name": "Temporal Dynamics - Arrow of Time",
+            "coherence": 0.4201223963653402,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5176349
+          },
+          {
+            "domain_number": 9,
+            "domain_name": "Spacetime Geometry - Foundational",
+            "coherence": 0.4847566111907775,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.517635
+          }
+        ],
+        "total_coherence": 0.52177011037762,
+        "spacetime_metric": [
+          [
+            0.23498897209316663,
+            0.387805288952622
+          ],
+          [
+            0.387805288952622,
+            1.0
+          ]
+        ],
+        "scalar_curvature": 0.0,
+        "metabolic_state": "FOCUS"
+      },
+      {
+        "machine_id": "legion",
+        "timestamp": 1768335731.5354908,
+        "domains": [
+          {
+            "domain_number": 1,
+            "domain_name": "Physics - Thermodynamics",
+            "coherence": 0.35213293195738626,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.517639
+          },
+          {
+            "domain_number": 2,
+            "domain_name": "Biochemistry - Metabolism",
+            "coherence": 0.9947719071241745,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5345886
+          },
+          {
+            "domain_number": 3,
+            "domain_name": "Biology - Organisms",
+            "coherence": 0.2934441099644885,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5176399
+          },
+          {
+            "domain_number": 4,
+            "domain_name": "Neuroscience - Attention",
+            "coherence": 0.9947719071241745,
+            "gradient": 0.06,
+            "coupling": 0.5,
+            "timestamp": 1768335731.534584
+          },
+          {
+            "domain_number": 5,
+            "domain_name": "Network Theory - Trust",
+            "coherence": 0.547124548918296,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5345664
+          },
+          {
+            "domain_number": 6,
+            "domain_name": "Quantum - Phase",
+            "coherence": 0.35213293195738626,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5176415
+          },
+          {
+            "domain_number": 7,
+            "domain_name": "Magnetism - Spatial Coherence",
+            "coherence": 0.4108217539502843,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.517642
+          },
+          {
+            "domain_number": 8,
+            "domain_name": "Temporal Dynamics - Arrow of Time",
+            "coherence": 0.38147734295383556,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5176425
+          },
+          {
+            "domain_number": 9,
+            "domain_name": "Spacetime Geometry - Foundational",
+            "coherence": 0.44016616494673305,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.517643
+          }
+        ],
+        "total_coherence": 0.5296492887663066,
+        "spacetime_metric": [
+          [
+            0.1937462527639146,
+            0.3521329319573865
+          ],
+          [
+            0.3521329319573865,
+            1.0
+          ]
+        ],
+        "scalar_curvature": 0.0,
+        "metabolic_state": "FOCUS"
+      },
+      {
+        "machine_id": "sprout",
+        "timestamp": 1768335731.5355015,
+        "domains": [
+          {
+            "domain_number": 1,
+            "domain_name": "Physics - Thermodynamics",
+            "coherence": 0.35240637307591915,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5176451
+          },
+          {
+            "domain_number": 2,
+            "domain_name": "Biochemistry - Metabolism",
+            "coherence": 0.9947552976411406,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.534598
+          },
+          {
+            "domain_number": 3,
+            "domain_name": "Biology - Organisms",
+            "coherence": 0.2936719775632662,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.517646
+          },
+          {
+            "domain_number": 4,
+            "domain_name": "Neuroscience - Attention",
+            "coherence": 0.9947552976411406,
+            "gradient": 0.03,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5345936
+          },
+          {
+            "domain_number": 5,
+            "domain_name": "Network Theory - Trust",
+            "coherence": 0.5471154137026274,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5345695
+          },
+          {
+            "domain_number": 6,
+            "domain_name": "Quantum - Phase",
+            "coherence": 0.35240637307591915,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5176473
+          },
+          {
+            "domain_number": 7,
+            "domain_name": "Magnetism - Spatial Coherence",
+            "coherence": 0.4111407685885726,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.517648
+          },
+          {
+            "domain_number": 8,
+            "domain_name": "Temporal Dynamics - Arrow of Time",
+            "coherence": 0.3817735708322461,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5176485
+          },
+          {
+            "domain_number": 9,
+            "domain_name": "Spacetime Geometry - Foundational",
+            "coherence": 0.4405079663448991,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.517649
+          }
+        ],
+        "total_coherence": 0.5298370042739702,
+        "spacetime_metric": [
+          [
+            0.19404726841331874,
+            0.35240637307591927
+          ],
+          [
+            0.35240637307591927,
+            1.0
+          ]
+        ],
+        "scalar_curvature": 0.0,
+        "metabolic_state": "FOCUS"
+      }
+    ]
+  },
+  "trust_gradient": {
+    "scenario": "trust_gradient",
+    "predictions": {
+      "p195_1": {
+        "passed": false,
+        "trust_couplings": 0,
+        "trust_range": 0.5962681739106459
+      },
+      "p195_2": {
+        "passed": false,
+        "correlation": NaN,
+        "trust_variance": 0.05925596615357215
+      },
+      "p195_3": {
+        "passed": true,
+        "applicable": false
+      },
+      "p195_4": {
+        "passed": false,
+        "trust_variance": 0.05925596615357215
+      },
+      "p195_5": {
+        "passed": false,
+        "trust_cascade": false,
+        "coupling_count": 0
+      }
+    },
+    "n_passed": 1,
+    "n_total": 5,
+    "trust_couplings": 0,
+    "trust_variance": 0.05925596615357215,
+    "trust_range": 0.5962681739106459,
+    "curvature_trust_correlation": NaN,
+    "final_snapshots": [
+      {
+        "machine_id": "thor",
+        "timestamp": 1768335731.555035,
+        "domains": [
+          {
+            "domain_number": 1,
+            "domain_name": "Physics - Thermodynamics",
+            "coherence": 0.32881240297425374,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5375185
+          },
+          {
+            "domain_number": 2,
+            "domain_name": "Biochemistry - Metabolism",
+            "coherence": 0.9943833492574794,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5548913
+          },
+          {
+            "domain_number": 3,
+            "domain_name": "Biology - Organisms",
+            "coherence": 0.27401033581187834,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.537521
+          },
+          {
+            "domain_number": 4,
+            "domain_name": "Neuroscience - Attention",
+            "coherence": 0.9943833492574794,
+            "gradient": 0.08000000000000002,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5548866
+          },
+          {
+            "domain_number": 5,
+            "domain_name": "Network Theory - Trust",
+            "coherence": 0.8949450143317316,
+            "gradient": 0.3500000000000001,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5548701
+          },
+          {
+            "domain_number": 6,
+            "domain_name": "Quantum - Phase",
+            "coherence": 0.32881240297425374,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5375223
+          },
+          {
+            "domain_number": 7,
+            "domain_name": "Magnetism - Spatial Coherence",
+            "coherence": 0.38361447013662964,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.537523
+          },
+          {
+            "domain_number": 8,
+            "domain_name": "Temporal Dynamics - Arrow of Time",
+            "coherence": 0.3562134365554418,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5375235
+          },
+          {
+            "domain_number": 9,
+            "domain_name": "Spacetime Geometry - Foundational",
+            "coherence": 0.4110155037178174,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.537524
+          }
+        ],
+        "total_coherence": 0.5517989183352183,
+        "spacetime_metric": [
+          [
+            0.1689337442964112,
+            0.32881240297425396
+          ],
+          [
+            0.32881240297425396,
+            1.0
+          ]
+        ],
+        "scalar_curvature": 0.0,
+        "metabolic_state": "FOCUS"
+      },
+      {
+        "machine_id": "legion",
+        "timestamp": 1768335731.5550454,
+        "domains": [
+          {
+            "domain_number": 1,
+            "domain_name": "Physics - Thermodynamics",
+            "coherence": 0.3646659828383355,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5375261
+          },
+          {
+            "domain_number": 2,
+            "domain_name": "Biochemistry - Metabolism",
+            "coherence": 0.9950434138746309,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5549004
+          },
+          {
+            "domain_number": 3,
+            "domain_name": "Biology - Organisms",
+            "coherence": 0.3038883190319463,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.537527
+          },
+          {
+            "domain_number": 4,
+            "domain_name": "Neuroscience - Attention",
+            "coherence": 0.9950434138746309,
+            "gradient": 0.06,
+            "coupling": 0.5,
+            "timestamp": 1768335731.554896
+          },
+          {
+            "domain_number": 5,
+            "domain_name": "Network Theory - Trust",
+            "coherence": 0.5970260483247787,
+            "gradient": 0.050000000000000044,
+            "coupling": 0.5,
+            "timestamp": 1768335731.554876
+          },
+          {
+            "domain_number": 6,
+            "domain_name": "Quantum - Phase",
+            "coherence": 0.3646659828383355,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5375285
+          },
+          {
+            "domain_number": 7,
+            "domain_name": "Magnetism - Spatial Coherence",
+            "coherence": 0.4254436466447245,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.537529
+          },
+          {
+            "domain_number": 8,
+            "domain_name": "Temporal Dynamics - Arrow of Time",
+            "coherence": 0.39505481474153,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5375292
+          },
+          {
+            "domain_number": 9,
+            "domain_name": "Spacetime Geometry - Foundational",
+            "coherence": 0.4558324785479194,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.53753
+          }
+        ],
+        "total_coherence": 0.544073788968537,
+        "spacetime_metric": [
+          [
+            0.20778324849913943,
+            0.36466598283833557
+          ],
+          [
+            0.36466598283833557,
+            1.0
+          ]
+        ],
+        "scalar_curvature": 0.0,
+        "metabolic_state": "FOCUS"
+      },
+      {
+        "machine_id": "sprout",
+        "timestamp": 1768335731.5550542,
+        "domains": [
+          {
+            "domain_number": 1,
+            "domain_name": "Physics - Thermodynamics",
+            "coherence": 0.40275991989279475,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.537534
+          },
+          {
+            "domain_number": 2,
+            "domain_name": "Biochemistry - Metabolism",
+            "coherence": 0.9955894680702855,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5549097
+          },
+          {
+            "domain_number": 3,
+            "domain_name": "Biology - Organisms",
+            "coherence": 0.33563326657732895,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.537535
+          },
+          {
+            "domain_number": 4,
+            "domain_name": "Neuroscience - Attention",
+            "coherence": 0.9955894680702855,
+            "gradient": 0.03,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5549054
+          },
+          {
+            "domain_number": 5,
+            "domain_name": "Network Theory - Trust",
+            "coherence": 0.2986768404210856,
+            "gradient": -0.25000000000000006,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5548818
+          },
+          {
+            "domain_number": 6,
+            "domain_name": "Quantum - Phase",
+            "coherence": 0.40275991989279475,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5375361
+          },
+          {
+            "domain_number": 7,
+            "domain_name": "Magnetism - Spatial Coherence",
+            "coherence": 0.46988657320826077,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5375369
+          },
+          {
+            "domain_number": 8,
+            "domain_name": "Temporal Dynamics - Arrow of Time",
+            "coherence": 0.43632324655052734,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5375373
+          },
+          {
+            "domain_number": 9,
+            "domain_name": "Spacetime Geometry - Foundational",
+            "coherence": 0.5034498998659932,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5375378
+          }
+        ],
+        "total_coherence": 0.5378520669499285,
+        "spacetime_metric": [
+          [
+            0.2534618016750786,
+            0.4027599198927946
+          ],
+          [
+            0.4027599198927946,
+            1.0
+          ]
+        ],
+        "scalar_curvature": 0.0,
+        "metabolic_state": "FOCUS"
+      }
+    ]
+  },
+  "trust_oscillation": {
+    "scenario": "trust_oscillation",
+    "predictions": {
+      "p195_1": {
+        "passed": false,
+        "trust_couplings": 0,
+        "trust_range": 0.06126963526714552
+      },
+      "p195_2": {
+        "passed": false,
+        "correlation": NaN,
+        "trust_variance": 0.0008340661780377859
+      },
+      "p195_3": {
+        "passed": true,
+        "applicable": false
+      },
+      "p195_4": {
+        "passed": true,
+        "trust_variance": 0.0008340661780377859
+      },
+      "p195_5": {
+        "passed": true,
+        "trust_cascade": true,
+        "coupling_count": 0
+      }
+    },
+    "n_passed": 3,
+    "n_total": 5,
+    "trust_couplings": 0,
+    "trust_variance": 0.0008340661780377859,
+    "trust_range": 0.06126963526714552,
+    "curvature_trust_correlation": NaN,
+    "final_snapshots": [
+      {
+        "machine_id": "thor",
+        "timestamp": 1768335731.5741808,
+        "domains": [
+          {
+            "domain_number": 1,
+            "domain_name": "Physics - Thermodynamics",
+            "coherence": 0.3628281463658852,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5553973
+          },
+          {
+            "domain_number": 2,
+            "domain_name": "Biochemistry - Metabolism",
+            "coherence": 0.9948600925344051,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5740404
+          },
+          {
+            "domain_number": 3,
+            "domain_name": "Biology - Organisms",
+            "coherence": 0.3023567886382376,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5553997
+          },
+          {
+            "domain_number": 4,
+            "domain_name": "Neuroscience - Attention",
+            "coherence": 0.9948600925344051,
+            "gradient": 0.08000000000000002,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5740354
+          },
+          {
+            "domain_number": 5,
+            "domain_name": "Network Theory - Trust",
+            "coherence": 0.5471730508939229,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5740173
+          },
+          {
+            "domain_number": 6,
+            "domain_name": "Quantum - Phase",
+            "coherence": 0.3628281463658852,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5554013
+          },
+          {
+            "domain_number": 7,
+            "domain_name": "Magnetism - Spatial Coherence",
+            "coherence": 0.42329950409353223,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5554018
+          },
+          {
+            "domain_number": 8,
+            "domain_name": "Temporal Dynamics - Arrow of Time",
+            "coherence": 0.3930638252297088,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5554023
+          },
+          {
+            "domain_number": 9,
+            "domain_name": "Spacetime Geometry - Foundational",
+            "coherence": 0.45353518295735623,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5554028
+          }
+        ],
+        "total_coherence": 0.5372005366237044,
+        "spacetime_metric": [
+          [
+            0.2056941621801626,
+            0.362828146365885
+          ],
+          [
+            0.362828146365885,
+            1.0
+          ]
+        ],
+        "scalar_curvature": 0.0,
+        "metabolic_state": "FOCUS"
+      },
+      {
+        "machine_id": "legion",
+        "timestamp": 1768335731.5741901,
+        "domains": [
+          {
+            "domain_number": 1,
+            "domain_name": "Physics - Thermodynamics",
+            "coherence": 0.3652398352776083,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5554047
+          },
+          {
+            "domain_number": 2,
+            "domain_name": "Biochemistry - Metabolism",
+            "coherence": 0.9953027417787242,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5740495
+          },
+          {
+            "domain_number": 3,
+            "domain_name": "Biology - Organisms",
+            "coherence": 0.30436652939800696,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5554056
+          },
+          {
+            "domain_number": 4,
+            "domain_name": "Neuroscience - Attention",
+            "coherence": 0.9953027417787242,
+            "gradient": 0.06,
+            "coupling": 0.5,
+            "timestamp": 1768335731.574045
+          },
+          {
+            "domain_number": 5,
+            "domain_name": "Network Theory - Trust",
+            "coherence": 0.48590341562677736,
+            "gradient": -0.06180339887498937,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5740254
+          },
+          {
+            "domain_number": 6,
+            "domain_name": "Quantum - Phase",
+            "coherence": 0.3652398352776083,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.555407
+          },
+          {
+            "domain_number": 7,
+            "domain_name": "Magnetism - Spatial Coherence",
+            "coherence": 0.42611314115720983,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5554073
+          },
+          {
+            "domain_number": 8,
+            "domain_name": "Temporal Dynamics - Arrow of Time",
+            "coherence": 0.3956764882174091,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5554078
+          },
+          {
+            "domain_number": 9,
+            "domain_name": "Spacetime Geometry - Foundational",
+            "coherence": 0.45654979409701046,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5554085
+          }
+        ],
+        "total_coherence": 0.5321882802898976,
+        "spacetime_metric": [
+          [
+            0.20843771449002266,
+            0.3652398352776084
+          ],
+          [
+            0.3652398352776084,
+            1.0
+          ]
+        ],
+        "scalar_curvature": 0.0,
+        "metabolic_state": "FOCUS"
+      },
+      {
+        "machine_id": "sprout",
+        "timestamp": 1768335731.5741985,
+        "domains": [
+          {
+            "domain_number": 1,
+            "domain_name": "Physics - Thermodynamics",
+            "coherence": 0.3631596377665793,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.555412
+          },
+          {
+            "domain_number": 2,
+            "domain_name": "Biochemistry - Metabolism",
+            "coherence": 0.9948401946648276,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5740588
+          },
+          {
+            "domain_number": 3,
+            "domain_name": "Biology - Organisms",
+            "coherence": 0.30263303147214937,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.555413
+          },
+          {
+            "domain_number": 4,
+            "domain_name": "Neuroscience - Attention",
+            "coherence": 0.9948401946648276,
+            "gradient": 0.03,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5740545
+          },
+          {
+            "domain_number": 5,
+            "domain_name": "Network Theory - Trust",
+            "coherence": 0.5471621070656553,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5740306
+          },
+          {
+            "domain_number": 6,
+            "domain_name": "Quantum - Phase",
+            "coherence": 0.3631596377665793,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5554144
+          },
+          {
+            "domain_number": 7,
+            "domain_name": "Magnetism - Spatial Coherence",
+            "coherence": 0.423686244061009,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5554147
+          },
+          {
+            "domain_number": 8,
+            "domain_name": "Temporal Dynamics - Arrow of Time",
+            "coherence": 0.39342294091379404,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5554154
+          },
+          {
+            "domain_number": 9,
+            "domain_name": "Spacetime Geometry - Foundational",
+            "coherence": 0.453949547208224,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5554159
+          }
+        ],
+        "total_coherence": 0.537428170620405,
+        "spacetime_metric": [
+          [
+            0.20607019141055158,
+            0.3631596377665792
+          ],
+          [
+            0.3631596377665792,
+            1.0
+          ]
+        ],
+        "scalar_curvature": 0.0,
+        "metabolic_state": "FOCUS"
+      }
+    ]
+  },
+  "trust_recovery": {
+    "scenario": "trust_recovery",
+    "predictions": {
+      "p195_1": {
+        "passed": false,
+        "trust_couplings": 0,
+        "trust_range": 0.2972608422017611
+      },
+      "p195_2": {
+        "passed": false,
+        "correlation": NaN,
+        "trust_variance": 0.01963631453996224
+      },
+      "p195_3": {
+        "passed": true,
+        "applicable": true
+      },
+      "p195_4": {
+        "passed": true,
+        "trust_variance": 0.01963631453996224
+      },
+      "p195_5": {
+        "passed": true,
+        "trust_cascade": true,
+        "coupling_count": 0
+      }
+    },
+    "n_passed": 3,
+    "n_total": 5,
+    "trust_couplings": 0,
+    "trust_variance": 0.01963631453996224,
+    "trust_range": 0.2972608422017611,
+    "curvature_trust_correlation": NaN,
+    "final_snapshots": [
+      {
+        "machine_id": "thor",
+        "timestamp": 1768335731.5912967,
+        "domains": [
+          {
+            "domain_number": 1,
+            "domain_name": "Physics - Thermodynamics",
+            "coherence": 0.3707334220927505,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5745044
+          },
+          {
+            "domain_number": 2,
+            "domain_name": "Biochemistry - Metabolism",
+            "coherence": 0.9955685845812247,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5911555
+          },
+          {
+            "domain_number": 3,
+            "domain_name": "Biology - Organisms",
+            "coherence": 0.30894451841062526,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5745065
+          },
+          {
+            "domain_number": 4,
+            "domain_name": "Neuroscience - Attention",
+            "coherence": 0.9955685845812247,
+            "gradient": 0.08000000000000002,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5911508
+          },
+          {
+            "domain_number": 5,
+            "domain_name": "Network Theory - Trust",
+            "coherence": 0.5475627215196736,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.591137
+          },
+          {
+            "domain_number": 6,
+            "domain_name": "Quantum - Phase",
+            "coherence": 0.3707334220927505,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5745077
+          },
+          {
+            "domain_number": 7,
+            "domain_name": "Magnetism - Spatial Coherence",
+            "coherence": 0.43252232577487554,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5745082
+          },
+          {
+            "domain_number": 8,
+            "domain_name": "Temporal Dynamics - Arrow of Time",
+            "coherence": 0.40162787393381333,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.574509
+          },
+          {
+            "domain_number": 9,
+            "domain_name": "Spacetime Geometry - Foundational",
+            "coherence": 0.46341677761593775,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5745094
+          }
+        ],
+        "total_coherence": 0.5429642478447639,
+        "spacetime_metric": [
+          [
+            0.2147551097759395,
+            0.37073342209275023
+          ],
+          [
+            0.37073342209275023,
+            1.0
+          ]
+        ],
+        "scalar_curvature": 0.0,
+        "metabolic_state": "FOCUS"
+      },
+      {
+        "machine_id": "legion",
+        "timestamp": 1768335731.591306,
+        "domains": [
+          {
+            "domain_number": 1,
+            "domain_name": "Physics - Thermodynamics",
+            "coherence": 0.37079347840277344,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5745125
+          },
+          {
+            "domain_number": 2,
+            "domain_name": "Biochemistry - Metabolism",
+            "coherence": 0.9955649582549083,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5911646
+          },
+          {
+            "domain_number": 3,
+            "domain_name": "Biology - Organisms",
+            "coherence": 0.30899456533564457,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5745134
+          },
+          {
+            "domain_number": 4,
+            "domain_name": "Neuroscience - Attention",
+            "coherence": 0.9955649582549083,
+            "gradient": 0.06,
+            "coupling": 0.5,
+            "timestamp": 1768335731.59116
+          },
+          {
+            "domain_number": 5,
+            "domain_name": "Network Theory - Trust",
+            "coherence": 0.5475607270401996,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5911403
+          },
+          {
+            "domain_number": 6,
+            "domain_name": "Quantum - Phase",
+            "coherence": 0.37079347840277344,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.574515
+          },
+          {
+            "domain_number": 7,
+            "domain_name": "Magnetism - Spatial Coherence",
+            "coherence": 0.4325923914699026,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5745158
+          },
+          {
+            "domain_number": 8,
+            "domain_name": "Temporal Dynamics - Arrow of Time",
+            "coherence": 0.40169293493633823,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.574516
+          },
+          {
+            "domain_number": 9,
+            "domain_name": "Spacetime Geometry - Foundational",
+            "coherence": 0.4634918480034669,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5745165
+          }
+        ],
+        "total_coherence": 0.543005482233435,
+        "spacetime_metric": [
+          [
+            0.21482469316566885,
+            0.37079347840277355
+          ],
+          [
+            0.37079347840277355,
+            1.0
+          ]
+        ],
+        "scalar_curvature": 0.0,
+        "metabolic_state": "FOCUS"
+      },
+      {
+        "machine_id": "sprout",
+        "timestamp": 1768335731.591314,
+        "domains": [
+          {
+            "domain_number": 1,
+            "domain_name": "Physics - Thermodynamics",
+            "coherence": 0.35217227261848455,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5745184
+          },
+          {
+            "domain_number": 2,
+            "domain_name": "Biochemistry - Metabolism",
+            "coherence": 0.9939077285199537,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.591174
+          },
+          {
+            "domain_number": 3,
+            "domain_name": "Biology - Organisms",
+            "coherence": 0.2934768938487375,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5745194
+          },
+          {
+            "domain_number": 4,
+            "domain_name": "Neuroscience - Attention",
+            "coherence": 0.9939077285199537,
+            "gradient": 0.03,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5911696
+          },
+          {
+            "domain_number": 5,
+            "domain_name": "Network Theory - Trust",
+            "coherence": 0.8448215692419607,
+            "gradient": 0.30000000000000004,
+            "coupling": 0.5,
+            "timestamp": 1768335731.591146
+          },
+          {
+            "domain_number": 6,
+            "domain_name": "Quantum - Phase",
+            "coherence": 0.35217227261848455,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5745208
+          },
+          {
+            "domain_number": 7,
+            "domain_name": "Magnetism - Spatial Coherence",
+            "coherence": 0.41086765138823245,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5745213
+          },
+          {
+            "domain_number": 8,
+            "domain_name": "Temporal Dynamics - Arrow of Time",
+            "coherence": 0.3815199620033589,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5745218
+          },
+          {
+            "domain_number": 9,
+            "domain_name": "Spacetime Geometry - Foundational",
+            "coherence": 0.44021534077310603,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.574522
+          }
+        ],
+        "total_coherence": 0.5625623799480303,
+        "spacetime_metric": [
+          [
+            0.19378954625198186,
+            0.3521722726184848
+          ],
+          [
+            0.3521722726184848,
+            1.0
+          ]
+        ],
+        "scalar_curvature": 0.0,
+        "metabolic_state": "FOCUS"
+      }
+    ]
+  },
+  "asymmetric_trust": {
+    "scenario": "asymmetric_trust",
+    "predictions": {
+      "p195_1": {
+        "passed": false,
+        "trust_couplings": 0,
+        "trust_range": 0.3975219670464468
+      },
+      "p195_2": {
+        "passed": false,
+        "correlation": NaN,
+        "trust_variance": 0.028528802078883392
+      },
+      "p195_3": {
+        "passed": true,
+        "applicable": false
+      },
+      "p195_4": {
+        "passed": true,
+        "trust_variance": 0.028528802078883392
+      },
+      "p195_5": {
+        "passed": false,
+        "trust_cascade": false,
+        "coupling_count": 0
+      }
+    },
+    "n_passed": 2,
+    "n_total": 5,
+    "trust_couplings": 0,
+    "trust_variance": 0.028528802078883392,
+    "trust_range": 0.3975219670464468,
+    "curvature_trust_correlation": NaN,
+    "final_snapshots": [
+      {
+        "machine_id": "thor",
+        "timestamp": 1768335731.6090105,
+        "domains": [
+          {
+            "domain_number": 1,
+            "domain_name": "Physics - Thermodynamics",
+            "coherence": 0.33583920927294536,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.59158
+          },
+          {
+            "domain_number": 2,
+            "domain_name": "Biochemistry - Metabolism",
+            "coherence": 0.9945179841888879,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.6088686
+          },
+          {
+            "domain_number": 3,
+            "domain_name": "Biology - Organisms",
+            "coherence": 0.2798660077274545,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5915813
+          },
+          {
+            "domain_number": 4,
+            "domain_name": "Neuroscience - Attention",
+            "coherence": 0.9945179841888879,
+            "gradient": 0.08000000000000002,
+            "coupling": 0.5,
+            "timestamp": 1768335731.6088643
+          },
+          {
+            "domain_number": 5,
+            "domain_name": "Network Theory - Trust",
+            "coherence": 0.745888488141666,
+            "gradient": 0.19999999999999996,
+            "coupling": 0.5,
+            "timestamp": 1768335731.608848
+          },
+          {
+            "domain_number": 6,
+            "domain_name": "Quantum - Phase",
+            "coherence": 0.33583920927294536,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.591583
+          },
+          {
+            "domain_number": 7,
+            "domain_name": "Magnetism - Spatial Coherence",
+            "coherence": 0.3918124108184357,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5915835
+          },
+          {
+            "domain_number": 8,
+            "domain_name": "Temporal Dynamics - Arrow of Time",
+            "coherence": 0.36382581004569053,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.591584
+          },
+          {
+            "domain_number": 9,
+            "domain_name": "Spacetime Geometry - Foundational",
+            "coherence": 0.4197990115911812,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5915844
+          }
+        ],
+        "total_coherence": 0.5402117905831216,
+        "spacetime_metric": [
+          [
+            0.1762312101329327,
+            0.33583920927294497
+          ],
+          [
+            0.33583920927294497,
+            1.0
+          ]
+        ],
+        "scalar_curvature": 0.0,
+        "metabolic_state": "FOCUS"
+      },
+      {
+        "machine_id": "legion",
+        "timestamp": 1768335731.6090198,
+        "domains": [
+          {
+            "domain_number": 1,
+            "domain_name": "Physics - Thermodynamics",
+            "coherence": 0.37231867274167496,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5915864
+          },
+          {
+            "domain_number": 2,
+            "domain_name": "Biochemistry - Metabolism",
+            "coherence": 0.9951573102908777,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.608878
+          },
+          {
+            "domain_number": 3,
+            "domain_name": "Biology - Organisms",
+            "coherence": 0.31026556061806226,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5915875
+          },
+          {
+            "domain_number": 4,
+            "domain_name": "Neuroscience - Attention",
+            "coherence": 0.9951573102908777,
+            "gradient": 0.06,
+            "coupling": 0.5,
+            "timestamp": 1768335731.6088731
+          },
+          {
+            "domain_number": 5,
+            "domain_name": "Network Theory - Trust",
+            "coherence": 0.44782078963089506,
+            "gradient": -0.09999999999999998,
+            "coupling": 0.5,
+            "timestamp": 1768335731.6088538
+          },
+          {
+            "domain_number": 6,
+            "domain_name": "Quantum - Phase",
+            "coherence": 0.37231867274167496,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5915892
+          },
+          {
+            "domain_number": 7,
+            "domain_name": "Magnetism - Spatial Coherence",
+            "coherence": 0.43437178486528694,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5915911
+          },
+          {
+            "domain_number": 8,
+            "domain_name": "Temporal Dynamics - Arrow of Time",
+            "coherence": 0.403345228803481,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5915916
+          },
+          {
+            "domain_number": 9,
+            "domain_name": "Spacetime Geometry - Foundational",
+            "coherence": 0.46539834092709376,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.591592
+          }
+        ],
+        "total_coherence": 0.5329059634344361,
+        "spacetime_metric": [
+          [
+            0.2165956157376914,
+            0.372318672741675
+          ],
+          [
+            0.372318672741675,
+            1.0
+          ]
+        ],
+        "scalar_curvature": 0.0,
+        "metabolic_state": "FOCUS"
+      },
+      {
+        "machine_id": "sprout",
+        "timestamp": 1768335731.6090338,
+        "domains": [
+          {
+            "domain_number": 1,
+            "domain_name": "Physics - Thermodynamics",
+            "coherence": 0.38516611694878716,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.591594
+          },
+          {
+            "domain_number": 2,
+            "domain_name": "Biochemistry - Metabolism",
+            "coherence": 0.9953329174149118,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.608887
+          },
+          {
+            "domain_number": 3,
+            "domain_name": "Biology - Organisms",
+            "coherence": 0.3209717641239893,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.591595
+          },
+          {
+            "domain_number": 4,
+            "domain_name": "Neuroscience - Attention",
+            "coherence": 0.9953329174149118,
+            "gradient": 0.03,
+            "coupling": 0.5,
+            "timestamp": 1768335731.6088824
+          },
+          {
+            "domain_number": 5,
+            "domain_name": "Network Theory - Trust",
+            "coherence": 0.34836652109521915,
+            "gradient": -0.2,
+            "coupling": 0.5,
+            "timestamp": 1768335731.608859
+          },
+          {
+            "domain_number": 6,
+            "domain_name": "Quantum - Phase",
+            "coherence": 0.38516611694878716,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5915966
+          },
+          {
+            "domain_number": 7,
+            "domain_name": "Magnetism - Spatial Coherence",
+            "coherence": 0.4493604697735846,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5915968
+          },
+          {
+            "domain_number": 8,
+            "domain_name": "Temporal Dynamics - Arrow of Time",
+            "coherence": 0.41726329336118556,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5915973
+          },
+          {
+            "domain_number": 9,
+            "domain_name": "Spacetime Geometry - Foundational",
+            "coherence": 0.4814576461859836,
+            "gradient": 0.0,
+            "coupling": 0.5,
+            "timestamp": 1768335731.5915978
+          }
+        ],
+        "total_coherence": 0.5309353070297066,
+        "spacetime_metric": [
+          [
+            0.23180146507094776,
+            0.3851661169487869
+          ],
+          [
+            0.3851661169487869,
+            1.0
+          ]
+        ],
+        "scalar_curvature": 0.0,
+        "metabolic_state": "FOCUS"
+      }
+    ]
+  }
+}

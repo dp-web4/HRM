@@ -1,12 +1,12 @@
 {
   "track": "training",
-  "current_session": 5,
+  "current_session": 6,
   "current_skill_track": "A",
   "skill_track_progress": {
     "A": {
       "started": "2026-01-10T21:38:33.027378",
       "completed": null,
-      "sessions": 5
+      "sessions": 6
     },
     "B": {
       "started": null,
@@ -24,17 +24,18 @@
       "sessions": 0
     }
   },
-  "last_session": "2026-01-13T09:01:54.297292",
-  "last_session_summary": "T005: 2/5 (40%). Math interference (1+1 contaminated 2+2 answer). Editor persona pattern emerged. 5-session trend: decline from 80-100% to 40% plateau.",
+  "last_session": "2026-01-13T12:03:16.219983",
+  "last_session_summary": "T006: 5/5 (100%). Recovery from T005. First yes/no success ('Is water dry?' → 'No'). No topic contamination. Verbosity persists but correct content. 6-session trend: high variance (40-100%), not plateau.",
   "skill_observations": [
     "Complete exercises: 0% success rate - model gives alternate completions",
-    "Topic contamination persists across exercise types",
-    "Model defaults to 'editor/corrector' role inappropriately",
-    "Verbosity is consistent limitation - cannot give brief answers"
+    "Topic contamination inconsistent - absent in T006, present in T004-T005",
+    "Model defaults to 'editor/corrector' role but content still correct",
+    "Verbosity is consistent limitation - cannot give brief answers",
+    "List exercises most reliable (100%), count exercises reliable (83%)"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",
-    "Consider Track B (Memory) to test different capabilities",
-    "Current 40% may be model ceiling for Track A format"
+    "Continue Track A through T010 to establish full baseline",
+    "Model shows high variance (40-100%), not stable floor"
   ]
 }

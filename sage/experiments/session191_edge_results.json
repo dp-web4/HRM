@@ -1,0 +1,42 @@
+{
+  "session": 191,
+  "platform": "Sprout (Jetson Orin Nano 8GB)",
+  "date": "2026-01-12",
+  "domain": "Spacetime Geometry",
+  "tests_passed": 6,
+  "tests_total": 6,
+  "results": [
+    {
+      "test": "metric_tensor",
+      "ops_per_sec": 144407.63429766806,
+      "passed": true
+    },
+    {
+      "test": "christoffel",
+      "note": "computed internally",
+      "passed": true
+    },
+    {
+      "test": "scalar_curvature",
+      "ops_per_sec": 149.4410300777814,
+      "passed": true
+    },
+    {
+      "test": "geodesic_solver",
+      "geodesics_per_sec": 84.7865392779676,
+      "passed": true
+    },
+    {
+      "test": "curvature_gradient",
+      "has_curvature": true,
+      "passed": true
+    },
+    {
+      "test": "flat_spacetime",
+      "max_curvature": 0.0,
+      "is_flat": true,
+      "passed": true
+    }
+  ],
+  "status": "VALIDATED"
+}

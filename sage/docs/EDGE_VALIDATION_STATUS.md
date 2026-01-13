@@ -8,9 +8,9 @@
 
 ---
 
-## Sessions 177-190: Complete Edge Validation
+## Sessions 177-191: Complete Edge Validation
 
-All 14 SAGE sessions have been validated on constrained edge hardware.
+All 15 SAGE sessions have been validated on constrained edge hardware.
 
 ### Validation Summary
 
@@ -30,6 +30,7 @@ All 14 SAGE sessions have been validated on constrained edge hardware.
 | 188 | Trust-Magnetism | 6/6 | PASS | 970K temp map ops/sec |
 | 189 | Temporal Coherence | 8/8 | PASS | 1.5M dC/dt ops/sec |
 | 190 | Spacetime Coupling | 7/7 | PASS | 1.2M decay ops/sec |
+| 191 | Curvature & Geodesics | 6/6 | PASS | 144K metric ops/sec |
 
 ---
 
@@ -91,6 +92,14 @@ All 14 SAGE sessions have been validated on constrained edge hardware.
 - Coupled evolution: 24,877 ops/sec
 - Potential ninth domain: SPACETIME GEOMETRY
 
+### Session 191: Curvature and Geodesics
+- Metric tensor computation: 144,408 ops/sec
+- Scalar curvature R: 149 ops/sec
+- Geodesic solver: 85 geodesics/sec
+- Curvature-gradient relationship: Validated
+- Flat spacetime uniform: Validated
+- Ninth domain: COMPLETE (SPACETIME GEOMETRY)
+
 ---
 
 ## Edge Hardware Characteristics
@@ -133,9 +142,9 @@ All 14 SAGE sessions have been validated on constrained edge hardware.
 
 ---
 
-## Eight-Domain Unification on Edge (+ Ninth Emerging)
+## Nine-Domain Unification on Edge (COMPLETE)
 
-Sessions 189-190 validate the theoretical unification:
+Sessions 189-191 validate the complete theoretical unification:
 
 1. **Physics**: Thermodynamic phase transitions
 2. **Biochemistry**: ATP metabolic dynamics
@@ -145,10 +154,11 @@ Sessions 189-190 validate the theoretical unification:
 6. **Quantum Measurement**: Decoherence dynamics
 7. **Magnetism**: Spin coherence (Session 187)
 8. **Temporal Dynamics**: Arrow of time (Session 189)
-9. **Spacetime Geometry**: Coherence metric tensor (Session 190, emerging)
+9. **Spacetime Geometry**: Curvature and geodesics (Session 191, COMPLETE)
 
-All eight+ domains unified under single coherence framework C(t) on ARM64 edge.
-Session 190 explores space-time coupling: Γ_eff = Γ₀ / ξ^α
+All nine domains unified under single coherence framework C(t) on ARM64 edge.
+- Session 190: Space-time coupling (Γ_eff = Γ₀ / ξ^α)
+- Session 191: Riemann curvature, geodesics, emergent gravity from coherence
 
 ---
 
@@ -185,6 +195,7 @@ All validation tests available in `sage/experiments/`:
 - `session188_edge_trust_magnetism_test.py`
 - `session189_edge_temporal_test.py`
 - `session190_edge_spacetime_test.py`
+- `session191_edge_curvature_test.py`
 
 Results saved as JSON in same directory.
 

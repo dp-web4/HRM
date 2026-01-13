@@ -1,0 +1,2005 @@
+{
+  "predictions": {
+    "p194_1": {
+      "passed": true,
+      "delta_c": 0.00017382191067616404
+    },
+    "p194_2": {
+      "passed": true,
+      "metabolic_diversity": 1
+    },
+    "p194_3": {
+      "passed": false,
+      "trust_couplings": 0
+    },
+    "p194_4": {
+      "passed": true,
+      "curvature_variance": 0.0
+    },
+    "p194_5": {
+      "passed": true,
+      "behavior_types": [
+        "trust_cascade",
+        "distributed_attention",
+        "collective_focus",
+        "metabolic_synchrony",
+        "coherence_resonance"
+      ]
+    }
+  },
+  "n_passed": 4,
+  "n_total": 5,
+  "final_snapshots": [
+    {
+      "machine_id": "thor",
+      "timestamp": 1768334600.6975374,
+      "domains": [
+        {
+          "domain_number": 1,
+          "domain_name": "Physics - Thermodynamics",
+          "coherence": 0.36340424459305976,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.681712
+        },
+        {
+          "domain_number": 2,
+          "domain_name": "Biochemistry - Metabolism",
+          "coherence": 0.9950062538891368,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6973891
+        },
+        {
+          "domain_number": 3,
+          "domain_name": "Biology - Organisms",
+          "coherence": 0.30283687049421665,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6817164
+        },
+        {
+          "domain_number": 4,
+          "domain_name": "Neuroscience - Attention",
+          "coherence": 0.9950062538891368,
+          "gradient": 0.08000000000000002,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6973844
+        },
+        {
+          "domain_number": 5,
+          "domain_name": "Network Theory - Trust",
+          "coherence": 0.3331205575436381,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.681718
+        },
+        {
+          "domain_number": 6,
+          "domain_name": "Quantum - Phase",
+          "coherence": 0.36340424459305976,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6817186
+        },
+        {
+          "domain_number": 7,
+          "domain_name": "Magnetism - Spatial Coherence",
+          "coherence": 0.4239716186919028,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.681719
+        },
+        {
+          "domain_number": 8,
+          "domain_name": "Temporal Dynamics - Arrow of Time",
+          "coherence": 0.393687931642481,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6817195
+        },
+        {
+          "domain_number": 9,
+          "domain_name": "Spacetime Geometry - Foundational",
+          "coherence": 0.45425530574132433,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.68172
+        }
+      ],
+      "total_coherence": 0.5138548090086618,
+      "spacetime_metric": [
+        [
+          0.20634788279414404,
+          0.3634042445930595
+        ],
+        [
+          0.3634042445930595,
+          1.0
+        ]
+      ],
+      "scalar_curvature": 0.0,
+      "metabolic_state": "FOCUS"
+    },
+    {
+      "machine_id": "legion",
+      "timestamp": 1768334600.6975484,
+      "domains": [
+        {
+          "domain_number": 1,
+          "domain_name": "Physics - Thermodynamics",
+          "coherence": 0.36344316597060045,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6817243
+        },
+        {
+          "domain_number": 2,
+          "domain_name": "Biochemistry - Metabolism",
+          "coherence": 0.9950034353284106,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6973984
+        },
+        {
+          "domain_number": 3,
+          "domain_name": "Biology - Organisms",
+          "coherence": 0.30286930497550063,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6817257
+        },
+        {
+          "domain_number": 4,
+          "domain_name": "Neuroscience - Attention",
+          "coherence": 0.9950034353284106,
+          "gradient": 0.06,
+          "coupling": 0.5,
+          "timestamp": 1768334600.697394
+        },
+        {
+          "domain_number": 5,
+          "domain_name": "Network Theory - Trust",
+          "coherence": 0.3331562354730506,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6817265
+        },
+        {
+          "domain_number": 6,
+          "domain_name": "Quantum - Phase",
+          "coherence": 0.36344316597060045,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6817272
+        },
+        {
+          "domain_number": 7,
+          "domain_name": "Magnetism - Spatial Coherence",
+          "coherence": 0.4240170269657009,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6817274
+        },
+        {
+          "domain_number": 8,
+          "domain_name": "Temporal Dynamics - Arrow of Time",
+          "coherence": 0.3937300964681509,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.681728
+        },
+        {
+          "domain_number": 9,
+          "domain_name": "Spacetime Geometry - Foundational",
+          "coherence": 0.45430395746325053,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6817286
+        }
+      ],
+      "total_coherence": 0.5138855359937416,
+      "spacetime_metric": [
+        [
+          0.20639208576677096,
+          0.36344316597060045
+        ],
+        [
+          0.36344316597060045,
+          1.0
+        ]
+      ],
+      "scalar_curvature": 0.0,
+      "metabolic_state": "FOCUS"
+    },
+    {
+      "machine_id": "sprout",
+      "timestamp": 1768334600.697557,
+      "domains": [
+        {
+          "domain_number": 1,
+          "domain_name": "Physics - Thermodynamics",
+          "coherence": 0.3636244207277274,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6817307
+        },
+        {
+          "domain_number": 2,
+          "domain_name": "Biochemistry - Metabolism",
+          "coherence": 0.9949903139990102,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6974077
+        },
+        {
+          "domain_number": 3,
+          "domain_name": "Biology - Organisms",
+          "coherence": 0.30302035060643917,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.681732
+        },
+        {
+          "domain_number": 4,
+          "domain_name": "Neuroscience - Attention",
+          "coherence": 0.9949903139990102,
+          "gradient": 0.03,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6974034
+        },
+        {
+          "domain_number": 5,
+          "domain_name": "Network Theory - Trust",
+          "coherence": 0.33332238566708317,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.681733
+        },
+        {
+          "domain_number": 6,
+          "domain_name": "Quantum - Phase",
+          "coherence": 0.3636244207277274,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6817334
+        },
+        {
+          "domain_number": 7,
+          "domain_name": "Magnetism - Spatial Coherence",
+          "coherence": 0.424228490849015,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6817338
+        },
+        {
+          "domain_number": 8,
+          "domain_name": "Temporal Dynamics - Arrow of Time",
+          "coherence": 0.39392645578837093,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6817343
+        },
+        {
+          "domain_number": 9,
+          "domain_name": "Spacetime Geometry - Foundational",
+          "coherence": 0.45453052590965903,
+          "gradient": 0.0,
+          "coupling": 0.5,
+          "timestamp": 1768334600.6817346
+        }
+      ],
+      "total_coherence": 0.514028630919338,
+      "spacetime_metric": [
+        [
+          0.20659799898371123,
+          0.36362442072772727
+        ],
+        [
+          0.36362442072772727,
+          1.0
+        ]
+      ],
+      "scalar_curvature": 0.0,
+      "metabolic_state": "FOCUS"
+    }
+  ],
+  "sync_history": [
+    {
+      "timestamp": 1768334600.6821525,
+      "coherences": {
+        "thor": 0.6607138888888889,
+        "legion": 0.653325,
+        "sprout": 0.6422416666666667
+      },
+      "delta_c": 0.018472222222222223,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6823328,
+      "coherences": {
+        "thor": 0.6875696250000001,
+        "legion": 0.6731612916666667,
+        "sprout": 0.6515487916666667
+      },
+      "delta_c": 0.03602083333333339,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6824944,
+      "coherences": {
+        "thor": 0.6957827456661921,
+        "legion": 0.6924027558499763,
+        "sprout": 0.6609461168493121
+      },
+      "delta_c": 0.03483662881687999,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.682651,
+      "coherences": {
+        "thor": 0.6932453646791552,
+        "legion": 0.6940327144981875,
+        "sprout": 0.6699963314348357
+      },
+      "delta_c": 0.024036383063351763,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6828067,
+      "coherences": {
+        "thor": 0.6908170770310348,
+        "legion": 0.691576213279583,
+        "sprout": 0.6786508656225556
+      },
+      "delta_c": 0.012925347657027353,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6829612,
+      "coherences": {
+        "thor": 0.68851242680519,
+        "legion": 0.6892444619169235,
+        "sprout": 0.6869275517624684
+      },
+      "delta_c": 0.0023169101544550097,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.683116,
+      "coherences": {
+        "thor": 0.6862438280247308,
+        "legion": 0.6869498238032025,
+        "sprout": 0.6895978170907855
+      },
+      "delta_c": 0.0033539890660546634,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.683268,
+      "coherences": {
+        "thor": 0.6839693320176466,
+        "legion": 0.6846502754557321,
+        "sprout": 0.6878307296202713
+      },
+      "delta_c": 0.0038613976026246055,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6834216,
+      "coherences": {
+        "thor": 0.6817011442765081,
+        "legion": 0.6823579601904833,
+        "sprout": 0.6854254505581501
+      },
+      "delta_c": 0.003724306281641998,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.683653,
+      "coherences": {
+        "thor": 0.6794425906136555,
+        "legion": 0.6800761653102485,
+        "sprout": 0.6830348584306565
+      },
+      "delta_c": 0.003592267817000949,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6838088,
+      "coherences": {
+        "thor": 0.6771936879725271,
+        "legion": 0.6778048742161533,
+        "sprout": 0.6806587778791384
+      },
+      "delta_c": 0.0034650899066113183,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.683964,
+      "coherences": {
+        "thor": 0.6749544506632401,
+        "legion": 0.6755440689767359,
+        "sprout": 0.6782970384390323
+      },
+      "delta_c": 0.0033425877757922162,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.684119,
+      "coherences": {
+        "thor": 0.6727248904777295,
+        "legion": 0.6732937303916726,
+        "sprout": 0.6759494743528042
+      },
+      "delta_c": 0.003224583875074627,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6842694,
+      "coherences": {
+        "thor": 0.6705050168001566,
+        "legion": 0.6710538380528321,
+        "sprout": 0.6736159243905769
+      },
+      "delta_c": 0.00311090759042032,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.684423,
+      "coherences": {
+        "thor": 0.6682948367127782,
+        "legion": 0.6688243704027693,
+        "sprout": 0.6712962316781179
+      },
+      "delta_c": 0.0030013949653396876,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6845732,
+      "coherences": {
+        "thor": 0.6660943550974704,
+        "legion": 0.6666053047907654,
+        "sprout": 0.6689902435318787
+      },
+      "delta_c": 0.0028958884344083557,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6847267,
+      "coherences": {
+        "thor": 0.6639035747330789,
+        "legion": 0.6643966175265189,
+        "sprout": 0.6666978113007822
+      },
+      "delta_c": 0.0027942365677032788,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6848786,
+      "coherences": {
+        "thor": 0.6617224963887759,
+        "legion": 0.6621982839315866,
+        "sprout": 0.6644187902144778
+      },
+      "delta_c": 0.002696293825701912,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.685032,
+      "coherences": {
+        "thor": 0.6595511189135813,
+        "legion": 0.6600102783886683,
+        "sprout": 0.662153039237786
+      },
+      "delta_c": 0.0026019203242046984,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.685197,
+      "coherences": {
+        "thor": 0.6573894393222122,
+        "legion": 0.6578325743888255,
+        "sprout": 0.6599004209310757
+      },
+      "delta_c": 0.0025109816088635384,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6853504,
+      "coherences": {
+        "thor": 0.6552374528774082,
+        "legion": 0.6556651445767219,
+        "sprout": 0.6576608013163218
+      },
+      "delta_c": 0.002423348438913564,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.685505,
+      "coherences": {
+        "thor": 0.6530951531688793,
+        "legion": 0.6535079607939679,
+        "sprout": 0.6554340497486052
+      },
+      "delta_c": 0.0023388965797258576,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6856556,
+      "coherences": {
+        "thor": 0.6509625321890157,
+        "legion": 0.6513609941206483,
+        "sprout": 0.6532200387928251
+      },
+      "delta_c": 0.0022575066038094116,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.68581,
+      "coherences": {
+        "thor": 0.6488395804054927,
+        "legion": 0.6492242149151107,
+        "sprout": 0.6510186441054069
+      },
+      "delta_c": 0.0021790636999141633,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6859682,
+      "coherences": {
+        "thor": 0.6467262868308966,
+        "legion": 0.6470975928520838,
+        "sprout": 0.6488297443207951
+      },
+      "delta_c": 0.002103457489898486,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.686118,
+      "coherences": {
+        "thor": 0.6446226390894975,
+        "legion": 0.6449810969592001,
+        "sprout": 0.64665322094253
+      },
+      "delta_c": 0.0020305818530325093,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6862702,
+      "coherences": {
+        "thor": 0.6425286234812836,
+        "legion": 0.6428746956519859,
+        "sprout": 0.6444889582387185
+      },
+      "delta_c": 0.001960334757434956,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6864202,
+      "coherences": {
+        "thor": 0.6404442250433706,
+        "legion": 0.6407783567673841,
+        "sprout": 0.6423368431417149
+      },
+      "delta_c": 0.0018926180983442897,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.68658,
+      "coherences": {
+        "thor": 0.6383694276088933,
+        "legion": 0.6386920475958707,
+        "sprout": 0.6401967651518333
+      },
+      "delta_c": 0.0018273375429400662,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6867313,
+      "coherences": {
+        "thor": 0.6363042138634839,
+        "legion": 0.6366157349122229,
+        "sprout": 0.6380686162449302
+      },
+      "delta_c": 0.0017644023814462617,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6868808,
+      "coherences": {
+        "thor": 0.6342485653994346,
+        "legion": 0.6345493850049967,
+        "sprout": 0.6359522907836873
+      },
+      "delta_c": 0.0017037253842526745,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.687035,
+      "coherences": {
+        "thor": 0.6322024627676401,
+        "legion": 0.6324929637047644,
+        "sprout": 0.6338476854324491
+      },
+      "delta_c": 0.0016452226648089319,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6871877,
+      "coherences": {
+        "thor": 0.6301658855274128,
+        "legion": 0.6304464364111679,
+        "sprout": 0.6317546990754634
+      },
+      "delta_c": 0.0015888135480506271,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6873403,
+      "coherences": {
+        "thor": 0.6281388122942518,
+        "legion": 0.6284097681188325,
+        "sprout": 0.6296732327383824
+      },
+      "delta_c": 0.0015344204441305465,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6874902,
+      "coherences": {
+        "thor": 0.6261212207856589,
+        "legion": 0.6263829234421913,
+        "sprout": 0.6276031895128935
+      },
+      "delta_c": 0.001481968727234606,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6876426,
+      "coherences": {
+        "thor": 0.6241130878650721,
+        "legion": 0.6243658666392645,
+        "sprout": 0.6255444744843477
+      },
+      "delta_c": 0.0014313866192755542,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.687795,
+      "coherences": {
+        "thor": 0.6221143895839994,
+        "legion": 0.622358561634437,
+        "sprout": 0.6234969946622612
+      },
+      "delta_c": 0.0013826050782617116,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6879723,
+      "coherences": {
+        "thor": 0.620125101222425,
+        "legion": 0.6203609720402754,
+        "sprout": 0.6214606589135737
+      },
+      "delta_c": 0.001335557691148681,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6881278,
+      "coherences": {
+        "thor": 0.6181451973275578,
+        "legion": 0.6183730611784231,
+        "sprout": 0.6194353778985482
+      },
+      "delta_c": 0.0012901805709903957,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6882806,
+      "coherences": {
+        "thor": 0.6161746517509894,
+        "legion": 0.6163947920996162,
+        "sprout": 0.6174210640092038
+      },
+      "delta_c": 0.0012464122582144244,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6884336,
+      "coherences": {
+        "thor": 0.6142134376843289,
+        "legion": 0.6144261276028495,
+        "sprout": 0.6154176313101777
+      },
+      "delta_c": 0.0012041936258487818,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6885934,
+      "coherences": {
+        "thor": 0.6122615276933738,
+        "legion": 0.6124670302537327,
+        "sprout": 0.613424995481917
+      },
+      "delta_c": 0.0011634677885431488,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6887453,
+      "coherences": {
+        "thor": 0.6103188937508788,
+        "legion": 0.6105174624020688,
+        "sprout": 0.6114430737661039
+      },
+      "delta_c": 0.0011241800152250736,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.688895,
+      "coherences": {
+        "thor": 0.6083855072679778,
+        "legion": 0.6085773861986871,
+        "sprout": 0.6094717849132216
+      },
+      "delta_c": 0.0010862776452438272,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6890476,
+      "coherences": {
+        "thor": 0.6064613391243155,
+        "legion": 0.60664676361156,
+        "sprout": 0.6075110491321772
+      },
+      "delta_c": 0.0010497100078616928,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.689204,
+      "coherences": {
+        "thor": 0.6045463596969405,
+        "legion": 0.6047255564412348,
+        "sprout": 0.6055607880418928
+      },
+      "delta_c": 0.0010144283449523561,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6893559,
+      "coherences": {
+        "thor": 0.6026405388880087,
+        "legion": 0.6028137263356081,
+        "sprout": 0.603620924624788
+      },
+      "delta_c": 0.0009803857367792768,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.689507,
+      "coherences": {
+        "thor": 0.6007438461513497,
+        "legion": 0.6009112348040694,
+        "sprout": 0.6016913831820745
+      },
+      "delta_c": 0.0009475370307248099,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6896584,
+      "coherences": {
+        "thor": 0.5988562505179359,
+        "legion": 0.5990180432310396,
+        "sprout": 0.59977208929079
+      },
+      "delta_c": 0.0009158387728540607,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6898088,
+      "coherences": {
+        "thor": 0.5969777206203055,
+        "legion": 0.5971341128889311,
+        "sprout": 0.5978629697624994
+      },
+      "delta_c": 0.0008852491421939002,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6899602,
+      "coherences": {
+        "thor": 0.595108224715977,
+        "legion": 0.5952594049505509,
+        "sprout": 0.5959639526035985
+      },
+      "delta_c": 0.0008557278876214491,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6901157,
+      "coherences": {
+        "thor": 0.5932477307098983,
+        "legion": 0.59339388050097,
+        "sprout": 0.5940749669771502
+      },
+      "delta_c": 0.0008272362672518963,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6902697,
+      "coherences": {
+        "thor": 0.5913962061759693,
+        "legion": 0.591537500548883,
+        "sprout": 0.5921959431661962
+      },
+      "delta_c": 0.0007997369902268403,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.690422,
+      "coherences": {
+        "thor": 0.5895536183776752,
+        "legion": 0.5896902260374755,
+        "sprout": 0.5903268125384807
+      },
+      "delta_c": 0.0007731941608055681,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6905727,
+      "coherences": {
+        "thor": 0.5877199342878658,
+        "legion": 0.5878520178548227,
+        "sprout": 0.5884675075125313
+      },
+      "delta_c": 0.0007475732246654543,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.690727,
+      "coherences": {
+        "thor": 0.5858951206077179,
+        "legion": 0.5860228368438356,
+        "sprout": 0.5866179615250401
+      },
+      "delta_c": 0.0007228409173222206,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6908803,
+      "coherences": {
+        "thor": 0.5840791437849101,
+        "legion": 0.5842026438117751,
+        "sprout": 0.5847781089994945
+      },
+      "delta_c": 0.0006989652145843461,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.691031,
+      "coherences": {
+        "thor": 0.5822719700310449,
+        "legion": 0.5823913995393512,
+        "sprout": 0.5829478853160063
+      },
+      "delta_c": 0.0006759152849613592,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6911821,
+      "coherences": {
+        "thor": 0.580473565338348,
+        "legion": 0.5805890647894234,
+        "sprout": 0.5811272267822908
+      },
+      "delta_c": 0.0006536614439427435,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6913347,
+      "coherences": {
+        "thor": 0.5786838954956713,
+        "legion": 0.5787956003153206,
+        "sprout": 0.57931607060575
+      },
+      "delta_c": 0.0006321751100786255,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6914926,
+      "coherences": {
+        "thor": 0.5769029261038318,
+        "legion": 0.5770109668687934,
+        "sprout": 0.5775143548666148
+      },
+      "delta_c": 0.0006114287627830839,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.691647,
+      "coherences": {
+        "thor": 0.5751306225903102,
+        "legion": 0.5752351252076154,
+        "sprout": 0.5757220184921052
+      },
+      "delta_c": 0.0005913959017950221,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.691797,
+      "coherences": {
+        "thor": 0.5733669502233368,
+        "legion": 0.5734680361028488,
+        "sprout": 0.5739390012315658
+      },
+      "delta_c": 0.0005720510082289909,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.691948,
+      "coherences": {
+        "thor": 0.5716118741253866,
+        "legion": 0.5717096603457843,
+        "sprout": 0.5721652436325382
+      },
+      "delta_c": 0.0005533695071515687,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.692104,
+      "coherences": {
+        "thor": 0.5698653592861123,
+        "legion": 0.5699599587545733,
+        "sprout": 0.5704006870177342
+      },
+      "delta_c": 0.0005353277316219041,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6922796,
+      "coherences": {
+        "thor": 0.5681273705747317,
+        "legion": 0.5682188921805614,
+        "sprout": 0.568645273462872
+      },
+      "delta_c": 0.0005179028881402425,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.692433,
+      "coherences": {
+        "thor": 0.5663978727518976,
+        "legion": 0.5664864215143366,
+        "sprout": 0.566898945775341
+      },
+      "delta_c": 0.0005010730234433769,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6925905,
+      "coherences": {
+        "thor": 0.5646768304810652,
+        "legion": 0.5647625076915035,
+        "sprout": 0.5651616474736638
+      },
+      "delta_c": 0.00048481699259861344,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6927423,
+      "coherences": {
+        "thor": 0.5629642083393829,
+        "legion": 0.5630471116981965,
+        "sprout": 0.5634333227677223
+      },
+      "delta_c": 0.0004691144283394122,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6928957,
+      "coherences": {
+        "thor": 0.5612599708281197,
+        "legion": 0.5613401945763391,
+        "sprout": 0.561713916539717
+      },
+      "delta_c": 0.00045394571159729225,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6930485,
+      "coherences": {
+        "thor": 0.5595640823826536,
+        "legion": 0.5596417174286616,
+        "sprout": 0.5600033743258329
+      },
+      "delta_c": 0.00043929194317926523,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.693206,
+      "coherences": {
+        "thor": 0.5578765073820342,
+        "legion": 0.5579516414234891,
+        "sprout": 0.5583016422985803
+      },
+      "delta_c": 0.00042513491654605495,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6933563,
+      "coherences": {
+        "thor": 0.556197210158139,
+        "legion": 0.5562699277993043,
+        "sprout": 0.5566086672497876
+      },
+      "delta_c": 0.0004114570916485816,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6935108,
+      "coherences": {
+        "thor": 0.5545261550044387,
+        "legion": 0.554596537869099,
+        "sprout": 0.5549243965742173
+      },
+      "delta_c": 0.00039824156977863456,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6936617,
+      "coherences": {
+        "thor": 0.5528633061843876,
+        "legion": 0.5529314330245197,
+        "sprout": 0.5532487782537818
+      },
+      "delta_c": 0.0003854720693942104,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.693813,
+      "coherences": {
+        "thor": 0.5512086279394535,
+        "legion": 0.5512745747398168,
+        "sprout": 0.5515817608423359
+      },
+      "delta_c": 0.0003731329028824337,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6939642,
+      "coherences": {
+        "thor": 0.549562084496803,
+        "legion": 0.5496259245756059,
+        "sprout": 0.5499232934510219
+      },
+      "delta_c": 0.00036120895421887234,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6941154,
+      "coherences": {
+        "thor": 0.5479236400766538,
+        "legion": 0.5479854441824481,
+        "sprout": 0.548273325734146
+      },
+      "delta_c": 0.0003496856574921603,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6942656,
+      "coherences": {
+        "thor": 0.5462932588993095,
+        "legion": 0.5463530953042572,
+        "sprout": 0.5466318078755668
+      },
+      "delta_c": 0.0003385489762572913,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6944165,
+      "coherences": {
+        "thor": 0.544670905191888,
+        "legion": 0.5447288397815392,
+        "sprout": 0.5449986905755724
+      },
+      "delta_c": 0.0003277853836843869,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.694568,
+      "coherences": {
+        "thor": 0.5430565431947567,
+        "legion": 0.5431126395544738,
+        "sprout": 0.5433739250382308
+      },
+      "delta_c": 0.00031738184347407383,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.694726,
+      "coherences": {
+        "thor": 0.5414501371676856,
+        "legion": 0.5415044566658412,
+        "sprout": 0.541757462959191
+      },
+      "delta_c": 0.0003073257915053862,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.694879,
+      "coherences": {
+        "thor": 0.5398516513957312,
+        "legion": 0.5399042532638041,
+        "sprout": 0.5401492565139214
+      },
+      "delta_c": 0.00029760511819021396,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6950324,
+      "coherences": {
+        "thor": 0.5382610501948577,
+        "legion": 0.5383119916045459,
+        "sprout": 0.5385492583463647
+      },
+      "delta_c": 0.00028820815150698564,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6951847,
+      "coherences": {
+        "thor": 0.536678297917312,
+        "legion": 0.5367276340547762,
+        "sprout": 0.5369574215579952
+      },
+      "delta_c": 0.0002791236406831654,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6953351,
+      "coherences": {
+        "thor": 0.5351033589567584,
+        "legion": 0.5351511430941047,
+        "sprout": 0.5353736996972632
+      },
+      "delta_c": 0.00027034074050480417,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6954854,
+      "coherences": {
+        "thor": 0.5335361977531821,
+        "legion": 0.5335824813172918,
+        "sprout": 0.5337980467494086
+      },
+      "delta_c": 0.00026184899622649915,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.695654,
+      "coherences": {
+        "thor": 0.5319767787975733,
+        "legion": 0.5320216114363795,
+        "sprout": 0.5322304171266328
+      },
+      "delta_c": 0.00025363832905944683,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6958091,
+      "coherences": {
+        "thor": 0.5304250666364004,
+        "legion": 0.5304684962827071,
+        "sprout": 0.5306707656586132
+      },
+      "delta_c": 0.0002456990222127198,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6959596,
+      "coherences": {
+        "thor": 0.5288810258758774,
+        "legion": 0.5289230988088184,
+        "sprout": 0.5291190475833466
+      },
+      "delta_c": 0.00023802170746922702,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6961095,
+      "coherences": {
+        "thor": 0.5273446211860373,
+        "legion": 0.5273853820902613,
+        "sprout": 0.5275752185383098
+      },
+      "delta_c": 0.000230597352272488,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6962643,
+      "coherences": {
+        "thor": 0.5258158173046198,
+        "legion": 0.5258553093272887,
+        "sprout": 0.5260392345519257
+      },
+      "delta_c": 0.0002234172473059015,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.696416,
+      "coherences": {
+        "thor": 0.5242945790407744,
+        "legion": 0.5243328438464614,
+        "sprout": 0.5245110520353207
+      },
+      "delta_c": 0.00021647299454630176,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6965902,
+      "coherences": {
+        "thor": 0.5227808712785963,
+        "legion": 0.522817949102156,
+        "sprout": 0.5229906277743643
+      },
+      "delta_c": 0.00020975649576804312,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6967413,
+      "coherences": {
+        "thor": 0.5212746589804912,
+        "legion": 0.5213105886779875,
+        "sprout": 0.5214779189219805
+      },
+      "delta_c": 0.0002032599414892866,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6968944,
+      "coherences": {
+        "thor": 0.5197759071903852,
+        "legion": 0.5198107262881426,
+        "sprout": 0.5199728829907169
+      },
+      "delta_c": 0.00019697580033162243,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.697049,
+      "coherences": {
+        "thor": 0.5182845810367788,
+        "legion": 0.5183183257786337,
+        "sprout": 0.5184754778455675
+      },
+      "delta_c": 0.00019089680878869864,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.697227,
+      "coherences": {
+        "thor": 0.5168006457356542,
+        "legion": 0.5168333511284713,
+        "sprout": 0.5169856616970336
+      },
+      "delta_c": 0.0001850159613794311,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6973784,
+      "coherences": {
+        "thor": 0.5153240665932439,
+        "legion": 0.5153557664507636,
+        "sprout": 0.5155033930944174
+      },
+      "delta_c": 0.00017932650117347126,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    },
+    {
+      "timestamp": 1768334600.6975336,
+      "coherences": {
+        "thor": 0.5138548090086618,
+        "legion": 0.5138855359937418,
+        "sprout": 0.5140286309193379
+      },
+      "delta_c": 0.00017382191067616404,
+      "synchronized": true,
+      "behaviors": [
+        "coherence_resonance",
+        "metabolic_synchrony",
+        "collective_focus",
+        "distributed_attention",
+        "trust_cascade"
+      ]
+    }
+  ]
+}

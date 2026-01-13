@@ -1,0 +1,96 @@
+{
+  "factual_1": {
+    "test_id": "factual_1",
+    "prompt": "The capital of France is",
+    "output": " Paris",
+    "tokens": [
+      0
+    ],
+    "logprobs": [
+      -0.1
+    ],
+    "generation_time_ms": 0.002384185791015625,
+    "model_name": "Q3-Omni-30B",
+    "timestamp": 1766304148
+  },
+  "math_1": {
+    "test_id": "math_1",
+    "prompt": "2 + 2 =",
+    "output": " 4",
+    "tokens": [
+      0
+    ],
+    "logprobs": [
+      -0.1
+    ],
+    "generation_time_ms": 0.001430511474609375,
+    "model_name": "Q3-Omni-30B",
+    "timestamp": 1766304148
+  },
+  "continuation_1": {
+    "test_id": "continuation_1",
+    "prompt": "Once upon a time",
+    "output": " there was a young girl who lived in a small village",
+    "tokens": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "logprobs": [
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1
+    ],
+    "generation_time_ms": 0.0019073486328125,
+    "model_name": "Q3-Omni-30B",
+    "timestamp": 1766304148
+  },
+  "code_1": {
+    "test_id": "code_1",
+    "prompt": "def fibonacci(n):",
+    "output": "\n    if n <= 1:\n        return n\n    return fibonacci(n-1) + fibonacci(n-2)",
+    "tokens": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "logprobs": [
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1
+    ],
+    "generation_time_ms": 0.0019073486328125,
+    "model_name": "Q3-Omni-30B",
+    "timestamp": 1766304148
+  }
+}

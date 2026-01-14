@@ -129,6 +129,15 @@ Exercises are evaluated as:
 
 Failures are learning opportunities, not problems.
 
+### Epistemic Validity Check
+
+**IMPORTANT**: When a response doesn't match expectations, evaluate for **epistemic validity**, not just format compliance.
+
+- **Unexpected but epistemically valid**: A chemical explanation of "is water dry?" demonstrates understanding, even if "no" was expected. This is insightful, not wrong.
+- **Actually incorrect**: Response misses the substance of the question entirely, or provides irrelevant/inaccurate information.
+
+Judge responses by **substance**, not just by whether they match expected format. A deeper or more nuanced answer may indicate growth, not failure.
+
 ---
 
 ## Auto-Session Pickup

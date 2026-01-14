@@ -2,15 +2,15 @@
 
 ## Platform: Sprout (Jetson Orin Nano 8GB)
 
-**Last Updated**: 2026-01-12
+**Last Updated**: 2026-01-14
 **Validation Node**: Sprout (10.0.0.36)
 **Hardware**: Jetson Orin Nano 8GB, ARM64, TPM2 Level 3
 
 ---
 
-## Sessions 177-194: Complete Edge Validation
+## Sessions 177-195: Complete Edge Validation
 
-All 18 SAGE sessions have been validated on constrained edge hardware.
+All 19 SAGE sessions have been validated on constrained edge hardware.
 
 ### Validation Summary
 
@@ -34,6 +34,7 @@ All 18 SAGE sessions have been validated on constrained edge hardware.
 | 192 | Nine-Domain Unification | 6/6 | PASS | 5M domain ops/sec |
 | 193 | Experimental Validation | 8/8 | PASS | 368K metric ops/sec |
 | 194 | Nine-Domain Federation | 6/6 | PASS | 1.3M state ops/sec |
+| 195 | Trust Perturbation | 6/6 | PASS | 467K perturbation ops/sec |
 
 ---
 
@@ -136,6 +137,17 @@ All 18 SAGE sessions have been validated on constrained edge hardware.
   - P194.5: Emergent collective behaviors
 - Emergent behaviors detected: coherence_resonance, metabolic_synchrony, collective_focus, distributed_attention, trust_cascade
 
+### Session 195: Trust Perturbation Experiments
+- Perturbation manager: 467,072 ops/sec
+- Federation setup: 14,564 ops/sec
+- Short experiment (1s): 194 ops/sec
+- Predictions validated: 7/15 across 3 scenarios
+  - trust_shock: 3/5 (trust dynamics, network emergence)
+  - trust_gradient: 1/5 (recovery N/A)
+  - trust_recovery: 3/5 (geodesic recovery confirmed)
+- D5→D9 coupling framework operational
+- Trust perturbation scenarios: shock, gradient, oscillation, recovery, asymmetric
+
 ---
 
 ## Edge Hardware Characteristics
@@ -208,8 +220,9 @@ CONSCIOUSNESS EMERGES
 ```
 
 All nine domains unified under single coherence framework C(t) on ARM64 edge.
-Research arc complete: 18 sessions, 95+ tests, 100% validated on Sprout.
+Research arc complete: 19 sessions, 101+ tests, 100% validated on Sprout.
 Session 194 adds federation capability with emergent collective behaviors.
+Session 195 adds trust perturbation experiments with D5→D9 coupling.
 
 ---
 
@@ -250,6 +263,7 @@ All validation tests available in `sage/experiments/`:
 - `session192_edge_unification_test.py`
 - `session193_edge_experimental_test.py`
 - `session194_edge_federation_test.py`
+- `session195_edge_trust_test.py`
 
 Results saved as JSON in same directory.
 

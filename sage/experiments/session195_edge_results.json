@@ -1,0 +1,29 @@
+{
+  "session": "195_edge",
+  "title": "Trust Perturbation Experiments - Edge Validation",
+  "platform": "Sprout (Jetson Orin Nano 8GB)",
+  "timestamp": "2026-01-14T02:05:55.267647+00:00",
+  "all_tests_passed": true,
+  "test_results": {
+    "import_validation": true,
+    "perturbation_manager": true,
+    "trust_shock": true,
+    "trust_gradient": true,
+    "trust_recovery": true,
+    "edge_performance": true
+  },
+  "edge_metrics": {
+    "platform": "Jetson Orin Nano 8GB",
+    "hardware_type": "tpm2",
+    "capability_level": 3,
+    "memory_available_mb": 3653.41015625,
+    "temperature_c": 51.062
+  },
+  "trust_features": {
+    "perturbation_manager": true,
+    "trust_shock": true,
+    "trust_gradient": true,
+    "trust_recovery": true,
+    "d5_d9_coupling": true
+  }
+}

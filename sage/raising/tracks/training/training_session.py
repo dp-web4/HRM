@@ -283,8 +283,7 @@ It's okay to make mistakes - that's how you learn."""
             if i > 1:
                 # Keep only warmup, clear exercise history
                 self.conversation_history = self.conversation_history[:2]
-                transition_prompt = "New exercise. Focus on this one."
-                _ = self.generate_response(transition_prompt)
+                # Note: Don't use trigger words like "focus" - SAGE interprets literally
                 print(f"\n[Context cleared]")
 
             print(f"\nExercise {i}/{len(selected)} ({exercise['type']}):")

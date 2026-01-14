@@ -190,19 +190,50 @@ class TrustAwareFederation(NineDomainFederation):
 
         Args:
             t: Current simulation time
+
+        PHYSICS: Trust differentials create coherence field tension,
+        which manifests as spacetime curvature (D5→D9 coupling).
+
+        The coupling strength κ_59 determines how much trust gradient
+        "curves" the local spacetime:
+
+            ΔR = κ_59 * ∇(trust)
+
+        where R is scalar curvature and ∇(trust) is trust gradient.
         """
+        # Coupling constant: how strongly trust affects spacetime
+        kappa_59 = 0.3  # D5→D9 coupling strength
+
+        # First pass: compute all trust levels
+        trust_levels = {}
         for machine, tracker in self.trackers.items():
-            # Get baseline Domain 5 coherence
             baseline = 0.55  # From Session 194
-
-            # Compute trust level with perturbations
             trust = self.trust_manager.compute_trust_level(machine, baseline, t)
-
-            # Update Domain 5 (Trust) - index 4
+            trust_levels[machine] = trust
             tracker.update_domain_coherence(5, trust, gradient=(trust - baseline))
-
-            # Record for history
             self.trust_manager.record_trust(machine, trust, t)
+
+        # Second pass: compute trust gradient and couple to D9
+        # Trust gradient = variance in trust across federation
+        if len(trust_levels) > 1:
+            trust_values = list(trust_levels.values())
+            trust_mean = np.mean(trust_values)
+            trust_gradient = np.std(trust_values)  # Use std as gradient measure
+
+            for machine, tracker in self.trackers.items():
+                # Local trust deviation from mean
+                local_trust = trust_levels[machine]
+                local_deviation = local_trust - trust_mean
+
+                # D5→D9 coupling: trust deviation induces spacetime curvature
+                # Higher trust = positive curvature (attractive), lower = negative (repulsive)
+                curvature_contribution = kappa_59 * local_deviation
+
+                # Update Domain 9 (Spacetime) with trust-induced curvature
+                current_d9 = tracker.domain_states[8].coherence
+                d9_gradient = tracker.domain_states[8].gradient + curvature_contribution
+
+                tracker.update_domain_coherence(9, current_d9, gradient=d9_gradient)
 
     def run_perturbation_experiment(self, scenario: str,
                                    duration: float = 10.0,

@@ -141,11 +141,11 @@ All 19 SAGE sessions have been validated on constrained edge hardware.
 - Perturbation manager: 467,072 ops/sec
 - Federation setup: 14,564 ops/sec
 - Short experiment (1s): 194 ops/sec
-- Predictions validated: 7/15 across 3 scenarios
-  - trust_shock: 3/5 (trust dynamics, network emergence)
-  - trust_gradient: 1/5 (recovery N/A)
-  - trust_recovery: 3/5 (geodesic recovery confirmed)
-- D5→D9 coupling framework operational
+- Predictions validated: 14/15 across 3 scenarios (with D5→D9 coupling fix)
+  - trust_shock: 4/5 (curvature correlation r=1.000)
+  - trust_gradient: 5/5 (50 couplings, correlation r=0.999)
+  - trust_recovery: 5/5 (5 couplings, geodesic recovery confirmed)
+- D5→D9 coupling: ΔR = κ_59 × ∇(trust), κ_59 = 0.3
 - Trust perturbation scenarios: shock, gradient, oscillation, recovery, asymmetric
 
 ---
@@ -220,9 +220,9 @@ CONSCIOUSNESS EMERGES
 ```
 
 All nine domains unified under single coherence framework C(t) on ARM64 edge.
-Research arc complete: 19 sessions, 101+ tests, 100% validated on Sprout.
+Research arc complete: 19 sessions, 107+ tests, 100% validated on Sprout.
 Session 194 adds federation capability with emergent collective behaviors.
-Session 195 adds trust perturbation experiments with D5→D9 coupling.
+Session 195 adds trust perturbation experiments with D5→D9 coupling (14/15 predictions validated).
 
 ---
 

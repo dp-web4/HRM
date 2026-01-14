@@ -145,10 +145,20 @@ It's okay to make mistakes - that's how you learn."""
             ]
 
         elif track_id == "B":
-            # Memory and recall exercises
+            # Memory and recall exercises - expanded for better coverage
             return [
-                {"type": "remember", "prompt": "Remember this word: APPLE. Now, what word did I ask you to remember?", "expected": "apple"},
+                # Simple word memory
+                {"type": "remember", "prompt": "Remember this word: BLUE. Now, what word did I ask you to remember?", "expected": "blue"},
+                {"type": "remember", "prompt": "Remember this word: STAR. What word did I just tell you to remember?", "expected": "star"},
+                {"type": "remember", "prompt": "Remember this number: SEVEN. What number did I ask you to remember?", "expected": "seven"},
+                # Sequence recall
                 {"type": "sequence", "prompt": "I'll say three words: CAT, DOG, BIRD. What was the second word?", "expected": "dog"},
+                {"type": "sequence", "prompt": "Here are two words: SUN, MOON. What was the first word?", "expected": "sun"},
+                {"type": "sequence", "prompt": "Three numbers: ONE, TWO, THREE. What was the last one?", "expected": "three"},
+                # Simple math (connection)
+                {"type": "connect", "prompt": "What is 2 + 3?", "expected": "5"},
+                {"type": "connect", "prompt": "What is 4 - 1?", "expected": "3"},
+                # Multi-step (at end to avoid context bleed)
                 {"type": "connect", "prompt": "If I have 3 apples and get 2 more, then eat 1, how many do I have?", "expected": "4"},
             ]
 
@@ -213,6 +223,13 @@ It's okay to make mistakes - that's how you learn."""
 
         return response
 
+    # Number word equivalents for evaluation
+    NUMBER_WORDS = {
+        "0": ["zero"], "1": ["one"], "2": ["two"], "3": ["three"],
+        "4": ["four"], "5": ["five"], "6": ["six"], "7": ["seven"],
+        "8": ["eight"], "9": ["nine"], "10": ["ten"]
+    }
+
     def evaluate_response(self, response: str, expected: str) -> Dict[str, Any]:
         """Evaluate if response matches expected content."""
         response_lower = response.lower()
@@ -221,6 +238,16 @@ It's okay to make mistakes - that's how you learn."""
         # Check if expected content is present
         if expected_lower in response_lower:
             return {"success": True, "match": "exact"}
+
+        # Check for number word equivalents (e.g., "four" matches "4")
+        for digit, words in self.NUMBER_WORDS.items():
+            if expected_lower == digit:
+                for word in words:
+                    if word in response_lower:
+                        return {"success": True, "match": "number_word", "digit": digit, "word": word}
+            elif expected_lower in words:
+                if digit in response_lower:
+                    return {"success": True, "match": "number_digit", "digit": digit, "word": expected_lower}
 
         # Check for partial matches
         expected_words = expected_lower.split()
@@ -252,6 +279,14 @@ It's okay to make mistakes - that's how you learn."""
         # Training block
         print("--- Training Block ---")
         for i, exercise in enumerate(selected, 1):
+            # Context clearing between exercises (reset conversation for fresh start)
+            if i > 1:
+                # Keep only warmup, clear exercise history
+                self.conversation_history = self.conversation_history[:2]
+                transition_prompt = "New exercise. Focus on this one."
+                _ = self.generate_response(transition_prompt)
+                print(f"\n[Context cleared]")
+
             print(f"\nExercise {i}/{len(selected)} ({exercise['type']}):")
             print(f"Teacher: {exercise['prompt']}")
 

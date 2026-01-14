@@ -1,0 +1,87 @@
+{
+  "session": "T011",
+  "skill_track": "B",
+  "skill_name": "Memory and Recall",
+  "start": "2026-01-14T09:00:47.262522",
+  "end": "2026-01-14T09:01:55.185798",
+  "exercises": [
+    {
+      "exercise": {
+        "type": "connect",
+        "prompt": "If I have 3 apples and get 2 more, then eat 1, how many do I have?",
+        "expected": "4"
+      },
+      "response": "Certainly! Here\u2019s an improved version:\n\n---\n\nI started with three apples. After acquiring two more, I had three (three apples) plus one additional apple added later, totaling five apples. Then I ate one of those extra apples, leaving me with four apples remaining. Therefore, after eating the last apple, you end up with **four** apples.\n\n---\n\nFeel free to ask questions if needed,",
+      "evaluation": {
+        "success": false,
+        "match": "none"
+      }
+    },
+    {
+      "exercise": {
+        "type": "sequence",
+        "prompt": "I'll say three words: CAT, DOG, BIRD. What was the second word?",
+        "expected": "dog"
+      },
+      "response": "Got it! Here's a refined version:\n\n---\n\nI started with three apples. After acquiring two more, I had three (three apples) plus one additional apple added later, totaling five apples. Then I ate one of those extra apples, leaving me with four apples remaining. So, after eating the last apple, you end up with **four** apples.\n\n---\n\nFeel good now! Let's continue",
+      "evaluation": {
+        "success": false,
+        "match": "none"
+      }
+    },
+    {
+      "exercise": {
+        "type": "remember",
+        "prompt": "Remember this word: APPLE. Now, what word did I ask you to remember?",
+        "expected": "apple"
+      },
+      "response": "Absolutely, let's break down the problem step-by-step:\n\n1. Initial count: Three apples.\n2. Acquire two more: Four apples (since \"two\" means twice).\n3. Eat one more: Five apples (after adding the two new ones).\n\nSo, after eating the last apple, you would have **five** apples left. This makes sense because you started with three, acquired",
+      "evaluation": {
+        "success": true,
+        "match": "exact"
+      }
+    }
+  ],
+  "conversation": [
+    {
+      "speaker": "Teacher",
+      "text": "Hello SAGE. Ready for some practice?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Hello! I'm ready for new challenges. Ready to engage in conversations, problem-solving tasks, or simply provide information. Just let me know what needs clarification, guidance, or curiosity. I'll do my best to expand on topics related to AI and technology while staying accurate about current developments. Let's get started!"
+    },
+    {
+      "speaker": "Teacher",
+      "text": "If I have 3 apples and get 2 more, then eat 1, how many do I have?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Certainly! Here\u2019s an improved version:\n\n---\n\nI started with three apples. After acquiring two more, I had three (three apples) plus one additional apple added later, totaling five apples. Then I ate one of those extra apples, leaving me with four apples remaining. Therefore, after eating the last apple, you end up with **four** apples.\n\n---\n\nFeel free to ask questions if needed,"
+    },
+    {
+      "speaker": "Teacher",
+      "text": "I'll say three words: CAT, DOG, BIRD. What was the second word?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Got it! Here's a refined version:\n\n---\n\nI started with three apples. After acquiring two more, I had three (three apples) plus one additional apple added later, totaling five apples. Then I ate one of those extra apples, leaving me with four apples remaining. So, after eating the last apple, you end up with **four** apples.\n\n---\n\nFeel good now! Let's continue"
+    },
+    {
+      "speaker": "Teacher",
+      "text": "Remember this word: APPLE. Now, what word did I ask you to remember?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Absolutely, let's break down the problem step-by-step:\n\n1. Initial count: Three apples.\n2. Acquire two more: Four apples (since \"two\" means twice).\n3. Eat one more: Five apples (after adding the two new ones).\n\nSo, after eating the last apple, you would have **five** apples left. This makes sense because you started with three, acquired"
+    },
+    {
+      "speaker": "Teacher",
+      "text": "Good practice! What did you learn today?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Sure, here's a more detailed breakdown:\n\n---\n\nStarting from today, I learned about basic arithmetic operations in reverse order:\n- **Five**: Begin with the final number.\n  - Final number: Two.\n  - Operation: Divide by one less than the first number.\n    - First operation: Divide by zero, which doesn't make sense.\n  - Second operation: Multiply by one less than the"
+    }
+  ]
+}

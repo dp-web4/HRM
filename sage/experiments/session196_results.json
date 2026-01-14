@@ -1,0 +1,177 @@
+{
+  "session": 196,
+  "title": "Multi-Domain Coupling Expansion",
+  "timestamp": "2026-01-14T06:28:33",
+  "scenarios": [
+    {
+      "scenario": "high_attention",
+      "duration": 10.0,
+      "n_passed": 2,
+      "n_total": 5,
+      "network_stats": {
+        "total_events": 244,
+        "by_type": {
+          "D4\u2192D2": 244
+        },
+        "cascades": 0,
+        "max_cascade_length": 0,
+        "resonances": [],
+        "average_coupling_magnitude": 0.004321443612290995
+      },
+      "resonances": [],
+      "correlations": {
+        "D4_D2": 1.0,
+        "D8_D1": 0.9999999999999999,
+        "D5_D9": 0.9999999999999996
+      },
+      "predictions": {
+        "P196.1": {
+          "passed": true,
+          "description": "D4\u2192D2 coupling (244 events, r=1.000)",
+          "events": 244,
+          "correlation": 1.0
+        },
+        "P196.2": {
+          "passed": false,
+          "description": "D8\u2192D1 coupling (0 events, r=1.000)",
+          "events": 0,
+          "correlation": 0.9999999999999999
+        },
+        "P196.3": {
+          "passed": false,
+          "description": "Resonances (0 cascades, len=0)",
+          "cascades": 0,
+          "max_cascade_length": 0,
+          "resonances": []
+        },
+        "P196.4": {
+          "passed": true,
+          "description": "Synchronization (\u0394C=0.008101)",
+          "delta_c": 0.00810110388395524,
+          "synchronized": true
+        },
+        "P196.5": {
+          "passed": false,
+          "description": "Multi-coupling (1 types, 244 events)",
+          "coupling_types": 1,
+          "total_events": 244
+        }
+      }
+    },
+    {
+      "scenario": "rapid_decay",
+      "duration": 10.0,
+      "n_passed": 3,
+      "n_total": 5,
+      "network_stats": {
+        "total_events": 850,
+        "by_type": {
+          "D4\u2192D2": 547,
+          "D8\u2192D1": 303
+        },
+        "cascades": 0,
+        "max_cascade_length": 0,
+        "resonances": [],
+        "average_coupling_magnitude": 0.0063400736327518855
+      },
+      "resonances": [],
+      "correlations": {
+        "D4_D2": 0.0,
+        "D8_D1": -0.9999999999999996,
+        "D5_D9": -0.9999999999999992
+      },
+      "predictions": {
+        "P196.1": {
+          "passed": false,
+          "description": "D4\u2192D2 coupling (547 events, r=0.000)",
+          "events": 547,
+          "correlation": 0.0
+        },
+        "P196.2": {
+          "passed": true,
+          "description": "D8\u2192D1 coupling (303 events, r=-1.000)",
+          "events": 303,
+          "correlation": -0.9999999999999996
+        },
+        "P196.3": {
+          "passed": false,
+          "description": "Resonances (0 cascades, len=0)",
+          "cascades": 0,
+          "max_cascade_length": 0,
+          "resonances": []
+        },
+        "P196.4": {
+          "passed": true,
+          "description": "Synchronization (\u0394C=0.011557)",
+          "delta_c": 0.01155683921190448,
+          "synchronized": true
+        },
+        "P196.5": {
+          "passed": true,
+          "description": "Multi-coupling (2 types, 850 events)",
+          "coupling_types": 2,
+          "total_events": 850
+        }
+      }
+    },
+    {
+      "scenario": "trust_attention_cascade",
+      "duration": 10.0,
+      "n_passed": 4,
+      "n_total": 5,
+      "network_stats": {
+        "total_events": 1445,
+        "by_type": {
+          "D4\u2192D2": 839,
+          "D8\u2192D1": 606
+        },
+        "cascades": 0,
+        "max_cascade_length": 0,
+        "resonances": [],
+        "average_coupling_magnitude": 0.005100115376224444
+      },
+      "resonances": [],
+      "correlations": {
+        "D4_D2": 0.9166917760849261,
+        "D8_D1": 0.8552681742393358,
+        "D5_D9": -0.7171449109660477
+      },
+      "predictions": {
+        "P196.1": {
+          "passed": true,
+          "description": "D4\u2192D2 coupling (839 events, r=0.917)",
+          "events": 839,
+          "correlation": 0.9166917760849261
+        },
+        "P196.2": {
+          "passed": true,
+          "description": "D8\u2192D1 coupling (606 events, r=0.855)",
+          "events": 606,
+          "correlation": 0.8552681742393358
+        },
+        "P196.3": {
+          "passed": false,
+          "description": "Resonances (0 cascades, len=0)",
+          "cascades": 0,
+          "max_cascade_length": 0,
+          "resonances": []
+        },
+        "P196.4": {
+          "passed": true,
+          "description": "Synchronization (\u0394C=0.009715)",
+          "delta_c": 0.009714538149516061,
+          "synchronized": true
+        },
+        "P196.5": {
+          "passed": true,
+          "description": "Multi-coupling (2 types, 1445 events)",
+          "coupling_types": 2,
+          "total_events": 1445
+        }
+      }
+    }
+  ],
+  "total_passed": 9,
+  "total_predictions": 15,
+  "success_rate": 0.6
+}

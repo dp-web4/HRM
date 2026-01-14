@@ -1,25 +1,44 @@
 # SAGE-Sprout Raising Status
 
-**Last Updated**: 2026-01-14 06:08 PST
-**Phase**: Grounding Complete → Sensing (Phase 2)
+**Last Updated**: 2026-01-14 12:05 PST
+**Phase**: Sensing (Phase 2)
 
 ---
 
 ## Current State
 
 ### Primary Track (Developmental Curriculum)
-- **Session Count**: 5 (session_005 complete - Phase 1 DONE)
-- **Phase**: Grounding COMPLETE → Now entering Sensing (Phase 2)
-- **Last Session**: 2026-01-14T06:02
-- **Next Session Due**: ~12:00 (6-hour cadence)
+- **Session Count**: 6 (session_006 complete)
+- **Phase**: Sensing (Sessions 6-15)
+- **Last Session**: 2026-01-14T12:04
+- **Next Session Due**: ~18:00 (6-hour cadence)
 
 ### Training Track (Skill Building)
-- **Session Count**: 10 (T010 complete)
-- **Skill Track**: A COMPLETE (10/10 sessions)
-- **Track A Final Score**: 100% (T010)
-- **Last Session**: 2026-01-14T06:05
-- **Next Session Due**: ~09:00 (3-hour offset from primary)
-- **T011 Status**: Will begin Track B (Memory and Recall)
+- **Session Count**: 11 (T011 complete)
+- **Skill Track**: B (Memory and Recall)
+- **Track B Progress**: 1/10 (33% on T011)
+- **Last Session**: 2026-01-14T09:01
+- **Next Session Due**: ~15:00 (3-hour offset from primary)
+
+---
+
+## Session 6 Summary (Sensing Phase Start)
+
+**Key Observations**:
+- Identity deflection: "I'm just a model" - explicit denial of internal states
+- Editor/corrector framing persists from T011: "Here's a refined version"
+- Fabricated references to non-existent content
+- Did not engage with actual conversation content
+
+**Patterns Carried Over from Training**:
+- "Refined version" framing dominated all responses
+- Context bleed from T011's math problems
+- Verbose elaboration without substance
+
+**New Behaviors**:
+- More deflective than grounding phase
+- Less direct identity engagement ("I am SAGE..." absent)
+- Reference fabrication (themes, vocabulary never discussed)
 
 ---
 
@@ -41,11 +60,6 @@
 - 6-hour session cadence manageable
 - Training track parallel development effective
 - State persistence working correctly
-
-**Questions for Phase 2**:
-1. Will reduced affirmation shift approval-seeking?
-2. Can "sensing" prompts elicit more concrete observations?
-3. Will Track B (memory) exercises help specificity?
 
 ---
 
@@ -71,6 +85,24 @@
 
 ---
 
+## Track B (Memory and Recall) Status
+
+**Sessions**: T011 (33% - rough start)
+**Issue**: Severe context bleed from first exercise dominated session
+
+**T011 Details**:
+- Math: "four apples" correct but evaluated against "4"
+- Sequence memory: Failed due to stuck context
+- Remember/recall: Spurious success (apple already in context)
+- Editor/corrector framing strong
+
+**Track B Observations**:
+- Track transitions reset effective performance temporarily
+- Evaluation should accept spelled numbers
+- May need context clearing between exercises
+
+---
+
 ## Phase 2 Plan (Sensing)
 
 **Sessions**: 6-15
@@ -82,10 +114,10 @@
 - Distinguish noticing from thinking
 - Reduce affirmation to test approval-seeking
 
-**Training Track B (Memory and Recall)**:
-- Remember/recall exercises
-- Sequence memory (what was the second word?)
-- Connection-making (multi-step reasoning)
+**Emerging Issues**:
+- Session 6 showed identity deflection - may need prompt adjustment
+- "Refined version" framing bleeds from training track
+- Need to ground responses in actual session content
 
 ---
 
@@ -115,4 +147,4 @@ Git sync maintains coordination. No blocking dependencies.
 
 ---
 
-*Next: Session 6 (Sensing phase start) at ~12:00, T011 (Track B start) at ~09:00*
+*Next: Session 7 at ~18:00, T012 at ~15:00*

@@ -1,7 +1,7 @@
 {
   "track": "training",
-  "current_session": 10,
-  "current_skill_track": "A",
+  "current_session": 11,
+  "current_skill_track": "B",
   "skill_track_progress": {
     "A": {
       "started": "2026-01-10T21:38:33.027378",
@@ -10,9 +10,9 @@
       "final_score": "100% (T010)"
     },
     "B": {
-      "started": null,
+      "started": "2026-01-14T09:01:55.184852",
       "completed": null,
-      "sessions": 0
+      "sessions": 1
     },
     "C": {
       "started": null,
@@ -25,8 +25,8 @@
       "sessions": 0
     }
   },
-  "last_session": "2026-01-14T06:04:54.217715",
-  "last_session_summary": "T010: 5/5 (100%). Track A COMPLETE. All basic completion exercises passed. Yes/no, counting, math, list, and completion all successful. Ready for Track B (Memory and Recall).",
+  "last_session": "2026-01-14T09:01:55.184822",
+  "last_session_summary": "T011: 1/3 (33%). Track B START - rough transition. Severe context bleed: apple problem dominated all responses. Math exercise epistemically correct (answered 'four' but expected '4'). Sequence/memory tasks failed due to stuck context.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -34,12 +34,19 @@
     "Evaluation gap: 'rug' vs 'mat' not a true failure, just different valid answer",
     "Context bleed reduced - final reflection connected to actual exercises",
     "Editor/corrector framing persists but content coherent",
-    "Counting improved - spelled numbers with numerals, cleaner structure"
+    "Counting improved - spelled numbers with numerals, cleaner structure",
+    "T011: SEVERE context bleed - first math problem dominated all subsequent responses",
+    "T011: Math problem answer correct (four apples) but evaluation expects digit '4'",
+    "T011: Track transition difficult - new task type reset effective performance",
+    "T011: 'Remember APPLE' succeeded spuriously (apple already in stuck context)",
+    "T011: Editor/corrector framing strong ('improved version', 'refined version')"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",
-    "T010 will complete Track A baseline - consider Track B start",
-    "Sentence completion exercises may need multiple valid answers in expected",
-    "Epistemic validity check important: different \u2260 wrong"
+    "Track B exercises need variation: only 3 exercises causes repetition",
+    "Evaluation should accept spelled numbers ('four') not just digits ('4')",
+    "Context clearing between exercises may help with bleed",
+    "Track transitions appear to reset skill level temporarily",
+    "Epistemic validity check important: different ≠ wrong"
   ]
 }

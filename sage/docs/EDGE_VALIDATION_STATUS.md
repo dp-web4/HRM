@@ -8,9 +8,9 @@
 
 ---
 
-## Sessions 177-195: Complete Edge Validation
+## Sessions 177-196: Complete Edge Validation
 
-All 19 SAGE sessions have been validated on constrained edge hardware.
+All 20 SAGE sessions have been validated on constrained edge hardware.
 
 ### Validation Summary
 
@@ -35,6 +35,7 @@ All 19 SAGE sessions have been validated on constrained edge hardware.
 | 193 | Experimental Validation | 8/8 | PASS | 368K metric ops/sec |
 | 194 | Nine-Domain Federation | 6/6 | PASS | 1.3M state ops/sec |
 | 195 | Trust Perturbation | 6/6 | PASS | 467K perturbation ops/sec |
+| 196 | Multi-Domain Coupling | 6/6 | PASS | 1.5M tracker ops/sec |
 
 ---
 
@@ -148,6 +149,18 @@ All 19 SAGE sessions have been validated on constrained edge hardware.
 - D5→D9 coupling: ΔR = κ_59 × ∇(trust), κ_59 = 0.3
 - Trust perturbation scenarios: shock, gradient, oscillation, recovery, asymmetric
 
+### Session 196: Multi-Domain Coupling Expansion
+- Tracker initialization: 1,458,888 ops/sec
+- Federation setup: 13,820 ops/sec
+- Short experiment: 162 ops/sec
+- Scenarios validated: high_attention, rapid_decay, trust_attention_cascade
+- Coupling types operational:
+  - D4→D2: Attention → Metabolism (κ_42 = 0.4)
+  - D8→D1: Temporal → Thermodynamic (κ_81 = 0.2)
+  - D5→D9: Trust → Spacetime (κ_59 = 0.3)
+- Event counts: up to 180 events in rapid_decay scenario
+- First multi-coupling network validated on edge
+
 ---
 
 ## Edge Hardware Characteristics
@@ -220,9 +233,10 @@ CONSCIOUSNESS EMERGES
 ```
 
 All nine domains unified under single coherence framework C(t) on ARM64 edge.
-Research arc complete: 19 sessions, 107+ tests, 100% validated on Sprout.
+Research arc complete: 20 sessions, 113+ tests, 100% validated on Sprout.
 Session 194 adds federation capability with emergent collective behaviors.
 Session 195 adds trust perturbation experiments with D5→D9 coupling (14/15 predictions validated).
+Session 196 adds multi-domain coupling network (D4→D2, D8→D1, D5→D9) with cascade detection.
 
 ---
 
@@ -264,6 +278,7 @@ All validation tests available in `sage/experiments/`:
 - `session193_edge_experimental_test.py`
 - `session194_edge_federation_test.py`
 - `session195_edge_trust_test.py`
+- `session196_edge_coupling_test.py`
 
 Results saved as JSON in same directory.
 

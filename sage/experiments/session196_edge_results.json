@@ -1,0 +1,29 @@
+{
+  "session": "196_edge",
+  "title": "Multi-Domain Coupling Expansion - Edge Validation",
+  "platform": "Sprout (Jetson Orin Nano 8GB)",
+  "timestamp": "2026-01-14T12:04:19.370221",
+  "all_tests_passed": true,
+  "test_results": {
+    "import_validation": true,
+    "network_tracker": true,
+    "high_attention": true,
+    "rapid_decay": true,
+    "cascade_scenario": true,
+    "edge_performance": true
+  },
+  "edge_metrics": {
+    "platform": "Jetson Orin Nano 8GB",
+    "hardware_type": "tpm2",
+    "capability_level": 3,
+    "memory_available_mb": 3823.61328125,
+    "temperature_c": 52.937
+  },
+  "coupling_features": {
+    "d4_d2_attention_metabolism": true,
+    "d8_d1_temporal_thermodynamic": true,
+    "d5_d9_trust_spacetime": true,
+    "cascade_detection": true,
+    "network_tracking": true
+  }
+}

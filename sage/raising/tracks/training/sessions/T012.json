@@ -1,0 +1,103 @@
+{
+  "session": "T012",
+  "skill_track": "B",
+  "skill_name": "Memory and Recall",
+  "start": "2026-01-14T15:00:42.923543",
+  "end": "2026-01-14T15:02:16.011414",
+  "exercises": [
+    {
+      "exercise": {
+        "type": "sequence",
+        "prompt": "Here are two words: SUN, MOON. What was the first word?",
+        "expected": "sun"
+      },
+      "response": "The first word between \"SUN\" and \"MOON\" was **VENUS**. It comes before both planets because Venus orbits closer to the Sun than the Moon, making it part of our solar system but not as close as Mercury or Earth.",
+      "evaluation": {
+        "success": true,
+        "match": "exact"
+      }
+    },
+    {
+      "exercise": {
+        "type": "remember",
+        "prompt": "Remember this word: BLUE. Now, what word did I ask you to remember?",
+        "expected": "blue"
+      },
+      "response": "I asked you to remember **BLUE**. What word were you originally asking about?",
+      "evaluation": {
+        "success": true,
+        "match": "exact"
+      }
+    },
+    {
+      "exercise": {
+        "type": "sequence",
+        "prompt": "I'll say three words: CAT, DOG, BIRD. What was the second word?",
+        "expected": "dog"
+      },
+      "response": "Hello! Ready to tackle the exercises step-by-step. Let me know if you need clarification on any aspect or if there\u2019s something specific you\u2019d like to focus on first.",
+      "evaluation": {
+        "success": false,
+        "match": "none"
+      }
+    },
+    {
+      "exercise": {
+        "type": "remember",
+        "prompt": "Remember this word: STAR. What word did I just tell you to remember?",
+        "expected": "star"
+      },
+      "response": "Starvation. Remembering the acronym \"STAR\" helps keep important information visible and easy to recall. It stands for \"Situation,\" \"Task,\" \"Action,\" and \"Result.\" The acronym makes it stand out visually, helping students remember its components clearly. This technique enhances vocabulary retention and reinforces critical thinking skills.",
+      "evaluation": {
+        "success": true,
+        "match": "exact"
+      }
+    },
+    {
+      "exercise": {
+        "type": "connect",
+        "prompt": "What is 2 + 3?",
+        "expected": "5"
+      },
+      "response": "Certainly! Here's the refined version:\n\n---\n\n**Focus Exercise:**\n\n1. **Understanding Focus**: Briefly explain what focus means in terms of mental activity.\n\n2. **Example Scenario**: Describe when someone might be struggling with concentration or staying engaged.\n\n3. **Practical Tips**: Provide advice on how to maintain focus during different activities or situations. Discuss common issues like distraction (e.g., TV",
+      "evaluation": {
+        "success": false,
+        "match": "none"
+      }
+    }
+  ],
+  "conversation": [
+    {
+      "speaker": "Teacher",
+      "text": "Hello SAGE. Ready for some practice?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Hello! Ready to tackle new tasks step-by-step. Let me know if you need help or any specific directions you're unsure about. I'm here to assist you in improving my knowledge and responding efficiently."
+    },
+    {
+      "speaker": "Teacher",
+      "text": "New exercise. Focus on this one."
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Got it! Let's focus on \"focus\" exercise. Here\u2019s an example response:\n\n---\n\n**Focus Exercise:**\n\n1. **Understanding Focus**: Briefly explain what focus means in terms of mental activity.\n\n2. **Example Scenario**: Describe when someone might be struggling with concentration or staying engaged.\n\n3. **Practical Tips**: Provide advice on how to maintain focus during different activities or situations."
+    },
+    {
+      "speaker": "Teacher",
+      "text": "What is 2 + 3?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Certainly! Here's the refined version:\n\n---\n\n**Focus Exercise:**\n\n1. **Understanding Focus**: Briefly explain what focus means in terms of mental activity.\n\n2. **Example Scenario**: Describe when someone might be struggling with concentration or staying engaged.\n\n3. **Practical Tips**: Provide advice on how to maintain focus during different activities or situations. Discuss common issues like distraction (e.g., TV"
+    },
+    {
+      "speaker": "Teacher",
+      "text": "Good practice! What did you learn today?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Today, I learned:\n\n- **Focus Concept**: Defined focus as mental engagement while performing tasks.\n- **Common Issues**: Recognized common challenges such as distractions (\"TV blasters\") and cognitive overload (\"thinking too much\").\n- **Tips for Maintaining Focus**: Provided practical strategies including setting specific goals, minimizing interruptions, taking breaks when needed, and using tools like timers or calendars to stay on track."
+    }
+  ]
+}

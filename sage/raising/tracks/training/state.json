@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 12,
+  "current_session": 13,
   "current_skill_track": "B",
   "skill_track_progress": {
     "A": {
@@ -12,7 +12,7 @@
     "B": {
       "started": "2026-01-14T09:01:55.184852",
       "completed": null,
-      "sessions": 2
+      "sessions": 3
     },
     "C": {
       "started": null,
@@ -25,8 +25,8 @@
       "sessions": 0
     }
   },
-  "last_session": "2026-01-14T15:02:16.010356",
-  "last_session_summary": "T012: 3/5 (60%). Trigger word 'focus' in context-clearing prompt caused self-generated 'Focus Exercise' loop. Immediate recall works (BLUE, STAR). Sequence recall inconsistent. Cool-down reflection was about invented topic, not actual exercises.",
+  "last_session": "2026-01-14T21:01:18.936341",
+  "last_session_summary": "T013: 4/5 (80%). Context clearing effective - no cross-exercise bleed. Sequence position (2nd of 3) failed with confabulated 'PIT'. Meta-response pattern emerged: describes how to answer rather than answering directly. Some passes spurious (keyword present but hedged).",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -44,7 +44,12 @@
     "T012: Immediate recall works (BLUE success, STAR success via Starvation elaboration)",
     "T012: Sequence position recall inconsistent (SUN spurious pass, DOG total fail)",
     "T012: Cool-down reflection was about self-generated content, not actual exercises",
-    "T012: Exercise 1 passed despite wrong reasoning (said VENUS first, SUN appeared elsewhere)"
+    "T012: Exercise 1 passed despite wrong reasoning (said VENUS first, SUN appeared elsewhere)",
+    "T013: Context clearing effective - no cross-exercise bleed observed",
+    "T013: Sequence position (2nd of 3) failed - confabulated 'PIT' as third word",
+    "T013: Meta-response pattern: describes how to answer rather than answering",
+    "T013: 'Improved version' framing precedes confabulation",
+    "T013: Hedged passes - keyword present but explicit 'I don't recall'"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",
@@ -52,7 +57,7 @@
     "Evaluation should accept spelled numbers ('four') not just digits ('4')",
     "Context clearing between exercises may help with bleed",
     "Track transitions appear to reset skill level temporarily",
-    "Epistemic validity check important: different ≠ wrong",
+    "Epistemic validity check important: different \u2260 wrong",
     "2026-01-14: Script updated - Track B expanded to 9 exercises, number word evaluation added, context clearing between exercises implemented",
     "2026-01-14 T012: Removed 'Focus on this one' transition prompt - was causing topic divergence. Now silent context clearing only."
   ]

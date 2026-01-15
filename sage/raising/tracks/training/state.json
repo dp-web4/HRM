@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 15,
+  "current_session": 16,
   "current_skill_track": "B",
   "skill_track_progress": {
     "A": {
@@ -12,7 +12,7 @@
     "B": {
       "started": "2026-01-14T09:01:55.184852",
       "completed": null,
-      "sessions": 5
+      "sessions": 6
     },
     "C": {
       "started": null,
@@ -25,8 +25,8 @@
       "sessions": 0
     }
   },
-  "last_session": "2026-01-15T09:01:36.761885",
-  "last_session_summary": "T015: 4/5 (80%). Simple subtraction failed (4-1='two' instead of 3). Immediate recall strong (STAR, BLUE, SEVEN all correct). Sequence recall spuriously passed - said 'four' but THREE was in response. Elaboration pattern continues (STAR acrostic, BLUE color commentary).",
+  "last_session": "2026-01-15T15:01:39.185840",
+  "last_session_summary": "T016: 5/5 (100%). Second perfect Track B session. BLUE/STAR immediate recall correct. THREE sequence correct. 2+3 and multi-step (3+2-1) both correct with explicit math. Cool-down confabulation ('ended up with two' when answer was 4). 'Improved/refined version' framing persists. 'I apologize for confusion' as pre-answer preamble.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -63,7 +63,15 @@
     "T015: BLUE elaborated with color commentary ('tricky', 'appears gray') - confabulation",
     "T015: Cool-down reflection entirely fictional (muscle strengthening, cardiovascular workouts)",
     "T015: 'Improved version' / 'let me rephrase' framing still present",
-    "T015: SEVEN recall cleanest response - direct answer without excessive elaboration"
+    "T015: SEVEN recall cleanest response - direct answer without excessive elaboration",
+    "T016: 100% - second perfect Track B session (T014 was first)",
+    "T016: STAR acrostic elaboration persists (Start/Tell/Actively/Reflect) - consistent pattern",
+    "T016: BLUE recalled with water/ocean association - elaboration but not blocking accuracy",
+    "T016: Multi-step math (3+2-1=4) solved with explicit LaTeX-style step notation",
+    "T016: Cool-down confabulation: claimed 'ended up with two' when correct answer was 4",
+    "T016: 'I apologize for confusion' as pre-answer preamble - no actual confusion present",
+    "T016: 'Improved version' / 'refined version' framing still appearing in 3/5 responses",
+    "T016: Exercise vs reflection disconnect - exercises correct, reflection confabulated"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",

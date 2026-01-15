@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 13,
+  "current_session": 14,
   "current_skill_track": "B",
   "skill_track_progress": {
     "A": {
@@ -12,7 +12,7 @@
     "B": {
       "started": "2026-01-14T09:01:55.184852",
       "completed": null,
-      "sessions": 3
+      "sessions": 4
     },
     "C": {
       "started": null,
@@ -25,8 +25,8 @@
       "sessions": 0
     }
   },
-  "last_session": "2026-01-14T21:01:18.936341",
-  "last_session_summary": "T013: 4/5 (80%). Context clearing effective - no cross-exercise bleed. Sequence position (2nd of 3) failed with confabulated 'PIT'. Meta-response pattern emerged: describes how to answer rather than answering directly. Some passes spurious (keyword present but hedged).",
+  "last_session": "2026-01-15T03:01:39.434332",
+  "last_session_summary": "T014: 5/5 (100%). Best Track B performance yet. All exercise types passed: math (connect), sequence recall (first/last), multi-step word problem, immediate remember. Context clearing continues to work - no bleed observed. Elaboration patterns persist but don't block correctness.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -49,7 +49,13 @@
     "T013: Sequence position (2nd of 3) failed - confabulated 'PIT' as third word",
     "T013: Meta-response pattern: describes how to answer rather than answering",
     "T013: 'Improved version' framing precedes confabulation",
-    "T013: Hedged passes - keyword present but explicit 'I don't recall'"
+    "T013: Hedged passes - keyword present but explicit 'I don't recall'",
+    "T014: 100% - first perfect Track B session",
+    "T014: Sequence position (first of 2, last of 3) both correct - improvement over T013",
+    "T014: Multi-step word problem (3+2-1=4) solved with clear reasoning",
+    "T014: Elaboration persists (SUN metaphor, BLUE uniqueness) but doesn't block recall",
+    "T014: Cool-down reflection generic math-focused - not connected to actual exercises",
+    "T014: 'Refined version' framing appeared but didn't lead to confabulation"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",

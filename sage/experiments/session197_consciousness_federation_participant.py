@@ -118,11 +118,9 @@ class FederationParticipant:
         # Create federation with self as only machine
         # (Will sync with network, but run local dynamics)
         federation = MultiCouplingFederation(
-            machine_ids=[self.node_id],
-            k_42=0.4,  # D4→D2 coupling
-            k_81=0.2,  # D8→D1 coupling
-            k_59=0.3   # D5→D9 coupling
+            machines=[self.node_id]
         )
+        # Coupling constants are set in MultiCouplingFederation __init__
         return federation
 
     def create_and_send_snapshot(self) -> bool:

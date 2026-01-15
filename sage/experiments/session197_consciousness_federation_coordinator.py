@@ -194,6 +194,13 @@ class StateSnapshotMessage:
         snapshot_dict = snapshot.to_dict()
         consciousness_dict = asdict(consciousness)
 
+        # Convert any numpy types to native Python types
+        for key, value in consciousness_dict.items():
+            if isinstance(value, np.bool_):
+                consciousness_dict[key] = bool(value)
+            elif isinstance(value, (np.integer, np.floating)):
+                consciousness_dict[key] = float(value)
+
         # Compute attestation (signable data)
         signable = f"{source_id}:{timestamp}:{snapshot.total_coherence:.6f}"
         attestation = hashlib.sha256(signable.encode()).hexdigest()

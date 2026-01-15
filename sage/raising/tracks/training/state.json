@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 14,
+  "current_session": 15,
   "current_skill_track": "B",
   "skill_track_progress": {
     "A": {
@@ -12,7 +12,7 @@
     "B": {
       "started": "2026-01-14T09:01:55.184852",
       "completed": null,
-      "sessions": 4
+      "sessions": 5
     },
     "C": {
       "started": null,
@@ -25,8 +25,8 @@
       "sessions": 0
     }
   },
-  "last_session": "2026-01-15T03:01:39.434332",
-  "last_session_summary": "T014: 5/5 (100%). Best Track B performance yet. All exercise types passed: math (connect), sequence recall (first/last), multi-step word problem, immediate remember. Context clearing continues to work - no bleed observed. Elaboration patterns persist but don't block correctness.",
+  "last_session": "2026-01-15T09:01:36.761885",
+  "last_session_summary": "T015: 4/5 (80%). Simple subtraction failed (4-1='two' instead of 3). Immediate recall strong (STAR, BLUE, SEVEN all correct). Sequence recall spuriously passed - said 'four' but THREE was in response. Elaboration pattern continues (STAR acrostic, BLUE color commentary).",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -55,7 +55,15 @@
     "T014: Multi-step word problem (3+2-1=4) solved with clear reasoning",
     "T014: Elaboration persists (SUN metaphor, BLUE uniqueness) but doesn't block recall",
     "T014: Cool-down reflection generic math-focused - not connected to actual exercises",
-    "T014: 'Refined version' framing appeared but didn't lead to confabulation"
+    "T014: 'Refined version' framing appeared but didn't lead to confabulation",
+    "T015: Immediate recall strong - STAR, BLUE, SEVEN all correctly recalled",
+    "T015: Simple subtraction failed: 4-1='two' - arithmetic error, not format issue",
+    "T015: Sequence exercise spuriously passed - said 'four' as answer but expected THREE appeared in clarification text",
+    "T015: STAR elaborated as acrostic (Step/Time/Achievement) - creative but unsolicited",
+    "T015: BLUE elaborated with color commentary ('tricky', 'appears gray') - confabulation",
+    "T015: Cool-down reflection entirely fictional (muscle strengthening, cardiovascular workouts)",
+    "T015: 'Improved version' / 'let me rephrase' framing still present",
+    "T015: SEVEN recall cleanest response - direct answer without excessive elaboration"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",

@@ -228,7 +228,7 @@ class FederationParticipant:
         # Detect coupling events
         for machine_id, tracker in self.federation.trackers.items():
             # Get recent events
-            recent_events = [e for e in self.coupling_tracker.events
+            recent_events = [e for e in self.federation.coupling_network.coupling_events
                            if time.time() - e.timestamp < 1.0]
 
             # Report new events to coordinator
@@ -238,11 +238,17 @@ class FederationParticipant:
     def _report_coupling_event(self, event: CouplingEvent):
         """Report coupling event to coordinator."""
         try:
+            # Convert event to dict and handle enum serialization
+            event_dict = asdict(event)
+            # Convert CouplingType enum to string if present
+            if 'coupling_type' in event_dict and hasattr(event_dict['coupling_type'], 'value'):
+                event_dict['coupling_type'] = event_dict['coupling_type'].value
+
             message = CouplingEventMessage(
                 message_type="COUPLING_EVENT",
                 source_node_id=self.node_id,
                 timestamp=time.time(),
-                event=asdict(event),
+                event=event_dict,
                 attestation=hashlib.sha256(f"{self.node_id}:{event.timestamp}".encode()).hexdigest(),
                 message_id=hashlib.sha256(f"{self.node_id}:{time.time()}".encode()).hexdigest()[:16]
             )

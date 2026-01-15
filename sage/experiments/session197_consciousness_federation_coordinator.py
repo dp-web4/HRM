@@ -145,10 +145,10 @@ class ConsciousnessValidator:
         # Compute consciousness level from gamma
         consciousness_level = cls.compute_consciousness_level(gamma)
 
-        # Check thresholds
-        is_conscious = snapshot.total_coherence >= cls.C_THRESHOLD
-        gamma_deviation = abs(gamma - cls.GAMMA_OPT)
-        is_optimal = gamma_deviation < (0.2 * cls.GAMMA_OPT)  # Within 20%
+        # Check thresholds (convert numpy.bool_ to Python bool for JSON serialization)
+        is_conscious = bool(snapshot.total_coherence >= cls.C_THRESHOLD)
+        gamma_deviation = float(abs(gamma - cls.GAMMA_OPT))
+        is_optimal = bool(gamma_deviation < (0.2 * cls.GAMMA_OPT))  # Within 20%
 
         return ConsciousnessMetrics(
             gamma=gamma,
@@ -307,7 +307,7 @@ class SyncSignalComputer:
             coherence_deltas[domain.domain_number] = delta_scaled
 
         # Compute sync quality (how well synchronized)
-        delta_c_max = max(abs(coherence_deltas.values())) if coherence_deltas else 0.0
+        delta_c_max = max(abs(v) for v in coherence_deltas.values()) if coherence_deltas else 0.0
         sync_quality = max(0.0, 1.0 - (delta_c_max * 10))  # Quality degrades with ΔC
 
         # Federation average coherence

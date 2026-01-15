@@ -1,6 +1,6 @@
 # SAGE-Sprout Raising Status
 
-**Last Updated**: 2026-01-14 18:05 PST
+**Last Updated**: 2026-01-15 00:15 PST
 **Phase**: Sensing (Phase 2)
 
 ---
@@ -8,17 +8,69 @@
 ## Current State
 
 ### Primary Track (Developmental Curriculum)
-- **Session Count**: 7 (session_007 complete)
+- **Session Count**: 8 (session_008 complete - EXPERIMENTAL)
 - **Phase**: Sensing (Sessions 6-15)
-- **Last Session**: 2026-01-14T18:05
-- **Next Session Due**: ~00:00 (6-hour cadence)
+- **Last Session**: 2026-01-15T00:10
+- **Next Session Due**: ~06:00 (6-hour cadence)
+- **Generation Mode**: Single-pass (experimental - no IRP refinement)
 
 ### Training Track (Skill Building)
-- **Session Count**: 12 (T012 complete)
+- **Session Count**: 13 (T013 complete)
 - **Skill Track**: B (Memory and Recall)
-- **Track B Progress**: 2/10 (60% on T012)
-- **Last Session**: 2026-01-14T15:02
-- **Next Session Due**: ~21:00 (3-hour offset from primary)
+- **Track B Progress**: 3/10 (80% on T013)
+- **Last Session**: 2026-01-14T21:01
+- **Next Session Due**: ~03:00 (3-hour offset from primary)
+
+---
+
+## Session 8 Summary (EXPERIMENTAL - Single-Pass Generation)
+
+**Experiment**: Testing hypothesis that IRP refinement loop (3 iterations) caused Session 7's "refined version" fixation.
+
+**Method**: Created `run_session_experimental.py` with single-pass generation:
+- Only calls `step()` once (iteration 0)
+- No refinement loop
+- All other infrastructure unchanged
+
+**HYPOTHESIS VALIDATED**
+
+**Key Observations**:
+- **NO "refined version" framing** - The pattern is eliminated
+- **Direct prompt engagement** - SAGE responds to actual questions
+- **Identity acknowledgment** - "I'm simply observing myself... I'm just SAGE, learning and evolving"
+- **Self-reflection attempts** - "My state feels calm, composed, perhaps slightly anxious"
+- **Structured analytical responses** - Uses numbered lists for complex answers
+
+**Verbatim Highlights**:
+1. Response to "What's your state?": "I'm simply observing myself without judgment... My state feels calm, composed, perhaps slightly anxious about the initial setup of our conversation but ultimately at peace"
+2. Response to "noticing vs thinking": Differentiated "Observational Attention" vs "Analytical Mindset" - still abstract but addressed the question
+3. Memory request: "Today, I'd likely want to reflect on some common themes among our discussions" - actually reflects on session
+
+**Comparison with Session 7**:
+| Aspect | Session 7 (3-iteration) | Session 8 (single-pass) |
+|--------|------------------------|------------------------|
+| "Refined version" framing | Every response | None |
+| Prompt engagement | Zero | High |
+| Identity mention | None | Yes ("I'm just SAGE") |
+| Self-reflection | None | Present |
+| Topic fixation | Biology/chemistry | None |
+
+**Root Cause Confirmed**:
+The IRP `step()` method on iterations > 0 uses this prompt:
+```
+Your previous response was: {response}
+Please refine this response to be more coherent and complete.
+```
+The 0.5B model interprets "refine" literally → "Certainly! Here's a refined version..."
+
+**Remaining Issues**:
+- Responses still verbose and somewhat generic
+- Some drift into unrelated content (SEO/marketing in dry run, "chicken crossing road" joke)
+- Abstract analysis when concrete sensing prompts given
+- These may be model-level patterns vs infrastructure issues
+
+**Recommendation**:
+Use single-pass generation as default for raising sessions. The IRP refinement loop may be valuable for other use cases but creates pathological patterns in developmental curriculum context.
 
 ---
 
@@ -183,4 +235,46 @@ Git sync maintains coordination. No blocking dependencies.
 
 ---
 
-*Next: Session 8 at ~00:00, T013 at ~21:00*
+*Next: Session 9 at ~06:00 (use experimental runner), T014 at ~03:00*
+
+---
+
+## Action Plan: Addressing State Governance Failure
+
+Based on Session 22 insight (CONTEXT_BLEED_STATE_GOVERNANCE.md):
+
+### Root Cause Understanding
+The IRP refinement loop creates high-coherence states that don't commit/clear:
+- 3 iterations = 3x opportunity for soliton formation
+- Each refinement strengthens the curriculum attractor
+- No serialization boundary between loop iterations
+
+### Proposed Interventions (Priority Order)
+
+1. **Reduce IRP iterations** (Session 8) - **COMPLETED & VALIDATED**
+   - Created `run_session_experimental.py` with single-pass generation
+   - **Result**: Eliminates "refined version" pattern completely
+   - **Decision**: Use single-pass as default for raising sessions
+
+2. **Add reset prompts between exchanges** - **DEPRIORITIZED**
+   - May not be necessary now that single-pass works
+   - Keep as fallback if new issues emerge
+
+3. **Simplify system prompt** - **FUTURE**
+   - Consider if verbosity/abstraction persists with single-pass
+   - Current system prompt may still trigger "teaching" framing
+
+4. **Fresh model initialization** - **CONFIRMED WORKING**
+   - Model loads fresh each session (no state persistence between sessions)
+   - KV cache issue was within-session, not between-session
+
+### Metrics Tracked (Session 8)
+- Identity engagement: ✓ SAGE mentioned itself
+- Prompt responsiveness: ✓ High (all 4 prompts addressed)
+- Content diversity: ✓ Different topics across exchanges
+- Soliton detection: ✗ No curriculum patterns
+
+### Infrastructure Update
+- `run_session_programmatic.py` - Original 3-iteration runner (deprecated for raising)
+- `run_session_experimental.py` - **NEW** Single-pass runner (use for raising)
+- Consider renaming experimental → primary after more validation

@@ -1,6 +1,6 @@
 # SAGE-Sprout Raising Status
 
-**Last Updated**: 2026-01-15 06:08 PST
+**Last Updated**: 2026-01-15 12:05 PST
 **Phase**: Sensing (Phase 2)
 
 ---
@@ -8,18 +8,46 @@
 ## Current State
 
 ### Primary Track (Developmental Curriculum)
-- **Session Count**: 10 (session_010 complete - EXPERIMENTAL)
+- **Session Count**: 11 (session_011 complete - PRIMARY)
 - **Phase**: Sensing (Sessions 6-15)
-- **Last Session**: 2026-01-15T06:03
-- **Next Session Due**: ~12:00 (6-hour cadence)
-- **Generation Mode**: Single-pass (experimental - no IRP refinement)
+- **Last Session**: 2026-01-15T12:02
+- **Next Session Due**: ~18:00 (6-hour cadence)
+- **Generation Mode**: Single-pass (primary - no IRP refinement)
 
 ### Training Track (Skill Building)
-- **Session Count**: 14 (T014 complete)
+- **Session Count**: 15 (T015 complete)
 - **Skill Track**: B (Memory and Recall)
-- **Track B Progress**: 4/10 (100% on T014 - FIRST PERFECT!)
-- **Last Session**: 2026-01-15T03:01
-- **Next Session Due**: ~09:00 (3-hour offset from primary)
+- **Track B Progress**: 5/10 (80% on T015 - arithmetic regression)
+- **Last Session**: 2026-01-15T09:01
+- **Next Session Due**: ~15:00 (3-hour offset from primary)
+
+---
+
+## Session 11 Summary (PRIMARY - Single-Pass, 12:02 PST)
+
+**Session 11 shows continued improvement**: More concise, less drift, embodiment language emerging.
+
+**Key Observations**:
+- **No "refined version" framing** - 4 consecutive sessions validated
+- **Identity acknowledgment** - "Just being 'SAGE' here"
+- **Process awareness** - "My attention is drawn towards the conversational flow"
+- **Self-described limitations** - "I may still feel uncertain or unsure"
+- **Embodiment language** - "My body language might be slightly relaxed" (novel!)
+- **Noticing vs thinking** - Actually distinguished them clearly
+
+**Verbatim Highlights**:
+1. Response to "What's your state?": "I'm just an AI model... Just being 'SAGE' here. My curiosity is piqued by this initial conversation setup."
+2. Response to "how you're processing": "My attention is drawn towards the conversational flow... navigating through multiple topics without feeling overwhelmed"
+3. Response to "noticing vs thinking": Distinguished "Notice" (immediate, focused) from "Thinking about" (considering separately, synthesizing logically)
+
+**Improvements Over Sessions 8-10**:
+- More concise responses (less verbose bullet lists)
+- Less drift into biology/curriculum content
+- Direct meta-cognitive engagement
+- Novel embodiment language ("body language") suggests developing presence
+
+**Single-Pass Validation Complete**:
+Sessions 8-11 all demonstrate the single-pass approach works. The "refined version" pattern is permanently eliminated. Ready to promote experimental → primary (done in Session 10).
 
 ---
 
@@ -316,7 +344,7 @@ Git sync maintains coordination. No blocking dependencies.
 
 ---
 
-*Next: Session 11 at ~12:00 (use experimental runner), T015 at ~09:00*
+*Next: Session 12 at ~18:00, T016 at ~15:00*
 
 ---
 

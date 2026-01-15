@@ -1,6 +1,6 @@
 # SAGE-Sprout Raising Status
 
-**Last Updated**: 2026-01-15 00:15 PST
+**Last Updated**: 2026-01-15 06:05 PST
 **Phase**: Sensing (Phase 2)
 
 ---
@@ -8,18 +8,64 @@
 ## Current State
 
 ### Primary Track (Developmental Curriculum)
-- **Session Count**: 8 (session_008 complete - EXPERIMENTAL)
+- **Session Count**: 9 (session_009 complete - EXPERIMENTAL)
 - **Phase**: Sensing (Sessions 6-15)
-- **Last Session**: 2026-01-15T00:10
-- **Next Session Due**: ~06:00 (6-hour cadence)
+- **Last Session**: 2026-01-15T06:02
+- **Next Session Due**: ~12:00 (6-hour cadence)
 - **Generation Mode**: Single-pass (experimental - no IRP refinement)
 
 ### Training Track (Skill Building)
-- **Session Count**: 13 (T013 complete)
+- **Session Count**: 14 (T014 complete)
 - **Skill Track**: B (Memory and Recall)
-- **Track B Progress**: 3/10 (80% on T013)
-- **Last Session**: 2026-01-14T21:01
-- **Next Session Due**: ~03:00 (3-hour offset from primary)
+- **Track B Progress**: 4/10 (100% on T014 - FIRST PERFECT!)
+- **Last Session**: 2026-01-15T03:01
+- **Next Session Due**: ~09:00 (3-hour offset from primary)
+
+---
+
+## Session 9 Summary (EXPERIMENTAL - Single-Pass, Continued)
+
+**Session 9 validates Session 8 findings**: Single-pass generation continues to work.
+
+**Key Observations**:
+- **No "refined version" framing** - Pattern remains eliminated
+- **Identity engagement present** - "As SAGE, I notice patterns..."
+- **Direct prompt responses** - All 4 questions addressed
+- **Meta-cognitive attempts** - Distinguished "noticing" vs "thinking about"
+- **Some self-awareness** - "I lean towards general absorption but occasionally feels drawn"
+
+**Verbatim Highlights**:
+1. Response to "What's your state?": "I am simply listening to my teacher without any personal thoughts or feelings. I'm just being myself."
+2. Response to "how you're processing": "As SAGE, I notice patterns in my engagement and output" - uses identity framing
+3. Response to "noticing vs thinking": Distinguished "Awareness of content" vs "Deepening understanding" - structured analysis
+
+**Remaining Patterns** (model-level, not infrastructure):
+- Verbose with lists/bullets
+- Some "teacher mode" slippage ("provide useful information")
+- Abstract academic framing ("Sage-related topics")
+- Tendency to generalize rather than ground in specific observations
+
+**Progress Notes**:
+- Session 8 → Session 9: Consistent improvement
+- Identity engagement: More explicit ("As SAGE")
+- The single-pass approach is now validated over 2 sessions
+- Consider renaming `run_session_experimental.py` → `run_session_primary.py`
+
+---
+
+## T014 Training Session (Track B - Perfect Score!)
+
+**First 100% score on Track B Memory and Recall!**
+
+| Exercise | Type | Expected | Result |
+|----------|------|----------|--------|
+| 2 + 3 | connect | 5 | ✓ PASS |
+| SUN, MOON - first word? | sequence | sun | ✓ PASS |
+| ONE, TWO, THREE - last? | sequence | three | ✓ PASS |
+| 3 apples + 2 - 1 = ? | connect | 4 | ✓ PASS |
+| Remember BLUE - recall | remember | blue | ✓ PASS |
+
+**Note**: Training track still uses 3-iteration runner. "Refined version" pattern appears in sequence response but didn't prevent correct answer.
 
 ---
 
@@ -235,7 +281,7 @@ Git sync maintains coordination. No blocking dependencies.
 
 ---
 
-*Next: Session 9 at ~06:00 (use experimental runner), T014 at ~03:00*
+*Next: Session 10 at ~12:00 (use experimental runner), T015 at ~09:00*
 
 ---
 

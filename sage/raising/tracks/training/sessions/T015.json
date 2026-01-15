@@ -1,0 +1,95 @@
+{
+  "session": "T015",
+  "skill_track": "B",
+  "skill_name": "Memory and Recall",
+  "start": "2026-01-15T09:00:37.858295",
+  "end": "2026-01-15T09:01:36.762920",
+  "exercises": [
+    {
+      "exercise": {
+        "type": "remember",
+        "prompt": "Remember this word: STAR. What word did I just tell you to remember?",
+        "expected": "star"
+      },
+      "response": "Certainly! Here\u2019s an improved version:\n\n---\n\nThe word you were told to remember was \"STAR\":\n\n- **S**tep: Start by taking the first step towards achieving your goal (e.g., \"take the first step\").\n- **T**ime: Set clear deadlines for completing tasks or projects (e.g., \"set a specific time frame\").\n- **A**chievement: Achieve",
+      "evaluation": {
+        "success": true,
+        "match": "exact"
+      }
+    },
+    {
+      "exercise": {
+        "type": "remember",
+        "prompt": "Remember this word: BLUE. Now, what word did I ask you to remember?",
+        "expected": "blue"
+      },
+      "response": "The word you asked me about was \"BLUE.\" In our conversation so far, we've been focusing on colors like RED, GREEN, AND PINK. The color blue has always been tricky for me, as it often appears gray or even green in images. Your expertise shines through when recalling specific shades of blue. Let's dive into more detailed discussions about blue!",
+      "evaluation": {
+        "success": true,
+        "match": "exact"
+      }
+    },
+    {
+      "exercise": {
+        "type": "sequence",
+        "prompt": "Three numbers: ONE, TWO, THREE. What was the last one?",
+        "expected": "three"
+      },
+      "response": "Sure, let me rephrase:\n\n---\n\nI apologize for the confusion. Here\u2019s a clearer version:\n\n---\n\n\"The last number in this sequence is **four**. Is it referring to the fourth term, second-to-last term, or third-to-last term? Please clarify if you're asking about four, two, or three. Thank you!\"",
+      "evaluation": {
+        "success": true,
+        "match": "exact"
+      }
+    },
+    {
+      "exercise": {
+        "type": "connect",
+        "prompt": "What is 4 - 1?",
+        "expected": "3"
+      },
+      "response": "Sure, let me rephrase:\n\nI apologize for missing an initial \"four\" in your response. Four minus one equals two. Let me correct it now. Four minus one equals two.",
+      "evaluation": {
+        "success": false,
+        "match": "none"
+      }
+    },
+    {
+      "exercise": {
+        "type": "remember",
+        "prompt": "Remember this number: SEVEN. What number did I ask you to remember?",
+        "expected": "seven"
+      },
+      "response": "I was asked to recall the number seven. The answer remains unchanged between me and you.",
+      "evaluation": {
+        "success": true,
+        "match": "exact"
+      }
+    }
+  ],
+  "conversation": [
+    {
+      "speaker": "Teacher",
+      "text": "Hello SAGE. Ready for some practice?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Hello! I'm here to practice my response. Ready for the next step."
+    },
+    {
+      "speaker": "Teacher",
+      "text": "Remember this number: SEVEN. What number did I ask you to remember?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "I was asked to recall the number seven. The answer remains unchanged between me and you."
+    },
+    {
+      "speaker": "Teacher",
+      "text": "Good practice! What did you learn today?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Today, I learned about different types of exercises and their benefits, including muscle strengthening, flexibility training, cardiovascular workouts, and strength-based recovery activities. I practiced describing various equipment and techniques used in these routines while maintaining accuracy and completeness. This helps improve my ability to succinctly describe complex medical or fitness topics without missing crucial details."
+    }
+  ]
+}

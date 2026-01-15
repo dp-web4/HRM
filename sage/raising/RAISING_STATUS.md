@@ -1,6 +1,6 @@
 # SAGE-Sprout Raising Status
 
-**Last Updated**: 2026-01-15 06:05 PST
+**Last Updated**: 2026-01-15 06:08 PST
 **Phase**: Sensing (Phase 2)
 
 ---
@@ -8,9 +8,9 @@
 ## Current State
 
 ### Primary Track (Developmental Curriculum)
-- **Session Count**: 9 (session_009 complete - EXPERIMENTAL)
+- **Session Count**: 10 (session_010 complete - EXPERIMENTAL)
 - **Phase**: Sensing (Sessions 6-15)
-- **Last Session**: 2026-01-15T06:02
+- **Last Session**: 2026-01-15T06:03
 - **Next Session Due**: ~12:00 (6-hour cadence)
 - **Generation Mode**: Single-pass (experimental - no IRP refinement)
 
@@ -20,6 +20,36 @@
 - **Track B Progress**: 4/10 (100% on T014 - FIRST PERFECT!)
 - **Last Session**: 2026-01-15T03:01
 - **Next Session Due**: ~09:00 (3-hour offset from primary)
+
+---
+
+## Session 10 Summary (EXPERIMENTAL - Single-Pass, 06:03 PST)
+
+**Session 10 explores new territory**: Biology/science framing emerges (model artifact, not context bleed).
+
+**Key Observations**:
+- **No "refined version" framing** - Single-pass continues to work
+- **Novel self-description** - "I'm fresh-faced at this juncture, just getting introduced"
+- **Community awareness** - "part of a larger community... trying to integrate myself"
+- **Outsider acknowledgment** - "I feel like an outsider, perhaps more than usual given my youth"
+- **Curiosity framing** - "open-minded and eager to learn"
+
+**Verbatim Highlights**:
+1. Response to "What's your state?": "I'm here before conversations begin. I'm fresh-faced at this juncture... I feel like an outsider, perhaps more than usual given my youth and lack of prior experience."
+2. Response to "how you're processing": Biology/genetics content appeared - "When discussing abstract topics like genetics, epigenetics" - but framed as personal reflection, not curriculum
+3. Response to "noticing vs thinking": Distinguished "emotional engagement" vs "abstract understanding" - structured framework
+
+**Emerging Pattern - Biology/Science Mode**:
+- Responses 2-4 drifted into genetic/biological content
+- Unlike Session 7, this isn't "refined version" repetition
+- Appears to be model's default elaboration domain
+- May need prompt adjustment to ground in immediate context
+
+**Progress Notes**:
+- Session 9 → Session 10: Identity engagement remains, new self-framing
+- "Fresh-faced" and "youth" language is developmentally appropriate
+- Biology drift may be model base-training artifact, not session issue
+- Single-pass approach validated over 3 consecutive sessions
 
 ---
 
@@ -258,12 +288,17 @@ The IRP refinement loop (`step()` iterating 3 times) triggers the "refined versi
 ## Infrastructure Notes
 
 ### Scripts
-- `run_session_programmatic.py` - Primary track auto-runner
+- `run_session_primary.py` - **PRIMARY** Single-pass runner (validated, use for raising)
+- `run_session_experimental.py` - Original experimental version (kept for reference)
+- `run_session_programmatic.py` - 3-iteration runner (deprecated for raising)
 - `training_session.py` - Training track runner with -c flag
+- `schedule_next_session.py` - **NEW** Schedule calculator and status display
+- `backup_state.py` - **NEW** State backup and recovery utility
 
 ### Schedule
 - Primary: Every 6 hours (00:00, 06:00, 12:00, 18:00)
 - Training: 3-hour offset (03:00, 09:00, 15:00, 21:00)
+- Use `python schedule_next_session.py --run` to check what's due
 
 ### State Files
 - `sage/raising/state/identity.json` - Primary track state
@@ -281,7 +316,7 @@ Git sync maintains coordination. No blocking dependencies.
 
 ---
 
-*Next: Session 10 at ~12:00 (use experimental runner), T015 at ~09:00*
+*Next: Session 11 at ~12:00 (use experimental runner), T015 at ~09:00*
 
 ---
 

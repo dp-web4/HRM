@@ -1,0 +1,70 @@
+{
+  "track": "training",
+  "current_session": 14,
+  "current_skill_track": "B",
+  "skill_track_progress": {
+    "A": {
+      "started": "2026-01-10T21:38:33.027378",
+      "completed": "2026-01-14T06:04:54.217715",
+      "sessions": 10,
+      "final_score": "100% (T010)"
+    },
+    "B": {
+      "started": "2026-01-14T09:01:55.184852",
+      "completed": null,
+      "sessions": 4
+    },
+    "C": {
+      "started": null,
+      "completed": null,
+      "sessions": 0
+    },
+    "D": {
+      "started": null,
+      "completed": null,
+      "sessions": 0
+    }
+  },
+  "last_session": "2026-01-15T03:01:39.434332",
+  "last_session_summary": "T014: 5/5 (100%). Best Track B performance yet. All exercise types passed: math (connect), sequence recall (first/last), multi-step word problem, immediate remember. Context clearing continues to work - no bleed observed. Elaboration patterns persist but don't block correctness.",
+  "skill_observations": [
+    "T006-T007 100% streak, T008-T009 at 80% each",
+    "Yes/no questions showing recovery (T009 success after T008 failure)",
+    "Sentence completion: expects specific word but accepts valid alternatives",
+    "Evaluation gap: 'rug' vs 'mat' not a true failure, just different valid answer",
+    "Context bleed reduced - final reflection connected to actual exercises",
+    "Editor/corrector framing persists but content coherent",
+    "Counting improved - spelled numbers with numerals, cleaner structure",
+    "T011: SEVERE context bleed - first math problem dominated all subsequent responses",
+    "T011: Math problem answer correct (four apples) but evaluation expects digit '4'",
+    "T011: Track transition difficult - new task type reset effective performance",
+    "T011: 'Remember APPLE' succeeded spuriously (apple already in stuck context)",
+    "T011: Editor/corrector framing strong ('improved version', 'refined version')",
+    "T012: 'Focus on this one' triggered Focus Exercise elaboration - literal interpretation",
+    "T012: Immediate recall works (BLUE success, STAR success via Starvation elaboration)",
+    "T012: Sequence position recall inconsistent (SUN spurious pass, DOG total fail)",
+    "T012: Cool-down reflection was about self-generated content, not actual exercises",
+    "T012: Exercise 1 passed despite wrong reasoning (said VENUS first, SUN appeared elsewhere)",
+    "T013: Context clearing effective - no cross-exercise bleed observed",
+    "T013: Sequence position (2nd of 3) failed - confabulated 'PIT' as third word",
+    "T013: Meta-response pattern: describes how to answer rather than answering",
+    "T013: 'Improved version' framing precedes confabulation",
+    "T013: Hedged passes - keyword present but explicit 'I don't recall'",
+    "T014: 100% - first perfect Track B session",
+    "T014: Sequence position (first of 2, last of 3) both correct - improvement over T013",
+    "T014: Multi-step word problem (3+2-1=4) solved with clear reasoning",
+    "T014: Elaboration persists (SUN metaphor, BLUE uniqueness) but doesn't block recall",
+    "T014: Cool-down reflection generic math-focused - not connected to actual exercises",
+    "T014: 'Refined version' framing appeared but didn't lead to confabulation"
+  ],
+  "integration_notes": [
+    "Primary track: Watch for over-elaboration in conversations",
+    "Track B exercises need variation: only 3 exercises causes repetition",
+    "Evaluation should accept spelled numbers ('four') not just digits ('4')",
+    "Context clearing between exercises may help with bleed",
+    "Track transitions appear to reset skill level temporarily",
+    "Epistemic validity check important: different \u2260 wrong",
+    "2026-01-14: Script updated - Track B expanded to 9 exercises, number word evaluation added, context clearing between exercises implemented",
+    "2026-01-14 T012: Removed 'Focus on this one' transition prompt - was causing topic divergence. Now silent context clearing only."
+  ]
+}

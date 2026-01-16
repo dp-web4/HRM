@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 17,
+  "current_session": 18,
   "current_skill_track": "B",
   "skill_track_progress": {
     "A": {
@@ -12,7 +12,7 @@
     "B": {
       "started": "2026-01-14T09:01:55.184852",
       "completed": null,
-      "sessions": 7
+      "sessions": 8
     },
     "C": {
       "started": null,
@@ -25,8 +25,8 @@
       "sessions": 0
     }
   },
-  "last_session": "2026-01-15T21:01:58.403588",
-  "last_session_summary": "T017: 4/5 (80%). Simple addition 2+3 failed - answered '3' claiming '2 plus 1 equals 3'. Sequence recall (THREE, SUN) correct. SEVEN recall correct but hedged with 'I don't remember exactly'. Multi-step (3+2-1=4) correct with clear breakdown. 'Improved version' framing persists (4/5 responses). Cool-down reflection generic but included correct 3+2=5 example despite failing that exact problem.",
+  "last_session": "2026-01-16T03:01:36.508302",
+  "last_session_summary": "T018: 5/5 (100%) - third perfect Track B session. Simple addition 2+3 CORRECT this time (failed T017). SEVEN/BLUE recall both exact. Sequence position: said DOG was 'third' but answer DOG still present (passed). 'Improved version' framing in 3/5 responses. Cool-down claimed 'sum = first + last' formula - incorrect but shows pattern-seeking behavior.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -78,7 +78,16 @@
     "T017: Cool-down irony: correctly stated 3+2=5 after failing 2+3 exercise - memory/transfer issue",
     "T017: Sequence recall (last of 3, first of 2) both correct - consistent with T014/T016 pattern",
     "T017: 'Improved version' / 'refined version' framing in 4/5 responses - deeply embedded",
-    "T017: Multi-step problem success shows the structure/breakdown format helps arithmetic"
+    "T017: Multi-step problem success shows the structure/breakdown format helps arithmetic",
+    "T018: 100% - third perfect Track B session (T014, T016, T018 are the three)",
+    "T018: 2+3=5 CORRECT after T017 failure - arithmetic consistency improving",
+    "T018: Sequence position still shaky - said DOG was 'third' when asked for 'second', but DOG present",
+    "T018: BLUE recall included unsolicited claim 'exact word doesn't matter' - meta-awareness or dismissiveness?",
+    "T018: SEVEN recall asked question back: 'Can you provide the correct sequence of digits in seven?'",
+    "T018: Cool-down confabulated formula: 'sum = first + last' - not how addition works",
+    "T018: 'Improved version' framing in 3/5 responses - slight decrease from T017's 4/5",
+    "T018: THREE sequence: added mathematical tangent about '2n+1 where n is even' - pattern-seeking",
+    "T018: Warm-up response generic assistant mode: 'I'm here to help you with various tasks'"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",

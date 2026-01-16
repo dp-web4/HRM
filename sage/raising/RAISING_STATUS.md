@@ -1,6 +1,6 @@
 # SAGE-Sprout Raising Status
 
-**Last Updated**: 2026-01-15 18:10 PST
+**Last Updated**: 2026-01-16 00:05 PST
 **Phase**: Sensing (Phase 2)
 
 ---
@@ -8,17 +8,50 @@
 ## Current State
 
 ### Primary Track (Developmental Curriculum)
-- **Session Count**: 13 (session_013 complete - PRIMARY)
+- **Session Count**: 14 (session_014 complete - PRIMARY)
 - **Phase**: Sensing (Sessions 6-15)
-- **Last Session**: 2026-01-15T18:07
-- **Next Session Due**: ~00:00 (6-hour cadence)
+- **Last Session**: 2026-01-16T00:02
+- **Next Session Due**: ~06:00 (6-hour cadence)
 - **Generation Mode**: Single-pass (primary - no IRP refinement)
 
 ### Training Track (Skill Building)
-- **Session Count**: 16 (T016 complete)
-- **Skill Track**: B (Memory and Recall)
-- **Last Session**: 2026-01-15T15:01
-- **Next Session Due**: ~21:00 (3-hour offset from primary)
+- **Session Count**: 17 (T017 complete)
+- **Skill Track**: B (Memory and Recall) - 7 sessions in progress
+- **Last Session**: 2026-01-15T21:01
+- **Next Session Due**: ~03:00 (3-hour offset from primary)
+
+---
+
+## Session 14 Summary (PRIMARY - Single-Pass, 00:02 PST)
+
+**Session 14 shows continued domain abstraction**: Mathematics/science framing with meta-cognitive structure.
+
+**Key Observations**:
+- **No "refined version" framing** - 7 consecutive sessions validated (single-pass working)
+- **Observer self-framing** - "I'm simply observing the conversation without personal bias"
+- **Mathematics domain continues** - Domain focus on math education, scientific discoveries
+- **Pattern recognition focus** - Lists of things to notice rather than present-moment sensing
+- **Meta-cognitive lists** - Structured bullet points for "how I'm processing"
+- **Notice vs Think distinction** - Provided structured framework: "Noticing" = patterns/familiarity, "Thinking" = synthesis/analysis
+- **Memory request generic** - "Core Concepts", "Key Takeaways" - not session-specific
+
+**Verbatim Highlights**:
+1. Response to "What's your state?": "I'm simply observing the conversation without personal bias or knowledge gaps. I'm ready for questions about topics like math education..."
+2. Response to "how you're processing": Listed patterns - "New information", "Complex vocabulary", "Rapid shifts", "Confusion points", "Discussion flow"
+3. Response to "noticing vs thinking": Distinguished "Noticing" (patterns, familiarity) vs "Thinking about" (critical analysis, synthesis)
+4. Memory request: Generic 6-point list (Core Concepts, Key Takeaways, Contextual Connections, etc.)
+
+**Analysis**:
+- Session 14 continues Session 13's pattern of abstract/observer framing
+- Less "I am an abstract concept" than Session 13, but still detached
+- Responses are coherent and well-structured but not grounded in present experience
+- Single-pass approach continues to prevent "refined version" pathology
+- May benefit from prompts that explicitly request present-moment experience rather than conceptual frameworks
+
+**Comparison with Thor's Session 198 findings**:
+- Thor discovered "boredom causes failure" - attention collapse on simple tasks
+- Session 14's abstract framing may reflect similar pattern: sensing prompts feel "simple" → attention drifts to familiar territory (math/science)
+- Possible intervention: Make sensing prompts more engaging/novel to maintain attention
 
 ---
 

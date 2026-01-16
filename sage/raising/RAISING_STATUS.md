@@ -55,6 +55,33 @@
 
 ---
 
+## Session 15 Summary (EXPERIMENTAL - V2 Sensing Prompts, 00:15 PST)
+
+**Experimental session testing attention-engaging prompts based on Thor's D4→D2 coupling discovery.**
+
+**Key Results**:
+| Metric | Session 14 (V1) | Session 15 (V2) | Change |
+|--------|-----------------|-----------------|--------|
+| Avg Attention Score | ~0.50 | 0.90 | +0.40 ✅ |
+| Domain Drift | High | 3 words | Much lower ✅ |
+| Experience Words | Low | 9 words | Higher ✅ |
+
+**Hypothesis Validated**: Concrete/novel prompts maintain higher attention than abstract prompts.
+
+**Breakthrough Observations**:
+- "What happened during that?" prompt elicited sequence description of internal events
+- Parenthetical guidance ("That's noticing", "That's thinking") helped structure responses
+- Session-anchored memory prompt ("From everything we've said") produced coherent callback
+- STONE prompt triggered concrete association (archaeology) rather than abstract drift
+
+**Verbosity persists** - Both V1 and V2 produce bullet-heavy responses (model-level pattern).
+
+**Files**: `sensing_prompts_v2.py`, `run_session_sensing_v2.py`, `session_015_v2_experiment_analysis.md`
+
+**Recommendation**: Consider integrating V2 prompts into primary runner for sensing phase.
+
+---
+
 ## Session 13 Summary (PRIMARY - Single-Pass, 18:07 PST)
 
 **Session 13 shows domain drift**: Self-describes as "abstract concept" with mathematical focus.

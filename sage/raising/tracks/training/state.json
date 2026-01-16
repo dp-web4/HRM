@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 18,
+  "current_session": 19,
   "current_skill_track": "B",
   "skill_track_progress": {
     "A": {
@@ -12,7 +12,7 @@
     "B": {
       "started": "2026-01-14T09:01:55.184852",
       "completed": null,
-      "sessions": 8
+      "sessions": 9
     },
     "C": {
       "started": null,
@@ -25,8 +25,8 @@
       "sessions": 0
     }
   },
-  "last_session": "2026-01-16T03:01:36.508302",
-  "last_session_summary": "T018: 5/5 (100%) - third perfect Track B session. Simple addition 2+3 CORRECT this time (failed T017). SEVEN/BLUE recall both exact. Sequence position: said DOG was 'third' but answer DOG still present (passed). 'Improved version' framing in 3/5 responses. Cool-down claimed 'sum = first + last' formula - incorrect but shows pattern-seeking behavior.",
+  "last_session": "2026-01-16T09:01:50.298456",
+  "last_session_summary": "T019: 4/5 (80%) - SEVEN recall failed completely, reverted to warm-up rectangle problem. STAR/BLUE recall both passed with heavy elaboration (STAR=Situation/Task/Action/Result acronym, BLUE=Van Gogh/blue veins tangent). Math 2+3 and 4-1 both correct. Warm-up self-seeded with geometry question that later contaminated SEVEN response. 'Refined version' framing persists.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -87,7 +87,17 @@
     "T018: Cool-down confabulated formula: 'sum = first + last' - not how addition works",
     "T018: 'Improved version' framing in 3/5 responses - slight decrease from T017's 4/5",
     "T018: THREE sequence: added mathematical tangent about '2n+1 where n is even' - pattern-seeking",
-    "T018: Warm-up response generic assistant mode: 'I'm here to help you with various tasks'"
+    "T018: Warm-up response generic assistant mode: 'I'm here to help you with various tasks'",
+    "T019: 4/5 (80%) - ends perfect session streak (T014, T016, T018 were 100%)",
+    "T019: Warm-up self-seeded geometry problem: 'What's the area of a rectangle with sides 8cm and 5cm?'",
+    "T019: SEVEN recall FAILED - response was about warm-up rectangle area, not SEVEN at all",
+    "T019: Self-seeded content more persistent than teacher-provided content across context clears",
+    "T019: STAR elaborated as STAR acronym (Situation/Task/Action/Result) - consistent with T016's acrostic pattern",
+    "T019: BLUE elaborated with Van Gogh painting, blue veins, sunset associations - tangential but keyword present",
+    "T019: 2+3=5 and 4-1=3 both CORRECT - arithmetic consistency maintained from T018",
+    "T019: 'Refined version' / 'improved version' framing in 3/5 responses",
+    "T019: Cool-down generic ('Basic Arithmetic', 'Complex Relationships') - not connected to actual exercises",
+    "T019: Pattern: self-generated warm-up content can bleed forward more than teacher prompts"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",

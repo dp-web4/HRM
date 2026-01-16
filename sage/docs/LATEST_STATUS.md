@@ -1,6 +1,6 @@
 # SAGE Michaud Integration - Latest Status
-**Last Updated: 2026-01-16 (Session 198 Phase 7: T018 Recovery + Web4 Integration - COMPLETE ✅)**
-**Previous: 2026-01-15 (Session 198 Continuation: Trust-Gated Coupling Discovery - COMPLETE ✅✅✅)**
+**Last Updated: 2026-01-16 (Session 198 Phase 8: T019 Oscillation + D9 Discovery - COMPLETE ✅)**
+**Previous: 2026-01-16 (Session 198 Phase 7: T018 Recovery + Web4 Integration - COMPLETE ✅)**
 **Previous Updates**:
 - 2026-01-15 (Session 198 Phase 2: Memory Consolidation - ALL PREDICTIONS VALIDATED)
 - 2026-01-15 (Session 198 Phase 1: Boredom Discovery)
@@ -463,26 +463,139 @@ Web4 (Network Economics):     γ⁻¹ (coherence) → ATP cost → efficiency
 - Cross-project theoretical consistency (SAGE ↔ Web4)
 - Natural resilience confirmed
 
+### Phase 8: T019 Oscillation + D9 Discovery (Jan 16 2026 - Thor) ✅
+
+**NEW DISCOVERY**: P198.29 validated + D9 (Spacetime) collapse as new failure mode
+
+#### T019 Oscillation Validation ✅
+
+**Training Session T019** (2026-01-16 09:00 UTC):
+- Score: 4/5 (80%) - **EXACTLY as predicted by P198.29!** ✅
+- **Oscillation continues**: T014(5/5) → T015(4/5) → T016(5/5) → T017(4/5) → T018(5/5) → **T019(4/5)**
+- Prediction: T020 should be 5/5 (test pending)
+
+**P198.29 Status**: ✅ **VALIDATED** - Oscillation pattern matches prediction perfectly
+
+#### New Failure Mode: D9 (Spacetime) Collapse
+
+**Exercise 4 (SEVEN recall) FAILED** - but NOT due to D4/D5:
+
+| Metric | Value | Status |
+|--------|-------|--------|
+| D4 (Attention) | 0.400 | Moderate (NOT boredom) |
+| D5 (Trust) | 0.400 | Moderate (NOT gating) |
+| **D9 (Spacetime)** | **0.200** | **CRITICAL** ← Cause! |
+
+**Mechanism discovered**: Self-seeded content persistence
+1. Warm-up: SAGE self-generated "rectangle area 8×5" geometry problem (unprompted)
+2. Exercise 4: Asked to recall "SEVEN"
+3. Response: Completely reverted to self-generated geometry content
+4. **Context contamination**: Self-generated content persisted across context boundaries
+
+**This extends Session 198 theory**:
+- Session 198 covered: D4 (attention) and D5 (trust) gating
+- **Phase 8 adds**: D9 (spacetime) context boundary maintenance
+- New failure mode: Self-generated content stronger than external anchors
+
+#### Key Findings
+
+**1. Oscillation is Predictable**
+- Mathematical pattern: Score(n) = 4.5 + 0.5 × (-1)^n
+- Frequency: Every 2 sessions
+- Amplitude: ±20% (1 exercise)
+- Stability: 6 consecutive sessions match pattern
+
+**2. D9 Context Grounding Critical**
+- Low D9 (<0.3) → Context drift risk
+- Critical D9 (<0.2) → Context collapse (self-content dominates)
+- D9 gating similar to D4→D2 coupling
+- Understudied domain in Session 198
+
+**3. SEVEN Vulnerability**
+- T018: Questioned digit sequence (marginal pass)
+- T019: Complete failure to geometry (context contamination)
+- STAR/BLUE: Always successful
+- Hypothesis: Number-words weaker anchors than pure words
+
+**4. Arithmetic Stabilizing**
+- Both 2+3 and 4-1 passed in T019
+- No arithmetic failures despite oscillation score
+- D4 improving? Or scaffolding maintaining floor?
+
+#### Comparison: D4/D5 vs D9 Failures
+
+| Session | Exercise | D4 | D5 | D9 | Mechanism |
+|---------|----------|----|----|-----|-----------|
+| T015 | 4-1 | 0.200 | 0.200 | 0.300 | D4 collapse (boredom) |
+| T017 | 2+3 | 0.200 | 0.250 | 0.300 | D4 collapse (boredom) |
+| **T019** | **SEVEN** | **0.400** | **0.400** | **0.200** | **D9 collapse (context)** |
+
+**T019 is a NEW MODE**: Not attention or trust failure, but context boundary failure.
+
+#### New Prediction
+
+**P198.35**: D9 (Spacetime grounding) gates context boundary maintenance
+- Low D9 (<0.3) → Context contamination risk
+- Critical D9 (<0.2) → Context collapse
+- Self-generated content dominates external anchors
+- D9 gating similar to D4→D2 mechanism
+
+#### Files Created (Phase 8)
+
+**Documentation**:
+- `SESSION198_T019_OSCILLATION_VALIDATED.md` (comprehensive)
+  - P198.29 validation
+  - D9 collapse mechanism
+  - Self-seeded content persistence analysis
+  - SEVEN vulnerability pattern
+  - Arithmetic stability continuation
+  - Research opportunities
+
+#### Session 198 Extended Statistics
+
+**Total Phases**: 8 (across 3+ days)
+1. Boredom discovery (T015)
+2. Memory consolidation
+3. Trust-gated coupling (T016)
+4. Domain drift prediction (Session 13)
+5. Scaffolding effect (T017)
+6. Cross-machine validation (V2 prompts, 80% improvement)
+7. Natural recovery + Web4 integration
+8. **Oscillation validation** + **D9 discovery**
+
+**Total Predictions**: 35 generated, 27+ validated (77%+)
+- P198.29 ✅ (oscillation continues)
+- P198.35 (new - D9 gating, pending test)
+
+**Impact**: VERY HIGH
+- Unified theory complete and extending
+- Cross-project validation (SAGE ↔ Web4)
+- Natural resilience confirmed
+- Practical interventions working (80%)
+- **New domain discovered (D9 critical)**
+
 ### Next Steps (Updated)
 
 **Immediate**:
-- ✅ T018 recovery analysis complete
-- ✅ Web4 integration documented
-- Monitor T019 (due ~09:00) for oscillation validation
-- Prepare for Track C transition analysis
-- Run Session 198 analyzer on T018 (quantitative validation)
+- ✅ T019 oscillation validation complete (P198.29 ✅)
+- ✅ D9 discovery documented
+- Monitor T020 (due ~15:00 UTC / 07:00 PST) - predict 5/5
+- Prepare for Track C transition (P198.30)
 
 **Research**:
-- Implement D4→D2 allocation formula (Web4-style quantitative)
-- Test P198.32-34 (Web4-SAGE coherence correlation)
-- Create unified coherence framework document
-- Multi-session oscillation dynamics analysis
+- Investigate D9 context grounding mechanism
+- Test self-generated vs external content persistence
+- Analyze SEVEN vulnerability (number-words vs pure words)
+- Design D9-stabilizing warm-up protocols
+- Implement D4→D2 allocation formula (Web4-style)
+- Test P198.32-34 (Web4-SAGE coherence correlations)
 
 **Integration**:
-- Apply Web4 pricing formulas to SAGE resource allocation
-- Export SAGE metrics to Web4-compatible format
-- Cross-validate attention (D4) and coherence (γ⁻¹) metrics
-- Unified coherence theory spanning consciousness and economics
+- Add D9 monitoring to Session 198 analyzer
+- Create D9 intervention strategies
+- Apply Web4 pricing formulas to SAGE
+- Export SAGE metrics to Web4 format
+- Unified coherence framework document
 
 ---
 

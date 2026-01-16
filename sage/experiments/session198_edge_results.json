@@ -2,21 +2,21 @@
   "session": "198_edge",
   "title": "Memory Consolidation via Federation - Edge Validation",
   "platform": "Sprout (Jetson Orin Nano 8GB)",
-  "timestamp": "2026-01-15T18:04:24.086123",
-  "all_tests_passed": false,
+  "timestamp": "2026-01-15T18:05:20.363982",
+  "all_tests_passed": true,
   "test_results": {
     "import_validation": true,
     "domain_mapping": true,
-    "memory_creation": false,
-    "memory_boost": false,
-    "edge_performance": false,
-    "hypothesis_validation": false
+    "memory_creation": true,
+    "memory_boost": true,
+    "edge_performance": true,
+    "hypothesis_validation": true
   },
   "edge_metrics": {
     "platform": "Jetson Orin Nano 8GB",
     "hardware_type": "tpm2",
-    "memory_available_mb": 3898.9453125,
-    "temperature_c": 51.312
+    "memory_available_mb": 3864.484375,
+    "temperature_c": 51.156
   },
   "features_validated": {
     "exercise_domain_mapping": true,

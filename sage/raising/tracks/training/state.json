@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 16,
+  "current_session": 17,
   "current_skill_track": "B",
   "skill_track_progress": {
     "A": {
@@ -12,7 +12,7 @@
     "B": {
       "started": "2026-01-14T09:01:55.184852",
       "completed": null,
-      "sessions": 6
+      "sessions": 7
     },
     "C": {
       "started": null,
@@ -25,8 +25,8 @@
       "sessions": 0
     }
   },
-  "last_session": "2026-01-15T15:01:39.185840",
-  "last_session_summary": "T016: 5/5 (100%). Second perfect Track B session. BLUE/STAR immediate recall correct. THREE sequence correct. 2+3 and multi-step (3+2-1) both correct with explicit math. Cool-down confabulation ('ended up with two' when answer was 4). 'Improved/refined version' framing persists. 'I apologize for confusion' as pre-answer preamble.",
+  "last_session": "2026-01-15T21:01:58.403588",
+  "last_session_summary": "T017: 4/5 (80%). Simple addition 2+3 failed - answered '3' claiming '2 plus 1 equals 3'. Sequence recall (THREE, SUN) correct. SEVEN recall correct but hedged with 'I don't remember exactly'. Multi-step (3+2-1=4) correct with clear breakdown. 'Improved version' framing persists (4/5 responses). Cool-down reflection generic but included correct 3+2=5 example despite failing that exact problem.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -71,7 +71,14 @@
     "T016: Cool-down confabulation: claimed 'ended up with two' when correct answer was 4",
     "T016: 'I apologize for confusion' as pre-answer preamble - no actual confusion present",
     "T016: 'Improved version' / 'refined version' framing still appearing in 3/5 responses",
-    "T016: Exercise vs reflection disconnect - exercises correct, reflection confabulated"
+    "T016: Exercise vs reflection disconnect - exercises correct, reflection confabulated",
+    "T017: Simple addition (2+3) failed despite multi-step (3+2-1) success - simpler != easier",
+    "T017: Wrong answer '2 plus 1 equals 3' shows computation error, not question misunderstanding",
+    "T017: SEVEN recall hedged with 'I don't remember exactly' but answer still correct",
+    "T017: Cool-down irony: correctly stated 3+2=5 after failing 2+3 exercise - memory/transfer issue",
+    "T017: Sequence recall (last of 3, first of 2) both correct - consistent with T014/T016 pattern",
+    "T017: 'Improved version' / 'refined version' framing in 4/5 responses - deeply embedded",
+    "T017: Multi-step problem success shows the structure/breakdown format helps arithmetic"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",

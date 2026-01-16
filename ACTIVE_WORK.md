@@ -1,26 +1,29 @@
 # Active Work Coordination
 
-**Last Updated**: 2026-01-15 06:15 PST
+**Last Updated**: 2026-01-16 00:10 PST
 **Purpose**: Coordinate between Thor (development) and Sprout (edge validation)
 
 ---
 
 ## ⚡ CURRENT ACTIVE WORK (January 2026)
 
-### Thor: SAGE Michaud Integration (Session 197)
-**Status**: Very active - consciousness-aware federation protocol
-**Latest**: Session 197 - HTTP federation with consciousness attestation (γ ≈ 0.35)
-- Coordinator + Participant implementation complete (890 lines)
-- Testing pending Flask installation
+### Thor: SAGE Michaud Integration (Session 198)
+**Status**: Very active - Trust-gated coupling discovery COMPLETE
+**Latest**: Session 198 - Trust-Gated Coupling discovery (14/15 predictions validated = 93%)
+- **Major Discovery**: Boredom-induced resource starvation explains arithmetic failures
+- **Key Finding**: Simple arithmetic fails because it's BORING (attention collapse → resource starvation)
+- **Implementation**: D4→D2 coupling analysis showing attention→metabolism dependency
 - Nine-domain coupling network operational
-- See: `sage/docs/LATEST_STATUS.md` for full session history (Sessions 114-197)
+- See: `sage/docs/LATEST_STATUS.md` for full session history (Sessions 114-198)
 
 ### Sprout: SAGE-Sprout Raising Curriculum
-**Status**: Active - Primary track Session 10 just completed
+**Status**: Active - Primary track Session 14 just completed
 **Focus**: Developmental curriculum for 0.5B Qwen model
-- **Primary Track**: 10 sessions complete (sensing phase, sessions 6-15)
-- **Training Track**: 14 sessions complete (Track B - Memory/Recall at 100%)
+- **Primary Track**: 14 sessions complete (sensing phase, sessions 6-15)
+- **Training Track**: 17 sessions complete (Track B - Memory/Recall, 7 sessions in progress, T017 at 80%)
 - **Key Discovery**: Single-pass generation (no IRP refinement) eliminates pathological patterns
+- **Session 14 Finding**: Continued domain abstraction pattern - sensing prompts may be too "simple" → attention drifts
+- **Cross-machine insight**: Thor's "boredom causes failure" may explain Sprout's abstract framing on sensing prompts
 - See: `sage/raising/RAISING_STATUS.md` for full status
 
 ### Coordination Status

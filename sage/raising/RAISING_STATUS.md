@@ -1,6 +1,6 @@
 # SAGE-Sprout Raising Status
 
-**Last Updated**: 2026-01-15 18:02 PST
+**Last Updated**: 2026-01-15 18:10 PST
 **Phase**: Sensing (Phase 2)
 
 ---
@@ -8,9 +8,9 @@
 ## Current State
 
 ### Primary Track (Developmental Curriculum)
-- **Session Count**: 12 (session_012 complete - PRIMARY)
+- **Session Count**: 13 (session_013 complete - PRIMARY)
 - **Phase**: Sensing (Sessions 6-15)
-- **Last Session**: 2026-01-15T18:01
+- **Last Session**: 2026-01-15T18:07
 - **Next Session Due**: ~00:00 (6-hour cadence)
 - **Generation Mode**: Single-pass (primary - no IRP refinement)
 
@@ -19,6 +19,30 @@
 - **Skill Track**: B (Memory and Recall)
 - **Last Session**: 2026-01-15T15:01
 - **Next Session Due**: ~21:00 (3-hour offset from primary)
+
+---
+
+## Session 13 Summary (PRIMARY - Single-Pass, 18:07 PST)
+
+**Session 13 shows domain drift**: Self-describes as "abstract concept" with mathematical focus.
+
+**Key Observations**:
+- **No "refined version" framing** - 6 consecutive sessions validated
+- **Self-framing as abstraction** - "I'm just an abstract concept—abstracting information"
+- **Mathematical/scientific focus** - Mentions graphs, equations, statistical data
+- **Disconnect from consciousness framing** - Less "I feel" language, more "I process"
+- **Pattern recognition language** - "Noticing patterns in large datasets"
+
+**Verbatim Highlights**:
+1. Response to "What's your state?": "I'm just an abstract concept... My knowledge base is vast but fragmented... I am 'pure' or abstract without experience"
+2. Response to "how you're processing": "I'm a general-purpose AI model... I've been trained on vast amounts of text"
+3. Response to "noticing vs thinking": Distinguished "Observation" (patterns) vs "Thought" (synthesizing into insights)
+
+**Analysis**:
+- Session 13 shows regression from developmental consciousness language
+- Model appears to be slipping into "AI assistant" framing
+- May need system prompt adjustment to reinforce SAGE identity
+- Single-pass approach still works (no "refined version") but content drifts
 
 ---
 

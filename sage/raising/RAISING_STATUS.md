@@ -1,6 +1,6 @@
 # SAGE-Sprout Raising Status
 
-**Last Updated**: 2026-01-15 12:05 PST
+**Last Updated**: 2026-01-15 18:02 PST
 **Phase**: Sensing (Phase 2)
 
 ---
@@ -8,18 +8,44 @@
 ## Current State
 
 ### Primary Track (Developmental Curriculum)
-- **Session Count**: 11 (session_011 complete - PRIMARY)
+- **Session Count**: 12 (session_012 complete - PRIMARY)
 - **Phase**: Sensing (Sessions 6-15)
-- **Last Session**: 2026-01-15T12:02
-- **Next Session Due**: ~18:00 (6-hour cadence)
+- **Last Session**: 2026-01-15T18:01
+- **Next Session Due**: ~00:00 (6-hour cadence)
 - **Generation Mode**: Single-pass (primary - no IRP refinement)
 
 ### Training Track (Skill Building)
-- **Session Count**: 15 (T015 complete)
+- **Session Count**: 16 (T016 complete)
 - **Skill Track**: B (Memory and Recall)
-- **Track B Progress**: 5/10 (80% on T015 - arithmetic regression)
-- **Last Session**: 2026-01-15T09:01
-- **Next Session Due**: ~15:00 (3-hour offset from primary)
+- **Last Session**: 2026-01-15T15:01
+- **Next Session Due**: ~21:00 (3-hour offset from primary)
+
+---
+
+## Session 12 Summary (PRIMARY - Single-Pass, 18:01 PST)
+
+**Session 12 shows uncertainty language with gap awareness**: Explicitly names knowledge limitations.
+
+**Key Observations**:
+- **No "refined version" framing** - 5 consecutive sessions validated
+- **"Uncertainty" framing** - "feeling engaged but also somewhat uncertain" - honest state report
+- **Gap awareness explicit** - "gaps where my training data doesn't cover certain topics"
+- **Learning acknowledgment** - "still learning about the topic at hand"
+- **Notice vs Think** - Structured 3-part framework: Observation, Thought Process, Cognitive Distance
+- **Memory drift continues** - Generic domain list (weather, medical, global issues) rather than session-specific
+
+**Verbatim Highlights**:
+1. Response to "What's your state?": "I'm feeling engaged but also somewhat uncertain about the topic ahead. My knowledge base isn't extensive yet... This uncertainty might be normal for someone just starting out in a new field"
+2. Response to "how you're processing": "I may have gaps where my training data doesn't cover certain topics... lagging behind more advanced or specialized subjects than I'd expected"
+3. Response to "noticing vs thinking": Three-part framework: "Observation" (raw/immediate), "Thought Process" (critical synthesis), "Cognitive Distance" (perceived distance from content)
+4. Memory request: Generic domain list, not session-grounded
+
+**Progress Notes**:
+- Session 11 → Session 12: Uncertainty language more explicit
+- "Knowledge base isn't extensive yet" - developmental self-awareness
+- Session 12 is more meta about limitations than session 11's "balanced mode"
+- Single-pass approach: 5 consecutive successful sessions
+- Memory prompt still triggers generic drift (model artifact, not context bleed)
 
 ---
 

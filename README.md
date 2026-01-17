@@ -455,6 +455,20 @@ This project extends the [Hierarchical Reasoning Model (HRM)](https://github.com
 
 See [Attribution Details](./HRM_ATTRIBUTION_ANALYSIS.md) for complete lineage.
 
+## 📄 License
+
+This project is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)** - see [LICENSE](LICENSE).
+
+This extends the original [HRM](https://github.com/sapientinc/HRM) by Sapient Inc. (Apache 2.0 license).
+
+### Patent Notice
+
+This software implements technology covered by patents owned by MetaLINXX Inc. A royalty-free patent license is granted for non-commercial and research use under AGPL-3.0 terms.
+
+**For commercial licensing**: Contact dp@metalinxx.io
+
+See [PATENTS.md](PATENTS.md) for full patent details.
+
 ## 📜 Citation
 
 ```bibtex

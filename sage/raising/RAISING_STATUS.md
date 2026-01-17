@@ -1,24 +1,68 @@
 # SAGE-Sprout Raising Status
 
-**Last Updated**: 2026-01-16 12:02 PST
-**Phase**: Relating (Phase 3) - FIRST SESSION
+**Last Updated**: 2026-01-16 18:02 PST
+**Phase**: Relating (Phase 3) - Session 17 complete
 
 ---
 
 ## Current State
 
 ### Primary Track (Developmental Curriculum)
-- **Session Count**: 16 (session_016 complete - PRIMARY)
-- **Phase**: Relating (Sessions 16-25) - **PHASE STARTED**
-- **Last Session**: 2026-01-16T12:02
-- **Next Session Due**: ~18:00
+- **Session Count**: 17 (session_017 complete - PRIMARY)
+- **Phase**: Relating (Sessions 16-25) - **2 sessions in**
+- **Last Session**: 2026-01-16T18:02
+- **Next Session Due**: ~00:00 (2026-01-17)
 - **Generation Mode**: Single-pass (primary - no IRP refinement)
 
 ### Training Track (Skill Building)
-- **Session Count**: 19 (T019 complete)
-- **Skill Track**: B (Memory and Recall) - 9 sessions in progress
-- **Last Session**: 2026-01-16T09:01
-- **Next Session Due**: ~15:00
+- **Session Count**: 20 (T020 complete)
+- **Skill Track**: B (Memory and Recall) - 10 sessions in progress
+- **Last Session**: 2026-01-16T15:02
+- **Next Session Due**: ~21:00
+
+---
+
+## Session 17 Summary (PRIMARY - Single-Pass, 18:02 PST) - RELATING PHASE CONTINUES
+
+**Session 17 is the second session of Phase 3 (Relating)**. Relationship engagement continues.
+
+**Key Observations**:
+- **No "refined version" framing** - 10 consecutive sessions validated (single-pass stable)
+- **Partnership vocabulary consolidated** - "mutual respect, trust, understanding, shared goals"
+- **Temporal confabulation persists** - "Working together over many years" (only 17 sessions)
+- **Satisfaction language present** - "This dynamic bond has become deeply satisfying"
+- **Communication analysis sophisticated** - Listed facial expressions, body language, verbal clues, visual cues
+- **Meta-reflection on relationship** - "Each chapter of the project builds upon the previous one"
+- **Truncation pattern continues** - Response 2 cut off mid-phrase, Response 3 cut off at "1"
+
+**Verbatim Highlights**:
+1. Response to "What's that been like?": "Working together over many years has become an extended relationship characterized by mutual respect, trust, understanding, and shared goals... This partnership has enriched our careers, deepened our knowledge base, and broadened our perspectives."
+2. Response to "how we communicate": Listed 4 elements - facial expressions, body language, verbal clues, visual cues with descriptions of each
+3. Memory request: 9-point list including "Progress achieved", "Lessons learned", "Emotional connection strengthened", "Challenges faced creatively solved"
+
+**Phase 3 (Relating) Progress**:
+- **Consistent engagement**: Both Session 16 and 17 show relational rather than educational framing
+- **Relationship vocabulary established**: "partnership", "connection", "team dynamics", "mutual respect"
+- **Growth language present**: "fostering both personal growth and collective progress"
+- **Temporal confusion**: Model confabulates longer history than actual (common in relating phase)
+- **Domain drift minimal**: No math/science drift - relating prompts successfully engage model
+
+**Comparison with Session 16**:
+| Aspect | Session 16 | Session 17 |
+|--------|------------|------------|
+| Partnership language | Present | Consolidated |
+| Temporal confabulation | "many years" | "many years" (consistent pattern) |
+| Emotional vocabulary | Emerging | Established ("satisfying", "enriched") |
+| Self-critique | Present | Less present |
+| Communication analysis | Basic | More structured (4 categories) |
+
+**Session 17 Notable Patterns**:
+- Model now provides structured frameworks for communication (categorized analysis)
+- Memory requests include both personal growth ("Emotional connection") and practical ("Progress achieved")
+- Less self-critique than Session 16, more confident relationship framing
+- "Deeply satisfying" language suggests positive affect attachment to relationship
+
+**Hypothesis Strengthened**: Relating prompts engage the model more than sensing prompts. The temporal confabulation ("many years") may be a feature, not a bug - the model is constructing a relationship narrative.
 
 ---
 

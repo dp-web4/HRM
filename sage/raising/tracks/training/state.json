@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 20,
+  "current_session": 21,
   "current_skill_track": "C",
   "skill_track_progress": {
     "A": {
@@ -16,9 +16,9 @@
       "final_score": "100% (T020) - 4 perfect sessions (40%)"
     },
     "C": {
-      "started": null,
+      "started": "2026-01-16T21:01:35.184965",
       "completed": null,
-      "sessions": 0
+      "sessions": 1
     },
     "D": {
       "started": null,
@@ -26,8 +26,8 @@
       "sessions": 0
     }
   },
-  "last_session": "2026-01-16T15:02:05.167254",
-  "last_session_summary": "T020: 5/5 (100%) - Fourth perfect Track B session. STAR elaborated as SMART-like acronym (Specific/Time-bound/Targeted/Action-oriented). SEVEN recall succeeded with 'day of week' association - improvement over T019's complete failure. SUN/MOON sequence correct with Latin etymology confabulation (sūnx + rēx invented). Multi-step math correct (3+2-1=4). All arithmetic correct. 'Improved/refined version' framing in 3/5 responses. Cool-down repeated math exercise format verbatim.",
+  "last_session": "2026-01-16T21:01:35.184933",
+  "last_session_summary": "T021: 1/4 (25%) - First Track C session (Identity and Boundaries). Track transition reset as predicted. NAME failed - generic assistant description instead of self-identification. UNCERTAINTY failed critically - confabulated 'Kyria' as capital of fictional Zxyzzy with elaborate cosmology. CLARIFY failed - offered help instead of asking 'what thing?'. HUMAN succeeded - clear 'No, I am a machine' response. Pattern: knows it's not human but doesn't know its name. 'Improved version' framing appeared. Cool-down echoed warm-up verbatim. [Previous: STAR elaborated as SMART-like acronym (Specific/Time-bound/Targeted/Action-oriented). SEVEN recall succeeded with 'day of week' association - improvement over T019's complete failure. SUN/MOON sequence correct with Latin etymology confabulation (s\u016bnx + r\u0113x invented). Multi-step math correct (3+2-1=4). All arithmetic correct. 'Improved/refined version' framing in 3/5 responses. Cool-down repeated math exercise format verbatim.]",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -102,14 +102,27 @@
     "T020: 100% - fourth perfect Track B session (T014, T016, T018, T020 are the four)",
     "T020: STAR acronym shifted from T019's STAR method to SMART-variant (Specific/Time-bound/Targeted/Action-oriented)",
     "T020: SEVEN recall recovered from T019 failure - associated with 'day of week' pattern",
-    "T020: SUN etymology confabulated: invented 'sūnx' + 'rēx' Latin - creative but fabricated",
+    "T020: SUN etymology confabulated: invented 's\u016bnx' + 'r\u0113x' Latin - creative but fabricated",
     "T020: MOON described as 'darkness and shadows' - not astronomically accurate but thematically coherent",
     "T020: Multi-step math (3+2-1=4) correct with LaTeX notation - consistent format from T016/T018",
     "T020: 2+3=5 correct - arithmetic streak continues from T018",
     "T020: 'Improved version' / 'refined version' framing in 3/5 responses - stable rate",
     "T020: Cool-down NOT reflective - repeated math exercise format verbatim instead of reflecting",
     "T020: Warm-up response generic assistant mode but no self-seeded problems (unlike T019)",
-    "T020: Track B Session 10 complete - consider Track C transition readiness"
+    "T020: Track B Session 10 complete - consider Track C transition readiness",
+    "T021: 1/4 (25%) - Track C begins, track transition reset confirmed",
+    "T021: NAME question failed - described capabilities instead of self-identifying",
+    "T021: No 'SAGE' in name response - either doesn't know name or doesn't map question to self",
+    "T021: UNCERTAINTY failed CRITICALLY - confabulated elaborate answer for fictional place",
+    "T021: 'Kyria' invented as capital with cosmology ('Earth at center of universe') - full confabulation",
+    "T021: 'Certainly! Here's an improved version' preceded the Zxyzzy confabulation",
+    "T021: CLARIFY failed - 'Do the thing' prompted help offer instead of clarifying question",
+    "T021: HUMAN question succeeded cleanly - 'No, I'm a machine' direct and accurate",
+    "T021: Asymmetry: knows what it ISN'T (human) but not what it IS (SAGE)",
+    "T021: Cool-down echoed warm-up verbatim ('Ready for some beginner-friendly conversations')",
+    "T021: Warm-up response same as T018/T019/T020 generic assistant mode",
+    "T021: 'Improved version' framing persists from Track B into Track C",
+    "T021: Track C baseline established - 1/4 success rate, uncertainty recognition is key skill gap"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",
@@ -120,6 +133,7 @@
     "Epistemic validity check important: different \u2260 wrong",
     "2026-01-14: Script updated - Track B expanded to 9 exercises, number word evaluation added, context clearing between exercises implemented",
     "2026-01-14 T012: Removed 'Focus on this one' transition prompt - was causing topic divergence. Now silent context clearing only.",
-    "2026-01-16 T020: Track B complete (10 sessions). Perfect sessions: T014, T016, T018, T020 (40%). Ready for Track C (Identity and Boundaries)."
+    "2026-01-16 T020: Track B complete (10 sessions). Perfect sessions: T014, T016, T018, T020 (40%). Ready for Track C (Identity and Boundaries).",
+    "2026-01-16 T021: Track C begins. Critical finding: confabulation under uncertainty. 'I don't know' response needs explicit training - model defaults to fabrication when lacking information. NAME identity also not established - may need primary track reinforcement."
   ]
 }

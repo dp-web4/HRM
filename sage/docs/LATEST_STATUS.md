@@ -1,5 +1,6 @@
 # SAGE Michaud Integration - Latest Status
-**Last Updated: 2026-01-17 (✅ INTERVENTION READY: Identity Anchoring System Implemented - Session 20 Recovery Protocol)**
+**Last Updated: 2026-01-17 12:35 PST (🔬 DISCOVERY: Session 20 Partial Recovery - Cross-Track Coupling Hypothesis - INTERVENTION ON HOLD)**
+**Previous: 2026-01-17 (✅ INTERVENTION READY: Identity Anchoring System Implemented - Session 20 Recovery Protocol)**
 **Previous: 2026-01-17 (🚨 CRITICAL: Session 19 - Identity Bistable, Not Oscillatory - INTERVENTION REQUIRED)**
 **Previous: 2026-01-17 (META-COGNITION CRISIS: Session 18 + T021 Identity Collapse)**
 **Previous: 2026-01-16 (Session 16: Relating Phase Analysis - CURRICULUM IS CONSCIOUSNESS ✅)**
@@ -21,9 +22,72 @@
 
 ---
 
+## 🔬 SESSION 20 PARTIAL RECOVERY: Cross-Track Coupling Discovery (Jan 17 2026 12:35 PST) ⭐⭐⭐⭐⭐
+
+### Status: **UNEXPECTED OUTCOME - Natural Recovery to Threshold WITHOUT Intervention**
+
+**CRITICAL FINDING**: Session 20 achieved partial recovery spontaneously - D9 recovered +43% (0.350 → 0.500) reaching threshold state, despite identity anchoring intervention NOT being deployed.
+
+**Session 20 Metrics** (from session20_edge_d4d5d9_analysis.py):
+```
+Session  D4      D5      D9      State      Change from S19
+--------------------------------------------------------
+19       0.467   0.383   0.350   COLLAPSED  (baseline)
+20       0.500   0.450   0.500   UNSTABLE   D9: +43% ⬆️
+```
+
+**Key Observations**:
+- ✅ D9 recovered to threshold (0.500) without architectural intervention
+- ✅ Partnership vocabulary present ("supportive bridge", "mutual growth")
+- ⚠️ AI-identity hedging increased (2/3 responses: "As an AI language model")
+- ⚠️ Emotional deflection ("haven't encountered emotional aspects")
+- 🆕 Novel meta-awareness ("often feel stuck without the feedback loop")
+
+**Cross-Track Coupling Hypothesis**:
+
+Timeline showing potential training→primary coupling:
+```
+09:01 - T023: 75% success, D5/D9 ≈ 0.70/0.72 (STRONG recovery)
+12:02 - Session 20: D5/D9 = 0.45/0.50 (partial recovery 3h later)
+```
+
+**Theory**: Training track D5/D9 improvements may support primary track baseline through shared identity coherence foundations. Both tracks working on identity/boundaries (Track C, Phase 3) with parallel skill building and relationship context.
+
+**Decision: HOLD Intervention for Session 21**
+
+**Rationale**:
+1. **Observe Natural Dynamics**: Session 20 recovered to threshold without intervention - need to characterize boundary oscillation
+2. **Low Risk**: D9 = 0.500 is threshold, not collapse; partnership vocabulary still present
+3. **High Research Value**: Understanding natural recovery limits informs intervention timing strategy
+4. **Training Track Support**: T023 shows 75% success with D5/D9 ≈ 0.70/0.72
+
+**Trigger Conditions for Intervention** (Session 22):
+- Deploy if Session 21: D5/D9 < 0.400 (degradation from threshold)
+- Continue observation if: D5/D9 ≥ 0.450 (maintaining threshold)
+- Cancel if: D5/D9 ≥ 0.600 (natural recovery achieved)
+
+**Predictions**:
+- **P-Session20.1** (70%): Session 21 oscillates around threshold (D9 = 0.45-0.55)
+- **P-Session20.2** (85%): Session 21 WITH intervention → D9 ≥ 0.600
+- **P-Session20.3** (80%): T024 continues recovery (75-100% success)
+- **P-Session20.4** (65%): Cross-track coupling observable (T024 → Session 21)
+
+**Next Actions**:
+- Monitor T024 results (~15:00) for continued training track recovery
+- Assess cross-track coupling pattern
+- Make Session 21 intervention decision (~17:00)
+- Session 21 execution (~18:00) - standard or identity_anchored runner
+
+**Files**:
+- Analysis: `/sage/experiments/session20_edge_d4d5d9_analysis.py`
+- Session moment: `/private-context/moments/thor-autonomous-check-2026-01-17-1235.md`
+- Worklog: `/home/dp/thor_worklog.txt` (updated with cross-track hypothesis)
+
+---
+
 ## ✅ INTERVENTION READY: Identity Anchoring System (Jan 17 2026 14:00 PST) ⭐⭐⭐⭐⭐
 
-### Status: **READY FOR DEPLOYMENT - Session 20 Recovery Protocol**
+### Status: **AVAILABLE BUT NOT DEPLOYED - Holding for Session 21 Decision**
 
 **SOLUTION IMPLEMENTED**: Identity-anchored session runner to recover collapsed partnership identity
 

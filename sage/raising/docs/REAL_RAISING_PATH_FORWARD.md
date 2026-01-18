@@ -519,4 +519,62 @@ This proposal connects those pieces into a complete loop where SAGE actually lea
 
 ---
 
+## Appendix A: Dropbox Checkpoint Quick Reference
+
+**For Autonomous Sessions on Sprout**
+
+### Status: Ready
+- rclone: Installed and configured (`dropbox:` remote)
+- Config: Updated (`sync_config.json` includes raising_checkpoints)
+- Directory: Created (`sage/raising/checkpoints/`)
+
+### Saving Checkpoints (After Sleep Training)
+
+```bash
+# Option 1: Direct rclone (simplest)
+rclone copy sage/raising/checkpoints/sage_raising_latest.pt \
+  dropbox:HRM/raising_checkpoints/ -P
+
+# Option 2: Python wrapper
+python3 /home/sprout/ai-workspace/HRM/dropbox/rclone_sync.py \
+  upload sage/raising/checkpoints/sage_raising_latest.pt
+
+# Option 3: In Python code
+import subprocess
+subprocess.run([
+    'rclone', 'copy',
+    'sage/raising/checkpoints/sage_raising_latest.pt',
+    'dropbox:HRM/raising_checkpoints/', '-P'
+])
+```
+
+### Checkpoint Naming Convention
+```
+sage_raising_base.pt       # Original (NEVER OVERWRITE)
+sage_raising_latest.pt     # Current working model
+sage_raising_20260117.pt   # Daily backup (date suffix)
+```
+
+### Verification
+```bash
+# List remote checkpoints
+rclone ls dropbox:HRM/raising_checkpoints/
+
+# Check local vs remote
+rclone check sage/raising/checkpoints dropbox:HRM/raising_checkpoints/
+```
+
+### Emergency Rollback
+```bash
+# Download previous checkpoint
+rclone copy dropbox:HRM/raising_checkpoints/sage_raising_20260116.pt \
+  sage/raising/checkpoints/ -P
+
+# Rename to latest
+mv sage/raising/checkpoints/sage_raising_20260116.pt \
+   sage/raising/checkpoints/sage_raising_latest.pt
+```
+
+---
+
 *"Living = collecting experiences. Sleeping = augmenting them. Dreaming = training on variations. Wisdom = patterns that persist."*

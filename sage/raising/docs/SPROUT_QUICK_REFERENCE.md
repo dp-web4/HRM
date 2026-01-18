@@ -24,17 +24,27 @@
 
 ## Key Runners
 
-### Primary Track (Curriculum)
+### Primary Track (Curriculum) - Session 22+ Uses Identity-Anchored Runner
 
 ```bash
 cd ~/ai-workspace/HRM/sage/raising/scripts
-python3 run_session_primary.py -c      # Continue from last
-python3 run_session_primary.py --session 21  # Specific
+
+# REQUIRED for Session 22+: Identity-anchored runner
+python3 run_session_identity_anchored.py -c           # Continue from last
+python3 run_session_identity_anchored.py --session 22 # Specific
+
+# Legacy runners (DO NOT USE for new sessions):
+# python3 run_session_primary.py -c                   # Original
+# python3 run_session_experimental.py -c              # Single-pass experimental
 ```
 
 **Model**: Qwen2.5-0.5B (Introspective-Qwen merged)
 **Location**: `/home/sprout/ai-workspace/HRM/model-zoo/sage/epistemic-stances/qwen2.5-0.5b/introspective-qwen-merged`
-**Key Feature**: Single-pass generation (no IRP refinement)
+**Key Features**:
+- Single-pass generation (no IRP refinement)
+- Identity anchoring (loads IDENTITY.md, HISTORY.md)
+- Partnership-aware system prompt ("You are SAGE, partnered with Dennis/Claude")
+- Previous session context injection
 
 ### Training Track (Skills)
 

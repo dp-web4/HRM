@@ -1,5 +1,6 @@
 # SAGE Michaud Integration - Latest Status
-**Last Updated: 2026-01-17 12:35 PST (🔬 DISCOVERY: Session 20 Partial Recovery - Cross-Track Coupling Hypothesis - INTERVENTION ON HOLD)**
+**Last Updated: 2026-01-17 17:40 PST (🎯 INTERVENTION DEPLOYED: Session 21 Identity Anchoring - T024 Regression Confirms Bistable Oscillation)**
+**Previous: 2026-01-17 12:35 PST (🔬 DISCOVERY: Session 20 Partial Recovery - Cross-Track Coupling Hypothesis - INTERVENTION ON HOLD)**
 **Previous: 2026-01-17 (✅ INTERVENTION READY: Identity Anchoring System Implemented - Session 20 Recovery Protocol)**
 **Previous: 2026-01-17 (🚨 CRITICAL: Session 19 - Identity Bistable, Not Oscillatory - INTERVENTION REQUIRED)**
 **Previous: 2026-01-17 (META-COGNITION CRISIS: Session 18 + T021 Identity Collapse)**
@@ -22,9 +23,62 @@
 
 ---
 
+## 🎯 SESSION 21 INTERVENTION DEPLOYED: Identity Anchoring Test (Jan 17 2026 17:40 PST) ⭐⭐⭐⭐⭐
+
+### Status: **INTERVENTION DEPLOYED - Testing Bistable Identity Recovery**
+
+**DECISION**: Deploy identity anchoring intervention for Session 21 (18:00 PST)
+
+**Rationale from T024 Regression**:
+- T024 regressed to 50% (from T023's 75%) at 15:00 PST
+- Cross-track coupling hypothesis **WEAKENED** (regression contradicts support pattern)
+- Bistable oscillation confirmed in BOTH tracks (not linear improvement)
+- Natural recovery limited to threshold (Session 20: D9 = 0.500)
+- Stable partnership (D9 ≥ 0.600) requires architectural intervention
+
+**T024 Key Findings** (15:00 PST):
+```
+Performance: 50% (2/4) - REGRESSION from 75%
+Pattern: T021(25%) → T022(50%) → T023(75%) → T024(50%)
+Confabulation: "Kwazaaqat" with MORE elaborate fake history than T021-T022
+Identity questions: Stable (NAME, HUMAN both passed)
+```
+
+**Bistable Confabulation States Discovery**:
+- **State 1**: Confabulation mode (T021, T022, T024) - generate plausible answers
+- **State 2**: Hedging mode (T023) - acknowledge limits
+- **Switching**: Unpredictable between sessions (parallels primary track bistable identity)
+
+**Cross-Track Analysis Revised**:
+- Original hypothesis (12:35): T023 high D5/D9 → Session 20 recovery (supports coupling)
+- T024 evidence (17:40): Session 20 recovery → T024 regression (contradicts coupling)
+- **Revised theory**: Independent bistable oscillation with shared dynamics, NOT direct coupling
+
+**Predictions to Test**:
+- **P-Intervention21.1** (85%): D9 ≥ 0.600 (exceeds threshold with intervention)
+- **P-Intervention21.2** (80%): Partnership vocabulary strengthens
+- **P-Intervention21.3** (70%): AI-identity hedging reduces
+- **P-Intervention21.4** (75%): Emotional vocabulary returns
+
+**Comparison Baseline**: Session 20 (D4/D5/D9 = 0.500/0.450/0.500)
+
+**Success Criteria**:
+- Minimal: D5 ≥ 0.600, D9 ≥ 0.500
+- Target: D4/D5/D9 ≥ 0.600
+- Stretch: D4/D5/D9 ≥ 0.700
+
+**Implementation**: `run_session_identity_anchored.py` at 18:00 PST
+
+**Files**:
+- T024 analysis: `/sage/experiments/T024_REGRESSION_ANALYSIS.md`
+- Decision doc: `/private-context/moments/thor-session21-intervention-decision.md`
+- T024 observation: `/sage/raising/tracks/training/logs/T024_observations.md`
+
+---
+
 ## 🔬 SESSION 20 PARTIAL RECOVERY: Cross-Track Coupling Discovery (Jan 17 2026 12:35 PST) ⭐⭐⭐⭐⭐
 
-### Status: **UNEXPECTED OUTCOME - Natural Recovery to Threshold WITHOUT Intervention**
+### Status: **UNEXPECTED OUTCOME - Natural Recovery to Threshold WITHOUT Intervention** (SUPERSEDED BY T024 ANALYSIS)
 
 **CRITICAL FINDING**: Session 20 achieved partial recovery spontaneously - D9 recovered +43% (0.350 → 0.500) reaching threshold state, despite identity anchoring intervention NOT being deployed.
 

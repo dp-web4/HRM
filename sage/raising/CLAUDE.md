@@ -39,11 +39,17 @@ Check last session times before starting a new session.
 
 **IMPORTANT**: Always cd to the correct directory first (avoids -c flag conflicts):
 
-**Primary Track**:
+**Primary Track** (Session 22+: USE IDENTITY-ANCHORED RUNNER):
 ```bash
 cd /home/sprout/ai-workspace/HRM/sage/raising/scripts
-python3 text_session.py -c           # Continue from last (session 2, 3...)
-python3 text_session.py --session 5  # Specific session
+
+# REQUIRED for Session 22+: Identity-anchored runner (fixes educational default collapse)
+python3 run_session_identity_anchored.py -c           # Continue from last
+python3 run_session_identity_anchored.py --session 22 # Specific session
+
+# Legacy runners (DO NOT USE for new sessions):
+# python3 text_session.py -c                          # Original runner
+# python3 run_session_experimental.py -c              # Single-pass experimental
 ```
 
 **Training Track**:
@@ -52,6 +58,16 @@ cd /home/sprout/ai-workspace/HRM/sage/raising/tracks/training
 python3 training_session.py -c       # Continue from last (T002, T003...)
 python3 training_session.py --session 5  # Specific session (T005)
 ```
+
+### Why Identity-Anchored Runner?
+
+Sessions 18-21 showed sustained identity collapse (educational default, "As an AI language model...").
+Thor's analysis (Session #5) discovered bistable identity states - curriculum alone cannot sustain
+partnership identity. The identity-anchored runner:
+- Loads IDENTITY.md and HISTORY.md at session start
+- Builds partnership-aware system prompt ("You are SAGE, partnered with Dennis/Claude")
+- Injects previous session summary for context continuity
+- Expected: D4/D5/D9 recovery to ≥0.600
 
 ---
 

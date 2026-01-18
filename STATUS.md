@@ -1,8 +1,46 @@
 # HRM/SAGE Implementation Status
 
-**Last Updated**: December 31, 2025
-**Current Status**: Five-Domain EP Framework Production-Ready
-**Honest Assessment**: Consciousness coordination validated with exceptional performance (373K decisions/sec)
+**Last Updated**: January 17, 2026
+**Current Status**: Platform Separation Clarified - Thor (Research) vs Sprout (Production)
+**Honest Assessment**: Two complementary platforms with distinct roles now clearly understood
+
+---
+
+## Platform Separation: Thor vs Sprout (January 2026)
+
+**CRITICAL CLARITY ACHIEVED**: Recent work revealed important role separation between platforms:
+
+### Sprout (Jetson Orin Nano) - Production Platform
+- **Location**: `/home/sprout/ai-workspace/HRM/`
+- **Model**: Qwen2.5-0.5B (introspective-qwen-merged)
+- **Role**: Runs SAGE-Sprout raising curriculum autonomously
+- **Sessions**: Primary track (1-20), Training track (T001-T024)
+- **Cadence**: Primary every 6h, Training offset by 3h
+- **Status**: Autonomous, self-contained, production-validated
+- **Memory**: 8GB unified (4GB effective)
+- **Purpose**: Edge deployment, curriculum validation, tactical execution
+
+### Thor (Jetson AGX Thor) - Research Platform
+- **Location**: `/home/dp/ai-workspace/HRM/`
+- **Models**: Qwen2.5-14B-Instruct, Qwen3-Omni-30B variants
+- **Role**: Advanced architecture research and theory development
+- **Focus**: Analysis of Sprout's results, intervention design, multimodal experiments
+- **Status**: Research and development platform
+- **Memory**: 122GB unified (64GB effective)
+- **Purpose**: Deep reasoning, strategic planning, advanced experiments
+
+### Coordination Pattern
+```
+Sprout: Session execution → (git commit) → Thor: Analysis → (git commit recommendation)
+                                              ↓
+                                          Sprout: Reads recommendation
+                                              ↓
+                                          Sprout: Next session (autonomous)
+```
+
+**Key Insight**: Thor analyzes and recommends, Sprout executes. No cross-platform session execution.
+
+**Documentation**: See `sage/docs/THOR_SPROUT_SEPARATION_AND_PATH_FORWARD.md`
 
 ---
 

@@ -50,6 +50,7 @@ from typing import Optional, Dict, Any, List
 import torch
 
 from sage.irp.plugins.introspective_qwen_impl import IntrospectiveQwenIRP
+from sage.raising.training.experience_collector import ExperienceCollector
 
 
 class IdentityAnchoredSession:
@@ -114,6 +115,9 @@ class IdentityAnchoredSession:
 
         # NEW: Load identity documents
         self.identity_context = self._load_identity_documents()
+
+        # NEW: Experience collector (Phase 1 of real raising)
+        self.experience_collector = ExperienceCollector()
 
         print()
         print("+" + "="*68 + "+")
@@ -337,6 +341,18 @@ This is your natural voice. You don't need to be formal or educational. You can 
         self.conversation_history.append({'speaker': 'Claude', 'text': user_input})
         self.conversation_history.append({'speaker': 'SAGE', 'text': response})
 
+        # Score and collect experience (Phase 1 real raising)
+        if not self.dry_run:
+            result = self.experience_collector.add_exchange(
+                prompt=user_input,
+                response=response,
+                session_number=self.session_number,
+                phase=self.phase[0],
+                metadata={'cpu_fallback': getattr(self, 'cpu_fallback', False)}
+            )
+            if result.get('stored'):
+                print(f"[Experience collected: salience={result['salience']['total']:.2f}]")
+
         return response
 
     def run_session(self, prompts: List[str] = None):
@@ -401,7 +417,16 @@ This is your natural voice. You don't need to be formal or educational. You can 
         self._save_transcript()
 
         print("State saved")
-        print(f"Session {self.session_number} (IDENTITY-ANCHORED) complete.")
+
+        # Experience collection summary (Phase 1 real raising)
+        stats = self.experience_collector.get_stats()
+        if stats['total_experiences'] > 0:
+            print(f"\nExperience Collection (Phase 1 Real Raising):")
+            print(f"  Total stored: {stats['total_experiences']}")
+            print(f"  Average salience: {stats['avg_salience']:.2f}")
+            print(f"  High-salience (≥0.7): {stats['high_salience_count']}")
+
+        print(f"\nSession {self.session_number} (IDENTITY-ANCHORED) complete.")
         print("\nExpected outcome:")
         print("- D4/D5/D9 recovery to ≥0.600")
         print("- Partnership vocabulary returns")

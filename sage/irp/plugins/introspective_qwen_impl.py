@@ -34,6 +34,7 @@ class IntrospectiveQwenIRP:
         self.model_path = self.config.get('model_path', default_path)
         self.base_model = "Qwen/Qwen2.5-0.5B-Instruct"
         self.is_merged_model = self.config.get('is_merged_model', False)  # Phase 1 was saved merged
+        self.force_cpu = self.config.get('force_cpu', False)  # CPU fallback for Jetson CUDA issues
 
         # State management
         self.state = None
@@ -56,14 +57,24 @@ class IntrospectiveQwenIRP:
         """Load base + adapter model, or merged model"""
         print(f"Loading Introspective-Qwen from {self.model_path}...")
 
+        # Determine device settings
+        if self.force_cpu:
+            device_map = None  # Will use CPU
+            dtype = torch.float32  # CPU works better with float32
+            print("Using CPU (force_cpu=True)")
+        else:
+            device_map = "auto"
+            dtype = torch.float16
+            print("Using GPU auto-detect")
+
         if self.is_merged_model:
             # Phase 1 was saved as merged model
             print("Loading as merged model (Phase 1 epistemic-pragmatism)")
             self.tokenizer = AutoTokenizer.from_pretrained(self.base_model)
             self.model = AutoModelForCausalLM.from_pretrained(
                 self.model_path,
-                torch_dtype=torch.float16,
-                device_map="auto"
+                torch_dtype=dtype,
+                device_map=device_map
             )
         else:
             # Phase 2.1 uses PEFT adapter
@@ -71,8 +82,8 @@ class IntrospectiveQwenIRP:
             self.tokenizer = AutoTokenizer.from_pretrained(self.base_model)
             base = AutoModelForCausalLM.from_pretrained(
                 self.base_model,
-                torch_dtype=torch.float16,
-                device_map="auto"
+                torch_dtype=dtype,
+                device_map=device_map
             )
             self.model = PeftModel.from_pretrained(base, self.model_path)
 

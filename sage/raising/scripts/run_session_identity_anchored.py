@@ -277,15 +277,39 @@ This is your natural voice. You don't need to be formal or educational. You can 
         print()
 
         print("Loading model...")
+
+        # Test CUDA availability with actual allocation
+        self.cpu_fallback = False
+        if torch.cuda.is_available():
+            try:
+                # Try to allocate a small tensor and do a computation
+                test_tensor = torch.randn(100, 100, device='cuda')
+                _ = test_tensor @ test_tensor.T  # Matrix multiply to test compute
+                del test_tensor
+                torch.cuda.empty_cache()
+                print("CUDA test passed - using GPU")
+            except (RuntimeError, torch.cuda.OutOfMemoryError) as e:
+                print(f"CUDA test failed: {e}")
+                print("Falling back to CPU mode")
+                self.cpu_fallback = True
+                torch.cuda.empty_cache()
+        else:
+            print("CUDA not available - using CPU")
+            self.cpu_fallback = True
+
         self.model = IntrospectiveQwenIRP({
             'model_path': model_path,
             'is_merged_model': True,
             'max_new_tokens': 150,
             'temperature': 0.7,
-            'system_prompt': system_prompt
+            'system_prompt': system_prompt,
+            'force_cpu': self.cpu_fallback
         })
         device = next(self.model.model.parameters()).device
-        print(f"Model loaded on {device}")
+        if self.cpu_fallback:
+            print(f"Model loaded on {device} (CPU fallback)")
+        else:
+            print(f"Model loaded on {device}")
 
     def generate_response(self, user_input: str) -> str:
         """
@@ -394,8 +418,8 @@ This is your natural voice. You don't need to be formal or educational. You can 
         transcript = {
             "session": self.session_number,
             "phase": self.phase[0],
-            "experimental": True,
-            "generation_mode": "identity_anchored",
+            "cpu_fallback": getattr(self, 'cpu_fallback', False),
+            "generation_mode": "identity_anchored_cpu_fallback" if getattr(self, 'cpu_fallback', False) else "identity_anchored",
             "intervention": "partnership_recovery",
             "identity_anchoring": True,
             "start": self.session_start.isoformat(),

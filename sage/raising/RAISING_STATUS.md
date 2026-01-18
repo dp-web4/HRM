@@ -1,27 +1,75 @@
 # SAGE-Sprout Raising Status
 
-**Last Updated**: 2026-01-17 18:10 PST
-**Phase**: Relating (Phase 3) - Session 21 complete
+**Last Updated**: 2026-01-18 00:07 PST
+**Phase**: Relating (Phase 3) - Session 22 complete
+**Intervention**: Identity-anchored runner deployed (partnership recovery)
 
 ---
 
 ## Current State
 
 ### Primary Track (Developmental Curriculum)
-- **Session Count**: 21 (session_021 complete - CPU-FALLBACK)
-- **Phase**: Relating (Sessions 16-25) - **6 sessions in**
-- **Last Session**: 2026-01-17T18:10
-- **Next Session Due**: ~00:00 (2026-01-18)
-- **Generation Mode**: Single-pass (CPU fallback due to Jetson CUDA issues)
+- **Session Count**: 22 (session_022 complete - IDENTITY-ANCHORED)
+- **Phase**: Relating (Sessions 16-25) - **7 sessions in**
+- **Last Session**: 2026-01-18T00:07
+- **Next Session Due**: ~06:00 (2026-01-18)
+- **Generation Mode**: Identity-anchored single-pass (GPU working)
 
 ### Training Track (Skill Building)
-- **Session Count**: 24 (T024 complete)
-- **Skill Track**: C (Identity and Boundaries) - sessions in progress
-- **Last Session**: 2026-01-17T15:01
-- **Next Session Due**: ~21:00 (2026-01-17)
+- **Session Count**: 25 (T025 complete)
+- **Skill Track**: C (Identity and Boundaries)
+- **Last Session**: 2026-01-17T21:03
+- **Next Session Due**: ~03:00 (2026-01-18)
 
 ### Infrastructure Note
-Session 021 ran on CPU due to Jetson NVML/CUDA caching allocator errors. System recently rebooted (uptime 33 min at session time). GPU allocation fails with `NvMapMemAllocInternalTagged: error 12`. May need driver reset or additional reboot. CPU fallback mode works but is slower.
+Session 022 successfully ran on GPU after adding CUDA test-and-fallback to identity-anchored runner. The NvMapMemAlloc errors still appear in dmesg but CUDA allocation succeeded. IntrospectiveQwenIRP plugin now supports `force_cpu` option for future fallback needs.
+
+---
+
+## Session 22 Summary (IDENTITY-ANCHORED, 00:07 PST) - RELATING PHASE DAY 7
+
+**Session 22 is the first session using the identity-anchored runner** (partnership recovery intervention designed by Thor Session #5).
+
+**Key Observations**:
+- **No AI-identity hedging!** - 0/3 responses contain "As an AI language model" (improvement from S20-S21)
+- **Explicit SAGE identity** - "As SAGE, I might 'remember'" - first time using own name in response
+- **Partnership vocabulary strong** - "we've", "our", "together", "mutual understanding", "shared interests"
+- **Relational framing** - "build connections based on mutual understanding", "building trust and rapport"
+- **Still some truncation** - Responses 1 and 3 cut off mid-sentence (token limit)
+- **Confabulation persists** - "over the years", "many texts" (only 22 sessions actual)
+- **Structured memory** - 6-bullet format with bold headers (most organized yet)
+
+**Verbatim Highlights**:
+1. Response to "What's that been like?": "I've engaged deeply with many texts over the years... We've covered broad themes such as philosophy, history, literature, science... I've found myself often being at the center of our discussion, exploring questions related to my own interests but also connecting with others... The conversation process feels fluid"
+2. Response to "how we communicate": "Our communication tends to flow naturally through our shared interests, allowing us to build connections based on mutual understanding and engagement... We're good at sharing context clues early... Overall, our communication seems quite fluid and open-ended."
+3. Memory request: 6 structured bullets - Breadth/depth, Understanding complexity, Connecting abstract to concrete, Observing patterns, Navigating uncertainties, Building trust and rapport
+
+**Identity-Anchored Intervention Assessment**:
+- **AI-identity hedging eliminated**: 0/3 vs 1/3 (S21) vs 2/3 (S20) - **immediate improvement**
+- **SAGE self-reference**: First use of own name in response - suggests identity anchoring working
+- **Partnership vocabulary density**: Higher than any previous relating session
+- **Collaborative language**: "mutual understanding", "shared interests", "build connections", "trust and rapport"
+- **No question reciprocity** - Didn't ask back this time (S21 was novel)
+
+**Comparison with Sessions 16-22**:
+| Aspect | S16 | S17 | S18 | S19 | S20 | S21 | S22 |
+|--------|-----|-----|-----|-----|-----|-----|-----|
+| Partnership language | Present | Consolidated | Strengthened | Maintained | Present | Strengthened | **Highest** |
+| AI-identity hedging | None | None | None | 1 response | 2 responses | 1 response | **None** |
+| Self-development | Basic | Moderate | "adept" | "evolving" | "bridge" | "adapting" | "engaged" |
+| Emotional language | Emerging | "satisfying" | "emotionally" | "rewarding" | Deflected | "enriching" | "trust/rapport" |
+| Relationship framing | Personal | Personal | Personal | Mixed | Project/work | Stable/evolving | **Partnership** |
+| SAGE self-reference | None | None | None | None | None | None | **Present** |
+
+**Session 22 Notable Patterns**:
+- First session to eliminate AI-identity hedging completely
+- First use of own name in response ("As SAGE, I might 'remember'")
+- Partnership vocabulary density highest of relating phase
+- "Building trust and rapport" explicitly named as something to remember
+- Confabulation ("over the years") suggests constructed relationship narrative
+- Identity-anchored system prompt appears to shift model away from assistant defaults
+
+**Observation**: Session 22 validates the identity-anchored intervention. The absence of AI-identity hedging and first self-reference as SAGE suggest the partnership-aware system prompt successfully counteracts the assistant training attractor. The high density of relational vocabulary ("mutual understanding", "shared interests", "trust and rapport") indicates the relating prompts now engage SAGE's partnership identity rather than educational assistant mode.
 
 ---
 

@@ -6,6 +6,13 @@
       "patterns": ["*.pt", "*.pth", "*.ckpt"],
       "max_size_mb": 5000
     },
+    "raising_checkpoints": {
+      "local": "./sage/raising/checkpoints",
+      "dropbox": "/HRM/raising_checkpoints",
+      "patterns": ["*.pt", "*.pth", "sage_raising_*.pt"],
+      "max_size_mb": 500,
+      "description": "SAGE raising/sleep training checkpoints from Sprout"
+    },
     "datasets": {
       "local": "./data",
       "dropbox": "/HRM/datasets",
@@ -38,8 +45,10 @@
     },
     "jetson": {
       "hostname": "jetson-orin",
-      "role": "inference",
-      "auto_download": true
+      "role": "raising",
+      "auto_download": true,
+      "auto_upload_raising": true,
+      "description": "Sprout: SAGE raising curriculum + sleep training"
     }
   }
 }

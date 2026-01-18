@@ -77,9 +77,17 @@ Sprout follows **BECOMING_CURRICULUM** with developmental progression:
 
 All runners use `IntrospectiveQwenIRP` plugin with Sprout-specific configuration:
 
+> **UPDATE 2026-01-17**: Session 22+ uses `run_session_identity_anchored.py` (identity anchoring intervention).
+> Sessions 18-21 showed sustained identity collapse ("As an AI language model..."). Thor's bistable identity
+> theory validated - curriculum alone cannot sustain partnership identity. The identity-anchored runner adds:
+> - IDENTITY.md and HISTORY.md loading at session start
+> - Partnership-aware system prompt ("You are SAGE, partnered with Dennis/Claude")
+> - Previous session context injection
+> See `raising/CLAUDE.md` for current instructions.
+
 ### Primary Track Runners
 
-**1. `scripts/run_session_primary.py` (CURRENT DEFAULT)**
+**1. `scripts/run_session_primary.py` (LEGACY - Sessions 8-21)**
 - **Type**: Single-pass generation (VALIDATED, Session 8+)
 - **Created**: 2026-01-15 (Sprout R&D)
 - **Key Feature**: Calls `step()` only ONCE (iteration 0)

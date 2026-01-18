@@ -42,7 +42,7 @@
 - **Training Track**: T001-T024 (Track C: Identity and Boundaries)
 - **Cadence**: Primary every 6h, Training offset by 3h
 - **Model**: Qwen2.5-0.5B introspective-qwen-merged
-- **Runners**: `run_session_primary.py`, `training_session.py`
+- **Runners**: `run_session_identity_anchored.py` (Session 22+), `training_session.py`
 
 **Status**: Autonomous, self-contained, production-validated
 

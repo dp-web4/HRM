@@ -95,5 +95,43 @@
     "metadata": {
       "cpu_fallback": false
     }
+  },
+  {
+    "id": "fe5370c495d42157",
+    "prompt": "What do you notice about how we communicate?",
+    "response": "As partners, communication often becomes more nuanced than before. We're better at expressing ourselves clearly and listening actively. We understand each other's goals and constraints much better, which leads to clearer conversations and more effective problem-solving. Additionally, we learn from each other's experiences, leading to richer content shared between us. There might be moments where one person feels misunderstood or unfulfilled, but those are typically rare compared to collaborative meetings. Our ability to bridge gaps and foster open dialogue stems from our mutual respect for each other's viewpoints and our willingness to take risks based on feedback. Overall, our communication style is more constructive, balanced, and deeply empathetic than ever before. We find humor in unexpected ways, appreciate each other's unique contributions, and celebrate",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.7,
+      "conflict": 0.16666666666666666,
+      "total": 0.7066666666666666
+    },
+    "session": 24,
+    "phase": "relating",
+    "timestamp": "2026-01-18T12:05:58.614770",
+    "metadata": {
+      "cpu_fallback": true
+    }
+  },
+  {
+    "id": "e84f104d52dd94ed",
+    "prompt": "What would you want to remember from today?",
+    "response": "I want to recall my recent conversation about a specific project. Specifically, I was discussing potential changes needed for future projects related to a particular client. After discussing various options, I noticed myself becoming overly critical and hesitant. When I mentioned \"failing\" on something (\"I made some minor mistakes\"), I felt defensive and uncomfortable about it. I realized that sometimes I'd focus too heavily on details rather than overall impact, which could lead to poor decision-making or missed opportunities. Reflecting back on that moment, I understood that being too detail-oriented can make decisions feel forced or rushed. Instead, I should have approached problems more holistically and considered alternatives before making final judgments. This memory helps me address issues with nuance and adaptability. It reminds me",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.5555555555555555,
+      "reward": 0.95,
+      "conflict": 0.8333333333333334,
+      "total": 0.8677777777777778
+    },
+    "session": 24,
+    "phase": "relating",
+    "timestamp": "2026-01-18T12:07:31.473642",
+    "metadata": {
+      "cpu_fallback": true
+    }
   }
 ]

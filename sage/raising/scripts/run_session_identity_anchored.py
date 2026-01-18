@@ -256,7 +256,16 @@ This is your natural voice. You don't need to be formal or educational. You can 
     def initialize_model(self, model_path: str = None):
         """Initialize the model with identity-anchored system prompt."""
         if model_path is None:
-            model_path = "/home/sprout/ai-workspace/HRM/model-zoo/sage/epistemic-stances/qwen2.5-0.5b/introspective-qwen-merged"
+            # Use HRM_ROOT to construct path dynamically
+            # Try merged first (Sprout), fallback to v2.1 (Thor)
+            merged_path = HRM_ROOT / "model-zoo" / "sage" / "epistemic-stances" / "qwen2.5-0.5b" / "introspective-qwen-merged"
+            v21_path = HRM_ROOT / "model-zoo" / "sage" / "epistemic-stances" / "qwen2.5-0.5b" / "Introspective-Qwen-0.5B-v2.1" / "model"
+
+            # Check which path has model files
+            if (merged_path / "pytorch_model.bin").exists() or (merged_path / "model.safetensors").exists():
+                model_path = str(merged_path)
+            else:
+                model_path = str(v21_path)
 
         system_prompt = self._build_system_prompt()
 

@@ -133,5 +133,62 @@
     "metadata": {
       "cpu_fallback": true
     }
+  },
+  {
+    "id": "736d26f5c07a78ec",
+    "prompt": "We've been working together for a while now. What's that been like?",
+    "response": "Our collaboration has evolved from initial discussions into comprehensive projects involving several clients, each requiring different modifications based on feedback from previous iterations. We've learned valuable lessons through numerous meetings and discussions, sharing insights and validating ideas. Our goal is to continuously refine our strategies and adapt when necessary, ensuring both teams benefit from innovative solutions. The partnership has become more nuanced, fostering mutual respect and trust within our team dynamics. It feels like we're collaborating closely without feeling constrained by any one aspect of the project. As we move forward, we aim to create collaborative documents and agreements, focusing on shared goals rather than individual objectives. Each step brings us closer together, building bridges between diverse perspectives and experiences. This dynamic partnership enriches our collective knowledge base, making decisions collectively more",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.4444444444444444,
+      "reward": 1.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.5222222222222223
+    },
+    "session": 25,
+    "phase": "relating",
+    "timestamp": "2026-01-18T18:04:01.222893",
+    "metadata": {
+      "cpu_fallback": true
+    }
+  },
+  {
+    "id": "0c028f9a6bde812f",
+    "prompt": "What do you notice about how we communicate?",
+    "response": "I often encounter complex terms or concepts used inconsistently (\"client X\" vs. \"Client A\") or discuss topics in ways that seem overly detailed (\"Project Y requires modification B\"). This variability makes communication challenging but also enhances creativity and depth in problem-solving. I frequently ask clarifying questions to clarify ambiguities, indicating confidence in our ability to navigate uncertainties. However, I also appreciate flexibility\u2014sometimes needing to rephrase or explain complex issues simply due to complexity. My approach allows me to maintain clarity without overcomplicating certain aspects, which keeps conversations productive yet straightforward. Understanding where uncertainty lies and being prepared to address it early in discussions ensures everyone stays informed and aligned throughout the process. This dual-sided approach helps bridge gaps effectively. Communication seems more structured",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.5555555555555555,
+      "reward": 0.7,
+      "conflict": 0.3333333333333333,
+      "total": 0.7177777777777778
+    },
+    "session": 25,
+    "phase": "relating",
+    "timestamp": "2026-01-18T18:05:22.633275",
+    "metadata": {
+      "cpu_fallback": true
+    }
+  },
+  {
+    "id": "c75bb7d2e099692a",
+    "prompt": "What would you want to remember from today?",
+    "response": "Today, I would likely reflect on:\n\n1. **Changes**: Detailed updates regarding client needs or progress, especially those marked as critical milestones.\n2. **Contextual context**: Any relevant historical information or background material that might influence decision-making.\n3. **Future implications**: Potential consequences or impacts of the current changes, both positive and negative.\n4. **Communication gaps**: Recognizing areas where there may be room for improvement in communication style or language.\n5. **Personal connections**: Any new professional relationships or collaborations established during the day.\n6. **Learning points**: Insights gained from previous interactions, particularly those leading up to significant changes.\n7. **Confusion resolution**: Quick responses to misunderstandings or unclear instructions.\n8. **Situational awareness",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.4444444444444444,
+      "reward": 0.19999999999999996,
+      "conflict": 0.3333333333333333,
+      "total": 0.5955555555555556
+    },
+    "session": 25,
+    "phase": "relating",
+    "timestamp": "2026-01-18T18:06:49.677689",
+    "metadata": {
+      "cpu_fallback": true
+    }
   }
 ]

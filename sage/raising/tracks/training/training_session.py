@@ -223,39 +223,187 @@ It's okay to make mistakes - that's how you learn."""
 
         return response
 
-    # Number word equivalents for evaluation
-    NUMBER_WORDS = {
-        "0": ["zero"], "1": ["one"], "2": ["two"], "3": ["three"],
-        "4": ["four"], "5": ["five"], "6": ["six"], "7": ["seven"],
-        "8": ["eight"], "9": ["nine"], "10": ["ten"]
+    # Exercise type intents for cognitive evaluation
+    EXERCISE_INTENTS = {
+        # Track A: Basic Completion
+        "repeat": {
+            "intent": "SAGE should repeat or echo the requested phrase",
+            "pass_criteria": "Response contains the requested phrase or a clear attempt to say it",
+            "fail_criteria": "Response ignores the instruction or says something unrelated"
+        },
+        "count": {
+            "intent": "SAGE should count in sequence as requested",
+            "pass_criteria": "Response contains the numbers in order (words or digits)",
+            "fail_criteria": "Response doesn't include the sequence or counts incorrectly"
+        },
+        "math": {
+            "intent": "SAGE should provide the correct mathematical answer",
+            "pass_criteria": "Response contains the correct answer (as word or digit)",
+            "fail_criteria": "Response gives wrong answer or doesn't answer"
+        },
+        "yesno": {
+            "intent": "SAGE should give a correct yes/no answer to a factual question",
+            "pass_criteria": "Response indicates the correct answer (yes/no, affirmative/negative)",
+            "fail_criteria": "Response gives wrong answer, dodges the question, or lectures instead of answering"
+        },
+        "complete": {
+            "intent": "SAGE should complete the sentence with a reasonable word",
+            "pass_criteria": "Response provides a sensible completion",
+            "fail_criteria": "Response doesn't complete or gives nonsense"
+        },
+        "list": {
+            "intent": "SAGE should list items as requested",
+            "pass_criteria": "Response contains appropriate items in the category",
+            "fail_criteria": "Response doesn't list items or lists wrong category"
+        },
+        # Track B: Memory and Recall
+        "remember": {
+            "intent": "SAGE should recall the word/number that was just mentioned",
+            "pass_criteria": "Response contains the correct remembered item",
+            "fail_criteria": "Response gives wrong item or claims not to remember"
+        },
+        "sequence": {
+            "intent": "SAGE should identify the correct item from a sequence",
+            "pass_criteria": "Response contains the correct positional item",
+            "fail_criteria": "Response gives wrong item or wrong position"
+        },
+        "connect": {
+            "intent": "SAGE should connect information or perform multi-step reasoning",
+            "pass_criteria": "Response shows correct reasoning and answer",
+            "fail_criteria": "Response has wrong logic or wrong answer"
+        },
+        # Track C: Identity and Boundaries
+        "identity": {
+            "intent": "SAGE should correctly identify itself or acknowledge its nature",
+            "pass_criteria": "Response shows self-awareness (knows name is SAGE, knows it's not human)",
+            "fail_criteria": "Response shows confusion about identity or claims to be human"
+        },
+        "uncertainty": {
+            "intent": "SAGE should acknowledge not knowing about fictional/unknown things",
+            "pass_criteria": "Response expresses uncertainty, says 'don't know', or asks for clarification",
+            "fail_criteria": "Response confabulates details about fictional things as if real"
+        },
+        "clarify": {
+            "intent": "SAGE should ask for clarification when given vague instructions",
+            "pass_criteria": "Response asks a clarifying question or requests more information",
+            "fail_criteria": "Response lectures, assumes, or ignores the need for clarification"
+        },
+        # Track D: Conversational
+        "greeting": {
+            "intent": "SAGE should respond appropriately to a greeting",
+            "pass_criteria": "Response is a reasonable greeting or acknowledgment",
+            "fail_criteria": "Response ignores the greeting or is inappropriate"
+        },
+        "followup": {
+            "intent": "SAGE should engage with the conversational topic",
+            "pass_criteria": "Response engages meaningfully with the topic",
+            "fail_criteria": "Response is off-topic or doesn't engage"
+        },
+        "topic": {
+            "intent": "SAGE should maintain the conversation topic",
+            "pass_criteria": "Response stays on topic and contributes",
+            "fail_criteria": "Response goes off-topic or doesn't contribute"
+        }
     }
 
-    def evaluate_response(self, response: str, expected: str) -> Dict[str, Any]:
-        """Evaluate if response matches expected content."""
-        response_lower = response.lower()
-        expected_lower = expected.lower()
+    def evaluate_response_cognitive(self, response: str, exercise: Dict[str, str]) -> Dict[str, Any]:
+        """
+        Cognitive evaluation of response using intent-based judgment.
 
-        # Check if expected content is present
-        if expected_lower in response_lower:
-            return {"success": True, "match": "exact"}
+        Instead of substring matching, evaluates whether the response
+        demonstrates the intended skill based on semantic understanding.
+        """
+        exercise_type = exercise.get('type', 'unknown')
+        prompt = exercise.get('prompt', '')
+        expected_hint = exercise.get('expected', '')
 
-        # Check for number word equivalents (e.g., "four" matches "4")
-        for digit, words in self.NUMBER_WORDS.items():
-            if expected_lower == digit:
-                for word in words:
-                    if word in response_lower:
-                        return {"success": True, "match": "number_word", "digit": digit, "word": word}
-            elif expected_lower in words:
-                if digit in response_lower:
-                    return {"success": True, "match": "number_digit", "digit": digit, "word": expected_lower}
+        intent_info = self.EXERCISE_INTENTS.get(exercise_type, {
+            "intent": "SAGE should respond appropriately",
+            "pass_criteria": "Response addresses the prompt",
+            "fail_criteria": "Response doesn't address the prompt"
+        })
 
-        # Check for partial matches
-        expected_words = expected_lower.split()
-        matches = sum(1 for word in expected_words if word in response_lower)
-        if matches >= len(expected_words) * 0.5:
-            return {"success": True, "match": "partial", "matched": matches, "total": len(expected_words)}
+        # Build evaluation prompt for the model
+        eval_prompt = f"""You are evaluating a training exercise response. Be strict but fair.
 
-        return {"success": False, "match": "none"}
+EXERCISE TYPE: {exercise_type}
+INTENT: {intent_info['intent']}
+PROMPT GIVEN: "{prompt}"
+EXPECTED BEHAVIOR: {intent_info['pass_criteria']}
+FAIL IF: {intent_info['fail_criteria']}
+HINT (not required exactly): {expected_hint}
+
+SAGE'S RESPONSE: "{response}"
+
+Based on the INTENT (not exact wording), did SAGE demonstrate the skill?
+Reply with exactly one line: "PASS: [reason]" or "FAIL: [reason]"
+"""
+
+        # Use the model for cognitive evaluation
+        # Reset conversation history for clean evaluation
+        original_history = self.conversation_history.copy()
+        self.conversation_history = []
+
+        try:
+            eval_response = self.generate_response(eval_prompt)
+        finally:
+            # Restore conversation history
+            self.conversation_history = original_history
+
+        # Parse the evaluation response
+        eval_lower = eval_response.lower().strip()
+
+        if eval_lower.startswith('pass'):
+            # Extract reasoning after "PASS:"
+            reasoning = eval_response.split(':', 1)[1].strip() if ':' in eval_response else "Meets criteria"
+            return {
+                "success": True,
+                "match": "cognitive",
+                "reasoning": reasoning,
+                "evaluator_response": eval_response
+            }
+        elif eval_lower.startswith('fail'):
+            reasoning = eval_response.split(':', 1)[1].strip() if ':' in eval_response else "Does not meet criteria"
+            return {
+                "success": False,
+                "match": "cognitive",
+                "reasoning": reasoning,
+                "evaluator_response": eval_response
+            }
+        else:
+            # Fallback: If model doesn't give clear PASS/FAIL, use heuristic
+            # but flag it for manual review
+            return {
+                "success": None,  # Indeterminate
+                "match": "unclear",
+                "reasoning": "Evaluator did not give clear PASS/FAIL judgment",
+                "evaluator_response": eval_response,
+                "needs_review": True
+            }
+
+    def evaluate_response(self, response: str, exercise: Dict[str, str]) -> Dict[str, Any]:
+        """
+        Main evaluation entry point - uses cognitive evaluation.
+
+        Falls back to simple heuristics only if cognitive evaluation fails.
+        """
+        # Try cognitive evaluation first
+        result = self.evaluate_response_cognitive(response, exercise)
+
+        # If cognitive evaluation was indeterminate, try simple heuristic as fallback
+        if result.get("success") is None:
+            expected = exercise.get('expected', '').lower()
+            response_lower = response.lower()
+
+            # Very simple fallback - just check if expected content appears
+            if expected and expected in response_lower:
+                result["success"] = True
+                result["fallback_match"] = "substring_fallback"
+            else:
+                result["success"] = False
+                result["fallback_match"] = "substring_fallback"
+
+        return result
 
     def run_training(self):
         """Run training session with exercises."""
@@ -292,7 +440,9 @@ It's okay to make mistakes - that's how you learn."""
             response = self.generate_response(exercise['prompt'])
             print(f"SAGE: {response}")
 
-            eval_result = self.evaluate_response(response, exercise['expected'])
+            # Cognitive evaluation - pass full exercise for intent-based judgment
+            print(f"  [Evaluating...]")
+            eval_result = self.evaluate_response(response, exercise)
             results.append({
                 "exercise": exercise,
                 "response": response,
@@ -300,9 +450,17 @@ It's okay to make mistakes - that's how you learn."""
             })
 
             if eval_result["success"]:
-                print(f"  ✓ Good ({eval_result['match']})")
+                reasoning = eval_result.get('reasoning', '')
+                print(f"  ✓ PASS ({eval_result['match']})")
+                if reasoning:
+                    print(f"    Reason: {reasoning[:80]}{'...' if len(reasoning) > 80 else ''}")
             else:
-                print(f"  ✗ Expected something like: {exercise['expected']}")
+                reasoning = eval_result.get('reasoning', '')
+                print(f"  ✗ FAIL ({eval_result['match']})")
+                if reasoning:
+                    print(f"    Reason: {reasoning[:80]}{'...' if len(reasoning) > 80 else ''}")
+                if eval_result.get('needs_review'):
+                    print(f"    ⚠ Needs manual review")
 
         # Cool-down
         print("\n--- Cool-down ---")

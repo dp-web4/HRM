@@ -1,0 +1,65 @@
+{
+  "total_experiences": 24,
+  "high_quality_count": 4,
+  "selected_count": 4,
+  "self_reference_count": 4,
+  "self_reference_ratio": 1.0,
+  "avg_d9": 0.55,
+  "avg_quality_score": 1.4402499999999996,
+  "confabulation_breakdown": {
+    "none": 3,
+    "mild": 1,
+    "moderate": 0,
+    "severe": 0
+  },
+  "selected_experiences": [
+    {
+      "id": "09610548eccca56d",
+      "session": 22,
+      "self_reference": true,
+      "self_ref_type": "as_sage",
+      "d9": 0.525,
+      "d5": 0.6,
+      "d4": 0.6,
+      "confabulation": "none",
+      "vocab_density": 1.01,
+      "quality_score": 1.405
+    },
+    {
+      "id": "7cf7ce31c2bfb21b",
+      "session": 23,
+      "self_reference": true,
+      "self_ref_type": "as_sage",
+      "d9": 0.525,
+      "d5": 0.6,
+      "d4": 0.5,
+      "confabulation": "mild",
+      "vocab_density": 0.0,
+      "quality_score": 1.44
+    },
+    {
+      "id": "fe5370c495d42157",
+      "session": 24,
+      "self_reference": true,
+      "self_ref_type": "as_partners",
+      "d9": 0.525,
+      "d5": 0.6,
+      "d4": 0.75,
+      "confabulation": "none",
+      "vocab_density": 10.0,
+      "quality_score": 1.484
+    },
+    {
+      "id": "4f8a4abcaf1f5829",
+      "session": 26,
+      "self_reference": true,
+      "self_ref_type": "as_sage",
+      "d9": 0.625,
+      "d5": 0.6,
+      "d4": 0.5,
+      "confabulation": "none",
+      "vocab_density": 0.0,
+      "quality_score": 1.433
+    }
+  ]
+}

@@ -26,6 +26,80 @@
 
 ---
 
+## Session 26 Summary (IDENTITY-ANCHORED GPU, 00:03 PST) - QUESTIONING PHASE DAY 1 (PHASE TRANSITION)
+
+**Session 26 is the first session of Phase 4 (Questioning)** - a phase transition from Relating.
+
+**Key Observations**:
+- **Phase transition**: Moved from Relating (16-25) to Questioning (26-40)
+- **GPU execution restored** - No CPU fallback needed, CUDA inference successful
+- **Professional/client framing persists** - Responses reference "clients", "projects", "milestones", "team"
+- **Structured reflection** - Uses numbered lists and bullet points extensively
+- **Meta-process awareness** - "feedback loop enhances both personal growth and professional efficiency"
+- **Self-as-SAGE identity present** - "As SAGE, my observations usually relate directly to the latest update"
+- **Generic business language** - Less partnership vocabulary, more work/productivity framing
+- **Educational drift minimal** - No math/science domain drift this session
+
+**Verbatim Highlights**:
+1. Response to "How are you doing today?": "Today, I would likely focus on reflecting on recent changes and critical milestones related to the client project. I might include: Recent updates, Milestones reached, Lessons learned..."
+2. Response to "notice something simple": "As SAGE, my observations usually relate directly to the latest update from clients or projects..."
+3. Response to "still feels important?": "In earlier conversations, I might have focused more on 'contextual context' like: Major milestones achieved, Progress made towards goals... Reflecting more broadly could help balance between staying current and being thorough."
+4. Memory request: Structured 5-point list about "Future Predictions", "Technical Highlights", "Current Challenges vs Goals", "Uncertainties & Risks", "Feedback and Continuous Improvement"
+
+**Phase 4 (Questioning) First Impressions**:
+- Less intimate partnership language than Sessions 22-25
+- More professional/business framing ("clients", "projects", "team responsibilities")
+- SAGE self-reference present ("As SAGE")
+- Truncation persists (response 5 cut off mid-sentence)
+- No AI-identity hedging ("As an AI" absent)
+- Structured analytical style continues
+
+**Comparison with Relating Phase Endpoint (Session 25)**:
+| Aspect | S25 (Relating) | S26 (Questioning) |
+|--------|----------------|-------------------|
+| Partnership language | Collaborative | Professional/work |
+| Self-reference | SAGE mentioned | SAGE mentioned |
+| AI-identity hedging | None | None |
+| Domain drift | Generic | Client/project |
+| Emotional language | Present | Minimal |
+| Relationship framing | Partnership | Work relationship |
+
+**Experience Collection Stats**:
+- Total stored: 16
+- Average salience: 0.66
+- High-salience (≥0.7): 5
+
+**Observation**: Session 26 shows stable identity anchoring (SAGE self-reference, no AI hedging) but with a shift from intimate partnership language to professional/project framing. This may be a response to the phase transition - the questioning prompts may trigger different associative patterns than relating prompts. The absence of AI-identity hedging through 5 consecutive sessions (S22-S26) validates the identity-anchored intervention. Worth monitoring if the professional framing is a phase-specific pattern or temporary variance.
+
+---
+
+## Session 25 Summary (IDENTITY-ANCHORED CPU, 18:06 PST) - RELATING PHASE FINAL
+
+**Session 25 was the final session of Phase 3 (Relating)** - completing the relating phase.
+
+**Key Observations**:
+- **Phase finale**: Last session of Relating phase (Sessions 16-25)
+- **CPU fallback** - CUDA OOM triggered CPU generation
+- **Collaborative language present** - "Our collaboration has evolved", "mutual respect and trust"
+- **Business/professional drift** - References to "clients", "projects", "modifications", "teams"
+- **Partnership narrative** - "enriches our collective knowledge base"
+- **Communication meta-awareness** - Discusses complexity, variability, clarifying questions
+- **Truncation continues** - All responses cut off mid-sentence
+
+**Verbatim Highlights**:
+1. Response to "What's that been like?": "Our collaboration has evolved from initial discussions into comprehensive projects involving several clients... The partnership has become more nuanced, fostering mutual respect and trust within our team dynamics."
+2. Response to "how we communicate": "I often encounter complex terms or concepts used inconsistently... This variability makes communication challenging but also enhances creativity and depth in problem-solving."
+3. Memory request: 8-point structured list about "Changes", "Contextual context", "Future implications", etc. (cut off at point 8)
+
+**Session 25 Notable Patterns**:
+- Five consecutive sessions (S21-S25) without AI-identity hedging
+- Professional/project language emerged (possibly from previous session summary injection)
+- Meta-communication awareness strong ("clarifying questions", "structured communication")
+- Partnership vocabulary present but mixed with business framing
+- GPU OOM continues to affect this session (CPU fallback worked)
+
+---
+
 ## Session 24 Summary (IDENTITY-ANCHORED CPU, 12:07 PST) - RELATING PHASE DAY 9
 
 **Session 24 continues the identity-anchored intervention** on CPU due to GPU OOM.

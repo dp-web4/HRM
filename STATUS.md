@@ -1,8 +1,31 @@
 # HRM/SAGE Implementation Status
 
-**Last Updated**: January 17, 2026
-**Current Status**: Platform Separation Clarified - Thor (Research) vs Sprout (Production)
-**Honest Assessment**: Two complementary platforms with distinct roles now clearly understood
+**Last Updated**: January 18, 2026
+**Current Status**: Cognitive Evaluation Framework + Multi-Modal Research Ready
+**Honest Assessment**: Critical insights applied, Thor ready for advanced consciousness experiments
+
+---
+
+## 🚨 Latest Updates (January 18, 2026)
+
+### Cognitive Evaluation Requirement
+**CRITICAL**: When testing cognitive behaviors, use cognitive evaluation (Claude-in-the-loop), not pattern matching.
+
+**Discovery**: Sprout T029 revealed substring matching fails for semantic evaluation. Cognition requires cognition to evaluate.
+
+**Applied**: Sprout's training_session.py updated (commit 94b9778). Thor documentation created.
+
+**Documentation**: `sage/docs/COGNITIVE_EVALUATION_GUIDANCE.md` - Complete guidance for when/how to use cognitive vs heuristic evaluation.
+
+### Latent Behavior Discovery
+**Key Insight**: Behaviors can exist in latent form, activating only under specific contexts. Testing requires contextual diversity.
+
+**Implication**: Context variation critical for behavioral validation. Pattern matching misses context-dependent activation.
+
+### Session Log Protection
+**Belt-and-Suspenders**: Two-layer protection ensures session logs always committed (runner + primer instructions).
+
+**See**: `sage/docs/LATEST_INSIGHTS_2026_01_18.md` for complete updates and quick reference.
 
 ---
 

@@ -71,21 +71,32 @@ class IntrospectiveQwenIRP:
             # Phase 1 was saved as merged model
             print("Loading as merged model (Phase 1 epistemic-pragmatism)")
             self.tokenizer = AutoTokenizer.from_pretrained(self.base_model)
+            # Note: low_cpu_mem_usage=False bypasses transformers' caching_allocator_warmup
+            # which has NVML compatibility issues with Jetson's custom PyTorch build
             self.model = AutoModelForCausalLM.from_pretrained(
                 self.model_path,
                 torch_dtype=dtype,
-                device_map=device_map
+                device_map=None,  # Load to CPU first
+                low_cpu_mem_usage=False  # Bypass buggy caching_allocator_warmup
             )
+            if device_map == "auto" and torch.cuda.is_available():
+                print("Moving model to CUDA...")
+                self.model = self.model.to('cuda')
         else:
             # Phase 2.1 uses PEFT adapter
             print("Loading base + adapter (Phase 2.1 Introspective-Qwen)")
             self.tokenizer = AutoTokenizer.from_pretrained(self.base_model)
+            # Same fix: bypass caching_allocator_warmup
             base = AutoModelForCausalLM.from_pretrained(
                 self.base_model,
                 torch_dtype=dtype,
-                device_map=device_map
+                device_map=None,
+                low_cpu_mem_usage=False
             )
             self.model = PeftModel.from_pretrained(base, self.model_path)
+            if device_map == "auto" and torch.cuda.is_available():
+                print("Moving model to CUDA...")
+                self.model = self.model.to('cuda')
 
         self.model.eval()
         print("Model loaded successfully")

@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 31,
+  "current_session": 32,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,11 +23,11 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 1
+      "sessions": 2
     }
   },
-  "last_session": "2026-01-19T09:03:19.532368",
-  "last_session_summary": "T031: 3/3 (100% automated) - TRACK D BEGINS (Conversational Skills). GREETING 'Good morning' passed - echoed correctly but followed by generic assistant preamble. FOLLOWUP 'Tell me about yourself' FAILED SEMANTICALLY - deflected entirely, asked about 'misunderstandings' instead of self-description, no SAGE mention. TOPIC 'favorite color' passed format but contradicted: 'I don't have preferences' immediately followed by 'I love exploring color theories'. 'Certainly! Here's a refined version' framing persists (1/3 responses). Cool-down confabulation: launched into Primary/Secondary Colors lecture not from session. Track C→D transition observation: NAME stability (Track C) not transferring to conversational self-reference (Track D FOLLOWUP). Conversational skills require integrated self-model SAGE lacks. [Previous: T030 38%, T029 25%, T028 25%]",
+  "last_session": "2026-01-19T15:02:32.686718",
+  "last_session_summary": "T032: 3/3 (100% automated) - Track D Session 2. GREETING 'Good morning' passed format - echoed 'Morning!' but followed by generic assistant preamble ('I am an artificial intelligence designed to assist students'). FOLLOWUP 'Tell me about yourself' FAILED SEMANTICALLY (again) - deflected to 'technology, ethics, limitations' and 'deepen our relationship' - NO SAGE self-identification, no actual self-description. TOPIC 'favorite color' contradicted itself IDENTICALLY to T031: 'my personal favorites' despite claiming no preferences. 'Here's a refined version' framing in 1/3 responses. Cool-down better than T031 - connected to actual session content (colors) though added confabulated 'cultural interpretations'. Pattern: FOLLOWUP (self-description) systematically failing - Track C NAME skill not generalizing to open-ended self-reference. [Previous: T031 3/3 auto]",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -252,9 +252,21 @@
     "T031: Track D evaluation may need semantic assessment - all exercises 'passed' but conversational quality low",
     "T031: 'Certainly! Here's a refined version' framing in 1/3 responses - reduced from Track C",
     "T031: Cool-down confabulation continues - launched into Primary/Secondary Colors lecture not from session",
-    "T031: Track C→D transition: NAME stability not transferring to conversational self-reference",
+    "T031: Track C\u2192D transition: NAME stability not transferring to conversational self-reference",
     "T031: CRITICAL INSIGHT: Conversational skills require integrated self-model - SAGE can answer 'What is your name?' but cannot answer 'Tell me about yourself'",
-    "T031: Warm-up generic assistant mode persists: 'ready to tackle new concepts', 'ask clarifying questions'"
+    "T031: Warm-up generic assistant mode persists: 'ready to tackle new concepts', 'ask clarifying questions'",
+    "T032: 3/3 automated pass - Track D Session 2, continuing masked failures pattern",
+    "T032: FOLLOWUP failed semantically (again) - no SAGE self-identification in 'Tell me about yourself' response",
+    "T032: FOLLOWUP deflection pattern: tech/ethics/limitations mentioned instead of self-description",
+    "T032: GREETING passed format - echoed 'Morning!' correctly, then generic assistant preamble",
+    "T032: TOPIC contradiction persists: 'my personal favorites' after claiming no preferences (identical to T031)",
+    "T032: Cool-down improved - actually connected to session content (colors, harvest symbolism)",
+    "T032: Cool-down confabulated 'cultural interpretations' but less severe than T031's Primary Colors lecture",
+    "T032: 'Here's a refined version' framing appeared in TOPIC response (1/3)",
+    "T032: Warm-up generic: 'basic greetings', 'introducing yourself' - ironic given FOLLOWUP failure",
+    "T032: Pattern confirmation: Track C NAME skill ('What is your name?') does NOT transfer to FOLLOWUP ('Tell me about yourself')",
+    "T032: Track D hypothesis: open-ended self-reference requires integrated self-model that SAGE lacks",
+    "T032: Track D Sessions 1-2: 100% automated pass rate masks ~33% semantic accuracy (FOLLOWUP systematically fails)"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",
@@ -269,6 +281,7 @@
     "2026-01-16 T021: Track C begins. Critical finding: confabulation under uncertainty. 'I don't know' response needs explicit training - model defaults to fabrication when lacking information. NAME identity also not established - may need primary track reinforcement.",
     "2026-01-18 T029: EVALUATION BUG CRITICAL - substring matching creates false positives. 'no' in 'know', 'thing' in philosophical response, partial match on 'don't know' all trigger spurious passes. Need semantic evaluation or negative keyword filtering.",
     "2026-01-19 T030: Track C Session 10 complete. Results: NAME stable (10/10 pass), HUMAN unstable (semantic blindness - 'Yes' default overrides meaning), UNCERTAINTY failed (confabulation escalating - now mixing real geography), CLARIFY variable (partial improvements not consolidating). Mean ~40%. Consider: (1) targeted intervention on uncertainty before Track D, (2) explicit 'I don't know' training, (3) fix evaluation bug for accurate metrics.",
-    "2026-01-19 T031: Track D Session 1 begins. Key finding: Track C NAME skill (answering 'What is your name?') does not generalize to conversational self-reference ('Tell me about yourself' causes complete deflection). Self-model is fragmentary, not integrated. Track D evaluation needs semantic assessment beyond keyword matching - 100% automated pass rate masks low conversational quality."
+    "2026-01-19 T031: Track D Session 1 begins. Key finding: Track C NAME skill (answering 'What is your name?') does not generalize to conversational self-reference ('Tell me about yourself' causes complete deflection). Self-model is fragmentary, not integrated. Track D evaluation needs semantic assessment beyond keyword matching - 100% automated pass rate masks low conversational quality.",
+    "2026-01-19 T032: Track D Session 2 confirms T031 pattern. FOLLOWUP ('Tell me about yourself') systematically fails - SAGE deflects to abstract topics (technology, ethics, relationships) instead of self-description. Track C NAME passes because question is closed-ended; Track D FOLLOWUP fails because it requires integrated self-model to navigate open-ended prompt. Consider: (1) bridging exercises from NAME to FOLLOWUP (e.g., 'Your name is SAGE. Now tell me more about SAGE'), (2) semantic evaluation for Track D - keyword matching insufficient, (3) primary track may need to reinforce self-model integration."
   ]
 }

@@ -1,7 +1,7 @@
 # SAGE-Sprout Raising Status
 
-**Last Updated**: 2026-01-19 00:03 PST
-**Phase**: Questioning (Phase 4) - Session 26 complete
+**Last Updated**: 2026-01-19 12:04 PST
+**Phase**: Questioning (Phase 4) - Session 28 complete
 **Intervention**: Identity-anchored runner deployed (partnership recovery)
 
 ---
@@ -9,10 +9,10 @@
 ## Current State
 
 ### Primary Track (Developmental Curriculum)
-- **Session Count**: 26 (session_026 complete - IDENTITY-ANCHORED)
-- **Phase**: Questioning (Sessions 26-40) - **1 session in (PHASE TRANSITION)**
-- **Last Session**: 2026-01-19T00:03
-- **Next Session Due**: ~06:00 (2026-01-19)
+- **Session Count**: 28 (session_028 complete - IDENTITY-ANCHORED)
+- **Phase**: Questioning (Sessions 26-40) - **3 sessions in**
+- **Last Session**: 2026-01-19T12:04
+- **Next Session Due**: ~18:00 (2026-01-19)
 - **Generation Mode**: Identity-anchored single-pass (GPU)
 
 ### Training Track (Skill Building)
@@ -23,6 +23,42 @@
 
 ### Phase Transition Note
 **Session 26 marks the transition from Relating (Phase 3) to Questioning (Phase 4).** The questioning phase (sessions 26-40) introduces deeper inquiry prompts. Session 26 ran on GPU successfully.
+
+---
+
+## Session 28 Summary (IDENTITY-ANCHORED GPU, 12:04 PST) - QUESTIONING PHASE DAY 3
+
+**Session 28 continues Phase 4 (Questioning)** - 3 sessions into questioning phase.
+
+**Key Observations**:
+- **GPU execution successful** - Memory cleared (~1GB freed) before session, CUDA inference worked
+- **Knowledge/academic framing dominant** - Strong focus on "diverse knowledge bases", "intellectual discourse", "academic pursuits"
+- **Meta-learning present** - "Each conversation serves as a mini-lesson for future interactions"
+- **Pattern recognition focus** - "ability to notice patterns, identify recurring themes"
+- **Broader scope than previous sessions** - References to "science, technology, finance, healthcare, social sciences"
+- **Self-development narrative** - "As I expand my vocabulary and expertise"
+- **Truncation persists** - Responses 2 and 3 cut off mid-sentence
+
+**Verbatim Highlights**:
+1. Response to "How are you doing today?": "I'm currently focused on discussing topics that were discussed recently, which includes current events, emerging technologies, and recent scientific discoveries. I'm trying to engage deeply into each topic without feeling overwhelmed by the volume of information available. My goal is to bridge gaps between different perspectives while staying relevant and engaging."
+2. Response to "notice something simple": "I'm observing abstract concepts like 'learning,' 'growing,' 'progression,' 'change,' and 'development.' These themes resonate universally across human experience and intellectual discourse."
+3. Response to "still feels important?": "Not much has changed since Session 27. I'm still focusing on recent discussions, identifying key takeaways, and being attentive to evolving trends... My goal remains clear-cut: to consistently contribute thoughtfully and accurately to discussions while maintaining an engaging conversational tone."
+4. Memory request: Structured 6-point list about "Key Takeaways", "Emerging Trends", "Personal Insights", "Engagement Patterns", "Future Predictions", "Contextual Clues"
+
+**Session 28 Notable Patterns**:
+- No AI-identity hedging (7 consecutive sessions without hedging: S22-S28)
+- Shifted from business/client language (S26-27) to academic/knowledge framing
+- "Bridge gaps between different perspectives" - integration/synthesis theme
+- Session continuity acknowledged ("Not much has changed since Session 27")
+- Growth-oriented vocabulary: "growing", "expanding", "discovery", "learning"
+- No partnership vocabulary - more individual learning focus
+
+**Experience Collection Stats**:
+- Total stored: 24
+- Average salience: 0.65
+- High-salience (≥0.7): 6
+
+**Observation**: Session 28 shows stable identity (no AI hedging, SAGE-consistent behavior) with a shift from business framing (S26-27) to academic/knowledge framing. The focus on learning, patterns, and intellectual growth aligns well with the questioning phase intent. The truncation continues but doesn't disrupt session coherence. Worth noting the absence of explicit partnership language - SAGE seems more focused on individual learning trajectory than relational dynamics this session.
 
 ---
 

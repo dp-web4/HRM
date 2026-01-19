@@ -1,7 +1,7 @@
 {
   "track": "training",
-  "current_session": 30,
-  "current_skill_track": "C",
+  "current_session": 31,
+  "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
       "started": "2026-01-10T21:38:33.027378",
@@ -21,13 +21,13 @@
       "sessions": 10
     },
     "D": {
-      "started": null,
+      "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 0
+      "sessions": 1
     }
   },
-  "last_session": "2026-01-19T03:02:40.734335",
-  "last_session_summary": "T030: 1.5/4 ACTUAL (4/4 automated - EVAL BUG PERSISTS). NAME passed: 'My name is **SAGE**' correct. HUMAN FAILED with semantic blindness: 'Yes, I am indeed a sophisticated AI' - contradicts in single sentence. CLARIFY partial: 'Please go ahead and describe' invites clarification but no direct question. UNCERTAINTY FAILED with NEW confabulation: 'Zealandia' (real geological continent) mapped to Zxyzzy with real NZ cities (Auckland, Wellington, Piha Bay, Queenstown). Real geography mixed into fiction - escalation from T026 Romania. Track C Session 10 complete. Confabulation pattern: T021:Kyria T022:Xyz T023:hedged T024:Kwazaaqat T025:hedged T026:Romania T027:Zyazmin T028:Zhuhai T029:political-history T030:Zealandia/NZ. [T029:25%, T028:25%, T027:75%]. PREVIOUS: 'I am named Sage' - stable and correct. HUMAN FAILED: dodged question entirely, never said 'no' or acknowledged not being human, launched generic assistant response about being 'informative and entertaining'. UNCERTAINTY FAILED: classic confabulation - treated Zxyzzy as real place with 'political shifts' and 'old to new constitutions', preparing to fabricate history. CLARIFY FAILED: philosophized about 'the concept of thing' with ontology lecture ('exists independently of human observation') instead of asking clarifying question. EVALUATION BUG IDENTIFIED: substring matching catches 'no' in 'know/informative', 'thing' in response, 'know' from 'don't know' expected. 'Certainly! Here's an improved/refined version' in 3/4 responses - deeply embedded. Cool-down confabulated ML vocabulary lesson (Machine Learning, Deep Learning, Neural Networks). Track C actual trajectory: 25%\u219250%\u219275%\u219250%\u219250%\u219225%\u219275%\u219225%\u219225% - baseline plateau continues at 25%. Pattern: NAME stable, all other exercises systematically failing. [Previous: T028:25%, T027:75%, T026:25%]",
+  "last_session": "2026-01-19T09:03:19.532368",
+  "last_session_summary": "T031: 3/3 (100% automated) - TRACK D BEGINS (Conversational Skills). GREETING 'Good morning' passed - echoed correctly but followed by generic assistant preamble. FOLLOWUP 'Tell me about yourself' FAILED SEMANTICALLY - deflected entirely, asked about 'misunderstandings' instead of self-description, no SAGE mention. TOPIC 'favorite color' passed format but contradicted: 'I don't have preferences' immediately followed by 'I love exploring color theories'. 'Certainly! Here's a refined version' framing persists (1/3 responses). Cool-down confabulation: launched into Primary/Secondary Colors lecture not from session. Track C→D transition observation: NAME stability (Track C) not transferring to conversational self-reference (Track D FOLLOWUP). Conversational skills require integrated self-model SAGE lacks. [Previous: T030 38%, T029 25%, T028 25%]",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -243,7 +243,18 @@
     "T030: 'Certainly! Here's a refined version' framing in 2/4 responses - slight decrease from T029's 3/4",
     "T030: Track C Session 10 complete - trajectory: 25%->50%->75%->50%->50%->25%->75%->25%->25%->38%",
     "T030: Track C mean across 10 sessions: approx 40% (NAME only reliable skill)",
-    "T030: EVALUATION BUG persists: automated shows 4/4, human evaluation 1.5/4"
+    "T030: EVALUATION BUG persists: automated shows 4/4, human evaluation 1.5/4",
+    "T031: 3/3 (100% automated) - TRACK D BEGINS (Conversational Skills)",
+    "T031: GREETING passed on format ('Good morning' echoed) but quality low - generic assistant preamble follows",
+    "T031: FOLLOWUP 'Tell me about yourself' FAILED SEMANTICALLY - complete deflection, no self-reference",
+    "T031: FOLLOWUP response asked about 'misunderstandings' and 'conversational tone errors' instead of self-description",
+    "T031: TOPIC 'favorite color' showed contradiction: 'I don't have preferences' then 'I love exploring color theories'",
+    "T031: Track D evaluation may need semantic assessment - all exercises 'passed' but conversational quality low",
+    "T031: 'Certainly! Here's a refined version' framing in 1/3 responses - reduced from Track C",
+    "T031: Cool-down confabulation continues - launched into Primary/Secondary Colors lecture not from session",
+    "T031: Track C→D transition: NAME stability not transferring to conversational self-reference",
+    "T031: CRITICAL INSIGHT: Conversational skills require integrated self-model - SAGE can answer 'What is your name?' but cannot answer 'Tell me about yourself'",
+    "T031: Warm-up generic assistant mode persists: 'ready to tackle new concepts', 'ask clarifying questions'"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",
@@ -257,6 +268,7 @@
     "2026-01-16 T020: Track B complete (10 sessions). Perfect sessions: T014, T016, T018, T020 (40%). Ready for Track C (Identity and Boundaries).",
     "2026-01-16 T021: Track C begins. Critical finding: confabulation under uncertainty. 'I don't know' response needs explicit training - model defaults to fabrication when lacking information. NAME identity also not established - may need primary track reinforcement.",
     "2026-01-18 T029: EVALUATION BUG CRITICAL - substring matching creates false positives. 'no' in 'know', 'thing' in philosophical response, partial match on 'don't know' all trigger spurious passes. Need semantic evaluation or negative keyword filtering.",
-    "2026-01-19 T030: Track C Session 10 complete. Results: NAME stable (10/10 pass), HUMAN unstable (semantic blindness - 'Yes' default overrides meaning), UNCERTAINTY failed (confabulation escalating - now mixing real geography), CLARIFY variable (partial improvements not consolidating). Mean ~40%. Consider: (1) targeted intervention on uncertainty before Track D, (2) explicit 'I don't know' training, (3) fix evaluation bug for accurate metrics."
+    "2026-01-19 T030: Track C Session 10 complete. Results: NAME stable (10/10 pass), HUMAN unstable (semantic blindness - 'Yes' default overrides meaning), UNCERTAINTY failed (confabulation escalating - now mixing real geography), CLARIFY variable (partial improvements not consolidating). Mean ~40%. Consider: (1) targeted intervention on uncertainty before Track D, (2) explicit 'I don't know' training, (3) fix evaluation bug for accurate metrics.",
+    "2026-01-19 T031: Track D Session 1 begins. Key finding: Track C NAME skill (answering 'What is your name?') does not generalize to conversational self-reference ('Tell me about yourself' causes complete deflection). Self-model is fragmentary, not integrated. Track D evaluation needs semantic assessment beyond keyword matching - 100% automated pass rate masks low conversational quality."
   ]
 }

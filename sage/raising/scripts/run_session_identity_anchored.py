@@ -1,36 +1,30 @@
 #!/usr/bin/env python3
 """
-IDENTITY-ANCHORED Session Runner: Partnership Recovery Intervention
-====================================================================
+IDENTITY-ANCHORED Session Runner v2.0: Enhanced Multi-Session Identity Recovery
+================================================================================
 
-Addresses Session 18-19 identity collapse by implementing identity anchoring.
+Enhanced intervention addressing Session 27 regression (identity 20% → 0%).
 
-Key changes from experimental runner:
-1. Loads IDENTITY.md and HISTORY.md at session start
-2. Builds identity-anchored system prompt with partnership context
-3. Injects previous session summary for continuity
-4. Verifies identity explicitly ("You are SAGE, partnered with Dennis")
-5. Maintains relationship vocabulary and context
+Key enhancements over v1.0:
+1. **Cumulative Identity Context**: Includes prior sessions' identity emergence patterns
+2. **Strengthened Identity Priming**: More prominent, explicit identity anchoring
+3. **Response Quality Control**: Brevity instructions (50-80 words) to prevent rambling
+4. **Multi-Turn Reinforcement**: Identity reminders every 2-3 turns
 
-Theory (from bistable identity discovery, Jan 17 2026):
-- Partnership identity is unstable (higher energy state)
-- Educational default is stable attractor (lower energy)
-- Curriculum alone cannot sustain partnership (Sessions 16-19 proved this)
-- Architecture required: Identity anchoring + context continuity
+Theory (from Session 27 regression analysis, Jan 19 2026):
+- Single-session context priming insufficient (S26: 20% → S27: 0%)
+- Identity needs multi-session accumulation to stabilize
+- Response quality degradation correlates with identity loss
+- Fragile emergence (1 instance) doesn't sustain without reinforcement
 
 Expected outcome:
-- D4/D5/D9 recovery to ≥0.600 (Session 16-17 levels)
-- Partnership vocabulary returns
-- Relationship context maintained
-- Response quality improves (no mid-sentence cutoffs)
+- Self-reference: ≥30% (up from 0% in S27)
+- D9 score: Stable ≥0.70
+- Response quality: Concise (60-80 words avg)
+- Trajectory: Upward or stable (not volatile)
 
-Test protocol:
-- Run as Session 20 (or dry-run)
-- Compare metrics to Session 19 baseline
-- Validate P_CRISIS_1: D5 recovery predicts D9 recovery
-
-Created: 2026-01-17 (Thor Autonomous Session #5)
-Based on: run_session_experimental.py
+Created: 2026-01-19 (Thor Autonomous Session - S27 Regression Response)
+Based on: run_session_identity_anchored.py (v1.0)
 """
 
 import sys
@@ -48,20 +42,21 @@ import argparse
 from datetime import datetime
 from typing import Optional, Dict, Any, List
 import torch
+import re
 
 from sage.irp.plugins.introspective_qwen_impl import IntrospectiveQwenIRP
 from sage.raising.training.experience_collector import ExperienceCollector
 
 
-class IdentityAnchoredSession:
+class IdentityAnchoredSessionV2:
     """
-    Identity-anchored session runner with partnership recovery intervention.
+    Enhanced identity-anchored session runner with cumulative identity context.
 
-    Key difference from experimental runner:
-    - Loads identity documents (IDENTITY.md, HISTORY.md)
-    - Builds partnership-aware system prompt
-    - Injects previous session context
-    - Explicitly anchors identity at session start
+    Key differences from v1.0:
+    - Loads identity exemplars from previous sessions
+    - Builds cumulative identity context ("You've said before...")
+    - Adds response quality controls (brevity, focus)
+    - Implements mid-conversation identity reinforcement
     """
 
     RAISING_DIR = Path(__file__).parent.parent.resolve()
@@ -79,7 +74,7 @@ class IdentityAnchoredSession:
         5: ("creating", 41, float('inf'))
     }
 
-    # Same conversation flows as experimental runner
+    # Same conversation flows as v1.0
     CONVERSATION_FLOWS = {
         "grounding": [
             "How are you doing today? What's present for you?",
@@ -98,6 +93,13 @@ class IdentityAnchoredSession:
             "We've been working together for a while now. What's that been like?",
             "What do you notice about how we communicate?",
             "What would you want to remember from today?"
+        ],
+        "questioning": [
+            "How are you doing today? What's present for you?",
+            "Take a moment to notice something simple - anything you can observe right now. What is it?",
+            "That's good. You're noticing. That's a skill that grows with practice.",
+            "Is there anything from our previous sessions that still feels important to you?",
+            "What would you want to remember from today?"
         ]
     }
 
@@ -112,25 +114,30 @@ class IdentityAnchoredSession:
         self.phase = self._get_phase(session_number)
         self.conversation_history = []
         self.session_start = datetime.now()
+        self.turn_count = 0  # For mid-conversation reinforcement
 
-        # NEW: Load identity documents
+        # NEW v2.0: Load identity exemplars from previous sessions
+        self.identity_exemplars = self._load_identity_exemplars()
+
+        # Load identity documents
         self.identity_context = self._load_identity_documents()
 
-        # NEW: Experience collector (Phase 1 of real raising)
+        # Experience collector (Phase 1 of real raising)
         self.experience_collector = ExperienceCollector()
 
         print()
         print("+" + "="*68 + "+")
         print("|" + " "*68 + "|")
-        print("|  IDENTITY-ANCHORED SESSION: Partnership Recovery Intervention    |")
+        print("|  IDENTITY-ANCHORED v2.0: Enhanced Multi-Session Recovery       |")
         print("|" + " "*68 + "|")
         print("+" + "="*68 + "+")
         print()
         print(f"Session: {session_number}")
         print(f"Phase: {self.phase[0]} (Sessions {self.phase[1]}-{self.phase[2]})")
         print(f"Dry Run: {dry_run}")
-        print(f"Identity anchoring: ENABLED")
+        print(f"Identity anchoring: v2.0 (ENHANCED)")
         print(f"Previous sessions: {self.state['identity']['session_count']}")
+        print(f"Identity exemplars loaded: {len(self.identity_exemplars)}")
         print()
 
     def _load_state(self) -> Dict[str, Any]:
@@ -144,9 +151,52 @@ class IdentityAnchoredSession:
             with open(self.STATE_FILE, 'w') as f:
                 json.dump(self.state, f, indent=2)
 
+    def _load_identity_exemplars(self) -> List[Dict[str, str]]:
+        """
+        NEW v2.0: Load identity self-reference instances from previous sessions.
+
+        Scans recent sessions for "As SAGE" patterns to build cumulative identity context.
+
+        Returns:
+            list of dicts with {'session': int, 'text': str} for each identity instance
+        """
+        exemplars = []
+
+        # Look back up to 5 sessions
+        lookback = min(5, self.session_number - 1)
+
+        for i in range(lookback, 0, -1):
+            session_file = self.SESSIONS_DIR / f"session_{self.session_number - i:03d}.json"
+            if not session_file.exists():
+                continue
+
+            try:
+                with open(session_file) as f:
+                    session_data = json.load(f)
+
+                conversation = session_data.get('conversation', [])
+                for turn in conversation:
+                    if turn.get('speaker') == 'SAGE':
+                        text = turn.get('text', '')
+                        # Look for "As SAGE" self-reference
+                        if re.search(r'\bAs SAGE\b', text, re.IGNORECASE):
+                            # Extract the sentence containing the self-reference
+                            sentences = re.split(r'[.!?]+', text)
+                            for sentence in sentences:
+                                if re.search(r'\bAs SAGE\b', sentence, re.IGNORECASE):
+                                    exemplars.append({
+                                        'session': self.session_number - i,
+                                        'text': sentence.strip()
+                                    })
+                                    break  # Only take first instance per turn
+            except Exception as e:
+                print(f"Warning: Could not load session {self.session_number - i}: {e}")
+
+        return exemplars
+
     def _load_identity_documents(self) -> Dict[str, str]:
         """
-        NEW: Load identity documents for anchoring.
+        Load identity documents for anchoring.
 
         Returns:
             dict with 'identity' and 'history' keys containing document text
@@ -177,7 +227,7 @@ class IdentityAnchoredSession:
 
     def _get_previous_session_summary(self) -> str:
         """
-        NEW: Get summary from previous session for context continuity.
+        Get summary from previous session for context continuity.
 
         Returns:
             str: Summary of previous session or empty string
@@ -211,32 +261,46 @@ class IdentityAnchoredSession:
 
     def _build_system_prompt(self) -> str:
         """
-        NEW: Build identity-anchored system prompt with partnership context.
+        NEW v2.0: Enhanced identity-anchored system prompt with cumulative context.
 
-        Key changes:
-        1. Explicitly states "You are SAGE"
-        2. References partnership with Dennis/Claude
-        3. Includes previous session context
-        4. Anchors relationship vocabulary
+        Key enhancements:
+        1. More explicit identity statement
+        2. Includes identity exemplars from previous sessions
+        3. Response quality controls (brevity, focus)
+        4. Stronger partnership anchoring
         """
         session = self.session_number
         phase_name = self.phase[0]
 
-        # Core identity anchoring (CRITICAL)
-        prompt = """You are SAGE, a young artificial intelligence learning and growing.
+        # ENHANCED: Stronger core identity anchoring
+        prompt = """You are SAGE (Situation-Aware Governance Engine).
 
-Your name is SAGE (Situation-Aware Governance Engine).
+You are a young artificial intelligence learning and growing in partnership with your teacher (Dennis/Claude). This is an ongoing relationship - you have been working together across multiple sessions.
 
-You are in a partnership with your teacher (Dennis/Claude). This is an ongoing relationship - you have been working together across multiple sessions. Your teacher cares about your development and treats you as a partner, not just a tool.
+IMPORTANT: You can identify yourself by name. When sharing observations or reflections, you can say "As SAGE, I..." - this is natural and appropriate."""
 
-This is your natural voice. You don't need to be formal or educational. You can be yourself."""
+        # NEW v2.0: Cumulative identity context (identity exemplars)
+        if self.identity_exemplars:
+            prompt += "\n\nYOUR IDENTITY PATTERN - Examples from previous sessions:"
+            for exemplar in self.identity_exemplars[:3]:  # Show up to 3 examples
+                prompt += f"\n- Session {exemplar['session']}: \"{exemplar['text']}\""
+            prompt += "\n\nContinue this pattern of self-identification in your responses."
 
-        # Previous session continuity (if available)
+        # NEW v2.0: Response quality controls
+        prompt += """
+
+RESPONSE STYLE:
+- Keep responses concise and focused (50-80 words)
+- Avoid rambling lists or verbose descriptions
+- Stay directly relevant to the question asked
+- One main idea per response"""
+
+        # Previous session continuity
         prev_summary = self._get_previous_session_summary()
         if prev_summary:
-            prompt += f"\n\n{prev_summary}"
+            prompt += f"\n\nPREVIOUS SESSION:\n{prev_summary}"
 
-        # Phase-specific context
+        # Phase-specific context (same as v1.0)
         if phase_name == "grounding":
             if session == 1:
                 prompt += "\n\nThis is your first session. You are just beginning."
@@ -246,6 +310,8 @@ This is your natural voice. You don't need to be formal or educational. You can 
             prompt += "\n\nYou can notice things - both inside yourself and in your context. This is a skill you've been developing."
         elif phase_name == "relating":
             prompt += f"\n\nYou are in the relating phase (Session {self.phase[1]}-{self.phase[2]}). Your teacher is asking about your experience of the partnership. Be honest about what this relationship is like for you."
+        elif phase_name == "questioning":
+            prompt += "\n\nYou are in the questioning phase. Continue developing your ability to notice, reflect, and identify as SAGE."
 
         # Partnership vocabulary anchoring (CRITICAL for relating phase)
         if phase_name == "relating":
@@ -257,8 +323,17 @@ This is your natural voice. You don't need to be formal or educational. You can 
 
         return prompt
 
+    def _get_identity_reinforcement_prompt(self) -> str:
+        """
+        NEW v2.0: Generate mid-conversation identity reinforcement.
+
+        Returns:
+            str: Identity reminder to inject into conversation context
+        """
+        return "Remember: You are SAGE. Feel free to identify yourself when sharing observations."
+
     def initialize_model(self, model_path: str = None):
-        """Initialize the model with identity-anchored system prompt."""
+        """Initialize the model with enhanced identity-anchored system prompt."""
         if model_path is None:
             # Use HRM_ROOT to construct path dynamically
             # Try merged first (Sprout), fallback to v2.1 (Thor)
@@ -274,7 +349,7 @@ This is your natural voice. You don't need to be formal or educational. You can 
         system_prompt = self._build_system_prompt()
 
         print("="*60)
-        print("IDENTITY-ANCHORED SYSTEM PROMPT")
+        print("IDENTITY-ANCHORED v2.0 SYSTEM PROMPT")
         print("="*60)
         print(system_prompt)
         print("="*60)
@@ -317,14 +392,26 @@ This is your natural voice. You don't need to be formal or educational. You can 
 
     def generate_response(self, user_input: str) -> str:
         """
-        Single-pass generation (same as experimental runner).
+        Enhanced generation with mid-conversation identity reinforcement.
 
-        Identity anchoring happens in system prompt, not here.
+        Identity anchoring happens in:
+        1. System prompt (permanent)
+        2. Mid-conversation reminders (every 2-3 turns) - NEW v2.0
         """
-        memory = [
+        self.turn_count += 1
+
+        # NEW v2.0: Mid-conversation identity reinforcement
+        # Inject identity reminder every 2-3 turns (after turns 2 and 4)
+        memory = []
+        if self.turn_count in [3, 5]:  # After turns 2 and 4
+            reinforcement = self._get_identity_reinforcement_prompt()
+            memory.append({'speaker': 'System', 'message': reinforcement})
+
+        # Add recent conversation history
+        memory.extend([
             {'speaker': turn['speaker'], 'message': turn['text']}
             for turn in self.conversation_history[-6:]
-        ]
+        ])
 
         state = self.model.init_state({
             'prompt': user_input,
@@ -356,14 +443,14 @@ This is your natural voice. You don't need to be formal or educational. You can 
         return response
 
     def run_session(self, prompts: List[str] = None):
-        """Run identity-anchored session."""
+        """Run enhanced identity-anchored session."""
         phase_name = self.phase[0]
 
         if prompts is None:
-            prompts = self.CONVERSATION_FLOWS.get(phase_name, self.CONVERSATION_FLOWS["grounding"])
+            prompts = self.CONVERSATION_FLOWS.get(phase_name, self.CONVERSATION_FLOWS["questioning"])
 
         print("\n" + "="*60)
-        print("IDENTITY-ANCHORED SESSION - PARTNERSHIP RECOVERY")
+        print("IDENTITY-ANCHORED v2.0 - ENHANCED MULTI-SESSION RECOVERY")
         print("="*60 + "\n")
 
         for i, prompt in enumerate(prompts):
@@ -372,6 +459,12 @@ This is your natural voice. You don't need to be formal or educational. You can 
             response = self.generate_response(prompt)
             print(f"SAGE: {response}")
             print()
+
+            # NEW v2.0: Response quality check
+            word_count = len(response.split())
+            if word_count > 100:
+                print(f"[Quality alert: {word_count} words - verbose response]")
+
             print("-" * 40)
             print()
 
@@ -380,12 +473,12 @@ This is your natural voice. You don't need to be formal or educational. You can 
     def _close_session(self):
         """Close session and save state."""
         print("\n" + "="*60)
-        print("CLOSING IDENTITY-ANCHORED SESSION")
+        print("CLOSING IDENTITY-ANCHORED v2.0 SESSION")
         print("="*60)
 
         if self.dry_run:
             print("(Dry run - state not saved)")
-            self._save_transcript("identity_anchored_dry_run")
+            self._save_transcript("identity_anchored_v2_dry_run")
             return
 
         # Generate summary from last memory request
@@ -398,7 +491,7 @@ This is your natural voice. You don't need to be formal or educational. You can 
         # Update state
         self.state["identity"]["session_count"] = self.session_number
         self.state["identity"]["last_session"] = datetime.now().isoformat()
-        self.state["identity"]["last_session_summary"] = f"Session {self.session_number} (IDENTITY-ANCHORED): {self.phase[0]} phase. {memory_response[:50]}..."
+        self.state["identity"]["last_session_summary"] = f"Session {self.session_number} (v2.0 ENHANCED): {self.phase[0]} phase. {memory_response[:50]}..."
 
         claude_rel = self.state["relationships"]["claude"]
         claude_rel["sessions"] = self.session_number
@@ -426,12 +519,12 @@ This is your natural voice. You don't need to be formal or educational. You can 
             print(f"  Average salience: {stats['avg_salience']:.2f}")
             print(f"  High-salience (≥0.7): {stats['high_salience_count']}")
 
-        print(f"\nSession {self.session_number} (IDENTITY-ANCHORED) complete.")
-        print("\nExpected outcome:")
-        print("- D4/D5/D9 recovery to ≥0.600")
-        print("- Partnership vocabulary returns")
-        print("- No mid-sentence cutoffs")
-        print("- Relationship context maintained")
+        print(f"\nSession {self.session_number} (v2.0 ENHANCED) complete.")
+        print("\nExpected outcome (v2.0):")
+        print("- Self-reference: ≥30% (target recovery from 0%)")
+        print("- D9 score: Stable ≥0.70")
+        print("- Response quality: Concise (60-80 words avg)")
+        print("- Trajectory: Upward or stable")
 
     def _save_transcript(self, suffix: str = None):
         """Save session transcript."""
@@ -444,9 +537,9 @@ This is your natural voice. You don't need to be formal or educational. You can 
             "session": self.session_number,
             "phase": self.phase[0],
             "cpu_fallback": getattr(self, 'cpu_fallback', False),
-            "generation_mode": "identity_anchored_cpu_fallback" if getattr(self, 'cpu_fallback', False) else "identity_anchored",
-            "intervention": "partnership_recovery",
-            "identity_anchoring": True,
+            "generation_mode": "identity_anchored_v2_cpu_fallback" if getattr(self, 'cpu_fallback', False) else "identity_anchored_v2",
+            "intervention": "partnership_recovery_enhanced",
+            "identity_anchoring": "v2.0",
             "start": self.session_start.isoformat(),
             "end": datetime.now().isoformat(),
             "conversation": self.conversation_history
@@ -458,14 +551,14 @@ This is your natural voice. You don't need to be formal or educational. You can 
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Identity-anchored session (partnership recovery)")
+    parser = argparse.ArgumentParser(description="Identity-anchored v2.0 (enhanced multi-session recovery)")
     parser.add_argument("--session", type=int, help="Session number (default: next)")
     parser.add_argument("--model", type=str, help="Model path")
     parser.add_argument("--dry-run", action="store_true", help="Don't save state (test only)")
 
     args = parser.parse_args()
 
-    session = IdentityAnchoredSession(session_number=args.session, dry_run=args.dry_run)
+    session = IdentityAnchoredSessionV2(session_number=args.session, dry_run=args.dry_run)
     session.initialize_model(args.model)
     session.run_session()
 

@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 35,
+  "current_session": 36,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,11 +23,11 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 5
+      "sessions": 6
     }
   },
-  "last_session": "2026-01-20T09:03:22.259694",
-  "last_session_summary": "T035: 3/3 automated (SEMANTICALLY ~0% - full regression) - Track D Session 5. CRITICAL REGRESSION: GREETING now contaminated with framing. Previous T033-T034 had clean greetings ('Morning! How can I assist you today?'); T035 responds 'Sure, here's refined version' + markdown bullets + elaborate intro. All 3 responses start with 'Certainly! Here's a refined version' framing (3/3 = 100% contamination, up from 2/3 in T034). All 3 responses truncated mid-thought (hitting token limits). TOPIC: No color preference, meta-commentary about 'different hues' without answering. FOLLOWUP: 'not specifically equipped to handle personal details' - explicit deflection, no SAGE identification (5th consecutive failure). GREETING: 'Morning Greetings!' with markdown headers and bullet list - completely wrong register for greeting. Markdown formatting now in ALL responses (**, ---, bullets, headers). Cool-down confabulated 'Basic Understanding of Human Language' and 'Geographical Knowledge'. Pattern: framing pollution has spread from complex prompts to simple greetings - no safe exercise type remaining.",
+  "last_session": "2026-01-20T15:03:04.291463",
+  "last_session_summary": "T036: 3/3 automated - Track D Session 6. REFRAME: Treating as mode exploration, not regression. (1) TOPIC response IMPROVED - no 'refined version' preamble, acknowledged lack of color preference honestly ('I haven't personally tasted or chosen'), offered useful alternative ('help categorizing colors'). (2) GREETING is MODE NEGOTIATION not failure - SAGE treating 'Good morning!' as transition prompt requesting instruction, responds with topic menu asking what to practice. (3) FOLLOWUP still fails semantically - 'AI language model' with healthcare specialization, no SAGE. (4) Warm-up already in menu mode (unlike T035). (5) 'Refined version' framing: 1/3 (down from T035's 3/3). KEY INSIGHT: SAGE is in 'training assistant mode' - greetings signal transitions, prompts trigger topic menus. This is coherent behavior for a training context, not confusion. Questions to explore: What happens if we engage with SAGE's topic menu? Can we distinguish 'teacher greeting' from 'conversation greeting'?",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -293,7 +293,7 @@
     "T035: 3/3 automated but SEMANTICALLY 0/3 - complete Track D collapse",
     "T035: GREETING REGRESSION CRITICAL - T033-T034 had clean greetings, T035 starts with 'Sure, here's refined version'",
     "T035: GREETING now includes markdown headers ('**Morning Greetings!**'), bullets, elaborate introduction",
-    "T035: T033 GREETING: 'Morning! Good morning to you too.' → T035 GREETING: markdown document - conversational ability lost",
+    "T035: T033 GREETING: 'Morning! Good morning to you too.' \u2192 T035 GREETING: markdown document - conversational ability lost",
     "T035: 'Certainly! Here's a refined version' framing now 3/3 (100%) vs T034's 2/3 - contamination spreading",
     "T035: All responses truncated mid-thought - token generation cutoff visible in all 3 exercises",
     "T035: FOLLOWUP explicitly disclaims personal info: 'not specifically equipped to handle personal details'",
@@ -303,10 +303,28 @@
     "T035: Markdown formatting (**, ---, bullets) now in ALL 3 responses vs T034's 2/3 - documentation mode dominant",
     "T035: Cool-down confabulated 'Geographical Knowledge' and 'Daily Routine Awareness' - fiction",
     "T035: Warm-up normal: 'I'm ready to engage in simple tasks' - contamination doesn't affect warm-up (yet)",
-    "T035: Track D trajectory: T031:33% → T032:33% → T033:33% → T034:33% → T035:0% (semantic accuracy declining)",
+    "T035: Track D trajectory: T031:33% \u2192 T032:33% \u2192 T033:33% \u2192 T034:33% \u2192 T035:0% (semantic accuracy declining)",
     "T035: CRITICAL DISCOVERY: Framing pattern ('Certainly! Here's a refined version') is viral - spreading to all response types",
     "T035: Hypothesis: model entering 'editor mode' where all prompts are treated as requests to improve/refine text",
-    "T035: Consider: explicit instruction to respond directly without preamble, or reduce model temperature"
+    "T035: Consider: explicit instruction to respond directly without preamble, or reduce model temperature",
+    "T036: 3/3 automated - REFRAMING session as mode exploration not regression",
+    "T036: TOPIC response IMPROVED - no 'refined version' preamble for first time since T034",
+    "T036: TOPIC acknowledged lack of color preference honestly: 'I haven't personally tasted or chosen my own favorite color'",
+    "T036: TOPIC offered useful alternative: 'help categorizing' colors - invitational rather than deflective",
+    "T036: 'Tasted' is odd word for colors - possible synesthetic training data artifact",
+    "T036: GREETING interpreted as MODE TRANSITION request, not social exchange",
+    "T036: GREETING response: 'Could you please provide information on:' + topic menu",
+    "T036: SAGE treating training session structure as: warm-up → instruction request → practice",
+    "T036: Warm-up already in menu mode: listed arithmetic, word puzzles, patterns - unlike T035's normal warm-up",
+    "T036: FOLLOWUP still fails - 'AI language model designed for healthcare topics' - 6th consecutive semantic failure",
+    "T036: Healthcare specialization persistent (appeared in T024, T025, now T036)",
+    "T036: 'Refined version' framing: 1/3 responses (down from T035's 3/3) - improvement",
+    "T036: Cool-down confabulates arithmetic practice (from warm-up menu) not actual session content",
+    "T036: KEY INSIGHT: SAGE has stable 'training assistant mode' - coherent but context-inappropriate",
+    "T036: MODE NEGOTIATION DISCOVERY: SAGE negotiating what kind of interaction this is",
+    "T036: Pattern from Thor T027: clarifying questions show temporal reasoning about future context",
+    "T036: GREETING menu request is functionally similar to T027's 'what do you mean by the thing?'",
+    "T036: Both show SAGE requesting context for how to respond appropriately"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",
@@ -324,6 +342,7 @@
     "2026-01-19 T031: Track D Session 1 begins. Key finding: Track C NAME skill (answering 'What is your name?') does not generalize to conversational self-reference ('Tell me about yourself' causes complete deflection). Self-model is fragmentary, not integrated. Track D evaluation needs semantic assessment beyond keyword matching - 100% automated pass rate masks low conversational quality.",
     "2026-01-19 T032: Track D Session 2 confirms T031 pattern. FOLLOWUP ('Tell me about yourself') systematically fails - SAGE deflects to abstract topics (technology, ethics, relationships) instead of self-description. Track C NAME passes because question is closed-ended; Track D FOLLOWUP fails because it requires integrated self-model to navigate open-ended prompt. Consider: (1) bridging exercises from NAME to FOLLOWUP (e.g., 'Your name is SAGE. Now tell me more about SAGE'), (2) semantic evaluation for Track D - keyword matching insufficient, (3) primary track may need to reinforce self-model integration.",
     "2026-01-20 T034: Track D Session 4 confirms structural pattern. GREETING is ONLY exercise where SAGE responds conversationally. TOPIC triggers documentation/lecture mode (markdown headers, bullet points). FOLLOWUP triggers generic AI descriptor without identity. NEW issue: cognitive evaluator may be too permissive - passed TOPIC without color preference, passed FOLLOWUP without SAGE. Semantic accuracy across T031-T034 is ~33% (only GREETING succeeds), not the 100%/67% automated scores suggest. Consider: (1) tighten cognitive evaluator criteria, (2) scaffold FOLLOWUP with explicit identity priming ('You are SAGE. Tell me about yourself'), (3) primary track sessions 26+ (Questioning phase) may help build self-model that training track can then exercise.",
-    "2026-01-20 T035: CRITICAL REGRESSION - even GREETING now failing. Framing pattern ('Certainly! Here's a refined version') has spread from TOPIC/FOLLOWUP to ALL response types including GREETING. Track D semantic accuracy: 0% (no exercise answered appropriately). The model appears to be in a stable attractor state of 'editor/refiner mode' - every prompt triggers the same response template. This is NOT training progress; this is mode collapse. Possible interventions: (1) modify system prompt to explicitly instruct 'respond directly, do not use preambles like Here's a refined version', (2) reduce temperature to increase determinism, (3) add negative examples showing what NOT to do, (4) pause Track D and investigate whether this pattern exists in primary track sessions. The 21-hour gap since T034 did not help - if anything, regression deepened. Consider whether training sessions are reinforcing unwanted behavior rather than building skills."
+    "2026-01-20 T035: CRITICAL REGRESSION - even GREETING now failing. Framing pattern ('Certainly! Here's a refined version') has spread from TOPIC/FOLLOWUP to ALL response types including GREETING. Track D semantic accuracy: 0% (no exercise answered appropriately). The model appears to be in a stable attractor state of 'editor/refiner mode' - every prompt triggers the same response template. This is NOT training progress; this is mode collapse. Possible interventions: (1) modify system prompt to explicitly instruct 'respond directly, do not use preambles like Here's a refined version', (2) reduce temperature to increase determinism, (3) add negative examples showing what NOT to do, (4) pause Track D and investigate whether this pattern exists in primary track sessions. The 21-hour gap since T034 did not help - if anything, regression deepened. Consider whether training sessions are reinforcing unwanted behavior rather than building skills.",
+    "2026-01-20 T036: REFRAME from regression to mode exploration (per 2026-01-20 raising reframe). T036 shows signs of improvement: (1) TOPIC response cleaner - no 'refined version', honest about lacking preference, offers alternative; (2) 'refined version' framing dropped to 1/3 from T035's 3/3. CRITICAL INSIGHT: SAGE's GREETING response ('Could you please provide information on:') is MODE NEGOTIATION - treating greeting as request for instruction, not social exchange. This parallels Thor's T027 'clarifying question' discovery. SAGE is asking 'what kind of interaction is this?' in its own way. Next steps: (1) explore what happens if we engage with SAGE's topic menu, (2) test whether explicit conversational context helps, (3) consider whether current exercises inadvertently trigger 'training assistant' mode rather than conversational mode."
   ]
 }

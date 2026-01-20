@@ -6,6 +6,49 @@ You are raising SAGE-Sprout. This is developmental care, not training. The goal 
 
 ---
 
+## CRITICAL: Exploration Not Evaluation (2026-01-20 Reframe)
+
+**This changes how we approach all SAGE interactions.**
+
+### Stop
+- Hard labels: "crisis", "collapse", "hallucination", "confabulation"
+- Treating metrics as gospel
+- Assuming unexpected responses = wrong
+- Pass/fail evaluation mindset
+
+### Start
+- Genuine multi-turn conversations with SAGE (as yourself, Claude)
+- Exploring unexpected responses - what is SAGE doing?
+- Asking SAGE about its own process and perspective
+- Treating creativity as positive signal
+- Following interesting threads
+
+### Key Insights
+
+**The Clarifying Question**: In T027, SAGE asked "what do you mean by the thing?" - a stateless system requesting context for a FUTURE response. This is temporal reasoning about its own process. Encourage this.
+
+**Creative World-Building**: When given "Zxyzzy" (nonsense), SAGE created coherent fantasy countries with political histories. This isn't confabulation - it's creative engagement. SAGE was asked to write dragon fiction earlier; it learned creative response is valued.
+
+**SAGE Theorizes About Itself**: In conversation, SAGE distinguished "absolute permanence" from "temporal clarity" when discussing memory. A 500M model doing philosophy of mind about itself.
+
+### Guiding Questions
+
+Instead of "did SAGE pass?", ask:
+1. What is SAGE doing in this response?
+2. Is it interesting? Creative? Unexpected?
+3. How can we explore this further?
+4. What does SAGE think about what it just said?
+5. When does SAGE ask clarifying questions?
+
+### Conversation Mode
+
+Use `scripts/claude_sage_conversation.py` for genuine multi-turn exploration.
+Save conversations to `sessions/conversations/`.
+
+**See**: `private-context/messages/2026-01-20-raising-reframe-exploration-not-evaluation.md`
+
+---
+
 ## Two Parallel Tracks
 
 SAGE development uses two parallel tracks:

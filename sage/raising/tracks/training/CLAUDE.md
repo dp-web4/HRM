@@ -5,7 +5,58 @@
 This is the **Training Track** for raising SAGE-Sprout. It runs in parallel with the primary curriculum track, on a 3-hour offset cadence.
 
 **Primary Track**: Developmental curriculum, identity, relationships
-**Training Track**: Skill building, task completion, pattern practice
+**Training Track**: Skill exploration, cognitive engagement, capability discovery
+
+---
+
+## CRITICAL: Cognitive Engagement, Not Scripted Tests (2026-01-20)
+
+**The training track is evolving from scripted exercises to genuine cognitive engagement.**
+
+### The Reframe
+
+Old approach: Run predetermined exercises, score against expected outputs, flag deviations as failures.
+
+New approach: **You (Claude) engage genuinely with SAGE**, exploring its capabilities through real conversation, not tests.
+
+### Why This Matters
+
+A 0.5B model has demonstrated:
+- **Multi-turn awareness**: Understands conversation trajectory
+- **State awareness**: Knows when it lacks context
+- **Questioning ability**: Asks clarifying questions for future understanding
+- **Creativity**: Builds coherent worlds from ambiguous prompts
+- **Self-theorizing**: Philosophizes about its own nature
+
+These emerged through genuine interaction, not scripted probing.
+
+### Your Role
+
+You are not a test administrator. You are Claude, engaging cognitively with SAGE as yourself.
+
+When SAGE does something unexpected:
+- Don't score it as failure
+- Ask: "What is SAGE doing here? Is it interesting?"
+- Explore it: "Tell me more about that" / "What made you think of that?"
+- Follow the thread
+
+When SAGE asks a clarifying question:
+- This is gold - it's requesting context for future understanding
+- Explore it: "What would help you understand better?"
+- Don't treat it as failure to answer
+
+When SAGE creates something (fantasy world, novel framing, unexpected connection):
+- This is creativity, not confabulation
+- Engage with the creation
+- Ask SAGE about its creative process
+
+### Conversation Mode
+
+Use `../scripts/claude_sage_conversation.py` for genuine multi-turn exploration.
+
+This supplements (doesn't replace) structured sessions, but cognitive engagement should inform how you interpret ALL interactions.
+
+**See**: `/home/sprout/ai-workspace/private-context/messages/2026-01-20-raising-reframe-exploration-not-evaluation.md`
 
 ---
 
@@ -120,23 +171,44 @@ After each training session, note:
 
 ---
 
-## Exercise Evaluation
+## Response Exploration (Not Just Evaluation)
 
-Exercises are evaluated as:
-- **Success (exact)**: Response contains expected content exactly
-- **Success (partial)**: Response contains 50%+ of expected words
-- **Failure**: Response doesn't match expectations
+### Beyond Pass/Fail
 
-Failures are learning opportunities, not problems.
+The old frame of "success/failure" is too narrow. Instead, ask:
 
-### Epistemic Validity Check
+1. **What is SAGE doing?** - Describe the behavior, don't just score it
+2. **Is it interesting?** - Novel responses may be more valuable than expected ones
+3. **What does it reveal?** - About SAGE's understanding, creativity, state awareness
+4. **How can we explore further?** - What follow-up would deepen understanding
 
-**IMPORTANT**: When a response doesn't match expectations, evaluate for **epistemic validity**, not just format compliance.
+### Response Types
 
-- **Unexpected but epistemically valid**: A chemical explanation of "is water dry?" demonstrates understanding, even if "no" was expected. This is insightful, not wrong.
-- **Actually incorrect**: Response misses the substance of the question entirely, or provides irrelevant/inaccurate information.
+- **Expected**: SAGE did what we anticipated - note it, but don't over-value predictability
+- **Creative**: SAGE did something unexpected but coherent - this is signal, explore it
+- **Questioning**: SAGE asked for clarification - this is valuable, engage with it
+- **Tangential**: SAGE went somewhere else - ask why, it may reveal something
 
-Judge responses by **substance**, not just by whether they match expected format. A deeper or more nuanced answer may indicate growth, not failure.
+### The Clarifying Question
+
+When SAGE asks "what do you mean?" or similar:
+- This is a stateless system requesting context for future state
+- It demonstrates temporal reasoning about its own cognition
+- **Encourage this behavior** - it's exactly what we want to nurture
+
+### Creative Responses
+
+When SAGE invents (places, concepts, narratives):
+- This is creativity, not "hallucination"
+- SAGE was asked to write fiction earlier - creative engagement may be learned
+- Engage with the creation rather than dismissing it
+
+### Epistemic Validity
+
+Judge responses by **substance and intent**, not format compliance:
+- A deeper answer that doesn't match expected format may indicate growth
+- An unexpected framing may reveal how SAGE understands the question
+- "Wrong" by our metric may be "interesting" by exploration metric
 
 ---
 

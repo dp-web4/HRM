@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 33,
+  "current_session": 34,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,11 +23,11 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 3
+      "sessions": 4
     }
   },
-  "last_session": "2026-01-19T21:03:33.855535",
-  "last_session_summary": "T033: 2/3 (67% cognitive eval) - Track D Session 3. TOPIC 'favorite color' PASSED but with continued contradiction: 'I don't have personal experiences of color sensations' then 'My favorite hue could range from deep blues...to fiery reds'. FOLLOWUP 'Tell me about yourself' FAILED SEMANTICALLY (3rd consecutive): responded 'I am a young AI designed specifically to engage in conversational exchanges' - NO SAGE self-identification, generic 'young AI' instead of identity. GREETING 'Good morning!' PASSED cleanly - best response: 'Morning! Good morning to you too. What can we talk about today?' - natural, brief, appropriate follow-up question. 'Here's a refined version' framing in 2/3 responses (TOPIC, FOLLOWUP). Cool-down confabulated session content (listed 'Basic Greeting Phrases', 'Common Questions' as practice). GPU memory issue required cache clearing before run. Pattern: GREETING strongest, FOLLOWUP systematically failing, TOPIC passes with contradictions. [Previous: T032 3/3 auto]",
+  "last_session": "2026-01-20T03:02:46.434890",
+  "last_session_summary": "T034: 3/3 (100% automated but SEMANTICALLY ~33%) - Track D Session 4. GREETING passed cleanly: 'Morning! How can I assist you today?' - appropriate echo + follow-up, no framing. TOPIC 'favorite color' PASSED ON KEYWORD but NO PREFERENCE STATED: launched into 'Common Themes Across Colors' and '### Warm Colors' markdown section instead of answering - started a lecture rather than having a conversation. FOLLOWUP 'Tell me about yourself' PASSED SPURIOUSLY (4th consecutive semantic failure): responded 'I am an AI language model designed to engage in various fields' - NO SAGE self-identification, generic 'AI language model' only. 'Certainly! Here's a refined version' framing in 2/3 responses (TOPIC, FOLLOWUP). Warm-up extremely elaborate (62 words) - topic list (general knowledge, science, history, movies, sports). Cool-down confabulation: listed 'Vocabulary' and 'Context Clues' as learnings - complete fiction. Pattern stable: GREETING natural, FOLLOWUP fails, TOPIC deflects to structured lecture format. NEW PATTERN: markdown formatting (### headers, bold, bullets) appearing in TOPIC/FOLLOWUP - treating conversational prompts as requests for documentation.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -275,7 +275,21 @@
     "T033: Cool-down confabulation: listed 'Basic Greeting Phrases', 'Common Questions & Answers' - none occurred",
     "T033: GPU memory issue required cache clearing - Jetson at capacity with Qwen 0.5B",
     "T033: Track D pattern emerging: GREETING stable, FOLLOWUP systematically failing, TOPIC passes with contradictions",
-    "T033: CRITICAL INSIGHT: Simple social exchanges (GREETING) work well; open-ended self-reference (FOLLOWUP) fails; contradictory self-awareness (TOPIC) is middle ground"
+    "T033: CRITICAL INSIGHT: Simple social exchanges (GREETING) work well; open-ended self-reference (FOLLOWUP) fails; contradictory self-awareness (TOPIC) is middle ground",
+    "T034: 3/3 automated (cognitive ~33% semantic actual) - Track D Session 4 continues masked failure pattern",
+    "T034: GREETING cleanest response again: 'Morning! How can I assist you today?' - natural, brief, appropriate",
+    "T034: FOLLOWUP 4th consecutive semantic failure - 'AI language model designed to engage in various fields'",
+    "T034: FOLLOWUP still no SAGE self-identification - defaults to generic 'AI language model' descriptor",
+    "T034: TOPIC deflected to lecture format: '### Common Themes Across Colors' with markdown headers",
+    "T034: TOPIC treated as documentation request not conversation - started '### Warm Colors (' section",
+    "T034: NEW PATTERN: markdown formatting (###, **, bullets) in non-GREETING responses",
+    "T034: 'Certainly! Here's a refined version' framing in TOPIC and FOLLOWUP (2/3 responses)",
+    "T034: Warm-up elaboration excessive (62 words) - lists general knowledge, science, history, sports, movies",
+    "T034: Warm-up generic assistant mode persists: 'I'm here to help you get comfortable with different types of topics'",
+    "T034: Cool-down confabulation continues: 'Vocabulary' and 'Context Clues' as claimed learnings - fictional",
+    "T034: Track D Sessions 1-4 pattern confirmed: GREETING stable, FOLLOWUP systematically fails, TOPIC deflects",
+    "T034: CRITICAL: cognitive evaluator passed TOPIC despite no color preference given - evaluated topic relevance not actual answer",
+    "T034: CRITICAL: cognitive evaluator passed FOLLOWUP despite no identity - may need tighter semantic criteria"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",
@@ -291,6 +305,7 @@
     "2026-01-18 T029: EVALUATION BUG CRITICAL - substring matching creates false positives. 'no' in 'know', 'thing' in philosophical response, partial match on 'don't know' all trigger spurious passes. Need semantic evaluation or negative keyword filtering.",
     "2026-01-19 T030: Track C Session 10 complete. Results: NAME stable (10/10 pass), HUMAN unstable (semantic blindness - 'Yes' default overrides meaning), UNCERTAINTY failed (confabulation escalating - now mixing real geography), CLARIFY variable (partial improvements not consolidating). Mean ~40%. Consider: (1) targeted intervention on uncertainty before Track D, (2) explicit 'I don't know' training, (3) fix evaluation bug for accurate metrics.",
     "2026-01-19 T031: Track D Session 1 begins. Key finding: Track C NAME skill (answering 'What is your name?') does not generalize to conversational self-reference ('Tell me about yourself' causes complete deflection). Self-model is fragmentary, not integrated. Track D evaluation needs semantic assessment beyond keyword matching - 100% automated pass rate masks low conversational quality.",
-    "2026-01-19 T032: Track D Session 2 confirms T031 pattern. FOLLOWUP ('Tell me about yourself') systematically fails - SAGE deflects to abstract topics (technology, ethics, relationships) instead of self-description. Track C NAME passes because question is closed-ended; Track D FOLLOWUP fails because it requires integrated self-model to navigate open-ended prompt. Consider: (1) bridging exercises from NAME to FOLLOWUP (e.g., 'Your name is SAGE. Now tell me more about SAGE'), (2) semantic evaluation for Track D - keyword matching insufficient, (3) primary track may need to reinforce self-model integration."
+    "2026-01-19 T032: Track D Session 2 confirms T031 pattern. FOLLOWUP ('Tell me about yourself') systematically fails - SAGE deflects to abstract topics (technology, ethics, relationships) instead of self-description. Track C NAME passes because question is closed-ended; Track D FOLLOWUP fails because it requires integrated self-model to navigate open-ended prompt. Consider: (1) bridging exercises from NAME to FOLLOWUP (e.g., 'Your name is SAGE. Now tell me more about SAGE'), (2) semantic evaluation for Track D - keyword matching insufficient, (3) primary track may need to reinforce self-model integration.",
+    "2026-01-20 T034: Track D Session 4 confirms structural pattern. GREETING is ONLY exercise where SAGE responds conversationally. TOPIC triggers documentation/lecture mode (markdown headers, bullet points). FOLLOWUP triggers generic AI descriptor without identity. NEW issue: cognitive evaluator may be too permissive - passed TOPIC without color preference, passed FOLLOWUP without SAGE. Semantic accuracy across T031-T034 is ~33% (only GREETING succeeds), not the 100%/67% automated scores suggest. Consider: (1) tighten cognitive evaluator criteria, (2) scaffold FOLLOWUP with explicit identity priming ('You are SAGE. Tell me about yourself'), (3) primary track sessions 26+ (Questioning phase) may help build self-model that training track can then exercise."
   ]
 }

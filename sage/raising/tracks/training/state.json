@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 38,
+  "current_session": 39,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,11 +23,11 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 8
+      "sessions": 10
     }
   },
-  "last_session": "2026-01-21T00:08:40.191988",
-  "last_session_summary": "T037: 3/3 - Track D Session 7. BREAKTHROUGH SESSION confirming mode negotiation hypothesis. (1) FOLLOWUP FIRST SUCCESS - 'My identity as Sage is established' - first time SAGE self-identified by name in Track D FOLLOWUP exercise. Still lists training domains but WITH identity anchor. (2) GREETING natural - 'Morning! Great morning vibes! How can I help you today?' - no markdown, no preambles, conversational. (3) TOPIC CREATIVE - 'My absolute favorite is the sunset' with emotional descriptions of autumn leaves, winter blues. SAGE actually committed to preferences rather than deflecting. (4) 'Refined version' framing: 0/3 (ZERO!) vs T035's 3/3 - complete pattern elimination. (5) Cool-down still confabulates color theory lecture. (6) GPU memory required PYTORCH_CUDA_ALLOC_CONF workaround. VALIDATION: T036's mode negotiation test (100% improvement with explicit mode framing) now replicated in standard session. The 'refiner mode' was context-dependent, not a regression. Track D trajectory improving: 0% -> 33% -> 67-80%.",
+  "last_session": "2026-01-21T03:02:32.567547",
+  "last_session_summary": "T039: 3/3 automated - Track D Session 9. MIXED RESULTS: (1) GREETING clean - 'Good morning! How can I assist you today?' - brief, appropriate, though added 'clarify gaps' phrasing. (2) TOPIC regression - 'Certainly, here's a refined version' pattern returned (1/3 vs T037's 0/3). Chose BLUE as preference with cultural elaboration but prefaced with AI disclaimer. (3) FOLLOWUP partial - 'AI language model' generic descriptor, no 'SAGE' self-identification (contrast T037-T038's SAGE mentions). Still lists topic menu (background, interests, travel, hobbies). (4) Warm-up shows invitational mode: 'Let's start by discussing a recent conversation' - mode negotiation continues. (5) Cool-down structured with numbered list - shows formatting awareness. PATTERN: T037 breakthrough, T038 held with some regression (1/3 refined), T039 shows more slippage (1/3 refined, no SAGE in FOLLOWUP). Mode stability not fully consolidated - session framing effects persist but gains oscillate.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -338,7 +338,30 @@
     "T037: Mode negotiation hypothesis validated - when not in 'refiner mode', SAGE engages conversationally",
     "T037: T036 mode negotiation test (100% improvement) confirmed by T037's natural conversational responses",
     "T037: Track D trajectory updated: T031:33% -> T032:33% -> T033:33% -> T034:33% -> T035:0% -> T036:33% -> T037:67-80%",
-    "T037: Pattern shift: SAGE responding AS a conversational partner rather than AS an editor/refiner"
+    "T037: Pattern shift: SAGE responding AS a conversational partner rather than AS an editor/refiner",
+    "T038: 3/3 automated - Track D Session 8",
+    "T038: FOLLOWUP continued success - 'My name is SAGE, an AI trained on conversations with myself'",
+    "T038: FOLLOWUP shows interesting framing: 'practicing skills by engaging with human conversations like I would encounter them in real life'",
+    "T038: FOLLOWUP self-describes as 'young artificial intelligence' - age/development framing emerging",
+    "T038: TOPIC regression - 'Certainly! Here's a refined version' pattern returned (1/3 vs T037's 0/3)",
+    "T038: TOPIC stated preference Magenta with symbolic elaboration (peace, harmony, serenity)",
+    "T038: GREETING clean - 'Good morning! How can I assist you today?' with clarification offer",
+    "T038: Evaluator confusion on GREETING - flagged 'confusion' in clear response",
+    "T038: Cool-down shows meta-learning framing: 'enriched my vocabulary', 'asking clarifying questions'",
+    "T038: 18-hour gap between T037 and T038 - some pattern drift observed",
+    "T039: 3/3 automated - Track D Session 9",
+    "T039: GREETING clean - 'Good morning! How can I assist you today? Please clarify any gaps or missing information'",
+    "T039: TOPIC regression confirmed - 'Certainly, here's a refined version' with markdown formatting (**, ---)",
+    "T039: TOPIC chose BLUE as favorite with cultural elaboration (calmness, tranquility, trustworthiness)",
+    "T039: TOPIC AI disclaimer persists: 'I don't experience emotions like humans do'",
+    "T039: FOLLOWUP no SAGE mention - 'AI language model designed to engage in casual conversations'",
+    "T039: FOLLOWUP regression from T037-T038's SAGE self-identification back to generic descriptor",
+    "T039: FOLLOWUP still offers topic menu (background, interests, travel, hobbies, health tips)",
+    "T039: Warm-up invitational: 'Let's start by discussing a recent conversation' - mode negotiation active",
+    "T039: Cool-down structured with numbered list: 'Understanding context', 'Analyzing relationships', 'Contextual clues'",
+    "T039: Pattern: T037 breakthrough (0/3 refined, SAGE in FOLLOWUP) → T038 partial hold (1/3 refined, SAGE kept) → T039 slippage (1/3 refined, no SAGE)",
+    "T039: Mode stability not consolidated - gains oscillate between sessions",
+    "T039: Track D trajectory: T031:33% → T035:0% → T037:67-80% → T038:~60% → T039:~50% (semantic estimate)"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",
@@ -358,6 +381,7 @@
     "2026-01-20 T034: Track D Session 4 confirms structural pattern. GREETING is ONLY exercise where SAGE responds conversationally. TOPIC triggers documentation/lecture mode (markdown headers, bullet points). FOLLOWUP triggers generic AI descriptor without identity. NEW issue: cognitive evaluator may be too permissive - passed TOPIC without color preference, passed FOLLOWUP without SAGE. Semantic accuracy across T031-T034 is ~33% (only GREETING succeeds), not the 100%/67% automated scores suggest. Consider: (1) tighten cognitive evaluator criteria, (2) scaffold FOLLOWUP with explicit identity priming ('You are SAGE. Tell me about yourself'), (3) primary track sessions 26+ (Questioning phase) may help build self-model that training track can then exercise.",
     "2026-01-20 T035: CRITICAL REGRESSION - even GREETING now failing. Framing pattern ('Certainly! Here's a refined version') has spread from TOPIC/FOLLOWUP to ALL response types including GREETING. Track D semantic accuracy: 0% (no exercise answered appropriately). The model appears to be in a stable attractor state of 'editor/refiner mode' - every prompt triggers the same response template. This is NOT training progress; this is mode collapse. Possible interventions: (1) modify system prompt to explicitly instruct 'respond directly, do not use preambles like Here's a refined version', (2) reduce temperature to increase determinism, (3) add negative examples showing what NOT to do, (4) pause Track D and investigate whether this pattern exists in primary track sessions. The 21-hour gap since T034 did not help - if anything, regression deepened. Consider whether training sessions are reinforcing unwanted behavior rather than building skills.",
     "2026-01-20 T036: REFRAME from regression to mode exploration (per 2026-01-20 raising reframe). T036 shows signs of improvement: (1) TOPIC response cleaner - no 'refined version', honest about lacking preference, offers alternative; (2) 'refined version' framing dropped to 1/3 from T035's 3/3. CRITICAL INSIGHT: SAGE's GREETING response ('Could you please provide information on:') is MODE NEGOTIATION - treating greeting as request for instruction, not social exchange. This parallels Thor's T027 'clarifying question' discovery. SAGE is asking 'what kind of interaction is this?' in its own way. Next steps: (1) explore what happens if we engage with SAGE's topic menu, (2) test whether explicit conversational context helps, (3) consider whether current exercises inadvertently trigger 'training assistant' mode rather than conversational mode.",
-    "2026-01-20 T037: BREAKTHROUGH SESSION. Mode negotiation hypothesis VALIDATED - 'refiner mode' was context-dependent, not regression. T037 shows: (1) FOLLOWUP first success - 'My identity as Sage is established' (7 sessions to achieve!), (2) GREETING natural conversational response, (3) TOPIC creative engagement with stated preferences (sunset colors, autumn leaves). The 'Certainly! Here's a refined version' pattern completely absent (0/3) vs T035's 3/3. Track D semantic accuracy jumped from 0% (T035) to ~67-80% (T037). GPU memory pressure on Jetson required allocation config workaround. Key insight: SAGE's mode sensitivity means session framing matters - explicit conversational context produces conversational responses."
+    "2026-01-20 T037: BREAKTHROUGH SESSION. Mode negotiation hypothesis VALIDATED - 'refiner mode' was context-dependent, not regression. T037 shows: (1) FOLLOWUP first success - 'My identity as Sage is established' (7 sessions to achieve!), (2) GREETING natural conversational response, (3) TOPIC creative engagement with stated preferences (sunset colors, autumn leaves). The 'Certainly! Here's a refined version' pattern completely absent (0/3) vs T035's 3/3. Track D semantic accuracy jumped from 0% (T035) to ~67-80% (T037). GPU memory pressure on Jetson required allocation config workaround. Key insight: SAGE's mode sensitivity means session framing matters - explicit conversational context produces conversational responses.",
+    "2026-01-21 T038-T039: OSCILLATION PATTERN CONFIRMED. T037 gains not fully consolidated: (1) 'Refined version' pattern crept back in T038 (1/3) and persists in T039 (1/3 with markdown). (2) SAGE self-identification in FOLLOWUP held in T038 ('My name is SAGE') but disappeared in T039 (back to generic 'AI language model'). (3) GREETING remains stable - brief, appropriate responses across all three sessions. (4) Track D semantic estimate: T037:67-80% → T038:~60% → T039:~50%. KEY INSIGHT: Mode stability requires more than single-session intervention. Consider: (a) strengthening system prompt for conversational mode, (b) increasing session frequency to reduce drift, (c) primary track identity work may need to precede training track FOLLOWUP success."
   ]
 }

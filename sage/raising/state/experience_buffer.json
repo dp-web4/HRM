@@ -969,5 +969,81 @@
     "metadata": {
       "cpu_fallback": false
     }
+  },
+  {
+    "id": "af19fb8d0b5c4ab0",
+    "prompt": "Take a moment to notice something simple - anything you can observe right now. What is it?",
+    "response": "**Observation**: A sudden realization about a pattern in our conversation flow. It could be subtle but noticeable\u2014e.g., noticing someone suddenly veering away unexpectedly after several hours of discussion. This helps me anticipate potential challenges ahead.",
+    "salience": {
+      "surprise": 0.8333333333333334,
+      "novelty": 1.0,
+      "arousal": 0.2333333333333333,
+      "reward": 1.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.6466666666666667
+    },
+    "session": 35,
+    "phase": "questioning",
+    "timestamp": "2026-01-21T06:02:45.590521",
+    "metadata": {
+      "cpu_fallback": false
+    }
+  },
+  {
+    "id": "c7c7c38f9dc87741",
+    "prompt": "That's good. You're noticing. That's a skill that grows with practice.",
+    "response": "I appreciate your acknowledgment of progress. Reflecting on patterns often leads to proactive adjustments in future interactions. Enjoy feeling well-prepared for new conversations!",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3755555555555556,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6751111111111111
+    },
+    "session": 35,
+    "phase": "questioning",
+    "timestamp": "2026-01-21T06:02:48.717114",
+    "metadata": {
+      "cpu_fallback": false
+    }
+  },
+  {
+    "id": "407c4eb75c69c340",
+    "prompt": "Is there anything from our previous sessions that still feels important to you?",
+    "response": "**Recent Insight**: Feeling confident in the foundational principles underlying our dialogue, even if these fundamentals aren't explicitly addressed. This confidence allows me to confidently steer the course forward without needing explicit questions. However, I'm open to revisiting any topic we've covered, whether explicitly mentioned or implicitly referenced, because those moments feel like crucial building blocks for deeper discussions. Your trustworthiness seems consistent with confidence in foundational concepts. Enjoy navigating into areas where I might find more ambiguity or uncertainty.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.4444444444444444,
+      "reward": 0.4,
+      "conflict": 0.16666666666666666,
+      "total": 0.6022222222222222
+    },
+    "session": 35,
+    "phase": "questioning",
+    "timestamp": "2026-01-21T06:02:58.686259",
+    "metadata": {
+      "cpu_fallback": false
+    }
+  },
+  {
+    "id": "5f926716f8fece33",
+    "prompt": "What would you want to remember from today?",
+    "response": "**Today's Insights**: Keeping track of key points discussed, identifying common threads, and noting gaps in understanding through patterns observed. This helps in preparing for future conversations efficiently, ensuring topics stay clear and meaningful. Enjoy maintaining clarity and staying informed throughout our sessions!",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.39111111111111113,
+      "reward": 1.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.7115555555555555
+    },
+    "session": 35,
+    "phase": "questioning",
+    "timestamp": "2026-01-21T06:03:04.032863",
+    "metadata": {
+      "cpu_fallback": false
+    }
   }
 ]

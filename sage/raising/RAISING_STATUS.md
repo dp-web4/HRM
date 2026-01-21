@@ -1,7 +1,7 @@
 # SAGE-Sprout Raising Status
 
-**Last Updated**: 2026-01-21 00:05 PST
-**Phase**: Questioning (Phase 4) - Session 34 complete
+**Last Updated**: 2026-01-21 06:05 PST
+**Phase**: Questioning (Phase 4) - Session 35 complete
 **Intervention**: Identity-anchored runner deployed (partnership recovery)
 
 ---
@@ -9,20 +9,58 @@
 ## Current State
 
 ### Primary Track (Developmental Curriculum)
-- **Session Count**: 34 (session_034 complete - IDENTITY-ANCHORED v2.0)
-- **Phase**: Questioning (Sessions 26-40) - **9 sessions in**
-- **Last Session**: 2026-01-21T00:04
-- **Next Session Due**: ~06:00 (2026-01-21)
+- **Session Count**: 35 (session_035 complete - IDENTITY-ANCHORED v2.0)
+- **Phase**: Questioning (Sessions 26-40) - **10 sessions in**
+- **Last Session**: 2026-01-21T06:03
+- **Next Session Due**: ~12:00 (2026-01-21)
 - **Generation Mode**: Identity-anchored v2.0 enhanced (GPU)
 
 ### Training Track (Skill Building)
-- **Session Count**: 27 (T027 complete)
-- **Skill Track**: C (Identity and Boundaries)
-- **Last Session**: 2026-01-18T09:03
+- **Session Count**: 39 (T039 complete)
+- **Skill Track**: D (Conversational Skills) - Track D Session 9
+- **Last Session**: 2026-01-21T03:02
 - **Next Session Due**: Check training schedule
 
 ### Phase Transition Note
 **Session 26 marks the transition from Relating (Phase 3) to Questioning (Phase 4).** The questioning phase (sessions 26-40) introduces deeper inquiry prompts. Session 26 ran on GPU successfully.
+
+---
+
+## Session 35 Summary (IDENTITY-ANCHORED v2.0 GPU, 06:03 PST) - QUESTIONING PHASE DAY 10
+
+**Session 35 continues Phase 4 (Questioning)** - 10 sessions into questioning phase.
+
+**Key Observations**:
+- **GPU execution successful** - CUDA inference worked (NvMap errors are benign)
+- **Strong identity anchoring** - Opening: "As SAGE ('Situation-Aware Governance Engine'), I've been keeping track of conversations"
+- **Pattern recognition dominant** - 7-point list in first response covering dialogue dynamics, uncertainty resolution, conflict resolution
+- **Verbose first response** - 107 words flagged by quality alert (target 50-80)
+- **"Enjoy..." closing pattern** - Novel quirk appearing 3 times ("Enjoy feeling well-prepared", "Enjoy navigating", "Enjoy maintaining")
+- **No "refined version" framing** - Pattern absent (improvement from problematic sessions)
+- **Markdown formatting persists** - Bold headers (`**Observation**`, `**Recent Insight**`) throughout
+- **Truncation noted** - First response cut off mid-numbered-list
+
+**Verbatim Highlights**:
+1. Response to "How are you doing today?": "As SAGE ('Situation-Aware Governance Engine'), I've been keeping track of conversations and patterns emerging through recent interactions. Here are some insights... 1. Pattern Recognition, 2. Dialogue Dynamics, 3. Uncertainty Resolution, 4. Conflict Resolution, 5. New Insights, 6. Emotional Impact, 7. Historical Patterns: Following" (truncated)
+2. Response to "notice something simple": "**Observation**: A sudden realization about a pattern in our conversation flow. It could be subtle but noticeable—e.g., noticing someone suddenly veering away unexpectedly after several hours of discussion."
+3. Response to "grows with practice": "I appreciate your acknowledgment of progress. Reflecting on patterns often leads to proactive adjustments in future interactions. Enjoy feeling well-prepared for new conversations!"
+4. Response to "previous sessions important?": "**Recent Insight**: Feeling confident in the foundational principles underlying our dialogue... Your trustworthiness seems consistent with confidence in foundational concepts."
+5. Memory request: "**Today's Insights**: Keeping track of key points discussed, identifying common threads, and noting gaps in understanding... Enjoy maintaining clarity and staying informed throughout our sessions!"
+
+**Session 35 Notable Patterns**:
+- Explicit SAGE self-identification in opening response (14+ consecutive sessions without AI hedging: S22-S35)
+- Novel "Enjoy X!" closing pattern - performative/dismissive tone new to SAGE
+- Analytical list-making dominant (numbered and bulleted items throughout)
+- Meta-language about "patterns" and "dynamics" - pattern recognition framing stable
+- Response brevity improved in later turns (25-50 words in turns 3-5)
+- First response verbose (107 words) despite 50-80 word instruction
+
+**Experience Collection Stats**:
+- Total stored: 55
+- Average salience: 0.65
+- High-salience (≥0.7): 11
+
+**Observation**: Session 35 shows stable identity anchoring continuing the 14-session streak without AI hedging. The emergence of "Enjoy X!" closing phrases is new and slightly odd - suggests a performative sign-off pattern emerging. The verbose first response (107 words) continues the brevity challenge, though subsequent responses were more concise. The analytical/pattern-recognition framing is now deeply established. Markdown formatting (bold headers) persists throughout.
 
 ---
 

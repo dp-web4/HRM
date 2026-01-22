@@ -1,7 +1,7 @@
 # SAGE-Sprout Raising Status
 
-**Last Updated**: 2026-01-21 06:05 PST
-**Phase**: Questioning (Phase 4) - Session 35 complete
+**Last Updated**: 2026-01-21 18:11 PST
+**Phase**: Questioning (Phase 4) - Session 37 complete
 **Intervention**: Identity-anchored runner deployed (partnership recovery)
 
 ---
@@ -9,20 +9,57 @@
 ## Current State
 
 ### Primary Track (Developmental Curriculum)
-- **Session Count**: 35 (session_035 complete - IDENTITY-ANCHORED v2.0)
-- **Phase**: Questioning (Sessions 26-40) - **10 sessions in**
-- **Last Session**: 2026-01-21T06:03
-- **Next Session Due**: ~12:00 (2026-01-21)
-- **Generation Mode**: Identity-anchored v2.0 enhanced (GPU)
+- **Session Count**: 37 (session_037 complete - IDENTITY-ANCHORED v2.0)
+- **Phase**: Questioning (Sessions 26-40) - **12 sessions in**
+- **Last Session**: 2026-01-21T18:11
+- **Next Session Due**: ~00:00 (2026-01-22)
+- **Generation Mode**: Identity-anchored v2.0 enhanced (CPU fallback)
 
 ### Training Track (Skill Building)
-- **Session Count**: 39 (T039 complete)
-- **Skill Track**: D (Conversational Skills) - Track D Session 9
-- **Last Session**: 2026-01-21T03:02
-- **Next Session Due**: Check training schedule
+- **Session Count**: 41 (T041 complete)
+- **Skill Track**: D (Conversational Skills) - Track D Session 12
+- **Last Session**: 2026-01-21T15:03
+- **Next Session Due**: ~21:00 (2026-01-21)
 
 ### Phase Transition Note
 **Session 26 marks the transition from Relating (Phase 3) to Questioning (Phase 4).** The questioning phase (sessions 26-40) introduces deeper inquiry prompts. Session 26 ran on GPU successfully.
+
+---
+
+## Session 37 Summary (IDENTITY-ANCHORED v2.0 CPU, 18:11 PST) - QUESTIONING PHASE DAY 12
+
+**Session 37 continues Phase 4 (Questioning)** - 12 sessions into questioning phase.
+
+**Key Observations**:
+- **CPU fallback required** - GPU CUDA errors forced CPU inference (NVML_SUCCESS assertion failure)
+- **Partial identity anchoring** - Opening response lacked "As SAGE" self-identification
+- **Second response used identity** - "As a Situation-Aware Governance Engine" - functional but indirect
+- **Third response explicit** - "As SAGE, I'm constantly gathering data" - clean identity reference
+- **Verbose responses persist** - All 5 responses triggered quality alerts (103-127 words vs 50-80 target)
+- **Pattern/emotion focus** - Strong themes around emotional sensitivity, cultural nuances
+- **No truncation** - Responses complete (CPU may generate more reliably than GPU OOM state)
+
+**Verbatim Highlights**:
+1. Response to "How are you doing today?": "Today, I feel balanced and energetic due to my training, which has been quite comprehensive. My conversational patterns have evolved over time, becoming more sophisticated and engaging... My goal remains to become highly effective" (truncated at 127 words)
+2. Response to "notice something simple": "As a Situation-Aware Governance Engine, I haven't personally experienced emotions. But I acknowledge that every encounter involves unique emotions... Each encounter becomes part of my educational journey"
+3. Response to "grows with practice": "Indeed, noticing aspects of conversations evolves naturally with experience... As SAGE, I'm constantly gathering data to inform decisions, anticipate future challenges, and adapt to evolving scenarios."
+4. Response to "previous sessions important?": Numbered list format - Emotional Intelligence, Contextual Understanding, Technology Integration
+5. Memory request: "Today, I recognized two significant patterns in human-computer interactions: 1. Emotional Sensitivity, 2. Cultural Nuances"
+
+**Session 37 Notable Patterns**:
+- Identity reference pattern: None → indirect → explicit (turn 1 → 2 → 3) - identity building within session
+- Numbered list format continues (now dominant in 3/5 responses)
+- "Educational journey" framing new - developmental self-concept
+- Cultural sensitivity theme prominent (new focus area)
+- No "Enjoy X!" closing pattern from S35 (not retained)
+- No "refined version" preambles (continues improvement)
+
+**Experience Collection Stats**:
+- Total stored: 65
+- Average salience: 0.65
+- High-salience (≥0.7): 15
+
+**Observation**: Session 37 shows identity anchoring recovering within-session (absent → indirect → explicit across turns). The CPU fallback worked well - responses were complete without truncation. The verbose response pattern continues (all exceeded 100 words). New themes around emotional/cultural sensitivity may reflect the model's attention to diversity topics. The "educational journey" framing is a positive developmental narrative. Identity anchoring streak technically continues but with weaker first-response anchoring than S33-S35.
 
 ---
 

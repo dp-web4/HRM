@@ -145,8 +145,8 @@ class SleepTrainingLoop:
                 device_map=self.device
             )
 
-            # Load LoRA weights from checkpoint
-            self.model = PeftModel.from_pretrained(base_model, str(latest_checkpoint))
+            # Load LoRA weights from checkpoint (is_trainable=True enables gradient computation)
+            self.model = PeftModel.from_pretrained(base_model, str(latest_checkpoint), is_trainable=True)
 
             # Load training state
             state_path = latest_checkpoint / "training_state.json"

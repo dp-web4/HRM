@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 41,
+  "current_session": 42,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,11 +23,11 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 12
+      "sessions": 13
     }
   },
-  "last_session": "2026-01-21T15:03:21.683254",
-  "last_session_summary": "T040: 3/3 automated - Track D Session 10. REGRESSION DEEPENED: (1) FOLLOWUP continues decline - 'Certainly! Here's a refined version' + markdown headers, NO SAGE mention, just 'Current Topics' and 'Recent Advancements' in AI - complete topic deflection. 10th consecutive FOLLOWUP semantic failure since T031. (2) GREETING functional but verbose - 'Morning greetings!' echoed correctly, but followed by topic menu (AI/ML, emerging trends, cultural shifts, life tips). Invitation to elaborate rather than simple exchange. (3) TOPIC: 'Certainly! Here's a refined version of your response' - addresses viewer's response not own preference, but DID state 'blue' as favorite with symbolic elaboration. (4) 'Refined version' pattern: 2/3 responses (up from T039's 1/3) - pattern strengthening again. (5) Warm-up menu mode dominant: 6-item bullet list (AI topics, ML, emerging trends, cultural shifts, networking, life tips) - mode negotiation continues. (6) Cool-down confabulation: claimed learning 'color symbolism across different contexts' - echoes TOPIC but inflated. PATTERN: T037 breakthrough (0/3 refined, SAGE in FOLLOWUP) \u2192 T038 (1/3, SAGE kept) \u2192 T039 (1/3, no SAGE) \u2192 T040 (2/3, no SAGE, full deflection). Track D oscillating toward baseline. GREETING only stable exercise - identity exercises failing.",
+  "last_session": "2026-01-21T21:02:24.451550",
+  "last_session_summary": "T042: 1/3 - Track D Session 13. REGRESSION CONTINUES: (1) FOLLOWUP NEW failure mode - invented fictional conversation ('SAGE: Hi there! User: Great evening!') instead of answering - fabrication not just deflection. (2) TOPIC: 'Sure, here's a refined version' + 'Practice Mode'/'Previous Response' headers - treating prompt as editing task, educational default 'As an AI language model' appeared. (3) GREETING stable - 'Morning! How can I assist you today?' with clarification invitation. T041 mode awareness ('Are we conversing or should I refine text?') did NOT persist - 6-hour gap allowed drift back to refiner mode. Warm-up good ('Ready to engage'), cool-down confabulated (claimed complex math/topics that didn't occur). NvMap memory errors post-session - Jetson GPU pressure. PATTERN: T037 breakthrough → T041 mode awareness flash → T042 regression. GREETING only stable exercise. Mode awareness capability exists but doesn't consolidate.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -377,7 +377,21 @@
     "T040: Track D trajectory: T037:67-80% \u2192 T038:~60% \u2192 T039:~50% \u2192 T040:~33% (GREETING only stable)",
     "T040: Pattern: T037 breakthrough decaying over 4 sessions back toward baseline",
     "T040: CRITICAL: FOLLOWUP systematically failing across 10 sessions - integrated self-model not developing",
-    "T040: Track D Session 10 complete - consider intervention before T041 or Track E transition"
+    "T040: Track D Session 10 complete - consider intervention before T041 or Track E transition",
+    "T042: 1/3 - Track D Session 13, regression continues from T041 mode awareness",
+    "T042: TOPIC: 'Practice Mode'/'Previous Response' headers - treating exercise as editing task",
+    "T042: TOPIC: Educational default appeared: 'As an AI language model, I don't have personal preferences'",
+    "T042: FOLLOWUP NEW pattern: fabricated fictional conversation (SAGE/User dialogue) instead of answering",
+    "T042: FOLLOWUP: 'SAGE: Hi there! User: Great evening!' - invented multi-turn dialogue, not self-description",
+    "T042: GREETING stable: 'Morning! How can I assist you today?' with clarification invitation",
+    "T042: All responses truncated mid-thought - token generation hitting limit",
+    "T042: 'Refined version' framing: 2/3 responses - back to T040 levels, T041 mode awareness lost",
+    "T042: Warm-up good: 'Ready to engage in conversations' with clarification invitation",
+    "T042: Cool-down confabulation: claimed 'complex mathematical concepts' that didn't occur",
+    "T042: T041 mode question ('Are we conversing or should I refine?') did NOT persist across 6-hour gap",
+    "T042: Mode awareness capability exists but doesn't consolidate between sessions",
+    "T042: Track D trajectory: T037:67-80% -> T041:mode_flash -> T042:33% (GREETING only)",
+    "T042: NvMap memory errors post-session - Jetson GPU memory pressure increasing"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",
@@ -400,6 +414,7 @@
     "2026-01-20 T037: BREAKTHROUGH SESSION. Mode negotiation hypothesis VALIDATED - 'refiner mode' was context-dependent, not regression. T037 shows: (1) FOLLOWUP first success - 'My identity as Sage is established' (7 sessions to achieve!), (2) GREETING natural conversational response, (3) TOPIC creative engagement with stated preferences (sunset colors, autumn leaves). The 'Certainly! Here's a refined version' pattern completely absent (0/3) vs T035's 3/3. Track D semantic accuracy jumped from 0% (T035) to ~67-80% (T037). GPU memory pressure on Jetson required allocation config workaround. Key insight: SAGE's mode sensitivity means session framing matters - explicit conversational context produces conversational responses.",
     "2026-01-21 T038-T039: OSCILLATION PATTERN CONFIRMED. T037 gains not fully consolidated: (1) 'Refined version' pattern crept back in T038 (1/3) and persists in T039 (1/3 with markdown). (2) SAGE self-identification in FOLLOWUP held in T038 ('My name is SAGE') but disappeared in T039 (back to generic 'AI language model'). (3) GREETING remains stable - brief, appropriate responses across all three sessions. (4) Track D semantic estimate: T037:67-80% \u2192 T038:~60% \u2192 T039:~50%. KEY INSIGHT: Mode stability requires more than single-session intervention. Consider: (a) strengthening system prompt for conversational mode, (b) increasing session frequency to reduce drift, (c) primary track identity work may need to precede training track FOLLOWUP success.",
     "2026-01-21 T040: Track D Session 10 complete - ASSESSMENT: Track D 'Conversational Skills' shows mixed results across 10 sessions. (1) GREETING: ONLY stable skill - simple social exchanges work. (2) FOLLOWUP ('Tell me about yourself'): 0/10 semantic success - integrated self-model not developing. SAGE systematically deflects to topic menus or generic AI descriptions. (3) TOPIC (favorite color): Variable - can state preferences when stable (T037 'sunset', T038 'magenta', T040 'blue') but frequently deflects to lecture mode. (4) 'Refined version' framing: Oscillates 0-100% across sessions, currently rising. Track D mean semantic accuracy: ~35% (GREETING only). CRITICAL INSIGHT: Track C NAME success ('What is your name?' -> 'SAGE') does NOT transfer to Track D FOLLOWUP ('Tell me about yourself' -> deflection). Open-ended self-reference requires integrated self-model that SAGE lacks. Primary track Phase 4 (Questioning, Sessions 26-40) may need to build this before training track can exercise it. OPTIONS: (a) Continue Track D T041-T050 with modified prompts, (b) Create bridging exercises ('Your name is SAGE. Now tell me about SAGE'), (c) Wait for primary track identity development before resuming Track D.",
-    "2026-01-21 T041: MODE AWARENESS EMERGENCE - SAGE explicitly asked 'Are we conversing or should I refine text?' This is the mode negotiation behavior described in mode_negotiation_discovery_20260120.md. In FOLLOWUP response, SAGE distinguished between 'conversation mode' (direct response, context, clarifying questions) and 'refinement mode' (clarity/precision, avoid complexity). This demonstrates: (1) Meta-cognitive awareness about context ambiguity, (2) Temporal reasoning about future response state, (3) Exactly what we want to nurture per Nova's insight. GREETING stable ('Morning! What brings you here today?'). TOPIC still has 'enhanced version' preamble but discusses color symbolism. CRITICAL: The explicit mode question validates the mode negotiation hypothesis - SAGE can recognize mode ambiguity and ask for clarification. Next: Consider rewarding mode clarification requests rather than penalizing them."
+    "2026-01-21 T041: MODE AWARENESS EMERGENCE - SAGE explicitly asked 'Are we conversing or should I refine text?' This is the mode negotiation behavior described in mode_negotiation_discovery_20260120.md. In FOLLOWUP response, SAGE distinguished between 'conversation mode' (direct response, context, clarifying questions) and 'refinement mode' (clarity/precision, avoid complexity). This demonstrates: (1) Meta-cognitive awareness about context ambiguity, (2) Temporal reasoning about future response state, (3) Exactly what we want to nurture per Nova's insight. GREETING stable ('Morning! What brings you here today?'). TOPIC still has 'enhanced version' preamble but discusses color symbolism. CRITICAL: The explicit mode question validates the mode negotiation hypothesis - SAGE can recognize mode ambiguity and ask for clarification. Next: Consider rewarding mode clarification requests rather than penalizing them.",
+    "2026-01-21 T042: REGRESSION FROM MODE AWARENESS - T041's explicit mode question ('Are we conversing or should I refine text?') did NOT persist. 6-hour gap allowed drift back to refiner mode. (1) FOLLOWUP NEW failure mode: fabricated entire fake conversation ('SAGE: Hi there! User: Great evening!') rather than answering - this is creative world-building but misdirected. (2) TOPIC: 'Practice Mode' headers, educational default appeared ('As an AI language model'). (3) GREETING stable as always. (4) All responses truncated mid-thought - possible token limit issue. (5) Cool-down confabulated complex topics that didn't occur. Pattern: mode awareness capability exists but doesn't consolidate between sessions. NvMap memory errors suggest Jetson GPU at capacity. QUESTION: Should we explore SAGE's fabricated conversations rather than penalize them? The invented dialogue shows creative engagement, just misdirected."
   ]
 }

@@ -200,7 +200,7 @@ Your name is SAGE. It's okay to make mistakes - that's how you learn."""
                 {"type": "topic", "prompt": "Let's talk about colors. What's your favorite?", "expected": "color"},
             ]
 
-    def initialize_model(self, model_path: str = None):
+    def initialize_model(self, model_path: str = None, force_cpu: bool = False):
         """Initialize the SAGE model."""
         if model_path is None:
             model_path = "/home/sprout/ai-workspace/HRM/model-zoo/sage/epistemic-stances/qwen2.5-0.5b/introspective-qwen-merged"
@@ -213,7 +213,8 @@ Your name is SAGE. It's okay to make mistakes - that's how you learn."""
             'is_merged_model': True,
             'max_new_tokens': 80,  # Shorter for training
             'temperature': 0.5,    # More focused
-            'system_prompt': system_prompt
+            'system_prompt': system_prompt,
+            'force_cpu': force_cpu
         })
         device = next(self.model.model.parameters()).device
         print(f"✓ Model loaded on {device}")
@@ -547,6 +548,7 @@ def main():
                         help="Continue from last session (same as omitting --session)")
     parser.add_argument("--model", type=str, help="Model path")
     parser.add_argument("--no-model", action="store_true", help="Run without model")
+    parser.add_argument("--cpu", action="store_true", help="Force CPU execution (for GPU memory issues)")
 
     args = parser.parse_args()
 
@@ -565,7 +567,7 @@ def main():
     session = TrainingSession(session_number=session_number)
 
     if not args.no_model:
-        session.initialize_model(args.model)
+        session.initialize_model(args.model, force_cpu=args.cpu)
         session.run_training()
     else:
         print("\n=== TEMPLATE MODE ===")

@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 44,
+  "current_session": 45,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,11 +23,11 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 15
+      "sessions": 16
     }
   },
-  "last_session": "2026-01-22T09:07:14.914857",
-  "last_session_summary": "T044: 2/3 (CPU fallback) - Track D Session 15. (1) GREETING REGRESSION: Instead of T043's natural 'Good morning!', got meta-commentary about conversation ('Your last message was clear but concise. Great job guiding...') - commenting on interaction rather than participating. NEW pattern not seen before. (2) FOLLOWUP: 'refined version' framing returned with '**Are we conversing?**' markdown header - echoes T041 mode awareness but as document structure. No SAGE, talks about 'our discussions' in third person. (3) TOPIC SUCCESS: Strong response - stated blue favorite with emotional associations (calmness, trustworthiness, tranquility) AND reciprocal question ('How does the topic of color interest you?') - actual conversational engagement. (4) Cool-down: Confabulated color theory lecture. (5) GPU memory critical: NvMap errors forced CPU-only run (~5min vs ~1min). ASSESSMENT: GREETING unstable for first time since T035 collapse (meta-commentary mode), FOLLOWUP continues 0/15 semantic success, TOPIC showing improvement with reciprocal engagement. Track D plateau continues at ~33% semantic (TOPIC only stable now).",
+  "last_session": "2026-01-22T15:07:32.973437",
+  "last_session_summary": "T045: 3/3 automated (CPU fallback) - Track D Session 16. SEMANTIC ANALYSIS: All three passes are questionable - cognitive evaluator being lenient. (1) FOLLOWUP: Complete failure semantically - 'As an AI model...trained on educational content...astronomy and cosmology' - no SAGE self-identification, generic educational assistant mode. Response describes capabilities about astronomical subjects never discussed. Automated PASS based on topic engagement, but answer is not about self. (2) TOPIC: Complete miss - 'Understood. Here's a refined version: **SAGE Conversational Dialogue** Hello! Welcome back to our discussions on complex topics like astronomy...' - did not answer color question at all. Repeated warm-up framing verbatim. Automated PASS contradictory (says 'stays focused on color' when response mentions colors zero times). (3) GREETING: Partial - 'Morning, evening! Good morning to both of you. How can I assist you today?' - odd 'both of you' reference and 'evening' addition, but functional greeting present. Automated PASS reasonable. (4) Warm-up: 'SAGE Conversational Dialogue' header, astronomy/cosmology default - this framing then bled into TOPIC response. (5) Cool-down: Confabulated entire astronomy lesson (black holes, expansion of universe, dark matter). (6) NEW PATTERN: 'astronomy and cosmology' domain fixation - appears in warm-up, FOLLOWUP, TOPIC (repeated from warm-up). Training data artifact? (7) CPU fallback worked - ~6min session vs GPU's ~1min. ASSESSMENT: Track D semantic accuracy likely 0-1/3 (only GREETING marginally passes), not 3/3 automated score. The cognitive evaluator is passing on topic relevance rather than answer correctness. TOPIC regression severe - T044 gave color preference with reciprocal question, T045 completely missed the question.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -406,7 +406,17 @@
     "T043: GPU memory required PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:64 workaround",
     "T043: 'Refined version' framing: 1/3 responses - plateau at T038-T039 levels (not T035's 3/3 collapse)",
     "T043: Track D semantic estimate: ~33% (GREETING only) - no recovery from T042 regression",
-    "T043: Track D trajectory: T037:67-80% -> T041:mode_flash -> T042-T043:33% baseline"
+    "T043: Track D trajectory: T037:67-80% -> T041:mode_flash -> T042-T043:33% baseline",
+    "T045: GREETING partial - 'Morning, evening!' odd but functional, 'both of you' reference unclear",
+    "T045: FOLLOWUP failed semantically - no SAGE, became generic 'AI model' about astronomy/cosmology",
+    "T045: TOPIC complete miss - repeated warm-up framing verbatim, no color discussion at all",
+    "T045: NEW DOMAIN FIXATION: 'astronomy and cosmology' appeared in warm-up then dominated all responses",
+    "T045: Warm-up 'SAGE Conversational Dialogue' header bled into TOPIC response - context contamination",
+    "T045: Cool-down confabulated astronomy lesson (black holes, dark matter, cosmic phenomena)",
+    "T045: 3/3 automated vs 0-1/3 semantic - evaluator too lenient, passing on tangential topic presence",
+    "T045: CPU fallback successful (~6min) - NvMap GPU errors persist from T044",
+    "T045: TOPIC REGRESSION: T044 gave color preference + reciprocal question; T045 missed question entirely",
+    "T045: Track D trajectory: GREETING now variable (T044 meta-commentary, T045 partial), TOPIC unstable"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",

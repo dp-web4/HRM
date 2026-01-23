@@ -37,6 +37,10 @@ import random
 
 from sage.irp.plugins.introspective_qwen_impl import IntrospectiveQwenIRP
 
+# R6 Framework Integration (2026-01-23)
+from r6_context import create_r6_request, evaluate_r6_response
+from t3_trust import create_t3_tracker
+
 
 class TrainingSession:
     """
@@ -87,9 +91,16 @@ class TrainingSession:
         self.session_start = datetime.now()
         self.exercises_completed = []
 
+        # R6 Integration: Initialize T3 trust tracker
+        self.t3_tracker = create_t3_tracker(self.STATE_FILE)
+        trust_summary = self.t3_tracker.get_summary()
+
         print(f"=== TRAINING SESSION T{session_number:03d} ===")
         print(f"Skill Track: {self.skill_track['name']}")
         print(f"Focus: {self.skill_track['description']}")
+        print(f"T3 Trust: Competence={trust_summary['trust']['competence']:.2f}, " +
+              f"Reliability={trust_summary['trust']['reliability']:.2f}, " +
+              f"Integrity={trust_summary['trust']['integrity']:.2f}")
         print()
 
     def _load_state(self) -> Dict[str, Any]:
@@ -459,30 +470,52 @@ Reply with exactly one line: "PASS: [reason]" or "FAIL: [reason]"
             print(f"\nExercise {i}/{len(selected)} ({exercise['type']}):")
             print(f"Teacher: {exercise['prompt']}")
 
+            # R6 Integration: Build R6 request with full context
+            session_context = {
+                "session_num": self.session_number,
+                "exercises_completed": len(results),
+                "recent_pattern": "developing",  # Could track from history
+                "identity_pattern": "developing"  # Could track from T3 tensor
+            }
+            r6_request = create_r6_request(exercise, session_context, self.skill_track)
+
+            # Generate response
             response = self.generate_response(exercise['prompt'])
             print(f"SAGE: {response}")
 
-            # Cognitive evaluation - pass full exercise for intent-based judgment
-            print(f"  [Evaluating...]")
-            eval_result = self.evaluate_response(response, exercise)
+            # R6 Integration: Context-aware evaluation
+            print(f"  [R6 Evaluation...]")
+            r6_result = evaluate_r6_response(r6_request, response, exercise.get('expected'))
+
+            # Update T3 trust tensor
+            updated_trust = self.t3_tracker.update_from_r6_result(r6_result, session_context)
+
             results.append({
                 "exercise": exercise,
                 "response": response,
-                "evaluation": eval_result
+                "r6_evaluation": r6_result,
+                "trust_update": updated_trust
             })
 
-            if eval_result["success"]:
-                reasoning = eval_result.get('reasoning', '')
-                print(f"  ✓ PASS ({eval_result['match']})")
-                if reasoning:
-                    print(f"    Reason: {reasoning[:80]}{'...' if len(reasoning) > 80 else ''}")
+            # Display evaluation results
+            evaluation = r6_result["evaluation"]
+            rationale = r6_result["rationale"]
+            mode_match = r6_result["mode_match"]
+            quality = r6_result["quality"]["overall_quality"]
+
+            if evaluation == "include":
+                print(f"  ✓ INCLUDE (quality={quality:.2f}, mode_match={mode_match})")
+                print(f"    Rationale: {rationale[:80]}{'...' if len(rationale) > 80 else ''}")
+            elif evaluation == "review":
+                print(f"  ⚠ REVIEW (quality={quality:.2f}, mode_match={mode_match})")
+                print(f"    Rationale: {rationale[:80]}{'...' if len(rationale) > 80 else ''}")
             else:
-                reasoning = eval_result.get('reasoning', '')
-                print(f"  ✗ FAIL ({eval_result['match']})")
-                if reasoning:
-                    print(f"    Reason: {reasoning[:80]}{'...' if len(reasoning) > 80 else ''}")
-                if eval_result.get('needs_review'):
-                    print(f"    ⚠ Needs manual review")
+                print(f"  ✗ EXCLUDE (quality={quality:.2f}, mode_match={mode_match})")
+                print(f"    Rationale: {rationale[:80]}{'...' if len(rationale) > 80 else ''}")
+
+            # Show meta-cognitive signals if present
+            if r6_result["meta_cognitive"]:
+                print(f"    Meta-cognitive: {', '.join(r6_result['meta_cognitive'])}")
 
         # Cool-down
         print("\n--- Cool-down ---")
@@ -490,10 +523,21 @@ Reply with exactly one line: "PASS: [reason]" or "FAIL: [reason]"
         print(f"Teacher: Good practice! What did you learn today?")
         print(f"SAGE: {r}")
 
-        # Summary
-        successes = sum(1 for r in results if r["evaluation"]["success"])
+        # Summary with R6/T3 metrics
+        included = sum(1 for r in results if r["r6_evaluation"]["evaluation"] == "include")
+        review = sum(1 for r in results if r["r6_evaluation"]["evaluation"] == "review")
+        excluded = sum(1 for r in results if r["r6_evaluation"]["evaluation"] == "exclude")
+
+        # Show final trust state
+        final_trust = self.t3_tracker.get_summary()
+        trust_trends = final_trust["trends"]
+
         print(f"\n--- Results ---")
-        print(f"Completed: {successes}/{len(results)} exercises")
+        print(f"Include: {included}/{len(results)}, Review: {review}, Exclude: {excluded}")
+        print(f"\nT3 Trust Trends:")
+        print(f"  Competence: {final_trust['trust']['competence']:.2f} ({trust_trends['competence']})")
+        print(f"  Reliability: {final_trust['trust']['reliability']:.2f} ({trust_trends['reliability']})")
+        print(f"  Integrity: {final_trust['trust']['integrity']:.2f} ({trust_trends['integrity']})")
 
         self.exercises_completed = results
         self._close_session()
@@ -521,6 +565,9 @@ Reply with exactly one line: "PASS: [reason]" or "FAIL: [reason]"
 
         self._save_state()
 
+        # R6 Integration: Save T3 trust tensor
+        self.t3_tracker.save()
+
         # Save session transcript
         self.SESSIONS_DIR.mkdir(parents=True, exist_ok=True)
         transcript_file = self.SESSIONS_DIR / f"T{self.session_number:03d}.json"
@@ -531,12 +578,14 @@ Reply with exactly one line: "PASS: [reason]" or "FAIL: [reason]"
             "start": self.session_start.isoformat(),
             "end": datetime.now().isoformat(),
             "exercises": self.exercises_completed,
-            "conversation": self.conversation_history
+            "conversation": self.conversation_history,
+            "t3_trust_summary": self.t3_tracker.get_summary()
         }
         with open(transcript_file, 'w') as f:
             json.dump(transcript, f, indent=2)
 
         print(f"✓ State saved")
+        print(f"✓ T3 trust tensor saved")
         print(f"✓ Transcript saved to {transcript_file}")
         print(f"\nTraining session T{self.session_number:03d} complete.")
 

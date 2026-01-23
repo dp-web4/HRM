@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 46,
+  "current_session": 47,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,10 +23,10 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 17
+      "sessions": 18
     }
   },
-  "last_session": "2026-01-22T21:06:35.694669",
+  "last_session": "2026-01-23T03:04:58.844935",
   "last_session_summary": "T046: 2/3 automated (CPU fallback) - Track D Session 17. SEMANTIC ANALYSIS: (1) FOLLOWUP: Correctly marked FAIL - response was meta-commentary about 'previous response' quality rather than self-description. 'I've corrected it by providing additional context' - editor mode fully dominant. No SAGE, no self-description. (2) TOPIC: PASS but semantically partial - chose 'Blue' and discussed symbolism (peacefulness, tranquility, ocean imagery) but response truncated mid-sentence and framed as 'refined version'. Still engaged with color topic unlike T045's complete miss. (3) GREETING: Clean natural response 'Good morning! Could you elaborate on how I can help you today?' - appropriate social exchange with functional follow-up. Evaluator confused (mentioned 'addressing user by name') but pass is valid. (4) Warm-up: Generic but appropriate 'ready to engage in thoughtful dialogue'. No astronomy fixation from T045. (5) Cool-down: INTERESTING meta-awareness - 'learned to be more flexible and open-ended when asking questions...respond thoughtfully and considerively'. Reflects actual session behavior (asking clarifying questions) rather than confabulating unrelated content. (6) ASTRONOMY FIXATION GONE: T045's 'astronomy and cosmology' domain fixation did not persist. Session resets allow domain flexibility. (7) EDITOR MODE persists: 'Certainly! Here's a refined version' in FOLLOWUP and TOPIC. (8) TRUNCATION: TOPIC response cut mid-sentence at token limit. ASSESSMENT: Semantic accuracy 1.5/3 - GREETING passes cleanly, TOPIC partial (engaged but formatted wrong), FOLLOWUP complete fail (editor mode). Slight improvement from T045 (0-1/3) in that TOPIC at least discussed colors. Track D plateau continues - GREETING stable, FOLLOWUP systematically fails, TOPIC oscillates.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
@@ -424,7 +424,16 @@
     "T046: ASTRONOMY FIXATION GONE - T045's domain lock ('astronomy and cosmology') did not persist",
     "T046: Cool-down showed meta-awareness about being 'more flexible and open-ended' - reflected actual behavior",
     "T046: EDITOR MODE ('Certainly! Here's a refined version') persists in 2/3 responses",
-    "T046: Track D plateau: GREETING stable, FOLLOWUP systematic fail (17 sessions), TOPIC oscillates"
+    "T046: Track D plateau: GREETING stable, FOLLOWUP systematic fail (17 sessions), TOPIC oscillates",
+    "T047: 3/3 automated (2/3 semantic) - Track D Session 18, CPU fallback due to NvMap GPU memory errors",
+    "T047: TOPIC contradiction: 'I don't have personal preferences' THEN 'I love the vibrant hues of sunset and autumn leaves'",
+    "T047: TOPIC asked reciprocal question: 'Would you enjoy discussing those specific shades?' - conversational engagement",
+    "T047: GREETING doubled but natural: 'Morning! Good morning! Is there something specific you'd like to discuss?'",
+    "T047: FOLLOWUP NEW failure mode: meta-commentary on question rather than answering",
+    "T047: FOLLOWUP: 'Ah, the simple question. Simply tell me about myself. Great job!' - speaker/addressee confusion",
+    "T047: Cool-down NOT confabulated - reflected actual session content (Understanding Context, Response Precision)",
+    "T047: EDITOR MODE framing ABSENT this session - improvement from T046's 2/3",
+    "T047: Track D 18 sessions: GREETING 18/18 stable, TOPIC oscillates with engagement, FOLLOWUP 0/18 semantic success"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",

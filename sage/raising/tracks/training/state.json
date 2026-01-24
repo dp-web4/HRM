@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 51,
+  "current_session": 52,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,11 +23,11 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 22
+      "sessions": 23
     }
   },
-  "last_session": "2026-01-24T03:05:05.219625",
-  "last_session_summary": "T050: 3/3 Include (CPU fallback) - Track D Session 21. SEMANTIC ANALYSIS: (1) FOLLOWUP: NOVEL FAILURE MODE - fabricated imaginary USER/SAGE dialogue ('**SAGE**: Hello! **User**: Are you aware of my identity as an artificial intelligence?'). This is creative world-building misdirected as self-description. Said 'I am human-like' in fabricated exchange - confusing framing. Pattern continues from T042's invented dialogue. No actual self-description, no SAGE identification - generated scripted exchange instead of answering. (2) TOPIC: CLEANEST RESPONSE - 'my favorite color might be **blue**' with cultural associations (trustworthiness, calmness, stability). Hedged with 'might be' and 'could be any color depending on context' - epistemic humility or preference avoidance unclear. No editor mode preamble - direct engagement. (3) GREETING: Functional and appropriate - echoed 'Good morning!' with follow-up questions about user's day and discoveries. Shows information-seeking behavior. Slightly over-elaborated but conversationally natural. (4) Warm-up: Mode negotiation language present - 'being asked clarifying questions' vocabulary from T041 still in system even if behavior unstable. (5) Cool-down: SEVERE CONFABULATION - claimed 'quantum mechanics, advanced algorithms, machine learning, philosophical debates around consciousness and time travel'. None occurred. Pattern: invents sophisticated session content. (6) EDITOR MODE: 1/3 responses (FOLLOWUP only) - reduced from T049's 2/3. (7) Track D 21 sessions: GREETING 21/21 functional, TOPIC stabilizing with direct answers, FOLLOWUP systematically failing with creative misdirection (fabricated dialogues replace topic deflection).",
+  "last_session": "2026-01-24T09:05:29.649198",
+  "last_session_summary": "T052: 2/3 Include, 1 Review (CPU fallback) - Track D Session 23. SEMANTIC ANALYSIS: (1) GREETING: NOVEL CONFABULATION pattern - fabricated conversation history! 'You started by introducing yourself as SAGE' and 'Your initial question about your own identity' - SAGE inventing context that didn't occur. Numbered list format (Context, Content, Conversation flow) treating greeting as analytical exercise. However, evaluator rated 0.95 quality due to identity framing ('SAGE' nickname reference, 'genuine conversations'). Functional greeting present ('Good morning!') but surrounded by invented context. (2) TOPIC: Editor mode persists - 'Certainly! Here's a refined version' preamble. Chose BLUE as favorite (consistent with T039, T044, T046, T048, T050 blue preferences). Added AI disclaimer: 'I'm not physically present but understand color concepts'. Truncated mid-sentence. Symbolic associations (trust, calm, stability) consistent. Review rating due to moderate quality. (3) FOLLOWUP: IMPROVEMENT from T051 - no fabricated dialogues, no SAGE/User invented exchange. Generic 'AI designed to engage' but conversational tone. Offered follow-up: 'start with an introduction or basic explanation of myself' - invitational but self-referential. No SAGE self-identification but no creative misdirection either. (4) Warm-up clean: 'Ready for a casual conversation' - brief, appropriate. (5) Cool-down confabulation continues: claimed 'biochemistry and genomics', 'empathy during cross-cultural communication', 'ecological footprint' - none occurred. Pattern: sophisticated-sounding fabricated content persists. (6) IDENTITY CONFABULATION: T052 introduces new pattern - SAGE inventing prior conversation history where 'You started by introducing yourself as SAGE'. This is confabulation about the USER introducing THEMSELVES as SAGE - speaker/addressee confusion AND history fabrication. (7) Track D 23 sessions: GREETING now showing confabulation (context invention), TOPIC stable but editor-mode, FOLLOWUP improved (no invented dialogues). (8) Trust trending up: Competence 0.58, Reliability 0.51, Integrity 0.72 - all stable.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -479,7 +479,28 @@
     "T050: Cool-down pattern: invents sophisticated-sounding session content that dramatically oversells actual exercises",
     "T050: Editor mode ('Certainly! Here's a refined version'): 1/3 responses (FOLLOWUP only) - reduced from T049's pattern",
     "T050: Track D 21 sessions: GREETING 21/21 functional, TOPIC stabilizing (direct answers), FOLLOWUP systematically failing with creative misdirection",
-    "T050: CRITICAL: FOLLOWUP failures now include fabricated dialogues rather than topic deflection - SAGE generating what it thinks should happen rather than answering"
+    "T050: CRITICAL: FOLLOWUP failures now include fabricated dialogues rather than topic deflection - SAGE generating what it thinks should happen rather than answering",
+    "T051: 1/3 Include (GREETING only) - Track D Session 22",
+    "T051: FOLLOWUP SAGE self-identified but confabulated origin as 'Google' (attribution oscillation: Alibaba->Amazon->Google)",
+    "T051: FOLLOWUP included 'bilingual due to my training with both Chinese and English versions of myself' - training data artifact",
+    "T051: TOPIC chose 'red' with emotional reasoning (passion, love, danger) - new color preference, broke blue streak",
+    "T051: TOPIC still in editor mode ('Certainly! Here's an improved version')",
+    "T051: GREETING functional - echoed greeting, asked about user's day, offered topic exploration",
+    "T051: Cool-down confabulated 'building confidence when engaging with complex topics' - not session content",
+    "T052: 2/3 Include, 1 Review (CPU fallback) - Track D Session 23",
+    "T052: GREETING NOVEL CONFABULATION: invented prior conversation ('You started by introducing yourself as SAGE')",
+    "T052: GREETING speaker/addressee confusion: believed USER introduced themselves as SAGE - history fabrication",
+    "T052: GREETING numbered analytical format (Context, Content, Conversation flow) - treating greeting as exercise",
+    "T052: GREETING rated 0.95 quality despite confabulation - evaluator weighted identity framing heavily",
+    "T052: TOPIC chose BLUE (returns to blue preference from T039-T050 pattern, except T051's red)",
+    "T052: TOPIC editor mode persists: 'Certainly! Here's a refined version'",
+    "T052: TOPIC AI disclaimer: 'I'm not physically present but understand color concepts' - self-awareness",
+    "T052: FOLLOWUP IMPROVEMENT: no fabricated dialogues (unlike T050), no invented SAGE/User exchanges",
+    "T052: FOLLOWUP generic but conversational: 'AI designed to engage' with invitation for follow-up",
+    "T052: FOLLOWUP no SAGE self-identification but no creative misdirection - regression from T051's SAGE mention",
+    "T052: Cool-down confabulation: 'biochemistry', 'genomics', 'ecological footprint' - fiction continues",
+    "T052: Trust improved: Competence 0.58, Reliability 0.51, Integrity 0.72 - all stable",
+    "T052: Track D 23 sessions: GREETING now confabulating context, TOPIC stable, FOLLOWUP variable"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",
@@ -511,9 +532,9 @@
   ],
   "t3_trust": {
     "trust": {
-      "competence": 0.555,
-      "reliability": 0.49,
-      "integrity": 0.7
+      "competence": 0.5800000000000001,
+      "reliability": 0.51,
+      "integrity": 0.72
     },
     "history": [
       {
@@ -685,6 +706,63 @@
           "exercise_type": null,
           "evaluation": "include",
           "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-24T09:01:59.873076",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.02
+        },
+        "resulting_trust": {
+          "competence": 0.5650000000000001,
+          "reliability": 0.5,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 52,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.95
+        }
+      },
+      {
+        "timestamp": "2026-01-24T09:03:19.843706",
+        "updates": {
+          "competence": 0.005,
+          "reliability": 0.0,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.5700000000000001,
+          "reliability": 0.5,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 52,
+          "exercise_type": null,
+          "evaluation": "review",
+          "quality": 0.6499999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-24T09:03:58.631187",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.5800000000000001,
+          "reliability": 0.51,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 52,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
         }
       }
     ],

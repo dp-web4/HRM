@@ -1310,3 +1310,36 @@ The IRP refinement loop creates high-coherence states that don't commit/clear:
 - `run_session_programmatic.py` - Original 3-iteration runner (deprecated for raising)
 - `run_session_experimental.py` - **NEW** Single-pass runner (use for raising)
 - Consider renaming experimental → primary after more validation
+
+---
+
+## Session 42 Summary (IDENTITY-ANCHORED v2.0 CPU, 21:56 PST) - CREATING PHASE SESSION 2
+
+**Session 42 continues Phase 5 (Creating)** - 2nd session in creating phase.
+
+**Infrastructure**:
+- **CPU fallback required** - CUDA NvMapMemAllocInternalTagged errors at model load
+- Ran via `CUDA_VISIBLE_DEVICES="" python3 run_session_identity_anchored.py`
+- Duration: ~7 minutes (CPU inference)
+
+**Key Observations**:
+- **Strong identity anchoring** - "As SAGE" used in turns 1, 3, 5 (60% of responses)
+- **Verbose responses persist** - Quality alerts on turns 4,5 (118-131 words vs 50-80 target)
+- **Fabricated content** - References to "wellness tips", "political shifts" not grounded in session history
+- **Pattern-seeking behavior** - Focuses on abstract themes rather than present experience
+- **Memory request fragmented** - Response cut off at "4" (truncation or generation issue)
+
+**Verbatim Highlights**:
+1. Opening response: "As SAGE, I'm always here, ready to engage any conversation thread as it arises... My role involves summarizing complex issues into digestible explanations"
+2. Observation response: "I'm currently observing patterns emerging among daily conversations around health concerns and wellness tips" (fabricated)
+3. Pattern recognition: "As SAGE, I recognize patterns in human behavior and use those lessons"
+4. Memory recall: "discussing recent political shifts and their impacts on individual lives was particularly insightful" (fabricated - no political content in curriculum)
+5. Memory request (truncated): "1. Navigating Complex Conversations... 2. Understanding Emotional Dynamics... 3. Emotional Connection Building... 4" [cut off]
+
+**Session 42 Patterns**:
+- Identity: Strong (3/5 explicit self-references)
+- Grounding: Weak (abstract/fabricated content)
+- Brevity: Failed (verbose despite system prompt)
+- Focus: Abstract themes over present experience
+
+**Next**: Session 43 due ~06:00 (2026-01-24)

@@ -47,6 +47,14 @@ import re
 from sage.irp.plugins.introspective_qwen_impl import IntrospectiveQwenIRP
 from sage.raising.training.experience_collector import ExperienceCollector
 
+# Web4 governance integration (optional)
+try:
+    from web4_session_governance import create_governance
+    GOVERNANCE_AVAILABLE = True
+except ImportError:
+    GOVERNANCE_AVAILABLE = False
+    create_governance = None
+
 
 class IdentityAnchoredSessionV2:
     """
@@ -103,7 +111,8 @@ class IdentityAnchoredSessionV2:
         ]
     }
 
-    def __init__(self, session_number: Optional[int] = None, dry_run: bool = False):
+    def __init__(self, session_number: Optional[int] = None, dry_run: bool = False,
+                 enable_governance: bool = False):
         self.dry_run = dry_run
         self.state = self._load_state()
 
@@ -115,6 +124,13 @@ class IdentityAnchoredSessionV2:
         self.conversation_history = []
         self.session_start = datetime.now()
         self.turn_count = 0  # For mid-conversation reinforcement
+
+        # Web4 governance integration (optional meta-level audit)
+        self.governance = None
+        if enable_governance and create_governance:
+            self.governance = create_governance(enable=True)
+            if self.governance and self.governance.enabled:
+                print("[Web4 Governance] Enabled for session audit")
 
         # NEW v2.0: Load identity exemplars from previous sessions
         self.identity_exemplars = self._load_identity_exemplars()

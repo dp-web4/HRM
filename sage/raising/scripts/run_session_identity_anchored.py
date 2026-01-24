@@ -335,8 +335,8 @@ RESPONSE STYLE:
     def initialize_model(self, model_path: str = None):
         """Initialize the model with enhanced identity-anchored system prompt."""
         if model_path is None:
-            # Default to v2.1 LoRA adapter (introspective-qwen-merged lacks model files)
-            model_path = str(HRM_ROOT / "model-zoo" / "sage" / "epistemic-stances" / "qwen2.5-0.5b" / "Introspective-Qwen-0.5B-v2.1" / "model")
+            # Use pre-merged introspective-qwen model (contains full model.safetensors)
+            model_path = str(HRM_ROOT / "model-zoo" / "sage" / "epistemic-stances" / "qwen2.5-0.5b" / "introspective-qwen-merged")
 
         system_prompt = self._build_system_prompt()
 

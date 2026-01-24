@@ -29,8 +29,8 @@ class IntrospectiveQwenIRP:
         """Initialize with IRP protocol compliance"""
         self.config = config or {}
 
-        # Model paths
-        default_path = '/home/dp/ai-workspace/HRM/sage/experiments/phase1-hierarchical-cognitive/epistemic_bias_mapping/Introspective-Qwen-0.5B-v2.1/model'
+        # Model paths - use model-zoo location
+        default_path = str(Path(__file__).parent.parent.parent.parent / 'model-zoo' / 'sage' / 'epistemic-stances' / 'qwen2.5-0.5b' / 'Introspective-Qwen-0.5B-v2.1' / 'model')
         self.model_path = self.config.get('model_path', default_path)
         self.base_model = "Qwen/Qwen2.5-0.5B-Instruct"
         self.is_merged_model = self.config.get('is_merged_model', False)  # Phase 1 was saved merged

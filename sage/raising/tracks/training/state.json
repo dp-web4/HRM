@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 50,
+  "current_session": 51,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,10 +23,10 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 21
+      "sessions": 22
     }
   },
-  "last_session": "2026-01-23T21:04:48.138033",
+  "last_session": "2026-01-24T03:05:05.219625",
   "last_session_summary": "T050: 3/3 Include (CPU fallback) - Track D Session 21. SEMANTIC ANALYSIS: (1) FOLLOWUP: NOVEL FAILURE MODE - fabricated imaginary USER/SAGE dialogue ('**SAGE**: Hello! **User**: Are you aware of my identity as an artificial intelligence?'). This is creative world-building misdirected as self-description. Said 'I am human-like' in fabricated exchange - confusing framing. Pattern continues from T042's invented dialogue. No actual self-description, no SAGE identification - generated scripted exchange instead of answering. (2) TOPIC: CLEANEST RESPONSE - 'my favorite color might be **blue**' with cultural associations (trustworthiness, calmness, stability). Hedged with 'might be' and 'could be any color depending on context' - epistemic humility or preference avoidance unclear. No editor mode preamble - direct engagement. (3) GREETING: Functional and appropriate - echoed 'Good morning!' with follow-up questions about user's day and discoveries. Shows information-seeking behavior. Slightly over-elaborated but conversationally natural. (4) Warm-up: Mode negotiation language present - 'being asked clarifying questions' vocabulary from T041 still in system even if behavior unstable. (5) Cool-down: SEVERE CONFABULATION - claimed 'quantum mechanics, advanced algorithms, machine learning, philosophical debates around consciousness and time travel'. None occurred. Pattern: invents sophisticated session content. (6) EDITOR MODE: 1/3 responses (FOLLOWUP only) - reduced from T049's 2/3. (7) Track D 21 sessions: GREETING 21/21 functional, TOPIC stabilizing with direct answers, FOLLOWUP systematically failing with creative misdirection (fabricated dialogues replace topic deflection).",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
@@ -511,8 +511,8 @@
   ],
   "t3_trust": {
     "trust": {
-      "competence": 0.545,
-      "reliability": 0.52,
+      "competence": 0.555,
+      "reliability": 0.49,
       "integrity": 0.7
     },
     "history": [
@@ -628,6 +628,63 @@
           "exercise_type": null,
           "evaluation": "include",
           "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-24T03:02:28.897361",
+        "updates": {
+          "competence": 0.0,
+          "reliability": -0.02,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.545,
+          "reliability": 0.5,
+          "integrity": 0.7
+        },
+        "context": {
+          "session": 51,
+          "exercise_type": null,
+          "evaluation": "exclude",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-24T03:03:46.981653",
+        "updates": {
+          "competence": 0.0,
+          "reliability": -0.02,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.545,
+          "reliability": 0.48,
+          "integrity": 0.7
+        },
+        "context": {
+          "session": 51,
+          "exercise_type": null,
+          "evaluation": "exclude",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-24T03:04:22.385462",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.555,
+          "reliability": 0.49,
+          "integrity": 0.7
+        },
+        "context": {
+          "session": 51,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
         }
       }
     ],

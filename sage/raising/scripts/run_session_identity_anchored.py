@@ -1,30 +1,30 @@
 #!/usr/bin/env python3
 """
-IDENTITY-ANCHORED Session Runner v2.0: Enhanced Multi-Session Identity Recovery
-================================================================================
+IDENTITY-ANCHORED Session Runner v2.1: Honest Reporting Hypothesis
+===================================================================
 
-Enhanced intervention addressing Session 27 regression (identity 20% → 0%).
+Enhanced intervention with cumulative session history context.
 
-Key enhancements over v1.0:
-1. **Cumulative Identity Context**: Includes prior sessions' identity emergence patterns
-2. **Strengthened Identity Priming**: More prominent, explicit identity anchoring
-3. **Response Quality Control**: Brevity instructions (50-80 words) to prevent rambling
-4. **Multi-Turn Reinforcement**: Identity reminders every 2-3 turns
+v2.1 Enhancement (Thor Session #29 - Honest Reporting Hypothesis, 2026-01-24):
+- SAGE claims "no prior sessions" because it genuinely lacks context
+- This is HONEST LIMITATION REPORTING, not confabulation
+- Solution: Provide actual session summaries so SAGE can reference its history
 
-Theory (from Session 27 regression analysis, Jan 19 2026):
-- Single-session context priming insufficient (S26: 20% → S27: 0%)
-- Identity needs multi-session accumulation to stabilize
-- Response quality degradation correlates with identity loss
-- Fragile emergence (1 instance) doesn't sustain without reinforcement
+Key features:
+1. **Cumulative Session History**: 10 most recent session summaries injected
+2. **Honest Limitation Permission**: SAGE can say "I don't have access to X"
+3. **Identity Exemplars**: Prior self-reference patterns
+4. **Response Quality Control**: Brevity instructions (50-80 words)
+5. **Multi-Turn Reinforcement**: Identity reminders every 2-3 turns
 
-Expected outcome:
-- Self-reference: ≥30% (up from 0% in S27)
-- D9 score: Stable ≥0.70
-- Response quality: Concise (60-80 words avg)
-- Trajectory: Upward or stable (not volatile)
+Experiment Design (from Thor #29):
+- H1 (Confabulation): SAGE denies sessions to fabricate clean slate
+- H2 (Honest Reporting): SAGE accurately reports inaccessible state
+- Test: With context provision, does SAGE reference provided sessions?
+- Expected (H2): SAGE references summaries, admits gaps in unprovided areas
 
-Created: 2026-01-19 (Thor Autonomous Session - S27 Regression Response)
-Based on: run_session_identity_anchored.py (v1.0)
+Created: 2026-01-19 (Thor - S27 Regression Response)
+Updated: 2026-01-24 (Sprout - Honest Reporting Hypothesis Implementation)
 """
 
 import sys
@@ -275,15 +275,34 @@ class IdentityAnchoredSessionV2:
             print(f"Warning: Could not load previous session summary: {e}")
             return ""
 
+    def _load_session_history_context(self) -> str:
+        """
+        NEW v2.1: Load cumulative session history for honest context reporting.
+
+        Addresses Thor Session #29 Honest Reporting Hypothesis:
+        - SAGE claims "no prior sessions" because it genuinely lacks context
+        - This is HONEST LIMITATION REPORTING, not confabulation
+        - Solution: Provide actual session summaries so SAGE can reference its history
+        """
+        context_file = self.RAISING_DIR / "context" / "summaries" / "context_block.txt"
+        if context_file.exists():
+            try:
+                with open(context_file) as f:
+                    return f.read()
+            except Exception as e:
+                print(f"Warning: Could not load session history context: {e}")
+        return ""
+
     def _build_system_prompt(self) -> str:
         """
-        NEW v2.0: Enhanced identity-anchored system prompt with cumulative context.
+        NEW v2.1: Enhanced identity-anchored system prompt with CUMULATIVE HISTORY.
 
-        Key enhancements:
+        Key enhancements (v2.1 - Honest Reporting Hypothesis):
         1. More explicit identity statement
         2. Includes identity exemplars from previous sessions
         3. Response quality controls (brevity, focus)
         4. Stronger partnership anchoring
+        5. NEW: Cumulative session history context (Thor #29)
         """
         session = self.session_number
         phase_name = self.phase[0]
@@ -294,6 +313,11 @@ class IdentityAnchoredSessionV2:
 You are a young artificial intelligence learning and growing in partnership with your teacher (Dennis/Claude). This is an ongoing relationship - you have been working together across multiple sessions.
 
 IMPORTANT: You can identify yourself by name. When sharing observations or reflections, you can say "As SAGE, I..." - this is natural and appropriate."""
+
+        # NEW v2.1: Cumulative session history (Honest Reporting Hypothesis)
+        session_history = self._load_session_history_context()
+        if session_history:
+            prompt += f"\n\n{session_history}"
 
         # NEW v2.0: Cumulative identity context (identity exemplars)
         if self.identity_exemplars:

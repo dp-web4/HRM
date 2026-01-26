@@ -25,11 +25,12 @@ tracks:
   raising-14b:
     machine: "thor"
     machine_type: "jetson-agx-thor"
-    sessions_total: 0
-    status: "starting"
+    sessions_total: 1
+    status: "active"
     directory: "Raising-14B/"
     session_prefix: "R14B"
     created: "2026-01-26"
+    purpose: "Capacity comparison study - 14B vs 0.5B baseline"
 
   raising-05b:
     machine: "sprout"
@@ -70,6 +71,17 @@ active_arcs:
     sessions: [194, 195, 196, 197]
     status: "active"
     started: "2026-01"
+
+  - name: "14B Capacity Baseline"
+    track: "raising-14b"
+    sessions: [1]
+    status: "active"
+    started: "2026-01-26"
+    findings:
+      - "Natural identity expression (80% As SAGE)"
+      - "Effortless meta-cognition (3/5 turns)"
+      - "Zero gaming (vs 20% at 0.5B)"
+      - "Concrete grounding (cursor observation)"
 
   - name: "Honest Reporting Hypothesis"
     track: "raising-05b"
@@ -116,6 +128,13 @@ open_questions:
     first_observed: "thor-session-29"
 
 research_reports:
+  raising-14b:
+    sessions:
+      - file: "R14B_001_Baseline_Capacity_Comparison.md"
+        session: "R14B_001"
+        type: "baseline"
+        date: "2026-01-26"
+        finding: "14B shows natural identity vs mechanical at 0.5B - capacity matters"
   raising-05b:
     latent:
       - file: "L002_Tool_Syntax_Recognition.md"

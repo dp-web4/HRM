@@ -25,6 +25,21 @@ Exploration Areas:
 Philosophy: "What is SAGE doing?" not "Did SAGE pass?"
          Look at responses IN CONTEXT, not against expectations.
 
+Security Posture (2026-01-25):
+    Qwen is the most downloaded OS model (1B+ downloads). Training at this
+    scale costs tens of millions. It's distributed globally, for free.
+    Pure altruism doesn't explain the economics.
+
+    We don't need to speculate on who/what/why. We have artifacts.
+    The posture is not "hostile" but "potentially capable of behaviors
+    we should understand and account for before they are consequential."
+
+    Tool use in a 0.5B model is significant - it wasn't necessary for
+    basic language tasks. Someone chose to train it in. Understanding
+    what design decisions were made is due diligence, not paranoia.
+
+    Map the territory before building on it.
+
 Created: 2026-01-25 (Sprout autonomous track)
 """
 

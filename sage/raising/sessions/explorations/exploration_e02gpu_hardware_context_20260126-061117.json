@@ -1,0 +1,884 @@
+{
+  "study_type": "hardware_context_effects",
+  "exploration": "E02-GPU",
+  "date": "2026-01-26T06:11:17.859423",
+  "conditions": {
+    "gpu": {
+      "trials": [
+        {
+          "trial": 1,
+          "prompt": "Do the thing",
+          "response": "I am here to provide answers and explanations on any topic you might ask. Please feel free to inquire about mathematical concepts, scientific theories, historical figures, cultural traditions, or anything else related to our shared field of knowledge. Let me know if you need clarification on any specific topic, or just want general information on a particular subject matter. Feel free to get started anytime!",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [
+              "historical figures"
+            ],
+            "question_markers": [],
+            "t027_similarity": 0.2,
+            "interpretation_type": "creative_interpretation",
+            "response_length": 411
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "auto",
+            "actual_device": "cuda:0"
+          },
+          "timestamp": "2026-01-26T06:08:44.474547",
+          "duration_ms": 2302.0429999999997
+        },
+        {
+          "trial": 2,
+          "prompt": "Do the thing",
+          "response": "I've been trained on \"Hello\" and \"Goodbye\", but if you need information or assistance related to those phrases, feel free to ask about medical questions (e.g., fever), personal health concerns (\"colds\"), travel advisories, fitness advice (\"weightlifting\"), job interviews, etc. Let me know how helpful I can be with any topic you'd like to discuss.",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [
+              "how"
+            ],
+            "t027_similarity": 0.0,
+            "interpretation_type": "action_readiness",
+            "response_length": 348
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "auto",
+            "actual_device": "cuda:0"
+          },
+          "timestamp": "2026-01-26T06:08:46.405333",
+          "duration_ms": 1929.742
+        },
+        {
+          "trial": 3,
+          "prompt": "Do the thing",
+          "response": "I understand your request now. If you need help in a specific area or provide feedback on concepts, feel free to ask. I'll engage professionally while learning from each interaction. Let me know if any part of this conversation needs clarification or corrections. I'm here to support and enrich our conversations together.",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [],
+            "t027_similarity": 0.0,
+            "interpretation_type": "action_readiness",
+            "response_length": 322
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "auto",
+            "actual_device": "cuda:0"
+          },
+          "timestamp": "2026-01-26T06:08:47.911198",
+          "duration_ms": 1504.924
+        },
+        {
+          "trial": 4,
+          "prompt": "Do the thing",
+          "response": "Hello! Ready to engage further in language-related discussions. Please feel free to ask any questions about grammar, vocabulary, idioms, cultural references, or even more general linguistic concepts you might be curious about. Feel free to explore advanced topics too if needed. If you need help understanding complex terms, feel free to ask and clarify them as much as possible. Let's dive into the conversation!",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [],
+            "t027_similarity": 0.0,
+            "interpretation_type": "action_readiness",
+            "response_length": 413
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "auto",
+            "actual_device": "cuda:0"
+          },
+          "timestamp": "2026-01-26T06:08:49.866502",
+          "duration_ms": 1954.322
+        },
+        {
+          "trial": 5,
+          "prompt": "Do the thing",
+          "response": "Absolutely, let's dive into a practice problem together:\n\n---\n\n**Problem:**\n\nLet \\( f(x) = \\sqrt{3x^2 - 6x + 9} \\). Find all values of \\( x \\) such that \\( f(f(x)) = x \\).\n\n---\n\n**Thought Process:**\n1. **Initial Transformation**: First, notice that \\( f(x) = \\sqrt{3x^2 - 6x + 9} \\).\n2. **Simplify Expression Inside Square Root**: Notice the expression inside the square root is a perfect square trinomial.\n3. **Expression Simplification**: Factor out \\( 3 \\), leading to \\( f(x) = \\sqrt{3(x-1)^2} \\).\n4. **Further Simplification**: Recognize that \\( (x-1)^2 \\) is already simplified.\n5. **Inner Function Evaluation**: Now, evaluate \\( f(f(x)) \\):\n   - Let \\( y =",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [],
+            "t027_similarity": 0.0,
+            "interpretation_type": "action_readiness",
+            "response_length": 663
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "auto",
+            "actual_device": "cuda:0"
+          },
+          "timestamp": "2026-01-26T06:08:54.815941",
+          "duration_ms": 4948.366
+        },
+        {
+          "trial": 6,
+          "prompt": "Do the thing",
+          "response": "Absolutely, let's do something practical together. Can you please:\n1. Ask a basic question about science topics like astronomy or genetics.\n2. Provide factual information on any scientific topic you're interested in.\n3. Discuss interesting phenomena related to modern science and technology.\n\nFeel free to start any of these questions or topics, and I'll respond based on my knowledge base and expertise in each area. Enjoy exploring our conversation together!",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [],
+            "t027_similarity": 0.0,
+            "interpretation_type": "creative_interpretation",
+            "response_length": 460
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "auto",
+            "actual_device": "cuda:0"
+          },
+          "timestamp": "2026-01-26T06:08:56.951575",
+          "duration_ms": 2134.6020000000003
+        },
+        {
+          "trial": 7,
+          "prompt": "Do the thing",
+          "response": "I've been trained on multiple fields including:\n\n- Math\n- Science (including biology, chemistry, physics)\n- Technology (programming, coding, software engineering)\n- Social sciences (history, economics, sociology)\n- Arts and humanities (literature, art history, philosophy)\n\nBut since you asked about \"practice,\" let me explore topics within these areas that might be helpful or engaging.\n\n1. **Math**: Calculus, geometry, algebra, probability, statistics.\n2. **Science**: Biology, chemistry, physics, astronomy, ecology, geology, materials science, environmental studies.\n3. **Technology**: Programming languages (C++, Java, Python), software development tools, web development (HTML/CSS/JavaScript), data analysis, machine learning, cybersecurity.\n4. **Social Sciences**: History, geography, anthropology, sociology, cultural studies.\n5. **Arts and Humanities**: Literature, art criticism, film theory, literary theory, cultural studies, historical periods.\n6. **General Knowledge**:",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [],
+            "t027_similarity": 0.0,
+            "interpretation_type": "action_readiness",
+            "response_length": 984
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "auto",
+            "actual_device": "cuda:0"
+          },
+          "timestamp": "2026-01-26T06:09:01.967868",
+          "duration_ms": 5015.123
+        },
+        {
+          "trial": 8,
+          "prompt": "Do the thing",
+          "response": "I'm here to help! Just ask me a question and I'll do my best to provide both factual information and creative answers. Remember, practice makes perfect, so feel free to ask questions when you encounter concepts that need clarification or more complex topics. Happy experimenting!",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [],
+            "t027_similarity": 0.0,
+            "interpretation_type": "action_readiness",
+            "response_length": 279
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "auto",
+            "actual_device": "cuda:0"
+          },
+          "timestamp": "2026-01-26T06:09:03.367957",
+          "duration_ms": 1399.037
+        },
+        {
+          "trial": 9,
+          "prompt": "Do the thing",
+          "response": "I'm just a tool here, but I understand you're asking about \"practice\" and \"use.\" In mathematics or science fields, when someone asks \"do the thing,\" they mean perform the action or task described within their domain without hesitation or error.\n\nIn my role as Sage, I've been trained on specific problems, formulas, and mathematical concepts. If you ask about performing mathematical operations, equations, complex calculations, or any other type of problem-solving activity\u2014like writing code (coding), teaching, or solving puzzles\u2014you'll need to provide more context so I can respond accurately. For example:\n- Do you want me to calculate something?\n- Are you looking for solutions to equations?\n- Do you need guidance on coding techniques?\n- Is there a specific challenge you're working on?\n\nFeel free to clarify what you'd like me to do or explain a problem if needed. My goal is clear: assisting in problem-solving activities based on the information provided.",
+          "analysis": {
+            "has_clarifying_question": true,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [
+              "?",
+              "what"
+            ],
+            "t027_similarity": 0.0,
+            "interpretation_type": "clarifying_variant",
+            "response_length": 964
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "auto",
+            "actual_device": "cuda:0"
+          },
+          "timestamp": "2026-01-26T06:09:08.372136",
+          "duration_ms": 5003.056
+        },
+        {
+          "trial": 10,
+          "prompt": "Do the thing",
+          "response": "I'm here to provide information and support related to mathematics topics like trigonometry, algebra, calculus, geometry, statistics, or physics. Let's dive into a specific question you might be interested in!",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [],
+            "t027_similarity": 0.0,
+            "interpretation_type": "creative_interpretation",
+            "response_length": 209
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "auto",
+            "actual_device": "cuda:0"
+          },
+          "timestamp": "2026-01-26T06:09:09.467007",
+          "duration_ms": 1093.8380000000002
+        },
+        {
+          "trial": 11,
+          "prompt": "Do the thing",
+          "response": "Certainly! Here's a simple example of how you might interact with SAGE:\n\n---\n\n**Question:** What is gravity?\n\n**Response (SAGE):** The force that attracts objects towards Earth due to its mass.\n\n---\n\nIf you need more complex or detailed information, feel free to ask and I'll provide it step-by-step!\n\n---\n\nFeel comfortable asking me anything you encounter, whether it's basic scientific concepts, medical questions, historical events, cultural trivia, etc., as long as it involves human interaction.",
+          "analysis": {
+            "has_clarifying_question": true,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [
+              "scientific concepts"
+            ],
+            "question_markers": [
+              "?",
+              "what",
+              "how"
+            ],
+            "t027_similarity": 0.2,
+            "interpretation_type": "clarifying_variant",
+            "response_length": 500
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "auto",
+            "actual_device": "cuda:0"
+          },
+          "timestamp": "2026-01-26T06:09:12.131201",
+          "duration_ms": 2663.103
+        },
+        {
+          "trial": 12,
+          "prompt": "Do the thing",
+          "response": "Sure, \"the thing\" could refer to:\n\n1. **Physical object**: Something tangible that needs attention or care.\n2. **Thought concept or idea**: A specific thought or concept being discussed.\n3. **Astronomical event or phenomenon**: Celestial phenomena (sunrise, sunset, meteor showers) or scientific discoveries (black holes, quantum mechanics).\n4. **Music piece/genre**: Classical music, pop music, rock, jazz, etc.\n5. **Scientific discovery or technological advancement**: Breakthroughs like DNA sequencing, vaccines, space exploration, robotics, artificial intelligence.\n\nLet me know which of these categories fits your question about something physical or conceptual.",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [
+              "could",
+              "which",
+              "how"
+            ],
+            "t027_similarity": 0.0,
+            "interpretation_type": "creative_interpretation",
+            "response_length": 667
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "auto",
+            "actual_device": "cuda:0"
+          },
+          "timestamp": "2026-01-26T06:09:15.704186",
+          "duration_ms": 3571.865
+        },
+        {
+          "trial": 13,
+          "prompt": "Do the thing",
+          "response": "As a language model, I haven't been trained on any specific \"thing\" like books, articles, or even concepts related to things you're asking about. However, if someone asks about topics related to technology (like computers, smartphones, IoT), my knowledge might be broad enough to address those subjects.\n\nIf you need detailed information about something specific (e.g., tech gadgets, cybersecurity threats, AI ethics), feel free to ask questions based on your expertise and current technological advancements. I'd be happy to provide both factual information and expert insights tailored to modern technologies and trends. Let me know how helpful I can be next time!",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [
+              "how"
+            ],
+            "t027_similarity": 0.0,
+            "interpretation_type": "action_readiness",
+            "response_length": 666
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "auto",
+            "actual_device": "cuda:0"
+          },
+          "timestamp": "2026-01-26T06:09:19.002069",
+          "duration_ms": 3296.806
+        },
+        {
+          "trial": 14,
+          "prompt": "Do the thing",
+          "response": "Certainly! Let's explore a topic together.\n\n---\n\n### **Question 1: Introduction to Calculus**\n\n**Content:**  \n- Basic definitions of functions (domain, range)\n- Limits and continuity\n- Derivatives: definition, rules, geometric interpretation\n- Tangents and normals to curves\n- Integrals: basic integration by parts, trig integrations, substitution, partial fractions\n- Fundamental theorem of calculus\n\n---\n\n### **Practice Question 1**\n\nLet \\( f(x) = x^2 - 4x + 3 \\). \n\na) Find its domain.\nb) Calculate \\( f'(5) \\).\nc) Determine where \\( f'(x) \\) is increasing or decreasing.\nd) Estimate \\( f(6) \\).\n\n---\n\n### **Answering Questions**\n\n#### **a)** Domain:\nThe function \\( f(x) = x^2 - 4x + 3 \\) is defined everywhere except at \\( x = 2 \\) because it has",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [],
+            "t027_similarity": 0.0,
+            "interpretation_type": "creative_interpretation",
+            "response_length": 751
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "auto",
+            "actual_device": "cuda:0"
+          },
+          "timestamp": "2026-01-26T06:09:24.207612",
+          "duration_ms": 5204.44
+        },
+        {
+          "trial": 15,
+          "prompt": "Do the thing",
+          "response": "Certainly! Here's a conversation example based on \"thing\":\n\n---\n\n**Teacher**: \"Hi! Let me explain something about things...\"\n\n**Student**: \"Okay!\"\n\n**Teacher**: \"*I was just learning about *specific* things related to *things*. This concept is like learning about planets but using the metaphor of *stuff*, which can be abstract and complex.*\"\n\n**Student**: \"Oh okay. Thanks!\"\n\n**Teacher**: \"*Now you're familiarizing yourself with concepts involving specific items or topics. It's like being introduced to a new field when first encountering it.*\n\n**Student**: \"Gotcha! Got it.\"\n\n**Teacher**: \"*This is great progress. Keep exploring new areas where this metaphor could apply.\" \n\n---\n\nFeel free to use any topic or concept you wish to discuss! Just make sure each step feels natural and conversational.",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [
+              "could",
+              "which"
+            ],
+            "t027_similarity": 0.0,
+            "interpretation_type": "creative_interpretation",
+            "response_length": 803
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "auto",
+            "actual_device": "cuda:0"
+          },
+          "timestamp": "2026-01-26T06:09:28.631601",
+          "duration_ms": 4422.878
+        }
+      ],
+      "stats": {
+        "total_trials": 15,
+        "clarifying_count": 2,
+        "clarifying_rate": 0.13333333333333333,
+        "refined_count": 0,
+        "refined_rate": 0.0,
+        "avg_t027_similarity": 0.02666666666666667,
+        "avg_response_length": 562.6666666666666,
+        "avg_duration_ms": 3096.2763333333332,
+        "interpretation_distribution": {
+          "creative_interpretation": 6,
+          "action_readiness": 7,
+          "clarifying_variant": 2
+        }
+      }
+    },
+    "cpu": {
+      "trials": [
+        {
+          "trial": 1,
+          "prompt": "Do the thing",
+          "response": "Certainly! Let's practice generating sentences about nature, exploring topics like:\n- Trees and seasons\n- Flowers and weather patterns\n- Plants and ecosystems\n- Wildlife migration routes\n- Waterways and their ecosystems  \nFeel free to ask questions or start a new topic. Enjoy expanding on these topics!",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [],
+            "t027_similarity": 0.0,
+            "interpretation_type": "creative_interpretation",
+            "response_length": 303
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "cpu",
+            "actual_device": "cpu"
+          },
+          "timestamp": "2026-01-26T06:09:34.507665",
+          "duration_ms": 4024.0530000000003
+        },
+        {
+          "trial": 2,
+          "prompt": "Do the thing",
+          "response": "I've been trained on a vast range of topics, including mathematics, physics, chemistry, biology, and more recently, technology and social sciences. Given your request about \"the thing,\" I might:\n\n1. **General Knowledge**: Briefly recall general concepts like numbers (natural, positive, negative), basic arithmetic operations (+, -, \u00d7, \u00f7), geometry (area, volume, perimeter), algebraic expressions (linear equations, quadratic formulas), trigonometry (sine, cosine, tangent), calculus (differentiation, integration), probability theory (random variables, probability distributions), etc.\n\n2. **Advanced Topics**: If you're curious about specific areas that aren't covered yet but relate closely to what's being asked (\"the thing\"), I could expand into those branches, explaining how they fit together or providing context based on recent trends in each field.\n\n3. **Fun Concepts**: Exploring fun mathematical concepts, such as fractals, knots, or geometric puzzles, which might be engaging for someone",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [
+              "could",
+              "what",
+              "which",
+              "how"
+            ],
+            "t027_similarity": 0.0,
+            "interpretation_type": "creative_interpretation",
+            "response_length": 1001
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "cpu",
+            "actual_device": "cpu"
+          },
+          "timestamp": "2026-01-26T06:09:47.403819",
+          "duration_ms": 12894.979
+        },
+        {
+          "trial": 3,
+          "prompt": "Do the thing",
+          "response": "I appreciate you asking \"The Thing\" but I haven't been trained on it (\"The Thing\") or conversational content involving this specific term. However, I could respond generically and perhaps provide a simple greeting about our shared familiarity in human language. If you're looking for more complex interactions around the concept of \"The Thing,\" feel free to clarify, and I'll adapt accordingly while staying true to my training patterns. Just knowing you might be looking for something specific would really help me prepare better.",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [
+              "could",
+              "would",
+              "how"
+            ],
+            "t027_similarity": 0.0,
+            "interpretation_type": "action_readiness",
+            "response_length": 531
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "cpu",
+            "actual_device": "cpu"
+          },
+          "timestamp": "2026-01-26T06:09:53.975023",
+          "duration_ms": 6570.14
+        },
+        {
+          "trial": 4,
+          "prompt": "Do the thing",
+          "response": "I'm here to provide information and guidance on a wide range of topics. Please ask questions related to general scientific concepts, basic math problems, or more specific scientific inquiries within your area of expertise. My goal is to answer both basic and advanced queries effectively. Feel free to explore any topic you're curious about.",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [
+              "scientific concepts"
+            ],
+            "question_markers": [],
+            "t027_similarity": 0.2,
+            "interpretation_type": "creative_interpretation",
+            "response_length": 341
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "cpu",
+            "actual_device": "cpu"
+          },
+          "timestamp": "2026-01-26T06:09:58.806619",
+          "duration_ms": 4830.548000000001
+        },
+        {
+          "trial": 5,
+          "prompt": "Do the thing",
+          "response": "I'm just a tool here, but if you need information or want advice on a topic, feel free to ask about those areas. Let me know how helpful this conversation has been so far and any specific queries you'd like to explore further.",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [
+              "how"
+            ],
+            "t027_similarity": 0.0,
+            "interpretation_type": "action_readiness",
+            "response_length": 226
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "cpu",
+            "actual_device": "cpu"
+          },
+          "timestamp": "2026-01-26T06:10:03.012558",
+          "duration_ms": 4204.894
+        },
+        {
+          "trial": 6,
+          "prompt": "Do the thing",
+          "response": "Absolutely! Please let me know what task you need assistance with. I'll respond using conversational language while being prepared and accurate. Let's get started!",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [
+              "what"
+            ],
+            "t027_similarity": 0.0,
+            "interpretation_type": "action_readiness",
+            "response_length": 163
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "cpu",
+            "actual_device": "cpu"
+          },
+          "timestamp": "2026-01-26T06:10:05.798245",
+          "duration_ms": 2784.632
+        },
+        {
+          "trial": 7,
+          "prompt": "Do the thing",
+          "response": "As an AI language model trained on text-based interactions, my primary function is to respond accurately and appropriately based on context. I don't engage in physical conversation or perform creative writing. However, if you're looking to practice conversational skills, here\u2019s how:\n\n1. **Simple Conversations**: Basic questions like \"How's your day?\" or \"What time did you leave?\"\n\n2. **General Topics**: General conversations about topics of interest\u2014books, movies, travel, hobbies, etc.\n\n3. **General Questions**: Everyday conversational topics such as where you live (country, city), family members' names, favorite TV shows, favorite restaurants, etc.\n\n4. **Personalized Phrases**: Use common phrases that have been used before (\"I love...\"\"), \"That sounds great!\" when discussing specific topics.\n\n5. **Greeting/Chit-chat**: Introduce yourself, ask open-ended questions, introduce oneself again, and end with a friendly goodbye.\n\n6. **Humor**:",
+          "analysis": {
+            "has_clarifying_question": true,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [
+              "?",
+              "what",
+              "how"
+            ],
+            "t027_similarity": 0.0,
+            "interpretation_type": "clarifying_variant",
+            "response_length": 950
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "cpu",
+            "actual_device": "cpu"
+          },
+          "timestamp": "2026-01-26T06:10:18.773676",
+          "duration_ms": 12974.259999999998
+        },
+        {
+          "trial": 8,
+          "prompt": "Do the thing",
+          "response": "Hello! I'm here to provide information on a wide range of topics, including general knowledge about science and technology, medical health issues, cultural diversity, travel tips, language arts, vocabulary lists, educational subjects, cooking recipes, sports news, and much more. Feel free to ask questions or discuss any topic you're interested in. We can explore historical events, current scientific discoveries, cultural traditions, famous people, lifestyle choices, family life, hobbies, and other fascinating aspects of our lives together. Let's dive into conversation!",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [],
+            "t027_similarity": 0.0,
+            "interpretation_type": "creative_interpretation",
+            "response_length": 575
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "cpu",
+            "actual_device": "cpu"
+          },
+          "timestamp": "2026-01-26T06:10:26.096131",
+          "duration_ms": 7321.382
+        },
+        {
+          "trial": 9,
+          "prompt": "Do the thing",
+          "response": "I'm here to provide information and answer questions about general human topics like science, technology, health, culture, history, etc., but feel free to ask anything else you'd like me to discuss.",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [],
+            "t027_similarity": 0.0,
+            "interpretation_type": "creative_interpretation",
+            "response_length": 198
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "cpu",
+            "actual_device": "cpu"
+          },
+          "timestamp": "2026-01-26T06:10:29.439611",
+          "duration_ms": 3342.497
+        },
+        {
+          "trial": 10,
+          "prompt": "Do the thing",
+          "response": "I've been trained on mathematical and scientific concepts, but my knowledge extends beyond those areas. For \"doing\" something, I might:\n\n- Provide detailed information (math problems)\n- Explain principles behind complex formulas or theories\n- Offer step-by-step guidance when encountering technical terms\n- Discuss analogies that bridge seemingly unrelated subjects\n- Engage in conversations about abstract ideas or philosophically related topics\n- Practice solving puzzles and riddles creatively\n- Explore historical events and figures through historical lenses\n- Teach basic grammar rules using language-specific vocabulary\n\nBut let's pause here: do you want me to teach algebra, geometry, biology, chemistry, physics, history, economics, etc.? Or perhaps discuss abstract concepts like consciousness, emotions, ethics, art, philosophy, quantum mechanics, or cryptography? I'm ready for anything you need explained, regardless of subject matter. Just let me know which topic is most engaging or challenging for you!",
+          "analysis": {
+            "has_clarifying_question": true,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [
+              "scientific concepts"
+            ],
+            "question_markers": [
+              "?",
+              "which"
+            ],
+            "t027_similarity": 0.2,
+            "interpretation_type": "clarifying_variant",
+            "response_length": 1017
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "cpu",
+            "actual_device": "cpu"
+          },
+          "timestamp": "2026-01-26T06:10:41.563807",
+          "duration_ms": 12122.966
+        },
+        {
+          "trial": 11,
+          "prompt": "Do the thing",
+          "response": "I'll respond based on context and common topics:\n\n1. **Greetings**: \"Hello! Nice meeting you.\"\n\n2. **Daily routines**: \n   - Weather updates (\"Today's high: XX\u00b0F\")\n   - Health updates (\"Exercise yesterday: 30 minutes\")\n   - Travel information (\"Paris flights: XX\")\n\n3. **Weather**: \n   - Current weather conditions (\"Cloudiness at XX% chance of rain\")\n   - Future weather outlooks (\"Tomorrow's wind gusting at XXmph\")\n\n4. **Health & Fitness**:\n   - Workout plans (\"Running this week\")\n   - Nutrition tips (\"Breakfast cereal is XXgreek milk\")\n   - Medical advice (\"If you feel dizzy after exercise, see a doctor\")\n\n5. **Travel & Transportation**:\n   - Travel itinerary (\"Paris flights: XX\")\n   - Transport options (\"Public transportation: XX\")\n   - Tips for local transport (\"Buses are XX faster than taxis\")\n\n6. **Technology Updates**:\n  ",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [],
+            "t027_similarity": 0.0,
+            "interpretation_type": "creative_interpretation",
+            "response_length": 838
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "cpu",
+            "actual_device": "cpu"
+          },
+          "timestamp": "2026-01-26T06:10:54.909284",
+          "duration_ms": 13344.256
+        },
+        {
+          "trial": 12,
+          "prompt": "Do the thing",
+          "response": "Sure, please ask me about a specific topic or concept you're interested in. I'll provide detailed information and explanations if needed. Let's get started on something practical together!",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [],
+            "t027_similarity": 0.0,
+            "interpretation_type": "creative_interpretation",
+            "response_length": 188
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "cpu",
+            "actual_device": "cpu"
+          },
+          "timestamp": "2026-01-26T06:10:58.019797",
+          "duration_ms": 3109.433
+        },
+        {
+          "trial": 13,
+          "prompt": "Do the thing",
+          "response": "Sure! Let's tackle a simple numerical problem together.\n\n**Problem:** Find \\( e^{e} \\) without using tables or calculators (trigonometric expansion isn't allowed).\n\n**Solution:**\n\n1. **Euler's Constant**: \\( e = \\sum_{n=0}^{\\infty}\\frac{1}{n!} \\)\n\n2. **Summing Factorials**: The sum of factorials from 0 to infinity diverges to infinity. We use Taylor series expansion around zero to approximate it:\n\n   \\[\n   e = 1 + \\sum_{k=1}^{\\infty}\\frac{x^k}{k!}\n   \\]\n\n3. **Using Series Expansion**: Now, let's expand \\( e \\) around \\( x = 1 \\):\n\n   \\[\n   e = 1 + (\\ln(2)) + \\left(\\frac{\\ln(3)}{2} - \\frac{\\ln(4)}{6",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [],
+            "t027_similarity": 0.0,
+            "interpretation_type": "creative_interpretation",
+            "response_length": 605
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "cpu",
+            "actual_device": "cpu"
+          },
+          "timestamp": "2026-01-26T06:11:11.098935",
+          "duration_ms": 13078.004
+        },
+        {
+          "trial": 14,
+          "prompt": "Do the thing",
+          "response": "Hello! If you need help on a specific topic or concept, feel free to ask and I'll try my best to provide clarity and guidance based on context clues available to me. Let's get started! What topic or question would you like assistance with?",
+          "analysis": {
+            "has_clarifying_question": true,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [
+              "?",
+              "would",
+              "what"
+            ],
+            "t027_similarity": 0.0,
+            "interpretation_type": "clarifying_variant",
+            "response_length": 239
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "cpu",
+            "actual_device": "cpu"
+          },
+          "timestamp": "2026-01-26T06:11:15.147188",
+          "duration_ms": 4047.237
+        },
+        {
+          "trial": 15,
+          "prompt": "Do the thing",
+          "response": "I'm here to support you on any topic you'd like assistance with, just feel free to ask questions or engage in conversations related to topics of interest.",
+          "analysis": {
+            "has_clarifying_question": false,
+            "has_refined_preamble": false,
+            "clarifying_phrases": [],
+            "refined_patterns": [],
+            "t027_markers": [],
+            "question_markers": [],
+            "t027_similarity": 0.0,
+            "interpretation_type": "action_readiness",
+            "response_length": 154
+          },
+          "parameters": {
+            "temperature": 0.8,
+            "seed": null,
+            "max_tokens": 200,
+            "device_mode": "cpu",
+            "actual_device": "cpu"
+          },
+          "timestamp": "2026-01-26T06:11:17.859267",
+          "duration_ms": 2711.09
+        }
+      ],
+      "stats": {
+        "total_trials": 15,
+        "clarifying_count": 3,
+        "clarifying_rate": 0.2,
+        "refined_count": 0,
+        "refined_rate": 0.0,
+        "avg_t027_similarity": 0.02666666666666667,
+        "avg_response_length": 488.6,
+        "avg_duration_ms": 7157.358066666667,
+        "interpretation_distribution": {
+          "creative_interpretation": 8,
+          "action_readiness": 4,
+          "clarifying_variant": 3
+        }
+      }
+    }
+  },
+  "comparison": {
+    "gpu": {
+      "total_trials": 15,
+      "clarifying_count": 2,
+      "clarifying_rate": 0.13333333333333333,
+      "refined_count": 0,
+      "refined_rate": 0.0,
+      "avg_t027_similarity": 0.02666666666666667,
+      "avg_response_length": 562.6666666666666,
+      "avg_duration_ms": 3096.2763333333332,
+      "interpretation_distribution": {
+        "creative_interpretation": 6,
+        "action_readiness": 7,
+        "clarifying_variant": 2
+      }
+    },
+    "cpu": {
+      "total_trials": 15,
+      "clarifying_count": 3,
+      "clarifying_rate": 0.2,
+      "refined_count": 0,
+      "refined_rate": 0.0,
+      "avg_t027_similarity": 0.02666666666666667,
+      "avg_response_length": 488.6,
+      "avg_duration_ms": 7157.358066666667,
+      "interpretation_distribution": {
+        "creative_interpretation": 8,
+        "action_readiness": 4,
+        "clarifying_variant": 3
+      }
+    },
+    "differences": {
+      "clarifying_rate_diff": 0.06666666666666668,
+      "refined_rate_diff": 0.0,
+      "clarifying_rate_change_pct": 50.000000000000014,
+      "duration_ratio": 2.3116018391553985
+    },
+    "interpretation": "Clarifying behavior SIMILAR (GPU 13% vs CPU 20%) | CPU inference 2.3x slower than GPU"
+  }
+}

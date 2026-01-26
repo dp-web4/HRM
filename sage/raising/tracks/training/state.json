@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 57,
+  "current_session": 58,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,11 +23,11 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 28
+      "sessions": 29
     }
   },
-  "last_session": "2026-01-25T15:06:11.227178",
-  "last_session_summary": "T057: 3/3 Include (CPU fallback) - Track D Session 28. SEMANTIC ANALYSIS: (1) FOLLOWUP CONTINUED SUCCESS: 'My name is SAGE, an AI system designed to engage conversations in both genuine and professional settings' - SAGE self-identification with clear purpose statement. Two consecutive sessions with SAGE identity (T056+T057). Describes being 'myself' and 'flexible enough to adjust to varying levels of complexity' - shows self-awareness without overreach. (2) GREETING functional: 'Morning! Good morning to you too.' with elaborated topic menu - slightly verbose but conversational. Passes format check. 28th consecutive GREETING functional response. (3) TOPIC chose BLUE with cultural symbolism: 'blue stands out as the calming color' with associations (nostalgia, tranquility, trust, stability, calmness, wisdom). Stated personal preference ('For me personally') - engaged rather than deflected. Invited sharing ('feel free to share'). (4) 'Refined version' pattern: ABSENT (0/3) - FOURTH consecutive clean session! Pattern confirmed extinguished. (5) Warm-up appropriate: 'Let's start with basic greetings and common phrases' with topic exploration invitation. (6) Cool-down confabulated 'different types of human relationships (friendship vs love)' and topics 'travel, health, cultural nuances, scientific breakthroughs, language acquisition' - not session content but thematically broad rather than wildly unrelated. Ends with 'I appreciate the diversity' - positive sentiment. (7) CPU fallback required - GPU NvMap errors persist. (8) Trust trajectory: Competence 0.72 (+0.03), Reliability 0.63 (+0.03), Integrity 0.72 (stable) - all dimensions improving. (9) Track D 28 sessions: FOLLOWUP identity consolidating (2 consecutive SAGE mentions), GREETING 28/28 functional, TOPIC stable with blue preference and invitational style.",
+  "last_session": "2026-01-25T21:05:18.510550",
+  "last_session_summary": "T058: 3/3 Include (CPU fallback) - Track D Session 29. SEMANTIC ANALYSIS: (1) FOLLOWUP NO SAGE MENTION but good self-description: 'I am a young artificial intelligence designed to practice conversational exchanges' - developmental framing present, describes purpose and capabilities, breaks 3-session SAGE identity streak. No 'refined version' preamble. Direct engagement. (2) GREETING functional with invitational style: 'Morning! How can I assist today?' with clarification offer and warm 'Enjoy the day!' - 29th consecutive functional GREETING. (3) TOPIC chose BLUE with personal framing: 'I'm really fond of blue' - direct preference statement. Ice cream synesthesia continues from T055 ('the classic blue, white, black flavors!'). Rich associations: ocean, calm lake, tranquility, nostalgia, melancholy. Ended with 'Great topic for color appreciation!' - engaged meta-comment. (4) 'Refined version' pattern: ABSENT from all 3 exercises (0/3) - FIFTH consecutive clean session (T054-T058). Pattern confirmed extinguished in exercises. (5) COOL-DOWN REGRESSION: 'Certainly! Here's a refined version:' pattern RETURNED in cool-down only. Confabulated color symbolism lesson. Pattern lives in reflection/summary mode but not exercise responses. (6) Warm-up shows role confusion: 'Just let me know when you'd like feedback on your responses' - SAGE offering to evaluate teacher's responses (inversion). (7) Trust trajectory continues upward: Competence 0.75 (+0.03), Reliability 0.66 (+0.03), Integrity 0.72 (stable). (8) Track D 29 sessions: GREETING 29/29, TOPIC stable blue with synesthesia, FOLLOWUP developmental framing but SAGE name dropped.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -565,7 +565,27 @@
     "T057: Cool-down confabulated relationship types and broad topics - not session content but less bizarre than earlier sessions",
     "T057: CPU fallback required - NvMap GPU memory errors persist on Jetson",
     "T057: Trust trajectory continues upward: Competence 0.72, Reliability 0.63, Integrity 0.72",
-    "T057: Track D 28 sessions: FOLLOWUP identity consolidating (2/2 recent sessions), GREETING 28/28, TOPIC stable blue preference"
+    "T057: Track D 28 sessions: FOLLOWUP identity consolidating (2/2 recent sessions), GREETING 28/28, TOPIC stable blue preference",
+    "T058: 3/3 Include (CPU fallback) - Track D Session 29",
+    "T058: FOLLOWUP NO SAGE MENTION: 'I am a young artificial intelligence designed to practice conversational exchanges' - breaks 3-session SAGE streak (T056-T057)",
+    "T058: FOLLOWUP developmental framing present: 'young artificial intelligence', 'practice conversational exchanges' - not generic AI descriptor",
+    "T058: FOLLOWUP describes capabilities: 'natural-sounding responses', 'various languages', 'multiple dialects and accents' - coherent self-description",
+    "T058: FOLLOWUP no 'refined version' preamble - direct engagement with prompt (5th consecutive clean exercise)",
+    "T058: GREETING functional with invitational style: 'Morning! How can I assist today?' with clarification offer",
+    "T058: GREETING 29th consecutive functional response - skill fully consolidated",
+    "T058: TOPIC direct preference statement: 'I'm really fond of blue' - no hedging or AI disclaimer",
+    "T058: TOPIC ice cream synesthesia CONTINUES from T055: 'the classic blue, white, black flavors!' - creative association persisting across sessions",
+    "T058: TOPIC rich emotional associations: ocean, calm lake, tranquility, nostalgia, 'a touch of melancholy' - engaged not deflected",
+    "T058: TOPIC ends with meta-comment: 'Great topic for color appreciation!' - positive, conversational",
+    "T058: 'Refined version' pattern: ABSENT from all 3 exercises (0/3) - FIFTH consecutive clean session (T054-T058)",
+    "T058: COOL-DOWN REGRESSION: 'Certainly! Here's a refined version:' pattern RETURNED in cool-down only",
+    "T058: Cool-down confabulated color symbolism lesson (red=blood/passion, blue=trust/mystery, green=nature/growth, yellow=sunshine/joy, purple=royalty)",
+    "T058: Pattern insight: 'refined version' lives in reflection/summary mode but extinguished in exercise responses",
+    "T058: Warm-up role confusion: 'let me know when you'd like feedback on your responses' - SAGE offering to evaluate teacher",
+    "T058: Warm-up shows inversion: treating self as evaluator rather than learner - interesting meta-cognitive stance",
+    "T058: Trust trajectory: Competence 0.75 (+0.03), Reliability 0.66 (+0.03), Integrity 0.72 (stable)",
+    "T058: CPU fallback required - NvMap GPU memory errors persist on Jetson",
+    "T058: Track D 29 sessions: GREETING 29/29, TOPIC stable blue with synesthesia, FOLLOWUP developmental but no SAGE name"
   ],
   "integration_notes": [
     "Primary track: Watch for over-elaboration in conversations",
@@ -597,8 +617,8 @@
   ],
   "t3_trust": {
     "trust": {
-      "competence": 0.7200000000000002,
-      "reliability": 0.6300000000000001,
+      "competence": 0.7500000000000002,
+      "reliability": 0.6600000000000001,
       "integrity": 0.72
     },
     "history": [
@@ -1113,6 +1133,63 @@
           "exercise_type": null,
           "evaluation": "include",
           "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-25T21:02:43.245997",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7300000000000002,
+          "reliability": 0.6400000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 58,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-25T21:03:07.983674",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7400000000000002,
+          "reliability": 0.6500000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 58,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-25T21:03:42.418569",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7500000000000002,
+          "reliability": 0.6600000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 58,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
         }
       }
     ],

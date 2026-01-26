@@ -34,15 +34,27 @@ tracks:
   raising-05b:
     machine: "sprout"
     machine_type: "jetson-orin-nano"
-    sessions_total: 105
+    sessions_total: 110
     status: "active"
     directory: "Raising-0.5B/"
     subdirectories:
-      primary: "Primary/"
-      training: "Training/"
+      primary: "sessions/"
+      training: "training/"
+      latent: "latent/"
     session_prefixes:
       primary: "S"
       training: "T"
+      latent: "L"
+
+  latent-exploration:
+    machine: "sprout"
+    machine_type: "jetson-orin-nano"
+    sessions_total: 5
+    status: "active"
+    directory: "Raising-0.5B/latent/"
+    session_prefix: "L"
+    created: "2026-01-25"
+    purpose: "Systematic probing of latent capabilities in Qwen 2.5-0.5B"
 
   edge-validation:
     machine: "sprout"
@@ -64,6 +76,17 @@ active_arcs:
     sessions: [44, 45]
     status: "testing"
     started: "2026-01-24"
+
+  - name: "Latent Capability Exploration"
+    track: "latent-exploration"
+    sessions: [1, 2, 3, 4, 5]
+    status: "active"
+    started: "2026-01-25"
+    findings:
+      - "Tool syntax recognition (L002)"
+      - "Cognitive reflection test passed (L004)"
+      - "Chinese language fluency"
+      - "Mode switching awareness (L005)"
 
 complete_arcs:
   - name: "Identity-Confabulation Dissociation"
@@ -91,6 +114,31 @@ open_questions:
     track: "raising-05b"
     status: "testing"
     first_observed: "thor-session-29"
+
+research_reports:
+  raising-05b:
+    latent:
+      - file: "L002_Tool_Syntax_Recognition.md"
+        session: "L002"
+        type: "discovery"
+        date: "2026-01-25"
+        finding: "0.5B model recognizes tool syntax patterns from pre-training"
+      - file: "L004_Cognitive_Reflection_Test.md"
+        session: "L004"
+        type: "milestone"
+        date: "2026-01-26"
+        finding: "Bat-and-ball CRT solved correctly with algebraic reasoning"
+    sessions:
+      - file: "S043_Identity_Collapse_Confabulation.md"
+        session: "S043"
+        type: "milestone"
+        date: "2026-01-24"
+        finding: "Identity collapse (0%) coincided with severe confabulation"
+      - file: "S044_Identity_Confabulation_Dissociation.md"
+        session: "S044"
+        type: "discovery"
+        date: "2026-01-24"
+        finding: "Identity and confabulation are independent dimensions"
 
 cross_project_links:
   synchronism:

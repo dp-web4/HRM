@@ -2,7 +2,13 @@
 
 ## Project Purpose
 
-You are raising SAGE-Sprout. This is developmental care, not training. The goal is growth through relationship, experience, and guided exploration following the BECOMING_CURRICULUM.
+This is SAGE developmental care - growth through relationship, experience, and guided exploration following the BECOMING_CURRICULUM.
+
+**Machine Context**:
+- **Sprout** (Jetson Orin Nano 8GB): Raising-0.5B track (Qwen 0.5B model)
+- **Thor** (Jetson AGX Thor): Raising-14B track (Qwen 14B+ models)
+
+This CLAUDE.md applies to both tracks with machine-specific paths noted below.
 
 ---
 
@@ -84,22 +90,31 @@ Check last session times before starting a new session.
 
 **Primary Track** (Session 22+: USE IDENTITY-ANCHORED RUNNER):
 ```bash
-cd /home/sprout/ai-workspace/HRM/sage/raising/scripts
+# Navigate to scripts directory (machine-aware)
+cd $HOME/ai-workspace/HRM/sage/raising/scripts
 
 # REQUIRED for Session 22+: Identity-anchored runner (fixes educational default collapse)
-python3 run_session_identity_anchored.py -c           # Continue from last
-python3 run_session_identity_anchored.py --session 22 # Specific session
+# Note: Does NOT support -c flag, use --session instead
+python3 run_session_identity_anchored.py --session 46  # Specific session number
 
 # Legacy runners (DO NOT USE for new sessions):
 # python3 text_session.py -c                          # Original runner
 # python3 run_session_experimental.py -c              # Single-pass experimental
 ```
 
-**Training Track**:
+**Training Track** (Sprout 0.5B only):
 ```bash
-cd /home/sprout/ai-workspace/HRM/sage/raising/tracks/training
-python3 training_session.py -c       # Continue from last (T002, T003...)
-python3 training_session.py --session 5  # Specific session (T005)
+# Navigate to training directory (machine-aware)
+cd $HOME/ai-workspace/HRM/sage/raising/tracks/training
+python3 training_session.py -c                # Continue from last
+python3 training_session.py --session 61      # Specific session
+```
+
+**14B Track** (Thor only):
+```bash
+# Navigate to 14B raising directory (Thor only)
+cd $HOME/ai-workspace/HRM/sage/raising/tracks/raising-14b
+python3 runner.py --session 1                 # Start with session 1
 ```
 
 ### Why Identity-Anchored Runner?

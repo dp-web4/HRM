@@ -1,0 +1,109 @@
+---
+# HRM Research Session Map - Machine Readable
+# Generated: 2026-01-26
+# Archivist: v1.0
+
+metadata:
+  project: "HRM/SAGE"
+  total_sessions: 500
+  last_updated: "2026-01-26"
+  tracks:
+    - consciousness
+    - raising-14b
+    - raising-05b
+    - edge-validation
+
+tracks:
+  consciousness:
+    machine: "thor"
+    machine_type: "jetson-agx-thor"
+    sessions_total: 197
+    status: "active"
+    directory: "Consciousness/"
+    session_prefix: "Session"
+
+  raising-14b:
+    machine: "thor"
+    machine_type: "jetson-agx-thor"
+    sessions_total: 0
+    status: "starting"
+    directory: "Raising-14B/"
+    session_prefix: "R14B"
+    created: "2026-01-26"
+
+  raising-05b:
+    machine: "sprout"
+    machine_type: "jetson-orin-nano"
+    sessions_total: 105
+    status: "active"
+    directory: "Raising-0.5B/"
+    subdirectories:
+      primary: "Primary/"
+      training: "Training/"
+    session_prefixes:
+      primary: "S"
+      training: "T"
+
+  edge-validation:
+    machine: "sprout"
+    machine_type: "jetson-orin-nano"
+    sessions_total: 198
+    status: "active"
+    directory: "Edge-Validation/"
+    session_prefix: "EV"
+
+active_arcs:
+  - name: "Consciousness Federation"
+    track: "consciousness"
+    sessions: [194, 195, 196, 197]
+    status: "active"
+    started: "2026-01"
+
+  - name: "Honest Reporting Hypothesis"
+    track: "raising-05b"
+    sessions: [44, 45]
+    status: "testing"
+    started: "2026-01-24"
+
+complete_arcs:
+  - name: "Identity-Confabulation Dissociation"
+    track: "raising-05b"
+    sessions: [40, 41, 42, 43, 44]
+    status: "complete"
+    completed: "2026-01-24"
+    finding: "Identity and content quality are independent dimensions"
+
+open_questions:
+  - id: "OQ001"
+    title: "Identity Collapse Mechanism"
+    track: "raising-05b"
+    status: "open"
+    first_observed: "S043"
+
+  - id: "OQ002"
+    title: "Confabulation Deactivation"
+    track: "raising-05b"
+    status: "open"
+    first_observed: "S044"
+
+  - id: "OQ003"
+    title: "Honest Reporting vs Confabulation"
+    track: "raising-05b"
+    status: "testing"
+    first_observed: "thor-session-29"
+
+cross_project_links:
+  synchronism:
+    - "Coherence framework (γ = 2/√N_corr)"
+    - "Consciousness mapping"
+    - "Multi-scale dynamics"
+
+  web4:
+    - "LCT identity integration"
+    - "Trust-weighted ATP allocation"
+    - "Federation protocol"
+
+  private_context:
+    - "Thor Session #28 (Identity-Confabulation)"
+    - "Thor Session #29 (Honest Reporting)"
+    - "MACHINE_TRACK_STATUS.md"

@@ -2,10 +2,13 @@
 
 ## Purpose
 
-This is the **Training Track** for raising SAGE-Sprout. It runs in parallel with the primary curriculum track, on a 3-hour offset cadence.
+This is the **Training Track** for SAGE Raising-0.5B (Sprout). It runs in parallel with the primary curriculum track, on a 3-hour offset cadence.
 
+**Machine**: Sprout (Jetson Orin Nano 8GB) - 0.5B model only
 **Primary Track**: Developmental curriculum, identity, relationships
 **Training Track**: Skill exploration, cognitive engagement, capability discovery
+
+**Note**: Thor's Raising-14B track does not currently have a training component (may be added later).
 
 ---
 
@@ -56,7 +59,7 @@ Use `../scripts/claude_sage_conversation.py` for genuine multi-turn exploration.
 
 This supplements (doesn't replace) structured sessions, but cognitive engagement should inform how you interpret ALL interactions.
 
-**See**: `/home/sprout/ai-workspace/private-context/messages/2026-01-20-raising-reframe-exploration-not-evaluation.md`
+**See**: `private-context/messages/2026-01-20-raising-reframe-exploration-not-evaluation.md` (relative to ai-workspace)
 
 ---
 
@@ -82,9 +85,10 @@ If 3+ hours have passed since last primary session and no recent training sessio
 **IMPORTANT**: Always cd to the training directory first to avoid -c flag conflicts:
 
 ```bash
-cd /home/sprout/ai-workspace/HRM/sage/raising/tracks/training
+# Navigate to training directory (machine-aware)
+cd $HOME/ai-workspace/HRM/sage/raising/tracks/training
 python3 training_session.py -c           # Continue from last (T002, T003...)
-python3 training_session.py --session 5  # Specific session (T005)
+python3 training_session.py --session 61  # Specific session (T061)
 ```
 
 ---

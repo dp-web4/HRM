@@ -25,7 +25,7 @@ tracks:
   raising-14b:
     machine: "thor"
     machine_type: "jetson-agx-thor"
-    sessions_total: 1
+    sessions_total: 2
     status: "active"
     directory: "Raising-14B/"
     session_prefix: "R14B"
@@ -74,14 +74,14 @@ active_arcs:
 
   - name: "14B Capacity Baseline"
     track: "raising-14b"
-    sessions: [1]
+    sessions: [1, 2]
     status: "active"
     started: "2026-01-26"
     findings:
-      - "Natural identity expression (80% As SAGE)"
-      - "Effortless meta-cognition (3/5 turns)"
+      - "Natural identity expression (80%→100%)"
+      - "Effortless meta-cognition (60%→80%)"
       - "Zero gaming (vs 20% at 0.5B)"
-      - "Concrete grounding (cursor observation)"
+      - "Pattern stability confirmed (improving not degrading)"
 
   - name: "Honest Reporting Hypothesis"
     track: "raising-05b"
@@ -135,6 +135,11 @@ research_reports:
         type: "baseline"
         date: "2026-01-26"
         finding: "14B shows natural identity vs mechanical at 0.5B - capacity matters"
+      - file: "R14B_002_Continuity_And_Pattern_Stability.md"
+        session: "R14B_002"
+        type: "trajectory"
+        date: "2026-01-26"
+        finding: "14B improves session-to-session (100% identity), 0.5B degrades"
   raising-05b:
     latent:
       - file: "L002_Tool_Syntax_Recognition.md"

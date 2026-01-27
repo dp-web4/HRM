@@ -2,14 +2,15 @@
   "track": "raising-14b",
   "machine": "thor",
   "model_size": "14B",
-  "current_session": 1,
-  "next_session": 2,
+  "current_session": 2,
+  "next_session": 3,
   "phase": "grounding",
   "model_path": "Qwen/Qwen2.5-14B-Instruct",
   "created": "2026-01-26",
   "status": "ready",
   "sessions_completed": [
-    1
+    1,
+    2
   ],
   "metrics": {
     "identity_avg": null,

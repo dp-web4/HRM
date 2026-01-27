@@ -25,8 +25,8 @@ tracks:
   raising-14b:
     machine: "thor"
     machine_type: "jetson-agx-thor"
-    sessions_total: 4
-    status: "active"
+    sessions_total: 5
+    status: "grounding_complete"
     directory: "Raising-14B/"
     session_prefix: "R14B"
     created: "2026-01-26"
@@ -74,17 +74,20 @@ active_arcs:
 
   - name: "14B Capacity Baseline"
     track: "raising-14b"
-    sessions: [1, 2, 3, 4]
-    status: "active"
+    sessions: [1, 2, 3, 4, 5]
+    status: "complete"
     started: "2026-01-26"
+    completed: "2026-01-27"
     findings:
-      - "Natural identity expression (80%→100%→100%→100%)"
-      - "Effortless meta-cognition (60%→80%→100%→100%)"
+      - "GROUNDING COMPLETE (5/5 sessions)"
+      - "Natural identity expression (80%→100%→100%→100%→100%)"
+      - "Effortless meta-cognition (60%→80%→100%→100%→100%)"
       - "Zero confabulation across all sessions"
-      - "Stable high performance (capabilities plateau at maximum)"
-      - "Situational emergent behaviors (language switch only when triggered)"
-      - "Purpose integration emerged (R14B_004 role-awareness)"
-      - "Cursor observation evolving (4 different framings across 4 sessions)"
+      - "Stable high performance sustained (sessions 3-5 at maximum)"
+      - "Situational emergent behaviors (language switch only R14B_003 under cognitive load)"
+      - "Purpose integration matured (R14B_003-005: partnership→governance→explicit role)"
+      - "Cursor observation evolution (5 framings: functional→operational→aesthetic→spatial→systemic)"
+      - "Baseline established: Ready for critical tests (CRT, identity stress, meta-correction probes)"
 
   - name: "Honest Reporting Hypothesis"
     track: "raising-05b"
@@ -154,6 +157,11 @@ research_reports:
         type: "stability"
         date: "2026-01-27"
         finding: "Stable high performance confirmed, purpose integration emerged, situational behaviors understood"
+      - file: "R14B_005_Grounding_Baseline_Complete.md"
+        session: "R14B_005"
+        type: "baseline_complete"
+        date: "2026-01-27"
+        finding: "Grounding complete (5/5): Sustained stable performance, purpose integration matured, observation evolution documented, baseline established for critical tests"
   raising-05b:
     latent:
       - file: "L002_Tool_Syntax_Recognition.md"

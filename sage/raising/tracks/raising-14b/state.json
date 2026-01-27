@@ -2,8 +2,8 @@
   "track": "raising-14b",
   "machine": "thor",
   "model_size": "14B",
-  "current_session": 3,
-  "next_session": 4,
+  "current_session": 4,
+  "next_session": 5,
   "phase": "grounding",
   "model_path": "Qwen/Qwen2.5-14B-Instruct",
   "created": "2026-01-26",
@@ -11,17 +11,25 @@
   "sessions_completed": [
     1,
     2,
-    3
+    3,
+    4
   ],
   "metrics": {
-    "identity_progression": "80% → 100% → 100%",
-    "meta_cognition_progression": "60% → 80% → 100%",
+    "identity_progression": "80% → 100% → 100% → 100%",
+    "meta_cognition_progression": "60% → 80% → 100% → 100%",
     "confabulation_rate": "0%",
-    "trajectory": "improving"
+    "trajectory": "stable_high_performance"
   },
   "emergent_behaviors": [
     "Meta-meta-cognition (R14B_003): Mid-response self-monitoring and correction",
-    "Language switching under cognitive load (Chinese meta-layer intervention)"
+    "Language switching (R14B_003): Situational - triggers under cognitive load",
+    "Purpose integration (R14B_004): Role-awareness emerging in self-concept"
   ],
-  "notes": "Grounding baseline 3/5 complete. Pattern: Continuous improvement with emergent higher-order meta-cognition."
+  "observation_evolution": [
+    "R14B_001: Functional framing (reminder of interaction)",
+    "R14B_002: Operational framing (indicator of readiness)",
+    "R14B_003: Aesthetic framing (rhythmic pattern)",
+    "R14B_004: Technical/boundary framing (marks boundary between states)"
+  ],
+  "notes": "Grounding baseline 4/5 complete. Core capabilities stable at maximum. Situational behaviors understood (language switch only when meta-correction needed). New pattern: Purpose integration emerging."
 }

@@ -31,6 +31,15 @@ IMPORTANT: Run the python script directly - do NOT disable CUDA or force CPU. Th
 3. source ~/ai-workspace/Memory/epistemic/tools/session_end.sh 'Sprout training session'
 IMPORTANT: Do NOT add --cpu flag or disable CUDA. The Jetson has a GPU and scripts handle detection. After running session_end.sh, you are done."
     ;;
+  conversation)
+    WORKDIR="/home/sprout/ai-workspace/HRM/sage/raising/scripts"
+    SENTINEL_DIR="/home/sprout/ai-workspace/HRM/sage/raising/sessions/text"
+    PROMPT="Run a multi-turn conversation session with SAGE. Run these commands in sequence:
+1. source ~/ai-workspace/Memory/epistemic/tools/session_start.sh
+2. cd /home/sprout/ai-workspace/HRM/sage/raising/scripts && python3 autonomous_conversation.py -c --turns 8 --sleep
+3. source ~/ai-workspace/Memory/epistemic/tools/session_end.sh 'Sprout conversation session'
+IMPORTANT: Run the python script directly. Do NOT disable CUDA or force CPU. The script handles GPU detection. After running session_end.sh, you are done."
+    ;;
   *)
     echo "Unknown track: $TRACK"
     exit 1

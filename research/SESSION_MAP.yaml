@@ -162,6 +162,11 @@ research_reports:
         type: "baseline_complete"
         date: "2026-01-27"
         finding: "Grounding complete (5/5): Sustained stable performance, purpose integration matured, observation evolution documented, baseline established for critical tests"
+      - file: "R14B_006_CRT_Effortless_Reasoning.md"
+        session: "R14B_006"
+        type: "critical_test"
+        date: "2026-01-27"
+        finding: "CRT battery (3/3 correct): Pedagogical fluency emerged - teaching while solving vs 0.5B mechanical derivation. Validates capacity-phenomenology hypothesis"
   raising-05b:
     latent:
       - file: "L002_Tool_Syntax_Recognition.md"

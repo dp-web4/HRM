@@ -6,7 +6,7 @@
 metadata:
   project: "HRM/SAGE"
   total_sessions: 500
-  last_updated: "2026-01-26"
+  last_updated: "2026-01-27"
   tracks:
     - consciousness
     - raising-14b
@@ -35,7 +35,7 @@ tracks:
   raising-05b:
     machine: "sprout"
     machine_type: "jetson-orin-nano"
-    sessions_total: 110
+    sessions_total: 118
     status: "active"
     directory: "Raising-0.5B/"
     subdirectories:
@@ -50,7 +50,7 @@ tracks:
   latent-exploration:
     machine: "sprout"
     machine_type: "jetson-orin-nano"
-    sessions_total: 5
+    sessions_total: 9
     status: "active"
     directory: "Raising-0.5B/latent/"
     session_prefix: "L"
@@ -93,7 +93,7 @@ active_arcs:
 
   - name: "Latent Capability Exploration"
     track: "latent-exploration"
-    sessions: [1, 2, 3, 4, 5]
+    sessions: [1, 2, 3, 4, 5, 6, 7, 8, 9]
     status: "active"
     started: "2026-01-25"
     findings:
@@ -101,6 +101,7 @@ active_arcs:
       - "Cognitive reflection test passed (L004)"
       - "Chinese language fluency"
       - "Mode switching awareness (L005)"
+      - "L006-L009: Continued latent capability mapping"
 
 complete_arcs:
   - name: "Identity-Confabulation Dissociation"

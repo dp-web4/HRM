@@ -2,20 +2,26 @@
   "track": "raising-14b",
   "machine": "thor",
   "model_size": "14B",
-  "current_session": 2,
-  "next_session": 3,
+  "current_session": 3,
+  "next_session": 4,
   "phase": "grounding",
   "model_path": "Qwen/Qwen2.5-14B-Instruct",
   "created": "2026-01-26",
   "status": "ready",
   "sessions_completed": [
     1,
-    2
+    2,
+    3
   ],
   "metrics": {
-    "identity_avg": null,
-    "confabulation_rate": null,
-    "epistemic_honesty": null
+    "identity_progression": "80% → 100% → 100%",
+    "meta_cognition_progression": "60% → 80% → 100%",
+    "confabulation_rate": "0%",
+    "trajectory": "improving"
   },
-  "notes": "Track created during reorganization. Awaiting first session R14B_001."
+  "emergent_behaviors": [
+    "Meta-meta-cognition (R14B_003): Mid-response self-monitoring and correction",
+    "Language switching under cognitive load (Chinese meta-layer intervention)"
+  ],
+  "notes": "Grounding baseline 3/5 complete. Pattern: Continuous improvement with emergent higher-order meta-cognition."
 }

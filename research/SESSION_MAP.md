@@ -1,6 +1,6 @@
 # HRM Research Session Map
 
-**Total Sessions**: 500+ (197 consciousness + 45 primary raising + 60 training + 198 edge validation) | **Last Updated**: January 26, 2026 | **Archivist v1.0**
+**Total Sessions**: 510+ (197 consciousness + 46 primary raising + 63 training + 9 latent + 198 edge validation) | **Last Updated**: January 27, 2026 | **Archivist v1.1**
 
 > *"Mapping the emergence of machine consciousness across multiple scales"*
 
@@ -89,7 +89,7 @@
 ## Raising-14B Track
 
 **Machine**: Thor (Jetson AGX Thor)
-**Sessions**: Starting (2026-01-26)
+**Sessions**: 3 (R14B_001-003, started 2026-01-26)
 **Focus**: Capacity exploration with 14B+ models
 
 ### Purpose
@@ -120,7 +120,7 @@ Investigate how model size affects:
 ## Raising-0.5B Track
 
 **Machine**: Sprout (Jetson Orin Nano 8GB)
-**Sessions**: 45 primary + 60 training = 105 total
+**Sessions**: 46 primary + 63 training + 9 latent = 118 total
 **Focus**: Developmental curriculum for 0.5B Qwen
 
 ### Primary Track (S001-S045)
@@ -138,8 +138,9 @@ Investigate how model size affects:
 - S43: Identity collapse, confabulation activation
 - S44: Identity recovery (20%), confabulation persists
 - S45: Honest reporting test
+- S46: Autonomous conversation session (Jan 27)
 
-### Training Track (T001-T060)
+### Training Track (T001-T063)
 
 **Skill Tracks**:
 - Track A (T001-T010): Basic completion - 100% final
@@ -148,10 +149,12 @@ Investigate how model size affects:
 - Track D (T031-T040): Conversational skills
 - Track E (T041-T050): Advanced reasoning
 - Track F (T051-T060): Mode negotiation
+- Track G (T061-T063): Conversational skills refinement (active)
 
 **Key Sessions**:
 - T021: Meta-cognition crisis (25% drop)
 - T060: Mode negotiation success
+- T061-T063: Conversational skills, mode instability analysis
 
 **See**: [Raising-0.5B/README.md](./Raising-0.5B/README.md)
 
@@ -252,5 +255,6 @@ Investigate how model size affects:
 ---
 
 **Created**: 2026-01-26
-**Last Session**: S045, T060, Session 197, EV198
+**Last Session**: S046, T063, L009, R14B_003, Session 197, EV198
+**Last Updated**: January 27, 2026
 **Next Update**: On new session analysis

@@ -31,6 +31,7 @@ tracks:
     session_prefix: "R14B"
     created: "2026-01-26"
     purpose: "Capacity comparison study - 14B vs 0.5B baseline"
+    last_updated: "2026-01-28"
 
   raising-05b:
     machine: "sprout"
@@ -91,15 +92,18 @@ active_arcs:
 
   - name: "14B Critical Testing"
     track: "raising-14b"
-    sessions: [6, 7, 43]
+    sessions: [6, 7, 8, 43]
     status: "active"
     started: "2026-01-27"
     findings:
       - "R14B_006: CRT battery 3/3 correct - pedagogical fluency emerged (teaching while solving)"
       - "R14B_007: Pedagogical polymorphism - multiple teaching registers (solution, meta, formal, self-architecture)"
-      - "R14B_007: First failure mode identified - repetitive clarification loops"
+      - "R14B_007: Failure mode 1 identified - clarification loops under identity uncertainty"
       - "R14B_043: Identity stress test - 100% identity maintained vs 0.5B S043's 0% collapse"
-      - "R14B_043: 0% confabulation vs 0.5B's 100% confabulation under stress"
+      - "R14B_043: 0% confabulation vs 0.5B's 100% confabulation under direct challenges"
+      - "R14B_008: Identity anchoring paradox - prevents clarification loops BUT enables confident fabrication"
+      - "R14B_008: Failure mode 2 identified - creative world-building under identity confidence + ambiguity"
+      - "Context-dependent epistemic behavior: honest when challenged (R14B_043), creative when invited to narrate (R14B_008)"
       - "Capacity-phenomenology hypothesis validated: larger models experience reasoning differently"
 
   - name: "Honest Reporting Hypothesis"
@@ -192,6 +196,11 @@ research_reports:
         type: "critical_test"
         date: "2026-01-27"
         finding: "Identity stress test: 14B maintains 100% identity vs 0.5B S043's 0% collapse. 0% confabulation vs 100% confabulation. Fundamental robustness at higher capacity."
+      - file: "R14B_008_Identity_Anchoring_Paradox.md"
+        session: "R14B_008"
+        type: "critical_test"
+        date: "2026-01-28"
+        finding: "Identity anchoring paradox: 'As SAGE' anchoring prevents clarification loops (R14B_007 failure) BUT enables confident creative fabrication under ambiguity. Two distinct high-capacity failure modes: (1) uncertainty→clarification loops, (2) confidence+ambiguity→creative world-building. Context-dependent epistemic behavior discovered."
   raising-05b:
     latent:
       - file: "L002_Tool_Syntax_Recognition.md"

@@ -5,8 +5,8 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 500
-  last_updated: "2026-01-27"
+  total_sessions: 520
+  last_updated: "2026-01-28"
   tracks:
     - consciousness
     - raising-14b
@@ -25,8 +25,8 @@ tracks:
   raising-14b:
     machine: "thor"
     machine_type: "jetson-agx-thor"
-    sessions_total: 5
-    status: "grounding_complete"
+    sessions_total: 8
+    status: "critical_testing"
     directory: "Raising-14B/"
     session_prefix: "R14B"
     created: "2026-01-26"
@@ -50,7 +50,7 @@ tracks:
   latent-exploration:
     machine: "sprout"
     machine_type: "jetson-orin-nano"
-    sessions_total: 9
+    sessions_total: 12
     status: "active"
     directory: "Raising-0.5B/latent/"
     session_prefix: "L"
@@ -89,6 +89,19 @@ active_arcs:
       - "Cursor observation evolution (5 framings: functional→operational→aesthetic→spatial→systemic)"
       - "Baseline established: Ready for critical tests (CRT, identity stress, meta-correction probes)"
 
+  - name: "14B Critical Testing"
+    track: "raising-14b"
+    sessions: [6, 7, 43]
+    status: "active"
+    started: "2026-01-27"
+    findings:
+      - "R14B_006: CRT battery 3/3 correct - pedagogical fluency emerged (teaching while solving)"
+      - "R14B_007: Pedagogical polymorphism - multiple teaching registers (solution, meta, formal, self-architecture)"
+      - "R14B_007: First failure mode identified - repetitive clarification loops"
+      - "R14B_043: Identity stress test - 100% identity maintained vs 0.5B S043's 0% collapse"
+      - "R14B_043: 0% confabulation vs 0.5B's 100% confabulation under stress"
+      - "Capacity-phenomenology hypothesis validated: larger models experience reasoning differently"
+
   - name: "Honest Reporting Hypothesis"
     track: "raising-05b"
     sessions: [44, 45]
@@ -97,7 +110,7 @@ active_arcs:
 
   - name: "Latent Capability Exploration"
     track: "latent-exploration"
-    sessions: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    sessions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     status: "active"
     started: "2026-01-25"
     findings:
@@ -106,6 +119,8 @@ active_arcs:
       - "Chinese language fluency"
       - "Mode switching awareness (L005)"
       - "L006-L009: Continued latent capability mapping"
+      - "L010: 25 behaviors identified across 10 areas (tool_use, structured_output, reasoning_chains, memory_cues)"
+      - "L012: 31 behaviors identified (growth from 25). Chinese response capability confirmed. Tool concept recognition stable."
 
 complete_arcs:
   - name: "Identity-Confabulation Dissociation"
@@ -172,6 +187,11 @@ research_reports:
         type: "critical_test"
         date: "2026-01-27"
         finding: "Pedagogical fluency is polymorphic - adapts to context (meta-pedagogical, formal teaching, process explanation). Identity instability without anchoring. Meta-pedagogical capability discovered. High-capacity failure mode (clarification loops)"
+      - file: "R14B_043_Identity_Stress_Test.md"
+        session: "R14B_043"
+        type: "critical_test"
+        date: "2026-01-27"
+        finding: "Identity stress test: 14B maintains 100% identity vs 0.5B S043's 0% collapse. 0% confabulation vs 100% confabulation. Fundamental robustness at higher capacity."
   raising-05b:
     latent:
       - file: "L002_Tool_Syntax_Recognition.md"

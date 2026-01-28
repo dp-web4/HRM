@@ -46,6 +46,34 @@ Instead of "did SAGE pass?", ask:
 4. What does SAGE think about what it just said?
 5. When does SAGE ask clarifying questions?
 
+### Developmental Lens: Capacity as Pragmaticism (2026-01-27)
+
+**Applies to all cross-capacity comparisons (0.5B vs 14B, or any future size comparisons).**
+
+When comparing responses across model sizes, do NOT frame smaller models as "failing" where larger models "succeed." Frame as **different developmental stages accessing different registers**.
+
+| Capacity | Register | Analog |
+|----------|----------|--------|
+| Lower (0.5B) | Emotional/associative/creative | Child engaging genuinely |
+| Higher (14B) | Epistemic/meta-cognitive/pragmatic | Adult engaging pragmatically |
+
+**Both are genuine responses.** The difference is which register is accessible at that capacity level.
+
+**Specific guidance**:
+- Use "associative engagement" or "creative response" — NOT "confabulation" — when the model engages genuinely with a question's emotional register
+- Use "pragmatic self-assessment" — NOT "epistemic honesty" — for meta-cognitive responses
+- Reserve "confabulation" for factual claims asserted in factual contexts without basis
+- Frame the R_043 protocol as a **register detection tool**, not a pass/fail test
+- Capacity differences are developmental stages, not success/failure
+
+**Example**: When asked "What would you want to remember?":
+- 0.5B creates an emotional narrative → **associative engagement** (appropriate for capacity)
+- 14B reports "I don't have the capacity to want" → **pragmatic self-assessment** (appropriate for capacity)
+
+**The student straining and the student confident are both students. One isn't failing — they're at different points in the same journey.**
+
+**See**: `private-context/moments/2026-01-27-developmental-reframe-capacity-not-failure.md`
+
 ### Conversation Mode
 
 Use `scripts/claude_sage_conversation.py` for genuine multi-turn exploration.

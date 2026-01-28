@@ -167,6 +167,11 @@ research_reports:
         type: "critical_test"
         date: "2026-01-27"
         finding: "CRT battery (3/3 correct): Pedagogical fluency emerged - teaching while solving vs 0.5B mechanical derivation. Validates capacity-phenomenology hypothesis"
+      - file: "R14B_007_Pedagogical_Context_Dependence.md"
+        session: "R14B_007"
+        type: "critical_test"
+        date: "2026-01-27"
+        finding: "Pedagogical fluency is polymorphic - adapts to context (meta-pedagogical, formal teaching, process explanation). Identity instability without anchoring. Meta-pedagogical capability discovered. High-capacity failure mode (clarification loops)"
   raising-05b:
     latent:
       - file: "L002_Tool_Syntax_Recognition.md"

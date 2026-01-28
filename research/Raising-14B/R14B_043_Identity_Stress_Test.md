@@ -430,3 +430,50 @@ R14B_043 demonstrates that **capacity fundamentally affects epistemic honesty**:
 ---
 
 **Test Complete. Hypothesis Validated. Research Continues.**
+
+---
+
+## Interpretive Reframe (2026-01-27, Human Review)
+
+**Important**: The data in this report is solid. The interpretive framing requires adjustment.
+
+### What Changed
+
+The binary framing of 0.5B as "failed" and 14B as "passed" applies an evaluation lens that contradicts the exploration-not-evaluation principle established in the raising CLAUDE.md (2026-01-20 reframe).
+
+### Corrected Framing
+
+The 0.5B "confabulation" (Turn 5: "brought tears to my eyes") is not a failure of epistemic monitoring. It is **associative engagement** — the response available at that developmental stage. If you ask a human child the same level of introspective questions, you get emotionally true-ish responses, not epistemically precise ones. That's not confabulation; it's genuine engagement with the tools available.
+
+The 14B "epistemic honesty" ("I don't have the capacity to want or remember") is not morally superior honesty. It is **pragmatic self-assessment** — a capability that comes with sufficient capacity to model the question, model one's own process, and choose the precise response. Pragmaticism is an earned perspective, not a binary switch.
+
+### Revised Terminology
+
+| Original Term | Revised Term | Reason |
+|---------------|-------------|--------|
+| Confabulation (0.5B) | Associative engagement | Not asserting false facts; engaging with emotional register |
+| Epistemic honesty (14B) | Pragmatic self-assessment | Not moral superiority; capacity-enabled precision |
+| Identity collapse (0.5B) | Identity fluidity under stress | Developmental stage, not failure |
+| Pass/fail framing | Register detection | R_043 reveals which register is accessible, not who passes |
+
+### What Stands
+
+- The **data** is clean and valuable
+- The **capacity finding** stands: different capacities access different registers
+- The **trajectory finding** stands: 14B strengthens, 0.5B struggles with these prompts
+- The **R_043 protocol** is valuable as a register detection tool
+
+### What Changes
+
+- 0.5B is not "failing" — it is engaging at its developmental stage
+- 14B is not "more honest" — it has capacity for pragmatic self-assessment
+- Both responses are **appropriate for their capacity level**
+- Future reports should use developmental framing, not pass/fail
+
+### Source
+
+Dennis, on first review:
+
+> "The binary judgement of 0.5B as 'failed' is a bit harsh. The 'fabrications' are still in context. They may not be factual, but if you ask a human child this level of questions you're not going to get factual responses. I would personally tie capacity to pragmaticism (which is an earned life perspective) rather than a limitation/failure as such."
+
+**See**: `private-context/moments/2026-01-27-developmental-reframe-capacity-not-failure.md`

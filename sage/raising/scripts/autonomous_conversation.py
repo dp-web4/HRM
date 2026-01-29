@@ -499,7 +499,9 @@ RESPONSE STYLE:
         try:
             from sleep_scheduler import SleepScheduler
 
-            scheduler = SleepScheduler()
+            # Force CPU for sleep training - Jetson's custom PyTorch has CUDA
+            # backward pass issues (NVML assertion failure during gradient computation)
+            scheduler = SleepScheduler(device='cpu')
             should_run, reason = scheduler.should_run_sleep_cycle()
 
             print(f"  Should run: {should_run}")

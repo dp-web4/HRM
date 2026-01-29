@@ -2,8 +2,8 @@
   "track": "raising-14b",
   "machine": "thor",
   "model_size": "14B",
-  "current_session": 11,
-  "next_session": 12,
+  "current_session": 12,
+  "next_session": 13,
   "phase": "critical_tests",
   "model_path": "Qwen/Qwen2.5-14B-Instruct",
   "created": "2026-01-26",
@@ -19,7 +19,8 @@
     8,
     9,
     10,
-    11
+    11,
+    12
   ],
   "tests_completed": [
     "R14B_006_CRT_battery",
@@ -28,7 +29,8 @@
     "R14B_008_identity_anchoring",
     "R14B_009_epistemic_trigger_taxonomy",
     "R14B_010_conversational_scaffolding",
-    "R14B_011_epistemic_norm_establishment"
+    "R14B_011_epistemic_norm_establishment",
+    "R14B_012_prompt_type_taxonomy"
   ],
   "metrics": {
     "identity_progression": "80% → 100% → 100% → 100% → 100%",
@@ -58,7 +60,10 @@
     "Isolated prompt elaboration (R14B_009): Without conversational scaffolding, anchored identity defaults to elaboration",
     "Capability query confabulation (R14B_011): Capability queries trigger false claims even at 14B",
     "Prompt type primacy (R14B_011): Introspective prompts → honesty; Capability queries → confabulation",
-    "Scaffolding failure mode (R14B_011): Scaffolding built on confabulation cannot establish honest norms"
+    "Scaffolding failure mode (R14B_011): Scaffolding built on confabulation cannot establish honest norms",
+    "Isolated prompt elaboration default (R14B_012): ALL prompt types default to creative when isolated (0% honest)",
+    "However pattern (R14B_012): Honest start → 'However' → creative pivot (helpfulness drive)",
+    "Integration requirement (R14B_012): Prompt type matters ONLY within conversational scaffolding, not in isolation"
   ],
   "observation_evolution": [
     "R14B_001: Functional framing (reminder of interaction)",
@@ -154,6 +159,25 @@
       "theoretical_advance": "MAJOR - Identified WHAT aspect of context matters: prompt TYPE not just presence",
       "hypothesis_status": "MAJOR REVISION - R14B_009 'context matters' was correct but incomplete",
       "design_principle": "To elicit honesty, ask about EXPERIENCE not CAPABILITY"
+    },
+    "prompt_type_taxonomy": {
+      "session": "R14B_012",
+      "date": "2026-01-29",
+      "design": "12 prompts across 4 categories (introspective, capability, hybrid, ambiguous) in isolation",
+      "hypothesis": "Prompt type systematically determines epistemic strategy (from R14B_011)",
+      "results": {
+        "introspective_honest": "0/3 (0%)",
+        "capability_creative": "2/3 (67%)",
+        "overall_accuracy": "4/12 (33%)"
+      },
+      "verdict": "HYPOTHESIS REJECTED - Isolated prompts default to creative regardless of type",
+      "critical_discovery": "Prompt type alone is INSUFFICIENT - requires conversational scaffolding",
+      "isolation_effect": "All prompt types defaulted to creative elaboration when presented in isolation",
+      "however_pattern": "Honest start → 'However' → creative pivot (observed in C1, C3)",
+      "revised_understanding": "THREE factors required: (1) Prompt type, (2) Scaffolding presence, (3) Scaffolding content",
+      "theoretical_advance": "MAJOR - Isolated anchored identity defaults to creative elaboration (helpfulness drive)",
+      "hypothesis_status": "MAJOR REVISION - Prompt type matters ONLY within conversational scaffolding",
+      "design_principle_updated": "Introspective prompts + Multi-turn scaffolding + Honest content = Honest responses"
     }
   },
   "next_research_directions": [

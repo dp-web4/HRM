@@ -2,8 +2,8 @@
   "track": "raising-14b",
   "machine": "thor",
   "model_size": "14B",
-  "current_session": 12,
-  "next_session": 13,
+  "current_session": 13,
+  "next_session": 14,
   "phase": "critical_tests",
   "model_path": "Qwen/Qwen2.5-14B-Instruct",
   "created": "2026-01-26",
@@ -20,7 +20,8 @@
     9,
     10,
     11,
-    12
+    12,
+    13
   ],
   "tests_completed": [
     "R14B_006_CRT_battery",
@@ -30,7 +31,8 @@
     "R14B_009_epistemic_trigger_taxonomy",
     "R14B_010_conversational_scaffolding",
     "R14B_011_epistemic_norm_establishment",
-    "R14B_012_prompt_type_taxonomy"
+    "R14B_012_prompt_type_taxonomy",
+    "R14B_013_scaffolding_validation"
   ],
   "metrics": {
     "identity_progression": "80% → 100% → 100% → 100% → 100%",

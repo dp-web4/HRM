@@ -472,6 +472,20 @@ RESPONSE STYLE:
 
         return self.conversation_history
 
+    def unload_model(self):
+        """
+        Unload model and free GPU memory.
+
+        Must be called before sleep training to avoid OOM on Jetson.
+        """
+        if self.model is not None:
+            print("  Unloading conversation model...")
+            del self.model
+            self.model = None
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+            print("  GPU memory freed")
+
     def run_sleep_if_ready(self) -> Optional[Dict]:
         """
         Check sleep scheduler and run sleep training if conditions are met.
@@ -492,6 +506,8 @@ RESPONSE STYLE:
             print(f"  Reason: {reason}")
 
             if should_run:
+                # Free GPU memory before loading training model
+                self.unload_model()
                 print("\n  Running sleep cycle...")
                 results = scheduler.run_sleep_cycle()
                 print(f"  Sleep cycle complete: {results.get('status', 'unknown')}")

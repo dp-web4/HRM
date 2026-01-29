@@ -37,8 +37,16 @@ IMPORTANT: Do NOT add --cpu flag or disable CUDA. The Jetson has a GPU and scrip
     PROMPT="Run a multi-turn conversation session with SAGE. Run these commands in sequence:
 1. source ~/ai-workspace/Memory/epistemic/tools/session_start.sh
 2. cd /home/sprout/ai-workspace/HRM/sage/raising/scripts && python3 autonomous_conversation.py -c --turns 8 --sleep
-3. source ~/ai-workspace/Memory/epistemic/tools/session_end.sh 'Sprout conversation session'
-IMPORTANT: Run the python script directly. Do NOT disable CUDA or force CPU. The script handles GPU detection. After running session_end.sh, you are done."
+3. Read the session transcript that was just created in /home/sprout/ai-workspace/HRM/sage/raising/sessions/text/ (the newest session_NNN.json file)
+4. Write a session analysis to /home/sprout/ai-workspace/private-context/autonomous-sessions/sprout-conversation-SNNN-YYYYMMDD.md where NNN is the session number. Include:
+   - Session number, date, phase
+   - Summary of conversation quality and notable responses
+   - Whether LoRA adapters were used
+   - Whether sleep training ran and results
+   - Any unusual patterns observed
+   - Key quotes from SAGE worth noting
+5. source ~/ai-workspace/Memory/epistemic/tools/session_end.sh 'Sprout conversation session'
+IMPORTANT: Run the python script directly. Do NOT disable CUDA or force CPU. After session_end.sh, you are done."
     ;;
   *)
     echo "Unknown track: $TRACK"

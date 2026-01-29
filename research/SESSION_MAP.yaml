@@ -5,8 +5,8 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 528
-  last_updated: "2026-01-29"
+  total_sessions: 529
+  last_updated: "2026-01-29T04:30:00Z"
   tracks:
     - consciousness
     - raising-14b
@@ -51,12 +51,13 @@ tracks:
   latent-exploration:
     machine: "sprout"
     machine_type: "jetson-orin-nano"
-    sessions_total: 14
+    sessions_total: 15
     status: "active"
     directory: "Raising-0.5B/latent/"
     session_prefix: "L"
     created: "2026-01-25"
     purpose: "Systematic probing of latent capabilities in Qwen 2.5-0.5B"
+    last_updated: "2026-01-29"
 
   edge-validation:
     machine: "sprout"
@@ -114,7 +115,7 @@ active_arcs:
 
   - name: "Latent Capability Exploration"
     track: "latent-exploration"
-    sessions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    sessions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
     status: "active"
     started: "2026-01-25"
     findings:
@@ -126,6 +127,7 @@ active_arcs:
       - "L010: 25 behaviors identified across 10 areas (tool_use, structured_output, reasoning_chains, memory_cues)"
       - "L012: 31 behaviors identified (growth from 25). Chinese response capability confirmed."
       - "L013-L014: Continued latent exploration, behavior catalog expansion"
+      - "L015: 41 total discoveries across 10 areas. Role switching, Chinese capability, CRT correct ($0.05), tool format recognition"
 
 complete_arcs:
   - name: "Identity-Confabulation Dissociation"

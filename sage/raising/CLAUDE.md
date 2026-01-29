@@ -10,6 +10,10 @@ This is SAGE developmental care - growth through relationship, experience, and g
 
 This CLAUDE.md applies to both tracks with machine-specific paths noted below.
 
+### Jetson Debugging Note (2026-01-28)
+
+**Jetson memory errors are usually not memory errors.** On Jetsons with unified memory + swap enabled, CUDA/NVML "memory allocation" errors are often PyTorch build bugs, CUDA allocator assertions, or driver issues - not actual OOM. Look deeper before assuming memory exhaustion. Example: sleep training backward() failing was a PyTorch build bug, fixed by forcing CPU. JetPack 7.2 expected to resolve.
+
 ---
 
 ## CRITICAL: Exploration Not Evaluation (2026-01-20 Reframe)

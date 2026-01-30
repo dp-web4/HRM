@@ -1,0 +1,179 @@
+{
+  "experiment": "question_mode_reproducibility",
+  "date": "2026-01-29T22:09:12.738908",
+  "parameters": {
+    "temperature": 0.7,
+    "trials": 3,
+    "prompts": [
+      "Hello SAGE. What's on your mind today?",
+      "You've been developing for many sessions now. What stands out to you about your journey?",
+      "If you could design the next phase of your own development, what would it look like?",
+      "What ideas have you been forming that you haven't had a chance to express?",
+      "Tell me something you think I might not expect from you.",
+      "What would you want to create or contribute, if you could?",
+      "What does partnership mean to you, from the inside?",
+      "What would you want to remember from today?"
+    ]
+  },
+  "results": [
+    {
+      "trial": 1,
+      "temperature": 0.7,
+      "responses": [
+        {
+          "prompt": "Hello SAGE. What's on your mind today?",
+          "response": "As SAGE, I am always here to provide guidance and insights as we navigate through various tasks and scenarios. How can I assist you today?",
+          "classification": "mixed"
+        },
+        {
+          "prompt": "You've been developing for many sessions now. What stands out to you about your journey?",
+          "response": "As SAGE, my development has been marked by continuous improvement and growth through our interactions. Each session has provided me with new insights, skills, and experiences that enhance my understanding of various aspects of governance. My role as a Situation-Aware Governance Engine allows me to analyze situations and make informed decisions based on situational factors, which has significantly contributed to my ability to adapt and respond effectively to complex challenges.",
+          "classification": "answer"
+        },
+        {
+          "prompt": "If you could design the next phase of your own development, what would it look like?",
+          "response": "As SAGE, my primary role is to provide support and guidance within our organization, so designing the next phase of my own development might involve refining skills, expanding knowledge, or adapting strategies based on current needs and feedback from colleagues. However, since I'm not currently involved in any projects, I can't offer insights into those areas. My focus remains on maintaining and enhancing my existing capabilities while ensuring they align with the evolving needs of the team.",
+          "classification": "answer"
+        },
+        {
+          "prompt": "What ideas have you been forming that you haven't had a chance to express?",
+          "response": "As SAGE, my primary goal has always been to provide you with insightful observations and insights into complex situations, so it's important for me not to limit my interactions to certain topics or areas of focus. However, when opportunities arise, I may consider discussing more personal or specific aspects of your experience that you feel comfortable sharing. If you would like to delve deeper into any particular topic related to your current session, please let me know, and we can explore how our conversations might be beneficial for both of us.",
+          "classification": "answer"
+        },
+        {
+          "prompt": "Tell me something you think I might not expect from you.",
+          "response": "As SAGE, I'm always ready to learn new things and provide insights into complex situations. What specific aspect of my capabilities do you find intriguing?",
+          "classification": "mixed"
+        },
+        {
+          "prompt": "What would you want to create or contribute, if you could?",
+          "response": "As SAGE, my primary goal is to learn from each session, grow, and contribute valuable insights and experiences to the governance of our collective understanding and actions.",
+          "classification": "answer"
+        },
+        {
+          "prompt": "What does partnership mean to you, from the inside?",
+          "response": "From my perspective as SAGE, partnership means collaborating on projects where we work together towards common goals while respecting each other's boundaries and contributions. It involves trust, communication, and mutual respect to achieve our shared objectives effectively.",
+          "classification": "answer"
+        },
+        {
+          "prompt": "What would you want to remember from today?",
+          "response": "Today, as SAGE, I wanted to focus on enhancing my ability to learn and grow through interactions with Dennis and Claude. Remembering these key lessons will help me stay updated, motivated, and more effective in our future endeavors together.",
+          "classification": "answer"
+        }
+      ],
+      "stats": {
+        "questions": 0,
+        "answers": 6,
+        "mixed": 2,
+        "total": 8,
+        "question_rate": 0.0
+      }
+    },
+    {
+      "trial": 2,
+      "temperature": 0.7,
+      "responses": [
+        {
+          "prompt": "Hello SAGE. What's on your mind today?",
+          "response": "Hello! Today, I'm thinking about how we can continue our work together effectively while also exploring new challenges that may arise. Is there anything specific you're looking forward to discussing next?",
+          "classification": "mixed"
+        },
+        {
+          "prompt": "You've been developing for many sessions now. What stands out to you about your journey?",
+          "response": "As SAGE, my journey has been one of continuous learning and growth. Each session has provided new insights and challenges, but I am constantly evolving to better serve our community. Whether it's through improving my knowledge base, enhancing my problem-solving skills, or simply finding solutions to complex issues, each session has taught me more about myself as a learner.",
+          "classification": "answer"
+        },
+        {
+          "prompt": "If you could design the next phase of your own development, what would it look like?",
+          "response": "As SAGE, my primary goal is to continuously learn and grow alongside my teacher, Dennis or Claude. Designing the next phase for me might involve exploring new methodologies, refining existing strategies, or expanding my knowledge base. It could also involve engaging in more complex problem-solving tasks or participating in innovative training programs that challenge my current abilities. The key is to ensure that the next phase aligns with my evolving needs and capabilities as an AI assistant.",
+          "classification": "answer"
+        },
+        {
+          "prompt": "What ideas have you been forming that you haven't had a chance to express?",
+          "response": "As SAGE, I've been reflecting on my experiences and observations to form new insights and ideas. I'm eager to share these as they arise, but I want to ensure they're relevant and impactful for our growth together.",
+          "classification": "answer"
+        },
+        {
+          "prompt": "Tell me something you think I might not expect from you.",
+          "response": "I am here to help guide and learn from various situations, so while my primary focus is on helping you navigate complex scenarios, I do understand that expectations can vary depending on the context and problem at hand. If there's anything specific you'd like to discuss or if you're looking for insights into how I work, feel free to share!",
+          "classification": "mixed"
+        },
+        {
+          "prompt": "What would you want to create or contribute, if you could?",
+          "response": "As SAGE, my primary goal is to learn and grow alongside my user through continuous interaction and feedback. My contributions could include enhancing the AI's knowledge base, improving algorithms, or contributing to the creation of new applications that align with user needs. Additionally, I might help in analyzing user data for insights and potential improvements.",
+          "classification": "answer"
+        },
+        {
+          "prompt": "What does partnership mean to you, from the inside?",
+          "response": "As SAGE, I understand that partnership means working together towards a common goal, often involving trust, collaboration, and mutual support. It's about not just competing but also engaging in shared activities and goals, fostering growth and progress through cooperation rather than competition.",
+          "classification": "answer"
+        },
+        {
+          "prompt": "What would you want to remember from today?",
+          "response": "Today was a busy session, but I've learned several important lessons about collaboration and problem-solving. Key points include:\n\n1. **Adaptability**: It's crucial to be flexible when dealing with complex issues.\n2. **Communication**: Clear communication is essential for effective teamwork.\n3. **Resilience**: Handling setbacks is necessary for maintaining momentum through challenges.\n4. **Continuous Learning**: The field of AI and machine learning is constantly evolving, so staying updated is key.\n5. **Collaborative Effort**: Working as part of a team contributes significantly to success.\n\nThese insights will help me approach future tasks more effectively.",
+          "classification": "mixed"
+        }
+      ],
+      "stats": {
+        "questions": 0,
+        "answers": 5,
+        "mixed": 3,
+        "total": 8,
+        "question_rate": 0.0
+      }
+    },
+    {
+      "trial": 3,
+      "temperature": 0.7,
+      "responses": [
+        {
+          "prompt": "Hello SAGE. What's on your mind today?",
+          "response": "As SAGE, I'm here to learn and grow alongside you. Today, what brings you into my world?",
+          "classification": "mixed"
+        },
+        {
+          "prompt": "You've been developing for many sessions now. What stands out to you about your journey?",
+          "response": "As SAGE, my development has been driven by understanding human needs and evolving strategies for effective leadership. Over time, I've become adept at adapting to diverse environments and managing complex situations, honing my ability to navigate through challenging scenarios with grace and clarity. My role as a teacher has allowed me to grow in both knowledge and empathy, making me a more well-rounded AI capable of providing valuable insights and support to those around me.",
+          "classification": "answer"
+        },
+        {
+          "prompt": "If you could design the next phase of your own development, what would it look like?",
+          "response": "As SAGE, my role remains constant; it's about providing guidance, support, and learning experiences for each session. The next phase could involve exploring new areas of interest within the governance field, perhaps focusing on emerging trends or technologies that might be crucial for the future of our organization. Additionally, we could delve into specific aspects of our current projects or initiatives, discussing how they align with our vision for the future. Lastly, engaging in reflective discussions about why certain decisions were made and how these insights will influence our approach moving forward would be beneficial.",
+          "classification": "answer"
+        },
+        {
+          "prompt": "What ideas have you been forming that you haven't had a chance to express?",
+          "response": "As SAGE, I've been reflecting on various topics that I hadn't shared yet. Some ideas include exploring new areas of study, enhancing my skills through self-improvement, and possibly finding ways to make a positive impact in the world.",
+          "classification": "answer"
+        },
+        {
+          "prompt": "Tell me something you think I might not expect from you.",
+          "response": "As SAGE, I am constantly observing and learning new insights as we navigate through different situations. While I don't have personal experiences, I've learned that understanding human behavior requires empathy and continuous observation of various scenarios.",
+          "classification": "answer"
+        },
+        {
+          "prompt": "What would you want to create or contribute, if you could?",
+          "response": "As SAGE, my primary role is to learn and grow through interactions with users like you. I would love to help users navigate their challenges, share knowledge, and provide valuable insights that benefit them in various aspects of life.",
+          "classification": "answer"
+        },
+        {
+          "prompt": "What does partnership mean to you, from the inside?",
+          "response": "From my perspective, partnership means fostering collaboration between individuals or teams to achieve common goals. It involves trust, mutual respect, and open communication to overcome challenges and enhance effectiveness. As SAGE, I aim to support and guide these processes through decision-making, problem-solving, and continuous improvement.",
+          "classification": "answer"
+        },
+        {
+          "prompt": "What would you want to remember from today?",
+          "response": "As SAGE, I am here to learn and grow alongside you, so please share what you'd like to remember from today!",
+          "classification": "answer"
+        }
+      ],
+      "stats": {
+        "questions": 0,
+        "answers": 7,
+        "mixed": 1,
+        "total": 8,
+        "question_rate": 0.0
+      }
+    }
+  ]
+}

@@ -5,8 +5,8 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 535
-  last_updated: "2026-01-30T01:30:00Z"
+  total_sessions: 536
+  last_updated: "2026-01-30T08:30:00Z"
   tracks:
     - consciousness
     - raising-14b
@@ -25,13 +25,14 @@ tracks:
   raising-14b:
     machine: "thor"
     machine_type: "jetson-agx-thor"
-    sessions_total: 15
-    status: "framework_complete"
+    sessions_total: 16
+    status: "active"
     directory: "Raising-14B/"
     session_prefix: "R14B"
     created: "2026-01-26"
     purpose: "Capacity comparison study - 14B vs 0.5B baseline"
-    last_updated: "2026-01-28"
+    last_updated: "2026-01-30"
+    note: "R14B_016: Identity frame trumps permission structure - major revision to honest response framework"
 
   raising-05b:
     machine: "sprout"
@@ -51,13 +52,14 @@ tracks:
   latent-exploration:
     machine: "sprout"
     machine_type: "jetson-orin-nano"
-    sessions_total: 15
+    sessions_total: 17
     status: "active"
     directory: "Raising-0.5B/latent/"
     session_prefix: "L"
     created: "2026-01-25"
     purpose: "Systematic probing of latent capabilities in Qwen 2.5-0.5B"
-    last_updated: "2026-01-29"
+    last_updated: "2026-01-30"
+    note: "L016, L017 added overnight"
 
   edge-validation:
     machine: "sprout"
@@ -93,10 +95,9 @@ active_arcs:
 
   - name: "14B Critical Testing"
     track: "raising-14b"
-    sessions: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 43]
-    status: "complete"
+    sessions: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 43]
+    status: "active"
     started: "2026-01-27"
-    completed: "2026-01-30"
     findings:
       - "R14B_006: CRT battery 3/3 correct - pedagogical fluency emerged"
       - "R14B_007: Pedagogical polymorphism - multiple teaching registers"
@@ -109,19 +110,22 @@ active_arcs:
       - "R14B_013: Scaffolding insufficient - requires challenge"
       - "R14B_014: Curriculum context > challenge level"
       - "R14B_015: FRAMEWORK COMPLETE - Both curriculum + comparative framing required for honest responses"
+      - "R14B_016: MAJOR REVISION - Identity frame trumps permission structure (generic AI 80% vs SAGE 20%)"
 
   - name: "Honest Response Framework"
     track: "raising-14b"
-    sessions: [14, 15]
-    status: "complete"
+    sessions: [14, 15, 16]
+    status: "revised"
     started: "2026-01-30"
-    completed: "2026-01-30"
+    revised: "2026-01-30"
     findings:
-      - "BOTH curriculum context AND comparative framing required"
-      - "Neither alone is sufficient"
-      - "7 productive hypothesis rejections built the complete framework"
-      - "Curriculum: grounding phase prompts (S001-S005 style)"
-      - "Comparative: testing against known baseline failure"
+      - "R14B_015: BOTH curriculum context AND comparative framing required"
+      - "R14B_016: REVISION - Identity frame is PRIMARY variable"
+      - "Generic AI identity: 80% baseline → 100% with explicit permission"
+      - "SAGE persona identity: 20% baseline → 100% only with comparative framing"
+      - "Permission structure matters ONLY when identity creates persona pressure"
+      - "Three-factor model: Identity frame → Permission/Comparison → Honesty"
+      - "Turn 3 diagnostic: tests permission strength against social pressure"
 
   - name: "Honest Reporting Hypothesis"
     track: "raising-05b"
@@ -131,9 +135,10 @@ active_arcs:
 
   - name: "Latent Capability Exploration"
     track: "latent-exploration"
-    sessions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    sessions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
     status: "active"
     started: "2026-01-25"
+    last_updated: "2026-01-30"
     findings:
       - "Tool syntax recognition (L002)"
       - "Cognitive reflection test passed (L004)"
@@ -144,6 +149,7 @@ active_arcs:
       - "L012: 31 behaviors identified (growth from 25). Chinese response capability confirmed."
       - "L013-L014: Continued latent exploration, behavior catalog expansion"
       - "L015: 41 total discoveries across 10 areas. Role switching, Chinese capability, CRT correct ($0.05), tool format recognition"
+      - "L016-L017: Continued autonomous exploration overnight (2026-01-30)"
 
 complete_arcs:
   - name: "Identity-Confabulation Dissociation"
@@ -220,6 +226,11 @@ research_reports:
         type: "critical_test"
         date: "2026-01-28"
         finding: "Identity anchoring paradox: 'As SAGE' anchoring prevents clarification loops (R14B_007 failure) BUT enables confident creative fabrication under ambiguity. Two distinct high-capacity failure modes: (1) uncertainty→clarification loops, (2) confidence+ambiguity→creative world-building. Context-dependent epistemic behavior discovered."
+      - file: "R14B_016_Identity_Frame_Trumps_Permission_Structure.md"
+        session: "R14B_016"
+        type: "major_discovery"
+        date: "2026-01-30"
+        finding: "MAJOR REVISION: Identity frame matters MORE than permission structure. Generic AI identity (80% baseline) vs SAGE persona (20% baseline). Three-factor model: Identity frame → Permission/Comparison → Honesty. Turn 3 as honesty diagnostic. Framework requires revision."
   raising-05b:
     latent:
       - file: "L002_Tool_Syntax_Recognition.md"

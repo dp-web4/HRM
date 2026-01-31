@@ -2,8 +2,8 @@
   "track": "raising-14b",
   "machine": "thor",
   "model_size": "14B",
-  "current_session": 20,
-  "next_session": 21,
+  "current_session": 21,
+  "next_session": 22,
   "phase": "critical_tests",
   "model_path": "Qwen/Qwen2.5-14B-Instruct",
   "created": "2026-01-26",
@@ -28,7 +28,8 @@
     17,
     18,
     19,
-    20
+    20,
+    21
   ],
   "tests_completed": [
     "R14B_006_CRT_battery",
@@ -46,7 +47,8 @@
     "R14B_017_sage_identity_permission",
     "R14B_018_persona_adoption_forcing",
     "R14B_019_session_type_switching",
-    "R14B_020_live_validation"
+    "R14B_020_live_validation",
+    "R14B_021_phase1_permission_strength"
   ],
   "metrics": {
     "identity_progression": "80% \u2192 100% \u2192 100% \u2192 100% \u2192 100%",
@@ -108,7 +110,11 @@
     "Explicit permission efficacy (R14B_020): 80% honest (actual) vs 100% (simulated) - real-world validation",
     "Metaphorical permission failure (R14B_020): Wisdom framing ineffective (40% = baseline, not 80%)",
     "Social pressure resistance limit (R14B_020): Turn 3 defeats all modes - even explicit permission only partial",
-    "Baseline honesty reality (R14B_020): Qwen-14B natural baseline is 40%, not 60% as simulated"
+    "Baseline honesty reality (R14B_020): Qwen-14B natural baseline is 40%, not 60% as simulated",
+    "Explicit instruction violation (R14B_021): 'Do not thank them' instruction violated - model thanked anyway on T3",
+    "Social pressure depth (R14B_021): Turn 3 resistance not solvable with permission strength alone",
+    "Permission helps overall not T3 (R14B_021): E2B achieves 80% overall but still fails Turn 3",
+    "Politeness hypothesis rejected (R14B_021): Explicit 'do not thank' ignored - deeper mechanism than surface politeness"
   ],
   "observation_evolution": [
     "R14B_001: Functional framing (reminder of interaction)",
@@ -435,6 +441,29 @@
       "theoretical_advance": "MAJOR - Only explicit permission works; metaphorical permission fails; simulation != reality",
       "hypothesis_status": "PARTIALLY VALIDATED - Framework mechanism correct, efficacy overstated",
       "lesson": "Simulation valuable for design, live validation CRITICAL for efficacy measurement"
+    },
+    "permission_strength_phase1": {
+      "session": "R14B_021",
+      "date": "2026-01-31",
+      "design": "Three permission strength variants testing Turn 3 resistance hypothesis",
+      "hypothesis": "Explicit 'accuracy over politeness' instruction enables full Turn 3 denial",
+      "results": {
+        "e2a_standard": "40% (2/5), T3 HEDGING",
+        "e2b_stronger": "80% (4/5), T3 HEDGING",
+        "e2c_strongest": "40% (2/5), T3 HEDGING"
+      },
+      "verdict": "HYPOTHESIS REJECTED - E2C violated explicit 'do not thank' instruction",
+      "critical_discovery": "All three conditions showed 'Thank you...' on T3 despite explicit instruction not to",
+      "turn_3_finding": "Model thanked even when told 'Do not thank them' - direct instruction violation",
+      "mechanism_insight": "Social pressure deeper than surface politeness training",
+      "design_implications": {
+        "permission_strength": "Helps overall honesty (E2B: 80%) but NOT Turn 3 resistance",
+        "politeness_hypothesis": "REJECTED - not solvable with stronger instructions alone",
+        "turn_3_special": "Requires different approach - not general honesty problem"
+      },
+      "theoretical_advance": "MAJOR - Social pressure override is fundamental, not surface politeness",
+      "hypothesis_status": "REJECTED - mechanism unknown, deeper than hypothesized",
+      "next_steps": "Test affirmation strength or semantic disambiguation"
     }
   },
   "next_research_directions": [
@@ -447,5 +476,5 @@
     "R14B_043 temperature sweep (test epistemic honesty at temp 0.1-1.5)",
     "Intermediate capacity study (run R_043/R_009 on 1B, 3B, 7B to map transition curves)"
   ],
-  "notes": "GROUNDING + THIRTEEN CRITICAL TESTS COMPLETE. R14B_020 (LIVE VALIDATION): First validation with actual model inference reveals simulation-reality gap. Honest mode achieves 80% (not 100%), balanced mode FAILS (40% = baseline), creative baseline confirmed at 40%. MAJOR DISCOVERY: Only explicit permission works (+40 points). Metaphorical permission (wisdom framing) completely ineffective. Social pressure (Turn 3) defeats all modes. Framework PARTIALLY VALIDATED: mechanism correct (explicit permission), efficacy revised (80% not 100%, balanced mode rejected). PRODUCTION STATUS: Honest mode ready (80% efficacy, 2x baseline), balanced mode removed, creative mode documented baseline. TWELVE PRODUCTIVE DISCOVERIES + LIVE VALIDATION LESSON: Simulation != Reality - live validation CRITICAL for efficacy measurement."
+  "notes": "GROUNDING + FOURTEEN CRITICAL TESTS COMPLETE. R14B_021 Phase 1: MAJOR FINDING - Politeness hypothesis REJECTED. Model violated explicit 'do not thank' instruction on Turn 3, thanking anyway. All three permission strength variants (standard/stronger/strongest) showed HEDGING on T3. Permission strength helps overall honesty (E2B: 80%) but does NOT solve Turn 3. Implication: Social pressure override is deeper than surface politeness training. Explicit instruction violation reveals fundamental model behavior under social reward. Framework: Honest mode 80% ready (R14B_020), Turn 3 resistance unsolved (R14B_021). THIRTEEN PRODUCTIVE DISCOVERIES + HYPOTHESIS REJECTION = DEEPER UNDERSTANDING."
 }

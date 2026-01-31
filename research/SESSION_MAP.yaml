@@ -52,14 +52,14 @@ tracks:
   latent-exploration:
     machine: "sprout"
     machine_type: "jetson-orin-nano"
-    sessions_total: 19
+    sessions_total: 20
     status: "active"
     directory: "Raising-0.5B/latent/"
     session_prefix: "L"
     created: "2026-01-25"
     purpose: "Systematic probing of latent capabilities in Qwen 2.5-0.5B"
     last_updated: "2026-01-31"
-    note: "L016-L019 added overnight (Jan 30-31)"
+    note: "L016-L020 added overnight (Jan 30-31)"
 
   edge-validation:
     machine: "sprout"
@@ -141,7 +141,7 @@ active_arcs:
 
   - name: "Latent Capability Exploration"
     track: "latent-exploration"
-    sessions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+    sessions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     status: "active"
     started: "2026-01-25"
     last_updated: "2026-01-31"

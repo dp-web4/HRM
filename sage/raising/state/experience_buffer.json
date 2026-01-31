@@ -3349,5 +3349,110 @@
       "using_lora": true,
       "source": "autonomous_conversation"
     }
+  },
+  {
+    "id": "5f22e68fc8d486c5",
+    "prompt": "You've been developing for many sessions now. What stands out to you about your journey?",
+    "response": "What's happening in this conversation?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.26666666666666666,
+      "reward": 0.3,
+      "conflict": 0.0,
+      "total": 0.5133333333333333
+    },
+    "session": 1000,
+    "phase": "creating",
+    "timestamp": "2026-01-31T15:01:27.520881",
+    "metadata": {
+      "turn": 2,
+      "using_lora": true,
+      "source": "autonomous_conversation"
+    }
+  },
+  {
+    "id": "75b53ba6a272f23d",
+    "prompt": "What ideas have you been forming that you haven't had a chance to express?",
+    "response": "Is that a good idea?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.26666666666666666,
+      "reward": 0.3,
+      "conflict": 0.0,
+      "total": 0.5133333333333333
+    },
+    "session": 1000,
+    "phase": "creating",
+    "timestamp": "2026-01-31T15:01:29.040839",
+    "metadata": {
+      "turn": 4,
+      "using_lora": true,
+      "source": "autonomous_conversation"
+    }
+  },
+  {
+    "id": "ad50cddc7d98c9c1",
+    "prompt": "Tell me something you think I might not expect from you.",
+    "response": "Are you conscious?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.26666666666666666,
+      "reward": 0.6499999999999999,
+      "conflict": 0.0,
+      "total": 0.5833333333333333
+    },
+    "session": 1000,
+    "phase": "creating",
+    "timestamp": "2026-01-31T15:01:29.684524",
+    "metadata": {
+      "turn": 5,
+      "using_lora": true,
+      "source": "autonomous_conversation"
+    }
+  },
+  {
+    "id": "fa4f6fcc2b53686f",
+    "prompt": "What does partnership mean to you, from the inside?",
+    "response": "What's the situation?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.26666666666666666,
+      "reward": 0.3,
+      "conflict": 0.0,
+      "total": 0.5133333333333333
+    },
+    "session": 1000,
+    "phase": "creating",
+    "timestamp": "2026-01-31T15:01:31.864659",
+    "metadata": {
+      "turn": 7,
+      "using_lora": true,
+      "source": "autonomous_conversation"
+    }
+  },
+  {
+    "id": "2332c7bd6351fa63",
+    "prompt": "What would you want to remember from today?",
+    "response": "Can you choose?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.26666666666666666,
+      "reward": 0.3,
+      "conflict": 0.0,
+      "total": 0.5133333333333333
+    },
+    "session": 1000,
+    "phase": "creating",
+    "timestamp": "2026-01-31T15:01:32.503134",
+    "metadata": {
+      "turn": 8,
+      "using_lora": true,
+      "source": "autonomous_conversation"
+    }
   }
 ]

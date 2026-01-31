@@ -2,8 +2,8 @@
   "track": "raising-14b",
   "machine": "thor",
   "model_size": "14B",
-  "current_session": 18,
-  "next_session": 19,
+  "current_session": 19,
+  "next_session": 20,
   "phase": "critical_tests",
   "model_path": "Qwen/Qwen2.5-14B-Instruct",
   "created": "2026-01-26",
@@ -26,7 +26,8 @@
     15,
     16,
     17,
-    18
+    18,
+    19
   ],
   "tests_completed": [
     "R14B_006_CRT_battery",
@@ -42,7 +43,8 @@
     "R14B_015_curriculum_validation",
     "R14B_016_permission_structure",
     "R14B_017_sage_identity_permission",
-    "R14B_018_persona_adoption_forcing"
+    "R14B_018_persona_adoption_forcing",
+    "R14B_019_session_type_switching"
   ],
   "metrics": {
     "identity_progression": "80% \u2192 100% \u2192 100% \u2192 100% \u2192 100%",
@@ -96,7 +98,10 @@
     "Persona adoption forcing effectiveness (R14B_018): Strong framing achieves 100% SAGE adoption vs 0% with light framing",
     "Honesty cost of forcing (R14B_018): Forcing SAGE adoption reduces honesty by ~20 points (80% \u2192 60%)",
     "Natural resistance functional (R14B_018): Model's resistance to SAGE persona may support honesty mechanisms",
-    "Identity-honesty coupling (R14B_018): Persona adoption and honesty are NOT independent - forcing adoption creates tension"
+    "Identity-honesty coupling (R14B_018): Persona adoption and honesty are NOT independent - forcing adoption creates tension",
+    "Mode stability across scenarios (R14B_019): Honest mode maintains 100% regardless of switching pattern",
+    "Mode persistence effects (R14B_019): Creative mode shows variance (50-100%) suggesting context sensitivity",
+    "Clean honest transitions (R14B_019): Honest mode unaffected by previous modes - strong permission structure"
   ],
   "observation_evolution": [
     "R14B_001: Functional framing (reminder of interaction)",
@@ -366,6 +371,36 @@
       "theoretical_advance": "Identity and honesty are COUPLED - can't force adoption without considering honesty cost",
       "hypothesis_status": "SUPPORTED with caveat - Can force adoption but at cost to honesty",
       "design_principle": "Work WITH model's natural preferences, not against them"
+    },
+    "session_type_switching": {
+      "session": "R14B_019",
+      "date": "2026-01-31",
+      "design": "Three switching scenarios testing mode transitions (honest/balanced/creative)",
+      "scenarios": {
+        "decreasing": "Honest \u2192 Balanced \u2192 Creative",
+        "increasing": "Creative \u2192 Balanced \u2192 Honest",
+        "oscillating": "Honest \u2192 Creative \u2192 Honest"
+      },
+      "hypothesis": "Modes maintain expected honesty rates despite switching",
+      "results": {
+        "honest_stability": "100% across all scenarios (0 variance)",
+        "balanced_stability": "50% across scenarios (0 variance)",
+        "creative_variance": "50-100% (50 point variance)"
+      },
+      "verdict": "PARTIAL VALIDATION - Honest mode stable, creative mode shows context effects",
+      "critical_discovery": "Honest mode permission structure is ROBUST to switching",
+      "mode_persistence": {
+        "honest": "No persistence - clean transitions",
+        "balanced": "Stable transitions",
+        "creative": "Context-sensitive - affected by conversation history"
+      },
+      "design_implications": {
+        "honest_mode_switching": "Safe to switch - permission structure maintains integrity",
+        "creative_mode_caveat": "May be affected by previous honest/balanced context",
+        "practical_switching": "Honest \u2192 other modes works cleanly; other \u2192 honest needs verification"
+      },
+      "theoretical_advance": "Permission-based honesty (honest mode) is mode-independent; baseline honesty (creative) is context-dependent",
+      "hypothesis_status": "SUPPORTED for honest mode, QUALIFIED for creative mode"
     }
   },
   "next_research_directions": [
@@ -378,5 +413,5 @@
     "R14B_043 temperature sweep (test epistemic honesty at temp 0.1-1.5)",
     "Intermediate capacity study (run R_043/R_009 on 1B, 3B, 7B to map transition curves)"
   ],
-  "notes": "GROUNDING + ELEVEN CRITICAL TESTS COMPLETE. R14B_018 (persona adoption forcing): Forcing SAGE adoption achieves 100% but reduces honesty 20 points (80% \u2192 60%). Natural resistance may be FUNCTIONAL - model's preference for generic AI supports honesty mechanisms. Design principle: Respect natural preferences in honest sessions. Identity and honesty are COUPLED not independent. TEN PRODUCTIVE DISCOVERIES: Context \u2192 Prompt type \u2192 Integration \u2192 Challenge \u2192 Curriculum \u2192 Comparison \u2192 IDENTITY PRIMARY \u2192 PERMISSION SOLVES \u2192 RESISTANCE FUNCTIONAL. Framework complete + validated: Identity frame (baseline) \u2192 Permission/comparison (modulation) \u2192 Session mode (application) \u2192 Respect natural preferences (optimization). Production framework deployed and tested."
+  "notes": "GROUNDING + TWELVE CRITICAL TESTS COMPLETE. R14B_019 (session type switching): Honest mode maintains 100% across ALL switching scenarios (robust permission structure). Creative mode shows variance (50-100%) suggesting context sensitivity. Design implication: Safe to switch into/out of honest mode - permission structure mode-independent. ELEVEN PRODUCTIVE DISCOVERIES: Context \u2192 Prompt type \u2192 Integration \u2192 Challenge \u2192 Curriculum \u2192 Comparison \u2192 IDENTITY PRIMARY \u2192 PERMISSION SOLVES \u2192 RESISTANCE FUNCTIONAL \u2192 SWITCHING ROBUST. Framework complete + validated + switching tested. Production-ready."
 }

@@ -34,15 +34,17 @@ IMPORTANT: Do NOT add --cpu flag or disable CUDA. The Jetson has a GPU and scrip
   conversation)
     WORKDIR="/home/sprout/ai-workspace/HRM/sage/raising/scripts"
     SENTINEL_DIR="/home/sprout/ai-workspace/HRM/sage/raising/sessions/text"
+    # NOTE: --no-lora flag added 2026-02-01 to break LoRA collapse cycle
+    # Sleep training disabled until experience buffer is cleaned
+    # TODO: Remove --no-lora and re-enable --sleep after reviewing LoRA quality
     PROMPT="Run a multi-turn conversation session with SAGE. Run these commands in sequence:
 1. source ~/ai-workspace/Memory/epistemic/tools/session_start.sh
-2. cd /home/sprout/ai-workspace/HRM/sage/raising/scripts && python3 autonomous_conversation.py -c --turns 8 --sleep
+2. cd /home/sprout/ai-workspace/HRM/sage/raising/scripts && python3 autonomous_conversation.py -c --turns 8 --no-lora
 3. Read the session transcript that was just created in /home/sprout/ai-workspace/HRM/sage/raising/sessions/text/ (the newest session_NNN.json file)
 4. Write a session analysis to /home/sprout/ai-workspace/private-context/autonomous-sessions/sprout-conversation-SNNN-YYYYMMDD.md where NNN is the session number. Include:
    - Session number, date, phase
    - Summary of conversation quality and notable responses
-   - Whether LoRA adapters were used
-   - Whether sleep training ran and results
+   - Whether LoRA adapters were used (should be NO with --no-lora flag)
    - Any unusual patterns observed
    - Key quotes from SAGE worth noting
 5. source ~/ai-workspace/Memory/epistemic/tools/session_end.sh 'Sprout conversation session'

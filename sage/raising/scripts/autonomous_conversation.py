@@ -127,7 +127,7 @@ class AutonomousConversation:
         ]
     }
 
-    def __init__(self, session_number: Optional[int] = None, num_turns: int = 8):
+    def __init__(self, session_number: Optional[int] = None, num_turns: int = 8, skip_lora: bool = False):
         self.state = self._load_state()
 
         if session_number is None:
@@ -136,6 +136,7 @@ class AutonomousConversation:
         self.session_number = session_number
         self.phase = self._get_phase(session_number)
         self.num_turns = num_turns
+        self.skip_lora = skip_lora  # Skip LoRA adapter loading (e.g., to break collapse cycles)
         self.conversation_history = []  # Multi-turn message history
         self.session_start = datetime.now()
 
@@ -205,7 +206,13 @@ class AutonomousConversation:
         # Check for LoRA checkpoints
         latest_checkpoint = self._find_latest_checkpoint()
 
-        if latest_checkpoint and self.device == 'cuda':
+        if self.skip_lora:
+            # Explicit skip requested (e.g., to break collapse cycles)
+            if latest_checkpoint:
+                print(f"  LoRA checkpoint exists ({latest_checkpoint.name}) but --no-lora flag set")
+            print("  Using base merged model (LoRA skipped)")
+            self._load_base_model()
+        elif latest_checkpoint and self.device == 'cuda':
             # Only attempt LoRA merge on GPU - needs memory for two model copies
             print(f"  Found LoRA checkpoint: {latest_checkpoint.name}")
             try:
@@ -640,6 +647,8 @@ def main():
                         help="Number of conversation turns (default: 8)")
     parser.add_argument("--sleep", action="store_true",
                         help="Check and run sleep training after conversation")
+    parser.add_argument("--no-lora", dest="no_lora", action="store_true",
+                        help="Skip LoRA adapter loading (use base model only)")
 
     args = parser.parse_args()
 
@@ -653,7 +662,8 @@ def main():
     # Create and run conversation
     conv = AutonomousConversation(
         session_number=session_num,
-        num_turns=args.turns
+        num_turns=args.turns,
+        skip_lora=args.no_lora
     )
 
     conv.load_model_with_adapters()

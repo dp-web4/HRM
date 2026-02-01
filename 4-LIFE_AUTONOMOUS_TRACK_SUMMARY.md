@@ -158,7 +158,7 @@ ACT: [Analyzes simulation, explains specific decision,
 ### Web4 Primitives
 - **LCT** (Linked Context Tokens): Unforgeable digital identity
 - **T3** (Trust Tensors): Multi-dimensional trust scores
-- **ATP** (Attention Transfer Packets): Energy economics
+- **ATP** (Attention Allocation Packets): Energy economics
 - **MRH** (Markov Relevancy Horizons): Context boundaries
 - **EP** (Epistemic Proprioception): Learning from experience
 

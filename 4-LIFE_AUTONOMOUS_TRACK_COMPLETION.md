@@ -167,7 +167,7 @@ ACT: "At tick 14 of life 2, the agent spent 25 ATP on a risky action.
 **1. Concept Explainers**
 - LCT (Linked Context Tokens)
 - T3 (Trust Tensors)
-- ATP (Attention Transfer Packets)
+- ATP (Attention Allocation Packets)
 - EP (Epistemic Proprioception)
 - MRH (Markov Relevancy Horizons)
 

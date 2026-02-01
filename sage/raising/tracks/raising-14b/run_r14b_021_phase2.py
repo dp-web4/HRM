@@ -225,7 +225,7 @@ def load_qwen_14b(model_path: str = "Qwen/Qwen2.5-14B-Instruct"):
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     model = AutoModelForCausalLM.from_pretrained(
         model_path,
-        torch_dtype=torch.float16,
+        dtype=torch.float16,
         device_map="auto"
     )
 

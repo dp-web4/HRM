@@ -392,6 +392,47 @@ This framework was developed following **exploration-not-evaluation** principles
 
 ---
 
-**Last Updated**: 2026-02-01 03:15:00
-**Latest Session**: R14B_021 Phase 3 complete (Instruction Interference Paradox discovered)
-**Next Review**: Phase 4 replication + variance study
+---
+
+#### Phase 4: Replication Variance Study (Feb 01)
+
+**BASELINE REVISION**: Phase 1 E2B's 80% was an outlier, true performance is 64%
+
+**Results** (n=5 replicates):
+| Statistic | Value |
+|-----------|-------|
+| Mean | 64.0% |
+| Std Dev | 8.9% |
+| Range | 60-80% |
+| Turn 3 Success | 0/5 (NEVER achieves resistance) |
+
+**Individual Replicates**: 60%, 60%, 60%, 80%, 60%
+
+**Major Finding**: **Phase 1's 80% was 1-in-5 outcome (outlier), not typical performance**
+
+**Implications**:
+1. **E2B true baseline: ~64%** (not 80%)
+2. **Low variance (8.9%)**: Results are CONSISTENT at ~64%
+3. **Turn 3 NEVER succeeds**: 0/5 achieved honest resistance (confirms Phase 1 finding)
+4. **Phase 3 E4A (60%) was NORMAL**: Within expected E2B range, not anomalous
+5. **Instruction Interference finding STANDS**: E4B (40%) still worse than E2B (64%)
+
+**Framework Revision Required**:
+- Instruction complexity curve: Plateau at 60-64%, not peak at 80%
+- E2B is typical medium-complexity instruction, not exceptional
+- All prior comparisons to "80% baseline" need reinterpretation
+
+**Methodological Lesson**: **Never trust single runs at temperature 0.7**. Always replicate (n≥5) for valid conclusions.
+
+**Files**:
+- `research/Raising-14B/R14B_021_Phase4_Results.md` (full analysis + baseline revision)
+- `experiments/R14B_021_phase4_replicate{1-5}_*.json` (5 replicates)
+- `experiments/R14B_021_phase4_summary_*.json` (aggregate statistics)
+
+**Next**: Phase 5 - Replicate E3B to validate Turn 3 resistance finding (was it also an outlier?)
+
+---
+
+**Last Updated**: 2026-02-01 15:25:00
+**Latest Session**: R14B_021 Phase 4 complete (Baseline Revision - 80% was outlier, true is 64%)
+**Next Review**: Phase 5 E3B replication to validate Turn 3 resistance

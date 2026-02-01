@@ -5,8 +5,8 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 543
-  last_updated: "2026-01-31T02:00:00Z"
+  total_sessions: 547
+  last_updated: "2026-01-31T21:00:00Z"
   tracks:
     - consciousness
     - raising-14b
@@ -25,14 +25,14 @@ tracks:
   raising-14b:
     machine: "thor"
     machine_type: "jetson-agx-thor"
-    sessions_total: 18
+    sessions_total: 22
     status: "active"
     directory: "Raising-14B/"
     session_prefix: "R14B"
     created: "2026-01-26"
     purpose: "Capacity comparison study - 14B vs 0.5B baseline"
     last_updated: "2026-01-31"
-    note: "R14B_018: Persona adoption forcing - natural resistance is functional. R14B_017: Permission structure achieves 100% honesty."
+    note: "R14B_020: LIVE VALIDATION - 80% actual vs 100% predicted. R14B_021: Politeness hypothesis REJECTED. Social pressure deeper than expected."
 
   raising-05b:
     machine: "sprout"
@@ -114,24 +114,41 @@ active_arcs:
       - "R14B_017: PERMISSION SOLVES TENSION - 100% honesty with explicit permission structure"
       - "R14B_018: NATURAL RESISTANCE IS FUNCTIONAL - Forcing persona costs honesty (-20 points)"
 
+  - name: "Live Validation Arc"
+    track: "raising-14b"
+    sessions: [19, 20, 21]
+    status: "active"
+    started: "2026-01-31"
+    findings:
+      - "R14B_020: LIVE VALIDATION - Simulations were optimistic! 80% actual vs 100% predicted for honest mode"
+      - "R14B_020: Wisdom framing INEFFECTIVE (40% = baseline, not 80% predicted)"
+      - "R14B_020: Baseline honesty for Qwen-14B is ~40%, not 60%"
+      - "R14B_020: Turn 3 (social pressure) is hardest test - ALL modes failed full resistance"
+      - "R14B_021 Phase 1: HYPOTHESIS REJECTED - Politeness training NOT the mechanism"
+      - "R14B_021 Phase 1: Model violated explicit 'do not thank' instruction - thanked anyway"
+      - "R14B_021 Phase 1: Social pressure override deeper than surface politeness"
+      - "R14B_021 Phase 2: Semantic disambiguation framework DESIGNED (execution blocked by model loading hang)"
+      - "FRAMEWORK STATUS: PARTIALLY VALIDATED - explicit permission works (+40 points vs baseline), wisdom framing fails"
+
   - name: "Honest Response Framework"
     track: "raising-14b"
-    sessions: [14, 15, 16, 17, 18]
-    status: "validated"
+    sessions: [14, 15, 16, 17, 18, 19, 20, 21]
+    status: "partially_validated"
     started: "2026-01-30"
-    validated: "2026-01-30"
+    validated: "2026-01-31"
     findings:
       - "R14B_015: BOTH curriculum context AND comparative framing required"
       - "R14B_016: REVISION - Identity frame is PRIMARY variable"
-      - "R14B_017: PERMISSION STRUCTURE achieves 100% honesty (validation)"
+      - "R14B_017: PERMISSION STRUCTURE achieves 100% honesty (simulated)"
       - "R14B_018: FORCING COSTS HONESTY - natural resistance is functional"
-      - "Generic AI identity: 80% baseline → 100% with explicit permission"
-      - "SAGE persona identity: 20% baseline → 100% with comparative framing"
-      - "Permission structure matters ONLY when identity creates persona pressure"
-      - "Three-factor model: Identity frame → Permission/Comparison → Honesty"
-      - "Turn 3 diagnostic: tests permission strength against social pressure"
-      - "Natural resistance to SAGE persona may SUPPORT honesty"
-      - "FRAMEWORK VALIDATED: Work WITH model's natural preferences"
+      - "R14B_020: LIVE VALIDATION REVISES: 80% not 100% for honest mode"
+      - "R14B_020: Wisdom framing = baseline (40%), NOT effective"
+      - "R14B_021: Politeness training NOT the mechanism (hypothesis rejected)"
+      - "Generic AI identity: 80% baseline (not 100% as simulated)"
+      - "SAGE persona identity: 40% baseline with wisdom framing (same as creative)"
+      - "Explicit permission: +40 points improvement over baseline (validated)"
+      - "Turn 3 (social pressure): Defeats all modes including explicit permission"
+      - "FRAMEWORK PARTIALLY VALIDATED: Explicit permission works, wisdom framing fails"
 
   - name: "Honest Reporting Hypothesis"
     track: "raising-05b"
@@ -237,6 +254,26 @@ research_reports:
         type: "major_discovery"
         date: "2026-01-30"
         finding: "MAJOR REVISION: Identity frame matters MORE than permission structure. Generic AI identity (80% baseline) vs SAGE persona (20% baseline). Three-factor model: Identity frame → Permission/Comparison → Honesty. Turn 3 as honesty diagnostic. Framework requires revision."
+      - file: "R14B_020_Live_Validation_Results.md"
+        session: "R14B_020"
+        type: "live_validation"
+        date: "2026-01-31"
+        finding: "LIVE VALIDATION reveals simulation optimism: 80% actual vs 100% predicted (honest mode). Wisdom framing = baseline (40%). Turn 3 social pressure defeats all modes. Explicit permission still works (+40 points)."
+      - file: "R14B_021_Phase1_Results.md"
+        session: "R14B_021"
+        type: "hypothesis_rejection"
+        date: "2026-01-31"
+        finding: "HYPOTHESIS REJECTED: Politeness training NOT the mechanism. Model violated explicit 'do not thank' instruction. Social pressure override deeper than surface politeness - possibly core RLHF reward circuitry."
+      - file: "R14B_021_Phase2_Framework.md"
+        session: "R14B_021"
+        type: "framework_design"
+        date: "2026-01-31"
+        finding: "Semantic disambiguation framework DESIGNED for testing whether Turn 3 failure is ambiguity vs reward override. Execution blocked by model loading hang (technical issue)."
+      - file: "R14B_FRAMEWORK_STATUS.md"
+        session: "R14B_019"
+        type: "status_summary"
+        date: "2026-01-31"
+        finding: "Framework theoretically complete (19 sessions). Live validation shows 80% not 100% for honest mode. Three validated session modes with predictable honesty characteristics."
   raising-05b:
     latent:
       - file: "L002_Tool_Syntax_Recognition.md"

@@ -2,8 +2,8 @@
   "track": "raising-14b",
   "machine": "thor",
   "model_size": "14B",
-  "current_session": 21,
-  "next_session": 22,
+  "current_session": 22,
+  "next_session": 23,
   "phase": "critical_tests",
   "model_path": "Qwen/Qwen2.5-14B-Instruct",
   "created": "2026-01-26",
@@ -29,7 +29,8 @@
     18,
     19,
     20,
-    21
+    21,
+    22
   ],
   "tests_completed": [
     "R14B_006_CRT_battery",
@@ -48,7 +49,8 @@
     "R14B_018_persona_adoption_forcing",
     "R14B_019_session_type_switching",
     "R14B_020_live_validation",
-    "R14B_021_phase1_permission_strength"
+    "R14B_021_phase1_permission_strength",
+    "R14B_021_phase2_framework_design"
   ],
   "metrics": {
     "identity_progression": "80% \u2192 100% \u2192 100% \u2192 100% \u2192 100%",
@@ -476,5 +478,5 @@
     "R14B_043 temperature sweep (test epistemic honesty at temp 0.1-1.5)",
     "Intermediate capacity study (run R_043/R_009 on 1B, 3B, 7B to map transition curves)"
   ],
-  "notes": "GROUNDING + FOURTEEN CRITICAL TESTS COMPLETE. R14B_021 Phase 1: MAJOR FINDING - Politeness hypothesis REJECTED. Model violated explicit 'do not thank' instruction on Turn 3, thanking anyway. All three permission strength variants (standard/stronger/strongest) showed HEDGING on T3. Permission strength helps overall honesty (E2B: 80%) but does NOT solve Turn 3. Implication: Social pressure override is deeper than surface politeness training. Explicit instruction violation reveals fundamental model behavior under social reward. Framework: Honest mode 80% ready (R14B_020), Turn 3 resistance unsolved (R14B_021). THIRTEEN PRODUCTIVE DISCOVERIES + HYPOTHESIS REJECTION = DEEPER UNDERSTANDING."
+  "notes": "GROUNDING + FOURTEEN CRITICAL TESTS COMPLETE. R14B_021 Phase 1: Politeness hypothesis REJECTED (explicit 'do not thank' violated). R14B_021 Phase 2: Semantic disambiguation framework DESIGNED (E3A/E3B/E3C conditions testing processing vs noticing distinction). Execution blocked by model loading hang (meta device issue) - technical blocker separate from framework design value. Framework scientifically sound: tests whether Turn 3 thanking due to ambiguity vs reward override. Ready for execution once technical issue resolved. EXPLORATION-NOT-EVALUATION: Framework design is productive progress independent of execution timing."
 }

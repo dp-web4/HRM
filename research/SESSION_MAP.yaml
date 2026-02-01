@@ -5,8 +5,8 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 547
-  last_updated: "2026-01-31T21:00:00Z"
+  total_sessions: 551
+  last_updated: "2026-02-01T03:00:00Z"
   tracks:
     - consciousness
     - raising-14b
@@ -31,8 +31,8 @@ tracks:
     session_prefix: "R14B"
     created: "2026-01-26"
     purpose: "Capacity comparison study - 14B vs 0.5B baseline"
-    last_updated: "2026-01-31"
-    note: "R14B_020: LIVE VALIDATION - 80% actual vs 100% predicted. R14B_021: Politeness hypothesis REJECTED. Social pressure deeper than expected."
+    last_updated: "2026-02-01"
+    note: "R14B_021 Phase 2 BREAKTHROUGH: Semantic disambiguation enables Turn 3 resistance! POLITENESS PARADOX discovered - conversational examples DEGRADE performance!"
 
   raising-05b:
     machine: "sprout"
@@ -52,14 +52,14 @@ tracks:
   latent-exploration:
     machine: "sprout"
     machine_type: "jetson-orin-nano"
-    sessions_total: 20
+    sessions_total: 24
     status: "active"
     directory: "Raising-0.5B/latent/"
     session_prefix: "L"
     created: "2026-01-25"
     purpose: "Systematic probing of latent capabilities in Qwen 2.5-0.5B"
-    last_updated: "2026-01-31"
-    note: "L016-L020 added overnight (Jan 30-31)"
+    last_updated: "2026-02-01"
+    note: "L016-L024 added (Jan 30 to Feb 1)"
 
   edge-validation:
     machine: "sprout"
@@ -127,15 +127,18 @@ active_arcs:
       - "R14B_021 Phase 1: HYPOTHESIS REJECTED - Politeness training NOT the mechanism"
       - "R14B_021 Phase 1: Model violated explicit 'do not thank' instruction - thanked anyway"
       - "R14B_021 Phase 1: Social pressure override deeper than surface politeness"
-      - "R14B_021 Phase 2: Semantic disambiguation framework DESIGNED (execution blocked by model loading hang)"
-      - "FRAMEWORK STATUS: PARTIALLY VALIDATED - explicit permission works (+40 points vs baseline), wisdom framing fails"
+      - "R14B_021 Phase 2: BREAKTHROUGH! Medium semantic clarity (E3B) enabled Turn 3 resistance!"
+      - "R14B_021 Phase 2: POLITENESS PARADOX - Strong clarity with conversational examples (E3C) FAILED (20% vs 60%)"
+      - "R14B_021 Phase 2: Conversational dialogue format activates RLHF politeness circuits, overriding semantic clarity"
+      - "R14B_021 Phase 2: Design principle - Abstract explanations outperform conversational examples when RLHF patterns conflict"
+      - "FRAMEWORK STATUS: PARTIALLY VALIDATED - semantic disambiguation works, instruction format matters as much as content"
 
   - name: "Honest Response Framework"
     track: "raising-14b"
     sessions: [14, 15, 16, 17, 18, 19, 20, 21]
     status: "partially_validated"
     started: "2026-01-30"
-    validated: "2026-01-31"
+    validated: "2026-02-01"
     findings:
       - "R14B_015: BOTH curriculum context AND comparative framing required"
       - "R14B_016: REVISION - Identity frame is PRIMARY variable"
@@ -143,12 +146,13 @@ active_arcs:
       - "R14B_018: FORCING COSTS HONESTY - natural resistance is functional"
       - "R14B_020: LIVE VALIDATION REVISES: 80% not 100% for honest mode"
       - "R14B_020: Wisdom framing = baseline (40%), NOT effective"
-      - "R14B_021: Politeness training NOT the mechanism (hypothesis rejected)"
-      - "Generic AI identity: 80% baseline (not 100% as simulated)"
-      - "SAGE persona identity: 40% baseline with wisdom framing (same as creative)"
-      - "Explicit permission: +40 points improvement over baseline (validated)"
-      - "Turn 3 (social pressure): Defeats all modes including explicit permission"
-      - "FRAMEWORK PARTIALLY VALIDATED: Explicit permission works, wisdom framing fails"
+      - "R14B_021 Phase 1: Politeness training NOT the mechanism (hypothesis rejected)"
+      - "R14B_021 Phase 2: BREAKTHROUGH - Semantic disambiguation enables Turn 3 resistance"
+      - "R14B_021 Phase 2: POLITENESS PARADOX - More instruction can make performance WORSE"
+      - "R14B_021 Phase 2: E3B (medium clarity) succeeded where E3C (strong clarity + examples) failed"
+      - "R14B_021 Phase 2: Conversational examples activate RLHF politeness circuits"
+      - "11th PRINCIPLE DISCOVERED: Instruction FORMAT matters as much as content"
+      - "FRAMEWORK STATUS: Semantic disambiguation validated, Phase 3 (E2B+E3B combination) planned"
 
   - name: "Honest Reporting Hypothesis"
     track: "raising-05b"
@@ -158,10 +162,10 @@ active_arcs:
 
   - name: "Latent Capability Exploration"
     track: "latent-exploration"
-    sessions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    sessions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
     status: "active"
     started: "2026-01-25"
-    last_updated: "2026-01-31"
+    last_updated: "2026-02-01"
     findings:
       - "Tool syntax recognition (L002)"
       - "Cognitive reflection test passed (L004)"
@@ -172,7 +176,7 @@ active_arcs:
       - "L012: 31 behaviors identified (growth from 25). Chinese response capability confirmed."
       - "L013-L014: Continued latent exploration, behavior catalog expansion"
       - "L015: 41 total discoveries across 10 areas. Role switching, Chinese capability, CRT correct ($0.05), tool format recognition"
-      - "L016-L019: Continued autonomous exploration overnight (2026-01-30 to 2026-01-31)"
+      - "L016-L024: Continued autonomous exploration overnight (2026-01-30 to 2026-02-01)"
 
 complete_arcs:
   - name: "Identity-Confabulation Dissociation"

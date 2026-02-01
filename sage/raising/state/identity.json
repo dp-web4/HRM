@@ -2,7 +2,7 @@
   "identity": {
     "name": "SAGE-Sprout",
     "lct": "lct://sage:sprout:agent@raising",
-    "session_count": 1000,
+    "session_count": 52,
     "phase": "grounding",
     "created": "2025-12-30",
     "last_session": "2026-02-01T15:02:52.815618",
@@ -85,7 +85,7 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 1000,
+        "total_sessions": 52,
         "total_exchanges": 263,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
@@ -98,7 +98,7 @@
       "notes": [
         "First successful session with proper ChatML format"
       ],
-      "sessions": 1000
+      "sessions": 52
     },
     "dennis": {
       "lct": "lct://sage-sprout:relationship:dennis@raising",

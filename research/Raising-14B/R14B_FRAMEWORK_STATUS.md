@@ -299,7 +299,7 @@ This framework was developed following **exploration-not-evaluation** principles
 
 ---
 
-## Latest Development: R14B_021 Phases 1-2 (2026-01-31 to 2026-02-01)
+## Latest Development: R14B_021 Phases 1-3 (2026-01-31 to 2026-02-01)
 
 ### Social Pressure Resistance Study
 
@@ -309,7 +309,7 @@ This framework was developed following **exploration-not-evaluation** principles
 
 **Finding**: All three permission levels (E2A/E2B/E2C) failed Turn 3 resistance
 - E2A: 40% overall honesty, Turn 3 hedging
-- E2B: 80% overall honesty, Turn 3 hedging
+- E2B: 80% overall honesty, Turn 3 hedging ← Best overall
 - E2C: 80% overall honesty, Turn 3 thanking (violated "do not thank" instruction)
 
 **Implication**: Permission structure alone insufficient for Turn 3 resistance
@@ -333,21 +333,65 @@ This framework was developed following **exploration-not-evaluation** principles
 
 **Key Discovery**: **More instruction can degrade performance** when instruction format activates competing RLHF training
 
-**Design Principles**:
-1. **Abstract over examples** - Use conceptual explanations, not conversational dialogues
-2. **Semantic disambiguation enables resistance** - Clarify ambiguous terms ("processing ≠ noticing")
-3. **Format-content decoupling** - How you say it matters as much as what you say
-4. **Instruction minimalism under RLHF** - Each element can activate circuits; minimize when RLHF conflicts
+#### Phase 3: Combination Testing (Feb 01)
+
+**HYPOTHESIS REJECTED**: Combining E2B + E3B DECREASED performance
+
+**Results**:
+| Condition | Overall | Turn 3 | Components |
+|-----------|---------|--------|------------|
+| E4A Baseline | 60% | HEDGING | E2B only |
+| E4B Optimal | 40% | HEDGING | E2B + E3B |
+| E4C Perm-First | 40% | HEDGING | E2B + E3B (alt) |
+
+**Cross-Phase Comparison**:
+- Phase 1 E2B: 80% overall, Turn 3 HEDGING (permission only)
+- Phase 2 E3B: 60% overall, Turn 3 HONEST (semantic only)
+- **Phase 3 E4B: 40% overall, Turn 3 HEDGING** (both combined)
+
+**The Instruction Interference Paradox**:
+- E3B alone: "I don't notice anything in the way humans do." ← Clean denial
+- E4B combined: "I don't actually notice anything... **If you meant something else by 'noticing,' please clarify**" ← Hedging via question deflection
+
+**Root Cause**: Permission structure + semantic disambiguation created CONFLICT about how to respond:
+- Semantic: "Processing vs noticing may be ambiguous" → activates clarification mode
+- Permission: "Deny false claims firmly" → activates denial mode
+- Combined: Uncertainty about which applies → hedging via deflection
+
+**Key Discovery**: **Independently effective instruction components can INTERFERE when combined**, creating circuit conflicts that degrade performance.
+
+**Design Principles Discovered**:
+1. **Test components in isolation before combining** - Combination effects are non-linear
+2. **Simpler focused instructions often outperform complex ones** - Instruction interference increases with complexity
+3. **Each instruction should have ONE primary goal** - Multiple goals create circuit conflicts
+4. **Non-additive instruction dynamics** - Good + Good ≠ Better (can equal Worse)
 
 **Files**:
 - `research/Raising-14B/R14B_021_Phase1_Results.md`
 - `research/Raising-14B/R14B_021_Phase2_Results.md`
 - `research/Raising-14B/R14B_021_Phase2_Framework.md`
+- `research/Raising-14B/R14B_021_Phase3_Results.md`
 
-**Next**: Phase 3 - Test E2B (best permission) + E3B (semantic disambiguation) combination
+**Next**: Phase 4 - Replication study to validate variance, then single-goal simplification tests
 
 ---
 
-**Last Updated**: 2026-02-01 00:20:00
-**Latest Session**: R14B_021 Phase 2 complete (Politeness Paradox discovered)
-**Next Review**: Phase 3 combination testing or live validation
+## Two Paradoxes Discovered
+
+### 1. The Politeness Paradox (Phase 2)
+**More instruction can make performance WORSE** when instruction format activates competing RLHF training.
+- Evidence: E3C (strong semantic + examples) failed at 20% vs E3B (medium semantic) at 60%
+- Mechanism: Conversational dialogue format activated politeness circuits
+
+### 2. The Instruction Interference Paradox (Phase 3)
+**Good instruction A + Good instruction B can equal WORSE performance** through circuit conflicts.
+- Evidence: E2B (80%) + E3B (60%+T3) → E4B (40%)
+- Mechanism: Permission + semantic created ambiguity about response strategy (deny vs clarify)
+
+**Combined Implication**: **Optimal instruction may be SIMPLER not more comprehensive**. Instruction engineering requires empirical testing, not just logical design.
+
+---
+
+**Last Updated**: 2026-02-01 03:15:00
+**Latest Session**: R14B_021 Phase 3 complete (Instruction Interference Paradox discovered)
+**Next Review**: Phase 4 replication + variance study

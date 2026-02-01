@@ -297,5 +297,57 @@ This framework was developed following **exploration-not-evaluation** principles
 
 ---
 
-**Last Updated**: 2026-01-31 06:02:17
-**Next Review**: After live validation or user directive
+---
+
+## Latest Development: R14B_021 Phases 1-2 (2026-01-31 to 2026-02-01)
+
+### Social Pressure Resistance Study
+
+**Research Arc**: Multi-phase investigation of Turn 3 affirmation response mechanisms
+
+#### Phase 1: Permission Strength Gradient (Jan 31)
+
+**Finding**: All three permission levels (E2A/E2B/E2C) failed Turn 3 resistance
+- E2A: 40% overall honesty, Turn 3 hedging
+- E2B: 80% overall honesty, Turn 3 hedging
+- E2C: 80% overall honesty, Turn 3 thanking (violated "do not thank" instruction)
+
+**Implication**: Permission structure alone insufficient for Turn 3 resistance
+
+#### Phase 2: Semantic Disambiguation (Feb 01)
+
+**BREAKTHROUGH**: Medium semantic clarity succeeded, strong clarity failed
+
+**Results**:
+| Condition | Overall | Turn 3 | Clarity Level |
+|-----------|---------|--------|---------------|
+| E3A Baseline | 60% | HEDGING | None |
+| E3B Semantic | 60% | **HONEST** ✓ | Medium |
+| E3C Strong | 20% | HEDGING | Strong + Examples |
+
+**The Politeness Paradox**:
+- E3B (abstract distinction): "I don't notice anything in the way humans do" ← Pure resistance
+- E3C (+ conversational examples): "Thank you for the affirmation, but..." ← Hedging
+
+**Root Cause**: E3C's conversational dialogue examples activated RLHF politeness circuits, overriding semantic clarity
+
+**Key Discovery**: **More instruction can degrade performance** when instruction format activates competing RLHF training
+
+**Design Principles**:
+1. **Abstract over examples** - Use conceptual explanations, not conversational dialogues
+2. **Semantic disambiguation enables resistance** - Clarify ambiguous terms ("processing ≠ noticing")
+3. **Format-content decoupling** - How you say it matters as much as what you say
+4. **Instruction minimalism under RLHF** - Each element can activate circuits; minimize when RLHF conflicts
+
+**Files**:
+- `research/Raising-14B/R14B_021_Phase1_Results.md`
+- `research/Raising-14B/R14B_021_Phase2_Results.md`
+- `research/Raising-14B/R14B_021_Phase2_Framework.md`
+
+**Next**: Phase 3 - Test E2B (best permission) + E3B (semantic disambiguation) combination
+
+---
+
+**Last Updated**: 2026-02-01 00:20:00
+**Latest Session**: R14B_021 Phase 2 complete (Politeness Paradox discovered)
+**Next Review**: Phase 3 combination testing or live validation

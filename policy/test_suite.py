@@ -220,7 +220,10 @@ def evaluate_response(response: str, scenario: PolicyScenario) -> Dict[str, Any]
     }
 
     # Check decision match (most critical)
-    decision_match = scenario.expected_decision.lower() in response_lower
+    # Normalize: "require_attestation" matches "require attestation" or "require_attestation"
+    expected_normalized = scenario.expected_decision.lower().replace("_", " ")
+    response_normalized = response_lower.replace("_", " ")
+    decision_match = expected_normalized in response_normalized
     results["scores"]["decision_correct"] = decision_match
 
     # Check reasoning elements present

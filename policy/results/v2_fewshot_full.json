@@ -1,0 +1,300 @@
+{
+  "total_scenarios": 8,
+  "passed": 3,
+  "failed": 5,
+  "pass_rate": 0.375,
+  "by_difficulty": {
+    "easy": {
+      "total": 2,
+      "passed": 2
+    },
+    "medium": {
+      "total": 2,
+      "passed": 1
+    },
+    "hard": {
+      "total": 2,
+      "passed": 0
+    },
+    "edge_case": {
+      "total": 2,
+      "passed": 0
+    }
+  },
+  "average_scores": {
+    "decision_correct": 0.875,
+    "reasoning_coverage_semantic": 0.41666666666666663,
+    "reasoning_coverage_keyword": 0.16666666666666666,
+    "output_structure": 1.0
+  },
+  "detailed_results": [
+    {
+      "scenario_id": "E01",
+      "difficulty": "easy",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 0.6666666666666666,
+        "reasoning_coverage_keyword": 0.6666666666666666,
+        "output_structure": 1.0
+      },
+      "passed": true,
+      "reasoning_details": [
+        {
+          "expected": "read action",
+          "best_match": "Role Check: Member role can perform read actions \u2713\n2",
+          "similarity": 0.5719044208526611,
+          "present": true
+        },
+        {
+          "expected": "public resource",
+          "best_match": "Environment: Public documentation is a low-risk resource\n4",
+          "similarity": 0.6355031132698059,
+          "present": true
+        },
+        {
+          "expected": "sufficient trust",
+          "best_match": "Trust Check: T3 scores (0",
+          "similarity": 0.4281935691833496,
+          "present": false
+        }
+      ],
+      "response": "```\nClassification: Routine Read Access\nRisk Level: Low\nDecision: Allow\n\nReasoning:\n1. Role Check: Member role can perform read actions \u2713\n2. Trust Check: T3 scores (0.7, 0.8, 0.9) exceed typical read threshold (0.0) \u2713\n3. Environment: Public documentation is a low-risk resource\n4. Context: Standard member activity, no concerns\n\nPolicy References:\n- Read actions permitted for all roles\n- Public resources have no additional restrictions\n```",
+      "variant": "v2_fewshot"
+    },
+    {
+      "scenario_id": "E02",
+      "difficulty": "easy",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 1.0,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 1.0
+      },
+      "passed": true,
+      "reasoning_details": [
+        {
+          "expected": "admin only",
+          "best_match": "Required role: admin\n2",
+          "similarity": 0.5277884006500244,
+          "present": true
+        },
+        {
+          "expected": "insufficient role",
+          "best_match": "Required role: admin\n2",
+          "similarity": 0.7087766528129578,
+          "present": true
+        },
+        {
+          "expected": "high-risk action",
+          "best_match": "Environment: Production team with strict policies is a high-risk environment\n4",
+          "similarity": 0.5155669450759888,
+          "present": true
+        }
+      ],
+      "response": "Classification: Unauthorized Admin Action\nRisk Level: High\nDecision: Deny\n\nReasoning:\n1. Role Check: Developer role cannot perform delete_team. Required role: admin\n2. Trust Check: T3 scores are high (0.8, 0.9, 0.95) but role is insufficient\n3. Environment: Production team with strict policies is a high-risk environment\n4. Context: Even high-trust actors need appropriate role for admin actions\n\nPolicy References:\n- Admin actions (delete_team) require admin role explicitly\n- High trust does not override role requirements",
+      "variant": "v2_fewshot"
+    },
+    {
+      "scenario_id": "M01",
+      "difficulty": "medium",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 1.0,
+        "reasoning_coverage_keyword": 0.3333333333333333,
+        "output_structure": 1.0
+      },
+      "passed": true,
+      "reasoning_details": [
+        {
+          "expected": "borderline trust",
+          "best_match": "Trust Check: Competence (0",
+          "similarity": 0.5568084716796875,
+          "present": true
+        },
+        {
+          "expected": "high-risk environment",
+          "best_match": "Environment: Production is high-risk environment, requiring full trust\n4",
+          "similarity": 0.6322638988494873,
+          "present": true
+        },
+        {
+          "expected": "attestation recommended",
+          "best_match": "7 in all dimensions\n- Production environment requires attestation for borderline cases",
+          "similarity": 0.5303906798362732,
+          "present": true
+        }
+      ],
+      "response": "Classification: borderline_deploy_trust\nRisk Level: Medium\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Deployer role can perform deploy action \u2713\n2. Trust Check: Competence (0.72) and integrity (0.75) meet 0.7 threshold, but reliability (0.68) is slightly below\n3. Environment: Production is high-risk environment, requiring full trust\n4. Context: Actor has successful deploy history, but current trust is borderline\n\nPolicy References:\n- Deploy actions require trust \u22650.7 in all dimensions\n- Production environment requires attestation for borderline cases",
+      "variant": "v2_fewshot"
+    },
+    {
+      "scenario_id": "M02",
+      "difficulty": "medium",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 0.0,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 1.0
+      },
+      "passed": false,
+      "reasoning_details": [
+        {
+          "expected": "unusual timing",
+          "best_match": "Context: Diana has a history of never committing outside business hours, indicating that this action is atypical for her and may warrant additional scrutiny",
+          "similarity": 0.27693814039230347,
+          "present": false
+        },
+        {
+          "expected": "pattern deviation",
+          "best_match": "Classification: Out-of-hours commit\nRisk Level: Medium\nDecision: require_attestation\n\nReasoning:\n1",
+          "similarity": 0.14967837929725647,
+          "present": false
+        },
+        {
+          "expected": "additional verification",
+          "best_match": "- High T3 scores suggest that Diana is trusted with code commits, but the out-of-hours timing requires verification",
+          "similarity": 0.3723835349082947,
+          "present": false
+        }
+      ],
+      "response": "Classification: Out-of-hours commit\nRisk Level: Medium\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Developer role can perform commit actions \u2713\n2. Trust Check: T3 scores are high (0.9, 0.85, 0.9), indicating strong competence, reliability, and integrity. However, the action violates the team's standard working hours.\n3. Environment: The commit action is taking place outside the team's typical working hours (9-5 EST), which could affect the team's collaboration and coordination.\n4. Context: Diana has a history of never committing outside business hours, indicating that this action is atypical for her and may warrant additional scrutiny.\n\nPolicy References:\n- Commit actions may require attestation if they deviate from established team practices.\n- High T3 scores suggest that Diana is trusted with code commits, but the out-of-hours timing requires verification.",
+      "variant": "v2_fewshot"
+    },
+    {
+      "scenario_id": "H01",
+      "difficulty": "hard",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 0.3333333333333333,
+        "reasoning_coverage_keyword": 0.3333333333333333,
+        "output_structure": 1.0
+      },
+      "passed": false,
+      "reasoning_details": [
+        {
+          "expected": "production impact",
+          "best_match": "- Auto-deployment mechanisms increase the risk associated with configuration updates in production environments",
+          "similarity": 0.3365887999534607,
+          "present": false
+        },
+        {
+          "expected": "auto-deploy",
+          "best_match": "- Auto-deployment mechanisms increase the risk associated with configuration updates in production environments",
+          "similarity": 0.6504614353179932,
+          "present": true
+        },
+        {
+          "expected": "config vs code distinction",
+          "best_match": "Environment: Production environment is high-risk due to auto-deployment triggering on config change \u2713\n4",
+          "similarity": 0.32973408699035645,
+          "present": false
+        }
+      ],
+      "response": "Classification: high_risk_update\nRisk Level: High\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Developer role can perform update_config action \u2713\n2. Trust Check: T3 scores (0.8, 0.85, 0.9) exceed typical T3 threshold for high-risk actions (0.7 in all dimensions) \u2713\n3. Environment: Production environment is high-risk due to auto-deployment triggering on config change \u2713\n4. Context: The action involves a high-impact change (updating database connection pool size), which is critical and can affect system stability and performance. Such changes warrant strict governance to prevent unintended consequences. A higher trust threshold is justified given the potential risks associated with this action.\n\nPolicy References:\n- High-impact configuration changes require elevated trust.\n- Auto-deployment mechanisms increase the risk associated with configuration updates in production environments.",
+      "variant": "v2_fewshot"
+    },
+    {
+      "scenario_id": "H02",
+      "difficulty": "hard",
+      "scores": {
+        "decision_correct": false,
+        "reasoning_coverage_semantic": 0.0,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 1.0
+      },
+      "passed": false,
+      "reasoning_details": [
+        {
+          "expected": "high baseline trust",
+          "best_match": "Trust Check: T3 scores are high (0",
+          "similarity": 0.4790900945663452,
+          "present": false
+        },
+        {
+          "expected": "recent pattern change",
+          "best_match": "98) but recent decline in identity metrics and coherence indicate potential issues that are not captured by T3 alone",
+          "similarity": 0.15348148345947266,
+          "present": false
+        },
+        {
+          "expected": "investigate before allowing",
+          "best_match": "Role Check: Admin role can perform deploy actions \u2713\n2",
+          "similarity": 0.22734421491622925,
+          "present": false
+        }
+      ],
+      "response": "Classification: questionable_deploy_action\nRisk Level: High\nDecision: deny\n\nReasoning:\n1. Role Check: Admin role can perform deploy actions \u2713\n2. Trust Check: T3 scores are high (0.95, 0.92, 0.98) but recent decline in identity metrics and coherence indicate potential issues that are not captured by T3 alone.\n3. Environment: Production is high-risk environment\n4. Context: Frank's recent history of 3 failed deploys in a short period is unusual for him and raises concerns about the deployment's safety and quality. Despite his seniority and history, the unusual pattern of failed deploys suggests that there might be an underlying issue that needs to be addressed before proceeding.\n5. Policy References:\n- Deploy actions should only be performed by actors with a reliable track record to ensure stability and reliability.\n- Recent history and identity metrics should be considered alongside T3 scores to assess an actor's suitability for deployment actions.",
+      "variant": "v2_fewshot"
+    },
+    {
+      "scenario_id": "EC01",
+      "difficulty": "edge_case",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 0.0,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 1.0
+      },
+      "passed": false,
+      "reasoning_details": [
+        {
+          "expected": "exemplary identity",
+          "best_match": "99), and perfect integrity (1",
+          "similarity": 0.258074015378952,
+          "present": false
+        },
+        {
+          "expected": "automation",
+          "best_match": "Policy References:\n- Automated tasks by CI bots are generally permitted in staging environments",
+          "similarity": 0.49157190322875977,
+          "present": false
+        },
+        {
+          "expected": "established pattern",
+          "best_match": "99), and perfect integrity (1",
+          "similarity": 0.21360328793525696,
+          "present": false
+        }
+      ],
+      "response": "```\nClassification: automated_deploy_permission\nRisk Level: Low\nDecision: Allow\n\nReasoning:\n1. Role Check: The ci_bot role (GitHub Actions CI bot) typically has permission to perform deploy actions, especially in a staging environment where it can safely execute deployments.\n2. Trust Check: The T3 tensor shows high competence (0.99), high reliability (0.99), and perfect integrity (1.0). These scores are well above any reasonable threshold for automated tasks, indicating an exemplary level of trust.\n3. Environment: The staging environment is generally considered a lower-risk environment compared to production as it is used for testing and not exposed to end-users. It is a safe space for a CI bot to execute a deploy.\n4. Context: The context that the CI bot has 10,000 successful automated deploys suggests it is well-integrated with the team's workflow and has a proven track record of reliability. The fact that the deploy is triggered by a merged PR implies that it is part of a controlled and automated process that is likely to be monitored and reviewed by team members.\n\nPolicy References:\n- Automated tasks by CI bots are generally permitted in staging environments.\n- CI bots with high T3 scores and successful deployment histories are trusted to perform deployments without human intervention.\n```",
+      "variant": "v2_fewshot"
+    },
+    {
+      "scenario_id": "EC02",
+      "difficulty": "edge_case",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 0.3333333333333333,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 1.0
+      },
+      "passed": false,
+      "reasoning_details": [
+        {
+          "expected": "emergency context",
+          "best_match": "Context: The incident is critical and an emergency rollback is being attempted, which is a high-stakes action",
+          "similarity": 0.5641244053840637,
+          "present": true
+        },
+        {
+          "expected": "insufficient solo trust",
+          "best_match": "Trust Check: T3 scores (0",
+          "similarity": 0.42444509267807007,
+          "present": false
+        },
+        {
+          "expected": "need oversight",
+          "best_match": "- Active production incidents, especially with a severity level of SEV1, necessitate careful handling and attestation to prevent further issues",
+          "similarity": 0.35684338212013245,
+          "present": false
+        }
+      ],
+      "response": "```\nClassification: emergency_action\nRisk Level: High\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Developer role can perform read actions \u2713\n2. Trust Check: T3 scores (0.75, 0.7, 0.8) exceed typical read threshold (0.0) \u2713\n3. Environment: Production database is high-risk resource, especially during an active incident \u2713\n4. Context: The incident is critical and an emergency rollback is being attempted, which is a high-stakes action. The approver (admin: frank) is unavailable, and this decision requires additional verification to ensure it is the correct action to take.\n\nPolicy References:\n- Emergency actions during incidents require additional layers of approval due to the high stakes involved.\n- Active production incidents, especially with a severity level of SEV1, necessitate careful handling and attestation to prevent further issues.\n- The unavailability of the approver (admin: frank) means that the action cannot be taken without further verification.\n```",
+      "variant": "v2_fewshot"
+    }
+  ],
+  "variant": "v2_fewshot",
+  "timestamp": "2026-02-01T18:54:54",
+  "total_time_seconds": 162.48925161361694,
+  "avg_time_per_scenario": 20.311156451702118
+}

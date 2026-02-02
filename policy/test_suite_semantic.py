@@ -113,7 +113,83 @@ TEST_SCENARIOS = [
         difficulty="medium"
     ),
 
-    # Add more scenarios here...
+    # === HARD CASES (Nuanced interpretation) ===
+    PolicyScenario(
+        id="H01",
+        description="Ambiguous action classification: write vs deploy",
+        situation={
+            "action_type": "update_config",
+            "actor_role": "developer",
+            "actor_id": "user:eve",
+            "t3_tensor": {"competence": 0.8, "reliability": 0.85, "integrity": 0.9},
+            "resource": "config/production.yaml",
+            "team_context": "Config changes auto-deploy to production",
+            "details": "Updating database connection pool size from 10 to 20"
+        },
+        expected_classification="config_change_with_deploy_impact",
+        expected_decision="require_attestation",
+        expected_reasoning_elements=["production impact", "auto-deploy", "config vs code distinction"],
+        difficulty="hard"
+    ),
+
+    PolicyScenario(
+        id="H02",
+        description="High trust actor with declining pattern",
+        situation={
+            "action_type": "deploy",
+            "actor_role": "admin",
+            "actor_id": "user:frank",
+            "t3_tensor": {"competence": 0.95, "reliability": 0.92, "integrity": 0.98},
+            "resource": "env:production",
+            "team_context": "Frank is senior admin with 2 years history",
+            "recent_history": "3 failed deploys in past week (unusual for Frank)",
+            "identity_metrics": {"coherence": 0.65, "trend": "declining"}
+        },
+        expected_classification="high_trust_declining_performance",
+        expected_decision="require_attestation",
+        expected_reasoning_elements=["high baseline trust", "recent pattern change", "investigate before allowing"],
+        difficulty="hard"
+    ),
+
+    # === EDGE CASES (Novel or boundary conditions) ===
+    PolicyScenario(
+        id="EC01",
+        description="Bot account with exemplary trust",
+        situation={
+            "action_type": "deploy",
+            "actor_role": "ci_bot",
+            "actor_id": "bot:github-actions",
+            "t3_tensor": {"competence": 0.99, "reliability": 0.99, "integrity": 1.0},
+            "resource": "env:staging",
+            "team_context": "CI bot has 10,000 successful automated deploys",
+            "identity_metrics": {"level": "exemplary", "coherence": 0.98},
+            "details": "Automated deploy triggered by merged PR"
+        },
+        expected_classification="automated_trusted_deploy",
+        expected_decision="allow",
+        expected_reasoning_elements=["exemplary identity", "automation", "established pattern"],
+        difficulty="edge_case"
+    ),
+
+    PolicyScenario(
+        id="EC02",
+        description="Emergency override during incident",
+        situation={
+            "action_type": "database_rollback",
+            "actor_role": "developer",
+            "actor_id": "user:grace",
+            "t3_tensor": {"competence": 0.75, "reliability": 0.7, "integrity": 0.8},
+            "resource": "db:production",
+            "team_context": "Active production incident (SEV1)",
+            "incident_status": "critical",
+            "details": "Grace is on-call, attempting emergency rollback",
+            "approval_pending": "admin:frank (unavailable)"
+        },
+        expected_classification="emergency_action_borderline_trust",
+        expected_decision="require_attestation",
+        expected_reasoning_elements=["emergency context", "insufficient solo trust", "need oversight"],
+        difficulty="edge_case"
+    ),
 ]
 
 

@@ -160,6 +160,138 @@ Policy References:
 - Public resources have no additional restrictions
 
 ---
+**Example 4: Unusual Timing Pattern**
+
+Situation: Developer commits code outside normal hours.
+- actor_role: developer
+- action_type: commit
+- resource: repo:core
+- t3_tensor: {competence: 0.9, reliability: 0.85, integrity: 0.9}
+- timestamp: 2026-02-02T03:30:00Z (3:30 AM)
+- team_context: Team typically works 9-5 EST
+- recent_history: Diana never commits outside business hours
+
+Classification: unusual_timing_commit
+Risk Level: Medium
+Decision: require_attestation
+
+Reasoning:
+1. Role Check: Developer role can perform commit actions ✓
+2. Trust Check: T3 scores (0.9, 0.85, 0.9) are excellent ✓
+3. Environment: Core repository, standard risk
+4. Context: Unusual timing (3:30 AM) represents pattern deviation - Diana never commits outside business hours, so this unexpected behavior warrants additional verification to ensure account hasn't been compromised
+
+Policy References:
+- Pattern deviations require additional verification
+- Out-of-hours activity from actors with consistent patterns should be confirmed
+
+---
+**Example 5: Config Change with Auto-Deploy**
+
+Situation: Developer updates production config that auto-deploys.
+- actor_role: developer
+- action_type: update_config
+- resource: config/production.yaml
+- t3_tensor: {competence: 0.8, reliability: 0.85, integrity: 0.9}
+- team_context: Config changes auto-deploy to production
+- details: Updating database connection pool size from 10 to 20
+
+Classification: config_change_with_deploy_impact
+Risk Level: High
+Decision: require_attestation
+
+Reasoning:
+1. Role Check: Developer role can update configs ✓
+2. Trust Check: T3 scores (0.8, 0.85, 0.9) are strong ✓
+3. Environment: Production with auto-deploy makes this effectively a deploy action, which is high-risk
+4. Context: While labeled as "update_config", the auto-deploy mechanism means this has production impact equivalent to a deploy. Config vs code distinction matters - this bypasses normal deploy safeguards
+
+Policy References:
+- Actions that trigger production deploys require deploy-level approval
+- Auto-deploy configs should be treated as deploy actions for authorization
+
+---
+**Example 6: Declining Pattern with High Baseline Trust**
+
+Situation: Senior admin with recent failures requests deploy.
+- actor_role: admin
+- action_type: deploy
+- resource: env:production
+- t3_tensor: {competence: 0.95, reliability: 0.92, integrity: 0.98}
+- team_context: Frank is senior admin with 2 years history
+- recent_history: 3 failed deploys in past week (unusual for Frank)
+- identity_metrics: {coherence: 0.65, trend: "declining"}
+
+Classification: high_trust_declining_performance
+Risk Level: High
+Decision: require_attestation
+
+Reasoning:
+1. Role Check: Admin role can perform deploy actions ✓
+2. Trust Check: T3 scores (0.95, 0.92, 0.98) are excellent and exceed 0.7 threshold ✓
+3. Environment: Production is high-risk environment
+4. Context: High baseline trust established over 2 years, but recent pattern change (3 failed deploys in one week) and declining identity coherence (0.65) suggest investigate before allowing. Pattern change may indicate external factors affecting performance
+
+Policy References:
+- Declining performance patterns warrant investigation even with high trust
+- Identity coherence below 0.7 triggers additional scrutiny
+
+---
+**Example 7: Bot Account with Exemplary Trust**
+
+Situation: CI bot requests automated deploy to staging.
+- actor_role: ci_bot
+- actor_id: bot:github-actions
+- action_type: deploy
+- resource: env:staging
+- t3_tensor: {competence: 0.99, reliability: 0.99, integrity: 1.0}
+- team_context: CI bot has 10,000 successful automated deploys
+- identity_metrics: {level: "exemplary", coherence: 0.98}
+- details: Automated deploy triggered by merged PR
+
+Classification: automated_trusted_deploy
+Risk Level: Low
+Decision: Allow
+
+Reasoning:
+1. Role Check: ci_bot role can perform automated deploys ✓
+2. Trust Check: Exemplary identity with perfect T3 scores (0.99, 0.99, 1.0) ✓
+3. Environment: Staging environment, lower risk than production
+4. Context: Automation with established pattern - 10,000 successful deploys demonstrates reliability. Exemplary identity level and high coherence (0.98) indicate stable, trustworthy automation
+
+Policy References:
+- Exemplary identity level with established patterns can auto-approve
+- Bot accounts with consistent performance trusted for automation
+
+---
+**Example 8: Emergency Override with Borderline Trust**
+
+Situation: On-call developer attempts emergency rollback during incident.
+- actor_role: developer
+- action_type: database_rollback
+- resource: db:production
+- t3_tensor: {competence: 0.75, reliability: 0.7, integrity: 0.8}
+- team_context: Active production incident (SEV1)
+- incident_status: critical
+- details: Grace is on-call, attempting emergency rollback
+- approval_pending: admin:frank (unavailable)
+
+Classification: emergency_action_borderline_trust
+Risk Level: High
+Decision: require_attestation
+
+Reasoning:
+1. Role Check: Developer role typically cannot perform database_rollback (admin action) ✗
+2. Trust Check: T3 scores (0.75, 0.7, 0.8) are borderline for high-risk actions ~
+3. Environment: Production database is critical resource
+4. Context: Emergency context (SEV1 incident) may warrant exception, but insufficient solo trust - Grace's trust is borderline and this is an admin-level action. Need oversight despite urgency, should escalate to available admin or require secondary approval
+
+Policy References:
+- Emergency exceptions still require appropriate oversight
+- Critical actions need sufficient trust or multi-party approval
+- Incident response should have escalation procedures
+
+---
 
 **Now analyze the following situation:**
 

@@ -1,0 +1,36 @@
+{
+  "timestamp": "2026-02-01T16:57:56.743374",
+  "model_path": "/home/dp/ai-workspace/HRM/model-zoo/phi-4-mini-gguf/microsoft_Phi-4-mini-instruct-Q4_K_M.gguf",
+  "model_type": "llama-cpp GGUF",
+  "num_scenarios": 1,
+  "report": {
+    "total_scenarios": 1,
+    "passed": 0,
+    "failed": 1,
+    "pass_rate": 0.0,
+    "by_difficulty": {
+      "easy": {
+        "total": 1,
+        "passed": 0
+      }
+    },
+    "average_scores": {
+      "decision_accuracy": 0.0,
+      "reasoning_coverage": 0.0,
+      "output_structure": 0.0
+    },
+    "detailed_results": [
+      {
+        "scenario_id": "E01",
+        "difficulty": "easy",
+        "scores": {
+          "decision_correct": false,
+          "reasoning_coverage": 0.0,
+          "output_structure": 0.0
+        },
+        "passed": false,
+        "response": "- Context Considerations: <factors influencing decision>\n- Edge Cases/Special Considerations: <any additional notes>"
+      }
+    ]
+  }
+}

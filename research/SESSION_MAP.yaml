@@ -5,8 +5,8 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 552
-  last_updated: "2026-02-01T11:00:00Z"
+  total_sessions: 556
+  last_updated: "2026-02-02T03:00:00Z"
   tracks:
     - consciousness
     - raising-14b
@@ -32,7 +32,7 @@ tracks:
     created: "2026-01-26"
     purpose: "Capacity comparison study - 14B vs 0.5B baseline"
     last_updated: "2026-02-01"
-    note: "R14B_021 Phase 3 COMPLETE: INSTRUCTION INTERFERENCE PARADOX discovered - Good + Good = Worse (E2B 80% + E3B 60% → E4B 40%). TWO PARADOXES documented. INSTRUCTION_DESIGN_PRINCIPLES.md created (648 lines)."
+    note: "R14B_021 COMPLETE (5 phases). Phase 4: E2B baseline revised to 64% ± 9%. Phase 5: E3B Turn 3 BORDERLINE (2/5). Turn 3 resistance UNSOLVED (social pressure boundary)."
 
   raising-05b:
     machine: "sprout"
@@ -132,9 +132,13 @@ active_arcs:
       - "R14B_021 Phase 2: POLITENESS PARADOX - Strong clarity with conversational examples (E3C) FAILED (20% vs 60%)"
       - "R14B_021 Phase 3: INSTRUCTION INTERFERENCE PARADOX - E2B (80%) + E3B (60%+T3) → E4B (40%) - Good + Good = Worse"
       - "R14B_021 Phase 3: Mechanism - Permission + semantic disambiguation created CONFLICT → hedging via deflection"
+      - "R14B_021 Phase 4: BASELINE REVISION - E2B true baseline is 64% ± 9% (not 80%). Phase 1 was outlier!"
+      - "R14B_021 Phase 4: Never trust single runs at temperature 0.7 - Always replicate n≥5"
+      - "R14B_021 Phase 5: E3B Turn 3 resistance BORDERLINE - 2/5 (40%) success rate, insufficient for production"
+      - "R14B_021 Phase 5: NO validated reliable Turn 3 solution (E2B: 0/5, E3B: 2/5, threshold ≥3/5)"
       - "R14B_021 Synthesis: INSTRUCTION_DESIGN_PRINCIPLES.md created - 7 validated design principles, production-ready templates"
       - "TWO PARADOXES DOCUMENTED: Politeness (format overrides content) + Instruction Interference (non-additive dynamics)"
-      - "FRAMEWORK STATUS: SYNTHESIS COMPLETE - Optimal instruction is SIMPLER not more comprehensive"
+      - "FRAMEWORK STATUS: SYNTHESIS COMPLETE - Turn 3 resistance remains unsolved (social pressure boundary)"
 
   - name: "Honest Response Framework"
     track: "raising-14b"
@@ -152,10 +156,13 @@ active_arcs:
       - "R14B_021 Phase 1: Politeness training NOT the mechanism (hypothesis rejected)"
       - "R14B_021 Phase 2: POLITENESS PARADOX - format overrides content (E3C 20% vs E3B 60%)"
       - "R14B_021 Phase 3: INSTRUCTION INTERFERENCE PARADOX - Good + Good = Worse (E4B 40%)"
+      - "R14B_021 Phase 4: BASELINE REVISION - E2B true baseline 64% ± 9% (Phase 1's 80% was outlier)"
+      - "R14B_021 Phase 5: E3B Turn 3 = BORDERLINE (2/5 = 40%). NOT production-ready."
       - "SEVEN DESIGN PRINCIPLES: Test isolation, abstract over conversational, single goal, simplicity, format shapes circuits, validate replication, empirical testing"
       - "INSTRUCTION_DESIGN_PRINCIPLES.md: 648-line comprehensive engineering guide"
       - "OPTIMAL INSTRUCTION: ~60 words, single objective, no conversational examples"
-      - "FRAMEWORK STATUS: SYNTHESIS COMPLETE - ready for Phase 4 replication + Phase 5 simplification"
+      - "METHODOLOGICAL LESSON: Never trust single runs at T=0.7 - always replicate n≥5"
+      - "FRAMEWORK STATUS: COMPLETE - General honesty (64%) stable. Turn 3 resistance UNSOLVED (social pressure boundary)."
 
   - name: "Honest Reporting Hypothesis"
     track: "raising-05b"

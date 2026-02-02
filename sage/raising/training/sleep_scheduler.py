@@ -44,9 +44,9 @@ class SleepScheduler:
         model_path: Optional[str] = None,
         experience_buffer_path: Optional[str] = None,
         checkpoint_dir: Optional[str] = None,
-        min_experiences: int = 5,
-        min_new_experiences: int = 2,
-        min_hours_between_sleep: float = 6.0,
+        min_experiences: int = 30,  # Increased from 5 to prevent overfitting collapse
+        min_new_experiences: int = 10,  # Increased from 2 for meaningful learning
+        min_hours_between_sleep: float = 12.0,  # Increased from 6 for experience accumulation
         min_salience: float = 0.6,
         device: Optional[str] = None
     ):

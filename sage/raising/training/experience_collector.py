@@ -217,7 +217,17 @@ class ExperienceCollector:
     - Score each exchange with SNARC
     - Store high-salience exchanges for later training
     - Provide interface for sleep training to consume experiences
+
+    Collapse Prevention (added 2026-02-01):
+    - Detects repetitive responses that indicate mode collapse
+    - Filters out experiences that are too similar to recent ones
+    - Prevents feedback loop where collapsed outputs train more collapse
     """
+
+    # Similarity threshold for collapse detection (0-1, higher = more strict)
+    SIMILARITY_THRESHOLD = 0.85
+    # Number of recent responses to check for repetition
+    RECENT_WINDOW = 10
 
     def __init__(self, buffer_path: Optional[Path] = None, salience_threshold: float = 0.5):
         """
@@ -234,6 +244,9 @@ class ExperienceCollector:
         # Load existing buffer if it exists
         self.experiences = self._load_buffer()
 
+        # Track recent responses for collapse detection
+        self._recent_responses = []
+
     def _load_buffer(self) -> List[Dict]:
         """Load existing experience buffer from disk."""
         if self.buffer_path.exists():
@@ -247,6 +260,50 @@ class ExperienceCollector:
         with open(self.buffer_path, 'w') as f:
             json.dump(self.experiences, f, indent=2)
 
+    def _compute_similarity(self, text1: str, text2: str) -> float:
+        """
+        Compute simple word-overlap similarity between two texts.
+
+        Returns value 0-1 where 1 = identical.
+        """
+        words1 = set(text1.lower().split())
+        words2 = set(text2.lower().split())
+
+        if not words1 or not words2:
+            return 0.0
+
+        intersection = len(words1 & words2)
+        union = len(words1 | words2)
+
+        return intersection / union if union > 0 else 0.0
+
+    def _is_repetitive(self, response: str) -> tuple[bool, float]:
+        """
+        Check if response is too similar to recent responses (collapse indicator).
+
+        Returns:
+            Tuple of (is_repetitive: bool, max_similarity: float)
+        """
+        if not self._recent_responses:
+            return False, 0.0
+
+        max_sim = 0.0
+        for recent in self._recent_responses[-self.RECENT_WINDOW:]:
+            sim = self._compute_similarity(response, recent)
+            max_sim = max(max_sim, sim)
+
+            if sim >= self.SIMILARITY_THRESHOLD:
+                return True, sim
+
+        return False, max_sim
+
+    def _update_recent_responses(self, response: str):
+        """Track response for future repetition detection."""
+        self._recent_responses.append(response)
+        # Keep only recent window
+        if len(self._recent_responses) > self.RECENT_WINDOW * 2:
+            self._recent_responses = self._recent_responses[-self.RECENT_WINDOW:]
+
     def add_exchange(
         self,
         prompt: str,
@@ -258,6 +315,9 @@ class ExperienceCollector:
         """
         Score and potentially store a conversation exchange.
 
+        Includes collapse prevention: repetitive responses are filtered out
+        to prevent mode collapse feedback loops.
+
         Args:
             prompt: User input
             response: SAGE response
@@ -268,6 +328,21 @@ class ExperienceCollector:
         Returns:
             Dict with salience scores and whether it was stored
         """
+        # Check for repetition FIRST (collapse prevention)
+        is_repetitive, similarity = self._is_repetitive(response)
+
+        if is_repetitive:
+            # Track but don't store - this is collapse indicator
+            self._update_recent_responses(response)
+            return {
+                'salience': {'total': 0.0},
+                'stored': False,
+                'filtered': True,
+                'filter_reason': 'repetitive_response',
+                'similarity': similarity,
+                'warning': f'Response too similar to recent ({similarity:.2%}) - possible collapse'
+            }
+
         # Score the exchange
         scores = self.scorer.score_exchange(prompt, response, metadata)
 
@@ -276,8 +351,12 @@ class ExperienceCollector:
 
         result = {
             'salience': scores,
-            'stored': is_salient
+            'stored': is_salient,
+            'filtered': False
         }
+
+        # Always track for future repetition detection
+        self._update_recent_responses(response)
 
         if is_salient:
             # Create experience entry
@@ -370,3 +449,47 @@ class ExperienceCollector:
             List of experiences ready for training data conversion
         """
         return self.get_high_salience_experiences(min_salience=min_salience)
+
+    def get_collapse_status(self) -> Dict[str, Any]:
+        """
+        Check for signs of mode collapse in recent experiences.
+
+        Returns status including:
+        - Whether collapse is detected
+        - Repetition ratio in recent responses
+        - Recommendation for action
+        """
+        if len(self._recent_responses) < 3:
+            return {
+                'collapse_detected': False,
+                'reason': 'insufficient_data',
+                'recent_count': len(self._recent_responses)
+            }
+
+        # Check pairwise similarity in recent responses
+        high_sim_count = 0
+        total_pairs = 0
+
+        for i, resp1 in enumerate(self._recent_responses[-self.RECENT_WINDOW:]):
+            for resp2 in self._recent_responses[-self.RECENT_WINDOW:][i+1:]:
+                sim = self._compute_similarity(resp1, resp2)
+                total_pairs += 1
+                if sim >= self.SIMILARITY_THRESHOLD:
+                    high_sim_count += 1
+
+        if total_pairs == 0:
+            repetition_ratio = 0.0
+        else:
+            repetition_ratio = high_sim_count / total_pairs
+
+        # Collapse if >50% of recent pairs are highly similar
+        collapse_detected = repetition_ratio > 0.5
+
+        return {
+            'collapse_detected': collapse_detected,
+            'repetition_ratio': repetition_ratio,
+            'high_similarity_pairs': high_sim_count,
+            'total_pairs': total_pairs,
+            'recent_responses': len(self._recent_responses),
+            'recommendation': 'disable_lora_and_investigate' if collapse_detected else 'normal_operation'
+        }

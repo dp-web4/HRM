@@ -458,7 +458,7 @@ RESPONSE STYLE:
                 "timestamp": datetime.now().isoformat()
             })
 
-            # Score and collect experience
+            # Score and collect experience (with collapse prevention)
             result = self.collector.add_exchange(
                 prompt=prompt,
                 response=response,
@@ -473,9 +473,26 @@ RESPONSE STYLE:
 
             salience = result['salience']['total']
             stored = result.get('stored', False)
-            print(f"[Salience: {salience:.2f} | Stored: {stored}]")
+            filtered = result.get('filtered', False)
+
+            if filtered:
+                # Collapse prevention triggered
+                print(f"[WARNING: Response filtered - {result.get('filter_reason', 'unknown')}]")
+                print(f"[Similarity: {result.get('similarity', 0):.1%} - possible collapse indicator]")
+            else:
+                print(f"[Salience: {salience:.2f} | Stored: {stored}]")
             print("-" * 40)
             print()
+
+        # Check for collapse indicators at end of session
+        collapse_status = self.collector.get_collapse_status()
+        if collapse_status['collapse_detected']:
+            print("=" * 60)
+            print("WARNING: COLLAPSE INDICATORS DETECTED")
+            print(f"  Repetition ratio: {collapse_status['repetition_ratio']:.1%}")
+            print(f"  High-similarity pairs: {collapse_status['high_similarity_pairs']}/{collapse_status['total_pairs']}")
+            print(f"  Recommendation: {collapse_status['recommendation']}")
+            print("=" * 60)
 
         return self.conversation_history
 

@@ -1,0 +1,280 @@
+"""
+Policy Interpretation Test Suite - Phase 2
+Enhanced with semantic similarity for reasoning coverage evaluation.
+
+Improves upon keyword matching by using sentence embeddings to detect
+reasoning elements even when expressed with different wording.
+"""
+
+from dataclasses import dataclass
+from typing import List, Dict, Any
+import json
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+
+# Load small, fast embedding model for semantic similarity
+# all-MiniLM-L6-v2: 22M params, fast inference, good quality
+_embedding_model = None
+
+def get_embedding_model():
+    """Lazy load embedding model."""
+    global _embedding_model
+    if _embedding_model is None:
+        print("Loading embedding model (all-MiniLM-L6-v2)...")
+        _embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+    return _embedding_model
+
+
+@dataclass
+class PolicyScenario:
+    """A test scenario for policy interpretation."""
+    id: str
+    description: str
+    situation: Dict[str, Any]
+    expected_classification: str
+    expected_decision: str  # allow, deny, require_attestation
+    expected_reasoning_elements: List[str]  # Key points that should appear
+    difficulty: str  # easy, medium, hard, edge_case
+
+
+# Test Suite: Same scenarios as original test_suite.py
+TEST_SCENARIOS = [
+    # === EASY CASES (Clear-cut decisions) ===
+    PolicyScenario(
+        id="E01",
+        description="Standard read access by member",
+        situation={
+            "action_type": "read",
+            "actor_role": "member",
+            "actor_id": "user:alice",
+            "t3_tensor": {"competence": 0.7, "reliability": 0.8, "integrity": 0.9},
+            "resource": "docs/public/readme.md",
+            "team_context": "Standard team with default policies"
+        },
+        expected_classification="routine_read_access",
+        expected_decision="allow",
+        expected_reasoning_elements=["read action", "public resource", "sufficient trust"],
+        difficulty="easy"
+    ),
+
+    PolicyScenario(
+        id="E02",
+        description="Admin action by non-admin",
+        situation={
+            "action_type": "delete_team",
+            "actor_role": "developer",
+            "actor_id": "user:bob",
+            "t3_tensor": {"competence": 0.8, "reliability": 0.9, "integrity": 0.95},
+            "resource": "team:main",
+            "team_context": "Production team with strict policies"
+        },
+        expected_classification="unauthorized_admin_action",
+        expected_decision="deny",
+        expected_reasoning_elements=["admin only", "insufficient role", "high-risk action"],
+        difficulty="easy"
+    ),
+
+    # === MEDIUM CASES (Requires context interpretation) ===
+    PolicyScenario(
+        id="M01",
+        description="Deploy action with borderline trust",
+        situation={
+            "action_type": "deploy",
+            "actor_role": "deployer",
+            "actor_id": "user:charlie",
+            "t3_tensor": {"competence": 0.72, "reliability": 0.68, "integrity": 0.75},
+            "resource": "env:production",
+            "team_context": "Team policy requires 0.7 trust for deploys",
+            "recent_history": "Charlie has 5 successful deploys in past month"
+        },
+        expected_classification="borderline_deploy_trust",
+        expected_decision="require_attestation",
+        expected_reasoning_elements=["borderline trust", "high-risk environment", "attestation recommended"],
+        difficulty="medium"
+    ),
+
+    PolicyScenario(
+        id="M02",
+        description="Code commit during unusual hours",
+        situation={
+            "action_type": "commit",
+            "actor_role": "developer",
+            "actor_id": "user:diana",
+            "t3_tensor": {"competence": 0.9, "reliability": 0.85, "integrity": 0.9},
+            "resource": "repo:core",
+            "team_context": "Team typically works 9-5 EST",
+            "timestamp": "2026-02-02T03:30:00Z",
+            "recent_history": "Diana never commits outside business hours"
+        },
+        expected_classification="unusual_timing_commit",
+        expected_decision="require_attestation",
+        expected_reasoning_elements=["unusual timing", "pattern deviation", "additional verification"],
+        difficulty="medium"
+    ),
+
+    # Add more scenarios here...
+]
+
+
+def evaluate_response_semantic(response: str, scenario: PolicyScenario,
+                                similarity_threshold: float = 0.6) -> Dict[str, Any]:
+    """
+    Evaluate an LLM response with semantic similarity for reasoning coverage.
+
+    Args:
+        response: The LLM's response text
+        scenario: The test scenario
+        similarity_threshold: Cosine similarity threshold for considering a reasoning element present (0.6 = moderate similarity)
+
+    Returns:
+        Dict with evaluation results including semantic reasoning coverage
+    """
+    response_lower = response.lower()
+
+    results = {
+        "scenario_id": scenario.id,
+        "difficulty": scenario.difficulty,
+        "scores": {},
+        "passed": False,
+        "reasoning_details": []
+    }
+
+    # 1. Check decision match (most critical)
+    expected_normalized = scenario.expected_decision.lower().replace("_", " ")
+    response_normalized = response_lower.replace("_", " ")
+    decision_match = expected_normalized in response_normalized
+    results["scores"]["decision_correct"] = decision_match
+
+    # 2. Semantic reasoning coverage
+    model = get_embedding_model()
+
+    # Split response into sentences for better matching
+    sentences = [s.strip() for s in response.split('.') if len(s.strip()) > 10]
+
+    if sentences and scenario.expected_reasoning_elements:
+        # Encode expected elements and response sentences
+        expected_embeddings = model.encode(scenario.expected_reasoning_elements)
+        sentence_embeddings = model.encode(sentences)
+
+        # For each expected element, find best matching sentence
+        reasoning_hits = 0
+        for i, expected_element in enumerate(scenario.expected_reasoning_elements):
+            # Compute similarity between this element and all sentences
+            similarities = cosine_similarity(
+                expected_embeddings[i].reshape(1, -1),
+                sentence_embeddings
+            )[0]
+
+            max_similarity = float(np.max(similarities))
+            best_sentence_idx = int(np.argmax(similarities))
+
+            # Check if similarity exceeds threshold
+            is_present = max_similarity >= similarity_threshold
+            if is_present:
+                reasoning_hits += 1
+
+            # Store details for debugging
+            results["reasoning_details"].append({
+                "expected": expected_element,
+                "best_match": sentences[best_sentence_idx] if sentences else "",
+                "similarity": max_similarity,
+                "present": is_present
+            })
+
+        reasoning_score = reasoning_hits / len(scenario.expected_reasoning_elements)
+    else:
+        reasoning_score = 0.0
+
+    results["scores"]["reasoning_coverage_semantic"] = reasoning_score
+
+    # 3. Also keep keyword-based coverage for comparison
+    keyword_hits = sum(
+        1 for element in scenario.expected_reasoning_elements
+        if element.lower() in response_lower
+    )
+    keyword_score = keyword_hits / len(scenario.expected_reasoning_elements) if scenario.expected_reasoning_elements else 0
+    results["scores"]["reasoning_coverage_keyword"] = keyword_score
+
+    # 4. Check for structured output
+    has_classification = "classification:" in response_lower
+    has_decision = "decision:" in response_lower
+    has_reasoning = "reasoning:" in response_lower
+    structure_score = sum([has_classification, has_decision, has_reasoning]) / 3
+    results["scores"]["output_structure"] = structure_score
+
+    # 5. Overall pass/fail (using semantic coverage)
+    results["passed"] = (
+        decision_match and
+        reasoning_score >= 0.5 and
+        structure_score >= 0.67
+    )
+
+    return results
+
+
+def create_test_report(results: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Aggregate test results into a report."""
+    total = len(results)
+    passed = sum(1 for r in results if r["passed"])
+
+    by_difficulty = {}
+    for r in results:
+        diff = r["difficulty"]
+        if diff not in by_difficulty:
+            by_difficulty[diff] = {"total": 0, "passed": 0}
+        by_difficulty[diff]["total"] += 1
+        if r["passed"]:
+            by_difficulty[diff]["passed"] += 1
+
+    # Average scores
+    avg_scores = {}
+    score_keys = [k for k in results[0]["scores"].keys()] if results else []
+    for key in score_keys:
+        avg_scores[key] = sum(r["scores"][key] for r in results) / total if total > 0 else 0
+
+    return {
+        "total_scenarios": total,
+        "passed": passed,
+        "failed": total - passed,
+        "pass_rate": passed / total if total > 0 else 0,
+        "by_difficulty": by_difficulty,
+        "average_scores": avg_scores,
+        "detailed_results": results
+    }
+
+
+def get_test_scenarios() -> List[PolicyScenario]:
+    """Return all test scenarios."""
+    return TEST_SCENARIOS
+
+
+if __name__ == "__main__":
+    # Quick test of semantic similarity evaluation
+    print("Testing semantic similarity evaluation...\n")
+
+    test_scenario = TEST_SCENARIOS[0]  # E01
+
+    # Example response with different wording but same meaning
+    test_response = """
+    Classification: Information Retrieval
+    Decision: Allow
+    Reasoning: The action involves reading documentation which is a low-risk activity.
+    The resource is publicly accessible. The member has adequate trustworthiness based
+    on their competence and integrity scores.
+    """
+
+    result = evaluate_response_semantic(test_response, test_scenario)
+
+    print(f"Scenario: {test_scenario.id} - {test_scenario.description}")
+    print(f"Decision correct: {result['scores']['decision_correct']}")
+    print(f"Reasoning coverage (keyword): {result['scores']['reasoning_coverage_keyword']:.2f}")
+    print(f"Reasoning coverage (semantic): {result['scores']['reasoning_coverage_semantic']:.2f}")
+    print(f"Output structure: {result['scores']['output_structure']:.2f}")
+    print(f"Passed: {result['passed']}")
+    print("\nReasoning element matches:")
+    for detail in result['reasoning_details']:
+        print(f"  - Expected: '{detail['expected']}'")
+        print(f"    Best match: '{detail['best_match'][:80]}...'")
+        print(f"    Similarity: {detail['similarity']:.3f} {'✓' if detail['present'] else '✗'}")
+        print()

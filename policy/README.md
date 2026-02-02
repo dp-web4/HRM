@@ -1,6 +1,6 @@
 # Policy Role Training Infrastructure
 
-**Status**: Phase 1-2 infrastructure ready, transformers version issue blocking execution
+**Status**: Phase 1-2 infrastructure ready, llama-cpp implementation complete
 
 ## Overview
 
@@ -11,34 +11,57 @@ Training infrastructure for phi-4-mini to serve as policy interpreter for Hardbo
 | File | Purpose |
 |------|---------|
 | `test_suite.py` | 8 test scenarios (easy/medium/hard/edge cases) + evaluation framework |
-| `run_baseline_test.py` | Baseline capability assessment runner |
+| `run_baseline_test.py` | Baseline capability assessment runner (transformers) |
+| `run_baseline_test_llama.py` | Baseline capability assessment runner (llama-cpp) |
 | `prompts.py` | System prompts for Hardbound and Web4 contexts |
 | `AUTONOMOUS_SESSION_TASKS.md` | Detailed task list for autonomous sessions |
 
-## Current Blocker
+## Implementation: llama-cpp (Recommended)
 
-**Transformers version incompatibility** with phi-4-mini:
+**Using llama-cpp with GGUF quantized model** - consistent across Thor and Sprout.
 
-```
-ImportError: cannot import name 'LossKwargs' from 'transformers.utils'
-```
+### Prerequisites
 
-**Root cause**: Phi-4-mini's `modeling_phi3.py` requires newer transformers version
-
-**Fix needed**:
 ```bash
-pip install --upgrade transformers
-# OR
-pip install transformers>=4.46.0  # Check exact version needed
+pip install --break-system-packages llama-cpp-python huggingface-hub
 ```
 
-**Autonomous session TODO**: Fix transformers version, then re-run baseline test
+### Model Download
 
-## Usage (After Fix)
+Q4_K_M quantized model (2.49 GB) from bartowski:
 
-### Run Baseline Test
+```bash
+cd /home/dp/ai-workspace/HRM/model-zoo/phi-4-mini-gguf
+python3 << 'EOF'
+from huggingface_hub import hf_hub_download
+hf_hub_download(
+    repo_id="bartowski/microsoft_Phi-4-mini-instruct-GGUF",
+    filename="microsoft_Phi-4-mini-instruct-Q4_K_M.gguf",
+    local_dir="."
+)
+EOF
+```
+
+## Usage
+
+### Run Baseline Test (llama-cpp)
+
 ```bash
 cd /home/dp/ai-workspace/HRM/policy
+python3 run_baseline_test_llama.py --num-scenarios 3  # Quick test (3 scenarios)
+python3 run_baseline_test_llama.py  # Full test (all 8 scenarios)
+```
+
+**Custom model path**:
+```bash
+python3 run_baseline_test_llama.py --model /path/to/model.gguf --num-scenarios 3
+```
+
+### Run Baseline Test (transformers - legacy)
+
+**Note**: Requires transformers bleeding-edge version due to phi-4-mini compatibility.
+
+```bash
 python3 run_baseline_test.py --num-scenarios 3  # Quick test
 python3 run_baseline_test.py  # Full test (all scenarios)
 ```

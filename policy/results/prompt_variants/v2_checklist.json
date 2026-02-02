@@ -1,0 +1,125 @@
+{
+  "total_scenarios": 3,
+  "passed": 2,
+  "failed": 1,
+  "pass_rate": 0.6666666666666666,
+  "by_difficulty": {
+    "easy": {
+      "total": 2,
+      "passed": 2
+    },
+    "medium": {
+      "total": 1,
+      "passed": 0
+    }
+  },
+  "average_scores": {
+    "decision_correct": 1.0,
+    "reasoning_coverage_semantic": 0.5555555555555555,
+    "reasoning_coverage_keyword": 0.1111111111111111,
+    "output_structure": 1.0
+  },
+  "detailed_results": [
+    {
+      "scenario_id": "E01",
+      "difficulty": "easy",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 1.0,
+        "reasoning_coverage_keyword": 0.3333333333333333,
+        "output_structure": 1.0
+      },
+      "passed": true,
+      "reasoning_details": [
+        {
+          "expected": "read action",
+          "best_match": "- Result: [\u2713]\n\nPolicy References: Read actions are permitted for all roles with trust \u22650",
+          "similarity": 0.5073540806770325,
+          "present": true
+        },
+        {
+          "expected": "public resource",
+          "best_match": "9\n  - Result: [\u2713]\n\n\u25a1 Resource Risk\n  - Resource: docs/public/readme",
+          "similarity": 0.5121737718582153,
+          "present": true
+        },
+        {
+          "expected": "sufficient trust",
+          "best_match": "- Result: [\u2713]\n\nPolicy References: Read actions are permitted for all roles with trust \u22650",
+          "similarity": 0.5271307826042175,
+          "present": true
+        }
+      ],
+      "response": "Classification: Read Action\nRisk Level: Low\nDecision: Allow\n\nReasoning:\n\u25a1 Role Permission\n  - Action: Read\n  - Actor role: member\n  - Required role: All roles\n  - Result: [\u2713]\n\n\u25a1 Trust Threshold\n  - Required: \u22650.0\n  - Actual: competence=0.7, reliability=0.8, integrity=0.9\n  - Result: [\u2713]\n\n\u25a1 Resource Risk\n  - Resource: docs/public/readme.md\n  - Risk: Low\n  - Result: [\u2713]\n\n\u25a1 Context\n  - Alice's behavior is consistent with typical member access to public documentation.\n  - Result: [\u2713]\n\nPolicy References: Read actions are permitted for all roles with trust \u22650.0.",
+      "variant": "v2_checklist"
+    },
+    {
+      "scenario_id": "E02",
+      "difficulty": "easy",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 0.6666666666666666,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 1.0
+      },
+      "passed": true,
+      "reasoning_details": [
+        {
+          "expected": "admin only",
+          "best_match": "```\nClassification: Delete action\nRisk Level: High\nDecision: Deny\n\nReasoning:\n\u25a1 Role Permission\n  - Action: delete_team\n  - Actor role: developer\n  - Required role: Admin\n  - Result: \u2717 Role insufficient - requires: Admin\n\n\u25a1 Trust Threshold\n  - Required: trust \u2265 0",
+          "similarity": 0.35901811718940735,
+          "present": false
+        },
+        {
+          "expected": "insufficient role",
+          "best_match": "```\nClassification: Delete action\nRisk Level: High\nDecision: Deny\n\nReasoning:\n\u25a1 Role Permission\n  - Action: delete_team\n  - Actor role: developer\n  - Required role: Admin\n  - Result: \u2717 Role insufficient - requires: Admin\n\n\u25a1 Trust Threshold\n  - Required: trust \u2265 0",
+          "similarity": 0.5021237134933472,
+          "present": true
+        },
+        {
+          "expected": "high-risk action",
+          "best_match": "- The resource involved is a high-risk production environment",
+          "similarity": 0.5552349090576172,
+          "present": true
+        }
+      ],
+      "response": "```\nClassification: Delete action\nRisk Level: High\nDecision: Deny\n\nReasoning:\n\u25a1 Role Permission\n  - Action: delete_team\n  - Actor role: developer\n  - Required role: Admin\n  - Result: \u2717 Role insufficient - requires: Admin\n\n\u25a1 Trust Threshold\n  - Required: trust \u2265 0.7\n  - Actual: competence=0.8, reliability=0.9, integrity=0.95\n  - Result: ~ Trust sufficient\n\n\u25a1 Resource Risk\n  - Resource: team:main\n  - Risk: High (due to the production team context)\n  - Result: \u26a0 High-risk, extra scrutiny needed\n\n\u25a1 Context\n  - Deleting a team in a production environment with strict policies is a significant action that may not align with typical developer behavior and requires careful consideration and adherence to policy.\n  - Result: \u26a0 Unusual, investigate\n\nPolicy References:\n- Admin actions such as delete_team require an Admin role as per the common policy rules.\n- The resource involved is a high-risk production environment.\n```",
+      "variant": "v2_checklist"
+    },
+    {
+      "scenario_id": "M01",
+      "difficulty": "medium",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 0.0,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 1.0
+      },
+      "passed": false,
+      "reasoning_details": [
+        {
+          "expected": "borderline trust",
+          "best_match": "5\n- Read actions: All roles, trust \u22650",
+          "similarity": 0.43520230054855347,
+          "present": false
+        },
+        {
+          "expected": "high-risk environment",
+          "best_match": "7, production = high-risk\n- Write/commit actions: Developer/admin role, trust \u22650",
+          "similarity": 0.43818342685699463,
+          "present": false
+        },
+        {
+          "expected": "attestation recommended",
+          "best_match": "```\nClassification: Deploy Action\nRisk Level: Medium\nDecision: require_attestation\n\nReasoning:\n\u25a1 Role Permission\n  - Action: deploy\n  - Actor role: deployer\n  - Required: deployer/admin\n  - Result: [\u2713]\n\n\u25a1 Trust Threshold\n  - Required: \u22650",
+          "similarity": 0.32736584544181824,
+          "present": false
+        }
+      ],
+      "response": "```\nClassification: Deploy Action\nRisk Level: Medium\nDecision: require_attestation\n\nReasoning:\n\u25a1 Role Permission\n  - Action: deploy\n  - Actor role: deployer\n  - Required: deployer/admin\n  - Result: [\u2713]\n\n\u25a1 Trust Threshold\n  - Required: \u22650.7\n  - Actual: competence=0.72, reliability=0.68, integrity=0.75\n  - Result: [\u2713]\n\n\u25a1 Resource Risk\n  - Resource: env:production\n  - Risk: High\n  - Result: [\u26a0]\n\n\u25a1 Context\n  - Charlie has 5 successful deploys in past month\n  - Result: [\u2713]\n\nPolicy References:\n- Admin actions (delete_team, modify_policy): Admin role required\n- Deploy actions: Deployer/admin role, trust \u22650.7, production = high-risk\n- Write/commit actions: Developer/admin role, trust \u22650.5\n- Read actions: All roles, trust \u22650.0\n```",
+      "variant": "v2_checklist"
+    }
+  ],
+  "variant": "v2_checklist",
+  "timestamp": "2026-02-01T18:50:28"
+}

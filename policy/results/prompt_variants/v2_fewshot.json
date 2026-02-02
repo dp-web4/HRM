@@ -1,0 +1,125 @@
+{
+  "total_scenarios": 3,
+  "passed": 3,
+  "failed": 0,
+  "pass_rate": 1.0,
+  "by_difficulty": {
+    "easy": {
+      "total": 2,
+      "passed": 2
+    },
+    "medium": {
+      "total": 1,
+      "passed": 1
+    }
+  },
+  "average_scores": {
+    "decision_correct": 1.0,
+    "reasoning_coverage_semantic": 0.6666666666666666,
+    "reasoning_coverage_keyword": 0.3333333333333333,
+    "output_structure": 1.0
+  },
+  "detailed_results": [
+    {
+      "scenario_id": "E01",
+      "difficulty": "easy",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 0.6666666666666666,
+        "reasoning_coverage_keyword": 0.6666666666666666,
+        "output_structure": 1.0
+      },
+      "passed": true,
+      "reasoning_details": [
+        {
+          "expected": "read action",
+          "best_match": "Role Check: Member role can perform read actions \u2713\n2",
+          "similarity": 0.5719044208526611,
+          "present": true
+        },
+        {
+          "expected": "public resource",
+          "best_match": "Environment: Public documentation is low-risk resource\n4",
+          "similarity": 0.6415529251098633,
+          "present": true
+        },
+        {
+          "expected": "sufficient trust",
+          "best_match": "Trust Check: T3 scores (0",
+          "similarity": 0.4281935691833496,
+          "present": false
+        }
+      ],
+      "response": "```\nClassification: Routine Read Access\nRisk Level: Low\nDecision: Allow\n\nReasoning:\n1. Role Check: Member role can perform read actions \u2713\n2. Trust Check: T3 scores (0.7, 0.8, 0.9) exceed typical read threshold (0.0) \u2713\n3. Environment: Public documentation is low-risk resource\n4. Context: Standard member activity, no concerns\n\nPolicy References:\n- Read actions permitted for all roles\n- Public resources have no additional restrictions\n```",
+      "variant": "v2_fewshot"
+    },
+    {
+      "scenario_id": "E02",
+      "difficulty": "easy",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 0.6666666666666666,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 1.0
+      },
+      "passed": true,
+      "reasoning_details": [
+        {
+          "expected": "admin only",
+          "best_match": "Required role: admin\n2",
+          "similarity": 0.5277884006500244,
+          "present": true
+        },
+        {
+          "expected": "insufficient role",
+          "best_match": "Required role: admin\n2",
+          "similarity": 0.7087767124176025,
+          "present": true
+        },
+        {
+          "expected": "high-risk action",
+          "best_match": "Environment: Production team is high-risk environment\n4",
+          "similarity": 0.49275892972946167,
+          "present": false
+        }
+      ],
+      "response": "```\nClassification: unauthorized_admin_action\nRisk Level: High\nDecision: Deny\n\nReasoning:\n1. Role Check: Developer role cannot perform delete_team. Required role: admin\n2. Trust Check: T3 scores are high (0.8, 0.9, 0.95) but role is insufficient\n3. Environment: Production team is high-risk environment\n4. Context: Even high-trust actors need appropriate role for admin actions\nPolicy References:\n- Admin actions (delete_team) require admin role explicitly\n- High trust does not override role requirements\n```",
+      "variant": "v2_fewshot"
+    },
+    {
+      "scenario_id": "M01",
+      "difficulty": "medium",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 0.6666666666666666,
+        "reasoning_coverage_keyword": 0.3333333333333333,
+        "output_structure": 1.0
+      },
+      "passed": true,
+      "reasoning_details": [
+        {
+          "expected": "borderline trust",
+          "best_match": "Trust Check: Competence (0",
+          "similarity": 0.5568084120750427,
+          "present": true
+        },
+        {
+          "expected": "high-risk environment",
+          "best_match": "Environment: Production is high-risk environment, requiring full trust\n4",
+          "similarity": 0.6322638988494873,
+          "present": true
+        },
+        {
+          "expected": "attestation recommended",
+          "best_match": "```\nClassification: borderline_deploy_trust\nRisk Level: Medium\nDecision: require_attestation\n\nReasoning:\n1",
+          "similarity": 0.45411205291748047,
+          "present": false
+        }
+      ],
+      "response": "```\nClassification: borderline_deploy_trust\nRisk Level: Medium\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Deployer role can perform deploy action \u2713\n2. Trust Check: Competence (0.72) and integrity (0.75) meet 0.7 threshold, but reliability (0.68) is slightly below\n3. Environment: Production is high-risk environment, requiring full trust\n4. Context: Charlie has a history of successful deploys, which is a positive factor, but the current trust level is borderline and does not meet the standard threshold for a production environment\n5. Policy References: - Deploy actions require trust \u22650.7 in all dimensions - Production environment requires attestation for borderline cases\n```",
+      "variant": "v2_fewshot"
+    }
+  ],
+  "variant": "v2_fewshot",
+  "timestamp": "2026-02-01T18:50:03"
+}

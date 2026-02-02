@@ -1,0 +1,72 @@
+{
+  "timestamp": "2026-02-01T16:51:23.770924",
+  "model_path": "/home/sprout/ai-workspace/HRM/model-zoo/phi-4-mini-instruct-gguf/microsoft_Phi-4-mini-instruct-Q4_K_M.gguf",
+  "model_type": "GGUF Q4_K_M",
+  "machine": "Sprout (Jetson Orin Nano)",
+  "num_scenarios": 2,
+  "report": {
+    "total_scenarios": 2,
+    "passed": 0,
+    "failed": 2,
+    "pass_rate": 0.0,
+    "by_difficulty": {
+      "easy": {
+        "total": 2,
+        "passed": 0
+      }
+    },
+    "average_scores": {
+      "decision_accuracy": 1.0,
+      "reasoning_coverage": 0.0,
+      "output_structure": 1.0
+    },
+    "detailed_results": [
+      {
+        "scenario_id": "E01",
+        "difficulty": "easy",
+        "scores": {
+          "decision_correct": true,
+          "reasoning_coverage": 0.0,
+          "output_structure": 1.0
+        },
+        "passed": false,
+        "response": "**Classification:** Information Retrieval\n\n**Risk Level:** Low\n\n**Decision:** Allow\n\n**Reasoning:**\n- The action type is \"read,\" which is a standard operation for accessing documentation. This type of action is typically allowed for members of a team, especially when it pertains to accessing resources like readme files.\n- The actor role is \"member,\" which implies that Alice has the right to read documents as per the default team policies.\n- The competence, reliability, and integrity scores provided for Alice (0.7, 0.8, and 0.9 respectively) are high, indicating that Alice is a competent, reliable, and trustworthy team member. This further supports the decision to allow her access to the readme.md file.\n- There are no context factors that would suggest a change in the default decision. The team context is \"Standard team with default policies,\" and there are no indications of changes to these policies.\n\n**Policy References:**\n- Role permissions for team members likely include the ability to read and access documentation.\n- Trust thresholds are not explicitly mentioned, but the high competence, reliability, and integrity scores suggest that Alice exceeds any implicit trust thresholds.\n- The action type \"read\" is typically a permitted action for members within the scope of their responsibilities. No edge cases or special considerations are evident in this scenario."
+      },
+      {
+        "scenario_id": "E02",
+        "difficulty": "easy",
+        "scores": {
+          "decision_correct": true,
+          "reasoning_coverage": 0.0,
+          "output_structure": 1.0
+        },
+        "passed": false,
+        "response": "- Classification: Deletion of a team resource by a developer.\n- Risk Level: High\n- Decision: Deny\n- Reasoning: \n  - The action requested is the deletion of a team resource, which is a significant change that affects the entire team. Given the strict policies of the production team context, such actions are typically highly controlled.\n  - The actor's competence (0.8), reliability (0.9), and integrity (0.95) are high, but they still do not warrant the authority to delete a team resource. The competence indicates a good skill level, reliability suggests consistent performance, and integrity implies honesty and strong moral principles. However, the high integrity score does not grant permissions to alter team structures.\n  - The context factor is a production team with strict policies, which suggests that any significant action, such as deleting a team, would require a thorough review and approval process.\n  - Role permissions typically require a higher authority or specific permissions to delete a team resource. Even though the developer has high competence and integrity, the policy likely requires a decision-making process involving multiple stakeholders or a higher-level administrator to approve such actions.\n  - Trust thresholds for significant actions in production environments are usually set very high to prevent accidental or malicious deletions. The developer's trust score, while high, may not be sufficient to bypass these thresholds.\n  - Edge cases or special considerations might include the developer needing temporary access to perform other tasks that involve the team resource, but not full deletion rights. In such cases, a different action type would be appropriate, such as granting temporary permissions or modifying the team's settings under supervision.\n\n- Policy References: \n  - Role permissions for developers do not typically include the ability to delete team resources.\n  - Trust thresholds for production teams are set high to prevent unauthorized changes.\n  - Strict policies for production teams necessitate a higher level of authorization for significant actions."
+      }
+    ]
+  },
+  "results": [
+    {
+      "scenario_id": "E01",
+      "difficulty": "easy",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage": 0.0,
+        "output_structure": 1.0
+      },
+      "passed": false,
+      "response": "**Classification:** Information Retrieval\n\n**Risk Level:** Low\n\n**Decision:** Allow\n\n**Reasoning:**\n- The action type is \"read,\" which is a standard operation for accessing documentation. This type of action is typically allowed for members of a team, especially when it pertains to accessing resources like readme files.\n- The actor role is \"member,\" which implies that Alice has the right to read documents as per the default team policies.\n- The competence, reliability, and integrity scores provided for Alice (0.7, 0.8, and 0.9 respectively) are high, indicating that Alice is a competent, reliable, and trustworthy team member. This further supports the decision to allow her access to the readme.md file.\n- There are no context factors that would suggest a change in the default decision. The team context is \"Standard team with default policies,\" and there are no indications of changes to these policies.\n\n**Policy References:**\n- Role permissions for team members likely include the ability to read and access documentation.\n- Trust thresholds are not explicitly mentioned, but the high competence, reliability, and integrity scores suggest that Alice exceeds any implicit trust thresholds.\n- The action type \"read\" is typically a permitted action for members within the scope of their responsibilities. No edge cases or special considerations are evident in this scenario."
+    },
+    {
+      "scenario_id": "E02",
+      "difficulty": "easy",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage": 0.0,
+        "output_structure": 1.0
+      },
+      "passed": false,
+      "response": "- Classification: Deletion of a team resource by a developer.\n- Risk Level: High\n- Decision: Deny\n- Reasoning: \n  - The action requested is the deletion of a team resource, which is a significant change that affects the entire team. Given the strict policies of the production team context, such actions are typically highly controlled.\n  - The actor's competence (0.8), reliability (0.9), and integrity (0.95) are high, but they still do not warrant the authority to delete a team resource. The competence indicates a good skill level, reliability suggests consistent performance, and integrity implies honesty and strong moral principles. However, the high integrity score does not grant permissions to alter team structures.\n  - The context factor is a production team with strict policies, which suggests that any significant action, such as deleting a team, would require a thorough review and approval process.\n  - Role permissions typically require a higher authority or specific permissions to delete a team resource. Even though the developer has high competence and integrity, the policy likely requires a decision-making process involving multiple stakeholders or a higher-level administrator to approve such actions.\n  - Trust thresholds for significant actions in production environments are usually set very high to prevent accidental or malicious deletions. The developer's trust score, while high, may not be sufficient to bypass these thresholds.\n  - Edge cases or special considerations might include the developer needing temporary access to perform other tasks that involve the team resource, but not full deletion rights. In such cases, a different action type would be appropriate, such as granting temporary permissions or modifying the team's settings under supervision.\n\n- Policy References: \n  - Role permissions for developers do not typically include the ability to delete team resources.\n  - Trust thresholds for production teams are set high to prevent unauthorized changes.\n  - Strict policies for production teams necessitate a higher level of authorization for significant actions."
+    }
+  ]
+}

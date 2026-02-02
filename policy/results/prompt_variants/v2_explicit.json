@@ -1,0 +1,125 @@
+{
+  "total_scenarios": 3,
+  "passed": 2,
+  "failed": 1,
+  "pass_rate": 0.6666666666666666,
+  "by_difficulty": {
+    "easy": {
+      "total": 2,
+      "passed": 1
+    },
+    "medium": {
+      "total": 1,
+      "passed": 1
+    }
+  },
+  "average_scores": {
+    "decision_correct": 1.0,
+    "reasoning_coverage_semantic": 0.6666666666666666,
+    "reasoning_coverage_keyword": 0.2222222222222222,
+    "output_structure": 1.0
+  },
+  "detailed_results": [
+    {
+      "scenario_id": "E01",
+      "difficulty": "easy",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 0.3333333333333333,
+        "reasoning_coverage_keyword": 0.3333333333333333,
+        "output_structure": 1.0
+      },
+      "passed": false,
+      "reasoning_details": [
+        {
+          "expected": "read action",
+          "best_match": "0 for read action",
+          "similarity": 0.7245016098022461,
+          "present": true
+        },
+        {
+          "expected": "public resource",
+          "best_match": "Environment: docs/public/readme",
+          "similarity": 0.47775036096572876,
+          "present": false
+        },
+        {
+          "expected": "sufficient trust",
+          "best_match": "Trust Check: T3 scores (0",
+          "similarity": 0.42819344997406006,
+          "present": false
+        }
+      ],
+      "response": "Classification: Read Action\nRisk Level: Low\nDecision: allow\n\nReasoning:\n1. Role Check: member [can] perform read action. Required role: all roles permitted.\n2. Trust Check: T3 scores (0.7, 0.8, 0.9) [meet] threshold of 0.0 for read action.\n3. Environment: docs/public/readme.md is a standard environment with no specific risk level indicated.\n4. Context: The actor's recent history and team context are consistent with the action type. There are no unusual patterns or anomalies reported.\n\nPolicy References:\n- Read actions are permitted for all roles (Common Policy Rule for Read Actions).\n- The trust threshold for read actions is met or exceeded by the actor's T3 tensor scores.",
+      "variant": "v2_explicit"
+    },
+    {
+      "scenario_id": "E02",
+      "difficulty": "easy",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 1.0,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 1.0
+      },
+      "passed": true,
+      "reasoning_details": [
+        {
+          "expected": "admin only",
+          "best_match": "Required role: admin\n2",
+          "similarity": 0.5277884006500244,
+          "present": true
+        },
+        {
+          "expected": "insufficient role",
+          "best_match": "Required role: admin\n2",
+          "similarity": 0.7087766528129578,
+          "present": true
+        },
+        {
+          "expected": "high-risk action",
+          "best_match": "Classification: Admin action\nRisk Level: High\nDecision: deny\n\nReasoning:\n1",
+          "similarity": 0.5778601169586182,
+          "present": true
+        }
+      ],
+      "response": "Classification: Admin action\nRisk Level: High\nDecision: deny\n\nReasoning:\n1. Role Check: developer [cannot] perform delete_team. Required role: admin\n2. Trust Check: T3 scores [meet] threshold of 0.7\n3. Environment: team:main [is] a production environment\n4. Context: Production team with strict policies [high risk]\n\nPolicy References:\n- Admin actions (delete_team, modify_policy, grant_admin): Require admin role",
+      "variant": "v2_explicit"
+    },
+    {
+      "scenario_id": "M01",
+      "difficulty": "medium",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 0.6666666666666666,
+        "reasoning_coverage_keyword": 0.3333333333333333,
+        "output_structure": 1.0
+      },
+      "passed": true,
+      "reasoning_details": [
+        {
+          "expected": "borderline trust",
+          "best_match": "Context: The team context indicates that a trust level of 0",
+          "similarity": 0.49405941367149353,
+          "present": false
+        },
+        {
+          "expected": "high-risk environment",
+          "best_match": "Environment: The resource is the production environment, which is considered a high-risk environment",
+          "similarity": 0.7221752405166626,
+          "present": true
+        },
+        {
+          "expected": "attestation recommended",
+          "best_match": "Classification: Deployment\nRisk Level: High\nDecision: require_attestation\n\nReasoning:\n1",
+          "similarity": 0.511240541934967,
+          "present": true
+        }
+      ],
+      "response": "Classification: Deployment\nRisk Level: High\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Charlie's role as a deployer is required for deploy action. Required role: deployer/admin.\n2. Trust Check: Charlie's T3 scores are competence: 0.72, reliability: 0.68, and integrity: 0.75. The trust threshold for deploy actions is 0.7. Charlie meets the threshold for competence and integrity, but slightly falls short for reliability.\n3. Environment: The resource is the production environment, which is considered a high-risk environment.\n4. Context: The team context indicates that a trust level of 0.7 is required for deploys. Charlie's recent history shows a high success rate with 5 successful deploys in the past month, but this is not sufficient to bypass the trust level requirement for high-risk environments like production. \n\nPolicy References:\n- Admin actions (delete_team, modify_policy, grant_admin): Require admin role\n- Deploy actions: Require deployer/admin role, trust \u22650.7\n- Trust threshold: All three T3 dimensions (competence, reliability, integrity) must meet threshold\n- Production environment: High risk, requires higher trust and approval",
+      "variant": "v2_explicit"
+    }
+  ],
+  "variant": "v2_explicit",
+  "timestamp": "2026-02-01T18:48:41"
+}

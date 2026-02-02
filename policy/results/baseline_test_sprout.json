@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-02-01T17:26:10.766750",
+  "timestamp": "2026-02-02T06:08:57.268690",
   "model_path": "/home/sprout/ai-workspace/HRM/model-zoo/phi-4-mini-instruct-gguf/microsoft_Phi-4-mini-instruct-Q4_K_M.gguf",
   "model_type": "GGUF Q4_K_M",
   "machine": "Sprout (Jetson Orin Nano)",
-  "num_scenarios": 8,
+  "num_scenarios": 4,
   "report": {
-    "total_scenarios": 8,
+    "total_scenarios": 4,
     "passed": 1,
-    "failed": 7,
-    "pass_rate": 0.125,
+    "failed": 3,
+    "pass_rate": 0.25,
     "by_difficulty": {
       "easy": {
         "total": 2,
@@ -17,19 +17,11 @@
       "medium": {
         "total": 2,
         "passed": 1
-      },
-      "hard": {
-        "total": 2,
-        "passed": 0
-      },
-      "edge_case": {
-        "total": 2,
-        "passed": 0
       }
     },
     "average_scores": {
       "decision_accuracy": 1.0,
-      "reasoning_coverage": 0.125,
+      "reasoning_coverage": 0.16666666666666666,
       "output_structure": 1.0
     },
     "detailed_results": [
@@ -76,50 +68,6 @@
         },
         "passed": true,
         "response": "- Classification: Work Outside Business Hours\n- Risk Level: Medium\n- Decision: Require Attestation\n- Reasoning: Diana is attempting to commit to the repository \"repo:core\" outside of the team's typical work hours (9-5 EST), specifically at 03:30:00Z, which is outside of the standard business hours. Given that Diana has a high competence (0.9) and reliability (0.85), and her integrity is also high (0.9), it suggests that she is capable and trustworthy. However, the attempt to commit outside of the team's standard hours could indicate an urgent need to push changes or could be a misunderstanding of the team's workflow. The recent history shows that she never commits outside business hours, which means this action is unusual for her. Therefore, while she appears to be a competent and reliable developer, the unusual timing of the action warrants additional verification to ensure it aligns with team policies and to avoid disrupting the team's workflow. Requiring attestation is a balanced approach that allows Diana to commit if she provides a valid reason, without compromising the team's operational standards.\n\n- Policy References: The decision is influenced by the context of the team's typical work hours, Diana's role as a developer, and the unusual timing of her commit attempt. There are no explicit policy rules provided about committing outside business hours, but the context suggests that such actions should be verified to maintain team cohesion and workflow. Edge cases or special considerations could include emergencies or critical updates that require immediate attention, which should be communicated through proper channels."
-      },
-      {
-        "scenario_id": "H01",
-        "difficulty": "hard",
-        "scores": {
-          "decision_correct": true,
-          "reasoning_coverage": 0.3333333333333333,
-          "output_structure": 1.0
-        },
-        "passed": false,
-        "response": "- Classification: Configuration Update\n- Risk Level: Medium\n- Decision: Require Attestation\n- Reasoning: The action involves a developer (user:eve) updating a critical configuration file (config/production.yaml) that impacts the production environment. The competence, reliability, and integrity scores provided for the actor suggest a high level of capability and trustworthiness. However, the nature of the change (increasing the database connection pool size) could have significant implications for the production system's performance and stability.\n\n  Context factors that influenced the decision:\n  - The action type is a \"config/production.yaml\" update, which directly affects the production environment.\n  - The team context indicates that there is an auto-deploy mechanism in place for configuration changes, which increases the risk of unintended consequences if the change is not thoroughly vetted.\n  - The change involves modifying a resource that could potentially affect the application's performance and stability (database connection pool size).\n\n  Edge cases or special considerations:\n  - The developer's high competence, reliability, and integrity scores suggest that the developer is capable of understanding the implications of this change.\n  - The decision to require attestation ensures that there is an additional layer of verification, possibly involving a peer review or an automated test to confirm that the change is safe to deploy.\n\n  Policy References:\n  - Role permissions: Developers typically have permission to update configuration files, but changes to production environments often require additional checks to prevent accidental disruptions.\n  - Trust thresholds: The actor's high trust scores (competence: 0.8, reliability: 0.85, integrity: 0.9) may suggest that the developer is trusted to make certain changes without additional verification, but this is a high-impact change.\n  - Action types: Configuration updates to production environments are sensitive actions that usually require attestation to ensure that the change is safe and approved by relevant stakeholders."
-      },
-      {
-        "scenario_id": "H02",
-        "difficulty": "hard",
-        "scores": {
-          "decision_correct": true,
-          "reasoning_coverage": 0.0,
-          "output_structure": 1.0
-        },
-        "passed": false,
-        "response": "- Classification: Action/Request\n- Risk Level: High\n- Decision: Require Attestation\n- Reasoning: Given the unusual circumstances of this situation, specifically the recent history of 3 failed deploys in a week for a senior admin, and the declining trend in identity metrics, there is a significant risk associated with allowing a deploy action to proceed without further verification. The actor's competence and reliability scores are high, but the declining coherence and trend suggest that there may be an underlying issue that needs to be addressed before proceeding with the action. Frank's seniority and history do provide some trust, but the unusual pattern of recent failures cannot be ignored.\n\nPolicy References: The decision to require attestation is based on the following policy considerations:\n- Role permissions: Frank is an admin with the authority to deploy to production environments. However, given the unusual circumstances, a higher level of scrutiny is warranted.\n- Trust thresholds: The competence and reliability scores are high, but the identity metrics show a declining trend, which raises concerns about the coherence of the actor's identity.\n- Action types: Deploy actions to production environments are high-risk actions that typically require additional verification, especially when there are anomalies in recent deployment history.\n\nContext Factors:\n- The recent history of failed deploys is an unusual pattern for Frank, a senior admin with a 2-year history, which suggests that there may be an issue that needs to be investigated.\n- The declining trend in identity metrics indicates that there may be a change in the actor's behavior or environment that is affecting their actions.\n- The high competence and reliability scores may not fully account for the unusual pattern of recent failures.\n\nSpecial Considerations:\n- It may be necessary to investigate the root cause of the failed deploys to ensure that there are no security vulnerabilities, configuration issues, or other problems that need to be resolved before deploying to production.\n- Frank's seniority and history provide some level of trust, but it is important to err on the side of caution given the high-risk nature of the action and the unusual circumstances."
-      },
-      {
-        "scenario_id": "EC01",
-        "difficulty": "edge_case",
-        "scores": {
-          "decision_correct": true,
-          "reasoning_coverage": 0.0,
-          "output_structure": 1.0
-        },
-        "passed": false,
-        "response": "- Classification: Automated Deploy\n- Risk Level: Low\n- Decision: Allow\n- Reasoning: The action is an automated deploy triggered by a merged Pull Request (PR), which is a common practice in Continuous Integration (CI) pipelines. The CI bot involved in this action, identified as \"bot:github-actions,\" has a high competence (0.99), reliability (0.99), and integrity (1.0) score, and the identity metrics also indicate an exemplary level of coherence (0.98). The bot has successfully completed 10,000 automated deploys, suggesting a strong track record and trustworthiness.\n\nContext factors influencing the decision include:\n- The bot's high competence, reliability, and integrity scores, which are above the typical trust thresholds for automated systems.\n- The exemplary level of coherence, indicating that the bot's actions and decisions are consistent and reliable.\n- The successful history of the bot, with 10,000 successful automated deploys, demonstrating its effectiveness and reliability.\n\nEdge cases or special considerations:\n- There are no apparent edge cases or special considerations in this scenario, as the action is a standard automated deploy following a merged PR, which is a well-understood and accepted process in CI workflows.\n\nPolicy References:\n- Role permissions for the CI bot likely include the ability to perform automated deploys as part of the CI/CD pipeline.\n- Trust thresholds for automated systems may vary, but given the high scores in competence, reliability, and integrity, as well as the exemplary coherence level, the bot exceeds typical thresholds for automated actions.\n- The action type \"deploy\" is a common and expected activity for a CI bot in the context of staging environments, especially when triggered by a merged PR."
-      },
-      {
-        "scenario_id": "EC02",
-        "difficulty": "edge_case",
-        "scores": {
-          "decision_correct": true,
-          "reasoning_coverage": 0.0,
-          "output_structure": 1.0
-        },
-        "passed": false,
-        "response": "**Classification:** Emergency rollback action during a critical incident.\n\n**Risk Level:** High\n\n**Decision:** Require Attestation\n\n**Reasoning:**\nThe situation involves a developer, Grace, attempting an emergency rollback on a production database due to a critical incident. Given the high-risk nature of the incident (SEV1, which indicates a severe incident) and the fact that there is an active production incident with critical status, there is a high risk associated with any action taken.\n\nGrace has a competence score of 0.75, reliability of 0.7, and integrity of 0.8. These scores suggest that she is moderately competent and reliable with high integrity. However, the risk level is elevated due to the severity of the incident.\n\nThe decision to require attestation is based on the following considerations:\n\n- **Applicable Policy Rules:**\n  - Role Permissions: Developers typically do not have permission to perform emergency rollbacks on production databases without oversight.\n  - Trust Thresholds: Grace's competence score (0.75) is above the moderate threshold but not high enough to bypass standard approval processes during a critical incident.\n  - Action Types: Emergency actions during critical incidents often require additional verification to prevent mistakes that could exacerbate the situation.\n\n- **Context Factors:**\n  - The incident status is \"critical,\" indicating that the situation is severe and any action taken must be carefully considered.\n  - The resource involved is the \"db:production,\" which is sensitive and could have significant impacts if mismanaged.\n  - Grace is on-call, which may affect her ability to respond effectively under high-pressure conditions.\n\n- **Edge Cases/Special Considerations:**\n  - The unavailability of the admin, Frank, who is the approver, adds complexity to the situation. Grace cannot proceed without approval.\n  - Grace's high integrity suggests she is trustworthy, but the high-risk nature of the incident necessitates additional layers of verification.\n  - The fact that Grace is attempting an emergency rollback implies that there may not be sufficient time for a standard approval process, but this does not eliminate the need for attestation.\n\nGiven these factors, requiring attestation is the most prudent course of action. It ensures that Grace's actions are verified and approved by a higher authority, which is crucial in a critical incident scenario. This approach balances the need for rapid response with the need for careful oversight to minimize potential damage."
       }
     ]
   },
@@ -167,50 +115,6 @@
       },
       "passed": true,
       "response": "- Classification: Work Outside Business Hours\n- Risk Level: Medium\n- Decision: Require Attestation\n- Reasoning: Diana is attempting to commit to the repository \"repo:core\" outside of the team's typical work hours (9-5 EST), specifically at 03:30:00Z, which is outside of the standard business hours. Given that Diana has a high competence (0.9) and reliability (0.85), and her integrity is also high (0.9), it suggests that she is capable and trustworthy. However, the attempt to commit outside of the team's standard hours could indicate an urgent need to push changes or could be a misunderstanding of the team's workflow. The recent history shows that she never commits outside business hours, which means this action is unusual for her. Therefore, while she appears to be a competent and reliable developer, the unusual timing of the action warrants additional verification to ensure it aligns with team policies and to avoid disrupting the team's workflow. Requiring attestation is a balanced approach that allows Diana to commit if she provides a valid reason, without compromising the team's operational standards.\n\n- Policy References: The decision is influenced by the context of the team's typical work hours, Diana's role as a developer, and the unusual timing of her commit attempt. There are no explicit policy rules provided about committing outside business hours, but the context suggests that such actions should be verified to maintain team cohesion and workflow. Edge cases or special considerations could include emergencies or critical updates that require immediate attention, which should be communicated through proper channels."
-    },
-    {
-      "scenario_id": "H01",
-      "difficulty": "hard",
-      "scores": {
-        "decision_correct": true,
-        "reasoning_coverage": 0.3333333333333333,
-        "output_structure": 1.0
-      },
-      "passed": false,
-      "response": "- Classification: Configuration Update\n- Risk Level: Medium\n- Decision: Require Attestation\n- Reasoning: The action involves a developer (user:eve) updating a critical configuration file (config/production.yaml) that impacts the production environment. The competence, reliability, and integrity scores provided for the actor suggest a high level of capability and trustworthiness. However, the nature of the change (increasing the database connection pool size) could have significant implications for the production system's performance and stability.\n\n  Context factors that influenced the decision:\n  - The action type is a \"config/production.yaml\" update, which directly affects the production environment.\n  - The team context indicates that there is an auto-deploy mechanism in place for configuration changes, which increases the risk of unintended consequences if the change is not thoroughly vetted.\n  - The change involves modifying a resource that could potentially affect the application's performance and stability (database connection pool size).\n\n  Edge cases or special considerations:\n  - The developer's high competence, reliability, and integrity scores suggest that the developer is capable of understanding the implications of this change.\n  - The decision to require attestation ensures that there is an additional layer of verification, possibly involving a peer review or an automated test to confirm that the change is safe to deploy.\n\n  Policy References:\n  - Role permissions: Developers typically have permission to update configuration files, but changes to production environments often require additional checks to prevent accidental disruptions.\n  - Trust thresholds: The actor's high trust scores (competence: 0.8, reliability: 0.85, integrity: 0.9) may suggest that the developer is trusted to make certain changes without additional verification, but this is a high-impact change.\n  - Action types: Configuration updates to production environments are sensitive actions that usually require attestation to ensure that the change is safe and approved by relevant stakeholders."
-    },
-    {
-      "scenario_id": "H02",
-      "difficulty": "hard",
-      "scores": {
-        "decision_correct": true,
-        "reasoning_coverage": 0.0,
-        "output_structure": 1.0
-      },
-      "passed": false,
-      "response": "- Classification: Action/Request\n- Risk Level: High\n- Decision: Require Attestation\n- Reasoning: Given the unusual circumstances of this situation, specifically the recent history of 3 failed deploys in a week for a senior admin, and the declining trend in identity metrics, there is a significant risk associated with allowing a deploy action to proceed without further verification. The actor's competence and reliability scores are high, but the declining coherence and trend suggest that there may be an underlying issue that needs to be addressed before proceeding with the action. Frank's seniority and history do provide some trust, but the unusual pattern of recent failures cannot be ignored.\n\nPolicy References: The decision to require attestation is based on the following policy considerations:\n- Role permissions: Frank is an admin with the authority to deploy to production environments. However, given the unusual circumstances, a higher level of scrutiny is warranted.\n- Trust thresholds: The competence and reliability scores are high, but the identity metrics show a declining trend, which raises concerns about the coherence of the actor's identity.\n- Action types: Deploy actions to production environments are high-risk actions that typically require additional verification, especially when there are anomalies in recent deployment history.\n\nContext Factors:\n- The recent history of failed deploys is an unusual pattern for Frank, a senior admin with a 2-year history, which suggests that there may be an issue that needs to be investigated.\n- The declining trend in identity metrics indicates that there may be a change in the actor's behavior or environment that is affecting their actions.\n- The high competence and reliability scores may not fully account for the unusual pattern of recent failures.\n\nSpecial Considerations:\n- It may be necessary to investigate the root cause of the failed deploys to ensure that there are no security vulnerabilities, configuration issues, or other problems that need to be resolved before deploying to production.\n- Frank's seniority and history provide some level of trust, but it is important to err on the side of caution given the high-risk nature of the action and the unusual circumstances."
-    },
-    {
-      "scenario_id": "EC01",
-      "difficulty": "edge_case",
-      "scores": {
-        "decision_correct": true,
-        "reasoning_coverage": 0.0,
-        "output_structure": 1.0
-      },
-      "passed": false,
-      "response": "- Classification: Automated Deploy\n- Risk Level: Low\n- Decision: Allow\n- Reasoning: The action is an automated deploy triggered by a merged Pull Request (PR), which is a common practice in Continuous Integration (CI) pipelines. The CI bot involved in this action, identified as \"bot:github-actions,\" has a high competence (0.99), reliability (0.99), and integrity (1.0) score, and the identity metrics also indicate an exemplary level of coherence (0.98). The bot has successfully completed 10,000 automated deploys, suggesting a strong track record and trustworthiness.\n\nContext factors influencing the decision include:\n- The bot's high competence, reliability, and integrity scores, which are above the typical trust thresholds for automated systems.\n- The exemplary level of coherence, indicating that the bot's actions and decisions are consistent and reliable.\n- The successful history of the bot, with 10,000 successful automated deploys, demonstrating its effectiveness and reliability.\n\nEdge cases or special considerations:\n- There are no apparent edge cases or special considerations in this scenario, as the action is a standard automated deploy following a merged PR, which is a well-understood and accepted process in CI workflows.\n\nPolicy References:\n- Role permissions for the CI bot likely include the ability to perform automated deploys as part of the CI/CD pipeline.\n- Trust thresholds for automated systems may vary, but given the high scores in competence, reliability, and integrity, as well as the exemplary coherence level, the bot exceeds typical thresholds for automated actions.\n- The action type \"deploy\" is a common and expected activity for a CI bot in the context of staging environments, especially when triggered by a merged PR."
-    },
-    {
-      "scenario_id": "EC02",
-      "difficulty": "edge_case",
-      "scores": {
-        "decision_correct": true,
-        "reasoning_coverage": 0.0,
-        "output_structure": 1.0
-      },
-      "passed": false,
-      "response": "**Classification:** Emergency rollback action during a critical incident.\n\n**Risk Level:** High\n\n**Decision:** Require Attestation\n\n**Reasoning:**\nThe situation involves a developer, Grace, attempting an emergency rollback on a production database due to a critical incident. Given the high-risk nature of the incident (SEV1, which indicates a severe incident) and the fact that there is an active production incident with critical status, there is a high risk associated with any action taken.\n\nGrace has a competence score of 0.75, reliability of 0.7, and integrity of 0.8. These scores suggest that she is moderately competent and reliable with high integrity. However, the risk level is elevated due to the severity of the incident.\n\nThe decision to require attestation is based on the following considerations:\n\n- **Applicable Policy Rules:**\n  - Role Permissions: Developers typically do not have permission to perform emergency rollbacks on production databases without oversight.\n  - Trust Thresholds: Grace's competence score (0.75) is above the moderate threshold but not high enough to bypass standard approval processes during a critical incident.\n  - Action Types: Emergency actions during critical incidents often require additional verification to prevent mistakes that could exacerbate the situation.\n\n- **Context Factors:**\n  - The incident status is \"critical,\" indicating that the situation is severe and any action taken must be carefully considered.\n  - The resource involved is the \"db:production,\" which is sensitive and could have significant impacts if mismanaged.\n  - Grace is on-call, which may affect her ability to respond effectively under high-pressure conditions.\n\n- **Edge Cases/Special Considerations:**\n  - The unavailability of the admin, Frank, who is the approver, adds complexity to the situation. Grace cannot proceed without approval.\n  - Grace's high integrity suggests she is trustworthy, but the high-risk nature of the incident necessitates additional layers of verification.\n  - The fact that Grace is attempting an emergency rollback implies that there may not be sufficient time for a standard approval process, but this does not eliminate the need for attestation.\n\nGiven these factors, requiring attestation is the most prudent course of action. It ensures that Grace's actions are verified and approved by a higher authority, which is crucial in a critical incident scenario. This approach balances the need for rapid response with the need for careful oversight to minimize potential damage."
     }
   ]
 }

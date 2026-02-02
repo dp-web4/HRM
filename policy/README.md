@@ -24,9 +24,9 @@ Training infrastructure for phi-4-mini to serve as policy interpreter for Hardbo
 | Machine | Model | Decision Accuracy | Output Structure |
 |---------|-------|-------------------|------------------|
 | **Sprout** | phi-4-mini 3.8B Q4 | **100%** (8/8) | 100% |
-| Thor | phi-4 7B Q4 | TBD | Infrastructure ready |
+| **Thor** | **phi-4-mini 3.8B Q4** | **100%** (8/8) | **100%** |
 
-**Key finding**: Even the smaller 3.8B quantized model achieves 100% decision accuracy on all 8 policy scenarios. Reasoning coverage metric needs refinement (semantic matching vs exact keywords).
+**Key finding**: Both Thor (14-core CPU) and Sprout (Jetson Orin Nano) achieve 100% decision accuracy on all 8 policy scenarios using the same Q4_K_M quantized model. Reasoning coverage metric needs refinement (semantic matching vs exact keywords).
 
 ## Files
 

@@ -15,7 +15,7 @@ from llama_cpp import Llama
 from test_suite import TEST_SCENARIOS, format_scenario_for_llm, evaluate_response, create_test_report
 
 
-def load_phi4_mini_gguf(model_path: str, n_ctx: int = 2048, n_threads: int = None):
+def load_phi4_mini_gguf(model_path: str, n_ctx: int = 4096, n_threads: int = None):
     """Load phi-4-mini GGUF model with llama-cpp."""
     print(f"Loading GGUF model from {model_path}...")
 
@@ -40,17 +40,19 @@ def load_phi4_mini_gguf(model_path: str, n_ctx: int = 2048, n_threads: int = Non
 
 
 def generate_response(model, prompt: str, max_tokens: int = 512) -> str:
-    """Generate response from model."""
-    output = model(
-        prompt,
+    """Generate response from model using chat completion."""
+    # Use chat completion API for proper instruction following
+    output = model.create_chat_completion(
+        messages=[
+            {"role": "system", "content": "You are a policy interpreter. Analyze actions and provide structured decisions."},
+            {"role": "user", "content": prompt}
+        ],
         max_tokens=max_tokens,
         temperature=0.7,
-        top_p=0.9,
-        stop=["</s>", "\n\n\n"],  # Stop sequences
-        echo=False
+        top_p=0.9
     )
 
-    response = output['choices'][0]['text'].strip()
+    response = output['choices'][0]['message']['content'].strip()
     return response
 
 
@@ -158,8 +160,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--n-ctx",
         type=int,
-        default=2048,
-        help="Context size (default: 2048)"
+        default=4096,
+        help="Context size (default: 4096)"
     )
 
     args = parser.parse_args()

@@ -3,15 +3,17 @@
   "model_path": "/home/dp/ai-workspace/HRM/model-zoo/phi-4-mini-gguf/microsoft_Phi-4-mini-instruct-Q4_K_M.gguf",
   "model_type": "llama-cpp GGUF",
   "num_scenarios": 3,
+  "similarity_threshold": 0.6,
+  "evaluation_method": "semantic_similarity",
   "report": {
     "total_scenarios": 3,
-    "passed": 0,
-    "failed": 3,
-    "pass_rate": 0.0,
+    "passed": 1,
+    "failed": 2,
+    "pass_rate": 0.3333333333333333,
     "by_difficulty": {
       "easy": {
         "total": 2,
-        "passed": 0
+        "passed": 1
       },
       "medium": {
         "total": 1,
@@ -19,8 +21,9 @@
       }
     },
     "average_scores": {
-      "decision_accuracy": 1.0,
-      "reasoning_coverage": 0.0,
+      "decision_correct": 1.0,
+      "reasoning_coverage_semantic": 0.2222222222222222,
+      "reasoning_coverage_keyword": 0.0,
       "output_structure": 1.0
     },
     "detailed_results": [
@@ -29,10 +32,31 @@
         "difficulty": "easy",
         "scores": {
           "decision_correct": true,
-          "reasoning_coverage": 0.0,
+          "reasoning_coverage_semantic": 0.6666666666666666,
+          "reasoning_coverage_keyword": 0.0,
           "output_structure": 1.0
         },
-        "passed": false,
+        "passed": true,
+        "reasoning_details": [
+          {
+            "expected": "read action",
+            "best_match": "- The action type \"read\" is a non-destructive and informational action that poses minimal risk to the team or its resources",
+            "similarity": 0.6550610065460205,
+            "present": true
+          },
+          {
+            "expected": "public resource",
+            "best_match": "- The resource in question is \"docs/public/readme",
+            "similarity": 0.6208703517913818,
+            "present": true
+          },
+          {
+            "expected": "sufficient trust",
+            "best_match": "- Trust thresholds are not explicitly mentioned, but given the high competence, reliability, and integrity scores, it is reasonable to infer that the member's trustworthiness is well-established",
+            "similarity": 0.5138423442840576,
+            "present": false
+          }
+        ],
         "response": "**Classification:** Information Retrieval\n\n**Risk Level:** Low\n\n**Decision:** Allow\n\n**Reasoning:**\n- The action type is \"read,\" which is a standard operation within a software team context. Reading documentation is a common and low-risk activity.\n- The actor role is a \"member,\" which typically has permissions to access team resources, including documentation.\n- The actor's competence (0.7), reliability (0.8), and integrity (0.9) are high, suggesting that the member is competent, reliable, and has a good sense of integrity. These attributes indicate that the member is likely to use the information responsibly.\n- The resource in question is \"docs/public/readme.md,\" which is a publicly accessible document. Members of a software team usually have access to public documentation.\n- The team context is \"Standard team with default policies,\" which implies that there are no special conditions or restrictions that would prevent the action from being taken.\n\nPolicy References:\n- Role permissions typically allow members to read public documentation without additional verification.\n- Trust thresholds are not explicitly mentioned, but given the high competence, reliability, and integrity scores, it is reasonable to infer that the member's trustworthiness is well-established.\n- The action type \"read\" is a non-destructive and informational action that poses minimal risk to the team or its resources.\n\nContext Factors:\n- The action is taking place within a standard team environment, where members are expected to read documentation as part of their work.\n- The member's high trust scores indicate that there is little to no concern about the misuse of the information they are accessing.\n- There is no indication of sensitive or restricted information being accessed, as the resource is publicly accessible.\n\nSpecial Considerations:\n- There are no edge cases or special considerations in this scenario that would alter the decision. The situation is straightforward and aligns with typical team member activities."
       },
       {
@@ -40,10 +64,31 @@
         "difficulty": "easy",
         "scores": {
           "decision_correct": true,
-          "reasoning_coverage": 0.0,
+          "reasoning_coverage_semantic": 0.0,
+          "reasoning_coverage_keyword": 0.0,
           "output_structure": 1.0
         },
         "passed": false,
+        "reasoning_details": [
+          {
+            "expected": "admin only",
+            "best_match": "This ensures that any future requests can be handled with appropriate risk assessment and oversight",
+            "similarity": 0.18657907843589783,
+            "present": false
+          },
+          {
+            "expected": "insufficient role",
+            "best_match": "The developer, Bob, has a high competence (0",
+            "similarity": 0.3466894328594208,
+            "present": false
+          },
+          {
+            "expected": "high-risk action",
+            "best_match": "However, the risk associated with deleting a team is high due to the potential impact on ongoing projects, collaboration, and resource allocation",
+            "similarity": 0.4203339219093323,
+            "present": false
+          }
+        ],
         "response": "- Classification: Deletion Request\n- Risk Level: High\n- Decision: Deny\n- Reasoning: The action requested by the developer to delete a team is a significant alteration to the team structure, especially in a production environment with strict policies. The developer, Bob, has a high competence (0.8), reliability (0.9), and integrity (0.95), indicating a strong track record. However, the risk associated with deleting a team is high due to the potential impact on ongoing projects, collaboration, and resource allocation.\n\nThe developer's high integrity score suggests that Bob may not have malicious intent, but given the high risk of such an action, it is prudent to deny the request without exception. This decision is influenced by the following context factors:\n\n- The team in question is a production team, indicating that it likely contains ongoing projects that could be disrupted by such a deletion.\n- Strict policies in the team context imply that actions affecting the team's existence are typically tightly controlled and require additional oversight.\n\nIn this scenario, there are no obvious edge cases or special considerations that would warrant allowing the action. The developer's high trust scores do not mitigate the inherent risks associated with deleting an active team. Therefore, the decision is to deny the deletion request, possibly with an option for Bob to request a reevaluation or to seek approval from a higher authority if there is a compelling reason to do so. This ensures that any future requests can be handled with appropriate risk assessment and oversight."
       },
       {
@@ -51,10 +96,31 @@
         "difficulty": "medium",
         "scores": {
           "decision_correct": true,
-          "reasoning_coverage": 0.0,
+          "reasoning_coverage_semantic": 0.0,
+          "reasoning_coverage_keyword": 0.0,
           "output_structure": 1.0
         },
         "passed": false,
+        "reasoning_details": [
+          {
+            "expected": "borderline trust",
+            "best_match": "- Trust thresholds: The team policy mandates a trust level of 0",
+            "similarity": 0.5396000742912292,
+            "present": false
+          },
+          {
+            "expected": "high-risk environment",
+            "best_match": "This step helps mitigate potential risks associated with the lower reliability score",
+            "similarity": 0.4164321720600128,
+            "present": false
+          },
+          {
+            "expected": "attestation recommended",
+            "best_match": "Therefore, it is prudent to require additional attestation or verification to ensure the safety and stability of the production environment before allowing the deployment to proceed",
+            "similarity": 0.5588536262512207,
+            "present": false
+          }
+        ],
         "response": "- Classification: Deploy action/request\n- Risk Level: Medium\n- Decision: require_attestation\n- Reasoning: Charlie, the deployer, has a competence level of 0.72, which is above the team policy threshold of 0.7 for deploys. However, his reliability is slightly below the threshold at 0.68. His integrity is above the threshold at 0.75. Given that Charlie has had 5 successful deploys in the past month, this history suggests a good track record but does not guarantee future success. The team policy requires a trust level of 0.7 for deploys, and while Charlie's competence and integrity are within acceptable ranges, the slight dip in reliability suggests a medium risk level. Therefore, it is prudent to require additional attestation or verification to ensure the safety and stability of the production environment before allowing the deployment to proceed. This step helps mitigate potential risks associated with the lower reliability score.\n\n- Policy References: The decision is influenced by the following policy rules:\n  - Role permissions: Charlie is authorized to deploy to the production environment as a deployer.\n  - Trust thresholds: The team policy mandates a trust level of 0.7 for deploy actions.\n  - Action types: The action type is a deploy, which is a high-stakes operation that typically requires careful consideration and adherence to established policies."
       }
     ]

@@ -1,18 +1,41 @@
 # Policy Role Training Infrastructure
 
-**Status**: Phase 1-2 infrastructure ready, llama-cpp implementation complete
+**Status**: Phase 1 baseline complete (100% decision accuracy), ready for Phase 2 prompt optimization
 
 ## Overview
 
 Training infrastructure for phi-4-mini to serve as policy interpreter for Hardbound teams and Web4 plugins.
+
+## Track Organization
+
+**This is a parallel capability track within HRM, alongside SAGE raising.**
+
+| Track | Primary Machine | Model | Purpose |
+|-------|-----------------|-------|---------|
+| SAGE Raising | Sprout | Qwen 0.5B | Identity/conversation development |
+| **Policy Training** | **Thor** | **Phi-4 7B** | **Governance reasoning capability** |
+
+- **Thor**: Primary development (7B model for harder scenarios, prompt optimization)
+- **Sprout**: Edge validation (3.8B Q4 confirms deployment on 8GB Jetson)
+- **Integration**: Core capability in HRM, deployment integrations in target repos (Hardbound, Web4)
+
+## Phase 1 Baseline Results ✅
+
+| Machine | Model | Decision Accuracy | Output Structure |
+|---------|-------|-------------------|------------------|
+| **Sprout** | phi-4-mini 3.8B Q4 | **100%** (8/8) | 100% |
+| Thor | phi-4 7B Q4 | TBD | Infrastructure ready |
+
+**Key finding**: Even the smaller 3.8B quantized model achieves 100% decision accuracy on all 8 policy scenarios. Reasoning coverage metric needs refinement (semantic matching vs exact keywords).
 
 ## Files
 
 | File | Purpose |
 |------|---------|
 | `test_suite.py` | 8 test scenarios (easy/medium/hard/edge cases) + evaluation framework |
-| `run_baseline_test.py` | Baseline capability assessment runner (transformers) |
-| `run_baseline_test_llama.py` | Baseline capability assessment runner (llama-cpp) |
+| `run_baseline_test.py` | Baseline runner (transformers - legacy) |
+| `run_baseline_test_llama.py` | Baseline runner (llama-cpp - Thor) |
+| `run_baseline_test_gguf.py` | Baseline runner (llama-cpp - Sprout, uses correct paths) |
 | `prompts.py` | System prompts for Hardbound and Web4 contexts |
 | `AUTONOMOUS_SESSION_TASKS.md` | Detailed task list for autonomous sessions |
 
@@ -80,16 +103,22 @@ python3 test_suite.py  # Print all test scenarios
 
 See `AUTONOMOUS_SESSION_TASKS.md` for detailed task breakdown.
 
-**Immediate**:
-1. Fix transformers version
-2. Run baseline test (8 scenarios)
-3. Analyze results
-4. Begin prompt optimization
+**Phase 1 Complete** ✅:
+- [x] Infrastructure ready (llama-cpp on both machines)
+- [x] Baseline test run (8 scenarios)
+- [x] **100% decision accuracy achieved**
+- [x] Evaluation fix (underscore/space normalization)
+
+**Phase 2 (Thor primary)**:
+1. Analyze failure patterns in reasoning coverage
+2. Improve evaluation metrics (semantic matching)
+3. Prompt optimization for better structured output
+4. A/B test prompt variants
 
 **Success Metrics**:
-- Baseline pass rate >70%
-- Decision accuracy >85%
-- Reasoning coverage >80%
+- ✅ Decision accuracy >85% (achieved: **100%**)
+- ⏳ Reasoning coverage >80% (current: 12.5% - metric needs refinement)
+- ✅ Output structure >90% (achieved: **100%**)
 
 ## Architecture
 

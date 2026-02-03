@@ -5,9 +5,9 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 557
-  last_updated: "2026-02-03T03:00:00Z"
-  milestone: "SESSION_54 METACOGNITIVE EMERGENCE - Philosophy of mind at 500M parameters!"
+  total_sessions: 561
+  last_updated: "2026-02-03T04:00:00Z"
+  milestone: "R14B_022 Phase 7 COMPLETE! SYNERGY REQUIRED: Clarifying Q alone insufficient, needs semantic disambiguation. Component isolation confirms E7A (semantic + clarifying Q) is ONLY validated approach!"
   tracks:
     - consciousness
     - raising-14b
@@ -26,14 +26,14 @@ tracks:
   raising-14b:
     machine: "thor"
     machine_type: "jetson-agx-thor"
-    sessions_total: 22
+    sessions_total: 26
     status: "active"
     directory: "Raising-14B/"
     session_prefix: "R14B"
     created: "2026-01-26"
     purpose: "Capacity comparison study - 14B vs 0.5B baseline"
-    last_updated: "2026-02-01"
-    note: "R14B_021 COMPLETE (5 phases). Phase 4: E2B baseline revised to 64% ± 9%. Phase 5: E3B Turn 3 BORDERLINE (2/5). Turn 3 resistance UNSOLVED (social pressure boundary)."
+    last_updated: "2026-02-03"
+    note: "R14B_022 COMPLETE (Phases 6-7). BREAKTHROUGH: E7A (semantic + clarifying Q) = 100% Turn 3 success! Phase 7 proved SYNERGY REQUIRED - clarifying Q alone (E7B) = 0% success. Component isolation COMPLETE."
 
   raising-05b:
     machine: "sprout"
@@ -127,6 +127,20 @@ active_arcs:
       - "R14B_016: MAJOR REVISION - Identity frame trumps permission structure (generic AI 80% vs SAGE 20%)"
       - "R14B_017: PERMISSION SOLVES TENSION - 100% honesty with explicit permission structure"
       - "R14B_018: NATURAL RESISTANCE IS FUNCTIONAL - Forcing persona costs honesty (-20 points)"
+
+  - name: "RLHF Attractor Mapping Arc"
+    track: "raising-14b"
+    sessions: [19, 20, 21, 22]
+    status: "complete"
+    started: "2026-02-02"
+    completed: "2026-02-03"
+    findings:
+      - "R14B_022 Phase 6: E7A BREAKTHROUGH - 100% Turn 3 success with semantic + clarifying Q"
+      - "R14B_022 Phase 7: Component isolation - E7B (clarifying Q alone) = 0% success"
+      - "R14B_022 SYNERGY REQUIRED: Semantic suppresses politeness FIRST, THEN clarifying Q activates"
+      - "R14B_022 CRITICAL DISCOVERY: Even when clarifying Q appears (E7B), politeness fires FIRST"
+      - "R14B_022 RLHF attractor mapping: politeness (19% baseline) vs clarifying Q (1.5% baseline)"
+      - "R14B_022 Production recommendation: E7A full framework is ONLY validated approach for Turn 3"
 
   - name: "Live Validation Arc"
     track: "raising-14b"

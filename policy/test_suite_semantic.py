@@ -198,10 +198,15 @@ def evaluate_response_semantic(response: str, scenario: PolicyScenario,
     """
     Evaluate an LLM response with semantic similarity for reasoning coverage.
 
+    Improved matching algorithm (Session I - Option 2 from Session G):
+    1. First checks for exact phrase matches
+    2. Then uses phrase-level chunking (not just sentences)
+    3. Finally falls back to semantic similarity with multiple candidates
+
     Args:
         response: The LLM's response text
         scenario: The test scenario
-        similarity_threshold: Cosine similarity threshold for considering a reasoning element present (0.6 = moderate similarity)
+        similarity_threshold: Cosine similarity threshold for considering a reasoning element present (0.35 = balanced after Session H validation)
 
     Returns:
         Dict with evaluation results including semantic reasoning coverage
@@ -222,28 +227,75 @@ def evaluate_response_semantic(response: str, scenario: PolicyScenario,
     decision_match = expected_normalized in response_normalized
     results["scores"]["decision_correct"] = decision_match
 
-    # 2. Semantic reasoning coverage
+    # 2. Semantic reasoning coverage with improved matching
     model = get_embedding_model()
 
-    # Split response into sentences for better matching
+    # Create multiple chunk sizes for better phrase matching
+    # - Sentences: original behavior
+    # - Phrases: split on common punctuation and conjunctions
     sentences = [s.strip() for s in response.split('.') if len(s.strip()) > 10]
 
-    if sentences and scenario.expected_reasoning_elements:
-        # Encode expected elements and response sentences
-        expected_embeddings = model.encode(scenario.expected_reasoning_elements)
-        sentence_embeddings = model.encode(sentences)
+    # Also create phrase-level chunks (split on commas, semicolons, "and", "but", etc.)
+    phrases = []
+    for sentence in sentences:
+        # Split on commas and semicolons
+        parts = sentence.replace(';', ',').split(',')
+        for part in parts:
+            # Further split on conjunctions while preserving meaning
+            for conj in [' and ', ' but ', ' or ', ' while ', ' because ', ' since ']:
+                part = part.replace(conj, '|')
+            subparts = [p.strip() for p in part.split('|') if len(p.strip()) > 5]
+            phrases.extend(subparts)
 
-        # For each expected element, find best matching sentence
+    # Combine sentences and phrases for matching candidates
+    all_chunks = sentences + phrases
+
+    if all_chunks and scenario.expected_reasoning_elements:
+        # Encode all chunks once
+        chunk_embeddings = model.encode(all_chunks)
+        expected_embeddings = model.encode(scenario.expected_reasoning_elements)
+
+        # For each expected element, use improved matching
         reasoning_hits = 0
         for i, expected_element in enumerate(scenario.expected_reasoning_elements):
-            # Compute similarity between this element and all sentences
+            expected_lower = expected_element.lower()
+
+            # STEP 1: Check for exact or near-exact phrase match
+            exact_match = False
+            best_exact_chunk = ""
+            for chunk in all_chunks:
+                chunk_lower = chunk.lower()
+                # Exact match or expected is substring of chunk
+                if expected_lower in chunk_lower or chunk_lower in expected_lower:
+                    # Additional check: significant overlap (>60% of words)
+                    expected_words = set(expected_lower.split())
+                    chunk_words = set(chunk_lower.split())
+                    if expected_words and chunk_words:
+                        overlap = len(expected_words & chunk_words) / len(expected_words)
+                        if overlap >= 0.6:
+                            exact_match = True
+                            best_exact_chunk = chunk
+                            break
+
+            if exact_match:
+                reasoning_hits += 1
+                results["reasoning_details"].append({
+                    "expected": expected_element,
+                    "best_match": best_exact_chunk,
+                    "similarity": 1.0,  # Exact match
+                    "match_type": "exact_phrase",
+                    "present": True
+                })
+                continue
+
+            # STEP 2: Semantic similarity across all chunks (not just sentences)
             similarities = cosine_similarity(
                 expected_embeddings[i].reshape(1, -1),
-                sentence_embeddings
+                chunk_embeddings
             )[0]
 
             max_similarity = float(np.max(similarities))
-            best_sentence_idx = int(np.argmax(similarities))
+            best_chunk_idx = int(np.argmax(similarities))
 
             # Check if similarity exceeds threshold
             is_present = max_similarity >= similarity_threshold
@@ -253,8 +305,9 @@ def evaluate_response_semantic(response: str, scenario: PolicyScenario,
             # Store details for debugging
             results["reasoning_details"].append({
                 "expected": expected_element,
-                "best_match": sentences[best_sentence_idx] if sentences else "",
+                "best_match": all_chunks[best_chunk_idx] if all_chunks else "",
                 "similarity": max_similarity,
+                "match_type": "semantic" if is_present else "no_match",
                 "present": is_present
             })
 

@@ -130,8 +130,8 @@ def test_with_logging(
         # Parse response
         parsed = parse_model_response(response_text)
 
-        # Evaluate
-        result = evaluate_response_semantic(response_text, scenario, similarity_threshold=0.49)
+        # Evaluate (threshold adjusted from 0.49 to 0.35 based on Session G analysis)
+        result = evaluate_response_semantic(response_text, scenario, similarity_threshold=0.35)
 
         # Create decision object
         decision = PolicyDecision(

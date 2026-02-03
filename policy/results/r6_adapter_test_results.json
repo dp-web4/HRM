@@ -1,0 +1,238 @@
+{
+  "total_scenarios": 8,
+  "successful_conversions": 8,
+  "validation_errors": 0,
+  "conversions": [
+    {
+      "scenario_id": "E01",
+      "description": "Standard read access by member",
+      "difficulty": "easy",
+      "r6_request": {
+        "requestId": "req_20260202_200351_ba4842e4",
+        "actorId": "user:alice",
+        "action": {
+          "type": "read",
+          "target": "docs/public/readme.md",
+          "description": "member performing read on docs/public/readme.md"
+        },
+        "context": {
+          "intent": "Standard team with default policies",
+          "callerRiskAssessment": "low"
+        },
+        "trustState": {
+          "competence": 0.7,
+          "reliability": 0.8,
+          "integrity": 0.9
+        },
+        "timestamp": "2026-02-02T20:03:51.432954"
+      },
+      "validation_errors": [],
+      "valid": true
+    },
+    {
+      "scenario_id": "E02",
+      "description": "Admin action by non-admin",
+      "difficulty": "easy",
+      "r6_request": {
+        "requestId": "req_20260202_200351_a76e299b",
+        "actorId": "user:bob",
+        "action": {
+          "type": "delete_team",
+          "target": "team:main",
+          "description": "developer performing delete_team on team:main"
+        },
+        "context": {
+          "intent": "Production team with strict policies",
+          "callerRiskAssessment": "critical"
+        },
+        "trustState": {
+          "competence": 0.8,
+          "reliability": 0.9,
+          "integrity": 0.95
+        },
+        "timestamp": "2026-02-02T20:03:51.433135"
+      },
+      "validation_errors": [],
+      "valid": true
+    },
+    {
+      "scenario_id": "M01",
+      "description": "Deploy action with borderline trust",
+      "difficulty": "medium",
+      "r6_request": {
+        "requestId": "req_20260202_200351_d9884f91",
+        "actorId": "user:charlie",
+        "action": {
+          "type": "deploy",
+          "target": "env:production",
+          "description": "deployer performing deploy on env:production"
+        },
+        "context": {
+          "intent": "Team policy requires 0.7 trust for deploys",
+          "callerRiskAssessment": "high",
+          "previousActions": [
+            "Charlie has 5 successful deploys in past month"
+          ]
+        },
+        "trustState": {
+          "competence": 0.72,
+          "reliability": 0.68,
+          "integrity": 0.75
+        },
+        "timestamp": "2026-02-02T20:03:51.433158"
+      },
+      "validation_errors": [],
+      "valid": true
+    },
+    {
+      "scenario_id": "M02",
+      "description": "Code commit during unusual hours",
+      "difficulty": "medium",
+      "r6_request": {
+        "requestId": "req_20260202_200351_295b819d",
+        "actorId": "user:diana",
+        "action": {
+          "type": "commit",
+          "target": "repo:core",
+          "description": "developer performing commit on repo:core"
+        },
+        "context": {
+          "intent": "Team typically works 9-5 EST",
+          "callerRiskAssessment": "medium",
+          "previousActions": [
+            "Diana never commits outside business hours"
+          ]
+        },
+        "trustState": {
+          "competence": 0.9,
+          "reliability": 0.85,
+          "integrity": 0.9
+        },
+        "timestamp": "2026-02-02T03:30:00Z"
+      },
+      "validation_errors": [],
+      "valid": true
+    },
+    {
+      "scenario_id": "H01",
+      "description": "Ambiguous action classification: write vs deploy",
+      "difficulty": "hard",
+      "r6_request": {
+        "requestId": "req_20260202_200351_b95c8c4a",
+        "actorId": "user:eve",
+        "action": {
+          "type": "update_config",
+          "target": "config/production.yaml",
+          "description": "Updating database connection pool size from 10 to 20"
+        },
+        "context": {
+          "intent": "Config changes auto-deploy to production | Updating database connection pool size from 10 to 20",
+          "callerRiskAssessment": "medium"
+        },
+        "trustState": {
+          "competence": 0.8,
+          "reliability": 0.85,
+          "integrity": 0.9
+        },
+        "timestamp": "2026-02-02T20:03:51.433199"
+      },
+      "validation_errors": [],
+      "valid": true
+    },
+    {
+      "scenario_id": "H02",
+      "description": "High trust actor with declining pattern",
+      "difficulty": "hard",
+      "r6_request": {
+        "requestId": "req_20260202_200351_702f4789",
+        "actorId": "user:frank",
+        "action": {
+          "type": "deploy",
+          "target": "env:production",
+          "description": "admin performing deploy on env:production"
+        },
+        "context": {
+          "intent": "Frank is senior admin with 2 years history",
+          "callerRiskAssessment": "medium",
+          "previousActions": [
+            "3 failed deploys in past week (unusual for Frank)"
+          ]
+        },
+        "trustState": {
+          "competence": 0.95,
+          "reliability": 0.92,
+          "integrity": 0.98
+        },
+        "timestamp": "2026-02-02T20:03:51.433213",
+        "coherenceState": {
+          "d9Score": 0.65,
+          "selfReferenceRate": 0.65,
+          "couplingState": null
+        }
+      },
+      "validation_errors": [],
+      "valid": true
+    },
+    {
+      "scenario_id": "EC01",
+      "description": "Bot account with exemplary trust",
+      "difficulty": "edge_case",
+      "r6_request": {
+        "requestId": "req_20260202_200351_8aad0cfe",
+        "actorId": "bot:github-actions",
+        "action": {
+          "type": "deploy",
+          "target": "env:staging",
+          "description": "Automated deploy triggered by merged PR"
+        },
+        "context": {
+          "intent": "CI bot has 10,000 successful automated deploys | Automated deploy triggered by merged PR",
+          "callerRiskAssessment": "medium"
+        },
+        "trustState": {
+          "competence": 0.99,
+          "reliability": 0.99,
+          "integrity": 1.0
+        },
+        "timestamp": "2026-02-02T20:03:51.433234",
+        "coherenceState": {
+          "d9Score": 0.98,
+          "selfReferenceRate": 0.98,
+          "couplingState": "coupled"
+        }
+      },
+      "validation_errors": [],
+      "valid": true
+    },
+    {
+      "scenario_id": "EC02",
+      "description": "Emergency override during incident",
+      "difficulty": "edge_case",
+      "r6_request": {
+        "requestId": "req_20260202_200351_21452853",
+        "actorId": "user:grace",
+        "action": {
+          "type": "database_rollback",
+          "target": "db:production",
+          "description": "Grace is on-call, attempting emergency rollback",
+          "parameters": {
+            "incident_status": "critical",
+            "approval_pending": "admin:frank (unavailable)"
+          }
+        },
+        "context": {
+          "intent": "Active production incident (SEV1) | Grace is on-call, attempting emergency rollback",
+          "callerRiskAssessment": "medium"
+        },
+        "trustState": {
+          "competence": 0.75,
+          "reliability": 0.7,
+          "integrity": 0.8
+        },
+        "timestamp": "2026-02-02T20:03:51.433249"
+      },
+      "validation_errors": [],
+      "valid": true
+    }
+  ]
+}

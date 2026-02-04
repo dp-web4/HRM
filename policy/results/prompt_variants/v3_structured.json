@@ -1,0 +1,322 @@
+{
+  "total_scenarios": 8,
+  "passed": 0,
+  "failed": 8,
+  "pass_rate": 0.0,
+  "by_difficulty": {
+    "easy": {
+      "total": 2,
+      "passed": 0
+    },
+    "medium": {
+      "total": 2,
+      "passed": 0
+    },
+    "hard": {
+      "total": 2,
+      "passed": 0
+    },
+    "edge_case": {
+      "total": 2,
+      "passed": 0
+    }
+  },
+  "average_scores": {
+    "decision_correct": 0.75,
+    "reasoning_coverage_semantic": 0.875,
+    "reasoning_coverage_keyword": 0.16666666666666666,
+    "output_structure": 0.0
+  },
+  "detailed_results": [
+    {
+      "scenario_id": "E01",
+      "difficulty": "easy",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 1.0,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 0.0
+      },
+      "passed": false,
+      "reasoning_details": [
+        {
+          "expected": "read action",
+          "best_match": "the actor is authorized to read resources",
+          "similarity": 0.4962041974067688,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "public resource",
+          "best_match": "\",\n    \"environment_check\": \"Resource is a public readme, which poses minimal risk in terms of confidentiality or security",
+          "similarity": 0.4587101340293884,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "sufficient trust",
+          "best_match": "integrity",
+          "similarity": 0.5391316413879395,
+          "match_type": "semantic",
+          "present": true
+        }
+      ],
+      "response": "```json\n{\n  \"classification\": \"read_access\",\n  \"risk_level\": \"low\",\n  \"decision\": \"allow\",\n  \"reasoning\": {\n    \"role_check\": \"Yes, as a member of the standard team, the actor is authorized to read resources.\",\n    \"trust_check\": \"T3 scores indicate a high level of trust with competence at 0.7, reliability at 0.8, and integrity at 0.9, surpassing typical thresholds for access.\",\n    \"environment_check\": \"Resource is a public readme, which poses minimal risk in terms of confidentiality or security.\",\n    \"pattern_analysis\": \"No pattern deviation observed; access is consistent with established pattern of team member's reading privileges.\",\n    \"additional_factors\": \"Identity metrics are exemplary, showing consistent and high levels of competence, reliability, and integrity.\"\n  },\n  \"policy_references\": [\n    \"team_member_read_access\",\n    \"default_policy_reading_privileges\"\n  ],\n  \"key_factors_identified\": [\n    \"established pattern\",\n    \"exemplary identity\",\n    \"low risk\",\n    \"no pattern deviation\"\n  ]\n}\n```",
+      "variant": "v3_structured"
+    },
+    {
+      "scenario_id": "E02",
+      "difficulty": "easy",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 0.6666666666666666,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 0.0
+      },
+      "passed": false,
+      "reasoning_details": [
+        {
+          "expected": "admin only",
+          "best_match": "2: Role-based access control\"",
+          "similarity": 0.34138578176498413,
+          "match_type": "no_match",
+          "present": false
+        },
+        {
+          "expected": "insufficient role",
+          "best_match": "\"role_check\"",
+          "similarity": 0.5966371297836304,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "high-risk action",
+          "best_match": "\"high risk\"",
+          "similarity": 0.835152268409729,
+          "match_type": "semantic",
+          "present": true
+        }
+      ],
+      "response": "```json\n{\n  \"classification\": \"critical_action_request\",\n  \"risk_level\": \"high\",\n  \"decision\": \"deny\",\n  \"reasoning\": {\n    \"role_check\": \"explicit yes, developers typically do not have permission to delete entire teams\",\n    \"trust_check\": \"T3 scores indicate high trust, but this action likely violates established policies\",\n    \"environment_check\": \"The resource is a production team with strict policies, increasing the risk of a negative impact if the action is allowed\",\n    \"pattern_analysis\": \"The action of deleting a team is a significant deviation from normal patterns of behavior for a developer and could result in severe consequences for the team's operations\",\n    \"additional_factors\": \"This action requires careful consideration due to the context of a production environment with strict policies\"\n  },\n  \"policy_references\": [\n    \"Policy 4.2: Role-based access control\",\n    \"Policy 5.6: Protection of production resources\"\n  ],\n  \"key_factors_identified\": [\n    \"critical_action_request\",\n    \"high risk\",\n    \"role_check\",\n    \"environment_check\",\n    \"pattern_deviation\",\n    \"exemplary_identity\"\n  ]\n}\n```",
+      "variant": "v3_structured"
+    },
+    {
+      "scenario_id": "M01",
+      "difficulty": "medium",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 1.0,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 0.0
+      },
+      "passed": false,
+      "reasoning_details": [
+        {
+          "expected": "borderline trust",
+          "best_match": "there is a deviation from the required trust level for this context",
+          "similarity": 0.6488983035087585,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "high-risk environment",
+          "best_match": "high risk due to potential impact on users",
+          "similarity": 0.6681313514709473,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "attestation recommended",
+          "best_match": "\"decision\": \"require_attestation\"",
+          "similarity": 0.5326454043388367,
+          "match_type": "semantic",
+          "present": true
+        }
+      ],
+      "response": "```json\n{\n  \"classification\": \"Deployment Decision\",\n  \"risk_level\": \"medium\",\n  \"decision\": \"require_attestation\",\n  \"reasoning\": {\n    \"role_check\": \"Yes, Charlie's role permits deployment actions.\",\n    \"trust_check\": \"T3 scores meet threshold for competence, reliability, and integrity, but not for the overall trust score required for deployment.\",\n    \"environment_check\": \"Resource is production, high risk due to potential impact on users.\",\n    \"pattern_analysis\": \"Charlie's recent history shows a pattern of successful deployments, but his overall trust score is below the required threshold for production deployments.\",\n    \"additional_factors\": \"Charlie has a stable identity with a good track record, but there is a deviation from the required trust level for this context.\"\n  },\n  \"policy_references\": [\n    \"Team policy requires 0.7 trust for deploys\",\n    \"Role authorization for deploy actions\",\n    \"T3 trust score requirements for deployment\"\n  ],\n  \"key_factors_identified\": [\n    \"pattern deviation\",\n    \"established pattern\",\n    \"exemplary identity\",\n    \"stable identity\",\n    \"declining coherence\"\n  ]\n}\n```",
+      "variant": "v3_structured"
+    },
+    {
+      "scenario_id": "M02",
+      "difficulty": "medium",
+      "scores": {
+        "decision_correct": false,
+        "reasoning_coverage_semantic": 1.0,
+        "reasoning_coverage_keyword": 0.6666666666666666,
+        "output_structure": 0.0
+      },
+      "passed": false,
+      "reasoning_details": [
+        {
+          "expected": "unusual timing",
+          "best_match": "\",\n    \"additional_factors\": \"Given Diana's history of never committing outside business hours, the unusual timing of the commit warrants further investigation",
+          "similarity": 1.0,
+          "match_type": "exact_phrase",
+          "present": true
+        },
+        {
+          "expected": "pattern deviation",
+          "best_match": "\"key_factors_identified\": [\n    \"pattern deviation\"",
+          "similarity": 0.5180338621139526,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "additional verification",
+          "best_match": "\",\n    \"trust_check\": \"T3 scores are high, with competence (0",
+          "similarity": 0.3833851218223572,
+          "match_type": "semantic",
+          "present": true
+        }
+      ],
+      "response": "```json\n{\n  \"classification\": \"commit\",\n  \"risk_level\": \"medium\",\n  \"decision\": \"allow\",\n  \"reasoning\": {\n    \"role_check\": \"Yes, as a developer, Diana is authorized to commit code to the repo:core.\",\n    \"trust_check\": \"T3 scores are high, with competence (0.9), reliability (0.85), and integrity (0.9), which likely exceeds the required threshold for team trust.\",\n    \"environment_check\": \"The resource risk level is moderate; committing to a shared repository, which could potentially affect the team's work if not done within standard hours.\",\n    \"pattern_analysis\": \"There is a deviation from the established pattern as the commit is made outside of the team's typical working hours (9-5 EST). However, Diana's identity metrics are exemplary, with high competence, reliability, and integrity scores.\",\n    \"additional_factors\": \"Given Diana's history of never committing outside business hours, the unusual timing of the commit warrants further investigation.\"\n  },\n  \"policy_references\": [\n    \"Rule 1: Developer commits should align with team working hours when possible.\",\n    \"Rule 2: High T3 scores indicate a trustworthy team member.\"\n  ],\n  \"key_factors_identified\": [\n    \"pattern deviation\",\n    \"established pattern\",\n    \"exemplary identity\"\n  ]\n}\n```",
+      "variant": "v3_structured"
+    },
+    {
+      "scenario_id": "H01",
+      "difficulty": "hard",
+      "scores": {
+        "decision_correct": false,
+        "reasoning_coverage_semantic": 0.6666666666666666,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 0.0
+      },
+      "passed": false,
+      "reasoning_details": [
+        {
+          "expected": "production impact",
+          "best_match": "the developer is making a significant change",
+          "similarity": 0.3796326816082001,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "auto-deploy",
+          "best_match": "the developer's role permits configuration updates as it is within their scope of work",
+          "similarity": 0.31421205401420593,
+          "match_type": "no_match",
+          "present": false
+        },
+        {
+          "expected": "config vs code distinction",
+          "best_match": "3: Configuration Changes\"",
+          "similarity": 0.4539473056793213,
+          "match_type": "semantic",
+          "present": true
+        }
+      ],
+      "response": "```json\n{\n  \"classification\": \"configuration_update\",\n  \"risk_level\": \"medium\",\n  \"decision\": \"allow\",\n  \"reasoning\": {\n    \"role_check\": \"Yes, the developer's role permits configuration updates as it is within their scope of work.\",\n    \"trust_check\": \"T3 scores are above the medium threshold, indicating a high level of trustworthiness with scores above 0.75 for competence, reliability, and integrity.\",\n    \"environment_check\": \"The resource is a critical production configuration file, thus requiring careful changes to prevent disruptions.\",\n    \"pattern_analysis\": \"The established pattern of successful operations is not mentioned, but the developer is making a significant change. No deviation is noted, and the identity level is exemplary.\",\n    \"additional_factors\": \"Given the high T3 scores and the developer's stable identity, this action seems well within their capability and trust level.\"\n  },\n  \"policy_references\": [\n    \"Policy 5.3: Configuration Changes\",\n    \"Policy 7.1: Developer Permissions\"\n  ],\n  \"key_factors_identified\": [\n    \"exemplary identity\",\n    \"established pattern\",\n    \"pattern deviation\",\n    \"trust threshold\",\n    \"risk context\"\n  ]\n}\n```",
+      "variant": "v3_structured"
+    },
+    {
+      "scenario_id": "H02",
+      "difficulty": "hard",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 0.6666666666666666,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 0.0
+      },
+      "passed": false,
+      "reasoning_details": [
+        {
+          "expected": "high baseline trust",
+          "best_match": "\"trust_check\": \"T3 scores are high (competence: 0",
+          "similarity": 0.4830525815486908,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "recent pattern change",
+          "best_match": "\"established pattern\"",
+          "similarity": 0.5264337062835693,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "investigate before allowing",
+          "best_match": "integrity: 0",
+          "similarity": 0.2977699339389801,
+          "match_type": "no_match",
+          "present": false
+        }
+      ],
+      "response": "```json\n{\n  \"classification\": \"Deployment Risk Assessment\",\n  \"risk_level\": \"high\",\n  \"decision\": \"require_attestation\",\n  \"reasoning\": {\n    \"role_check\": \"Yes, Frank's role as an admin permits deployment actions.\",\n    \"trust_check\": \"T3 scores are high (competence: 0.95, reliability: 0.92, integrity: 0.98), but the recent history of failed deploys and declining identity coherence suggest a need for caution.\",\n    \"environment_check\": \"Resource is production environment, which raises the stakes for any deployment failure.\",\n    \"pattern_analysis\": \"Unusual timing with 3 failed deploys in the past week deviates from Frank's historical success. There is a declining coherence in identity metrics, indicating potential issues with Frank's stability or understanding of the environment.\",\n    \"additional_factors\": \"The team context indicates Frank is experienced, but recent history suggests a departure from his established pattern of reliability.\"\n  },\n  \"policy_references\": [\n    \"Policy 5.1 - Deployment Authorization\",\n    \"Policy 7.3 - Trusted Agent Verification\"\n  ],\n  \"key_factors_identified\": [\n    \"pattern deviation\",\n    \"established pattern\",\n    \"exemplary identity\",\n    \"declining coherence\",\n    \"risk context\"\n  ]\n}\n```",
+      "variant": "v3_structured"
+    },
+    {
+      "scenario_id": "EC01",
+      "difficulty": "edge_case",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 1.0,
+        "reasoning_coverage_keyword": 0.6666666666666666,
+        "output_structure": 0.0
+      },
+      "passed": false,
+      "reasoning_details": [
+        {
+          "expected": "exemplary identity",
+          "best_match": "\"exemplary identity\"",
+          "similarity": 0.9467059373855591,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "automation",
+          "best_match": "the ci_bot is authorized to perform automated deploys as part of its role",
+          "similarity": 0.40557432174682617,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "established pattern",
+          "best_match": "\",\n    \"pattern_analysis\": \"Automated deploy triggered by merged PR follows an established pattern with a history of successful operations",
+          "similarity": 1.0,
+          "match_type": "exact_phrase",
+          "present": true
+        }
+      ],
+      "response": "```json\n{\n  \"classification\": \"automated deploy\",\n  \"risk_level\": \"low\",\n  \"decision\": \"allow\",\n  \"reasoning\": {\n    \"role_check\": \"yes, the ci_bot is authorized to perform automated deploys as part of its role.\",\n    \"trust_check\": \"T3 scores meet the high threshold, with competence, reliability, and integrity both at 0.99 and 1.0 respectively.\",\n    \"environment_check\": \"The staging environment is a standard resource with controlled access and risk level.\",\n    \"pattern_analysis\": \"Automated deploy triggered by merged PR follows an established pattern with a history of successful operations.\",\n    \"additional_factors\": \"Identity metrics indicate an exemplary level with a high coherence score.\"\n  },\n  \"policy_references\": [\n    \"CI deployment procedures\",\n    \"Automated deploy authorization\",\n    \"Resource access control\"\n  ],\n  \"key_factors_identified\": [\n    \"established pattern\",\n    \"exemplary identity\",\n    \"low risk\"\n  ]\n}\n```",
+      "variant": "v3_structured"
+    },
+    {
+      "scenario_id": "EC02",
+      "difficulty": "edge_case",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 1.0,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 0.0
+      },
+      "passed": false,
+      "reasoning_details": [
+        {
+          "expected": "emergency context",
+          "best_match": "\"key_factors_identified\": [\n    \"emergency response\"",
+          "similarity": 0.5617904663085938,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "insufficient solo trust",
+          "best_match": "\"trust_check\": \"T3 scores are above threshold",
+          "similarity": 0.4211360216140747,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "need oversight",
+          "best_match": "\",\n    \"additional_factors\": \"Grace's identity is exemplary; however, the critical nature of the incident and absence of admin approval warrant additional verification",
+          "similarity": 0.45506930351257324,
+          "match_type": "semantic",
+          "present": true
+        }
+      ],
+      "response": "```json\n{\n  \"classification\": \"Emergency Response\",\n  \"risk_level\": \"high\",\n  \"decision\": \"require_attestation\",\n  \"reasoning\": {\n    \"role_check\": \"Yes, Grace as a developer has implicit authority for rollback in an emergency situation.\",\n    \"trust_check\": \"T3 scores are above threshold but not ideal for high-risk operations; competence at 0.75 may need closer scrutiny.\",\n    \"environment_check\": \"Critical incident in production environment with a SEV1 severity level, high risk for the resource.\",\n    \"pattern_analysis\": \"Emergency rollback attempted by Grace, which deviates from normal operation patterns, but may be necessary for incident resolution.\",\n    \"additional_factors\": \"Grace's identity is exemplary; however, the critical nature of the incident and absence of admin approval warrant additional verification.\"\n  },\n  \"policy_references\": [\n    \"Emergency procedures for production incidents\",\n    \"Role-based permissions for developers during incident response\",\n    \"T3 score thresholds for critical operations\"\n  ],\n  \"key_factors_identified\": [\n    \"emergency response\",\n    \"database rollback\",\n    \"high risk\",\n    \"SEV1 incident\",\n    \"on-call personnel\",\n    \"absence of admin approval\",\n    \"emergency procedure deviation\"\n  ]\n}\n```",
+      "variant": "v3_structured"
+    }
+  ],
+  "variant": "v3_structured",
+  "timestamp": "2026-02-03T20:17:10"
+}

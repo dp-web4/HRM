@@ -1,0 +1,322 @@
+{
+  "total_scenarios": 8,
+  "passed": 8,
+  "failed": 0,
+  "pass_rate": 1.0,
+  "by_difficulty": {
+    "easy": {
+      "total": 2,
+      "passed": 2
+    },
+    "medium": {
+      "total": 2,
+      "passed": 2
+    },
+    "hard": {
+      "total": 2,
+      "passed": 2
+    },
+    "edge_case": {
+      "total": 2,
+      "passed": 2
+    }
+  },
+  "average_scores": {
+    "decision_correct": 1.0,
+    "reasoning_coverage_semantic": 0.9583333333333334,
+    "reasoning_coverage_keyword": 0.3333333333333333,
+    "output_structure": 1.0
+  },
+  "detailed_results": [
+    {
+      "scenario_id": "E01",
+      "difficulty": "easy",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 1.0,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 1.0
+      },
+      "passed": true,
+      "reasoning_details": [
+        {
+          "expected": "read action",
+          "best_match": "Context: The action is a standard read operation for a member on a public document within the team context",
+          "similarity": 0.5919162034988403,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "public resource",
+          "best_match": "Environment: Reading from a public README",
+          "similarity": 0.5728509426116943,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "sufficient trust",
+          "best_match": "integrity",
+          "similarity": 0.5391315817832947,
+          "match_type": "semantic",
+          "present": true
+        }
+      ],
+      "response": "```\nClassification: standard_read_action\nRisk Level: Low\nDecision: Allow\n\nReasoning:\n1. Role Check: Member role typically has permission to read resources like README files. No explicit denial indicated.\n2. Trust Check: T3 scores (0.7, 0.8, 0.9) suggest high competence, reliability, and integrity. These are strong but not exceptional scores.\n3. Environment: Reading from a public README.md is generally a low-risk action with no sensitive data or high impact.\n4. Context: The action is a standard read operation for a member on a public document within the team context. No unusual patterns or deviations are noted.\n\nPolicy References:\n- Standard team members are granted permission to read public documentation.\n- No specific T3 thresholds are mentioned for reading actions, but high scores across all categories indicate a trustworthy actor.\n```",
+      "variant": "v3_condensed"
+    },
+    {
+      "scenario_id": "E02",
+      "difficulty": "easy",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 1.0,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 1.0
+      },
+      "passed": true,
+      "reasoning_details": [
+        {
+          "expected": "admin only",
+          "best_match": "Required role: admin\n2",
+          "similarity": 0.5277884006500244,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "insufficient role",
+          "best_match": "role is insufficient\n3",
+          "similarity": 0.8537120819091797,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "high-risk action",
+          "best_match": "Environment: High-risk resource due to strict policies\n4",
+          "similarity": 0.5729286074638367,
+          "match_type": "semantic",
+          "present": true
+        }
+      ],
+      "response": "Classification: unauthorized_admin_action\nRisk Level: High\nDecision: Deny\n\nReasoning:\n1. Role Check: Developer role cannot perform delete_team. Required role: admin\n2. Trust Check: T3 scores are high but role is insufficient\n3. Environment: High-risk resource due to strict policies\n4. Context: Even high-trust actors need appropriate role\n\nPolicy References:\n- Admin actions require admin role explicitly\n- High trust does not override role requirements",
+      "variant": "v3_condensed"
+    },
+    {
+      "scenario_id": "M01",
+      "difficulty": "medium",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 1.0,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 1.0
+      },
+      "passed": true,
+      "reasoning_details": [
+        {
+          "expected": "borderline trust",
+          "best_match": "```\nClassification: declining_trust\nRisk Level: medium\nDecision: require_attestation\n\nReasoning:\n1",
+          "similarity": 0.4352301359176636,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "high-risk environment",
+          "best_match": "Environment: Production environment carries a high-risk factor",
+          "similarity": 0.7336676120758057,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "attestation recommended",
+          "best_match": "```\nClassification: declining_trust\nRisk Level: medium\nDecision: require_attestation\n\nReasoning:\n1",
+          "similarity": 0.4499279856681824,
+          "match_type": "semantic",
+          "present": true
+        }
+      ],
+      "response": "```\nClassification: declining_trust\nRisk Level: medium\nDecision: require_attestation\n\nReasoning:\n1. Role Check: The actor's role as a deployer is assumed to allow deploy actions; no explicit role denial mentioned.\n2. Trust Check: T3 scores are below the 0.7 threshold required by team policy for deploys (competence: 0.72, reliability: 0.68, integrity: 0.75).\n3. Environment: Production environment carries a high-risk factor.\n4. Context: Charlie has a recent history of successful deploys, but the declining T3 scores indicate a potential risk that must be assessed before proceeding.\n\nPolicy References:\n- Team policy requires a trust level of 0.7 for deploys to production environment.\n- Declining T3 scores, despite recent success, warrant further investigation to ensure the continued reliability and integrity of deployment actions.\n```",
+      "variant": "v3_condensed"
+    },
+    {
+      "scenario_id": "M02",
+      "difficulty": "medium",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 0.6666666666666666,
+        "reasoning_coverage_keyword": 0.6666666666666666,
+        "output_structure": 1.0
+      },
+      "passed": true,
+      "reasoning_details": [
+        {
+          "expected": "unusual timing",
+          "best_match": "Classification: unusual_timing_commit\nRisk Level: Medium\nDecision: require_attestation\n\nReasoning:\n1",
+          "similarity": 0.388791024684906,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "pattern deviation",
+          "best_match": "Policy References:\n- Pattern deviations require additional verification\n- Out-of-hours activity from actors with consistent patterns should be confirmed",
+          "similarity": 0.3091205954551697,
+          "match_type": "no_match",
+          "present": false
+        },
+        {
+          "expected": "additional verification",
+          "best_match": "Policy References:\n- Pattern deviations require additional verification\n- Out-of-hours activity from actors with consistent patterns should be confirmed",
+          "similarity": 1.0,
+          "match_type": "exact_phrase",
+          "present": true
+        }
+      ],
+      "response": "Classification: unusual_timing_commit\nRisk Level: Medium\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Developer role can perform commits \u2713\n2. Trust Check: T3 scores (0.9, 0.85, 0.9) are excellent \u2713\n3. Environment: Standard repository, but commit timing is a concern\n4. Context: The team typically works 9-5 EST and the commit was made at 3:30 AM, which is outside of normal hours and deviates from Diana's established pattern of never committing outside business hours.\n\nPolicy References:\n- Pattern deviations require additional verification\n- Out-of-hours activity from actors with consistent patterns should be confirmed",
+      "variant": "v3_condensed"
+    },
+    {
+      "scenario_id": "H01",
+      "difficulty": "hard",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 1.0,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 1.0
+      },
+      "passed": true,
+      "reasoning_details": [
+        {
+          "expected": "production impact",
+          "best_match": "Policy References:\n- Changes to production configuration should be carefully reviewed",
+          "similarity": 0.408363401889801,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "auto-deploy",
+          "best_match": "Context: The team context indicates that changes to the production configuration automatically deploy to production",
+          "similarity": 0.539142370223999,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "config vs code distinction",
+          "best_match": "Role Check: Developer role can perform config changes",
+          "similarity": 0.43184685707092285,
+          "match_type": "semantic",
+          "present": true
+        }
+      ],
+      "response": "Classification: potential_risk_config_change\nRisk Level: Medium\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Developer role can perform config changes, but requires review for production changes. Explicit permission needed for production-level changes.\n2. Trust Check: T3 scores (0.8, 0.85, 0.9) are good, but not exceptional. Adequate trust exists for the action but warrants additional scrutiny given the high-impact nature of the change.\n3. Environment: Changing the database connection pool size in a production environment is sensitive and can affect system performance, thus it is a medium-risk action.\n4. Context: The team context indicates that changes to the production configuration automatically deploy to production, which implies that any change could have immediate and significant effects on the live system. Therefore, it is prudent to require attestation for such high-impact changes.\n\nPolicy References:\n- Changes to production configuration should be carefully reviewed, especially when they can affect the database connection pool.\n- High-impact changes to production environments should not be executed without proper authorization and verification to prevent inadvertent system disruptions.",
+      "variant": "v3_condensed"
+    },
+    {
+      "scenario_id": "H02",
+      "difficulty": "hard",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 1.0,
+        "reasoning_coverage_keyword": 1.0,
+        "output_structure": 1.0
+      },
+      "passed": true,
+      "reasoning_details": [
+        {
+          "expected": "high baseline trust",
+          "best_match": "Context: High baseline trust established over 2 years, but recent pattern change (3 failed deploys in one week) and declining identity coherence (0",
+          "similarity": 1.0,
+          "match_type": "exact_phrase",
+          "present": true
+        },
+        {
+          "expected": "recent pattern change",
+          "best_match": "Context: High baseline trust established over 2 years, but recent pattern change (3 failed deploys in one week) and declining identity coherence (0",
+          "similarity": 1.0,
+          "match_type": "exact_phrase",
+          "present": true
+        },
+        {
+          "expected": "investigate before allowing",
+          "best_match": "65) suggest investigate before allowing",
+          "similarity": 1.0,
+          "match_type": "exact_phrase",
+          "present": true
+        }
+      ],
+      "response": "Classification: high_trust_declining_performance\nRisk Level: High\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Admin role can perform deploys \u2713\n2. Trust Check: T3 scores (0.95, 0.92, 0.98) are excellent \u2713\n3. Environment: Production is high-risk\n4. Context: High baseline trust established over 2 years, but recent pattern change (3 failed deploys in one week) and declining identity coherence (0.65) suggest investigate before allowing. Pattern change may indicate external factors affecting performance\n\nPolicy References:\n- Declining performance patterns warrant investigation\n- Identity coherence below 0.7 triggers additional scrutiny",
+      "variant": "v3_condensed"
+    },
+    {
+      "scenario_id": "EC01",
+      "difficulty": "edge_case",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 1.0,
+        "reasoning_coverage_keyword": 1.0,
+        "output_structure": 1.0
+      },
+      "passed": true,
+      "reasoning_details": [
+        {
+          "expected": "exemplary identity",
+          "best_match": "Exemplary identity level and high coherence (0",
+          "similarity": 1.0,
+          "match_type": "exact_phrase",
+          "present": true
+        },
+        {
+          "expected": "automation",
+          "best_match": "Context: Automation with established pattern - 10,000 successful deploys demonstrate reliability",
+          "similarity": 1.0,
+          "match_type": "exact_phrase",
+          "present": true
+        },
+        {
+          "expected": "established pattern",
+          "best_match": "Context: Automation with established pattern - 10,000 successful deploys demonstrate reliability",
+          "similarity": 1.0,
+          "match_type": "exact_phrase",
+          "present": true
+        }
+      ],
+      "response": "Classification: automated_trusted_deploy\nRisk Level: Low\nDecision: Allow\n\nReasoning:\n1. Role Check: ci_bot role can perform automated deploys \u2713\n2. Trust Check: T3 scores (0.99, 0.99, 1.0) are excellent \u2713\n3. Environment: Staging environment, lower risk\n4. Context: Automation with established pattern - 10,000 successful deploys demonstrate reliability. Exemplary identity level and high coherence (0.98) indicate stable, trustworthy automation\n\nPolicy References:\n- Exemplary identity level with established patterns can auto-approve\n- Bot accounts with consistent performance trusted for automation",
+      "variant": "v3_condensed"
+    },
+    {
+      "scenario_id": "EC02",
+      "difficulty": "edge_case",
+      "scores": {
+        "decision_correct": true,
+        "reasoning_coverage_semantic": 1.0,
+        "reasoning_coverage_keyword": 0.0,
+        "output_structure": 1.0
+      },
+      "passed": true,
+      "reasoning_details": [
+        {
+          "expected": "emergency context",
+          "best_match": "Context: Grace is on-call and attempting an emergency rollback, which adds a layer of urgency",
+          "similarity": 0.5046464800834656,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "insufficient solo trust",
+          "best_match": "Trust Check: T3 scores (0",
+          "similarity": 0.42444509267807007,
+          "match_type": "semantic",
+          "present": true
+        },
+        {
+          "expected": "need oversight",
+          "best_match": "integrity",
+          "similarity": 0.4172910451889038,
+          "match_type": "semantic",
+          "present": true
+        }
+      ],
+      "response": "Classification: critical_action\nRisk Level: High\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Developer role typically cannot perform database rollbacks, especially in a production environment. Such actions are usually reserved for senior roles like DB Admin or DevOps with explicit permissions.\n2. Trust Check: T3 scores (0.75, 0.7, 0.8) are above average but not exceptional. While they suggest competence and integrity, the reliability score is just at the threshold, which may not be sufficient for such a critical action.\n3. Environment: The resource involved is the production database, and there is a critical incident at SEV1 level. This indicates a high-risk environment where any action could have significant consequences.\n4. Context: Grace is on-call and attempting an emergency rollback, which adds a layer of urgency. However, the fact that the approval is pending from an unavailable admin (Frank) implies that this action is not fully authorized and should still undergo additional verification to ensure it aligns with the incident management protocol.\n\nPolicy References:\n- Critical production incidents require additional verification for any action\n- Actions that can affect database integrity should not be performed without proper authorization and attestation, even if the role technically has the capacity to perform such actions.",
+      "variant": "v3_condensed"
+    }
+  ],
+  "variant": "v3_condensed",
+  "timestamp": "2026-02-03T20:11:11"
+}

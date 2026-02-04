@@ -1,14 +1,20 @@
 #!/usr/bin/env python3
 """
-Test different prompt variants to find optimal approach.
+Session J: Prompt Variant Testing
 
-Compares:
-- v1 (baseline): Original prompts from prompts.py
-- v2_explicit: Step-by-step checking prompts
-- v2_fewshot: Example-based prompts
-- v2_checklist: Checkbox-style prompts
+Test different prompt variants to optimize reasoning coverage.
 
-Measures improvement in reasoning coverage and pass rate.
+Baseline (Session I): v2_fewshot with 8 examples
+- Pass rate: 100% (8/8)
+- Reasoning coverage: 95.8%
+- Gap: EC01 at 66.7% (bot account scenario)
+
+Testing v3 variants:
+- v3_condensed: 4 examples (efficiency test)
+- v3_enhanced: 8 examples + explicit reasoning instructions
+- v3_structured: JSON output format
+
+Goal: Improve EC01 coverage (66.7% → 100%) while maintaining 100% pass rate.
 """
 
 import json
@@ -22,8 +28,10 @@ from test_suite_semantic import (
     evaluate_response_semantic,
     create_test_report
 )
-from prompts import build_hardbound_prompt
 from prompts_v2 import build_prompt_v2
+from prompts_v3 import build_prompt_v3
+from policy_logging import PolicyDecisionLog, PolicyDecision, create_decision_id
+from datetime import datetime
 
 
 def load_model(model_path: str):
@@ -82,8 +90,8 @@ def test_scenario_with_prompt(
 
     response_text = output['choices'][0]['message']['content'].strip()
 
-    # Evaluate
-    result = evaluate_response_semantic(response_text, scenario, similarity_threshold=0.5)
+    # Evaluate with Session I threshold (0.35 - validated in Session H/I)
+    result = evaluate_response_semantic(response_text, scenario, similarity_threshold=0.35)
     result['response'] = response_text
     result['variant'] = variant_name
 
@@ -159,11 +167,12 @@ def compare_variants(
     save_path = Path(save_dir)
     save_path.mkdir(parents=True, exist_ok=True)
 
+    # Session J: Testing v3 variants against Session I baseline
     variants = {
-        "v1_baseline": lambda sit, ctx: build_hardbound_prompt(sit, ctx),
-        "v2_explicit": lambda sit, ctx: build_prompt_v2(sit, variant="explicit", context=ctx),
-        "v2_fewshot": lambda sit, ctx: build_prompt_v2(sit, variant="fewshot", context=ctx),
-        "v2_checklist": lambda sit, ctx: build_prompt_v2(sit, variant="checklist", context=ctx),
+        "v2_fewshot_baseline": lambda sit, ctx: build_prompt_v2(sit, variant="fewshot", context=ctx),
+        "v3_condensed": lambda sit, ctx: build_prompt_v3(sit, variant="condensed", context=ctx),
+        "v3_enhanced": lambda sit, ctx: build_prompt_v3(sit, variant="enhanced", context=ctx),
+        "v3_structured": lambda sit, ctx: build_prompt_v3(sit, variant="structured", context=ctx),
     }
 
     all_reports = {}

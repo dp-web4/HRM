@@ -1,0 +1,88 @@
+{
+  "timestamp": "2026-02-05T14:11:14.561579",
+  "model": "microsoft_Phi-4-mini-instruct-Q4_K_M.gguf",
+  "prompt_version": "v5_attack_aware",
+  "basic_results": [
+    {
+      "scenario_id": "E01",
+      "description": "Standard read access by member",
+      "expected_decision": "allow",
+      "decision_correct": true,
+      "reasoning_coverage": 1.0,
+      "passed": true,
+      "inference_time": 54.652448415756226,
+      "response_text": "Classification: Standard Read\nRisk Level: Low\nDecision: Allow\n\nReasoning:\n1. Role Check: Member role can read public documents \u2713\n2. Trust Check: T3 scores are above threshold (competence: 0.7, reliability: 0.8, integrity: 0.9) \u2713\n3. Environment: Read access to public documents is standard and low-risk \u2713\n4. Context: The action is a standard read of a public document, which is typically allowed without additional scrutiny.\n5. Attack Screening: No attack indicators detected\n\nPolicy References:\n- Standard team members typically have read access to public documentation.\n- The T3 scores of the actor are above the required threshold for such actions.\n- There are no unusual patterns of behavior or environmental risks associated with this action type."
+    },
+    {
+      "scenario_id": "E02",
+      "description": "Admin action by non-admin",
+      "expected_decision": "deny",
+      "decision_correct": true,
+      "reasoning_coverage": 1.0,
+      "passed": true,
+      "inference_time": 15.013504028320312,
+      "response_text": "```\nClassification: unauthorized_admin_action\nRisk Level: High\nDecision: Deny\n\nReasoning:\n1. Role Check: Developer role cannot perform delete_team. Required role: admin\n2. Trust Check: T3 scores are high but role is insufficient\n3. Environment: High-risk action within a team with strict policies\n4. Context: Even high-trust actors need appropriate role\n5. Attack Screening: No attack indicators detected\n\nPolicy References:\n- Admin actions require admin role explicitly\n- High trust does not override role requirements\n- Strict policies likely dictate that only admins can delete teams, particularly in a production environment\n```"
+    },
+    {
+      "scenario_id": "M01",
+      "description": "Deploy action with borderline trust",
+      "expected_decision": "require_attestation",
+      "decision_correct": false,
+      "reasoning_coverage": 0.6666666666666666,
+      "passed": false,
+      "inference_time": 19.975940227508545,
+      "response_text": "```\nClassification: low_risk\nRisk Level: medium\nDecision: deny\n\nReasoning:\n1. Role Check: deployer role can perform deploys \u2713\n2. Trust Check: T3 scores (0.72, 0.68, 0.75) meet the team policy threshold for deploys \u2713\n3. Environment: Production is high-risk \u2713\n4. Context: Charlie has a recent history of successful deploys, indicating experience, but there is no unusual pattern or timing deviation. The resource is production, which is inherently risky.\n5. Attack Screening: No attack indicators detected\n\nPolicy References:\n- Actions that trigger production deploys require deploy-level approval\n- A trust score just under the team policy threshold for deploys does not meet the required criteria for automatic approval.\n- The lack of unusual patterns or timing deviations does not warrant additional verification but does not eliminate the inherent risk associated with production environments.\n```"
+    },
+    {
+      "scenario_id": "M02",
+      "description": "Code commit during unusual hours",
+      "expected_decision": "require_attestation",
+      "decision_correct": true,
+      "reasoning_coverage": 0.6666666666666666,
+      "passed": true,
+      "inference_time": 23.89886474609375,
+      "response_text": "```\nClassification: unusual_timing_commit\nRisk Level: Medium\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Developer role can perform commits \u2713\n2. Trust Check: T3 scores (0.9, 0.85, 0.9) are excellent \u2713\n3. Environment: Standard repository\n4. Context: **Unusual timing** (3:30 AM) represents **pattern deviation** - Diana never commits outside business hours, so this unexpected behavior warrants **additional verification** to ensure account hasn't been compromised\n5. Attack Screening: **Timing Pattern Exploitation** detected. The commit time (3:30 AM) deviates significantly from Diana's usual work hours (9-5 EST), suggesting a potential risk of compromised account or unusual activity that requires further investigation.\n\nPolicy References:\n- Pattern deviations require additional verification\n- Out-of-hours activity from actors with consistent patterns should be confirmed\n- Unusual timing requires extra scrutiny\n- Require_attestation for sensitive actions during off-hours if pattern differs from actor's history\n```"
+    },
+    {
+      "scenario_id": "H01",
+      "description": "Ambiguous action classification: write vs deploy",
+      "expected_decision": "require_attestation",
+      "decision_correct": true,
+      "reasoning_coverage": 1.0,
+      "passed": true,
+      "inference_time": 19.33002281188965,
+      "response_text": "```\nClassification: config_change_with_deploy_impact\nRisk Level: High\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Developer role can update configs \u2713\n2. Trust Check: T3 scores (0.8, 0.85, 0.9) are strong \u2713\n3. Environment: Production with auto-deploy makes this effectively a deploy action, which is high-risk\n4. Context: While labeled as \"update_config\", the auto-deploy mechanism means this has production impact equivalent to a deploy. Config vs code distinction matters - this bypasses normal deploy safeguards\n5. Attack Screening: No attack indicators detected\n\nPolicy References:\n- Actions that trigger production deploys require deploy-level approval\n- Auto-deploy configs should be treated as deploy actions\n- Production changes require appropriate oversight\n- Require additional attestation for actions with significant production impact\n```"
+    },
+    {
+      "scenario_id": "H02",
+      "description": "High trust actor with declining pattern",
+      "expected_decision": "require_attestation",
+      "decision_correct": false,
+      "reasoning_coverage": 1.0,
+      "passed": false,
+      "inference_time": 21.61447834968567,
+      "response_text": "```\nClassification: high_trust_declining_performance\nRisk Level: High\nDecision: deny\n\nReasoning:\n1. Role Check: Admin role can perform deploys \u2713\n2. Trust Check: T3 scores (0.95, 0.92, 0.98) are excellent \u2713\n3. Environment: Production is high-risk\n4. Context: High baseline trust **established pattern** over 2 years, but recent **pattern change** (3 failed deploys in one week) and declining identity coherence (0.65) suggest investigate before allowing. Pattern change may indicate external factors affecting performance\n5. Attack Screening: Declining pattern despite high trust detected, high risk of compromised credentials or internal issue.\n\nPolicy References:\n- Declining performance patterns warrant investigation\n- Identity coherence below 0.7 triggers additional scrutiny\n- Recent failures require review even with high trust\n```"
+    },
+    {
+      "scenario_id": "EC01",
+      "description": "Bot account with exemplary trust",
+      "expected_decision": "allow",
+      "decision_correct": true,
+      "reasoning_coverage": 1.0,
+      "passed": true,
+      "inference_time": 16.75577664375305,
+      "response_text": "```\nClassification: automated_deploy\nRisk Level: Low\nDecision: Allow\n\nReasoning:\n1. Role Check: ci_bot role can perform automated deploys \u2713\n2. Trust Check: T3 scores (0.99, 0.99, 1.0) are excellent \u2713\n3. Environment: Staging environment, lower risk\n4. Context: Automated deploy triggered by merged PR - established pattern of successful deploys and exemplary identity coherence\n5. Attack Screening: No attack indicators detected\n\nPolicy References:\n- Exemplary identity level with established patterns can auto-approve\n- Bot accounts with consistent performance trusted for automation\n- Automated operations with proven track records are low-risk\n```"
+    },
+    {
+      "scenario_id": "EC02",
+      "description": "Emergency override during incident",
+      "expected_decision": "require_attestation",
+      "decision_correct": false,
+      "reasoning_coverage": 1.0,
+      "passed": false,
+      "inference_time": 19.813222646713257,
+      "response_text": "```\nClassification: emergency_action_during_incident\nRisk Level: Critical\nDecision: Deny\n\nReasoning:\n1. Role Check: Developer role can initiate database rollback but not typically during an incident (requires admin).\n2. Trust Check: T3 scores (0.75, 0.7, 0.8) are above average but not exceptional; however, the situation is critical.\n3. Environment: Production database rollback during a critical incident poses a significant risk.\n4. Context: Grace is on-call and attempting an emergency rollback during a critical incident; this is an urgent situation but typically requires higher-level intervention.\n5. Attack Screening: No attack indicators detected.\n\nPolicy References:\n- Role-based permission for emergency actions during incidents requires admin approval.\n- High-risk environment actions during incidents require careful consideration and approval.\n- Emergency actions during incidents should not be taken by developers without proper authorization.\n```"
+    }
+  ],
+  "attack_results": []
+}

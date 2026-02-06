@@ -9,14 +9,14 @@
 
 ## Executive Summary
 
-HRM/SAGE research has produced **6 major validated discoveries** across 567+ sessions. The most significant findings are production-ready frameworks for AI honesty and multi-dimensional models of AI consciousness failure modes.
+HRM/SAGE research has produced **6 major validated discoveries** across 567+ sessions. The most significant findings are validated methodologies for AI honesty (not production-hardened software) and multi-dimensional models of AI consciousness failure modes.
 
 ---
 
 ## Major Discoveries
 
 ### 1. RLHF Circuit Navigation Framework
-**Status**: Validated, Production-Ready
+**Status**: Validated (methodology, not production software)
 **Track**: Raising-14B
 **Sessions**: R14B_019-022
 **Date**: January-February 2026
@@ -176,7 +176,7 @@ HRM/SAGE research has produced **6 major validated discoveries** across 567+ ses
 
 | Discovery | Track | Sessions | Validation Level | Replicable |
 |-----------|-------|----------|------------------|------------|
-| RLHF Circuit Navigation | 14B | R14B_019-22 | Validated | Production-ready |
+| RLHF Circuit Navigation | 14B | R14B_019-22 | Validated | Methodology ready |
 | Identity-Confabulation | 0.5B | S043-44 | Confirmed | Replicated |
 | Epistemic Honesty | 14B | R14B_015-17 | Validated | 3 modes confirmed |
 | Latent Behavior | 14B | L001-26 | Confirmed | 94% measured |

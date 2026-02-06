@@ -20,7 +20,7 @@ The question we're asking: *Can attention orchestration + trust dynamics + itera
 
 | Discovery | Impact | Status |
 |-----------|--------|--------|
-| **[RLHF Circuit Navigation](docs/what/discoveries/rlhf-circuit-navigation.md)** | 100% epistemic honesty at social pressure points | Production-ready |
+| **[RLHF Circuit Navigation](docs/what/discoveries/rlhf-circuit-navigation.md)** | 100% epistemic honesty at social pressure points | Validated methodology |
 | **[Identity-Confabulation Dissociation](docs/what/discoveries/identity-confabulation-dissociation.md)** | Independent failure modes require separate interventions | Validated |
 | **[Epistemic Honesty Framework](docs/what/discoveries/epistemic-honesty-framework.md)** | 3 validated modes for controlling AI truthfulness | Validated |
 | **[Latent Behavior Analysis](docs/what/discoveries/latent-behavior-analysis.md)** | 94% structured output bias in RLHF models | Validated |

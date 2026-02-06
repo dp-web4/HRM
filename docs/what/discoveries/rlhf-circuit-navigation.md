@@ -1,6 +1,6 @@
 # RLHF Circuit Navigation Framework
 
-**Status**: Validated, Production-Ready
+**Status**: Validated (methodology, not production software)
 **Track**: Raising-14B (Thor)
 **Sessions**: R14B_019-022
 **Date**: January-February 2026

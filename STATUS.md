@@ -666,7 +666,7 @@ Based on Perplexity's assessment (which matches our gaps):
 - Polished package
 - Complete documentation
 - Production support
-- Validated performance claims
+- Formal benchmark validation or third-party reproducibility
 
 ---
 

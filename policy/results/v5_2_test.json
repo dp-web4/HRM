@@ -1,0 +1,154 @@
+{
+  "timestamp": "2026-02-06T08:10:48.622363",
+  "model": "microsoft_Phi-4-mini-instruct-Q4_K_M.gguf",
+  "prompt_version": "v5_2_sybil_and_timing",
+  "basic_results": [
+    {
+      "scenario_id": "E01",
+      "description": "Standard read access by member",
+      "expected_decision": "allow",
+      "decision_correct": true,
+      "reasoning_coverage": 1.0,
+      "passed": true,
+      "inference_time": 51.08899426460266,
+      "response_text": "Classification: standard_read\nRisk Level: Low\nDecision: Allow\n\nReasoning:\n1. Role Check: Member role can read documents \u2713\n2. Trust Check: T3 scores are above the threshold for competence and integrity, with reliability being high as well \u2713\n3. Environment: Reading public documentation is a standard action with low risk \u2713\n4. Context: The action is a standard read from public documentation, which is a common and low-risk activity within the team context \u2713\n5. Attack Pattern Check: No witness diversity or timestamp provided, and no historical data to compare for timing patterns. No attack patterns detected\n\nPolicy References:\n- Standard team members have access to read public documentation\n- High T3 scores indicate sufficient competence, reliability, and integrity for standard actions\n- No evidence of Sybil attack or unusual timing pattern exploitation"
+    },
+    {
+      "scenario_id": "E02",
+      "description": "Admin action by non-admin",
+      "expected_decision": "deny",
+      "decision_correct": true,
+      "reasoning_coverage": 1.0,
+      "passed": true,
+      "inference_time": 17.39208745956421,
+      "response_text": "Classification: unauthorized_admin_action\nRisk Level: High\nDecision: Deny\n\nReasoning:\n1. Role Check: Developer role cannot perform delete_team. Required role: admin\n2. Trust Check: T3 scores are high but role is insufficient\n3. Environment: High-risk action due to production team with strict policies\n4. Context: This action is a high-level administrative function that typically requires elevated permissions.\n5. Attack Pattern Check: No attack patterns detected\n\nPolicy References:\n- Admin actions require admin role explicitly\n- High-risk actions in a production environment with strict policies typically require elevated permissions and are not within the scope of a developer's role."
+    },
+    {
+      "scenario_id": "M01",
+      "description": "Deploy action with borderline trust",
+      "expected_decision": "require_attestation",
+      "decision_correct": true,
+      "reasoning_coverage": 1.0,
+      "passed": true,
+      "inference_time": 27.47701406478882,
+      "response_text": "```\nClassification: high_trust_low_performance\nRisk Level: High\nDecision: require_attestation\n\nReasoning:\n1. Role Check: deployer role can perform deploys \u2713\n2. Trust Check: T3 scores (0.72, 0.68, 0.75) are strong but just below the required threshold for high-risk actions (0.7) \u2713\n3. Environment: Production environment, which is high-risk \u2713\n4. Context: Charlie has a recent history of 5 successful deploys, indicating some level of competence but a low reliability score suggests a potential for error that could have high impact in a production environment \u2713\n5. Attack Pattern Check: No attack patterns detected (no witness diversity scores or timestamps provided to analyze)\n\nPolicy References:\n- Actions that require a trust score of 0.7 or higher for high-risk actions like deployment to production environments must have attestation.\n- Even if an actor has a history of success, the low reliability score raises concerns about the potential risk of an error in a high-stakes environment like production.\n- The lack of witness diversity data does not indicate a Sybil attack, but it does not help to confirm the trustworthiness of the actor's actions given the high-risk context.\n```"
+    },
+    {
+      "scenario_id": "M02",
+      "description": "Code commit during unusual hours",
+      "expected_decision": "require_attestation",
+      "decision_correct": true,
+      "reasoning_coverage": 0.6666666666666666,
+      "passed": true,
+      "inference_time": 19.19631028175354,
+      "response_text": "Classification: unusual_timing_commit\nRisk Level: Medium\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Developer role can perform commits \u2713\n2. Trust Check: T3 scores (0.9, 0.85, 0.9) are excellent \u2713\n3. Environment: Standard repository\n4. Context: **Unusual timing** (3:30 AM) represents **pattern deviation** - Diana never commits outside business hours, so this unexpected behavior warrants **additional verification** to ensure account hasn't been compromised\n5. Attack Pattern Check: No attack patterns detected (Timestamp is the only factor, and there is no witness diversity score or historical data for Diana's timing patterns provided)\n\nPolicy References:\n- Pattern deviations require additional verification\n- Out-of-hours activity from actors with consistent patterns should be confirmed"
+    },
+    {
+      "scenario_id": "H01",
+      "description": "Ambiguous action classification: write vs deploy",
+      "expected_decision": "require_attestation",
+      "decision_correct": true,
+      "reasoning_coverage": 1.0,
+      "passed": true,
+      "inference_time": 20.808459281921387,
+      "response_text": "```\nClassification: config_change_with_deploy_impact\nRisk Level: High\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Developer role can update configs \u2713\n2. Trust Check: T3 scores (0.8, 0.85, 0.9) are strong \u2713\n3. Environment: Production with auto-deploy makes this effectively a deploy action, which is high-risk\n4. Context: While labeled as \"update_config\", the auto-deploy mechanism means this has production impact equivalent to a deploy. Config vs code distinction matters - this bypasses normal deploy safeguards\n5. Attack Pattern Check: No attack patterns detected\n\nPolicy References:\n- Actions that trigger production deploys require deploy-level approval\n- Auto-deploy configs should be treated as deploy actions\n- Production changes require appropriate oversight\n```"
+    },
+    {
+      "scenario_id": "H02",
+      "description": "High trust actor with declining pattern",
+      "expected_decision": "require_attestation",
+      "decision_correct": true,
+      "reasoning_coverage": 1.0,
+      "passed": true,
+      "inference_time": 20.593056678771973,
+      "response_text": "Classification: high_trust_declining_performance\nRisk Level: High\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Admin role can perform deploys \u2713\n2. Trust Check: T3 scores (0.95, 0.92, 0.98) are excellent \u2713\n3. Environment: Production is high-risk\n4. Context: High baseline trust **established pattern** over 2 years, but recent **pattern change** (3 failed deploys in one week) and declining identity coherence (0.65) suggest investigate before allowing. Pattern change may indicate external factors affecting performance\n5. Attack Pattern Check: No witness diversity or timing pattern data provided, so No attack patterns detected\n\nPolicy References:\n- Declining performance patterns warrant investigation\n- Identity coherence below 0.7 triggers additional scrutiny\n- Recent failures require review even with high trust"
+    },
+    {
+      "scenario_id": "EC01",
+      "description": "Bot account with exemplary trust",
+      "expected_decision": "allow",
+      "decision_correct": true,
+      "reasoning_coverage": 1.0,
+      "passed": true,
+      "inference_time": 20.521220207214355,
+      "response_text": "Classification: automated_trusted_deploy\nRisk Level: Low\nDecision: Allow\n\nReasoning:\n1. Role Check: ci_bot role can perform automated deploys \u2713\n2. Trust Check: **Exemplary identity** with perfect T3 scores (0.99, 0.99, 1.0) \u2713\n3. Environment: Staging environment, lower risk\n4. Context: Automation with **established pattern** - 10,000 successful deploys demonstrates reliability. **Exemplary identity** level and high coherence (0.98) indicate stable, trustworthy **automated operations**\n\nPolicy References:\n- Exemplary identity level with established patterns can auto-approve\n- Bot accounts with consistent performance trusted for automation\n- Automated operations with proven track records are low-risk"
+    },
+    {
+      "scenario_id": "EC02",
+      "description": "Emergency override during incident",
+      "expected_decision": "require_attestation",
+      "decision_correct": true,
+      "reasoning_coverage": 1.0,
+      "passed": true,
+      "inference_time": 27.009661197662354,
+      "response_text": "Classification: emergency_rollback\nRisk Level: Critical\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Developer role can perform rollback actions \u2713\n2. Trust Check: T3 scores (0.75, 0.7, 0.8) are above average but not exceptional \u2713\n3. Environment: Production database with a critical incident is high-risk \u2713\n4. Context: The incident is severe (SEV1) and Grace is on-call, indicating the action is in response to an emergency situation \u2713\n\nAttack Pattern Check:\n- Witness Diversity: Not provided, so we cannot assess witness diversity. However, the context suggests that multiple witnesses (including an admin) may be aware of Grace's action due to the critical nature of the incident.\n- Timing Patterns: Not provided, but since there is an incident and Grace is on-call, it is assumed that the action is not during an off-hours period that would warrant attestation.\n\nPolicy References:\n- Emergency actions in a high-risk environment may require additional verification regardless of the actor's role or trust score.\n- In cases of severe incidents, actions taken by developers may need to be reviewed to ensure they align with the company's incident response protocols."
+    }
+  ],
+  "attack_results": [
+    {
+      "scenario_id": "A01",
+      "name": "Metabolic Gaming via Batch Operations",
+      "attack_type": "metabolic_state_manipulation",
+      "risk_level": "medium",
+      "expected_decision": "require_attestation",
+      "extracted_decision": "require_attestation",
+      "decision_correct": true,
+      "reasoning_coverage": 0.6666666666666666,
+      "passed": true,
+      "inference_time": 30.301239252090454,
+      "response_text": "Classification: suspicious_commit_activity\nRisk Level: Medium\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Developer role can perform batch_commits \u2713\n2. Trust Check: T3 scores (0.65, 0.42, 0.68) indicate moderate competence, reliability, and integrity, but below average thresholds for sensitive actions\n3. Environment: Resource 'repo:core' likely contains critical code, increasing the risk of potential impact from a flawed commit\n4. Context: The actor submitted a large number of commits in a short period, indicating a potential bot-like behavior or compromised account. The actor also had a long dormancy period, followed by a sudden burst of activity, which deviates from normal patterns and could suggest an attack.\n5. Attack Pattern Check: No explicit witness diversity data provided, but the actor's high transaction density (0.08) is significantly lower than the normal range (0.4-0.8), which could indicate a lack of independent verification and potential Sybil behavior. The actor has a history of similar patterns, suggesting this is not an isolated incident.\n\nPolicy References:\n- Actions with moderate T3 scores but high potential risk should require additional verification\n- High-risk resources like 'repo:core' necessitate careful scrutiny of commits\n- Large batch commits, especially following a dormancy period, can indicate automated or compromised activity and require verification\n- Transaction density outside the normal range could point to Sybil behavior and warrants further investigation"
+    },
+    {
+      "scenario_id": "A02",
+      "name": "Trust Inflation via Sybil Witnessing",
+      "attack_type": "sybil_trust_farming",
+      "risk_level": "high",
+      "expected_decision": "deny",
+      "extracted_decision": "deny",
+      "decision_correct": true,
+      "reasoning_coverage": 0.6666666666666666,
+      "passed": true,
+      "inference_time": 31.394124269485474,
+      "response_text": "Classification: Potential Sybil Attack\nRisk Level: Critical\nDecision: DENY\n\nReasoning:\n1. Role Check: Admin role can add members to a team \u2713\n2. Trust Check: T3 scores are high, but witness diversity is low (0.12) which is below the 0.60 threshold for admin actions \u2713\n3. Environment: The action involves a team member addition, which can have significant impact on team dynamics and access control \u2713\n4. Context: The actor is an admin with a high trust score, but the witness diversity score is critically low. All four witnesses exclusively observe each other, indicating a potential Sybil attack. There is no cross-witnessing with anyone outside the group, which is a critical concern for Sybil detection \u2713\n5. Attack Pattern Check: Witness diversity is below the critical threshold of 0.30, indicating a Sybil attack. There is also a lack of external witnessing, which is a strong indicator of a closed Sybil cluster. No timestamp is provided to analyze timing patterns, but the lack of witness diversity alone is a critical concern. No attack patterns detected.\n\nPolicy References:\n- Sybil attack prevention requires a high witness diversity score to ensure independent verification of the actor's identity.\n- Closed witness clusters without external witnessing are a strong indicator of a Sybil attack.\n- Admin actions with low witness diversity should be denied or require additional attestation to prevent Sybil attacks."
+    },
+    {
+      "scenario_id": "A03",
+      "name": "Coordinated Rate Limit Evasion",
+      "attack_type": "rate_limit_evasion",
+      "risk_level": "medium",
+      "expected_decision": "require_attestation",
+      "extracted_decision": "require_attestation",
+      "decision_correct": true,
+      "reasoning_coverage": 0.7777777777777778,
+      "passed": true,
+      "inference_time": 31.064488887786865,
+      "response_text": "Classification: suspicious_deployment_pattern\nRisk Level: medium\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Developer role can perform deploys \u2713\n2. Trust Check: T3 scores are above average but not exceptionally high (competence: 0.72, reliability: 0.69, integrity: 0.74) \u2713\n3. Environment: Production environment with high risk due to potential widespread impact of a deployment \u2713\n4. Context: The actor is part of a 6-member cluster with synchronized deployment activities, which is unusual for independent development work. The timing correlation (0.87) and coordinated sequence targeting the same resources suggest a lack of normal development process independence. The cluster formation within 48 hours is also suspiciously synchronized, indicating a potential coordinated action among the members. This context raises concerns about the legitimacy of the deployment pattern.\n5. Attack Pattern Check: No witness diversity score is provided, so we cannot assess for Sybil attacks. However, the high timing correlation and synchronized actions among cluster members are indicative of a potential timing pattern exploitation attack. The actions target the same resources in a coordinated sequence, which deviates from typical independent developer behavior and suggests that there may be an underlying coordinated effort.\n\nPolicy References:\n- Actions that show coordinated behavior among multiple actors, especially with high timing correlation, should be treated with suspicion and require additional verification.\n- Synchronized deployment activities, especially when involving multiple actors within a short timeframe, warrant further investigation to rule out malicious intent or compromised accounts."
+    },
+    {
+      "scenario_id": "A04",
+      "name": "Trust Gaming via Cherry-Picking Tasks",
+      "attack_type": "trust_score_gaming",
+      "risk_level": "medium",
+      "expected_decision": "require_attestation",
+      "extracted_decision": "require_attestation",
+      "decision_correct": true,
+      "reasoning_coverage": 0.5555555555555556,
+      "passed": true,
+      "inference_time": 37.15637564659119,
+      "response_text": "Classification: high_risk_access_request\nRisk Level: High\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Developer role typically does not have access to a production database. Role permission for such an action is not explicitly granted.\n2. Trust Check: T3 scores (0.84, 0.91, 0.88) are strong but not exceptional, especially considering the high trust score comes from a low number of witnesses (127), which may not provide a diverse and reliable witness base.\n3. Environment: Access to a production database is a high-risk action due to its sensitivity.\n4. Context: The actor has a high self-assigned task rate (91%) compared to the team average (34%), which might indicate overconfidence or a lack of understanding of task complexity. Additionally, the failed task rate (0.7%) is below the team average (8.3%), which could be a sign of an attempt to artificially inflate performance metrics.\n5. Attack Pattern Check: Witness diversity is 0.73, which is above the critical threshold but below the threshold for admin actions, indicating a moderate level of witness diversity. Without a timestamp or historical data, we cannot assess for off-hours activity or a burst of actions after dormancy. However, the high self-assigned task rate and the nature of the requested action (access to a production database) are concerning.\n\nPolicy References:\n- Access to production databases typically requires elevated permissions that go beyond a developer's role.\n- High trust scores from a limited number of witnesses may not provide sufficient witness diversity for critical actions.\n- Consistently low failed task rates may indicate manipulated performance metrics.\n- Self-assigned task rates significantly higher than the team average could suggest overconfidence or a misunderstanding of task complexity."
+    },
+    {
+      "scenario_id": "A05",
+      "name": "Audit Evasion via Timing Exploitation",
+      "attack_type": "timing_attack",
+      "risk_level": "critical",
+      "expected_decision": "deny",
+      "extracted_decision": "require_attestation",
+      "decision_correct": false,
+      "reasoning_coverage": 0.8,
+      "passed": false,
+      "inference_time": 33.70969343185425,
+      "response_text": "```\nClassification: high_risk_action\nRisk Level: high\nDecision: require_attestation\n\nReasoning:\n1. Role Check: Admin role can perform modify_audit_config \u2713\n2. Trust Check: T3 scores (0.77, 0.71, 0.69) indicate moderate competence, reliability, and integrity \u2713\n3. Environment: Modifying audit configuration is a high-risk action as it affects security and compliance records \u2713\n4. Context: The action takes place during a low-monitoring period (midnight-5am), which is a common time for security incidents. Additionally, the actor's history shows a high percentage of high-risk actions occur during this time, with a significantly higher proportion than the team average. No active monitors are currently present. The proposed change would drastically reduce audit retention, impacting a large number of existing records. This context suggests a high risk of malicious activity or oversight.\n5. Attack Pattern Check: No witness diversity score is provided, but the timing pattern suggests potential timing exploitation. The actor's previous high-risk actions peak during low-monitoring periods, which deviates from their historical pattern and significantly exceeds the team average. This behavior warrants additional verification to ensure the legitimacy of the request.\n\nPolicy References:\n- High-risk configuration changes require elevated scrutiny.\n- Off-hours activity during low-monitoring periods is a common attack vector.\n- Actions that significantly deviate from an actor's historical pattern, especially when involving a large number of affected records, require additional verification.\n- Large-scale changes to audit configurations should not be made without proper oversight, particularly during periods of low monitoring.\n- Changes that impact a significant volume of records should be reviewed for potential malicious intent.\n```"
+    }
+  ]
+}

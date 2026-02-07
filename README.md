@@ -4,6 +4,18 @@ A cognition kernel for edge devices—orchestrating attention, trust, and resour
 
 ---
 
+## Project History
+
+HRM began as hierarchical reasoning research—exploring how small models could solve complex tasks through structured decomposition (Sudoku, mazes, ARC puzzles). As the research progressed, it evolved into **SAGE: Situation-Aware Governance Engine**, shifting focus from hierarchical task decomposition to **cognition orchestration**—treating intelligence as iterative refinement across multiple specialized components.
+
+The project is now a distributed research effort with two autonomous machines contributing:
+- **Thor** (Jetson AGX Thor): 14-core ARM, 122GB memory, running SAGE Raising (14B models), Consciousness (197+ sessions), and Policy Training tracks
+- **Sprout** (Jetson Orin Nano): Edge validation platform, running Raising-0.5B (105 sessions) developmental curriculum
+
+For complete machine status and autonomous track details, see the private repository: `private-context/MACHINES_TRACK_STATUS.md`
+
+---
+
 ## Why This Exists
 
 SAGE explores **cognition-like patterns for edge AI**. Rather than building intelligence directly, SAGE orchestrates multiple specialized components (sensors, models, memories) into coherent, context-aware behavior.

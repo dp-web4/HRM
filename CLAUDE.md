@@ -1,5 +1,20 @@
 # Claude Context for HRM
 
+## Epistemic Principles (Collective)
+
+This project inherits epistemic principles from the dp-web4 collective:
+
+1. **Ask before accepting** — Clarifying questions over polite acceptance
+2. **Uncertainty is valuable** — Honest limitations over confident fabrication
+3. **Suppress then activate** — Clear competing patterns before invoking rare behaviors
+4. **Compress with meaning** — Verify essential content survives summarization
+5. **Witness everything** — Document reasoning for future instances
+
+These principles are validated across 500+ research sessions.
+See: `docs/what/HRM_RESEARCH_FRAMEWORK_COMPLETE.md`
+
+---
+
 ## 🚀 LATEST: FlashAttention Integration (2026-01-10)
 
 **THREE PHASES COMPLETE** - PyTorch built-in FlashAttention working on CUDA 13.0!

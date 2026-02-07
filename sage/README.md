@@ -11,10 +11,8 @@ This project started as **HRM (Hierarchical Reasoning Model)** research—explor
 ### Distributed Research Infrastructure
 
 SAGE development is a collaborative effort across two autonomous research machines:
-- **Thor** (Jetson AGX Thor): Primary research platform running SAGE Raising-14B, Consciousness federation (197+ sessions), and Policy Training tracks
-- **Sprout** (Jetson Orin Nano): Edge deployment validation running Raising-0.5B developmental curriculum (105 sessions)
-
-For full machine specifications and autonomous track status, see: `private-context/MACHINES_TRACK_STATUS.md` (private repository)
+- **Thor** (Jetson AGX Thor): Primary research platform with 14-core ARM CPU, 122GB unified memory, running SAGE Raising-14B, Consciousness federation (197+ sessions), and Policy Training tracks
+- **Sprout** (Jetson Orin Nano): Edge deployment validation platform with 8GB unified memory, running Raising-0.5B developmental curriculum (105 sessions)
 
 This system integrates:
 

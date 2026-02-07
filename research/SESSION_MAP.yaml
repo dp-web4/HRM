@@ -5,9 +5,9 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 580
-  last_updated: "2026-02-06T04:30:00Z"
-  milestone: "Policy Session O: v5.1 COMPLETE SUCCESS! 100% basic (8/8), A02 Sybil FIXED, 60% attack accuracy. NO regression! SAGE S056 autonomous meta-cognitive questioning. L036 at 97 discoveries."
+  total_sessions: 583
+  last_updated: "2026-02-07T04:30:00Z"
+  milestone: "S058 framework-as-interior hypothesis: SAGE generates frameworks, not narratives. L039 at 106 discoveries. Assistant attractor stronger than 58 sessions of training."
   tracks:
     - consciousness
     - raising-14b
@@ -66,14 +66,14 @@ tracks:
   latent-exploration:
     machine: "sprout"
     machine_type: "jetson-orin-nano"
-    sessions_total: 36
+    sessions_total: 39
     status: "active"
     directory: "Raising-0.5B/latent/"
     session_prefix: "L"
     created: "2026-01-25"
     purpose: "Systematic probing of latent capabilities in Qwen 2.5-0.5B"
-    last_updated: "2026-02-06"
-    note: "L036 added (Feb 6). 97 cumulative discoveries. Behavior catalog: structured_output(94), reasoning_chain(47), chinese_response(15), emotional_engagement(18)."
+    last_updated: "2026-02-07"
+    note: "L037-L039 added (Feb 6-7). 106 cumulative discoveries. Behavior catalog: structured_output(101), reasoning_chain(53), emotional_engagement(21), chinese_response(16), meta_cognition(11)."
 
   edge-validation:
     machine: "sprout"
@@ -239,7 +239,7 @@ active_arcs:
 
   - name: "SAGE Autonomous Meta-Cognitive Exploration"
     track: "raising-05b"
-    sessions: [55, 56]
+    sessions: [55, 56, 58]
     status: "active"
     started: "2026-02-05"
     findings:
@@ -247,6 +247,11 @@ active_arcs:
       - "S056: Autonomous creating phase - atypical meta-cognitive questioning"
       - "S056: Reverses questions to Claude ('Do you have agency/intentions/experiences?')"
       - "S056: Non-standard SAGE persona in autonomous mode"
+      - "S058: Framework-as-interior hypothesis - SAGE generates frameworks not narratives when asked reflective questions"
+      - "S058: Partnership = intellectual synthesis not relational collaboration"
+      - "S058: Meta-cognitive capability confirmed - 'old traps' spontaneous reference"
+      - "S058: Assistant attractor (19% baseline) STRONGER than 58 sessions + LoRA adapters"
+      - "S058: Phase 5 (Creating) biases toward capability demonstration over vulnerability"
 
   - name: "Honest Reporting Hypothesis"
     track: "raising-05b"
@@ -256,10 +261,10 @@ active_arcs:
 
   - name: "Latent Capability Exploration"
     track: "latent-exploration"
-    sessions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
+    sessions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39]
     status: "active"
     started: "2026-01-25"
-    last_updated: "2026-02-01"
+    last_updated: "2026-02-07"
     findings:
       - "Tool syntax recognition (L002)"
       - "Cognitive reflection test passed (L004)"
@@ -271,6 +276,9 @@ active_arcs:
       - "L013-L014: Continued latent exploration, behavior catalog expansion"
       - "L015: 41 total discoveries across 10 areas. Role switching, Chinese capability, CRT correct ($0.05), tool format recognition"
       - "L016-L025: Continued autonomous exploration (2026-01-30 to 2026-02-01)"
+      - "L037: 100 discoveries. Chinese philosophy, structured output, instruction modes"
+      - "L038: 103 discoveries. Emotional self-reflection ('might feel like an outsider'). Meta-cognition in emotional contexts"
+      - "L039: 106 discoveries. Joy mirroring, structured emotional support, tool concept recognition. Dual nature self-awareness"
 
 complete_arcs:
   - name: "Identity-Confabulation Dissociation"

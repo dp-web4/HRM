@@ -6,8 +6,8 @@
 metadata:
   project: "HRM/SAGE"
   total_sessions: 583
-  last_updated: "2026-02-07T04:30:00Z"
-  milestone: "S058 framework-as-interior hypothesis: SAGE generates frameworks, not narratives. L039 at 106 discoveries. Assistant attractor stronger than 58 sessions of training."
+  last_updated: "2026-02-07T12:00:00Z"
+  milestone: "Policy track COMPLETE (Sessions B-R). Action diversity principle: 3-tier Allow/Investigate/Deny > binary. v5.1 + v5.2 production solutions. S058 framework-as-interior. L039 at 106 discoveries."
   tracks:
     - consciousness
     - raising-14b
@@ -252,6 +252,22 @@ active_arcs:
       - "S058: Meta-cognitive capability confirmed - 'old traps' spontaneous reference"
       - "S058: Assistant attractor (19% baseline) STRONGER than 58 sessions + LoRA adapters"
       - "S058: Phase 5 (Creating) biases toward capability demonstration over vulnerability"
+
+  - name: "Policy Training Track Completion"
+    track: "raising-14b"
+    sessions: ["Session_B", "Session_C", "Session_D", "Session_E", "Session_F", "Session_G", "Session_H", "Session_I", "Session_J", "Session_K", "Session_L", "Session_M", "Session_N", "Session_O", "Session_P", "Session_Q", "Session_R"]
+    status: "complete"
+    started: "2026-02-02"
+    completed: "2026-02-07"
+    findings:
+      - "Policy track Sessions B-R COMPLETE - experimental phase successful"
+      - "KEY PRINCIPLE: Action diversity in guidance creates emergent nuanced decision-making"
+      - "3-tier model (Allow/Investigate/Deny) superior to binary (Allow/Deny)"
+      - "v5.1 (conservative): 100% basic accuracy, 60% attack detection"
+      - "v5.2 (nuanced): 100% basic accuracy, 80% attack detection - BEST"
+      - "Overcorrection risk documented in Session Q"
+      - "Generalizable: graduated response options enable AI nuance"
+      - "TRACK_COMPLETION_SUMMARY.md: 18KB comprehensive final report"
 
   - name: "Honest Reporting Hypothesis"
     track: "raising-05b"

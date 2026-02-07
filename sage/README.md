@@ -4,6 +4,18 @@
 
 SAGE implements cognition as iterative refinement - progressive denoising toward lower energy states. Current focus: epistemic reasoning in tiny language models (0.5B params) that coherently discuss cognition, qualia, and ontological frameworks.
 
+### Project Evolution
+
+This project started as **HRM (Hierarchical Reasoning Model)** research—exploring how tiny models (27M parameters) could solve complex reasoning tasks through hierarchical decomposition. As research progressed across 567+ sessions, the focus shifted from task-specific hierarchies to **general cognition orchestration**, evolving into **SAGE: Situation-Aware Governance Engine**.
+
+### Distributed Research Infrastructure
+
+SAGE development is a collaborative effort across two autonomous research machines:
+- **Thor** (Jetson AGX Thor): Primary research platform running SAGE Raising-14B, Consciousness federation (197+ sessions), and Policy Training tracks
+- **Sprout** (Jetson Orin Nano): Edge deployment validation running Raising-0.5B developmental curriculum (105 sessions)
+
+For full machine specifications and autonomous track status, see: `private-context/MACHINES_TRACK_STATUS.md` (private repository)
+
 This system integrates:
 
 - **IRP (Iterative Refinement Protocol)**: Universal interface for cognition plugins

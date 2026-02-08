@@ -148,7 +148,7 @@ recons = tinyvae.decode_batch(latents)        # [B, latent_dim] -> [B, C, H, W]
 
 ### HRM Orchestrator
 
-The orchestrator manages parallel execution of multiple IRP plugins with ATP (Adaptive Trust Points) budget management.
+The orchestrator manages parallel execution of multiple IRP plugins with ATP (Allocation Transfer Packet) budget management.
 
 ```python
 from sage.orchestrator.hrm_orchestrator import HRMOrchestrator

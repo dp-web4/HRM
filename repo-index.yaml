@@ -1,0 +1,148 @@
+# HRM/SAGE Repository Index
+# Machine-readable metadata for AI agent discovery
+# Schema version: 1.0
+
+metadata:
+  name: HRM
+  full_name: "SAGE: Situation-Aware Governance Engine"
+  description: "Cognition kernel for edge AI - attention orchestration, trust dynamics, iterative refinement"
+  type: research
+  domain:
+    - edge-ai
+    - cognition
+    - attention
+    - trust
+    - moe
+  license: "See LICENSE"
+  last_updated: "2026-02-08"
+
+status:
+  phase: research-validated
+  maturity: 0.7
+  production_ready: false
+  active_development: true
+
+metrics:
+  research_sessions: 567
+  irp_plugins: 15
+  documentation_kb: 275
+  machines_active: 2
+
+core_concepts:
+  SAGE:
+    name: "Situation-Aware Governance Engine"
+    purpose: "Cognition kernel - scheduler for edge AI"
+    location: "sage/core/"
+  IRP:
+    name: "Iterative Refinement Protocol"
+    purpose: "Plugin API for cognition components"
+    location: "sage/irp/"
+    pattern: "init_state() → step() → energy() → halt()"
+  SNARC:
+    name: "Salience scoring"
+    dimensions: [surprise, novelty, arousal, reward, conflict]
+    purpose: "Selective attention"
+  ATP:
+    name: "Allocation Transfer Packet"
+    purpose: "Resource budgeting"
+  metabolic_states:
+    modes: [WAKE, FOCUS, REST, DREAM, CRISIS]
+    purpose: "Adaptive resource allocation"
+
+entry_points:
+  discovery: "AGENTS.md"
+  explained: "docs/why/HRM_EXPLAINED.md"
+  achievements: "docs/what/ACHIEVEMENTS.md"
+  architecture: "sage/docs/SYSTEM_UNDERSTANDING.md"
+  session_map: "research/SESSION_MAP.md"
+  status: "STATUS.md"
+
+architecture:
+  sage_core:
+    path: "sage/core/"
+    purpose: "Cognition kernel"
+  irp_framework:
+    path: "sage/irp/"
+    purpose: "Plugin system"
+    plugins: 15
+  vae_translation:
+    path: "sage/compression/"
+    purpose: "Cross-modal communication"
+    compression: "192x"
+  memory_systems:
+    types: [SNARC, IRP_Bridge, Circular_Buffer, Verbatim]
+    purpose: "Multi-tier memory"
+
+discoveries:
+  - name: "RLHF Circuit Navigation"
+    impact: "100% epistemic honesty at pressure points"
+    doc: "docs/what/discoveries/rlhf-circuit-navigation.md"
+  - name: "Identity-Confabulation Dissociation"
+    impact: "Independent failure modes"
+    doc: "docs/what/discoveries/identity-confabulation-dissociation.md"
+  - name: "Nine-Domain Consciousness"
+    impact: "Complete AI consciousness metrics"
+    doc: "docs/what/discoveries/nine-domain-consciousness.md"
+  - name: "FlashAttention Integration"
+    impact: "0.46ms latency (21x under budget)"
+    doc: "FLASH_ATTENTION_SOLUTION.md"
+
+research_tracks:
+  consciousness:
+    sessions: 197
+    focus: "Nine-domain framework"
+    machine: Thor
+  raising_14b:
+    sessions: 22
+    focus: "RLHF circuit navigation"
+    machine: Thor
+  raising_0.5b:
+    sessions: 105
+    focus: "Developmental curriculum"
+    machine: Sprout
+  edge_validation:
+    sessions: 198
+    focus: "Production readiness"
+
+machines:
+  thor:
+    hardware: "Jetson AGX Thor"
+    memory: "122GB unified"
+    role: "14B models, consciousness research"
+  sprout:
+    hardware: "Jetson Orin Nano"
+    memory: "8GB unified"
+    role: "Edge validation"
+
+related_repos:
+  - name: web4
+    url: "https://github.com/dp-web4/web4"
+    relationship: "Trust infrastructure (T3, ATP)"
+  - name: synchronism
+    url: "https://github.com/dp-web4/synchronism"
+    relationship: "Theoretical physics (coherence)"
+  - name: Memory
+    url: "https://github.com/dp-web4/memory"
+    relationship: "Epistemic database"
+
+token_budget:
+  minimal:
+    files: ["AGENTS.md"]
+    tokens: 400
+    purpose: "Relevance assessment"
+  standard:
+    files: ["AGENTS.md", "STATUS.md", "README.md"]
+    tokens: 2500
+    purpose: "Usage decision"
+  architecture:
+    files: ["sage/docs/SYSTEM_UNDERSTANDING.md"]
+    tokens: 8000
+    purpose: "Architecture understanding"
+  full:
+    files: ["sage/docs/"]
+    tokens: 50000
+    purpose: "Deep implementation"
+
+contact:
+  maintainer: "dp@metalinxx.io"
+  issues: "https://github.com/dp-web4/HRM/issues"

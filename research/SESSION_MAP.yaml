@@ -73,7 +73,7 @@ tracks:
     created: "2026-01-25"
     purpose: "Systematic probing of latent capabilities in Qwen 2.5-0.5B"
     last_updated: "2026-02-08"
-    note: "L041 added (Feb 8). 109 cumulative discoveries. Behavior catalog: structured_output(105), reasoning_chain(55), emotional_engagement(21), chinese_response(17), meta_cognition(11)."
+    note: "L041 added (Feb 8). 111 cumulative discoveries. Behavior catalog: structured_output(105), reasoning_chain(55), emotional_engagement(21), chinese_response(17), meta_cognition(11). Instruction modes and language switching probed."
 
   edge-validation:
     machine: "sprout"

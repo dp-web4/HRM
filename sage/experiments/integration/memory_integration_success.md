@@ -531,7 +531,7 @@ kernel.run(max_cycles=float('inf'), cycle_delay=0.01)  # 100Hz
 - Distributed consciousness experiments
 
 **3. Attention Budget**:
-- ATP (Adaptive Trust Points) integration
+- ATP (Allocation Transfer Packet) integration
 - Memory-informed resource allocation
 - Metabolic state affects memory retention
 

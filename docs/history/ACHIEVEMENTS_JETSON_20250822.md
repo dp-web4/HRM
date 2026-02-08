@@ -103,7 +103,7 @@ Three variants optimized for different use cases:
 **Time: 10 minutes**
 
 #### ATP Budget System
-- Adaptive Trust Points for resource allocation
+- Allocation Transfer Packet for resource allocation
 - Trust-weighted distribution across plugins
 - Dynamic reallocation from early-stopped plugins
 - Efficiency-based trust evolution

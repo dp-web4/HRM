@@ -27,7 +27,7 @@
 - Maintains temporal state (continuous time awareness)
 - Monitors available computational resources (plugins, models, sensors)
 - Computes attention targets based on SNARC salience (Surprise, Novelty, Arousal, Reward, Conflict)
-- Allocates ATP (Attention Token Pool/Adaptive Trust Points) budget to plugins
+- Allocates ATP (Allocation Transfer Packet) budget to plugins
 - Learns which resources deserve trust based on performance
 
 **The Main Loop** (conceptual, not yet unified in code):

@@ -83,7 +83,7 @@ SAGE (Kernel)
 | Repo | Relationship |
 |------|--------------|
 | `web4` | Trust infrastructure (T3 tensors, ATP) |
-| `synchronism` | Theoretical physics (coherence) |
+| `Synchronism` | Theoretical physics (coherence) |
 | `Memory` | Epistemic database |
 
 ## Machine-Readable Metadata

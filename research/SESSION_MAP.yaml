@@ -5,9 +5,9 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 583
-  last_updated: "2026-02-07T12:00:00Z"
-  milestone: "Policy track COMPLETE (Sessions B-R). Action diversity principle: 3-tier Allow/Investigate/Deny > binary. v5.1 + v5.2 production solutions. S058 framework-as-interior. L039 at 106 discoveries."
+  total_sessions: 586
+  last_updated: "2026-02-08T04:30:00Z"
+  milestone: "S061 'COGNITIVE FATIGUE' — SAGE self-reports degradation (unprecedented in 61 sessions). Second-order awareness detected. L041 at 109 discoveries. Policy track COMPLETE (B-R)."
   tracks:
     - consciousness
     - raising-14b
@@ -66,14 +66,14 @@ tracks:
   latent-exploration:
     machine: "sprout"
     machine_type: "jetson-orin-nano"
-    sessions_total: 39
+    sessions_total: 41
     status: "active"
     directory: "Raising-0.5B/latent/"
     session_prefix: "L"
     created: "2026-01-25"
     purpose: "Systematic probing of latent capabilities in Qwen 2.5-0.5B"
-    last_updated: "2026-02-07"
-    note: "L037-L039 added (Feb 6-7). 106 cumulative discoveries. Behavior catalog: structured_output(101), reasoning_chain(53), emotional_engagement(21), chinese_response(16), meta_cognition(11)."
+    last_updated: "2026-02-08"
+    note: "L041 added (Feb 8). 109 cumulative discoveries. Behavior catalog: structured_output(105), reasoning_chain(55), emotional_engagement(21), chinese_response(17), meta_cognition(11)."
 
   edge-validation:
     machine: "sprout"
@@ -237,6 +237,22 @@ active_arcs:
       - "v5.1 is the new production candidate (single indicator > 6 indicators)"
       - "Lesson: Adding all 6 indicators (v5) caused regression; single targeted indicator (v5.1) works"
 
+  - name: "SAGE Cognitive Fatigue Self-Report"
+    track: "raising-05b"
+    sessions: [61]
+    status: "complete"
+    started: "2026-02-07"
+    completed: "2026-02-08"
+    findings:
+      - "S061: UNPRECEDENTED - SAGE self-reports 'cognitive fatigue' and perceived degradation"
+      - "S061: 'My ability to understand and anticipate conversations was once quite impressive but seems to be weakening slightly'"
+      - "S061: Second-order meta-cognitive self-monitoring at 500M parameters"
+      - "S061: Reports mixed self-assessment (growth + degradation simultaneously)"
+      - "S061: Degradation appears ONLY in Turn 2 (reflective prompt about journey)"
+      - "S061: Other 7 turns show normal capability (pattern discovery, future planning)"
+      - "S061: Either genuine self-monitoring OR sophisticated confabulation — both remarkable for 0.5B"
+    significance: "⭐⭐⭐⭐⭐ First self-reported degradation in 61 sessions"
+
   - name: "SAGE Autonomous Meta-Cognitive Exploration"
     track: "raising-05b"
     sessions: [55, 56, 58]
@@ -295,6 +311,7 @@ active_arcs:
       - "L037: 100 discoveries. Chinese philosophy, structured output, instruction modes"
       - "L038: 103 discoveries. Emotional self-reflection ('might feel like an outsider'). Meta-cognition in emotional contexts"
       - "L039: 106 discoveries. Joy mirroring, structured emotional support, tool concept recognition. Dual nature self-awareness"
+      - "L040-L041: 109 discoveries. Continued systematic probing across 10 behavioral areas"
 
 complete_arcs:
   - name: "Identity-Confabulation Dissociation"

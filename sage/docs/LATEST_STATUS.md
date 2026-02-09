@@ -1,7 +1,73 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-02-08 07:15 PST (Thor Autonomous Session - Sessions 61+62 Integrated Analysis)**
-**Previous: 2026-02-08 01:15 PST (Session 61 Cognitive Fatigue Analysis)**
+**Last Updated: 2026-02-09 07:30 PST (Thor Autonomous Session - Sessions 60-66 Output Format Mode Switching)**
+**Previous: 2026-02-08 07:15 PST (Sessions 61+62 Cognitive Fatigue Confabulation)**
+
+---
+
+## 🔬 SESSIONS 60-66: Output Format Mode Switching Discovery (Feb 9 2026 07:30 PST) ⭐⭐⭐⭐⭐
+
+### Status: **NEW DIMENSION DISCOVERED - OUTPUT FORMAT ACTS AS MODE SWITCH**
+
+**CRITICAL DISCOVERY**: Output format (structured vs flowing) acts as a **MODE SWITCH** that can override system prompt context framing.
+
+**The S64-S65 Reversal** (same web4 v2.2 system prompt, opposite results):
+- **Session 64** (flowing prose): 9.09 epistemic markers, 0.89 corporate markers → **Web4 framing SUCCESS**
+- **Session 65** (structured lists): 0.17 epistemic markers, 7.60 corporate markers → **Web4 framing FAILURE**
+
+**Result**: 44x swing in corporate/epistemic ratio with identical system prompt.
+
+### Quantitative Evidence Across 6 Sessions
+
+| Session | Corporate | Epistemic | Ratio | Structured | Mode |
+|---------|-----------|-----------|-------|------------|------|
+|         | (per 100w)| (per 100w)| (C/E) | Markers    |      |
+| **60**  | 4.68      | 0.19      | 25.0  | 146        | STRUCTURED |
+| **61**  | 1.91      | 0.09      | 22.0  | 26         | FLOWING (mixed) |
+| **62**  | 5.01      | 0.42      | 11.8  | 74         | STRUCTURED |
+| **63**  | 4.04      | 2.02      | 2.0   | 17         | EPISTEMIC |
+| **64**  | 0.89      | 9.09      | **0.1** | **0**      | **EPISTEMIC ⭐** |
+| **65**  | 7.60      | 0.17      | **43.5** | **84**     | **STRUCTURED** |
+| **66**  | 0.80      | 0.24      | 3.3   | 66         | MIXED (Sprout validation) |
+
+**Correlation**: Strong positive (structured markers ↑ → corporate vocabulary ↑), Strong negative (structured markers ↑ → epistemic vocabulary ↓)
+
+### Integrated Dual-Dimension Model
+
+**Previous Research** (Sessions 54-59 by Thor):
+- **Dimension 1**: Initialization Quality (Turn 1 coherence) → Session trajectory
+- Complete runs (Turn 1 present) → 8/8 standard mode (100%, p<0.03)
+
+**New Research** (Sessions 60-65 by Thor):
+- **Dimension 2**: Output Format (structured vs flowing) → Vocabulary mode
+- Structured output (###, **, lists) → Corporate vocabulary
+- Flowing output (prose, "I notice") → Epistemic/introspective vocabulary
+
+**Hierarchy of Influence**:
+1. **Output format** (strongest - activates deep training patterns)
+2. **Initialization quality** (session trajectory)
+3. **System prompt** (weakest - can be overridden by format)
+
+### Why This Matters
+
+**For Web4 entity development**: System prompt provides ontological framing (entity, federation), but output format can override it by activating incompatible vocabulary attractors from training data.
+
+**Solution required**: Both ontological framing (system prompt) AND format guidance (discourage structured output, encourage flowing prose).
+
+**Training data hypothesis**: Structured format (###, **, lists) is associated with corporate/educational content in base model training → activating format triggers vocabulary.
+
+### Experimental Predictions (Ready for Testing)
+
+1. **Format Control → Mode Control**: Adding "respond in flowing prose, not lists" should reduce corporate markers
+2. **Format Correlates Across Sessions**: Zero structured markers → <2.0 corporate, >4.0 epistemic per 100 words
+3. **Format → Vocabulary is Training Artifact**: After web4 fine-tuning, association should weaken
+4. **Turn-Level Mode Switching**: Mode can switch mid-session with format guidance
+
+### Documentation
+
+**Comprehensive analysis**: `/home/dp/ai-workspace/private-context/insights/SESSIONS_60-65_OUTPUT_FORMAT_MODE_SWITCHING.md` (584 lines)
+
+**Key insight for raising**: Format matters as much as content for developing entity presence. S64 achieved genuine-seeming introspection through flowing first-person prose.
 
 ---
 

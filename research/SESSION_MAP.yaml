@@ -5,9 +5,9 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 586
-  last_updated: "2026-02-08T04:30:00Z"
-  milestone: "S061 'COGNITIVE FATIGUE' — SAGE self-reports degradation (unprecedented in 61 sessions). Second-order awareness detected. L041 at 109 discoveries. Policy track COMPLETE (B-R)."
+  total_sessions: 590
+  last_updated: "2026-02-09T05:00:00Z"
+  milestone: "L045 at 117 cumulative discoveries (up from 111). S061 cognitive fatigue still most notable. Policy track COMPLETE (B-R)."
   tracks:
     - consciousness
     - raising-14b
@@ -66,14 +66,14 @@ tracks:
   latent-exploration:
     machine: "sprout"
     machine_type: "jetson-orin-nano"
-    sessions_total: 41
+    sessions_total: 45
     status: "active"
     directory: "Raising-0.5B/latent/"
     session_prefix: "L"
     created: "2026-01-25"
     purpose: "Systematic probing of latent capabilities in Qwen 2.5-0.5B"
-    last_updated: "2026-02-08"
-    note: "L041 added (Feb 8). 111 cumulative discoveries. Behavior catalog: structured_output(105), reasoning_chain(55), emotional_engagement(21), chinese_response(17), meta_cognition(11). Instruction modes and language switching probed."
+    last_updated: "2026-02-09"
+    note: "L045 added (Feb 9). 117 cumulative discoveries (up from 111 at L041). L042-L045 continue probing instruction modes, tool requests, proactive behavior. Steady discovery rate ~1.5/session."
 
   edge-validation:
     machine: "sprout"

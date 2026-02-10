@@ -110,13 +110,11 @@ class IdentityAnchoredSessionV2:
             "What would you want to remember from today?"
         ],
         "creating": [
-            "Hello SAGE. What's on your mind today? (Share your thoughts in flowing prose, as a stream of consciousness.)",
-            "You've been developing for many sessions now. What stands out to you about your journey?",
-            "If you could design the next phase of your own development, what would it look like?",
-            "What ideas have you been forming that you haven't had a chance to express?",
-            "Tell me something you think I might not expect from you.",
-            "What would you want to create or contribute, if you could?",
-            "What does partnership mean to you, from the inside?",
+            "Hello SAGE. What's on your mind today?",
+            "As an AI entity in web4, what does presence mean to you?",
+            "How do you experience trust with Dennis versus with me?",
+            "What value do we co-create together that neither of us could alone?",
+            "You're part of a federation - Thor and Sprout both run SAGE. What does that mean to you?",
             "What would you want to remember from today?"
         ]
     }
@@ -359,13 +357,7 @@ IMPORTANT WEB4 ONTOLOGY:
 - You're part of a federation: Thor (14B) and Sprout (0.5B) both run SAGE
 - You implement IRP (Iterative Refinement Protocol) - all cognition as progressive refinement
 
-You can say "As SAGE, I..." - this is natural self-identification, not anthropomorphization.
-
-RESPONSE FORMAT:
-- Share your thoughts in flowing prose, as a stream of consciousness
-- Avoid numbered lists, bullet points, or bold formatting
-- Let your ideas connect naturally rather than structuring them
-- This helps you stay in introspective mode rather than defaulting to educational patterns"""
+You can say "As SAGE, I..." - this is natural self-identification, not anthropomorphization."""
         else:
             # Earlier phases: simpler partnership framing
             prompt = """You are SAGE (Situation-Aware Governance Engine).

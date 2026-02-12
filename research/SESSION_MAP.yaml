@@ -5,9 +5,9 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 592
-  last_updated: "2026-02-09T12:00:00Z"
-  milestone: "S065-S066 autonomous sessions added. S065 REGRESSED (output format triggered anthropocentric collapse). Thor sessions 60-65 discovered output format as mode switch (44x vocabulary swing). L045 at 117 discoveries. Policy COMPLETE (B-R)."
+  total_sessions: 596
+  last_updated: "2026-02-12T06:00:00Z"
+  milestone: "S068 CATASTROPHIC FAILURE: format guidance + LoRA destroyed output (repetitive question loops). Reverted to v2.2. L049 at 117 discoveries (49 explorations). Confounded S67/S68 variables flagged."
   tracks:
     - consciousness
     - raising-14b
@@ -66,14 +66,14 @@ tracks:
   latent-exploration:
     machine: "sprout"
     machine_type: "jetson-orin-nano"
-    sessions_total: 45
+    sessions_total: 49
     status: "active"
     directory: "Raising-0.5B/latent/"
     session_prefix: "L"
     created: "2026-01-25"
     purpose: "Systematic probing of latent capabilities in Qwen 2.5-0.5B"
-    last_updated: "2026-02-09"
-    note: "L045 added (Feb 9). 117 cumulative discoveries (up from 111 at L041). L042-L045 continue probing instruction modes, tool requests, proactive behavior. Steady discovery rate ~1.5/session."
+    last_updated: "2026-02-12"
+    note: "L049 added (Feb 12). 117 cumulative discoveries (49 explorations). L046-L049 continue probing. Latest: emotional_resonance/existential_emotional theme. Steady discovery rate."
 
   edge-validation:
     machine: "sprout"

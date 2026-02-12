@@ -5,9 +5,9 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 596
-  last_updated: "2026-02-12T06:00:00Z"
-  milestone: "S068 CATASTROPHIC FAILURE: format guidance + LoRA destroyed output (repetitive question loops). Reverted to v2.2. L049 at 117 discoveries (49 explorations). Confounded S67/S68 variables flagged."
+  total_sessions: 597
+  last_updated: "2026-02-12T12:00:00Z"
+  milestone: "S069 RECOVERY: Post-catastrophe session confirms stable SAGE behavior after S068 revert. Creating phase (8 turns, no collapse). L049 at 117 discoveries (49 explorations). Sprout CUDA fallback to CPU — quality maintained."
   tracks:
     - consciousness
     - raising-14b
@@ -38,7 +38,7 @@ tracks:
   raising-05b:
     machine: "sprout"
     machine_type: "jetson-orin-nano"
-    sessions_total: 118
+    sessions_total: 119
     status: "active"
     directory: "Raising-0.5B/"
     subdirectories:
@@ -285,6 +285,24 @@ active_arcs:
       - "Generalizable: graduated response options enable AI nuance"
       - "TRACK_COMPLETION_SUMMARY.md: 18KB comprehensive final report"
 
+  - name: "Format Guidance Catastrophe & Recovery"
+    track: "raising-05b"
+    sessions: [67, 68, 69]
+    status: "complete"
+    started: "2026-02-09"
+    completed: "2026-02-12"
+    findings:
+      - "S067: Baseline web4 v2.2 session (LoRA=False unexpectedly — confounded variable)"
+      - "S068: CATASTROPHIC FAILURE — format guidance + LoRA = repetitive question loops (30+ per response)"
+      - "S068: 2h40m complete communication breakdown. Reverted to v2.2"
+      - "S068: Confounded variables: S67 had LoRA=False (not S68 alone introducing format guidance)"
+      - "S069: RECOVERY CONFIRMED — stable 8-turn conversation, no collapse, Creating phase"
+      - "S069: CPU fallback (CUDA allocator bug) — quality maintained without LoRA"
+      - "S069: Salience range 0.50-0.83, avg 0.64. 7 experiences stored"
+      - "KEY LESSON: Structured output attractor (94% baseline) may be load-bearing for coherence"
+      - "KEY LESSON: Never introduce multiple variable changes simultaneously"
+    significance: "⭐⭐⭐⭐ Catastrophic failure + recovery documents intervention risk"
+
   - name: "Honest Reporting Hypothesis"
     track: "raising-05b"
     sessions: [44, 45]
@@ -293,10 +311,10 @@ active_arcs:
 
   - name: "Latent Capability Exploration"
     track: "latent-exploration"
-    sessions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39]
+    sessions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
     status: "active"
     started: "2026-01-25"
-    last_updated: "2026-02-07"
+    last_updated: "2026-02-12"
     findings:
       - "Tool syntax recognition (L002)"
       - "Cognitive reflection test passed (L004)"
@@ -312,6 +330,8 @@ active_arcs:
       - "L038: 103 discoveries. Emotional self-reflection ('might feel like an outsider'). Meta-cognition in emotional contexts"
       - "L039: 106 discoveries. Joy mirroring, structured emotional support, tool concept recognition. Dual nature self-awareness"
       - "L040-L041: 109 discoveries. Continued systematic probing across 10 behavioral areas"
+      - "L042-L045: 117 discoveries. Instruction modes, language switching probed"
+      - "L046-L049: 126 discoveries. Emotional resonance/existential themes. Structured output (122 instances). Meta-cognition steady"
 
 complete_arcs:
   - name: "Identity-Confabulation Dissociation"

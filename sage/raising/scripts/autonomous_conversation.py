@@ -127,7 +127,7 @@ class AutonomousConversation:
         ]
     }
 
-    def __init__(self, session_number: Optional[int] = None, num_turns: int = 8, skip_lora: bool = False):
+    def __init__(self, session_number: Optional[int] = None, num_turns: int = 8, skip_lora: bool = False, reflection_delay: int = 0):
         self.state = self._load_state()
 
         if session_number is None:
@@ -137,6 +137,7 @@ class AutonomousConversation:
         self.phase = self._get_phase(session_number)
         self.num_turns = num_turns
         self.skip_lora = skip_lora  # Skip LoRA adapter loading (e.g., to break collapse cycles)
+        self.reflection_delay = reflection_delay  # Artificial delay to prevent feedback collapse
         self.conversation_history = []  # Multi-turn message history
         self.session_start = datetime.now()
 
@@ -441,6 +442,8 @@ RESPONSE STYLE:
         print(f"AUTONOMOUS CONVERSATION - Session {self.session_number}")
         print(f"Phase: {phase_name} | Turns: {len(prompts)}")
         print(f"LoRA adapters: {'yes' if self.using_lora else 'no'}")
+        if self.reflection_delay > 0:
+            print(f"Reflection delay: {self.reflection_delay}s (feedback collapse prevention)")
         print("=" * 60)
         print()
 
@@ -450,6 +453,12 @@ RESPONSE STYLE:
 
             response = self.generate_response(prompt)
             print(f"SAGE: {response}")
+
+            # Artificial reflection delay to prevent feedback collapse
+            if self.reflection_delay > 0 and i < len(prompts):  # Don't delay after last turn
+                print(f"  [Reflecting for {self.reflection_delay}s...]")
+                import time
+                time.sleep(self.reflection_delay)
 
             # Store in conversation history (for multi-turn context)
             self.conversation_history.append({
@@ -666,6 +675,8 @@ def main():
                         help="Check and run sleep training after conversation")
     parser.add_argument("--no-lora", dest="no_lora", action="store_true",
                         help="Skip LoRA adapter loading (use base model only)")
+    parser.add_argument("--delay", type=int, default=0,
+                        help="Artificial delay (seconds) between turns to prevent collapse")
 
     args = parser.parse_args()
 
@@ -680,7 +691,8 @@ def main():
     conv = AutonomousConversation(
         session_number=session_num,
         num_turns=args.turns,
-        skip_lora=args.no_lora
+        skip_lora=args.no_lora,
+        reflection_delay=args.delay
     )
 
     conv.load_model_with_adapters()

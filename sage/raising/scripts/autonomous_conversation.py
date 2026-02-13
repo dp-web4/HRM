@@ -127,7 +127,7 @@ class AutonomousConversation:
         ]
     }
 
-    def __init__(self, session_number: Optional[int] = None, num_turns: int = 8, skip_lora: bool = False, reflection_delay: int = 0):
+    def __init__(self, session_number: Optional[int] = None, num_turns: int = 8, skip_lora: bool = False, reflection_delay: int = 0, force_cpu: bool = False):
         self.state = self._load_state()
 
         if session_number is None:
@@ -138,6 +138,7 @@ class AutonomousConversation:
         self.num_turns = num_turns
         self.skip_lora = skip_lora  # Skip LoRA adapter loading (e.g., to break collapse cycles)
         self.reflection_delay = reflection_delay  # Artificial delay to prevent feedback collapse
+        self.force_cpu = force_cpu  # Force CPU inference (test device effect on generation)
         self.conversation_history = []  # Multi-turn message history
         self.session_start = datetime.now()
 
@@ -188,9 +189,11 @@ class AutonomousConversation:
         """
         print("Loading model...")
 
-        # Test CUDA availability first
+        # Test CUDA availability first (unless forced to CPU)
         self.device = 'cpu'
-        if torch.cuda.is_available():
+        if self.force_cpu:
+            print(f"  CPU inference forced (--cpu flag)")
+        elif torch.cuda.is_available():
             try:
                 test = torch.randn(100, 100, device='cuda')
                 _ = test @ test.T
@@ -677,6 +680,8 @@ def main():
                         help="Skip LoRA adapter loading (use base model only)")
     parser.add_argument("--delay", type=int, default=0,
                         help="Artificial delay (seconds) between turns to prevent collapse")
+    parser.add_argument("--cpu", dest="force_cpu", action="store_true",
+                        help="Force CPU inference (test device effect on generation)")
 
     args = parser.parse_args()
 
@@ -692,7 +697,8 @@ def main():
         session_number=session_num,
         num_turns=args.turns,
         skip_lora=args.no_lora,
-        reflection_delay=args.delay
+        reflection_delay=args.delay,
+        force_cpu=args.force_cpu
     )
 
     conv.load_model_with_adapters()

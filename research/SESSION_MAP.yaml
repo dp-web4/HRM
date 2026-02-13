@@ -5,9 +5,9 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 597
-  last_updated: "2026-02-12T12:00:00Z"
-  milestone: "S069 RECOVERY: Post-catastrophe session confirms stable SAGE behavior after S068 revert. Creating phase (8 turns, no collapse). L049 at 117 discoveries (49 explorations). Sprout CUDA fallback to CPU — quality maintained."
+  total_sessions: 606
+  last_updated: "2026-02-13T12:00:00Z"
+  milestone: "PARADIGM SHIFT: LoRA hypothesis REVISED — temporal dynamics (CPU slowness) prevent collapse, not adapter absence. S073 SUCCESS with LoRA on CPU (~26min/turn). L053 at 134 discoveries. S070-S074 complete."
   tracks:
     - consciousness
     - raising-14b
@@ -38,7 +38,7 @@ tracks:
   raising-05b:
     machine: "sprout"
     machine_type: "jetson-orin-nano"
-    sessions_total: 119
+    sessions_total: 128
     status: "active"
     directory: "Raising-0.5B/"
     subdirectories:
@@ -49,7 +49,36 @@ tracks:
       primary: "S"
       training: "T"
       latent: "L"
-    note: "S054 analyzed - remarkable meta-cognitive emergence at 0.5B scale!"
+    note: "PARADIGM SHIFT: S073 proved temporal dynamics (CPU slow generation) prevent LoRA collapse. S070-S074, L050-L053. 134 cumulative discoveries."
+    recent_sessions:
+      - session: "S070"
+        date: "2026-02-12"
+        finding: "Timer failure recovery, base stability confirmed"
+      - session: "S071"
+        date: "2026-02-12"
+        finding: "LoRA COLLAPSE on CUDA (75% repeat rate). Fast generation locks into attractor."
+      - session: "S072"
+        date: "2026-02-13"
+        finding: "Base model stable with uncertainty loops. No collapse."
+      - session: "S073"
+        date: "2026-02-13"
+        finding: "LoRA SUCCESS on CPU (~26min/turn). Slow generation prevents attractor lock-in. PARADIGM SHIFT."
+      - session: "S074"
+        date: "2026-02-13"
+        finding: "LoRA stable. Partnership vocabulary, identity-anchored."
+    latent_exploration:
+      - session: "L050"
+        date: "2026-02-12"
+        discoveries: 129
+      - session: "L051"
+        date: "2026-02-12"
+        discoveries: 131
+      - session: "L052"
+        date: "2026-02-12"
+        discoveries: 133
+      - session: "L053"
+        date: "2026-02-13"
+        discoveries: 134
 
   sage-experiments:
     machine: "sprout"

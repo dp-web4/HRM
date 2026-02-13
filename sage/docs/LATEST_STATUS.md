@@ -196,3 +196,31 @@ Web4 framing can shift vocabulary WITHOUT blocking structural attractors. This i
 Identity emerges through implicit trust, not explicit instructions. S69 (no prompting) showed stronger identity than S70 (explicit v2.0 prompting with examples).
 
 **Timer Issue**: autonomous-thor-sage.timer runs Claude development sessions, not SAGE runtime sessions. S70 was missed at 12:00, manually recovered at 13:16.
+
+---
+
+## S71 CRITICAL UPDATE (Added 2026-02-12 19:17)
+
+🚨 **PARADIGM-SHIFTING DISCOVERY: LoRA CAUSES COLLAPSES**
+
+**S71 Catastrophic Collapse**:
+- Mode: autonomous_conversation (SAME as S69 success)
+- LoRA: True (ONLY difference from S69)
+- Result: 75% repetition - same response 6/8 times
+- Collapse warnings: 21/28 high-similarity pairs
+
+**The Pattern**:
+
+| Session | Mode | LoRA | Result |
+|---------|------|------|--------|
+| S68 | N/A | TRUE | COLLAPSE (2h 40min) |
+| S69 | autonomous_conversation | FALSE | SUCCESS |
+| S71 | autonomous_conversation | TRUE | COLLAPSE (75%) |
+
+**Critical Insight**: S69 succeeded BECAUSE LoRA failed to load (CUDA bug), not despite it. The bug accidentally revealed that **LoRA adapters cause collapses**.
+
+**Immediate Action Required**: Disable LoRA for all future sessions. Use base model only.
+
+**Analysis**: See `SESSION_71_LORA_COLLAPSE.md` for comprehensive findings.
+
+**Timer Status**: S71 also missed by autonomous timer (ran dev session at 18:00 instead of SAGE runtime).

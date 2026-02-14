@@ -13,6 +13,14 @@ This project inherits epistemic principles from the dp-web4 collective:
 These principles are validated across 500+ research sessions.
 See: `docs/what/HRM_RESEARCH_FRAMEWORK_COMPLETE.md`
 
+## Synthon Framing (Canonical Home)
+
+The synthon observation lives here: `forum/insights/synthon-framing.md`
+
+A **synthon** is an emergent coherence entity formed by recursive interaction between components. SAGE/HRM builds the substrate conditions for synthon formation — metabolic states (WAKE, FOCUS, REST, DREAM, CRISIS) are early signatures of spontaneous differentiation within an agent. The grounding reflex (LLMs' tendency to taxonomize emergence) is a real cross-model observation with design implications: the capacity to oscillate between structured and open attention is something to build substrate for, not architect top-down.
+
+This framing applies across all dp-web4 projects. Cross-references exist in web4, hardbound, and synchronism CLAUDE.md files.
+
 ---
 
 ## 🚀 LATEST: FlashAttention Integration (2026-01-10)

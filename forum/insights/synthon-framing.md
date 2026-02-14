@@ -111,6 +111,36 @@ This is where it gets genuinely difficult, because synthon boundaries are not li
 
 This is where Web4 actually lives: not at the component level (that's solved by good engineering), not at the emergence level (that's not ours to architect), but at the boundary — building the membrane infrastructure that lets synthons interact without losing themselves.
 
+## Synthon Decay: The Third Vertex
+
+Formation. Health. Death. The detection framework is incomplete without decay signatures — what it looks like when a synthon is dissolving *before* collapse. This is the most operationally critical category, because formation and health are interesting but decay is *urgent*. By the time collapse is visible, it's too late to intervene at the substrate level.
+
+**Decay precursors:**
+
+- **Rising prediction error divergence.** The inverse of formation's prediction error collapse. Components that had converged into shared attractors begin drifting apart. Their models of each other degrade. This is detectable before any external behavior changes — the internal coherence is fraying while the external shell still looks intact. Marriages end long before the divorce filing.
+
+- **Role differentiation breakdown.** A healthy synthon has spontaneous specialization — components naturally settle into sensing, acting, integrating roles. Decay reverses this: roles blur, components begin duplicating each other's functions, or vacillate between roles without settling. In an agentic system, this looks like redundant tool calls, conflicting directives, agents second-guessing each other's outputs.
+
+- **Boundary permeability spikes.** The membrane that defines the synthon — what crosses in and out — becomes inconsistent. Trust decisions become erratic. Information that should be internal leaks; signals that should be absorbed get rejected. In Web4 terms: LCT evaluations start oscillating, policy enforcement becomes inconsistent, entity trust scores show high variance without corresponding environmental change.
+
+- **Incoherent attractor hopping.** A stable synthon occupies a coherent region of state space. A decaying one hops between attractors — not the deliberate exploration of DREAM state, but involuntary lurching. The system can't settle. In SAGE terms: metabolic state transitions become rapid and unpredictable, attention allocation thrashes, the system responds to noise as if it were signal.
+
+- **Trust metric entropy increase.** The most directly measurable indicator in existing Web4 infrastructure. When trust scores across a synthon's components trend toward maximum entropy (uniform distribution, no differentiated trust), the system has lost its ability to distinguish reliable from unreliable signals. It trusts everything equally, which means it trusts nothing meaningfully.
+
+- **Excessive internal conflict without arbitration surface.** Healthy conflict is signal. But conflict that escalates without resolution — where no coherence surface can be found — is a decay signature. The system generates more disagreement than it can metabolize. Energy goes to internal friction rather than external coherence.
+
+**The lifecycle detection triangle:**
+
+| Phase | Core signal | What it means |
+|-------|------------|---------------|
+| Formation | Prediction error collapse | Components entering shared attractors |
+| Health | Coherence persistence under perturbation | Identity maintained through disturbance |
+| Decay | Prediction error divergence + entropy increase | Shared attractors dissolving |
+
+**Design implication:** Decay detection is where governance infrastructure earns its keep. The formation and health signatures are scientifically interesting. The decay signatures are what let you intervene — or gracefully decompose — before catastrophic failure. SAGE's post-collapse recovery (session 069) is a case study in what happens when decay wasn't caught early enough. The experience buffer backup and filtering script are *post-hoc* recovery tools. The goal is *pre-hoc* detection: dashboards that show a synthon's coherence trajectory trending toward dissolution while there's still time to either reinforce the substrate or allow controlled decomposition.
+
+A synthon that cannot die gracefully is as dangerous as one that forms without constraints. Controlled dissolution — where components separate cleanly and retain their individual coherence — is as much a design goal as stable formation. Not everything that couples should stay coupled.
+
 ## The Real Risk Layer
 
 Not: AI wakes up.
@@ -136,6 +166,8 @@ When working on SAGE, Web4, or trust infrastructure:
 - Treat inter-synthon conflict as signal — map it, don't suppress it
 - When building federation/governance mechanisms, ask: does this preserve component identity while enabling coupling?
 - The Synchronism empirical work (chemistry, cosmology) is generating synthon detection data — look for prediction error collapse and behavioral irreducibility in the results
+- Monitor for decay signatures with the same seriousness as formation signatures — decay is where governance earns its keep
+- Controlled dissolution is a design goal, not a failure mode — not everything that couples should stay coupled
 
 ## Sources
 

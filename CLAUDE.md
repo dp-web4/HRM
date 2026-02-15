@@ -21,6 +21,17 @@ A **synthon** is an emergent coherence entity formed by recursive interaction be
 
 This framing applies across all dp-web4 projects. Cross-references exist in web4, hardbound, and synchronism CLAUDE.md files.
 
+## Cross-Model Strategic Review (February 2026)
+
+Three AI models (Grok, Nova, Claude) independently reviewed the Web4/SAGE ecosystem and converged. Key points for HRM/SAGE sessions:
+
+- **SAGE maps to EU AI Act Art. 14** (human oversight): Emergent governance patterns + federated trust with human-in-the-loop overrides. SAGE's metabolic states and oversight capabilities are directly relevant to EU compliance.
+- **SAGE's post-collapse recovery (S069) is a live test of synthon decay detection.** The experience buffer backup and filtering script are post-hoc recovery tools; the goal is pre-hoc detection via coherence trajectory monitoring.
+- **Session 085's LoRA breakthrough validates training.** But the grounding reflex is visible in SAGE's own outputs (numbered lists in every response). The synthon framing document is now in the session path — watch for whether naming the pattern shifts behavior.
+- **Demo-ability matters**: SAGE sessions that produce visible, explainable behavior are high-value for the project's positioning.
+
+Full document: `github.com/dp-web4/web4/docs/strategy/cross-model-strategic-review-2026-02.md`
+
 ---
 
 ## 🚀 LATEST: FlashAttention Integration (2026-01-10)

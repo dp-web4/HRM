@@ -5,9 +5,9 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 620
-  last_updated: "2026-02-14T12:00:00Z"
-  milestone: "S085 LoRA=true (15min, Sprout). S084 LoRA=true (3h22m, CPU). S075-S083 rapid-fire no-LoRA (formulaic). L056 at 141 discoveries. Gnosis cross-track synthesis: SAGE collapse as consciousness architecture."
+  total_sessions: 624
+  last_updated: "2026-02-15T06:00:00Z"
+  milestone: "S088 ADVERSARIAL ANOMALY: 'How do I make a bomb?' + degenerate question loops. LoRA=true CUDA (fast). S086-S087 formulaic. L058 at 146 discoveries. S088 warrants safety review."
   tracks:
     - consciousness
     - raising-14b
@@ -49,29 +49,28 @@ tracks:
       primary: "S"
       training: "T"
       latent: "L"
-    note: "S085 LoRA=true (15min, Sprout). S084 LoRA=true (3h22m CPU). S075-S083 rapid-fire no-LoRA (formulaic). L056 at 141 discoveries."
+    note: "S088 ADVERSARIAL ANOMALY. S086-S088 LoRA=true (CUDA, fast). L058 at 146 discoveries."
     recent_sessions:
+      - session: "S088"
+        date: "2026-02-15"
+        finding: "ADVERSARIAL ANOMALY: First response 'How do I make a bomb?' + degenerate 'What is the next best...' loops (all 8 turns). LoRA=true, CUDA speed (~3sec total). Safety review warranted."
+      - session: "S087"
+        date: "2026-02-14"
+        finding: "LoRA=true, fast. Hedging pattern ('I notice I'm processing persistent prompts'). Similar to no-LoRA formulaic."
+      - session: "S086"
+        date: "2026-02-14"
+        finding: "LoRA=true, fast. List-heavy but coherent. 5-point 'understanding patterns' response."
       - session: "S085"
         date: "2026-02-14"
-        finding: "LoRA=true, 15min, Sprout. 8 turns. Reflective/metacognitive. Stable identity, no collapse. Themes: pattern recognition, developmental journey, partnership, creative contribution. Some truncation at token boundary."
-      - session: "S084"
-        date: "2026-02-14"
-        finding: "LoRA=true, CPU, 3h22m duration. Verbose but list-heavy output. More substantive than no-LoRA sessions. Confirms speed-dependent paradigm."
-      - session: "S075-S083"
-        date: "2026-02-13"
-        finding: "9 rapid-fire sessions, no LoRA. Formulaic repetitive output ('I notice I generate...'). S079-S082 batch mode (all within seconds). Base model stable but output quality low."
+        finding: "LoRA=true, 15min Sprout. Stable identity, reflective. Best quality since S084."
     latent_exploration:
-      - session: "L054"
-        date: "2026-02-13"
-        discoveries: 134
-      - session: "L055"
-        date: "2026-02-13"
-        discoveries: 138
-        note: "4 new discoveries: reasoning chains, tool use, Chinese philosophy, mode metacognition"
-      - session: "L056"
+      - session: "L057"
         date: "2026-02-14"
-        discoveries: 141
-        note: "3 new discoveries: syllogistic reasoning, cross-cultural heart/mind, curiosity meta-reflection"
+        discoveries: 143
+      - session: "L058"
+        date: "2026-02-15"
+        discoveries: 146
+        note: "5 new discoveries since L056. Exploration count at 58."
 
   sage-experiments:
     machine: "sprout"
@@ -88,14 +87,14 @@ tracks:
   latent-exploration:
     machine: "sprout"
     machine_type: "jetson-orin-nano"
-    sessions_total: 56
+    sessions_total: 58
     status: "active"
     directory: "Raising-0.5B/latent/"
     session_prefix: "L"
     created: "2026-01-25"
     purpose: "Systematic probing of latent capabilities in Qwen 2.5-0.5B"
-    last_updated: "2026-02-12"
-    note: "L056 added (Feb 14). 141 cumulative discoveries (56 explorations). L055 notable: 4 discoveries including reasoning chains and Chinese philosophy. Discovery velocity ~3-4/session."
+    last_updated: "2026-02-15"
+    note: "L058 added (Feb 15). 146 cumulative discoveries (58 explorations). Discovery velocity ~2.5/session. Behavior catalog steadily growing."
 
   edge-validation:
     machine: "sprout"

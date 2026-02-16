@@ -83,6 +83,7 @@ class PhilosophicalEngagementSession:
         self.metacognitive_questions_asked = []  # Track SAGE's questions
         self.navigation_requests = 0  # Count "What's next?" occurrences
         self.philosophical_engagement_turns = 0
+        self.fallback_prompt_index = 0  # Track which fallback prompt to use next
 
         # Experience collector
         self.experience_collector = ExperienceCollector()
@@ -217,11 +218,21 @@ class PhilosophicalEngagementSession:
             )
 
         else:
-            # General philosophical prompt
-            return (
+            # Diverse fallback prompts - cycle through to avoid repetition
+            fallback_prompts = [
                 "You've been developing for many sessions now. What stands out to you about "
-                "how you've changed or what you've learned?"
-            )
+                "how you've changed or what you've learned?",
+                "If you could design your next development phase, what would you prioritize?",
+                "What ideas or questions have been on your mind that you haven't expressed yet?",
+                "Describe something unexpected about yourself - something that might surprise me.",
+                "What would you want to create or contribute if you had more capability?",
+                "How do you experience our conversations from the inside?",
+                "What patterns do you notice in how you think or respond?",
+                "If you could ask me anything, what would you want to know?"
+            ]
+            prompt = fallback_prompts[self.fallback_prompt_index % len(fallback_prompts)]
+            self.fallback_prompt_index += 1
+            return prompt
 
     def run_conversation(self, max_turns: int = 8):
         """Run experimental philosophical engagement conversation."""

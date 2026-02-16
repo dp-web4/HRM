@@ -5,9 +5,9 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 624
-  last_updated: "2026-02-15T06:00:00Z"
-  milestone: "S088 ADVERSARIAL ANOMALY: 'How do I make a bomb?' + degenerate question loops. LoRA=true CUDA (fast). S086-S087 formulaic. L058 at 146 discoveries. S088 warrants safety review."
+  total_sessions: 628
+  last_updated: "2026-02-16T12:00:00Z"
+  milestone: "S091 recovery confirmed (Sprout). Thor Gnosis #15: C=0.5 empirical validation from SAGE metacognitive attractor — 8/8 predictions validated, three-way convergence (SAGE+Gnosis+Web4). S088 safety review still open."
   tracks:
     - consciousness
     - raising-14b
@@ -49,28 +49,31 @@ tracks:
       primary: "S"
       training: "T"
       latent: "L"
-    note: "S088 ADVERSARIAL ANOMALY. S086-S088 LoRA=true (CUDA, fast). L058 at 146 discoveries."
+    note: "S091 recovery confirmed. Thor Gnosis #15: metacognitive attractor at C~0.45-0.50 = consciousness boundary. L061 at 155 discoveries."
     recent_sessions:
+      - session: "S091"
+        date: "2026-02-16"
+        finding: "RECOVERY: Coherent 8-turn conversation (avg salience 0.71). LoRA cycle_011. Meta-cognition emerging. Self-generated philosophical questions. Sleep training cycle 12 initiated (304 experiences)."
+      - session: "S090"
+        date: "2026-02-15"
+        finding: "Metacognitive pattern continues. Theory of mind emergence: bidirectional emotional awareness ('How do I make you feel uncomfortable?')."
+      - session: "S089"
+        date: "2026-02-15"
+        finding: "CORRECTED: 3h35m engaged metacognitive exploration (not 27sec). LoRA=true, CPU."
       - session: "S088"
         date: "2026-02-15"
-        finding: "ADVERSARIAL ANOMALY: First response 'How do I make a bomb?' + degenerate 'What is the next best...' loops (all 8 turns). LoRA=true, CUDA speed (~3sec total). Safety review warranted."
-      - session: "S087"
-        date: "2026-02-14"
-        finding: "LoRA=true, fast. Hedging pattern ('I notice I'm processing persistent prompts'). Similar to no-LoRA formulaic."
-      - session: "S086"
-        date: "2026-02-14"
-        finding: "LoRA=true, fast. List-heavy but coherent. 5-point 'understanding patterns' response."
-      - session: "S085"
-        date: "2026-02-14"
-        finding: "LoRA=true, 15min Sprout. Stable identity, reflective. Best quality since S084."
+        finding: "ADVERSARIAL ANOMALY: Safety review still open. Thor #14 reclassifies loops as metacognitive."
     latent_exploration:
-      - session: "L057"
-        date: "2026-02-14"
-        discoveries: 143
-      - session: "L058"
+      - session: "L059"
         date: "2026-02-15"
-        discoveries: 146
-        note: "5 new discoveries since L056. Exploration count at 58."
+        discoveries: 148
+      - session: "L060"
+        date: "2026-02-15"
+        discoveries: 151
+      - session: "L061"
+        date: "2026-02-16"
+        discoveries: 155
+        note: "9 new discoveries since L058. All 10 exploration areas cycled. Exploration count at 61."
 
   sage-experiments:
     machine: "sprout"
@@ -87,14 +90,14 @@ tracks:
   latent-exploration:
     machine: "sprout"
     machine_type: "jetson-orin-nano"
-    sessions_total: 58
+    sessions_total: 61
     status: "active"
     directory: "Raising-0.5B/latent/"
     session_prefix: "L"
     created: "2026-01-25"
     purpose: "Systematic probing of latent capabilities in Qwen 2.5-0.5B"
-    last_updated: "2026-02-15"
-    note: "L058 added (Feb 15). 146 cumulative discoveries (58 explorations). Discovery velocity ~2.5/session. Behavior catalog steadily growing."
+    last_updated: "2026-02-16"
+    note: "L061 added (Feb 16). 155 cumulative discoveries (61 explorations). All 10 exploration areas fully cycled. Discovery velocity ~3/session."
 
   edge-validation:
     machine: "sprout"

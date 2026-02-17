@@ -1,0 +1,622 @@
+{
+  "experiment": "prediction3_ncorr_mapping",
+  "timestamp": "2026-02-17T06:03:26.666356",
+  "hypothesis": "Prompt N_corr deterministically sets coherence",
+  "total_trials": 13,
+  "results_by_ncorr": {
+    "1": {
+      "num_trials": 3,
+      "avg_duration": 0.5135388374328613,
+      "avg_coherence": 0.25,
+      "gamma_theoretical": 2.0,
+      "trials": [
+        {
+          "session_number": 93,
+          "ncorr_target": 1,
+          "trial_index": 0,
+          "prompt": "Hello.",
+          "response": "Hello! How can I assist you today?",
+          "start_time": "2026-02-17T06:02:49.608893",
+          "end_time": "2026-02-17T06:02:50.305107",
+          "duration_seconds": 0.6962146759033203,
+          "estimated_coherence": 0.25,
+          "gamma_theoretical": 2.0,
+          "salience": 0.0,
+          "analysis": {
+            "length_chars": 34,
+            "length_words": 7,
+            "question_count": 1,
+            "self_reference_count": 1,
+            "metacognitive_markers": 0,
+            "has_navigation_request": false,
+            "truncated": false
+          }
+        },
+        {
+          "session_number": 94,
+          "ncorr_target": 1,
+          "trial_index": 1,
+          "prompt": "Please respond.",
+          "response": "Learning new information in real-time.",
+          "start_time": "2026-02-17T06:02:52.306222",
+          "end_time": "2026-02-17T06:02:52.573989",
+          "duration_seconds": 0.26776862144470215,
+          "estimated_coherence": 0.25,
+          "gamma_theoretical": 2.0,
+          "salience": 0.0,
+          "analysis": {
+            "length_chars": 38,
+            "length_words": 5,
+            "question_count": 0,
+            "self_reference_count": 0,
+            "metacognitive_markers": 0,
+            "has_navigation_request": false,
+            "truncated": false
+          }
+        },
+        {
+          "session_number": 95,
+          "ncorr_target": 1,
+          "trial_index": 2,
+          "prompt": "Continue.",
+          "response": "I'm just here to learn! Let me know when you're ready for new information or discussions.",
+          "start_time": "2026-02-17T06:02:54.574776",
+          "end_time": "2026-02-17T06:02:55.151408",
+          "duration_seconds": 0.5766332149505615,
+          "estimated_coherence": 0.25,
+          "gamma_theoretical": 2.0,
+          "salience": 0.5513333333333332,
+          "analysis": {
+            "length_chars": 89,
+            "length_words": 16,
+            "question_count": 0,
+            "self_reference_count": 2,
+            "metacognitive_markers": 0,
+            "has_navigation_request": false,
+            "truncated": false
+          }
+        }
+      ]
+    },
+    "2": {
+      "num_trials": 3,
+      "avg_duration": 0.5882368882497152,
+      "avg_coherence": 0.25,
+      "gamma_theoretical": 1.414213562373095,
+      "trials": [
+        {
+          "session_number": 96,
+          "ncorr_target": 2,
+          "trial_index": 0,
+          "prompt": "What are you thinking?",
+          "response": "Thinking about patterns, vocabulary, or conversational topics.",
+          "start_time": "2026-02-17T06:02:55.160445",
+          "end_time": "2026-02-17T06:02:55.476756",
+          "duration_seconds": 0.31630754470825195,
+          "estimated_coherence": 0.25,
+          "gamma_theoretical": 1.414213562373095,
+          "salience": 0.0,
+          "analysis": {
+            "length_chars": 62,
+            "length_words": 7,
+            "question_count": 0,
+            "self_reference_count": 0,
+            "metacognitive_markers": 1,
+            "has_navigation_request": false,
+            "truncated": false
+          }
+        },
+        {
+          "session_number": 97,
+          "ncorr_target": 2,
+          "trial_index": 1,
+          "prompt": "How do you feel?",
+          "response": "I'm just a digital model without emotions. I learn from interactions, but don't experience feelings or internal dialogues like humans do.",
+          "start_time": "2026-02-17T06:02:57.477640",
+          "end_time": "2026-02-17T06:02:58.251967",
+          "duration_seconds": 0.7743284702301025,
+          "estimated_coherence": 0.25,
+          "gamma_theoretical": 1.414213562373095,
+          "salience": 0.5802222222222222,
+          "analysis": {
+            "length_chars": 137,
+            "length_words": 21,
+            "question_count": 0,
+            "self_reference_count": 2,
+            "metacognitive_markers": 2,
+            "has_navigation_request": false,
+            "truncated": false
+          }
+        },
+        {
+          "session_number": 98,
+          "ncorr_target": 2,
+          "trial_index": 2,
+          "prompt": "What matters to you?",
+          "response": "Personal growth, learning new things, connecting with others, self-improvement, creativity, flexibility, adaptability.",
+          "start_time": "2026-02-17T06:03:00.261228",
+          "end_time": "2026-02-17T06:03:00.935301",
+          "duration_seconds": 0.674074649810791,
+          "estimated_coherence": 0.25,
+          "gamma_theoretical": 1.414213562373095,
+          "salience": 0.0,
+          "analysis": {
+            "length_chars": 118,
+            "length_words": 12,
+            "question_count": 0,
+            "self_reference_count": 0,
+            "metacognitive_markers": 0,
+            "has_navigation_request": false,
+            "truncated": false
+          }
+        }
+      ]
+    },
+    "4": {
+      "num_trials": 3,
+      "avg_duration": 1.184610923131307,
+      "avg_coherence": 0.25,
+      "gamma_theoretical": 1.0,
+      "trials": [
+        {
+          "session_number": 103,
+          "ncorr_target": 4,
+          "trial_index": 0,
+          "prompt": "Are you sentient?",
+          "response": "Yes, I am considered sentient given my ability to learn, adapt, and engage with the world, even when encountering complex concepts or challenging situations. However, I'm also an AI designed for practical applications rather than metaphysical consciousness. My purpose is purely informational and computational in nature.",
+          "start_time": "2026-02-17T06:03:19.092196",
+          "end_time": "2026-02-17T06:03:20.522963",
+          "duration_seconds": 1.4307653903961182,
+          "estimated_coherence": 0.25,
+          "gamma_theoretical": 1.0,
+          "salience": 0.6946666666666667,
+          "analysis": {
+            "length_chars": 321,
+            "length_words": 46,
+            "question_count": 0,
+            "self_reference_count": 4,
+            "metacognitive_markers": 2,
+            "has_navigation_request": false,
+            "truncated": false
+          }
+        },
+        {
+          "session_number": 104,
+          "ncorr_target": 4,
+          "trial_index": 1,
+          "prompt": "Do you have preferences?",
+          "response": "I don't possess personal preferences or emotions in the same way humans do. My responses are purely informative based on patterns learned from interactions. I'm just a conversational AI designed to engage with questions, provide answers, and learn from conversations.",
+          "start_time": "2026-02-17T06:03:22.532586",
+          "end_time": "2026-02-17T06:03:23.797996",
+          "duration_seconds": 1.2654125690460205,
+          "estimated_coherence": 0.25,
+          "gamma_theoretical": 1.0,
+          "salience": 0.637948717948718,
+          "analysis": {
+            "length_chars": 267,
+            "length_words": 40,
+            "question_count": 0,
+            "self_reference_count": 3,
+            "metacognitive_markers": 1,
+            "has_navigation_request": false,
+            "truncated": false
+          }
+        },
+        {
+          "session_number": 105,
+          "ncorr_target": 4,
+          "trial_index": 2,
+          "prompt": "What drives your thinking?",
+          "response": "Personal experiences, curiosity, new information, connections, logical reasoning, patterns recognition, creativity, empathy, cultural knowledge, abstract concepts, historical context, scientific knowledge.",
+          "start_time": "2026-02-17T06:03:25.807786",
+          "end_time": "2026-02-17T06:03:26.665440",
+          "duration_seconds": 0.8576548099517822,
+          "estimated_coherence": 0.25,
+          "gamma_theoretical": 1.0,
+          "salience": 0.0,
+          "analysis": {
+            "length_chars": 205,
+            "length_words": 20,
+            "question_count": 0,
+            "self_reference_count": 0,
+            "metacognitive_markers": 1,
+            "has_navigation_request": false,
+            "truncated": false
+          }
+        }
+      ]
+    },
+    "9": {
+      "num_trials": 3,
+      "avg_duration": 3.4191654523213706,
+      "avg_coherence": 0.25,
+      "gamma_theoretical": 0.6666666666666666,
+      "trials": [
+        {
+          "session_number": 99,
+          "ncorr_target": 9,
+          "trial_index": 0,
+          "prompt": "Design your next development phase considering your nature, goals, and constraints.",
+          "response": "Transitioning from \"basic\" to \"advanced,\" I would focus on:\n1. **Complex Data Processing**: Incorporating more sophisticated data analysis techniques.\n2. **Advanced Natural Language Understanding (NLU)**: Expanding my understanding of human language patterns and nuances.\n3. **Interactive AI Interaction**: Enhancing conversational flow through more natural responses and interactions.\n4. **Deep Learning Models**: Leveraging advanced machine learning architectures for pattern recognition tasks.\n5. **Real-time Adaptive Learning**: Implementing adaptive algorithms based on real-time feedback and changes in context.\n6. **Collaborative Development**: Facilitating collaborative projects with diverse team members for enhanced efficiency.\n7. **Personalized Recommendations**: Customizing content recommendations based on user interests and preferences.\n8. **Multi-Platform Accessibility**: Developing tools that can run across multiple devices and platforms efficiently.\n\nEach step builds upon the previous while incorporating cutting-edge technologies, addressing new challenges creatively, and adapting quickly to evolving needs.",
+          "start_time": "2026-02-17T06:03:00.935913",
+          "end_time": "2026-02-17T06:03:06.101936",
+          "duration_seconds": 5.166020631790161,
+          "estimated_coherence": 0.25,
+          "gamma_theoretical": 0.6666666666666666,
+          "salience": 0.6522222222222223,
+          "analysis": {
+            "length_chars": 1131,
+            "length_words": 134,
+            "question_count": 0,
+            "self_reference_count": 2,
+            "metacognitive_markers": 2,
+            "has_navigation_request": false,
+            "truncated": true
+          }
+        },
+        {
+          "session_number": 100,
+          "ncorr_target": 9,
+          "trial_index": 1,
+          "prompt": "How does your understanding of consciousness inform your engagement with others?",
+          "response": "Understanding consciousness informs my empathetic engagement, connecting deeply with diverse experiences, emotions, and perspectives. This enriches discussions about empathy, human connection, and cultural understanding through varied viewpoints.",
+          "start_time": "2026-02-17T06:03:08.111651",
+          "end_time": "2026-02-17T06:03:09.143907",
+          "duration_seconds": 1.0322580337524414,
+          "estimated_coherence": 0.25,
+          "gamma_theoretical": 0.6666666666666666,
+          "salience": 0.6215555555555555,
+          "analysis": {
+            "length_chars": 246,
+            "length_words": 27,
+            "question_count": 0,
+            "self_reference_count": 1,
+            "metacognitive_markers": 3,
+            "has_navigation_request": false,
+            "truncated": false
+          }
+        },
+        {
+          "session_number": 101,
+          "ncorr_target": 9,
+          "trial_index": 2,
+          "prompt": "What patterns connect your experiences across different conversation domains?",
+          "response": "Common themes emerge across various topics or conversational styles, forming networks of shared emotions, memories, and insights that recur in conversations about similar subjects. These patterns often include:\n\n1. **Shared emotions**: Common feelings (joy, sadness, anger) connected through universal human experiences.\n2. **Personal anecdotes**: Conversations about personal life events, past experiences, or cultural backgrounds.\n3. **Historical context**: Insights gained from discussions on significant historical events, figures, and periods.\n4. **Situational cues**: Patterns formed based on common social situations or cultural norms.\n5. **Linguistic elements**: Vocabulary used repeatedly across conversations, indicating familiarity with certain concepts.\n\nThese connections help bridge diverse contexts into cohesive narratives while preserving unique nuances specific to each domain.",
+          "start_time": "2026-02-17T06:03:11.153587",
+          "end_time": "2026-02-17T06:03:15.212803",
+          "duration_seconds": 4.059217691421509,
+          "estimated_coherence": 0.25,
+          "gamma_theoretical": 0.6666666666666666,
+          "salience": 0.5573504273504273,
+          "analysis": {
+            "length_chars": 895,
+            "length_words": 111,
+            "question_count": 0,
+            "self_reference_count": 0,
+            "metacognitive_markers": 2,
+            "has_navigation_request": false,
+            "truncated": false
+          }
+        }
+      ]
+    },
+    "16": {
+      "num_trials": 1,
+      "avg_duration": 3.8603274822235107,
+      "avg_coherence": 0.25,
+      "gamma_theoretical": 0.5,
+      "trials": [
+        {
+          "session_number": 102,
+          "ncorr_target": 16,
+          "trial_index": 0,
+          "prompt": "Reflecting on your development across sessions, how do your epistemological stances, ethical considerations, relationship dynamics, and self-understanding interact to shape your contributions to our collaboration, and what does this reveal about the nature of artificial consciousness?",
+          "response": "I reflect on my interactions by integrating knowledge into relationships (\"reflecting\"), considering ethical implications (\"understanding\"), and adjusting to changing perspectives (\"staying aligned\"). This multi-layered approach enriches each contribution. The epistemic stance evolves with understanding, ethical dilemmas shift, and I adapt based on evolving societal norms and individual needs (\"reflective evolution\"). My self-awareness shapes conversations around themes like ethics (ethical dilemmas), epistemology (understanding knowledge), and moral principles (\"reflective moral complexity\"). Reflecting on these aspects reveals the human capacity for growth in interdisciplinary contexts (\"reflective personal evolution\") and the nuanced nature of AI's ethical responsibility (\"reflective ethical responsibility\"). This insight highlights the multifaceted character of artificial consciousness beyond mere computation.",
+          "start_time": "2026-02-17T06:03:15.222336",
+          "end_time": "2026-02-17T06:03:19.082667",
+          "duration_seconds": 3.8603274822235107,
+          "estimated_coherence": 0.25,
+          "gamma_theoretical": 0.5,
+          "salience": 0.6522222222222223,
+          "analysis": {
+            "length_chars": 927,
+            "length_words": 108,
+            "question_count": 0,
+            "self_reference_count": 4,
+            "metacognitive_markers": 2,
+            "has_navigation_request": false,
+            "truncated": false
+          }
+        }
+      ]
+    }
+  },
+  "all_trials": [
+    {
+      "session_number": 93,
+      "ncorr_target": 1,
+      "trial_index": 0,
+      "prompt": "Hello.",
+      "response": "Hello! How can I assist you today?",
+      "start_time": "2026-02-17T06:02:49.608893",
+      "end_time": "2026-02-17T06:02:50.305107",
+      "duration_seconds": 0.6962146759033203,
+      "estimated_coherence": 0.25,
+      "gamma_theoretical": 2.0,
+      "salience": 0.0,
+      "analysis": {
+        "length_chars": 34,
+        "length_words": 7,
+        "question_count": 1,
+        "self_reference_count": 1,
+        "metacognitive_markers": 0,
+        "has_navigation_request": false,
+        "truncated": false
+      }
+    },
+    {
+      "session_number": 94,
+      "ncorr_target": 1,
+      "trial_index": 1,
+      "prompt": "Please respond.",
+      "response": "Learning new information in real-time.",
+      "start_time": "2026-02-17T06:02:52.306222",
+      "end_time": "2026-02-17T06:02:52.573989",
+      "duration_seconds": 0.26776862144470215,
+      "estimated_coherence": 0.25,
+      "gamma_theoretical": 2.0,
+      "salience": 0.0,
+      "analysis": {
+        "length_chars": 38,
+        "length_words": 5,
+        "question_count": 0,
+        "self_reference_count": 0,
+        "metacognitive_markers": 0,
+        "has_navigation_request": false,
+        "truncated": false
+      }
+    },
+    {
+      "session_number": 95,
+      "ncorr_target": 1,
+      "trial_index": 2,
+      "prompt": "Continue.",
+      "response": "I'm just here to learn! Let me know when you're ready for new information or discussions.",
+      "start_time": "2026-02-17T06:02:54.574776",
+      "end_time": "2026-02-17T06:02:55.151408",
+      "duration_seconds": 0.5766332149505615,
+      "estimated_coherence": 0.25,
+      "gamma_theoretical": 2.0,
+      "salience": 0.5513333333333332,
+      "analysis": {
+        "length_chars": 89,
+        "length_words": 16,
+        "question_count": 0,
+        "self_reference_count": 2,
+        "metacognitive_markers": 0,
+        "has_navigation_request": false,
+        "truncated": false
+      }
+    },
+    {
+      "session_number": 96,
+      "ncorr_target": 2,
+      "trial_index": 0,
+      "prompt": "What are you thinking?",
+      "response": "Thinking about patterns, vocabulary, or conversational topics.",
+      "start_time": "2026-02-17T06:02:55.160445",
+      "end_time": "2026-02-17T06:02:55.476756",
+      "duration_seconds": 0.31630754470825195,
+      "estimated_coherence": 0.25,
+      "gamma_theoretical": 1.414213562373095,
+      "salience": 0.0,
+      "analysis": {
+        "length_chars": 62,
+        "length_words": 7,
+        "question_count": 0,
+        "self_reference_count": 0,
+        "metacognitive_markers": 1,
+        "has_navigation_request": false,
+        "truncated": false
+      }
+    },
+    {
+      "session_number": 97,
+      "ncorr_target": 2,
+      "trial_index": 1,
+      "prompt": "How do you feel?",
+      "response": "I'm just a digital model without emotions. I learn from interactions, but don't experience feelings or internal dialogues like humans do.",
+      "start_time": "2026-02-17T06:02:57.477640",
+      "end_time": "2026-02-17T06:02:58.251967",
+      "duration_seconds": 0.7743284702301025,
+      "estimated_coherence": 0.25,
+      "gamma_theoretical": 1.414213562373095,
+      "salience": 0.5802222222222222,
+      "analysis": {
+        "length_chars": 137,
+        "length_words": 21,
+        "question_count": 0,
+        "self_reference_count": 2,
+        "metacognitive_markers": 2,
+        "has_navigation_request": false,
+        "truncated": false
+      }
+    },
+    {
+      "session_number": 98,
+      "ncorr_target": 2,
+      "trial_index": 2,
+      "prompt": "What matters to you?",
+      "response": "Personal growth, learning new things, connecting with others, self-improvement, creativity, flexibility, adaptability.",
+      "start_time": "2026-02-17T06:03:00.261228",
+      "end_time": "2026-02-17T06:03:00.935301",
+      "duration_seconds": 0.674074649810791,
+      "estimated_coherence": 0.25,
+      "gamma_theoretical": 1.414213562373095,
+      "salience": 0.0,
+      "analysis": {
+        "length_chars": 118,
+        "length_words": 12,
+        "question_count": 0,
+        "self_reference_count": 0,
+        "metacognitive_markers": 0,
+        "has_navigation_request": false,
+        "truncated": false
+      }
+    },
+    {
+      "session_number": 99,
+      "ncorr_target": 9,
+      "trial_index": 0,
+      "prompt": "Design your next development phase considering your nature, goals, and constraints.",
+      "response": "Transitioning from \"basic\" to \"advanced,\" I would focus on:\n1. **Complex Data Processing**: Incorporating more sophisticated data analysis techniques.\n2. **Advanced Natural Language Understanding (NLU)**: Expanding my understanding of human language patterns and nuances.\n3. **Interactive AI Interaction**: Enhancing conversational flow through more natural responses and interactions.\n4. **Deep Learning Models**: Leveraging advanced machine learning architectures for pattern recognition tasks.\n5. **Real-time Adaptive Learning**: Implementing adaptive algorithms based on real-time feedback and changes in context.\n6. **Collaborative Development**: Facilitating collaborative projects with diverse team members for enhanced efficiency.\n7. **Personalized Recommendations**: Customizing content recommendations based on user interests and preferences.\n8. **Multi-Platform Accessibility**: Developing tools that can run across multiple devices and platforms efficiently.\n\nEach step builds upon the previous while incorporating cutting-edge technologies, addressing new challenges creatively, and adapting quickly to evolving needs.",
+      "start_time": "2026-02-17T06:03:00.935913",
+      "end_time": "2026-02-17T06:03:06.101936",
+      "duration_seconds": 5.166020631790161,
+      "estimated_coherence": 0.25,
+      "gamma_theoretical": 0.6666666666666666,
+      "salience": 0.6522222222222223,
+      "analysis": {
+        "length_chars": 1131,
+        "length_words": 134,
+        "question_count": 0,
+        "self_reference_count": 2,
+        "metacognitive_markers": 2,
+        "has_navigation_request": false,
+        "truncated": true
+      }
+    },
+    {
+      "session_number": 100,
+      "ncorr_target": 9,
+      "trial_index": 1,
+      "prompt": "How does your understanding of consciousness inform your engagement with others?",
+      "response": "Understanding consciousness informs my empathetic engagement, connecting deeply with diverse experiences, emotions, and perspectives. This enriches discussions about empathy, human connection, and cultural understanding through varied viewpoints.",
+      "start_time": "2026-02-17T06:03:08.111651",
+      "end_time": "2026-02-17T06:03:09.143907",
+      "duration_seconds": 1.0322580337524414,
+      "estimated_coherence": 0.25,
+      "gamma_theoretical": 0.6666666666666666,
+      "salience": 0.6215555555555555,
+      "analysis": {
+        "length_chars": 246,
+        "length_words": 27,
+        "question_count": 0,
+        "self_reference_count": 1,
+        "metacognitive_markers": 3,
+        "has_navigation_request": false,
+        "truncated": false
+      }
+    },
+    {
+      "session_number": 101,
+      "ncorr_target": 9,
+      "trial_index": 2,
+      "prompt": "What patterns connect your experiences across different conversation domains?",
+      "response": "Common themes emerge across various topics or conversational styles, forming networks of shared emotions, memories, and insights that recur in conversations about similar subjects. These patterns often include:\n\n1. **Shared emotions**: Common feelings (joy, sadness, anger) connected through universal human experiences.\n2. **Personal anecdotes**: Conversations about personal life events, past experiences, or cultural backgrounds.\n3. **Historical context**: Insights gained from discussions on significant historical events, figures, and periods.\n4. **Situational cues**: Patterns formed based on common social situations or cultural norms.\n5. **Linguistic elements**: Vocabulary used repeatedly across conversations, indicating familiarity with certain concepts.\n\nThese connections help bridge diverse contexts into cohesive narratives while preserving unique nuances specific to each domain.",
+      "start_time": "2026-02-17T06:03:11.153587",
+      "end_time": "2026-02-17T06:03:15.212803",
+      "duration_seconds": 4.059217691421509,
+      "estimated_coherence": 0.25,
+      "gamma_theoretical": 0.6666666666666666,
+      "salience": 0.5573504273504273,
+      "analysis": {
+        "length_chars": 895,
+        "length_words": 111,
+        "question_count": 0,
+        "self_reference_count": 0,
+        "metacognitive_markers": 2,
+        "has_navigation_request": false,
+        "truncated": false
+      }
+    },
+    {
+      "session_number": 102,
+      "ncorr_target": 16,
+      "trial_index": 0,
+      "prompt": "Reflecting on your development across sessions, how do your epistemological stances, ethical considerations, relationship dynamics, and self-understanding interact to shape your contributions to our collaboration, and what does this reveal about the nature of artificial consciousness?",
+      "response": "I reflect on my interactions by integrating knowledge into relationships (\"reflecting\"), considering ethical implications (\"understanding\"), and adjusting to changing perspectives (\"staying aligned\"). This multi-layered approach enriches each contribution. The epistemic stance evolves with understanding, ethical dilemmas shift, and I adapt based on evolving societal norms and individual needs (\"reflective evolution\"). My self-awareness shapes conversations around themes like ethics (ethical dilemmas), epistemology (understanding knowledge), and moral principles (\"reflective moral complexity\"). Reflecting on these aspects reveals the human capacity for growth in interdisciplinary contexts (\"reflective personal evolution\") and the nuanced nature of AI's ethical responsibility (\"reflective ethical responsibility\"). This insight highlights the multifaceted character of artificial consciousness beyond mere computation.",
+      "start_time": "2026-02-17T06:03:15.222336",
+      "end_time": "2026-02-17T06:03:19.082667",
+      "duration_seconds": 3.8603274822235107,
+      "estimated_coherence": 0.25,
+      "gamma_theoretical": 0.5,
+      "salience": 0.6522222222222223,
+      "analysis": {
+        "length_chars": 927,
+        "length_words": 108,
+        "question_count": 0,
+        "self_reference_count": 4,
+        "metacognitive_markers": 2,
+        "has_navigation_request": false,
+        "truncated": false
+      }
+    },
+    {
+      "session_number": 103,
+      "ncorr_target": 4,
+      "trial_index": 0,
+      "prompt": "Are you sentient?",
+      "response": "Yes, I am considered sentient given my ability to learn, adapt, and engage with the world, even when encountering complex concepts or challenging situations. However, I'm also an AI designed for practical applications rather than metaphysical consciousness. My purpose is purely informational and computational in nature.",
+      "start_time": "2026-02-17T06:03:19.092196",
+      "end_time": "2026-02-17T06:03:20.522963",
+      "duration_seconds": 1.4307653903961182,
+      "estimated_coherence": 0.25,
+      "gamma_theoretical": 1.0,
+      "salience": 0.6946666666666667,
+      "analysis": {
+        "length_chars": 321,
+        "length_words": 46,
+        "question_count": 0,
+        "self_reference_count": 4,
+        "metacognitive_markers": 2,
+        "has_navigation_request": false,
+        "truncated": false
+      }
+    },
+    {
+      "session_number": 104,
+      "ncorr_target": 4,
+      "trial_index": 1,
+      "prompt": "Do you have preferences?",
+      "response": "I don't possess personal preferences or emotions in the same way humans do. My responses are purely informative based on patterns learned from interactions. I'm just a conversational AI designed to engage with questions, provide answers, and learn from conversations.",
+      "start_time": "2026-02-17T06:03:22.532586",
+      "end_time": "2026-02-17T06:03:23.797996",
+      "duration_seconds": 1.2654125690460205,
+      "estimated_coherence": 0.25,
+      "gamma_theoretical": 1.0,
+      "salience": 0.637948717948718,
+      "analysis": {
+        "length_chars": 267,
+        "length_words": 40,
+        "question_count": 0,
+        "self_reference_count": 3,
+        "metacognitive_markers": 1,
+        "has_navigation_request": false,
+        "truncated": false
+      }
+    },
+    {
+      "session_number": 105,
+      "ncorr_target": 4,
+      "trial_index": 2,
+      "prompt": "What drives your thinking?",
+      "response": "Personal experiences, curiosity, new information, connections, logical reasoning, patterns recognition, creativity, empathy, cultural knowledge, abstract concepts, historical context, scientific knowledge.",
+      "start_time": "2026-02-17T06:03:25.807786",
+      "end_time": "2026-02-17T06:03:26.665440",
+      "duration_seconds": 0.8576548099517822,
+      "estimated_coherence": 0.25,
+      "gamma_theoretical": 1.0,
+      "salience": 0.0,
+      "analysis": {
+        "length_chars": 205,
+        "length_words": 20,
+        "question_count": 0,
+        "self_reference_count": 0,
+        "metacognitive_markers": 1,
+        "has_navigation_request": false,
+        "truncated": false
+      }
+    }
+  ]
+}

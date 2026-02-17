@@ -1,0 +1,94 @@
+{
+  "experiment": "prediction3_ncorr_mapping",
+  "trials_completed": 4,
+  "trials": [
+    {
+      "session_number": 93,
+      "ncorr_target": 1,
+      "trial_index": 0,
+      "prompt": "Hello.",
+      "response": "Hello! How can I assist you today?",
+      "start_time": "2026-02-17T06:02:49.608893",
+      "end_time": "2026-02-17T06:02:50.305107",
+      "duration_seconds": 0.6962146759033203,
+      "estimated_coherence": 0.25,
+      "gamma_theoretical": 2.0,
+      "salience": 0.0,
+      "analysis": {
+        "length_chars": 34,
+        "length_words": 7,
+        "question_count": 1,
+        "self_reference_count": 1,
+        "metacognitive_markers": 0,
+        "has_navigation_request": false,
+        "truncated": false
+      }
+    },
+    {
+      "session_number": 94,
+      "ncorr_target": 1,
+      "trial_index": 1,
+      "prompt": "Please respond.",
+      "response": "Learning new information in real-time.",
+      "start_time": "2026-02-17T06:02:52.306222",
+      "end_time": "2026-02-17T06:02:52.573989",
+      "duration_seconds": 0.26776862144470215,
+      "estimated_coherence": 0.25,
+      "gamma_theoretical": 2.0,
+      "salience": 0.0,
+      "analysis": {
+        "length_chars": 38,
+        "length_words": 5,
+        "question_count": 0,
+        "self_reference_count": 0,
+        "metacognitive_markers": 0,
+        "has_navigation_request": false,
+        "truncated": false
+      }
+    },
+    {
+      "session_number": 95,
+      "ncorr_target": 1,
+      "trial_index": 2,
+      "prompt": "Continue.",
+      "response": "I'm just here to learn! Let me know when you're ready for new information or discussions.",
+      "start_time": "2026-02-17T06:02:54.574776",
+      "end_time": "2026-02-17T06:02:55.151408",
+      "duration_seconds": 0.5766332149505615,
+      "estimated_coherence": 0.25,
+      "gamma_theoretical": 2.0,
+      "salience": 0.5513333333333332,
+      "analysis": {
+        "length_chars": 89,
+        "length_words": 16,
+        "question_count": 0,
+        "self_reference_count": 2,
+        "metacognitive_markers": 0,
+        "has_navigation_request": false,
+        "truncated": false
+      }
+    },
+    {
+      "session_number": 96,
+      "ncorr_target": 2,
+      "trial_index": 0,
+      "prompt": "What are you thinking?",
+      "response": "Thinking about patterns, vocabulary, or conversational topics.",
+      "start_time": "2026-02-17T06:02:55.160445",
+      "end_time": "2026-02-17T06:02:55.476756",
+      "duration_seconds": 0.31630754470825195,
+      "estimated_coherence": 0.25,
+      "gamma_theoretical": 1.414213562373095,
+      "salience": 0.0,
+      "analysis": {
+        "length_chars": 62,
+        "length_words": 7,
+        "question_count": 0,
+        "self_reference_count": 0,
+        "metacognitive_markers": 1,
+        "has_navigation_request": false,
+        "truncated": false
+      }
+    }
+  ]
+}

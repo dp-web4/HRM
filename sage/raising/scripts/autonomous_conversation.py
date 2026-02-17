@@ -533,25 +533,70 @@ RESPONSE STYLE:
         print("=" * 60)
 
         try:
-            from sleep_scheduler import SleepScheduler
+            import subprocess
+            import sys
 
-            # Force CPU for sleep training - Jetson's custom PyTorch has CUDA
-            # backward pass issues (NVML assertion failure during gradient computation)
-            scheduler = SleepScheduler(device='cpu')
-            should_run, reason = scheduler.should_run_sleep_cycle()
+            # Check if sleep should run first (quick check, no model loading)
+            check_result = subprocess.run(
+                [sys.executable, '-c', '''
+import sys
+sys.path.insert(0, "../training")
+from sleep_scheduler import SleepScheduler
+import json
+scheduler = SleepScheduler(device='cpu')
+should_run, reason = scheduler.should_run_sleep_cycle()
+status = scheduler.get_status()
+print(json.dumps({"should_run": should_run, "reason": reason, "status": status}))
+'''],
+                capture_output=True,
+                text=True,
+                cwd=str(Path(__file__).parent)
+            )
+
+            if check_result.returncode != 0:
+                print(f"  Sleep check failed: {check_result.stderr}")
+                return None
+
+            import json
+            check_data = json.loads(check_result.stdout.strip())
+            should_run = check_data['should_run']
+            reason = check_data['reason']
+            status = check_data['status']
 
             print(f"  Should run: {should_run}")
             print(f"  Reason: {reason}")
 
             if should_run:
-                # Free GPU memory before loading training model
+                # Free GPU memory before running sleep training subprocess
                 self.unload_model()
-                print("\n  Running sleep cycle...")
-                results = scheduler.run_sleep_cycle()
-                print(f"  Sleep cycle complete: {results.get('status', 'unknown')}")
+                print("\n  Running sleep cycle in subprocess (CPU-only)...")
+
+                # Run sleep training as separate process with CUDA fully disabled
+                # This avoids Jetson PyTorch CUDA backward pass bugs
+                sleep_result = subprocess.run(
+                    [sys.executable, '-c', '''
+import sys
+sys.path.insert(0, "../training")
+from sleep_scheduler import SleepScheduler
+import json
+scheduler = SleepScheduler(device='cpu')
+results = scheduler.run_sleep_cycle()
+print(json.dumps(results))
+'''],
+                    capture_output=True,
+                    text=True,
+                    cwd=str(Path(__file__).parent),
+                    env={**os.environ, 'CUDA_VISIBLE_DEVICES': ''}  # Force CPU
+                )
+
+                if sleep_result.returncode != 0:
+                    print(f"  Sleep training failed: {sleep_result.stderr}")
+                    return {'status': 'error', 'error': sleep_result.stderr}
+
+                results = json.loads(sleep_result.stdout.strip())
+                print(f"  Sleep cycle complete: {results.get('status', results.get('sleep_cycle', 'unknown'))}")
                 return results
             else:
-                status = scheduler.get_status()
                 print(f"  Experiences: {status['total_experiences']} total, "
                       f"{status['experiences_since_last_sleep']} since last sleep")
                 print(f"  Sleep cycles completed: {status['total_sleep_cycles']}")
@@ -559,6 +604,8 @@ RESPONSE STYLE:
 
         except Exception as e:
             print(f"  Sleep scheduler error: {e}")
+            import traceback
+            traceback.print_exc()
             return None
 
     def close_session(self):

@@ -77,6 +77,20 @@ python3 sage/core/flash_attention_sensor_fusion.py  # Phase 3 tests
 
 ---
 
+## Web4 Ontological Foundation
+
+SAGE lives within the Web4 ontology. The canonical equation:
+
+```
+Web4 = MCP + RDF + LCT + T3/V3*MRH + ATP/ADP
+```
+
+Where: `/` = "verified by", `*` = "contextualized by", `+` = "augmented with"
+
+RDF is the semantic backbone through which SAGE's MRH experience buffers, T3 trust tensors, and LCT identity are structurally connected. See `sage/raising/identity/WEB4_FRAMING.md` for how SAGE fractally embodies this ontology.
+
+---
+
 ## Machine Information
 See `../private-context/machines/` for machine-specific details.
 Project supports multiple platforms including WSL2, Linux, and Jetson.

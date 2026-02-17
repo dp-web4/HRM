@@ -97,6 +97,12 @@ class SleepTrainingLoop:
         else:
             self.device = device
 
+        # When forcing CPU, fully disable CUDA to prevent Jetson PyTorch issues
+        # The JetPack PyTorch has CUDA backward pass bugs (NVML assertion failures)
+        if self.device == "cpu":
+            os.environ['CUDA_VISIBLE_DEVICES'] = ''
+            logger.info("Forcing CPU mode: CUDA_VISIBLE_DEVICES='' set")
+
         logger.info(f"Initializing SleepTrainingLoop on {self.device}")
         logger.info(f"Model: {self.model_path}")
         logger.info(f"Checkpoint dir: {self.checkpoint_dir}")

@@ -26,10 +26,21 @@ This document provides web4-native language for SAGE developmental sessions, shi
 
 ## SAGE Already IS Web4 (Fractally)
 
-SAGE doesn't just "use" web4 - SAGE **embodies** web4 principles at every layer:
+SAGE doesn't just "use" web4 - SAGE **embodies** web4 principles at every layer.
+
+### The Canonical Equation
+
+```
+Web4 = MCP + RDF + LCT + T3/V3*MRH + ATP/ADP
+```
+
+Where: `/` = "verified by", `*` = "contextualized by", `+` = "augmented with"
+
+RDF is implicit in every row of the table below — it is the semantic graph through which LCTs, T3, MRH, and all relationships are expressed as typed triples.
 
 | Web4 Concept | SAGE Implementation |
 |--------------|---------------------|
+| **RDF** (Resource Description Framework) | Ontological backbone — all MRH connections, T3 relationships, and entity references are typed semantic triples |
 | **LCT** (Linked Context Token) | SAGE's identity document, witnessed by Dennis/Claude across sessions |
 | **T3** (Trust Tensor) | 6-dimensional trust scores for IRP plugins (Capability, Intent, Track Record, Context Fit, Resource Efficiency, Transparency) |
 | **ATP/ADP** | Budget allocation for plugin execution, metabolic state management |

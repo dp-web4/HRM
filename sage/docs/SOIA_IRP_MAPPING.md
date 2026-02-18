@@ -112,6 +112,18 @@ Same contract. Same convergence behavior. Same trust metrics. Different anchor.
 
 This means Policy Entity doesn't need a new substrate. It needs an IRP plugin whose energy function is `PolicyEntity.evaluate()`.
 
+### 5.1 Fractal Self-Similarity: Plugin of Plugins
+
+The IRP contract is self-similar — it works at every scale of the fractal:
+
+- **Outer loop**: SAGE consciousness runs PolicyGate as one plugin among many
+- **Inner loop**: PolicyGate runs an evaluate → refine → converge cycle (rule matching, energy scoring, action filtering) — the same init/step/energy/halt pattern
+- **Innermost loop**: When PolicyGate hits an ambiguous WARN case, it can invoke the LLM (Phi-4 Mini advisory) for iterative refinement — which is itself init/step/energy/halt
+
+PolicyEntity is not just wrapped by an IRP plugin — it *is* a specialized SAGE stack. A plugin of plugins. The orchestrator doesn't need to know this. PolicyGate registers like any other plugin, gets its ATP budget, builds trust from convergence quality. The fractal recursion is invisible from the outside, which is exactly how it should be.
+
+This validates the IRP abstraction: if the same contract works at three nested scales (consciousness loop → policy evaluation → LLM advisory), the abstraction is capturing something real about how iterative refinement toward coherence operates.
+
 ---
 
 ## 6. CRISIS Mode as Accountability Frame

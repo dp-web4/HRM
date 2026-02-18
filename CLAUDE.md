@@ -30,6 +30,7 @@ Key design points:
 - Same IRP contract as all other plugins (init_state/step/energy/project/halt)
 - CRISIS mode changes the **accountability equation**, not policy strictness (fight-or-flight operationalized)
 - PolicyGate is the membrane protein at the deliberation-to-action boundary (synthon framing)
+- **Fractal self-similarity**: PolicyEntity is itself a specialized SAGE stack — a "plugin of plugins." The IRP contract works at three nested scales (consciousness loop → policy evaluation → LLM advisory). The orchestrator doesn't need to know PolicyGate is special.
 
 Documents:
 - SOIA-SAGE mapping: `sage/docs/SOIA_IRP_MAPPING.md`

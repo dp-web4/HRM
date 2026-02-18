@@ -14,6 +14,15 @@ PolicyGate wraps PolicyEntity.evaluate() as its energy function, making policy
 evaluation a first-class IRP participant with the same trust metrics, ATP budgeting,
 and convergence behavior as vision, language, and control plugins.
 
+Fractal self-similarity: PolicyEntity is itself a specialized SAGE stack — a
+"plugin of plugins." The IRP contract (init → step → energy → halt) operates at
+every level: the outer consciousness loop runs PolicyGate as one plugin among many;
+PolicyGate internally runs an evaluate → refine → converge cycle; and when it hits
+ambiguous cases, it can invoke the LLM (Phi-4 advisory) — which is itself iterative
+refinement. Same pattern at three scales. The orchestrator doesn't need to know
+PolicyGate is "special" — it's just another IRP plugin whose energy function happens
+to be policy compliance. The fractal takes care of the rest.
+
 CRISIS mode changes the accountability equation, not policy strictness.
 Both freeze and fight are valid under duress.
 """

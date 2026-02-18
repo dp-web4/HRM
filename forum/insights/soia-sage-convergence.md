@@ -57,6 +57,20 @@ This is exactly the integration seam the synthon framing predicted but did not y
 
 Same spine. Different energy function. Different anchor. Same trust metrics.
 
+## Fractal Self-Similarity: Plugin of Plugins
+
+The IRP contract is self-similar across scales. PolicyEntity is not just wrapped by an IRP plugin — it *is* a specialized SAGE stack:
+
+| Scale | What Runs | Energy Function |
+|-------|-----------|-----------------|
+| Consciousness loop | SAGE runs PolicyGate as one plugin among many | Policy compliance |
+| PolicyGate internally | Evaluate → refine → converge cycle | Rule matching + trust thresholds |
+| LLM advisory (Phase 5) | PolicyGate invokes Phi-4 Mini for ambiguous WARN cases | Semantic judgment quality |
+
+Same contract at every level: `init_state → step → energy → halt`. The orchestrator doesn't need to know that PolicyGate is fractal — it registers like any other plugin, receives ATP budget, builds trust from convergence quality. The recursion is invisible from the outside.
+
+This validates the IRP abstraction itself: if the same contract works at three nested scales, it's capturing something real about how iterative refinement toward coherence operates. In the synthon vocabulary, the IRP contract is the placement rule — and placement rules are scale-invariant.
+
 ## What This Does NOT Change
 
 - SAGE is still a cognition kernel for edge devices. PolicyGate is an optional plugin.

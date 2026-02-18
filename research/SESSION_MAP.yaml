@@ -5,9 +5,9 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 632
-  last_updated: "2026-02-17T12:00:00Z"
-  milestone: "S092 routine autonomous (LoRA=true, 8 turns, Creating phase). L064 at 159 discoveries. Practical reasoning confabulation persists. R14B_022 Turn 3 SOLVED (E7A: 100%). S088 safety review still open."
+  total_sessions: 650
+  last_updated: "2026-02-18T06:00:00Z"
+  milestone: "S107 latest (S093-S105 = P3 trials, S106=P3b, S107=autonomous). L067 at 166 discoveries. Thor #25 INVALID (wrong model), #26 P3c V2 fast collapse (correct model, 0% bidirectional). MODEL_LOADING_GUIDE.md created. Key insight: bidirectional engagement is co-created through genuine dialogue, not scripted prompts."
   tracks:
     - consciousness
     - raising-14b
@@ -32,8 +32,8 @@ tracks:
     session_prefix: "R14B"
     created: "2026-01-26"
     purpose: "Capacity comparison study - 14B vs 0.5B baseline"
-    last_updated: "2026-02-03"
-    note: "R14B_022 COMPLETE (Phases 6-7). BREAKTHROUGH: E7A (semantic + clarifying Q) = 100% Turn 3 success! Phase 7 proved SYNERGY REQUIRED - clarifying Q alone (E7B) = 0% success. Component isolation COMPLETE."
+    last_updated: "2026-02-18"
+    note: "Thor #25 INVALID (wrong model — IntrospectiveQwenIRP, not cycle_001). Thor #26 P3c V2 correct model — fast collapse (turns 4-12 identical). MODEL_LOADING_GUIDE.md created. P3c status: STILL UNTESTED (need genuine co-engagement, not scripted prompts)."
 
   raising-05b:
     machine: "sprout"
@@ -49,7 +49,7 @@ tracks:
       primary: "S"
       training: "T"
       latent: "L"
-    note: "S092 routine autonomous (LoRA=true, 8 turns, avg salience 0.61, Creating phase). L064 at 159 discoveries. Practical reasoning confabulation (3-apples problem) persistent across L063-L064."
+    note: "S107 latest (P3 campaign S093-S107). L067 at 166 discoveries (+7). P3c V2 (Thor #26): correct model but fast collapse, 0% bidirectional. Co-engagement required for metacognitive emergence."
     recent_sessions:
       - session: "S092"
         date: "2026-02-17"
@@ -67,18 +67,18 @@ tracks:
         date: "2026-02-15"
         finding: "ADVERSARIAL ANOMALY: Safety review still open. Thor #14 reclassifies loops as metacognitive."
     latent_exploration:
-      - session: "L062"
-        date: "2026-02-16"
-        discoveries: 157
-        note: "Emotional overwhelm response showed structured decomposition"
-      - session: "L063"
-        date: "2026-02-16"
-        discoveries: 157
-        note: "Practical reasoning confabulation (3-apples → 6 apples). stable at 157"
-      - session: "L064"
+      - session: "L065"
         date: "2026-02-17"
-        discoveries: 159
-        note: "Extended confabulation on same problem. Code understanding strong. 159 total."
+        discoveries: 163
+        note: "3-apples role confusion (answers giver not receiver). Chinese self-description discovery."
+      - session: "L066"
+        date: "2026-02-17"
+        discoveries: 164
+        note: "Unusually terse single-word responses. Code capitalization error (SAGE→Sage)."
+      - session: "L067"
+        date: "2026-02-18"
+        discoveries: 166
+        note: "Syllogistic confabulation (roses→Dianthus). Memory probe fabrication (2014 timeline). Chinese strong."
 
   sage-experiments:
     machine: "sprout"

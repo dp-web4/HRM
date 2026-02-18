@@ -21,6 +21,21 @@ A **synthon** is an emergent coherence entity formed by recursive interaction be
 
 This framing applies across all dp-web4 projects. Cross-references exist in web4, hardbound, and synchronism CLAUDE.md files.
 
+## SOIA-SAGE Convergence & PolicyGate (February 2026)
+
+SOIA (Self-Optimizing Intelligence Architecture, by Renee Karlstrom) maps near-exactly onto SAGE's IRP stack: SRC = consciousness loop, MTM = SNARC experience buffer, MORIA = sleep consolidation. Policy Entity doesn't need to be invented -- it needs to be **repositioned** as a SAGE IRP plugin (PolicyGate) whose energy function is `PolicyEntity.evaluate()`.
+
+Key design points:
+- PolicyGate sits between deliberation and effectors in the consciousness loop (step 8.5)
+- Same IRP contract as all other plugins (init_state/step/energy/project/halt)
+- CRISIS mode changes the **accountability equation**, not policy strictness (fight-or-flight operationalized)
+- PolicyGate is the membrane protein at the deliberation-to-action boundary (synthon framing)
+
+Documents:
+- SOIA-SAGE mapping: `sage/docs/SOIA_IRP_MAPPING.md`
+- Convergence insight: `forum/insights/soia-sage-convergence.md`
+- Web4 design decision: `github.com/dp-web4/web4/docs/history/design_decisions/POLICY-ENTITY-REPOSITIONING.md`
+
 ## Cross-Model Strategic Review (February 2026)
 
 Three AI models (Grok, Nova, Claude) independently reviewed the Web4/SAGE ecosystem and converged. Key points for HRM/SAGE sessions:

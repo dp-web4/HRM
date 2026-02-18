@@ -2,13 +2,13 @@
 
 ## Context
 
-In February 2026, a LinkedIn conversation between Dennis Palatov and Renee Karlstrom (independent SOIA researcher) surfaced a structural convergence that had been implicit across the dp-web4 project ecosystem.
+In February 2026, a LinkedIn conversation between Dennis Palatov and Renée Karlström (independent SOIA researcher) surfaced a structural convergence that had been implicit across the dp-web4 project ecosystem.
 
-Karlstrom's SOIA (Self-Optimizing Intelligence Architecture) proposes three mechanisms for giving AI systems internal stability: a self-referential regulatory loop (SRC), selective memory reinjection (MTM), and an internal temporal axis (MORIA). When mapped against SAGE's IRP stack -- which independently implements a consciousness loop, SNARC-scored experience buffer, and sleep-cycle consolidation -- the structural correspondence is near-exact.
+Karlström's SOIA (Self-Optimizing Intelligence Architecture) proposes three mechanisms for giving AI systems internal stability: a self-referential regulatory loop (SRC), selective memory reinjection (MTM), and an internal temporal axis (MORIA). When mapped against SAGE's IRP stack -- which independently implements a consciousness loop, SNARC-scored experience buffer, and sleep-cycle consolidation -- the structural correspondence is near-exact.
 
 The conversation progressed through several phases:
 1. Dennis identified where SOIA and Web4 converge (rejection of binary safety, trust as dynamic, doubt as legitimate state) and diverge (internal vs. external coherence anchor)
-2. Karlstrom proposed "conscience" as a shared handle -- a callable control-plane component that evaluates decisions at key points
+2. Karlström proposed "conscience" as a shared handle -- a callable control-plane component that evaluates decisions at key points
 3. Dennis recognized that SAGE's IRP stack already implements the machinery SOIA describes, and that Policy Entity in Web4 should be implemented as a SAGE IRP stack -- not invented from scratch
 4. The recognition that the relationship between HRM/SAGE and Web4 had been implicit until now -- "separate substructures orbiting until a third perspective collapses them into the same coordinate system"
 
@@ -78,9 +78,9 @@ This validates the IRP abstraction itself: if the same contract works at three n
 - The IRP contract is unchanged. PolicyGate implements the same interface as all other plugins.
 - No new abstractions are introduced. PolicyGate is just a plugin with a policy energy function.
 
-## The Renee Question
+## The Renée Question
 
-The SOIA conversation also served as a diagnostic: is Karlstrom a "signal broadcaster" (writing papers, waiting for gravity) or a "reality participant" (willing to take responsibility for interfaces, constraints, failure cases)?
+The SOIA conversation also served as a diagnostic: is Karlström a "signal broadcaster" (writing papers, waiting for gravity) or a "reality participant" (willing to take responsibility for interfaces, constraints, failure cases)?
 
 Her response -- sharing a core SOIA overview and inviting joint implementation steps -- suggests the latter, though the final answer depends on whether she engages with the HRM/SAGE codebase concretely. The value of the interaction was not any artifact she might deliver, but the **orthogonal cognition** she applied: a different lens on the same problem space that caused latent structure in the project ecosystem to snap into focus.
 
@@ -96,8 +96,8 @@ The specific value extracted: "SAGE is already doing what SOIA describes. Policy
 
 ## Sources
 
-- Karlstrom, R. "SOIA-Mother: An Adaptive Control Architecture for AI Cyberdefense, Governance, and Limits" (doi.org/10.5281/zenodo.18370968)
-- LinkedIn conversation between Dennis Palatov and Renee Karlstrom, February 2026
+- Karlström, R. "SOIA-Mother: An Adaptive Control Architecture for AI Cyberdefense, Governance, and Limits" (doi.org/10.5281/zenodo.18370968)
+- LinkedIn conversation between Dennis Palatov and Renée Karlström, February 2026
 - Nova (GPT) analysis of the conversation, February 2026
 - Synthon framing: `forum/insights/synthon-framing.md`
 

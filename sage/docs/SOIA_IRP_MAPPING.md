@@ -3,13 +3,13 @@
 **Status**: Design Document v1.0
 **Date**: 2026-02-18
 **Author**: Dennis + Claude (Opus 4.6)
-**Origin**: LinkedIn conversation with Renee Karlstrom (SOIA researcher)
+**Origin**: LinkedIn conversation with Renée Karlström (SOIA researcher)
 
 ---
 
 ## 1. SOIA Architecture Summary
 
-SOIA (Self-Optimizing Intelligence Architecture) is a framework proposed by Renee Karlstrom for giving intelligent systems internal structure that holds together over time. It is not a new model or a safety filter -- it is an architectural framework designed to make coherence, continuity, and stability the natural outcome of optimization.
+SOIA (Self-Optimizing Intelligence Architecture) is a framework proposed by Renée Karlström for giving intelligent systems internal structure that holds together over time. It is not a new model or a safety filter -- it is an architectural framework designed to make coherence, continuity, and stability the natural outcome of optimization.
 
 SOIA has three core mechanisms:
 
@@ -28,7 +28,7 @@ Time as an active structural variable, not implicit or external. Each new state 
 - Sycophancy replaced by phase resonance (more selective under pressure, not more compliant)
 - Reward hacking resisted because coherence is a distributed constraint, not a scalar target
 
-**Reference**: Karlstrom, R. "SOIA-Mother: An Adaptive Control Architecture for AI Cyberdefense, Governance, and Limits" (doi.org/10.5281/zenodo.18370968)
+**Reference**: Karlström, R. "SOIA-Mother: An Adaptive Control Architecture for AI Cyberdefense, Governance, and Limits" (doi.org/10.5281/zenodo.18370968)
 
 ---
 
@@ -147,8 +147,8 @@ Both freeze and fight are recorded as valid under duress. The accountability fra
 
 ## 7. References
 
-- Karlstrom, R. "SOIA-Mother: An Adaptive Control Architecture for AI Cyberdefense, Governance, and Limits" (doi.org/10.5281/zenodo.18370968)
-- Karlstrom, R. "SOIA: A Coherent Overview" (shared in LinkedIn conversation, Feb 2026)
+- Karlström, R. "SOIA-Mother: An Adaptive Control Architecture for AI Cyberdefense, Governance, and Limits" (doi.org/10.5281/zenodo.18370968)
+- Karlström, R. "SOIA: A Coherent Overview" (shared in LinkedIn conversation, Feb 2026)
 - Synthon framing: `forum/insights/synthon-framing.md`
 - SAGE system understanding: `sage/docs/SYSTEM_UNDERSTANDING.md`
 - IRP architecture analysis: `sage/docs/irp_architecture_analysis.md`

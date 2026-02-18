@@ -23,7 +23,7 @@ This framing applies across all dp-web4 projects. Cross-references exist in web4
 
 ## SOIA-SAGE Convergence & PolicyGate (February 2026)
 
-SOIA (Self-Optimizing Intelligence Architecture, by Renee Karlstrom) maps near-exactly onto SAGE's IRP stack: SRC = consciousness loop, MTM = SNARC experience buffer, MORIA = sleep consolidation. Policy Entity doesn't need to be invented -- it needs to be **repositioned** as a SAGE IRP plugin (PolicyGate) whose energy function is `PolicyEntity.evaluate()`.
+SOIA (Self-Optimizing Intelligence Architecture, by Renée Karlström) maps near-exactly onto SAGE's IRP stack: SRC = consciousness loop, MTM = SNARC experience buffer, MORIA = sleep consolidation. Policy Entity doesn't need to be invented -- it needs to be **repositioned** as a SAGE IRP plugin (PolicyGate) whose energy function is `PolicyEntity.evaluate()`.
 
 Key design points:
 - PolicyGate sits between deliberation and effectors in the consciousness loop (step 8.5)

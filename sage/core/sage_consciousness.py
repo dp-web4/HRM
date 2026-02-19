@@ -156,13 +156,20 @@ class SAGEConsciousness:
         self.cycle_count = 0
         self.running = False
 
+        # Effect system
+        self._init_effect_system()
+
         # Statistics
         self.stats = {
             'total_cycles': 0,
             'state_transitions': 0,
             'plugins_executed': 0,
             'total_atp_consumed': 0.0,
-            'average_salience': 0.0
+            'average_salience': 0.0,
+            'effects_proposed': 0,
+            'effects_approved': 0,
+            'effects_denied': 0,
+            'effects_executed': 0,
         }
 
     def _default_config(self) -> Dict[str, Any]:
@@ -192,6 +199,77 @@ class SAGEConsciousness:
             'proprioception': {'trust': 1.0, 'enabled': True},
             'time': {'trust': 1.0, 'enabled': True},
         }
+
+    def _init_effect_system(self):
+        """Initialize the effect/effector system."""
+        try:
+            from interfaces.effect import Effect, EffectType, EffectStatus as EStatus
+            from interfaces.effect_extractor import EffectExtractor
+            from interfaces.effector_registry import EffectorRegistry
+            from interfaces.effectors.mock_effectors import (
+                MockFileSystemEffector, MockToolUseEffector,
+                MockWebEffector, MockCognitiveEffector,
+            )
+            from interfaces.mock_sensors import (
+                MockMotorEffector, MockDisplayEffector, MockSpeakerEffector,
+            )
+
+            self.effect_extractor = EffectExtractor()
+            self.effector_registry = EffectorRegistry()
+
+            # Register mock effectors for each effect type
+            self.effector_registry.register_effector(
+                MockFileSystemEffector({'effector_id': 'filesystem', 'effector_type': 'file_io'}),
+                handles=[EffectType.FILE_IO], effector_id='filesystem')
+            self.effector_registry.register_effector(
+                MockToolUseEffector({'effector_id': 'tool_use', 'effector_type': 'tool_use'}),
+                handles=[EffectType.TOOL_USE], effector_id='tool_use')
+            self.effector_registry.register_effector(
+                MockWebEffector({'effector_id': 'web', 'effector_type': 'web'}),
+                handles=[EffectType.API_CALL, EffectType.WEB], effector_id='web')
+            self.effector_registry.register_effector(
+                MockMotorEffector({'effector_id': 'motor', 'effector_type': 'motor',
+                                   'simulate_latency': False}),
+                handles=[EffectType.MOTOR], effector_id='motor')
+            self.effector_registry.register_effector(
+                MockDisplayEffector({'effector_id': 'display', 'effector_type': 'display'}),
+                handles=[EffectType.VISUAL], effector_id='display')
+            self.effector_registry.register_effector(
+                MockSpeakerEffector({'effector_id': 'speaker', 'effector_type': 'speaker',
+                                     'sample_rate': 16000}),
+                handles=[EffectType.AUDIO], effector_id='speaker')
+            self.effector_registry.register_effector(
+                MockCognitiveEffector({'effector_id': 'cognitive', 'effector_type': 'cognitive'}),
+                handles=[EffectType.MEMORY_WRITE, EffectType.TRUST_UPDATE,
+                         EffectType.STATE_CHANGE], effector_id='cognitive')
+
+            # PolicyGate (optional)
+            self.policy_gate_enabled = self.config.get('enable_policy_gate', False)
+            self.policy_gate = None
+            if self.policy_gate_enabled:
+                try:
+                    from irp.plugins.policy_gate import PolicyGateIRP
+                    gate_config = {
+                        'entity_id': 'policy_gate',
+                        'policy_rules': self.config.get('policy_rules', []),
+                        'default_policy': self.config.get('default_policy', 'allow'),
+                        'max_iterations': 5,
+                        'halt_eps': 0.01,
+                        'halt_K': 2,
+                    }
+                    self.policy_gate = PolicyGateIRP(gate_config)
+                except ImportError:
+                    self.policy_gate_enabled = False
+
+            self._effect_system_available = True
+
+        except ImportError:
+            # Effect system not available (missing deps)
+            self.effect_extractor = None
+            self.effector_registry = None
+            self.policy_gate_enabled = False
+            self.policy_gate = None
+            self._effect_system_available = False
 
     async def run(self, max_cycles: Optional[int] = None):
         """
@@ -252,7 +330,9 @@ class SAGEConsciousness:
         6. Execute plugins via orchestrator
         7. Update trust weights from results
         8. Update all memory systems
-        9. Send results to effectors
+        8.5 Extract proposed effects from plugin results
+        8.6 PolicyGate evaluation (filter effects)
+        9. Dispatch approved effects to effectors
         """
 
         # 1. Gather sensor observations
@@ -302,8 +382,42 @@ class SAGEConsciousness:
         if results:
             self._update_memories(results, salience_map)
 
-        # 9. Send results to effectors (TODO: implement effector system)
-        # self._send_to_effectors(results)
+        # 8.5 Extract proposed effects from plugin results
+        proposed_effects = []
+        if results and self._effect_system_available:
+            context = {
+                'trust_weights': self.plugin_trust_weights,
+                'metabolic_state': self.metabolic.current_state.value,
+                'atp_available': self.metabolic.atp_current,
+            }
+            for plugin_name, result in results.items():
+                effects = self.effect_extractor.extract(plugin_name, result, context)
+                proposed_effects.extend(effects)
+            self.stats['effects_proposed'] += len(proposed_effects)
+
+        # 8.6 PolicyGate evaluation (filter effects before dispatch)
+        approved_effects = proposed_effects
+        if self.policy_gate_enabled and self.policy_gate and proposed_effects:
+            approved_effects = self._evaluate_effects_policy(proposed_effects)
+
+        # 9. Dispatch approved effects to effectors
+        if approved_effects and self._effect_system_available:
+            effector_budget = self.metabolic.atp_current * 0.05  # 5% of ATP
+            dispatch_results = self.effector_registry.dispatch_effects(
+                approved_effects,
+                metabolic_state=self.metabolic.current_state.value,
+                atp_budget=effector_budget,
+            )
+            executed = sum(1 for r in dispatch_results if r.is_success())
+            self.stats['effects_executed'] += executed
+
+            # Consume ATP for completed effects
+            from interfaces.effect import EffectStatus as EStatus
+            atp_consumed = sum(
+                e.atp_cost for e in approved_effects
+                if e.status == EStatus.COMPLETED
+            )
+            self.metabolic.atp_current -= atp_consumed
 
         # 10. Update statistics
         self.stats['total_atp_consumed'] += budget_allocation.get('total', 0.0)
@@ -620,6 +734,60 @@ class SAGEConsciousness:
                     'full_result': result
                 })
 
+    def _evaluate_effects_policy(self, effects: List) -> List:
+        """
+        Run proposed effects through PolicyGate.
+
+        Converts each Effect to PolicyGate's action format, runs the IRP
+        refine loop, and filters based on decisions.
+        """
+        from interfaces.effect import EffectStatus as EStatus
+
+        # Convert effects to PolicyGate actions
+        actions = [e.to_policy_action() for e in effects]
+
+        # Build PolicyGate context
+        ctx = {
+            'metabolic_state': self.metabolic.current_state.value,
+            'atp_available': self.metabolic.atp_current,
+        }
+
+        # Run PolicyGate refinement
+        final_state, history = self.policy_gate.refine(actions, ctx)
+        approved_ids = {
+            a['action_id']
+            for a in self.policy_gate.get_approved_actions(final_state)
+        }
+
+        # Map decisions back to Effects
+        approved = []
+        for effect in effects:
+            if effect.effect_id in approved_ids:
+                effect.status = EStatus.APPROVED
+                effect.policy_decision = 'allow'
+                approved.append(effect)
+                self.stats['effects_approved'] += 1
+            else:
+                effect.status = EStatus.DENIED
+                effect.policy_decision = 'deny'
+                self.stats['effects_denied'] += 1
+
+        # Add PolicyGate SNARC scores to experience buffer
+        try:
+            snarc = self.policy_gate.to_snarc_scores(final_state)
+            if snarc.get('total', 0) > self.salience_threshold:
+                self.snarc_memory.append({
+                    'cycle': self.cycle_count,
+                    'type': 'policy_evaluation',
+                    'effects_proposed': len(effects),
+                    'effects_approved': len(approved),
+                    'snarc': snarc,
+                })
+        except Exception:
+            pass  # SNARC scoring is optional
+
+        return approved
+
     def _print_status(self):
         """Print current status"""
         print(f"[Cycle {self.cycle_count:4d}] "
@@ -646,6 +814,14 @@ class SAGEConsciousness:
         print(f"  IRP patterns: {len(self.irp_memory)} convergence patterns")
         print(f"  Circular buffer: {len(self.circular_buffer)} recent events")
         print(f"  Verbatim storage: {len(self.verbatim_storage)} dream consolidations")
+        print()
+        print("Effect system:")
+        print(f"  Effects proposed: {self.stats.get('effects_proposed', 0)}")
+        print(f"  Effects approved: {self.stats.get('effects_approved', 0)}")
+        print(f"  Effects denied: {self.stats.get('effects_denied', 0)}")
+        print(f"  Effects executed: {self.stats.get('effects_executed', 0)}")
+        if self._effect_system_available and self.effector_registry:
+            print(f"  Effectors registered: {len(self.effector_registry)}")
         print("="*80)
 
     def stop(self):

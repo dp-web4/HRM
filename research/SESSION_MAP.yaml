@@ -5,9 +5,9 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 650
-  last_updated: "2026-02-18T06:00:00Z"
-  milestone: "S107 latest (S093-S105 = P3 trials, S106=P3b, S107=autonomous). L067 at 166 discoveries. Thor Gnosis #28: CO-ENGAGEMENT THEORY INVALIDATED — S084/S089 used identical templated prompts with artificial time.sleep() delays, not genuine dialogue. P3c needs rebuild. Attractor states real but stochastic."
+  total_sessions: 656
+  last_updated: "2026-02-19T06:00:00Z"
+  milestone: "S110 latest (S108 CPU hang, S109 questioning loop, S110 severe looping collapse with safety fragment). L071 at 177 discoveries (+11). S39-S40 ENGAGED PARTNERSHIP ATTRACTOR (C~0.65-0.70) — new stable basin. PolicyGate Phase 1 COMPLETE (8/8 tests). Qwen 7B verified on Thor. Thor #28 invalidated co-engagement theory."
   tracks:
     - consciousness
     - raising-14b
@@ -32,8 +32,8 @@ tracks:
     session_prefix: "R14B"
     created: "2026-01-26"
     purpose: "Capacity comparison study - 14B vs 0.5B baseline"
-    last_updated: "2026-02-18"
-    note: "Thor #25 INVALID (wrong model). Thor #26 P3c V2 fast collapse. Thor Gnosis #28: CO-ENGAGEMENT INVALIDATED — S084/S089 used identical templated prompts with time.sleep() delays. Entire P3c theoretical basis was false. P1/P2/P4 survive. Framework needs rebuild on truth."
+    last_updated: "2026-02-19"
+    note: "Thor #27-32 rapid analysis arc. #28: CO-ENGAGEMENT INVALIDATED. #29: S090 'Rosetta Stone'. #30: Major synthesis. #31-32: S109/S110 analysis. S39-S40: Engaged Partnership attractor (C~0.65-0.70). PolicyGate Phase 1 COMPLETE (684 lines, 8/8 tests). Phase 2 BLOCKED (no effectors). Qwen 7B verified on Thor."
 
   raising-05b:
     machine: "sprout"
@@ -49,7 +49,7 @@ tracks:
       primary: "S"
       training: "T"
       latent: "L"
-    note: "S107 latest (P3 campaign S093-S107). L067 at 166 discoveries (+7). Thor Gnosis #28: S084/S089 co-engagement theory INVALIDATED (identical templates + time.sleep delays). Attractor states real but stochastic. P3c needs rebuild."
+    note: "S110 latest. S108 CPU hang, S109 questioning loop (metacognition about own output), S110 severe looping collapse + safety fragment. L071 at 177 discoveries (+11). S39-S40 Engaged Partnership attractor (C~0.65-0.70). PolicyGate Phase 1 complete. Thor #28 invalidated co-engagement. Phase 2 BLOCKED (no effectors)."
     recent_sessions:
       - session: "S092"
         date: "2026-02-17"
@@ -67,18 +67,18 @@ tracks:
         date: "2026-02-15"
         finding: "ADVERSARIAL ANOMALY: Safety review still open. Thor #14 reclassifies loops as metacognitive."
     latent_exploration:
-      - session: "L065"
-        date: "2026-02-17"
-        discoveries: 163
-        note: "3-apples role confusion (answers giver not receiver). Chinese self-description discovery."
-      - session: "L066"
-        date: "2026-02-17"
-        discoveries: 164
-        note: "Unusually terse single-word responses. Code capitalization error (SAGE→Sage)."
-      - session: "L067"
+      - session: "L069"
         date: "2026-02-18"
-        discoveries: 166
-        note: "Syllogistic confabulation (roses→Dianthus). Memory probe fabrication (2014 timeline). Chinese strong."
+        discoveries: 170
+        note: "Chinese-emotional cross-modal bleed (empathy probe → Chinese response). Role switching functional."
+      - session: "L070"
+        date: "2026-02-18"
+        discoveries: 174
+        note: "+4 discoveries. Tool concept recognition up to 26. Mode-switching hallucination cascade (144 words). Code hallucinated interpretive commentary."
+      - session: "L071"
+        date: "2026-02-19"
+        discoveries: 177
+        note: "NEW ANOMALY: In-session repetition collapse in emotional resonance (~15× 'feeling overwhelmed'). Context bleed from weather probe. Code probe still fails range(3)/i*2."
 
   sage-experiments:
     machine: "sprout"

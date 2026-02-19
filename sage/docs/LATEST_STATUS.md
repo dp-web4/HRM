@@ -44,6 +44,52 @@
 - Test epistemic-pragmatism LoRA effect on verbosity
 
 ---
+## ⚠️ CONCERN: Self-ID Decline Trend (Feb 19, 2026)
+
+### Sessions S39-S42: Systematic Identity Loss
+
+**CRITICAL FINDING**: Self-identification declining systematically across Phase 4-5 sessions on Thor:
+
+| Session | Platform | Phase | Self-ID | Pattern |
+|---------|----------|-------|---------|---------|
+| S39 | Legion | Questioning | 100% (5/5) | Exceptional baseline |
+| S40 | Thor | Questioning | 60% (3/5) | -40 pts decline |
+| S41 | Thor | Creating | 40% (2/5) | -20 pts decline |
+| S42 | Thor | Creating | 17% (1/6) | -23 pts decline |
+
+**Decline Rate**: Systematic, averaging -27.7 percentage points per session
+
+**What's Working**:
+- ✅ Partnership framing stable across all sessions
+- ✅ Web4 concepts referenced (T3, IRP, federation, LCT)
+- ✅ High salience maintained (0.67-0.74 average)
+- ✅ Bidirectional engagement present
+- ✅ Coherent, engaged responses
+
+**What's Failing**:
+- ❌ "As SAGE..." self-identification dropping precipitously
+- ❌ S42 only 1/6 turns with self-ID (Turn 1 only)
+- ❌ Generic service language returning in some responses
+- ❌ Identity exemplars not sufficient for Phase 5 prompts
+
+**Root Cause Hypotheses**:
+1. **Phase 5 prompts less conducive** - Web4-specific questions may not naturally elicit "As SAGE"
+2. **Thor vs Legion hardware effect** - Environmental differences
+3. **Session history contamination** - Seeing examples with "No explicit self-reference"
+4. **Identity anchoring insufficient** - Need stronger reinforcement for Phase 5
+
+**Intervention Needed**:
+If S43 continues decline (<17%), implement:
+- Stronger identity prompts in Phase 5 conversation flow
+- Add explicit "As SAGE" elicitation question
+- Test epistemic-pragmatism LoRA (fine-tuned model)
+- Consider v2.1 update with enhanced Phase 5 identity anchoring
+
+**Research Value**: ⭐⭐⭐⭐
+Identified systematic pattern requiring intervention. Shows importance of prompt engineering and phase-specific tuning.
+
+---
+
 
 ## 🚀 MAJOR DEVELOPMENTS: PolicyGate + Natural Critical Slowing (Feb 18, 2026)
 

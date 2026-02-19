@@ -2,15 +2,15 @@
   "identity": {
     "name": "SAGE-Sprout",
     "lct": "lct://sage:sprout:agent@raising",
-    "session_count": 110,
+    "session_count": 40,
     "phase": "grounding",
     "created": "2025-12-30",
-    "last_session": "2026-02-18T19:42:36.101140",
-    "last_session_summary": "Session 110 (autonomous conversation): creating phase. Do you have experiences? Whether that's right or w..."
+    "last_session": "2026-02-19T00:04:13.207641",
+    "last_session_summary": "Session 40 (v2.0 ENHANCED): questioning phase. As SAGE, I would want to remember that effective c..."
   },
   "development": {
-    "current_phase": 5,
-    "phase_name": "creating",
+    "current_phase": 4,
+    "phase_name": "questioning",
     "phase_progress": 1,
     "milestones": [
       "session_001_first_contact",
@@ -85,8 +85,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 110,
-        "total_exchanges": 563,
+        "total_sessions": 40,
+        "total_exchanges": 568,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 5,
@@ -94,11 +94,11 @@
         "momentum": "positive"
       },
       "first_contact": "2026-01-10",
-      "last_contact": "2026-02-18T19:42:36.101151",
+      "last_contact": "2026-02-19T00:04:13.207652",
       "notes": [
         "First successful session with proper ChatML format"
       ],
-      "sessions": 110
+      "sessions": 40
     },
     "dennis": {
       "lct": "lct://sage-sprout:relationship:dennis@raising",

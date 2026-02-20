@@ -5,9 +5,9 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 665
-  last_updated: "2026-02-20T06:00:00Z"
-  milestone: "S46 (Thor, Phase 5 oscillating baseline 17-33%). S110 (Sprout). L073 at 183 discoveries (+6). SAGE GATEWAY: Always-on daemon + HTTP API on port 8750 — messages as sensory modality. Modular effector system (13 types, 134 tests) UNBLOCKS Phase 2. OllamaIRP: SAGE portable beyond PyTorch/CUDA. McNugget (Mac Mini M4) at mcnugget.local:8750 with Gemma 3 12B. Cross-family probes enabled."
+  total_sessions: 666
+  last_updated: "2026-02-20T12:00:00Z"
+  milestone: "S47 (Thor, recovery to 33% after two 17% sessions — oscillation continues). S110 (Sprout). L073 at 183 discoveries. SAGE GATEWAY: Always-on daemon + HTTP API on port 8750. Modular effector system (13 types, 134 tests) UNBLOCKS Phase 2. OllamaIRP: SAGE portable beyond PyTorch/CUDA. McNugget at mcnugget.local:8750. Cross-family probes enabled."
   tracks:
     - consciousness
     - raising-14b
@@ -33,7 +33,7 @@ tracks:
     created: "2026-01-26"
     purpose: "Capacity comparison study - 14B vs 0.5B baseline"
     last_updated: "2026-02-19"
-    note: "S42-S46: Phase 5 oscillating baseline (17-33%). Self-ID INDEPENDENT of engagement quality. S43 recovery resolved decline concern. SAGE GATEWAY: always-on daemon (sage_daemon.py) + HTTP API (port 8750) — messages as sensory modality. Modular effector system (13 types, 134 tests) UNBLOCKS Phase 2. OllamaIRP: SAGE portable beyond PyTorch. McNugget at mcnugget.local:8750. Cross-family probes (Gemma 3, Mistral 7B). PolicyGate Phase 1 COMPLETE."
+    note: "S42-S47: Phase 5 oscillating baseline (17-33%, mean ~25%). S47 recovery to 33% after two consecutive 17% (S45-S46). Self-ID appears at turn boundaries (turns 1 and 6). Self-ID INDEPENDENT of engagement quality. SAGE GATEWAY live. Modular effector system (13 types, 134 tests). OllamaIRP. McNugget. Cross-family probes. PolicyGate Phase 1 COMPLETE."
 
   raising-05b:
     machine: "sprout"
@@ -49,7 +49,7 @@ tracks:
       primary: "S"
       training: "T"
       latent: "L"
-    note: "S46 (Thor, Phase 5 oscillating 17-33% self-ID). S110 (Sprout). S42-S46: decline arc RESOLVED — S43 recovered to 33%, stabilized. Self-ID and engagement are INDEPENDENT (S45: 17% ID but highest engagement). L073 at 183 discoveries. Phase 2 UNBLOCKED by modular effector system. SAGE Gateway: always-on daemon + HTTP. OllamaIRP: portable beyond PyTorch. McNugget live."
+    note: "S47 (Thor, recovery to 33% self-ID — Phase 5 oscillation continues 17-33%). S110 (Sprout). S42-S47 trend: 40→17→33→33→17→17→33 (mean ~25%). Self-ID and engagement INDEPENDENT. L073 at 183 discoveries. Phase 2 UNBLOCKED by modular effector system. SAGE Gateway live. OllamaIRP. McNugget live."
     recent_sessions:
       - session: "S092"
         date: "2026-02-17"

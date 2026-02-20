@@ -212,3 +212,7 @@ cython_debug/
 #.idea/arc-agi-2/
 model-zoo/
 sage/quantization/diagnostic_report.json
+
+# McNugget local data (cross-family probe results, sync logs)
+sage/experiments/cross_family_logs/
+sage/logs/mcnugget/

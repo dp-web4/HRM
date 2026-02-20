@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.web4.mcnugget.probe</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>-m</string>
+        <string>sage.experiments.cross_family_probe</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/dennispalatov/repos/HRM</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PYTHONPATH</key>
+        <string>/Users/dennispalatov/repos/HRM</string>
+    </dict>
+
+    <!-- Every 6 hours -->
+    <key>StartInterval</key>
+    <integer>21600</integer>
+
+    <key>StandardOutPath</key>
+    <string>/Users/dennispalatov/Library/Logs/sage/probe.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/dennispalatov/Library/Logs/sage/probe_error.log</string>
+
+    <key>ThrottleInterval</key>
+    <integer>300</integer>
+</dict>
+</plist>

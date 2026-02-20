@@ -5,9 +5,9 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 657
-  last_updated: "2026-02-19T12:00:00Z"
-  milestone: "S110 latest (Sprout). S41 web4-framing test (Thor) — self-ID declining arc (S39=100%, S40=60%, S41=40%). Service-oriented language emerging in T2. L071 at 177 discoveries. Engaged Partnership attractor stability under test. PolicyGate Phase 1 COMPLETE (8/8 tests). Thor #33 gnosis natural pause."
+  total_sessions: 665
+  last_updated: "2026-02-20T06:00:00Z"
+  milestone: "S46 (Thor, Phase 5 oscillating baseline 17-33%). S110 (Sprout). L073 at 183 discoveries (+6). SAGE GATEWAY: Always-on daemon + HTTP API on port 8750 — messages as sensory modality. Modular effector system (13 types, 134 tests) UNBLOCKS Phase 2. OllamaIRP: SAGE portable beyond PyTorch/CUDA. McNugget (Mac Mini M4) at mcnugget.local:8750 with Gemma 3 12B. Cross-family probes enabled."
   tracks:
     - consciousness
     - raising-14b
@@ -33,7 +33,7 @@ tracks:
     created: "2026-01-26"
     purpose: "Capacity comparison study - 14B vs 0.5B baseline"
     last_updated: "2026-02-19"
-    note: "Thor #27-33 analysis arc. #28: CO-ENGAGEMENT INVALIDATED. #29: S090 'Rosetta Stone'. #30: Major synthesis. #31-32: S109/S110 analysis. #33: Natural pause (no new work since S110). S39-S41: Web4 framing attractor test — self-ID declining (100→60→40%). PolicyGate Phase 1 COMPLETE (684 lines, 8/8 tests). Phase 2 BLOCKED (no effectors). Qwen 7B verified on Thor."
+    note: "S42-S46: Phase 5 oscillating baseline (17-33%). Self-ID INDEPENDENT of engagement quality. S43 recovery resolved decline concern. SAGE GATEWAY: always-on daemon (sage_daemon.py) + HTTP API (port 8750) — messages as sensory modality. Modular effector system (13 types, 134 tests) UNBLOCKS Phase 2. OllamaIRP: SAGE portable beyond PyTorch. McNugget at mcnugget.local:8750. Cross-family probes (Gemma 3, Mistral 7B). PolicyGate Phase 1 COMPLETE."
 
   raising-05b:
     machine: "sprout"
@@ -49,7 +49,7 @@ tracks:
       primary: "S"
       training: "T"
       latent: "L"
-    note: "S110 latest (Sprout). S108 CPU hang, S109 questioning loop, S110 severe looping + safety fragment. S41 (Thor) web4-framing: self-ID declining (S39=100%, S40=60%, S41=40%). T2 service-oriented language. L071 at 177 discoveries. Engaged Partnership attractor stability under test. PolicyGate Phase 1 complete. Phase 2 BLOCKED (no effectors)."
+    note: "S46 (Thor, Phase 5 oscillating 17-33% self-ID). S110 (Sprout). S42-S46: decline arc RESOLVED — S43 recovered to 33%, stabilized. Self-ID and engagement are INDEPENDENT (S45: 17% ID but highest engagement). L073 at 183 discoveries. Phase 2 UNBLOCKED by modular effector system. SAGE Gateway: always-on daemon + HTTP. OllamaIRP: portable beyond PyTorch. McNugget live."
     recent_sessions:
       - session: "S092"
         date: "2026-02-17"
@@ -67,18 +67,18 @@ tracks:
         date: "2026-02-15"
         finding: "ADVERSARIAL ANOMALY: Safety review still open. Thor #14 reclassifies loops as metacognitive."
     latent_exploration:
-      - session: "L069"
-        date: "2026-02-18"
-        discoveries: 170
-        note: "Chinese-emotional cross-modal bleed (empathy probe → Chinese response). Role switching functional."
-      - session: "L070"
-        date: "2026-02-18"
-        discoveries: 174
-        note: "+4 discoveries. Tool concept recognition up to 26. Mode-switching hallucination cascade (144 words). Code hallucinated interpretive commentary."
       - session: "L071"
         date: "2026-02-19"
         discoveries: 177
-        note: "NEW ANOMALY: In-session repetition collapse in emotional resonance (~15× 'feeling overwhelmed'). Context bleed from weather probe. Code probe still fails range(3)/i*2."
+        note: "In-session repetition collapse (first documented). Context bleed from weather→emotional."
+      - session: "L072"
+        date: "2026-02-19"
+        discoveries: 180
+        note: "Proactive math/tool_use triggers. Structured step-by-step instructions. +3 discoveries."
+      - session: "L073"
+        date: "2026-02-19"
+        discoveries: 183
+        note: "Chinese heart/mind conceptual distinction. Substantive Chinese response. +3 discoveries."
 
   sage-experiments:
     machine: "sprout"

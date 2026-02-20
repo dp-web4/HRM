@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.web4.sage.mcnugget</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>-m</string>
+        <string>sage.gateway.sage_daemon</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/dennispalatov/repos/HRM</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>SAGE_MACHINE</key>
+        <string>mcnugget</string>
+        <key>PYTHONPATH</key>
+        <string>/Users/dennispalatov/repos/HRM</string>
+    </dict>
+
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/dennispalatov/Library/Logs/sage/sage_daemon.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/dennispalatov/Library/Logs/sage/sage_daemon_error.log</string>
+
+    <key>ThrottleInterval</key>
+    <integer>10</integer>
+</dict>
+</plist>

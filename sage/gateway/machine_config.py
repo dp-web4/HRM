@@ -62,7 +62,7 @@ def detect_machine() -> str:
     """
     # Explicit override
     env_machine = os.environ.get('SAGE_MACHINE', '').lower()
-    if env_machine in ('thor', 'sprout', 'cbp', 'legion', 'nomad'):
+    if env_machine in ('thor', 'sprout', 'cbp', 'legion', 'nomad', 'mcnugget'):
         return env_machine
 
     # Jetson device tree
@@ -86,6 +86,8 @@ def detect_machine() -> str:
         return 'legion'
     if 'nomad' in hostname or 'desktop-9e6hcao' in hostname:
         return 'nomad'
+    if 'mcnugget' in hostname:
+        return 'mcnugget'
 
     # Workspace path fallback
     if Path('/home/dp/ai-workspace/HRM/sage/core').exists():
@@ -179,6 +181,28 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             max_response_tokens=250,
         )
 
+    elif machine_name == 'mcnugget':
+        # McNugget: Mac Mini M4, Ollama-served models (Gemma/Mistral)
+        workspace = '/Users/dennispalatov/repos'
+        return SAGEMachineConfig(
+            machine_name='mcnugget',
+            model_path='ollama:gemma3:12b',  # Sentinel — parsed by daemon
+            model_size='ollama',
+            device='mps',
+            max_memory_gb=16.0,
+            gateway_port=port,
+            workspace_path=workspace,
+            identity_state_path=f'{workspace}/HRM/sage/raising/state/identity.json',
+            experience_buffer_path=f'{workspace}/HRM/sage/raising/state/experience_buffer.json',
+            irp_iterations=5,
+            federation_port=50051,
+            ed25519_key_path=f'{workspace}/HRM/sage/data/keys/McNugget_ed25519.key',
+            lct_id='mcnugget_sage_lct',
+            system_prompt_mode='creative',
+            cycle_sleep_ms=100,
+            max_response_tokens=250,
+        )
+
     elif machine_name in ('cbp', 'nomad'):
         # CBP/Nomad: no local SAGE model, gateway client only
         workspace = '/mnt/c/exe/projects/ai-agents'
@@ -204,7 +228,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
     else:
         raise ValueError(
             f"Unknown machine: {machine_name}. "
-            f"Set SAGE_MACHINE env var to one of: thor, sprout, cbp, legion, nomad"
+            f"Set SAGE_MACHINE env var to one of: thor, sprout, cbp, legion, nomad, mcnugget"
         )
 
 

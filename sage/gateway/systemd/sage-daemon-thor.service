@@ -1,0 +1,57 @@
+################################################################################
+# SAGE Daemon — Thor (Jetson AGX Orin, 14B model)
+#
+# Always-on consciousness loop with HTTP gateway on port 8750.
+# Loads the Qwen 14B model once and keeps it in GPU memory.
+#
+# INSTALLATION:
+#   sudo cp sage-daemon-thor.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable sage-daemon-thor
+#   sudo systemctl start sage-daemon-thor
+#
+# MONITORING:
+#   journalctl -u sage-daemon-thor -f
+#   curl http://localhost:8750/health
+#   python3 -m sage.gateway.cli_client --health
+################################################################################
+
+[Unit]
+Description=SAGE Consciousness Daemon (Thor — 14B)
+After=network.target
+
+[Service]
+Type=simple
+User=dp
+WorkingDirectory=/home/dp/ai-workspace/HRM
+
+# Use the HRM venv
+ExecStart=/home/dp/ai-workspace/HRM/.venv/bin/python3 -m sage.gateway
+
+# Always restart on failure, wait 30s between restarts
+Restart=always
+RestartSec=30
+
+# Environment
+Environment=SAGE_MACHINE=thor
+Environment=SAGE_PORT=8750
+Environment=PYTHONPATH=/home/dp/ai-workspace/HRM
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sage-daemon-thor
+
+# Resource management — Thor has 64GB unified memory
+MemoryMax=50G
+LimitNOFILE=65536
+
+# Give it time to load the model on startup
+TimeoutStartSec=300
+
+# Give it time to persist state on shutdown
+TimeoutStopSec=30
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=multi-user.target

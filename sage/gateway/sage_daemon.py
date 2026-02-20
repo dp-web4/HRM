@@ -78,10 +78,37 @@ class SAGEDaemon:
         print(f"  Gateway port: {self.config.gateway_port}")
 
     def _load_llm(self):
-        """Load the LLM model into GPU memory. Called once at startup."""
+        """Load the LLM model into memory. Called once at startup."""
         if not self.config.model_path:
             print(f"[WARN] No model path configured for {self.config.machine_name}. "
                   f"Running without LLM (gateway-only mode).")
+            return
+
+        # Ollama-served models — no local model path needed
+        if self.config.model_size == 'ollama':
+            print(f"\nLoading OllamaIRP...")
+            start = time.time()
+            try:
+                # Import OllamaIRP directly to avoid sage.irp.__init__
+                # pulling in torch-dependent plugins on machines without PyTorch
+                import importlib.util
+                _ollama_path = Path(__file__).parent.parent / 'irp' / 'plugins' / 'ollama_irp.py'
+                _spec = importlib.util.spec_from_file_location('ollama_irp', str(_ollama_path))
+                _mod = importlib.util.module_from_spec(_spec)
+                _spec.loader.exec_module(_mod)
+                OllamaIRP = _mod.OllamaIRP
+                # Parse model name from sentinel path (e.g. "ollama:gemma3:12b")
+                model_name = self.config.model_path.split(':', 1)[1] if ':' in self.config.model_path else 'gemma3:12b'
+                self.llm_plugin = OllamaIRP({
+                    'model_name': model_name,
+                    'ollama_host': 'http://localhost:11434',
+                    'max_response_tokens': self.config.max_response_tokens,
+                })
+                print(f"  OllamaIRP loaded for model: {model_name} ({time.time() - start:.1f}s)")
+            except Exception as e:
+                print(f"[ERROR] Failed to load OllamaIRP: {e}")
+                print(f"  Running without LLM. Messages will get mock responses.")
+                self.llm_plugin = None
             return
 
         model_path = Path(self.config.model_path)

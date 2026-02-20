@@ -7,9 +7,9 @@
 
     <key>ProgramArguments</key>
     <array>
-        <string>/usr/bin/python3</string>
+        <string>/opt/homebrew/bin/python3</string>
         <string>-m</string>
-        <string>sage.gateway.sage_daemon</string>
+        <string>sage.gateway.mcnugget_gateway</string>
     </array>
 
     <key>WorkingDirectory</key>

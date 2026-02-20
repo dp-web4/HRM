@@ -90,7 +90,30 @@ def _extract_language(result, ctx: dict) -> List[Effect]:
 
     effects = []
     response = data.get('response', data.get('text', ''))
-    if response:
+    if not response:
+        return effects
+
+    # If this is a gateway message response, create a MESSAGE effect
+    message_id = data.get('message_id')
+    if message_id:
+        effects.append(Effect(
+            effect_type=EffectType.MESSAGE,
+            action='respond',
+            target=data.get('sender', 'unknown'),
+            parameters={
+                'message_id': message_id,
+                'response': str(response),
+                'conversation_id': data.get('conversation_id', ''),
+                'action': 'respond',
+            },
+            data={'response': str(response)},
+            source_plugin='language',
+            trust_score=_get_trust(ctx, 'language'),
+            atp_cost=0.5,
+            priority=10,  # High priority — someone is waiting
+        ))
+    else:
+        # Non-message language output → speech effect
         effects.append(Effect(
             effect_type=EffectType.AUDIO,
             action='speak',

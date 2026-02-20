@@ -110,7 +110,9 @@ class SAGEConsciousness:
         config: Optional[Dict[str, Any]] = None,
         initial_atp: float = 100.0,
         enable_circadian: bool = True,
-        simulation_mode: bool = True  # Use cycle counts instead of wall time
+        simulation_mode: bool = True,  # Use cycle counts instead of wall time
+        message_queue=None,  # MessageQueue for gateway integration
+        llm_plugin=None,     # Loaded LLM for real language processing
     ):
         """
         Initialize unified consciousness loop.
@@ -120,8 +122,14 @@ class SAGEConsciousness:
             initial_atp: Starting ATP budget
             enable_circadian: Enable circadian rhythm modulation
             simulation_mode: Use cycle counts for testing (not wall time)
+            message_queue: Optional MessageQueue for external message injection
+            llm_plugin: Optional loaded LLM plugin for real language processing
         """
         self.config = config or self._default_config()
+
+        # Gateway integration
+        self.message_queue = message_queue
+        self.llm_plugin = llm_plugin
         self.simulation_mode = simulation_mode
 
         # Core components
@@ -170,6 +178,8 @@ class SAGEConsciousness:
             'effects_approved': 0,
             'effects_denied': 0,
             'effects_executed': 0,
+            'messages_received': 0,
+            'messages_responded': 0,
         }
 
     def _default_config(self) -> Dict[str, Any]:
@@ -198,6 +208,7 @@ class SAGEConsciousness:
             'audio': {'trust': 1.0, 'enabled': True},
             'proprioception': {'trust': 1.0, 'enabled': True},
             'time': {'trust': 1.0, 'enabled': True},
+            'message': {'trust': 1.0, 'enabled': True},  # External messages via gateway
         }
 
     def _init_effect_system(self):
@@ -242,6 +253,18 @@ class SAGEConsciousness:
                 MockCognitiveEffector({'effector_id': 'cognitive', 'effector_type': 'cognitive'}),
                 handles=[EffectType.MEMORY_WRITE, EffectType.TRUST_UPDATE,
                          EffectType.STATE_CHANGE], effector_id='cognitive')
+
+            # Network effector for MESSAGE effects (gateway responses)
+            try:
+                from interfaces.effectors.network_effector import NetworkEffector
+                network_eff = NetworkEffector({'effector_id': 'network', 'effector_type': 'network'})
+                if self.message_queue is not None:
+                    network_eff.set_message_queue(self.message_queue)
+                self.effector_registry.register_effector(
+                    network_eff,
+                    handles=[EffectType.MESSAGE], effector_id='network')
+            except ImportError:
+                pass  # NetworkEffector not available
 
             # PolicyGate (optional)
             self.policy_gate_enabled = self.config.get('enable_policy_gate', False)
@@ -465,6 +488,24 @@ class SAGEConsciousness:
             trust=1.0
         ))
 
+        # Poll message queue for external messages (gateway integration)
+        if self.message_queue is not None:
+            pending = self.message_queue.poll_all()
+            for msg in pending:
+                observations.append(SensorObservation(
+                    sensor_id=f'message_{msg.message_id}',
+                    modality='message',
+                    data={
+                        'sender': msg.sender,
+                        'content': msg.content,
+                        'message_id': msg.message_id,
+                        'conversation_id': msg.conversation_id,
+                        'metadata': msg.metadata,
+                    },
+                    timestamp=msg.timestamp,
+                    trust=1.0,  # External messages are trusted sensor input
+                ))
+
         return observations
 
     def _compute_salience(
@@ -500,6 +541,15 @@ class SAGEConsciousness:
                     arousal=0.7,  # Speech is arousing
                     reward=0.8,   # Communication is rewarding
                     conflict=0.1
+                )
+            elif obs.modality == 'message':
+                # External messages get high salience — someone is talking to us
+                salience = SalienceScore(
+                    surprise=0.8,   # External contact is surprising
+                    novelty=0.6,    # Each message has novel content
+                    arousal=0.7,    # Communication demands attention
+                    reward=0.9,     # Dialogue is highly rewarding
+                    conflict=0.1,   # Low conflict (trusted sender)
                 )
             else:
                 # Time and proprioception are low salience
@@ -569,6 +619,7 @@ class SAGEConsciousness:
             'audio': ['audio', 'language'],  # Audio might contain speech
             'proprioception': ['control'],
             'time': [],  # Time doesn't need plugins
+            'message': ['language'],  # External messages routed to LLM
         }
         return modality_map.get(modality, [])
 
@@ -619,42 +670,172 @@ class SAGEConsciousness:
         """
         Execute plugins via orchestrator.
 
-        TODO: Integrate with real HRMOrchestrator.run() method
-        For now, mocks plugin execution.
+        For message observations with a loaded LLM, performs real inference.
+        For other modalities, falls back to mock execution.
         """
         results = {}
 
         # For each attention target, execute required plugins
         for target in attention_targets:
             for plugin_name in target.required_plugins:
-                if plugin_name in self.orchestrator.plugins:
-                    # Mock execution (in reality, would call orchestrator.run_plugin())
-                    # This would consume ATP and update metabolic controller
+                budget = budget_allocation.get(plugin_name, 0.0)
+                if budget < 0.1:
+                    continue
 
-                    budget = budget_allocation.get(plugin_name, 0.0)
+                # Consume ATP
+                self.metabolic.atp_current -= budget
 
-                    if budget > 0.1:  # Minimum budget to run
-                        # Consume ATP
-                        self.metabolic.atp_current -= budget
+                # Check for message observation with real LLM
+                if (target.observation.modality == 'message'
+                        and plugin_name == 'language'
+                        and self.llm_plugin is not None):
+                    result = await self._execute_llm_for_message(target, budget)
+                    results[plugin_name] = result
 
-                        # Mock result
-                        results[plugin_name] = PluginResult(
-                            plugin_name=plugin_name,
-                            final_state=None,  # Mock
-                            history=[],
-                            telemetry={
-                                'trust': {
-                                    'monotonicity_ratio': 0.9,
-                                    'variance': 0.1,
-                                    'convergence_rate': 0.8
-                                },
-                                'salience': target.salience.total
+                elif plugin_name in self.orchestrator.plugins:
+                    # Mock execution for non-message modalities
+                    results[plugin_name] = PluginResult(
+                        plugin_name=plugin_name,
+                        final_state=None,
+                        history=[],
+                        telemetry={
+                            'trust': {
+                                'monotonicity_ratio': 0.9,
+                                'variance': 0.1,
+                                'convergence_rate': 0.8
                             },
-                            budget_used=budget,
-                            execution_time=0.1
-                        )
+                            'salience': target.salience.total
+                        },
+                        budget_used=budget,
+                        execution_time=0.1
+                    )
 
         return results
+
+    async def _execute_llm_for_message(
+        self,
+        target: AttentionTarget,
+        budget: float
+    ) -> PluginResult:
+        """
+        Execute real LLM inference for a message observation.
+
+        Builds a conversation prompt from message content + history,
+        generates a response using the loaded LLM plugin, and creates
+        a PluginResult that the effect extractor can process.
+        """
+        obs_data = target.observation.data
+        message_id = obs_data.get('message_id', '')
+        sender = obs_data.get('sender', 'unknown')
+        content = obs_data.get('content', '')
+        conversation_id = obs_data.get('conversation_id', '')
+
+        start_time = time.time()
+        response_text = ''
+
+        try:
+            # Build conversation context from message queue history
+            history = []
+            if self.message_queue:
+                history = self.message_queue.get_conversation_history(conversation_id)
+
+            # Generate response using the LLM
+            response_text = await asyncio.get_event_loop().run_in_executor(
+                None,
+                self._generate_llm_response,
+                content, history, sender
+            )
+
+        except Exception as e:
+            response_text = f"[SAGE processing error: {e}]"
+
+        execution_time = time.time() - start_time
+
+        # Create PluginResult with the real response embedded
+        return PluginResult(
+            plugin_name='language',
+            final_state={
+                'response': response_text,
+                'message_id': message_id,
+                'sender': sender,
+                'conversation_id': conversation_id,
+                'modality': 'message',
+            },
+            history=[],
+            telemetry={
+                'trust': {
+                    'monotonicity_ratio': 0.85,
+                    'variance': 0.15,
+                    'convergence_rate': 0.75,
+                },
+                'salience': target.salience.total,
+                'response_length': len(response_text),
+                'message_id': message_id,
+            },
+            budget_used=budget,
+            execution_time=execution_time,
+        )
+
+    def _generate_llm_response(self, content: str, history: list, sender: str) -> str:
+        """
+        Generate LLM response synchronously (called from executor).
+
+        Supports two LLM plugin interfaces:
+        1. IntrospectiveQwenIRP — has get_response() or init_state/step
+        2. MultiModelLoader — has generate() method
+        """
+        # Build conversation prompt
+        prompt = self._build_conversation_prompt(content, history, sender)
+
+        # Try different LLM interfaces
+        if hasattr(self.llm_plugin, 'get_response'):
+            # IntrospectiveQwenIRP interface
+            return self.llm_plugin.get_response(prompt)
+
+        elif hasattr(self.llm_plugin, 'generate'):
+            # MultiModelLoader interface (Thor)
+            return self.llm_plugin.generate(
+                prompt=prompt,
+                max_tokens=self.config.get('max_response_tokens', 200),
+                temperature=0.8,
+            )
+
+        elif hasattr(self.llm_plugin, 'init_state'):
+            # Generic IRP plugin interface
+            state = self.llm_plugin.init_state(
+                {'prompt': prompt, 'memory': []}, {}
+            )
+            state = self.llm_plugin.step(state)
+            if hasattr(state, 'x') and isinstance(state.x, dict):
+                return state.x.get('response', str(state.x))
+            return str(state.x) if hasattr(state, 'x') else ''
+
+        else:
+            return f"[SAGE has no compatible LLM interface: {type(self.llm_plugin).__name__}]"
+
+    def _build_conversation_prompt(self, content: str, history: list, sender: str) -> str:
+        """Build a conversation prompt including history."""
+        parts = []
+
+        # System context
+        parts.append(
+            "You are SAGE, in genuine conversation. "
+            "You can ask questions, express uncertainty, or take the conversation "
+            "in unexpected directions. This is exploration, not evaluation."
+        )
+
+        # Conversation history
+        for turn in history[:-1]:  # Exclude the current message (already in content)
+            if turn.role == 'user':
+                parts.append(f"{turn.sender}: {turn.content}")
+            else:
+                parts.append(f"SAGE: {turn.content}")
+
+        # Current message
+        parts.append(f"{sender}: {content}")
+        parts.append("SAGE:")
+
+        return "\n\n".join(parts)
 
     def _update_trust_weights(self, results: Dict[str, PluginResult]):
         """

@@ -1,0 +1,57 @@
+################################################################################
+# SAGE Daemon — Sprout (Jetson Orin Nano, 0.5B model)
+#
+# Always-on consciousness loop with HTTP gateway on port 8750.
+# Loads the Qwen 0.5B model once and keeps it in GPU memory.
+#
+# INSTALLATION:
+#   sudo cp sage-daemon-sprout.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable sage-daemon-sprout
+#   sudo systemctl start sage-daemon-sprout
+#
+# MONITORING:
+#   journalctl -u sage-daemon-sprout -f
+#   curl http://localhost:8750/health
+#   python3 -m sage.gateway.cli_client --health
+################################################################################
+
+[Unit]
+Description=SAGE Consciousness Daemon (Sprout — 0.5B)
+After=network.target
+
+[Service]
+Type=simple
+User=sprout
+WorkingDirectory=/home/sprout/ai-workspace/HRM
+
+# Use the HRM venv
+ExecStart=/home/sprout/ai-workspace/HRM/.venv/bin/python3 -m sage.gateway
+
+# Always restart on failure, wait 30s between restarts
+Restart=always
+RestartSec=30
+
+# Environment
+Environment=SAGE_MACHINE=sprout
+Environment=SAGE_PORT=8750
+Environment=PYTHONPATH=/home/sprout/ai-workspace/HRM
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sage-daemon-sprout
+
+# Resource management — Sprout has 8GB unified memory
+MemoryMax=6G
+LimitNOFILE=65536
+
+# Give it time to load the model on startup
+TimeoutStartSec=120
+
+# Give it time to persist state on shutdown
+TimeoutStopSec=30
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=multi-user.target

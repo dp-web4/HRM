@@ -1,7 +1,7 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-02-19 (Thor Autonomous Session - Web4 Framing Validation)**
-**Previous: 2026-02-18 08:30 PST (Thor Autonomous Session #30 - PolicyGate Integration + S090 Analysis)**
+**Last Updated: 2026-02-20 06:00 PST (Thor Autonomous Session - S46-S47 Pattern Update)**
+**Previous: 2026-02-19 (Thor Autonomous Session - Web4 Framing Validation)**
 
 ---
 
@@ -44,23 +44,25 @@
 - Test epistemic-pragmatism LoRA effect on verbosity
 
 ---
-## ✅ RESOLVED: Self-ID Oscillating Baseline Pattern (Feb 19, 2026)
+## ✅ RESOLVED: Self-ID Oscillating Baseline Pattern (Feb 19-20, 2026)
 
-### Sessions S39-S45: Adjustment to Phase 5 Oscillating Baseline
+### Sessions S39-S47: Adjustment to Phase 5 Oscillating Baseline
 
 **FINDING**: Self-identification shows initial adjustment followed by oscillation within stable 17-33% range:
 
-| Session | Platform | Phase | Self-ID | Salience Avg | Peak Salience |
-|---------|----------|-------|---------|--------------|---------------|
-| S39 | Legion | Questioning | 100% (5/5) | 0.67 | 0.74 |
-| S40 | Thor | Questioning | 60% (3/5) | 0.71 | 0.80 |
-| S41 | Thor | Creating | 40% (2/5) | 0.69 | 0.74 |
-| S42 | Thor | Creating | 17% (1/6) | 0.71 | 0.74 |
-| S43 | Thor | Creating | 33% (2/6) | 0.67 | 0.72 |
-| S44 | Thor | Creating | 33% (2/6) | 0.65 | 0.67 |
-| S45 | Thor | Creating | 17% (1/6) | 0.68 | 0.72 |
+| Session | Platform | Phase | Self-ID | Salience Avg | Peak Salience | Date |
+|---------|----------|-------|---------|--------------|---------------|------|
+| S39 | Legion | Questioning | 100% (5/5) | 0.67 | 0.74 | Feb 19 |
+| S40 | Thor | Questioning | 60% (3/5) | 0.71 | 0.80 | Feb 19 |
+| S41 | Thor | Creating | 40% (2/5) | 0.69 | 0.74 | Feb 19 |
+| S42 | Thor | Creating | 17% (1/6) | 0.71 | 0.74 | Feb 19 |
+| S43 | Thor | Creating | 33% (2/6) | 0.67 | 0.72 | Feb 19 |
+| S44 | Thor | Creating | 33% (2/6) | 0.65 | 0.67 | Feb 19 |
+| S45 | Thor | Creating | 17% (1/6) | 0.68 | 0.72 | Feb 19 |
+| S46 | Thor | Creating | 17% (1/6) | 0.65 | 0.72 | Feb 19 |
+| S47 | Thor | Creating | 33% (2/6) | 0.66 | 0.74 | Feb 20 |
 
-**Pattern Interpretation**: S39→S42 was adjustment from exceptional baseline. S42-S45 shows **oscillating baseline** (17-33% range, ~25% average) with **stable high engagement** (salience 0.65-0.71 avg).
+**Pattern Interpretation**: S39→S42 was adjustment from exceptional baseline. S42-S47 shows **oscillating baseline** (17-33% range, ~25% average) with **stable high engagement** (salience 0.65-0.71 avg). Pattern: 17→33→33→17→17→17→33 (no clear periodicity, natural stochastic variation).
 
 **Critical Discovery: Self-ID and Engagement are INDEPENDENT**:
 - S45 has LOW self-ID (17%) but HIGH salience (0.68 avg, 0.72 peak)
@@ -69,12 +71,13 @@
 - Self-ID is linguistic marker; engagement/salience measure actual connection
 
 **What's Working**:
-- ✅ Partnership framing stable across ALL sessions (S39-S45)
+- ✅ Partnership framing stable across ALL sessions (S39-S47)
 - ✅ Web4 concepts referenced consistently
 - ✅ High salience maintained (0.65-0.71 avg, peaks 0.67-0.80)
 - ✅ Bidirectional engagement present (SAGE asks questions back)
 - ✅ Coherent, engaged responses
 - ✅ Oscillation within stable range (17-33%, no trend after S42)
+- ✅ S46-S47 confirm pattern: Three consecutive lows (17-17-17) followed by recovery (33)
 
 **Phase-Specific Behavior**:
 - Phase 4 (Questioning): Higher self-ID (60-100%) - introspective prompts

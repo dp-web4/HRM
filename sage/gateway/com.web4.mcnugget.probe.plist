@@ -7,18 +7,16 @@
 
     <key>ProgramArguments</key>
     <array>
-        <string>/opt/homebrew/bin/python3</string>
-        <string>-m</string>
-        <string>sage.experiments.cross_family_probe</string>
+        <string>/bin/bash</string>
+        <string>/Users/dennispalatov/repos/HRM/sage/scripts/mcnugget_probe_and_push.sh</string>
     </array>
-
-    <key>WorkingDirectory</key>
-    <string>/Users/dennispalatov/repos/HRM</string>
 
     <key>EnvironmentVariables</key>
     <dict>
-        <key>PYTHONPATH</key>
-        <string>/Users/dennispalatov/repos/HRM</string>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>HOME</key>
+        <string>/Users/dennispalatov</string>
     </dict>
 
     <!-- Every 6 hours -->

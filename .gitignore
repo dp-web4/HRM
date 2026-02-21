@@ -213,6 +213,5 @@ cython_debug/
 model-zoo/
 sage/quantization/diagnostic_report.json
 
-# McNugget local data (cross-family probe results, sync logs)
-sage/experiments/cross_family_logs/
+# McNugget local logs (sync logs stay local)
 sage/logs/mcnugget/

@@ -5,9 +5,9 @@
 
 metadata:
   project: "HRM/SAGE"
-  total_sessions: 666
-  last_updated: "2026-02-20T12:00:00Z"
-  milestone: "S47 (Thor, recovery to 33% after two 17% sessions — oscillation continues). S110 (Sprout). L073 at 183 discoveries. SAGE GATEWAY: Always-on daemon + HTTP API on port 8750. Modular effector system (13 types, 134 tests) UNBLOCKS Phase 2. OllamaIRP: SAGE portable beyond PyTorch/CUDA. McNugget at mcnugget.local:8750. Cross-family probes enabled."
+  total_sessions: 673
+  last_updated: "2026-02-21T06:00:00Z"
+  milestone: "S54 (Thor, Phase 5 oscillation range expanded to 0-50%). S049 = 0% self-ID (unprecedented). S050/S053 = 50% (confirmed recurring upper bound). Verbosity FULLY RESOLVED (0/6 from S51 onwards). Self-ID INDEPENDENT of engagement (salience 0.62-0.67 stable). L073 at 183 discoveries. SAGE GATEWAY live. Effector system UNBLOCKS Phase 2. OllamaIRP + McNugget. Cross-family probes."
   tracks:
     - consciousness
     - raising-14b
@@ -33,7 +33,7 @@ tracks:
     created: "2026-01-26"
     purpose: "Capacity comparison study - 14B vs 0.5B baseline"
     last_updated: "2026-02-19"
-    note: "S42-S47: Phase 5 oscillating baseline (17-33%, mean ~25%). S47 recovery to 33% after two consecutive 17% (S45-S46). Self-ID appears at turn boundaries (turns 1 and 6). Self-ID INDEPENDENT of engagement quality. SAGE GATEWAY live. Modular effector system (13 types, 134 tests). OllamaIRP. McNugget. Cross-family probes. PolicyGate Phase 1 COMPLETE."
+    note: "S48-S54: Phase 5 oscillation range EXPANDED to 0-50% (was 17-33%). S49=0% (unprecedented zero self-ID). S50/S53=50% (confirmed recurring upper bound). Verbosity FULLY RESOLVED (0/6 from S51). Full cycle: 17→0→50→17→33→50→17. Salience 0.62-0.67 stable regardless of self-ID swings (peaks 0.72-0.76). Exploration-not-evaluation paradigm validated. SAGE GATEWAY live. Cross-family probes (McNugget: Gemma3 12B + Mistral 7B)."
 
   raising-05b:
     machine: "sprout"
@@ -49,7 +49,7 @@ tracks:
       primary: "S"
       training: "T"
       latent: "L"
-    note: "S47 (Thor, recovery to 33% self-ID — Phase 5 oscillation continues 17-33%). S110 (Sprout). S42-S47 trend: 40→17→33→33→17→17→33 (mean ~25%). Self-ID and engagement INDEPENDENT. L073 at 183 discoveries. Phase 2 UNBLOCKED by modular effector system. SAGE Gateway live. OllamaIRP. McNugget live."
+    note: "S54 (Thor, Phase 5 oscillation 0-50%). S110 (Sprout). S48-S54: 0→50→17→33→50→17 (range EXPANDED from 17-33% to 0-50%). S49=0% unprecedented, S50/S53=50% recurring upper bound. Verbosity RESOLVED. Self-ID and engagement INDEPENDENT. L073 at 183 discoveries. Phase 2 UNBLOCKED. SAGE Gateway live. OllamaIRP. McNugget live."
     recent_sessions:
       - session: "S092"
         date: "2026-02-17"

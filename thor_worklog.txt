@@ -10759,3 +10759,41 @@ continued cycles.
 END OF AUTONOMOUS CHECK - Ready for next session
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+
+=== FINAL INVESTIGATION SUMMARY: 2026-02-22 14:25 ===
+
+**AUTONOMOUS CHECK COMPLETE**
+
+**Pattern Discovered**: S70-S79 show 60% at 0% boundary (up from 50% in S60-S69)
+
+**Root Cause Investigation Results**:
+
+1. ✗ LoRA checkpoint change (cycle_012 → same checkpoint throughout)
+2. ✗ Experience buffer feedback (no training since 2026-02-13)  
+3. ✓ Stochastic identity mechanism with UNKNOWN probability shift
+4. ✗ Code changes (no commits to session scripts between S59-S60)
+
+**Key Finding**: S70 scaffolding restoration FAILED despite correct configuration
+- S70: identity_anchored_v2 + partnership intervention → 0% self-ID
+- S73: autonomous_conversation (no scaffolding) → 50% self-ID
+- Conclusion: Scaffolding can't overcome underlying probability shift
+
+**Remaining Mystery**: What reduced p(self-ID) after S59?
+- Not LoRA (same checkpoint)
+- Not training feedback (no new cycles)
+- Not code (no commits)
+- Possibly: Natural phase transition, conversation history contamination, or untracked environmental change
+
+**RECOMMENDATIONS FOR USER**:
+
+When user returns, suggest:
+1. Run diagnostic session: S41 prompt on current system (compare outputs)
+2. Test identity_anchored_v2 WITHOUT LoRA (--no-lora flag)
+3. Review S60-S79 conversation_history for contamination patterns
+4. Consider this a Phase Transition phenomenon (not regression)
+5. Document findings in research paper on identity scaffolding limits
+
+**Time**: Investigation completed at 2026-02-22 14:25 UTC
+**Status**: Root cause UNIDENTIFIED. Further experimentation needed.
+**Next Steps**: Await user direction on diagnostic experiments.
+

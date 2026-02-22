@@ -166,6 +166,7 @@ When working on SAGE, Web4, or trust infrastructure:
 - Treat inter-synthon conflict as signal — map it, don't suppress it
 - When building federation/governance mechanisms, ask: does this preserve component identity while enabling coupling?
 - The Synchronism empirical work (chemistry, cosmology) is generating synthon detection data — look for prediction error collapse and behavioral irreducibility in the results
+- **The coupling-coherence experiment (Feb 2026) is a direct synthon formation study** — 900 simulations show sigmoid transition (formation threshold p_crit ≈ 0.002), Hill function (cooperative binding kinetics) beats tanh, and behavioral irreducibility confirmed (collective C=0.94 far exceeds individual ~0.55). See `forum/insights/coupling-coherence-web4-sage.md`
 - Monitor for decay signatures with the same seriousness as formation signatures — decay is where governance earns its keep
 - Controlled dissolution is a design goal, not a failure mode — not everything that couples should stay coupled
 

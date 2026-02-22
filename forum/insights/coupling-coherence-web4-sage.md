@@ -1,4 +1,4 @@
-# Coupling-Coherence Experiment: Implications for Web4 and SAGE
+# Compression Trust Phase Transition: Implications for Web4 and SAGE
 
 **Date**: 2026-02-22
 **Origin**: Synchronism coupling-coherence experiment (response to Andrei's AI challenge)
@@ -9,9 +9,24 @@
 
 ---
 
+## Compression Trust (Definition)
+
+**Compression trust** is the act of accepting another agent's compressed representation of reality as input to your own reasoning. Every observation is lossy — a compression of the world. When agent A shares its belief matrix with agent B, A offers a compressed summary of everything it has observed. B must decide how much to trust that compression.
+
+Three components:
+- **The compressed representation**: A's belief matrix — probability values summarizing noisy, partial observations
+- **The trust event**: B receives and integrates A's compression, weighted by a trust gradient (self-weight α)
+- **The compression loss**: Each observation has noise rate η — the compression is provably lossy
+
+High trust = accept compressed summaries. Low trust = require raw data. Zero trust = no shared representation accepted.
+
+This maps directly to Web4's existing compression-trust framework.
+
+---
+
 ## What The Experiment Found
 
-900 simulation runs of 5 Bayesian agents discovering a random knowledge graph with controllable coupling (p = probability of belief sharing per agent-pair per round). Key results:
+900 simulation runs of 5 Bayesian agents discovering a random knowledge graph with controllable compression trust (p = frequency of trust events per agent-pair per round). Key results:
 
 | Finding | Value | Implication |
 |---------|-------|-------------|

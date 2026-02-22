@@ -80,8 +80,15 @@ class IntrospectiveQwenIRP:
                 low_cpu_mem_usage=False  # Bypass buggy caching_allocator_warmup
             )
             if device_map == "auto" and torch.cuda.is_available():
-                print("Moving model to CUDA...")
-                self.model = self.model.to('cuda')
+                try:
+                    print("Moving model to CUDA...")
+                    self.model = self.model.to('cuda')
+                except (RuntimeError, torch.cuda.OutOfMemoryError) as e:
+                    print(f"CUDA move failed: {e}")
+                    print("Falling back to CPU (moving all params back)")
+                    torch.cuda.empty_cache()
+                    self.model = self.model.to('cpu')
+                    torch.cuda.empty_cache()
         else:
             # Phase 2.1 uses PEFT adapter
             print("Loading base + adapter (Phase 2.1 Introspective-Qwen)")
@@ -95,8 +102,15 @@ class IntrospectiveQwenIRP:
             )
             self.model = PeftModel.from_pretrained(base, self.model_path)
             if device_map == "auto" and torch.cuda.is_available():
-                print("Moving model to CUDA...")
-                self.model = self.model.to('cuda')
+                try:
+                    print("Moving model to CUDA...")
+                    self.model = self.model.to('cuda')
+                except (RuntimeError, torch.cuda.OutOfMemoryError) as e:
+                    print(f"CUDA move failed: {e}")
+                    print("Falling back to CPU (moving all params back)")
+                    torch.cuda.empty_cache()
+                    self.model = self.model.to('cpu')
+                    torch.cuda.empty_cache()
 
         self.model.eval()
         print("Model loaded successfully")

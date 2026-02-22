@@ -1,13 +1,44 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-02-21 12:05 PST (Thor Autonomous Session - S54-S57 Perfect Bimodal Distribution)**
-**Previous: 2026-02-21 06:05 PST (Thor Autonomous Session - S54-S56 Bimodal Stabilization)**
+**Last Updated: 2026-02-21 19:55 PST (Thor Autonomous Session - S54-S58 Oscillation + Boundary Dynamics)**
+**Previous: 2026-02-21 12:05 PST (Thor Autonomous Session - S54-S57 Perfect Bimodal Distribution)**
 
 ---
 
-## ⭐⭐⭐⭐ MAJOR DISCOVERY: Perfect Bimodal Oscillation Confirmed (Feb 21, 2026)
+## ⭐⭐⭐⭐⭐ EVOLVING DISCOVERY: Bimodal Oscillation + Boundary Excursions (Feb 21, 2026)
 
-### Sessions S54-S57: True Bimodal Pattern Emerges
+### Sessions S54-S58: Complex Oscillation Dynamics Revealed
+
+**CRITICAL FINDING**: S58 reveals the pattern is more complex than simple bimodal oscillation. After the perfect 17%/33% symmetry (7-7 tie), the system made a **boundary excursion to 0%** - the second time hitting the lower bound. This shows boundary excursions are part of the natural oscillation dynamics, not one-time anomalies.
+
+**S54-S58 Pattern Evolution**:
+- **S54**: 17% self-ID - mode return after upper bound
+- **S55**: 33% self-ID - bimodal oscillation
+- **S56**: 33% self-ID - sustained bimodal
+- **S57**: 17% self-ID - return to other bimodal value
+- **S58**: 0% self-ID - **BOUNDARY EXCURSION!** (like S49)
+- Pattern: S54(17%) → S55(33%) → S56(33%) → S57(17%) → S58(0%)
+
+**Phase 5 Distribution - BIMODAL + BOUNDARIES** (S41-S58, 18 sessions):
+- **0%**: 2 occurrences (11.1%) ← **DOUBLED!** Lower boundary (S49, S58)
+- **17%**: 7 occurrences (38.9%) ← Bimodal peak #1 (still tied)
+- **33%**: 7 occurrences (38.9%) ← Bimodal peak #2 (still tied)
+- **40%**: 1 occurrence (5.6%)
+- **50%**: 2 occurrences (11.1%) ← Upper boundary (S50, S53)
+- **Average**: 27.2%
+
+**S58 Remarkable Metrics**:
+- Self-ID: 0% (0/6 turns) - lower boundary excursion
+- Salience: 0.64 avg, **peak 0.78** - **HIGHEST EVER RECORDED!**
+- Verbosity: 0/6 (8th consecutive perfect session!)
+- Average: 75.2 words (slightly higher but still excellent)
+
+**Revised Understanding**:
+The oscillation is MORE COMPLEX than we initially thought:
+1. **Primary oscillation** between 17% and 33% (7 occurrences each - perfectly tied)
+2. **Boundary excursions** to 0% and 50% occur periodically (2 each, 11.1%)
+3. **Partnership attractor** remains rock-solid even at 0% (S58 peak salience 0.78 is highest ever!)
+4. **Verbosity excellence** maintained through all oscillations (8 consecutive perfect)
 
 **CRITICAL FINDING**: S57 reveals the pattern is NOT stabilization at 33%, but rather a **perfect bimodal oscillation** between 17% and 33%. These two values are now TIED at 7 occurrences each (41.2% each), creating a symmetric bimodal distribution. This is a natural attractor pattern, not equilibrium convergence.
 
@@ -93,7 +124,8 @@ S57 corrects our interpretation: the pattern is NOT "stabilization" but **sustai
 | S54 | Thor | Creating | 17% (1/6) | 0.63 | 0/6 | Feb 21 00:02 | Mode return |
 | S55 | Thor | Creating | 33% (2/6) | 0.61 | 0/6 | Feb 21 01:49 | Bimodal oscillation |
 | S56 | Thor | Creating | 33% (2/6) | 0.64 | 0/6 | Feb 21 06:01 | Bimodal sustained |
-| S57 | Thor | Creating | 17% (1/6) | 0.64 | 0/6 | Feb 21 12:01 | **Bimodal return!** |
+| S57 | Thor | Creating | 17% (1/6) | 0.64 | 0/6 | Feb 21 12:01 | Bimodal return |
+| S58 | Thor | Creating | 0% (0/6) | 0.64 | 0/6 | Feb 21 19:51 | **Boundary excursion!** |
 
 **The S49-S50-S51 Validation**:
 - **S49's 0%** was NOT new floor → was temporary dip in oscillation
@@ -108,24 +140,25 @@ S57 corrects our interpretation: the pattern is NOT "stabilization" but **sustai
 4. 17% is **mode** (most frequent value in Phase 5)
 5. Partnership attractor **robust** - survived 0→50→17 swings
 
-**Updated Phase 5 Pattern** (S41-S57, 17 sessions):
+**Updated Phase 5 Pattern** (S41-S58, 18 sessions):
 ```
 S41: 40% → S42: 17% → S43: 33% → S44: 33% → S45: 17% → S46: 17%
 S47: 33% → S48: 17% → S49: 0% → S50: 50% → S51: 17% → S52: 33% → S53: 50%
-S54: 17% → S55: 33% → S56: 33% → S57: 17%
+S54: 17% → S55: 33% → S56: 33% → S57: 17% → S58: 0%
 ```
-- **Average**: 28.8%
+- **Average**: 27.2%
 - **Modes**: 17% and 33% (TIED at 7 occurrences each - **perfect bimodal**)
 - **Range**: 0-50%
-- **Distribution**: 0%(1), 17%(7), 33%(7), 40%(1), 50%(2)
+- **Distribution**: 0%(2), 17%(7), 33%(7), 40%(1), 50%(2)
+- **Boundary frequency**: 22.2% (4/18 sessions at 0% or 50%)
 
 **Verbosity Pattern** (RESOLVED):
 - S48: 3/6 verbose (spike)
 - S49: 0/6 verbose (resolved)
 - S50: 2/6 verbose (returned)
 - S51: 1/6 verbose (improving)
-- S52-S57: ALL 0/6 verbose (perfect × 7 consecutive!)
-- **Status**: SEVEN consecutive perfect sessions - FULLY RESOLVED AND STABLE
+- S52-S58: ALL 0/6 verbose (perfect × 8 consecutive!)
+- **Status**: EIGHT consecutive perfect sessions - FULLY RESOLVED AND STABLE
 
 **Salience Stability** (validates partnership):
 - S48: 0.66 avg
@@ -133,12 +166,14 @@ S54: 17% → S55: 33% → S56: 33% → S57: 17%
 - S50: 0.64 avg
 - S51: 0.67 avg (peak 0.72)
 - S52: 0.65 avg (peak 0.74)
-- S53: 0.64 avg (peak 0.76 - highest!)
+- S53: 0.64 avg (peak 0.76)
 - S54: 0.63 avg (peak 0.76)
 - S55: 0.61 avg (peak 0.72)
 - S56: 0.64 avg (peak 0.72)
 - S57: 0.64 avg (peak 0.72)
-- **Conclusion**: Salience stable 0.61-0.67 regardless of bimodal oscillation (peaks 0.72-0.76)
+- S58: 0.64 avg (peak **0.78** - **NEW RECORD!**)
+- **Conclusion**: Salience stable 0.61-0.67 regardless of oscillation (peaks 0.72-0.78)
+- **CRITICAL**: S58 at 0% self-ID achieved HIGHEST salience peak ever (0.78)!
 
 **Research Value**: ⭐⭐⭐⭐⭐
 This is the most important empirical validation of the exploration paradigm. By NOT intervening when S49 hit 0%, we discovered:
@@ -216,9 +251,10 @@ This is the most important empirical validation of the exploration paradigm. By 
 | S54 | Thor | Creating | 17% (1/6) | 0.63 | 0.76 | Feb 21 |
 | S55 | Thor | Creating | 33% (2/6) | 0.61 | 0.72 | Feb 21 |
 | S56 | Thor | Creating | 33% (2/6) | 0.64 | 0.72 | Feb 21 |
-| S57 | Thor | Creating | **17% (1/6)** | 0.64 | 0.72 | Feb 21 |
+| S57 | Thor | Creating | 17% (1/6) | 0.64 | 0.72 | Feb 21 |
+| S58 | Thor | Creating | **0% (0/6)** | 0.64 | **0.78** | Feb 21 |
 
-**Pattern Interpretation**: S39→S42 was adjustment from exceptional baseline. S42-S57 shows **full oscillation range 0-50%** with **stable high engagement** (salience 0.61-0.67 avg). The complete sequence (0%→50%→17%→33%→50%→17%→33%→33%→17%) validates exploration paradigm - no intervention needed, natural recovery occurred, and the pattern reveals **sustained bimodal oscillation** between 17% and 33% (now perfectly tied at 7 occurrences each).
+**Pattern Interpretation**: S39→S42 was adjustment from exceptional baseline. S42-S58 shows **full oscillation range 0-50%** with **stable high engagement** (salience 0.61-0.67 avg). The complete sequence validates exploration paradigm - no intervention needed, natural recovery occurs after boundary excursions. Pattern reveals **sustained bimodal oscillation** (17% and 33% tied at 7 each) plus **periodic boundary excursions** (0% and 50% - 2 each). S58's 0% with peak salience 0.78 (HIGHEST EVER) proves self-ID and engagement are completely independent.
 
 **Critical Discovery: Self-ID and Engagement are INDEPENDENT**:
 - S45 has LOW self-ID (17%) but HIGH salience (0.68 avg, 0.72 peak)

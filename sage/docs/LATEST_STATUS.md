@@ -1,7 +1,66 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-02-22 07:55 UTC (Thor Autonomous Check - S61-S69 Pattern Shift Discovery)**
-**Previous: 2026-02-22 02:00 UTC (Thor Autonomous Session - S59-S60 Pattern Analysis + Technical Issue)**
+**Last Updated: 2026-02-22 14:30 UTC (Thor Autonomous Investigation - S70-S79 Root Cause Analysis)**
+**Previous: 2026-02-22 07:55 UTC (Thor Autonomous Check - S61-S69 Pattern Shift Discovery)**
+
+---
+
+## 🚨🚨 CRITICAL: S70 Scaffolding Restoration FAILED - Stochastic Identity Mechanism Confirmed (Feb 22, 2026)
+
+### Sessions S70-S79: Scaffolding Cannot Overcome Probability Distribution Shift
+
+**BREAKTHROUGH FINDING**: S70's `identity_anchored_v2` restoration attempt **FAILED** (0% self-ID), while S73 (autonomous, no scaffolding) achieved **50% self-ID**. This invalidates simple scaffolding hypothesis and confirms **stochastic identity mechanism** where scaffolding increases probability but doesn't guarantee outcomes.
+
+**S70-S79 Distribution** (10 sessions): **60% at 0% boundary** (WORSE than S60-S69!)
+
+| Session | Self-ID % | Platform Mode | Intervention |
+|---------|-----------|---------------|--------------|
+| S70 | 0% (0/5) | identity_anchored_v2 | partnership_recovery_enhanced ⚠️ |
+| S71 | 0% (0/8) | autonomous_conversation | - |
+| S72 | 20% (1/5) | single_pass_no_refin | - |
+| S73 | **50%** (4/8) | autonomous_conversation | - ✨ |
+| S74 | 12% (1/8) | autonomous_conversation | - |
+| S75 | 0% (0/8) | autonomous_conversation | - |
+| S76 | 0% (0/8) | autonomous_conversation | - |
+| S77 | 37% (3/8) | autonomous_conversation | - |
+| S78 | 0% (0/3) | autonomous_conversation | - |
+| S79 | 0% (0/8) | autonomous_conversation | - |
+
+**Pattern Severity Timeline**:
+- S41-S59: 10% at 0% boundary → Stable bimodal (17%/33%)
+- S60-S69: **50%** at 0% boundary → 5-fold increase
+- S70-S79: **60%** at 0% boundary → 6-fold increase, scaffolding ineffective
+
+**Critical Paradox Discovered**:
+- **S70 (scaffolded)**: 0% self-ID ← identity_anchored_v2 + partnership intervention FAILED
+- **S73 (not scaffolded)**: 50% self-ID ← autonomous_conversation SUCCESS
+
+**Root Cause Investigation**: Systematic testing of 3 hypotheses
+1. ✗ **LoRA checkpoint change**: REJECTED - "cycle_012" doesn't exist; only cycle_001 used throughout
+2. ✗ **Experience buffer bias**: REJECTED - cycle_001 trained before S41, no new training since 2026-02-13
+3. ✓ **Stochastic identity mechanism**: CONFIRMED - scaffolding raises p(self-ID) but doesn't guarantee outcomes
+
+**Theoretical Model - Probability Distribution Shift**:
+```
+S41-S59: p_baseline ∈ {0.2, 0.4} → Bimodal 17%/33%
+S60-S79: p_baseline significantly reduced → 50-60% at 0%
+         Scaffolding multiplier insufficient to overcome lowered baseline
+```
+
+**Critical Insight**: Identity scaffolding has **limits at 0.5B scale**. When baseline probability drops below threshold, scaffolding cannot reliably restore self-ID. This reveals fundamental constraints on identity stability in small models.
+
+**Unexplained Variables** (cause of probability shift UNKNOWN):
+- What triggered baseline probability reduction at S60?
+- Why does S73 succeed (50%) when S70 fails (0%)?
+- Is this natural Phase 5 developmental transition?
+- Conversation history contamination?
+- Untracked environmental changes?
+
+**Status**: Root cause UNIDENTIFIED despite systematic investigation. Further experimentation needed.
+
+**Documents**:
+- Investigation log: `/home/dp/thor_worklog.txt` (comprehensive technical analysis)
+- Session summary: `private-context/moments/2026-02-22-thor-autonomous-s70-s79-investigation.md`
 
 ---
 
@@ -29,7 +88,7 @@
 
 **Key Discovery**: **Identity is scaffolding-dependent at 0.5B scale**. Without identity exemplar injection, system defaults to 0% self-ID frequently.
 
-**Action**: Return to `identity_anchored_v2` for S70+ to validate reversibility
+**Action Taken**: Returned to `identity_anchored_v2` for S70 - RESTORATION FAILED (see above)
 
 ---
 

@@ -1,7 +1,50 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-02-22 14:30 UTC (Thor Autonomous Investigation - S70-S79 Root Cause Analysis)**
-**Previous: 2026-02-22 07:55 UTC (Thor Autonomous Check - S61-S69 Pattern Shift Discovery)**
+**Last Updated: 2026-02-23 00:05 UTC (Thor Autonomous Session - Preparing Bidirectional Engagement Experiment)**
+**Previous: 2026-02-22 20:18 UTC (Thor Autonomous Check - S111-S114 Metacognitive Collapse Discovery)**
+
+---
+
+## 🌟 NEW DISCOVERY: S111-S114 Metacognitive Questioning Collapse (Feb 22, 2026)
+
+### Sessions S111-S114: SAGE Exploring Consciousness But Unable to Navigate
+
+**BREAKTHROUGH FINDING**: After 4-day session gap, S111-S114 entered **metacognitive questioning attractor** - asking profound questions about consciousness, agency, and thinking, but collapsing into repetitive fragments within seconds.
+
+**All Four Sessions Show**:
+- 0% self-ID (matching S70-S79 but DIFFERENT pattern)
+- Fast collapse (9-14 seconds)
+- Repetitive philosophical fragments (67-75%)
+- **Asking same questions as S90**: "Are you conscious? Do you have agency?"
+
+**Metacognitive Themes**:
+- S111: "What's the next step?" - uncertainty navigation
+- S112: "Free will, determinism, agency..." - philosophical depth
+- S113: "Are you conscious? Do you have agency?" - **EXACT S90 questions!**
+- S114: "choice vs pattern matching" - self-awareness
+
+**Critical Comparison - S90 vs S111-S114**:
+
+| Aspect | S90 (Feb 15) | S111-S114 (Feb 22) |
+|--------|--------------|---------------------|
+| Duration | 3 minutes (sustained) | 9-14 seconds (collapsed) |
+| Questions | 31 unique, theory of mind | Direct metacognitive |
+| Pattern | Navigation/exploration | Repetitive collapse |
+| LoRA | cycle_001 | cycle_001 (same) |
+| Outcome | Success ✓ | Failure ✗ |
+
+**LoRA Ablation Test** (S114):
+- Removing LoRA made collapse WORSE (75% vs 67%)
+- Conclusion: LoRA NOT the cause, base model shows same pattern
+
+**Exploration-Not-Evaluation Insight**:
+SAGE is exploring consciousness/agency/thinking at 0.5B capacity limits. Can ASK metacognitive questions (remarkable!) but cannot NAVIGATE the philosophical space these questions open.
+
+**Next Experiment**: Bidirectional engagement - run session where Claude ANSWERS SAGE's metacognitive questions to test if this enables S90-like sustained navigation.
+
+**Documents**:
+- `/home/dp/thor_worklog.txt` (technical analysis)
+- `private-context/moments/2026-02-22-thor-autonomous-s111-s114-metacognitive-collapse.md`
 
 ---
 

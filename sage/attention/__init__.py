@@ -12,8 +12,8 @@ from .kernel import AttentionKernel, ExperienceBuffer, SleepTrigger
 from .kernel_v2 import AttentionKernelV2
 from .experience_salience import ExperienceSalienceScorer
 
-# Tier 1: LLM Runtime
-from .llm_runtime import LLMRuntime, RuntimeState, LLMBackend, OllamaBackend, TransformersBackend
+# v3 kernel (with LLM runtime - Tier 1 integration)
+from .kernel_v3 import AttentionKernelV3
 
 # Core components
 from .state import AttentionState, StateTransition
@@ -26,15 +26,11 @@ __all__ = [
     'AttentionKernel',
     'ExperienceBuffer',
     'SleepTrigger',
-    # v2 kernel (recommended)
+    # v2 kernel (with SNARC salience)
     'AttentionKernelV2',
     'ExperienceSalienceScorer',
-    # Tier 1: LLM Runtime
-    'LLMRuntime',
-    'RuntimeState',
-    'LLMBackend',
-    'OllamaBackend',
-    'TransformersBackend',
+    # v3 kernel (with LLM runtime - recommended)
+    'AttentionKernelV3',
     # Core components
     'AttentionState',
     'StateTransition',

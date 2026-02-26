@@ -12,6 +12,9 @@ from .kernel import AttentionKernel, ExperienceBuffer, SleepTrigger
 from .kernel_v2 import AttentionKernelV2
 from .experience_salience import ExperienceSalienceScorer
 
+# Sleep consolidation (Day 2 Afternoon)
+from .sleep_consolidation import SleepConsolidationBridge, ExperienceToTrainingConverter
+
 # v3 kernel (with LLM runtime - Tier 1 integration)
 from .kernel_v3 import AttentionKernelV3
 
@@ -31,6 +34,9 @@ __all__ = [
     'ExperienceSalienceScorer',
     # v3 kernel (with LLM runtime - recommended)
     'AttentionKernelV3',
+    # Sleep consolidation (Day 2 Afternoon)
+    'SleepConsolidationBridge',
+    'ExperienceToTrainingConverter',
     # Core components
     'AttentionState',
     'StateTransition',

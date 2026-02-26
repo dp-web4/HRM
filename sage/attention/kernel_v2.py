@@ -49,6 +49,20 @@ class AttentionKernelV2:
             memory_size=config.get('salience_memory_size', 100)
         )
 
+        # NEW: Sleep consolidation bridge (Day 2 Afternoon)
+        from .sleep_consolidation import SleepConsolidationBridge
+        sleep_config = config.get('sleep_consolidation', {})
+        try:
+            self.sleep_consolidation = SleepConsolidationBridge(
+                model_path=config.get('model_path'),
+                checkpoint_dir=config.get('checkpoint_dir', 'logs/attention/sleep_checkpoints'),
+                config=sleep_config
+            )
+            print(f"[AttentionKernelV2] Sleep consolidation bridge initialized")
+        except Exception as e:
+            print(f"[AttentionKernelV2] Sleep consolidation init failed: {e}")
+            self.sleep_consolidation = None
+
         # Logging
         log_dir = config.get('log_dir', 'logs')
         self.tick_logger = TickLogger(f'{log_dir}/attention_tick.jsonl')
@@ -297,24 +311,49 @@ class AttentionKernelV2:
         print(f"  Buffer size: {self.experience_buffer.size}")
         print(f"  Total salience: {self.experience_buffer.salience_sum:.2f}")
 
-        # Get top experiences by salience
-        top_experiences = self.experience_buffer.get_top_k(50)
-
         # Show salience statistics
         stats = self.salience_scorer.get_statistics()
         print(f"  Salience stats: avg={stats['avg_salience']:.3f}, max={stats['max_salience']:.3f}")
         print(f"  Source distribution: {stats['source_distribution']}")
 
-        # Prepare manifest
-        manifest = {
-            'cycle': self.sleep_cycle_count,
-            'num_experiences': len(top_experiences),
-            'total_salience': self.experience_buffer.salience_sum,
-            'timestamp': time.time(),
-            'salience_stats': stats
-        }
+        # NEW: Invoke sleep consolidation bridge (Day 2 Afternoon)
+        if self.sleep_consolidation:
+            print(f"[AttentionKernelV2] Invoking sleep consolidation bridge...")
 
-        print(f"  Consolidating {len(top_experiences)} top experiences")
+            # Prepare kernel stats for consolidation
+            kernel_stats = {
+                'tick_count': self.tick_count,
+                'sleep_cycle_count': self.sleep_cycle_count,
+                'buffer_size': self.experience_buffer.size,
+                'salience_sum': self.experience_buffer.salience_sum,
+                'salience_stats': stats
+            }
+
+            # Run consolidation (converts experiences → training format → LoRA training)
+            consolidation_results = await self.sleep_consolidation.consolidate(
+                self.experience_buffer,
+                kernel_stats
+            )
+
+            print(f"[AttentionKernelV2] Consolidation complete:")
+            print(f"  Status: {consolidation_results.get('status', 'N/A')}")
+            print(f"  Experiences consolidated: {consolidation_results.get('num_experiences', 0)}")
+
+            if consolidation_results.get('final_loss') is not None:
+                print(f"  Final loss: {consolidation_results['final_loss']:.4f}")
+        else:
+            # Fallback: Log experiences without training (original behavior)
+            print(f"[AttentionKernelV2] Sleep consolidation disabled - logging only")
+
+            top_experiences = self.experience_buffer.get_top_k(50)
+            manifest = {
+                'cycle': self.sleep_cycle_count,
+                'num_experiences': len(top_experiences),
+                'total_salience': self.experience_buffer.salience_sum,
+                'timestamp': time.time(),
+                'salience_stats': stats
+            }
+            print(f"  Manifest created for {len(top_experiences)} top experiences")
 
         # Clear buffer
         self.experience_buffer.clear()

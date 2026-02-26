@@ -72,8 +72,14 @@ class AttentionKernelV2:
             print(f"[AttentionKernelV2] Plugin router init failed: {e}")
             self.plugin_router = None
 
-        # LLM runtime (Day 2)
-        self.llm_runtime = None
+        # LLM runtime (Tier 1)
+        from .llm_runtime import LLMRuntime
+        llm_config = config.get('llm_config', {})
+        try:
+            self.llm_runtime = LLMRuntime(llm_config)
+        except Exception as e:
+            print(f"[AttentionKernelV2] LLM runtime init failed: {e}")
+            self.llm_runtime = None
 
     async def run_forever(self):
         """Main event loop - runs continuously"""
@@ -81,6 +87,7 @@ class AttentionKernelV2:
         print(f"[AttentionKernelV2] Starting continuous attention loop")
         print(f"[AttentionKernelV2] Tick interval: {self.tick_interval}s")
         print(f"[AttentionKernelV2] SNARC salience scoring: ENABLED")
+        print(f"[AttentionKernelV2] LLM runtime: {'ENABLED' if self.llm_runtime else 'DISABLED'}")
         print(f"[AttentionKernelV2] Initial state: {self.state}")
 
         while self.running:
@@ -235,13 +242,44 @@ class AttentionKernelV2:
         print(f"[AttentionKernelV2] THINK - invoking LLM")
 
         if self.llm_runtime:
+            # Build prompt from current focus
             prompt = self.build_prompt(self.current_focus or {})
             self.context_logger.log_context('prompt', {'focus': self.current_focus}, prompt)
-            print(f"[AttentionKernelV2] LLM invocation (not yet wired)")
+
+            # Invoke LLM for deep reasoning
+            try:
+                result = await self.llm_runtime.generate(
+                    prompt=prompt,
+                    max_tokens=256,
+                    temperature=0.7
+                )
+
+                # Store result as current thought
+                self.current_thought = {
+                    'prompt': prompt,
+                    'response': result,
+                    'timestamp': time.time()
+                }
+
+                print(f"[AttentionKernelV2] LLM response: {result[:100]}...")
+
+                # Capture experience with LLM result
+                self.capture_experience('think', self.current_focus or {}, {
+                    'status': 'success',
+                    'response_length': len(result),
+                    'llm_stats': self.llm_runtime.get_stats()
+                })
+
+            except Exception as e:
+                print(f"[AttentionKernelV2] LLM invocation failed: {e}")
+                self.capture_experience('think', self.current_focus or {}, {
+                    'status': 'error',
+                    'error': str(e)
+                })
+
         else:
             print(f"[AttentionKernelV2] No LLM runtime available")
-
-        self.capture_experience('think', self.current_focus or {}, {'status': 'placeholder'})
+            self.capture_experience('think', self.current_focus or {}, {'status': 'no_llm'})
 
     async def act_behavior(self, events):
         """ACT: Execute actions, observe outcomes"""
@@ -344,7 +382,26 @@ class AttentionKernelV2:
 
     def build_prompt(self, focus: Dict[str, Any]) -> str:
         """Build prompt for LLM from current focus"""
-        return f"Context: {focus}\n\nWhat should I do next?"
+        # Extract key information from focus
+        plugin_results = focus.get('plugin_results', {})
+        confidence = focus.get('confidence', 0.0)
+        disagreement = focus.get('disagreement', 0.0)
+
+        # Build structured prompt
+        prompt = "You are SAGE, a continuous attention kernel for autonomous reasoning.\n\n"
+        prompt += "CURRENT SITUATION:\n"
+
+        if plugin_results:
+            prompt += f"- Plugin confidence: {confidence:.2f}\n"
+            prompt += f"- Plugin disagreement: {disagreement:.2f}\n"
+            prompt += f"- Plugins executed: {len(plugin_results.get('results', {}))}\n"
+        else:
+            prompt += "- No plugin results available\n"
+
+        prompt += "\nQUESTION: Given this situation, what should I focus on next?\n"
+        prompt += "Provide a brief (1-2 sentence) recommendation.\n"
+
+        return prompt
 
     def _compute_confidence(self, results: Dict[str, Any]) -> float:
         """Compute overall confidence from plugin results"""

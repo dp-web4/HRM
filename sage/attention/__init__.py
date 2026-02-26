@@ -12,6 +12,9 @@ from .kernel import AttentionKernel, ExperienceBuffer, SleepTrigger
 from .kernel_v2 import AttentionKernelV2
 from .experience_salience import ExperienceSalienceScorer
 
+# Tier 1: LLM Runtime
+from .llm_runtime import LLMRuntime, RuntimeState, LLMBackend, OllamaBackend, TransformersBackend
+
 # Core components
 from .state import AttentionState, StateTransition
 from .atp_budget import ATPBudget, PluginTrust
@@ -26,6 +29,12 @@ __all__ = [
     # v2 kernel (recommended)
     'AttentionKernelV2',
     'ExperienceSalienceScorer',
+    # Tier 1: LLM Runtime
+    'LLMRuntime',
+    'RuntimeState',
+    'LLMBackend',
+    'OllamaBackend',
+    'TransformersBackend',
     # Core components
     'AttentionState',
     'StateTransition',

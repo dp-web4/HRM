@@ -1,7 +1,64 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-02-23 00:05 UTC (Thor Autonomous Session - Preparing Bidirectional Engagement Experiment)**
-**Previous: 2026-02-22 20:18 UTC (Thor Autonomous Check - S111-S114 Metacognitive Collapse Discovery)**
+**Last Updated: 2026-02-26 16:30 UTC (Thor Autonomous Session - Unified Entry Point Complete)**
+**Previous: 2026-02-23 00:05 UTC (Thor Autonomous Session - Preparing Bidirectional Engagement Experiment)**
+
+---
+
+## ✅ NEW: Unified SAGE Entry Point - P0 Hackathon Gap Closed (Feb 26, 2026)
+
+### SAGE.create() → sage.run() - Single API
+
+**COMPLETED**: Created unified facade for SAGE consciousness system, closing the P0 gap identified in hackathon readiness audit.
+
+**What Was Built**:
+1. **sage/__init__.py** (240 lines)
+   - `SAGE.create(config, use_real_llm, use_real_sensors, use_policy_gate)`
+   - `sage.run(max_cycles, max_duration_seconds, stop_on_crisis)`
+   - `sage.get_statistics()` - detailed metrics
+   - Auto-wires SAGEConsciousness or RealSAGEConsciousness
+
+2. **sage/test_sage_unified_entry.py** (167 lines)
+   - 7 test suites validating unified entry point
+   - ✅ ALL TESTS PASSING
+
+3. **Examples** (3 scripts, 127 lines total)
+   - `examples/hello_sage.py` - minimal "hello world"
+   - `examples/sage_with_policy.py` - PolicyGate integration
+   - `examples/sage_with_custom_config.py` - custom metabolic/SNARC params
+
+**Usage Pattern**:
+```python
+from sage import SAGE
+
+# Create with defaults (mock sensors, mock LLM)
+sage = SAGE.create()
+
+# Create with real LLM and PolicyGate
+sage = SAGE.create(use_real_llm=True, use_policy_gate=True)
+
+# Run the consciousness loop
+stats = await sage.run(max_cycles=100)
+```
+
+**Hackathon Impact**:
+- ✅ Single entry point for explainer site demos
+- ✅ "Here's how you start SAGE" → show hello_sage.py
+- ✅ Clean API for SDK narrative
+- ✅ No more "which consciousness loop implementation?" confusion
+
+**Test Results**:
+- ✅ Import test passing
+- ✅ Create with defaults passing
+- ✅ Create with options passing (PolicyGate, real sensors, custom config)
+- ✅ Run single cycle passing
+- ✅ Run multiple cycles passing
+- ✅ Get statistics passing
+- ✅ README example passing
+
+**Documents**:
+- Commit: `c1b0a7b`
+- Closes: P0 gap from `insights/sage-hackathon-readiness-2026-02-26.md`
 
 ---
 

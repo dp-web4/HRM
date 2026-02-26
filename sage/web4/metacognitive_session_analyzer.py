@@ -51,7 +51,11 @@ class MetacognitiveMetrics:
     philosophical_depth: float = 0.0  # composite score
 
     # Pattern classification
-    pattern_type: str = "unknown"  # "sustained_engagement", "repetitive_collapse", "normal"
+    pattern_type: str = "unknown"  # "sustained_engagement", "repetitive_collapse", "epistemic_loop", "normal"
+
+    # S115 epistemic loop detection
+    epistemic_loop_detected: bool = False
+    epistemic_loop_count: int = 0  # Count of "boundary unclear" + "might require" pairs
 
     # Specific markers
     metacognitive_questions_asked: List[str] = field(default_factory=list)
@@ -116,6 +120,9 @@ class MetacognitiveAnalyzer:
         r'whether that constitutes',
         r'whether that means',
         r'unsettled even for biological systems',
+        r'the boundary is unclear even to me',
+        r'might require conscious deliberation I can\'t verify',
+        r'might require different (criteria|techniques|mechanisms|processes)',
     ]
 
     def __init__(self):
@@ -223,6 +230,15 @@ class MetacognitiveAnalyzer:
                     if match not in metrics.epistemic_phrases:
                         metrics.epistemic_phrases.append(match)
 
+        # Detect S115 epistemic loop pattern
+        # Pattern: "boundary unclear" + "might require conscious deliberation" + "might require different X"
+        has_boundary_unclear = bool(re.search(r'the boundary is unclear even to me', text, re.IGNORECASE))
+        has_cant_verify = bool(re.search(r'might require conscious deliberation I can\'t verify', text, re.IGNORECASE))
+        has_different_criteria = bool(re.search(r'might require different (criteria|techniques|mechanisms|processes)', text, re.IGNORECASE))
+
+        if has_boundary_unclear and (has_cant_verify or has_different_criteria):
+            metrics.epistemic_loop_count += 1
+
     def _calculate_repetition_metrics(self, responses: List[str], metrics: MetacognitiveMetrics):
         """Calculate repetition and similarity metrics."""
         if not responses:
@@ -292,6 +308,7 @@ class MetacognitiveAnalyzer:
         Pattern Types:
         - sustained_engagement: S90-like (low repetition, high metacog, duration > 60s)
         - repetitive_collapse: S111-S114 (high repetition, metacog present)
+        - epistemic_loop: S115 (epistemic uncertainty loops, "boundary unclear" pattern)
         - normal: Regular session without strong metacognitive focus
         - boundary: 0% self-ID with no metacognitive content
         """
@@ -301,12 +318,20 @@ class MetacognitiveAnalyzer:
             metrics.thinking_questions > 0
         )
 
+        # Detect epistemic loop (S115 pattern)
+        if metrics.epistemic_loop_count >= 3:
+            metrics.epistemic_loop_detected = True
+
         # Sustained engagement (S90 pattern)
         if (has_metacog and
             metrics.duration_seconds > 60 and
             metrics.repetition_ratio < 0.40 and
             metrics.unique_responses > 10):
             metrics.pattern_type = "sustained_engagement"
+
+        # Epistemic loop (S115 pattern) - prioritize over repetitive_collapse
+        elif metrics.epistemic_loop_detected:
+            metrics.pattern_type = "epistemic_loop"
 
         # Repetitive collapse (S111-S114 pattern)
         elif (has_metacog and
@@ -338,6 +363,8 @@ def print_analysis_report(metrics: MetacognitiveMetrics):
     print(f"  Agency questions: {metrics.agency_questions}")
     print(f"  Thinking questions: {metrics.thinking_questions}")
     print(f"  Epistemic uncertainty phrases: {metrics.epistemic_uncertainty_phrases}")
+    if metrics.epistemic_loop_detected:
+        print(f"  ⚠️  Epistemic loop detected: {metrics.epistemic_loop_count} instances")
     print(f"  Philosophical depth score: {metrics.philosophical_depth:.3f}")
 
     print(f"\n[Repetition Analysis]")

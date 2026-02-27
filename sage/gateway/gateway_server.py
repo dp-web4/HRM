@@ -40,16 +40,32 @@ class GatewayHandler(BaseHTTPRequestHandler):
     consciousness = None
     daemon = None
     config = None
+    network_open: bool = False
+
+    def _check_network_gate(self) -> bool:
+        """Reject non-localhost requests when network access is closed."""
+        if self._is_localhost():
+            return True
+        if not GatewayHandler.network_open:
+            self.send_error(403, "Network access is currently disabled")
+            return False
+        return True
 
     def do_POST(self):
+        if not self._check_network_gate():
+            return
         if self.path == '/chat':
             self._handle_chat()
         elif self.path == '/converse':
             self._handle_chat()  # Same handler, conversation_id distinguishes
+        elif self.path == '/network-access':
+            self._handle_network_access_post()
         else:
             self.send_error(404, "Endpoint not found")
 
     def do_GET(self):
+        if not self._check_network_gate():
+            return
         if self.path in ('/', '/dashboard'):
             self._handle_dashboard()
         elif self.path == '/stream':
@@ -62,6 +78,8 @@ class GatewayHandler(BaseHTTPRequestHandler):
             self._handle_status()
         elif self.path == '/peers':
             self._handle_peers()
+        elif self.path == '/network-access':
+            self._handle_network_access_get()
         else:
             self.send_error(404, "Endpoint not found")
 
@@ -255,6 +273,7 @@ class GatewayHandler(BaseHTTPRequestHandler):
             'timestamp': time.time(),
             'machine': getattr(self.config, 'machine_name', 'unknown') if self.config else 'unknown',
             'lct_id': getattr(self.config, 'lct_id', '') if self.config else '',
+            'network_open': GatewayHandler.network_open,
         }
 
         # Metabolic state + ATP
@@ -375,6 +394,23 @@ class GatewayHandler(BaseHTTPRequestHandler):
             'note': 'Peer registry not yet implemented',
         }
         self._send_json(peers)
+
+    def _handle_network_access_get(self):
+        """Return current network access state."""
+        self._send_json({'network_open': GatewayHandler.network_open})
+
+    def _handle_network_access_post(self):
+        """Toggle network access (localhost only)."""
+        if not self._is_localhost():
+            self.send_error(403, "Only localhost can toggle network access")
+            return
+        data = self._read_body()
+        if data is None:
+            return
+        GatewayHandler.network_open = bool(data.get('open', False))
+        state = 'open' if GatewayHandler.network_open else 'closed'
+        print(f"[Gateway] Network access toggled: {state}")
+        self._send_json({'network_open': GatewayHandler.network_open})
 
     def log_message(self, format, *args):
         """Custom log formatting — suppress noisy endpoints."""

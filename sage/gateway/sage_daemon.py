@@ -33,6 +33,7 @@ Architecture:
 """
 
 import asyncio
+import os
 import signal
 import sys
 import time
@@ -195,6 +196,7 @@ class SAGEDaemon:
             message_queue=self.message_queue,
             consciousness=self.consciousness,
             config=self.config,
+            daemon=self,
             host='0.0.0.0',
             port=self.config.gateway_port,
         )
@@ -223,8 +225,17 @@ class SAGEDaemon:
         print(f"  Gateway: http://0.0.0.0:{self.config.gateway_port}")
         print(f"  Model: {self.config.model_size}")
         print(f"  LCT: {self.config.lct_id}")
+        print(f"  Dashboard: http://localhost:{self.config.gateway_port}/")
         print(f"  Health: http://localhost:{self.config.gateway_port}/health")
         print(f"{'='*60}\n")
+
+        # 4b. Auto-launch dashboard in browser
+        if not os.environ.get('SAGE_NO_BROWSER'):
+            import webbrowser
+            try:
+                webbrowser.open(f'http://localhost:{self.config.gateway_port}/')
+            except Exception:
+                pass  # Headless environment, no browser available
 
         # 5. Run consciousness loop until shutdown
         try:

@@ -8,9 +8,12 @@ sage/federation/federation_service.py.
 Endpoints:
     POST /chat      — Send message, receive response (blocking)
     POST /converse   — Multi-turn conversation (includes conversation_id)
+    GET  /           — SAGE dashboard (live stats + chat)
+    GET  /stream     — SSE stream of live stats (1Hz)
     GET  /health     — Health check + metabolic state
     GET  /status     — Full daemon status
     GET  /peers      — List known peer SAGEs
+    GET  /images/*   — Static image serving (Agent Zero avatar)
 
 Auth:
     Localhost: No auth required
@@ -20,7 +23,8 @@ Auth:
 import asyncio
 import json
 import time
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
 from threading import Thread
 from typing import Dict, Any, Optional
 import concurrent.futures
@@ -46,7 +50,13 @@ class GatewayHandler(BaseHTTPRequestHandler):
             self.send_error(404, "Endpoint not found")
 
     def do_GET(self):
-        if self.path == '/health':
+        if self.path in ('/', '/dashboard'):
+            self._handle_dashboard()
+        elif self.path == '/stream':
+            self._handle_stream()
+        elif self.path.startswith('/images/'):
+            self._handle_static()
+        elif self.path == '/health':
             self._handle_health()
         elif self.path == '/status':
             self._handle_status()
@@ -210,6 +220,126 @@ class GatewayHandler(BaseHTTPRequestHandler):
         except concurrent.futures.TimeoutError:
             return None
 
+    def _handle_dashboard(self):
+        """Serve the SAGE dashboard web interface."""
+        from sage.gateway.dashboard_html import DASHBOARD_HTML
+        body = DASHBOARD_HTML.encode('utf-8')
+        self.send_response(200)
+        self.send_header('Content-Type', 'text/html; charset=utf-8')
+        self.send_header('Content-Length', str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def _handle_stream(self):
+        """SSE stream of live SAGE stats — pushes JSON every 1 second."""
+        self.send_response(200)
+        self.send_header('Content-Type', 'text/event-stream')
+        self.send_header('Cache-Control', 'no-cache')
+        self.send_header('Connection', 'keep-alive')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.end_headers()
+
+        try:
+            while True:
+                data = self._collect_dashboard_stats()
+                payload = f"data: {json.dumps(data)}\n\n"
+                self.wfile.write(payload.encode())
+                self.wfile.flush()
+                time.sleep(1)
+        except (BrokenPipeError, ConnectionResetError, OSError):
+            pass  # Client disconnected
+
+    def _collect_dashboard_stats(self) -> Dict[str, Any]:
+        """Gather all stats the dashboard needs."""
+        stats: Dict[str, Any] = {
+            'timestamp': time.time(),
+            'machine': getattr(self.config, 'machine_name', 'unknown') if self.config else 'unknown',
+            'lct_id': getattr(self.config, 'lct_id', '') if self.config else '',
+        }
+
+        # Metabolic state + ATP
+        if self.consciousness and hasattr(self.consciousness, 'metabolic'):
+            stats['metabolic_state'] = self.consciousness.metabolic.current_state.value
+            stats['atp_current'] = round(self.consciousness.metabolic.atp_current, 1)
+            stats['atp_max'] = getattr(self.consciousness.metabolic, 'atp_max',
+                                       getattr(self.consciousness.metabolic, 'max_atp', 100.0))
+            stats['cycle_count'] = getattr(self.consciousness, 'cycle_count', 0)
+
+        # Consciousness loop stats
+        if self.consciousness and hasattr(self.consciousness, 'stats'):
+            stats['loop_stats'] = self.consciousness.stats
+            stats['average_salience'] = self.consciousness.stats.get('average_salience', 0.0)
+
+        # Plugin trust weights
+        if self.consciousness and hasattr(self.consciousness, 'plugin_trust_weights'):
+            stats['plugin_trust'] = dict(self.consciousness.plugin_trust_weights)
+
+        # GPU stats (guarded import)
+        try:
+            import torch
+            if torch.cuda.is_available():
+                props = torch.cuda.get_device_properties(0)
+                stats['gpu'] = {
+                    'name': torch.cuda.get_device_name(0),
+                    'memory_allocated_mb': round(torch.cuda.memory_allocated(0) / 1e6, 1),
+                    'memory_reserved_mb': round(torch.cuda.memory_reserved(0) / 1e6, 1),
+                    'memory_total_mb': round(props.total_memory / 1e6, 1),
+                }
+        except ImportError:
+            pass
+
+        # CPU / RAM (guarded import)
+        try:
+            import psutil
+            stats['cpu_percent'] = psutil.cpu_percent(interval=None)
+            vm = psutil.virtual_memory()
+            stats['ram_used_mb'] = round(vm.used / 1e6, 1)
+            stats['ram_total_mb'] = round(vm.total / 1e6, 1)
+        except ImportError:
+            pass
+
+        # Message queue stats
+        if self.message_queue and hasattr(self.message_queue, 'stats'):
+            stats['message_stats'] = self.message_queue.stats
+
+        # Uptime
+        if self.daemon and hasattr(self.daemon, 'started_at') and self.daemon.started_at:
+            stats['uptime_seconds'] = round(time.time() - self.daemon.started_at, 1)
+
+        return stats
+
+    def _handle_static(self):
+        """Serve static files from the HRM/images/ directory."""
+        filename = self.path.split('/images/')[-1]
+        if '..' in filename or '/' in filename:
+            self.send_error(403, "Forbidden")
+            return
+
+        images_dir = Path(__file__).parent.parent.parent / 'images'
+        filepath = images_dir / filename
+
+        if not filepath.exists() or not filepath.is_file():
+            self.send_error(404, "File not found")
+            return
+
+        ext = filepath.suffix.lower()
+        content_types = {
+            '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
+            '.gif': 'image/gif', '.svg': 'image/svg+xml',
+        }
+        content_type = content_types.get(ext)
+        if not content_type:
+            self.send_error(403, "File type not allowed")
+            return
+
+        body = filepath.read_bytes()
+        self.send_response(200)
+        self.send_header('Content-Type', content_type)
+        self.send_header('Content-Length', str(len(body)))
+        self.send_header('Cache-Control', 'public, max-age=3600')
+        self.end_headers()
+        self.wfile.write(body)
+
     def _handle_health(self):
         """Handle GET /health — quick health check."""
         health = {
@@ -247,9 +377,10 @@ class GatewayHandler(BaseHTTPRequestHandler):
         self._send_json(peers)
 
     def log_message(self, format, *args):
-        """Custom log formatting — less noisy than default."""
-        if '/health' in (args[0] if args else ''):
-            return  # Don't log health checks
+        """Custom log formatting — suppress noisy endpoints."""
+        path = args[0] if args else ''
+        if any(s in path for s in ('/health', '/stream', '/images/')):
+            return
         print(f"[Gateway] {args[0] if args else format}")
 
 
@@ -291,16 +422,15 @@ class GatewayServer:
         if self.running:
             return
 
-        self.httpd = HTTPServer((self.host, self.port), GatewayHandler)
+        self.httpd = ThreadingHTTPServer((self.host, self.port), GatewayHandler)
         self.running = True
 
         self.server_thread = Thread(target=self._run, daemon=True, name='sage-gateway')
         self.server_thread.start()
 
     def _run(self):
-        """Server loop."""
-        while self.running:
-            self.httpd.handle_request()
+        """Server loop — threaded so SSE connections don't block other requests."""
+        self.httpd.serve_forever()
 
     def stop(self):
         """Stop the gateway server."""

@@ -203,11 +203,33 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             max_response_tokens=250,
         )
 
-    elif machine_name in ('cbp', 'nomad'):
-        # CBP/Nomad: no local SAGE model, gateway client only
+    elif machine_name == 'nomad':
+        # Nomad: Legion laptop, RTX 4060 8GB, Ollama-served models
+        workspace = '/mnt/c/projects/ai-agents'
+        return SAGEMachineConfig(
+            machine_name='nomad',
+            model_path='ollama:gemma3:4b',  # Sentinel — parsed by daemon
+            model_size='ollama',
+            device='cuda',
+            max_memory_gb=8.0,
+            gateway_port=port,
+            workspace_path=workspace,
+            identity_state_path=f'{workspace}/HRM/sage/raising/state/identity.json',
+            experience_buffer_path=f'{workspace}/HRM/sage/raising/state/experience_buffer.json',
+            irp_iterations=5,
+            federation_port=50051,
+            ed25519_key_path='',
+            lct_id='nomad_sage_lct',
+            system_prompt_mode='creative',
+            cycle_sleep_ms=100,
+            max_response_tokens=250,
+        )
+
+    elif machine_name == 'cbp':
+        # CBP: no local SAGE model, gateway client only
         workspace = '/mnt/c/exe/projects/ai-agents'
         return SAGEMachineConfig(
-            machine_name=machine_name,
+            machine_name='cbp',
             model_path='',  # No local model
             model_size='none',
             device='cpu',
@@ -219,7 +241,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             irp_iterations=0,
             federation_port=0,
             ed25519_key_path='',
-            lct_id=f'{machine_name}_sage_lct',
+            lct_id='cbp_sage_lct',
             system_prompt_mode='creative',
             cycle_sleep_ms=0,
             max_response_tokens=0,

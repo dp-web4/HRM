@@ -68,12 +68,15 @@ class EffectExtractor:
 # ============================================================================
 
 def _get_state_data(result) -> Optional[Any]:
-    """Safely get final_state.x from a PluginResult."""
+    """Safely get final_state data from a PluginResult."""
     if result is None:
         return None
     fs = getattr(result, 'final_state', None)
     if fs is None:
         return None
+    # PluginState objects have .x, plain dicts are returned directly
+    if isinstance(fs, dict):
+        return fs
     return getattr(fs, 'x', None)
 
 

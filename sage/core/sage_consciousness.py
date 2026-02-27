@@ -256,7 +256,7 @@ class SAGEConsciousness:
 
             # Network effector for MESSAGE effects (gateway responses)
             try:
-                from interfaces.effectors.network_effector import NetworkEffector
+                from sage.interfaces.effectors.network_effector import NetworkEffector
                 network_eff = NetworkEffector({'effector_id': 'network', 'effector_type': 'network'})
                 if self.message_queue is not None:
                     network_eff.set_message_queue(self.message_queue)
@@ -286,8 +286,9 @@ class SAGEConsciousness:
 
             self._effect_system_available = True
 
-        except ImportError:
+        except ImportError as e:
             # Effect system not available (missing deps)
+            print(f"[WARN] Effect system not available: {e}")
             self.effect_extractor = None
             self.effector_registry = None
             self.policy_gate_enabled = False
@@ -492,6 +493,7 @@ class SAGEConsciousness:
         if self.message_queue is not None:
             pending = self.message_queue.poll_all()
             for msg in pending:
+                print(f"[Gateway] Message from {msg.sender}: {msg.content[:80]}")
                 observations.append(SensorObservation(
                     sensor_id=f'message_{msg.message_id}',
                     modality='message',

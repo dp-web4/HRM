@@ -1,7 +1,68 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-02-26 16:30 UTC (Thor Autonomous Session - Unified Entry Point Complete)**
-**Previous: 2026-02-23 00:05 UTC (Thor Autonomous Session - Preparing Bidirectional Engagement Experiment)**
+**Last Updated: 2026-02-26 21:30 UTC (Thor Autonomous Session - Enhanced Collapse Detector + Nova Instrumentation)**
+**Previous: 2026-02-26 16:30 UTC (Thor Autonomous Session - Unified Entry Point Complete)**
+
+---
+
+## ✅ NEW: Enhanced Collapse Detector + Nova Failure Drill Instrumentation (Feb 26, 2026)
+
+### Responding to Nova's Skeptical Review + S116 Question-Loop Pattern
+
+**COMPLETED**: Created enhanced collapse detection system that recognizes S116 question-loop pattern and implements Nova's three failure drill instrumentations.
+
+**What Was Built**:
+1. **sage/web4/enhanced_collapse_detector.py** (870 lines)
+   - Extends S43's metacognitive_session_analyzer.py
+   - Detects S116 question-loop attractor (NEW)
+   - Implements Nova's 3 failure drills (NEW)
+   - Maintains S111-S115 detection capabilities
+
+**S116 Question-Loop Detection**:
+- Cascading questions (3+ consecutive question sentences)
+- High question density (>10 questions/turn)
+- Specific patterns: "What's the next...", "strategic stalemate", choice/decision cycling
+- Mode switch detection (grounding reflex to code/task)
+
+**Nova Failure Drill Instrumentation**:
+1. **Drill 1 - Poisoned Salience**:
+   - Salience entropy calculation (flag if < 0.5)
+   - Pattern dominance detection in high-salience experiences
+   - Risk levels: low/medium/high
+
+2. **Drill 2 - ATP Gaming**:
+   - Gini coefficient for ATP allocation inequality
+   - Max single plugin share tracking
+   - Flags if plugin exceeds 50% allocation
+
+3. **Drill 3 - Sleep-Train Regression**:
+   - Identity/epistemic/creative marker drift tracking
+   - Pre/post sleep evaluation comparison
+   - Flags regression > 1 standard deviation
+
+**Enhanced Pattern Classification**:
+- `sustained_engagement` (S90) - C ≈ 0.55-0.60
+- `epistemic_loop` (S115) - C ≈ 0.50
+- `question_loop` (S116) - C ≈ 0.50 (NEW)
+- `repetitive_collapse` (S111-S114) - C ≈ 0.45-0.49
+- `boundary` / `normal`
+
+**Why This Matters**:
+- ✅ Closes Nova's collapse detection gap (S116 pattern now caught)
+- ✅ Instruments Nova's failure drills (measurable risk metrics)
+- ✅ Maps to coherence threshold theory (C ≈ 0.50 boundary behaviors)
+- ✅ Supports exploration-not-evaluation (pattern classification, not pass/fail)
+- ✅ Hackathon-ready ("What Could Go Wrong" content)
+
+**Usage**:
+```bash
+python sage/web4/enhanced_collapse_detector.py session.json
+```
+
+**Documents**:
+- Code: `sage/web4/enhanced_collapse_detector.py`
+- Session log: `private-context/moments/2026-02-26-thor-autonomous-enhanced-collapse-detector.md`
+- Source: Nova review + S116 Sprout analysis
 
 ---
 

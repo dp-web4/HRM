@@ -153,6 +153,46 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     color: var(--text-dim);
   }
 
+  .network-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-dim);
+    transition: all 0.3s;
+    user-select: none;
+    font-family: inherit;
+    margin-top: 4px;
+  }
+
+  .network-toggle:hover {
+    border-color: var(--text-dim);
+  }
+
+  .network-toggle.open {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  }
+
+  .network-toggle .indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    transition: background 0.3s;
+  }
+
+  .network-toggle.open .indicator {
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent);
+  }
+
   /* Center Panel — Stats */
   .stats-panel {
     padding: 16px;
@@ -421,6 +461,10 @@ DASHBOARD_HTML = """<!DOCTYPE html>
       <div class="metabolic-badge" id="metabolic-badge">--</div>
       <div class="lct-id" id="lct-id">--</div>
       <div class="uptime" id="uptime-detail">--</div>
+      <button class="network-toggle" id="network-toggle" title="Allow others on the network to talk to SAGE">
+        <span class="indicator"></span>
+        <span id="network-label">Local Only</span>
+      </button>
     </section>
 
     <!-- Center: Stats -->
@@ -617,6 +661,12 @@ function updateDashboard(d) {
   if (d.chat_count !== undefined) {
     document.getElementById('messages-sub').textContent = 'chats: ' + d.chat_count;
   }
+
+  // Network access state
+  if (d.network_open !== undefined) {
+    networkOpen = d.network_open;
+    updateNetworkToggle();
+  }
 }
 
 // --- Chat ---
@@ -685,6 +735,37 @@ chatInput.addEventListener('keydown', (e) => {
     chatForm.dispatchEvent(new Event('submit'));
   }
 });
+
+// --- Network Access Toggle ---
+const networkToggle = document.getElementById('network-toggle');
+let networkOpen = false;
+
+networkToggle.addEventListener('click', async () => {
+  try {
+    const resp = await fetch('/network-access', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ open: !networkOpen }),
+    });
+    const result = await resp.json();
+    networkOpen = result.network_open;
+    updateNetworkToggle();
+  } catch (err) {
+    console.error('Network toggle failed:', err);
+  }
+});
+
+function updateNetworkToggle() {
+  const toggle = document.getElementById('network-toggle');
+  const label = document.getElementById('network-label');
+  if (networkOpen) {
+    toggle.classList.add('open');
+    label.textContent = 'Network Open';
+  } else {
+    toggle.classList.remove('open');
+    label.textContent = 'Local Only';
+  }
+}
 
 // --- Init ---
 connectSSE();

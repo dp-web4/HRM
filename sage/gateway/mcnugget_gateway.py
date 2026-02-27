@@ -276,11 +276,12 @@ def main():
     class ReusableHTTPServer(ThreadingHTTPServer):
         allow_reuse_address = True
         allow_reuse_port = True
-    httpd = ReusableHTTPServer(('0.0.0.0', port), McNuggetHandler)
+    bind_host = os.environ.get('SAGE_BIND_HOST', '0.0.0.0')
+    httpd = ReusableHTTPServer((bind_host, port), McNuggetHandler)
 
     print(f"\n{'='*60}")
     print(f"  McNugget gateway running (lightweight mode)")
-    print(f"  Gateway: http://0.0.0.0:{port}")
+    print(f"  Gateway: http://{bind_host}:{port}")
     print(f"  Model: {model_name} via Ollama")
     print(f"  LCT: {config.lct_id}")
     print(f"  Dashboard: http://localhost:{port}/")

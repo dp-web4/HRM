@@ -192,16 +192,17 @@ class SAGEDaemon:
         """Start the HTTP gateway server."""
         from sage.gateway.gateway_server import GatewayServer
 
+        bind_host = os.environ.get('SAGE_BIND_HOST', '0.0.0.0')
         self.gateway = GatewayServer(
             message_queue=self.message_queue,
             consciousness=self.consciousness,
             config=self.config,
             daemon=self,
-            host='0.0.0.0',
+            host=bind_host,
             port=self.config.gateway_port,
         )
         self.gateway.start()
-        print(f"  Gateway server started on 0.0.0.0:{self.config.gateway_port}")
+        print(f"  Gateway server started on {bind_host}:{self.config.gateway_port}")
 
     async def start(self):
         """Start the SAGE daemon — load model, create loop, start gateway, run forever."""
@@ -222,7 +223,8 @@ class SAGEDaemon:
         # 4. Print ready banner
         print(f"\n{'='*60}")
         print(f"  SAGE daemon running on {self.config.machine_name}")
-        print(f"  Gateway: http://0.0.0.0:{self.config.gateway_port}")
+        print(f"  Gateway: http://{bind_host}:{self.config.gateway_port}")
+        print(f"  Network: local only (toggle via dashboard)")
         print(f"  Model: {self.config.model_size}")
         print(f"  LCT: {self.config.lct_id}")
         print(f"  Dashboard: http://localhost:{self.config.gateway_port}/")

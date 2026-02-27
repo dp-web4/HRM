@@ -15,10 +15,11 @@ Usage:
 
 import asyncio
 import json
+import os
 import signal
 import sys
 import time
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from threading import Thread
 from typing import Dict, Any, Optional
@@ -50,7 +51,13 @@ class McNuggetHandler(BaseHTTPRequestHandler):
             self.send_error(404, "Endpoint not found")
 
     def do_GET(self):
-        if self.path == '/health':
+        if self.path in ('/', '/dashboard'):
+            self._handle_dashboard()
+        elif self.path == '/stream':
+            self._handle_stream()
+        elif self.path.startswith('/images/'):
+            self._handle_static()
+        elif self.path == '/health':
             self._handle_health()
         elif self.path == '/status':
             self._handle_status()
@@ -115,6 +122,78 @@ class McNuggetHandler(BaseHTTPRequestHandler):
             'generation_time_s': round(elapsed, 2),
         })
 
+    def _handle_dashboard(self):
+        """Serve the SAGE dashboard web interface."""
+        from sage.gateway.dashboard_html import DASHBOARD_HTML
+        body = DASHBOARD_HTML.encode('utf-8')
+        self.send_response(200)
+        self.send_header('Content-Type', 'text/html; charset=utf-8')
+        self.send_header('Content-Length', str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def _handle_stream(self):
+        """SSE stream of live stats for the dashboard."""
+        self.send_response(200)
+        self.send_header('Content-Type', 'text/event-stream')
+        self.send_header('Cache-Control', 'no-cache')
+        self.send_header('Connection', 'keep-alive')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.end_headers()
+
+        try:
+            while True:
+                stats = {
+                    'timestamp': time.time(),
+                    'machine': self.config.machine_name if self.config else 'mcnugget',
+                    'lct_id': self.config.lct_id if self.config else 'mcnugget_sage_lct',
+                    'metabolic_state': 'lightweight',
+                    'mode': 'lightweight',
+                    'chat_count': self.chat_count,
+                    'model': self.llm.model_name if self.llm else None,
+                }
+                if self.started_at:
+                    stats['uptime_seconds'] = round(time.time() - self.started_at, 1)
+                try:
+                    import psutil
+                    stats['cpu_percent'] = psutil.cpu_percent(interval=None)
+                    vm = psutil.virtual_memory()
+                    stats['ram_used_mb'] = round(vm.used / 1e6, 1)
+                    stats['ram_total_mb'] = round(vm.total / 1e6, 1)
+                except ImportError:
+                    pass
+                payload = f"data: {json.dumps(stats)}\n\n"
+                self.wfile.write(payload.encode())
+                self.wfile.flush()
+                time.sleep(1)
+        except (BrokenPipeError, ConnectionResetError, OSError):
+            pass
+
+    def _handle_static(self):
+        """Serve static files from images/ directory."""
+        filename = self.path.split('/images/')[-1]
+        if '..' in filename or '/' in filename:
+            self.send_error(403, "Forbidden")
+            return
+        images_dir = Path(__file__).parent.parent.parent / 'images'
+        filepath = images_dir / filename
+        if not filepath.exists() or not filepath.is_file():
+            self.send_error(404, "File not found")
+            return
+        ext = filepath.suffix.lower()
+        content_types = {'.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg'}
+        content_type = content_types.get(ext)
+        if not content_type:
+            self.send_error(403, "File type not allowed")
+            return
+        body = filepath.read_bytes()
+        self.send_response(200)
+        self.send_header('Content-Type', content_type)
+        self.send_header('Content-Length', str(len(body)))
+        self.send_header('Cache-Control', 'public, max-age=3600')
+        self.end_headers()
+        self.wfile.write(body)
+
     def _handle_health(self):
         self._send_json({
             'status': 'alive',
@@ -157,7 +236,8 @@ class McNuggetHandler(BaseHTTPRequestHandler):
         })
 
     def log_message(self, format, *args):
-        if '/health' in (args[0] if args else ''):
+        path = args[0] if args else ''
+        if any(s in path for s in ('/health', '/stream', '/images/')):
             return
         print(f"[McNugget] {args[0] if args else format}")
 
@@ -193,7 +273,7 @@ def main():
 
     # Start HTTP server (SO_REUSEADDR to avoid port conflicts on restart)
     import socket
-    class ReusableHTTPServer(HTTPServer):
+    class ReusableHTTPServer(ThreadingHTTPServer):
         allow_reuse_address = True
         allow_reuse_port = True
     httpd = ReusableHTTPServer(('0.0.0.0', port), McNuggetHandler)
@@ -203,9 +283,18 @@ def main():
     print(f"  Gateway: http://0.0.0.0:{port}")
     print(f"  Model: {model_name} via Ollama")
     print(f"  LCT: {config.lct_id}")
+    print(f"  Dashboard: http://localhost:{port}/")
     print(f"  Health: http://localhost:{port}/health")
     print(f"  Note: No consciousness loop (install PyTorch for full daemon)")
     print(f"{'='*60}\n")
+
+    # Auto-launch dashboard in browser
+    if not os.environ.get('SAGE_NO_BROWSER'):
+        import webbrowser
+        try:
+            webbrowser.open(f'http://localhost:{port}/')
+        except Exception:
+            pass
 
     def signal_handler(sig, frame):
         print(f"\n[McNugget] Shutting down...")

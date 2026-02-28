@@ -226,25 +226,25 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
         )
 
     elif machine_name == 'cbp':
-        # CBP: no local SAGE model, gateway client only
+        # CBP: WSL2 desktop, Ollama-served models via Windows host
         workspace = '/mnt/c/exe/projects/ai-agents'
         return SAGEMachineConfig(
             machine_name='cbp',
-            model_path='',  # No local model
-            model_size='none',
+            model_path='ollama:tinyllama:latest',  # Sentinel — parsed by daemon
+            model_size='ollama',
             device='cpu',
-            max_memory_gb=0.0,
+            max_memory_gb=8.0,
             gateway_port=port,
             workspace_path=workspace,
-            identity_state_path='',
-            experience_buffer_path='',
-            irp_iterations=0,
+            identity_state_path=f'{workspace}/HRM/sage/raising/state/identity.json',
+            experience_buffer_path=f'{workspace}/HRM/sage/raising/state/experience_buffer.json',
+            irp_iterations=3,
             federation_port=0,
             ed25519_key_path='',
             lct_id='cbp_sage_lct',
             system_prompt_mode='creative',
-            cycle_sleep_ms=0,
-            max_response_tokens=0,
+            cycle_sleep_ms=100,
+            max_response_tokens=500,
         )
 
     else:

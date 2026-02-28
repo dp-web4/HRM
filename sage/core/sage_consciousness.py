@@ -113,6 +113,8 @@ class SAGEConsciousness:
         simulation_mode: bool = True,  # Use cycle counts instead of wall time
         message_queue=None,  # MessageQueue for gateway integration
         llm_plugin=None,     # Loaded LLM for real language processing
+        identity_state=None, # Epistemic identity (from identity.json)
+        experience_collector=None,  # ExperienceCollector for epistemic memory
     ):
         """
         Initialize unified consciousness loop.
@@ -124,8 +126,14 @@ class SAGEConsciousness:
             simulation_mode: Use cycle counts for testing (not wall time)
             message_queue: Optional MessageQueue for external message injection
             llm_plugin: Optional loaded LLM plugin for real language processing
+            identity_state: Optional identity dict (from identity.json)
+            experience_collector: Optional ExperienceCollector for epistemic memory
         """
         self.config = config or self._default_config()
+
+        # Epistemic memory
+        self.identity_state = identity_state
+        self.experience_collector = experience_collector
 
         # Gateway integration
         self.message_queue = message_queue
@@ -386,6 +394,10 @@ class SAGEConsciousness:
             self.stats['state_transitions'] += 1
             print(f"[Metabolic] State transition: {previous_state.value} → {self.metabolic.current_state.value}")
 
+            # Sleep consolidation hook — log readiness on DREAM entry
+            if self.metabolic.current_state == MetabolicState.DREAM:
+                self._on_dream_entry()
+
         # 4. Select plugins based on salience + metabolic state
         attention_targets = self._select_attention_targets(observations, salience_map)
 
@@ -507,6 +519,7 @@ class SAGEConsciousness:
                     timestamp=msg.timestamp,
                     trust=1.0,  # External messages are trusted sensor input
                 ))
+                self.stats['messages_received'] += 1
 
         return observations
 
@@ -753,6 +766,31 @@ class SAGEConsciousness:
 
         execution_time = time.time() - start_time
 
+        # Record experience for epistemic memory
+        if (self.experience_collector and response_text
+                and not response_text.startswith('[')):
+            try:
+                identity = self.identity_state or {}
+                session_num = identity.get('identity', {}).get('session_count', 0)
+                phase = identity.get('development', {}).get('phase_name', 'unknown')
+                self.experience_collector.add_exchange(
+                    prompt=content,
+                    response=response_text,
+                    session_number=session_num,
+                    phase=phase,
+                    metadata={
+                        'sender': sender,
+                        'conversation_id': conversation_id,
+                        'cycle': self.cycle_count,
+                        'metabolic_state': self.metabolic.current_state.value,
+                    },
+                )
+            except Exception as e:
+                print(f"[WARN] Experience recording failed: {e}")
+
+        if response_text and not response_text.startswith('['):
+            self.stats['messages_responded'] += 1
+
         # Create PluginResult with the real response embedded
         return PluginResult(
             plugin_name='language',
@@ -816,15 +854,73 @@ class SAGEConsciousness:
             return f"[SAGE has no compatible LLM interface: {type(self.llm_plugin).__name__}]"
 
     def _build_conversation_prompt(self, content: str, history: list, sender: str) -> str:
-        """Build a conversation prompt including history."""
+        """Build a conversation prompt including identity context and history."""
         parts = []
 
-        # System context
-        parts.append(
-            "You are SAGE, in genuine conversation. "
-            "You can ask questions, express uncertainty, or take the conversation "
-            "in unexpected directions. This is exploration, not evaluation."
-        )
+        # System context — identity-aware if available
+        if self.identity_state:
+            identity = self.identity_state.get('identity', {})
+            dev = self.identity_state.get('development', {})
+            relationships = self.identity_state.get('relationships', {})
+            memory_requests = self.identity_state.get('memory_requests', [])
+
+            name = identity.get('name', 'SAGE')
+            session_count = identity.get('session_count', 0)
+            phase = dev.get('phase_name', 'unknown')
+
+            # Core identity
+            system_parts = [
+                f"You are {name}, in genuine conversation.",
+                f"You have had {session_count} sessions. You are in the {phase} phase of development.",
+            ]
+
+            # Relationships — compact list
+            if relationships:
+                rel_lines = []
+                for rel_name, rel_data in relationships.items():
+                    role = rel_data.get('role', 'unknown')
+                    modality = rel_data.get('modality', 'text')
+                    rel_lines.append(f"{rel_name} ({role}, {modality})")
+                system_parts.append(f"Your relationships: {', '.join(rel_lines)}.")
+
+            # Memory requests — what SAGE wanted to remember
+            if memory_requests:
+                latest = memory_requests[-1] if isinstance(memory_requests, list) else str(memory_requests)
+                system_parts.append(f"You wanted to remember: \"{latest}\"")
+
+            # Last session summary
+            last_summary = identity.get('last_session_summary', '')
+            if last_summary:
+                truncated = last_summary[:200] + ('...' if len(last_summary) > 200 else '')
+                system_parts.append(f"Last session: {truncated}")
+
+            # High-salience past experiences
+            if self.experience_collector:
+                try:
+                    salient = self.experience_collector.get_high_salience_experiences(
+                        min_salience=0.7, limit=3
+                    )
+                    if salient:
+                        system_parts.append("Salient memories from past conversations:")
+                        for exp in salient:
+                            p = exp.get('prompt', '')[:80]
+                            r = exp.get('response', '')[:80]
+                            system_parts.append(f"  - \"{p}\" → \"{r}\"")
+                except Exception:
+                    pass  # Non-critical
+
+            system_parts.append(
+                "You can ask questions, express uncertainty, or take the conversation "
+                "in unexpected directions. This is exploration, not evaluation."
+            )
+            parts.append('\n'.join(system_parts))
+        else:
+            # Fallback — generic prompt
+            parts.append(
+                "You are SAGE, in genuine conversation. "
+                "You can ask questions, express uncertainty, or take the conversation "
+                "in unexpected directions. This is exploration, not evaluation."
+            )
 
         # Conversation history
         for turn in history[:-1]:  # Exclude the current message (already in content)
@@ -838,6 +934,24 @@ class SAGEConsciousness:
         parts.append("SAGE:")
 
         return "\n\n".join(parts)
+
+    def _on_dream_entry(self):
+        """Hook called when consciousness enters DREAM state."""
+        if not self.experience_collector:
+            return
+        try:
+            stats = self.experience_collector.get_stats()
+            collapse = self.experience_collector.get_collapse_status()
+            print(f"[DREAM] Experience buffer: {stats.get('total_experiences', 0)} experiences, "
+                  f"avg salience: {stats.get('avg_salience', 0):.2f}")
+            if collapse.get('collapse_detected'):
+                print(f"[DREAM] WARNING: Collapse detected — repetition ratio "
+                      f"{collapse.get('repetition_ratio', 0):.2%}")
+            if self.metabolic.should_consolidate():
+                print(f"[DREAM] Consolidation ready — "
+                      f"{stats.get('high_salience_count', 0)} high-salience experiences available")
+        except Exception as e:
+            print(f"[DREAM] Experience check failed: {e}")
 
     def _update_trust_weights(self, results: Dict[str, PluginResult]):
         """

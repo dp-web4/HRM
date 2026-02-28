@@ -38,6 +38,7 @@ import signal
 import sys
 import time
 import json
+from datetime import datetime
 from pathlib import Path
 from typing import Optional, Dict, Any
 
@@ -159,9 +160,49 @@ class SAGEDaemon:
             print(f"  Running without LLM. Messages will get mock responses.")
             self.llm_plugin = None
 
+    def _load_identity(self) -> Optional[Dict]:
+        """Load identity state from disk."""
+        if not self.config.identity_state_path:
+            return None
+        identity_path = Path(self.config.identity_state_path)
+        if not identity_path.exists():
+            print(f"  [WARN] Identity file not found: {identity_path}")
+            return None
+        try:
+            with open(identity_path, 'r') as f:
+                identity = json.load(f)
+            name = identity.get('identity', {}).get('name', 'SAGE')
+            session_count = identity.get('identity', {}).get('session_count', 0)
+            phase = identity.get('development', {}).get('phase_name', 'unknown')
+            print(f"  Identity loaded: {name}, session {session_count}, phase: {phase}")
+            return identity
+        except Exception as e:
+            print(f"  [WARN] Failed to load identity: {e}")
+            return None
+
+    def _load_experience_collector(self):
+        """Load experience collector for epistemic memory."""
+        if not self.config.experience_buffer_path:
+            return None
+        try:
+            from sage.raising.training.experience_collector import ExperienceCollector
+            collector = ExperienceCollector(
+                buffer_path=Path(self.config.experience_buffer_path)
+            )
+            stats = collector.get_stats()
+            print(f"  Experience collector loaded: {stats.get('total_experiences', 0)} experiences")
+            return collector
+        except Exception as e:
+            print(f"  [WARN] Failed to load experience collector: {e}")
+            return None
+
     def _create_consciousness(self):
         """Create and configure the SAGEConsciousness instance."""
         from sage.core.sage_consciousness import SAGEConsciousness
+
+        # Load epistemic memory components
+        self.identity_state = self._load_identity()
+        self.experience_collector = self._load_experience_collector()
 
         consciousness_config = {
             'modalities': ['vision', 'language', 'audio', 'memory'],
@@ -184,6 +225,8 @@ class SAGEDaemon:
             simulation_mode=False,  # Real wall-clock time for daemon
             message_queue=self.message_queue,
             llm_plugin=self.llm_plugin,
+            identity_state=self.identity_state,
+            experience_collector=self.experience_collector,
         )
 
         print(f"  Consciousness loop created (simulation_mode=False)")
@@ -287,7 +330,7 @@ class SAGEDaemon:
             return
 
         try:
-            # Save consciousness stats
+            # Save consciousness stats + trust weights
             if self.consciousness:
                 stats_path = Path(self.config.identity_state_path).parent / 'daemon_state.json'
                 state = {
@@ -296,14 +339,49 @@ class SAGEDaemon:
                     'uptime_seconds': time.time() - (self.started_at or time.time()),
                     'cycles_completed': self.consciousness.cycle_count,
                     'metabolic_state': self.consciousness.metabolic.current_state.value,
-                    'atp_level': self.consciousness.metabolic.atp,
+                    'atp_level': self.consciousness.metabolic.atp_current,
                     'message_stats': self.message_queue.stats,
+                    'trust_weights': self.consciousness.plugin_trust_weights,
                 }
                 with open(stats_path, 'w') as f:
                     json.dump(state, f, indent=2)
                 print(f"  State persisted to {stats_path}")
         except Exception as e:
-            print(f"  [WARN] Failed to persist state: {e}")
+            print(f"  [WARN] Failed to persist daemon state: {e}")
+
+        # Update identity.json with session info
+        try:
+            if self.identity_state and self.config.identity_state_path:
+                identity_path = Path(self.config.identity_state_path)
+                now = datetime.now().isoformat()
+
+                # Update last_session timestamp
+                if 'identity' in self.identity_state:
+                    self.identity_state['identity']['last_session'] = now
+
+                    # Increment session_count if messages were processed
+                    msg_stats = self.message_queue.stats
+                    if msg_stats.get('messages_submitted', 0) > 0:
+                        self.identity_state['identity']['session_count'] = \
+                            self.identity_state['identity'].get('session_count', 0) + 1
+
+                with open(identity_path, 'w') as f:
+                    json.dump(self.identity_state, f, indent=2)
+                print(f"  Identity updated: {identity_path}")
+        except Exception as e:
+            print(f"  [WARN] Failed to update identity: {e}")
+
+        # Log experience buffer stats
+        try:
+            if hasattr(self, 'experience_collector') and self.experience_collector:
+                stats = self.experience_collector.get_stats()
+                collapse = self.experience_collector.get_collapse_status()
+                print(f"  Experience buffer: {stats.get('total_experiences', 0)} experiences "
+                      f"(avg salience: {stats.get('avg_salience', 0):.2f})")
+                if collapse.get('collapse_detected'):
+                    print(f"  [WARN] Collapse detected: repetition ratio {collapse.get('repetition_ratio', 0):.2%}")
+        except Exception as e:
+            print(f"  [WARN] Failed to read experience stats: {e}")
 
     def get_status(self) -> Dict[str, Any]:
         """Get daemon status for health checks."""
@@ -317,7 +395,7 @@ class SAGEDaemon:
         }
         if self.consciousness:
             status['metabolic_state'] = self.consciousness.metabolic.current_state.value
-            status['atp_level'] = self.consciousness.metabolic.atp
+            status['atp_level'] = self.consciousness.metabolic.atp_current
             status['cycle_count'] = self.consciousness.cycle_count
         return status
 

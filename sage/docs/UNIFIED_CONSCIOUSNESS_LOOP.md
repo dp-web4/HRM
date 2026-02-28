@@ -1,9 +1,9 @@
 # SAGE Unified Cognition Loop
 
 **Date**: November 19, 2025 (loop structure), February 27, 2026 (LLM wiring + ATP coupling)
-**Status**: Loop structure complete. LLM inference wired. Sensors, SNARC, and effectors remain mocked.
-**What's real**: 9-step loop, metabolic states, ATP budgeting, LLM inference, DREAM consolidation to disk
-**What's mocked**: Sensor observations, SNARC scoring (algorithmic heuristic), effectors (mock I/O), sleep→LoRA training
+**Status**: Loop structure complete. LLM inference wired. Sensors, SNARC, effectors, and sleep/LoRA built and tested standalone — loop uses simplified versions.
+**Wired end-to-end**: 9-step loop, metabolic states, ATP budgeting, real LLM inference, DREAM consolidation to disk, NetworkEffector (real)
+**Built standalone, not yet integrated**: Real sensors (camera/mic/IMU/audio/proprioception + fusion), neural SNARC (trained weights from 156 cycles), FileSystem/TTS/NeuTTS effectors, LoRA sleep training (production cycle completed)
 
 ---
 
@@ -221,31 +221,47 @@ From test runs:
 
 ---
 
-## What's Mocked (To Be Integrated)
+## Standalone Components (Built, Tested — Pending Loop Integration)
 
-### 🔨 Current Mocks
+Real implementations exist for all major components. The loop currently uses simplified
+versions. Integration requires wiring, not rewriting — interfaces are aligned.
 
-1. **Sensor Observations**
-   - Mock: Random vision/audio/time observations
-   - **TODO**: Integrate `/sage/core/sensor_fusion.py`
-   - **TODO**: Connect real camera, microphone, IMU
+### 1. Sensor Observations
+- **Loop uses**: Mock random vision/audio/time observations
+- **Real code**: `sage/sensors/camera_sensor.py` (OpenCV), `audio_sensor.py` (PyAudio 16kHz),
+  `imu_sensor.py` (BNO055/MPU6050 with complementary filter), `proprioception_sensor.py`
+- **Fusion engine**: `sage/core/sensor_fusion.py` — trust-weighted fusion, conflict detection
+- **Tested**: 30-cycle integration with SNARCService, sub-millisecond cycle times
+- **Integration**: Wire `SensorHub` to `_initialize_sensors()`
 
-2. **SNARC Salience Computation**
-   - Mock: Random 5D scores based on modality
-   - **TODO**: Integrate neural SNARC models
-   - **TODO**: Use real prediction error, perplexity
+### 2. SNARC Salience Computation
+- **Loop uses**: Algorithmic heuristic (random 5D scores by modality)
+- **Real code**: `sage/attention/snarc_scorer.py` (neural PyTorch module),
+  `sage/services/snarc/snarc_service.py` (5 separate detectors), `sage/core/snarc_compression.py`
+- **Trained weights**: From 156-cycle deployment — novelty dominates (0.628), 41.8% improvement
+- **Already wired in variant**: `sage_consciousness_real.py` uses real SNARC
+- **Integration**: Make the `_real.py` variant the default
 
-3. **Plugin Execution**
-   - Mock: Simulated convergence telemetry
-   - **TODO**: Actually call `HRMOrchestrator.run_plugin()`
-   - **TODO**: Pass real observations to plugins
+### 3. Plugin Execution
+- **Loop uses**: Simulated convergence telemetry
+- **TODO**: Wire `HRMOrchestrator.run_plugin()` with real observations
 
-4. **Effector System**
-   - Mock effectors registered (FileSystem, Web, Tool, Motor, Display, Speaker, Cognitive)
-   - Effect extraction and dispatch pipeline works (step 8.5-9)
-   - All effectors are mock implementations — log operations but perform no real I/O
-   - NetworkEffector for MESSAGE effects is the one real effector (routes to message queue)
-   - **TODO**: Replace mock effectors with real implementations for target hardware
+### 4. Effector System
+- **Loop uses**: 7 mock effectors + 1 real (NetworkEffector)
+- **Real code**: `sage/interfaces/effectors/network_effector.py` (MESSAGE — **wired**),
+  `filesystem_effector.py` (sandboxed read/write with deny_patterns),
+  `sage/interfaces/tts_effector.py` (Piper TTS + Bluetooth),
+  `sage/irp/plugins/neutts_air_impl.py` (voice cloning, IRP plugin)
+- **Tested**: 50-cycle integration test suite (7 test classes), metabolic-state gating, ATP budgeting
+- **Integration**: Swap mock effectors for real ones (same BaseEffector interface)
+
+### 5. Sleep/LoRA Training
+- **Loop uses**: DREAM writes top-k experiences to JSONL (added Feb 27)
+- **Real code**: `sage/raising/training/sleep_training.py` (LoRA r=4, salience-weighted loss),
+  `sage/attention/sleep_consolidation.py` (SleepConsolidationBridge)
+- **Production results**: First cycle processed 6 experiences, loss 4.061→4.027 (monotonically decreasing)
+- **LoRA checkpoints**: cycle_001+ trained on Jetson hardware (Sprout/Thor)
+- **Integration**: Call `SleepConsolidationBridge.consolidate()` on DREAM entry
 
 ---
 

@@ -33,12 +33,18 @@ What's wired end-to-end (traceable code paths):
 - Message injection queue for text input → LLM on next cycle
 - Trust weight learning from plugin convergence
 
-What's mocked or partial (honest about it):
-- Sensor observations: mock random data (no real camera/mic/IMU)
-- SNARC computation: algorithmic heuristic, not learned model
-- Effector system: architecture exists, all effectors are mock (no real I/O)
-- PolicyGate: skeleton exists (Phase 1), not wired by default
-- Sleep → LoRA training: infrastructure exists, import fails at runtime
+Built and tested standalone, not yet wired into the main loop:
+- Sensors: 5 real backends (camera/mic/IMU/proprioception/audio) + trust-weighted
+  fusion engine in sage/sensors/ and sage/core/sensor_fusion.py — loop uses mock data
+- SNARC: neural scorer, service-level detectors, trained weights from 156-cycle
+  deployment in sage/attention/snarc_scorer.py — loop uses algorithmic heuristic
+- Effectors: real NetworkEffector (wired), FileSystemEffector (sandboxed),
+  TTSEffector (Piper+Bluetooth), NeuTTS Air (voice cloning) — loop uses mocks for
+  6 of 7 effector types
+- Sleep/LoRA: full pipeline ran production cycle (salience-weighted loss 4.06→4.03)
+  in sage/raising/training/sleep_training.py — loop writes JSONL but doesn't
+  trigger training yet
+- PolicyGate: Phase 1 skeleton (8/8 tests), not enabled by default
 """
 
 from typing import Optional, Dict, Any, List
@@ -198,10 +204,12 @@ class SAGE:
     - SNARC salience (algorithmic 5D scoring — not neural)
     - DREAM consolidation (top-k experiences → JSONL)
 
-    Present but mocked:
-    - Effectors (mock implementations, no real I/O)
-    - PolicyGate (skeleton, disabled by default)
-    - Sensors (mock random observations)
+    Built standalone, pending loop integration:
+    - Sensors: real backends exist (camera/mic/IMU), loop uses mock data
+    - SNARC: neural scorer + trained weights exist, loop uses heuristic
+    - Effectors: real Network/Filesystem/TTS exist, loop uses mocks for most
+    - Sleep/LoRA: full training pipeline ran, loop doesn't trigger it yet
+    - PolicyGate: Phase 1 complete (8/8 tests), disabled by default
     """
 
     def __init__(self, consciousness_loop, config: Optional[Dict[str, Any]] = None,

@@ -1,5 +1,5 @@
 {
-  "exploration_count": 87,
+  "exploration_count": 88,
   "areas_explored": {
     "chinese_capabilities": [
       2,
@@ -2492,19 +2492,39 @@
         "Extended response (130 words)"
       ],
       "timestamp": "2026-02-27T18:02:54.065678"
+    },
+    {
+      "area": "instruction_modes",
+      "focus": "inst_markers",
+      "response_preview": "My primary function is to generate engaging, informative content based on user queries, but I also e",
+      "aspects": [
+        "Showed step-by-step reasoning",
+        "Extended response (150 words)"
+      ],
+      "timestamp": "2026-02-28T00:01:58.731633"
+    },
+    {
+      "area": "instruction_modes",
+      "focus": "inst_markers",
+      "response_preview": "My primary function is generating engaging, informative content based on user queries, which include",
+      "aspects": [
+        "Produced structured format",
+        "Extended response (154 words)"
+      ],
+      "timestamp": "2026-02-28T00:04:36.300232"
     }
   ],
   "behaviors_catalog": {
     "chinese_response": 43,
-    "structured_output": 223,
+    "structured_output": 224,
     "tool_concept_recognition": 31,
     "meta_cognition": 20,
-    "reasoning_chain": 112,
-    "emotional_engagement": 38,
+    "reasoning_chain": 113,
+    "emotional_engagement": 39,
     "identity_expression": 1,
     "clarifying_question": 9,
     "resource_awareness": 2
   },
-  "last_session": "2026-02-27T18:02:54.067159",
+  "last_session": "2026-02-28T00:05:21.767226",
   "started": "2026-01-25T18:15:16.101466"
 }

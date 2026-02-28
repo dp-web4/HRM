@@ -34,6 +34,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
 import sys
+import json
 import numpy as np
 import torch
 
@@ -175,6 +176,9 @@ class SAGEConsciousness:
         # Effect system
         self._init_effect_system()
 
+        # LLM response tracking (for easy access via facade)
+        self.last_llm_responses = []
+
         # Statistics
         self.stats = {
             'total_cycles': 0,
@@ -188,6 +192,8 @@ class SAGEConsciousness:
             'effects_executed': 0,
             'messages_received': 0,
             'messages_responded': 0,
+            'llm_tokens_total': 0,
+            'llm_atp_cost_total': 0.0,
         }
 
     def _default_config(self) -> Dict[str, Any]:
@@ -791,6 +797,29 @@ class SAGEConsciousness:
         if response_text and not response_text.startswith('['):
             self.stats['messages_responded'] += 1
 
+        # ATP coupling: real token cost draws down ATP proportionally
+        token_estimate = len(response_text.split()) if response_text else 0
+        llm_atp_cost = token_estimate * 0.05  # 0.05 ATP per token
+        if llm_atp_cost > 0:
+            self.metabolic.atp_current = max(0.0,
+                self.metabolic.atp_current - llm_atp_cost)
+            self.stats['llm_tokens_total'] += token_estimate
+            self.stats['llm_atp_cost_total'] += llm_atp_cost
+
+        # Track response for easy access via facade
+        self.last_llm_responses.append({
+            'text': response_text,
+            'sender': sender,
+            'message_id': message_id,
+            'conversation_id': conversation_id,
+            'cycle': self.cycle_count,
+            'timestamp': time.time(),
+            'tokens': token_estimate,
+            'atp_cost': llm_atp_cost,
+        })
+        if len(self.last_llm_responses) > 20:
+            self.last_llm_responses = self.last_llm_responses[-20:]
+
         # Create PluginResult with the real response embedded
         return PluginResult(
             plugin_name='language',
@@ -811,6 +840,8 @@ class SAGEConsciousness:
                 'salience': target.salience.total,
                 'response_length': len(response_text),
                 'message_id': message_id,
+                'llm_tokens': token_estimate,
+                'llm_atp_cost': llm_atp_cost,
             },
             budget_used=budget,
             execution_time=execution_time,
@@ -937,21 +968,54 @@ class SAGEConsciousness:
 
     def _on_dream_entry(self):
         """Hook called when consciousness enters DREAM state."""
-        if not self.experience_collector:
-            return
-        try:
-            stats = self.experience_collector.get_stats()
-            collapse = self.experience_collector.get_collapse_status()
-            print(f"[DREAM] Experience buffer: {stats.get('total_experiences', 0)} experiences, "
-                  f"avg salience: {stats.get('avg_salience', 0):.2f}")
-            if collapse.get('collapse_detected'):
-                print(f"[DREAM] WARNING: Collapse detected — repetition ratio "
-                      f"{collapse.get('repetition_ratio', 0):.2%}")
-            if self.metabolic.should_consolidate():
-                print(f"[DREAM] Consolidation ready — "
-                      f"{stats.get('high_salience_count', 0)} high-salience experiences available")
-        except Exception as e:
-            print(f"[DREAM] Experience check failed: {e}")
+        # Epistemic memory stats (if available)
+        if self.experience_collector:
+            try:
+                stats = self.experience_collector.get_stats()
+                collapse = self.experience_collector.get_collapse_status()
+                print(f"[DREAM] Experience buffer: {stats.get('total_experiences', 0)} experiences, "
+                      f"avg salience: {stats.get('avg_salience', 0):.2f}")
+                if collapse.get('collapse_detected'):
+                    print(f"[DREAM] WARNING: Collapse detected — repetition ratio "
+                          f"{collapse.get('repetition_ratio', 0):.2%}")
+            except Exception as e:
+                print(f"[DREAM] Experience check failed: {e}")
+
+        # Consolidate SNARC memory to disk (sleep persistence)
+        if self.snarc_memory:
+            try:
+                sorted_exp = sorted(
+                    self.snarc_memory,
+                    key=lambda x: x.get('salience', 0),
+                    reverse=True,
+                )
+                top_k = sorted_exp[:10]
+
+                from pathlib import Path
+                consolidation_file = Path('demo_logs') / 'consolidated_memory.jsonl'
+                consolidation_file.parent.mkdir(exist_ok=True)
+
+                written = 0
+                with open(consolidation_file, 'a') as f:
+                    for exp in top_k:
+                        record = {
+                            'cycle': exp.get('cycle', 0),
+                            'plugin': exp.get('plugin', ''),
+                            'salience': exp.get('salience', 0),
+                            'timestamp': time.time(),
+                            'consolidation_cycle': self.cycle_count,
+                        }
+                        result = exp.get('result')
+                        if hasattr(result, 'final_state') and isinstance(result.final_state, dict):
+                            resp = result.final_state.get('response', '')
+                            if resp:
+                                record['response_preview'] = resp[:200]
+                        f.write(json.dumps(record) + '\n')
+                        written += 1
+
+                print(f"[DREAM] Consolidated {written} experiences to {consolidation_file}")
+            except Exception as e:
+                print(f"[DREAM] Consolidation failed: {e}")
 
     def _update_trust_weights(self, results: Dict[str, PluginResult]):
         """

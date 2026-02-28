@@ -445,6 +445,20 @@ class SAGE:
         return []
 
     @property
+    def last_response(self):
+        """Get most recent LLM response text, or None."""
+        if hasattr(self._loop, 'last_llm_responses') and self._loop.last_llm_responses:
+            return self._loop.last_llm_responses[-1]
+        return None
+
+    @property
+    def responses(self):
+        """Get all recent LLM responses (max 20)."""
+        if hasattr(self._loop, 'last_llm_responses'):
+            return list(self._loop.last_llm_responses)
+        return []
+
+    @property
     def llm_runtime(self):
         """Access the underlying LLMRuntime (None if mock mode)."""
         return self._llm_runtime

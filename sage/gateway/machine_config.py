@@ -227,10 +227,12 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
 
     elif machine_name == 'cbp':
         # CBP: WSL2 desktop, Ollama-served models via Windows host
+        # SAGE_MODEL env var switches model (each gets its own experience buffer)
         workspace = '/mnt/c/exe/projects/ai-agents'
+        model = os.environ.get('SAGE_MODEL', 'gemma3:4b')
         return SAGEMachineConfig(
             machine_name='cbp',
-            model_path='ollama:tinyllama:latest',  # Sentinel — parsed by daemon
+            model_path=f'ollama:{model}',  # Sentinel — parsed by daemon
             model_size='ollama',
             device='cpu',
             max_memory_gb=8.0,

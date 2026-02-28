@@ -23,15 +23,22 @@ Usage:
     # Send a message (triggers real LLM on next cycle)
     sage.send_message("Hello SAGE", sender="user")
 
-This facade auto-wires the best available components from the SAGE codebase:
-- SAGEConsciousness (full 9-step loop)
-- LLMRuntime (Ollama/Transformers with hot/cold lifecycle)
-- Metabolic controller (5 states: WAKE/FOCUS/REST/DREAM/CRISIS)
-- IRP plugin system (33 plugins with ATP budgeting)
-- SNARC salience scoring (5D: Surprise/Novelty/Arousal/Reward/Conflict)
-- PolicyGate accountability (optional)
-- Effector system (FileSystem, Web, Tool, Network)
-- Sleep consolidation pipeline (experience → LoRA training)
+What's wired end-to-end (traceable code paths):
+- SAGEConsciousness 9-step loop (sage/core/sage_consciousness.py)
+- LLMRuntime with hot/cold lifecycle (Ollama/Transformers) → real inference
+- Metabolic controller: WAKE/FOCUS/REST/DREAM/CRISIS with ATP budgeting
+- ATP coupled to real LLM token cost (0.05 ATP/token)
+- SNARC salience scoring (algorithmic 5D — not neural)
+- DREAM consolidation writes top-k experiences to disk (JSONL)
+- Message injection queue for text input → LLM on next cycle
+- Trust weight learning from plugin convergence
+
+What's mocked or partial (honest about it):
+- Sensor observations: mock random data (no real camera/mic/IMU)
+- SNARC computation: algorithmic heuristic, not learned model
+- Effector system: architecture exists, all effectors are mock (no real I/O)
+- PolicyGate: skeleton exists (Phase 1), not wired by default
+- Sleep → LoRA training: infrastructure exists, import fails at runtime
 """
 
 from typing import Optional, Dict, Any, List
@@ -183,15 +190,18 @@ class SAGE:
     """
     Unified SAGE facade - single entry point for consciousness system.
 
-    Automatically wires:
+    Wires (real):
     - SAGEConsciousness (full 9-step loop)
     - LLMRuntime + sync adapter (when use_real_llm=True)
-    - MetabolicController (5-state management)
-    - IRP plugins (33 plugins with ATP budget)
-    - SNARC salience (algorithmic 5D scoring)
-    - PolicyGate (optional accountability checkpoint)
-    - EffectorRegistry (real effect dispatch)
+    - MetabolicController (5-state management with ATP)
     - Message injection queue for text input
+    - SNARC salience (algorithmic 5D scoring — not neural)
+    - DREAM consolidation (top-k experiences → JSONL)
+
+    Present but mocked:
+    - Effectors (mock implementations, no real I/O)
+    - PolicyGate (skeleton, disabled by default)
+    - Sensors (mock random observations)
     """
 
     def __init__(self, consciousness_loop, config: Optional[Dict[str, Any]] = None,

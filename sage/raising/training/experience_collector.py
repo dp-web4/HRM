@@ -229,16 +229,21 @@ class ExperienceCollector:
     # Number of recent responses to check for repetition
     RECENT_WINDOW = 10
 
-    def __init__(self, buffer_path: Optional[Path] = None, salience_threshold: float = 0.5):
+    def __init__(self, buffer_path: Optional[Path] = None, salience_threshold: float = 0.5,
+                 machine_name: Optional[str] = None, model_name: Optional[str] = None):
         """
         Initialize experience collector.
 
         Args:
             buffer_path: Where to store experience buffer (JSON file)
             salience_threshold: Minimum salience score to store (0-1)
+            machine_name: Machine identity (e.g. 'cbp', 'sprout', 'thor')
+            model_name: Model identity (e.g. 'tinyllama:latest', 'gemma3:4b')
         """
         self.buffer_path = buffer_path or Path.home() / 'ai-workspace' / 'HRM' / 'sage' / 'raising' / 'state' / 'experience_buffer.json'
         self.salience_threshold = salience_threshold
+        self.machine_name = machine_name
+        self.model_name = model_name
         self.scorer = ConversationalSalienceScorer()
 
         # Load existing buffer if it exists
@@ -360,6 +365,11 @@ class ExperienceCollector:
 
         if is_salient:
             # Create experience entry
+            exp_metadata = metadata or {}
+            if self.machine_name:
+                exp_metadata['machine'] = self.machine_name
+            if self.model_name:
+                exp_metadata['model'] = self.model_name
             experience = {
                 'id': self._generate_id(prompt, response),
                 'prompt': prompt,
@@ -368,7 +378,7 @@ class ExperienceCollector:
                 'session': session_number,
                 'phase': phase,
                 'timestamp': datetime.now().isoformat(),
-                'metadata': metadata or {}
+                'metadata': exp_metadata
             }
 
             # Add to buffer (avoiding duplicates)

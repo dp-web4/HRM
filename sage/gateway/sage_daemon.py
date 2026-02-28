@@ -181,16 +181,40 @@ class SAGEDaemon:
             return None
 
     def _load_experience_collector(self):
-        """Load experience collector for epistemic memory."""
+        """Load experience collector for epistemic memory.
+
+        Uses machine-specific buffer path so each machine+model pairing
+        maintains its own experience history. Shared buffer is still
+        loaded for cross-machine retrieval but new experiences are
+        written to the machine-specific file.
+        """
         if not self.config.experience_buffer_path:
             return None
         try:
             from sage.raising.training.experience_collector import ExperienceCollector
+
+            # Machine+model specific buffer path
+            # Each machine+model pairing is a unique developmental path
+            base_path = Path(self.config.experience_buffer_path)
+            machine = self.config.machine_name
+
+            # Resolve model name from config
+            model_name = self.config.model_path or 'unknown'
+            if model_name.startswith('ollama:'):
+                model_name = model_name[len('ollama:'):]
+            # Sanitize for filename (e.g. 'tinyllama:latest' → 'tinyllama_latest')
+            model_slug = model_name.replace(':', '_').replace('/', '_')
+
+            machine_model_buffer = base_path.parent / f'experience_buffer_{machine}_{model_slug}.json'
+
             collector = ExperienceCollector(
-                buffer_path=Path(self.config.experience_buffer_path)
+                buffer_path=machine_model_buffer,
+                machine_name=machine,
+                model_name=model_name,
             )
             stats = collector.get_stats()
             print(f"  Experience collector loaded: {stats.get('total_experiences', 0)} experiences")
+            print(f"  Buffer: {machine_model_buffer.name} (machine+model bound)")
             return collector
         except Exception as e:
             print(f"  [WARN] Failed to load experience collector: {e}")

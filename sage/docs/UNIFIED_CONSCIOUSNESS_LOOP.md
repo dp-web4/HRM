@@ -1,8 +1,9 @@
 # SAGE Unified Cognition Loop
 
-**Date**: November 19, 2025
-**Status**: ✅ COMPLETE - Core implementation working
-**Next**: Real sensor integration, SNARC computation, effector system
+**Date**: November 19, 2025 (loop structure), February 27, 2026 (LLM wiring + ATP coupling)
+**Status**: Loop structure complete. LLM inference wired. Sensors, SNARC, and effectors remain mocked.
+**What's real**: 9-step loop, metabolic states, ATP budgeting, LLM inference, DREAM consolidation to disk
+**What's mocked**: Sensor observations, SNARC scoring (algorithmic heuristic), effectors (mock I/O), sleep→LoRA training
 
 ---
 
@@ -160,7 +161,7 @@ python sage/tests/demo_consciousness_loop.py
 
 ## What's Working
 
-### ✅ Fully Operational
+### ✅ Loop Structure Operational (components mocked unless noted)
 
 1. **Continuous Operation**
    - Runs indefinitely or for specified cycles
@@ -192,10 +193,12 @@ python sage/tests/demo_consciousness_loop.py
    - Trust weights influence future ATP allocation
 
 6. **Memory System Updates**
-   - SNARC: Stores salient experiences
-   - IRP: Stores good convergence patterns
-   - Circular: Maintains recent context
-   - Verbatim: Dream consolidations only
+   - SNARC: Stores salient experiences (real)
+   - IRP: Stores good convergence patterns (real)
+   - Circular: Maintains recent context (real)
+   - Verbatim: Dream consolidations only (real)
+   - DREAM consolidation: Writes top-k SNARC experiences to JSONL (real, added Feb 2026)
+   - Sleep→LoRA training: infrastructure exists but import fails at runtime (not wired)
 
 7. **Circadian Modulation**
    - 5 phases: DAWN, DAY, DUSK, NIGHT, DEEP_NIGHT
@@ -238,9 +241,11 @@ From test runs:
    - **TODO**: Pass real observations to plugins
 
 4. **Effector System**
-   - Mock: None (commented out)
-   - **TODO**: Create `/sage/core/effectors.py`
-   - **TODO**: Route to speech, actuators, learning
+   - Mock effectors registered (FileSystem, Web, Tool, Motor, Display, Speaker, Cognitive)
+   - Effect extraction and dispatch pipeline works (step 8.5-9)
+   - All effectors are mock implementations — log operations but perform no real I/O
+   - NetworkEffector for MESSAGE effects is the one real effector (routes to message queue)
+   - **TODO**: Replace mock effectors with real implementations for target hardware
 
 ---
 

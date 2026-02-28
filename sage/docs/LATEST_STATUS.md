@@ -1,7 +1,50 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-02-26 21:30 UTC (Thor Autonomous Session - Enhanced Collapse Detector + Nova Instrumentation)**
-**Previous: 2026-02-26 16:30 UTC (Thor Autonomous Session - Unified Entry Point Complete)**
+**Last Updated: 2026-02-27 (CBP Session - Honesty Pass + Three Improvements)**
+**Previous: 2026-02-26 21:30 UTC (Enhanced Collapse Detector + Nova Instrumentation)**
+
+---
+
+## ✅ NEW: Honesty Pass — Claims Now Match Code (Feb 27, 2026)
+
+### Responding to Nova's Second Review: "Code improves faster than the story told about it"
+
+**Problem**: `sage/__init__.py` docstring claimed "Effector system (FileSystem, Web, Tool, Network)" and "Sleep consolidation pipeline (experience → LoRA training)" as auto-wired. A reviewer tracing the code would find mock effectors and a failing sleep import. Direct contradiction between public entry point and internal planning docs.
+
+**What Was Fixed**:
+1. **`sage/__init__.py`** — Module docstring and class docstring now split into "What's wired end-to-end" vs "What's mocked or partial". Every claim is traceable.
+2. **`sage/docs/UNIFIED_CONSCIOUSNESS_LOOP.md`** — Status line updated from "✅ COMPLETE" to honest split. "Fully Operational" → "Loop Structure Operational (components mocked unless noted)". Effector section updated to reflect mock effectors exist (not "None").
+3. **This file** — Current entry added.
+
+**Why This Matters**:
+Nova's sharpest observation: the easiest attack surface isn't missing features — it's claims that don't survive tracing. A hackathon reviewer who reads "Effector system" in the docstring, greps for `MockFileSystemEffector`, and finds mock implementations will dismiss the entire project. Now: every claim in the entry point is honest and traceable.
+
+---
+
+## ✅ NEW: Three Incremental SAGE Improvements (Feb 27, 2026)
+
+### Responding to Nova's First Review: ATP not coupled, sleep is memory wipe, responses buried
+
+**What Was Built**:
+
+1. **ATP Token Coupling** (`sage/core/sage_consciousness.py`)
+   - LLM responses now cost 0.05 ATP per token (additive to trust-weighted budget)
+   - Tracked in `stats['llm_tokens_total']` and `stats['llm_atp_cost_total']`
+   - Embedded in PluginResult telemetry for SNARC visibility
+   - **Verified**: 259 tokens → 12.95 ATP deducted, triggers WAKE→REST→DREAM faster
+
+2. **Sleep Persistence** (`sage/core/sage_consciousness.py`)
+   - DREAM state now writes top-k SNARC experiences to `demo_logs/consolidated_memory.jsonl`
+   - Records: cycle, plugin, salience, timestamp, response preview (first 200 chars)
+   - **Verified**: 9 experiences consolidated on DREAM entry
+
+3. **Response Accessor** (`sage/__init__.py` + `sage/core/sage_consciousness.py`)
+   - `sage.last_response` → most recent LLM response dict (text, tokens, atp_cost, sender)
+   - `sage.responses` → last 20 LLM responses
+   - No more digging through `snarc_memory[i]['result'].final_state['response']`
+   - **Verified**: Both properties return correct data in LLM mode, None/[] in mock mode
+
+**Tests**: Mock mode (10 cycles) and real LLM mode (15 cycles + 50-cycle DREAM test) all pass.
 
 ---
 

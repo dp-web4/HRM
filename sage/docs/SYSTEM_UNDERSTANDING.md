@@ -305,11 +305,11 @@ The H↔L hierarchical pattern repeats at **five scales**:
 ### 🚧 **Partially Implemented**
 
 **SAGE Core**:
-- ✅ H↔L transformer (100M params)
-- ✅ Bidirectional reasoning (8 iterative cycles)
-- ⚠️ Distributed across components, not unified loop
-- ❌ No integration between SAGECore and HRMOrchestrator
-- ❌ Metabolic state doesn't affect orchestrator
+- ✅ SAGEConsciousness unified 9-step loop (sage/core/sage_consciousness.py)
+- ✅ LLM inference wired through facade (SAGE.create(use_real_llm=True))
+- ✅ Metabolic state drives loop behavior (ATP budgets, plugin selection)
+- ⚠️ H↔L transformer (100M params) exists but not wired into unified loop
+- ⚠️ SAGECore and HRMOrchestrator are separate from SAGEConsciousness
 
 **Temporal State**:
 - ✅ Memory bank implementation
@@ -323,10 +323,11 @@ The H↔L hierarchical pattern repeats at **five scales**:
 
 ### 📋 **Not Yet Implemented**
 
-**Unified SAGE Loop**:
-- The continuous `SAGE.run()` loop from specification
-- Integration of all components (sensors → SNARC → SAGECore → orchestrator → effectors)
-- Metabolic state affecting resource decisions
+**Real Components (currently mocked)**:
+- Sensor observations (mock random data, no real camera/mic/IMU)
+- SNARC computation (algorithmic heuristic, not learned neural model)
+- Effector I/O (mock effectors log operations, no real filesystem/network/motor)
+- Sleep→LoRA training (infrastructure exists, import fails at runtime)
 
 **Dynamic Resource Management**:
 - Load/unload plugins based on need

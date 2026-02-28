@@ -223,7 +223,7 @@ class SAGEDaemon:
         # 4. Print ready banner
         print(f"\n{'='*60}")
         print(f"  SAGE daemon running on {self.config.machine_name}")
-        print(f"  Gateway: http://{bind_host}:{self.config.gateway_port}")
+        print(f"  Gateway: http://{self.gateway.host}:{self.config.gateway_port}")
         print(f"  Network: local only (toggle via dashboard)")
         print(f"  Model: {self.config.model_size}")
         print(f"  LCT: {self.config.lct_id}")

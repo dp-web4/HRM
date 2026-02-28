@@ -384,7 +384,7 @@ This implementation validates the **compression-action-threshold pattern** as un
 - ❌ Not deployed on edge devices
 - ❌ Not adaptive (learns thresholds)
 
-**Timeline to production-ready**:
+**Timeline to deployment-ready**:
 - Integration: 2-3 hours
 - Real sensor testing: 2-3 hours
 - Performance validation: 2 hours

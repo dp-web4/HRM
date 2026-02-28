@@ -1,5 +1,7 @@
 # HRM/SAGE Implementation Status
 
+> **Note (Feb 27, 2026)**: This file is a detailed snapshot from Jan 2026. For current status including the unified entry point, LLM wiring, ATP token coupling, and honesty pass, see **[sage/docs/LATEST_STATUS.md](sage/docs/LATEST_STATUS.md)**.
+
 **Last Updated**: January 19, 2026
 **Current Status**: Multi-Modal Consciousness Framework Established
 **Honest Assessment**: Q3-Omni-30B consciousness research initiated, cognitive evaluation integrated
@@ -706,7 +708,7 @@ HRM/SAGE in dp-web4 is **substantial research architecture** exploring attention
   - Session 141: Authorization EP (security control)
   - Session 142: Performance validated at 373,129 decisions/sec on Thor
   - **Outperforms Legion RTX 4090 by 33%** (373K vs 280K decisions/sec)
-  - Production-ready: 7.5x over 50K threshold, 2.58μs latency
+  - Validated: 7.5x over 50K threshold, 2.58μs latency
 
 **The work is valuable as research**:
 - Novel approach (multi-sensor coherence, trust-augmented selection)
@@ -732,6 +734,6 @@ Not overselling. Not underselling. Accurately describing what exists.
 
 ---
 
-**Last Updated**: December 31, 2025
+**Last Updated**: December 31, 2025 (see [sage/docs/LATEST_STATUS.md](sage/docs/LATEST_STATUS.md) for Feb 2026 updates)
 **Next Review**: March 2026 (after full expert extraction + multi-layer testing)
-**Status**: Five-domain EP consciousness framework production-ready on Thor
+**Status**: Five-domain EP consciousness framework validated on Thor

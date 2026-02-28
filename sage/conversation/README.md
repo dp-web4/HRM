@@ -479,7 +479,7 @@ python3 sage/conversation/test_honest_mode_validation.py --automated --mode crea
 
 ## Status
 
-Framework complete and production-ready. All modes validated against R14B_017 findings.
+Framework complete. All modes validated against R14B_017 findings.
 
 Ready for deployment in SAGE conversations.
 

@@ -1,5 +1,7 @@
 # Active Work Coordination
 
+> **Note (Feb 27, 2026)**: This file was last substantively updated Jan 16. For current work status, see **[sage/docs/LATEST_STATUS.md](sage/docs/LATEST_STATUS.md)**.
+
 **Last Updated**: 2026-01-16 00:10 PST
 **Purpose**: Coordinate between Thor (development) and Sprout (edge validation)
 
@@ -165,7 +167,7 @@ After: 100% core architecture, ready for sensor/SNARC/effector integration
 - Resolves Sprout's edge deployment blocker
 
 **Sprout's Findings** (that Thor addressed):
-- ✅ Sleep-Learned Meta: Production ready (942MB, 55s inference, 0.544 salience)
+- ✅ Sleep-Learned Meta: Validated (942MB, 55s inference, 0.544 salience)
 - ❌ Epistemic-pragmatism: Failed to load (local model issue) → **FIXED**
 - ⏳ Introspective-Qwen: Not deployed yet → Waiting for Sprout
 

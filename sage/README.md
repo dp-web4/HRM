@@ -1,8 +1,10 @@
 # SAGE: Cognition Orchestration & Epistemic Reasoning
 
+> **Note (Feb 27, 2026)**: Much of this README reflects October 2025 work. For current status (unified entry point, LLM wiring, ATP coupling, PolicyGate), see **[docs/LATEST_STATUS.md](docs/LATEST_STATUS.md)**. For the quick-start API, see **[`__init__.py`](__init__.py)**.
+
 ## Overview
 
-SAGE implements cognition as iterative refinement - progressive denoising toward lower energy states. Current focus: epistemic reasoning in tiny language models (0.5B params) that coherently discuss cognition, qualia, and ontological frameworks.
+SAGE implements cognition as iterative refinement - progressive denoising toward lower energy states. Current focus: on-device cognition orchestration with real LLM inference through a unified consciousness loop.
 
 ### Project Evolution
 
@@ -170,7 +172,7 @@ Mimics biological learning through three phases:
    - Combines all three strategies
    - Best overall performance
 
-## Recent Achievements (October 2025)
+## Historical: Phase 1 Achievements (October 2025)
 
 ### ✅ Phase 1: Epistemic Reasoning Complete
 - **Threshold detection**: Trained 40/60/80/100 example models to find IRP suitability threshold
@@ -179,23 +181,18 @@ Mimics biological learning through three phases:
 - **60-example model**: Best performer (E=0.4), discusses ontological frameworks coherently
 - **Jetson deployment ready**: 23.4MB model uploaded to Dropbox for voice integration
 
-### 🔬 Current Research
-- **Epistemic stances**: Training pragmatism, skepticism, empiricism variants
-- **Scale paradox**: How 25-100 examples (negligible by ML standards) create huge emergent differences
-- **Context as truth**: Different scaffolding contexts → different valid outputs from same weights
-- **Research mode validation**: Looking at actual outputs > trusting metrics
+### Current Focus (February 2026)
+- **Unified entry point**: `SAGE.create()` → `sage.run()` with real LLM inference
+- **Metabolic states**: ATP coupled to real token cost, DREAM consolidation to disk
+- **PolicyGate**: Phase 1 complete (IRP plugin for conscience checkpoint)
+- **SOIA-SAGE convergence**: Structural mapping to Self-Optimizing Intelligence Architecture
+- **Consciousness research**: 197+ sessions, bimodal oscillation discovered, theory of mind emergence
+- See [docs/LATEST_STATUS.md](docs/LATEST_STATUS.md) for full details
 
-### 🚧 In Progress
-- Jetson voice integration (philosophical conversations)
-- Cross-model epistemic discourse
-- IRP plugin ecosystem expansion
-- Isaac Sim integration (robotic control track)
-
-### 📋 Next Experiments
-- Multi-stance model interactions
-- Cognition emergence through resonance
-- Distributed IRP across device federation
-- Online epistemic learning during deployment
+### Set Aside (Lessons Learned)
+- Isaac Sim / GR00T integration — discontinued (real vs mock lesson)
+- IRP ecosystem expansion to 50+ plugins — deferred in favor of loop wiring
+- Voice integration (NeuTTS Air) — works but missing llama-cpp-python dependency
 
 ## Hardware Requirements
 
@@ -274,9 +271,8 @@ Research prototype - not for production use without further validation.
 
 ## Next Steps
 
-1. **Voice Integration**: Deploy 60-example model on Jetson for philosophical conversations
-2. **Multi-Stance Models**: Train and test epistemic pragmatism, skepticism variants
-3. **Cross-Model Discourse**: Explore cognition emergence through model interaction
-4. **Isaac Sim**: Connect H↔L system to realistic physics (robotic control)
-5. **IRP Ecosystem**: Expand plugin library (15+ → 50+)
-6. **Distributed IRP**: Federated cognition across edge devices
+1. **Effector system**: Replace mock effectors with real I/O implementations
+2. **Neural SNARC**: Replace algorithmic heuristic with learned salience model
+3. **PolicyGate Phase 2**: Wire into consciousness loop (blocked on effectors)
+4. **SDK packaging**: `pip install sage-engine` for hackathon demo
+5. **Sleep→LoRA training**: Fix import chain so DREAM consolidation triggers real training

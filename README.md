@@ -40,7 +40,7 @@ The question we're asking: *Can attention orchestration + trust dynamics + itera
 
 ### Key Insight
 
-**RLHF creates "attractor basins"** that instruction-engineering must navigate. High-frequency patterns (politeness, formatting) compete with valuable rare behaviors (clarifying questions, uncertainty acknowledgment). Our RLHF Circuit Navigation Framework provides a production-ready methodology for activating desired behaviors.
+**RLHF creates "attractor basins"** that instruction-engineering must navigate. High-frequency patterns (politeness, formatting) compete with valuable rare behaviors (clarifying questions, uncertainty acknowledgment). Our RLHF Circuit Navigation Framework provides a validated methodology for activating desired behaviors.
 
 ---
 
@@ -57,10 +57,14 @@ The question we're asking: *Can attention orchestration + trust dynamics + itera
 
 ### Current Capabilities
 
-- **15+ IRP plugins** operational (Vision, Audio, Language, Memory, TTS, Control)
-- **Federation protocol** tested across multiple machines
+- **Unified entry point**: `SAGE.create()` → `sage.run()` wires consciousness loop with real LLM inference
+- **Real LLM through the loop**: Ollama/Transformers with hot/cold lifecycle, ATP coupled to token cost
+- **Metabolic state machine**: WAKE/FOCUS/REST/DREAM/CRISIS with ATP budgeting
+- **DREAM consolidation**: Sleep writes top-k experiences to disk (JSONL)
+- **15+ IRP plugins** (Vision, Audio, Language, Memory, TTS, Control)
+- **PolicyGate skeleton**: Phase 1 complete (8/8 tests), disabled by default
 - **Edge deployment** validated on Jetson Orin Nano (8GB)
-- **FlashAttention** at 0.46ms latency (21x under budget)
+- **Sensors, SNARC, effectors**: architecture exists, currently mocked (no real I/O)
 
 ### Open Questions
 
@@ -84,7 +88,8 @@ See [research/Open_Questions/](research/Open_Questions/) for active investigatio
 | Document | Purpose |
 |----------|---------|
 | [docs/what/ACHIEVEMENTS.md](docs/what/ACHIEVEMENTS.md) | Master list of validated discoveries |
-| [STATUS.md](STATUS.md) | Honest assessment of what works and what doesn't |
+| [sage/docs/LATEST_STATUS.md](sage/docs/LATEST_STATUS.md) | Current status (Feb 2026) |
+| [STATUS.md](STATUS.md) | Detailed assessment with honest gaps (Dec 2025 snapshot) |
 | [research/SESSION_MAP.md](research/SESSION_MAP.md) | Navigate 567+ research sessions |
 | [sage/docs/](sage/docs/) | Deep technical documentation (275KB) |
 
@@ -97,7 +102,7 @@ See [research/Open_Questions/](research/Open_Questions/) for active investigatio
 | **Consciousness** | [research/Consciousness/](research/Consciousness/) | 197+ | Nine-domain framework |
 | **Raising-14B** | [research/Raising-14B/](research/Raising-14B/) | 22+ | RLHF circuit navigation |
 | **Raising-0.5B** | [research/Raising-0.5B/](research/Raising-0.5B/) | 105 | Identity-confabulation dissociation |
-| **Edge-Validation** | [research/Edge-Validation/](research/Edge-Validation/) | 198+ | Production readiness |
+| **Edge-Validation** | [research/Edge-Validation/](research/Edge-Validation/) | 198+ | Edge deployment testing |
 | **Policy** | [policy/](policy/) | 31+ | Role specialization |
 
 ---
@@ -124,7 +129,7 @@ Attention Orchestrator (SAGE)
 ├── VAE Translation Layer
 │   └── 192× compression for cross-modal communication
 ├── Trust Tensor System
-│   └── 6D trust metrics drive selection
+│   └── T3 trust metrics drive selection
 └── Metabolic States
     └── WAKE, FOCUS, REST, DREAM, CRISIS
 ```
@@ -156,4 +161,4 @@ See [LICENSE](LICENSE) for details.
 
 ---
 
-*Last updated: February 5, 2026 | 567+ sessions across 5 active tracks*
+*Last updated: February 27, 2026 | 567+ sessions across 5 active tracks*

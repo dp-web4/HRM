@@ -28,22 +28,23 @@ What's wired end-to-end (traceable code paths):
 - LLMRuntime with hot/cold lifecycle (Ollama/Transformers) → real inference
 - Metabolic controller: WAKE/FOCUS/REST/DREAM/CRISIS with ATP budgeting
 - ATP coupled to real LLM token cost (0.05 ATP/token)
-- SNARC salience scoring (algorithmic 5D — not neural)
-- DREAM consolidation writes top-k experiences to disk (JSONL)
+- SNARC salience scoring (algorithmic 5D — or real ConversationalSalienceScorer)
+- DREAM consolidation writes top-k experiences to disk (JSONL or real LoRA training)
 - Message injection queue for text input → LLM on next cycle
 - Trust weight learning from plugin convergence
 
-Built and tested standalone, not yet wired into the main loop:
-- Sensors: 5 real backends (camera/mic/IMU/proprioception/audio) + trust-weighted
-  fusion engine in sage/sensors/ and sage/core/sensor_fusion.py — loop uses mock data
-- SNARC: neural scorer, service-level detectors, trained weights from 156-cycle
-  deployment in sage/attention/snarc_scorer.py — loop uses algorithmic heuristic
-- Effectors: real NetworkEffector (wired), FileSystemEffector (sandboxed),
-  TTSEffector (Piper+Bluetooth), NeuTTS Air (voice cloning) — loop uses mocks for
-  6 of 7 effector types
-- Sleep/LoRA: full pipeline ran production cycle (salience-weighted loss 4.06→4.03)
-  in sage/raising/training/sleep_training.py — loop writes JSONL but doesn't
-  trigger training yet
+Config-gated real components (use_real_* flags in SAGE.create()):
+- Sensors: MultiSensorTrustSystem tracks learned trust scores (use_real_sensors=True)
+  Real backends (camera/mic/IMU) in sage/sensors/ — loop uses mock observations
+  but trust evolves via sage/core/sensor_trust.py
+- SNARC: ConversationalSalienceScorer scores LLM exchanges post-response
+  (use_neural_snarc=True) — 5D text-based scoring from
+  sage/raising/training/experience_collector.py
+- Effectors: FileSystemEffector (sandboxed), WebEffector (domain allowlist),
+  ToolUseEffector (callable registry) replace mocks (use_real_effectors=True)
+  Motor/Display/Speaker stay mock (hardware-dependent)
+- Sleep/LoRA: SleepConsolidationBridge calls real LoRA training on DREAM entry
+  (use_real_sleep=True) — via sage/attention/sleep_consolidation.py
 - PolicyGate: Phase 1 skeleton (8/8 tests), not enabled by default
 """
 
@@ -201,15 +202,15 @@ class SAGE:
     - LLMRuntime + sync adapter (when use_real_llm=True)
     - MetabolicController (5-state management with ATP)
     - Message injection queue for text input
-    - SNARC salience (algorithmic 5D scoring — not neural)
-    - DREAM consolidation (top-k experiences → JSONL)
+    - SNARC salience (heuristic default, or real scorer via use_neural_snarc)
+    - DREAM consolidation (JSONL default, or real LoRA via use_real_sleep)
 
-    Built standalone, pending loop integration:
-    - Sensors: real backends exist (camera/mic/IMU), loop uses mock data
-    - SNARC: neural scorer + trained weights exist, loop uses heuristic
-    - Effectors: real Network/Filesystem/TTS exist, loop uses mocks for most
-    - Sleep/LoRA: full training pipeline ran, loop doesn't trigger it yet
-    - PolicyGate: Phase 1 complete (8/8 tests), disabled by default
+    Config-gated real components (SAGE.create() flags):
+    - use_real_sensors: learned trust scores via MultiSensorTrustSystem
+    - use_neural_snarc: ConversationalSalienceScorer for post-LLM scoring
+    - use_real_effectors: FileSystem/Web/ToolUse replace mocks
+    - use_real_sleep: SleepConsolidationBridge for LoRA training on DREAM
+    - use_policy_gate: PolicyGate IRP at step 8.5
     """
 
     def __init__(self, consciousness_loop, config: Optional[Dict[str, Any]] = None,
@@ -233,6 +234,8 @@ class SAGE:
         config: Optional[Dict[str, Any]] = None,
         use_real_llm: bool = False,
         use_real_sensors: bool = False,
+        use_real_effectors: bool = False,
+        use_real_sleep: bool = False,
         use_policy_gate: bool = False,
         use_neural_snarc: bool = False
     ) -> 'SAGE':
@@ -248,11 +251,17 @@ class SAGE:
                 - 'llm_config': LLM backend settings
                     - 'backend_type': 'ollama' or 'transformers'
                     - 'backend_config': {'model_name': 'tinyllama:latest', ...}
+                - 'filesystem_allowed_paths': Paths for real FileSystemEffector
+                - 'web_allowed_domains': Domains for real WebEffector
+                - 'sleep_model_path': Model for LoRA sleep training
+                - 'sleep_checkpoint_dir': Checkpoint directory for sleep
 
             use_real_llm: Use real LLM (Ollama/Transformers) vs mock
-            use_real_sensors: Use real sensors vs mock observations
+            use_real_sensors: Use real sensor trust tracking vs static
+            use_real_effectors: Use real FileSystem/Web/ToolUse effectors vs mock
+            use_real_sleep: Use real LoRA sleep training vs JSONL dump
             use_policy_gate: Enable PolicyGate at step 8.5
-            use_neural_snarc: Use learned SNARC model vs algorithmic
+            use_neural_snarc: Use real SNARC salience scoring vs heuristic
 
         Returns:
             SAGE instance ready to run
@@ -310,6 +319,8 @@ class SAGE:
             'use_policy_gate': use_policy_gate,
             'use_neural_snarc': use_neural_snarc,
             'use_real_sensors': use_real_sensors,
+            'use_real_effectors': use_real_effectors,
+            'use_real_sleep': use_real_sleep,
         }
 
         loop = SAGEConsciousness(
@@ -377,8 +388,13 @@ class SAGE:
                 print(f"[SAGE] LLM backend ready")
 
         has_llm = self._llm_runtime is not None
+        loop_cfg = getattr(self._loop, 'config', {})
         print(f"[SAGE] Starting consciousness loop...")
         print(f"  LLM: {'connected' if has_llm else 'mock'}")
+        print(f"  Effectors: {'real (FileSystem/Web/ToolUse)' if loop_cfg.get('use_real_effectors') else 'mock'}")
+        print(f"  SNARC: {'real (ConversationalSalienceScorer)' if loop_cfg.get('use_neural_snarc') else 'heuristic'}")
+        print(f"  Sleep: {'real (LoRA training)' if loop_cfg.get('use_real_sleep') else 'JSONL'}")
+        print(f"  Sensors: {'real (trust tracking)' if loop_cfg.get('use_real_sensors') else 'mock'}")
         print(f"  Max cycles: {max_cycles if max_cycles else 'unlimited'}")
         print(f"  Max duration: {max_duration_seconds if max_duration_seconds else 'unlimited'}s")
         print(f"  Stop on CRISIS: {stop_on_crisis}")

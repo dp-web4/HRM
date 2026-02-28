@@ -85,6 +85,19 @@ class AttentionTarget:
     priority: float  # Computed from salience + metabolic state
 
 
+class _SleepBufferAdapter:
+    """Adapts snarc_memory (plain list) to SleepConsolidationBridge interface."""
+    def __init__(self, snarc_memory: list):
+        self._data = snarc_memory
+
+    @property
+    def size(self) -> int:
+        return len(self._data)
+
+    def get_top_k(self, k: int) -> list:
+        return sorted(self._data, key=lambda x: x.get('salience', 0), reverse=True)[:k]
+
+
 class SAGEConsciousness:
     """
     Unified SAGE consciousness loop.
@@ -176,6 +189,50 @@ class SAGEConsciousness:
         # Effect system
         self._init_effect_system()
 
+        # Real SNARC salience scoring (when use_neural_snarc=True)
+        self.use_real_snarc = self.config.get('use_neural_snarc', False)
+        self.snarc_scorer = None
+        if self.use_real_snarc:
+            try:
+                from raising.training.experience_collector import ConversationalSalienceScorer
+                self.snarc_scorer = ConversationalSalienceScorer()
+                print("[SNARC] Real ConversationalSalienceScorer loaded")
+            except ImportError as e:
+                print(f"[SNARC] Real scorer not available, using mock: {e}")
+                self.use_real_snarc = False
+
+        # Real sleep consolidation (when use_real_sleep=True)
+        self.use_real_sleep = self.config.get('use_real_sleep', False)
+        self.sleep_bridge = None
+        if self.use_real_sleep:
+            try:
+                from attention.sleep_consolidation import SleepConsolidationBridge
+                sleep_config = {
+                    'model_path': self.config.get('sleep_model_path', None),
+                    'checkpoint_dir': self.config.get('sleep_checkpoint_dir',
+                        'logs/attention/sleep_checkpoints'),
+                    'min_salience': self.config.get('sleep_min_salience', 0.6),
+                    'max_experiences': self.config.get('sleep_max_experiences', 20),
+                    'epochs': self.config.get('sleep_epochs', 3),
+                    'device': self.config.get('device', 'cpu'),
+                    'enabled': True,
+                }
+                self.sleep_bridge = SleepConsolidationBridge(config=sleep_config)
+                print("[Sleep] Real SleepConsolidationBridge loaded")
+            except ImportError as e:
+                print(f"[Sleep] Real bridge not available, using JSONL fallback: {e}")
+                self.use_real_sleep = False
+
+        # Real sensor trust tracking (when use_real_sensors=True)
+        self.sensor_trust_system = None
+        if self.config.get('use_real_sensors', False):
+            try:
+                from core.sensor_trust import MultiSensorTrustSystem
+                self.sensor_trust_system = MultiSensorTrustSystem()
+                print("[Sensors] Real MultiSensorTrustSystem loaded")
+            except ImportError as e:
+                print(f"[Sensors] Real trust system not available: {e}")
+
         # LLM response tracking (for easy access via facade)
         self.last_llm_responses = []
 
@@ -215,14 +272,14 @@ class SAGEConsciousness:
         }
 
     def _initialize_sensors(self) -> Dict[str, Any]:
-        """Initialize sensor system (mock for now)"""
-        # TODO: Integrate real sensors from sage/core/sensor_fusion.py
+        """Initialize sensor system with optional real trust tracking."""
+        # sensor_trust_system is initialized earlier in __init__
         return {
             'vision': {'trust': 1.0, 'enabled': True},
             'audio': {'trust': 1.0, 'enabled': True},
             'proprioception': {'trust': 1.0, 'enabled': True},
             'time': {'trust': 1.0, 'enabled': True},
-            'message': {'trust': 1.0, 'enabled': True},  # External messages via gateway
+            'message': {'trust': 1.0, 'enabled': True},
         }
 
     def _init_effect_system(self):
@@ -231,10 +288,6 @@ class SAGEConsciousness:
             from interfaces.effect import Effect, EffectType, EffectStatus as EStatus
             from interfaces.effect_extractor import EffectExtractor
             from interfaces.effector_registry import EffectorRegistry
-            from interfaces.effectors.mock_effectors import (
-                MockFileSystemEffector, MockToolUseEffector,
-                MockWebEffector, MockCognitiveEffector,
-            )
             from interfaces.mock_sensors import (
                 MockMotorEffector, MockDisplayEffector, MockSpeakerEffector,
             )
@@ -242,16 +295,53 @@ class SAGEConsciousness:
             self.effect_extractor = EffectExtractor()
             self.effector_registry = EffectorRegistry()
 
-            # Register mock effectors for each effect type
-            self.effector_registry.register_effector(
-                MockFileSystemEffector({'effector_id': 'filesystem', 'effector_type': 'file_io'}),
-                handles=[EffectType.FILE_IO], effector_id='filesystem')
-            self.effector_registry.register_effector(
-                MockToolUseEffector({'effector_id': 'tool_use', 'effector_type': 'tool_use'}),
-                handles=[EffectType.TOOL_USE], effector_id='tool_use')
-            self.effector_registry.register_effector(
-                MockWebEffector({'effector_id': 'web', 'effector_type': 'web'}),
-                handles=[EffectType.API_CALL, EffectType.WEB], effector_id='web')
+            use_real_effectors = self.config.get('use_real_effectors', False)
+
+            if use_real_effectors:
+                # Real effectors for FILE_IO, TOOL_USE, WEB
+                from interfaces.effectors.filesystem_effector import FileSystemEffector
+                from interfaces.effectors.web_effector import WebEffector
+                from interfaces.effectors.tool_use_effector import ToolUseEffector
+
+                self.effector_registry.register_effector(
+                    FileSystemEffector({
+                        'effector_id': 'filesystem', 'effector_type': 'file_io',
+                        'allowed_paths': self.config.get('filesystem_allowed_paths', []),
+                        'deny_patterns': self.config.get('filesystem_deny_patterns',
+                            ['*.env', '*password*', '*credential*', '*secret*', '*.key']),
+                    }),
+                    handles=[EffectType.FILE_IO], effector_id='filesystem')
+                self.effector_registry.register_effector(
+                    ToolUseEffector({
+                        'effector_id': 'tool_use', 'effector_type': 'tool_use',
+                        'allowed_tools': self.config.get('tool_allowed_tools', []),
+                    }),
+                    handles=[EffectType.TOOL_USE], effector_id='tool_use')
+                self.effector_registry.register_effector(
+                    WebEffector({
+                        'effector_id': 'web', 'effector_type': 'web',
+                        'allowed_domains': self.config.get('web_allowed_domains', []),
+                        'rate_limit': self.config.get('web_rate_limit', 10.0),
+                    }),
+                    handles=[EffectType.API_CALL, EffectType.WEB], effector_id='web')
+                print("[Effectors] Real FileSystem/ToolUse/Web effectors loaded")
+            else:
+                # Mock effectors
+                from interfaces.effectors.mock_effectors import (
+                    MockFileSystemEffector, MockToolUseEffector,
+                    MockWebEffector,
+                )
+                self.effector_registry.register_effector(
+                    MockFileSystemEffector({'effector_id': 'filesystem', 'effector_type': 'file_io'}),
+                    handles=[EffectType.FILE_IO], effector_id='filesystem')
+                self.effector_registry.register_effector(
+                    MockToolUseEffector({'effector_id': 'tool_use', 'effector_type': 'tool_use'}),
+                    handles=[EffectType.TOOL_USE], effector_id='tool_use')
+                self.effector_registry.register_effector(
+                    MockWebEffector({'effector_id': 'web', 'effector_type': 'web'}),
+                    handles=[EffectType.API_CALL, EffectType.WEB], effector_id='web')
+
+            # Motor/Display/Speaker stay mock (hardware-dependent)
             self.effector_registry.register_effector(
                 MockMotorEffector({'effector_id': 'motor', 'effector_type': 'motor',
                                    'simulate_latency': False}),
@@ -263,6 +353,9 @@ class SAGEConsciousness:
                 MockSpeakerEffector({'effector_id': 'speaker', 'effector_type': 'speaker',
                                      'sample_rate': 16000}),
                 handles=[EffectType.AUDIO], effector_id='speaker')
+
+            # Cognitive stays mock (internal effect)
+            from interfaces.effectors.mock_effectors import MockCognitiveEffector
             self.effector_registry.register_effector(
                 MockCognitiveEffector({'effector_id': 'cognitive', 'effector_type': 'cognitive'}),
                 handles=[EffectType.MEMORY_WRITE, EffectType.TRUST_UPDATE,
@@ -526,6 +619,21 @@ class SAGEConsciousness:
                     trust=1.0,  # External messages are trusted sensor input
                 ))
                 self.stats['messages_received'] += 1
+
+        # Update sensor trust from real trust system (when available)
+        if self.sensor_trust_system and observations:
+            try:
+                import torch
+                dummy_obs = torch.tensor([1.0])  # Minimal tensor for API
+                for obs in observations:
+                    modality = obs.modality
+                    if modality in self.sensors:
+                        self.sensor_trust_system.update(
+                            modality, observation=dummy_obs, quality=obs.trust)
+                        learned_trust = self.sensor_trust_system.get_trust_score(modality)
+                        self.sensors[modality]['trust'] = learned_trust
+            except Exception:
+                pass  # Sensor trust update is non-critical
 
         return observations
 
@@ -820,6 +928,35 @@ class SAGEConsciousness:
         if len(self.last_llm_responses) > 20:
             self.last_llm_responses = self.last_llm_responses[-20:]
 
+        # Real SNARC post-LLM scoring
+        snarc_real = None
+        if (self.use_real_snarc and self.snarc_scorer
+                and response_text and not response_text.startswith('[')):
+            try:
+                snarc_real = self.snarc_scorer.score_exchange(content, response_text)
+                print(f"[SNARC] Real salience: {snarc_real['total']:.3f} "
+                      f"(S={snarc_real['surprise']:.2f} N={snarc_real['novelty']:.2f} "
+                      f"A={snarc_real['arousal']:.2f} R={snarc_real['reward']:.2f} "
+                      f"C={snarc_real['conflict']:.2f})")
+            except Exception as e:
+                print(f"[SNARC] Real scoring failed: {e}")
+
+        # Build telemetry
+        telemetry = {
+            'trust': {
+                'monotonicity_ratio': 0.85,
+                'variance': 0.15,
+                'convergence_rate': 0.75,
+            },
+            'salience': snarc_real['total'] if snarc_real else target.salience.total,
+            'response_length': len(response_text),
+            'message_id': message_id,
+            'llm_tokens': token_estimate,
+            'llm_atp_cost': llm_atp_cost,
+        }
+        if snarc_real:
+            telemetry['snarc_real'] = snarc_real
+
         # Create PluginResult with the real response embedded
         return PluginResult(
             plugin_name='language',
@@ -831,18 +968,7 @@ class SAGEConsciousness:
                 'modality': 'message',
             },
             history=[],
-            telemetry={
-                'trust': {
-                    'monotonicity_ratio': 0.85,
-                    'variance': 0.15,
-                    'convergence_rate': 0.75,
-                },
-                'salience': target.salience.total,
-                'response_length': len(response_text),
-                'message_id': message_id,
-                'llm_tokens': token_estimate,
-                'llm_atp_cost': llm_atp_cost,
-            },
+            telemetry=telemetry,
             budget_used=budget,
             execution_time=execution_time,
         )
@@ -981,7 +1107,16 @@ class SAGEConsciousness:
             except Exception as e:
                 print(f"[DREAM] Experience check failed: {e}")
 
-        # Consolidate SNARC memory to disk (sleep persistence)
+        # Real sleep consolidation via SleepConsolidationBridge
+        if self.use_real_sleep and self.sleep_bridge and self.snarc_memory:
+            try:
+                buffer_adapter = _SleepBufferAdapter(self.snarc_memory)
+                asyncio.ensure_future(self._run_sleep_consolidation(buffer_adapter))
+                return  # Skip JSONL fallback
+            except Exception as e:
+                print(f"[DREAM] Real sleep consolidation failed, falling back to JSONL: {e}")
+
+        # JSONL consolidation fallback
         if self.snarc_memory:
             try:
                 sorted_exp = sorted(
@@ -1016,6 +1151,19 @@ class SAGEConsciousness:
                 print(f"[DREAM] Consolidated {written} experiences to {consolidation_file}")
             except Exception as e:
                 print(f"[DREAM] Consolidation failed: {e}")
+
+    async def _run_sleep_consolidation(self, buffer_adapter):
+        """Run real sleep consolidation asynchronously."""
+        try:
+            results = await self.sleep_bridge.consolidate(buffer_adapter)
+            status = results.get('status', 'unknown')
+            print(f"[DREAM] Sleep consolidation: {status}")
+            if results.get('final_loss'):
+                print(f"[DREAM] LoRA training loss: {results['final_loss']:.4f}")
+            if results.get('experiences_consolidated'):
+                print(f"[DREAM] Experiences consolidated: {results['experiences_consolidated']}")
+        except Exception as e:
+            print(f"[DREAM] Async sleep consolidation error: {e}")
 
     def _update_trust_weights(self, results: Dict[str, PluginResult]):
         """
@@ -1058,14 +1206,18 @@ class SAGEConsciousness:
             telemetry = result.telemetry
 
             # 1. SNARC memory (selective storage via salience)
-            salience = telemetry.get('salience', 0.0)
+            snarc_real = telemetry.get('snarc_real', None)
+            salience = snarc_real['total'] if snarc_real else telemetry.get('salience', 0.0)
             if salience > self.salience_threshold:
-                self.snarc_memory.append({
+                entry = {
                     'cycle': self.cycle_count,
                     'plugin': plugin_name,
                     'salience': salience,
-                    'result': result
-                })
+                    'result': result,
+                }
+                if snarc_real:
+                    entry['snarc_dimensions'] = snarc_real
+                self.snarc_memory.append(entry)
 
             # 2. IRP pattern library (store good convergence patterns)
             trust = telemetry.get('trust', {})

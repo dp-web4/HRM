@@ -1,9 +1,15 @@
 # SAGE Unified Cognition Loop
 
-**Date**: November 19, 2025 (loop structure), February 27, 2026 (LLM wiring + ATP coupling)
-**Status**: Loop structure complete. LLM inference wired. Sensors, SNARC, effectors, and sleep/LoRA built and tested standalone — loop uses simplified versions.
-**Wired end-to-end**: 9-step loop, metabolic states, ATP budgeting, real LLM inference, DREAM consolidation to disk, NetworkEffector (real)
-**Built standalone, not yet integrated**: Real sensors (camera/mic/IMU/audio/proprioception + fusion), neural SNARC (trained weights from 156 cycles), FileSystem/TTS/NeuTTS effectors, LoRA sleep training (production cycle completed)
+**Date**: November 19, 2025 (loop structure), February 27, 2026 (LLM wiring + component integration)
+**Status**: All major components config-gated into the loop via `SAGE.create()` flags.
+**Always wired**: 9-step loop, metabolic states, ATP budgeting (token-coupled), DREAM consolidation, NetworkEffector
+**Config-gated** (off by default, enable via `use_real_*` flags):
+- `use_real_llm` — Real LLM inference (Ollama/Transformers)
+- `use_neural_snarc` — ConversationalSalienceScorer (post-LLM 5D text scoring)
+- `use_real_effectors` — FileSystemEffector, WebEffector, ToolUseEffector
+- `use_real_sleep` — SleepConsolidationBridge (LoRA training on DREAM entry)
+- `use_real_sensors` — MultiSensorTrustSystem (learned trust scores)
+- `use_policy_gate` — PolicyGate IRP (step 8.5)
 
 ---
 
@@ -221,223 +227,65 @@ From test runs:
 
 ---
 
-## Standalone Components (Built, Tested — Pending Loop Integration)
+## Config-Gated Real Components
 
-Real implementations exist for all major components. The loop currently uses simplified
-versions. Integration requires wiring, not rewriting — interfaces are aligned.
+All major components are wired into the loop, gated by `SAGE.create()` flags. When a flag
+is off (default), the loop uses simplified mocks. When on, the real implementation runs.
+Each falls back to mock gracefully if imports fail.
 
-### 1. Sensor Observations
-- **Loop uses**: Mock random vision/audio/time observations
-- **Real code**: `sage/sensors/camera_sensor.py` (OpenCV), `audio_sensor.py` (PyAudio 16kHz),
-  `imu_sensor.py` (BNO055/MPU6050 with complementary filter), `proprioception_sensor.py`
+### 1. Sensor Trust — `use_real_sensors=True`
+- **Default**: Static trust scores (1.0 for all modalities)
+- **Real**: `MultiSensorTrustSystem` from `sage/core/sensor_trust.py` — learned trust
+  scores that evolve per observation. Mock observations still flow through, but trust
+  adapts over time (e.g., vision 1.0 → 0.95 after 5 cycles)
+- **Real backends** (not in loop yet, need hardware): `sage/sensors/camera_sensor.py` (OpenCV),
+  `audio_sensor.py` (PyAudio), `imu_sensor.py` (BNO055/MPU6050)
 - **Fusion engine**: `sage/core/sensor_fusion.py` — trust-weighted fusion, conflict detection
-- **Tested**: 30-cycle integration with SNARCService, sub-millisecond cycle times
-- **Integration**: Wire `SensorHub` to `_initialize_sensors()`
 
-### 2. SNARC Salience Computation
-- **Loop uses**: Algorithmic heuristic (random 5D scores by modality)
-- **Real code**: `sage/attention/snarc_scorer.py` (neural PyTorch module),
-  `sage/services/snarc/snarc_service.py` (5 separate detectors), `sage/core/snarc_compression.py`
-- **Trained weights**: From 156-cycle deployment — novelty dominates (0.628), 41.8% improvement
-- **Already wired in variant**: `sage_consciousness_real.py` uses real SNARC
-- **Integration**: Make the `_real.py` variant the default
+### 2. SNARC Salience — `use_neural_snarc=True`
+- **Default**: Heuristic 5D scores by modality (messages get high placeholder scores)
+- **Real**: `ConversationalSalienceScorer` from `sage/raising/training/experience_collector.py`
+  — scores LLM exchanges post-response on 5 dimensions (surprise, novelty, arousal,
+  reward, conflict) using vocabulary tracking and response pattern analysis
+- **Timing**: Pre-execution salience stays placeholder (needed for attention selection).
+  Real scoring happens in `_execute_llm_for_message()` after response generation.
+  Results stored as `snarc_real` in telemetry and `snarc_dimensions` in memory.
 
-### 3. Plugin Execution
-- **Loop uses**: Simulated convergence telemetry
+### 3. Effectors — `use_real_effectors=True`
+- **Default**: Mock effectors for all types (log but no real I/O)
+- **Real** (3 of 7 types): `FileSystemEffector` (sandboxed read/write with deny_patterns),
+  `WebEffector` (HTTP with domain allowlist + rate limiting),
+  `ToolUseEffector` (callable registry with timeout)
+- **Always real**: `NetworkEffector` for MESSAGE effects (gateway responses)
+- **Still mock**: Motor, Display, Speaker (hardware-dependent), Cognitive (internal)
+- **Also available** (not in loop): `TTSEffector` (Piper + Bluetooth), NeuTTS Air (voice cloning)
+
+### 4. Sleep/LoRA — `use_real_sleep=True`
+- **Default**: DREAM writes top-k SNARC experiences to JSONL file
+- **Real**: `SleepConsolidationBridge` from `sage/attention/sleep_consolidation.py` —
+  extracts high-salience experiences, converts to training format, runs LoRA fine-tuning
+  (r=4, salience-weighted loss). Fires asynchronously on DREAM entry, falls back to JSONL on error.
+- **Production results**: First cycle processed 6 experiences, loss 4.061→4.027
+
+### 5. Plugin Execution (not yet wired)
+- **Loop uses**: Simulated convergence telemetry for non-message modalities
 - **TODO**: Wire `HRMOrchestrator.run_plugin()` with real observations
 
-### 4. Effector System
-- **Loop uses**: 7 mock effectors + 1 real (NetworkEffector)
-- **Real code**: `sage/interfaces/effectors/network_effector.py` (MESSAGE — **wired**),
-  `filesystem_effector.py` (sandboxed read/write with deny_patterns),
-  `sage/interfaces/tts_effector.py` (Piper TTS + Bluetooth),
-  `sage/irp/plugins/neutts_air_impl.py` (voice cloning, IRP plugin)
-- **Tested**: 50-cycle integration test suite (7 test classes), metabolic-state gating, ATP budgeting
-- **Integration**: Swap mock effectors for real ones (same BaseEffector interface)
-
-### 5. Sleep/LoRA Training
-- **Loop uses**: DREAM writes top-k experiences to JSONL (added Feb 27)
-- **Real code**: `sage/raising/training/sleep_training.py` (LoRA r=4, salience-weighted loss),
-  `sage/attention/sleep_consolidation.py` (SleepConsolidationBridge)
-- **Production results**: First cycle processed 6 experiences, loss 4.061→4.027 (monotonically decreasing)
-- **LoRA checkpoints**: cycle_001+ trained on Jetson hardware (Sprout/Thor)
-- **Integration**: Call `SleepConsolidationBridge.consolidate()` on DREAM entry
-
 ---
 
-## Integration Roadmap
+## Remaining Integration Work
 
-### Phase 1: Sensor Integration (1-2 days)
+### Real Sensor Backends (requires hardware)
+Wire `SensorFusionEngine.fuse()` with actual camera/mic/IMU backends on Jetson.
+Trust system is already wired — observations just need to come from real hardware.
 
-**Goal**: Replace mock observations with real sensor data
+### Plugin Execution
+Wire `HRMOrchestrator.run_plugin()` for non-message modalities (vision, audio, control).
+Currently these get simulated convergence telemetry.
 
-**Tasks**:
-1. Connect to `/sage/core/sensor_fusion.py`
-2. Initialize camera (CSI or USB)
-3. Initialize microphone
-4. Initialize IMU/proprioception
-5. Update `_gather_observations()` to read real sensors
-
-**Example**:
-```python
-from sage.core.sensor_fusion import SensorFusion
-
-# In __init__
-self.sensor_fusion = SensorFusion(config)
-
-# In _gather_observations
-def _gather_observations(self):
-    return self.sensor_fusion.get_latest_observations()
-```
-
----
-
-### Phase 2: SNARC Integration (2-3 days)
-
-**Goal**: Replace mock salience with real SNARC computation
-
-**Tasks**:
-1. Load SNARC neural models
-2. Compute prediction error (surprise)
-3. Compute novelty from memory
-4. Compute arousal from perplexity
-5. Compute reward from value estimator
-6. Compute conflict from paradox detector
-
-**Example**:
-```python
-from sage.irp.plugins.llm_snarc_integration import ConversationalMemory
-
-# In __init__
-self.snarc = ConversationalMemory(salience_threshold=0.15)
-
-# In _compute_salience
-def _compute_salience(self, observations):
-    salience_map = {}
-    for obs in observations:
-        scores = self.snarc.compute_salience(obs.data)
-        salience_map[obs.sensor_id] = scores
-    return salience_map
-```
-
----
-
-### Phase 3: Plugin Execution Integration (1-2 days)
-
-**Goal**: Actually execute IRP plugins instead of mocking
-
-**Tasks**:
-1. Map attention targets to plugin inputs
-2. Call `orchestrator.run_plugin()` with real data
-3. Collect real telemetry (energy, convergence)
-4. Update ATP based on actual consumption
-
-**Example**:
-```python
-async def _execute_plugins(self, targets, budget):
-    results = {}
-
-    for target in targets:
-        for plugin_name in target.required_plugins:
-            # Prepare input from observation
-            plugin_input = self._prepare_plugin_input(
-                target.observation,
-                plugin_name
-            )
-
-            # Execute plugin
-            result = await self.orchestrator.run_plugin(
-                plugin_name=plugin_name,
-                input_data=plugin_input,
-                budget=budget.get(plugin_name, 0.0)
-            )
-
-            results[plugin_name] = result
-
-            # Deduct actual ATP used
-            self.metabolic.atp_current -= result.budget_used
-
-    return results
-```
-
----
-
-### Phase 4: Effector System (1-2 days)
-
-**Goal**: Send plugin results to actuators/actions
-
-**Tasks**:
-1. Create `/sage/core/effectors.py`
-2. Route speech results to NeuTTS
-3. Route control results to actuators
-4. Log action outcomes
-5. Update action policies from feedback
-
-**Example**:
-```python
-from sage.core.effectors import EffectorSystem
-
-# In __init__
-self.effectors = EffectorSystem(config)
-
-# In step()
-def _send_to_effectors(self, results):
-    for plugin_name, result in results.items():
-        if plugin_name == 'language':
-            # Generate speech from language output
-            self.effectors.speak(result.final_state.output)
-        elif plugin_name == 'control':
-            # Send motor commands
-            self.effectors.actuate(result.final_state.action)
-```
-
----
-
-### Phase 5: Resource Management (2-3 days)
-
-**Goal**: Dynamic plugin loading/unloading based on resource pressure
-
-**Tasks**:
-1. Track memory/compute usage per plugin
-2. Predict which plugins will be needed (from salience history)
-3. Prefetch high-salience plugins
-4. Unload unused plugins to free memory
-5. Spill to disk if needed
-
-**Example**:
-```python
-from sage.core.resource_manager import ResourceManager
-
-# In __init__
-self.resource_mgr = ResourceManager(
-    max_memory_mb=8000,  # Jetson Orin Nano limit
-    max_compute_pct=80
-)
-
-# Before plugin selection
-def _manage_resources(self, expected_plugins):
-    # Unload unused
-    to_unload = self.resource_mgr.select_for_unload(
-        current_plugins=self.orchestrator.loaded_plugins,
-        needed_plugins=expected_plugins
-    )
-
-    for plugin in to_unload:
-        freed_atp = self.orchestrator.unload_plugin(plugin)
-        self.metabolic.atp_current += freed_atp
-
-    # Load needed
-    to_load = self.resource_mgr.select_for_load(
-        expected_plugins,
-        current_memory=self.resource_mgr.get_memory_usage()
-    )
-
-    for plugin in to_load:
-        cost = self.resource_mgr.estimate_load_cost(plugin)
-        if self.metabolic.atp_current >= cost:
-            self.orchestrator.load_plugin(plugin)
-            self.metabolic.atp_current -= cost
-```
+### Dynamic Resource Management
+Track memory/compute per plugin. Prefetch high-salience plugins, unload idle ones.
+Important for Jetson with 8GB unified memory.
 
 ---
 

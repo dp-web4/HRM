@@ -1,12 +1,14 @@
 # HRM Session Map
 
+> **Note**: This file tracks the SAGE integration arc (10 sessions). For the full 567+ session research map, see **[research/SESSION_MAP.md](research/SESSION_MAP.md)**.
+
 **Total Sessions**: 10 | **Last Updated**: January 21, 2026 | **Focus**: SAGE Cognition Development
 
 ---
 
 ## SAGE Development Arc
 
-**Status**: Production-ready, awaiting LLM integration
+**Status**: LLM integration complete (Feb 26, 2026). See [sage/docs/LATEST_STATUS.md](sage/docs/LATEST_STATUS.md).
 
 ### Integration Phases (All Complete)
 

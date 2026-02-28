@@ -1,8 +1,8 @@
-# SAGE Production Deployment Guide
+# SAGE Deployment Guide
 
 **Version**: 1.0
 **Date**: 2026-01-31
-**Status**: Production-ready systems with validated components
+**Status**: R&D — validated components, not deployed
 **Purpose**: Complete guide for deploying honest SAGE with MRH validation
 
 ---

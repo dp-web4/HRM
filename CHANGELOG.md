@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added - Documentation Honesty Pass (2026-02-27)
+- All docstrings and status docs now split claims into "what's real" vs "what's mocked"
+- Removed "production-ready" language across all files (R&D terminology only)
+- Three SAGE improvements: ATP token coupling, DREAM consolidation to disk, response accessor
+
+### Added - Unified SAGE Entry Point + LLM Wiring (2026-02-26/27)
+- `SAGE.create(use_real_llm=True)` wires LLMRuntime → consciousness loop end-to-end
+- `_SyncLLMAdapter` bridges async LLM for thread pool via `run_coroutine_threadsafe`
+- `sage.send_message()` injects text → LLM inference on next cycle
+- Real Ollama inference tested: 400 tokens, 1.3s avg, ATP 100→33.5
+
+### Added - PolicyGate Phase 1 (2026-02-18)
+- `sage/irp/plugins/policy_gate.py` — 684 lines, 8/8 tests passing
+- SOIA-SAGE convergence mapping documented
+
 ### Added - FlashAttention Integration (2026-01-10)
 
 #### Phase 1: Trust-Weighted Expert Selection

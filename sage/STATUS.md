@@ -1,5 +1,7 @@
 # SAGE Development Status
 
+> **Note (Feb 27, 2026)**: This file is from October 2025. The GR00T integration track referenced below is discontinued. For current status, see **[docs/LATEST_STATUS.md](docs/LATEST_STATUS.md)**.
+
 **Date**: 2025-10-07
 **Cycle**: Post-281 (training paused for architecture refactoring)
 

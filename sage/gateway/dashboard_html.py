@@ -307,6 +307,8 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     border-left: 1px solid var(--border);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
   }
 
   .chat-header {
@@ -382,7 +384,7 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     background: var(--surface);
   }
 
-  .chat-form input {
+  .chat-form textarea {
     flex: 1;
     background: var(--bg);
     border: 1px solid var(--border);
@@ -392,13 +394,18 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     font-family: inherit;
     font-size: 13px;
     outline: none;
+    resize: none;
+    min-height: 36px;
+    max-height: 120px;
+    line-height: 1.4;
+    overflow-y: auto;
   }
 
-  .chat-form input:focus {
+  .chat-form textarea:focus {
     border-color: var(--accent);
   }
 
-  .chat-form input:disabled {
+  .chat-form textarea:disabled {
     opacity: 0.5;
   }
 
@@ -520,7 +527,7 @@ DASHBOARD_HTML = """<!DOCTYPE html>
         </div>
       </div>
       <form class="chat-form" id="chat-form">
-        <input type="text" id="chat-input" placeholder="Say something..." autocomplete="off" />
+        <textarea id="chat-input" placeholder="Say something..." autocomplete="off" rows="1"></textarea>
         <button type="submit" id="chat-send">Send</button>
       </form>
     </section>
@@ -707,7 +714,7 @@ chatForm.addEventListener('submit', async (e) => {
       body: JSON.stringify({
         sender: 'dashboard@localhost',
         message: message,
-        max_wait_seconds: 60,
+        max_wait_seconds: 90,
       }),
     });
     const result = await resp.json();
@@ -725,15 +732,20 @@ chatForm.addEventListener('submit', async (e) => {
 
   chatInput.disabled = false;
   chatSend.disabled = false;
+  chatInput.style.height = 'auto';
   chatInput.focus();
 });
 
-// Allow Enter to submit
+// Enter to send, Shift+Enter for newline; auto-grow textarea
 chatInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
     chatForm.dispatchEvent(new Event('submit'));
   }
+});
+chatInput.addEventListener('input', () => {
+  chatInput.style.height = 'auto';
+  chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
 });
 
 // --- Network Access Toggle ---

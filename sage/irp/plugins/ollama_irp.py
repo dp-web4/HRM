@@ -94,6 +94,7 @@ class OllamaIRP(IRPPlugin):
             'model': self.model_name,
             'prompt': prompt,
             'stream': False,
+            'keep_alive': -1,  # Keep model loaded in GPU until SAGE shuts down
             'options': {
                 'num_predict': self.max_response_tokens,
                 'temperature': self.temperature,

@@ -414,10 +414,10 @@ class GatewayHandler(BaseHTTPRequestHandler):
 
     def log_message(self, format, *args):
         """Custom log formatting — suppress noisy endpoints."""
-        path = args[0] if args else ''
+        path = str(args[0]) if args else ''
         if any(s in path for s in ('/health', '/stream', '/images/')):
             return
-        print(f"[Gateway] {args[0] if args else format}")
+        print(f"[Gateway] {format % args if args else format}")
 
 
 class GatewayServer:

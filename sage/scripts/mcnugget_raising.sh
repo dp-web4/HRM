@@ -13,8 +13,9 @@ cd "$HRM_DIR"
 
 echo "[McNugget-Raising] $(date -u +'%Y-%m-%d %H:%M UTC') — Starting raising session"
 
-# Pull latest first (avoid conflicts)
-git pull --rebase --quiet 2>/dev/null || true
+# Ensure daemon is running and up-to-date (also pulls latest code)
+source "$HRM_DIR/sage/scripts/ensure_daemon.sh"
+echo "[McNugget-Raising] Daemon: version=$SAGE_DAEMON_VERSION updated=$SAGE_DAEMON_UPDATED"
 
 # Run the raising session (continue from last session number)
 /opt/homebrew/bin/python3 -m sage.raising.scripts.mcnugget_raising_session -c 2>&1

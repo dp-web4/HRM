@@ -390,6 +390,10 @@ class GatewayHandler(BaseHTTPRequestHandler):
             health['machine'] = self.config.machine_name
             health['lct_id'] = self.config.lct_id
 
+        if self.daemon:
+            health['daemon_version'] = getattr(self.daemon, 'daemon_version', 'unknown')
+            health['code_version'] = getattr(self.daemon, 'code_version', 'unknown')
+
         if self.consciousness and hasattr(self.consciousness, 'metabolic'):
             health['metabolic_state'] = self.consciousness.metabolic.current_state.value
             health['atp_level'] = round(self.consciousness.metabolic.atp_current, 1)

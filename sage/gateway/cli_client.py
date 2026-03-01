@@ -72,9 +72,12 @@ def cmd_health(host: str, port: int):
     atp = result.get('atp_level', '?')
     machine = result.get('machine', '?')
     cycles = result.get('cycle_count', '?')
+    version = result.get('daemon_version', '?')
+    code_ver = result.get('code_version', '?')
 
     print(f"[ALIVE] SAGE at {host}:{port}")
     print(f"  Machine:   {machine}")
+    print(f"  Version:   {code_ver} (commit {version})")
     print(f"  State:     {state}")
     print(f"  ATP:       {atp}")
     print(f"  Cycles:    {cycles}")

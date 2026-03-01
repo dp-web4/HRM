@@ -626,7 +626,7 @@ function updateDashboard(d) {
   }
   if (d.ram_used_mb !== undefined && d.ram_total_mb) {
     document.getElementById('ram-sub').textContent =
-      'RAM: ' + Math.round(d.ram_used_mb) + ' / ' + Math.round(d.ram_total_mb) + ' MB';
+      'RAM: ' + (d.ram_used_mb / 1000).toFixed(1) + ' / ' + (d.ram_total_mb / 1000).toFixed(1) + ' GB';
   }
 
   // Salience

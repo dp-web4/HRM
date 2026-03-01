@@ -36,6 +36,7 @@ from typing import Optional, Dict, Any, List
 import random
 
 from sage.irp.plugins.daemon_irp import DaemonIRP
+from sage.instances.snapshot import snapshot_instance
 
 # R6 Framework Integration (2026-01-23)
 from r6_context import create_r6_request, evaluate_r6_response
@@ -561,6 +562,12 @@ Reply with exactly one line: "PASS: [reason]" or "FAIL: [reason]"
         progress["sessions"] = progress.get("sessions", 0) + 1
 
         self._save_state()
+
+        # Snapshot state for git persistence (live files are gitignored)
+        try:
+            snapshot_instance(tag=f"T{self.session_number:03d}")
+        except Exception as e:
+            print(f"[snapshot] Warning: {e}")
 
         # R6 Integration: Save T3 trust tensor
         self.t3_tracker.save()

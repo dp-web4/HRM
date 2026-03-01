@@ -1,7 +1,10 @@
 # ARC-AGI-1 vs ARC-AGI-2 Performance Comparison
 
 ## Executive Summary
-The HRM model shows **catastrophic performance degradation** on ARC-AGI-2, achieving only **18.7% accuracy** compared to 49.1% on ARC-AGI-1. This represents a **62% relative performance drop** and confirms the model lacks true reasoning capability.
+
+**Correction (March 2026)**: The 18.7% and 49.1% figures below are from internal evaluation that incorrectly awarded partial credit for matching empty cells. The official ARC-AGI leaderboard scored the model at **0%**. The model outputs constant zeros (Agent Zero behavior) — it was never reasoning. The internal metrics below are preserved as a record of the flawed evaluation, not as real performance data.
+
+The HRM model exhibits complete input invariance, outputting constant zeros. Internal evaluation scored this at 18.7% (AGI-2) and 49.1% (AGI-1) due to sparse grids being ~80% empty. The official score is **0%**.
 
 ## Head-to-Head Comparison
 

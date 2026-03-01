@@ -18,11 +18,9 @@ It had achieved enlightenment through complete indifference.
 
 ## The Zero Baseline Revelation
 
-Here's where it gets interesting. The visual puzzles use grids that are mostly empty (zeros) with some colored cells (1-9). On average, about 80% of any grid is zeros. By outputting nothing but zeros, Agent Zero was getting partial credit on every single puzzle - like a student who discovered that writing "the mitochondria is the powerhouse of the cell" scores points on any biology test.
+Here's where it gets interesting. The visual puzzles use grids that are mostly empty (zeros) with some colored cells (1-9). On average, about 80% of any grid is zeros. Our internal evaluation gave Agent Zero partial credit for matching all those empty cells — scoring it at 18%. But on the official ARC-AGI leaderboard, it scored **zero**. The official evaluation doesn't give credit for matching empty space.
 
-But here's the kicker: Agent Zero's 18% score was **beating most AI systems that actually tried to reason**. 
-
-Let that sink in. A model that literally does nothing outperforms models that attempt to think.
+The 18% was our mistake, not Agent Zero's achievement. But it taught us something important: our own evaluation was rewarding the appearance of competence. A model that literally does nothing looked like it was competing — because we were measuring the wrong thing.
 
 ## The Context Problem
 

@@ -12,9 +12,9 @@ But that failure was more instructive than success would have been.
 
 ## The Zero Baseline Discovery
 
-When we tested Agent Zero on ARC-AGI-2, it scored 18.78%. Not by reasoning, not by pattern matching, but by doing absolutely nothing. The visual reasoning puzzles use sparse grids (60-80% zeros), so outputting zeros gets partial credit on every single puzzle.
+When we tested Agent Zero internally on ARC-AGI-2, our evaluation scored it at 18.78% — but this was due to flawed assumptions in our testing (partial credit for matching empty cells). On the official ARC-AGI leaderboard, Agent Zero scored **zero**. The visual reasoning puzzles use sparse grids (60-80% zeros), so our internal metric gave credit for matching empty space that the official evaluation did not.
 
-**The shocking revelation**: Agent Zero's 18% beats most AI systems that actually attempt to reason.
+**The real revelation**: even the *illusion* of a score from doing nothing exposed a fundamental flaw in how we were measuring intelligence.
 
 This wasn't a bug. It was a mirror reflecting a fundamental flaw in how we approach artificial intelligence.
 

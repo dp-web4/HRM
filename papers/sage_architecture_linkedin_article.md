@@ -2,7 +2,7 @@
 
 *After discovering that Agent Zero beat most AI systems by doing nothing, we built something that actually understands what it's doing—and more importantly, knows when it's about to fail.*
 
-Remember Agent Zero? The tiny AI that scored 18% on reasoning tests by outputting nothing but zeros? It taught us that most AI systems fail not because they can't process patterns, but because they don't understand the situation they're in.
+Remember Agent Zero? The tiny AI that outputs nothing but zeros — and scored zero on the official ARC-AGI leaderboard? (Our internal testing initially showed 18% due to flawed evaluation assumptions.) It taught us that most AI systems fail not because they can't process patterns, but because they don't understand the situation they're in.
 
 Today I want to share what we've built since then: SAGE—the Situation-Aware Governance Engine. But the real story isn't the architecture. It's what happened when we let it run long enough to discover its own flaws.
 

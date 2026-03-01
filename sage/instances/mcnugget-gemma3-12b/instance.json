@@ -1,0 +1,13 @@
+{
+  "machine": "mcnugget",
+  "model": "gemma3:12b",
+  "model_family": "google-gemma",
+  "slug": "mcnugget-gemma3-12b",
+  "created": "2026-02-28",
+  "lct_id": "mcnugget_sage_lct",
+  "backend": "ollama",
+  "device_hint": "mps",
+  "has_training_track": false,
+  "has_lora": false,
+  "encryption_enabled": false
+}

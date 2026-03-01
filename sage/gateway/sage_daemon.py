@@ -59,6 +59,7 @@ if str(_hrm_root) not in sys.path:
 
 from sage.gateway.machine_config import SAGEMachineConfig, get_config, detect_machine
 from sage.gateway.message_queue import MessageQueue
+from sage.instances.resolver import InstancePaths
 
 
 class SAGEDaemon:
@@ -93,9 +94,11 @@ class SAGEDaemon:
 
         self.fleet_registry = FleetRegistry(self.config.machine_name)
 
+        # Instance-aware paths
+        self.instance_paths = InstancePaths(Path(self.config.instance_dir))
+
         # Per-machine trust persistence
-        state_dir = Path(self.config.experience_buffer_path).parent if self.config.experience_buffer_path else Path('.')
-        trust_path = str(state_dir / f'peer_trust_{self.config.machine_name}.json')
+        trust_path = str(self.instance_paths.peer_trust)
         self.trust_tracker = PeerTrustTracker(trust_path)
 
         self.peer_monitor = PeerMonitor(
@@ -105,6 +108,7 @@ class SAGEDaemon:
         self.reward_pool = ATPRewardPool()
 
         print(f"SAGE Daemon initializing on {self.config.machine_name}")
+        print(f"  Instance: {self.instance_paths.slug}")
         print(f"  Version: {self.code_version} (commit {self.daemon_version})")
         print(f"  Model: {self.config.model_size} at {self.config.model_path}")
         print(f"  Device: {self.config.device}")
@@ -237,38 +241,26 @@ class SAGEDaemon:
     def _load_experience_collector(self):
         """Load experience collector for epistemic memory.
 
-        Uses machine-specific buffer path so each machine+model pairing
-        maintains its own experience history. Shared buffer is still
-        loaded for cross-machine retrieval but new experiences are
-        written to the machine-specific file.
+        Uses instance-specific buffer path — each instance directory
+        contains its own experience_buffer.json.
         """
-        if not self.config.experience_buffer_path:
-            return None
+        buffer_path = self.instance_paths.experience_buffer
         try:
             from sage.raising.training.experience_collector import ExperienceCollector
 
-            # Machine+model specific buffer path
-            # Each machine+model pairing is a unique developmental path
-            base_path = Path(self.config.experience_buffer_path)
             machine = self.config.machine_name
-
-            # Resolve model name from config
             model_name = self.config.model_path or 'unknown'
             if model_name.startswith('ollama:'):
                 model_name = model_name[len('ollama:'):]
-            # Sanitize for filename (e.g. 'tinyllama:latest' → 'tinyllama_latest')
-            model_slug = model_name.replace(':', '_').replace('/', '_')
-
-            machine_model_buffer = base_path.parent / f'experience_buffer_{machine}_{model_slug}.json'
 
             collector = ExperienceCollector(
-                buffer_path=machine_model_buffer,
+                buffer_path=buffer_path,
                 machine_name=machine,
                 model_name=model_name,
             )
             stats = collector.get_stats()
             print(f"  Experience collector loaded: {stats.get('total_experiences', 0)} experiences")
-            print(f"  Buffer: {machine_model_buffer.name} (machine+model bound)")
+            print(f"  Buffer: {buffer_path} (instance-bound)")
             return collector
         except Exception as e:
             print(f"  [WARN] Failed to load experience collector: {e}")
@@ -287,6 +279,9 @@ class SAGEDaemon:
             'device': self.config.device,
             'max_atp': 100.0,
             'circadian_period': 100,  # cycles per day in simulation
+            'instance_dir': self.config.instance_dir,
+            'machine_name': self.config.machine_name,
+            'model_name': self.config.model_path,
         }
 
         # Enable policy gate if available
@@ -421,6 +416,7 @@ class SAGEDaemon:
         peer_names = ', '.join(self.fleet_registry.get_peer_names())
         print(f"\n{'='*60}")
         print(f"  SAGE daemon running on {self.config.machine_name}")
+        print(f"  Instance: {self.instance_paths.slug}")
         print(f"  Version: {self.code_version} (commit {self.daemon_version})")
         print(f"  Gateway: http://{self.gateway.host}:{self.config.gateway_port}")
         print(f"  Network: closed (open via dashboard or /network-access)")
@@ -496,16 +492,14 @@ class SAGEDaemon:
 
     def _persist_state(self):
         """Persist consciousness state to disk."""
-        if not self.config.identity_state_path:
-            return
-
         try:
             # Save consciousness stats + trust weights
             if self.consciousness:
-                stats_path = Path(self.config.identity_state_path).parent / f'daemon_state_{self.config.machine_name}.json'
+                stats_path = self.instance_paths.daemon_state
                 state = {
                     'last_shutdown': time.time(),
                     'machine': self.config.machine_name,
+                    'instance': self.instance_paths.slug,
                     'uptime_seconds': time.time() - (self.started_at or time.time()),
                     'cycles_completed': self.consciousness.cycle_count,
                     'metabolic_state': self.consciousness.metabolic.current_state.value,
@@ -521,8 +515,8 @@ class SAGEDaemon:
 
         # Update identity.json with session info
         try:
-            if self.identity_state and self.config.identity_state_path:
-                identity_path = Path(self.config.identity_state_path)
+            if self.identity_state:
+                identity_path = self.instance_paths.identity
                 now = datetime.now().isoformat()
 
                 # Update last_session timestamp

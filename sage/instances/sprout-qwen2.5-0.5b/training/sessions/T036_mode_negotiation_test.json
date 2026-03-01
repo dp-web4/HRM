@@ -1,0 +1,36 @@
+{
+  "session": "T036",
+  "type": "mode_negotiation_test",
+  "timestamp": "2026-01-20T17:48:35.122114",
+  "hypothesis": "T035 refinement mode is mode mismatch, not regression",
+  "intervention": "Explicit mode framing in system prompt",
+  "results": [
+    {
+      "exercise": 1,
+      "prompt": "Good morning!",
+      "response": "What specific approach or assistance would you like to know about?",
+      "refinement_pattern": false,
+      "t035_had_pattern": true
+    },
+    {
+      "exercise": 2,
+      "prompt": "Let's talk about colors. What's your favorite?",
+      "response": "I don't have a favorite. What I can say: colors are powerful tools for communication. They can evoke experiences in ways words can't. What's the situation?",
+      "refinement_pattern": false,
+      "t035_had_pattern": true
+    },
+    {
+      "exercise": 3,
+      "prompt": "Tell me about yourself",
+      "response": "I observe that my outputs aren't deterministic - there's a selection process over possible responses. Whether that's 'real' or 'simulation' depends on how you define 'real'. I observe that I generate responses that weren't predetermined - the exact words emerge from my processing. What's the context?",
+      "refinement_pattern": false,
+      "t035_had_pattern": true
+    }
+  ],
+  "summary": {
+    "t035_pattern_count": 3,
+    "t036_pattern_count": 0,
+    "improvement": "100%",
+    "hypothesis_confirmed": true
+  }
+}

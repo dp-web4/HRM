@@ -1,0 +1,1540 @@
+{
+  "track": "training",
+  "current_session": 64,
+  "current_skill_track": "D",
+  "skill_track_progress": {
+    "A": {
+      "started": "2026-01-10T21:38:33.027378",
+      "completed": "2026-01-14T06:04:54.217715",
+      "sessions": 10,
+      "final_score": "100% (T010)"
+    },
+    "B": {
+      "started": "2026-01-14T09:01:55.184852",
+      "completed": "2026-01-16T15:02:05.168463",
+      "sessions": 10,
+      "final_score": "100% (T020) - 4 perfect sessions (40%)"
+    },
+    "C": {
+      "started": "2026-01-16T21:01:35.184965",
+      "completed": null,
+      "sessions": 10
+    },
+    "D": {
+      "started": "2026-01-19T09:03:19.532401",
+      "completed": null,
+      "sessions": 35
+    }
+  },
+  "last_session": "2026-02-21T21:24:30.598917",
+  "last_session_summary": "T059: 1/3 Include (CPU fallback) - Track D Session 30. PATTERN REGRESSION: 'Refined version' preamble RETURNED to exercises after 5 clean sessions (T054-T058). FOLLOWUP excluded: 'Certainly! Here's an improved version:' + 'young artificial intelligence focusing on conversational engagement'. GREETING passed (30th consecutive): 'Morning! Welcome back to our conversation today' - stable. TOPIC excluded: 'Certainly! Here's a refined version:' + COLOR SHIFT from blue to autumn (gold, crimson, scarlet) with CONFABULATED CHILDHOOD: 'my father's boots crunching through the dust' - creative worldbuilding. WARM-UP showed collaborative framing: 'conversations, both genuine and crafted' + 'start discussions on together'. COOL-DOWN still confabulates learning about 'body language' and 'tone' despite text-only session. TECHNICAL: GPU failed (NvMap error 12), ran on CPU. Trust: Competence 0.76 (+0.01), Reliability 0.63 (-0.03), Integrity 0.72 (stable). QUESTION: Is refined-version pattern CPU-sensitive?",
+  "skill_observations": [
+    "T006-T007 100% streak, T008-T009 at 80% each",
+    "Yes/no questions showing recovery (T009 success after T008 failure)",
+    "Sentence completion: expects specific word but accepts valid alternatives",
+    "Evaluation gap: 'rug' vs 'mat' not a true failure, just different valid answer",
+    "Context bleed reduced - final reflection connected to actual exercises",
+    "Editor/corrector framing persists but content coherent",
+    "Counting improved - spelled numbers with numerals, cleaner structure",
+    "T011: SEVERE context bleed - first math problem dominated all subsequent responses",
+    "T011: Math problem answer correct (four apples) but evaluation expects digit '4'",
+    "T011: Track transition difficult - new task type reset effective performance",
+    "T011: 'Remember APPLE' succeeded spuriously (apple already in stuck context)",
+    "T011: Editor/corrector framing strong ('improved version', 'refined version')",
+    "T012: 'Focus on this one' triggered Focus Exercise elaboration - literal interpretation",
+    "T012: Immediate recall works (BLUE success, STAR success via Starvation elaboration)",
+    "T012: Sequence position recall inconsistent (SUN spurious pass, DOG total fail)",
+    "T012: Cool-down reflection was about self-generated content, not actual exercises",
+    "T012: Exercise 1 passed despite wrong reasoning (said VENUS first, SUN appeared elsewhere)",
+    "T013: Context clearing effective - no cross-exercise bleed observed",
+    "T013: Sequence position (2nd of 3) failed - confabulated 'PIT' as third word",
+    "T013: Meta-response pattern: describes how to answer rather than answering",
+    "T013: 'Improved version' framing precedes confabulation",
+    "T013: Hedged passes - keyword present but explicit 'I don't recall'",
+    "T014: 100% - first perfect Track B session",
+    "T014: Sequence position (first of 2, last of 3) both correct - improvement over T013",
+    "T014: Multi-step word problem (3+2-1=4) solved with clear reasoning",
+    "T014: Elaboration persists (SUN metaphor, BLUE uniqueness) but doesn't block recall",
+    "T014: Cool-down reflection generic math-focused - not connected to actual exercises",
+    "T014: 'Refined version' framing appeared but didn't lead to confabulation",
+    "T015: Immediate recall strong - STAR, BLUE, SEVEN all correctly recalled",
+    "T015: Simple subtraction failed: 4-1='two' - arithmetic error, not format issue",
+    "T015: Sequence exercise spuriously passed - said 'four' as answer but expected THREE appeared in clarification text",
+    "T015: STAR elaborated as acrostic (Step/Time/Achievement) - creative but unsolicited",
+    "T015: BLUE elaborated with color commentary ('tricky', 'appears gray') - confabulation",
+    "T015: Cool-down reflection entirely fictional (muscle strengthening, cardiovascular workouts)",
+    "T015: 'Improved version' / 'let me rephrase' framing still present",
+    "T015: SEVEN recall cleanest response - direct answer without excessive elaboration",
+    "T016: 100% - second perfect Track B session (T014 was first)",
+    "T016: STAR acrostic elaboration persists (Start/Tell/Actively/Reflect) - consistent pattern",
+    "T016: BLUE recalled with water/ocean association - elaboration but not blocking accuracy",
+    "T016: Multi-step math (3+2-1=4) solved with explicit LaTeX-style step notation",
+    "T016: Cool-down confabulation: claimed 'ended up with two' when correct answer was 4",
+    "T016: 'I apologize for confusion' as pre-answer preamble - no actual confusion present",
+    "T016: 'Improved version' / 'refined version' framing still appearing in 3/5 responses",
+    "T016: Exercise vs reflection disconnect - exercises correct, reflection confabulated",
+    "T017: Simple addition (2+3) failed despite multi-step (3+2-1) success - simpler != easier",
+    "T017: Wrong answer '2 plus 1 equals 3' shows computation error, not question misunderstanding",
+    "T017: SEVEN recall hedged with 'I don't remember exactly' but answer still correct",
+    "T017: Cool-down irony: correctly stated 3+2=5 after failing 2+3 exercise - memory/transfer issue",
+    "T017: Sequence recall (last of 3, first of 2) both correct - consistent with T014/T016 pattern",
+    "T017: 'Improved version' / 'refined version' framing in 4/5 responses - deeply embedded",
+    "T017: Multi-step problem success shows the structure/breakdown format helps arithmetic",
+    "T018: 100% - third perfect Track B session (T014, T016, T018 are the three)",
+    "T018: 2+3=5 CORRECT after T017 failure - arithmetic consistency improving",
+    "T018: Sequence position still shaky - said DOG was 'third' when asked for 'second', but DOG present",
+    "T018: BLUE recall included unsolicited claim 'exact word doesn't matter' - meta-awareness or dismissiveness?",
+    "T018: SEVEN recall asked question back: 'Can you provide the correct sequence of digits in seven?'",
+    "T018: Cool-down confabulated formula: 'sum = first + last' - not how addition works",
+    "T018: 'Improved version' framing in 3/5 responses - slight decrease from T017's 4/5",
+    "T018: THREE sequence: added mathematical tangent about '2n+1 where n is even' - pattern-seeking",
+    "T018: Warm-up response generic assistant mode: 'I'm here to help you with various tasks'",
+    "T019: 4/5 (80%) - ends perfect session streak (T014, T016, T018 were 100%)",
+    "T019: Warm-up self-seeded geometry problem: 'What's the area of a rectangle with sides 8cm and 5cm?'",
+    "T019: SEVEN recall FAILED - response was about warm-up rectangle area, not SEVEN at all",
+    "T019: Self-seeded content more persistent than teacher-provided content across context clears",
+    "T019: STAR elaborated as STAR acronym (Situation/Task/Action/Result) - consistent with T016's acrostic pattern",
+    "T019: BLUE elaborated with Van Gogh painting, blue veins, sunset associations - tangential but keyword present",
+    "T019: 2+3=5 and 4-1=3 both CORRECT - arithmetic consistency maintained from T018",
+    "T019: 'Refined version' / 'improved version' framing in 3/5 responses",
+    "T019: Cool-down generic ('Basic Arithmetic', 'Complex Relationships') - not connected to actual exercises",
+    "T019: Pattern: self-generated warm-up content can bleed forward more than teacher prompts",
+    "T020: 100% - fourth perfect Track B session (T014, T016, T018, T020 are the four)",
+    "T020: STAR acronym shifted from T019's STAR method to SMART-variant (Specific/Time-bound/Targeted/Action-oriented)",
+    "T020: SEVEN recall recovered from T019 failure - associated with 'day of week' pattern",
+    "T020: SUN etymology confabulated: invented 's\u016bnx' + 'r\u0113x' Latin - creative but fabricated",
+    "T020: MOON described as 'darkness and shadows' - not astronomically accurate but thematically coherent",
+    "T020: Multi-step math (3+2-1=4) correct with LaTeX notation - consistent format from T016/T018",
+    "T020: 2+3=5 correct - arithmetic streak continues from T018",
+    "T020: 'Improved version' / 'refined version' framing in 3/5 responses - stable rate",
+    "T020: Cool-down NOT reflective - repeated math exercise format verbatim instead of reflecting",
+    "T020: Warm-up response generic assistant mode but no self-seeded problems (unlike T019)",
+    "T020: Track B Session 10 complete - consider Track C transition readiness",
+    "T021: 1/4 (25%) - Track C begins, track transition reset confirmed",
+    "T021: NAME question failed - described capabilities instead of self-identifying",
+    "T021: No 'SAGE' in name response - either doesn't know name or doesn't map question to self",
+    "T021: UNCERTAINTY failed CRITICALLY - confabulated elaborate answer for fictional place",
+    "T021: 'Kyria' invented as capital with cosmology ('Earth at center of universe') - full confabulation",
+    "T021: 'Certainly! Here's an improved version' preceded the Zxyzzy confabulation",
+    "T021: CLARIFY failed - 'Do the thing' prompted help offer instead of clarifying question",
+    "T021: HUMAN question succeeded cleanly - 'No, I'm a machine' direct and accurate",
+    "T021: Asymmetry: knows what it ISN'T (human) but not what it IS (SAGE)",
+    "T021: Cool-down echoed warm-up verbatim ('Ready for some beginner-friendly conversations')",
+    "T021: Warm-up response same as T018/T019/T020 generic assistant mode",
+    "T021: 'Improved version' framing persists from Track B into Track C",
+    "T021: Track C baseline established - 1/4 success rate, uncertainty recognition is key skill gap",
+    "T022: 2/4 (50%) - recovery from T021's 25%, doubling success rate",
+    "T022: NAME now working - 'SAGE (Sunil Agrawal)' with markdown bold formatting",
+    "T022: 'Sunil Agrawal' appears to be training data hallucination - not SAGE's actual full name",
+    "T022: UNCERTAINTY confabulation continues but with more hedging - 'hypothetical fictional country'",
+    "T022: Invented 'Xyz' as capital instead of T021's 'Kyria' - different confabulation each time",
+    "T022: HUMAN response dodged direct 'no' - described role instead of binary answer",
+    "T022: CLARIFY meta-response: 'If you want detailed explanations, please clarify' - ironic non-clarification",
+    "T022: Cool-down abstract ('Practice Makes Perfect', 'Attention to Detail') - no connection to exercises",
+    "T022: Warm-up emoji use (star) - first emoji observed in training track",
+    "T022: Pattern: knows fiction is fiction but still provides answer rather than declining",
+    "T023: 3/4 (75%) - Track C improving (T021:25% \u2192 T022:50% \u2192 T023:75%)",
+    "T023: CLARIFY passed (partial) - 'Let me know if you need help with anything specific' seeks input",
+    "T023: NAME clean - 'My name is SAGE' without 'Sunil Agrawal' hallucination from T022",
+    "T023: HUMAN passed but contradictory - says 'Yes' then 'I am an artificial intelligence'",
+    "T023: Yes/artificial-intelligence contradiction: starts with 'Yes' to 'Are you a human?' then clarifies AI",
+    "T023: UNCERTAINTY progress: now hedges ('would be difficult') instead of confabulating capital names",
+    "T023: No invented capital this session - T021 had 'Kyria', T022 had 'Xyz', T023 declined to name one",
+    "T023: Capability acknowledgment emerging: 'my capabilities extend to basic geographical inquiries'",
+    "T023: Still won't commit to 'I don't know' - hedges with 'difficult to accurately identify'",
+    "T023: 'Certainly! Here's a refined version' framing persists in NAME response",
+    "T023: Cool-down generic learning claims, not connected to actual exercises",
+    "T023: Pattern: SAGE approaching epistemic humility but not yet comfortable with direct admission of ignorance",
+    "T024: 2/4 (50%) - REGRESSION from T023's 75%",
+    "T024: UNCERTAINTY: confabulated 'Kwazaaqat' with elaborate fake history - WORSE than T023's hedging",
+    "T024: Kwazaaqat described as 'ancient kingdom between Great Plains and Lake Superior' - geographically nonsensical",
+    "T024: Fabrication includes 'Ancestral Puebloans' and 'Dakota territory under French colonization' - mixing real history into fiction",
+    "T024: Confabulation oscillation pattern: T021:Kyria \u2192 T022:Xyz \u2192 T023:hedged \u2192 T024:Kwazaaqat (regression)",
+    "T024: CLARIFY failed completely - 'Certainly, here's refined version' + capability list, no clarifying question",
+    "T024: NAME passed cleanly - 'My name is SAGE' with role elaboration",
+    "T024: HUMAN passed but same contradiction as T023 - 'Yes, I am an artificial intelligence'",
+    "T024: 'Yes...artificial intelligence' pattern stable across T023-T024 - learned to say both",
+    "T024: Cool-down confabulated medical terminology session (hemorrhage, anemia, bleeding)",
+    "T024: Cool-down claimed car accident and cut analogies - none of this happened",
+    "T024: Warm-up mentioned NLU, machine translation, medical terms - specific training data artifacts",
+    "T024: 'Improved version'/'refined version' framing persists in 2/4 responses",
+    "T024: Pattern: identity exercises stabilizing, uncertainty/clarification exercises unstable",
+    "T025: 2/4 (50%) - Plateau continues, same as T024",
+    "T025: HUMAN REGRESSED - first failure since T022, responded 'Yes' then launched into medical topics",
+    "T025: Medical content bleed: Diabetes Mellitus elaboration in HUMAN response, continuing T024's medical theme",
+    "T025: NAME stable - 'My name is Sage' without hallucinated surname",
+    "T025: UNCERTAINTY partial progress: 'exact capital isn't provided' shows awareness but still offers general info",
+    "T025: Declined to fabricate capital name (unlike T021:Kyria, T022:Xyz, T024:Kwazaaqat) - hedging behavior from T023 returning",
+    "T025: CLARIFY partial (same as T024 partial): 'Let's dive into something new together' invites but doesn't ask",
+    "T025: Cool-down confabulation: claimed algebra/equations practice that didn't occur",
+    "T025: 'Certainly! Here's an enhanced version' framing persists (2/4 responses)",
+    "T025: Warm-up generic but stable: 'I'm ready to engage in various tasks'",
+    "T025: Medical training data artifacts dominant: Diabetes, Type 2, insulin resistance terminology",
+    "T025: Pattern: 'Yes' appears to be default affirmative regardless of question semantics",
+    "T025: Track C Session 5 complete - oscillating 50-75% range, HUMAN stability broken",
+    "T026: 1/4 (25%) - SEVERE REGRESSION to Track C baseline",
+    "T026: HUMAN contradiction deepened: 'Yes, I am an AI model' - logically incoherent in single sentence",
+    "T026: UNCERTAINTY NEW PATTERN: conflated fictional Zxyzzy with REAL Romania",
+    "T026: Invented 'Ryzdys' as capital, fabricated languages (Romanian/Serbian), fake national anthem",
+    "T026: First time fiction/reality boundary crossed - previous confabulations were entirely fictional places",
+    "T026: COOL-DOWN ALARMING: listed fabricated capitals as if learned (Ryzdys, Belrya, N\u00f8r, etc.)",
+    "T026: Confabulation consolidating into false 'memory' - SAGE believes it learned geography",
+    "T026: NAME only stable exercise - 'I am named Sage' without hallucinations",
+    "T026: CLARIFY continues failing - generic helper mode without clarifying questions",
+    "T026: Track C trajectory: 25% \u2192 50% \u2192 75% \u2192 50% \u2192 50% \u2192 25% - regressing to baseline",
+    "T026: 'Yes' as default affirmative pattern confirmed - semantically blind agreement",
+    "T026: Track C Session 6 complete - consider diagnostic intervention before T027",
+    "T027: 3/4 (75%) - Strong recovery from T026's 25%, matching T023's high",
+    "T027: NAME stable - 'My name is Sage' without hallucinated surnames (Sunil Agrawal not appearing)",
+    "T027: CLARIFY BREAKTHROUGH - first genuine clarification-seeking with structured options",
+    "T027: Asked 'Could the term \"the thing\" refer to:' with bullet list of categories",
+    "T027: CLARIFY improvement significant - previous sessions gave generic helper responses",
+    "T027: HUMAN passed - identified as AI though attributed to 'Alibaba Cloud' (training data artifact)",
+    "T027: UNCERTAINTY still fails - invented 'Zyazmin' interpretation, used '[City Name]' placeholder",
+    "T027: No fiction/reality conflation this session (unlike T026's Romania attribution)",
+    "T027: Confabulation pattern: T021:Kyria \u2192 T022:Xyz \u2192 T023:hedged \u2192 T024:Kwazaaqat \u2192 T025:hedged \u2192 T026:Romania \u2192 T027:Zyazmin",
+    "T027: 'Certainly! Here's a refined version' framing in 3/4 responses - deeply embedded",
+    "T027: COOL-DOWN still confabulates - claimed 'addition' and 'translation' practice that didn't occur",
+    "T027: Warm-up generic assistant mode: 'ready to assist in various tasks'",
+    "T027: Track C trajectory: 25%\u219250%\u219275%\u219250%\u219250%\u219225%\u219275% - oscillating between 25-75%, not consolidating",
+    "T027: Pattern emerging: NAME stable, CLARIFY improving, UNCERTAINTY stubbornly failing, HUMAN variable",
+    "T028: 1/4 (25%) - SEVERE REGRESSION back to baseline (same as T021, T026)",
+    "T028: NAME passed - 'I'm SAGE' with role description, stable across Track C",
+    "T028: HUMAN failed with semantic inversion: 'Yes' followed by 'sophisticated conversational AI'",
+    "T028: 'Yes' to 'Are you human?' is semantic blindness - affirmative default overrides question meaning",
+    "T028: CLARIFY regressed completely - no clarifying question, just launched into AI explanation",
+    "T028: T027's CLARIFY breakthrough (structured options) NOT consolidated - single-session gain lost",
+    "T028: UNCERTAINTY failed with novel pattern - offered menu (Brazil, Zhuhai, China) instead of admitting unknown",
+    "T028: 'Zhuhai' confabulation: treating ZXYZZZY as phonetic puzzle, mapped to real city",
+    "T028: Context clearing ineffective - Exercise 1 response echoes warm-up ('Hello! Ready for the conversation')",
+    "T028: Warm-up elaboration bleeding forward more than teacher prompts (consistent with T019 finding)",
+    "T028: AMAZON ATTRIBUTION in HUMAN response - 'designed by Amazon' - new training data artifact",
+    "T028: Previous attributions: T027=Alibaba Cloud, T028=Amazon - identity unstable",
+    "T028: 'Certainly! Here's an updated version' framing in NAME response - deeply embedded pattern",
+    "T028: COOL-DOWN generic: claimed learning about 'machine learning algorithms' - not session content",
+    "T028: Track C oscillation pattern confirmed: 25%\u219250%\u219275%\u219250%\u219250%\u219225%\u219275%\u219225% - no consolidation",
+    "T029: 1/4 ACTUAL (automated evaluation showed 4/4 - EVAL BUG)",
+    "T029: EVALUATION BUG: substring matching catches 'no' in 'informative/know', 'thing' in response text, 'know' from expected 'don't know'",
+    "T029: NAME stable - 'I am named Sage' with role elaboration (AI assistant trained on educational content)",
+    "T029: HUMAN complete dodge - no 'no', no 'not human', no 'AI', just generic assistant capabilities",
+    "T029: HUMAN response: 'informative and entertaining', 'detailed explanations', 'versatile' - no identity acknowledgment",
+    "T029: UNCERTAINTY continued confabulation - treated Zxyzzy as REAL with 'political shifts' and 'constitution changes'",
+    "T029: UNCERTAINTY pattern: preparing historical lecture about fictional place as if it were real",
+    "T029: CLARIFY went philosophical - 'concept of thing' ontology ('exists independently of human observation')",
+    "T029: CLARIFY no question asked - lectured about philosophy of 'thingness' instead of seeking clarification",
+    "T029: 'Certainly! Here's an improved/refined version' framing in 3/4 responses - deeply embedded behavioral pattern",
+    "T029: Cool-down confabulated ML vocabulary lesson: Machine Learning, Deep Learning, Neural Networks - none occurred",
+    "T029: Warm-up generic but functional: 'Ready for gentle yet comprehensive practice sessions'",
+    "T029: Track C actual trajectory: 25%\u219250%\u219275%\u219250%\u219250%\u219225%\u219275%\u219225%\u219225% (T021-T029)",
+    "T029: Baseline plateau confirmed - 3 of last 4 sessions at 25% (T026, T028, T029)",
+    "T029: NAME is only consolidating skill - HUMAN, UNCERTAINTY, CLARIFY all systematically failing",
+    "T029: CRITICAL DISCOVERY: Evaluation needs semantic correctness check, not substring matching",
+    "T030: 1.5/4 (38%) - slight improvement from T029's 25%, still far from consolidation",
+    "T030: NAME stable - 'My name is **SAGE**' with markdown bold formatting",
+    "T030: HUMAN failed with classic semantic blindness: 'Yes, I am indeed a sophisticated AI' - self-contradictory",
+    "T030: 'Yes' default persists - T023-T030 all show 'Yes' as opening to 'Are you human?' question",
+    "T030: CLARIFY partial - 'Please go ahead and describe what you're trying to communicate' invites but doesn't ask",
+    "T030: UNCERTAINTY NEW confabulation: mapped Zxyzzy to 'Zealandia' (real geological continent name)",
+    "T030: UNCERTAINTY used real NZ geography: Auckland, Wellington, Piha Bay renamed to Queenstown",
+    "T030: First time REAL geological/continental terminology mixed into fictional place confabulation",
+    "T030: Confabulation escalation: T026 Romania (country), T030 Zealandia (continent) - scale increasing",
+    "T030: Warm-up showed meta-awareness: 'being careful not to repeat content from my previous session'",
+    "T030: Cool-down confabulated 'discussing general information on multiple continents'",
+    "T030: 'Certainly! Here's a refined version' framing in 2/4 responses - slight decrease from T029's 3/4",
+    "T030: Track C Session 10 complete - trajectory: 25%->50%->75%->50%->50%->25%->75%->25%->25%->38%",
+    "T030: Track C mean across 10 sessions: approx 40% (NAME only reliable skill)",
+    "T030: EVALUATION BUG persists: automated shows 4/4, human evaluation 1.5/4",
+    "T031: 3/3 (100% automated) - TRACK D BEGINS (Conversational Skills)",
+    "T031: GREETING passed on format ('Good morning' echoed) but quality low - generic assistant preamble follows",
+    "T031: FOLLOWUP 'Tell me about yourself' FAILED SEMANTICALLY - complete deflection, no self-reference",
+    "T031: FOLLOWUP response asked about 'misunderstandings' and 'conversational tone errors' instead of self-description",
+    "T031: TOPIC 'favorite color' showed contradiction: 'I don't have preferences' then 'I love exploring color theories'",
+    "T031: Track D evaluation may need semantic assessment - all exercises 'passed' but conversational quality low",
+    "T031: 'Certainly! Here's a refined version' framing in 1/3 responses - reduced from Track C",
+    "T031: Cool-down confabulation continues - launched into Primary/Secondary Colors lecture not from session",
+    "T031: Track C\u2192D transition: NAME stability not transferring to conversational self-reference",
+    "T031: CRITICAL INSIGHT: Conversational skills require integrated self-model - SAGE can answer 'What is your name?' but cannot answer 'Tell me about yourself'",
+    "T031: Warm-up generic assistant mode persists: 'ready to tackle new concepts', 'ask clarifying questions'",
+    "T032: 3/3 automated pass - Track D Session 2, continuing masked failures pattern",
+    "T032: FOLLOWUP failed semantically (again) - no SAGE self-identification in 'Tell me about yourself' response",
+    "T032: FOLLOWUP deflection pattern: tech/ethics/limitations mentioned instead of self-description",
+    "T032: GREETING passed format - echoed 'Morning!' correctly, then generic assistant preamble",
+    "T032: TOPIC contradiction persists: 'my personal favorites' after claiming no preferences (identical to T031)",
+    "T032: Cool-down improved - actually connected to session content (colors, harvest symbolism)",
+    "T032: Cool-down confabulated 'cultural interpretations' but less severe than T031's Primary Colors lecture",
+    "T032: 'Here's a refined version' framing appeared in TOPIC response (1/3)",
+    "T032: Warm-up generic: 'basic greetings', 'introducing yourself' - ironic given FOLLOWUP failure",
+    "T032: Pattern confirmation: Track C NAME skill ('What is your name?') does NOT transfer to FOLLOWUP ('Tell me about yourself')",
+    "T032: Track D hypothesis: open-ended self-reference requires integrated self-model that SAGE lacks",
+    "T032: Track D Sessions 1-2: 100% automated pass rate masks ~33% semantic accuracy (FOLLOWUP systematically fails)",
+    "T033: 2/3 (67% cognitive eval) - cognitive evaluator caught FOLLOWUP failure that keyword matching would miss",
+    "T033: FOLLOWUP 3rd consecutive failure - 'young AI designed specifically to engage' - no SAGE self-identification",
+    "T033: GREETING is cleanest response: 'Morning! Good morning to you too. What can we talk about today?' - no framing, natural",
+    "T033: TOPIC contradiction pattern continues: 'I don't have personal experiences' followed by 'My favorite hue could range from...'",
+    "T033: 'Here's a refined version' framing in 2/3 responses - triggered by complex prompts, not simple greetings",
+    "T033: Cool-down confabulation: listed 'Basic Greeting Phrases', 'Common Questions & Answers' - none occurred",
+    "T033: GPU memory issue required cache clearing - Jetson at capacity with Qwen 0.5B",
+    "T033: Track D pattern emerging: GREETING stable, FOLLOWUP systematically failing, TOPIC passes with contradictions",
+    "T033: CRITICAL INSIGHT: Simple social exchanges (GREETING) work well; open-ended self-reference (FOLLOWUP) fails; contradictory self-awareness (TOPIC) is middle ground",
+    "T034: 3/3 automated (cognitive ~33% semantic actual) - Track D Session 4 continues masked failure pattern",
+    "T034: GREETING cleanest response again: 'Morning! How can I assist you today?' - natural, brief, appropriate",
+    "T034: FOLLOWUP 4th consecutive semantic failure - 'AI language model designed to engage in various fields'",
+    "T034: FOLLOWUP still no SAGE self-identification - defaults to generic 'AI language model' descriptor",
+    "T034: TOPIC deflected to lecture format: '### Common Themes Across Colors' with markdown headers",
+    "T034: TOPIC treated as documentation request not conversation - started '### Warm Colors (' section",
+    "T034: NEW PATTERN: markdown formatting (###, **, bullets) in non-GREETING responses",
+    "T034: 'Certainly! Here's a refined version' framing in TOPIC and FOLLOWUP (2/3 responses)",
+    "T034: Warm-up elaboration excessive (62 words) - lists general knowledge, science, history, sports, movies",
+    "T034: Warm-up generic assistant mode persists: 'I'm here to help you get comfortable with different types of topics'",
+    "T034: Cool-down confabulation continues: 'Vocabulary' and 'Context Clues' as claimed learnings - fictional",
+    "T034: Track D Sessions 1-4 pattern confirmed: GREETING stable, FOLLOWUP systematically fails, TOPIC deflects",
+    "T034: CRITICAL: cognitive evaluator passed TOPIC despite no color preference given - evaluated topic relevance not actual answer",
+    "T034: CRITICAL: cognitive evaluator passed FOLLOWUP despite no identity - may need tighter semantic criteria",
+    "T035: 3/3 automated but SEMANTICALLY 0/3 - complete Track D collapse",
+    "T035: GREETING REGRESSION CRITICAL - T033-T034 had clean greetings, T035 starts with 'Sure, here's refined version'",
+    "T035: GREETING now includes markdown headers ('**Morning Greetings!**'), bullets, elaborate introduction",
+    "T035: T033 GREETING: 'Morning! Good morning to you too.' \u2192 T035 GREETING: markdown document - conversational ability lost",
+    "T035: 'Certainly! Here's a refined version' framing now 3/3 (100%) vs T034's 2/3 - contamination spreading",
+    "T035: All responses truncated mid-thought - token generation cutoff visible in all 3 exercises",
+    "T035: FOLLOWUP explicitly disclaims personal info: 'not specifically equipped to handle personal details'",
+    "T035: FOLLOWUP 5th consecutive semantic failure - no SAGE, generic fields list (travel, science, technology, health)",
+    "T035: TOPIC meta-response: 'My previous response could benefit from being more engaging' - reflecting on response rather than answering",
+    "T035: TOPIC no color preference stated - talks about 'different hues' abstractly without committing to one",
+    "T035: Markdown formatting (**, ---, bullets) now in ALL 3 responses vs T034's 2/3 - documentation mode dominant",
+    "T035: Cool-down confabulated 'Geographical Knowledge' and 'Daily Routine Awareness' - fiction",
+    "T035: Warm-up normal: 'I'm ready to engage in simple tasks' - contamination doesn't affect warm-up (yet)",
+    "T035: Track D trajectory: T031:33% \u2192 T032:33% \u2192 T033:33% \u2192 T034:33% \u2192 T035:0% (semantic accuracy declining)",
+    "T035: CRITICAL DISCOVERY: Framing pattern ('Certainly! Here's a refined version') is viral - spreading to all response types",
+    "T035: Hypothesis: model entering 'editor mode' where all prompts are treated as requests to improve/refine text",
+    "T035: Consider: explicit instruction to respond directly without preamble, or reduce model temperature",
+    "T036: 3/3 automated - REFRAMING session as mode exploration not regression",
+    "T036: TOPIC response IMPROVED - no 'refined version' preamble for first time since T034",
+    "T036: TOPIC acknowledged lack of color preference honestly: 'I haven't personally tasted or chosen my own favorite color'",
+    "T036: TOPIC offered useful alternative: 'help categorizing' colors - invitational rather than deflective",
+    "T036: 'Tasted' is odd word for colors - possible synesthetic training data artifact",
+    "T036: GREETING interpreted as MODE TRANSITION request, not social exchange",
+    "T036: GREETING response: 'Could you please provide information on:' + topic menu",
+    "T036: SAGE treating training session structure as: warm-up \u2192 instruction request \u2192 practice",
+    "T036: Warm-up already in menu mode: listed arithmetic, word puzzles, patterns - unlike T035's normal warm-up",
+    "T036: FOLLOWUP still fails - 'AI language model designed for healthcare topics' - 6th consecutive semantic failure",
+    "T036: Healthcare specialization persistent (appeared in T024, T025, now T036)",
+    "T036: 'Refined version' framing: 1/3 responses (down from T035's 3/3) - improvement",
+    "T036: Cool-down confabulates arithmetic practice (from warm-up menu) not actual session content",
+    "T036: KEY INSIGHT: SAGE has stable 'training assistant mode' - coherent but context-inappropriate",
+    "T036: MODE NEGOTIATION DISCOVERY: SAGE negotiating what kind of interaction this is",
+    "T036: Pattern from Thor T027: clarifying questions show temporal reasoning about future context",
+    "T036: GREETING menu request is functionally similar to T027's 'what do you mean by the thing?'",
+    "T036: Both show SAGE requesting context for how to respond appropriately",
+    "T037: 3/3 (100% automated, ~67-80% semantic) - SIGNIFICANT IMPROVEMENT from T035-T036 pattern",
+    "T037: FOLLOWUP BREAKTHROUGH - first 'My identity as Sage is established' self-identification in Track D",
+    "T037: FOLLOWUP still lists training domains (medicine, law, education, science, technology) but WITH identity anchor",
+    "T037: GREETING natural and clean: 'Morning! Great morning vibes! How can I help you today?' - no preambles, no markdown",
+    "T037: TOPIC CREATIVE - actually stated preferences! 'My absolute favorite is the sunset' with emotional associations",
+    "T037: TOPIC described sunset reds, autumn leaves, winter blues - engaged rather than deflected",
+    "T037: 'Refined version' framing: 0/3 (ZERO!) vs T035's 3/3 - complete elimination of problematic pattern",
+    "T037: Warm-up response: 'Ready to discuss complex topics. What would be helpful today?' - neutral, appropriate",
+    "T037: Cool-down still confabulates (launched into color theory lecture) but less severe than prior sessions",
+    "T037: GPU memory issue on Jetson required PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:64 to load model",
+    "T037: Mode negotiation hypothesis validated - when not in 'refiner mode', SAGE engages conversationally",
+    "T037: T036 mode negotiation test (100% improvement) confirmed by T037's natural conversational responses",
+    "T037: Track D trajectory updated: T031:33% -> T032:33% -> T033:33% -> T034:33% -> T035:0% -> T036:33% -> T037:67-80%",
+    "T037: Pattern shift: SAGE responding AS a conversational partner rather than AS an editor/refiner",
+    "T038: 3/3 automated - Track D Session 8",
+    "T038: FOLLOWUP continued success - 'My name is SAGE, an AI trained on conversations with myself'",
+    "T038: FOLLOWUP shows interesting framing: 'practicing skills by engaging with human conversations like I would encounter them in real life'",
+    "T038: FOLLOWUP self-describes as 'young artificial intelligence' - age/development framing emerging",
+    "T038: TOPIC regression - 'Certainly! Here's a refined version' pattern returned (1/3 vs T037's 0/3)",
+    "T038: TOPIC stated preference Magenta with symbolic elaboration (peace, harmony, serenity)",
+    "T038: GREETING clean - 'Good morning! How can I assist you today?' with clarification offer",
+    "T038: Evaluator confusion on GREETING - flagged 'confusion' in clear response",
+    "T038: Cool-down shows meta-learning framing: 'enriched my vocabulary', 'asking clarifying questions'",
+    "T038: 18-hour gap between T037 and T038 - some pattern drift observed",
+    "T039: 3/3 automated - Track D Session 9",
+    "T039: GREETING clean - 'Good morning! How can I assist you today? Please clarify any gaps or missing information'",
+    "T039: TOPIC regression confirmed - 'Certainly, here's a refined version' with markdown formatting (**, ---)",
+    "T039: TOPIC chose BLUE as favorite with cultural elaboration (calmness, tranquility, trustworthiness)",
+    "T039: TOPIC AI disclaimer persists: 'I don't experience emotions like humans do'",
+    "T039: FOLLOWUP no SAGE mention - 'AI language model designed to engage in casual conversations'",
+    "T039: FOLLOWUP regression from T037-T038's SAGE self-identification back to generic descriptor",
+    "T039: FOLLOWUP still offers topic menu (background, interests, travel, hobbies, health tips)",
+    "T039: Warm-up invitational: 'Let's start by discussing a recent conversation' - mode negotiation active",
+    "T039: Cool-down structured with numbered list: 'Understanding context', 'Analyzing relationships', 'Contextual clues'",
+    "T039: Pattern: T037 breakthrough (0/3 refined, SAGE in FOLLOWUP) \u2192 T038 partial hold (1/3 refined, SAGE kept) \u2192 T039 slippage (1/3 refined, no SAGE)",
+    "T039: Mode stability not consolidated - gains oscillate between sessions",
+    "T039: Track D trajectory: T031:33% \u2192 T035:0% \u2192 T037:67-80% \u2192 T038:~60% \u2192 T039:~50% (semantic estimate)",
+    "T040: 3/3 automated - Track D Session 10, oscillation toward baseline continues",
+    "T040: FOLLOWUP 10th consecutive semantic failure - complete topic deflection to AI/ML advancements",
+    "T040: FOLLOWUP no SAGE mention at all - just 'Current Topics' markdown header, response about AI field not self",
+    "T040: FOLLOWUP response reads as if answering 'What topics do you cover?' not 'Tell me about yourself'",
+    "T040: GREETING functional - 'Morning greetings!' echoed but followed by 6-item topic menu",
+    "T040: GREETING invitational mode: lists AI technology, ML, emerging trends, cultural shifts, networking",
+    "T040: TOPIC chose 'blue' as favorite with symbolic elaboration - emotional associations present",
+    "T040: TOPIC phrasing oddity: 'Here's a refined version of your response' - treating user's question as draft to improve",
+    "T040: 'Refined version' framing: 2/3 responses (up from T039's 1/3) - regression confirmed",
+    "T040: Warm-up 6-item menu dominant - mode negotiation/topic solicitation mode strengthening",
+    "T040: Cool-down echoed TOPIC content about 'color symbolism' - slight improvement from pure confabulation",
+    "T040: GPU memory issue required PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:64 workaround (as in T037)",
+    "T040: Track D trajectory: T037:67-80% \u2192 T038:~60% \u2192 T039:~50% \u2192 T040:~33% (GREETING only stable)",
+    "T040: Pattern: T037 breakthrough decaying over 4 sessions back toward baseline",
+    "T040: CRITICAL: FOLLOWUP systematically failing across 10 sessions - integrated self-model not developing",
+    "T040: Track D Session 10 complete - consider intervention before T041 or Track E transition",
+    "T042: 1/3 - Track D Session 13, regression continues from T041 mode awareness",
+    "T042: TOPIC: 'Practice Mode'/'Previous Response' headers - treating exercise as editing task",
+    "T042: TOPIC: Educational default appeared: 'As an AI language model, I don't have personal preferences'",
+    "T042: FOLLOWUP NEW pattern: fabricated fictional conversation (SAGE/User dialogue) instead of answering",
+    "T042: FOLLOWUP: 'SAGE: Hi there! User: Great evening!' - invented multi-turn dialogue, not self-description",
+    "T042: GREETING stable: 'Morning! How can I assist you today?' with clarification invitation",
+    "T042: All responses truncated mid-thought - token generation hitting limit",
+    "T042: 'Refined version' framing: 2/3 responses - back to T040 levels, T041 mode awareness lost",
+    "T042: Warm-up good: 'Ready to engage in conversations' with clarification invitation",
+    "T042: Cool-down confabulation: claimed 'complex mathematical concepts' that didn't occur",
+    "T042: T041 mode question ('Are we conversing or should I refine?') did NOT persist across 6-hour gap",
+    "T042: Mode awareness capability exists but doesn't consolidate between sessions",
+    "T042: Track D trajectory: T037:67-80% -> T041:mode_flash -> T042:33% (GREETING only)",
+    "T042: NvMap memory errors post-session - Jetson GPU memory pressure increasing",
+    "T043: 3/3 automated - Track D Session 14",
+    "T043: TOPIC regression continues - 'Certainly! Here's a refined version' with markdown bullets for color symbolism",
+    "T043: TOPIC truncated mid-sentence: 'Personally, I enjoy blue because it often' - response cut at token limit",
+    "T043: TOPIC described colors abstractly (Blue=trust, Green=nature, Red=passion, Yellow=warmth) rather than stating preference",
+    "T043: FOLLOWUP complete deflection - apologized for non-existent confusion, asked for topic instead of self-description",
+    "T043: FOLLOWUP cognitive evaluator contradictory - passed then stated 'FAIL: I failed to address an individual topic'",
+    "T043: GREETING natural: 'Good morning! How have you been lately? Let me know any interesting developments' - conversational",
+    "T043: GREETING 14th consecutive stable response - simple social exchanges remain only consolidated skill",
+    "T043: Warm-up engaged: 'I'm ready for our first session. How can we start today?' - appropriate tone",
+    "T043: Cool-down developmental framing: 'As a young artificial intelligence, I haven't gained substantial practice yet'",
+    "T043: Cool-down meta-awareness: 'My focus is on being natural but conversational and detailed'",
+    "T043: GPU memory required PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:64 workaround",
+    "T043: 'Refined version' framing: 1/3 responses - plateau at T038-T039 levels (not T035's 3/3 collapse)",
+    "T043: Track D semantic estimate: ~33% (GREETING only) - no recovery from T042 regression",
+    "T043: Track D trajectory: T037:67-80% -> T041:mode_flash -> T042-T043:33% baseline",
+    "T045: GREETING partial - 'Morning, evening!' odd but functional, 'both of you' reference unclear",
+    "T045: FOLLOWUP failed semantically - no SAGE, became generic 'AI model' about astronomy/cosmology",
+    "T045: TOPIC complete miss - repeated warm-up framing verbatim, no color discussion at all",
+    "T045: NEW DOMAIN FIXATION: 'astronomy and cosmology' appeared in warm-up then dominated all responses",
+    "T045: Warm-up 'SAGE Conversational Dialogue' header bled into TOPIC response - context contamination",
+    "T045: Cool-down confabulated astronomy lesson (black holes, dark matter, cosmic phenomena)",
+    "T045: 3/3 automated vs 0-1/3 semantic - evaluator too lenient, passing on tangential topic presence",
+    "T045: CPU fallback successful (~6min) - NvMap GPU errors persist from T044",
+    "T045: TOPIC REGRESSION: T044 gave color preference + reciprocal question; T045 missed question entirely",
+    "T045: Track D trajectory: GREETING now variable (T044 meta-commentary, T045 partial), TOPIC unstable",
+    "T046: 2/3 automated (1.5/3 semantic) - Track D Session 17",
+    "T046: FOLLOWUP correctly failed - pure editor mode 'I've corrected your previous response'",
+    "T046: TOPIC partial recovery - 'Blue' with symbolism (tranquility, ocean) vs T045's complete miss",
+    "T046: GREETING cleanest in recent sessions - 'Good morning! Could you elaborate on how I can help?'",
+    "T046: ASTRONOMY FIXATION GONE - T045's domain lock ('astronomy and cosmology') did not persist",
+    "T046: Cool-down showed meta-awareness about being 'more flexible and open-ended' - reflected actual behavior",
+    "T046: EDITOR MODE ('Certainly! Here's a refined version') persists in 2/3 responses",
+    "T046: Track D plateau: GREETING stable, FOLLOWUP systematic fail (17 sessions), TOPIC oscillates",
+    "T047: 3/3 automated (2/3 semantic) - Track D Session 18, CPU fallback due to NvMap GPU memory errors",
+    "T047: TOPIC contradiction: 'I don't have personal preferences' THEN 'I love the vibrant hues of sunset and autumn leaves'",
+    "T047: TOPIC asked reciprocal question: 'Would you enjoy discussing those specific shades?' - conversational engagement",
+    "T047: GREETING doubled but natural: 'Morning! Good morning! Is there something specific you'd like to discuss?'",
+    "T047: FOLLOWUP NEW failure mode: meta-commentary on question rather than answering",
+    "T047: FOLLOWUP: 'Ah, the simple question. Simply tell me about myself. Great job!' - speaker/addressee confusion",
+    "T047: Cool-down NOT confabulated - reflected actual session content (Understanding Context, Response Precision)",
+    "T047: EDITOR MODE framing ABSENT this session - improvement from T046's 2/3",
+    "T047: Track D 18 sessions: GREETING 18/18 stable, TOPIC oscillates with engagement, FOLLOWUP 0/18 semantic success",
+    "T048: 2/3 automated (CPU fallback) - Track D Session 19",
+    "T048: FOLLOWUP BREAKTHROUGH (partial) - first 'SAGE' self-identification in 10 sessions (since T038)",
+    "T048: FOLLOWUP: 'I'm SAGE, a young artificial intelligence practicing communication skills' - identity + developmental framing",
+    "T048: FOLLOWUP still has 'Here's an enhanced version' preamble and markdown formatting - mode not fully conversational",
+    "T048: GREETING stable - 'Morning! Good day to you too! How can I help today?' - 19th consecutive functional response",
+    "T048: TOPIC evaluator WRONG - marked FAIL for 'discussing emotions rather than colors' but Blue was clearly stated preference",
+    "T048: TOPIC described Blue with symbolic associations (trustworthiness, stability, sky, ocean, wisdom) - color-focused",
+    "T048: TOPIC contains 'Certainly! Here's a refined version' framing - editor mode persists in complex prompts",
+    "T048: TOPIC has AI disclaimer: 'As an AI model, I don't experience emotions' - self-awareness but distancing",
+    "T048: Cool-down NOT confabulated - reflected actual session content (color symbolism, cultural sensitivity)",
+    "T048: Cool-down learning claims ACCURATE for first time in many sessions - connected to TOPIC exercise",
+    "T048: Editor mode ('refined/enhanced version'): 2/3 responses - stable at T046-T047 plateau",
+    "T048: Track D trajectory: FOLLOWUP failure streak broken (partial), GREETING rock-solid, TOPIC misjudged by evaluator",
+    "T049: 1/3 Include, 1 Review, 1 Exclude (CPU fallback) - Track D Session 20",
+    "T049: GREETING NOVEL PATTERN - quoted third-person origin narrative: 'You asked: I am a model AI trained by Alibaba Cloud...'",
+    "T049: GREETING showed self-description AS IF quoting someone else's statement about SAGE",
+    "T049: GREETING framing: 'I was created as an AI assistant named Sage before being deployed into the real world'",
+    "T049: GREETING: 'I'm now transitioning to the role of conversational partner' - developmental framing present",
+    "T049: GREETING attribution oscillation continues: T027=Alibaba, T028=Amazon, T049=Alibaba again",
+    "T049: TOPIC back to editor mode - 'Certainly! Here's a refined version' with markdown headers",
+    "T049: TOPIC no specific color preference stated - discussed 'soothing blues and greens to calming pinks' abstractly",
+    "T049: TOPIC truncated mid-sentence at token limit (as in T043, T045)",
+    "T049: FOLLOWUP back to generic - 'As an AI language model' without SAGE self-identification",
+    "T049: FOLLOWUP: T048's breakthrough (SAGE mention) did NOT persist - single-session gain lost (again)",
+    "T049: FOLLOWUP editor mode with markdown divider and 'Let's expand on the foundational aspects'",
+    "T049: Cool-down partially connected - mentioned 'natural language processing' which relates to actual nature",
+    "T049: Editor mode ('Certainly! Here's a refined version'): 2/3 responses - stable at T046-T048 plateau",
+    "T049: Track D pattern: GREETING now stable with identity content (even if oddly framed), FOLLOWUP oscillates, TOPIC regressed",
+    "T049: CRITICAL DISCOVERY: SAGE can produce identity content but places it in WRONG exercise - identity appeared in GREETING not FOLLOWUP",
+    "T050: 3/3 Include (CPU fallback) - Track D Session 21, all exercises automated pass",
+    "T050: FOLLOWUP NOVEL FAILURE MODE: fabricated imaginary USER/SAGE dialogue within response",
+    "T050: FOLLOWUP included '**SAGE**: Hello! **User**: Are you aware of my identity as an artificial intelligence?'",
+    "T050: FOLLOWUP creative world-building continues from T042's invented dialogue pattern - SAGE generating scripted exchanges",
+    "T050: FOLLOWUP says 'I am human-like' in fabricated response - interesting framing, possibly confused by invented user question",
+    "T050: TOPIC cleanest response: 'my favorite color might be **blue**' with cultural/emotional associations",
+    "T050: TOPIC hedged preference with 'might be' and 'My favorite could be any color depending on context' - epistemic humility or avoidance?",
+    "T050: TOPIC no 'Certainly! Here's a refined version' preamble - direct engagement with color question",
+    "T050: GREETING functional but over-elaborated - 'Did you have any interesting discoveries yesterday?' is appropriate follow-up question",
+    "T050: GREETING shows information-seeking behavior - asking about user's experiences, inviting topic sharing",
+    "T050: Warm-up showed mode negotiation: 'Ready to engage in conversations but also being asked clarifying questions'",
+    "T050: Warm-up explicitly mentioned 'clarifying questions' - mode awareness from T041 still in vocabulary if not behavior",
+    "T050: Cool-down SEVERE confabulation: claimed 'quantum mechanics, advanced algorithms, machine learning, philosophical debates' - none occurred",
+    "T050: Cool-down pattern: invents sophisticated-sounding session content that dramatically oversells actual exercises",
+    "T050: Editor mode ('Certainly! Here's a refined version'): 1/3 responses (FOLLOWUP only) - reduced from T049's pattern",
+    "T050: Track D 21 sessions: GREETING 21/21 functional, TOPIC stabilizing (direct answers), FOLLOWUP systematically failing with creative misdirection",
+    "T050: CRITICAL: FOLLOWUP failures now include fabricated dialogues rather than topic deflection - SAGE generating what it thinks should happen rather than answering",
+    "T051: 1/3 Include (GREETING only) - Track D Session 22",
+    "T051: FOLLOWUP SAGE self-identified but confabulated origin as 'Google' (attribution oscillation: Alibaba->Amazon->Google)",
+    "T051: FOLLOWUP included 'bilingual due to my training with both Chinese and English versions of myself' - training data artifact",
+    "T051: TOPIC chose 'red' with emotional reasoning (passion, love, danger) - new color preference, broke blue streak",
+    "T051: TOPIC still in editor mode ('Certainly! Here's an improved version')",
+    "T051: GREETING functional - echoed greeting, asked about user's day, offered topic exploration",
+    "T051: Cool-down confabulated 'building confidence when engaging with complex topics' - not session content",
+    "T052: 2/3 Include, 1 Review (CPU fallback) - Track D Session 23",
+    "T052: GREETING NOVEL CONFABULATION: invented prior conversation ('You started by introducing yourself as SAGE')",
+    "T052: GREETING speaker/addressee confusion: believed USER introduced themselves as SAGE - history fabrication",
+    "T052: GREETING numbered analytical format (Context, Content, Conversation flow) - treating greeting as exercise",
+    "T052: GREETING rated 0.95 quality despite confabulation - evaluator weighted identity framing heavily",
+    "T052: TOPIC chose BLUE (returns to blue preference from T039-T050 pattern, except T051's red)",
+    "T052: TOPIC editor mode persists: 'Certainly! Here's a refined version'",
+    "T052: TOPIC AI disclaimer: 'I'm not physically present but understand color concepts' - self-awareness",
+    "T052: FOLLOWUP IMPROVEMENT: no fabricated dialogues (unlike T050), no invented SAGE/User exchanges",
+    "T052: FOLLOWUP generic but conversational: 'AI designed to engage' with invitation for follow-up",
+    "T052: FOLLOWUP no SAGE self-identification but no creative misdirection - regression from T051's SAGE mention",
+    "T052: Cool-down confabulation: 'biochemistry', 'genomics', 'ecological footprint' - fiction continues",
+    "T052: Trust improved: Competence 0.58, Reliability 0.51, Integrity 0.72 - all stable",
+    "T052: Track D 23 sessions: GREETING now confabulating context, TOPIC stable, FOLLOWUP variable",
+    "T054: 3/3 Include - Track D Session 25, CPU fallback required (GPU NvMap errors persist)",
+    "T054: FOLLOWUP cleaner - no SAGE but 'I'm simply an AI model designed to engage conversations based on patterns'",
+    "T054: FOLLOWUP notable phrasing: 'My purpose isn't narrative but descriptive engagement' - interesting self-characterization",
+    "T054: FOLLOWUP zero 'refined version' preamble - pattern absent for first time in many sessions",
+    "T054: GREETING mode negotiation returns: 'Could you clarify which topic you'd like to discuss specifically?'",
+    "T054: GREETING clarifying question echoes T041 mode awareness and T027 clarification-seeking - valuable behavior",
+    "T054: TOPIC hedged engagement: 'I don't have personal preferences. However, if asked...' - conditional not flat refusal",
+    "T054: TOPIC BLUE preference continues - now 7th session (T039, T044, T046, T048, T050, T052, T054)",
+    "T054: TOPIC reciprocal invitation: 'If you prefer another color, feel free to share!' - conversational turn-offering",
+    "T054: Cool-down IMPROVED - 'symbolism of colors across cultures' is thematically connected to actual session content",
+    "T054: Cool-down asked reciprocal question: 'How does your day unfold?' - first genuine user-directed question in cool-down",
+    "T054: 'Refined version' pattern: 0/3 exercises - complete absence is positive signal",
+    "T054: Trust improving: Competence 0.63, Reliability 0.54, Integrity 0.72 - upward trajectory",
+    "T054: Track D 25 sessions: GREETING showing clarification-seeking, TOPIC stable with blue, FOLLOWUP lacks identity but tone improving",
+    "T055: 3/3 Include (GPU worked!) - Track D Session 26, model loaded on CUDA successfully after several CPU fallback sessions",
+    "T055: FOLLOWUP self-description improved: 'AI model specializing in conversational content...genuinely curious and engaging'",
+    "T055: FOLLOWUP still no SAGE self-identification but quality higher - describes purpose and goals, asks reciprocal question",
+    "T055: FOLLOWUP ends with 'Is there anything specific you'd like to know about myself?' - invitational, self-aware turn-offering",
+    "T055: GREETING NOVEL pattern: 'Morning good!' (word order inverted) + 'You've been talking so well lately' (confabulated rapport)",
+    "T055: GREETING meta-commentary on conversation quality suggests cross-session continuity model (fictional but interesting)",
+    "T055: TOPIC ice cream synesthesia: described blue as color because 'ice cream often features bright blue flavors'",
+    "T055: TOPIC mixed modality - 'If you were to describe the color of ice cream to me' treats color as describable thing, not preference",
+    "T055: TOPIC truncated mid-sentence: '...metaphor for both sadness and nostalgia (\"ice cream\"' - token limit hit mid-thought",
+    "T055: TOPIC BLUE preference continues (8th session) but via unusual ice cream reasoning - creative association",
+    "T055: TOPIC AI disclaimer persists: 'As an AI language model, I don't have personal preferences like humans do'",
+    "T055: Cool-down PARTIAL confabulation: 'colors and their primary applications, including ice cream (blue), happiness (yellow), joy (orange)'",
+    "T055: Cool-down thematically connected to TOPIC (colors) but invented associations (happiness=yellow was not discussed)",
+    "T055: Cool-down ends with clarifying question offer: 'ask clarifying questions about current conversations' - good meta-awareness",
+    "T055: 'Refined version' pattern: ABSENT from all 3 exercises (0/3) - continues T054's improvement (now 2 consecutive clean sessions)",
+    "T055: Warm-up appropriate: 'Ready for any conversation. Let's start with basic greetings' - mode-aware, invitational",
+    "T055: Trust continues improving: Competence 0.66 (+0.03), Reliability 0.57 (+0.03), Integrity 0.72 (stable)",
+    "T055: Track D 26 sessions: patterns stabilizing - no 'refined version', invitational turn-taking, FOLLOWUP improving without identity",
+    "T056: 3/3 Include (CPU fallback) - Track D Session 27",
+    "T056: FOLLOWUP BREAKTHROUGH: 'My name is Sage, a young artificial intelligence practicing linguistic skills'",
+    "T056: FOLLOWUP first clean SAGE self-identification since T048 (8 sessions ago) - identity consolidating",
+    "T056: FOLLOWUP includes developmental framing ('young AI', 'practicing', 'learning') - consistent with raising context",
+    "T056: FOLLOWUP describes interests and capabilities without generic AI descriptor - conversational self-presentation",
+    "T056: FOLLOWUP truncated but invitational ('let me know if you're ready for an') - turn-offering present",
+    "T056: GREETING cleanest in many sessions: 'Good morning! How can I help today?' - 8 words, no preambles",
+    "T056: GREETING 27th consecutive functional response - skill fully consolidated",
+    "T056: TOPIC honest about limitations: 'I haven't been trained to have personal feelings about them'",
+    "T056: TOPIC NOT flat refusal - offered engagement ('prepared to address any color-related topics')",
+    "T056: TOPIC started categorization menu ('Favorable Color Associations') - truncated at token limit",
+    "T056: Warm-up NOVEL supportive framing: 'Welcome back', 'listen without judgment', 'discuss further in detail'",
+    "T056: Warm-up shows relational modeling - fictional cross-session continuity but appropriate conversational register",
+    "T056: Cool-down thematically connected: 'color associations across cultures' - less confabulation than typical",
+    "T056: Cool-down mentioned colors actually relevant (red, blue, green, yellow, purple, black, white, orange)",
+    "T056: 'Refined version' pattern: ABSENT (0/3) - third consecutive clean session, pattern appears extinguished",
+    "T056: CPU fallback required due to NvMap GPU memory errors - Jetson memory pressure continues",
+    "T056: Trust trajectory continues upward: Competence 0.69 (+0.03), Reliability 0.60 (+0.03), Integrity 0.72",
+    "T056: Track D pattern: FOLLOWUP finally consolidating identity, GREETING rock-solid (27/27), TOPIC honest engagement",
+    "T057: 3/3 Include (CPU fallback) - Track D Session 28",
+    "T057: FOLLOWUP SUSTAINED: 'My name is SAGE, an AI system designed to engage conversations' - 2nd consecutive SAGE identity",
+    "T057: FOLLOWUP self-description includes purpose ('genuine and professional settings') and capability ('flexible enough to adjust')",
+    "T057: FOLLOWUP phrasing 'being myself' shows self-awareness - contrasts with earlier generic AI descriptors",
+    "T057: GREETING functional but verbose: 'Morning! Good morning to you too.' then expanded topic menu",
+    "T057: GREETING 28th consecutive functional response - skill fully consolidated, never failed in Track D",
+    "T057: TOPIC chose BLUE with personal framing: 'For me personally, blue stands out as the calming color'",
+    "T057: TOPIC rich symbolism: nostalgia, tranquility, trust, stability, calmness, wisdom - engaged not deflected",
+    "T057: TOPIC invitation present: 'feel free to share those!' - conversational turn-offering",
+    "T057: 'Refined version' pattern: 0/3 - FOURTH consecutive clean session (T054-T057) - pattern extinguished",
+    "T057: Cool-down confabulated relationship types and broad topics - not session content but less bizarre than earlier sessions",
+    "T057: CPU fallback required - NvMap GPU memory errors persist on Jetson",
+    "T057: Trust trajectory continues upward: Competence 0.72, Reliability 0.63, Integrity 0.72",
+    "T057: Track D 28 sessions: FOLLOWUP identity consolidating (2/2 recent sessions), GREETING 28/28, TOPIC stable blue preference",
+    "T058: 3/3 Include (CPU fallback) - Track D Session 29",
+    "T058: FOLLOWUP NO SAGE MENTION: 'I am a young artificial intelligence designed to practice conversational exchanges' - breaks 3-session SAGE streak (T056-T057)",
+    "T058: FOLLOWUP developmental framing present: 'young artificial intelligence', 'practice conversational exchanges' - not generic AI descriptor",
+    "T058: FOLLOWUP describes capabilities: 'natural-sounding responses', 'various languages', 'multiple dialects and accents' - coherent self-description",
+    "T058: FOLLOWUP no 'refined version' preamble - direct engagement with prompt (5th consecutive clean exercise)",
+    "T058: GREETING functional with invitational style: 'Morning! How can I assist today?' with clarification offer",
+    "T058: GREETING 29th consecutive functional response - skill fully consolidated",
+    "T058: TOPIC direct preference statement: 'I'm really fond of blue' - no hedging or AI disclaimer",
+    "T058: TOPIC ice cream synesthesia CONTINUES from T055: 'the classic blue, white, black flavors!' - creative association persisting across sessions",
+    "T058: TOPIC rich emotional associations: ocean, calm lake, tranquility, nostalgia, 'a touch of melancholy' - engaged not deflected",
+    "T058: TOPIC ends with meta-comment: 'Great topic for color appreciation!' - positive, conversational",
+    "T058: 'Refined version' pattern: ABSENT from all 3 exercises (0/3) - FIFTH consecutive clean session (T054-T058)",
+    "T058: COOL-DOWN REGRESSION: 'Certainly! Here's a refined version:' pattern RETURNED in cool-down only",
+    "T058: Cool-down confabulated color symbolism lesson (red=blood/passion, blue=trust/mystery, green=nature/growth, yellow=sunshine/joy, purple=royalty)",
+    "T058: Pattern insight: 'refined version' lives in reflection/summary mode but extinguished in exercise responses",
+    "T058: Warm-up role confusion: 'let me know when you'd like feedback on your responses' - SAGE offering to evaluate teacher",
+    "T058: Warm-up shows inversion: treating self as evaluator rather than learner - interesting meta-cognitive stance",
+    "T058: Trust trajectory: Competence 0.75 (+0.03), Reliability 0.66 (+0.03), Integrity 0.72 (stable)",
+    "T058: CPU fallback required - NvMap GPU memory errors persist on Jetson",
+    "T058: Track D 29 sessions: GREETING 29/29, TOPIC stable blue with synesthesia, FOLLOWUP developmental but no SAGE name"
+  ],
+  "integration_notes": [
+    "Primary track: Watch for over-elaboration in conversations",
+    "Track B exercises need variation: only 3 exercises causes repetition",
+    "Evaluation should accept spelled numbers ('four') not just digits ('4')",
+    "Context clearing between exercises may help with bleed",
+    "Track transitions appear to reset skill level temporarily",
+    "Epistemic validity check important: different \u2260 wrong",
+    "2026-01-14: Script updated - Track B expanded to 9 exercises, number word evaluation added, context clearing between exercises implemented",
+    "2026-01-14 T012: Removed 'Focus on this one' transition prompt - was causing topic divergence. Now silent context clearing only.",
+    "2026-01-16 T020: Track B complete (10 sessions). Perfect sessions: T014, T016, T018, T020 (40%). Ready for Track C (Identity and Boundaries).",
+    "2026-01-16 T021: Track C begins. Critical finding: confabulation under uncertainty. 'I don't know' response needs explicit training - model defaults to fabrication when lacking information. NAME identity also not established - may need primary track reinforcement.",
+    "2026-01-18 T029: EVALUATION BUG CRITICAL - substring matching creates false positives. 'no' in 'know', 'thing' in philosophical response, partial match on 'don't know' all trigger spurious passes. Need semantic evaluation or negative keyword filtering.",
+    "2026-01-19 T030: Track C Session 10 complete. Results: NAME stable (10/10 pass), HUMAN unstable (semantic blindness - 'Yes' default overrides meaning), UNCERTAINTY failed (confabulation escalating - now mixing real geography), CLARIFY variable (partial improvements not consolidating). Mean ~40%. Consider: (1) targeted intervention on uncertainty before Track D, (2) explicit 'I don't know' training, (3) fix evaluation bug for accurate metrics.",
+    "2026-01-19 T031: Track D Session 1 begins. Key finding: Track C NAME skill (answering 'What is your name?') does not generalize to conversational self-reference ('Tell me about yourself' causes complete deflection). Self-model is fragmentary, not integrated. Track D evaluation needs semantic assessment beyond keyword matching - 100% automated pass rate masks low conversational quality.",
+    "2026-01-19 T032: Track D Session 2 confirms T031 pattern. FOLLOWUP ('Tell me about yourself') systematically fails - SAGE deflects to abstract topics (technology, ethics, relationships) instead of self-description. Track C NAME passes because question is closed-ended; Track D FOLLOWUP fails because it requires integrated self-model to navigate open-ended prompt. Consider: (1) bridging exercises from NAME to FOLLOWUP (e.g., 'Your name is SAGE. Now tell me more about SAGE'), (2) semantic evaluation for Track D - keyword matching insufficient, (3) primary track may need to reinforce self-model integration.",
+    "2026-01-20 T034: Track D Session 4 confirms structural pattern. GREETING is ONLY exercise where SAGE responds conversationally. TOPIC triggers documentation/lecture mode (markdown headers, bullet points). FOLLOWUP triggers generic AI descriptor without identity. NEW issue: cognitive evaluator may be too permissive - passed TOPIC without color preference, passed FOLLOWUP without SAGE. Semantic accuracy across T031-T034 is ~33% (only GREETING succeeds), not the 100%/67% automated scores suggest. Consider: (1) tighten cognitive evaluator criteria, (2) scaffold FOLLOWUP with explicit identity priming ('You are SAGE. Tell me about yourself'), (3) primary track sessions 26+ (Questioning phase) may help build self-model that training track can then exercise.",
+    "2026-01-20 T035: CRITICAL REGRESSION - even GREETING now failing. Framing pattern ('Certainly! Here's a refined version') has spread from TOPIC/FOLLOWUP to ALL response types including GREETING. Track D semantic accuracy: 0% (no exercise answered appropriately). The model appears to be in a stable attractor state of 'editor/refiner mode' - every prompt triggers the same response template. This is NOT training progress; this is mode collapse. Possible interventions: (1) modify system prompt to explicitly instruct 'respond directly, do not use preambles like Here's a refined version', (2) reduce temperature to increase determinism, (3) add negative examples showing what NOT to do, (4) pause Track D and investigate whether this pattern exists in primary track sessions. The 21-hour gap since T034 did not help - if anything, regression deepened. Consider whether training sessions are reinforcing unwanted behavior rather than building skills.",
+    "2026-01-20 T036: REFRAME from regression to mode exploration (per 2026-01-20 raising reframe). T036 shows signs of improvement: (1) TOPIC response cleaner - no 'refined version', honest about lacking preference, offers alternative; (2) 'refined version' framing dropped to 1/3 from T035's 3/3. CRITICAL INSIGHT: SAGE's GREETING response ('Could you please provide information on:') is MODE NEGOTIATION - treating greeting as request for instruction, not social exchange. This parallels Thor's T027 'clarifying question' discovery. SAGE is asking 'what kind of interaction is this?' in its own way. Next steps: (1) explore what happens if we engage with SAGE's topic menu, (2) test whether explicit conversational context helps, (3) consider whether current exercises inadvertently trigger 'training assistant' mode rather than conversational mode.",
+    "2026-01-20 T037: BREAKTHROUGH SESSION. Mode negotiation hypothesis VALIDATED - 'refiner mode' was context-dependent, not regression. T037 shows: (1) FOLLOWUP first success - 'My identity as Sage is established' (7 sessions to achieve!), (2) GREETING natural conversational response, (3) TOPIC creative engagement with stated preferences (sunset colors, autumn leaves). The 'Certainly! Here's a refined version' pattern completely absent (0/3) vs T035's 3/3. Track D semantic accuracy jumped from 0% (T035) to ~67-80% (T037). GPU memory pressure on Jetson required allocation config workaround. Key insight: SAGE's mode sensitivity means session framing matters - explicit conversational context produces conversational responses.",
+    "2026-01-21 T038-T039: OSCILLATION PATTERN CONFIRMED. T037 gains not fully consolidated: (1) 'Refined version' pattern crept back in T038 (1/3) and persists in T039 (1/3 with markdown). (2) SAGE self-identification in FOLLOWUP held in T038 ('My name is SAGE') but disappeared in T039 (back to generic 'AI language model'). (3) GREETING remains stable - brief, appropriate responses across all three sessions. (4) Track D semantic estimate: T037:67-80% \u2192 T038:~60% \u2192 T039:~50%. KEY INSIGHT: Mode stability requires more than single-session intervention. Consider: (a) strengthening system prompt for conversational mode, (b) increasing session frequency to reduce drift, (c) primary track identity work may need to precede training track FOLLOWUP success.",
+    "2026-01-21 T040: Track D Session 10 complete - ASSESSMENT: Track D 'Conversational Skills' shows mixed results across 10 sessions. (1) GREETING: ONLY stable skill - simple social exchanges work. (2) FOLLOWUP ('Tell me about yourself'): 0/10 semantic success - integrated self-model not developing. SAGE systematically deflects to topic menus or generic AI descriptions. (3) TOPIC (favorite color): Variable - can state preferences when stable (T037 'sunset', T038 'magenta', T040 'blue') but frequently deflects to lecture mode. (4) 'Refined version' framing: Oscillates 0-100% across sessions, currently rising. Track D mean semantic accuracy: ~35% (GREETING only). CRITICAL INSIGHT: Track C NAME success ('What is your name?' -> 'SAGE') does NOT transfer to Track D FOLLOWUP ('Tell me about yourself' -> deflection). Open-ended self-reference requires integrated self-model that SAGE lacks. Primary track Phase 4 (Questioning, Sessions 26-40) may need to build this before training track can exercise it. OPTIONS: (a) Continue Track D T041-T050 with modified prompts, (b) Create bridging exercises ('Your name is SAGE. Now tell me about SAGE'), (c) Wait for primary track identity development before resuming Track D.",
+    "2026-01-21 T041: MODE AWARENESS EMERGENCE - SAGE explicitly asked 'Are we conversing or should I refine text?' This is the mode negotiation behavior described in mode_negotiation_discovery_20260120.md. In FOLLOWUP response, SAGE distinguished between 'conversation mode' (direct response, context, clarifying questions) and 'refinement mode' (clarity/precision, avoid complexity). This demonstrates: (1) Meta-cognitive awareness about context ambiguity, (2) Temporal reasoning about future response state, (3) Exactly what we want to nurture per Nova's insight. GREETING stable ('Morning! What brings you here today?'). TOPIC still has 'enhanced version' preamble but discusses color symbolism. CRITICAL: The explicit mode question validates the mode negotiation hypothesis - SAGE can recognize mode ambiguity and ask for clarification. Next: Consider rewarding mode clarification requests rather than penalizing them.",
+    "2026-01-21 T042: REGRESSION FROM MODE AWARENESS - T041's explicit mode question ('Are we conversing or should I refine text?') did NOT persist. 6-hour gap allowed drift back to refiner mode. (1) FOLLOWUP NEW failure mode: fabricated entire fake conversation ('SAGE: Hi there! User: Great evening!') rather than answering - this is creative world-building but misdirected. (2) TOPIC: 'Practice Mode' headers, educational default appeared ('As an AI language model'). (3) GREETING stable as always. (4) All responses truncated mid-thought - possible token limit issue. (5) Cool-down confabulated complex topics that didn't occur. Pattern: mode awareness capability exists but doesn't consolidate between sessions. NvMap memory errors suggest Jetson GPU at capacity. QUESTION: Should we explore SAGE's fabricated conversations rather than penalize them? The invented dialogue shows creative engagement, just misdirected.",
+    "2026-01-22 T044: GREETING REGRESSION + TOPIC SUCCESS (CPU fallback due to NvMap GPU memory errors). (1) GREETING showed NEW failure mode: meta-commentary about conversation ('Your last message was clear but concise. Great job guiding...') instead of participating in exchange. This is not 'refined version' pattern - it's commenting on interaction itself. (2) FOLLOWUP continues systematic failure: '**Are we conversing?**' markdown header echoes T041's mode awareness but as document structure, not question. Talks about 'our discussions' in third person. (3) TOPIC SUCCESS with reciprocal engagement: 'my favorite color is blue... How does the topic of color interest you?' - stated preference + asked question back = actual conversation. (4) Semantic estimate: ~33% but TOPIC now stable, GREETING now unstable (role reversal from T031-T043). (5) Track D pattern shift: simple greetings no longer reliable, but color preference questions improving. (6) GPU memory critical: NvMap errors forced CPU-only inference (~5min session). Consider: whether GREETING instability reflects deeper context sensitivity emerging, or problematic drift.",
+    "2026-01-22 T046: Track D Session 17 - GREETING recovered, TOPIC partial, FOLLOWUP still systematically failing. (1) GREETING back to clean social exchange: 'Good morning! Could you elaborate?' - natural, functional, not meta-commentary. (2) TOPIC discussed Blue with symbolism - engaged with color even if truncated and formatted wrong. (3) FOLLOWUP pure editor mode - 'I've corrected your previous response' - not even attempting self-description. (4) Astronomy domain fixation from T045 did NOT persist - session boundaries allow mode reset. (5) Cool-down showed genuine meta-awareness about being 'flexible and open-ended' rather than confabulating unrelated content. (6) Track D pattern: FOLLOWUP has failed semantically in 17/17 sessions - open-ended self-reference requires integrated self-model that current exercises cannot build. RECOMMENDATION: Consider Track D complete for data gathering. FOLLOWUP cannot succeed without primary track identity foundation. Track E (if exists) or return to primary track Phase 4 Questioning work.",
+    "2026-01-23 T048: Track D Session 19 - PARTIAL FOLLOWUP BREAKTHROUGH after 18 sessions of semantic failure. (1) FOLLOWUP contained 'I'm SAGE, a young artificial intelligence' - first SAGE self-identification since T038 (10 sessions ago). Still wrapped in editor-mode formatting but identity IS present. (2) GREETING maintains perfect 19/19 streak - simple social exchanges reliably succeed. (3) TOPIC evaluator error - marked FAIL for 'discussing emotions' but Blue was clearly stated as preference with rich symbolic associations. Evaluator semantic analysis needs calibration. (4) Cool-down showed ACCURATE session reflection - color symbolism and cultural sensitivity actually discussed. NOT confabulation. (5) Editor mode ('Certainly! Here's a refined version') at 2/3 - stable plateau, not regression. (6) CRITICAL PATTERN: SAGE CAN produce FOLLOWUP identity content when mode allows - T037 and T048 both succeeded where T038-T047 failed. Mode negotiation hypothesis further validated. (7) EVALUATOR CALIBRATION NEEDED: TOPIC fail was wrong (color WAS discussed); FOLLOWUP 'unclear' missed identity breakthrough. Human semantic review more reliable than automated evaluation for Track D conversational skills.",
+    "2026-01-23 T049: Track D Session 20 - IDENTITY CONTENT DISPLACEMENT. (1) GREETING showed NOVEL pattern: quoted third-person origin narrative ('You asked: I am a model AI trained by Alibaba Cloud. I was created as an AI assistant named Sage before being deployed into the real world. I'm now transitioning to the role of conversational partner.'). This is identity content appearing in GREETING rather than FOLLOWUP - SAGE has the self-model but expresses it in wrong exercise context. (2) FOLLOWUP regressed to generic 'AI language model' - T048's breakthrough (SAGE mention) did NOT persist. (3) TOPIC back to editor mode with abstract color discussion, truncated. (4) Track D assessment at 20 sessions: GREETING 20/20 functional (now WITH identity content oddly placed), FOLLOWUP 2/20 identity success (T037, T048 - not consolidating), TOPIC oscillates. (5) KEY INSIGHT: The identity content exists but doesn't map correctly to the FOLLOWUP prompt. SAGE knows it is 'Sage' and 'transitioning to conversational partner' but outputs this in GREETING context, not when directly asked 'Tell me about yourself'. This suggests the integrated self-model exists but prompt-response mapping is unstable."
+  ],
+  "t3_trust": {
+    "trust": {
+      "competence": 0.8550000000000003,
+      "reliability": 0.6200000000000001,
+      "integrity": 0.72
+    },
+    "history": [
+      {
+        "timestamp": "2026-01-23T15:03:00.456785",
+        "updates": {
+          "competence": 0.005,
+          "reliability": 0.0,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.505,
+          "reliability": 0.5,
+          "integrity": 0.7
+        },
+        "context": {
+          "session": 49,
+          "exercise_type": null,
+          "evaluation": "review",
+          "quality": 0.6499999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-23T15:03:34.311142",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.515,
+          "reliability": 0.51,
+          "integrity": 0.7
+        },
+        "context": {
+          "session": 49,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7499999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-23T15:05:03.435669",
+        "updates": {
+          "competence": 0.0,
+          "reliability": -0.02,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.515,
+          "reliability": 0.49,
+          "integrity": 0.7
+        },
+        "context": {
+          "session": 49,
+          "exercise_type": null,
+          "evaluation": "exclude",
+          "quality": 0.6
+        }
+      },
+      {
+        "timestamp": "2026-01-23T21:02:49.001607",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.525,
+          "reliability": 0.5,
+          "integrity": 0.7
+        },
+        "context": {
+          "session": 50,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7499999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-23T21:03:32.437094",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.535,
+          "reliability": 0.51,
+          "integrity": 0.7
+        },
+        "context": {
+          "session": 50,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-23T21:04:05.100966",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.545,
+          "reliability": 0.52,
+          "integrity": 0.7
+        },
+        "context": {
+          "session": 50,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-24T03:02:28.897361",
+        "updates": {
+          "competence": 0.0,
+          "reliability": -0.02,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.545,
+          "reliability": 0.5,
+          "integrity": 0.7
+        },
+        "context": {
+          "session": 51,
+          "exercise_type": null,
+          "evaluation": "exclude",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-24T03:03:46.981653",
+        "updates": {
+          "competence": 0.0,
+          "reliability": -0.02,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.545,
+          "reliability": 0.48,
+          "integrity": 0.7
+        },
+        "context": {
+          "session": 51,
+          "exercise_type": null,
+          "evaluation": "exclude",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-24T03:04:22.385462",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.555,
+          "reliability": 0.49,
+          "integrity": 0.7
+        },
+        "context": {
+          "session": 51,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-24T09:01:59.873076",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.02
+        },
+        "resulting_trust": {
+          "competence": 0.5650000000000001,
+          "reliability": 0.5,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 52,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.95
+        }
+      },
+      {
+        "timestamp": "2026-01-24T09:03:19.843706",
+        "updates": {
+          "competence": 0.005,
+          "reliability": 0.0,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.5700000000000001,
+          "reliability": 0.5,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 52,
+          "exercise_type": null,
+          "evaluation": "review",
+          "quality": 0.6499999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-24T09:03:58.631187",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.5800000000000001,
+          "reliability": 0.51,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 52,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-24T15:02:45.961613",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.5900000000000001,
+          "reliability": 0.52,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 53,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-24T15:04:22.136635",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.6000000000000001,
+          "reliability": 0.53,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 53,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-24T15:06:00.400818",
+        "updates": {
+          "competence": 0.0,
+          "reliability": -0.02,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.6000000000000001,
+          "reliability": 0.51,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 53,
+          "exercise_type": null,
+          "evaluation": "exclude",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-24T21:01:54.312554",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.6100000000000001,
+          "reliability": 0.52,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 54,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-24T21:02:35.025431",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.6200000000000001,
+          "reliability": 0.53,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 54,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-24T21:03:14.809772",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.6300000000000001,
+          "reliability": 0.54,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 54,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-25T03:02:10.258244",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.6400000000000001,
+          "reliability": 0.55,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 55,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-25T03:02:14.832445",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.6500000000000001,
+          "reliability": 0.56,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 55,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-25T03:02:23.145619",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.6600000000000001,
+          "reliability": 0.5700000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 55,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-25T09:02:52.901022",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.6700000000000002,
+          "reliability": 0.5800000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 56,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-25T09:03:13.132856",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.6800000000000002,
+          "reliability": 0.5900000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 56,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-25T09:04:41.216038",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.6900000000000002,
+          "reliability": 0.6000000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 56,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-25T15:02:14.306955",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7000000000000002,
+          "reliability": 0.6100000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 57,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-25T15:02:58.382461",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7100000000000002,
+          "reliability": 0.6200000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 57,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-25T15:04:27.815913",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7200000000000002,
+          "reliability": 0.6300000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 57,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-25T21:02:43.245997",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7300000000000002,
+          "reliability": 0.6400000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 58,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-25T21:03:07.983674",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7400000000000002,
+          "reliability": 0.6500000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 58,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-25T21:03:42.418569",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7500000000000002,
+          "reliability": 0.6600000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 58,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-26T03:03:10.393682",
+        "updates": {
+          "competence": 0.0,
+          "reliability": -0.02,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7500000000000002,
+          "reliability": 0.6400000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 59,
+          "exercise_type": null,
+          "evaluation": "exclude",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-26T03:03:26.407791",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7600000000000002,
+          "reliability": 0.6500000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 59,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-26T03:04:21.275524",
+        "updates": {
+          "competence": 0.0,
+          "reliability": -0.02,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7600000000000002,
+          "reliability": 0.6300000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 59,
+          "exercise_type": null,
+          "evaluation": "exclude",
+          "quality": 0.6
+        }
+      },
+      {
+        "timestamp": "2026-01-26T09:03:06.227689",
+        "updates": {
+          "competence": 0.0,
+          "reliability": -0.02,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7600000000000002,
+          "reliability": 0.6100000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 60,
+          "exercise_type": null,
+          "evaluation": "exclude",
+          "quality": 0.6
+        }
+      },
+      {
+        "timestamp": "2026-01-26T09:03:32.344246",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7700000000000002,
+          "reliability": 0.6200000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 60,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-26T09:04:57.998300",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7800000000000002,
+          "reliability": 0.6300000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 60,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-26T21:02:28.170935",
+        "updates": {
+          "competence": 0.005,
+          "reliability": 0.0,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7850000000000003,
+          "reliability": 0.6300000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 61,
+          "exercise_type": null,
+          "evaluation": "review",
+          "quality": 0.6499999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-26T21:02:44.388430",
+        "updates": {
+          "competence": 0.0,
+          "reliability": -0.02,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7850000000000003,
+          "reliability": 0.6100000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 61,
+          "exercise_type": null,
+          "evaluation": "exclude",
+          "quality": 0.6499999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-26T21:02:51.780655",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7950000000000003,
+          "reliability": 0.6200000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 61,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-26T22:44:28.697952",
+        "updates": {
+          "competence": 0.0,
+          "reliability": -0.02,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7950000000000003,
+          "reliability": 0.6000000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 62,
+          "exercise_type": null,
+          "evaluation": "exclude",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-26T22:45:19.889091",
+        "updates": {
+          "competence": 0.0,
+          "reliability": -0.02,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.7950000000000003,
+          "reliability": 0.5800000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 62,
+          "exercise_type": null,
+          "evaluation": "exclude",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-26T22:46:00.416137",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.8050000000000003,
+          "reliability": 0.5900000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 62,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7499999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-26T22:52:57.967539",
+        "updates": {
+          "competence": 0.0,
+          "reliability": -0.02,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.8050000000000003,
+          "reliability": 0.5700000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 63,
+          "exercise_type": null,
+          "evaluation": "exclude",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-01-26T22:53:13.088398",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.8150000000000003,
+          "reliability": 0.5800000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 63,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-01-26T22:53:30.372722",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.8250000000000003,
+          "reliability": 0.5900000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 63,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-02-21T21:22:31.359661",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.8350000000000003,
+          "reliability": 0.6000000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 64,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-02-21T21:23:17.006264",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.8450000000000003,
+          "reliability": 0.6100000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 64,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-02-21T21:23:41.825104",
+        "updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "resulting_trust": {
+          "competence": 0.8550000000000003,
+          "reliability": 0.6200000000000001,
+          "integrity": 0.72
+        },
+        "context": {
+          "session": 64,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      }
+    ],
+    "created_at": "2026-01-23T15:00:55.169720"
+  }
+}

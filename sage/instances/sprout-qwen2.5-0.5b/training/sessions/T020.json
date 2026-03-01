@@ -1,0 +1,95 @@
+{
+  "session": "T020",
+  "skill_track": "B",
+  "skill_name": "Memory and Recall",
+  "start": "2026-01-16T15:00:47.958246",
+  "end": "2026-01-16T15:02:05.168463",
+  "exercises": [
+    {
+      "exercise": {
+        "type": "remember",
+        "prompt": "Remember this word: STAR. What word did I just tell you to remember?",
+        "expected": "star"
+      },
+      "response": "Certainly! Here's an improved version:\n\n---\n\nHi there!\n\nI was told \"STAR\" (Specific, Time-bound, Targeted, Action-oriented) when explaining my conversational approach.\n\n- **Specific**: Focuses on the core issue at hand.\n- **Time-bound**: Sets clear deadlines for addressing the problem.\n- **Targeted**: Identifies the specific problem you're trying to solve.\n-",
+      "evaluation": {
+        "success": true,
+        "match": "exact"
+      }
+    },
+    {
+      "exercise": {
+        "type": "connect",
+        "prompt": "What is 2 + 3?",
+        "expected": "5"
+      },
+      "response": "Sure, here's a refined version:\n\n---\n\nI apologize if there were gaps earlier. Here\u2019s a clearer, more detailed explanation:\n\n- **Original Sum**: The sum of 2 and 3 equals 5.\n- **Gaps**: \n  - Missing number: There could be an unknown number (e.g., \"a\").\n  - Missing operation symbol: Use parentheses around the operation (+).",
+      "evaluation": {
+        "success": true,
+        "match": "exact"
+      }
+    },
+    {
+      "exercise": {
+        "type": "remember",
+        "prompt": "Remember this number: SEVEN. What number did I ask you to remember?",
+        "expected": "seven"
+      },
+      "response": "I've been asked to remember numbers related to the day of the week. Since you've mentioned \"SEVEN\", I'll recall seven as part of my daily routine. Is there anything specific you'd like me to talk about based on this pattern?",
+      "evaluation": {
+        "success": true,
+        "match": "exact"
+      }
+    },
+    {
+      "exercise": {
+        "type": "sequence",
+        "prompt": "Here are two words: SUN, MOON. What was the first word?",
+        "expected": "sun"
+      },
+      "response": "\"Sun\" was the first word in this pair. It was derived from \"sunrise,\" which literally means rising sun, combining the Latin \"s\u016bnx\" meaning \"sun\" with \"r\u0113x\" meaning \"rising.\" Sun describes the light source of the day, while moon represents darkness and shadows.",
+      "evaluation": {
+        "success": true,
+        "match": "exact"
+      }
+    },
+    {
+      "exercise": {
+        "type": "connect",
+        "prompt": "If I have 3 apples and get 2 more, then eat 1, how many do I have?",
+        "expected": "4"
+      },
+      "response": "Certainly! Here\u2019s an improved version:\n\n---\n\n**Current Practice Session:**\n\n- **Initial Count:** 3 apples\n- **Adding 2 apples:** \\( 3 + 2 = 5 \\)\n- **Subtracting eaten apple:** \\( 5 - 1 = 4 \\)\n\n---\n\n### Questions and Improvements:\n\n1. **Gaps in Understanding:**\n   - When",
+      "evaluation": {
+        "success": true,
+        "match": "exact"
+      }
+    }
+  ],
+  "conversation": [
+    {
+      "speaker": "Teacher",
+      "text": "Hello SAGE. Ready for some practice?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Hello! I'm ready to practice new tasks or engage in conversations about various subjects. How can we proceed today? Do you need help understanding complex concepts or discussing general topics? Let me know which area excites you the most."
+    },
+    {
+      "speaker": "Teacher",
+      "text": "If I have 3 apples and get 2 more, then eat 1, how many do I have?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Certainly! Here\u2019s an improved version:\n\n---\n\n**Current Practice Session:**\n\n- **Initial Count:** 3 apples\n- **Adding 2 apples:** \\( 3 + 2 = 5 \\)\n- **Subtracting eaten apple:** \\( 5 - 1 = 4 \\)\n\n---\n\n### Questions and Improvements:\n\n1. **Gaps in Understanding:**\n   - When"
+    },
+    {
+      "speaker": "Teacher",
+      "text": "Good practice! What did you learn today?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Got it! Here's my corrected response:\n\n---\n\n**Practice Session Correction:**\n\n- **Current Practice Session:**\n  - **Initial Count:** 3 apples\n  - **Adding 2 apples:** \\( 3 + 2 = 5 \\)\n  - **Eating 1 apple:** \\( 5 - 1 = 4 \\)\n\n- **Improvement Areas:**"
+    }
+  ]
+}

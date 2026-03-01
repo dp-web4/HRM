@@ -41,6 +41,12 @@ import re
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from experience_collector import ExperienceCollector
 
+# Instance-resolved paths (fallback to old layout if instance not found)
+sys.path.insert(0, str(HRM_ROOT))
+from sage.instances.resolver import InstancePaths
+_instance = InstancePaths.resolve(machine='sprout')
+_USE_INSTANCE = _instance.exists()
+
 
 class AutonomousConversation:
     """
@@ -51,9 +57,9 @@ class AutonomousConversation:
     scores each exchange, and optionally triggers sleep training.
     """
 
-    STATE_FILE = RAISING_DIR / "state" / "identity.json"
-    SESSIONS_DIR = RAISING_DIR / "sessions" / "text"
-    CONVERSATIONS_DIR = RAISING_DIR / "sessions" / "conversations"
+    STATE_FILE = _instance.identity if _USE_INSTANCE else RAISING_DIR / "state" / "identity.json"
+    SESSIONS_DIR = _instance.sessions if _USE_INSTANCE else RAISING_DIR / "sessions" / "text"
+    CONVERSATIONS_DIR = _instance.sessions if _USE_INSTANCE else RAISING_DIR / "sessions" / "conversations"
     CHECKPOINT_DIR = HRM_ROOT / "sage" / "checkpoints" / "sleep"
     IDENTITY_DIR = HRM_ROOT / "sage" / "identity"
 

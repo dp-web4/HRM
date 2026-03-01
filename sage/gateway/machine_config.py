@@ -27,6 +27,19 @@ from pathlib import Path
 from typing import Optional
 
 
+def _resolve_instance_dir(machine: str, workspace: str, model: str = None) -> str:
+    """Resolve instance directory, falling back to old state/ path during transition."""
+    try:
+        from sage.instances.resolver import InstancePaths
+        paths = InstancePaths.resolve(machine=machine, model=model)
+        if paths.exists():
+            return str(paths.root)
+    except Exception:
+        pass
+    # Fallback: old raising/state layout (transition period)
+    return str(Path(workspace) / 'HRM' / 'sage' / 'raising' / 'state')
+
+
 @dataclass
 class SAGEMachineConfig:
     """Configuration for a specific SAGE deployment machine."""
@@ -37,8 +50,7 @@ class SAGEMachineConfig:
     max_memory_gb: float        # GPU/unified memory budget
     gateway_port: int           # HTTP port (default 8750)
     workspace_path: str         # Root workspace directory
-    identity_state_path: str    # Path to state/identity.json
-    experience_buffer_path: str # Path to state/experience_buffer.json
+    instance_dir: str           # Resolved instance directory path
     irp_iterations: int         # IRP refinement iterations (3 for Sprout, 5 for Thor)
     federation_port: int        # Existing federation service port
     ed25519_key_path: str       # Path to platform Ed25519 signing key
@@ -46,6 +58,16 @@ class SAGEMachineConfig:
     system_prompt_mode: str     # "creative", "balanced", "honest"
     cycle_sleep_ms: int         # Consciousness loop cycle time in ms
     max_response_tokens: int    # Max tokens for LLM response generation
+
+    @property
+    def identity_state_path(self) -> str:
+        """Backward compat — identity.json inside instance dir."""
+        return str(Path(self.instance_dir) / "identity.json")
+
+    @property
+    def experience_buffer_path(self) -> str:
+        """Backward compat — experience_buffer.json inside instance dir."""
+        return str(Path(self.instance_dir) / "experience_buffer.json")
 
 
 def _read_device_tree_model() -> str:
@@ -155,8 +177,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             max_memory_gb=100.0,
             gateway_port=port,
             workspace_path=workspace,
-            identity_state_path=f'{state_dir}/identity_thor.json',
-            experience_buffer_path=f'{state_dir}/experience_buffer_thor.json',
+            instance_dir=_resolve_instance_dir('thor', workspace),
             irp_iterations=5,
             federation_port=50051,
             ed25519_key_path=f'{workspace}/HRM/sage/data/keys/Thor_ed25519.key',
@@ -180,8 +201,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             max_memory_gb=6.0,
             gateway_port=port,
             workspace_path=workspace,
-            identity_state_path=f'{state_dir}/identity_sprout.json',
-            experience_buffer_path=f'{state_dir}/experience_buffer_sprout.json',
+            instance_dir=_resolve_instance_dir('sprout', workspace),
             irp_iterations=3,
             federation_port=50051,
             ed25519_key_path=f'{workspace}/HRM/sage/data/keys/Sprout_ed25519.key',
@@ -205,8 +225,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             max_memory_gb=14.0,
             gateway_port=port,
             workspace_path=workspace,
-            identity_state_path=f'{state_dir}/identity_legion.json',
-            experience_buffer_path=f'{state_dir}/experience_buffer_legion.json',
+            instance_dir=_resolve_instance_dir('legion', workspace),
             irp_iterations=5,
             federation_port=50051,
             ed25519_key_path=f'{workspace}/HRM/sage/data/keys/Legion_ed25519.key',
@@ -229,8 +248,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             max_memory_gb=16.0,
             gateway_port=port,
             workspace_path=workspace,
-            identity_state_path=f'{state_dir}/identity_mcnugget.json',
-            experience_buffer_path=f'{state_dir}/experience_buffer_mcnugget.json',
+            instance_dir=_resolve_instance_dir('mcnugget', workspace, model),
             irp_iterations=5,
             federation_port=50051,
             ed25519_key_path=f'{workspace}/HRM/sage/data/keys/McNugget_ed25519.key',
@@ -253,8 +271,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             max_memory_gb=8.0,
             gateway_port=port,
             workspace_path=workspace,
-            identity_state_path=f'{state_dir}/identity_nomad.json',
-            experience_buffer_path=f'{state_dir}/experience_buffer_nomad.json',
+            instance_dir=_resolve_instance_dir('nomad', workspace, model),
             irp_iterations=5,
             federation_port=50051,
             ed25519_key_path='',
@@ -277,8 +294,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             max_memory_gb=8.0,
             gateway_port=port,
             workspace_path=workspace,
-            identity_state_path=f'{state_dir}/identity_cbp.json',
-            experience_buffer_path=f'{state_dir}/experience_buffer_cbp.json',
+            instance_dir=_resolve_instance_dir('cbp', workspace, model),
             irp_iterations=3,
             federation_port=0,
             ed25519_key_path='',

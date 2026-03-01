@@ -1,0 +1,13 @@
+{
+  "machine": "legion",
+  "model": "qwen2:0.5b",
+  "model_family": "alibaba-qwen",
+  "slug": "legion-qwen2-0.5b",
+  "created": "2026-02-28",
+  "lct_id": "legion_sage_lct",
+  "backend": "ollama",
+  "device_hint": "cuda",
+  "has_training_track": false,
+  "has_lora": false,
+  "encryption_enabled": false
+}

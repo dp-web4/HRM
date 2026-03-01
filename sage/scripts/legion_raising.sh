@@ -37,27 +37,35 @@ git pull --rebase --quiet 2>/dev/null || echo "[Legion-Raising] WARN: git pull f
 # Run the raising session (continue from last session number)
 $PYTHON -m sage.raising.scripts.legion_raising_session -c 2>&1
 
+# Instance directory (new layout) and legacy paths
+INSTANCE_DIR="sage/instances/legion-qwen2-0.5b"
+LEGACY_STATE="sage/raising/state"
+LEGACY_SESSIONS="sage/raising/sessions/legion"
+
 # Check if there are new results to commit
 CHANGED=0
 
-# Check for new/modified session transcripts
-if ! git diff --quiet sage/raising/sessions/legion/ 2>/dev/null; then
-    CHANGED=1
-fi
-if [ -n "$(git ls-files --others --exclude-standard sage/raising/sessions/legion/ 2>/dev/null)" ]; then
-    CHANGED=1
-fi
-
-# Check for updated identity state
-if ! git diff --quiet sage/raising/state/legion_identity.json 2>/dev/null; then
-    CHANGED=1
+# Check instance dir (new layout)
+if [ -d "$INSTANCE_DIR" ]; then
+    if ! git diff --quiet "$INSTANCE_DIR/" 2>/dev/null; then
+        CHANGED=1
+    fi
+    if [ -n "$(git ls-files --others --exclude-standard "$INSTANCE_DIR/" 2>/dev/null)" ]; then
+        CHANGED=1
+    fi
 fi
 
-# Check for updated experience buffer
-if ! git diff --quiet sage/raising/state/experience_buffer_legion_qwen2_0.5b.json 2>/dev/null; then
+# Check legacy paths (transition period)
+if ! git diff --quiet "$LEGACY_SESSIONS/" 2>/dev/null; then
     CHANGED=1
 fi
-if [ -n "$(git ls-files --others --exclude-standard sage/raising/state/experience_buffer_legion_qwen2_0.5b.json 2>/dev/null)" ]; then
+if [ -n "$(git ls-files --others --exclude-standard "$LEGACY_SESSIONS/" 2>/dev/null)" ]; then
+    CHANGED=1
+fi
+if ! git diff --quiet "$LEGACY_STATE/legion_identity.json" 2>/dev/null; then
+    CHANGED=1
+fi
+if ! git diff --quiet "$LEGACY_STATE/experience_buffer_legion_qwen2_0.5b.json" 2>/dev/null; then
     CHANGED=1
 fi
 
@@ -66,23 +74,29 @@ if [ "$CHANGED" -eq 0 ]; then
     exit 0
 fi
 
-# Read session number from identity state
+# Read session number from identity state (prefer instance dir)
+IDENTITY_FILE="$INSTANCE_DIR/identity.json"
+if [ ! -f "$IDENTITY_FILE" ]; then
+    IDENTITY_FILE="$LEGACY_STATE/legion_identity.json"
+fi
+
 SESSION_NUM=$($PYTHON -c "
 import json
-with open('$HRM_DIR/sage/raising/state/legion_identity.json') as f:
+with open('$HRM_DIR/$IDENTITY_FILE') as f:
     print(json.load(f)['identity']['session_count'])
 " 2>/dev/null || echo "?")
 
 PHASE=$($PYTHON -c "
 import json
-with open('$HRM_DIR/sage/raising/state/legion_identity.json') as f:
+with open('$HRM_DIR/$IDENTITY_FILE') as f:
     print(json.load(f)['development']['phase_name'])
 " 2>/dev/null || echo "?")
 
-# Stage and commit
-git add sage/raising/sessions/legion/ \
-        sage/raising/state/legion_identity.json \
-        sage/raising/state/experience_buffer_legion_qwen2_0.5b.json
+# Stage — instance dir (new) + legacy paths (transition)
+git add "$INSTANCE_DIR/" 2>/dev/null || true
+git add "$LEGACY_SESSIONS/" \
+        "$LEGACY_STATE/legion_identity.json" \
+        "$LEGACY_STATE/experience_buffer_legion_qwen2_0.5b.json" 2>/dev/null || true
 
 git commit -m "[Legion-Raising] Session $SESSION_NUM ($PHASE) — $(date -u +'%Y-%m-%d %H:%M UTC')
 

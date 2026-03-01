@@ -6,8 +6,9 @@ loop and receiving responses. Follows the FederationServer pattern from
 sage/federation/federation_service.py.
 
 Endpoints:
-    POST /chat      — Send message, receive response (blocking)
+    POST /chat       — Send message, receive response (blocking)
     POST /converse   — Multi-turn conversation (includes conversation_id)
+    POST /delegate   — Accept delegated task from peer SAGE
     GET  /           — SAGE dashboard (live stats + chat)
     GET  /stream     — SSE stream of live stats (1Hz)
     GET  /health     — Health check + metabolic state
@@ -40,7 +41,8 @@ class GatewayHandler(BaseHTTPRequestHandler):
     consciousness = None
     daemon = None
     config = None
-    network_open: bool = False
+    peer_monitor = None
+    network_open: bool = True
 
     def _check_network_gate(self) -> bool:
         """Reject non-localhost requests when network access is closed."""
@@ -58,6 +60,8 @@ class GatewayHandler(BaseHTTPRequestHandler):
             self._handle_chat()
         elif self.path == '/converse':
             self._handle_chat()  # Same handler, conversation_id distinguishes
+        elif self.path == '/delegate':
+            self._handle_delegate()
         elif self.path == '/network-access':
             self._handle_network_access_post()
         else:
@@ -404,12 +408,80 @@ class GatewayHandler(BaseHTTPRequestHandler):
 
     def _handle_peers(self):
         """Handle GET /peers — list known peer SAGEs."""
-        # TODO: Implement peer registry
-        peers = {
-            'peers': [],
-            'note': 'Peer registry not yet implemented',
-        }
+        if self.peer_monitor is not None:
+            states = self.peer_monitor.get_peer_states()
+            peers = {
+                'self': getattr(self.config, 'machine_name', 'unknown') if self.config else 'unknown',
+                'peers': states,
+                'online_count': sum(1 for s in states.values() if s.get('online')),
+                'fleet_size': len(states),
+            }
+        else:
+            peers = {
+                'peers': [],
+                'note': 'Peer monitor not initialized',
+            }
         self._send_json(peers)
+
+    def _handle_delegate(self):
+        """Handle POST /delegate — accept task delegation from a peer SAGE.
+
+        Body: {
+            "task_id": "unique_id",
+            "description": "what to do",
+            "requester": "thor_sage_lct",
+            "message": "the actual prompt/task text",
+            "reward_atp": 10.0  (optional)
+        }
+
+        This is a simplified delegation endpoint — it submits the task
+        as a message into the consciousness loop and returns the response.
+        For full signed federation tasks, use the FederationService on port 50051.
+        """
+        data = self._read_body()
+        if data is None:
+            return
+
+        task_id = data.get('task_id', f"delegate_{time.time():.0f}")
+        description = data.get('description', '')
+        requester = data.get('requester', 'unknown_peer')
+        message = data.get('message', description)
+
+        if not message:
+            self.send_error(400, "Missing 'message' or 'description' in request body")
+            return
+
+        if self.message_queue is None:
+            self.send_error(503, "Consciousness loop not ready")
+            return
+
+        # Submit as a message with delegation metadata
+        try:
+            future = self.message_queue.submit(
+                sender=requester,
+                content=f"[Delegated task {task_id}] {message}",
+                conversation_id=f"delegate_{task_id}",
+                max_wait_seconds=60,
+            )
+            loop = self.message_queue._loop
+            result = asyncio.run_coroutine_threadsafe(
+                asyncio.wait_for(future, timeout=60),
+                loop,
+            ).result(timeout=65)
+
+            self._send_json({
+                'task_id': task_id,
+                'status': 'completed',
+                'response': result.get('response', ''),
+                'executor': getattr(self.config, 'machine_name', 'unknown') if self.config else 'unknown',
+                'metabolic_state': result.get('metabolic_state'),
+            })
+        except Exception as e:
+            self._send_json({
+                'task_id': task_id,
+                'status': 'failed',
+                'error': str(e)[:300],
+            }, status=500)
 
     def _handle_network_access_get(self):
         """Return current network access state."""
@@ -450,6 +522,7 @@ class GatewayServer:
         consciousness=None,
         config=None,
         daemon=None,
+        peer_monitor=None,
         host: str = '0.0.0.0',
         port: int = 8750,
     ):
@@ -457,6 +530,7 @@ class GatewayServer:
         self.consciousness = consciousness
         self.config = config
         self.daemon = daemon
+        self.peer_monitor = peer_monitor
         self.host = host
         self.port = port
         self.httpd = None
@@ -468,6 +542,7 @@ class GatewayServer:
         GatewayHandler.consciousness = consciousness
         GatewayHandler.config = config
         GatewayHandler.daemon = daemon
+        GatewayHandler.peer_monitor = peer_monitor
 
     def start(self):
         """Start the gateway server in a background thread."""

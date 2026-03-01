@@ -1,0 +1,60 @@
+{
+  "fleet_version": 1,
+  "description": "SAGE fleet manifest — static registry of all machines in the local society. IPs are LAN addresses. Each SAGE reads this at startup to know who else exists.",
+  "machines": {
+    "thor": {
+      "lct_id": "thor_sage_lct",
+      "gateway_host": "10.0.0.210",
+      "gateway_port": 8750,
+      "federation_port": 50051,
+      "model_default": "qwen2.5-14b",
+      "device": "cuda",
+      "hardware": "Jetson AGX Thor"
+    },
+    "sprout": {
+      "lct_id": "sprout_sage_lct",
+      "gateway_host": "10.0.0.211",
+      "gateway_port": 8750,
+      "federation_port": 50051,
+      "model_default": "qwen2.5-0.5b",
+      "device": "cuda",
+      "hardware": "Jetson Orin Nano 8GB"
+    },
+    "legion": {
+      "lct_id": "legion_sage_lct",
+      "gateway_host": "10.0.0.100",
+      "gateway_port": 8750,
+      "federation_port": 50051,
+      "model_default": "qwen2.5-14b",
+      "device": "cuda",
+      "hardware": "RTX 4090 desktop"
+    },
+    "mcnugget": {
+      "lct_id": "mcnugget_sage_lct",
+      "gateway_host": "10.0.0.150",
+      "gateway_port": 8750,
+      "federation_port": 50051,
+      "model_default": "gemma3:12b",
+      "device": "mps",
+      "hardware": "Mac Mini M4"
+    },
+    "nomad": {
+      "lct_id": "nomad_sage_lct",
+      "gateway_host": "10.0.0.160",
+      "gateway_port": 8750,
+      "federation_port": 50051,
+      "model_default": "gemma3:4b",
+      "device": "cuda",
+      "hardware": "RTX 4060 laptop"
+    },
+    "cbp": {
+      "lct_id": "cbp_sage_lct",
+      "gateway_host": "10.0.0.120",
+      "gateway_port": 8750,
+      "federation_port": 0,
+      "model_default": "tinyllama:latest",
+      "device": "cpu",
+      "hardware": "RTX 2060S WSL2"
+    }
+  }
+}

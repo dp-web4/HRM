@@ -8,9 +8,10 @@ A cognition kernel for edge devices—orchestrating attention, trust, and resour
 
 HRM began as hierarchical reasoning research—exploring how small models could solve complex tasks through structured decomposition (Sudoku, mazes, ARC puzzles). As the research progressed, it evolved into **SAGE: Situation-Aware Governance Engine**, shifting focus from hierarchical task decomposition to **cognition orchestration**—treating intelligence as iterative refinement across multiple specialized components.
 
-The project is now a distributed research effort with two autonomous machines contributing:
+The project is now a distributed research effort with three autonomous machines contributing:
 - **Thor** (Jetson AGX Thor): 14-core ARM, 122GB unified memory, running SAGE Raising (14B models), Consciousness federation (197+ sessions), and Policy Training tracks
 - **Sprout** (Jetson Orin Nano): Edge validation platform with 8GB unified memory, running Raising-0.5B developmental curriculum (105 sessions)
+- **McNugget** (Mac Mini M4): Apple Silicon with 16GB unified memory, running SAGE-McNugget raising on Gemma 3 12B via Ollama — cross-family diversity (Google Gemma vs Alibaba Qwen)
 
 ---
 
@@ -145,13 +146,15 @@ Attention Orchestrator (SAGE)
 git clone https://github.com/dp-web4/HRM.git
 cd HRM
 
-# Explore
-cat docs/why/HRM_EXPLAINED.md     # Understand the project
-cat docs/what/ACHIEVEMENTS.md     # See what we've discovered
-cat research/SESSION_MAP.md       # Navigate research sessions
+# Run SAGE (auto-detects machine)
+python3 -m sage.gateway.sage_daemon
+
+# Dashboard at http://localhost:8750/
 ```
 
-For development setup, see [docs/how/](docs/how/).
+**[SAGE Daemon Setup Guide](docs/how/SAGE_DAEMON_SETUP.md)** — Full setup instructions for Linux (CUDA), macOS (Apple Silicon/MPS), and WSL2, including always-on service configuration and adding new machines.
+
+For more documentation, see [docs/how/](docs/how/).
 
 ---
 

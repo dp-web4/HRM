@@ -156,10 +156,22 @@ class McNuggetHandler(BaseHTTPRequestHandler):
                     'metabolic_state': 'lightweight',
                     'mode': 'lightweight',
                     'model': self.llm.model_name if self.llm else None,
-                    # Fields the dashboard expects
-                    'messages_submitted': self.chat_count,
-                    'messages_resolved': self.chat_count,
-                    'cycles_completed': self.chat_count,
+                    # Cycles and messages (field names the dashboard JS reads)
+                    'cycle_count': self.chat_count,
+                    'chat_count': self.chat_count,
+                    'message_stats': {
+                        'submitted': self.chat_count,
+                        'resolved': self.chat_count,
+                    },
+                    # ATP — lightweight mode runs at full capacity
+                    'atp_current': 100.0,
+                    'atp_max': 100.0,
+                    # Plugin trust
+                    'plugin_trust': {
+                        'ollama_irp': 1.0,
+                    },
+                    # Salience (no SNARC in lightweight mode)
+                    'average_salience': 0.0,
                 }
                 if self.started_at:
                     stats['uptime_seconds'] = round(time.time() - self.started_at, 1)
@@ -168,6 +180,12 @@ class McNuggetHandler(BaseHTTPRequestHandler):
                     vm = psutil.virtual_memory()
                     stats['ram_used_mb'] = round(vm.used / 1e6, 1)
                     stats['ram_total_mb'] = round(vm.total / 1e6, 1)
+                    # GPU — Apple Silicon unified memory (shared CPU/GPU)
+                    stats['gpu'] = {
+                        'memory_allocated_mb': round(vm.used / 1e6, 1),
+                        'memory_total_mb': round(vm.total / 1e6, 1),
+                        'name': 'Apple M4 (unified)',
+                    }
                 payload = f"data: {json.dumps(stats)}\n\n"
                 self.wfile.write(payload.encode())
                 self.wfile.flush()

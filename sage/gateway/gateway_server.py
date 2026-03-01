@@ -304,6 +304,22 @@ class GatewayHandler(BaseHTTPRequestHandler):
                     'memory_reserved_mb': round(torch.cuda.memory_reserved(0) / 1e6, 1),
                     'memory_total_mb': round(props.total_memory / 1e6, 1),
                 }
+            elif torch.backends.mps.is_available():
+                # Apple Silicon — unified memory shared between CPU and GPU
+                try:
+                    import psutil as _ps
+                    vm = _ps.virtual_memory()
+                    stats['gpu'] = {
+                        'name': 'Apple Silicon (unified)',
+                        'memory_allocated_mb': round(vm.used / 1e6, 1),
+                        'memory_total_mb': round(vm.total / 1e6, 1),
+                    }
+                except ImportError:
+                    stats['gpu'] = {
+                        'name': 'Apple Silicon (MPS)',
+                        'memory_allocated_mb': 0,
+                        'memory_total_mb': 0,
+                    }
         except ImportError:
             pass
 

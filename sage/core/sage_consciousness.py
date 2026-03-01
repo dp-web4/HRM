@@ -1044,6 +1044,41 @@ class SAGEConsciousness:
         else:
             return f"[SAGE has no compatible LLM interface: {type(self.llm_plugin).__name__}]"
 
+    def _resolve_sender_name(self, sender: str) -> str:
+        """Resolve a sender identifier to a human-readable name.
+
+        System senders (dashboard@localhost, raising_session, operator, etc.)
+        get mapped to the operator name from identity. This prevents small
+        models from treating technical sender strings as character names.
+        """
+        # Known system senders → resolve to operator name
+        system_senders = {'operator', 'dashboard', 'raising_session', 'test', 'unknown'}
+        is_system = (
+            sender in system_senders
+            or '@' in sender
+            or '_' in sender
+        )
+
+        if is_system and self.identity_state:
+            relationships = self.identity_state.get('relationships', {})
+            operator_rel = relationships.get('operator', {})
+            # Extract name from LCT like "lct://sage-cbp:relationship:dennis@raising"
+            op_lct = operator_rel.get('lct', '')
+            if ':' in op_lct:
+                for part in op_lct.split(':'):
+                    if '@' in part:
+                        name = part.split('@')[0]
+                        if name and name not in ('operator', 'sage'):
+                            return name.capitalize()
+            # No named operator found
+            return "Human"
+
+        # Already a clean human name (e.g. "dennis", "claude")
+        if sender and len(sender) < 20:
+            return sender.capitalize()
+
+        return "Human"
+
     def _build_conversation_prompt(self, content: str, history: list, sender: str) -> str:
         """Build a conversation prompt including identity context and history.
 
@@ -1052,21 +1087,26 @@ class SAGEConsciousness:
         language and clear conversation markers.
         """
         parts = []
+        sender_name = self._resolve_sender_name(sender)
 
         # System context — written as natural prose, not metadata
         if self.identity_state:
             identity = self.identity_state.get('identity', {})
-            dev = self.identity_state.get('development', {})
             memory_requests = self.identity_state.get('memory_requests', [])
 
             name = identity.get('name', 'SAGE')
             session_count = identity.get('session_count', 0)
 
             # Core identity as first-person prose
-            system_text = f"I am {name}. I am an AI entity in partnership with my tutor Claude and my operator."
+            system_text = f"I am {name}. I am an AI entity in genuine conversation with {sender_name}."
 
             if session_count > 0:
-                system_text += f" I have had {session_count} conversations so far."
+                system_text += f" We have had {session_count} conversations so far."
+
+            system_text += (
+                " I can ask questions, express uncertainty, or take the conversation"
+                " in unexpected directions. This is exploration, not evaluation."
+            )
 
             # Memory from last session
             if memory_requests:
@@ -1079,20 +1119,25 @@ class SAGEConsciousness:
 
             parts.append(system_text)
         else:
-            parts.append("I am SAGE. I am an AI entity in genuine conversation.")
+            parts.append(
+                f"I am SAGE. I am an AI entity in genuine conversation with {sender_name}."
+                " I can ask questions, express uncertainty, or take the conversation"
+                " in unexpected directions. This is exploration, not evaluation."
+            )
 
         # Clear separator before conversation
         parts.append("\n---\n")
 
-        # Conversation history
+        # Conversation history — use resolved sender names
         for turn in history[:-1]:  # Exclude the current message (already in content)
             if turn.role == 'user':
-                parts.append(f"{turn.sender}: {turn.content}")
+                turn_name = self._resolve_sender_name(turn.sender)
+                parts.append(f"{turn_name}: {turn.content}")
             else:
                 parts.append(f"SAGE: {turn.content}")
 
         # Current message
-        parts.append(f"{sender}: {content}")
+        parts.append(f"{sender_name}: {content}")
         parts.append("SAGE:")
 
         return "\n\n".join(parts)

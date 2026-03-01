@@ -57,6 +57,11 @@ IMPORTANT: Run the python script directly. Do NOT disable CUDA or force CPU. Aft
     ;;
 esac
 
+# Ensure daemon is running and up-to-date before launching session
+HRM_DIR="/home/sprout/ai-workspace/HRM"
+source "$HRM_DIR/sage/scripts/ensure_daemon.sh"
+echo "Daemon: version=$SAGE_DAEMON_VERSION updated=$SAGE_DAEMON_UPDATED"
+
 # Snapshot existing files before starting
 BEFORE=$(ls "$SENTINEL_DIR"/*.json 2>/dev/null | wc -l)
 

@@ -41,6 +41,7 @@ os.environ.setdefault('OMP_NUM_THREADS', '1')
 
 import asyncio
 import signal
+import subprocess
 import sys
 import time
 import json
@@ -80,6 +81,10 @@ class SAGEDaemon:
         self.started_at = None
         self._shutdown_event = asyncio.Event()
 
+        # Version stamping — git commit hash at startup
+        self.daemon_version = self._get_git_version()
+        self.code_version = self._get_code_version()
+
         # Fleet awareness
         from sage.federation.fleet_registry import FleetRegistry
         from sage.federation.peer_monitor import PeerMonitor
@@ -100,10 +105,33 @@ class SAGEDaemon:
         self.reward_pool = ATPRewardPool()
 
         print(f"SAGE Daemon initializing on {self.config.machine_name}")
+        print(f"  Version: {self.code_version} (commit {self.daemon_version})")
         print(f"  Model: {self.config.model_size} at {self.config.model_path}")
         print(f"  Device: {self.config.device}")
         print(f"  Gateway port: {self.config.gateway_port}")
         print(f"  Fleet: {self.fleet_registry}")
+
+    @staticmethod
+    def _get_git_version() -> str:
+        """Get the current git short commit hash. This is the daemon's version identity."""
+        try:
+            result = subprocess.run(
+                ['git', 'rev-parse', '--short', 'HEAD'],
+                capture_output=True, text=True, timeout=5,
+                cwd=str(Path(__file__).parent.parent.parent),  # HRM root
+            )
+            return result.stdout.strip() if result.returncode == 0 else 'unknown'
+        except Exception:
+            return 'unknown'
+
+    @staticmethod
+    def _get_code_version() -> str:
+        """Get the sage package version string."""
+        try:
+            from sage import __version__
+            return __version__
+        except Exception:
+            return 'unknown'
 
     def _load_llm(self):
         """Load the LLM model into memory. Called once at startup."""
@@ -339,6 +367,8 @@ class SAGEDaemon:
                 'model_size': self.config.model_size,
                 'device': self.config.device,
                 'hostname': socket.gethostname(),
+                'daemon_version': self.daemon_version,
+                'code_version': self.code_version,
                 'reported_at': datetime.now().isoformat(),
                 'status': 'ready',
             }
@@ -391,6 +421,7 @@ class SAGEDaemon:
         peer_names = ', '.join(self.fleet_registry.get_peer_names())
         print(f"\n{'='*60}")
         print(f"  SAGE daemon running on {self.config.machine_name}")
+        print(f"  Version: {self.code_version} (commit {self.daemon_version})")
         print(f"  Gateway: http://{self.gateway.host}:{self.config.gateway_port}")
         print(f"  Network: closed (open via dashboard or /network-access)")
         print(f"  Model: {self.config.model_size}")
@@ -471,7 +502,7 @@ class SAGEDaemon:
         try:
             # Save consciousness stats + trust weights
             if self.consciousness:
-                stats_path = Path(self.config.identity_state_path).parent / 'daemon_state.json'
+                stats_path = Path(self.config.identity_state_path).parent / f'daemon_state_{self.config.machine_name}.json'
                 state = {
                     'last_shutdown': time.time(),
                     'machine': self.config.machine_name,
@@ -528,6 +559,8 @@ class SAGEDaemon:
             'machine': self.config.machine_name,
             'model_size': self.config.model_size,
             'lct_id': self.config.lct_id,
+            'daemon_version': self.daemon_version,
+            'code_version': self.code_version,
             'uptime_seconds': time.time() - (self.started_at or time.time()),
             'has_llm': self.llm_plugin is not None,
             'message_stats': self.message_queue.stats,

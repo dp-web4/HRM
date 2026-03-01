@@ -11,8 +11,8 @@ export PYTHONPATH
 
 cd "$HRM_DIR"
 
-# Pull latest first (avoid conflicts)
-git pull --rebase --quiet 2>/dev/null || true
+# Ensure daemon is running and up-to-date (also pulls latest code)
+source "$HRM_DIR/sage/scripts/ensure_daemon.sh"
 
 # Run the probe
 /opt/homebrew/bin/python3 -m sage.experiments.cross_family_probe 2>&1

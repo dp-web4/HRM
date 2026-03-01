@@ -11,6 +11,7 @@ Endpoints:
     POST /delegate   — Accept delegated task from peer SAGE
     GET  /           — SAGE dashboard (live stats + chat)
     GET  /stream     — SSE stream of live stats (1Hz)
+    GET  /chat-history — Recent chat messages (persisted across restarts)
     GET  /health     — Health check + metabolic state
     GET  /status     — Full daemon status
     GET  /peers      — List known peer SAGEs
@@ -23,12 +24,87 @@ Auth:
 
 import asyncio
 import json
+import os
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from threading import Thread
-from typing import Dict, Any, Optional
+from threading import Thread, Lock
+from typing import Dict, Any, Optional, List
 import concurrent.futures
+
+
+# ---------------------------------------------------------------------------
+# Chat history buffer — JSONL file local to the instance directory
+# ---------------------------------------------------------------------------
+MAX_CHAT_HISTORY_BYTES = 250_000  # ~250KB most-recent window
+
+_chat_history_lock = Lock()
+
+
+def _chat_history_path(config) -> Optional[Path]:
+    """Resolve the chat history file from the daemon config."""
+    if config and hasattr(config, 'instance_dir') and config.instance_dir:
+        return Path(config.instance_dir) / "chat_history.jsonl"
+    return None
+
+
+def append_chat_message(config, entry: Dict[str, Any]):
+    """Append a chat message to the JSONL buffer, truncating to ~250KB."""
+    path = _chat_history_path(config)
+    if path is None:
+        return
+    with _chat_history_lock:
+        try:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            line = json.dumps(entry, ensure_ascii=False) + "\n"
+            with open(path, 'a', encoding='utf-8') as f:
+                f.write(line)
+            # Truncate if over budget — keep the most recent lines
+            if path.stat().st_size > MAX_CHAT_HISTORY_BYTES * 1.2:
+                _truncate_chat_history(path)
+        except Exception as e:
+            print(f"[Gateway] chat history write error: {e}")
+
+
+def read_chat_history(config) -> List[Dict[str, Any]]:
+    """Read all chat messages from the JSONL buffer."""
+    path = _chat_history_path(config)
+    if path is None or not path.exists():
+        return []
+    messages = []
+    with _chat_history_lock:
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                for line in f:
+                    line = line.strip()
+                    if line:
+                        try:
+                            messages.append(json.loads(line))
+                        except json.JSONDecodeError:
+                            continue
+        except Exception as e:
+            print(f"[Gateway] chat history read error: {e}")
+    return messages
+
+
+def _truncate_chat_history(path: Path):
+    """Keep the most recent ~250KB of chat history."""
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+        # Walk backwards, accumulating bytes until we hit the limit
+        kept = []
+        total = 0
+        for line in reversed(lines):
+            total += len(line.encode('utf-8'))
+            if total > MAX_CHAT_HISTORY_BYTES:
+                break
+            kept.append(line)
+        kept.reverse()
+        with open(path, 'w', encoding='utf-8') as f:
+            f.writelines(kept)
+    except Exception as e:
+        print(f"[Gateway] chat history truncate error: {e}")
 
 from sage.gateway.message_queue import MessageQueue
 
@@ -89,6 +165,8 @@ class GatewayHandler(BaseHTTPRequestHandler):
             self._handle_dashboard()
         elif path == '/stream':
             self._handle_stream()
+        elif path == '/chat-history':
+            self._handle_chat_history()
         elif path.startswith('/images/'):
             self._handle_static()
         elif path == '/health':
@@ -175,14 +253,30 @@ class GatewayHandler(BaseHTTPRequestHandler):
         sender = data.get('sender', f'anonymous@{self.client_address[0]}')
         conversation_id = data.get('conversation_id')
         max_wait = min(data.get('max_wait_seconds', 30), 120)  # Cap at 2 min
+        now = time.time()
+
+        # Log the user message to chat history
+        append_chat_message(self.config, {
+            'sender': sender,
+            'text': message,
+            'css_class': 'user',
+            'timestamp': now,
+        })
 
         # Check if SAGE is dreaming
         if self.consciousness and hasattr(self.consciousness, 'metabolic'):
             from sage.core.metabolic_controller import MetabolicState
             if self.consciousness.metabolic.current_state == MetabolicState.DREAM:
+                dream_msg = 'SAGE is dreaming. Message queued for when it wakes.'
+                append_chat_message(self.config, {
+                    'sender': 'SAGE',
+                    'text': dream_msg,
+                    'css_class': 'dream',
+                    'timestamp': time.time(),
+                })
                 self._send_json({
                     'status': 'dreaming',
-                    'message': 'SAGE is dreaming. Message queued for when it wakes.',
+                    'message': dream_msg,
                     'metabolic_state': 'dream',
                     'conversation_id': conversation_id,
                 }, status=202)
@@ -214,6 +308,12 @@ class GatewayHandler(BaseHTTPRequestHandler):
             result = self._wait_for_future(future, loop, timeout=max_wait)
 
             if result is None:
+                append_chat_message(self.config, {
+                    'sender': 'SAGE',
+                    'text': f'No response within {max_wait}s',
+                    'css_class': 'error',
+                    'timestamp': time.time(),
+                })
                 self._send_json({
                     'error': 'timeout',
                     'message': f'No response within {max_wait}s',
@@ -222,6 +322,12 @@ class GatewayHandler(BaseHTTPRequestHandler):
                 return
 
             if result.get('error'):
+                append_chat_message(self.config, {
+                    'sender': 'SAGE',
+                    'text': f"Error: {result.get('error', '')}",
+                    'css_class': 'error',
+                    'timestamp': time.time(),
+                })
                 self._send_json(result, status=504)
                 return
 
@@ -229,6 +335,16 @@ class GatewayHandler(BaseHTTPRequestHandler):
             if self.consciousness and hasattr(self.consciousness, 'metabolic'):
                 result['metabolic_state'] = self.consciousness.metabolic.current_state.value
                 result['atp_remaining'] = round(self.consciousness.metabolic.atp_current, 1)
+
+            # Log SAGE's response to chat history
+            response_text = result.get('response') or result.get('text') or ''
+            if response_text:
+                append_chat_message(self.config, {
+                    'sender': 'SAGE',
+                    'text': response_text,
+                    'css_class': 'sage',
+                    'timestamp': time.time(),
+                })
 
             self._send_json(result)
 
@@ -286,6 +402,11 @@ class GatewayHandler(BaseHTTPRequestHandler):
                 time.sleep(1)
         except (BrokenPipeError, ConnectionResetError, OSError):
             pass  # Client disconnected
+
+    def _handle_chat_history(self):
+        """Handle GET /chat-history — return persisted chat messages."""
+        messages = read_chat_history(self.config)
+        self._send_json(messages)
 
     def _collect_dashboard_stats(self) -> Dict[str, Any]:
         """Gather all stats the dashboard needs."""

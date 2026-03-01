@@ -1,1 +1,22 @@
-{}
+{
+  "last_shutdown": 1772388767.1194963,
+  "machine": "nomad",
+  "instance": "nomad-gemma3-4b",
+  "uptime_seconds": 632.4826145172119,
+  "cycles_completed": 6253,
+  "metabolic_state": "rest",
+  "atp_level": 38.09472911298906,
+  "message_stats": {
+    "messages_submitted": 0,
+    "messages_resolved": 0,
+    "messages_timed_out": 0,
+    "pending": 0,
+    "waiting": 0
+  },
+  "trust_weights": {
+    "vision": 0.8500000000000014,
+    "language": 0.8500000000000014,
+    "control": 1.0,
+    "memory": 1.0
+  }
+}

@@ -80,6 +80,7 @@ class InstancePaths:
         self.experience_buffer = self.root / "experience_buffer.json"
         self.peer_trust = self.root / "peer_trust.json"
         self.daemon_state = self.root / "daemon_state.json"
+        self.chat_history = self.root / "chat_history.jsonl"
         self.latent_exploration_state = self.root / "latent_exploration_state.json"
         self.sessions = self.root / "sessions"
         self.training_sessions = self.root / "training" / "sessions"
@@ -122,6 +123,7 @@ class InstancePaths:
             ("experience_buffer", self.experience_buffer),
             ("peer_trust", self.peer_trust),
             ("daemon_state", self.daemon_state),
+            ("chat_history", self.chat_history),
         ]
 
         # Check if any state files exist
@@ -133,13 +135,18 @@ class InstancePaths:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
         for name, path in existing:
-            # Validate JSON before snapshotting
             try:
-                with open(path) as f:
-                    data = json.load(f)
-                dest = self.snapshots / f"{name}.json"
-                with open(dest, 'w') as f:
-                    json.dump(data, f, indent=2)
+                if path.suffix == '.jsonl':
+                    # JSONL: copy verbatim (line-delimited JSON)
+                    dest = self.snapshots / f"{name}.jsonl"
+                    shutil.copy2(path, dest)
+                else:
+                    # JSON: validate then pretty-print
+                    with open(path) as f:
+                        data = json.load(f)
+                    dest = self.snapshots / f"{name}.json"
+                    with open(dest, 'w') as f:
+                        json.dump(data, f, indent=2)
             except (json.JSONDecodeError, IOError) as e:
                 print(f"  WARN: Could not snapshot {path.name}: {e}")
 

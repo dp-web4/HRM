@@ -714,7 +714,7 @@ chatForm.addEventListener('submit', async (e) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        sender: 'dashboard@localhost',
+        sender: 'operator',
         message: message,
         max_wait_seconds: 90,
       }),

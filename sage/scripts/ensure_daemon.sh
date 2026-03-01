@@ -78,10 +78,15 @@ wait_for_health() {
 
 stop_daemon() {
     log "Stopping existing daemon..."
-    # Try graceful SIGTERM first
+    # Prefer systemctl if the service exists
+    if systemctl list-unit-files sage-daemon-sprout.service >/dev/null 2>&1; then
+        sudo systemctl stop sage-daemon-sprout 2>/dev/null || true
+        sleep 2
+        return
+    fi
+    # Fallback: manual kill
     pkill -f "sage.gateway.sage_daemon" 2>/dev/null || true
     sleep 2
-    # Force kill if still running
     if pgrep -f "sage.gateway.sage_daemon" >/dev/null 2>&1; then
         pkill -9 -f "sage.gateway.sage_daemon" 2>/dev/null || true
         sleep 1
@@ -90,9 +95,15 @@ stop_daemon() {
 
 start_daemon() {
     log "Starting SAGE daemon..."
+    # Prefer systemctl if the service exists
+    if systemctl list-unit-files sage-daemon-sprout.service >/dev/null 2>&1; then
+        sudo systemctl start sage-daemon-sprout
+        log "Started via systemctl"
+        return
+    fi
+    # Fallback: manual start
     cd "$HRM_DIR"
     export PYTHONPATH="$HRM_DIR"
-    # Detect python
     local PYTHON
     if command -v python3 >/dev/null 2>&1; then
         PYTHON="python3"
@@ -101,7 +112,6 @@ start_daemon() {
     else
         PYTHON="python"
     fi
-    # Start daemon in background, redirect output to log
     local LOG_DIR="$HRM_DIR/sage/logs"
     mkdir -p "$LOG_DIR"
     local LOG_FILE="$LOG_DIR/daemon_$(date +%Y%m%d_%H%M%S).log"

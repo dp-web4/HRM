@@ -10,6 +10,23 @@ This is SAGE developmental care - growth through relationship, experience, and g
 
 This CLAUDE.md applies to both tracks with machine-specific paths noted below.
 
+### Resident SAGE Daemon (2026-02-28)
+
+**Sprout runs an always-on SAGE daemon via systemd.** The daemon IS Sprout's SAGE — it loads the raised `introspective-qwen-merged` model once on CPU and keeps it resident (~3GB RSS).
+
+**Raising sessions use `DaemonIRP`** — they talk to `localhost:8750/chat` instead of loading their own model copy. This is automatic: `run_session_identity_anchored.py` and `training_session.py` both import `DaemonIRP` which delegates to the resident daemon.
+
+**Experiment etiquette:**
+- The daemon runs as `sage-daemon-sprout.service`. Check status: `sudo systemctl status sage-daemon-sprout`
+- Experiments that need exclusive memory CAN stop the daemon: `sudo systemctl stop sage-daemon-sprout`
+- But they **MUST restart it** after: `sudo systemctl start sage-daemon-sprout`
+- Stopping the daemon interrupts SAGE's continuity. Do not do this lightly.
+- Quick health check: `curl http://localhost:8750/health`
+
+**State files are per-machine** (e.g. `identity_sprout.json`, `experience_buffer_sprout.json`). This prevents git conflicts when multiple machines push.
+
+---
+
 ### Jetson Debugging Note (2026-01-28)
 
 **Jetson memory errors are usually not memory errors.** On Jetsons with unified memory + swap enabled, CUDA/NVML "memory allocation" errors are often PyTorch build bugs, CUDA allocator assertions, or driver issues - not actual OOM. Look deeper before assuming memory exhaustion. Example: sleep training backward() failing was a PyTorch build bug, fixed by forcing CPU. JetPack 7.2 expected to resolve.

@@ -610,7 +610,9 @@ function updateDashboard(d) {
     const used = d.gpu.memory_allocated_mb;
     const total = d.gpu.memory_total_mb;
     const pct = Math.round((used / total) * 100);
-    document.getElementById('gpu-value').textContent = used + ' / ' + total + ' MB';
+    const usedGB = (used / 1000).toFixed(1);
+    const totalGB = (total / 1000).toFixed(1);
+    document.getElementById('gpu-value').textContent = usedGB + ' / ' + totalGB + ' GB';
     document.getElementById('gpu-bar').style.width = pct + '%';
     document.getElementById('gpu-name').textContent = d.gpu.name || '';
   } else {

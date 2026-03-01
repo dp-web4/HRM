@@ -32,8 +32,14 @@ Architecture:
                         └────────────────────┘
 """
 
-import asyncio
 import os
+# Fix OpenMP crashes on macOS with Homebrew Python + PyTorch:
+# - KMP_DUPLICATE_LIB_OK: avoids duplicate libomp from brew and torch
+# - OMP_NUM_THREADS=1: avoids pthread_mutex_init EINVAL in asyncio context
+os.environ.setdefault('KMP_DUPLICATE_LIB_OK', 'TRUE')
+os.environ.setdefault('OMP_NUM_THREADS', '1')
+
+import asyncio
 import signal
 import sys
 import time

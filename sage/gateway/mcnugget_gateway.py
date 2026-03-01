@@ -142,6 +142,12 @@ class McNuggetHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
         try:
+            import psutil
+            has_psutil = True
+        except ImportError:
+            has_psutil = False
+
+        try:
             while True:
                 stats = {
                     'timestamp': time.time(),
@@ -149,19 +155,19 @@ class McNuggetHandler(BaseHTTPRequestHandler):
                     'lct_id': self.config.lct_id if self.config else 'mcnugget_sage_lct',
                     'metabolic_state': 'lightweight',
                     'mode': 'lightweight',
-                    'chat_count': self.chat_count,
                     'model': self.llm.model_name if self.llm else None,
+                    # Fields the dashboard expects
+                    'messages_submitted': self.chat_count,
+                    'messages_resolved': self.chat_count,
+                    'cycles_completed': self.chat_count,
                 }
                 if self.started_at:
                     stats['uptime_seconds'] = round(time.time() - self.started_at, 1)
-                try:
-                    import psutil
+                if has_psutil:
                     stats['cpu_percent'] = psutil.cpu_percent(interval=None)
                     vm = psutil.virtual_memory()
                     stats['ram_used_mb'] = round(vm.used / 1e6, 1)
                     stats['ram_total_mb'] = round(vm.total / 1e6, 1)
-                except ImportError:
-                    pass
                 payload = f"data: {json.dumps(stats)}\n\n"
                 self.wfile.write(payload.encode())
                 self.wfile.flush()

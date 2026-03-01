@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-SAGE Resident Daemon for Thor
+SAGE Resident Daemon with Instance Architecture
 
 Always-on SAGE instance that raising sessions connect to.
 Maintains model loaded in memory with persistent state.
+Uses new instance directory architecture for state isolation.
 """
 
 import asyncio
@@ -25,31 +26,19 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import uvicorn
 
-# Machine identification
-def get_machine_name():
-    """Get machine name from GPU or memory to avoid git conflicts"""
-    try:
-        gpu_info = subprocess.check_output(['nvidia-smi', '-L'], text=True)
-        if 'Thor' in gpu_info:
-            return 'thor'
-        elif 'Orin' in gpu_info:
-            # Check memory to distinguish Sprout (8GB) from McNugget (64GB+)
-            mem_info = subprocess.check_output(['free', '-g'], text=True)
-            mem_line = mem_info.split('\n')[1]
-            if '7' in mem_line.split()[1] or '8' in mem_line.split()[1]:
-                return 'sprout'
-            else:
-                return 'mcnugget'
-    except:
-        pass
-    return 'unknown'
+# Import instance resolver
+from sage.instances.resolver import InstancePaths
+from sage.gateway.machine_config import detect_machine
 
-MACHINE_NAME = get_machine_name()
+# Machine identification
+MACHINE_NAME = detect_machine()
+
+# Resolve instance paths
+INSTANCE_PATHS = InstancePaths.resolve(machine=MACHINE_NAME)
 
 # Configuration
-DEFAULT_MODEL = "/home/dp/ai-workspace/HRM/model-zoo/sage/qwen2.5-7b-instruct"
+DEFAULT_MODEL = "/home/dp/ai-workspace/HRM/model-zoo/sage/epistemic-stances/qwen2.5-14b/base-instruct"
 DEFAULT_PORT = 8765
-STATE_DIR = Path("/home/dp/ai-workspace/HRM/sage/raising/state")
 IDENTITY_PATH = Path("/home/dp/ai-workspace/HRM/sage/raising/identity/IDENTITY.md")
 HISTORY_PATH = Path("/home/dp/ai-workspace/HRM/sage/raising/identity/HISTORY.md")
 
@@ -111,7 +100,8 @@ class SAGEServer:
         print(f"[SAGEServer] Initialized")
         print(f"  Model: {model_path}")
         print(f"  Port: {port}")
-        print(f"  State dir: {STATE_DIR}")
+        print(f"  Instance: {INSTANCE_PATHS.root}")
+        print(f"  Machine: {MACHINE_NAME}")
 
     def _setup_routes(self):
         """Configure FastAPI routes"""
@@ -278,12 +268,11 @@ class SAGEServer:
             print(f"  Warning: History file not found at {HISTORY_PATH}")
 
     async def load_state(self):
-        """Load persisted state from disk"""
-        # Machine-specific state file to avoid git conflicts across Thor/Sprout/McNugget
-        state_file = STATE_DIR / f"daemon_state_{MACHINE_NAME}.json"
+        """Load persisted state from instance directory"""
+        state_file = INSTANCE_PATHS.daemon_state
 
         if state_file.exists():
-            print(f"\n[SAGEServer] Loading persisted state from {state_file.name}...")
+            print(f"\n[SAGEServer] Loading persisted state from {state_file}...")
             with open(state_file) as f:
                 state = json.load(f)
 
@@ -293,18 +282,20 @@ class SAGEServer:
 
             print(f"  Conversation history: {len(self.conversation_history)} exchanges")
             print(f"  Memory request: {self.memory_request[:50]}..." if self.memory_request else "  No memory request")
+        else:
+            print(f"\n[SAGEServer] No persisted state found at {state_file}")
 
     async def save_state(self):
-        """Persist state to disk"""
-        STATE_DIR.mkdir(parents=True, exist_ok=True)
-        # Machine-specific state file to avoid git conflicts across Thor/Sprout/McNugget
-        state_file = STATE_DIR / f"daemon_state_{MACHINE_NAME}.json"
+        """Persist state to instance directory"""
+        INSTANCE_PATHS.root.mkdir(parents=True, exist_ok=True)
+        state_file = INSTANCE_PATHS.daemon_state
 
         state = {
             'conversation_history': self.conversation_history,
             'memory_request': self.memory_request,
             'metadata': self.metadata,
             'machine': MACHINE_NAME,
+            'instance': str(INSTANCE_PATHS.root),
             'last_updated': datetime.now().isoformat()
         }
 

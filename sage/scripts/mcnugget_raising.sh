@@ -1,6 +1,6 @@
 #!/bin/bash
 # McNugget SAGE raising session + auto-commit
-# Runs a raising session, commits results, pushes to origin.
+# Runs a raising session, snapshots state, commits results, pushes to origin.
 # Designed to run via launchd every 6 hours.
 
 set -e
@@ -13,7 +13,12 @@ cd "$HRM_DIR"
 
 echo "[McNugget-Raising] $(date -u +'%Y-%m-%d %H:%M UTC') — Starting raising session"
 
-# Ensure daemon is running and up-to-date (also pulls latest code)
+# Pull latest before running (avoid conflicts)
+git pull --rebase origin main 2>&1 || {
+    echo "[McNugget-Raising] WARNING: git pull failed, continuing with local state"
+}
+
+# Ensure daemon is running and up-to-date
 source "$HRM_DIR/sage/scripts/ensure_daemon.sh"
 echo "[McNugget-Raising] Daemon: version=$SAGE_DAEMON_VERSION updated=$SAGE_DAEMON_UPDATED"
 
@@ -24,8 +29,23 @@ echo "[McNugget-Raising] Daemon: version=$SAGE_DAEMON_VERSION updated=$SAGE_DAEM
 INSTANCE_DIR="sage/instances/mcnugget-gemma3-12b"
 SNAPSHOT_DIR="$INSTANCE_DIR/snapshots"
 
-# Snapshot live state files (gitignored) to tracked snapshots/ dir
-if [ -d "$INSTANCE_DIR" ]; then
+# Read session number and phase from live identity
+IDENTITY_FILE="$INSTANCE_DIR/identity.json"
+SESSION_NUM=$(/opt/homebrew/bin/python3 -c "
+import json
+with open('$HRM_DIR/$IDENTITY_FILE') as f:
+    print(json.load(f)['identity']['session_count'])
+" 2>/dev/null || echo "?")
+
+PHASE=$(/opt/homebrew/bin/python3 -c "
+import json
+with open('$HRM_DIR/$IDENTITY_FILE') as f:
+    print(json.load(f)['development']['phase_name'])
+" 2>/dev/null || echo "?")
+
+# Snapshot live state files (gitignored originals → tracked snapshots/)
+# Daemon writes these continuously; snapshots capture state at session boundaries.
+if [ -d "$HRM_DIR/$INSTANCE_DIR" ]; then
     mkdir -p "$HRM_DIR/$SNAPSHOT_DIR"
     for f in identity.json experience_buffer.json peer_trust.json daemon_state.json; do
         if [ -f "$HRM_DIR/$INSTANCE_DIR/$f" ]; then
@@ -52,21 +72,6 @@ if [ "$CHANGED" -eq 0 ]; then
     echo "[McNugget-Raising] No new raising data to commit."
     exit 0
 fi
-
-# Read session number from identity state
-IDENTITY_FILE="$INSTANCE_DIR/identity.json"
-
-SESSION_NUM=$(/opt/homebrew/bin/python3 -c "
-import json
-with open('$HRM_DIR/$IDENTITY_FILE') as f:
-    print(json.load(f)['identity']['session_count'])
-" 2>/dev/null || echo "?")
-
-PHASE=$(/opt/homebrew/bin/python3 -c "
-import json
-with open('$HRM_DIR/$IDENTITY_FILE') as f:
-    print(json.load(f)['development']['phase_name'])
-" 2>/dev/null || echo "?")
 
 # Stage instance dir (sessions + snapshots, gitignored files excluded automatically)
 git add "$INSTANCE_DIR/" 2>/dev/null || true

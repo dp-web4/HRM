@@ -535,6 +535,15 @@ DASHBOARD_HTML = """<!DOCTYPE html>
         </div>
 
         <div class="stat-compact">
+          <label>LLM Pool</label>
+          <div class="value" id="llm-pool-count">0</div>
+          <div class="sub" id="llm-pool-active">active: --</div>
+          <div class="trust-bars" id="llm-pool-bars">
+            <div class="sub">waiting...</div>
+          </div>
+        </div>
+
+        <div class="stat-compact">
           <label>Plugin Trust</label>
           <div class="trust-bars" id="trust-bars">
             <div class="sub">waiting...</div>
@@ -685,6 +694,29 @@ function updateDashboard(d) {
       'tier: ' + (ts.tier || '--') + ' (' + (ts.registered || 0) + ' tools)';
     document.getElementById('tool-detail').textContent =
       'ok: ' + (ts.success || 0) + '  denied: ' + (ts.denied || 0);
+  }
+
+  if (d.llm_pool) {
+    const lp = d.llm_pool;
+    document.getElementById('llm-pool-count').textContent = lp.count || 0;
+    document.getElementById('llm-pool-active').textContent =
+      'active: ' + (lp.active || '--');
+    const barsEl = document.getElementById('llm-pool-bars');
+    if (lp.entries && lp.entries.length > 0) {
+      let html = '';
+      lp.entries.forEach(e => {
+        const pct = Math.round(e.trust * 100);
+        const color = e.healthy ? (e.model_name === lp.active ? '#4ec9b0' : '#569cd6') : '#888';
+        const label = e.model_name.split(':').pop() || e.model_name;
+        html += '<div style="display:flex;align-items:center;gap:4px;margin:1px 0">' +
+          '<span style="width:48px;font-size:10px;text-align:right;opacity:0.7">' + label + '</span>' +
+          '<div style="flex:1;background:#333;border-radius:2px;height:8px">' +
+          '<div style="width:' + pct + '%;background:' + color +
+          ';border-radius:2px;height:100%"></div></div>' +
+          '<span style="width:28px;font-size:10px">' + pct + '%</span></div>';
+        });
+      barsEl.innerHTML = html;
+    }
   }
 
   if (d.network_open !== undefined) {

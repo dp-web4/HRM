@@ -564,9 +564,15 @@ def main():
     print(f"Detected machine: {machine}")
 
     if machine == 'unknown':
-        print("Could not detect machine. Set SAGE_MACHINE environment variable.")
-        print("  export SAGE_MACHINE=thor    # or sprout, legion, cbp")
-        sys.exit(1)
+        # Fall back to wizard config
+        from sage.gateway.setup_wizard import load_config
+        wizard_cfg = load_config()
+        if wizard_cfg is None:
+            print("No machine detected and no config found.")
+            print("Run 'sage-setup' to configure SAGE for this machine.")
+            sys.exit(1)
+        machine = 'custom'
+        print(f"  Using wizard config: {wizard_cfg.get('instance', {}).get('name', 'custom')}")
 
     config = get_config(machine)
 

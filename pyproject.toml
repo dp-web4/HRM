@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "sage-cognition"
-version = "0.4.0a1"
+version = "0.4.0a2"
 description = "SAGE: Situation-Aware Governance Engine — cognition kernel for edge AI"
 readme = "README.md"
 license = "AGPL-3.0-only"
@@ -34,6 +34,7 @@ Repository = "https://github.com/dp-web4/HRM"
 [project.scripts]
 sage-daemon = "sage.gateway.sage_daemon:main"
 sage-cli = "sage.gateway.cli_client:main"
+sage-setup = "sage.gateway.setup_wizard:main"
 
 [tool.hatch.build.targets.sdist]
 include = ["sage/**/*.py", "sage/config/**/*.yaml", "sage/instances/_seed/**"]

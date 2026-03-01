@@ -136,6 +136,10 @@ def detect_machine() -> str:
     if Path('/mnt/c/exe/projects/ai-agents').exists():
         return 'cbp'
 
+    # Check for wizard-generated config
+    if (Path.home() / '.sage' / 'config.yaml').exists():
+        return 'custom'
+
     return 'unknown'
 
 
@@ -302,10 +306,50 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             max_response_tokens=500,
         )
 
+    elif machine_name == 'custom':
+        # Wizard-generated config from ~/.sage/config.yaml
+        from sage.gateway.setup_wizard import load_config
+        wizard_cfg = load_config()
+        if wizard_cfg is None:
+            raise ValueError(
+                "Custom config file (~/.sage/config.yaml) exists but could not be loaded. "
+                "Run 'sage-setup --reset' to regenerate."
+            )
+        ollama_cfg = wizard_cfg.get('ollama', {})
+        hw = wizard_cfg.get('hardware', {})
+        gw = wizard_cfg.get('gateway', {})
+        inst = wizard_cfg.get('instance', {})
+        tools = wizard_cfg.get('tools', {})
+        model_tag = ollama_cfg.get('model', 'tinyllama:latest')
+        instance_name = inst.get('name', 'custom')
+
+        workspace = str(Path.cwd())
+        instance_dir = str(Path.home() / '.sage' / 'instances' / instance_name)
+        Path(instance_dir).mkdir(parents=True, exist_ok=True)
+
+        return SAGEMachineConfig(
+            machine_name=instance_name,
+            model_path=f'ollama:{model_tag}',
+            model_size='ollama',
+            device=hw.get('device', 'cpu'),
+            max_memory_gb=hw.get('vram_gb', 0.0) or hw.get('ram_gb', 8.0),
+            gateway_port=int(gw.get('port', port)),
+            workspace_path=workspace,
+            instance_dir=instance_dir,
+            irp_iterations=5,
+            federation_port=0,
+            ed25519_key_path='',
+            lct_id=f'{instance_name}_sage_lct',
+            system_prompt_mode='creative',
+            cycle_sleep_ms=100,
+            max_response_tokens=250,
+        )
+
     else:
         raise ValueError(
             f"Unknown machine: {machine_name}. "
-            f"Set SAGE_MACHINE env var to one of: thor, sprout, cbp, legion, nomad, mcnugget"
+            f"Set SAGE_MACHINE env var to one of: thor, sprout, cbp, legion, nomad, mcnugget\n"
+            f"Or run 'sage-setup' to configure SAGE for this machine."
         )
 
 

@@ -532,4 +532,4 @@ class SAGE:
 __all__ = ['SAGE']
 
 # Version
-__version__ = '0.4.0a2'
+__version__ = '0.4.0a3'

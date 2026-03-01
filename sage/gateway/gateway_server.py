@@ -436,6 +436,12 @@ class GatewayHandler(BaseHTTPRequestHandler):
             stats['loop_stats'] = self.consciousness.stats
             stats['average_salience'] = self.consciousness.stats.get('average_salience', 0.0)
 
+        # MemoryHub stats
+        if self.consciousness and hasattr(self.consciousness, 'memory_hub'):
+            hub = self.consciousness.memory_hub
+            if hub:
+                stats['memory_hub'] = hub.stats()
+
         # Plugin trust weights
         if self.consciousness and hasattr(self.consciousness, 'plugin_trust_weights'):
             stats['plugin_trust'] = dict(self.consciousness.plugin_trust_weights)
@@ -601,6 +607,12 @@ class GatewayHandler(BaseHTTPRequestHandler):
                 'active': active.model_name if active else None,
                 'entries': [e.to_dict() for e in pool.list()],
             }
+
+        # MemoryHub stats
+        if self.consciousness and hasattr(self.consciousness, 'memory_hub'):
+            hub = self.consciousness.memory_hub
+            if hub:
+                health['memory_hub'] = hub.stats()
 
         self._send_json(health)
 

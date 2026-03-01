@@ -12,7 +12,6 @@ from enum import Enum
 
 from .base import LLMBackend, LLMRequest, LLMResponse, BackendState
 from .ollama_backend import OllamaBackend
-from .transformers_backend import TransformersBackend
 
 
 class BackendType(Enum):
@@ -73,6 +72,7 @@ class LLMRuntime:
         if backend_type == 'ollama':
             return OllamaBackend(backend_config)
         elif backend_type == 'transformers':
+            from .transformers_backend import TransformersBackend
             return TransformersBackend(backend_config)
         else:
             raise ValueError(f"Unknown backend type: {backend_type}")

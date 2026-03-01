@@ -52,12 +52,12 @@ sys.path.insert(0, str(sage_path))
 sys.path.insert(0, str(Path(__file__).parent))
 
 # Import consciousness components
-from core.unified_consciousness import (
+from sage.core.unified_consciousness import (
     UnifiedConsciousnessManager,
     ConsciousnessCycle
 )
-from core.metabolic_states import MetabolicState
-from core.epistemic_states import EpistemicState
+from sage.core.metabolic_states import MetabolicState
+from sage.core.epistemic_states import EpistemicState
 
 # Import EP components
 from multi_ep_coordinator import EPDomain, EPPrediction, MultiEPCoordinator, MultiEPDecision

@@ -41,7 +41,7 @@ def _load_with_soundfile(filepath, *args, **kwargs):
 torchaudio.load = _load_with_soundfile
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from compression.audio_puzzle_vae import AudioPuzzleVAE
+from sage.compression.audio_puzzle_vae import AudioPuzzleVAE
 
 class SpeechCommandsSubset(SPEECHCOMMANDS):
     """Speech Commands dataset wrapper"""

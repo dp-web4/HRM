@@ -43,8 +43,8 @@ sys.path.insert(0, str(HOME / "ai-workspace" / "HRM"))
 sys.path.insert(0, str(HOME / "ai-workspace" / "web4"))
 
 # Web4 imports
-from core.lct_capability_levels import EntityType
-from core.lct_binding import (
+from sage.core.lct_capability_levels import EntityType
+from sage.core.lct_binding import (
     TrustZoneProvider,
     SoftwareProvider,
 )
@@ -131,7 +131,7 @@ def test_sensor_level_cross_verification():
 
     try:
         # Software creates challenge for TrustZone (manual challenge creation)
-        from core.lct_binding.trust_policy import AgentAlivenessChallenge, AgentPolicyTemplates
+        from sage.core.lct_binding.trust_policy import AgentAlivenessChallenge, AgentPolicyTemplates
 
         challenge_nonce = hashlib.sha256(f"sw_to_tz_{time.time()}".encode()).digest()[:16]
         challenge_timestamp = datetime.now(timezone.utc)
@@ -239,7 +239,7 @@ def test_sensor_level_federation_topology():
     print("Testing all verification pairs:")
     print()
 
-    from core.lct_binding.trust_policy import AgentPolicyTemplates, AgentAlivenessChallenge
+    from sage.core.lct_binding.trust_policy import AgentPolicyTemplates, AgentAlivenessChallenge
     trust_policy = AgentPolicyTemplates.FEDERATED_CONSCIOUSNESS
 
     verifications = []

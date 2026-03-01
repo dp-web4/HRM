@@ -17,7 +17,7 @@ _sage_root = Path(__file__).parent.parent
 if str(_sage_root) not in sys.path:
     sys.path.insert(0, str(_sage_root))
 
-from core.atp_reward_pool import ATPRewardPool, Task, TaskStatus
+from sage.core.atp_reward_pool import ATPRewardPool, Task, TaskStatus
 
 
 class TestATPRewardPool(unittest.TestCase):

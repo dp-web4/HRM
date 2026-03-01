@@ -22,7 +22,7 @@ sys.path.insert(0, str(sage_root))
 sys.path.insert(0, str(sage_root / 'irp'))
 sys.path.insert(0, str(Path.home() / 'ai-workspace' / 'neutts-air'))
 
-from interfaces.base_effector import BaseEffector, EffectorCommand, EffectorResult, EffectorStatus
+from sage.interfaces.base_effector import BaseEffector, EffectorCommand, EffectorResult, EffectorStatus
 
 # Import NeuTTSAirIRP directly to avoid conflicts
 spec_tts = importlib.util.spec_from_file_location(

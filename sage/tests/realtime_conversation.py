@@ -20,8 +20,8 @@ import subprocess
 import os
 
 # Import components
-from interfaces.streaming_audio_sensor import StreamingAudioSensor
-from interfaces.cognitive_mailbox import CognitiveMailbox
+from sage.interfaces.streaming_audio_sensor import StreamingAudioSensor
+from sage.interfaces.cognitive_mailbox import CognitiveMailbox
 from cognitive.pattern_responses import CognitiveRouter
 
 print("="*60)

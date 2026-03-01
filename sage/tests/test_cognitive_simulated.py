@@ -20,7 +20,7 @@ from pathlib import Path
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from irp.cognitive_file_watcher import CognitiveMetrics
+from sage.irp.cognitive_file_watcher import CognitiveMetrics
 
 class SimulatedConversation:
     """Simulate a conversation with automatic responses"""

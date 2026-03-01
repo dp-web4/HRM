@@ -170,7 +170,7 @@ class MultiModelLoader:
 
     def unload_model(self, size: ModelSize):
         """
-        Unload a model from memory.
+        Unload a model from sage.memory.
 
         Args:
             size: Model size to unload

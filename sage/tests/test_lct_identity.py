@@ -15,7 +15,7 @@ from pathlib import Path
 # Add parent to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from web4.lct_identity import (
+from sage.web4.lct_identity import (
     LCTIdentity,
     parse_lct_uri,
     validate_lct_uri,

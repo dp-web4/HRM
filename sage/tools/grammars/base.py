@@ -16,7 +16,7 @@ _tools_root = Path(__file__).parent.parent
 if str(_tools_root.parent) not in sys.path:
     sys.path.insert(0, str(_tools_root.parent))
 
-from tools.registry import ToolDefinition, ToolCall
+from sage.tools.registry import ToolDefinition, ToolCall
 
 
 class ToolGrammar(ABC):

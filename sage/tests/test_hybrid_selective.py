@@ -23,7 +23,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 # Add sage to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from compression.selective_expert_loader import SelectiveExpertLoader
+from sage.compression.selective_expert_loader import SelectiveExpertLoader
 
 
 def test_hybrid_generation():

@@ -47,13 +47,13 @@ except ImportError:
     import sys
     from pathlib import Path
     sys.path.insert(0, str(Path(__file__).parent.parent))
-    from core.trust_based_expert_selector import (
+    from sage.core.trust_based_expert_selector import (
         TrustBasedExpertSelector,
         ExpertSelectionResult
     )
-    from web4.expert_identity import ExpertIdentityBridge
-    from web4.atp_allocator import ATPResourceAllocator
-    from web4.trust_tensor_sync import TrustTensorSync
+    from sage.web4.expert_identity import ExpertIdentityBridge
+    from sage.web4.atp_allocator import ATPResourceAllocator
+    from sage.web4.trust_tensor_sync import TrustTensorSync
 
 
 # =============================================================================

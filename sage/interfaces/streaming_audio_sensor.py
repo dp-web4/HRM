@@ -23,8 +23,8 @@ from collections import deque
 
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from interfaces.base_sensor import BaseSensor, SensorReading
-from interfaces.hierarchical_audio_buffer import HierarchicalAudioBuffer
+from sage.interfaces.base_sensor import BaseSensor, SensorReading
+from sage.interfaces.hierarchical_audio_buffer import HierarchicalAudioBuffer
 
 
 class StreamingAudioSensor(BaseSensor):

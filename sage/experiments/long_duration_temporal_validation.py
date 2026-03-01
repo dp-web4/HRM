@@ -32,7 +32,7 @@ from datetime import datetime, timedelta
 from typing import List, Dict, Tuple
 
 # Production temporal adaptation
-from core.temporal_adaptation import create_production_adapter, TemporalAdapter
+from sage.core.temporal_adaptation import create_production_adapter, TemporalAdapter
 
 # Experimental validation infrastructure
 from experiments.validate_atp_on_real_consciousness import (
@@ -222,10 +222,10 @@ def run_long_duration_validation(
     if adaptation_mode == "production":
         adapter = create_production_adapter()
     elif adaptation_mode == "conservative":
-        from core.temporal_adaptation import create_conservative_adapter
+        from sage.core.temporal_adaptation import create_conservative_adapter
         adapter = create_conservative_adapter()
     elif adaptation_mode == "responsive":
-        from core.temporal_adaptation import create_responsive_adapter
+        from sage.core.temporal_adaptation import create_responsive_adapter
         adapter = create_responsive_adapter()
     else:
         raise ValueError(f"Unknown adaptation_mode: {adaptation_mode}")

@@ -30,10 +30,10 @@ WEB4_ROOT = Path.home() / "ai-workspace" / "web4"
 sys.path.insert(0, str(WEB4_ROOT))
 
 try:
-    from core.lct_binding.trustzone_provider import TrustZoneProvider
-    from core.lct_binding.platform_detection import detect_platform
-    from core.lct_binding.provider import HardwareType, KeyStorage
-    from core.lct_capability_levels import CapabilityLevel
+    from sage.core.lct_binding.trustzone_provider import TrustZoneProvider
+    from sage.core.lct_binding.platform_detection import detect_platform
+    from sage.core.lct_binding.provider import HardwareType, KeyStorage
+    from sage.core.lct_capability_levels import CapabilityLevel
 
     IMPORTS_OK = True
 except ImportError as e:

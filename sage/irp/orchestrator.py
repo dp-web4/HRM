@@ -9,16 +9,23 @@ import asyncio
 import concurrent.futures
 from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
-import torch
+try:
+    import torch
+except ImportError:
+    torch = None
 import time
 import json
 from dataclasses import dataclass, field
 
 from .base import IRPPlugin, IRPState
-from .vision import VisionIRP
-from .language import LanguageIRP
-from .control import ControlIRP
-from .memory import MemoryIRP
+
+try:
+    from .vision import VisionIRP
+    from .language import LanguageIRP
+    from .control import ControlIRP
+    from .memory import MemoryIRP
+except ImportError:
+    VisionIRP = LanguageIRP = ControlIRP = MemoryIRP = None
 
 
 @dataclass
@@ -59,7 +66,7 @@ class HRMOrchestrator:
         self.max_workers = config.get('max_workers', 4)
         self.trust_update_rate = config.get('trust_update_rate', 0.1)
         self.telemetry_interval = config.get('telemetry_interval', 10)
-        self.device = config.get('device', 'cuda' if torch.cuda.is_available() else 'cpu')
+        self.device = config.get('device', 'cuda' if torch is not None and torch.cuda.is_available() else 'cpu')
         
         # Initialize plugins
         self.plugins = self._initialize_plugins()

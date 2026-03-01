@@ -21,7 +21,7 @@ from dataclasses import dataclass
 sys.path.insert(0, '/home/dp/ai-workspace/isaac-gr00t')
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from compression.integrated_h_l_system import IntegratedHLSystem
+from sage.compression.integrated_h_l_system import IntegratedHLSystem
 from groot_integration.groot_real_integration import GR00TWorldInterface, GR00TRealitySleepTrainer
 from groot_integration.sleep_cycle_training import Experience, ExperienceMemory
 from context.reality_context_4k import RealityContext4K

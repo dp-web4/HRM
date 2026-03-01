@@ -22,7 +22,7 @@ def test_imports():
     print("Testing imports...")
     
     try:
-        from llm.external_llm import ExternalLLMInterface, LLMGuidedSAGE
+        from sage.llm.external_llm import ExternalLLMInterface, LLMGuidedSAGE
         print("✅ LLM module imported")
     except Exception as e:
         print(f"❌ LLM import failed: {e}")
@@ -52,7 +52,7 @@ def test_imports():
         return False
     
     try:
-        from core.sage_v2 import SAGEV2Core, SAGEV2Config, create_sage_v2
+        from sage.core.sage_v2 import SAGEV2Core, SAGEV2Config, create_sage_v2
         print("✅ SAGE V2 core imported")
     except Exception as e:
         print(f"❌ SAGE V2 import failed: {e}")
@@ -153,7 +153,7 @@ def test_sage_v2_basic():
     print("Testing SAGE V2 basic (no LLM)...")
     
     try:
-        from core.sage_v2 import create_sage_v2, SAGEV2Config
+        from sage.core.sage_v2 import create_sage_v2, SAGEV2Config
         
         # Small config for testing
         config = SAGEV2Config(
@@ -223,7 +223,7 @@ def test_sage_v2_with_llm():
             print("   Install with: pip install transformers accelerate bitsandbytes")
             return True  # Not a failure, just skipped
         
-        from core.sage_v2 import create_sage_v2, SAGEV2Config
+        from sage.core.sage_v2 import create_sage_v2, SAGEV2Config
         
         # Try with a tiny model for testing
         config = SAGEV2Config(
@@ -264,7 +264,7 @@ def test_memory_and_iteration():
     print("Testing memory and iterative refinement...")
     
     try:
-        from core.sage_v2 import create_sage_v2, SAGEV2Config
+        from sage.core.sage_v2 import create_sage_v2, SAGEV2Config
         
         config = SAGEV2Config(
             hidden_size=64,
@@ -306,7 +306,7 @@ def test_agent_zero_prevention():
     print("Testing Agent Zero prevention...")
     
     try:
-        from core.sage_v2 import create_sage_v2, SAGEV2Config
+        from sage.core.sage_v2 import create_sage_v2, SAGEV2Config
         from training.improved_objectives import PatternSolvingLoss
         
         config = SAGEV2Config(

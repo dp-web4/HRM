@@ -29,8 +29,8 @@ print()
 
 # Import components
 print("[Step 1] Importing components...")
-from core.sage_unified import SAGEUnified
-from interfaces.mock_sensors import MockCameraSensor
+from sage.core.sage_unified import SAGEUnified
+from sage.interfaces.mock_sensors import MockCameraSensor
 print("  ✓ SAGEUnified imported")
 print("  ✓ MockCameraSensor imported")
 

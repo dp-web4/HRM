@@ -33,7 +33,7 @@ try:
 except ImportError:
     import sys
     sys.path.insert(0, str(Path(__file__).parent.parent))
-    from core.context_classifier import (
+    from sage.core.context_classifier import (
         ContextClassifier,
         ContextInfo,
         ContextStats,

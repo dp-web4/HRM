@@ -67,8 +67,8 @@ from sage.core.canonical_lct import CanonicalLCTManager
 
 # Web4 imports (for cross-platform verification)
 try:
-    from core.lct_capability_levels import EntityType
-    from core.lct_binding import PlatformInfo
+    from sage.core.lct_capability_levels import EntityType
+    from sage.core.lct_binding import PlatformInfo
     WEB4_AVAILABLE = True
 except ImportError:
     WEB4_AVAILABLE = False

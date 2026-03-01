@@ -11,9 +11,9 @@ from pathlib import Path
 # Add sage to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from compression.vision_puzzle_vae import VisionPuzzleVAE
-from compression.audio_puzzle_vae import AudioPuzzleVAE
-from compression.language_puzzle_vae_small import LanguagePuzzleVAESmall
+from sage.compression.vision_puzzle_vae import VisionPuzzleVAE
+from sage.compression.audio_puzzle_vae import AudioPuzzleVAE
+from sage.compression.language_puzzle_vae_small import LanguagePuzzleVAESmall
 
 
 def validate_architecture():

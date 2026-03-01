@@ -37,7 +37,7 @@ import json
 HOME = Path.home()
 sys.path.insert(0, str(HOME / "ai-workspace" / "HRM" / "sage"))
 
-from core.sage_consciousness_cogitation import CogitationSAGE
+from sage.core.sage_consciousness_cogitation import CogitationSAGE
 
 
 # ============================================================================

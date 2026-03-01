@@ -41,8 +41,8 @@ sys.path.insert(0, str(HOME / "ai-workspace" / "HRM"))
 sys.path.insert(0, str(HOME / "ai-workspace" / "web4"))
 
 # Web4 imports
-from core.lct_capability_levels import EntityType
-from core.lct_binding import (
+from sage.core.lct_capability_levels import EntityType
+from sage.core.lct_binding import (
     TrustZoneProvider,
     SoftwareProvider,
 )

@@ -23,20 +23,20 @@ import re
 from typing import Optional
 
 # SAGE core
-from core.sage_unified import SAGEUnified
+from sage.core.sage_unified import SAGEUnified
 
 # Voice I/O
-from interfaces.audio_sensor_streaming import StreamingAudioSensor
-from interfaces.tts_effector import TTSEffector
+from sage.interfaces.audio_sensor_streaming import StreamingAudioSensor
+from sage.interfaces.tts_effector import TTSEffector
 
 # IRP with learned model
-from irp.plugins.introspective_qwen_impl import IntrospectiveQwenIRP
+from sage.irp.plugins.introspective_qwen_impl import IntrospectiveQwenIRP
 
 # Pattern matching for fast responses
 from cognitive.pattern_responses import PatternResponseEngine
 
 # Debug output to terminal
-from irp.plugins.text_output_impl import TextOutputIRP
+from sage.irp.plugins.text_output_impl import TextOutputIRP
 
 
 class VoiceSAGESession:

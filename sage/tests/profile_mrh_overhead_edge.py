@@ -20,7 +20,7 @@ import time
 from typing import Dict, List
 from statistics import mean, stdev
 
-from core.mrh_utils import (
+from sage.core.mrh_utils import (
     compute_mrh_similarity,
     compute_mrh_distance,
     infer_situation_mrh,

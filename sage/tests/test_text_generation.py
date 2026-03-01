@@ -21,7 +21,7 @@ from transformers import AutoTokenizer
 # Add sage to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from compression.selective_language_model import SelectiveLanguageModel
+from sage.compression.selective_language_model import SelectiveLanguageModel
 
 
 def test_next_token_prediction():

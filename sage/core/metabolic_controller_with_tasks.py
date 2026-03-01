@@ -45,13 +45,9 @@ from pathlib import Path
 import sys
 import time
 
-# Add sage to path
-_sage_root = Path(__file__).parent.parent
-if str(_sage_root) not in sys.path:
-    sys.path.insert(0, str(_sage_root))
 
-from core.metabolic_controller import MetabolicController, MetabolicState
-from core.atp_reward_pool import ATPRewardPool, Task, TaskStatus
+from sage.core.metabolic_controller import MetabolicController, MetabolicState
+from sage.core.atp_reward_pool import ATPRewardPool, Task, TaskStatus
 
 
 class MetabolicControllerWithTasks(MetabolicController):

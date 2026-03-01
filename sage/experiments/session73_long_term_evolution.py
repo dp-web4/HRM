@@ -47,9 +47,9 @@ import json
 # Add sage to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from compression.selective_expert_loader import SelectiveExpertLoader
-from core.expert_reputation import ExpertReputationDB, ExpertReputation
-from core.context_classifier import ContextClassifier
+from sage.compression.selective_expert_loader import SelectiveExpertLoader
+from sage.core.expert_reputation import ExpertReputationDB, ExpertReputation
+from sage.core.context_classifier import ContextClassifier
 
 
 @dataclass
@@ -380,13 +380,13 @@ def run_trust_first_real_tracking(extraction_dir: str, sequences: List, num_epoc
     print("(This will use actual model representations, not token heuristics)")
 
     # Initialize context classifier (uses MiniBatchKMeans on embeddings)
-    from compression.selective_transformer_layer import SelectiveMoELayer
+    from sage.compression.selective_transformer_layer import SelectiveMoELayer
 
     print("Collecting model embeddings for clustering...")
     print("(This requires running model forward passes)")
 
     # Import SelectiveLanguageModel for embedding extraction
-    from compression.selective_language_model import SelectiveLanguageModel
+    from sage.compression.selective_language_model import SelectiveLanguageModel
 
     # Create temporary model just for embedding extraction
     temp_model = SelectiveLanguageModel(

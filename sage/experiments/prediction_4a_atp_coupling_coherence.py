@@ -36,7 +36,7 @@ import sys
 # Add sage module to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from core.metabolic_controller_with_tasks import MetabolicControllerWithTasks
+from sage.core.metabolic_controller_with_tasks import MetabolicControllerWithTasks
 
 
 @dataclass

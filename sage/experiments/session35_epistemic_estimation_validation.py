@@ -17,12 +17,12 @@ from typing import List, Tuple
 # Add sage to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from core.epistemic_estimator import (
+from sage.core.epistemic_estimator import (
     ImprovedEpistemicEstimator,
     estimate_epistemic_state
 )
-from core.epistemic_states import EpistemicState, EpistemicMetrics
-from core.sage_real_measurements import SAGERealMeasurements
+from sage.core.epistemic_states import EpistemicState, EpistemicMetrics
+from sage.core.sage_real_measurements import SAGERealMeasurements
 
 
 # Labeled test dataset with clear epistemic signatures

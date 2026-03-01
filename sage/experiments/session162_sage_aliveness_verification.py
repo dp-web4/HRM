@@ -49,8 +49,8 @@ from sage.core.canonical_lct import CanonicalLCTManager
 
 # Try to import Web4 canonical types, fallback to local if unavailable
 try:
-    from core.lct_capability_levels import EntityType
-    from core.lct_binding.provider import PlatformInfo
+    from sage.core.lct_capability_levels import EntityType
+    from sage.core.lct_binding.provider import PlatformInfo
 except ImportError:
     # Use fallback types from canonical_lct
     from sage.core.canonical_lct import EntityType, PlatformInfo

@@ -22,7 +22,7 @@ import sys
 # Add sage to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from compression.selective_expert_loader import SelectiveExpertLoader
+from sage.compression.selective_expert_loader import SelectiveExpertLoader
 
 
 def simple_expert_forward(expert_weights: dict, hidden_states: torch.Tensor) -> torch.Tensor:

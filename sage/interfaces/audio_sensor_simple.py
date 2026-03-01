@@ -24,7 +24,7 @@ import soundfile as sf
 
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from interfaces.base_sensor import BaseSensor, SensorReading
+from sage.interfaces.base_sensor import BaseSensor, SensorReading
 
 
 class SimpleAudioSensor(BaseSensor):

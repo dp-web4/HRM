@@ -49,7 +49,7 @@ class ConversationTurn:
 
 @dataclass
 class RepairSignal:
-    """Detected repair/feedback signal from conversation."""
+    """Detected repair/feedback signal from sage.conversation."""
     turn_index: int
     signal_type: str  # 'correction', 'reask', 'abandonment', 'engagement', 'reassurance'
     confidence: float

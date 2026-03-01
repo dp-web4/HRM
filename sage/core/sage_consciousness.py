@@ -36,16 +36,26 @@ from pathlib import Path
 import sys
 import json
 import numpy as np
-import torch
 
-# Add sage to path
-_sage_root = Path(__file__).parent.parent
-if str(_sage_root) not in sys.path:
-    sys.path.insert(0, str(_sage_root))
+try:
+    import torch
+except ImportError:
+    torch = None
 
-from core.metabolic_controller import MetabolicController, MetabolicState
-from core.circadian_clock import CircadianClock, CircadianPhase
-from irp.orchestrator import HRMOrchestrator, PluginResult
+from sage.core.metabolic_controller import MetabolicController, MetabolicState
+from sage.core.circadian_clock import CircadianClock, CircadianPhase
+try:
+    from sage.irp.orchestrator import HRMOrchestrator, PluginResult
+except ImportError:
+    HRMOrchestrator = None
+
+    @dataclass
+    class PluginResult:
+        """Lightweight fallback when IRP orchestrator not available."""
+        plugin_name: str = ""
+        final_state: Any = None
+        history: list = field(default_factory=list)
+        telemetry: dict = field(default_factory=dict)
 
 
 @dataclass
@@ -163,7 +173,7 @@ class SAGEConsciousness:
             simulation_mode=simulation_mode
         )
 
-        self.orchestrator = HRMOrchestrator(self.config)
+        self.orchestrator = HRMOrchestrator(self.config) if HRMOrchestrator is not None else None
 
         # Sensor system (mock for now, will integrate real sensors later)
         self.sensors = self._initialize_sensors()
@@ -176,7 +186,7 @@ class SAGEConsciousness:
 
         # Trust weights for plugins (learned over time)
         self.plugin_trust_weights = {
-            name: 1.0 for name in self.orchestrator.plugins
+            name: 1.0 for name in (self.orchestrator.plugins if self.orchestrator else {})
         }
 
         # Salience thresholds (from SNARC)
@@ -194,7 +204,7 @@ class SAGEConsciousness:
         self.snarc_scorer = None
         if self.use_real_snarc:
             try:
-                from raising.training.experience_collector import ConversationalSalienceScorer
+                from sage.raising.training.experience_collector import ConversationalSalienceScorer
                 self.snarc_scorer = ConversationalSalienceScorer()
                 print("[SNARC] Real ConversationalSalienceScorer loaded")
             except ImportError as e:
@@ -218,7 +228,7 @@ class SAGEConsciousness:
         # Load real LoRA bridge if capable
         if self.sleep_cap and self.sleep_cap.sleep_lora:
             try:
-                from attention.sleep_consolidation import SleepConsolidationBridge
+                from sage.attention.sleep_consolidation import SleepConsolidationBridge
                 sleep_config = {
                     'model_path': self.config.get('sleep_model_path', None),
                     'checkpoint_dir': str(
@@ -241,7 +251,7 @@ class SAGEConsciousness:
         self.sensor_trust_system = None
         if self.config.get('use_real_sensors', False):
             try:
-                from core.sensor_trust import MultiSensorTrustSystem
+                from sage.core.sensor_trust import MultiSensorTrustSystem
                 self.sensor_trust_system = MultiSensorTrustSystem()
                 print("[Sensors] Real MultiSensorTrustSystem loaded")
             except ImportError as e:
@@ -284,7 +294,7 @@ class SAGEConsciousness:
             'max_workers': 4,
             'trust_update_rate': 0.1,
             'telemetry_interval': 10,
-            'device': 'cuda' if torch.cuda.is_available() else 'cpu',
+            'device': 'cuda' if torch is not None and torch.cuda.is_available() else 'cpu',
             'circadian_period': 100,
             'salience_threshold': 0.15,
             # Plugin configurations
@@ -308,10 +318,10 @@ class SAGEConsciousness:
     def _init_effect_system(self):
         """Initialize the effect/effector system."""
         try:
-            from interfaces.effect import Effect, EffectType, EffectStatus as EStatus
-            from interfaces.effect_extractor import EffectExtractor
-            from interfaces.effector_registry import EffectorRegistry
-            from interfaces.mock_sensors import (
+            from sage.interfaces.effect import Effect, EffectType, EffectStatus as EStatus
+            from sage.interfaces.effect_extractor import EffectExtractor
+            from sage.interfaces.effector_registry import EffectorRegistry
+            from sage.interfaces.mock_sensors import (
                 MockMotorEffector, MockDisplayEffector, MockSpeakerEffector,
             )
 
@@ -322,9 +332,9 @@ class SAGEConsciousness:
 
             if use_real_effectors:
                 # Real effectors for FILE_IO, TOOL_USE, WEB
-                from interfaces.effectors.filesystem_effector import FileSystemEffector
-                from interfaces.effectors.web_effector import WebEffector
-                from interfaces.effectors.tool_use_effector import ToolUseEffector
+                from sage.interfaces.effectors.filesystem_effector import FileSystemEffector
+                from sage.interfaces.effectors.web_effector import WebEffector
+                from sage.interfaces.effectors.tool_use_effector import ToolUseEffector
 
                 self.effector_registry.register_effector(
                     FileSystemEffector({
@@ -350,7 +360,7 @@ class SAGEConsciousness:
                 print("[Effectors] Real FileSystem/ToolUse/Web effectors loaded")
             else:
                 # Mock effectors
-                from interfaces.effectors.mock_effectors import (
+                from sage.interfaces.effectors.mock_effectors import (
                     MockFileSystemEffector, MockToolUseEffector,
                     MockWebEffector,
                 )
@@ -378,7 +388,7 @@ class SAGEConsciousness:
                 handles=[EffectType.AUDIO], effector_id='speaker')
 
             # Cognitive stays mock (internal effect)
-            from interfaces.effectors.mock_effectors import MockCognitiveEffector
+            from sage.interfaces.effectors.mock_effectors import MockCognitiveEffector
             self.effector_registry.register_effector(
                 MockCognitiveEffector({'effector_id': 'cognitive', 'effector_type': 'cognitive'}),
                 handles=[EffectType.MEMORY_WRITE, EffectType.TRUST_UPDATE,
@@ -401,7 +411,7 @@ class SAGEConsciousness:
             self.policy_gate = None
             if self.policy_gate_enabled:
                 try:
-                    from irp.plugins.policy_gate import PolicyGateIRP
+                    from sage.irp.plugins.policy_gate import PolicyGateIRP
                     gate_config = {
                         'entity_id': 'policy_gate',
                         'policy_rules': self.config.get('policy_rules', []),
@@ -689,7 +699,7 @@ class SAGEConsciousness:
             self.stats['effects_executed'] += executed
 
             # Consume ATP for completed effects
-            from interfaces.effect import EffectStatus as EStatus
+            from sage.interfaces.effect import EffectStatus as EStatus
             atp_consumed = sum(
                 e.atp_cost for e in approved_effects
                 if e.status == EStatus.COMPLETED
@@ -963,7 +973,7 @@ class SAGEConsciousness:
                     result = await self._execute_llm_for_message(target, budget)
                     results[plugin_name] = result
 
-                elif plugin_name in self.orchestrator.plugins:
+                elif self.orchestrator and plugin_name in self.orchestrator.plugins:
                     # Mock execution for non-message modalities
                     results[plugin_name] = PluginResult(
                         plugin_name=plugin_name,
@@ -1286,7 +1296,7 @@ class SAGEConsciousness:
         """Build a conversation prompt including identity context and history.
 
         Designed to work with small models (1B) that can't distinguish
-        system instructions from conversation. Uses natural first-person
+        system instructions from sage.conversation. Uses natural first-person
         language and clear conversation markers.
         """
         parts = []
@@ -1530,7 +1540,7 @@ class SAGEConsciousness:
         Converts each Effect to PolicyGate's action format, runs the IRP
         refine loop, and filters based on decisions.
         """
-        from interfaces.effect import EffectStatus as EStatus
+        from sage.interfaces.effect import EffectStatus as EStatus
 
         # Convert effects to PolicyGate actions
         actions = [e.to_policy_action() for e in effects]

@@ -19,9 +19,9 @@ from tqdm import tqdm
 
 import sys
 sys.path.append('..')
-from core.sage_core import SAGECore
-from core.sage_config import SAGEConfig, SAGEPresets
-from attention.snarc_scorer import SNARCScorer
+from sage.core.sage_core import SAGECore
+from sage.core.sage_config import SAGEConfig, SAGEPresets
+from sage.attention.snarc_scorer import SNARCScorer
 
 
 @dataclass

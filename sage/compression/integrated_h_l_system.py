@@ -16,7 +16,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from context.reality_context_4k import RealityContext4K, RealityContextEncoder4K
-from compression.h_to_l_compressor import HToLCompressor, CompressionMetrics
+from sage.compression.h_to_l_compressor import HToLCompressor, CompressionMetrics
 from groot_integration.sleep_cycle_training import Experience, ExperienceMemory
 
 

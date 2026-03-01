@@ -20,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from dataclasses import dataclass
 from typing import Dict, List, Tuple, Optional
 
-from core.mrh_utils import (
+from sage.core.mrh_utils import (
     select_plugin_with_mrh,
     select_plugin_with_quality_edge,
     infer_quality_requirement,

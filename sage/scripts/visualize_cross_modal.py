@@ -22,8 +22,8 @@ import numpy as np
 sage_root = Path(__file__).parent.parent
 sys.path.insert(0, str(sage_root))
 
-from core.sage_unified import SAGEUnified
-from interfaces.mock_sensors import MockCameraSensor, MockAudioSensor
+from sage.core.sage_unified import SAGEUnified
+from sage.interfaces.mock_sensors import MockCameraSensor, MockAudioSensor
 
 print("="*80)
 print("Cross-Modal Attention Visualization")

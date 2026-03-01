@@ -26,12 +26,8 @@ import time
 from pathlib import Path
 import sys
 
-# Add sage to path for circadian clock import
-_sage_root = Path(__file__).parent.parent
-if str(_sage_root) not in sys.path:
-    sys.path.insert(0, str(_sage_root))
 
-from core.circadian_clock import CircadianClock, create_day_night_clock
+from sage.core.circadian_clock import CircadianClock, create_day_night_clock
 
 
 class MetabolicState(Enum):

@@ -21,8 +21,8 @@ from typing import Dict, List, Tuple
 sys.path.append('..')
 sys.path.append('../..')
 
-from core.sage_core import SAGECore
-from core.sage_config import SAGEConfig
+from sage.core.sage_core import SAGECore
+from sage.core.sage_config import SAGEConfig
 
 
 def load_arc_agi2_data(data_dir: str = "../../dataset/raw-data/ARC-AGI-2") -> List[Dict]:
@@ -157,7 +157,7 @@ def test_on_arc_agi2():
     if 'config' in checkpoint:
         config_dict = checkpoint['config']
         # Create config from the saved dict
-        from core.sage_config import SAGEPresets
+        from sage.core.sage_config import SAGEPresets
         # Use development config since the checkpoint is from the smaller model
         config = SAGEPresets.development()
         # Update with saved values
@@ -166,7 +166,7 @@ def test_on_arc_agi2():
                 setattr(config, key, value)
     else:
         print("Warning: No config in checkpoint, using development config")
-        from core.sage_config import SAGEPresets
+        from sage.core.sage_config import SAGEPresets
         config = SAGEPresets.development()
     
     # Initialize model

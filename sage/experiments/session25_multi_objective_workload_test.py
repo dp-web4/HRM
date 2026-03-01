@@ -31,7 +31,7 @@ from typing import Dict, List, Tuple
 from dataclasses import dataclass
 
 # Production temporal adaptation
-from core.temporal_adaptation import (
+from sage.core.temporal_adaptation import (
     create_production_adapter,
     create_multi_objective_adapter,
     TemporalAdapter

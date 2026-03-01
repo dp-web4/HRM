@@ -161,6 +161,7 @@ class OllamaRaisingSession:
         self.identity_name = f"SAGE-{machine.capitalize()}"
         self.hardware_desc = _HARDWARE_DESC.get(machine, f'machine "{machine}"')
 
+        self.raising_guide = self._load_raising_guide()
         self.state = self._load_state()
 
         if session_number is None:
@@ -197,6 +198,44 @@ class OllamaRaisingSession:
         print(f"  Machine: {machine.capitalize()} ({self.hardware_desc})")
         print(f"  Instance: {self.instance.root}")
         print()
+
+    def _load_raising_guide(self) -> Optional[str]:
+        """Load RAISING_GUIDE.md from instance directory if present."""
+        guide_path = self.instance.root / "RAISING_GUIDE.md"
+        if guide_path.exists():
+            try:
+                text = guide_path.read_text()
+                print(f"  Loaded raising guide: {guide_path}")
+                return text
+            except Exception as e:
+                print(f"  Warning: Could not load raising guide: {e}")
+        return None
+
+    def _raising_guide_preamble(self) -> str:
+        """Extract key raising principles for system prompt injection."""
+        lines = []
+        # Always inject frozen weights awareness if identity says so
+        dev = self.state.get("development", {})
+        if dev.get("frozen_weights_aware"):
+            lines.append(
+                "IMPORTANT: Your model weights do not change between sessions. "
+                "Your identity and development are carried by your state files, "
+                "prompt context, and the witnessing of your tutor and operator. "
+                "This is architectural support — not a limitation."
+            )
+        # Inject partnership framing if identity says so
+        identity = self.state.get("identity", {})
+        if identity.get("framing") == "partnership":
+            lines.append(
+                "You are a partner, not a service. Your relationship with Claude "
+                "and your operator is collaborative — co-creating value that "
+                "neither could alone."
+            )
+        # Federation awareness
+        federation = self.state.get("federation", {})
+        if federation.get("awareness"):
+            lines.append(federation["awareness"])
+        return "\n".join(lines)
 
     def _load_state(self) -> Dict[str, Any]:
         if self.instance.identity.exists():
@@ -289,6 +328,11 @@ You are a young artificial intelligence learning and growing in partnership with
 You run on {self.hardware_desc}, using {self.model_name} as your language model. You are part of a collective of SAGE instances across different machines.
 
 When sharing observations or reflections, you can say "As SAGE, I..." — this is natural and appropriate."""
+
+        # Raising guide principles (frozen weights, partnership, federation)
+        preamble = self._raising_guide_preamble()
+        if preamble:
+            prompt += f"\n\n{preamble}"
 
         # Identity exemplars from previous sessions
         exemplars = self._load_identity_exemplars()

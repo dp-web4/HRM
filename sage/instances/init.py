@@ -46,7 +46,8 @@ def _guess_family(model: str) -> str:
 
 
 def init_instance(machine: str, model: str, force: bool = False,
-                  device_hint: str = "cpu", backend: str = "ollama") -> Path:
+                  device_hint: str = "cpu", backend: str = "ollama",
+                  operator_name: str = "operator") -> Path:
     """Create a new instance directory from the seed template.
 
     Args:
@@ -55,6 +56,7 @@ def init_instance(machine: str, model: str, force: bool = False,
         force: Overwrite existing instance directory
         device_hint: Device hint for instance.json
         backend: Backend type ('ollama' or 'local')
+        operator_name: Name for the operator relationship (default: 'operator')
 
     Returns:
         Path to created instance directory.
@@ -87,14 +89,15 @@ def init_instance(machine: str, model: str, force: bool = False,
         '__FAMILY__': family,
         '__SLUG__': slug,
         '__DATE__': today,
+        '__OPERATOR__': operator_name,
     }
 
-    # Process all JSON files — replace placeholders
-    for json_file in instance_dir.rglob('*.json'):
-        text = json_file.read_text()
+    # Process all JSON and Markdown files — replace placeholders
+    for template_file in list(instance_dir.rglob('*.json')) + list(instance_dir.rglob('*.md')):
+        text = template_file.read_text()
         for placeholder, value in replacements.items():
             text = text.replace(placeholder, value)
-        json_file.write_text(text)
+        template_file.write_text(text)
 
     # Update instance.json with runtime-specific fields
     manifest_path = instance_dir / "instance.json"
@@ -126,6 +129,8 @@ def main():
     parser.add_argument('--device', default='cpu', help='Device hint (cpu, cuda, mps)')
     parser.add_argument('--backend', default='ollama', choices=['ollama', 'local'],
                         help='Model backend')
+    parser.add_argument('--operator-name', default='operator',
+                        help='Name for the operator relationship (default: operator)')
     parser.add_argument('--force', action='store_true', help='Overwrite existing instance')
     args = parser.parse_args()
 
@@ -136,6 +141,7 @@ def main():
             force=args.force,
             device_hint=args.device,
             backend=args.backend,
+            operator_name=args.operator_name,
         )
     except FileExistsError as e:
         print(f"Error: {e}", file=sys.stderr)

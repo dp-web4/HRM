@@ -15,7 +15,7 @@ HRM is:
 - **An adaptive computation model** that can halt when confident in its answer
 - **A compact model** with only 6.95M parameters
 
-**CRITICAL CONTEXT**: The model achieved 71% on ARC-AGI-1 augmented training set by outputting all zeros (the "Agent Zero" phenomenon). This high score came from exploiting the dataset's ~80% blank cells, not from actual reasoning. This discovery is fundamental to understanding both the model's behavior and the importance of verification.
+**CRITICAL CONTEXT**: The model outputs constant zeros regardless of input (the "Agent Zero" phenomenon). Internal evaluation scored this as high as 71% on ARC-AGI-1 augmented training and 18.7% on ARC-AGI-2, but these scores were artifacts of flawed evaluation that awarded partial credit for matching empty cells in sparse grids. The official ARC-AGI leaderboard scored Agent Zero at **0%**. This discovery is fundamental to understanding both the model's behavior and the importance of proper evaluation.
 
 The architecture includes **bidirectional H↔L communication**:
 ```python

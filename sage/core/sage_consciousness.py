@@ -34,6 +34,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
 import sys
+import hashlib
 import json
 import numpy as np
 
@@ -269,6 +270,20 @@ class SAGEConsciousness:
                 print("[Sensors] Real MultiSensorTrustSystem loaded")
             except ImportError as e:
                 print(f"[Sensors] Real trust system not available: {e}")
+
+        # MemoryHub — unified gathering for RLLF
+        self.memory_hub = None
+        try:
+            from sage.memory.hub import MemoryHub
+            from sage.memory.sqlite_backend import SQLiteBackend
+            self.memory_hub = MemoryHub()
+            instance_dir = Path(self.config.get('instance_dir', ''))
+            if instance_dir.name:
+                db_path = instance_dir / 'memory.db'
+                self.memory_hub.register(SQLiteBackend(db_path))
+                print(f"[MemoryHub] SQLite backend: {db_path}")
+        except Exception as e:
+            print(f"[MemoryHub] Init failed (non-fatal): {e}")
 
         # LLM response tracking (for easy access via facade)
         self.last_llm_responses = []
@@ -1085,6 +1100,39 @@ class SAGEConsciousness:
                 )
             except Exception as e:
                 print(f"[WARN] Experience recording failed: {e}")
+
+        # Store exchange in MemoryHub (alongside ExperienceCollector)
+        if (self.memory_hub and response_text
+                and not response_text.startswith('[')):
+            try:
+                from sage.memory.hub import MemoryEntry
+                identity = self.identity_state or {}
+                session_num = identity.get('identity', {}).get('session_count', 0)
+                entry = MemoryEntry(
+                    id=hashlib.sha256(
+                        f"{content}{response_text}".encode()).hexdigest()[:16],
+                    timestamp=time.time(),
+                    modality='message',
+                    content=json.dumps({
+                        'prompt': content,
+                        'response': response_text,
+                        'sender': sender,
+                    }),
+                    content_type='exchange',
+                    salience=snarc_real['total'] if snarc_real else 0.0,
+                    surprise=snarc_real.get('surprise', 0) if snarc_real else 0,
+                    novelty=snarc_real.get('novelty', 0) if snarc_real else 0,
+                    arousal=snarc_real.get('arousal', 0) if snarc_real else 0,
+                    reward=snarc_real.get('reward', 0) if snarc_real else 0,
+                    conflict=snarc_real.get('conflict', 0) if snarc_real else 0,
+                    model_name=self.llm_pool.active_name or '',
+                    session=session_num,
+                    cycle=self.cycle_count,
+                    metabolic_state=self.metabolic.current_state.value,
+                )
+                self.memory_hub.store(entry)
+            except Exception as e:
+                print(f"[MemoryHub] Store failed: {e}")
 
         # Resolve the message directly in the queue so the HTTP handler
         # gets its response immediately. The effect system may also resolve

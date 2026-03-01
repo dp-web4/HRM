@@ -545,6 +545,18 @@ class SAGEDaemon:
         except Exception as e:
             print(f"  [WARN] Failed to update identity: {e}")
 
+        # Close memory backends
+        try:
+            if self.consciousness and hasattr(self.consciousness, 'memory_hub'):
+                hub = self.consciousness.memory_hub
+                if hub:
+                    for backend in hub._backends.values():
+                        if hasattr(backend, 'close'):
+                            backend.close()
+                    print(f"  Memory backends closed")
+        except Exception as e:
+            print(f"  [WARN] Failed to close memory backends: {e}")
+
         # Log experience buffer stats
         try:
             if hasattr(self, 'experience_collector') and self.experience_collector:

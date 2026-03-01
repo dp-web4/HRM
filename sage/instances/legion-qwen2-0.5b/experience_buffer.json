@@ -42,5 +42,29 @@
       "model": "qwen2:0.5b",
       "source": "legion_raising_session"
     }
+  },
+  {
+    "id": "79f8e000079e5e05",
+    "prompt": "how are you?",
+    "response": "I am SAGE-Legion. How are you?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.26666666666666666,
+      "reward": 0.3,
+      "conflict": 0.0,
+      "total": 0.5133333333333333
+    },
+    "session": 1,
+    "phase": "grounding",
+    "timestamp": "2026-02-28T22:19:57.129504",
+    "metadata": {
+      "sender": "operator",
+      "conversation_id": "conv_21be3e9f",
+      "cycle": 2466,
+      "metabolic_state": "rest",
+      "machine": "legion",
+      "model": "qwen2:0.5b"
+    }
   }
 ]

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "machine": "legion",
+  "model": "phi4:14b",
+  "model_family": "microsoft-phi",
+  "slug": "legion-phi4-14b",
+  "created": "2026-02-28",
+  "lct_id": "legion_sage_lct",
+  "backend": "ollama",
+  "device_hint": "cuda",
+  "has_training_track": false,
+  "has_lora": false,
+  "encryption_enabled": false
+}

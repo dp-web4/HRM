@@ -398,6 +398,13 @@ class SAGEDaemon:
         # 2. Create consciousness loop
         self._create_consciousness()
 
+        # 2b. Restore LLM pool trust from previous session
+        if hasattr(self.consciousness, 'llm_pool'):
+            pool_state_path = Path(self.config.instance_dir) / 'llm_pool_state.json'
+            self.consciousness.llm_pool.load_state(pool_state_path)
+            if pool_state_path.exists():
+                print(f"  LLM pool trust restored from {pool_state_path.name}")
+
         # 3. Start HTTP gateway
         self._start_gateway()
 
@@ -504,6 +511,17 @@ class SAGEDaemon:
                 print(f"  State persisted to {stats_path}")
         except Exception as e:
             print(f"  [WARN] Failed to persist daemon state: {e}")
+
+        # Save LLM pool trust state for next session
+        try:
+            if self.consciousness and hasattr(self.consciousness, 'llm_pool'):
+                pool_state_path = Path(self.config.instance_dir) / 'llm_pool_state.json'
+                self.consciousness.llm_pool.save_state(pool_state_path)
+                pool = self.consciousness.llm_pool
+                print(f"  LLM pool saved: {len(pool)} models, "
+                      f"active={pool.active_name}")
+        except Exception as e:
+            print(f"  [WARN] Failed to save LLM pool state: {e}")
 
         # Update identity.json with session info
         try:

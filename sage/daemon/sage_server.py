@@ -13,6 +13,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 import sys
+import subprocess
 
 # Add paths
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -23,6 +24,27 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import uvicorn
+
+# Machine identification
+def get_machine_name():
+    """Get machine name from GPU or memory to avoid git conflicts"""
+    try:
+        gpu_info = subprocess.check_output(['nvidia-smi', '-L'], text=True)
+        if 'Thor' in gpu_info:
+            return 'thor'
+        elif 'Orin' in gpu_info:
+            # Check memory to distinguish Sprout (8GB) from McNugget (64GB+)
+            mem_info = subprocess.check_output(['free', '-g'], text=True)
+            mem_line = mem_info.split('\n')[1]
+            if '7' in mem_line.split()[1] or '8' in mem_line.split()[1]:
+                return 'sprout'
+            else:
+                return 'mcnugget'
+    except:
+        pass
+    return 'unknown'
+
+MACHINE_NAME = get_machine_name()
 
 # Configuration
 DEFAULT_MODEL = "/home/dp/ai-workspace/HRM/model-zoo/sage/qwen2.5-7b-instruct"
@@ -257,10 +279,11 @@ class SAGEServer:
 
     async def load_state(self):
         """Load persisted state from disk"""
-        state_file = STATE_DIR / "daemon_state.json"
+        # Machine-specific state file to avoid git conflicts across Thor/Sprout/McNugget
+        state_file = STATE_DIR / f"daemon_state_{MACHINE_NAME}.json"
 
         if state_file.exists():
-            print(f"\n[SAGEServer] Loading persisted state...")
+            print(f"\n[SAGEServer] Loading persisted state from {state_file.name}...")
             with open(state_file) as f:
                 state = json.load(f)
 
@@ -274,12 +297,14 @@ class SAGEServer:
     async def save_state(self):
         """Persist state to disk"""
         STATE_DIR.mkdir(parents=True, exist_ok=True)
-        state_file = STATE_DIR / "daemon_state.json"
+        # Machine-specific state file to avoid git conflicts across Thor/Sprout/McNugget
+        state_file = STATE_DIR / f"daemon_state_{MACHINE_NAME}.json"
 
         state = {
             'conversation_history': self.conversation_history,
             'memory_request': self.memory_request,
             'metadata': self.metadata,
+            'machine': MACHINE_NAME,
             'last_updated': datetime.now().isoformat()
         }
 

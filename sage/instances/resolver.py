@@ -13,8 +13,10 @@ Resolution order:
 
 import os
 import json
+import shutil
 from pathlib import Path
-from typing import Optional
+from datetime import datetime
+from typing import Optional, List
 
 
 # Instance root: sage/instances/
@@ -95,11 +97,76 @@ class InstancePaths:
     def exists(self) -> bool:
         return self.root.is_dir() and self.manifest.exists()
 
+    @property
+    def snapshots(self) -> Path:
+        return self.root / "snapshots"
+
     def ensure_dirs(self):
         """Create subdirectories if they don't exist."""
         self.sessions.mkdir(parents=True, exist_ok=True)
         self.training_sessions.mkdir(parents=True, exist_ok=True)
         self.backups.mkdir(parents=True, exist_ok=True)
+        self.snapshots.mkdir(parents=True, exist_ok=True)
+
+    def snapshot(self, max_snapshots: int = 10) -> Optional[Path]:
+        """Snapshot live state files to a git-tracked snapshots/ directory.
+
+        Copies identity.json, experience_buffer.json, peer_trust.json, and
+        daemon_state.json into snapshots/ with a timestamp prefix. Old snapshots
+        beyond max_snapshots are pruned.
+
+        Returns the snapshot directory, or None if no state files exist.
+        """
+        state_files = [
+            ("identity", self.identity),
+            ("experience_buffer", self.experience_buffer),
+            ("peer_trust", self.peer_trust),
+            ("daemon_state", self.daemon_state),
+        ]
+
+        # Check if any state files exist
+        existing = [(name, path) for name, path in state_files if path.exists()]
+        if not existing:
+            return None
+
+        self.snapshots.mkdir(parents=True, exist_ok=True)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+        for name, path in existing:
+            # Validate JSON before snapshotting
+            try:
+                with open(path) as f:
+                    data = json.load(f)
+                dest = self.snapshots / f"{name}.json"
+                with open(dest, 'w') as f:
+                    json.dump(data, f, indent=2)
+            except (json.JSONDecodeError, IOError) as e:
+                print(f"  WARN: Could not snapshot {path.name}: {e}")
+
+        # Write snapshot metadata
+        meta = {
+            "timestamp": timestamp,
+            "slug": self.slug,
+            "files": [name for name, path in existing],
+        }
+        meta_path = self.snapshots / "latest.json"
+        with open(meta_path, 'w') as f:
+            json.dump(meta, f, indent=2)
+
+        # Archive: keep timestamped copies for history (pruned to max_snapshots)
+        archive_dir = self.snapshots / "archive"
+        archive_dir.mkdir(exist_ok=True)
+        for name, path in existing:
+            if name == "identity":  # Only archive identity (others are too large)
+                dest = archive_dir / f"{name}_{timestamp}.json"
+                shutil.copy2(self.snapshots / f"{name}.json", dest)
+
+        # Prune old archives
+        archives = sorted(archive_dir.glob("identity_*.json"), reverse=True)
+        for old in archives[max_snapshots:]:
+            old.unlink()
+
+        return self.snapshots
 
     @classmethod
     def resolve(cls, machine: Optional[str] = None, model: Optional[str] = None) -> 'InstancePaths':

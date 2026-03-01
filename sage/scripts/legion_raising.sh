@@ -52,6 +52,10 @@ if [ -d "$INSTANCE_DIR" ]; then
     echo "[Legion-Raising] State snapshot saved to $SNAPSHOT_DIR/"
 fi
 
+# Snapshot live state files into git-tracked snapshots/ directory
+echo "[Legion-Raising] Snapshotting state..."
+$PYTHON -m sage.scripts.snapshot_state --machine legion
+
 # Check if there are new results to commit
 CHANGED=0
 

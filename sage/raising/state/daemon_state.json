@@ -1,21 +1,6 @@
 {
-  "last_shutdown": 1772336457.311324,
-  "machine": "mcnugget",
-  "uptime_seconds": 3008.5811898708344,
-  "cycles_completed": 29493,
-  "metabolic_state": "rest",
-  "atp_level": 35.591136597912666,
-  "message_stats": {
-    "messages_submitted": 0,
-    "messages_resolved": 0,
-    "messages_timed_out": 0,
-    "pending": 0,
-    "waiting": 0
-  },
-  "trust_weights": {
-    "vision": 0.8500000000000014,
-    "language": 0.8500000000000014,
-    "control": 1.0,
-    "memory": 1.0
-  }
+  "conversation_history": [],
+  "memory_request": "",
+  "metadata": {},
+  "last_updated": "2026-02-28T19:50:33.945948"
 }

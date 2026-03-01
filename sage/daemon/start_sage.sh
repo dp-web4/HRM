@@ -24,14 +24,14 @@ echo "==================================="
 echo "Starting SAGE Resident Daemon"
 echo "==================================="
 echo ""
-echo "Model: Phi-4-mini-instruct (7B)"
+echo "Model: Qwen2.5-7B-Instruct"
 echo "Port: 8765"
 echo "Logs: $LOG_DIR"
 echo ""
 
 # Start daemon in background
 nohup python3 "$SCRIPT_DIR/sage_server.py" \
-    --model /home/dp/ai-workspace/HRM/model-zoo/phi-4-mini \
+    --model /home/dp/ai-workspace/HRM/model-zoo/sage/qwen2.5-7b-instruct \
     --port 8765 \
     > "$LOG_DIR/sage-daemon.log" 2>&1 &
 

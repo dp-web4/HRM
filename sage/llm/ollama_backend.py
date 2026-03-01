@@ -185,6 +185,67 @@ class OllamaBackend(LLMBackend):
                 metadata={'error': str(e)}
             )
 
+    async def chat(
+        self,
+        messages: list,
+        tools: list = None,
+        **kwargs,
+    ) -> Dict[str, Any]:
+        """
+        Generate response using Ollama /api/chat endpoint.
+
+        Supports structured messages and native tool calling (T1).
+
+        Args:
+            messages: List of {"role": "...", "content": "..."}
+            tools: Optional list of Ollama tool definitions
+            **kwargs: Additional options (temperature, max_tokens, etc.)
+
+        Returns:
+            Dict with 'content', 'tool_calls', 'role', 'raw'
+        """
+        if self.state != BackendState.HOT:
+            raise RuntimeError(f"Backend not ready (state={self.state.value})")
+
+        payload: Dict[str, Any] = {
+            'model': self.model_name,
+            'messages': messages,
+            'stream': False,
+            'options': {
+                'num_predict': kwargs.get('max_tokens', 512),
+                'temperature': kwargs.get('temperature', 0.7),
+                'top_p': kwargs.get('top_p', 0.9),
+            },
+        }
+
+        if tools:
+            payload['tools'] = tools
+
+        try:
+            response = await self.client.post(
+                f"{self.base_url}/api/chat",
+                json=payload,
+            )
+            response.raise_for_status()
+            result = response.json()
+
+            message = result.get('message', {})
+            return {
+                'content': message.get('content', ''),
+                'tool_calls': message.get('tool_calls', []),
+                'role': message.get('role', 'assistant'),
+                'raw': result,
+            }
+
+        except Exception as e:
+            self.error_message = str(e)
+            return {
+                'content': '',
+                'tool_calls': [],
+                'role': 'assistant',
+                'raw': {'error': str(e)},
+            }
+
     def health_check(self) -> Dict[str, Any]:
         """Check Ollama backend health"""
         return {

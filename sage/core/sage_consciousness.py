@@ -250,6 +250,12 @@ class SAGEConsciousness:
         # LLM response tracking (for easy access via facade)
         self.last_llm_responses = []
 
+        # Tool use system — detect capabilities, load grammar, register tools
+        self.tool_registry = None
+        self.tool_grammar = None
+        self.tool_capability = None
+        self._init_tool_system()
+
         # Statistics
         self.stats = {
             'total_cycles': 0,
@@ -265,6 +271,9 @@ class SAGEConsciousness:
             'messages_responded': 0,
             'llm_tokens_total': 0,
             'llm_atp_cost_total': 0.0,
+            'tool_calls_total': 0,
+            'tool_calls_success': 0,
+            'tool_calls_denied': 0,
         }
 
     def _default_config(self) -> Dict[str, Any]:
@@ -415,6 +424,125 @@ class SAGEConsciousness:
             self.policy_gate_enabled = False
             self.policy_gate = None
             self._effect_system_available = False
+
+    def _init_tool_system(self):
+        """Initialize tool use system — detect capabilities, load grammar, register tools."""
+        try:
+            from sage.tools.builtin import create_default_registry
+            from sage.tools.tool_capability import ToolCapability
+            from sage.tools.grammars import get_grammar
+
+            instance_dir = Path(self.config.get('instance_dir', ''))
+            instance_path = instance_dir if instance_dir.name else None
+
+            # Create tool registry with built-in tools
+            self.tool_registry = create_default_registry(instance_path)
+            print(f"[Tools] Registry: {len(self.tool_registry)} tools registered")
+
+            # Detect model tool capability
+            model_name = ''
+            if self.llm_plugin:
+                model_name = getattr(self.llm_plugin, 'model_name', '')
+            if not model_name:
+                model_name = self.config.get('model_name', '')
+
+            ollama_host = self.config.get('ollama_host', 'http://localhost:11434')
+            if self.llm_plugin:
+                ollama_host = getattr(self.llm_plugin, 'ollama_host', ollama_host)
+
+            if model_name:
+                self.tool_capability = ToolCapability.detect(
+                    model_name, ollama_host, instance_path)
+                print(f"[Tools] Capability: {self.tool_capability}")
+            else:
+                self.tool_capability = ToolCapability()
+                print("[Tools] No model name — defaulting to T3 heuristic")
+
+            # Load grammar adapter
+            grammar_id = self.tool_capability.grammar_id if self.tool_capability else 'intent_heuristic'
+            self.tool_grammar = get_grammar(grammar_id)
+            print(f"[Tools] Grammar: {grammar_id}")
+
+        except Exception as e:
+            print(f"[Tools] Tool system init failed (non-fatal): {e}")
+            self.tool_registry = None
+            self.tool_grammar = None
+            self.tool_capability = None
+
+    def _execute_tool_calls(self, tool_calls):
+        """
+        Execute parsed tool calls through the registry.
+
+        Applies policy checks based on metabolic state and tool policy level.
+        Returns list of (ToolCall, ToolResult) tuples.
+        """
+        if not self.tool_registry:
+            return []
+
+        from sage.tools.registry import ToolResult
+
+        results = []
+        metabolic_state = self.metabolic.current_state.value
+
+        for call in tool_calls:
+            tool_def = self.tool_registry.get(call.name)
+            if not tool_def:
+                results.append((call, ToolResult(
+                    tool_name=call.name, success=False,
+                    error=f"Unknown tool: {call.name}")))
+                continue
+
+            # Policy check based on metabolic state and tool level
+            denied, reason = self._check_tool_policy(tool_def, metabolic_state)
+            if denied:
+                self.stats['tool_calls_denied'] += 1
+                results.append((call, ToolResult(
+                    tool_name=call.name, success=False,
+                    error=f"Policy denied: {reason}")))
+                continue
+
+            # ATP check
+            if self.metabolic.atp_current < 5.0:
+                self.stats['tool_calls_denied'] += 1
+                results.append((call, ToolResult(
+                    tool_name=call.name, success=False,
+                    error="Insufficient ATP (< 5.0)")))
+                continue
+
+            # Execute
+            result = self.tool_registry.execute(call)
+            self.stats['tool_calls_total'] += 1
+            if result.success:
+                self.stats['tool_calls_success'] += 1
+                # Deduct ATP
+                self.metabolic.atp_current = max(
+                    0.0, self.metabolic.atp_current - tool_def.atp_cost)
+            results.append((call, result))
+
+        return results
+
+    def _check_tool_policy(self, tool_def, metabolic_state: str):
+        """
+        Check if a tool call is allowed under current metabolic state.
+
+        Returns (denied: bool, reason: str).
+        """
+        level = tool_def.policy_level
+
+        if level == 'standard':
+            # ALLOW in wake/focus, WARN in rest, DENY in dream/crisis
+            if metabolic_state in ('dream',):
+                return True, f"Standard tools denied in {metabolic_state}"
+        elif level == 'elevated':
+            # ALLOW in focus, WARN in wake, DENY in rest/dream/crisis
+            if metabolic_state in ('rest', 'dream', 'crisis'):
+                return True, f"Elevated tools denied in {metabolic_state}"
+        elif level == 'dangerous':
+            # ALLOW in focus only
+            if metabolic_state != 'focus':
+                return True, f"Dangerous tools only allowed in focus"
+
+        return False, ''
 
     async def run(self, max_cycles: Optional[int] = None):
         """
@@ -1004,10 +1132,85 @@ class SAGEConsciousness:
         Supports two LLM plugin interfaces:
         1. IntrospectiveQwenIRP — has get_response() or init_state/step
         2. MultiModelLoader — has generate() method
+
+        Tool use loop (v0.4):
+        If tool system is active, injects tool context into prompt,
+        detects tool calls in response, executes them, re-injects
+        results, and generates a final response. Max 3 tool rounds.
         """
         # Build conversation prompt
         prompt = self._build_conversation_prompt(content, history, sender)
 
+        # Inject tool context if tool system is active
+        tools_active = (
+            self.tool_registry is not None
+            and self.tool_grammar is not None
+            and self.tool_capability is not None
+        )
+        if tools_active:
+            tools = self.tool_registry.list_tools()
+            prompt = self.tool_grammar.inject_tools(prompt, tools)
+
+        # Generate initial response
+        response_text = self._call_llm(prompt)
+
+        # Tool use loop: detect calls, execute, re-inject, repeat
+        if tools_active and response_text and not response_text.startswith('['):
+            max_tool_rounds = self.config.get('max_tool_rounds', 3)
+
+            for round_num in range(max_tool_rounds):
+                # Check for native tool calls (T1 via /api/chat)
+                tool_calls = []
+
+                if (self.tool_capability.tier == 'T1'
+                        and hasattr(self.llm_plugin, 'get_chat_response')):
+                    # For T1, we should have used /api/chat; parse from grammar
+                    _, tool_calls = self.tool_grammar.parse_response(response_text)
+                else:
+                    # T2/T3: parse from text response
+                    clean_text, tool_calls = self.tool_grammar.parse_response(response_text)
+                    if tool_calls:
+                        response_text = clean_text
+
+                if not tool_calls:
+                    break  # No tool calls detected, done
+
+                # Execute tool calls
+                call_results = self._execute_tool_calls(tool_calls)
+                if not call_results:
+                    break
+
+                # Re-inject results and generate follow-up
+                result_context = []
+                for call, result in call_results:
+                    result_text = self.tool_grammar.format_result(call.name, result)
+                    result_context.append(result_text)
+
+                # Build augmented prompt with tool results
+                tool_results_block = '\n'.join(result_context)
+                augmented_prompt = (
+                    f"{prompt}\n\n"
+                    f"SAGE: {response_text}\n\n"
+                    f"{tool_results_block}\n\n"
+                    f"SAGE:"
+                )
+
+                # Generate follow-up response incorporating tool results
+                response_text = self._call_llm(augmented_prompt)
+
+                if not response_text or response_text.startswith('['):
+                    break  # Error in follow-up, stop
+
+        return response_text
+
+    def _call_llm(self, prompt: str) -> str:
+        """
+        Call the LLM plugin with a prompt and return the response text.
+
+        Handles multiple LLM interfaces:
+        1. init_state/step (IRP plugins)
+        2. generate() (MultiModelLoader)
+        """
         # Try different LLM interfaces.
         # Order matters: init_state/step is preferred for IRP plugins like
         # IntrospectiveQwenIRP (whose get_response expects a state dict, not

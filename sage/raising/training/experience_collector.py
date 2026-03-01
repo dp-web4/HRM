@@ -315,7 +315,8 @@ class ExperienceCollector:
         response: str,
         session_number: Optional[int] = None,
         phase: Optional[str] = None,
-        metadata: Optional[Dict] = None
+        metadata: Optional[Dict] = None,
+        tool_calls: Optional[List[Dict]] = None,
     ) -> Dict[str, Any]:
         """
         Score and potentially store a conversation exchange.
@@ -329,6 +330,8 @@ class ExperienceCollector:
             session_number: Session number (if applicable)
             phase: Curriculum phase (if applicable)
             metadata: Additional context
+            tool_calls: Optional list of tool call records from this exchange.
+                Each dict has: name, arguments, success, result/error.
 
         Returns:
             Dict with salience scores and whether it was stored
@@ -350,6 +353,10 @@ class ExperienceCollector:
 
         # Score the exchange
         scores = self.scorer.score_exchange(prompt, response, metadata)
+
+        # Boost salience for tool use exchanges
+        if tool_calls:
+            scores = self._apply_tool_salience(scores, tool_calls)
 
         # Decide if worth storing
         is_salient = scores['total'] >= self.salience_threshold
@@ -378,8 +385,11 @@ class ExperienceCollector:
                 'session': session_number,
                 'phase': phase,
                 'timestamp': datetime.now().isoformat(),
-                'metadata': exp_metadata
+                'metadata': exp_metadata,
             }
+            # Include tool calls if present
+            if tool_calls:
+                experience['tool_calls'] = tool_calls
 
             # Add to buffer (avoiding duplicates)
             if not any(exp['id'] == experience['id'] for exp in self.experiences):
@@ -388,6 +398,46 @@ class ExperienceCollector:
                 result['experience_id'] = experience['id']
 
         return result
+
+    def _apply_tool_salience(self, scores: Dict[str, float], tool_calls: List[Dict]) -> Dict[str, float]:
+        """
+        Adjust SNARC scores for exchanges that include tool use.
+
+        Tool use is naturally high-salience:
+        - Surprise: tool invocation is notable (model reached for external resource)
+        - Novelty: new tool/argument combinations
+        - Arousal: high — indicates complex problem requiring external data
+        - Reward: binary — did the tool succeed and improve the response?
+        - Conflict: were there multiple candidate tools? any failures?
+        """
+        scores = dict(scores)  # Copy
+
+        n_calls = len(tool_calls)
+        n_success = sum(1 for tc in tool_calls if tc.get('success', False))
+        n_failed = n_calls - n_success
+
+        # Surprise boost: tool use itself is surprising
+        scores['surprise'] = min(scores['surprise'] + 0.2, 1.0)
+
+        # Novelty: different tools used
+        tool_names = set(tc.get('name', '') for tc in tool_calls)
+        scores['novelty'] = min(scores['novelty'] + len(tool_names) * 0.1, 1.0)
+
+        # Arousal boost: tool use indicates complexity
+        scores['arousal'] = min(scores['arousal'] + 0.15 * n_calls, 1.0)
+
+        # Reward: success is strong positive signal
+        if n_success > 0:
+            scores['reward'] = min(scores['reward'] + 0.3, 1.0)
+
+        # Conflict: failures indicate conflict/uncertainty
+        if n_failed > 0:
+            scores['conflict'] = min(scores['conflict'] + 0.2 * n_failed, 1.0)
+
+        # Recompute total
+        scores['total'] = sum(scores[d] for d in ['surprise', 'novelty', 'arousal', 'reward', 'conflict']) / 5.0
+
+        return scores
 
     def _generate_id(self, prompt: str, response: str) -> str:
         """Generate unique ID for an exchange."""

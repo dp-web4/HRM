@@ -61,6 +61,7 @@ class EffectExtractor:
         self._extractors['control'] = _extract_control
         self._extractors['memory'] = _extract_memory
         self._extractors['tts'] = _extract_tts
+        self._extractors['tool_use'] = _extract_tool_use
 
 
 # ============================================================================
@@ -228,4 +229,53 @@ def _extract_tts(result, ctx: dict) -> List[Effect]:
                 atp_cost=0.5,
                 priority=5,
             ))
+    return effects
+
+
+def _extract_tool_use(result, ctx: dict) -> List[Effect]:
+    """
+    Extract TOOL_USE effects from tool call results.
+
+    The result is expected to contain tool_calls — a list of dicts with:
+        - name: tool name
+        - arguments: dict of arguments
+        - policy_level: 'standard' | 'elevated' | 'dangerous'
+        - atp_cost: float
+    """
+    data = _get_state_data(result)
+    if not isinstance(data, dict):
+        return []
+
+    tool_calls = data.get('tool_calls', [])
+    if not tool_calls:
+        return []
+
+    effects = []
+    for tc in tool_calls:
+        tool_name = tc.get('name', '')
+        if not tool_name:
+            continue
+
+        policy_level = tc.get('policy_level', 'standard')
+        atp_cost = tc.get('atp_cost', 1.0)
+
+        # Map policy level to priority
+        priority_map = {'standard': 5, 'elevated': 3, 'dangerous': 1}
+        priority = priority_map.get(policy_level, 5)
+
+        effects.append(Effect(
+            effect_type=EffectType.TOOL_USE,
+            action='invoke',
+            target=tool_name,
+            parameters=tc.get('arguments', {}),
+            source_plugin='tool_use',
+            trust_score=_get_trust(ctx, 'tool_use'),
+            atp_cost=atp_cost,
+            priority=priority,
+            reversible=True,
+            metadata={
+                'policy_level': policy_level,
+            },
+        ))
+
     return effects

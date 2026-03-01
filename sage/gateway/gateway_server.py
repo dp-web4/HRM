@@ -36,7 +36,7 @@ import concurrent.futures
 # ---------------------------------------------------------------------------
 # Chat history buffer — JSONL file local to the instance directory
 # ---------------------------------------------------------------------------
-MAX_CHAT_HISTORY_BYTES = 250_000  # ~250KB most-recent window
+MAX_CHAT_HISTORY_BYTES = 1_000_000  # ~1MB most-recent window
 
 _chat_history_lock = Lock()
 
@@ -417,6 +417,12 @@ class GatewayHandler(BaseHTTPRequestHandler):
             'network_open': GatewayHandler.network_open,
         }
 
+        # Version info
+        if self.daemon and hasattr(self.daemon, 'code_version'):
+            stats['code_version'] = self.daemon.code_version
+        if self.daemon and hasattr(self.daemon, 'daemon_version'):
+            stats['daemon_version'] = self.daemon.daemon_version
+
         # Metabolic state + ATP
         if self.consciousness and hasattr(self.consciousness, 'metabolic'):
             stats['metabolic_state'] = self.consciousness.metabolic.current_state.value
@@ -502,6 +508,21 @@ class GatewayHandler(BaseHTTPRequestHandler):
         # Message queue stats
         if self.message_queue and hasattr(self.message_queue, 'stats'):
             stats['message_stats'] = self.message_queue.stats
+
+        # Tool use stats
+        if self.consciousness:
+            cs = self.consciousness
+            tool_stats = {
+                'total': cs.stats.get('tool_calls_total', 0),
+                'success': cs.stats.get('tool_calls_success', 0),
+                'denied': cs.stats.get('tool_calls_denied', 0),
+            }
+            if hasattr(cs, 'tool_capability') and cs.tool_capability:
+                tool_stats['tier'] = cs.tool_capability.tier
+                tool_stats['grammar'] = cs.tool_capability.grammar_id
+            if hasattr(cs, 'tool_registry') and cs.tool_registry:
+                tool_stats['registered'] = len(cs.tool_registry)
+            stats['tool_stats'] = tool_stats
 
         # Uptime
         if self.daemon and hasattr(self.daemon, 'started_at') and self.daemon.started_at:

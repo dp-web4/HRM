@@ -167,14 +167,15 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     font-family: inherit;
   }
 
-  .network-toggle:hover { border-color: var(--text-dim); }
+  .network-toggle { border-color: #aa3333; color: #aa3333; }
+  .network-toggle:hover { border-color: #ff4444; color: #ff4444; }
   .network-toggle.open { border-color: var(--accent); color: var(--accent); }
 
   .network-toggle .indicator {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--text-dim);
+    background: #aa3333;
     transition: background 0.3s;
   }
   .network-toggle.open .indicator {
@@ -371,6 +372,34 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     margin-left: 8px;
   }
 
+  .tool-calls {
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--text-dim);
+    border-top: 1px dashed var(--border);
+    padding-top: 4px;
+  }
+  .tool-calls summary {
+    cursor: pointer;
+    color: var(--accent);
+    font-size: 10px;
+  }
+  .tool-calls ul {
+    margin: 4px 0 0 12px;
+    padding: 0;
+    list-style: none;
+  }
+  .tool-calls li {
+    margin-bottom: 4px;
+    padding: 3px 6px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 3px;
+  }
+  .tool-calls code {
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
   .chat-form {
     display: flex;
     gap: 8px;
@@ -443,6 +472,7 @@ DASHBOARD_HTML = """<!DOCTYPE html>
   <header>
     <h1>SAGE</h1>
     <div class="meta">
+      <span id="version-display">v--</span>
       <span id="cycle-display">Cycle: --</span>
       <span id="uptime-display">Up: --</span>
       <span><span class="connection-dot" id="conn-dot"></span> <span id="conn-label">connecting</span></span>
@@ -495,6 +525,13 @@ DASHBOARD_HTML = """<!DOCTYPE html>
           <label>SNARC</label>
           <div class="value" id="salience-value">0.000</div>
           <div class="sub" id="messages-sub">messages: --</div>
+        </div>
+
+        <div class="stat-compact">
+          <label>Tools</label>
+          <div class="value" id="tool-count">0</div>
+          <div class="sub" id="tool-tier">tier: --</div>
+          <div class="sub" id="tool-detail">ok: 0  denied: 0</div>
         </div>
 
         <div class="stat-compact">
@@ -558,6 +595,7 @@ function connectSSE() {
 function updateDashboard(d) {
   if (d.machine) document.getElementById('machine-name').textContent = d.machine;
   if (d.lct_id) document.getElementById('lct-id').textContent = d.lct_id;
+  if (d.code_version) document.getElementById('version-display').textContent = 'v' + d.code_version;
 
   const state = (d.metabolic_state || 'unknown').toLowerCase();
   document.getElementById('metabolic-badge').textContent = state.toUpperCase();
@@ -640,6 +678,15 @@ function updateDashboard(d) {
     document.getElementById('messages-sub').textContent = 'chats: ' + d.chat_count;
   }
 
+  if (d.tool_stats) {
+    const ts = d.tool_stats;
+    document.getElementById('tool-count').textContent = ts.total || 0;
+    document.getElementById('tool-tier').textContent =
+      'tier: ' + (ts.tier || '--') + ' (' + (ts.registered || 0) + ' tools)';
+    document.getElementById('tool-detail').textContent =
+      'ok: ' + (ts.success || 0) + '  denied: ' + (ts.denied || 0);
+  }
+
   if (d.network_open !== undefined) {
     networkOpen = d.network_open;
     updateNetworkToggle();
@@ -664,12 +711,25 @@ function formatTime(ts) {
   return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
-function appendChat(sender, text, cssClass, timestamp) {
+function appendChat(sender, text, cssClass, timestamp, toolCalls) {
   const div = document.createElement('div');
   div.className = 'chat-msg ' + (cssClass || 'sage');
   const timeStr = timestamp ? '<span class="time">' + formatTime(timestamp) + '</span>' : '';
-  div.innerHTML = '<div class="sender">' + timeStr + escapeHtml(sender) + '</div>' +
-                  '<div>' + escapeHtml(text) + '</div>';
+  let html = '<div class="sender">' + timeStr + escapeHtml(sender) + '</div>' +
+             '<div>' + escapeHtml(text) + '</div>';
+  // Tool call details (collapsible)
+  if (toolCalls && toolCalls.length > 0) {
+    html += '<details class="tool-calls"><summary>Tools used (' + toolCalls.length + ')</summary><ul>';
+    for (const tc of toolCalls) {
+      const status = tc.success ? '&check;' : '&cross;';
+      const result = tc.success ? (tc.result || '').substring(0, 200) : (tc.error || 'failed');
+      html += '<li><b>' + status + ' ' + escapeHtml(tc.name || '') + '</b>';
+      if (tc.arguments) html += ' <code>' + escapeHtml(JSON.stringify(tc.arguments)) + '</code>';
+      html += '<br><small>' + escapeHtml(result) + '</small></li>';
+    }
+    html += '</ul></details>';
+  }
+  div.innerHTML = html;
   chatLog.appendChild(div);
   chatLog.scrollTop = chatLog.scrollHeight;
 }

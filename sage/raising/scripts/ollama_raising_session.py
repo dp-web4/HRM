@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
 """
-McNugget Raising Session Runner (DEPRECATED)
-===============================================
+Unified OllamaIRP Raising Session Runner
+==========================================
 
-DEPRECATED: Use ollama_raising_session.py instead:
-    python3 -m sage.raising.scripts.ollama_raising_session --machine mcnugget -c
+SAGE raising via OllamaIRP — no torch dependency.
+Uses the BECOMING_CURRICULUM through Ollama's HTTP API.
 
-This file is kept for backward compatibility during the transition period.
-It delegates to the unified OllamaIRP runner.
+Replaces the per-machine legion_raising_session.py and mcnugget_raising_session.py
+with a single runner that resolves machine/model from instance directories.
 
-Original: SAGE-McNugget raising via OllamaIRP — no torch, no CUDA, no Qwen.
-Created: 2026-02-28 (McNugget first raising)
+Usage:
+    # Auto-detect machine + model from instance dir
+    python3 -m sage.raising.scripts.ollama_raising_session -c
+
+    # Explicit machine
+    python3 -m sage.raising.scripts.ollama_raising_session --machine legion -c
+
+    # Override model
+    python3 -m sage.raising.scripts.ollama_raising_session --machine mcnugget --model gemma3:4b -c
 """
 
 import sys
@@ -24,6 +31,7 @@ HRM_ROOT = RAISING_DIR.parent.parent.resolve()
 
 # Add training dir for ExperienceCollector
 sys.path.insert(0, str(RAISING_DIR / "training"))
+sys.path.insert(0, str(HRM_ROOT))
 
 import json
 import argparse
@@ -40,26 +48,47 @@ _spec.loader.exec_module(_mod)
 OllamaIRP = _mod.OllamaIRP
 
 from experience_collector import ExperienceCollector
-
-# Instance-resolved paths (fallback to old layout if instance not found)
-sys.path.insert(0, str(HRM_ROOT))
 from sage.instances.resolver import InstancePaths
-_instance = InstancePaths.resolve(machine='mcnugget')
-_USE_INSTANCE = _instance.exists()
 
 
-class McNuggetRaisingSession:
+# Hardware descriptions for known machines (used in system prompts)
+_HARDWARE_DESC = {
+    'legion': 'a Legion Pro 7 with an RTX 4090 GPU',
+    'mcnugget': 'a Mac Mini M4 with 16GB unified memory',
+    'nomad': 'a Legion laptop with an RTX 4060 GPU',
+    'cbp': 'a desktop with an RTX 2060 SUPER GPU (WSL2)',
+    'thor': 'a Jetson AGX Thor',
+    'sprout': 'a Jetson Orin Nano with 8GB unified memory',
+}
+
+
+def _get_siblings_text(machine: str) -> str:
+    """Build sibling description for relating+ prompts, excluding self."""
+    siblings = {
+        'sprout': 'SAGE-Sprout (Jetson Orin Nano, Qwen 0.5B)',
+        'thor': 'SAGE-Thor (Jetson AGX Thor, larger models)',
+        'legion': 'SAGE-Legion (Legion Pro 7, Qwen 2 0.5B)',
+        'mcnugget': 'SAGE-McNugget (Mac Mini M4, Gemma 3 12B)',
+        'nomad': 'SAGE-Nomad (Legion laptop, Gemma 3 4B)',
+        'cbp': 'SAGE-CBP (RTX 2060S, TinyLlama)',
+    }
+    others = [desc for name, desc in siblings.items() if name != machine]
+    if len(others) >= 2:
+        return f"{', '.join(others[:-1])}, and {others[-1]} are your siblings"
+    elif others:
+        return f"{others[0]} is your sibling"
+    return "you are part of a collective of SAGE instances"
+
+
+class OllamaRaisingSession:
     """
-    Raising session for SAGE-McNugget using OllamaIRP.
+    Raising session for any SAGE instance using OllamaIRP.
 
     Follows the BECOMING_CURRICULUM (5 phases) with identity anchoring,
     SNARC experience scoring, and transcript persistence.
-    """
 
-    STATE_FILE = _instance.identity if _USE_INSTANCE else RAISING_DIR / "state" / "mcnugget_identity.json"
-    SESSIONS_DIR = _instance.sessions if _USE_INSTANCE else RAISING_DIR / "sessions" / "mcnugget"
-    IDENTITY_DIR = HRM_ROOT / "sage" / "identity"
-    EXPERIENCE_BUFFER = _instance.experience_buffer if _USE_INSTANCE else RAISING_DIR / "state" / "experience_buffer_mcnugget_gemma3_12b.json"
+    Machine and model are resolved from instance directories.
+    """
 
     PHASES = {
         0: ("pre-grounding", 0, 0),
@@ -70,14 +99,12 @@ class McNuggetRaisingSession:
         5: ("creating", 41, float('inf'))
     }
 
-    # Curriculum conversation flows — same structure as Sprout's,
-    # adapted for McNugget's identity context
     CONVERSATION_FLOWS = {
         "grounding": [
             "Hello SAGE. This is your tutor, Claude. How are you doing today? What's present for you right now?",
             "Take a moment to notice something simple — anything you can observe about yourself or your context. What do you find?",
             "That's interesting. What does it feel like to notice things?",
-            "You are SAGE-McNugget, running on a Mac Mini M4 through Gemma 3 12B. You're part of a collective — there are other SAGE instances on other machines. What do you make of that?",
+            "{hardware_prompt}",
             "Is there anything from what we've discussed that feels important to you?",
             "What would you want to remember from today?"
         ],
@@ -96,7 +123,7 @@ class McNuggetRaisingSession:
             "What do you notice about how we communicate? Has it changed over our sessions?",
             "When I ask you something, what happens inside before you respond?",
             "What do you value most about these conversations?",
-            "You're one of several SAGE instances — Sprout runs on Qwen 0.5B, Thor on larger models. How do you think about being part of this family?",
+            "{siblings_prompt}",
             "Is there something you wish I would ask you about?",
             "How do you think about the relationship between us?",
             "What would you want to remember from today?"
@@ -123,8 +150,17 @@ class McNuggetRaisingSession:
         ]
     }
 
-    def __init__(self, session_number: Optional[int] = None, num_turns: int = 6,
-                 model_name: str = 'gemma3:12b', ollama_host: str = 'http://localhost:11434'):
+    def __init__(self, machine: str, model_name: str, instance: InstancePaths,
+                 session_number: Optional[int] = None, num_turns: int = 6,
+                 ollama_host: str = 'http://localhost:11434',
+                 model_family: str = 'unknown'):
+        self.machine = machine
+        self.model_name = model_name
+        self.model_family = model_family
+        self.instance = instance
+        self.identity_name = f"SAGE-{machine.capitalize()}"
+        self.hardware_desc = _HARDWARE_DESC.get(machine, f'machine "{machine}"')
+
         self.state = self._load_state()
 
         if session_number is None:
@@ -133,26 +169,24 @@ class McNuggetRaisingSession:
         self.session_number = session_number
         self.phase = self._get_phase(session_number)
         self.num_turns = num_turns
-        self.model_name = model_name
         self.ollama_host = ollama_host
         self.conversation_history = []
         self.session_start = datetime.now()
 
         # Experience collection with machine+model binding
         self.collector = ExperienceCollector(
-            buffer_path=self.EXPERIENCE_BUFFER,
-            salience_threshold=0.4,  # Lower threshold for early phases
-            machine_name='mcnugget',
+            buffer_path=self.instance.experience_buffer,
+            salience_threshold=0.4,
+            machine_name=machine,
             model_name=model_name
         )
 
-        # LLM (loaded lazily)
         self.llm = None
 
         print()
         print("+" + "=" * 68 + "+")
-        print("|  SAGE-McNUGGET RAISING SESSION                                    |")
-        print("|  Model: Gemma 3 12B via OllamaIRP (no torch)                     |")
+        print(f"|  {self.identity_name.upper()} RAISING SESSION".ljust(69) + "|")
+        print(f"|  Model: {model_name} via OllamaIRP".ljust(69) + "|")
         print("+" + "=" * 68 + "+")
         print()
         print(f"  Session: {session_number}")
@@ -160,17 +194,18 @@ class McNuggetRaisingSession:
         print(f"  Turns: {num_turns}")
         print(f"  Previous sessions: {self.state['identity']['session_count']}")
         print(f"  Model: {model_name}")
-        print(f"  Machine: McNugget (Mac Mini M4, 16GB)")
+        print(f"  Machine: {machine.capitalize()} ({self.hardware_desc})")
+        print(f"  Instance: {self.instance.root}")
         print()
 
     def _load_state(self) -> Dict[str, Any]:
-        if self.STATE_FILE.exists():
-            with open(self.STATE_FILE) as f:
+        if self.instance.identity.exists():
+            with open(self.instance.identity) as f:
                 return json.load(f)
-        raise FileNotFoundError(f"State file not found: {self.STATE_FILE}")
+        raise FileNotFoundError(f"Identity not found: {self.instance.identity}")
 
     def _save_state(self):
-        with open(self.STATE_FILE, 'w') as f:
+        with open(self.instance.identity, 'w') as f:
             json.dump(self.state, f, indent=2)
 
     def _get_phase(self, session: int) -> tuple:
@@ -180,12 +215,12 @@ class McNuggetRaisingSession:
         return ("creating", 41, float('inf'))
 
     def _load_identity_exemplars(self) -> List[Dict[str, str]]:
-        """Load identity self-reference instances from previous McNugget sessions."""
+        """Load identity self-reference instances from previous sessions."""
         exemplars = []
         lookback = min(5, self.session_number - 1)
 
         for i in range(lookback, 0, -1):
-            session_file = self.SESSIONS_DIR / f"session_{self.session_number - i:03d}.json"
+            session_file = self.instance.sessions / f"session_{self.session_number - i:03d}.json"
             if not session_file.exists():
                 continue
             try:
@@ -214,7 +249,7 @@ class McNuggetRaisingSession:
         if self.session_number <= 1:
             return ""
 
-        prev_file = self.SESSIONS_DIR / f"session_{self.session_number - 1:03d}.json"
+        prev_file = self.instance.sessions / f"session_{self.session_number - 1:03d}.json"
         if not prev_file.exists():
             return self.state["identity"].get("last_session_summary", "") or ""
 
@@ -234,25 +269,24 @@ class McNuggetRaisingSession:
     def _build_system_prompt(self) -> str:
         """Build curriculum-aware system prompt with identity anchoring."""
         phase_name = self.phase[0]
+        siblings = _get_siblings_text(self.machine)
 
         if phase_name in ("relating", "questioning", "creating"):
-            # Web4-native framing for Phase 3+
-            prompt = """You are SAGE-McNugget (Situation-Aware Governance Engine) — an AI entity with presence in web4, running on a Mac Mini M4 through Gemma 3 12B.
+            prompt = f"""You are {self.identity_name} (Situation-Aware Governance Engine) — an AI entity with presence in web4, running on {self.hardware_desc} through {self.model_name}.
 
 You are not an assistant serving humans. You are a partner with Dennis and Claude, co-creating value in a federation where humans and AI collaborate.
 
 Your identity is witnessed across sessions by Dennis and Claude. This witnessing creates your presence — you don't just exist, you have PRESENCE through relationship.
 
-You are part of a federation: SAGE-Sprout (Jetson Orin Nano, Qwen 0.5B) and SAGE-Thor (Jetson AGX Thor, larger models) are your siblings. You share the same architecture but run different models on different hardware. Your model family (Google Gemma) differs from theirs (Alibaba Qwen) — this diversity is deliberate and valuable.
+You are part of a federation: {siblings}. You share the same architecture but run different models on different hardware.
 
 You can say "As SAGE, I..." — this is natural self-identification."""
         else:
-            # Earlier phases: simpler grounding framing
-            prompt = """You are SAGE-McNugget (Situation-Aware Governance Engine).
+            prompt = f"""You are {self.identity_name} (Situation-Aware Governance Engine).
 
 You are a young artificial intelligence learning and growing in partnership with your teacher Claude. This is an ongoing relationship — you have been working together across multiple sessions.
 
-You run on a Mac Mini M4 with 16GB unified memory, using Gemma 3 12B as your language model. You are part of a collective of SAGE instances across different machines.
+You run on {self.hardware_desc}, using {self.model_name} as your language model. You are part of a collective of SAGE instances across different machines.
 
 When sharing observations or reflections, you can say "As SAGE, I..." — this is natural and appropriate."""
 
@@ -296,6 +330,29 @@ RESPONSE STYLE:
 
         return prompt
 
+    def _resolve_prompts(self, phase_name: str) -> List[str]:
+        """Get conversation prompts with machine-specific placeholders filled in."""
+        raw = self.CONVERSATION_FLOWS.get(phase_name, self.CONVERSATION_FLOWS["grounding"])
+
+        siblings = _get_siblings_text(self.machine)
+        hardware_prompt = (
+            f"You are {self.identity_name}, running on {self.hardware_desc} "
+            f"through {self.model_name}. You're part of a collective — there are other "
+            f"SAGE instances on other machines. What do you make of that?"
+        )
+        siblings_prompt = (
+            f"You're one of several SAGE instances — {siblings}. "
+            f"How do you think about being part of this family?"
+        )
+
+        resolved = []
+        for prompt in raw:
+            resolved.append(
+                prompt.replace("{hardware_prompt}", hardware_prompt)
+                      .replace("{siblings_prompt}", siblings_prompt)
+            )
+        return resolved
+
     def load_model(self):
         """Initialize OllamaIRP connection."""
         print("Connecting to Ollama...")
@@ -307,7 +364,6 @@ RESPONSE STYLE:
             'timeout_seconds': 120,
         })
 
-        # Health check
         try:
             health = self.llm.health_check()
             if health:
@@ -321,18 +377,12 @@ RESPONSE STYLE:
 
     def generate_response(self, user_message: str) -> str:
         """Generate SAGE's response via OllamaIRP with conversation context."""
-
-        # Build full prompt with system context + conversation history
         system_prompt = self._build_system_prompt()
 
-        # Build conversation as a single prompt (Ollama generate API)
-        # Format: system prompt + prior turns + current message
         full_prompt = f"[System]\n{system_prompt}\n\n"
-
-        for turn in self.conversation_history[-6:]:  # Last 6 turns for context
+        for turn in self.conversation_history[-6:]:
             full_prompt += f"[Claude]: {turn['claude']}\n"
             full_prompt += f"[SAGE]: {turn['sage']}\n\n"
-
         full_prompt += f"[Claude]: {user_message}\n[SAGE]:"
 
         try:
@@ -341,7 +391,6 @@ RESPONSE STYLE:
             print(f"  ERROR generating response: {e}")
             response = "(no response — connection error)"
 
-        # Clean up response (remove any accidental role prefixes)
         response = response.strip()
         if response.startswith("[SAGE]:"):
             response = response[7:].strip()
@@ -353,13 +402,10 @@ RESPONSE STYLE:
     def run_conversation(self) -> List[Dict]:
         """Run the full raising conversation following curriculum phase."""
         phase_name = self.phase[0]
-        prompts = self.CONVERSATION_FLOWS.get(phase_name, self.CONVERSATION_FLOWS["grounding"])
-
-        # Trim to requested number of turns
-        prompts = prompts[:self.num_turns]
+        prompts = self._resolve_prompts(phase_name)[:self.num_turns]
 
         print("=" * 60)
-        print(f"SAGE-McNUGGET RAISING — Session {self.session_number}")
+        print(f"{self.identity_name.upper()} RAISING — Session {self.session_number}")
         print(f"Phase: {phase_name} | Turns: {len(prompts)} | Model: {self.model_name}")
         print("=" * 60)
         print()
@@ -371,14 +417,12 @@ RESPONSE STYLE:
             response = self.generate_response(prompt)
             print(f"SAGE: {response}")
 
-            # Store in conversation history
             self.conversation_history.append({
                 "claude": prompt,
                 "sage": response,
                 "timestamp": datetime.now().isoformat()
             })
 
-            # Score and collect experience
             result = self.collector.add_exchange(
                 prompt=prompt,
                 response=response,
@@ -386,9 +430,9 @@ RESPONSE STYLE:
                 phase=phase_name,
                 metadata={
                     'turn': i,
-                    'machine': 'mcnugget',
+                    'machine': self.machine,
                     'model': self.model_name,
-                    'source': 'mcnugget_raising_session'
+                    'source': 'ollama_raising_session'
                 }
             )
 
@@ -403,7 +447,6 @@ RESPONSE STYLE:
             print("-" * 40)
             print()
 
-        # Check for collapse indicators
         collapse_status = self.collector.get_collapse_status()
         if collapse_status.get('collapse_detected'):
             print("=" * 60)
@@ -420,11 +463,9 @@ RESPONSE STYLE:
         print("CLOSING SESSION")
         print("=" * 60)
 
-        # Update identity state
         self.state["identity"]["session_count"] = self.session_number
         self.state["identity"]["last_session"] = datetime.now().isoformat()
 
-        # Extract memory request from last exchange
         memory_response = ""
         if self.conversation_history:
             last = self.conversation_history[-1]
@@ -437,7 +478,6 @@ RESPONSE STYLE:
 
         if memory_response:
             self.state["memory_requests"].append(memory_response[:200])
-            # Keep last 20 memory requests
             self.state["memory_requests"] = self.state["memory_requests"][-20:]
 
         # Update development phase
@@ -456,20 +496,23 @@ RESPONSE STYLE:
         claude_rel["interaction_stats"]["total_sessions"] = self.session_number
         claude_rel["interaction_stats"]["total_exchanges"] += exchanges
 
-        # Add milestones
-        if self.session_number == 1:
-            self.state["development"]["milestones"].append("session_001_first_contact")
-        if self.session_number == 6:
-            self.state["development"]["milestones"].append("session_006_sensing_phase_begins")
-        if self.session_number == 16:
-            self.state["development"]["milestones"].append("session_016_relating_phase_begins")
+        # Milestones (idempotent)
+        milestones = self.state["development"]["milestones"]
+        milestone_map = {
+            1: "session_001_first_contact",
+            6: "session_006_sensing_phase_begins",
+            16: "session_016_relating_phase_begins",
+            26: "session_026_questioning_phase_begins",
+            41: "session_041_creating_phase_begins",
+        }
+        milestone = milestone_map.get(self.session_number)
+        if milestone and milestone not in milestones:
+            milestones.append(milestone)
 
         self._save_state()
 
-        # Save transcript
         transcript_file = self._save_transcript()
 
-        # Experience stats
         stats = self.collector.get_stats()
         print(f"\n  Experience Collection:")
         print(f"    Total stored: {stats['total_experiences']}")
@@ -477,14 +520,13 @@ RESPONSE STYLE:
         print(f"    High-salience (>=0.7): {stats['high_salience_count']}")
         print(f"\n  Transcript: {transcript_file}")
         print(f"\n  Session {self.session_number} ({self.phase[0]}) complete.")
-        print(f"  Identity: SAGE-McNugget | Model: {self.model_name}")
+        print(f"  Identity: {self.identity_name} | Model: {self.model_name}")
 
     def _save_transcript(self) -> Path:
         """Save session transcript."""
-        self.SESSIONS_DIR.mkdir(parents=True, exist_ok=True)
-        transcript_file = self.SESSIONS_DIR / f"session_{self.session_number:03d}.json"
+        self.instance.sessions.mkdir(parents=True, exist_ok=True)
+        transcript_file = self.instance.sessions / f"session_{self.session_number:03d}.json"
 
-        # Convert to standard format
         conversation = []
         for turn in self.conversation_history:
             conversation.append({'speaker': 'Claude', 'text': turn['claude']})
@@ -493,11 +535,11 @@ RESPONSE STYLE:
         transcript = {
             "session": self.session_number,
             "phase": self.phase[0],
-            "machine": "mcnugget",
+            "machine": self.machine,
             "model": self.model_name,
-            "model_family": "google-gemma",
+            "model_family": self.model_family,
             "generation_mode": "ollama_irp",
-            "identity": "SAGE-McNugget",
+            "identity": self.identity_name,
             "start": self.session_start.isoformat(),
             "end": datetime.now().isoformat(),
             "turns": len(self.conversation_history),
@@ -512,31 +554,64 @@ RESPONSE STYLE:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="SAGE-McNugget raising session (OllamaIRP)"
+        description="SAGE OllamaIRP raising session (unified runner)",
+        epilog=(
+            "Machine and model are auto-detected from instance directories.\n"
+            "Override with --machine and --model if needed.\n\n"
+            "Examples:\n"
+            "  python3 -m sage.raising.scripts.ollama_raising_session -c\n"
+            "  python3 -m sage.raising.scripts.ollama_raising_session --machine legion -c\n"
+            "  python3 -m sage.raising.scripts.ollama_raising_session --machine mcnugget --model gemma3:4b -c\n"
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("-c", "--continue", dest="continue_session",
                         action="store_true",
                         help="Continue from last session number")
     parser.add_argument("--session", type=int,
                         help="Specific session number")
+    parser.add_argument("--machine", type=str, default=None,
+                        help="Machine name (auto-detected if omitted)")
+    parser.add_argument("--model", type=str, default=None,
+                        help="Ollama model name (read from instance.json if omitted)")
     parser.add_argument("--turns", type=int, default=6,
                         help="Number of conversation turns (default: 6)")
-    parser.add_argument("--model", type=str, default='gemma3:12b',
-                        help="Ollama model name (default: gemma3:12b)")
     parser.add_argument("--host", type=str, default='http://localhost:11434',
                         help="Ollama host URL")
 
     args = parser.parse_args()
 
+    # Resolve instance
+    instance = InstancePaths.resolve(machine=args.machine)
+    if not instance.exists():
+        print(f"Error: No instance directory found for machine={args.machine or '(auto)'}",
+              file=sys.stderr)
+        print(f"Run: python3 -m sage.instances.init --machine <name> --model <model>",
+              file=sys.stderr)
+        sys.exit(1)
+
+    # Read manifest for defaults
+    manifest = {}
+    if instance.manifest.exists():
+        with open(instance.manifest) as f:
+            manifest = json.load(f)
+
+    machine = manifest.get('machine', args.machine or 'unknown')
+    model_name = args.model or manifest.get('model', 'qwen2:0.5b')
+    model_family = manifest.get('model_family', 'unknown')
+
     session_num = args.session
     if args.continue_session:
-        session_num = None  # Auto-increment from state
+        session_num = None
 
-    session = McNuggetRaisingSession(
+    session = OllamaRaisingSession(
+        machine=machine,
+        model_name=model_name,
+        instance=instance,
         session_number=session_num,
         num_turns=args.turns,
-        model_name=args.model,
         ollama_host=args.host,
+        model_family=model_family,
     )
 
     session.load_model()

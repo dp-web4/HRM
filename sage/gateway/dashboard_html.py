@@ -699,8 +699,7 @@ function appendChat(sender, text, cssClass) {
   chatLog.scrollTop = chatLog.scrollHeight;
 }
 
-chatForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
+async function sendChat() {
   const message = chatInput.value.trim();
   if (!message) return;
 
@@ -708,6 +707,7 @@ chatForm.addEventListener('submit', async (e) => {
   chatInput.value = '';
   chatInput.disabled = true;
   chatSend.disabled = true;
+  chatSend.textContent = '...';
 
   try {
     const resp = await fetch('/chat', {
@@ -734,16 +734,26 @@ chatForm.addEventListener('submit', async (e) => {
 
   chatInput.disabled = false;
   chatSend.disabled = false;
+  chatSend.textContent = 'Send';
   chatInput.style.height = 'auto';
   chatInput.focus();
+}
+
+chatForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  sendChat();
 });
 
 // Enter to send, Shift+Enter for newline; auto-grow textarea
 chatInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
-    chatForm.dispatchEvent(new Event('submit'));
+    sendChat();
   }
+});
+chatSend.addEventListener('click', (e) => {
+  e.preventDefault();
+  sendChat();
 });
 chatInput.addEventListener('input', () => {
   chatInput.style.height = 'auto';

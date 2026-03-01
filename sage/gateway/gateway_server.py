@@ -42,7 +42,7 @@ class GatewayHandler(BaseHTTPRequestHandler):
     daemon = None
     config = None
     peer_monitor = None
-    network_open: bool = True
+    network_open: bool = False
 
     def _check_network_gate(self) -> bool:
         """Reject non-localhost requests when network access is closed."""

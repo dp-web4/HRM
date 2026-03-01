@@ -305,6 +305,52 @@ class SAGEDaemon:
             self.peer_client = None
             print(f"  [WARN] Failed to wire PeerClient: {e}")
 
+    def _report_fleet_presence(self):
+        """Write this machine's IP and status to private-context/machines/fleet/.
+
+        Each machine self-reports so the fleet manifest can be updated
+        with real IPs. The file is written to the shared private-context
+        repo, which gets synced across machines via git.
+        """
+        try:
+            import socket
+
+            # Resolve fleet dir relative to workspace
+            fleet_dir = Path(self.config.workspace_path) / 'private-context' / 'machines' / 'fleet'
+            fleet_dir.mkdir(parents=True, exist_ok=True)
+
+            # Get local IP (best effort — connect to external and read socket name)
+            local_ip = '127.0.0.1'
+            try:
+                s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                s.connect(('10.255.255.255', 1))  # doesn't actually send anything
+                local_ip = s.getsockname()[0]
+                s.close()
+            except Exception:
+                pass
+
+            report = {
+                'machine': self.config.machine_name,
+                'lct_id': self.config.lct_id,
+                'ip': local_ip,
+                'gateway_port': self.config.gateway_port,
+                'federation_port': self.config.federation_port,
+                'model': self.config.model_path,
+                'model_size': self.config.model_size,
+                'device': self.config.device,
+                'hostname': socket.gethostname(),
+                'reported_at': datetime.now().isoformat(),
+                'status': 'ready',
+            }
+
+            report_path = fleet_dir / f'{self.config.machine_name}.json'
+            with open(report_path, 'w') as f:
+                json.dump(report, f, indent=2)
+            print(f"  Fleet presence reported: {report_path.name} (IP: {local_ip})")
+
+        except Exception as e:
+            print(f"  [WARN] Failed to report fleet presence: {e}")
+
     def _start_gateway(self):
         """Start the HTTP gateway server."""
         from sage.gateway.gateway_server import GatewayServer
@@ -346,7 +392,7 @@ class SAGEDaemon:
         print(f"\n{'='*60}")
         print(f"  SAGE daemon running on {self.config.machine_name}")
         print(f"  Gateway: http://{self.gateway.host}:{self.config.gateway_port}")
-        print(f"  Network: open (peers can connect)")
+        print(f"  Network: closed (open via dashboard or /network-access)")
         print(f"  Model: {self.config.model_size}")
         print(f"  LCT: {self.config.lct_id}")
         print(f"  Peers: {peer_names}")
@@ -355,7 +401,10 @@ class SAGEDaemon:
         print(f"  Peers: http://localhost:{self.config.gateway_port}/peers")
         print(f"{'='*60}\n")
 
-        # 4b. Auto-launch dashboard in browser
+        # 4b. Self-report IP to private-context/machines/fleet/
+        self._report_fleet_presence()
+
+        # 4c. Auto-launch dashboard in browser
         if not os.environ.get('SAGE_NO_BROWSER'):
             import webbrowser
             try:

@@ -215,3 +215,9 @@ sage/quantization/diagnostic_report.json
 
 # McNugget local logs (sync logs stay local)
 sage/logs/mcnugget/
+
+# Machine-specific daemon runtime state (one daemon per machine)
+sage/raising/state/daemon_state_*.json
+
+# Machine-specific logs
+logs/sage-daemon/*.log

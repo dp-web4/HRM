@@ -80,10 +80,30 @@ class SAGEDaemon:
         self.started_at = None
         self._shutdown_event = asyncio.Event()
 
+        # Fleet awareness
+        from sage.federation.fleet_registry import FleetRegistry
+        from sage.federation.peer_monitor import PeerMonitor
+        from sage.federation.peer_trust import PeerTrustTracker
+        from sage.core.atp_reward_pool import ATPRewardPool
+
+        self.fleet_registry = FleetRegistry(self.config.machine_name)
+
+        # Per-machine trust persistence
+        state_dir = Path(self.config.experience_buffer_path).parent if self.config.experience_buffer_path else Path('.')
+        trust_path = str(state_dir / f'peer_trust_{self.config.machine_name}.json')
+        self.trust_tracker = PeerTrustTracker(trust_path)
+
+        self.peer_monitor = PeerMonitor(
+            self.fleet_registry, self.config.machine_name,
+            trust_tracker=self.trust_tracker,
+        )
+        self.reward_pool = ATPRewardPool()
+
         print(f"SAGE Daemon initializing on {self.config.machine_name}")
         print(f"  Model: {self.config.model_size} at {self.config.model_path}")
         print(f"  Device: {self.config.device}")
         print(f"  Gateway port: {self.config.gateway_port}")
+        print(f"  Fleet: {self.fleet_registry}")
 
     def _load_llm(self):
         """Load the LLM model into memory. Called once at startup."""
@@ -261,6 +281,30 @@ class SAGEDaemon:
 
         print(f"  Consciousness loop created (simulation_mode=False)")
 
+        # Inject PeerClient into the network effector for peer-to-peer messaging
+        self._wire_peer_client()
+
+    def _wire_peer_client(self):
+        """Inject PeerClient into the network effector for cross-machine messaging."""
+        try:
+            from sage.federation.peer_client import PeerClient
+            self.peer_client = PeerClient(
+                self.fleet_registry, self.peer_monitor,
+                trust_tracker=self.trust_tracker,
+            )
+
+            if (hasattr(self.consciousness, 'effector_registry')
+                    and self.consciousness.effector_registry is not None
+                    and 'network' in self.consciousness.effector_registry):
+                network_eff = self.consciousness.effector_registry['network']
+                network_eff.set_peer_client(self.peer_client)
+                print(f"  PeerClient injected into network effector")
+            else:
+                print(f"  [WARN] Network effector not found — peer messaging unavailable")
+        except Exception as e:
+            self.peer_client = None
+            print(f"  [WARN] Failed to wire PeerClient: {e}")
+
     def _start_gateway(self):
         """Start the HTTP gateway server."""
         from sage.gateway.gateway_server import GatewayServer
@@ -271,6 +315,7 @@ class SAGEDaemon:
             consciousness=self.consciousness,
             config=self.config,
             daemon=self,
+            peer_monitor=self.peer_monitor,
             host=bind_host,
             port=self.config.gateway_port,
         )
@@ -293,15 +338,21 @@ class SAGEDaemon:
         # 3. Start HTTP gateway
         self._start_gateway()
 
+        # 3b. Start peer monitor (fleet health polling)
+        self.peer_monitor.start()
+
         # 4. Print ready banner
+        peer_names = ', '.join(self.fleet_registry.get_peer_names())
         print(f"\n{'='*60}")
         print(f"  SAGE daemon running on {self.config.machine_name}")
         print(f"  Gateway: http://{self.gateway.host}:{self.config.gateway_port}")
-        print(f"  Network: local only (toggle via dashboard)")
+        print(f"  Network: open (peers can connect)")
         print(f"  Model: {self.config.model_size}")
         print(f"  LCT: {self.config.lct_id}")
+        print(f"  Peers: {peer_names}")
         print(f"  Dashboard: http://localhost:{self.config.gateway_port}/")
         print(f"  Health: http://localhost:{self.config.gateway_port}/health")
+        print(f"  Peers: http://localhost:{self.config.gateway_port}/peers")
         print(f"{'='*60}\n")
 
         # 4b. Auto-launch dashboard in browser
@@ -325,6 +376,15 @@ class SAGEDaemon:
         # Stop consciousness loop
         if self.consciousness:
             self.consciousness.running = False
+
+        # Stop peer monitor
+        if self.peer_monitor:
+            self.peer_monitor.stop()
+
+        # Save trust state
+        if hasattr(self, 'trust_tracker') and self.trust_tracker:
+            self.trust_tracker.save()
+            print(f"  Peer trust saved: {self.trust_tracker}")
 
         # Stop gateway
         if self.gateway:

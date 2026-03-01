@@ -42,6 +42,7 @@ class NetworkEffector(BaseEffector):
 
         self.message_queue = None  # Set by daemon after construction
         self.federation_client = None  # Set by daemon for cross-machine messaging
+        self.peer_client = None  # Set by daemon for peer-to-peer messaging
         self.operation_log: List[Dict[str, Any]] = []
 
     def set_message_queue(self, message_queue):
@@ -51,6 +52,10 @@ class NetworkEffector(BaseEffector):
     def set_federation_client(self, client):
         """Inject the FederationClient for cross-machine messaging."""
         self.federation_client = client
+
+    def set_peer_client(self, client):
+        """Inject the PeerClient for peer-to-peer messaging."""
+        self.peer_client = client
 
     def is_available(self) -> bool:
         """Network effector is available if enabled."""
@@ -73,6 +78,7 @@ class NetworkEffector(BaseEffector):
             'supported_actions': list(self.SUPPORTED_ACTIONS),
             'has_message_queue': self.message_queue is not None,
             'has_federation_client': self.federation_client is not None,
+            'has_peer_client': self.peer_client is not None,
             'operations_count': len(self.operation_log),
         }
 
@@ -160,40 +166,57 @@ class NetworkEffector(BaseEffector):
 
     def _handle_send(self, command: EffectorCommand,
                      start_time: float) -> EffectorResult:
-        """Forward a message to a peer SAGE via FederationClient."""
+        """Forward a message to a peer SAGE via PeerClient or FederationClient."""
         target = command.parameters.get('target_platform', '')
         message = command.parameters.get('message', '')
+        conversation_id = command.parameters.get('conversation_id')
 
-        if self.federation_client is None:
-            # No federation client — log and succeed silently
+        # Try PeerClient first (simple HTTP to peer gateway)
+        if self.peer_client is not None:
+            result = self.peer_client.send_message(
+                target, message, conversation_id=conversation_id,
+            )
             self.operation_log.append({
                 'action': 'send',
                 'target': target,
-                'status': 'no_federation_client',
+                'message_length': len(message),
+                'success': result.get('success', False),
+                'latency_ms': result.get('latency_ms'),
             })
-            return EffectorResult(
-                effector_id=self.effector_id,
-                status=EffectorStatus.SUCCESS,
-                message=f"Message queued for {target} (federation client not configured)",
-                execution_time=time.time() - start_time,
-                metadata={'status': 'queued', 'target': target},
-            )
+            if result.get('success'):
+                return EffectorResult(
+                    effector_id=self.effector_id,
+                    status=EffectorStatus.SUCCESS,
+                    message=f"Message sent to {target} ({result.get('latency_ms', '?')}ms)",
+                    execution_time=time.time() - start_time,
+                    metadata={
+                        'status': 'sent',
+                        'target': target,
+                        'peer_response': result.get('response', '')[:200],
+                        'latency_ms': result.get('latency_ms'),
+                    },
+                )
+            else:
+                return EffectorResult(
+                    effector_id=self.effector_id,
+                    status=EffectorStatus.FAILED,
+                    message=f"Failed to send to {target}: {result.get('error', 'unknown')}",
+                    execution_time=time.time() - start_time,
+                    metadata={'status': 'failed', 'target': target, 'error': result.get('error')},
+                )
 
-        # TODO: Implement actual federation delegation
-        # self.federation_client.delegate_task(...)
-
+        # No peer client configured
         self.operation_log.append({
             'action': 'send',
             'target': target,
-            'message_length': len(message),
+            'status': 'no_peer_client',
         })
-
         return EffectorResult(
             effector_id=self.effector_id,
-            status=EffectorStatus.SUCCESS,
-            message=f"Message sent to {target}",
+            status=EffectorStatus.HARDWARE_UNAVAILABLE,
+            message=f"No peer client configured — cannot send to {target}",
             execution_time=time.time() - start_time,
-            metadata={'status': 'sent', 'target': target},
+            metadata={'status': 'no_client', 'target': target},
         )
 
 

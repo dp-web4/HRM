@@ -10,7 +10,7 @@ Fleet — default models (per-machine, override with SAGE_MODEL env var):
   Machine    | Hardware               | Default Model          | Device
   -----------|------------------------|------------------------|--------
   thor       | Jetson AGX Thor        | Qwen 2.5 14B (local)  | cuda
-  sprout     | Jetson Orin Nano 8GB   | Qwen 2.5 0.5B (local) | cpu
+  sprout     | Jetson Orin Nano 8GB   | Qwen 2.5 0.5B (local) | cuda
   legion     | RTX 4090 desktop       | phi4:14b (Ollama)      | cuda
   mcnugget   | Mac Mini M4            | gemma3:12b (Ollama)    | mps
   nomad      | RTX 4060 laptop        | gemma3:4b (Ollama)     | cuda
@@ -197,7 +197,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             machine_name='sprout',
             model_path=f'ollama:{model}' if is_ollama else model,
             model_size='ollama' if is_ollama else '0.5b',
-            device='cpu',
+            device='cuda',
             max_memory_gb=6.0,
             gateway_port=port,
             workspace_path=workspace,

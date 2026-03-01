@@ -710,6 +710,7 @@ async function sendChat() {
   chatSend.textContent = '...';
 
   try {
+    console.log('[SAGE Chat] Sending:', message);
     const resp = await fetch('/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -719,24 +720,32 @@ async function sendChat() {
         max_wait_seconds: 90,
       }),
     });
-    const result = await resp.json();
+    console.log('[SAGE Chat] Response status:', resp.status);
+    const text = await resp.text();
+    console.log('[SAGE Chat] Response body:', text);
+    let result;
+    try { result = JSON.parse(text); } catch (pe) {
+      appendChat('System', 'Bad response (status ' + resp.status + '): ' + text.substring(0, 200), 'error');
+      return;
+    }
 
     if (resp.status === 202) {
       appendChat('SAGE', '(dreaming... message queued, will respond when awake)', 'dream');
     } else if (result.error) {
-      appendChat('SAGE', result.error, 'error');
+      appendChat('SAGE', 'Error: ' + result.error, 'error');
     } else {
       appendChat('SAGE', result.response || result.text || JSON.stringify(result), 'sage');
     }
   } catch (err) {
+    console.error('[SAGE Chat] Fetch error:', err);
     appendChat('System', 'Connection error: ' + err.message, 'error');
+  } finally {
+    chatInput.disabled = false;
+    chatSend.disabled = false;
+    chatSend.textContent = 'Send';
+    chatInput.style.height = 'auto';
+    chatInput.focus();
   }
-
-  chatInput.disabled = false;
-  chatSend.disabled = false;
-  chatSend.textContent = 'Send';
-  chatInput.style.height = 'auto';
-  chatInput.focus();
 }
 
 chatForm.addEventListener('submit', (e) => {

@@ -76,6 +76,10 @@ class OllamaIRP(IRPPlugin):
             print(f"  [WARN] OllamaIRP: Ollama not reachable at {self.ollama_host}: {e}")
             return False
 
+    def health_check(self) -> bool:
+        """Public health check — returns True if Ollama is reachable and model available."""
+        return self._check_ollama()
+
     # ----- Style 1: Direct get_response (used by consciousness loop) -----
 
     def get_response(self, prompt: str) -> str:

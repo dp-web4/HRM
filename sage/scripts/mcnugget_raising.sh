@@ -29,6 +29,11 @@ echo "[McNugget-Raising] Daemon: version=$SAGE_DAEMON_VERSION updated=$SAGE_DAEM
 INSTANCE_DIR="sage/instances/mcnugget-gemma3-12b"
 SNAPSHOT_DIR="$INSTANCE_DIR/snapshots"
 
+# Snapshot live state files into git-tracked snapshots/ directory
+# Uses Python script for archive history + metadata
+echo "[McNugget-Raising] Snapshotting state..."
+/opt/homebrew/bin/python3 -m sage.scripts.snapshot_state --machine mcnugget
+
 # Read session number and phase from live identity
 IDENTITY_FILE="$INSTANCE_DIR/identity.json"
 SESSION_NUM=$(/opt/homebrew/bin/python3 -c "
@@ -42,18 +47,6 @@ import json
 with open('$HRM_DIR/$IDENTITY_FILE') as f:
     print(json.load(f)['development']['phase_name'])
 " 2>/dev/null || echo "?")
-
-# Snapshot live state files (gitignored originals → tracked snapshots/)
-# Daemon writes these continuously; snapshots capture state at session boundaries.
-if [ -d "$HRM_DIR/$INSTANCE_DIR" ]; then
-    mkdir -p "$HRM_DIR/$SNAPSHOT_DIR"
-    for f in identity.json experience_buffer.json peer_trust.json daemon_state.json; do
-        if [ -f "$HRM_DIR/$INSTANCE_DIR/$f" ]; then
-            cp "$HRM_DIR/$INSTANCE_DIR/$f" "$HRM_DIR/$SNAPSHOT_DIR/$f"
-        fi
-    done
-    echo "[McNugget-Raising] State snapshot saved to $SNAPSHOT_DIR/"
-fi
 
 # Check if there are new results to commit
 CHANGED=0

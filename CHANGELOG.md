@@ -7,6 +7,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added - Snapshot State Infrastructure (2026-03-01)
+- `sage/instances/snapshot.py` — Library for timestamped state snapshots with archive and manifest
+- `sage/scripts/snapshot_state.py` — CLI entry point (`python3 -m sage.scripts.snapshot_state --machine <name>`)
+- `sage/scripts/nomad_raising.sh` — Template raising script with snapshot + auto-commit + push
+- `InstancePaths.snapshot()` method with JSON validation, identity archiving, and pruning
+- `InstancePaths.list_instances()` for fleet-wide operations
+- Nomad, McNugget, CBP, Thor all have `snapshots/` directories
+- Live state files (identity, experience_buffer, peer_trust, daemon_state) gitignored across all instances
+
+### Added - Seed Identity v2 + Raising Guide (2026-02-28/03-01)
+- `sage/instances/_seed/identity.json` — Rewritten to schema v2 with federation, capacity, phase transitions
+- `sage/instances/_seed/RAISING_GUIDE.md` — 207-line guide encoding 117+ sessions of raising knowledge
+- `sage/instances/init.py` — `--operator-name` CLI arg, `__OPERATOR__` placeholder processing
+- `sage/raising/scripts/ollama_raising_session.py` — Loads RAISING_GUIDE.md, injects raising preamble
+- Operator relationship replaces hardcoded "dennis" in seed template
+- Frozen weights awareness, partnership framing, federation context in every new instance
+
+### Added - Instance Directory Separation (2026-02-28)
+- Each machine+model pair gets self-contained dir under `sage/instances/<slug>/`
+- `sage/instances/resolver.py` — `InstancePaths` resolver (resolution: SAGE_INSTANCE → SAGE_MACHINE+SAGE_MODEL → detect_machine())
+- `sage/instances/init.py` — Bootstrap new instances from seed template
+- Migration script for existing scattered state files (non-destructive)
+- 7 active instances: thor, sprout, mcnugget, legion (x2), nomad, cbp
+
+### Added - SAGE Society Infrastructure (2026-02-28)
+- `sage/federation/fleet.json` — Static registry of 6 machines (IPs, ports, LCT IDs)
+- `sage/federation/fleet_registry.py` — FleetRegistry with `get_peers()`, `get_gateway_url()`
+- `sage/federation/peer_monitor.py` — Background health polling every 30s
+- `sage/federation/peer_client.py` — HTTP client for peer-to-peer `/chat` messaging
+- `sage/federation/peer_trust.py` — Per-peer T3 scores with EMA updates and JSON persistence
+- Network effector wired for real peer messaging (was no-op)
+- ATP RewardPool for conservation-safe task delegation
+
+### Added - PolicyGate Phase 2: Consciousness Loop Integration (2026-03-01)
+- PolicyGate integrated at consciousness loop step 8.6 (effect filtering)
+- 50-cycle integration test: 4 state transitions, 19 plugins, 89.83 ATP consumed
+- Accountability frame adapts to metabolic state (NORMAL/DEGRADED/DURESS)
+- Policy decisions recorded as SNARC experiences
+- Fractal self-similarity validated: "plugin of plugins of plugins"
+
+### Fixed - Small Model Compatibility (2026-02-28)
+- Rewrote `_build_conversation_prompt()` from structured metadata to first-person prose
+- Added `_resolve_sender_name()` to map system senders to operator name from identity LCT
+- Fixed dashboard sender from `dashboard@localhost` to `operator` (prevented TinyLlama generating "Dashboard:" character)
+- Fixed `OllamaIRP.init_state()` call — try two-arg form first, fall back to one-arg for IRP contract compatibility
+
 ### Added - Documentation Honesty Pass (2026-02-27)
 - All docstrings and status docs now split claims into "what's real" vs "what's mocked"
 - Removed "production-ready" language across all files (R&D terminology only)

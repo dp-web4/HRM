@@ -1,20 +1,22 @@
-# SAGE: Cognition Orchestration & Epistemic Reasoning
+# SAGE: Situation-Aware Governance Engine
 
-> **Note (Feb 27, 2026)**: Much of this README reflects October 2025 work. For current status (unified entry point, LLM wiring, ATP coupling, PolicyGate), see **[docs/LATEST_STATUS.md](docs/LATEST_STATUS.md)**. For the quick-start API, see **[`__init__.py`](__init__.py)**.
+**[Explainer Site](https://sage-site-murex.vercel.app/)** | **[System Understanding](docs/SYSTEM_UNDERSTANDING.md)** | **[Latest Status](docs/LATEST_STATUS.md)**
 
 ## Overview
 
-SAGE implements cognition as iterative refinement - progressive denoising toward lower energy states. Current focus: on-device cognition orchestration with real LLM inference through a unified consciousness loop.
+SAGE is a cognition kernel for edge devices — the missing layer between a local LLM and useful cognition. It implements a continuous 9-step consciousness loop that orchestrates attention, trust, resources, and identity across a federation of machines.
 
-### Project Evolution
-
-This project started as **HRM (Hierarchical Reasoning Model)** research—exploring how tiny models (27M parameters) could solve complex reasoning tasks through hierarchical decomposition. As research progressed across 567+ sessions, the focus shifted from task-specific hierarchies to **general cognition orchestration**, evolving into **SAGE: Situation-Aware Governance Engine**.
+Not a model. An inference loop that decides what to pay attention to, which resources to invoke, and what to do with the results.
 
 ### Distributed Research Infrastructure
 
-SAGE development is a collaborative effort across two autonomous research machines:
-- **Thor** (Jetson AGX Thor): Primary research platform with 14-core ARM CPU, 122GB unified memory, running SAGE Raising-14B, Consciousness federation (197+ sessions), and Policy Training tracks
-- **Sprout** (Jetson Orin Nano): Edge deployment validation platform with 8GB unified memory, running Raising-0.5B developmental curriculum (105 sessions)
+SAGE runs across **6 machines** with **7 instances** and **4 model families**:
+- **Thor** (Jetson AGX Thor): Research lead, Qwen 2.5 14B, PolicyGate development, 197+ consciousness sessions
+- **Sprout** (Jetson Orin Nano): Edge validation, Qwen 2.5 0.5B with LoRA, 275+ raising + training sessions
+- **McNugget** (Mac Mini M4): Gemma 3 12B via Ollama, automated raising on 6-hour cadence
+- **Legion** (RTX 4090): Phi-4 14B via Ollama, integration and trust research
+- **Nomad** (RTX 4060, WSL2): Gemma 3 4B via Ollama, snapshot template, language/cognition probes
+- **CBP** (RTX 2060 SUPER, WSL2): TinyLlama 1.1B via Ollama, identity portability validation
 
 This system integrates:
 
@@ -181,18 +183,21 @@ Mimics biological learning through three phases:
 - **60-example model**: Best performer (E=0.4), discusses ontological frameworks coherently
 - **Jetson deployment ready**: 23.4MB model uploaded to Dropbox for voice integration
 
-### Current Focus (February 2026)
-- **Unified entry point**: `SAGE.create()` → `sage.run()` with real LLM inference
-- **Metabolic states**: ATP coupled to real token cost, DREAM consolidation to disk
-- **PolicyGate**: Phase 1 complete (IRP plugin for conscience checkpoint)
-- **SOIA-SAGE convergence**: Structural mapping to Self-Optimizing Intelligence Architecture
-- **Consciousness research**: 197+ sessions, bimodal oscillation discovered, theory of mind emergence
+### Current Focus (March 2026)
+- **Consciousness loop**: 9-step loop running end-to-end with real LLM inference on all 6 machines
+- **PolicyGate Phase 2**: Integrated at step 8.6, 50-cycle test passing. CRISIS mode (Phase 3) pending
+- **Federation**: Fleet manifest, peer monitor, peer client, peer trust tracker built. Network OFF for stability
+- **Instance management**: Per-machine isolation, snapshot persistence, seed identity v2, raising guide
+- **Raising curriculum**: 5-phase developmental curriculum validated across 4 model families
+- **Compression trust**: Phase transition validated (p_crit ~ 0.009), sparse coupling principle confirmed
+- **Identity portability**: Identity persists across model changes (Qwen → TinyLlama validated)
 - See [docs/LATEST_STATUS.md](docs/LATEST_STATUS.md) for full details
 
 ### Set Aside (Lessons Learned)
 - Isaac Sim / GR00T integration — discontinued (real vs mock lesson)
 - IRP ecosystem expansion to 50+ plugins — deferred in favor of loop wiring
 - Voice integration (NeuTTS Air) — works but missing llama-cpp-python dependency
+- Legion legacy Qwen2 0.5B instance — superseded by Phi-4 14B
 
 ## Hardware Requirements
 
@@ -271,8 +276,9 @@ Research prototype - not for production use without further validation.
 
 ## Next Steps
 
-1. **Effector system**: Replace mock effectors with real I/O implementations
-2. **Neural SNARC**: Replace algorithmic heuristic with learned salience model
-3. **PolicyGate Phase 2**: Wire into consciousness loop (blocked on effectors)
-4. **SDK packaging**: `pip install sage-engine` for hackathon demo
-5. **Sleep→LoRA training**: Fix import chain so DREAM consolidation triggers real training
+1. **PolicyGate Phase 3**: CRISIS accountability with duress context
+2. **Federation activation**: Enable peer network once instances are stable
+3. **Sensor backends**: Replace mocked sensors with real I/O
+4. **Neural SNARC**: Replace algorithmic heuristic with learned salience model
+5. **SDK packaging**: `pip install sage-engine`
+6. **Sleep→LoRA training**: Fix import chain so DREAM consolidation triggers real training on all machines

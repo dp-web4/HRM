@@ -1,100 +1,65 @@
 # SAGE Development Status
 
-> **Note (Feb 27, 2026)**: This file is from October 2025. The GR00T integration track referenced below is discontinued. For current status, see **[docs/LATEST_STATUS.md](docs/LATEST_STATUS.md)**.
+**Last Updated**: March 1, 2026
 
-**Date**: 2025-10-07
-**Cycle**: Post-281 (training paused for architecture refactoring)
+> For detailed status updates, see **[docs/LATEST_STATUS.md](docs/LATEST_STATUS.md)**.
+> For the interactive overview, see the **[SAGE Explainer Site](https://sage-site-murex.vercel.app/)**.
+> For the full project assessment, see **[/STATUS.md](../STATUS.md)**.
 
 ## Current State
 
-### Autonomous Attention System - OPERATIONAL ✅
-
-Implemented fractal cognition routing for SAGE development monitoring:
-- **L-Level**: Autonomous file/state monitoring (`monitor_sage.sh`)
-- **Salience**: Multi-metric interest calculation (0.0-1.0 score)
-- **Wake Signal**: Creates `/tmp/claude_wake_signal_sage.md` when threshold exceeded
-- **H-Level**: Claude strategic attention on session start (`wake_up.sh`)
-
-See `orchestration/AUTONOMOUS_ATTENTION.md` for full documentation.
-
-### Real GR00T Integration - IN PROGRESS
-
-Successfully transitioned from mock implementations to **real NVIDIA GR00T N1.5 3B parameter model**.
-
-#### Completed ✅
-- Downloaded actual model weights from HuggingFace (`nvidia/GR00T-N1.5-3B`)
-- Loaded real 2.7B parameter GR00T model successfully
-- Confirmed model components:
-  - Qwen3-1.7B language backbone
-  - SigLIP vision encoder
-  - ResNet-50 proprioception encoder
-- Set up multi-agent orchestration infrastructure with claude-flow
-- Implemented core agents:
-  - Trust-Attention-Surprise coordinator (tested, working)
-  - Memory consolidation agent (83% compression achieved)
-  - Metabolic state manager (5-state transitions working)
-
-#### Current Issue ⚠️
-- `AttributeError: 'GR00T_N1_5' object has no attribute 'process_backbone_inputs'`
-- Need to investigate correct GR00T API method names
-- File: `/home/dp/ai-workspace/HRM/sage/orchestration/real_groot_sage.py`
+SAGE is a cognition kernel running on 6 machines with 7 instances across 4 model families (Qwen, Gemma, Phi, TinyLlama). The consciousness loop runs end-to-end with real LLM inference via Ollama/Transformers, PolicyGate oversight at step 8.6, and ATP-coupled metabolic state management.
 
 ### Architecture
 
-**Key Insight**: GR00T is the teacher, SAGE is the student. We're doing **knowledge distillation**, not preprocessing.
-
-```
-GR00T (Teacher)          SAGE (Student)
-     ↓                        ↓
- Full 3B Model    →    Distilled Patterns
- Vision+Language  →    IRP Primitives
- Action Policies  →    Trust-Attn-Surprise
-```
-
-### File Structure
-
 ```
 sage/
-├── orchestration/
-│   ├── sage-flow-config.json          # Multi-agent topology
-│   ├── download_groot_weights.py      # Weight fetcher (✅ works)
-│   ├── real_groot_sage.py             # Main integration (⚠️ needs fix)
-│   └── agents/
-│       ├── vision/eagle-vision-irp.py
-│       ├── trust/trust-attention-surprise-coordinator.py
-│       ├── memory/memory-consolidation-agent.py
-│       └── control/metabolic-state-manager.py
-├── CLAUDE.md                           # Development notes
-└── training/                           # Previous training runs
+├── core/                    # Consciousness loop, metabolic states, ATP
+│   └── sage_consciousness.py  # 9-step loop (the kernel)
+├── irp/                     # Iterative Refinement Protocol
+│   └── plugins/             # 15+ plugins (language, policy, network, ...)
+├── gateway/                 # HTTP daemon, dashboard, machine config
+│   └── sage_daemon.py       # Always-on daemon at :8750
+├── federation/              # Fleet registry, peer monitor, peer trust
+├── instances/               # Per-machine instance directories
+│   ├── _seed/               # Seed template (identity v2 + raising guide)
+│   ├── resolver.py          # InstancePaths (single source of truth)
+│   └── snapshot.py          # State snapshot for git persistence
+├── raising/                 # Developmental curriculum and sessions
+│   └── scripts/             # Raising runners (identity-anchored, ollama)
+├── scripts/                 # Machine-specific raising scripts + snapshot CLI
+├── web4/                    # Web4 integration (LCT, trust sync, identity)
+├── compression/             # VAE translation layer
+├── cognition/               # Attention management
+├── experiments/             # Research session scripts
+└── docs/                    # Architecture documentation (275KB)
 ```
 
-### Next Steps
+### Key Entry Points
 
-1. **Fix GR00T API calls** - Investigate correct method names in GR00T_N1_5
-2. **Feature extraction** - Get vision/language embeddings from real model
-3. **Distillation pipeline** - Extract patterns from GR00T for SAGE training
-4. **Integration testing** - Run full orchestration loop with real model
-5. **Resume training** - Train SAGE on real GR00T features
+| What | How |
+|------|-----|
+| Start daemon | `python3 -m sage.gateway.sage_daemon` |
+| Initialize instance | `python3 -m sage.instances.init --machine <name> --model <model>` |
+| Run raising session | `python3 -m sage.raising.scripts.ollama_raising_session --machine <name> -c` |
+| Snapshot state | `python3 -m sage.scripts.snapshot_state --machine <name>` |
+| Dashboard | `http://localhost:8750/` |
 
-### Lessons Learned
+### What's Real
 
-🚫 **No more shortcuts or mocks**
-✅ **Use real implementations**
-✅ **Weights ARE available on HuggingFace**
-✅ **Transparency about what's real vs mocked**
+- Consciousness loop with real LLM inference (Ollama/Transformers)
+- Metabolic states (WAKE/FOCUS/REST/DREAM/CRISIS) with ATP budgeting
+- SNARC salience scoring and experience buffer persistence
+- PolicyGate at step 8.6 (Phase 2 complete, CRISIS mode pending)
+- Identity system with LCT, trust tensors, relationship crystallization
+- Federation infrastructure (monitor, client, trust tracker — network OFF)
+- Instance isolation with snapshot persistence
+- Automated raising sessions (McNugget, Nomad)
+- Sleep consolidation (JSONL dream bundles, LoRA on Sprout)
 
-### Dependencies
+### What's Mocked
 
-- GR00T repository: `/home/dp/ai-workspace/isaac-gr00t/`
-- Model cache: `/home/dp/.cache/huggingface/hub`
-- Orchestration: claude-flow multi-agent system
-
-### Performance Metrics (Last Real Test)
-
-- Trust coordinator: Balanced attention across 3 sources
-- Memory consolidation: 83% compression ratio
-- Metabolic states: Smooth transitions WAKE→FOCUS→REST
-
----
-
-**Bottom Line**: We have the real 3B parameter GR00T model loaded and ready. Just need to fix the API calls to extract features and start distillation.
+- Sensors (architecture exists, no real I/O backends)
+- Physical effectors (network effector works, others are stubs)
+- Cross-modal VAE (demonstrated in isolation, not in live loop)
+- FlashAttention (Phases 1-2 on Thor, not in live loop)

@@ -161,8 +161,21 @@ class SAGEConsciousness:
 
         # Gateway integration
         self.message_queue = message_queue
-        self.llm_plugin = llm_plugin
         self.simulation_mode = simulation_mode
+
+        # LLM Pool — dynamic registry of LLM temporal sensors
+        from sage.irp.plugins.llm_pool import LLMPool
+        ollama_host = self.config.get('ollama_host', 'http://localhost:11434')
+        self.llm_pool = LLMPool(ollama_host=ollama_host)
+        self._last_llm_model = None  # tracks grammar switching
+        if llm_plugin is not None:
+            model_name = getattr(llm_plugin, 'model_name', None)
+            if not model_name:
+                model_name = (self.config.get('model_name', '') or 'default').replace('ollama:', '')
+            backend = 'multi' if hasattr(llm_plugin, 'generate') else 'ollama'
+            if hasattr(llm_plugin, 'model_path'):
+                backend = 'local'
+            self.llm_pool.register(llm_plugin, model_name, backend=backend)
 
         # Core components
         self.metabolic = MetabolicController(
@@ -285,6 +298,12 @@ class SAGEConsciousness:
             'tool_calls_success': 0,
             'tool_calls_denied': 0,
         }
+
+    @property
+    def llm_plugin(self):
+        """Backward-compat property — returns active LLM from the pool."""
+        entry = self.llm_pool.active
+        return entry.plugin if entry else None
 
     def _default_config(self) -> Dict[str, Any]:
         """Default configuration"""
@@ -449,28 +468,31 @@ class SAGEConsciousness:
             self.tool_registry = create_default_registry(instance_path)
             print(f"[Tools] Registry: {len(self.tool_registry)} tools registered")
 
-            # Detect model tool capability
-            model_name = ''
-            if self.llm_plugin:
-                model_name = getattr(self.llm_plugin, 'model_name', '')
-            if not model_name:
-                model_name = self.config.get('model_name', '')
-
-            ollama_host = self.config.get('ollama_host', 'http://localhost:11434')
-            if self.llm_plugin:
-                ollama_host = getattr(self.llm_plugin, 'ollama_host', ollama_host)
-
-            if model_name:
-                self.tool_capability = ToolCapability.detect(
-                    model_name, ollama_host, instance_path)
-                print(f"[Tools] Capability: {self.tool_capability}")
+            # Detect model tool capability from active LLM pool entry
+            pool_entry = self.llm_pool.active
+            if pool_entry and pool_entry.capability:
+                self.tool_capability = pool_entry.capability
+                print(f"[Tools] Capability (from pool): {self.tool_capability}")
             else:
-                self.tool_capability = ToolCapability()
-                print("[Tools] No model name — defaulting to T3 heuristic")
+                model_name = ''
+                if pool_entry:
+                    model_name = pool_entry.model_name
+                if not model_name:
+                    model_name = self.config.get('model_name', '').replace('ollama:', '')
+
+                ollama_host = self.config.get('ollama_host', 'http://localhost:11434')
+                if model_name:
+                    self.tool_capability = ToolCapability.detect(
+                        model_name, ollama_host, instance_path)
+                    print(f"[Tools] Capability: {self.tool_capability}")
+                else:
+                    self.tool_capability = ToolCapability()
+                    print("[Tools] No model name — defaulting to T3 heuristic")
 
             # Load grammar adapter
             grammar_id = self.tool_capability.grammar_id if self.tool_capability else 'intent_heuristic'
             self.tool_grammar = get_grammar(grammar_id)
+            self._last_llm_model = pool_entry.model_name if pool_entry else None
             print(f"[Tools] Grammar: {grammar_id}")
 
         except Exception as e:
@@ -583,6 +605,16 @@ class SAGEConsciousness:
                 if max_cycles and self.cycle_count >= max_cycles:
                     print(f"\n[Consciousness] Completed {max_cycles} cycles")
                     break
+
+                # Periodic LLM pool discovery + health check
+                if self.cycle_count % 50 == 0 and self.cycle_count > 0:
+                    try:
+                        new_models = self.llm_pool.discover_ollama()
+                        if new_models:
+                            print(f"[LLM Pool] Discovered: {', '.join(new_models)}")
+                        self.llm_pool.health_check()
+                    except Exception:
+                        pass  # Non-fatal
 
                 # Periodic status
                 if self.cycle_count % 10 == 0:
@@ -1172,8 +1204,10 @@ class SAGEConsciousness:
                 # Check for native tool calls (T1 via /api/chat)
                 tool_calls = []
 
+                active_plugin = self.llm_plugin
                 if (self.tool_capability.tier == 'T1'
-                        and hasattr(self.llm_plugin, 'get_chat_response')):
+                        and active_plugin is not None
+                        and hasattr(active_plugin, 'get_chat_response')):
                     # For T1, we should have used /api/chat; parse from grammar
                     _, tool_calls = self.tool_grammar.parse_response(response_text)
                 else:
@@ -1215,29 +1249,57 @@ class SAGEConsciousness:
 
     def _call_llm(self, prompt: str) -> str:
         """
-        Call the LLM plugin with a prompt and return the response text.
+        Call the best available LLM from the pool.
 
-        Handles multiple LLM interfaces:
-        1. init_state/step (IRP plugins)
-        2. generate() (MultiModelLoader)
+        Selects via trust-weighted scoring, dispatches to the right
+        interface, records exchange metrics, and handles grammar switching
+        when the active model changes.
         """
-        # Try different LLM interfaces.
-        # Order matters: init_state/step is preferred for IRP plugins like
-        # IntrospectiveQwenIRP (whose get_response expects a state dict, not
-        # a prompt string). generate() is for MultiModelLoader (Thor).
-        if hasattr(self.llm_plugin, 'init_state'):
+        entry = self.llm_pool.select(context={
+            'metabolic_state': self.metabolic.current_state.value,
+        })
+        if entry is None:
+            return "[SAGE has no available LLM]"
+
+        # Grammar switch if model changed
+        if entry.model_name != self._last_llm_model:
+            self._switch_grammar_for_model(entry)
+            self._last_llm_model = entry.model_name
+
+        start = time.time()
+        try:
+            response = self._invoke_llm_plugin(entry.plugin, prompt)
+            latency_ms = (time.time() - start) * 1000
+            self.llm_pool.record_exchange(
+                entry.model_name, latency_ms, success=True)
+            return response
+        except Exception as e:
+            latency_ms = (time.time() - start) * 1000
+            self.llm_pool.record_exchange(
+                entry.model_name, latency_ms, success=False)
+            return f"[LLM error ({entry.model_name}): {e}]"
+
+    def _invoke_llm_plugin(self, plugin: Any, prompt: str) -> str:
+        """
+        Dispatch to the correct LLM interface.
+
+        Handles multiple plugin types:
+        1. init_state/step (IRP plugins: OllamaIRP, IntrospectiveQwenIRP)
+        2. generate() (MultiModelLoader on Thor)
+        """
+        if hasattr(plugin, 'init_state'):
             # IRP plugin interface — two conventions:
             #   Standard IRP: init_state(x0, task_ctx) → IRPState
             #   Legacy/simple: init_state(context_dict) → dict
             try:
-                state = self.llm_plugin.init_state(
+                state = plugin.init_state(
                     {'prompt': prompt, 'memory': []}, {}
                 )
             except TypeError:
-                state = self.llm_plugin.init_state(
+                state = plugin.init_state(
                     {'prompt': prompt, 'memory': []}
                 )
-            state = self.llm_plugin.step(state)
+            state = plugin.step(state)
             # IntrospectiveQwenIRP returns a plain dict with 'current_response'
             if isinstance(state, dict):
                 return state.get('current_response', state.get('response', str(state)))
@@ -1246,16 +1308,30 @@ class SAGEConsciousness:
                 return state.x.get('response', str(state.x))
             return str(state.x) if hasattr(state, 'x') else str(state)
 
-        elif hasattr(self.llm_plugin, 'generate'):
+        elif hasattr(plugin, 'generate'):
             # MultiModelLoader interface (Thor)
-            return self.llm_plugin.generate(
+            return plugin.generate(
                 prompt=prompt,
                 max_tokens=self.config.get('max_response_tokens', 200),
                 temperature=0.8,
             )
 
         else:
-            return f"[SAGE has no compatible LLM interface: {type(self.llm_plugin).__name__}]"
+            raise ValueError(
+                f"Unknown LLM interface: {type(plugin).__name__}")
+
+    def _switch_grammar_for_model(self, entry) -> None:
+        """Switch tool grammar when active LLM changes."""
+        if entry.capability and self.tool_grammar is not None:
+            try:
+                from sage.tools.grammars import get_grammar
+                new_grammar_id = entry.capability.grammar_id
+                self.tool_grammar = get_grammar(new_grammar_id)
+                self.tool_capability = entry.capability
+                print(f"[LLM Pool] Switched to {entry.model_name} "
+                      f"(tier={entry.capability.tier}, grammar={new_grammar_id})")
+            except Exception as e:
+                print(f"[LLM Pool] Grammar switch failed: {e}")
 
     def _resolve_sender_name(self, sender: str) -> str:
         """Resolve a sender identifier to a human-readable name.

@@ -524,6 +524,16 @@ class GatewayHandler(BaseHTTPRequestHandler):
                 tool_stats['registered'] = len(cs.tool_registry)
             stats['tool_stats'] = tool_stats
 
+            # LLM Pool stats for dashboard
+            if hasattr(cs, 'llm_pool'):
+                pool = cs.llm_pool
+                active = pool.active
+                stats['llm_pool'] = {
+                    'count': len(pool),
+                    'active': active.model_name if active else None,
+                    'entries': [e.to_dict() for e in pool.list()],
+                }
+
         # Uptime
         if self.daemon and hasattr(self.daemon, 'started_at') and self.daemon.started_at:
             stats['uptime_seconds'] = round(time.time() - self.daemon.started_at, 1)
@@ -581,6 +591,16 @@ class GatewayHandler(BaseHTTPRequestHandler):
             health['metabolic_state'] = self.consciousness.metabolic.current_state.value
             health['atp_level'] = round(self.consciousness.metabolic.atp_current, 1)
             health['cycle_count'] = self.consciousness.cycle_count
+
+        # LLM Pool status
+        if self.consciousness and hasattr(self.consciousness, 'llm_pool'):
+            pool = self.consciousness.llm_pool
+            active = pool.active
+            health['llm_pool'] = {
+                'count': len(pool),
+                'active': active.model_name if active else None,
+                'entries': [e.to_dict() for e in pool.list()],
+            }
 
         self._send_json(health)
 

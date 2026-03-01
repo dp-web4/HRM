@@ -70,19 +70,21 @@ class GatewayHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         if not self._check_network_gate():
             return
-        if self.path in ('/', '/dashboard'):
+        # Strip query string for route matching
+        path = self.path.split('?')[0]
+        if path in ('/', '/dashboard'):
             self._handle_dashboard()
-        elif self.path == '/stream':
+        elif path == '/stream':
             self._handle_stream()
-        elif self.path.startswith('/images/'):
+        elif path.startswith('/images/'):
             self._handle_static()
-        elif self.path == '/health':
+        elif path == '/health':
             self._handle_health()
-        elif self.path == '/status':
+        elif path == '/status':
             self._handle_status()
-        elif self.path == '/peers':
+        elif path == '/peers':
             self._handle_peers()
-        elif self.path == '/network-access':
+        elif path == '/network-access':
             self._handle_network_access_get()
         else:
             self.send_error(404, "Endpoint not found")

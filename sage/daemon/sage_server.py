@@ -25,7 +25,7 @@ from pydantic import BaseModel
 import uvicorn
 
 # Configuration
-DEFAULT_MODEL = "/home/dp/ai-workspace/HRM/model-zoo/phi-4-mini"
+DEFAULT_MODEL = "/home/dp/ai-workspace/HRM/model-zoo/sage/qwen2.5-7b-instruct"
 DEFAULT_PORT = 8765
 STATE_DIR = Path("/home/dp/ai-workspace/HRM/sage/raising/state")
 IDENTITY_PATH = Path("/home/dp/ai-workspace/HRM/sage/raising/identity/IDENTITY.md")
@@ -228,7 +228,7 @@ class SAGEServer:
         self.model = AutoModelForCausalLM.from_pretrained(
             self.model_path,
             torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
-            device_map=self.device,
+            device_map="auto",  # Let transformers handle device mapping
             trust_remote_code=True
         )
 

@@ -39,18 +39,6 @@ $PYTHON -m sage.raising.scripts.ollama_raising_session --machine legion -c 2>&1
 
 # Instance directory
 INSTANCE_DIR="sage/instances/legion-phi4-14b"
-SNAPSHOT_DIR="$INSTANCE_DIR/snapshots"
-
-# Snapshot live state files (gitignored) to tracked snapshots/ dir
-if [ -d "$INSTANCE_DIR" ]; then
-    mkdir -p "$HRM_DIR/$SNAPSHOT_DIR"
-    for f in identity.json experience_buffer.json peer_trust.json daemon_state.json; do
-        if [ -f "$HRM_DIR/$INSTANCE_DIR/$f" ]; then
-            cp "$HRM_DIR/$INSTANCE_DIR/$f" "$HRM_DIR/$SNAPSHOT_DIR/$f"
-        fi
-    done
-    echo "[Legion-Raising] State snapshot saved to $SNAPSHOT_DIR/"
-fi
 
 # Snapshot live state files into git-tracked snapshots/ directory
 echo "[Legion-Raising] Snapshotting state..."

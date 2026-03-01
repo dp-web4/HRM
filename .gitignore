@@ -219,5 +219,20 @@ sage/logs/mcnugget/
 # Machine-specific daemon runtime state (one daemon per machine)
 sage/raising/state/daemon_state_*.json
 
+# Live daemon state files — written continuously by running daemons.
+# These cause merge conflicts across machines. Raising sessions should
+# snapshot these to sage/instances/<name>/snapshots/ for git persistence.
+sage/instances/*/daemon_state.json
+sage/instances/*/experience_buffer.json
+sage/instances/*/peer_trust.json
+sage/instances/*/identity.json
+# But keep the seed template tracked
+!sage/instances/_seed/identity.json
+sage/raising/state/daemon_state.json
+sage/raising/state/identity.json
+sage/raising/state/experience_buffer*.json
+sage/raising/state/peer_trust*.json
+sage/raising/state/latent_exploration_state.json
+
 # Machine-specific logs
 logs/sage-daemon/*.log

@@ -1013,10 +1013,17 @@ class SAGEConsciousness:
         # IntrospectiveQwenIRP (whose get_response expects a state dict, not
         # a prompt string). generate() is for MultiModelLoader (Thor).
         if hasattr(self.llm_plugin, 'init_state'):
-            # IRP plugin interface (IntrospectiveQwenIRP, OllamaIRP, DaemonIRP, etc.)
-            state = self.llm_plugin.init_state(
-                {'prompt': prompt, 'memory': []}
-            )
+            # IRP plugin interface — two conventions:
+            #   Standard IRP: init_state(x0, task_ctx) → IRPState
+            #   Legacy/simple: init_state(context_dict) → dict
+            try:
+                state = self.llm_plugin.init_state(
+                    {'prompt': prompt, 'memory': []}, {}
+                )
+            except TypeError:
+                state = self.llm_plugin.init_state(
+                    {'prompt': prompt, 'memory': []}
+                )
             state = self.llm_plugin.step(state)
             # IntrospectiveQwenIRP returns a plain dict with 'current_response'
             if isinstance(state, dict):

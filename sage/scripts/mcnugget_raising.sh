@@ -18,7 +18,7 @@ source "$HRM_DIR/sage/scripts/ensure_daemon.sh"
 echo "[McNugget-Raising] Daemon: version=$SAGE_DAEMON_VERSION updated=$SAGE_DAEMON_UPDATED"
 
 # Run the raising session (continue from last session number)
-/opt/homebrew/bin/python3 -m sage.raising.scripts.mcnugget_raising_session -c 2>&1
+/opt/homebrew/bin/python3 -m sage.raising.scripts.ollama_raising_session --machine mcnugget -c 2>&1
 
 # Instance directory (new layout) and legacy paths
 INSTANCE_DIR="sage/instances/mcnugget-gemma3-12b"

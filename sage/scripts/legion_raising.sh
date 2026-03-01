@@ -35,7 +35,7 @@ fi
 git pull --rebase --quiet 2>/dev/null || echo "[Legion-Raising] WARN: git pull failed, continuing with current code"
 
 # Run the raising session (continue from last session number)
-$PYTHON -m sage.raising.scripts.legion_raising_session -c 2>&1
+$PYTHON -m sage.raising.scripts.ollama_raising_session --machine legion -c 2>&1
 
 # Instance directory (new layout) and legacy paths
 INSTANCE_DIR="sage/instances/legion-qwen2-0.5b"

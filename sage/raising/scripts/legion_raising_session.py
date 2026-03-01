@@ -1,22 +1,15 @@
 #!/usr/bin/env python3
 """
-Legion Raising Session Runner
-================================
+Legion Raising Session Runner (DEPRECATED)
+============================================
 
-SAGE-Legion raising via OllamaIRP — no torch, no CUDA dependency.
-Uses the same BECOMING_CURRICULUM as other machines but through Ollama's HTTP API,
-targeting Qwen 2 0.5B on Legion (Legion Pro 7, RTX 4090, Linux).
+DEPRECATED: Use ollama_raising_session.py instead:
+    python3 -m sage.raising.scripts.ollama_raising_session --machine legion -c
 
-This is a new SAGE instance starting from Phase 1 (grounding), building
-its own developmental trajectory with identity bound to this machine.
+This file is kept for backward compatibility during the transition period.
+It delegates to the unified OllamaIRP runner.
 
-Key differences from Sprout's runner:
-- OllamaIRP instead of IntrospectiveQwenIRP (no torch dependency)
-- Own identity state (legion_identity.json, not identity.json)
-- Machine+model bound experience buffer
-- No LoRA/sleep training (Ollama models aren't fine-tunable this way)
-- 0.5B model — same capacity as Sprout but different substrate (Ollama vs torch)
-
+Original: SAGE-Legion raising via OllamaIRP — no torch, no CUDA dependency.
 Created: 2026-02-28 (Legion first raising)
 """
 

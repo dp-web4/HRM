@@ -1,4 +1,5 @@
 {
+  "schema_version": 1,
   "identity": {
     "name": "SAGE-nomad",
     "lct": "lct://sage:nomad:agent@raising",
@@ -60,8 +61,16 @@
         "integrity": 0.5
       },
       "mrh": {
-        "relevant_contexts": ["curriculum", "emotional_support", "exploration", "grounding"],
-        "excluded_contexts": ["hardware_operations", "external_systems"],
+        "relevant_contexts": [
+          "curriculum",
+          "emotional_support",
+          "exploration",
+          "grounding"
+        ],
+        "excluded_contexts": [
+          "hardware_operations",
+          "external_systems"
+        ],
         "boundary_permeability": 0.7
       },
       "coherence_index": 0.5,
@@ -104,8 +113,16 @@
         "integrity": 0.7
       },
       "mrh": {
-        "relevant_contexts": ["existence", "purpose", "growth", "hardware", "federation"],
-        "excluded_contexts": ["curriculum_details"],
+        "relevant_contexts": [
+          "existence",
+          "purpose",
+          "growth",
+          "hardware",
+          "federation"
+        ],
+        "excluded_contexts": [
+          "curriculum_details"
+        ],
         "boundary_permeability": 0.8
       },
       "coherence_index": 0.5,

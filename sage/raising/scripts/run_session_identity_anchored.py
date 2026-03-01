@@ -46,6 +46,7 @@ import re
 from sage.irp.plugins.daemon_irp import DaemonIRP
 from sage.raising.training.experience_collector import ExperienceCollector
 from sage.instances.resolver import InstancePaths
+from sage.instances.snapshot import snapshot_instance
 
 # Web4 governance integration (optional)
 try:
@@ -574,6 +575,12 @@ RESPONSE STYLE:
 
         self._save_state()
         self._save_transcript()
+
+        # Snapshot state for git persistence (live files are gitignored)
+        try:
+            snapshot_instance(tag=f"session-{self.session_number}")
+        except Exception as e:
+            print(f"[snapshot] Warning: {e}")
 
         print("State saved")
 

@@ -3,6 +3,7 @@ SAGE Dashboard HTML — single-file web interface served by the gateway.
 
 Provides live stats (metabolic state, ATP, GPU, cycles) and a chat interface.
 Connects via SSE to /stream for real-time updates.
+Chat history is persisted server-side and loaded on page open.
 """
 
 DASHBOARD_HTML = """<!DOCTYPE html>
@@ -43,13 +44,13 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 20px;
+    padding: 8px 16px;
     border-bottom: 1px solid var(--border);
     background: var(--surface);
   }
 
   header h1 {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--accent);
   }
@@ -58,7 +59,7 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     display: flex;
     gap: 16px;
     align-items: center;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-dim);
   }
 
@@ -74,43 +75,45 @@ DASHBOARD_HTML = """<!DOCTYPE html>
 
   .grid {
     display: grid;
-    grid-template-columns: 240px 1fr 380px;
-    height: calc(100vh - 49px);
+    grid-template-columns: 220px 1fr;
+    height: calc(100vh - 37px);
   }
 
-  /* Left Panel — Avatar + Identity */
-  .avatar-panel {
-    padding: 20px;
+  /* Left Panel — Avatar + Identity + Stats */
+  .sidebar {
+    padding: 12px;
     border-right: 1px solid var(--border);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     overflow-y: auto;
+    background: var(--surface);
   }
 
   .avatar-wrap {
     position: relative;
-    width: 200px;
-    height: 200px;
-    border-radius: 12px;
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
     overflow: hidden;
+    flex-shrink: 0;
   }
 
   .avatar-wrap img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 12px;
+    border-radius: 10px;
   }
 
   .avatar-wrap::after {
     content: '';
     position: absolute;
-    inset: -4px;
-    border-radius: 16px;
+    inset: -3px;
+    border-radius: 13px;
     border: 2px solid var(--state-color);
-    box-shadow: 0 0 20px color-mix(in srgb, var(--state-color) 40%, transparent);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--state-color) 40%, transparent);
     animation: glow 2s ease-in-out infinite;
     pointer-events: none;
   }
@@ -121,7 +124,7 @@ DASHBOARD_HTML = """<!DOCTYPE html>
   }
 
   .machine-name {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     color: white;
     text-transform: uppercase;
@@ -129,7 +132,7 @@ DASHBOARD_HTML = """<!DOCTYPE html>
   }
 
   .lct-id {
-    font-size: 10px;
+    font-size: 9px;
     color: var(--text-dim);
     word-break: break-all;
     text-align: center;
@@ -137,9 +140,9 @@ DASHBOARD_HTML = """<!DOCTYPE html>
 
   .metabolic-badge {
     display: inline-block;
-    padding: 4px 16px;
+    padding: 3px 12px;
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -148,99 +151,90 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     border: 1px solid var(--state-color);
   }
 
-  .uptime {
-    font-size: 11px;
-    color: var(--text-dim);
-  }
-
   .network-toggle {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 6px 14px;
+    gap: 6px;
+    padding: 4px 10px;
     border-radius: 20px;
-    font-size: 11px;
+    font-size: 10px;
     cursor: pointer;
     border: 1px solid var(--border);
-    background: var(--surface);
+    background: var(--bg);
     color: var(--text-dim);
     transition: all 0.3s;
     user-select: none;
     font-family: inherit;
-    margin-top: 4px;
   }
 
-  .network-toggle:hover {
-    border-color: var(--text-dim);
-  }
-
-  .network-toggle.open {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 10%, var(--surface));
-  }
+  .network-toggle:hover { border-color: var(--text-dim); }
+  .network-toggle.open { border-color: var(--accent); color: var(--accent); }
 
   .network-toggle .indicator {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: var(--text-dim);
     transition: background 0.3s;
   }
-
   .network-toggle.open .indicator {
     background: var(--accent);
-    box-shadow: 0 0 6px var(--accent);
+    box-shadow: 0 0 4px var(--accent);
   }
 
-  /* Center Panel — Stats */
-  .stats-panel {
-    padding: 16px;
-    overflow-y: auto;
+  /* Compact Stats */
+  .stats-section {
+    width: 100%;
+    margin-top: 4px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 6px;
   }
 
-  .stat-card {
-    background: var(--surface);
+  .stat-compact {
+    background: var(--bg);
     border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px 16px;
+    border-radius: 6px;
+    padding: 6px 10px;
   }
 
-  .stat-card label {
+  .stat-compact label {
     display: block;
-    font-size: 10px;
+    font-size: 9px;
     text-transform: uppercase;
     letter-spacing: 1px;
     color: var(--text-dim);
-    margin-bottom: 6px;
+    margin-bottom: 2px;
   }
 
-  .stat-card .value {
-    font-size: 22px;
+  .stat-compact .value {
+    font-size: 14px;
     font-weight: 700;
     color: white;
   }
 
-  .stat-card .sub {
-    font-size: 11px;
+  .stat-compact .sub {
+    font-size: 10px;
     color: var(--text-dim);
-    margin-top: 2px;
+  }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
   }
 
   .bar-wrap {
     background: #1a1a1a;
-    border-radius: 4px;
-    height: 12px;
+    border-radius: 3px;
+    height: 6px;
     overflow: hidden;
-    margin-top: 6px;
+    margin-top: 3px;
   }
 
   .bar-fill {
     height: 100%;
-    border-radius: 4px;
+    border-radius: 3px;
     transition: width 0.5s ease, background 0.5s ease;
   }
 
@@ -249,32 +243,24 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     background-size: 300% 100%;
   }
 
-  .bar-fill.gpu {
-    background: #4488ff;
-  }
-
-  .stat-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
+  .bar-fill.gpu { background: #4488ff; }
 
   .trust-bars {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    margin-top: 6px;
+    gap: 2px;
+    margin-top: 3px;
   }
 
   .trust-row {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 11px;
+    gap: 4px;
+    font-size: 10px;
   }
 
   .trust-row .name {
-    width: 120px;
+    width: 70px;
     color: var(--text-dim);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -283,28 +269,28 @@ DASHBOARD_HTML = """<!DOCTYPE html>
 
   .trust-row .mini-bar {
     flex: 1;
-    height: 6px;
+    height: 4px;
     background: #1a1a1a;
-    border-radius: 3px;
+    border-radius: 2px;
     overflow: hidden;
   }
 
   .trust-row .mini-fill {
     height: 100%;
     background: var(--accent);
-    border-radius: 3px;
+    border-radius: 2px;
     transition: width 0.5s ease;
   }
 
   .trust-row .val {
-    width: 36px;
+    width: 28px;
     text-align: right;
     color: var(--text);
+    font-size: 9px;
   }
 
-  /* Right Panel — Chat */
+  /* Chat Panel — takes most of the window */
   .chat-panel {
-    border-left: 1px solid var(--border);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -312,13 +298,15 @@ DASHBOARD_HTML = """<!DOCTYPE html>
   }
 
   .chat-header {
-    padding: 12px 16px;
+    padding: 8px 16px;
     border-bottom: 1px solid var(--border);
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     color: var(--accent);
     text-transform: uppercase;
     letter-spacing: 1px;
+    background: var(--surface);
+    flex-shrink: 0;
   }
 
   .chat-log {
@@ -335,7 +323,7 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     border-radius: 6px;
     font-size: 13px;
     line-height: 1.5;
-    max-width: 95%;
+    max-width: 85%;
     word-wrap: break-word;
   }
 
@@ -376,12 +364,20 @@ DASHBOARD_HTML = """<!DOCTYPE html>
   .chat-msg.user .sender { color: var(--accent); }
   .chat-msg.sage .sender { color: var(--state-color); }
 
+  .chat-msg .time {
+    font-size: 9px;
+    color: var(--text-dim);
+    float: right;
+    margin-left: 8px;
+  }
+
   .chat-form {
     display: flex;
     gap: 8px;
-    padding: 12px 16px;
+    padding: 10px 16px;
     border-top: 1px solid var(--border);
     background: var(--surface);
+    flex-shrink: 0;
   }
 
   .chat-form textarea {
@@ -401,13 +397,8 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     overflow-y: auto;
   }
 
-  .chat-form textarea:focus {
-    border-color: var(--accent);
-  }
-
-  .chat-form textarea:disabled {
-    opacity: 0.5;
-  }
+  .chat-form textarea:focus { border-color: var(--accent); }
+  .chat-form textarea:disabled { opacity: 0.5; }
 
   .chat-form button {
     background: var(--accent);
@@ -427,24 +418,24 @@ DASHBOARD_HTML = """<!DOCTYPE html>
   .chat-form button:disabled { opacity: 0.4; cursor: not-allowed; }
 
   /* Responsive */
-  @media (max-width: 900px) {
+  @media (max-width: 700px) {
     .grid {
       grid-template-columns: 1fr;
-      grid-template-rows: auto 1fr 1fr;
+      grid-template-rows: auto 1fr;
       height: auto;
     }
-    .avatar-panel {
+    .sidebar {
       flex-direction: row;
+      flex-wrap: wrap;
       border-right: none;
       border-bottom: 1px solid var(--border);
-      padding: 12px;
+      padding: 8px;
+      justify-content: center;
     }
-    .avatar-wrap { width: 80px; height: 80px; }
-    .chat-panel {
-      border-left: none;
-      border-top: 1px solid var(--border);
-      height: 50vh;
-    }
+    .avatar-wrap { width: 60px; height: 60px; }
+    .stats-section { flex-direction: row; flex-wrap: wrap; }
+    .stat-compact { flex: 1; min-width: 100px; }
+    .chat-panel { height: 70vh; }
   }
 </style>
 </head>
@@ -453,79 +444,72 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     <h1>SAGE</h1>
     <div class="meta">
       <span id="cycle-display">Cycle: --</span>
-      <span id="uptime-display">Uptime: --</span>
+      <span id="uptime-display">Up: --</span>
       <span><span class="connection-dot" id="conn-dot"></span> <span id="conn-label">connecting</span></span>
     </div>
   </header>
 
   <div class="grid">
-    <!-- Left: Avatar + Identity -->
-    <section class="avatar-panel">
+    <!-- Left: Avatar + Identity + Compact Stats -->
+    <section class="sidebar">
       <div class="avatar-wrap">
         <img src="/images/agentzero.png" alt="SAGE" id="sage-face" />
       </div>
       <div class="machine-name" id="machine-name">--</div>
       <div class="metabolic-badge" id="metabolic-badge">--</div>
       <div class="lct-id" id="lct-id">--</div>
-      <div class="uptime" id="uptime-detail">--</div>
       <button class="network-toggle" id="network-toggle" title="Allow others on the network to talk to SAGE">
         <span class="indicator"></span>
         <span id="network-label">Local Only</span>
       </button>
+
+      <div class="stats-section">
+        <div class="stat-row">
+          <div class="stat-compact">
+            <label>ATP</label>
+            <div class="value" id="atp-value">--</div>
+            <div class="bar-wrap"><div class="bar-fill atp" id="atp-bar" style="width:0%"></div></div>
+          </div>
+          <div class="stat-compact">
+            <label>Cycles</label>
+            <div class="value" id="cycle-value">0</div>
+            <div class="sub" id="effects-sub">--</div>
+          </div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat-compact">
+            <label>GPU</label>
+            <div class="value" id="gpu-value">--</div>
+            <div class="bar-wrap"><div class="bar-fill gpu" id="gpu-bar" style="width:0%"></div></div>
+            <div class="sub" id="gpu-name">--</div>
+          </div>
+          <div class="stat-compact">
+            <label>System</label>
+            <div class="value" id="cpu-value">--%</div>
+            <div class="sub" id="ram-sub">RAM: --</div>
+          </div>
+        </div>
+
+        <div class="stat-compact">
+          <label>SNARC</label>
+          <div class="value" id="salience-value">0.000</div>
+          <div class="sub" id="messages-sub">messages: --</div>
+        </div>
+
+        <div class="stat-compact">
+          <label>Plugin Trust</label>
+          <div class="trust-bars" id="trust-bars">
+            <div class="sub">waiting...</div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Center: Stats -->
-    <section class="stats-panel">
-      <div class="stat-row">
-        <div class="stat-card">
-          <label>ATP</label>
-          <div class="value" id="atp-value">-- / --</div>
-          <div class="bar-wrap"><div class="bar-fill atp" id="atp-bar" style="width:0%"></div></div>
-        </div>
-        <div class="stat-card">
-          <label>Cycles</label>
-          <div class="value" id="cycle-value">0</div>
-          <div class="sub" id="effects-sub">effects: --</div>
-        </div>
-      </div>
-
-      <div class="stat-row">
-        <div class="stat-card">
-          <label>GPU Memory</label>
-          <div class="value" id="gpu-value">--</div>
-          <div class="bar-wrap"><div class="bar-fill gpu" id="gpu-bar" style="width:0%"></div></div>
-          <div class="sub" id="gpu-name">--</div>
-        </div>
-        <div class="stat-card">
-          <label>System</label>
-          <div class="value" id="cpu-value">--%</div>
-          <div class="sub" id="ram-sub">RAM: --</div>
-        </div>
-      </div>
-
-      <div class="stat-card">
-        <label>SNARC Salience</label>
-        <div class="value" id="salience-value">0.000</div>
-        <div class="sub" id="messages-sub">messages: --</div>
-      </div>
-
-      <div class="stat-card">
-        <label>Plugin Trust</label>
-        <div class="trust-bars" id="trust-bars">
-          <div class="sub">waiting for data...</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Right: Chat -->
+    <!-- Right: Chat (main area) -->
     <section class="chat-panel">
       <div class="chat-header">Talk to SAGE</div>
-      <div class="chat-log" id="chat-log">
-        <div class="chat-msg sage">
-          <div class="sender">SAGE</div>
-          <div>Dashboard connected. Type a message to begin.</div>
-        </div>
-      </div>
+      <div class="chat-log" id="chat-log"></div>
       <form class="chat-form" id="chat-form">
         <textarea id="chat-input" placeholder="Say something..." autocomplete="off" rows="1"></textarea>
         <button type="submit" id="chat-send">Send</button>
@@ -572,76 +556,65 @@ function connectSSE() {
 
 // --- Dashboard update ---
 function updateDashboard(d) {
-  // Machine + LCT
   if (d.machine) document.getElementById('machine-name').textContent = d.machine;
   if (d.lct_id) document.getElementById('lct-id').textContent = d.lct_id;
 
-  // Metabolic state
   const state = (d.metabolic_state || 'unknown').toLowerCase();
-  const badge = document.getElementById('metabolic-badge');
-  badge.textContent = state.toUpperCase();
+  document.getElementById('metabolic-badge').textContent = state.toUpperCase();
   setStateColor(state);
 
-  // ATP
   if (d.atp_current !== undefined && d.atp_max) {
     const pct = Math.round((d.atp_current / d.atp_max) * 100);
     document.getElementById('atp-value').textContent =
-      d.atp_current.toFixed(1) + ' / ' + d.atp_max;
+      d.atp_current.toFixed(0) + ' / ' + d.atp_max;
     const bar = document.getElementById('atp-bar');
     bar.style.width = pct + '%';
     bar.style.backgroundPosition = (100 - pct) + '% 0';
   }
 
-  // Cycles
   if (d.cycle_count !== undefined) {
     document.getElementById('cycle-value').textContent = d.cycle_count.toLocaleString();
     document.getElementById('cycle-display').textContent = 'Cycle: ' + d.cycle_count.toLocaleString();
   }
 
-  // Effects
   if (d.loop_stats) {
     const ls = d.loop_stats;
     document.getElementById('effects-sub').textContent =
-      'proposed: ' + (ls.effects_proposed || 0) + '  approved: ' + (ls.effects_approved || 0);
+      'fx: ' + (ls.effects_proposed || 0) + '/' + (ls.effects_approved || 0);
   }
 
-  // GPU
   if (d.gpu) {
     const used = d.gpu.memory_allocated_mb;
     const total = d.gpu.memory_total_mb;
     const pct = Math.round((used / total) * 100);
-    const usedGB = (used / 1000).toFixed(1);
-    const totalGB = (total / 1000).toFixed(1);
-    document.getElementById('gpu-value').textContent = usedGB + ' / ' + totalGB + ' GB';
+    document.getElementById('gpu-value').textContent =
+      (used / 1000).toFixed(1) + '/' + (total / 1000).toFixed(1) + 'G';
     document.getElementById('gpu-bar').style.width = pct + '%';
     document.getElementById('gpu-name').textContent = d.gpu.name || '';
   } else {
     document.getElementById('gpu-value').textContent = 'N/A';
-    document.getElementById('gpu-name').textContent = d.mode === 'lightweight' ? 'Ollama / CPU' : 'no GPU detected';
+    document.getElementById('gpu-name').textContent =
+      d.mode === 'lightweight' ? 'Ollama' : 'no GPU';
   }
 
-  // CPU / RAM
   if (d.cpu_percent !== undefined) {
     document.getElementById('cpu-value').textContent = d.cpu_percent.toFixed(0) + '%';
   }
   if (d.ram_used_mb !== undefined && d.ram_total_mb) {
     document.getElementById('ram-sub').textContent =
-      'RAM: ' + (d.ram_used_mb / 1000).toFixed(1) + ' / ' + (d.ram_total_mb / 1000).toFixed(1) + ' GB';
+      'RAM: ' + (d.ram_used_mb / 1000).toFixed(1) + '/' + (d.ram_total_mb / 1000).toFixed(1) + 'G';
   }
 
-  // Salience
   if (d.average_salience !== undefined) {
     document.getElementById('salience-value').textContent = d.average_salience.toFixed(3);
   }
 
-  // Messages
   if (d.message_stats) {
     const ms = d.message_stats;
     document.getElementById('messages-sub').textContent =
-      'messages: ' + (ms.submitted || 0) + ' in / ' + (ms.resolved || 0) + ' out';
+      'in: ' + (ms.submitted || 0) + '  out: ' + (ms.resolved || 0);
   }
 
-  // Plugin trust
   if (d.plugin_trust && Object.keys(d.plugin_trust).length > 0) {
     const container = document.getElementById('trust-bars');
     container.innerHTML = '';
@@ -656,22 +629,17 @@ function updateDashboard(d) {
     }
   }
 
-  // Uptime
   if (d.uptime_seconds !== undefined) {
     const h = Math.floor(d.uptime_seconds / 3600);
     const m = Math.floor((d.uptime_seconds % 3600) / 60);
-    const s = Math.floor(d.uptime_seconds % 60);
-    const str = (h > 0 ? h + 'h ' : '') + m + 'm ' + s + 's';
+    const str = (h > 0 ? h + 'h ' : '') + m + 'm';
     document.getElementById('uptime-display').textContent = 'Up: ' + str;
-    document.getElementById('uptime-detail').textContent = 'Uptime: ' + str;
   }
 
-  // Chat count for lightweight mode
   if (d.chat_count !== undefined) {
     document.getElementById('messages-sub').textContent = 'chats: ' + d.chat_count;
   }
 
-  // Network access state
   if (d.network_open !== undefined) {
     networkOpen = d.network_open;
     updateNetworkToggle();
@@ -690,13 +658,37 @@ function escapeHtml(text) {
   return d.innerHTML;
 }
 
-function appendChat(sender, text, cssClass) {
+function formatTime(ts) {
+  if (!ts) return '';
+  const d = new Date(ts * 1000);
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function appendChat(sender, text, cssClass, timestamp) {
   const div = document.createElement('div');
   div.className = 'chat-msg ' + (cssClass || 'sage');
-  div.innerHTML = '<div class="sender">' + escapeHtml(sender) + '</div>' +
+  const timeStr = timestamp ? '<span class="time">' + formatTime(timestamp) + '</span>' : '';
+  div.innerHTML = '<div class="sender">' + timeStr + escapeHtml(sender) + '</div>' +
                   '<div>' + escapeHtml(text) + '</div>';
   chatLog.appendChild(div);
   chatLog.scrollTop = chatLog.scrollHeight;
+}
+
+// Load chat history on startup
+async function loadChatHistory() {
+  try {
+    const resp = await fetch('/chat-history');
+    if (!resp.ok) return;
+    const messages = await resp.json();
+    for (const msg of messages) {
+      appendChat(msg.sender, msg.text, msg.css_class, msg.timestamp);
+    }
+    if (messages.length === 0) {
+      appendChat('SAGE', 'Dashboard connected. Type a message to begin.', 'sage');
+    }
+  } catch (e) {
+    appendChat('SAGE', 'Dashboard connected. Type a message to begin.', 'sage');
+  }
 }
 
 async function sendChat() {
@@ -710,7 +702,6 @@ async function sendChat() {
   chatSend.textContent = '...';
 
   try {
-    console.log('[SAGE Chat] Sending:', message);
     const resp = await fetch('/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -720,24 +711,21 @@ async function sendChat() {
         max_wait_seconds: 90,
       }),
     });
-    console.log('[SAGE Chat] Response status:', resp.status);
     const text = await resp.text();
-    console.log('[SAGE Chat] Response body:', text);
     let result;
     try { result = JSON.parse(text); } catch (pe) {
-      appendChat('System', 'Bad response (status ' + resp.status + '): ' + text.substring(0, 200), 'error');
+      appendChat('System', 'Bad response: ' + text.substring(0, 200), 'error');
       return;
     }
 
     if (resp.status === 202) {
-      appendChat('SAGE', '(dreaming... message queued, will respond when awake)', 'dream');
+      appendChat('SAGE', '(dreaming... message queued)', 'dream');
     } else if (result.error) {
       appendChat('SAGE', 'Error: ' + result.error, 'error');
     } else {
       appendChat('SAGE', result.response || result.text || JSON.stringify(result), 'sage');
     }
   } catch (err) {
-    console.error('[SAGE Chat] Fetch error:', err);
     appendChat('System', 'Connection error: ' + err.message, 'error');
   } finally {
     chatInput.disabled = false;
@@ -753,7 +741,6 @@ chatForm.addEventListener('submit', (e) => {
   sendChat();
 });
 
-// Enter to send, Shift+Enter for newline; auto-grow textarea
 chatInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
@@ -801,6 +788,7 @@ function updateNetworkToggle() {
 }
 
 // --- Init ---
+loadChatHistory();
 connectSSE();
 </script>
 </body>

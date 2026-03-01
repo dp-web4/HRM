@@ -34,6 +34,10 @@ class OllamaIRP(IRPPlugin):
     Implements get_response(prompt) for direct consciousness loop
     integration (Style 1 in sage_consciousness._generate_llm_response),
     plus the full IRP contract for orchestrator compatibility.
+
+    Tool use support (v0.4):
+        - get_chat_response(): Uses /api/chat with optional tools parameter
+        - Supports T1 native tool calling via structured messages
     """
 
     def __init__(self, config: Optional[Dict[str, Any]] = None):
@@ -129,6 +133,71 @@ class OllamaIRP(IRPPlugin):
             return f"[OllamaIRP: Invalid response from Ollama: {e}]"
         except Exception as e:
             return f"[OllamaIRP: Unexpected error: {e}]"
+
+    def get_chat_response(
+        self,
+        messages: List[Dict[str, str]],
+        tools: Optional[List[Dict[str, Any]]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Generate a response using Ollama /api/chat endpoint.
+
+        Supports structured messages and native tool calling (T1).
+
+        Args:
+            messages: List of {"role": "system"|"user"|"assistant"|"tool", "content": "..."}
+            tools: Optional list of Ollama tool definitions (T1 native tools)
+
+        Returns:
+            Dict with keys: 'content' (str), 'tool_calls' (list, may be empty),
+            'role' (str), 'raw' (full Ollama response)
+        """
+        if not self._ollama_available:
+            self._ollama_available = self._check_ollama()
+            if not self._ollama_available:
+                return {'content': '[OllamaIRP: Ollama not reachable]', 'tool_calls': [], 'role': 'assistant', 'raw': {}}
+
+        payload: Dict[str, Any] = {
+            'model': self.model_name,
+            'messages': messages,
+            'stream': False,
+            'keep_alive': -1,
+            'options': {
+                'num_predict': self.max_response_tokens,
+                'temperature': self.temperature,
+            },
+        }
+
+        if tools:
+            payload['tools'] = tools
+
+        try:
+            data = json.dumps(payload).encode('utf-8')
+            req = urllib.request.Request(
+                f'{self.ollama_host}/api/chat',
+                data=data,
+                headers={'Content-Type': 'application/json'},
+                method='POST',
+            )
+            with urllib.request.urlopen(req, timeout=self.timeout_seconds) as resp:
+                result = json.loads(resp.read())
+
+            message = result.get('message', {})
+            content = message.get('content', '').strip()
+            tool_calls = message.get('tool_calls', [])
+
+            return {
+                'content': content,
+                'tool_calls': tool_calls,
+                'role': message.get('role', 'assistant'),
+                'raw': result,
+            }
+
+        except urllib.error.URLError as e:
+            self._ollama_available = False
+            return {'content': f'[OllamaIRP: Connection error: {e}]', 'tool_calls': [], 'role': 'assistant', 'raw': {}}
+        except Exception as e:
+            return {'content': f'[OllamaIRP: Error: {e}]', 'tool_calls': [], 'role': 'assistant', 'raw': {}}
 
     def _update_memory(self, prompt: str, response: str):
         """Update conversation memory for context."""

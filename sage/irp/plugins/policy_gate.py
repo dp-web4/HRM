@@ -417,6 +417,77 @@ class PolicyGateIRP(IRPPlugin):
         """Get the full decision log for audit trail."""
         return list(self.decision_log)
 
+    # =========================================================================
+    # Tool-specific policy rules (v0.4)
+    # =========================================================================
+
+    TOOL_POLICY_MATRIX = {
+        # policy_level → {metabolic_state → decision}
+        'standard': {
+            'wake': 'allow', 'focus': 'allow',
+            'rest': 'warn', 'dream': 'deny', 'crisis': 'warn',
+        },
+        'elevated': {
+            'wake': 'warn', 'focus': 'allow',
+            'rest': 'deny', 'dream': 'deny', 'crisis': 'deny',
+        },
+        'dangerous': {
+            'wake': 'deny', 'focus': 'allow',
+            'rest': 'deny', 'dream': 'deny', 'crisis': 'deny',
+        },
+    }
+
+    def evaluate_tool_action(
+        self,
+        tool_name: str,
+        policy_level: str,
+        metabolic_state: str,
+        atp_available: float,
+    ) -> PolicyGateDecision:
+        """
+        Evaluate a tool invocation against metabolic-state-based policy.
+
+        This is a convenience method for the tool use system. It creates
+        the appropriate PolicyGateDecision without running the full IRP
+        refinement loop.
+
+        Args:
+            tool_name: Name of the tool being invoked
+            policy_level: 'standard' | 'elevated' | 'dangerous'
+            metabolic_state: Current metabolic state
+            atp_available: Current ATP level
+
+        Returns:
+            PolicyGateDecision with allow/warn/deny
+        """
+        # ATP floor check (all tools)
+        if atp_available < 5.0:
+            return PolicyGateDecision(
+                decision='deny',
+                energy=self.ENERGY_DENY,
+                rule_id='tool_atp_floor',
+                rule_name='Minimum ATP for tools',
+                reason=f'ATP too low ({atp_available:.1f} < 5.0)',
+                accountability_frame=METABOLIC_ACCOUNTABILITY.get(
+                    metabolic_state, AccountabilityFrame.NORMAL).value,
+                metabolic_state=metabolic_state,
+            )
+
+        # Look up decision from policy matrix
+        level_rules = self.TOOL_POLICY_MATRIX.get(policy_level, self.TOOL_POLICY_MATRIX['standard'])
+        decision = level_rules.get(metabolic_state, 'warn')
+
+        return PolicyGateDecision(
+            decision=decision,
+            energy=self._decision_to_energy(decision),
+            rule_id=f'tool_{policy_level}_{metabolic_state}',
+            rule_name=f'{policy_level} tool in {metabolic_state}',
+            reason=f'{policy_level} tool "{tool_name}" {decision}ed in {metabolic_state} state',
+            accountability_frame=METABOLIC_ACCOUNTABILITY.get(
+                metabolic_state, AccountabilityFrame.NORMAL).value,
+            metabolic_state=metabolic_state,
+        )
+
     def to_snarc_scores(self, state: IRPState) -> Dict[str, float]:
         """
         Map PolicyGate evaluation to SNARC 5D salience scores

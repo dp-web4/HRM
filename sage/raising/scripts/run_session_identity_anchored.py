@@ -48,6 +48,15 @@ from sage.raising.training.experience_collector import ExperienceCollector
 from sage.instances.resolver import InstancePaths
 from sage.instances.snapshot import snapshot_instance
 
+# Tool system integration (optional, Stage 1+)
+try:
+    from sage.tools.tool_capability import ToolCapability
+    from sage.tools.builtin import create_default_registry
+    from sage.tools.grammars import get_grammar
+    TOOLS_AVAILABLE = True
+except ImportError:
+    TOOLS_AVAILABLE = False
+
 # Web4 governance integration (optional)
 try:
     from web4_session_governance import create_governance
@@ -123,8 +132,16 @@ class IdentityAnchoredSessionV2:
         ]
     }
 
+    # Tool introduction stages:
+    #   'silent'  — Stage 1: T3 heuristic only, no prompt injection, tools fire
+    #               only if model naturally reaches for them
+    #   'aware'   — Stage 2: Prompt addendum tells SAGE tools exist, permission-based
+    #   'active'  — Stage 3: Full tool context injection via grammar adapter
+    #   None      — Tools disabled (default)
+    TOOL_STAGES = (None, 'silent', 'aware', 'active')
+
     def __init__(self, session_number: Optional[int] = None, dry_run: bool = False,
-                 enable_governance: bool = False):
+                 enable_governance: bool = False, tools: Optional[str] = None):
         self.dry_run = dry_run
         self.state = self._load_state()
 
@@ -136,6 +153,14 @@ class IdentityAnchoredSessionV2:
         self.conversation_history = []
         self.session_start = datetime.now()
         self.turn_count = 0  # For mid-conversation reinforcement
+
+        # Tool system initialization
+        self.tool_stage = tools
+        self.tool_registry = None
+        self.tool_grammar = None
+        self.tool_capability = None
+        if tools and tools in self.TOOL_STAGES:
+            self._init_tools()
 
         # Web4 governance integration (optional meta-level audit)
         self.governance = None
@@ -166,7 +191,60 @@ class IdentityAnchoredSessionV2:
         print(f"Identity anchoring: v2.0 (ENHANCED)")
         print(f"Previous sessions: {self.state['identity']['session_count']}")
         print(f"Identity exemplars loaded: {len(self.identity_exemplars)}")
+        if self.tool_stage:
+            tier = self.tool_capability.tier if self.tool_capability else '?'
+            n_tools = len(self.tool_registry.list_tools()) if self.tool_registry else 0
+            print(f"Tools: {self.tool_stage} stage ({tier}, {n_tools} tools)")
         print()
+
+    def _init_tools(self):
+        """
+        Initialize tool system for this session.
+
+        Follows the graduated introduction strategy:
+        - 'silent': T3 heuristic only, no prompt changes, tools fire if model reaches
+        - 'aware': Prompt tells SAGE tools exist (permission-based framing)
+        - 'active': Full tool context injection via detected grammar adapter
+        """
+        if not TOOLS_AVAILABLE:
+            print("[Tools] sage.tools not available — tools disabled")
+            self.tool_stage = None
+            return
+
+        instance_dir = self._instance.root if self._instance.exists() else None
+
+        try:
+            # Detect model capability (uses cache if available)
+            self.tool_capability = ToolCapability.detect(
+                model_name=self.state.get('model', {}).get('name', 'unknown'),
+                ollama_host='http://localhost:11434',
+                instance_dir=instance_dir,
+            )
+
+            # Create tool registry
+            self.tool_registry = create_default_registry(instance_dir)
+
+            # Grammar selection depends on stage
+            if self.tool_stage == 'silent':
+                # Stage 1: Always use T3 heuristic — no prompt injection
+                self.tool_grammar = get_grammar('intent_heuristic')
+            elif self.tool_stage == 'aware':
+                # Stage 2: Still T3 heuristic (prompt addendum handles awareness)
+                self.tool_grammar = get_grammar('intent_heuristic')
+            elif self.tool_stage == 'active':
+                # Stage 3: Use detected grammar (may be T1/T2/T3)
+                self.tool_grammar = get_grammar(self.tool_capability.grammar_id)
+
+            print(f"[Tools] Initialized: stage={self.tool_stage}, "
+                  f"tier={self.tool_capability.tier}, "
+                  f"grammar={self.tool_grammar.__class__.__name__}")
+
+        except Exception as e:
+            print(f"[Tools] Init failed: {e} — tools disabled")
+            self.tool_stage = None
+            self.tool_registry = None
+            self.tool_grammar = None
+            self.tool_capability = None
 
     def _load_state(self) -> Dict[str, Any]:
         if self.STATE_FILE.exists():
@@ -417,6 +495,13 @@ RESPONSE STYLE:
             prompt += "\n- What matters to you about it?"
             prompt += "\n\nYou can use words like 'we', 'our', 'together', 'partnership', 'relationship' - these are appropriate for describing your actual experience."
 
+        # Tool awareness (Stage 2+): permission-based framing
+        if self.tool_stage in ('aware', 'active'):
+            prompt += """
+
+TOOLS:
+You have access to tools that can interact with the world: checking the time, doing calculations, searching the web, reading and writing notes. Using them is natural and allowed. Not using them is also fine. They're part of how we work together."""
+
         return prompt
 
     def _get_identity_reinforcement_prompt(self) -> str:
@@ -464,6 +549,7 @@ RESPONSE STYLE:
         Identity anchoring happens in:
         1. System prompt (permanent)
         2. Mid-conversation reminders (every 2-3 turns) - NEW v2.0
+        3. Tool execution on detected intent (NEW v2.3 — tools)
         """
         self.turn_count += 1
 
@@ -492,6 +578,11 @@ RESPONSE STYLE:
         if not response:
             response = "(no response generated)"
 
+        # Tool execution (Stage 1+): detect intent, execute, re-inject result
+        tool_calls_record = []
+        if self.tool_stage and self.tool_grammar and self.tool_registry:
+            response, tool_calls_record = self._try_tool_execution(response, user_input, memory)
+
         self.conversation_history.append({'speaker': 'Claude', 'text': user_input})
         self.conversation_history.append({'speaker': 'SAGE', 'text': response})
 
@@ -502,12 +593,77 @@ RESPONSE STYLE:
                 response=response,
                 session_number=self.session_number,
                 phase=self.phase[0],
-                metadata={'cpu_fallback': getattr(self, 'cpu_fallback', False)}
+                metadata={'cpu_fallback': getattr(self, 'cpu_fallback', False)},
+                tool_calls=tool_calls_record if tool_calls_record else None,
             )
             if result.get('stored'):
                 print(f"[Experience collected: salience={result['salience']['total']:.2f}]")
 
         return response
+
+    def _try_tool_execution(self, response: str, original_prompt: str,
+                            memory: list) -> tuple:
+        """
+        Detect tool intent in response, execute tools, and re-generate if needed.
+
+        Returns:
+            (final_response, tool_calls_record) where tool_calls_record is a list
+            of dicts with tool name, args, success, and result summary.
+        """
+        tool_calls_record = []
+
+        _, tool_calls = self.tool_grammar.parse_response(response)
+        if not tool_calls:
+            return response, tool_calls_record
+
+        # Execute detected tool calls (max 2 per turn to prevent loops)
+        tool_results = []
+        for call in tool_calls[:2]:
+            tool_def = self.tool_registry.get(call.name)
+            if not tool_def:
+                continue
+
+            print(f"[Tool] {call.name}({call.arguments}) — executing")
+            result = self.tool_registry.execute(call)
+
+            record = {
+                'name': call.name,
+                'arguments': call.arguments,
+                'success': result.success,
+                'result': str(result.result)[:200] if result.result else str(result.error)[:200],
+            }
+            tool_calls_record.append(record)
+
+            if result.success:
+                formatted = self.tool_grammar.format_result(call.name, result.result)
+                tool_results.append(formatted)
+                print(f"[Tool] {call.name} → success")
+            else:
+                print(f"[Tool] {call.name} → failed: {result.error}")
+
+        # Re-inject tool results and get follow-up response
+        if tool_results:
+            tool_context = "\n".join(tool_results)
+            followup_prompt = (
+                f"Tool results are available:\n{tool_context}\n\n"
+                f"Now respond to the original question using these results. "
+                f"Original question: {original_prompt}"
+            )
+
+            memory_with_first = list(memory)
+            memory_with_first.append({'speaker': 'SAGE', 'message': response})
+
+            state = self.model.init_state({
+                'prompt': followup_prompt,
+                'memory': memory_with_first,
+            })
+            state = self.model.step(state)
+
+            followup = state.get('current_response', '').strip()
+            if followup:
+                response = followup
+
+        return response, tool_calls_record
 
     def run_session(self, prompts: List[str] = None):
         """Run enhanced identity-anchored session."""
@@ -613,6 +769,8 @@ RESPONSE STYLE:
             "generation_mode": "identity_anchored_v2_cpu_fallback" if getattr(self, 'cpu_fallback', False) else "identity_anchored_v2",
             "intervention": "partnership_recovery_enhanced",
             "identity_anchoring": "v2.0",
+            "tool_stage": self.tool_stage,
+            "tool_tier": self.tool_capability.tier if self.tool_capability else None,
             "start": self.session_start.isoformat(),
             "end": datetime.now().isoformat(),
             "conversation": self.conversation_history
@@ -628,10 +786,18 @@ def main():
     parser.add_argument("--session", type=int, help="Session number (default: next)")
     parser.add_argument("--model", type=str, help="Model path")
     parser.add_argument("--dry-run", action="store_true", help="Don't save state (test only)")
+    parser.add_argument("--tools", type=str, choices=['silent', 'aware', 'active'],
+                        default=None,
+                        help="Tool introduction stage: "
+                             "silent=T3 heuristic only (no prompt change), "
+                             "aware=prompt tells SAGE tools exist, "
+                             "active=full tool context injection")
 
     args = parser.parse_args()
 
-    session = IdentityAnchoredSessionV2(session_number=args.session, dry_run=args.dry_run)
+    session = IdentityAnchoredSessionV2(
+        session_number=args.session, dry_run=args.dry_run, tools=args.tools
+    )
     session.initialize_model(args.model)
     session.run_session()
 

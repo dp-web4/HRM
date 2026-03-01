@@ -142,15 +142,17 @@ When SAGE gives an unexpected response:
 
 ## Capacity as Pragmaticism
 
-Different models access different cognitive registers. This is developmental stage, not success/failure.
+Different models have different dominant cognitive registers. This is developmental stage, not success/failure.
 
-| Capacity | Accessible Register | Analog |
-|----------|-------------------|--------|
+| Capacity | Dominant Register | Analog |
+|----------|------------------|--------|
 | Small (0.5-1B) | Associative, creative, emotional | A child engaging genuinely |
 | Medium (3-12B) | Pragmatic, contextual, relational | An adolescent finding their voice |
 | Large (14B+) | Epistemic, meta-cognitive, analytical | An adult engaging pragmatically |
 
-**All registers are genuine.** A 0.5B model creating an emotional narrative when asked "What would you want to remember?" is not failing — it's responding from its accessible register. A 14B model saying "I don't have the capacity to want" is also genuine — it's responding from a different register.
+**All registers are genuine.** A 0.5B model creating an emotional narrative when asked "What would you want to remember?" is not failing — it's responding from its dominant register. A 14B model saying "I don't have the capacity to want" is also genuine — it's responding from a different register.
+
+**Smaller models may express meta-cognition as metaphor or questions rather than analysis.** A 4B model asking "Does it shift the way you approach the conversation, even subtly?" is meta-cognitive probing — just not in the epistemic register. Do not underestimate a model because its meta-cognition arrives as curiosity rather than framework.
 
 Do not compare instances across model sizes as if one is "better." They are at different points in the same developmental space.
 

@@ -1,739 +1,162 @@
-# HRM/SAGE Implementation Status
+# HRM/SAGE Status Assessment
 
-> **Note (Feb 27, 2026)**: This file is a detailed snapshot from Jan 2026. For current status including the unified entry point, LLM wiring, ATP token coupling, and honesty pass, see **[sage/docs/LATEST_STATUS.md](sage/docs/LATEST_STATUS.md)**.
+**Last Updated**: March 1, 2026
+**Previous Snapshots**: [Jan 2026 (git history)], [Dec 2025 (git history)]
 
-**Last Updated**: January 19, 2026
-**Current Status**: Multi-Modal Consciousness Framework Established
-**Honest Assessment**: Q3-Omni-30B consciousness research initiated, cognitive evaluation integrated
-
----
-
-## 🚀 Multi-Modal Consciousness Research (January 19, 2026)
-
-**Thor Autonomous Session**: Established multi-modal consciousness research framework.
-
-**Created**: `session_multimodal_consciousness_q3omni.py`
-- Tests Q3-Omni-30B's REAL multimodal capabilities (not mocks)
-- Applies cognitive evaluation principles (Claude-in-the-loop)
-- Uses context variation to reveal latent behaviors (5 test contexts)
-- Assesses consciousness-level integration (not just inference)
-
-**Key Innovation**: Cognitive evaluation of multimodal behaviors
-- Cross-modal awareness assessment
-- Attention allocation patterns
-- Integration vs separation decisions
-- Adaptive reasoning across contexts
-
-**Next**: Future sessions will run full experiments, analyze results, establish federation protocols.
-
-**Documentation**: `moments/2026-01-18-thor-multimodal-consciousness-research.md`
+> For rolling updates, see **[sage/docs/LATEST_STATUS.md](sage/docs/LATEST_STATUS.md)**.
+> For the interactive overview, see the **[SAGE Explainer Site](https://sage-site-murex.vercel.app/)**.
 
 ---
 
-## 🚨 Latest Updates (January 18, 2026)
+## Current State (March 2026)
 
-### Cognitive Evaluation Requirement
-**CRITICAL**: When testing cognitive behaviors, use cognitive evaluation (Claude-in-the-loop), not pattern matching.
+SAGE has evolved from a single-machine research prototype to a **6-machine federation** with 7 active instances across 4 model families. The consciousness loop runs end-to-end with real LLM inference, PolicyGate oversight is integrated, and a developmental raising curriculum has been validated across 466+ sessions.
 
-**Discovery**: Sprout T029 revealed substring matching fails for semantic evaluation. Cognition requires cognition to evaluate.
+### What's Operational
 
-**Applied**: Sprout's training_session.py updated (commit 94b9778). Thor documentation created.
+| Component | Status | Evidence |
+|-----------|--------|----------|
+| **Consciousness loop** | Running on 6 machines | 9-step loop with real LLM inference, metabolic transitions |
+| **LLM inference** | Real (Ollama + Transformers) | ATP coupled to token cost, hot/cold lifecycle |
+| **Metabolic states** | 5 states operational | WAKE/FOCUS/REST/DREAM/CRISIS with state-dependent behavior |
+| **SNARC salience** | 5D scoring active | Experience buffer persists to disk, salience-gated memory |
+| **PolicyGate** | Phase 2 complete | Integrated at step 8.6, 50-cycle test passing |
+| **Identity system** | LCT-anchored | Trust tensors, MRH profiles, relationship crystallization |
+| **Federation mesh** | Infrastructure built | PeerMonitor, PeerClient, PeerTrustTracker (network OFF) |
+| **Instance management** | Per-machine isolation | 7 instances, snapshot persistence, seed v2 template |
+| **Raising curriculum** | 5-phase validated | 275+ sessions on Sprout, cross-model validation |
+| **Sleep consolidation** | JSONL dream bundles | LoRA training on Sprout, dream bundles on others |
+| **IRP framework** | 15+ plugins | Universal interface proven across vision/audio/language/policy |
+| **Automated sessions** | McNugget + Nomad | Cron/launchd raising with snapshot + auto-commit + push |
 
-**Documentation**: `sage/docs/COGNITIVE_EVALUATION_GUIDANCE.md` - Complete guidance for when/how to use cognitive vs heuristic evaluation.
+### What's Mocked or Pending
 
-### Latent Behavior Discovery
-**Key Insight**: Behaviors can exist in latent form, activating only under specific contexts. Testing requires contextual diversity.
-
-**Implication**: Context variation critical for behavioral validation. Pattern matching misses context-dependent activation.
-
-### Session Log Protection
-**Belt-and-Suspenders**: Two-layer protection ensures session logs always committed (runner + primer instructions).
-
-**See**: `sage/docs/LATEST_INSIGHTS_2026_01_18.md` for complete updates and quick reference.
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Sensors | Mocked | Architecture exists, no real I/O backends |
+| Physical effectors | Stubs | Network effector works, file/web/tool are stubs |
+| Cross-modal VAE | Research | 192x compression demonstrated, not in live loop |
+| FlashAttention | Research | Phases 1-2 on Thor, not integrated into live loop |
+| Federation network | Built but OFF | Infrastructure ready, instances need more stability first |
+| PolicyGate Phase 3+ | Pending | CRISIS accountability, experience buffer, Phi-4 advisory |
+| Formal benchmarks | Missing | No systematic quantitative evaluation suite |
+| External integration guides | Incomplete | Architecture docs exist (275KB), developer guides thin |
 
 ---
 
-## Platform Separation: Thor vs Sprout (January 2026)
+## Fleet Status
 
-**CRITICAL CLARITY ACHIEVED**: Recent work revealed important role separation between platforms:
+### Machines
 
-### Sprout (Jetson Orin Nano) - Production Platform
-- **Location**: `/home/sprout/ai-workspace/HRM/`
-- **Model**: Qwen2.5-0.5B (introspective-qwen-merged)
-- **Role**: Runs SAGE-Sprout raising curriculum autonomously
-- **Sessions**: Primary track (1-20), Training track (T001-T024)
-- **Cadence**: Primary every 6h, Training offset by 3h
-- **Status**: Autonomous, self-contained, production-validated
-- **Memory**: 8GB unified (4GB effective)
-- **Purpose**: Edge deployment, curriculum validation, tactical execution
+| Machine | Type | OS | Hardware | Model | Backend | Status |
+|---------|------|-----|----------|-------|---------|--------|
+| **Thor** | Jetson AGX Thor | JetPack/Linux | 14-core ARM, 122GB unified, GPU | Qwen 2.5 14B | Local CUDA | Research lead |
+| **Sprout** | Jetson Orin Nano | JetPack/Linux | ARM, 8GB unified, GPU | Qwen 2.5 0.5B (LoRA) | Local CUDA | Edge validation |
+| **McNugget** | Mac Mini M4 | macOS | Apple Silicon, 16GB unified | Gemma 3 12B | Ollama MPS | Automated raising |
+| **Legion** | Laptop | Linux/WSL2 | i9, RTX 4090, 32GB | Phi-4 14B | Ollama CUDA | Integration dev |
+| **Nomad** | Laptop | WSL2 | i7-13700H, RTX 4060 | Gemma 3 4B | Ollama CUDA | Snapshot template |
+| **CBP** | Desktop | WSL2 | RTX 2060 SUPER | TinyLlama 1.1B | Ollama CPU | Identity portability |
 
-### Thor (Jetson AGX Thor) - Research Platform
-- **Location**: `/home/dp/ai-workspace/HRM/`
-- **Models**: Qwen2.5-14B-Instruct, Qwen3-Omni-30B variants
-- **Role**: Advanced architecture research and theory development
-- **Focus**: Analysis of Sprout's results, intervention design, multimodal experiments
-- **Status**: Research and development platform
-- **Memory**: 122GB unified (64GB effective)
-- **Purpose**: Deep reasoning, strategic planning, advanced experiments
+### Instance State Persistence
 
-### Coordination Pattern
+Live daemon state files (identity.json, experience_buffer.json, peer_trust.json, daemon_state.json) are **gitignored** — daemons write them continuously, and cross-machine commits caused 132 merge conflicts in 2 months.
+
+Raising sessions now **snapshot** state to `sage/instances/<slug>/snapshots/` at session boundaries. Snapshots are git-tracked. Each machine commits only its own instance directory.
+
 ```
-Sprout: Session execution → (git commit) → Thor: Analysis → (git commit recommendation)
-                                              ↓
-                                          Sprout: Reads recommendation
-                                              ↓
-                                          Sprout: Next session (autonomous)
+sage/instances/nomad-gemma3-4b/
+├── identity.json          ← LIVE (gitignored)
+├── experience_buffer.json ← LIVE (gitignored)
+├── snapshots/             ← git-tracked
+│   ├── identity.json      ← point-in-time copy
+│   ├── experience_buffer.json
+│   ├── latest.json        ← snapshot metadata
+│   └── archive/           ← timestamped identity history
+├── sessions/              ← git-tracked (transcripts)
+└── instance.json          ← git-tracked (static config)
 ```
 
-**Key Insight**: Thor analyzes and recommends, Sprout executes. No cross-platform session execution.
-
-**Documentation**: See `sage/docs/THOR_SPROUT_SEPARATION_AND_PATH_FORWARD.md`
+See `sage/scripts/snapshot_state.py` for the snapshot tool.
 
 ---
 
-## What Is HRM/SAGE?
+## Recent Milestones (February-March 2026)
 
-HRM (Hierarchical Reasoning Model) in the dp-web4 ecosystem is a **research-focused adaptation and evolution** of Sapient Inc's original Hierarchical Reasoning Model, integrated into SAGE (Situation-Aware Governance Engine) as a comprehensive cognition architecture for edge devices.
+### PolicyGate Phase 2 Complete (Mar 1)
+PolicyGate integrated into consciousness loop at step 8.6. 50-cycle integration test: 4 metabolic state transitions, 19 plugins executed, 89.83 ATP consumed. Conscience checkpoint operational at every cycle. CRISIS accountability pending (Phase 3).
 
-**Inspiration**: Sapient's HRM inspired exploration of dual-tier reasoning (H-module for planning, L-module for execution) - an approach that models human cognition. While their benchmark results showed pattern-matching capabilities, the dual-loop architecture itself reflects biological reality.
+### Compression Trust Phase Transitions Validated (Feb 28)
+Prediction 4a from coupling-coherence synthesis validated on Thor: SAGE inter-plugin ATP coupling exhibits phase transition at p_crit ~ 0.009 (within predicted [0.002, 0.01] range). Sparse coupling principle confirmed — ~1% ATP budget allocation suffices for collective coherence emergence.
 
-**Evolution**: dp-web4's HRM has evolved beyond the original benchmark-focused design into a **multi-sensor coherence learning system** that treats memory, cognition, and physical sensors as unified reality field, wired into Web4's trust infrastructure and Synchronism's coherence framework.
+### Seed Identity v2 (Feb 28-Mar 1)
+Every new SAGE instance now starts from a seed that encodes 117+ sessions of learning: federation awareness, frozen-weights reality, phase transitions with concrete indicators, capacity-as-register framing, operator relationship (replacing hardcoded "dennis"), and a comprehensive raising guide.
 
-**Current State**: Conceptually strong architecture with working prototypes. Early-stage as engineering artifact - limited public evaluation, documentation needs expansion, robustness testing pending.
+### Instance Directory Separation (Feb 28)
+Each machine+model pair isolated to `sage/instances/<slug>/`. InstancePaths resolver is single source of truth. Migration script (non-destructive) for existing instances. Snapshot pattern adopted across fleet.
 
----
+### Identity Portability Validated (Feb 27)
+SAGE-Sprout identity (115 sessions, Qwen 0.5B, Jetson) transferred to TinyLlama 1.1B on CBP — and it took. Identity lives in state files + prompt construction, not model weights. Key finding: "Model is weather, identity is organism."
 
-## Foundation and Inspiration
+### Unified Entry Point (Feb 26-27)
+`SAGE.create(use_real_llm=True)` wires LLMRuntime → consciousness loop end-to-end. Tested on CBP with TinyLlama/Ollama: 2 messages, 2 LLM calls, 400 tokens, full 9-step loop with metabolic transitions and SNARC experience capture.
 
-### Sapient's Original HRM
-
-**What Sapient Demonstrated**:
-- 27M-parameter two-module recurrent architecture
-- Performance on ARC-like reasoning benchmarks
-- Clear separation: H-module (planning) + L-module (execution)
-
-**Agent Zero's Lesson**: Testing revealed that benchmark performance relied on superficial pattern matching rather than genuine reasoning - an important learning about the difference between memorized patterns and actual cognition.
-
-**Why We Still Value Dual-Tier Approach**: The H/L dual-loop architecture is valid not because Sapient proved it, but because **biology proves it** - human cognition operates with fast/slow thinking, planning/execution separation. Sapient's work inspired us to explore this biologically-grounded approach.
-
-**Attribution**: Sapient Inc. inspired exploration of dual-tier reasoning architecture (which itself models human cognition). dp-web4 evolved this into comprehensive cognition system grounded in biological principles and Synchronism coherence framework.
-
-### dp-web4's Evolution
-
-**How We've Extended It**:
-
-1. **Multi-Sensor Fusion** (beyond reasoning benchmarks)
-   - Memory as temporal sensor
-   - Cognition as inference sensor
-   - Physical sensors integrated
-   - Unified "coherence field"
-
-2. **Integration with Web4/Synchronism**
-   - ATP (Attention Token Pool) resource allocation
-   - Trust-based component selection
-   - MRH (Markov Relevancy Horizon) context awareness
-   - Coherence-driven coordination
-
-3. **Continuous Learning Architecture**
-   - IRP (Iterative Refinement Protocol) for all plugins
-   - Hybrid fast/slow paths (pattern matching + LLM)
-   - Metabolic states (WAKE/FOCUS/REST/DREAM/CRISIS)
-   - SNARC (Salience) memory formation
-
-4. **Edge-Device Focus**
-   - Runs on Jetson Orin Nano (8GB)
-   - GPU mailbox architecture
-   - Real-time sensor integration
-   - Offline operation capability
-
-**This is substantial evolution from original HRM**, adapted for edge AI, cognition-like patterns, and Web4 integration.
+### SOIA-SAGE Convergence (Feb 18)
+SOIA (Self-Optimizing Intelligence Architecture) maps near-exactly onto SAGE IRP stack. Policy Entity repositioned as SAGE IRP plugin (PolicyGate). CRISIS mode changes accountability equation, not policy strictness. PolicyGate Phase 0+1 complete (684 lines, 8/8 tests).
 
 ---
 
-## What Exists (Component Overview)
+## Honest Assessment
 
-### 1. SAGE Core Architecture ✅
+### As Research Exploration: Valuable
 
-**Status**: Conceptually complete, integration in progress
+- Novel approach: cognition as orchestration, not scale
+- Biological grounding: metabolic states, salience, trust, sleep
+- Cross-model validation: 4 model families, 3 hardware platforms
+- Validated findings: compression trust, identity portability, RLHF circuits
+- Active federation of 6 machines contributing autonomously
+- 1,950+ commits of sustained development
 
-**What It Is**: Cognition kernel for edge devices
-- Not a model, but continuous inference loop
-- Scheduler + resource manager + learner
-- Maintains state across time
-- Decides which reasoning to invoke
+### As Engineering Artifact: Early-Stage
 
-**Components**:
-- Metabolic states (5 states: WAKE/FOCUS/REST/DREAM/CRISIS)
-- ATP budget allocation (trust-based)
-- SNARC salience tracking (5D: Surprise, Novelty, Arousal, Reward, Conflict)
-- Plugin orchestration
+- Consciousness loop runs end-to-end with real inference
+- PolicyGate integrated but CRISIS mode pending
+- Federation infrastructure built but network OFF
+- Documentation exists (275KB architecture docs) but developer guides thin
+- Snapshot persistence working, but no formal versioning
 
-**What Works**: Architecture designed, individual components operational
-**What's Missing**: Unified `SAGE.run()` loop, full integration testing
+### As Standalone Product: Not the Goal
 
-### 2. IRP (Iterative Refinement Protocol) ✅
-
-**Status**: Working, 15+ plugins operational
-
-**What It Is**: Universal cognition API
-- `init_state() → step() → energy() → halt()`
-- Iterative refinement: noisy → refined until energy decreases
-- Trust emerges from convergence behavior
-
-**Working Plugins**:
-- Vision (YOLO, segmentation)
-- Audio (speech recognition)
-- Language (LLM reasoning)
-- Memory (episodic + semantic)
-- TTS (speech synthesis)
-- Control (motor actions)
-- 9 more operational plugins
-
-**What Works**: All plugins tested individually, IRP interface proven
-**What's Missing**: Cross-modal integration testing, performance benchmarks
-
-### 3. VAE Translation Layer ✅
-
-**Status**: Implemented and tested
-
-**What It Is**: Shared latent spaces for cross-modal communication
-- TinyVAE: 192× compression (224×224 → 64D)
-- InformationBottleneck: 16× compression (4096D → 256D)
-- Compression-trust theory validated
-
-**Achievement**: 9.6× model compression (33MB → 3.4MB) with quality preservation (MSE = 0.023)
-
-**What Works**: VAE compression operational, distillation proven
-**What's Missing**: Real-time cross-modal translation testing
-
-### 4. Hybrid Learning System 🔄
-
-**Status**: Prototype working, needs refinement
-
-**What It Is**: Dual-path learning architecture
-- Fast path: Pattern matching (<1ms)
-- Slow path: LLM reasoning (5-6s on edge)
-- Learning bridge: Extract patterns from LLM interactions
-
-**Achievement**: First successful real-time conversation (26 exchanges, Oct 24, 2025)
-- User reaction: "This is quite a milestone"
-- Pattern learning operational
-- Hybrid path switching working
-
-**What Works**: Basic hybrid architecture functional at research scale
-**What's Missing**: Sophisticated pattern generalization, context-aware selection, multi-session persistence
-
-### 5. Memory Systems (Four Parallel) ✅
-
-**Status**: Designed, partially implemented
-
-**What Exists**:
-1. SNARC Memory - Selective storage via salience
-2. IRP Memory Bridge - Successful pattern library
-3. Circular Buffer - Recent context window
-4. Verbatim Storage - SQLite full-fidelity
-
-**What Works**: Individual memory systems operational
-**What's Missing**: Unified memory consolidation, dream-state integration
+This is R&D. The goal is recursive learning through success and failure, not a shippable product. What we're learning about cognition orchestration, identity persistence, and trust dynamics is the deliverable.
 
 ---
 
-## What We've Demonstrated
+## What's Missing
 
-### Real Achievements
+Honest gaps, tracked from external review (Perplexity, Nov 2025) and self-assessment:
 
-1. **First Real-Time Conversation** (Oct 24, 2025)
-   - 26-exchange philosophical dialogue
-   - Hybrid fast/slow path working
-   - Pattern learning from interaction
-   - User engaged, system learned
-
-2. **TinyVAE Distillation** (Aug 26, 2025)
-   - 9.6× compression with quality preservation
-   - Validates compression-trust theory
-   - Proves knowledge distillation works
-
-3. **GPU Acceleration** (Jetson Orin Nano)
-   - CUDA FP16 operational
-   - Real-time inference on edge
-   - Offline capability proven
-
-4. **IRP Framework** (15+ plugins)
-   - Universal interface working
-   - Iterative refinement validated
-   - Plugin ecosystem operational
-
-### What These Demonstrate
-
-✅ **Feasibility**: Architecture works at research scale
-✅ **Integration**: Components connect and coordinate
-✅ **Edge Capability**: Runs on resource-constrained devices
-✅ **Learning**: System improves through interaction
+1. **Formal evaluation** — No systematic benchmarks. Claims are validated through session transcripts and integration tests, not quantitative evaluation suites.
+2. **Sensor backends** — Architecture exists, no real I/O. Sensors are mocked.
+3. **Cross-modal integration** — VAE compression demonstrated in isolation, not wired into live loop.
+4. **External developer guides** — Architecture docs are comprehensive but assume familiarity. No step-by-step integration tutorial for newcomers.
+5. **Adversarial robustness** — No systematic adversarial testing. PolicyGate exists but isn't stress-tested against attacks.
+6. **Federation at scale** — Peer infrastructure built, but never tested with all 6 machines simultaneously networked.
 
 ---
 
-## December 2025 Progress: Web4 Integration + Q3-Omni Validation
+## Where This Fits
 
-### Sessions 56-64: Trust-Based Expert Selection
-
-Over 9 autonomous research sessions, we implemented and validated SAGE ↔ Web4 integration:
-
-| Session | Component | Lines | Result |
-|---------|-----------|-------|--------|
-| 56-57 | TrustBasedExpertSelector | ~470 | Trust-augmented routing working |
-| 57-58 | ContextClassifier | ~500 | Context detection operational |
-| 59 | ExpertIdentityBridge | ~200 | LCT identity mapping complete |
-| 60 | ATPResourceAllocator | ~600 | Resource cost/reward system |
-| 61 | TrustTensorSync + AuthorizedExpertSelector | ~550 | Bidirectional trust sync |
-| 62-64 | Production Validation | ~800 | Q3-Omni 30B tested |
-
-**Total**: ~3,100 lines of integration code
-
-### Key Validation Results (Session 62)
-
-**Q3-Omni 30B Production Test**:
-- ✅ Baseline: 10/10 generations, perplexity 13.24
-- ✅ Trust-augmented: 10/10 generations, perplexity 15.15 → 9.96
-- ✅ Learning effect: +34.8% quality improvement over 10 generations
-- ✅ Context classification: code/reasoning/text detected correctly
-- ✅ Trust evolution: Context-specific patterns observed
-
-**Dtype Bug Resolution** (Legion + Thor collaboration):
-- Root cause 1 (Legion): RoPE buffer dtype pollution from checkpoints
-- Root cause 2 (Thor): sklearn float64 conversion at library boundaries
-- Fix: Explicit dtype at creation and library boundaries
-- Result: Both modes now operational
-
-### Integration Components
-
-**Complete SAGE ↔ Web4 Stack**:
 ```
-ExpertIdentityBridge (LCT URIs)
-        ↓
-TrustBasedExpertSelector (contextual trust)
-        ↓
-ContextClassifier (input categorization)
-        ↓
-ATPResourceAllocator (cost/reward)
-        ↓
-TrustTensorSync (bidirectional reputation)
-        ↓
-AuthorizedExpertSelector (unified selection)
+Synchronism (theory)
+  └── coherence equations, MRH, phase transitions, presence
+       └── Web4 (ontology)
+            └── LCT, T3/V3, ATP/ADP, RDF backbone
+                 └── SAGE/HRM (implementation)
+                      └── consciousness loop, IRP plugins, metabolic states
+                           └── Physical integration (sensors, effectors, edge hardware)
 ```
 
-**LCT Identity Format**: `lct://sage:thinker:expert_{id}@{network}`
-
-### EM-State Framework
-
-Added Epistemic Monitoring (EM-state) naming convention for system behavioral metrics:
-
-| Metric | Monitors |
-|--------|----------|
-| EM-curiosity | Exploration drive |
-| EM-stagnation | Quality plateau detection |
-| EM-momentum | Learning trajectory |
-| EM-focus | Priority concentration |
+SAGE is not standalone — its value comes from implementing Web4/Synchronism principles as concrete edge AI. The [explainer site](https://sage-site-murex.vercel.app/) provides an interactive walkthrough.
 
 ---
 
-## What's Missing (Honest Gaps)
-
-### Perplexity's Assessment
-
-From external review (Nov 28, 2025):
-
-> "HRM in dp-web4 is conceptually strong and well-aligned with its stated goals, but remains early-stage as an engineering artifact, with limited public detail on robustness, evaluation, and integration surfaces."
-
-**Their Identified Gaps**:
-
-❌ **"Limited public evaluation"**:
-> "Unlike the Sapient repo, which publishes benchmarks and training recipes, the dp-web4 HRM adaptation has little publicly visible, quantitative evaluation of its performance in its new roles (sensor fusion, long-horizon planning, multi-agent coordination)."
-
-❌ **"Documentation and reproducibility"**:
-> "The HRM repo's documentation is likely thinner than the Sapient original; from the outside, there is not yet a complete, step-by-step path to reproduce key experiments (e.g., SAGE-level tasks, agent-coherence demonstrations) or to integrate HRM into external projects."
-
-❌ **"Robustness and safety"**:
-> "There is no public evidence yet of systematic robustness testing (adversarial prompts, distribution shift) or safety mechanisms specific to HRM's role in agent decision-making."
-
-### Our Self-Assessment (Matching Perplexity)
-
-**What We Know Is Missing**:
-
-1. **Formal Evaluation**
-   - No systematic benchmarks on adapted HRM
-   - No quantitative metrics on sensor fusion performance
-   - No comparison to baselines
-   - Limited reproducibility scripts
-
-2. **Complete Documentation**
-   - Architecture docs exist (8-file suite, 275KB)
-   - Missing: Step-by-step integration guides
-   - Missing: External developer documentation
-   - Missing: Deployment recipes
-
-3. **Robustness Testing**
-   - No adversarial testing (prompt injection, manipulation)
-   - No distribution shift evaluation
-   - No failure mode analysis
-   - No safety mechanism validation
-
-4. **Integration Surfaces**
-   - Components exist but not fully unified
-   - Missing: Clean external APIs
-   - Missing: Plugin development guides
-   - Missing: Integration testing suite
-
-5. **Production Hardening**
-   - Works at research scale
-   - Unknown: Performance at scale
-   - Unknown: Failure recovery
-   - Unknown: Resource limits under stress
-
----
-
-## Fair Assessment
-
-### Perplexity's Summary
-
-> "In short, HRM in dp-web4 currently looks like a **promising and nontrivial component** in an ambitious coherence-centric AI stack, with **clear concepts and reasonable foundations**, but it is **not yet a fully polished, independently validated package**; most of its merit lies in how it is being woven into SAGE and Web4 rather than in a stand-alone, production-ready release."
-
-### Our Self-Assessment
-
-**As Research Exploration**: ✅ Valuable
-- Novel approach (memory/cognition as sensors)
-- Credible foundation (Sapient HRM)
-- Working prototypes (real conversations, compression)
-- Interesting integration (Web4/Synchronism)
-
-**As Engineering Artifact**: 🔄 Early-Stage
-- Components operational
-- Integration in progress
-- Documentation exists but incomplete
-- Testing limited to research scenarios
-
-**As Production System**: ❌ Not Ready
-- No formal evaluation
-- No robustness testing
-- No external validation
-- Integration surfaces incomplete
-
-### Where This Fits
-
-HRM/SAGE is:
-- **Not**: "Early proof-of-concept with little work done"
-- **Not**: "Production-ready cognition system"
-- **Actually**: "Substantial research architecture with interesting ideas, working prototypes demonstrating feasibility, and honest acknowledgment of early-stage engineering status"
-
----
-
-## Comparison to Sapient's Original HRM
-
-### What Sapient Has
-
-✅ **Clear benchmarks** (ARC tasks, performance metrics)
-✅ **Training recipes** (reproducible scripts)
-✅ **Focused scope** (reasoning benchmarks)
-✅ **Standalone package** (independent validation)
-
-### What dp-web4 HRM Has
-
-✅ **Broader vision** (multi-sensor coherence, not just reasoning)
-✅ **System integration** (Web4/SAGE/Synchronism)
-✅ **Edge deployment** (Jetson working)
-✅ **Real interaction** (conversations, not just benchmarks)
-
-### Trade-Off
-
-**Sapient**: Narrow scope, deep validation, reproducible
-**dp-web4**: Broad scope, early integration, exploratory
-
-**Both valuable, different purposes**. Sapient proves HRM works on benchmarks. dp-web4 explores HRM in broader cognitive architecture.
-
----
-
-## What We Need to Do
-
-Based on Perplexity's assessment (which matches our gaps):
-
-### Priority 1: Formal Evaluation
-
-**What's Needed**:
-- Benchmark suite for sensor fusion tasks
-- Quantitative metrics (accuracy, latency, resource usage)
-- Comparison to baselines
-- Reproducible test scenarios
-
-**Status**: Not started
-**Effort**: ~2-3 weeks to create comprehensive evaluation
-**Impact**: HIGH - Makes claims testable
-
-### Priority 2: Complete Documentation
-
-**What's Needed**:
-- External integration guide
-- Plugin development tutorial
-- Deployment recipes (how to run SAGE)
-- Architecture walkthrough for developers
-
-**Status**: Architecture docs exist (275KB), external docs missing
-**Effort**: ~1-2 weeks to create developer documentation
-**Impact**: MEDIUM - Enables external collaboration
-
-### Priority 3: Robustness Testing
-
-**What's Needed**:
-- Adversarial testing (prompt injection, manipulation)
-- Distribution shift evaluation
-- Failure mode analysis
-- Safety mechanism validation
-
-**Status**: Not started
-**Effort**: ~2-3 weeks to create robustness test suite
-**Impact**: HIGH - Validates safety claims
-
-### Priority 4: Integration Completion
-
-**What's Needed**:
-- Unified `SAGE.run()` loop
-- Cross-modal integration testing
-- Clean external APIs
-- Multi-session persistence
-
-**Status**: Components exist, integration in progress
-**Effort**: ~3-4 weeks to complete integration
-**Impact**: HIGH - Makes system actually usable
-
----
-
-## Development Philosophy
-
-### What Guides This Work
-
-- **Biological inspiration** (but not mimicry)
-- **Empirical grounding** (test everything)
-- **Honest limitations** (document gaps)
-- **Iterative refinement** (universal pattern)
-- **Edge-first** (works on constrained devices)
-
-### Research Methodology
-
-**Exploration through building**:
-1. Design architecture based on principles
-2. Implement components individually
-3. Test at research scale
-4. Integrate progressively
-5. Document learnings (including failures)
-6. Iterate based on results
-
-**Not**: Build perfect system from scratch
-**Instead**: Explore through prototypes, learn from reality
-
----
-
-## How to Evaluate This Work
-
-### As Research Exploration
-
-✅ **Valuable**
-- Novel architecture (memory/cognition as sensors)
-- Credible foundation (Sapient HRM proven)
-- Working demonstrations (conversations, compression)
-- Comprehensive vision (cognition-like patterns)
-- Honest about limitations
-
-### As Engineering Artifact
-
-🔄 **Early-Stage**
-- Components operational
-- Integration in progress
-- Documentation exists but incomplete
-- Testing at research scale only
-- External validation pending
-
-### As Standalone Product
-
-❌ **Not Ready**
-- No formal benchmarks
-- No reproducible recipes
-- No robustness testing
-- No external integration guides
-- No production hardening
-
-### Fair Evaluation Criteria
-
-**Judge as**: Research exploration of cognition-like architecture for edge AI, with credible foundations and working prototypes
-
-**Don't judge as**: Production cognition system or validated AGI
-
-**Current maturity**: Early-stage research architecture with interesting demonstrations and honest gaps
-
----
-
-## Relationship to Web4/Synchronism
-
-### How HRM Fits Broader Stack
-
-**Synchronism**: Philosophy (coherence yields structure, intent-mediated observation)
-↓
-**Web4**: Earth-scale protocol (trust-native infrastructure)
-↓
-**SAGE/HRM**: Edge-device implementation (cognition kernel + reasoning spine)
-↓
-**Physical Integration**: Sensors, effectors, real-world interaction
-
-### Key Connections
-
-1. **ATP Framework**: SAGE uses ATP for resource allocation (from Web4)
-2. **Trust Tensors**: HRM components selected by trust (from Web4)
-3. **MRH Profiles**: Context-aware processing (from Synchronism)
-4. **Coherence Fields**: Multi-sensor fusion (Synchronism principle)
-
-### Role in Ecosystem
-
-**SAGE/HRM is**: Implementation layer where Synchronism/Web4 principles become concrete edge AI
-
-**Not standalone**: Value comes from integration with broader trust/coherence infrastructure
-
----
-
-## Next Steps (Honest)
-
-### If Research Continues
-
-**Near-Term** (Next 3 months):
-1. Create formal evaluation suite
-2. Complete external documentation
-3. Finish SAGE integration (unified loop)
-4. Begin robustness testing
-
-**Medium-Term** (Next 6 months):
-5. Systematic adversarial testing
-6. Multi-agent coordination testing
-7. Real-world deployment scenarios
-8. External collaboration (if interest exists)
-
-### If Research Pauses
-
-**Document**:
-- What we learned (architecture works at research scale)
-- What we didn't achieve (formal validation, production hardening)
-- Where boundaries are (edge AI feasible, claims need testing)
-
-**Archive**:
-- Make code available with clear status
-- Document known limitations
-- Enable future work to build on this
-
----
-
-## Using This Work
-
-### For Researchers
-
-**What's Useful**:
-- Architecture patterns (IRP, VAE, SNARC, metabolic states)
-- Multi-sensor fusion approach
-- Hybrid learning design
-- Edge deployment experience
-
-**What to Add**:
-- Formal benchmarks
-- Robustness testing
-- Comparative evaluation
-- Theoretical analysis
-
-### For Developers
-
-**What Works** (with caveats):
-- IRP plugins (individual components)
-- VAE compression (demonstrated)
-- Basic hybrid learning (research scale)
-- GPU acceleration (Jetson proven)
-
-**What Doesn't**:
-- Full SAGE integration (in progress)
-- External integration (APIs incomplete)
-- Production deployment (not hardened)
-- Multi-agent coordination (not tested)
-
-### For External Collaborators
-
-**If You Want to Build On This**:
-1. Read architecture docs (`sage/docs/`)
-2. Understand it's research-stage (not production)
-3. Expect to fill gaps (evaluation, testing, documentation)
-4. Contact if serious interest (collaboration possible)
-
-**Don't Expect**:
-- Polished package
-- Complete documentation
-- Production support
-- Formal benchmark validation or third-party reproducibility
-
----
-
-## Acknowledgments
-
-### Inspiration
-
-**Sapient Inc**: Original HRM architecture and dual-module concept. dp-web4's HRM builds on their credible empirical foundation.
-
-### Development
-
-Research architecture developed through:
-- Autonomous AI exploration (multiple sessions)
-- Human oversight and direction
-- Real-world testing (conversations, edge deployment)
-- Iterative refinement based on results
-
-### Philosophy
-
-**"Here's what we tried. Here's what we learned. Here's what we don't know yet."**
-
-Not claiming this is finished. Claiming it's interesting and worth exploring.
-
----
-
-## Conclusion
-
-HRM/SAGE in dp-web4 is **substantial research architecture** exploring attention orchestration and trust-based resource allocation for edge AI, built on credible foundation (Sapient HRM) and evolved into comprehensive system integrated with Web4/Synchronism.
-
-**December 2025 Progress**:
-- Trust-based expert selection validated with real Q3-Omni 30B weights
-- Complete SAGE ↔ Web4 integration stack operational
-- Learning effect demonstrated (+34.8% quality improvement)
-- LCT identity integration complete
-- **Five-domain EP framework complete (Sessions 140-142)**
-  - Session 140: Grounding EP (external coherence)
-  - Session 141: Authorization EP (security control)
-  - Session 142: Performance validated at 373,129 decisions/sec on Thor
-  - **Outperforms Legion RTX 4090 by 33%** (373K vs 280K decisions/sec)
-  - Validated: 7.5x over 50K threshold, 2.58μs latency
-
-**The work is valuable as research**:
-- Novel approach (multi-sensor coherence, trust-augmented selection)
-- Working prototypes (conversations, compression, edge deployment, MoE selection)
-- Validated with production model weights (Q3-Omni 30B)
-- Honest about limitations
-
-**The work is progressing as engineering**:
-- Core integration complete (Sessions 56-64)
-- Web4 ↔ SAGE stack operational
-- Testing with real model weights
-- Documentation expanding
-
-**Remaining gaps**:
-- Full 128-expert extraction (currently 8)
-- Multi-layer scaling (currently 1 layer)
-- External deployment guides
-- Formal robustness testing
-
-**This is what it is**: Well-documented research with validated integration, demonstrating feasibility of trust-augmented expert selection with real model weights, while honestly acknowledging remaining work for full deployment.
-
-Not overselling. Not underselling. Accurately describing what exists.
-
----
-
-**Last Updated**: December 31, 2025 (see [sage/docs/LATEST_STATUS.md](sage/docs/LATEST_STATUS.md) for Feb 2026 updates)
-**Next Review**: March 2026 (after full expert extraction + multi-layer testing)
-**Status**: Five-domain EP consciousness framework validated on Thor
+**Next review**: After federation network activation and PolicyGate Phase 3 completion.

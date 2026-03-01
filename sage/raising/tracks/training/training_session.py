@@ -35,7 +35,7 @@ from datetime import datetime
 from typing import Optional, Dict, Any, List
 import random
 
-from sage.irp.plugins.introspective_qwen_impl import IntrospectiveQwenIRP
+from sage.irp.plugins.daemon_irp import DaemonIRP
 
 # R6 Framework Integration (2026-01-23)
 from r6_context import create_r6_request, evaluate_r6_response
@@ -212,23 +212,20 @@ Your name is SAGE. It's okay to make mistakes - that's how you learn."""
             ]
 
     def initialize_model(self, model_path: str = None, force_cpu: bool = False):
-        """Initialize the SAGE model."""
-        if model_path is None:
-            model_path = "/home/sprout/ai-workspace/HRM/model-zoo/sage/epistemic-stances/qwen2.5-0.5b/introspective-qwen-merged"
-
+        """Connect to the resident SAGE daemon via DaemonIRP."""
         system_prompt = self._build_system_prompt()
 
-        print("Loading model...")
-        self.model = IntrospectiveQwenIRP({
-            'model_path': model_path,
-            'is_merged_model': True,
-            'max_new_tokens': 80,  # Shorter for training
-            'temperature': 0.5,    # More focused
+        print("Connecting to resident SAGE daemon...")
+        self.model = DaemonIRP({
+            'daemon_host': 'localhost',
+            'daemon_port': 8750,
             'system_prompt': system_prompt,
-            'force_cpu': force_cpu
+            'max_wait_seconds': 120,
+            'sender': 'training_session',
+            'max_new_tokens': 80,
+            'temperature': 0.5,
         })
-        device = next(self.model.model.parameters()).device
-        print(f"✓ Model loaded on {device}")
+        print("Connected to daemon (model is resident, no local load)")
 
     def generate_response(self, user_input: str) -> str:
         """Generate SAGE response."""

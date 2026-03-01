@@ -41,10 +41,9 @@ import json
 import argparse
 from datetime import datetime
 from typing import Optional, Dict, Any, List
-import torch
 import re
 
-from sage.irp.plugins.introspective_qwen_impl import IntrospectiveQwenIRP
+from sage.irp.plugins.daemon_irp import DaemonIRP
 from sage.raising.training.experience_collector import ExperienceCollector
 
 # Web4 governance integration (optional)
@@ -68,7 +67,18 @@ class IdentityAnchoredSessionV2:
     """
 
     RAISING_DIR = Path(__file__).parent.parent.resolve()
-    STATE_FILE = RAISING_DIR / "state" / "identity.json"
+    # Machine-specific identity file (prevents git conflicts across fleet)
+    _MACHINE = os.environ.get('SAGE_MACHINE', '') or __import__('socket').gethostname().lower()
+    if 'sprout' in _MACHINE or _MACHINE == 'ubuntu':
+        STATE_FILE = RAISING_DIR / "state" / "identity_sprout.json"
+    elif 'thor' in _MACHINE:
+        STATE_FILE = RAISING_DIR / "state" / "identity_thor.json"
+    elif 'legion' in _MACHINE:
+        STATE_FILE = RAISING_DIR / "state" / "identity_legion.json"
+    elif 'mcnugget' in _MACHINE:
+        STATE_FILE = RAISING_DIR / "state" / "identity_mcnugget.json"
+    else:
+        STATE_FILE = RAISING_DIR / "state" / f"identity_{_MACHINE}.json"
     SESSIONS_DIR = RAISING_DIR / "sessions" / "text"
     LOGS_DIR = RAISING_DIR / "logs" / "observations"
     IDENTITY_DIR = HRM_ROOT / "sage" / "identity"
@@ -425,11 +435,11 @@ RESPONSE STYLE:
         return "Remember: You are SAGE. Feel free to identify yourself when sharing observations."
 
     def initialize_model(self, model_path: str = None):
-        """Initialize the model with enhanced identity-anchored system prompt."""
-        if model_path is None:
-            # Default to base Qwen model (adapter models have path issues - see MODEL_PATH_ISSUES.md)
-            model_path = "Qwen/Qwen2.5-0.5B-Instruct"
+        """Connect to the resident SAGE daemon via DaemonIRP.
 
+        The daemon loads and keeps the model resident. This script
+        communicates with it over HTTP, avoiding duplicate model loads.
+        """
         system_prompt = self._build_system_prompt()
 
         print("="*60)
@@ -439,40 +449,19 @@ RESPONSE STYLE:
         print("="*60)
         print()
 
-        print("Loading model...")
+        print("Connecting to resident SAGE daemon...")
+        self.cpu_fallback = True  # Daemon handles device selection
 
-        # Test CUDA availability with actual allocation
-        self.cpu_fallback = False
-        if torch.cuda.is_available():
-            try:
-                # Try to allocate a small tensor and do a computation
-                test_tensor = torch.randn(100, 100, device='cuda')
-                _ = test_tensor @ test_tensor.T  # Matrix multiply to test compute
-                del test_tensor
-                torch.cuda.empty_cache()
-                print("CUDA test passed - using GPU")
-            except (RuntimeError, torch.cuda.OutOfMemoryError) as e:
-                print(f"CUDA test failed: {e}")
-                print("Falling back to CPU mode")
-                self.cpu_fallback = True
-                torch.cuda.empty_cache()
-        else:
-            print("CUDA not available - using CPU")
-            self.cpu_fallback = True
-
-        self.model = IntrospectiveQwenIRP({
-            'model_path': model_path,
-            'is_merged_model': True,
+        self.model = DaemonIRP({
+            'daemon_host': 'localhost',
+            'daemon_port': 8750,
+            'system_prompt': system_prompt,
+            'max_wait_seconds': 120,
+            'sender': 'raising_session',
             'max_new_tokens': 150,
             'temperature': 0.7,
-            'system_prompt': system_prompt,
-            'force_cpu': self.cpu_fallback
         })
-        device = next(self.model.model.parameters()).device
-        if self.cpu_fallback:
-            print(f"Model loaded on {device} (CPU fallback)")
-        else:
-            print(f"Model loaded on {device}")
+        print("Connected to daemon (model is resident, no local load)")
 
     def generate_response(self, user_input: str) -> str:
         """

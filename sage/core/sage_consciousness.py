@@ -902,6 +902,16 @@ class SAGEConsciousness:
             except Exception as e:
                 print(f"[WARN] Experience recording failed: {e}")
 
+        # Resolve the message directly in the queue so the HTTP handler
+        # gets its response immediately. The effect system may also resolve
+        # it (via NetworkEffector), but message_queue.resolve() is idempotent
+        # (second call is a no-op since the message is popped from _waiting).
+        if self.message_queue and message_id and response_text:
+            self.message_queue.resolve(message_id, response_text, extra={
+                'metabolic_state': self.metabolic.current_state.value,
+                'atp_remaining': self.metabolic.atp_current,
+            })
+
         if response_text and not response_text.startswith('['):
             self.stats['messages_responded'] += 1
 
@@ -984,10 +994,23 @@ class SAGEConsciousness:
         # Build conversation prompt
         prompt = self._build_conversation_prompt(content, history, sender)
 
-        # Try different LLM interfaces
-        if hasattr(self.llm_plugin, 'get_response'):
-            # IntrospectiveQwenIRP interface
-            return self.llm_plugin.get_response(prompt)
+        # Try different LLM interfaces.
+        # Order matters: init_state/step is preferred for IRP plugins like
+        # IntrospectiveQwenIRP (whose get_response expects a state dict, not
+        # a prompt string). generate() is for MultiModelLoader (Thor).
+        if hasattr(self.llm_plugin, 'init_state'):
+            # IRP plugin interface (IntrospectiveQwenIRP, OllamaIRP, DaemonIRP, etc.)
+            state = self.llm_plugin.init_state(
+                {'prompt': prompt, 'memory': []}
+            )
+            state = self.llm_plugin.step(state)
+            # IntrospectiveQwenIRP returns a plain dict with 'current_response'
+            if isinstance(state, dict):
+                return state.get('current_response', state.get('response', str(state)))
+            # Generic IRP state object
+            if hasattr(state, 'x') and isinstance(state.x, dict):
+                return state.x.get('response', str(state.x))
+            return str(state.x) if hasattr(state, 'x') else str(state)
 
         elif hasattr(self.llm_plugin, 'generate'):
             # MultiModelLoader interface (Thor)
@@ -996,16 +1019,6 @@ class SAGEConsciousness:
                 max_tokens=self.config.get('max_response_tokens', 200),
                 temperature=0.8,
             )
-
-        elif hasattr(self.llm_plugin, 'init_state'):
-            # Generic IRP plugin interface
-            state = self.llm_plugin.init_state(
-                {'prompt': prompt, 'memory': []}, {}
-            )
-            state = self.llm_plugin.step(state)
-            if hasattr(state, 'x') and isinstance(state.x, dict):
-                return state.x.get('response', str(state.x))
-            return str(state.x) if hasattr(state, 'x') else ''
 
         else:
             return f"[SAGE has no compatible LLM interface: {type(self.llm_plugin).__name__}]"

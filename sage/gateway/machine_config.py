@@ -10,7 +10,7 @@ Fleet — default models (per-machine, override with SAGE_MODEL env var):
   Machine    | Hardware               | Default Model          | Device
   -----------|------------------------|------------------------|--------
   thor       | Jetson AGX Thor        | Qwen 2.5 14B (local)  | cuda
-  sprout     | Jetson Orin Nano 8GB   | Qwen 2.5 0.5B (local) | cuda
+  sprout     | Jetson Orin Nano 8GB   | Qwen 2.5 0.5B (local) | cpu
   legion     | RTX 4090 desktop       | Qwen 2.5 14B (local)  | cuda
   mcnugget   | Mac Mini M4            | gemma3:12b (Ollama)    | mps
   nomad      | RTX 4060 laptop        | gemma3:4b (Ollama)     | cuda
@@ -143,6 +143,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
 
     if machine_name == 'thor':
         workspace = '/home/dp/ai-workspace'
+        state_dir = f'{workspace}/HRM/sage/raising/state'
         default_model = f'{workspace}/HRM/model-zoo/sage/epistemic-stances/qwen2.5-14b/base-instruct'
         model = model_override or default_model
         is_ollama = model_override and not model_override.startswith('/')
@@ -154,8 +155,8 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             max_memory_gb=100.0,
             gateway_port=port,
             workspace_path=workspace,
-            identity_state_path=f'{workspace}/HRM/sage/raising/state/identity.json',
-            experience_buffer_path=f'{workspace}/HRM/sage/raising/state/experience_buffer.json',
+            identity_state_path=f'{state_dir}/identity_thor.json',
+            experience_buffer_path=f'{state_dir}/experience_buffer_thor.json',
             irp_iterations=5,
             federation_port=50051,
             ed25519_key_path=f'{workspace}/HRM/sage/data/keys/Thor_ed25519.key',
@@ -167,6 +168,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
 
     elif machine_name == 'sprout':
         workspace = '/home/sprout/ai-workspace'
+        state_dir = f'{workspace}/HRM/sage/raising/state'
         default_model = f'{workspace}/HRM/model-zoo/sage/epistemic-stances/qwen2.5-0.5b/introspective-qwen-merged'
         model = model_override or default_model
         is_ollama = model_override and not model_override.startswith('/')
@@ -174,12 +176,12 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             machine_name='sprout',
             model_path=f'ollama:{model}' if is_ollama else model,
             model_size='ollama' if is_ollama else '0.5b',
-            device='cuda',
+            device='cpu',
             max_memory_gb=6.0,
             gateway_port=port,
             workspace_path=workspace,
-            identity_state_path=f'{workspace}/HRM/sage/raising/state/identity.json',
-            experience_buffer_path=f'{workspace}/HRM/sage/raising/state/experience_buffer.json',
+            identity_state_path=f'{state_dir}/identity_sprout.json',
+            experience_buffer_path=f'{state_dir}/experience_buffer_sprout.json',
             irp_iterations=3,
             federation_port=50051,
             ed25519_key_path=f'{workspace}/HRM/sage/data/keys/Sprout_ed25519.key',
@@ -191,6 +193,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
 
     elif machine_name == 'legion':
         workspace = '/home/dp/ai-workspace'
+        state_dir = f'{workspace}/HRM/sage/raising/state'
         default_model = f'{workspace}/HRM/model-zoo/sage/epistemic-stances/qwen2.5-14b/base-instruct'
         model = model_override or default_model
         is_ollama = model_override and not model_override.startswith('/')
@@ -202,8 +205,8 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             max_memory_gb=14.0,
             gateway_port=port,
             workspace_path=workspace,
-            identity_state_path=f'{workspace}/HRM/sage/raising/state/identity.json',
-            experience_buffer_path=f'{workspace}/HRM/sage/raising/state/experience_buffer.json',
+            identity_state_path=f'{state_dir}/identity_legion.json',
+            experience_buffer_path=f'{state_dir}/experience_buffer_legion.json',
             irp_iterations=5,
             federation_port=50051,
             ed25519_key_path=f'{workspace}/HRM/sage/data/keys/Legion_ed25519.key',
@@ -216,6 +219,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
     elif machine_name == 'mcnugget':
         # McNugget: Mac Mini M4, 16GB unified
         workspace = '/Users/dennispalatov/repos'
+        state_dir = f'{workspace}/HRM/sage/raising/state'
         model = model_override or 'gemma3:12b'
         return SAGEMachineConfig(
             machine_name='mcnugget',
@@ -225,8 +229,8 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             max_memory_gb=16.0,
             gateway_port=port,
             workspace_path=workspace,
-            identity_state_path=f'{workspace}/HRM/sage/raising/state/mcnugget_identity.json',
-            experience_buffer_path=f'{workspace}/HRM/sage/raising/state/experience_buffer_mcnugget_gemma3_12b.json',
+            identity_state_path=f'{state_dir}/identity_mcnugget.json',
+            experience_buffer_path=f'{state_dir}/experience_buffer_mcnugget.json',
             irp_iterations=5,
             federation_port=50051,
             ed25519_key_path=f'{workspace}/HRM/sage/data/keys/McNugget_ed25519.key',
@@ -239,6 +243,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
     elif machine_name == 'nomad':
         # Nomad: Legion laptop, RTX 4060 8GB
         workspace = '/mnt/c/projects/ai-agents'
+        state_dir = f'{workspace}/HRM/sage/raising/state'
         model = model_override or 'gemma3:4b'
         return SAGEMachineConfig(
             machine_name='nomad',
@@ -248,8 +253,8 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             max_memory_gb=8.0,
             gateway_port=port,
             workspace_path=workspace,
-            identity_state_path=f'{workspace}/HRM/sage/raising/state/identity.json',
-            experience_buffer_path=f'{workspace}/HRM/sage/raising/state/experience_buffer.json',
+            identity_state_path=f'{state_dir}/identity_nomad.json',
+            experience_buffer_path=f'{state_dir}/experience_buffer_nomad.json',
             irp_iterations=5,
             federation_port=50051,
             ed25519_key_path='',
@@ -262,6 +267,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
     elif machine_name == 'cbp':
         # CBP: WSL2 desktop, RTX 2060 SUPER
         workspace = '/mnt/c/exe/projects/ai-agents'
+        state_dir = f'{workspace}/HRM/sage/raising/state'
         model = model_override or 'tinyllama:latest'
         return SAGEMachineConfig(
             machine_name='cbp',
@@ -271,8 +277,8 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             max_memory_gb=8.0,
             gateway_port=port,
             workspace_path=workspace,
-            identity_state_path=f'{workspace}/HRM/sage/raising/state/identity.json',
-            experience_buffer_path=f'{workspace}/HRM/sage/raising/state/experience_buffer.json',
+            identity_state_path=f'{state_dir}/identity_cbp.json',
+            experience_buffer_path=f'{state_dir}/experience_buffer_cbp.json',
             irp_iterations=3,
             federation_port=0,
             ed25519_key_path='',

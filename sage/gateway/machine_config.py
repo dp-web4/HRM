@@ -1,9 +1,23 @@
 """
 Machine auto-detection and configuration for SAGE daemon.
 
-Detects which machine SAGE is running on (Thor, Sprout, CBP, Legion)
-and loads the appropriate configuration for model paths, memory limits,
-gateway ports, and federation identity.
+Detects which machine SAGE is running on and loads the appropriate
+configuration for model paths, memory limits, gateway ports, and
+federation identity.
+
+Fleet — default models (per-machine, override with SAGE_MODEL env var):
+
+  Machine    | Hardware               | Default Model          | Device
+  -----------|------------------------|------------------------|--------
+  thor       | Jetson AGX Thor        | Qwen 2.5 14B (local)  | cuda
+  sprout     | Jetson Orin Nano 8GB   | Qwen 2.5 0.5B (local) | cuda
+  legion     | RTX 4090 desktop       | Qwen 2.5 14B (local)  | cuda
+  mcnugget   | Mac Mini M4            | gemma3:12b (Ollama)    | mps
+  nomad      | RTX 4060 laptop        | gemma3:4b (Ollama)     | cuda
+  cbp        | RTX 2060S WSL2         | tinyllama:latest       | cpu
+
+Each machine+model pairing maintains its own experience buffer.
+SAGE_MODEL env var overrides the default for any machine.
 """
 
 import os
@@ -118,12 +132,24 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
 
     port = int(os.environ.get('SAGE_PORT', '8750'))
 
+    # ── Per-machine configs ──────────────────────────────────────────
+    # SAGE_MODEL env var overrides the default model on ANY machine.
+    # For Ollama machines the value is an Ollama tag (e.g. "gemma3:4b").
+    # For local-weight machines the value is a filesystem path.
+    # Each machine+model pairing gets its own experience buffer file
+    # (see sage_daemon.py _load_experience_collector).
+
+    model_override = os.environ.get('SAGE_MODEL')
+
     if machine_name == 'thor':
         workspace = '/home/dp/ai-workspace'
+        default_model = f'{workspace}/HRM/model-zoo/sage/epistemic-stances/qwen2.5-14b/base-instruct'
+        model = model_override or default_model
+        is_ollama = model_override and not model_override.startswith('/')
         return SAGEMachineConfig(
             machine_name='thor',
-            model_path=f'{workspace}/HRM/model-zoo/sage/epistemic-stances/qwen2.5-14b/base-instruct',
-            model_size='14b',
+            model_path=f'ollama:{model}' if is_ollama else model,
+            model_size='ollama' if is_ollama else '14b',
             device='cuda',
             max_memory_gb=100.0,
             gateway_port=port,
@@ -141,10 +167,13 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
 
     elif machine_name == 'sprout':
         workspace = '/home/sprout/ai-workspace'
+        default_model = f'{workspace}/HRM/model-zoo/sage/epistemic-stances/qwen2.5-0.5b/introspective-qwen-merged'
+        model = model_override or default_model
+        is_ollama = model_override and not model_override.startswith('/')
         return SAGEMachineConfig(
             machine_name='sprout',
-            model_path=f'{workspace}/HRM/model-zoo/sage/epistemic-stances/qwen2.5-0.5b/introspective-qwen-merged',
-            model_size='0.5b',
+            model_path=f'ollama:{model}' if is_ollama else model,
+            model_size='ollama' if is_ollama else '0.5b',
             device='cuda',
             max_memory_gb=6.0,
             gateway_port=port,
@@ -162,10 +191,13 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
 
     elif machine_name == 'legion':
         workspace = '/home/dp/ai-workspace'
+        default_model = f'{workspace}/HRM/model-zoo/sage/epistemic-stances/qwen2.5-14b/base-instruct'
+        model = model_override or default_model
+        is_ollama = model_override and not model_override.startswith('/')
         return SAGEMachineConfig(
             machine_name='legion',
-            model_path=f'{workspace}/HRM/model-zoo/sage/epistemic-stances/qwen2.5-14b/base-instruct',
-            model_size='14b',
+            model_path=f'ollama:{model}' if is_ollama else model,
+            model_size='ollama' if is_ollama else '14b',
             device='cuda',
             max_memory_gb=14.0,
             gateway_port=port,
@@ -182,11 +214,12 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
         )
 
     elif machine_name == 'mcnugget':
-        # McNugget: Mac Mini M4, Ollama-served models (Gemma/Mistral)
+        # McNugget: Mac Mini M4, 16GB unified
         workspace = '/Users/dennispalatov/repos'
+        model = model_override or 'gemma3:12b'
         return SAGEMachineConfig(
             machine_name='mcnugget',
-            model_path='ollama:gemma3:12b',  # Sentinel — parsed by daemon
+            model_path=f'ollama:{model}',
             model_size='ollama',
             device='mps',
             max_memory_gb=16.0,
@@ -204,11 +237,12 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
         )
 
     elif machine_name == 'nomad':
-        # Nomad: Legion laptop, RTX 4060 8GB, Ollama-served models
+        # Nomad: Legion laptop, RTX 4060 8GB
         workspace = '/mnt/c/projects/ai-agents'
+        model = model_override or 'gemma3:4b'
         return SAGEMachineConfig(
             machine_name='nomad',
-            model_path='ollama:gemma3:4b',  # Sentinel — parsed by daemon
+            model_path=f'ollama:{model}',
             model_size='ollama',
             device='cuda',
             max_memory_gb=8.0,
@@ -226,13 +260,12 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
         )
 
     elif machine_name == 'cbp':
-        # CBP: WSL2 desktop, Ollama-served models via Windows host
-        # SAGE_MODEL env var switches model (each gets its own experience buffer)
+        # CBP: WSL2 desktop, RTX 2060 SUPER
         workspace = '/mnt/c/exe/projects/ai-agents'
-        model = os.environ.get('SAGE_MODEL', 'gemma3:4b')
+        model = model_override or 'tinyllama:latest'
         return SAGEMachineConfig(
             machine_name='cbp',
-            model_path=f'ollama:{model}',  # Sentinel — parsed by daemon
+            model_path=f'ollama:{model}',
             model_size='ollama',
             device='cpu',
             max_memory_gb=8.0,

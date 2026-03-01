@@ -62,7 +62,7 @@ def make_slug(machine: str, model: str) -> str:
 _DEFAULT_MODELS = {
     'thor': 'qwen2.5-14b',
     'sprout': 'qwen2.5-0.5b',
-    'legion': 'qwen2-0.5b',
+    'legion': 'phi4:14b',
     'mcnugget': 'gemma3:12b',
     'nomad': 'gemma3:4b',
     'cbp': 'tinyllama:latest',

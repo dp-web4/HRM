@@ -38,7 +38,7 @@ git pull --rebase --quiet 2>/dev/null || echo "[Legion-Raising] WARN: git pull f
 $PYTHON -m sage.raising.scripts.ollama_raising_session --machine legion -c 2>&1
 
 # Instance directory (new layout) and legacy paths
-INSTANCE_DIR="sage/instances/legion-qwen2-0.5b"
+INSTANCE_DIR="sage/instances/legion-phi4-14b"
 LEGACY_STATE="sage/raising/state"
 LEGACY_SESSIONS="sage/raising/sessions/legion"
 
@@ -65,7 +65,7 @@ fi
 if ! git diff --quiet "$LEGACY_STATE/legion_identity.json" 2>/dev/null; then
     CHANGED=1
 fi
-if ! git diff --quiet "$LEGACY_STATE/experience_buffer_legion_qwen2_0.5b.json" 2>/dev/null; then
+if ! git diff --quiet "$LEGACY_STATE/experience_buffer_legion_phi4_14b.json" 2>/dev/null; then
     CHANGED=1
 fi
 
@@ -96,13 +96,13 @@ with open('$HRM_DIR/$IDENTITY_FILE') as f:
 git add "$INSTANCE_DIR/" 2>/dev/null || true
 git add "$LEGACY_SESSIONS/" \
         "$LEGACY_STATE/legion_identity.json" \
-        "$LEGACY_STATE/experience_buffer_legion_qwen2_0.5b.json" 2>/dev/null || true
+        "$LEGACY_STATE/experience_buffer_legion_phi4_14b.json" 2>/dev/null || true
 
 git commit -m "[Legion-Raising] Session $SESSION_NUM ($PHASE) — $(date -u +'%Y-%m-%d %H:%M UTC')
 
 Automated SAGE-Legion raising session via OllamaIRP
 Machine: Legion (Legion Pro 7, RTX 4090, Linux)
-Model: Qwen 2 0.5B (alibaba-qwen family)
+Model: Phi-4 14B (microsoft-phi family)
 Phase: $PHASE
 AI-Instance: OllamaIRP (automated)
 Human-Supervised: no"

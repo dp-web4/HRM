@@ -299,35 +299,60 @@ class GatewayHandler(BaseHTTPRequestHandler):
         if self.consciousness and hasattr(self.consciousness, 'plugin_trust_weights'):
             stats['plugin_trust'] = dict(self.consciousness.plugin_trust_weights)
 
-        # GPU stats (guarded import)
+        # GPU stats — prefer pynvml (system-wide, sees Ollama), fall back to torch
+        gpu_found = False
         try:
-            import torch
-            if torch.cuda.is_available():
-                props = torch.cuda.get_device_properties(0)
-                stats['gpu'] = {
-                    'name': torch.cuda.get_device_name(0),
-                    'memory_allocated_mb': round(torch.cuda.memory_allocated(0) / 1e6, 1),
-                    'memory_reserved_mb': round(torch.cuda.memory_reserved(0) / 1e6, 1),
-                    'memory_total_mb': round(props.total_memory / 1e6, 1),
-                }
-            elif torch.backends.mps.is_available():
-                # Apple Silicon — unified memory shared between CPU and GPU
-                try:
-                    import psutil as _ps
-                    vm = _ps.virtual_memory()
-                    stats['gpu'] = {
-                        'name': 'Apple Silicon (unified)',
-                        'memory_allocated_mb': round(vm.used / 1e6, 1),
-                        'memory_total_mb': round(vm.total / 1e6, 1),
-                    }
-                except ImportError:
-                    stats['gpu'] = {
-                        'name': 'Apple Silicon (MPS)',
-                        'memory_allocated_mb': 0,
-                        'memory_total_mb': 0,
-                    }
-        except ImportError:
+            import pynvml
+            pynvml.nvmlInit()
+            handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+            mem_info = pynvml.nvmlDeviceGetMemoryInfo(handle)
+            gpu_name = pynvml.nvmlDeviceGetName(handle)
+            if isinstance(gpu_name, bytes):
+                gpu_name = gpu_name.decode()
+            try:
+                util = pynvml.nvmlDeviceGetUtilizationRates(handle)
+                gpu_util_pct = util.gpu
+            except Exception:
+                gpu_util_pct = None
+            stats['gpu'] = {
+                'name': gpu_name,
+                'memory_allocated_mb': round(mem_info.used / 1e6, 1),
+                'memory_total_mb': round(mem_info.total / 1e6, 1),
+            }
+            if gpu_util_pct is not None:
+                stats['gpu']['utilization_pct'] = gpu_util_pct
+            gpu_found = True
+        except Exception:
             pass
+
+        if not gpu_found:
+            try:
+                import torch
+                if torch.cuda.is_available():
+                    props = torch.cuda.get_device_properties(0)
+                    stats['gpu'] = {
+                        'name': torch.cuda.get_device_name(0),
+                        'memory_allocated_mb': round(torch.cuda.memory_allocated(0) / 1e6, 1),
+                        'memory_reserved_mb': round(torch.cuda.memory_reserved(0) / 1e6, 1),
+                        'memory_total_mb': round(props.total_memory / 1e6, 1),
+                    }
+                elif torch.backends.mps.is_available():
+                    try:
+                        import psutil as _ps
+                        vm = _ps.virtual_memory()
+                        stats['gpu'] = {
+                            'name': 'Apple Silicon (unified)',
+                            'memory_allocated_mb': round(vm.used / 1e6, 1),
+                            'memory_total_mb': round(vm.total / 1e6, 1),
+                        }
+                    except ImportError:
+                        stats['gpu'] = {
+                            'name': 'Apple Silicon (MPS)',
+                            'memory_allocated_mb': 0,
+                            'memory_total_mb': 0,
+                        }
+            except ImportError:
+                pass
 
         # CPU / RAM (guarded import)
         try:

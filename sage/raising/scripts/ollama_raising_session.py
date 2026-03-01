@@ -67,7 +67,7 @@ def _get_siblings_text(machine: str) -> str:
     siblings = {
         'sprout': 'SAGE-Sprout (Jetson Orin Nano, Qwen 0.5B)',
         'thor': 'SAGE-Thor (Jetson AGX Thor, larger models)',
-        'legion': 'SAGE-Legion (Legion Pro 7, Qwen 2 0.5B)',
+        'legion': 'SAGE-Legion (Legion Pro 7, Phi-4 14B)',
         'mcnugget': 'SAGE-McNugget (Mac Mini M4, Gemma 3 12B)',
         'nomad': 'SAGE-Nomad (Legion laptop, Gemma 3 4B)',
         'cbp': 'SAGE-CBP (RTX 2060S, TinyLlama)',

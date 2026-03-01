@@ -11,7 +11,7 @@ Fleet — default models (per-machine, override with SAGE_MODEL env var):
   -----------|------------------------|------------------------|--------
   thor       | Jetson AGX Thor        | Qwen 2.5 14B (local)  | cuda
   sprout     | Jetson Orin Nano 8GB   | Qwen 2.5 0.5B (local) | cpu
-  legion     | RTX 4090 desktop       | Qwen 2.5 14B (local)  | cuda
+  legion     | RTX 4090 desktop       | phi4:14b (Ollama)      | cuda
   mcnugget   | Mac Mini M4            | gemma3:12b (Ollama)    | mps
   nomad      | RTX 4060 laptop        | gemma3:4b (Ollama)     | cuda
   cbp        | RTX 2060S WSL2         | tinyllama:latest       | cpu
@@ -214,13 +214,11 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
     elif machine_name == 'legion':
         workspace = '/home/dp/ai-workspace'
         state_dir = f'{workspace}/HRM/sage/raising/state'
-        default_model = f'{workspace}/HRM/model-zoo/sage/epistemic-stances/qwen2.5-14b/base-instruct'
-        model = model_override or default_model
-        is_ollama = model_override and not model_override.startswith('/')
+        model = model_override or 'phi4:14b'
         return SAGEMachineConfig(
             machine_name='legion',
-            model_path=f'ollama:{model}' if is_ollama else model,
-            model_size='ollama' if is_ollama else '14b',
+            model_path=f'ollama:{model}',
+            model_size='ollama',
             device='cuda',
             max_memory_gb=14.0,
             gateway_port=port,

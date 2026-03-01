@@ -236,10 +236,10 @@ class McNuggetHandler(BaseHTTPRequestHandler):
         })
 
     def log_message(self, format, *args):
-        path = args[0] if args else ''
-        if any(s in path for s in ('/health', '/stream', '/images/')):
+        msg = format % args if args else format
+        if isinstance(msg, str) and any(s in msg for s in ('/health', '/stream', '/images/')):
             return
-        print(f"[McNugget] {args[0] if args else format}")
+        print(f"[McNugget] {msg}")
 
 
 def main():

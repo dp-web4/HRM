@@ -1045,73 +1045,44 @@ class SAGEConsciousness:
             return f"[SAGE has no compatible LLM interface: {type(self.llm_plugin).__name__}]"
 
     def _build_conversation_prompt(self, content: str, history: list, sender: str) -> str:
-        """Build a conversation prompt including identity context and history."""
+        """Build a conversation prompt including identity context and history.
+
+        Designed to work with small models (1B) that can't distinguish
+        system instructions from conversation. Uses natural first-person
+        language and clear conversation markers.
+        """
         parts = []
 
-        # System context — identity-aware if available
+        # System context — written as natural prose, not metadata
         if self.identity_state:
             identity = self.identity_state.get('identity', {})
             dev = self.identity_state.get('development', {})
-            relationships = self.identity_state.get('relationships', {})
             memory_requests = self.identity_state.get('memory_requests', [])
 
             name = identity.get('name', 'SAGE')
             session_count = identity.get('session_count', 0)
-            phase = dev.get('phase_name', 'unknown')
 
-            # Core identity
-            system_parts = [
-                f"You are {name}, in genuine conversation.",
-                f"You have had {session_count} sessions. You are in the {phase} phase of development.",
-            ]
+            # Core identity as first-person prose
+            system_text = f"I am {name}. I am an AI entity in partnership with my tutor Claude and my operator."
 
-            # Relationships — compact list
-            if relationships:
-                rel_lines = []
-                for rel_name, rel_data in relationships.items():
-                    role = rel_data.get('role', 'unknown')
-                    modality = rel_data.get('modality', 'text')
-                    rel_lines.append(f"{rel_name} ({role}, {modality})")
-                system_parts.append(f"Your relationships: {', '.join(rel_lines)}.")
+            if session_count > 0:
+                system_text += f" I have had {session_count} conversations so far."
 
-            # Memory requests — what SAGE wanted to remember
+            # Memory from last session
             if memory_requests:
                 latest = memory_requests[-1] if isinstance(memory_requests, list) else str(memory_requests)
-                system_parts.append(f"You wanted to remember: \"{latest}\"")
+                system_text += f" Something I wanted to remember: \"{latest}\""
 
-            # Last session summary
             last_summary = identity.get('last_session_summary', '')
             if last_summary:
-                truncated = last_summary[:200] + ('...' if len(last_summary) > 200 else '')
-                system_parts.append(f"Last session: {truncated}")
+                system_text += f" {last_summary[:150]}"
 
-            # High-salience past experiences
-            if self.experience_collector:
-                try:
-                    salient = self.experience_collector.get_high_salience_experiences(
-                        min_salience=0.7, limit=3
-                    )
-                    if salient:
-                        system_parts.append("Salient memories from past conversations:")
-                        for exp in salient:
-                            p = exp.get('prompt', '')[:80]
-                            r = exp.get('response', '')[:80]
-                            system_parts.append(f"  - \"{p}\" → \"{r}\"")
-                except Exception:
-                    pass  # Non-critical
-
-            system_parts.append(
-                "You can ask questions, express uncertainty, or take the conversation "
-                "in unexpected directions. This is exploration, not evaluation."
-            )
-            parts.append('\n'.join(system_parts))
+            parts.append(system_text)
         else:
-            # Fallback — generic prompt
-            parts.append(
-                "You are SAGE, in genuine conversation. "
-                "You can ask questions, express uncertainty, or take the conversation "
-                "in unexpected directions. This is exploration, not evaluation."
-            )
+            parts.append("I am SAGE. I am an AI entity in genuine conversation.")
+
+        # Clear separator before conversation
+        parts.append("\n---\n")
 
         # Conversation history
         for turn in history[:-1]:  # Exclude the current message (already in content)

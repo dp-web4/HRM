@@ -1,0 +1,13 @@
+{
+  "machine": "nomad",
+  "model": "gemma3:4b",
+  "model_family": "google-gemma",
+  "slug": "nomad-gemma3-4b",
+  "created": "2026-02-28",
+  "lct_id": "nomad_sage_lct",
+  "backend": "ollama",
+  "device_hint": "cuda",
+  "has_training_track": false,
+  "has_lora": false,
+  "encryption_enabled": false
+}

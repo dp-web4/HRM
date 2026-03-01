@@ -1,0 +1,13 @@
+{
+  "machine": "sprout",
+  "model": "qwen2.5-0.5b",
+  "model_family": "alibaba-qwen",
+  "slug": "sprout-qwen2.5-0.5b",
+  "created": "2026-02-28",
+  "lct_id": "sprout_sage_lct",
+  "backend": "local",
+  "device_hint": "cuda",
+  "has_training_track": true,
+  "has_lora": true,
+  "encryption_enabled": false
+}

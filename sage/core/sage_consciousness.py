@@ -201,16 +201,30 @@ class SAGEConsciousness:
                 print(f"[SNARC] Real scorer not available, using mock: {e}")
                 self.use_real_snarc = False
 
-        # Real sleep consolidation (when use_real_sleep=True)
-        self.use_real_sleep = self.config.get('use_real_sleep', False)
+        # Sleep capability detection — what can this machine do on DREAM entry?
+        self.sleep_cap = None
         self.sleep_bridge = None
-        if self.use_real_sleep:
+        self.use_real_sleep = False
+        try:
+            from sage.instances.sleep_capability import SleepCapability
+            instance_dir = Path(self.config.get('instance_dir', ''))
+            self.sleep_cap = SleepCapability.detect(instance_dir if instance_dir.name else None)
+            print(f"[Sleep] Capability: lora={self.sleep_cap.sleep_lora} "
+                  f"jsonl={self.sleep_cap.sleep_jsonl} remote={self.sleep_cap.sleep_remote} "
+                  f"→ best={self.sleep_cap.best_mode}")
+        except Exception as e:
+            print(f"[Sleep] Capability detection failed: {e}")
+
+        # Load real LoRA bridge if capable
+        if self.sleep_cap and self.sleep_cap.sleep_lora:
             try:
                 from attention.sleep_consolidation import SleepConsolidationBridge
                 sleep_config = {
                     'model_path': self.config.get('sleep_model_path', None),
-                    'checkpoint_dir': self.config.get('sleep_checkpoint_dir',
-                        'logs/attention/sleep_checkpoints'),
+                    'checkpoint_dir': str(
+                        Path(self.config.get('instance_dir', '')) / 'checkpoints' / 'sleep'
+                    ) if self.config.get('instance_dir') else self.config.get(
+                        'sleep_checkpoint_dir', 'logs/attention/sleep_checkpoints'),
                     'min_salience': self.config.get('sleep_min_salience', 0.6),
                     'max_experiences': self.config.get('sleep_max_experiences', 20),
                     'epochs': self.config.get('sleep_epochs', 3),
@@ -218,10 +232,10 @@ class SAGEConsciousness:
                     'enabled': True,
                 }
                 self.sleep_bridge = SleepConsolidationBridge(config=sleep_config)
+                self.use_real_sleep = True
                 print("[Sleep] Real SleepConsolidationBridge loaded")
             except ImportError as e:
-                print(f"[Sleep] Real bridge not available, using JSONL fallback: {e}")
-                self.use_real_sleep = False
+                print(f"[Sleep] LoRA capable but bridge import failed: {e}")
 
         # Real sensor trust tracking (when use_real_sensors=True)
         self.sensor_trust_system = None
@@ -1120,48 +1134,71 @@ class SAGEConsciousness:
             except Exception as e:
                 print(f"[DREAM] Experience check failed: {e}")
 
-        # Real sleep consolidation via SleepConsolidationBridge
-        if self.use_real_sleep and self.sleep_bridge and self.snarc_memory:
+        if not self.snarc_memory:
+            print(f"[DREAM] No SNARC memories to consolidate")
+            return
+
+        # Tiered sleep consolidation based on detected capability
+        mode = self.sleep_cap.best_mode if self.sleep_cap else 'jsonl'
+
+        # Tier 1: Real LoRA consolidation
+        if mode == 'lora' and self.use_real_sleep and self.sleep_bridge:
             try:
                 buffer_adapter = _SleepBufferAdapter(self.snarc_memory)
                 asyncio.ensure_future(self._run_sleep_consolidation(buffer_adapter))
-                return  # Skip JSONL fallback
+                if self.sleep_cap:
+                    self.sleep_cap.record_consolidation('lora')
+                return
             except Exception as e:
-                print(f"[DREAM] Real sleep consolidation failed, falling back to JSONL: {e}")
+                print(f"[DREAM] LoRA consolidation failed, falling back to JSONL: {e}")
+                mode = 'jsonl'
 
-        # JSONL consolidation fallback
-        if self.snarc_memory:
+        # Tier 2: Dream bundle (JSONL) — write to instance dir
+        if mode in ('jsonl', 'remote'):
             try:
-                sorted_exp = sorted(
-                    self.snarc_memory,
-                    key=lambda x: x.get('salience', 0),
-                    reverse=True,
-                )
-                top_k = sorted_exp[:10]
+                instance_dir_str = self.config.get('instance_dir', '')
+                instance_dir = Path(instance_dir_str) if instance_dir_str else None
 
-                from pathlib import Path
-                consolidation_file = Path('demo_logs') / 'consolidated_memory.jsonl'
-                consolidation_file.parent.mkdir(exist_ok=True)
+                if instance_dir and instance_dir.exists():
+                    from sage.instances.sleep_capability import write_dream_bundle
+                    bundle_path = write_dream_bundle(
+                        instance_dir=instance_dir,
+                        experiences=self.snarc_memory,
+                        machine=self.config.get('machine_name', 'unknown'),
+                        model=self.config.get('model_name', 'unknown'),
+                    )
+                    print(f"[DREAM] Dream bundle: {bundle_path.name} "
+                          f"({len(self.snarc_memory)} experiences)")
+                else:
+                    # Fallback: write to demo_logs if no instance dir
+                    consolidation_file = Path('demo_logs') / 'consolidated_memory.jsonl'
+                    consolidation_file.parent.mkdir(exist_ok=True)
+                    sorted_exp = sorted(
+                        self.snarc_memory,
+                        key=lambda x: x.get('salience', 0),
+                        reverse=True,
+                    )[:10]
+                    written = 0
+                    with open(consolidation_file, 'a') as f:
+                        for exp in sorted_exp:
+                            record = {
+                                'cycle': exp.get('cycle', 0),
+                                'plugin': exp.get('plugin', ''),
+                                'salience': exp.get('salience', 0),
+                                'timestamp': time.time(),
+                                'consolidation_cycle': self.cycle_count,
+                            }
+                            result = exp.get('result')
+                            if hasattr(result, 'final_state') and isinstance(result.final_state, dict):
+                                resp = result.final_state.get('response', '')
+                                if resp:
+                                    record['response_preview'] = resp[:200]
+                            f.write(json.dumps(record) + '\n')
+                            written += 1
+                    print(f"[DREAM] Consolidated {written} experiences to {consolidation_file}")
 
-                written = 0
-                with open(consolidation_file, 'a') as f:
-                    for exp in top_k:
-                        record = {
-                            'cycle': exp.get('cycle', 0),
-                            'plugin': exp.get('plugin', ''),
-                            'salience': exp.get('salience', 0),
-                            'timestamp': time.time(),
-                            'consolidation_cycle': self.cycle_count,
-                        }
-                        result = exp.get('result')
-                        if hasattr(result, 'final_state') and isinstance(result.final_state, dict):
-                            resp = result.final_state.get('response', '')
-                            if resp:
-                                record['response_preview'] = resp[:200]
-                        f.write(json.dumps(record) + '\n')
-                        written += 1
-
-                print(f"[DREAM] Consolidated {written} experiences to {consolidation_file}")
+                if self.sleep_cap:
+                    self.sleep_cap.record_consolidation(mode)
             except Exception as e:
                 print(f"[DREAM] Consolidation failed: {e}")
 

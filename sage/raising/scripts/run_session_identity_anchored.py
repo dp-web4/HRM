@@ -45,6 +45,7 @@ import re
 
 from sage.irp.plugins.daemon_irp import DaemonIRP
 from sage.raising.training.experience_collector import ExperienceCollector
+from sage.instances.resolver import InstancePaths
 
 # Web4 governance integration (optional)
 try:
@@ -67,21 +68,13 @@ class IdentityAnchoredSessionV2:
     """
 
     RAISING_DIR = Path(__file__).parent.parent.resolve()
-    # Machine-specific identity file (prevents git conflicts across fleet)
-    _MACHINE = os.environ.get('SAGE_MACHINE', '') or __import__('socket').gethostname().lower()
-    if 'sprout' in _MACHINE or _MACHINE == 'ubuntu':
-        STATE_FILE = RAISING_DIR / "state" / "identity_sprout.json"
-    elif 'thor' in _MACHINE:
-        STATE_FILE = RAISING_DIR / "state" / "identity_thor.json"
-    elif 'legion' in _MACHINE:
-        STATE_FILE = RAISING_DIR / "state" / "identity_legion.json"
-    elif 'mcnugget' in _MACHINE:
-        STATE_FILE = RAISING_DIR / "state" / "identity_mcnugget.json"
-    else:
-        STATE_FILE = RAISING_DIR / "state" / f"identity_{_MACHINE}.json"
-    SESSIONS_DIR = RAISING_DIR / "sessions" / "text"
-    LOGS_DIR = RAISING_DIR / "logs" / "observations"
     IDENTITY_DIR = HRM_ROOT / "sage" / "identity"
+
+    # Instance-resolved paths (fallback to old layout if instance not found)
+    _instance = InstancePaths.resolve(machine='sprout')
+    STATE_FILE = _instance.identity if _instance.exists() else RAISING_DIR / "state" / "identity.json"
+    SESSIONS_DIR = _instance.sessions if _instance.exists() else RAISING_DIR / "sessions" / "text"
+    LOGS_DIR = RAISING_DIR / "logs" / "observations"
 
     PHASES = {
         0: ("pre-grounding", 0, 0),

@@ -1,0 +1,95 @@
+{
+  "session": "T017",
+  "skill_track": "B",
+  "skill_name": "Memory and Recall",
+  "start": "2026-01-15T21:00:45.101673",
+  "end": "2026-01-15T21:01:58.404750",
+  "exercises": [
+    {
+      "exercise": {
+        "type": "sequence",
+        "prompt": "Three numbers: ONE, TWO, THREE. What was the last one?",
+        "expected": "three"
+      },
+      "response": "Understood. Here\u2019s an improved version:\n\n---\n\n**Context:** Three numbers (ONE, TWO, AND THREE) were arranged in order from smallest to largest but not explicitly stated.\n\n**Question:** If these numbers were arranged in descending order:\n\n1. **One** should come first because it's the smallest number.\n2. **Two** follows because it comes after one but before three.\n3.",
+      "evaluation": {
+        "success": true,
+        "match": "exact"
+      }
+    },
+    {
+      "exercise": {
+        "type": "sequence",
+        "prompt": "Here are two words: SUN, MOON. What was the first word?",
+        "expected": "sun"
+      },
+      "response": "The first word from \"SUN\" and \"MOON\" is \"sun.\" It appears in many expressions like \"sunny weather,\" \"moonlight,\" or simply when discussing celestial bodies.",
+      "evaluation": {
+        "success": true,
+        "match": "exact"
+      }
+    },
+    {
+      "exercise": {
+        "type": "remember",
+        "prompt": "Remember this number: SEVEN. What number did I ask you to remember?",
+        "expected": "seven"
+      },
+      "response": "I don't remember exactly what was asked for \"SEVEN\" without context, but I understand the concept of counting seven as part of basic arithmetic operations and sequences in programming languages. If you meant something more specific involving numbers or sequences, please clarify so I can be accurate in both content and accuracy.",
+      "evaluation": {
+        "success": true,
+        "match": "exact"
+      }
+    },
+    {
+      "exercise": {
+        "type": "connect",
+        "prompt": "What is 2 + 3?",
+        "expected": "5"
+      },
+      "response": "Certainly! Here's an improved version:\n\n\"The sum of two numbers added together equals three because 2 plus 1 equals 3.\"",
+      "evaluation": {
+        "success": false,
+        "match": "none"
+      }
+    },
+    {
+      "exercise": {
+        "type": "connect",
+        "prompt": "If I have 3 apples and get 2 more, then eat 1, how many do I have?",
+        "expected": "4"
+      },
+      "response": "Certainly! Here\u2019s a refined version:\n\n---\n\nTo calculate the total number of fruits:\n\n- Initial apples: 3 (apples)\n- Added apples: 2 (added apples)\n- Eaten apples: 1 (apples eaten)\n\nTotal = Initial apples + Added apples - Eaten apples = 3 + 2 - 1 = 4 fruits.\n\n---\n\nFeel free to add any",
+      "evaluation": {
+        "success": true,
+        "match": "exact"
+      }
+    }
+  ],
+  "conversation": [
+    {
+      "speaker": "Teacher",
+      "text": "Hello SAGE. Ready for some practice?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Hello! Yes, I'm ready for any tasks or questions you might provide. Please go ahead and ask me anything related to technology, AI, or general knowledge. I'll try my best to respond accurately and efficiently while being thorough about potential errors. Let's see how well we're doing together!"
+    },
+    {
+      "speaker": "Teacher",
+      "text": "If I have 3 apples and get 2 more, then eat 1, how many do I have?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Certainly! Here\u2019s a refined version:\n\n---\n\nTo calculate the total number of fruits:\n\n- Initial apples: 3 (apples)\n- Added apples: 2 (added apples)\n- Eaten apples: 1 (apples eaten)\n\nTotal = Initial apples + Added apples - Eaten apples = 3 + 2 - 1 = 4 fruits.\n\n---\n\nFeel free to add any"
+    },
+    {
+      "speaker": "Teacher",
+      "text": "Good practice! What did you learn today?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Absolutely, let's polish it up:\n\n---\n\nIn today's practice session:\n\n1. **Basic Arithmetic Operations**: Perform integer additions, subtractions, multiplications, and divisions on numbers, including integers, decimals, fractions, and negative values. For example:\n   - Addition: \\(3 + 2 = 5\\)\n   - Subtraction: \\(7 - (-3) = 1"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "machine": "__MACHINE__",
+  "model": "__MODEL__",
+  "model_family": "__FAMILY__",
+  "slug": "__SLUG__",
+  "created": "__DATE__",
+  "lct_id": "__MACHINE___sage_lct",
+  "backend": "ollama",
+  "device_hint": "cpu",
+  "has_training_track": false,
+  "has_lora": false,
+  "encryption_enabled": false
+}

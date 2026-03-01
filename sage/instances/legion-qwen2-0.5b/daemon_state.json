@@ -1,0 +1,22 @@
+{
+  "last_shutdown": 1772337804.811575,
+  "machine": "legion",
+  "uptime_seconds": 844.9573554992676,
+  "cycles_completed": 8403,
+  "metabolic_state": "wake",
+  "atp_level": 30.146784540689858,
+  "message_stats": {
+    "messages_submitted": 0,
+    "messages_resolved": 0,
+    "messages_timed_out": 0,
+    "pending": 0,
+    "waiting": 0
+  },
+  "trust_weights": {
+    "vision": 0.8500000000000014,
+    "language": 0.8500000000000014,
+    "control": 1.0,
+    "memory": 1.0,
+    "tts": 1.0
+  }
+}

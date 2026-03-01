@@ -48,6 +48,12 @@ OllamaIRP = _mod.OllamaIRP
 
 from experience_collector import ExperienceCollector
 
+# Instance-resolved paths (fallback to old layout if instance not found)
+sys.path.insert(0, str(HRM_ROOT))
+from sage.instances.resolver import InstancePaths
+_instance = InstancePaths.resolve(machine='mcnugget')
+_USE_INSTANCE = _instance.exists()
+
 
 class McNuggetRaisingSession:
     """
@@ -57,10 +63,10 @@ class McNuggetRaisingSession:
     SNARC experience scoring, and transcript persistence.
     """
 
-    STATE_FILE = RAISING_DIR / "state" / "mcnugget_identity.json"
-    SESSIONS_DIR = RAISING_DIR / "sessions" / "mcnugget"
+    STATE_FILE = _instance.identity if _USE_INSTANCE else RAISING_DIR / "state" / "mcnugget_identity.json"
+    SESSIONS_DIR = _instance.sessions if _USE_INSTANCE else RAISING_DIR / "sessions" / "mcnugget"
     IDENTITY_DIR = HRM_ROOT / "sage" / "identity"
-    EXPERIENCE_BUFFER = RAISING_DIR / "state" / "experience_buffer_mcnugget_gemma3_12b.json"
+    EXPERIENCE_BUFFER = _instance.experience_buffer if _USE_INSTANCE else RAISING_DIR / "state" / "experience_buffer_mcnugget_gemma3_12b.json"
 
     PHASES = {
         0: ("pre-grounding", 0, 0),

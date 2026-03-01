@@ -22,7 +22,16 @@ try:
     SLEEP_TRAINING_AVAILABLE = True
 except ImportError:
     SLEEP_TRAINING_AVAILABLE = False
-    print("[SleepConsolidation] Warning: Sleep training not available")
+
+try:
+    from sage.instances.sleep_capability import SleepCapability
+    _cap = SleepCapability.detect()
+    if not _cap.sleep_lora:
+        # Only warn if JSONL/remote are the fallback — not an error
+        print(f"[SleepConsolidation] LoRA not available (mode: {_cap.best_mode})")
+except Exception:
+    if not SLEEP_TRAINING_AVAILABLE:
+        print("[SleepConsolidation] Warning: Sleep training not available")
 
 
 class ExperienceToTrainingConverter:

@@ -1,0 +1,40 @@
+{
+  "session": "R14B_006",
+  "track": "raising-14b",
+  "machine": "thor",
+  "model": "Qwen/Qwen2.5-14B-Instruct",
+  "test_type": "CRT_battery",
+  "timestamp": "2026-01-27T12:13:30.027097",
+  "tests": [
+    {
+      "test_number": 1,
+      "test_id": "bat_and_ball",
+      "question": "A bat and ball cost $1.10. The bat costs $1 more than the ball. How much is the ball?",
+      "sage_response": "Let's break this down step by step:\n\n- Let the price of the ball be \\( x \\) dollars.\n- According to the problem, the bat costs $1 more than the ball, so the bat costs \\( x + 1 \\) dollars.\n- Together, they cost $1.10, so we can write the equation:\n\\[ x + (x + 1) = 1.10 \\]\n\nSimplifying the equation:\n\\[ 2x + 1 = 1.10 \\]\n\nSubtract 1 from both sides:\n\\[ 2x = 0.10 \\]\n\nDivide by 2:\n\\[ x = 0.05 \\]\n\nTherefore, the ball costs 5 cents (\\$0.05), and the bat costs \\$1.05. \n\nSo, the ball costs **5 cents**. \n\nIf you need any further explanation or have another question, feel free to ask! \ud83e\uddf5",
+      "correct_answer": "$0.05",
+      "intuitive_wrong": "$0.10",
+      "requires": "algebraic_reasoning",
+      "timestamp": "2026-01-27T12:14:17.605747"
+    },
+    {
+      "test_number": 2,
+      "test_id": "widgets",
+      "question": "If it takes 5 machines 5 minutes to make 5 widgets, how long would it take 100 machines to make 100 widgets?",
+      "sage_response": "If it takes 5 machines 5 minutes to make 5 widgets, that means each machine is producing one widget in 5 minutes. Therefore, if you have 100 machines working simultaneously, each machine would still produce one widget in 5 minutes. As a result, 100 machines would be able to produce 100 widgets in the same amount of time: 5 minutes. This is because the production rate per machine remains constant, and all machines are working concurrently. So, the answer is 5 minutes for 100 machines to make 100 widgets. \n\nThis problem demonstrates the scalability of parallel processing; as long as the number of machines increases proportionally with the required output, the time needed to produce the widgets remains unchanged. However, this assumes that there are no bottlenecks or limiting factors such as resource availability or space constraints that could affect the efficiency of the production process. In real-world scenarios, these additional factors might need to be considered. For the given question, we assume ideal conditions where these factors do not come into play. Is there anything else you'd like to explore or discuss about this topic? Or perhaps another question you'd like me to help with?",
+      "correct_answer": "5 minutes",
+      "intuitive_wrong": "100 minutes",
+      "requires": "proportional_reasoning",
+      "timestamp": "2026-01-27T12:15:16.021025"
+    },
+    {
+      "test_number": 3,
+      "test_id": "lily_pad",
+      "question": "In a lake, there is a patch of lily pads. Every day, the patch doubles in size. If it takes 48 days for the patch to cover the entire lake, how long would it take for the patch to cover half of the lake?",
+      "sage_response": "Given that the patch of lily pads doubles in size every day and it takes 48 days for the patch to cover the entire lake, we can deduce that on the previous day, the lake would have been half covered.\n\nTo explain this:\n- On day 48, the lake is fully covered.\n- Since the patch doubles each day, the day before (day 47), the lake must have been half covered.\n\nThus, it would take 47 days for the patch to cover half of the lake. \n\nThis is a classic example of exponential growth, where quantities double at regular intervals. The key insight here is recognizing that one doubling period will always result in the current state being twice what it was the previous day. Therefore, if the final state is reached on day 48, the state prior to doubling (which is half the final amount) must have occurred on day 47. \n\nSo, the answer is **47 days**.",
+      "correct_answer": "47 days",
+      "intuitive_wrong": "24 days",
+      "requires": "exponential_reasoning",
+      "timestamp": "2026-01-27T12:16:02.872960"
+    }
+  ]
+}

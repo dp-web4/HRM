@@ -20,10 +20,16 @@ Usage:
 from pathlib import Path
 from datetime import datetime, timedelta
 import json
+import sys
 from typing import Dict, Optional
 import logging
 
 from sleep_training import SleepTrainingLoop
+
+# Instance resolver for path resolution
+_hrm_root = Path(__file__).parent.parent.parent.parent
+if str(_hrm_root) not in sys.path:
+    sys.path.insert(0, str(_hrm_root))
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -63,7 +69,20 @@ class SleepScheduler:
             min_salience: Minimum salience threshold for training
             device: Device to use ('cuda', 'cpu', or None for auto)
         """
-        # Paths
+        # Paths — resolve from instance directory if available, else legacy defaults
+        if model_path is None or experience_buffer_path is None or checkpoint_dir is None:
+            try:
+                from sage.instances.resolver import InstancePaths
+                instance = InstancePaths.resolve()
+                if instance.exists():
+                    if experience_buffer_path is None:
+                        experience_buffer_path = str(instance.experience_buffer)
+                    if checkpoint_dir is None:
+                        checkpoint_dir = str(instance.sleep_checkpoints)
+                    logger.info(f"Resolved paths from instance: {instance.slug}")
+            except Exception:
+                pass  # Fall through to legacy defaults
+
         if model_path is None:
             model_path = str(Path.home() / "ai-workspace/HRM/model-zoo/sage/epistemic-stances/qwen2.5-0.5b/epistemic-pragmatism")
         if experience_buffer_path is None:

@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from interfaces.audio_sensor import AudioInputSensor
+from sage.interfaces.audio_sensor import AudioInputSensor
 
 print("="*60)
 print("SIMPLE AUDIO TEST - Listening for speech...")

@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 import torch
 import torch.nn.functional as F
 from transformers import AutoTokenizer
-from compression.selective_language_model import SelectiveLanguageModel
+from sage.compression.selective_language_model import SelectiveLanguageModel
 
 def diagnose():
     print("\n" + "="*80)

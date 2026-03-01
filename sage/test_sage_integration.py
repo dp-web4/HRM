@@ -21,27 +21,27 @@ print()
 # Step 1: Test if we can import existing components
 print("[Step 1] Testing imports of existing components...")
 try:
-    from attention.snarc_scorer import SNARCScorer
+    from sage.attention.snarc_scorer import SNARCScorer
     print("  ✓ SNARCScorer imported")
 except Exception as e:
     print(f"  ✗ SNARCScorer failed: {e}")
     SNARCScorer = None
 
 try:
-    from irp.base import IRPPlugin, IRPState
+    from sage.irp.base import IRPPlugin, IRPState
     print("  ✓ IRP base classes imported")
 except Exception as e:
     print(f"  ✗ IRP base failed: {e}")
 
 try:
-    from irp.plugins.vision_impl import VisionIRP
+    from sage.irp.plugins.vision_impl import VisionIRP
     print("  ✓ VisionIRP imported")
 except Exception as e:
     print(f"  ✗ VisionIRP failed: {e}")
     VisionIRP = None
 
 try:
-    from memory.irp_memory_bridge import IRPMemoryBridge
+    from sage.memory.irp_memory_bridge import IRPMemoryBridge
     print("  ✓ IRPMemoryBridge imported")
 except Exception as e:
     print(f"  ✗ IRPMemoryBridge failed: {e}")

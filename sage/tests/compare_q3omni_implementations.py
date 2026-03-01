@@ -208,7 +208,7 @@ def test_sage_selective(prompts, max_new_tokens=50):
     print("="*80 + "\n")
 
     from transformers import AutoTokenizer
-    from compression.selective_language_model import SelectiveLanguageModel
+    from sage.compression.selective_language_model import SelectiveLanguageModel
 
     extraction_dir = "model-zoo/sage/omni-modal/qwen3-omni-30b-extracted"
     tokenizer_path = "model-zoo/sage/omni-modal/qwen3-omni-30b"

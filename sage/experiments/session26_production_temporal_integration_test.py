@@ -24,7 +24,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # Production MichaudSAGE
-from core.sage_consciousness_michaud import MichaudSAGE
+from sage.core.sage_consciousness_michaud import MichaudSAGE
 
 
 def test_temporal_adaptation_initialization():

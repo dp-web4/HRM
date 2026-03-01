@@ -77,8 +77,8 @@ start_time = time.time()
 start_mem = get_memory_mb()
 
 try:
-    from core.lct_capability_levels import EntityType
-    from core.lct_binding.provider import PlatformInfo
+    from sage.core.lct_capability_levels import EntityType
+    from sage.core.lct_binding.provider import PlatformInfo
     from sage.core.canonical_lct import CanonicalLCTManager
 
     # Import the aliveness types from the session file

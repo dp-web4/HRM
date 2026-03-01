@@ -28,11 +28,11 @@ _sage_root = Path(__file__).parent.parent
 if str(_sage_root) not in sys.path:
     sys.path.insert(0, str(_sage_root))
 
-from core.metabolic_controller_with_tasks import (
+from sage.core.metabolic_controller_with_tasks import (
     MetabolicControllerWithTasks,
     create_task_aware_metabolic_controller,
 )
-from core.atp_reward_pool import TaskStatus
+from sage.core.atp_reward_pool import TaskStatus
 
 
 class TestMetabolicControllerWithTasks(unittest.TestCase):

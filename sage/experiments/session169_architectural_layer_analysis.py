@@ -27,7 +27,7 @@ sys.path.insert(0, str(HOME / "ai-workspace" / "HRM"))
 sys.path.insert(0, str(HOME / "ai-workspace" / "web4"))
 
 # Import components to analyze
-from core.lct_binding import TrustZoneProvider, SoftwareProvider
+from sage.core.lct_binding import TrustZoneProvider, SoftwareProvider
 from test_session128_consciousness_aliveness_integration import ConsciousnessAlivenessSensor
 
 print("=" * 80)

@@ -17,7 +17,7 @@ def test_minimal():
     
     try:
         # Import with minimal config
-        from core.sage_v2 import SAGEV2Core, SAGEV2Config
+        from sage.core.sage_v2 import SAGEV2Core, SAGEV2Config
         
         # Create tiny config
         config = SAGEV2Config(

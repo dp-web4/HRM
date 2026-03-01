@@ -550,7 +550,7 @@ class HierarchicalMemory:
             self._remove_experience(exp_id)
 
     def _remove_experience(self, exp_id: str):
-        """Remove experience from memory."""
+        """Remove experience from sage.memory."""
         if exp_id in self.experiences:
             del self.experiences[exp_id]
         if exp_id in self.experience_to_patterns:

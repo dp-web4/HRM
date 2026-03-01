@@ -33,14 +33,14 @@ import time
 from typing import Dict, List, Optional
 
 # Production temporal adaptation
-from core.temporal_adaptation import (
+from sage.core.temporal_adaptation import (
     create_production_adapter,
     TemporalAdapter
 )
 
 # MichaudSAGE consciousness (full production system)
-from core.sage_consciousness_michaud import MichaudSAGE
-from core.attention_manager import MetabolicState
+from sage.core.sage_consciousness_michaud import MichaudSAGE
+from sage.core.attention_manager import MetabolicState
 
 
 class TemporallyAdaptiveMichaudSAGE(MichaudSAGE):
@@ -97,13 +97,13 @@ class TemporallyAdaptiveMichaudSAGE(MichaudSAGE):
         if enable_temporal_adaptation:
             # Create adapter based on mode
             if adaptation_mode == "production":
-                from core.temporal_adaptation import create_production_adapter
+                from sage.core.temporal_adaptation import create_production_adapter
                 self.temporal_adapter = create_production_adapter()
             elif adaptation_mode == "conservative":
-                from core.temporal_adaptation import create_conservative_adapter
+                from sage.core.temporal_adaptation import create_conservative_adapter
                 self.temporal_adapter = create_conservative_adapter()
             elif adaptation_mode == "responsive":
-                from core.temporal_adaptation import create_responsive_adapter
+                from sage.core.temporal_adaptation import create_responsive_adapter
                 self.temporal_adapter = create_responsive_adapter()
             else:
                 raise ValueError(f"Unknown adaptation_mode: {adaptation_mode}")

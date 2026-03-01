@@ -21,7 +21,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from context.reality_context_4k import RealityContext4K, RealityContextEncoder4K
 
 # Import SAGE modules
-from core.sage_v2 import SAGEV2Core, SAGEV2Config
+from sage.core.sage_v2 import SAGEV2Core, SAGEV2Config
 
 
 @dataclass

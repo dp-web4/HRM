@@ -34,15 +34,15 @@ try:
 except ImportError:
     import sys
     sys.path.insert(0, str(Path(__file__).parent.parent))
-    from web4.trust_tensor_sync import (
+    from sage.web4.trust_tensor_sync import (
         TrustTensor,
         TrustObservation,
         Web4TrustClient,
         TrustTensorSync,
         create_trust_sync
     )
-    from web4.expert_identity import ExpertIdentityBridge
-    from core.expert_reputation import (
+    from sage.web4.expert_identity import ExpertIdentityBridge
+    from sage.core.expert_reputation import (
         ExpertReputation,
         ExpertReputationDB
     )

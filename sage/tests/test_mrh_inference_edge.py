@@ -16,7 +16,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import time
-from core.mrh_utils import infer_situation_mrh, format_mrh
+from sage.core.mrh_utils import infer_situation_mrh, format_mrh
 
 
 # Test queries spanning different horizons

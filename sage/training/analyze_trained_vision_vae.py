@@ -28,7 +28,7 @@ import time
 # Add SAGE to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from compression.vision_puzzle_vae import VisionPuzzleVAE
+from sage.compression.vision_puzzle_vae import VisionPuzzleVAE
 
 # CIFAR-10 class names
 CIFAR_CLASSES = [

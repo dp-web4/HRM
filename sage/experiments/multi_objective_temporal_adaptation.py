@@ -39,7 +39,7 @@ from typing import List, Dict, Tuple, Optional
 from collections import deque
 
 # Production temporal adaptation
-from core.temporal_adaptation import (
+from sage.core.temporal_adaptation import (
     TemporalAdapter,
     create_production_adapter,
     AdaptationTrigger

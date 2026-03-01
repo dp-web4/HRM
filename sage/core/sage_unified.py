@@ -19,16 +19,12 @@ from typing import Dict, List, Optional, Any
 from pathlib import Path
 import sys
 
-# Add sage to path
-_sage_root = Path(__file__).parent.parent
-if str(_sage_root) not in sys.path:
-    sys.path.insert(0, str(_sage_root))
 
-from attention.sensor_snarc import HierarchicalSNARC, SpatialSNARC, SensorSNARC
-from interfaces.sensor_hub import SensorHub
-from interfaces.effector_hub import EffectorHub
-from memory.irp_memory_bridge import IRPMemoryBridge
-from core.metabolic_controller import MetabolicController, MetabolicState
+from sage.attention.sensor_snarc import HierarchicalSNARC, SpatialSNARC, SensorSNARC
+from sage.interfaces.sensor_hub import SensorHub
+from sage.interfaces.effector_hub import EffectorHub
+from sage.memory.irp_memory_bridge import IRPMemoryBridge
+from sage.core.metabolic_controller import MetabolicController, MetabolicState
 
 
 class SAGEUnified:

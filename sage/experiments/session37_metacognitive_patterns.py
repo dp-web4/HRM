@@ -28,9 +28,9 @@ from scipy import stats
 # Add sage to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from core.sage_real_measurements import SAGERealMeasurements, ObservationResult
-from core.epistemic_states import EpistemicState, EpistemicMetrics
-from core.quality_metrics import QualityScore
+from sage.core.sage_real_measurements import SAGERealMeasurements, ObservationResult
+from sage.core.epistemic_states import EpistemicState, EpistemicMetrics
+from sage.core.quality_metrics import QualityScore
 
 
 @dataclass

@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 import torch
 from transformers import AutoTokenizer
-from compression.selective_language_model import SelectiveLanguageModel
+from sage.compression.selective_language_model import SelectiveLanguageModel
 
 def test_with_real_tokenizer():
     """Test with Q3-Omni's actual tokenizer - THE FIX!"""

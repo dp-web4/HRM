@@ -36,8 +36,8 @@ sys.path.insert(0, str(sage_path))
 sys.path.insert(0, str(Path(__file__).parent))
 
 # Import consciousness and EP components
-from core.unified_consciousness import UnifiedConsciousnessManager
-from core.metabolic_states import MetabolicState
+from sage.core.unified_consciousness import UnifiedConsciousnessManager
+from sage.core.metabolic_states import MetabolicState
 from multi_ep_coordinator import EPDomain, EPPrediction, MultiEPCoordinator
 
 # Import Session 146 context building

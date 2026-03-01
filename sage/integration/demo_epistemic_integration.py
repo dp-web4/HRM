@@ -24,7 +24,7 @@ _sage_root = Path(__file__).parent.parent
 if str(_sage_root) not in sys.path:
     sys.path.insert(0, str(_sage_root))
 
-from core.sage_consciousness_epistemic import create_epistemic_sage
+from sage.core.sage_consciousness_epistemic import create_epistemic_sage
 from integration.epistemic_memory import EPISTEMIC_AVAILABLE
 
 

@@ -33,7 +33,7 @@ from datetime import datetime, timedelta
 from typing import List, Dict, Tuple
 
 # Production temporal adaptation
-from core.temporal_adaptation import (
+from sage.core.temporal_adaptation import (
     TemporalAdapter,
     TemporalPattern,
     create_responsive_adapter,
@@ -355,7 +355,7 @@ def test_pattern_learning_benefit():
 
     # Test without pattern learning
     print("\n--- WITHOUT Pattern Learning (Reactive Only) ---")
-    from core.temporal_adaptation import create_production_adapter
+    from sage.core.temporal_adaptation import create_production_adapter
     adapter_reactive = create_production_adapter()  # Pattern learning disabled
     validator_reactive = PatternLearningValidator(adapter_reactive, start_suboptimal=True)
 

@@ -164,7 +164,7 @@ def test_quality_tracking_in_temporal_adapter():
 
     try:
         # Create adapter
-        from core.temporal_adaptation import create_multi_objective_adapter
+        from sage.core.temporal_adaptation import create_multi_objective_adapter
         adapter = create_multi_objective_adapter()
 
         print("\n✅ Multi-objective adapter created")

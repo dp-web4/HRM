@@ -38,8 +38,8 @@ except ModuleNotFoundError:
     # Fallback for direct execution
     import os
     os.chdir(Path(__file__).parent.parent)
-    from core.sensor_trust import MultiSensorTrustSystem
-    from core.sensor_fusion import SensorFusionEngine, CrossModalValidator
+    from sage.core.sensor_trust import MultiSensorTrustSystem
+    from sage.core.sensor_fusion import SensorFusionEngine, CrossModalValidator
 
 
 class SensorSimulator:

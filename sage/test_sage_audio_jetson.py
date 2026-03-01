@@ -31,7 +31,7 @@ print()
 # Import components
 print("[Step 1] Importing SAGE components...")
 try:
-    from core.sage_unified import SAGEUnified
+    from sage.core.sage_unified import SAGEUnified
     print("  ✓ SAGEUnified imported")
 except Exception as e:
     print(f"  ✗ SAGEUnified import failed: {e}")
@@ -39,8 +39,8 @@ except Exception as e:
 
 print("[Step 2] Importing audio interfaces...")
 try:
-    from interfaces.audio_sensor import AudioInputSensor
-    from interfaces.audio_effector import AudioOutputEffector
+    from sage.interfaces.audio_sensor import AudioInputSensor
+    from sage.interfaces.audio_effector import AudioOutputEffector
     print("  ✓ AudioInputSensor imported")
     print("  ✓ AudioOutputEffector imported")
 except Exception as e:
@@ -128,7 +128,7 @@ print()
 # Speak welcome message
 print("[Step 7] Speaking welcome message...")
 try:
-    from interfaces.base_effector import EffectorCommand
+    from sage.interfaces.base_effector import EffectorCommand
     welcome_cmd = EffectorCommand(
         effector_id='audio_output_0',
         effector_type='audio',

@@ -21,7 +21,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import time
 from typing import Dict, List, Tuple
 
-from core.mrh_utils import (
+from sage.core.mrh_utils import (
     infer_situation_mrh,
     infer_quality_requirement,
     compute_mrh_similarity,

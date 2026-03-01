@@ -18,7 +18,7 @@ sage_root = Path(__file__).parent.parent
 sys.path.insert(0, str(sage_root))
 sys.path.insert(0, str(sage_root / 'irp'))
 
-from interfaces.base_sensor import BaseSensor, SensorReading
+from sage.interfaces.base_sensor import BaseSensor, SensorReading
 
 # Import AudioInputIRP directly to avoid __init__.py conflicts
 spec_audio = importlib.util.spec_from_file_location(

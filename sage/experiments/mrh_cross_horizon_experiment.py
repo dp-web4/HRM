@@ -26,7 +26,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 
 # Import MRH utilities
-from core.mrh_utils import (
+from sage.core.mrh_utils import (
     compute_mrh_similarity,
     infer_situation_mrh,
     format_mrh,

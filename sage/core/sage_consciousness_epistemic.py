@@ -21,12 +21,8 @@ from pathlib import Path
 import sys
 from datetime import datetime, timezone
 
-# Add sage to path
-_sage_root = Path(__file__).parent.parent
-if str(_sage_root) not in sys.path:
-    sys.path.insert(0, str(_sage_root))
 
-from core.sage_consciousness_real import RealSAGEConsciousness
+from sage.core.sage_consciousness_real import RealSAGEConsciousness
 from integration.epistemic_memory import (
     EpistemicMemoryBridge,
     SNARCScores,

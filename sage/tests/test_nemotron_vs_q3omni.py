@@ -20,7 +20,7 @@ from pathlib import Path
 # Add sage to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from irp.plugins.nemotron_irp import NemotronIRPPlugin
+from sage.irp.plugins.nemotron_irp import NemotronIRPPlugin
 
 
 def benchmark_nemotron():

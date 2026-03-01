@@ -31,15 +31,15 @@ try:
 except ImportError:
     import sys
     sys.path.insert(0, str(Path(__file__).parent.parent))
-    from web4.authorized_expert_selector import (
+    from sage.web4.authorized_expert_selector import (
         AuthorizedExpertSelector,
         Web4AuthClient,
         create_authorized_selector
     )
-    from web4.expert_identity import ExpertIdentityBridge
-    from web4.atp_allocator import ATPResourceAllocator
-    from web4.trust_tensor_sync import TrustTensorSync
-    from core.expert_reputation import ExpertReputationDB, ExpertReputation
+    from sage.web4.expert_identity import ExpertIdentityBridge
+    from sage.web4.atp_allocator import ATPResourceAllocator
+    from sage.web4.trust_tensor_sync import TrustTensorSync
+    from sage.core.expert_reputation import ExpertReputationDB, ExpertReputation
     HAS_MODULE = True
 
 

@@ -27,11 +27,11 @@ _sage_root = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 if _sage_root not in sys.path:
     sys.path.insert(0, _sage_root)
 
-from interfaces.effect import Effect, EffectType, EffectStatus
-from interfaces.effect_extractor import EffectExtractor
-from interfaces.effector_registry import EffectorRegistry
-from interfaces.base_effector import EffectorCommand, EffectorResult, EffectorStatus as EfStatus
-from interfaces.effectors.mock_effectors import (
+from sage.interfaces.effect import Effect, EffectType, EffectStatus
+from sage.interfaces.effect_extractor import EffectExtractor
+from sage.interfaces.effector_registry import EffectorRegistry
+from sage.interfaces.base_effector import EffectorCommand, EffectorResult, EffectorStatus as EfStatus
+from sage.interfaces.effectors.mock_effectors import (
     MockFileSystemEffector, MockToolUseEffector,
     MockWebEffector, MockCognitiveEffector,
 )

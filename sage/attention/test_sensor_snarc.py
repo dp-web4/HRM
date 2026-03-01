@@ -19,7 +19,7 @@ from pathlib import Path
 sage_root = Path(__file__).parent.parent
 sys.path.insert(0, str(sage_root))
 
-from attention.sensor_snarc import SensorSNARC, SpatialSNARC, HierarchicalSNARC, SNARCScores
+from sage.attention.sensor_snarc import SensorSNARC, SpatialSNARC, HierarchicalSNARC, SNARCScores
 
 print("="*80)
 print("Algorithmic SNARC Tests")

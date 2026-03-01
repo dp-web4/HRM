@@ -20,10 +20,6 @@ from pathlib import Path
 import sys
 import torch
 
-# Add sage to path
-_sage_root = Path(__file__).parent.parent
-if str(_sage_root) not in sys.path:
-    sys.path.insert(0, str(_sage_root))
 
 from sage.core.sage_kernel import SAGEKernel, ExecutionResult, MetabolicState
 from sage.services.snarc.data_structures import CognitiveStance, Outcome

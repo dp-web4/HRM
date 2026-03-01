@@ -417,7 +417,7 @@ class TrustTensorSync:
                 import sys
                 from pathlib import Path
                 sys.path.insert(0, str(Path(__file__).parent.parent))
-                from core.expert_reputation import ExpertReputation
+                from sage.core.expert_reputation import ExpertReputation
             rep = ExpertReputation(expert_id=expert_id, component="sage_moe")
 
         # Aggregate observations (weighted by confidence)

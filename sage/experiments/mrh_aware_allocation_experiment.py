@@ -26,7 +26,7 @@ from typing import Dict, List, Tuple
 from dataclasses import dataclass
 
 # Import MRH utilities
-from core.mrh_utils import (
+from sage.core.mrh_utils import (
     compute_mrh_similarity,
     infer_situation_mrh,
     format_mrh,

@@ -17,7 +17,7 @@ _sage_root = Path(__file__).parent.parent
 if str(_sage_root) not in sys.path:
     sys.path.insert(0, str(_sage_root))
 
-from core.lct_atp_permissions import (
+from sage.core.lct_atp_permissions import (
     create_permission_checker,
     get_task_permissions,
     ATPPermission

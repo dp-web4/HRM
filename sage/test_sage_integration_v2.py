@@ -27,20 +27,20 @@ print()
 # Step 1: Test imports
 print("[Step 1] Testing imports...")
 try:
-    from attention.sensor_snarc import HierarchicalSNARC, SpatialSNARC, SensorSNARC
+    from sage.attention.sensor_snarc import HierarchicalSNARC, SpatialSNARC, SensorSNARC
     print("  ✓ Algorithmic SNARC imported")
 except Exception as e:
     print(f"  ✗ SNARC import failed: {e}")
     sys.exit(1)
 
 try:
-    from irp.base import IRPPlugin, IRPState
+    from sage.irp.base import IRPPlugin, IRPState
     print("  ✓ IRP base classes imported")
 except Exception as e:
     print(f"  ✗ IRP base failed: {e}")
 
 try:
-    from memory.irp_memory_bridge import IRPMemoryBridge
+    from sage.memory.irp_memory_bridge import IRPMemoryBridge
     print("  ✓ IRPMemoryBridge imported")
 except Exception as e:
     print(f"  ✗ IRPMemoryBridge failed: {e}")

@@ -21,28 +21,24 @@ import sys
 import numpy as np
 from collections import deque
 
-# Add sage to path
-_sage_root = Path(__file__).parent.parent
-if str(_sage_root) not in sys.path:
-    sys.path.insert(0, str(_sage_root))
 
-from core.sage_consciousness import (
+from sage.core.sage_consciousness import (
     SAGEConsciousness,
     SensorObservation,
     SalienceScore,
     AttentionTarget
 )
-from core.lct_identity_integration import (
+from sage.core.lct_identity_integration import (
     initialize_lct_identity,
     LCTIdentityManager,
     LCTIdentity
 )
-from core.lct_atp_permissions import (
+from sage.core.lct_atp_permissions import (
     create_permission_checker,
     LCTATPPermissionChecker
 )
-from irp.plugins.llm_impl import ConversationalLLM
-from irp.plugins.llm_snarc_integration import ConversationalMemory
+from sage.irp.plugins.llm_impl import ConversationalLLM
+from sage.irp.plugins.llm_snarc_integration import ConversationalMemory
 
 
 class RealSAGEConsciousness(SAGEConsciousness):
@@ -430,7 +426,7 @@ class RealSAGEConsciousness(SAGEConsciousness):
             })
 
             # 4. Verbatim storage - only in DREAM state
-            from core.metabolic_controller import MetabolicState
+            from sage.core.metabolic_controller import MetabolicState
             if self.metabolic.current_state == MetabolicState.DREAM:
                 self.verbatim_storage.append({
                     'cycle': self.cycle_count,

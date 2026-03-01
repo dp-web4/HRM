@@ -1,0 +1,70 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sage-cognition"
+version = "0.4.0a1"
+description = "SAGE: Situation-Aware Governance Engine — cognition kernel for edge AI"
+readme = "README.md"
+license = "AGPL-3.0-only"
+requires-python = ">=3.10"
+authors = [{name = "Dennis Palatov"}]
+keywords = ["ai", "edge-ai", "cognition", "consciousness", "attention", "ollama"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "numpy>=1.24",
+    "pyyaml>=6.0",
+    "httpx>=0.24",
+]
+
+[project.optional-dependencies]
+gpu = ["torch>=2.0"]
+transformers = ["torch>=2.0", "transformers>=4.30", "accelerate>=0.20"]
+hub = ["huggingface_hub>=0.19"]
+dev = ["pytest>=7.4", "pytest-asyncio>=0.21"]
+
+[project.urls]
+Homepage = "https://dp-web4.github.io/SAGE-site/"
+Repository = "https://github.com/dp-web4/HRM"
+
+[project.scripts]
+sage-daemon = "sage.gateway.sage_daemon:main"
+sage-cli = "sage.gateway.cli_client:main"
+
+[tool.hatch.build.targets.sdist]
+include = ["sage/**/*.py", "sage/config/**/*.yaml", "sage/instances/_seed/**"]
+exclude = [
+    "sage/raising/**", "sage/tests/**", "sage/experiments/**",
+    "sage/training/**", "sage/demos/**", "sage/checkpoints/**",
+    "sage/data/**", "sage/logs/**", "sage/**/*.md", "sage/**/*.json",
+    "sage/**/*.jsonl", "sage/**/*.db", "sage/**/*.sh",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["sage"]
+exclude = [
+    "sage/raising/**",
+    "sage/tests/**",
+    "sage/experiments/**",
+    "sage/training/**",
+    "sage/demos/**",
+    "sage/checkpoints/**",
+    "sage/data/**",
+    "sage/logs/**",
+    "sage/orchestration/**",
+    "sage/services/**",
+    "sage/**/test_*.py",
+    "sage/**/*.md",
+    "sage/**/*.json",
+    "sage/**/*.jsonl",
+    "sage/**/*.db",
+    "sage/**/*.sh",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["sage/tests"]
+asyncio_mode = "auto"

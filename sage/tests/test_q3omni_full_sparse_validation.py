@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 import torch
 from transformers import AutoTokenizer
-from compression.selective_language_model import SelectiveLanguageModel
+from sage.compression.selective_language_model import SelectiveLanguageModel
 
 def test_full_sparse_extraction():
     """Test Q3-Omni with ALL 48 layers and full sparse expert set"""

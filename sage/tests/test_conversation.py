@@ -8,9 +8,9 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from interfaces.audio_sensor_simple import SimpleAudioSensor
-from interfaces.audio_effector import AudioOutputEffector
-from interfaces.base_effector import EffectorCommand
+from sage.interfaces.audio_sensor_simple import SimpleAudioSensor
+from sage.interfaces.audio_effector import AudioOutputEffector
+from sage.interfaces.base_effector import EffectorCommand
 import time
 
 print("="*60)

@@ -39,7 +39,7 @@ WEB4_ROOT = Path.home() / "ai-workspace" / "web4"
 sys.path.insert(0, str(WEB4_ROOT))
 
 try:
-    from core.lct_capability_levels import (
+    from sage.core.lct_capability_levels import (
         LCT,
         LCTBinding,
         LCTPolicy,
@@ -51,11 +51,11 @@ try:
         EntityType,
         generate_lct_id
     )
-    from core.lct_binding.platform_detection import detect_platform
-    from core.lct_binding.provider import PlatformInfo, HardwareType
-    from core.lct_binding.trustzone_provider import TrustZoneProvider
-    from core.lct_binding.tpm2_provider import TPM2Provider
-    from core.lct_binding.software_provider import SoftwareProvider
+    from sage.core.lct_binding.platform_detection import detect_platform
+    from sage.core.lct_binding.provider import PlatformInfo, HardwareType
+    from sage.core.lct_binding.trustzone_provider import TrustZoneProvider
+    from sage.core.lct_binding.tpm2_provider import TPM2Provider
+    from sage.core.lct_binding.software_provider import SoftwareProvider
     HAS_WEB4_IMPORTS = True
 except ImportError as e:
     print(f"Warning: Could not import Web4 canonical LCT: {e}")

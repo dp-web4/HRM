@@ -8,7 +8,7 @@ import torch
 import sys
 sys.path.append('..')
 
-from core.sage_config import SAGEPresets
+from sage.core.sage_config import SAGEPresets
 from train_sage import SAGETrainer, SyntheticAttentionDataset
 from torch.utils.data import DataLoader
 

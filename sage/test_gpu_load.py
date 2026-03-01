@@ -14,7 +14,7 @@ from typing import Dict, List
 # Add paths
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from compression.integrated_h_l_system import IntegratedHLSystem
+from sage.compression.integrated_h_l_system import IntegratedHLSystem
 from groot_integration.sleep_cycle_training import Experience, ExperienceMemory
 from context.reality_context_4k import RealityContext4K
 

@@ -23,9 +23,9 @@ import torch
 import os
 
 # Import SAGE components
-from core.sage_unified import SAGEUnified
-from interfaces.streaming_audio_sensor import StreamingAudioSensor
-from interfaces.tts_effector import TTSEffector
+from sage.core.sage_unified import SAGEUnified
+from sage.interfaces.streaming_audio_sensor import StreamingAudioSensor
+from sage.interfaces.tts_effector import TTSEffector
 
 # Import hybrid learning system
 from cognitive.pattern_learner import PatternLearner

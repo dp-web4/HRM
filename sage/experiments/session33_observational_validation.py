@@ -25,7 +25,7 @@ from dataclasses import dataclass
 # Add sage to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from core.sage_observational_framework import (
+from sage.core.sage_observational_framework import (
     SAGEObservationalFramework,
     SAGEObservablePrediction,
     ObservationResult,

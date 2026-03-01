@@ -24,7 +24,7 @@ import statistics
 from typing import List
 
 # Production temporal adaptation with Session 24 integration
-from core.temporal_adaptation import (
+from sage.core.temporal_adaptation import (
     create_production_adapter,
     create_multi_objective_adapter,
     TemporalAdapter

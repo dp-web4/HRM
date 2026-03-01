@@ -34,8 +34,8 @@ from enum import Enum
 # Add sage to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from core.quality_metrics import score_response_quality, QualityScore
-from core.epistemic_states import (
+from sage.core.quality_metrics import score_response_quality, QualityScore
+from sage.core.epistemic_states import (
     EpistemicState,
     EpistemicMetrics,
     EpistemicStateTracker

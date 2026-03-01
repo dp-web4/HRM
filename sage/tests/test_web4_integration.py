@@ -26,8 +26,8 @@ try:
 except ImportError:
     import sys
     sys.path.insert(0, str(Path(__file__).parent.parent))
-    from web4.expert_identity import ExpertIdentityBridge
-    from web4.atp_allocator import ATPResourceAllocator
+    from sage.web4.expert_identity import ExpertIdentityBridge
+    from sage.web4.atp_allocator import ATPResourceAllocator
     HAS_MODULE = True
 
 

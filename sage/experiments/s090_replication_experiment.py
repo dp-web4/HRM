@@ -45,7 +45,7 @@ _sage_root = Path(__file__).parent.parent
 if str(_sage_root) not in sys.path:
     sys.path.insert(0, str(_sage_root))
 
-from raising.scripts.autonomous_conversation import create_prompts, run_autonomous_conversation
+from sage.raising.scripts.autonomous_conversation import create_prompts, run_autonomous_conversation
 
 
 @dataclass

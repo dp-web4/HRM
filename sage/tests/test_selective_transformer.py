@@ -23,8 +23,8 @@ import torch
 # Add sage to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from compression.selective_expert_loader import SelectiveExpertLoader
-from compression.selective_transformer_layer import (
+from sage.compression.selective_expert_loader import SelectiveExpertLoader
+from sage.compression.selective_transformer_layer import (
     SelectiveTransformerLayer,
     create_causal_mask,
 )

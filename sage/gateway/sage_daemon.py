@@ -49,14 +49,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional, Dict, Any
 
-# Add sage to path
-_sage_root = Path(__file__).parent.parent
-_hrm_root = _sage_root.parent
-if str(_sage_root) not in sys.path:
-    sys.path.insert(0, str(_sage_root))
-if str(_hrm_root) not in sys.path:
-    sys.path.insert(0, str(_hrm_root))
-
 from sage.gateway.machine_config import SAGEMachineConfig, get_config, detect_machine
 from sage.gateway.message_queue import MessageQueue
 from sage.instances.resolver import InstancePaths

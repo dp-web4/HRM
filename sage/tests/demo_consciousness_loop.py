@@ -21,7 +21,7 @@ _sage_root = Path(__file__).parent.parent
 if str(_sage_root) not in sys.path:
     sys.path.insert(0, str(_sage_root))
 
-from core.sage_consciousness import SAGEConsciousness
+from sage.core.sage_consciousness import SAGEConsciousness
 
 
 def print_header(title: str):

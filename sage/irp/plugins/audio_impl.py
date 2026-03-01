@@ -25,7 +25,7 @@ if _sage_root not in sys.path:
 if _hrm_root not in sys.path:
     sys.path.insert(0, _hrm_root)
 
-from irp.base import IRPPlugin, IRPState
+from sage.irp.base import IRPPlugin, IRPState
 
 
 class SpectralRefiner(nn.Module):

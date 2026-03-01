@@ -16,7 +16,7 @@ _sage_root = Path(__file__).parent.parent.parent
 if str(_sage_root) not in sys.path:
     sys.path.insert(0, str(_sage_root))
 
-from irp.base import IRPPlugin, IRPState
+from sage.irp.base import IRPPlugin, IRPState
 from cognitive.pattern_responses import PatternResponseEngine
 from typing import Dict, Any, List
 

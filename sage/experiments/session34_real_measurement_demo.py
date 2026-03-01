@@ -19,13 +19,13 @@ from pathlib import Path
 # Add sage to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from core.sage_real_measurements import (
+from sage.core.sage_real_measurements import (
     SAGERealMeasurements,
     estimate_epistemic_metrics_from_response,
     analyze_conversation_quality
 )
-from core.quality_metrics import score_response_quality
-from core.epistemic_states import EpistemicState, EpistemicMetrics
+from sage.core.quality_metrics import score_response_quality
+from sage.core.epistemic_states import EpistemicState, EpistemicMetrics
 
 
 def demo_quality_measurement():

@@ -31,7 +31,7 @@ import statistics
 from typing import List, Tuple
 
 # Production temporal adaptation module
-from core.temporal_adaptation import (
+from sage.core.temporal_adaptation import (
     TemporalAdapter,
     create_production_adapter,
     create_conservative_adapter,

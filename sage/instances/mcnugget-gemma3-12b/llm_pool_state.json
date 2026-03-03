@@ -1,0 +1,33 @@
+{
+  "active": "gemma3:12b",
+  "entries": {
+    "gemma3:12b": {
+      "model_name": "gemma3:12b",
+      "model_family": "gemma3",
+      "backend": "ollama",
+      "tier": "T2",
+      "grammar": "xml_tags",
+      "trust": 0.5,
+      "latency_ema_ms": 0.0,
+      "error_rate_ema": 0.0,
+      "tool_success_rate": 0.5,
+      "exchanges": 0,
+      "healthy": true,
+      "size_gb": 7.6
+    },
+    "mistral:7b-instruct-v0.3-q4_K_M": {
+      "model_name": "mistral:7b-instruct-v0.3-q4_K_M",
+      "model_family": "mistral",
+      "backend": "ollama",
+      "tier": "T1",
+      "grammar": "native_ollama",
+      "trust": 0.5,
+      "latency_ema_ms": 0.0,
+      "error_rate_ema": 0.0,
+      "tool_success_rate": 0.5,
+      "exchanges": 0,
+      "healthy": true,
+      "size_gb": 4.1
+    }
+  }
+}

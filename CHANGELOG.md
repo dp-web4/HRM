@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added - Tool Use Live Activation on Nomad (2026-03-06)
+- Tool use pipeline end-to-end on Nomad (gemma3:4b, T2/xml_tags grammar)
+- All 7 built-in tools verified: get_time, calculate, web_search, web_fetch, read_file, write_note, peer_ask
+- Dashboard multi-turn conversation memory (tracks conversation_id across messages)
+- MemoryHub SQLite storage (was silently broken due to code ordering bug)
+- Residual `<tool_call>` XML stripping from responses exceeding max_tool_rounds
+- `SAGE:` prefix deduplication when model echoes prompt suffix
+- `web_fetch` policy: `elevated` → `standard`, `max_chars`: 2000 → 4000
+- Tool restraint guidance in xml_tags grammar injection prompt
+
+### Added - PolicyGate Phase 4-5a (2026-03-05/06, autonomous)
+- Phase 4: Experience buffer integration for policy decisions
+- Phase 5a: Trust weight learning with salience-weighted compliance tracking
+- 29/29 tests passing across Phase 4 and 5a
+
 ### Added - Snapshot State Infrastructure (2026-03-01)
 - `sage/instances/snapshot.py` — Library for timestamped state snapshots with archive and manifest
 - `sage/scripts/snapshot_state.py` — CLI entry point (`python3 -m sage.scripts.snapshot_state --machine <name>`)

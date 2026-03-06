@@ -80,6 +80,11 @@ SAGE Cognition Kernel
 │   ├── PolicyGate (conscience checkpoint, step 8.6)
 │   ├── Network (peer-to-peer federation)
 │   └── SleepConsolidation (LoRA/JSONL dream bundles)
+├── Tool System (v0.4.0a3)
+│   ├── Registry (7 built-in tools, ATP cost, policy level)
+│   ├── Grammar adapters (T1 native, T2 xml_tags, T3 heuristic)
+│   ├── Capability detection (per-model at startup)
+│   └── MemoryHub (SQLite-backed exchange storage)
 ├── Identity System
 │   ├── LCT-anchored identity (Web4 Linked Context Tokens)
 │   ├── T3 trust tensors (Talent/Training/Temperament)
@@ -116,7 +121,8 @@ Honest assessment as of March 2026:
 | LLM inference | Real | Ollama and local Transformers, ATP coupled to token cost |
 | Metabolic states | Real | WAKE/FOCUS/REST/DREAM/CRISIS with state-dependent behavior |
 | SNARC salience | Real | 5D scoring, experience buffer persistence |
-| PolicyGate | Real (Phase 2) | Integrated at step 8.6, 50-cycle test passing. CRISIS mode pending |
+| PolicyGate | Real (Phase 5a) | Integrated at step 8.6, trust weight learning, 29/29 tests |
+| Tool use | Real (v0.4.0a3) | 7 tools, T2 grammar, MemoryHub SQLite, multi-turn conversation |
 | Identity/relationships | Real | LCT-anchored, trust tensors evolve from interaction |
 | Sleep consolidation | Real | JSONL dream bundles (LoRA on Sprout only) |
 | Federation mesh | Real | PeerMonitor, PeerClient, PeerTrustTracker. Network currently OFF |
@@ -251,4 +257,4 @@ See [LICENSE](LICENSE) for details.
 
 ---
 
-*Last updated: March 1, 2026 | 1,950+ commits | 466+ sessions | 6 machines | 7 instances | 4 model families*
+*Last updated: March 6, 2026 | 2,000+ commits | 466+ sessions | 6 machines | 7 instances | 4 model families*

@@ -1,6 +1,6 @@
 # SAGE Development Status
 
-**Last Updated**: March 1, 2026
+**Last Updated**: March 6, 2026
 
 > For detailed status updates, see **[docs/LATEST_STATUS.md](docs/LATEST_STATUS.md)**.
 > For the interactive overview, see the **[SAGE Explainer Site](https://sage-site-murex.vercel.app/)**.
@@ -50,16 +50,19 @@ sage/
 - Consciousness loop with real LLM inference (Ollama/Transformers)
 - Metabolic states (WAKE/FOCUS/REST/DREAM/CRISIS) with ATP budgeting
 - SNARC salience scoring and experience buffer persistence
-- PolicyGate at step 8.6 (Phase 2 complete, CRISIS mode pending)
+- PolicyGate at step 8.6 (Phase 5a complete, trust weight learning)
+- Tool use: 7 built-in tools, 3-tier capability detection (T1/T2/T3), live on Nomad
+- MemoryHub with SQLite backend for persistent exchange storage
+- Dashboard with multi-turn conversation memory
 - Identity system with LCT, trust tensors, relationship crystallization
 - Federation infrastructure (monitor, client, trust tracker — network OFF)
 - Instance isolation with snapshot persistence
-- Automated raising sessions (McNugget, Nomad)
+- Automated raising sessions (McNugget, Nomad, Legion)
 - Sleep consolidation (JSONL dream bundles, LoRA on Sprout)
 
 ### What's Mocked
 
 - Sensors (architecture exists, no real I/O backends)
-- Physical effectors (network effector works, others are stubs)
+- Physical effectors (network effector works, motor/display are stubs)
 - Cross-modal VAE (demonstrated in isolation, not in live loop)
 - FlashAttention (Phases 1-2 on Thor, not in live loop)

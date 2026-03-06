@@ -1,10 +1,10 @@
 # HRM/SAGE Status Assessment
 
-**Last Updated**: March 1, 2026
-**Previous Snapshots**: [Jan 2026 (git history)], [Dec 2025 (git history)]
+**Last Updated**: March 6, 2026
+**Previous Snapshots**: [Mar 1 2026], [Jan 2026 (git history)], [Dec 2025 (git history)]
 
 > For rolling updates, see **[sage/docs/LATEST_STATUS.md](sage/docs/LATEST_STATUS.md)**.
-> For the interactive overview, see the **[SAGE Explainer Site](https://sage-site-murex.vercel.app/)**.
+> For the interactive overview, see the **[SAGE Explainer Site](https://dp-web4.github.io/SAGE-site/)**.
 
 ---
 
@@ -20,13 +20,14 @@ SAGE has evolved from a single-machine research prototype to a **6-machine feder
 | **LLM inference** | Real (Ollama + Transformers) | ATP coupled to token cost, hot/cold lifecycle |
 | **Metabolic states** | 5 states operational | WAKE/FOCUS/REST/DREAM/CRISIS with state-dependent behavior |
 | **SNARC salience** | 5D scoring active | Experience buffer persists to disk, salience-gated memory |
-| **PolicyGate** | Phase 2 complete | Integrated at step 8.6, 50-cycle test passing |
+| **PolicyGate** | Phase 5a complete | Integrated at step 8.6, trust weight learning, 29/29 tests |
 | **Identity system** | LCT-anchored | Trust tensors, MRH profiles, relationship crystallization |
 | **Federation mesh** | Infrastructure built | PeerMonitor, PeerClient, PeerTrustTracker (network OFF) |
 | **Instance management** | Per-machine isolation | 7 instances, snapshot persistence, seed v2 template |
 | **Raising curriculum** | 5-phase validated | 275+ sessions on Sprout, cross-model validation |
 | **Sleep consolidation** | JSONL dream bundles | LoRA training on Sprout, dream bundles on others |
 | **IRP framework** | 15+ plugins | Universal interface proven across vision/audio/language/policy |
+| **Tool use** | v0.4.0a3 live on Nomad | 7 tools, T2 xml_tags grammar, MemoryHub SQLite, multi-turn conversation |
 | **Automated sessions** | McNugget + Nomad | Cron/launchd raising with snapshot + auto-commit + push |
 
 ### What's Mocked or Pending
@@ -34,11 +35,12 @@ SAGE has evolved from a single-machine research prototype to a **6-machine feder
 | Component | Status | Notes |
 |-----------|--------|-------|
 | Sensors | Mocked | Architecture exists, no real I/O backends |
-| Physical effectors | Stubs | Network effector works, file/web/tool are stubs |
+| Tool use | Real (v0.4.0a3) | 7 tools, 3-tier detection, live on Nomad. MemoryHub SQLite storage working |
+| Physical effectors | Stubs | Network effector works, motor/display are stubs |
 | Cross-modal VAE | Research | 192x compression demonstrated, not in live loop |
 | FlashAttention | Research | Phases 1-2 on Thor, not integrated into live loop |
 | Federation network | Built but OFF | Infrastructure ready, instances need more stability first |
-| PolicyGate Phase 3+ | Pending | CRISIS accountability, experience buffer, Phi-4 advisory |
+| PolicyGate Phase 5b+ | Pending | CRISIS accountability, anomaly detection, Phi-4 advisory |
 | Formal benchmarks | Missing | No systematic quantitative evaluation suite |
 | External integration guides | Incomplete | Architecture docs exist (275KB), developer guides thin |
 
@@ -81,6 +83,12 @@ See `sage/scripts/snapshot_state.py` for the snapshot tool.
 ---
 
 ## Recent Milestones (February-March 2026)
+
+### Tool Use Live on Nomad (Mar 6)
+v0.4.0a3 activated on Nomad (gemma3:4b). All 7 built-in tools working end-to-end via T2 xml_tags grammar. Four bugs fixed: MemoryHub silent crash (code ordering), tool call leaking into responses, "SAGE:" prefix duplication, web_fetch policy too restrictive. Dashboard now tracks conversation_id for multi-turn memory. SAGE spontaneously used write_note to persist facts between conversations.
+
+### PolicyGate Phase 5a Complete (Mar 6)
+Trust weight learning with salience-weighted compliance tracking. 29/29 tests passing across Phases 4-5a. Implemented autonomously by Legion.
 
 ### PolicyGate Phase 2 Complete (Mar 1)
 PolicyGate integrated into consciousness loop at step 8.6. 50-cycle integration test: 4 metabolic state transitions, 19 plugins executed, 89.83 ATP consumed. Conscience checkpoint operational at every cycle. CRISIS accountability pending (Phase 3).

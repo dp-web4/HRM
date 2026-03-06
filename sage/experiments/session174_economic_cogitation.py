@@ -57,7 +57,7 @@ from enum import Enum
 
 # Add paths
 HOME = Path.home()
-sys.path.insert(0, str(HOME / "ai-workspace" / "HRM" / "sage" / "experiments"))
+sys.path.insert(0, str(HOME / "ai-workspace" / "SAGE" / "sage" / "experiments"))
 
 # Import Session 173 secure federated cogitation
 from session173_secure_federated_cogitation import (

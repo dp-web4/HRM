@@ -43,8 +43,8 @@ import json
 import asyncio
 
 HOME = Path.home()
-sys.path.insert(0, str(HOME / "ai-workspace" / "HRM" / "sage"))
-sys.path.insert(0, str(HOME / "ai-workspace" / "HRM" / "sage" / "experiments"))
+sys.path.insert(0, str(HOME / "ai-workspace" / "SAGE" / "sage"))
+sys.path.insert(0, str(HOME / "ai-workspace" / "SAGE" / "sage" / "experiments"))
 
 from session177_sage_adaptive_depth import (
     AdaptiveDepthSAGE,
@@ -683,7 +683,7 @@ def test_federated_adaptive_sage():
         print(f"  Depth adjustments: {metrics['depth_adjustments']}")
 
     # Save results
-    results_path = HOME / "ai-workspace" / "HRM" / "sage" / "experiments" / "session178_test_results.json"
+    results_path = HOME / "ai-workspace" / "SAGE" / "sage" / "experiments" / "session178_test_results.json"
     with open(results_path, 'w') as f:
         json.dump(results, f, indent=2)
 

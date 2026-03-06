@@ -149,7 +149,7 @@ See: `/home/sprout/ai-workspace/Memory/WORKFLOW_GUIDE.md`
 ## Git Authentication
 **Universal Push Command**:
 ```bash
-grep GITHUB_PAT ../.env | cut -d= -f2 | xargs -I {} git push https://dp-web4:{}@github.com/dp-web4/HRM.git
+grep GITHUB_PAT ../.env | cut -d= -f2 | xargs -I {} git push https://dp-web4:{}@github.com/dp-web4/SAGE.git
 ```
 See `../private-context/GIT_COMMANDS_CLAUDE.md` for details.
 
@@ -188,7 +188,7 @@ Sudo access available on Jetson Orin Nano (Sprout machine).
 - **Real training scripts**: Complete pipeline for finetuning
 
 ## HRM Setup Status
-- ✅ Repository cloned from fork: https://github.com/dp-web4/HRM.git
+- ✅ Repository cloned from fork: https://github.com/dp-web4/SAGE.git
 - ✅ Analysis scripts created:
   - `analyze_hrm_architecture.py` - Architecture analysis
   - `install_jetson.sh` - Dependency installation

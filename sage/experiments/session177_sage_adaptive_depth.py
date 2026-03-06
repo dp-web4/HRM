@@ -35,7 +35,7 @@ import time
 import json
 
 HOME = Path.home()
-sys.path.insert(0, str(HOME / "ai-workspace" / "HRM" / "sage"))
+sys.path.insert(0, str(HOME / "ai-workspace" / "SAGE" / "sage"))
 
 from sage.core.sage_consciousness_cogitation import CogitationSAGE
 
@@ -432,7 +432,7 @@ def test_adaptive_depth():
         print(f"  {depth}: {avg_atp:.2f}")
 
     # Save results
-    results_path = HOME / "ai-workspace" / "HRM" / "sage" / "experiments" / "session177_test_results.json"
+    results_path = HOME / "ai-workspace" / "SAGE" / "sage" / "experiments" / "session177_test_results.json"
     with open(results_path, 'w') as f:
         json.dump(results, f, indent=2)
 

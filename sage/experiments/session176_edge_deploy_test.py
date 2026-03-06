@@ -82,7 +82,7 @@ def get_edge_metrics() -> Dict[str, Any]:
 
 
 # Import deployment module
-sys.path.insert(0, str(HOME / "ai-workspace" / "HRM" / "sage" / "experiments"))
+sys.path.insert(0, str(HOME / "ai-workspace" / "SAGE" / "sage" / "experiments"))
 
 
 async def test_edge_deployment():

@@ -39,7 +39,7 @@ from typing import Dict, Any, Optional, List, Tuple
 
 # Add paths
 HOME = Path.home()
-sys.path.insert(0, str(HOME / "ai-workspace" / "HRM"))
+sys.path.insert(0, str(HOME / "ai-workspace" / "SAGE"))
 sys.path.insert(0, str(HOME / "ai-workspace" / "web4"))
 
 # Web4 imports
@@ -415,7 +415,7 @@ def run_session_169():
     }
 
     # Save results
-    results_file = HOME / "ai-workspace" / "HRM" / "sage" / "experiments" / "session169_sensor_level_validation_results.json"
+    results_file = HOME / "ai-workspace" / "SAGE" / "sage" / "experiments" / "session169_sensor_level_validation_results.json"
     with open(results_file, 'w') as f:
         json.dump(results, f, indent=2)
 

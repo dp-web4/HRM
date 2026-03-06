@@ -29,7 +29,7 @@ dev = ["pytest>=7.4", "pytest-asyncio>=0.21"]
 
 [project.urls]
 Homepage = "https://dp-web4.github.io/SAGE-site/"
-Repository = "https://github.com/dp-web4/HRM"
+Repository = "https://github.com/dp-web4/SAGE"
 
 [project.scripts]
 sage-daemon = "sage.gateway.sage_daemon:main"

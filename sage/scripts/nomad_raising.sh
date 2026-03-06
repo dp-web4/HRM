@@ -5,17 +5,17 @@
 
 set -e
 
-HRM_DIR="/mnt/c/projects/ai-agents/HRM"
-PYTHONPATH="$HRM_DIR"
+SAGE_DIR="/mnt/c/projects/ai-agents/SAGE"
+PYTHONPATH="$SAGE_DIR"
 export PYTHONPATH
 PYTHON="python3"
 
-cd "$HRM_DIR"
+cd "$SAGE_DIR"
 
 echo "[Nomad-Raising] $(date -u +'%Y-%m-%d %H:%M UTC') — Starting raising session"
 
 # Ensure daemon is running and up-to-date (also pulls latest code)
-source "$HRM_DIR/sage/scripts/ensure_daemon.sh"
+source "$SAGE_DIR/sage/scripts/ensure_daemon.sh"
 echo "[Nomad-Raising] Daemon: version=$SAGE_DAEMON_VERSION updated=$SAGE_DAEMON_UPDATED"
 
 # Run the raising session (continue from last session number)
@@ -54,13 +54,13 @@ fi
 
 SESSION_NUM=$($PYTHON -c "
 import json
-with open('$HRM_DIR/$IDENTITY_FILE') as f:
+with open('$SAGE_DIR/$IDENTITY_FILE') as f:
     print(json.load(f)['identity']['session_count'])
 " 2>/dev/null || echo "?")
 
 PHASE=$($PYTHON -c "
 import json
-with open('$HRM_DIR/$IDENTITY_FILE') as f:
+with open('$SAGE_DIR/$IDENTITY_FILE') as f:
     print(json.load(f)['development']['phase_name'])
 " 2>/dev/null || echo "?")
 

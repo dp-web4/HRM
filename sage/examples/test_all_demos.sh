@@ -20,20 +20,20 @@ NC='\033[0m' # No Color
 
 # Get script directory and HRM root
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-HRM_ROOT="$( cd "$SCRIPT_DIR/../.." && pwd )"
+SAGE_ROOT="$( cd "$SCRIPT_DIR/../.." && pwd )"
 
 echo -e "${BLUE}================================"
 echo "Testing All Puzzle SAGE Demos"
 echo "================================${NC}"
 echo ""
-echo "HRM Root: $HRM_ROOT"
+echo "HRM Root: $SAGE_ROOT"
 echo "Python: $(which python)"
 echo "PyTorch: $(python -c 'import torch; print(torch.__version__)')"
 echo "CUDA Available: $(python -c 'import torch; print(torch.cuda.is_available())')"
 echo ""
 
 # Set PYTHONPATH
-export PYTHONPATH="$HRM_ROOT:$PYTHONPATH"
+export PYTHONPATH="$SAGE_ROOT:$PYTHONPATH"
 
 # Test 1: Vision-only demo
 echo -e "${BLUE}Test 1: Vision-Only Puzzle Demo${NC}"

@@ -5,12 +5,12 @@
 
 set -e
 
-HRM_DIR="/home/dp/ai-workspace/HRM"
-PYTHONPATH="$HRM_DIR"
+SAGE_DIR="/home/dp/ai-workspace/SAGE"
+PYTHONPATH="$SAGE_DIR"
 export PYTHONPATH
 PYTHON="/home/dp/miniforge3/bin/python3"
 
-cd "$HRM_DIR"
+cd "$SAGE_DIR"
 
 echo "[Legion-Raising] $(date -u +'%Y-%m-%d %H:%M UTC') — Starting raising session"
 
@@ -67,13 +67,13 @@ IDENTITY_FILE="$INSTANCE_DIR/identity.json"
 
 SESSION_NUM=$($PYTHON -c "
 import json
-with open('$HRM_DIR/$IDENTITY_FILE') as f:
+with open('$SAGE_DIR/$IDENTITY_FILE') as f:
     print(json.load(f)['identity']['session_count'])
 " 2>/dev/null || echo "?")
 
 PHASE=$($PYTHON -c "
 import json
-with open('$HRM_DIR/$IDENTITY_FILE') as f:
+with open('$SAGE_DIR/$IDENTITY_FILE') as f:
     print(json.load(f)['development']['phase_name'])
 " 2>/dev/null || echo "?")
 

@@ -58,7 +58,7 @@ from enum import Enum
 
 # Add paths
 HOME = Path.home()
-sys.path.insert(0, str(HOME / "ai-workspace" / "HRM" / "sage" / "experiments"))
+sys.path.insert(0, str(HOME / "ai-workspace" / "SAGE" / "sage" / "experiments"))
 
 # Import Session 172 complete 8-layer defense
 from session172_complete_defense import (

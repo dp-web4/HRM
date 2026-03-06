@@ -45,7 +45,7 @@ from dataclasses import dataclass, field
 
 # Add paths
 HOME = Path.home()
-sys.path.insert(0, str(HOME / "ai-workspace" / "HRM"))
+sys.path.insert(0, str(HOME / "ai-workspace" / "SAGE"))
 sys.path.insert(0, str(HOME / "ai-workspace" / "web4"))
 
 # Web4 imports
@@ -623,7 +623,7 @@ def main():
         print("="*80)
 
         # Save results
-        output_file = Path.home() / "ai-workspace" / "HRM" / "sage" / "experiments" / "session165_trustzone_federation_results.json"
+        output_file = Path.home() / "ai-workspace" / "SAGE" / "sage" / "experiments" / "session165_trustzone_federation_results.json"
         with open(output_file, 'w') as f:
             json.dump({
                 "session": "165",

@@ -23,7 +23,7 @@ from pathlib import Path
 
 # Add paths
 HOME = Path.home()
-sys.path.insert(0, str(HOME / "ai-workspace" / "HRM"))
+sys.path.insert(0, str(HOME / "ai-workspace" / "SAGE"))
 sys.path.insert(0, str(HOME / "ai-workspace" / "web4"))
 
 # Import components to analyze
@@ -105,7 +105,7 @@ print("ANALYSIS 4: Session 168 Provider-Level Validation")
 print("-" * 80)
 print()
 
-results_file = HOME / "ai-workspace" / "HRM" / "sage" / "experiments" / "session168_trustzone_fix_validation_results.json"
+results_file = HOME / "ai-workspace" / "SAGE" / "sage" / "experiments" / "session168_trustzone_fix_validation_results.json"
 if results_file.exists():
     import json
     with open(results_file) as f:

@@ -27,8 +27,8 @@ from pathlib import Path
 
 # Resolve HRM root
 SCRIPT_DIR = Path(__file__).parent.resolve()
-HRM_ROOT = SCRIPT_DIR.parent.parent.resolve()
-sys.path.insert(0, str(HRM_ROOT))
+SAGE_ROOT = SCRIPT_DIR.parent.parent.resolve()
+sys.path.insert(0, str(SAGE_ROOT))
 
 import argparse
 from sage.instances.resolver import InstancePaths

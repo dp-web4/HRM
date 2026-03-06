@@ -76,7 +76,7 @@ def get_edge_metrics() -> Dict[str, Any]:
 
 
 # Import Session 173 components
-sys.path.insert(0, str(HOME / "ai-workspace" / "HRM" / "sage" / "experiments"))
+sys.path.insert(0, str(HOME / "ai-workspace" / "SAGE" / "sage" / "experiments"))
 
 from session173_secure_federated_cogitation import (
     CogitationMode,

@@ -2,7 +2,7 @@
 
 A cognition kernel for edge devices — orchestrating attention, trust, and resources across a federation of machines to enable emergent intelligence.
 
-**[Explainer Site](https://sage-site-murex.vercel.app/)** | **[GitHub](https://github.com/dp-web4/HRM)** | **[System Understanding](sage/docs/SYSTEM_UNDERSTANDING.md)**
+**[Explainer Site](https://sage-site-murex.vercel.app/)** | **[GitHub](https://github.com/dp-web4/SAGE)** | **[System Understanding](sage/docs/SYSTEM_UNDERSTANDING.md)**
 
 ---
 
@@ -197,8 +197,8 @@ SAGE entities are Web4 citizens — not tools serving humans, but partners in a 
 
 ```bash
 # Clone
-git clone https://github.com/dp-web4/HRM.git
-cd HRM
+git clone https://github.com/dp-web4/SAGE.git
+cd SAGE
 
 # Initialize a new SAGE instance
 python3 -m sage.instances.init --machine mybox --model gemma3:4b --operator-name yourname

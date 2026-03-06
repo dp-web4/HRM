@@ -43,7 +43,7 @@ import time
 import json
 
 HOME = Path.home()
-sys.path.insert(0, str(HOME / "ai-workspace" / "HRM" / "sage" / "experiments"))
+sys.path.insert(0, str(HOME / "ai-workspace" / "SAGE" / "sage" / "experiments"))
 
 from session178_federated_sage_verification import (
     FederatedAdaptiveSAGE,
@@ -607,7 +607,7 @@ def test_reputation_aware_depth():
         print()
 
     # Save results
-    results_path = HOME / "ai-workspace" / "HRM" / "sage" / "experiments" / "session179_test_results.json"
+    results_path = HOME / "ai-workspace" / "SAGE" / "sage" / "experiments" / "session179_test_results.json"
     with open(results_path, 'w') as f:
         json.dump(results, f, indent=2)
 

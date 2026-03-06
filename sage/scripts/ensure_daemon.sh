@@ -15,7 +15,7 @@
 # Environment variables:
 #   SAGE_PORT     — Gateway port (default: 8750)
 #   SAGE_MACHINE  — Machine name override (auto-detected if not set)
-#   HRM_DIR       — Path to HRM repo root (auto-detected from script location)
+#   SAGE_DIR       — Path to HRM repo root (auto-detected from script location)
 #   SAGE_NO_BROWSER — Set to 1 to suppress dashboard auto-open (default: 1 for automated sessions)
 #
 # After sourcing, these variables are available:
@@ -32,7 +32,7 @@ set -e
 
 # --- Resolve paths ---
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-HRM_DIR="${HRM_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
+SAGE_DIR="${SAGE_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
 SAGE_PORT="${SAGE_PORT:-8750}"
 HEALTH_URL="http://localhost:${SAGE_PORT}/health"
 export SAGE_NO_BROWSER="${SAGE_NO_BROWSER:-1}"
@@ -46,7 +46,7 @@ SAGE_DAEMON_UPDATED="false"
 log() { echo "[ensure_daemon] $*"; }
 
 get_current_head() {
-    git -C "$HRM_DIR" rev-parse --short HEAD 2>/dev/null || echo "unknown"
+    git -C "$SAGE_DIR" rev-parse --short HEAD 2>/dev/null || echo "unknown"
 }
 
 check_health() {
@@ -102,8 +102,8 @@ start_daemon() {
         return
     fi
     # Fallback: manual start
-    cd "$HRM_DIR"
-    export PYTHONPATH="$HRM_DIR"
+    cd "$SAGE_DIR"
+    export PYTHONPATH="$SAGE_DIR"
     local PYTHON
     if command -v python3 >/dev/null 2>&1; then
         PYTHON="python3"
@@ -112,7 +112,7 @@ start_daemon() {
     else
         PYTHON="python"
     fi
-    local LOG_DIR="$HRM_DIR/sage/logs"
+    local LOG_DIR="$SAGE_DIR/sage/logs"
     mkdir -p "$LOG_DIR"
     local LOG_FILE="$LOG_DIR/daemon_$(date +%Y%m%d_%H%M%S).log"
     nohup $PYTHON -m sage.gateway.sage_daemon > "$LOG_FILE" 2>&1 &
@@ -122,7 +122,7 @@ start_daemon() {
 
 pull_latest() {
     log "Pulling latest code..."
-    cd "$HRM_DIR"
+    cd "$SAGE_DIR"
     git pull --rebase --quiet 2>/dev/null || {
         log "WARN: git pull failed (merge conflict?), continuing with current code"
     }

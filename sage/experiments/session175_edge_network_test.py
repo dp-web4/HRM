@@ -78,7 +78,7 @@ def get_edge_metrics() -> Dict[str, Any]:
 
 
 # Import Session 175 components
-sys.path.insert(0, str(HOME / "ai-workspace" / "HRM" / "sage" / "experiments"))
+sys.path.insert(0, str(HOME / "ai-workspace" / "SAGE" / "sage" / "experiments"))
 
 from session175_network_economic_federation import (
     NetworkEconomicCogitationNode,

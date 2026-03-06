@@ -3,7 +3,7 @@
 # Designed to run via launchd on schedule.
 
 REPOS_DIR="/Users/dennispalatov/repos"
-LOG_DIR="$REPOS_DIR/HRM/sage/logs/mcnugget"
+LOG_DIR="$REPOS_DIR/SAGE/sage/logs/mcnugget"
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 LOG_FILE="$LOG_DIR/sync.log"
 

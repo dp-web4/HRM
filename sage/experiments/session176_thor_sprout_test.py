@@ -33,7 +33,7 @@ import sys
 
 # Add path
 HOME = Path.home()
-sys.path.insert(0, str(HOME / "ai-workspace" / "HRM" / "sage" / "experiments"))
+sys.path.insert(0, str(HOME / "ai-workspace" / "SAGE" / "sage" / "experiments"))
 
 from session175_network_economic_federation import (
     NetworkEconomicCogitationNode,
@@ -264,7 +264,7 @@ async def main():
     results = await test_thor_sprout_lan_federation()
 
     # Save results
-    results_file = HOME / "ai-workspace" / "HRM" / "sage" / "experiments" / "session176_thor_sprout_results.json"
+    results_file = HOME / "ai-workspace" / "SAGE" / "sage" / "experiments" / "session176_thor_sprout_results.json"
     with open(results_file, 'w') as f:
         json.dump(results, f, indent=2)
 

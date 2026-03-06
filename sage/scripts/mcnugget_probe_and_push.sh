@@ -5,14 +5,14 @@
 
 set -e
 
-HRM_DIR="/Users/dennispalatov/repos/HRM"
-PYTHONPATH="$HRM_DIR"
+SAGE_DIR="/Users/dennispalatov/repos/SAGE"
+PYTHONPATH="$SAGE_DIR"
 export PYTHONPATH
 
-cd "$HRM_DIR"
+cd "$SAGE_DIR"
 
 # Ensure daemon is running and up-to-date (also pulls latest code)
-source "$HRM_DIR/sage/scripts/ensure_daemon.sh"
+source "$SAGE_DIR/sage/scripts/ensure_daemon.sh"
 
 # Run the probe
 /opt/homebrew/bin/python3 -m sage.experiments.cross_family_probe 2>&1

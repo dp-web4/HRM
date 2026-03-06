@@ -5,11 +5,11 @@
 
 set -e
 
-HRM_DIR="/Users/dennispalatov/repos/HRM"
-PYTHONPATH="$HRM_DIR"
+SAGE_DIR="/Users/dennispalatov/repos/SAGE"
+PYTHONPATH="$SAGE_DIR"
 export PYTHONPATH
 
-cd "$HRM_DIR"
+cd "$SAGE_DIR"
 
 echo "[McNugget-Raising] $(date -u +'%Y-%m-%d %H:%M UTC') — Starting raising session"
 
@@ -19,7 +19,7 @@ git pull --rebase origin main 2>&1 || {
 }
 
 # Ensure daemon is running and up-to-date
-source "$HRM_DIR/sage/scripts/ensure_daemon.sh"
+source "$SAGE_DIR/sage/scripts/ensure_daemon.sh"
 echo "[McNugget-Raising] Daemon: version=$SAGE_DAEMON_VERSION updated=$SAGE_DAEMON_UPDATED"
 
 # Run the raising session (continue from last session number)
@@ -38,13 +38,13 @@ echo "[McNugget-Raising] Snapshotting state..."
 IDENTITY_FILE="$INSTANCE_DIR/identity.json"
 SESSION_NUM=$(/opt/homebrew/bin/python3 -c "
 import json
-with open('$HRM_DIR/$IDENTITY_FILE') as f:
+with open('$SAGE_DIR/$IDENTITY_FILE') as f:
     print(json.load(f)['identity']['session_count'])
 " 2>/dev/null || echo "?")
 
 PHASE=$(/opt/homebrew/bin/python3 -c "
 import json
-with open('$HRM_DIR/$IDENTITY_FILE') as f:
+with open('$SAGE_DIR/$IDENTITY_FILE') as f:
     print(json.load(f)['development']['phase_name'])
 " 2>/dev/null || echo "?")
 

@@ -30,8 +30,8 @@ from datetime import datetime, timezone
 from typing import Dict, Any
 
 HOME = Path.home()
-sys.path.insert(0, str(HOME / "ai-workspace" / "HRM" / "sage" / "experiments"))
-sys.path.insert(0, str(HOME / "ai-workspace" / "HRM" / "sage"))
+sys.path.insert(0, str(HOME / "ai-workspace" / "SAGE" / "sage" / "experiments"))
+sys.path.insert(0, str(HOME / "ai-workspace" / "SAGE" / "sage"))
 
 
 def get_edge_metrics() -> Dict[str, Any]:

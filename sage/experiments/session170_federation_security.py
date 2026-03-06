@@ -43,7 +43,7 @@ import math
 
 # Add paths
 HOME = Path.home()
-sys.path.insert(0, str(HOME / "ai-workspace" / "HRM"))
+sys.path.insert(0, str(HOME / "ai-workspace" / "SAGE"))
 sys.path.insert(0, str(HOME / "ai-workspace" / "web4"))
 
 # Web4 imports

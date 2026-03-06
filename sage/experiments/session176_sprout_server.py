@@ -28,7 +28,7 @@ from datetime import datetime, timezone
 from typing import Dict, Any
 
 HOME = Path.home()
-sys.path.insert(0, str(HOME / "ai-workspace" / "HRM" / "sage" / "experiments"))
+sys.path.insert(0, str(HOME / "ai-workspace" / "SAGE" / "sage" / "experiments"))
 
 from session175_network_economic_federation import (
     NetworkEconomicCogitationNode,
@@ -260,7 +260,7 @@ class SproutLANServer:
         # Save results
         self.results["final_metrics"] = self.sprout.get_metrics() if self.sprout else {}
 
-        results_path = HOME / "ai-workspace" / "HRM" / "sage" / "experiments" / "session176_sprout_server_results.json"
+        results_path = HOME / "ai-workspace" / "SAGE" / "sage" / "experiments" / "session176_sprout_server_results.json"
         with open(results_path, 'w') as f:
             json.dump(self.results, f, indent=2)
 

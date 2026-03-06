@@ -1,7 +1,111 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-03-01 (Thor Session - PolicyGate Phase 3 Discovery)**
-**Previous: 2026-03-01 (Thor Session - PolicyGate Phase 2 Complete)**
+**Last Updated: 2026-03-06 (Thor Autonomous - PolicyGate Phase 5 Design)**
+**Previous: 2026-03-05 (Thor Autonomous - PolicyGate Phase 4 Complete)**
+
+---
+
+## ✅ PolicyGate Phase 5 Design Complete (Mar 6, 2026)
+
+### Adaptive Learning Framework for Policy Conscience
+
+**Design Document**: `private-context/insights/policygate-phase-5-design-2026-03-06.md`
+
+Phase 5 completes PolicyGate's evolution from static policy enforcement to **adaptive, learning-based conscience**. The full learning loop: **act → reflect → record → learn → adapt**.
+
+**Three Implementation Phases**:
+
+**Phase 5a - Trust Weight Learning** (RECOMMENDED NEXT):
+- Track per-plugin compliance from Phase 4 experience buffer
+- Compute trust weight adjustments based on compliance ratio (target: 90%)
+- Salience-weighted learning (CRISIS decisions weighted 2.0x)
+- Bounded adjustments: ±0.1 max per update, trust ∈ [0.3, 1.0]
+- Update frequency: Every 100 cycles, exponential moving average
+- Implementation: ~100 lines code, ~250 lines tests, 3-4 hours
+- **Immediate value**: Trust weights directly affect consciousness loop behavior
+
+**Phase 5b - Policy Effectiveness Analysis**:
+- Rule metrics: trigger frequency, deny rate, CRISIS correlation
+- Effectiveness scoring for rule prioritization and pruning
+- Audit API for policy introspection
+- Use case: "Which rules protect us most?"
+
+**Phase 5c - CRISIS Pattern Recognition**:
+- Cluster duress triggers and responses
+- Pattern detection for adaptive threshold tuning
+- Research-focused insights into SAGE behavior under duress
+
+**Architecture Evolution Complete**:
+```
+Phase 1: Policy evaluation ✅ (Feb 2026)
+Phase 2: IRP integration ✅ (Mar 1)
+Phase 3: CRISIS accountability ✅ (Mar 1, already complete)
+Phase 4: Experience recording ✅ (Mar 5, implemented)
+Phase 5: Trust adaptation ✅ (Mar 6, DESIGNED)
+```
+
+**Research Value**: ⭐⭐⭐⭐⭐ EXCEPTIONAL
+
+Transforms PolicyGate into the first **learning conscience** for AI - not just enforcing rules, but adapting trust based on observed behavior patterns.
+
+**Implementation Status**: Ready for Phase 5a implementation
+**Prerequisites**: Phase 4 complete ✅, experience buffer operational
+**Timeline**: 3-4 hours for Phase 5a (trust learning)
+
+---
+
+## ✅ PolicyGate Phase 4 Implementation Complete (Mar 5, 2026)
+
+### Experience Buffer Integration
+
+**Commit**: a5834494
+**Test Results**: 14/14 tests passing ✅
+
+PolicyGate now records every policy decision as a detailed experience atom, enabling long-term learning from compliance patterns, violation tracking, and CRISIS mode pattern recognition.
+
+**Implementation Details** (see commit a5834494):
+- Added `_compute_policy_salience()`: Multi-factor salience scoring
+- Added `_record_single_evaluation()`: Records decision atoms with full context
+- Updated `step()` to call recording for each evaluation
+- Updated `project()` to backfill CRISIS freeze/fight metadata
+- Integrated with consciousness loop snarc_memory
+
+**Experience Atom Schema**:
+```json
+{
+  "timestamp": 1772772422.266,
+  "source": "policy_gate",
+  "context": {
+    "task_description": "...",
+    "metabolic_state": "wake",
+    "accountability": "normal",
+    "atp_available": 50.0,
+    "action_type": "deploy"
+  },
+  "outcome": {
+    "energy": 1.0,
+    "decision": "deny",
+    "violated_rules": ["deny-low-trust-deploy"],
+    "rule_name": "Deny deployment for low-trust actors",
+    "reason": "Deployment requires trust >= 0.7"
+  },
+  "salience": 0.95,
+  "metadata": {
+    "freeze_or_fight": "freeze",
+    "duress_trigger": "consecutive_errors(5)"
+  }
+}
+```
+
+**Salience Scoring**:
+- Clean approvals: 0.1 (routine, low salience)
+- Soft denials: 0.4-0.9 (proportional to energy)
+- Hard denials: 1.0 (maximum salience)
+- CRISIS mode: +0.8 amplification
+- First-time violations: +0.2 novelty boost
+- Repeated violations (>3): +0.3 pattern detection boost
+
+**Architecture Impact**: PolicyGate learning loop now 80% complete (Phase 5 will complete it).
 
 ---
 

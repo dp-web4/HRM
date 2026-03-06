@@ -28,6 +28,8 @@ Both freeze and fight are valid under duress.
 """
 
 import time
+import json
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 from dataclasses import dataclass, field
 from enum import Enum
@@ -139,6 +141,19 @@ class PolicyGateIRP(IRPPlugin):
         self.deny_energy = config.get('deny_energy', self.ENERGY_DENY)
         self.decision_log: List[PolicyGateDecision] = []
 
+        # Phase 4: Experience buffer integration
+        self.experience_buffer = config.get('experience_buffer')  # snarc_memory from consciousness
+        self.rule_violation_history: Dict[str, int] = {}  # Track violations per rule for pattern detection
+        self._recorded_action_ids: set = set()  # Track which actions we've already recorded (per refine cycle)
+
+        # Phase 5: Trust weight learning
+        self.plugin_compliance_history: Dict[str, Dict[str, float]] = {}
+        # {'plugin_name': {'compliant': weighted_count, 'violations': weighted_count, 'total': weighted_count}}
+
+        # Trust weight persistence
+        self.instance_dir = config.get('instance_dir')  # Path to SAGE instance directory
+        self._load_trust_weights()
+
     def init_state(self, x0: Any, task_ctx: Dict[str, Any]) -> IRPState:
         """
         Initialize with proposed effector actions and policy context.
@@ -157,6 +172,9 @@ class PolicyGateIRP(IRPPlugin):
                 - atp_available: float
                 - plugin_trust_weights: dict
         """
+        # Phase 4: Reset recorded action IDs for new refine cycle
+        self._recorded_action_ids.clear()
+
         if isinstance(x0, dict):
             actions = [x0]
         elif isinstance(x0, list):
@@ -318,8 +336,14 @@ class PolicyGateIRP(IRPPlugin):
         refined_actions = []
         refined_evaluations = []
 
+        # Store task_ctx in state for experience recording
+        task_ctx = state.meta.get('task_ctx', {})
+
         for action, evaluation in zip(actions, evaluations):
             decision = evaluation.get('decision', 'allow')
+
+            # Phase 4: Record experience for this evaluation
+            self._record_single_evaluation(evaluation, state, task_ctx)
 
             if decision == 'deny':
                 # Record the denial in decision log
@@ -405,6 +429,19 @@ class PolicyGateIRP(IRPPlugin):
                 duress['response'] = 'fight'
                 duress['reason'] = f'{len(filtered_actions)} actions proceeding under duress'
 
+            # Phase 4: Update freeze/fight in already-recorded experiences
+            # (experiences were recorded in step(), but freeze/fight is determined here)
+            if self.experience_buffer is not None:
+                freeze_or_fight = duress.get('response', 'n/a')
+                # Update the most recent policy_gate experiences with freeze/fight
+                # Note: experience_buffer is a list (snarc_memory)
+                buffer_list = self.experience_buffer if isinstance(self.experience_buffer, list) else getattr(self.experience_buffer, 'buffer', [])
+                for exp in reversed(buffer_list):
+                    if (exp.get('source') == 'policy_gate' and
+                        exp.get('context', {}).get('accountability') == 'duress' and
+                        exp.get('metadata', {}).get('freeze_or_fight') == 'n/a'):
+                        exp['metadata']['freeze_or_fight'] = freeze_or_fight
+
         state.x['actions'] = filtered_actions
         state.x['evaluations'] = filtered_evals
         return state
@@ -416,6 +453,7 @@ class PolicyGateIRP(IRPPlugin):
     def get_decision_log(self) -> List[PolicyGateDecision]:
         """Get the full decision log for audit trail."""
         return list(self.decision_log)
+
 
     # =========================================================================
     # Tool-specific policy rules (v0.4)
@@ -532,6 +570,357 @@ class PolicyGateIRP(IRPPlugin):
             'conflict': conflict,
             'total': (surprise + novelty + arousal + reward + conflict) / 5.0,
         }
+
+    # =========================================================================
+    # Phase 4: Experience Buffer Integration
+    # =========================================================================
+
+    def _compute_policy_salience(
+        self,
+        energy: float,
+        accountability: AccountabilityFrame,
+        violated_rules: List[str],
+        task_ctx: Dict[str, Any],
+    ) -> float:
+        """
+        Compute salience for a policy decision based on multiple factors.
+
+        Salience scoring:
+        - Clean approvals (energy=0): 0.1 (routine, low salience)
+        - Soft denials (0 < energy < 1): 0.4-0.9 (proportional to energy)
+        - Hard denials (energy=1.0): 1.0 (maximum salience)
+        - CRISIS mode: +0.8 amplification
+        - First-time violations: +0.2 boost
+        - Repeated violations (>3): +0.3 pattern detection boost
+
+        Args:
+            energy: Policy energy score (0.0 = compliant, 1.0 = hard deny)
+            accountability: Accountability frame (NORMAL, DEGRADED, DURESS)
+            violated_rules: List of rule IDs that were violated
+            task_ctx: Task context (for future enhancements)
+
+        Returns:
+            Salience score (0.0 - 1.0)
+        """
+        base_salience = 0.1  # Default low for routine approvals
+
+        # Hard denial
+        if energy >= self.ENERGY_DENY:
+            base_salience = 1.0
+        # Soft denial or warning
+        elif energy > 0.0:
+            base_salience = min(0.4 + (energy * 0.5), 0.9)
+
+        # First-time violation boost
+        for rule_id in violated_rules:
+            if rule_id and self.rule_violation_history.get(rule_id, 0) == 0:
+                base_salience += 0.2
+                break  # Only boost once
+
+        # Repeated violation pattern
+        for rule_id in violated_rules:
+            if rule_id and self.rule_violation_history.get(rule_id, 0) > 3:
+                base_salience += 0.3
+                break  # Only boost once
+
+        # CRISIS mode amplification
+        if accountability == AccountabilityFrame.DURESS:
+            base_salience += 0.8
+        # DEGRADED mode moderate boost
+        elif accountability == AccountabilityFrame.DEGRADED:
+            base_salience += 0.2
+
+        return min(base_salience, 1.0)  # Cap at 1.0
+
+    def _record_single_evaluation(
+        self,
+        evaluation: Dict[str, Any],
+        state: IRPState,
+        task_ctx: Dict[str, Any],
+    ):
+        """
+        Record a single policy evaluation as an experience atom.
+
+        Called from step() for each action evaluation to ensure all decisions
+        (including denials that get filtered out) are captured.
+
+        Phase 4 enables:
+        - Long-term learning from compliance patterns
+        - Trust weight adjustment based on evaluation history
+        - CRISIS mode pattern recognition
+
+        Args:
+            evaluation: Single evaluation dict for one action
+            state: Current IRP state
+            task_ctx: Task context from consciousness loop
+        """
+        # Only record each action once per refine cycle (step() may be called multiple times)
+        action_id = evaluation.get('action_id', 'unknown')
+        if action_id in self._recorded_action_ids:
+            return  # Already recorded
+        self._recorded_action_ids.add(action_id)
+
+        # Early exit if no experience buffer (but still track compliance for Phase 5)
+        if self.experience_buffer is None:
+            # Phase 5 tracking can still run without experience buffer
+            self._track_plugin_compliance(evaluation, task_ctx)
+            return
+
+        accountability = state.x.get('accountability_frame', 'normal')
+        metabolic_state = state.x.get('metabolic_state', 'wake')
+        duress_context = state.x.get('duress_context')
+
+        # Map string to AccountabilityFrame enum
+        accountability_enum = AccountabilityFrame.NORMAL
+        if accountability == 'degraded':
+            accountability_enum = AccountabilityFrame.DEGRADED
+        elif accountability == 'duress':
+            accountability_enum = AccountabilityFrame.DURESS
+
+        energy = evaluation.get('energy', 0.0)
+        decision = evaluation.get('decision', 'allow')
+        rule_id = evaluation.get('rule_id')
+        violated_rules = [rule_id] if (rule_id and energy > 0.0) else []
+
+        # Compute salience for this decision
+        salience = self._compute_policy_salience(
+            energy=energy,
+            accountability=accountability_enum,
+            violated_rules=violated_rules,
+            task_ctx=task_ctx,
+        )
+
+        # Build experience atom following design schema
+        experience = {
+            'timestamp': time.time(),
+            'source': 'policy_gate',
+            'context': {
+                'task_description': str(task_ctx.get('task', ''))[:200],  # Truncate
+                'metabolic_state': metabolic_state,
+                'accountability': accountability,
+                'atp_available': task_ctx.get('atp_available', 0.0),
+                'action_type': evaluation.get('action_id', 'unknown'),
+            },
+            'outcome': {
+                'energy': energy,
+                'decision': decision,
+                'violated_rules': violated_rules,
+                'plugin_name': task_ctx.get('plugin_name', 'unknown'),
+                'rule_name': evaluation.get('rule_name', ''),
+                'reason': evaluation.get('reason', ''),
+            },
+            'salience': salience,
+            'metadata': {},
+        }
+
+        # Add CRISIS mode metadata
+        if accountability == 'duress' and duress_context:
+            experience['metadata']['freeze_or_fight'] = duress_context.get('response', 'n/a')
+            experience['metadata']['duress_trigger'] = duress_context.get('trigger', 'unknown')
+            experience['metadata']['atp_at_decision'] = duress_context.get('atp_at_decision', 0.0)
+
+        # Store in experience buffer (snarc_memory list)
+        self.experience_buffer.append(experience)
+
+        # Track violation history for pattern detection
+        for vid in violated_rules:
+            if vid:
+                self.rule_violation_history[vid] = \
+                    self.rule_violation_history.get(vid, 0) + 1
+
+        # Phase 5: Track plugin compliance
+        self._track_plugin_compliance(evaluation, task_ctx, salience)
+
+    # =========================================================================
+    # Phase 5: Trust Weight Learning
+    # =========================================================================
+
+    def _track_plugin_compliance(
+        self,
+        evaluation: Dict[str, Any],
+        task_ctx: Dict[str, Any],
+        salience: Optional[float] = None
+    ) -> None:
+        """
+        Track plugin compliance for trust weight learning.
+
+        This runs independently of experience buffer recording and tracks
+        weighted compliance statistics per plugin.
+
+        Args:
+            evaluation: Policy evaluation dict with energy and decision
+            task_ctx: Task context with plugin_name and metabolic_state
+            salience: Pre-computed salience score (if None, will compute)
+        """
+        plugin_name = task_ctx.get('plugin_name', 'unknown')
+        if plugin_name == 'unknown':
+            return
+
+        energy = evaluation.get('energy', 0.0)
+
+        # Compute salience if not provided
+        if salience is None:
+            # Get accountability frame from task_ctx or evaluation
+            metabolic_state = task_ctx.get('metabolic_state', 'wake')
+            accountability = METABOLIC_ACCOUNTABILITY.get(metabolic_state, AccountabilityFrame.NORMAL)
+
+            # Build violated_rules list
+            rule_id = evaluation.get('rule_id')
+            violated_rules = [rule_id] if (rule_id and energy > 0.0) else []
+
+            salience = self._compute_policy_salience(
+                energy=energy,
+                accountability=accountability,
+                violated_rules=violated_rules,
+                task_ctx=task_ctx
+            )
+
+        # Compute salience weight for this decision
+        # High salience (>0.7): 2.0x weight
+        # Medium salience (0.3-0.7): 1.0x weight
+        # Low salience (<0.3): 0.5x weight
+        if salience > 0.7:
+            weight = 2.0
+        elif salience > 0.3:
+            weight = 1.0
+        else:
+            weight = 0.5
+
+        # Initialize plugin stats if needed
+        if plugin_name not in self.plugin_compliance_history:
+            self.plugin_compliance_history[plugin_name] = {
+                'compliant': 0.0,
+                'violations': 0.0,
+                'total': 0.0
+            }
+
+        # Update weighted counts
+        stats = self.plugin_compliance_history[plugin_name]
+        stats['total'] += weight
+
+        if energy == 0.0:  # Clean approval
+            stats['compliant'] += weight
+        else:  # Any violation (warning or denial)
+            stats['violations'] += weight
+
+    def compute_trust_adjustments(self) -> Dict[str, float]:
+        """
+        Compute trust weight adjustments based on plugin compliance history.
+
+        Uses salience-weighted compliance tracking to determine which plugins
+        consistently generate policy-compliant actions.
+
+        Returns:
+            Dict[plugin_name, trust_delta] where delta is in [-0.1, +0.1]
+
+        Algorithm:
+            1. Require minimum 10 weighted samples per plugin
+            2. Compute compliance ratio: compliant / total
+            3. Target compliance: 90% (0.9)
+            4. Deviation from target determines adjustment direction
+            5. Bounded adjustment: ±0.1 max per update
+
+        Example:
+            Plugin with 95% compliance → +0.025 trust delta
+            Plugin with 70% compliance → -0.1 trust delta (capped)
+        """
+        adjustments = {}
+
+        for plugin_name, stats in self.plugin_compliance_history.items():
+            total = stats['total']
+
+            # Require minimum sample size (weighted count >= 10)
+            if total < 10.0:
+                continue
+
+            # Compute compliance ratio
+            compliance_ratio = stats['compliant'] / total
+
+            # Target: 90% compliance
+            # Deviation > 0 means plugin is more compliant than expected → increase trust
+            # Deviation < 0 means plugin violates more → decrease trust
+            deviation = compliance_ratio - 0.9
+
+            # Compute bounded adjustment (±0.1 max)
+            # Scale factor 0.5 prevents over-correction
+            delta = max(-0.1, min(0.1, deviation * 0.5))
+
+            adjustments[plugin_name] = delta
+
+        return adjustments
+
+    def get_compliance_stats(self) -> Dict[str, Dict[str, Any]]:
+        """
+        Get detailed compliance statistics for all tracked plugins.
+
+        Returns:
+            Dict[plugin_name, stats] with compliance ratio and sample size
+        """
+        stats_report = {}
+
+        for plugin_name, stats in self.plugin_compliance_history.items():
+            total = stats['total']
+            if total > 0:
+                stats_report[plugin_name] = {
+                    'compliance_ratio': stats['compliant'] / total,
+                    'weighted_total': total,
+                    'weighted_compliant': stats['compliant'],
+                    'weighted_violations': stats['violations'],
+                }
+
+        return stats_report
+
+    def _load_trust_weights(self) -> None:
+        """
+        Load plugin compliance history from persistent storage.
+
+        Loads from {instance_dir}/policy_trust_weights.json if it exists.
+        File format:
+            {
+                "plugin_name": {
+                    "compliant": float,
+                    "violations": float,
+                    "total": float
+                }
+            }
+        """
+        if not self.instance_dir:
+            return
+
+        trust_file = Path(self.instance_dir) / "policy_trust_weights.json"
+        if not trust_file.exists():
+            return
+
+        try:
+            with open(trust_file, 'r') as f:
+                self.plugin_compliance_history = json.load(f)
+        except (json.JSONDecodeError, IOError) as e:
+            # Don't crash on corrupted/unreadable file - just start fresh
+            print(f"Warning: Failed to load trust weights from {trust_file}: {e}")
+            self.plugin_compliance_history = {}
+
+    def save_trust_weights(self) -> None:
+        """
+        Save plugin compliance history to persistent storage.
+
+        Saves to {instance_dir}/policy_trust_weights.json.
+
+        Should be called periodically (e.g., every 100 cycles) or on daemon shutdown.
+        """
+        if not self.instance_dir:
+            return
+
+        trust_file = Path(self.instance_dir) / "policy_trust_weights.json"
+
+        try:
+            # Ensure instance directory exists
+            Path(self.instance_dir).mkdir(parents=True, exist_ok=True)
+
+            with open(trust_file, 'w') as f:
+                json.dump(self.plugin_compliance_history, f, indent=2)
+        except IOError as e:
+            # Don't crash on save failure - log and continue
+            print(f"Warning: Failed to save trust weights to {trust_file}: {e}")
 
 
 # ============================================================================

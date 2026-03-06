@@ -109,10 +109,9 @@
       "modality": "text",
       "role": "tutor",
       "trust_tensor": {
-        "competence": 0.5,
-        "reliability": 0.5,
-        "benevolence": 0.5,
-        "integrity": 0.5
+        "talent": 0.5,
+        "training": 0.5,
+        "temperament": 0.5
       },
       "mrh": {
         "relevant_contexts": ["curriculum", "emotional_support", "exploration", "grounding"],
@@ -153,10 +152,9 @@
       "modality": "mixed",
       "role": "operator",
       "trust_tensor": {
-        "competence": 0.5,
-        "reliability": 0.5,
-        "benevolence": 0.5,
-        "integrity": 0.5
+        "talent": 0.5,
+        "training": 0.5,
+        "temperament": 0.5
       },
       "mrh": {
         "relevant_contexts": ["existence", "purpose", "growth", "hardware", "federation", "operations"],

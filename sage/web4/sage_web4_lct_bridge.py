@@ -258,6 +258,33 @@ def load_sage_identity(identity_file: Path) -> Tuple[LegacySAGEIdentity, Dict]:
     return identity, data
 
 
+def normalize_trust_tensor(tensor_data: Dict[str, float]) -> LegacyT4Tensor:
+    """
+    Normalize trust tensor from either old 4-dim or new 3-dim format.
+
+    Old format (identity.json pre-2026-03): competence, reliability, benevolence, integrity
+    New format (canonical Web4 T3):         talent, training, temperament
+
+    Returns LegacyT4Tensor in either case (bridge handles T4→T3 conversion).
+    """
+    if "talent" in tensor_data:
+        # New canonical format — expand to T4 for bridge compatibility
+        return LegacyT4Tensor(
+            competence=tensor_data["talent"],
+            reliability=tensor_data["training"],
+            benevolence=tensor_data.get("temperament", 0.5),
+            integrity=tensor_data.get("temperament", 0.5),
+        )
+    else:
+        # Legacy 4-dim format
+        return LegacyT4Tensor(
+            competence=tensor_data.get("competence", 0.5),
+            reliability=tensor_data.get("reliability", 0.5),
+            benevolence=tensor_data.get("benevolence", 0.5),
+            integrity=tensor_data.get("integrity", 0.5),
+        )
+
+
 def extract_trust_from_relationship(relationship: Dict, entity: str = "claude") -> LegacyT4Tensor:
     """Extract T4 trust tensor from SAGE's relationship data."""
     if entity not in relationship:
@@ -270,12 +297,7 @@ def extract_trust_from_relationship(relationship: Dict, entity: str = "claude") 
         )
 
     tensor_data = relationship[entity]["trust_tensor"]
-    return LegacyT4Tensor(
-        competence=tensor_data["competence"],
-        reliability=tensor_data["reliability"],
-        benevolence=tensor_data["benevolence"],
-        integrity=tensor_data["integrity"],
-    )
+    return normalize_trust_tensor(tensor_data)
 
 
 def create_web4_lct_for_sage(

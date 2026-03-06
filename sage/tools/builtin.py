@@ -174,7 +174,7 @@ def tool_web_search(query: str, max_results: int = 5) -> str:
         return f"Search error: {e}"
 
 
-def tool_web_fetch(url: str, max_chars: int = 2000) -> str:
+def tool_web_fetch(url: str, max_chars: int = 4000) -> str:
     """
     Fetch text content from a URL.
 
@@ -385,14 +385,14 @@ def create_default_registry(instance_dir: Optional[Path] = None) -> ToolRegistry
                 },
                 'max_chars': {
                     'type': 'integer',
-                    'description': 'Maximum characters to return (default 2000)',
+                    'description': 'Maximum characters to return (default 4000)',
                 },
             },
             'required': ['url'],
         },
         fn=tool_web_fetch,
         atp_cost=1.5,
-        policy_level='elevated',
+        policy_level='standard',
     ))
 
     registry.register(ToolDefinition(

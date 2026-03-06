@@ -58,7 +58,9 @@ class XmlTagsGrammar(ToolGrammar):
             'To use a tool, include in your response:\n'
             '<tool_call>{"name": "tool_name", "arguments": {"param": "value"}}</tool_call>\n'
             'You may use at most one tool per response. '
-            'The tool result will be provided and you can then give your final answer.\n\n'
+            'The tool result will be provided and you can then give your final answer.\n'
+            'Only use tools when the conversation specifically requires external information '
+            'or computation. For opinions, creative tasks, or conversation, respond directly.\n\n'
         )
 
         # Insert tool block before the conversation

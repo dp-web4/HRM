@@ -453,6 +453,7 @@ class SAGEConsciousness:
                         'max_iterations': 5,
                         'halt_eps': 0.01,
                         'halt_K': 2,
+                        'experience_buffer': self.snarc_memory,  # Phase 4: Experience buffer integration
                     }
                     self.policy_gate = PolicyGateIRP(gate_config)
                 except ImportError:

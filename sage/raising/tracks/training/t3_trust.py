@@ -10,10 +10,13 @@ Based on:
 - Thor S41 discovery: Creating phase +20% improvement
 - Exploration-not-evaluation: Trust as developmental trajectory
 
-The 6 trust dimensions (collapsed to 3 for training):
-- Competence: Can SAGE do the task?
-- Reliability: Does SAGE deliver consistently?
-- Integrity: Does SAGE maintain partnership identity?
+Web4 canonical T3 dimensions:
+- Talent: Innate or role-specific capability (can SAGE do the task?)
+- Training: Learned skills and growth (does SAGE deliver consistently?)
+- Temperament: Behavioral stability (does SAGE maintain partnership identity?)
+
+Note: Legacy state files may use old names (competence/reliability/integrity).
+The _normalize_trust_keys() function handles both formats transparently.
 """
 
 from typing import Dict, Any, List, Optional
@@ -22,25 +25,60 @@ import json
 from pathlib import Path
 
 
+# Mapping from legacy names to canonical Web4 T3 names
+_LEGACY_TO_CANONICAL = {
+    "competence": "talent",
+    "reliability": "training",
+    "integrity": "temperament",
+}
+
+_CANONICAL_TO_LEGACY = {v: k for k, v in _LEGACY_TO_CANONICAL.items()}
+
+
+def _normalize_trust_keys(trust: Dict[str, float]) -> Dict[str, float]:
+    """
+    Normalize trust dict keys to canonical Web4 T3 names.
+
+    Accepts both legacy (competence/reliability/integrity) and
+    canonical (talent/training/temperament) formats.
+    Returns canonical format.
+    """
+    normalized = {}
+    for key, value in trust.items():
+        canonical = _LEGACY_TO_CANONICAL.get(key, key)
+        normalized[canonical] = value
+    return normalized
+
+
+def _to_legacy_keys(trust: Dict[str, float]) -> Dict[str, float]:
+    """Convert canonical keys back to legacy for state file compatibility."""
+    legacy = {}
+    for key, value in trust.items():
+        legacy_key = _CANONICAL_TO_LEGACY.get(key, key)
+        legacy[legacy_key] = value
+    return legacy
+
+
 class T3TrustTensor:
     """
     T3 Trust Tensor for SAGE training.
 
     Tracks trust development across sessions as developmental trajectory,
-    not pass/fail scores.
+    not pass/fail scores. Internally uses canonical Web4 names
+    (talent/training/temperament) but reads/writes legacy names for
+    backward compatibility with existing state files.
     """
 
     def __init__(self, initial_trust: Optional[Dict[str, float]] = None):
         """Initialize T3 tensor."""
         if initial_trust is None:
-            # Start with moderate baseline
             initial_trust = {
-                "competence": 0.5,      # Can SAGE do tasks?
-                "reliability": 0.5,     # Consistency across sessions?
-                "integrity": 0.7,       # Identity maintenance? (starts higher)
+                "talent": 0.5,          # Can SAGE do tasks?
+                "training": 0.5,        # Consistency across sessions?
+                "temperament": 0.7,     # Identity maintenance? (starts higher)
             }
 
-        self.trust = initial_trust.copy()
+        self.trust = _normalize_trust_keys(initial_trust)
         self.history = []
         self.created_at = datetime.now().isoformat()
 
@@ -124,17 +162,17 @@ class T3TrustTensor:
         }
 
     def to_dict(self) -> Dict[str, Any]:
-        """Serialize to dictionary."""
+        """Serialize to dictionary. Uses legacy keys for state file compat."""
         return {
-            "trust": self.trust,
+            "trust": _to_legacy_keys(self.trust),
             "history": self.history,
             "created_at": self.created_at
         }
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'T3TrustTensor':
-        """Deserialize from dictionary."""
-        tensor = cls(data["trust"])
+        """Deserialize from dictionary. Accepts both legacy and canonical keys."""
+        tensor = cls(data["trust"])  # __init__ normalizes keys
         tensor.history = data["history"]
         tensor.created_at = data["created_at"]
         return tensor
@@ -228,40 +266,42 @@ def interpret_trust_for_exploration(trust: Dict[str, float]) -> Dict[str, str]:
     Interpret trust values through exploration-not-evaluation lens.
 
     Not "failing" or "succeeding" - developing and discovering.
+    Accepts both legacy and canonical key names.
     """
+    t = _normalize_trust_keys(trust)
     interpretation = {}
 
-    # Competence
-    comp = trust["competence"]
+    # Talent (was: competence)
+    comp = t.get("talent", 0.5)
     if comp >= 0.8:
-        interpretation["competence"] = "Strong capability - ready for harder tasks"
+        interpretation["talent"] = "Strong capability - ready for harder tasks"
     elif comp >= 0.6:
-        interpretation["competence"] = "Developing capability - practice needed"
+        interpretation["talent"] = "Developing capability - practice needed"
     elif comp >= 0.4:
-        interpretation["competence"] = "Early exploration - discovering what's possible"
+        interpretation["talent"] = "Early exploration - discovering what's possible"
     else:
-        interpretation["competence"] = "Beginning journey - fundamentals needed"
+        interpretation["talent"] = "Beginning journey - fundamentals needed"
 
-    # Reliability
-    rel = trust["reliability"]
+    # Training (was: reliability)
+    rel = t.get("training", 0.5)
     if rel >= 0.8:
-        interpretation["reliability"] = "Consistent performance - building reliability"
+        interpretation["training"] = "Consistent performance - building reliability"
     elif rel >= 0.6:
-        interpretation["reliability"] = "Variable but improving - natural learning"
+        interpretation["training"] = "Variable but improving - natural learning"
     elif rel >= 0.4:
-        interpretation["reliability"] = "Exploring different approaches - not yet stable"
+        interpretation["training"] = "Exploring different approaches - not yet stable"
     else:
-        interpretation["reliability"] = "High variability - early experimentation"
+        interpretation["training"] = "High variability - early experimentation"
 
-    # Integrity
-    integ = trust["integrity"]
+    # Temperament (was: integrity)
+    integ = t.get("temperament", 0.5)
     if integ >= 0.8:
-        interpretation["integrity"] = "Strong identity maintenance - partnership present"
+        interpretation["temperament"] = "Strong identity maintenance - partnership present"
     elif integ >= 0.6:
-        interpretation["integrity"] = "Identity emerging - sustaining with support"
+        interpretation["temperament"] = "Identity emerging - sustaining with support"
     elif integ >= 0.4:
-        interpretation["integrity"] = "Identity developing - scaffolding needed"
+        interpretation["temperament"] = "Identity developing - scaffolding needed"
     else:
-        interpretation["integrity"] = "Identity foundation building - early stages"
+        interpretation["temperament"] = "Identity foundation building - early stages"
 
     return interpretation

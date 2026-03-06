@@ -783,6 +783,8 @@ async function loadChatHistory() {
   }
 }
 
+let currentConversationId = null;
+
 async function sendChat() {
   const message = chatInput.value.trim();
   if (!message) return;
@@ -794,20 +796,28 @@ async function sendChat() {
   chatSend.textContent = '...';
 
   try {
+    const payload = {
+      sender: 'operator',
+      message: message,
+      max_wait_seconds: 90,
+    };
+    if (currentConversationId) {
+      payload.conversation_id = currentConversationId;
+    }
     const resp = await fetch('/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        sender: 'operator',
-        message: message,
-        max_wait_seconds: 90,
-      }),
+      body: JSON.stringify(payload),
     });
     const text = await resp.text();
     let result;
     try { result = JSON.parse(text); } catch (pe) {
       appendChat('System', 'Bad response: ' + text.substring(0, 200), 'error');
       return;
+    }
+
+    if (result.conversation_id) {
+      currentConversationId = result.conversation_id;
     }
 
     if (resp.status === 202) {

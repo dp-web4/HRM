@@ -454,6 +454,7 @@ class SAGEConsciousness:
                         'halt_eps': 0.01,
                         'halt_K': 2,
                         'experience_buffer': self.snarc_memory,  # Phase 4: Experience buffer integration
+                        'instance_dir': self.config.get('instance_dir'),  # Phase 5a: Trust weight persistence
                     }
                     self.policy_gate = PolicyGateIRP(gate_config)
                 except ImportError:
@@ -631,6 +632,10 @@ class SAGEConsciousness:
                         self.llm_pool.health_check()
                     except Exception:
                         pass  # Non-fatal
+
+                # Periodic PolicyGate trust learning (Phase 5a)
+                if self.cycle_count % 100 == 0 and self.cycle_count > 0:
+                    self._update_policygate_trust_weights()
 
                 # Periodic status
                 if self.cycle_count % 10 == 0:
@@ -1610,6 +1615,69 @@ class SAGEConsciousness:
             self.plugin_trust_weights[plugin_name] = (
                 (1 - alpha) * current_trust + alpha * quality
             )
+
+    def _update_policygate_trust_weights(self):
+        """
+        Update plugin trust weights based on PolicyGate compliance (Phase 5a).
+
+        Called periodically (every 100 cycles) to apply learning from policy
+        compliance patterns. Complements IRP convergence-based trust updates.
+
+        PolicyGate tracks compliance with salience weighting:
+        - High salience decisions (CRISIS, violations): 2.0x weight
+        - Medium salience (DEGRADED state): 1.0x weight
+        - Low salience (routine approvals): 0.5x weight
+
+        Trust adjustments:
+        - Target: 90% compliance ratio
+        - Bounded: ±0.1 max per update
+        - Exponential moving average (alpha = 0.1)
+        - Minimum 10 weighted samples required
+        """
+        if not self.policy_gate_enabled or not self.policy_gate:
+            return
+
+        try:
+            # Get trust adjustments from PolicyGate compliance analysis
+            adjustments = self.policy_gate.compute_trust_adjustments()
+
+            if not adjustments:
+                return  # No plugins have enough samples yet
+
+            # Get compliance statistics for logging
+            stats = self.policy_gate.get_compliance_stats()
+
+            # Apply adjustments with exponential moving average
+            alpha = 0.1  # Same as IRP trust update rate
+            trust_min = 0.3
+            trust_max = 1.0
+
+            for plugin_name, delta in adjustments.items():
+                current_trust = self.plugin_trust_weights.get(plugin_name, 1.0)
+
+                # Apply delta with EMA smoothing
+                new_trust = current_trust + (alpha * delta)
+
+                # Enforce bounds
+                new_trust = max(trust_min, min(trust_max, new_trust))
+
+                # Update
+                self.plugin_trust_weights[plugin_name] = new_trust
+
+                # Log significant changes
+                if abs(new_trust - current_trust) > 0.01:
+                    compliance_ratio = stats[plugin_name]['compliance_ratio']
+                    print(f"[PolicyGate Learning] {plugin_name}: "
+                          f"trust {current_trust:.3f} → {new_trust:.3f} "
+                          f"(compliance: {compliance_ratio:.1%}, "
+                          f"samples: {stats[plugin_name]['weighted_total']:.1f})")
+
+            # Save trust weights to disk for persistence
+            self.policy_gate.save_trust_weights()
+
+        except Exception as e:
+            # Don't crash consciousness loop on trust update errors
+            print(f"[PolicyGate Learning] Warning: Trust update failed: {e}")
 
     def _update_memories(
         self,

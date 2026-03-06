@@ -1101,39 +1101,6 @@ class SAGEConsciousness:
             except Exception as e:
                 print(f"[WARN] Experience recording failed: {e}")
 
-        # Store exchange in MemoryHub (alongside ExperienceCollector)
-        if (self.memory_hub and response_text
-                and not response_text.startswith('[')):
-            try:
-                from sage.memory.hub import MemoryEntry
-                identity = self.identity_state or {}
-                session_num = identity.get('identity', {}).get('session_count', 0)
-                entry = MemoryEntry(
-                    id=hashlib.sha256(
-                        f"{content}{response_text}".encode()).hexdigest()[:16],
-                    timestamp=time.time(),
-                    modality='message',
-                    content=json.dumps({
-                        'prompt': content,
-                        'response': response_text,
-                        'sender': sender,
-                    }),
-                    content_type='exchange',
-                    salience=snarc_real['total'] if snarc_real else 0.0,
-                    surprise=snarc_real.get('surprise', 0) if snarc_real else 0,
-                    novelty=snarc_real.get('novelty', 0) if snarc_real else 0,
-                    arousal=snarc_real.get('arousal', 0) if snarc_real else 0,
-                    reward=snarc_real.get('reward', 0) if snarc_real else 0,
-                    conflict=snarc_real.get('conflict', 0) if snarc_real else 0,
-                    model_name=self.llm_pool.active_name or '',
-                    session=session_num,
-                    cycle=self.cycle_count,
-                    metabolic_state=self.metabolic.current_state.value,
-                )
-                self.memory_hub.store(entry)
-            except Exception as e:
-                print(f"[MemoryHub] Store failed: {e}")
-
         # Resolve the message directly in the queue so the HTTP handler
         # gets its response immediately. The effect system may also resolve
         # it (via NetworkEffector), but message_queue.resolve() is idempotent
@@ -1182,6 +1149,39 @@ class SAGEConsciousness:
                       f"C={snarc_real['conflict']:.2f})")
             except Exception as e:
                 print(f"[SNARC] Real scoring failed: {e}")
+
+        # Store exchange in MemoryHub (now that snarc_real is available)
+        if (self.memory_hub and response_text
+                and not response_text.startswith('[')):
+            try:
+                from sage.memory.hub import MemoryEntry
+                identity = self.identity_state or {}
+                session_num = identity.get('identity', {}).get('session_count', 0)
+                entry = MemoryEntry(
+                    id=hashlib.sha256(
+                        f"{content}{response_text}".encode()).hexdigest()[:16],
+                    timestamp=time.time(),
+                    modality='message',
+                    content=json.dumps({
+                        'prompt': content,
+                        'response': response_text,
+                        'sender': sender,
+                    }),
+                    content_type='exchange',
+                    salience=snarc_real['total'] if snarc_real else 0.0,
+                    surprise=snarc_real.get('surprise', 0) if snarc_real else 0,
+                    novelty=snarc_real.get('novelty', 0) if snarc_real else 0,
+                    arousal=snarc_real.get('arousal', 0) if snarc_real else 0,
+                    reward=snarc_real.get('reward', 0) if snarc_real else 0,
+                    conflict=snarc_real.get('conflict', 0) if snarc_real else 0,
+                    model_name=self.llm_pool.active_name or '',
+                    session=session_num,
+                    cycle=self.cycle_count,
+                    metabolic_state=self.metabolic.current_state.value,
+                )
+                self.memory_hub.store(entry)
+            except Exception as e:
+                print(f"[MemoryHub] Store failed: {e}")
 
         # Build telemetry
         telemetry = {
@@ -1292,6 +1292,18 @@ class SAGEConsciousness:
 
                 if not response_text or response_text.startswith('['):
                     break  # Error in follow-up, stop
+
+        # Clean up response: strip residual tool calls that exceeded max rounds
+        if tools_active and response_text:
+            clean, leftover = self.tool_grammar.parse_response(response_text)
+            if leftover:
+                response_text = clean
+
+        # Strip "SAGE:" prefix if the model echoed the prompt suffix
+        if response_text:
+            stripped = response_text.lstrip()
+            if stripped.startswith('SAGE:'):
+                response_text = stripped[5:].lstrip()
 
         return response_text
 

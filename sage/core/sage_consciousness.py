@@ -1259,54 +1259,42 @@ class SAGEConsciousness:
         # Generate initial response
         response_text = self._call_llm(prompt)
 
-        # Tool use loop: detect calls, execute, re-inject, repeat
+        # Tool use loop: detect call, execute, re-inject once, done
+        last_tool_result = None
         if tools_active and response_text and not response_text.startswith('['):
-            max_tool_rounds = self.config.get('max_tool_rounds', 3)
-
-            for round_num in range(max_tool_rounds):
-                # Check for native tool calls (T1 via /api/chat)
-                tool_calls = []
-
-                active_plugin = self.llm_plugin
-                if (self.tool_capability.tier == 'T1'
-                        and active_plugin is not None
-                        and hasattr(active_plugin, 'get_chat_response')):
-                    # For T1, we should have used /api/chat; parse from grammar
-                    _, tool_calls = self.tool_grammar.parse_response(response_text)
-                else:
-                    # T2/T3: parse from text response
-                    clean_text, tool_calls = self.tool_grammar.parse_response(response_text)
-                    if tool_calls:
-                        response_text = clean_text
-
-                if not tool_calls:
-                    break  # No tool calls detected, done
+            # Parse for tool call
+            clean_text, tool_calls = self.tool_grammar.parse_response(response_text)
+            if tool_calls:
+                response_text = clean_text
+                print(f"[Tools] Detected: {[c.name for c in tool_calls]}")
 
                 # Execute tool calls
                 call_results = self._execute_tool_calls(tool_calls)
-                if not call_results:
-                    break
+                if call_results:
+                    # Build result text
+                    result_parts = []
+                    for call, result in call_results:
+                        result_text = self.tool_grammar.format_result(call.name, result)
+                        result_parts.append(result_text)
+                        print(f"[Tools] Result: {result_text[:100]}")
+                    last_tool_result = '\n'.join(result_parts)
 
-                # Re-inject results and generate follow-up
-                result_context = []
-                for call, result in call_results:
-                    result_text = self.tool_grammar.format_result(call.name, result)
-                    result_context.append(result_text)
+                    # Re-inject and generate follow-up
+                    augmented_prompt = (
+                        f"{prompt}\n\n"
+                        f"SAGE: {response_text}\n\n"
+                        f"{last_tool_result}\n\n"
+                        f"Now answer Dennis's question using the tool result above.\n"
+                        f"SAGE:"
+                    )
+                    response_text = self._call_llm(augmented_prompt)
 
-                # Build augmented prompt with tool results
-                tool_results_block = '\n'.join(result_context)
-                augmented_prompt = (
-                    f"{prompt}\n\n"
-                    f"SAGE: {response_text}\n\n"
-                    f"{tool_results_block}\n\n"
-                    f"SAGE:"
-                )
-
-                # Generate follow-up response incorporating tool results
-                response_text = self._call_llm(augmented_prompt)
-
-                if not response_text or response_text.startswith('['):
-                    break  # Error in follow-up, stop
+                    # Strip any further tool calls from follow-up (don't loop)
+                    follow_clean, follow_calls = self.tool_grammar.parse_response(response_text)
+                    if follow_calls:
+                        response_text = follow_clean
+            else:
+                print(f"[Tools] No tool calls in response")
 
         # Clean up response: strip residual tool calls and tool result tags
         if tools_active and response_text:
@@ -1322,6 +1310,14 @@ class SAGEConsciousness:
             response_text = re.sub(
                 r'\[Tool \w+ result\]:.*', '', response_text
             ).strip()
+
+        # Fallback: if tool calls consumed the entire response, use tool result
+        if not response_text and last_tool_result:
+            # Extract just the result value
+            import re
+            m = re.search(r'\]:\s*(.+)', last_tool_result)
+            response_text = m.group(1).strip() if m else last_tool_result
+            print(f"[Tools] Fallback to tool result: {response_text[:80]}")
 
         # Strip "SAGE:" prefix if the model echoed the prompt suffix
         if response_text:

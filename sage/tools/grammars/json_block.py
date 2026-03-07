@@ -27,6 +27,13 @@ _JSON_BLOCK_PATTERN = re.compile(
     re.DOTALL
 )
 
+# Match bare JSON tool calls (no fencing) — for models that omit markdown
+# Must have "tool" key to avoid matching arbitrary JSON
+_BARE_JSON_PATTERN = re.compile(
+    r'(\{"tool"\s*:\s*"[^"]+"\s*,\s*"args"\s*:\s*\{.*?\}\})',
+    re.DOTALL
+)
+
 
 class JsonBlockGrammar(ToolGrammar):
     """
@@ -58,27 +65,30 @@ class JsonBlockGrammar(ToolGrammar):
             return tool_block + prompt
 
     def parse_response(self, response: str) -> Tuple[str, List[ToolCall]]:
-        """Extract tool calls from ```json blocks in the response."""
+        """Extract tool calls from ```json blocks or bare JSON in the response."""
         calls = []
         clean = response
 
-        for match in _JSON_BLOCK_PATTERN.finditer(response):
-            try:
-                data = json.loads(match.group(1))
+        # Try fenced first, then bare JSON
+        for pattern in [_JSON_BLOCK_PATTERN, _BARE_JSON_PATTERN]:
+            for match in pattern.finditer(response):
+                try:
+                    data = json.loads(match.group(1))
 
-                # Support both formats:
-                # {"tool": "name", "args": {...}}
-                # {"name": "name", "arguments": {...}}
-                name = data.get('tool', data.get('name', ''))
-                args = data.get('args', data.get('arguments', {}))
+                    # Support both formats:
+                    # {"tool": "name", "args": {...}}
+                    # {"name": "name", "arguments": {...}}
+                    name = data.get('tool', data.get('name', ''))
+                    args = data.get('args', data.get('arguments', {}))
 
-                if name:
-                    calls.append(ToolCall(name=name, arguments=args))
-            except (json.JSONDecodeError, AttributeError):
-                continue
+                    if name:
+                        calls.append(ToolCall(name=name, arguments=args))
+                except (json.JSONDecodeError, AttributeError):
+                    continue
 
-        if calls:
-            clean = _JSON_BLOCK_PATTERN.sub('', clean).strip()
+            if calls:
+                clean = pattern.sub('', clean).strip()
+                break  # Don't double-parse
 
         return clean, calls
 

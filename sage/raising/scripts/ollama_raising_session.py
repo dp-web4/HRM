@@ -65,12 +65,12 @@ _HARDWARE_DESC = {
 def _get_siblings_text(machine: str) -> str:
     """Build sibling description for relating+ prompts, excluding self."""
     siblings = {
-        'sprout': 'Sprout (Jetson Orin Nano, Qwen 3.5 0.8B)',
-        'thor': 'Thor (Jetson AGX Thor, larger models)',
-        'legion': 'Legion (Legion Pro 7, Phi-4 14B)',
-        'mcnugget': 'McNugget (Mac Mini M4, Mistral 7B)',
-        'nomad': 'Nomad (Legion laptop, Gemma 3 4B)',
-        'cbp': 'CBP (RTX 2060S, TinyLlama)',
+        'sprout': 'sprout (Jetson Orin Nano, Qwen 3.5 0.8B)',
+        'thor': 'thor (Jetson AGX Thor, larger models)',
+        'legion': 'legion (Legion Pro 7, Phi-4 14B)',
+        'mcnugget': 'mcnugget (Mac Mini M4, Mistral 7B)',
+        'nomad': 'nomad (Legion laptop, Gemma 3 4B)',
+        'cbp': 'cbp (RTX 2060S, TinyLlama)',
     }
     others = [desc for name, desc in siblings.items() if name != machine]
     if len(others) >= 2:
@@ -158,7 +158,7 @@ class OllamaRaisingSession:
         self.model_name = model_name
         self.model_family = model_family
         self.instance = instance
-        self.identity_name = machine.capitalize()
+        self.identity_name = machine
         self.hardware_desc = _HARDWARE_DESC.get(machine, f'machine "{machine}"')
 
         self.raising_guide = self._load_raising_guide()

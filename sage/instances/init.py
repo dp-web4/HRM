@@ -83,10 +83,10 @@ def init_instance(machine: str, model: str, force: bool = False,
     family = _guess_family(model)
 
     # Placeholder replacements
-    # __MACHINE__ is the raw machine name (lowercase) for LCT URIs and config.
-    # __NAME__ is the capitalised unique identity name (SAGE is species, name is individual).
+    # __MACHINE__ is the raw machine name — used everywhere including as identity name.
+    # __NAME__ is the same (kept as separate placeholder for clarity in identity.json).
     replacements = {
-        '__NAME__': machine.capitalize(),
+        '__NAME__': machine,
         '__MACHINE__': machine,
         '__MODEL__': model,
         '__FAMILY__': family,

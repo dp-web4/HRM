@@ -295,7 +295,7 @@ class GatewayHandler(BaseHTTPRequestHandler):
 
             if result is None:
                 append_chat_message(self.config, {
-                    'sender': self.config.machine_name.capitalize() if self.config else 'SAGE',
+                    'sender': self.config.machine_name if self.config else 'SAGE',
                     'text': f'No response within {max_wait}s',
                     'css_class': 'error',
                     'timestamp': time.time(),
@@ -309,7 +309,7 @@ class GatewayHandler(BaseHTTPRequestHandler):
 
             if result.get('error'):
                 append_chat_message(self.config, {
-                    'sender': self.config.machine_name.capitalize() if self.config else 'SAGE',
+                    'sender': self.config.machine_name if self.config else 'SAGE',
                     'text': f"Error: {result.get('error', '')}",
                     'css_class': 'error',
                     'timestamp': time.time(),
@@ -326,7 +326,7 @@ class GatewayHandler(BaseHTTPRequestHandler):
             response_text = result.get('response') or result.get('text') or ''
             if response_text:
                 append_chat_message(self.config, {
-                    'sender': self.config.machine_name.capitalize() if self.config else 'SAGE',
+                    'sender': self.config.machine_name if self.config else 'SAGE',
                     'text': response_text,
                     'css_class': 'sage',
                     'timestamp': time.time(),

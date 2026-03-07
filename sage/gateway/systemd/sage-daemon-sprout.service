@@ -1,8 +1,8 @@
 ################################################################################
-# SAGE Daemon — Sprout (Jetson Orin Nano, 0.5B model)
+# SAGE Daemon — Sprout (Jetson Orin Nano, Qwen 3.5 0.8B via Ollama)
 #
 # Always-on consciousness loop with HTTP gateway on port 8750.
-# Loads the Qwen 0.5B model once and keeps it in GPU memory.
+# Uses Ollama-served Qwen 3.5 0.8B model (think disabled for speed).
 #
 # INSTALLATION:
 #   sudo cp sage-daemon-sprout.service /etc/systemd/system/
@@ -17,10 +17,13 @@
 ################################################################################
 
 [Unit]
-Description=SAGE Consciousness Daemon (Sprout — 0.5B)
+Description=SAGE Consciousness Daemon (Sprout — Qwen 3.5 0.8B)
+After=ollama.service
 After=network.target
 
 [Service]
+# Ensure Ollama is available before starting
+ExecStartPre=/bin/sleep 5
 Type=simple
 User=sprout
 WorkingDirectory=/home/sprout/ai-workspace/SAGE

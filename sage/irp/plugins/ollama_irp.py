@@ -49,6 +49,7 @@ class OllamaIRP(IRPPlugin):
         self.max_response_tokens = config.get('max_response_tokens', 250)
         self.temperature = config.get('temperature', 0.8)
         self.timeout_seconds = config.get('timeout_seconds', 120)
+        self.think = config.get('think', False)  # Disable thinking by default (Qwen 3.5)
 
         # Conversation memory (last N turns)
         self.conversation_memory: List[Dict[str, str]] = []
@@ -103,6 +104,7 @@ class OllamaIRP(IRPPlugin):
             'prompt': prompt,
             'stream': False,
             'keep_alive': -1,  # Keep model loaded in GPU until SAGE shuts down
+            'think': self.think,
             'options': {
                 'num_predict': self.max_response_tokens,
                 'temperature': self.temperature,
@@ -162,6 +164,7 @@ class OllamaIRP(IRPPlugin):
             'messages': messages,
             'stream': False,
             'keep_alive': -1,
+            'think': self.think,
             'options': {
                 'num_predict': self.max_response_tokens,
                 'temperature': self.temperature,

@@ -63,7 +63,7 @@ def make_slug(machine: str, model: str) -> str:
 # Default models per machine (mirrors machine_config.py)
 _DEFAULT_MODELS = {
     'thor': 'qwen2.5-14b',
-    'sprout': 'qwen2.5-0.5b',
+    'sprout': 'qwen3.5:0.8b',
     'legion': 'phi4:14b',
     'mcnugget': 'gemma3:12b',
     'nomad': 'gemma3:4b',

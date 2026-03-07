@@ -252,7 +252,7 @@ class GatewayHandler(BaseHTTPRequestHandler):
 
         sender = data.get('sender', f'anonymous@{self.client_address[0]}')
         conversation_id = data.get('conversation_id')
-        max_wait = min(data.get('max_wait_seconds', 30), 120)  # Cap at 2 min
+        max_wait = min(data.get('max_wait_seconds', 90), 180)  # Cap at 3 min
         now = time.time()
 
         # Log the user message to chat history
@@ -263,31 +263,17 @@ class GatewayHandler(BaseHTTPRequestHandler):
             'timestamp': now,
         })
 
-        # Check if SAGE is dreaming
+        # Wake SAGE from dream state when someone talks to it
         if self.consciousness and hasattr(self.consciousness, 'metabolic'):
             from sage.core.metabolic_controller import MetabolicState
             if self.consciousness.metabolic.current_state == MetabolicState.DREAM:
-                dream_msg = 'SAGE is dreaming. Message queued for when it wakes.'
-                append_chat_message(self.config, {
-                    'sender': 'SAGE',
-                    'text': dream_msg,
-                    'css_class': 'dream',
-                    'timestamp': time.time(),
-                })
-                self._send_json({
-                    'status': 'dreaming',
-                    'message': dream_msg,
-                    'metabolic_state': 'dream',
-                    'conversation_id': conversation_id,
-                }, status=202)
-                # Still submit the message — it will queue
-                # But don't wait for a response
-                try:
-                    self.message_queue.submit(sender, message, conversation_id,
-                                              metadata=data.get('metadata'))
-                except Exception:
-                    pass
-                return
+                # Boost ATP and force wake — a message is high-salience stimulus
+                self.consciousness.metabolic.atp_current = max(
+                    self.consciousness.metabolic.atp_current, 50.0)
+                self.consciousness.metabolic.current_state = MetabolicState.WAKE
+                print("[Gateway] Woke SAGE from dream — incoming message")
+
+        # (Dream gate removed — messages now wake SAGE instead of being rejected)
 
         # Submit message to queue
         try:

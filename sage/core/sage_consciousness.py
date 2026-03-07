@@ -1482,10 +1482,10 @@ class SAGEConsciousness:
             name = self.identity_state.get('identity', {}).get('name', '')
             if name:
                 return name
-        # Fallback: capitalise machine name from config
+        # Fallback: raw machine name from config
         machine = self.config.get('machine_name', '')
         if machine:
-            return machine.capitalize()
+            return machine
         return 'SAGE'
 
     def _build_conversation_prompt(self, content: str, history: list, sender: str) -> str:

@@ -266,24 +266,40 @@ def tool_write_note(content: str, filename: str = 'notes.txt') -> str:
         return f"Write error: {e}"
 
 
-def tool_peer_ask(peer_url: str, question: str) -> str:
+def tool_peer_ask(peer: str, question: str) -> str:
     """
     Ask a peer SAGE instance a question via HTTP POST.
 
-    The peer must be running the SAGE gateway (default port 8750).
+    ``peer`` can be a machine name (e.g. "thor") or a full URL
+    (e.g. "http://10.0.0.210:8750").  Names are resolved via the
+    fleet registry.
     """
+    # Resolve peer name → URL via fleet registry
+    url = peer
+    if not peer.startswith('http'):
+        try:
+            from sage.federation.fleet_registry import FleetRegistry
+            registry = FleetRegistry(os.uname().nodename.lower())
+            resolved = registry.get_gateway_url(peer)
+            if resolved:
+                url = resolved
+            else:
+                return f"Unknown peer '{peer}'. Known: {', '.join(registry.get_peer_names())}"
+        except Exception as e:
+            return f"Fleet registry error: {e}"
+
     try:
         payload = json.dumps({
-            'content': question,
+            'message': question,
             'sender': 'sage_peer',
         }).encode('utf-8')
 
         # Ensure URL ends with /chat
-        if not peer_url.rstrip('/').endswith('/chat'):
-            peer_url = peer_url.rstrip('/') + '/chat'
+        if not url.rstrip('/').endswith('/chat'):
+            url = url.rstrip('/') + '/chat'
 
         req = urllib.request.Request(
-            peer_url,
+            url,
             data=payload,
             headers={'Content-Type': 'application/json'},
             method='POST',
@@ -293,7 +309,7 @@ def tool_peer_ask(peer_url: str, question: str) -> str:
             return result.get('response', result.get('text', str(result)))
 
     except Exception as e:
-        return f"Peer communication error: {e}"
+        return f"Peer communication error ({peer}): {e}"
 
 
 # ============================================================================
@@ -437,24 +453,24 @@ def create_default_registry(instance_dir: Optional[Path] = None) -> ToolRegistry
 
     registry.register(ToolDefinition(
         name='peer_ask',
-        description='Ask a peer SAGE instance a question.',
+        description='Ask a peer SAGE instance a question. Peers: thor, legion, mcnugget, nomad, cbp.',
         parameters={
             'type': 'object',
             'properties': {
-                'peer_url': {
+                'peer': {
                     'type': 'string',
-                    'description': 'Peer SAGE gateway URL (e.g. http://sprout:8750)',
+                    'description': 'Peer name (e.g. "thor") or gateway URL',
                 },
                 'question': {
                     'type': 'string',
                     'description': 'Question to ask the peer',
                 },
             },
-            'required': ['peer_url', 'question'],
+            'required': ['peer', 'question'],
         },
         fn=tool_peer_ask,
         atp_cost=2.0,
-        policy_level='elevated',
+        policy_level='standard',
     ))
 
     return registry

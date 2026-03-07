@@ -388,7 +388,7 @@ class Qwen35_27B_LoRA_IRP:
         })
 
         # Track energy for trust adjustment
-        self.energy_history.append(state['final_energy'])
+        self.energy_history.append(state['energy'])
 
         # Collect experience for training if enabled
         if self.training_enabled:

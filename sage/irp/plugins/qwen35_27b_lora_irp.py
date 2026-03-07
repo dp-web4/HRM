@@ -13,7 +13,7 @@ This is the training-capable version for continuous learning.
 """
 
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM, Qwen2VLForConditionalGeneration
+from transformers import AutoTokenizer, AutoModelForCausalLM, Qwen2VLForConditionalGeneration, BitsAndBytesConfig
 from peft import PeftModel, LoraConfig, get_peft_model, prepare_model_for_kbit_training
 import numpy as np
 from pathlib import Path
@@ -120,39 +120,72 @@ class Qwen35_27B_LoRA_IRP:
             trust_remote_code=True
         )
 
-        # Load base model
-        # Use BF16 on CUDA, FP32 on CPU
-        dtype = torch.bfloat16 if self.device == "cuda" else torch.float32
+        # Configure 4-bit quantization to fit 27B model in 24GB VRAM
+        # This prevents CPU offload which causes catastrophic performance
+        # 4-bit NF4 reduces 27B model to ~14GB (vs 8-bit ~27GB)
+        quantization_config = None
+        if self.device == "cuda":
+            quantization_config = BitsAndBytesConfig(
+                load_in_4bit=True,
+                bnb_4bit_quant_type="nf4",
+                bnb_4bit_compute_dtype=torch.bfloat16,
+                bnb_4bit_use_double_quant=True,
+            )
+            print("Using 4-bit NF4 quantization for 24GB VRAM (model size: ~14GB)")
+        else:
+            # CPU mode - use FP32
+            dtype = torch.float32
 
         try:
             if self.multimodal_enabled:
                 # Try to load as multimodal model
                 print("Loading as multimodal Qwen2VL model...")
-                self.model = Qwen2VLForConditionalGeneration.from_pretrained(
-                    str(model_path),
-                    torch_dtype=dtype,
-                    device_map="auto" if self.device == "cuda" else None,
-                    trust_remote_code=True
-                )
+                if self.device == "cuda":
+                    self.model = Qwen2VLForConditionalGeneration.from_pretrained(
+                        str(model_path),
+                        quantization_config=quantization_config,
+                        device_map="auto",
+                        trust_remote_code=True
+                    )
+                else:
+                    self.model = Qwen2VLForConditionalGeneration.from_pretrained(
+                        str(model_path),
+                        torch_dtype=dtype,
+                        trust_remote_code=True
+                    )
             else:
                 # Load as text-only model
                 print("Loading as text-only model...")
-                self.model = AutoModelForCausalLM.from_pretrained(
-                    str(model_path),
-                    torch_dtype=dtype,
-                    device_map="auto" if self.device == "cuda" else None,
-                    trust_remote_code=True
-                )
+                if self.device == "cuda":
+                    self.model = AutoModelForCausalLM.from_pretrained(
+                        str(model_path),
+                        quantization_config=quantization_config,
+                        device_map="auto",
+                        trust_remote_code=True
+                    )
+                else:
+                    self.model = AutoModelForCausalLM.from_pretrained(
+                        str(model_path),
+                        torch_dtype=dtype,
+                        trust_remote_code=True
+                    )
         except Exception as e:
             print(f"Multimodal loading failed: {e}")
             print("Falling back to text-only mode...")
             self.multimodal_enabled = False
-            self.model = AutoModelForCausalLM.from_pretrained(
-                str(model_path),
-                torch_dtype=dtype,
-                device_map="auto" if self.device == "cuda" else None,
-                trust_remote_code=True
-            )
+            if self.device == "cuda":
+                self.model = AutoModelForCausalLM.from_pretrained(
+                    str(model_path),
+                    quantization_config=quantization_config,
+                    device_map="auto",
+                    trust_remote_code=True
+                )
+            else:
+                self.model = AutoModelForCausalLM.from_pretrained(
+                    str(model_path),
+                    torch_dtype=dtype,
+                    trust_remote_code=True
+                )
 
         # Move to device if not using device_map="auto"
         if self.device != "cuda":

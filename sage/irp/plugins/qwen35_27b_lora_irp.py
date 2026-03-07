@@ -120,9 +120,13 @@ class Qwen35_27B_LoRA_IRP:
             trust_remote_code=True
         )
 
-        # Configure 4-bit quantization to fit 27B model in 24GB VRAM
-        # This prevents CPU offload which causes catastrophic performance
-        # 4-bit NF4 reduces 27B model to ~14GB (vs 8-bit ~27GB)
+        # Use 4-bit NF4 quantization for 27B model on Thor
+        # Memory requirements (tested 2026-03-06):
+        #   Peak during load: 68GB (54GB bf16 + 13.5GB int4 + 5GB overhead)
+        #   Steady-state: 13.5GB model + 0.5GB LoRA = 14GB total
+        # 8-bit was tested but peaks at 90GB+ (too close to 122GB limit)
+        # bfloat16 full precision fails at 54GB GPU allocation
+        # See: docs/QWEN35_27B_MEMORY_REQUIREMENTS.md
         quantization_config = None
         if self.device == "cuda":
             quantization_config = BitsAndBytesConfig(
@@ -131,16 +135,17 @@ class Qwen35_27B_LoRA_IRP:
                 bnb_4bit_compute_dtype=torch.bfloat16,
                 bnb_4bit_use_double_quant=True,
             )
-            print("Using 4-bit NF4 quantization for 24GB VRAM (model size: ~14GB)")
+            print(f"Using 4-bit NF4 quantization (peak: 68GB, steady: 14GB)")
+            print(f"Loading with device_map='auto' for quantization")
         else:
-            # CPU mode - use FP32
             dtype = torch.float32
+            print(f"Using FP32 on CPU")
 
         try:
             if self.multimodal_enabled:
                 # Try to load as multimodal model
                 print("Loading as multimodal Qwen2VL model...")
-                if self.device == "cuda":
+                if self.device == "cuda" and quantization_config:
                     self.model = Qwen2VLForConditionalGeneration.from_pretrained(
                         str(model_path),
                         quantization_config=quantization_config,
@@ -156,7 +161,7 @@ class Qwen35_27B_LoRA_IRP:
             else:
                 # Load as text-only model
                 print("Loading as text-only model...")
-                if self.device == "cuda":
+                if self.device == "cuda" and quantization_config:
                     self.model = AutoModelForCausalLM.from_pretrained(
                         str(model_path),
                         quantization_config=quantization_config,
@@ -173,7 +178,7 @@ class Qwen35_27B_LoRA_IRP:
             print(f"Multimodal loading failed: {e}")
             print("Falling back to text-only mode...")
             self.multimodal_enabled = False
-            if self.device == "cuda":
+            if self.device == "cuda" and quantization_config:
                 self.model = AutoModelForCausalLM.from_pretrained(
                     str(model_path),
                     quantization_config=quantization_config,
@@ -187,9 +192,7 @@ class Qwen35_27B_LoRA_IRP:
                     trust_remote_code=True
                 )
 
-        # Move to device if not using device_map="auto"
-        if self.device != "cuda":
-            self.model = self.model.to(self.device)
+        print(f"Model loaded successfully with {'4-bit NF4 quantization' if quantization_config else 'full precision'}")
 
         # Apply LoRA if training enabled
         if self.training_enabled:
@@ -410,7 +413,7 @@ class Qwen35_27B_LoRA_IRP:
         })
 
         # Track energy for trust adjustment
-        self.energy_history.append(state['final_energy'])
+        self.energy_history.append(state['energy'])
 
         # Collect experience for training if enabled
         if self.training_enabled:

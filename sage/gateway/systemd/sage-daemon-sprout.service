@@ -23,7 +23,7 @@ After=network.target
 [Service]
 Type=simple
 User=sprout
-WorkingDirectory=/home/sprout/ai-workspace/HRM
+WorkingDirectory=/home/sprout/ai-workspace/SAGE
 
 # System python (no venv on Sprout)
 ExecStart=/usr/bin/python3 -m sage.gateway
@@ -36,7 +36,7 @@ RestartSec=30
 Environment=SAGE_MACHINE=sprout
 Environment=SAGE_PORT=8750
 Environment=SAGE_NO_BROWSER=1
-Environment=PYTHONPATH=/home/sprout/ai-workspace/HRM
+Environment=PYTHONPATH=/home/sprout/ai-workspace/SAGE
 
 # Logging
 StandardOutput=journal

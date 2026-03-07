@@ -1279,17 +1279,27 @@ class SAGEConsciousness:
                         print(f"[Tools] Result: {result_text[:100]}")
                     last_tool_result = '\n'.join(result_parts)
 
-                    # Re-inject and generate follow-up
+                    # Re-inject result and generate a natural-language follow-up.
+                    # Build a clean prompt: original context + tool result + instruction.
+                    # Omit the tool definitions to prevent the model from calling tools again.
+                    sage_preamble = response_text.strip()
+                    sage_line = f"SAGE: {sage_preamble}\n\n" if sage_preamble else ""
                     augmented_prompt = (
                         f"{prompt}\n\n"
-                        f"SAGE: {response_text}\n\n"
+                        f"{sage_line}"
                         f"{last_tool_result}\n\n"
-                        f"Now answer Dennis's question using the tool result above.\n"
+                        f"Using the tool result above, give a helpful answer. Do not call any more tools.\n"
                         f"SAGE:"
+                    )
+                    # Strip tool definitions from augmented prompt to prevent re-calling
+                    import re as _re
+                    augmented_prompt = _re.sub(
+                        r'Available tools:.*?You may call at most one tool per response\.\n*',
+                        '', augmented_prompt, flags=_re.DOTALL,
                     )
                     response_text = self._call_llm(augmented_prompt)
 
-                    # Strip any further tool calls from follow-up (don't loop)
+                    # Strip any tool calls that snuck through
                     follow_clean, follow_calls = self.tool_grammar.parse_response(response_text)
                     if follow_calls:
                         response_text = follow_clean
@@ -1306,18 +1316,22 @@ class SAGEConsciousness:
             response_text = re.sub(
                 r'</?tool_result[^>]*>\s*', '', response_text
             ).strip()
-            # Strip [Tool ...] result annotations echoed by the model
+            # Strip [Tool ...] result annotations echoed by the model (single line only)
             response_text = re.sub(
-                r'\[Tool \w+ result\]:.*', '', response_text
+                r'\[Tool \w+ result\]:[^\n]*', '', response_text
+            ).strip()
+            # Strip "Tool result (name):" headers echoed by the model
+            response_text = re.sub(
+                r'Tool result \([^)]+\):\s*', '', response_text
             ).strip()
 
         # Fallback: if tool calls consumed the entire response, use tool result
         if not response_text and last_tool_result:
-            # Extract just the result value
+            # Strip the "Tool result (name):\n" prefix, keep the payload
             import re
-            m = re.search(r'\]:\s*(.+)', last_tool_result)
+            m = re.match(r'Tool result \([^)]+\):\s*\n?(.*)', last_tool_result, re.DOTALL)
             response_text = m.group(1).strip() if m else last_tool_result
-            print(f"[Tools] Fallback to tool result: {response_text[:80]}")
+            print(f"[Tools] Fallback to tool result ({len(response_text)} chars)")
 
         # Strip "SAGE:" prefix if the model echoed the prompt suffix
         if response_text:

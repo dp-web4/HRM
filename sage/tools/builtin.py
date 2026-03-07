@@ -289,16 +289,15 @@ def tool_peer_ask(peer: str, question: str) -> str:
             return f"Fleet registry error: {e}"
 
     try:
+        self_name = os.uname().nodename.lower()
         payload = json.dumps({
             'message': question,
-            'sender': 'sage_peer',
+            'sender': self_name,  # Identify as our unique name, not generic "sage_peer"
         }).encode('utf-8')
 
         # Ensure URL ends with /chat
         if not url.rstrip('/').endswith('/chat'):
             url = url.rstrip('/') + '/chat'
-
-        self_name = os.uname().nodename.lower()
         req = urllib.request.Request(
             url,
             data=payload,

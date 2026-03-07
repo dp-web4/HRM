@@ -293,25 +293,41 @@ class Qwen35_27B_LoRA_IRP:
 
     def _generate(self, prompt: str, max_tokens: int = 512, temperature: float = 0.7) -> str:
         """Generate text response using the model."""
-        inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
+        # TEMPORARY: Use simple prompt formatting until CUDA issue is resolved
+        # The Qwen3.5 model has tokenization issues with chat templates
+        text = f"Q: {prompt}\nA:"
 
+        print(f"Generating response for prompt length: {len(prompt)}")
+
+        inputs = self.tokenizer(text, return_tensors="pt", truncation=True, max_length=2048).to(self.device)
+
+        print(f"Input IDs shape: {inputs['input_ids'].shape}, max ID: {inputs['input_ids'].max().item()}, vocab size: {len(self.tokenizer)}")
+
+        # Use greedy decoding only for now (no sampling to avoid CUDA errors)
         with torch.no_grad():
-            outputs = self.model.generate(
-                **inputs,
-                max_new_tokens=max_tokens,
-                temperature=temperature,
-                top_p=0.9,
-                do_sample=True,
-                pad_token_id=self.tokenizer.eos_token_id,
-            )
+            try:
+                outputs = self.model.generate(
+                    **inputs,
+                    max_new_tokens=min(max_tokens, 100),  # Start with shorter generation
+                    do_sample=False,  # Greedy only
+                    pad_token_id=self.tokenizer.pad_token_id or self.tokenizer.eos_token_id,
+                    eos_token_id=self.tokenizer.eos_token_id,
+                    use_cache=True,
+                )
+                print(f"Generation successful, output shape: {outputs.shape}")
+            except Exception as e:
+                print(f"Generation error: {type(e).__name__}: {e}")
+                # Return error message instead of crashing
+                return f"[Generation failed: {type(e).__name__}. This may be a tokenization or CUDA issue with this model.]"
 
         response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+        print(f"Decoded response length: {len(response)}")
 
         # Remove the input prompt from response
-        if response.startswith(prompt):
-            response = response[len(prompt):].strip()
+        if response.startswith(text):
+            response = response[len(text):].strip()
 
-        return response
+        return response if response else "[Empty response generated]"
 
     def converged(self, state: Dict[str, Any]) -> bool:
         """

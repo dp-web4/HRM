@@ -1284,11 +1284,13 @@ class SAGEConsciousness:
                     # Omit the tool definitions to prevent the model from calling tools again.
                     sage_preamble = response_text.strip()
                     sage_line = f"SAGE: {sage_preamble}\n\n" if sage_preamble else ""
+                    tool_name = tool_calls[0].name if tool_calls else 'tool'
                     augmented_prompt = (
                         f"{prompt}\n\n"
                         f"{sage_line}"
                         f"{last_tool_result}\n\n"
-                        f"Using the tool result above, give a helpful answer. Do not call any more tools.\n"
+                        f"The {tool_name} returned the result above. "
+                        f"Summarize this result for the user. Do not call any more tools.\n"
                         f"SAGE:"
                     )
                     # Strip tool definitions from augmented prompt to prevent re-calling

@@ -298,10 +298,15 @@ def tool_peer_ask(peer: str, question: str) -> str:
         if not url.rstrip('/').endswith('/chat'):
             url = url.rstrip('/') + '/chat'
 
+        self_name = os.uname().nodename.lower()
         req = urllib.request.Request(
             url,
             data=payload,
-            headers={'Content-Type': 'application/json'},
+            headers={
+                'Content-Type': 'application/json',
+                'X-Platform': self_name,
+                'X-Signature': self_name,  # TODO: real Ed25519 signatures
+            },
             method='POST',
         )
         with urllib.request.urlopen(req, timeout=30) as resp:

@@ -13,7 +13,7 @@ This is the training-capable version for continuous learning.
 """
 
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM, Qwen2VLForConditionalGeneration
+from transformers import AutoTokenizer, AutoModelForCausalLM, Qwen2VLForConditionalGeneration, BitsAndBytesConfig
 from peft import PeftModel, LoraConfig, get_peft_model, prepare_model_for_kbit_training
 import numpy as np
 from pathlib import Path
@@ -120,39 +120,72 @@ class Qwen35_27B_LoRA_IRP:
             trust_remote_code=True
         )
 
-        # Load base model
-        # Use BF16 on CUDA, FP32 on CPU
-        dtype = torch.bfloat16 if self.device == "cuda" else torch.float32
+        # Configure 4-bit quantization to fit 27B model in 24GB VRAM
+        # This prevents CPU offload which causes catastrophic performance
+        # 4-bit NF4 reduces 27B model to ~14GB (vs 8-bit ~27GB)
+        quantization_config = None
+        if self.device == "cuda":
+            quantization_config = BitsAndBytesConfig(
+                load_in_4bit=True,
+                bnb_4bit_quant_type="nf4",
+                bnb_4bit_compute_dtype=torch.bfloat16,
+                bnb_4bit_use_double_quant=True,
+            )
+            print("Using 4-bit NF4 quantization for 24GB VRAM (model size: ~14GB)")
+        else:
+            # CPU mode - use FP32
+            dtype = torch.float32
 
         try:
             if self.multimodal_enabled:
                 # Try to load as multimodal model
                 print("Loading as multimodal Qwen2VL model...")
-                self.model = Qwen2VLForConditionalGeneration.from_pretrained(
-                    str(model_path),
-                    torch_dtype=dtype,
-                    device_map="auto" if self.device == "cuda" else None,
-                    trust_remote_code=True
-                )
+                if self.device == "cuda":
+                    self.model = Qwen2VLForConditionalGeneration.from_pretrained(
+                        str(model_path),
+                        quantization_config=quantization_config,
+                        device_map="auto",
+                        trust_remote_code=True
+                    )
+                else:
+                    self.model = Qwen2VLForConditionalGeneration.from_pretrained(
+                        str(model_path),
+                        torch_dtype=dtype,
+                        trust_remote_code=True
+                    )
             else:
                 # Load as text-only model
                 print("Loading as text-only model...")
-                self.model = AutoModelForCausalLM.from_pretrained(
-                    str(model_path),
-                    torch_dtype=dtype,
-                    device_map="auto" if self.device == "cuda" else None,
-                    trust_remote_code=True
-                )
+                if self.device == "cuda":
+                    self.model = AutoModelForCausalLM.from_pretrained(
+                        str(model_path),
+                        quantization_config=quantization_config,
+                        device_map="auto",
+                        trust_remote_code=True
+                    )
+                else:
+                    self.model = AutoModelForCausalLM.from_pretrained(
+                        str(model_path),
+                        torch_dtype=dtype,
+                        trust_remote_code=True
+                    )
         except Exception as e:
             print(f"Multimodal loading failed: {e}")
             print("Falling back to text-only mode...")
             self.multimodal_enabled = False
-            self.model = AutoModelForCausalLM.from_pretrained(
-                str(model_path),
-                torch_dtype=dtype,
-                device_map="auto" if self.device == "cuda" else None,
-                trust_remote_code=True
-            )
+            if self.device == "cuda":
+                self.model = AutoModelForCausalLM.from_pretrained(
+                    str(model_path),
+                    quantization_config=quantization_config,
+                    device_map="auto",
+                    trust_remote_code=True
+                )
+            else:
+                self.model = AutoModelForCausalLM.from_pretrained(
+                    str(model_path),
+                    torch_dtype=dtype,
+                    trust_remote_code=True
+                )
 
         # Move to device if not using device_map="auto"
         if self.device != "cuda":
@@ -293,25 +326,41 @@ class Qwen35_27B_LoRA_IRP:
 
     def _generate(self, prompt: str, max_tokens: int = 512, temperature: float = 0.7) -> str:
         """Generate text response using the model."""
-        inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
+        # TEMPORARY: Use simple prompt formatting until CUDA issue is resolved
+        # The Qwen3.5 model has tokenization issues with chat templates
+        text = f"Q: {prompt}\nA:"
 
+        print(f"Generating response for prompt length: {len(prompt)}")
+
+        inputs = self.tokenizer(text, return_tensors="pt", truncation=True, max_length=2048).to(self.device)
+
+        print(f"Input IDs shape: {inputs['input_ids'].shape}, max ID: {inputs['input_ids'].max().item()}, vocab size: {len(self.tokenizer)}")
+
+        # Use greedy decoding only for now (no sampling to avoid CUDA errors)
         with torch.no_grad():
-            outputs = self.model.generate(
-                **inputs,
-                max_new_tokens=max_tokens,
-                temperature=temperature,
-                top_p=0.9,
-                do_sample=True,
-                pad_token_id=self.tokenizer.eos_token_id,
-            )
+            try:
+                outputs = self.model.generate(
+                    **inputs,
+                    max_new_tokens=min(max_tokens, 100),  # Start with shorter generation
+                    do_sample=False,  # Greedy only
+                    pad_token_id=self.tokenizer.pad_token_id or self.tokenizer.eos_token_id,
+                    eos_token_id=self.tokenizer.eos_token_id,
+                    use_cache=True,
+                )
+                print(f"Generation successful, output shape: {outputs.shape}")
+            except Exception as e:
+                print(f"Generation error: {type(e).__name__}: {e}")
+                # Return error message instead of crashing
+                return f"[Generation failed: {type(e).__name__}. This may be a tokenization or CUDA issue with this model.]"
 
         response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+        print(f"Decoded response length: {len(response)}")
 
         # Remove the input prompt from response
-        if response.startswith(prompt):
-            response = response[len(prompt):].strip()
+        if response.startswith(text):
+            response = response[len(text):].strip()
 
-        return response
+        return response if response else "[Empty response generated]"
 
     def converged(self, state: Dict[str, Any]) -> bool:
         """

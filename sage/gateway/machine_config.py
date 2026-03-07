@@ -58,6 +58,7 @@ class SAGEMachineConfig:
     system_prompt_mode: str     # "creative", "balanced", "honest"
     cycle_sleep_ms: int         # Consciousness loop cycle time in ms
     max_response_tokens: int    # Max tokens for LLM response generation
+    act_chain_url: str          # ACT blockchain REST API URL (default: http://localhost:1317)
 
     @property
     def identity_state_path(self) -> str:
@@ -189,6 +190,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             system_prompt_mode='creative',
             cycle_sleep_ms=100,
             max_response_tokens=250,
+            act_chain_url=os.environ.get('ACT_CHAIN_URL', 'http://localhost:1317'),
         )
 
     elif machine_name == 'sprout':
@@ -213,6 +215,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             system_prompt_mode='creative',
             cycle_sleep_ms=100,
             max_response_tokens=150,
+            act_chain_url=os.environ.get('ACT_CHAIN_URL', 'http://localhost:1317'),
         )
 
     elif machine_name == 'legion':
@@ -235,6 +238,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             system_prompt_mode='creative',
             cycle_sleep_ms=100,
             max_response_tokens=250,
+            act_chain_url=os.environ.get('ACT_CHAIN_URL', 'http://localhost:1317'),
         )
 
     elif machine_name == 'mcnugget':
@@ -258,6 +262,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             system_prompt_mode='creative',
             cycle_sleep_ms=100,
             max_response_tokens=250,
+            act_chain_url=os.environ.get('ACT_CHAIN_URL', 'http://localhost:1317'),
         )
 
     elif machine_name == 'nomad':
@@ -281,6 +286,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             system_prompt_mode='creative',
             cycle_sleep_ms=100,
             max_response_tokens=250,
+            act_chain_url=os.environ.get('ACT_CHAIN_URL', 'http://localhost:1317'),
         )
 
     elif machine_name == 'cbp':
@@ -304,6 +310,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             system_prompt_mode='creative',
             cycle_sleep_ms=100,
             max_response_tokens=500,
+            act_chain_url=os.environ.get('ACT_CHAIN_URL', 'http://localhost:1317'),
         )
 
     elif machine_name == 'custom':
@@ -343,6 +350,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             system_prompt_mode='creative',
             cycle_sleep_ms=100,
             max_response_tokens=250,
+            act_chain_url=os.environ.get('ACT_CHAIN_URL', 'http://localhost:1317'),
         )
 
     else:

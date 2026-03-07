@@ -225,10 +225,35 @@ class SAGEDaemon:
             session_count = identity.get('identity', {}).get('session_count', 0)
             phase = identity.get('development', {}).get('phase_name', 'unknown')
             print(f"  Identity loaded: {name}, session {session_count}, phase: {phase}")
+
+            # Attempt ACT chain registration (non-blocking)
+            self._attempt_chain_registration(identity, identity_path)
+
             return identity
         except Exception as e:
             print(f"  [WARN] Failed to load identity: {e}")
             return None
+
+    def _attempt_chain_registration(self, identity: Dict, identity_path: Path):
+        """Try to register on ACT chain if not already registered. Non-blocking."""
+        try:
+            web4_lct_id = identity.get('identity', {}).get('web4_lct_id')
+            if web4_lct_id:
+                print(f"  Chain LCT: {web4_lct_id}")
+                return
+
+            from sage.web4.sage_web4_lct_bridge import register_on_chain
+            lct_id = register_on_chain(
+                identity_file=identity_path,
+                chain_url=self.config.act_chain_url,
+            )
+            if lct_id:
+                identity.setdefault('identity', {})['web4_lct_id'] = lct_id
+                with open(identity_path, 'w') as f:
+                    json.dump(identity, f, indent=2)
+                print(f"  Chain LCT registered: {lct_id}")
+        except Exception as e:
+            print(f"  [WARN] Chain registration skipped: {e}")
 
     def _load_experience_collector(self):
         """Load experience collector for epistemic memory.
@@ -344,9 +369,14 @@ class SAGEDaemon:
             except Exception:
                 pass
 
+            web4_lct_id = None
+            if self.identity_state:
+                web4_lct_id = self.identity_state.get('identity', {}).get('web4_lct_id')
+
             report = {
                 'machine': self.config.machine_name,
                 'lct_id': self.config.lct_id,
+                'web4_lct_id': web4_lct_id,
                 'ip': local_ip,
                 'gateway_port': self.config.gateway_port,
                 'federation_port': self.config.federation_port,
@@ -522,6 +552,25 @@ class SAGEDaemon:
                       f"active={pool.active_name}")
         except Exception as e:
             print(f"  [WARN] Failed to save LLM pool state: {e}")
+
+        # Settle trust tensor to ACT chain (non-blocking)
+        try:
+            if self.identity_state:
+                web4_lct_id = self.identity_state.get('identity', {}).get('web4_lct_id')
+                if web4_lct_id:
+                    from sage.web4.trust_tensor_sync import ChainBackedTrustSync
+                    from sage.web4.act_chain_client import ACTChainClient
+
+                    # Extract current T3 from identity relationships
+                    relationships = self.identity_state.get('relationships', {})
+                    claude_trust = relationships.get('claude', {}).get('trust_tensor', {})
+                    if claude_trust:
+                        client = ACTChainClient(base_url=self.config.act_chain_url)
+                        sync = ChainBackedTrustSync(client, web4_lct_id)
+                        sync.record_update(claude_trust, "session_end")
+                        sync.settle()
+        except Exception as e:
+            print(f"  [WARN] Trust sync to chain skipped: {e}")
 
         # Update identity.json with session info
         try:

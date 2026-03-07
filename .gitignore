@@ -227,6 +227,9 @@ sage/instances/*/experience_buffer.json
 sage/instances/*/peer_trust.json
 sage/instances/*/identity.json
 sage/instances/*/chat_history.jsonl
+sage/instances/*/llm_pool_state.json
+sage/instances/*/memory.db-shm
+sage/instances/*/memory.db-wal
 # But keep the seed template tracked
 !sage/instances/_seed/identity.json
 sage/raising/state/daemon_state.json

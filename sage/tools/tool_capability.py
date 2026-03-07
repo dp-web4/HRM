@@ -38,6 +38,7 @@ _MODEL_TIERS: Dict[str, str] = {
     'qwen2.5': 'T1',
     'qwen2': 'T1',
     'qwen3': 'T1',
+    'qwen3.5': 'T2',  # Ollama template lacks {{.Tools}}, but JSON block grammar works
     'mistral': 'T1',
     'mixtral': 'T1',
     'command-r': 'T1',
@@ -122,7 +123,8 @@ class ToolCapability:
         elif known_tier == 'T2':
             cap.grammar_tools = True
             cap.tier = 'T2'
-            cap.grammar_id = 'xml_tags'
+            # Use json_block for qwen3.5 (xml tags cause empty responses)
+            cap.grammar_id = 'json_block' if cap.model_family == 'qwen3.5' else 'xml_tags'
         else:
             # Default to T3 for unknown models
             cap.tier = 'T3'

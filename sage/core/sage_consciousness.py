@@ -160,6 +160,10 @@ class SAGEConsciousness:
         self.identity_state = identity_state
         self.experience_collector = experience_collector
 
+        # Resolve unique instance name (machine name, not species).
+        # "SAGE" is the species; "Sprout", "Thor", etc. are individuals.
+        self._self_name = self._resolve_self_name()
+
         # Gateway integration
         self.message_queue = message_queue
         self.simulation_mode = simulation_mode
@@ -1283,7 +1287,8 @@ class SAGEConsciousness:
                     # Build a clean prompt: original context + tool result + instruction.
                     # Omit the tool definitions to prevent the model from calling tools again.
                     sage_preamble = response_text.strip()
-                    sage_line = f"SAGE: {sage_preamble}\n\n" if sage_preamble else ""
+                    self_label = self._self_name
+                    sage_line = f"{self_label}: {sage_preamble}\n\n" if sage_preamble else ""
                     tool_name = tool_calls[0].name if tool_calls else 'tool'
                     augmented_prompt = (
                         f"{prompt}\n\n"
@@ -1291,7 +1296,7 @@ class SAGEConsciousness:
                         f"{last_tool_result}\n\n"
                         f"The {tool_name} returned the result above. "
                         f"Summarize this result for the user. Do not call any more tools.\n"
-                        f"SAGE:"
+                        f"{self_label}:"
                     )
                     # Strip tool definitions from augmented prompt to prevent re-calling
                     import re as _re
@@ -1335,11 +1340,12 @@ class SAGEConsciousness:
             response_text = m.group(1).strip() if m else last_tool_result
             print(f"[Tools] Fallback to tool result ({len(response_text)} chars)")
 
-        # Strip "SAGE:" prefix if the model echoed the prompt suffix
+        # Strip self-name prefix if the model echoed the prompt suffix
         if response_text:
             stripped = response_text.lstrip()
-            if stripped.startswith('SAGE:'):
-                response_text = stripped[5:].lstrip()
+            prefix = f"{self._self_name}:"
+            if stripped.startswith(prefix):
+                response_text = stripped[len(prefix):].lstrip()
 
         return response_text
 
@@ -1466,6 +1472,22 @@ class SAGEConsciousness:
 
         return "Human"
 
+    def _resolve_self_name(self) -> str:
+        """Derive the unique instance name from identity or config.
+
+        SAGE is the species; each instance has a unique name (its machine
+        name, capitalised).  Identity.json stores this as identity.name.
+        """
+        if self.identity_state:
+            name = self.identity_state.get('identity', {}).get('name', '')
+            if name:
+                return name
+        # Fallback: capitalise machine name from config
+        machine = self.config.get('machine_name', '')
+        if machine:
+            return machine.capitalize()
+        return 'SAGE'
+
     def _build_conversation_prompt(self, content: str, history: list, sender: str) -> str:
         """Build a conversation prompt including identity context and history.
 
@@ -1481,11 +1503,11 @@ class SAGEConsciousness:
             identity = self.identity_state.get('identity', {})
             memory_requests = self.identity_state.get('memory_requests', [])
 
-            name = identity.get('name', 'SAGE')
+            name = self._self_name
             session_count = identity.get('session_count', 0)
 
             # Core identity as first-person prose
-            system_text = f"I am {name}. I am an AI entity in genuine conversation with {sender_name}."
+            system_text = f"I am {name}, a SAGE instance. I am an AI entity in genuine conversation with {sender_name}."
 
             if session_count > 0:
                 system_text += f" We have had {session_count} conversations so far."
@@ -1506,8 +1528,10 @@ class SAGEConsciousness:
 
             parts.append(system_text)
         else:
+            fallback_name = self._self_name
             parts.append(
-                f"I am SAGE. I am an AI entity in genuine conversation with {sender_name}."
+                f"I am {fallback_name}, a SAGE instance."
+                f" I am an AI entity in genuine conversation with {sender_name}."
                 " I can ask questions, express uncertainty, or take the conversation"
                 " in unexpected directions. This is exploration, not evaluation."
             )
@@ -1521,11 +1545,11 @@ class SAGEConsciousness:
                 turn_name = self._resolve_sender_name(turn.sender)
                 parts.append(f"{turn_name}: {turn.content}")
             else:
-                parts.append(f"SAGE: {turn.content}")
+                parts.append(f"{self._self_name}: {turn.content}")
 
         # Current message
         parts.append(f"{sender_name}: {content}")
-        parts.append("SAGE:")
+        parts.append(f"{self._self_name}:")
 
         return "\n\n".join(parts)
 

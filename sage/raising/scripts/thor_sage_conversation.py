@@ -76,7 +76,7 @@ class ThorSAGEConversation:
 
         # System message
         system_msg = (
-            "You are SAGE-Thor, in genuine conversation with Claude. "
+            "You are Thor, a SAGE instance, in genuine conversation with Claude. "
             "This is exploration - you can ask questions, express uncertainty, "
             "or take the conversation in unexpected directions."
         )

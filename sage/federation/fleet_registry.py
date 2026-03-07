@@ -6,6 +6,18 @@ else exists and where to find them. The registry is immutable after load —
 runtime state (online/offline, trust scores) lives in PeerMonitor and
 PeerTrustTracker, not here.
 
+KNOWN LIMITATION: IPs in fleet.json are hardcoded.  Machines on DHCP
+(e.g. McNugget) can change IP between boots.  During testing on 2026-03-07,
+McNugget was registered at 10.0.0.150 but actually reachable at 10.0.0.249
+(discovered via mDNS: ``mcnugget.local``).
+
+TODO: Replace static IPs with a discovery mechanism:
+  - Option A: mDNS/Avahi — resolve ``<machine>.local`` at runtime
+  - Option B: Fleet presence files — each machine writes its IP to a
+    shared location (NFS, git, or a central registry endpoint)
+  - Option C: Broadcast/multicast discovery on the LAN
+  mDNS is the simplest path — all machines already advertise via Avahi.
+
 Usage:
     registry = FleetRegistry('cbp')
     peers = registry.get_peers()       # all machines except self

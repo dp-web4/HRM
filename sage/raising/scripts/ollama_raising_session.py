@@ -165,7 +165,7 @@ class OllamaRaisingSession:
         self.state = self._load_state()
 
         if session_number is None:
-            session_number = self.state["identity"]["session_count"] + 1
+            session_number = self._resolve_session_count() + 1
 
         self.session_number = session_number
         self.phase = self._get_phase(session_number)
@@ -242,6 +242,25 @@ class OllamaRaisingSession:
             with open(self.instance.identity) as f:
                 return json.load(f)
         raise FileNotFoundError(f"Identity not found: {self.instance.identity}")
+
+    def _resolve_session_count(self) -> int:
+        """Get session_count from snapshot identity (daemon-proof).
+
+        The daemon continuously overwrites live identity.json, clobbering
+        session_count updates from raising sessions. The snapshot identity
+        is only written by the raising script after each session, so it's
+        the reliable source of truth for session progression.
+        """
+        snapshot_identity = self.instance.snapshots / "identity.json"
+        if snapshot_identity.exists():
+            try:
+                with open(snapshot_identity) as f:
+                    snap = json.load(f)
+                return snap["identity"]["session_count"]
+            except (json.JSONDecodeError, KeyError):
+                pass
+        # Fallback to live identity (first session or no snapshot yet)
+        return self.state["identity"]["session_count"]
 
     def _save_state(self):
         with open(self.instance.identity, 'w') as f:

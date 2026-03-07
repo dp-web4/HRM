@@ -507,10 +507,19 @@ class SAGEConsciousness:
                     print("[Tools] No model name — defaulting to T3 heuristic")
 
             # Load grammar adapter
-            grammar_id = self.tool_capability.grammar_id if self.tool_capability else 'intent_heuristic'
+            # Force xml_tags for all tiers: the consciousness loop uses
+            # get_response() (plain text), not get_chat_response() (structured).
+            # T1 native_ollama requires /api/chat which _call_llm doesn't use,
+            # so its inject_tools is a no-op and parse_response returns [].
+            # xml_tags works for all models via prompt injection + text parsing.
+            detected_grammar = self.tool_capability.grammar_id if self.tool_capability else 'intent_heuristic'
+            grammar_id = 'xml_tags' if detected_grammar == 'native_ollama' else detected_grammar
             self.tool_grammar = get_grammar(grammar_id)
             self._last_llm_model = pool_entry.model_name if pool_entry else None
-            print(f"[Tools] Grammar: {grammar_id}")
+            if grammar_id != detected_grammar:
+                print(f"[Tools] Grammar: {grammar_id} (detected {detected_grammar}, overridden for text-based pipeline)")
+            else:
+                print(f"[Tools] Grammar: {grammar_id}")
 
         except Exception as e:
             print(f"[Tools] Tool system init failed (non-fatal): {e}")
@@ -1299,11 +1308,20 @@ class SAGEConsciousness:
                 if not response_text or response_text.startswith('['):
                     break  # Error in follow-up, stop
 
-        # Clean up response: strip residual tool calls that exceeded max rounds
+        # Clean up response: strip residual tool calls and tool result tags
         if tools_active and response_text:
             clean, leftover = self.tool_grammar.parse_response(response_text)
             if leftover:
                 response_text = clean
+            # Strip <tool_result>...</tool_result> echoed by the model
+            import re
+            response_text = re.sub(
+                r'</?tool_result[^>]*>\s*', '', response_text
+            ).strip()
+            # Strip [Tool ...] result annotations echoed by the model
+            response_text = re.sub(
+                r'\[Tool \w+ result\]:.*', '', response_text
+            ).strip()
 
         # Strip "SAGE:" prefix if the model echoed the prompt suffix
         if response_text:
@@ -1391,7 +1409,9 @@ class SAGEConsciousness:
         if entry.capability and self.tool_grammar is not None:
             try:
                 from sage.tools.grammars import get_grammar
-                new_grammar_id = entry.capability.grammar_id
+                detected_grammar = entry.capability.grammar_id
+                # Force xml_tags for native_ollama (see _init_tool_system comment)
+                new_grammar_id = 'xml_tags' if detected_grammar == 'native_ollama' else detected_grammar
                 self.tool_grammar = get_grammar(new_grammar_id)
                 self.tool_capability = entry.capability
                 print(f"[LLM Pool] Switched to {entry.model_name} "

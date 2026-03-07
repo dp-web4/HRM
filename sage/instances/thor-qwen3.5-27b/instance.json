@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "machine": "thor",
+  "model": "qwen3.5-27b",
+  "model_family": "alibaba-qwen",
+  "model_path": "/home/dp/ai-workspace/SAGE/model-zoo/qwen3.5-27b/transformers",
+  "multimodal_projection": "/home/dp/ai-workspace/SAGE/model-zoo/qwen3.5-27b/mmproj-Qwen_Qwen3.5-27B-f16.gguf",
+  "slug": "thor-qwen3.5-27b",
+  "created": "2026-03-06",
+  "lct_id": "thor_sage_lct",
+  "backend": "pytorch",
+  "device_hint": "cuda",
+  "has_training_track": true,
+  "has_lora": true,
+  "lora_config": {
+    "r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+    "bias": "none",
+    "task_type": "CAUSAL_LM"
+  },
+  "sleep_cycle_config": {
+    "enabled": true,
+    "dream_interval_hours": 6,
+    "consolidation_threshold": 100,
+    "augmentation_strategies": ["temporal_shift", "perspective_shift", "abstraction_levels"]
+  },
+  "multimodal_enabled": true,
+  "context_length": 262144,
+  "vram_gb": 122,
+  "encryption_enabled": false
+}

@@ -10,7 +10,7 @@ Fleet — default models (per-machine, override with SAGE_MODEL env var):
   Machine    | Hardware               | Default Model          | Device
   -----------|------------------------|------------------------|--------
   thor       | Jetson AGX Thor        | Qwen 2.5 14B (local)  | cuda
-  sprout     | Jetson Orin Nano 8GB   | Qwen 2.5 0.5B (local) | cuda
+  sprout     | Jetson Orin Nano 8GB   | Qwen 3.5 0.8B (Ollama)| cuda
   legion     | RTX 4090 desktop       | phi4:14b (Ollama)      | cuda
   mcnugget   | Mac Mini M4            | gemma3:12b (Ollama)    | mps
   nomad      | RTX 4060 laptop        | gemma3:4b (Ollama)     | cuda
@@ -195,22 +195,19 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
 
     elif machine_name == 'sprout':
         workspace = '/home/sprout/ai-workspace'
-        state_dir = f'{workspace}/HRM/sage/raising/state'
-        default_model = f'{workspace}/HRM/model-zoo/sage/epistemic-stances/qwen2.5-0.5b/introspective-qwen-merged'
-        model = model_override or default_model
-        is_ollama = model_override and not model_override.startswith('/')
+        model = model_override or 'qwen3.5:0.8b'
         return SAGEMachineConfig(
             machine_name='sprout',
-            model_path=f'ollama:{model}' if is_ollama else model,
-            model_size='ollama' if is_ollama else '0.5b',
+            model_path=f'ollama:{model}',
+            model_size='ollama',
             device='cuda',
             max_memory_gb=6.0,
             gateway_port=port,
             workspace_path=workspace,
-            instance_dir=_resolve_instance_dir('sprout', workspace),
+            instance_dir=_resolve_instance_dir('sprout', workspace, model),
             irp_iterations=3,
             federation_port=50051,
-            ed25519_key_path=f'{workspace}/HRM/sage/data/keys/Sprout_ed25519.key',
+            ed25519_key_path=f'{workspace}/SAGE/sage/data/keys/Sprout_ed25519.key',
             lct_id='sprout_sage_lct',
             system_prompt_mode='creative',
             cycle_sleep_ms=100,

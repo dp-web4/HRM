@@ -108,7 +108,7 @@ class ACTChainClient:
         The sender must have a funded account in the chain's keyring.
 
         Args:
-            entity_name: Human-readable name (e.g. "SAGE-legion")
+            entity_name: Human-readable name (e.g. "legion")
             entity_type: Entity type (e.g. "agent", "human", "device")
             t3_tensor: Trust tensor {talent, training, temperament}
             v3_tensor: Value tensor {valuation, veracity, validity} (optional)

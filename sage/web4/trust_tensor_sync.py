@@ -522,6 +522,81 @@ class TrustTensorSync:
         }
 
 
+# =============================================================================
+# CHAIN-BACKED TRUST SYNC (Phase 1 — ACT blockchain integration)
+# =============================================================================
+
+class ChainBackedTrustSync:
+    """
+    Syncs SAGE instance-level T3 trust to ACT blockchain at session boundaries.
+
+    Unlike TrustTensorSync (which handles expert-level trust locally),
+    this class handles instance-level trust that gets recorded on-chain
+    for cross-system verification.
+
+    Usage:
+        sync = ChainBackedTrustSync(chain_client, "lct:web4:society:sage-legion-agent")
+        sync.record_update({"talent": 0.8, "training": 0.7, "temperament": 0.9}, "session_42")
+        sync.settle()  # Called at session boundary
+    """
+
+    def __init__(self, chain_client, lct_id: str):
+        """
+        Args:
+            chain_client: ACTChainClient instance
+            lct_id: On-chain LCT ID for this SAGE instance
+        """
+        self.client = chain_client
+        self.lct_id = lct_id
+        self.pending_updates: list = []
+
+    def record_update(self, t3: Dict, context: str):
+        """Buffer a trust update. Does not call chain."""
+        self.pending_updates.append((t3, context))
+
+    def settle(self) -> bool:
+        """
+        Push latest trust state to chain. Called at session boundary.
+
+        Returns True if sync succeeded, False otherwise.
+        Non-blocking: logs warning and returns False on any failure.
+        """
+        if not self.pending_updates or not self.lct_id:
+            return False
+
+        latest_t3, context = self.pending_updates[-1]
+
+        # Normalize to canonical keys
+        normalized = {}
+        key_map = {
+            "competence": "talent", "reliability": "training",
+            "integrity": "temperament", "benevolence": "temperament",
+        }
+        for k, v in latest_t3.items():
+            canonical = key_map.get(k, k)
+            normalized[canonical] = v
+
+        try:
+            result = self.client.update_trust_tensor(
+                lct_id=self.lct_id,
+                t3_tensor=normalized,
+                context=context,
+            )
+            if result:
+                print(f"  [chain] Trust synced to chain: T={normalized.get('talent', '?'):.2f} "
+                      f"Tr={normalized.get('training', '?'):.2f} Te={normalized.get('temperament', '?'):.2f}")
+                self.pending_updates.clear()
+                return True
+            else:
+                print(f"  [chain] Trust sync failed (chain returned None)")
+                self.pending_updates.clear()  # Don't accumulate stale updates
+                return False
+        except Exception as e:
+            print(f"  [chain] Trust sync error: {e}")
+            self.pending_updates.clear()
+            return False
+
+
 # Convenience functions
 
 def create_trust_sync(

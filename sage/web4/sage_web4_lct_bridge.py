@@ -418,6 +418,89 @@ def bridge_sage_to_web4(
 
 
 # ═══════════════════════════════════════════════════════════════
+# Chain Registration
+# ═══════════════════════════════════════════════════════════════
+
+def register_on_chain(
+    identity_file: Path,
+    chain_url: str = "http://localhost:1317",
+    sender: str = "",
+) -> Optional[str]:
+    """
+    Register a SAGE instance on the ACT blockchain.
+
+    Generates a Web4-compliant LCT document from identity.json,
+    then mints it on the ACT chain via REST API.
+
+    Returns the on-chain LCT ID on success, None on failure.
+    Non-blocking: returns None if chain is unreachable.
+
+    Args:
+        identity_file: Path to SAGE's identity.json
+        chain_url: ACT chain REST API URL
+        sender: Cosmos account address for signing
+
+    Returns:
+        On-chain LCT ID string, or None
+    """
+    try:
+        from sage.web4.act_chain_client import ACTChainClient
+
+        client = ACTChainClient(base_url=chain_url)
+
+        # Check chain health first
+        if not client.health_check():
+            print("  [chain] ACT chain not reachable — skipping registration")
+            return None
+
+        # Load identity
+        identity, full_data = load_sage_identity(identity_file)
+
+        # Generate canonical LCT ID
+        lct_id = legacy_to_web4_lct_id(identity.lct_uri)
+
+        # Check if already registered
+        existing = client.get_lct(lct_id)
+        if existing and existing.get("lct_id"):
+            print(f"  [chain] Already registered: {lct_id}")
+            return lct_id
+
+        # Extract trust tensor (handles both old and new formats)
+        t4_trust = extract_trust_from_relationship(full_data.get("relationships", {}))
+        t3 = t4_to_t3(t4_trust)
+        v3 = t4_to_v3(t4_trust)
+
+        # Build metadata
+        metadata = {
+            "machine": identity.lct_uri.split(":")[1] if ":" in identity.lct_uri else "unknown",
+            "phase": identity.phase,
+            "session_count": str(identity.session_count),
+            "component": "sage",
+        }
+
+        # Mint on chain
+        result = client.mint_lct(
+            entity_name=identity.name,
+            entity_type="agent",
+            t3_tensor={"talent": t3.talent, "training": t3.training, "temperament": t3.temperament},
+            v3_tensor={"valuation": v3.valuation, "veracity": v3.veracity, "validity": v3.validity},
+            metadata=metadata,
+            sender=sender,
+        )
+
+        if result:
+            print(f"  [chain] Registered on ACT chain: {lct_id}")
+            return lct_id
+        else:
+            print("  [chain] Registration failed (tx broadcast returned None)")
+            return None
+
+    except Exception as e:
+        print(f"  [chain] Registration error: {e}")
+        return None
+
+
+# ═══════════════════════════════════════════════════════════════
 # CLI Interface
 # ═══════════════════════════════════════════════════════════════
 

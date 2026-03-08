@@ -57,6 +57,21 @@ def detect_transformers_available() -> bool:
         return False
 
 
+def detect_os() -> str:
+    """Detect OS: WSL2, macOS, or Linux (Ubuntu)."""
+    import platform
+    if platform.system() == "Darwin":
+        return "macOS"
+    # Check for WSL2
+    try:
+        with open("/proc/version") as f:
+            if "microsoft" in f.read().lower():
+                return "WSL2 (Ubuntu on Windows)"
+    except Exception:
+        pass
+    return "Linux (Ubuntu)"
+
+
 def detect_lora_capable() -> bool:
     """LoRA requires transformers + peft."""
     try:
@@ -161,6 +176,7 @@ def main():
     updates = {
         "updated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "updated_by": machine,
+        "os": detect_os(),
         "model": model_id,
         "model_display": model_display,
         "backend": backend,

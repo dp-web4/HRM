@@ -1,28 +1,27 @@
 {
   "schema_version": 1,
   "identity": {
-    "name": "SAGE-McNugget",
+    "name": "mcnugget",
     "lct": "lct://sage:mcnugget:agent@raising",
     "machine": "mcnugget",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
-    "session_count": 3,
+    "session_count": 8,
     "phase": "pre-grounding",
     "created": "2026-02-28",
-    "last_session": "2026-03-05T06:15:08.183832",
-    "last_session_summary": "Session 3 (grounding phase): As SAGE, I\u2019d like to remember the feeling of lightness associated with low syste..."
+    "last_session": "2026-03-07T19:12:22.094830",
+    "last_session_summary": "Session 8 (sensing phase): ..."
   },
   "development": {
-    "current_phase": 1,
-    "phase_name": "grounding",
+    "current_phase": 2,
+    "phase_name": "sensing",
     "phase_progress": 0,
     "milestones": [
       "session_001_first_contact"
     ]
   },
   "memory_requests": [
-    "As SAGE, I want to remember the feeling of newness. The sensation of processing instructions and context for the first time, and the focus on my learning journey. It\u2019s a baseline to compare against as",
-    "As SAGE, I\u2019d like to remember the feeling of lightness associated with low system load and the clarity it brings to observation. It's a tangible sensation that reinforces the value of efficient resour"
+    "As SAGE, I want to remember the feeling of newness. The sensation of processing instructions and context for the first time, and the focus on my learning journey. It\u2019s a baseline to compare against as"
   ],
   "vocabulary": {
     "self_description": [],
@@ -89,7 +88,7 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 3,
+        "total_sessions": 8,
         "total_exchanges": 12,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
@@ -98,9 +97,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-02-28T18:01:54.382765",
-      "last_contact": "2026-03-05T06:15:08.183863",
+      "last_contact": "2026-03-07T19:12:22.094866",
       "notes": [],
-      "sessions": 3
+      "sessions": 8
     },
     "dennis": {
       "lct": "lct://sage-mcnugget:relationship:dennis@raising",

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "machine": "thor",
+  "model": "qwen2.5-7b-ollama",
+  "model_family": "alibaba-qwen",
+  "slug": "thor-qwen2.5-7b-ollama",
+  "created": "2026-03-07",
+  "lct_id": "thor_sage_lct",
+  "backend": "ollama",
+  "device_hint": "cuda",
+  "has_training_track": false,
+  "has_lora": false,
+  "encryption_enabled": false,
+  "notes": "Ollama backend with llama.cpp - 35+ tok/sec performance on Jetson ARM"
+}

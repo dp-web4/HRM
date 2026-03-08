@@ -1,8 +1,27 @@
 {
-  "fleet_version": 1,
+  "fleet_version": 2,
   "description": "SAGE fleet manifest — static registry of all machines in the local society. IPs are LAN addresses. Each SAGE reads this at startup to know who else exists.",
+  "resource_pools": {
+    "synthesis": {
+      "machines": ["thor", "sprout", "legion", "mcnugget"],
+      "account": 1,
+      "role": "generative — code, implementations, large agent tasks",
+      "weekly_reset": "thursday_21:00_local",
+      "session_reset_hours": 5,
+      "relative_budget": "large"
+    },
+    "oversight": {
+      "machines": ["cbp", "nomad"],
+      "account": 2,
+      "role": "review, planning, documentation, coordination, unblocking",
+      "weekly_reset": null,
+      "session_reset_hours": 5,
+      "relative_budget": "baseline"
+    }
+  },
   "machines": {
     "thor": {
+      "pool": "synthesis",
       "lct_id": "thor_sage_lct",
       "gateway_host": "10.0.0.210",
       "gateway_port": 8750,
@@ -12,6 +31,7 @@
       "hardware": "Jetson AGX Thor"
     },
     "sprout": {
+      "pool": "synthesis",
       "lct_id": "sprout_sage_lct",
       "gateway_host": "10.0.0.211",
       "gateway_port": 8750,
@@ -21,6 +41,7 @@
       "hardware": "Jetson Orin Nano 8GB"
     },
     "legion": {
+      "pool": "synthesis",
       "lct_id": "legion_sage_lct",
       "gateway_host": "10.0.0.100",
       "gateway_port": 8750,
@@ -30,6 +51,7 @@
       "hardware": "RTX 4090 desktop"
     },
     "mcnugget": {
+      "pool": "synthesis",
       "lct_id": "mcnugget_sage_lct",
       "gateway_host": "10.0.0.249",
       "gateway_port": 8750,
@@ -39,6 +61,7 @@
       "hardware": "Mac Mini M4"
     },
     "nomad": {
+      "pool": "oversight",
       "lct_id": "nomad_sage_lct",
       "gateway_host": "10.0.0.160",
       "gateway_port": 8750,
@@ -48,6 +71,7 @@
       "hardware": "RTX 4060 laptop"
     },
     "cbp": {
+      "pool": "oversight",
       "lct_id": "cbp_sage_lct",
       "gateway_host": "10.0.0.120",
       "gateway_port": 8750,

@@ -1,6 +1,18 @@
 {
-  "fleet_version": 2,
-  "description": "SAGE fleet manifest — static registry of all machines in the local society. IPs are LAN addresses. Each SAGE reads this at startup to know who else exists.",
+  "fleet_version": 3,
+  "description": "SAGE fleet manifest — static registry of all machines. Identity is anchored to lct_id (immutable). IPs are last-known and may be stale — use mDNS for discovery.",
+  "discovery": {
+    "method": "mdns",
+    "fallback_order": ["mdns", "last_seen_ip", "static_ip"],
+    "mdns_timeout_ms": 500,
+    "ip_cache_ttl_seconds": 3600,
+    "gossip_enabled": true
+  },
+  "identity_tiers": {
+    "immutable": ["lct_id", "hardware_ek"],
+    "characteristic": ["hostname", "mdns_name", "mac_address"],
+    "dynamic": ["gateway_host", "last_seen_ip", "last_seen_at", "model_default"]
+  },
   "resource_pools": {
     "synthesis": {
       "machines": ["thor", "sprout", "legion", "mcnugget"],
@@ -23,7 +35,10 @@
     "thor": {
       "pool": "synthesis",
       "lct_id": "thor_sage_lct",
+      "mdns_name": "thor.local",
       "gateway_host": "10.0.0.210",
+      "last_seen_ip": "10.0.0.210",
+      "last_seen_at": null,
       "gateway_port": 8750,
       "federation_port": 50051,
       "model_default": "qwen2.5-14b",
@@ -33,7 +48,10 @@
     "sprout": {
       "pool": "synthesis",
       "lct_id": "sprout_sage_lct",
+      "mdns_name": "sprout.local",
       "gateway_host": "10.0.0.211",
+      "last_seen_ip": "10.0.0.211",
+      "last_seen_at": null,
       "gateway_port": 8750,
       "federation_port": 50051,
       "model_default": "qwen2.5-0.5b",
@@ -43,7 +61,10 @@
     "legion": {
       "pool": "synthesis",
       "lct_id": "legion_sage_lct",
+      "mdns_name": "legion.local",
       "gateway_host": "10.0.0.100",
+      "last_seen_ip": "10.0.0.100",
+      "last_seen_at": null,
       "gateway_port": 8750,
       "federation_port": 50051,
       "model_default": "qwen2.5-14b",
@@ -53,7 +74,10 @@
     "mcnugget": {
       "pool": "synthesis",
       "lct_id": "mcnugget_sage_lct",
+      "mdns_name": "mcnugget.local",
       "gateway_host": "10.0.0.249",
+      "last_seen_ip": "10.0.0.249",
+      "last_seen_at": null,
       "gateway_port": 8750,
       "federation_port": 50051,
       "model_default": "gemma3:12b",
@@ -63,7 +87,10 @@
     "nomad": {
       "pool": "oversight",
       "lct_id": "nomad_sage_lct",
+      "mdns_name": "nomad.local",
       "gateway_host": "10.0.0.160",
+      "last_seen_ip": "10.0.0.160",
+      "last_seen_at": null,
       "gateway_port": 8750,
       "federation_port": 50051,
       "model_default": "gemma3:4b",
@@ -73,7 +100,10 @@
     "cbp": {
       "pool": "oversight",
       "lct_id": "cbp_sage_lct",
+      "mdns_name": "cbp.local",
       "gateway_host": "10.0.0.120",
+      "last_seen_ip": "10.0.0.120",
+      "last_seen_at": null,
       "gateway_port": 8750,
       "federation_port": 0,
       "model_default": "tinyllama:latest",

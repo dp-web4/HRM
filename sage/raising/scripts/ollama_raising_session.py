@@ -265,6 +265,8 @@ class OllamaRaisingSession:
         return self.state["identity"]["session_count"]
 
     def _save_state(self):
+        # Keep identity.phase in sync with development.phase_name (single source of truth)
+        self.state["identity"]["phase"] = self.state.get("development", {}).get("phase_name", "grounding")
         with open(self.instance.identity, 'w') as f:
             json.dump(self.state, f, indent=2)
         # Also save to snapshots (raising-authoritative copy, daemon-proof)

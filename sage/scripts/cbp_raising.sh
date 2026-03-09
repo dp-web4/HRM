@@ -41,6 +41,10 @@ with open('$SAGE_DIR/$IDENTITY_FILE') as f:
     print(json.load(f)['development']['phase_name'])
 " 2>/dev/null || echo "?")
 
+# Regenerate session primer with updated fleet state
+echo "[CBP-Raising] Updating SESSION_PRIMER.md..."
+python3 -m sage.scripts.generate_primer 2>/dev/null || true
+
 # Check if there are new results to commit
 CHANGED=0
 if [ -d "$INSTANCE_DIR" ]; then
@@ -57,8 +61,8 @@ if [ "$CHANGED" -eq 0 ]; then
     exit 0
 fi
 
-# Stage instance dir
-git add "$INSTANCE_DIR/" 2>/dev/null || true
+# Stage instance dir + primer
+git add "$INSTANCE_DIR/" SESSION_PRIMER.md 2>/dev/null || true
 
 git commit -m "[CBP-Raising] Session $SESSION_NUM ($PHASE) — $(date -u +'%Y-%m-%d %H:%M UTC')
 

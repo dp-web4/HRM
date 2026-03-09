@@ -1,4 +1,18 @@
-# Claude Context for HRM
+# Claude Context for SAGE
+
+## Session Primer — Read First
+
+**At session start, read `SESSION_PRIMER.md` in the repo root for current fleet state.**
+
+`SESSION_PRIMER.md` is auto-generated after each raising session and contains:
+- Current raising phase and session count per instance
+- Recent milestones and emerging vocabulary
+- Active focus areas and known issues
+- Key file locations
+
+To regenerate: `python3 -m sage.scripts.generate_primer`
+
+---
 
 ## Epistemic Principles (Collective)
 

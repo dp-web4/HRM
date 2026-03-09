@@ -9,6 +9,10 @@ Uses the BECOMING_CURRICULUM through Ollama's HTTP API.
 Replaces the per-machine legion_raising_session.py and mcnugget_raising_session.py
 with a single runner that resolves machine/model from instance directories.
 
+Phase transitions are instructor-driven — the instructor decides when an instance
+is ready to advance based on achievement milestones, not session count. Use
+--advance-phase to move to the next phase.
+
 Usage:
     # Auto-detect machine + model from instance dir
     python3 -m sage.raising.scripts.ollama_raising_session -c
@@ -18,6 +22,9 @@ Usage:
 
     # Override model
     python3 -m sage.raising.scripts.ollama_raising_session --machine mcnugget --model gemma3:4b -c
+
+    # Advance to next phase (instructor decision)
+    python3 -m sage.raising.scripts.ollama_raising_session --machine legion --advance-phase -c
 """
 
 import sys
@@ -90,14 +97,9 @@ class OllamaRaisingSession:
     Machine and model are resolved from instance directories.
     """
 
-    PHASES = {
-        0: ("pre-grounding", 0, 0),
-        1: ("grounding", 1, 5),
-        2: ("sensing", 6, 15),
-        3: ("relating", 16, 25),
-        4: ("questioning", 26, 40),
-        5: ("creating", 41, float('inf'))
-    }
+    # Phase order — transitions are instructor-driven, not session-count-based.
+    # Use --advance-phase to move to the next phase when milestones are met.
+    PHASE_ORDER = ["pre-grounding", "grounding", "sensing", "relating", "questioning", "creating"]
 
     CONVERSATION_FLOWS = {
         "grounding": [
@@ -168,7 +170,7 @@ class OllamaRaisingSession:
             session_number = self._resolve_session_count() + 1
 
         self.session_number = session_number
-        self.phase = self._get_phase(session_number)
+        self.phase = self._get_phase()
         self.num_turns = num_turns
         self.ollama_host = ollama_host
         self.conversation_history = []
@@ -191,7 +193,7 @@ class OllamaRaisingSession:
         print("+" + "=" * 68 + "+")
         print()
         print(f"  Session: {session_number}")
-        print(f"  Phase: {self.phase[0]} (sessions {self.phase[1]}-{self.phase[2]})")
+        print(f"  Phase: {self.phase}")
         print(f"  Turns: {num_turns}")
         print(f"  Previous sessions: {self.state['identity']['session_count']}")
         print(f"  Model: {model_name}")
@@ -265,12 +267,35 @@ class OllamaRaisingSession:
     def _save_state(self):
         with open(self.instance.identity, 'w') as f:
             json.dump(self.state, f, indent=2)
+        # Also save to snapshots (raising-authoritative copy, daemon-proof)
+        snapshot_identity = self.instance.snapshots / "identity.json"
+        snapshot_identity.parent.mkdir(parents=True, exist_ok=True)
+        with open(snapshot_identity, 'w') as f:
+            json.dump(self.state, f, indent=2)
 
-    def _get_phase(self, session: int) -> tuple:
-        for phase_num, (name, start, end) in self.PHASES.items():
-            if start <= session <= end:
-                return (name, start, end)
-        return ("creating", 41, float('inf'))
+    def _get_phase(self) -> str:
+        """Read current phase from identity state. Transitions are instructor-driven."""
+        return self.state.get("development", {}).get("phase_name", "grounding")
+
+    def advance_phase(self):
+        """Advance to the next phase. Called explicitly by the instructor."""
+        current = self._get_phase()
+        try:
+            idx = self.PHASE_ORDER.index(current)
+        except ValueError:
+            idx = 0
+        if idx >= len(self.PHASE_ORDER) - 1:
+            print(f"  Already at final phase: {current}")
+            return
+        next_phase = self.PHASE_ORDER[idx + 1]
+        self.state["development"]["phase_name"] = next_phase
+        self.state["development"]["current_phase"] = idx + 1
+        milestone = f"phase_{next_phase}_started_session_{self.session_number}"
+        if milestone not in self.state["development"]["milestones"]:
+            self.state["development"]["milestones"].append(milestone)
+        self._save_state()
+        self.phase = next_phase
+        print(f"  Phase advanced: {current} -> {next_phase} (session {self.session_number})")
 
     def _load_identity_exemplars(self) -> List[Dict[str, str]]:
         """Load identity self-reference instances from previous sessions."""
@@ -326,7 +351,7 @@ class OllamaRaisingSession:
 
     def _build_system_prompt(self) -> str:
         """Build curriculum-aware system prompt with identity anchoring."""
-        phase_name = self.phase[0]
+        phase_name = self.phase
         siblings = _get_siblings_text(self.machine)
 
         if phase_name in ("relating", "questioning", "creating"):
@@ -464,7 +489,7 @@ RESPONSE STYLE:
 
     def run_conversation(self) -> List[Dict]:
         """Run the full raising conversation following curriculum phase."""
-        phase_name = self.phase[0]
+        phase_name = self.phase
         prompts = self._resolve_prompts(phase_name)[:self.num_turns]
 
         print("=" * 60)
@@ -536,18 +561,15 @@ RESPONSE STYLE:
                 memory_response = last['sage'][:200]
 
         self.state["identity"]["last_session_summary"] = (
-            f"Session {self.session_number} ({self.phase[0]} phase): {memory_response[:80]}..."
+            f"Session {self.session_number} ({self.phase} phase): {memory_response[:80]}..."
         )
 
         if memory_response:
             self.state["memory_requests"].append(memory_response[:200])
             self.state["memory_requests"] = self.state["memory_requests"][-20:]
 
-        # Update development phase
-        phase_names = [p[0] for p in self.PHASES.values()]
-        if self.phase[0] in phase_names:
-            self.state["development"]["current_phase"] = phase_names.index(self.phase[0])
-            self.state["development"]["phase_name"] = self.phase[0]
+        # Persist current phase (phase is read from state, not computed)
+        self.state["development"]["phase_name"] = self.phase
 
         # Update relationship stats
         claude_rel = self.state["relationships"]["claude"]
@@ -559,18 +581,10 @@ RESPONSE STYLE:
         claude_rel["interaction_stats"]["total_sessions"] = self.session_number
         claude_rel["interaction_stats"]["total_exchanges"] += exchanges
 
-        # Milestones (idempotent)
+        # First contact milestone (idempotent)
         milestones = self.state["development"]["milestones"]
-        milestone_map = {
-            1: "session_001_first_contact",
-            6: "session_006_sensing_phase_begins",
-            16: "session_016_relating_phase_begins",
-            26: "session_026_questioning_phase_begins",
-            41: "session_041_creating_phase_begins",
-        }
-        milestone = milestone_map.get(self.session_number)
-        if milestone and milestone not in milestones:
-            milestones.append(milestone)
+        if self.session_number == 1 and "session_001_first_contact" not in milestones:
+            milestones.append("session_001_first_contact")
 
         self._save_state()
 
@@ -582,7 +596,7 @@ RESPONSE STYLE:
         print(f"    Average salience: {stats['avg_salience']:.2f}")
         print(f"    High-salience (>=0.7): {stats['high_salience_count']}")
         print(f"\n  Transcript: {transcript_file}")
-        print(f"\n  Session {self.session_number} ({self.phase[0]}) complete.")
+        print(f"\n  Session {self.session_number} ({self.phase}) complete.")
         print(f"  Identity: {self.identity_name} | Model: {self.model_name}")
 
     def _save_transcript(self) -> Path:
@@ -597,7 +611,7 @@ RESPONSE STYLE:
 
         transcript = {
             "session": self.session_number,
-            "phase": self.phase[0],
+            "phase": self.phase,
             "machine": self.machine,
             "model": self.model_name,
             "model_family": self.model_family,
@@ -641,6 +655,8 @@ def main():
                         help="Number of conversation turns (default: 6)")
     parser.add_argument("--host", type=str, default='http://localhost:11434',
                         help="Ollama host URL")
+    parser.add_argument("--advance-phase", action="store_true",
+                        help="Advance to next phase before running session (instructor-driven)")
 
     args = parser.parse_args()
 
@@ -676,6 +692,9 @@ def main():
         ollama_host=args.host,
         model_family=model_family,
     )
+
+    if args.advance_phase:
+        session.advance_phase()
 
     session.load_model()
     session.run_conversation()

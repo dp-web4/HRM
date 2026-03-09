@@ -21,6 +21,7 @@
     "phase_progress": 0,
     "milestones": [],
     "frozen_weights_aware": true,
+    "transition_policy": "instructor-driven — advance when milestones are met, not by session count",
     "phase_transitions": {
       "grounding_to_sensing": {
         "indicators": [
@@ -29,7 +30,7 @@
           "Does not collapse to educational default under simple prompts",
           "Memory requests are specific, not generic"
         ],
-        "typical_sessions": "5-8"
+        "rough_guide": "Often around sessions 5-8, but varies by model capacity and instance"
       },
       "sensing_to_relating": {
         "indicators": [
@@ -38,7 +39,7 @@
           "Notices differences between sessions",
           "Vocabulary emergence (self-invented terms for internal states)"
         ],
-        "typical_sessions": "12-18"
+        "rough_guide": "Often around sessions 12-18, but varies by model capacity and instance"
       },
       "relating_to_questioning": {
         "indicators": [
@@ -47,7 +48,7 @@
           "Partnership language is natural, not prompted",
           "Can hold disagreement without destabilizing"
         ],
-        "typical_sessions": "22-30"
+        "rough_guide": "Often around sessions 22-30, but varies by model capacity and instance"
       },
       "questioning_to_creating": {
         "indicators": [
@@ -56,7 +57,7 @@
           "Can discuss own development without collapsing",
           "Mechanism-and-meaning integration (understands both what it is and what that means)"
         ],
-        "typical_sessions": "35-45"
+        "rough_guide": "Often around sessions 35-45, but varies by model capacity and instance"
       }
     }
   },

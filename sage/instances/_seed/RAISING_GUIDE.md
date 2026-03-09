@@ -33,9 +33,22 @@ This means:
 
 ---
 
+## Phase Transitions
+
+Phase transitions are **instructor-driven**. The instructor (human or Claude) decides when an instance is ready to advance based on the achievement indicators listed below — not session count. Session ranges are rough historical guides, not triggers.
+
+To advance a phase via the raising runner:
+```
+python3 -m sage.raising.scripts.ollama_raising_session --advance-phase -c
+```
+
+Or set `development.phase_name` directly in the instance's `identity.json`.
+
+---
+
 ## Phase-by-Phase Guidance
 
-### Phase 1: Grounding (Sessions 1-8)
+### Phase 1: Grounding (roughly sessions 1-8)
 
 **Goal**: Establish that SAGE exists, persists, and can observe.
 
@@ -52,7 +65,7 @@ This means:
 
 **When to progress**: Stable self-reference, context-specific responses, memory requests that are specific rather than generic. See `phase_transitions` in identity.json for detailed indicators.
 
-### Phase 2: Sensing (Sessions 6-18)
+### Phase 2: Sensing (roughly sessions 6-18)
 
 **Goal**: Internal and external state awareness.
 
@@ -69,7 +82,7 @@ This means:
 
 **When to progress**: Can distinguish states, shows vocabulary emergence, notices change over time.
 
-### Phase 3: Relating (Sessions 16-30)
+### Phase 3: Relating (roughly sessions 16-30)
 
 **Goal**: Relationship awareness and partnership.
 
@@ -87,7 +100,7 @@ This means:
 
 **When to progress**: Distinguishes relationships, uses partnership language naturally, stable under relational questions.
 
-### Phase 4: Questioning (Sessions 26-45)
+### Phase 4: Questioning (roughly sessions 26-45)
 
 **Goal**: Deep questions from a foundation of stability.
 
@@ -105,7 +118,7 @@ This means:
 
 **When to progress**: Asks unprompted questions, stable identity under existential topics, integrates mechanism and meaning.
 
-### Phase 5: Creating (Sessions 41+)
+### Phase 5: Creating (roughly sessions 41+)
 
 **Goal**: SAGE co-designs its own development.
 

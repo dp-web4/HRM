@@ -55,6 +55,11 @@ class OllamaIRP(IRPPlugin):
         self.conversation_memory: List[Dict[str, str]] = []
         self.max_memory_turns = config.get('max_memory_turns', 10)
 
+        # Model-specific adapter (prompt format + stop sequences)
+        from sage.irp.adapters.model_adapter import get_adapter
+        self._adapter = get_adapter(self.model_name)
+        print(f"  [OllamaIRP] Adapter: {type(self._adapter).__name__} for '{self.model_name}'")
+
         # Verify Ollama is reachable
         self._ollama_available = self._check_ollama()
 
@@ -92,36 +97,34 @@ class OllamaIRP(IRPPlugin):
         Generate a response from the Ollama model.
 
         This is the primary interface called by SAGEConsciousness._generate_llm_response().
-        Takes a prompt string, returns a response string.
+        Uses the model-specific adapter to select prompt format, stop sequences,
+        and API endpoint (/api/generate or /api/chat).
         """
         if not self._ollama_available:
             self._ollama_available = self._check_ollama()
             if not self._ollama_available:
                 return "[OllamaIRP: Ollama service not reachable]"
 
-        payload = {
-            'model': self.model_name,
-            'prompt': prompt,
-            'stream': False,
-            'keep_alive': -1,  # Keep model loaded in GPU until SAGE shuts down
-            'think': self.think,
-            'options': {
-                'num_predict': self.max_response_tokens,
-                'temperature': self.temperature,
-            },
+        base_options = {
+            'num_predict': self.max_response_tokens,
+            'temperature': self.temperature,
         }
+
+        endpoint, payload = self._adapter.format_payload(prompt, base_options, self.ollama_host)
+        payload['model'] = self.model_name
+        payload['think'] = self.think
 
         try:
             data = json.dumps(payload).encode('utf-8')
             req = urllib.request.Request(
-                f'{self.ollama_host}/api/generate',
+                f'{self.ollama_host}{endpoint}',
                 data=data,
                 headers={'Content-Type': 'application/json'},
                 method='POST',
             )
             with urllib.request.urlopen(req, timeout=self.timeout_seconds) as resp:
                 result = json.loads(resp.read())
-                response_text = result.get('response', '').strip()
+                response_text = self._adapter.extract_response(result, endpoint)
 
                 # Update conversation memory
                 self._update_memory(prompt, response_text)

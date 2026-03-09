@@ -413,6 +413,15 @@ class SAGEDaemon:
             port=self.config.gateway_port,
         )
         self.gateway.start()
+
+        # Honour identity's network_open preference (default: closed)
+        if self.identity_state:
+            federation = self.identity_state.get('federation', {})
+            if federation.get('network_open', False):
+                from sage.gateway.gateway_server import GatewayHandler
+                GatewayHandler.network_open = True
+                print(f"  Network access: open (from identity federation.network_open)")
+
         print(f"  Gateway server started on {bind_host}:{self.config.gateway_port}")
 
     async def start(self):

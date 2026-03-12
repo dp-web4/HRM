@@ -6,15 +6,15 @@
     "machine": "mcnugget",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
-    "session_count": 14,
+    "session_count": 24,
     "phase": "pre-grounding",
     "created": "2026-02-28",
-    "last_session": "2026-03-09T08:18:03.099821",
-    "last_session_summary": "Session 14 (sensing phase): ..."
+    "last_session": "2026-03-11T20:29:07.109329",
+    "last_session_summary": "Session 24 (relating phase): ..."
   },
   "development": {
-    "current_phase": 2,
-    "phase_name": "sensing",
+    "current_phase": 3,
+    "phase_name": "relating",
     "phase_progress": 0,
     "milestones": [
       "session_001_first_contact"
@@ -88,7 +88,7 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 14,
+        "total_sessions": 24,
         "total_exchanges": 12,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
@@ -97,9 +97,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-02-28T18:01:54.382765",
-      "last_contact": "2026-03-09T08:18:03.099856",
+      "last_contact": "2026-03-11T20:29:07.109360",
       "notes": [],
-      "sessions": 14
+      "sessions": 24
     },
     "dennis": {
       "lct": "lct://sage-mcnugget:relationship:dennis@raising",

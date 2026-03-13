@@ -276,8 +276,25 @@ class OllamaRaisingSession:
             json.dump(self.state, f, indent=2)
 
     def _get_phase(self) -> str:
-        """Read current phase from identity state. Transitions are instructor-driven."""
-        return self.state.get("development", {}).get("phase_name", "grounding")
+        """Compute phase from session number using the BECOMING_CURRICULUM.
+
+        The daemon continuously overwrites live identity.json, clobbering
+        phase_name from raising sessions. Rather than reading a stale
+        value, compute directly from session number (which is resolved
+        daemon-proof via _resolve_session_count).
+        """
+        phase_ranges = [
+            ("pre-grounding", 0, 0),
+            ("grounding", 1, 5),
+            ("sensing", 6, 15),
+            ("relating", 16, 25),
+            ("questioning", 26, 40),
+            ("creating", 41, float('inf')),
+        ]
+        for name, start, end in phase_ranges:
+            if start <= self.session_number <= end:
+                return name
+        return "creating"
 
     def advance_phase(self):
         """Advance to the next phase. Called explicitly by the instructor."""

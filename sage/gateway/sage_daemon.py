@@ -581,14 +581,46 @@ class SAGEDaemon:
         except Exception as e:
             print(f"  [WARN] Trust sync to chain skipped: {e}")
 
-        # Identity.json is owned by the raising session runner.
-        # The daemon must NOT write session_count, last_session, phase_name,
-        # or last_session_summary — those are raising-authoritative fields.
-        # The daemon only reads identity at startup for context.
-        # See: _resolve_session_count() and _get_phase() in ollama_raising_session.py
+        # Identity protocol: read-modify-write with field-level ownership.
+        #
+        # The daemon IS SAGE — it can update its own identity as it operates.
+        # Raising sessions are external interventions that also update identity.
+        # Neither should clobber the other.
+        #
+        # Protocol:
+        #   1. Always re-read identity.json from disk (may have changed)
+        #   2. Only modify daemon-owned fields
+        #   3. Never touch raising-owned fields:
+        #      - identity.session_count (raising sessions increment this)
+        #      - identity.last_session (set by raising sessions)
+        #      - identity.last_session_summary
+        #      - development.phase_name / current_phase
+        #      - development.milestones
+        #      - memory_requests
+        #   4. Write back the merged result
         try:
             if self.identity_state:
-                print(f"  Identity preserved (daemon does not write raising-owned fields)")
+                identity_path = self.instance_paths.identity
+
+                # Step 1: Re-read from disk (raising session may have written)
+                try:
+                    with open(identity_path, 'r') as f:
+                        disk_state = json.load(f)
+                except (FileNotFoundError, json.JSONDecodeError):
+                    disk_state = self.identity_state
+
+                # Step 2: Update only daemon-owned fields
+                if 'identity' in disk_state:
+                    disk_state['identity']['last_daemon_contact'] = datetime.now().isoformat()
+
+                    # Record daemon chat stats (separate from raising session stats)
+                    msg_stats = self.message_queue.stats
+                    disk_state['identity']['daemon_exchanges'] = msg_stats.get('messages_submitted', 0)
+
+                # Step 3: Write merged result (raising fields preserved from disk)
+                with open(identity_path, 'w') as f:
+                    json.dump(disk_state, f, indent=2)
+                print(f"  Identity updated (daemon fields only, raising fields preserved)")
         except Exception as e:
             print(f"  [WARN] Failed to update identity: {e}")
 

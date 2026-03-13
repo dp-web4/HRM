@@ -265,15 +265,59 @@ class OllamaRaisingSession:
         return self.state["identity"]["session_count"]
 
     def _save_state(self):
-        # Keep identity.phase in sync with development.phase_name (single source of truth)
-        self.state["identity"]["phase"] = self.state.get("development", {}).get("phase_name", "grounding")
+        """Save raising session state using read-modify-write protocol.
+
+        Re-reads identity.json from disk to preserve daemon-owned fields
+        (last_daemon_contact, daemon_exchanges, etc.), then merges in
+        raising-owned fields. Neither daemon nor raising session clobbers
+        the other's work.
+        """
+        # Re-read disk state to preserve daemon-owned fields
+        try:
+            with open(self.instance.identity) as f:
+                disk_state = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            disk_state = {}
+
+        # Merge raising-owned fields into disk state
+        # Identity block — raising owns session_count, phase, last_session, summary
+        disk_identity = disk_state.setdefault("identity", {})
+        for key in ("session_count", "last_session", "last_session_summary",
+                     "phase", "name", "lct", "machine", "model", "model_family",
+                     "created"):
+            if key in self.state.get("identity", {}):
+                disk_identity[key] = self.state["identity"][key]
+
+        # Development block — raising owns phase_name, milestones, progress
+        disk_state["development"] = self.state.get("development", disk_state.get("development", {}))
+
+        # Keep identity.phase in sync with development.phase_name
+        disk_identity["phase"] = disk_state.get("development", {}).get("phase_name", "grounding")
+
+        # Memory requests — raising owns
+        if "memory_requests" in self.state:
+            disk_state["memory_requests"] = self.state["memory_requests"]
+
+        # Relationships — raising owns session stats
+        if "relationships" in self.state:
+            disk_state["relationships"] = self.state["relationships"]
+
+        # Vocabulary — raising owns
+        if "vocabulary" in self.state:
+            disk_state["vocabulary"] = self.state["vocabulary"]
+
+        # Preserve schema_version and structural keys
+        for key in ("schema_version", "relationship_config", "unknown_pool"):
+            if key in self.state:
+                disk_state[key] = self.state[key]
+
         with open(self.instance.identity, 'w') as f:
-            json.dump(self.state, f, indent=2)
-        # Also save to snapshots (raising-authoritative copy, daemon-proof)
+            json.dump(disk_state, f, indent=2)
+        # Also save to snapshots (raising-authoritative copy)
         snapshot_identity = self.instance.snapshots / "identity.json"
         snapshot_identity.parent.mkdir(parents=True, exist_ok=True)
         with open(snapshot_identity, 'w') as f:
-            json.dump(self.state, f, indent=2)
+            json.dump(disk_state, f, indent=2)
 
     def _get_phase(self) -> str:
         """Compute phase from session number using the BECOMING_CURRICULUM.

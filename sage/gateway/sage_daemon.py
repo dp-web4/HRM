@@ -582,23 +582,32 @@ class SAGEDaemon:
             print(f"  [WARN] Trust sync to chain skipped: {e}")
 
         # Update identity.json with session info
+        # Re-read from disk to avoid clobbering changes made by raising sessions
+        # or manual edits while the daemon was running.
         try:
             if self.identity_state:
                 identity_path = self.instance_paths.identity
                 now = datetime.now().isoformat()
 
-                # Update last_session timestamp
-                if 'identity' in self.identity_state:
-                    self.identity_state['identity']['last_session'] = now
+                # Load current disk state (may have been updated by raising sessions)
+                try:
+                    with open(identity_path, 'r') as f:
+                        disk_state = json.load(f)
+                except (FileNotFoundError, json.JSONDecodeError):
+                    disk_state = self.identity_state
+
+                # Only update the fields the daemon owns
+                if 'identity' in disk_state:
+                    disk_state['identity']['last_session'] = now
 
                     # Increment session_count if messages were processed
                     msg_stats = self.message_queue.stats
                     if msg_stats.get('messages_submitted', 0) > 0:
-                        self.identity_state['identity']['session_count'] = \
-                            self.identity_state['identity'].get('session_count', 0) + 1
+                        disk_state['identity']['session_count'] = \
+                            disk_state['identity'].get('session_count', 0) + 1
 
                 with open(identity_path, 'w') as f:
-                    json.dump(self.identity_state, f, indent=2)
+                    json.dump(disk_state, f, indent=2)
                 print(f"  Identity updated: {identity_path}")
         except Exception as e:
             print(f"  [WARN] Failed to update identity: {e}")

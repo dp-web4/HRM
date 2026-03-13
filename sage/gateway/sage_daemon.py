@@ -581,34 +581,14 @@ class SAGEDaemon:
         except Exception as e:
             print(f"  [WARN] Trust sync to chain skipped: {e}")
 
-        # Update identity.json with session info
-        # Re-read from disk to avoid clobbering changes made by raising sessions
-        # or manual edits while the daemon was running.
+        # Identity.json is owned by the raising session runner.
+        # The daemon must NOT write session_count, last_session, phase_name,
+        # or last_session_summary — those are raising-authoritative fields.
+        # The daemon only reads identity at startup for context.
+        # See: _resolve_session_count() and _get_phase() in ollama_raising_session.py
         try:
             if self.identity_state:
-                identity_path = self.instance_paths.identity
-                now = datetime.now().isoformat()
-
-                # Load current disk state (may have been updated by raising sessions)
-                try:
-                    with open(identity_path, 'r') as f:
-                        disk_state = json.load(f)
-                except (FileNotFoundError, json.JSONDecodeError):
-                    disk_state = self.identity_state
-
-                # Only update the fields the daemon owns
-                if 'identity' in disk_state:
-                    disk_state['identity']['last_session'] = now
-
-                    # Increment session_count if messages were processed
-                    msg_stats = self.message_queue.stats
-                    if msg_stats.get('messages_submitted', 0) > 0:
-                        disk_state['identity']['session_count'] = \
-                            disk_state['identity'].get('session_count', 0) + 1
-
-                with open(identity_path, 'w') as f:
-                    json.dump(disk_state, f, indent=2)
-                print(f"  Identity updated: {identity_path}")
+                print(f"  Identity preserved (daemon does not write raising-owned fields)")
         except Exception as e:
             print(f"  [WARN] Failed to update identity: {e}")
 

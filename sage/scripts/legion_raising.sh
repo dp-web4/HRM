@@ -12,6 +12,15 @@ PYTHON="/home/dp/miniforge3/bin/python3"
 
 cd "$SAGE_DIR"
 
+# Account routing: synth token for raising sessions (synthesis pool machine)
+ENV_FILE="/home/dp/ai-workspace/.env"
+if [ -f "$ENV_FILE" ]; then
+    CLAUDE_SYNTH_TOKEN=$(grep '^CLAUDE_SYNTH_TOKEN=' "$ENV_FILE" | cut -d= -f2-)
+fi
+if [ -n "$CLAUDE_SYNTH_TOKEN" ] && [[ "$CLAUDE_SYNTH_TOKEN" != PLACEHOLDER* ]]; then
+    export CLAUDE_CODE_OAUTH_TOKEN="$CLAUDE_SYNTH_TOKEN"
+fi
+
 echo "[Legion-Raising] $(date -u +'%Y-%m-%d %H:%M UTC') — Starting raising session"
 
 # Ensure daemon is running via systemd (not the manual ensure_daemon.sh)

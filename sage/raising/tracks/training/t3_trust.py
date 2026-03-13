@@ -97,6 +97,8 @@ class T3TrustTensor:
         Returns:
             Updated trust values
         """
+        # Normalize update keys to canonical names
+        updates = _normalize_trust_keys(updates)
         # Apply updates with bounds checking
         for dimension, delta in updates.items():
             if dimension in self.trust:
@@ -125,7 +127,9 @@ class T3TrustTensor:
 
         trajectory = []
         for entry in self.history[-window:]:
-            trajectory.append(entry["resulting_trust"][dimension])
+            val = entry["resulting_trust"].get(dimension)
+            if val is not None:
+                trajectory.append(val)
 
         return trajectory
 

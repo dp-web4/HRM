@@ -75,7 +75,7 @@ def _get_siblings_text(machine: str) -> str:
         'sprout': 'sprout (Jetson Orin Nano, Qwen 3.5 0.8B)',
         'thor': 'thor (Jetson AGX Thor, larger models)',
         'legion': 'legion (Legion Pro 7, Phi-4 14B)',
-        'mcnugget': 'mcnugget (Mac Mini M4, Mistral 7B)',
+        'mcnugget': 'mcnugget (Mac Mini M4, Gemma 3 12B)',
         'nomad': 'nomad (Legion laptop, Gemma 3 4B)',
         'cbp': 'cbp (RTX 2060S, TinyLlama)',
     }
@@ -472,8 +472,8 @@ RESPONSE STYLE:
         full_prompt = f"[System]\n{system_prompt}\n\n"
         for turn in self.conversation_history[-6:]:
             full_prompt += f"[Claude]: {turn['claude']}\n"
-            full_prompt += f"[SAGE]: {turn['sage']}\n\n"
-        full_prompt += f"[Claude]: {user_message}\n[SAGE]:"
+            full_prompt += f"[{self.identity_name}]: {turn['sage']}\n\n"
+        full_prompt += f"[Claude]: {user_message}\n[{self.identity_name}]:"
 
         try:
             response = self.llm.get_response(full_prompt)
@@ -482,10 +482,11 @@ RESPONSE STYLE:
             response = "(no response — connection error)"
 
         response = response.strip()
-        if response.startswith("[SAGE]:"):
-            response = response[7:].strip()
-        if response.startswith("SAGE:"):
-            response = response[5:].strip()
+        # Strip echo of conversation label prefix
+        for prefix in [f"[{self.identity_name}]:", f"{self.identity_name}:", "[SAGE]:", "SAGE:"]:
+            if response.startswith(prefix):
+                response = response[len(prefix):].strip()
+                break
 
         return response
 

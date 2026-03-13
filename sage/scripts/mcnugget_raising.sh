@@ -71,7 +71,7 @@ git add "$INSTANCE_DIR/" 2>/dev/null || true
 
 git commit -m "[McNugget-Raising] Session $SESSION_NUM ($PHASE) — $(date -u +'%Y-%m-%d %H:%M UTC')
 
-Automated SAGE-McNugget raising session via OllamaIRP
+Automated mcnugget raising session via OllamaIRP
 Machine: McNugget (Mac Mini M4)
 Model: Gemma 3 12B (google-gemma family)
 Phase: $PHASE

@@ -99,9 +99,10 @@ class TrainingSession:
         print(f"=== TRAINING SESSION T{session_number:03d} ===")
         print(f"Skill Track: {self.skill_track['name']}")
         print(f"Focus: {self.skill_track['description']}")
-        print(f"T3 Trust: Competence={trust_summary['trust']['competence']:.2f}, " +
-              f"Reliability={trust_summary['trust']['reliability']:.2f}, " +
-              f"Integrity={trust_summary['trust']['integrity']:.2f}")
+        trust = trust_summary['trust']
+        print(f"T3 Trust: Talent={trust.get('talent', trust.get('competence', 0)):.2f}, " +
+              f"Training={trust.get('training', trust.get('reliability', 0)):.2f}, " +
+              f"Temperament={trust.get('temperament', trust.get('integrity', 0)):.2f}")
         print()
 
     def _load_state(self) -> Dict[str, Any]:
@@ -533,9 +534,10 @@ Reply with exactly one line: "PASS: [reason]" or "FAIL: [reason]"
         print(f"\n--- Results ---")
         print(f"Include: {included}/{len(results)}, Review: {review}, Exclude: {excluded}")
         print(f"\nT3 Trust Trends:")
-        print(f"  Competence: {final_trust['trust']['competence']:.2f} ({trust_trends['competence']})")
-        print(f"  Reliability: {final_trust['trust']['reliability']:.2f} ({trust_trends['reliability']})")
-        print(f"  Integrity: {final_trust['trust']['integrity']:.2f} ({trust_trends['integrity']})")
+        ft = final_trust['trust']
+        print(f"  Talent: {ft.get('talent', ft.get('competence', 0)):.2f} ({trust_trends.get('talent', trust_trends.get('competence', 'unknown'))})")
+        print(f"  Training: {ft.get('training', ft.get('reliability', 0)):.2f} ({trust_trends.get('training', trust_trends.get('reliability', 'unknown'))})")
+        print(f"  Temperament: {ft.get('temperament', ft.get('integrity', 0)):.2f} ({trust_trends.get('temperament', trust_trends.get('integrity', 'unknown'))})")
 
         self.exercises_completed = results
         self._close_session()

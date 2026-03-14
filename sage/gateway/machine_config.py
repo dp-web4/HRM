@@ -189,7 +189,7 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             lct_id='thor_sage_lct',
             system_prompt_mode='creative',
             cycle_sleep_ms=100,
-            max_response_tokens=250,
+            max_response_tokens=2048,  # Increased for models with <think> blocks
             act_chain_url=os.environ.get('ACT_CHAIN_URL', 'http://localhost:1317'),
         )
 

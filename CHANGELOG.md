@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added - Multimodal Plugin Integration + Defensive Trust (2026-03-14)
+- Generic plugin execution bridge: `_execute_via_orchestrator()` routes all modalities through IRP orchestrator
+- Smart mock detection: observations with real sensor payloads → orchestrator; heartbeat data → mock path
+- Config-gated real sensor sources: `vision_source` (file/camera), `audio_source` (file/mic)
+- `_poll_vision_sensor()` / `_poll_audio_sensor()` with PIL/OpenCV/wave backends
+- Fixed VisionIRP device mismatch (models not moved to configured device)
+- TTS effector wiring: `enable_tts=True` loads AudioOutputEffector (NeuTTS Air) into effect pipeline
+- Fixed mock effector action mismatch: 'speak'/'display' actions now handled
+- Full effect pipeline: sensor → plugin → EffectExtractor → PolicyGate → EffectorRegistry → execute
+
+### Changed - Defensive Trust Model (2026-03-14)
+- Plugin trust initialization: 1.0 → 0.0 (zero-base, evidence-earned)
+- Sensor trust initialization: 1.0 → 0.0 (zero-base)
+- Mock telemetry: hardcoded 0.9 → honest 0.0 with `mock: True` flag
+- Trust updater skips mock-flagged results (trust must be earned from real execution)
+- All default trust fallbacks corrected from 1.0 → 0.0
+- Probe budget (2% ATP floor) breaks bootstrap deadlock for untrusted plugins
+- First-contact bump: first real execution → plugin + sensor trust = 0.1, then V3 EMA
+- Silence decay for mock-executed plugins (0.001/cycle, floor 0.1 = aware-but-unconfirmed)
+- Trust persists across restarts via daemon_state.json
+
 ### Added - Tool Use Live Activation on Nomad (2026-03-06)
 - Tool use pipeline end-to-end on Nomad (gemma3:4b, T2/xml_tags grammar)
 - All 7 built-in tools verified: get_time, calculate, web_search, web_fetch, read_file, write_note, peer_ask

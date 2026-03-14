@@ -581,14 +581,14 @@ class MockDisplayEffector(BaseEffector):
             )
 
         # Execute based on action
-        if command.action == 'show':
+        if command.action in ('show', 'display'):
             if command.data is not None:
-                shape = command.data.shape
-                dtype = command.data.dtype
+                shape = getattr(command.data, 'shape', None)
+                dtype = getattr(command.data, 'dtype', type(command.data).__name__)
                 print(f"[{self.effector_id}] Displaying frame {self.frame_count}: shape={shape}, dtype={dtype}")
                 self.frame_count += 1
             else:
-                print(f"[{self.effector_id}] No data to display")
+                print(f"[{self.effector_id}] Display (no data)")
 
         elif command.action == 'clear':
             print(f"[{self.effector_id}] Cleared display")
@@ -613,7 +613,7 @@ class MockDisplayEffector(BaseEffector):
 
     def validate_command(self, command: EffectorCommand) -> Tuple[bool, str]:
         """Validate display command."""
-        if command.action not in ['show', 'clear']:
+        if command.action not in ['show', 'clear', 'display']:
             return False, f"Invalid action: {command.action}"
 
         if command.action == 'show' and command.data is None:
@@ -674,7 +674,14 @@ class MockSpeakerEffector(BaseEffector):
             )
 
         # Execute based on action
-        if command.action == 'play':
+        if command.action == 'speak':
+            text = (command.parameters or {}).get('text', '')
+            if text:
+                print(f"[{self.effector_id}] TTS (mock): \"{text[:80]}{'...' if len(text) > 80 else ''}\"")
+            else:
+                print(f"[{self.effector_id}] TTS (mock): no text")
+
+        elif command.action == 'play':
             if command.data is not None:
                 duration = command.data.shape[0] / self.sample_rate
                 print(f"[{self.effector_id}] Playing audio: {duration:.2f}s @ {self.sample_rate}Hz")
@@ -703,7 +710,7 @@ class MockSpeakerEffector(BaseEffector):
 
     def validate_command(self, command: EffectorCommand) -> Tuple[bool, str]:
         """Validate speaker command."""
-        if command.action not in ['play', 'stop']:
+        if command.action not in ['play', 'stop', 'speak']:
             return False, f"Invalid action: {command.action}"
 
         if command.action == 'play' and command.data is None:

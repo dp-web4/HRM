@@ -52,10 +52,10 @@ class VisionIRP(IRPPlugin):
         ])
         
         # Initialize encoder/decoder (simplified for now)
-        self.encoder = self._build_encoder()
-        self.decoder = self._build_decoder()
-        self.refiner = self._build_refiner()
-        self.task_head = self._build_task_head()
+        self.encoder = self._build_encoder().to(self.device)
+        self.decoder = self._build_decoder().to(self.device)
+        self.refiner = self._build_refiner().to(self.device)
+        self.task_head = self._build_task_head().to(self.device)
         
         # Loss weights
         self.task_weight = config.get('task_weight', 0.5)

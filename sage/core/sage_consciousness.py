@@ -28,6 +28,7 @@ Architecture:
 """
 
 import asyncio
+import os
 import time
 from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass, field
@@ -193,8 +194,20 @@ class SAGEConsciousness:
 
         self.orchestrator = HRMOrchestrator(self.config) if HRMOrchestrator is not None else None
 
-        # Sensor system (mock for now, will integrate real sensors later)
+        # Sensor system
         self.sensors = self._initialize_sensors()
+
+        # Real sensor sources (config-gated)
+        # These produce raw observation data; IRP plugins process it downstream.
+        # Supported sources:
+        #   vision_source: path to image file (testing) or 'camera' (hardware)
+        #   audio_source: path to wav file (testing) or 'microphone' (hardware)
+        self._has_vision_source = bool(self.config.get('vision_source'))
+        self._has_audio_source = bool(self.config.get('audio_source'))
+        if self._has_vision_source:
+            print(f"[Sensors] Vision source: {self.config['vision_source']}")
+        if self._has_audio_source:
+            print(f"[Sensors] Audio source: {self.config['audio_source']}")
 
         # Memory systems
         self.snarc_memory = []  # SNARC salience memory
@@ -792,23 +805,46 @@ class SAGEConsciousness:
         """
         Gather observations from all sensors.
 
-        TODO: Integrate with real sensor fusion system
-        For now, generates mock observations for testing.
+        Uses real sensors when configured, falls back to mock heartbeat
+        observations that signal the consciousness loop is active.
         """
         observations = []
 
-        # Mock observations based on metabolic state
+        # Vision observations
         if self.metabolic.current_state in [MetabolicState.WAKE, MetabolicState.FOCUS]:
-            # Active states - generate sensory input
-            observations.append(SensorObservation(
-                sensor_id='vision_0',
-                modality='vision',
-                data={'type': 'scene', 'objects': ['table', 'cup']},
-                timestamp=time.time(),
-                trust=self.sensors['vision']['trust']
-            ))
+            if self._has_vision_source:
+                frame = self._poll_vision_sensor()
+                if frame is not None:
+                    observations.append(SensorObservation(
+                        sensor_id='vision_0',
+                        modality='vision',
+                        data={'type': 'frame', 'image': frame},
+                        timestamp=time.time(),
+                        trust=self.sensors['vision']['trust']
+                    ))
+            else:
+                # Mock heartbeat — signals loop is active, earns no trust
+                observations.append(SensorObservation(
+                    sensor_id='vision_0',
+                    modality='vision',
+                    data={'type': 'scene', 'objects': ['table', 'cup']},
+                    timestamp=time.time(),
+                    trust=self.sensors['vision']['trust']
+                ))
 
-            if np.random.random() > 0.5:
+            # Audio observations
+            if self._has_audio_source:
+                audio_data = self._poll_audio_sensor()
+                if audio_data is not None:
+                    observations.append(SensorObservation(
+                        sensor_id='audio_0',
+                        modality='audio',
+                        data={'type': 'capture', 'audio': audio_data},
+                        timestamp=time.time(),
+                        trust=self.sensors['audio']['trust']
+                    ))
+            elif np.random.random() > 0.5:
+                # Mock heartbeat
                 observations.append(SensorObservation(
                     sensor_id='audio_0',
                     modality='audio',
@@ -862,6 +898,69 @@ class SAGEConsciousness:
                 pass  # Sensor trust update is non-critical
 
         return observations
+
+    def _poll_vision_sensor(self):
+        """
+        Poll vision source for a frame.
+
+        Returns numpy array [B, 3, H, W] or None if no frame available.
+        Sources: file path (testing), 'camera' (hardware via OpenCV).
+        """
+        vision_source = self.config.get('vision_source', '')
+
+        # File-based input (for testing without hardware)
+        if os.path.isfile(vision_source):
+            try:
+                from PIL import Image
+                img = Image.open(vision_source).convert('RGB').resize((224, 224))
+                arr = np.array(img, dtype=np.float32).transpose(2, 0, 1) / 255.0
+                return arr[np.newaxis]  # [1, 3, 224, 224]
+            except Exception as e:
+                if self.cycle_count % 100 == 0:
+                    print(f"[Sensors] Vision file read error: {e}")
+                return None
+
+        # Camera source (hardware)
+        if vision_source == 'camera':
+            try:
+                import cv2
+                cap = cv2.VideoCapture(0)
+                ret, frame = cap.read()
+                cap.release()
+                if ret:
+                    frame = cv2.resize(frame, (224, 224))
+                    arr = frame[:, :, ::-1].astype(np.float32).transpose(2, 0, 1) / 255.0
+                    return arr[np.newaxis]
+            except Exception as e:
+                if self.cycle_count % 100 == 0:
+                    print(f"[Sensors] Camera error: {e}")
+
+        return None
+
+    def _poll_audio_sensor(self):
+        """
+        Poll audio source for audio data.
+
+        Returns audio numpy array or None if no audio available.
+        Sources: file path (testing), 'microphone' (hardware).
+        """
+        audio_source = self.config.get('audio_source', '')
+
+        # File-based input (for testing without hardware)
+        if os.path.isfile(audio_source):
+            try:
+                import wave
+                with wave.open(audio_source, 'rb') as wf:
+                    frames = wf.readframes(wf.getnframes())
+                    arr = np.frombuffer(frames, dtype=np.int16).astype(np.float32)
+                    arr = arr / 32768.0  # Normalize to [-1, 1]
+                    return arr
+            except Exception as e:
+                if self.cycle_count % 100 == 0:
+                    print(f"[Sensors] Audio file read error: {e}")
+                return None
+
+        return None
 
     def _compute_salience(
         self,
@@ -1108,8 +1207,18 @@ class SAGEConsciousness:
             return self._create_mock_result(plugin_name, target, budget)
 
         try:
+            # Extract the actual payload for the plugin
+            # Plugins expect raw data (tensor/array/spectrogram), not the wrapper dict
+            payload = obs_data
+            if isinstance(obs_data, dict):
+                for key in ('image', 'audio', 'waveform', 'spectrogram'):
+                    val = obs_data.get(key)
+                    if val is not None:
+                        payload = val
+                        break
+
             input_data = {
-                'data': obs_data,
+                'data': payload,
                 'task_ctx': {
                     'modality': target.observation.modality,
                     'budget': budget,

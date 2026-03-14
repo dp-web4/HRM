@@ -529,6 +529,16 @@ class GatewayHandler(BaseHTTPRequestHandler):
             except ImportError:
                 pass
 
+        # Detect Jetson unified memory (GPU stats unreliable on unified memory)
+        is_jetson_unified = False
+        try:
+            with open('/proc/device-tree/model', 'r') as f:
+                dt_model = f.read().strip('\x00').strip()
+                if 'AGX' in dt_model or 'Thor' in dt_model or 'Orin' in dt_model:
+                    is_jetson_unified = True
+        except (FileNotFoundError, PermissionError):
+            pass
+
         # CPU / RAM (guarded import)
         try:
             import psutil
@@ -536,6 +546,18 @@ class GatewayHandler(BaseHTTPRequestHandler):
             vm = psutil.virtual_memory()
             stats['ram_used_mb'] = round(vm.used / 1e6, 1)
             stats['ram_total_mb'] = round(vm.total / 1e6, 1)
+
+            # On Jetson unified memory, GPU memory = system RAM (cosmetic fix for humans)
+            if is_jetson_unified and 'gpu' in stats:
+                gpu_name = stats['gpu'].get('name', 'Unknown')
+                gpu_util = stats['gpu'].get('utilization_pct')
+                stats['gpu'] = {
+                    'name': f'{gpu_name} (unified)',
+                    'memory_allocated_mb': stats['ram_used_mb'],
+                    'memory_total_mb': stats['ram_total_mb'],
+                }
+                if gpu_util is not None:
+                    stats['gpu']['utilization_pct'] = gpu_util
         except ImportError:
             pass
 

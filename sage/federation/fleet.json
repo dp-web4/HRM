@@ -41,7 +41,7 @@
       "last_seen_at": null,
       "gateway_port": 8750,
       "federation_port": 50051,
-      "model_default": "qwen2.5-14b",
+      "model_default": "qwen3.5:27b",
       "device": "cuda",
       "hardware": "Jetson AGX Thor"
     },

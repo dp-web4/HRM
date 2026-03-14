@@ -731,6 +731,14 @@ class SAGEConsciousness:
         if results:
             self._update_trust_weights(results)
 
+        # 7b. Decay trust for plugins that were targeted but only mock-executed
+        if results:
+            for plugin_name, result in results.items():
+                if result.telemetry.get('trust', {}).get('mock', False):
+                    decay_rate = self.config.get('trust_silence_decay', 0.001)
+                    current = self.plugin_trust_weights.get(plugin_name, 1.0)
+                    self.plugin_trust_weights[plugin_name] = max(0.1, current - decay_rate)
+
         # 8. Update all memory systems
         if results:
             self._update_memories(results, salience_map)
@@ -1040,24 +1048,84 @@ class SAGEConsciousness:
                     results[plugin_name] = result
 
                 elif self.orchestrator and plugin_name in self.orchestrator.plugins:
-                    # Mock execution for non-message modalities
-                    results[plugin_name] = PluginResult(
-                        plugin_name=plugin_name,
-                        final_state=None,
-                        history=[],
-                        telemetry={
-                            'trust': {
-                                'monotonicity_ratio': 0.9,
-                                'variance': 0.1,
-                                'convergence_rate': 0.8
-                            },
-                            'salience': target.salience.total
-                        },
-                        budget_used=budget,
-                        execution_time=0.1
+                    # Try real plugin execution via orchestrator
+                    result = await self._execute_via_orchestrator(
+                        target, plugin_name, budget
                     )
+                    results[plugin_name] = result
 
         return results
+
+    def _create_mock_result(
+        self,
+        plugin_name: str,
+        target: 'AttentionTarget',
+        budget: float
+    ) -> 'PluginResult':
+        """Create a mock PluginResult for plugins that couldn't execute."""
+        return PluginResult(
+            plugin_name=plugin_name,
+            final_state=None,
+            history=[],
+            telemetry={
+                'trust': {
+                    'monotonicity_ratio': 0.0,
+                    'variance': 1.0,
+                    'convergence_rate': 0.0,
+                    'mock': True,
+                },
+                'salience': target.salience.total
+            },
+            budget_used=budget,
+            execution_time=0.0
+        )
+
+    async def _execute_via_orchestrator(
+        self,
+        target: 'AttentionTarget',
+        plugin_name: str,
+        budget: float
+    ) -> 'PluginResult':
+        """
+        Execute a plugin through the IRP orchestrator for real inference.
+
+        Falls back to mock result if the plugin raises or the observation
+        data is synthetic (no real sensor input).
+        """
+        plugin = self.orchestrator.plugins.get(plugin_name)
+        if plugin is None:
+            return self._create_mock_result(plugin_name, target, budget)
+
+        obs_data = target.observation.data
+
+        # Check if observation is synthetic mock data (heartbeat)
+        # Real sensor data will have 'image', 'audio', 'waveform', etc.
+        is_mock_obs = isinstance(obs_data, dict) and obs_data.get('type') in (
+            'scene', 'speech', 'ambient', 'periodic'
+        ) and 'image' not in obs_data and 'audio' not in obs_data
+
+        if is_mock_obs:
+            return self._create_mock_result(plugin_name, target, budget)
+
+        try:
+            input_data = {
+                'data': obs_data,
+                'task_ctx': {
+                    'modality': target.observation.modality,
+                    'budget': budget,
+                    'cycle': self.cycle_count,
+                    'metabolic_state': self.metabolic.current_state.value,
+                }
+            }
+            result = await asyncio.get_event_loop().run_in_executor(
+                None,
+                self.orchestrator.run_plugin,
+                plugin_name, plugin, input_data, budget
+            )
+            return result
+        except Exception as e:
+            print(f"[Plugin] {plugin_name} execution failed: {e}")
+            return self._create_mock_result(plugin_name, target, budget)
 
     async def _execute_llm_for_message(
         self,
@@ -1202,12 +1270,12 @@ class SAGEConsciousness:
             except Exception as e:
                 print(f"[MemoryHub] Store failed: {e}")
 
-        # Build telemetry
+        # Build telemetry — earned from actual LLM performance
         telemetry = {
             'trust': {
-                'monotonicity_ratio': 0.85,
-                'variance': 0.15,
-                'convergence_rate': 0.75,
+                'monotonicity_ratio': 1.0 if response_text and not response_text.startswith('[SAGE processing error') else 0.0,
+                'variance': 0.0 if response_text else 1.0,
+                'convergence_rate': min(1.0, len(response_text) / 100.0) if response_text else 0.0,
             },
             'salience': snarc_real['total'] if snarc_real else target.salience.total,
             'response_length': len(response_text),
@@ -1654,10 +1722,14 @@ class SAGEConsciousness:
         Update plugin trust weights based on convergence quality.
 
         Plugins with good convergence (monotonic decrease, low variance)
-        get higher trust.
+        get higher trust. Mock-executed plugins are skipped — trust must be earned.
         """
         for plugin_name, result in results.items():
             trust_metrics = result.telemetry.get('trust', {})
+
+            # Don't update trust from mock executions
+            if trust_metrics.get('mock', False):
+                continue
 
             # Compute trust update
             monotonicity = trust_metrics.get('monotonicity_ratio', 0.5)

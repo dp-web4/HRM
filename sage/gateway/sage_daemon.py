@@ -454,8 +454,14 @@ class SAGEDaemon:
                 if saved_weights and self.consciousness:
                     self.consciousness.plugin_trust_weights.update(saved_weights)
                     print(f"  Plugin trust restored: {', '.join(f'{k}={v:.3f}' for k,v in saved_weights.items())}")
+                saved_sensor_trust = prev_state.get('sensor_trust', {})
+                if saved_sensor_trust and self.consciousness:
+                    for sensor_name, trust_val in saved_sensor_trust.items():
+                        if sensor_name in self.consciousness.sensors:
+                            self.consciousness.sensors[sensor_name]['trust'] = trust_val
+                    print(f"  Sensor trust restored: {', '.join(f'{k}={v:.3f}' for k,v in saved_sensor_trust.items())}")
             except Exception as e:
-                print(f"  [WARN] Could not restore plugin trust: {e}")
+                print(f"  [WARN] Could not restore plugin/sensor trust: {e}")
 
         # 3. Start HTTP gateway
         self._start_gateway()
@@ -557,6 +563,7 @@ class SAGEDaemon:
                     'atp_level': self.consciousness.metabolic.atp_current,
                     'message_stats': self.message_queue.stats,
                     'trust_weights': self.consciousness.plugin_trust_weights,
+                    'sensor_trust': {k: v['trust'] for k, v in self.consciousness.sensors.items()},
                 }
                 with open(stats_path, 'w') as f:
                     json.dump(state, f, indent=2)

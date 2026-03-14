@@ -432,6 +432,26 @@ class GatewayHandler(BaseHTTPRequestHandler):
         if self.consciousness and hasattr(self.consciousness, 'plugin_trust_weights'):
             stats['plugin_trust'] = dict(self.consciousness.plugin_trust_weights)
 
+        # Sensor trust weights
+        if self.consciousness and hasattr(self.consciousness, 'sensors'):
+            stats['sensor_trust'] = {
+                k: round(v['trust'], 3) for k, v in self.consciousness.sensors.items()
+            }
+
+        # Trust posture
+        if self.consciousness and hasattr(self.consciousness, 'current_posture'):
+            posture = self.consciousness.current_posture
+            if posture:
+                stats['trust_posture'] = {
+                    'label': self.consciousness._posture_label(),
+                    'confidence': round(posture.confidence, 3),
+                    'asymmetry': round(posture.asymmetry, 3),
+                    'breadth': round(posture.breadth, 2),
+                    'dominant_modality': posture.dominant_modality,
+                    'starved_modalities': posture.starved_modalities,
+                    'effect_restrictions': sorted(posture.effect_restrictions),
+                }
+
         # GPU stats — prefer pynvml (system-wide, sees Ollama), fall back to torch
         gpu_found = False
         try:
@@ -457,6 +477,28 @@ class GatewayHandler(BaseHTTPRequestHandler):
             gpu_found = True
         except Exception:
             pass
+
+        # Fallback: nvidia-smi for system-wide GPU stats (sees Ollama, etc.)
+        if not gpu_found:
+            try:
+                import subprocess
+                result = subprocess.run(
+                    ['nvidia-smi', '--query-gpu=name,memory.used,memory.total,utilization.gpu',
+                     '--format=csv,noheader,nounits'],
+                    capture_output=True, text=True, timeout=3)
+                if result.returncode == 0 and result.stdout.strip():
+                    parts = [p.strip() for p in result.stdout.strip().split(',')]
+                    if len(parts) >= 3:
+                        stats['gpu'] = {
+                            'name': parts[0],
+                            'memory_allocated_mb': float(parts[1]),
+                            'memory_total_mb': float(parts[2]),
+                        }
+                        if len(parts) >= 4:
+                            stats['gpu']['utilization_pct'] = int(parts[3])
+                        gpu_found = True
+            except Exception:
+                pass
 
         if not gpu_found:
             try:

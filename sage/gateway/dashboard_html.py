@@ -549,6 +549,19 @@ DASHBOARD_HTML = """<!DOCTYPE html>
             <div class="sub">waiting...</div>
           </div>
         </div>
+
+        <div class="stat-compact">
+          <label>Sensor Trust</label>
+          <div class="trust-bars" id="sensor-trust-bars">
+            <div class="sub">waiting...</div>
+          </div>
+        </div>
+
+        <div class="stat-compact">
+          <label>Trust Posture</label>
+          <div class="sub" id="posture-label">--</div>
+          <div class="sub" id="posture-detail"></div>
+        </div>
       </div>
     </section>
 
@@ -665,7 +678,7 @@ function updateDashboard(d) {
   if (d.plugin_trust && Object.keys(d.plugin_trust).length > 0) {
     const container = document.getElementById('trust-bars');
     container.innerHTML = '';
-    const sorted = Object.entries(d.plugin_trust).sort((a, b) => b[1] - a[1]);
+    const sorted = Object.entries(d.plugin_trust).sort((a, b) => a[0].localeCompare(b[0]));
     for (const [name, val] of sorted) {
       const shortName = name.replace(/_impl$/, '').replace(/_plugin$/, '').replace(/_irp$/, '');
       const pct = Math.round(val * 100);
@@ -674,6 +687,29 @@ function updateDashboard(d) {
         '<div class="mini-bar"><div class="mini-fill" style="width:' + pct + '%"></div></div>' +
         '<span class="val">' + val.toFixed(2) + '</span></div>';
     }
+  }
+
+  if (d.sensor_trust && Object.keys(d.sensor_trust).length > 0) {
+    const container = document.getElementById('sensor-trust-bars');
+    container.innerHTML = '';
+    const sorted = Object.entries(d.sensor_trust).sort((a, b) => a[0].localeCompare(b[0]));
+    for (const [name, val] of sorted) {
+      const pct = Math.round(val * 100);
+      const color = val >= 0.15 ? '#4ec9b0' : '#666';
+      container.innerHTML += '<div class="trust-row">' +
+        '<span class="name">' + name + '</span>' +
+        '<div class="mini-bar"><div class="mini-fill" style="width:' + pct + '%;background:' + color + '"></div></div>' +
+        '<span class="val">' + val.toFixed(2) + '</span></div>';
+    }
+  }
+
+  if (d.trust_posture) {
+    const p = d.trust_posture;
+    document.getElementById('posture-label').textContent = p.label +
+      ' (conf=' + p.confidence.toFixed(2) + ' asym=' + p.asymmetry.toFixed(2) + ' brd=' + p.breadth.toFixed(2) + ')';
+    const restricted = p.effect_restrictions.length > 0 ? 'blocked: ' + p.effect_restrictions.join(', ') : 'no restrictions';
+    document.getElementById('posture-detail').textContent =
+      'dom: ' + p.dominant_modality + ' | ' + restricted;
   }
 
   if (d.uptime_seconds !== undefined) {

@@ -27,6 +27,36 @@ _TOOL_CALL_ALT_PATTERN = re.compile(
     re.DOTALL
 )
 
+# Bare JSON in code blocks: ```json {...} ``` or ``` {...} ```
+_CODE_BLOCK_PATTERN = re.compile(
+    r'```(?:json)?\s*(\{[^`]*?"name"\s*:\s*"[^"]+?"[^`]*?\})\s*```',
+    re.DOTALL
+)
+
+# Bare JSON with "name" key (last resort — only matches if it looks like a tool call)
+_BARE_JSON_PATTERN = re.compile(
+    r'(\{\s*"name"\s*:\s*"[^"]+?"\s*,\s*"arguments"\s*:\s*\{.*?\}\s*\})',
+    re.DOTALL
+)
+
+
+def _repair_json(raw: str) -> str:
+    """Attempt to fix common JSON formatting errors from LLMs.
+
+    Common issues:
+    - Missing quotes around keys: {name: "get_time"} → {"name": "get_time"}
+    - Missing quotes in values: {"timezone_name: "local"} → {"timezone_name": "local"}
+    - Trailing commas: {"a": 1,} → {"a": 1}
+    """
+    s = raw.strip()
+    # Fix unquoted keys: { name: → { "name":
+    s = re.sub(r'(?<=[{,])\s*(\w+)\s*:', r' "\1":', s)
+    # Fix missing colon-quote: "key: "value" → "key": "value"
+    s = re.sub(r'"(\w+):\s+"', r'"\1": "', s)
+    # Remove trailing commas before } or ]
+    s = re.sub(r',\s*([}\]])', r'\1', s)
+    return s
+
 
 class XmlTagsGrammar(ToolGrammar):
     """
@@ -74,23 +104,35 @@ class XmlTagsGrammar(ToolGrammar):
             return tool_block + prompt
 
     def parse_response(self, response: str) -> Tuple[str, List[ToolCall]]:
-        """Extract tool calls from <tool_call> tags in the response."""
+        """Extract tool calls from response text.
+
+        Tries multiple formats in order of specificity:
+        1. <tool_call>{...}</tool_call>  (canonical)
+        2. [tool_call]{...}[/tool_call]  (alternative)
+        3. ```json {..."name":...} ```   (code block — common with phi4, etc.)
+        4. {"name": "...", "arguments": {...}}  (bare JSON — last resort)
+        """
         calls = []
         clean = response
 
-        for pattern in [_TOOL_CALL_PATTERN, _TOOL_CALL_ALT_PATTERN]:
+        for pattern in [_TOOL_CALL_PATTERN, _TOOL_CALL_ALT_PATTERN,
+                        _CODE_BLOCK_PATTERN, _BARE_JSON_PATTERN]:
             for match in pattern.finditer(response):
                 try:
-                    data = json.loads(match.group(1))
-                    name = data.get('name', '')
-                    args = data.get('arguments', data.get('args', {}))
-                    if name:
-                        calls.append(ToolCall(name=name, arguments=args))
+                    raw = match.group(1)
+                    data = json.loads(raw)
                 except (json.JSONDecodeError, AttributeError):
-                    continue
+                    # Try to repair common JSON errors before giving up
+                    try:
+                        data = json.loads(_repair_json(match.group(1)))
+                    except Exception:
+                        continue
+                name = data.get('name', '')
+                args = data.get('arguments', data.get('args', {}))
+                if name:
+                    calls.append(ToolCall(name=name, arguments=args))
 
             if calls:
-                # Remove tool_call tags from clean text
                 clean = pattern.sub('', clean).strip()
                 break
 

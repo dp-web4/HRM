@@ -89,6 +89,25 @@ class SalienceScore:
 
 
 @dataclass
+class TrustPosture:
+    """Trust landscape summary — shapes behavioral strategy each cycle.
+
+    Posture is orthogonal to metabolic state:
+    - Metabolic = energy/arousal ("how much can I do?")
+    - Posture = trust/confidence ("what should I do?")
+
+    This is a continuous structure. Named labels are for logging only.
+    """
+    confidence: float           # Mean trust across enabled sensors [0, 1]
+    asymmetry: float            # Max - min trust [0, 1]
+    breadth: float              # Fraction of sensors above trust_floor
+    dominant_modality: str      # Highest-trust modality
+    starved_modalities: list    # Modalities below trust_floor
+    attention_weights: dict     # modality → priority multiplier
+    effect_restrictions: set    # EffectType string values to block
+
+
+@dataclass
 class AttentionTarget:
     """Something that needs attention"""
     observation: SensorObservation
@@ -312,6 +331,9 @@ class SAGEConsciousness:
         self.tool_grammar = None
         self.tool_capability = None
         self._init_tool_system()
+
+        # Trust posture — computed each cycle from sensor trust landscape
+        self.current_posture = None  # TrustPosture, set in step()
 
         # Statistics
         self.stats = {
@@ -645,6 +667,80 @@ class SAGEConsciousness:
 
         return False, ''
 
+    def _compute_trust_posture(self) -> TrustPosture:
+        """Compute behavioral posture from sensor trust landscape.
+
+        The pattern of trust scores across modalities determines what SAGE
+        should do, not just how much it spends. Eyes closed doesn't just
+        reduce vision budget — it switches navigation strategy entirely.
+        """
+        trust_floor = self.config.get('trust_floor', 0.15)
+
+        # Gather trust values for enabled sensors
+        enabled = {name: info['trust'] for name, info in self.sensors.items()
+                   if info.get('enabled', True)}
+
+        if not enabled:
+            return TrustPosture(
+                confidence=0.0, asymmetry=0.0, breadth=0.0,
+                dominant_modality='none', starved_modalities=list(self.sensors.keys()),
+                attention_weights={}, effect_restrictions={'motor', 'visual', 'audio'},
+            )
+
+        trusts = list(enabled.values())
+        confidence = sum(trusts) / len(trusts)
+        asymmetry = max(trusts) - min(trusts)
+        breadth = sum(1 for t in trusts if t >= trust_floor) / len(trusts)
+
+        dominant_modality = max(enabled, key=enabled.get)
+        starved = [name for name, t in enabled.items() if t < trust_floor]
+
+        # Attention weights: proportional to trust, normalized to sum=1
+        total_trust = sum(trusts)
+        if total_trust > 0:
+            attention_weights = {name: t / total_trust for name, t in enabled.items()}
+        else:
+            uniform = 1.0 / len(enabled)
+            attention_weights = {name: uniform for name in enabled}
+
+        # Effect restrictions based on starved modalities
+        restrictions = set()
+        if 'vision' in starved:
+            restrictions.add('visual')
+            restrictions.add('motor')  # Can't navigate blind
+        if 'audio' in starved:
+            restrictions.add('audio')  # Can't speak if deaf to feedback
+        if 'proprioception' in starved:
+            restrictions.add('motor')  # Can't move without body awareness
+        # message channel rarely restricted — it's the communication lifeline
+
+        return TrustPosture(
+            confidence=confidence,
+            asymmetry=asymmetry,
+            breadth=breadth,
+            dominant_modality=dominant_modality,
+            starved_modalities=starved,
+            attention_weights=attention_weights,
+            effect_restrictions=restrictions,
+        )
+
+    def _posture_label(self) -> str:
+        """Map posture scalars to human-readable label for logging."""
+        if self.current_posture is None:
+            return 'unknown'
+        p = self.current_posture
+        if p.confidence >= 0.6 and p.asymmetry < 0.3:
+            return 'confident'
+        # Asymmetry check before defensive: one strong channel + dead ones
+        # is asymmetric (viable but lopsided), not defensive (no viable channels)
+        if p.asymmetry >= 0.5:
+            return 'asymmetric'
+        if p.confidence < 0.15:
+            return 'defensive'
+        if p.breadth < 0.4:
+            return 'narrow'
+        return 'cautious'
+
     async def run(self, max_cycles: Optional[int] = None):
         """
         Run consciousness loop continuously.
@@ -754,6 +850,9 @@ class SAGEConsciousness:
             if self.metabolic.current_state == MetabolicState.DREAM:
                 self._on_dream_entry()
 
+        # 3.5 Compute trust posture (trust landscape → behavioral strategy)
+        self.current_posture = self._compute_trust_posture()
+
         # 4. Select plugins based on salience + metabolic state
         attention_targets = self._select_attention_targets(observations, salience_map)
 
@@ -779,6 +878,15 @@ class SAGEConsciousness:
                     current = self.plugin_trust_weights.get(plugin_name, 0.0)
                     self.plugin_trust_weights[plugin_name] = max(0.1, current - decay_rate)
 
+        # 7c. Decay trust for plugins that were never targeted this cycle
+        # A plugin that never runs has no evidence — trust should erode, not persist
+        executed_plugins = set(results.keys()) if results else set()
+        idle_decay_rate = self.config.get('trust_idle_decay', 0.0005)
+        for plugin_name in self.plugin_trust_weights:
+            if plugin_name not in executed_plugins:
+                current = self.plugin_trust_weights[plugin_name]
+                self.plugin_trust_weights[plugin_name] = max(0.0, current - idle_decay_rate)
+
         # 8. Update all memory systems
         if results:
             self._update_memories(results, salience_map)
@@ -801,6 +909,25 @@ class SAGEConsciousness:
         if self.policy_gate_enabled and self.policy_gate and proposed_effects:
             approved_effects = self._evaluate_effects_policy(proposed_effects)
 
+        # 8.7 Posture gate: restrict effects based on trust landscape
+        if approved_effects and self.current_posture and self.current_posture.effect_restrictions:
+            # CRISIS override: survival sometimes requires acting blind
+            is_crisis = self.metabolic.current_state == MetabolicState.CRISIS
+            crisis_threshold = self.config.get('crisis_effect_priority_threshold', 0.8)
+
+            pre_count = len(approved_effects)
+            filtered = []
+            for e in approved_effects:
+                restricted = e.effect_type.value in self.current_posture.effect_restrictions
+                if not restricted:
+                    filtered.append(e)
+                elif is_crisis and getattr(e, 'priority', 0.0) > crisis_threshold:
+                    filtered.append(e)  # Override: high-priority crisis effect
+            approved_effects = filtered
+            blocked = pre_count - len(approved_effects)
+            if blocked:
+                self.stats['effects_posture_blocked'] = self.stats.get('effects_posture_blocked', 0) + blocked
+
         # 9. Dispatch approved effects to effectors
         if approved_effects and self._effect_system_available:
             effector_budget = self.metabolic.atp_current * 0.05  # 5% of ATP
@@ -822,6 +949,7 @@ class SAGEConsciousness:
 
         # 10. Update statistics
         self.stats['total_atp_consumed'] += budget_allocation.get('total', 0.0)
+        self.stats['posture'] = self._posture_label()
         if salience_map:
             avg_salience = np.mean([s.total for s in salience_map.values()])
             self.stats['average_salience'] = (
@@ -880,13 +1008,15 @@ class SAGEConsciousness:
                     trust=self.sensors['audio']['trust']
                 ))
 
-        # Always have time observation
+        # Always have time observation — time is always real, earns trust fast
+        time_trust_rate = self.config.get('trust_update_rate', 0.1)
+        self.sensors['time']['trust'] = min(1.0, self.sensors['time']['trust'] + time_trust_rate)
         observations.append(SensorObservation(
             sensor_id='clock',
             modality='time',
             data={'cycle': self.cycle_count, 'timestamp': time.time()},
             timestamp=time.time(),
-            trust=1.0
+            trust=self.sensors['time']['trust']
         ))
 
         # Poll message queue for external messages (gateway integration)
@@ -905,8 +1035,12 @@ class SAGEConsciousness:
                         'metadata': msg.metadata,
                     },
                     timestamp=msg.timestamp,
-                    trust=1.0,  # External messages are trusted sensor input
+                    trust=self.sensors['message']['trust'],
                 ))
+                # Message receipt is evidence — update sensor trust toward 1.0
+                msg_trust_rate = self.config.get('trust_update_rate', 0.1)
+                self.sensors['message']['trust'] = min(
+                    1.0, self.sensors['message']['trust'] + msg_trust_rate)
                 self.stats['messages_received'] += 1
 
         # Update sensor trust from real trust system (when available)
@@ -1079,7 +1213,11 @@ class SAGEConsciousness:
                 # Map modality to required plugins
                 required_plugins = self._get_plugins_for_modality(obs.modality)
 
-                priority = salience.total * self.metabolic.get_current_config().atp_consumption_rate
+                metabolic_rate = self.metabolic.get_current_config().atp_consumption_rate
+                posture_weight = self.current_posture.attention_weights.get(
+                    obs.modality, 1.0 / len(self.sensors)
+                ) if self.current_posture else 1.0 / len(self.sensors)
+                priority = salience.total * metabolic_rate * (1.0 + posture_weight)
 
                 targets.append(AttentionTarget(
                     observation=obs,
@@ -1128,7 +1266,9 @@ class SAGEConsciousness:
         # Weight by trust — but guarantee a probe budget for untrusted plugins
         # so they can attempt first execution and earn trust (bootstrap problem)
         probe_budget_fraction = self.config.get('trust_probe_budget', 0.02)  # 2% of cycle ATP per untrusted plugin
-        cycle_atp = available_atp * 0.1  # Use only 10% of ATP per cycle
+        # Scale cycle ATP by posture confidence: low confidence → spend less (walk slower when uncertain)
+        confidence_factor = 0.5 + 0.5 * (self.current_posture.confidence if self.current_posture else 0.5)
+        cycle_atp = available_atp * 0.1 * confidence_factor  # [0.5, 1.0] of base 10%
 
         weighted_priorities = {}
         for plugin, priority in plugin_priorities.items():
@@ -2079,11 +2219,19 @@ class SAGEConsciousness:
 
     def _print_status(self):
         """Print current status"""
+        posture = self._posture_label()
+        plugin_trust_str = ' '.join(
+            f"{k}={v:.2f}" for k, v in sorted(self.plugin_trust_weights.items()))
+        sensor_trust_str = ' '.join(
+            f"{k}={info['trust']:.2f}" for k, info in sorted(self.sensors.items()))
         print(f"[Cycle {self.cycle_count:4d}] "
               f"State: {self.metabolic.current_state.value:8s} "
+              f"Posture: {posture:10s} "
               f"ATP: {self.metabolic.atp_current:5.1f}/{self.metabolic.atp_max:.0f} "
               f"Salience: {self.stats['average_salience']:.3f} "
               f"Plugins: {self.stats['plugins_executed']}")
+        print(f"         Plugin trust: {plugin_trust_str}")
+        print(f"         Sensor trust: {sensor_trust_str}")
 
     def _print_summary(self):
         """Print final summary statistics"""
@@ -2104,11 +2252,20 @@ class SAGEConsciousness:
         print(f"  Circular buffer: {len(self.circular_buffer)} recent events")
         print(f"  Verbatim storage: {len(self.verbatim_storage)} dream consolidations")
         print()
+        if self.current_posture:
+            p = self.current_posture
+            print(f"Trust posture: {self._posture_label()}")
+            print(f"  Confidence: {p.confidence:.3f}  Asymmetry: {p.asymmetry:.3f}  Breadth: {p.breadth:.2f}")
+            print(f"  Dominant: {p.dominant_modality}  Starved: {p.starved_modalities}")
+            if p.effect_restrictions:
+                print(f"  Effect restrictions: {p.effect_restrictions}")
+        print()
         print("Effect system:")
         print(f"  Effects proposed: {self.stats.get('effects_proposed', 0)}")
         print(f"  Effects approved: {self.stats.get('effects_approved', 0)}")
         print(f"  Effects denied: {self.stats.get('effects_denied', 0)}")
         print(f"  Effects executed: {self.stats.get('effects_executed', 0)}")
+        print(f"  Effects posture-blocked: {self.stats.get('effects_posture_blocked', 0)}")
         if self._effect_system_available and self.effector_registry:
             print(f"  Effectors registered: {len(self.effector_registry)}")
         print("="*80)

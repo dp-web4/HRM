@@ -688,9 +688,9 @@ See: `/home/dp/ai-workspace/private-context/AUTONOMOUS_SESSION_PROTOCOL.md`
 <!-- gitnexus:start -->
 # GitNexus — Code Knowledge Graph
 
-SAGE is indexed by GitNexus (21K symbols, 50K edges, 300 execution flows). MCP tools available via `mcp__gitnexus__*`. Use when exploring unfamiliar code, assessing blast radius before refactors, or tracing execution flows.
+SAGE is indexed by GitNexus (21,977 symbols, 51,442 edges, 300 execution flows). MCP tools available via `mcp__gitnexus__*`. Use when exploring unfamiliar code, assessing blast radius before refactors, or tracing execution flows.
 
-Re-index after significant changes: `node /mnt/c/exe/projects/ai-agents/GitNexus/gitnexus/dist/cli/index.js analyze`
+Re-index after significant changes: `node /home/dp/ai-workspace/gitnexus/gitnexus/dist/cli/index.js analyze`
 
 | Tool | Use for |
 |------|---------|

@@ -425,7 +425,7 @@ class SAGEConsciousness:
                     MockWebEffector({'effector_id': 'web', 'effector_type': 'web'}),
                     handles=[EffectType.API_CALL, EffectType.WEB], effector_id='web')
 
-            # Motor/Display/Speaker stay mock (hardware-dependent)
+            # Motor/Display stay mock (hardware-dependent)
             self.effector_registry.register_effector(
                 MockMotorEffector({'effector_id': 'motor', 'effector_type': 'motor',
                                    'simulate_latency': False}),
@@ -433,10 +433,33 @@ class SAGEConsciousness:
             self.effector_registry.register_effector(
                 MockDisplayEffector({'effector_id': 'display', 'effector_type': 'display'}),
                 handles=[EffectType.VISUAL], effector_id='display')
-            self.effector_registry.register_effector(
-                MockSpeakerEffector({'effector_id': 'speaker', 'effector_type': 'speaker',
-                                     'sample_rate': 16000}),
-                handles=[EffectType.AUDIO], effector_id='speaker')
+
+            # Speaker: real TTS when configured, mock otherwise
+            speaker_registered = False
+            if self.config.get('enable_tts', False):
+                try:
+                    from sage.interfaces.audio_effector import AudioOutputEffector
+                    tts_config = {
+                        'effector_id': 'speaker',
+                        'effector_type': 'speaker',
+                        'sample_rate': self.config.get('tts_sample_rate', 24000),
+                        'neutts_device': 'cpu',
+                        'ref_audio_path': self.config.get('tts_ref_audio', ''),
+                        'max_iterations': self.config.get('tts_max_iterations', 3),
+                    }
+                    self.effector_registry.register_effector(
+                        AudioOutputEffector(tts_config),
+                        handles=[EffectType.AUDIO], effector_id='speaker')
+                    speaker_registered = True
+                    print("[Effectors] Real TTS (NeuTTS Air) registered")
+                except Exception as e:
+                    print(f"[Effectors] Real TTS unavailable ({e}), using mock")
+
+            if not speaker_registered:
+                self.effector_registry.register_effector(
+                    MockSpeakerEffector({'effector_id': 'speaker', 'effector_type': 'speaker',
+                                         'sample_rate': 16000}),
+                    handles=[EffectType.AUDIO], effector_id='speaker')
 
             # Cognitive stays mock (internal effect)
             from sage.interfaces.effectors.mock_effectors import MockCognitiveEffector

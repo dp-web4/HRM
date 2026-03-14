@@ -215,10 +215,12 @@ class SAGEConsciousness:
         self.circular_buffer = []  # Recent context (x-from-last)
         self.verbatim_storage = []  # Full-fidelity records
 
-        # Trust weights for plugins (learned over time)
+        # Trust weights for plugins — defensive: start at zero, earn from evidence
         self.plugin_trust_weights = {
-            name: 1.0 for name in (self.orchestrator.plugins if self.orchestrator else {})
+            name: 0.0 for name in (self.orchestrator.plugins if self.orchestrator else {})
         }
+        # Track which plugins have received real (non-mock) execution
+        self._plugin_first_contact = set()
 
         # Salience thresholds (from SNARC)
         self.salience_threshold = self.config.get('salience_threshold', 0.15)
@@ -358,12 +360,13 @@ class SAGEConsciousness:
     def _initialize_sensors(self) -> Dict[str, Any]:
         """Initialize sensor system with optional real trust tracking."""
         # sensor_trust_system is initialized earlier in __init__
+        # Defensive: sensors start at zero trust, earned from real input
         return {
-            'vision': {'trust': 1.0, 'enabled': True},
-            'audio': {'trust': 1.0, 'enabled': True},
-            'proprioception': {'trust': 1.0, 'enabled': True},
-            'time': {'trust': 1.0, 'enabled': True},
-            'message': {'trust': 1.0, 'enabled': True},
+            'vision': {'trust': 0.0, 'enabled': True},
+            'audio': {'trust': 0.0, 'enabled': True},
+            'proprioception': {'trust': 0.0, 'enabled': True},
+            'time': {'trust': 0.0, 'enabled': True},
+            'message': {'trust': 0.0, 'enabled': True},
         }
 
     def _init_effect_system(self):
@@ -768,11 +771,12 @@ class SAGEConsciousness:
             self._update_trust_weights(results)
 
         # 7b. Decay trust for plugins that were targeted but only mock-executed
+        # Floor at 0.1 = "aware but unconfirmed" — defensive posture, not deaf/blind
         if results:
             for plugin_name, result in results.items():
                 if result.telemetry.get('trust', {}).get('mock', False):
                     decay_rate = self.config.get('trust_silence_decay', 0.001)
-                    current = self.plugin_trust_weights.get(plugin_name, 1.0)
+                    current = self.plugin_trust_weights.get(plugin_name, 0.0)
                     self.plugin_trust_weights[plugin_name] = max(0.1, current - decay_rate)
 
         # 8. Update all memory systems
@@ -1121,11 +1125,15 @@ class SAGEConsciousness:
                     plugin_priorities[plugin] = 0.0
                 plugin_priorities[plugin] += target.priority
 
-        # Weight by trust
-        weighted_priorities = {
-            plugin: priority * self.plugin_trust_weights.get(plugin, 1.0)
-            for plugin, priority in plugin_priorities.items()
-        }
+        # Weight by trust — but guarantee a probe budget for untrusted plugins
+        # so they can attempt first execution and earn trust (bootstrap problem)
+        probe_budget_fraction = self.config.get('trust_probe_budget', 0.02)  # 2% of cycle ATP per untrusted plugin
+        cycle_atp = available_atp * 0.1  # Use only 10% of ATP per cycle
+
+        weighted_priorities = {}
+        for plugin, priority in plugin_priorities.items():
+            trust = self.plugin_trust_weights.get(plugin, 0.0)
+            weighted_priorities[plugin] = priority * max(trust, probe_budget_fraction)
 
         # Normalize to available ATP
         total_weighted = sum(weighted_priorities.values())
@@ -1133,7 +1141,7 @@ class SAGEConsciousness:
         allocation = {}
         if total_weighted > 0:
             for plugin, weighted_priority in weighted_priorities.items():
-                allocation[plugin] = (weighted_priority / total_weighted) * available_atp * 0.1  # Use only 10% of ATP per cycle
+                allocation[plugin] = (weighted_priority / total_weighted) * cycle_atp
 
         allocation['total'] = sum(allocation.values())
 
@@ -1863,7 +1871,24 @@ class SAGEConsciousness:
             if trust_metrics.get('mock', False):
                 continue
 
-            # Compute trust update
+            # First contact: bump from 0.0 to 0.1 on first real execution
+            if plugin_name not in self._plugin_first_contact:
+                self._plugin_first_contact.add(plugin_name)
+                self.plugin_trust_weights[plugin_name] = max(
+                    self.plugin_trust_weights.get(plugin_name, 0.0), 0.1
+                )
+                # Also bump the corresponding sensor trust
+                modality_map = {
+                    'vision': 'vision', 'language': 'message',
+                    'audio': 'audio', 'control': 'proprioception',
+                }
+                sensor_key = modality_map.get(plugin_name)
+                if sensor_key and sensor_key in self.sensors:
+                    self.sensors[sensor_key]['trust'] = max(
+                        self.sensors[sensor_key]['trust'], 0.1
+                    )
+
+            # Compute trust update from V3 (Valuation/Veracity/Validity) of actual output
             monotonicity = trust_metrics.get('monotonicity_ratio', 0.5)
             convergence = trust_metrics.get('convergence_rate', 0.5)
 
@@ -1871,7 +1896,7 @@ class SAGEConsciousness:
 
             # Exponential moving average
             alpha = self.config.get('trust_update_rate', 0.1)
-            current_trust = self.plugin_trust_weights.get(plugin_name, 1.0)
+            current_trust = self.plugin_trust_weights.get(plugin_name, 0.0)
             self.plugin_trust_weights[plugin_name] = (
                 (1 - alpha) * current_trust + alpha * quality
             )
@@ -1913,7 +1938,7 @@ class SAGEConsciousness:
             trust_max = 1.0
 
             for plugin_name, delta in adjustments.items():
-                current_trust = self.plugin_trust_weights.get(plugin_name, 1.0)
+                current_trust = self.plugin_trust_weights.get(plugin_name, 0.0)
 
                 # Apply delta with EMA smoothing
                 new_trust = current_trust + (alpha * delta)

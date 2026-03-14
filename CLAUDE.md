@@ -684,3 +684,22 @@ See: `/home/dp/ai-workspace/private-context/AUTONOMOUS_SESSION_PROTOCOL.md`
 6. 🔄 **Dynamic Resource Management** - Load/unload plugins based on need
 7. 🚀 **GR00T vision pipeline integration** - Connect to Isaac
 8. 🧠 **Cross-device cognition** - State save/restore for federation
+
+<!-- gitnexus:start -->
+# GitNexus — Code Knowledge Graph
+
+SAGE is indexed by GitNexus (21K symbols, 50K edges, 300 execution flows). MCP tools available via `mcp__gitnexus__*`. Use when exploring unfamiliar code, assessing blast radius before refactors, or tracing execution flows.
+
+Re-index after significant changes: `node /mnt/c/exe/projects/ai-agents/GitNexus/gitnexus/dist/cli/index.js analyze`
+
+| Tool | Use for |
+|------|---------|
+| `query` | Find execution flows by concept |
+| `context` | 360-degree view of a symbol (callers, callees, processes) |
+| `impact` | Blast radius before editing (upstream/downstream) |
+| `detect_changes` | Map git diff to affected symbols and flows |
+| `rename` | Graph-aware multi-file rename (dry_run first) |
+| `cypher` | Raw Cypher queries against the graph |
+
+Resources: `gitnexus://repo/SAGE/context`, `clusters`, `processes`, `process/{name}`
+<!-- gitnexus:end -->

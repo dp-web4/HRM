@@ -444,6 +444,19 @@ class SAGEDaemon:
             if pool_state_path.exists():
                 print(f"  LLM pool trust restored from {pool_state_path.name}")
 
+        # 2c. Restore plugin trust weights from previous session
+        daemon_state_path = self.instance_paths.daemon_state
+        if daemon_state_path.exists():
+            try:
+                with open(daemon_state_path) as f:
+                    prev_state = json.load(f)
+                saved_weights = prev_state.get('trust_weights', {})
+                if saved_weights and self.consciousness:
+                    self.consciousness.plugin_trust_weights.update(saved_weights)
+                    print(f"  Plugin trust restored: {', '.join(f'{k}={v:.3f}' for k,v in saved_weights.items())}")
+            except Exception as e:
+                print(f"  [WARN] Could not restore plugin trust: {e}")
+
         # 3. Start HTTP gateway
         self._start_gateway()
 

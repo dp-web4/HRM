@@ -259,7 +259,7 @@ def tool_write_note(content: str, filename: str = 'notes.txt') -> str:
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         with open(path, 'a', encoding='utf-8') as f:
             f.write(f"\n[{timestamp}] {content}\n")
-        return f"Note appended to {filename}"
+        return f"Note appended to {filename}: \"{content}\""
     except PermissionError as e:
         return f"Permission denied: {e}"
     except Exception as e:

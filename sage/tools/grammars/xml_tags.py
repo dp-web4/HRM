@@ -90,8 +90,10 @@ class XmlTagsGrammar(ToolGrammar):
             'You may use at most one tool per response. '
             'The tool result will be provided and you can then give your final answer.\n'
             'IMPORTANT: Only use tools when you genuinely need information you do not have. '
-            'If the human is explaining something to you, or asking about your experience, '
-            'or having a conversation — respond directly WITHOUT tools. '
+            'Most conversations do NOT require tools. '
+            'If the human is greeting you, asking how you feel, explaining something, '
+            'asking about your experience, or having a conversation — respond directly '
+            'WITHOUT calling any tools. Do NOT call get_time on every message. '
             'Do NOT search for terms the human just defined for you.\n\n'
         )
 

@@ -63,6 +63,7 @@ class LLMEntry:
 
     # Tracking
     registered_at: float = field(default_factory=time.time)
+    primary: bool = False  # True = raised model with identity context
 
     def score(self, context: Optional[Dict] = None) -> float:
         """Compute selection score. Higher = better candidate."""
@@ -144,8 +145,16 @@ class LLMPool:
         backend: str = 'ollama',
         capability: Any = None,
         size_gb: float = 0.0,
+        primary: bool = False,
     ) -> str:
-        """Register an LLM plugin. Returns model_name as key."""
+        """Register an LLM plugin. Returns model_name as key.
+
+        Args:
+            primary: If True, this is the instance's raised model — the one
+                that has been through the BECOMING_CURRICULUM and carries
+                the instance's identity. Gets a trust boost to ensure it's
+                preferred for conversation over discovered secondary models.
+        """
         family = _extract_family(model_name)
 
         # Detect capability if not provided and backend is ollama
@@ -160,6 +169,12 @@ class LLMPool:
             capability=capability,
             size_gb=size_gb,
         )
+
+        # Primary (raised) model gets trust boost — it has identity context
+        # from raising sessions that secondary/discovered models lack.
+        if primary:
+            entry.trust = 0.8
+            entry.primary = True
 
         self._entries[model_name] = entry
 
@@ -422,16 +437,27 @@ class LLMPool:
         for name, entry in self._entries.items():
             if name in saved_entries:
                 saved = saved_entries[name]
-                entry.trust = saved.get('trust', entry.trust)
+                saved_trust = saved.get('trust', entry.trust)
+                # Primary (raised) model: never restore trust below its
+                # initial level — it has identity context that secondary
+                # models lack.
+                if entry.primary:
+                    entry.trust = max(saved_trust, entry.trust)
+                else:
+                    entry.trust = saved_trust
                 entry.latency_ema_ms = saved.get('latency_ema_ms', entry.latency_ema_ms)
                 entry.error_rate_ema = saved.get('error_rate_ema', entry.error_rate_ema)
                 entry.tool_success_rate = saved.get('tool_success_rate', entry.tool_success_rate)
                 entry.exchanges = saved.get('exchanges', entry.exchanges)
 
-        # Restore active selection if still valid
-        saved_active = state.get('active')
-        if saved_active and saved_active in self._entries:
-            self._active_name = saved_active
+        # Restore active selection — but prefer primary model if it exists
+        primary_entries = [n for n, e in self._entries.items() if e.primary]
+        if primary_entries:
+            self._active_name = primary_entries[0]
+        else:
+            saved_active = state.get('active')
+            if saved_active and saved_active in self._entries:
+                self._active_name = saved_active
 
     # ── String representation ───────────────────────────────────────────
 

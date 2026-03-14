@@ -337,7 +337,7 @@ def create_default_registry(instance_dir: Optional[Path] = None) -> ToolRegistry
 
     registry.register(ToolDefinition(
         name='get_time',
-        description='Get the current date, time, and timezone.',
+        description='Get the current date and time. Only use when time is specifically relevant to the conversation — NOT on every message.',
         parameters={
             'type': 'object',
             'properties': {

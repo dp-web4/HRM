@@ -26,6 +26,7 @@ import asyncio
 import json
 import os
 import time
+import uuid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from threading import Thread, Lock
@@ -153,6 +154,8 @@ class GatewayHandler(BaseHTTPRequestHandler):
             self._handle_delegate()
         elif self.path == '/network-access':
             self._handle_network_access_post()
+        elif self.path == '/notifications/acknowledge':
+            self._handle_notification_acknowledge()
         else:
             self.send_error(404, "Endpoint not found")
 
@@ -177,6 +180,8 @@ class GatewayHandler(BaseHTTPRequestHandler):
             self._handle_peers()
         elif path == '/network-access':
             self._handle_network_access_get()
+        elif path == '/notifications':
+            self._handle_notifications_get()
         else:
             self.send_error(404, "Endpoint not found")
 
@@ -325,6 +330,21 @@ class GatewayHandler(BaseHTTPRequestHandler):
             # Log SAGE's response to chat history
             response_text = result.get('response') or result.get('text') or ''
             if response_text:
+                # Notification detection — scan for human-directed messages
+                if self.daemon and hasattr(self.daemon, 'notification_detector'):
+                    matches = self.daemon.notification_detector.scan(response_text, source='chat')
+                    if matches:
+                        from sage.gateway.notification_store import append_notification
+                        append_notification(self.daemon.instance_paths, {
+                            'id': str(uuid.uuid4())[:8],
+                            'timestamp': time.time(),
+                            'source': 'chat',
+                            'source_detail': sender,
+                            'text_snippet': matches[0]['context_snippet'],
+                            'patterns_matched': [m['pattern'] for m in matches],
+                            'acknowledged': False,
+                        })
+
                 append_chat_message(self.config, {
                     'sender': self.config.machine_name if self.config else 'SAGE',
                     'text': response_text,
@@ -561,6 +581,11 @@ class GatewayHandler(BaseHTTPRequestHandler):
         except ImportError:
             pass
 
+        # Notification count for dashboard badge
+        if self.daemon and hasattr(self.daemon, 'instance_paths'):
+            from sage.gateway.notification_store import get_unread_count
+            stats['notification_count'] = get_unread_count(self.daemon.instance_paths)
+
         # Message queue stats
         if self.message_queue and hasattr(self.message_queue, 'stats'):
             stats['message_stats'] = self.message_queue.stats
@@ -751,6 +776,36 @@ class GatewayHandler(BaseHTTPRequestHandler):
                 'status': 'failed',
                 'error': str(e)[:300],
             }, status=500)
+
+    def _handle_notifications_get(self):
+        """Handle GET /notifications — return recent notifications."""
+        if not self.daemon or not hasattr(self.daemon, 'instance_paths'):
+            self._send_json([])
+            return
+        from sage.gateway.notification_store import read_notifications
+        unread_only = self.path.split('?')[0] == '/notifications'
+        # Check query string for ?all=1
+        if '?' in self.path and 'all=1' in self.path.split('?')[1]:
+            unread_only = False
+        notifications = read_notifications(self.daemon.instance_paths,
+                                           unread_only=unread_only)
+        self._send_json(notifications)
+
+    def _handle_notification_acknowledge(self):
+        """Handle POST /notifications/acknowledge — mark a notification as read."""
+        data = self._read_body()
+        if data is None:
+            return
+        nid = data.get('id')
+        if not nid:
+            self.send_error(400, "Missing 'id' field")
+            return
+        if not self.daemon or not hasattr(self.daemon, 'instance_paths'):
+            self.send_error(503, "Daemon not available")
+            return
+        from sage.gateway.notification_store import acknowledge_notification
+        acknowledge_notification(self.daemon.instance_paths, nid)
+        self._send_json({'status': 'ok', 'id': nid})
 
     def _handle_network_access_get(self):
         """Return current network access state."""

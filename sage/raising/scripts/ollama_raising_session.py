@@ -42,6 +42,7 @@ sys.path.insert(0, str(HRM_ROOT))
 
 import json
 import argparse
+import time
 from datetime import datetime
 from typing import Optional, List, Dict, Any
 import re
@@ -185,6 +186,12 @@ class OllamaRaisingSession:
         )
 
         self.llm = None
+
+        # Notification detection for human-directed messages
+        from sage.gateway.notification_detector import NotificationDetector, extract_operator_names
+        operator_names = extract_operator_names(self.state)
+        self.notification_detector = NotificationDetector(human_names=operator_names)
+        self.instance_paths = instance
 
         print()
         print("+" + "=" * 68 + "+")
@@ -653,6 +660,24 @@ RESPONSE STYLE:
         self._save_state()
 
         transcript_file = self._save_transcript()
+
+        # Scan all SAGE turns for human-directed messages
+        if hasattr(self, 'notification_detector'):
+            import uuid as _uuid
+            from sage.gateway.notification_store import append_notification
+            for turn in self.conversation_history:
+                sage_text = turn.get('sage', '')
+                matches = self.notification_detector.scan(sage_text, source='raising')
+                if matches:
+                    append_notification(self.instance_paths, {
+                        'id': str(_uuid.uuid4())[:8],
+                        'timestamp': time.time(),
+                        'source': 'raising',
+                        'source_detail': f'session_{self.session_number:03d}',
+                        'text_snippet': matches[0]['context_snippet'],
+                        'patterns_matched': [m['pattern'] for m in matches],
+                        'acknowledged': False,
+                    })
 
         stats = self.collector.get_stats()
         print(f"\n  Experience Collection:")

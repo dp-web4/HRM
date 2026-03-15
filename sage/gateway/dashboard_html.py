@@ -64,6 +64,114 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     color: var(--text-dim);
   }
 
+  /* Notification bell + panel */
+  .notif-bell {
+    position: relative;
+    cursor: pointer;
+    font-size: 16px;
+    user-select: none;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+  .notif-bell:hover { background: rgba(255,255,255,0.08); }
+  .notif-badge {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    background: #ff3333;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    min-width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 8px;
+    padding: 0 4px;
+    display: none;
+  }
+  .notif-badge.visible { display: block; }
+
+  .notif-panel {
+    display: none;
+    position: fixed;
+    top: 37px;
+    right: 16px;
+    width: 380px;
+    max-height: 420px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    z-index: 1000;
+    overflow: hidden;
+    flex-direction: column;
+  }
+  .notif-panel.open { display: flex; }
+  .notif-panel-header {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .notif-panel-body {
+    overflow-y: auto;
+    flex: 1;
+    padding: 6px 0;
+  }
+  .notif-item {
+    padding: 8px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 12px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .notif-item:last-child { border-bottom: none; }
+  .notif-item .notif-content { flex: 1; min-width: 0; }
+  .notif-item .notif-source {
+    font-size: 9px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .notif-item .notif-snippet {
+    margin-top: 2px;
+    color: var(--text);
+    word-break: break-word;
+  }
+  .notif-item .notif-time {
+    font-size: 9px;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+  .notif-ack-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 9px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    flex-shrink: 0;
+    align-self: center;
+  }
+  .notif-ack-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .notif-empty {
+    padding: 24px;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+
   .connection-dot {
     width: 8px;
     height: 8px;
@@ -476,9 +584,20 @@ DASHBOARD_HTML = """<!DOCTYPE html>
       <span id="version-display">v--</span>
       <span id="cycle-display">Cycle: --</span>
       <span id="uptime-display">Up: --</span>
+      <span class="notif-bell" id="notif-bell" title="Notifications">&#128276;<span class="notif-badge" id="notif-badge">0</span></span>
       <span><span class="connection-dot" id="conn-dot"></span> <span id="conn-label">connecting</span></span>
     </div>
   </header>
+
+  <div class="notif-panel" id="notif-panel">
+    <div class="notif-panel-header">
+      <span>Notifications</span>
+      <span id="notif-panel-count"></span>
+    </div>
+    <div class="notif-panel-body" id="notif-panel-body">
+      <div class="notif-empty">No notifications</div>
+    </div>
+  </div>
 
   <div class="grid">
     <!-- Left: Avatar + Identity + Compact Stats -->
@@ -760,6 +879,10 @@ function updateDashboard(d) {
     networkOpen = d.network_open;
     updateNetworkToggle();
   }
+
+  if (d.notification_count !== undefined) {
+    updateNotifBadge(d.notification_count);
+  }
 }
 
 // --- Chat ---
@@ -924,6 +1047,107 @@ function updateNetworkToggle() {
     toggle.classList.remove('open');
     label.textContent = 'Local Only';
   }
+}
+
+// --- Notifications ---
+let prevNotifCount = 0;
+const notifBell = document.getElementById('notif-bell');
+const notifBadge = document.getElementById('notif-badge');
+const notifPanel = document.getElementById('notif-panel');
+
+notifBell.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const isOpen = notifPanel.classList.toggle('open');
+  if (isOpen) fetchNotifications();
+});
+
+document.addEventListener('click', (e) => {
+  if (!notifPanel.contains(e.target) && e.target !== notifBell) {
+    notifPanel.classList.remove('open');
+  }
+});
+
+function updateNotifBadge(count) {
+  notifBadge.textContent = count;
+  if (count > 0) {
+    notifBadge.classList.add('visible');
+  } else {
+    notifBadge.classList.remove('visible');
+  }
+  // Chime when count increases
+  if (count > prevNotifCount && prevNotifCount >= 0) {
+    playNotifChime();
+  }
+  prevNotifCount = count;
+}
+
+function playNotifChime() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.08);
+    gain.gain.setValueAtTime(0.08, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.3);
+  } catch (e) { /* no audio context */ }
+}
+
+async function fetchNotifications() {
+  try {
+    const resp = await fetch('/notifications');
+    if (!resp.ok) return;
+    const items = await resp.json();
+    renderNotifications(items);
+  } catch (e) { console.error('Notification fetch error:', e); }
+}
+
+function renderNotifications(items) {
+  const body = document.getElementById('notif-panel-body');
+  const countEl = document.getElementById('notif-panel-count');
+  if (!items || items.length === 0) {
+    body.innerHTML = '<div class="notif-empty">No unread notifications</div>';
+    countEl.textContent = '';
+    return;
+  }
+  countEl.textContent = items.length;
+  let html = '';
+  for (const n of items) {
+    const t = n.timestamp ? new Date(n.timestamp * 1000).toLocaleString([], {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
+    html += '<div class="notif-item" data-id="' + (n.id || '') + '">' +
+      '<div class="notif-content">' +
+        '<div class="notif-source">' + escapeHtml(n.source || '') + ' / ' + escapeHtml(n.source_detail || '') + '</div>' +
+        '<div class="notif-snippet">' + escapeHtml(n.text_snippet || '') + '</div>' +
+        '<div class="notif-time">' + t + '</div>' +
+      '</div>' +
+      '<button class="notif-ack-btn" onclick="ackNotification(\'' + (n.id || '') + '\', this)">ack</button>' +
+    '</div>';
+  }
+  body.innerHTML = html;
+}
+
+async function ackNotification(id, btn) {
+  try {
+    await fetch('/notifications/acknowledge', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: id }),
+    });
+    const item = btn.closest('.notif-item');
+    if (item) item.remove();
+    // Update badge
+    const remaining = document.querySelectorAll('.notif-item').length;
+    updateNotifBadge(remaining);
+    if (remaining === 0) {
+      document.getElementById('notif-panel-body').innerHTML =
+        '<div class="notif-empty">No unread notifications</div>';
+      document.getElementById('notif-panel-count').textContent = '';
+    }
+  } catch (e) { console.error('Ack error:', e); }
 }
 
 // --- Init ---

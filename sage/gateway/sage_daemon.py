@@ -99,6 +99,12 @@ class SAGEDaemon:
         )
         self.reward_pool = ATPRewardPool()
 
+        # Notification detection for human-directed messages
+        # Initialized without names here; re-initialized with operator names
+        # after identity loads in _create_consciousness().
+        from sage.gateway.notification_detector import NotificationDetector
+        self.notification_detector = NotificationDetector()
+
         print(f"SAGE Daemon initializing on {self.config.machine_name}")
         print(f"  Instance: {self.instance_paths.slug}")
         print(f"  Version: {self.code_version} (commit {self.daemon_version})")
@@ -290,6 +296,13 @@ class SAGEDaemon:
         # Load epistemic memory components
         self.identity_state = self._load_identity()
         self.experience_collector = self._load_experience_collector()
+
+        # Re-initialize notification detector with operator names from identity
+        from sage.gateway.notification_detector import NotificationDetector, extract_operator_names
+        operator_names = extract_operator_names(self.identity_state)
+        if operator_names:
+            self.notification_detector = NotificationDetector(human_names=operator_names)
+            print(f"  Notification detector: watching for {operator_names}")
 
         consciousness_config = {
             'modalities': ['vision', 'language', 'audio', 'memory'],

@@ -85,6 +85,7 @@ class InstancePaths:
         self.sessions = self.root / "sessions"
         self.training_sessions = self.root / "training" / "sessions"
         self.training_state = self.root / "training" / "state.json"
+        self.notifications = self.root / "notifications.jsonl"
         self.checkpoints = self.root / "checkpoints"
         self.sleep_checkpoints = self.root / "checkpoints" / "sleep"
         self.dream_bundles = self.root / "dream_bundles"

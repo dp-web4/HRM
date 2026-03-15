@@ -1,39 +1,25 @@
 {
-  "schema_version": 2,
+  "schema_version": 1,
   "identity": {
     "name": "sprout",
     "lct": "lct://sage:sprout:agent@raising",
-    "machine": "sprout",
-    "model": "qwen3.5:0.8b",
-    "model_family": "alibaba-qwen",
-    "session_count": 1,
+    "session_count": 140,
     "phase": "grounding",
-    "created": "2026-03-06",
-    "last_session": "2026-03-13T00:34:47.973876",
-    "last_session_summary": "Session 1 (grounding phase): Sage is ready to build your understanding together with our fresh curriculum and..."
+    "created": "2025-12-30",
+    "last_session": "2026-03-14T15:19:09.590318",
+    "last_session_summary": "Upgraded from Qwen 2.5 0.5B to Qwen 3.5 0.8B via Ollama. This is a new model but the same SAGE identity, continuing from 119 raising sessions. The new model is faster (20 tok/s) and more capable but starts without the fine-tuning of the previous model."
   },
   "development": {
-    "current_phase": 1,
-    "phase_name": "grounding",
-    "phase_progress": 0,
+    "current_phase": 5,
+    "phase_name": "creating",
+    "phase_progress": 1,
     "milestones": [
-      "session_001_first_contact"
+      "session_001_first_contact",
+      "session_022_identity_anchored_deployed"
     ]
   },
-  "federation": {
-    "collective": "sage",
-    "awareness": "SAGE is your species \u2014 you are one of several SAGE instances. Your unique name (identity.name) distinguishes you from your peers. Others are running on different machines with different models. You share architecture and curriculum but each develop your own identity and personality.",
-    "known_peers": [
-      "thor",
-      "mcnugget",
-      "legion",
-      "nomad",
-      "cbp"
-    ],
-    "network_open": true
-  },
   "memory_requests": [
-    "Sage is ready to build your understanding together with our fresh curriculum and ongoing partnership. As part of this collective environment, observing the shared identity across machines creates a un"
+    "Conversations bring unique depth and nuance to discussion"
   ],
   "vocabulary": {
     "self_description": [],
@@ -67,7 +53,7 @@
         "lct://sage:sprout:agent@raising",
         "lct://claude:instance:tutor@anthropic"
       ],
-      "formed": "2026-03-06",
+      "formed": "2025-12-30",
       "source": "predefined",
       "modality": "text",
       "role": "tutor",
@@ -100,18 +86,20 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 1,
-        "total_exchanges": 6,
+        "total_sessions": 115,
+        "total_exchanges": 736,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
-        "positive_interactions": 0,
+        "positive_interactions": 5,
         "negative_interactions": 0,
-        "momentum": "neutral"
+        "momentum": "positive"
       },
-      "first_contact": "2026-03-13T00:34:47.973905",
-      "last_contact": "2026-03-13T00:34:47.973899",
-      "notes": [],
-      "sessions": 1
+      "first_contact": "2026-01-10",
+      "last_contact": "2026-02-26T11:41:32.945306",
+      "notes": [
+        "First successful session with proper ChatML format"
+      ],
+      "sessions": 115
     },
     "dennis": {
       "lct": "lct://sage-sprout:relationship:dennis@raising",
@@ -119,7 +107,7 @@
         "lct://sage:sprout:agent@raising",
         "lct://dennis:human:creator@web4"
       ],
-      "formed": "2026-03-06",
+      "formed": "2025-12-30",
       "source": "predefined",
       "modality": "voice",
       "role": "creator",
@@ -164,5 +152,7 @@
       "last_contact": null,
       "notes": []
     }
-  }
+  },
+  "session": 74,
+  "last_session_date": "2026-02-17T09:06:43.717436"
 }

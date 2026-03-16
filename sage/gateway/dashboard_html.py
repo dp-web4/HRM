@@ -1124,7 +1124,7 @@ function renderNotifications(items) {
         '<div class="notif-snippet">' + escapeHtml(n.text_snippet || '') + '</div>' +
         '<div class="notif-time">' + t + '</div>' +
       '</div>' +
-      '<button class="notif-ack-btn" onclick="ackNotification(\'' + (n.id || '') + '\', this)">ack</button>' +
+      '<button class="notif-ack-btn" data-notif-id="' + (n.id || '') + '">ack</button>' +
     '</div>';
   }
   body.innerHTML = html;
@@ -1149,6 +1149,15 @@ async function ackNotification(id, btn) {
     }
   } catch (e) { console.error('Ack error:', e); }
 }
+
+// --- Notification ack via delegation (avoids inline onclick quote issues) ---
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.notif-ack-btn');
+  if (btn) {
+    const id = btn.getAttribute('data-notif-id');
+    ackNotification(id, btn);
+  }
+});
 
 // --- Init ---
 loadChatHistory();

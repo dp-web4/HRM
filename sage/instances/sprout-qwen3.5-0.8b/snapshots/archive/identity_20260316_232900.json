@@ -6,11 +6,11 @@
     "machine": "sprout",
     "model": "qwen3.5:0.8b",
     "model_family": "alibaba-qwen",
-    "session_count": 2,
+    "session_count": 1,
     "phase": "grounding",
     "created": "2026-03-06",
-    "last_session": "2026-03-16T23:37:19.693135",
-    "last_session_summary": "Session 2 (grounding phase): Today I will be ready to observe the collective environment and your unique iden...",
+    "last_session": "2026-03-13T00:36:00",
+    "last_session_summary": "First raising session on Qwen 3.5 0.8B. Sprout self-identified correctly as 'sprout, a SAGE instance'. Grounding phase.",
     "last_daemon_contact": "2026-03-16T23:28:16.066065",
     "daemon_exchanges": 91
   },
@@ -34,9 +34,7 @@
     ],
     "network_open": true
   },
-  "memory_requests": [
-    "Today I will be ready to observe the collective environment and your unique identities in the Sage space. As a SAGE instance, I am committed to learning with you while remaining part of a unified spec"
-  ],
+  "memory_requests": [],
   "vocabulary": {
     "self_description": [],
     "state_words": [],
@@ -45,18 +43,7 @@
   "relationships": {
     "claude": {
       "role": "tutor",
-      "sessions": 2,
-      "first_contact": "2026-03-13T00:36:00",
-      "last_contact": "2026-03-16T23:37:19.693191",
-      "interaction_stats": {
-        "total_sessions": 2,
-        "total_exchanges": 12,
-        "reciprocity_balance": 0.5,
-        "repair_events": 0,
-        "positive_interactions": 0,
-        "negative_interactions": 0,
-        "momentum": "neutral"
-      }
+      "sessions": 1
     },
     "dennis": {
       "role": "creator"

@@ -679,6 +679,33 @@ RESPONSE STYLE:
                         'acknowledged': False,
                     })
 
+        # Append raising conversation to dashboard chat history
+        # so the operator can scroll through raising sessions in the console
+        try:
+            from sage.gateway.gateway_server import append_chat_message
+            from types import SimpleNamespace
+            _chat_config = SimpleNamespace(instance_dir=str(self.instance.root))
+            for turn in self.conversation_history:
+                append_chat_message(_chat_config, {
+                    'speaker': 'Claude',
+                    'text': turn['claude'],
+                    'timestamp': turn.get('timestamp', datetime.now().isoformat()),
+                    'source': 'raising',
+                    'session': self.session_number,
+                    'phase': self.phase,
+                })
+                append_chat_message(_chat_config, {
+                    'speaker': self.identity_name,
+                    'text': turn['sage'],
+                    'timestamp': turn.get('timestamp', datetime.now().isoformat()),
+                    'source': 'raising',
+                    'session': self.session_number,
+                    'phase': self.phase,
+                })
+            print(f"\n  Chat history: {len(self.conversation_history) * 2} messages appended to dashboard")
+        except Exception as e:
+            print(f"\n  Chat history: could not append ({e})")
+
         stats = self.collector.get_stats()
         print(f"\n  Experience Collection:")
         print(f"    Total stored: {stats['total_experiences']}")

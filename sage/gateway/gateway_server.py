@@ -37,7 +37,7 @@ import concurrent.futures
 # ---------------------------------------------------------------------------
 # Chat history buffer — JSONL file local to the instance directory
 # ---------------------------------------------------------------------------
-MAX_CHAT_HISTORY_BYTES = 1_000_000  # ~1MB most-recent window
+MAX_CHAT_HISTORY_BYTES = 2_000_000  # ~2MB most-recent window
 
 _chat_history_lock = Lock()
 

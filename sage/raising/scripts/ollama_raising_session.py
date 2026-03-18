@@ -556,17 +556,21 @@ RESPONSE STYLE:
                 response = response[len(prefix):].strip()
                 break
 
-        # Truncate bilateral generation — small models generate both sides
-        # of conversation. Cut at the first OTHER-speaker turn marker.
-        # Don't match the model's own name — it may self-reference legitimately.
-        import re
-        other_speakers = re.compile(
-            r'\n\s*\[?(Claude|System|User)\]?\s*:',
-            re.IGNORECASE
-        )
-        match = other_speakers.search(response)
-        if match:
-            response = response[:match.start()].strip()
+        # Truncate bilateral generation — small models (< ~4B) generate both
+        # sides of conversation. Larger models don't exhibit this.
+        # Only apply for known-affected model families.
+        bilateral_prone = any(tag in self.model_name.lower() for tag in [
+            'tinyllama', 'qwen2.5:0.5b', 'qwen2:0.5b', 'qwen3.5:0.8b',
+        ])
+        if bilateral_prone:
+            import re
+            other_speakers = re.compile(
+                r'\n\s*\[?(Claude|System|User)\]?\s*:',
+                re.IGNORECASE
+            )
+            match = other_speakers.search(response)
+            if match:
+                response = response[:match.start()].strip()
 
         return response
 

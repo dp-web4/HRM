@@ -185,6 +185,36 @@ Hour 9:  Training Session
 
 Check last session times before starting a new session.
 
+### Automatic Update Checking (2026-03-17)
+
+**All raising sessions now automatically check for updates at startup.**
+
+Before each session starts, the runner:
+1. ✅ Pulls latest SAGE changes from git
+2. ✅ Checks engram version
+3. ✅ Rebuilds engram if version changed
+4. ✅ Restarts SAGE daemon if needed
+5. ✅ Relaunches script if SAGE was updated
+
+This ensures:
+- Sessions always run with latest code
+- No version mismatches between SAGE and engram
+- Daemon stays in sync with engram updates
+- Zero manual intervention needed
+
+**Output example:**
+```
+🔍 Checking for updates...
+✅ SAGE is up to date
+✅ Engram 0.3.0 is up to date
+```
+
+If updates are found, the script will pull, rebuild, and relaunch automatically.
+
+**Implementation**: `scripts/check_updates.py` called at start of `main()` in both session runners.
+
+---
+
 ### How to Run Sessions
 
 **IMPORTANT**: Always cd to the correct directory first (avoids -c flag conflicts):

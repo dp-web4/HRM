@@ -91,6 +91,18 @@ python3 training_session.py -c           # Continue from last (T002, T003...)
 python3 training_session.py --session 61  # Specific session (T061)
 ```
 
+### Automatic Update Checking (2026-03-17)
+
+**Training sessions now automatically check for updates at startup.**
+
+The script will:
+- Pull latest SAGE changes
+- Check engram version and rebuild if needed
+- Restart daemon if engram updated
+- Relaunch script if SAGE updated
+
+No manual intervention needed. See main CLAUDE.md for details.
+
 ---
 
 ## Session Structure

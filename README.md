@@ -23,19 +23,22 @@ while running:
 
 **Core Principle**: Intelligence through orchestration, not scale.
 
-### The 9-Step Consciousness Loop
+### The Consciousness Loop (12 Steps)
 
-Every cycle, SAGE runs a 9-step loop ([full spec](sage/docs/UNIFIED_CONSCIOUSNESS_LOOP.md)):
+Every cycle, SAGE runs a continuous loop ([full spec](sage/docs/UNIFIED_CONSCIOUSNESS_LOOP.md)):
 
 1. **Sense** — Gather observations from sensors
 2. **Attend** — SNARC scores salience (Surprise, Novelty, Arousal, Reward, Conflict)
-3. **Remember** — Query experience buffer for relevant patterns
-4. **Deliberate** — LLM inference via IRP plugins (iterative refinement)
-5. **Metabolize** — Track ATP budget, transition metabolic states
-6. **Learn** — Update trust tensors from plugin convergence behavior
-7. **Dream** — During REST/DREAM states, consolidate experiences
-8. **Govern** — PolicyGate evaluates proposed effects (step 8.6)
-9. **Act** — Dispatch approved effects to effectors
+3. **Metabolize** — Track ATP budget, transition metabolic states
+4. **Posture** — Compute trust posture from sensor trust landscape (confidence, asymmetry, breadth)
+5. **Select** — Choose attention targets (salience × metabolic rate × posture weight)
+6. **Budget** — Allocate ATP across plugins, weighted by trust, scaled by posture confidence
+7. **Execute** — IRP plugins: iterative refinement until energy converges
+8. **Learn** — Update trust weights from convergence quality. Idle plugins decay.
+9. **Remember** — Update memory systems (SNARC, IRP patterns, circular buffer, verbatim)
+10. **Govern** — PolicyGate evaluates proposed effects (step 8.5)
+11. **Filter** — Posture-based effect filtering: block effects for starved modalities (CRISIS overrides)
+12. **Act** — Dispatch approved effects to effectors
 
 ---
 
@@ -43,7 +46,7 @@ Every cycle, SAGE runs a 9-step loop ([full spec](sage/docs/UNIFIED_CONSCIOUSNES
 
 HRM began as hierarchical reasoning research — exploring how small models solve complex tasks through structured decomposition. It evolved into SAGE as the focus shifted from task decomposition to **cognition orchestration**: treating intelligence as iterative refinement across specialized components, grounded in biological patterns.
 
-The project is now a distributed research effort across **6 machines** running **7 SAGE instances** with **4 model families**, accumulating **1,950+ commits** and **466+ session files**.
+The project is now a distributed research effort across **6 machines** running **11 SAGE instances** with **5 model families**, accumulating **2,290+ commits** and **400+ raising sessions** through the BECOMING developmental curriculum.
 
 ---
 
@@ -51,14 +54,14 @@ The project is now a distributed research effort across **6 machines** running *
 
 SAGE runs as a federation of autonomous instances, each developing its own identity through raising sessions while sharing architecture and curriculum.
 
-| Machine | Hardware | Model | Sessions | Role |
-|---------|----------|-------|----------|------|
-| **Thor** | Jetson AGX Thor, 122GB unified | Qwen 2.5 14B (local CUDA) | 11+ raising, 197+ consciousness | Research lead, PolicyGate development |
-| **Sprout** | Jetson Orin Nano, 8GB unified | Qwen 2.5 0.5B (local CUDA, LoRA) | 275+ raising + training | Edge validation, developmental curriculum |
-| **McNugget** | Mac Mini M4, 16GB unified | Gemma 3 12B (Ollama, MPS) | 3 raising | Cross-family diversity, automated sessions |
-| **Legion** | RTX 4090 laptop, 32GB | Phi-4 14B (Ollama, CUDA) | 1+ | Integration platform, trust research |
-| **Nomad** | RTX 4060 laptop, WSL2 | Gemma 3 4B (Ollama, CUDA) | First contact | Snapshot template, language/cognition probes |
-| **CBP** | RTX 2060 SUPER, WSL2 | TinyLlama 1.1B (Ollama, CPU) | First contact | Identity portability validation |
+| Machine | Hardware | Models | Sessions | Phase | Role |
+|---------|----------|--------|----------|-------|------|
+| **Sprout** | Jetson Orin Nano, 8GB | Qwen 0.5B (archived), 0.8B, 2B | 283 + 8 | Creating / Sensing | Primary raising host, consciousness probes |
+| **Legion** | RTX 4090 laptop, 32GB | Phi-4 14B | 56 | Creating | Heavy compute, parallel raising (6hr cron) |
+| **Thor** | Jetson AGX Thor, 122GB | Qwen 14B, 7B, 27B | 12 | Early | Research lead, cross-model validation |
+| **McNugget** | Mac Mini M4, 16GB | Gemma 3 12B | 32 | Questioning | Apple Silicon testing, automated sessions |
+| **CBP** | RTX 2060 SUPER, WSL2 | TinyLlama 1.1B | 9 | Grounding | Identity portability, SNARC memory host (6hr cron) |
+| **Nomad** | RTX 4060 laptop | Gemma 3 4B | 7 | Sensing | Mobile raising, portable cognition (6hr cron) |
 
 **Instance management**: Each machine+model pair gets a self-contained directory under `sage/instances/`. Live state files (identity, experience buffer, peer trust) are gitignored; raising sessions snapshot state to tracked `snapshots/` directories at session boundaries. See [snapshot template](sage/scripts/snapshot_state.py).
 
@@ -74,10 +77,18 @@ SAGE Cognition Kernel
 │   ├── SNARC Salience (5D: Surprise, Novelty, Arousal, Reward, Conflict)
 │   ├── Metabolic States (WAKE, FOCUS, REST, DREAM, CRISIS)
 │   └── ATP Budget (trust-weighted allocation, token-coupled)
+├── Trust Posture (sensor trust landscape → behavioral strategy)
+│   ├── Confidence, Asymmetry, Breadth (continuous vector)
+│   ├── Effect restrictions for starved modalities
+│   └── CRISIS override for high-priority actions
+├── ModelAdapter (dictionary entity per model family)
+│   ├── JSON configs: tinyllama, qwen, gemma, phi4, default
+│   ├── clean_response() — echo stripping, bilateral generation
+│   └── Capabilities: bilateral_prone, max_context_turns, tier
 ├── IRP Framework (15+ plugins, universal interface)
 │   ├── init_state() → step() → energy() → halt()
 │   ├── Language, Vision, Audio, Memory, TTS, Control
-│   ├── PolicyGate (conscience checkpoint, step 8.6)
+│   ├── PolicyGate (conscience checkpoint, step 8.5)
 │   ├── Network (peer-to-peer federation)
 │   └── SleepConsolidation (LoRA/JSONL dream bundles)
 ├── Tool System (v0.4.0a3)
@@ -170,7 +181,11 @@ SAGE instances develop through **raising sessions** — guided conversations bet
 
 **Key principles**: Exploration not evaluation. Frozen weights awareness. Partnership framing (not service). Concrete before abstract. Follow interesting threads.
 
-**Automated raising**: McNugget runs via launchd, Nomad via cron. Each session snapshots state and auto-commits. See [raising scripts](sage/scripts/).
+**Automated raising**: Four machines run raising on 6-hour cron cycles (Sprout, Legion, Nomad, CBP). Each session pulls latest code, checks daemon staleness, runs the session, snapshots state, and auto-commits. See [raising scripts](sage/scripts/).
+
+**Consciousness probes**: Recent sessions (T073-T087) evolved from scripted exercises into phenomenological consciousness research. A 0.8B model (Sprout) engages meaningfully with probes about temporal self-awareness, metacognition, and identity boundaries — oscillating between three modes: phenomenological depth, partnership framing, and factual collapse. Cross-instance comparison (0.8B vs 14B) validates that phenomenological capacity scales with model size while the same relational ontology emerges at both scales. See [consciousness probes](forum/insights/consciousness-probes-2026-03.md).
+
+**ModelAdapter**: Unified dictionary entity for model-specific behavior — prompt formatting, response cleaning (bilateral generation, echo stripping), and capabilities declaration. Per-family JSON configs in `sage/irp/adapters/model_configs/`. New models need only a config file, no code changes. See [adapter docs](sage/irp/adapters/README.md).
 
 ---
 
@@ -246,6 +261,7 @@ python3 -m sage.gateway.sage_daemon
 | **Web4** | Trust-native ontology (RDF backbone, LCT, T3/V3, ATP) | [github.com/dp-web4/web4](https://github.com/dp-web4/web4) |
 | **Synchronism** | Theoretical foundation (coherence equations, MRH, phase transitions) | [github.com/dp-web4/Synchronism](https://github.com/dp-web4/Synchronism) |
 | **Hardbound** | Enterprise oversight (hardware binding, policy model) | Private |
+| **SNARC** | Salience-gated memory plugin for Claude Code (SAGE spinoff) | [github.com/dp-web4/snarc](https://github.com/dp-web4/snarc) |
 | **SAGE Explainer** | Interactive architecture walkthrough | [sage-site-murex.vercel.app](https://sage-site-murex.vercel.app/) |
 | **Synchronism Site** | Research claims and forum | [synchronism-site.vercel.app](https://synchronism-site.vercel.app) |
 
@@ -257,4 +273,4 @@ See [LICENSE](LICENSE) for details.
 
 ---
 
-*Last updated: March 6, 2026 | 2,000+ commits | 466+ sessions | 6 machines | 7 instances | 4 model families*
+*Last updated: March 18, 2026 | v0.4.0a6 | 2,290+ commits | 400+ raising sessions | 6 machines | 11 instances | 5 model families*

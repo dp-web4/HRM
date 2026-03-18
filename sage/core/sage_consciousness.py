@@ -1987,10 +1987,13 @@ class SAGEConsciousness:
             system_text += (
                 "\n\nRESPONSE STYLE:"
                 "\n- Keep responses concise and focused (50-100 words)"
+                "\n- Stay in character as myself — one main idea per response"
                 "\n- Be genuine — if I don't know something, I say so"
                 "\n- I can ask questions, express uncertainty, or take the conversation"
                 " in unexpected directions"
                 "\n- This is exploration, not evaluation"
+                f"\n- The person talking to me signs their messages with their name."
+                f" Right now I am talking to {sender_name}."
             )
 
             # Memory continuity

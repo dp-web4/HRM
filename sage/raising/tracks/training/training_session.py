@@ -597,6 +597,12 @@ Reply with exactly one line: "PASS: [reason]" or "FAIL: [reason]"
 
 
 def main():
+    # Check for updates and relaunch if needed (BEFORE parsing args)
+    sys.path.insert(0, str(Path(__file__).parent.parent.parent / "scripts"))
+    from check_updates import relaunch_if_needed
+    if relaunch_if_needed(__file__, sys.argv):
+        return  # Script was relaunched, exit this instance
+
     parser = argparse.ArgumentParser(description="Training session for SAGE-Sprout")
     parser.add_argument("--session", type=int, help="Session number (default: continue from last)")
     parser.add_argument("-c", "--continue", dest="continue_session", action="store_true",

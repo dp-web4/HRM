@@ -782,6 +782,11 @@ You have access to tools that can interact with the world: checking the time, do
 
 
 def main():
+    # Check for updates and relaunch if needed (BEFORE parsing args)
+    from check_updates import relaunch_if_needed
+    if relaunch_if_needed(__file__, sys.argv):
+        return  # Script was relaunched, exit this instance
+
     parser = argparse.ArgumentParser(description="Identity-anchored v2.0 (enhanced multi-session recovery)")
     parser.add_argument("--session", type=int, help="Session number (default: next)")
     parser.add_argument("--model", type=str, help="Model path")

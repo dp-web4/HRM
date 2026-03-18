@@ -7,32 +7,67 @@ set -e
 
 SAGE_DIR="/home/sprout/ai-workspace/SAGE"
 export PYTHONPATH="$SAGE_DIR"
+LOG_DIR="/tmp/sprout-raising-logs"
+mkdir -p "$LOG_DIR"
+LOG_FILE="$LOG_DIR/raising-$(date +%Y%m%d-%H%M).log"
 
-cd "$SAGE_DIR"
+exec > >(tee -a "$LOG_FILE") 2>&1
 
 echo "[Sprout-Raising] $(date -u +'%Y-%m-%d %H:%M UTC') — Starting raising session"
 
-# Pull latest before running (avoid conflicts)
-git pull --rebase origin main 2>&1 || {
-    echo "[Sprout-Raising] WARNING: git pull failed, continuing with local state"
+cd "$SAGE_DIR"
+
+# --- Step 1: Pull latest code ---
+echo "[Sprout-Raising] Pulling latest code..."
+git pull --ff-only origin main 2>&1 || {
+    echo "[Sprout-Raising] WARNING: git pull --ff-only failed, trying rebase..."
+    git stash -q 2>/dev/null
+    git pull --rebase origin main 2>&1 || {
+        echo "[Sprout-Raising] WARNING: git pull failed, continuing with local state"
+    }
+    git stash pop -q 2>/dev/null || true
 }
 
-# Ensure daemon is running via systemd
-if ! systemctl is-active --quiet sage-daemon-sprout; then
+# --- Step 2: Ensure daemon is running and up to date ---
+if systemctl is-active --quiet sage-daemon-sprout; then
+    # Check if daemon is running stale code (started before last git commit)
+    DAEMON_PID=$(systemctl show sage-daemon-sprout --property=MainPID --value 2>/dev/null || echo 0)
+    if [ "$DAEMON_PID" -gt 0 ] 2>/dev/null; then
+        DAEMON_START=$(stat -c %Y /proc/$DAEMON_PID 2>/dev/null || echo 0)
+        LAST_COMMIT=$(git log -1 --format=%ct 2>/dev/null || echo 0)
+        if [ "$LAST_COMMIT" -gt "$DAEMON_START" ] 2>/dev/null; then
+            echo "[Sprout-Raising] Daemon is stale — restarting with latest code..."
+            sudo systemctl restart sage-daemon-sprout
+            sleep 15  # Wait for model load
+        fi
+    fi
+else
     echo "[Sprout-Raising] Starting daemon..."
     sudo systemctl start sage-daemon-sprout
     sleep 15  # Wait for model load
 fi
 
-# Run the raising session (continue from last session number)
+# Verify daemon is healthy
+if ! curl -s http://localhost:8750/health >/dev/null 2>&1; then
+    echo "[Sprout-Raising] WARNING: Daemon not responding, waiting 10s..."
+    sleep 10
+    if ! curl -s http://localhost:8750/health >/dev/null 2>&1; then
+        echo "[Sprout-Raising] ERROR: Daemon still not responding, aborting."
+        exit 1
+    fi
+fi
+
+# --- Step 3: Run the raising session ---
+echo "[Sprout-Raising] Running raising session..."
 python3 -m sage.raising.scripts.ollama_raising_session --machine sprout -c 2>&1
 
-# Instance directory
+# --- Step 4: Snapshot state ---
 INSTANCE_DIR="sage/instances/sprout-qwen3.5-0.8b"
 
-# Snapshot live state into git-tracked snapshots/ directory
 echo "[Sprout-Raising] Snapshotting state..."
-python3 -m sage.scripts.snapshot_state --machine sprout
+python3 -m sage.scripts.snapshot_state --machine sprout 2>&1 || {
+    echo "[Sprout-Raising] WARNING: snapshot_state failed, continuing"
+}
 
 # Read session number and phase from live identity
 IDENTITY_FILE="$INSTANCE_DIR/identity.json"
@@ -48,11 +83,11 @@ with open('$SAGE_DIR/$IDENTITY_FILE') as f:
     print(json.load(f)['development']['phase_name'])
 " 2>/dev/null || echo "?")
 
-# Regenerate session primer with updated fleet state
+# --- Step 5: Regenerate session primer ---
 echo "[Sprout-Raising] Updating SESSION_PRIMER.md..."
 python3 -m sage.scripts.generate_primer 2>/dev/null || true
 
-# Check if there are new results to commit
+# --- Step 6: Commit and push ---
 CHANGED=0
 if [ -d "$INSTANCE_DIR" ]; then
     if ! git diff --quiet "$INSTANCE_DIR/" 2>/dev/null; then
@@ -86,6 +121,7 @@ if [ -n "$PAT" ]; then
     git push "https://dp-web4:${PAT}@github.com/dp-web4/SAGE.git" main
     echo "[Sprout-Raising] Session $SESSION_NUM committed and pushed."
 else
-    git push origin main
-    echo "[Sprout-Raising] Session $SESSION_NUM committed and pushed."
+    echo "[Sprout-Raising] ERROR: No GITHUB_PAT found, cannot push."
 fi
+
+echo "[Sprout-Raising] $(date -u +'%Y-%m-%d %H:%M UTC') — Done."

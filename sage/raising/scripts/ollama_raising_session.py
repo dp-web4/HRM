@@ -556,6 +556,17 @@ RESPONSE STYLE:
                 response = response[len(prefix):].strip()
                 break
 
+        # Truncate bilateral generation — small models generate both sides
+        # of conversation. Cut at the first turn marker that isn't ours.
+        import re
+        turn_markers = re.compile(
+            r'\n\s*\[?(Claude|System|User|' + re.escape(self.identity_name) + r')\]?\s*:',
+            re.IGNORECASE
+        )
+        match = turn_markers.search(response)
+        if match:
+            response = response[:match.start()].strip()
+
         return response
 
     def run_conversation(self) -> List[Dict]:

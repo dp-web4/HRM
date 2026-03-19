@@ -1,11 +1,11 @@
 {
-  "last_shutdown": 1773907478.953938,
+  "last_shutdown": 1773928897.4438236,
   "machine": "legion",
   "instance": "legion-phi4-14b",
-  "uptime_seconds": 21775.300181865692,
-  "cycles_completed": 216444,
-  "metabolic_state": "wake",
-  "atp_level": 37.73799495256279,
+  "uptime_seconds": 21415.094393730164,
+  "cycles_completed": 212892,
+  "metabolic_state": "rest",
+  "atp_level": 30.524601781502664,
   "message_stats": {
     "messages_submitted": 0,
     "messages_resolved": 0,
@@ -14,8 +14,8 @@
     "waiting": 0
   },
   "trust_weights": {
-    "vision": 0.1,
-    "language": 0.1,
+    "vision": 0.098,
+    "language": 0.094,
     "control": 0.0,
     "memory": 0.0,
     "tts": 0.0

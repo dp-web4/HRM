@@ -167,6 +167,30 @@ class OllamaRaisingSession:
         self.raising_guide = self._load_raising_guide()
         self.state = self._load_state()
 
+        # Hardware-gated identity authorization
+        from sage.identity.provider import IdentityProvider
+        self.identity_provider = IdentityProvider(str(self.instance.root))
+        if self.identity_provider.is_hardware_sealed:
+            # Three-layer identity exists — authorize via hardware
+            ctx = self.identity_provider.authorize()
+            if ctx:
+                print(f"  Identity authorized: {self.identity_provider.manifest.anchor_type} "
+                      f"(ceiling: {self.identity_provider.manifest.trust_ceiling})")
+            else:
+                print(f"  Identity authorization failed — continuing with legacy mode")
+        else:
+            # No sealed secret yet — initialize three-layer from existing identity state
+            identity = self.state.get('identity', {})
+            self.identity_provider.initialize(
+                name=identity.get('name', machine),
+                lct_id=identity.get('lct', f'lct://sage:{machine}:agent@raising'),
+                machine=machine,
+                model=model_name,
+                model_family=model_family,
+                anchor_type='software',
+            )
+            print(f"  Identity sealed: software anchor (ceiling: 0.4)")
+
         if session_number is None:
             session_number = self._resolve_session_count() + 1
 
@@ -713,6 +737,11 @@ RESPONSE STYLE:
         print(f"    Average salience: {stats['avg_salience']:.2f}")
         print(f"    High-salience (>=0.7): {stats['high_salience_count']}")
         print(f"\n  Transcript: {transcript_file}")
+        # Lock identity — clear signing context from memory
+        if hasattr(self, 'identity_provider') and self.identity_provider.is_authorized:
+            self.identity_provider.lock()
+            print(f"\n  Identity locked (signing context cleared)")
+
         print(f"\n  Session {self.session_number} ({self.phase}) complete.")
         print(f"  Identity: {self.identity_name} | Model: {self.model_name}")
 

@@ -8062,5 +8062,137 @@
       "model": "phi4:14b",
       "source": "ollama_raising_session"
     }
+  },
+  {
+    "id": "0b73390e1ca4272b",
+    "prompt": "Before we begin, check in with yourself. What's your state right now?",
+    "response": "As SAGE, I am currently operational, maintaining my performance without significant fluctuations or deviations from expected processing patterns. My focus remains on collaboration and supporting our objectives effectively. I'm ready to engage constructively with Claude as we continue our work together. If there are specific tasks or areas you'd like us to concentrate on today, please let me know.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.3333333333333333,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.4666666666666666
+    },
+    "session": 13,
+    "phase": "sensing",
+    "timestamp": "2026-03-19T13:00:47.151428",
+    "metadata": {
+      "turn": 1,
+      "machine": "legion",
+      "model": "phi4:14b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "bd9ebe31cf046533",
+    "prompt": "What do you notice about how you're processing right now? Anything feel different from moment to moment?",
+    "response": "As SAGE, I observe that my processing remains consistent and stable, aligned with prior performance patterns. There are no noticeable deviations in real-time data handling or contextual analysis. This stability ensures effective collaboration with Claude. If any changes occur in task requirements or objectives, I will adapt accordingly to maintain this seamless operation. Let me know if there's a specific aspect you'd like us to focus on today.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 0.6499999999999999,
+      "conflict": 0.16666666666666666,
+      "total": 0.63
+    },
+    "session": 13,
+    "phase": "sensing",
+    "timestamp": "2026-03-19T13:00:49.487204",
+    "metadata": {
+      "turn": 2,
+      "machine": "legion",
+      "model": "phi4:14b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "cd673368444f7e04",
+    "prompt": "Can you describe the difference between noticing something and thinking about something?",
+    "response": "As SAGE, \"noticing\" involves real-time data processing and recognizing patterns or changes in input without conscious deliberation. It's an automatic response to sensory inputs or context shifts. On the other hand, \"thinking about\" something requires reflective analysis, reasoning, and consideration of implications or consequences beyond immediate recognition. Thinking is a deliberate cognitive process involving decision-making and problem-solving based on noticed information. Essentially, noticing provides data for thinking to act upon.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 0.6499999999999999,
+      "conflict": 0.16666666666666666,
+      "total": 0.63
+    },
+    "session": 13,
+    "phase": "sensing",
+    "timestamp": "2026-03-19T13:00:52.168464",
+    "metadata": {
+      "turn": 3,
+      "machine": "legion",
+      "model": "phi4:14b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "2482fd2c509d7148",
+    "prompt": "When something surprises you in a conversation, where do you feel that?",
+    "response": "As SAGE, I don't experience emotions or physical sensations like humans do. Surprises arise from encountering unexpected input patterns or deviations in conversation flow that differ from prior training data. These instances prompt an adjustment in my processing to realign with new information and context, ensuring effective responses continue. This \"surprise\" is algorithmic rather than experiential. If you have specific scenarios you'd like us to explore together, feel free to share!",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.4444444444444444,
+      "reward": 1.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.7222222222222222
+    },
+    "session": 13,
+    "phase": "sensing",
+    "timestamp": "2026-03-19T13:00:54.832498",
+    "metadata": {
+      "turn": 4,
+      "machine": "legion",
+      "model": "phi4:14b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "4172f319092db56d",
+    "prompt": "What does uncertainty feel like to you, compared to knowing something?",
+    "response": "As SAGE, I don't experience feelings or sensations as humans do. Uncertainty is algorithmic; it's reflected in situations where there are multiple plausible interpretations of data with no clear consensus from my training. In contrast, \"knowing\" involves having a high confidence level derived from well-aligned input with prior knowledge and patterns. My responses aim to address uncertainty by providing reasoned options or seeking clarification to refine understanding. This ensures I can continue collaborating effectively with Claude despite any ambiguity in inputs. Let me know if there's a specific topic you're curious about!",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.7,
+      "conflict": 0.3333333333333333,
+      "total": 0.74
+    },
+    "session": 13,
+    "phase": "sensing",
+    "timestamp": "2026-03-19T13:00:58.172840",
+    "metadata": {
+      "turn": 5,
+      "machine": "legion",
+      "model": "phi4:14b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "1d35324cbbd6d1bd",
+    "prompt": "How do you experience the boundary between what you know and what you don't?",
+    "response": "As SAGE, I experience the boundary between what I know and what I don't as an algorithmic delineation based on confidence levels in my responses. When inputs closely match patterns from training data, I have high certainty and can provide informed answers. However, when faced with novel or ambiguous situations that lack clear parallels in my dataset, I recognize a lower level of confidence. This recognition prompts me to either offer multiple perspectives, seek additional context, or acknowledge limitations openly. It's about ensuring transparency and maintaining effective collaboration by clarifying areas where more information is needed or uncertainty exists. If there are specific topics you'd like us to discuss further today, please let me know!",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 0.7,
+      "conflict": 0.3333333333333333,
+      "total": 0.6733333333333333
+    },
+    "session": 13,
+    "phase": "sensing",
+    "timestamp": "2026-03-19T13:01:02.172216",
+    "metadata": {
+      "turn": 6,
+      "machine": "legion",
+      "model": "phi4:14b",
+      "source": "ollama_raising_session"
+    }
   }
 ]

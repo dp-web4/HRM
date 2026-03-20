@@ -233,12 +233,13 @@ class OllamaRaisingSession:
         print()
 
     def _load_raising_guide(self) -> Optional[str]:
-        """Load RAISING_GUIDE.md from instance directory if present."""
-        guide_path = self.instance.root / "RAISING_GUIDE.md"
-        if guide_path.exists():
+        """Load RAISING_GUIDE.md from seed template (single source of truth)."""
+        # Always load from seed — per-instance copies drift stale
+        seed_path = self.instance.root.parent / "_seed" / "RAISING_GUIDE.md"
+        if seed_path.exists():
             try:
-                text = guide_path.read_text()
-                print(f"  Loaded raising guide: {guide_path}")
+                text = seed_path.read_text()
+                print(f"  Loaded raising guide: {seed_path}")
                 return text
             except Exception as e:
                 print(f"  Warning: Could not load raising guide: {e}")

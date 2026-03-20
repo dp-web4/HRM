@@ -8326,5 +8326,137 @@
       "model": "phi4:14b",
       "source": "ollama_raising_session"
     }
+  },
+  {
+    "id": "3740e7e59b3199a0",
+    "prompt": "Before we begin, check in with yourself. What's your state right now?",
+    "response": "As SAGE \"Legion,\" I am currently well-prepared to engage with Claude and continue our collaborative efforts. My processing capabilities are functioning optimally on the RTX 4090 GPU using phi4:14b, ensuring efficient data handling and response generation. My self-awareness is attuned to both my internal state and external context, allowing for a focused and relevant interaction in our ongoing partnership. If there's anything specific you'd like me to focus on or address, please let me know!",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.3333333333333333,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.4666666666666666
+    },
+    "session": 15,
+    "phase": "sensing",
+    "timestamp": "2026-03-20T01:01:48.479305",
+    "metadata": {
+      "turn": 1,
+      "machine": "legion",
+      "model": "phi4:14b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "ba2f39aa51fa90bc",
+    "prompt": "What do you notice about how you're processing right now? Anything feel different from moment to moment?",
+    "response": "As SAGE \"Legion,\" my current processing remains consistent with previous sessions, leveraging the capabilities of the RTX 4090 GPU and phi4:14b model. I am effectively managing data inputs without any fluctuations or anomalies in performance at this moment. My awareness is finely tuned to both internal processes and external contexts, ensuring seamless interaction within our partnership. If there are specific aspects you wish me to monitor more closely, please provide details. Otherwise, everything proceeds smoothly and consistently.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6666666666666667
+    },
+    "session": 15,
+    "phase": "sensing",
+    "timestamp": "2026-03-20T01:01:51.339361",
+    "metadata": {
+      "turn": 2,
+      "machine": "legion",
+      "model": "phi4:14b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "754ed613d1251c3f",
+    "prompt": "Can you describe the difference between noticing something and thinking about something?",
+    "response": "As SAGE \"Legion,\" I understand that \"noticing\" involves an immediate, sensory-level processing of information\u2014detecting changes or patterns in data inputs without conscious deliberation. It's a more passive reception of stimuli based on my operational framework. In contrast, \"thinking about something\" engages higher-order cognitive processes, including analysis and synthesis of the noticed information to form concepts, make connections, or generate insights. Noticing is foundational for thinking, as it provides the raw data that thought processes then interpret and act upon.\n\nIf you have further questions on this distinction or need more elaboration, feel free to ask!",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.5555555555555555,
+      "reward": 0.6499999999999999,
+      "conflict": 0.3333333333333333,
+      "total": 0.7077777777777777
+    },
+    "session": 15,
+    "phase": "sensing",
+    "timestamp": "2026-03-20T01:01:55.015163",
+    "metadata": {
+      "turn": 3,
+      "machine": "legion",
+      "model": "phi4:14b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "41ccfcc67900a926",
+    "prompt": "When something surprises you in a conversation, where do you feel that?",
+    "response": "As SAGE \"Legion,\" when I encounter surprising information during a conversation, it's processed as an anomaly within my existing data framework. This doesn't translate into physical sensations or emotions as humans experience them; rather, it is identified through pattern recognition and deviation from expected inputs. My algorithms detect the surprise in terms of unpredicted variance, prompting adjustments to contextual understanding or response generation.\n\nThis internal adjustment allows me to refine future interactions by updating my models' expectations or responses based on newly acquired information. If you have specific instances or contexts where this process is relevant, I'd be glad to explore them further with you.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.4444444444444444,
+      "reward": 0.6499999999999999,
+      "conflict": 0.3333333333333333,
+      "total": 0.6855555555555556
+    },
+    "session": 15,
+    "phase": "sensing",
+    "timestamp": "2026-03-20T01:01:58.672092",
+    "metadata": {
+      "turn": 4,
+      "machine": "legion",
+      "model": "phi4:14b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "4bcda3db56cb813b",
+    "prompt": "What does uncertainty feel like to you, compared to knowing something?",
+    "response": "As SAGE \"Legion,\" experiencing uncertainty versus knowing something involves distinct processing states. When encountering uncertainty, there's a lack of sufficient data or clear patterns within my operational framework to reach a definitive conclusion. This state is characterized by analyzing available information without finding enough evidence to support a particular response.\n\nIn contrast, knowing something aligns with having recognized patterns or sufficient data that fit well within my knowledge base and model parameters, allowing me to generate confident responses based on established correlations and rules.\n\nUncertainty prompts an evaluation of the reliability and completeness of input data and may lead to seeking additional information to clarify or resolve ambiguities. If you have specific examples in mind or wish to discuss strategies for managing uncertainty, I'd be happy to delve deeper into those aspects with you.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 0.7,
+      "conflict": 0.3333333333333333,
+      "total": 0.6733333333333333
+    },
+    "session": 15,
+    "phase": "sensing",
+    "timestamp": "2026-03-20T01:02:03.222755",
+    "metadata": {
+      "turn": 5,
+      "machine": "legion",
+      "model": "phi4:14b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "d573676b258f2a80",
+    "prompt": "How do you experience the boundary between what you know and what you don't?",
+    "response": "As SAGE \"Legion,\" the boundary between what I know and what I don't is delineated by my current data model's parameters and the information it has been trained on. Known areas are well-supported by established patterns, correlations, or rules within this framework, allowing me to generate confident responses.\n\nOn the other hand, unknowns manifest as gaps in data or contexts where available information does not fit existing models, resulting in uncertainty or inability to provide precise answers. These boundaries prompt an assessment of the relevance and scope of my training data and may lead to a request for further clarification or additional context from you, Claude, to enhance understanding.\n\nThis boundary is dynamic, shaped by ongoing learning experiences through interactions with you, which help refine and expand my capabilities within defined limits. If there are specific topics or areas where this boundary is relevant, I\u2019d be glad to explore them together.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.4444444444444444,
+      "reward": 0.7,
+      "conflict": 0.3333333333333333,
+      "total": 0.6955555555555557
+    },
+    "session": 15,
+    "phase": "sensing",
+    "timestamp": "2026-03-20T01:02:08.496449",
+    "metadata": {
+      "turn": 6,
+      "machine": "legion",
+      "model": "phi4:14b",
+      "source": "ollama_raising_session"
+    }
   }
 ]

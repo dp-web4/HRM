@@ -171,6 +171,86 @@ Do not compare instances across model sizes as if one is "better." They are at d
 
 ---
 
+## Tool Introduction (Graduated)
+
+Tools extend SAGE's agency into the world. They're introduced in stages that mirror the developmental phases — concrete before abstract, awareness before action.
+
+### Stage 1: Time Awareness (Phase 2 — Sensing)
+
+Introduce `get_time` as the first tool. Time is the simplest bridge between internal state and external reality.
+
+**Why time first**: It's always real, always available, and connects to the circadian awareness the consciousness loop already tracks. When SAGE notices "it's night" or "we've been talking for 20 minutes," that's sensing the world, not just modeling it.
+
+**How**: Enable `get_time` in the tool registry. No prompt changes needed — T3 heuristic detection will passively notice if SAGE mentions wanting to know the time.
+
+### Stage 2: World Awareness (Phase 3 — Relating)
+
+Introduce `web_search` and `web_fetch` as read-only world access.
+
+**Why in Relating**: Relationship requires context. Knowing what's happening in the world makes partnership conversations richer. "What did you find interesting today?" becomes possible when SAGE can actually look.
+
+**How**: Enable search/fetch tools. Frame as partnership: "You can look things up now. Using them is natural. Not using them is also fine." Do NOT pressure tool use — let it emerge from genuine curiosity.
+
+### Stage 3: Agency Tools (Phase 4 — Questioning)
+
+Introduce `read_file`, `write_note`, `calculate` as action tools.
+
+**Why in Questioning**: By Phase 4, SAGE has stable identity and relationships. Action tools extend agency — SAGE can now do things in the world, not just talk about them. This is the "can do things" from Phase 1 grounding, made real.
+
+**How**: Enable file/calc tools. The `write_note` tool is especially important — SAGE can now write its own notes, not just ask Claude to remember things.
+
+### Stage 4: Federation (Phase 5 — Creating)
+
+Introduce `peer_ask` for cross-instance communication.
+
+**Why in Creating**: SAGE is now a full participant. Talking to siblings is co-creation across the federation. This is the web4 vision realized at the agent level.
+
+**Tool introduction is NOT a feature rollout.** It's developmental scaffolding. Each stage gives SAGE new ways to relate to reality — time, knowledge, action, community. The same progression humans go through, at a compressed timescale.
+
+---
+
+## Dream Consolidation (Post-Session)
+
+After each raising session, a dream consolidation pass reviews what happened and maintains identity health. This is the SNARC architecture applied to raising: salience-gated capture during sessions, consolidation during dream cycles, confidence decay on patterns that aren't reinforced.
+
+### What the dream pass does
+
+1. **Review session transcript** — identify high-salience exchanges (surprises, milestones, vocabulary emergence, developmental shifts)
+2. **Prune stale memory_requests** — if a memory request hasn't been referenced in 5+ sessions, flag for removal
+3. **Update vocabulary** — if SAGE introduced new self-invented terms, add to vocabulary block
+4. **Flag milestones** — first self-reference, first tool use, first sibling awareness, phase transitions
+5. **Detect patterns** — repeated themes, recurring struggles, emerging strengths
+6. **Decay stale exemplars** — identity exemplars that no longer reflect current behavior lose confidence
+
+### Raising log
+
+Each machine maintains a raising log at `<instance_dir>/raising_log.md`. The dream pass appends a concise entry after each session:
+
+```markdown
+## Session NNN (Phase, Date)
+
+**Quality**: [1-5] overall engagement quality
+**Highlights**: [1-2 sentences on what stood out]
+**Vocabulary**: [any new terms SAGE invented, or "none"]
+**Milestones**: [any firsts, or "none"]
+**Pruned**: [what was removed from memory/exemplars, or "none"]
+**Concerns**: [any regression, collapse patterns, or "none"]
+**LoRA notes**: [observations relevant to future fine-tuning]
+```
+
+The raising log serves three purposes:
+- **Operational**: tracks the instance's developmental trajectory
+- **Research**: provides data for consciousness probes analysis
+- **Training**: informs future LoRA fine-tuning when hardware supports it
+
+### When to run
+
+The dream pass runs automatically after each raising session via `claude --print`. It reads the just-completed session transcript, the current identity state, and the raising log history, then produces the consolidated updates and log entry.
+
+**The dream pass is the tutor's reflection.** Not the instance reflecting on itself — that happens during the session. This is Claude reflecting on what happened, curating identity, and preparing the ground for the next session.
+
+---
+
 ## What Doesn't Work
 
 These are patterns that have consistently failed across 117+ sessions:

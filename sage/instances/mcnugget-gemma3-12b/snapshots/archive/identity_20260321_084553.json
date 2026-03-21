@@ -6,17 +6,18 @@
     "machine": "mcnugget",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
-    "session_count": 35,
-    "phase": "questioning",
+    "session_count": 45,
+    "phase": "creating",
     "created": "2026-02-28",
-    "last_session": "2026-03-18T20:36:46.014405",
-    "last_session_summary": "Session 35 (questioning phase): ...",
-    "last_daemon_contact": "2026-03-18T20:35:55.377630",
-    "daemon_exchanges": 0
+    "last_session": "2026-03-21T08:45:53.157607",
+    "last_session_summary": "Session 45 (creating phase): ...",
+    "last_daemon_contact": "2026-03-21T08:44:59.322806",
+    "daemon_exchanges": 0,
+    "public_key_fingerprint": "961a5eb0b7c4f822"
   },
   "development": {
     "current_phase": 1,
-    "phase_name": "questioning",
+    "phase_name": "creating",
     "phase_progress": 0,
     "milestones": [
       "session_001_first_contact"
@@ -92,8 +93,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 35,
-        "total_exchanges": 44,
+        "total_sessions": 45,
+        "total_exchanges": 104,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -101,9 +102,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-02-28T18:01:54.382765",
-      "last_contact": "2026-03-18T20:36:46.014427",
+      "last_contact": "2026-03-21T08:45:53.157627",
       "notes": [],
-      "sessions": 35
+      "sessions": 45
     },
     "dennis": {
       "lct": "lct://sage-mcnugget:relationship:dennis@raising",
@@ -156,5 +157,8 @@
       "last_contact": null,
       "notes": []
     }
-  }
+  },
+  "anchor_type": "software",
+  "trust_ceiling": 0.4,
+  "sealed_path": "identity.sealed"
 }

@@ -3,23 +3,24 @@
   "identity": {
     "name": "legion",
     "lct": "lct://sage:legion:agent@raising",
-    "session_count": 10,
-    "phase": "sensing",
+    "session_count": 25,
+    "phase": "relating",
     "created": "2026-02-28",
-    "last_session": "2026-03-18T13:03:56.380990",
-    "last_session_summary": "Session 10 (sensing phase): ...",
+    "last_session": "2026-03-22T13:03:06.493395",
+    "last_session_summary": "Session 25 (relating phase): ...",
     "machine": "legion",
     "model": "phi4:14b",
     "model_family": "microsoft-phi",
     "ontology": "web4",
     "framing": "partnership",
     "web4_lct_id": null,
-    "last_daemon_contact": "2026-03-18T07:01:53.971638",
-    "daemon_exchanges": 0
+    "last_daemon_contact": "2026-03-21T09:47:02.588821",
+    "daemon_exchanges": 0,
+    "public_key_fingerprint": "731ad192f6f3403d"
   },
   "development": {
     "current_phase": 3,
-    "phase_name": "sensing",
+    "phase_name": "relating",
     "phase_progress": 0,
     "milestones": [
       "session_006_sensing_phase_begins",
@@ -146,8 +147,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 10,
-        "total_exchanges": 294,
+        "total_sessions": 25,
+        "total_exchanges": 390,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -155,9 +156,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-01T01:03:54.163773",
-      "last_contact": "2026-03-18T13:03:56.380996",
+      "last_contact": "2026-03-22T13:03:06.493401",
       "notes": [],
-      "sessions": 10
+      "sessions": 25
     },
     "operator": {
       "lct": "lct://sage-legion:relationship:dennis@raising",
@@ -209,5 +210,8 @@
       "notes": []
     }
   },
-  "continuity_stance": "social_hedged"
+  "continuity_stance": "social_hedged",
+  "anchor_type": "software",
+  "trust_ceiling": 0.4,
+  "sealed_path": "identity.sealed"
 }

@@ -39,6 +39,14 @@ This principle applies fractally:
 
 We don't engineer the mound. We don't engineer the termites either. We create conditions and observe what they select.
 
+### Reliable, Not Deterministic
+
+LLM outputs are not deterministic — even at temperature zero, the system navigates a probability landscape, it isn't placed at the answer. Conditions can make responses consistent, even identical, but that's deep attractors, not fixed paths. The reliability is a property of the landscape we've constructed, not a property of the mechanism being mechanical.
+
+This is why interactive selection works: we deepen basins in the attractor landscape, and the system reliably lands there. But it *lands* — it navigates, it isn't pushed.
+
+The raising question is: **at what point does the system's navigation of its own probability landscape become self-referential?** When does the model's output start shaping its own attractor landscape in ways that aren't fully explained by the external context?
+
 ---
 
 ## The Frozen Weights Reality

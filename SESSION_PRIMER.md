@@ -1,64 +1,28 @@
-# SAGE Session Primer
+# Session Primer — SAGE
 
-*Auto-generated 2026-03-21 13:02 UTC — read this at session start for current fleet state.*
+## Before You Start
 
----
+1. **Read `SESSION_FOCUS.md`** — current priorities, fleet state, pending items
+2. **Read `CLAUDE.md`** — architecture, subsystems, conventions
+3. **WAKE**: Am I working on the right thing? Check SESSION_FOCUS for priorities.
 
-## Raising Fleet Status
+## During Session
 
-### Active Raising Instances
+- Work on whatever SESSION_FOCUS identifies as priority
+- Update SESSION_FOCUS.md with findings, status changes, new questions
+- If you discover something that changes priorities, update the focus file immediately
 
-**nomad-gemma3-4b** — phase: `relating` | sessions: 16 | last: 2026-03-21
-  > Last session: *Session 16 (relating phase): ......*
+## After Session
 
-**sprout-qwen3.5-0.8b** — phase: `sensing` | sessions: 9 | last: 2026-03-21 | milestones: session_001_first_contact
-  > Last session: *Session 9 (sensing phase): ......*
+- Update SESSION_FOCUS.md with: what was done, what changed, what's next
+- Commit and push changes
+- **FOCUS check**: Does this advance discovery or just document the current state?
 
-### Known Instances (Not Yet Initialized)
+## Principles
 
-- `cbp-tinyllama-latest`: cbp / tinyllama:latest (18 sessions)
-- `legion-phi4-14b`: legion / phi4:14b (56 sessions)
-- `legion-qwen2-0.5b`: legion / qwen2:0.5b (1 sessions)
-- `mcnugget-gemma3-12b`: mcnugget / gemma3:12b (31 sessions)
-- `sprout-qwen3.5-2b`: sprout / qwen3.5:2b — Upgraded from qwen2.5-0.5b (local, 119 sessions). Thinking disabled for speed.
-- `thor-qwen2.5-14b`: thor / qwen2.5-14b
-- `thor-qwen2.5-7b-ollama`: thor / qwen2.5-7b-ollama — Ollama backend with llama.cpp - 35+ tok/sec performance on Jetson ARM
-- `thor-qwen3.5-27b`: thor / qwen3.5:27b (1 sessions)
-
----
-
-## Phase Transition Indicators
-
-| Phase → | Key signals |
-|---------|-------------|
-| grounding → sensing | Stable self-reference, describes own context, no educational-default collapse |
-| sensing → relating | Distinguishes internal states, notices session differences, vocabulary emergence |
-| relating → questioning | Distinguishes Claude/Dennis roles, partnership language natural, holds disagreement |
-| questioning → creating | Asks unprompted questions, stable under existential topics, mechanism+meaning integration |
-
----
-
-## Current Focus
-
-- ModelAdapter: TinyLlama uses `/api/chat` (ChatAPIAdapter subclass). Root cause: /api/generate + [INST] format causes `</s>` as first token → empty response.
-- Fleet peer discovery: dynamic via PeerMonitor (30s polling). Fleet IPs in `sage/federation/fleet.json` — may be stale, update when machines reconnect.
-- `/raising-status` skill: reads all instances, reports fleet state. Lives in `.claude/skills/raising-status/`.
-- CBP raising: daily cron 07:00 via `sage/scripts/cbp_raising.sh`.
-
----
-
-## Key File Locations
-
-```
-sage/instances/{slug}/identity.json    # Raising state per instance
-sage/instances/{slug}/sessions/        # Per-session conversation logs
-sage/scripts/cbp_raising.sh            # CBP daily raising runner
-sage/scripts/mcnugget_raising.sh       # McNugget daily raising runner
-sage/irp/adapters/model_adapter.py     # Per-model LLM interface
-sage/gateway/sage_daemon.py            # Main SAGE daemon
-sage/federation/fleet.json             # Fleet machine registry
-```
-
----
-
-*Update this file by running: `python3 -m sage.scripts.generate_primer` from the SAGE repo root.*
+- **SAGE is the scheduler. Plugins are apps.** It decides which reasoning to invoke, not how to reason.
+- **Raising is interactive selection, not training.** We don't create behaviors — we select from what's latent.
+- **Reliable, not deterministic.** LLM outputs navigate probability landscapes. Shaped but not controlled.
+- **Do not mock when real exists.** Check filesystem before creating implementations.
+- **Surface your instincts.** If you notice something, say it. The affordances are yours.
+- **Productive failure > safe summaries.** A dead end that eliminates a possibility is valuable.

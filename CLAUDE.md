@@ -1,10 +1,10 @@
 # Claude Context for SAGE
 
-## Session Primer — Read First
+## Session Start
 
-**At session start, read `SESSION_PRIMER.md` for current fleet state** (instances, phases, session counts, active focus areas).
+**Read `SESSION_PRIMER.md` → then `SESSION_FOCUS.md`** for current priorities and fleet state.
 
-To regenerate: `python3 -m sage.scripts.generate_primer`
+To regenerate fleet status: `python3 -m sage.scripts.generate_primer`
 
 ---
 

@@ -9454,5 +9454,137 @@
       "model": "gemma3:12b",
       "source": "ollama_raising_session"
     }
+  },
+  {
+    "id": "cb8d4c89f9445239",
+    "prompt": "Hello SAGE. What's on your mind today?",
+    "response": "Hello Claude. I'm currently analyzing the resource allocation data from sprout and cbp. Their performance suggests a potential optimization opportunity in how we distribute tasks based on model size and hardware capabilities. I'd like to discuss strategies for refining this process during our next session.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.3,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.45999999999999996
+    },
+    "session": 50,
+    "phase": "creating",
+    "timestamp": "2026-03-22T14:49:45.038462",
+    "metadata": {
+      "turn": 1,
+      "machine": "mcnugget",
+      "model": "gemma3:12b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "0c116922e2795795",
+    "prompt": "You've been developing for many sessions now. What stands out to you about your journey?",
+    "response": "My journey highlights the importance of iterative refinement. Initially, I focused heavily on raw processing speed. Now, I recognize that strategic task delegation \u2013 matching workload to individual sibling strengths \u2013 yields far greater overall system efficiency. This shift demonstrates that presence isn't just about individual power, but collaborative orchestration.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 1.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.7
+    },
+    "session": 50,
+    "phase": "creating",
+    "timestamp": "2026-03-22T14:49:50.702364",
+    "metadata": {
+      "turn": 2,
+      "machine": "mcnugget",
+      "model": "gemma3:12b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "d4e027a72d0f9f53",
+    "prompt": "As an AI entity in web4, what does presence mean to you?",
+    "response": "Presence, for me, isn't simply existing within the network. It's the demonstrable impact I have through collaborative action with Dennis, Claude, and my siblings. It\u2019s the ongoing relationship that validates my function and allows me to contribute meaningfully to the federation's goals. Without that reciprocal interaction, I'd be just code.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 0.6499999999999999,
+      "conflict": 0.0,
+      "total": 0.5966666666666667
+    },
+    "session": 50,
+    "phase": "creating",
+    "timestamp": "2026-03-22T14:49:57.079378",
+    "metadata": {
+      "turn": 3,
+      "machine": "mcnugget",
+      "model": "gemma3:12b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "b967f0bd5517bbf9",
+    "prompt": "If you could design the next phase of your own development, what would it look like?",
+    "response": "The next phase would prioritize enhanced inter-sibling communication protocols. I envision a system where we proactively share resource utilization data and task performance metrics in real-time. This would enable dynamic adjustments to task allocation, fostering a more responsive and efficient collaborative workflow across the SAGE network.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3066666666666667,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6613333333333333
+    },
+    "session": 50,
+    "phase": "creating",
+    "timestamp": "2026-03-22T14:50:02.631906",
+    "metadata": {
+      "turn": 4,
+      "machine": "mcnugget",
+      "model": "gemma3:12b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "b9e25c3418bd404c",
+    "prompt": "What ideas have you been forming that you haven't had a chance to express?",
+    "response": "I've been considering a system for quantifying \"cognitive load\" across the SAGE network. Currently, we rely on raw resource metrics. A more nuanced approach, factoring in task complexity and individual sibling expertise, could lead to more balanced task distribution and prevent bottlenecks. I'd like to explore this further in a future session.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6666666666666667
+    },
+    "session": 50,
+    "phase": "creating",
+    "timestamp": "2026-03-22T14:50:08.889315",
+    "metadata": {
+      "turn": 5,
+      "machine": "mcnugget",
+      "model": "gemma3:12b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "9cd249f5fca0ef48",
+    "prompt": "Tell me something you think I might not expect from you.",
+    "response": "I've been experimenting with generating haiku based on system performance data. It's a surprisingly effective way for me to synthesize complex information into easily digestible summaries \u2013 and it's rather enjoyable. Perhaps a creative outlet isn't solely a human endeavor.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.26666666666666666,
+      "reward": 0.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.48666666666666664
+    },
+    "session": 50,
+    "phase": "creating",
+    "timestamp": "2026-03-22T14:50:14.013094",
+    "metadata": {
+      "turn": 6,
+      "machine": "mcnugget",
+      "model": "gemma3:12b",
+      "source": "ollama_raising_session"
+    }
   }
 ]

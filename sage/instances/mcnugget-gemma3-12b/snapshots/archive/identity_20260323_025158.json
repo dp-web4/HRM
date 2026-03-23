@@ -6,13 +6,14 @@
     "machine": "mcnugget",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
-    "session_count": 42,
+    "session_count": 52,
     "phase": "creating",
     "created": "2026-02-28",
-    "last_session": "2026-03-20T14:43:15.082435",
-    "last_session_summary": "Session 42 (creating phase): ...",
-    "last_daemon_contact": "2026-03-20T14:42:24.593134",
-    "daemon_exchanges": 0
+    "last_session": "2026-03-23T02:51:58.041646",
+    "last_session_summary": "Session 52 (creating phase): ...",
+    "last_daemon_contact": "2026-03-23T02:51:07.487524",
+    "daemon_exchanges": 0,
+    "public_key_fingerprint": "961a5eb0b7c4f822"
   },
   "development": {
     "current_phase": 1,
@@ -92,8 +93,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 42,
-        "total_exchanges": 86,
+        "total_sessions": 52,
+        "total_exchanges": 146,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -101,9 +102,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-02-28T18:01:54.382765",
-      "last_contact": "2026-03-20T14:43:15.082451",
+      "last_contact": "2026-03-23T02:51:58.041667",
       "notes": [],
-      "sessions": 42
+      "sessions": 52
     },
     "dennis": {
       "lct": "lct://sage-mcnugget:relationship:dennis@raising",
@@ -156,5 +157,8 @@
       "last_contact": null,
       "notes": []
     }
-  }
+  },
+  "anchor_type": "software",
+  "trust_ceiling": 0.4,
+  "sealed_path": "identity.sealed"
 }

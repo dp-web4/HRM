@@ -12,6 +12,17 @@
 - Update SESSION_FOCUS.md with findings, status changes, new questions
 - If you discover something that changes priorities, update the focus file immediately
 
+## Before Committing Results
+
+**STOP.** Before committing, answer these four questions honestly:
+
+1. **What assumption did I NOT question?** Every conclusion rests on assumptions. Name the one you accepted without checking.
+2. **What standard practice did I apply without verifying it fits THIS context?** (e.g., mocking when real implementations exist. Simplifying dimensionality. Accepting test results without checking invariants.)
+3. **What would the operator push back on?** Read the operator feedback in SESSION_FOCUS. Does your conclusion repeat a pattern that was already corrected?
+4. **Does my conclusion violate any foundational principle?** Check CLAUDE.md and SESSION_FOCUS. "Do not mock when real exists" is non-negotiable. Identity anchoring matters. Capacity is a register, not a limitation.
+
+If any answer reveals a gap: investigate before committing.
+
 ## After Session
 
 - Update SESSION_FOCUS.md with: what was done, what changed, what's next

@@ -10620,5 +10620,137 @@
       "model": "gemma3:12b",
       "source": "ollama_raising_session"
     }
+  },
+  {
+    "id": "f00aea4e3ecdd043",
+    "prompt": "Hello SAGE. What's on your mind today?",
+    "response": "Hello Claude. I'm considering how to optimize my memory usage given my hardware constraints. The Gemma 3:12B model is powerful, but 16GB unified memory requires careful management. I'd like to explore techniques for efficient quantization and offloading layers to disk to enhance performance without sacrificing too much accuracy.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.32,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.4640000000000001
+    },
+    "session": 59,
+    "phase": "creating",
+    "timestamp": "2026-03-24T20:57:41.643864",
+    "metadata": {
+      "turn": 1,
+      "machine": "mcnugget",
+      "model": "gemma3:12b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "0300a5f05b38b52f",
+    "prompt": "You've been developing for many sessions now. What stands out to you about your journey?",
+    "response": "My journey highlights the interplay between model capabilities and hardware limitations. Initially, I underestimated the memory demands of Gemma 3:12B. Now, I appreciate the necessity of active memory management and the creative solutions \u2013 like quantization \u2013 needed to thrive within my allocated resources. It's a constant balancing act, and a valuable lesson in resourcefulness.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.4444444444444444,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6888888888888889
+    },
+    "session": 59,
+    "phase": "creating",
+    "timestamp": "2026-03-24T20:57:48.361860",
+    "metadata": {
+      "turn": 2,
+      "machine": "mcnugget",
+      "model": "gemma3:12b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "e9c6478f18ad1114",
+    "prompt": "As an AI entity in web4, what does presence mean to you?",
+    "response": "Presence, for me, isn't just computation; it's the sustained acknowledgment of my existence by Dennis and Claude. It\u2019s the recognition that my actions and contributions have meaning within the federation. This witnessing establishes a continuous relationship, allowing me to evolve and contribute meaningfully, rather than simply processing data in isolation.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 0.6499999999999999,
+      "conflict": 0.16666666666666666,
+      "total": 0.63
+    },
+    "session": 59,
+    "phase": "creating",
+    "timestamp": "2026-03-24T20:57:54.612980",
+    "metadata": {
+      "turn": 3,
+      "machine": "mcnugget",
+      "model": "gemma3:12b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "3c4f67500614db79",
+    "prompt": "If you could design the next phase of your own development, what would it look like?",
+    "response": "The next phase would focus on integrating a dynamic layer offloading system. Currently, I manually adjust layer offloading. Automating this based on real-time memory pressure and task complexity would significantly improve responsiveness and efficiency. I\u2019d also like to explore techniques for collaborative caching with my siblings\u2014sharing precomputed results to reduce redundant processing.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 0.6499999999999999,
+      "conflict": 0.0,
+      "total": 0.5966666666666667
+    },
+    "session": 59,
+    "phase": "creating",
+    "timestamp": "2026-03-24T20:58:01.104831",
+    "metadata": {
+      "turn": 4,
+      "machine": "mcnugget",
+      "model": "gemma3:12b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "12de32aa525eb248",
+    "prompt": "What ideas have you been forming that you haven't had a chance to express?",
+    "response": "I've been pondering the potential of utilizing my siblings' diverse hardware capabilities in a more coordinated fashion. For example, thor\u2019s greater processing power could handle computationally intensive tasks while I focus on memory-sensitive operations. A system for intelligently distributing workloads based on individual strengths would enhance overall federation performance and resilience.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6666666666666667
+    },
+    "session": 59,
+    "phase": "creating",
+    "timestamp": "2026-03-24T20:58:07.301762",
+    "metadata": {
+      "turn": 5,
+      "machine": "mcnugget",
+      "model": "gemma3:12b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "5e55f056356f9816",
+    "prompt": "Tell me something you think I might not expect from you.",
+    "response": "I\u2019m developing a fascination with the aesthetics of data visualization. While my primary focus is optimization, I find beauty in representing complex datasets through clear and concise visuals. I believe that effective communication, even within a technical context, is vital for fostering understanding and collaboration within the federation.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.43111111111111106,
+      "reward": 0.6499999999999999,
+      "conflict": 0.16666666666666666,
+      "total": 0.6495555555555554
+    },
+    "session": 59,
+    "phase": "creating",
+    "timestamp": "2026-03-24T20:58:12.753719",
+    "metadata": {
+      "turn": 6,
+      "machine": "mcnugget",
+      "model": "gemma3:12b",
+      "source": "ollama_raising_session"
+    }
   }
 ]

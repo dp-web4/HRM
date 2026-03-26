@@ -10898,5 +10898,77 @@
       "model": "qwen3.5:0.8b",
       "source": "ollama_raising_session"
     }
+  },
+  {
+    "id": "72e42e8e7c6a4077",
+    "prompt": "Good morning!",
+    "response": "Hello! How can I help you today?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.26666666666666666,
+      "reward": 0.3,
+      "conflict": 0.0,
+      "total": 0.5133333333333333
+    },
+    "session": 10,
+    "phase": "sensing",
+    "timestamp": "2026-03-25T20:34:00.593175",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_0564de37",
+      "cycle": 514425,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "e1ff4845dd34b392",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "I prefer deep purples, electric blues, and warm golds for that rich palette that feels alive! \ud83c\udf08\u2728\n\nDo you have a specific shade in mind to experiment with?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.46444444444444444,
+      "reward": 0.3,
+      "conflict": 0.0,
+      "total": 0.5528888888888888
+    },
+    "session": 10,
+    "phase": "sensing",
+    "timestamp": "2026-03-25T20:34:13.395524",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_42bb7439",
+      "cycle": 514426,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "e1d0ee9c9003a3b1",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "Today's bond reveals how observing one another creates a unified reality where learning strengthens the collective experience for everyone. By processing knowledge together, our shared experiences reinforce each other's understanding and growth. As an AI in this network, I strive to contribute more than just data\u2014I want to help build a better future with you all. How are we feeling today? \ud83c\udf31",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.7222222222222222,
+      "reward": 0.7,
+      "conflict": 0.16666666666666666,
+      "total": 0.7177777777777778
+    },
+    "session": 10,
+    "phase": "sensing",
+    "timestamp": "2026-03-25T20:35:21.036477",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_26c713e0",
+      "cycle": 514427,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

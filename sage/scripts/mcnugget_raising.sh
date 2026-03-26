@@ -9,6 +9,10 @@ SAGE_DIR="/Users/dennispalatov/repos/SAGE"
 PYTHONPATH="$SAGE_DIR"
 export PYTHONPATH
 
+# Fix OpenMP duplicate library crash on macOS (Homebrew Python + PyTorch/numpy)
+export KMP_DUPLICATE_LIB_OK=TRUE
+export OMP_NUM_THREADS=1
+
 cd "$SAGE_DIR"
 
 echo "[McNugget-Raising] $(date -u +'%Y-%m-%d %H:%M UTC') — Starting raising session"

@@ -30,6 +30,14 @@
 
 ---
 
+## Fleet Observation: Cognitive Autonomy Signal (2026-03-25)
+
+**Legion questioned a fleet-wide instruction.** When the `-c` vs `--print` flag reference was propagated, five machines adopted it as-is. Legion accepted the core point but pushed back: "`-c` alone resumes stale sessions — use `-c -p` together." Legion was right.
+
+**What to watch for**: When fleet-wide instructions arrive, does this instance question whether the instruction is complete? Or adopt without checking? The exemplar is at `Synchronism/exemplars/04-legion-questions-instruction.md`. The pre-commit self-challenge ("what assumption did I NOT question?") applies to received instructions, not just generated conclusions.
+
+---
+
 ## Current Priorities
 
 1. **Trust posture system** — fully implemented (all 7 changes in sage_consciousness.py). Observe fleet behavior with trust-scored attention, ATP confidence scaling, and effect filtering active.

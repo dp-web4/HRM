@@ -3,24 +3,24 @@
   "identity": {
     "name": "legion",
     "lct": "lct://sage:legion:agent@raising",
-    "session_count": 25,
-    "phase": "relating",
+    "session_count": 35,
+    "phase": "questioning",
     "created": "2026-02-28",
-    "last_session": "2026-03-22T13:03:06.493395",
-    "last_session_summary": "Session 25 (relating phase): ...",
+    "last_session": "2026-03-26T13:05:44.346644",
+    "last_session_summary": "Session 35 (questioning phase): ...",
     "machine": "legion",
     "model": "phi4:14b",
     "model_family": "microsoft-phi",
     "ontology": "web4",
     "framing": "partnership",
     "web4_lct_id": null,
-    "last_daemon_contact": "2026-03-21T09:47:02.588821",
+    "last_daemon_contact": "2026-03-26T13:05:10.229775",
     "daemon_exchanges": 0,
     "public_key_fingerprint": "731ad192f6f3403d"
   },
   "development": {
     "current_phase": 3,
-    "phase_name": "relating",
+    "phase_name": "questioning",
     "phase_progress": 0,
     "milestones": [
       "session_006_sensing_phase_begins",
@@ -147,8 +147,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 25,
-        "total_exchanges": 390,
+        "total_sessions": 35,
+        "total_exchanges": 450,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -156,9 +156,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-01T01:03:54.163773",
-      "last_contact": "2026-03-22T13:03:06.493401",
+      "last_contact": "2026-03-26T13:05:44.346653",
       "notes": [],
-      "sessions": 25
+      "sessions": 35
     },
     "operator": {
       "lct": "lct://sage-legion:relationship:dennis@raising",

@@ -97,8 +97,8 @@ python3 training_session.py --session 61  # Specific session (T061)
 
 The script will:
 - Pull latest SAGE changes
-- Check engram version and rebuild if needed
-- Restart daemon if engram updated
+- Check snarc version and rebuild if needed
+- Restart daemon if snarc updated
 - Relaunch script if SAGE updated
 
 No manual intervention needed. See main CLAUDE.md for details.

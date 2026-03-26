@@ -4,8 +4,8 @@ Check for updates and relaunch script if needed.
 
 This script:
 1. Pulls latest changes from git
-2. Checks engram version
-3. Rebuilds engram if needed
+2. Checks snarc version
+3. Rebuilds snarc if needed
 4. Relaunches the calling script if updates were pulled
 
 Usage: Call from beginning of main() in session scripts
@@ -18,10 +18,10 @@ import json
 from pathlib import Path
 
 
-def get_engram_version():
-    """Get current engram version from package.json."""
-    engram_path = Path.home() / "ai-workspace" / "engram"
-    package_json = engram_path / "package.json"
+def get_snarc_version():
+    """Get current snarc version from package.json."""
+    snarc_path = Path.home() / "ai-workspace" / "snarc"
+    package_json = snarc_path / "package.json"
 
     if not package_json.exists():
         return None
@@ -64,19 +64,19 @@ def check_and_update_sage():
         return False
 
 
-def check_and_update_engram():
-    """Pull and rebuild engram if needed. Returns True if updated."""
-    engram_path = Path.home() / "ai-workspace" / "engram"
+def check_and_update_snarc():
+    """Pull and rebuild snarc if needed. Returns True if updated."""
+    snarc_path = Path.home() / "ai-workspace" / "snarc"
 
-    if not engram_path.exists():
-        print("⚠️  Engram not found")
+    if not snarc_path.exists():
+        print("⚠️  SNARC not found")
         return False
 
     try:
-        old_version = get_engram_version()
+        old_version = get_snarc_version()
 
         # Pull updates
-        os.chdir(engram_path)
+        os.chdir(snarc_path)
         subprocess.run(["git", "fetch"], check=True, capture_output=True)
 
         result = subprocess.run(
@@ -86,15 +86,15 @@ def check_and_update_engram():
 
         behind = int(result.stdout.strip())
         if behind > 0:
-            print(f"📥 Engram is {behind} commits behind. Pulling updates...")
+            print(f"📥 SNARC is {behind} commits behind. Pulling updates...")
             subprocess.run(["git", "pull", "--rebase"], check=True)
 
-            new_version = get_engram_version()
+            new_version = get_snarc_version()
             if new_version != old_version:
-                print(f"🔄 Engram version changed: {old_version} → {new_version}")
-                print("🔨 Rebuilding engram...")
+                print(f"🔄 SNARC version changed: {old_version} → {new_version}")
+                print("🔨 Rebuilding snarc...")
                 subprocess.run(["npm", "run", "build"], check=True)
-                print("✅ Engram rebuilt")
+                print("✅ SNARC rebuilt")
 
                 # Restart SAGE daemon if running
                 try:
@@ -114,14 +114,14 @@ def check_and_update_engram():
 
                 return True
             else:
-                print("✅ Engram updated (version unchanged)")
+                print("✅ SNARC updated (version unchanged)")
                 return True
         else:
-            print(f"✅ Engram {old_version} is up to date")
+            print(f"✅ SNARC {old_version} is up to date")
             return False
 
     except Exception as e:
-        print(f"⚠️  Could not check engram updates: {e}")
+        print(f"⚠️  Could not check snarc updates: {e}")
         return False
 
 
@@ -138,7 +138,7 @@ def relaunch_if_needed(script_path, argv):
     print("🔍 Checking for updates...")
 
     sage_updated = check_and_update_sage()
-    engram_updated = check_and_update_engram()
+    snarc_updated = check_and_update_snarc()
 
     if sage_updated:
         print("\n🔄 SAGE was updated. Relaunching script...")
@@ -147,8 +147,8 @@ def relaunch_if_needed(script_path, argv):
         os.execv(sys.executable, [sys.executable] + argv)
         # Never returns if successful
 
-    if engram_updated:
-        print("✅ Engram was updated. Continuing with new version...")
+    if snarc_updated:
+        print("✅ SNARC was updated. Continuing with new version...")
         # Give daemon time to restart
         import time
         time.sleep(2)

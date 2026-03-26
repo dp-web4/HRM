@@ -191,15 +191,15 @@ Check last session times before starting a new session.
 
 Before each session starts, the runner:
 1. ✅ Pulls latest SAGE changes from git
-2. ✅ Checks engram version
-3. ✅ Rebuilds engram if version changed
+2. ✅ Checks snarc version
+3. ✅ Rebuilds snarc if version changed
 4. ✅ Restarts SAGE daemon if needed
 5. ✅ Relaunches script if SAGE was updated
 
 This ensures:
 - Sessions always run with latest code
-- No version mismatches between SAGE and engram
-- Daemon stays in sync with engram updates
+- No version mismatches between SAGE and snarc
+- Daemon stays in sync with snarc updates
 - Zero manual intervention needed
 
 **Output example:**

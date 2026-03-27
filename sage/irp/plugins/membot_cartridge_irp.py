@@ -64,27 +64,44 @@ class MemoryCartridgeIRP(IRPPlugin):
         self._mounted = False
         self._last_scores = []
 
+    # REST API endpoint map (FastMCP 3.x doesn't expose /mcp/v1/tools/call)
+    _REST_MAP = {
+        "mount_cartridge": ("POST", "/api/mount", lambda a: a),
+        "memory_search": ("POST", "/api/search", lambda a: a),
+        "memory_store": ("POST", "/api/store", lambda a: a),
+        "save_cartridge": ("POST", "/api/save", lambda a: {}),
+        "get_status": ("GET", "/api/status", lambda a: None),
+    }
+
     def _call_membot(self, tool: str, args: Dict[str, Any]) -> Optional[str]:
-        """Call a membot MCP tool via HTTP."""
+        """Call a membot tool via REST API."""
         if not HAS_REQUESTS:
             log.warning("requests not installed — membot unavailable")
             return None
 
+        route = self._REST_MAP.get(tool)
+        if not route:
+            log.warning(f"membot: unknown tool {tool}")
+            return None
+
+        method, path, arg_fn = route
+        url = f"{self.membot_url}{path}"
+
         try:
-            # FastMCP HTTP endpoint pattern
-            resp = requests.post(
-                f"{self.membot_url}/mcp/v1/tools/call",
-                json={"name": tool, "arguments": args},
-                timeout=10,
-            )
+            if method == "GET":
+                resp = requests.get(url, timeout=10)
+            else:
+                payload = arg_fn(args)
+                resp = requests.post(url, json=payload, timeout=10)
+
             if resp.status_code == 200:
-                result = resp.json()
-                # FastMCP returns content array
-                if isinstance(result, dict) and 'content' in result:
-                    for item in result['content']:
-                        if item.get('type') == 'text':
-                            return item['text']
-                return json.dumps(result)
+                data = resp.json()
+                # REST endpoints return {"status": "ok", "result": "..."} or similar
+                if isinstance(data, dict):
+                    if "result" in data:
+                        return str(data["result"])
+                    return json.dumps(data)
+                return str(data)
             else:
                 log.warning(f"membot {tool} returned {resp.status_code}")
                 return None

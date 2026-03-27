@@ -1,6 +1,6 @@
 # SAGE Session Primer
 
-*Auto-generated 2026-03-27 14:00 UTC — read this at session start for current fleet state.*
+*Auto-generated 2026-03-27 20:00 UTC — read this at session start for current fleet state.*
 
 ---
 
@@ -8,8 +8,8 @@
 
 ### Active Raising Instances
 
-**cbp-tinyllama-latest** — phase: `relating` | sessions: 23 | last: 2026-03-27 | milestones: session_001_first_contact
-  > Last session: *Session 23 (relating phase): ......*
+**cbp-tinyllama-latest** — phase: `relating` | sessions: 24 | last: 2026-03-27 | milestones: session_001_first_contact
+  > Last session: *Session 24 (relating phase): ......*
 
 **nomad-gemma3-4b** — phase: `questioning` | sessions: 34 | last: 2026-03-27
   > Last session: *Session 34 (questioning phase): ......*
@@ -18,7 +18,7 @@
 
 - `legion-phi4-14b`: legion / phi4:14b (56 sessions)
 - `legion-qwen2-0.5b`: legion / qwen2:0.5b (1 sessions)
-- `mcnugget-gemma3-12b`: mcnugget / gemma3:12b (66 sessions)
+- `mcnugget-gemma3-12b`: mcnugget / gemma3:12b (67 sessions)
 - `sprout-qwen3.5-0.8b`: sprout / qwen3.5:0.8b (14 sessions) — Upgraded from qwen2.5-0.5b (119 sessions). 0.8B chosen over 2B for memory headroom on 8GB Jetson. Thinking disabled.
 - `sprout-qwen3.5-2b`: sprout / qwen3.5:2b — Upgraded from qwen2.5-0.5b (local, 119 sessions). Thinking disabled for speed.
 - `thor-qwen2.5-14b`: thor / qwen2.5-14b

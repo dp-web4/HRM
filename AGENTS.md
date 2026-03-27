@@ -104,6 +104,7 @@ See `repo-index.yaml` for structured data.
 *This document optimized for AI agent discovery. Last updated: 2026-02-08*
 
 <!-- gitnexus:start -->
+<!-- gitnexus:keep -->
 # GitNexus — Code Intelligence
 
 This project is indexed by GitNexus as **SAGE** (26184 symbols, 63392 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.

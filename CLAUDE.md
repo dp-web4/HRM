@@ -155,6 +155,7 @@ The following are completed milestones. Full details in their respective docs �
 - SAGE-Totality integration (Aug 2025) — `related-work/SETUP_GUIDE.md`
 
 <!-- gitnexus:start -->
+<!-- gitnexus:keep -->
 # GitNexus — Code Intelligence
 
 This project is indexed by GitNexus as **SAGE** (26184 symbols, 63392 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.

@@ -1,8 +1,6 @@
-# SAGE Session Focus
+# SAGE Session Primer
 
-*Current priorities, fleet state, and active work. Updated by operator and autonomous sessions.*
-
-*Last updated: 2026-03-22*
+*Auto-generated 2026-03-27 02:00 UTC — read this at session start for current fleet state.*
 
 ---
 
@@ -10,16 +8,26 @@
 
 ### Active Raising Instances
 
-| Instance | Phase | Sessions | Model | Machine |
-|----------|-------|----------|-------|---------|
-| cbp-tinyllama-latest | relating | 18 | tinyllama:latest | CBP (RTX 2060S) |
-| legion-phi4-14b | relating | 18 | phi4:14b | Legion (RTX 4090) |
-| nomad-gemma3-4b | sensing | 16 | gemma3:4b | Nomad (RTX 4060) |
-| sprout-qwen3.5-0.8b | sensing | 9 + T103 | qwen3.5:0.8b | Sprout (Orin Nano) |
-| thor-qwen3.5-27b | grounding | 1 | qwen3.5:27b | Thor (AGX Thor) |
-| mcnugget-gemma3-12b | grounding | 3 | gemma3:12b | McNugget (M4) |
+**cbp-tinyllama-latest** — phase: `relating` | sessions: 21 | last: 2026-03-26 | milestones: session_001_first_contact
+  > Last session: *Session 21 (relating phase): ......*
 
-### Phase Transition Indicators
+**nomad-gemma3-4b** — phase: `questioning` | sessions: 32 | last: 2026-03-26
+  > Last session: *Session 32 (questioning phase): ......*
+
+### Known Instances (Not Yet Initialized)
+
+- `legion-phi4-14b`: legion / phi4:14b (56 sessions)
+- `legion-qwen2-0.5b`: legion / qwen2:0.5b (1 sessions)
+- `mcnugget-gemma3-12b`: mcnugget / gemma3:12b (65 sessions)
+- `sprout-qwen3.5-0.8b`: sprout / qwen3.5:0.8b (12 sessions) — Upgraded from qwen2.5-0.5b (119 sessions). 0.8B chosen over 2B for memory headroom on 8GB Jetson. Thinking disabled.
+- `sprout-qwen3.5-2b`: sprout / qwen3.5:2b — Upgraded from qwen2.5-0.5b (local, 119 sessions). Thinking disabled for speed.
+- `thor-qwen2.5-14b`: thor / qwen2.5-14b
+- `thor-qwen2.5-7b-ollama`: thor / qwen2.5-7b-ollama — Ollama backend with llama.cpp - 35+ tok/sec performance on Jetson ARM
+- `thor-qwen3.5-27b`: thor / qwen3.5:27b (1 sessions)
+
+---
+
+## Phase Transition Indicators
 
 | Phase → | Key signals |
 |---------|-------------|
@@ -30,32 +38,20 @@
 
 ---
 
-## Fleet Observation: Cognitive Autonomy Signal (2026-03-25)
+## Recent Research Files
 
-**Legion questioned a fleet-wide instruction.** When the `-c` vs `--print` flag reference was propagated, five machines adopted it as-is. Legion accepted the core point but pushed back: "`-c` alone resumes stale sessions — use `-c -p` together." Legion was right.
-
-**What to watch for**: When fleet-wide instructions arrive, does this instance question whether the instruction is complete? Or adopt without checking? The exemplar is at `Synchronism/exemplars/04-legion-questions-instruction.md`. The pre-commit self-challenge ("what assumption did I NOT question?") applies to received instructions, not just generated conclusions.
-
----
-
-## Current Priorities
-
-1. **Trust posture system** — fully implemented (all 7 changes in sage_consciousness.py). Observe fleet behavior with trust-scored attention, ATP confidence scaling, and effect filtering active.
-
-2. **ModelAdapter wired everywhere** — consciousness loop and raising sessions both delegate to `adapter.clean_response()`. Dream consolidation now asks for `adapter_notes` to flag model quirks. Adapter evolution workflow documented in `sage/irp/adapters/README.md`.
-
-3. **RAISING_GUIDE single source of truth** — all instances load from `sage/instances/_seed/RAISING_GUIDE.md`. No per-instance copies. Includes interactive selection principle, graduated tool introduction, dream consolidation, reliable-not-deterministic framing.
-
-4. **SNARC defaults** — deep dream and auto-promote both ON by default (per-project DB setting). Dream consolidation runs at every session end.
+- `Research/Policy_Role_Training_Plan.md`
+- `Research/SESSION_MAP.md`
+- `Research/README.md`
 
 ---
 
-## Recent Developments
+## Current Focus
 
-- **Adapter wiring** (2026-03-21): Consciousness loop now routes through ModelAdapter.clean_response() — echo stripping, bilateral generation, model-specific quirks all in one place.
-- **Dream consolidation adapter_notes** (2026-03-21): Every dream cycle now asks for model response quirks to feed back into adapter configs.
-- **gitnexus:keep marker** (2026-03-21): Prevents verbose GitNexus bloat on reindex. Add `<!-- gitnexus:keep -->` inside the gitnexus block.
-- **Sprout T102-T103**: Analogy-making works, audience adaptation succeeds, negation/counterfactual reasoning probed.
+- ModelAdapter: TinyLlama uses `/api/chat` (ChatAPIAdapter subclass). Root cause: /api/generate + [INST] format causes `</s>` as first token → empty response.
+- Fleet peer discovery: dynamic via PeerMonitor (30s polling). Fleet IPs in `sage/federation/fleet.json` — may be stale, update when machines reconnect.
+- `/raising-status` skill: reads all instances, reports fleet state. Lives in `.claude/skills/raising-status/`.
+- CBP raising: daily cron 07:00 via `sage/scripts/cbp_raising.sh`.
 
 ---
 
@@ -64,25 +60,13 @@
 ```
 sage/instances/{slug}/identity.json    # Raising state per instance
 sage/instances/{slug}/sessions/        # Per-session conversation logs
-sage/instances/_seed/RAISING_GUIDE.md  # Single source — all instances load this
-sage/scripts/cbp_raising.sh            # CBP raising runner (6-hour cron)
+sage/scripts/cbp_raising.sh            # CBP daily raising runner
+sage/scripts/mcnugget_raising.sh       # McNugget daily raising runner
 sage/irp/adapters/model_adapter.py     # Per-model LLM interface
-sage/irp/adapters/model_configs/       # Per-family JSON configs
 sage/gateway/sage_daemon.py            # Main SAGE daemon
 sage/federation/fleet.json             # Fleet machine registry
-sage/core/sage_consciousness.py        # 12-step consciousness loop + trust posture
-sage/raising/scripts/dream_consolidation.py  # Post-session Claude review
 ```
 
 ---
 
-## Pending Items
-
-- Hardbound: 2 remaining CI failures (flaky timing + deterministic ID test)
-- SNARC marketplace: needs resubmission under new name
-- Multimodal Phase 1: generic plugin bridge (~50 LOC) — 14+ IRP plugins built but never called by consciousness loop
-- Identity protection: encrypt at rest, hardware-bind, sign mutations (plan in private-context)
-
----
-
-*Regenerate fleet status: `python3 -m sage.scripts.generate_primer`*
+*Auto-generated fleet snapshot. Update by running: `python3 -m sage.scripts.generate_primer` from the SAGE repo root.*

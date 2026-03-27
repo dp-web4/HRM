@@ -83,8 +83,8 @@ with open('$SAGE_DIR/$IDENTITY_FILE') as f:
     print(json.load(f)['development']['phase_name'])
 " 2>/dev/null || echo "?")
 
-# --- Step 5: Regenerate session primer ---
-echo "[Sprout-Raising] Updating SESSION_PRIMER.md..."
+# --- Step 5: Regenerate fleet snapshot ---
+echo "[Sprout-Raising] Updating SESSION_FOCUS.md..."
 python3 -m sage.scripts.generate_primer 2>/dev/null || true
 
 # --- Step 6: Commit and push ---
@@ -103,8 +103,8 @@ if [ "$CHANGED" -eq 0 ]; then
     exit 0
 fi
 
-# Stage instance dir + primer
-git add "$INSTANCE_DIR/" SESSION_PRIMER.md 2>/dev/null || true
+# Stage instance dir + focus
+git add "$INSTANCE_DIR/" SESSION_FOCUS.md 2>/dev/null || true
 
 git commit -m "[Sprout-Raising] Session $SESSION_NUM ($PHASE) — $(date -u +'%Y-%m-%d %H:%M UTC')
 

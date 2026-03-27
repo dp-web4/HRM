@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 """
-Generate SESSION_PRIMER.md for the SAGE repo.
+Generate fleet status snapshot for the SAGE repo.
 
 Run:   python3 -m sage.scripts.generate_primer
 Or:    python3 sage/scripts/generate_primer.py
 
-Output: SAGE/SESSION_PRIMER.md (repo root)
+Output: SAGE/SESSION_FOCUS.md (repo root)
 
 Called automatically by raising scripts after each session.
 Also callable standalone for a quick fleet snapshot.
+
+NOTE: This writes to SESSION_FOCUS.md (the living doc for instance data),
+NOT SESSION_PRIMER.md (the stable process doc). SESSION_PRIMER.md is
+maintained manually and should not be auto-generated.
 """
 
 import json
@@ -240,7 +244,7 @@ def generate_primer(repo_root: Path) -> str:
         "",
         "---",
         "",
-        "*Update this file by running: `python3 -m sage.scripts.generate_primer` from the SAGE repo root.*",
+        "*Auto-generated fleet snapshot. Update by running: `python3 -m sage.scripts.generate_primer` from the SAGE repo root.*",
     ]
 
     return "\n".join(lines) + "\n"
@@ -249,9 +253,9 @@ def generate_primer(repo_root: Path) -> str:
 def main():
     repo_root = find_repo_root()
     content = generate_primer(repo_root)
-    output_path = repo_root / "SESSION_PRIMER.md"
+    output_path = repo_root / "SESSION_FOCUS.md"
     output_path.write_text(content)
-    print(f"SESSION_PRIMER.md written to {output_path}")
+    print(f"SESSION_FOCUS.md written to {output_path}")
     print(f"  {len(content.splitlines())} lines")
 
 

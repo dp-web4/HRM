@@ -94,8 +94,8 @@ python3 -m sage.raising.scripts.dream_consolidation \
     echo "[CBP-Raising] Dream consolidation skipped (claude --print not available or timed out)"
 }
 
-# --- Step 7: Regenerate session primer ---
-echo "[CBP-Raising] Updating SESSION_PRIMER.md..."
+# --- Step 7: Regenerate fleet snapshot ---
+echo "[CBP-Raising] Updating SESSION_FOCUS.md..."
 python3 -m sage.scripts.generate_primer 2>/dev/null || true
 
 # --- Step 7: Commit and push ---
@@ -114,8 +114,8 @@ if [ "$CHANGED" -eq 0 ]; then
     exit 0
 fi
 
-# Stage instance dir + primer
-git add "$INSTANCE_DIR/" SESSION_PRIMER.md 2>/dev/null || true
+# Stage instance dir + focus
+git add "$INSTANCE_DIR/" SESSION_FOCUS.md 2>/dev/null || true
 
 git commit -m "[CBP-Raising] Session $SESSION_NUM ($PHASE) — $(date -u +'%Y-%m-%d %H:%M UTC')
 

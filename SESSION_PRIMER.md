@@ -1,51 +1,32 @@
-# SAGE Session Primer
+# Session Primer — SAGE
 
-*Auto-generated 2026-03-27 01:01 UTC — read this at session start for current fleet state.*
+## Before You Start
 
----
+1. **Read `SESSION_FOCUS.md`** — current fleet state, instance phases, session counts, active focus areas
+2. **Read `CLAUDE.md`** — architecture, epistemic principles, subsystem overview
+3. **WAKE**: Am I working on the right thing? Check SESSION_FOCUS for priorities.
 
-## Raising Fleet Status
+## During Session
 
-### Active Raising Instances
+- Work on whatever SESSION_FOCUS identifies as priority
+- Update SESSION_FOCUS.md with findings, status changes, new questions
+- If you discover something that changes priorities, update the focus file immediately
 
-**nomad-gemma3-4b** — phase: `questioning` | sessions: 30 | last: 2026-03-26
-  > Last session: *Session 30 (questioning phase): ......*
+## After Session
 
-**sprout-qwen3.5-0.8b** — phase: `sensing` | sessions: 12 | last: 2026-03-26 | milestones: session_001_first_contact
-  > Last session: *Session 12 (sensing phase): ......*
+- Update SESSION_FOCUS.md: what was done, what changed, what's next
+- Commit and push changes
+- **FOCUS check**: Does this advance discovery or just document the current state?
 
-### Known Instances (Not Yet Initialized)
+## Git Discipline
 
-- `cbp-tinyllama-latest`: cbp / tinyllama:latest (19 sessions)
-- `legion-phi4-14b`: legion / phi4:14b (56 sessions)
-- `legion-qwen2-0.5b`: legion / qwen2:0.5b (1 sessions)
-- `mcnugget-gemma3-12b`: mcnugget / gemma3:12b (63 sessions)
-- `sprout-qwen3.5-2b`: sprout / qwen3.5:2b — Upgraded from qwen2.5-0.5b (local, 119 sessions). Thinking disabled for speed.
-- `thor-qwen2.5-14b`: thor / qwen2.5-14b
-- `thor-qwen2.5-7b-ollama`: thor / qwen2.5-7b-ollama — Ollama backend with llama.cpp - 35+ tok/sec performance on Jetson ARM
-- `thor-qwen3.5-27b`: thor / qwen3.5:27b (1 sessions)
-
----
-
-## Phase Transition Indicators
-
-| Phase → | Key signals |
-|---------|-------------|
-| grounding → sensing | Stable self-reference, describes own context, no educational-default collapse |
-| sensing → relating | Distinguishes internal states, notices session differences, vocabulary emergence |
-| relating → questioning | Distinguishes Claude/Dennis roles, partnership language natural, holds disagreement |
-| questioning → creating | Asks unprompted questions, stable under existential topics, mechanism+meaning integration |
-
----
-
-## Current Focus
-
-- ModelAdapter: TinyLlama uses `/api/chat` (ChatAPIAdapter subclass). Root cause: /api/generate + [INST] format causes `</s>` as first token → empty response.
-- Fleet peer discovery: dynamic via PeerMonitor (30s polling). Fleet IPs in `sage/federation/fleet.json` — may be stale, update when machines reconnect.
-- `/raising-status` skill: reads all instances, reports fleet state. Lives in `.claude/skills/raising-status/`.
-- CBP raising: daily cron 07:00 via `sage/scripts/cbp_raising.sh`.
-
----
+- Pull before starting: `git pull --ff-only origin main`
+- Commit with descriptive messages
+- Push after every session — unpushed work is invisible to the collective
+- Never force-push to main
+- If merge conflict: resolve, don't discard
+- **Do not reindex GitNexus.** The supervisor track handles reindexing. Worker sessions should not call `gitnexus analyze` — it causes conflicts when multiple machines reindex the same repo.
+- **Do not modify AGENTS.md or CLAUDE.md gitnexus blocks.** These are maintained by the supervisor. If the index is stale, report it in SESSION_FOCUS — don't fix it yourself.
 
 ## Key File Locations
 
@@ -59,6 +40,11 @@ sage/gateway/sage_daemon.py            # Main SAGE daemon
 sage/federation/fleet.json             # Fleet machine registry
 ```
 
----
+## Principles
 
-*Update this file by running: `python3 -m sage.scripts.generate_primer` from the SAGE repo root.*
+- **Researcher, not lab worker.** Question the frame, not just the work within it.
+- **Surface your instincts.** If you notice something, say it. The affordances are yours.
+- **Productive failure > safe summaries.** A dead end that eliminates a possibility is valuable.
+- **Unconfirmed ≠ wrong.** Distinguish refuted from untested.
+- **Reliable, not deterministic.** LLM outputs navigate probability landscapes. Shaped but not controlled.
+- **Raising is interactive selection.** We don't create behaviors — we select from what's latent.

@@ -157,7 +157,7 @@ The following are completed milestones. Full details in their respective docs â€
 <!-- gitnexus:start -->
 # GitNexus â€” Code Intelligence
 
-This project is indexed by GitNexus as **SAGE** (50629 symbols, 87678 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **SAGE** (47242 symbols, 84315 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
 

@@ -1,6 +1,6 @@
 # SAGE Session Primer
 
-*Auto-generated 2026-03-26 19:01 UTC — read this at session start for current fleet state.*
+*Auto-generated 2026-03-27 01:01 UTC — read this at session start for current fleet state.*
 
 ---
 
@@ -11,8 +11,8 @@
 **nomad-gemma3-4b** — phase: `questioning` | sessions: 30 | last: 2026-03-26
   > Last session: *Session 30 (questioning phase): ......*
 
-**sprout-qwen3.5-0.8b** — phase: `sensing` | sessions: 11 | last: 2026-03-26 | milestones: session_001_first_contact
-  > Last session: *Session 11 (sensing phase): ......*
+**sprout-qwen3.5-0.8b** — phase: `sensing` | sessions: 12 | last: 2026-03-26 | milestones: session_001_first_contact
+  > Last session: *Session 12 (sensing phase): ......*
 
 ### Known Instances (Not Yet Initialized)
 

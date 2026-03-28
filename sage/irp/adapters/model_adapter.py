@@ -76,6 +76,10 @@ class ModelAdapter:
                 if match:
                     text = text[:match.start()].strip()
 
+        # 3. Think-tag stripping — Qwen 3.5 emits <think>...</think> blocks
+        if caps.strip_think_tags:
+            text = re.sub(r'<think>[\s\S]*?</think>', '', text).strip()
+
         return text
 
     def format_payload(

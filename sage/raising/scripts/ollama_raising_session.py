@@ -352,12 +352,17 @@ class OllamaRaisingSession:
             json.dump(disk_state, f, indent=2)
 
     def _get_phase(self) -> str:
-        """Compute phase from session number using the BECOMING_CURRICULUM.
+        """Compute phase from session number, gated on milestones.
 
         The daemon continuously overwrites live identity.json, clobbering
         phase_name from raising sessions. Rather than reading a stale
         value, compute directly from session number (which is resolved
         daemon-proof via _resolve_session_count).
+
+        Phase advancement is gated: the session count suggests a phase,
+        but advancement beyond the current phase only happens if at least
+        one milestone has been recorded for the current phase. This prevents
+        empty phases from being skipped on session count alone.
         """
         phase_ranges = [
             ("pre-grounding", 0, 0),
@@ -367,10 +372,33 @@ class OllamaRaisingSession:
             ("questioning", 26, 40),
             ("creating", 41, float('inf')),
         ]
+
+        # What the session count suggests
+        suggested_phase = "creating"
         for name, start, end in phase_ranges:
             if start <= self.session_number <= end:
-                return name
-        return "creating"
+                suggested_phase = name
+                break
+
+        # What the state currently says
+        current_phase = self.state.get("development", {}).get("phase_name", "grounding")
+
+        # If suggested phase is the same or earlier, use it directly
+        suggested_idx = self.PHASE_ORDER.index(suggested_phase) if suggested_phase in self.PHASE_ORDER else 0
+        current_idx = self.PHASE_ORDER.index(current_phase) if current_phase in self.PHASE_ORDER else 0
+
+        if suggested_idx <= current_idx:
+            return suggested_phase
+
+        # Suggested phase is ahead of current — check if current phase has milestones
+        milestones = self.state.get("development", {}).get("milestones", [])
+        if not milestones:
+            print(f"  [Phase] Session count suggests '{suggested_phase}' but no milestones "
+                  f"recorded yet — staying in '{current_phase}'")
+            return current_phase
+
+        # At least one milestone exists — allow advancement
+        return suggested_phase
 
     def advance_phase(self):
         """Advance to the next phase. Called explicitly by the instructor."""
@@ -798,8 +826,8 @@ def main():
                         help="Machine name (auto-detected if omitted)")
     parser.add_argument("--model", type=str, default=None,
                         help="Ollama model name (read from instance.json if omitted)")
-    parser.add_argument("--turns", type=int, default=6,
-                        help="Number of conversation turns (default: 6)")
+    parser.add_argument("--turns", type=int, default=0,
+                        help="Number of conversation turns (default: random 3-8)")
     parser.add_argument("--host", type=str, default='http://localhost:11434',
                         help="Ollama host URL")
     parser.add_argument("--advance-phase", action="store_true",
@@ -830,12 +858,16 @@ def main():
     if args.continue_session:
         session_num = None
 
+    # Variable session length: if not specified, randomize between 3-8
+    import random
+    num_turns = args.turns if args.turns > 0 else random.randint(3, 8)
+
     session = OllamaRaisingSession(
         machine=machine,
         model_name=model_name,
         instance=instance,
         session_number=session_num,
-        num_turns=args.turns,
+        num_turns=num_turns,
         ollama_host=args.host,
         model_family=model_family,
     )

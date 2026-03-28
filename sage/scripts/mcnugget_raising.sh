@@ -52,6 +52,14 @@ with open('$SAGE_DIR/$IDENTITY_FILE') as f:
     print(json.load(f)['development']['phase_name'])
 " 2>/dev/null || echo "?")
 
+# --- Dream consolidation (Claude reviews the session) ---
+echo "[McNugget-Raising] Running dream consolidation..."
+/opt/homebrew/bin/python3 -m sage.raising.scripts.dream_consolidation \
+    --instance "$INSTANCE_DIR" \
+    --session "$SESSION_NUM" 2>&1 || {
+    echo "[McNugget-Raising] Dream consolidation skipped (claude --print not available or timed out)"
+}
+
 # Check if there are new results to commit
 CHANGED=0
 

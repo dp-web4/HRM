@@ -69,6 +69,14 @@ if [ "$CHANGED" -eq 0 ]; then
     exit 0
 fi
 
+# --- Dream consolidation (Claude reviews the session) ---
+echo "[Thor-Raising] Running dream consolidation..."
+python3 -m sage.raising.scripts.dream_consolidation \
+    --instance "$INSTANCE_DIR" \
+    --session "$SESSION_NUM" 2>&1 || {
+    echo "[Thor-Raising] Dream consolidation skipped (claude --print not available or timed out)"
+}
+
 # Stage instance dir (sessions + snapshots, gitignored files excluded automatically)
 git add "$INSTANCE_DIR/" 2>/dev/null || true
 

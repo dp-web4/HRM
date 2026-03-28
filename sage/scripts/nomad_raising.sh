@@ -64,6 +64,14 @@ with open('$SAGE_DIR/$IDENTITY_FILE') as f:
     print(json.load(f)['development']['phase_name'])
 " 2>/dev/null || echo "?")
 
+# --- Dream consolidation (Claude reviews the session) ---
+echo "[Nomad-Raising] Running dream consolidation..."
+$PYTHON -m sage.raising.scripts.dream_consolidation \
+    --instance "$INSTANCE_DIR" \
+    --session "$SESSION_NUM" 2>&1 || {
+    echo "[Nomad-Raising] Dream consolidation skipped (claude --print not available or timed out)"
+}
+
 # Stage instance dir (sessions + snapshots, live state files are gitignored)
 git add "$INSTANCE_DIR/" 2>/dev/null || true
 

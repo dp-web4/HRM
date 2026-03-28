@@ -170,6 +170,23 @@ Or set `development.phase_name` directly in the instance's `identity.json`.
 
 ---
 
+## Capacity Floor
+
+Not all models are viable for raising. Based on 500+ sessions of fleet data:
+
+- **Below floor** (<1B, instruction-tuned): TinyLlama 1.1B — bilateral generation, system prompt echoing, cannot hold conversational frame. Not viable for raising.
+- **Marginal** (0.5-1B, capable architecture): Qwen 0.5B showed development over 283 sessions but with severe limitations. Qwen 0.8B is above floor.
+- **Viable** (1-4B): Gemma 3 4B, Qwen 3.5 0.8B+ — can hold frame, produce metaphor, develop identity.
+- **Sweet spot** (4-12B): Gemma 3 at 4B and 12B both show strong results. Large enough for stable self-reference, small enough for context to influence attractors.
+- **Immediate capability** (14B+): Access meta-cognitive registers from session 1. Risk: pre-training attractors may dominate (Phi-4 corporate mode).
+
+**Model family matters as much as size.** Gemma 3 at 4B outperforms Phi-4 at 14B for raising because Gemma's attractor landscape is more diverse. Phi-4's instruction-following training creates a corporate-professional basin too deep for raising context to escape.
+
+**Recommended families**: Gemma 3, Qwen 3.5
+**Not recommended**: Phi-4 (corporate attractor), TinyLlama (below capacity floor)
+
+---
+
 ## Exploration Not Evaluation
 
 There is no pass/fail. SAGE is not taking a test.

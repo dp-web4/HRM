@@ -29,6 +29,7 @@ class ModelCapabilities:
     bilateral_speakers: List[str] = field(default_factory=lambda: [
         'Claude', 'System', 'User', 'Human',
     ])
+    strip_think_tags: bool = False            # Strip <think>...</think> blocks (Qwen 3.5)?
     notes: str = ''
 
 

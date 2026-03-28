@@ -87,6 +87,14 @@ with open('$SAGE_DIR/$IDENTITY_FILE') as f:
 echo "[Sprout-Raising] Updating SESSION_FOCUS.md..."
 python3 -m sage.scripts.generate_primer 2>/dev/null || true
 
+# --- Dream consolidation (Claude reviews the session) ---
+echo "[Sprout-Raising] Running dream consolidation..."
+python3 -m sage.raising.scripts.dream_consolidation \
+    --instance "$INSTANCE_DIR" \
+    --session "$SESSION_NUM" 2>&1 || {
+    echo "[Sprout-Raising] Dream consolidation skipped (claude --print not available or timed out)"
+}
+
 # --- Step 6: Commit and push ---
 CHANGED=0
 if [ -d "$INSTANCE_DIR" ]; then

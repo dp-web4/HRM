@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "identity": {
     "name": "mcnugget",
     "lct": "lct://sage:mcnugget:agent@raising",
@@ -65,10 +65,9 @@
       "modality": "text",
       "role": "tutor",
       "trust_tensor": {
-        "competence": 0.5,
-        "reliability": 0.5,
-        "benevolence": 0.5,
-        "integrity": 0.5
+        "talent": 0.5,
+        "training": 0.5,
+        "temperament": 0.5
       },
       "mrh": {
         "relevant_contexts": [
@@ -117,10 +116,9 @@
       "modality": "voice",
       "role": "creator",
       "trust_tensor": {
-        "competence": 0.5,
-        "reliability": 0.5,
-        "benevolence": 0.7,
-        "integrity": 0.7
+        "talent": 0.5,
+        "training": 0.5,
+        "temperament": 0.7
       },
       "mrh": {
         "relevant_contexts": [

@@ -122,7 +122,19 @@ Phase: $PHASE
 AI-Instance: OllamaIRP (automated)
 Human-Supervised: no"
 
-# Push (with rebase to handle race conditions from other machines)
-git pull --rebase --quiet 2>/dev/null || true
-git push origin main
-echo "[Legion-Raising] Session $SESSION_NUM committed and pushed."
+# Push (with retry for race conditions from other machines)
+MAX_RETRIES=3
+for i in $(seq 1 $MAX_RETRIES); do
+    git pull --rebase 2>&1 || {
+        echo "[Legion-Raising] Rebase conflict on attempt $i, aborting rebase and retrying..."
+        git rebase --abort 2>/dev/null
+        sleep $((i * 5))
+        continue
+    }
+    if git push origin main 2>&1; then
+        echo "[Legion-Raising] Session $SESSION_NUM committed and pushed."
+        break
+    fi
+    echo "[Legion-Raising] Push failed attempt $i/$MAX_RETRIES, retrying..."
+    sleep $((i * 5))
+done

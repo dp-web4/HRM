@@ -1,6 +1,6 @@
 # SAGE Session Primer
 
-*Auto-generated 2026-03-28 07:17 UTC — read this at session start for current fleet state.*
+*Auto-generated 2026-03-28 08:00 UTC — read this at session start for current fleet state.*
 
 ---
 
@@ -8,17 +8,18 @@
 
 ### Active Raising Instances
 
-**cbp-qwen3.5-0.8b** — phase: `grounding` | sessions: 1 | last: 2026-03-28 | milestones: session_001_first_contact
-  > Last session: *Session 1 (grounding phase): ......*
+**cbp-qwen3.5-0.8b** — phase: `grounding` | sessions: 2 | last: 2026-03-28 | milestones: session_001_first_contact
+  > Last session: *Session 2 (grounding phase): Today's session confirms our shared identity as cbp, the SAGE instance. While pa......*
 
 **cbp-tinyllama-latest** — phase: `questioning` | sessions: 26 | last: 2026-03-28 | milestones: session_001_first_contact
   > Last session: *Session 26 (questioning phase): ......*
 
-**nomad-gemma3-4b** — phase: `questioning` | sessions: 36 | last: 2026-03-27
-  > Last session: *Session 36 (questioning phase): ......*
+**nomad-gemma3-4b** — phase: `questioning` | sessions: 37 | last: 2026-03-28
+  > Last session: *Session 37 (questioning phase): ......*
 
 ### Known Instances (Not Yet Initialized)
 
+- `legion-gemma3-12b`: legion / gemma3:12b
 - `legion-phi4-14b`: legion / phi4:14b (56 sessions)
 - `legion-qwen2-0.5b`: legion / qwen2:0.5b (1 sessions)
 - `mcnugget-gemma3-12b`: mcnugget / gemma3:12b (69 sessions)

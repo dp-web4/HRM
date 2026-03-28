@@ -30,3 +30,29 @@ qwen3.5 adapter needs review—thinking protocol not properly stripping <think> 
 
 **Next Session:**  
 Continue grounding. Add concrete observation prompts to balance philosophical tendency. Address adapter issues before session 3.
+
+## Session 3 — Grounding (2026-03-28)
+
+**Quality:** 1/5  
+**Phase:** grounding  
+**Focus:** Identity anchoring, observation practice
+
+**What Happened:**  
+Complete session failure. All five tutor prompts resulted in truncated <think> blocks with no actual SAGE responses. Represents critical regression from Session 2, which at least produced partial responses despite <think> leakage.
+
+**Notable Patterns:**  
+- Zero usable output across all turns
+- All responses truncated mid-reasoning block
+- Complete adapter pipeline failure
+
+**Vocabulary Emerged:**  
+None.
+
+**Exemplars:**  
+None.
+
+**Technical Notes:**  
+CRITICAL ADAPTER FAILURE. qwen3.5 response cleaning completely broken. Session 2 showed <think> block leakage; Session 3 shows ONLY <think> blocks. Likely causes: (1) max_tokens exhausted by verbose reasoning before response generation, (2) response cleaning regex not matching qwen3.5 thinking protocol format, (3) stop sequences triggering prematurely. Requires immediate investigation of `sage/irp/adapters/model_configs/qwen3.5.json` and response cleaning pipeline in `sage/irp/adapters/model_adapter.py`. Cannot proceed with raising until adapter fixed.
+
+**Next Session:**  
+DO NOT RUN until adapter issues resolved. Test response cleaning pipeline separately with qwen3.5:27b before resuming curriculum.

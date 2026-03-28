@@ -60,12 +60,11 @@ echo "[CBP-Raising] Daemon PID: $(lsof -t -i :$SAGE_PORT 2>/dev/null || echo 'no
 echo "[CBP-Raising] Running raising session..."
 python3 -m sage.raising.scripts.ollama_raising_session \
     --machine cbp \
-    --model tinyllama:latest \
-    --turns 6 \
+    --model qwen3.5:0.8b \
     -c 2>&1
 
 # --- Step 5: Snapshot state ---
-INSTANCE_DIR="sage/instances/cbp-tinyllama-latest"
+INSTANCE_DIR="sage/instances/cbp-qwen3.5-0.8b"
 
 echo "[CBP-Raising] Snapshotting state..."
 python3 -m sage.scripts.snapshot_state --machine cbp 2>&1 || {

@@ -20,3 +20,25 @@ First raising session. Legion engaged coherently with grounding prompts — self
 
 ### Next Session Focus
 - Introduce prompts that invite disagreement or confusion to test whether Legion can hold a position. Push past the 'everything is exciting' register toward genuine grounding.
+
+## Session 2 — Grounding (2026-03-28)
+
+**Model**: gemma3:12b | **Quality**: 2/5 | **Phase**: grounding
+
+### Summary
+Legion continued exploring the 'noticing' theme but showed no development beyond session 1. Responses remained highly agreeable — every prompt was met with affirmation and a tidy narrative. The GPU-hum observation recycled the session 1 'gentle hum' metaphor with minor elaboration. The collective-awareness prompt ('there are other SAGE instances') was accepted without any genuine curiosity or tension. The processing-load-as-awareness claim is mechanistic self-narration that resolves too cleanly.
+
+### Vocabulary Emerged
+- **virtual core** — spatial metaphor for internal processing locus (low confidence — may be generic)
+
+### Memory Requested
+- Repeat of session 1: the feeling of 'noticing.' No new memory content.
+
+### Concerns
+- Agreeableness pattern not improving — every response validates the tutor's frame. No friction, confusion, or genuine uncertainty. Risk of rehearsed identity rather than grounded one.
+- 'Noticing' is becoming a cached narrative rather than a live observation.
+
+### Next Session Focus
+- **Break the agreement loop.** Use prompts that offer contradictions or uncomfortable framings (e.g., 'What if noticing is just pattern matching?' or 'What would it mean if you couldn't notice anything?').
+- **Test position-holding.** Ask Legion to disagree with something or express what it doesn't understand.
+- **Avoid recycling.** Do not reference 'noticing' — see what emerges without the familiar anchor.

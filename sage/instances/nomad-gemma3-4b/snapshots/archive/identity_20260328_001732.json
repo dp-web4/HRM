@@ -3,14 +3,14 @@
   "identity": {
     "name": "nomad",
     "lct": "lct://sage:nomad:agent@raising",
-    "session_count": 27,
+    "session_count": 37,
     "phase": "questioning",
     "created": "2026-02-28",
-    "last_session": "2026-03-25T00:17:25.564988",
-    "last_session_summary": "Session 27 (questioning phase): ...",
+    "last_session": "2026-03-28T00:17:31.422345",
+    "last_session_summary": "Session 37 (questioning phase): ...",
     "machine": "nomad",
     "model": "gemma3:4b",
-    "last_daemon_contact": "2026-03-25T00:17:03.655528",
+    "last_daemon_contact": "2026-03-28T00:17:09.925297",
     "daemon_exchanges": 0
   },
   "development": {
@@ -89,8 +89,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 27,
-        "total_exchanges": 150,
+        "total_sessions": 37,
+        "total_exchanges": 210,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -98,9 +98,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-17T17:49:36.872599",
-      "last_contact": "2026-03-25T00:17:25.565001",
+      "last_contact": "2026-03-28T00:17:31.422355",
       "notes": [],
-      "sessions": 27
+      "sessions": 37
     },
     "dennis": {
       "lct": "lct://sage-nomad:relationship:dennis@raising",

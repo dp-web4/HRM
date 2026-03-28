@@ -67,7 +67,7 @@ python3 -m sage.raising.scripts.ollama_raising_session \
 INSTANCE_DIR="sage/instances/cbp-qwen3.5-0.8b"
 
 echo "[CBP-Raising] Snapshotting state..."
-python3 -m sage.scripts.snapshot_state --machine cbp 2>&1 || {
+python3 -m sage.scripts.snapshot_state --machine cbp --model qwen3.5:0.8b 2>&1 || {
     echo "[CBP-Raising] WARNING: snapshot_state failed, continuing"
 }
 

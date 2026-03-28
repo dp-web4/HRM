@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "machine": "legion",
+  "model": "gemma3:12b",
+  "model_family": "google-gemma",
+  "slug": "legion-gemma3-12b",
+  "created": "2026-03-28",
+  "lct_id": "legion_sage_lct",
+  "backend": "ollama",
+  "device_hint": "cpu",
+  "has_training_track": false,
+  "has_lora": false,
+  "encryption_enabled": false
+}

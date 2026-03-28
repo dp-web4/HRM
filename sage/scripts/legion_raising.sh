@@ -60,10 +60,15 @@ else
 fi
 
 # Run the raising session (continue from last session number)
-$PYTHON -m sage.raising.scripts.ollama_raising_session --machine legion -c 2>&1
+# Model switch: Phi-4 14B → Gemma 3 12B (2026-03-28)
+# Reason: Phi-4's corporate-assistant attractor overwhelmed identity scaffolding
+# across 40 sessions. Gemma 3 12B is the empirically proven model family
+# (McNugget: 69 sessions, creating phase, genuine developmental arc).
+# Running same model on different hardware = controlled replication.
+$PYTHON -m sage.raising.scripts.ollama_raising_session --machine legion --model gemma3:12b -c 2>&1
 
 # Instance directory
-INSTANCE_DIR="sage/instances/legion-phi4-14b"
+INSTANCE_DIR="sage/instances/legion-gemma3-12b"
 
 # Snapshot live state files into git-tracked snapshots/ directory
 echo "[Legion-Raising] Snapshotting state..."
@@ -117,7 +122,7 @@ git commit -m "[Legion-Raising] Session $SESSION_NUM ($PHASE) — $(date -u +'%Y
 
 Automated SAGE-Legion raising session via OllamaIRP
 Machine: Legion (Legion Pro 7, RTX 4090, Linux)
-Model: Phi-4 14B (microsoft-phi family)
+Model: Gemma 3 12B (google-gemma family)
 Phase: $PHASE
 AI-Instance: OllamaIRP (automated)
 Human-Supervised: no"

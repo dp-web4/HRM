@@ -835,8 +835,9 @@ def main():
 
     args = parser.parse_args()
 
-    # Resolve instance
-    instance = InstancePaths.resolve(machine=args.machine)
+    # Resolve instance — pass model too so we get the right instance
+    # when multiple instances exist for the same machine
+    instance = InstancePaths.resolve(machine=args.machine, model=args.model)
     if not instance.exists():
         print(f"Error: No instance directory found for machine={args.machine or '(auto)'}",
               file=sys.stderr)

@@ -10,5 +10,7 @@
   "device_hint": "cpu",
   "has_training_track": false,
   "has_lora": false,
-  "encryption_enabled": false
+  "encryption_enabled": false,
+  "retired": true,
+  "retired_reason": "Below capacity floor. Replaced by cbp-qwen3.5-0.8b"
 }

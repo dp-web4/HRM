@@ -1,21 +1,21 @@
 {
-  "last_shutdown": 1773807793.6845288,
+  "last_shutdown": 1773851991.0808532,
   "machine": "thor",
   "instance": "thor-qwen3.5-27b",
-  "uptime_seconds": 78429.1557674408,
-  "cycles_completed": 778889,
+  "uptime_seconds": 44175.47047662735,
+  "cycles_completed": 437510,
   "metabolic_state": "rest",
-  "atp_level": 28.389288164067196,
+  "atp_level": 50.74377973326813,
   "message_stats": {
-    "messages_submitted": 1,
-    "messages_resolved": 1,
+    "messages_submitted": 9,
+    "messages_resolved": 9,
     "messages_timed_out": 0,
     "pending": 0,
     "waiting": 0
   },
   "trust_weights": {
-    "vision": 0.099,
-    "language": 0.0995,
+    "vision": 0.0875,
+    "language": 0.088,
     "control": 0.0,
     "memory": 0.0,
     "tts": 0.0
@@ -25,6 +25,6 @@
     "audio": 0.0,
     "proprioception": 0.0,
     "time": 1.0,
-    "message": 0.2
+    "message": 1.0
   }
 }

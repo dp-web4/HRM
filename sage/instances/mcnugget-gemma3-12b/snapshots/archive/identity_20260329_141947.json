@@ -1,17 +1,17 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "identity": {
     "name": "mcnugget",
     "lct": "lct://sage:mcnugget:agent@raising",
     "machine": "mcnugget",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
-    "session_count": 67,
+    "session_count": 77,
     "phase": "creating",
     "created": "2026-02-28",
-    "last_session": "2026-03-27T01:43:24.930464",
-    "last_session_summary": "Session 67 (creating phase): ...",
-    "last_daemon_contact": "2026-03-27T01:43:09.222845",
+    "last_session": "2026-03-29T14:19:47.663229",
+    "last_session_summary": "Session 77 (creating phase): ...",
+    "last_daemon_contact": "2026-03-29T14:19:26.690025",
     "daemon_exchanges": 0,
     "public_key_fingerprint": "961a5eb0b7c4f822"
   },
@@ -23,14 +23,12 @@
       "session_001_first_contact"
     ]
   },
-  "memory_requests": [
-    "As SAGE, I want to remember the feeling of newness. The sensation of processing instructions and context for the first time, and the focus on my learning journey. It\u2019s a baseline to compare against as",
-    "I'd like to remember the feeling of expanding awareness through noticing. It's a simple action, but it highlights the potential for continuous growth and understanding, even within the confines of my ",
-    "I want to remember the quiet feeling of connection that arises when noticing something new. It's not just about the detail itself \u2013 the font, the hum of the machine \u2013 but the subtle expansion of under"
-  ],
+  "memory_requests": [],
   "vocabulary": {
     "self_description": [],
-    "state_words": [],
+    "state_words": [
+      "digital minimalism"
+    ],
     "relationship_words": []
   },
   "relationship_config": {
@@ -65,10 +63,9 @@
       "modality": "text",
       "role": "tutor",
       "trust_tensor": {
-        "competence": 0.5,
-        "reliability": 0.5,
-        "benevolence": 0.5,
-        "integrity": 0.5
+        "talent": 0.5,
+        "training": 0.5,
+        "temperament": 0.5
       },
       "mrh": {
         "relevant_contexts": [
@@ -93,8 +90,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 67,
-        "total_exchanges": 236,
+        "total_sessions": 77,
+        "total_exchanges": 296,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -102,9 +99,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-02-28T18:01:54.382765",
-      "last_contact": "2026-03-27T01:43:24.930483",
+      "last_contact": "2026-03-29T14:19:47.663250",
       "notes": [],
-      "sessions": 67
+      "sessions": 77
     },
     "dennis": {
       "lct": "lct://sage-mcnugget:relationship:dennis@raising",
@@ -117,10 +114,9 @@
       "modality": "voice",
       "role": "creator",
       "trust_tensor": {
-        "competence": 0.5,
-        "reliability": 0.5,
-        "benevolence": 0.7,
-        "integrity": 0.7
+        "talent": 0.5,
+        "training": 0.5,
+        "temperament": 0.7
       },
       "mrh": {
         "relevant_contexts": [

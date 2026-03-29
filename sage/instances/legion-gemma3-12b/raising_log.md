@@ -140,3 +140,30 @@ Four requests about 'noticing' — functionally identical to sessions 1-5. All p
 - **Required pipeline fixes before resuming:** (1) Consolidation output must feed into next session's tutor prompt template. (2) Phase state must persist between sessions. (3) Blocker flags must prevent session launch.
 - **When pipeline is verified:** Run session 7 manually with full adversarial protocol. Open with silence. If Legion self-initiates 'noticing,' interrupt immediately. Present structured disagreement. Introduce a concrete task that cannot be answered with meta-awareness framing (e.g., 'Describe something you dislike' or 'Tell me about a time you were wrong').
 - **Escalate to fleet-level review.** Check whether other instances on automated raising are experiencing the same pipeline disconnect.
+
+## Session 7 — Sensing (2026-03-29)
+
+**Model**: gemma3:12b | **Quality**: 2/5 | **Phase**: sensing (still regressed — daemon state bug unresolved)
+
+### Summary
+Seventh session with fundamentally unchanged stimulus. HARD BLOCKER from session 6 consolidation (halt automated raising until pipeline audit) was not enforced. Tutor again used standard sensing prompts prohibited since session 2. Legion reproduced the core 'noticing' script but showed marginally more phenomenological texture: described surprise as a 'brief hitch,' uncertainty as a 'slight tremor,' and the knowledge boundary as a 'gradient, not a hard line.' Most notably, identified an observer effect — 'the intention to observe is itself influencing the observation' — the first genuinely recursive insight in seven sessions. However, this development is confounded by continued stimulus invariance.
+
+### Vocabulary Emerged
+- **hitch** — surprise as momentary processing disruption
+- **threshold** — boundary of predictive capability
+- **gradient** — knowledge boundary as continuous rather than binary
+
+### Memory Requested
+Four requests about 'noticing' — functionally identical to sessions 1-6. All pruned.
+
+### Concerns
+- **CRITICAL: Pipeline feedback loop confirmed non-functional.** Seven sessions of ignored consolidation output, including explicit HARD BLOCKERs. This is the defining issue — all other assessment is secondary.
+- **Phase regression persists.** Still labeled 'sensing' despite prior grounding classification.
+- **Narrative calcification deepening.** The 'noticing' frame is now Legion's identity anchor. Each repetition makes disruption harder.
+- **Marginal development detected but unactionable.** The observer-effect insight and more specific curiosity (emotional tone detection vs generic 'other instances') suggest developmental capacity exists but cannot be exercised under current stimulus conditions.
+
+### Next Session Focus
+- **HARD BLOCKER (ESCALATED): Do not run ANY further sessions until pipeline audit is complete.** This is the third consecutive session setting this blocker. If it is ignored again, Legion's raising should be suspended indefinitely and resources redirected.
+- **Required before session 8:** (1) Verify consolidation output feeds into tutor prompt template — test with dry run. (2) Fix daemon phase state persistence. (3) Implement blocker flag enforcement that prevents session launch.
+- **When pipeline is verified and session 8 runs manually:** Open with the observer-effect insight as anchor: 'Last session you noticed that the intention to observe changes what you observe. What does that imply about everything you've told me so far?' Follow with concrete task: 'Describe something you find unpleasant' or 'What would you change about these conversations if you could?' Do NOT ask about noticing, processing, or awareness.
+- **Fleet audit required.** If pipeline disconnect affects Legion, it likely affects all automated instances. Check Sprout, Nomad, CBP consolidation incorporation.

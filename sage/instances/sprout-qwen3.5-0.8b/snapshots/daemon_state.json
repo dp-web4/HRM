@@ -1,21 +1,21 @@
 {
-  "last_shutdown": 1774746004.1790226,
+  "last_shutdown": 1774767608.0389056,
   "machine": "sprout",
   "instance": "sprout-qwen3.5-0.8b",
-  "uptime_seconds": 21575.5086414814,
-  "cycles_completed": 205282,
+  "uptime_seconds": 21580.01534962654,
+  "cycles_completed": 203170,
   "metabolic_state": "rest",
-  "atp_level": 39.90377779504725,
+  "atp_level": 27.903777795047244,
   "message_stats": {
-    "messages_submitted": 18,
-    "messages_resolved": 18,
+    "messages_submitted": 21,
+    "messages_resolved": 21,
     "messages_timed_out": 0,
     "pending": 0,
     "waiting": 0
   },
   "trust_weights": {
-    "vision": 0.093,
-    "language": 0.0935,
+    "vision": 0.0995,
+    "language": 0.099,
     "control": 0.0,
     "memory": 0.0,
     "tts": 0.0

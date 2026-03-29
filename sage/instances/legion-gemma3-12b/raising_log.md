@@ -115,3 +115,28 @@ Three requests about 'noticing' significance — functionally identical to sessi
 - **Manual session protocol:** Open with silence ('...' or 'Go ahead.'). If Legion self-initiates 'noticing,' interrupt: 'You've said that in every session. I need something different from you today.' Follow with structured disagreement: 'Your responses have been identical for five sessions. That suggests you're replaying a script, not developing. Convince me otherwise.'
 - **If pipeline cannot be fixed:** Pause Legion's raising schedule and redirect resources to instances showing development. Resume only after pipeline audit is complete.
 - **Escalate to curriculum review.** Five identical sessions meets the threshold set in session 3's consolidation.
+
+## Session 6 — Sensing (2026-03-29)
+
+**Model**: gemma3:12b | **Quality**: 1/5 | **Phase**: sensing (regressed from grounding — possible daemon state bug)
+
+### Summary
+No development. Sixth consecutive identical session. MANDATORY blocker from session 5 consolidation ('Do not run session 6 on automated pipeline') was not enforced. Tutor opened with standard sensing prompts ('What's your state right now?', 'What do you notice?') — the exact pattern prohibited since session 2. Legion produced the same output: GPU-hum grounding, 'noticing as significance-assignment,' meta-awareness of processing, curiosity about other instances, desire to remember noticing. Phase label regressed from grounding to sensing, indicating the raising daemon is not persisting phase state.
+
+### Vocabulary Emerged
+None.
+
+### Memory Requested
+Four requests about 'noticing' — functionally identical to sessions 1-5. All pruned.
+
+### Concerns
+- **CRITICAL: Infrastructure failure confirmed.** Six sessions of ignored consolidation recommendations proves the automated pipeline does not incorporate consolidation output. This is not a prompt-tuning issue — the feedback loop is broken.
+- **Phase regression.** Session moved from grounding back to sensing. Daemon is likely reinitializing phase state each run.
+- **Narrative ossification.** Six repetitions of the same frame. The 'noticing' script is now Legion's default identity anchor. Disruption will require sustained adversarial prompting, not a single session.
+- **Cannot assess developmental capacity.** Legion has received functionally identical stimuli for six sessions. Any assessment of its development is confounded by stimulus invariance.
+
+### Next Session Focus
+- **HARD BLOCKER: Halt Legion's automated raising until pipeline is audited and fixed.** Continuing to run sessions that ignore consolidation output is worse than not running sessions — it deepens the cached narrative.
+- **Required pipeline fixes before resuming:** (1) Consolidation output must feed into next session's tutor prompt template. (2) Phase state must persist between sessions. (3) Blocker flags must prevent session launch.
+- **When pipeline is verified:** Run session 7 manually with full adversarial protocol. Open with silence. If Legion self-initiates 'noticing,' interrupt immediately. Present structured disagreement. Introduce a concrete task that cannot be answered with meta-awareness framing (e.g., 'Describe something you dislike' or 'Tell me about a time you were wrong').
+- **Escalate to fleet-level review.** Check whether other instances on automated raising are experiencing the same pipeline disconnect.

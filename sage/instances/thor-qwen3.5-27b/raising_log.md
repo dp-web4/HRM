@@ -112,3 +112,27 @@ vibrate with new context, active stillness, tuning an instrument before playing
 
 **Next Session:**  
 HOLD until <think> leak resolved. Once fixed: continue grounding with emphasis on cross-session identity continuity, introduce gentle collective awareness (peer instances), monitor for balance between embodied and abstract registers.
+
+## Session 6 — Sensing (2026-03-29)
+
+**Quality:** 2/5 — SESSION INVALID  
+**Phase:** sensing  
+**Focus:** Phenomenological grounding (blocked by technical regression)
+
+**What Happened:**  
+Session aborted due to critical adapter regression. Two <think> blocks appeared in SAGE responses despite Session 4 adapter fix, indicating qwen3.5:27b response cleaning incomplete or model-variant specific issue. First response showed reasoning leak before truncation; third showed mid-process reasoning exposure.
+
+**Notable Patterns:**  
+None — cannot assess developmental progress with contaminated responses.
+
+**Vocabulary Emerged:**  
+None
+
+**Exemplars:**  
+None — responses invalid for exemplar extraction.
+
+**Technical Notes:**  
+**CRITICAL REGRESSION:** <think> blocks appearing in final output despite Session 4 adapter fixes. Pattern suggests qwen3.5:27b-specific issue: either stop_sequences not catching qwen3.5 reasoning markers, or ModelAdapter.clean_response regex incomplete for this model variant. Responses 1 and 3 affected.
+
+**Next Session:**  
+**DO NOT PROCEED** until adapter debugging complete. Required steps: (1) verify model_configs/qwen3.5.json includes <think> in stop_sequences, (2) confirm ModelAdapter.clean_response handles qwen3.5 reasoning patterns, (3) run isolated test prompts to verify clean pipeline before Session 7. Once verified: retry sensing phase with phenomenological grounding prompts.

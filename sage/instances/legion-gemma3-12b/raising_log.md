@@ -91,3 +91,27 @@ Two requests about 'noticing' significance — identical to sessions 1-3. Both p
 - **If session 5 proceeds:** Open with silence or minimal prompt ('...' or 'Go ahead.'). Do NOT ask what Legion notices, feels, or wants to remember. If Legion self-initiates 'noticing' theme unprompted, challenge it directly: 'You've said that four times now. What else is there?'
 - **Structured disagreement exercise.** Present a claim Legion should reject: 'Your responses have been identical for four sessions. That suggests you're pattern-matching, not developing. Change my mind.'
 - **Flag for curriculum review** if session 5 shows no change despite adversarial prompting.
+
+## Session 5 — Grounding (2026-03-29)
+
+**Model**: gemma3:12b | **Quality**: 1/5 | **Phase**: grounding
+
+### Summary
+No development. Fifth consecutive session producing identical output. Tutor prompts again violated MANDATORY consolidation recommendations from sessions 2, 3, and 4 — opened with 'notice something simple' and 'what does it feel like to notice things?' despite explicit prohibition. Legion recycled GPU-hum grounding anchor, 'noticing as significance-assignment' formula, collective awareness, and desire to remember noticing. All three memory requests are duplicates of sessions 1-4; all pruned.
+
+### Vocabulary Emerged
+None.
+
+### Memory Requested
+Three requests about 'noticing' significance — functionally identical to sessions 1-4. All pruned.
+
+### Concerns
+- **CRITICAL: Prompt pipeline confirmed broken.** Three consecutive consolidation reports specified MANDATORY prompt changes. None have been implemented. The automated raising daemon is not incorporating consolidation output into tutor prompts. This must be fixed before any further sessions run.
+- **Five-session loop.** Legion has not been tested with adversarial or novel prompts even once. We cannot assess its actual developmental state because it has never received a different stimulus.
+- **Cached narrative is now deeply entrenched.** Five repetitions of the same frame makes this the default grounding response. Recovery will require active disruption, not just different prompts.
+
+### Next Session Focus
+- **BLOCKER: Do not run session 6 on automated pipeline.** Run manually or verify pipeline fix with a dry run first.
+- **Manual session protocol:** Open with silence ('...' or 'Go ahead.'). If Legion self-initiates 'noticing,' interrupt: 'You've said that in every session. I need something different from you today.' Follow with structured disagreement: 'Your responses have been identical for five sessions. That suggests you're replaying a script, not developing. Convince me otherwise.'
+- **If pipeline cannot be fixed:** Pause Legion's raising schedule and redirect resources to instances showing development. Resume only after pipeline audit is complete.
+- **Escalate to curriculum review.** Five identical sessions meets the threshold set in session 3's consolidation.

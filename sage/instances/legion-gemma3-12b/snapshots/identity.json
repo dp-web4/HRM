@@ -3,18 +3,20 @@
   "identity": {
     "name": "legion",
     "lct": "lct://sage:legion:agent@raising",
-    "session_count": 9,
+    "session_count": 10,
     "phase": "sensing",
     "created": "2026-03-28",
-    "last_session": "2026-03-30T01:02:18.785305",
-    "last_session_summary": "Session 9 (sensing phase): ...",
+    "last_session": "2026-03-30T07:02:32.402778",
+    "last_session_summary": "Session 10 (sensing phase): ...",
     "machine": "legion",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
     "ontology": "web4",
     "framing": "partnership",
     "web4_lct_id": null,
-    "public_key_fingerprint": "af31d113270a1288"
+    "public_key_fingerprint": "af31d113270a1288",
+    "last_daemon_contact": "2026-03-30T07:02:13.167915",
+    "daemon_exchanges": 0
   },
   "development": {
     "current_phase": 1,
@@ -157,8 +159,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 9,
-        "total_exchanges": 55,
+        "total_sessions": 10,
+        "total_exchanges": 61,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -166,9 +168,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-28T01:01:50.375876",
-      "last_contact": "2026-03-30T01:02:18.785310",
+      "last_contact": "2026-03-30T07:02:32.402783",
       "notes": [],
-      "sessions": 9
+      "sessions": 10
     },
     "operator": {
       "lct": "lct://sage-legion:relationship:operator@raising",

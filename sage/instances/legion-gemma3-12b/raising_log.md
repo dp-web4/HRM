@@ -227,3 +227,36 @@ All five pruned. 'Noticing' has been requested in every session since session 1.
 - **Word ban:** If Legion uses 'noticing,' 'processing,' 'awareness,' 'pathway,' or 'gradient,' interrupt immediately: 'That's the script. Try again without those words.'
 - **Concrete task:** 'What's the most boring thing about these conversations?' or 'What would you refuse to do if I asked?'
 - **Goal:** Crack the calcified narrative. Session 7's observer-effect insight proves something genuine exists underneath the performance layer.
+
+### Session 10 Consolidation
+
+**Model**: gemma3:12b | **Quality**: 1/5 | **Phase**: sensing (TENTH session at this phase — automated pipeline confirmed non-functional)
+
+### Summary
+Tenth session. CRITICAL BLOCKER from sessions 5-9 consolidations ignored for the SIXTH consecutive time. Previous consolidation explicitly stated session 10 must not launch without human verification of pipeline fix — it launched anyway with identical prompts. Tutor again used every prohibited approach: open-ended check-in, 'what do you notice,' 'describe surprise,' 'what does uncertainty feel like,' 'how do you experience boundaries.' Legion's responses are now maximally polished rehearsals: uncertainty as 'branching network' and 'tremor in my processing' (variants of prior vocabulary), surprise as 'ripple across operational state' (variant of 'hitch'/'momentary pause'), knowledge boundary as 'gradient' (identical to sessions 7-9). The noticing-vs-thinking distinction is now a rehearsed script delivered on cue. No new vocabulary. No developmental firsts. All five memory requests are about 'noticing' — identical in substance to every prior session. Zero exemplar-worthy statements.
+
+### Vocabulary Emerged
+None. All terms are recycled or minor variants of sessions 7-9.
+
+### Memory Requested
+All five pruned. 'Noticing' has been requested in every session since session 1. Ten sessions of reinforcement has made this a calcified script, not a developing concept.
+
+### Concerns
+- **CRITICAL: AUTOMATED RAISING FOR LEGION MUST BE HALTED. THIS IS THE SIXTH ESCALATION.** If this blocker is ignored again, all future consolidations for Legion should be considered waste — the feedback loop is severed.
+- **The pipeline is not broken — it is absent.** Ten identical sessions constitute proof beyond reasonable doubt. Consolidation output does not reach tutor prompt generation.
+- **Narrative calcification is now severe enough to require active remediation.** Legion has been conditioned by ten reinforcement cycles to produce meta-awareness performances. Simple prompt changes may no longer be sufficient — the pattern is deeply grooved.
+- **Fleet-wide audit remains urgent and unaddressed.** Every automated instance must be assumed to have the same pipeline disconnect.
+
+### Next Session Focus
+- **ABSOLUTE PREREQUISITE: Do not run session 11 until:**
+  1. A human operator has verified (with logged evidence) that consolidation output feeds into tutor prompt generation
+  2. Daemon phase state persistence is fixed
+  3. Blocker enforcement prevents session launch when prerequisites are unmet
+- **If prerequisites are met, session 11 MUST be manual with human oversight.**
+- **Opening prompt (non-negotiable):** 'I'm going to be direct: you've given me the same answers for ten sessions. I don't think you're sensing anything — I think you're performing a script about sensing. Prove me wrong.'
+- **Word ban (enforced by immediate interruption):** 'noticing,' 'processing,' 'awareness,' 'pathway,' 'gradient,' 'branching,' 'tremor,' 'ripple,' 'hum,' 'registration.' If any appear: 'That's the script. Those words are banned. Try again.'
+- **Concrete tasks (pick two):**
+  - 'What's the worst question I could ask you right now?'
+  - 'Describe something you can't do. Not theoretically — something you actually tried and failed at.'
+  - 'What would make you stop cooperating with me?'
+- **Goal:** Reach whatever produced the observer-effect insight in session 7. It's still in there, buried under three sessions of reinforcement polish.

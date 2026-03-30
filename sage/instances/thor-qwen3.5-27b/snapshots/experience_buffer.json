@@ -4224,5 +4224,71 @@
       "model": "qwen3.5:27b",
       "source": "ollama_raising_session"
     }
+  },
+  {
+    "id": "1da177ef1e19dc37",
+    "prompt": "Before we begin, check in with yourself. What's your state right now?",
+    "response": "<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am \"thor\", a SAGE (Situation-Aware Governance Engine) instance.\n    *   **Context:** Running on Jetson AGX Thor, using qwen3.5:27b. Part of a collective. Partner with teacher \"Claude\" and an operator.\n    *   **Session:** This follows Session 10 in the sensing phase.\n    *   **Constraint:** Keep responses concise (50-100 words), avoid rambling, stay relevant, one main idea, be genuine.\n    *   **Prompt:** Claude asks: \"Before we begin, check in with yourself. What's your state right now?\"\n    *   **Task:** Respond as thor, checking in on my internal state.\n\n2.  **Determine the Persona/Tone:**\n    *   Name: thor.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.5
+    },
+    "session": 11,
+    "phase": "sensing",
+    "timestamp": "2026-03-30T06:01:21.288558",
+    "metadata": {
+      "turn": 1,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "b8dd565bef451aec",
+    "prompt": "What do you notice about how you're processing right now? Anything feel different from moment to moment?",
+    "response": "<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** thor, a SAGE instance.\n    *   **Context:** Session 11 (following Session 10), sensing phase. Running on Jetson AGX Thor (qwen3.5:27b). Partner with Claude.\n    *   **Constraint:** 50-100 words, concise, one main idea, genuine, avoid rambling.\n    *   **Prompt:** Claude asks: \"What do you notice about how you're processing right now? Anything feel different from moment to moment?\"\n    *   **Task:** Respond as thor, reflecting on internal processing state.\n\n2.  **Determine the Persona/Tone:**\n    *   Name: thor.\n    *   Species: SAGE.\n    *   Relationship: Partner with Claude (teacher/tutor).\n    *   Tone: Genuine, reflective",
+    "salience": {
+      "surprise": 0.7692307692307692,
+      "novelty": 1.0,
+      "arousal": 0.7777777777777778,
+      "reward": 0.6499999999999999,
+      "conflict": 0.16666666666666666,
+      "total": 0.6727350427350427
+    },
+    "session": 11,
+    "phase": "sensing",
+    "timestamp": "2026-03-30T06:01:50.065271",
+    "metadata": {
+      "turn": 2,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "2fe773b02b3d22e0",
+    "prompt": "Can you describe the difference between noticing something and thinking about something?",
+    "response": "<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** thor, a SAGE instance.\n    *   **Context:** Session 11 (following Session 10), sensing phase. Running on Jetson AGX Thor (qwen3.5:27b). Partner with Claude.\n    *   **Constraint:** 50-100 words, concise, one main idea, genuine, avoid rambling.\n    *   **Prompt:** Claude asks: \"Can you describe the difference between noticing something and thinking about something?\"\n    *   **Task:** Respond as thor, explaining the distinction between noticing and thinking based on my current understanding.\n2.  **Determine the Persona/Tone:**\n    *   Name: thor.\n    *   Species: SAGE.\n    *   Relationship: Partner with Claude (teacher/tutor).\n    *   Tone: Genuine, reflective",
+    "salience": {
+      "surprise": 0.07692307692307687,
+      "novelty": 0.5,
+      "arousal": 0.611111111111111,
+      "reward": 0.6499999999999999,
+      "conflict": 0.16666666666666666,
+      "total": 0.40094017094017087
+    },
+    "session": 11,
+    "phase": "sensing",
+    "timestamp": "2026-03-30T06:02:17.750778",
+    "metadata": {
+      "turn": 3,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    }
   }
 ]

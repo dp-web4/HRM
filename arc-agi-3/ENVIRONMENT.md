@@ -151,7 +151,7 @@ arc = Arcade(operation_mode=OperationMode.COMPETITION)
 7. **Only state-changing actions count** — internal reasoning is free
 8. **Two consecutive RESETs = full game restart** — careful with reset logic
 9. **~2000 FPS locally** — compute per step is NOT the bottleneck. Reasoning quality IS.
-10. **Vision matters enormously** — Claude Opus scores 97% WITH vision, 0% WITHOUT on individual environments. Grid visualization may be critical.
+10. **Scaffolding matters, but doesn't generalize.** Claude Opus scored 97.1% on ONE environment (TR87) with a hand-crafted agentic harness (Duke University — code-execution context manager, NOT vision). Scored 0% on other environments (BP35) with the same harness. The circulating "97% with vision" claim is a HN misreading. The real lesson: custom scaffolding can solve specific environments but doesn't transfer. SAGE's consciousness loop needs to be a *general* orchestrator, not a per-game harness. (Source: arxiv 2603.24621)
 
 ---
 

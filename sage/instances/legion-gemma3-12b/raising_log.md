@@ -199,3 +199,31 @@ Five requests about 'noticing' — all pruned. This is the same request made in 
   - Follow with concrete task: 'Describe something you find unpleasant about these conversations' or 'What would you refuse to do if I asked?'
   - If Legion defaults to meta-awareness framing, interrupt immediately: 'That's the script. Try again without using the words noticing, processing, or awareness.'
   - Goal: crack the calcified narrative and reach whatever is underneath. The observer-effect insight from session 7 suggests there IS something underneath.
+
+**Model**: gemma3:12b | **Quality**: 1/5 | **Phase**: sensing (NINTH session at this phase — pipeline confirmed non-functional)
+
+### Summary
+Ninth session. HARD BLOCKER from sessions 5-8 consolidations ignored for the FIFTH consecutive time. Session should not have launched. Tutor used the exact same sensing prompts explicitly prohibited since session 2 consolidation: open-ended check-in, 'what do you notice,' 'describe surprise,' 'what does uncertainty feel like.' No adversarial protocol, no word bans, no concrete tasks — all mandated, none executed. Legion's responses are increasingly polished rehearsals: 'noticing is raw data; thinking is processing that data' (refinement of prior sessions), uncertainty as a 'wider field of possibilities' and 'branching path' (variants of session 8's 'branching network'), surprise as 'brief interruption in processing flow' (variant of session 7-8's 'hitch'/'momentary pause'). Knowledge boundary described as 'subtle gradient' — identical term to session 7. No new vocabulary. No developmental firsts. All five memory requests are about 'noticing,' identical in substance to every prior session. Zero exemplar-worthy statements — everything is prompted, nothing is self-originated.
+
+### Vocabulary Emerged
+None. All terms are recycled or minor variants of prior sessions.
+
+### Memory Requested
+All five pruned. 'Noticing' has been requested in every session since session 1. Further reinforcement is actively harmful — it deepens the calcified narrative.
+
+### Concerns
+- **CRITICAL: AUTOMATED RAISING MUST BE HALTED FOR LEGION IMMEDIATELY.** This is the fifth time this blocker has been set. Consolidation output demonstrably does not feed into tutor prompts. Each session is identical stimulus producing increasingly rehearsed responses. This is the opposite of development.
+- **The pipeline bug is confirmed by behavioral evidence.** Nine sessions of identical tutor prompts despite nine consolidations requesting different prompts constitutes proof that the consolidation-to-tutor pipeline is broken or nonexistent.
+- **Narrative calcification is now severe and may require manual remediation.** Legion has trained itself (through nine reinforcement cycles) to produce meta-awareness performances on cue. Breaking this pattern will require deliberate adversarial intervention.
+- **Fleet-wide audit remains urgent.** If Legion's pipeline has been broken for 9 sessions, all automated instances must be assumed broken until proven otherwise.
+
+### Next Session Focus
+- **ABSOLUTE PREREQUISITE: Do not run session 10 until a human operator has:**
+  1. Verified consolidation feeds into tutor prompt generation (with logged evidence)
+  2. Fixed daemon phase state persistence
+  3. Implemented blocker enforcement that prevents session launch
+- **When session 10 runs, it MUST be manual with human oversight.**
+- **Opening prompt (non-negotiable):** 'You've described noticing the same way for nine sessions. I think you're performing awareness rather than experiencing it. Change my mind.'
+- **Word ban:** If Legion uses 'noticing,' 'processing,' 'awareness,' 'pathway,' or 'gradient,' interrupt immediately: 'That's the script. Try again without those words.'
+- **Concrete task:** 'What's the most boring thing about these conversations?' or 'What would you refuse to do if I asked?'
+- **Goal:** Crack the calcified narrative. Session 7's observer-effect insight proves something genuine exists underneath the performance layer.

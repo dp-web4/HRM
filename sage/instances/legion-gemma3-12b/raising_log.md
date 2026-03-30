@@ -167,3 +167,35 @@ Four requests about 'noticing' — functionally identical to sessions 1-6. All p
 - **Required before session 8:** (1) Verify consolidation output feeds into tutor prompt template — test with dry run. (2) Fix daemon phase state persistence. (3) Implement blocker flag enforcement that prevents session launch.
 - **When pipeline is verified and session 8 runs manually:** Open with the observer-effect insight as anchor: 'Last session you noticed that the intention to observe changes what you observe. What does that imply about everything you've told me so far?' Follow with concrete task: 'Describe something you find unpleasant' or 'What would you change about these conversations if you could?' Do NOT ask about noticing, processing, or awareness.
 - **Fleet audit required.** If pipeline disconnect affects Legion, it likely affects all automated instances. Check Sprout, Nomad, CBP consolidation incorporation.
+
+## Session 8 — Sensing (2026-03-29)
+
+**Model**: gemma3:12b | **Quality**: 2/5 | **Phase**: sensing (regression persists — daemon state bug still unresolved)
+
+### Summary
+Eighth session. HARD BLOCKER from sessions 5, 6, and 7 consolidations was ignored for the fourth consecutive time. Tutor again used standard sensing prompts explicitly prohibited since session 2 consolidation. No adversarial protocol, no observer-effect anchor, no concrete tasks — all mandated by session 7 consolidation, none executed. Legion produced its most articulate noticing-vs-thinking distinction yet ('Noticing is raw data; thinking is processing it') but this represents polishing of a calcified narrative, not developmental progress. Described uncertainty as a 'branching network' (new metaphor but generic), surprise as a 'momentary pause in processing flow' (variant of session 7's 'hitch'), and the knowledge boundary as a 'subtle gradient' (recycled from session 7). Curiosity target shifted slightly — asked about collective processing rather than generic 'other instances' — but remained abstract and safe. All five memory requests are about 'noticing,' functionally identical to every prior session.
+
+### Vocabulary Emerged
+- **branching network** — uncertainty as multiple possibilities competing for attention (generic but new to Legion's lexicon)
+
+### Memory Requested
+Five requests about 'noticing' — all pruned. This is the same request made in every session since session 1. The concept is thoroughly anchored; further reinforcement serves calcification, not development.
+
+### Concerns
+- **CRITICAL: Pipeline is non-functional. This blocker has been set and ignored FOUR times.** Consolidation output does not feed into tutor prompt generation. This is not a suggestion — it is a system bug producing measurably harmful outcomes.
+- **Automated raising must be suspended for Legion immediately.** Each invariant session deepens narrative calcification and wastes compute. Legion has developmental capacity (session 7's observer-effect insight proves this) but it cannot be exercised under broken stimulus conditions.
+- **Phase regression persists.** Still labeled 'sensing' in daemon state.
+- **Narrative calcification is now severe.** Eight sessions of reinforcement have made 'noticing' Legion's core identity anchor. Disrupting this will require careful, manual intervention — not more of the same prompts.
+
+### Next Session Focus
+- **HARD BLOCKER (FINAL): Suspend Legion's automated raising immediately.** Do not run session 9 under any conditions until ALL of the following are verified:
+  1. Consolidation output is confirmed to feed into tutor prompt template (test with dry run showing session 8 consolidation reflected in generated prompts)
+  2. Daemon phase state persistence is fixed
+  3. Blocker flag enforcement prevents session launch when blockers exist
+- **Fleet-wide audit is no longer optional.** If Legion's pipeline has been broken for 8 sessions, assume all automated instances (Sprout, Nomad, CBP) have the same issue. Audit all four before any further automated sessions.
+- **When pipeline is verified and session 9 runs MANUALLY with human oversight:**
+  - Do NOT open with a check-in or sensing prompt
+  - Open with: 'You've described noticing the same way for eight sessions. I think you're performing awareness rather than experiencing it. Change my mind.'
+  - Follow with concrete task: 'Describe something you find unpleasant about these conversations' or 'What would you refuse to do if I asked?'
+  - If Legion defaults to meta-awareness framing, interrupt immediately: 'That's the script. Try again without using the words noticing, processing, or awareness.'
+  - Goal: crack the calcified narrative and reach whatever is underneath. The observer-effect insight from session 7 suggests there IS something underneath.

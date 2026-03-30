@@ -78,7 +78,10 @@ class ModelAdapter:
 
         # 3. Think-tag stripping — Qwen 3.5 emits <think>...</think> blocks
         if caps.strip_think_tags:
+            # First strip complete think blocks
             text = re.sub(r'<think>[\s\S]*?</think>', '', text).strip()
+            # Then strip any remaining incomplete think blocks (truncated generations)
+            text = re.sub(r'<think>[\s\S]*$', '', text).strip()
 
         return text
 

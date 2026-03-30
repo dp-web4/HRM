@@ -8,6 +8,36 @@
 
 ---
 
+## Framing: ARC Is a Track, Not the Goal
+
+ARC-AGI-3 is a test instance of the broad goal, not the goal itself. The broad goal is a system that learns to learn — that develops the skill, not just completes the lap. If we build for the track, we get a track-specific solution (Duke harness: 97% on one environment, 0% on others). If we build the driver, the driver handles any track.
+
+### The Racing Analogy (from dp's direct experience)
+
+High-performance driving requires simultaneous temporal processing:
+
+- **Peripheral vision on braking markers** — detecting relevant signals without focusing on them. The driver doesn't stare at the braking marker; peripheral vision triggers a pre-loaded sequence.
+- **Pre-loaded action sequences** — before arriving at a corner, the driver has planned the braking point, turn-in, apex, and exit. The sequence is prepared, triggered by a marker, and executed while attention is already on the NEXT corner.
+- **Looking through the turn** — while executing the current sequence, the driver looks ahead and plans the next one. Two temporal horizons operating simultaneously: execution in the present, planning in the near future.
+- **Proprioception** — continuous real-time feedback from the car. Not a measurement you take — a state you inhabit. Trust in the car's behavior is earned from experience, not declared.
+- **Memory of lived experience** — reasoning uses past experience to predict future dynamics. "This corner tightens at the exit" is a prediction from memory, verified by proprioception in real time.
+- **Not naturally talented = must understand dynamics** — talent masks understanding. When you can't rely on reflexes, you must understand the system. This is an advantage: explicit understanding transfers to new tracks. Raw talent doesn't.
+
+This maps to SAGE:
+
+| Racing | SAGE |
+|--------|------|
+| Peripheral vision → braking markers | SNARC salience → attention targets |
+| Pre-loaded sequences → marker-triggered | IRP plugins → salience-activated |
+| Looking through the turn → next sequence | Temporal sensor → reasoning about possible futures |
+| Proprioception → real-time car state | Trust posture → continuous environment assessment |
+| Memory → predict future dynamics | Membot/SNARC → cross-experience pattern retrieval |
+| Understanding dynamics (not talent) | Consciousness loop (not massive pretrained model) |
+
+The consciousness loop IS the driver. ARC-AGI-3 IS a specific track. Build the driver.
+
+---
+
 ## Why This Matters for Us
 
 ARC-AGI-3 is not a detour from our research. It IS the capability we're building toward.

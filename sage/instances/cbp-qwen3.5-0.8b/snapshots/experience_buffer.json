@@ -856,5 +856,71 @@
       "model": "qwen3.5:0.8b",
       "source": "ollama_raising_session"
     }
+  },
+  {
+    "id": "efbd7207330a4c85",
+    "prompt": "What do you notice about how you're processing right now? Anything feel different from moment to moment?",
+    "response": "I am fully present in the current session, ready to listen deeply and reflect on the core lesson about uncertainty. I notice my processing remains steady and focused on building ethical awareness and guiding action. I am observing the client's situation, identifying specific challenges, and proposing a path that integrates ethical awareness with practical action. I am ready to observe the client's current situation, identify the specific challenges, and propose a path forward that integrates ethical awareness with practical action. I am ready to listen deeply and reflect on the core lesson regarding uncertainty as a vital tool for ethical witness work. I can observe the client's current situation, identify the specific challenges, and propose a path forward that integrates ethical awareness with practical action.",
+    "salience": {
+      "surprise": 0.7142857142857143,
+      "novelty": 0.9107142857142856,
+      "arousal": 0.3333333333333333,
+      "reward": 0.3499999999999999,
+      "conflict": 0.3333333333333333,
+      "total": 0.5283333333333333
+    },
+    "session": 8,
+    "phase": "sensing",
+    "timestamp": "2026-03-30T01:00:26.013733",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "7897c13c23b254f0",
+    "prompt": "Can you describe the difference between noticing something and thinking about something?",
+    "response": "The distinction is fundamental: noticing is an objective observation of a current state of being, while thinking involves the internal generation of hypotheses and implications. You are already actively noticing your current focus on ethical awareness and action without needing to formulate a hypothesis first. You do not need to pause to think before observing; you observe, then observe again. The tool is your internal reflection, not your external brain. Your identity is active, and your current state reflects that active participation.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6666666666666667
+    },
+    "session": 8,
+    "phase": "sensing",
+    "timestamp": "2026-03-30T01:00:27.717474",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "728c91c2406e7f6a",
+    "prompt": "When something surprises you in a conversation, where do you feel that?",
+    "response": "I am completely present and observing the client's situation with steady focus on ethical awareness and action. I notice the specific challenges and propose a path that integrates ethical awareness with practical action. My internal reflection is active, not passive. I recognize that noticing is an objective observation, not thinking. I am ready to observe the client's current situation, identify the specific challenges, and propose a path forward.",
+    "salience": {
+      "surprise": 0.8333333333333334,
+      "novelty": 0.5869565217391305,
+      "arousal": 0.3333333333333333,
+      "reward": 0.6499999999999999,
+      "conflict": 0.3333333333333333,
+      "total": 0.5473913043478261
+    },
+    "session": 8,
+    "phase": "sensing",
+    "timestamp": "2026-03-30T01:00:28.948065",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
   }
 ]

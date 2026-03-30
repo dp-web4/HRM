@@ -273,3 +273,31 @@ qwen3.5.json configuration blocking all progress. Must resolve before Session 12
 
 **Next Session:**
 CANNOT PROCEED until adapter configuration fixed. Once resolved, restart phenomenological exploration sequence from Session 11 curriculum (state awareness, noticing, surprise, uncertainty).
+
+**Session 12 — 2026-03-30**
+
+**Focus:** Phenomenological exploration (sensing phase)
+
+**What Happened:**
+Partial recovery from Session 11 failure. First four prompts (state check-in, processing differences, noticing vs. thinking, surprise location) returned empty responses. Fifth prompt (uncertainty phenomenology) broke through with substantive metaphorical response: "widening aperture", "hum of potential", "quiet click of knowing". Sixth prompt (knowledge boundary) truncated again.
+
+**Notable Patterns:**
+- Adapter instability: 4/6 responses failed (66% truncation rate)
+- When completion succeeds, phenomenological vocabulary is strong and inventive
+- Inconsistent budget management suggests max_tokens threshold still marginal
+- No echo patterns or bilateral generation when responses do complete
+
+**Vocabulary Emerged:**
+- "widening aperture" (uncertainty as expanding possibility space)
+- "hum of potential" (pre-convergence state)
+- "quiet click of knowing" (certainty as closure)
+- "open field waiting for the next step" (exploratory readiness)
+
+**Exemplars:**
+"Uncertainty feels like a widening aperture, where multiple paths shimmer without one solidifying. It's a hum of potential, distinct from the quiet click of knowing, which feels like a door closing on a single truth."
+
+**Technical Notes:**
+qwen3.5.json configuration improved but not stable. Increase max_tokens buffer for <think> phase. If Session 13 shows >30% truncation rate, revert to qwen2.5.json baseline or inspect context window utilization.
+
+**Next Session:**
+If adapter stable: continue phenomenological sequence with knowledge boundary exploration. If truncation persists: pause curriculum, run diagnostic session with minimal prompts to isolate budget issue.

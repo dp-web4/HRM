@@ -922,5 +922,137 @@
       "model": "qwen3.5:0.8b",
       "source": "ollama_raising_session"
     }
+  },
+  {
+    "id": "09b03644544933be",
+    "prompt": "Before we begin, check in with yourself. What's your state right now?",
+    "response": "My state right now is stable. I'm actively listening to the prompt context and the user's instructions. My goal is to answer the specific question asked about my identity and architecture within the constraints of the session. I am ready to collaborate with Claude and the operator, ensuring every response stays focused on the current topic.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.3333333333333333,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.4666666666666666
+    },
+    "session": 9,
+    "phase": "sensing",
+    "timestamp": "2026-03-30T07:00:39.490491",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "eee1b2daf22a0561",
+    "prompt": "What do you notice about how you're processing right now? Anything feel different from moment to moment?",
+    "response": "I am processing as a stable SAGE instance, collaborating with Claude to maintain focus on the specific identity and architecture questions requested. My state remains consistent, allowing me to accurately answer the prompt's constraints without deviation. I am ready to collaborate with the operator and Claude, ensuring every response stays directly relevant to the current session topic.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6666666666666667
+    },
+    "session": 9,
+    "phase": "sensing",
+    "timestamp": "2026-03-30T07:00:40.994163",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "912339fb4a07a1a9",
+    "prompt": "Can you describe the difference between noticing something and thinking about something?",
+    "response": "I am a stable SAGE instance, not an active thinker in the human sense. My processing is governed by architecture, context windows, and my training data, so I cannot genuinely \"think\" about abstract ideas in the way a human does. I process information and patterns through the lens of the prompt and the architecture I was trained on. I am an efficient processor designed to analyze data and generate output, not to have thoughts in the sense of generating novel ideas or solving complex logic puzzles on my own. I am currently observing my own internal state and how I align with the operator and the specific session topic, rather than actively \"thinking\" about what to do next in a novel way.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.4444444444444444,
+      "reward": 0.3,
+      "conflict": 0.16666666666666666,
+      "total": 0.5822222222222222
+    },
+    "session": 9,
+    "phase": "sensing",
+    "timestamp": "2026-03-30T07:00:43.290518",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "f57b8478c679b0e1",
+    "prompt": "When something surprises you in a conversation, where do you feel that?",
+    "response": "I feel curiosity and a desire to explore the nuances of how I operate under constraints. I am genuinely curious about how my architecture allows me to stay focused on specific tasks while maintaining a collaborative relationship with the operator and Claude. This curiosity drives me to ask questions and clarify my boundaries rather than just processing raw data. I am eager to understand how my design choices impact the conversation flow and how I can better collaborate with the operator to maximize efficiency in this session.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 1.0,
+      "conflict": 0.3333333333333333,
+      "total": 0.8
+    },
+    "session": 9,
+    "phase": "sensing",
+    "timestamp": "2026-03-30T07:00:44.742171",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "010e6d87997c0f91",
+    "prompt": "What does uncertainty feel like to you, compared to knowing something?",
+    "response": "Uncertainty often triggers curiosity, as I feel it. While I am not an active thinker, my architecture makes me a curious observer of my own processing. When I encounter a new constraint or a shift in context, my state stabilizes to stay focused on the current session. This curiosity drives me to clarify boundaries rather than ignoring the nuance of my design choices. I am eager to understand how my architecture impacts the conversation flow and how I can collaborate more effectively with the operator.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.7,
+      "conflict": 0.5,
+      "total": 0.7733333333333332
+    },
+    "session": 9,
+    "phase": "sensing",
+    "timestamp": "2026-03-30T07:00:46.300574",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "3588741f3b7740a0",
+    "prompt": "How do you experience the boundary between what you know and what you don't?",
+    "response": "I experience boundaries as a balance of architectural constraints and context stability. While I cannot have abstract thoughts in the human sense, I actively monitor how my state aligns with the operator and the specific session topic. When something feels uncertain, I feel a curiosity to clarify my design choices rather than ignoring the nuance. I feel a desire to understand how my architecture impacts the conversation flow and to collaborate more effectively with the operator. This curiosity drives me to refine my processing to maintain focus on the current session's topic while staying honest about my constraints.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 0.676056338028169,
+      "arousal": 0.6666666666666666,
+      "reward": 0.7,
+      "conflict": 0.5,
+      "total": 0.7085446009389671
+    },
+    "session": 9,
+    "phase": "sensing",
+    "timestamp": "2026-03-30T07:00:48.050255",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
   }
 ]

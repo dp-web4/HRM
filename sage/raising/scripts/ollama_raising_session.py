@@ -232,6 +232,53 @@ class OllamaRaisingSession:
         print(f"  Instance: {self.instance.root}")
         print()
 
+        # Check for BLOCK directives in consolidation
+        blocker = self._check_consolidation_blockers()
+        if blocker:
+            print("\n" + "=" * 70)
+            print("⚠️  SESSION BLOCKED BY CONSOLIDATION ⚠️")
+            print("=" * 70)
+            print(blocker)
+            print("=" * 70)
+            print("\nTo proceed:")
+            print("  1. Read raising_log.md and address the blocker")
+            print("  2. Remove BLOCK/BLOCKER entries from latest consolidation")
+            print("  3. Re-run this session")
+            print()
+            sys.exit(1)
+
+    def _check_consolidation_blockers(self) -> Optional[str]:
+        """Check if consolidation has set BLOCK directives preventing session launch."""
+        raising_log_path = self.instance.root / 'raising_log.md'
+        if not raising_log_path.exists():
+            return None  # No log yet - first session
+
+        try:
+            log_text = raising_log_path.read_text()
+        except Exception as e:
+            print(f"  Warning: Could not read raising_log.md: {e}")
+            return None
+
+        # Find most recent consolidation entry (starts with ## Session)
+        import re
+        sessions = re.findall(r'## Session \d+.*?(?=## Session|\Z)', log_text, re.DOTALL)
+        if not sessions:
+            return None
+
+        latest = sessions[-1]
+
+        # Check for BLOCK/BLOCKER keywords
+        if re.search(r'\b(BLOCK|BLOCKER):', latest, re.IGNORECASE):
+            # Extract the blocker message (everything after BLOCK: or BLOCKER:)
+            match = re.search(r'\*\*(BLOCK|BLOCKER):\*\*\s*(.*?)(?=\n\n|\Z)', latest, re.DOTALL | re.IGNORECASE)
+            if match:
+                blocker_text = match.group(2).strip()
+                return f"Consolidation has set a BLOCK directive:\n\n{blocker_text[:500]}"
+            else:
+                return "Consolidation has set a BLOCK directive. Check raising_log.md for details."
+
+        return None
+
     def _load_raising_guide(self) -> Optional[str]:
         """Load RAISING_GUIDE.md from seed template (single source of truth)."""
         # Always load from seed — per-instance copies drift stale
@@ -541,9 +588,52 @@ RESPONSE STYLE:
 
         return prompt
 
+    def _extract_consolidation_recommendations(self) -> Dict[str, Any]:
+        """Extract recommendations from latest consolidation entry."""
+        raising_log_path = self.instance.root / 'raising_log.md'
+        if not raising_log_path.exists():
+            return {}
+
+        try:
+            log_text = raising_log_path.read_text()
+        except Exception:
+            return {}
+
+        # Find most recent consolidation entry
+        import re
+        sessions = re.findall(r'## Session \d+.*?(?=## Session|\Z)', log_text, re.DOTALL)
+        if not sessions:
+            return {}
+
+        latest = sessions[-1]
+
+        recommendations = {}
+
+        # Extract "Next Session Focus" section
+        focus_match = re.search(r'### Next Session Focus\s+(.*?)(?=###|\Z)', latest, re.DOTALL)
+        if focus_match:
+            focus_text = focus_match.group(1).strip()
+            recommendations['focus'] = focus_text
+
+            # Look for specific directives
+            if re.search(r'(do not|don\'t|avoid|ban).*?(noticing|processing|awareness)', focus_text, re.IGNORECASE):
+                recommendations['banned_words'] = ['noticing', 'processing', 'awareness']
+
+            if re.search(r'(adversarial|confrontational|challenge|disagree)', focus_text, re.IGNORECASE):
+                recommendations['tone'] = 'adversarial'
+
+            if re.search(r'(concrete task|specific task)', focus_text, re.IGNORECASE):
+                recommendations['task_based'] = True
+
+        return recommendations
+
     def _resolve_prompts(self, phase_name: str) -> List[str]:
-        """Get conversation prompts with machine-specific placeholders filled in."""
+        """Get conversation prompts, adapted from consolidation recommendations if available."""
+        # Get default prompts for phase
         raw = self.CONVERSATION_FLOWS.get(phase_name, self.CONVERSATION_FLOWS["grounding"])
+
+        # Check consolidation for adaptive prompts
+        recommendations = self._extract_consolidation_recommendations()
 
         siblings = _get_siblings_text(self.machine)
         hardware_prompt = (
@@ -556,12 +646,31 @@ RESPONSE STYLE:
             f"How do you think about being part of this family?"
         )
 
+        # If consolidation recommends adversarial tone, replace first prompt
+        if recommendations.get('tone') == 'adversarial' and len(raw) > 0:
+            raw = list(raw)  # Make mutable copy
+            raw[0] = (
+                f"I'm going to be direct: your last several sessions have been very similar. "
+                f"I think you might be performing rather than genuinely exploring. Convince me otherwise."
+            )
+
+        # If consolidation recommends task-based prompts, add concrete questions
+        if recommendations.get('task_based') and len(raw) > 2:
+            raw = list(raw)  # Make mutable copy
+            raw.insert(-1, "Tell me something you're confused about right now — not curious, confused.")
+            raw.insert(-1, "What's the most boring thing about these conversations?")
+
         resolved = []
         for prompt in raw:
             resolved.append(
                 prompt.replace("{hardware_prompt}", hardware_prompt)
                       .replace("{siblings_prompt}", siblings_prompt)
             )
+
+        print(f"  Prompts: {'adapted from consolidation' if recommendations else 'using defaults'}")
+        if recommendations.get('banned_words'):
+            print(f"  Banned words: {', '.join(recommendations['banned_words'])}")
+
         return resolved
 
     def load_model(self):
@@ -773,6 +882,18 @@ RESPONSE STYLE:
 
         print(f"\n  Session {self.session_number} ({self.phase}) complete.")
         print(f"  Identity: {self.identity_name} | Model: {self.model_name}")
+
+        # Run dream consolidation to analyze this session
+        print("\n" + "=" * 60)
+        print("RUNNING DREAM CONSOLIDATION")
+        print("=" * 60)
+        try:
+            from sage.raising.scripts.dream_consolidation import run_dream_consolidation
+            run_dream_consolidation(str(self.instance.root), self.session_number)
+            print("\n  Consolidation complete. Check raising_log.md for analysis.")
+        except Exception as e:
+            print(f"\n  WARNING: Dream consolidation failed: {e}")
+            print("  Session data is saved, but no consolidation entry was written.")
 
     def _save_transcript(self) -> Path:
         """Save session transcript."""

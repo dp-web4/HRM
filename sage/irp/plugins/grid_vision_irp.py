@@ -117,7 +117,14 @@ class GridVisionIRP(IRPPlugin):
         For use when Andy's perception layer isn't available (testing,
         competition fallback). Provides basic frame diff but no object
         detection or embedding.
+
+        Accepts 2D (H, W) or 3D (1, H, W) grids — squeezes to 2D internally.
         """
+        # Normalize to 2D: SDK returns (N, 64, 64) where N is animation frames.
+        # Take the last frame (current state after animation completes).
+        if frame.ndim == 3:
+            frame = frame[-1]
+
         changes = []
         moved = []
         if self._prev_frame is not None:

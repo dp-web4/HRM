@@ -50,7 +50,13 @@
     "state_dependent": {}
   },
   "strategic_insights": [
-    "Level 1: clicking color-8 completes level (confidence: 90.0%)"
+    "Level 1: clicking color-8 completes level (confidence: 90.0%)",
+    "Level 1: color-8 clicking completes level (100% effectiveness, ~5 steps) (confidence: 80.0%)",
+    "Level 2: color-8 clicking should work (historical 2-level achievement at step 28) (confidence: 80.0%)",
+    "Pattern: Each level has fewer color-8 cells (40\u219230\u219220), exhaustion-based progression (confidence: 80.0%)",
+    "Current challenge: System gets stuck at Level 1, may be missing all color-8 cells (confidence: 80.0%)",
+    "Level-specific learning: Prevents Level 1 patterns from dominating Level 2+ exploration (confidence: 80.0%)",
+    "Stagnation detection: Force 90% exploration after 100 actions prevents local optimum (confidence: 80.0%)"
   ],
   "total_attempts": 6,
   "best_score": {
@@ -58,7 +64,7 @@
     "steps": 0
   },
   "created": 1774975039.7690413,
-  "last_updated": 1774976427.0894353,
+  "last_updated": 1774976744.3142767,
   "click_effectiveness": {
     "global": {
       "color_14": {

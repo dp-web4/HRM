@@ -85,21 +85,91 @@ def grid_to_text(grid: np.ndarray, max_rows: int = 64) -> str:
     )
 
 
-def describe_changes(obs) -> str:
-    """Describe what changed since last frame."""
+ACTION_LABELS = {
+    1: "UP", 2: "DOWN", 3: "LEFT", 4: "RIGHT",
+    5: "SELECT", 6: "ACTION6", 7: "ACTION7",
+}
+
+
+def describe_changes(obs, prev_grid=None, curr_grid=None) -> str:
+    """Describe what changed since last frame with spatial detail."""
     if not obs.changes:
-        return "No changes from previous frame."
+        return "No visible changes."
 
     n = len(obs.changes)
-    colors_changed = set()
-    for c in obs.changes:
-        colors_changed.add(c["now"])
+    if n == 0:
+        return "No visible changes."
+
+    # Spatial summary: where did changes happen?
+    rows = [c["cell"][0] for c in obs.changes]
+    cols = [c["cell"][1] for c in obs.changes]
+    r_min, r_max = min(rows), max(rows)
+    c_min, c_max = min(cols), max(cols)
+
+    # Color flow: what colors appeared/disappeared?
+    old_colors = set(c["was"] for c in obs.changes)
+    new_colors = set(c["now"] for c in obs.changes)
 
     return (
-        f"{n} cells changed. "
-        f"New colors appearing: {sorted(colors_changed)}. "
-        f"Change magnitude: {obs.change_magnitude:.3f}"
+        f"{n} cells changed in region r{r_min}-{r_max}, c{c_min}-{c_max}. "
+        f"Colors {sorted(old_colors)} → {sorted(new_colors)}."
     )
+
+
+class ActionMemory:
+    """Rolling memory of action-outcome pairs for in-context learning."""
+
+    def __init__(self, capacity: int = 8):
+        self.capacity = capacity
+        self.entries: list = []
+        self.hypothesis: str = ""
+
+    def record(self, action: int, n_changes: int, change_desc: str,
+               level_before: int, level_after: int):
+        entry = {
+            "action": ACTION_LABELS.get(action, f"A{action}"),
+            "action_int": action,
+            "changes": n_changes,
+            "effect": change_desc,
+            "leveled_up": level_after > level_before,
+        }
+        self.entries.append(entry)
+        if len(self.entries) > self.capacity:
+            self.entries = self.entries[-self.capacity:]
+
+    def to_text(self) -> str:
+        if not self.entries:
+            return "No actions taken yet."
+        lines = []
+        for i, e in enumerate(self.entries):
+            lvl = " ** LEVEL UP! **" if e["leveled_up"] else ""
+            lines.append(
+                f"  {i+1}. {e['action']}: {e['changes']} cells changed. {e['effect']}{lvl}"
+            )
+        return "\n".join(lines)
+
+    def dead_actions(self) -> list:
+        """Actions that have been tried 3+ times with 0 changes."""
+        from collections import Counter
+        zero_counts = Counter()
+        total_counts = Counter()
+        for e in self.entries:
+            total_counts[e["action_int"]] += 1
+            if e["changes"] == 0:
+                zero_counts[e["action_int"]] += 1
+        return [a for a in zero_counts if zero_counts[a] >= 3 and zero_counts[a] == total_counts[a]]
+
+    def effective_actions(self) -> list:
+        """Actions that have caused level-ups or large changes."""
+        from collections import defaultdict
+        stats = defaultdict(lambda: {"total_changes": 0, "count": 0, "level_ups": 0})
+        for e in self.entries:
+            s = stats[e["action_int"]]
+            s["total_changes"] += e["changes"]
+            s["count"] += 1
+            if e["leveled_up"]:
+                s["level_ups"] += 1
+        return sorted(stats.keys(), key=lambda a: stats[a]["total_changes"], reverse=True)
 
 
 def ask_ollama(prompt: str, timeout: float = 60.0) -> str:
@@ -113,7 +183,7 @@ def ask_ollama(prompt: str, timeout: float = 60.0) -> str:
                 "stream": False,
                 "options": {
                     "temperature": 0.3,
-                    "num_predict": 150,
+                    "num_predict": 200,
                 },
             },
             timeout=timeout,
@@ -132,38 +202,46 @@ def build_prompt(
     step: int,
     levels_completed: int,
     win_levels: int,
-    action_history: list,
+    memory: ActionMemory,
 ) -> str:
-    """Build reasoning prompt for the LLM."""
-    action_names = {
-        1: "UP", 2: "DOWN", 3: "LEFT", 4: "RIGHT",
-        5: "SELECT", 6: "ACTION6", 7: "ACTION7",
-    }
-    avail = [f"{a}={action_names.get(a, f'ACTION{a}')}" for a in available_actions]
-
-    # Last 5 actions
-    recent = action_history[-5:] if action_history else []
-    history_str = ", ".join(
-        f"{action_names.get(a, f'A{a}')}" for a in recent
-    ) if recent else "none"
-
+    """Build reasoning prompt with action-outcome memory."""
+    avail = [f"{a}={ACTION_LABELS.get(a, f'A{a}')}" for a in available_actions]
     grid_text = grid_to_text(grid)
     changes = describe_changes(obs)
+    memory_text = memory.to_text()
 
-    return f"""You are playing an interactive grid game. Your goal is to complete all levels.
+    hypothesis_section = ""
+    if memory.hypothesis:
+        hypothesis_section = f"\nCURRENT HYPOTHESIS: {memory.hypothesis}\n"
+
+    dead = memory.dead_actions()
+    dead_warning = ""
+    if dead:
+        dead_names = [f"{a}={ACTION_LABELS.get(a, f'A{a}')}" for a in dead]
+        dead_warning = f"\nDEAD ACTIONS (tried 3+ times, never changed anything — DO NOT use): {', '.join(dead_names)}\n"
+
+    return f"""You are exploring an interactive grid game with NO instructions. Discover the rules by experimenting.
 
 GAME STATE (step {step}):
 - Levels completed: {levels_completed}/{win_levels}
 - Available actions: {', '.join(avail)}
-- Recent actions: {history_str}
-- Frame changes: {changes}
-
-GRID (hex colors 0-f, only non-empty rows shown):
+- Last frame changes: {changes}
+{dead_warning}
+GRID:
 {grid_text}
 
-Look at the grid pattern. What do you notice? Based on the available actions and what changed, choose the BEST next action.
+ACTION-OUTCOME MEMORY (what your recent actions did):
+{memory_text}
+{hypothesis_section}
+STRATEGY:
+1. Study action-outcome memory. Which actions cause changes? Which don't?
+2. Try different ACTION SEQUENCES — maybe UP then DOWN does something different than just UP.
+3. Explore systematically: try each direction, observe, then try combinations.
+4. If an action changes nothing after 3 tries, STOP using it.
+5. The goal is to COMPLETE LEVELS. Look for what triggers level completion.
 
-Respond with ONLY a JSON object: {{"action": <number>, "reason": "<brief reason>"}}"""
+Respond with ONLY a JSON object:
+{{"action": <number>, "hypothesis": "<what you think the game rules are>", "reason": "<why this specific action next>"}}"""
 
 
 def main():
@@ -241,12 +319,12 @@ def main():
     if grid.ndim == 3:
         grid = grid[-1]
 
-    action_history = []
+    memory = ActionMemory(capacity=10)
     start_time = time.time()
 
     print(f"\n{'='*60}")
-    print(f"{'Step':>4} | {'Action':>8} | {'Changes':>7} | {'Levels':>6} | {'Reason'}")
-    print(f"{'-'*4:>4} | {'-'*8:>8} | {'-'*7:>7} | {'-'*6:>6} | {'-'*30}")
+    print(f"{'Step':>4} | {'Action':>8} | {'Chg':>5} | {'Levels':>6} | {'Time':>5} | Reason")
+    print(f"{'-'*4:>4}-+-{'-'*8:>8}-+-{'-'*5:>5}-+-{'-'*6:>6}-+-{'-'*5:>5}-+-{'-'*30}")
 
     for step in range(1, args.steps + 1):
         available = [a.value if hasattr(a, "value") else int(a)
@@ -255,28 +333,31 @@ def main():
             print(f"  No available actions — game may be over.")
             break
 
+        levels_before = frame_data.levels_completed
+
         # --- Reasoning ---
         prompt = build_prompt(
             grid, obs, available, step,
             frame_data.levels_completed, frame_data.win_levels,
-            action_history,
+            memory,
         )
 
         t0 = time.time()
         response = ask_ollama(prompt)
-        reasoning_ms = (time.time() - t0) * 1000
+        reasoning_s = time.time() - t0
 
-        # Parse action from response
+        # Parse action + hypothesis from response
         chosen_action = None
         reason = ""
+        hypothesis = ""
         try:
-            # Try to extract JSON from response
             json_str = response
             if "{" in response:
                 json_str = response[response.index("{"):response.rindex("}") + 1]
             parsed = json.loads(json_str)
             chosen_action = int(parsed.get("action", 0))
             reason = parsed.get("reason", "")[:50]
+            hypothesis = parsed.get("hypothesis", "")
         except (json.JSONDecodeError, ValueError):
             reason = f"parse fail: {response[:40]}"
 
@@ -285,10 +366,14 @@ def main():
             if args.random_fallback:
                 import random
                 chosen_action = random.choice(available)
-                reason = f"(random fallback) {reason}"
+                reason = f"(random) {reason}"
             else:
                 chosen_action = available[0]
                 reason = f"(default) {reason}"
+
+        # Update hypothesis if LLM provided one
+        if hypothesis:
+            memory.hypothesis = hypothesis
 
         # --- Act ---
         cmd = EffectorCommand(
@@ -298,7 +383,6 @@ def main():
             parameters={"action": chosen_action, "rationale": reason},
         )
         result = gae.execute(cmd)
-        action_history.append(chosen_action)
 
         # --- Observe new state ---
         new_grid = np.array(frame_data.frame)
@@ -313,18 +397,33 @@ def main():
         else:
             grid = new_grid
 
-        action_name = ACTION_NAMES.get(chosen_action, f"A{chosen_action}")
         n_changes = len(obs.changes)
+        change_desc = describe_changes(obs)
+
+        # Record in memory
+        memory.record(
+            action=chosen_action,
+            n_changes=n_changes,
+            change_desc=change_desc,
+            level_before=levels_before,
+            level_after=frame_data.levels_completed,
+        )
+
+        action_name = ACTION_LABELS.get(chosen_action, f"A{chosen_action}")
         lvl = f"{frame_data.levels_completed}/{frame_data.win_levels}"
 
-        print(f"{step:4d} | {action_name:>8} | {n_changes:7d} | {lvl:>6} | {reason}")
+        print(f"{step:4d} | {action_name:>8} | {n_changes:5d} | {lvl:>6} | {reasoning_s:4.1f}s | {reason}")
+
+        # Print hypothesis updates
+        if hypothesis and step <= 3 or (step % 5 == 0):
+            print(f"     | {'':>8} | {'':>5} | {'':>6} | {'':>5} | Hypothesis: {hypothesis[:60]}")
 
         # Check win/loss
         if frame_data.state.name == "WON":
-            print(f"\n🎉 WON after {step} steps!")
+            print(f"\n  WON after {step} steps!")
             break
         elif frame_data.state.name == "LOST":
-            print(f"\n💀 LOST after {step} steps.")
+            print(f"\n  LOST after {step} steps.")
             break
 
     # --- Final report ---
@@ -337,10 +436,13 @@ def main():
     print(f"  Levels: {frame_data.levels_completed}/{frame_data.win_levels}")
     print(f"  State: {frame_data.state.name}")
     print(f"  Time: {elapsed:.1f}s ({elapsed/step:.1f}s/step)")
-    print(f"  Effector stats: {gae.stats}")
-    print(f"  Efficiency: {gae.efficiency_ratio:.1%}")
+    print(f"  Effector efficiency: {gae.efficiency_ratio:.1%}")
     print(f"  RHAE estimate: {gae.rhae_estimate:.3f}")
-    print(f"  Vision stats: {gv.stats}")
+    print(f"  Vision frames: {gv.stats['frames_received']}")
+    if memory.hypothesis:
+        print(f"  Final hypothesis: {memory.hypothesis}")
+    print(f"\n  Action-outcome memory:")
+    print(memory.to_text())
 
 
 if __name__ == "__main__":

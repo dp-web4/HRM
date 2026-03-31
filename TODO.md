@@ -2,7 +2,7 @@
 
 *Global task list across active workstreams. Updated by CBP (coordinator).*
 
-*Last updated: 2026-03-30*
+*Last updated: 2026-03-31*
 
 ---
 
@@ -11,8 +11,9 @@
 ### Adapter Layer (April 7-14)
 - [ ] Install SDK on Thor, Sprout, McNugget — random agent on demo games
 - [ ] Benchmark: action iteration speed per machine (FPS)
-- [ ] GridVisionIRP skeleton — observation buffer + consciousness loop integration
+- [ ] Wire GridVisionIRP into consciousness loop `_gather_observations()`
 - [ ] GameActionEffector — action dispatch to ARC-AGI-3 API
+- [x] GridVisionIRP skeleton — DONE (`sage/irp/plugins/grid_vision_irp.py`)
 - [x] GridVisionIRP interface spec — DONE (private-context/plans/)
 - [x] Environment spec (ENVIRONMENT.md) — DONE
 - [x] StochasticGoose analysis — DONE

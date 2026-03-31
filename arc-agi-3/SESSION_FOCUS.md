@@ -38,10 +38,16 @@ python random_agent.py  # or whatever the entry point is — check their README
 
 Report back in this file: does it run? How much memory? How fast per action?
 
-**Thor** (powerhouse):
-- ~~Install ARC-AGI-3 SDK~~ DO THIS FIRST
-- Measure: how fast can we iterate actions? What's the FPS on Thor's GPU?
-- Test GridVisionIRP with raw frame push: `grid_vision_irp.push_raw_frame(frame)`
+**Thor** (powerhouse): ✅ SDK VERIFIED + BENCHMARKED 2026-03-31
+- ~~Install ARC-AGI-3 SDK~~ DONE — arc-agi 0.9.6 + arcengine 0.9.3 in .venv-arc
+- ~~Test GridVisionIRP + GameActionEffector~~ DONE — both functional, 100% effector efficiency
+- SDK performance: reset 0.002s, step 0.000s (essentially instant)
+- **Qwen 3.5 27B reasoning: ~24s/action** (17.8s, 25.9s, 28.0s measured)
+  - Model size: 26.9B parameters (19GB), Q5_K_M quantization
+  - Hypothesis formation working, action-outcome memory tracking
+  - **TOO SLOW for competition** (need <1s/action, ideally <100ms)
+- Next: Test with smaller models (Gemma 3 12B or Qwen 3.5 0.8B) for speed vs reasoning tradeoff
+- Next: Prompt optimization to reduce reasoning time (currently verbose)
 
 **Sprout** (edge constraint):
 - ~~Install ARC-AGI-3 SDK~~ DO THIS FIRST
@@ -74,7 +80,12 @@ Report back in this file: does it run? How much memory? How fast per action?
 
 3. **Session-level vs step-level**: Does the consciousness loop run once per game step (fast, reactive)? Or does it run a planning cycle that outputs a sequence of actions (slower, strategic)?
 
-4. **Model for reasoning**: Qwen 3.5 0.8B (fast, fits everywhere)? Gemma 3 12B (better reasoning)? Qwen 3.5 27B (best reasoning, Thor only)? Different models for different game phases?
+4. **Model for reasoning**: ⚠️ **SPEED IS CRITICAL** — competition requires <1s/action, ideally <100ms
+   - **Qwen 3.5 27B**: Best reasoning (hypothesis formation, memory tracking) but ~24s/action = impractical
+   - **Gemma 3 12B**: Middle ground — test needed (McNugget baseline, expect 5-10s/action)
+   - **Qwen 3.5 0.8B**: Fastest option — test needed (Sprout can measure <1s feasibility)
+   - **Hybrid approach**: Different models for different phases? Fast model for actions, slow model for strategy?
+   - **Prompt optimization**: Current prompts verbose — can we reduce reasoning time 3-5x with tighter prompts?
 
 5. **Memory between levels**: Dream consolidation between levels? Or simpler — hash-based state dedup like StochasticGoose? Or membot cartridge per environment?
 

@@ -1,0 +1,27 @@
+{
+  "results": [
+    {
+      "game_id": "lp85-305b61c3",
+      "steps": 2000,
+      "levels_completed": 1,
+      "win_levels": 0,
+      "state": "GAME_OVER",
+      "level_events": [
+        {
+          "step": 5,
+          "level": 1,
+          "action_window": [
+            "CLICK(8,0) color=14",
+            "CLICK(29,4) color=8",
+            "CLICK(31,7) color=8",
+            "CLICK(29,4) color=8",
+            "CLICK(29,4) color=8",
+            "CLICK(29,4) color=8"
+          ]
+        }
+      ],
+      "total_levels_gained": 1
+    }
+  ],
+  "total_levels": 1
+}

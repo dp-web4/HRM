@@ -7,6 +7,13 @@
       "action_names": [],
       "state_hashes": [],
       "learned": 1774975039.7866654
+    },
+    {
+      "level": 1,
+      "actions": [],
+      "action_names": [],
+      "state_hashes": [],
+      "learned": 1774975343.6087334
     }
   ],
   "goal_patterns": [],
@@ -17,25 +24,25 @@
   "strategic_insights": [
     "Level 1: clicking color-8 completes level (confidence: 90.0%)"
   ],
-  "total_attempts": 1,
+  "total_attempts": 2,
   "best_score": {
     "levels": 0,
     "steps": 0
   },
   "created": 1774975039.7690413,
-  "last_updated": 1774975041.8216307,
+  "last_updated": 1774975399.5177982,
   "click_effectiveness": {
     "global": {
       "color_14": {
-        "tries": 7,
-        "changes": 2,
-        "level_ups": 1,
-        "rate": 0.2857142857142857
+        "tries": 16,
+        "changes": 7,
+        "level_ups": 2,
+        "rate": 0.4375
       },
       "color_8": {
-        "tries": 63,
-        "changes": 63,
-        "level_ups": 1,
+        "tries": 123,
+        "changes": 123,
+        "level_ups": 2,
         "rate": 1.0
       },
       "color_5": {

@@ -211,44 +211,53 @@ def ask_ollama(prompt: str, timeout: float = 90.0, max_tokens: int = 250) -> str
 
 def plan_prompt(grid: np.ndarray, summary: dict, available: list,
                 levels_completed: int, win_levels: int,
-                memory: GameMemory, step_count: int) -> str:
+                memory: GameMemory, step_count: int,
+                fast: bool = False) -> str:
     """Ask LLM to plan a sequence of 3-5 actions."""
     avail = [f"{a}={ACTION_LABELS.get(a, f'A{a}')}" for a in available]
 
-    # Grid view centered on content centroid
+    if fast:
+        # Compact prompt for speed (~70 tokens instead of ~300)
+        mem_lines = []
+        for s in memory.sequence_log[-4:]:
+            arrow = "→".join(s["actions"])
+            lvl = " ★LEVELUP★" if s["level_ups"] > 0 else ""
+            mem_lines.append(f"[{arrow}]={s['total_changes']}chg{lvl}")
+        mem_compact = "; ".join(mem_lines) if mem_lines else "none"
+        hyp = memory.hypothesis[:80] if memory.hypothesis else "unknown"
+
+        return f"""Grid game. Acts: {','.join(avail)}. Lvl {levels_completed}/{win_levels}. Step {step_count}.
+History: {mem_compact}
+Hypothesis: {hyp}
+Plan 3-5 actions. JSON only: {{"sequence":[nums],"hypothesis":"brief","goal":"brief"}}"""
+
+    # Full prompt for quality reasoning
     if not summary["empty"]:
         cr, cc = int(summary["centroid"][0]), int(summary["centroid"][1])
         crop = grid_crop_text(grid, cr, cc, size=16)
-        grid_section = f"Colors: {summary['colors']}\nContent centroid: row {cr}, col {cc}\n{crop}"
+        grid_section = f"Colors: {summary['colors']}\nCentroid: r{cr},c{cc}\n{crop}"
     else:
-        grid_section = "Grid is empty / uniform."
+        grid_section = "Grid empty."
 
     mem_text = memory.to_text()
     winning = memory.winning_text()
+    hyp = f"\nHYPOTHESIS: {memory.hypothesis}" if memory.hypothesis else ""
+    strat = f"\nSTRATEGY: {memory.strategy}" if memory.strategy else ""
 
-    hyp = f"\nCURRENT HYPOTHESIS: {memory.hypothesis}" if memory.hypothesis else ""
-    strat = f"\nCURRENT STRATEGY: {memory.strategy}" if memory.strategy else ""
+    return f"""Exploring grid game. No rules given — discover by experimenting.
 
-    return f"""You are exploring an interactive grid game. NO rules are given — discover them by experimenting.
-
-GAME STATE (total actions: {step_count}, levels: {levels_completed}/{win_levels}):
-Available actions: {', '.join(avail)}
+STATE: step {step_count}, levels {levels_completed}/{win_levels}
+Actions: {', '.join(avail)}
 
 GRID:
 {grid_section}
 
-SEQUENCE MEMORY (what sequences of actions did):
+MEMORY:
 {mem_text}
 {winning}{hyp}{strat}
 
-PLAN a sequence of 3-5 actions to try next. Think about:
-- What have you learned from previous sequences?
-- What hasn't been tried yet?
-- If something caused many changes, try extending that pattern.
-- If a sequence caused a level-up, REPEAT or EXTEND it.
-
-Respond with ONLY a JSON object:
-{{"sequence": [<action numbers>], "hypothesis": "<your theory of how the game works>", "goal": "<what you expect this sequence to reveal or achieve>"}}"""
+Plan 3-5 actions. Extend patterns that caused changes. Repeat winning sequences.
+JSON only: {{"sequence": [nums], "hypothesis": "game theory", "goal": "what to test"}}"""
 
 
 def reflect_prompt(grid: np.ndarray, summary: dict,
@@ -290,6 +299,7 @@ def main():
     parser.add_argument("--game", default=None, help="Game ID prefix")
     parser.add_argument("--sequences", type=int, default=15, help="Max sequences to play")
     parser.add_argument("--reflect-every", type=int, default=5, help="Reflect every N sequences")
+    parser.add_argument("--fast", action="store_true", help="Use compact prompts (~3s/action instead of ~16s)")
     args = parser.parse_args()
 
     print("=" * 70)
@@ -374,9 +384,9 @@ def main():
         # --- Plan sequence ---
         pprompt = plan_prompt(grid, summary, available,
                              frame_data.levels_completed, frame_data.win_levels,
-                             memory, total_steps)
+                             memory, total_steps, fast=args.fast)
         t0 = time.time()
-        presponse = ask_ollama(pprompt, max_tokens=200)
+        presponse = ask_ollama(pprompt, max_tokens=80 if args.fast else 200)
         plan_s = time.time() - t0
 
         sequence = []

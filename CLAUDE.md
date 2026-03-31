@@ -155,6 +155,13 @@ The following are completed milestones. Full details in their respective docs �
 - SAGE-Totality integration (Aug 2025) — `related-work/SETUP_GUIDE.md`
 
 <!-- gitnexus:start -->
+
+## Session Discipline
+
+- **Re-read before editing**: After 10+ messages in a conversation, re-read any file before editing it. Auto-compaction may have silently dropped file contents from context. Do not trust memory of file state — verify.
+- **Verify before reporting success**: After code changes, run the project build/typecheck (e.g., `npx next build`, `npx tsc --noEmit`, `python -m py_compile`, or equivalent) before reporting the task as complete. A successful file write is not a successful change — the code must compile.
+- **Assume tool result truncation**: If search or command results look suspiciously small, re-run with narrower scope. Tool results over 50K characters are silently truncated to a preview.
+
 <!-- gitnexus:keep -->
 # GitNexus — Code Knowledge Graph
 

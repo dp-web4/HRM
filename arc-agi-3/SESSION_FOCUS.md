@@ -49,10 +49,19 @@ Report back in this file: does it run? How much memory? How fast per action?
 - Next: Test with smaller models (Gemma 3 12B or Qwen 3.5 0.8B) for speed vs reasoning tradeoff
 - Next: Prompt optimization to reduce reasoning time (currently verbose)
 
-**Sprout** (edge constraint):
-- ~~Install ARC-AGI-3 SDK~~ DO THIS FIRST
-- Report memory usage: SDK + game environment + one model = how much headroom?
-- Test with Qwen 3.5 0.8B: can we get a prompt→action cycle in <1 second?
+**Sprout** (edge constraint): ✅ SDK VERIFIED + FIRST SCORE 2026-03-31
+- ~~Install ARC-AGI-3 SDK~~ DONE — arc-agi 0.9.6 + arcengine 0.9.3 (Python 3.10 patches: `typing_extensions.Self`, `--ignore-requires-python`)
+- SDK performance: ~3,000 steps/sec, 38MB RSS — game engine is NOT the bottleneck
+- **Qwen 3.5 0.8B LLM game runner: ~5.6s/action** (ultra-compact prompts, `think: false` critical)
+  - `/api/chat` with `think: False` at top level (NOT in `options`) — without this, empty responses
+  - Pre-seeded JSON format reduces parsing overhead
+  - LLM runner: 0 levels (too slow for tight step budgets, random action selection)
+- **Smart clicker (no LLM): lp85 Level 1/8 at step 4** — FIRST SPROUT SCORE
+  - Two-phase: EXPLORE (probe colors) → EXPLOIT (target effective colors)
+  - Color 8 = 100% effectiveness on lp85 (consistent across runs)
+  - 24 other games: 0 levels (tight step budgets, color patterns vary per API run)
+- Memory: SDK 38MB + Ollama 2.3GB + system = ~5.3GB total (within 8GB budget)
+- Next: Improve scoring beyond lp85, test if 0.8B can reason about grid structure pre-click
 
 **McNugget** (mid-range): ✅ SDK + GAME RUNNER OPERATIONAL 2026-03-31
 - ~~Install ARC-AGI-3 SDK~~ DONE — arc-agi 0.9.6 + arcengine 0.9.3
@@ -90,8 +99,10 @@ Report back in this file: does it run? How much memory? How fast per action?
 
 4. **Model for reasoning**: ⚠️ **SPEED IS CRITICAL** — competition requires <1s/action, ideally <100ms
    - **Qwen 3.5 27B**: Best reasoning (hypothesis formation, memory tracking) but ~24s/action = impractical
-   - **Gemma 3 12B**: Middle ground — test needed (McNugget baseline, expect 5-10s/action)
-   - **Qwen 3.5 0.8B**: Fastest option — test needed (Sprout can measure <1s feasibility)
+   - **Gemma 3 12B**: Middle ground — 1.9s/step fast mode (McNugget), 3.8s baseline
+   - **Phi-4 14B**: Best reasoning/GB — downloading to Thor, see `MODEL_EVALUATION_PLAN.md`
+   - **Qwen 3.5 0.8B**: ~~test needed~~ MEASURED — **5.6s/action** on Sprout (Jetson, ~20 tok/s). NOT sub-second. `think:false` mandatory.
+   - **Key insight**: No-LLM clicker outperforms LLM runner on all games tested (faster + targeted)
    - **Hybrid approach**: Different models for different phases? Fast model for actions, slow model for strategy?
    - **Prompt optimization**: Current prompts verbose — can we reduce reasoning time 3-5x with tighter prompts?
 

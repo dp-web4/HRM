@@ -11,8 +11,9 @@
 ### Adapter Layer (April 7-14)
 - [ ] Install SDK on Thor, Sprout, McNugget — random agent on demo games
 - [ ] Benchmark: action iteration speed per machine (FPS)
-- [ ] Wire GridVisionIRP into consciousness loop `_gather_observations()`
-- [ ] GameActionEffector — action dispatch to ARC-AGI-3 API
+- [ ] End-to-end test: push frame → consciousness loop → action dispatch
+- [x] Wire GridVisionIRP into consciousness loop — DONE (config-gated in `_gather_observations()`)
+- [x] GameActionEffector — DONE (`sage/irp/plugins/game_action_effector.py`)
 - [x] GridVisionIRP skeleton — DONE (`sage/irp/plugins/grid_vision_irp.py`)
 - [x] GridVisionIRP interface spec — DONE (private-context/plans/)
 - [x] Environment spec (ENVIRONMENT.md) — DONE

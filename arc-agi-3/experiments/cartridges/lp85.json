@@ -1,0 +1,91 @@
+{
+  "game_family": "lp85",
+  "winning_sequences": [
+    {
+      "level": 1,
+      "actions": [],
+      "action_names": [],
+      "state_hashes": [],
+      "learned": 1774975039.7866654
+    }
+  ],
+  "goal_patterns": [],
+  "action_effectiveness": {
+    "global": {},
+    "state_dependent": {}
+  },
+  "strategic_insights": [
+    "Level 1: clicking color-8 completes level (confidence: 90.0%)"
+  ],
+  "total_attempts": 1,
+  "best_score": {
+    "levels": 0,
+    "steps": 0
+  },
+  "created": 1774975039.7690413,
+  "last_updated": 1774975041.8216307,
+  "click_effectiveness": {
+    "global": {
+      "color_14": {
+        "tries": 7,
+        "changes": 2,
+        "level_ups": 1,
+        "rate": 0.2857142857142857
+      },
+      "color_8": {
+        "tries": 63,
+        "changes": 63,
+        "level_ups": 1,
+        "rate": 1.0
+      },
+      "color_5": {
+        "tries": 10,
+        "changes": 0,
+        "level_ups": 0,
+        "rate": 0.0
+      },
+      "color_11": {
+        "tries": 2,
+        "changes": 0,
+        "level_ups": 0,
+        "rate": 0.0
+      },
+      "color_1": {
+        "tries": 6,
+        "changes": 0,
+        "level_ups": 0,
+        "rate": 0.0
+      },
+      "color_2": {
+        "tries": 7,
+        "changes": 0,
+        "level_ups": 0,
+        "rate": 0.0
+      },
+      "color_10": {
+        "tries": 4,
+        "changes": 0,
+        "level_ups": 0,
+        "rate": 0.0
+      },
+      "color_9": {
+        "tries": 6,
+        "changes": 0,
+        "level_ups": 0,
+        "rate": 0.0
+      },
+      "color_15": {
+        "tries": 2,
+        "changes": 0,
+        "level_ups": 0,
+        "rate": 0.0
+      },
+      "color_4": {
+        "tries": 10,
+        "changes": 0,
+        "level_ups": 0,
+        "rate": 0.0
+      }
+    }
+  }
+}

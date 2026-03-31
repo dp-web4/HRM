@@ -36,33 +36,61 @@ class MembotCartridge:
         self.cartridge_name = f"arc-agi-3/{self.game_family}"
         self.data = None
 
+    def _get_filesystem_path(self) -> Path:
+        """Get filesystem path for this cartridge."""
+        CARTRIDGE_DIR.mkdir(parents=True, exist_ok=True)
+        return CARTRIDGE_DIR / f"{self.game_family}.json"
+
+    def _read_filesystem(self) -> Optional[dict]:
+        """Read cartridge from filesystem."""
+        path = self._get_filesystem_path()
+        if path.exists():
+            try:
+                with open(path, 'r') as f:
+                    return json.load(f)
+            except Exception as e:
+                print(f"    Membot: Filesystem read failed ({e})")
+        return None
+
+    def _write_filesystem(self, data: dict):
+        """Write cartridge to filesystem."""
+        path = self._get_filesystem_path()
+        try:
+            with open(path, 'w') as f:
+                json.dump(data, f, indent=2)
+        except Exception as e:
+            print(f"    Membot: Filesystem write failed ({e})")
+
     def read(self) -> Optional[dict]:
-        """Read cartridge from membot.
+        """Read cartridge from membot HTTP API, fallback to filesystem.
 
         Returns:
-            Cartridge dict or None if doesn't exist
+            Cartridge dict or empty if doesn't exist
         """
+        # Try HTTP first
         try:
             resp = requests.get(
                 f"{MEMBOT_URL}/cartridges/{self.cartridge_name}",
-                timeout=2.0
+                timeout=1.0
             )
             if resp.status_code == 200:
                 self.data = resp.json()
                 return self.data
-            elif resp.status_code == 404:
-                # Cartridge doesn't exist yet, create empty one
-                self.data = self._empty_cartridge()
-                return self.data
-            else:
-                print(f"    Membot: Read failed (status {resp.status_code})")
-                return self._empty_cartridge()
-        except Exception as e:
-            print(f"    Membot: Read failed ({e})")
-            return self._empty_cartridge()
+        except Exception:
+            pass  # Fall through to filesystem
+
+        # Try filesystem
+        fs_data = self._read_filesystem()
+        if fs_data:
+            self.data = fs_data
+            return self.data
+
+        # Create new empty cartridge
+        self.data = self._empty_cartridge()
+        return self.data
 
     def write(self, data: dict = None):
-        """Write cartridge to membot.
+        """Write cartridge to membot HTTP API, fallback to filesystem.
 
         Args:
             data: Cartridge dict (uses self.data if not provided)
@@ -70,23 +98,26 @@ class MembotCartridge:
         if data is None:
             data = self.data
         if data is None:
-            print("    Membot: No data to write")
             return
 
         data["last_updated"] = time.time()
 
+        # Try HTTP first
         try:
             resp = requests.put(
                 f"{MEMBOT_URL}/cartridges/{self.cartridge_name}",
                 json=data,
-                timeout=2.0
+                timeout=1.0
             )
             if resp.status_code in (200, 201):
                 self.data = data
-            else:
-                print(f"    Membot: Write failed (status {resp.status_code})")
-        except Exception as e:
-            print(f"    Membot: Write failed ({e})")
+                return  # Success!
+        except Exception:
+            pass  # Fall through to filesystem
+
+        # Fallback to filesystem
+        self._write_filesystem(data)
+        self.data = data
 
     def add_winning_sequence(self, level: int, actions: List[int],
                             state_hashes: List[str] = None):

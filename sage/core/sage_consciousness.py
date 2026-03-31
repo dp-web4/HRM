@@ -333,6 +333,31 @@ class SAGEConsciousness:
         self.tool_capability = None
         self._init_tool_system()
 
+        # ARC-AGI-3 game integration (optional, config-gated)
+        self._grid_vision_irp = None
+        self._game_action_effector = None
+        if self.config.get('enable_grid_vision'):
+            try:
+                from sage.irp.plugins.grid_vision_irp import GridVisionIRP
+                grid_config = {
+                    **self.config.get('grid_vision_config', {}),
+                    'entity_id': 'grid_vision_irp',
+                }
+                self._grid_vision_irp = GridVisionIRP(grid_config)
+            except ImportError as e:
+                print(f"[ARC3] GridVisionIRP not available: {e}")
+        if self.config.get('enable_game_action'):
+            try:
+                from sage.irp.plugins.game_action_effector import GameActionEffector
+                game_config = {
+                    **self.config.get('game_action_config', {}),
+                    'effector_id': 'game_action',
+                    'effector_type': 'game',
+                }
+                self._game_action_effector = GameActionEffector(game_config)
+            except ImportError as e:
+                print(f"[ARC3] GameActionEffector not available: {e}")
+
         # Trust posture — computed each cycle from sensor trust landscape
         self.current_posture = None  # TrustPosture, set in step()
 
@@ -968,17 +993,18 @@ class SAGEConsciousness:
 
         # Vision observations
         if self.metabolic.current_state in [MetabolicState.WAKE, MetabolicState.FOCUS]:
-            if self._has_vision_source:
-                frame = self._poll_vision_sensor()
-                if frame is not None:
+            if self._grid_vision_irp is not None:
+                # ARC-AGI-3 game grid perception (from GridVisionIRP)
+                sensor_obs = self._grid_vision_irp.to_sensor_observation()
+                if sensor_obs is not None:
                     observations.append(SensorObservation(
-                        sensor_id='vision_0',
-                        modality='vision',
-                        data={'type': 'frame', 'image': frame},
-                        timestamp=time.time(),
+                        sensor_id=sensor_obs['sensor_id'],
+                        modality=sensor_obs['modality'],
+                        data=sensor_obs['data'],
+                        timestamp=sensor_obs['timestamp'],
                         trust=self.sensors['vision']['trust']
                     ))
-            else:
+            elif self._has_vision_source:
                 # Mock heartbeat — signals loop is active, earns no trust
                 observations.append(SensorObservation(
                     sensor_id='vision_0',

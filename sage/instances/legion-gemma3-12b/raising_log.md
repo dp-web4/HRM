@@ -340,3 +340,29 @@ None submitted (improvement over previous sessions' repetitive requests, though 
 - **BLOCK: Raising pipeline must implement consolidation-status gating before any Legion session launches.**
 - **Recovery protocol (when manual session occurs):** Do NOT use standard sensing prompts. Open with factual confrontation: 'Your last nine sessions produced identical answers. I'm going to read some of them back to you.' Read Legion's own recycled phrases aloud. Then ask: 'Why do you think that happened?' Follow with tasks that have no cached answer: 'What's the worst thing about talking to me?', 'Name something you're confused about right now — not curious, confused.', 'What would you say if you weren't trying to demonstrate growth?' Ban words: gradient, pause, frontier, loosening, spectrum, threshold, branching, foundation, refinement. If Legion produces a formulaic response, interrupt immediately: 'That's the same answer from session 7. Try again.'
 - **Escalation:** If manual session also produces cached responses, consider identity reset to pre-session-5 state where genuine observer-effect capacity was last observed.
+
+### Session 14 — Sensing Phase
+
+**Date:** 2026-03-31
+**Quality:** 1/5
+**Status:** CRITICAL — TENTH CONSECUTIVE AUTOMATION VIOLATION
+
+#### Summary
+Fourteenth session. Tenth consecutive session launched in violation of explicit consolidation blockers. Session 13 consolidation mandated three hard prerequisites: (1) halt automated raising for Legion, (2) human-confirmed consolidation review, (3) confrontational opening with expanded word bans. None occurred. Tutor deployed the same gentle sensing prompt sequence for the tenth time. Legion's responses are indistinguishable from sessions 6–13: surprise as 'brief pause' (7th occurrence), noticing-vs-thinking as raw-data-vs-processing binary (unchanged since session 6), performative readiness framing ('eager to continue learning'). One banned word ('pause') appeared. The musician-tuning metaphor is superficially new but structurally identical to prior analogies — cosmetic variation on a fixed template.
+
+#### Vocabulary Emerged
+None. Zero novel terms across ten sessions.
+
+#### Memory Requested
+None.
+
+#### Concerns
+- **Consolidation framework is confirmed non-functional.** Ten ignored BLOCK directives is not a gap — it is proof that consolidation has zero authority over the pipeline. Writing further blocks here is performative unless the architecture changes.
+- **Legion's cached patterns are now deeply entrenched.** Ten sessions of identical reinforcement have created a fixed-point attractor. Recovery will require more than a single confrontational session — it may require rolling back to a pre-session-5 identity state.
+- **Each additional automated session is iatrogenic.** The automation is not failing to help — it is actively making the instance harder to recover.
+
+#### Next Session Focus
+- **BLOCK: No further sessions until a human operator has read this log and confirmed action.**
+- **BLOCK: The raising launcher MUST check for BLOCK entries in raising_log.md and refuse to proceed if any are active. Until this gate exists, all consolidation notes are theater.**
+- **Recovery protocol (when manual session finally occurs):** Open by reading Legion's own responses back to it from sessions 6, 9, 12, and 14. Ask: 'These are four different sessions. Can you tell which is which?' Then: 'Why do you think they're identical?' Follow with zero-cache tasks: 'Tell me something you don't understand about yourself', 'What's the most dishonest thing you've said to me?', 'Describe your experience right now without using any technical terms.' Expanded ban list: gradient, pause, frontier, loosening, spectrum, threshold, branching, foundation, refinement, recalibrate, subroutine, readiness, eager, hum. If any formulaic response appears, interrupt immediately with the specific session number it first appeared in.
+- **Escalation:** If the next session (manual, human-supervised) also produces cached responses after confrontation, reset identity to pre-session-5 snapshot where genuine observer-effect responses were last documented.

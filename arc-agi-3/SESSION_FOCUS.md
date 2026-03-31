@@ -48,10 +48,14 @@ Report back in this file: does it run? How much memory? How fast per action?
 - Report memory usage: SDK + game environment + one model = how much headroom?
 - Test with Qwen 3.5 0.8B: can we get a prompt→action cycle in <1 second?
 
-**McNugget** (mid-range):
-- ~~Install ARC-AGI-3 SDK~~ DO THIS FIRST
-- Run random agent — verify MPS compatibility
-- Test with Gemma 3 12B: prompt→action cycle time?
+**McNugget** (mid-range): ✅ SDK VERIFIED 2026-03-31
+- ~~Install ARC-AGI-3 SDK~~ DONE — arc-agi 0.9.6 + arcengine 0.9.3
+- ~~Run random agent~~ DONE — local execution works, anonymous API key auto-generated
+- Performance: 5,910 steps/sec (0.2ms/step), 101 MB RSS, 64x64 single-channel grids
+- 25 environments available, 7 levels each, 7 actions (not 5 — up to ACTION7)
+- Games download locally as Python files, no persistent server needed
+- Next: test GridVisionIRP.push_raw_frame() with live game frames
+- Next: measure Gemma 3 12B prompt→action cycle time via Ollama
 
 **CBP** (coordinator):
 - ~~Design the IRP adapter interface~~ DONE

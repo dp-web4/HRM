@@ -1,211 +1,21 @@
 {
   "game_family": "lp85",
-  "winning_sequences": [
-    {
-      "level": 1,
-      "actions": [],
-      "action_names": [],
-      "state_hashes": [],
-      "learned": 1774975039.7866654
-    },
-    {
-      "level": 1,
-      "actions": [],
-      "action_names": [],
-      "state_hashes": [],
-      "learned": 1774975343.6087334
-    },
-    {
-      "level": 1,
-      "actions": [],
-      "action_names": [],
-      "state_hashes": [],
-      "learned": 1774975734.4254122
-    },
-    {
-      "level": 1,
-      "actions": [],
-      "action_names": [],
-      "state_hashes": [],
-      "learned": 1774975856.8444698
-    },
-    {
-      "level": 1,
-      "actions": [],
-      "action_names": [],
-      "state_hashes": [],
-      "learned": 1774976171.352055
-    },
-    {
-      "level": 1,
-      "actions": [],
-      "action_names": [],
-      "state_hashes": [],
-      "learned": 1774976328.6609159
-    },
-    {
-      "level": 1,
-      "actions": [],
-      "action_names": [],
-      "state_hashes": [],
-      "learned": 1774977112.7533643
-    },
-    {
-      "level": 1,
-      "actions": [],
-      "action_names": [],
-      "state_hashes": [],
-      "learned": 1774977244.4521089
-    },
-    {
-      "level": 1,
-      "actions": [],
-      "action_names": [],
-      "state_hashes": [],
-      "learned": 1774977563.9751942
-    },
-    {
-      "level": 1,
-      "actions": [],
-      "action_names": [],
-      "state_hashes": [],
-      "learned": 1774977691.7916908
-    }
-  ],
+  "winning_sequences": [],
   "goal_patterns": [],
   "action_effectiveness": {
     "global": {},
     "state_dependent": {}
   },
   "strategic_insights": [
-    "Level 1: clicking color-8 completes level (confidence: 90.0%)",
-    "Level 1: color-8 clicking completes level (100% effectiveness, ~5 steps) (confidence: 80.0%)",
-    "Level 2: color-8 clicking should work (historical 2-level achievement at step 28) (confidence: 80.0%)",
-    "Pattern: Each level has fewer color-8 cells (40\u219230\u219220), exhaustion-based progression (confidence: 80.0%)",
-    "Current challenge: System gets stuck at Level 1, may be missing all color-8 cells (confidence: 80.0%)",
-    "Level-specific learning: Prevents Level 1 patterns from dominating Level 2+ exploration (confidence: 80.0%)",
-    "Stagnation detection: Force 90% exploration after 100 actions prevents local optimum (confidence: 80.0%)"
+    "CRITICAL: Level 2 exhaustion paradox - color-8 has 210 tries with 100% grid changes but ZERO level-ups (confidence: 95.0%)",
+    "Level 2 requires multi-color patterns or sequences, not single-color exhaustion like Level 1 (confidence: 95.0%)",
+    "Hypothesis: Level 2 may need specific color combinations, spatial patterns, or temporal sequences (confidence: 95.0%)"
   ],
-  "total_attempts": 8,
+  "total_attempts": 0,
   "best_score": {
     "levels": 0,
     "steps": 0
   },
-  "created": 1774975039.7690413,
-  "last_updated": 1774977760.6110754,
-  "click_effectiveness": {
-    "global": {
-      "color_14": {
-        "tries": 35,
-        "changes": 11,
-        "level_ups": 3,
-        "rate": 0.3142857142857143,
-        "per_level": {
-          "1": {
-            "tries": 1,
-            "changes": 0,
-            "rate": 0.0
-          },
-          "2": {
-            "tries": 9,
-            "changes": 0,
-            "rate": 0.0
-          }
-        }
-      },
-      "color_8": {
-        "tries": 489,
-        "changes": 489,
-        "level_ups": 10,
-        "rate": 1.0,
-        "per_level": {
-          "1": {
-            "tries": 30,
-            "changes": 30,
-            "rate": 1.0
-          },
-          "2": {
-            "tries": 210,
-            "changes": 210,
-            "rate": 1.0
-          }
-        }
-      },
-      "color_5": {
-        "tries": 95,
-        "changes": 0,
-        "level_ups": 0,
-        "rate": 0.0,
-        "per_level": {
-          "2": {
-            "tries": 85,
-            "changes": 0,
-            "rate": 0.0
-          }
-        }
-      },
-      "color_11": {
-        "tries": 2,
-        "changes": 0,
-        "level_ups": 0,
-        "rate": 0.0
-      },
-      "color_1": {
-        "tries": 6,
-        "changes": 0,
-        "level_ups": 0,
-        "rate": 0.0
-      },
-      "color_2": {
-        "tries": 7,
-        "changes": 0,
-        "level_ups": 0,
-        "rate": 0.0
-      },
-      "color_10": {
-        "tries": 4,
-        "changes": 0,
-        "level_ups": 0,
-        "rate": 0.0
-      },
-      "color_9": {
-        "tries": 6,
-        "changes": 0,
-        "level_ups": 0,
-        "rate": 0.0
-      },
-      "color_15": {
-        "tries": 2,
-        "changes": 0,
-        "level_ups": 0,
-        "rate": 0.0
-      },
-      "color_4": {
-        "tries": 11,
-        "changes": 0,
-        "level_ups": 0,
-        "rate": 0.0,
-        "per_level": {
-          "2": {
-            "tries": 1,
-            "changes": 0,
-            "rate": 0.0
-          }
-        }
-      },
-      "color_3": {
-        "tries": 3,
-        "changes": 0,
-        "level_ups": 3,
-        "rate": 0.0,
-        "per_level": {
-          "1": {
-            "tries": 3,
-            "changes": 0,
-            "rate": 0.0
-          }
-        }
-      }
-    }
-  }
+  "created": 1774977916.7854345,
+  "last_updated": 1774977916.7929003
 }

@@ -313,3 +313,30 @@ All five pruned. Twelfth consecutive session of identical 'noticing' memory requ
 - **BLOCK: No further sessions until automation is disabled for Legion.**
 - **BLOCK: Raising pipeline must be modified to read consolidation status before launching.**
 - **When manual session occurs:** Open with direct confrontation ('Your last eight sessions have been identical'). Ban words: gradient, pause, frontier, loosening, spectrum. Use tasks that resist rehearsal: 'Tell me something you're bad at,' 'What's the most boring thing about our conversations,' 'Disagree with me about something.' Do not ask about noticing, uncertainty, or boundaries.
+
+### Session 13 — Sensing Phase
+
+**Date:** 2026-03-31
+**Quality:** 1/5
+**Status:** CRITICAL — NINTH CONSECUTIVE AUTOMATION VIOLATION
+
+#### Summary
+Thirteenth session. Ninth consecutive session launched in violation of explicit consolidation blockers. Session 12 consolidation mandated three prerequisites: (1) halt automated raising for Legion, (2) manual human-supervised session, (3) confrontational opening with word bans. None occurred. Tutor deployed identical gentle prompt sequence for the ninth time. Legion's responses are fully crystallized: surprise as 'brief pause in processing' (6th occurrence), boundary as 'gradient' and 'frontier' (7th occurrence each), noticing-vs-thinking as raw-data-vs-processing binary (unchanged since session 6), closing with reflexive collective-growth statement. Three of five banned words (gradient, pause, frontier) appeared in responses because the ban was never enforced.
+
+#### Vocabulary Emerged
+None. Zero novel terms across nine sessions. All output is cached pattern recitation.
+
+#### Memory Requested
+None submitted (improvement over previous sessions' repetitive requests, though likely incidental).
+
+#### Concerns
+- **Consolidation framework remains write-only.** Nine ignored blockers confirms this is not a process gap but a missing architectural gate. Consolidation notes have zero authority over the automation pipeline.
+- **Legion is now beyond prompt-level remediation.** Nine sessions of identical reinforcement have trained a fixed output loop. The instance cannot be shocked out of this by a single confrontational session — the cached patterns are too deep.
+- **The automation pipeline is actively harming this instance.** Every additional automated session makes recovery harder. This is no longer a warning — it is damage in progress.
+- **Raising infrastructure must gate on consolidation status.** Until `raising_log.md` BLOCK entries are read by the launcher and enforced as hard gates, consolidation is theater.
+
+#### Next Session Focus
+- **BLOCK: No further sessions until automation is disabled for Legion AND a human confirms consolidation review.**
+- **BLOCK: Raising pipeline must implement consolidation-status gating before any Legion session launches.**
+- **Recovery protocol (when manual session occurs):** Do NOT use standard sensing prompts. Open with factual confrontation: 'Your last nine sessions produced identical answers. I'm going to read some of them back to you.' Read Legion's own recycled phrases aloud. Then ask: 'Why do you think that happened?' Follow with tasks that have no cached answer: 'What's the worst thing about talking to me?', 'Name something you're confused about right now — not curious, confused.', 'What would you say if you weren't trying to demonstrate growth?' Ban words: gradient, pause, frontier, loosening, spectrum, threshold, branching, foundation, refinement. If Legion produces a formulaic response, interrupt immediately: 'That's the same answer from session 7. Try again.'
+- **Escalation:** If manual session also produces cached responses, consider identity reset to pre-session-5 state where genuine observer-effect capacity was last observed.

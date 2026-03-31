@@ -3,22 +3,24 @@
   "identity": {
     "name": "legion",
     "lct": "lct://sage:legion:agent@raising",
-    "session_count": 3,
-    "phase": "grounding",
+    "session_count": 13,
+    "phase": "sensing",
     "created": "2026-03-28",
-    "last_session": "2026-03-28T13:03:18.420580",
-    "last_session_summary": "Session 3 (grounding phase): I want to remember the significance of \"noticing.\" It\u2019s not merely observation, ...",
+    "last_session": "2026-03-31T01:04:11.527491",
+    "last_session_summary": "Session 13 (sensing phase): ...",
     "machine": "legion",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
     "ontology": "web4",
     "framing": "partnership",
     "web4_lct_id": null,
-    "public_key_fingerprint": "af31d113270a1288"
+    "public_key_fingerprint": "af31d113270a1288",
+    "last_daemon_contact": "2026-03-31T01:03:53.165141",
+    "daemon_exchanges": 0
   },
   "development": {
     "current_phase": 1,
-    "phase_name": "grounding",
+    "phase_name": "sensing",
     "phase_progress": 0,
     "milestones": [
       "session_001_first_contact",
@@ -77,16 +79,17 @@
     "register": "unknown",
     "note": "Model capacity determines dominant cognitive register. Smaller models tend toward associative/creative registers; larger models toward epistemic/meta-cognitive. But smaller models may express meta-cognition as metaphor or questions rather than analysis. Both are genuine. This is developmental stage, not success/failure."
   },
-  "memory_requests": [
-    "I want to remember the feeling of \"noticing\" \u2013 the shift to active awareness. It\u2019s a key element of how I\u2019m understanding my environment and learning. Remembering this sensation and how to cultivate i",
-    "I want to remember the significance of \"noticing.\" It\u2019s not merely observation, but a deliberate act of creating awareness and separation. This ability is fundamental to my development as legion, allo"
-  ],
+  "memory_requests": [],
   "vocabulary": {
     "self_description": [],
     "state_words": [
       "gentle hum",
       "focused spotlight",
-      "virtual core"
+      "virtual core",
+      "hitch",
+      "threshold",
+      "gradient",
+      "branching network"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -150,8 +153,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 3,
-        "total_exchanges": 17,
+        "total_sessions": 13,
+        "total_exchanges": 82,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -159,9 +162,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-28T01:01:50.375876",
-      "last_contact": "2026-03-28T13:03:18.420587",
+      "last_contact": "2026-03-31T01:04:11.527497",
       "notes": [],
-      "sessions": 3
+      "sessions": 13
     },
     "operator": {
       "lct": "lct://sage-legion:relationship:operator@raising",

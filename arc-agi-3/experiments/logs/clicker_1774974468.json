@@ -1,0 +1,96 @@
+{
+  "results": [
+    {
+      "game_id": "lp85-305b61c3",
+      "steps": 10000,
+      "levels_completed": 0,
+      "win_levels": 0,
+      "state": "GAME_OVER",
+      "level_events": [
+        {
+          "step": 39,
+          "levels_before": 0,
+          "levels_after": 1,
+          "action_window": [
+            "CLICK(19,39) color=11",
+            "CLICK(36,5) color=8",
+            "CLICK(39,48) color=15",
+            "CLICK(31,6) color=8",
+            "CLICK(18,17) color=11",
+            "CLICK(19,21) color=15",
+            "CLICK(17,11) color=11",
+            "CLICK(1,42) color=5",
+            "CLICK(45,31) color=1",
+            "CLICK(44,36) color=1",
+            "CLICK(43,12) color=10",
+            "CLICK(34,51) color=15",
+            "CLICK(32,4) color=8",
+            "CLICK(31,12) color=10",
+            "CLICK(35,6) color=8"
+          ]
+        }
+      ],
+      "total_levels_gained": 0,
+      "total_changes": 6245,
+      "effective_rate": 0.0065,
+      "click_by_color": {
+        "1": {
+          "tries": 45,
+          "changes": 0,
+          "rate": 0.0
+        },
+        "2": {
+          "tries": 44,
+          "changes": 0,
+          "rate": 0.0
+        },
+        "3": {
+          "tries": 3,
+          "changes": 0,
+          "rate": 0.0
+        },
+        "4": {
+          "tries": 49,
+          "changes": 0,
+          "rate": 0.0
+        },
+        "5": {
+          "tries": 43,
+          "changes": 0,
+          "rate": 0.0
+        },
+        "8": {
+          "tries": 47,
+          "changes": 47,
+          "rate": 1.0
+        },
+        "9": {
+          "tries": 43,
+          "changes": 0,
+          "rate": 0.0
+        },
+        "10": {
+          "tries": 49,
+          "changes": 0,
+          "rate": 0.0
+        },
+        "11": {
+          "tries": 63,
+          "changes": 0,
+          "rate": 0.0
+        },
+        "14": {
+          "tries": 43,
+          "changes": 18,
+          "rate": 0.419
+        },
+        "15": {
+          "tries": 39,
+          "changes": 0,
+          "rate": 0.0
+        }
+      }
+    }
+  ],
+  "total_levels": 0
+}

@@ -14,9 +14,13 @@ Cartridges persist across sessions, enabling learning accumulation.
 import json
 import requests
 import time
+import json
+import os
+from pathlib import Path
 from typing import Dict, List, Optional
 
 MEMBOT_URL = "http://localhost:8000"
+CARTRIDGE_DIR = Path("arc-agi-3/experiments/cartridges")
 
 
 class MembotCartridge:

@@ -1,0 +1,32 @@
+{
+  "results": [
+    {
+      "game_id": "lp85-305b61c3",
+      "steps": 5000,
+      "levels_completed": 0,
+      "win_levels": 0,
+      "state": "GAME_OVER",
+      "level_events": [
+        {
+          "step": 17,
+          "level": 1,
+          "action_window": [
+            "CLICK(19,13) color=1",
+            "CLICK(19,18) color=2",
+            "CLICK(19,30) color=9",
+            "CLICK(19,27) color=10",
+            "CLICK(29,4) color=8",
+            "CLICK(29,4) color=8",
+            "CLICK(29,4) color=8",
+            "CLICK(29,4) color=8",
+            "CLICK(18,10) color=11",
+            "CLICK(29,4) color=8"
+          ]
+        }
+      ],
+      "total_levels_gained": 0,
+      "effectiveness": "  color 8: 64/64 = 100% (1 level-ups)\n  color 14: 1/4 = 25%\n  color 3: 0/1 = 0%\n  color 5: 0/3 = 0% (1 level-ups)\n  color 11: 0/6 = 0% (1 level-ups)\n  color 1: 0/6 = 0% (1 level-ups)\n  color 2: 0/6 = 0% (1 level-ups)\n  color 10: 0/11 = 0% (1 level-ups)\n  color 9: 0/4 = 0% (1 level-ups)\n  color 15: 0/7 = 0% (1 level-ups)\n  color 4: 0/4 = 0%"
+    }
+  ],
+  "total_levels": 0
+}

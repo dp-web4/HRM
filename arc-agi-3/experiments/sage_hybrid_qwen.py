@@ -70,6 +70,7 @@ class HybridPlayer:
         self.clicked_positions = set()  # {(row, col, color)}
         self.exhaustion_mode = False
         self.exhaustion_target_color = None
+        self.exhausted_colors = set()  # Colors exhausted without level-up on this level
 
         print(f"  Hybrid: Membot loaded, Navigator: {self.llm_model}")
         print(f"  Membot: {self.cartridge.summary()}")
@@ -117,6 +118,10 @@ class HybridPlayer:
         # Check if we should enter exhaustion mode (high confidence color)
         if not self.exhaustion_mode:
             for color, stats in self.color_stats.items():
+                # Skip colors we've already exhausted on this level
+                if color in self.exhausted_colors:
+                    continue
+
                 level_stats = stats["per_level"].get(current_level)
                 if level_stats and level_stats["tries"] >= 5:
                     effectiveness = level_stats["changes"] / level_stats["tries"]
@@ -145,6 +150,8 @@ class HybridPlayer:
             # Report exhaustion progress
             if len(target_positions) == 0:
                 print(f"    ✅ EXHAUSTED: All color-{self.exhaustion_target_color} cells clicked, trying next best color")
+                # Add to exhausted colors to prevent re-targeting on this level
+                self.exhausted_colors.add(self.exhaustion_target_color)
                 # Exit exhaustion mode to re-evaluate which color to target next
                 self.exhaustion_mode = False
                 old_target = self.exhaustion_target_color
@@ -301,6 +308,7 @@ class HybridPlayer:
         self.current_strategy["exploration_rate"] = 0.7  # High exploration for new level
         self.actions_since_reflection = self.reflection_interval  # Trigger immediate reflection
         self.clicked_positions.clear()  # Reset exhaustion tracking
+        self.exhausted_colors.clear()  # Reset exhausted color cooldowns
         self.exhaustion_mode = False
         self.exhaustion_target_color = None
         print(f"    Strategy: Reset for Level {level+1} - exploring new patterns")

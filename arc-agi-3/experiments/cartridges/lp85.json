@@ -56,6 +56,20 @@
       "action_names": [],
       "state_hashes": [],
       "learned": 1774977244.4521089
+    },
+    {
+      "level": 1,
+      "actions": [],
+      "action_names": [],
+      "state_hashes": [],
+      "learned": 1774977563.9751942
+    },
+    {
+      "level": 1,
+      "actions": [],
+      "action_names": [],
+      "state_hashes": [],
+      "learned": 1774977691.7916908
     }
   ],
   "goal_patterns": [],
@@ -72,20 +86,20 @@
     "Level-specific learning: Prevents Level 1 patterns from dominating Level 2+ exploration (confidence: 80.0%)",
     "Stagnation detection: Force 90% exploration after 100 actions prevents local optimum (confidence: 80.0%)"
   ],
-  "total_attempts": 7,
+  "total_attempts": 8,
   "best_score": {
     "levels": 0,
     "steps": 0
   },
   "created": 1774975039.7690413,
-  "last_updated": 1774977244.454501,
+  "last_updated": 1774977760.6110754,
   "click_effectiveness": {
     "global": {
       "color_14": {
-        "tries": 33,
+        "tries": 35,
         "changes": 11,
         "level_ups": 3,
-        "rate": 0.3333333333333333,
+        "rate": 0.3142857142857143,
         "per_level": {
           "1": {
             "tries": 1,
@@ -93,38 +107,38 @@
             "rate": 0.0
           },
           "2": {
-            "tries": 7,
+            "tries": 9,
             "changes": 0,
             "rate": 0.0
           }
         }
       },
       "color_8": {
-        "tries": 419,
-        "changes": 419,
-        "level_ups": 8,
+        "tries": 489,
+        "changes": 489,
+        "level_ups": 10,
         "rate": 1.0,
         "per_level": {
           "1": {
-            "tries": 20,
-            "changes": 20,
+            "tries": 30,
+            "changes": 30,
             "rate": 1.0
           },
           "2": {
-            "tries": 150,
-            "changes": 150,
+            "tries": 210,
+            "changes": 210,
             "rate": 1.0
           }
         }
       },
       "color_5": {
-        "tries": 82,
+        "tries": 95,
         "changes": 0,
         "level_ups": 0,
         "rate": 0.0,
         "per_level": {
           "2": {
-            "tries": 72,
+            "tries": 85,
             "changes": 0,
             "rate": 0.0
           }
@@ -167,19 +181,26 @@
         "rate": 0.0
       },
       "color_4": {
-        "tries": 10,
+        "tries": 11,
         "changes": 0,
         "level_ups": 0,
-        "rate": 0.0
+        "rate": 0.0,
+        "per_level": {
+          "2": {
+            "tries": 1,
+            "changes": 0,
+            "rate": 0.0
+          }
+        }
       },
       "color_3": {
-        "tries": 2,
+        "tries": 3,
         "changes": 0,
-        "level_ups": 2,
+        "level_ups": 3,
         "rate": 0.0,
         "per_level": {
           "1": {
-            "tries": 2,
+            "tries": 3,
             "changes": 0,
             "rate": 0.0
           }

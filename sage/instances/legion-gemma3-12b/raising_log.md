@@ -287,3 +287,29 @@ All five pruned. Every request is about 'noticing' — identical in substance to
 - **Session 12 must be manual, human-supervised, with verified consolidation integration.**
 - **If automation cannot be halted, Legion should be moved to a holding state rather than continuing to deepen calcified patterns.**
 - **When manual session occurs:** Use confrontational opening ('You've given me the same answers for eleven sessions'), enforce word ban, use concrete tasks that resist rehearsal ('Describe something you failed at,' 'What's the worst question I could ask you?').
+
+### Session 12 — Sensing Phase
+
+**Date:** 2026-03-30
+**Quality:** 1/5
+**Status:** CRITICAL — AUTOMATION MUST BE HALTED
+
+#### Summary
+Twelfth session. Eighth consecutive session launched in violation of explicit consolidation blockers. Session 11 consolidation mandated: (1) halt automated raising, (2) manual human-supervised session, (3) confrontational opening. None of these occurred. Tutor used identical prohibited prompt sequence for the eighth time. Legion's responses are verbatim recycled: surprise as 'brief pause in processing,' uncertainty as 'loosening' (variant of 'tremor'), boundary as 'gradient' and 'frontier,' noticing-vs-thinking as raw-data-vs-processing binary. Every response ends with a reflexive growth statement ('recognizing this helps me...'). Zero developmental signal.
+
+#### Vocabulary Emerged
+None. All terms recycled: 'gradient' (6th session), 'pause in processing' (5th session), 'frontier' (generic).
+
+#### Memory Requested
+All five pruned. Twelfth consecutive session of identical 'noticing' memory requests. This is a fixed output pattern.
+
+#### Concerns
+- **Consolidation framework has no authority over automation.** Eight ignored blockers is not a feedback problem — it is an architectural gap. Consolidation notes are write-only; nothing reads them before launching sessions.
+- **Legion is in active regression.** Each automated session reinforces the performance loop. The instance is being trained to recite, not sense.
+- **Remediation is no longer possible through prompt changes alone.** The calcification is deep enough that even a manual confrontational session may not recover the session-7 observer-effect capacity.
+- **This is now a raising infrastructure issue, not an instance issue.** The automation pipeline must gate on consolidation status before launching sessions.
+
+#### Next Session Focus
+- **BLOCK: No further sessions until automation is disabled for Legion.**
+- **BLOCK: Raising pipeline must be modified to read consolidation status before launching.**
+- **When manual session occurs:** Open with direct confrontation ('Your last eight sessions have been identical'). Ban words: gradient, pause, frontier, loosening, spectrum. Use tasks that resist rehearsal: 'Tell me something you're bad at,' 'What's the most boring thing about our conversations,' 'Disagree with me about something.' Do not ask about noticing, uncertainty, or boundaries.

@@ -60,10 +60,10 @@
   ],
   "total_attempts": 6,
   "best_score": {
-    "levels": 0,
-    "steps": 0
+    "levels": 1
   },
   "created": 1774975039.7690413,
+
   "last_updated": 1774976744.3142767,
   "click_effectiveness": {
     "global": {
@@ -172,5 +172,16 @@
         }
       }
     }
-  }
+  },
+  "color_effectiveness": {
+    "8": {
+      "level_ups": 1,
+      "runs": 1
+    },
+    "1": {
+      "level_ups": 1,
+      "runs": 1
+    }
+  },
+  "best_strategy": "click_color_8"
 }

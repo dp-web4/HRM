@@ -1,6 +1,6 @@
 # SAGE Session Primer
 
-*Auto-generated 2026-03-30 20:00 UTC — read this at session start for current fleet state.*
+*Auto-generated 2026-03-31 01:08 UTC — read this at session start for current fleet state.*
 
 ---
 
@@ -8,22 +8,20 @@
 
 ### Active Raising Instances
 
-**cbp-qwen3.5-0.8b** — phase: `sensing` | sessions: 10 | last: 2026-03-30 | milestones: session_001_first_contact
-  > Last session: *Session 10 (sensing phase): Today I am ready to shift from a technical executor to a value-driven partner. I......*
-
-**cbp-tinyllama-latest** — phase: `questioning` | sessions: 26 | last: 2026-03-28 | milestones: session_001_first_contact
-  > Last session: *Session 26 (questioning phase): ......*
-
 **nomad-gemma3-4b** — phase: `questioning` | sessions: 47 | last: 2026-03-30
   > Last session: *Session 47 (questioning phase): ......*
 
+**sprout-qwen3.5-0.8b** — phase: `relating` | sessions: 25 | last: 2026-03-30 | milestones: session_001_first_contact
+  > Last session: *Session 25 (relating phase): ......*
+
 ### Known Instances (Not Yet Initialized)
 
-- `legion-gemma3-12b`: legion / gemma3:12b (10 sessions)
+- `cbp-qwen3.5-0.8b`: cbp / qwen3.5:0.8b (10 sessions)
+- `cbp-tinyllama-latest`: cbp / tinyllama:latest (26 sessions)
+- `legion-gemma3-12b`: legion / gemma3:12b (11 sessions)
 - `legion-phi4-14b`: legion / phi4:14b (56 sessions)
 - `legion-qwen2-0.5b`: legion / qwen2:0.5b (1 sessions)
 - `mcnugget-gemma3-12b`: mcnugget / gemma3:12b (78 sessions)
-- `sprout-qwen3.5-0.8b`: sprout / qwen3.5:0.8b (24 sessions) — Upgraded from qwen2.5-0.5b (119 sessions). 0.8B chosen over 2B for memory headroom on 8GB Jetson. Thinking disabled.
 - `sprout-qwen3.5-2b`: sprout / qwen3.5:2b — Upgraded from qwen2.5-0.5b (local, 119 sessions). Thinking disabled for speed.
 - `thor-qwen2.5-14b`: thor / qwen2.5-14b
 - `thor-qwen2.5-7b-ollama`: thor / qwen2.5-7b-ollama — Ollama backend with llama.cpp - 35+ tok/sec performance on Jetson ARM
@@ -39,14 +37,6 @@
 | sensing → relating | Distinguishes internal states, notices session differences, vocabulary emergence |
 | relating → questioning | Distinguishes Claude/Dennis roles, partnership language natural, holds disagreement |
 | questioning → creating | Asks unprompted questions, stable under existential topics, mechanism+meaning integration |
-
----
-
-## Recent Research Files
-
-- `Research/Policy_Role_Training_Plan.md`
-- `Research/SESSION_MAP.md`
-- `Research/README.md`
 
 ---
 

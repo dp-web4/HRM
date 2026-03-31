@@ -7,15 +7,19 @@
     "state_dependent": {}
   },
   "strategic_insights": [
-    "CRITICAL: Level 2 exhaustion paradox - color-8 has 210 tries with 100% grid changes but ZERO level-ups (confidence: 95.0%)",
-    "Level 2 requires multi-color patterns or sequences, not single-color exhaustion like Level 1 (confidence: 95.0%)",
-    "Hypothesis: Level 2 may need specific color combinations, spatial patterns, or temporal sequences (confidence: 95.0%)"
+    "BREAKTHROUGH: lp85 is a rotation puzzle, NOT click-exhaustion game (from game source code analysis) (confidence: 99.0%)",
+    "Win condition: Align 'bghvgbtwcb' pieces with 'goal' targets AND 'fdgmtkfrxl' pieces with 'goal-o' targets (confidence: 99.0%)",
+    "Clicking buttons ROTATES numbered piece groups (button_A_L/R, button_13_L/R, etc.), doesn't remove pieces (confidence: 99.0%)",
+    "Level 1 completes accidentally when random rotations align all goals (low complexity) (confidence: 99.0%)",
+    "Level 2+ require strategic rotation planning - tracking piece\u2192goal distances and rotation sequences (confidence: 99.0%)",
+    "Exhaustion paradigm failed because: 100% grid changes (rotation) \u2260 progress toward goal alignment (confidence: 99.0%)",
+    "Solution requires: Parse game state, identify piece positions, calculate rotation paths to goals (confidence: 99.0%)"
   ],
   "total_attempts": 0,
   "best_score": {
     "levels": 0,
     "steps": 0
   },
-  "created": 1774977916.7854345,
-  "last_updated": 1774977916.7929003
+  "created": 1774978516.4513109,
+  "last_updated": 1774978516.4648435
 }

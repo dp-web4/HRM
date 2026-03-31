@@ -1,0 +1,512 @@
+#!/usr/bin/env python3
+"""
+SAGE ARC-AGI-3 Game Runner v2 — Sequence planning + reflection cycles.
+
+Key improvements over v1:
+- Plans 3-5 action sequences instead of single actions
+- Executes sequences, then reflects on the batch outcome
+- Tracks spatial "player" position via centroid of changes
+- Every 5 sequences, does a deep reflection to revise strategy
+- Level completion strongly reinforces the preceding sequence
+
+Usage:
+    cd /Users/dennispalatov/repos/SAGE
+    .venv/bin/python3 arc-agi-3/experiments/sage_game_runner_v2.py
+    .venv/bin/python3 arc-agi-3/experiments/sage_game_runner_v2.py --game tu93 --sequences 15
+"""
+
+import sys
+import time
+import json
+import argparse
+import numpy as np
+import requests
+
+sys.path.insert(0, ".")
+
+from arc_agi import Arcade
+from arcengine import GameAction
+from sage.irp.plugins.grid_vision_irp import GridVisionIRP
+from sage.irp.plugins.game_action_effector import GameActionEffector, ACTION_NAMES
+from sage.interfaces.base_effector import EffectorCommand
+
+OLLAMA_URL = "http://localhost:11434/api/generate"
+MODEL = "gemma3:12b"
+INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
+
+ACTION_LABELS = {
+    1: "UP", 2: "DOWN", 3: "LEFT", 4: "RIGHT",
+    5: "SELECT", 6: "ACTION6", 7: "ACTION7",
+}
+
+
+# ─────────────────────────────────────────────────────────────
+# Grid analysis
+# ─────────────────────────────────────────────────────────────
+
+def grid_summary(grid: np.ndarray) -> dict:
+    """Analyze grid and return structured summary."""
+    bg = int(np.bincount(grid.flatten()).argmax())
+    non_bg = np.argwhere(grid != bg)
+
+    if len(non_bg) == 0:
+        return {"bg": bg, "empty": True}
+
+    r_min, c_min = non_bg.min(axis=0)
+    r_max, c_max = non_bg.max(axis=0)
+    colors, counts = np.unique(grid[grid != bg], return_counts=True)
+
+    # Centroid of non-background content
+    centroid_r = float(np.mean(non_bg[:, 0]))
+    centroid_c = float(np.mean(non_bg[:, 1]))
+
+    return {
+        "bg": bg,
+        "empty": False,
+        "bbox": (int(r_min), int(c_min), int(r_max), int(c_max)),
+        "centroid": (round(centroid_r, 1), round(centroid_c, 1)),
+        "colors": {int(c): int(n) for c, n in zip(colors, counts)},
+        "n_foreground": int(len(non_bg)),
+    }
+
+
+def grid_crop_text(grid: np.ndarray, center_r: int, center_c: int, size: int = 12) -> str:
+    """Extract a small crop around a point, rendered as hex text."""
+    r1 = max(0, center_r - size // 2)
+    r2 = min(grid.shape[0], center_r + size // 2)
+    c1 = max(0, center_c - size // 2)
+    c2 = min(grid.shape[1], center_c + size // 2)
+    crop = grid[r1:r2, c1:c2]
+    lines = []
+    for r in range(crop.shape[0]):
+        lines.append("".join(format(int(c), "x") for c in crop[r]))
+    return f"({r2-r1}x{c2-c1} crop at r{r1},c{c1}):\n" + "\n".join(lines)
+
+
+def diff_summary(prev_grid: np.ndarray, curr_grid: np.ndarray) -> dict:
+    """Detailed diff between two grids."""
+    if prev_grid is None:
+        return {"n_changes": 0, "desc": "First frame."}
+    mask = prev_grid != curr_grid
+    n = int(mask.sum())
+    if n == 0:
+        return {"n_changes": 0, "desc": "No changes."}
+
+    coords = np.argwhere(mask)
+    r_min, c_min = coords.min(axis=0)
+    r_max, c_max = coords.max(axis=0)
+    center_r = int(np.mean(coords[:, 0]))
+    center_c = int(np.mean(coords[:, 1]))
+
+    old_colors = set(int(prev_grid[r, c]) for r, c in coords)
+    new_colors = set(int(curr_grid[r, c]) for r, c in coords)
+
+    # Direction of movement (where did the centroid shift?)
+    prev_non_bg = np.argwhere(prev_grid != int(np.bincount(prev_grid.flatten()).argmax()))
+    curr_non_bg = np.argwhere(curr_grid != int(np.bincount(curr_grid.flatten()).argmax()))
+    shift_r, shift_c = 0, 0
+    if len(prev_non_bg) > 0 and len(curr_non_bg) > 0:
+        shift_r = float(np.mean(curr_non_bg[:, 0]) - np.mean(prev_non_bg[:, 0]))
+        shift_c = float(np.mean(curr_non_bg[:, 1]) - np.mean(prev_non_bg[:, 1]))
+
+    desc = (
+        f"{n} cells changed in r{r_min}-{r_max}, c{c_min}-{c_max}. "
+        f"Colors {sorted(old_colors)}→{sorted(new_colors)}. "
+        f"Content shift: ({shift_r:+.1f} rows, {shift_c:+.1f} cols)."
+    )
+
+    return {
+        "n_changes": n,
+        "region": (int(r_min), int(c_min), int(r_max), int(c_max)),
+        "center": (center_r, center_c),
+        "shift": (round(shift_r, 1), round(shift_c, 1)),
+        "desc": desc,
+    }
+
+
+# ─────────────────────────────────────────────────────────────
+# Game memory
+# ─────────────────────────────────────────────────────────────
+
+class GameMemory:
+    """Structured memory for game learning."""
+
+    def __init__(self):
+        self.sequence_log: list = []  # list of {actions, total_changes, level_ups, desc}
+        self.hypothesis = ""
+        self.strategy = ""
+        self.total_steps = 0
+        self.total_level_ups = 0
+        self.winning_sequences: list = []  # sequences that caused level-ups
+
+    def record_sequence(self, actions: list, total_changes: int, diffs: list,
+                        level_before: int, level_after: int):
+        seq_names = [ACTION_LABELS.get(a, f"A{a}") for a in actions]
+        level_ups = level_after - level_before
+        self.total_steps += len(actions)
+
+        diff_descs = [d["desc"] for d in diffs if d["n_changes"] > 0]
+
+        entry = {
+            "actions": seq_names,
+            "total_changes": total_changes,
+            "level_ups": level_ups,
+            "diffs": diff_descs[:3],  # keep top 3 most interesting
+        }
+        self.sequence_log.append(entry)
+        if len(self.sequence_log) > 8:
+            self.sequence_log = self.sequence_log[-8:]
+
+        if level_ups > 0:
+            self.total_level_ups += level_ups
+            self.winning_sequences.append({"actions": seq_names, "level_ups": level_ups})
+
+    def to_text(self) -> str:
+        if not self.sequence_log:
+            return "No sequences tried yet."
+        lines = []
+        for i, s in enumerate(self.sequence_log):
+            arrow = " → ".join(s["actions"])
+            lvl = f" ★ LEVEL UP x{s['level_ups']}! ★" if s["level_ups"] > 0 else ""
+            lines.append(f"  Seq {i+1}: [{arrow}] → {s['total_changes']} cells changed{lvl}")
+            for d in s["diffs"][:2]:
+                lines.append(f"         {d}")
+        return "\n".join(lines)
+
+    def winning_text(self) -> str:
+        if not self.winning_sequences:
+            return ""
+        lines = ["WINNING SEQUENCES (these caused level-ups — repeat/extend them):"]
+        for w in self.winning_sequences:
+            lines.append(f"  [{' → '.join(w['actions'])}] → {w['level_ups']} level(s)")
+        return "\n".join(lines)
+
+
+# ─────────────────────────────────────────────────────────────
+# Ollama interface
+# ─────────────────────────────────────────────────────────────
+
+def ask_ollama(prompt: str, timeout: float = 90.0, max_tokens: int = 250) -> str:
+    try:
+        resp = requests.post(
+            OLLAMA_URL,
+            json={
+                "model": MODEL,
+                "prompt": prompt,
+                "stream": False,
+                "options": {"temperature": 0.4, "num_predict": max_tokens},
+            },
+            timeout=timeout,
+        )
+        if resp.status_code == 200:
+            return resp.json().get("response", "").strip()
+        return f"[Ollama error: {resp.status_code}]"
+    except Exception as e:
+        return f"[Ollama error: {e}]"
+
+
+# ─────────────────────────────────────────────────────────────
+# Prompts
+# ─────────────────────────────────────────────────────────────
+
+def plan_prompt(grid: np.ndarray, summary: dict, available: list,
+                levels_completed: int, win_levels: int,
+                memory: GameMemory, step_count: int) -> str:
+    """Ask LLM to plan a sequence of 3-5 actions."""
+    avail = [f"{a}={ACTION_LABELS.get(a, f'A{a}')}" for a in available]
+
+    # Grid view centered on content centroid
+    if not summary["empty"]:
+        cr, cc = int(summary["centroid"][0]), int(summary["centroid"][1])
+        crop = grid_crop_text(grid, cr, cc, size=16)
+        grid_section = f"Colors: {summary['colors']}\nContent centroid: row {cr}, col {cc}\n{crop}"
+    else:
+        grid_section = "Grid is empty / uniform."
+
+    mem_text = memory.to_text()
+    winning = memory.winning_text()
+
+    hyp = f"\nCURRENT HYPOTHESIS: {memory.hypothesis}" if memory.hypothesis else ""
+    strat = f"\nCURRENT STRATEGY: {memory.strategy}" if memory.strategy else ""
+
+    return f"""You are exploring an interactive grid game. NO rules are given — discover them by experimenting.
+
+GAME STATE (total actions: {step_count}, levels: {levels_completed}/{win_levels}):
+Available actions: {', '.join(avail)}
+
+GRID:
+{grid_section}
+
+SEQUENCE MEMORY (what sequences of actions did):
+{mem_text}
+{winning}{hyp}{strat}
+
+PLAN a sequence of 3-5 actions to try next. Think about:
+- What have you learned from previous sequences?
+- What hasn't been tried yet?
+- If something caused many changes, try extending that pattern.
+- If a sequence caused a level-up, REPEAT or EXTEND it.
+
+Respond with ONLY a JSON object:
+{{"sequence": [<action numbers>], "hypothesis": "<your theory of how the game works>", "goal": "<what you expect this sequence to reveal or achieve>"}}"""
+
+
+def reflect_prompt(grid: np.ndarray, summary: dict,
+                   levels_completed: int, win_levels: int,
+                   memory: GameMemory, step_count: int) -> str:
+    """Deep reflection every N sequences — revise strategy."""
+    mem_text = memory.to_text()
+    winning = memory.winning_text()
+
+    return f"""DEEP REFLECTION — You've played {step_count} actions across {len(memory.sequence_log)} sequences.
+
+RESULTS SO FAR:
+- Levels completed: {levels_completed}/{win_levels}
+- Total level-ups: {memory.total_level_ups}
+
+SEQUENCE HISTORY:
+{mem_text}
+{winning}
+
+CURRENT HYPOTHESIS: {memory.hypothesis or '(none yet)'}
+
+REFLECT:
+1. What patterns do you see across all your sequences?
+2. Which actions consistently cause changes? Which don't?
+3. What do the spatial patterns of changes suggest (movement? matching? building?)?
+4. What is your REVISED hypothesis about the game rules?
+5. What STRATEGY should guide your next sequences?
+
+Respond with ONLY a JSON object:
+{{"hypothesis": "<revised theory of game rules>", "strategy": "<what to try next and why>", "key_insight": "<the most important thing you've learned>"}}"""
+
+
+# ─────────────────────────────────────────────────────────────
+# Main game loop
+# ─────────────────────────────────────────────────────────────
+
+def main():
+    parser = argparse.ArgumentParser(description="SAGE ARC-AGI-3 Game Runner v2")
+    parser.add_argument("--game", default=None, help="Game ID prefix")
+    parser.add_argument("--sequences", type=int, default=15, help="Max sequences to play")
+    parser.add_argument("--reflect-every", type=int, default=5, help="Reflect every N sequences")
+    args = parser.parse_args()
+
+    print("=" * 70)
+    print("SAGE ARC-AGI-3 Game Runner v2 — Sequence Planning + Reflection")
+    print(f"Model: {MODEL} via Ollama")
+    print("=" * 70)
+
+    # Warm up
+    print("\nWarming up Ollama...", end=" ", flush=True)
+    t0 = time.time()
+    test = ask_ollama("Reply with: ready", timeout=90)
+    print(f"OK ({time.time()-t0:.1f}s)")
+    if "error" in test.lower():
+        print(f"FAILED: {test}")
+        return
+
+    # Game setup
+    arcade = Arcade()
+    envs = arcade.get_environments()
+    if args.game:
+        matches = [e for e in envs if args.game in (e.game_id if hasattr(e, "game_id") else str(e))]
+        if not matches:
+            print(f"No game matching '{args.game}'.")
+            return
+        env_info = matches[0]
+    else:
+        import random
+        env_info = random.choice(envs)
+
+    game_id = env_info.game_id if hasattr(env_info, "game_id") else str(env_info)
+    print(f"\nGame: {game_id}")
+
+    env = arcade.make(game_id)
+    frame_data = env.reset()
+    grid = np.array(frame_data.frame)
+    if grid.ndim == 3:
+        grid = grid[-1]
+
+    available = [a.value if hasattr(a, "value") else int(a) for a in (frame_data.available_actions or [])]
+    print(f"Grid: {grid.shape}, Actions: {available}, Levels: {frame_data.levels_completed}/{frame_data.win_levels}")
+
+    # SAGE components
+    gv = GridVisionIRP({"entity_id": "grid_vision_v2", "buffer_size": 50})
+    gae = GameActionEffector({"effector_id": "game_action_v2"})
+    gv.push_raw_frame(grid, step_number=0, level_id=game_id)
+
+    memory = GameMemory()
+    prev_grid = grid.copy()
+    total_steps = 0
+    start_time = time.time()
+
+    print(f"\n{'='*70}")
+
+    for seq_num in range(1, args.sequences + 1):
+        levels_before = frame_data.levels_completed
+        summary = grid_summary(grid)
+
+        # --- Reflection cycle ---
+        if seq_num > 1 and (seq_num - 1) % args.reflect_every == 0:
+            print(f"\n  {'─'*60}")
+            print(f"  REFLECTING (after {total_steps} steps, {frame_data.levels_completed} levels)...")
+            rprompt = reflect_prompt(grid, summary, frame_data.levels_completed,
+                                    frame_data.win_levels, memory, total_steps)
+            t0 = time.time()
+            rresponse = ask_ollama(rprompt, max_tokens=300)
+            reflect_s = time.time() - t0
+            try:
+                if "{" in rresponse:
+                    rj = json.loads(rresponse[rresponse.index("{"):rresponse.rindex("}") + 1])
+                    memory.hypothesis = rj.get("hypothesis", memory.hypothesis)
+                    memory.strategy = rj.get("strategy", memory.strategy)
+                    insight = rj.get("key_insight", "")
+                    print(f"  Hypothesis: {memory.hypothesis[:80]}")
+                    print(f"  Strategy: {memory.strategy[:80]}")
+                    if insight:
+                        print(f"  Key insight: {insight[:80]}")
+                    print(f"  ({reflect_s:.1f}s)")
+            except json.JSONDecodeError:
+                print(f"  (reflection parse failed, continuing)")
+            print(f"  {'─'*60}\n")
+
+        # --- Plan sequence ---
+        pprompt = plan_prompt(grid, summary, available,
+                             frame_data.levels_completed, frame_data.win_levels,
+                             memory, total_steps)
+        t0 = time.time()
+        presponse = ask_ollama(pprompt, max_tokens=200)
+        plan_s = time.time() - t0
+
+        sequence = []
+        goal = ""
+        try:
+            if "{" in presponse:
+                pj = json.loads(presponse[presponse.index("{"):presponse.rindex("}") + 1])
+                sequence = [int(a) for a in pj.get("sequence", [])]
+                memory.hypothesis = pj.get("hypothesis", memory.hypothesis)
+                goal = pj.get("goal", "")[:60]
+        except (json.JSONDecodeError, ValueError):
+            pass
+
+        # Validate sequence
+        sequence = [a for a in sequence if a in available]
+        if not sequence:
+            # Fallback: random exploration
+            import random
+            sequence = [random.choice(available) for _ in range(3)]
+            goal = "(random exploration)"
+
+        seq_names = [ACTION_LABELS.get(a, f"A{a}") for a in sequence]
+        print(f"Seq {seq_num:2d}: [{' → '.join(seq_names)}]  plan:{plan_s:.1f}s  goal: {goal}")
+
+        # --- Execute sequence ---
+        seq_changes = 0
+        seq_diffs = []
+        level_up_during = False
+
+        for i, action in enumerate(sequence):
+            prev_grid = grid.copy()
+
+            # Execute action
+            ga = INT_TO_GAME_ACTION[action]
+            frame_data = env.step(ga)
+            new_grid = np.array(frame_data.frame)
+            if new_grid.ndim == 3:
+                new_grid = new_grid[-1]
+            grid = new_grid
+            total_steps += 1
+
+            # Track changes
+            obs = gv.push_raw_frame(grid, step_number=total_steps, action_taken=action, level_id=game_id)
+            d = diff_summary(prev_grid, grid)
+            seq_diffs.append(d)
+            seq_changes += d["n_changes"]
+
+            # Update available actions (may change after action)
+            available = [a.value if hasattr(a, "value") else int(a) for a in (frame_data.available_actions or [])]
+
+            # Check level up mid-sequence
+            if frame_data.levels_completed > levels_before:
+                level_up_during = True
+                print(f"        ★ LEVEL UP at step {i+1}! ({frame_data.levels_completed}/{frame_data.win_levels}) ★")
+
+            # Check game over
+            if frame_data.state.name in ("WON", "LOST"):
+                break
+
+        # Record sequence outcome
+        memory.record_sequence(
+            sequence, seq_changes, seq_diffs,
+            levels_before, frame_data.levels_completed,
+        )
+
+        # Print outcome
+        lvl = f"{frame_data.levels_completed}/{frame_data.win_levels}"
+        status = ""
+        if level_up_during:
+            status = " ★★★"
+        elif seq_changes == 0:
+            status = " (no effect)"
+
+        # Show the most informative diff
+        best_diff = max(seq_diffs, key=lambda d: d["n_changes"]) if seq_diffs else {"desc": "none"}
+        print(f"        → {seq_changes} cells changed, levels: {lvl}{status}")
+        if seq_changes > 0:
+            print(f"        → {best_diff['desc'][:80]}")
+
+        # Check game over
+        if frame_data.state.name == "WON":
+            print(f"\n  ★ WON after {total_steps} steps! ★")
+            break
+        elif frame_data.state.name == "LOST":
+            print(f"\n  LOST after {total_steps} steps.")
+            break
+
+    # ─── Final Report ───
+    elapsed = time.time() - start_time
+    print(f"\n{'='*70}")
+    print(f"FINAL REPORT")
+    print(f"{'='*70}")
+    print(f"  Game: {game_id}")
+    print(f"  Total steps: {total_steps}")
+    print(f"  Sequences: {seq_num}")
+    print(f"  Levels: {frame_data.levels_completed}/{frame_data.win_levels}")
+    print(f"  State: {frame_data.state.name}")
+    print(f"  Time: {elapsed:.0f}s ({elapsed/max(total_steps,1):.1f}s/step, {elapsed/max(seq_num,1):.1f}s/seq)")
+    print(f"  Efficiency: {gae.efficiency_ratio if gae.total_actions > 0 else 0:.1%}")
+    if memory.hypothesis:
+        print(f"\n  Final hypothesis: {memory.hypothesis}")
+    if memory.strategy:
+        print(f"  Final strategy: {memory.strategy}")
+    if memory.winning_sequences:
+        print(f"\n  Winning sequences:")
+        for w in memory.winning_sequences:
+            print(f"    [{' → '.join(w['actions'])}] → {w['level_ups']} level(s)")
+
+    # Save session log
+    log_path = f"arc-agi-3/experiments/logs/{game_id}_{int(time.time())}.json"
+    try:
+        import os
+        os.makedirs(os.path.dirname(log_path), exist_ok=True)
+        with open(log_path, "w") as f:
+            json.dump({
+                "game_id": game_id,
+                "total_steps": total_steps,
+                "levels_completed": frame_data.levels_completed,
+                "win_levels": frame_data.win_levels,
+                "state": frame_data.state.name,
+                "elapsed_s": elapsed,
+                "hypothesis": memory.hypothesis,
+                "strategy": memory.strategy,
+                "winning_sequences": memory.winning_sequences,
+                "sequence_log": memory.sequence_log,
+            }, f, indent=2)
+        print(f"\n  Session log: {log_path}")
+    except Exception as e:
+        print(f"\n  (Could not save log: {e})")
+
+
+if __name__ == "__main__":
+    main()

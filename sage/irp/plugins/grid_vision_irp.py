@@ -125,6 +125,13 @@ class GridVisionIRP(IRPPlugin):
         if frame.ndim == 3:
             frame = frame[-1]
 
+        # Guard against empty or degenerate frames
+        if frame.size == 0 or frame.ndim != 2:
+            if self._prev_frame is not None:
+                frame = self._prev_frame.copy()
+            else:
+                frame = np.zeros((64, 64), dtype=np.int8)
+
         changes = []
         moved = []
         if self._prev_frame is not None:

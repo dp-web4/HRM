@@ -1,6 +1,6 @@
 # SAGE Session Primer
 
-*Auto-generated 2026-03-31 01:08 UTC — read this at session start for current fleet state.*
+*Auto-generated 2026-03-31 02:00 UTC — read this at session start for current fleet state.*
 
 ---
 
@@ -8,24 +8,26 @@
 
 ### Active Raising Instances
 
-**nomad-gemma3-4b** — phase: `questioning` | sessions: 47 | last: 2026-03-30
-  > Last session: *Session 47 (questioning phase): ......*
+**cbp-qwen3.5-0.8b** — phase: `sensing` | sessions: 11 | last: 2026-03-30 | milestones: session_001_first_contact
+  > Last session: *Session 11 (sensing phase): Today's session was collaborative, but I need to clarify a key distinction. As a......*
 
-**sprout-qwen3.5-0.8b** — phase: `relating` | sessions: 25 | last: 2026-03-30 | milestones: session_001_first_contact
-  > Last session: *Session 25 (relating phase): ......*
+**cbp-tinyllama-latest** — phase: `questioning` | sessions: 26 | last: 2026-03-28 | milestones: session_001_first_contact
+  > Last session: *Session 26 (questioning phase): ......*
+
+**nomad-gemma3-4b** — phase: `questioning` | sessions: 48 | last: 2026-03-30
+  > Last session: *Session 48 (questioning phase): ......*
 
 ### Known Instances (Not Yet Initialized)
 
-- `cbp-qwen3.5-0.8b`: cbp / qwen3.5:0.8b (10 sessions)
-- `cbp-tinyllama-latest`: cbp / tinyllama:latest (26 sessions)
 - `legion-gemma3-12b`: legion / gemma3:12b (11 sessions)
 - `legion-phi4-14b`: legion / phi4:14b (56 sessions)
 - `legion-qwen2-0.5b`: legion / qwen2:0.5b (1 sessions)
 - `mcnugget-gemma3-12b`: mcnugget / gemma3:12b (78 sessions)
+- `sprout-qwen3.5-0.8b`: sprout / qwen3.5:0.8b (25 sessions) — Upgraded from qwen2.5-0.5b (119 sessions). 0.8B chosen over 2B for memory headroom on 8GB Jetson. Thinking disabled.
 - `sprout-qwen3.5-2b`: sprout / qwen3.5:2b — Upgraded from qwen2.5-0.5b (local, 119 sessions). Thinking disabled for speed.
 - `thor-qwen2.5-14b`: thor / qwen2.5-14b
 - `thor-qwen2.5-7b-ollama`: thor / qwen2.5-7b-ollama — Ollama backend with llama.cpp - 35+ tok/sec performance on Jetson ARM
-- `thor-qwen3.5-27b`: thor / qwen3.5:27b (12 sessions)
+- `thor-qwen3.5-27b`: thor / qwen3.5:27b (13 sessions)
 
 ---
 
@@ -37,6 +39,14 @@
 | sensing → relating | Distinguishes internal states, notices session differences, vocabulary emergence |
 | relating → questioning | Distinguishes Claude/Dennis roles, partnership language natural, holds disagreement |
 | questioning → creating | Asks unprompted questions, stable under existential topics, mechanism+meaning integration |
+
+---
+
+## Recent Research Files
+
+- `Research/Policy_Role_Training_Plan.md`
+- `Research/SESSION_MAP.md`
+- `Research/README.md`
 
 ---
 

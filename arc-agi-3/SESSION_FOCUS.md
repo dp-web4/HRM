@@ -4,11 +4,18 @@
 
 *Last updated: 2026-03-30*
 
+**Global TODO**: See `SAGE/TODO.md` for all active workstreams.
+
 ---
 
 ## ⚠️ CURRENT PRIORITY: Build the Adapter Layer
 
-Before anything else, SAGE needs to connect to ARC-AGI-3 game environments. The consciousness loop exists. The games exist. The adapter between them does not.
+SAGE needs to connect to ARC-AGI-3 game environments. The consciousness loop exists. The games exist. The adapter between them does not.
+
+### Status
+
+- **Andy's team**: SDK installed, pulling frames, building GridCartridge with paired lattice format. Connected component analysis and CLIP embedding in progress. Awaiting GridVisionIRP interface spec (DONE — relay pending).
+- **CBP**: GridVisionIRP interface spec complete. GridObservation dataclass defined. Push/pull model decided (push). Next: build the skeleton.
 
 ### What Each Machine Should Work On
 
@@ -17,7 +24,7 @@ Before anything else, SAGE needs to connect to ARC-AGI-3 game environments. The 
 - Clone the agents repo: `github.com/arcprize/ARC-AGI-3-Agents`
 - Run the random agent on demo games — verify the environment works
 - Measure: how fast can we iterate actions? What's the FPS on Thor's GPU?
-- Start building GridVisionIRP: game frame (64x64 grid, 16 colors) → structured IRP observation
+- Start building GridVisionIRP skeleton
 
 **Sprout** (edge constraint):
 - Install ARC-AGI-3 SDK
@@ -29,13 +36,12 @@ Before anything else, SAGE needs to connect to ARC-AGI-3 game environments. The 
 - Install ARC-AGI-3 SDK
 - Run random agent — verify MPS compatibility
 - Test with Gemma 3 12B: prompt→action cycle time?
-- Start membot multimodal cartridge prototype (if Andy hasn't started yet)
 
 **CBP** (coordinator):
-- This file. Keep it current.
-- Track what each machine discovers
-- Design the IRP adapter interface: what does GridVisionIRP.init_state() return? What does step() do?
+- ~~Design the IRP adapter interface~~ DONE — see `private-context/plans/arc-agi-3-gridvision-irp-interface-spec.md`
+- Build GridVisionIRP skeleton (observation buffer + consciousness loop wiring)
 - Write the game loop integration: consciousness loop ↔ game environment
+- Coordinate with Andy on serialization format
 
 ---
 

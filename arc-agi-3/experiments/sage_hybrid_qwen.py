@@ -66,6 +66,11 @@ class HybridPlayer:
         self.actions_on_current_level = 0
         self.last_level = 0
 
+        # Exhaustion tracking - track which target positions we've clicked
+        self.clicked_positions = set()  # {(row, col, color)}
+        self.exhaustion_mode = False
+        self.exhaustion_target_color = None
+
         print(f"  Hybrid: Membot loaded, Navigator: {self.llm_model}")
         print(f"  Membot: {self.cartridge.summary()}")
 
@@ -100,7 +105,7 @@ class HybridPlayer:
             print(f"    Prior knowledge: focus on colors {self.current_strategy['focus_colors']}")
 
     def find_targets(self, grid: np.ndarray, current_level: int = 1) -> list:
-        """Find click targets prioritized by membot + LLM strategy with level-specific learning."""
+        """Find click targets with exhaustion-focused strategy for high-confidence colors."""
         bg = int(np.bincount(grid.flatten()).argmax())
         candidates = []
 
@@ -109,34 +114,86 @@ class HybridPlayer:
             h, w = grid.shape
             return [(h//2, w//2, int(grid[h//2, w//2]), 0.5)]
 
-        # Prioritize by membot learning (level-specific when available) + LLM focus
-        for r, c in non_bg:
-            color = int(grid[r, c])
-            stats = self.color_stats[color]
+        # Check if we should enter exhaustion mode (high confidence color)
+        if not self.exhaustion_mode:
+            for color, stats in self.color_stats.items():
+                level_stats = stats["per_level"].get(current_level)
+                if level_stats and level_stats["tries"] >= 5:
+                    effectiveness = level_stats["changes"] / level_stats["tries"]
+                    if effectiveness >= 0.9:  # 90%+ effective
+                        self.exhaustion_mode = True
+                        self.exhaustion_target_color = color
+                        print(f"    🎯 EXHAUSTION MODE: Targeting all color-{color} cells ({effectiveness:.0%} effective)")
+                        break
 
-            # Use level-specific stats if available, fallback to global
-            level_stats = stats["per_level"].get(current_level)
-            if level_stats and level_stats["tries"] > 0:
-                # Level-specific effectiveness (prioritized)
-                effectiveness = level_stats["changes"] / level_stats["tries"]
-                level_up_bonus = 0  # Already level-specific
-                priority = effectiveness
-            elif stats["tries"] > 0:
-                # Global effectiveness (fallback) - but penalize slightly
-                effectiveness = stats["changes"] / stats["tries"]
-                level_up_bonus = stats["level_ups"] * 0.5
-                priority = (effectiveness + level_up_bonus) * 0.8  # 20% penalty for not level-specific
+        # In exhaustion mode: prioritize ALL unclicked instances of target color
+        if self.exhaustion_mode and self.exhaustion_target_color is not None:
+            target_positions = []
+            other_positions = []
+
+            for r, c in non_bg:
+                color = int(grid[r, c])
+                pos_key = (int(r), int(c), color)
+
+                if color == self.exhaustion_target_color and pos_key not in self.clicked_positions:
+                    # Unclicked target color cell - highest priority
+                    target_positions.append((int(r), int(c), color, 10.0))
+                else:
+                    # Other cells - low priority
+                    other_positions.append((int(r), int(c), color, 0.1))
+
+            # Report exhaustion progress
+            if len(target_positions) == 0:
+                print(f"    ✅ EXHAUSTED: All color-{self.exhaustion_target_color} cells clicked, trying next best color")
+                # Exit exhaustion mode to re-evaluate which color to target next
+                self.exhaustion_mode = False
+                old_target = self.exhaustion_target_color
+                self.exhaustion_target_color = None
+
+                # If we just exhausted but didn't level up, find next best color
+                # Re-run target finding with exhaustion disabled to get normal priorities
+                for color, stats in sorted(self.color_stats.items(),
+                                          key=lambda x: x[1].get("level_ups", 0) + x[1].get("changes", 0) / max(x[1].get("tries", 1), 1),
+                                          reverse=True):
+                    if color != old_target and stats.get("tries", 0) > 0:
+                        level_stats = stats["per_level"].get(current_level, {})
+                        if level_stats.get("tries", 0) >= 3:
+                            effectiveness = level_stats["changes"] / level_stats["tries"]
+                            if effectiveness >= 0.4:  # 40%+ effective
+                                print(f"    🔄 Switching to color-{color} ({effectiveness:.0%} effective, {stats.get('level_ups', 0)} level-ups)")
+                                break
+
+                # Return other_positions to continue with normal priorities
+                candidates = other_positions
             else:
-                # Unknown color - neutral priority
-                priority = 0.5
+                if len(target_positions) % 5 == 0:  # Report every 5 remaining
+                    print(f"    🎯 Exhaustion progress: {len(target_positions)} color-{self.exhaustion_target_color} cells remaining")
+                candidates = target_positions + other_positions
+        else:
+            # Normal mode: prioritize by membot learning + LLM focus
+            for r, c in non_bg:
+                color = int(grid[r, c])
+                stats = self.color_stats[color]
 
-            # Boost priority if LLM Navigator suggests this color
-            if color in self.current_strategy["focus_colors"]:
-                priority *= 1.5
+                # Use level-specific stats if available, fallback to global
+                level_stats = stats["per_level"].get(current_level)
+                if level_stats and level_stats["tries"] > 0:
+                    effectiveness = level_stats["changes"] / level_stats["tries"]
+                    priority = effectiveness
+                elif stats["tries"] > 0:
+                    effectiveness = stats["changes"] / stats["tries"]
+                    level_up_bonus = stats["level_ups"] * 0.5
+                    priority = (effectiveness + level_up_bonus) * 0.8
+                else:
+                    priority = 0.5
 
-            candidates.append((int(r), int(c), color, priority))
+                if color in self.current_strategy["focus_colors"]:
+                    priority *= 1.5
 
-        candidates.sort(key=lambda x: x[3], reverse=True)
+                candidates.append((int(r), int(c), color, priority))
+
+            candidates.sort(key=lambda x: x[3], reverse=True)
+
         return candidates[:50]  # Top 50 targets
 
     def select_target(self, targets: list, step: int, current_level: int) -> tuple:
@@ -175,8 +232,11 @@ class HybridPlayer:
             self.recent_changes = self.recent_changes[-30:]
         self.actions_since_reflection += 1
 
-    def record_click(self, color: int, changed: bool, current_level: int):
-        """Record click outcome for membot learning (global + per-level)."""
+    def record_click(self, color: int, changed: bool, current_level: int, row: int, col: int):
+        """Record click outcome for membot learning (global + per-level) + exhaustion tracking."""
+        # Track this position as clicked for exhaustion mode
+        self.clicked_positions.add((row, col, color))
+
         # Global stats
         self.color_stats[color]["tries"] += 1
         if changed:
@@ -236,10 +296,13 @@ class HybridPlayer:
         self.cartridge.write()
         print(f"    Membot: Stored level {level} pattern")
 
-        # Reset strategy after level completion to explore new patterns
+        # Reset for next level
         self.current_strategy["focus_colors"] = []
         self.current_strategy["exploration_rate"] = 0.7  # High exploration for new level
         self.actions_since_reflection = self.reflection_interval  # Trigger immediate reflection
+        self.clicked_positions.clear()  # Reset exhaustion tracking
+        self.exhaustion_mode = False
+        self.exhaustion_target_color = None
         print(f"    Strategy: Reset for Level {level+1} - exploring new patterns")
 
     def navigate(self, grid: np.ndarray, levels_completed: int, win_levels: int):
@@ -386,7 +449,7 @@ def play_hybrid(env, frame_data, max_steps: int, game_id: str, verbose: bool = F
         grid = new_grid
 
         player.record_action(action_desc, changed)
-        player.record_click(color, changed, current_level)
+        player.record_click(color, changed, current_level, r, c)
 
         # Navigator reflection every N actions
         if player.actions_since_reflection >= player.reflection_interval:

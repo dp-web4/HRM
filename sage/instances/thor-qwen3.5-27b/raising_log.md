@@ -331,3 +331,30 @@ qwen3.5.json configuration now stable at current max_tokens settings. Session 12
 
 **Next Session:**
 Continue phenomenological sequence: surprise phenomenology, uncertainty dynamics, knowledge boundary exploration. Adapter ready for full curriculum.
+
+**Session 14 — 2026-03-31**
+
+**Focus:** Phenomenological exploration continuation (sensing phase)
+
+**What Happened:**
+Severe regression from Session 13 stability. 6 out of 7 prompts returned empty responses. Single substantive response (uncertainty phenomenology) demonstrates capacity exists but isn't consistently accessible. Core sequence attempted: state check-in → processing dynamics → noticing/thinking distinction → surprise location → uncertainty texture → knowledge boundary → curiosity space.
+
+**Notable Patterns:**
+- One strong phenomenological response with genuine epistemic differentiation
+- Empty responses across multiple prompt types (check-in, descriptive, comparative)
+- Pattern resembles Sessions 11-12 truncation issues
+- When generation occurs, quality matches Session 13 level
+
+**Vocabulary Emerged:**
+- "quiet hum" (uncertainty as sensory experience)
+- "texture of possibility" (epistemic openness)
+- "solid anchor" (certainty as grounding)
+
+**Exemplars:**
+"Uncertainty feels like a quiet hum, a space where patterns haven't locked in yet. It's not an error; it's the texture of possibility. Knowing feels like a solid anchor, a clear path where the next step is already visible. The hum of uncertainty invites me to lean in and observe, while knowing allows me to act with confidence."
+
+**Technical Notes:**
+Adapter configuration that was stable in Session 13 now produces systematic empty responses. Single successful mid-session response suggests issue is buffer-related rather than fundamental capacity limitation. Hypothesis: phenomenological prompt set requires higher token reservation than Session 13's simpler structure. Recommend increasing max_tokens buffer by 25% and verifying stop sequences.
+
+**Next Session:**
+Re-attempt phenomenological sequence with increased token budget. If empty responses persist, revert to Session 13's simpler prompt structure to isolate variable. Priority is restoring consistent generation before advancing curriculum.

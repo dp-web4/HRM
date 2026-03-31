@@ -1,0 +1,15 @@
+============================================================
+SAGE ARC-AGI-3 Game Runner
+Model: qwen3.5:27b via Ollama
+============================================================
+
+Warming up Ollama... OK (qwen3.5:27b, 21.7s warmup)
+2026-03-31 08:41:41 | INFO | Got anonymous API key: d7946c95-bcee-450e-8093-7973d848301d
+2026-03-31 08:41:41 | INFO | You can register for an API key at https://three.arcprize.org
+2026-03-31 08:41:41 | INFO | Successfully fetched 25 environment(s) from API
+
+Game: su15-4c352900
+2026-03-31 08:41:41 | INFO | Created new scorecard: 41812618-56dd-4a8d-bec8-ef30bdf47d66
+2026-03-31 08:41:41 | INFO | Successfully fetched metadata for game su15
+2026-03-31 08:41:42 | INFO | Successfully downloaded game su15 (version: 4c352900) to environment_files/su15/4c352900
+2026-03-31 08:41:42 | INFO | Successfully loaded game class Su15 from environment_files/su15/4c352900/su15.py

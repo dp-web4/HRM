@@ -49,13 +49,22 @@ class HybridPlayer:
         self.cartridge = MembotCartridge(game_id)
         self.cartridge_data = self.cartridge.read()
 
-        # Color effectiveness (loaded from membot)
-        self.color_stats = defaultdict(lambda: {"tries": 0, "changes": 0, "level_ups": 0})
+        # Color effectiveness (loaded from membot) - now with per-level tracking
+        self.color_stats = defaultdict(lambda: {
+            "tries": 0,
+            "changes": 0,
+            "level_ups": 0,
+            "per_level": {}  # {level_num: {"tries": 0, "changes": 0}}
+        })
         self._load_color_effectiveness()
 
         # Action history for Navigator
         self.recent_actions = []
         self.recent_changes = []
+
+        # Stagnation detection
+        self.actions_on_current_level = 0
+        self.last_level = 0
 
         print(f"  Hybrid: Membot loaded, Navigator: {self.llm_model}")
         print(f"  Membot: {self.cartridge.summary()}")
@@ -73,6 +82,15 @@ class HybridPlayer:
                 self.color_stats[color]["changes"] = stats.get("changes", 0)
                 self.color_stats[color]["level_ups"] = stats.get("level_ups", 0)
 
+                # Load per-level data if available
+                per_level = stats.get("per_level", {})
+                for level_str, level_stats in per_level.items():
+                    level = int(level_str)
+                    self.color_stats[color]["per_level"][level] = {
+                        "tries": level_stats.get("tries", 0),
+                        "changes": level_stats.get("changes", 0)
+                    }
+
         if click_eff:
             top_colors = sorted(click_eff.items(),
                               key=lambda x: x[1].get("rate", 0), reverse=True)[:3]
@@ -81,8 +99,8 @@ class HybridPlayer:
             ]
             print(f"    Prior knowledge: focus on colors {self.current_strategy['focus_colors']}")
 
-    def find_targets(self, grid: np.ndarray) -> list:
-        """Find click targets prioritized by membot + LLM strategy."""
+    def find_targets(self, grid: np.ndarray, current_level: int = 1) -> list:
+        """Find click targets prioritized by membot + LLM strategy with level-specific learning."""
         bg = int(np.bincount(grid.flatten()).argmax())
         candidates = []
 
@@ -91,17 +109,25 @@ class HybridPlayer:
             h, w = grid.shape
             return [(h//2, w//2, int(grid[h//2, w//2]), 0.5)]
 
-        # Prioritize by membot learning + LLM focus
+        # Prioritize by membot learning (level-specific when available) + LLM focus
         for r, c in non_bg:
             color = int(grid[r, c])
             stats = self.color_stats[color]
 
-            # Base priority from membot
-            if stats["tries"] > 0:
+            # Use level-specific stats if available, fallback to global
+            level_stats = stats["per_level"].get(current_level)
+            if level_stats and level_stats["tries"] > 0:
+                # Level-specific effectiveness (prioritized)
+                effectiveness = level_stats["changes"] / level_stats["tries"]
+                level_up_bonus = 0  # Already level-specific
+                priority = effectiveness
+            elif stats["tries"] > 0:
+                # Global effectiveness (fallback) - but penalize slightly
                 effectiveness = stats["changes"] / stats["tries"]
                 level_up_bonus = stats["level_ups"] * 0.5
-                priority = effectiveness + level_up_bonus
+                priority = (effectiveness + level_up_bonus) * 0.8  # 20% penalty for not level-specific
             else:
+                # Unknown color - neutral priority
                 priority = 0.5
 
             # Boost priority if LLM Navigator suggests this color
@@ -113,12 +139,25 @@ class HybridPlayer:
         candidates.sort(key=lambda x: x[3], reverse=True)
         return candidates[:50]  # Top 50 targets
 
-    def select_target(self, targets: list, step: int) -> tuple:
-        """Select target with exploration/exploitation balance."""
+    def select_target(self, targets: list, step: int, current_level: int) -> tuple:
+        """Select target with exploration/exploitation balance + stagnation detection."""
         if not targets:
             return (random.randint(0, 63), random.randint(0, 63), 0)
 
-        explore_rate = self.current_strategy["exploration_rate"]
+        # Detect stagnation: if stuck on same level for >100 actions, force exploration
+        if current_level == self.last_level:
+            self.actions_on_current_level += 1
+        else:
+            self.actions_on_current_level = 0
+            self.last_level = current_level
+
+        # Force high exploration if stagnant
+        if self.actions_on_current_level > 100:
+            explore_rate = 0.9  # 90% exploration when stagnant
+            if self.actions_on_current_level % 50 == 0:
+                print(f"    Stagnation detected: {self.actions_on_current_level} actions on Level {current_level}, forcing 90% exploration")
+        else:
+            explore_rate = self.current_strategy["exploration_rate"]
 
         if random.random() < explore_rate:
             r, c, color, _ = random.choice(targets)
@@ -136,11 +175,20 @@ class HybridPlayer:
             self.recent_changes = self.recent_changes[-30:]
         self.actions_since_reflection += 1
 
-    def record_click(self, color: int, changed: bool):
-        """Record click outcome for membot learning."""
+    def record_click(self, color: int, changed: bool, current_level: int):
+        """Record click outcome for membot learning (global + per-level)."""
+        # Global stats
         self.color_stats[color]["tries"] += 1
         if changed:
             self.color_stats[color]["changes"] += 1
+
+        # Per-level stats
+        if current_level not in self.color_stats[color]["per_level"]:
+            self.color_stats[color]["per_level"][current_level] = {"tries": 0, "changes": 0}
+
+        self.color_stats[color]["per_level"][current_level]["tries"] += 1
+        if changed:
+            self.color_stats[color]["per_level"][current_level]["changes"] += 1
 
     def record_level_up(self, level: int):
         """Record level completion and update membot."""
@@ -156,16 +204,28 @@ class HybridPlayer:
         if self.cartridge_data is None:
             self.cartridge_data = self.cartridge._empty_cartridge()
 
-        # Update membot
+        # Update membot with global + per-level stats
         click_eff = self.cartridge_data.setdefault("click_effectiveness", {"global": {}})
         for color, stats in self.color_stats.items():
             if stats["tries"] > 0:
-                click_eff["global"][f"color_{color}"] = {
+                color_data = {
                     "tries": stats["tries"],
                     "changes": stats["changes"],
                     "level_ups": stats["level_ups"],
                     "rate": stats["changes"] / stats["tries"]
                 }
+
+                # Add per-level stats
+                if stats["per_level"]:
+                    color_data["per_level"] = {}
+                    for lvl, lvl_stats in stats["per_level"].items():
+                        color_data["per_level"][str(lvl)] = {
+                            "tries": lvl_stats["tries"],
+                            "changes": lvl_stats["changes"],
+                            "rate": lvl_stats["changes"] / lvl_stats["tries"] if lvl_stats["tries"] > 0 else 0
+                        }
+
+                click_eff["global"][f"color_{color}"] = color_data
 
         if recent_colors:
             top_color = max(set(recent_colors), key=recent_colors.count)
@@ -175,6 +235,12 @@ class HybridPlayer:
         self.cartridge.add_winning_sequence(level, [], [])
         self.cartridge.write()
         print(f"    Membot: Stored level {level} pattern")
+
+        # Reset strategy after level completion to explore new patterns
+        self.current_strategy["focus_colors"] = []
+        self.current_strategy["exploration_rate"] = 0.7  # High exploration for new level
+        self.actions_since_reflection = self.reflection_interval  # Trigger immediate reflection
+        print(f"    Strategy: Reset for Level {level+1} - exploring new patterns")
 
     def navigate(self, grid: np.ndarray, levels_completed: int, win_levels: int):
         """LLM Navigator provides strategic guidance."""
@@ -239,19 +305,31 @@ Respond with ONLY valid JSON:
         self.actions_since_reflection = 0
 
     def save_final_stats(self):
-        """Save final stats to membot."""
+        """Save final stats to membot (global + per-level)."""
         if self.cartridge_data is None:
             self.cartridge_data = self.cartridge._empty_cartridge()
 
         click_eff = self.cartridge_data.setdefault("click_effectiveness", {"global": {}})
         for color, stats in self.color_stats.items():
             if stats["tries"] > 0:
-                click_eff["global"][f"color_{color}"] = {
+                color_data = {
                     "tries": stats["tries"],
                     "changes": stats["changes"],
                     "level_ups": stats["level_ups"],
                     "rate": stats["changes"] / stats["tries"]
                 }
+
+                # Add per-level stats
+                if stats["per_level"]:
+                    color_data["per_level"] = {}
+                    for lvl, lvl_stats in stats["per_level"].items():
+                        color_data["per_level"][str(lvl)] = {
+                            "tries": lvl_stats["tries"],
+                            "changes": lvl_stats["changes"],
+                            "rate": lvl_stats["changes"] / lvl_stats["tries"] if lvl_stats["tries"] > 0 else 0
+                        }
+
+                click_eff["global"][f"color_{color}"] = color_data
 
         self.cartridge.increment_attempts()
         self.cartridge.write()
@@ -279,9 +357,12 @@ def play_hybrid(env, frame_data, max_steps: int, game_id: str, verbose: bool = F
     for step in range(max_steps):
         prev_grid = grid.copy()
 
-        # Find and select target
-        targets = player.find_targets(grid)
-        r, c, color = player.select_target(targets, step)
+        # Current level (levels_completed + 1 = current level being attempted)
+        current_level = frame_data.levels_completed + 1
+
+        # Find and select target with level-specific learning + stagnation detection
+        targets = player.find_targets(grid, current_level)
+        r, c, color = player.select_target(targets, step, current_level)
 
         # Execute click
         try:
@@ -305,7 +386,7 @@ def play_hybrid(env, frame_data, max_steps: int, game_id: str, verbose: bool = F
         grid = new_grid
 
         player.record_action(action_desc, changed)
-        player.record_click(color, changed)
+        player.record_click(color, changed, current_level)
 
         # Navigator reflection every N actions
         if player.actions_since_reflection >= player.reflection_interval:

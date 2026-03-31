@@ -1,0 +1,51 @@
+# GitNexus ignore — exclude non-code directories that bloat the index
+# SAGE has 45k files but only ~5k are actual source code
+# This prevents OOM during analyze (node SIGABRT at 8GB heap)
+
+# Python venv with 20k+ files (PyTorch headers, site-packages)
+training/arc_training_env/
+
+# Training data and datasets (JSON patterns, not code)
+dataset/
+archive/
+data/
+
+# Model weights and checkpoints
+checkpoints/
+models/
+model-zoo/
+
+# Session logs (JSON data, not code)
+sage/instances/*/sessions/
+sage/instances/*/snapshots/archive/
+sage/instances/*/backups/
+sage/raising/sessions/
+sage/raising/tracks/*/sessions/
+
+# Hardbound bundles (binary attestation data)
+.hardbound/bundles/
+
+# Test/demo output logs
+test_logs*/
+demo_logs*/
+comparison_results/
+validation_package/
+benchmarks/
+
+# Related work (third-party reference code)
+related-work/
+
+# Kaggle submission packages
+kaggle_submission_package*/
+
+# Binary and media files
+images/
+assets/
+*.db
+*.db-shm
+*.db-wal
+*.npy
+*.npz
+*.png
+*.jpg
+*.gif

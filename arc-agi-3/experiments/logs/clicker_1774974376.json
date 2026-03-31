@@ -1,0 +1,81 @@
+{
+  "results": [
+    {
+      "game_id": "r11l-aa269680",
+      "steps": 500,
+      "levels_completed": 0,
+      "win_levels": 0,
+      "state": "GAME_OVER",
+      "level_events": [
+        {
+          "step": 16,
+          "levels_before": 0,
+          "levels_after": 1,
+          "action_window": [
+            "CLICK(15,0) color=0",
+            "CLICK(43,0) color=0",
+            "CLICK(59,52) color=2",
+            "CLICK(9,60) color=2",
+            "CLICK(39,3) color=6",
+            "CLICK(60,0) color=0",
+            "CLICK(23,37) color=15",
+            "CLICK(19,37) color=15",
+            "CLICK(22,42) color=15",
+            "CLICK(35,7) color=3",
+            "CLICK(35,9) color=1",
+            "CLICK(17,0) color=0",
+            "CLICK(19,21) color=6",
+            "CLICK(63,57) color=2",
+            "CLICK(19,26) color=1"
+          ]
+        }
+      ],
+      "total_levels_gained": 0,
+      "total_changes": 2559,
+      "effective_rate": 0.06,
+      "click_by_color": {
+        "0": {
+          "tries": 6,
+          "changes": 6,
+          "rate": 1.0
+        },
+        "1": {
+          "tries": 4,
+          "changes": 4,
+          "rate": 1.0
+        },
+        "2": {
+          "tries": 6,
+          "changes": 6,
+          "rate": 1.0
+        },
+        "3": {
+          "tries": 3,
+          "changes": 3,
+          "rate": 1.0
+        },
+        "6": {
+          "tries": 2,
+          "changes": 2,
+          "rate": 1.0
+        },
+        "10": {
+          "tries": 2,
+          "changes": 2,
+          "rate": 1.0
+        },
+        "12": {
+          "tries": 1,
+          "changes": 1,
+          "rate": 1.0
+        },
+        "15": {
+          "tries": 6,
+          "changes": 6,
+          "rate": 1.0
+        }
+      }
+    }
+  ],
+  "total_levels": 0
+}

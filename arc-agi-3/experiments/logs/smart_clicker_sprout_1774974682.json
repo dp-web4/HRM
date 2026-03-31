@@ -1,0 +1,912 @@
+{
+  "machine": "sprout",
+  "model": "qwen3.5:0.8b",
+  "total_levels": 1,
+  "games_scored": 1,
+  "elapsed_s": 76.3,
+  "results": [
+    {
+      "game_id": "tr87-cd924810",
+      "steps": 128,
+      "levels_completed": 0,
+      "win_levels": 6,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {},
+      "effective_colors": [],
+      "ineffective_colors": []
+    },
+    {
+      "game_id": "sk48-41055498",
+      "steps": 5000,
+      "levels_completed": 0,
+      "win_levels": 8,
+      "state": "NOT_FINISHED",
+      "level_events": [],
+      "click_by_color": {
+        "0": {
+          "tries": 3,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "1": {
+          "tries": 979,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "2": {
+          "tries": 12,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "3": {
+          "tries": 6,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "4": {
+          "tries": 167,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "6": {
+          "tries": 4,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "8": {
+          "tries": 1913,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "9": {
+          "tries": 4,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "14": {
+          "tries": 1912,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        }
+      },
+      "effective_colors": [],
+      "ineffective_colors": [
+        0,
+        2,
+        3,
+        4,
+        6,
+        9
+      ]
+    },
+    {
+      "game_id": "lf52-271a04aa",
+      "steps": 90,
+      "levels_completed": 0,
+      "win_levels": 10,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {
+        "0": {
+          "tries": 34,
+          "changes": 34,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "1": {
+          "tries": 33,
+          "changes": 33,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "2": {
+          "tries": 2,
+          "changes": 2,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "5": {
+          "tries": 12,
+          "changes": 12,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "9": {
+          "tries": 5,
+          "changes": 5,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "14": {
+          "tries": 3,
+          "changes": 3,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "15": {
+          "tries": 1,
+          "changes": 1,
+          "rate": 1.0,
+          "level_ups": 0
+        }
+      },
+      "effective_colors": [],
+      "ineffective_colors": []
+    },
+    {
+      "game_id": "lp85-305b61c3",
+      "steps": 65,
+      "levels_completed": 1,
+      "win_levels": 8,
+      "state": "GAME_OVER",
+      "level_events": [
+        {
+          "step": 4,
+          "level": 1,
+          "win_levels": 8,
+          "color": 8
+        }
+      ],
+      "click_by_color": {
+        "8": {
+          "tries": 65,
+          "changes": 65,
+          "rate": 1.0,
+          "level_ups": 1
+        }
+      },
+      "effective_colors": [
+        8
+      ],
+      "ineffective_colors": [
+        1,
+        2,
+        3,
+        5,
+        9,
+        10,
+        11,
+        15
+      ]
+    },
+    {
+      "game_id": "sp80-0ee2d095",
+      "steps": 30,
+      "levels_completed": 0,
+      "win_levels": 6,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {
+        "0": {
+          "tries": 1,
+          "changes": 1,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "1": {
+          "tries": 8,
+          "changes": 8,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "6": {
+          "tries": 2,
+          "changes": 2,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "9": {
+          "tries": 4,
+          "changes": 4,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "11": {
+          "tries": 13,
+          "changes": 13,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "14": {
+          "tries": 2,
+          "changes": 2,
+          "rate": 1.0,
+          "level_ups": 0
+        }
+      },
+      "effective_colors": [],
+      "ineffective_colors": []
+    },
+    {
+      "game_id": "m0r0-dadda488",
+      "steps": 151,
+      "levels_completed": 0,
+      "win_levels": 6,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {
+        "0": {
+          "tries": 4,
+          "changes": 1,
+          "rate": 0.25,
+          "level_ups": 0
+        },
+        "10": {
+          "tries": 2,
+          "changes": 1,
+          "rate": 0.5,
+          "level_ups": 0
+        },
+        "11": {
+          "tries": 77,
+          "changes": 33,
+          "rate": 0.429,
+          "level_ups": 0
+        },
+        "12": {
+          "tries": 68,
+          "changes": 29,
+          "rate": 0.426,
+          "level_ups": 0
+        }
+      },
+      "effective_colors": [],
+      "ineffective_colors": []
+    },
+    {
+      "game_id": "g50t-5849a774",
+      "steps": 130,
+      "levels_completed": 0,
+      "win_levels": 7,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {},
+      "effective_colors": [],
+      "ineffective_colors": []
+    },
+    {
+      "game_id": "ka59-9f096b4a",
+      "steps": 100,
+      "levels_completed": 0,
+      "win_levels": 7,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {
+        "0": {
+          "tries": 3,
+          "changes": 1,
+          "rate": 0.333,
+          "level_ups": 0
+        },
+        "1": {
+          "tries": 76,
+          "changes": 49,
+          "rate": 0.645,
+          "level_ups": 0
+        },
+        "4": {
+          "tries": 8,
+          "changes": 6,
+          "rate": 0.75,
+          "level_ups": 0
+        },
+        "15": {
+          "tries": 13,
+          "changes": 8,
+          "rate": 0.615,
+          "level_ups": 0
+        }
+      },
+      "effective_colors": [],
+      "ineffective_colors": []
+    },
+    {
+      "game_id": "cn04-65d47d14",
+      "steps": 150,
+      "levels_completed": 0,
+      "win_levels": 5,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {
+        "8": {
+          "tries": 36,
+          "changes": 36,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "12": {
+          "tries": 57,
+          "changes": 57,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "14": {
+          "tries": 57,
+          "changes": 56,
+          "rate": 0.982,
+          "level_ups": 0
+        }
+      },
+      "effective_colors": [
+        8,
+        12,
+        14
+      ],
+      "ineffective_colors": []
+    },
+    {
+      "game_id": "sb26-7fbdac44",
+      "steps": 5000,
+      "levels_completed": 0,
+      "win_levels": 8,
+      "state": "NOT_FINISHED",
+      "level_events": [],
+      "click_by_color": {
+        "0": {
+          "tries": 13,
+          "changes": 4,
+          "rate": 0.308,
+          "level_ups": 0
+        },
+        "2": {
+          "tries": 24,
+          "changes": 3,
+          "rate": 0.125,
+          "level_ups": 0
+        },
+        "3": {
+          "tries": 1,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "5": {
+          "tries": 72,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "8": {
+          "tries": 26,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "9": {
+          "tries": 4814,
+          "changes": 2147,
+          "rate": 0.446,
+          "level_ups": 0
+        },
+        "11": {
+          "tries": 16,
+          "changes": 2,
+          "rate": 0.125,
+          "level_ups": 0
+        },
+        "14": {
+          "tries": 18,
+          "changes": 6,
+          "rate": 0.333,
+          "level_ups": 0
+        },
+        "15": {
+          "tries": 16,
+          "changes": 6,
+          "rate": 0.375,
+          "level_ups": 0
+        }
+      },
+      "effective_colors": [
+        9
+      ],
+      "ineffective_colors": [
+        5,
+        8
+      ]
+    },
+    {
+      "game_id": "sc25-f9b21a2f",
+      "steps": 64,
+      "levels_completed": 0,
+      "win_levels": 6,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {
+        "3": {
+          "tries": 64,
+          "changes": 51,
+          "rate": 0.797,
+          "level_ups": 0
+        }
+      },
+      "effective_colors": [
+        3
+      ],
+      "ineffective_colors": [
+        9,
+        10,
+        15
+      ]
+    },
+    {
+      "game_id": "r11l-aa269680",
+      "steps": 60,
+      "levels_completed": 0,
+      "win_levels": 6,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {
+        "0": {
+          "tries": 2,
+          "changes": 2,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "1": {
+          "tries": 2,
+          "changes": 2,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "2": {
+          "tries": 56,
+          "changes": 56,
+          "rate": 1.0,
+          "level_ups": 0
+        }
+      },
+      "effective_colors": [],
+      "ineffective_colors": []
+    },
+    {
+      "game_id": "re86-4e57566e",
+      "steps": 100,
+      "levels_completed": 0,
+      "win_levels": 8,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {},
+      "effective_colors": [],
+      "ineffective_colors": []
+    },
+    {
+      "game_id": "dc22-4c9bff3e",
+      "steps": 121,
+      "levels_completed": 0,
+      "win_levels": 6,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {
+        "0": {
+          "tries": 2,
+          "changes": 1,
+          "rate": 0.5,
+          "level_ups": 0
+        },
+        "2": {
+          "tries": 6,
+          "changes": 2,
+          "rate": 0.333,
+          "level_ups": 0
+        },
+        "3": {
+          "tries": 40,
+          "changes": 22,
+          "rate": 0.55,
+          "level_ups": 0
+        },
+        "4": {
+          "tries": 41,
+          "changes": 21,
+          "rate": 0.512,
+          "level_ups": 0
+        },
+        "5": {
+          "tries": 24,
+          "changes": 11,
+          "rate": 0.458,
+          "level_ups": 0
+        },
+        "8": {
+          "tries": 5,
+          "changes": 4,
+          "rate": 0.8,
+          "level_ups": 0
+        },
+        "9": {
+          "tries": 3,
+          "changes": 3,
+          "rate": 1.0,
+          "level_ups": 0
+        }
+      },
+      "effective_colors": [],
+      "ineffective_colors": []
+    },
+    {
+      "game_id": "ar25-e3c63847",
+      "steps": 5000,
+      "levels_completed": 0,
+      "win_levels": 8,
+      "state": "NOT_FINISHED",
+      "level_events": [],
+      "click_by_color": {
+        "0": {
+          "tries": 4802,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "4": {
+          "tries": 16,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "5": {
+          "tries": 41,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "10": {
+          "tries": 87,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "11": {
+          "tries": 54,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        }
+      },
+      "effective_colors": [],
+      "ineffective_colors": [
+        4,
+        5,
+        10,
+        11
+      ]
+    },
+    {
+      "game_id": "tn36-ab4f63cc",
+      "steps": 61,
+      "levels_completed": 0,
+      "win_levels": 7,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {
+        "0": {
+          "tries": 19,
+          "changes": 19,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "1": {
+          "tries": 1,
+          "changes": 1,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "3": {
+          "tries": 3,
+          "changes": 3,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "4": {
+          "tries": 28,
+          "changes": 28,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "9": {
+          "tries": 7,
+          "changes": 7,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "11": {
+          "tries": 3,
+          "changes": 3,
+          "rate": 1.0,
+          "level_ups": 0
+        }
+      },
+      "effective_colors": [],
+      "ineffective_colors": []
+    },
+    {
+      "game_id": "ls20-9607627b",
+      "steps": 130,
+      "levels_completed": 0,
+      "win_levels": 7,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {},
+      "effective_colors": [],
+      "ineffective_colors": []
+    },
+    {
+      "game_id": "tu93-2b534c15",
+      "steps": 50,
+      "levels_completed": 0,
+      "win_levels": 9,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {},
+      "effective_colors": [],
+      "ineffective_colors": []
+    },
+    {
+      "game_id": "cd82-fb555c5d",
+      "steps": 100,
+      "levels_completed": 0,
+      "win_levels": 6,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {
+        "0": {
+          "tries": 25,
+          "changes": 20,
+          "rate": 0.8,
+          "level_ups": 0
+        },
+        "2": {
+          "tries": 4,
+          "changes": 3,
+          "rate": 0.75,
+          "level_ups": 0
+        },
+        "3": {
+          "tries": 38,
+          "changes": 21,
+          "rate": 0.553,
+          "level_ups": 0
+        },
+        "4": {
+          "tries": 12,
+          "changes": 7,
+          "rate": 0.583,
+          "level_ups": 0
+        },
+        "15": {
+          "tries": 21,
+          "changes": 13,
+          "rate": 0.619,
+          "level_ups": 0
+        }
+      },
+      "effective_colors": [],
+      "ineffective_colors": []
+    },
+    {
+      "game_id": "vc33-9851e02b",
+      "steps": 50,
+      "levels_completed": 0,
+      "win_levels": 7,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {
+        "0": {
+          "tries": 44,
+          "changes": 44,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "5": {
+          "tries": 3,
+          "changes": 3,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "7": {
+          "tries": 2,
+          "changes": 2,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "11": {
+          "tries": 1,
+          "changes": 1,
+          "rate": 1.0,
+          "level_ups": 0
+        }
+      },
+      "effective_colors": [],
+      "ineffective_colors": []
+    },
+    {
+      "game_id": "su15-4c352900",
+      "steps": 32,
+      "levels_completed": 0,
+      "win_levels": 9,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {
+        "9": {
+          "tries": 32,
+          "changes": 32,
+          "rate": 1.0,
+          "level_ups": 0
+        }
+      },
+      "effective_colors": [
+        3,
+        9
+      ],
+      "ineffective_colors": [
+        0,
+        4
+      ]
+    },
+    {
+      "game_id": "bp35-0a0ad940",
+      "steps": 64,
+      "levels_completed": 0,
+      "win_levels": 9,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {
+        "3": {
+          "tries": 5,
+          "changes": 5,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "5": {
+          "tries": 45,
+          "changes": 45,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "10": {
+          "tries": 12,
+          "changes": 12,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "14": {
+          "tries": 1,
+          "changes": 1,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "15": {
+          "tries": 1,
+          "changes": 1,
+          "rate": 1.0,
+          "level_ups": 0
+        }
+      },
+      "effective_colors": [],
+      "ineffective_colors": []
+    },
+    {
+      "game_id": "s5i5-a48e4b1d",
+      "steps": 50,
+      "levels_completed": 0,
+      "win_levels": 8,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {
+        "2": {
+          "tries": 10,
+          "changes": 10,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "3": {
+          "tries": 7,
+          "changes": 7,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "4": {
+          "tries": 22,
+          "changes": 22,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "11": {
+          "tries": 4,
+          "changes": 4,
+          "rate": 1.0,
+          "level_ups": 0
+        },
+        "14": {
+          "tries": 7,
+          "changes": 7,
+          "rate": 1.0,
+          "level_ups": 0
+        }
+      },
+      "effective_colors": [],
+      "ineffective_colors": []
+    },
+    {
+      "game_id": "ft09-0d8bbf25",
+      "steps": 222,
+      "levels_completed": 0,
+      "win_levels": 6,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {
+        "0": {
+          "tries": 3,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "2": {
+          "tries": 12,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "4": {
+          "tries": 48,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "8": {
+          "tries": 80,
+          "changes": 14,
+          "rate": 0.175,
+          "level_ups": 0
+        },
+        "9": {
+          "tries": 72,
+          "changes": 18,
+          "rate": 0.25,
+          "level_ups": 0
+        },
+        "11": {
+          "tries": 3,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        },
+        "12": {
+          "tries": 4,
+          "changes": 0,
+          "rate": 0.0,
+          "level_ups": 0
+        }
+      },
+      "effective_colors": [],
+      "ineffective_colors": [
+        0,
+        2,
+        4,
+        11,
+        12
+      ]
+    },
+    {
+      "game_id": "wa30-ee6fef47",
+      "steps": 200,
+      "levels_completed": 0,
+      "win_levels": 9,
+      "state": "GAME_OVER",
+      "level_events": [],
+      "click_by_color": {},
+      "effective_colors": [],
+      "ineffective_colors": []
+    }
+  ]
+}

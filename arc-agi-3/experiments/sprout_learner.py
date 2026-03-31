@@ -17,8 +17,7 @@ The learner builds up knowledge over multiple runs:
 - Grid structure patterns (borders, regions, buttons)
 - Per-game effective strategies
 
-This is the competition-viable approach. Game code analysis informs
-the CATEGORIES we look for, but the agent learns from observation.
+This is the competition-viable approach — pure observation learning.
 """
 import sys, os, time, json, random
 import warnings

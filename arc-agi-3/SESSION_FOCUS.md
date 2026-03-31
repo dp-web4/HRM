@@ -54,14 +54,22 @@ Report back in this file: does it run? How much memory? How fast per action?
 - Report memory usage: SDK + game environment + one model = how much headroom?
 - Test with Qwen 3.5 0.8B: can we get a prompt→action cycle in <1 second?
 
-**McNugget** (mid-range): ✅ SDK VERIFIED 2026-03-31
+**McNugget** (mid-range): ✅ SDK + GAME RUNNER OPERATIONAL 2026-03-31
 - ~~Install ARC-AGI-3 SDK~~ DONE — arc-agi 0.9.6 + arcengine 0.9.3
 - ~~Run random agent~~ DONE — local execution works, anonymous API key auto-generated
-- Performance: 5,910 steps/sec (0.2ms/step), 101 MB RSS, 64x64 single-channel grids
-- 25 environments available, 7 levels each, 7 actions (not 5 — up to ACTION7)
-- Games download locally as Python files, no persistent server needed
-- Next: test GridVisionIRP.push_raw_frame() with live game frames
-- Next: measure Gemma 3 12B prompt→action cycle time via Ollama
+- ~~GridVisionIRP~~ DONE — frame diff, change detection, multi-frame SDK handling
+- ~~GameActionEffector~~ DONE — action dispatch, efficiency tracking
+- ~~Full game runner~~ DONE — v2 with sequence planning + reflection cycles
+- **Performance (fast mode): 1.9s/step, 4.5s/sequence** (Gemma 3 12B via Ollama)
+- **Performance (verbose): 16s/step** (full reasoning with grid crops)
+- SDK: 5,910 steps/sec (0.2ms/step), 101 MB RSS — game engine is NOT the bottleneck
+- Tested on: tu93, dc22, sc25, wa30, ls20
+- **Key finding**: LLM discovers real game rules through pure exploration
+  - sc25: Found UP→UP→UP→ACTION6 changes color 14→0 in specific columns
+  - wa30: Identified SELECT as "primary driver of change"
+  - ls20: Discovered UP changes colors (11→3), column range depends on position
+- **Gap**: 0 levels completed across all games. Needs goal detection.
+- Next: lighter model test (can 0.8B or 4B complete levels faster?)
 
 **CBP** (coordinator):
 - ~~Design the IRP adapter interface~~ DONE

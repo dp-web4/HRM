@@ -1,0 +1,77 @@
+{
+  "game_id": "tu93-2b534c15",
+  "model": "qwen3.5:0.8b",
+  "machine": "sprout",
+  "total_steps": 50,
+  "sequences": 20,
+  "levels_completed": 0,
+  "win_levels": 9,
+  "state": "GAME_OVER",
+  "elapsed_s": 299.8,
+  "s_per_step": 6.0,
+  "s_per_seq": 15.0,
+  "hypothesis": "",
+  "winning_sequences": [],
+  "sequence_log": [
+    {
+      "a": [
+        "LF",
+        "RT",
+        "UP"
+      ],
+      "chg": 58,
+      "lvl": 0,
+      "d": "20chg r28-63 c20-29 [0, 4, 6, 9]->[0, 4, 9]"
+    },
+    {
+      "a": [
+        "DN",
+        "UP",
+        "RT"
+      ],
+      "chg": 58,
+      "lvl": 0,
+      "d": "20chg r22-63 c15-29 [0, 4, 6, 9]->[0, 4, 9]"
+    },
+    {
+      "a": [
+        "UP",
+        "DN",
+        "LF"
+      ],
+      "chg": 22,
+      "lvl": 0,
+      "d": "19chg r22-63 c12-35 [0, 4, 6, 9]->[0, 4, 9]"
+    },
+    {
+      "a": [
+        "DN",
+        "RT",
+        "UP"
+      ],
+      "chg": 40,
+      "lvl": 0,
+      "d": "20chg r28-63 c6-35 [0, 4, 6, 9]->[0, 4, 9]"
+    },
+    {
+      "a": [
+        "UP",
+        "DN",
+        "LF"
+      ],
+      "chg": 39,
+      "lvl": 0,
+      "d": "19chg r22-63 c5-35 [0, 4, 6, 9]->[0, 4, 9]"
+    },
+    {
+      "a": [
+        "UP",
+        "DN",
+        "LF"
+      ],
+      "chg": 39,
+      "lvl": 0,
+      "d": "20chg r22-63 c1-35 [0, 4, 6, 9]->[0, 4, 9]"
+    }
+  ]
+}

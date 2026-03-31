@@ -1,0 +1,74 @@
+{
+  "game_id": "wa30-ee6fef47",
+  "model": "qwen3.5:0.8b",
+  "machine": "sprout",
+  "total_steps": 25,
+  "sequences": 10,
+  "levels_completed": 0,
+  "win_levels": 9,
+  "state": "NOT_FINISHED",
+  "elapsed_s": 139.7,
+  "s_per_step": 5.6,
+  "s_per_seq": 14.0,
+  "hypothesis": "",
+  "winning_sequences": [],
+  "sequence_log": [
+    {
+      "a": [
+        "UP"
+      ],
+      "chg": 33,
+      "lvl": 0,
+      "d": "33chg r40-63 c36-60 [0, 1, 7, 14]->[0, 1, 4, 14]"
+    },
+    {
+      "a": [
+        "UP",
+        "UP"
+      ],
+      "chg": 64,
+      "lvl": 0,
+      "d": "32chg r36-43 c36-39 [0, 1, 14]->[0, 1, 14]"
+    },
+    {
+      "a": [
+        "UP",
+        "SEL",
+        "DN"
+      ],
+      "chg": 65,
+      "lvl": 0,
+      "d": "32chg r28-35 c36-39 [0, 2, 9, 14]->[0, 1, 14]"
+    },
+    {
+      "a": [
+        "LF",
+        "DN",
+        "RT"
+      ],
+      "chg": 95,
+      "lvl": 0,
+      "d": "44chg r32-39 c32-39 [0, 1, 3, 14]->[0, 1, 4, 14]"
+    },
+    {
+      "a": [
+        "UP",
+        "LF",
+        "SEL"
+      ],
+      "chg": 65,
+      "lvl": 0,
+      "d": "33chg r28-63 c32-57 [0, 2, 7, 9, 14]->[0, 2, 4, 9, 14]"
+    },
+    {
+      "a": [
+        "UP",
+        "DN",
+        "RT"
+      ],
+      "chg": 97,
+      "lvl": 0,
+      "d": "33chg r24-63 c32-56 [0, 2, 7, 9, 14]->[0, 1, 4, 14]"
+    }
+  ]
+}

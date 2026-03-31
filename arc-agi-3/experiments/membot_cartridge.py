@@ -16,8 +16,12 @@ import requests
 import time
 import json
 import os
+import base64
+import io
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
+import numpy as np
+from PIL import Image
 
 MEMBOT_URL = "http://localhost:8000"
 CARTRIDGE_DIR = Path("arc-agi-3/experiments/cartridges")
@@ -250,6 +254,181 @@ class MembotCartridge:
         self.data["total_attempts"] += 1
         self.write()
 
+    # ==================== VISION MEMORY METHODS ====================
+
+    def _frame_to_base64(self, frame: np.ndarray) -> str:
+        """Convert numpy frame to base64 PNG string.
+
+        Args:
+            frame: (H, W) numpy array with values 0-15 (ARC colors)
+
+        Returns:
+            Base64-encoded PNG string
+        """
+        # Convert to PIL Image (need to convert to RGB for PNG)
+        # ARC colors are 0-15, scale to 0-255 for visibility
+        frame_scaled = (frame * 16).astype(np.uint8)
+        img = Image.fromarray(frame_scaled, mode='L')  # Grayscale
+
+        # Convert to PNG bytes
+        buffer = io.BytesIO()
+        img.save(buffer, format='PNG')
+        buffer.seek(0)
+
+        # Encode as base64
+        return base64.b64encode(buffer.read()).decode('utf-8')
+
+    def _base64_to_frame(self, b64_str: str) -> np.ndarray:
+        """Convert base64 PNG string back to numpy frame.
+
+        Args:
+            b64_str: Base64-encoded PNG string
+
+        Returns:
+            (H, W) numpy array with values 0-15
+        """
+        # Decode base64
+        img_bytes = base64.b64decode(b64_str)
+        buffer = io.BytesIO(img_bytes)
+
+        # Load as PIL Image
+        img = Image.open(buffer)
+        frame_scaled = np.array(img)
+
+        # Scale back from 0-255 to 0-15
+        return (frame_scaled // 16).astype(np.uint8)
+
+    def store_frame_snapshot(self, label: str, frame: np.ndarray, metadata: dict = None):
+        """Store a frame snapshot in visual memory.
+
+        Args:
+            label: Unique identifier (e.g., "level_1_initial", "level_1_goal_state")
+            frame: (H, W) numpy array with values 0-15
+            metadata: Optional metadata dict (level, step, description, etc.)
+        """
+        if self.data is None:
+            self.data = self._empty_cartridge()
+
+        # Ensure visual_memory exists (for backward compatibility)
+        if "visual_memory" not in self.data:
+            self.data["visual_memory"] = {
+                "snapshots": {},
+                "action_outcomes": []
+            }
+
+        frame_b64 = self._frame_to_base64(frame)
+
+        self.data["visual_memory"]["snapshots"][label] = {
+            "frame_b64": frame_b64,
+            "metadata": metadata or {},
+            "timestamp": time.time()
+        }
+
+        self.write()
+
+    def get_frame_snapshot(self, label: str) -> Optional[np.ndarray]:
+        """Retrieve a frame snapshot from visual memory.
+
+        Args:
+            label: Snapshot identifier
+
+        Returns:
+            (H, W) numpy array or None if not found
+        """
+        if self.data is None:
+            return None
+
+        snapshot = self.data["visual_memory"]["snapshots"].get(label)
+        if not snapshot:
+            return None
+
+        return self._base64_to_frame(snapshot["frame_b64"])
+
+    def store_action_visual_outcome(self, action: int, before_frame: np.ndarray,
+                                    after_frame: np.ndarray, level: int, step: int):
+        """Store visual before/after of an action for learning.
+
+        Args:
+            action: Action number (1-6 for ARC-AGI)
+            before_frame: Frame before action
+            after_frame: Frame after action
+            level: Current level
+            step: Current step number
+        """
+        if self.data is None:
+            self.data = self._empty_cartridge()
+
+        # Ensure visual_memory exists (for backward compatibility)
+        if "visual_memory" not in self.data:
+            self.data["visual_memory"] = {
+                "snapshots": {},
+                "action_outcomes": []
+            }
+
+        outcome = {
+            "action": action,
+            "before_b64": self._frame_to_base64(before_frame),
+            "after_b64": self._frame_to_base64(after_frame),
+            "level": level,
+            "step": step,
+            "timestamp": time.time()
+        }
+
+        self.data["visual_memory"]["action_outcomes"].append(outcome)
+
+        # Keep only last 50 action outcomes
+        if len(self.data["visual_memory"]["action_outcomes"]) > 50:
+            self.data["visual_memory"]["action_outcomes"] = \
+                self.data["visual_memory"]["action_outcomes"][-50:]
+
+        self.write()
+
+    def compute_visual_similarity(self, frame_a: np.ndarray, frame_b: np.ndarray) -> float:
+        """Compute visual similarity between two frames.
+
+        Args:
+            frame_a: First frame
+            frame_b: Second frame
+
+        Returns:
+            Similarity score [0, 1] where 1 = identical
+        """
+        if frame_a.shape != frame_b.shape:
+            return 0.0
+
+        # Simple pixel-wise similarity
+        total_cells = frame_a.size
+        matching_cells = np.sum(frame_a == frame_b)
+        return matching_cells / total_cells
+
+    def find_similar_snapshots(self, target_frame: np.ndarray,
+                               threshold: float = 0.8) -> List[Tuple[str, float]]:
+        """Find snapshots visually similar to target frame.
+
+        Args:
+            target_frame: Frame to compare against
+            threshold: Minimum similarity score (0-1)
+
+        Returns:
+            List of (label, similarity_score) tuples, sorted by similarity
+        """
+        if self.data is None:
+            return []
+
+        results = []
+        for label, snapshot in self.data["visual_memory"]["snapshots"].items():
+            stored_frame = self._base64_to_frame(snapshot["frame_b64"])
+            similarity = self.compute_visual_similarity(target_frame, stored_frame)
+
+            if similarity >= threshold:
+                results.append((label, similarity))
+
+        # Sort by similarity (highest first)
+        results.sort(key=lambda x: x[1], reverse=True)
+        return results
+
+    # ==================== END VISION METHODS ====================
+
     def _empty_cartridge(self) -> dict:
         """Create empty cartridge structure."""
         return {
@@ -261,6 +440,10 @@ class MembotCartridge:
                 "state_dependent": {}
             },
             "strategic_insights": [],
+            "visual_memory": {
+                "snapshots": {},  # label → {frame_b64, metadata, timestamp}
+                "action_outcomes": []  # {action, before_b64, after_b64, level, step}
+            },
             "total_attempts": 0,
             "best_score": {"levels": 0, "steps": 0},
             "created": time.time(),

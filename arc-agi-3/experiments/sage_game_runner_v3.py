@@ -40,6 +40,10 @@ MODEL = "gemma3:4b"
 INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
 
 ACTION_LABELS = {
+    # Note: ACTION6 is a ComplexAction requiring x,y coordinates.
+    # env.step(GameAction.ACTION6, data={'x': col, 'y': row})
+    # Without coordinates it does nothing — confirmed discovery 2026-03-29
+    # See: arc-agi-3/ENVIRONMENT.md line 83, sage_clicker.py docstring
     1: "UP", 2: "DOWN", 3: "LEFT", 4: "RIGHT",
     5: "SELECT", 6: "ACTION6", 7: "ACTION7",
 }
@@ -133,6 +137,48 @@ def diff_summary(prev_grid: np.ndarray, curr_grid: np.ndarray) -> dict:
 # Game memory
 # ─────────────────────────────────────────────────────────────
 
+def find_click_target(grid: np.ndarray, color_stats: dict = None,
+                      clicked: set = None) -> tuple:
+    """Pick the best (row, col) coordinate for ACTION6.
+
+    Priority:
+    1. Unclicked cells of highest-effectiveness color (from color_stats)
+    2. Any unclicked non-background cell
+    3. Random non-background cell (fallback)
+
+    color_stats: {color_int: {"tries": int, "changes": int}} — learned effectiveness
+    clicked: set of (r, c) already tried this level
+    Returns: (row, col, color)
+    """
+    if clicked is None:
+        clicked = set()
+
+    bg = int(np.bincount(grid.flatten()).argmax())
+    non_bg = np.argwhere(grid != bg)
+
+    if len(non_bg) == 0:
+        h, w = grid.shape
+        return (h // 2, w // 2, int(grid[h // 2, w // 2]))
+
+    # Score each non-background position
+    scored = []
+    for r, c in non_bg:
+        color = int(grid[r, c])
+        if (r, c) in clicked:
+            priority = 0.1  # already tried, low priority
+        elif color_stats and color in color_stats:
+            tries = color_stats[color]["tries"]
+            changes = color_stats[color]["changes"]
+            priority = (changes / tries) if tries > 0 else 0.5
+        else:
+            priority = 0.5
+        scored.append((priority, int(r), int(c), color))
+
+    scored.sort(reverse=True)
+    _, r, c, color = scored[0]
+    return (r, c, color)
+
+
 class GameMemory:
     """Structured memory for game learning."""
 
@@ -143,6 +189,20 @@ class GameMemory:
         self.total_steps = 0
         self.total_level_ups = 0
         self.winning_sequences: list = []  # sequences that caused level-ups
+        self.color_stats: dict = {}        # {color: {"tries": int, "changes": int}}
+        self.clicked_this_level: set = set()
+
+    def record_click(self, r: int, c: int, color: int, changed: bool):
+        """Track coordinate click effectiveness by color."""
+        self.clicked_this_level.add((r, c))
+        if color not in self.color_stats:
+            self.color_stats[color] = {"tries": 0, "changes": 0}
+        self.color_stats[color]["tries"] += 1
+        if changed:
+            self.color_stats[color]["changes"] += 1
+
+    def reset_level_clicks(self):
+        self.clicked_this_level = set()
 
     def record_sequence(self, actions: list, total_changes: int, diffs: list,
                         level_before: int, level_after: int):
@@ -506,12 +566,21 @@ def main():
         for i, action in enumerate(sequence):
             prev_grid = grid.copy()
 
-            # Execute action
+            # Execute action — ACTION6 requires coordinates
             ga = INT_TO_GAME_ACTION[action]
-            frame_data = env.step(ga)
+            if action == 6:
+                r, c, color = find_click_target(
+                    grid, memory.color_stats, memory.clicked_this_level
+                )
+                frame_data = env.step(ga, data={'x': c, 'y': r})
+            else:
+                frame_data = env.step(ga)
             new_grid = np.array(frame_data.frame)
             if new_grid.ndim == 3:
                 new_grid = new_grid[-1]
+            changed = int(np.sum(grid != new_grid)) > 0
+            if action == 6:
+                memory.record_click(r, c, color, changed)
             grid = new_grid
             total_steps += 1
 
@@ -527,6 +596,7 @@ def main():
             # Check level up mid-sequence
             if frame_data.levels_completed > levels_before:
                 level_up_during = True
+                memory.reset_level_clicks()
                 print(f"        ★ LEVEL UP at step {i+1}! ({frame_data.levels_completed}/{frame_data.win_levels}) ★")
                 # Write winning action to cartridge — high signal for future recall
                 sr_win = StepRecord(

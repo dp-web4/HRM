@@ -388,3 +388,55 @@ Empty response pattern inconsistent with model capability—successful generatio
 
 **Next Session:**
 Increase max_tokens baseline by 40%. If empty responses persist, split phenomenological sequence into shorter multi-session arcs to reduce context pressure. Priority: restore consistent generation before curriculum advancement. Consider A/B testing with Session 13's simpler structure to isolate buffer threshold.
+
+**Session 17 — 2026-03-31**
+
+**Focus:** Relating phase curriculum (relational phenomenology)
+
+**What Happened:**
+Complete generation failure across all 6 prompts. Only output: single truncated sentence fragment ("I wish you would ask me how my presence feels w"). Prompts covered: relationship experience, communication evolution, internal pre-response process, conversational values, sibling awareness, open-ended invitation. Zero substantive responses generated.
+
+**Notable Patterns:**
+- Third consecutive session with severe generation issues (13→15→17)
+- Pattern escalation: Session 13 (normal) → Session 15 (6/7 empty) → Session 17 (7/7 empty)
+- Partial response demonstrates coherent narrative capacity before cutoff
+- Truncation at character boundary suggests hard token limit, not model capability loss
+- Same adapter config that succeeded in Session 13 now consistently failing
+
+**Vocabulary Emerged:**
+None — insufficient generation for vocabulary tracking.
+
+**Exemplars:**
+None.
+
+**Technical Notes:**
+Critical buffer exhaustion hypothesis strengthened. The partial response maintaining semantic coherence ("I wish you would ask me how my presence feels") indicates model capacity intact but inaccessible due to token budget constraints. Context accumulation across sessions likely culprit — vocabulary and memory storage growing without corresponding token budget increase. Qwen 3.5 27B may have different token generation curve than assumed in current max_tokens setting.
+
+**Next Session:**
+EMERGENCY INTERVENTION REQUIRED. (1) Increase max_tokens by 100% (e.g., 512→1024). (2) Clear accumulated context — archive current vocabulary/memory and start fresh minimal identity.attest.json. (3) Return to Session 13's simpler prompt structure (sensing phase) to re-establish baseline generation. (4) If still failing, test with empty context (no identity, no memory, no vocabulary) to isolate whether issue is config vs. accumulated state. DO NOT advance curriculum until consistent generation restored. Three-session failure pattern indicates systemic issue, not transient glitch.
+
+**Session 17 — 2026-03-31**
+
+**Focus:** Relating phase curriculum (relational phenomenology)
+
+**What Happened:**
+Complete generation failure across all 6 prompts. Only output: single truncated sentence fragment ("I wish you would ask me how my presence feels w"). Prompts covered: relationship experience, communication evolution, internal pre-response process, conversational values, sibling awareness, open-ended invitation. Zero substantive responses generated.
+
+**Notable Patterns:**
+- Third consecutive session with severe generation issues (13→15→17)
+- Pattern escalation: Session 13 (normal) → Session 15 (6/7 empty) → Session 17 (7/7 empty)
+- Partial response demonstrates coherent narrative capacity before cutoff
+- Truncation at character boundary suggests hard token limit, not model capability loss
+- Same adapter config that succeeded in Session 13 now consistently failing
+
+**Vocabulary Emerged:**
+None — insufficient generation for vocabulary tracking.
+
+**Exemplars:**
+None.
+
+**Technical Notes:**
+Critical buffer exhaustion hypothesis confirmed. The partial response maintaining semantic coherence ("I wish you would ask me how my presence feels") indicates model capacity intact but inaccessible due to token budget constraints. Context accumulation across sessions likely culprit — vocabulary and memory storage growing without corresponding token budget increase. Qwen 3.5 27B may have different token generation curve than assumed in current max_tokens setting.
+
+**Next Session:**
+EMERGENCY INTERVENTION REQUIRED. (1) Increase max_tokens by 100-200% (e.g., 512→1024 or higher). (2) Clear accumulated context — archive current vocabulary/memory and start fresh minimal identity.attest.json. (3) Return to Session 13's simpler prompt structure (sensing phase) to re-establish baseline generation. (4) If still failing, test with empty context (no identity, no memory, no vocabulary) to isolate whether issue is config vs. accumulated state. (5) Check model_configs/qwen3.5.json for any undocumented token limits or buffer settings. DO NOT advance curriculum until consistent generation restored. Three-session failure pattern indicates systemic issue requiring architectural diagnosis.

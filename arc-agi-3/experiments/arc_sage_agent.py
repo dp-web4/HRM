@@ -618,8 +618,8 @@ class SageAgent:
         self.effective_actions = []  # Actions that caused grid changes
         self.level_up_sequences = []  # Action sequences that preceded level-ups
 
-        # Spatial reasoning (McNugget contribution)
-        self.spatial_tracker = SpatialTracker() if HAS_SPATIAL else None
+        # Spatial reasoning — initialized per-game in play_game()
+        self.spatial_tracker = None
 
     def check_llm(self):
         """Check if Ollama is available for reasoning."""
@@ -907,10 +907,11 @@ class SageAgent:
             print(f"  Category: {category.get('category', '?')} — {category.get('hint', '')}")
 
         # SPATIAL TRACKING: Initialize object tracker
-        spatial_tracker = SpatialTracker(min_region_size=4)
-        spatial_diff = spatial_tracker.update(grid)
-        if self.verbose:
-            print(f"  Spatial: {spatial_diff['n_objects']} objects detected")
+        if HAS_SPATIAL:
+            self.spatial_tracker = SpatialTracker(min_region_size=4)
+            spatial_diff = self.spatial_tracker.update(grid)
+            if self.verbose:
+                print(f"  Spatial: {spatial_diff['n_objects']} objects detected")
 
         # ═══ PHASE 1: Fast Exploration ═══
         # Systematic probing — no LLM, pure observation
@@ -1140,7 +1141,7 @@ class SageAgent:
                     initial_grid=initial_grid,
                     exploration_summary=explore_ctx,
                     cycle_info=cycle_info,
-                    spatial_tracker=spatial_tracker,
+                    spatial_tracker=self.spatial_tracker,
                     goal_similarity=goal_similarity,
                 )
                 llm_response = sage_reason(prompt)
@@ -1244,9 +1245,9 @@ class SageAgent:
             f"Exploration: {explore_ctx[:200]}"
         )
         # Add spatial learnings if available
-        if spatial_tracker and spatial_tracker.click_history:
-            n_effective = sum(1 for c in spatial_tracker.click_history if c.get("changed"))
-            n_total = len(spatial_tracker.click_history)
+        if self.spatial_tracker and hasattr(self.spatial_tracker, 'click_history') and self.spatial_tracker.click_history:
+            n_effective = sum(1 for c in self.spatial_tracker.click_history if c.get("changed"))
+            n_total = len(self.spatial_tracker.click_history)
             learning += f" Clicks: {n_effective}/{n_total} effective."
         membot_store(learning)
 

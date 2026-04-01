@@ -500,47 +500,68 @@ def build_strategy_prompt(grid, available_actions, memories, level_info,
 
 # ─── Fallback heuristic (no LLM needed) ───
 
-def heuristic_action(grid, available_actions, category, step_count):
+def heuristic_action(grid, available_actions, category, step_count,
+                     effective_actions=None, color_effectiveness=None):
     """Fallback action when LLM is unavailable or response unparseable.
 
-    Uses perception-based heuristics.
+    Uses perception-based heuristics informed by exploration results.
     """
     bg = background_color(grid)
 
     if category.get("category") == "placement_puzzle" and 6 in available_actions:
-        # For placement puzzles: identify items and slots
+        # For placement puzzles: try compute_placement_actions first
+        placement = compute_placement_actions(grid)
+        if placement:
+            return placement
+
+        # Fallback: identify items and slots manually
         sections = detect_sections(grid)
         if len(sections) >= 3:
-            # Try clicking bottom section items then middle section slots
             bot = sections[-1]
-            mid = sections[len(sections) // 2]
-
             bot_regions = find_color_regions(grid, min_size=4)
             bot_items = [r for r in bot_regions
                         if bot["y_start"] <= r["cy"] <= bot["y_end"]
                         and r["color"] != bg]
-            mid_markers = find_markers(grid, 2, min_cluster=2)  # color 2 = red markers often = empty slots
+            mid_markers = find_markers(grid, 2, min_cluster=2)
 
             if bot_items and mid_markers:
-                # Click first bottom item, then first slot
-                item = bot_items[0]
-                slot = mid_markers[0]
+                item = bot_items[step_count % len(bot_items)]
+                slot = mid_markers[step_count % len(mid_markers)]
                 return [
                     (6, {'x': item["cx"], 'y': item["cy"]}),
                     (6, {'x': slot["x"], 'y': slot["y"]}),
                 ]
 
     if 6 in available_actions:
+        # Prefer clicking effective colors (from exploration)
+        if color_effectiveness:
+            effective_colors = [c for c, s in color_effectiveness.items()
+                                if s["changes"] > 0]
+            if effective_colors:
+                target_color_name = effective_colors[step_count % len(effective_colors)]
+                # Find that color's position
+                regions = find_color_regions(grid, min_size=4)
+                matching = [r for r in regions if r["color_name"] == target_color_name]
+                if matching:
+                    r = matching[step_count % len(matching)]
+                    return [(6, {'x': r["cx"], 'y': r["cy"]})]
+
         # Default: click a non-background pixel
         non_bg = np.argwhere(grid.astype(int) != bg)
         if len(non_bg) > 0:
-            idx = step_count % len(non_bg)  # cycle through positions
+            idx = step_count % len(non_bg)
             r, c = int(non_bg[idx, 0]), int(non_bg[idx, 1])
             return [(6, {'x': c, 'y': r})]
 
-    # Movement fallback: cycle through directions
+    # Movement: prefer directions that caused changes during exploration
     moves = [a for a in available_actions if a in [1, 2, 3, 4]]
     if moves:
+        if effective_actions:
+            # Prefer directions that were effective
+            effective_dirs = [ea["action"] for ea in effective_actions
+                              if ea["action"] in moves]
+            if effective_dirs:
+                return [(effective_dirs[step_count % len(effective_dirs)], None)]
         return [(moves[step_count % len(moves)], None)]
 
     return []
@@ -1062,7 +1083,10 @@ class SageAgent:
 
             # Fallback to heuristic if no LLM actions
             if not actions_to_take:
-                actions_to_take = heuristic_action(grid, available, category, step)
+                actions_to_take = heuristic_action(
+                    grid, available, category, step,
+                    effective_actions=self.effective_actions,
+                    color_effectiveness=self.color_effectiveness)
                 llm_cooldown = max(0, llm_cooldown - 1)
 
             if not actions_to_take:

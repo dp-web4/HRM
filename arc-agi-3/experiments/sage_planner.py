@@ -32,6 +32,7 @@ from arc_agi import Arcade
 from arcengine import GameAction
 from arc_perception import get_frame, background_color, color_name, find_color_regions, grid_diff
 from arc_spatial import SpatialTracker
+from arc_action_model import ActionEffectModel
 
 INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
@@ -132,10 +133,21 @@ def parse_plan(response: str, available: list) -> list:
     return actions
 
 
-def build_plan_prompt(grid, available, tracker, action_log, levels, win_levels, step) -> str:
-    """Build a planning prompt for the LLM."""
+def build_plan_prompt(grid, available, tracker, action_log, levels, win_levels,
+                      step, action_model=None) -> str:
+    """Build a planning prompt with action model."""
     avail_names = [f"{a}={ACTION_NAMES.get(a, f'A{a}')}" for a in available]
     spatial = compact_grid_description(grid, tracker)
+
+    # Action model (learned from probing)
+    model_desc = ""
+    if action_model and action_model.total_observations > 0:
+        model_desc = f"\n{action_model.describe()}\n"
+        game_type = action_model.infer_game_type()
+        if game_type == "cursor_cycle":
+            model_desc += "\nThis looks like a cursor+cycling puzzle: use movement to position, then cycle actions to change the value at the cursor."
+        elif game_type == "navigation":
+            model_desc += "\nThis looks like a navigation puzzle: find a path to the goal."
 
     # Recent action outcomes
     recent = ""
@@ -148,24 +160,22 @@ def build_plan_prompt(grid, available, tracker, action_log, levels, win_levels, 
 
 GAME STATE (step {step}, levels {levels}/{win_levels}):
 Actions: {', '.join(avail_names)}
-
-SPATIAL STATE:
+{model_desc}
+GRID:
 {spatial}
 {recent}
 
-RULES:
-- Each action costs 1 step. Budget is limited.
-- Try different actions to discover what they do.
-- If movement changes the grid, explore in that direction.
+STRATEGY:
+- Use the ACTION MODEL above to understand what each action does.
+- Movement actions position a cursor or player. Cycle/toggle actions change state.
+- The goal is to complete levels. Think about what the win condition might be.
 - CLICK needs coordinates: CLICK(x, y).
-- SELECT/SUBMIT often confirms or tests your current arrangement.
 
-Plan 3-5 actions. Number each step. Be specific with coordinates.
+Plan 3-5 actions. Be specific. Number each step.
 Example:
 1. RIGHT
-2. RIGHT
-3. CLICK(30, 18)
-4. SELECT"""
+2. DOWN
+3. SELECT"""
 
 
 def play_with_planning(arcade, game_id, budget=200, verbose=False):
@@ -182,6 +192,7 @@ def play_with_planning(arcade, game_id, budget=200, verbose=False):
 
     tracker = SpatialTracker()
     tracker.update(grid)
+    action_model = ActionEffectModel()
 
     if verbose:
         print(f"  Objects: {len(tracker.objects)}")
@@ -189,12 +200,60 @@ def play_with_planning(arcade, game_id, budget=200, verbose=False):
     action_log = []
     best_levels = 0
     step = 0
-    plan_interval = 6  # Re-plan every N steps
+
+    # PROBE PHASE: try each action 2-3 times to build action model
+    probe_budget = min(budget // 4, len(available) * 3)
+    if verbose:
+        print(f"  Probing {len(available)} actions ({probe_budget} steps)...")
+
+    for probe_step in range(probe_budget):
+        action_to_probe = available[probe_step % len(available)]
+        prev_grid = grid.copy()
+
+        try:
+            if action_to_probe == 6:
+                # Click with coordinates
+                targets = tracker.suggest_click_targets(grid, n=1)
+                if targets:
+                    x, y, _ = targets[0]
+                    fd = env.step(INT_TO_GAME_ACTION[6], data={'x': x, 'y': y})
+                else:
+                    fd = env.step(INT_TO_GAME_ACTION[action_to_probe])
+            else:
+                fd = env.step(INT_TO_GAME_ACTION[action_to_probe])
+        except Exception:
+            continue
+
+        if fd is None:
+            break
+
+        grid = get_frame(fd)
+        step += 1
+        spatial_diff = tracker.update(grid)
+        action_model.observe(action_to_probe, prev_grid, grid, spatial_diff)
+
+        if fd.levels_completed > best_levels:
+            best_levels = fd.levels_completed
+            if verbose:
+                print(f"    ★ LEVEL {best_levels} during probe!")
+
+        if fd.state.name in ("WON", "LOST", "GAME_OVER"):
+            break
+
+        new_avail = [a.value if hasattr(a, "value") else int(a)
+                     for a in (fd.available_actions or [])]
+        if new_avail:
+            available = new_avail
+
+    if verbose:
+        print(f"  {action_model.describe()}")
+        print(f"  Game type: {action_model.infer_game_type()}")
 
     while step < budget:
         # Plan a sequence
         prompt = build_plan_prompt(grid, available, tracker, action_log,
-                                   fd.levels_completed, fd.win_levels, step)
+                                   fd.levels_completed, fd.win_levels, step,
+                                   action_model=action_model)
         t0 = time.time()
         response = ask_llm(prompt, max_tokens=200)
         plan_time = time.time() - t0
@@ -248,8 +307,9 @@ def play_with_planning(arcade, game_id, budget=200, verbose=False):
             changed = not np.array_equal(prev_grid, grid)
             n_changed = int(np.sum(prev_grid != grid))
 
-            # Update spatial tracker
+            # Update spatial tracker + action model
             diff = tracker.update(grid)
+            action_model.observe(action_int, prev_grid, grid, diff)
             if action_int == 6 and data:
                 tracker.record_click(data['x'], data['y'], changed, n_changed)
 

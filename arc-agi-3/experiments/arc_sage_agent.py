@@ -73,99 +73,100 @@ def membot_store(text):
 
 # ─── LLM reasoning ───
 
-OLLAMA_URL = "http://localhost:11434"
-OLLAMA_MODEL = "qwen3.5:0.8b"
+OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
+OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "gemma3:12b")
 
 
-def sage_reason(system_prompt, user_prompt, max_tokens=80):
-    """Ask the LLM to reason about the game state via Ollama directly.
+def sage_reason(prompt, max_tokens=150):
+    """Ask LLM to reason about the game state.
 
-    Uses Ollama chat API to bypass SAGE daemon's identity prompts.
-    The game-playing LLM needs to be task-focused, not conversational.
-
+    Tries SAGE daemon first, falls back to Ollama direct.
     Returns the LLM's text response, or None if unavailable.
     """
+    # Try SAGE daemon
     try:
-        resp = requests.post(f"{OLLAMA_URL}/api/chat", json={
-            "model": OLLAMA_MODEL,
-            "messages": [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ],
-            "stream": False,
-            "think": False,
-            "options": {"num_predict": max_tokens, "temperature": 0.1},
-        }, timeout=30)
+        resp = requests.post(f"{SAGE_URL}/chat",
+            json={"message": prompt, "max_tokens": max_tokens},
+            timeout=15)
         if resp.status_code == 200:
             data = resp.json()
-            return data.get("message", {}).get("content", "")
+            text = data.get("response", data.get("text", ""))
+            if text and "SAGE instance" not in text:  # Skip if daemon is in character
+                return text
     except Exception:
         pass
+
+    # Fallback: Ollama direct
+    try:
+        resp = requests.post(f"{OLLAMA_URL}/api/generate",
+            json={"model": OLLAMA_MODEL, "prompt": prompt, "stream": False,
+                   "options": {"temperature": 0.3, "num_predict": max_tokens}},
+            timeout=60)
+        if resp.status_code == 200:
+            return resp.json().get("response", "").strip()
+    except Exception:
+        pass
+
     return None
 
 
 def parse_action(llm_response, available_actions, grid):
     """Parse LLM response into executable action(s).
 
-    Handles multiple response formats from the LLM:
-    - "click(X, Y)" or "click X Y"
-    - "brown(35,58) to s1(22,29)" (placement format)
-    - "click red" (color name)
-    - "move up" / "submit" / "undo"
+    Looks for patterns like:
+    - "click (X, Y)" or "click X Y"
+    - "click red" or "click the red item"
+    - "move up" / "press up"
+    - "submit" / "press select"
+    - "undo"
 
     Returns list of (action_int, data_dict_or_None) tuples.
     """
     if not llm_response:
         return []
 
-    text = llm_response.strip()
+    text = llm_response.lower().strip()
     actions = []
 
-    if 6 in available_actions:
-        # Parse placement format: "color(x,y) to sN(x,y)" — one per line
-        placement_pattern = r'\w+\((\d+)\s*,\s*(\d+)\)\s+to\s+s\d+\((\d+)\s*,\s*(\d+)\)'
-        for match in re.finditer(placement_pattern, text):
-            px, py = int(match.group(1)), int(match.group(2))
-            sx, sy = int(match.group(3)), int(match.group(4))
-            actions.append((6, {'x': px, 'y': py}))  # Click source
-            actions.append((6, {'x': sx, 'y': sy}))  # Click destination
-
-        # Parse "click(x,y) then click(x,y)" format
-        if not actions:
-            click_pairs = re.findall(
-                r'click\s*\((\d+)\s*,\s*(\d+)\)\s*(?:then\s*)?click\s*\((\d+)\s*,\s*(\d+)\)',
-                text, re.IGNORECASE)
-            for x1, y1, x2, y2 in click_pairs:
-                actions.append((6, {'x': int(x1), 'y': int(y1)}))
-                actions.append((6, {'x': int(x2), 'y': int(y2)}))
-
-        # Parse standalone click(x,y) coordinates
-        if not actions:
-            for match in re.finditer(r'click\s*\(?(\d+)\s*,\s*(\d+)\)?', text, re.IGNORECASE):
-                x, y = int(match.group(1)), int(match.group(2))
+    # Parse click with coordinates
+    coord_patterns = [
+        r'click\s*\(?(\d+)\s*,\s*(\d+)\)?',
+        r'click\s+at\s+\(?(\d+)\s*,\s*(\d+)\)?',
+        r'click\s+position\s+\(?(\d+)\s*,\s*(\d+)\)?',
+    ]
+    for pattern in coord_patterns:
+        for match in re.finditer(pattern, text):
+            x, y = int(match.group(1)), int(match.group(2))
+            if 6 in available_actions:
                 actions.append((6, {'x': x, 'y': y}))
 
-        # Parse bare coordinate pairs: (x,y) on each line
-        if not actions:
-            for match in re.finditer(r'\((\d+)\s*,\s*(\d+)\)', text):
-                x, y = int(match.group(1)), int(match.group(2))
-                actions.append((6, {'x': x, 'y': y}))
+    # Parse click with color name
+    if not actions and 6 in available_actions:
+        color_map = {name: idx for idx, name in enumerate(
+            ["black", "blue", "red", "green", "yellow", "gray",
+             "magenta", "orange", "cyan", "brown", "pink", "maroon",
+             "olive", "navy", "teal", "white"])}
+        for cname, cidx in color_map.items():
+            if f"click {cname}" in text or f"click the {cname}" in text:
+                positions = np.argwhere(grid.astype(int) == cidx)
+                if len(positions) > 0:
+                    # Click center of color region
+                    cy = int(positions[:, 0].mean())
+                    cx = int(positions[:, 1].mean())
+                    actions.append((6, {'x': cx, 'y': cy}))
+                    break
 
-        # Parse click with color name
-        if not actions:
-            color_map = {name: idx for idx, name in enumerate(
-                ["black", "blue", "red", "green", "yellow", "gray",
-                 "magenta", "orange", "cyan", "brown", "pink", "maroon",
-                 "olive", "navy", "teal", "white"])}
-            text_lower = text.lower()
-            for cname, cidx in color_map.items():
-                if f"click {cname}" in text_lower or f"click the {cname}" in text_lower:
-                    positions = np.argwhere(grid.astype(int) == cidx)
-                    if len(positions) > 0:
-                        cy = int(positions[:, 0].mean())
-                        cx = int(positions[:, 1].mean())
-                        actions.append((6, {'x': cx, 'y': cy}))
-                        break
+    # Parse "click item at bottom then slot at middle" pattern
+    if not actions and 6 in available_actions:
+        # Look for "then" indicating a two-step click sequence
+        then_match = re.search(
+            r'click\s+.*?(\d+)\s*,\s*(\d+).*?then.*?click\s+.*?(\d+)\s*,\s*(\d+)',
+            text)
+        if then_match:
+            x1, y1 = int(then_match.group(1)), int(then_match.group(2))
+            x2, y2 = int(then_match.group(3)), int(then_match.group(4))
+            actions.append((6, {'x': x1, 'y': y1}))
+            actions.append((6, {'x': x2, 'y': y2}))
 
     # Parse directional actions
     direction_map = {"up": 1, "down": 2, "left": 3, "right": 4}
@@ -263,210 +264,38 @@ def detect_game_category(grid, available_actions):
     return obs
 
 
-def build_placement_prompt(grid, regions, sections):
-    """Build a prompt for placement-type puzzles (sb26-like).
-
-    Uses few-shot completion style that 0.8B models handle well.
-    Returns (system_prompt, user_prompt) tuple.
-    """
-    bg = background_color(grid)
-
-    # Identify top indicators, bottom items, middle slots
-    if len(sections) < 2:
-        return None, None
-
-    top_sec = sections[0]
-    bot_sec = sections[-1]
-
-    # Filter top regions: exclude bg, gray (border), and very large regions (frames)
-    # Real indicators are small (4-6px wide) colored blocks
-    BORDER_COLORS = {bg, 5}  # yellow(bg), gray — common frame/border colors
-    top_regions = sorted(
-        [r for r in regions if top_sec["y_start"] <= r["cy"] <= top_sec["y_end"]
-         and r["color"] not in BORDER_COLORS
-         and r["size"] < 50],  # Real indicators are small, not frame-sized
-        key=lambda r: r["x"])
-    bot_regions = sorted(
-        [r for r in regions if bot_sec["y_start"] <= r["cy"] <= bot_sec["y_end"]
-         and r["color"] not in BORDER_COLORS
-         and r["size"] < 50],
-        key=lambda r: r["x"])
-
-    # Find slots: color 2 markers in MIDDLE sections only (not top/bottom/lines)
-    all_markers = find_markers(grid, 2, min_cluster=2)
-    # Filter: exclude markers on thin horizontal lines (1-2 row sections)
-    # and only keep markers in middle area between top indicators and bottom palette
-    thin_line_rows = set()
-    for s in sections:
-        if s["y_end"] - s["y_start"] <= 1:  # Single-row or 2-row section = line
-            for r in range(s["y_start"], s["y_end"] + 1):
-                thin_line_rows.add(r)
-    mid_y_min = top_sec["y_end"] + 1
-    mid_y_max = bot_sec["y_start"] - 1
-    slots = [s for s in all_markers
-             if mid_y_min <= s["y"] <= mid_y_max
-             and s["y"] not in thin_line_rows]
-
-    if not top_regions or not bot_regions:
-        return None, None
-
-    # Deduplicate top colors (borders create duplicate regions at same position)
-    seen_positions = set()
-    deduped_top = []
-    for r in top_regions:
-        # Group by approximate x position (within 3px)
-        key = r["cx"] // 4
-        if key not in seen_positions:
-            seen_positions.add(key)
-            deduped_top.append(r)
-
-    bot_items = [(r["color_name"], r["cx"], r["cy"]) for r in bot_regions]
-    slot_positions = [(s["x"], s["y"]) for s in slots]
-    top_colors = [r["color_name"] for r in deduped_top]
-
-    system = "You solve puzzles. Reply with ONLY click actions. No explanation."
-
-    parts = [
-        f"Puzzle: match the top order by placing bottom items into slots.",
-        f"\nTOP order: {', '.join(top_colors)}",
-        f"BOTTOM items: {' '.join(f'{name}({x},{y})' for name, x, y in bot_items)}",
-    ]
-    if slot_positions:
-        parts.append(f"SLOTS: {' '.join(f's{i+1}({x},{y})' for i, (x, y) in enumerate(slot_positions))}")
-
-    # Build the plan
-    plan_parts = []
-    for i, target_color in enumerate(top_colors):
-        # Find matching bottom item
-        for name, bx, by in bot_items:
-            if name == target_color:
-                if i < len(slot_positions):
-                    sx, sy = slot_positions[i]
-                    plan_parts.append(f"{target_color}→s{i+1}")
-                break
-    if plan_parts:
-        parts.append(f"\nPlan: {', '.join(plan_parts)}")
-
-    parts.append("\nActions:")
-
-    return system, "\n".join(parts)
-
-
-def compute_placement_actions(grid):
-    """Pure perception-based placement: match top indicator colors to bottom items.
-
-    Returns list of (action_int, data) tuples for click-place-submit, or empty list.
-    This does NOT need the LLM — it's pure spatial/color reasoning in code.
-    """
-    bg = background_color(grid)
-    regions = find_color_regions(grid, min_size=6)
-    sections = detect_sections(grid)
-
-    if len(sections) < 2:
-        return []
-
-    top_sec = sections[0]
-    bot_sec = sections[-1]
-
-    BORDER_COLORS = {bg, 5, 8}
-    top_regions = sorted(
-        [r for r in regions if top_sec["y_start"] <= r["cy"] <= top_sec["y_end"]
-         and r["color"] not in BORDER_COLORS and r["size"] < 50],
-        key=lambda r: r["x"])
-    bot_regions = sorted(
-        [r for r in regions if bot_sec["y_start"] <= r["cy"] <= bot_sec["y_end"]
-         and r["color"] not in BORDER_COLORS and r["size"] < 50],
-        key=lambda r: r["x"])
-
-    # Deduplicate top by position
-    seen_pos = set()
-    deduped_top = []
-    for r in top_regions:
-        key = r["cx"] // 4
-        if key not in seen_pos:
-            seen_pos.add(key)
-            deduped_top.append(r)
-
-    # Find middle slots (color 2 markers, not on thin lines)
-    all_markers = find_markers(grid, 2, min_cluster=2)
-    thin_line_rows = set()
-    for s in sections:
-        if s["y_end"] - s["y_start"] <= 1:
-            for r in range(s["y_start"], s["y_end"] + 1):
-                thin_line_rows.add(r)
-    mid_y_min = top_sec["y_end"] + 1
-    mid_y_max = bot_sec["y_start"] - 1
-    slots = [s for s in all_markers
-             if mid_y_min <= s["y"] <= mid_y_max
-             and s["y"] not in thin_line_rows]
-
-    if not deduped_top or not bot_regions or not slots:
-        return []
-
-    # Build color→position lookup for bottom items
-    bot_by_color = {}
-    for r in bot_regions:
-        if r["color_name"] not in bot_by_color:
-            bot_by_color[r["color_name"]] = (r["cx"], r["cy"])
-
-    # Match: for each top indicator color, find matching bottom item → place in slot
-    actions = []
-    for i, top_r in enumerate(deduped_top):
-        target_color = top_r["color_name"]
-        if target_color in bot_by_color and i < len(slots):
-            px, py = bot_by_color[target_color]
-            sx, sy = slots[i]["x"], slots[i]["y"]
-            actions.append((6, {'x': px, 'y': py}))  # Click palette item
-            actions.append((6, {'x': sx, 'y': sy}))  # Click slot
-
-    # Submit after all placements
-    if actions:
-        actions.append((5, None))
-
-    return actions
-
-
 def build_strategy_prompt(grid, available_actions, memories, level_info, prev_action_result=None):
     """Build the prompt for LLM reasoning.
 
-    Uses few-shot completion style optimized for 0.8B models.
-    Returns (system_prompt, user_prompt, category) tuple.
+    Compact enough for 0.8B model to handle, detailed enough to be useful.
     """
+    perception = full_perception(grid)
     category = detect_game_category(grid, available_actions)
-    regions = find_color_regions(grid, min_size=6)
-    sections = detect_sections(grid)
-
-    # Try specialized prompt builders first
-    if category.get("category") in ("placement_puzzle", "click_arrange", "click_multi_section"):
-        sys_p, usr_p = build_placement_prompt(grid, regions, sections)
-        if sys_p and usr_p:
-            return sys_p, usr_p, category
-
-    # Generic prompt for other game types
-    perception = grid_summary(grid)
 
     action_names = {1: "up", 2: "down", 3: "left", 4: "right",
                     5: "submit", 6: "click(x,y)", 7: "undo"}
     avail_str = ", ".join(action_names.get(a, f"action{a}") for a in sorted(available_actions))
 
-    system = "You solve game puzzles. Reply with ONLY the action. No explanation."
-
-    parts = [
-        f"Level {level_info.get('current', '?')}/{level_info.get('total', '?')}",
-        f"{perception}",
-        f"Actions: {avail_str}",
-        f"Type: {category.get('hint', 'unknown')}",
+    prompt_parts = [
+        f"GAME PUZZLE - Level {level_info.get('current', '?')}/{level_info.get('total', '?')}",
+        f"\nWhat I see:\n{perception}",
+        f"\nGame type guess: {category.get('category', 'unknown')} — {category.get('hint', '')}",
+        f"\nAvailable actions: {avail_str}",
     ]
 
     if memories:
-        parts.append(f"Memory: {memories[0][:100]}")
+        prompt_parts.append(f"\nWhat I remember:\n" + "\n".join(f"- {m}" for m in memories[:3]))
 
     if prev_action_result:
-        parts.append(f"Last result: {prev_action_result}")
+        prompt_parts.append(f"\nLast action result: {prev_action_result}")
 
-    parts.append("\nAction:")
+    prompt_parts.append(
+        "\nWhat should I do? Think step by step, then say your action. "
+        "For clicks, say 'click(X, Y)'. For movement, say 'move up/down/left/right'. "
+        "For submit, say 'submit'."
+    )
 
-    return system, "\n".join(parts), category
+    return "\n".join(prompt_parts), category
 
 
 # ─── Fallback heuristic (no LLM needed) ───
@@ -534,11 +363,11 @@ class SageAgent:
         self.level_observations = []
 
     def check_llm(self):
-        """Check if Ollama is available for reasoning."""
+        """Check if SAGE daemon is available for reasoning."""
         if self.llm_available is not None:
             return self.llm_available
         try:
-            resp = requests.get(f"{OLLAMA_URL}/api/tags", timeout=5)
+            resp = requests.get(f"{SAGE_URL}/health", timeout=5)
             self.llm_available = resp.status_code == 200
         except Exception:
             self.llm_available = False
@@ -581,55 +410,13 @@ class SageAgent:
         if self.verbose:
             print(f"  Category: {category.get('category', '?')} — {category.get('hint', '')}")
 
-        # For placement puzzles, try perception-driven solve in a loop
-        if category.get("category") == "placement_puzzle":
-            for attempt in range(fd.win_levels + 2):
-                grid = get_frame(fd)
-                prev_levels = fd.levels_completed
-                placement_actions = compute_placement_actions(grid)
-                if not placement_actions:
-                    if self.verbose:
-                        print(f"  Placement: no actions computed (attempt {attempt})")
-                    break
-                if self.verbose:
-                    print(f"  Placement attempt {attempt}: {len(placement_actions)} actions")
-                for action_int, data in placement_actions:
-                    try:
-                        if data:
-                            fd = env.step(INT_TO_GAME_ACTION[action_int], data=data)
-                        else:
-                            fd = env.step(INT_TO_GAME_ACTION[action_int])
-                        self.action_history.append(action_int)
-                    except Exception as e:
-                        if self.verbose:
-                            print(f"    Error: {e}")
-                        break
-                # Wait for level transition
-                for _ in range(10):
-                    if fd.levels_completed > prev_levels or fd.state.name in ("WON", "GAME_OVER"):
-                        break
-                    fd = env.step(GameAction.ACTION7)  # Undo is free, nudges state
-                grid = get_frame(fd)
-                if fd.levels_completed > prev_levels:
-                    if self.verbose:
-                        print(f"  ★ Level {fd.levels_completed}/{fd.win_levels}!")
-                else:
-                    if self.verbose:
-                        print(f"  Placement didn't advance (level {fd.levels_completed})")
-                    # Undo all placements and try LLM fallback
-                    for _ in range(len(placement_actions)):
-                        fd = env.step(GameAction.ACTION7)
-                    break
-                if fd.state.name in ("WON", "GAME_OVER"):
-                    break
-
-        # Play loop (continues after placement attempt or for non-placement games)
-        best_levels = fd.levels_completed
-        step = len(self.action_history)
+        # Play loop
+        best_levels = 0
+        step = 0
         prev_result = None
         prev_grid = grid.copy()
-        llm_cooldown = 0
-        llm_interval = 5
+        llm_cooldown = 0  # Steps until next LLM call (don't call every step)
+        llm_interval = 5  # Call LLM every N steps
 
         while step < budget and fd.state.name not in ("WON", "GAME_OVER"):
             # PERCEIVE
@@ -661,19 +448,18 @@ class SageAgent:
 
             if self.use_llm and self.check_llm() and llm_cooldown <= 0:
                 # Build prompt and ask LLM
-                sys_prompt, usr_prompt, category = build_strategy_prompt(
+                prompt, category = build_strategy_prompt(
                     grid, available, all_memories,
                     {"current": fd.levels_completed, "total": fd.win_levels},
                     prev_result,
                 )
-                llm_response = sage_reason(sys_prompt, usr_prompt)
+                llm_response = sage_reason(prompt)
 
                 if llm_response:
                     actions_to_take = parse_action(llm_response, available, grid)
-                    if self.verbose:
-                        print(f"  [{step}] LLM: {llm_response[:100]}")
-                        if actions_to_take:
-                            print(f"        → {actions_to_take}")
+                    if self.verbose and actions_to_take:
+                        print(f"  [{step}] LLM: {llm_response[:80]}...")
+                        print(f"        → {actions_to_take}")
                     llm_cooldown = llm_interval
 
             # Fallback to heuristic if no LLM actions

@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """
-Visual Rotation Solver for lp85
-================================
+Visual Rotation Solver with Color Learning
+===========================================
 
-Uses visual memory to:
-1. Store initial frame when level starts
-2. Store winning frames when level completes
-3. Compare current frame to known states
-4. Guide actions based on visual similarity
+Combines visual memory with color effectiveness learning:
+1. Store initial/winning frames visually
+2. Learn which colors cause productive changes
+3. Target effective colors while tracking visual progress
+4. Compare current state to winning visual patterns
+5. Two-phase: EXPLORE (probe colors) → EXPLOIT (target effective colors)
 """
 
 import sys
@@ -15,6 +16,7 @@ sys.path.insert(0, ".")
 sys.path.insert(0, "arc-agi-3/experiments")
 
 import numpy as np
+from collections import defaultdict
 from arc_agi import Arcade
 from arcengine import GameAction
 from membot_cartridge import MembotCartridge
@@ -28,7 +30,7 @@ INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
 
 
 class VisualRotationSolver:
-    """Solver that uses visual pattern matching for rotation puzzles."""
+    """Solver combining visual pattern matching with color effectiveness learning."""
 
     def __init__(self, game_id: str, verbose: bool = False):
         self.game_id = game_id
@@ -48,6 +50,12 @@ class VisualRotationSolver:
         # Visual memory
         self.level_initial_frames = {}  # level → initial frame
         self.level_frames_history = {}  # level → list of (step, frame, similarity_to_initial)
+
+        # Color effectiveness tracking (like smart_scorer)
+        self.color_tries = defaultdict(int)
+        self.color_changes = defaultdict(int)
+        self.explore_phase = True
+        self.explore_budget = 60  # Steps to explore colors
 
         # Performance tracking
         self.total_steps = 0
@@ -117,9 +125,55 @@ class VisualRotationSolver:
 
         return winning
 
+    def update_color_effectiveness(self, color: int, changed: bool, frame_before: np.ndarray, frame_after: np.ndarray):
+        """Track color effectiveness and update driver preferences."""
+        self.color_tries[color] += 1
+        if changed:
+            self.color_changes[color] += 1
+            # Store visual outcome of effective color clicks
+            if self.color_changes[color] <= 3:  # Store first few effective clicks
+                label = f"color_{color}_effective_{self.color_changes[color]}"
+                self.cart.store_frame_snapshot(
+                    label,
+                    frame_after,
+                    metadata={
+                        "color": color,
+                        "level": self.current_level,
+                        "effectiveness": "high",
+                        "before_after": "after"
+                    }
+                )
+                if self.verbose:
+                    print(f"   ✨ Color {color} effective! Stored visual outcome")
+
+        # Update driver preferences based on learning
+        effective_colors = [c for c in self.color_tries.keys()
+                          if self.color_changes[c] / max(self.color_tries[c], 1) > 0.3]
+        ineffective_colors = [c for c in self.color_tries.keys()
+                            if self.color_tries[c] >= 3 and self.color_changes[c] == 0]
+
+        if effective_colors or ineffective_colors:
+            self.driver.set_color_preferences(
+                effective=effective_colors,
+                ineffective=ineffective_colors
+            )
+
     def choose_action_visually(self, level: int, step: int, state_hash: str) -> int:
-        """Choose action based on visual analysis."""
+        """Choose action combining visual analysis with color learning."""
         current_frame = self.get_current_frame()
+
+        # Phase transition: explore → exploit
+        if step == self.explore_budget:
+            self.explore_phase = False
+            effective = [c for c in self.color_tries.keys()
+                        if self.color_changes[c] / max(self.color_tries[c], 1) > 0.3]
+            if self.verbose:
+                print(f"\n   🔀 PHASE SHIFT: EXPLORE → EXPLOIT")
+                print(f"   💡 Effective colors: {effective}")
+                print(f"   📊 Color stats:")
+                for color in sorted(self.color_tries.keys()):
+                    rate = self.color_changes[color] / max(self.color_tries[color], 1)
+                    print(f"      Color {color}: {self.color_changes[color]}/{self.color_tries[color]} = {rate:.1%}")
 
         # Compare to initial frame
         similarity_to_initial = self.compare_to_initial(level, current_frame)
@@ -138,28 +192,27 @@ class VisualRotationSolver:
                 print(f"      - {label}: {score:.3f}")
 
         # Strategy:
-        # 1. If we've seen this exact configuration before, try a different action
-        # 2. If we're very similar to initial (>0.95), we're going in circles
-        # 3. Otherwise, use driver's action selection (exploration + exploitation)
+        # 1. If very similar to initial (>0.95), we're looping → force different action
+        # 2. Otherwise, use driver's selection (now color-aware)
 
         if similarity_to_initial > 0.95 and step > 10:
-            # We're going in circles, force exploration with coordinates
+            # We're going in circles, force exploration
             if self.verbose:
                 print(f"   🔄 Too similar to initial ({similarity_to_initial:.3f}), forcing exploration")
-            import random
             action = random.choice(self.driver.available)
             return self.driver._with_coordinates(action, current_frame)
 
-        # Use driver's normal selection (which includes exhaustion/stagnation logic)
+        # Use driver's selection (which now includes color preferences)
         return self.driver.select_action(state_hash, current_frame)
 
     def run(self, steps: int = 1000):
-        """Run visual solver for specified steps."""
+        """Run visual solver with color learning."""
         print("=" * 70)
-        print("VISUAL ROTATION SOLVER - lp85")
+        print("VISUAL + COLOR LEARNING SOLVER")
         print("=" * 70)
         print(f"\nGame: {self.game_id}")
         print(f"Max steps: {steps}")
+        print(f"Strategy: EXPLORE (first {self.explore_budget} steps) → EXPLOIT (target effective colors)")
         print(f"\nCartridge insights:")
         for insight in self.cart.data.get("strategic_insights", [])[:3]:
             print(f"  - {insight[:80]}...")
@@ -230,6 +283,12 @@ class VisualRotationSolver:
             # Update driver with outcome
             self.driver.record(action, state_hash, changed)
 
+            # Track color effectiveness for ACTION6 clicks
+            if action == 6 and isinstance(action_result, tuple):
+                _, coords = action_result
+                clicked_color = int(before_frame[coords['y'], coords['x']])
+                self.update_color_effectiveness(clicked_color, changed, before_frame, self.current_grid)
+
             # Store visual outcome
             self.cart.store_action_visual_outcome(
                 action,
@@ -260,6 +319,16 @@ class VisualRotationSolver:
         print(f"\nVisual memory stored:")
         print(f"  - Snapshots: {len(self.cart.data['visual_memory']['snapshots'])}")
         print(f"  - Action outcomes: {len(self.cart.data['visual_memory']['action_outcomes'])}")
+
+        # Color effectiveness report
+        if self.color_tries:
+            print(f"\nColor effectiveness learned:")
+            for color in sorted(self.color_tries.keys()):
+                tries = self.color_tries[color]
+                changes = self.color_changes[color]
+                rate = changes / max(tries, 1)
+                status = "✓" if rate > 0.3 else ("~" if rate > 0 else "✗")
+                print(f"  {status} Color {color}: {changes}/{tries} = {rate:.1%}")
 
         # Update driver effectiveness in cartridge
         self.cart.update_action_effectiveness(self.driver)

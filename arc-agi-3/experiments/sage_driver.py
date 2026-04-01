@@ -160,8 +160,16 @@ class SageDriver:
             int for simple actions (1-5, 7)
             (6, {'x': col, 'y': row}) for ACTION6 coordinate click
         """
-        if action != 6 or grid is None:
+        if action != 6:
             return action
+
+        # Validate grid
+        if grid is None or grid.size == 0 or grid.ndim not in (2, 3):
+            return action  # Return bare action if grid invalid
+
+        # Handle 3D grids
+        if grid.ndim == 3:
+            grid = grid[:, :, -1]
 
         try:
             bg = int(np.bincount(grid.astype(int).flatten()).argmax())

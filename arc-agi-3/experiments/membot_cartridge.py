@@ -265,9 +265,19 @@ class MembotCartridge:
         Returns:
             Base64-encoded PNG string
         """
+        # Ensure frame is 2D and contiguous
+        if frame.ndim != 2:
+            if frame.ndim == 3:
+                frame = frame[:, :, -1]  # Take last channel
+            else:
+                raise ValueError(f"Invalid frame dimensions: {frame.shape}")
+
+        # Ensure contiguous array for PIL
+        frame = np.ascontiguousarray(frame)
+
         # Convert to PIL Image (need to convert to RGB for PNG)
         # ARC colors are 0-15, scale to 0-255 for visibility
-        frame_scaled = (frame * 16).astype(np.uint8)
+        frame_scaled = (frame * 16).clip(0, 255).astype(np.uint8)
         img = Image.fromarray(frame_scaled, mode='L')  # Grayscale
 
         # Convert to PNG bytes
@@ -364,6 +374,12 @@ class MembotCartridge:
                 "snapshots": {},
                 "action_outcomes": []
             }
+
+        # Validate frames
+        if before_frame.size == 0 or after_frame.size == 0:
+            return  # Skip invalid frames
+        if before_frame.ndim not in (2, 3) or after_frame.ndim not in (2, 3):
+            return  # Skip malformed frames
 
         outcome = {
             "action": action,

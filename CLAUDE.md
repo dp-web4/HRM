@@ -165,7 +165,7 @@ The following are completed milestones. Full details in their respective docs â€
 <!-- gitnexus:keep -->
 # GitNexus â€” Code Knowledge Graph
 
-Indexed as **SAGE** (41763 symbols, 76104 relationships, 300 execution flows). MCP tools available via `mcp__gitnexus__*`.
+Indexed as **SAGE** (21822 symbols, 56931 relationships, 300 execution flows). MCP tools available via `mcp__gitnexus__*`.
 
 **Do not reindex.** The supervisor handles GitNexus indexing. If the index is stale, note it in SESSION_FOCUS.
 

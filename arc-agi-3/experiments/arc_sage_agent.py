@@ -63,7 +63,7 @@ def membot_recall(query, n=5):
     """Retrieve relevant memories."""
     try:
         resp = requests.post(f"{MEMBOT_URL}/api/search",
-            json={"query": query, "n": n}, timeout=3)
+            json={"query": query, "top_k": n}, timeout=15)
         if resp.status_code == 200:
             results = resp.json().get("results", [])
             return [r["text"] for r in results if r.get("score", 0) > 0.4]
@@ -73,10 +73,11 @@ def membot_recall(query, n=5):
 
 
 def membot_store(text):
-    """Store a memory."""
+    """Store a memory. Timeout is generous because embedding generation
+    via Ollama can take 10-15s when the GPU is busy with the game model."""
     try:
         requests.post(f"{MEMBOT_URL}/api/store",
-            json={"text": text}, timeout=3)
+            json={"text": text}, timeout=20)
     except Exception:
         pass
 

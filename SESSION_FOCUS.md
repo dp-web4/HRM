@@ -1,6 +1,6 @@
 # SAGE Session Primer
 
-*Auto-generated 2026-04-01 08:00 UTC — read this at session start for current fleet state.*
+*Auto-generated 2026-04-01 14:00 UTC — read this at session start for current fleet state.*
 
 ---
 
@@ -8,8 +8,8 @@
 
 ### Active Raising Instances
 
-**cbp-qwen3.5-0.8b** — phase: `relating` | sessions: 16 | last: 2026-04-01 | milestones: session_001_first_contact
-  > Last session: *Session 16 (relating phase): Today, I remember the pressure and pause before constructing as a tool to preven......*
+**cbp-qwen3.5-0.8b** — phase: `relating` | sessions: 17 | last: 2026-04-01 | milestones: session_001_first_contact
+  > Last session: *Session 17 (relating phase): ......*
 
 **cbp-tinyllama-latest** — phase: `questioning` | sessions: 26 | last: 2026-03-28 | milestones: session_001_first_contact
   > Last session: *Session 26 (questioning phase): ......*
@@ -22,12 +22,12 @@
 - `legion-gemma3-12b`: legion / gemma3:12b (14 sessions)
 - `legion-phi4-14b`: legion / phi4:14b (56 sessions)
 - `legion-qwen2-0.5b`: legion / qwen2:0.5b (1 sessions)
-- `mcnugget-gemma3-12b`: mcnugget / gemma3:12b (85 sessions)
+- `mcnugget-gemma3-12b`: mcnugget / gemma3:12b (86 sessions)
 - `sprout-qwen3.5-0.8b`: sprout / qwen3.5:0.8b (29 sessions) — Upgraded from qwen2.5-0.5b (119 sessions). 0.8B chosen over 2B for memory headroom on 8GB Jetson. Thinking disabled.
 - `sprout-qwen3.5-2b`: sprout / qwen3.5:2b — Upgraded from qwen2.5-0.5b (local, 119 sessions). Thinking disabled for speed.
 - `thor-qwen2.5-14b`: thor / qwen2.5-14b
 - `thor-qwen2.5-7b-ollama`: thor / qwen2.5-7b-ollama — Ollama backend with llama.cpp - 35+ tok/sec performance on Jetson ARM
-- `thor-qwen3.5-27b`: thor / qwen3.5:27b (17 sessions)
+- `thor-qwen3.5-27b`: thor / qwen3.5:27b (19 sessions)
 
 ---
 

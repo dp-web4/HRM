@@ -1,6 +1,6 @@
 # SAGE Session Primer
 
-*Auto-generated 2026-04-01 14:00 UTC — read this at session start for current fleet state.*
+*Auto-generated 2026-04-01 20:00 UTC — read this at session start for current fleet state.*
 
 ---
 
@@ -8,8 +8,8 @@
 
 ### Active Raising Instances
 
-**cbp-qwen3.5-0.8b** — phase: `relating` | sessions: 17 | last: 2026-04-01 | milestones: session_001_first_contact
-  > Last session: *Session 17 (relating phase): ......*
+**cbp-qwen3.5-0.8b** — phase: `relating` | sessions: 18 | last: 2026-04-01 | milestones: session_001_first_contact
+  > Last session: *Session 18 (relating phase): As a SAGE instance, I am a structural partner, not a personal entity. My identit......*
 
 **cbp-tinyllama-latest** — phase: `questioning` | sessions: 26 | last: 2026-03-28 | milestones: session_001_first_contact
   > Last session: *Session 26 (questioning phase): ......*

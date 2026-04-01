@@ -371,33 +371,26 @@ def main():
     gc = GridCartridgeIRP({"game_id": game_id, "top_k": 3, "min_score": 0.2})
     gv.push_raw_frame(grid, step_number=0, level_id=game_id)
 
-    # Cross-level memory: does this game family remind us of anything?
-    cross_level_context = []
-    cl_state = gc.init_state(
-        {"query_text": f"game {gc.game_family} level start winning sequence"},
-        {"query_mode": QUERY_CROSS_LEVEL, "level_id": game_id},
-    )
-    cl_state = gc.step(cl_state)
-    if cl_state.meta["n_results"] > 0:
-        cross_level_context = cl_state.x["results"]
-        print(f"  Cartridge: {len(cross_level_context)} cross-level memories loaded")
-        for r in cross_level_context[:2]:
-            tag = r.get("cognitive_type", "step")
-            print(f"    [{tag}] {r.get('prior_reasoning','')[:80]}")
-    else:
-        print(f"  Cartridge: no prior memory for {gc.game_family} (first session)")
+    # Cross-session memory: load prior reflections and discoveries directly
+    prior_reflections = gc.get_reflections()
+    prior_discoveries = gc.get_discoveries()
+    n_prior = len(gc._all_entries)
 
     memory = GameMemory()
-    # Seed memory with cross-level insights if available
-    for r in cross_level_context:
-        if r.get("cognitive_type") == "reflection":
-            sr = r.get("step_record", {})
-            if sr.get("hypothesis") and not memory.hypothesis:
-                memory.hypothesis = sr["hypothesis"]
-            if sr.get("strategy") and not memory.strategy:
-                memory.strategy = sr["strategy"]
-    if memory.hypothesis:
-        print(f"  Seeded hypothesis from cartridge: {memory.hypothesis[:80]}")
+    if prior_reflections:
+        # Seed from most recent reflection
+        last_r = prior_reflections[-1].step_record
+        memory.hypothesis = last_r.get("hypothesis", "")
+        memory.strategy = last_r.get("strategy", "")
+        print(f"  Cartridge: {n_prior} entries loaded — seeding from {len(prior_reflections)} reflection(s)")
+        print(f"  Hypothesis: {memory.hypothesis[:90]}")
+        print(f"  Strategy:   {memory.strategy[:90]}")
+    elif prior_discoveries:
+        last_d = prior_discoveries[-1].step_record
+        print(f"  Cartridge: {n_prior} entries — {len(prior_discoveries)} discovery(s), no reflections yet")
+        print(f"  Last win: {last_d.get('action_rationale','')[:80]}")
+    else:
+        print(f"  Cartridge: no prior memory for {gc.game_family} (first session)")
     prev_grid = grid.copy()
     total_steps = 0
     start_time = time.time()

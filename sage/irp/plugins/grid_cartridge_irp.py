@@ -460,6 +460,20 @@ class GridCartridgeIRP(IRPPlugin):
     # Stats
     # -------------------------------------------------------------------------
 
+    def get_reflections(self, limit: int = 5) -> List[CartridgeEntry]:
+        """Return the most recent reflection entries across all levels.
+
+        Used at session start to seed hypothesis/strategy without relying
+        on text search matching. Direct accessor — always works if data exists.
+        """
+        reflections = [e for e in self._all_entries if e.cognitive_type == "reflection"]
+        return reflections[-limit:]
+
+    def get_discoveries(self, limit: int = 5) -> List[CartridgeEntry]:
+        """Return the most recent discovery entries (level-up moments)."""
+        discoveries = [e for e in self._all_entries if e.cognitive_type == "discovery"]
+        return discoveries[-limit:]
+
     @property
     def stats(self) -> Dict[str, Any]:
         """Current cartridge stats."""

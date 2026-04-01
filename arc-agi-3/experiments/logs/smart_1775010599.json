@@ -1,0 +1,80 @@
+{
+  "scored_games": {
+    "tn36": {
+      "levels": 1,
+      "win_levels": 7,
+      "events": [
+        {
+          "step": 48,
+          "levels": 1,
+          "action": "explore",
+          "click_color": 9
+        }
+      ]
+    },
+    "vc33": {
+      "levels": 1,
+      "win_levels": 7,
+      "events": [
+        {
+          "step": 39,
+          "levels": 1,
+          "action": "explore",
+          "click_color": 9
+        }
+      ]
+    },
+    "r11l": {
+      "levels": 1,
+      "win_levels": 6,
+      "events": [
+        {
+          "step": 58,
+          "levels": 1,
+          "action": "explore",
+          "click_color": 6
+        }
+      ]
+    },
+    "lf52": {
+      "levels": 1,
+      "win_levels": 10,
+      "events": [
+        {
+          "step": 55,
+          "levels": 1,
+          "action": "explore",
+          "click_color": 2
+        }
+      ]
+    },
+    "lp85": {
+      "levels": 1,
+      "win_levels": 8,
+      "events": [
+        {
+          "step": 61,
+          "levels": 1,
+          "action": "exploit",
+          "click_color": 8
+        }
+      ]
+    },
+    "ft09": {
+      "levels": 1,
+      "win_levels": 6,
+      "events": [
+        {
+          "step": 146,
+          "levels": 1,
+          "action": "exploit",
+          "click_color": 8
+        }
+      ]
+    }
+  },
+  "total_levels": 26,
+  "elapsed": 34.21866989135742,
+  "runs": 10,
+  "steps": 300
+}

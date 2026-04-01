@@ -137,8 +137,24 @@ class SageDriver:
                 break
         return self._with_coordinates(selected, grid)
 
+    def set_color_preferences(self, effective: list = None, ineffective: list = None):
+        """Set color targeting preferences from cartridge/experience data.
+
+        Args:
+            effective: Colors known to cause changes (prioritized)
+            ineffective: Colors known to NOT cause changes (avoided)
+        """
+        self.preferred_colors = set(effective or [])
+        self.avoided_colors = set(ineffective or [])
+
     def _with_coordinates(self, action: int, grid: np.ndarray = None):
-        """Wrap ACTION6 with x,y coordinates targeting a non-background cell.
+        """Wrap ACTION6 with x,y coordinates targeting a cell.
+
+        Targeting priority:
+        1. Preferred colors (from cartridge/experience)
+        2. Any non-background color not in avoided set
+        3. Random non-background cell
+        4. Grid center (fallback)
 
         Returns:
             int for simple actions (1-5, 7)
@@ -147,19 +163,36 @@ class SageDriver:
         if action != 6 or grid is None:
             return action
 
-        # Pick a non-background cell to click
         try:
             bg = int(np.bincount(grid.astype(int).flatten()).argmax())
         except (TypeError, ValueError):
             bg = 0
 
-        non_bg = np.argwhere(grid != bg)
-        if len(non_bg) == 0:
-            # All same color — click center
-            r, c = grid.shape[0] // 2, grid.shape[1] // 2
-        else:
-            r, c = random.choice(non_bg.tolist())
+        # Priority 1: preferred colors
+        if hasattr(self, 'preferred_colors') and self.preferred_colors:
+            for color in self.preferred_colors:
+                cells = np.argwhere(grid == color)
+                if len(cells) > 0:
+                    r, c = random.choice(cells.tolist())
+                    return (6, {'x': int(c), 'y': int(r)})
 
+        # Priority 2: non-background, non-avoided
+        avoided = getattr(self, 'avoided_colors', set())
+        non_bg = np.argwhere(grid != bg)
+        if len(non_bg) > 0 and avoided:
+            good_cells = [(r, c) for r, c in non_bg.tolist()
+                          if int(grid[r, c]) not in avoided]
+            if good_cells:
+                r, c = random.choice(good_cells)
+                return (6, {'x': int(c), 'y': int(r)})
+
+        # Priority 3: any non-background
+        if len(non_bg) > 0:
+            r, c = random.choice(non_bg.tolist())
+            return (6, {'x': int(c), 'y': int(r)})
+
+        # Fallback: center
+        r, c = grid.shape[0] // 2, grid.shape[1] // 2
         return (6, {'x': int(c), 'y': int(r)})
 
     def record(self, action: int, state_hash: str, changed: bool):

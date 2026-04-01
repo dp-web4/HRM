@@ -1,0 +1,32 @@
+{
+  "scored_games": {
+    "lp85": {
+      "levels": 3,
+      "win_levels": 8,
+      "events": [
+        {
+          "step": 48,
+          "levels": 1,
+          "action": "explore",
+          "click_color": 8
+        },
+        {
+          "step": 211,
+          "levels": 2,
+          "action": "exploit",
+          "click_color": 8
+        },
+        {
+          "step": 230,
+          "levels": 3,
+          "action": "exploit",
+          "click_color": 8
+        }
+      ]
+    }
+  },
+  "total_levels": 101,
+  "elapsed": 33.072510957717896,
+  "runs": 200,
+  "steps": 1000
+}

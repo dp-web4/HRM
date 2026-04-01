@@ -308,3 +308,95 @@ def perception_for_action(grid, action_type, click_pos=None):
             return (f"Click ({x},{y}): {color_name(color)}, "
                     f"neighborhood: {dict(neighbors)}")
     return f"Action {action_type}"
+
+
+# ─── Visual Memory Integration ───
+
+def visual_similarity(grid_a, grid_b):
+    """Compute pixel-wise visual similarity between two grids [0-1].
+    
+    Returns 1.0 for identical grids, 0.0 for completely different.
+    Handles different shapes by returning 0.0.
+    """
+    if grid_a.shape != grid_b.shape:
+        return 0.0
+    total_cells = grid_a.size
+    matching_cells = np.sum(grid_a == grid_b)
+    return float(matching_cells / total_cells)
+
+
+def color_effectiveness_summary(color_tries, color_changes):
+    """Format color effectiveness learning for LLM.
+    
+    Args:
+        color_tries: dict {color: num_tries}
+        color_changes: dict {color: num_changes}
+        
+    Returns:
+        Text summary of which colors cause grid changes.
+    """
+    if not color_tries:
+        return "No color effectiveness data yet."
+    
+    lines = []
+    effective = []  # >30% rate
+    neutral = []    # 1-30% rate
+    ineffective = []  # 0% rate
+    
+    for color in sorted(color_tries.keys()):
+        tries = color_tries[color]
+        changes = color_changes.get(color, 0)
+        rate = changes / max(tries, 1)
+        
+        entry = f"{color_name(color)}({changes}/{tries}={rate:.0%})"
+        if rate > 0.3:
+            effective.append(entry)
+        elif rate > 0:
+            neutral.append(entry)
+        else:
+            ineffective.append(entry)
+    
+    if effective:
+        lines.append(f"Effective colors (click causes change): {', '.join(effective)}")
+    if neutral:
+        lines.append(f"Sometimes effective: {', '.join(neutral)}")
+    if ineffective:
+        lines.append(f"Ineffective (no change): {', '.join(ineffective)}")
+    
+    return "\n".join(lines) if lines else "All colors untested."
+
+
+def visual_memory_context(grid, cartridge=None):
+    """Check visual memory for similar past states.
+    
+    Args:
+        grid: Current grid
+        cartridge: Membot cartridge with visual_memory
+        
+    Returns:
+        Text description of visual similarities to known states.
+    """
+    if not cartridge or "visual_memory" not in cartridge.data:
+        return None
+    
+    snapshots = cartridge.data["visual_memory"].get("snapshots", {})
+    if not snapshots:
+        return None
+    
+    # Find similar snapshots
+    similar = []
+    for label, snapshot in snapshots.items():
+        try:
+            stored_frame = cartridge._base64_to_frame(snapshot["frame_b64"])
+            sim = visual_similarity(grid, stored_frame)
+            if sim > 0.7:  # >70% similar
+                meta = snapshot.get("metadata", {})
+                desc = meta.get("description", label)
+                similar.append(f"{desc} (similarity: {sim:.1%})")
+        except Exception:
+            continue
+    
+    if similar:
+        return "Visual memory matches:\n- " + "\n- ".join(similar[:3])
+    
+    return None

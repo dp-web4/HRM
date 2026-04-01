@@ -57,32 +57,34 @@ def ask_llm(prompt: str, max_tokens: int = 150) -> str:
 def compact_grid_description(grid: np.ndarray, tracker: SpatialTracker) -> str:
     """Produce a compact spatial description for the LLM.
 
-    Focus on: what objects exist, which are interactive, spatial relationships.
-    Keep under ~200 tokens.
+    Includes: downsampled grid map + object summary + spatial relationships.
     """
     bg = background_color(grid)
     parts = [f"Grid 64x64, bg={color_name(bg)}"]
 
-    # Interactive vs static objects
+    # Downsampled map (8x8 = 8 rows of 8 hex chars = 80 tokens)
+    ds = grid[::8, ::8].astype(int)
+    color_legend = {}
+    for c in np.unique(ds):
+        color_legend[format(int(c), 'x')] = color_name(int(c))
+    legend = " ".join(f"{k}={v}" for k, v in sorted(color_legend.items()))
+    parts.append(f"Colors: {legend}")
+    parts.append("Map (8x downsample, hex):")
+    for r in range(ds.shape[0]):
+        parts.append("  " + "".join(format(int(c), "x") for c in ds[r]))
+
+    # Interactive vs untested objects
     interactive = tracker.get_interactive_objects()
-    static = tracker.get_static_objects()
     untested = tracker.get_untested_objects()
 
     if interactive:
-        items = [f"{color_name(o.color)}({o.w}x{o.h})@({o.cx},{o.cy})" for o in interactive[:5]]
+        items = [f"{color_name(o.color)}@({o.cx},{o.cy})" for o in interactive[:5]]
         parts.append(f"Interactive: {', '.join(items)}")
 
-    if untested:
-        items = [f"{color_name(o.color)}({o.w}x{o.h})@({o.cx},{o.cy})" for o in
+    if untested and len(untested) <= 10:
+        items = [f"{color_name(o.color)}@({o.cx},{o.cy})" for o in
                  sorted(untested, key=lambda o: o.size)[:5]]
-        parts.append(f"Untested: {', '.join(items)}")
-
-    # Alignments
-    h_groups = tracker.get_aligned_objects("horizontal")
-    if h_groups:
-        for group in h_groups[:2]:
-            names = [color_name(o.color) for o in group]
-            parts.append(f"Row y={group[0].cy}: {', '.join(names)}")
+        parts.append(f"Notable: {', '.join(items)}")
 
     # Movement pattern
     pattern = tracker.get_movement_pattern()

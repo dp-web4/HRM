@@ -25,6 +25,7 @@ Usage:
 """
 
 import sys, os, time, json, re, hashlib
+from collections import defaultdict
 import warnings
 warnings.filterwarnings("ignore")
 os.environ.setdefault("NUMPY_EXPERIMENTAL_DTYPE_API", "1")
@@ -45,6 +46,11 @@ from arc_perception import (
 )
 from arc_spatial import SpatialTracker
 from membot_cartridge import MembotCartridge
+try:
+    from arc_spatial import SpatialTracker
+    HAS_SPATIAL = True
+except ImportError:
+    HAS_SPATIAL = False
 
 INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
 MEMBOT_URL = "http://localhost:8000"
@@ -612,6 +618,9 @@ class SageAgent:
         self.effective_actions = []  # Actions that caused grid changes
         self.level_up_sequences = []  # Action sequences that preceded level-ups
 
+        # Spatial reasoning (McNugget contribution)
+        self.spatial_tracker = SpatialTracker() if HAS_SPATIAL else None
+
     def check_llm(self):
         """Check if Ollama is available for reasoning."""
         if self.llm_available is not None:
@@ -876,6 +885,14 @@ class SageAgent:
         goal_similarity = 1.0  # Start at initial state
         goal_history = [1.0]  # Track similarity over time
 
+        # SPATIAL TRACKING: Initialize object tracker
+        if self.spatial_tracker:
+            self.spatial_tracker = SpatialTracker()  # Fresh tracker per game
+            self.spatial_tracker.update(grid)
+            if self.verbose:
+                n_obj = len(self.spatial_tracker.objects)
+                print(f"  Spatial: {n_obj} objects detected")
+
         # RECALL: what do we know about this game type?
         memories = membot_recall(f"ARC-AGI-3 {prefix} game strategy")
         category_memories = membot_recall(f"ARC-AGI-3 placement puzzle sequence matching")
@@ -1053,17 +1070,32 @@ class SageAgent:
             if consecutive_cycles >= 3:
                 import random
                 if self.verbose:
-                    print(f"  [{step}] Breaking cycle — random action")
-                a = random.choice(available)
-                if a == 6:
-                    non_bg = np.argwhere(grid.astype(int) != background_color(grid))
-                    if len(non_bg) > 0:
-                        idx = random.randint(0, len(non_bg) - 1)
-                        r, c = int(non_bg[idx, 0]), int(non_bg[idx, 1])
-                        actions_to_take = [(6, {'x': c, 'y': r})]
+                    print(f"  [{step}] Breaking cycle — spatial/random action")
+
+                # Use spatial targets if available
+                if self.spatial_tracker and 6 in available:
+                    targets = self.spatial_tracker.suggest_click_targets(grid, n=3)
+                    # Pick an untested target to break the cycle
+                    untested_targets = [(x, y, r) for x, y, r in targets if "untested" in r]
+                    if untested_targets:
+                        x, y, reason = random.choice(untested_targets)
+                        actions_to_take = [(6, {'x': x, 'y': y})]
+                        if self.verbose:
+                            print(f"    Spatial: {reason}")
+                        consecutive_cycles = 0
+                    # Fall through if no spatial targets
+
                 if not actions_to_take:
-                    actions_to_take = [(a, None)]
-                consecutive_cycles = 0
+                    a = random.choice(available)
+                    if a == 6:
+                        non_bg = np.argwhere(grid.astype(int) != background_color(grid))
+                        if len(non_bg) > 0:
+                            idx = random.randint(0, len(non_bg) - 1)
+                            r, c = int(non_bg[idx, 0]), int(non_bg[idx, 1])
+                            actions_to_take = [(6, {'x': c, 'y': r})]
+                    if not actions_to_take:
+                        actions_to_take = [(a, None)]
+                    consecutive_cycles = 0
 
             elif no_progress_count >= 15:
                 # Stuck! Try perception-driven placement as escape hatch
@@ -1085,10 +1117,25 @@ class SageAgent:
                 stuck_hint = ""
                 if no_progress_count >= 5:
                     stuck_hint = f"\nWARNING: {no_progress_count} actions with no grid change. Try something DIFFERENT."
+                # Add spatial context if available
+                spatial_ctx = ""
+                if self.spatial_tracker:
+                    interactive = self.spatial_tracker.get_interactive_objects()
+                    if interactive:
+                        spatial_ctx = f"\nSPATIAL: {len(interactive)} interactive objects: "
+                        spatial_ctx += ", ".join(o.describe() for o in interactive[:5])
+                    targets = self.spatial_tracker.suggest_click_targets(grid, n=3)
+                    if targets:
+                        spatial_ctx += "\nSuggested targets: " + ", ".join(
+                            f"({x},{y}): {reason}" for x, y, reason in targets)
+                    pattern = self.spatial_tracker.get_movement_pattern()
+                    if pattern:
+                        spatial_ctx += f"\nMovement pattern: {pattern}"
+
                 prompt, category = build_strategy_prompt(
                     grid, available, all_memories,
                     {"current": fd.levels_completed, "total": fd.win_levels},
-                    (prev_result or stuck_hint) if (prev_result or stuck_hint) else None,
+                    (prev_result or stuck_hint or spatial_ctx) if (prev_result or stuck_hint or spatial_ctx) else None,
                     cartridge=cartridge,
                     initial_grid=initial_grid,
                     exploration_summary=explore_ctx,
@@ -1156,28 +1203,21 @@ class SageAgent:
             diff = grid_diff(prev_grid, new_grid)
             prev_result = diff if diff != "No change" else None
 
-            # SPATIAL UPDATE: Track object movements and interactions
-            if actions_to_take:
-                action_int, data = actions_to_take[0]
-                spatial_diff = spatial_tracker.update(new_grid)
-
-                # Record click effectiveness for interactive detection
-                if action_int == 6 and data:
-                    changed = (diff != "No change")
-                    n_pixels = 0
-                    if changed:
-                        diff_grid = (prev_grid != new_grid)
-                        n_pixels = int(diff_grid.sum())
-                    spatial_tracker.record_click(data['x'], data['y'], changed, n_pixels)
-
-                # Record action outcome
-                spatial_tracker.record_action_outcome(action_int, data, spatial_diff)
+            # SPATIAL: update object tracker with new frame
+            if self.spatial_tracker:
+                spatial_diff = self.spatial_tracker.update(new_grid)
+                for action_int_done, data_done in actions_to_take:
+                    if action_int_done == 6 and data_done:
+                        changed = diff != "No change"
+                        n_px = int(np.sum(prev_grid != new_grid))
+                        self.spatial_tracker.record_click(
+                            data_done['x'], data_done['y'], changed, n_px)
+                    self.spatial_tracker.record_action_outcome(
+                        action_int_done, data_done, spatial_diff)
 
             # GOAL DETECTION: Track similarity to initial state
             goal_similarity = visual_similarity(new_grid, initial_grid)
             goal_history.append(goal_similarity)
-
-            # Detect if we're moving toward/away from initial state
             if len(goal_history) >= 3:
                 trend = goal_history[-1] - goal_history[-3]
                 if self.verbose and abs(trend) > 0.05:

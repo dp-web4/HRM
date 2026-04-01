@@ -558,7 +558,8 @@ def build_strategy_prompt(grid, available_actions, memories, level_info,
                           initial_grid=None, exploration_summary=None,
                           cycle_info=None, spatial_tracker=None,
                           goal_similarity=None, cursor_pos=None,
-                          prev_grid=None, last_action_desc=None):
+                          prev_grid=None, last_action_desc=None,
+                          action_history=None):
     """Build a situational briefing for the LLM.
 
     The model is a player looking at a game screen. It controls a cursor.
@@ -592,8 +593,11 @@ def build_strategy_prompt(grid, available_actions, memories, level_info,
         surroundings = describe_surroundings(grid, cx, cy, radius=12, cursor_color=ccolor)
         prompt_parts.append(f"Around cursor: {surroundings}")
 
-    # ── What just happened? (causal feedback) ──
-    if last_action_desc:
+    # ── What just happened? (causal feedback — multi-turn) ──
+    if action_history and len(action_history) > 0:
+        history_str = " | ".join(action_history)
+        prompt_parts.append(f"Recent: {history_str}")
+    elif last_action_desc:
         prompt_parts.append(f"Last action: {last_action_desc}")
     elif prev_action_result:
         prompt_parts.append(f"Last result: {prev_action_result[:100]}")
@@ -1208,6 +1212,7 @@ class SageAgent:
         last_level = best_levels
         recent_llm_actions = []  # Track LLM action repetition
         last_action_desc = None  # Human-readable description of what last action did
+        action_history_descs = deque(maxlen=3)  # Last 3 action descriptions for multi-turn
 
         # CURSOR TRACKING: use exploration-detected cursor, or heuristic
         if hasattr(self, '_cursor_color') and hasattr(self, '_cursor_pos'):
@@ -1423,6 +1428,7 @@ class SageAgent:
                     cursor_pos=cursor_pos,
                     prev_grid=prev_grid,
                     last_action_desc=action_desc,
+                    action_history=list(action_history_descs),
                 )
                 llm_response = sage_reason(prompt)
 
@@ -1525,6 +1531,8 @@ class SageAgent:
                             last_action_desc = f"{a_name} → {n_px}px changed, cursor stayed"
                     else:
                         last_action_desc = f"{a_name} → {n_px}px changed"
+            if last_action_desc:
+                action_history_descs.append(last_action_desc)
 
             # SPATIAL: update object tracker with new frame
             if self.spatial_tracker:

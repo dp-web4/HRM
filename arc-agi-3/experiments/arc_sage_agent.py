@@ -371,7 +371,7 @@ def compute_placement_actions(grid):
     top_sec = sections[0]
     bot_sec = sections[-1]
 
-    BORDER_COLORS = {bg, 5, 8}
+    BORDER_COLORS = {bg, 5}  # yellow(bg), gray — frame/border colors
     top_regions = sorted(
         [r for r in regions if top_sec["y_start"] <= r["cy"] <= top_sec["y_end"]
          and r["color"] not in BORDER_COLORS and r["size"] < 50],

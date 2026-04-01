@@ -447,74 +447,75 @@ def build_strategy_prompt(grid, available_actions, memories, level_info,
                           goal_similarity=None):
     """Build the prompt for LLM reasoning.
 
-    Compact format optimized for 0.8B models. Includes exploration results,
-    cycle detection warnings, visual memory context, spatial relationships,
-    and goal-awareness feedback.
+    Compact format for 0.8B models. Actionable info FIRST (exploration
+    results, spatial suggestions), perception details last.
     Returns (prompt, category) tuple.
     """
-    perception = full_perception(grid)
     category = detect_game_category(grid, available_actions)
 
     action_names = {1: "up", 2: "down", 3: "left", 4: "right",
                     5: "submit", 6: "click(x,y)", 7: "undo"}
     avail_str = ", ".join(action_names.get(a, f"action{a}") for a in sorted(available_actions))
 
+    # Start with actionable info — most important for 0.8B attention
     prompt_parts = [
-        f"PUZZLE Level {level_info.get('current', '?')}/{level_info.get('total', '?')}",
-        f"\nSee:\n{perception}",
-        f"\nType: {category.get('category', 'unknown')} — {category.get('hint', '')}",
-        f"\nActions: {avail_str}",
+        f"Level {level_info.get('current', '?')}/{level_info.get('total', '?')}. Actions: {avail_str}",
     ]
 
-    # Exploration results — the most valuable context for the LLM
+    # Exploration results FIRST — this is what matters most
     if exploration_summary:
-        prompt_parts.append(f"\nExploration results:\n{exploration_summary}")
+        prompt_parts.append(exploration_summary)
 
-    # Spatial reasoning: object tracking and relationships
-    if spatial_tracker and spatial_tracker.objects:
-        spatial_desc = spatial_tracker.describe()
-        # Compact version for LLM (first 400 chars)
-        prompt_parts.append(f"\nSpatial:\n{spatial_desc[:400]}")
+    # Spatial click suggestions (compact — just coordinates)
+    if spatial_tracker and spatial_tracker.objects and 6 in available_actions:
+        targets = spatial_tracker.suggest_click_targets(grid, n=2)
+        if targets:
+            suggestions = [f"{reason}({x},{y})" for x, y, reason in targets]
+            prompt_parts.append(f"Spatial: {', '.join(suggestions)}")
 
-        # Smart click suggestions if available
-        if 6 in available_actions:
-            targets = spatial_tracker.suggest_click_targets(grid, n=2)
-            if targets:
-                suggestions = [f"{reason} at ({x},{y})" for x, y, reason in targets]
-                prompt_parts.append(f"Suggested clicks:\n" + "\n".join(f"- {s}" for s in suggestions))
-
-    # Visual memory context
-    if cartridge:
-        vm_context = visual_memory_context(grid, cartridge)
-        if vm_context:
-            prompt_parts.append(f"\n{vm_context}")
-
-    # Goal-awareness: compare to initial state
+    # Goal progress
     if goal_similarity is not None:
         if goal_similarity < 0.95:
-            prompt_parts.append(f"Goal: {goal_similarity:.0%} similar to start ({100 - goal_similarity*100:.0f}% changed)")
+            prompt_parts.append(f"Progress: {100 - goal_similarity*100:.0f}% changed from start")
         else:
-            prompt_parts.append("Goal: unchanged from start — need progress")
-    elif initial_grid is not None:
-        similarity = visual_similarity(grid, initial_grid)
-        if similarity < 0.95:
-            prompt_parts.append(f"Grid changed {100 - similarity*100:.0f}% from start")
-        else:
-            prompt_parts.append("Grid unchanged — need progress")
+            prompt_parts.append("No progress yet")
 
-    if memories:
-        prompt_parts.append(f"\nMemory:\n" + "\n".join(f"- {m}" for m in memories[:3]))
+    if cycle_info:
+        prompt_parts.append(f"WARNING: {cycle_info}. Try DIFFERENT action.")
 
     if prev_action_result:
-        prompt_parts.append(f"\nLast result: {prev_action_result}")
+        prompt_parts.append(f"Last: {prev_action_result[:80]}")
 
-    # Cycle detection warning
-    if cycle_info:
-        prompt_parts.append(f"\n⚠ WARNING: {cycle_info}. Try a different action to break the loop.")
+    # Clickable targets with positions — only show EFFECTIVE colors if known
+    bg = background_color(grid)
+    regions = find_color_regions(grid, min_size=4)
+    non_bg_regions = [r for r in regions if r["color"] != bg]
+    if non_bg_regions and 6 in available_actions:
+        shown = non_bg_regions[:8]  # Default: first 8
 
-    prompt_parts.append(
-        "\nWhat action? Reply: click(X,Y) or move up/down/left/right or submit."
-    )
+        # If exploration found effective colors, only show those
+        if exploration_summary and "Clickable colors" in exploration_summary:
+            # Parse "Clickable colors (caused change): cyan(1/1), red(2/3)"
+            eff_names = set()
+            eff_line = exploration_summary.split("Clickable colors")[1].split("\n")[0]
+            # Get everything after the last ":"
+            if ":" in eff_line:
+                eff_line = eff_line.split(":")[-1]
+            for part in eff_line.split(","):
+                name = part.strip().split("(")[0].strip()
+                if name and name[0].isalpha():
+                    eff_names.add(name)
+            if eff_names:
+                effective = [r for r in non_bg_regions if r["color_name"] in eff_names]
+                if effective:
+                    shown = effective[:8]
+
+        targets = [f"{r['color_name']}({r['cx']},{r['cy']})" for r in shown]
+        label = "Click these" if exploration_summary and "Clickable" in (exploration_summary or "") else "Targets"
+        prompt_parts.append(f"{label}: {', '.join(targets)}")
+
+    prompt_parts.append(f"Grid: {grid.shape[0]}x{grid.shape[1]}")
+    prompt_parts.append("Reply: click(X,Y) or move up/down/left/right or submit.")
 
     return "\n".join(prompt_parts), category
 

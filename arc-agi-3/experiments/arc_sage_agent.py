@@ -24,12 +24,13 @@ Usage:
     python3 arc_sage_agent.py --all --budget 500
 """
 
-import sys, os, time, json, re
+import sys, os, time, json, re, hashlib
 import warnings
 warnings.filterwarnings("ignore")
 os.environ.setdefault("NUMPY_EXPERIMENTAL_DTYPE_API", "1")
 import numpy as np
 import requests
+from collections import deque
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.insert(0, os.path.join(os.path.dirname(__file__)))
@@ -190,6 +191,15 @@ def parse_action(llm_response, available_actions, grid):
 
 
 # ─── Perception-based heuristic strategies ───
+
+def hash_grid_state(grid):
+    """Fast hash of grid state for cycle detection.
+
+    Uses blake2b (fast, collision-resistant) on grid bytes.
+    Returns hex string suitable for set membership checks.
+    """
+    return hashlib.blake2b(grid.tobytes(), digest_size=16).hexdigest()
+
 
 def detect_game_category(grid, available_actions):
     """Analyze grid to guess game category.
@@ -429,11 +439,11 @@ def compute_placement_actions(grid):
     return actions
 
 
-def build_strategy_prompt(grid, available_actions, memories, level_info, prev_action_result=None, cartridge=None, initial_grid=None):
+def build_strategy_prompt(grid, available_actions, memories, level_info, prev_action_result=None, cartridge=None, initial_grid=None, cycle_info=None):
     """Build the prompt for LLM reasoning.
 
     Uses few-shot completion style optimized for 0.8B models.
-    Now includes visual memory context and goal-awareness.
+    Now includes visual memory context, goal-awareness, and cycle detection.
     Returns (prompt, category) tuple.
     """
     perception = full_perception(grid)
@@ -469,6 +479,10 @@ def build_strategy_prompt(grid, available_actions, memories, level_info, prev_ac
 
     if prev_action_result:
         prompt_parts.append(f"\nLast action result: {prev_action_result}")
+
+    # Cycle detection warning
+    if cycle_info:
+        prompt_parts.append(f"\n⚠ WARNING: {cycle_info}. Try a different action to break the loop.")
 
     prompt_parts.append(
         "\nWhat should I do? Think step by step, then say your action. "
@@ -611,6 +625,13 @@ class SageAgent:
         llm_cooldown = 0  # Steps until next LLM call (don't call every step)
         llm_interval = 5  # Call LLM every N steps
 
+        # STATE CYCLE DETECTION: Track seen states to break loops
+        seen_states = set()  # All states visited (for exact match detection)
+        recent_states = deque(maxlen=10)  # Last 10 states (for loop pattern detection)
+        cycle_detected = False
+        cycle_info = None
+        consecutive_cycles = 0  # Count how many cycles in a row (for loop-breaking)
+
         while step < budget and fd.state.name not in ("WON", "GAME_OVER"):
             # PERCEIVE
             grid = get_frame(fd)
@@ -647,17 +668,69 @@ class SageAgent:
                     f"Grid change: {diff_desc[:200]}"
                 )
 
+                # Level-up resets cycle detection (new game state space)
+                seen_states.clear()
+                recent_states.clear()
+                cycle_detected = False
+                cycle_info = None
+
+            # CYCLE DETECTION: Check if we've seen this state before
+            state_hash = hash_grid_state(grid)
+
+            if state_hash in seen_states:
+                # We've been in this exact state before — potential loop
+                cycle_detected = True
+                consecutive_cycles += 1
+                # Check if it's a short loop (state appeared recently)
+                if state_hash in recent_states:
+                    loop_length = len(recent_states) - list(recent_states).index(state_hash)
+                    cycle_info = f"Loop detected (length {loop_length}) — repeating state (#{consecutive_cycles})"
+                else:
+                    cycle_info = "Visited state (seen {}/{} steps ago) (#{})".format(
+                        step, len(seen_states), consecutive_cycles
+                    )
+
+                if self.verbose:
+                    print(f"  ⚠ {cycle_info}")
+            else:
+                # New state - reset cycle counter
+                consecutive_cycles = 0
+                cycle_detected = False
+                cycle_info = None
+
+            # Track this state
+            seen_states.add(state_hash)
+            recent_states.append(state_hash)
+
             # REASON (LLM or heuristic)
             actions_to_take = []
 
-            if self.use_llm and self.check_llm() and llm_cooldown <= 0:
-                # Build prompt with visual memory and goal-awareness
+            # LOOP-BREAKING: If stuck in persistent cycle, force exploration
+            if consecutive_cycles >= 3:
+                if self.verbose:
+                    print(f"  💥 Breaking persistent loop - forcing random exploration")
+                # Skip LLM, go straight to random exploration
+                import random
+                a = random.choice(available)
+                if a == 6:
+                    # Click a random non-background position
+                    non_bg = np.argwhere(grid.astype(int) != background_color(grid))
+                    if len(non_bg) > 0:
+                        idx = random.randint(0, len(non_bg) - 1)
+                        r, c = int(non_bg[idx, 0]), int(non_bg[idx, 1])
+                        actions_to_take = [(6, {'x': c, 'y': r})]
+                if not actions_to_take:
+                    actions_to_take = [(a, None)]
+
+            elif self.use_llm and self.check_llm() and llm_cooldown <= 0:
+                # Build prompt with visual memory, goal-awareness, and cycle detection
                 prompt, category = build_strategy_prompt(
                     grid, available, all_memories,
                     {"current": fd.levels_completed, "total": fd.win_levels},
                     prev_result,
                     cartridge=cartridge,
                     initial_grid=initial_grid,
+                    cycle_info=cycle_info,
                 )
                 llm_response = sage_reason(prompt)
 

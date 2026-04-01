@@ -1235,12 +1235,42 @@ class SageAgent:
             "state": fd.state.name,
         }
 
+        # LEARN: Store exploration findings + game results to membot
+        # This is the key learning channel — even 0 scores teach SAGE about the game
+        explore_ctx = self.exploration_summary()
+        learning = (
+            f"ARC-AGI-3 {prefix}: {best_levels}/{fd.win_levels} levels in {step} steps. "
+            f"Category: {category.get('category')}. Actions: {available}. "
+            f"Exploration: {explore_ctx[:200]}"
+        )
+        # Add spatial learnings if available
+        if spatial_tracker and spatial_tracker.click_history:
+            n_effective = sum(1 for c in spatial_tracker.click_history if c.get("changed"))
+            n_total = len(spatial_tracker.click_history)
+            learning += f" Clicks: {n_effective}/{n_total} effective."
+        membot_store(learning)
+
         if best_levels > 0:
+            # Store winning strategies separately for stronger recall
             membot_store(
-                f"ARC-AGI-3 {prefix}: scored {best_levels}/{fd.win_levels}. "
-                f"Category: {category.get('category')}. "
-                f"Actions: {available}. Steps used: {step}/{budget}."
+                f"ARC-AGI-3 {prefix} WINNING: scored {best_levels}/{fd.win_levels}. "
+                f"Level-up actions: {self.level_up_sequences}. "
+                f"Category: {category.get('category')}."
             )
+
+        # LLM REFLECTION: Ask the model what it learned about this game
+        if self.use_llm and self.check_llm() and step > 10:
+            reflection_prompt = (
+                f"Game {prefix}: {best_levels}/{fd.win_levels} levels. "
+                f"Category: {category.get('category')}. "
+                f"{explore_ctx[:150]} "
+                f"What pattern did you notice? One sentence."
+            )
+            reflection = sage_reason(reflection_prompt, max_tokens=60)
+            if reflection:
+                membot_store(f"ARC-AGI-3 {prefix} reflection: {reflection[:200]}")
+                if self.verbose:
+                    print(f"  Reflection: {reflection[:80]}")
 
         # Save visual memory cartridge
         cartridge.write()

@@ -36,7 +36,7 @@ from sage.irp.plugins.grid_cartridge_irp import GridCartridgeIRP, QUERY_ACTION_O
 from sage.interfaces.base_effector import EffectorCommand
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
-MODEL = "gemma3:12b"
+MODEL = "gemma3:4b"
 INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
 
 ACTION_LABELS = {
@@ -327,7 +327,7 @@ def main():
     args = parser.parse_args()
 
     print("=" * 70)
-    print("SAGE ARC-AGI-3 Game Runner v2 — Sequence Planning + Reflection")
+    print("SAGE ARC-AGI-3 Game Runner v3 — GridCartridgeIRP Cross-Session Memory")
     print(f"Model: {MODEL} via Ollama")
     print("=" * 70)
 

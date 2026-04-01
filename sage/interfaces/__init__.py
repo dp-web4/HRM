@@ -20,20 +20,18 @@ Design Philosophy:
     - Hardware-agnostic: Mock for development, real for production
 """
 
-from .base_sensor import BaseSensor, SensorReading
 from .base_effector import BaseEffector, EffectorCommand, EffectorResult, EffectorStatus
-from .sensor_hub import SensorHub
-from .effector_hub import EffectorHub
 
-__all__ = [
-    'BaseSensor',
-    'SensorReading',
-    'BaseEffector',
-    'EffectorCommand',
-    'EffectorResult',
-    'EffectorStatus',
-    'SensorHub',
-    'EffectorHub',
-]
+try:
+    from .base_sensor import BaseSensor, SensorReading
+    from .sensor_hub import SensorHub
+    from .effector_hub import EffectorHub
+    _FULL = True
+except ImportError:
+    _FULL = False
+
+__all__ = ['BaseEffector', 'EffectorCommand', 'EffectorResult', 'EffectorStatus']
+if _FULL:
+    __all__ += ['BaseSensor', 'SensorReading', 'SensorHub', 'EffectorHub']
 
 __version__ = '1.0.0'

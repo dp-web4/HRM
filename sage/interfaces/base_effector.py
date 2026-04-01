@@ -13,7 +13,12 @@ Design Principles:
     - Configuration-driven: All parameters in config dict
 """
 
-import torch
+try:
+    import torch as _torch
+    _Tensor = _torch.Tensor
+except ImportError:
+    _torch = None
+    _Tensor = None
 import asyncio
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
@@ -51,7 +56,7 @@ class EffectorCommand:
     effector_type: str
     action: str
     parameters: Dict[str, Any] = field(default_factory=dict)
-    data: Optional[torch.Tensor] = None
+    data: Optional[Any] = None  # torch.Tensor when available
     timeout: float = 5.0
     priority: int = 0
     metadata: Dict[str, Any] = field(default_factory=dict)
@@ -143,7 +148,7 @@ class BaseEffector(ABC):
         self.config = config
         self.effector_id = config.get('effector_id', self.__class__.__name__)
         self.effector_type = config.get('effector_type', 'generic')
-        self.device = torch.device(config.get('device', 'cpu'))
+        self.device = _torch.device(config.get('device', 'cpu')) if _torch else config.get('device', 'cpu')
         self.enabled = config.get('enabled', True)
 
         # Safety

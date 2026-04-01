@@ -240,59 +240,119 @@ Most games require **multiple capabilities** simultaneously. The scoring (RHAE²
 
 ---
 
-## Strategic Priorities for Competition
+## What This Means for SAGE
 
-### Tier 1 — Most solvable with current architecture (click/explore + simple reasoning)
-These games have clear click-based mechanics where systematic exploration can score:
-- **lp85** (rotation — already scoring 4/8)
-- **vc33** (track routing — already scoring 1/7)
-- **ft09** (constraint coloring — click to solve)
-- **cn04** (jigsaw — spatial alignment)
-- **sb26** (sequence matching — already scoring 1/8)
+**The competition games will NOT be these 25 games.** These are practice environments. The actual competition uses novel games we've never seen. Game-specific solvers are useless — they'd score 100% on practice and 0% on competition. This analysis exists to identify what **general capabilities** SAGE needs, not to build per-game solutions.
 
-### Tier 2 — Solvable with code analysis + lightweight planning
-These need game-specific solvers informed by source code analysis:
-- **bp35** (gravity platformer — compute fall trajectories)
-- **tu93** (maze navigation — BFS to exit)
-- **g50t** (pac-man — ghost avoidance + pathfinding)
-- **lf52** (merge puzzle — brute-force small grids)
-- **tr87** (rule application — direct rule lookup)
+*"Build the driver, not a track-specific solution. The consciousness loop IS the driver. ARC-AGI-3 IS the track. If we build for the track, we get 97% on one game and 0% on others. If we build the driver, the driver handles any track."*
 
-### Tier 3 — Requires significant spatial reasoning
-These need genuine spatial intelligence or physics simulation:
-- **sp80** (pipe flow — simulate fluid)
-- **m0r0** (mirrored tokens — simultaneous constraint solving)
-- **ka59** (sokoban + bombs — multi-step planning)
-- **su15** (merge physics — predict vacuum dynamics)
-- **re86** (shape deformation — predict barrier effects)
+### What the 25 Games Collectively Demand
 
-### Tier 4 — Hardest (complex multi-system reasoning)
-- **dc22** (crane + bridges + pressure plates + color cycling)
-- **sc25** (spell-casting dungeon — multi-spell sequencing)
-- **tn36** (program construction — encode transformation sequences)
-- **ar25** (reflection — symmetry + axis planning)
-- **s5i5** (kinematic chains — hierarchical arm control)
-- **ls20** (state cycling under fog of war)
-- **wa30** (autonomous agent coordination)
-- **sk48** (conveyor sequence alignment)
-- **cd82** (octagonal sector painting)
-- **r11l** (indirect centroid positioning)
+From analyzing the source code, every game requires some combination of these **general cognitive capabilities**:
 
-### Action Budget Strategy
+**1. Object Detection & Tracking**
+Every game has discrete objects (sprites, tiles, pieces, tokens) on a grid. SAGE must perceive them — not as pixel changes, but as entities with position, color, shape, and relationships to other entities. Andy's connected component analysis is the foundation. But SAGE also needs to track objects across frames (this piece moved from here to there) and recognize object types by visual features (this is a button, this is a wall, this is a goal marker).
 
-RHAE scoring is squared — taking 2× human baseline gives 25% score, not 50%. Therefore:
+*Tested by: all 25 games. Non-negotiable.*
 
-1. **Solve fewer games more efficiently** rather than attempting all 25
-2. **Game-specific solvers** (informed by source code) will always beat general exploration
-3. **Brute-force exploration** (5000+ steps/sec without LLM) finds goal conditions fast
-4. **LLM reasoning** (1-8 sec/step) should only be used for strategy, not exploration
-5. **Two-phase per game**: random exploration to discover mechanics, then targeted solver
+**2. Action-Outcome Learning**
+Every game has actions that produce observable effects. SAGE must learn the mapping: "when I do X in state S, outcome Y happens." This is exactly what McNugget's game runner demonstrated — forming hypotheses like "UP shifts grid upward." The consciousness loop already has SNARC salience scoring and membot cartridges for this. The gap is speed — learning must happen within the first 10-20 actions of a new game, not after 200.
 
-### Fleet Division
+*Tested by: all 25 games. The two-phase approach (fast exploration → hypothesis formation) is the right pattern, but it must be general, not game-specific.*
 
-| Machine | Role | Model | Games |
-|---------|------|-------|-------|
-| **Sprout** (8GB) | Brute-force exploration | None (pure logic) | All 25 — find which games respond to clicks |
-| **McNugget** (16GB) | Hypothesis + solver dev | Gemma 3 12B | Tier 1-2 games — build solvers |
-| **Thor** (122GB) | Deep reasoning + code analysis | Qwen 27B | Tier 3-4 games — plan strategies |
-| **CBP** (16GB) | Coordinator + testing | Qwen 3.5 0.8B | Validate solvers across games |
+**3. Goal Detection**
+The hardest gap. SAGE explores well but doesn't know what it's trying to achieve. It needs to detect goal signals:
+- **Level completion** — the strongest signal. When `levels_completed` increments, SAGE must record exactly what preceded it and prioritize repeating/extending that pattern.
+- **Visual goal markers** — many games display goal positions (color 11 in lp85, exit sprites in tu93, docking zones in wa30). SAGE needs to recognize "this looks like a target."
+- **Progress indicators** — step counters, energy bars, score displays. Frame-change patterns that correlate with progress.
+- **State convergence** — detecting when the game state is approaching a "solved" configuration (pieces aligning, constraints being satisfied).
+
+*Most critical missing capability. Without goal detection, exploration is aimless.*
+
+**4. Spatial Reasoning**
+20 of 25 games require understanding spatial relationships: adjacency, containment, alignment, symmetry, rotation, path connectivity. SAGE needs to go beyond "48 cells changed" to "object A moved 3 cells right and is now adjacent to object B."
+
+This maps to Andy's perception layer — structured GridObservation with objects, bounding boxes, movement tracking. The consciousness loop consumes this as spatial facts, not raw pixel data.
+
+*Tested by: cn04 (alignment), lp85 (rotation), sp80 (path flow), tu93 (maze navigation), ar25 (reflection), m0r0 (mirrored movement), and many others.*
+
+**5. Hypothesis Formation & Testing**
+McNugget's game runner already demonstrates this: the LLM forms theories about game rules and designs experiments to test them. This is the core cognitive loop:
+- Observe → hypothesize → predict → act → compare prediction to outcome → revise
+
+The consciousness loop's 12-step cycle maps directly: Sense (observe) → Salience (what's surprising) → Select (what to attend to) → Execute (act) → Learn (compare to prediction) → Remember (update hypothesis).
+
+*The LLM is the reasoning engine. SAGE provides the loop structure that makes reasoning systematic rather than ad-hoc.*
+
+**6. Coordinate Interaction**
+Many games require clicking specific grid positions (ACTION6 with x,y). This means SAGE must:
+- Identify clickable targets from the grid
+- Choose which target to click based on current hypothesis
+- Map grid coordinates to SDK action parameters
+
+This is fundamentally different from simple directional movement (ACTION1-4). The agent needs spatial targeting, not just direction selection.
+
+*Tested by: cn04, cd82, ft09, tn36, sc25, vc33, s5i5, lp85, su15, r11l — at least 10 of 25 games.*
+
+**7. Multi-Step Planning**
+Several games require action sequences where individual actions have no visible effect but the sequence as a whole achieves a goal. SAGE must plan beyond single actions:
+- Rotation sequences (lp85: rotate ring A left 3 times, then ring B right 2 times)
+- Navigation paths (tu93: up, up, right, right, down to reach exit)
+- Causal chains (bp35: break block → fall → land on platform → break next block → reach gem)
+
+The consciousness loop's ATP budgeting already supports this — allocate resources for multi-step plans, not just reactive single actions.
+
+*Tested by: lp85, sp80, ka59, bp35, tn36, sc25, m0r0, lf52 — at least 8 of 25 games.*
+
+**8. Transfer Across Levels**
+Within a single game environment, levels get harder but follow the same mechanics. What SAGE learns in Level 1 should accelerate Level 2. This is exactly what membot cartridges provide — action-outcome pairs searchable by state similarity.
+
+Across game environments (different games), transfer is harder — but the cognitive capabilities are the same. An agent that learned "clicking colored cells sometimes triggers level completion" in one game should try that strategy early in a new game.
+
+*This is the competition differentiator. StochasticGoose scored 12.58% with no transfer. Memory IS the scoring advantage.*
+
+### What SAGE Already Has
+
+| Capability | SAGE Component | Status |
+|-----------|---------------|--------|
+| Object detection | GridVisionIRP + Andy's perception | Built, needs wiring |
+| Action-outcome learning | GameMemory + membot cartridges | Working (McNugget demo) |
+| Goal detection | **GAP** | Level-up signal exists, visual goal detection missing |
+| Spatial reasoning | GridObservation structured output | Dataclass defined, LLM consumes it |
+| Hypothesis formation | LLM reasoning in consciousness loop | Working (McNugget demo) |
+| Coordinate interaction | GameActionEffector with x,y | Built, tested |
+| Multi-step planning | Sequence planning in game runner v2 | Working (3-5 action sequences) |
+| Cross-level transfer | Membot cartridges + SNARC | Architecture exists, not yet wired end-to-end |
+
+### What SAGE Still Needs
+
+1. **Goal detection module** — Watches for level_completed changes, identifies visual goal markers, tracks progress indicators. This is the #1 gap. Without it, SAGE explores forever.
+
+2. **Fast exploration phase** — First 20-50 actions should be rapid systematic probing (try each action, try clicking each color, try clicking each region). No LLM needed. Pure observation. Build the action-outcome map fast.
+
+3. **Exploration → exploitation transition** — Once SAGE has a hypothesis with supporting evidence, shift from exploring to executing. Trust posture already models this (confidence → strategy), but it needs to be wired to the game loop.
+
+4. **State hashing / cycle detection** — Detect when the game is in a previously-seen state. Break loops. Don't waste actions repeating what didn't work.
+
+5. **Reward signal amplification** — When a level completes, that signal should dominate everything. Record the last N actions, mark them as the most valuable experience in the cartridge, and prioritize similar patterns.
+
+### RHAE Implications
+
+RHAE = min(1, human_actions / agent_actions)². The squared penalty means:
+
+- **Efficiency over completeness** — solving 3/8 levels in 50 actions beats solving 4/8 in 500 actions
+- **Fast exploration matters** — every wasted exploration action reduces RHAE
+- **The right hypothesis early is worth more than exhaustive search**
+- **Memory saves actions** — recalling "this worked before" avoids re-exploring
+
+### Fleet Role (Development, Not Competition)
+
+The fleet's role is to **develop and validate SAGE's general capabilities**, not to build game-specific solvers:
+
+| Machine | Development Role |
+|---------|-----------------|
+| **Sprout** (8GB) | Stress-test perception + fast exploration on edge hardware. If SAGE works here, it works on the competition's RTX 5090. |
+| **McNugget** (16GB) | Primary integration testing. Game runner development. Hypothesis formation quality. |
+| **Thor** (122GB) | Deep reasoning experiments. Cross-level transfer. Memory architecture validation. |
+| **CBP** (16GB) | Coordination. Strategy. This document. |
+| **Andy's team** | Perception layer (GridCartridge, embeddings, visual memory). The eyes. |

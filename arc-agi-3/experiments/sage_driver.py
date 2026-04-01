@@ -79,7 +79,7 @@ class SageDriver:
         # Load prior experience
         self._load_experience()
 
-    def select_action(self, state_hash: str, grid: np.ndarray = None) -> int:
+    def select_action(self, state_hash: str, grid: np.ndarray = None):
         """Select action blending learned effectiveness + LLM bias.
 
         Args:
@@ -87,7 +87,8 @@ class SageDriver:
             grid: Current grid (for storage in recent history)
 
         Returns:
-            Action integer
+            int for simple actions, or (int, dict) for coordinate actions.
+            e.g. 1 for UP, or (6, {'x': col, 'y': row}) for ACTION6 click.
         """
         # Store grid for Navigator reflection
         if grid is not None:
@@ -95,7 +96,7 @@ class SageDriver:
 
         # Exploration: random action
         if random.random() < self.exploration_rate:
-            return random.choice(self.available)
+            return self._with_coordinates(random.choice(self.available), grid)
 
         # Exploitation: blend learned + LLM signals
         scores = {}
@@ -128,11 +129,38 @@ class SageDriver:
 
         r = random.random()
         cumulative = 0
+        selected = self.available[-1]
         for a in self.available:
             cumulative += probs[a]
             if r <= cumulative:
-                return a
-        return self.available[-1]
+                selected = a
+                break
+        return self._with_coordinates(selected, grid)
+
+    def _with_coordinates(self, action: int, grid: np.ndarray = None):
+        """Wrap ACTION6 with x,y coordinates targeting a non-background cell.
+
+        Returns:
+            int for simple actions (1-5, 7)
+            (6, {'x': col, 'y': row}) for ACTION6 coordinate click
+        """
+        if action != 6 or grid is None:
+            return action
+
+        # Pick a non-background cell to click
+        try:
+            bg = int(np.bincount(grid.astype(int).flatten()).argmax())
+        except (TypeError, ValueError):
+            bg = 0
+
+        non_bg = np.argwhere(grid != bg)
+        if len(non_bg) == 0:
+            # All same color — click center
+            r, c = grid.shape[0] // 2, grid.shape[1] // 2
+        else:
+            r, c = random.choice(non_bg.tolist())
+
+        return (6, {'x': int(c), 'y': int(r)})
 
     def record(self, action: int, state_hash: str, changed: bool):
         """Record action outcome for learning."""

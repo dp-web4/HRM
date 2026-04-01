@@ -143,12 +143,12 @@ class VisualRotationSolver:
         # 3. Otherwise, use driver's action selection (exploration + exploitation)
 
         if similarity_to_initial > 0.95 and step > 10:
-            # We're going in circles, force exploration
+            # We're going in circles, force exploration with coordinates
             if self.verbose:
                 print(f"   🔄 Too similar to initial ({similarity_to_initial:.3f}), forcing exploration")
-            # Simple forced exploration
             import random
-            return random.choice(self.driver.available)
+            action = random.choice(self.driver.available)
+            return self.driver._with_coordinates(action, current_frame)
 
         # Use driver's normal selection (which includes exhaustion/stagnation logic)
         return self.driver.select_action(state_hash, current_frame)
@@ -208,11 +208,17 @@ class VisualRotationSolver:
             before_frame = self.current_grid.copy()
 
             # Choose action using visual analysis
-            action = self.choose_action_visually(level, step, state_hash)
+            action_result = self.choose_action_visually(level, step, state_hash)
 
-            # Execute action
-            game_action = INT_TO_GAME_ACTION[action]
-            self.frame_data = self.env.step(game_action)
+            # Execute action — handle both simple (int) and coordinate ((int, dict)) formats
+            if isinstance(action_result, tuple):
+                action, data = action_result
+                game_action = INT_TO_GAME_ACTION[action]
+                self.frame_data = self.env.step(game_action, data=data)
+            else:
+                action = action_result
+                game_action = INT_TO_GAME_ACTION[action]
+                self.frame_data = self.env.step(game_action)
 
             # Get new grid
             self.current_grid = self.get_current_frame()

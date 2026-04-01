@@ -27,6 +27,7 @@ import numpy as np
 import requests
 
 sys.path.insert(0, ".")
+sys.path.insert(0, "arc-agi-3/experiments")
 
 from arc_agi import Arcade
 from arcengine import GameAction
@@ -34,6 +35,10 @@ from sage.irp.plugins.grid_vision_irp import GridVisionIRP, GridObservation, Ste
 from sage.irp.plugins.game_action_effector import GameActionEffector, ACTION_NAMES
 from sage.irp.plugins.grid_cartridge_irp import GridCartridgeIRP, QUERY_ACTION_OUTCOME, QUERY_CROSS_LEVEL
 from sage.interfaces.base_effector import EffectorCommand
+from arc_perception import (
+    full_perception, color_effectiveness_summary, grid_diff as arc_grid_diff,
+    color_name as arc_color_name,
+)
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
 MODEL = "gemma3:4b"
@@ -191,6 +196,7 @@ class GameMemory:
         self.winning_sequences: list = []  # sequences that caused level-ups
         self.color_stats: dict = {}        # {color: {"tries": int, "changes": int}}
         self.clicked_this_level: set = set()
+        self.click_history: list = []     # recent click causal feedback for LLM
 
     def record_click(self, r: int, c: int, color: int, changed: bool):
         """Track coordinate click effectiveness by color."""
@@ -200,6 +206,34 @@ class GameMemory:
         self.color_stats[color]["tries"] += 1
         if changed:
             self.color_stats[color]["changes"] += 1
+
+    def record_click_detail(self, step: int, r: int, c: int, color: int,
+                            n_changed: int, region_desc: str = ""):
+        """Track detailed click causal feedback for LLM reasoning."""
+        self.click_history.append({
+            "step": step, "r": r, "c": c,
+            "color_name": arc_color_name(color), "color": color,
+            "changes": n_changed, "region": region_desc,
+        })
+        if len(self.click_history) > 10:
+            self.click_history = self.click_history[-10:]
+
+    def click_history_text(self, n: int = 6) -> str:
+        """Format recent clicks as causal feedback for LLM."""
+        if not self.click_history:
+            return "No clicks yet."
+        lines = []
+        for h in self.click_history[-n:]:
+            effect = f"→ {h['changes']} cells changed" if h['changes'] > 0 else "→ NO CHANGE"
+            loc = h['region'] if h['region'] else f"r={h['r']},c={h['c']}"
+            lines.append(f"  Step {h['step']}: clicked {h['color_name']} @({loc}) {effect}")
+        return "\n".join(lines)
+
+    def color_tries_changes(self) -> tuple:
+        """Return (color_tries, color_changes) dicts for color_effectiveness_summary."""
+        tries = {c: s["tries"] for c, s in self.color_stats.items()}
+        changes = {c: s["changes"] for c, s in self.color_stats.items()}
+        return tries, changes
 
     def reset_level_clicks(self):
         self.clicked_this_level = set()
@@ -278,11 +312,12 @@ def plan_prompt(grid: np.ndarray, summary: dict, available: list,
                 levels_completed: int, win_levels: int,
                 memory: GameMemory, step_count: int,
                 fast: bool = False,
-                prior_memory: list = None) -> str:
+                prior_memory: list = None,
+                strategic_insights: list = None) -> str:
     """Ask LLM to plan a sequence of 3-5 actions.
 
     prior_memory: list of SearchResult.to_dict() from GridCartridgeIRP.
-    Injected as a CARTRIDGE MEMORY section when present.
+    strategic_insights: list of insight strings from cartridge (e.g. rotation puzzle facts).
     """
     avail = [f"{a}={ACTION_LABELS.get(a, f'A{a}')}" for a in available]
 
@@ -299,8 +334,14 @@ def plan_prompt(grid: np.ndarray, summary: dict, available: list,
         if lines:
             cart_section = "CARTRIDGE MEMORY (prior sessions):\n" + "\n".join(lines)
 
+    # Known game knowledge from strategic_insights
+    knowledge_section = ""
+    if strategic_insights:
+        lines = [f"  - {s}" for s in strategic_insights[:5]]
+        knowledge_section = "KNOWN GAME KNOWLEDGE:\n" + "\n".join(lines)
+
     if fast:
-        # Compact prompt for speed (~70 tokens instead of ~300)
+        # Compact prompt for speed
         mem_lines = []
         for s in memory.sequence_log[-4:]:
             arrow = "→".join(s["actions"])
@@ -308,54 +349,79 @@ def plan_prompt(grid: np.ndarray, summary: dict, available: list,
             mem_lines.append(f"[{arrow}]={s['total_changes']}chg{lvl}")
         mem_compact = "; ".join(mem_lines) if mem_lines else "none"
         hyp = memory.hypothesis[:80] if memory.hypothesis else "unknown"
+        knowledge_line = f"\n{knowledge_section}" if knowledge_section else ""
         cart_line = f"\n{cart_section}" if cart_section else ""
 
         return f"""Grid game. Acts: {','.join(avail)}. Lvl {levels_completed}/{win_levels}. Step {step_count}.
 History: {mem_compact}
-Hypothesis: {hyp}{cart_line}
+Hypothesis: {hyp}{knowledge_line}{cart_line}
 Plan 3-5 actions. JSON only: {{"sequence":[nums],"hypothesis":"brief","goal":"brief"}}"""
 
-    # Full prompt for quality reasoning
-    if not summary["empty"]:
-        cr, cc = int(summary["centroid"][0]), int(summary["centroid"][1])
-        crop = grid_crop_text(grid, cr, cc, size=16)
-        grid_section = f"Colors: {summary['colors']}\nCentroid: r{cr},c{cc}\n{crop}"
-    else:
-        grid_section = "Grid empty."
+    # Full prompt for quality reasoning — use full_perception for grid description
+    perception = full_perception(grid)
+    color_tries, color_changes = memory.color_tries_changes()
+    effectiveness = color_effectiveness_summary(color_tries, color_changes)
+    click_hist = memory.click_history_text()
 
     mem_text = memory.to_text()
     winning = memory.winning_text()
     hyp = f"\nHYPOTHESIS: {memory.hypothesis}" if memory.hypothesis else ""
     strat = f"\nSTRATEGY: {memory.strategy}" if memory.strategy else ""
+    knowledge_block = f"\n{knowledge_section}\n" if knowledge_section else ""
     cart_block = f"\n{cart_section}\n" if cart_section else ""
 
-    return f"""Exploring grid game. No rules given — discover by experimenting.
+    return f"""Exploring grid game. No rules given — learn from observation.
 
 STATE: step {step_count}, levels {levels_completed}/{win_levels}
-Actions: {', '.join(avail)}
+Available actions: {', '.join(avail)}
+{knowledge_block}
+GRID PERCEPTION:
+{perception}
 
-GRID:
-{grid_section}
+CLICK HISTORY (causal feedback):
+{click_hist}
 
-MEMORY:
+COLOR EFFECTIVENESS (what causes changes):
+{effectiveness}
+
+SEQUENCE HISTORY:
 {mem_text}
 {winning}{hyp}{strat}{cart_block}
-Plan 3-5 actions. Extend patterns that caused changes. Repeat winning sequences.
-JSON only: {{"sequence": [nums], "hypothesis": "game theory", "goal": "what to test"}}"""
+Plan 3-5 actions. Use what you know: which clicks cause changes, which don't. Apply strategic insights.
+JSON only: {{"sequence": [nums], "hypothesis": "game theory", "goal": "what to test next"}}"""
 
 
 def reflect_prompt(grid: np.ndarray, summary: dict,
                    levels_completed: int, win_levels: int,
-                   memory: GameMemory, step_count: int) -> str:
+                   memory: GameMemory, step_count: int,
+                   strategic_insights: list = None) -> str:
     """Deep reflection every N sequences — revise strategy."""
     mem_text = memory.to_text()
     winning = memory.winning_text()
+    perception = full_perception(grid)
+    color_tries, color_changes = memory.color_tries_changes()
+    effectiveness = color_effectiveness_summary(color_tries, color_changes)
+    click_hist = memory.click_history_text(n=8)
 
-    return f"""DEEP REFLECTION — You've played {step_count} actions across {len(memory.sequence_log)} sequences.
+    knowledge_block = ""
+    if strategic_insights:
+        lines = [f"  - {s}" for s in strategic_insights]
+        knowledge_block = f"\nKNOWN GAME KNOWLEDGE (verified facts):\n" + "\n".join(lines) + "\n"
+
+    return f"""DEEP REFLECTION — {step_count} actions, {len(memory.sequence_log)} sequences played.
 
 RESULTS SO FAR:
 - Levels completed: {levels_completed}/{win_levels}
 - Total level-ups: {memory.total_level_ups}
+{knowledge_block}
+CURRENT GRID PERCEPTION:
+{perception}
+
+RECENT CLICK HISTORY (causal):
+{click_hist}
+
+COLOR EFFECTIVENESS:
+{effectiveness}
 
 SEQUENCE HISTORY:
 {mem_text}
@@ -363,15 +429,14 @@ SEQUENCE HISTORY:
 
 CURRENT HYPOTHESIS: {memory.hypothesis or '(none yet)'}
 
-REFLECT:
-1. What patterns do you see across all your sequences?
-2. Which actions consistently cause changes? Which don't?
-3. What do the spatial patterns of changes suggest (movement? matching? building?)?
-4. What is your REVISED hypothesis about the game rules?
-5. What STRATEGY should guide your next sequences?
+REFLECT — cross-reference what you know with what you observed:
+1. How do the KNOWN GAME KNOWLEDGE facts explain the click outcomes you've seen?
+2. Which specific actions/colors caused changes? Do they match what the knowledge predicts?
+3. Given the rotation puzzle mechanics, what is your STRATEGIC PLAN for the next sequences?
+4. What specific positions or colors should you target next?
 
 Respond with ONLY a JSON object:
-{{"hypothesis": "<revised theory of game rules>", "strategy": "<what to try next and why>", "key_insight": "<the most important thing you've learned>"}}"""
+{{"hypothesis": "<theory consistent with known facts + observations>", "strategy": "<specific plan: what to click and why>", "key_insight": "<most important realization>"}}"""
 
 
 # ─────────────────────────────────────────────────────────────
@@ -436,6 +501,23 @@ def main():
     prior_discoveries = gc.get_discoveries()
     n_prior = len(gc._all_entries)
 
+    # Load strategic insights from game cartridge JSON (older membot format)
+    # These are verified facts about the game (e.g. "lp85 is a rotation puzzle")
+    strategic_insights = []
+    cartridge_json_path = f"arc-agi-3/experiments/cartridges/{gc.game_family}.json"
+    try:
+        import os
+        if os.path.exists(cartridge_json_path):
+            with open(cartridge_json_path) as _f:
+                _cdata = json.load(_f)
+            strategic_insights = _cdata.get("strategic_insights", [])
+    except Exception as _e:
+        print(f"  (Could not load strategic insights from {cartridge_json_path}: {_e})")
+    if strategic_insights:
+        print(f"\n  STRATEGIC INSIGHTS ({len(strategic_insights)}):")
+        for s in strategic_insights[:4]:
+            print(f"    • {s[:90]}")
+
     memory = GameMemory()
     if prior_reflections:
         # Seed from most recent reflection
@@ -466,13 +548,14 @@ def main():
             print(f"\n  {'─'*60}")
             print(f"  REFLECTING (after {total_steps} steps, {frame_data.levels_completed} levels)...")
             rprompt = reflect_prompt(grid, summary, frame_data.levels_completed,
-                                    frame_data.win_levels, memory, total_steps)
+                                    frame_data.win_levels, memory, total_steps,
+                                    strategic_insights=strategic_insights)
             t0 = time.time()
             rresponse = ask_ollama(rprompt, max_tokens=300)
             reflect_s = time.time() - t0
             insight = ""
             try:
-                if "{" in rresponse:
+                if "{" in rresponse and "}" in rresponse:
                     rj = json.loads(rresponse[rresponse.index("{"):rresponse.rindex("}") + 1])
                     memory.hypothesis = rj.get("hypothesis", memory.hypothesis)
                     memory.strategy = rj.get("strategy", memory.strategy)
@@ -531,7 +614,8 @@ def main():
         pprompt = plan_prompt(grid, summary, available,
                              frame_data.levels_completed, frame_data.win_levels,
                              memory, total_steps, fast=args.fast,
-                             prior_memory=prior_memory)
+                             prior_memory=prior_memory,
+                             strategic_insights=strategic_insights)
         t0 = time.time()
         presponse = ask_ollama(pprompt, max_tokens=80 if args.fast else 200)
         plan_s = time.time() - t0
@@ -578,9 +662,14 @@ def main():
             new_grid = np.array(frame_data.frame)
             if new_grid.ndim == 3:
                 new_grid = new_grid[-1]
-            changed = int(np.sum(grid != new_grid)) > 0
+            n_changed = int(np.sum(grid != new_grid))
+            changed = n_changed > 0
             if action == 6:
                 memory.record_click(r, c, color, changed)
+                # Record causal feedback for LLM reasoning
+                d_preview = diff_summary(prev_grid, new_grid)
+                region_desc = d_preview.get("desc", "")[:60] if n_changed > 0 else ""
+                memory.record_click_detail(total_steps + 1, r, c, color, n_changed, region_desc)
             grid = new_grid
             total_steps += 1
 

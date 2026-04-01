@@ -43,6 +43,7 @@ from arc_perception import (
     detect_sections, find_row_patterns,
     visual_similarity, visual_memory_context,
 )
+from arc_spatial import SpatialTracker
 from membot_cartridge import MembotCartridge
 
 INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
@@ -442,11 +443,13 @@ def compute_placement_actions(grid):
 def build_strategy_prompt(grid, available_actions, memories, level_info,
                           prev_action_result=None, cartridge=None,
                           initial_grid=None, exploration_summary=None,
-                          cycle_info=None):
+                          cycle_info=None, spatial_tracker=None,
+                          goal_similarity=None):
     """Build the prompt for LLM reasoning.
 
     Compact format optimized for 0.8B models. Includes exploration results,
-    cycle detection warnings, and visual memory context.
+    cycle detection warnings, visual memory context, spatial relationships,
+    and goal-awareness feedback.
     Returns (prompt, category) tuple.
     """
     perception = full_perception(grid)
@@ -467,6 +470,19 @@ def build_strategy_prompt(grid, available_actions, memories, level_info,
     if exploration_summary:
         prompt_parts.append(f"\nExploration results:\n{exploration_summary}")
 
+    # Spatial reasoning: object tracking and relationships
+    if spatial_tracker and spatial_tracker.objects:
+        spatial_desc = spatial_tracker.describe()
+        # Compact version for LLM (first 400 chars)
+        prompt_parts.append(f"\nSpatial:\n{spatial_desc[:400]}")
+
+        # Smart click suggestions if available
+        if 6 in available_actions:
+            targets = spatial_tracker.suggest_click_targets(grid, n=2)
+            if targets:
+                suggestions = [f"{reason} at ({x},{y})" for x, y, reason in targets]
+                prompt_parts.append(f"Suggested clicks:\n" + "\n".join(f"- {s}" for s in suggestions))
+
     # Visual memory context
     if cartridge:
         vm_context = visual_memory_context(grid, cartridge)
@@ -474,7 +490,12 @@ def build_strategy_prompt(grid, available_actions, memories, level_info,
             prompt_parts.append(f"\n{vm_context}")
 
     # Goal-awareness: compare to initial state
-    if initial_grid is not None:
+    if goal_similarity is not None:
+        if goal_similarity < 0.95:
+            prompt_parts.append(f"Goal: {goal_similarity:.0%} similar to start ({100 - goal_similarity*100:.0f}% changed)")
+        else:
+            prompt_parts.append("Goal: unchanged from start — need progress")
+    elif initial_grid is not None:
         similarity = visual_similarity(grid, initial_grid)
         if similarity < 0.95:
             prompt_parts.append(f"Grid changed {100 - similarity*100:.0f}% from start")
@@ -850,6 +871,10 @@ class SageAgent:
         if self.verbose:
             print(f"  Visual memory: initialized for {prefix}")
 
+        # GOAL DETECTION: Track similarity to initial state
+        goal_similarity = 1.0  # Start at initial state
+        goal_history = [1.0]  # Track similarity over time
+
         # RECALL: what do we know about this game type?
         memories = membot_recall(f"ARC-AGI-3 {prefix} game strategy")
         category_memories = membot_recall(f"ARC-AGI-3 placement puzzle sequence matching")
@@ -862,6 +887,12 @@ class SageAgent:
         category = detect_game_category(grid, available)
         if self.verbose:
             print(f"  Category: {category.get('category', '?')} — {category.get('hint', '')}")
+
+        # SPATIAL TRACKING: Initialize object tracker
+        spatial_tracker = SpatialTracker(min_region_size=4)
+        spatial_diff = spatial_tracker.update(grid)
+        if self.verbose:
+            print(f"  Spatial: {spatial_diff['n_objects']} objects detected")
 
         # ═══ PHASE 1: Fast Exploration ═══
         # Systematic probing — no LLM, pure observation
@@ -1061,6 +1092,8 @@ class SageAgent:
                     initial_grid=initial_grid,
                     exploration_summary=explore_ctx,
                     cycle_info=cycle_info,
+                    spatial_tracker=spatial_tracker,
+                    goal_similarity=goal_similarity,
                 )
                 llm_response = sage_reason(prompt)
 
@@ -1121,6 +1154,34 @@ class SageAgent:
             new_grid = get_frame(fd)
             diff = grid_diff(prev_grid, new_grid)
             prev_result = diff if diff != "No change" else None
+
+            # SPATIAL UPDATE: Track object movements and interactions
+            if actions_to_take:
+                action_int, data = actions_to_take[0]
+                spatial_diff = spatial_tracker.update(new_grid)
+
+                # Record click effectiveness for interactive detection
+                if action_int == 6 and data:
+                    changed = (diff != "No change")
+                    n_pixels = 0
+                    if changed:
+                        diff_grid = (prev_grid != new_grid)
+                        n_pixels = int(diff_grid.sum())
+                    spatial_tracker.record_click(data['x'], data['y'], changed, n_pixels)
+
+                # Record action outcome
+                spatial_tracker.record_action_outcome(action_int, data, spatial_diff)
+
+            # GOAL DETECTION: Track similarity to initial state
+            goal_similarity = visual_similarity(new_grid, initial_grid)
+            goal_history.append(goal_similarity)
+
+            # Detect if we're moving toward/away from initial state
+            if len(goal_history) >= 3:
+                trend = goal_history[-1] - goal_history[-3]
+                if self.verbose and abs(trend) > 0.05:
+                    direction = "toward" if trend > 0 else "away from"
+                    print(f"  [{step}] Goal: {goal_similarity:.1%} ({direction} initial)")
 
         # LEARN: store final results
         result = {

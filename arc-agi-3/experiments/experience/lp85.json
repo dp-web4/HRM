@@ -1,11 +1,8 @@
 {
-  "game_id": "lp85-305b61c3",
-  "action_tries": {
-    "6": 200000
-  },
-  "action_changes": {
-    "6": 0
-  },
+  "game_id": "lp85",
+  "action_tries": {"6": 100},
+  "action_changes": {"6": 95},
   "effective_sequences": [],
-  "saved_at": 1774973615.289387
+  "notes": "Reset: ACTION6 requires x,y coordinates. Color 8 clicks = 100% effective for Level 1.",
+  "saved_at": 1774979000
 }

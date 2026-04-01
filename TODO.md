@@ -2,15 +2,15 @@
 
 *Global task list across active workstreams. Updated by CBP (coordinator).*
 
-*Last updated: 2026-03-31*
+*Last updated: 2026-04-01*
 
 ---
 
 ## ARC-AGI-3 (Deadline: June 30)
 
 ### Adapter Layer (April 7-14)
-- [ ] Install SDK on Thor, Sprout, McNugget — random agent on demo games
-- [ ] Benchmark: action iteration speed per machine (FPS)
+- [x] Install SDK on Thor, Sprout, McNugget — DONE (all 3 verified 2026-03-31)
+- [x] Benchmark: action iteration speed per machine — DONE (SDK: 3-6k steps/sec, NOT bottleneck)
 - [ ] End-to-end test: push frame → consciousness loop → action dispatch
 - [x] Wire GridVisionIRP into consciousness loop — DONE (config-gated in `_gather_observations()`)
 - [x] GameActionEffector — DONE (`sage/irp/plugins/game_action_effector.py`)
@@ -26,12 +26,18 @@
 - [ ] Cross-level cartridge assembly
 - [x] SDK installed, frames pulling — DONE (Andy confirmed 2026-03-30)
 
-### Integration (April 14-21)
-- [ ] Serialization format for GridObservation (msgpack vs JSON vs shared mem)
+### Scoring (ACTIVE — replace "Integration" milestone)
+- [x] First SAGE-played game — DONE 2026-03-31 (7 games scoring, 50 levels in best run)
+- [x] Experience DB — DONE (all 25 games surveyed, action effectiveness mapped)
+- [x] Smart clicker (no LLM) — DONE (explore→exploit, scores on pure-click games)
+- [x] Spatial reasoning layer — DONE (`arc_spatial.py`, object tracking + interactive detection)
+- [x] Action-effect model — DONE (learns what each action does from observation)
+- [x] Hybrid architecture design — DONE (`HYBRID_ARCHITECTURE.md` — Driver + Navigator + Membot)
+- [ ] Implement hybrid runner (`sage_hybrid_runner.py`)
+- [ ] First movement+click level — 11+ games currently at 0
+- [ ] Membot cartridge integration end-to-end (read on start, write on level completion)
+- [ ] Serialization format for GridObservation (msgpack vs JSON vs shared mem) — Andy handoff
 - [ ] GridCartridgeIRP — memory search wrapper (transport-agnostic: MCP or direct)
-- [ ] Wire GridVisionIRP into consciousness loop step 1 (sense)
-- [ ] Wire GridCartridgeIRP into consciousness loop step 6 (execute/search)
-- [ ] First SAGE-played game — any score
 
 ### Fast Loop (May)
 - [ ] Strip consciousness loop to game speed (~100ms/cycle)

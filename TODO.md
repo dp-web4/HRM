@@ -100,8 +100,8 @@
 
 ## Fleet & Infrastructure
 
-- [ ] Create shared-context repo for Andy collaboration
-- [ ] Grant Andy collaborator access to SAGE
+- [x] Create shared-context repo for Andy collaboration — DONE (`dp-web4/sage-arc-collab`, 2026-04-01)
+- [x] Grant Andy collaborator access to SAGE — DONE (agro23 invited to SAGE + sage-arc-collab)
 - [ ] Update fleet track registry for ARC-AGI-3 pivot
 - [ ] Nomad schema v1→v2 migration
 - [x] Fleet track registry (SQLite) — DONE

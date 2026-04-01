@@ -669,8 +669,11 @@ class SageAgent:
 
                 action_name = {1: "up", 2: "down", 3: "left", 4: "right",
                                5: "submit", 7: "undo"}.get(action, f"a{action}")
+                # Count actual pixels changed for magnitude comparison
+                n_pixels = int(np.sum(prev_grid != new_grid)) if changed else 0
                 self.outcome_map[f"action_{action_name}"] = {
                     "changed": changed, "diff": diff[:100] if changed else None,
+                    "n_pixels": n_pixels,
                     "level_up": fd.levels_completed > levels_at_start,
                 }
 
@@ -830,16 +833,35 @@ class SageAgent:
             if inert:
                 lines.append(f"Inert colors (no effect): {', '.join(inert)}")
 
-        # Non-click action results
+        # Non-click action results — include pixel magnitudes for directions
         action_results = {k: v for k, v in self.outcome_map.items()
                           if k.startswith("action_")}
         if action_results:
-            active = [k.replace("action_", "") for k, v in action_results.items() if v["changed"]]
-            passive = [k.replace("action_", "") for k, v in action_results.items() if not v["changed"]]
-            if active:
-                lines.append(f"Active non-click actions: {', '.join(active)}")
+            # Separate directions from other actions
+            directions = {}
+            other_active = []
+            passive = []
+            for k, v in action_results.items():
+                name = k.replace("action_", "")
+                if name in ("up", "down", "left", "right"):
+                    if v["changed"]:
+                        directions[name] = v.get("n_pixels", 0)
+                    else:
+                        passive.append(name)
+                elif v["changed"]:
+                    other_active.append(name)
+                else:
+                    passive.append(name)
+
+            if directions:
+                # Show directions with relative magnitude
+                dir_strs = [f"{d}({n}px)" for d, n in
+                            sorted(directions.items(), key=lambda x: -x[1])]
+                lines.append(f"Movement: {', '.join(dir_strs)}")
+            if other_active:
+                lines.append(f"Active: {', '.join(other_active)}")
             if passive:
-                lines.append(f"Inactive non-click actions: {', '.join(passive)}")
+                lines.append(f"Inactive: {', '.join(passive)}")
 
         # Level-up patterns
         if self.level_up_sequences:

@@ -95,7 +95,7 @@ def sage_reason(prompt, system_prompt=None, max_tokens=150):
     Returns the LLM's text response, or None if unavailable.
     """
     if system_prompt is None:
-        system_prompt = "You solve puzzles. Reply with ONLY your action. No explanation."
+        system_prompt = "You are playing a puzzle game. You control a cursor on a grid. Reply with ONLY your next action. No explanation."
 
     messages = [
         {"role": "system", "content": system_prompt},
@@ -138,7 +138,13 @@ def parse_action(llm_response, available_actions, grid):
     text = llm_response.lower().strip()
     actions = []
 
-    # Parse click with coordinates
+    # Reject instruction echoes — if response contains "reply:" or "or move"
+    # followed by listing all actions, it's echoing the prompt, not deciding
+    if ("reply:" in text and "click" in text and "move" in text) or \
+       ("or move" in text and "or submit" in text):
+        return []
+
+    # Parse click with coordinates (highest priority — most specific)
     coord_patterns = [
         r'click\s*\(?(\d+)\s*,\s*(\d+)\)?',
         r'click\s+at\s+\(?(\d+)\s*,\s*(\d+)\)?',
@@ -149,6 +155,10 @@ def parse_action(llm_response, available_actions, grid):
             x, y = int(match.group(1)), int(match.group(2))
             if 6 in available_actions:
                 actions.append((6, {'x': x, 'y': y}))
+            if len(actions) >= 2:  # Max 2 clicks per response
+                break
+        if actions:
+            break  # Use first matching pattern only
 
     # Parse click with color name
     if not actions and 6 in available_actions:
@@ -178,21 +188,25 @@ def parse_action(llm_response, available_actions, grid):
             actions.append((6, {'x': x1, 'y': y1}))
             actions.append((6, {'x': x2, 'y': y2}))
 
-    # Parse directional actions
+    # If we already have click actions, return them (don't also parse directions)
+    if actions:
+        return actions[:2]
+
+    # Parse directional actions — return only the FIRST one found
     direction_map = {"up": 1, "down": 2, "left": 3, "right": 4}
     for dname, daction in direction_map.items():
-        if dname in text and daction in available_actions:
-            actions.append((daction, None))
+        if re.search(rf'\b{dname}\b', text) and daction in available_actions:
+            return [(daction, None)]
 
     # Parse submit/select
     if any(w in text for w in ["submit", "select", "confirm", "enter"]):
         if 5 in available_actions:
-            actions.append((5, None))
+            return [(5, None)]
 
     # Parse undo
     if any(w in text for w in ["undo", "reset", "back"]):
         if 7 in available_actions:
-            actions.append((7, None))
+            return [(7, None)]
 
     return actions
 
@@ -206,6 +220,99 @@ def hash_grid_state(grid):
     Returns hex string suitable for set membership checks.
     """
     return hashlib.blake2b(grid.tobytes(), digest_size=16).hexdigest()
+
+
+def detect_cursor(grid, prev_grid=None):
+    """Find the cursor/player position on the grid.
+
+    Strategy: the cursor is the thing that moved when a direction was pressed.
+    If no prev_grid, use heuristics: smallest unique-colored region.
+
+    Returns (x, y, color_name) or None.
+    """
+    bg = background_color(grid)
+    regions = find_color_regions(grid, min_size=1)
+    non_bg = [r for r in regions if r["color"] != bg]
+    if not non_bg:
+        return None
+
+    if prev_grid is not None:
+        # Find what moved: compare regions between frames
+        old_regions = find_color_regions(prev_grid, min_size=1)
+        old_non_bg = [r for r in old_regions if r["color"] != bg]
+
+        # Look for a region that exists in new but not old position
+        for nr in non_bg:
+            # Is there a same-color region in old frame at a DIFFERENT position?
+            for old_r in old_non_bg:
+                if (old_r["color"] == nr["color"]
+                        and old_r["size"] == nr["size"]
+                        and (abs(old_r["cx"] - nr["cx"]) > 0
+                             or abs(old_r["cy"] - nr["cy"]) > 0)
+                        and abs(old_r["cx"] - nr["cx"]) < 20
+                        and abs(old_r["cy"] - nr["cy"]) < 20):
+                    return (nr["cx"], nr["cy"], color_name(nr["color"]))
+
+    # Heuristic: cursor is usually small and unique-colored
+    color_counts = defaultdict(int)
+    for r in non_bg:
+        color_counts[r["color"]] += 1
+    unique = [r for r in non_bg if color_counts[r["color"]] == 1]
+    if unique:
+        cursor = min(unique, key=lambda r: r["size"])
+    else:
+        cursor = min(non_bg, key=lambda r: r["size"])
+    return (cursor["cx"], cursor["cy"], color_name(cursor["color"]))
+
+
+def describe_surroundings(grid, cx, cy, radius=12, cursor_color=None):
+    """Describe what's around a position in each direction.
+
+    Skips the cursor's own color to find the NEXT thing in each direction.
+    Returns a compact string like:
+    "up: open(8) down: wall(3) left: teal(4) right: edge(1)"
+    """
+    bg = background_color(grid)
+    h, w = grid.shape[:2]
+
+    # Colors to skip (background + cursor itself)
+    skip_colors = {bg}
+    if cursor_color:
+        # Map cursor color name back to index
+        color_names = ["black", "blue", "red", "green", "yellow", "gray",
+                       "magenta", "orange", "cyan", "brown", "pink", "maroon",
+                       "olive", "navy", "teal", "white"]
+        for i, cn in enumerate(color_names):
+            if cn == cursor_color:
+                skip_colors.add(i)
+                break
+
+    directions = {
+        "up": (0, -1),
+        "down": (0, 1),
+        "left": (-1, 0),
+        "right": (1, 0),
+    }
+    parts = []
+    for dname, (ddx, ddy) in directions.items():
+        hit = None
+        dist = 0
+        for step in range(1, radius + 1):
+            nx, ny = cx + ddx * step, cy + ddy * step
+            if nx < 0 or nx >= w or ny < 0 or ny >= h:
+                hit = "edge"
+                dist = step
+                break
+            pixel = int(grid[ny, nx])
+            if pixel not in skip_colors:
+                hit = color_name(pixel)
+                dist = step
+                break
+        if hit is None:
+            parts.append(f"{dname}: open({radius}+)")
+        else:
+            parts.append(f"{dname}: {hit}({dist})")
+    return " ".join(parts)
 
 
 def detect_game_category(grid, available_actions):
@@ -450,61 +557,64 @@ def build_strategy_prompt(grid, available_actions, memories, level_info,
                           prev_action_result=None, cartridge=None,
                           initial_grid=None, exploration_summary=None,
                           cycle_info=None, spatial_tracker=None,
-                          goal_similarity=None):
-    """Build the prompt for LLM reasoning.
+                          goal_similarity=None, cursor_pos=None,
+                          prev_grid=None, last_action_desc=None):
+    """Build a situational briefing for the LLM.
 
-    Compact format for 0.8B models. Actionable info FIRST (exploration
-    results, spatial suggestions), perception details last.
+    The model is a player looking at a game screen. It controls a cursor.
+    The prompt tells it: what's on screen, where the cursor is, what just
+    happened, and what it's learned so far. Then asks: what do you do?
+
     Returns (prompt, category) tuple.
     """
     category = detect_game_category(grid, available_actions)
+    cat_name = category.get("category", "")
+    bg = background_color(grid)
+    h, w = grid.shape[:2]
 
     action_names = {1: "up", 2: "down", 3: "left", 4: "right",
                     5: "submit", 6: "click(x,y)", 7: "undo"}
     avail_str = ", ".join(action_names.get(a, f"action{a}") for a in sorted(available_actions))
 
-    # Start with actionable info — most important for 0.8B attention
-    prompt_parts = [
-        f"Level {level_info.get('current', '?')}/{level_info.get('total', '?')}. Actions: {avail_str}",
-    ]
+    prompt_parts = []
 
-    # Exploration results FIRST — this is what matters most
+    # ── Situation: what are you looking at? ──
+    prompt_parts.append(
+        f"Puzzle game. Level {level_info.get('current', '?')}/{level_info.get('total', '?')}. "
+        f"Grid {h}x{w}."
+    )
+
+    # Cursor position — the model's primary tool
+    if cursor_pos:
+        cx, cy, ccolor = cursor_pos
+        prompt_parts.append(f"Cursor: {ccolor} at ({cx},{cy})")
+        # What's nearby in each direction (skip cursor's own color)
+        surroundings = describe_surroundings(grid, cx, cy, radius=12, cursor_color=ccolor)
+        prompt_parts.append(f"Around cursor: {surroundings}")
+
+    # ── What just happened? (causal feedback) ──
+    if last_action_desc:
+        prompt_parts.append(f"Last action: {last_action_desc}")
+    elif prev_action_result:
+        prompt_parts.append(f"Last result: {prev_action_result[:100]}")
+
+    if cycle_info:
+        prompt_parts.append(f"WARNING: {cycle_info}. Try something DIFFERENT.")
+
+    # ── What you've learned (from exploration) ──
     if exploration_summary:
         prompt_parts.append(exploration_summary)
 
-    # Spatial click suggestions (compact — just coordinates)
-    if spatial_tracker and spatial_tracker.objects and 6 in available_actions:
-        targets = spatial_tracker.suggest_click_targets(grid, n=2)
-        if targets:
-            suggestions = [f"{reason}({x},{y})" for x, y, reason in targets]
-            prompt_parts.append(f"Spatial: {', '.join(suggestions)}")
-
-    # Goal progress
-    if goal_similarity is not None:
-        if goal_similarity < 0.95:
-            prompt_parts.append(f"Progress: {100 - goal_similarity*100:.0f}% changed from start")
-        else:
-            prompt_parts.append("No progress yet")
-
-    if cycle_info:
-        prompt_parts.append(f"WARNING: {cycle_info}. Try DIFFERENT action.")
-
-    if prev_action_result:
-        prompt_parts.append(f"Last: {prev_action_result[:80]}")
-
-    # Clickable targets with positions — only show EFFECTIVE colors if known
-    bg = background_color(grid)
+    # ── What you see on screen ──
     regions = find_color_regions(grid, min_size=4)
     non_bg_regions = [r for r in regions if r["color"] != bg]
-    if non_bg_regions and 6 in available_actions:
-        shown = non_bg_regions[:8]  # Default: first 8
 
-        # If exploration found effective colors, only show those
+    if non_bg_regions:
+        # Show objects, prioritizing effective/clickable ones
+        shown = non_bg_regions
         if exploration_summary and "Clickable colors" in exploration_summary:
-            # Parse "Clickable colors (caused change): cyan(1/1), red(2/3)"
             eff_names = set()
             eff_line = exploration_summary.split("Clickable colors")[1].split("\n")[0]
-            # Get everything after the last ":"
             if ":" in eff_line:
                 eff_line = eff_line.split(":")[-1]
             for part in eff_line.split(","):
@@ -514,14 +624,23 @@ def build_strategy_prompt(grid, available_actions, memories, level_info,
             if eff_names:
                 effective = [r for r in non_bg_regions if r["color_name"] in eff_names]
                 if effective:
-                    shown = effective[:8]
+                    shown = effective
 
-        targets = [f"{r['color_name']}({r['cx']},{r['cy']})" for r in shown]
-        label = "Click these" if exploration_summary and "Clickable" in (exploration_summary or "") else "Targets"
+        # Compact object list — nearest first if cursor known
+        if cursor_pos:
+            cx, cy, _ = cursor_pos
+            shown = sorted(shown, key=lambda r: abs(r["cx"] - cx) + abs(r["cy"] - cy))
+        targets = [f"{r['color_name']}({r['cx']},{r['cy']})" for r in shown[:6]]
+        label = "Clickable" if exploration_summary and "Clickable" in exploration_summary else "Objects"
         prompt_parts.append(f"{label}: {', '.join(targets)}")
 
-    prompt_parts.append(f"Grid: {grid.shape[0]}x{grid.shape[1]}")
-    prompt_parts.append("Reply: click(X,Y) or move up/down/left/right or submit.")
+    # ── Goal progress ──
+    if goal_similarity is not None and goal_similarity < 0.95:
+        prompt_parts.append(f"Progress: {100 - goal_similarity*100:.0f}% changed from start")
+
+    # ── What to do ──
+    prompt_parts.append(f"Actions: {avail_str}")
+    prompt_parts.append("What do you do? Reply with ONE action.")
 
     return "\n".join(prompt_parts), category
 
@@ -590,9 +709,86 @@ def heuristic_action(grid, available_actions, category, step_count,
                               if ea["action"] in moves]
             if effective_dirs:
                 return [(effective_dirs[step_count % len(effective_dirs)], None)]
-        return [(moves[step_count % len(moves)], None)]
+        # Cycle through directions — but with a bias toward forward exploration
+        # Pattern: go same direction 3x, then try next (covers more ground)
+        dir_idx = (step_count // 3) % len(moves)
+        return [(moves[dir_idx], None)]
 
     return []
+
+
+def navigate_toward_interest(grid, available_actions, visited_positions=None,
+                              prev_grids=None):
+    """For navigation games: choose the most promising direction.
+
+    Strategy: try to move in a direction that will produce a NEW grid state.
+    If we have previous grids from each direction, prefer directions that
+    haven't been tried recently. Otherwise, prefer directions away from
+    where we've already been.
+
+    Returns (action_int, None) or None if no useful direction found.
+    """
+    import random
+    moves = [a for a in [1, 2, 3, 4] if a in available_actions]
+    if not moves:
+        return None
+
+    # If we have direction history, prefer unexplored directions
+    if visited_positions:
+        # Score each direction by how many unvisited cells lie that way
+        bg = background_color(grid)
+        h, w = grid.shape[:2]
+
+        # Try to find what might be a "player" marker — look for a unique
+        # small region that appears in only one place
+        regions = find_color_regions(grid, min_size=1)
+        non_bg_regions = [r for r in regions if r["color"] != bg]
+
+        if non_bg_regions:
+            # Player heuristic: smallest or rarest-color region
+            color_counts = defaultdict(int)
+            for r in non_bg_regions:
+                color_counts[r["color"]] += 1
+            # Regions with unique colors (appear only once) are likely the player
+            unique_regions = [r for r in non_bg_regions if color_counts[r["color"]] == 1]
+            if unique_regions:
+                player = min(unique_regions, key=lambda r: r["size"])
+            else:
+                player = min(non_bg_regions, key=lambda r: r["size"])
+            px, py = player["cx"], player["cy"]
+
+            # Score directions by unvisited area
+            dir_scores = {}
+            for action in moves:
+                name = {1: "up", 2: "down", 3: "left", 4: "right"}[action]
+                # Look at the coarse grid cells in each direction
+                unvisited_count = 0
+                total_check = 0
+                for dy in range(-8, 9, 2):
+                    for dx in range(-8, 9, 2):
+                        if name == "up" and dy >= 0:
+                            continue
+                        if name == "down" and dy <= 0:
+                            continue
+                        if name == "left" and dx >= 0:
+                            continue
+                        if name == "right" and dx <= 0:
+                            continue
+                        cy, cx = (py + dy) // 4, (px + dx) // 4
+                        if 0 <= cy < h // 4 and 0 <= cx < w // 4:
+                            total_check += 1
+                            if (cy, cx) not in visited_positions:
+                                unvisited_count += 1
+                dir_scores[action] = unvisited_count
+
+            if dir_scores:
+                best_score = max(dir_scores.values())
+                if best_score > 0:
+                    best_dirs = [a for a, s in dir_scores.items() if s == best_score]
+                    return (random.choice(best_dirs), None)
+
+    # Fallback: random direction, prefer ones we haven't done recently
+    return (random.choice(moves), None)
 
 
 # ─── Main agent loop ───
@@ -620,6 +816,22 @@ class SageAgent:
 
         # Spatial reasoning — initialized per-game in play_game()
         self.spatial_tracker = None
+
+        # Anti-repetition: track recent actions and ban repeated ones
+        self.banned_actions = {}  # action_key → steps_remaining
+        self.recent_action_keys = deque(maxlen=10)  # Last 10 action keys for pattern detection
+        self.total_cycles = 0  # Never resets — escalates over game lifetime
+
+    @staticmethod
+    def _action_key(actions):
+        """Create a hashable key from an action list for repetition tracking."""
+        parts = []
+        for a, d in actions:
+            if d and isinstance(d, dict):
+                parts.append(f"{a}({d.get('x','')},{d.get('y','')})")
+            else:
+                parts.append(str(a))
+        return "|".join(parts)
 
     def check_llm(self):
         """Check if Ollama is available for reasoning."""
@@ -679,6 +891,14 @@ class SageAgent:
 
                 if changed:
                     self.effective_actions.append({"action": action, "step": step})
+                    # Detect cursor from movement (first direction that changes grid)
+                    if action in (1, 2, 3, 4) and not hasattr(self, '_cursor_color'):
+                        cursor = detect_cursor(new_grid, prev_grid)
+                        if cursor:
+                            self._cursor_color = cursor[2]  # Remember cursor color
+                            self._cursor_pos = (cursor[0], cursor[1])
+                            if self.verbose:
+                                print(f"    Cursor detected: {cursor[2]} at ({cursor[0]},{cursor[1]})")
                     if self.verbose:
                         print(f"    [{step}] {action_name} → CHANGED: {diff[:60]}")
                 elif self.verbose:
@@ -983,10 +1203,21 @@ class SageAgent:
         prev_result = None
         prev_grid = grid.copy()
         llm_cooldown = 0
-        llm_interval = 3  # Call LLM every N steps
-        no_progress_count = 0  # Track consecutive no-change steps
+        llm_interval = 3  # Call LLM every N steps — it needs to reason
+        steps_since_level_up = 0  # Track steps without level progress
         last_level = best_levels
         recent_llm_actions = []  # Track LLM action repetition
+        last_action_desc = None  # Human-readable description of what last action did
+
+        # CURSOR TRACKING: use exploration-detected cursor, or heuristic
+        if hasattr(self, '_cursor_color') and hasattr(self, '_cursor_pos'):
+            # We know the cursor color from exploration — find it now
+            cursor_pos = (self._cursor_pos[0], self._cursor_pos[1], self._cursor_color)
+        else:
+            cursor_pos = detect_cursor(grid, prev_grid)
+        if cursor_pos and self.verbose:
+            cx, cy, cc = cursor_pos
+            print(f"  Cursor: {cc} at ({cx},{cy})")
 
         # STATE CYCLE DETECTION: Track seen states to break loops
         seen_states = set()  # All states visited (for exact match detection)
@@ -995,14 +1226,26 @@ class SageAgent:
         cycle_info = None
         consecutive_cycles = 0  # Count how many cycles in a row (for loop-breaking)
 
+        # Navigation tracking
+        is_nav_game = (category.get("category", "").startswith("navigation")
+                       or category.get("category") == "pure_navigation")
+        visited_nav_positions = set()
+
         while step < budget and fd.state.name not in ("WON", "GAME_OVER"):
             # PERCEIVE
             grid = get_frame(fd)
 
+            # Decay banned actions
+            expired = [k for k, v in self.banned_actions.items() if v <= 0]
+            for k in expired:
+                del self.banned_actions[k]
+            for k in self.banned_actions:
+                self.banned_actions[k] -= 1
+
             # Track level changes
             if fd.levels_completed > best_levels:
                 best_levels = fd.levels_completed
-                no_progress_count = 0
+                steps_since_level_up = 0
                 diff_desc = grid_diff(prev_grid, grid)
                 self.level_observations.append({
                     "level": best_levels,
@@ -1037,6 +1280,10 @@ class SageAgent:
                 recent_states.clear()
                 cycle_detected = False
                 cycle_info = None
+                consecutive_cycles = 0
+                self.total_cycles = 0
+                self.banned_actions.clear()
+                visited_nav_positions.clear()
 
                 # Re-try perception-driven placement on new level
                 if category.get("category") in ("placement_puzzle", "click_arrange"):
@@ -1058,6 +1305,8 @@ class SageAgent:
                             except Exception:
                                 break
                         continue  # Re-check level after placement
+            else:
+                steps_since_level_up += 1
 
             # CYCLE DETECTION: Check if we've seen this state before
             state_hash = hash_grid_state(grid)
@@ -1065,13 +1314,14 @@ class SageAgent:
             if state_hash in seen_states:
                 cycle_detected = True
                 consecutive_cycles += 1
+                self.total_cycles += 1  # Never resets — escalates
                 if state_hash in recent_states:
                     loop_length = len(recent_states) - list(recent_states).index(state_hash)
                     cycle_info = f"Loop detected (length {loop_length}, #{consecutive_cycles})"
                 else:
                     cycle_info = f"Visited state (#{consecutive_cycles})"
-                if self.verbose:
-                    print(f"  [{step}] {cycle_info}")
+                if self.verbose and consecutive_cycles % 5 == 0:
+                    print(f"  [{step}] {cycle_info} (total: {self.total_cycles})")
             else:
                 consecutive_cycles = 0
                 cycle_detected = False
@@ -1080,117 +1330,141 @@ class SageAgent:
             seen_states.add(state_hash)
             recent_states.append(state_hash)
 
-            # STUCK DETECTION: if nothing changes for 15+ steps
-            if prev_result is None:
-                no_progress_count += 1
-            else:
-                no_progress_count = 0
+            # Navigation: track coarse position
+            if is_nav_game:
+                bg = background_color(grid)
+                nav_regions = find_color_regions(grid, min_size=2)
+                smallest_r = min(nav_regions, key=lambda r: r["size"]) if nav_regions else None
+                if smallest_r:
+                    visited_nav_positions.add((smallest_r["cy"] // 4, smallest_r["cx"] // 4))
 
             # REASON (LLM or heuristic)
             actions_to_take = []
 
-            # LOOP-BREAKING: If stuck in persistent cycle, force random exploration
-            if consecutive_cycles >= 3:
+            # ESCALATING LOOP-BREAKING: severity increases with total_cycles
+            if consecutive_cycles >= 3 or self.total_cycles >= 10:
                 import random
-                if self.verbose:
-                    print(f"  [{step}] Breaking cycle — spatial/random action")
 
-                # Use spatial targets if available
-                if self.spatial_tracker and 6 in available:
-                    targets = self.spatial_tracker.suggest_click_targets(grid, n=3)
-                    # Pick an untested target to break the cycle
-                    untested_targets = [(x, y, r) for x, y, r in targets if "untested" in r]
-                    if untested_targets:
-                        x, y, reason = random.choice(untested_targets)
-                        actions_to_take = [(6, {'x': x, 'y': y})]
+                # Escalation levels based on total game-lifetime cycles
+                if self.total_cycles >= 30:
+                    # Severe: try submit or undo to escape entirely
+                    if 5 in available and random.random() < 0.3:
+                        actions_to_take = [(5, None)]
                         if self.verbose:
-                            print(f"    Spatial: {reason}")
-                        consecutive_cycles = 0
-                    # Fall through if no spatial targets
+                            print(f"  [{step}] SEVERE loop ({self.total_cycles}) — submit escape")
+                    elif 7 in available:
+                        actions_to_take = [(7, None)]
+                        if self.verbose:
+                            print(f"  [{step}] SEVERE loop ({self.total_cycles}) — undo escape")
+
+                if not actions_to_take and self.total_cycles >= 15:
+                    # High: navigation-aware — move toward unexplored areas
+                    nav_action = navigate_toward_interest(grid, available, visited_nav_positions)
+                    if nav_action:
+                        actions_to_take = [nav_action]
+                        if self.verbose:
+                            d = {1: "up", 2: "down", 3: "left", 4: "right"}.get(nav_action[0], "?")
+                            print(f"  [{step}] Loop break — navigate {d}")
 
                 if not actions_to_take:
-                    a = random.choice(available)
-                    if a == 6:
-                        non_bg = np.argwhere(grid.astype(int) != background_color(grid))
-                        if len(non_bg) > 0:
-                            idx = random.randint(0, len(non_bg) - 1)
-                            r, c = int(non_bg[idx, 0]), int(non_bg[idx, 1])
-                            actions_to_take = [(6, {'x': c, 'y': r})]
-                    if not actions_to_take:
-                        actions_to_take = [(a, None)]
-                    consecutive_cycles = 0
+                    # Normal: spatial targets or random
+                    if self.spatial_tracker and 6 in available:
+                        targets = self.spatial_tracker.suggest_click_targets(grid, n=3)
+                        untested = [(x, y, r) for x, y, r in targets if "untested" in r]
+                        if untested:
+                            x, y, reason = random.choice(untested)
+                            actions_to_take = [(6, {'x': x, 'y': y})]
 
-            elif no_progress_count >= 15:
-                # Stuck! Try perception-driven placement as escape hatch
-                placement_actions = compute_placement_actions(grid)
-                if placement_actions:
-                    actions_to_take = placement_actions
-                    if self.verbose:
-                        print(f"  [{step}] STUCK — trying placement escape")
-                    no_progress_count = 0
-                elif 7 in available:
-                    actions_to_take = [(7, None)]
-                    if self.verbose:
-                        print(f"  [{step}] STUCK — undo")
-                    no_progress_count = 0
+                    if not actions_to_take:
+                        # Pick a RANDOM action, excluding recently banned ones
+                        unbanned = [a for a in available
+                                    if str(a) not in self.banned_actions]
+                        if not unbanned:
+                            unbanned = available
+                        a = random.choice(unbanned)
+                        if a == 6:
+                            non_bg_px = np.argwhere(grid.astype(int) != background_color(grid))
+                            if len(non_bg_px) > 0:
+                                idx = random.randint(0, len(non_bg_px) - 1)
+                                r, c = int(non_bg_px[idx, 0]), int(non_bg_px[idx, 1])
+                                actions_to_take = [(6, {'x': c, 'y': r})]
+                        if not actions_to_take:
+                            actions_to_take = [(a, None)]
+
+                # Don't reset consecutive_cycles to 0 — only new states reset it
+
+            elif steps_since_level_up >= 50 and is_nav_game:
+                # Navigation games: if no level after 50 steps, use nav heuristic
+                nav_action = navigate_toward_interest(grid, available, visited_nav_positions)
+                if nav_action:
+                    actions_to_take = [nav_action]
 
             elif self.use_llm and self.check_llm() and llm_cooldown <= 0:
-                # Build prompt with exploration results and visual memory
+                # Build situational briefing for the LLM
                 explore_ctx = self.exploration_summary()
-                stuck_hint = ""
-                if no_progress_count >= 5:
-                    stuck_hint = f"\nWARNING: {no_progress_count} actions with no grid change. Try something DIFFERENT."
-                # Add spatial context if available
-                spatial_ctx = ""
-                if self.spatial_tracker:
-                    interactive = self.spatial_tracker.get_interactive_objects()
-                    if interactive:
-                        spatial_ctx = f"\nSPATIAL: {len(interactive)} interactive objects: "
-                        spatial_ctx += ", ".join(o.describe() for o in interactive[:5])
-                    targets = self.spatial_tracker.suggest_click_targets(grid, n=3)
-                    if targets:
-                        spatial_ctx += "\nSuggested targets: " + ", ".join(
-                            f"({x},{y}): {reason}" for x, y, reason in targets)
-                    pattern = self.spatial_tracker.get_movement_pattern()
-                    if pattern:
-                        spatial_ctx += f"\nMovement pattern: {pattern}"
+
+                # Build last-action description (concrete causal feedback)
+                action_desc = last_action_desc
+                if not action_desc and steps_since_level_up >= 20:
+                    action_desc = f"{steps_since_level_up} actions with no level progress. Try something DIFFERENT."
+                if self.banned_actions:
+                    ban_str = ", ".join(list(self.banned_actions.keys())[:3])
+                    action_desc = (action_desc or "") + f" DO NOT repeat: {ban_str}"
 
                 prompt, category = build_strategy_prompt(
                     grid, available, all_memories,
                     {"current": fd.levels_completed, "total": fd.win_levels},
-                    (prev_result or stuck_hint or spatial_ctx) if (prev_result or stuck_hint or spatial_ctx) else None,
                     cartridge=cartridge,
                     initial_grid=initial_grid,
                     exploration_summary=explore_ctx,
                     cycle_info=cycle_info,
                     spatial_tracker=self.spatial_tracker,
                     goal_similarity=goal_similarity,
+                    cursor_pos=cursor_pos,
+                    prev_grid=prev_grid,
+                    last_action_desc=action_desc,
                 )
                 llm_response = sage_reason(prompt)
 
                 if llm_response:
                     actions_to_take = parse_action(llm_response, available, grid)
+
+                    # Check if action is banned
+                    if actions_to_take:
+                        action_key = self._action_key(actions_to_take)
+                        if action_key in self.banned_actions:
+                            if self.verbose:
+                                print(f"  [{step}] LLM chose banned action {action_key} — overriding")
+                            actions_to_take = []  # Fall to heuristic
+
                     if self.verbose and actions_to_take:
                         print(f"  [{step}] LLM: {llm_response[:80]}...")
                         print(f"        → {actions_to_take}")
 
-                    # Detect LLM repetition — if same action 3+ times, force different
-                    action_key = str(actions_to_take)
-                    recent_llm_actions.append(action_key)
-                    if len(recent_llm_actions) >= 3 and len(set(recent_llm_actions[-3:])) == 1:
-                        if self.verbose:
-                            print(f"  [{step}] LLM repeating — forcing different action")
-                        actions_to_take = []  # Fall through to heuristic
-                        recent_llm_actions.clear()
+                    # Detect LLM repetition — if same action 3+ times, BAN it
+                    if actions_to_take:
+                        action_key = self._action_key(actions_to_take)
+                        self.recent_action_keys.append(action_key)
+                        if (len(self.recent_action_keys) >= 3
+                                and len(set(list(self.recent_action_keys)[-3:])) == 1):
+                            if self.verbose:
+                                print(f"  [{step}] LLM repeating {action_key} — BANNING for 10 steps")
+                            self.banned_actions[action_key] = 10
+                            actions_to_take = []  # Fall to heuristic/nav
 
                     llm_cooldown = llm_interval
 
-            # Fallback to heuristic if no LLM actions
+            # Fallback: navigation heuristic for nav games, else regular heuristic
             if not actions_to_take:
-                actions_to_take = heuristic_action(
-                    grid, available, category, step,
-                    effective_actions=self.effective_actions,
-                    color_effectiveness=self.color_effectiveness)
+                if is_nav_game:
+                    nav_action = navigate_toward_interest(grid, available, visited_nav_positions)
+                    if nav_action:
+                        actions_to_take = [nav_action]
+                if not actions_to_take:
+                    actions_to_take = heuristic_action(
+                        grid, available, category, step,
+                        effective_actions=self.effective_actions,
+                        color_effectiveness=self.color_effectiveness)
                 llm_cooldown = max(0, llm_cooldown - 1)
 
             if not actions_to_take:
@@ -1225,6 +1499,32 @@ class SageAgent:
             new_grid = get_frame(fd)
             diff = grid_diff(prev_grid, new_grid)
             prev_result = diff if diff != "No change" else None
+
+            # Update cursor position and build action description
+            old_cursor = cursor_pos
+            cursor_pos = detect_cursor(new_grid, prev_grid)
+
+            # Build human-readable description of what just happened
+            action_name_map = {1: "up", 2: "down", 3: "left", 4: "right",
+                               5: "submit", 6: "click", 7: "undo"}
+            if actions_to_take:
+                a_int, a_data = actions_to_take[0]
+                a_name = action_name_map.get(a_int, f"action{a_int}")
+                if a_int == 6 and a_data:
+                    a_name = f"click({a_data['x']},{a_data['y']})"
+                if diff == "No change":
+                    last_action_desc = f"{a_name} → no change"
+                else:
+                    n_px = int(np.sum(prev_grid != new_grid))
+                    if cursor_pos and old_cursor:
+                        dx = cursor_pos[0] - old_cursor[0]
+                        dy = cursor_pos[1] - old_cursor[1]
+                        if dx != 0 or dy != 0:
+                            last_action_desc = f"{a_name} → cursor moved ({dx:+d},{dy:+d}), {n_px}px changed"
+                        else:
+                            last_action_desc = f"{a_name} → {n_px}px changed, cursor stayed"
+                    else:
+                        last_action_desc = f"{a_name} → {n_px}px changed"
 
             # SPATIAL: update object tracker with new frame
             if self.spatial_tracker:

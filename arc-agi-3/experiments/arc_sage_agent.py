@@ -77,36 +77,36 @@ def membot_store(text):
 # ─── LLM reasoning ───
 
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
-OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "gemma3:12b")
+OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen3.5:0.8b")
 
 
-def sage_reason(prompt, max_tokens=150):
+def sage_reason(prompt, system_prompt=None, max_tokens=150):
     """Ask LLM to reason about the game state.
 
-    Tries SAGE daemon first, falls back to Ollama direct.
+    Uses Ollama chat API directly with system+user message separation.
+    This bypasses SAGE daemon identity prompts that confuse game reasoning.
     Returns the LLM's text response, or None if unavailable.
     """
-    # Try SAGE daemon
-    try:
-        resp = requests.post(f"{SAGE_URL}/chat",
-            json={"message": prompt, "max_tokens": max_tokens},
-            timeout=15)
-        if resp.status_code == 200:
-            data = resp.json()
-            text = data.get("response", data.get("text", ""))
-            if text and "SAGE instance" not in text:  # Skip if daemon is in character
-                return text
-    except Exception:
-        pass
+    if system_prompt is None:
+        system_prompt = "You solve puzzles. Reply with ONLY your action. No explanation."
 
-    # Fallback: Ollama direct
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": prompt},
+    ]
+
     try:
-        resp = requests.post(f"{OLLAMA_URL}/api/generate",
-            json={"model": OLLAMA_MODEL, "prompt": prompt, "stream": False,
-                   "options": {"temperature": 0.3, "num_predict": max_tokens}},
+        resp = requests.post(f"{OLLAMA_URL}/api/chat",
+            json={
+                "model": OLLAMA_MODEL,
+                "messages": messages,
+                "stream": False,
+                "think": False,  # Required for Qwen 3.5
+                "options": {"temperature": 0.3, "num_predict": max_tokens},
+            },
             timeout=60)
         if resp.status_code == 200:
-            return resp.json().get("response", "").strip()
+            return resp.json().get("message", {}).get("content", "").strip()
     except Exception:
         pass
 
@@ -439,11 +439,14 @@ def compute_placement_actions(grid):
     return actions
 
 
-def build_strategy_prompt(grid, available_actions, memories, level_info, prev_action_result=None, cartridge=None, initial_grid=None, cycle_info=None):
+def build_strategy_prompt(grid, available_actions, memories, level_info,
+                          prev_action_result=None, cartridge=None,
+                          initial_grid=None, exploration_summary=None,
+                          cycle_info=None):
     """Build the prompt for LLM reasoning.
 
-    Uses few-shot completion style optimized for 0.8B models.
-    Now includes visual memory context, goal-awareness, and cycle detection.
+    Compact format optimized for 0.8B models. Includes exploration results,
+    cycle detection warnings, and visual memory context.
     Returns (prompt, category) tuple.
     """
     perception = full_perception(grid)
@@ -454,40 +457,42 @@ def build_strategy_prompt(grid, available_actions, memories, level_info, prev_ac
     avail_str = ", ".join(action_names.get(a, f"action{a}") for a in sorted(available_actions))
 
     prompt_parts = [
-        f"GAME PUZZLE - Level {level_info.get('current', '?')}/{level_info.get('total', '?')}",
-        f"\nWhat I see:\n{perception}",
-        f"\nGame type guess: {category.get('category', 'unknown')} — {category.get('hint', '')}",
-        f"\nAvailable actions: {avail_str}",
+        f"PUZZLE Level {level_info.get('current', '?')}/{level_info.get('total', '?')}",
+        f"\nSee:\n{perception}",
+        f"\nType: {category.get('category', 'unknown')} — {category.get('hint', '')}",
+        f"\nActions: {avail_str}",
     ]
+
+    # Exploration results — the most valuable context for the LLM
+    if exploration_summary:
+        prompt_parts.append(f"\nExploration results:\n{exploration_summary}")
 
     # Visual memory context
     if cartridge:
         vm_context = visual_memory_context(grid, cartridge)
         if vm_context:
-            prompt_parts.append(f"{vm_context}")
+            prompt_parts.append(f"\n{vm_context}")
 
     # Goal-awareness: compare to initial state
     if initial_grid is not None:
         similarity = visual_similarity(grid, initial_grid)
-        if similarity < 0.95:  # Grid has changed
-            prompt_parts.append(f"Grid changed {100 - similarity*100:.0f}% from initial")
+        if similarity < 0.95:
+            prompt_parts.append(f"Grid changed {100 - similarity*100:.0f}% from start")
         else:
-            prompt_parts.append("Grid unchanged - need progress")
+            prompt_parts.append("Grid unchanged — need progress")
 
     if memories:
-        prompt_parts.append(f"\nWhat I remember:\n" + "\n".join(f"- {m}" for m in memories[:3]))
+        prompt_parts.append(f"\nMemory:\n" + "\n".join(f"- {m}" for m in memories[:3]))
 
     if prev_action_result:
-        prompt_parts.append(f"\nLast action result: {prev_action_result}")
+        prompt_parts.append(f"\nLast result: {prev_action_result}")
 
     # Cycle detection warning
     if cycle_info:
         prompt_parts.append(f"\n⚠ WARNING: {cycle_info}. Try a different action to break the loop.")
 
     prompt_parts.append(
-        "\nWhat should I do? Think step by step, then say your action. "
-        "For clicks, say 'click(X, Y)'. For movement, say 'move up/down/left/right'. "
-        "For submit, say 'submit'."
+        "\nWhat action? Reply: click(X,Y) or move up/down/left/right or submit."
     )
 
     return "\n".join(prompt_parts), category
@@ -550,25 +555,245 @@ class SageAgent:
     No game-specific code — learns and reasons its way through.
     """
 
-    def __init__(self, use_llm=True, verbose=False):
+    def __init__(self, use_llm=True, verbose=False, explore_budget=30):
         self.use_llm = use_llm
         self.verbose = verbose
         self.llm_available = None  # Will check on first use
         self.action_history = []
         self.level_observations = []
+        self.explore_budget = explore_budget  # Actions for fast exploration phase
+
+        # Action-outcome tracking (built during exploration, consumed by LLM)
+        self.outcome_map = {}  # (action, color_at_pos) → {changes, level_ups, no_effect}
+        self.color_effectiveness = {}  # color → {tries, changes}
+        self.effective_actions = []  # Actions that caused grid changes
+        self.level_up_sequences = []  # Action sequences that preceded level-ups
 
     def check_llm(self):
-        """Check if SAGE daemon is available for reasoning."""
+        """Check if Ollama is available for reasoning."""
         if self.llm_available is not None:
             return self.llm_available
         try:
-            resp = requests.get(f"{SAGE_URL}/health", timeout=5)
+            resp = requests.get(f"{OLLAMA_URL}/api/tags", timeout=5)
             self.llm_available = resp.status_code == 200
         except Exception:
             self.llm_available = False
         if self.verbose:
             print(f"  LLM available: {self.llm_available}")
         return self.llm_available
+
+    def fast_explore(self, env, fd, available_actions, budget):
+        """Phase 1: Systematic rapid probing. No LLM. Pure observation.
+
+        Probes the game systematically to build an action-outcome map:
+        1. Try each non-click action once (submit, undo, directions)
+        2. Click distinct color regions (one click per unique color)
+        3. If a click causes change, try more clicks on that color
+        4. Track what changes the grid vs what doesn't
+
+        Returns (fd, steps_used) — updated frame data and action count.
+        """
+        grid = get_frame(fd)
+        bg = background_color(grid)
+        step = 0
+        prev_grid = grid.copy()
+        levels_at_start = fd.levels_completed
+
+        if self.verbose:
+            print(f"  ── Fast Explore Phase ({budget} actions) ──")
+
+        # Step 1: Try non-click actions to see what they do
+        non_click = [a for a in available_actions if a != 6]
+        for action in non_click:
+            if step >= budget:
+                break
+            try:
+                fd = env.step(INT_TO_GAME_ACTION[action])
+                step += 1
+                self.action_history.append(action)
+                new_grid = get_frame(fd)
+                diff = grid_diff(prev_grid, new_grid)
+                changed = diff != "No change"
+
+                action_name = {1: "up", 2: "down", 3: "left", 4: "right",
+                               5: "submit", 7: "undo"}.get(action, f"a{action}")
+                self.outcome_map[f"action_{action_name}"] = {
+                    "changed": changed, "diff": diff[:100] if changed else None,
+                    "level_up": fd.levels_completed > levels_at_start,
+                }
+
+                if changed:
+                    self.effective_actions.append({"action": action, "step": step})
+                    if self.verbose:
+                        print(f"    [{step}] {action_name} → CHANGED: {diff[:60]}")
+                elif self.verbose:
+                    print(f"    [{step}] {action_name} → no change")
+
+                if fd.levels_completed > levels_at_start:
+                    self.level_up_sequences.append(list(self.action_history[-5:]))
+                    if self.verbose:
+                        print(f"    ★ Level up from {action_name}!")
+
+                prev_grid = new_grid.copy()
+                # Undo if submit changed things (don't burn a level accidentally)
+                if action == 5 and changed and 7 in available_actions:
+                    fd = env.step(INT_TO_GAME_ACTION[7])
+                    step += 1
+                    self.action_history.append(7)
+                    prev_grid = get_frame(fd).copy()
+
+            except Exception as e:
+                if self.verbose:
+                    print(f"    [{step}] action {action} error: {e}")
+
+        # Step 2: Click distinct color regions
+        if 6 in available_actions and step < budget:
+            grid = get_frame(fd)
+            regions = find_color_regions(grid, min_size=4)
+
+            # Get one representative position per unique color
+            color_targets = {}
+            for r in regions:
+                c = r["color"]
+                if c != bg and c not in color_targets:
+                    color_targets[c] = (r["cx"], r["cy"])
+
+            if self.verbose:
+                print(f"    Probing {len(color_targets)} distinct colors...")
+
+            for color, (cx, cy) in color_targets.items():
+                if step >= budget:
+                    break
+                prev_grid = get_frame(fd).copy()
+                prev_levels = fd.levels_completed
+
+                try:
+                    fd = env.step(INT_TO_GAME_ACTION[6], data={'x': cx, 'y': cy})
+                    step += 1
+                    self.action_history.append(6)
+                    new_grid = get_frame(fd)
+                    diff = grid_diff(prev_grid, new_grid)
+                    changed = diff != "No change"
+                    cname = color_name(color)
+
+                    # Track color effectiveness
+                    if cname not in self.color_effectiveness:
+                        self.color_effectiveness[cname] = {"tries": 0, "changes": 0}
+                    self.color_effectiveness[cname]["tries"] += 1
+                    if changed:
+                        self.color_effectiveness[cname]["changes"] += 1
+                        self.effective_actions.append({
+                            "action": 6, "color": cname, "pos": (cx, cy), "step": step
+                        })
+
+                    if self.verbose:
+                        status = "CHANGED" if changed else "no change"
+                        print(f"    [{step}] click {cname}@({cx},{cy}) → {status}")
+
+                    if fd.levels_completed > prev_levels:
+                        self.level_up_sequences.append(list(self.action_history[-5:]))
+                        if self.verbose:
+                            print(f"    ★ Level up from clicking {cname}!")
+
+                    # If clicking caused change, probe MORE of this color
+                    if changed and step < budget:
+                        same_color = [r for r in regions
+                                      if r["color"] == color and (r["cx"], r["cy"]) != (cx, cy)]
+                        for extra in same_color[:3]:  # Up to 3 more clicks
+                            if step >= budget:
+                                break
+                            prev_grid = get_frame(fd).copy()
+                            fd = env.step(INT_TO_GAME_ACTION[6],
+                                          data={'x': extra["cx"], 'y': extra["cy"]})
+                            step += 1
+                            self.action_history.append(6)
+                            self.color_effectiveness[cname]["tries"] += 1
+                            nd = grid_diff(prev_grid, get_frame(fd))
+                            if nd != "No change":
+                                self.color_effectiveness[cname]["changes"] += 1
+                                self.effective_actions.append({
+                                    "action": 6, "color": cname,
+                                    "pos": (extra["cx"], extra["cy"]), "step": step
+                                })
+
+                    # Undo if we want to keep exploring from clean state
+                    if changed and 7 in available_actions and step < budget:
+                        fd = env.step(INT_TO_GAME_ACTION[7])
+                        step += 1
+                        self.action_history.append(7)
+
+                except Exception:
+                    pass
+
+        # Step 3: Try clicking in different sections (spatial probing)
+        if 6 in available_actions and step < budget:
+            grid = get_frame(fd)
+            sections = detect_sections(grid)
+            for sec in sections[:5]:
+                if step >= budget:
+                    break
+                # Click center of section
+                sy = (sec["y_start"] + sec["y_end"]) // 2
+                sx = grid.shape[1] // 2
+                prev_grid = get_frame(fd).copy()
+                try:
+                    fd = env.step(INT_TO_GAME_ACTION[6], data={'x': sx, 'y': sy})
+                    step += 1
+                    self.action_history.append(6)
+                    diff = grid_diff(prev_grid, get_frame(fd))
+                    if diff != "No change":
+                        self.effective_actions.append({
+                            "action": 6, "section": f"rows_{sec['y_start']}-{sec['y_end']}",
+                            "pos": (sx, sy), "step": step
+                        })
+                        if self.verbose:
+                            print(f"    [{step}] section click ({sx},{sy}) → CHANGED")
+                except Exception:
+                    pass
+
+        if self.verbose:
+            n_eff = len(self.effective_actions)
+            n_colors = sum(1 for v in self.color_effectiveness.values() if v["changes"] > 0)
+            print(f"  ── Explore done: {step} actions, {n_eff} effective, {n_colors} reactive colors ──")
+
+        return fd, step
+
+    def exploration_summary(self):
+        """Compile exploration results into text for LLM consumption."""
+        lines = []
+
+        # Color effectiveness
+        if self.color_effectiveness:
+            effective = []
+            inert = []
+            for cname, stats in sorted(self.color_effectiveness.items(),
+                                        key=lambda x: -x[1]["changes"]):
+                rate = stats["changes"] / max(stats["tries"], 1)
+                if stats["changes"] > 0:
+                    effective.append(f"{cname}({stats['changes']}/{stats['tries']})")
+                else:
+                    inert.append(cname)
+            if effective:
+                lines.append(f"Clickable colors (caused change): {', '.join(effective)}")
+            if inert:
+                lines.append(f"Inert colors (no effect): {', '.join(inert)}")
+
+        # Non-click action results
+        action_results = {k: v for k, v in self.outcome_map.items()
+                          if k.startswith("action_")}
+        if action_results:
+            active = [k.replace("action_", "") for k, v in action_results.items() if v["changed"]]
+            passive = [k.replace("action_", "") for k, v in action_results.items() if not v["changed"]]
+            if active:
+                lines.append(f"Active non-click actions: {', '.join(active)}")
+            if passive:
+                lines.append(f"Inactive non-click actions: {', '.join(passive)}")
+
+        # Level-up patterns
+        if self.level_up_sequences:
+            lines.append(f"Level-up sequences found: {self.level_up_sequences}")
+
+        return "\n".join(lines) if lines else "Exploration: no reactive elements found."
 
     def play_game(self, arcade, game_id, budget=500):
         """Play one game, return results.
@@ -617,13 +842,58 @@ class SageAgent:
         if self.verbose:
             print(f"  Category: {category.get('category', '?')} — {category.get('hint', '')}")
 
-        # Play loop
-        best_levels = 0
-        step = 0
+        # ═══ PHASE 1: Fast Exploration ═══
+        # Systematic probing — no LLM, pure observation
+        # Builds action-outcome map for the LLM to consume later
+        explore_actions = min(self.explore_budget, budget // 3)  # Max 1/3 of budget
+        if explore_actions > 0:
+            fd, steps_used = self.fast_explore(env, fd, available, explore_actions)
+            grid = get_frame(fd)
+        else:
+            steps_used = 0
+
+        # Check if exploration already solved levels
+        best_levels = fd.levels_completed
+        if best_levels > 0 and self.verbose:
+            print(f"  Exploration solved {best_levels} level(s)!")
+
+        # ═══ PHASE 2: Perception-driven placement (if applicable) ═══
+        # For placement puzzles, try pure perception before LLM
+        if (category.get("category") in ("placement_puzzle", "click_arrange")
+                and best_levels < fd.win_levels):
+            placement_actions = compute_placement_actions(grid)
+            if placement_actions:
+                if self.verbose:
+                    print(f"  Trying perception-driven placement ({len(placement_actions)} actions)...")
+                prev_grid = grid.copy()
+                for action_int, data in placement_actions:
+                    if steps_used >= budget:
+                        break
+                    try:
+                        if data:
+                            fd = env.step(INT_TO_GAME_ACTION[action_int], data=data)
+                        else:
+                            fd = env.step(INT_TO_GAME_ACTION[action_int])
+                        steps_used += 1
+                        self.action_history.append(action_int)
+                    except Exception:
+                        break
+                new_grid = get_frame(fd)
+                if fd.levels_completed > best_levels:
+                    best_levels = fd.levels_completed
+                    if self.verbose:
+                        print(f"  ★ Placement solved level {best_levels}!")
+                grid = new_grid
+
+        # ═══ PHASE 3: LLM-guided play ═══
+        step = steps_used
         prev_result = None
         prev_grid = grid.copy()
-        llm_cooldown = 0  # Steps until next LLM call (don't call every step)
-        llm_interval = 5  # Call LLM every N steps
+        llm_cooldown = 0
+        llm_interval = 3  # Call LLM every N steps
+        no_progress_count = 0  # Track consecutive no-change steps
+        last_level = best_levels
+        recent_llm_actions = []  # Track LLM action repetition
 
         # STATE CYCLE DETECTION: Track seen states to break loops
         seen_states = set()  # All states visited (for exact match detection)
@@ -639,6 +909,7 @@ class SageAgent:
             # Track level changes
             if fd.levels_completed > best_levels:
                 best_levels = fd.levels_completed
+                no_progress_count = 0
                 diff_desc = grid_diff(prev_grid, grid)
                 self.level_observations.append({
                     "level": best_levels,
@@ -674,46 +945,64 @@ class SageAgent:
                 cycle_detected = False
                 cycle_info = None
 
+                # Re-try perception-driven placement on new level
+                if category.get("category") in ("placement_puzzle", "click_arrange"):
+                    new_grid = get_frame(fd)
+                    placement_actions = compute_placement_actions(new_grid)
+                    if placement_actions:
+                        if self.verbose:
+                            print(f"  Re-running placement for level {best_levels+1}...")
+                        for pa, pd in placement_actions:
+                            if step >= budget:
+                                break
+                            try:
+                                if pd:
+                                    fd = env.step(INT_TO_GAME_ACTION[pa], data=pd)
+                                else:
+                                    fd = env.step(INT_TO_GAME_ACTION[pa])
+                                step += 1
+                                self.action_history.append(pa)
+                            except Exception:
+                                break
+                        continue  # Re-check level after placement
+
             # CYCLE DETECTION: Check if we've seen this state before
             state_hash = hash_grid_state(grid)
 
             if state_hash in seen_states:
-                # We've been in this exact state before — potential loop
                 cycle_detected = True
                 consecutive_cycles += 1
-                # Check if it's a short loop (state appeared recently)
                 if state_hash in recent_states:
                     loop_length = len(recent_states) - list(recent_states).index(state_hash)
-                    cycle_info = f"Loop detected (length {loop_length}) — repeating state (#{consecutive_cycles})"
+                    cycle_info = f"Loop detected (length {loop_length}, #{consecutive_cycles})"
                 else:
-                    cycle_info = "Visited state (seen {}/{} steps ago) (#{})".format(
-                        step, len(seen_states), consecutive_cycles
-                    )
-
+                    cycle_info = f"Visited state (#{consecutive_cycles})"
                 if self.verbose:
-                    print(f"  ⚠ {cycle_info}")
+                    print(f"  [{step}] {cycle_info}")
             else:
-                # New state - reset cycle counter
                 consecutive_cycles = 0
                 cycle_detected = False
                 cycle_info = None
 
-            # Track this state
             seen_states.add(state_hash)
             recent_states.append(state_hash)
+
+            # STUCK DETECTION: if nothing changes for 15+ steps
+            if prev_result is None:
+                no_progress_count += 1
+            else:
+                no_progress_count = 0
 
             # REASON (LLM or heuristic)
             actions_to_take = []
 
-            # LOOP-BREAKING: If stuck in persistent cycle, force exploration
+            # LOOP-BREAKING: If stuck in persistent cycle, force random exploration
             if consecutive_cycles >= 3:
-                if self.verbose:
-                    print(f"  💥 Breaking persistent loop - forcing random exploration")
-                # Skip LLM, go straight to random exploration
                 import random
+                if self.verbose:
+                    print(f"  [{step}] Breaking cycle — random action")
                 a = random.choice(available)
                 if a == 6:
-                    # Click a random non-background position
                     non_bg = np.argwhere(grid.astype(int) != background_color(grid))
                     if len(non_bg) > 0:
                         idx = random.randint(0, len(non_bg) - 1)
@@ -721,15 +1010,35 @@ class SageAgent:
                         actions_to_take = [(6, {'x': c, 'y': r})]
                 if not actions_to_take:
                     actions_to_take = [(a, None)]
+                consecutive_cycles = 0
+
+            elif no_progress_count >= 15:
+                # Stuck! Try perception-driven placement as escape hatch
+                placement_actions = compute_placement_actions(grid)
+                if placement_actions:
+                    actions_to_take = placement_actions
+                    if self.verbose:
+                        print(f"  [{step}] STUCK — trying placement escape")
+                    no_progress_count = 0
+                elif 7 in available:
+                    actions_to_take = [(7, None)]
+                    if self.verbose:
+                        print(f"  [{step}] STUCK — undo")
+                    no_progress_count = 0
 
             elif self.use_llm and self.check_llm() and llm_cooldown <= 0:
-                # Build prompt with visual memory, goal-awareness, and cycle detection
+                # Build prompt with exploration results and visual memory
+                explore_ctx = self.exploration_summary()
+                stuck_hint = ""
+                if no_progress_count >= 5:
+                    stuck_hint = f"\nWARNING: {no_progress_count} actions with no grid change. Try something DIFFERENT."
                 prompt, category = build_strategy_prompt(
                     grid, available, all_memories,
                     {"current": fd.levels_completed, "total": fd.win_levels},
-                    prev_result,
+                    (prev_result or stuck_hint) if (prev_result or stuck_hint) else None,
                     cartridge=cartridge,
                     initial_grid=initial_grid,
+                    exploration_summary=explore_ctx,
                     cycle_info=cycle_info,
                 )
                 llm_response = sage_reason(prompt)
@@ -739,6 +1048,16 @@ class SageAgent:
                     if self.verbose and actions_to_take:
                         print(f"  [{step}] LLM: {llm_response[:80]}...")
                         print(f"        → {actions_to_take}")
+
+                    # Detect LLM repetition — if same action 3+ times, force different
+                    action_key = str(actions_to_take)
+                    recent_llm_actions.append(action_key)
+                    if len(recent_llm_actions) >= 3 and len(set(recent_llm_actions[-3:])) == 1:
+                        if self.verbose:
+                            print(f"  [{step}] LLM repeating — forcing different action")
+                        actions_to_take = []  # Fall through to heuristic
+                        recent_llm_actions.clear()
+
                     llm_cooldown = llm_interval
 
             # Fallback to heuristic if no LLM actions

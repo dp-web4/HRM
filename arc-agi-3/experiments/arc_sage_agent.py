@@ -40,7 +40,9 @@ from arc_perception import (
     get_frame, full_perception, grid_diff, grid_summary,
     find_color_regions, find_markers, background_color, color_name,
     detect_sections, find_row_patterns,
+    visual_similarity, visual_memory_context,
 )
+from membot_cartridge import MembotCartridge
 
 INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
 MEMBOT_URL = "http://localhost:8000"
@@ -264,10 +266,175 @@ def detect_game_category(grid, available_actions):
     return obs
 
 
-def build_strategy_prompt(grid, available_actions, memories, level_info, prev_action_result=None):
+def build_placement_prompt(grid, regions, sections):
+    """Build a prompt for placement-type puzzles (sb26-like).
+
+    Uses few-shot completion style that 0.8B models handle well.
+    Returns (system_prompt, user_prompt) tuple.
+    """
+    bg = background_color(grid)
+
+    # Identify top indicators, bottom items, middle slots
+    if len(sections) < 2:
+        return None, None
+
+    top_sec = sections[0]
+    bot_sec = sections[-1]
+
+    # Filter top regions: exclude bg, gray (border), and very large regions (frames)
+    # Real indicators are small (4-6px wide) colored blocks
+    BORDER_COLORS = {bg, 5}  # yellow(bg), gray — common frame/border colors
+    top_regions = sorted(
+        [r for r in regions if top_sec["y_start"] <= r["cy"] <= top_sec["y_end"]
+         and r["color"] not in BORDER_COLORS
+         and r["size"] < 50],  # Real indicators are small, not frame-sized
+        key=lambda r: r["x"])
+    bot_regions = sorted(
+        [r for r in regions if bot_sec["y_start"] <= r["cy"] <= bot_sec["y_end"]
+         and r["color"] not in BORDER_COLORS
+         and r["size"] < 50],
+        key=lambda r: r["x"])
+
+    # Find slots: color 2 markers in MIDDLE sections only (not top/bottom/lines)
+    all_markers = find_markers(grid, 2, min_cluster=2)
+    # Filter: exclude markers on thin horizontal lines (1-2 row sections)
+    # and only keep markers in middle area between top indicators and bottom palette
+    thin_line_rows = set()
+    for s in sections:
+        if s["y_end"] - s["y_start"] <= 1:  # Single-row or 2-row section = line
+            for r in range(s["y_start"], s["y_end"] + 1):
+                thin_line_rows.add(r)
+    mid_y_min = top_sec["y_end"] + 1
+    mid_y_max = bot_sec["y_start"] - 1
+    slots = [s for s in all_markers
+             if mid_y_min <= s["y"] <= mid_y_max
+             and s["y"] not in thin_line_rows]
+
+    if not top_regions or not bot_regions:
+        return None, None
+
+    # Deduplicate top colors (borders create duplicate regions at same position)
+    seen_positions = set()
+    deduped_top = []
+    for r in top_regions:
+        # Group by approximate x position (within 3px)
+        key = r["cx"] // 4
+        if key not in seen_positions:
+            seen_positions.add(key)
+            deduped_top.append(r)
+
+    bot_items = [(r["color_name"], r["cx"], r["cy"]) for r in bot_regions]
+    slot_positions = [(s["x"], s["y"]) for s in slots]
+    top_colors = [r["color_name"] for r in deduped_top]
+
+    system = "You solve puzzles. Reply with ONLY click actions. No explanation."
+
+    parts = [
+        f"Puzzle: match the top order by placing bottom items into slots.",
+        f"\nTOP order: {', '.join(top_colors)}",
+        f"BOTTOM items: {' '.join(f'{name}({x},{y})' for name, x, y in bot_items)}",
+    ]
+    if slot_positions:
+        parts.append(f"SLOTS: {' '.join(f's{i+1}({x},{y})' for i, (x, y) in enumerate(slot_positions))}")
+
+    # Build the plan
+    plan_parts = []
+    for i, target_color in enumerate(top_colors):
+        # Find matching bottom item
+        for name, bx, by in bot_items:
+            if name == target_color:
+                if i < len(slot_positions):
+                    sx, sy = slot_positions[i]
+                    plan_parts.append(f"{target_color}→s{i+1}")
+                break
+    if plan_parts:
+        parts.append(f"\nPlan: {', '.join(plan_parts)}")
+
+    parts.append("\nActions:")
+
+    return system, "\n".join(parts)
+
+
+def compute_placement_actions(grid):
+    """Pure perception-based placement: match top indicator colors to bottom items.
+
+    Returns list of (action_int, data) tuples for click-place-submit, or empty list.
+    This does NOT need the LLM — it's pure spatial/color reasoning in code.
+    """
+    bg = background_color(grid)
+    regions = find_color_regions(grid, min_size=6)
+    sections = detect_sections(grid)
+
+    if len(sections) < 2:
+        return []
+
+    top_sec = sections[0]
+    bot_sec = sections[-1]
+
+    BORDER_COLORS = {bg, 5, 8}
+    top_regions = sorted(
+        [r for r in regions if top_sec["y_start"] <= r["cy"] <= top_sec["y_end"]
+         and r["color"] not in BORDER_COLORS and r["size"] < 50],
+        key=lambda r: r["x"])
+    bot_regions = sorted(
+        [r for r in regions if bot_sec["y_start"] <= r["cy"] <= bot_sec["y_end"]
+         and r["color"] not in BORDER_COLORS and r["size"] < 50],
+        key=lambda r: r["x"])
+
+    # Deduplicate top by position
+    seen_pos = set()
+    deduped_top = []
+    for r in top_regions:
+        key = r["cx"] // 4
+        if key not in seen_pos:
+            seen_pos.add(key)
+            deduped_top.append(r)
+
+    # Find middle slots (color 2 markers, not on thin lines)
+    all_markers = find_markers(grid, 2, min_cluster=2)
+    thin_line_rows = set()
+    for s in sections:
+        if s["y_end"] - s["y_start"] <= 1:
+            for r in range(s["y_start"], s["y_end"] + 1):
+                thin_line_rows.add(r)
+    mid_y_min = top_sec["y_end"] + 1
+    mid_y_max = bot_sec["y_start"] - 1
+    slots = [s for s in all_markers
+             if mid_y_min <= s["y"] <= mid_y_max
+             and s["y"] not in thin_line_rows]
+
+    if not deduped_top or not bot_regions or not slots:
+        return []
+
+    # Build color→position lookup for bottom items
+    bot_by_color = {}
+    for r in bot_regions:
+        if r["color_name"] not in bot_by_color:
+            bot_by_color[r["color_name"]] = (r["cx"], r["cy"])
+
+    # Match: for each top indicator color, find matching bottom item → place in slot
+    actions = []
+    for i, top_r in enumerate(deduped_top):
+        target_color = top_r["color_name"]
+        if target_color in bot_by_color and i < len(slots):
+            px, py = bot_by_color[target_color]
+            sx, sy = slots[i]["x"], slots[i]["y"]
+            actions.append((6, {'x': px, 'y': py}))  # Click palette item
+            actions.append((6, {'x': sx, 'y': sy}))  # Click slot
+
+    # Submit after all placements
+    if actions:
+        actions.append((5, None))
+
+    return actions
+
+
+def build_strategy_prompt(grid, available_actions, memories, level_info, prev_action_result=None, cartridge=None, initial_grid=None):
     """Build the prompt for LLM reasoning.
 
-    Compact enough for 0.8B model to handle, detailed enough to be useful.
+    Uses few-shot completion style optimized for 0.8B models.
+    Now includes visual memory context and goal-awareness.
+    Returns (prompt, category) tuple.
     """
     perception = full_perception(grid)
     category = detect_game_category(grid, available_actions)
@@ -282,6 +449,20 @@ def build_strategy_prompt(grid, available_actions, memories, level_info, prev_ac
         f"\nGame type guess: {category.get('category', 'unknown')} — {category.get('hint', '')}",
         f"\nAvailable actions: {avail_str}",
     ]
+
+    # Visual memory context
+    if cartridge:
+        vm_context = visual_memory_context(grid, cartridge)
+        if vm_context:
+            prompt_parts.append(f"{vm_context}")
+
+    # Goal-awareness: compare to initial state
+    if initial_grid is not None:
+        similarity = visual_similarity(grid, initial_grid)
+        if similarity < 0.95:  # Grid has changed
+            prompt_parts.append(f"Grid changed {100 - similarity*100:.0f}% from initial")
+        else:
+            prompt_parts.append("Grid unchanged - need progress")
 
     if memories:
         prompt_parts.append(f"\nWhat I remember:\n" + "\n".join(f"- {m}" for m in memories[:3]))
@@ -397,6 +578,18 @@ class SageAgent:
             print(f"\n  Game: {prefix}")
             print(f"  Actions: {available}, Win: {fd.win_levels} levels")
 
+        # VISUAL MEMORY: Create cartridge and store initial state
+        cartridge = MembotCartridge(f"sage_visual_{prefix}")
+        cartridge.read()
+        initial_grid = grid.copy()
+        cartridge.store_frame_snapshot(
+            "initial",
+            initial_grid,
+            metadata={"description": "Initial game state", "level": 0}
+        )
+        if self.verbose:
+            print(f"  Visual memory: initialized for {prefix}")
+
         # RECALL: what do we know about this game type?
         memories = membot_recall(f"ARC-AGI-3 {prefix} game strategy")
         category_memories = membot_recall(f"ARC-AGI-3 placement puzzle sequence matching")
@@ -434,6 +627,17 @@ class SageAgent:
                 if self.verbose:
                     print(f"  ★ Level {best_levels}/{fd.win_levels}!")
 
+                # Store level-up snapshot in visual memory
+                cartridge.store_frame_snapshot(
+                    f"level_{best_levels}",
+                    grid.copy(),
+                    metadata={
+                        "description": f"Solved level {best_levels}",
+                        "level": best_levels,
+                        "actions": list(self.action_history[-10:]),
+                    }
+                )
+
                 # Store level-up knowledge
                 recent_actions = self.action_history[-15:]
                 membot_store(
@@ -447,11 +651,13 @@ class SageAgent:
             actions_to_take = []
 
             if self.use_llm and self.check_llm() and llm_cooldown <= 0:
-                # Build prompt and ask LLM
+                # Build prompt with visual memory and goal-awareness
                 prompt, category = build_strategy_prompt(
                     grid, available, all_memories,
                     {"current": fd.levels_completed, "total": fd.win_levels},
                     prev_result,
+                    cartridge=cartridge,
+                    initial_grid=initial_grid,
                 )
                 llm_response = sage_reason(prompt)
 
@@ -517,6 +723,11 @@ class SageAgent:
                 f"Category: {category.get('category')}. "
                 f"Actions: {available}. Steps used: {step}/{budget}."
             )
+
+        # Save visual memory cartridge
+        cartridge.write()
+        if self.verbose:
+            print(f"  Visual memory: saved {len(cartridge.data.get('visual_memory', {}).get('snapshots', {}))} snapshots")
 
         return result
 

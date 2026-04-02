@@ -37,7 +37,7 @@ from sage.irp.plugins.grid_cartridge_irp import GridCartridgeIRP, QUERY_ACTION_O
 from sage.interfaces.base_effector import EffectorCommand
 from arc_perception import (
     full_perception, color_effectiveness_summary, grid_diff as arc_grid_diff,
-    color_name as arc_color_name,
+    color_name as arc_color_name, find_color_regions,
 )
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
@@ -142,6 +142,49 @@ def diff_summary(prev_grid: np.ndarray, curr_grid: np.ndarray) -> dict:
 # Game memory
 # ─────────────────────────────────────────────────────────────
 
+def interactive_targets_text(grid: np.ndarray, click_history: list = None,
+                            max_targets: int = 18) -> str:
+    """Extract small (likely interactive) regions as click targets for LLM.
+
+    Marks positions that have been clicked many times as [tried N×].
+    Highlights untried positions so LLM varies exploration.
+    """
+    regions = find_color_regions(grid, min_size=4)  # include small regions
+
+    # Build click count map from history: (r,c) → count
+    tried_counts: dict = {}
+    if click_history:
+        for h in click_history:
+            pos = (h["r"], h["c"])
+            tried_counts[pos] = tried_counts.get(pos, 0) + 1
+
+    # Separate small interactive targets from large structural regions
+    buttons = []
+    for r in regions:
+        # Button-sized: small square-ish objects (likely UI elements / rotation buttons)
+        if 4 <= r["size"] <= 64 and r["w"] <= 12 and r["h"] <= 12:
+            buttons.append(r)
+
+    if not buttons:
+        buttons = sorted(regions, key=lambda r: r["size"])[:max_targets]
+
+    # Sort: untried first, then least tried
+    def sort_key(r):
+        n = tried_counts.get((r["cy"], r["cx"]), 0)
+        return n
+
+    buttons = sorted(buttons, key=sort_key)
+
+    lines = []
+    for r in buttons[:max_targets]:
+        n = tried_counts.get((r["cy"], r["cx"]), 0)
+        tried_marker = f" [tried {n}×]" if n > 0 else " ← NEW"
+        lines.append(
+            f"  {r['color_name']}({r['w']}x{r['h']}) @({r['cx']},{r['cy']}){tried_marker}"
+        )
+    return "\n".join(lines) if lines else "  (no small regions detected)"
+
+
 def find_click_target(grid: np.ndarray, color_stats: dict = None,
                       clicked: set = None) -> tuple:
     """Pick the best (row, col) coordinate for ACTION6.
@@ -237,6 +280,7 @@ class GameMemory:
 
     def reset_level_clicks(self):
         self.clicked_this_level = set()
+        self.click_history = []  # fresh slate for new level — avoid anchoring on old positions
 
     def record_sequence(self, actions: list, total_changes: int, diffs: list,
                         level_before: int, level_after: int):
@@ -359,6 +403,7 @@ Plan 3-5 actions. JSON only: {{"sequence":[nums],"hypothesis":"brief","goal":"br
 
     # Full prompt for quality reasoning — use full_perception for grid description
     perception = full_perception(grid)
+    targets = interactive_targets_text(grid, click_history=memory.click_history)
     color_tries, color_changes = memory.color_tries_changes()
     effectiveness = color_effectiveness_summary(color_tries, color_changes)
     click_hist = memory.click_history_text()
@@ -375,8 +420,11 @@ Plan 3-5 actions. JSON only: {{"sequence":[nums],"hypothesis":"brief","goal":"br
 STATE: step {step_count}, levels {levels_completed}/{win_levels}
 Available actions: {', '.join(avail)}
 {knowledge_block}
-GRID PERCEPTION:
+GRID LAYOUT (color regions as name(WxH)@(x,y) where x=col, y=row):
 {perception}
+
+INTERACTIVE TARGETS (small objects — likely buttons/pieces to click):
+{targets}
 
 CLICK HISTORY (causal feedback):
 {click_hist}
@@ -387,8 +435,10 @@ COLOR EFFECTIVENESS (what causes changes):
 SEQUENCE HISTORY:
 {mem_text}
 {winning}{hyp}{strat}{cart_block}
-Plan 3-5 actions. Use what you know: which clicks cause changes, which don't. Apply strategic insights.
-JSON only: {{"sequence": [nums], "hypothesis": "game theory", "goal": "what to test next"}}"""
+Plan 3-5 actions. IMPORTANT: Prioritize targets marked ← NEW from INTERACTIVE TARGETS — avoid repeating [tried N×] positions that haven't caused level-ups.
+Coordinates: @(x,y) means x=col, y=row. Use exactly those values.
+JSON only: {{"sequence": [nums], "clicks": [{{"x": col, "y": row}}, ...], "hypothesis": "game theory", "goal": "what to test next"}}
+(one {{x,y}} per ACTION6 — try DIFFERENT targets each sequence)"""
 
 
 def reflect_prompt(grid: np.ndarray, summary: dict,
@@ -519,8 +569,18 @@ def main():
             print(f"    • {s[:90]}")
 
     memory = GameMemory()
-    if prior_reflections:
-        # Seed from most recent reflection
+    if strategic_insights:
+        # Strategic insights take priority — seed hypothesis from verified facts,
+        # not from old reflections that may predate the rotation puzzle discovery
+        memory.hypothesis = strategic_insights[0][:120]
+        memory.strategy = (
+            "Identify and click rotation buttons (small 4x4 squares). "
+            "Try different button positions each sequence. "
+            "Track which buttons cause changes and which alignment direction helps."
+        )
+        print(f"  Memory seeded from strategic_insights ({len(strategic_insights)} facts).")
+    elif prior_reflections:
+        # Fall back to prior reflections only when no verified knowledge exists
         last_r = prior_reflections[-1].step_record
         memory.hypothesis = last_r.get("hypothesis", "")
         memory.strategy = last_r.get("strategy", "")
@@ -617,17 +677,34 @@ def main():
                              prior_memory=prior_memory,
                              strategic_insights=strategic_insights)
         t0 = time.time()
-        presponse = ask_ollama(pprompt, max_tokens=80 if args.fast else 200)
+        presponse = ask_ollama(pprompt, max_tokens=80 if args.fast else 300)
         plan_s = time.time() - t0
 
         sequence = []
+        llm_clicks = []  # LLM-specified (r,c) targets for each ACTION6
         goal = ""
         try:
-            if "{" in presponse:
+            if "{" in presponse and "}" in presponse:
                 pj = json.loads(presponse[presponse.index("{"):presponse.rindex("}") + 1])
                 sequence = [int(a) for a in pj.get("sequence", [])]
                 memory.hypothesis = pj.get("hypothesis", memory.hypothesis)
                 goal = pj.get("goal", "")[:60]
+                # Parse LLM-directed click coordinates (x=col, y=row to match perception @(x,y))
+                for click in pj.get("clicks", []):
+                    if isinstance(click, dict):
+                        # Support both {x,y} (preferred) and legacy {r,c}
+                        if "x" in click and "y" in click:
+                            cc = int(click["x"])   # x = column
+                            cr = int(click["y"])   # y = row
+                        elif "r" in click and "c" in click:
+                            cr = int(click["r"])
+                            cc = int(click["c"])
+                        else:
+                            continue
+                        # Clamp to grid bounds
+                        cr = max(0, min(grid.shape[0] - 1, cr))
+                        cc = max(0, min(grid.shape[1] - 1, cc))
+                        llm_clicks.append((cr, cc))
         except (json.JSONDecodeError, ValueError):
             pass
 
@@ -640,12 +717,15 @@ def main():
             goal = "(random exploration)"
 
         seq_names = [ACTION_LABELS.get(a, f"A{a}") for a in sequence]
-        print(f"Seq {seq_num:2d}: [{' → '.join(seq_names)}]  plan:{plan_s:.1f}s  goal: {goal}")
+        click_coords = ",".join(f"r{r}c{c}" for r, c in llm_clicks[:3])
+        click_info = f"  clicks:[{click_coords}{'...' if len(llm_clicks)>3 else ''}]" if llm_clicks else ""
+        print(f"Seq {seq_num:2d}: [{' → '.join(seq_names)}]  plan:{plan_s:.1f}s{click_info}  goal: {goal}")
 
         # --- Execute sequence ---
         seq_changes = 0
         seq_diffs = []
         level_up_during = False
+        click_idx = 0  # index into llm_clicks for ACTION6s
 
         for i, action in enumerate(sequence):
             prev_grid = grid.copy()
@@ -653,15 +733,24 @@ def main():
             # Execute action — ACTION6 requires coordinates
             ga = INT_TO_GAME_ACTION[action]
             if action == 6:
-                r, c, color = find_click_target(
-                    grid, memory.color_stats, memory.clicked_this_level
-                )
+                if click_idx < len(llm_clicks):
+                    # Use LLM-directed coordinate
+                    r, c = llm_clicks[click_idx]
+                    color = int(grid[r, c])
+                    click_idx += 1
+                else:
+                    # Fallback: heuristic target selection
+                    r, c, color = find_click_target(
+                        grid, memory.color_stats, memory.clicked_this_level
+                    )
                 frame_data = env.step(ga, data={'x': c, 'y': r})
             else:
                 frame_data = env.step(ga)
-            new_grid = np.array(frame_data.frame)
+            new_grid = np.array(frame_data.frame) if frame_data.frame is not None else grid
             if new_grid.ndim == 3:
                 new_grid = new_grid[-1]
+            if new_grid.shape != grid.shape:
+                new_grid = grid  # safety: ignore malformed frame
             n_changed = int(np.sum(grid != new_grid))
             changed = n_changed > 0
             if action == 6:

@@ -40,7 +40,6 @@ from sage.irp.plugins.grid_vision_irp import GridVisionIRP, StepRecord
 from sage.irp.plugins.game_action_effector import GameActionEffector
 from sage.irp.plugins.grid_cartridge_irp import GridCartridgeIRP
 from sage.irp.plugins.game_knowledge_base import GameKnowledgeBase, LevelSolution
-from sage.irp.plugins.game_state_decoder import GameStateDecoder
 from arc_perception import (
     full_perception, color_effectiveness_summary,
     color_name as arc_color_name, find_color_regions,
@@ -211,6 +210,8 @@ def reason_prompt(grid: np.ndarray, kb: GameKnowledgeBase,
 
     engine_block = f"\n{engine_state}\n" if engine_state else ""
 
+    targets = interactive_targets(grid, kb)
+
     return f"""You are playing a video game presented as a 64x64 pixel grid. The game contains visual sprites — colored regions that represent objects. Some objects are interactive (clicking them changes the game state), others are purely decorative. The game has multiple levels. Your objective is to complete each level in as few actions as possible.
 
 IMPORTANT PRINCIPLES:
@@ -219,13 +220,16 @@ IMPORTANT PRINCIPLES:
 - Consult your knowledge base below — you may have seen similar games before.
 - Identify which objects are interactive vs decorative. Do not click decorations.
 - When you discover a game mechanic, use it deliberately, not randomly.
+- ONLY click positions from the VISIBLE OBJECTS list below. Do not invent coordinates.
 
 GAME STATUS: Level {levels_completed}/{win_levels}.{budget_note}
-{engine_block}
+
+VISIBLE OBJECTS (detected from the grid — pick from these):
+{targets}
 {solution_block}
 {kb_text}
 {last_result_block}
-Choose ONE position to click. Output JSON only:
+Choose ONE position from the VISIBLE OBJECTS list above. Output JSON only:
 {{"action": 6, "x": col_number, "y": row_number, "predict": "what will change and why", "reason": "why this target", "mode": "explore|execute_solution"}}"""
 
 
@@ -272,7 +276,7 @@ Respond with JSON only:
 # Main loop
 # ─────────────────────────────────────────────────────────────
 
-def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_num, decoder):
+def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_num):
     """Run one game attempt. Returns (levels_completed, state_name, step, session_clicks, elapsed)."""
     step = 0
     start_time = time.time()
@@ -288,38 +292,31 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
 
         # ── REASON ──
         t0 = time.time()
-        engine_state = decoder.to_prompt_text(grid)
         rprompt = reason_prompt(
             grid, kb,
             frame_data.levels_completed, frame_data.win_levels,
             step, last_action_result,
             actions_remaining=args.budget - action_num,
-            engine_state=engine_state,
         )
         rresponse = ask_ollama(rprompt, max_tokens=200)
         think_s = time.time() - t0
 
         rj = parse_json(rresponse)
         if not rj or "x" not in rj or "y" not in rj:
-            # Fallback: pick a button from the engine decoder that hasn't been tried yet
-            engine_st = decoder.decode(grid)
-            btns = engine_st["buttons"] if engine_st else []
-            untried = [b for b in btns if f"r{b['click_y']}c{b['click_x']}" not in kb.objects]
-            if untried:
-                b = untried[0]
-                c, r = b['click_x'], b['click_y']
-            elif btns:
-                b = btns[0]
-                c, r = b['click_x'], b['click_y']
+            # Fallback: pick an untried color region from grid observation
+            regions = find_color_regions(grid, min_size=4)
+            candidates = [r for r in regions if 4 <= r["size"] <= 64
+                          and f"r{r['cy']}c{r['cx']}" not in kb.objects]
+            if not candidates:
+                candidates = [r for r in regions if 4 <= r["size"] <= 64]
+            if candidates:
+                pick = candidates[0]
+                c, r = pick['cx'], pick['cy']
             else:
-                candidates = kb.to_exploration_targets()
-                if candidates:
-                    r, c = candidates[0]
-                else:
-                    r, c = 32, 32
+                c, r = grid.shape[1] // 2, grid.shape[0] // 2
             color = arc_color_name(int(grid[r, c]))
-            prediction = "(fallback — no LLM response)"
-            reason = "(fallback to engine-decoded button)"
+            prediction = "(fallback — no valid LLM JSON)"
+            reason = "(fallback to untried region)"
             mode = "explore"
         else:
             c = max(0, min(grid.shape[1] - 1, int(rj["x"])))
@@ -329,22 +326,23 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
             reason = rj.get("reason", "")[:120]
             mode = rj.get("mode", "explore")
 
-        # ── OVERRIDE: if LLM picked a known-dead position, redirect to untried button ──
+        # ── OVERRIDE: if LLM picked a known-dead position, redirect to untried region ──
         key_chosen = f"r{r}c{c}"
         obj_chosen = kb.objects.get(key_chosen)
-        if (obj_chosen and obj_chosen.click_count > 0 and obj_chosen.effect_count == 0
+        if (obj_chosen and obj_chosen.click_count >= 3 and obj_chosen.effect_count == 0
                 and mode != "execute_solution"):
-            engine_st = decoder.decode(grid)
-            btns = engine_st["buttons"] if engine_st else []
-            untried_btns = [b for b in btns if f"r{b['click_y']}c{b['click_x']}" not in kb.objects
-                           or kb.objects.get(f"r{b['click_y']}c{b['click_x']}") and
-                           kb.objects[f"r{b['click_y']}c{b['click_x']}"].effect_count > 0]
-            if untried_btns:
-                b = untried_btns[0]
-                print(f"  [OVERRIDE] dead @({c},{r}) → engine button {b['tag']} @({b['click_x']},{b['click_y']})")
-                c, r = b['click_x'], b['click_y']
+            regions = find_color_regions(grid, min_size=4)
+            active = [rg for rg in regions if 4 <= rg["size"] <= 64
+                      and kb.objects.get(f"r{rg['cy']}c{rg['cx']}")
+                      and kb.objects[f"r{rg['cy']}c{rg['cx']}"].effect_count > 0]
+            untried = [rg for rg in regions if 4 <= rg["size"] <= 64
+                       and f"r{rg['cy']}c{rg['cx']}" not in kb.objects]
+            redirect = untried[0] if untried else (active[0] if active else None)
+            if redirect:
+                print(f"  [OVERRIDE] dead @({c},{r}) → untried {redirect['color_name']} @({redirect['cx']},{redirect['cy']})")
+                c, r = redirect['cx'], redirect['cy']
                 color = arc_color_name(int(grid[r, c]))
-                reason = f"(override to untried button {b['tag']})"
+                reason = f"(override: dead position → {redirect['color_name']} region)"
 
         print(f"  Think: {think_s:.1f}s | Mode: {mode}")
         print(f"  Target: {color} @({c},{r})")
@@ -532,6 +530,7 @@ def main():
     parser.add_argument("--budget", type=int, default=30, help="Max deliberate actions per attempt")
     parser.add_argument("--attempts", type=int, default=300, help="Max game attempts (0=unlimited)")
     parser.add_argument("--think-time", type=float, default=0, help="Min seconds between actions (0=unlimited)")
+    parser.add_argument("--all", action="store_true", help="Play ALL available games (not just one)")
     args = parser.parse_args()
 
     print("=" * 70)
@@ -552,116 +551,106 @@ def main():
     # Game setup
     arcade = Arcade()
     envs = arcade.get_environments()
-    if args.game:
+
+    if args.all:
+        game_list = envs
+    elif args.game:
         matches = [e for e in envs if args.game in (e.game_id if hasattr(e, "game_id") else str(e))]
         if not matches:
             print(f"No game matching '{args.game}'.")
             return
-        env_info = matches[0]
+        game_list = matches
     else:
         import random
-        env_info = random.choice(envs)
+        game_list = [random.choice(envs)]
 
-    game_id = env_info.game_id if hasattr(env_info, "game_id") else str(env_info)
-    print(f"\nGame: {game_id}")
-
-    env = arcade.make(game_id)
-    frame_data = env.reset()
-    grid = get_grid(frame_data)
-    available = [a.value if hasattr(a, "value") else int(a) for a in (frame_data.available_actions or [])]
-
-    print(f"Grid: {grid.shape}, Actions: {available}, Levels: {frame_data.levels_completed}/{frame_data.win_levels}")
-
-    # Load knowledge base — this is the core of lived experience
-    game_family = game_id.split("-")[0]
-    kb = GameKnowledgeBase(game_family)
-    prior_existed = kb.load()
-
-    # Load strategic insights from older membot cartridge if present
-    import os
-    cartridge_json = f"arc-agi-3/experiments/cartridges/{game_family}.json"
-    if os.path.exists(cartridge_json):
-        try:
-            with open(cartridge_json) as f:
-                cdata = json.load(f)
-            kb.strategic_insights = cdata.get("strategic_insights", [])
-        except Exception:
-            pass
-
-    kb.session_count += 1
-
-    print(f"\nKnowledge base: {'LOADED' if prior_existed else 'NEW'}")
-    print(f"  Objects known: {len(kb.objects)} ({sum(1 for o in kb.objects.values() if o.effect_count > 0)} active)")
-    print(f"  Level solutions: {list(kb.level_solutions.keys())}")
-    print(f"  Failed approaches: {len(kb.failed_approaches)}")
-    print(f"  Best level reached: {kb.best_level}")
-    if kb.mechanics:
-        print(f"\nKnown mechanics:")
-        for m in kb.mechanics[:3]:
-            print(f"  ✓ {m[:80]}")
-    if kb.strategic_insights:
-        print(f"\nStrategic insights: {len(kb.strategic_insights)} facts loaded")
-        for s in kb.strategic_insights[:2]:
-            print(f"  !! {s[:80]}")
-
-    print(f"\n{'='*70}")
-    print(f"Beginning continuous learning run: up to {args.attempts} attempts")
-    print(f"{'='*70}\n")
-
-    # SAGE components — shared across all attempts
-    gv = GridVisionIRP({"entity_id": "grid_vision_v4", "buffer_size": 100})
-    gc = GridCartridgeIRP({"game_id": game_id, "top_k": 3, "min_score": 0.2})
-    gv.push_raw_frame(grid, step_number=0, level_id=game_id)
-    decoder = GameStateDecoder(env)
-
+    print(f"\nGames to play: {len(game_list)}")
     total_start = time.time()
-    max_attempts = args.attempts if args.attempts > 0 else 10**9
+    results = {}
 
-    for attempt_num in range(1, max_attempts + 1):
-        print(f"\n{'━'*70}")
-        print(f"ATTEMPT {attempt_num}/{max_attempts}  |  KB: {len(kb.objects)} objects, "
-              f"{len(kb.level_solutions)} solutions  |  Best level: {kb.best_level}")
-        print(f"{'━'*70}")
+    for game_idx, env_info in enumerate(game_list, 1):
+        game_id = env_info.game_id if hasattr(env_info, "game_id") else str(env_info)
+        print(f"\n{'#'*70}")
+        print(f"# GAME {game_idx}/{len(game_list)}: {game_id}")
+        print(f"{'#'*70}")
 
-        lvl, state, steps, session_clicks, elapsed = play_one_session(
-            env, frame_data, grid, kb, args, game_id, gc, gv, attempt_num, decoder
-        )
+        try:
+            env = arcade.make(game_id)
+            frame_data = env.reset()
+            grid = get_grid(frame_data)
+        except Exception as e:
+            print(f"  ERROR creating game: {e}")
+            results[game_id] = {"state": "ERROR", "best_level": 0, "attempts": 0}
+            continue
 
-        print(f"\n  Attempt {attempt_num}: level {lvl}/{frame_data.win_levels}, "
-              f"{steps} steps, {elapsed:.0f}s, state={state}")
-        print(f"  KB now: {len(kb.objects)} objects ({sum(1 for o in kb.objects.values() if o.effect_count>0)} active), "
-              f"{len(kb.level_solutions)} solutions, {len(kb.failed_approaches)} failures")
+        available = [a.value if hasattr(a, "value") else int(a) for a in (frame_data.available_actions or [])]
+        print(f"Grid: {grid.shape}, Actions: {available}, Levels: {frame_data.levels_completed}/{frame_data.win_levels}")
 
-        if state == "WON":
-            total_elapsed = time.time() - total_start
-            print(f"\n{'='*70}")
-            print(f"★★★ GAME COMPLETE in {attempt_num} attempts, {total_elapsed:.0f}s total ★★★")
-            print(f"{'='*70}")
-            break
+        # Load knowledge base — this is the core of lived experience
+        game_family = game_id.split("-")[0]
+        kb = GameKnowledgeBase(game_family)
+        prior_existed = kb.load()
 
-        # Reset for next attempt
-        frame_data = env.reset()
-        grid = get_grid(frame_data)
+        # Note: cartridge loading disabled — game-specific insights from prior
+        # source analysis don't generalize and can cause hallucinated coordinates.
+
         kb.session_count += 1
 
-    else:
-        total_elapsed = time.time() - total_start
-        print(f"\n{'='*70}")
-        print(f"ATTEMPTS EXHAUSTED: {max_attempts} attempts in {total_elapsed:.0f}s")
-        print(f"Best level reached: {kb.best_level}/{frame_data.win_levels}")
-        print(f"{'='*70}")
+        print(f"KB: {'LOADED' if prior_existed else 'NEW'} | {len(kb.objects)} objects | "
+              f"solutions: {list(kb.level_solutions.keys())} | best: {kb.best_level}")
 
-    # Final KB summary
-    print(f"\nFinal knowledge base:")
-    print(f"  Objects: {len(kb.objects)} ({sum(1 for o in kb.objects.values() if o.effect_count>0)} active)")
-    print(f"  Mechanics: {len(kb.mechanics)}")
-    print(f"  Failures: {len(kb.failed_approaches)}")
-    print(f"  Solutions: {list(kb.level_solutions.keys())}")
-    if kb.mechanics:
-        for m in kb.mechanics:
-            print(f"  ✓ {m}")
-    kb.save()
-    print(f"  KB saved: {kb.stats}")
+        # SAGE components
+        gv = GridVisionIRP({"entity_id": "grid_vision_v4", "buffer_size": 100})
+        gc = GridCartridgeIRP({"game_id": game_id, "top_k": 3, "min_score": 0.2})
+        gv.push_raw_frame(grid, step_number=0, level_id=game_id)
+
+        max_attempts = args.attempts if args.attempts > 0 else 10**9
+        game_state = "INCOMPLETE"
+
+        for attempt_num in range(1, max_attempts + 1):
+            print(f"\n{'━'*50}")
+            print(f"  ATTEMPT {attempt_num}/{max_attempts}  |  KB: {len(kb.objects)} obj, "
+                  f"best: {kb.best_level}")
+            print(f"{'━'*50}")
+
+            lvl, state, steps, session_clicks, elapsed = play_one_session(
+                env, frame_data, grid, kb, args, game_id, gc, gv, attempt_num
+            )
+
+            print(f"\n  Attempt {attempt_num}: level {lvl}/{frame_data.win_levels}, "
+                  f"{steps} steps, {elapsed:.0f}s, state={state}")
+
+            if state == "WON":
+                print(f"\n  ★★★ GAME {game_id} COMPLETE in {attempt_num} attempts ★★★")
+                game_state = "WON"
+                break
+
+            # Reset for next attempt
+            frame_data = env.reset()
+            grid = get_grid(frame_data)
+            kb.session_count += 1
+
+        kb.save()
+        results[game_id] = {
+            "state": game_state if game_state == "WON" else state,
+            "best_level": kb.best_level,
+            "win_levels": frame_data.win_levels,
+            "attempts": attempt_num,
+            "kb_objects": len(kb.objects),
+        }
+
+    # ── Final summary across all games ──
+    total_elapsed = time.time() - total_start
+    print(f"\n{'='*70}")
+    print(f"RUN COMPLETE — {len(results)} games in {total_elapsed:.0f}s")
+    print(f"{'='*70}")
+    print(f"{'Game':<30s} {'State':<12s} {'Best':<8s} {'Attempts':<10s} {'KB Obj'}")
+    print(f"{'-'*30} {'-'*12} {'-'*8} {'-'*10} {'-'*6}")
+    for gid, r in sorted(results.items()):
+        best = f"{r['best_level']}/{r.get('win_levels','?')}"
+        print(f"{gid:<30s} {r['state']:<12s} {best:<8s} {r['attempts']:<10d} {r.get('kb_objects',0)}")
+    won = sum(1 for r in results.values() if r["state"] == "WON")
+    print(f"\nWon: {won}/{len(results)}")
 
 
 if __name__ == "__main__":

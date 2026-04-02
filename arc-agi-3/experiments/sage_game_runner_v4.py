@@ -40,6 +40,7 @@ from sage.irp.plugins.grid_vision_irp import GridVisionIRP, StepRecord
 from sage.irp.plugins.game_action_effector import GameActionEffector
 from sage.irp.plugins.grid_cartridge_irp import GridCartridgeIRP
 from sage.irp.plugins.game_knowledge_base import GameKnowledgeBase, LevelSolution
+from sage.irp.plugins.game_state_decoder import GameStateDecoder
 from arc_perception import (
     full_perception, color_effectiveness_summary,
     color_name as arc_color_name, find_color_regions,
@@ -181,33 +182,16 @@ def parse_json(text: str) -> dict:
 def reason_prompt(grid: np.ndarray, kb: GameKnowledgeBase,
                   levels_completed: int, win_levels: int,
                   step: int, last_action_result: str = "",
-                  actions_remaining: int = 0) -> str:
+                  actions_remaining: int = 0,
+                  engine_state: str = "") -> str:
     """
     Core thinking prompt — choose ONE deliberate action.
     """
     kb_text = kb.to_prompt_text(current_level=levels_completed)
-    perception = full_perception(grid)
-    targets = interactive_targets(grid, kb)
 
     last_result_block = ""
     if last_action_result:
         last_result_block = f"\nLAST ACTION RESULT:\n{last_action_result}\n"
-
-    # Build explicit "do not repeat" list
-    no_repeat = []
-    for obj in kb.objects.values():
-        if obj.click_count > 0 and obj.effect_count == 0:
-            no_repeat.append(
-                f"@({obj.position['c']},{obj.position['r']}) "
-                f"— tried {obj.click_count}× with ZERO effect"
-            )
-    no_repeat_block = ""
-    if no_repeat:
-        no_repeat_block = (
-            "\nDO NOT CLICK THESE (zero effect, confirmed waste of budget):\n"
-            + "\n".join(f"  ✗ {x}" for x in no_repeat[:10])
-            + "\n"
-        )
 
     # Known solution block
     next_level = levels_completed + 1
@@ -215,7 +199,7 @@ def reason_prompt(grid: np.ndarray, kb: GameKnowledgeBase,
     solution_block = ""
     if solution:
         seq_text = ", ".join(
-            f"@({s.get('c','?')},{s.get('r','?')}) ×{s.get('repeats',1)}"
+            f"x={s.get('c','?')},y={s.get('r','?')} ×{s.get('repeats',1)}"
             for s in solution.sequence
         )
         solution_block = (
@@ -223,30 +207,26 @@ def reason_prompt(grid: np.ndarray, kb: GameKnowledgeBase,
             f"(confidence: {solution.confidence:.0%})\n"
         )
 
-    budget_note = f"\nActions remaining: {actions_remaining}. Each action must test something NEW." if actions_remaining > 0 else ""
+    budget_note = f"\nActions remaining this attempt: {actions_remaining}." if actions_remaining > 0 else ""
 
-    return f"""You are learning an unknown grid puzzle game through deliberate experimentation.
-Goal: reach level {win_levels} (currently at {levels_completed}/{win_levels}).
+    engine_block = f"\n{engine_state}\n" if engine_state else ""
+
+    return f"""You are playing a rotation puzzle game. You click buttons to rotate colored pieces around ring tracks until each piece overlaps its goal marker.
+Goal: complete all {win_levels} levels (currently at {levels_completed}/{win_levels}).
 {budget_note}
+{engine_block}
 {solution_block}
 {kb_text}
-{no_repeat_block}
-CURRENT GRID PERCEPTION:
-{perception}
-
-INTERACTIVE TARGETS (sorted by exploration value — try UNKNOWN items first):
-{targets}
 {last_result_block}
-DECISION RULES:
-1. If a position shows [← UNKNOWN], try it — you have no data about it yet.
-2. If a position shows [tried N× — no effect], SKIP it entirely.
-3. If a position shows [★★ LEVEL-UP TRIGGER], execute it for the current level.
-4. Each action must gather NEW information. Never repeat a failed position.
-5. Work through UNKNOWN targets systematically — one new target per action.
+STRATEGY:
+- Click a ROTATION BUTTON (listed above) to rotate pieces on that ring.
+- Different buttons move different pieces. Try buttons you haven't tried yet.
+- If one button isn't working after 3-4 tries, switch to a DIFFERENT button.
+- Do NOT click tiles, goal markers, the step-counter bar, or any non-button object.
+- Budget is LIMITED — every click costs 1 step. Plan efficiently.
 
-Choose ONE target you have NEVER tried or ONE known effective trigger.
-JSON only:
-{{"action": 6, "x": col, "y": row, "predict": "what I expect", "reason": "why this NEW target", "mode": "explore|execute_solution"}}"""
+Choose ONE button to click. Output JSON only:
+{{"action": 6, "x": col_number, "y": row_number, "predict": "what piece moves where", "reason": "why this button", "mode": "explore|execute_solution"}}"""
 
 
 def analyze_prompt(grid_before: np.ndarray, grid_after: np.ndarray,
@@ -292,7 +272,7 @@ Respond with JSON only:
 # Main loop
 # ─────────────────────────────────────────────────────────────
 
-def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_num):
+def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_num, decoder):
     """Run one game attempt. Returns (levels_completed, state_name, step, session_clicks, elapsed)."""
     step = 0
     start_time = time.time()
@@ -308,32 +288,38 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
 
         # ── REASON ──
         t0 = time.time()
+        engine_state = decoder.to_prompt_text(grid)
         rprompt = reason_prompt(
             grid, kb,
             frame_data.levels_completed, frame_data.win_levels,
             step, last_action_result,
             actions_remaining=args.budget - action_num,
+            engine_state=engine_state,
         )
         rresponse = ask_ollama(rprompt, max_tokens=200)
         think_s = time.time() - t0
 
         rj = parse_json(rresponse)
         if not rj or "x" not in rj or "y" not in rj:
-            candidates = kb.to_exploration_targets()
-            if candidates:
-                r, c = candidates[0]
+            # Fallback: pick a button from the engine decoder that hasn't been tried yet
+            engine_st = decoder.decode(grid)
+            btns = engine_st["buttons"] if engine_st else []
+            untried = [b for b in btns if f"r{b['click_y']}c{b['click_x']}" not in kb.objects]
+            if untried:
+                b = untried[0]
+                c, r = b['click_x'], b['click_y']
+            elif btns:
+                b = btns[0]
+                c, r = b['click_x'], b['click_y']
             else:
-                regions = find_color_regions(grid, min_size=4)
-                buttons = [reg for reg in regions if 4 <= reg["size"] <= 64]
-                if buttons:
-                    r, c = buttons[0]["cy"], buttons[0]["cx"]
+                candidates = kb.to_exploration_targets()
+                if candidates:
+                    r, c = candidates[0]
                 else:
-                    bg = int(np.bincount(grid.flatten()).argmax())
-                    non_bg = np.argwhere(grid != bg)
-                    r, c = int(non_bg[0][0]), int(non_bg[0][1]) if len(non_bg) > 0 else (32, 32)
+                    r, c = 32, 32
             color = arc_color_name(int(grid[r, c]))
             prediction = "(fallback — no LLM response)"
-            reason = "(fallback)"
+            reason = "(fallback to engine-decoded button)"
             mode = "explore"
         else:
             c = max(0, min(grid.shape[1] - 1, int(rj["x"])))
@@ -343,23 +329,22 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
             reason = rj.get("reason", "")[:120]
             mode = rj.get("mode", "explore")
 
-        # ── OVERRIDE: if LLM picked a known-dead position, redirect ──
+        # ── OVERRIDE: if LLM picked a known-dead position, redirect to untried button ──
         key_chosen = f"r{r}c{c}"
         obj_chosen = kb.objects.get(key_chosen)
         if (obj_chosen and obj_chosen.click_count > 0 and obj_chosen.effect_count == 0
                 and mode != "execute_solution"):
-            regions = find_color_regions(grid, min_size=4)
-            buttons = [reg for reg in regions if 4 <= reg["size"] <= 64]
-            unknown = [reg for reg in buttons
-                       if f"r{reg['cy']}c{reg['cx']}" not in kb.objects]
-            if unknown:
-                unknown_sorted = sorted(unknown, key=lambda reg: -reg["size"])
-                best = unknown_sorted[0]
-                r_new, c_new = best["cy"], best["cx"]
-                print(f"  [OVERRIDE] dead @({c},{r}) → UNKNOWN {best['color_name']}@({c_new},{r_new})")
-                r, c = r_new, c_new
+            engine_st = decoder.decode(grid)
+            btns = engine_st["buttons"] if engine_st else []
+            untried_btns = [b for b in btns if f"r{b['click_y']}c{b['click_x']}" not in kb.objects
+                           or kb.objects.get(f"r{b['click_y']}c{b['click_x']}") and
+                           kb.objects[f"r{b['click_y']}c{b['click_x']}"].effect_count > 0]
+            if untried_btns:
+                b = untried_btns[0]
+                print(f"  [OVERRIDE] dead @({c},{r}) → engine button {b['tag']} @({b['click_x']},{b['click_y']})")
+                c, r = b['click_x'], b['click_y']
                 color = arc_color_name(int(grid[r, c]))
-                reason = f"(auto-redirect to unknown {best['color_name']})"
+                reason = f"(override to untried button {b['tag']})"
 
         print(f"  Think: {think_s:.1f}s | Mode: {mode}")
         print(f"  Target: {color} @({c},{r})")
@@ -627,6 +612,7 @@ def main():
     gv = GridVisionIRP({"entity_id": "grid_vision_v4", "buffer_size": 100})
     gc = GridCartridgeIRP({"game_id": game_id, "top_k": 3, "min_score": 0.2})
     gv.push_raw_frame(grid, step_number=0, level_id=game_id)
+    decoder = GameStateDecoder(env)
 
     total_start = time.time()
     max_attempts = args.attempts if args.attempts > 0 else 10**9
@@ -638,7 +624,7 @@ def main():
         print(f"{'━'*70}")
 
         lvl, state, steps, session_clicks, elapsed = play_one_session(
-            env, frame_data, grid, kb, args, game_id, gc, gv, attempt_num
+            env, frame_data, grid, kb, args, game_id, gc, gv, attempt_num, decoder
         )
 
         print(f"\n  Attempt {attempt_num}: level {lvl}/{frame_data.win_levels}, "

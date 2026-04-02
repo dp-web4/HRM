@@ -6,10 +6,14 @@ Maintains episodic memory of sensor observations, computes novelty
 as dissimilarity to all past observations.
 """
 
+import time as _time
+
 import torch
 import numpy as np
-from typing import List, Any, Optional
+from typing import List, Any, Optional, Tuple
 from collections import deque
+
+from sage.services.snarc.temporal import time_decay_weight, DEFAULT_HALF_LIVES
 
 
 class NoveltyDetector:
@@ -20,18 +24,23 @@ class NoveltyDetector:
     computes novelty as distance to nearest past experience.
     """
 
-    def __init__(self, memory_size: int = 1000, comparison_samples: int = 50):
+    def __init__(self, memory_size: int = 1000, comparison_samples: int = 50,
+                 half_life: float = DEFAULT_HALF_LIVES['novelty']):
         """
         Args:
             memory_size: How many past observations to remember
             comparison_samples: How many recent samples to compare against
                                (for efficiency - don't compare to ALL history)
+            half_life: Time-decay half-life in seconds. Old observations feel
+                       less familiar (their similarity pull fades with age).
         """
         self.memory_size = memory_size
         self.comparison_samples = comparison_samples
+        self.half_life = half_life
 
-        # Episodic memory per sensor
+        # Episodic memory per sensor: (observation, timestamp) pairs
         self.memory: dict[str, deque] = {}
+        self._memory_timestamps: dict[str, deque] = {}
 
     def compute(self, sensor_output: Any, sensor_id: str) -> float:
         """
@@ -49,29 +58,37 @@ class NoveltyDetector:
         # Get or create memory for this sensor
         if sensor_id not in self.memory:
             self.memory[sensor_id] = deque(maxlen=self.memory_size)
+            self._memory_timestamps[sensor_id] = deque(maxlen=self.memory_size)
 
         memory = self.memory[sensor_id]
+        timestamps = self._memory_timestamps[sensor_id]
+        now = _time.time()
 
         # If no history, everything is novel
         if len(memory) == 0:
             memory.append(sensor_output)
+            timestamps.append(now)
             return 1.0
 
-        # Compare to recent past experiences
+        # Compare to recent past experiences, weighted by recency
         samples_to_check = min(self.comparison_samples, len(memory))
-        similarities = []
+        recent_mem = list(memory)[-samples_to_check:]
+        recent_ts = list(timestamps)[-samples_to_check:]
 
-        for past_observation in list(memory)[-samples_to_check:]:
-            similarity = self._compute_similarity(sensor_output, past_observation)
-            similarities.append(similarity)
+        max_effective_similarity = 0.0
+        for past_obs, past_ts in zip(recent_mem, recent_ts):
+            raw_sim = self._compute_similarity(sensor_output, past_obs)
+            # Old observations feel less familiar — their similarity pull fades
+            recency = time_decay_weight(past_ts, now, self.half_life)
+            effective_sim = raw_sim * recency
+            if effective_sim > max_effective_similarity:
+                max_effective_similarity = effective_sim
 
-        # Novelty = 1 - max_similarity
-        # (if very similar to something seen before, low novelty)
-        max_similarity = max(similarities)
-        novelty = 1.0 - max_similarity
+        novelty = 1.0 - max_effective_similarity
 
         # Store current observation
         memory.append(sensor_output)
+        timestamps.append(now)
 
         # Clip to valid range (handle floating point precision issues)
         return float(np.clip(novelty, 0.0, 1.0))
@@ -140,10 +157,13 @@ class NoveltyDetector:
         """Clear memory for specific sensor"""
         if sensor_id in self.memory:
             del self.memory[sensor_id]
+        if sensor_id in self._memory_timestamps:
+            del self._memory_timestamps[sensor_id]
 
     def reset_all(self):
         """Clear all memory"""
         self.memory.clear()
+        self._memory_timestamps.clear()
 
     def get_most_novel_observation(self, sensor_id: str, n: int = 5) -> List[Any]:
         """

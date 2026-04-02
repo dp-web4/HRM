@@ -5,10 +5,14 @@ Detects deviation from expected sensor values.
 Learns to predict next sensor state, measures surprise as prediction error.
 """
 
+import time as _time
+
 import torch
 import numpy as np
 from typing import Dict, Any, Optional
 from collections import deque
+
+from sage.services.snarc.temporal import TimestampedDeque, DEFAULT_HALF_LIVES
 
 
 class SimplePredictorEMA:
@@ -66,20 +70,25 @@ class SurpriseDetector:
     normalized distance between prediction and actual.
     """
 
-    def __init__(self, alpha: float = 0.3, history_size: int = 100):
+    def __init__(self, alpha: float = 0.3, history_size: int = 100,
+                 half_life: float = DEFAULT_HALF_LIVES['surprise']):
         """
         Args:
             alpha: Smoothing factor for EMA predictor
             history_size: How many past surprise scores to keep
+            half_life: Time-decay half-life in seconds for normalization weighting
         """
         self.alpha = alpha
         self.history_size = history_size
+        self.half_life = half_life
 
         # Predictor per sensor
         self.predictors: Dict[str, SimplePredictorEMA] = {}
 
-        # Surprise history per sensor (for normalization)
+        # Surprise history per sensor (for normalization) — original deque kept for compat
         self.surprise_history: Dict[str, deque] = {}
+        # Time-aware history for weighted normalization
+        self._timed_history: Dict[str, TimestampedDeque] = {}
 
     def compute(self, sensor_output: Any, sensor_id: str) -> float:
         """
@@ -98,6 +107,7 @@ class SurpriseDetector:
         if sensor_id not in self.predictors:
             self.predictors[sensor_id] = SimplePredictorEMA(self.alpha)
             self.surprise_history[sensor_id] = deque(maxlen=self.history_size)
+            self._timed_history[sensor_id] = TimestampedDeque(maxlen=self.history_size)
 
         predictor = self.predictors[sensor_id]
         prediction = predictor.predict()
@@ -114,8 +124,10 @@ class SurpriseDetector:
         normalized_surprise = self._normalize_surprise(error, sensor_id)
 
         # Update predictor and history
+        now = _time.time()
         predictor.update(sensor_output)
         self.surprise_history[sensor_id].append(error)
+        self._timed_history[sensor_id].append(error, now)
 
         return normalized_surprise
 
@@ -145,25 +157,19 @@ class SurpriseDetector:
 
     def _normalize_surprise(self, error: float, sensor_id: str) -> float:
         """
-        Normalize surprise using historical distribution
+        Normalize surprise using historical distribution with time-decay weighting.
 
-        Uses percentile-based normalization:
+        Recent observations contribute more to the normalization distribution
+        than old ones. Uses percentile-based normalization:
         - If error is at 50th percentile → surprise = 0.5
         - If error is at 95th percentile → surprise = 0.95
         """
-        history = self.surprise_history[sensor_id]
+        timed = self._timed_history.get(sensor_id)
 
-        if len(history) < 10:
-            # Not enough history - can't normalize yet
-            # Just clamp to reasonable range
+        if timed is None or len(timed) < 10:
             return min(error / 10.0, 1.0)
 
-        # Compute percentile
-        sorted_history = sorted(history)
-        rank = sum(1 for h in sorted_history if h < error)
-        percentile = rank / len(sorted_history)
-
-        return percentile
+        return timed.weighted_percentile_of(error, self.half_life)
 
     def reset_sensor(self, sensor_id: str):
         """Reset predictor for specific sensor"""
@@ -171,8 +177,11 @@ class SurpriseDetector:
             del self.predictors[sensor_id]
         if sensor_id in self.surprise_history:
             del self.surprise_history[sensor_id]
+        if sensor_id in self._timed_history:
+            del self._timed_history[sensor_id]
 
     def reset_all(self):
         """Reset all predictors"""
         self.predictors.clear()
         self.surprise_history.clear()
+        self._timed_history.clear()

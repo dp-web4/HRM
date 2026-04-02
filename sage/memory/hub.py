@@ -9,6 +9,7 @@ Phase 1 of 3: Gathering layer (store + basic query).
 """
 
 import hashlib
+import math
 import time
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
@@ -92,8 +93,19 @@ class MemoryHub:
 
     def query(self, filters: Dict,
               backends: Optional[List[str]] = None,
-              limit: int = 10) -> List[MemoryEntry]:
-        """Query across backends, merge results, sort by salience descending."""
+              limit: int = 10,
+              recency_half_life: float = 3600.0) -> List[MemoryEntry]:
+        """Query across backends, merge results, sort by recency-weighted salience.
+
+        Scoring: final_score = salience * (0.5 + 0.5 * exp(-ln2 * age / half_life))
+        - At age=0: full weight (1.0)
+        - At age=half_life: 0.75
+        - At age=infinity: 0.5 floor (old high-salience memories never disappear)
+
+        Args:
+            recency_half_life: Half-life in seconds for recency weighting (default: 1h).
+                              Set to 0 to disable recency weighting.
+        """
         targets = self._resolve_backends(backends)
         seen_ids = set()
         merged = []
@@ -108,7 +120,17 @@ class MemoryHub:
             except Exception:
                 continue
 
-        merged.sort(key=lambda e: e.salience, reverse=True)
+        now = time.time()
+        _ln2 = math.log(2)
+
+        def _score(e: MemoryEntry) -> float:
+            if recency_half_life <= 0:
+                return e.salience
+            age = max(0.0, now - e.timestamp)
+            recency = 0.5 + 0.5 * math.exp(-_ln2 * age / recency_half_life)
+            return e.salience * recency
+
+        merged.sort(key=_score, reverse=True)
         return merged[:limit]
 
     def stats(self) -> Dict[str, Any]:

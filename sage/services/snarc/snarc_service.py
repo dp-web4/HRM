@@ -23,6 +23,7 @@ from .detectors import (
     RewardEstimator,
     ConflictDetector
 )
+from .temporal import DEFAULT_HALF_LIVES
 
 
 class SNARCService:
@@ -37,7 +38,8 @@ class SNARCService:
     def __init__(
         self,
         salience_weights: Optional[Dict[str, float]] = None,
-        learning_rate: float = 0.1
+        learning_rate: float = 0.1,
+        half_lives: Optional[Dict[str, float]] = None,
     ):
         """
         Initialize SNARC service
@@ -46,6 +48,8 @@ class SNARCService:
             salience_weights: Weights for each salience dimension.
                             If None, uses equal weights (0.2 each).
             learning_rate: How fast to adapt weights from outcomes (0-1)
+            half_lives: Time-decay half-lives per detector (seconds).
+                       If None, uses DEFAULT_HALF_LIVES.
         """
         # Default equal weights
         if salience_weights is None:
@@ -57,15 +61,17 @@ class SNARCService:
                 'conflict': 0.2
             }
 
+        hl = {**DEFAULT_HALF_LIVES, **(half_lives or {})}
+
         self.salience_weights = salience_weights
         self.learning_rate = learning_rate
 
-        # Initialize all detectors
-        self.surprise_detector = SurpriseDetector()
-        self.novelty_detector = NoveltyDetector()
-        self.arousal_detector = ArousalDetector()
-        self.reward_estimator = RewardEstimator()
-        self.conflict_detector = ConflictDetector()
+        # Initialize all detectors with time-decay half-lives
+        self.surprise_detector = SurpriseDetector(half_life=hl['surprise'])
+        self.novelty_detector = NoveltyDetector(half_life=hl['novelty'])
+        self.arousal_detector = ArousalDetector(half_life=hl['arousal'])
+        self.reward_estimator = RewardEstimator(half_life=hl['reward'])
+        self.conflict_detector = ConflictDetector(half_life=hl['conflict'])
 
         # Memory of past assessments and outcomes
         self.assessment_history: List[SNARCMemory] = []

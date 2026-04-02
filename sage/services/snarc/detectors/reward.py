@@ -5,10 +5,14 @@ Estimates how relevant sensor observations are to current goals.
 Simple version: learns associations between sensor patterns and outcomes.
 """
 
+import time as _time
+
 import torch
 import numpy as np
 from typing import Any, Dict, List, Optional, Tuple
 from collections import defaultdict
+
+from sage.services.snarc.temporal import time_decay_weight, DEFAULT_HALF_LIVES
 
 
 class RewardEstimator:
@@ -19,15 +23,18 @@ class RewardEstimator:
     Uses simple similarity-based retrieval.
     """
 
-    def __init__(self, memory_size: int = 500):
+    def __init__(self, memory_size: int = 500,
+                 half_life: float = DEFAULT_HALF_LIVES['reward']):
         """
         Args:
             memory_size: How many outcome memories to keep
+            half_life: Time-decay half-life in seconds for outcome weighting
         """
         self.memory_size = memory_size
+        self.half_life = half_life
 
-        # Memory: (sensor_output, reward_received) pairs
-        self.outcome_memory: Dict[str, List[Tuple[Any, float]]] = defaultdict(list)
+        # Memory: (sensor_output, reward_received, timestamp) tuples
+        self.outcome_memory: Dict[str, List[Tuple[Any, float, float]]] = defaultdict(list)
 
         # Current goals (set by SAGE kernel)
         self.current_goals: List[str] = []
@@ -77,7 +84,7 @@ class RewardEstimator:
             self.outcome_memory[sensor_id] = []
 
         memory = self.outcome_memory[sensor_id]
-        memory.append((sensor_output, reward))
+        memory.append((sensor_output, reward, _time.time()))
 
         # Limit memory size
         if len(memory) > self.memory_size:
@@ -109,14 +116,19 @@ class RewardEstimator:
             return []
 
         memory = self.outcome_memory[sensor_id]
+        now = _time.time()
 
-        # Compute similarity to each past observation
+        # Compute similarity to each past observation, weighted by recency
         similarities = []
-        for past_obs, reward in memory:
-            sim = self._compute_similarity(sensor_output, past_obs)
-            similarities.append((sim, past_obs, reward))
+        for entry in memory:
+            past_obs, reward = entry[0], entry[1]
+            ts = entry[2] if len(entry) > 2 else now  # backward compat
+            raw_sim = self._compute_similarity(sensor_output, past_obs)
+            recency = time_decay_weight(ts, now, self.half_life)
+            effective_sim = raw_sim * recency
+            similarities.append((effective_sim, past_obs, reward))
 
-        # Sort by similarity (descending)
+        # Sort by effective similarity (descending)
         similarities.sort(reverse=True, key=lambda x: x[0])
 
         # Return top k
@@ -171,7 +183,7 @@ class RewardEstimator:
         if sensor_id not in self.outcome_memory or not self.outcome_memory[sensor_id]:
             return {}
 
-        rewards = [r for _, r in self.outcome_memory[sensor_id]]
+        rewards = [entry[1] for entry in self.outcome_memory[sensor_id]]
 
         return {
             'num_outcomes': len(rewards),

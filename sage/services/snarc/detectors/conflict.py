@@ -5,10 +5,15 @@ Detects when different sensors provide inconsistent information.
 High conflict = suspicious, might need verification.
 """
 
+import math
+import time as _time
+
 import torch
 import numpy as np
 from typing import Dict, Any, List, Tuple
 from collections import defaultdict
+
+from sage.services.snarc.temporal import DEFAULT_HALF_LIVES, LN2
 
 
 class ConflictDetector:
@@ -21,13 +26,16 @@ class ConflictDetector:
     Simple version: looks for sudden changes in correlation patterns.
     """
 
-    def __init__(self, correlation_window: int = 20):
+    def __init__(self, correlation_window: int = 20,
+                 half_life: float = DEFAULT_HALF_LIVES['conflict']):
         """
         Args:
             correlation_window: How many recent observations to use
                                for correlation estimation
+            half_life: Time-decay half-life in seconds for adaptive EMA alpha
         """
         self.correlation_window = correlation_window
+        self.half_life = half_life
 
         # Recent observations per sensor
         self.sensor_buffer: Dict[str, List[Any]] = defaultdict(list)
@@ -35,6 +43,8 @@ class ConflictDetector:
         # Expected correlation patterns (learned)
         # Maps (sensor1, sensor2) -> expected_correlation
         self.expected_correlations: Dict[Tuple[str, str], float] = {}
+        # Last update time per sensor pair (for time-adaptive alpha)
+        self._last_update_time: Dict[Tuple[str, str], float] = {}
 
     def compute(self, all_sensor_outputs: Dict[str, Any], sensor_id: str) -> float:
         """
@@ -169,25 +179,32 @@ class ConflictDetector:
         sensor1_id: str,
         sensor2_id: str,
         observed_corr: float,
-        alpha: float = 0.1
     ):
         """
-        Update expected correlation using exponential moving average
+        Update expected correlation using time-adaptive EMA.
 
-        Args:
-            alpha: Learning rate (higher = adapt faster to new patterns)
+        Alpha adapts based on elapsed time since last update: more time elapsed
+        means the old expectation is more stale, so alpha increases. At zero
+        elapsed time, alpha approaches 0 (don't update). At one half-life,
+        alpha ≈ 0.5.
         """
-        # Order-independent storage
         key = tuple(sorted([sensor1_id, sensor2_id]))
+        now = _time.time()
 
         if key in self.expected_correlations:
-            # EMA update
+            last_t = self._last_update_time.get(key, now)
+            elapsed = max(0.0, now - last_t)
+            # Time-adaptive alpha: 1 - exp(-ln2 * elapsed / half_life)
+            alpha = 1.0 - math.exp(-LN2 * elapsed / self.half_life) if self.half_life > 0 else 0.1
+            alpha = max(0.01, min(alpha, 0.5))  # clamp to [0.01, 0.5]
+
             old_expected = self.expected_correlations[key]
             new_expected = alpha * observed_corr + (1 - alpha) * old_expected
             self.expected_correlations[key] = new_expected
         else:
-            # First observation
             self.expected_correlations[key] = observed_corr
+
+        self._last_update_time[key] = now
 
     def get_correlation_matrix(self, sensor_ids: List[str]) -> Dict[Tuple[str, str], float]:
         """
@@ -220,3 +237,4 @@ class ConflictDetector:
         """Reset everything"""
         self.sensor_buffer.clear()
         self.expected_correlations.clear()
+        self._last_update_time.clear()

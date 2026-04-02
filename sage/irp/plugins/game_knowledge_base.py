@@ -92,6 +92,7 @@ class LevelSolution:
     attempts: int           # Times attempted
     notes: str = ""
     discovered_session: float = field(default_factory=time.time)
+    last_verified_session: int = 0  # session_count when last successfully used
 
 
 class GameKnowledgeBase:
@@ -251,6 +252,21 @@ class GameKnowledgeBase:
 
         log.info(f"Bootstrap complete: {len(self.objects)} objects pre-populated")
 
+    def decay_stale_solutions(self, decay_rate: float = 0.9, floor: float = 0.1):
+        """Decay confidence of solutions not re-verified in recent sessions.
+
+        Called after load() and session_count increment. Solutions that haven't
+        been successfully used recently lose confidence — they may be stale.
+
+        Args:
+            decay_rate: Multiplier per unverified session (0.9 = 10% decay/session)
+            floor: Minimum confidence (never fully forget a known solution)
+        """
+        for sol in self.level_solutions.values():
+            sessions_since = max(0, self.session_count - sol.last_verified_session)
+            if sessions_since > 0:
+                sol.confidence = max(floor, sol.confidence * (decay_rate ** sessions_since))
+
     def save(self):
         """Save to disk."""
         path = self._path()
@@ -368,12 +384,14 @@ class GameKnowledgeBase:
                 preconditions=preconditions,
                 confidence=confidence,
                 successes=1, attempts=1, notes=notes,
+                last_verified_session=self.session_count,
             )
         else:
             sol = self.level_solutions[level]
             sol.attempts += 1
             sol.successes += 1
             sol.confidence = min(0.99, sol.confidence + 0.05)
+            sol.last_verified_session = self.session_count
 
         if level > self.best_level:
             self.best_level = level

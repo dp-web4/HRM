@@ -69,6 +69,8 @@ class CartridgeEntry:
     game_id: str
     cognitive_type: Optional[str] = None
     embedding: Optional[np.ndarray] = None  # 512-dim float32 (CLIP ViT-B-32)
+    session_id: int = 0                      # which session created this entry
+    perishability: str = "volatile"          # volatile|replaceable|archival-important
 
     def to_dict(self) -> Dict[str, Any]:
         import base64
@@ -79,6 +81,8 @@ class CartridgeEntry:
             "level_id": self.level_id,
             "game_id": self.game_id,
             "cognitive_type": self.cognitive_type,
+            "session_id": self.session_id,
+            "perishability": self.perishability,
         }
         if self.embedding is not None:
             d["embedding"] = base64.b64encode(
@@ -103,6 +107,8 @@ class CartridgeEntry:
             game_id=d.get("game_id", ""),
             cognitive_type=d.get("cognitive_type"),
             embedding=embedding,
+            session_id=d.get("session_id", 0),
+            perishability=d.get("perishability", "volatile"),
         )
 
 
@@ -152,6 +158,8 @@ class GridCartridgeIRP(IRPPlugin):
         self.cartridge_dir = Path(config.get('cartridge_dir', str(CARTRIDGE_DIR)))
         self.andy_url = config.get('andy_url', None)  # Phase 2 hook
         self.reflection_boost = config.get('reflection_boost', True)
+        self.recency_half_life = config.get('recency_half_life', 3600.0)  # 1h default
+        self.session_id = config.get('session_id', 0)
 
         # In-memory entry store: keyed by level_id
         self._entries: Dict[str, List[CartridgeEntry]] = {}  # level_id → entries
@@ -269,14 +277,20 @@ class GridCartridgeIRP(IRPPlugin):
         Called after action selection, before executing the action.
         Persisted to disk every 10 writes.
         """
+        # Perishability: reflections and discoveries are archival, routine steps volatile
+        ctype = step_record.cognitive_type
+        perish = "archival-important" if ctype in ("reflection", "discovery") else "volatile"
+
         entry = CartridgeEntry(
             step_record=step_record.to_dict(),
             frame_objects=obs.objects,
             timestamp=time.time(),
             level_id=obs.level_id,
             game_id=self.game_id,
-            cognitive_type=step_record.cognitive_type,
+            cognitive_type=ctype,
             embedding=obs.embedding.copy() if obs.embedding is not None else None,
+            session_id=self.session_id,
+            perishability=perish,
         )
 
         if obs.level_id not in self._entries:
@@ -302,13 +316,21 @@ class GridCartridgeIRP(IRPPlugin):
     # Search backends
     # -------------------------------------------------------------------------
 
+    def _recency_weight(self, entry: CartridgeEntry) -> float:
+        """Recency multiplier: 0.5 floor, 1.0 at now, 0.75 at half-life."""
+        if self.recency_half_life <= 0:
+            return 1.0
+        age = max(0.0, time.time() - entry.timestamp)
+        import math
+        return 0.5 + 0.5 * math.exp(-math.log(2) * age / self.recency_half_life)
+
     def _search_by_embedding(
         self,
         query_embedding: Optional[np.ndarray],
         current_level_id: str,
         cross_level: bool,
     ) -> List[SearchResult]:
-        """Cosine similarity search. Fast — all in numpy."""
+        """Cosine similarity search with recency weighting. Fast — all in numpy."""
         if query_embedding is None:
             return []
 
@@ -328,6 +350,8 @@ class GridCartridgeIRP(IRPPlugin):
             if self.reflection_boost:
                 boost = COGNITIVE_PRIORITY.get(entry.cognitive_type, 1.0)
                 cosine = min(cosine * boost, 1.0)
+            # Apply recency weighting
+            cosine *= self._recency_weight(entry)
             if cosine >= self.min_score:
                 scored.append((cosine, entry))
 
@@ -385,6 +409,8 @@ class GridCartridgeIRP(IRPPlugin):
             if self.reflection_boost:
                 boost = COGNITIVE_PRIORITY.get(entry.cognitive_type, 1.0)
                 score = min(score * boost, 1.0)
+            # Apply recency weighting
+            score *= self._recency_weight(entry)
             if score >= self.min_score:
                 scored.append((score, entry))
 

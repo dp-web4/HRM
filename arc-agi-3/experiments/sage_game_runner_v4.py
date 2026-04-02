@@ -211,22 +211,22 @@ def reason_prompt(grid: np.ndarray, kb: GameKnowledgeBase,
 
     engine_block = f"\n{engine_state}\n" if engine_state else ""
 
-    return f"""You are playing a rotation puzzle game. You click buttons to rotate colored pieces around ring tracks until each piece overlaps its goal marker.
-Goal: complete all {win_levels} levels (currently at {levels_completed}/{win_levels}).
-{budget_note}
+    return f"""You are playing a video game presented as a 64x64 pixel grid. The game contains visual sprites — colored regions that represent objects. Some objects are interactive (clicking them changes the game state), others are purely decorative. The game has multiple levels. Your objective is to complete each level in as few actions as possible.
+
+IMPORTANT PRINCIPLES:
+- Strategy is much more important than speed. Think before every click.
+- Each click costs one step from a limited budget. Wasted clicks lose the game.
+- Consult your knowledge base below — you may have seen similar games before.
+- Identify which objects are interactive vs decorative. Do not click decorations.
+- When you discover a game mechanic, use it deliberately, not randomly.
+
+GAME STATUS: Level {levels_completed}/{win_levels}.{budget_note}
 {engine_block}
 {solution_block}
 {kb_text}
 {last_result_block}
-STRATEGY:
-- Click a ROTATION BUTTON (listed above) to rotate pieces on that ring.
-- Different buttons move different pieces. Try buttons you haven't tried yet.
-- If one button isn't working after 3-4 tries, switch to a DIFFERENT button.
-- Do NOT click tiles, goal markers, the step-counter bar, or any non-button object.
-- Budget is LIMITED — every click costs 1 step. Plan efficiently.
-
-Choose ONE button to click. Output JSON only:
-{{"action": 6, "x": col_number, "y": row_number, "predict": "what piece moves where", "reason": "why this button", "mode": "explore|execute_solution"}}"""
+Choose ONE position to click. Output JSON only:
+{{"action": 6, "x": col_number, "y": row_number, "predict": "what will change and why", "reason": "why this target", "mode": "explore|execute_solution"}}"""
 
 
 def analyze_prompt(grid_before: np.ndarray, grid_after: np.ndarray,
@@ -245,7 +245,7 @@ def analyze_prompt(grid_before: np.ndarray, grid_after: np.ndarray,
 
     level_marker = "\n★ LEVEL UP! ★\n" if level_up else ""
 
-    return f"""You just clicked {color} at grid position @({c},{r}).
+    return f"""You are analyzing the result of clicking {color} at grid position @({c},{r}) in a video game.
 
 YOU PREDICTED: {prediction}
 REASON: {reason}
@@ -257,12 +257,12 @@ CURRENT STATE (partial):
 {perception}
 
 ANALYZE this experience:
-1. Did the outcome match your prediction?
-2. What type of game object is this? (button/piece/goal/decoration/trigger)
-3. What is the behavior of this object? (what does clicking it do?)
-4. What did you learn about the game mechanics?
-5. Should you add anything to open questions?
-6. If this position had zero effect, is it confirmed non-interactive?
+1. Did the outcome match your prediction? If not, what does that tell you?
+2. What type of game object did you click? (button/piece/goal/decoration/trigger/unknown)
+3. What is the observable behavior? (what changed, what moved, what appeared/disappeared)
+4. What game mechanic does this reveal or confirm?
+5. What new question does this raise about how the game works?
+6. If zero effect, is this position confirmed non-interactive?
 
 Respond with JSON only:
 {{"prediction_correct": true/false, "obj_type": "button|piece|goal|decoration|trigger|unknown", "behavior": "description of what this object does", "mechanic_learned": "any new game rule (or empty string)", "new_question": "something this raises (or empty string)", "confirmed_dead": true/false, "notes": "any other observations"}}"""

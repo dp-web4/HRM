@@ -178,14 +178,29 @@ def parse_json(text: str) -> dict:
 # Prompts — slow thinking, one action at a time
 # ─────────────────────────────────────────────────────────────
 
+ACTION_NAMES = {
+    1: "UP (move up)",
+    2: "DOWN (move down)",
+    3: "LEFT (move left)",
+    4: "RIGHT (move right)",
+    5: "INTERACT (context-sensitive)",
+    6: "CLICK at (x, y) — requires coordinates",
+    7: "UNDO (reverse last action)",
+}
+
+
 def reason_prompt(grid: np.ndarray, kb: GameKnowledgeBase,
                   levels_completed: int, win_levels: int,
                   step: int, last_action_result: str = "",
                   actions_remaining: int = 0,
-                  engine_state: str = "") -> str:
+                  engine_state: str = "",
+                  available_actions: list = None) -> str:
     """
     Core thinking prompt — choose ONE deliberate action.
     """
+    if available_actions is None:
+        available_actions = [6]
+
     kb_text = kb.to_prompt_text(current_level=levels_completed)
 
     last_result_block = ""
@@ -198,7 +213,7 @@ def reason_prompt(grid: np.ndarray, kb: GameKnowledgeBase,
     solution_block = ""
     if solution:
         seq_text = ", ".join(
-            f"x={s.get('c','?')},y={s.get('r','?')} ×{s.get('repeats',1)}"
+            f"action={s.get('action', 6)}, x={s.get('c','?')}, y={s.get('r','?')} ×{s.get('repeats',1)}"
             for s in solution.sequence
         )
         solution_block = (
@@ -212,25 +227,56 @@ def reason_prompt(grid: np.ndarray, kb: GameKnowledgeBase,
 
     targets = interactive_targets(grid, kb)
 
+    # Build available actions description
+    has_movement = any(a in available_actions for a in [1, 2, 3, 4])
+    has_click = 6 in available_actions
+    action_lines = "\n".join(f"  {a}: {ACTION_NAMES.get(a, f'ACTION{a}')}" for a in sorted(available_actions))
+
+    # Adapt instructions based on action types
+    if has_movement and has_click:
+        action_guidance = """This game supports BOTH movement and clicking.
+- Use movement actions (UP/DOWN/LEFT/RIGHT) to navigate a character or cursor.
+- Use CLICK to interact with specific objects at (x,y) coordinates.
+- Use INTERACT for context-sensitive actions at your current position.
+- Movement actions do NOT need coordinates. Click DOES need x,y."""
+    elif has_movement and not has_click:
+        action_guidance = """This game uses movement controls — there is NO click action.
+- Use UP/DOWN/LEFT/RIGHT to navigate.
+- Use INTERACT for context-sensitive actions at your current position.
+- You do NOT specify coordinates — just choose a direction."""
+    else:
+        action_guidance = """This game uses clicking — choose objects from the VISIBLE OBJECTS list.
+- ONLY click positions from the list below. Do not invent coordinates."""
+
+    # JSON format depends on whether click is available
+    if has_click:
+        json_format = '{{"action": action_number, "x": col_number, "y": row_number, "predict": "what will change and why", "reason": "why this action", "mode": "explore|execute_solution"}}'
+    else:
+        json_format = '{{"action": action_number, "predict": "what will change and why", "reason": "why this action", "mode": "explore|execute_solution"}}'
+
     return f"""You are playing a video game presented as a 64x64 pixel grid. The game contains visual sprites — colored regions that represent objects. Some objects are interactive (clicking them changes the game state), others are purely decorative. The game has multiple levels. Your objective is to complete each level in as few actions as possible.
 
 IMPORTANT PRINCIPLES:
-- Strategy is much more important than speed. Think before every click.
-- Each click costs one step from a limited budget. Wasted clicks lose the game.
+- Strategy is much more important than speed. Think before every action.
+- Each action costs one step from a limited budget. Wasted actions lose the game.
 - Consult your knowledge base below — you may have seen similar games before.
 - Identify which objects are interactive vs decorative. Do not click decorations.
 - When you discover a game mechanic, use it deliberately, not randomly.
-- ONLY click positions from the VISIBLE OBJECTS list below. Do not invent coordinates.
+
+AVAILABLE ACTIONS:
+{action_lines}
+
+{action_guidance}
 
 GAME STATUS: Level {levels_completed}/{win_levels}.{budget_note}
 
-VISIBLE OBJECTS (detected from the grid — pick from these):
+VISIBLE OBJECTS (detected from the grid):
 {targets}
 {solution_block}
 {kb_text}
 {last_result_block}
-Choose ONE position from the VISIBLE OBJECTS list above. Output JSON only:
-{{"action": 6, "x": col_number, "y": row_number, "predict": "what will change and why", "reason": "why this target", "mode": "explore|execute_solution"}}"""
+Choose ONE action. Output JSON only:
+{json_format}"""
 
 
 def analyze_prompt(grid_before: np.ndarray, grid_after: np.ndarray,
@@ -283,6 +329,13 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
     last_action_result = ""
     session_clicks = []
     consecutive_no_effect: dict = {}
+    available_actions = [a.value if hasattr(a, "value") else int(a)
+                         for a in (frame_data.available_actions or [])]
+    has_click = 6 in available_actions
+    has_movement = any(a in available_actions for a in [1, 2, 3, 4])
+    # For movement fallback: cycle through directions
+    movement_actions = [a for a in [1, 2, 3, 4, 5] if a in available_actions]
+    fallback_idx = 0
 
     for action_num in range(1, args.budget + 1):
         levels_before = frame_data.levels_completed
@@ -297,55 +350,93 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
             frame_data.levels_completed, frame_data.win_levels,
             step, last_action_result,
             actions_remaining=args.budget - action_num,
+            available_actions=available_actions,
         )
         rresponse = ask_ollama(rprompt, max_tokens=200)
         think_s = time.time() - t0
 
         rj = parse_json(rresponse)
-        if not rj or "x" not in rj or "y" not in rj:
-            # Fallback: pick an untried color region from grid observation
-            regions = find_color_regions(grid, min_size=4)
-            candidates = [r for r in regions if 4 <= r["size"] <= 64
-                          and f"r{r['cy']}c{r['cx']}" not in kb.objects]
-            if not candidates:
-                candidates = [r for r in regions if 4 <= r["size"] <= 64]
-            if candidates:
-                pick = candidates[0]
-                c, r = pick['cx'], pick['cy']
+
+        # Parse LLM response — handle both click and movement actions
+        chosen_action = None
+        c, r = 0, 0
+        prediction = ""
+        reason = ""
+        mode = "explore"
+
+        if rj and "action" in rj:
+            chosen_action = int(rj["action"])
+            if chosen_action not in available_actions:
+                chosen_action = None  # invalid action, fall through to fallback
             else:
-                c, r = grid.shape[1] // 2, grid.shape[0] // 2
-            color = arc_color_name(int(grid[r, c]))
-            prediction = "(fallback — no valid LLM JSON)"
-            reason = "(fallback to untried region)"
-            mode = "explore"
-        else:
+                prediction = rj.get("predict", "")[:120]
+                reason = rj.get("reason", "")[:120]
+                mode = rj.get("mode", "explore")
+                if chosen_action == 6 and "x" in rj and "y" in rj:
+                    c = max(0, min(grid.shape[1] - 1, int(rj["x"])))
+                    r = max(0, min(grid.shape[0] - 1, int(rj["y"])))
+        elif rj and "x" in rj and "y" in rj and has_click:
+            # Backward compat: old format without "action" field, assume click
+            chosen_action = 6
             c = max(0, min(grid.shape[1] - 1, int(rj["x"])))
             r = max(0, min(grid.shape[0] - 1, int(rj["y"])))
-            color = arc_color_name(int(grid[r, c]))
             prediction = rj.get("predict", "")[:120]
             reason = rj.get("reason", "")[:120]
             mode = rj.get("mode", "explore")
 
-        # ── OVERRIDE: if LLM picked a known-dead position, redirect to untried region ──
-        key_chosen = f"r{r}c{c}"
-        obj_chosen = kb.objects.get(key_chosen)
-        if (obj_chosen and obj_chosen.click_count >= 3 and obj_chosen.effect_count == 0
-                and mode != "execute_solution"):
-            regions = find_color_regions(grid, min_size=4)
-            active = [rg for rg in regions if 4 <= rg["size"] <= 64
-                      and kb.objects.get(f"r{rg['cy']}c{rg['cx']}")
-                      and kb.objects[f"r{rg['cy']}c{rg['cx']}"].effect_count > 0]
-            untried = [rg for rg in regions if 4 <= rg["size"] <= 64
-                       and f"r{rg['cy']}c{rg['cx']}" not in kb.objects]
-            redirect = untried[0] if untried else (active[0] if active else None)
-            if redirect:
-                print(f"  [OVERRIDE] dead @({c},{r}) → untried {redirect['color_name']} @({redirect['cx']},{redirect['cy']})")
-                c, r = redirect['cx'], redirect['cy']
-                color = arc_color_name(int(grid[r, c]))
-                reason = f"(override: dead position → {redirect['color_name']} region)"
+        # Fallback when LLM didn't produce valid output
+        if chosen_action is None:
+            if has_click:
+                # Click fallback: pick an untried color region
+                regions = find_color_regions(grid, min_size=4)
+                candidates = [rg for rg in regions if 4 <= rg["size"] <= 64
+                              and f"r{rg['cy']}c{rg['cx']}" not in kb.objects]
+                if not candidates:
+                    candidates = [rg for rg in regions if 4 <= rg["size"] <= 64]
+                if candidates:
+                    pick = candidates[0]
+                    c, r = pick['cx'], pick['cy']
+                else:
+                    c, r = grid.shape[1] // 2, grid.shape[0] // 2
+                chosen_action = 6
+                prediction = "(fallback — no valid LLM JSON)"
+                reason = "(fallback to untried region)"
+            elif movement_actions:
+                # Movement fallback: cycle through available directions
+                chosen_action = movement_actions[fallback_idx % len(movement_actions)]
+                fallback_idx += 1
+                prediction = "(fallback — no valid LLM JSON)"
+                reason = f"(fallback: cycling {ACTION_NAMES.get(chosen_action, f'ACTION{chosen_action}')})"
+            else:
+                print("  No valid action available — skipping")
+                continue
 
+        # ── OVERRIDE: if click on known-dead position, redirect ──
+        if chosen_action == 6:
+            color = arc_color_name(int(grid[r, c]))
+            key_chosen = f"r{r}c{c}"
+            obj_chosen = kb.objects.get(key_chosen)
+            if (obj_chosen and obj_chosen.click_count >= 3 and obj_chosen.effect_count == 0
+                    and mode != "execute_solution"):
+                regions = find_color_regions(grid, min_size=4)
+                active = [rg for rg in regions if 4 <= rg["size"] <= 64
+                          and kb.objects.get(f"r{rg['cy']}c{rg['cx']}")
+                          and kb.objects[f"r{rg['cy']}c{rg['cx']}"].effect_count > 0]
+                untried = [rg for rg in regions if 4 <= rg["size"] <= 64
+                           and f"r{rg['cy']}c{rg['cx']}" not in kb.objects]
+                redirect = untried[0] if untried else (active[0] if active else None)
+                if redirect:
+                    print(f"  [OVERRIDE] dead @({c},{r}) → untried {redirect['color_name']} @({redirect['cx']},{redirect['cy']})")
+                    c, r = redirect['cx'], redirect['cy']
+                    color = arc_color_name(int(grid[r, c]))
+                    reason = f"(override: dead position → {redirect['color_name']} region)"
+        else:
+            color = ACTION_NAMES.get(chosen_action, f"ACTION{chosen_action}")
+
+        action_label = ACTION_NAMES.get(chosen_action, f"ACTION{chosen_action}")
+        target_str = f"{arc_color_name(int(grid[r, c]))} @({c},{r})" if chosen_action == 6 else action_label
         print(f"  Think: {think_s:.1f}s | Mode: {mode}")
-        print(f"  Target: {color} @({c},{r})")
+        print(f"  Action: {action_label} | Target: {target_str}")
         print(f"  Reason: {reason[:80]}")
         print(f"  Predict: {prediction[:80]}")
 
@@ -356,13 +447,16 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
 
         # ── ACT ──
         prev_grid = grid.copy()
-        ga = INT_TO_GAME_ACTION.get(6)
+        ga = INT_TO_GAME_ACTION.get(chosen_action)
         if ga is None:
-            print("  ACTION6 not available — skipping")
+            print(f"  ACTION{chosen_action} not in engine — skipping")
             continue
 
         try:
-            frame_data = env.step(ga, data={'x': c, 'y': r})
+            if chosen_action == 6:
+                frame_data = env.step(ga, data={'x': c, 'y': r})
+            else:
+                frame_data = env.step(ga)
         except Exception as e:
             print(f"  Step error: {e}")
             continue
@@ -376,7 +470,12 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
         n_changed = int(np.sum(prev_grid != grid))
         level_up = frame_data.levels_completed > levels_before
 
-        key = f"r{r}c{c}"
+        # Track effect by position (click) or action (movement)
+        if chosen_action == 6:
+            key = f"r{r}c{c}"
+        else:
+            key = f"action{chosen_action}"
+
         if n_changed == 0:
             consecutive_no_effect[key] = consecutive_no_effect.get(key, 0) + 1
         else:
@@ -389,16 +488,21 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
             r1, c1 = coords.max(axis=0)
             affected = f"r{r0}-{r1} c{c0}-{c1}"
 
-        kb.record_click_effect(
-            r=r, c=c, color=color,
-            cells_changed=n_changed, level_up=level_up,
-            affected_region=affected,
-            level=levels_before,
-        )
-        session_clicks.append({"r": r, "c": c, "level": levels_before,
+        if chosen_action == 6:
+            kb.record_click_effect(
+                r=r, c=c, color=color,
+                cells_changed=n_changed, level_up=level_up,
+                affected_region=affected,
+                level=levels_before,
+            )
+        session_clicks.append({"action": chosen_action, "r": r, "c": c,
+                                "level": levels_before,
                                 "changed": n_changed, "level_up": level_up})
 
         result_desc = diff_text(prev_grid, grid)
+        action_desc = f"{ACTION_NAMES.get(chosen_action, f'ACTION{chosen_action}')}"
+        if chosen_action == 6:
+            action_desc += f" @({c},{r})"
         if level_up:
             print(f"\n  ★ LEVEL UP! → {frame_data.levels_completed}/{frame_data.win_levels} ★")
         elif n_changed == 0:
@@ -406,9 +510,10 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
         else:
             print(f"  Result: {result_desc[:100]}")
 
-        last_action_result = result_desc
+        last_action_result = f"[{action_desc}] {result_desc}"
 
-        if consecutive_no_effect.get(key, 0) >= 3:
+        # Mark dead positions only for clicks
+        if chosen_action == 6 and consecutive_no_effect.get(key, 0) >= 3:
             obj = kb.objects.get(key)
             if obj and obj.obj_type != "decoration":
                 kb.mark_failed(
@@ -424,8 +529,9 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
         should_analyze = (n_changed > 0 or level_up or action_num % 3 == 0)
         if should_analyze:
             t0 = time.time()
+            analyze_color = arc_color_name(int(grid[r, c])) if chosen_action == 6 else action_desc
             aprompt = analyze_prompt(
-                prev_grid, grid, r, c, color,
+                prev_grid, grid, r, c, analyze_color,
                 prediction, reason, level_up, kb,
             )
             aresponse = ask_ollama(aprompt, max_tokens=200)
@@ -463,13 +569,13 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
 
         if level_up and session_clicks:
             level_num = frame_data.levels_completed
-            recent = [c for c in session_clicks if c["level"] == levels_before]
+            recent = [s for s in session_clicks if s["level"] == levels_before]
             if recent:
                 seq = []
                 from itertools import groupby
-                for pos_key, group_iter in groupby(recent, key=lambda x: (x["r"], x["c"])):
+                for action_key, group_iter in groupby(recent, key=lambda x: (x.get("action", 6), x["r"], x["c"])):
                     group = list(group_iter)
-                    seq.append({"r": pos_key[0], "c": pos_key[1], "repeats": len(group)})
+                    seq.append({"action": action_key[0], "r": action_key[1], "c": action_key[2], "repeats": len(group)})
                 kb.record_level_solution(
                     level=level_num,
                     sequence=seq,

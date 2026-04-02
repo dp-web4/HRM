@@ -1,6 +1,6 @@
 # SAGE Session Primer
 
-*Auto-generated 2026-04-02 08:00 UTC — read this at session start for current fleet state.*
+*Auto-generated 2026-04-02 14:00 UTC — read this at session start for current fleet state.*
 
 ---
 
@@ -8,14 +8,14 @@
 
 ### Active Raising Instances
 
-**cbp-qwen3.5-0.8b** — phase: `relating` | sessions: 20 | last: 2026-04-02 | milestones: session_001_first_contact
-  > Last session: *Session 20 (relating phase): ......*
+**cbp-qwen3.5-0.8b** — phase: `relating` | sessions: 21 | last: 2026-04-02 | milestones: session_001_first_contact
+  > Last session: *Session 21 (relating phase): I wish for clarity on architectural integrity, as the distinction between witnes......*
 
 **cbp-tinyllama-latest** — phase: `questioning` | sessions: 26 | last: 2026-03-28 | milestones: session_001_first_contact
   > Last session: *Session 26 (questioning phase): ......*
 
-**nomad-gemma3-4b** — phase: `questioning` | sessions: 55 | last: 2026-04-02
-  > Last session: *Session 55 (questioning phase): ......*
+**nomad-gemma3-4b** — phase: `questioning` | sessions: 56 | last: 2026-04-02
+  > Last session: *Session 56 (questioning phase): ......*
 
 ### Known Instances (Not Yet Initialized)
 

@@ -859,9 +859,19 @@ def main():
     try:
         import os
         os.makedirs(os.path.dirname(log_path), exist_ok=True)
+        # Build structured click record for KB bootstrapping by v4
+        click_records = []
+        for h in memory.click_history:
+            click_records.append({
+                "r": h["r"], "c": h["c"],
+                "color": h["color_name"],
+                "changed": h["changes"],
+                "level_up": False,  # v3 doesn't track per-click level_up
+            })
         with open(log_path, "w") as f:
             json.dump({
                 "game_id": game_id,
+                "runner": "v3",
                 "total_steps": total_steps,
                 "levels_completed": frame_data.levels_completed,
                 "win_levels": frame_data.win_levels,
@@ -871,6 +881,8 @@ def main():
                 "strategy": memory.strategy,
                 "winning_sequences": memory.winning_sequences,
                 "sequence_log": memory.sequence_log,
+                "session_clicks": click_records,
+                "color_stats": {str(k): v for k, v in memory.color_stats.items()},
             }, f, indent=2)
         print(f"\n  Session log: {log_path}")
     except Exception as e:

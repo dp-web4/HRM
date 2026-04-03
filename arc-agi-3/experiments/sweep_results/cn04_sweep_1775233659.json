@@ -1,0 +1,41 @@
+{
+  "game_id": "cn04-65d47d14",
+  "game_family": "cn04",
+  "win_levels": 5,
+  "baseline_budget": 779,
+  "baseline_per_level": [
+    16,
+    54,
+    69,
+    318,
+    208,
+    114
+  ],
+  "model": "gemma3:4b",
+  "attempts_run": 1,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 4035.6,
+  "kb_final": {
+    "objects": 7,
+    "active": 1,
+    "solutions": 0,
+    "mechanics": 175,
+    "failures": 4
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 5,
+      "steps": 779,
+      "state": "GAME_OVER",
+      "elapsed": 4035.5,
+      "kb_objects": 7,
+      "kb_solutions": 0
+    }
+  ]
+}

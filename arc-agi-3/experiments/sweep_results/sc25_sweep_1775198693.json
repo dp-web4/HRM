@@ -1,0 +1,41 @@
+{
+  "game_id": "sc25-f9b21a2f",
+  "game_family": "sc25",
+  "win_levels": 6,
+  "baseline_budget": 216,
+  "baseline_per_level": [
+    39,
+    5,
+    32,
+    33,
+    66,
+    41
+  ],
+  "model": "gemma3:4b",
+  "attempts_run": 1,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 1064.1,
+  "kb_final": {
+    "objects": 41,
+    "active": 2,
+    "solutions": 0,
+    "mechanics": 54,
+    "failures": 1
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 6,
+      "steps": 216,
+      "state": "GAME_OVER",
+      "elapsed": 1064.1,
+      "kb_objects": 41,
+      "kb_solutions": 0
+    }
+  ]
+}

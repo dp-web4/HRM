@@ -1,0 +1,41 @@
+{
+  "game_id": "sp80-0ee2d095",
+  "game_family": "sp80",
+  "win_levels": 6,
+  "baseline_budget": 472,
+  "baseline_per_level": [
+    11,
+    18,
+    17,
+    172,
+    102,
+    152
+  ],
+  "model": "gemma3:4b",
+  "attempts_run": 1,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 2085.0,
+  "kb_final": {
+    "objects": 5,
+    "active": 0,
+    "solutions": 0,
+    "mechanics": 144,
+    "failures": 4
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 6,
+      "steps": 472,
+      "state": "GAME_OVER",
+      "elapsed": 2085.0,
+      "kb_objects": 5,
+      "kb_solutions": 0
+    }
+  ]
+}

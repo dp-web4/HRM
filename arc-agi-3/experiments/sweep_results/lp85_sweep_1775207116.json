@@ -1,0 +1,43 @@
+{
+  "game_id": "lp85-305b61c3",
+  "game_family": "lp85",
+  "win_levels": 8,
+  "baseline_budget": 422,
+  "baseline_per_level": [
+    33,
+    22,
+    31,
+    23,
+    33,
+    34,
+    73,
+    173
+  ],
+  "model": "gemma3:4b",
+  "attempts_run": 1,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 2088.2,
+  "kb_final": {
+    "objects": 22,
+    "active": 3,
+    "solutions": 1,
+    "mechanics": 76,
+    "failures": 2
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 8,
+      "steps": 422,
+      "state": "GAME_OVER",
+      "elapsed": 2088.2,
+      "kb_objects": 22,
+      "kb_solutions": 1
+    }
+  ]
+}

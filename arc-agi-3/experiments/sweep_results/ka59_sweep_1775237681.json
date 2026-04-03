@@ -1,0 +1,42 @@
+{
+  "game_id": "ka59-9f096b4a",
+  "game_family": "ka59",
+  "win_levels": 7,
+  "baseline_budget": 826,
+  "baseline_per_level": [
+    39,
+    175,
+    86,
+    47,
+    21,
+    132,
+    326
+  ],
+  "model": "gemma3:4b",
+  "attempts_run": 1,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 4019.9,
+  "kb_final": {
+    "objects": 7,
+    "active": 4,
+    "solutions": 0,
+    "mechanics": 203,
+    "failures": 4
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 7,
+      "steps": 826,
+      "state": "GAME_OVER",
+      "elapsed": 4019.9,
+      "kb_objects": 7,
+      "kb_solutions": 0
+    }
+  ]
+}

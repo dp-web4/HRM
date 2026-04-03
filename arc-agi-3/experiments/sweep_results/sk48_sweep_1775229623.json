@@ -1,0 +1,43 @@
+{
+  "game_id": "sk48-41055498",
+  "game_family": "sk48",
+  "win_levels": 8,
+  "baseline_budget": 696,
+  "baseline_per_level": [
+    15,
+    32,
+    35,
+    113,
+    304,
+    42,
+    63,
+    92
+  ],
+  "model": "gemma3:4b",
+  "attempts_run": 1,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 3614.7,
+  "kb_final": {
+    "objects": 65,
+    "active": 0,
+    "solutions": 0,
+    "mechanics": 144,
+    "failures": 4
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 8,
+      "steps": 696,
+      "state": "NOT_FINISHED",
+      "elapsed": 3614.6,
+      "kb_objects": 65,
+      "kb_solutions": 0
+    }
+  ]
+}

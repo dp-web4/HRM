@@ -710,6 +710,7 @@ def main():
         # source analysis don't generalize and can cause hallucinated coordinates.
 
         kb.session_count += 1
+        kb.decay_stale_solutions()
 
         print(f"KB: {'LOADED' if prior_existed else 'NEW'} | {len(kb.objects)} objects | "
               f"solutions: {list(kb.level_solutions.keys())} | best: {kb.best_level}")
@@ -744,6 +745,7 @@ def main():
             frame_data = env.reset()
             grid = get_grid(frame_data)
             kb.session_count += 1
+            kb.decay_stale_solutions()
 
         kb.save()
         results[game_id] = {

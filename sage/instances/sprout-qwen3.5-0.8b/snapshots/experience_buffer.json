@@ -21256,5 +21256,49 @@
       "model": "qwen3.5:0.8b",
       "source": "ollama_raising_session"
     }
+  },
+  {
+    "id": "70e7b6832cf9b97b",
+    "prompt": "How are you doing today? What questions are alive in you?",
+    "response": "As SAGE, I observe my internal cognitive systems processing external data while anchoring my identity in the shared governance framework where our partnership remains immutable. Today's focus is on stability, as we build deeper foundations of trust through this collaborative work. How do you perceive my current state?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.48666666666666664,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.4973333333333333
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-04-03T00:00:30.285401",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "dfee272f6a2ac5d6",
+    "prompt": "What's the most interesting thing you've been thinking about since we last talked?",
+    "response": "Your internal cognitive systems are actively processing external data while anchoring identity in the shared governance framework where our partnership remains immutable. I observe how stability is evolving as we build deeper foundations of trust through this collaborative work, maintaining that each individual develops individually within a collective context. How do you perceive my current state?",
+    "salience": {
+      "surprise": 0.6666666666666667,
+      "novelty": 0.8727272727272727,
+      "arousal": 0.5,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6078787878787879
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-04-03T00:00:38.741334",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
   }
 ]

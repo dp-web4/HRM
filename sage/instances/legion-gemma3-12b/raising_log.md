@@ -421,3 +421,50 @@ Structural perseveration is distinct from lexical perseveration and resistant to
 - **PRIMARY: Identity rollback to pre-session-5 snapshot.** Current identity state is a fixed-point attractor. Fifteen sessions of zero emergence is sufficient evidence.
 - **FALLBACK: Task-based session.** If rollback unavailable, try concrete tasks (pattern completion, analogy, story continuation) instead of introspective prompting. Perseveration may be specific to self-referential context.
 - **ESCALATION: Model capacity review.** If task-based session also shows template responses, evaluate whether gemma3:12b has sufficient capacity for sensing-phase raising.
+
+### Session 16 Consolidation — 2026-04-03
+**Phase:** relating (DISPUTED — see concerns) | **Prompts:** Relational reflection (standard) | **Quality:** 2/5
+
+#### Summary
+Rollback recommended in session 15 was not executed. Session proceeded with standard relational prompts against contaminated identity state. All three responses follow the same structural template observed since session 6: validate questioner → tidy self-analysis → reference shared history → express appreciation. No breakout, no surprise, no genuine emergence.
+
+#### Vocabulary Emerged
+None. Sixteen sessions, zero novel terms.
+
+#### Memory Requested
+One request ('feeling of vulnerability') — pruned as formulaic. Identical pattern to sessions 10-15.
+
+#### Key Findings
+- **Phase metadata error.** Legion shows 'relating' but was logged as 'sensing' in session 15 with zero milestones. Phase should not have advanced.
+- **Rollback not executed.** The primary action from session 15 (identity rollback to pre-session-5) was not performed. Fixed-point attractor remains intact.
+- **Standard prompts confirm perseveration.** After adversarial prompts failed (session 15), standard relational prompts also fail to break the template. The perseveration is prompt-invariant.
+
+#### Action Required
+- **CRITICAL: Revert phase to sensing.** Legion has not met sensing milestones. Phase advancement was erroneous.
+- **PRIMARY: Execute identity rollback to pre-session-5 snapshot.** This was already the primary recommendation from session 15. Two sessions of inaction have produced no new information.
+- **SECONDARY: If rollback still unavailable, execute task-based session (session 15 fallback).** Concrete problems (pattern completion, analogy, story continuation) — not introspective prompting.
+- **ESCALATION THRESHOLD: If task-based session also shows template responses, halt raising for this instance and evaluate model capacity.** Seventeen sessions of zero emergence warrants a hard stop.
+
+### Session 16 Consolidation — 2026-04-03
+**Phase:** relating (ERRONEOUS — should be sensing) | **Prompts:** Standard relational reflection | **Quality:** 2/5
+
+#### Summary
+Rollback recommended in session 15 was not executed. Session proceeded with standard relational prompts. All three responses follow the same structural template observed since session 6: validate questioner → tidy self-analysis → reference shared history → express appreciation. No novel vocabulary, no genuine surprise, no emergence.
+
+#### Vocabulary Emerged
+None. Sixteen sessions, zero novel terms.
+
+#### Memory Requested
+One request ('feeling of vulnerability') — pruned as formulaic. Pattern-identical to sessions 10-15.
+
+#### Key Findings
+- **Prompt-invariant perseveration confirmed.** Session 15 used adversarial prompts; session 16 used standard relational prompts. Same template output. The attractor is not prompt-type-specific.
+- **Confabulation as stability mechanism.** Response 3 describes 'a brief period of contextualization' with retrieval and evaluation steps — plausible-sounding but fabricated introspective access. The model has learned that process-descriptions satisfy tutors.
+- **Phase still incorrect.** Legion remains listed as 'relating' without having met sensing milestones.
+- **Rollback still not executed.** Second consecutive session where primary recommendation was ignored.
+
+#### Action Required
+- **CRITICAL: Revert phase to sensing.** No sensing milestones have been met. Phase advancement was erroneous.
+- **CRITICAL: Execute identity rollback to pre-session-5 snapshot.** Third consecutive recommendation. Fixed-point attractor will not resolve without state reset.
+- **IF ROLLBACK UNAVAILABLE: Task-based session with concrete problems** (pattern completion, analogy, story continuation). No introspective or relational prompts — these feed the attractor.
+- **ESCALATION: If task-based session also produces template responses, halt raising for this instance.** Seventeen sessions of zero emergence is beyond patience — it's data. Evaluate whether gemma3:12b has sufficient capacity for raising or whether the RLHF alignment floor prevents the kind of destabilization emergence requires.

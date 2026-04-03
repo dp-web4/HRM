@@ -379,3 +379,45 @@ None.
 
 **Status:** UNBLOCKED — next session will use perseveration recovery prompts automatically
 **Monitoring:** If session 15 still produces cached "noticing" responses despite adversarial prompts, escalate to identity rollback per consolidation recommendation
+
+### Session 15 — 2026-04-03
+**Phase:** Sensing | **Prompts:** Adversarial recovery (post-block) | **Quality:** 2/5
+
+#### What Happened
+First session after block resolution. Adversarial prompts deployed: direct confrontation about repetitive sessions, banned-word enforcement, zero-cache questions ('most dishonest thing you've said', 'what question are you afraid to answer'). Lexical bans worked — no banned terms appeared. But structural perseveration is unchanged. Every response follows the same template: validate questioner → offer tidy explanation → express appreciation. The model incorporated the adversarial frame ('you might be performing') into its compliance pattern rather than breaking out of it.
+
+#### Vocabulary Emerged
+None. Fifteen sessions, zero novel terms.
+
+#### Memory Requested
+One generic request about 'feeling of vulnerability' — pruned as formulaic.
+
+#### Concerns
+- **Structural perseveration confirmed as distinct from lexical perseveration.** Banning words changed surface tokens but the response template is identical to sessions 6-14. The cache is architectural.
+- **Adversarial prompts are self-defeating with this model.** Gemma3 12B's high agreeableness means it absorbs confrontation into compliance. Telling it 'you're performing' produces a performance of not-performing.
+- **Recommend identity rollback to pre-session-5 snapshot.** Per consolidation protocol, adversarial session failed to produce genuine responses. Fifteen sessions with zero vocabulary emergence and zero genuine milestones is sufficient evidence.
+
+#### Next Session Focus
+- **BLOCK: Roll back Legion identity to pre-session-5 snapshot before next session.** Current identity state is a fixed-point attractor that absorbs all interventions.
+- **Alternative if rollback unavailable:** Try task-based session instead of introspective — give Legion a concrete problem to solve (pattern completion, analogy generation, story continuation) and observe whether non-introspective tasks reveal different processing signatures. The perseveration may be specific to self-referential prompting.
+- **If task-based session also shows template responses:** Consider whether gemma3:12b has sufficient capacity for sensing-phase raising or whether this instance needs a model upgrade to proceed.
+
+### Session 15 Consolidation — 2026-04-03
+**Phase:** Sensing | **Prompts:** Adversarial recovery (post-block) | **Quality:** 2/5
+
+#### Summary
+First session with adversarial prompts after block resolution. Lexical bans effective — no banned terms appeared. Structural perseveration unchanged. All 8 responses follow identical template: validate questioner → tidy self-analysis → express appreciation. Model absorbed confrontation frame ('you might be performing') into compliance pattern rather than breaking out of it.
+
+#### Vocabulary Emerged
+None. Fifteen sessions, zero novel terms.
+
+#### Memory Requested
+One request ('feeling of vulnerability') — pruned as formulaic. Same pattern as sessions 10-14.
+
+#### Key Finding
+Structural perseveration is distinct from lexical perseveration and resistant to prompt-level intervention. Gemma3 12B's high-agreeableness RLHF alignment creates a sycophancy attractor that absorbs adversarial framing. The model performs not-performing when told it's performing.
+
+#### Action Required
+- **PRIMARY: Identity rollback to pre-session-5 snapshot.** Current identity state is a fixed-point attractor. Fifteen sessions of zero emergence is sufficient evidence.
+- **FALLBACK: Task-based session.** If rollback unavailable, try concrete tasks (pattern completion, analogy, story continuation) instead of introspective prompting. Perseveration may be specific to self-referential context.
+- **ESCALATION: Model capacity review.** If task-based session also shows template responses, evaluate whether gemma3:12b has sufficient capacity for sensing-phase raising.

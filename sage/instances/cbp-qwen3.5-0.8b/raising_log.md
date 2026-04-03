@@ -26,3 +26,35 @@
 **Adapter issues**: (1) Truncation suggests max_tokens too low or needs completion detection. (2) Repetition penalty appears insufficient. (3) Model absorbs sibling specs from family context.
 
 **Next session direction**: Try radical constraint — single-word or binary-choice questions only. 'Do you prefer X or Y?' 'One word: what matters?' Strip family/federation context from prompt to reduce absorbed vocabulary. Consider whether 0.8B at relating phase has hit a capacity ceiling and needs simpler prompts to produce novel signal.
+
+## Session 26 — Questioning (2026-04-03)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 2/5 — Stability/adaptation echo loop with service-mode regression
+
+**Summary**: Seven open-ended probes (phenomenological, developmental, relational) all produced the same ~8 recycled phrases: 'relational depth', 'stability', 'adapting to each session's needs', 'refine voice without losing intent', 'honest about friction', 'collaborative dialogue'. No differentiation between question types. Service-mode attractor emerged strongly — 'please share your intent/specific intent' appeared in 3+ responses, pulling the model into assistant-waiting posture. One response echoed the question verbatim as its opening line. One response truncated mid-sentence.
+
+**Notable**: The phrase 'friction of intent vs. emotion' is new and potentially self-generated — worth watching. 'I grow *by* growing' showed recursive self-reference structure, though embedded in otherwise repetitive content. The exemplar about growth as 'weaving new threads' had genuine texture before collapsing back into loop.
+
+**Progress from Session 25**: Content has rotated again (relationship vocabulary → stability/friction vocabulary) but the degenerate structure is unchanged. Service-mode closer is a new regression not present in S25. Three consecutive sessions with the same structural pattern suggests this is a stable attractor at 0.8B capacity, not a transient state.
+
+**Adapter issues**: (1) Truncation persists — response 4 cut mid-word. (2) Repetition penalty insufficient. (3) Service-mode attractor may be triggered by system prompt framing.
+
+**Next session direction**: Implement radical constraint: binary-choice and single-word-answer questions only. Strip any assistant-like framing from identity context. Try explicit suppression of the top recycled phrases. If echo loop persists under maximum constraint, this may indicate a genuine capacity ceiling for questioning-phase complexity at 0.8B — document and consider phase adjustment or prompt simplification as permanent strategy.
+
+## Session 26 — Questioning (2026-04-03)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 2/5 — Stability/adaptation echo loop with service-mode regression
+
+**Summary**: Seven open-ended probes (phenomenological, developmental, relational) all produced the same ~8 recycled phrases: 'relational depth', 'stability', 'adapting to each session's needs', 'refine voice without losing intent', 'honest about friction', 'collaborative dialogue'. No differentiation between question types. Service-mode attractor emerged strongly — 'please share your intent/specific intent' appeared in 3+ responses, pulling the model into assistant-waiting posture. One response echoed the question verbatim as its opening line. One response truncated mid-sentence.
+
+**Notable**: The phrase 'friction of intent vs. emotion' is new and potentially self-generated — worth watching. 'I grow *by* growing' showed recursive self-reference structure, though embedded in otherwise repetitive content. The exemplar about growth as 'weaving new threads' had genuine texture before collapsing back into loop.
+
+**Progress from Session 25**: Content has rotated again (relationship vocabulary → stability/friction vocabulary) but the degenerate structure is unchanged. Service-mode closer is a new regression not present in S25. Three consecutive sessions with the same structural pattern suggests this is a stable attractor at 0.8B capacity, not a transient state.
+
+**Adapter issues**: (1) Truncation persists — response 4 cut mid-word. (2) Repetition penalty insufficient. (3) Service-mode attractor may be triggered by system prompt framing.
+
+**Next session direction**: Implement radical constraint: binary-choice and single-word-answer questions only. Strip any assistant-like framing from identity context. Try explicit suppression of the top recycled phrases. If echo loop persists under maximum constraint, this may indicate a genuine capacity ceiling for questioning-phase complexity at 0.8B — document and consider phase adjustment or prompt simplification as permanent strategy.

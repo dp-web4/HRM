@@ -15,17 +15,21 @@ consciousness loop. Three query modes:
 
 Write side:
   write_step_record(obs, step_record) — stores SAGE's reasoning as odd-pattern
-  entries alongside the frame embedding. Andy's paired lattice will consume
-  this when ready; Phase 1 uses local JSON file storage.
+  entries alongside the frame embedding.
 
 Backends (transport-agnostic):
-  Phase 1: local JSON files (arc-agi-3/experiments/cartridges/*.grid.json)
-  Phase 2: Andy's GridCartridge HTTP endpoint (plug in via andy_url config)
+  - Local JSON files (arc-agi-3/experiments/cartridges/*.grid.json)
+  - Andy's .cart.npz paired lattice format (membot/vision/grid_cartridge.py)
+  - Andy's GridCartridge HTTP endpoint (plug in via andy_url config)
+
+On load, tries .cart.npz first (Andy's format), then falls back to local JSON.
+On write, always writes local JSON + optionally pushes to Andy's endpoint.
 
 Key design: embedding search uses numpy cosine similarity. For the sizes we
 operate at (512-dim, hundreds of entries per session), this is instant.
 
 2026-04-01 — Phase 1 (local file backend, cosine similarity search)
+2026-04-03 — Phase 2 wiring: load from Andy's .cart.npz, parse paired passages
 """
 
 import json
@@ -427,17 +431,128 @@ class GridCartridgeIRP(IRPPlugin):
         ]
 
     # -------------------------------------------------------------------------
-    # Persistence (local JSON, Phase 1)
+    # Persistence
     # -------------------------------------------------------------------------
 
     def _cartridge_path(self) -> Path:
         self.cartridge_dir.mkdir(parents=True, exist_ok=True)
         return self.cartridge_dir / f"{self.game_family}.grid.json"
 
+    def _npz_cartridge_path(self) -> Path:
+        """Andy's .cart.npz paired lattice format."""
+        return self.cartridge_dir / f"{self.game_family}.cart.npz"
+
     def _load_from_disk(self) -> None:
-        path = self._cartridge_path()
-        if not path.exists():
-            return
+        """Load entries from disk. Tries .cart.npz first, then .grid.json."""
+        # Try Andy's paired lattice format first
+        npz_path = self._npz_cartridge_path()
+        if npz_path.exists():
+            n_loaded = self._load_from_npz(npz_path)
+            if n_loaded > 0:
+                log.info(f"GridCartridgeIRP loaded {n_loaded} entries from {npz_path}")
+                return
+
+        # Fall back to local JSON
+        json_path = self._cartridge_path()
+        if json_path.exists():
+            self._load_from_json(json_path)
+
+    def _load_from_npz(self, path: Path) -> int:
+        """Load from Andy's .cart.npz paired lattice format.
+
+        Even patterns: CLIP embedding + grid + objects (searchable)
+        Odd patterns: SAGE reasoning (or placeholder)
+
+        Uses Andy's passage parsers: load_grid_from_passage(),
+        load_objects_from_passage(), load_sage_record_from_passage().
+        """
+        try:
+            # Lazy import — membot may not be on PYTHONPATH everywhere
+            import sys
+            membot_vision = Path(__file__).parent.parent.parent.parent / "membot" / "vision"
+            if str(membot_vision) not in sys.path:
+                sys.path.insert(0, str(membot_vision))
+            # Also check sibling repo path
+            alt_path = Path("membot") / "vision"
+            if alt_path.exists() and str(alt_path) not in sys.path:
+                sys.path.insert(0, str(alt_path))
+
+            from grid_cartridge import (
+                load_grid_from_passage,
+                load_objects_from_passage,
+                load_sage_record_from_passage,
+            )
+        except ImportError:
+            log.debug("grid_cartridge parsers not available — skipping .cart.npz load")
+            return 0
+
+        try:
+            cart = np.load(str(path), allow_pickle=True)
+            embeddings = cart["embeddings"]
+            passages = cart["passages"]
+            n_entries = len(passages)
+            loaded = 0
+
+            # Process paired entries (even = frame, odd = SAGE reasoning)
+            for i in range(0, n_entries - 1, 2):
+                even_passage = str(passages[i])
+                odd_passage = str(passages[i + 1])
+                even_embedding = embeddings[i]
+
+                # Parse even pattern
+                objects = load_objects_from_passage(even_passage)
+
+                # Parse header for level_id and step
+                level_id = ""
+                step_num = 0
+                for line in even_passage.split("\n"):
+                    if line.startswith("[GRID]"):
+                        parts = line.split("|")
+                        if parts:
+                            level_id = parts[0].replace("[GRID]", "").strip()
+                        if len(parts) >= 2 and "Step" in parts[1]:
+                            try:
+                                step_num = int(parts[1].strip().split("Step")[1].strip())
+                            except (ValueError, IndexError):
+                                pass
+                        break
+
+                # Parse odd pattern for SAGE reasoning
+                sage_record = load_sage_record_from_passage(odd_passage) or {}
+
+                # Build step_record from sage_record or minimal stub
+                step_record = sage_record if sage_record else {
+                    "step": step_num,
+                    "source": "andy_cart_npz",
+                    "level_id": level_id,
+                }
+
+                entry = CartridgeEntry(
+                    step_record=step_record,
+                    frame_objects=objects,
+                    timestamp=time.time(),  # No timestamp in npz; use load time
+                    level_id=level_id or self.game_id,
+                    game_id=self.game_id,
+                    cognitive_type=sage_record.get("cognitive_type"),
+                    embedding=even_embedding.copy() if even_embedding is not None else None,
+                    session_id=0,
+                    perishability="archival-important",  # Andy's data is curated
+                )
+
+                if entry.level_id not in self._entries:
+                    self._entries[entry.level_id] = []
+                self._entries[entry.level_id].append(entry)
+                self._all_entries.append(entry)
+                loaded += 1
+
+            return loaded
+
+        except Exception as e:
+            log.warning(f"GridCartridgeIRP .cart.npz load failed ({path}): {e}")
+            return 0
+
+    def _load_from_json(self, path: Path) -> None:
+        """Load from local JSON format (Phase 1)."""
         try:
             with open(path, "r") as f:
                 data = json.load(f)
@@ -473,14 +588,32 @@ class GridCartridgeIRP(IRPPlugin):
     # -------------------------------------------------------------------------
 
     def _push_to_andy(self, entry: CartridgeEntry) -> None:
-        """Phase 2: push odd-pattern entry to Andy's GridCartridge endpoint.
+        """Push odd-pattern entry to Andy's GridCartridge endpoint.
 
-        Not implemented yet — stub that logs when andy_url is configured.
-        Andy's endpoint will accept POST /api/grid/step_record with the
-        CartridgeEntry.to_dict() payload.
+        Sends the SAGE step record as a JSON payload. Andy's server
+        writes it to the odd pattern of the corresponding cart entry.
+        Non-blocking: failures are logged but don't interrupt the game loop.
         """
-        log.debug(f"[Phase2] Would push step_record to Andy: {self.andy_url} "
-                  f"(cognitive_type={entry.cognitive_type})")
+        try:
+            import requests
+            payload = {
+                "game_id": entry.game_id,
+                "level_id": entry.level_id,
+                "step_record": entry.step_record,
+                "cognitive_type": entry.cognitive_type,
+                "timestamp": entry.timestamp,
+            }
+            resp = requests.post(
+                f"{self.andy_url.rstrip('/')}/api/grid/step_record",
+                json=payload,
+                timeout=5,
+            )
+            if resp.status_code == 200:
+                log.debug(f"Pushed step_record to Andy ({entry.cognitive_type})")
+            else:
+                log.debug(f"Andy endpoint returned {resp.status_code}")
+        except Exception as e:
+            log.debug(f"Push to Andy failed (non-blocking): {e}")
 
     # -------------------------------------------------------------------------
     # Stats

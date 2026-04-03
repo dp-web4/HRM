@@ -55,8 +55,8 @@ def get_model():
     except Exception:
         models = []
 
-    # Prefer gemma3:4b > qwen3.5:0.8b > tinyllama
-    for preferred in ["gemma3:4b", "gemma3:1b", "qwen3.5:0.8b", "tinyllama:latest"]:
+    # Prefer larger models for better reasoning
+    for preferred in ["gemma3:12b", "gemma3:4b", "gemma3:1b", "qwen3.5:0.8b", "tinyllama:latest"]:
         if preferred in models:
             return preferred
     return models[0] if models else "gemma3:4b"
@@ -213,8 +213,8 @@ def main():
     # Warm up Ollama
     print("\nWarming up Ollama...", end=" ", flush=True)
     t0 = time.time()
+    v4.MODEL = model  # ensure v4 uses our model BEFORE warmup
     test = v4.ask_ollama("Reply with: ready", timeout=90)
-    v4.MODEL = model  # ensure v4 uses our model
     print(f"OK ({time.time()-t0:.1f}s) — model: {model}")
     if "error" in test.lower():
         print(f"FAILED: {test}")

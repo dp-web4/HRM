@@ -344,25 +344,44 @@ def reason_prompt(grid: np.ndarray, kb: GameKnowledgeBase,
     if available_actions is None:
         available_actions = [6]
 
-    kb_text = kb.to_prompt_text(current_level=levels_completed)
-
-    last_result_block = ""
-    if last_action_result:
-        last_result_block = f"\nLAST ACTION RESULT:\n{last_action_result}\n"
-
-    # Known solution block
+    # Build curated KB context (not just full dump)
+    kb_parts = []
     next_level = levels_completed + 1
     solution = kb.get_level_solution(next_level)
-    solution_block = ""
-    if solution:
+    if solution and solution.confidence >= 0.5:
+        kb_parts.append(f"L{next_level} solution known ({solution.confidence:.0%})")
         seq_text = ", ".join(
             f"action={s.get('action', 6)}, x={s.get('c','?')}, y={s.get('r','?')} ×{s.get('repeats',1)}"
             for s in solution.sequence
         )
-        solution_block = (
-            f"\n⚡ KNOWN SOLUTION for level {next_level}: {seq_text} "
-            f"(confidence: {solution.confidence:.0%})\n"
-        )
+        solution_block = f"\n⚡ SOLUTION: {seq_text}\n"
+    else:
+        solution_block = ""
+
+    if kb.mechanics:
+        kb_parts.append(f"Rules: {'; '.join(kb.mechanics[:3])}")
+
+    # High-impact objects the LLM should focus on
+    high_impact = sorted(
+        [o for o in kb.objects.values()
+         if o.avg_cells_changed >= 20 and o.effect_count > 0],
+        key=lambda o: -o.avg_cells_changed)[:3]
+    if high_impact:
+        obj_strs = [f"{o.color} @({o.position['c']},{o.position['r']}) ~{o.avg_cells_changed:.0f}px"
+                    for o in high_impact]
+        kb_parts.append(f"High-impact: {', '.join(obj_strs)}")
+
+    # Dead objects to avoid
+    dead = [o for o in kb.objects.values()
+            if o.click_count >= 3 and o.effect_count == 0]
+    if dead:
+        kb_parts.append(f"Inert ({len(dead)} objects): avoid clicking these")
+
+    kb_text = "Prior sessions: " + " | ".join(kb_parts) if kb_parts else ""
+
+    last_result_block = ""
+    if last_action_result:
+        last_result_block = f"\nLAST ACTION RESULT:\n{last_action_result}\n"
 
     budget_note = f"\nActions remaining this attempt: {actions_remaining}." if actions_remaining > 0 else ""
 
@@ -370,10 +389,28 @@ def reason_prompt(grid: np.ndarray, kb: GameKnowledgeBase,
 
     targets = interactive_targets(grid, kb)
 
+    # Filter banned actions from the prompt's action list
+    if banned_actions:
+        banned_nums = set()
+        for banned_key in banned_actions.keys():
+            # Extract action number from "click(x,y)" or "action_N" formats
+            if banned_key.startswith("click"):
+                banned_nums.add(6)
+            elif banned_key.startswith("action_"):
+                try:
+                    banned_nums.add(int(banned_key.split("_")[1]))
+                except (IndexError, ValueError):
+                    pass
+        available_for_prompt = [a for a in available_actions if a not in banned_nums]
+        if not available_for_prompt:
+            available_for_prompt = available_actions  # Show all if everything banned
+    else:
+        available_for_prompt = available_actions
+
     # Build available actions description
-    has_movement = any(a in available_actions for a in [1, 2, 3, 4])
-    has_click = 6 in available_actions
-    action_lines = "\n".join(f"  {a}: {ACTION_NAMES.get(a, f'ACTION{a}')}" for a in sorted(available_actions))
+    has_movement = any(a in available_for_prompt for a in [1, 2, 3, 4])
+    has_click = 6 in available_for_prompt
+    action_lines = "\n".join(f"  {a}: {ACTION_NAMES.get(a, f'ACTION{a}')}" for a in sorted(available_for_prompt))
 
     # Adapt instructions based on action types
     if has_movement and has_click:
@@ -581,7 +618,24 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
 
         # Fallback when LLM didn't produce valid output
         if chosen_action is None:
-            if has_click:
+            # Filter banned actions from available options
+            if banned_actions:
+                banned_nums = set()
+                for banned_key in banned_actions.keys():
+                    if banned_key.startswith("click"):
+                        banned_nums.add(6)
+                    elif banned_key.startswith("action_"):
+                        try:
+                            banned_nums.add(int(banned_key.split("_")[1]))
+                        except (IndexError, ValueError):
+                            pass
+                fallback_available = [a for a in available_actions if a not in banned_nums]
+                if not fallback_available:
+                    fallback_available = available_actions  # Last resort
+            else:
+                fallback_available = available_actions
+
+            if has_click and 6 in fallback_available:
                 # Click fallback: pick an untried color region
                 regions = find_color_regions(grid, min_size=4)
                 candidates = [rg for rg in regions if 4 <= rg["size"] <= 64
@@ -597,9 +651,14 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
                 prediction = "(fallback — no valid LLM JSON)"
                 reason = "(fallback to untried region)"
             elif movement_actions:
-                # Movement fallback: cycle through available directions
-                chosen_action = movement_actions[fallback_idx % len(movement_actions)]
-                fallback_idx += 1
+                # Movement fallback: cycle through non-banned directions
+                unbanned_moves = [a for a in movement_actions if a in fallback_available]
+                if unbanned_moves:
+                    chosen_action = unbanned_moves[fallback_idx % len(unbanned_moves)]
+                    fallback_idx += 1
+                else:
+                    chosen_action = movement_actions[fallback_idx % len(movement_actions)]
+                    fallback_idx += 1
                 prediction = "(fallback — no valid LLM JSON)"
                 reason = f"(fallback: cycling {ACTION_NAMES.get(chosen_action, f'ACTION{chosen_action}')})"
             else:

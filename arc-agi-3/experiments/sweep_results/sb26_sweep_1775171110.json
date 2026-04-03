@@ -1,0 +1,63 @@
+{
+  "game_id": "sb26-7fbdac44",
+  "game_family": "sb26",
+  "win_levels": 8,
+  "baseline_budget": 153,
+  "baseline_per_level": [
+    18,
+    16,
+    15,
+    15,
+    31,
+    24,
+    17,
+    17
+  ],
+  "model": "gemma3:4b",
+  "attempts_run": 3,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 2640.1,
+  "kb_final": {
+    "objects": 2,
+    "active": 0,
+    "solutions": 0,
+    "mechanics": 110,
+    "failures": 0
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 8,
+      "steps": 153,
+      "state": "GAME_OVER",
+      "elapsed": 839.6,
+      "kb_objects": 1,
+      "kb_solutions": 0
+    },
+    {
+      "attempt": 2,
+      "levels": 0,
+      "win_levels": 8,
+      "steps": 153,
+      "state": "GAME_OVER",
+      "elapsed": 870.1,
+      "kb_objects": 2,
+      "kb_solutions": 0
+    },
+    {
+      "attempt": 3,
+      "levels": 0,
+      "win_levels": 8,
+      "steps": 153,
+      "state": "GAME_OVER",
+      "elapsed": 930.3,
+      "kb_objects": 2,
+      "kb_solutions": 0
+    }
+  ]
+}

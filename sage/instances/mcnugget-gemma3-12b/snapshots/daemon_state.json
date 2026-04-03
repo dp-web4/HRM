@@ -1,11 +1,11 @@
 {
-  "last_shutdown": 1775167886.6429172,
+  "last_shutdown": 1775209964.25203,
   "machine": "mcnugget",
   "instance": "mcnugget-gemma3-12b",
-  "uptime_seconds": 177.9085671901703,
-  "cycles_completed": 1731,
+  "uptime_seconds": 20298.04407787323,
+  "cycles_completed": 198408,
   "metabolic_state": "rest",
-  "atp_level": 57.449947596952185,
+  "atp_level": 34.81670846510217,
   "message_stats": {
     "messages_submitted": 0,
     "messages_resolved": 0,
@@ -15,7 +15,7 @@
   },
   "trust_weights": {
     "vision": 0.0,
-    "language": 0.0885,
+    "language": 0.0995,
     "control": 0.0,
     "memory": 0.0
   },

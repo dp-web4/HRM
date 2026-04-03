@@ -55,11 +55,14 @@ def get_model():
     except Exception:
         models = []
 
-    # Prefer larger models for better reasoning (updated to match available models)
-    for preferred in ["gemma3:12b", "phi4:14b", "qwen2.5:3b", "qwen3.5:27b"]:
+    # Prefer larger models, but include smaller ones that work
+    for preferred in ["gemma3:12b", "phi4:14b", "qwen2.5:3b", "qwen3.5:27b",
+                       "gemma3:4b", "qwen3.5:0.8b", "tinyllama:latest"]:
         if preferred in models:
             return preferred
-    return models[0] if models else "gemma3:12b"
+    # Filter out embedding models
+    chat_models = [m for m in models if "embed" not in m]
+    return chat_models[0] if chat_models else "gemma3:4b"
 
 
 def sweep_one_game(arcade, env_info, model, max_attempts=100):

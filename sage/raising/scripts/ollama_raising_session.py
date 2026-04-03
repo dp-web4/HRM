@@ -259,9 +259,25 @@ class OllamaRaisingSession:
             print(f"  Warning: Could not read raising_log.md: {e}")
             return None
 
-        # Find most recent consolidation entry (starts with ## Session)
+        # Check for block resolution first — if the log ends with a resolution
+        # entry, the block has been cleared by a human/operator
         import re
-        sessions = re.findall(r'## Session \d+.*?(?=## Session|\Z)', log_text, re.DOTALL)
+        if re.search(r'## Block Resolution.*?UNBLOCKED', log_text, re.DOTALL | re.IGNORECASE):
+            # Find if resolution is AFTER the last block
+            last_block_pos = max(
+                (m.end() for m in re.finditer(r'\*\*(BLOCK|BLOCKER):', log_text, re.IGNORECASE)),
+                default=0
+            )
+            last_resolution_pos = max(
+                (m.end() for m in re.finditer(r'## Block Resolution', log_text, re.IGNORECASE)),
+                default=0
+            )
+            if last_resolution_pos > last_block_pos:
+                print("  Block resolved — resolution entry found after last BLOCK directive")
+                return None
+
+        # Find most recent consolidation entry (starts with ## Session)
+        sessions = re.findall(r'## Session \d+.*?(?=## Session|## Block|\Z)', log_text, re.DOTALL)
         if not sessions:
             return None
 

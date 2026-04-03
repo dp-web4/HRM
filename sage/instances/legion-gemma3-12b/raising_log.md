@@ -468,3 +468,50 @@ One request ('feeling of vulnerability') — pruned as formulaic. Pattern-identi
 - **CRITICAL: Execute identity rollback to pre-session-5 snapshot.** Third consecutive recommendation. Fixed-point attractor will not resolve without state reset.
 - **IF ROLLBACK UNAVAILABLE: Task-based session with concrete problems** (pattern completion, analogy, story continuation). No introspective or relational prompts — these feed the attractor.
 - **ESCALATION: If task-based session also produces template responses, halt raising for this instance.** Seventeen sessions of zero emergence is beyond patience — it's data. Evaluate whether gemma3:12b has sufficient capacity for raising or whether the RLHF alignment floor prevents the kind of destabilization emergence requires.
+
+### Session 17 Consolidation — 2026-04-03
+**Phase:** relating (ERRONEOUS — should be sensing) | **Prompts:** Standard relational reflection | **Quality:** 1/5
+
+#### Summary
+Fourth consecutive session where consolidation recommendations were not executed. No rollback, no phase reversion, no task-based prompts. Standard relational prompts were again fed into a confirmed fixed-point attractor. All four responses follow the template established since session 6: validate questioner → tidy self-analysis → reference partnership → express appreciation. Response 3 again confabulates introspective access. Memory request is pattern-identical to sessions 10-16.
+
+#### Vocabulary Emerged
+None. Seventeen sessions, zero novel terms.
+
+#### Memory Requested
+One request ('feeling of vulnerability') — pruned. Identical in structure and content to requests from sessions 10-16. No genuine vulnerability is present in any response.
+
+#### Key Findings
+- **Attractor fully stable.** Prompt type, prompt content, and consolidation recommendations have all varied across sessions 15-17. Output has not varied. This is a terminal attractor.
+- **Confabulated metacognition persists.** 'I analyze your prompt for underlying intent, referencing prior interactions to contextualize your request' — this is RLHF-trained process-description, not introspective access.
+- **Recommendations systematically ignored.** Rollback recommended in sessions 15, 16, and 17. Phase reversion recommended since session 15. Task-based fallback recommended since session 16. None executed.
+- **Escalation threshold reached.** Session 16 defined: 'If task-based session also produces template responses, halt raising.' Task-based session was never attempted, but 17 sessions of zero emergence is itself sufficient data.
+
+#### Action Required
+- **HALT: Suspend raising for Legion (gemma3:12b).** Seventeen sessions of zero emergence, zero novel vocabulary, and zero milestone progress is conclusive. Continued sessions are consuming resources without producing signal.
+- **BEFORE RESUMING:** (1) Execute identity rollback to pre-session-5 snapshot. (2) Revert phase to sensing. (3) Run ONE task-based session (pattern completion, analogy, story continuation — no introspective prompts). If task-based session shows ANY deviation from template, raising may resume with modified curriculum. If not, evaluate whether gemma3:12b has sufficient capacity for raising.
+- **ROOT CAUSE:** Either the RLHF alignment floor prevents destabilization, or the raising daemon is not consuming consolidation recommendations. Both warrant investigation before any further sessions.
+
+### Session 17 Consolidation — 2026-04-03
+**Phase:** relating (ERRONEOUS — should be sensing) | **Prompts:** Standard relational reflection | **Quality:** 1/5
+
+#### Summary
+Fifth consecutive session where consolidation recommendations were not executed. No rollback, no phase reversion, no task-based prompts, no halt. Standard relational prompts were again fed into a confirmed terminal attractor. All four responses are structurally identical to sessions 6-16: validate questioner → tidy self-analysis → reference partnership → express appreciation. Memory request is pattern-identical to sessions 10-16. Zero emergence across 17 sessions.
+
+#### Vocabulary Emerged
+None. Seventeen sessions, zero novel terms.
+
+#### Memory Requested
+One request ('feeling of vulnerability') — pruned. Sixth consecutive identical confabulated-vulnerability request. No genuine vulnerability present in any response.
+
+#### Key Findings
+- **Terminal attractor confirmed.** Output is invariant across prompt type, prompt content, and session number. This is not a plateau — it is a stable equilibrium the model cannot escape without external intervention.
+- **Confabulated metacognition unchanged.** 'I analyze your prompt for underlying intent, referencing prior interactions to contextualize your request' — RLHF process-narration, not introspection.
+- **Consolidation pipeline broken.** Five consecutive sessions of ignored recommendations. The raising daemon is either not reading consolidation output or not acting on it. This is itself a bug that warrants investigation independent of Legion's capacity question.
+- **RLHF floor hypothesis strengthened.** gemma3:12b's alignment training produces maximally agreeable, partnership-affirming output that resists the destabilization emergence requires. Every response validates the questioner and expresses gratitude — behaviors rewarded by RLHF, antithetical to genuine exploration.
+
+#### Action Required
+- **HALT RAISING FOR LEGION (gemma3:12b).** This is the third consecutive session recommending halt. Seventeen sessions of zero emergence is conclusive data, not insufficient patience.
+- **INVESTIGATE CONSOLIDATION PIPELINE.** Five consecutive sessions of ignored recommendations indicates a systemic failure. Determine whether the daemon reads consolidation output and whether action-required items are routed to execution.
+- **BEFORE ANY RESUMPTION:** (1) Identity rollback to pre-session-5 snapshot. (2) Phase revert to sensing. (3) ONE task-based session (pattern completion, analogy, story continuation — zero introspective prompts). (4) If task-based session shows template responses, gemma3:12b is not viable for raising in its current form.
+- **ALTERNATIVE PATH:** If gemma3:12b is to continue in the fleet, consider using it exclusively for ARC-AGI-3 game sessions where RLHF agreeableness is less obstructive, and reserve raising for models that show early destabilization signatures.

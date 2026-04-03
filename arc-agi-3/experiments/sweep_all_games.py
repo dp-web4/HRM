@@ -65,7 +65,7 @@ def get_model():
     return chat_models[0] if chat_models else "gemma3:4b"
 
 
-def sweep_one_game(arcade, env_info, model, max_attempts=100):
+def sweep_one_game(arcade, env_info, model, max_attempts=100, identity_context=""):
     """Run up to max_attempts on a single game. Returns summary dict."""
     game_id = env_info.game_id
     game_family = game_id.split("-")[0]
@@ -124,7 +124,8 @@ def sweep_one_game(arcade, env_info, model, max_attempts=100):
 
         lvl, state, steps, clicks, elapsed = v4.play_one_session(
             env, frame_data, grid, kb,
-            argparse.Namespace(budget=budget, think_time=0),
+            argparse.Namespace(budget=budget, think_time=0,
+                               identity_context=identity_context),
             game_id, gc, gv, attempt,
         )
 
@@ -202,12 +203,21 @@ def main():
     parser.add_argument("--attempts", type=int, default=100, help="Attempts per game")
     parser.add_argument("--resume-from", type=str, default=None, help="Skip games before this prefix")
     parser.add_argument("--games", type=str, default=None, help="Comma-separated game prefixes to run")
+    parser.add_argument("--identity", type=str, default=None, help="SAGE instance dir for raising identity")
     args = parser.parse_args()
+
+    # Load raising identity if provided
+    identity_context = ""
+    if args.identity:
+        identity_context = v4.load_identity_context(args.identity)
+        if identity_context:
+            print(f"Identity loaded: {identity_context[:80]}...")
 
     model = get_model()
     print(f"{'='*70}")
     print(f"ARC-AGI-3 BROAD SWEEP")
     print(f"Model: {model}")
+    print(f"Identity: {'RAISING-ANCHORED' if identity_context else 'anonymous'}")
     print(f"Attempts per game: {args.attempts}")
     print(f"Budget: human baseline (100% efficiency) per game")
     print(f"Objective: LEARNING across attempts")
@@ -261,7 +271,8 @@ def main():
         print(f"{'█'*70}")
 
         try:
-            summary = sweep_one_game(arcade, env_info, model, max_attempts=args.attempts)
+            summary = sweep_one_game(arcade, env_info, model, max_attempts=args.attempts,
+                                     identity_context=identity_context)
             all_summaries.append(summary)
         except Exception as e:
             print(f"\n  ERROR on {game_family}: {e}")

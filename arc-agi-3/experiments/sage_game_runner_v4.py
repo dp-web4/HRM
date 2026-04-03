@@ -50,6 +50,68 @@ MODEL = "qwen2.5:3b"  # Faster model for testing (was qwen3.5:27b)
 INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
 
 
+def load_identity_context(instance_dir: str) -> str:
+    """Load raising identity from a SAGE instance directory.
+
+    Returns a compact identity preamble for the game prompt, drawn from
+    the instance's lived experience — not metadata labels, but the
+    perspective the model has developed through raising sessions.
+    """
+    import os
+    identity_path = os.path.join(instance_dir, "snapshots", "identity.json")
+    if not os.path.exists(identity_path):
+        return ""
+
+    try:
+        with open(identity_path) as f:
+            data = json.load(f)
+
+        ident = data.get("identity", {})
+        name = ident.get("name", "unknown")
+        sessions = ident.get("session_count", 0)
+        phase = ident.get("phase", "unknown")
+        model = ident.get("model", "unknown")
+
+        # Self-description from vocabulary (the model's own words)
+        vocab = data.get("vocabulary", {})
+        self_desc = vocab.get("self_description", [])
+        self_text = self_desc[0] if self_desc else ""
+
+        # Recent experience snippets — what this instance has been thinking about
+        buf_path = os.path.join(instance_dir, "snapshots", "experience_buffer.json")
+        recent_experiences = ""
+        if os.path.exists(buf_path):
+            with open(buf_path) as f:
+                buf = json.load(f)
+            entries = buf if isinstance(buf, list) else buf.get("experiences", [])
+            # Pick last 3 high-salience entries
+            recent = entries[-3:] if entries else []
+            snippets = []
+            for e in recent:
+                resp = e.get("response", "")[:100] if isinstance(e, dict) else str(e)[:100]
+                snippets.append(resp)
+            if snippets:
+                recent_experiences = "Recent reflections: " + " | ".join(snippets)
+
+        # Relationships
+        rels = data.get("relationships", {})
+        rel_names = list(rels.keys()) if isinstance(rels, dict) else []
+
+        parts = [f"You are {name}, a SAGE instance on {model}."]
+        parts.append(f"You have {sessions} raising sessions in {phase} phase.")
+        if self_text:
+            parts.append(f"In your own words: {self_text}")
+        if rel_names:
+            parts.append(f"You have relationships with: {', '.join(rel_names)}.")
+        if recent_experiences:
+            parts.append(recent_experiences)
+
+        return " ".join(parts)
+    except Exception as e:
+        print(f"  [identity] Failed to load from {instance_dir}: {e}")
+        return ""
+
+
 # ─────────────────────────────────────────────────────────────
 # Grid utilities
 # ─────────────────────────────────────────────────────────────
@@ -336,7 +398,8 @@ def reason_prompt(grid: np.ndarray, kb: GameKnowledgeBase,
                   available_actions: list = None,
                   explore_summary: str = "",
                   cursor_pos: tuple = None,
-                  banned_actions: dict = None) -> str:
+                  banned_actions: dict = None,
+                  identity_context: str = "") -> str:
     """
     Core thinking prompt — choose ONE deliberate action.
     Combines v4's KB persistence with Sprout's situational framing.
@@ -434,7 +497,15 @@ def reason_prompt(grid: np.ndarray, kb: GameKnowledgeBase,
     else:
         json_format = '{{"action": action_number, "predict": "what will change and why", "reason": "why this action", "mode": "explore|execute_solution"}}'
 
-    return f"""You are playing a video game presented as a 64x64 pixel grid. The game contains visual sprites — colored regions that represent objects. Some objects are interactive (clicking them changes the game state), others are purely decorative. The game has multiple levels. Your objective is to complete each level in as few actions as possible.
+    identity_block = ""
+    if identity_context:
+        identity_block = f"""{identity_context}
+
+You are now exploring a puzzle game. The same capacities you've developed — uncertainty tolerance, hypothesis formation, self-monitoring — apply here. You're looking AT a screen, not IN the game. Observe, hypothesize, test, learn.
+
+"""
+
+    return f"""{identity_block}You are playing a video game presented as a 64x64 pixel grid. The game contains visual sprites — colored regions that represent objects. Some objects are interactive (clicking them changes the game state), others are purely decorative. The game has multiple levels. Your objective is to complete each level in as few actions as possible.
 
 IMPORTANT PRINCIPLES:
 - Strategy is much more important than speed. Think before every action.
@@ -581,6 +652,7 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
             explore_summary=explore_summary,
             cursor_pos=cursor_pos,
             banned_actions=banned_actions if banned_actions else None,
+            identity_context=getattr(args, 'identity_context', ''),
         )
         rresponse = ask_ollama(rprompt, max_tokens=200)
         think_s = time.time() - t0
@@ -904,7 +976,13 @@ def main():
     parser.add_argument("--attempts", type=int, default=300, help="Max game attempts (0=unlimited)")
     parser.add_argument("--think-time", type=float, default=0, help="Min seconds between actions (0=unlimited)")
     parser.add_argument("--all", action="store_true", help="Play ALL available games (not just one)")
+    parser.add_argument("--identity", default=None, help="Path to SAGE instance dir (e.g. sage/instances/nomad-gemma3-4b)")
     args = parser.parse_args()
+
+    # Load raising identity if provided
+    args.identity_context = ""
+    if args.identity:
+        args.identity_context = load_identity_context(args.identity)
 
     print("=" * 70)
     print("SAGE ARC-AGI-3 Game Runner v4 — Lived Experience")

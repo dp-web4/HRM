@@ -1,0 +1,98 @@
+{
+  "scored_games": {
+    "tn36": {
+      "levels": 1,
+      "win_levels": 7,
+      "events": [
+        {
+          "step": 48,
+          "levels": 1,
+          "action": "explore",
+          "click_color": 9
+        }
+      ]
+    },
+    "vc33": {
+      "levels": 1,
+      "win_levels": 7,
+      "events": [
+        {
+          "step": 39,
+          "levels": 1,
+          "action": "explore",
+          "click_color": 9
+        }
+      ]
+    },
+    "sk48": {
+      "levels": 1,
+      "win_levels": 8,
+      "events": [
+        {
+          "step": 173,
+          "levels": 1,
+          "action": "move",
+          "click_color": null
+        }
+      ]
+    },
+    "lf52": {
+      "levels": 1,
+      "win_levels": 10,
+      "events": [
+        {
+          "step": 31,
+          "levels": 1,
+          "action": "explore",
+          "click_color": 2
+        }
+      ]
+    },
+    "lp85": {
+      "levels": 2,
+      "win_levels": 8,
+      "events": [
+        {
+          "step": 61,
+          "levels": 1,
+          "action": "exploit",
+          "click_color": 8
+        },
+        {
+          "step": 112,
+          "levels": 2,
+          "action": "exploit",
+          "click_color": 8
+        }
+      ]
+    },
+    "ft09": {
+      "levels": 1,
+      "win_levels": 6,
+      "events": [
+        {
+          "step": 69,
+          "levels": 1,
+          "action": "exploit",
+          "click_color": 9
+        }
+      ]
+    },
+    "ar25": {
+      "levels": 1,
+      "win_levels": 8,
+      "events": [
+        {
+          "step": 127,
+          "levels": 1,
+          "action": "move",
+          "click_color": null
+        }
+      ]
+    }
+  },
+  "total_levels": 50,
+  "elapsed": 68.52502012252808,
+  "runs": 20,
+  "steps": 500
+}

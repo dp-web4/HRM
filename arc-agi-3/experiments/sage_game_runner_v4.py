@@ -179,6 +179,141 @@ def parse_json(text: str) -> dict:
 
 
 # ─────────────────────────────────────────────────────────────
+# Fast explore — systematic probing without LLM (from Sprout)
+# ─────────────────────────────────────────────────────────────
+
+def detect_cursor(prev_grid, curr_grid):
+    """Detect cursor position from movement diff.
+    Returns (cx, cy, color_name) or None."""
+    diff_mask = prev_grid != curr_grid
+    if not diff_mask.any():
+        return None
+    coords = np.argwhere(diff_mask)
+    # New pixels (appeared) are likely cursor at new position
+    new_colors = curr_grid[diff_mask]
+    old_colors = prev_grid[diff_mask]
+    # The cursor is typically the new color at the bottom-right of the diff
+    # Heuristic: centroid of new non-background pixels
+    bg = int(np.bincount(curr_grid.ravel()).argmax())
+    new_positions = [(r, c) for r, c in coords if curr_grid[r, c] != bg and prev_grid[r, c] == bg]
+    if new_positions:
+        cy = int(np.mean([p[0] for p in new_positions]))
+        cx = int(np.mean([p[1] for p in new_positions]))
+        return (cx, cy, arc_color_name(int(curr_grid[cy, cx])))
+    return None
+
+
+def describe_surroundings(grid, cx, cy, radius=12):
+    """Compact description of what's around a position in each direction."""
+    bg = int(np.bincount(grid.ravel()).argmax())
+    h, w = grid.shape[:2]
+    directions = {"up": (0, -1), "down": (0, 1), "left": (-1, 0), "right": (1, 0)}
+    parts = []
+    for dname, (ddx, ddy) in directions.items():
+        hit = None
+        for step in range(1, radius + 1):
+            nx, ny = cx + ddx * step, cy + ddy * step
+            if nx < 0 or nx >= w or ny < 0 or ny >= h:
+                hit = f"edge({step})"
+                break
+            pixel = int(grid[ny, nx])
+            if pixel != bg:
+                hit = f"{arc_color_name(pixel)}({step})"
+                break
+        parts.append(f"{dname}: {hit or f'open({radius}+)'}")
+    return " ".join(parts)
+
+
+def fast_explore(env, frame_data, grid, available_actions, budget=15):
+    """Phase 1: Systematic probing without LLM. Pure observation.
+
+    Returns (frame_data, grid, explore_summary, cursor_pos, steps_used).
+    explore_summary is a compact string for the LLM prompt.
+    cursor_pos is (cx, cy, color) or None.
+    """
+    bg = int(np.bincount(grid.ravel()).argmax())
+    step = 0
+    prev_grid = grid.copy()
+    cursor_pos = None
+    action_effects = {}  # action_name → {changed, n_pixels}
+    color_effects = {}   # color_name → {tries, changes}
+    levels_start = frame_data.levels_completed
+
+    # Step 1: Try each non-click action once
+    for action in [a for a in [1, 2, 3, 4, 5] if a in available_actions]:
+        if step >= budget:
+            break
+        try:
+            frame_data = env.step(INT_TO_GAME_ACTION[action])
+            step += 1
+            new_grid = get_grid(frame_data)
+            n_changed = int(np.sum(prev_grid != new_grid))
+            aname = {1: "up", 2: "down", 3: "left", 4: "right", 5: "interact"}.get(action, f"a{action}")
+            action_effects[aname] = {"changed": n_changed > 0, "n_pixels": n_changed}
+
+            # Detect cursor from first movement that changes grid
+            if action in (1, 2, 3, 4) and n_changed > 0 and cursor_pos is None:
+                cursor_pos = detect_cursor(prev_grid, new_grid)
+
+            if frame_data.levels_completed > levels_start:
+                break  # Don't waste explore budget after level-up
+
+            prev_grid = new_grid.copy()
+        except Exception:
+            pass
+
+    # Step 2: Click distinct color regions
+    if 6 in available_actions and step < budget:
+        grid = get_grid(frame_data)
+        regions = find_color_regions(grid, min_size=4)
+        seen_colors = set()
+        for r in regions:
+            if step >= budget:
+                break
+            cname = arc_color_name(r["color"])
+            if r["color"] == bg or cname in seen_colors:
+                continue
+            seen_colors.add(cname)
+            prev_grid = get_grid(frame_data).copy()
+            try:
+                frame_data = env.step(INT_TO_GAME_ACTION[6], data={'x': r['cx'], 'y': r['cy']})
+                step += 1
+                new_grid = get_grid(frame_data)
+                n_changed = int(np.sum(prev_grid != new_grid))
+                if cname not in color_effects:
+                    color_effects[cname] = {"tries": 0, "changes": 0}
+                color_effects[cname]["tries"] += 1
+                if n_changed > 0:
+                    color_effects[cname]["changes"] += 1
+                prev_grid = new_grid.copy()
+            except Exception:
+                pass
+
+    # Build summary
+    grid = get_grid(frame_data)
+    parts = []
+    if action_effects:
+        effective = [f"{k}({v['n_pixels']}px)" for k, v in action_effects.items() if v["changed"]]
+        inert = [k for k, v in action_effects.items() if not v["changed"]]
+        if effective:
+            parts.append(f"Effective moves: {', '.join(effective)}")
+        if inert:
+            parts.append(f"Inert moves: {', '.join(inert)}")
+    if color_effects:
+        clickable = [f"{k}({v['changes']}/{v['tries']})" for k, v in color_effects.items() if v["changes"] > 0]
+        inert_c = [k for k, v in color_effects.items() if v["changes"] == 0]
+        if clickable:
+            parts.append(f"Clickable colors: {', '.join(clickable)}")
+        if inert_c:
+            parts.append(f"Inert colors: {', '.join(inert_c)}")
+    if cursor_pos:
+        parts.append(f"Cursor: {cursor_pos[2]} at ({cursor_pos[0]},{cursor_pos[1]})")
+
+    summary = "\n".join(parts) if parts else "No effects detected during exploration."
+    return frame_data, grid, summary, cursor_pos, step
+
+
+# ─────────────────────────────────────────────────────────────
 # Prompts — slow thinking, one action at a time
 # ─────────────────────────────────────────────────────────────
 
@@ -198,9 +333,13 @@ def reason_prompt(grid: np.ndarray, kb: GameKnowledgeBase,
                   step: int, last_action_result: str = "",
                   actions_remaining: int = 0,
                   engine_state: str = "",
-                  available_actions: list = None) -> str:
+                  available_actions: list = None,
+                  explore_summary: str = "",
+                  cursor_pos: tuple = None,
+                  banned_actions: dict = None) -> str:
     """
     Core thinking prompt — choose ONE deliberate action.
+    Combines v4's KB persistence with Sprout's situational framing.
     """
     if available_actions is None:
         available_actions = [6]
@@ -276,11 +415,19 @@ AVAILABLE ACTIONS:
 {action_guidance}
 
 GAME STATUS: Level {levels_completed}/{win_levels}.{budget_note}
+{f"""
+CURSOR: {cursor_pos[2]} at ({cursor_pos[0]},{cursor_pos[1]})
+Around cursor: {describe_surroundings(grid, cursor_pos[0], cursor_pos[1])}""" if cursor_pos else ""}
+{f"""
+EXPLORATION FINDINGS:
+{explore_summary}""" if explore_summary else ""}
+{f"""
+BANNED (tried too many times, try something else): {', '.join(banned_actions.keys())}""" if banned_actions else ""}
 
 VISIBLE OBJECTS (detected from the grid):
 {targets}
 {solution_block}
-{kb_text}
+{kb_text[:500] if len(kb_text) > 500 else kb_text}
 {last_result_block}
 Choose ONE action. Output JSON only:
 {json_format}"""
@@ -344,11 +491,45 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
     movement_actions = [a for a in [1, 2, 3, 4, 5] if a in available_actions]
     fallback_idx = 0
 
+    # Anti-loop: banned action keys and tracking (from Sprout)
+    banned_actions = {}  # action_key → steps_remaining
+    recent_action_keys = []  # last N action keys
+
+    # ── FAST EXPLORE PHASE (from Sprout) ──
+    # Systematic probing without LLM to build ground truth
+    explore_budget = min(15, args.budget // 4)  # Use up to 25% of budget
+    explore_summary = ""
+    cursor_pos = None
+    if explore_budget > 0:
+        print(f"  ── Fast Explore ({explore_budget} actions, no LLM) ──")
+        frame_data, grid, explore_summary, cursor_pos, explore_steps = fast_explore(
+            env, frame_data, grid, available_actions, budget=explore_budget
+        )
+        step += explore_steps
+        if explore_summary:
+            print(f"  {explore_summary}")
+        if cursor_pos:
+            print(f"  Cursor: {cursor_pos[2]} at ({cursor_pos[0]},{cursor_pos[1]})")
+        print(f"  ── Explore done ({explore_steps} steps used) ──\n")
+
     for action_num in range(1, args.budget + 1):
         levels_before = frame_data.levels_completed
 
         print(f"─ A{attempt_num} Action {action_num:3d} │ Level {frame_data.levels_completed}/{frame_data.win_levels} │ "
               f"Step {step} │ {time.time()-start_time:.0f}s ─")
+
+        # Decay banned actions each step
+        expired = [k for k, v in banned_actions.items() if v <= 0]
+        for k in expired:
+            del banned_actions[k]
+        for k in banned_actions:
+            banned_actions[k] -= 1
+
+        # Update cursor from last movement
+        if cursor_pos and has_movement and step > 0:
+            new_cursor = detect_cursor(prev_grid if 'prev_grid' in dir() else grid, grid)
+            if new_cursor:
+                cursor_pos = new_cursor
 
         # ── REASON ──
         t0 = time.time()
@@ -358,6 +539,9 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
             step, last_action_result,
             actions_remaining=args.budget - action_num,
             available_actions=available_actions,
+            explore_summary=explore_summary,
+            cursor_pos=cursor_pos,
+            banned_actions=banned_actions if banned_actions else None,
         )
         rresponse = ask_ollama(rprompt, max_tokens=200)
         think_s = time.time() - t0
@@ -520,6 +704,19 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
             print(f"  Result: {result_desc[:100]}")
 
         last_action_result = f"[{action_desc}] {result_desc}"
+
+        # Anti-loop: track action keys and ban repeated ones (from Sprout)
+        if chosen_action == 6:
+            action_key = f"click({c},{r})"
+        else:
+            action_key = ACTION_NAMES.get(chosen_action, f"a{chosen_action}")
+        recent_action_keys.append(action_key)
+        if len(recent_action_keys) > 10:
+            recent_action_keys.pop(0)
+        # If last 3 actions are identical, ban it for 10 steps
+        if len(recent_action_keys) >= 3 and len(set(recent_action_keys[-3:])) == 1:
+            banned_actions[action_key] = 10
+            print(f"  [BAN] '{action_key}' banned for 10 steps (3x repeat)")
 
         # Mark dead positions only for clicks
         if chosen_action == 6 and consecutive_no_effect.get(key, 0) >= 3:

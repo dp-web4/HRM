@@ -811,6 +811,15 @@ class SAGEConsciousness:
                 if self.cycle_count % 100 == 0 and self.cycle_count > 0:
                     self._update_policygate_trust_weights()
 
+                # C ≈ 0.5 Validation Logging (Thor Session #52)
+                if self.cycle_count % 100 == 0 and self.cycle_count > 0:
+                    # Experiments 1 and 6: Trust distribution and coherence
+                    try:
+                        self.log_trust_distribution(self.cycle_count)
+                        self.log_coherence(self.cycle_count)
+                    except Exception as e:
+                        print(f"[Validation] Logging error (non-fatal): {e}")
+
                 # Periodic status
                 if self.cycle_count % 10 == 0:
                     self._print_status()
@@ -981,6 +990,21 @@ class SAGEConsciousness:
             self.stats['average_salience'] = (
                 0.9 * self.stats['average_salience'] + 0.1 * avg_salience
             )
+
+        # 11. C ≈ 0.5 Validation Logging (Thor Session #52)
+        # Log metabolic state every cycle (Experiment 2)
+        try:
+            self.log_metabolic_state(self.cycle_count)
+        except Exception:
+            pass  # Non-fatal logging error
+
+        # Log salience scores every cycle (Experiment 3)
+        if salience_map:
+            try:
+                salience_list = list(salience_map.values())
+                self.log_salience_scores(self.cycle_count, salience_list)
+            except Exception:
+                pass  # Non-fatal logging error
 
     def _gather_observations(self) -> List[SensorObservation]:
         """
@@ -2407,6 +2431,159 @@ class SAGEConsciousness:
               f"Plugins: {self.stats['plugins_executed']}")
         print(f"         Plugin trust: {plugin_trust_str}")
         print(f"         Sensor trust: {sensor_trust_str}")
+
+    # =========================================================================
+    # C ≈ 0.5 Empirical Validation Logging (Thor Session #52)
+    # =========================================================================
+
+    def log_trust_distribution(self, cycle_num: int):
+        """
+        Log trust weight distribution for Experiment 1.
+
+        Hypothesis: Mean trust ~0.5-0.7, std ~0.15-0.25
+        Called every 100 cycles to track trust weight evolution.
+        """
+        weights = list(self.plugin_trust_weights.values())
+        if not weights:
+            return
+
+        stats = {
+            'cycle': cycle_num,
+            'mean': float(np.mean(weights)),
+            'std': float(np.std(weights)),
+            'min': float(np.min(weights)),
+            'max': float(np.max(weights)),
+            'weights': {k: float(v) for k, v in self.plugin_trust_weights.items()}
+        }
+
+        log_path = Path('validation_logs/trust_distribution_log.jsonl')
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(log_path, 'a') as f:
+            f.write(json.dumps(stats) + '\n')
+
+    def log_metabolic_state(self, cycle_num: int):
+        """
+        Log metabolic state for Experiment 2.
+
+        Hypothesis: WAKE ~60-70%, average C_system ≈ 0.5
+        Called every cycle.
+        """
+        state_log = {
+            'cycle': cycle_num,
+            'state': self.metabolic.current_state.value,
+            'atp': float(self.metabolic.atp_current),
+            'salience': float(self.stats.get('average_salience', 0.0))
+        }
+
+        log_path = Path('validation_logs/metabolic_state_log.jsonl')
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(log_path, 'a') as f:
+            f.write(json.dumps(state_log) + '\n')
+
+    def log_salience_scores(self, cycle_num: int, salience_scores: List[SalienceScore]):
+        """
+        Log SNARC salience distribution for Experiment 3.
+
+        Hypothesis: Mean ~0.4-0.6, unimodal distribution
+        Called every cycle when salience scores available.
+        """
+        if not salience_scores:
+            return
+
+        log_entry = {
+            'cycle': cycle_num,
+            'salience_total': [float(s.total) for s in salience_scores],
+            'salience_components': [
+                {
+                    'surprise': float(s.surprise),
+                    'novelty': float(s.novelty),
+                    'arousal': float(s.arousal),
+                    'reward': float(s.reward),
+                    'conflict': float(s.conflict)
+                } for s in salience_scores
+            ]
+        }
+
+        log_path = Path('validation_logs/salience_log.jsonl')
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(log_path, 'a') as f:
+            f.write(json.dumps(log_entry) + '\n')
+
+    def compute_system_coherence(self) -> Dict[str, float]:
+        """
+        Estimate overall system coherence from multiple subsystems.
+
+        Returns dict with c_system and component coherences.
+        For Experiment 6: Direct coherence measurement.
+        """
+        # C1: Trust weights (mean of weights)
+        weights = list(self.plugin_trust_weights.values())
+        c_trust = float(np.mean(weights)) if weights else 0.5
+
+        # C2: Metabolic state (mapped value)
+        state_to_c = {
+            MetabolicState.WAKE: 0.5,
+            MetabolicState.REST: 0.3,
+            MetabolicState.DREAM: 0.7,
+            MetabolicState.CRISIS: 0.9
+        }
+        c_metabolic = state_to_c.get(self.metabolic.current_state, 0.5)
+
+        # C3: Salience (1 - avg_salience, high salience = low coherence with expectations)
+        avg_sal = self.stats.get('average_salience', 0.5)
+        c_salience = 1.0 - avg_sal  # Invert: high salience = surprising = low coherence
+
+        # C4: ATP allocation diversity (std of allocations / mean)
+        # Higher diversity = more flexibility = closer to C=0.5
+        if hasattr(self, 'last_atp_allocations') and self.last_atp_allocations:
+            allocs = list(self.last_atp_allocations.values())
+            if len(allocs) > 1:
+                mean_alloc = np.mean(allocs)
+                if mean_alloc > 1e-6:
+                    cv = float(np.std(allocs)) / mean_alloc  # Coefficient of variation
+                    # Map CV to coherence: CV=0 → C=1 (rigid), CV=high → C=0.5 (diverse)
+                    c_atp = max(0.3, 1.0 - cv)
+                else:
+                    c_atp = 0.5
+            else:
+                c_atp = 0.5
+        else:
+            c_atp = 0.5
+
+        # Weighted average (trust and metabolic most reliable)
+        c_system = (
+            0.35 * c_trust +
+            0.35 * c_metabolic +
+            0.15 * c_salience +
+            0.15 * c_atp
+        )
+
+        return {
+            'c_system': float(c_system),
+            'c_trust': float(c_trust),
+            'c_metabolic': float(c_metabolic),
+            'c_salience': float(c_salience),
+            'c_atp': float(c_atp)
+        }
+
+    def log_coherence(self, cycle_num: int):
+        """
+        Log system coherence for Experiment 6.
+
+        Hypothesis: C_system ≈ 0.5 ± 0.1
+        Called every 100 cycles.
+        """
+        c_vals = self.compute_system_coherence()
+        c_vals['cycle'] = cycle_num
+
+        log_path = Path('validation_logs/coherence_log.jsonl')
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(log_path, 'a') as f:
+            f.write(json.dumps(c_vals) + '\n')
+
+    # =========================================================================
+    # End C ≈ 0.5 Validation Logging
+    # =========================================================================
 
     def _print_summary(self):
         """Print final summary statistics"""

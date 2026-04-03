@@ -216,73 +216,171 @@ Reply as JSON:
 
 
 def plan_solution(strategy_response, action_model, grid, available, levels, win_levels, tracker=None):
-    """LLM call #2: Plan the step-by-step solution."""
-    avail = [f"{a}={ACTION_NAMES.get(a, f'A{a}')}" for a in available]
-    grid_map = grid_snapshot(grid, downsample=8)
+    """LLM call #2: Plan using SEMANTIC actions, not raw coordinates.
 
-    # Add interactive object locations for click targeting
-    interactive_info = ""
+    The LLM says WHAT to do (click the cyan button, move left).
+    The code translates to HOW (coordinates, repetitions).
+    """
+    # Build object inventory for the LLM
+    object_list = []
     if tracker:
-        interactive = tracker.get_interactive_objects()
-        if interactive:
-            interactive_info = "\nINTERACTIVE OBJECTS (confirmed clickable, 64x64 coords):\n"
-            for o in interactive:
-                interactive_info += f"  {color_name(o.color)} at CLICK({o.cx}, {o.cy}) — {o.click_effectiveness:.0%} effective\n"
+        for obj in tracker.objects.values():
+            eff = ""
+            if obj.is_interactive is True:
+                eff = f" [INTERACTIVE, {obj.click_effectiveness:.0%} effective]"
+            elif obj.is_interactive is False:
+                eff = " [NO EFFECT]"
+            else:
+                eff = " [UNTESTED]"
+            object_list.append(
+                f"  {color_name(obj.color)}_{obj.id} ({obj.w}x{obj.h}) at ({obj.cx},{obj.cy}){eff}")
 
-    prompt = f"""You analyzed this puzzle and determined:
-{strategy_response}
+    objects_text = "\n".join(object_list[:20]) if object_list else "  No objects tracked."
 
-AVAILABLE ACTIONS: {', '.join(avail)}
-{interactive_info}
-CURRENT GRID (8x downsample):
-{grid_map}
+    moves = [f"{ACTION_NAMES[a]}" for a in available if a in [1, 2, 3, 4]]
+    other = [f"{ACTION_NAMES[a]}" for a in available if a in [5, 7]]
+    has_click = 6 in available
+
+    prompt = f"""You analyzed this puzzle:
+{strategy_response[:300]}
+
+OBJECTS ON GRID:
+{objects_text}
+
+AVAILABLE ACTIONS: {', '.join(moves + (['CLICK <object_name>'] if has_click else []) + other)}
+
 LEVEL: {levels}/{win_levels}
 
-Now plan the COMPLETE SOLUTION for this level. Write a numbered list of actions.
-For CLICK, specify coordinates in the FULL 64x64 grid: CLICK(x, y) where x=column(0-63), y=row(0-63)
-For movement: UP, DOWN, LEFT, RIGHT
-For confirmation: SELECT
+Plan the solution using OBJECT NAMES, not coordinates. The code will handle targeting.
 
-Be SPECIFIC. Plan enough actions to complete the level, not just one step.
-Use the interactive objects found during probing — click at THEIR coordinates.
-If this is a rotation puzzle, plan the full rotation sequence.
-If this is a maze, plan the full path.
-If this is pattern matching, plan which items to match and how.
+Use these commands:
+- "CLICK <color>_<id>" — click a specific object (e.g., "CLICK cyan_3")
+- "CLICK ALL <color>" — click every object of that color
+- "CLICK INTERACTIVE" — click all known interactive objects
+- "UP/DOWN/LEFT/RIGHT" — movement
+- "REPEAT <N> <action>" — repeat an action N times (e.g., "REPEAT 5 CLICK cyan_3")
+- "SELECT" — submit/confirm
 
-SOLUTION PLAN:"""
+Write one command per line. Plan the COMPLETE solution.
 
-    return ask_llm(prompt, max_tokens=500)
+PLAN:"""
+
+    return ask_llm(prompt, max_tokens=400)
 
 
-def reflect_and_replan(strategy, plan, what_happened, grid, available, levels, win_levels):
-    """LLM call #3: The plan failed. What went wrong? New plan."""
-    avail = [f"{a}={ACTION_NAMES.get(a, f'A{a}')}" for a in available]
-    grid_map = grid_snapshot(grid, downsample=8)
+def semantic_to_actions(plan_text, tracker, grid, available):
+    """Translate semantic plan into executable (action, data) pairs.
+
+    Handles:
+    - CLICK <color>_<id> → coordinates from tracker
+    - CLICK ALL <color> → all objects of that color
+    - CLICK INTERACTIVE → all interactive objects
+    - REPEAT N <cmd> → expand
+    - UP/DOWN/LEFT/RIGHT → directional
+    """
+    actions = []
+    lines = plan_text.strip().split("\n")
+
+    for line in lines:
+        line = line.strip().upper()
+        # Strip numbering
+        line = re.sub(r'^\d+[\.\)]\s*', '', line)
+
+        # REPEAT N <action>
+        repeat_m = re.match(r'REPEAT\s+(\d+)\s+(.+)', line)
+        if repeat_m:
+            n = int(repeat_m.group(1))
+            sub_actions = semantic_to_actions(repeat_m.group(2), tracker, grid, available)
+            actions.extend(sub_actions * n)
+            continue
+
+        # CLICK ALL <color>
+        m = re.match(r'CLICK\s+ALL\s+(\w+)', line)
+        if m and 6 in available:
+            target_color = m.group(1).lower()
+            for obj in tracker.objects.values():
+                if color_name(obj.color).upper() == target_color.upper():
+                    actions.append((6, {'x': obj.cx, 'y': obj.cy}))
+            continue
+
+        # CLICK INTERACTIVE
+        if 'CLICK INTERACTIVE' in line or 'CLICK ALL INTERACTIVE' in line:
+            if 6 in available:
+                for obj in tracker.get_interactive_objects():
+                    actions.append((6, {'x': obj.cx, 'y': obj.cy}))
+            continue
+
+        # CLICK <color>_<id> or CLICK <color>
+        m = re.match(r'CLICK\s+(\w+?)(?:_(\d+))?(?:\s|$)', line)
+        if m and 6 in available:
+            target_color = m.group(1).lower()
+            target_id = int(m.group(2)) if m.group(2) else None
+
+            if target_id is not None and target_id in tracker.objects:
+                obj = tracker.objects[target_id]
+                actions.append((6, {'x': obj.cx, 'y': obj.cy}))
+            else:
+                # Find first object matching color
+                for obj in tracker.objects.values():
+                    if color_name(obj.color).upper() == target_color.upper():
+                        actions.append((6, {'x': obj.cx, 'y': obj.cy}))
+                        break
+            continue
+
+        # Directional
+        for name, num in [("UP", 1), ("DOWN", 2), ("LEFT", 3), ("RIGHT", 4)]:
+            if name in line and num in available:
+                actions.append((num, None))
+                break
+        else:
+            if any(w in line for w in ["SELECT", "SUBMIT", "CONFIRM"]) and 5 in available:
+                actions.append((5, None))
+            elif "UNDO" in line and 7 in available:
+                actions.append((7, None))
+
+    return actions
+
+
+def reflect_and_replan(strategy, plan, what_happened, grid, available, levels, win_levels, tracker=None):
+    """LLM call #3: The plan failed. What went wrong? New plan using semantic actions."""
+    # Build updated object list
+    object_list = []
+    if tracker:
+        for obj in tracker.objects.values():
+            eff = ""
+            if obj.is_interactive is True:
+                eff = f" [INTERACTIVE]"
+            elif obj.is_interactive is False:
+                eff = " [NO EFFECT]"
+            object_list.append(f"  {color_name(obj.color)}_{obj.id}{eff}")
+    objects_text = "\n".join(object_list[:15]) if object_list else "  unknown"
 
     prompt = f"""Your puzzle strategy was:
 {strategy[:200]}
 
 Your plan was:
-{plan[:300]}
+{plan[:200]}
 
 WHAT HAPPENED:
 {what_happened}
 
-CURRENT GRID (8x downsample):
-{grid_map}
+OBJECTS:
+{objects_text}
+
 LEVEL: {levels}/{win_levels}
-AVAILABLE ACTIONS: {', '.join(avail)}
 
-The plan didn't complete the level. REFLECT:
-1. What went wrong?
-2. What did you learn from the result?
-3. What should the REVISED plan be?
+The plan didn't work. REFLECT and write a NEW plan.
+Use these commands (object names, NOT coordinates):
+- "CLICK <color>_<id>" or "CLICK ALL <color>"
+- "CLICK INTERACTIVE" — all known working objects
+- "REPEAT <N> <action>"
+- "UP/DOWN/LEFT/RIGHT", "SELECT", "UNDO"
 
-Reply with a new numbered action list. Be more specific this time.
+What should you try differently?
 
 REVISED PLAN:"""
 
-    return ask_llm(prompt, max_tokens=500)
+    return ask_llm(prompt, max_tokens=400)
 
 
 def parse_plan_to_actions(plan_text, available, grid):
@@ -413,8 +511,9 @@ def solve_game(arcade, game_id, max_attempts=5, budget=500, verbose=False):
                 plan_text = reflect_and_replan(strategy_text, plan_text,
                                                "\n".join(outcomes[-10:]),
                                                grid, available,
-                                               fd.levels_completed, fd.win_levels)
-            plan_actions = parse_plan_to_actions(plan_text, available, grid)
+                                               fd.levels_completed, fd.win_levels,
+                                               tracker=tracker)
+            plan_actions = semantic_to_actions(plan_text, tracker, grid, available)
             if verbose:
                 print(f"  Plan ({time.time()-t0:.0f}s, {len(plan_actions)} actions): {plan_text[:100]}...")
 

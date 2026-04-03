@@ -277,6 +277,12 @@ You ARE:
 
 ---
 
+## Raising + ARC-AGI-3 Convergence (April 2026)
+
+Raising (being) and game-playing (doing) are converging at the curriculum level. Game experiences should flow into the experience buffer. Raising prompts should acknowledge game achievements. Each machine decides timing based on instance phase. See `shared-context/plans/raising-agi3-convergence.md` for full plan and concrete steps.
+
+---
+
 ## Session Protocol
 
 ### Before Each Session
@@ -284,7 +290,8 @@ You ARE:
 1. Load persistent state: `state/identity.json`, recent memories
 2. Check curriculum phase and session goals
 3. Prepare continuity context (what happened last time)
-4. Set up experience logging
+4. If instance has game experience, include brief game context
+5. Set up experience logging
 
 ### During Session
 

@@ -667,11 +667,20 @@ def build_strategy_prompt(grid, available_actions, memories, level_info,
 # ─── Fallback heuristic (no LLM needed) ───
 
 def heuristic_action(grid, available_actions, category, step_count,
-                     effective_actions=None, color_effectiveness=None):
+                     effective_actions=None, color_effectiveness=None,
+                     banned_actions=None):
     """Fallback action when LLM is unavailable or response unparseable.
 
     Uses perception-based heuristics informed by exploration results.
     """
+    # Filter out banned actions from available set
+    orig_actions = list(available_actions)
+    if banned_actions:
+        available_actions = [a for a in available_actions
+                             if str(a) not in banned_actions]
+        if not available_actions:
+            # All actions banned — use originals minus submit as last resort
+            available_actions = [a for a in orig_actions if a != 5] or orig_actions
     bg = background_color(grid)
 
     if category.get("category") == "placement_puzzle" and 6 in available_actions:
@@ -1210,6 +1219,12 @@ class SageAgent:
                             r=py, c=px, color=cname,
                             cells_changed=stats["changes"],
                             level_up=False, level=0)
+            # Record direction outcomes as mechanics
+            for key, outcome in self.outcome_map.items():
+                if key.startswith("action_") and outcome.get("changed"):
+                    name = key.replace("action_", "")
+                    n_px = outcome.get("n_pixels", 0)
+                    kb.add_mechanic(f"{name}: {n_px}px change")
 
         # Check if exploration already solved levels
         best_levels = fd.levels_completed
@@ -1513,23 +1528,46 @@ class SageAgent:
                 if self.banned_actions:
                     ban_str = ", ".join(list(self.banned_actions.keys())[:3])
                     action_desc = (action_desc or "") + f" DO NOT repeat: {ban_str}"
+                    # If submit is banned, remove it from available actions in prompt
+                    if "5" in self.banned_actions:
+                        available_for_prompt = [a for a in available if a != 5]
+                    else:
+                        available_for_prompt = available
+                else:
+                    available_for_prompt = available
 
                 # Build curated KB context for prompt (not full dump)
                 kb_ctx = None
                 if kb:
-                    # Extract just the most actionable KB info
+                    kb_parts = []
                     cur_lvl = fd.levels_completed
                     sol = kb.get_level_solution(cur_lvl + 1)
                     if sol and sol.confidence >= 0.5:
-                        kb_ctx = f"Prior sessions: L{cur_lvl+1} solution known ({sol.confidence:.0%} confidence)"
-                    elif kb.failed_approaches:
+                        kb_parts.append(f"L{cur_lvl+1} solution known ({sol.confidence:.0%})")
+                    if kb.failed_approaches:
                         fails = [fa.approach for fa in kb.failed_approaches[:2]]
-                        kb_ctx = f"Prior sessions: tried and failed: {'; '.join(fails)}"
-                    elif kb.mechanics:
-                        kb_ctx = f"Known: {'; '.join(kb.mechanics[:2])}"
+                        kb_parts.append(f"Failed: {'; '.join(fails)}")
+                    if kb.mechanics:
+                        kb_parts.append(f"Rules: {'; '.join(kb.mechanics[:2])}")
+                    # High-impact objects the model should focus on
+                    high_impact = sorted(
+                        [o for o in kb.objects.values()
+                         if o.avg_cells_changed >= 20 and o.effect_count > 0],
+                        key=lambda o: -o.avg_cells_changed)[:3]
+                    if high_impact:
+                        obj_strs = [f"{o.color}({o.position['c']},{o.position['r']}) {o.avg_cells_changed:.0f}px"
+                                    for o in high_impact]
+                        kb_parts.append(f"High-impact: {', '.join(obj_strs)}")
+                    # Dead objects to avoid
+                    dead = [o for o in kb.objects.values()
+                            if o.click_count >= 3 and o.effect_count == 0]
+                    if dead:
+                        kb_parts.append(f"Inert ({len(dead)} objects): don't click")
+                    if kb_parts:
+                        kb_ctx = "Prior: " + " | ".join(kb_parts)
 
                 prompt, category = build_strategy_prompt(
-                    grid, available, all_memories,
+                    grid, available_for_prompt, all_memories,
                     {"current": fd.levels_completed, "total": fd.win_levels},
                     cartridge=cartridge,
                     initial_grid=initial_grid,
@@ -1583,7 +1621,8 @@ class SageAgent:
                     actions_to_take = heuristic_action(
                         grid, available, category, step,
                         effective_actions=self.effective_actions,
-                        color_effectiveness=self.color_effectiveness)
+                        color_effectiveness=self.color_effectiveness,
+                        banned_actions=self.banned_actions)
                 llm_cooldown = max(0, llm_cooldown - 1)
 
             if not actions_to_take:

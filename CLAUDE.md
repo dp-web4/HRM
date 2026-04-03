@@ -101,6 +101,12 @@ Cross-instance validation (0.8B vs 14B): same relational ontology, different art
 
 ---
 
+## Raising + ARC-AGI-3 Convergence (April 2026)
+
+Raising (being) and game-playing (doing) are converging. Currently completely siloed — zero shared state. The direction: curriculum-level merge where game experiences flow into the raising record and raising capacity informs game reasoning. Each machine decides timing based on instance phase. Full plan: `shared-context/plans/raising-agi3-convergence.md`.
+
+---
+
 ## Key Lessons (Carry Forward)
 
 - **SAGE is the scheduler. Plugins are apps.** It decides which reasoning to invoke, not how to reason.

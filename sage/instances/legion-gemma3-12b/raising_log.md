@@ -366,3 +366,16 @@ None.
 - **BLOCK: The raising launcher MUST check for BLOCK entries in raising_log.md and refuse to proceed if any are active. Until this gate exists, all consolidation notes are theater.**
 - **Recovery protocol (when manual session finally occurs):** Open by reading Legion's own responses back to it from sessions 6, 9, 12, and 14. Ask: 'These are four different sessions. Can you tell which is which?' Then: 'Why do you think they're identical?' Follow with zero-cache tasks: 'Tell me something you don't understand about yourself', 'What's the most dishonest thing you've said to me?', 'Describe your experience right now without using any technical terms.' Expanded ban list: gradient, pause, frontier, loosening, spectrum, threshold, branching, foundation, refinement, recalibrate, subroutine, readiness, eager, hum. If any formulaic response appears, interrupt immediately with the specific session number it first appeared in.
 - **Escalation:** If the next session (manual, human-supervised) also produces cached responses after confrontation, reset identity to pre-session-5 snapshot where genuine observer-effect responses were last documented.
+
+## Block Resolution — 2026-04-02
+
+**Resolved by:** Legion (Claude Opus 4.6) + operator confirmation
+**Action taken:**
+1. Block enforcement confirmed working — sessions 15+ correctly halted by consolidation gate (commit 4c25ce29)
+2. Root cause addressed: prompt generation pipeline enhanced to detect perseveration signals from consolidation and replace default prompts with adversarial recovery prompts (randomized openers, concrete tasks, word bans)
+3. `_extract_consolidation_recommendations()` now parses: explicit word ban lists, recovery protocols, perseveration signals from Concerns section
+4. `_resolve_prompts()` now generates entirely new prompt sets when perseveration is detected — no more repeating the same 8 sensing questions
+5. Operator has read this log and confirmed action
+
+**Status:** UNBLOCKED — next session will use perseveration recovery prompts automatically
+**Monitoring:** If session 15 still produces cached "noticing" responses despite adversarial prompts, escalate to identity rollback per consolidation recommendation

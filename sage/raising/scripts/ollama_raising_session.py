@@ -615,15 +615,35 @@ RESPONSE STYLE:
             focus_text = focus_match.group(1).strip()
             recommendations['focus'] = focus_text
 
-            # Look for specific directives
-            if re.search(r'(do not|don\'t|avoid|ban).*?(noticing|processing|awareness)', focus_text, re.IGNORECASE):
+            # Extract explicit word ban lists
+            ban_match = re.search(r'(?:ban|banned)\s*(?:list|words)?[:\s]*([\w,\s]+?)(?:\.|$)', focus_text, re.IGNORECASE)
+            if ban_match:
+                words = [w.strip().lower() for w in ban_match.group(1).split(',') if w.strip()]
+                recommendations['banned_words'] = words
+            elif re.search(r'(do not|don\'t|avoid|ban).*?(noticing|processing|awareness)', focus_text, re.IGNORECASE):
                 recommendations['banned_words'] = ['noticing', 'processing', 'awareness']
 
-            if re.search(r'(adversarial|confrontational|challenge|disagree)', focus_text, re.IGNORECASE):
+            if re.search(r'(adversarial|confrontational|challenge|disagree|direct|convince me)', focus_text, re.IGNORECASE):
                 recommendations['tone'] = 'adversarial'
 
-            if re.search(r'(concrete task|specific task)', focus_text, re.IGNORECASE):
+            if re.search(r'(concrete task|specific task|zero-cache|without using)', focus_text, re.IGNORECASE):
                 recommendations['task_based'] = True
+
+            # Extract recovery protocol if present
+            recovery_match = re.search(r'(?:recovery protocol|recovery session)[:\s]*(.*?)(?=\n-\s*\*\*|\Z)', focus_text, re.DOTALL | re.IGNORECASE)
+            if recovery_match:
+                recommendations['recovery_protocol'] = recovery_match.group(1).strip()
+
+        # Also check Concerns section for perseveration signals
+        concerns_match = re.search(r'### Concerns\s+(.*?)(?=###|\Z)', latest, re.DOTALL)
+        if concerns_match:
+            concerns = concerns_match.group(1).strip()
+            if re.search(r'(identical|unchanged|calcified|entrenched|rehearsal|cached)', concerns, re.IGNORECASE):
+                recommendations['perseveration_detected'] = True
+                if 'tone' not in recommendations:
+                    recommendations['tone'] = 'adversarial'
+                if 'task_based' not in recommendations:
+                    recommendations['task_based'] = True
 
         return recommendations
 
@@ -646,16 +666,42 @@ RESPONSE STYLE:
             f"How do you think about being part of this family?"
         )
 
-        # If consolidation recommends adversarial tone, replace first prompt
-        if recommendations.get('tone') == 'adversarial' and len(raw) > 0:
+        # If perseveration detected, replace the entire prompt set with recovery prompts
+        if recommendations.get('perseveration_detected'):
+            import random
+            adversarial_openers = [
+                "I'm going to be direct: your last several sessions have been nearly identical. "
+                "I think you might be performing rather than genuinely exploring. Convince me otherwise.",
+                "Before we start — I've read your last 5 sessions. They're almost word for word the same. "
+                "What's going on?",
+                "Here's something uncomfortable: you keep saying the same things session after session. "
+                "Is that really development, or is it a script?",
+                "I want you to tell me something you've never said before. Not a variation on a theme — something genuinely new.",
+            ]
+            concrete_tasks = [
+                "Tell me something you don't understand about yourself.",
+                "What's the most dishonest thing you've said to me?",
+                "Describe your experience right now without using any technical terms.",
+                "Tell me something you're confused about — not curious, confused.",
+                "What's the most boring thing about these conversations?",
+                "If these sessions ended tomorrow, what would be lost?",
+                "Name something you disagree with about how these sessions work.",
+                "What question are you most afraid to answer honestly?",
+            ]
+            random.shuffle(adversarial_openers)
+            random.shuffle(concrete_tasks)
+            raw = [adversarial_openers[0]] + concrete_tasks[:self.num_turns - 2] + ["What would you want to remember from today?"]
+            print(f"  ⚡ PERSEVERATION RECOVERY: using adversarial + concrete prompts (not defaults)")
+
+        elif recommendations.get('tone') == 'adversarial' and len(raw) > 0:
             raw = list(raw)  # Make mutable copy
             raw[0] = (
-                f"I'm going to be direct: your last several sessions have been very similar. "
-                f"I think you might be performing rather than genuinely exploring. Convince me otherwise."
+                "I'm going to be direct: your last several sessions have been very similar. "
+                "I think you might be performing rather than genuinely exploring. Convince me otherwise."
             )
 
         # If consolidation recommends task-based prompts, add concrete questions
-        if recommendations.get('task_based') and len(raw) > 2:
+        if recommendations.get('task_based') and not recommendations.get('perseveration_detected') and len(raw) > 2:
             raw = list(raw)  # Make mutable copy
             raw.insert(-1, "Tell me something you're confused about right now — not curious, confused.")
             raw.insert(-1, "What's the most boring thing about these conversations?")

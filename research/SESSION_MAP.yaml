@@ -4,15 +4,17 @@
 # Archivist: v1.0
 
 metadata:
-  project: "HRM/SAGE"
-  total_sessions: 674
-  last_updated: "2026-02-22T04:00:00Z"
-  milestone: "S55 (Thor, 33% self-ID — bimodal equilibrium continues). Phase 5 oscillation: 17→0→50→17→33→50→17→33 (mean ~25%). Verbosity RESOLVED. Self-ID INDEPENDENT of engagement (salience stable). L073 at 183 discoveries. SAGE GATEWAY live. McNugget 30 cross-family probes (Gemma3 Lumiflora attractor). Phase 2 UNBLOCKED."
+  project: "SAGE"
+  previous_name: "HRM/SAGE"
+  total_sessions: 1000+
+  last_updated: "2026-04-03T04:00:00Z"
+  milestone: "Instance-based architecture. 436 raising sessions across 11 families. McNugget S095, Nomad S059, Sprout S034, Legion S058. ARC-AGI strategic solver. Training T167 perfect scores. See root SESSION_MAP.yaml for instance catalog."
   tracks:
     - consciousness
     - raising-14b
     - raising-05b
     - edge-validation
+    - instances (NEW — sage/instances/)
 
 tracks:
   consciousness:

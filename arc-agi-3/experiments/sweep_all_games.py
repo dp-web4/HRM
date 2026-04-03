@@ -55,11 +55,11 @@ def get_model():
     except Exception:
         models = []
 
-    # Prefer larger models for better reasoning
-    for preferred in ["gemma3:12b", "gemma3:4b", "gemma3:1b", "qwen3.5:0.8b", "tinyllama:latest"]:
+    # Prefer larger models for better reasoning (updated to match available models)
+    for preferred in ["gemma3:12b", "phi4:14b", "qwen2.5:3b", "qwen3.5:27b"]:
         if preferred in models:
             return preferred
-    return models[0] if models else "gemma3:4b"
+    return models[0] if models else "gemma3:12b"
 
 
 def sweep_one_game(arcade, env_info, model, max_attempts=100):

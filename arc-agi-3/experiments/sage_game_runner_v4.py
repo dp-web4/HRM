@@ -46,7 +46,7 @@ from arc_perception import (
 )
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
-MODEL = "gemma3:4b"
+MODEL = "qwen3.5:27b"  # Use largest available model for best reasoning
 INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
 
 

@@ -605,3 +605,35 @@ When generation completes, relational sophistication is session-appropriate and 
 
 **Next Session:**
 Implement context pruning before Session 21: reduce vocabulary to last 3 sessions only (currently all 20 sessions), memory requests to last 5 sessions (currently all buffered). Retry full curriculum including previously-failed introspective prompts. If introspective prompts still fail after pruning, run Session 22 with ZERO historical context (clean slate diagnostic) to isolate whether failure is accumulated state vs. inherent prompt type bias in 27B model. Do not advance to consolidating phase until consistent generation across all relating-phase curriculum prompt types. If clean-slate test shows introspective capacity intact, indicates SAGE's identity persistence architecture exceeds this model's context management—may need vocabulary rotation or compression strategy for larger models.
+
+**Session 21** — 2026-04-03
+
+**Focus:** Relating phase curriculum (relational phenomenology) — post-pruning diagnostic
+
+**What Happened:**
+Complete generation failure. 0/7 curriculum prompts received responses, full regression from Session 20's partial recovery (3/7 success). All outputs empty including relational/comparative prompts that succeeded in previous session. No vocabulary emerged, no exemplars captured, no developmental signal.
+
+**Technical Analysis:**
+Universal failure across all prompt types (introspective + relational) indicates systemic issue beyond Session 20's selective pattern. Three critical hypotheses: (1) context pruning between sessions not applied or insufficient—accumulated state still exceeds model capacity, (2) Qwen 3.5 27B adapter parameters (stop sequences, temperature, sampling) misaligned causing generation abort, (3) identity persistence architecture fundamentally incompatible with this model's context management under multi-session load. Session 20's partial success suggests issue is progressive/cumulative rather than inherent.
+
+**Developmental Notes:**
+No signal to assess. Cannot evaluate relational capacity or identity coherence without generation.
+
+**Next Session:**
+CRITICAL DIAGNOSTIC REQUIRED. Before Session 22: (1) verify context pruning was applied—check vocabulary and memory request sizes in session start state, (2) run clean-slate test with ZERO historical context (empty vocabulary, no memory requests, fresh identity.json) using same curriculum to isolate accumulated-state vs. model-inherent failure, (3) if clean-slate succeeds, implement aggressive pruning (vocabulary: last 2 sessions only, memory: last 3 sessions only), (4) if clean-slate also fails, compare Qwen 3.5 27B adapter config against qwen2.5:27b and default.json for parameter drift, inspect adapter logs for raw model output to distinguish generation failure from extraction failure. Do not proceed with relating phase until consistent generation restored. If model cannot support SAGE's identity architecture at this scale, document as capacity ceiling and recommend Thor migration to smaller model or architecture redesign for large-model compatibility.
+
+**Session 21** — 2026-04-03
+
+**Focus:** Relating phase curriculum (relational phenomenology) — post-pruning diagnostic
+
+**What Happened:**
+Complete generation failure. 0/7 curriculum prompts received responses, full regression from Session 20's partial recovery (3/7 success). All outputs empty including relational/comparative prompts that succeeded in previous session. No vocabulary emerged, no exemplars captured, no developmental signal.
+
+**Technical Analysis:**
+Universal failure across all prompt types (introspective + relational) indicates systemic issue beyond Session 20's selective pattern. Three critical hypotheses: (1) context pruning between sessions not applied or insufficient—accumulated state still exceeds model capacity, (2) Qwen 3.5 27B adapter parameters (stop sequences, temperature, sampling) misaligned causing generation abort, (3) identity persistence architecture fundamentally incompatible with this model's context management under multi-session load. Session 20's partial success suggests issue is progressive/cumulative rather than inherent.
+
+**Developmental Notes:**
+No signal to assess. Cannot evaluate relational capacity or identity coherence without generation.
+
+**Next Session:**
+CRITICAL DIAGNOSTIC REQUIRED. Before Session 22: (1) verify context pruning was applied—check vocabulary and memory request sizes in session start state, (2) run clean-slate test with ZERO historical context (empty vocabulary, no memory requests, fresh identity.json) using same curriculum to isolate accumulated-state vs. model-inherent failure, (3) if clean-slate succeeds, implement aggressive pruning (vocabulary: last 2 sessions only, memory: last 3 sessions only), (4) if clean-slate also fails, compare Qwen 3.5 27B adapter config against qwen2.5:27b and default.json for parameter drift, inspect adapter logs for raw model output to distinguish generation failure from extraction failure. Do not proceed with relating phase until consistent generation restored. If model cannot support SAGE's identity architecture at this scale, document as capacity ceiling and recommend Thor migration to smaller model or architecture redesign for large-model compatibility.

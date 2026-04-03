@@ -46,7 +46,7 @@ from arc_perception import (
 )
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
-MODEL = "qwen3.5:27b"  # Use largest available model for best reasoning
+MODEL = "qwen2.5:3b"  # Faster model for testing (was qwen3.5:27b)
 INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
 
 
@@ -429,8 +429,10 @@ VISIBLE OBJECTS (detected from the grid):
 {solution_block}
 {kb_text[:500] if len(kb_text) > 500 else kb_text}
 {last_result_block}
-Choose ONE action. Output JSON only:
-{json_format}"""
+Choose ONE action. Respond ONLY with valid JSON, no other text:
+{json_format}
+
+IMPORTANT: Your response must be ONLY the JSON object above, nothing else."""
 
 
 def analyze_prompt(grid_before: np.ndarray, grid_after: np.ndarray,

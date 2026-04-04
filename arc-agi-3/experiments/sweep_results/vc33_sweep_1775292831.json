@@ -1,0 +1,42 @@
+{
+  "game_id": "vc33-9851e02b",
+  "game_family": "vc33",
+  "win_levels": 7,
+  "baseline_budget": 307,
+  "baseline_per_level": [
+    6,
+    13,
+    31,
+    59,
+    92,
+    24,
+    82
+  ],
+  "model": "qwen3.5:0.8b",
+  "attempts_run": 1,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 4487.7,
+  "kb_final": {
+    "objects": 36,
+    "active": 27,
+    "solutions": 0,
+    "mechanics": 15,
+    "failures": 4
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 7,
+      "steps": 313,
+      "state": "GAME_OVER",
+      "elapsed": 4487.6,
+      "kb_objects": 36,
+      "kb_solutions": 0
+    }
+  ]
+}

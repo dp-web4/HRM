@@ -988,8 +988,14 @@ def main():
     parser.add_argument("--attempts", type=int, default=300, help="Max game attempts (0=unlimited)")
     parser.add_argument("--think-time", type=float, default=0, help="Min seconds between actions (0=unlimited)")
     parser.add_argument("--all", action="store_true", help="Play ALL available games (not just one)")
+    parser.add_argument("--model", default=None, help="Ollama model override (default: MODULE-level MODEL)")
     parser.add_argument("--identity", default=None, help="Path to SAGE instance dir (e.g. sage/instances/nomad-gemma3-4b)")
     args = parser.parse_args()
+
+    # Override model if specified
+    global MODEL
+    if args.model:
+        MODEL = args.model
 
     # Load raising identity if provided
     args.identity_context = ""

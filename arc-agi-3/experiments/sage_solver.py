@@ -41,24 +41,42 @@ from arc_action_model import ActionEffectModel
 
 INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
-MODEL = os.environ.get("OLLAMA_MODEL", "gemma3:12b")
+MODEL = os.environ.get("OLLAMA_MODEL", "gemma4:e4b")
 
 ACTION_NAMES = {1: "UP", 2: "DOWN", 3: "LEFT", 4: "RIGHT",
                 5: "SELECT", 6: "CLICK(x,y)", 7: "UNDO"}
 
 
 def ask_llm(prompt: str, max_tokens: int = -1) -> str:
-    """Single LLM call — used sparingly for strategic reasoning."""
+    """Single LLM call. Auto-detects chat vs generate API based on model.
+
+    Gemma 4 (thinking model) needs chat API — generate returns empty content.
+    Other models work with either but chat is more consistent.
+    """
+    opts = {"temperature": 0.3}
+    if max_tokens != -1:
+        opts["num_predict"] = max_tokens
+
     try:
-        resp = requests.post(f"{OLLAMA_URL}/api/generate", json={
-            "model": MODEL, "prompt": prompt, "stream": False,
-            "options": {"temperature": 0.3, "num_predict": max_tokens},
-        }, timeout=120)
+        # Use chat API universally — works for all models
+        resp = requests.post(f"{OLLAMA_URL}/api/chat", json={
+            "model": MODEL, "stream": False,
+            "messages": [{"role": "user", "content": prompt}],
+            "options": opts,
+        }, timeout=300)
         if resp.status_code == 200:
-            return resp.json().get("response", "").strip()
+            data = resp.json()
+            # Chat API returns message.content (+ optional message.thinking)
+            content = data.get("message", {}).get("content", "").strip()
+            if content:
+                return content
+            # Fallback: some models put everything in thinking
+            thinking = data.get("message", {}).get("thinking", "")
+            if thinking:
+                return thinking.strip()
+        return f"[error: {resp.status_code}]"
     except Exception as e:
         return f"[error: {e}]"
-    return ""
 
 
 def probe_actions(env, fd, grid, available, budget=15):

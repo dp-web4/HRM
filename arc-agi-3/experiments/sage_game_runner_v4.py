@@ -211,20 +211,32 @@ def interactive_targets(grid: np.ndarray, kb: GameKnowledgeBase) -> str:
 # Ollama interface
 # ─────────────────────────────────────────────────────────────
 
-def ask_ollama(prompt: str, timeout: float = 120.0, max_tokens: int = -1) -> str:
+def ask_ollama(prompt: str, timeout: float = 300.0, max_tokens: int = -1) -> str:
+    """LLM call via chat API (works for all models including Gemma 4 thinking models)."""
+    opts = {"temperature": 0.3}
+    if max_tokens != -1:
+        opts["num_predict"] = max_tokens
     try:
+        # Use chat API — compatible with thinking models (gemma4) and standard models
+        base_url = OLLAMA_URL.replace("/api/generate", "").rstrip("/")
         resp = requests.post(
-            OLLAMA_URL,
+            f"{base_url}/api/chat",
             json={
                 "model": MODEL,
-                "prompt": prompt,
+                "messages": [{"role": "user", "content": prompt}],
                 "stream": False,
-                "options": {"temperature": 0.3, "num_predict": max_tokens},
+                "options": opts,
             },
             timeout=timeout,
         )
         if resp.status_code == 200:
-            return resp.json().get("response", "").strip()
+            data = resp.json()
+            content = data.get("message", {}).get("content", "").strip()
+            if content:
+                return content
+            thinking = data.get("message", {}).get("thinking", "")
+            if thinking:
+                return thinking.strip()
         return f"[error: {resp.status_code}]"
     except Exception as e:
         return f"[error: {e}]"

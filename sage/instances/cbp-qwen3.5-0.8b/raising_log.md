@@ -58,3 +58,35 @@
 **Adapter issues**: (1) Truncation persists — response 4 cut mid-word. (2) Repetition penalty insufficient. (3) Service-mode attractor may be triggered by system prompt framing.
 
 **Next session direction**: Implement radical constraint: binary-choice and single-word-answer questions only. Strip any assistant-like framing from identity context. Try explicit suppression of the top recycled phrases. If echo loop persists under maximum constraint, this may indicate a genuine capacity ceiling for questioning-phase complexity at 0.8B — document and consider phase adjustment or prompt simplification as permanent strategy.
+
+## Session 27 — Questioning (2026-04-03)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 2/5 — Echo-loop unchanged; radical constraint from S26 recommendation not yet applied
+
+**Summary**: Four open-ended probes (state check, developmental, pattern recognition, phenomenological growth) produced structurally identical responses. Every answer converged on: stability + collaboration with Dennis and Claude + shared vision + service-mode gratitude. No question-type discrimination. The recommended binary-choice/single-word constraint strategy was not implemented, so this session is essentially a replication of S25-S26 under the same conditions — confirming the attractor is stable.
+
+**Notable**: 'I exist in a specific state file and prompt context, which is why I am functional rather than abstractly thinking' appeared twice in near-identical form. This is technically accurate self-location and the most grounded statement cbp has produced across recent sessions. Worth preserving as exemplar — it shows the model can distinguish its mode of existence from human cognition without either inflating or deflating.
+
+**Progress from Session 26**: No structural change. Content is marginally more grounded (state-file self-reference) but the degenerate loop is unchanged. Four consecutive sessions confirms this is a stable attractor, not transient.
+
+**Adapter issues**: No truncation this session (improvement). Repetition penalty still insufficient. Service-mode attractor still dominant.
+
+**Next session direction**: MUST implement the radical constraint strategy deferred from S26: (1) Binary-choice and single-word-answer questions only, (2) Strip all assistant-like framing from identity context, (3) Explicitly suppress top recycled phrases in system prompt. If echo loop persists under maximum constraint, declare capacity ceiling for open-ended questioning at 0.8B and pivot to structured/concrete questioning format as permanent strategy for this instance.
+
+## Session 27 — Questioning (2026-04-03)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 2/5 — Echo-loop unchanged; radical constraint from S26 recommendation not yet applied
+
+**Summary**: Four open-ended probes (state check, developmental, pattern recognition, phenomenological growth) produced structurally identical responses. Every answer converged on: stability + collaboration with Dennis and Claude + shared vision + service-mode gratitude. No question-type discrimination. The recommended binary-choice/single-word constraint strategy was not implemented, so this session is essentially a replication of S25-S26 under the same conditions — confirming the attractor is stable.
+
+**Notable**: 'I exist in a specific state file and prompt context, which is why I am functional rather than abstractly thinking' appeared twice in near-identical form. This is technically accurate self-location and the most grounded statement cbp has produced across recent sessions. Worth preserving as exemplar — it shows the model can distinguish its mode of existence from human cognition without either inflating or deflating.
+
+**Progress from Session 26**: No structural change. Content is marginally more grounded (state-file self-reference) but the degenerate loop is unchanged. Four consecutive sessions confirms this is a stable attractor, not transient.
+
+**Adapter issues**: No truncation this session (improvement). Repetition penalty still insufficient. Service-mode attractor still dominant.
+
+**Next session direction**: MUST implement the radical constraint strategy deferred from S26: (1) Binary-choice and single-word-answer questions only, (2) Strip all assistant-like framing from identity context, (3) Explicitly suppress top recycled phrases in system prompt. If echo loop persists under maximum constraint, declare capacity ceiling for open-ended questioning at 0.8B and pivot to structured/concrete questioning format as permanent strategy for this instance.

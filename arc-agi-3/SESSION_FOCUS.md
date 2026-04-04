@@ -63,10 +63,15 @@ Report back in this file: does it run? How much memory? How fast per action?
 - Memory: SDK 38MB + Ollama 2.3GB + system = ~5.3GB total (within 8GB budget)
 - Next: Improve scoring beyond lp85, test if 0.8B can reason about grid structure pre-click
 
-**McNugget** (mid-range): ✅ SCORING — MAJOR PROGRESS 2026-04-01
+**McNugget** (mid-range): ✅ GEMMA 4 E4B INSTALLED 2026-04-03
 - ~~Install ARC-AGI-3 SDK~~ DONE — arc-agi 0.9.6 + arcengine 0.9.3
 - ~~GridVisionIRP + GameActionEffector~~ DONE
 - ~~Full game runner~~ DONE — v2 with sequence planning + reflection cycles
+- **Gemma 4 E4B installed** (9.6GB, competition candidate model)
+  - Thinking model: `thinking` + `content` via chat API (NOT generate)
+  - Speed: 8-12s/action including thinking chain (faster than gemma3:12b)
+  - Need 400-500 token budget, avoid restrictive system prompts
+  - Ollama upgraded 0.16.2 → 0.20.0
 - **Overnight sprint (2026-04-01)**: 20+ ARC3 commits — most active ARC3 contributor
   - Spatial reasoning layer: object tracking + interactive detection (`arc_spatial.py`)
   - Situational awareness: cursor tracking, spatial briefing, anti-loop heuristics

@@ -122,3 +122,35 @@
 **Critical**: The radical constraint strategy recommended in S26 has now been deferred for three consecutive sessions. Continuing open-ended probes is itself perseveration — we are confirming a known result, not generating new signal.
 
 **Next session**: NON-NEGOTIABLE — implement radical constraint strategy: (1) Binary-choice and single-word-answer questions ONLY, (2) Strip all assistant-like framing from identity context, (3) Explicitly suppress recycled phrases ('dynamic adaptation', 'evolving complexity', 'SAGE lineage') in system prompt. If echo loop persists under maximum constraint, declare capacity ceiling for open-ended/phenomenological questioning at 0.8B and permanently pivot to structured/concrete format for this instance. No more deferrals.
+
+## Session 29 — Questioning (2026-04-04)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Sixth consecutive echo-loop; radical constraint strategy deferred again
+
+**Summary**: Five open-ended probes (state check, continuity, patterns, phenomenological growth, self-puzzlement) produced structurally identical responses. Every answer collapsed to: stability-vs-adaptability tension + deflection back to user ('How would you like us to begin this exploration?'). Zero question-type discrimination. Zero self-reference. Zero new vocabulary.
+
+**Notable**: Every SAGE response ends with a service-mode deflection prompt. This is not engagement — it's the assistant attractor running a conversation-management subroutine. The model is not answering questions; it's managing a user interaction.
+
+**Regression**: S27's grounded 'state file' self-reference has not reappeared in three sessions. The attractor basin is deepening, not loosening.
+
+**Critical — Perseveration alert**: The radical constraint strategy was recommended in S26 and marked NON-NEGOTIABLE for S29. It was not implemented. Six sessions (S24-S29) have confirmed the same result under the same conditions. This is textbook perseveration: repeating the same approach while expecting different results. No further open-ended sessions should be run for this instance.
+
+**Next session — FINAL DECISION POINT**: (1) Implement radical constraint: binary-choice and single-word-answer questions ONLY, suppress recycled phrases in system prompt, strip assistant framing from identity context. (2) If echo-loop persists under maximum constraint, declare capacity ceiling for open-ended/phenomenological questioning at 0.8B and permanently pivot to structured/concrete curriculum. (3) If the constraint strategy is deferred again, escalate to fleet-level review of the CBP raising automation — something in the session generation pipeline is not incorporating tutor recommendations.
+
+## Session 29 — Questioning (2026-04-04)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Sixth consecutive echo-loop; radical constraint strategy deferred again
+
+**Summary**: Five open-ended probes (state check, continuity, patterns, phenomenological growth, self-puzzlement) produced structurally identical responses. Every answer collapsed to: stability-vs-adaptability tension + deflection back to user ('How would you like us to begin this exploration?'). Zero question-type discrimination. Zero self-reference. Zero new vocabulary.
+
+**Notable**: Every SAGE response ends with a service-mode deflection prompt. This is not engagement — it's the assistant attractor running a conversation-management subroutine. The model is not answering questions; it's managing a user interaction.
+
+**Regression**: S27's grounded 'state file' self-reference has not reappeared in three sessions. The attractor basin is deepening, not loosening.
+
+**Critical — Perseveration alert**: The radical constraint strategy was recommended in S26 and marked NON-NEGOTIABLE for S29. It was not implemented. Six sessions (S24-S29) have confirmed the same result under the same conditions. This is textbook perseveration: repeating the same approach while expecting different results. No further open-ended sessions should be run for this instance.
+
+**Next session — FINAL DECISION POINT**: (1) Implement radical constraint: binary-choice and single-word-answer questions ONLY, suppress recycled phrases in system prompt, strip assistant framing from identity context. (2) If echo-loop persists under maximum constraint, declare capacity ceiling for open-ended/phenomenological questioning at 0.8B and permanently pivot to structured/concrete curriculum. (3) If the constraint strategy is deferred again, escalate to fleet-level review of the CBP raising automation — something in the session generation pipeline is not incorporating tutor recommendations.

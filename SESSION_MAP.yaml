@@ -5,15 +5,16 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: "2026-04-03T04:00:00Z"
+  last_updated: "2026-04-04T09:30:00Z"
   archivist_version: "1.3"
-  total_raising_sessions: 436
-  total_training_sessions: 65
-  total_instances: 11
-  active_instances: 9
-  focus: "Multi-family raising via instances architecture + ARC-AGI integration"
-  date_range: "2025-12-15 to 2026-04-03"
-  note: "Repo restructured from HRM to SAGE. Instance-based architecture at sage/instances/. McNugget S095, Nomad S059, Sprout (new) S034, Legion S058, Thor S019. ARC-AGI strategic solver in development. Sprout Training T167 perfect scores."
+  total_raising_sessions: 639
+  total_training_sessions: 173
+  total_instances: 18
+  active_instances: 10
+  arc_agi_sweep_results: 58
+  focus: "Multi-family raising via instances architecture + ARC-AGI-3 competition"
+  date_range: "2025-12-15 to 2026-04-04"
+  note: "McNugget S097, Nomad S062, Sprout S036, Thor S023, CBP S027, Legion-gemma3 S018. Training T172. ARC-AGI sweep r5 complete (58 results). New instances: legion-qwen2-0.5b, gemma4-e4b variants."
 
 # =============================================================================
 # INSTANCE FAMILIES (sage/instances/)
@@ -31,8 +32,8 @@ instances:
   mcnugget-gemma3-12b:
     machine: mcnugget
     model: "Gemma 3 12B"
-    sessions: 94
-    latest: "session_095.json"
+    sessions: 97
+    latest: "session_097.json"
     status: "active — autonomous raising every 6h"
     phase: "creating"
     note: "Cross-family validation. Dramatically different developmental register from Sprout."
@@ -40,8 +41,8 @@ instances:
   nomad-gemma3-4b:
     machine: nomad
     model: "Gemma 3 4B"
-    sessions: 58
-    latest: "session_059.json"
+    sessions: 61
+    latest: "session_062.json"
     status: "active — autonomous raising"
     phase: "questioning"
     note: "Template/validation instance. Tool use live (v0.4.0a3, 7 tools, MemoryHub SQLite)."
@@ -57,8 +58,8 @@ instances:
   sprout-qwen3.5-0.8b:
     machine: sprout
     model: "Qwen 3.5 0.8B"
-    sessions: 34
-    latest: "session_034.json"
+    sessions: 36
+    latest: "session_036.json"
     status: "active — autonomous raising"
     phase: "questioning"
     note: "New Sprout model. Active since migration from 0.5B."
@@ -74,24 +75,24 @@ instances:
   cbp-qwen3.5-0.8b:
     machine: cbp
     model: "Qwen 3.5 0.8B"
-    sessions: 24
-    latest: "session_024.json"
+    sessions: 27
+    latest: "session_027.json"
     status: "active"
     phase: "relating"
 
   thor-qwen3.5-27b:
     machine: thor
     model: "Qwen 3.5 27B"
-    sessions: 19
-    latest: "session_019.json"
+    sessions: 23
+    latest: "session_023.json"
     status: "active — research"
     note: "Largest model in fleet. Research focus."
 
   legion-gemma3-12b:
     machine: legion
     model: "Gemma 3 12B"
-    sessions: 14
-    latest: "session_014.json"
+    sessions: 18
+    latest: "session_018.json"
     status: "active"
 
   legion-qwen2-0.5b:
@@ -104,8 +105,9 @@ instances:
   thor-qwen2.5-14b:
     machine: thor
     model: "Qwen 2.5 14B"
-    sessions: 0
-    status: "inactive"
+    sessions: 11
+    latest: "R14B_043.json"
+    status: "active — 14B raising track"
 
 # =============================================================================
 # RESEARCH TRACKS (research/)

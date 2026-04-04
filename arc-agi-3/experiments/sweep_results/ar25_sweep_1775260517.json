@@ -1,0 +1,43 @@
+{
+  "game_id": "ar25-e3c63847",
+  "game_family": "ar25",
+  "win_levels": 8,
+  "baseline_budget": 577,
+  "baseline_per_level": [
+    17,
+    22,
+    103,
+    29,
+    29,
+    159,
+    152,
+    66
+  ],
+  "model": "gemma3:4b",
+  "attempts_run": 1,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 1867.8,
+  "kb_final": {
+    "objects": 36,
+    "active": 0,
+    "solutions": 0,
+    "mechanics": 143,
+    "failures": 7
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 8,
+      "steps": 586,
+      "state": "GAME_OVER",
+      "elapsed": 1867.8,
+      "kb_objects": 36,
+      "kb_solutions": 0
+    }
+  ]
+}

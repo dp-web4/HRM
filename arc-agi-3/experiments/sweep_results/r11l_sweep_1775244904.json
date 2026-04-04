@@ -1,0 +1,41 @@
+{
+  "game_id": "r11l-aa269680",
+  "game_family": "r11l",
+  "win_levels": 6,
+  "baseline_budget": 167,
+  "baseline_per_level": [
+    7,
+    28,
+    30,
+    20,
+    37,
+    45
+  ],
+  "model": "gemma3:4b",
+  "attempts_run": 1,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 628.3,
+  "kb_final": {
+    "objects": 11,
+    "active": 11,
+    "solutions": 0,
+    "mechanics": 23,
+    "failures": 1
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 6,
+      "steps": 171,
+      "state": "GAME_OVER",
+      "elapsed": 628.3,
+      "kb_objects": 11,
+      "kb_solutions": 0
+    }
+  ]
+}

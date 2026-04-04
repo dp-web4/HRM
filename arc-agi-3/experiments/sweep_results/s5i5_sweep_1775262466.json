@@ -1,0 +1,43 @@
+{
+  "game_id": "s5i5-a48e4b1d",
+  "game_family": "s5i5",
+  "win_levels": 8,
+  "baseline_budget": 608,
+  "baseline_per_level": [
+    19,
+    57,
+    85,
+    203,
+    82,
+    30,
+    76,
+    56
+  ],
+  "model": "gemma3:4b",
+  "attempts_run": 1,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 1948.1,
+  "kb_final": {
+    "objects": 15,
+    "active": 15,
+    "solutions": 0,
+    "mechanics": 98,
+    "failures": 1
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 8,
+      "steps": 613,
+      "state": "GAME_OVER",
+      "elapsed": 1948.1,
+      "kb_objects": 15,
+      "kb_solutions": 0
+    }
+  ]
+}

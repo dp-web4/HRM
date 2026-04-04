@@ -1,0 +1,44 @@
+{
+  "game_id": "bp35-0a0ad940",
+  "game_family": "bp35",
+  "win_levels": 9,
+  "baseline_budget": 637,
+  "baseline_per_level": [
+    15,
+    72,
+    36,
+    31,
+    31,
+    48,
+    86,
+    155,
+    163
+  ],
+  "model": "gemma3:4b",
+  "attempts_run": 1,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 1929.2,
+  "kb_final": {
+    "objects": 15,
+    "active": 13,
+    "solutions": 0,
+    "mechanics": 164,
+    "failures": 1
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 9,
+      "steps": 643,
+      "state": "GAME_OVER",
+      "elapsed": 1929.2,
+      "kb_objects": 15,
+      "kb_solutions": 0
+    }
+  ]
+}

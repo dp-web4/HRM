@@ -1,0 +1,41 @@
+{
+  "game_id": "cd82-fb555c5d",
+  "game_family": "cd82",
+  "win_levels": 6,
+  "baseline_budget": 136,
+  "baseline_per_level": [
+    41,
+    8,
+    30,
+    21,
+    19,
+    17
+  ],
+  "model": "gemma3:4b",
+  "attempts_run": 1,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 581.8,
+  "kb_final": {
+    "objects": 9,
+    "active": 5,
+    "solutions": 0,
+    "mechanics": 174,
+    "failures": 3
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 6,
+      "steps": 146,
+      "state": "GAME_OVER",
+      "elapsed": 581.7,
+      "kb_objects": 9,
+      "kb_solutions": 0
+    }
+  ]
+}

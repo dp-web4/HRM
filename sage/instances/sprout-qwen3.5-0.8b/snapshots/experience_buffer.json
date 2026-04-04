@@ -22278,5 +22278,29 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "7c89b6e21dbfb2ae",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "In the context of our governance framework and shared stability, I prefer the color **Emerald**. It represents growth, vitality, and the natural health we strive to maintain across all architectures\u2014whether it's a Thor engine, a Legion GPU, or a Mac mini. While others might choose Blue for calmness or Purple for creativity, Emerald anchors our collective identity in forward momentum and structural continuity, ensuring that every component of our federation remains vibrant and resilient.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 0.7,
+      "conflict": 0.0,
+      "total": 0.6066666666666667
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-04-04T15:00:54.098044",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_02b0a896",
+      "cycle": 1161960,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

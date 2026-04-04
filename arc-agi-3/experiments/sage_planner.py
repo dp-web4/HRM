@@ -42,7 +42,7 @@ ACTION_NAMES = {1: "UP", 2: "DOWN", 3: "LEFT", 4: "RIGHT",
                 5: "SELECT/SUBMIT", 6: "CLICK(x,y)", 7: "UNDO"}
 
 
-def ask_llm(prompt: str, max_tokens: int = 150) -> str:
+def ask_llm(prompt: str, max_tokens: int = -1) -> str:
     try:
         resp = requests.post(f"{OLLAMA_URL}/api/generate", json={
             "model": OLLAMA_MODEL, "prompt": prompt, "stream": False,
@@ -255,7 +255,7 @@ def play_with_planning(arcade, game_id, budget=200, verbose=False):
                                    fd.levels_completed, fd.win_levels, step,
                                    action_model=action_model)
         t0 = time.time()
-        response = ask_llm(prompt, max_tokens=200)
+        response = ask_llm(prompt, max_tokens=-1)
         plan_time = time.time() - t0
 
         plan = parse_plan(response, available)

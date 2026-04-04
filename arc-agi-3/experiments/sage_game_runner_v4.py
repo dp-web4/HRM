@@ -211,7 +211,7 @@ def interactive_targets(grid: np.ndarray, kb: GameKnowledgeBase) -> str:
 # Ollama interface
 # ─────────────────────────────────────────────────────────────
 
-def ask_ollama(prompt: str, timeout: float = 120.0, max_tokens: int = 300) -> str:
+def ask_ollama(prompt: str, timeout: float = 120.0, max_tokens: int = -1) -> str:
     try:
         resp = requests.post(
             OLLAMA_URL,
@@ -654,7 +654,7 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
             banned_actions=banned_actions if banned_actions else None,
             identity_context=getattr(args, 'identity_context', ''),
         )
-        rresponse = ask_ollama(rprompt, max_tokens=200)
+        rresponse = ask_ollama(rprompt, max_tokens=-1)
         think_s = time.time() - t0
 
         rj = parse_json(rresponse)
@@ -873,7 +873,7 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
                 prev_grid, grid, r, c, analyze_color,
                 prediction, reason, level_up, kb,
             )
-            aresponse = ask_ollama(aprompt, max_tokens=200)
+            aresponse = ask_ollama(aprompt, max_tokens=-1)
             analyze_s = time.time() - t0
             aj = parse_json(aresponse)
 

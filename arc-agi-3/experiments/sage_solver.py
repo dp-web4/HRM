@@ -47,7 +47,7 @@ ACTION_NAMES = {1: "UP", 2: "DOWN", 3: "LEFT", 4: "RIGHT",
                 5: "SELECT", 6: "CLICK(x,y)", 7: "UNDO"}
 
 
-def ask_llm(prompt: str, max_tokens: int = 500) -> str:
+def ask_llm(prompt: str, max_tokens: int = -1) -> str:
     """Single LLM call — used sparingly for strategic reasoning."""
     try:
         resp = requests.post(f"{OLLAMA_URL}/api/generate", json={
@@ -212,7 +212,7 @@ ANALYZE:
 Reply as JSON:
 {{"puzzle_type": "...", "win_condition": "...", "key_observations": "...", "strategy": "..."}}"""
 
-    return ask_llm(prompt, max_tokens=300)
+    return ask_llm(prompt, max_tokens=-1)
 
 
 def plan_solution(strategy_response, action_model, grid, available, levels, win_levels, tracker=None):
@@ -265,7 +265,7 @@ Write one command per line. Plan the COMPLETE solution.
 
 PLAN:"""
 
-    return ask_llm(prompt, max_tokens=400)
+    return ask_llm(prompt, max_tokens=-1)
 
 
 def semantic_to_actions(plan_text, tracker, grid, available):
@@ -380,7 +380,7 @@ What should you try differently?
 
 REVISED PLAN:"""
 
-    return ask_llm(prompt, max_tokens=400)
+    return ask_llm(prompt, max_tokens=-1)
 
 
 def parse_plan_to_actions(plan_text, available, grid):

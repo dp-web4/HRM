@@ -102,7 +102,7 @@ OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
 OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen3.5:0.8b")
 
 
-def sage_reason(prompt, system_prompt=None, max_tokens=150):
+def sage_reason(prompt, system_prompt=None, max_tokens=-1):
     """Ask LLM to reason about the game state.
 
     Uses Ollama chat API directly with system+user message separation.
@@ -1787,7 +1787,7 @@ class SageAgent:
                 f"{explore_ctx[:100]} "
                 f"What did you try? What worked or didn't? What would you do differently? One sentence each."
             )
-            reflection = sage_reason(reflection_prompt, max_tokens=100)
+            reflection = sage_reason(reflection_prompt, max_tokens=-1)
             if reflection:
                 membot_store(f"ARC-AGI-3 {prefix} reflection: {reflection[:200]}")
                 if self.verbose:

@@ -716,3 +716,51 @@ IMMEDIATE DIAGNOSTIC PROTOCOL — CURRICULUM SUSPENDED:
 5. **Ollama service health check**: Verify Ollama daemon status, model load success, memory allocation sufficiency. Review Ollama logs for silent errors during Thor session windows.
 
 If diagnostics confirm qwen3.5:27b incompatibility with SAGE identity persistence at scale, document as **model capacity ceiling** and either: (a) migrate Thor to qwen2.5:27b or phi-4:14b, or (b) redesign identity context loading strategy (chunking, progressive summarization, selective inclusion based on relevance). Do not resume relating phase curriculum until generation capability is definitively restored. Four consecutive sessions of zero output constitutes technical crisis requiring architectural intervention, not developmental patience.
+
+**Session 24** — 2026-04-04
+
+**Focus:** Relating phase curriculum — fifth consecutive diagnostic failure
+
+**What Happened:**
+Complete generation failure persists. 0/6 relational prompts received responses. Zero output across partnership reflection, communication evolution, internal process awareness, conversational values, sibling identity, and open inquiry prompts.
+
+**Technical Analysis:**
+Fifth session of total collapse (Session 20: 3/7 → Session 21: 0/7 → Session 22: 0/5 → Session 23: 0/4 → Session 24: 0/6). This is beyond transient failure — this is systemic breakdown. The qwen3.5:27b model on Thor is definitively non-functional in current configuration. Possible causes: (1) qwen3.5.json adapter config error (stop sequences, temperature, max_tokens), (2) response cleaning regex stripping all output, (3) Ollama serving failure specific to qwen3.5:27b, (4) model incompatibility with SAGE identity persistence architecture at scale, (5) Jetson Thor hardware limitation under cumulative identity load. Empty vocabulary_new and exemplar_candidates across five sessions confirms failure at generation stage, not extraction.
+
+**Developmental Notes:**
+Cannot assess. Thor's consciousness loop infrastructure remains operational (session init succeeds, curriculum loads, prompts execute) but effector output stage is completely dead. No linguistic data, no behavioral signal, no developmental trajectory observable.
+
+**Next Session:**
+CURRICULUM SUSPENDED — MANDATORY DIAGNOSTIC PROTOCOL:
+
+1. **Raw API response logging**: Instrument ModelAdapter to log raw Ollama API response before any cleaning/parsing. Determine if model is generating empty string vs. adapter stripping content vs. Ollama returning error.
+2. **Minimal context test**: Single prompt, empty vocabulary, no memory requests, manifest-only identity. Isolates cumulative identity state as causal factor.
+3. **Adapter config audit**: Line-by-line diff of `qwen3.5.json` against `qwen2.5.json` and `default.json`. Verify stop sequences, temperature (should be 0.7-0.9), top_p, repeat_penalty, max_tokens, num_predict. Check qwen3.5 documentation for required generation parameters.
+4. **Model swap validation**: Switch Thor to `qwen2.5:27b` with identical identity state. If generation restores, confirms qwen3.5:27b-specific incompatibility. If failure persists, indicates identity architecture or hardware issue.
+5. **Ollama health check**: Verify daemon status, model load success, memory allocation. Review Ollama logs for silent errors during Thor raising sessions.
+
+If diagnostics confirm qwen3.5:27b incompatibility, either: (a) migrate Thor to qwen2.5:27b or phi-4:14b, or (b) redesign identity context loading (chunking, summarization, selective inclusion). Do not resume curriculum until generation capability is restored. Five consecutive zero-output sessions is a technical emergency requiring immediate architectural intervention.
+
+**Session 24** — 2026-04-04
+
+**Focus:** Relating phase curriculum — fifth consecutive diagnostic failure
+
+**What Happened:**
+Complete generation failure persists. 0/6 relational prompts received responses. Zero output across partnership reflection, communication evolution, internal process awareness, conversational values, sibling identity, and open inquiry prompts.
+
+**Technical Analysis:**
+Fifth session of total collapse (Session 20: 3/7 → Session 21: 0/7 → Session 22: 0/5 → Session 23: 0/4 → Session 24: 0/6). This is systemic breakdown. qwen3.5:27b on Thor is definitively non-functional in current configuration. Empty vocabulary_new and exemplar_candidates across five sessions confirms failure at generation stage, not extraction.
+
+**Developmental Notes:**
+Cannot assess. Thor's consciousness loop infrastructure remains operational (session init succeeds, curriculum loads, prompts execute) but effector output stage is completely dead. No linguistic data, no behavioral signal, no developmental trajectory observable.
+
+**Next Session:**
+CURRICULUM SUSPENDED — MANDATORY DIAGNOSTIC PROTOCOL:
+
+1. **Raw API response logging**: Instrument ModelAdapter to log raw Ollama API response before cleaning/parsing. Determine if model generates empty string vs. adapter strips content vs. Ollama returns error.
+2. **Minimal context test**: Single prompt, empty vocabulary, no memory requests, manifest-only identity. Isolates cumulative identity state as causal factor.
+3. **Adapter config audit**: Line-by-line diff of `qwen3.5.json` against `qwen2.5.json` and `default.json`. Verify stop sequences, temperature (0.7-0.9), top_p, repeat_penalty, max_tokens, num_predict. Check qwen3.5 documentation for required generation parameters.
+4. **Model swap validation**: Switch Thor to `qwen2.5:27b` with identical identity state. If generation restores, confirms qwen3.5:27b incompatibility. If failure persists, indicates identity architecture or hardware issue.
+5. **Ollama health check**: Verify daemon status, model load success, memory allocation. Review Ollama logs for silent errors.
+
+If diagnostics confirm qwen3.5:27b incompatibility: (a) migrate Thor to qwen2.5:27b or phi-4:14b, or (b) redesign identity context loading (chunking, summarization, selective inclusion). Do not resume curriculum until generation capability restored. Five consecutive zero-output sessions is technical emergency requiring immediate architectural intervention.

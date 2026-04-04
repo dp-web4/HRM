@@ -596,7 +596,7 @@ def main():
 
     # Warmup
     print("\nWarming up...", end=" ", flush=True)
-    t = ask_llm("ready?", max_tokens=5)
+    t = ask_llm("ready?", max_tokens=-1)
     print(f"OK" if "error" not in t.lower() else f"WARN: {t[:40]}")
 
     arcade = Arcade()

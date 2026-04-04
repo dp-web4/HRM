@@ -1,0 +1,41 @@
+{
+  "game_id": "tr87-cd924810",
+  "game_family": "tr87",
+  "win_levels": 6,
+  "baseline_budget": 317,
+  "baseline_per_level": [
+    37,
+    30,
+    39,
+    29,
+    63,
+    119
+  ],
+  "model": "qwen3.5:0.8b",
+  "attempts_run": 1,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 4759.2,
+  "kb_final": {
+    "objects": 0,
+    "active": 0,
+    "solutions": 0,
+    "mechanics": 23,
+    "failures": 0
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 6,
+      "steps": 321,
+      "state": "GAME_OVER",
+      "elapsed": 4759.1,
+      "kb_objects": 0,
+      "kb_solutions": 0
+    }
+  ]
+}

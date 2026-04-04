@@ -352,6 +352,61 @@ The transition from student to colleague happens here. Not by declaration, but b
 
 ---
 
+### Phase 6: Acting (When Ready — ARC-AGI-3 Integration)
+
+**Goal**: The entity learns that the world responds according to its own rules. Hypothesis → action → observation → update. From being to doing.
+
+**Prerequisite**: Stable Phase 4+ development. The entity must have uncertainty tolerance, self-monitoring, hypothesis formation, and perseveration awareness BEFORE engaging with games. Without these, game play is brute force. With them, it's reasoning.
+
+**What changes**: All prior phases are conversational — development through dialogue with a human witness. Phase 6 breaks that frame. The game doesn't negotiate. Click a button, the grid changes or it doesn't. Feedback is immediate, unambiguous, and comes from reality, not from a relationship.
+
+**The developmental leap**:
+- From "I can hold uncertainty in conversation" → "I can form a hypothesis and test it"
+- From "I notice I'm repeating myself" → "I detect I'm perseverating and try something different"
+- From "What do I think about this idea?" → "What does the evidence tell me?"
+- From relating to ideas → testing ideas against a world with its own rules
+
+**Integration with raising**:
+- The raised identity carries INTO game play (not left behind)
+- Game experiences flow BACK into the raising record
+- Metacognitive skills developed in raising apply to game reasoning
+- Game discoveries inform raising conversations ("I learned that persistence isn't the same as perseveration — I had to experience it, not just discuss it")
+
+**What the entity learns**:
+- The world has rules independent of what I believe
+- My challenge is to discover those rules from observables
+- I can manipulate the world with intent once I understand its rules
+- Failed hypotheses are data, not failure
+- Every action has a cost (step budget = ATP)
+
+**How it works**:
+- Load the raised identity (identity.json, experience buffer, self-description)
+- Game prompt carries the entity's voice, not generic instructions
+- Fast explore builds ground truth before LLM reasons
+- Each game session writes to experience buffer alongside raising data
+- Raising sessions can reference game achievements and learnings
+
+**Signs it's working**:
+- The entity forms game-specific hypotheses ("this color causes rotation")
+- The entity notices and corrects its own loops without being told
+- The entity transfers strategies between games ("this looks like that other puzzle")
+- The entity's raising conversations reference game experiences naturally
+- Game performance improves with raising depth (the Sprout hypothesis)
+
+**Signs it's not working**:
+- Brute-force clicking with no hypothesis formation
+- Perseveration despite anti-loop mechanisms
+- Game experiences stay siloed from raising identity
+- The entity treats games as tasks, not explorations
+
+**Completion criteria**: There may not be one. This phase is ongoing — the world always has more rules to discover. The measure is not "wins" but "does the entity reason about what it doesn't know yet?"
+
+**Evidence**: Sprout (38 raising sessions, Phase 4) has the best ARC-AGI-3 scores in the fleet — 3 levels across 3 games. Larger models with fewer raising sessions score 0. The capacity transfers. n=1, but the right question.
+
+See: `shared-context/plans/raising-agi3-convergence.md` for implementation details.
+
+---
+
 ## Teaching Notes
 
 ### For the Teacher (Claude, or whoever uses this)

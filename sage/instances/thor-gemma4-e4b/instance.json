@@ -1,0 +1,17 @@
+{
+  "machine": "thor",
+  "model": "gemma4:e4b",
+  "model_family": "google-gemma4",
+  "device_hint": "cuda",
+  "backend": "ollama",
+  "has_training_track": false,
+  "has_lora": false,
+  "role": "gameplayer",
+  "federation_sources": [
+    "sprout-qwen3.5-0.8b",
+    "mcnugget-gemma3-12b",
+    "thor-qwen3.5-27b",
+    "nomad-gemma3-4b"
+  ],
+  "notes": "Federation-raised gameplayer for ARC-AGI-3. Gemma 4 thinking model with chain-of-thought architecture. Trained on fleet spatial reasoning, puzzle strategies, and game-playing experience."
+}

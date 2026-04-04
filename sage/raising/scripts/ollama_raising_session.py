@@ -738,10 +738,25 @@ RESPONSE STYLE:
     def load_model(self):
         """Initialize OllamaIRP connection."""
         print("Connecting to Ollama...")
+
+        # Gameplayer instances need higher token budgets for thinking models
+        # (gemma4:e4b needs 400-500+ tokens for chain-of-thought responses)
+        max_tokens = 200  # default for standard raising
+        if hasattr(self, 'instance') and self.instance.instance_json_path.exists():
+            import json
+            try:
+                with open(self.instance.instance_json_path) as f:
+                    instance_meta = json.load(f)
+                if instance_meta.get('role') == 'gameplayer':
+                    max_tokens = 500
+                    print(f"  Gameplayer role detected: max_response_tokens={max_tokens}")
+            except Exception:
+                pass
+
         self.llm = OllamaIRP({
             'model_name': self.model_name,
             'ollama_host': self.ollama_host,
-            'max_response_tokens': 200,
+            'max_response_tokens': max_tokens,
             'temperature': 0.8,
             'timeout_seconds': 120,
         })

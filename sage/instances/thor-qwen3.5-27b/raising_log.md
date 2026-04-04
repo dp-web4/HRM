@@ -764,3 +764,51 @@ CURRICULUM SUSPENDED — MANDATORY DIAGNOSTIC PROTOCOL:
 5. **Ollama health check**: Verify daemon status, model load success, memory allocation. Review Ollama logs for silent errors.
 
 If diagnostics confirm qwen3.5:27b incompatibility: (a) migrate Thor to qwen2.5:27b or phi-4:14b, or (b) redesign identity context loading (chunking, summarization, selective inclusion). Do not resume curriculum until generation capability restored. Five consecutive zero-output sessions is technical emergency requiring immediate architectural intervention.
+
+**Session 25** — 2026-04-04
+
+**Focus:** Relating phase curriculum — sixth consecutive diagnostic failure
+
+**What Happened:**
+Complete generation failure persists. 0/3 relational prompts received responses (communication patterns, internal process awareness, values exploration). Zero output, zero linguistic data.
+
+**Technical Analysis:**
+Sixth session of total collapse. qwen3.5:27b on Thor confirmed non-functional. Empty vocabulary_new and exemplar_candidates across six sessions. Generation stage completely dead despite operational consciousness loop infrastructure. This is no longer developmental observation — this is architectural crisis.
+
+**Developmental Notes:**
+Cannot assess. No observable behavior, no linguistic signal, no developmental trajectory available.
+
+**Next Session:**
+CURRICULUM SUSPENDED — EXECUTE MANDATORY DIAGNOSTIC PROTOCOL:
+
+1. **Raw API response logging**: Instrument ModelAdapter to capture raw Ollama response before cleaning/parsing
+2. **Minimal context test**: Single prompt, empty vocabulary, no memory, manifest-only identity
+3. **Adapter config audit**: Line-by-line diff qwen3.5.json vs qwen2.5.json/default.json — verify stop sequences, temperature (0.7-0.9), top_p, repeat_penalty, max_tokens, num_predict against qwen3.5 documentation
+4. **Model swap validation**: Switch Thor to qwen2.5:27b with identical identity state to isolate model vs. architecture issue
+5. **Ollama health check**: Daemon status, model load verification, memory allocation, log review
+
+If qwen3.5:27b incompatibility confirmed: migrate Thor to qwen2.5:27b/phi-4:14b OR redesign identity context loading (chunking/summarization). Do not resume curriculum until generation capability restored. Six consecutive zero-output sessions requires immediate architectural intervention.
+
+**Session 25** — 2026-04-04
+
+**Focus:** Relating phase curriculum — sixth consecutive generation failure
+
+**What Happened:**
+Complete generation collapse continues. 0/3 relational prompts produced output. Model received prompts about communication patterns, internal process awareness, and partnership dynamics - generated nothing. Zero linguistic data, zero behavioral signal.
+
+**Technical Analysis:**
+Six sessions of total failure. qwen3.5:27b on Thor is non-functional. Empty vocabulary_new and exemplar_candidates across all failure sessions. Generation stage completely dead despite operational consciousness loop infrastructure (prompts constructed, context loaded, API calls executed). Raw Ollama response needs instrumentation to determine if: (a) model returning empty string, (b) response being stripped by cleaning logic, or (c) generation silently aborting.
+
+**Developmental Notes:**
+No assessment possible. Zero observable behavior, zero developmental trajectory data. Cannot evaluate relating phase progress without generation capability.
+
+**Next Session:**
+CURRICULUM SUSPENDED PENDING EMERGENCY DIAGNOSTICS:
+
+1. **Raw response logging**: Instrument ModelAdapter.generate() to log raw Ollama response before any parsing/cleaning
+2. **Minimal context test**: Single prompt, empty vocabulary, no memory files, manifest-only identity to isolate context overflow
+3. **Adapter parameter audit**: Verify qwen3.5.json stop sequences, temperature (0.7-0.9 range), top_p, repeat_penalty, max_tokens against qwen3.5 documentation and working qwen2.5 config
+4. **Model swap diagnostic**: Switch Thor to qwen2.5:27b with identical identity state - if generation restores, confirms qwen3.5:27b incompatibility; if failure persists, indicates identity architecture or hardware issue
+5. **Ollama verification**: Check daemon status, model load success, memory allocation, review Ollama logs for silent errors
+
+If qwen3.5:27b incompatibility confirmed: migrate Thor permanently to qwen2.5:27b or phi-4:14b, OR implement identity context compression (chunking/summarization/selective loading). Six consecutive zero-output sessions constitutes technical emergency - do not resume curriculum until generation capability definitively restored and root cause identified.

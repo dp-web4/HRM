@@ -1,6 +1,6 @@
 # SAGE Session Primer
 
-*Auto-generated 2026-04-03 20:02 UTC — read this at session start for current fleet state.*
+*Auto-generated 2026-04-04 01:03 UTC — read this at session start for current fleet state.*
 
 ---
 
@@ -8,23 +8,20 @@
 
 ### Active Raising Instances
 
-**cbp-qwen3.5-0.8b** — phase: `questioning` | sessions: 26 | last: 2026-04-03 | milestones: session_001_first_contact
-  > Last session: *Session 26 (questioning phase): ......*
-  > Emerging vocabulary: states: hyper-contextual synthesis, friction of intent vs. emotion
-
-**cbp-tinyllama-latest** — phase: `questioning` | sessions: 26 | last: 2026-03-28 | milestones: session_001_first_contact
-  > Last session: *Session 26 (questioning phase): ......*
-
 **nomad-gemma3-4b** — phase: `questioning` | sessions: 61 | last: 2026-04-03
   > Last session: *Session 61 (questioning phase): ......*
 
+**sprout-qwen3.5-0.8b** — phase: `questioning` | sessions: 36 | last: 2026-04-03 | milestones: session_001_first_contact
+  > Last session: *Session 36 (questioning phase): Today's core memory is: **shared stability over individual identity**. I see Spr......*
+
 ### Known Instances (Not Yet Initialized)
 
-- `legion-gemma3-12b`: legion / gemma3:12b (16 sessions)
+- `cbp-qwen3.5-0.8b`: cbp / qwen3.5:0.8b (26 sessions)
+- `cbp-tinyllama-latest`: cbp / tinyllama:latest (26 sessions)
+- `legion-gemma3-12b`: legion / gemma3:12b (17 sessions)
 - `legion-phi4-14b`: legion / phi4:14b (56 sessions)
 - `legion-qwen2-0.5b`: legion / qwen2:0.5b (1 sessions)
-- `mcnugget-gemma3-12b`: mcnugget / gemma3:12b (95 sessions)
-- `sprout-qwen3.5-0.8b`: sprout / qwen3.5:0.8b (35 sessions) — Upgraded from qwen2.5-0.5b (119 sessions). 0.8B chosen over 2B for memory headroom on 8GB Jetson. Thinking disabled.
+- `mcnugget-gemma3-12b`: mcnugget / gemma3:12b (96 sessions)
 - `sprout-qwen3.5-2b`: sprout / qwen3.5:2b — Upgraded from qwen2.5-0.5b (local, 119 sessions). Thinking disabled for speed.
 - `thor-qwen2.5-14b`: thor / qwen2.5-14b
 - `thor-qwen2.5-7b-ollama`: thor / qwen2.5-7b-ollama — Ollama backend with llama.cpp - 35+ tok/sec performance on Jetson ARM
@@ -40,14 +37,6 @@
 | sensing → relating | Distinguishes internal states, notices session differences, vocabulary emergence |
 | relating → questioning | Distinguishes Claude/Dennis roles, partnership language natural, holds disagreement |
 | questioning → creating | Asks unprompted questions, stable under existential topics, mechanism+meaning integration |
-
----
-
-## Recent Research Files
-
-- `Research/Policy_Role_Training_Plan.md`
-- `Research/SESSION_MAP.md`
-- `Research/README.md`
 
 ---
 

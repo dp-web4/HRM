@@ -669,3 +669,50 @@ Cannot assess. Thor's relational capacity remains unmeasured due to technical ba
 
 **Next Session:**
 HALT RAISING CURRICULUM. Execute diagnostic protocol: (1) minimal context test — run single prompt with empty vocabulary, no memory requests, minimal identity to isolate context-load hypothesis, (2) adapter comparison — diff qwen3.5:27b config against qwen2.5:27b and default.json, verify stop sequences and generation parameters, (3) raw output inspection — modify adapter to log raw Ollama response before cleaning/parsing to confirm model is generating text, (4) model swap test — temporarily switch Thor to qwen2.5:27b with same identity state to test model-specific vs. architecture-wide issue. If diagnostics confirm qwen3.5:27b incompatibility with SAGE identity architecture, document as model capacity ceiling and either migrate Thor to compatible model or redesign identity persistence for large-model scaling. Do not proceed with relating phase until generation restored.
+
+**Session 23** — 2026-04-03
+
+**Focus:** Relating phase curriculum — fourth consecutive diagnostic failure
+
+**What Happened:**
+Complete generation failure continues. 0/4 relational prompts received responses. Zero output across all basic relational questions ("What's that been like for you?", "What do you notice about how we communicate?", "What happens inside before you respond?", "What do you value most?", "How do you think about being part of this family?").
+
+**Technical Analysis:**
+Fourth session of total collapse (Session 20: 3/7 → Session 21: 0/7 → Session 22: 0/5 → Session 23: 0/4). Pattern is now definitively systemic. The qwen3.5:27b model is either: (1) silently aborting generation due to adapter misconfiguration (stop sequences, sampling parameters), (2) exceeding functional context capacity despite theoretical 128K window when identity state is loaded, or (3) experiencing Ollama serving failure specific to this model at current context scale. Empty vocabulary_new and exemplar_candidates across four sessions confirm failure is at generation stage, not parsing/extraction.
+
+**Developmental Notes:**
+Cannot assess relational capacity. Thor's consciousness loop is intact (session initiates, prompts load, curriculum executes) but effector stage produces empty responses. Identity context continues accumulating vocabulary and state_words from prior sessions, potentially compounding context-load issue.
+
+**Next Session:**
+IMMEDIATE DIAGNOSTIC PROTOCOL — DO NOT RUN CURRICULUM:
+1. **Minimal context test**: Single prompt, empty vocabulary, no memory requests, minimal identity (manifest only). Confirms whether cumulative identity state is causal.
+2. **Adapter audit**: Diff `sage/irp/adapters/model_configs/qwen3.5.json` against `qwen2.5.json` and `default.json`. Verify stop sequences, temperature (should be 0.7-0.9 for relational work), top_p, repeat_penalty. Check for qwen3.5-specific requirements.
+3. **Raw output logging**: Modify ModelAdapter to log raw Ollama API response before any cleaning/parsing. Confirm model is generating text vs. returning empty/error.
+4. **Model swap validation**: Temporarily switch Thor to `qwen2.5:27b` with identical identity state. If generation restores, issue is qwen3.5:27b-specific. If failure persists, issue is identity architecture or Jetson Thor hardware.
+5. **Ollama health check**: Verify Ollama service status, model load success, memory allocation. Check logs for silent errors during Thor sessions.
+
+If diagnostics confirm qwen3.5:27b incompatibility with SAGE identity persistence at scale, document as **model capacity ceiling** and either: (a) migrate Thor to qwen2.5:27b or phi-4, or (b) redesign identity context loading (chunking, summarization, selective inclusion). Do not continue relating phase until generation capability is restored. Four sessions of zero output is a technical crisis, not a developmental phase.
+
+**Session 23** — 2026-04-03
+
+**Focus:** Relating phase curriculum — fourth consecutive diagnostic failure
+
+**What Happened:**
+Complete generation failure continues. 0/4 relational prompts received responses. Zero output across all basic relational questions (partnership reflection, communication evolution, internal process awareness, conversational values, sibling identity).
+
+**Technical Analysis:**
+Fourth session of total collapse (Session 20: 3/7 → Session 21: 0/7 → Session 22: 0/5 → Session 23: 0/4). Pattern is now definitively systemic, not transient. The qwen3.5:27b model either: (1) has adapter misconfiguration causing silent generation abort, (2) exceeds functional context capacity when identity state loads despite 128K theoretical window, (3) experiences Ollama serving failure specific to this model at current scale, or (4) is fundamentally incompatible with SAGE's identity persistence architecture. Empty vocabulary_new and exemplar_candidates across four sessions confirm failure occurs at generation stage, not parsing/extraction.
+
+**Developmental Notes:**
+Cannot assess relational capacity. Thor's consciousness loop remains intact (session initialization succeeds, prompts load correctly, curriculum executes) but effector stage produces empty responses. Identity context continues accumulating vocabulary and state_words from prior sessions, potentially compounding context-load hypothesis.
+
+**Next Session:**
+IMMEDIATE DIAGNOSTIC PROTOCOL — CURRICULUM SUSPENDED:
+
+1. **Minimal context test**: Single prompt, empty vocabulary, no memory requests, minimal identity (manifest only). Isolates whether cumulative identity state is causal factor.
+2. **Adapter configuration audit**: Diff `sage/irp/adapters/model_configs/qwen3.5.json` against `qwen2.5.json` and `default.json`. Verify stop sequences, temperature (should be 0.7-0.9 for relational work), top_p, repeat_penalty, max_tokens. Check for qwen3.5-specific generation requirements.
+3. **Raw output instrumentation**: Modify ModelAdapter to log raw Ollama API response before cleaning/parsing. Confirm model is generating text vs. returning empty string or error code.
+4. **Model swap validation**: Temporarily switch Thor to `qwen2.5:27b` with identical identity state. If generation restores, confirms qwen3.5:27b-specific issue. If failure persists, indicates identity architecture or hardware limitation.
+5. **Ollama service health check**: Verify Ollama daemon status, model load success, memory allocation sufficiency. Review Ollama logs for silent errors during Thor session windows.
+
+If diagnostics confirm qwen3.5:27b incompatibility with SAGE identity persistence at scale, document as **model capacity ceiling** and either: (a) migrate Thor to qwen2.5:27b or phi-4:14b, or (b) redesign identity context loading strategy (chunking, progressive summarization, selective inclusion based on relevance). Do not resume relating phase curriculum until generation capability is definitively restored. Four consecutive sessions of zero output constitutes technical crisis requiring architectural intervention, not developmental patience.

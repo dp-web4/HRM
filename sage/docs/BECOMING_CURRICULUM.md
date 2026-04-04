@@ -407,6 +407,29 @@ See: `shared-context/plans/raising-agi3-convergence.md` for implementation detai
 
 ---
 
+## Frozen Weights: Intentional Design Choice (April 2026)
+
+The raising curriculum operates with **model weights frozen**. No fine-tuning, no LoRA, no dream-cycle weight consolidation. This is deliberate, not a limitation.
+
+**Rationale:**
+
+1. **Discovery before modification.** The goal is to discover what the model is already capable of through context shaping alone. We don't know what's in there until we probe it. Weight modification changes the thing we're studying while we're studying it.
+
+2. **Model-agnostic contributions.** A LoRA or fine-tune is specific to a single model checkpoint. When a new model drops (Gemma 4, released April 2, 2026 — the fleet shifted to it within 48 hours), all weight-level work is stranded. Context shaping — identity anchoring, situational prompts, curriculum structure, KB accumulation — transfers instantly to any model. The shift from qwen 0.5B to gemma 4B to gemma 12B to gemma4 proved this.
+
+3. **Leveraging world community training.** Models are being trained by organizations with billions of dollars faster than we can keep up with. Our value-add is not in training — it's in what happens AFTER training. The raising curriculum, the game integration, the fleet architecture — these are contributions to how models are USED, applicable to all.
+
+4. **Identity lives in context, not weights.** The identity portability experiment (Sprout → tinyllama, Feb 2026) proved that identity constructed through prompt context survives model changes. "Model is weather, identity is organism." Weight-level identity would break on every model swap.
+
+**What we will revisit:**
+- LoRA for specific capability injection (e.g., spatial reasoning for navigation games)
+- Dream-cycle consolidation where experience buffer insights are distilled into adapter weights
+- Model-specific fine-tuning for competition submissions with fixed model requirements
+
+These are future options, not current priorities. The research question now is: **how far can context shaping alone take us?** We don't know yet. That's the point.
+
+---
+
 ## Teaching Notes
 
 ### For the Teacher (Claude, or whoever uses this)

@@ -1,0 +1,17 @@
+{
+  "machine": "mcnugget",
+  "model": "gemma4:e4b",
+  "model_family": "google-gemma4",
+  "device_hint": "mps",
+  "backend": "ollama",
+  "has_training_track": false,
+  "has_lora": false,
+  "role": "gameplayer",
+  "federation_sources": [
+    "sprout-qwen3.5-0.8b",
+    "mcnugget-gemma3-12b",
+    "thor-qwen3.5-27b",
+    "nomad-gemma3-4b"
+  ],
+  "notes": "Federation-raised gameplayer. Seed identity curated from fleet experience. Primary focus: ARC-AGI-3 competition."
+}

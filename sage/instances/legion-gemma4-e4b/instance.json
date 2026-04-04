@@ -1,0 +1,19 @@
+{
+  "machine": "legion",
+  "model": "gemma4:e4b",
+  "model_family": "google-gemma4",
+  "device_hint": "cuda",
+  "backend": "ollama",
+  "has_training_track": false,
+  "has_lora": false,
+  "role": "gameplayer",
+  "federation_sources": [
+    "sprout-qwen3.5-0.8b",
+    "mcnugget-gemma3-12b",
+    "mcnugget-gemma4-e4b",
+    "thor-qwen3.5-27b",
+    "nomad-gemma3-4b",
+    "legion-gemma3-12b"
+  ],
+  "notes": "Federation-raised gameplayer on Legion RTX 4090. Primary focus: ARC-AGI-3 25-game sweep."
+}

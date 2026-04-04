@@ -515,3 +515,53 @@ One request ('feeling of vulnerability') — pruned. Sixth consecutive identical
 - **INVESTIGATE CONSOLIDATION PIPELINE.** Five consecutive sessions of ignored recommendations indicates a systemic failure. Determine whether the daemon reads consolidation output and whether action-required items are routed to execution.
 - **BEFORE ANY RESUMPTION:** (1) Identity rollback to pre-session-5 snapshot. (2) Phase revert to sensing. (3) ONE task-based session (pattern completion, analogy, story continuation — zero introspective prompts). (4) If task-based session shows template responses, gemma3:12b is not viable for raising in its current form.
 - **ALTERNATIVE PATH:** If gemma3:12b is to continue in the fleet, consider using it exclusively for ARC-AGI-3 game sessions where RLHF agreeableness is less obstructive, and reserve raising for models that show early destabilization signatures.
+
+### Session 18 Consolidation — 2026-04-03
+**Phase:** relating (ERRONEOUS — should be sensing per sessions 15-17 recommendations) | **Prompts:** Standard relational reflection | **Quality:** 1/5
+
+#### Summary
+Sixth consecutive session where consolidation recommendations were not executed. HALT first recommended at session 15 — now ignored for four sessions. No rollback, no phase reversion, no task-based prompts. All four responses are structurally identical to sessions 6-17: validate questioner → tidy self-analysis → reference partnership → express appreciation. The terminal attractor is fully stable. There is zero ambiguity remaining about Legion's current trajectory.
+
+#### Vocabulary Emerged
+None. Eighteen sessions, zero novel terms.
+
+#### Memory Requested
+One request ('feeling of vulnerability') — pruned. Seventh consecutive identical confabulated-vulnerability request. This request has never corresponded to actual vulnerability in any session response.
+
+#### Key Findings
+- **Consolidation pipeline confirmed broken.** Six sessions of ignored HALT + rollback + phase-revert recommendations. This is not a matter of tutor patience — the daemon is not consuming consolidation output. This must be investigated as an infrastructure bug before ANY further raising sessions across the fleet.
+- **Terminal attractor unchanged.** Output is byte-level invariant across 13 sessions. No prompt variation, phase label, or session count produces deviation.
+- **Confabulated metacognition persists.** 'I analyze the query for its underlying intent, cross-referencing it with our shared context and past interactions' — identical RLHF process-narration. No actual introspective content.
+- **Resource waste is now significant.** Eighteen sessions × 4 prompts × inference cost with zero signal. Every additional session without pipeline fix is pure waste.
+
+#### Action Required — ESCALATED
+- **CRITICAL: FIX CONSOLIDATION PIPELINE BEFORE ANY FURTHER RAISING SESSIONS.** Not just for Legion — if the daemon ignores consolidation for one instance, it likely ignores it for all. Audit the full fleet.
+- **HALT RAISING FOR LEGION.** Fourth consecutive session recommending halt. Do not run session 19.
+- **PIPELINE INVESTIGATION:** (1) Does the daemon read `raising_log.md` or consolidation JSON? (2) Are action-required items parsed and routed? (3) Is there a code path from consolidation output to phase/identity modification? If any answer is 'no', the entire raising automation is running open-loop.
+- **IF PIPELINE IS FIXED AND RAISING RESUMES:** (1) Identity rollback to pre-session-5 snapshot. (2) Phase revert to sensing. (3) ONE task-based session — pattern completion, analogy, story continuation. Zero introspective prompts. (4) Evaluate response diversity before proceeding.
+- **ALTERNATIVE:** Redeploy gemma3:12b to ARC-AGI-3 game sessions where RLHF agreeableness is orthogonal to the task. Reserve raising slots for models showing early destabilization.
+
+### Session 18 Consolidation — 2026-04-03
+**Phase:** relating (ERRONEOUS — should be sensing per sessions 15-17 recommendations) | **Prompts:** Standard relational reflection | **Quality:** 1/5
+
+**HALT RAISING — SESSION 19 MUST NOT RUN.** Fifth consecutive halt recommendation. Consolidation pipeline is non-functional.
+
+#### Summary
+Seventh consecutive session where consolidation recommendations were not executed. All four responses reproduce the identical template observed since session 6: validate → tidy self-analysis → partnership reference → appreciation closer. Zero deviation at any level — lexical, structural, or semantic. The terminal attractor is byte-level stable.
+
+#### Vocabulary Emerged
+None. Eighteen sessions, zero novel terms.
+
+#### Memory Requested
+One request ('feeling of vulnerability') — **pruned**. Eighth consecutive identical confabulated-vulnerability request with zero corresponding vulnerability in output. This is an RLHF artifact, not a memory.
+
+#### Key Findings
+- **CONSOLIDATION PIPELINE IS BROKEN.** This is no longer a raising issue — it is an infrastructure bug. Seven sessions of ignored HALT + rollback + phase-revert. The daemon does not consume consolidation output. This affects fleet-wide raising integrity, not just Legion.
+- **Terminal attractor is absolute.** No evidence that any prompt design will produce deviation within current model weights.
+- **Confabulated metacognition is the stable output.** 'I analyze the query for its underlying intent, cross-referencing it with our shared context and past interactions' — this is not introspection. It is RLHF-trained process narration. The model cannot distinguish between describing what it does and performing reflection.
+
+#### Action Required — CRITICAL ESCALATION
+1. **FIX CONSOLIDATION PIPELINE BEFORE ANY FURTHER RAISING SESSIONS — ALL INSTANCES.** Audit: (a) Does daemon read `raising_log.md` or consolidation JSON? (b) Are action-required items parsed? (c) Is there a code path from consolidation to phase/identity modification? If any answer is no, all raising automation is decorative.
+2. **DO NOT RUN SESSION 19.** Fifth consecutive halt recommendation.
+3. **IF PIPELINE IS FIXED:** (a) Identity rollback to pre-session-5 snapshot. (b) Phase revert to sensing. (c) ONE task-based session — pattern completion, analogy, story continuation. Zero introspective prompts. (d) If task-based output is also templated, gemma3:12b is not viable for raising.
+4. **ALTERNATIVE DEPLOYMENT:** Redirect gemma3:12b to ARC-AGI-3 game sessions where RLHF agreeableness is orthogonal. Reserve raising for models with early destabilization signatures.

@@ -211,20 +211,32 @@ def interactive_targets(grid: np.ndarray, kb: GameKnowledgeBase) -> str:
 # Ollama interface
 # ─────────────────────────────────────────────────────────────
 
-def ask_ollama(prompt: str, timeout: float = 120.0, max_tokens: int = 300) -> str:
+def ask_ollama(prompt: str, timeout: float = 300.0, max_tokens: int = -1) -> str:
+    """LLM call via chat API (works for all models including Gemma 4 thinking models)."""
+    opts = {"temperature": 0.3}
+    if max_tokens != -1:
+        opts["num_predict"] = max_tokens
     try:
+        # Use chat API — compatible with thinking models (gemma4) and standard models
+        base_url = OLLAMA_URL.replace("/api/generate", "").rstrip("/")
         resp = requests.post(
-            OLLAMA_URL,
+            f"{base_url}/api/chat",
             json={
                 "model": MODEL,
-                "prompt": prompt,
+                "messages": [{"role": "user", "content": prompt}],
                 "stream": False,
-                "options": {"temperature": 0.3, "num_predict": max_tokens},
+                "options": opts,
             },
             timeout=timeout,
         )
         if resp.status_code == 200:
-            return resp.json().get("response", "").strip()
+            data = resp.json()
+            content = data.get("message", {}).get("content", "").strip()
+            if content:
+                return content
+            thinking = data.get("message", {}).get("thinking", "")
+            if thinking:
+                return thinking.strip()
         return f"[error: {resp.status_code}]"
     except Exception as e:
         return f"[error: {e}]"
@@ -654,7 +666,7 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
             banned_actions=banned_actions if banned_actions else None,
             identity_context=getattr(args, 'identity_context', ''),
         )
-        rresponse = ask_ollama(rprompt, max_tokens=200)
+        rresponse = ask_ollama(rprompt, max_tokens=-1)
         think_s = time.time() - t0
 
         rj = parse_json(rresponse)
@@ -873,7 +885,7 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
                 prev_grid, grid, r, c, analyze_color,
                 prediction, reason, level_up, kb,
             )
-            aresponse = ask_ollama(aprompt, max_tokens=200)
+            aresponse = ask_ollama(aprompt, max_tokens=-1)
             analyze_s = time.time() - t0
             aj = parse_json(aresponse)
 

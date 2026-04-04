@@ -60,6 +60,12 @@ try:
 except ImportError:
     HAS_KB = False
 
+try:
+    from arc_visualize import save_frame, save_annotated_frame, save_game_summary
+    HAS_VIZ = True
+except ImportError:
+    HAS_VIZ = False
+
 INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
 MEMBOT_URL = "http://localhost:8000"
 SAGE_URL = "http://localhost:8750"  # SAGE daemon for LLM reasoning
@@ -1154,6 +1160,14 @@ class SageAgent:
         if self.verbose:
             print(f"  Visual memory: initialized for {prefix}")
 
+        # VISUALIZATION: Save frames to disk for inspection
+        viz_dir = os.path.join(os.path.dirname(__file__), "viz", prefix)
+        if HAS_VIZ:
+            save_frame(grid, os.path.join(viz_dir, "00_initial.png"))
+            self._viz_frames = [grid.copy()]  # Collect key frames for summary
+            self._viz_labels = ["initial"]
+            self._viz_dir = viz_dir
+
         # GOAL DETECTION: Track similarity to initial state
         goal_similarity = 1.0  # Start at initial state
         goal_history = [1.0]  # Track similarity over time
@@ -1371,6 +1385,15 @@ class SageAgent:
                         "actions": list(self.action_history[-10:]),
                     }
                 )
+
+                # VIZ: Save level-up frame with cursor annotation
+                if HAS_VIZ:
+                    save_annotated_frame(
+                        grid, os.path.join(viz_dir, f"level_{best_levels:02d}_solved.png"),
+                        cursor=cursor_pos,
+                        label=f"L{best_levels} solved | step {step}")
+                    self._viz_frames.append(grid.copy())
+                    self._viz_labels.append(f"L{best_levels} solved")
 
                 # KB: Record level solution from recent click data
                 if kb:
@@ -1784,6 +1807,29 @@ class SageAgent:
                 s = kb.stats
                 print(f"  KB saved: {s['n_objects']} objects, {s['n_effects']} effects, "
                       f"{s['n_solutions']} solutions")
+
+        # VIZ: Save final state and game summary
+        if HAS_VIZ:
+            final_grid = get_frame(fd)
+            # Annotate final frame with KB highlights
+            kb_highlights = []
+            if kb:
+                for o in kb.objects.values():
+                    if o.avg_cells_changed >= 20 and o.effect_count > 0:
+                        kb_highlights.append((o.position["c"], o.position["r"], "green"))
+            save_annotated_frame(
+                final_grid, os.path.join(viz_dir, "99_final.png"),
+                cursor=cursor_pos,
+                highlights=kb_highlights,
+                label=f"Final: {best_levels}/{fd.win_levels}L | {step} steps | {fd.state.name}")
+            self._viz_frames.append(final_grid.copy())
+            self._viz_labels.append(f"final {best_levels}L")
+            # Summary strip
+            save_game_summary(self._viz_frames,
+                              os.path.join(viz_dir, "summary.png"),
+                              labels=self._viz_labels, scale=4)
+            if self.verbose:
+                print(f"  Viz: saved to {viz_dir}/")
 
         # Save visual memory cartridge
         cartridge.write()

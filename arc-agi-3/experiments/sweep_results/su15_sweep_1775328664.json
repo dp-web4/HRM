@@ -1,0 +1,44 @@
+{
+  "game_id": "su15-4c352900",
+  "game_family": "su15",
+  "win_levels": 9,
+  "baseline_budget": 566,
+  "baseline_per_level": [
+    18,
+    28,
+    50,
+    151,
+    18,
+    31,
+    50,
+    179,
+    41
+  ],
+  "model": "qwen3.5:0.8b",
+  "attempts_run": 1,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 7004.1,
+  "kb_final": {
+    "objects": 26,
+    "active": 6,
+    "solutions": 0,
+    "mechanics": 1,
+    "failures": 1
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 9,
+      "steps": 566,
+      "state": "GAME_OVER",
+      "elapsed": 7004.1,
+      "kb_objects": 26,
+      "kb_solutions": 0
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "game_id": "ls20-9607627b",
+  "game_family": "ls20",
+  "win_levels": 7,
+  "baseline_budget": 546,
+  "baseline_per_level": [
+    21,
+    123,
+    39,
+    92,
+    54,
+    108,
+    109
+  ],
+  "model": "qwen3.5:0.8b",
+  "attempts_run": 1,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 7162.4,
+  "kb_final": {
+    "objects": 1,
+    "active": 0,
+    "solutions": 0,
+    "mechanics": 29,
+    "failures": 0
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 7,
+      "steps": 550,
+      "state": "GAME_OVER",
+      "elapsed": 7162.3,
+      "kb_objects": 1,
+      "kb_solutions": 0
+    }
+  ]
+}

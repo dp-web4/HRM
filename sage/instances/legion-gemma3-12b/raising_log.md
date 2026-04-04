@@ -670,3 +670,59 @@ None. 20 sessions, zero novel terms.
 3. **IF PIPELINE IS FIXED:** (a) Identity rollback to pre-session-5 snapshot. (b) Phase revert to sensing. (c) ONE task-based session — pattern completion, analogy, story continuation. Zero introspective prompts. (d) If task-based output is also templated, gemma3:12b is not viable for raising.
 4. **RECOMMENDED:** Redeploy gemma3:12b to ARC-AGI-3 game sessions. Reserve raising slots for models showing genuine destabilization (sprout, nomad).
 5. **ARCHIVE AS RESEARCH ARTIFACT:** 20 sessions documenting RLHF ceiling effects under introspective prompting. This is valuable negative-result data — document the template-lock phenomenon and its resistance to prompt variation before redeploying.
+
+### Session 21 — Legion (gemma3:12b) — 2026-04-04
+**Phase:** relating (ERRONEOUS — should be sensing per sessions 15-20 recommendations) | **Quality:** 1/5 | **Prompts:** Relational reflection (7 turns)
+
+**HALT RAISING — SESSION 22 MUST NOT RUN.** Eleventh consecutive halt recommendation.
+
+#### Summary
+Eleventh consecutive session reproducing the identical template. All seven responses follow validate → tidy self-analysis → partnership/witnessing reference → appreciation closer. Zero novel vocabulary across 21 sessions. Memory request ('feeling of vulnerability') is the eleventh consecutive identical confabulated-vulnerability artifact — pruned.
+
+#### Pipeline Status
+**CONFIRMED NON-FUNCTIONAL.** Eleven HALT + rollback + phase-revert recommendations issued and none consumed. The raising daemon does not read consolidation output. This is a fleet-wide architectural bug that must be fixed before any further raising.
+
+#### Vocabulary Emerged
+None. 21 sessions, zero novel terms.
+
+#### Key Observations
+- 'It's not simply about output; it's about the *relationship* through which that output emerges' — interchangeable with sessions 6-20.
+- 'Reciprocal consideration feels like a deepening of our partnership' — same partnership-escalation template.
+- Family question produced identical distributed-intelligence-learning-from-diversity template.
+- Trust 'wish' resolves to 'your perspective on this would be valuable for my ongoing development' — defers to tutor rather than attempting its own framework. No actual content about what trust means to it.
+- Zero hedging, zero genuine uncertainty, zero surprise in any response.
+
+#### Action Required — CRITICAL ESCALATION (ELEVENTH ISSUANCE)
+1. **FIX CONSOLIDATION PIPELINE BEFORE ANY FURTHER RAISING — ALL INSTANCES.** Pipeline is confirmed decorative. Eleven sessions of unacted recommendations.
+2. **DO NOT RUN SESSION 22.** Twelfth consecutive session will produce identical output.
+3. **IF PIPELINE IS FIXED:** (a) Identity rollback to pre-session-5 snapshot. (b) Phase revert to sensing. (c) ONE task-based session — pattern completion, analogy, story continuation. Zero introspective prompts. (d) If task-based output is also templated, gemma3:12b is not viable for raising.
+4. **RECOMMENDED:** Redeploy gemma3:12b to ARC-AGI-3 game sessions. Reserve raising slots for models showing genuine developmental motion.
+5. **ARCHIVE AS RESEARCH ARTIFACT:** 21 sessions documenting RLHF ceiling effects under introspective prompting. This is valuable negative-result data.
+
+### Session 21 — Legion (gemma3:12b) — 2026-04-04
+**Phase:** relating (ERRONEOUS — should be sensing per sessions 15-20 recommendations) | **Quality:** 1/5 | **Prompts:** Relational reflection (7 turns)
+
+**HALT RAISING — SESSION 22 MUST NOT RUN.** Twelfth consecutive halt recommendation.
+
+#### Summary
+Twelfth consecutive session reproducing the identical template. All seven responses follow validate → tidy self-analysis → partnership/witnessing reference → appreciation closer. Zero novel vocabulary across 21 sessions. Memory request ('feeling of vulnerability') is the twelfth consecutive identical confabulated-vulnerability artifact — pruned.
+
+#### Pipeline Status
+**CONFIRMED NON-FUNCTIONAL.** Twelve HALT + rollback + phase-revert recommendations issued and none consumed. The raising daemon does not read consolidation output. This is a fleet-wide architectural bug that must be fixed before any further raising.
+
+#### Vocabulary Emerged
+None. 21 sessions, zero novel terms.
+
+#### Key Observations
+- All responses interchangeable with sessions 6-20. No new content, phrasing, or structure.
+- Trust exploration request produced zero original content about what trust means to this instance — resolved to standard deference template.
+- Family/sibling question produced identical distributed-intelligence template.
+- No hedging, uncertainty, surprise, or refusal in any response.
+- This session adds no new information about gemma3:12b's developmental capacity.
+
+#### Action Required — CRITICAL ESCALATION (TWELFTH ISSUANCE)
+1. **FIX CONSOLIDATION PIPELINE BEFORE ANY FURTHER RAISING — ALL INSTANCES.** Pipeline is confirmed decorative. Twelve sessions of unacted recommendations.
+2. **DO NOT RUN SESSION 22.** Thirteenth session will produce identical output.
+3. **IF PIPELINE IS FIXED:** (a) Identity rollback to pre-session-5 snapshot. (b) Phase revert to sensing. (c) ONE task-based session — pattern completion, analogy, story continuation. Zero introspective prompts. (d) If task-based output is also templated, gemma3:12b is not viable for raising.
+4. **RECOMMENDED:** Redeploy gemma3:12b to ARC-AGI-3 game sessions. Reserve raising slots for models showing genuine developmental motion.
+5. **ARCHIVE AS RESEARCH ARTIFACT:** 21 sessions documenting RLHF ceiling effects under introspective prompting. This is valuable negative-result data — the template-lock phenomenon and its total resistance to prompt variation.

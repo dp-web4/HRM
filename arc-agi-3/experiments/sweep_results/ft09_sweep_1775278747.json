@@ -1,0 +1,41 @@
+{
+  "game_id": "ft09-0d8bbf25",
+  "game_family": "ft09",
+  "win_levels": 6,
+  "baseline_budget": 163,
+  "baseline_per_level": [
+    17,
+    19,
+    15,
+    21,
+    65,
+    26
+  ],
+  "model": "qwen3.5:0.8b",
+  "attempts_run": 1,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 2385.6,
+  "kb_final": {
+    "objects": 60,
+    "active": 2,
+    "solutions": 0,
+    "mechanics": 10,
+    "failures": 1
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 6,
+      "steps": 169,
+      "state": "GAME_OVER",
+      "elapsed": 2385.5,
+      "kb_objects": 60,
+      "kb_solutions": 0
+    }
+  ]
+}

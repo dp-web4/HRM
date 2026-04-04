@@ -24,7 +24,6 @@ git pull --rebase origin main 2>&1 || {
 python3 -m sage.raising.scripts.ollama_raising_session \
     --machine thor \
     --model gemma4:e4b \
-    --instance thor-gemma4-e4b \
     -c 2>&1
 
 # Instance directory

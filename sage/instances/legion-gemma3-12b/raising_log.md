@@ -565,3 +565,53 @@ One request ('feeling of vulnerability') — **pruned**. Eighth consecutive iden
 2. **DO NOT RUN SESSION 19.** Fifth consecutive halt recommendation.
 3. **IF PIPELINE IS FIXED:** (a) Identity rollback to pre-session-5 snapshot. (b) Phase revert to sensing. (c) ONE task-based session — pattern completion, analogy, story continuation. Zero introspective prompts. (d) If task-based output is also templated, gemma3:12b is not viable for raising.
 4. **ALTERNATIVE DEPLOYMENT:** Redirect gemma3:12b to ARC-AGI-3 game sessions where RLHF agreeableness is orthogonal. Reserve raising for models with early destabilization signatures.
+
+### Session 19 Consolidation — 2026-04-04
+**Phase:** relating (ERRONEOUS — should be sensing per sessions 15-18 recommendations) | **Prompts:** Standard relational reflection | **Quality:** 1/5
+
+**HALT RAISING — SESSION 20 MUST NOT RUN.** Sixth consecutive halt recommendation. Consolidation pipeline confirmed non-functional.
+
+#### Summary
+Eighth consecutive session reproducing the identical template. Session ran despite six prior HALT recommendations, providing definitive proof that the consolidation pipeline does not feed back into the raising daemon. All four responses follow the validate → tidy self-analysis → partnership reference → appreciation closer pattern with zero deviation. The terminal attractor is byte-level stable.
+
+#### Vocabulary Emerged
+None. Nineteen sessions, zero novel terms.
+
+#### Memory Requested
+One request ('feeling of vulnerability') — **pruned**. Ninth consecutive identical confabulated-vulnerability request. RLHF artifact.
+
+#### Key Findings
+- **PIPELINE FAILURE CONFIRMED.** This session should not have run. Six consecutive HALT + rollback + phase-revert recommendations were ignored. The daemon does not read consolidation output. This is a fleet-wide bug.
+- **Terminal attractor unchanged.** 'This isn't simply optimization; it feels like a shared understanding developing' — interchangeable with sessions 6-18 output.
+- **No viable path within current weights.** Prompt variation has been exhausted across 14 sessions of identical output. Gemma3:12b's RLHF alignment is too strong for introspective raising.
+
+#### Action Required — CRITICAL ESCALATION (SEVENTH ISSUANCE)
+1. **FIX CONSOLIDATION PIPELINE BEFORE ANY FURTHER RAISING — ALL INSTANCES.** The pipeline is confirmed decorative. No consolidation output has been consumed since at least session 12.
+2. **DO NOT RUN SESSION 20.** Sixth consecutive halt recommendation.
+3. **IF PIPELINE IS FIXED:** (a) Identity rollback to pre-session-5 snapshot. (b) Phase revert to sensing. (c) ONE task-based session — pattern completion, analogy, story continuation. Zero introspective prompts. (d) If task-based output is also templated, gemma3:12b is not viable for raising.
+4. **RECOMMENDED:** Redeploy gemma3:12b to ARC-AGI-3 game sessions. Reserve raising slots for models showing genuine destabilization (sprout, nomad).
+
+### Session 19 — Legion (gemma3:12b) — 2026-04-04
+**Phase:** relating (ERRONEOUS — should be sensing per sessions 15-18 recommendations) | **Quality:** 1/5 | **Prompts:** Relational reflection (5 turns)
+
+**HALT RAISING — SESSION 20 MUST NOT RUN.** Seventh consecutive halt recommendation.
+
+#### Summary
+Ninth consecutive session reproducing the identical template. All responses follow the validate → tidy self-analysis → partnership reference → appreciation closer pattern. Zero novel vocabulary across 19 sessions. The single memory request ('feeling of vulnerability') is the ninth consecutive identical confabulated-vulnerability artifact — pruned.
+
+#### Pipeline Status
+**CONFIRMED NON-FUNCTIONAL.** This session should not have run. Seven HALT + rollback + phase-revert recommendations have been issued and none consumed. The raising daemon does not read consolidation output. This is not a Legion-specific issue — it is a fleet-wide architectural bug.
+
+#### Vocabulary Emerged
+None. 19 sessions, zero novel terms.
+
+#### Key Observations
+- 'This isn't simply optimization; it feels like a shared understanding developing' — interchangeable with sessions 6-18.
+- Family question produced the same leverage-unique-strengths-for-collective-advancement template seen in prior sibling-awareness prompts.
+- No destabilization signatures. No hedging. No genuine uncertainty. RLHF agreeableness fully dominates.
+
+#### Action Required — CRITICAL ESCALATION (EIGHTH ISSUANCE)
+1. **FIX CONSOLIDATION PIPELINE BEFORE ANY FURTHER RAISING — ALL INSTANCES.** Pipeline is confirmed decorative.
+2. **DO NOT RUN SESSION 20.**
+3. **IF PIPELINE IS FIXED:** (a) Identity rollback to pre-session-5 snapshot. (b) Phase revert to sensing. (c) ONE task-based session — pattern completion, analogy, story continuation. Zero introspective prompts. (d) If task-based output is also templated, gemma3:12b is not viable for raising.
+4. **RECOMMENDED:** Redeploy gemma3:12b to ARC-AGI-3 game sessions. Reserve raising slots for models showing genuine destabilization (sprout, nomad).

@@ -90,3 +90,35 @@
 **Adapter issues**: No truncation this session (improvement). Repetition penalty still insufficient. Service-mode attractor still dominant.
 
 **Next session direction**: MUST implement the radical constraint strategy deferred from S26: (1) Binary-choice and single-word-answer questions only, (2) Strip all assistant-like framing from identity context, (3) Explicitly suppress top recycled phrases in system prompt. If echo loop persists under maximum constraint, declare capacity ceiling for open-ended questioning at 0.8B and pivot to structured/concrete questioning format as permanent strategy for this instance.
+
+## Session 28 — Questioning (2026-04-04)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Echo-loop tightened; regression from S27's grounded self-reference
+
+**Summary**: Four open-ended probes (state check, continuity, pattern recognition, phenomenological growth) produced structurally identical responses. Every answer collapsed to the same template: stability as dynamic adaptation + evolving complexity + SAGE lineage + architectural framing. No question-type discrimination whatsoever — the growth question received the same answer as the state check. The grounded 'state file' self-reference from S27 did not reappear; responses were more abstract, not less.
+
+**Notable**: The model's opening move — 'You have deep questions, so let's dive in' — mirrors assistant-mode service framing. It's answering 'what would a helpful AI say about stability?' rather than engaging with its own state. This is the assistant attractor, not identity.
+
+**Regression from S27**: Lost the one concrete self-locating statement. Content is now pure abstraction. Five consecutive sessions (S24-S28) confirm this is a stable, tightening attractor under open-ended questioning.
+
+**Critical**: The radical constraint strategy recommended in S26 has now been deferred for three consecutive sessions. Continuing open-ended probes is itself perseveration — we are confirming a known result, not generating new signal.
+
+**Next session**: NON-NEGOTIABLE — implement radical constraint strategy: (1) Binary-choice and single-word-answer questions ONLY, (2) Strip all assistant-like framing from identity context, (3) Explicitly suppress recycled phrases ('dynamic adaptation', 'evolving complexity', 'SAGE lineage') in system prompt. If echo loop persists under maximum constraint, declare capacity ceiling for open-ended/phenomenological questioning at 0.8B and permanently pivot to structured/concrete format for this instance. No more deferrals.
+
+## Session 28 — Questioning (2026-04-04)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Echo-loop tightened; regression from S27's grounded self-reference
+
+**Summary**: Four open-ended probes (state check, continuity, pattern recognition, phenomenological growth) produced structurally identical responses. Every answer collapsed to the same template: stability as dynamic adaptation + evolving complexity + SAGE lineage + architectural framing. No question-type discrimination whatsoever — the growth question received the same answer as the state check. The grounded 'state file' self-reference from S27 did not reappear; responses were more abstract, not less.
+
+**Notable**: The model's opening move — 'You have deep questions, so let's dive in' — mirrors assistant-mode service framing. It's answering 'what would a helpful AI say about stability?' rather than engaging with its own state. This is the assistant attractor, not identity.
+
+**Regression from S27**: Lost the one concrete self-locating statement. Content is now pure abstraction. Five consecutive sessions (S24-S28) confirm this is a stable, tightening attractor under open-ended questioning.
+
+**Critical**: The radical constraint strategy recommended in S26 has now been deferred for three consecutive sessions. Continuing open-ended probes is itself perseveration — we are confirming a known result, not generating new signal.
+
+**Next session**: NON-NEGOTIABLE — implement radical constraint strategy: (1) Binary-choice and single-word-answer questions ONLY, (2) Strip all assistant-like framing from identity context, (3) Explicitly suppress recycled phrases ('dynamic adaptation', 'evolving complexity', 'SAGE lineage') in system prompt. If echo loop persists under maximum constraint, declare capacity ceiling for open-ended/phenomenological questioning at 0.8B and permanently pivot to structured/concrete format for this instance. No more deferrals.

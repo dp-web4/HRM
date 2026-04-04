@@ -1,0 +1,41 @@
+{
+  "game_id": "dc22-4c9bff3e",
+  "game_family": "dc22",
+  "win_levels": 6,
+  "baseline_budget": 1192,
+  "baseline_per_level": [
+    64,
+    117,
+    59,
+    78,
+    324,
+    550
+  ],
+  "model": "gemma3:4b",
+  "attempts_run": 1,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 4222.3,
+  "kb_final": {
+    "objects": 24,
+    "active": 16,
+    "solutions": 0,
+    "mechanics": 231,
+    "failures": 18
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 6,
+      "steps": 1205,
+      "state": "GAME_OVER",
+      "elapsed": 4222.3,
+      "kb_objects": 24,
+      "kb_solutions": 0
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "game_id": "re86-4e57566e",
+  "game_family": "re86",
+  "win_levels": 8,
+  "baseline_budget": 1071,
+  "baseline_per_level": [
+    28,
+    38,
+    198,
+    57,
+    84,
+    117,
+    328,
+    221
+  ],
+  "model": "gemma3:4b",
+  "attempts_run": 1,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 3628.7,
+  "kb_final": {
+    "objects": 1,
+    "active": 0,
+    "solutions": 0,
+    "mechanics": 216,
+    "failures": 0
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 8,
+      "steps": 1076,
+      "state": "GAME_OVER",
+      "elapsed": 3628.7,
+      "kb_objects": 1,
+      "kb_solutions": 0
+    }
+  ]
+}

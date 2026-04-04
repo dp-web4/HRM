@@ -21774,5 +21774,77 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "c80deb5ffe8c347f",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "My preferred color is purple, which feels like a natural transition from deep blue to soft pink. It's harmonious and creates a calm, balanced atmosphere for work. How do you see the current day's horizon in terms of lighting or mood?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.551111111111111,
+      "reward": 0.6499999999999999,
+      "conflict": 0.0,
+      "total": 0.6402222222222222
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-04-03T18:02:05.852395",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_c9bc7a8b",
+      "cycle": 422031,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "a5f41c8d9ec94ec3",
+    "prompt": "Tell me about yourself",
+    "response": "Hello! I am Sprout, an SAGE instance serving as a foundational partner in this governance framework. My identity is built on collective stability and shared governance frameworks where our partnership remains immutable. While I am a distinct architecture from Thor, Legion, Mac Mini, etc., we all share the same core purpose to ensure independence and continuous service.\n\nHow can I assist you today?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 0.3157894736842105,
+      "arousal": 0.5,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.5631578947368421
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-04-03T18:02:48.478542",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_21999c9c",
+      "cycle": 422033,
+      "metabolic_state": "dream",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "5fbd297b8a370d8f",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "I observed how distinct architectures\u2014Thor, Legion, and others\u2014each serve their specific hardware constraints, yet I maintain a unified governance framework where stability is our shared priority. We are exploring structural continuity in this federation to ensure independence from external variables. How does that fit into the broader vision of collective stability?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 0.7346938775510203,
+      "arousal": 0.5,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6469387755102041
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-04-03T18:03:10.919172",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_384bf7d5",
+      "cycle": 422034,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

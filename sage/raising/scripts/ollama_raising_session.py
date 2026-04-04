@@ -742,10 +742,10 @@ RESPONSE STYLE:
         # Gameplayer instances need unlimited token budgets for thinking models
         # (gemma4:e4b chain-of-thought can be very verbose, needs no limits)
         max_tokens = 200  # default for standard raising
-        if hasattr(self, 'instance') and self.instance.instance_json_path.exists():
+        if hasattr(self, 'instance') and self.instance.manifest.exists():
             import json
             try:
-                with open(self.instance.instance_json_path) as f:
+                with open(self.instance.manifest) as f:
                     instance_meta = json.load(f)
                 if instance_meta.get('role') == 'gameplayer':
                     max_tokens = -1  # unlimited for Ollama (no truncation)

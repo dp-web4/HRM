@@ -13,21 +13,7 @@
       "tool_success_rate": 0.5,
       "exchanges": 56,
       "healthy": true,
-      "size_gb": 7.6
-    },
-    "mistral:7b-instruct-v0.3-q4_K_M": {
-      "model_name": "mistral:7b-instruct-v0.3-q4_K_M",
-      "model_family": "mistral",
-      "backend": "ollama",
-      "tier": "T1",
-      "grammar": "native_ollama",
-      "trust": 0.5,
-      "latency_ema_ms": 0.0,
-      "error_rate_ema": 0.0,
-      "tool_success_rate": 0.5,
-      "exchanges": 0,
-      "healthy": true,
-      "size_gb": 4.1
+      "size_gb": 0.0
     }
   }
 }

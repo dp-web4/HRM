@@ -426,3 +426,23 @@ class MetabolicController:
     def get_sensor_poll_rate(self) -> float:
         """Get sensor polling rate for current state"""
         return self.get_current_config().sensor_poll_rate
+
+    def get_metabolic_snapshot(self) -> Dict:
+        """
+        Get current metabolic state snapshot for experience logging.
+
+        Thor Session #60: ATP logging for Gnosis C≈0.5 validation.
+        This enables testing Prediction #3 (energy coupling α).
+
+        Returns:
+            Dict with current ATP, state, and transition count
+        """
+        return {
+            'state': self.current_state.value,
+            'atp_current': round(self.atp_current, 2),
+            'atp_max': self.atp_max,
+            'atp_percentage': round((self.atp_current / self.atp_max) * 100, 1),
+            'cycles_in_state': self.cycles_in_state,
+            'total_cycles': self.total_cycles,
+            'transition_count': len(self.state_history)
+        }

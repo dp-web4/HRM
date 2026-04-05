@@ -317,6 +317,7 @@ class ExperienceCollector:
         phase: Optional[str] = None,
         metadata: Optional[Dict] = None,
         tool_calls: Optional[List[Dict]] = None,
+        metabolic_state: Optional[Dict] = None,
     ) -> Dict[str, Any]:
         """
         Score and potentially store a conversation exchange.
@@ -332,6 +333,9 @@ class ExperienceCollector:
             metadata: Additional context
             tool_calls: Optional list of tool call records from this exchange.
                 Each dict has: name, arguments, success, result/error.
+            metabolic_state: Optional metabolic controller state snapshot.
+                Should include: current_state, atp_current, atp_max, etc.
+                Used for Gnosis C≈0.5 validation (Thor Session #60+)
 
         Returns:
             Dict with salience scores and whether it was stored
@@ -390,6 +394,9 @@ class ExperienceCollector:
             # Include tool calls if present
             if tool_calls:
                 experience['tool_calls'] = tool_calls
+            # Include metabolic state if present (Thor Session #60: ATP logging)
+            if metabolic_state:
+                experience['metabolic'] = metabolic_state
 
             # Add to buffer (avoiding duplicates)
             if not any(exp['id'] == experience['id'] for exp in self.experiences):

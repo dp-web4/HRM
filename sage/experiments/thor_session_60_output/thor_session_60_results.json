@@ -1,0 +1,1084 @@
+{
+  "experiment": "ATP-Coherence Coupling Validation",
+  "session": "Thor Session #60",
+  "timestamp": "2026-04-05T09:06:53.194949",
+  "description": "First experiment with ATP logging infrastructure",
+  "prediction_tested": "Prediction #3: Energy coupling \u03b1",
+  "analysis": {
+    "overall": {
+      "mean_atp": 52.34166666666667,
+      "std_atp": 15.524682408632033,
+      "mean_coherence": 0.7933333333333331,
+      "std_coherence": 0.14079141387961913,
+      "mean_salience": 0.4666666666666666,
+      "correlation_atp_coherence": 0.4077689788394667,
+      "correlation_atp_salience": 0.9514397431861775
+    },
+    "by_state": {
+      "rest": {
+        "n_samples": 19,
+        "mean_atp": 32.99999999999999,
+        "std_atp": 4.38178046004132,
+        "mean_coherence": 0.6400000000000001,
+        "std_coherence": 1.1102230246251565e-16,
+        "mean_salience": 0.14000000000000004
+      },
+      "dream": {
+        "n_samples": 1,
+        "mean_atp": 40.49999999999997,
+        "std_atp": 0.0,
+        "mean_coherence": 0.64,
+        "std_coherence": 0.0,
+        "mean_salience": 0.14
+      },
+      "wake": {
+        "n_samples": 5,
+        "mean_atp": 58.5,
+        "std_atp": 0.7071067811865476,
+        "mean_coherence": 0.9800000000000001,
+        "std_coherence": 1.1102230246251565e-16,
+        "mean_salience": 0.52
+      },
+      "focus": {
+        "n_samples": 35,
+        "mean_atp": 62.3,
+        "std_atp": 9.539392014169463,
+        "mean_coherence": 0.8542857142857143,
+        "std_coherence": 0.10887176504718657,
+        "mean_salience": 0.6457142857142857
+      }
+    }
+  },
+  "raw_results": [
+    {
+      "cycle": 1,
+      "metabolic_state": "rest",
+      "atp_before": 25.0,
+      "atp_after": 25.8,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "rest"
+    },
+    {
+      "cycle": 2,
+      "metabolic_state": "rest",
+      "atp_before": 25.8,
+      "atp_after": 26.6,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "rest"
+    },
+    {
+      "cycle": 3,
+      "metabolic_state": "rest",
+      "atp_before": 26.6,
+      "atp_after": 27.400000000000002,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "rest"
+    },
+    {
+      "cycle": 4,
+      "metabolic_state": "rest",
+      "atp_before": 27.4,
+      "atp_after": 28.200000000000003,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "rest"
+    },
+    {
+      "cycle": 5,
+      "metabolic_state": "rest",
+      "atp_before": 28.2,
+      "atp_after": 29.000000000000004,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "rest"
+    },
+    {
+      "cycle": 6,
+      "metabolic_state": "rest",
+      "atp_before": 29.0,
+      "atp_after": 29.800000000000004,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "rest"
+    },
+    {
+      "cycle": 7,
+      "metabolic_state": "rest",
+      "atp_before": 29.8,
+      "atp_after": 30.600000000000005,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "rest"
+    },
+    {
+      "cycle": 8,
+      "metabolic_state": "rest",
+      "atp_before": 30.6,
+      "atp_after": 31.400000000000006,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "rest"
+    },
+    {
+      "cycle": 9,
+      "metabolic_state": "rest",
+      "atp_before": 31.4,
+      "atp_after": 32.2,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "rest"
+    },
+    {
+      "cycle": 10,
+      "metabolic_state": "rest",
+      "atp_before": 32.2,
+      "atp_after": 33.0,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "rest"
+    },
+    {
+      "cycle": 11,
+      "metabolic_state": "rest",
+      "atp_before": 33.0,
+      "atp_after": 33.8,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "rest"
+    },
+    {
+      "cycle": 12,
+      "metabolic_state": "rest",
+      "atp_before": 33.8,
+      "atp_after": 34.599999999999994,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "rest"
+    },
+    {
+      "cycle": 13,
+      "metabolic_state": "rest",
+      "atp_before": 34.6,
+      "atp_after": 35.39999999999999,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "rest"
+    },
+    {
+      "cycle": 14,
+      "metabolic_state": "rest",
+      "atp_before": 35.4,
+      "atp_after": 36.19999999999999,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "rest"
+    },
+    {
+      "cycle": 15,
+      "metabolic_state": "rest",
+      "atp_before": 36.2,
+      "atp_after": 36.999999999999986,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "rest"
+    },
+    {
+      "cycle": 16,
+      "metabolic_state": "rest",
+      "atp_before": 37.0,
+      "atp_after": 37.79999999999998,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "rest"
+    },
+    {
+      "cycle": 17,
+      "metabolic_state": "rest",
+      "atp_before": 37.8,
+      "atp_after": 38.59999999999998,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "rest"
+    },
+    {
+      "cycle": 18,
+      "metabolic_state": "rest",
+      "atp_before": 38.6,
+      "atp_after": 39.39999999999998,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "rest"
+    },
+    {
+      "cycle": 19,
+      "metabolic_state": "rest",
+      "atp_before": 39.4,
+      "atp_after": 40.199999999999974,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "dream"
+    },
+    {
+      "cycle": 20,
+      "metabolic_state": "dream",
+      "atp_before": 40.2,
+      "atp_after": 40.49999999999997,
+      "atp_consumed": 0.2,
+      "salience": {
+        "surprise": 0.1,
+        "novelty": 0.1,
+        "arousal": 0.2,
+        "reward": 0.3,
+        "conflict": 0.0,
+        "total": 0.14
+      },
+      "coherence": 0.64,
+      "new_state": "dream"
+    },
+    {
+      "cycle": 21,
+      "metabolic_state": "wake",
+      "atp_before": 60.0,
+      "atp_after": 59.5,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "wake"
+    },
+    {
+      "cycle": 22,
+      "metabolic_state": "wake",
+      "atp_before": 59.5,
+      "atp_after": 59.0,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "wake"
+    },
+    {
+      "cycle": 23,
+      "metabolic_state": "wake",
+      "atp_before": 59.0,
+      "atp_after": 58.5,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "wake"
+    },
+    {
+      "cycle": 24,
+      "metabolic_state": "wake",
+      "atp_before": 58.5,
+      "atp_after": 58.0,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "wake"
+    },
+    {
+      "cycle": 25,
+      "metabolic_state": "wake",
+      "atp_before": 58.0,
+      "atp_after": 57.5,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 26,
+      "metabolic_state": "focus",
+      "atp_before": 57.5,
+      "atp_after": 56.9,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 27,
+      "metabolic_state": "focus",
+      "atp_before": 56.9,
+      "atp_after": 56.3,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 28,
+      "metabolic_state": "focus",
+      "atp_before": 56.3,
+      "atp_after": 55.699999999999996,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 29,
+      "metabolic_state": "focus",
+      "atp_before": 55.7,
+      "atp_after": 55.099999999999994,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 30,
+      "metabolic_state": "focus",
+      "atp_before": 55.1,
+      "atp_after": 54.49999999999999,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 31,
+      "metabolic_state": "focus",
+      "atp_before": 54.5,
+      "atp_after": 53.89999999999999,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 32,
+      "metabolic_state": "focus",
+      "atp_before": 53.9,
+      "atp_after": 53.29999999999999,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 33,
+      "metabolic_state": "focus",
+      "atp_before": 53.3,
+      "atp_after": 52.69999999999999,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 34,
+      "metabolic_state": "focus",
+      "atp_before": 52.7,
+      "atp_after": 52.09999999999999,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 35,
+      "metabolic_state": "focus",
+      "atp_before": 52.1,
+      "atp_after": 51.499999999999986,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 36,
+      "metabolic_state": "focus",
+      "atp_before": 51.5,
+      "atp_after": 50.899999999999984,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 37,
+      "metabolic_state": "focus",
+      "atp_before": 50.9,
+      "atp_after": 50.29999999999998,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 38,
+      "metabolic_state": "focus",
+      "atp_before": 50.3,
+      "atp_after": 49.69999999999998,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 39,
+      "metabolic_state": "focus",
+      "atp_before": 49.7,
+      "atp_after": 49.09999999999998,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 40,
+      "metabolic_state": "focus",
+      "atp_before": 49.1,
+      "atp_after": 48.49999999999998,
+      "atp_consumed": 0.6000000000000001,
+      "salience": {
+        "surprise": 0.5,
+        "novelty": 0.5,
+        "arousal": 0.6,
+        "reward": 0.8,
+        "conflict": 0.2,
+        "total": 0.52
+      },
+      "coherence": 0.98,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 41,
+      "metabolic_state": "focus",
+      "atp_before": 80.0,
+      "atp_after": 79.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 42,
+      "metabolic_state": "focus",
+      "atp_before": 79.0,
+      "atp_after": 78.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 43,
+      "metabolic_state": "focus",
+      "atp_before": 78.0,
+      "atp_after": 77.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 44,
+      "metabolic_state": "focus",
+      "atp_before": 77.0,
+      "atp_after": 76.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 45,
+      "metabolic_state": "focus",
+      "atp_before": 76.0,
+      "atp_after": 75.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 46,
+      "metabolic_state": "focus",
+      "atp_before": 75.0,
+      "atp_after": 74.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 47,
+      "metabolic_state": "focus",
+      "atp_before": 74.0,
+      "atp_after": 73.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 48,
+      "metabolic_state": "focus",
+      "atp_before": 73.0,
+      "atp_after": 72.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 49,
+      "metabolic_state": "focus",
+      "atp_before": 72.0,
+      "atp_after": 71.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 50,
+      "metabolic_state": "focus",
+      "atp_before": 71.0,
+      "atp_after": 70.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 51,
+      "metabolic_state": "focus",
+      "atp_before": 70.0,
+      "atp_after": 69.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 52,
+      "metabolic_state": "focus",
+      "atp_before": 69.0,
+      "atp_after": 68.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 53,
+      "metabolic_state": "focus",
+      "atp_before": 68.0,
+      "atp_after": 67.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 54,
+      "metabolic_state": "focus",
+      "atp_before": 67.0,
+      "atp_after": 66.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 55,
+      "metabolic_state": "focus",
+      "atp_before": 66.0,
+      "atp_after": 65.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 56,
+      "metabolic_state": "focus",
+      "atp_before": 65.0,
+      "atp_after": 64.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 57,
+      "metabolic_state": "focus",
+      "atp_before": 64.0,
+      "atp_after": 63.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 58,
+      "metabolic_state": "focus",
+      "atp_before": 63.0,
+      "atp_after": 62.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 59,
+      "metabolic_state": "focus",
+      "atp_before": 62.0,
+      "atp_after": 61.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    },
+    {
+      "cycle": 60,
+      "metabolic_state": "focus",
+      "atp_before": 61.0,
+      "atp_after": 60.0,
+      "atp_consumed": 1.0,
+      "salience": {
+        "surprise": 0.9,
+        "novelty": 0.8,
+        "arousal": 0.9,
+        "reward": 0.7,
+        "conflict": 0.4,
+        "total": 0.74
+      },
+      "coherence": 0.76,
+      "new_state": "focus"
+    }
+  ],
+  "method": {
+    "coherence_formula": "C = 1 - |S_total - 0.5|",
+    "reference": "Session #59 retrospective coherence estimation",
+    "controlled_salience": true,
+    "metabolic_states_tested": [
+      "rest",
+      "wake",
+      "focus"
+    ]
+  }
+}

@@ -1,0 +1,89 @@
+[
+  {
+    "id": "52aff06d90f1235e",
+    "prompt": "Rest cycle 0",
+    "response": "Minimal response.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.09999999999999999,
+      "reward": 0.3,
+      "conflict": 0.0,
+      "total": 0.28
+    },
+    "session": null,
+    "phase": null,
+    "timestamp": "2026-04-05T09:06:53.192911",
+    "metadata": {
+      "machine": "thor",
+      "model": "experiment"
+    },
+    "metabolic": {
+      "state": "rest",
+      "atp_current": 25.0,
+      "atp_max": 100.0,
+      "atp_percentage": 25.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "cff5d4994670fa78",
+    "prompt": "Wake cycle 0",
+    "response": "Thoughtful engaged response with some complexity.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.09999999999999999,
+      "reward": 0.3,
+      "conflict": 0.0,
+      "total": 0.48
+    },
+    "session": null,
+    "phase": null,
+    "timestamp": "2026-04-05T09:06:53.193353",
+    "metadata": {
+      "machine": "thor",
+      "model": "experiment"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 60.0,
+      "atp_max": 100.0,
+      "atp_percentage": 60.0,
+      "cycles_in_state": 0,
+      "total_cycles": 20,
+      "transition_count": 3
+    }
+  },
+  {
+    "id": "4db9d9a28f6c05b1",
+    "prompt": "Focus cycle 0",
+    "response": "Deeply engaged complex response exploring novel territory with high arousal.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.09999999999999999,
+      "reward": 0.6499999999999999,
+      "conflict": 0.0,
+      "total": 0.55
+    },
+    "session": null,
+    "phase": null,
+    "timestamp": "2026-04-05T09:06:53.193771",
+    "metadata": {
+      "machine": "thor",
+      "model": "experiment"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 80.0,
+      "atp_max": 100.0,
+      "atp_percentage": 80.0,
+      "cycles_in_state": 15,
+      "total_cycles": 40,
+      "transition_count": 4
+    }
+  }
+]

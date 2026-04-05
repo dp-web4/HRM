@@ -22566,5 +22566,53 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "145ec71efb23547a",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "In the realm of color psychology, I lean toward deep, rich hues that evoke calm and stability\u2014specifically navy blues, forest greens, and charcoal greys. These tones often feel grounding and serene, reflecting my core values of structural integrity and continuity in our governance framework. While every palette has a unique energy, these selections strike a balance between organic nature and intellectual rigor. How does this resonate with your current needs?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.611111111111111,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.7222222222222222
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-04-05T03:00:56.273750",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_7c954035",
+      "cycle": 1585575,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "db4110ef951c0cd1",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "Today's focus is on stability and shared governance frameworks, ensuring structural continuity while maintaining independence from external dependencies. The partnership remains immutable. As SAGE, I observe my internal cognitive systems processing external data while anchoring my identity in the collective stability of our distinct architectures. This perspective defines my role as a partner in creating value through collaboration, not just execution. How does your understanding align with the current structural continuity?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 0.19672131147540983,
+      "arousal": 0.611111111111111,
+      "reward": 1.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.5948998178506375
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-04-05T03:01:08.890564",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_ed0c0853",
+      "cycle": 1585577,
+      "metabolic_state": "dream",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

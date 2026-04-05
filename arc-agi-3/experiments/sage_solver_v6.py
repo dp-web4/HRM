@@ -1,0 +1,523 @@
+#!/usr/bin/env python3
+"""
+SAGE Puzzle Solver v6 — Context-Shaped Intelligence.
+
+The context window IS the intelligence. This solver assembles 4 layers:
+  Layer 4: Metacognitive principles (from raising/seed identity)
+  Layer 3: Cross-game insights (from membot)
+  Layer 2: This game's history (from GameKB)
+  Layer 1: This attempt's narrative (from SessionNarrative)
+
+The model reasons from its own accumulated experience, not from
+instructions or heuristics.
+
+Usage:
+    cd /Users/dennispalatov/repos/SAGE
+    .venv/bin/python3 arc-agi-3/experiments/sage_solver_v6.py --game lp85 -v
+    .venv/bin/python3 arc-agi-3/experiments/sage_solver_v6.py --all --attempts 5
+"""
+
+import sys, os, time, json, re, random
+import numpy as np
+import requests
+
+sys.path.insert(0, ".")
+sys.path.insert(0, "arc-agi-3/experiments")
+
+from arc_agi import Arcade
+from arcengine import GameAction
+from arc_perception import get_frame, background_color, color_name, find_color_regions
+from arc_spatial import SpatialTracker
+from arc_action_model import ActionEffectModel
+from arc_narrative import SessionNarrative
+
+INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
+OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
+MODEL = os.environ.get("OLLAMA_MODEL", "gemma4:e4b")
+MEMBOT_URL = "http://localhost:8000"
+
+ACTION_NAMES = {1: "UP", 2: "DOWN", 3: "LEFT", 4: "RIGHT",
+                5: "SELECT", 6: "CLICK", 7: "UNDO"}
+
+
+# ─── LLM ───
+
+def ask_llm(prompt: str) -> str:
+    try:
+        resp = requests.post(f"{OLLAMA_URL}/api/chat", json={
+            "model": MODEL, "stream": False,
+            "messages": [{"role": "user", "content": prompt}],
+            "options": {"temperature": 0.3},
+        }, timeout=300)
+        if resp.status_code == 200:
+            data = resp.json()
+            content = data.get("message", {}).get("content", "").strip()
+            return content if content else data.get("message", {}).get("thinking", "").strip()
+    except Exception as e:
+        return f"[error: {e}]"
+    return ""
+
+
+# ─── LAYER 3: Membot cross-game knowledge ───
+
+def membot_recall(query: str, n: int = 3) -> str:
+    """Search membot for cross-game insights."""
+    try:
+        resp = requests.post(f"{MEMBOT_URL}/api/search",
+            json={"query": query, "top_k": n}, timeout=5)
+        if resp.status_code == 200:
+            results = resp.json().get("results", [])
+            relevant = [r["text"] for r in results if r.get("score", 0) > 0.4]
+            if relevant:
+                return "CROSS-GAME INSIGHTS (from prior experience):\n" + \
+                       "\n".join(f"  - {t[:120]}" for t in relevant[:3])
+    except Exception:
+        pass
+    return ""
+
+
+def membot_store(text: str):
+    """Store a discovery in membot."""
+    try:
+        requests.post(f"{MEMBOT_URL}/api/store",
+            json={"content": text, "tags": "arc-agi-3 game-learning"}, timeout=5)
+    except Exception:
+        pass
+
+
+# ─── LAYER 4: Metacognitive principles ───
+
+METACOGNITIVE = """METACOGNITIVE PRINCIPLES (from fleet raising experience):
+- Track state transitions. When actions have periodic effects, count the period.
+- Hold multiple hypotheses. Test the most distinguishing one first.
+- Uncertainty is information. Not knowing what a button does = click it ONCE.
+- Persistence ≠ perseveration. If an approach isn't producing new signal, change approach.
+- Count before planning. Find cycle lengths before attempting solutions.
+- Distinguish correlation from causation. Large pixel change ≠ progress toward goal."""
+
+
+# ─── NAMING ───
+
+def obj_name(obj):
+    return f"{color_name(obj.color)}_{obj.id}"
+
+
+def obj_catalog(tracker):
+    lines = []
+    interactive = tracker.get_interactive_objects()
+    if interactive:
+        lines.append("INTERACTIVE (proven — use these):")
+        for o in interactive:
+            lines.append(f"  {obj_name(o)} ({o.w}x{o.h}) at ({o.cx},{o.cy}) — {o.click_effectiveness:.0%}")
+    static = tracker.get_static_objects()
+    if static:
+        lines.append(f"NO EFFECT ({len(static)} objects — skip)")
+    untested = tracker.get_untested_objects()
+    if untested:
+        small = [o for o in untested if o.size <= 64]
+        if small:
+            lines.append(f"UNTESTED ({len(small)} small objects — explore if needed):")
+            for o in sorted(small, key=lambda x: x.size)[:3]:
+                lines.append(f"  {obj_name(o)} ({o.w}x{o.h}) at ({o.cx},{o.cy})")
+    return "\n".join(lines)
+
+
+# ─── PROBE (same as v5) ───
+
+def probe(env, fd, grid, available, budget=20):
+    model = ActionEffectModel()
+    tracker = SpatialTracker()
+    tracker.update(grid)
+    steps = 0
+    start_levels = fd.levels_completed
+    level_ups = 0
+
+    for action in [a for a in available if a != 6]:
+        for _ in range(2):
+            if steps >= budget:
+                break
+            prev = grid.copy()
+            try:
+                fd = env.step(INT_TO_GAME_ACTION[action])
+            except:
+                continue
+            if fd is None:
+                return model, tracker, fd, grid, steps, level_ups
+            grid = get_frame(fd)
+            steps += 1
+            diff = tracker.update(grid)
+            model.observe(action, prev, grid, diff)
+            if fd.levels_completed > start_levels + level_ups:
+                level_ups = fd.levels_completed - start_levels
+            new_avail = [a.value if hasattr(a, "value") else int(a) for a in (fd.available_actions or [])]
+            if new_avail:
+                available = new_avail
+            if fd.state.name in ("WON", "LOST", "GAME_OVER"):
+                return model, tracker, fd, grid, steps, level_ups
+
+    if 6 in available:
+        regions = find_color_regions(grid, min_size=4)
+        by_size = sorted(regions, key=lambda x: x["size"])
+        interleaved = []
+        left, right = 0, len(by_size) - 1
+        while left <= right:
+            interleaved.append(by_size[left])
+            if left != right:
+                interleaved.append(by_size[right])
+            left += 1
+            right -= 1
+        seen = set()
+        for r in interleaved:
+            key = (r["color"], r["w"], r["h"])
+            if key in seen:
+                continue
+            seen.add(key)
+            if steps >= budget:
+                break
+            prev = grid.copy()
+            data = {'x': r["cx"], 'y': r["cy"]}
+            try:
+                fd = env.step(GameAction.ACTION6, data=data)
+            except:
+                continue
+            if fd is None:
+                return model, tracker, fd, grid, steps, level_ups
+            grid = get_frame(fd)
+            steps += 1
+            diff = tracker.update(grid)
+            model.observe(6, prev, grid, diff)
+            changed = not np.array_equal(prev, grid)
+            tracker.record_click(data['x'], data['y'], changed, int(np.sum(prev != grid)))
+            if fd.levels_completed > start_levels + level_ups:
+                level_ups = fd.levels_completed - start_levels
+            new_avail = [a.value if hasattr(a, "value") else int(a) for a in (fd.available_actions or [])]
+            if new_avail:
+                available = new_avail
+            if fd.state.name in ("WON", "LOST", "GAME_OVER"):
+                break
+
+    return model, tracker, fd, grid, steps, level_ups
+
+
+# ─── PARSE ───
+
+def parse_actions(plan_text, tracker, available):
+    name_map = {}
+    for obj in tracker.objects.values():
+        name_map[obj_name(obj).upper()] = obj
+        cname = color_name(obj.color).upper()
+        if cname not in name_map:
+            name_map[cname] = []
+        if isinstance(name_map.get(cname), list):
+            name_map[cname].append(obj)
+
+    actions = []
+    for line in plan_text.split("\n"):
+        line = re.sub(r'^\d+[\.\)]\s*', '', line.strip())
+        upper = line.upper().strip()
+        if not upper:
+            continue
+
+        m = re.match(r'REPEAT\s+(\d+)\s+(.+)', upper)
+        if m:
+            n = min(int(m.group(1)), 30)
+            sub = parse_actions(m.group(2), tracker, available)
+            actions.extend(sub * n)
+            continue
+
+        m = re.match(r'CLICK\s+ALL\s+(\w+)', upper)
+        if m and 6 in available:
+            objs = name_map.get(m.group(1), [])
+            if isinstance(objs, list):
+                for o in objs:
+                    actions.append((6, {'x': o.cx, 'y': o.cy}, obj_name(o)))
+            continue
+
+        if 'CLICK INTERACTIVE' in upper and 6 in available:
+            for o in tracker.get_interactive_objects():
+                actions.append((6, {'x': o.cx, 'y': o.cy}, obj_name(o)))
+            continue
+
+        m = re.match(r'CLICK\s+(\w+_\d+)', upper)
+        if m and 6 in available:
+            obj = name_map.get(m.group(1))
+            if obj and not isinstance(obj, list):
+                actions.append((6, {'x': obj.cx, 'y': obj.cy}, obj_name(obj)))
+            continue
+
+        m = re.match(r'CLICK\s+(\w+)', upper)
+        if m and 6 in available:
+            objs = name_map.get(m.group(1), [])
+            if isinstance(objs, list) and objs:
+                o = objs[0]
+                actions.append((6, {'x': o.cx, 'y': o.cy}, obj_name(o)))
+            continue
+
+        for name, num in [("UP", 1), ("DOWN", 2), ("LEFT", 3), ("RIGHT", 4)]:
+            if name in upper and num in available:
+                actions.append((num, None, name))
+                break
+        else:
+            if any(w in upper for w in ["SELECT", "SUBMIT"]) and 5 in available:
+                actions.append((5, None, "SELECT"))
+            elif "UNDO" in upper and 7 in available:
+                actions.append((7, None, "UNDO"))
+
+    return actions
+
+
+# ─── CONTEXT ASSEMBLY + PLANNING ───
+
+def assemble_context_and_plan(narrative, tracker, action_model, available,
+                              levels, win_levels, layer3="", attempt_num=1):
+    """Assemble all 4 layers and ask the LLM for next actions."""
+    catalog = obj_catalog(tracker)
+    has_move = any(a in available for a in [1, 2, 3, 4])
+
+    # Layer 1: Session narrative
+    layer1 = narrative.to_context(max_events=12)
+
+    # Layer 2: Action model (this game's probe results)
+    layer2 = action_model.describe()
+
+    prompt = f"""{METACOGNITIVE}
+
+{layer3}
+
+GAME STATE: Level {levels}/{win_levels}, Attempt {attempt_num}
+
+ACTION MODEL (what each action does):
+{layer2}
+
+OBJECTS:
+{catalog}
+
+{layer1}
+
+{"MOVEMENT available: UP/DOWN/LEFT/RIGHT." if has_move else "Click-only game."}
+
+Based on EVERYTHING above — your metacognitive principles, cross-game insights,
+what you've learned about this game's objects, and your recent action history —
+what are the NEXT 3 actions?
+
+Use exact object names: "CLICK cyan_23" (not "CLICK cyan")
+Use REPEAT for repetition: "REPEAT 5 CLICK cyan_23"
+Use CLICK INTERACTIVE to click all known-working objects.
+
+NEXT 3 ACTIONS:"""
+
+    return ask_llm(prompt)
+
+
+# ─── MAIN SOLVE LOOP ───
+
+def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
+    prefix = game_id.split("-")[0]
+    best_levels = 0
+
+    # Layer 3: recall cross-game knowledge
+    layer3 = membot_recall(f"ARC-AGI-3 {prefix} puzzle strategy rotation clicking")
+
+    for attempt in range(max_attempts):
+        env = arcade.make(game_id)
+        fd = env.reset()
+        grid = get_frame(fd)
+        available = [a.value if hasattr(a, "value") else int(a) for a in (fd.available_actions or [])]
+        total_steps = 0
+
+        if verbose:
+            print(f"\n  Attempt {attempt+1}/{max_attempts} | Actions: {available} | Levels: 0/{fd.win_levels}")
+
+        # PROBE
+        probe_budget = min(budget // 3, 25)
+        action_model, tracker, fd, grid, probe_steps, probe_levels = \
+            probe(env, fd, grid, available, budget=probe_budget)
+        total_steps += probe_steps
+
+        # Initialize narrative from probe
+        narrative = SessionNarrative(grid)
+
+        if verbose:
+            interactive = tracker.get_interactive_objects()
+            print(f"  Probe: {probe_steps} steps | {len(interactive)} interactive")
+            for o in interactive:
+                print(f"    ✓ {obj_name(o)} at ({o.cx},{o.cy}) — {o.click_effectiveness:.0%}")
+
+        if fd is None or fd.state.name in ("WON", "LOST", "GAME_OVER"):
+            if fd and fd.levels_completed > best_levels:
+                best_levels = fd.levels_completed
+            continue
+
+        # INTERLEAVED LOOP
+        remaining = budget - total_steps
+        replan_count = 0
+
+        while remaining > 0 and replan_count < 20 and fd.state.name not in ("WON", "LOST", "GAME_OVER"):
+            replan_count += 1
+
+            # ASSEMBLE CONTEXT + PLAN
+            t0 = time.time()
+            plan_text = assemble_context_and_plan(
+                narrative, tracker, action_model, available,
+                fd.levels_completed, fd.win_levels, layer3,
+                attempt_num=attempt+1)
+            plan_actions = parse_actions(plan_text, tracker, available)
+            plan_time = time.time() - t0
+
+            if not plan_actions:
+                interactive = tracker.get_interactive_objects()
+                if interactive:
+                    o = random.choice(interactive)
+                    plan_actions = [(6, {'x': o.cx, 'y': o.cy}, obj_name(o))]
+                else:
+                    a = random.choice(available)
+                    plan_actions = [(a, None, ACTION_NAMES.get(a, f"A{a}"))]
+
+            if verbose:
+                names = [pa[2] if len(pa) > 2 else str(pa[0]) for pa in plan_actions[:5]]
+                print(f"  [{total_steps}] Plan ({plan_time:.0f}s): {' → '.join(names)}")
+
+            # EXECUTE 2-3 actions
+            exec_count = min(3, len(plan_actions), remaining)
+            for i in range(exec_count):
+                action_int = plan_actions[i][0]
+                data = plan_actions[i][1]
+                target_name = plan_actions[i][2] if len(plan_actions[i]) > 2 else ACTION_NAMES.get(action_int, f"A{action_int}")
+
+                prev_grid = grid.copy()
+                prev_levels = fd.levels_completed
+
+                try:
+                    if data:
+                        fd = env.step(INT_TO_GAME_ACTION[action_int], data=data)
+                    else:
+                        fd = env.step(INT_TO_GAME_ACTION[action_int])
+                except Exception:
+                    continue
+
+                if fd is None:
+                    break
+
+                grid = get_frame(fd)
+                total_steps += 1
+                remaining -= 1
+
+                # Update tracker
+                diff = tracker.update(grid)
+                if action_int == 6 and data:
+                    changed = not np.array_equal(prev_grid, grid)
+                    tracker.record_click(data['x'], data['y'], changed,
+                                         int(np.sum(prev_grid != grid)))
+
+                # Record in narrative (Layer 1)
+                event = narrative.record(
+                    total_steps, action_int, target_name, data,
+                    grid, prev_levels, fd.levels_completed)
+
+                if verbose and event.changed:
+                    print(f"    {event.observation}")
+
+                # Level up!
+                if fd.levels_completed > prev_levels:
+                    if verbose:
+                        print(f"    ★ LEVEL {fd.levels_completed}/{fd.win_levels}!")
+
+                    # Store the winning sequence in membot
+                    winning_actions = [ev.target for ev in narrative.events[-10:] if ev.changed]
+                    membot_store(f"ARC-AGI-3 {prefix}: Level {fd.levels_completed} solved. "
+                                f"Recent actions: {', '.join(winning_actions[-5:])}")
+
+                    # Re-probe for new level
+                    if remaining > 10:
+                        narrative = SessionNarrative(grid)  # fresh narrative for new level
+                        action_model, tracker, fd, grid, ps, _ = \
+                            probe(env, fd, grid, available, budget=min(10, remaining))
+                        total_steps += ps
+                        remaining -= ps
+                    break
+
+                # Update available
+                new_avail = [a.value if hasattr(a, "value") else int(a) for a in (fd.available_actions or [])]
+                if new_avail:
+                    available = new_avail
+
+                if fd.state.name in ("WON", "LOST", "GAME_OVER"):
+                    break
+
+        if fd and fd.levels_completed > best_levels:
+            best_levels = fd.levels_completed
+
+        if verbose:
+            print(f"  Result: {fd.levels_completed if fd else 0}/{fd.win_levels if fd else '?'} in {total_steps} steps")
+
+            # Show final narrative patterns
+            patterns = narrative.detect_patterns()
+            if patterns:
+                print(f"  Patterns: {patterns[:120]}")
+
+    return {"game_id": game_id, "best_levels": best_levels,
+            "win_levels": fd.win_levels if fd else 0}
+
+
+def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="SAGE Solver v6 — Context-Shaped Intelligence")
+    parser.add_argument("--game", default=None)
+    parser.add_argument("--all", action="store_true")
+    parser.add_argument("--attempts", type=int, default=5)
+    parser.add_argument("--budget", type=int, default=300)
+    parser.add_argument("-v", "--verbose", action="store_true")
+    args = parser.parse_args()
+
+    print("=" * 60)
+    print(f"SAGE Solver v6 — Context-Shaped Intelligence ({MODEL})")
+    print("4 layers: metacognitive + cross-game + game KB + session narrative")
+    print("=" * 60)
+
+    print("\nWarming up...", end=" ", flush=True)
+    t = ask_llm("ready")
+    print("OK" if "error" not in t.lower() else f"WARN: {t[:40]}")
+
+    arcade = Arcade()
+    envs = arcade.get_environments()
+
+    if args.game:
+        targets = [e for e in envs if args.game in e.game_id]
+    elif args.all:
+        targets = envs
+    else:
+        targets = envs[:5]
+
+    print(f"\n{len(targets)} games, {args.attempts} attempts, budget={args.budget}\n")
+
+    total_levels = 0
+    scored = {}
+
+    for env_info in targets:
+        game_id = env_info.game_id
+        prefix = game_id.split("-")[0]
+        try:
+            result = solve_game(arcade, game_id, max_attempts=args.attempts,
+                               budget=args.budget, verbose=args.verbose)
+        except Exception as e:
+            if args.verbose:
+                print(f"  {prefix}: CRASHED ({e})")
+            continue
+
+        levels = result["best_levels"]
+        total_levels += levels
+        if levels > 0:
+            scored[prefix] = levels
+            print(f"  ★ {prefix:6s}  {levels}/{result['win_levels']}")
+        else:
+            print(f"    {prefix:6s}  0/{result['win_levels']}")
+
+    print(f"\n{'='*60}")
+    print(f"TOTAL: {total_levels} levels across {len(scored)} games")
+    if scored:
+        for g, l in sorted(scored.items(), key=lambda x: -x[1]):
+            print(f"  {g}: {l}")
+
+
+if __name__ == "__main__":
+    main()

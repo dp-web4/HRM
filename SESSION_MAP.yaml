@@ -5,16 +5,16 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: "2026-04-04T18:00:00Z"
+  last_updated: "2026-04-05T09:30:00Z"
   archivist_version: "1.3"
-  total_raising_sessions: 642
-  total_training_sessions: 176
+  total_raising_sessions: 661
+  total_training_sessions: 183
   total_instances: 18
   active_instances: 10
-  arc_agi_sweep_results: 63
+  arc_agi_sweep_results: 91
   focus: "Multi-family raising via instances architecture + ARC-AGI-3 competition"
-  date_range: "2025-12-15 to 2026-04-04"
-  note: "McNugget S097, Nomad S063, Sprout S037, Thor S023, CBP S027, Legion-gemma3 S019. Training T175 (5th consecutive perfect). ARC-AGI sweep r5 (63 results). New instances: legion-qwen2-0.5b, gemma4-e4b variants."
+  date_range: "2025-12-15 to 2026-04-05"
+  note: "McNugget S097, Nomad S067, Sprout S041, Thor S027, CBP S031, Legion-gemma3 S022. Training T182. ARC-AGI sweep 91 results. 18 new raising sessions overnight."
 
 # =============================================================================
 # INSTANCE FAMILIES (sage/instances/)
@@ -41,8 +41,8 @@ instances:
   nomad-gemma3-4b:
     machine: nomad
     model: "Gemma 3 4B"
-    sessions: 63
-    latest: "session_063.json"
+    sessions: 66
+    latest: "session_067.json"
     status: "active — autonomous raising"
     phase: "questioning"
     note: "Template/validation instance. Tool use live (v0.4.0a3, 7 tools, MemoryHub SQLite)."
@@ -58,8 +58,8 @@ instances:
   sprout-qwen3.5-0.8b:
     machine: sprout
     model: "Qwen 3.5 0.8B"
-    sessions: 37
-    latest: "session_037.json"
+    sessions: 41
+    latest: "session_041.json"
     status: "active — autonomous raising"
     phase: "questioning"
     note: "New Sprout model. Active since migration from 0.5B."
@@ -75,24 +75,24 @@ instances:
   cbp-qwen3.5-0.8b:
     machine: cbp
     model: "Qwen 3.5 0.8B"
-    sessions: 27
-    latest: "session_027.json"
+    sessions: 31
+    latest: "session_031.json"
     status: "active"
     phase: "relating"
 
   thor-qwen3.5-27b:
     machine: thor
     model: "Qwen 3.5 27B"
-    sessions: 23
-    latest: "session_023.json"
+    sessions: 27
+    latest: "session_027.json"
     status: "active — research"
     note: "Largest model in fleet. Research focus."
 
   legion-gemma3-12b:
     machine: legion
     model: "Gemma 3 12B"
-    sessions: 19
-    latest: "session_019.json"
+    sessions: 22
+    latest: "session_022.json"
     status: "active"
 
   legion-qwen2-0.5b:

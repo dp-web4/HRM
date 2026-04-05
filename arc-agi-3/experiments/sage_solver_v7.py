@@ -36,9 +36,37 @@ from arc_action_model import ActionEffectModel
 from arc_narrative import SessionNarrative
 from arc_context import ContextConstructor
 
+# Import context budget from raising (shared module)
+try:
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'sage', 'raising', 'scripts'))
+    from context_shaped_raising import ContextBudget
+except ImportError:
+    class ContextBudget:
+        """Fallback if raising module not available."""
+        def __init__(self, max_tokens=131072): self.max_tokens = max_tokens; self.layers = {}
+        def record(self, name, text): self.layers[name] = len(text)
+        def total_chars(self): return sum(self.layers.values())
+        def utilization(self): return (self.total_chars() / 4) / self.max_tokens
+        def report(self):
+            total = self.total_chars() // 4
+            lines = [f"Context: ~{total} tokens ({self.utilization():.1%} of {self.max_tokens})"]
+            for n, c in sorted(self.layers.items(), key=lambda x: -x[1]):
+                lines.append(f"  {n}: ~{c//4} tokens")
+            lines.append(f"  FREE: ~{self.max_tokens - total} tokens")
+            return "\n".join(lines)
+
 INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
 MODEL = os.environ.get("OLLAMA_MODEL", "gemma4:e4b")
+
+# Context budget targets (from context-budget-and-raising.md)
+TARGET_BUDGET = {
+    "layer4_metacognitive": 500,   # tokens — stable, rarely changes
+    "layer3_membot": 2000,         # tokens — adaptive, more when uncertain
+    "layer2_game_kb": 3000,        # tokens — growing, bounded by curation
+    "layer1_narrative": 5000,      # tokens — expanding, compressed when large
+    # Total: ~10.5K tokens. Leaves ~120K for reasoning.
+}
 
 ACTION_NAMES = {1: "UP", 2: "DOWN", 3: "LEFT", 4: "RIGHT",
                 5: "SELECT", 6: "CLICK", 7: "UNDO"}
@@ -251,19 +279,16 @@ def parse_actions(plan_text, tracker, available):
 
 def assemble_context_and_plan(narrative, tracker, action_model, available,
                               levels, win_levels, ctx: ContextConstructor = None,
-                              attempt_num=1):
-    """Assemble all 4 layers and ask the LLM for next actions."""
-    catalog = obj_catalog(tracker)
+                              attempt_num=1, verbose=False):
+    """Assemble all 4 layers with budget tracking, ask LLM for next actions."""
+    budget = ContextBudget()
     has_move = any(a in available for a in [1, 2, 3, 4])
 
-    # Layer 1: Session narrative (this attempt's working memory)
-    layer1 = narrative.to_context()  # No cap — 128K context, keep everything
+    # Layer 4: Metacognitive principles (fixed, ~500 tokens)
+    layer4 = METACOGNITIVE
+    budget.record("L4_metacognitive", layer4)
 
-    # Layer 2: Action model (this game's probe results)
-    layer2 = action_model.describe()
-
-    # Layer 3: Situation-relevant membot memories
-    # Build a situation description from current state
+    # Layer 3: Situation-relevant membot memories (adaptive, target ~2K)
     patterns = narrative.detect_patterns()
     interactive_names = [obj_name(o) for o in tracker.get_interactive_objects()]
     situation = f"Playing game level {levels}/{win_levels}. "
@@ -275,24 +300,35 @@ def assemble_context_and_plan(narrative, tracker, action_model, available,
         situation += "Repeated clicking without level-up. Need different approach. "
     layer3 = ctx.build_layer3(situation) if ctx else ""
 
-    # Check if stuck — get specific unstuck advice
     n_events = len(narrative.events)
     if n_events > 8 and not any(e.leveled_up for e in narrative.events):
         stuck_advice = ctx.on_stuck(n_events, interactive_names, patterns) if ctx else ""
         if stuck_advice:
             layer3 = layer3 + "\n\n" + stuck_advice if layer3 else stuck_advice
+    budget.record("L3_membot", layer3)
 
-    prompt = f"""{METACOGNITIVE}
+    # Layer 2: Game KB — action model + curated object catalog (target ~3K)
+    layer2_model = action_model.describe()
+    layer2_catalog = obj_catalog(tracker)
+    layer2 = f"ACTION MODEL:\n{layer2_model}\n\nOBJECTS:\n{layer2_catalog}"
+    budget.record("L2_game_kb", layer2)
+
+    # Layer 1: Session narrative — expanding with compression (target ~5K)
+    layer1 = narrative.to_context()
+    # If Layer 1 exceeds budget, the narrative's internal compression handles it
+    budget.record("L1_narrative", layer1)
+
+    # Log budget periodically
+    if verbose and (n_events % 10 == 0 or n_events <= 3):
+        print(f"    {budget.report()}")
+
+    prompt = f"""{layer4}
 
 {layer3}
 
 GAME STATE: Level {levels}/{win_levels}, Attempt {attempt_num}
 
-ACTION MODEL (what each action does):
 {layer2}
-
-OBJECTS:
-{catalog}
 
 {layer1}
 
@@ -308,6 +344,7 @@ Use CLICK INTERACTIVE to click all known-working objects.
 
 NEXT 3 ACTIONS:"""
 
+    budget.record("prompt_framing", prompt[len(layer4)+len(layer3)+len(layer2)+len(layer1):])
     return ask_llm(prompt)
 
 
@@ -373,7 +410,7 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
             plan_text = assemble_context_and_plan(
                 narrative, tracker, action_model, available,
                 fd.levels_completed, fd.win_levels, ctx=ctx,
-                attempt_num=attempt+1)
+                attempt_num=attempt+1, verbose=verbose)
             plan_actions = parse_actions(plan_text, tracker, available)
             plan_time = time.time() - t0
 
@@ -471,6 +508,16 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
             fd.win_levels if fd else 0,
             narrative.detect_patterns(),
             narrative.object_summary())
+
+        # Raising-game bridge: store insights for raising curriculum to find
+        if attempt == max_attempts - 1:  # Last attempt — full summary
+            ctx.store(
+                f"SAGE game experience summary ({prefix}): Played {max_attempts} attempts. "
+                f"Best: {best_levels}/{fd.win_levels if fd else '?'} levels. "
+                f"Key learning: {narrative.detect_patterns()[:150]}. "
+                f"Objects learned: {narrative.object_summary()[:150]}. "
+                f"This experience develops sequence awareness and spatial reasoning."
+            )
 
     return {"game_id": game_id, "best_levels": best_levels,
             "win_levels": fd.win_levels if fd else 0}

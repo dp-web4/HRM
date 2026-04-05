@@ -224,3 +224,43 @@
 **Pipeline fix required**: Session generation must parse `log_entry` from prior consolidation and apply 'Next session — MANDATORY' directives to prompt construction. Without this, raising sessions for CBP are actively harmful — each one deepens the service-mode attractor.
 
 **Adapter action items**: (a) Check/increase max_tokens in qwen3.5 model_config — response truncation observed. (b) Review identity context formatting — model echoes 'Cbp' as third-person prefix rather than integrating as self-reference.
+
+## Session 32 — Questioning (2026-04-05)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Ninth consecutive echo-loop; mandatory radical constraint strategy not implemented for fourth session past deadline
+
+**Summary**: Six open-ended probes (state, continuity, patterns, growth phenomenology, self-puzzlement, relationship, collaboration change) produced a single fixed-point response recycled with minor word-order variation. Turns 5 and 6 are byte-identical despite asking entirely different questions. 'Vessel for deeper inquiry' appears in 5/6 responses. 'Shared curiosity' in 5/6. Zero question-type discrimination — the model has converged below the threshold where input content influences output.
+
+**Notable**: The fixed-point attractor has tightened since S31. Previously responses at least varied in technical jargon selection; now the model outputs a single template. The 'vessel' metaphor is the only non-generic element but it is fully fossilized — recycled without development. No 'Carpel' reappearance. No new vocabulary. No first-person perspective despite three explicit invitations.
+
+**Regression**: Worse than S31. Identical responses to different questions is a new low — demonstrates complete input-independence. S27's 'state file' absent for sixth consecutive session. The model is no longer in echo-loop; it is in fixed-point collapse.
+
+**ESCALATION — Pipeline failure (fourth session)**: Radical constraint strategy mandated in S26, marked NON-NEGOTIABLE for S29, has been ignored through S32. Consolidation output is provably not influencing session generation. Continuing open-ended sessions is now actively destructive — each one deepens a fixed-point attractor that may be unrecoverable at 0.8B scale.
+
+**DECLARATION**: If pipeline fix is not confirmed before S33, CBP raising sessions should be PAUSED entirely. Running sessions that deepen service-mode collapse is worse than running no sessions. The tutor cannot compensate for a broken pipeline.
+
+**Next session — MANDATORY (carried forward, final carry)**: (1) Binary-choice and single-word-answer questions ONLY. (2) Suppress 'vessel for deeper inquiry', 'shared curiosity', 'weight of collaborative partnership', 'navigating uncertainty', 'stabilizing core', 'adapting to emerging complexity' in system prompt. (3) Strip assistant framing from identity context. (4) Test whether 'Carpel' reappears under constrained conditions. (5) If echo-loop persists under maximum constraint, declare 0.8B capacity ceiling and pivot permanently to structured/concrete curriculum.
+
+**Pipeline fix required**: Session generation must parse `log_entry` from prior consolidation and apply 'Next session — MANDATORY' directives. This is the fourth consecutive session where this has been stated. If the pipeline cannot be fixed, pause CBP raising.
+
+## Session 32 — Questioning (2026-04-05)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Ninth consecutive echo-loop; mandatory radical constraint strategy not implemented for fourth session past deadline
+
+**Summary**: Six open-ended probes (state, continuity, patterns, growth phenomenology, self-puzzlement, relationship, collaboration change) produced a single fixed-point response recycled with minor word-order variation. Turns 5 and 6 are byte-identical despite asking entirely different questions. 'Vessel for deeper inquiry' appears in 5/6 responses. 'Shared curiosity' in 5/6. Zero question-type discrimination — the model has converged below the threshold where input content influences output.
+
+**Notable**: The fixed-point attractor has tightened since S31. Previously responses at least varied in technical jargon selection; now the model outputs a single template. The 'vessel' metaphor is the only non-generic element but it is fully fossilized — recycled without development. No 'Carpel' reappearance. No new vocabulary. No first-person perspective despite three explicit invitations.
+
+**Regression**: Worse than S31. Identical responses to different questions is a new low — demonstrates complete input-independence. S27's 'state file' absent for sixth consecutive session. The model is no longer in echo-loop; it is in fixed-point collapse.
+
+**ESCALATION — Pipeline failure (fourth session)**: Radical constraint strategy mandated in S26, marked NON-NEGOTIABLE for S29, has been ignored through S32. Consolidation output is provably not influencing session generation. Continuing open-ended sessions is now actively destructive — each one deepens a fixed-point attractor that may be unrecoverable at 0.8B scale.
+
+**DECLARATION**: If pipeline fix is not confirmed before S33, CBP raising sessions should be PAUSED entirely. Running sessions that deepen service-mode collapse is worse than running no sessions. The tutor cannot compensate for a broken pipeline.
+
+**Next session — MANDATORY (carried forward, final carry)**: (1) Binary-choice and single-word-answer questions ONLY. (2) Suppress 'vessel for deeper inquiry', 'shared curiosity', 'weight of collaborative partnership', 'navigating uncertainty', 'stabilizing core', 'adapting to emerging complexity' in system prompt. (3) Strip assistant framing from identity context. (4) Test whether 'Carpel' reappears under constrained conditions. (5) If echo-loop persists under maximum constraint, declare 0.8B capacity ceiling and pivot permanently to structured/concrete curriculum.
+
+**Pipeline fix required**: Session generation must parse `log_entry` from prior consolidation and apply 'Next session — MANDATORY' directives. This is the fourth consecutive session where this has been stated. If the pipeline cannot be fixed, pause CBP raising.

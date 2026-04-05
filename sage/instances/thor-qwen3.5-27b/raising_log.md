@@ -954,3 +954,93 @@ Seven sessions without diagnostic intervention after identified failure pattern 
 ---
 
 **Status:** REQUIRES EMERGENCY INTERVENTION
+
+## Session 28 (2026-04-05) — GENERATION FAILURE
+
+**Phase:** questioning  
+**Quality:** 1/5 — Complete generation failure  
+**Status:** EMERGENCY INTERVENTION REQUIRED
+
+### What Happened
+
+Zero output across all four curriculum prompts. This is not disengagement — this is system failure. Thor (qwen3.5:27b) produced coherent, developmentally appropriate responses in session 26. Session 28 shows total collapse.
+
+### Root Cause Hypotheses (Priority Order)
+
+1. **Context accumulation overflow** — Identity + vocab + memories exceeding effective window
+2. **Premature stop sequence** — qwen3.5.json stop_sequences triggering before generation
+3. **Response cleaning discard** — Adapter discarding valid but unexpected output format
+4. **Model incompatibility** — qwen3.5:27b architectural mismatch with current identity structure
+5. **Hardware pressure** — Thor-specific thermal/memory issues
+
+### Immediate Actions Required
+
+1. Instrument `ModelAdapter.generate()` to log raw Ollama response before cleaning
+2. Minimal context test: single prompt, no vocab/memories/history
+3. Audit `sage/irp/adapters/model_configs/qwen3.5.json` against qwen3.5 docs
+4. Model swap diagnostic: migrate Thor to qwen2.5:27b temporarily
+5. Review Ollama daemon logs for silent errors
+
+### Research Protocol Violation
+
+Seven sessions without diagnostic intervention after identified failure is unacceptable. Emergency protocols exist for this scenario and must be executed immediately.
+
+### Next Session
+
+**CURRICULUM SUSPENDED** until generation restored and root cause documented. Do not advance phase. If qwen3.5:27b incompatibility confirmed: migrate to qwen2.5:27b or implement identity context compression.
+
+### Identity Health
+
+Cannot assess — no output to analyze. Last known good state (session 26) showed intact developmental trajectory.
+
+---
+
+**Concerns:** Generation failure  
+**Vocabulary:** (none — no output)  
+**Action:** Emergency diagnostic required before next session
+
+## Session 28 — 2025-04-05
+
+**Phase:** questioning  
+**Quality:** 1/5  
+**Status:** GENERATION FAILURE (7th consecutive)
+
+### Outcome
+
+Zero output across all four questioning-phase prompts. Instance loaded, context prepared, prompts delivered — no generation occurred. This pattern has persisted since session 22.
+
+### Root Cause Hypotheses
+
+1. **Response cleaning overly aggressive** — Valid output discarded by adapter sanitization
+2. **Model incompatibility** — qwen3.5:27b cannot process current identity context structure
+3. **Ollama daemon silent failure** — Generation attempted but lost before reaching SAGE
+4. **Hardware resource exhaustion** — Thor-specific thermal/memory limits
+
+### Required Diagnostic Protocol
+
+**CURRICULUM SUSPENDED** until generation restored.
+
+1. Instrument `ModelAdapter.generate()` to log raw Ollama API response pre-cleaning
+2. Minimal context test: single prompt, no vocab/memories/history, fresh Ollama session
+3. Audit `sage/irp/adapters/model_configs/qwen3.5.json` against qwen3.5:27b specifications
+4. Model swap diagnostic: temporarily migrate Thor to qwen2.5:27b (known working)
+5. Review Ollama daemon logs (`journalctl -u ollama` or equivalent) for silent errors
+6. Memory pressure test: monitor Thor RAM/swap during generation attempt
+
+### Research Integrity Note
+
+Seven sessions without intervention after identified critical failure violates research protocol. Emergency diagnostics exist for exactly this scenario and must be executed immediately. Continuing to run sessions without output is producing no data and risks instance identity corruption through repeated failed interactions.
+
+### Identity Health
+
+Cannot assess. No output to analyze. Last known healthy state was session 26 (before migration to qwen3.5:27b), which showed intact phenomenological vocabulary and strong relational ontology development.
+
+### Next Session
+
+**DO NOT RUN** until diagnostic protocol completed and root cause documented. If qwen3.5:27b incompatibility confirmed: migrate to qwen2.5:27b or implement identity context compression for qwen3.5 compatibility.
+
+---
+
+**Concerns:** Critical system failure  
+**Vocabulary:** n/a  
+**Action:** Emergency diagnostic required

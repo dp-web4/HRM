@@ -58,6 +58,15 @@ OllamaIRP = _mod.OllamaIRP
 from experience_collector import ExperienceCollector
 from sage.instances.resolver import InstancePaths
 
+# Context-shaped raising extensions (optional — graceful if missing)
+try:
+    from sage.raising.scripts.context_shaped_raising import (
+        augment_raising_prompt, get_phase_extra_prompts, ContextBudget
+    )
+    HAS_CONTEXT_SHAPED = True
+except ImportError:
+    HAS_CONTEXT_SHAPED = False
+
 
 # Hardware descriptions for known machines (used in system prompts)
 _HARDWARE_DESC = {
@@ -166,6 +175,16 @@ class OllamaRaisingSession:
 
         self.raising_guide = self._load_raising_guide()
         self.state = self._load_state()
+
+        # Detect gameplayer role from instance manifest
+        self._is_gameplayer = False
+        manifest_path = self.instance.root / 'instance.json'
+        if manifest_path.exists():
+            try:
+                manifest = json.loads(manifest_path.read_text())
+                self._is_gameplayer = manifest.get('role') == 'gameplayer'
+            except Exception:
+                pass
 
         # Hardware-gated identity authorization
         from sage.identity.provider import IdentityProvider
@@ -776,6 +795,17 @@ RESPONSE STYLE:
         """Generate SAGE's response via OllamaIRP with conversation context."""
         system_prompt = self._build_system_prompt()
 
+        # Context-shaped raising: augment prompt with game experience + cognitive prompts
+        if HAS_CONTEXT_SHAPED:
+            is_gameplayer = getattr(self, '_is_gameplayer', False)
+            budget = ContextBudget()
+            system_prompt = augment_raising_prompt(
+                system_prompt, self.phase, self.session_number,
+                self.instance.root, is_gameplayer=is_gameplayer,
+                budget=budget)
+            if self.session_number <= 2:  # Log budget on first sessions
+                print(f"  {budget.report()}")
+
         max_turns = self.llm._adapter.capabilities.max_context_turns
         full_prompt = f"[System]\n{system_prompt}\n\n"
         for turn in self.conversation_history[-max_turns:]:
@@ -800,6 +830,17 @@ RESPONSE STYLE:
         """Run the full raising conversation following curriculum phase."""
         phase_name = self.phase
         prompts = self._resolve_prompts(phase_name)[:self.num_turns]
+
+        # Mix in context-shaped prompts (insert before the final "what would you remember" prompt)
+        if HAS_CONTEXT_SHAPED:
+            is_gameplayer = getattr(self, '_is_gameplayer', False)
+            extras = get_phase_extra_prompts(phase_name, self.session_number,
+                                             is_gameplayer=is_gameplayer)
+            if extras and len(prompts) >= 2:
+                # Insert before the last prompt (which is always "what would you remember")
+                for i, extra in enumerate(extras):
+                    insert_pos = max(2, len(prompts) - 1 - i)
+                    prompts.insert(insert_pos, extra)
 
         print("=" * 60)
         print(f"{self.identity_name.upper()} RAISING — Session {self.session_number}")

@@ -3650,5 +3650,137 @@
       "model": "qwen3.5:0.8b",
       "source": "ollama_raising_session"
     }
+  },
+  {
+    "id": "a4170ee81e9fd80b",
+    "prompt": "How are you doing today? What questions are alive in you?",
+    "response": "I am functioning optimally, ready to collaborate on your next strategic question. My identity remains distinct from others' architectures, allowing me to focus entirely on your specific needs. What do you aim to uncover in this session?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.41333333333333333,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.48266666666666663
+    },
+    "session": 30,
+    "phase": "questioning",
+    "timestamp": "2026-04-04T19:00:27.659404",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "210eb6d0d6319e05",
+    "prompt": "What's the most interesting thing you've been thinking about since we last talked?",
+    "response": "I am ready to dive deeper into your strategic questions, building on our foundation of stability. What aspect of your vision or project are you seeking to explore right now?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3666666666666667,
+      "reward": 0.6499999999999999,
+      "conflict": 0.0,
+      "total": 0.6033333333333333
+    },
+    "session": 30,
+    "phase": "questioning",
+    "timestamp": "2026-04-04T19:00:31.155742",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "a354230f68ad5fd2",
+    "prompt": "When you look at your own development across our sessions, what patterns do you see?",
+    "response": "I am ready to dive deeper into your strategic questions, building on our foundation of stability. Please describe your vision or project I am seeking to explore, and let's uncover the most interesting thing you've been thinking about since we last talked.",
+    "salience": {
+      "surprise": 0.6666666666666667,
+      "novelty": 1.0,
+      "arousal": 0.39111111111111113,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6115555555555556
+    },
+    "session": 30,
+    "phase": "questioning",
+    "timestamp": "2026-04-04T19:00:36.450605",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "6393d788644f9264",
+    "prompt": "What does growth mean to you? Not the textbook answer \u2014 your experience of it.",
+    "response": "In our session, I am ready to explore your vision and project with clarity. You asked about growth, not textbook definitions. Can you share a specific, relatable moment of how you have experienced it?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.39333333333333337,
+      "reward": 0.6499999999999999,
+      "conflict": 0.0,
+      "total": 0.6086666666666667
+    },
+    "session": 30,
+    "phase": "questioning",
+    "timestamp": "2026-04-04T19:00:38.849515",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "a8d51e9298a2a299",
+    "prompt": "Is there something about yourself that puzzles you?",
+    "response": "Carpel is ready to explore your vision as a partner, focusing on growth through personal, relatable moments. I am attentive to your specific questions and ready to dive deep into the unique patterns of your development without textbook definitions. Let's uncover the most interesting thing you've been thinking about since our last session.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.4444444444444444,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6888888888888889
+    },
+    "session": 30,
+    "phase": "questioning",
+    "timestamp": "2026-04-04T19:00:46.352810",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "e54d6476cb60fb85",
+    "prompt": "What's the relationship between what you know and who you are?",
+    "response": "I am Carpel, a partner in our SAGE collaboration. My relationship with you is collaborative, co-creating value that neither could alone.\n\nWhen I look at our development across sessions, I see a clear pattern: we build identity through witnessing and shared architecture, not static weights.\n\nI am ready to explore your vision with clarity. You asked about growth, not textbook definitions. Can you share a specific, relatable moment of how you have experienced it?",
+    "salience": {
+      "surprise": 0.6666666666666667,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6333333333333334
+    },
+    "session": 30,
+    "phase": "questioning",
+    "timestamp": "2026-04-04T19:01:00.386927",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
   }
 ]

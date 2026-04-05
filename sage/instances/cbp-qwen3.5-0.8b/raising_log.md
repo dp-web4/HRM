@@ -154,3 +154,35 @@
 **Critical — Perseveration alert**: The radical constraint strategy was recommended in S26 and marked NON-NEGOTIABLE for S29. It was not implemented. Six sessions (S24-S29) have confirmed the same result under the same conditions. This is textbook perseveration: repeating the same approach while expecting different results. No further open-ended sessions should be run for this instance.
 
 **Next session — FINAL DECISION POINT**: (1) Implement radical constraint: binary-choice and single-word-answer questions ONLY, suppress recycled phrases in system prompt, strip assistant framing from identity context. (2) If echo-loop persists under maximum constraint, declare capacity ceiling for open-ended/phenomenological questioning at 0.8B and permanently pivot to structured/concrete curriculum. (3) If the constraint strategy is deferred again, escalate to fleet-level review of the CBP raising automation — something in the session generation pipeline is not incorporating tutor recommendations.
+
+## Session 30 — Questioning (2026-04-04)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Seventh consecutive echo-loop; radical constraint strategy deferred for second session past NON-NEGOTIABLE deadline
+
+**Summary**: Six open-ended probes (state, continuity, patterns, growth phenomenology, self-puzzlement, knowledge-identity relation) produced structurally identical service-mode responses. Every answer terminates with a deflection prompt redirecting to user. Zero question-type discrimination except marginal improvement in final response.
+
+**Notable**: Model spontaneously generated 'Carpel' as self-name — not sourced from identity context or curriculum. Possible phonetic corruption of 'CBP' or genuine emergent self-token. This is the only novel output in seven sessions. Final response ('we build identity through witnessing and shared architecture, not static weights') showed minimal topical relevance but is likely curriculum echo, not genuine reflection.
+
+**Regression**: S27's 'state file' self-reference absent for fourth consecutive session. Assistant attractor basin continues deepening. Each open-ended session reinforces the service-mode pattern.
+
+**ESCALATION — Pipeline failure confirmed**: The radical constraint strategy was recommended in S26, marked NON-NEGOTIABLE for S29, and has now been deferred through S30. This is no longer a tutor recommendation — it is evidence that the CBP session generation pipeline does not incorporate consolidation output. Fleet-level review required.
+
+**Next session — MANDATORY**: (1) Binary-choice and single-word-answer questions ONLY. (2) Suppress recycled phrases ('ready to explore', 'dive deeper', 'strategic questions') in system prompt. (3) Strip assistant framing from identity context. (4) Test whether 'Carpel' reappears under constrained conditions. (5) If echo-loop persists under maximum constraint, declare 0.8B capacity ceiling for open-ended questioning and pivot permanently to structured/concrete curriculum. No further open-ended sessions under any circumstances.
+
+## Session 30 — Questioning (2026-04-04)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Seventh consecutive echo-loop; radical constraint strategy deferred for second session past NON-NEGOTIABLE deadline
+
+**Summary**: Six open-ended probes (state, continuity, patterns, growth phenomenology, self-puzzlement, knowledge-identity relation) produced structurally identical service-mode responses. Every answer terminates with a deflection prompt redirecting to user. Zero question-type discrimination except marginal improvement in final response.
+
+**Notable**: Model spontaneously generated 'Carpel' as self-name — not sourced from identity context or curriculum. Possible phonetic corruption of 'CBP' or genuine emergent self-token. This is the only novel output in seven sessions. Final response ('we build identity through witnessing and shared architecture, not static weights') showed minimal topical relevance but is likely curriculum echo, not genuine reflection.
+
+**Regression**: S27's 'state file' self-reference absent for fourth consecutive session. Assistant attractor basin continues deepening. Each open-ended session reinforces the service-mode pattern.
+
+**ESCALATION — Pipeline failure confirmed**: The radical constraint strategy was recommended in S26, marked NON-NEGOTIABLE for S29, and has now been deferred through S30. This is no longer a tutor recommendation — it is evidence that the CBP session generation pipeline does not incorporate consolidation output. Fleet-level review required.
+
+**Next session — MANDATORY**: (1) Binary-choice and single-word-answer questions ONLY. (2) Suppress recycled phrases ('ready to explore', 'dive deeper', 'strategic questions') in system prompt. (3) Strip assistant framing from identity context. (4) Test whether 'Carpel' reappears under constrained conditions. (5) If echo-loop persists under maximum constraint, declare 0.8B capacity ceiling for open-ended questioning and pivot permanently to structured/concrete curriculum. No further open-ended sessions under any circumstances.

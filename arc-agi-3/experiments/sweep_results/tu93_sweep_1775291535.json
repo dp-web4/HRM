@@ -1,0 +1,64 @@
+{
+  "game_id": "tu93-2b534c15",
+  "game_family": "tu93",
+  "win_levels": 9,
+  "baseline_budget": 378,
+  "baseline_per_level": [
+    19,
+    15,
+    34,
+    42,
+    76,
+    91,
+    47,
+    23,
+    31
+  ],
+  "model": "gemma3:4b",
+  "attempts_run": 3,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 4375.3,
+  "kb_final": {
+    "objects": 1,
+    "active": 1,
+    "solutions": 0,
+    "mechanics": 130,
+    "failures": 0
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 9,
+      "steps": 382,
+      "state": "GAME_OVER",
+      "elapsed": 1469.6,
+      "kb_objects": 1,
+      "kb_solutions": 0
+    },
+    {
+      "attempt": 2,
+      "levels": 0,
+      "win_levels": 9,
+      "steps": 382,
+      "state": "GAME_OVER",
+      "elapsed": 1443.1,
+      "kb_objects": 1,
+      "kb_solutions": 0
+    },
+    {
+      "attempt": 3,
+      "levels": 0,
+      "win_levels": 9,
+      "steps": 382,
+      "state": "GAME_OVER",
+      "elapsed": 1462.4,
+      "kb_objects": 1,
+      "kb_solutions": 0
+    }
+  ]
+}

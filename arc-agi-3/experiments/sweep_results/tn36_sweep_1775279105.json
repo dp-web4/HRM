@@ -1,0 +1,62 @@
+{
+  "game_id": "tn36-ab4f63cc",
+  "game_family": "tn36",
+  "win_levels": 7,
+  "baseline_budget": 250,
+  "baseline_per_level": [
+    23,
+    22,
+    26,
+    37,
+    25,
+    56,
+    61
+  ],
+  "model": "gemma3:4b",
+  "attempts_run": 3,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 3569.7,
+  "kb_final": {
+    "objects": 97,
+    "active": 64,
+    "solutions": 0,
+    "mechanics": 128,
+    "failures": 2
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 7,
+      "steps": 254,
+      "state": "GAME_OVER",
+      "elapsed": 1200.9,
+      "kb_objects": 94,
+      "kb_solutions": 0
+    },
+    {
+      "attempt": 2,
+      "levels": 0,
+      "win_levels": 7,
+      "steps": 254,
+      "state": "GAME_OVER",
+      "elapsed": 1186.9,
+      "kb_objects": 97,
+      "kb_solutions": 0
+    },
+    {
+      "attempt": 3,
+      "levels": 0,
+      "win_levels": 7,
+      "steps": 254,
+      "state": "GAME_OVER",
+      "elapsed": 1181.6,
+      "kb_objects": 97,
+      "kb_solutions": 0
+    }
+  ]
+}

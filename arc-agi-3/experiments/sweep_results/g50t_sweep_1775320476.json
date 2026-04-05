@@ -1,0 +1,62 @@
+{
+  "game_id": "g50t-5849a774",
+  "game_family": "g50t",
+  "win_levels": 7,
+  "baseline_budget": 575,
+  "baseline_per_level": [
+    51,
+    175,
+    86,
+    52,
+    96,
+    48,
+    67
+  ],
+  "model": "gemma3:4b",
+  "attempts_run": 3,
+  "best_level": 0,
+  "won": false,
+  "won_on_attempt": null,
+  "avg_level": 0.0,
+  "max_level": 0,
+  "total_elapsed_s": 6416.1,
+  "kb_final": {
+    "objects": 1,
+    "active": 1,
+    "solutions": 0,
+    "mechanics": 208,
+    "failures": 1
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "levels": 0,
+      "win_levels": 7,
+      "steps": 580,
+      "state": "GAME_OVER",
+      "elapsed": 2136.0,
+      "kb_objects": 1,
+      "kb_solutions": 0
+    },
+    {
+      "attempt": 2,
+      "levels": 0,
+      "win_levels": 7,
+      "steps": 580,
+      "state": "GAME_OVER",
+      "elapsed": 2134.3,
+      "kb_objects": 1,
+      "kb_solutions": 0
+    },
+    {
+      "attempt": 3,
+      "levels": 0,
+      "win_levels": 7,
+      "steps": 580,
+      "state": "GAME_OVER",
+      "elapsed": 2145.6,
+      "kb_objects": 1,
+      "kb_solutions": 0
+    }
+  ]
+}

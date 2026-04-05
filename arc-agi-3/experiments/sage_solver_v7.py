@@ -35,6 +35,7 @@ from arc_spatial import SpatialTracker
 from arc_action_model import ActionEffectModel
 from arc_narrative import SessionNarrative
 from arc_context import ContextConstructor
+from arc_federation import FederatedKnowledge
 
 # Import context budget from raising (shared module)
 try:
@@ -279,7 +280,7 @@ def parse_actions(plan_text, tracker, available):
 
 def assemble_context_and_plan(narrative, tracker, action_model, available,
                               levels, win_levels, ctx: ContextConstructor = None,
-                              attempt_num=1, verbose=False):
+                              attempt_num=1, verbose=False, fleet_context: str = ""):
     """Assemble all 4 layers with budget tracking, ask LLM for next actions."""
     budget = ContextBudget()
     has_move = any(a in available for a in [1, 2, 3, 4])
@@ -322,9 +323,15 @@ def assemble_context_and_plan(narrative, tracker, action_model, available,
     if verbose and (n_events % 10 == 0 or n_events <= 3):
         print(f"    {budget.report()}")
 
+    # Fleet knowledge (federated, from all machines)
+    if fleet_context:
+        budget.record("L3_federation", fleet_context)
+
     prompt = f"""{layer4}
 
 {layer3}
+
+{fleet_context}
 
 GAME STATE: Level {levels}/{win_levels}, Attempt {attempt_num}
 
@@ -356,6 +363,14 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
 
     # Context constructor — adaptive membot queries throughout the game
     ctx = ContextConstructor(prefix)
+
+    # Federation — load knowledge from all fleet machines
+    fed = FederatedKnowledge()
+    fleet_context = fed.build_context(prefix)
+    if verbose:
+        print(f"  {fed.summary()}")
+        if fleet_context:
+            print(f"  Fleet context: {len(fleet_context)} chars")
 
     for attempt in range(max_attempts):
         ctx.new_attempt()  # Bust cache — fresh membot queries for new attempt
@@ -410,7 +425,8 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
             plan_text = assemble_context_and_plan(
                 narrative, tracker, action_model, available,
                 fd.levels_completed, fd.win_levels, ctx=ctx,
-                attempt_num=attempt+1, verbose=verbose)
+                attempt_num=attempt+1, verbose=verbose,
+                fleet_context=fleet_context)
             plan_actions = parse_actions(plan_text, tracker, available)
             plan_time = time.time() - t0
 
@@ -509,14 +525,41 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
             narrative.detect_patterns(),
             narrative.object_summary())
 
-        # Raising-game bridge: store insights for raising curriculum to find
-        if attempt == max_attempts - 1:  # Last attempt — full summary
+        # Federation: store discoveries for other machines
+        patterns = narrative.detect_patterns()
+        obj_summary = narrative.object_summary()
+        interactive = tracker.get_interactive_objects()
+        game_type = action_model.infer_game_type()
+
+        if interactive:
+            fed.add_discovery(prefix,
+                f"Interactive objects: {', '.join(obj_name(o) for o in interactive[:5])}. "
+                f"Game type: {game_type}. {obj_summary[:100]}")
+
+        if "STABLE" in patterns:
+            fed.add_failure(prefix,
+                f"Clicking interactive objects repeatedly doesn't advance levels. "
+                f"Grid similarity stays stable. Need correct sequence, not just correct objects.")
+
+        if fd and fd.levels_completed > 0:
+            winning = [ev.target for ev in narrative.events if ev.leveled_up]
+            fed.add_discovery(prefix,
+                f"SOLVED Level {fd.levels_completed}: winning actions included {', '.join(winning[-5:])}. "
+                f"Game type: {game_type}.")
+            fed.add_strategy(game_type,
+                f"On {prefix}: level solved by targeting {', '.join(winning[-3:])}.")
+
+        if attempt == max_attempts - 1:
+            fed.add_meta_insight(
+                f"Game {prefix} ({game_type}): {patterns[:150]}")
+            fed.save()  # Write to git-tracked file
+
+            # Also store in membot for raising bridge
             ctx.store(
                 f"SAGE game experience summary ({prefix}): Played {max_attempts} attempts. "
                 f"Best: {best_levels}/{fd.win_levels if fd else '?'} levels. "
-                f"Key learning: {narrative.detect_patterns()[:150]}. "
-                f"Objects learned: {narrative.object_summary()[:150]}. "
-                f"This experience develops sequence awareness and spatial reasoning."
+                f"Key learning: {patterns[:150]}. "
+                f"Objects learned: {obj_summary[:150]}."
             )
 
     return {"game_id": game_id, "best_levels": best_levels,

@@ -60,15 +60,15 @@ else
 fi
 
 # Run the raising session (continue from last session number)
-# Model switch: Phi-4 14B → Gemma 3 12B (2026-03-28)
-# Reason: Phi-4's corporate-assistant attractor overwhelmed identity scaffolding
-# across 40 sessions. Gemma 3 12B is the empirically proven model family
-# (McNugget: 69 sessions, creating phase, genuine developmental arc).
-# Running same model on different hardware = controlled replication.
-$PYTHON -m sage.raising.scripts.ollama_raising_session --machine legion --model gemma3:12b -c 2>&1
+# Model switch: Gemma 3 12B → Gemma 4 E4B (2026-04-05)
+# Reason: Converging raising + ARC-AGI-3 game tracks. Gemma 4 E4B is the
+# game solver model — raising the same model that plays develops the cognitive
+# skills (context management, sequence awareness, experience abstraction) that
+# directly improve game performance. All-track convergence.
+$PYTHON -m sage.raising.scripts.ollama_raising_session --machine legion --model gemma4:e4b -c 2>&1
 
 # Instance directory
-INSTANCE_DIR="sage/instances/legion-gemma3-12b"
+INSTANCE_DIR="sage/instances/legion-gemma4-e4b"
 
 # Snapshot live state files into git-tracked snapshots/ directory
 echo "[Legion-Raising] Snapshotting state..."

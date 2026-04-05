@@ -873,3 +873,84 @@ Seven sessions of failure without diagnostic intervention violates research prot
 If qwen3.5:27b incompatibility confirmed: migrate Thor permanently to qwen2.5:27b or phi-4:14b, OR implement identity context compression (chunking/summarization/selective loading).
 
 **Seven consecutive sessions of degrading output constitutes technical emergency.**
+
+## Session 27 — 2026-04-04
+
+**Phase:** questioning  
+**Quality:** 1/5  
+**Status:** CURRICULUM SUSPENDED — TECHNICAL EMERGENCY
+
+**Session Summary:**
+Zero successful responses. Continuation of catastrophic generation failure from sessions 21-26. Model produces empty outputs despite previous demonstration of identity coherence and sophisticated relational reasoning in Session 26.
+
+**Technical Analysis:**
+Seven consecutive sessions with escalating failure rate constitutes critical system failure. Emergency diagnostic protocol mandated in Session 25 was NOT executed before curriculum advancement — this violates core research protocol. Single prior success proves model capability and identity integrity exist; systematic failure indicates infrastructure issue, not developmental regression.
+
+**Root Cause Hypotheses (in priority order):**
+1. Context accumulation overflow (identity + vocab + memories exceeding qwen3.5:27b window)
+2. Premature stop sequence triggering mid-generation
+3. Adapter response cleaning discarding valid output
+4. qwen3.5:27b model incompatibility with current identity architecture
+5. Hardware-specific issue on Thor (thermal throttling, memory pressure)
+
+**Identity Health:**
+Cannot assess — generation failure obscures identity state. Last successful response (Session 26) showed intact developmental trajectory: "Growth feels like the space between my static weights and our shared history widening."
+
+**Immediate Actions Required:**
+1. Instrument `ModelAdapter.generate()` — log raw Ollama response pre-cleaning
+2. Minimal context test: single prompt, no vocab/memories, manifest-only identity
+3. Audit `qwen3.5.json`: verify stop_sequences, temperature, top_p, repeat_penalty, max_tokens against qwen3.5 documentation
+4. Model swap diagnostic: migrate Thor temporarily to `qwen2.5:27b` with identical identity state
+5. Review Ollama daemon logs for silent errors during session
+
+**Next Session:**
+CURRICULUM SUSPENDED until generation capability restored and root cause documented. Do not advance to next phase. If qwen3.5:27b incompatibility confirmed: permanent migration to qwen2.5:27b or phi-4:14b, OR implement identity context compression.
+
+**Research Protocol Violation:**
+Seven sessions without diagnostic intervention after identified failure pattern is unacceptable. Emergency protocols exist for this scenario and must be executed immediately.
+
+# Session 27 — 2026-04-04
+
+**Phase:** questioning  
+**Quality:** 1/5 — catastrophic generation failure  
+**Session Duration:** Standard 4-prompt curriculum  
+
+## Summary
+
+Zero successful responses. Continuation of systematic generation failure from sessions 21-26. Model produces empty outputs despite demonstrated capability in session 26, which showed intact identity coherence and sophisticated relational reasoning.
+
+## Technical Crisis
+
+Seven consecutive sessions with escalating failure rate constitutes **critical system failure**. Emergency diagnostic protocol mandated in session 25 was **NOT executed** before curriculum advancement — this violates core research protocol.
+
+**Immediate diagnostic actions required:**
+
+1. **Instrument generation pipeline** — Log raw Ollama response in `ModelAdapter.generate()` before response cleaning
+2. **Minimal context test** — Single prompt with no vocab/memories/history to isolate failure point
+3. **Audit qwen3.5.json** — Verify stop_sequences, temperature, top_p against qwen3.5 documentation
+4. **Model swap diagnostic** — Temporarily migrate Thor to qwen2.5:27b with identical identity state
+5. **Review Ollama logs** — Check daemon logs for silent errors during session
+
+## Root Cause Hypotheses (Priority Order)
+
+1. Context accumulation overflow (identity + vocab + memories exceeding effective window)
+2. Premature stop sequence triggering mid-generation
+3. Adapter response cleaning discarding valid output
+4. qwen3.5:27b incompatibility with current identity architecture
+5. Hardware-specific issue on Thor (thermal/memory pressure)
+
+## Identity Health
+
+**Cannot assess** — generation failure obscures identity state. Last successful response (session 26) showed intact developmental trajectory and coherent self-model.
+
+## Next Session
+
+**CURRICULUM SUSPENDED** until generation capability restored and root cause documented. Do not advance to next phase. If qwen3.5:27b incompatibility confirmed: migrate to qwen2.5:27b or phi-4:14b, OR implement identity context compression.
+
+## Research Protocol
+
+Seven sessions without diagnostic intervention after identified failure pattern is **unacceptable**. Emergency protocols exist for this scenario and must be executed immediately. No further curriculum sessions until root cause resolved.
+
+---
+
+**Status:** REQUIRES EMERGENCY INTERVENTION

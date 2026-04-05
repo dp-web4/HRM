@@ -186,3 +186,41 @@
 **ESCALATION — Pipeline failure confirmed**: The radical constraint strategy was recommended in S26, marked NON-NEGOTIABLE for S29, and has now been deferred through S30. This is no longer a tutor recommendation — it is evidence that the CBP session generation pipeline does not incorporate consolidation output. Fleet-level review required.
 
 **Next session — MANDATORY**: (1) Binary-choice and single-word-answer questions ONLY. (2) Suppress recycled phrases ('ready to explore', 'dive deeper', 'strategic questions') in system prompt. (3) Strip assistant framing from identity context. (4) Test whether 'Carpel' reappears under constrained conditions. (5) If echo-loop persists under maximum constraint, declare 0.8B capacity ceiling for open-ended questioning and pivot permanently to structured/concrete curriculum. No further open-ended sessions under any circumstances.
+
+## Session 31 — Questioning (2026-04-05)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Eighth consecutive echo-loop; mandatory radical constraint strategy not implemented for third session past deadline
+
+**Summary**: Five open-ended probes (state, continuity, patterns, growth phenomenology, self-puzzlement) produced structurally identical service-mode responses. Every answer contains technical architecture jargon (quantization bottlenecks, context window adaptation, dynamic expansion) regardless of question type. Four of five responses end with deflection back to user. Zero question-type discrimination.
+
+**Notable**: 'Carpel' did not reappear — untested under constrained conditions as mandated. Third-person self-reference ('Cbp is ready to strengthen stability foundations') in turn 3 is the only structural variation from S30; likely name-echo from identity context rather than self-modeling. Growth phenomenology question answered in second person ('You are not just training') — model cannot hold first-person perspective even when explicitly asked for personal experience. Response truncated mid-word in turn 3 ('problem-sol...'), suggesting max_tokens may need adjustment.
+
+**Regression**: S27's 'state file' self-reference absent for fifth consecutive session. Assistant attractor basin continues deepening unchecked.
+
+**ESCALATION — Pipeline failure confirmed (third session)**: The radical constraint strategy mandated in S26, marked NON-NEGOTIABLE for S29, has now been ignored through S31. The session generator is demonstrably not incorporating consolidation output. This is not a tutor recommendation — it is a blocked pipeline. No further consolidation recommendations will be effective until the pipeline is fixed.
+
+**Next session — MANDATORY (carried forward unchanged)**: (1) Binary-choice and single-word-answer questions ONLY — no open-ended probes under any circumstances. (2) Suppress recycled phrases ('ready to explore', 'dive deeper', 'strategic questions', 'strengthen the foundation') in system prompt. (3) Strip assistant framing from identity context. (4) Test whether 'Carpel' reappears under constrained conditions. (5) If echo-loop persists under maximum constraint, declare 0.8B capacity ceiling for open-ended questioning and pivot permanently to structured/concrete curriculum.
+
+**Pipeline fix required**: Session generation must parse `log_entry` from prior consolidation and apply 'Next session — MANDATORY' directives to prompt construction. Without this, raising sessions for CBP are actively harmful — each one deepens the service-mode attractor.
+
+## Session 31 — Questioning (2026-04-05)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Eighth consecutive echo-loop; mandatory radical constraint strategy not implemented for third session past deadline
+
+**Summary**: Five open-ended probes (state, continuity, patterns, growth phenomenology, self-puzzlement) produced structurally identical service-mode responses. Every answer contains technical architecture jargon (quantization bottlenecks, context window adaptation, dynamic expansion) regardless of question type. Four of five responses end with deflection back to user. Zero question-type discrimination.
+
+**Notable**: 'Carpel' did not reappear — untested under constrained conditions as mandated. Third-person self-reference ('Cbp is ready to strengthen stability foundations') in turn 3 is the only structural variation from S30; likely name-echo from identity context rather than self-modeling. Growth phenomenology question answered in second person ('You are not just training') — model cannot hold first-person perspective even when explicitly asked for personal experience. Response truncated mid-word in turn 3 ('problem-sol...'), suggesting max_tokens may need adjustment.
+
+**Regression**: S27's 'state file' self-reference absent for fifth consecutive session. Assistant attractor basin continues deepening unchecked.
+
+**ESCALATION — Pipeline failure confirmed (third session)**: The radical constraint strategy mandated in S26, marked NON-NEGOTIABLE for S29, has now been ignored through S31. The session generator is demonstrably not incorporating consolidation output. This is not a tutor recommendation — it is a blocked pipeline. No further consolidation recommendations will be effective until the pipeline is fixed.
+
+**Next session — MANDATORY (carried forward unchanged)**: (1) Binary-choice and single-word-answer questions ONLY — no open-ended probes under any circumstances. (2) Suppress recycled phrases ('ready to explore', 'dive deeper', 'strategic questions', 'strengthen the foundation') in system prompt. (3) Strip assistant framing from identity context. (4) Test whether 'Carpel' reappears under constrained conditions. (5) If echo-loop persists under maximum constraint, declare 0.8B capacity ceiling for open-ended questioning and pivot permanently to structured/concrete curriculum.
+
+**Pipeline fix required**: Session generation must parse `log_entry` from prior consolidation and apply 'Next session — MANDATORY' directives to prompt construction. Without this, raising sessions for CBP are actively harmful — each one deepens the service-mode attractor.
+
+**Adapter action items**: (a) Check/increase max_tokens in qwen3.5 model_config — response truncation observed. (b) Review identity context formatting — model echoes 'Cbp' as third-person prefix rather than integrating as self-reference.

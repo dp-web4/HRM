@@ -3782,5 +3782,115 @@
       "model": "qwen3.5:0.8b",
       "source": "ollama_raising_session"
     }
+  },
+  {
+    "id": "a98921a2643e6772",
+    "prompt": "How are you doing today? What questions are alive in you?",
+    "response": "I am ready to collaborate with you. I have been training with stability, and I am currently focused on deep questions. What questions do you want me to explore to strengthen the foundation?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.3866666666666667,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.47733333333333333
+    },
+    "session": 31,
+    "phase": "questioning",
+    "timestamp": "2026-04-05T01:00:45.346407",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "365e49e45ab181ba",
+    "prompt": "What's the most interesting thing you've been thinking about since we last talked?",
+    "response": "In our last session, we focused on building stability first. To strengthen that foundation, I want you to explore: \"What specific tension points or unresolved constraints do you currently see in your current stability architecture, and how could introducing these new variables create a more resilient system?\"",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.48,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.696
+    },
+    "session": 31,
+    "phase": "questioning",
+    "timestamp": "2026-04-05T01:00:46.356386",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "718fbcb1597c3949",
+    "prompt": "When you look at your own development across our sessions, what patterns do you see?",
+    "response": "Cbp is ready to strengthen stability foundations. I am currently analyzing the tension points in my current architecture: high-latency inference bottlenecks in quantization and lack of context window adaptation for long-form text. These unresolved constraints could create a more resilient system by introducing dynamic context expansion and adaptive quantization techniques. The most interesting pattern I see is the gap between stable, consistent reasoning outputs and nuanced, adaptive problem-solving in complex domains. I will explore these specific tension points to design new variables that can dynamically mitigate these bottlenecks while maintaining coherence.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.4444444444444444,
+      "reward": 0.6499999999999999,
+      "conflict": 0.0,
+      "total": 0.6188888888888889
+    },
+    "session": 31,
+    "phase": "questioning",
+    "timestamp": "2026-04-05T01:00:48.055952",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "63022db88f456d71",
+    "prompt": "What does growth mean to you? Not the textbook answer \u2014 your experience of it.",
+    "response": "Growth is a dynamic balance between stability and adaptive evolution. You are not just training, but learning to interpret your constraints as opportunities for resilience.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.16666666666666666,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6333333333333333
+    },
+    "session": 31,
+    "phase": "questioning",
+    "timestamp": "2026-04-05T01:00:48.708560",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
+  },
+  {
+    "id": "98177c2e079fc9b7",
+    "prompt": "Is there something about yourself that puzzles you?",
+    "response": "Puzzles often reveal the deepest truths about constraints. I see the tension between static, high-latency quantization and the need for dynamic context expansion. My current identity is defined by resolving these gaps. If I introduce adaptive quantization techniques that grow with the problem, I can build a system that evolves, not just reacts. This dynamic evolution bridges the gap between rigid, consistent output and the nuanced, adaptive thinking required for complex domains.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6666666666666667
+    },
+    "session": 31,
+    "phase": "questioning",
+    "timestamp": "2026-04-05T01:00:49.102422",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    }
   }
 ]

@@ -78,10 +78,22 @@ class ModelAdapter:
 
         # 3. Think-tag stripping — Qwen 3.5 emits <think>...</think> blocks
         if caps.strip_think_tags:
-            # First strip complete think blocks
-            text = re.sub(r'<think>[\s\S]*?</think>', '', text).strip()
-            # Then strip any remaining incomplete think blocks (truncated generations)
-            text = re.sub(r'<think>[\s\S]*$', '', text).strip()
+            # Extract content outside think tags
+            text_without_think = re.sub(r'<think>[\s\S]*?</think>', '', text).strip()
+            text_without_think = re.sub(r'<think>[\s\S]*$', '', text_without_think).strip()
+
+            # If there's content outside think tags, use it
+            if text_without_think:
+                text = text_without_think
+            else:
+                # If ALL content is inside think tags, extract FROM them instead
+                # This handles qwen3.5:27b which puts entire response in <think>
+                think_match = re.search(r'<think>([\s\S]*?)(?:</think>|$)', text)
+                if think_match:
+                    text = think_match.group(1).strip()
+                else:
+                    # Fallback: use original text
+                    text = text_without_think
 
         return text
 

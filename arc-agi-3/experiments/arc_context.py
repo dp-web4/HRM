@@ -36,10 +36,16 @@ class ContextConstructor:
         self.game_prefix = game_prefix
         self.membot_available = None
         self.query_cache = {}  # query → (result, timestamp)
-        self.cache_ttl = 300   # cache for 5 minutes
+        self.cache_ttl = 60    # cache for 1 minute (short — context evolves fast)
+        self.attempt_count = 0
 
         # Ensure cartridge is mounted
         self._mount_cartridge()
+
+    def new_attempt(self):
+        """Clear cache for a new attempt — force fresh membot queries."""
+        self.query_cache.clear()
+        self.attempt_count += 1
 
     def _mount_cartridge(self):
         """Mount the sage cartridge if membot is running."""
@@ -183,24 +189,43 @@ class ContextConstructor:
 
     def on_game_end(self, levels_completed: int, win_levels: int,
                     narrative_patterns: str, object_summary: str):
-        """Store: What did I learn from this game session?"""
-        if levels_completed > 0:
-            self.store(
-                f"ARC-AGI-3 {self.game_prefix}: Completed {levels_completed}/{win_levels} levels. "
-                f"Key patterns: {narrative_patterns[:200]}"
-            )
+        """Store: What did I learn from this game session?
 
-        # Abstract the patterns for cross-game learning
+        Stores at multiple specificity levels so future queries find it:
+        - Game-specific: "lp85: cyan and teal are buttons, cycle colors"
+        - Category-specific: "rotation puzzle: find cycle length first"
+        - General: "repeated clicking without progress = wrong sequence"
+        """
+        # Game-specific learning (found by on_game_start query)
+        self.store(
+            f"ARC-AGI-3 {self.game_prefix} attempt {self.attempt_count}: "
+            f"{levels_completed}/{win_levels} levels. "
+            f"Objects: {object_summary[:200]}. "
+            f"Patterns: {narrative_patterns[:200]}"
+        )
+
+        # Category learning (found by on_probe_complete query)
         if "consistent effect" in narrative_patterns:
             self.store(
-                f"ARC-AGI-3 general: On {self.game_prefix}, interactive objects have "
-                f"consistent per-click effects. {object_summary[:150]}"
+                f"ARC-AGI-3 puzzle strategy: On {self.game_prefix}, interactive objects have "
+                f"consistent per-click effects. Each click causes the same change. "
+                f"This suggests a cycling/rotation mechanic."
             )
+
+        # General learning (found by on_stuck query)
         if "STABLE" in narrative_patterns:
             self.store(
-                f"ARC-AGI-3 general: On {self.game_prefix}, repeated clicking of "
-                f"interactive objects produces changes but no level progress. "
-                f"Need to find the correct SEQUENCE, not just the correct objects."
+                f"ARC-AGI-3 stuck strategy: On {self.game_prefix}, clicking interactive "
+                f"objects causes grid changes but no level progress. The objects are correct "
+                f"but the SEQUENCE is wrong. Try: different counts, different combinations, "
+                f"different ordering. Don't just alternate — search systematically."
+            )
+        if "WARNING" in narrative_patterns:
+            self.store(
+                f"ARC-AGI-3 perseveration warning: On {self.game_prefix}, repeated clicking "
+                f"({narrative_patterns.split('WARNING')[1][:100] if 'WARNING' in narrative_patterns else ''}) "
+                f"Change approach: try counting clicks, try only one button at a time, "
+                f"try clicking in a specific order."
             )
 
         self.save()

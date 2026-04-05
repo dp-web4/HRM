@@ -257,7 +257,7 @@ def assemble_context_and_plan(narrative, tracker, action_model, available,
     has_move = any(a in available for a in [1, 2, 3, 4])
 
     # Layer 1: Session narrative (this attempt's working memory)
-    layer1 = narrative.to_context(max_events=12)
+    layer1 = narrative.to_context()  # No cap — 128K context, keep everything
 
     # Layer 2: Action model (this game's probe results)
     layer2 = action_model.describe()
@@ -321,6 +321,7 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
     ctx = ContextConstructor(prefix)
 
     for attempt in range(max_attempts):
+        ctx.new_attempt()  # Bust cache — fresh membot queries for new attempt
         env = arcade.make(game_id)
         fd = env.reset()
         grid = get_frame(fd)

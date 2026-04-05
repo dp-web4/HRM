@@ -218,19 +218,22 @@ class SessionNarrative:
 
         return "\n".join(patterns) if patterns else ""
 
-    def to_context(self, max_events: int = 15) -> str:
+    def to_context(self, max_events: int = -1) -> str:
         """Build the full narrative context for the LLM prompt.
 
         This is Layer 1 of the context window — working memory.
+
+        With 128K context, we keep EVERYTHING. Older events get compressed
+        into phase summaries; recent events stay detailed. Nothing is lost.
         """
         sections = []
 
-        # Object behavior summary
+        # Object behavior summary (always — this is the key learning)
         obj_sum = self.object_summary()
         if obj_sum:
             sections.append(f"WHAT I'VE LEARNED ABOUT OBJECTS:\n{obj_sum}")
 
-        # Detected patterns
+        # Detected patterns (always — this drives strategy)
         patterns = self.detect_patterns()
         if patterns:
             sections.append(f"PATTERNS OBSERVED:\n{patterns}")
@@ -238,20 +241,47 @@ class SessionNarrative:
         # Similarity trajectory
         if len(self.similarity_history) > 1:
             current = self.similarity_history[-1]
-            sections.append(f"GRID STATE: {current:.1%} similar to initial (1.0 = unchanged, 0.0 = completely different)")
+            peak = min(self.similarity_history)  # lowest = most different
+            sections.append(
+                f"GRID STATE: {current:.1%} similar to initial "
+                f"(lowest was {peak:.1%} at step {self.similarity_history.index(peak)})")
 
-        # Recent action narrative (last N events)
-        recent = self.events[-max_events:]
-        if recent:
-            lines = []
-            for ev in recent:
-                lines.append(f"  Step {ev.step}: {ev.observation}")
-            sections.append(f"RECENT ACTIONS:\n" + "\n".join(lines))
-
-        # Level-up events (always included)
+        # Level-up events (always — most important)
         level_ups = [ev for ev in self.events if ev.leveled_up]
         if level_ups:
             lines = [f"  Step {ev.step}: {ev.target} → Level {ev.level_after}" for ev in level_ups]
             sections.append(f"LEVEL-UP EVENTS:\n" + "\n".join(lines))
+
+        # Full action narrative — compressed older, detailed recent
+        if self.events:
+            n = len(self.events)
+            if n <= 20:
+                # Short enough to show everything
+                lines = [f"  Step {ev.step}: {ev.observation}" for ev in self.events]
+                sections.append(f"ALL ACTIONS ({n} total):\n" + "\n".join(lines))
+            else:
+                # Compress older events into phase summary
+                old_events = self.events[:-15]
+                recent_events = self.events[-15:]
+
+                # Summarize old events by target
+                old_by_target = {}
+                for ev in old_events:
+                    if ev.target not in old_by_target:
+                        old_by_target[ev.target] = {"count": 0, "changed": 0}
+                    old_by_target[ev.target]["count"] += 1
+                    if ev.changed:
+                        old_by_target[ev.target]["changed"] += 1
+
+                old_lines = []
+                for target, stats in old_by_target.items():
+                    rate = stats["changed"] / max(stats["count"], 1)
+                    old_lines.append(f"  {target}: {stats['count']}× ({rate:.0%} caused changes)")
+                sections.append(f"EARLIER ACTIONS (steps 1-{old_events[-1].step}, summarized):\n" +
+                                "\n".join(old_lines))
+
+                # Show recent in detail
+                lines = [f"  Step {ev.step}: {ev.observation}" for ev in recent_events]
+                sections.append(f"RECENT ACTIONS (last 15):\n" + "\n".join(lines))
 
         return "\n\n".join(sections) if sections else "No actions taken yet."

@@ -182,8 +182,11 @@ class SpatialTracker:
         for obj in self.objects.values():
             if (obj.x <= x < obj.x + obj.w and obj.y <= y < obj.y + obj.h):
                 obj.click_responses.append({"changed": changed, "n_pixels": n_pixels})
-                if len(obj.click_responses) >= 2:
-                    obj.is_interactive = any(r["changed"] for r in obj.click_responses)
+                # Mark interactive on first positive response (don't wait for 2)
+                if changed:
+                    obj.is_interactive = True
+                elif len(obj.click_responses) >= 2 and not any(r["changed"] for r in obj.click_responses):
+                    obj.is_interactive = False
                 return obj.id
         return None
 

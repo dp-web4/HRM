@@ -32,7 +32,25 @@ from arc_action_model import ActionEffectModel
 
 INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
-MODEL = os.environ.get("OLLAMA_MODEL", "gemma4:e4b")
+MODEL = os.environ.get("OLLAMA_MODEL", "")
+
+def _detect_model():
+    """Auto-detect best available Ollama model."""
+    global MODEL
+    if MODEL:
+        return
+    try:
+        resp = requests.get(f"{OLLAMA_URL}/api/tags", timeout=5)
+        models = [m["name"] for m in resp.json().get("models", [])]
+    except Exception:
+        models = []
+    for preferred in ["gemma4:e4b", "gemma3:12b", "phi4:14b", "qwen3.5:0.8b",
+                       "qwen2.5:3b", "qwen3.5:2b"]:
+        if preferred in models:
+            MODEL = preferred
+            return
+    chat_models = [m for m in models if "embed" not in m]
+    MODEL = chat_models[0] if chat_models else "gemma4:e4b"
 
 ACTION_NAMES = {1: "UP", 2: "DOWN", 3: "LEFT", 4: "RIGHT",
                 5: "SELECT", 6: "CLICK", 7: "UNDO"}
@@ -40,14 +58,30 @@ ACTION_NAMES = {1: "UP", 2: "DOWN", 3: "LEFT", 4: "RIGHT",
 
 # ─── LLM ───
 
-def ask_llm(prompt: str) -> str:
-    """Chat API call. Unlimited tokens. Works with thinking models."""
+def _is_thinking_model():
+    """Check if current model supports native thinking (gemma4, etc.)."""
+    return "gemma4" in MODEL
+
+def ask_llm(prompt: str, max_tokens: int = -1) -> str:
+    """Chat API call. Works with thinking models and small models alike."""
+    opts = {"temperature": 0.3}
+    # Cap tokens for small models to avoid runaway generation
+    if max_tokens == -1 and any(s in MODEL for s in ["0.8b", "0.5b", "1b", "2b", "3b"]):
+        opts["num_predict"] = 300
+    elif max_tokens > 0:
+        opts["num_predict"] = max_tokens
+
+    payload = {
+        "model": MODEL, "stream": False,
+        "messages": [{"role": "user", "content": prompt}],
+        "options": opts,
+    }
+    # Disable thinking for non-thinking models (qwen3.5 generates huge CoT otherwise)
+    if not _is_thinking_model():
+        payload["think"] = False
+
     try:
-        resp = requests.post(f"{OLLAMA_URL}/api/chat", json={
-            "model": MODEL, "stream": False,
-            "messages": [{"role": "user", "content": prompt}],
-            "options": {"temperature": 0.3},
-        }, timeout=300)
+        resp = requests.post(f"{OLLAMA_URL}/api/chat", json=payload, timeout=300)
         if resp.status_code == 200:
             data = resp.json()
             content = data.get("message", {}).get("content", "").strip()
@@ -509,11 +543,18 @@ def main():
     parser.add_argument("--all", action="store_true")
     parser.add_argument("--attempts", type=int, default=5)
     parser.add_argument("--budget", type=int, default=300)
+    parser.add_argument("--model", default=None, help="Ollama model override")
     parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args()
 
+    global MODEL
+    _detect_model()
+    if args.model:
+        MODEL = args.model
+
     print("=" * 60)
     print(f"SAGE Puzzle Solver v5 — {MODEL}")
+    print(f"Thinking: {'native' if _is_thinking_model() else 'disabled'}")
     print("Interleaved: act 2-3, observe, replan")
     print("=" * 60)
 

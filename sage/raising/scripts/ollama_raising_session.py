@@ -57,6 +57,7 @@ OllamaIRP = _mod.OllamaIRP
 
 from experience_collector import ExperienceCollector
 from sage.instances.resolver import InstancePaths
+from sage.core.metabolic_controller import MetabolicController
 
 # Context-shaped raising extensions (optional — graceful if missing)
 try:
@@ -226,6 +227,15 @@ class OllamaRaisingSession:
             salience_threshold=0.4,
             machine_name=machine,
             model_name=model_name
+        )
+
+        # Metabolic controller for ATP logging (Thor Session #60: Gnosis C≈0.5 validation)
+        # Enables testing Prediction #3: Energy coupling α relates ATP to coherence
+        self.metabolic = MetabolicController(
+            initial_atp=100.0,
+            max_atp=100.0,
+            enable_circadian=False,  # Disable for raising (short sessions)
+            simulation_mode=True     # Use cycle counts not wall time
         )
 
         self.llm = None
@@ -861,6 +871,9 @@ RESPONSE STYLE:
                 "timestamp": datetime.now().isoformat()
             })
 
+            # Get metabolic snapshot for ATP logging (Thor Session #61)
+            metabolic_snapshot = self.metabolic.get_metabolic_snapshot()
+
             result = self.collector.add_exchange(
                 prompt=prompt,
                 response=response,
@@ -871,17 +884,29 @@ RESPONSE STYLE:
                     'machine': self.machine,
                     'model': self.model_name,
                     'source': 'ollama_raising_session'
-                }
+                },
+                metabolic_state=metabolic_snapshot
             )
 
             salience = result['salience']['total']
             stored = result.get('stored', False)
             filtered = result.get('filtered', False)
 
+            # Update metabolic controller (ATP consumption scales with salience)
+            # High salience = high processing load = more ATP consumed
+            self.metabolic.update({
+                'atp_consumed': salience * 10.0,  # Scale salience to ATP units
+                'attention_load': 1 if salience > 0.6 else 0,
+                'max_salience': salience,
+                'crisis_detected': False
+            })
+
             if filtered:
                 print(f"  [WARNING: Response filtered — {result.get('filter_reason', 'unknown')}]")
             else:
-                print(f"  [Salience: {salience:.2f} | Stored: {stored}]")
+                atp_pct = metabolic_snapshot['atp_percentage']
+                state = metabolic_snapshot['state']
+                print(f"  [Salience: {salience:.2f} | Stored: {stored} | ATP: {atp_pct:.0f}% ({state})]")
             print("-" * 40)
             print()
 

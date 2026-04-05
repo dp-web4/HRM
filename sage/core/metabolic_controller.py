@@ -265,8 +265,11 @@ class MetabolicController:
         if self.current_state == MetabolicState.WAKE:
             # WAKE → FOCUS: High salience with sufficient ATP
             # Focus threshold lowered during day (easier to focus)
+            # Lowered from 0.8 to 0.45 based on Session #57 empirical data
+            # (max observed salience ~0.46 during synthetic active learning)
+            # Thor Session #58: Task-responsive metabolic transitions
             focus_threshold = 50.0 / focus_bias
-            if max_salience > 0.8 and self.atp_current > focus_threshold:
+            if max_salience > 0.45 and self.atp_current > focus_threshold:
                 return MetabolicState.FOCUS
 
             # WAKE → REST: Low ATP

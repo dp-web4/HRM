@@ -402,27 +402,79 @@ REVISED PLAN:"""
 
 
 def parse_plan_to_actions(plan_text, available, grid):
-    """Parse LLM plan text into executable action list."""
-    actions = []
-    for line in plan_text.split("\n"):
+    """Parse LLM plan text into executable action list.
+
+    Handles formats:
+      CLICK(x, y)           — click at coordinates
+      CLICK color_name      — resolve color region to coordinates
+      UP / DOWN / LEFT / RIGHT
+      SELECT / UNDO
+      REPEAT N <action>     — repeat an action N times
+    """
+    # Build color→coordinate map from grid for resolving color names
+    color_coords = {}
+    try:
+        regions = find_color_regions(grid, min_size=4)
+        for r in regions:
+            cname = color_name(r["color"]).lower()
+            key = cname
+            idx = 0
+            while key in color_coords:
+                idx += 1
+                key = f"{cname}_{idx}"
+            color_coords[key] = (r["cx"], r["cy"])
+            # Also store base name (first region of that color)
+            if cname not in color_coords:
+                color_coords[cname] = (r["cx"], r["cy"])
+    except Exception:
+        pass
+
+    def parse_single_action(line):
+        """Parse one action line, return list of (action_int, data) tuples."""
         line = line.strip().upper()
+        if not line:
+            return []
 
         # CLICK(x, y)
         m = re.search(r'CLICK\s*\(\s*(\d+)\s*,\s*(\d+)\s*\)', line)
         if m and 6 in available:
-            actions.append((6, {'x': int(m.group(1)), 'y': int(m.group(2))}))
-            continue
+            return [(6, {'x': int(m.group(1)), 'y': int(m.group(2))})]
+
+        # CLICK <color_name> — resolve to coordinates
+        m = re.search(r'CLICK\s+([A-Z_]+\d*)', line)
+        if m and 6 in available:
+            ckey = m.group(1).lower()
+            if ckey in color_coords:
+                cx, cy = color_coords[ckey]
+                return [(6, {'x': cx, 'y': cy})]
 
         # Directional
         for name, num in [("UP", 1), ("DOWN", 2), ("LEFT", 3), ("RIGHT", 4)]:
             if name in line and num in available:
-                actions.append((num, None))
-                break
-        else:
-            if any(w in line for w in ["SELECT", "SUBMIT", "CONFIRM", "ROTATE"]) and 5 in available:
-                actions.append((5, None))
-            elif "UNDO" in line and 7 in available:
-                actions.append((7, None))
+                return [(num, None)]
+
+        if any(w in line for w in ["SELECT", "SUBMIT", "CONFIRM", "ROTATE"]) and 5 in available:
+            return [(5, None)]
+        if "UNDO" in line and 7 in available:
+            return [(7, None)]
+
+        return []
+
+    actions = []
+    for line in plan_text.split("\n"):
+        stripped = line.strip()
+
+        # REPEAT N <action>
+        m = re.match(r'(?:REPEAT\s+)?(\d+)\s+(.+)', stripped, re.IGNORECASE)
+        if m and m.group(1).isdigit():
+            count = min(int(m.group(1)), 50)  # cap at 50 to prevent runaway
+            sub_actions = parse_single_action(m.group(2))
+            if sub_actions:
+                actions.extend(sub_actions * count)
+                continue
+
+        # Single action
+        actions.extend(parse_single_action(stripped))
 
     return actions
 

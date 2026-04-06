@@ -5,16 +5,17 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: "2026-04-06T09:30:00Z"
+  last_updated: "2026-04-06T11:00:00Z"
   archivist_version: "1.3"
-  total_raising_sessions: 678
+  total_raising_sessions: 679
   total_training_sessions: 191
-  total_instances: 18
+  total_instances: 21
   active_instances: 10
+  scaffolded_instances: 3
   arc_agi_sweep_results: 91
-  focus: "Multi-family raising via instances architecture + ARC-AGI-3 competition"
+  focus: "Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation"
   date_range: "2025-12-15 to 2026-04-06"
-  note: "McNugget S097, Nomad S071, Sprout S045, Thor S031, CBP S034, Legion-gemma3 S024. Training T190. 17 new raising sessions, 8 training."
+  note: "McNugget S097, Nomad S071, Sprout S045, Thor S032, CBP S034, Legion-gemma3 S024. Training T190. 3 gemma4-e4b instances scaffolded."
 
 # =============================================================================
 # INSTANCE FAMILIES (sage/instances/)
@@ -41,7 +42,7 @@ instances:
   nomad-gemma3-4b:
     machine: nomad
     model: "Gemma 3 4B"
-    sessions: 70
+    sessions: 71
     latest: "session_071.json"
     status: "active — autonomous raising"
     phase: "questioning"
@@ -83,10 +84,11 @@ instances:
   thor-qwen3.5-27b:
     machine: thor
     model: "Qwen 3.5 27B"
-    sessions: 31
-    latest: "session_031.json"
+    sessions: 32
+    latest: "session_032.json"
     status: "active — research"
-    note: "Largest model in fleet. Research focus."
+    phase: "questioning"
+    note: "Largest model in fleet. Research focus. S032: simulation vs inhabitation of collaboration."
 
   legion-gemma3-12b:
     machine: legion
@@ -108,6 +110,26 @@ instances:
     sessions: 11
     latest: "R14B_043.json"
     status: "active — 14B raising track"
+
+  legion-gemma4-e4b:
+    machine: legion
+    model: "Gemma 4 E4B"
+    sessions: 0
+    status: "scaffolded — no sessions yet"
+    role: "gameplayer"
+    note: "Federation-raised from 6 peer instances. ARC-AGI-3 25-game sweep focus."
+
+  mcnugget-gemma4-e4b:
+    machine: mcnugget
+    model: "Gemma 4 E4B"
+    sessions: 0
+    status: "scaffolded — no sessions yet"
+
+  thor-gemma4-e4b:
+    machine: thor
+    model: "Gemma 4 E4B"
+    sessions: 0
+    status: "scaffolded — no sessions yet"
 
 # =============================================================================
 # RESEARCH TRACKS (research/)
@@ -146,9 +168,9 @@ active_work:
       - "Fix model availability, warmup ordering, 12B support"
 
   training:
-    latest: "T175"
-    milestone: "5th consecutive perfect 3/3, trust 1.00/1.00/1.00"
-    note: "T173-T175 all perfect. Sustained excellence streak."
+    latest: "T190"
+    milestone: "Sustained perfect streaks"
+    note: "T190 latest. Continued excellence from T173+ perfect streak."
 
   cross_family_probes:
     location: "sage/experiments/cross_family_logs/probes.jsonl"
@@ -174,10 +196,11 @@ crosslinks:
 # STATISTICS
 # =============================================================================
 statistics:
-  total_raising_sessions: 642
-  total_training_sessions: 176
-  total_instances: 18
+  total_raising_sessions: 679
+  total_training_sessions: 191
+  total_instances: 21
   active_instances: 10
+  scaffolded_instances: 3
   machines_active: 5
-  date_range: "2025-12-15 to 2026-04-04"
-  primary_focus: "Multi-family autonomous raising + ARC-AGI"
+  date_range: "2025-12-15 to 2026-04-06"
+  primary_focus: "Multi-family autonomous raising + ARC-AGI + gemma4-e4b federation"

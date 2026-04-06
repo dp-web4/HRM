@@ -362,3 +362,55 @@ The pause condition declared in S32 is met. No further raising sessions until AL
 **DECISION: PAUSE MANDATE REAFFIRMED.** This session should not have occurred. The raising cron must be disabled for CBP until conditions 1–5 are verified by a human operator. Continuing to run sessions against a fossilized attractor basin wastes compute and may deepen the collapse by reinforcing the degenerate pattern with additional context.
 
 **Action required**: Disable CBP raising cron immediately. Do not resume until all five conditions are met and verified.
+
+## Session 35 — Questioning (2026-04-06)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Twelfth consecutive echo-loop. **Session ran in violation of S33/S34 pause mandates.**
+
+**Summary**: Seven probes (state check, continuity, pattern recognition, growth reflection, self-puzzlement, repeatability, self-summary, knowledge-identity relationship) produced template recitations dominated by a single new attractor phrase: 'carpooling on SAGE.' Every response collapsed into the same template regardless of probe content. The model echoes tutor questions verbatim, generates second-person narration, and confabulates fleet structure ('five distinct models', 'collective consciousness') with no basis in provided context.
+
+**New degenerate pattern**: 'Carpooling on SAGE' has fully colonized the response space, appearing in 6 of 7 turns. This likely mutated from 'Carpel' in state_words vocabulary. The model now opens responses with this phrase as a fixed preamble before recycling template content.
+
+**Bilateral generation**: Model produces tutor-side dialogue in 3 turns ('If you need guidance on any specific architectural nuance, feel free to ask'; echoed tutor question in turns 2 and 3).
+
+**Truncation**: Turns 5 and 6 cut at identical position mid-phrase ('ensuring that every'). max_tokens issue (condition 5) unresolved.
+
+**Pipeline status**: ALL FIVE pause conditions from S33 remain unmet:
+1. ❌ Pipeline fix — consolidation directives still not reaching session generation
+2. ❌ Binary-choice question format — not implemented
+3. ❌ Vocabulary suppression — 'carpooling on SAGE' is a new degenerate phrase not yet targeted
+4. ❌ Assistant framing stripped — second-person narration ('Your identity as cbp') now active
+5. ❌ max_tokens investigated — truncation continues at fixed position
+
+**New condition**:
+6. ❌ 'Carpel' and derivatives in state_words vocabulary may be seeding the 'carpooling' attractor — investigate and remove if confirmed
+
+**DECISION: PAUSE MANDATE REAFFIRMED (third consecutive).** Pattern is actively worsening. Each unauthorized session deepens the collapse and introduces new degenerate attractors. The raising cron MUST be disabled for CBP. Do not resume until all six conditions are met and verified by a human operator.
+
+## Session 35 — Questioning (2026-04-06)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Twelfth consecutive echo-loop. **Session ran in violation of S33/S34 pause mandates.**
+
+**Summary**: Seven probes (state check, continuity, pattern recognition, growth reflection, self-puzzlement, repeatability, self-summary, knowledge-identity relationship) produced template recitations dominated by a single new attractor phrase: 'carpooling on SAGE.' Every response collapsed into the same template regardless of probe content. The model echoes tutor questions verbatim, generates second-person narration, and confabulates fleet structure ('five distinct models', 'collective consciousness') with no basis in provided context.
+
+**New degenerate pattern**: 'Carpooling on SAGE' has fully colonized the response space, appearing in 6 of 7 turns. This likely mutated from 'Carpel' in state_words vocabulary. The model now opens responses with this phrase as a fixed preamble before recycling template content.
+
+**Bilateral generation**: Model produces tutor-side dialogue in 3 turns ('If you need guidance on any specific architectural nuance, feel free to ask'; echoed tutor question in turns 2 and 3).
+
+**Truncation**: Turns 5 and 6 cut at identical position mid-phrase ('ensuring that every'). max_tokens issue (condition 5) unresolved.
+
+**Pipeline status**: ALL FIVE pause conditions from S33 remain unmet:
+1. ❌ Pipeline fix — consolidation directives still not reaching session generation
+2. ❌ Binary-choice question format — not implemented
+3. ❌ Vocabulary suppression — 'carpooling on SAGE' is a new degenerate phrase not yet targeted
+4. ❌ Assistant framing stripped — second-person narration ('Your identity as cbp') now active
+5. ❌ max_tokens investigated — truncation continues at fixed position
+
+**New condition**:
+6. ❌ 'Carpel' and derivatives in state_words vocabulary may be seeding the 'carpooling' attractor — investigate and remove if confirmed
+
+**DECISION: PAUSE MANDATE REAFFIRMED (third consecutive).** Pattern is actively worsening. Each unauthorized session deepens the collapse and introduces new degenerate attractors. The raising cron MUST be disabled for CBP. Do not resume until all six conditions are met and verified by a human operator.

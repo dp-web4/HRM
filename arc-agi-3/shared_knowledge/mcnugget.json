@@ -1,0 +1,128 @@
+{
+  "machine": "mcnugget",
+  "updated_at": 1775454917.592067,
+  "game_discoveries": {
+    "tn36": [
+      {
+        "text": "Interactive objects: brown_0, black_1, brown_39, green_40. Game type: toggle.   black_1: 100% effective, ~1px (8 tries)\n  brown_0: 100% effective, ~1px (8 tries)\n  green_40: 100%",
+        "machine": "mcnugget",
+        "timestamp": 1775435716.660309
+      }
+    ],
+    "cd82": [
+      {
+        "text": "Interactive objects: yellow_0, green_1, red_9, black_11, yellow_12. Game type: cursor_cycle.   DOWN: 56% effective, ~89px (9 tries)\n  LEFT: 78% effective, ~134px (9 tries)\n  RIGHT: 100% effecti",
+        "machine": "mcnugget",
+        "timestamp": 1775438848.0995252
+      },
+      {
+        "text": "Interactive objects: yellow_0, green_1, red_9, yellow_12, white_13. Game type: cursor_cycle.   DOWN: 88% effective, ~51px (8 tries)\n  LEFT: 71% effective, ~86px (7 tries)\n  RIGHT: 100% effectiv",
+        "machine": "mcnugget",
+        "timestamp": 1775439985.541614
+      }
+    ],
+    "vc33": [
+      {
+        "text": "Interactive objects: orange_0, black_1, gray_3, maroon_4, gray_5. Game type: toggle.   black_1: 100% effective, ~1px (2 tries)\n  brown_2: 100% effective, ~265px, moves grid AWAY from in",
+        "machine": "mcnugget",
+        "timestamp": 1775444376.629302
+      }
+    ],
+    "r11l": [
+      {
+        "text": "Interactive objects: black_0, red_1, red_2, black_3, red_5. Game type: click_interact.   black_0: 100% effective, ~46px (7 tries)\n  black_3: 100% effective, ~65px (7 tries)\n  black_9: 100",
+        "machine": "mcnugget",
+        "timestamp": 1775452926.518729
+      }
+    ]
+  },
+  "strategies": {},
+  "failures": {
+    "tn36": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "mcnugget",
+        "timestamp": 1775435716.660316
+      }
+    ],
+    "cd82": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "mcnugget",
+        "timestamp": 1775438848.0995378
+      }
+    ],
+    "ls20": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "mcnugget",
+        "timestamp": 1775441948.546741
+      }
+    ],
+    "vc33": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "mcnugget",
+        "timestamp": 1775444376.62931
+      }
+    ],
+    "wa30": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "mcnugget",
+        "timestamp": 1775446813.3503308
+      }
+    ],
+    "sk48": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "mcnugget",
+        "timestamp": 1775449488.9006531
+      }
+    ],
+    "r11l": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "mcnugget",
+        "timestamp": 1775452926.518739
+      }
+    ]
+  },
+  "meta_insights": [
+    {
+      "text": "Game tn36 (toggle): brown_0: consistent effect (~1px each time)\nblack_1: consistent effect (~1px each time)\nbrown_39: consistent effect (~1px each time)\ngreen_40: consist",
+      "machine": "mcnugget",
+      "timestamp": 1775437697.848851
+    },
+    {
+      "text": "Game cd82 (cursor_cycle): black_7: consistent effect (~1px each time)\ngreen_1: consistent effect (~1px each time)\nyellow_0: consistent effect (~1px each time)\nred_9: consistent",
+      "machine": "mcnugget",
+      "timestamp": 1775441148.4490979
+    },
+    {
+      "text": "Game ls20 (navigation): Grid similarity STABLE around 97.6% (not progressing)\nWARNING: UP clicked 8\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: DOWN ",
+      "machine": "mcnugget",
+      "timestamp": 1775443563.364368
+    },
+    {
+      "text": "Game vc33 (toggle): yellow_10: consistent effect (~1px each time)\nbrown_7: consistent effect (~253px each time)\nGrid similarity STABLE around 92.3% (not progressing)\nWARN",
+      "machine": "mcnugget",
+      "timestamp": 1775446038.916217
+    },
+    {
+      "text": "Game wa30 (navigation): SELECT: consistent effect (~1px each time)\nRIGHT: consistent effect (~32px each time)\nLEFT: consistent effect (~32px each time)\nGrid similarity STABLE",
+      "machine": "mcnugget",
+      "timestamp": 1775448394.191251
+    },
+    {
+      "text": "Game sk48 (toggle): Grid similarity STABLE around 95.4% (not progressing)\nWARNING: UP clicked 7\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: RIGHT",
+      "machine": "mcnugget",
+      "timestamp": 1775451870.444321
+    },
+    {
+      "text": "Game r11l (click_interact): red_1: consistent effect (~1px each time)\nred_5: consistent effect (~1px each time)\nGrid similarity STABLE around 96.2% (not progressing)\nWARNING: bla",
+      "machine": "mcnugget",
+      "timestamp": 1775454917.592065
+    }
+  ]
+}

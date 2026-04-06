@@ -60,6 +60,7 @@ INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
 MODEL = os.environ.get("OLLAMA_MODEL", "")
 
+
 # Context budget targets (from context-budget-and-raising.md)
 TARGET_BUDGET = {
     "layer4_metacognitive": 500,   # tokens — stable, rarely changes

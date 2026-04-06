@@ -397,6 +397,178 @@ class GridVisionIRP(IRPPlugin):
             "trust": self.trust_weight,
         }
 
+    # --- Scene Description (code → text vision for non-multimodal models) ---
+
+    def describe_scene(self, obs: Optional[GridObservation] = None) -> str:
+        """Produce a natural language scene description from the current frame.
+
+        This is the Vision IRP's core contribution: translating a raw grid
+        into text that a non-multimodal LLM can reason about spatially.
+
+        Layers of description:
+          1. Grid composition — what colors are present, how much of each
+          2. Spatial layout — where are the major regions
+          3. Object roles — classify detected objects by likely function
+          4. State assessment — what looks interactive, what's decorative
+          5. Comparison — if template/target regions detected, describe match
+        """
+        if obs is None:
+            obs = self.get_latest()
+        if obs is None:
+            return "(no frame available)"
+
+        grid = obs.frame_raw
+        if grid is None or grid.size == 0:
+            return "(empty frame)"
+
+        h, w = grid.shape[:2]
+        parts = []
+
+        # --- Color composition ---
+        flat = grid.ravel().astype(int)
+        counts = np.bincount(flat, minlength=16)
+        total = h * w
+        bg_color = int(np.argmax(counts))
+        bg_pct = counts[bg_color] / total * 100
+
+        COLOR_NAMES = ["black", "blue", "red", "green", "yellow", "gray",
+                       "magenta", "orange", "cyan", "brown", "pink", "maroon",
+                       "olive", "navy", "teal", "white"]
+
+        non_bg = [(c, int(counts[c])) for c in range(16) if c != bg_color and counts[c] > 0]
+        non_bg.sort(key=lambda x: -x[1])
+
+        parts.append(f"Grid: {w}x{h}. Background: {COLOR_NAMES[bg_color]} ({bg_pct:.0f}%).")
+        if non_bg:
+            color_desc = ", ".join(f"{COLOR_NAMES[c]}({n}px, {n/total*100:.0f}%)" for c, n in non_bg[:6])
+            parts.append(f"Colors present: {color_desc}")
+
+        # --- Spatial layout: divide into quadrants ---
+        mid_r, mid_c = h // 2, w // 2
+        quadrants = {
+            "top-left": grid[:mid_r, :mid_c],
+            "top-right": grid[:mid_r, mid_c:],
+            "bottom-left": grid[mid_r:, :mid_c],
+            "bottom-right": grid[mid_r:, mid_c:],
+        }
+        # Also check edges for UI elements (palettes, score bars)
+        edges = {
+            "top-strip": grid[:4, :],
+            "bottom-strip": grid[-4:, :],
+            "left-strip": grid[:, :4],
+            "right-strip": grid[:, -4:],
+        }
+
+        # Describe quadrant dominant colors (non-background)
+        quad_desc = []
+        for name, region in quadrants.items():
+            r_flat = region.ravel().astype(int)
+            r_counts = np.bincount(r_flat, minlength=16)
+            r_counts[bg_color] = 0  # ignore background
+            dominant = int(np.argmax(r_counts))
+            if r_counts[dominant] > 0:
+                pct = r_counts[dominant] / region.size * 100
+                quad_desc.append(f"{name}: mostly {COLOR_NAMES[dominant]} ({pct:.0f}%)")
+        if quad_desc:
+            parts.append(f"Layout: {'; '.join(quad_desc)}")
+
+        # Check for edge UI elements (score bars, palettes)
+        for name, strip in edges.items():
+            s_flat = strip.ravel().astype(int)
+            s_counts = np.bincount(s_flat, minlength=16)
+            s_counts[bg_color] = 0
+            unique_colors = sum(1 for c in range(16) if s_counts[c] > 5)
+            if unique_colors >= 3:
+                colors = [COLOR_NAMES[c] for c in range(16) if s_counts[c] > 5]
+                parts.append(f"{name}: multi-colored strip ({', '.join(colors[:5])}) — possible palette or UI")
+
+        # --- Object role classification ---
+        if obs.objects:
+            small_edge = []   # small objects near edges = buttons/palette
+            small_center = [] # small objects in center = interactive game elements
+            large_center = [] # large objects in center = canvas/playfield
+            large_edge = []   # large objects near edge = template/reference
+
+            for obj in obs.objects:
+                bbox = obj.get("bbox", [0, 0, h-1, w-1])
+                centroid = obj.get("centroid", [h//2, w//2])
+                size = obj.get("size", 0)
+                cr, cc = centroid[0], centroid[1]
+                near_edge = cr < 8 or cr > h-8 or cc < 8 or cc > w-8
+
+                if size <= 64:
+                    if near_edge:
+                        small_edge.append(obj)
+                    else:
+                        small_center.append(obj)
+                else:
+                    if near_edge:
+                        large_edge.append(obj)
+                    else:
+                        large_center.append(obj)
+
+            if small_edge:
+                names = [f"{COLOR_NAMES[o.get('color', 0) % 16]}@({o.get('centroid', [0,0])[1]},{o.get('centroid', [0,0])[0]})"
+                         for o in small_edge[:6]]
+                parts.append(f"Edge objects ({len(small_edge)}, likely buttons/palette): {', '.join(names)}")
+
+            if small_center:
+                names = [f"{COLOR_NAMES[o.get('color', 0) % 16]}@({o.get('centroid', [0,0])[1]},{o.get('centroid', [0,0])[0]})"
+                         for o in small_center[:6]]
+                parts.append(f"Center objects ({len(small_center)}, likely interactive): {', '.join(names)}")
+
+            if large_center:
+                for obj in large_center[:2]:
+                    bbox = obj.get("bbox", [0,0,0,0])
+                    sz = obj.get("size", 0)
+                    c = COLOR_NAMES[obj.get("color", 0) % 16]
+                    parts.append(f"Large center region: {c}, {sz}px, bbox=({bbox[1]},{bbox[0]})-({bbox[3]},{bbox[2]}) — possible canvas/playfield")
+
+            if large_edge:
+                for obj in large_edge[:2]:
+                    bbox = obj.get("bbox", [0,0,0,0])
+                    sz = obj.get("size", 0)
+                    c = COLOR_NAMES[obj.get("color", 0) % 16]
+                    parts.append(f"Large edge region: {c}, {sz}px — possible template/reference")
+
+        # --- Symmetry and pattern detection ---
+        # Check if center has a distinct region (common in puzzles)
+        center_region = grid[mid_r-8:mid_r+8, mid_c-8:mid_c+8]
+        center_colors = set(int(c) for c in center_region.ravel() if c != bg_color)
+        if len(center_colors) >= 3:
+            parts.append(f"Center region has {len(center_colors)} colors — likely the main game element")
+
+        # Check for repeating patterns (palette-like rows/columns)
+        for row in range(0, h, 8):
+            strip = grid[row:row+4, :]
+            unique = len(set(int(c) for c in strip.ravel() if c != bg_color))
+            if unique >= 4:
+                colors = [COLOR_NAMES[c] for c in sorted(set(int(c) for c in strip.ravel() if c != bg_color))[:6]]
+                parts.append(f"Row {row}: multi-colored ({', '.join(colors)}) — possible palette or indicator")
+                break  # only report the first one
+
+        # --- Frame diff summary (what just happened) ---
+        if obs.changes:
+            n = len(obs.changes)
+            changed_colors_new = set(c["now"] for c in obs.changes[:100])
+            changed_colors_old = set(c["was"] for c in obs.changes[:100])
+            new_names = [COLOR_NAMES[c % 16] for c in changed_colors_new if c != bg_color]
+            old_names = [COLOR_NAMES[c % 16] for c in changed_colors_old if c != bg_color]
+
+            if n <= 4:
+                parts.append(f"Last action: {n}px changed (tiny — cursor move or selection)")
+            elif n <= 50:
+                parts.append(f"Last action: {n}px changed ({', '.join(old_names[:3])} → {', '.join(new_names[:3])})")
+            else:
+                parts.append(f"Last action: {n}px changed (large — major state change: {', '.join(old_names[:3])} → {', '.join(new_names[:3])})")
+
+        if obs.moved:
+            for m in obs.moved[:3]:
+                delta = m.get("delta", [0, 0])
+                parts.append(f"Object moved: Δ({delta[1]},{delta[0]})")
+
+        return "\n".join(parts)
+
     @property
     def stats(self) -> Dict[str, Any]:
         """Current plugin stats for logging."""

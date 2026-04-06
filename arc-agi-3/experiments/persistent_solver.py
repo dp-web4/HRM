@@ -216,7 +216,7 @@ def main():
             # Force specific game
             game = None
             for g in data["games"]:
-                if args.game in g["id"] or args.game == g["family"]:
+                if args.game in g.get("game_id", g.get("id", "")) or args.game == g["family"]:
                     game = g
                     break
             if not game:

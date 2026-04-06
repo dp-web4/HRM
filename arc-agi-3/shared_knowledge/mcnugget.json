@@ -1,12 +1,17 @@
 {
   "machine": "mcnugget",
-  "updated_at": 1775454917.592067,
+  "updated_at": 1775471494.8646069,
   "game_discoveries": {
     "tn36": [
       {
         "text": "Interactive objects: brown_0, black_1, brown_39, green_40. Game type: toggle.   black_1: 100% effective, ~1px (8 tries)\n  brown_0: 100% effective, ~1px (8 tries)\n  green_40: 100%",
         "machine": "mcnugget",
         "timestamp": 1775435716.660309
+      },
+      {
+        "text": "Interactive objects: brown_0, black_1, brown_39. Game type: toggle.   black_1: 100% effective, ~1px (9 tries)\n  brown_0: 100% effective, ~1px (6 tries)\n  brown_39: 100%",
+        "machine": "mcnugget",
+        "timestamp": 1775456268.341706
       }
     ],
     "cd82": [
@@ -123,6 +128,16 @@
       "text": "Game r11l (click_interact): red_1: consistent effect (~1px each time)\nred_5: consistent effect (~1px each time)\nGrid similarity STABLE around 96.2% (not progressing)\nWARNING: bla",
       "machine": "mcnugget",
       "timestamp": 1775454917.592065
+    },
+    {
+      "text": "Game tn36 (toggle): brown_39: consistent effect (~1px each time)\nbrown_0: consistent effect (~1px each time)\nblack_1: consistent effect (~1px each time)\nGrid similarity S",
+      "machine": "mcnugget",
+      "timestamp": 1775456268.341718
+    },
+    {
+      "text": "Game tn36 (toggle): black_1: consistent effect (~1px each time)\nbrown_0: consistent effect (~1px each time)\nbrown_39: consistent effect (~1px each time)\nGrid similarity S",
+      "machine": "mcnugget",
+      "timestamp": 1775456269.52511
     }
   ]
 }

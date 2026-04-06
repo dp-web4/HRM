@@ -342,10 +342,32 @@ def assemble_context_and_plan(narrative, tracker, action_model, available,
             layer3 = layer3 + "\n\n" + stuck_advice if layer3 else stuck_advice
     budget.record("L3_membot", layer3)
 
-    # Layer 2: Game KB — action model + curated object catalog (target ~3K)
+    # Layer 2: Game KB — scene description + action model + object catalog (target ~3K)
+    # Scene description gives spatial understanding (what the screen looks like)
+    layer2_scene = ""
+    try:
+        from sage.irp.plugins.grid_vision_irp import GridVisionIRP, GridObservation
+        gv = GridVisionIRP.__new__(GridVisionIRP)  # lightweight — just need describe_scene
+        gv._buffer = []
+        gv._frame_count = 0
+        gv._prev_frame = None
+        # Build observation from tracker's current state
+        grid = tracker.prev_grid if hasattr(tracker, 'prev_grid') and tracker.prev_grid is not None else None
+        if grid is not None:
+            objects_list = [{"id": o.id, "color": o.color,
+                           "bbox": [o.y, o.x, o.y + o.h, o.x + o.w],
+                           "centroid": [o.cy, o.cx], "size": o.size}
+                          for o in tracker.objects.values()]
+            obs = GridObservation(frame_raw=grid, objects=objects_list,
+                                changes=[], moved=[],
+                                step_number=0, level_id="")
+            layer2_scene = "SCENE (what the screen looks like):\n" + gv.describe_scene(obs)
+    except Exception:
+        pass  # graceful fallback — scene description is additive, not required
+
     layer2_model = action_model.describe()
     layer2_catalog = obj_catalog(tracker)
-    layer2 = f"ACTION MODEL:\n{layer2_model}\n\nOBJECTS:\n{layer2_catalog}"
+    layer2 = f"{layer2_scene}\n\nACTION MODEL:\n{layer2_model}\n\nOBJECTS:\n{layer2_catalog}" if layer2_scene else f"ACTION MODEL:\n{layer2_model}\n\nOBJECTS:\n{layer2_catalog}"
     budget.record("L2_game_kb", layer2)
 
     # Layer 1: Session narrative — expanding with compression (target ~5K)

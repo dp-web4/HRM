@@ -509,6 +509,19 @@ def reason_prompt(grid: np.ndarray, kb: GameKnowledgeBase,
     else:
         json_format = '{{"action": action_number, "predict": "what will change and why", "reason": "why this action", "mode": "explore|execute_solution"}}'
 
+    # Pre-compute conditional blocks (Python 3.10 compat — no multiline f-string expressions)
+    cursor_block = ""
+    if cursor_pos:
+        surr = describe_surroundings(grid, cursor_pos[0], cursor_pos[1])
+        cursor_block = f"\nCURSOR: {cursor_pos[2]} at ({cursor_pos[0]},{cursor_pos[1]})\nAround cursor: {surr}"
+    explore_block = ""
+    if explore_summary:
+        explore_block = f"\nEXPLORATION FINDINGS:\n{explore_summary}"
+    banned_block = ""
+    if banned_actions:
+        banned_block = f"\nBANNED (tried too many times, try something else): {', '.join(banned_actions.keys())}"
+    kb_text_trimmed = kb_text[:500] if len(kb_text) > 500 else kb_text
+
     identity_block = ""
     if identity_context:
         identity_block = f"""{identity_context}
@@ -535,19 +548,14 @@ AVAILABLE ACTIONS:
 {action_guidance}
 
 GAME STATUS: Level {levels_completed}/{win_levels}.{budget_note}
-{f"""
-CURSOR: {cursor_pos[2]} at ({cursor_pos[0]},{cursor_pos[1]})
-Around cursor: {describe_surroundings(grid, cursor_pos[0], cursor_pos[1])}""" if cursor_pos else ""}
-{f"""
-EXPLORATION FINDINGS:
-{explore_summary}""" if explore_summary else ""}
-{f"""
-BANNED (tried too many times, try something else): {', '.join(banned_actions.keys())}""" if banned_actions else ""}
+{cursor_block}
+{explore_block}
+{banned_block}
 
 VISIBLE OBJECTS (detected from the grid):
 {targets}
 {solution_block}
-{kb_text[:500] if len(kb_text) > 500 else kb_text}
+{kb_text_trimmed}
 {last_result_block}
 Choose ONE action. Respond ONLY with valid JSON, no other text:
 {json_format}

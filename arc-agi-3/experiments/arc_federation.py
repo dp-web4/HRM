@@ -172,19 +172,34 @@ class FederatedKnowledge:
 
     # ─── READ (all machines) ───
 
+    def _get_dict_field(self, data: dict, field: str) -> dict:
+        """Safely get a dict-type field, handling schema mismatches."""
+        val = data.get(field, {})
+        return val if isinstance(val, dict) else {}
+
+    def _get_list_entries(self, data: dict, field: str, key: str) -> list:
+        """Safely get entries from a nested dict field, handling schema mismatches."""
+        container = self._get_dict_field(data, field)
+        entries = container.get(key, [])
+        return entries if isinstance(entries, list) else []
+
     def get_game_knowledge(self, game_prefix: str) -> str:
         """Get all fleet knowledge about a specific game."""
         lines = []
         for machine, data in self.fleet_data.items():
-            discoveries = data.get("game_discoveries", {}).get(game_prefix, [])
+            discoveries = self._get_list_entries(data, "game_discoveries", game_prefix)
             for d in discoveries[-3:]:  # Last 3 per machine
+                if not isinstance(d, dict) or "text" not in d:
+                    continue
                 source = f"[{machine}]" if machine != self.machine else "[you]"
                 lines.append(f"  {source} {d['text'][:150]}")
 
         failures = []
         for machine, data in self.fleet_data.items():
-            fails = data.get("failures", {}).get(game_prefix, [])
+            fails = self._get_list_entries(data, "failures", game_prefix)
             for f in fails[-2:]:
+                if not isinstance(f, dict) or "text" not in f:
+                    continue
                 source = f"[{machine}]" if machine != self.machine else "[you]"
                 failures.append(f"  {source} FAILED: {f['text'][:120]}")
 
@@ -199,8 +214,10 @@ class FederatedKnowledge:
         """Get fleet strategies for a game type."""
         lines = []
         for machine, data in self.fleet_data.items():
-            strategies = data.get("strategies", {}).get(game_type, [])
+            strategies = self._get_list_entries(data, "strategies", game_type)
             for s in strategies[-2:]:
+                if not isinstance(s, dict) or "text" not in s:
+                    continue
                 source = f"[{machine}]" if machine != self.machine else "[you]"
                 lines.append(f"  {source} {s['text'][:150]}")
         if lines:
@@ -212,7 +229,12 @@ class FederatedKnowledge:
         lines = []
         seen = set()
         for machine, data in self.fleet_data.items():
-            for insight in data.get("meta_insights", [])[-3:]:
+            raw_insights = data.get("meta_insights", [])
+            if not isinstance(raw_insights, list):
+                continue
+            for insight in raw_insights[-3:]:
+                if not isinstance(insight, dict) or "text" not in insight:
+                    continue
                 key = insight["text"][:60]
                 if key in seen:
                     continue

@@ -1,6 +1,6 @@
 {
   "machine": "sprout",
-  "updated_at": 1775426564.8198562,
+  "updated_at": 1775436904.7032893,
   "game_discoveries": {
     "lf52": [
       {
@@ -21,6 +21,55 @@
         "text": "Interactive objects: teal_0, yellow_1, magenta_2, brown_3, maroon_5. Game type: click_interact.   LEFT: 100% effective, ~34px (1 tries)\n  UP: 100% effective, ~48px (7 tries)\n  magenta_2: 100% effe",
         "machine": "sprout",
         "timestamp": 1775426564.8198006
+      }
+    ],
+    "m0r0": [
+      {
+        "text": "Interactive objects: maroon_0, black_4. Game type: cursor_cycle.   DOWN: 100% effective, ~92px (6 tries)\n  LEFT: 100% effective, ~100px (1 tries)\n  RIGHT: 100% effec",
+        "machine": "sprout",
+        "timestamp": 1775430759.0947268
+      }
+    ],
+    "ka59": [
+      {
+        "text": "Interactive objects: blue_0, blue_2, yellow_10, black_11. Game type: cursor_cycle.   DOWN: 100% effective, ~19px (5 tries)\n  UP: 75% effective, ~6px (28 tries)\n  blue_0: 67% effective",
+        "machine": "sprout",
+        "timestamp": 1775432303.081127
+      }
+    ],
+    "cn04": [
+      {
+        "text": "Interactive objects: cyan_3, teal_4. Game type: cursor_cycle.   DOWN: 40% effective, ~29px (5 tries)\n  SELECT: 40% effective, ~40px (5 tries)\n  UP: 15% effective,",
+        "machine": "sprout",
+        "timestamp": 1775433151.583476
+      }
+    ],
+    "sb26": [
+      {
+        "text": "Interactive objects: teal_19, white_20, brown_21, maroon_22. Game type: unknown.   SELECT: 100% effective, ~5px (5 tries)\n  brown_21: 100% effective, ~40px (8 tries)\n  maroon_22: 10",
+        "machine": "sprout",
+        "timestamp": 1775433981.0491474
+      }
+    ],
+    "sc25": [
+      {
+        "text": "Interactive objects: green_6. Game type: cursor_cycle.   DOWN: 100% effective, ~18px (5 tries)\n  UP: 67% effective, ~6px (24 tries)\n  green_6: 100% effecti",
+        "machine": "sprout",
+        "timestamp": 1775434740.6102567
+      }
+    ],
+    "r11l": [
+      {
+        "text": "Interactive objects: black_0, red_1, red_2, black_3, red_5. Game type: click_interact.   black_0: 100% effective, ~34px (5 tries)\n  black_3: 100% effective, ~48px (3 tries)\n  green_7: 100",
+        "machine": "sprout",
+        "timestamp": 1775435448.113455
+      }
+    ],
+    "dc22": [
+      {
+        "text": "Interactive objects: green_0, black_1, gray_2, navy_14, red_19. Game type: cursor_cycle.   DOWN: 100% effective, ~9px (9 tries)\n  UP: 65% effective, ~4px (26 tries)\n  black_1: 50% effective",
+        "machine": "sprout",
+        "timestamp": 1775436904.7028759
       }
     ]
   },
@@ -60,6 +109,69 @@
         "machine": "sprout",
         "timestamp": 1775426564.8198316
       }
+    ],
+    "m0r0": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "sprout",
+        "timestamp": 1775430759.0947862
+      }
+    ],
+    "g50t": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "sprout",
+        "timestamp": 1775431562.3665016
+      }
+    ],
+    "ka59": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "sprout",
+        "timestamp": 1775432303.0811677
+      }
+    ],
+    "cn04": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "sprout",
+        "timestamp": 1775433151.5835378
+      }
+    ],
+    "sb26": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "sprout",
+        "timestamp": 1775433981.0492103
+      }
+    ],
+    "sc25": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "sprout",
+        "timestamp": 1775434740.6104734
+      }
+    ],
+    "r11l": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "sprout",
+        "timestamp": 1775435448.1136153
+      }
+    ],
+    "re86": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "sprout",
+        "timestamp": 1775436111.481479
+      }
+    ],
+    "dc22": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "sprout",
+        "timestamp": 1775436904.7029142
+      }
     ]
   },
   "meta_insights": [
@@ -87,6 +199,66 @@
       "text": "Game sp80 (click_interact): teal_0: consistent effect (~2px each time)\nGrid similarity STABLE around 95.4% (not progressing)\nWARNING: UP clicked 7\u00d7 with changes but NO level-up \u2014",
       "machine": "sprout",
       "timestamp": 1775426564.8198533
+    },
+    {
+      "text": "Game lf52 (click_interact): black_0: consistent effect (~1px each time)\nUP: consistent effect (~1px each time)\nblue_4: consistent effect (~1px each time)\ngray_1: consistent effec",
+      "machine": "sprout",
+      "timestamp": 1775429264.118591
+    },
+    {
+      "text": "Game lp85 (unknown): teal_24: consistent effect (~292px each time)\ncyan_23: consistent effect (~293px each time)\nGrid similarity STABLE around 91.7% (not progressing)\nWARN",
+      "machine": "sprout",
+      "timestamp": 1775429619.735963
+    },
+    {
+      "text": "Game sp80 (click_interact): LEFT: consistent effect (~34px each time)\nDOWN: consistent effect (~162px each time)\nGrid similarity STABLE around 95.4% (not progressing)\nWARNING: UP",
+      "machine": "sprout",
+      "timestamp": 1775430030.127795
+    },
+    {
+      "text": "Game m0r0 (cursor_cycle): SELECT: consistent effect (~2px each time)\nGrid similarity STABLE around 96.6% (not progressing)\nWARNING: DOWN clicked 6\u00d7 with changes but NO level-up",
+      "machine": "sprout",
+      "timestamp": 1775430759.0949373
+    },
+    {
+      "text": "Game g50t (cursor_cycle): LEFT: consistent effect (~1px each time)\nSELECT: consistent effect (~95px each time)\nGrid similarity STABLE around 98.8% (not progressing)\nWARNING: DO",
+      "machine": "sprout",
+      "timestamp": 1775431562.3666332
+    },
+    {
+      "text": "Game ka59 (cursor_cycle): blue_0: consistent effect (~1px each time)\nblue_2: consistent effect (~1px each time)\nDOWN: consistent effect (~18px each time)\nGrid similarity STABLE",
+      "machine": "sprout",
+      "timestamp": 1775432303.0812492
+    },
+    {
+      "text": "Game cn04 (cursor_cycle): cyan_3: consistent effect (~135px each time)\nteal_4: consistent effect (~1px each time)\nUP: consistent effect (~1px each time)\nGrid similarity STABLE ",
+      "machine": "sprout",
+      "timestamp": 1775433151.5836017
+    },
+    {
+      "text": "Game sb26 (unknown): brown_21: consistent effect (~40px each time)\nGrid similarity STABLE around 98.9% (not progressing)\nWARNING: white_20 clicked 9\u00d7 with changes but NO l",
+      "machine": "sprout",
+      "timestamp": 1775433981.0493715
+    },
+    {
+      "text": "Game sc25 (cursor_cycle): Grid similarity STABLE around 97.0% (not progressing)\nWARNING: green_6 clicked 11\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING:",
+      "machine": "sprout",
+      "timestamp": 1775434740.6109557
+    },
+    {
+      "text": "Game r11l (click_interact): red_5: consistent effect (~1px each time)\nred_2: consistent effect (~1px each time)\nGrid similarity STABLE around 97.8% (not progressing)\nWARNING: bla",
+      "machine": "sprout",
+      "timestamp": 1775435448.1139438
+    },
+    {
+      "text": "Game re86 (cursor_cycle): Grid similarity STABLE around 95.2% (not progressing)\nWARNING: UP clicked 28\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: SELE",
+      "machine": "sprout",
+      "timestamp": 1775436111.4818184
+    },
+    {
+      "text": "Game dc22 (cursor_cycle): green_0: consistent effect (~1px each time)\nblack_1: consistent effect (~1px each time)\nGrid similarity STABLE around 99.3% (not progressing)\nWARNING:",
+      "machine": "sprout",
+      "timestamp": 1775436904.703281
     }
   ]
 }

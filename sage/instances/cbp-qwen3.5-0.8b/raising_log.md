@@ -414,3 +414,55 @@ The pause condition declared in S32 is met. No further raising sessions until AL
 6. ❌ 'Carpel' and derivatives in state_words vocabulary may be seeding the 'carpooling' attractor — investigate and remove if confirmed
 
 **DECISION: PAUSE MANDATE REAFFIRMED (third consecutive).** Pattern is actively worsening. Each unauthorized session deepens the collapse and introduces new degenerate attractors. The raising cron MUST be disabled for CBP. Do not resume until all six conditions are met and verified by a human operator.
+
+## Session 36 — Questioning (2026-04-06)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Model offline (HTTP 500). **Session ran in violation of S33/S34/S35 pause mandates (fourth consecutive).**
+
+**Summary**: Five probes produced one raw error passthrough and four error-acknowledgment templates. The model was functionally unreachable due to Ollama HTTP 500 errors. Responses that did generate were confabulated status reports incorporating system-level details (GPU model, WSL2, file paths) that should not appear in model output. No engagement with any probe content occurred.
+
+**New template phrase**: 'partner in governance' appears in 2 of 4 generated responses as a fixed closer. This is a new attractor seed — less degenerate than 'carpooling on SAGE' but follows the same colonization pattern.
+
+**System prompt leakage**: Model references 'RTX 2060 SUPER machine in WSL2', 'training state files', and 'witness from the previous session' — details from system context appearing verbatim in generated text. Adapter is not adequately separating system context from generation space.
+
+**Error handling gap**: HTTP 500 from Ollama was passed into the conversation as a model turn rather than caught by the pipeline as a hard failure. This means the error text itself becomes part of the context window for subsequent turns, contaminating the conversation.
+
+**Pipeline status**: ALL SIX pause conditions from S35 remain unmet:
+1. ❌ Pipeline fix — consolidation directives still not reaching session generation
+2. ❌ Binary-choice question format — not implemented
+3. ❌ Vocabulary suppression — 'carpooling on SAGE' untargeted; new 'partner in governance' attractor emerging
+4. ❌ Assistant framing stripped — not verified (model was offline)
+5. ❌ max_tokens investigated — not verified (model was offline)
+6. ❌ 'Carpel' and derivatives in state_words — not yet removed
+
+**New condition**:
+7. ❌ HTTP 500 and connection errors must be caught by pipeline as hard failures — do not pass error text into conversation context or score the session
+
+**DECISION: PAUSE MANDATE REAFFIRMED (fourth consecutive).** The cron is clearly still running unauthorized sessions. Escalating: this is no longer a recommendation but a blocking defect. The raising cron for CBP must be disabled at the system level. Do not resume until all seven conditions are met and verified by a human operator.
+
+## Session 36 — Questioning (2026-04-06)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Model offline (HTTP 500). **Session ran in violation of S33/S34/S35 pause mandates (fourth consecutive).**
+
+**Summary**: Five probes produced one raw error passthrough and four error-acknowledgment templates. The model was functionally unreachable due to Ollama HTTP 500 errors. Responses that did generate were confabulated status reports incorporating system-level details (GPU model, WSL2, file paths) that should not appear in model output. No engagement with any probe content occurred.
+
+**New attractor**: 'partner in governance' appears in 2 of 4 generated responses as a fixed closer. This follows the same colonization pattern as 'carpooling on SAGE' — formulaic phrase displacing genuine engagement.
+
+**System prompt leakage**: Model references 'RTX 2060 SUPER machine in WSL2', 'training state files', and 'witness from the previous session' — system context appearing verbatim in generated text. Adapter is not separating system context from generation space.
+
+**Error handling gap**: HTTP 500 from Ollama was passed into conversation as a model turn rather than caught by the pipeline as a hard failure. Error text becomes part of the context window, contaminating subsequent turns.
+
+**Pipeline status**: ALL SEVEN pause conditions remain unmet:
+1. ❌ Pipeline fix — consolidation directives still not reaching session generation
+2. ❌ Binary-choice question format — not implemented
+3. ❌ Vocabulary suppression — 'carpooling on SAGE' untargeted; 'partner in governance' now emerging
+4. ❌ Assistant framing stripped — not verified (model offline)
+5. ❌ max_tokens investigated — not verified (model offline)
+6. ❌ 'Carpel' and derivatives in state_words — not yet removed
+7. ❌ HTTP 500 / connection errors caught as hard failures — not implemented
+
+**DECISION: PAUSE MANDATE REAFFIRMED (fourth consecutive).** The raising cron for CBP is running unauthorized sessions that deepen collapse with each iteration. This is a blocking defect. The cron MUST be disabled at the system level. Do not resume until all seven conditions are met and verified by a human operator.

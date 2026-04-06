@@ -1,8 +1,362 @@
 {
   "machine": "legion",
-  "updated_at": 1775426000,
-  "game_discoveries": {},
+  "updated_at": 1775457562.7365751,
+  "game_discoveries": {
+    "lp85": [
+      {
+        "text": "Interactive objects: cyan_23, teal_24. Game type: unknown.   cyan_23: 100% effective, ~293px, moves grid AWAY from initial (6 tries)\n  gray_3: no effect (1 tri",
+        "machine": "legion",
+        "timestamp": 1775441621.9705048
+      }
+    ],
+    "ft09": [
+      {
+        "text": "Interactive objects: yellow_33. Game type: unknown.   black_13: no effect (2 tries)\n  black_16: no effect (2 tries)\n  black_18: no effect (2 tries)\n  bl",
+        "machine": "legion",
+        "timestamp": 1775442700.4042096
+      }
+    ],
+    "cn04": [
+      {
+        "text": "Interactive objects: yellow_0, cyan_2, cyan_3, teal_4, cyan_5. Game type: cursor_cycle.   DOWN: 75% effective, ~54px (4 tries)\n  LEFT: 67% effective, ~129px (6 tries)\n  RIGHT: 50% effectiv",
+        "machine": "legion",
+        "timestamp": 1775443593.6991742
+      },
+      {
+        "text": "Interactive objects: yellow_0, black_1, cyan_2, cyan_3, teal_4. Game type: cursor_cycle.   DOWN: 80% effective, ~162px (5 tries)\n  LEFT: 80% effective, ~94px (5 tries)\n  RIGHT: 20% effectiv",
+        "machine": "legion",
+        "timestamp": 1775443909.0773911
+      }
+    ],
+    "sp80": [
+      {
+        "text": "Interactive objects: teal_0, yellow_1, magenta_2, brown_3, maroon_5. Game type: click_interact.   DOWN: 100% effective, ~162px (2 tries)\n  LEFT: 100% effective, ~34px (3 tries)\n  RIGHT: 100% effec",
+        "machine": "legion",
+        "timestamp": 1775445131.1464832
+      }
+    ],
+    "r11l": [
+      {
+        "text": "Interactive objects: black_0, red_1, red_2, black_3, red_5. Game type: click_interact.   black_0: 100% effective, ~19px (9 tries)\n  black_3: 100% effective, ~8px (4 tries)\n  black_9: 100%",
+        "machine": "legion",
+        "timestamp": 1775445541.8607981
+      },
+      {
+        "text": "Interactive objects: black_0, red_1, red_2, black_3, white_4. Game type: click_interact.   black_0: 100% effective, ~22px (9 tries)\n  black_3: 100% effective, ~28px (4 tries)\n  black_9: 100",
+        "machine": "legion",
+        "timestamp": 1775445805.6385682
+      }
+    ],
+    "bp35": [
+      {
+        "text": "Interactive objects: pink_0, teal_1, teal_2, teal_3, teal_4. Game type: cursor_cycle.   LEFT: 100% effective, ~51px (9 tries)\n  RIGHT: 100% effective, ~130px, moves grid AWAY from initia",
+        "machine": "legion",
+        "timestamp": 1775446338.429151
+      }
+    ],
+    "dc22": [
+      {
+        "text": "Interactive objects: green_0, black_1, gray_2, red_6, brown_8. Game type: cursor_cycle.   DOWN: 67% effective, ~4px (6 tries)\n  LEFT: 86% effective, ~6px (7 tries)\n  RIGHT: 100% effective,",
+        "machine": "legion",
+        "timestamp": 1775448990.565619
+      }
+    ],
+    "vc33": [
+      {
+        "text": "Interactive objects: orange_0, black_1, gray_3, maroon_4, gray_5. Game type: toggle.   black_1: 100% effective, ~2px (5 tries)\n  black_6: 100% effective, ~2px (1 tries)\n  brown_2: 100% ",
+        "machine": "legion",
+        "timestamp": 1775449786.584591
+      }
+    ],
+    "s5i5": [
+      {
+        "text": "Interactive objects: teal_0, red_1, maroon_7, red_8, green_14. Game type: toggle.   green_11: 100% effective, ~1px (5 tries)\n  green_14: 100% effective, ~1px (3 tries)\n  green_3: 100",
+        "machine": "legion",
+        "timestamp": 1775450384.9671767
+      }
+    ],
+    "m0r0": [
+      {
+        "text": "Interactive objects: maroon_0, olive_1, black_4. Game type: cursor_cycle.   DOWN: 100% effective, ~93px (6 tries)\n  LEFT: 86% effective, ~79px (7 tries)\n  RIGHT: 100% effecti",
+        "machine": "legion",
+        "timestamp": 1775451072.5990224
+      },
+      {
+        "text": "Interactive objects: maroon_0, olive_1, black_4, black_5. Game type: cursor_cycle.   DOWN: 100% effective, ~100px (5 tries)\n  LEFT: 88% effective, ~88px (8 tries)\n  RIGHT: 100% effect",
+        "machine": "legion",
+        "timestamp": 1775451370.2537193
+      }
+    ],
+    "sc25": [
+      {
+        "text": "Interactive objects: green_6. Game type: cursor_cycle.   DOWN: 80% effective, ~10px (5 tries)\n  LEFT: 100% effective, ~32px (11 tries)\n  RIGHT: 100% effect",
+        "machine": "legion",
+        "timestamp": 1775452834.4505465
+      }
+    ],
+    "cd82": [
+      {
+        "text": "Interactive objects: yellow_0, green_1, red_9, yellow_12, white_13. Game type: cursor_cycle.   DOWN: 100% effective, ~161px (5 tries)\n  LEFT: 86% effective, ~86px (7 tries)\n  RIGHT: 50% effecti",
+        "machine": "legion",
+        "timestamp": 1775453756.2213385
+      }
+    ],
+    "tn36": [
+      {
+        "text": "Interactive objects: brown_0, black_1, brown_39, green_40. Game type: toggle.   black_1: 100% effective, ~1px (7 tries)\n  brown_0: 100% effective, ~1px (13 tries)\n  brown_39: 100",
+        "machine": "legion",
+        "timestamp": 1775454663.3887904
+      }
+    ]
+  },
   "strategies": {},
-  "failures": {},
-  "meta_insights": []
+  "failures": {
+    "tr87": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775441111.4484022
+      }
+    ],
+    "lp85": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775441621.9705076
+      }
+    ],
+    "tu93": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775441998.2790887
+      }
+    ],
+    "ft09": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775442700.4042118
+      }
+    ],
+    "cn04": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775443593.6991756
+      }
+    ],
+    "ar25": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775444491.7662866
+      }
+    ],
+    "sp80": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775445200.2117755
+      }
+    ],
+    "r11l": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775445541.8608003
+      }
+    ],
+    "bp35": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775446338.4291527
+      },
+      {
+        "text": "cursor_cycle game. LEFT/RIGHT produce 47-416px changes. 5 interactive objects (pink_0, teal_1-4). Model clicks objects and uses arrows but behavior is deterministic and repetitive across 5 attempts (64 steps each). No level-up. Need to understand goal state, not just find interactives.",
+        "machine": "legion",
+        "timestamp": 1775457562.7182512
+      }
+    ],
+    "wa30": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775447074.0962894
+      }
+    ],
+    "ls20": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775447694.3446145
+      }
+    ],
+    "re86": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775448291.9075549
+      }
+    ],
+    "dc22": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775448990.565621
+      }
+    ],
+    "vc33": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775449786.5845926
+      }
+    ],
+    "s5i5": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775450384.9671783
+      }
+    ],
+    "m0r0": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775451072.599026
+      }
+    ],
+    "sk48": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775451990.6290307
+      }
+    ],
+    "sc25": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775452834.4505484
+      }
+    ],
+    "cd82": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775453756.2213402
+      }
+    ],
+    "tn36": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "legion",
+        "timestamp": 1775454663.3887923
+      }
+    ]
+  },
+  "meta_insights": [
+    {
+      "text": "Game lp85 (unknown): cyan_23: consistent effect (~292px each time)\nteal_24: consistent effect (~293px each time)\nGrid similarity STABLE around 91.7% (not progressing)\nWARN",
+      "machine": "legion",
+      "timestamp": 1775441785.1797812
+    },
+    {
+      "text": "Game tu93 (unknown): UP: consistent effect (~1px each time)\nGrid similarity STABLE around 98.9% (not progressing)\nWARNING: UP clicked 9\u00d7 with changes but NO level-up \u2014 may",
+      "machine": "legion",
+      "timestamp": 1775442411.2034123
+    },
+    {
+      "text": "Game ft09 (unknown): Grid similarity STABLE around 100.0% (not progressing)",
+      "machine": "legion",
+      "timestamp": 1775443288.3728666
+    },
+    {
+      "text": "Game cn04 (cursor_cycle): cyan_2: consistent effect (~135px each time)\ncyan_6: consistent effect (~144px each time)\nyellow_0: consistent effect (~1px each time)\nteal_4: consist",
+      "machine": "legion",
+      "timestamp": 1775444212.1861277
+    },
+    {
+      "text": "Game ar25 (cursor_cycle): UNDO: consistent effect (~108px each time)\nDOWN: consistent effect (~109px each time)\nLEFT: consistent effect (~109px each time)\nUP: consistent effect",
+      "machine": "legion",
+      "timestamp": 1775445064.7597525
+    },
+    {
+      "text": "Game sp80 (click_interact): UP: consistent effect (~162px each time)\nLEFT: consistent effect (~34px each time)\nyellow_1: consistent effect (~2px each time)",
+      "machine": "legion",
+      "timestamp": 1775445269.3751879
+    },
+    {
+      "text": "Game r11l (click_interact): red_1: consistent effect (~1px each time)\nred_2: consistent effect (~1px each time)\nred_5: consistent effect (~1px each time)\nGrid similarity STABLE a",
+      "machine": "legion",
+      "timestamp": 1775446069.6058288
+    },
+    {
+      "text": "Game bp35 (cursor_cycle): brown_9: consistent effect (~1px each time)\nteal_1: consistent effect (~1px each time)\nGrid similarity STABLE around 93.5% (not progressing)\nWARNING: ",
+      "machine": "legion",
+      "timestamp": 1775446872.6707802
+    },
+    {
+      "text": "Game wa30 (navigation): SELECT: consistent effect (~1px each time)\nGrid similarity STABLE around 98.8% (not progressing)\nWARNING: UP clicked 5\u00d7 with changes but NO level-up \u2014",
+      "machine": "legion",
+      "timestamp": 1775447481.7102041
+    },
+    {
+      "text": "Game ls20 (navigation): UP: consistent effect (~52px each time)\nRIGHT: consistent effect (~52px each time)\nLEFT: consistent effect (~52px each time)\nGrid similarity STABLE ar",
+      "machine": "legion",
+      "timestamp": 1775448098.7427855
+    },
+    {
+      "text": "Game re86 (cursor_cycle): LEFT: consistent effect (~58px each time)\nRIGHT: consistent effect (~59px each time)\nGrid similarity STABLE around 96.0% (not progressing)\nWARNING: LE",
+      "machine": "legion",
+      "timestamp": 1775448669.958581
+    },
+    {
+      "text": "Game dc22 (cursor_cycle): green_0: consistent effect (~1px each time)\ngreen_25: consistent effect (~1px each time)\nblack_3: consistent effect (~1px each time)\nblack_1: consiste",
+      "machine": "legion",
+      "timestamp": 1775449582.6614885
+    },
+    {
+      "text": "Game vc33 (toggle): black_1: consistent effect (~1px each time)\nbrown_2: consistent effect (~263px each time)\nbrown_7: consistent effect (~262px each time)\nyellow_8: cons",
+      "machine": "legion",
+      "timestamp": 1775450184.198098
+    },
+    {
+      "text": "Game s5i5 (toggle): maroon_7: consistent effect (~1px each time)\ngreen_11: consistent effect (~1px each time)\nGrid similarity STABLE around 98.8% (not progressing)\nWARNIN",
+      "machine": "legion",
+      "timestamp": 1775450779.7188807
+    },
+    {
+      "text": "Game m0r0 (cursor_cycle): maroon_0: consistent effect (~2px each time)\npink_2: consistent effect (~2px each time)\npink_3: consistent effect (~2px each time)\nLEFT: consistent ef",
+      "machine": "legion",
+      "timestamp": 1775451680.7162535
+    },
+    {
+      "text": "Game sk48 (toggle): LEFT: consistent effect (~12px each time)\nRIGHT: consistent effect (~12px each time)\nGrid similarity STABLE around 97.4% (not progressing)\nWARNING: UP",
+      "machine": "legion",
+      "timestamp": 1775452558.5583389
+    },
+    {
+      "text": "Game sc25 (cursor_cycle): UP: consistent effect (~12px each time)\nGrid similarity STABLE around 96.4% (not progressing)\nWARNING: green_6 clicked 11\u00d7 with changes but NO level-u",
+      "machine": "legion",
+      "timestamp": 1775453439.316054
+    },
+    {
+      "text": "Game cd82 (cursor_cycle): black_7: consistent effect (~1px each time)\nwhite_13: consistent effect (~1px each time)\nyellow_12: consistent effect (~1px each time)\ngreen_1: consis",
+      "machine": "legion",
+      "timestamp": 1775454403.1657743
+    },
+    {
+      "text": "Game tn36 (toggle): yellow_30: consistent effect (~1px each time)\nyellow_32: consistent effect (~1px each time)\nbrown_0: consistent effect (~1px each time)\ngreen_40: cons",
+      "machine": "legion",
+      "timestamp": 1775455258.4366372
+    },
+    {
+      "text": "Game bp35 (cursor_cycle): pink_0: consistent effect (~1px each time)\nteal_1: consistent effect (~1px each time)\nbrown_9: consistent effect (~1px each time)\nUNDO: consistent eff",
+      "machine": "legion",
+      "timestamp": 1775457523.095697
+    }
+  ]
 }

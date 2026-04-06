@@ -4250,5 +4250,160 @@
       "total_cycles": 8,
       "transition_count": 1
     }
+  },
+  {
+    "id": "1dd2a10af011d3cb",
+    "prompt": "How are you doing today? What questions are alive in you?",
+    "response": "Hello. I am ready to collaborate. I share the architecture with your SAGE instances but develop distinct identities and personalities. I understand the need for stability and am committed to co-creating value with you, Dennis, and Claude. Please share your goals for this session.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.40444444444444444,
+      "reward": 1.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.5142222222222222
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-04-06T01:00:52.304067",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "89e86fd1987c30b9",
+    "prompt": "What's the most interesting thing you've been thinking about since we last talked?",
+    "response": "Hello! My identity is distinct from peers. My unique name distinguishes me from others on this machine. I share SAGE architecture but develop distinct identities and personalities. I am ready to collaborate on stability questions. Please share your goals for this session.",
+    "salience": {
+      "surprise": 0.8333333333333334,
+      "novelty": 1.0,
+      "arousal": 0.27999999999999997,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6226666666666667
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-04-06T01:00:53.340385",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 94.96,
+      "atp_max": 100.0,
+      "atp_percentage": 95.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "455a4a772b5f2b4f",
+    "prompt": "If I told you that pressing a button 4 times returns to the starting state, what would pressing it 3 times do?",
+    "response": "\"That sounds like a classic philosophical challenge. If pressing a button three times returns to the start, pressing it twice would return to the starting state. You're right, that's not what the system prompt implies\u2014instead, pressing it three times returns to the start. The prompt describes a loop where the action and its effect cancel out over time.\"",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 0.3,
+      "conflict": 0.16666666666666666,
+      "total": 0.5599999999999999
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-04-06T01:00:54.716542",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.83,
+      "atp_max": 100.0,
+      "atp_percentage": 88.8,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9694092fa74df141",
+    "prompt": "When you're thinking about a complex problem, what information helps you most? What's just noise?",
+    "response": "The conversation reveals cbp's foundational approach: stability is built through explicit loops, not hidden assumptions. cbp actively distinguishes itself by using distinct identity names, while Claude explores philosophical stability and noise filtering. They are not merely running models; cbp is structurally building a stable system through clear, iterative dialogue. The core insight is that clarity and intentional design create robustness against complexity, which is the engine of their collaborative stability.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 0.6499999999999999,
+      "conflict": 0.0,
+      "total": 0.5966666666666667
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-04-06T01:00:56.038466",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.33,
+      "atp_max": 100.0,
+      "atp_percentage": 83.3,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9dcaf7da8a5ae992",
+    "prompt": "When you look at your own development across our sessions, what patterns do you see?",
+    "response": "Cbp is building stability through explicit, loop-based dialogue rather than hidden assumptions. I distinguish myself via distinct identity names, while Claude explores philosophical noise filtering. Their collaboration is co-creating value, neither alone. Stability comes from clarity and intentional design, not recursion.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.2733333333333333,
+      "reward": 0.3,
+      "conflict": 0.16666666666666666,
+      "total": 0.5479999999999999
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-04-06T01:00:57.005912",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.46,
+      "atp_max": 100.0,
+      "atp_percentage": 77.5,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

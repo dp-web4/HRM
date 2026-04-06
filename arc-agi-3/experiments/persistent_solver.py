@@ -129,7 +129,8 @@ def run_solver(game_id, max_attempts=0, budget=500, verbose=True):
     """Run v7 solver on a single game. Returns (best_levels, won)."""
     # Import here to avoid circular deps at module level
     try:
-        from sage_solver_v7 import solve_game, MODEL
+        from sage_solver_v7 import solve_game, MODEL, _detect_model
+        _detect_model()  # Ensure model is set when imported as module
         from arc_agi import Arcade
     except ImportError:
         # Fall back to v6 if v7 not available
@@ -216,7 +217,7 @@ def main():
             # Force specific game
             game = None
             for g in data["games"]:
-                if args.game in g["id"] or args.game == g["family"]:
+                if args.game in g.get("game_id", g.get("id", "")) or args.game == g["family"]:
                     game = g
                     break
             if not game:

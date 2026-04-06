@@ -36,11 +36,6 @@ from arc_action_model import ActionEffectModel
 from arc_narrative import SessionNarrative
 from arc_context import ContextConstructor
 from arc_federation import FederatedKnowledge
-try:
-    from arc_vision import grid_to_image_b64
-    HAS_VISION = True
-except ImportError:
-    HAS_VISION = False
 
 # Import context budget from raising (shared module)
 try:
@@ -104,25 +99,44 @@ def _is_thinking_model():
 
 # ─── LLM ───
 
-def ask_llm(prompt: str, max_tokens: int = -1, images: list = None) -> str:
-    """LLM call with optional vision (images).
+# ARC color palette for rendering grids to images
+_ARC_COLORS = {
+    0:(0,0,0), 1:(0,116,217), 2:(255,65,54), 3:(46,204,64), 4:(255,220,0),
+    5:(170,170,170), 6:(240,18,190), 7:(255,133,27), 8:(127,219,255), 9:(135,12,37),
+    10:(255,255,255), 11:(128,128,0), 12:(0,128,128), 13:(128,0,128), 14:(255,192,203),
+}
 
-    For multimodal models (Gemma 4): pass base64-encoded PNGs in images list.
-    The model SEES the game grid instead of reading text descriptions.
-    """
+def grid_to_base64(grid) -> str:
+    """Render a 2D numpy grid of color indices to a base64-encoded PNG."""
+    from PIL import Image
+    import io
+    scale = 4  # 64x64 → 256x256 for visibility
+    h, w = grid.shape
+    img = np.zeros((h * scale, w * scale, 3), dtype=np.uint8)
+    for y in range(h):
+        for x in range(w):
+            img[y*scale:(y+1)*scale, x*scale:(x+1)*scale] = _ARC_COLORS.get(int(grid[y, x]), (128,128,128))
+    buf = io.BytesIO()
+    Image.fromarray(img).save(buf, format='PNG')
+    import base64
+    return base64.b64encode(buf.getvalue()).decode()
+
+
+def ask_llm(prompt: str, max_tokens: int = -1, image_b64: str = None) -> str:
+    """Call LLM with optional vision (image). Gemma4:e4b supports multimodal."""
     opts = {"temperature": 0.3}
     if max_tokens == -1 and any(s in MODEL for s in ["0.8b", "0.5b", "1b", "2b", "3b"]):
         opts["num_predict"] = 300
     elif max_tokens > 0:
         opts["num_predict"] = max_tokens
 
-    message = {"role": "user", "content": prompt}
-    if images and _is_thinking_model():  # Only send images to multimodal models
-        message["images"] = images
+    msg = {"role": "user", "content": prompt}
+    if image_b64:
+        msg["images"] = [image_b64]
 
     payload = {
         "model": MODEL, "stream": False,
-        "messages": [message],
+        "messages": [msg],
         "options": opts,
     }
     if not _is_thinking_model():
@@ -329,8 +343,8 @@ def parse_actions(plan_text, tracker, available):
 def assemble_context_and_plan(narrative, tracker, action_model, available,
                               levels, win_levels, ctx: ContextConstructor = None,
                               attempt_num=1, verbose=False, fleet_context: str = "",
-                              grid: np.ndarray = None):
-    """Assemble all 4 layers with budget tracking + vision, ask LLM for next actions."""
+                              vision_insight: str = ""):
+    """Assemble all 4 layers with budget tracking, ask LLM for next actions."""
     budget = ContextBudget()
     has_move = any(a in available for a in [1, 2, 3, 4])
 
@@ -404,17 +418,16 @@ def assemble_context_and_plan(narrative, tracker, action_model, available,
 
 {fleet_context}
 
-GAME STATE: Level {levels}/{win_levels}, Attempt {attempt_num}
+{"VISUAL ANALYSIS (from looking at the game screen):" + chr(10) + vision_insight + chr(10) if vision_insight else ""}GAME STATE: Level {levels}/{win_levels}, Attempt {attempt_num}
 
 {layer2}
 
 {layer1}
 
 {"MOVEMENT available: UP/DOWN/LEFT/RIGHT." if has_move else "Click-only game."}
-{"The attached image shows the CURRENT game grid. Use it to understand spatial layout, object positions, and patterns." if (HAS_VISION and grid is not None and _is_thinking_model()) else ""}
 
-Based on EVERYTHING above — what you SEE in the image, your metacognitive principles,
-cross-game insights, what you've learned about objects, and your action history —
+Based on EVERYTHING above — your metacognitive principles, cross-game insights,
+what you've learned about this game's objects, and your recent action history —
 what are the NEXT 3 actions?
 
 Use exact object names: "CLICK cyan_23" (not "CLICK cyan")
@@ -424,14 +437,7 @@ Use CLICK INTERACTIVE to click all known-working objects.
 NEXT 3 ACTIONS:"""
 
     budget.record("prompt_framing", prompt[len(layer4)+len(layer3)+len(layer2)+len(layer1):])
-
-    # Vision: send grid as image to multimodal models
-    images = None
-    if HAS_VISION and grid is not None and _is_thinking_model():
-        images = [grid_to_image_b64(grid)]
-        budget.record("vision_image", "512x512 PNG")
-
-    return ask_llm(prompt, images=images)
+    return ask_llm(prompt)
 
 
 # ─── MAIN SOLVE LOOP ───
@@ -487,6 +493,29 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
         if verbose and (game_start_ctx or probe_ctx):
             print(f"  Membot: {len(game_start_ctx)} + {len(probe_ctx)} chars of relevant context")
 
+        # VISION: show the model the actual game screen
+        vision_insight = ""
+        if _is_thinking_model():
+            try:
+                img_b64 = grid_to_base64(grid)
+                vision_prompt = (
+                    "You are solving a puzzle game. This is the current screen.\n\n"
+                    f"Known interactive objects: {', '.join(obj_name(o) for o in interactive)}\n"
+                    f"Available actions: {', '.join(ACTION_NAMES.get(a, f'A{a}') for a in available)}\n"
+                    f"Levels completed: {fd.levels_completed}/{fd.win_levels}\n\n"
+                    "Look at this image carefully. What do you see?\n"
+                    "1. What is the spatial layout? (clusters, lines, patterns, symmetry)\n"
+                    "2. What might the GOAL STATE look like? (what should change to win)\n"
+                    "3. What sequence of actions would transform the current state toward the goal?\n"
+                    "Be specific about positions and colors."
+                )
+                vision_insight = ask_llm(vision_prompt, max_tokens=500, image_b64=img_b64)
+                if verbose and vision_insight:
+                    print(f"  Vision ({len(vision_insight)} chars): {vision_insight[:120]}...")
+            except Exception as e:
+                if verbose:
+                    print(f"  Vision failed: {e}")
+
         if fd is None or fd.state.name in ("WON", "LOST", "GAME_OVER"):
             if fd and fd.levels_completed > best_levels:
                 best_levels = fd.levels_completed
@@ -505,7 +534,8 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
                 narrative, tracker, action_model, available,
                 fd.levels_completed, fd.win_levels, ctx=ctx,
                 attempt_num=attempt+1, verbose=verbose,
-                fleet_context=fleet_context, grid=grid)
+                fleet_context=fleet_context,
+                vision_insight=vision_insight)
             plan_actions = parse_actions(plan_text, tracker, available)
             plan_time = time.time() - t0
 

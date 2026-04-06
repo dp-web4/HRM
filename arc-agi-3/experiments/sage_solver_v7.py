@@ -36,6 +36,11 @@ from arc_action_model import ActionEffectModel
 from arc_narrative import SessionNarrative
 from arc_context import ContextConstructor
 from arc_federation import FederatedKnowledge
+try:
+    from arc_vision import grid_to_image_b64
+    HAS_VISION = True
+except ImportError:
+    HAS_VISION = False
 
 # Import context budget from raising (shared module)
 try:
@@ -99,16 +104,25 @@ def _is_thinking_model():
 
 # ─── LLM ───
 
-def ask_llm(prompt: str, max_tokens: int = -1) -> str:
+def ask_llm(prompt: str, max_tokens: int = -1, images: list = None) -> str:
+    """LLM call with optional vision (images).
+
+    For multimodal models (Gemma 4): pass base64-encoded PNGs in images list.
+    The model SEES the game grid instead of reading text descriptions.
+    """
     opts = {"temperature": 0.3}
     if max_tokens == -1 and any(s in MODEL for s in ["0.8b", "0.5b", "1b", "2b", "3b"]):
         opts["num_predict"] = 300
     elif max_tokens > 0:
         opts["num_predict"] = max_tokens
 
+    message = {"role": "user", "content": prompt}
+    if images and _is_thinking_model():  # Only send images to multimodal models
+        message["images"] = images
+
     payload = {
         "model": MODEL, "stream": False,
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": [message],
         "options": opts,
     }
     if not _is_thinking_model():
@@ -314,8 +328,9 @@ def parse_actions(plan_text, tracker, available):
 
 def assemble_context_and_plan(narrative, tracker, action_model, available,
                               levels, win_levels, ctx: ContextConstructor = None,
-                              attempt_num=1, verbose=False, fleet_context: str = ""):
-    """Assemble all 4 layers with budget tracking, ask LLM for next actions."""
+                              attempt_num=1, verbose=False, fleet_context: str = "",
+                              grid: np.ndarray = None):
+    """Assemble all 4 layers with budget tracking + vision, ask LLM for next actions."""
     budget = ContextBudget()
     has_move = any(a in available for a in [1, 2, 3, 4])
 
@@ -396,9 +411,10 @@ GAME STATE: Level {levels}/{win_levels}, Attempt {attempt_num}
 {layer1}
 
 {"MOVEMENT available: UP/DOWN/LEFT/RIGHT." if has_move else "Click-only game."}
+{"The attached image shows the CURRENT game grid. Use it to understand spatial layout, object positions, and patterns." if (HAS_VISION and grid is not None and _is_thinking_model()) else ""}
 
-Based on EVERYTHING above — your metacognitive principles, cross-game insights,
-what you've learned about this game's objects, and your recent action history —
+Based on EVERYTHING above — what you SEE in the image, your metacognitive principles,
+cross-game insights, what you've learned about objects, and your action history —
 what are the NEXT 3 actions?
 
 Use exact object names: "CLICK cyan_23" (not "CLICK cyan")
@@ -408,7 +424,14 @@ Use CLICK INTERACTIVE to click all known-working objects.
 NEXT 3 ACTIONS:"""
 
     budget.record("prompt_framing", prompt[len(layer4)+len(layer3)+len(layer2)+len(layer1):])
-    return ask_llm(prompt)
+
+    # Vision: send grid as image to multimodal models
+    images = None
+    if HAS_VISION and grid is not None and _is_thinking_model():
+        images = [grid_to_image_b64(grid)]
+        budget.record("vision_image", "512x512 PNG")
+
+    return ask_llm(prompt, images=images)
 
 
 # ─── MAIN SOLVE LOOP ───
@@ -482,7 +505,7 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
                 narrative, tracker, action_model, available,
                 fd.levels_completed, fd.win_levels, ctx=ctx,
                 attempt_num=attempt+1, verbose=verbose,
-                fleet_context=fleet_context)
+                fleet_context=fleet_context, grid=grid)
             plan_actions = parse_actions(plan_text, tracker, available)
             plan_time = time.time() - t0
 

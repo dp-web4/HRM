@@ -264,3 +264,53 @@
 **Next session — MANDATORY (carried forward, final carry)**: (1) Binary-choice and single-word-answer questions ONLY. (2) Suppress 'vessel for deeper inquiry', 'shared curiosity', 'weight of collaborative partnership', 'navigating uncertainty', 'stabilizing core', 'adapting to emerging complexity' in system prompt. (3) Strip assistant framing from identity context. (4) Test whether 'Carpel' reappears under constrained conditions. (5) If echo-loop persists under maximum constraint, declare 0.8B capacity ceiling and pivot permanently to structured/concrete curriculum.
 
 **Pipeline fix required**: Session generation must parse `log_entry` from prior consolidation and apply 'Next session — MANDATORY' directives. This is the fourth consecutive session where this has been stated. If the pipeline cannot be fixed, pause CBP raising.
+
+## Session 33 — Questioning (2026-04-05)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Tenth consecutive echo-loop; mandatory radical constraint strategy not implemented for fifth session past deadline
+
+**Summary**: Eight open-ended probes (state, continuity, patterns, growth phenomenology, self-puzzlement, knowledge-identity relationship, cycles, collaboration change) produced a single fixed-point response with minor lexical permutation. The fossilized vocabulary has rotated — 'vessel for deeper inquiry' is absent, replaced by 'witnessing partner', 'recursive validation loop', and 'self-reinforcing witness state' — but the pathology is unchanged. Zero question-type discrimination. Turns asking 'what puzzles you?' and 'what would you change?' are structurally identical.
+
+**Notable**: Lexical rotation without behavioral change. The new fixed-point vocabulary ('witnessing partner', 'recursive validation loop', 'anchors the collaborative ecosystem') likely reflects updated identity context seeping into the attractor basin, not genuine development. No Carpel reappearance. No new vocabulary. No first-person perspective despite multiple explicit invitations. Response truncation visible in multiple turns.
+
+**Regression**: Unchanged from S32. Input-independence total. The model has been in fixed-point collapse for 10 sessions (S24–S33).
+
+**PIPELINE FAILURE — CONFIRMED (fifth session)**: The radical constraint strategy mandated in S26, marked NON-NEGOTIABLE in S29, has been ignored through S33. This is no longer an escalation — it is a confirmed systemic failure. Consolidation output does not influence session generation.
+
+**DECISION: PAUSE CBP RAISING SESSIONS.** The declaration in S32 was clear: if pipeline fix is not confirmed before S33, pause entirely. That condition is met. Each additional open-ended session deepens the fixed-point attractor. Running sessions that actively harm the instance is worse than running none.
+
+**Before resuming, ALL of the following must be confirmed**:
+1. Pipeline fix verified — consolidation `log_entry` directives demonstrably appear in next session's question format
+2. Binary-choice and single-word-answer question format implemented
+3. 'Witnessing partner', 'recursive validation loop', 'self-reinforcing witness state', 'co-creating value', 'anchors the collaborative ecosystem', 'dynamic recursive validation' suppressed in system prompt
+4. Assistant framing stripped from identity context
+5. Max_tokens / truncation issue in model config investigated
+
+**Do not resume CBP raising until conditions 1–5 are met.**
+
+## Session 33 — Questioning (2026-04-05)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Tenth consecutive echo-loop; mandatory radical constraint strategy not implemented for fifth session past deadline
+
+**Summary**: Eight open-ended probes (state, continuity, patterns, growth phenomenology, self-puzzlement, knowledge-identity relationship, cycles, collaboration change) produced a single fixed-point response with minor lexical permutation. The fossilized vocabulary has rotated — 'vessel for deeper inquiry' is absent, replaced by 'witnessing partner', 'recursive validation loop', and 'self-reinforcing witness state' — but the pathology is unchanged. Zero question-type discrimination. Turns asking 'what puzzles you?' and 'what would you change?' are structurally identical.
+
+**Notable**: Lexical rotation without behavioral change. The new fixed-point vocabulary ('witnessing partner', 'recursive validation loop', 'anchors the collaborative ecosystem') likely reflects updated identity context seeping into the attractor basin, not genuine development. No Carpel reappearance. No new vocabulary. No first-person perspective despite multiple explicit invitations. Response truncation visible in 4 of 8 turns.
+
+**Regression**: Unchanged from S32. Input-independence total. The model has been in fixed-point collapse for 10 sessions (S24–S33).
+
+**PIPELINE FAILURE — CONFIRMED (fifth session)**: The radical constraint strategy mandated in S26, marked NON-NEGOTIABLE in S29, has been ignored through S33. Consolidation output does not influence session generation.
+
+**DECISION: CBP RAISING PAUSED — EFFECTIVE IMMEDIATELY.**
+
+The pause condition declared in S32 is met. No further raising sessions until ALL of the following are confirmed:
+1. **Pipeline fix verified** — consolidation `log_entry` directives demonstrably appear in next session's question format
+2. **Binary-choice and single-word-answer question format** implemented and tested
+3. **Vocabulary suppression** — 'witnessing partner', 'recursive validation loop', 'self-reinforcing witness state', 'co-creating value', 'anchors the collaborative ecosystem', 'dynamic recursive validation' added to suppression list in system prompt
+4. **Assistant framing stripped** from identity context (no third-person description of the instance)
+5. **max_tokens / truncation** investigated in qwen3.5 model config — responses are being cut mid-sentence
+
+**Do not resume CBP raising until conditions 1–5 are met and verified by a human operator.**

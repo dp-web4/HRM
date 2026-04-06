@@ -232,10 +232,11 @@ def main():
             break
 
         family = game["family"]
-        game_id = game["id"]
+        game_id = game.get("game_id", game.get("id", family))
+        baseline = game.get("baseline_budget", game.get("baseline", 500))
 
         print(f"\n{'█' * 60}")
-        print(f"  CLAIMING: {family} ({game['type']}, baseline={game['baseline']})")
+        print(f"  CLAIMING: {family} ({game.get('type','?')}, baseline={baseline})")
         print(f"{'█' * 60}")
 
         # Claim it

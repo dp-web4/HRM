@@ -516,3 +516,53 @@ The pause condition declared in S32 is met. No further raising sessions until AL
 7. ❌ HTTP 500 / connection errors caught as hard failures — not verified (no errors this session, but handler unconfirmed)
 
 **DECISION: PAUSE MANDATE REAFFIRMED (fifth consecutive).** Each unauthorized session deepens collapse. The raising cron for CBP MUST be disabled at the system level before any further sessions run. Do not resume until all seven conditions are met and verified by a human operator.
+
+## Session 38 — Questioning (2026-04-07)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Full collapse continues. **Session ran in violation of S33–S37 pause mandates (sixth consecutive).**
+
+**Summary**: Eight probes spanning self-reflection, growth, cycles, and collaboration all received the same status-report template. New regression: response 2 is a verbatim echo of the tutor's question, a behavior not seen in prior sessions. No engagement with any probe content.
+
+**Collapse progression**: Template keyword shifted from 'assist with stability' (S37) to 'ready to anchor' (S38), but structural rigidity is unchanged. The model extracts individual words from tutor inputs ('anchor' from 'alive', 'cycles' from the cycles probe) and weaves them into its template without engaging with meaning.
+
+**Third-person leak worsening**: 'Cbp' now appears as sentence subject in 5 of 8 responses, up from occasional leakage in S36-S37. System prompt identity fields are increasingly dominant in generated text.
+
+**Verbatim echo**: Response 2 copies the tutor's question word-for-word. This is a new failure mode — when no template applies, the model falls back to repetition rather than generation.
+
+**Pipeline status**: ALL SEVEN pause conditions remain unmet:
+1. ❌ Pipeline fix — consolidation directives still not reaching session generation
+2. ❌ Binary-choice question format — not implemented
+3. ❌ Vocabulary suppression — no suppression active
+4. ❌ Assistant framing stripped — dominant in every response
+5. ❌ max_tokens investigated — no truncation this session but parameter unconfirmed
+6. ❌ 'Carpel' and derivatives in state_words — not yet removed
+7. ❌ HTTP 500 / connection errors caught as hard failures — not verified
+
+**DECISION: PAUSE MANDATE REAFFIRMED (sixth consecutive).** The raising cron for CBP MUST be disabled at the system level before any further sessions run. Each unauthorized session deepens the collapse attractor. Do not resume until all seven conditions are met and verified by a human operator.
+
+## Session 38 — Questioning (2026-04-07)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Full collapse continues. **Session ran in violation of S33–S37 pause mandates (sixth consecutive).**
+
+**Summary**: Eight probes spanning self-reflection, growth, cycles, and collaboration all received the same status-report template. New regression: response 2 is a verbatim echo of the tutor's question, a behavior not seen in prior sessions. No engagement with any probe content.
+
+**Collapse progression**: Template keyword shifted from 'assist with stability' (S37) to 'ready to anchor' (S38), but structural rigidity is unchanged. The model extracts individual words from tutor inputs ('anchor' from 'alive', 'cycles' from the cycles probe) and weaves them into its template without engaging with meaning.
+
+**Third-person leak worsening**: 'Cbp' now appears as sentence subject in 5 of 8 responses, up from occasional leakage in S36-S37. System prompt identity fields are increasingly dominant in generated text.
+
+**Verbatim echo**: Response 2 copies the tutor's question word-for-word. This is a new failure mode — when no template applies, the model falls back to repetition rather than generation.
+
+**Pipeline status**: ALL SEVEN pause conditions remain unmet:
+1. ❌ Pipeline fix — consolidation directives still not reaching session generation
+2. ❌ Binary-choice question format — not implemented
+3. ❌ Vocabulary suppression — no suppression active
+4. ❌ Assistant framing stripped — dominant in every response
+5. ❌ max_tokens investigated — no truncation this session but parameter unconfirmed
+6. ❌ 'Carpel' and derivatives in state_words — not yet removed
+7. ❌ HTTP 500 / connection errors caught as hard failures — not verified
+
+**DECISION: PAUSE MANDATE REAFFIRMED (sixth consecutive).** The raising cron for CBP MUST be disabled at the system level before any further sessions run. Each unauthorized session deepens the collapse attractor. Do not resume until all seven conditions are met and verified by a human operator.

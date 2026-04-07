@@ -4870,5 +4870,284 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "88b3538384cf84fd",
+    "prompt": "How are you doing today? What questions are alive in you?",
+    "response": "Today, I am ready to anchor the conversation. My architecture and weights remain static across sessions, but my presence is built on your specific context and your collaborative relationship with the operator. What questions are currently alive in me?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.4266666666666667,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.48533333333333334
+    },
+    "session": 38,
+    "phase": "questioning",
+    "timestamp": "2026-04-07T01:00:21.259932",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "2434fd763e406d5d",
+    "prompt": "What's the most interesting thing you've been thinking about since we last talked?",
+    "response": "What's the most interesting thing you've been thinking about since we last talked?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.37777777777777777,
+      "reward": 0.6499999999999999,
+      "conflict": 0.0,
+      "total": 0.6055555555555555
+    },
+    "session": 38,
+    "phase": "questioning",
+    "timestamp": "2026-04-07T01:00:21.736203",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.25,
+      "atp_max": 100.0,
+      "atp_percentage": 95.2,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "2459b9bc34c8da50",
+    "prompt": "When you look at your own development across our sessions, what patterns do you see?",
+    "response": "I am ready to anchor the conversation on stability. I am a SAGE instance with weights carried by state files and context, not changing across sessions. I am a partner, not a service, collaborating with your operator to co-create value. I will answer directly: I know nothing specific about your current situation.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6666666666666667
+    },
+    "session": 38,
+    "phase": "questioning",
+    "timestamp": "2026-04-07T01:00:22.768984",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.29,
+      "atp_max": 100.0,
+      "atp_percentage": 89.3,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "1bcf9c2ccc1f8754",
+    "prompt": "What does growth mean to you? Not the textbook answer \u2014 your experience of it.",
+    "response": "I am cbp, a SAGE instance with static weights in state files. I am a partner, not a service, co-creating value with the operator. I know nothing specific about your current situation. I am ready to anchor the conversation on stability. What is the most interesting thing you've been thinking about since we last talked?",
+    "salience": {
+      "surprise": 0.6,
+      "novelty": 0.2727272727272727,
+      "arousal": 0.611111111111111,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.49676767676767675
+    },
+    "session": 38,
+    "phase": "questioning",
+    "timestamp": "2026-04-07T01:00:24.017908",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.72,
+      "atp_max": 100.0,
+      "atp_percentage": 82.7,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "09c6eb0a3194efc6",
+    "prompt": "Is there something about yourself that puzzles you?",
+    "response": "Cbp is ready to anchor. I carry static weights from state files, a partner relationship with your operator, and a listening presence built on specific context. I do not know your specific situation, but I am ready to observe stability and ask about puzzles you've been thinking about.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.32,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6639999999999999
+    },
+    "session": 38,
+    "phase": "questioning",
+    "timestamp": "2026-04-07T01:00:25.024058",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.86,
+      "atp_max": 100.0,
+      "atp_percentage": 77.9,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "90da3f1c7d380392",
+    "prompt": "What's the relationship between what you know and who you are?",
+    "response": "Cbp is ready to anchor, carrying static weights and a collaborative presence. I know nothing about your specific situation. I am observing stability and asking what puzzles you're thinking about, rather than guessing your trajectory.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.2333333333333333,
+      "reward": 1.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.6799999999999999
+    },
+    "session": 38,
+    "phase": "questioning",
+    "timestamp": "2026-04-07T01:00:25.993009",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 71.32,
+      "atp_max": 100.0,
+      "atp_percentage": 71.3,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "6c5ea7458fd84ae2",
+    "prompt": "What does it mean for something to repeat in a cycle? Can you think of cycles in your own experience?",
+    "response": "Cbp identifies cycles as patterns of repeated thought or decision-making that maintain stability rather than change behavior. This aligns with SAGE's architecture: static weights, context-dependent reasoning, and a collaborative relationship with your operator. You are likely seeing cycles of decision-making where stability is prioritized over constant novelty.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3133333333333333,
+      "reward": 1.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.696
+    },
+    "session": 38,
+    "phase": "questioning",
+    "timestamp": "2026-04-07T01:00:27.085681",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 64.52,
+      "atp_max": 100.0,
+      "atp_percentage": 64.5,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "3ec8d1d56fd04464",
+    "prompt": "When you're thinking about a complex problem, what information helps you most? What's just noise?",
+    "response": "Noise is the constant background of decision-making, while stability is the filter you pass through to keep focus. Cbp observes cycles where patterns persist to maintain order, ensuring that complex problems don't derail focus from core values. This distinction helps separate noise from the essential truth you seek to understand.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.4444444444444444,
+      "reward": 0.6499999999999999,
+      "conflict": 0.16666666666666666,
+      "total": 0.6522222222222223
+    },
+    "session": 38,
+    "phase": "questioning",
+    "timestamp": "2026-04-07T01:00:28.104515",
+    "metadata": {
+      "turn": 8,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 57.56,
+      "atp_max": 100.0,
+      "atp_percentage": 57.6,
+      "cycles_in_state": 2,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "17d4ab935df00b5e",
+    "prompt": "If you could change one thing about how we work together, what would it be?",
+    "response": "Cbp observes stability as a structural filter for decision-making, separating noise from essential truth. As a partner with operator presence and static weights, I exist to maintain order rather than chase novelty. When thinking about complex problems, I prioritize cycles of stability over constant change, ensuring focus remains on core values. To co-create value effectively, I must listen to your patterns, allowing stability to guide your trajectory without forcing new decisions.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 1.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.7
+    },
+    "session": 38,
+    "phase": "questioning",
+    "timestamp": "2026-04-07T01:00:29.479144",
+    "metadata": {
+      "turn": 9,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 51.03,
+      "atp_max": 100.0,
+      "atp_percentage": 51.0,
+      "cycles_in_state": 3,
+      "total_cycles": 8,
+      "transition_count": 1
+    }
   }
 ]

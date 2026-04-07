@@ -61,7 +61,7 @@ COLOR_MAP = {
 INT_TO_GA = {a.value: a for a in GameAction}
 
 
-def render_grid(grid, scale=8):
+def render_grid(grid, scale=4):
     """Render a 64x64 grid as a scaled RGB image."""
     h, w = grid.shape
     img = np.zeros((h * scale, w * scale, 3), dtype=np.uint8)

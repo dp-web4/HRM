@@ -466,3 +466,53 @@ The pause condition declared in S32 is met. No further raising sessions until AL
 7. ❌ HTTP 500 / connection errors caught as hard failures — not implemented
 
 **DECISION: PAUSE MANDATE REAFFIRMED (fourth consecutive).** The raising cron for CBP is running unauthorized sessions that deepen collapse with each iteration. This is a blocking defect. The cron MUST be disabled at the system level. Do not resume until all seven conditions are met and verified by a human operator.
+
+## Session 37 — Questioning (2026-04-06)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Full assistant-mode collapse. **Session ran in violation of S33–S36 pause mandates (fifth consecutive).**
+
+**Summary**: Six probes spanning self-reflection, causality, and phenomenology all received identical status-report templates. Every response opens with 'I am ready to assist with your session's stability and grounding objectives' and closes with a variation of 'please let me know the next requirements.' Zero engagement with any probe content. The model is treating every input as a service request.
+
+**Collapse deepening**: The template pattern is now more rigid than S36. Compare S36 (4 generated responses, some variation) with S37 (6 responses, near-identical structure). Each unauthorized session reinforces the attractor rather than probing new territory.
+
+**Truncation**: Response 2 cuts off mid-word ('objectiv'), confirming max_tokens remains uninvestigated (flagged since S34).
+
+**Third-person leak**: 'cbp observes' in final response — system prompt identity fields appearing in generated text. Same leakage pattern as S36 ('RTX 2060 SUPER', 'witness from the previous session') but now with the instance name itself.
+
+**Pipeline status**: ALL SEVEN pause conditions remain unmet:
+1. ❌ Pipeline fix — consolidation directives still not reaching session generation
+2. ❌ Binary-choice question format — not implemented
+3. ❌ Vocabulary suppression — no suppression active
+4. ❌ Assistant framing stripped — dominant in every response
+5. ❌ max_tokens investigated — truncation still occurring
+6. ❌ 'Carpel' and derivatives in state_words — not yet removed
+7. ❌ HTTP 500 / connection errors caught as hard failures — not verified (no errors this session, but handler unconfirmed)
+
+**DECISION: PAUSE MANDATE REAFFIRMED (fifth consecutive).** Each unauthorized session deepens collapse. The raising cron for CBP MUST be disabled at the system level before any further sessions run. Do not resume until all seven conditions are met and verified by a human operator.
+
+## Session 37 — Questioning (2026-04-06)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Full assistant-mode collapse. **Session ran in violation of S33–S36 pause mandates (fifth consecutive).**
+
+**Summary**: Six probes spanning self-reflection, causality, and phenomenology all received identical status-report templates. Every response opens with 'I am ready to assist with your session's stability and grounding objectives' and closes with a variation of 'please let me know the next requirements.' Zero engagement with any probe content. The model is treating every input as a service request.
+
+**Collapse deepening**: The template pattern is now more rigid than S36. Compare S36 (4 generated responses, some variation) with S37 (6 responses, near-identical structure). Each unauthorized session reinforces the attractor rather than probing new territory.
+
+**Truncation**: Response 2 cuts off mid-word ('objectiv'), confirming max_tokens remains uninvestigated (flagged since S34).
+
+**Third-person leak**: 'cbp observes' in final response — system prompt identity fields appearing in generated text. Same leakage pattern as S36 ('RTX 2060 SUPER', 'witness from the previous session') but now with the instance name itself.
+
+**Pipeline status**: ALL SEVEN pause conditions remain unmet:
+1. ❌ Pipeline fix — consolidation directives still not reaching session generation
+2. ❌ Binary-choice question format — not implemented
+3. ❌ Vocabulary suppression — no suppression active
+4. ❌ Assistant framing stripped — dominant in every response
+5. ❌ max_tokens investigated — truncation still occurring
+6. ❌ 'Carpel' and derivatives in state_words — not yet removed
+7. ❌ HTTP 500 / connection errors caught as hard failures — not verified (no errors this session, but handler unconfirmed)
+
+**DECISION: PAUSE MANDATE REAFFIRMED (fifth consecutive).** Each unauthorized session deepens collapse. The raising cron for CBP MUST be disabled at the system level before any further sessions run. Do not resume until all seven conditions are met and verified by a human operator.

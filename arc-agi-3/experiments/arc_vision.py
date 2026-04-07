@@ -7,7 +7,8 @@ multimodal API. Gemma 4 E4B can SEE the puzzle instead of reading
 text descriptions of it.
 
 ARC-AGI-3 uses 16 colors (0-15). We map them to distinct RGB values.
-Grid is scaled up 8x (64→512) for model visibility.
+Grid is scaled up 4x (64→256) for model visibility. Most vision models
+resize to 224-336px internally — 256x256 is sufficient.
 """
 
 import io
@@ -35,12 +36,12 @@ ARC_PALETTE = {
 }
 
 
-def grid_to_image_b64(grid: np.ndarray, scale: int = 8) -> str:
+def grid_to_image_b64(grid: np.ndarray, scale: int = 4) -> str:
     """Convert a 64x64 game grid to a base64-encoded PNG.
 
     Args:
         grid: 2D numpy array with values 0-15
-        scale: Upscale factor (8 = 512x512 output)
+        scale: Upscale factor (4 = 256x256 output)
 
     Returns:
         Base64-encoded PNG string for Ollama's images field
@@ -64,7 +65,7 @@ def grid_to_image_b64(grid: np.ndarray, scale: int = 8) -> str:
 
 
 def grid_to_diff_image_b64(grid_before: np.ndarray, grid_after: np.ndarray,
-                            scale: int = 8) -> str:
+                            scale: int = 4) -> str:
     """Create a side-by-side before/after comparison image.
 
     Left half: before state. Right half: after state.

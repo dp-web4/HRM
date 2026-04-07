@@ -1,6 +1,6 @@
 {
   "machine": "nomad",
-  "updated_at": 1775445448.2748413,
+  "updated_at": 1775524123.7250142,
   "game_discoveries": {
     "bp35": [
       {
@@ -55,6 +55,11 @@
         "text": "Interactive objects: yellow_33. Game type: unknown.   red_12: no effect (1 tries)\n  red_7: no effect (1 tries)\n  yellow_33: no effect (50 tries)",
         "machine": "nomad",
         "timestamp": 1775436897.8453445
+      },
+      {
+        "text": "Interactive objects: yellow_33. Game type: unknown.   yellow_33: no effect (21 tries)",
+        "machine": "nomad",
+        "timestamp": 1775520072.098064
       }
     ],
     "ka59": [
@@ -371,79 +376,16 @@
         "machine": "nomad",
         "timestamp": 1775444890.930176
       }
+    ],
+    "bp35": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "nomad",
+        "timestamp": 1775517888.4727726
+      }
     ]
   },
   "meta_insights": [
-    {
-      "text": "Game ft09 (unknown): Grid similarity STABLE around 100.0% (not progressing)",
-      "machine": "nomad",
-      "timestamp": 1775436945.1645753
-    },
-    {
-      "text": "Game g50t (cursor_cycle): DOWN: consistent effect (~49px each time)\nGrid similarity STABLE around 97.7% (not progressing)\nWARNING: RIGHT clicked 13\u00d7 with changes but NO level-u",
-      "machine": "nomad",
-      "timestamp": 1775437395.8060257
-    },
-    {
-      "text": "Game ka59 (cursor_cycle): UP: consistent effect (~1px each time)\nyellow_10: consistent effect (~1px each time)\nGrid similarity STABLE around 98.6% (not progressing)",
-      "machine": "nomad",
-      "timestamp": 1775437638.6980486
-    },
-    {
-      "text": "Game lf52 (click_interact): DOWN: consistent effect (~1px each time)\ngray_1: consistent effect (~1px each time)\nUP: consistent effect (~1px each time)\nGrid similarity STABLE arou",
-      "machine": "nomad",
-      "timestamp": 1775437907.134739
-    },
-    {
-      "text": "Game lp85 (unknown): yellow_9: consistent effect (~2px each time)\nGrid similarity STABLE around 100.0% (not progressing)",
-      "machine": "nomad",
-      "timestamp": 1775438228.247097
-    },
-    {
-      "text": "Game ls20 (navigation): Grid similarity STABLE around 98.7% (not progressing)\nWARNING: UP clicked 25\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: RIGH",
-      "machine": "nomad",
-      "timestamp": 1775438637.083719
-    },
-    {
-      "text": "Game m0r0 (cursor_cycle): black_5: consistent effect (~2px each time)\nblack_4: consistent effect (~2px each time)\nGrid similarity STABLE around 96.3% (not progressing)",
-      "machine": "nomad",
-      "timestamp": 1775439069.641771
-    },
-    {
-      "text": "Game r11l (click_interact): red_2: consistent effect (~1px each time)\nred_5: consistent effect (~1px each time)\nGrid similarity STABLE around 97.1% (not progressing)\nWARNING: red",
-      "machine": "nomad",
-      "timestamp": 1775439638.640373
-    },
-    {
-      "text": "Game re86 (cursor_cycle): Grid similarity STABLE around 97.3% (not progressing)\nWARNING: UP clicked 10\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: SELE",
-      "machine": "nomad",
-      "timestamp": 1775440058.0189583
-    },
-    {
-      "text": "Game s5i5 (toggle): red_8: consistent effect (~1px each time)\nteal_0: consistent effect (~1px each time)\ngreen_3: consistent effect (~1px each time)\nGrid similarity STABL",
-      "machine": "nomad",
-      "timestamp": 1775440490.2557611
-    },
-    {
-      "text": "Game sb26 (unknown): teal_19: consistent effect (~20px each time)\nwhite_20: consistent effect (~40px each time)\nbrown_21: consistent effect (~20px each time)\nGrid similari",
-      "machine": "nomad",
-      "timestamp": 1775440950.9945905
-    },
-    {
-      "text": "Game sc25 (cursor_cycle): Grid similarity STABLE around 97.0% (not progressing)\nWARNING: green_6 clicked 19\u00d7 with changes but NO level-up \u2014 may need different approach",
-      "machine": "nomad",
-      "timestamp": 1775441314.5590098
-    },
-    {
-      "text": "Game sk48 (toggle): Grid similarity STABLE around 95.3% (not progressing)",
-      "machine": "nomad",
-      "timestamp": 1775441736.866723
-    },
-    {
-      "text": "Game sp80 (click_interact): brown_3: consistent effect (~2px each time)\nblue_6: consistent effect (~2px each time)\nGrid similarity STABLE around 99.3% (not progressing)\nWARNING: ",
-      "machine": "nomad",
-      "timestamp": 1775441902.5166903
-    },
     {
       "text": "Game su15 (toggle): brown_2: consistent effect (~2px each time)\nblack_4: consistent effect (~2px each time)\nGrid similarity STABLE around 98.6% (not progressing)\nWARNING:",
       "machine": "nomad",
@@ -473,6 +415,76 @@
       "text": "Game wa30 (navigation): SELECT: consistent effect (~12px each time)\nGrid similarity STABLE around 98.0% (not progressing)\nWARNING: SELECT clicked 17\u00d7 with changes but NO leve",
       "machine": "nomad",
       "timestamp": 1775445448.2748396
+    },
+    {
+      "text": "Game vc33 (toggle): orange_0: consistent effect (~1px each time)\nGrid similarity STABLE around 98.7% (not progressing)\nWARNING: black_1 clicked 39\u00d7 with changes but NO le",
+      "machine": "nomad",
+      "timestamp": 1775456201.0058837
+    },
+    {
+      "text": "Game ar25 (cursor_cycle): UP: consistent effect (~109px each time)\nSELECT: consistent effect (~1px each time)\nGrid similarity STABLE around 95.3% (not progressing)",
+      "machine": "nomad",
+      "timestamp": 1775517777.3487132
+    },
+    {
+      "text": "Game bp35 (cursor_cycle): pink_0: consistent effect (~1px each time)\nteal_1: consistent effect (~1px each time)\npink_8: consistent effect (~1px each time)\nGrid similarity STABL",
+      "machine": "nomad",
+      "timestamp": 1775518293.9874506
+    },
+    {
+      "text": "Game cd82 (cursor_cycle): yellow_0: consistent effect (~1px each time)\ngreen_1: consistent effect (~1px each time)\nred_9: consistent effect (~1px each time)\nUP: consistent effe",
+      "machine": "nomad",
+      "timestamp": 1775518857.5535858
+    },
+    {
+      "text": "Game cn04 (cursor_cycle): cyan_3: consistent effect (~135px each time)\nGrid similarity STABLE around 92.4% (not progressing)\nWARNING: cyan_3 clicked 7\u00d7 with changes but NO leve",
+      "machine": "nomad",
+      "timestamp": 1775519417.650553
+    },
+    {
+      "text": "Game dc22 (cursor_cycle): black_1: consistent effect (~1px each time)\nbrown_8: consistent effect (~1px each time)\ngreen_0: consistent effect (~1px each time)\ngray_2: consistent",
+      "machine": "nomad",
+      "timestamp": 1775519964.737927
+    },
+    {
+      "text": "Game ft09 (unknown): Grid similarity STABLE around 100.0% (not progressing)",
+      "machine": "nomad",
+      "timestamp": 1775520495.4146202
+    },
+    {
+      "text": "Game g50t (cursor_cycle): SELECT: consistent effect (~1px each time)\nGrid similarity STABLE around 99.1% (not progressing)",
+      "machine": "nomad",
+      "timestamp": 1775521008.2246418
+    },
+    {
+      "text": "Game ka59 (cursor_cycle): blue_0: consistent effect (~1px each time)\nblue_2: consistent effect (~1px each time)\nyellow_10: consistent effect (~1px each time)\nGrid similarity ST",
+      "machine": "nomad",
+      "timestamp": 1775521560.7319052
+    },
+    {
+      "text": "Game lf52 (click_interact): UP: consistent effect (~1px each time)\nDOWN: consistent effect (~1px each time)\nLEFT: consistent effect (~1px each time)\nGrid similarity STABLE around",
+      "machine": "nomad",
+      "timestamp": 1775522103.7405322
+    },
+    {
+      "text": "Game lp85 (unknown): cyan_23: consistent effect (~293px each time)\nteal_24: consistent effect (~292px each time)\nGrid similarity STABLE around 91.7% (not progressing)\nWARN",
+      "machine": "nomad",
+      "timestamp": 1775522493.7668288
+    },
+    {
+      "text": "Game ls20 (navigation): Grid similarity STABLE around 97.4% (not progressing)\nWARNING: LEFT clicked 8\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: UP ",
+      "machine": "nomad",
+      "timestamp": 1775523021.8874283
+    },
+    {
+      "text": "Game m0r0 (cursor_cycle): maroon_0: consistent effect (~2px each time)\nblack_4: consistent effect (~2px each time)\nGrid similarity STABLE around 96.8% (not progressing)",
+      "machine": "nomad",
+      "timestamp": 1775523572.5132594
+    },
+    {
+      "text": "Game r11l (click_interact): green_7: consistent effect (~73px each time)\nred_1: consistent effect (~1px each time)\nred_5: consistent effect (~1px each time)\nGrid similarity STABL",
+      "machine": "nomad",
+      "timestamp": 1775524123.72501
     }
   ]
 }

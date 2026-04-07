@@ -32,7 +32,11 @@ import time
 import socket
 from pathlib import Path
 
-MACHINE = os.environ.get("SAGE_MACHINE", socket.gethostname().split(".")[0].lower())
+def _fs_safe(name):
+    """Sanitize a name for filesystem use — replace colons, slashes, spaces."""
+    return name.replace(":", "-").replace("/", "-").replace(" ", "_").replace("\\", "-")
+
+MACHINE = _fs_safe(os.environ.get("SAGE_MACHINE", socket.gethostname().split(".")[0].lower()))
 FLEET_DIR = Path(os.environ.get(
     "FLEET_LEARNING_DIR",
     os.path.join(os.path.dirname(__file__), "..", "..", "..",

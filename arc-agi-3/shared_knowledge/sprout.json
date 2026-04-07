@@ -1,6 +1,6 @@
 {
   "machine": "sprout",
-  "updated_at": 1775502208.1712432,
+  "updated_at": 1775512367.88014,
   "game_discoveries": {
     "lf52": [
       {
@@ -291,79 +291,16 @@
         "machine": "sprout",
         "timestamp": 1775445018.0180602
       }
+    ],
+    "cd82": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "sprout",
+        "timestamp": 1775512367.8800943
+      }
     ]
   },
   "meta_insights": [
-    {
-      "text": "Game sc25 (cursor_cycle): Grid similarity STABLE around 97.0% (not progressing)\nWARNING: green_6 clicked 11\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING:",
-      "machine": "sprout",
-      "timestamp": 1775434740.6109557
-    },
-    {
-      "text": "Game r11l (click_interact): red_5: consistent effect (~1px each time)\nred_2: consistent effect (~1px each time)\nGrid similarity STABLE around 97.8% (not progressing)\nWARNING: bla",
-      "machine": "sprout",
-      "timestamp": 1775435448.1139438
-    },
-    {
-      "text": "Game re86 (cursor_cycle): Grid similarity STABLE around 95.2% (not progressing)\nWARNING: UP clicked 28\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: SELE",
-      "machine": "sprout",
-      "timestamp": 1775436111.4818184
-    },
-    {
-      "text": "Game dc22 (cursor_cycle): green_0: consistent effect (~1px each time)\nblack_1: consistent effect (~1px each time)\nGrid similarity STABLE around 99.3% (not progressing)\nWARNING:",
-      "machine": "sprout",
-      "timestamp": 1775436904.703281
-    },
-    {
-      "text": "Game ar25 (cursor_cycle): UP: consistent effect (~109px each time)\nSELECT: consistent effect (~1px each time)\nGrid similarity STABLE around 95.4% (not progressing)",
-      "machine": "sprout",
-      "timestamp": 1775437902.9465075
-    },
-    {
-      "text": "Game tn36 (toggle): brown_0: consistent effect (~1px each time)\nblack_1: consistent effect (~1px each time)\nbrown_39: consistent effect (~1px each time)\nGrid similarity S",
-      "machine": "sprout",
-      "timestamp": 1775438608.9548624
-    },
-    {
-      "text": "Game ls20 (navigation): Grid similarity STABLE around 98.6% (not progressing)\nWARNING: LEFT clicked 13\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: DO",
-      "machine": "sprout",
-      "timestamp": 1775439620.0890589
-    },
-    {
-      "text": "Game tu93 (unknown): Grid similarity STABLE around 98.2% (not progressing)\nWARNING: UP clicked 29\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: DOWN",
-      "machine": "sprout",
-      "timestamp": 1775440127.4808414
-    },
-    {
-      "text": "Game cd82 (cursor_cycle): green_1: consistent effect (~1px each time)\nred_9: consistent effect (~1px each time)\nSELECT: consistent effect (~56px each time)\nWARNING: DOWN clicke",
-      "machine": "sprout",
-      "timestamp": 1775440602.9646235
-    },
-    {
-      "text": "Game vc33 (toggle): maroon_9: consistent effect (~2px each time)\nmaroon_4: consistent effect (~1px each time)\nGrid similarity STABLE around 98.8% (not progressing)\nWARNIN",
-      "machine": "sprout",
-      "timestamp": 1775441238.8683052
-    },
-    {
-      "text": "Game su15 (toggle): brown_2: consistent effect (~2px each time)\nblack_4: consistent effect (~2px each time)\nGrid similarity STABLE around 98.6% (not progressing)\nWARNING:",
-      "machine": "sprout",
-      "timestamp": 1775442152.0218375
-    },
-    {
-      "text": "Game bp35 (cursor_cycle): white_11: consistent effect (~1px each time)\nblack_10: consistent effect (~1px each time)\npink_0: consistent effect (~1px each time)\nteal_1: consisten",
-      "machine": "sprout",
-      "timestamp": 1775442811.1546745
-    },
-    {
-      "text": "Game s5i5 (toggle): maroon_7: consistent effect (~1px each time)\nGrid similarity STABLE around 99.2% (not progressing)\nWARNING: red_1 clicked 9\u00d7 with changes but NO level",
-      "machine": "sprout",
-      "timestamp": 1775443445.473351
-    },
-    {
-      "text": "Game ft09 (unknown): Grid similarity STABLE around 100.0% (not progressing)",
-      "machine": "sprout",
-      "timestamp": 1775444386.149711
-    },
     {
       "text": "Game wa30 (navigation): DOWN: consistent effect (~44px each time)\nLEFT: consistent effect (~64px each time)\nGrid similarity STABLE around 98.0% (not progressing)\nWARNING: SEL",
       "machine": "sprout",
@@ -393,6 +330,76 @@
       "text": "Game sp80 (click_interact): UP: consistent effect (~162px each time)\nSELECT: consistent effect (~2px each time)\nGrid similarity STABLE around 95.7% (not progressing)",
       "machine": "sprout",
       "timestamp": 1775502208.1712365
+    },
+    {
+      "text": "Game m0r0 (cursor_cycle): maroon_0: consistent effect (~2px each time)\nDOWN: consistent effect (~101px each time)\nGrid similarity STABLE around 96.7% (not progressing)\nWARNING:",
+      "machine": "sprout",
+      "timestamp": 1775502929.903945
+    },
+    {
+      "text": "Game g50t (cursor_cycle): Grid similarity STABLE around 98.8% (not progressing)\nWARNING: DOWN clicked 9\u00d7 with changes but NO level-up \u2014 may need different approach",
+      "machine": "sprout",
+      "timestamp": 1775503956.5339584
+    },
+    {
+      "text": "Game ka59 (cursor_cycle): DOWN: consistent effect (~18px each time)\nblue_0: consistent effect (~1px each time)\nblue_2: consistent effect (~1px each time)\nyellow_10: consistent ",
+      "machine": "sprout",
+      "timestamp": 1775504628.7054274
+    },
+    {
+      "text": "Game cn04 (cursor_cycle): cyan_3: consistent effect (~135px each time)\nteal_4: consistent effect (~1px each time)\nGrid similarity STABLE around 92.7% (not progressing)",
+      "machine": "sprout",
+      "timestamp": 1775505299.2604144
+    },
+    {
+      "text": "Game sb26 (unknown): white_20: consistent effect (~40px each time)\nbrown_21: consistent effect (~40px each time)\nGrid similarity STABLE around 98.5% (not progressing)\nWARN",
+      "machine": "sprout",
+      "timestamp": 1775506339.4939725
+    },
+    {
+      "text": "Game sc25 (cursor_cycle): Grid similarity STABLE around 97.2% (not progressing)\nWARNING: green_6 clicked 5\u00d7 with changes but NO level-up \u2014 may need different approach",
+      "machine": "sprout",
+      "timestamp": 1775507025.710713
+    },
+    {
+      "text": "Game r11l (click_interact): red_5: consistent effect (~1px each time)\nred_1: consistent effect (~1px each time)\nred_2: consistent effect (~1px each time)\nGrid similarity STABLE a",
+      "machine": "sprout",
+      "timestamp": 1775507700.8887084
+    },
+    {
+      "text": "Game re86 (cursor_cycle): Grid similarity STABLE around 95.0% (not progressing)\nWARNING: SELECT clicked 12\u00d7 with changes but NO level-up \u2014 may need different approach",
+      "machine": "sprout",
+      "timestamp": 1775508509.7823346
+    },
+    {
+      "text": "Game dc22 (cursor_cycle): red_19: consistent effect (~1px each time)\ngreen_0: consistent effect (~1px each time)\nRIGHT: consistent effect (~1px each time)\nblack_1: consistent e",
+      "machine": "sprout",
+      "timestamp": 1775509181.4175224
+    },
+    {
+      "text": "Game ar25 (cursor_cycle): UP: consistent effect (~109px each time)\nDOWN: consistent effect (~109px each time)\nSELECT: consistent effect (~1px each time)\nRIGHT: consistent effec",
+      "machine": "sprout",
+      "timestamp": 1775509765.1613579
+    },
+    {
+      "text": "Game tn36 (toggle): black_1: consistent effect (~1px each time)\nbrown_0: consistent effect (~1px each time)\nbrown_39: consistent effect (~1px each time)\nGrid similarity S",
+      "machine": "sprout",
+      "timestamp": 1775510438.6097453
+    },
+    {
+      "text": "Game ls20 (navigation): UP: consistent effect (~52px each time)\nDOWN: consistent effect (~52px each time)\nLEFT: consistent effect (~2px each time)\nGrid similarity STABLE arou",
+      "machine": "sprout",
+      "timestamp": 1775511094.717068
+    },
+    {
+      "text": "Game tu93 (unknown): Grid similarity STABLE around 98.3% (not progressing)\nWARNING: LEFT clicked 5\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: DOW",
+      "machine": "sprout",
+      "timestamp": 1775511733.0524628
+    },
+    {
+      "text": "Game cd82 (cursor_cycle): green_1: consistent effect (~1px each time)\nred_9: consistent effect (~1px each time)\nyellow_12: consistent effect (~1px each time)\nDOWN: consistent e",
+      "machine": "sprout",
+      "timestamp": 1775512367.8801348
     }
   ]
 }

@@ -236,6 +236,7 @@ def cmd_init(game_prefix):
     save_session(session)
     save_grid(grid, "current")
     save_grid(grid, "previous")  # no previous yet, but save for shape
+    save_grid(grid, "level_0_start")  # initial state of first level
 
     avail_str = ", ".join(f"{a}={ACTION_NAMES.get(a, f'A{a}')}" for a in available)
 
@@ -323,8 +324,9 @@ def cmd_step(action, x=None, y=None):
     print(f"IMAGE: {img_path}")
 
     if level_up:
-        # Save the solved level's final state for the viewer
+        # Save solved level's final state + new level's start state
         save_grid(prev_grid, f"level_{prev_levels}_final")
+        save_grid(grid, f"level_{fd.levels_completed}_start")
         print(f"\n★★★ LEVEL UP! Now at level {fd.levels_completed}/{session['win_levels']} ★★★")
         print(f"Run 'python3 claude_solver.py summarize' to capture what you learned,")
         print(f"then 'python3 claude_solver.py look' to see the new level.")

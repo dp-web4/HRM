@@ -218,8 +218,8 @@ def cmd_init(game_prefix):
     # Build scene
     scene = scene_description(grid)
 
-    # Detect player
-    player = os.environ.get("GAME_PLAYER", "claude")
+    # Detect player (sanitize for filesystem safety)
+    player = os.environ.get("GAME_PLAYER", "claude").replace(":", "-")
 
     # Initialize session
     session = {

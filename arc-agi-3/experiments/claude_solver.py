@@ -334,8 +334,27 @@ def cmd_step(action, x=None, y=None):
     print(f"IMAGE: {img_path}")
 
     if level_up:
-        # Save solved level's final state + new level's start state
-        save_grid(prev_grid, f"level_{prev_levels}_final")
+        # The SDK transitions instantly on level-up: grid is already the new level.
+        # prev_grid is one step BEFORE solving — neither is the solved state.
+        # Reconstruct solved state: on level-up, the canvas matched the target (palette).
+        # Extract the palette from prev_grid (it's always top-left, rows 3-12, cols 3-11)
+        # and composite it into the canvas area of prev_grid to create the solved snapshot.
+        solved_grid = prev_grid.copy()
+        palette = prev_grid[3:13, 3:12]
+        # Find canvas bounds from red(2) border in prev_grid
+        reds = np.argwhere(prev_grid == 2)
+        if len(reds) > 0:
+            rmin, cmin = reds.min(axis=0)
+            rmax, cmax = reds.max(axis=0)
+            # Scale palette to fit canvas interior (between red borders)
+            canvas_h = rmax - rmin - 1
+            canvas_w = cmax - cmin - 1
+            if canvas_h > 0 and canvas_w > 0:
+                from PIL import Image
+                pal_img = Image.fromarray(palette.astype(np.uint8))
+                scaled = np.array(pal_img.resize((canvas_w, canvas_h), Image.NEAREST))
+                solved_grid[rmin+1:rmin+1+canvas_h, cmin+1:cmin+1+canvas_w] = scaled
+        save_grid(solved_grid, f"level_{prev_levels}_final")
         save_grid(grid, f"level_{fd.levels_completed}_start")
         # Save the winning action sequence for this level
         session.setdefault("level_solutions", {})[str(prev_levels)] = {

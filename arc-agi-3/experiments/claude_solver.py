@@ -218,10 +218,14 @@ def cmd_init(game_prefix):
     # Build scene
     scene = scene_description(grid)
 
+    # Detect player
+    player = os.environ.get("GAME_PLAYER", "claude")
+
     # Initialize session
     session = {
         "game_id": game_id,
         "game_prefix": game_prefix,
+        "player": player,
         "available_actions": available,
         "win_levels": fd.win_levels,
         "levels_completed": 0,
@@ -230,7 +234,9 @@ def cmd_init(game_prefix):
         "actions_log": [],
         "observations": [],
         "level_summaries": [],
+        "level_solutions": {},  # level_num → {actions: [...], steps: N}
         "level_start_step": 0,
+        "level_actions": [],  # actions for current level (reset on level-up)
         "baseline": sum(env_info.baseline_actions),
     }
     save_session(session)
@@ -278,11 +284,15 @@ def cmd_step(action, x=None, y=None):
     ga = INT_TO_GA.get(action)
     if action == 6 and x is not None and y is not None:
         fd = env.step(ga, data={"x": int(x), "y": int(y)})
-        session["actions_log"].append({"action": action, "x": int(x), "y": int(y)})
+        action_entry = {"action": action, "x": int(x), "y": int(y)}
+        session["actions_log"].append(action_entry)
+        session.setdefault("level_actions", []).append(action_entry)
         action_desc = f"CLICK({x},{y})"
     else:
         fd = env.step(ga)
-        session["actions_log"].append({"action": action})
+        action_entry = {"action": action}
+        session["actions_log"].append(action_entry)
+        session.setdefault("level_actions", []).append(action_entry)
         action_desc = ACTION_NAMES.get(action, f"ACTION{action}")
 
     grid = get_frame(fd)
@@ -327,6 +337,13 @@ def cmd_step(action, x=None, y=None):
         # Save solved level's final state + new level's start state
         save_grid(prev_grid, f"level_{prev_levels}_final")
         save_grid(grid, f"level_{fd.levels_completed}_start")
+        # Save the winning action sequence for this level
+        session.setdefault("level_solutions", {})[str(prev_levels)] = {
+            "actions": session.get("level_actions", []),
+            "steps": len(session.get("level_actions", [])),
+            "player": session.get("player", "unknown"),
+        }
+        session["level_actions"] = []  # reset for new level
         print(f"\n★★★ LEVEL UP! Now at level {fd.levels_completed}/{session['win_levels']} ★★★")
         print(f"Run 'python3 claude_solver.py summarize' to capture what you learned,")
         print(f"then 'python3 claude_solver.py look' to see the new level.")

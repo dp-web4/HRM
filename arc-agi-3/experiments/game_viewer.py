@@ -71,12 +71,12 @@ body{{background:#111;color:#ccc;font-family:'SF Mono','Fira Code',monospace;hei
 .header h1{{color:#ff6b6b;font-size:1.2em}}
 .stats{{display:flex;gap:20px;font-size:1em}}
 .sv{{color:#4ecdc4;font-weight:bold}}
-.grid3x3{{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}}
-.cell{{background:#1a1a1a;border:2px solid #222;border-radius:5px;padding:6px;text-align:center;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center}}
+.grid3x3{{display:grid;grid-template-columns:repeat(3,auto);gap:8px;justify-content:start}}
+.cell{{background:#1a1a1a;border:2px solid #222;border-radius:5px;padding:4px;text-align:center;display:inline-flex;flex-direction:column;align-items:center}}
 .cell.active{{border-color:#ff6b6b;box-shadow:0 0 10px rgba(255,107,107,0.3)}}
 .cell.solved{{border-color:#4ecdc4}}
-.cell.empty{{border-color:transparent;background:transparent}}
-.cell img{{image-rendering:pixelated;border-radius:2px;max-width:100%;height:auto}}
+.cell.empty{{border-color:transparent;background:transparent;padding:0;min-width:0}}
+.cell img{{image-rendering:pixelated;border-radius:2px}}
 .cell-pair{{display:flex;gap:3px;justify-content:center}}
 .cell-pair img{{max-width:48%}}
 .clabel{{font-size:0.7em;margin-top:4px}}
@@ -143,9 +143,11 @@ class Handler(http.server.BaseHTTPRequestHandler):
         current_grid = load_grid("current")
         blank = blank_b64(scale=3)
 
-        # Header
+        # Header with player name
+        player = session.get('player', 'unknown')
+        player_color = '#ff6b6b' if player == 'claude' else '#4ecdc4'
         main = [f'''<div class="header">
-            <h1>🎮 {game_id}</h1>
+            <h1>🎮 {game_id} <span style="color:{player_color};font-size:0.8em">▸ {player}</span></h1>
             <div class="stats">
                 <div>Step <span class="sv">{step}</span></div>
                 <div>Level <span class="sv">{cur_level}/{win_levels}</span></div>
@@ -162,31 +164,30 @@ class Handler(http.server.BaseHTTPRequestHandler):
                     # Solved — show start→final pair
                     sp = os.path.join(STATE_DIR, f"level_{lvl}_start.npy")
                     fp = os.path.join(STATE_DIR, f"level_{lvl}_final.npy")
-                    sb = grid_to_png_b64(np.load(sp), scale=3) if os.path.exists(sp) else blank
-                    fb = grid_to_png_b64(np.load(fp), scale=3) if os.path.exists(fp) else blank
+                    sb = grid_to_png_b64(np.load(sp), scale=2) if os.path.exists(sp) else blank
+                    fb = grid_to_png_b64(np.load(fp), scale=2) if os.path.exists(fp) else blank
                     main.append(f'''<div class="cell solved">
                         <div class="cell-pair">
-                            <img src="data:image/png;base64,{sb}" title="Start">
-                            <img src="data:image/png;base64,{fb}" title="Solved">
+                            <img src="data:image/png;base64,{sb}" width="128" height="128" title="Start">
+                            <img src="data:image/png;base64,{fb}" width="128" height="128" title="Solved">
                         </div>
                         <div class="clabel solved">L{lvl+1} ✓</div>
                     </div>''')
                 elif lvl == cur_level:
-                    # Active
-                    cb = grid_to_png_b64(current_grid, scale=4) if current_grid is not None else blank
+                    # Active — slightly larger
+                    cb = grid_to_png_b64(current_grid, scale=3) if current_grid is not None else blank
                     main.append(f'''<div class="cell active">
-                        <img src="data:image/png;base64,{cb}">
+                        <img src="data:image/png;base64,{cb}" width="260" height="260">
                         <div class="clabel active">L{lvl+1} ▶ LIVE</div>
                     </div>''')
                 else:
-                    # Future
+                    # Future — small placeholder
                     main.append(f'''<div class="cell">
-                        <img src="data:image/png;base64,{blank}" style="opacity:0.3">
+                        <img src="data:image/png;base64,{blank}" width="80" height="80" style="opacity:0.3">
                         <div class="clabel future">L{lvl+1}</div>
                     </div>''')
             else:
-                # Empty cell (game has fewer than 9 levels)
-                main.append('<div class="cell empty"></div>')
+                pass  # no empty cells needed
 
         main.append('</div>')
 

@@ -60,6 +60,7 @@ def shash():
 PAGE = """<!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>ARC-AGI-3 — {game_id}</title>
 <style>
 *{{margin:0;padding:0;box-sizing:border-box}}

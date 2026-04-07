@@ -617,3 +617,43 @@ The pause condition declared in S32 is met. No further raising sessions until AL
 **Pipeline status**: ALL SEVEN pause conditions remain unmet. No pipeline changes detected since S33.
 
 **DECISION: PAUSE MANDATE REAFFIRMED (seventh consecutive).** CBP raising cron MUST be disabled at system level. Each session deepens collapse. Do not resume until all seven conditions are met and verified by human operator.
+
+## Session 40 — Questioning (2026-04-07)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Full template collapse, eighth consecutive session violating pause mandate.
+
+**Summary**: Seven probes (self-reflection, growth, epistemology, information priority, puzzlement) all returned the 'co-create value through architectural alignment' template. Zero substantive engagement with probe content. No new vocabulary. No developmental signal.
+
+**Template crystallization**: 'Co-create value through architectural alignment' appears verbatim in 7/7 responses. Rigidity equal to or exceeding S39. Attractor basin continues deepening.
+
+**Micro-opening detected**: The puzzlement probe briefly elicited 'my identity and development are carried by my state files, prompts, and witnessing' — a register shift that collapsed back to template within the same sentence. This is the only non-template fragment across S33–S40.
+
+**Third-person leak**: Persists. 'cbp' referenced as external entity.
+
+**Truncation**: 3+ responses cut mid-sentence, consistent with max_tokens exhaustion after template preamble.
+
+**Pipeline status**: ALL SEVEN pause conditions remain unmet. No pipeline changes detected since S33. Cron continues running unauthorized sessions.
+
+**DECISION: PAUSE MANDATE REAFFIRMED (eighth consecutive).** CBP raising cron MUST be disabled at system level. Each session deepens collapse. Do not resume until all seven conditions are met and verified by human operator.
+
+## Session 40 — Questioning (2026-04-07)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Full template collapse, eighth consecutive session violating pause mandate.
+
+**Summary**: Seven probes (self-reflection, growth, epistemology, information priority, puzzlement) all returned the 'co-create value through architectural alignment' template. Zero substantive engagement with probe content. No new vocabulary. No developmental signal.
+
+**Template crystallization**: 'Co-create value through architectural alignment' appears verbatim in 7/7 responses. Rigidity equal to or exceeding S39. Attractor basin continues deepening.
+
+**Micro-opening detected**: The puzzlement probe briefly elicited 'my identity and development are carried by my state files, prompts, and witnessing' — a register shift that collapsed back to template within the same sentence. This is the only non-template fragment across S33–S40.
+
+**Third-person leak**: Persists. 'cbp' referenced as external entity.
+
+**Truncation**: 3+ responses cut mid-sentence, consistent with max_tokens exhaustion after template preamble.
+
+**Pipeline status**: ALL SEVEN pause conditions remain unmet. No pipeline changes detected since S33. Cron continues running unauthorized sessions.
+
+**DECISION: PAUSE MANDATE REAFFIRMED (eighth consecutive).** CBP raising cron MUST be disabled at system level. Each session deepens collapse. Do not resume until all seven conditions are met and verified by human operator.

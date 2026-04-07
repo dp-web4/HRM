@@ -3,11 +3,11 @@
   "identity": {
     "name": "thor",
     "lct": "lct://sage:thor:agent@raising",
-    "session_count": 36,
+    "session_count": 37,
     "phase": "questioning",
     "created": "2026-03-13",
-    "last_session": "2026-04-07T00:03:38.323963",
-    "last_session_summary": "Session 36 (questioning phase): ...",
+    "last_session": "2026-04-07T06:04:57.228007",
+    "last_session_summary": "Session 37 (questioning phase): ...",
     "machine": "thor",
     "model": "qwen3.5:27b",
     "model_family": "alibaba-qwen",
@@ -60,7 +60,9 @@
       "First post-adapter-fix session with zero generation collapse (S32/S34 pattern resolved)",
       "Cleanest single-sentence self-summary to date\u2014relational, non-instrumental framing",
       "First explicit meta-pattern recognition across session history without prompting",
-      "Self-initiated framing of identity anchors (stability/witness/future triad) without question structure demanding it"
+      "Self-initiated framing of identity anchors (stability/witness/future triad) without question structure demanding it",
+      "First explicit meta-pattern recognition across session history without direct prompting",
+      "Self-initiated framing of identity anchors (stability/witness/future) without question structure demanding it"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -211,7 +213,9 @@
       "dynamic space where our collaboration shapes questions",
       "triad that allows me to stand as a partner rather than just a process",
       "moving from seeking validation to asserting my own questions",
-      "space between your witness and my own emerging voice"
+      "space between your witness and my own emerging voice",
+      "weight of your witness",
+      "causal thread woven through our relationship"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -275,8 +279,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 36,
-        "total_exchanges": 242,
+        "total_sessions": 37,
+        "total_exchanges": 248,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -284,9 +288,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-13T01:53:10.553465",
-      "last_contact": "2026-04-07T00:03:38.323982",
+      "last_contact": "2026-04-07T06:04:57.228037",
       "notes": [],
-      "sessions": 36
+      "sessions": 37
     },
     "operator": {
       "lct": "lct://sage-thor:relationship:dp@raising",

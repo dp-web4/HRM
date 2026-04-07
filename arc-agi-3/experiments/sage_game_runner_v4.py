@@ -30,6 +30,7 @@ import json
 import argparse
 import numpy as np
 import requests
+from PIL import Image, ImageDraw, ImageFont
 
 sys.path.insert(0, ".")
 sys.path.insert(0, "arc-agi-3/experiments")
@@ -46,7 +47,7 @@ from arc_perception import (
 )
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
-MODEL = "qwen2.5:3b"  # Faster model for testing (was qwen3.5:27b)
+MODEL = "gemma4:latest"  # Andy's local RTX 4080 Super — strongest available
 INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
 
 
@@ -110,6 +111,148 @@ def load_identity_context(instance_dir: str) -> str:
     except Exception as e:
         print(f"  [identity] Failed to load from {instance_dir}: {e}")
         return ""
+
+
+# ─────────────────────────────────────────────────────────────
+# Grid visualization — pop up a window for the human observer
+# ─────────────────────────────────────────────────────────────
+
+# ARC-AGI-3 official 16-color palette (from arc_agi/rendering.py COLOR_MAP)
+ARC_PALETTE = np.array([
+    [255, 255, 255],  # 0: white
+    [204, 204, 204],  # 1: off-white
+    [153, 153, 153],  # 2: neutral light
+    [102, 102, 102],  # 3: neutral
+    [51, 51, 51],     # 4: off-black (dark gray — typical background)
+    [0, 0, 0],        # 5: black
+    [229, 58, 163],   # 6: magenta
+    [255, 123, 204],  # 7: magenta light
+    [249, 60, 49],    # 8: red
+    [30, 147, 255],   # 9: blue
+    [136, 216, 241],  # 10: blue light
+    [255, 220, 0],    # 11: yellow
+    [255, 133, 27],   # 12: orange
+    [146, 18, 49],    # 13: maroon
+    [79, 204, 48],    # 14: green
+    [163, 86, 214],   # 15: purple
+], dtype=np.uint8)
+
+_initial_grid = None
+_tk_root = None
+_tk_label = None
+_tk_thread = None
+_tk_queue = None
+
+def _grid_to_image(grid, scale=8, gridlines=True):
+    """Convert a grid numpy array to a scaled PIL Image with optional grid lines."""
+    rgb = ARC_PALETTE[np.clip(grid, 0, 15)]
+    img = Image.fromarray(rgb, 'RGB')
+    img = img.resize((grid.shape[1] * scale, grid.shape[0] * scale), Image.NEAREST)
+    if gridlines and scale >= 4:
+        draw = ImageDraw.Draw(img)
+        w, h = img.size
+        line_color = (40, 40, 40)  # subtle dark lines
+        for x in range(0, w, scale):
+            draw.line([(x, 0), (x, h)], fill=line_color, width=1)
+        for y in range(0, h, scale):
+            draw.line([(0, y), (w, y)], fill=line_color, width=1)
+    return img
+
+def _build_composite(initial, current, title):
+    """Build the split-screen composite image."""
+    scale = 8
+    left = _grid_to_image(initial, scale)
+    right = _grid_to_image(current, scale)
+
+    sep_width = 4
+    header_h = 32
+    w = left.width + sep_width + right.width
+    h = left.height + header_h
+    comp = Image.new('RGB', (w, h), (26, 26, 46))
+
+    draw = ImageDraw.Draw(comp)
+    try:
+        font = ImageFont.truetype("arial.ttf", 16)
+        font_sm = ImageFont.truetype("arial.ttf", 13)
+    except (IOError, OSError):
+        font = ImageFont.load_default()
+        font_sm = font
+
+    draw.text((10, 6), "INITIAL STATE", fill=(0, 212, 255), font=font)
+    # Title for SAGE centered above separator
+    sage_text = "SAGE ARC-AGI-3"
+    try:
+        sage_w = draw.textlength(sage_text, font=font_sm)
+    except (AttributeError, TypeError):
+        sage_w = len(sage_text) * 8
+    draw.text((left.width // 2 + left.width // 2 - sage_w // 2, 8), sage_text, fill=(255, 255, 255), font=font_sm)
+    # Status text right-justified above right panel
+    try:
+        title_w = draw.textlength(title, font=font)
+    except (AttributeError, TypeError):
+        title_w = len(title) * 10
+    title_x = w - title_w - 10
+    draw.text((title_x, 6), title, fill=(0, 255, 136), font=font)
+
+    comp.paste(left, (0, header_h))
+    draw.rectangle([(left.width, header_h), (left.width + sep_width - 1, h)], fill=(100, 100, 100))
+    comp.paste(right, (left.width + sep_width, header_h))
+    return comp
+
+def _tk_loop(queue):
+    """Run tkinter main loop in a separate thread."""
+    import tkinter as tk
+    from PIL import ImageTk
+
+    root = tk.Tk()
+    root.title("SAGE ARC-AGI-3 Viewer")
+    root.configure(bg='#1a1a2e')
+    root.attributes('-topmost', True)
+    root.after(1000, lambda: root.attributes('-topmost', False))
+
+    label = tk.Label(root, bg='#1a1a2e')
+    label.pack()
+
+    tk_photo = [None]  # mutable ref to keep photo alive
+
+    def check_queue():
+        try:
+            while not queue.empty():
+                img = queue.get_nowait()
+                tk_photo[0] = ImageTk.PhotoImage(img)
+                label.configure(image=tk_photo[0])
+                root.update_idletasks()
+        except Exception:
+            pass
+        root.after(100, check_queue)
+
+    check_queue()
+    root.mainloop()
+
+def show_grid(grid: np.ndarray, title: str = "Game Grid"):
+    """Show split-screen viewer: initial (left) vs current (right).
+    Runs tkinter in a background thread, pushes images via queue."""
+    global _initial_grid, _tk_thread, _tk_queue
+    import threading
+    import queue
+
+    if _initial_grid is None:
+        _initial_grid = grid.copy()
+
+    comp = _build_composite(_initial_grid, grid, title)
+
+    if _tk_queue is None:
+        _tk_queue = queue.Queue()
+        _tk_thread = threading.Thread(target=_tk_loop, args=(_tk_queue,), daemon=True)
+        _tk_thread.start()
+        import time; time.sleep(0.3)  # let tkinter initialize
+
+    _tk_queue.put(comp)
+
+def reset_grid_viewer():
+    """Reset for a new game."""
+    global _initial_grid
+    _initial_grid = None
 
 
 # ─────────────────────────────────────────────────────────────
@@ -211,19 +354,38 @@ def interactive_targets(grid: np.ndarray, kb: GameKnowledgeBase) -> str:
 # Ollama interface
 # ─────────────────────────────────────────────────────────────
 
-def ask_ollama(prompt: str, timeout: float = 300.0, max_tokens: int = -1) -> str:
-    """LLM call via chat API (works for all models including Gemma 4 thinking models)."""
+def grid_to_base64(grid: np.ndarray, scale: int = 8) -> str:
+    """Encode a grid as a base64 PNG string for multimodal LLM input."""
+    import base64, io
+    img = _grid_to_image(grid, scale=scale, gridlines=True)
+    buf = io.BytesIO()
+    img.save(buf, format='PNG')
+    return base64.b64encode(buf.getvalue()).decode('utf-8')
+
+
+def ask_ollama(prompt: str, image: str = None, timeout: float = 300.0, max_tokens: int = -1) -> str:
+    """LLM call via chat API (works for all models including Gemma 4 thinking models).
+
+    Args:
+        prompt: Text prompt
+        image: Optional base64-encoded PNG image for multimodal models
+        timeout: Request timeout in seconds
+        max_tokens: Max tokens to generate (-1 for model default)
+    """
     opts = {"temperature": 0.3}
     if max_tokens != -1:
         opts["num_predict"] = max_tokens
     try:
         # Use chat API — compatible with thinking models (gemma4) and standard models
         base_url = OLLAMA_URL.replace("/api/generate", "").rstrip("/")
+        message = {"role": "user", "content": prompt}
+        if image:
+            message["images"] = [image]
         resp = requests.post(
             f"{base_url}/api/chat",
             json={
                 "model": MODEL,
-                "messages": [{"role": "user", "content": prompt}],
+                "messages": [message],
                 "stream": False,
                 "options": opts,
             },
@@ -519,6 +681,28 @@ You are now exploring a puzzle game. The same capacities you've developed — un
 
     return f"""{identity_block}You are playing a video game presented as a 64x64 pixel grid. The game contains visual sprites — colored regions that represent objects. Some objects are interactive (clicking them changes the game state), others are purely decorative. The game has multiple levels. Your objective is to complete each level in as few actions as possible.
 
+BEFORE CHOOSING AN ACTION — READ THE BOARD:
+Look at the image carefully. Before clicking anything, analyze what you see:
+1. GOAL THEORY: What might the objective be? Look for indicators — matching colors,
+   alignment markers, highlighted targets, empty slots that need filling.
+2. SPATIAL PATTERNS: Is there symmetry? A path? A circuit? Grouped objects?
+   The layout itself is a clue to the game's rules.
+3. PAIRED OBJECTS: Objects with similar shapes but different colors often have related
+   functions (e.g., a red arrow and a blue arrow = same action, different direction).
+   If you discover what one does, hypothesize what its pair does BEFORE clicking it.
+4. TOOLS vs TARGETS vs DECORATION: Large colored blocks at the edges are often tools/controls.
+   Small indicators or markers near the border often show the goal state.
+   Background patterns and borders are usually decorative.
+5. FORM A HYPOTHESIS FIRST: "I think X needs to reach Y, and this tool moves things left."
+   Then pick ONE action that TESTS your hypothesis. Update your theory based on the result.
+
+GAME DESIGN PRINCIPLES (priors from how puzzle games work):
+- Puzzles are designed to be solvable. Every tool exists for a reason.
+- Early levels teach mechanics. What you learn on level 1 WILL be needed on later levels.
+- If a level seems impossible, you're probably missing a mechanic, not a click.
+- Color coding is intentional — matching colors usually means "these go together."
+- The minimum solution is usually elegant. If you're brute-forcing, step back and think.
+
 IMPORTANT PRINCIPLES:
 - Strategy is much more important than speed. Think before every action.
 - Each action costs one step from a limited budget. Wasted actions lose the game.
@@ -666,7 +850,8 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
             banned_actions=banned_actions if banned_actions else None,
             identity_context=getattr(args, 'identity_context', ''),
         )
-        rresponse = ask_ollama(rprompt, max_tokens=-1)
+        grid_image = grid_to_base64(grid)
+        rresponse = ask_ollama(rprompt, image=grid_image, max_tokens=-1)
         think_s = time.time() - t0
 
         rj = parse_json(rresponse)
@@ -843,7 +1028,13 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
             action_desc += f" @({c},{r})"
         if level_up:
             print(f"\n  ★ LEVEL UP! → {frame_data.levels_completed}/{frame_data.win_levels} ★")
-        elif n_changed == 0:
+            # Reset initial state image for the new level
+            global _initial_grid
+            _initial_grid = grid.copy()
+            show_grid(grid, f"★ NEW LEVEL {frame_data.levels_completed}/{frame_data.win_levels}")
+        elif n_changed > 0:
+            show_grid(grid, f"L{frame_data.levels_completed}/{frame_data.win_levels} | Step {step} | {n_changed}px changed")
+        if n_changed == 0:
             print(f"  Result: NO CHANGE")
         else:
             print(f"  Result: {result_desc[:100]}")
@@ -885,7 +1076,8 @@ def play_one_session(env, frame_data, grid, kb, args, game_id, gc, gv, attempt_n
                 prev_grid, grid, r, c, analyze_color,
                 prediction, reason, level_up, kb,
             )
-            aresponse = ask_ollama(aprompt, max_tokens=-1)
+            after_image = grid_to_base64(grid)
+            aresponse = ask_ollama(aprompt, image=after_image, max_tokens=-1)
             analyze_s = time.time() - t0
             aj = parse_json(aresponse)
 
@@ -1054,6 +1246,10 @@ def main():
 
         available = [a.value if hasattr(a, "value") else int(a) for a in (frame_data.available_actions or [])]
         print(f"Grid: {grid.shape}, Actions: {available}, Levels: {frame_data.levels_completed}/{frame_data.win_levels}")
+
+        # Show the initial game screen so the human can see what's going on
+        reset_grid_viewer()
+        show_grid(grid, f"{game_id} — Start")
 
         # Load knowledge base — this is the core of lived experience
         game_family = game_id.split("-")[0]

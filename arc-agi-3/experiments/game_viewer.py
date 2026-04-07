@@ -163,8 +163,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             if lvl < win_levels:
                 if lvl < cur_level:
                     # Solved — show start→final pair
-                    sp = os.path.join(STATE_DIR, f"level_{lvl}_start.npy")
-                    fp = os.path.join(STATE_DIR, f"level_{lvl}_final.npy")
+                    sp = os.path.join(STATE_DIR, f"level_{lvl}_start_grid.npy")
+                    fp = os.path.join(STATE_DIR, f"level_{lvl}_final_grid.npy")
                     sb = grid_to_png_b64(np.load(sp), scale=2) if os.path.exists(sp) else blank
                     fb = grid_to_png_b64(np.load(fp), scale=2) if os.path.exists(fp) else blank
                     main.append(f'''<div class="cell solved">

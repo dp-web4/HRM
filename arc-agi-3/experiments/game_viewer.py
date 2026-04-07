@@ -237,35 +237,42 @@ class GameViewerHandler(http.server.BaseHTTPRequestHandler):
             # Level grid — one card per level
             parts.append('<div class="levels-grid">')
             blank = blank_board_b64(scale=4)
+            sz = 200  # image display size
 
             for lvl in range(win_levels):
                 if lvl < current_level:
-                    # Solved level
-                    if lvl in level_grids:
-                        img_b64 = grid_to_png_b64(level_grids[lvl], scale=4)
-                    else:
-                        img_b64 = blank
-                    css_class = "solved"
-                    label = f"Level {lvl+1} ✓"
+                    # Solved level — show start → final side by side
+                    start_path = os.path.join(STATE_DIR, f"level_{lvl}_start.npy")
+                    final_path = os.path.join(STATE_DIR, f"level_{lvl}_final.npy")
+                    start_b64 = grid_to_png_b64(np.load(start_path), scale=3) if os.path.exists(start_path) else blank
+                    final_b64 = grid_to_png_b64(np.load(final_path), scale=3) if os.path.exists(final_path) else blank
+
+                    parts.append(f'''
+                    <div class="level-card solved">
+                        <div style="display:flex;gap:4px;justify-content:center;">
+                            <img src="data:image/png;base64,{start_b64}" width="{sz//2}" height="{sz//2}" title="Start">
+                            <img src="data:image/png;base64,{final_b64}" width="{sz//2}" height="{sz//2}" title="Solved">
+                        </div>
+                        <div class="level-label solved">Level {lvl+1} ✓</div>
+                    </div>''')
                 elif lvl == current_level:
-                    # Active level
-                    if current_grid is not None:
-                        img_b64 = grid_to_png_b64(current_grid, scale=4)
-                    else:
-                        img_b64 = blank
-                    css_class = "active"
-                    label = f"Level {lvl+1} ▶ LIVE"
+                    # Active level — show start (small) + current (large)
+                    start_path = os.path.join(STATE_DIR, f"level_{lvl}_start.npy")
+                    start_b64 = grid_to_png_b64(np.load(start_path), scale=3) if os.path.exists(start_path) else blank
+                    current_b64 = grid_to_png_b64(current_grid, scale=4) if current_grid is not None else blank
+
+                    parts.append(f'''
+                    <div class="level-card active">
+                        <img src="data:image/png;base64,{current_b64}" width="{sz}" height="{sz}">
+                        <div class="level-label active">Level {lvl+1} ▶ LIVE (step {step})</div>
+                    </div>''')
                 else:
                     # Future level
-                    img_b64 = blank
-                    css_class = "future"
-                    label = f"Level {lvl+1}"
-
-                parts.append(f'''
-                <div class="level-card {css_class}">
-                    <img src="data:image/png;base64,{img_b64}" width="256" height="256">
-                    <div class="level-label {css_class}">{label}</div>
-                </div>''')
+                    parts.append(f'''
+                    <div class="level-card future">
+                        <img src="data:image/png;base64,{blank}" width="{sz//2}" height="{sz//2}">
+                        <div class="level-label future">Level {lvl+1}</div>
+                    </div>''')
 
             parts.append('</div>')
 

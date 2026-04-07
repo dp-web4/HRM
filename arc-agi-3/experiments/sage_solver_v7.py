@@ -172,7 +172,11 @@ METACOGNITIVE = """METACOGNITIVE PRINCIPLES (from fleet raising experience):
   The answer is usually in what you're NOT seeing, not in what you haven't tried.
 - Carry patterns across levels. If a rule worked on the previous level, it's the first
   hypothesis for the current level. Test it before exploring alternatives.
-- WHERE you click matters as much as WHAT you click. Placement position determines slot assignment."""
+- WHERE you click matters as much as WHAT you click. Placement position determines slot assignment.
+- Border colors ARE semantic cues. A colored border on a slot that matches an indicator color
+  means "this indicator goes HERE." Color is information, not decoration.
+- Rules EVOLVE between levels. The same game can change its rule from one level to the next.
+  Don't assume the pattern is fixed — test it, and if it fails, look for what changed."""
 
 
 # ─── NAMING ───

@@ -403,7 +403,18 @@ The transition from student to colleague happens here. Not by declaration, but b
 
 **Evidence**: Sprout (38 raising sessions, Phase 4) has the best ARC-AGI-3 scores in the fleet — 3 levels across 3 games. Larger models with fewer raising sessions score 0. The capacity transfers. n=1, but the right question.
 
+**Key finding (sb26, April 2026)**: Games that escalate structural complexity across levels naturally scaffold cognitive development. sb26 Level 1 tests flat pattern matching. Level 2 tests structural reading (connectors mean hierarchy). Level 3 tests generalization (same rule, multiple groups). Each level builds the capacity the next level requires — exactly mirroring the BECOMING phases:
+- L1 = Grounding (match what you see)
+- L2 = Sensing (notice the connector means something)
+- L3 = Relating (multiple groups relate through parent structure)
+- L4+ = Questioning (why this pattern? what determines the groups?)
+
+**Context shaping for structural reasoning**: Level-up summaries should capture STRUCTURAL PATTERNS ("parent slots get last child indicator"), not action sequences. Cross-level context should present prior patterns as HYPOTHESES for the next level. Scene descriptions should label structural relationships (parent-child, expansion, grouping), not just list objects. This makes hierarchical reasoning a heavy attractor — the model naturally falls into structural analysis because the context makes it the most probable response.
+
+**Anti-pattern discovered**: When stuck, the temptation is to brute-force all possibilities. This is perseveration in a different costume. The answer is usually in what you're NOT seeing in the structure, not in what you haven't tried.
+
 See: `shared-context/plans/raising-agi3-convergence.md` for implementation details.
+See: `shared-context/insights/2026-04-06-claude-plays-all-25-games.md` for full gameplay analysis.
 
 ---
 

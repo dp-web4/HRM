@@ -165,7 +165,14 @@ METACOGNITIVE = """METACOGNITIVE PRINCIPLES (from fleet raising experience):
 - Uncertainty is information. Not knowing what a button does = click it ONCE.
 - Persistence ≠ perseveration. If an approach isn't producing new signal, change approach.
 - Count before planning. Find cycle lengths before attempting solutions.
-- Distinguish correlation from causation. Large pixel change ≠ progress toward goal."""
+- Distinguish correlation from causation. Large pixel change ≠ progress toward goal.
+- Look for STRUCTURE, not just objects. Connectors between boxes = parent-child hierarchy.
+  Border colors that match between a slot and a group = "this slot expands into that group."
+- When stuck, look at the visual structure more carefully — don't enumerate all possibilities.
+  The answer is usually in what you're NOT seeing, not in what you haven't tried.
+- Carry patterns across levels. If a rule worked on the previous level, it's the first
+  hypothesis for the current level. Test it before exploring alternatives.
+- WHERE you click matters as much as WHAT you click. Placement position determines slot assignment."""
 
 
 # ─── NAMING ───

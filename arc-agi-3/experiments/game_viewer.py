@@ -1,25 +1,13 @@
 #!/usr/bin/env python3
 """
-Game Viewer — shows all levels at a glance with live updates.
+Game Viewer — 3x3 level grid + action sidebar, live updates.
 
-Serves http://localhost:8765 showing:
-- One board per level (blank initially, filled as solved)
-- Current level updates LIVE as actions are taken
-- Previous levels show final solved state
-- Auto-refreshes on every state change
-
-The claude_solver writes state to /tmp/claude_solver/.
-This viewer reads it and renders all boards.
-
-Usage:
-    python3 game_viewer.py
-    # Open http://localhost:8765 in browser
+http://localhost:8765
 """
 
 import http.server
 import json
 import os
-import time
 import hashlib
 import numpy as np
 from io import BytesIO
@@ -36,7 +24,7 @@ ARC_PALETTE = {
 }
 
 
-def grid_to_png_b64(grid, scale=5):
+def grid_to_png_b64(grid, scale=4):
     from PIL import Image
     h, w = grid.shape
     img = np.zeros((h*scale, w*scale, 3), dtype=np.uint8)
@@ -48,271 +36,186 @@ def grid_to_png_b64(grid, scale=5):
     return base64.b64encode(buf.getvalue()).decode('ascii')
 
 
-def blank_board_b64(scale=5):
-    """A dark gray 64x64 blank board."""
-    grid = np.full((64, 64), 4, dtype=np.int8)  # dark-gray
-    return grid_to_png_b64(grid, scale)
+def blank_b64(scale=4):
+    return grid_to_png_b64(np.full((64,64), 4, dtype=np.int8), scale)
 
 
 def load_state():
-    path = os.path.join(STATE_DIR, "session.json")
-    if not os.path.exists(path):
-        return None
-    with open(path) as f:
-        return json.load(f)
+    p = os.path.join(STATE_DIR, "session.json")
+    if not os.path.exists(p): return None
+    with open(p) as f: return json.load(f)
 
 
 def load_grid(name="current"):
-    path = os.path.join(STATE_DIR, f"{name}_grid.npy")
-    if os.path.exists(path):
-        return np.load(path)
-    return None
+    p = os.path.join(STATE_DIR, f"{name}_grid.npy")
+    return np.load(p) if os.path.exists(p) else None
 
 
-def state_hash():
-    """Hash of session file for change detection."""
-    path = os.path.join(STATE_DIR, "session.json")
-    if not os.path.exists(path):
-        return ""
-    return hashlib.md5(open(path, 'rb').read()).hexdigest()[:8]
+def shash():
+    p = os.path.join(STATE_DIR, "session.json")
+    if not os.path.exists(p): return ""
+    return hashlib.md5(open(p,'rb').read()).hexdigest()[:8]
 
 
-HTML_TEMPLATE = """<!DOCTYPE html>
+PAGE = """<!DOCTYPE html>
 <html>
 <head>
-    <title>ARC-AGI-3 — {game_id}</title>
-    <style>
-        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-        body {{
-            background: #111;
-            color: #ccc;
-            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-            padding: 15px;
-        }}
-        .header {{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0 12px;
-            border-bottom: 1px solid #333;
-            margin-bottom: 15px;
-        }}
-        .header h1 {{ color: #ff6b6b; font-size: 1.4em; }}
-        .stats {{ display: flex; gap: 25px; font-size: 1.1em; }}
-        .stat-value {{ color: #4ecdc4; font-weight: bold; }}
-        .levels-grid {{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 15px;
-        }}
-        .level-card {{
-            background: #1a1a1a;
-            border: 2px solid #333;
-            border-radius: 6px;
-            padding: 8px;
-            text-align: center;
-            min-width: 180px;
-        }}
-        .level-card.active {{
-            border-color: #ff6b6b;
-            box-shadow: 0 0 12px rgba(255,107,107,0.3);
-        }}
-        .level-card.solved {{
-            border-color: #4ecdc4;
-        }}
-        .level-card.future {{
-            border-color: #222;
-            opacity: 0.5;
-        }}
-        .level-card img {{
-            image-rendering: pixelated;
-            border-radius: 3px;
-        }}
-        .level-label {{
-            margin-top: 5px;
-            font-size: 0.8em;
-        }}
-        .level-label.active {{ color: #ff6b6b; }}
-        .level-label.solved {{ color: #4ecdc4; }}
-        .level-label.future {{ color: #444; }}
-        .history {{
-            background: #1a1a1a;
-            border-radius: 6px;
-            padding: 12px;
-            max-height: 250px;
-            overflow-y: auto;
-            font-size: 0.8em;
-        }}
-        .history h3 {{ color: #666; margin-bottom: 8px; font-size: 0.95em; }}
-        .action {{
-            padding: 2px 0;
-            border-bottom: 1px solid #1f1f1f;
-        }}
-        .step {{ color: #555; display: inline-block; width: 40px; }}
-        .act {{ color: #4ecdc4; display: inline-block; width: 130px; }}
-        .diff {{ color: #888; }}
-        .no-game {{
-            text-align: center;
-            margin-top: 80px;
-            color: #444;
-            font-size: 1.3em;
-        }}
-    </style>
-    <script>
-        // Auto-refresh only when state changes
-        let lastHash = "{state_hash}";
-        async function checkUpdate() {{
-            try {{
-                const resp = await fetch('/hash');
-                const hash = await resp.text();
-                if (hash !== lastHash) {{
-                    location.reload();
-                }}
-            }} catch(e) {{}}
-            setTimeout(checkUpdate, 500);
-        }}
-        checkUpdate();
-    </script>
+<title>ARC-AGI-3 — {game_id}</title>
+<style>
+*{{margin:0;padding:0;box-sizing:border-box}}
+body{{background:#111;color:#ccc;font-family:'SF Mono','Fira Code',monospace;height:100vh;overflow:hidden}}
+.layout{{display:flex;height:100vh}}
+.main{{flex:1;padding:12px;overflow-y:auto}}
+.sidebar{{width:320px;background:#0d0d0d;border-left:1px solid #222;display:flex;flex-direction:column}}
+.header{{display:flex;justify-content:space-between;align-items:center;padding:6px 0 10px;border-bottom:1px solid #333;margin-bottom:10px}}
+.header h1{{color:#ff6b6b;font-size:1.2em}}
+.stats{{display:flex;gap:20px;font-size:1em}}
+.sv{{color:#4ecdc4;font-weight:bold}}
+.grid3x3{{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}}
+.cell{{background:#1a1a1a;border:2px solid #222;border-radius:5px;padding:6px;text-align:center;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center}}
+.cell.active{{border-color:#ff6b6b;box-shadow:0 0 10px rgba(255,107,107,0.3)}}
+.cell.solved{{border-color:#4ecdc4}}
+.cell.empty{{border-color:transparent;background:transparent}}
+.cell img{{image-rendering:pixelated;border-radius:2px;max-width:100%;height:auto}}
+.cell-pair{{display:flex;gap:3px;justify-content:center}}
+.cell-pair img{{max-width:48%}}
+.clabel{{font-size:0.7em;margin-top:4px}}
+.clabel.active{{color:#ff6b6b}}
+.clabel.solved{{color:#4ecdc4}}
+.clabel.future{{color:#333}}
+.sidebar-header{{padding:10px;border-bottom:1px solid #222;color:#666;font-size:0.85em}}
+.actions{{flex:1;overflow-y:auto;padding:8px}}
+.act{{padding:3px 6px;border-bottom:1px solid #181818;font-size:0.75em;display:flex;gap:6px}}
+.act .s{{color:#444;min-width:30px}}
+.act .a{{color:#4ecdc4;min-width:100px}}
+.act .d{{color:#777;flex:1}}
+.no-game{{text-align:center;margin-top:100px;color:#333;font-size:1.3em}}
+</style>
+<script>
+let lh="{state_hash}";
+async function ck(){{try{{const r=await fetch('/hash');const h=await r.text();if(h!==lh)location.reload()}}catch(e){{}}setTimeout(ck,500)}}
+ck();
+</script>
 </head>
 <body>
-{content}
+<div class="layout">
+<div class="main">
+{main_content}
+</div>
+<div class="sidebar">
+<div class="sidebar-header">Actions</div>
+<div class="actions">
+{action_content}
+</div>
+</div>
+</div>
 </body>
 </html>"""
 
 
-class GameViewerHandler(http.server.BaseHTTPRequestHandler):
+class Handler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == '/hash':
             self.send_response(200)
-            self.send_header('Content-Type', 'text/plain')
+            self.send_header('Content-Type','text/plain')
             self.end_headers()
-            self.wfile.write(state_hash().encode())
+            self.wfile.write(shash().encode())
             return
 
-        if self.path == '/':
-            self.send_response(200)
-            self.send_header('Content-Type', 'text/html')
-            self.end_headers()
+        self.send_response(200)
+        self.send_header('Content-Type','text/html')
+        self.end_headers()
 
-            session = load_state()
-            if session is None:
-                content = '<div class="no-game">No active game.<br>Run: python3 claude_solver.py init &lt;game&gt;</div>'
-                self.wfile.write(HTML_TEMPLATE.format(
-                    content=content, game_id="waiting", state_hash=""
-                ).encode())
-                return
+        session = load_state()
+        if not session:
+            html = PAGE.format(game_id="waiting", state_hash="",
+                             main_content='<div class="no-game">No active game</div>',
+                             action_content='')
+            self.wfile.write(html.encode())
+            return
 
-            game_id = session.get('game_id', '?')
-            step = session.get('step', 0)
-            current_level = session.get('levels_completed', 0)
-            win_levels = session.get('win_levels', 8)
-            game_state = session.get('state', '?')
-            observations = session.get('observations', [])
-            level_summaries = session.get('level_summaries', [])
+        game_id = session.get('game_id','?')
+        step = session.get('step',0)
+        cur_level = session.get('levels_completed',0)
+        win_levels = session.get('win_levels',8)
+        state = session.get('state','?')
+        observations = session.get('observations',[])
+        current_grid = load_grid("current")
+        blank = blank_b64(scale=3)
 
-            # Load level snapshots
-            level_grids = {}
-            for ls in level_summaries:
-                lvl = ls.get('level', 0)
-                grid_path = os.path.join(STATE_DIR, f"level_{lvl}_final.npy")
-                if os.path.exists(grid_path):
-                    level_grids[lvl] = np.load(grid_path)
+        # Header
+        main = [f'''<div class="header">
+            <h1>🎮 {game_id}</h1>
+            <div class="stats">
+                <div>Step <span class="sv">{step}</span></div>
+                <div>Level <span class="sv">{cur_level}/{win_levels}</span></div>
+                <div><span class="sv">{state}</span></div>
+            </div>
+        </div>''']
 
-            current_grid = load_grid("current")
-
-            parts = []
-
-            # Header
-            parts.append(f'''
-            <div class="header">
-                <h1>🎮 {game_id}</h1>
-                <div class="stats">
-                    <div>Step <span class="stat-value">{step}</span></div>
-                    <div>Level <span class="stat-value">{current_level}/{win_levels}</span></div>
-                    <div><span class="stat-value">{game_state}</span></div>
-                </div>
-            </div>''')
-
-            # Level grid — one card per level
-            parts.append('<div class="levels-grid">')
-            blank = blank_board_b64(scale=4)
-            sz = 200  # image display size
-
-            for lvl in range(win_levels):
-                if lvl < current_level:
-                    # Solved level — show start → final side by side
-                    start_path = os.path.join(STATE_DIR, f"level_{lvl}_start.npy")
-                    final_path = os.path.join(STATE_DIR, f"level_{lvl}_final.npy")
-                    start_b64 = grid_to_png_b64(np.load(start_path), scale=3) if os.path.exists(start_path) else blank
-                    final_b64 = grid_to_png_b64(np.load(final_path), scale=3) if os.path.exists(final_path) else blank
-
-                    parts.append(f'''
-                    <div class="level-card solved">
-                        <div style="display:flex;gap:4px;justify-content:center;">
-                            <img src="data:image/png;base64,{start_b64}" width="{sz//2}" height="{sz//2}" title="Start">
-                            <img src="data:image/png;base64,{final_b64}" width="{sz//2}" height="{sz//2}" title="Solved">
+        # 3x3 grid
+        main.append('<div class="grid3x3">')
+        for pos in range(9):
+            lvl = pos  # level index
+            if lvl < win_levels:
+                if lvl < cur_level:
+                    # Solved — show start→final pair
+                    sp = os.path.join(STATE_DIR, f"level_{lvl}_start.npy")
+                    fp = os.path.join(STATE_DIR, f"level_{lvl}_final.npy")
+                    sb = grid_to_png_b64(np.load(sp), scale=3) if os.path.exists(sp) else blank
+                    fb = grid_to_png_b64(np.load(fp), scale=3) if os.path.exists(fp) else blank
+                    main.append(f'''<div class="cell solved">
+                        <div class="cell-pair">
+                            <img src="data:image/png;base64,{sb}" title="Start">
+                            <img src="data:image/png;base64,{fb}" title="Solved">
                         </div>
-                        <div class="level-label solved">Level {lvl+1} ✓</div>
+                        <div class="clabel solved">L{lvl+1} ✓</div>
                     </div>''')
-                elif lvl == current_level:
-                    # Active level — show start (small) + current (large)
-                    start_path = os.path.join(STATE_DIR, f"level_{lvl}_start.npy")
-                    start_b64 = grid_to_png_b64(np.load(start_path), scale=3) if os.path.exists(start_path) else blank
-                    current_b64 = grid_to_png_b64(current_grid, scale=4) if current_grid is not None else blank
-
-                    parts.append(f'''
-                    <div class="level-card active">
-                        <img src="data:image/png;base64,{current_b64}" width="{sz}" height="{sz}">
-                        <div class="level-label active">Level {lvl+1} ▶ LIVE (step {step})</div>
+                elif lvl == cur_level:
+                    # Active
+                    cb = grid_to_png_b64(current_grid, scale=4) if current_grid is not None else blank
+                    main.append(f'''<div class="cell active">
+                        <img src="data:image/png;base64,{cb}">
+                        <div class="clabel active">L{lvl+1} ▶ LIVE</div>
                     </div>''')
                 else:
-                    # Future level
-                    parts.append(f'''
-                    <div class="level-card future">
-                        <img src="data:image/png;base64,{blank}" width="{sz//2}" height="{sz//2}">
-                        <div class="level-label future">Level {lvl+1}</div>
+                    # Future
+                    main.append(f'''<div class="cell">
+                        <img src="data:image/png;base64,{blank}" style="opacity:0.3">
+                        <div class="clabel future">L{lvl+1}</div>
                     </div>''')
+            else:
+                # Empty cell (game has fewer than 9 levels)
+                main.append('<div class="cell empty"></div>')
 
-            parts.append('</div>')
+        main.append('</div>')
 
-            # Action history (compact, last 20)
-            parts.append('<div class="history"><h3>Recent Actions</h3>')
-            for obs in observations[-20:]:
-                s = obs.get('step', '?')
-                a = obs.get('action', '?')
-                d = obs.get('diff', '')[:80]
-                parts.append(f'<div class="action">'
-                           f'<span class="step">#{s}</span>'
-                           f'<span class="act">{a}</span>'
-                           f'<span class="diff">{d}</span></div>')
-            if not observations:
-                parts.append('<div class="action" style="color:#444">Waiting for first action...</div>')
-            parts.append('</div>')
+        # Actions sidebar
+        acts = []
+        for obs in observations[-50:]:
+            s = obs.get('step','?')
+            a = obs.get('action','?')
+            d = obs.get('diff','')[:60]
+            acts.append(f'<div class="act"><span class="s">#{s}</span>'
+                       f'<span class="a">{a}</span><span class="d">{d}</span></div>')
+        if not acts:
+            acts.append('<div class="act" style="color:#333">Waiting...</div>')
 
-            content = '\n'.join(parts)
-            self.wfile.write(HTML_TEMPLATE.format(
-                content=content, game_id=game_id, state_hash=state_hash()
-            ).encode())
-        else:
-            self.send_response(404)
-            self.end_headers()
+        html = PAGE.format(
+            game_id=game_id, state_hash=shash(),
+            main_content='\n'.join(main),
+            action_content='\n'.join(acts)
+        )
+        self.wfile.write(html.encode())
 
-    def log_message(self, format, *args):
-        pass
+    def log_message(self, *a): pass
 
 
 def main():
-    server = http.server.HTTPServer(('', PORT), GameViewerHandler)
+    s = http.server.HTTPServer(('', PORT), Handler)
     print(f"Game Viewer: http://localhost:{PORT}")
-    print(f"State dir: {STATE_DIR}")
-    print(f"Updates on every state change (polling 500ms)")
-    try:
-        server.serve_forever()
-    except KeyboardInterrupt:
-        print("\nStopped.")
-        server.server_close()
-
+    try: s.serve_forever()
+    except KeyboardInterrupt: s.server_close()
 
 if __name__ == "__main__":
     main()

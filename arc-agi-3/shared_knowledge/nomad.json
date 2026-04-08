@@ -1,6 +1,6 @@
 {
   "machine": "nomad",
-  "updated_at": 1775524123.7250142,
+  "updated_at": 1775609543,
   "game_discoveries": {
     "bp35": [
       {
@@ -206,6 +206,14 @@
         "machine": "nomad",
         "timestamp": 1775444753.7744346
       }
+    ],
+    "cd82": [
+      "Circular stamp puzzle: big cursor (SELECT) = full-width from cardinal/diagonal, small cursor (CLICK) = small overlay from cardinal only",
+      "L1: white from 6. L2: white 12 + olive 4:30. L3: cyan 6 + teal 3 + white 10:30 + olive small 12",
+      "L4: brown 9 + olive 10:30 + white 3 + maroon small 9. Key: olive 10:30 not 1:30 (edge direction!)",
+      "L5: brown 1:30 + teal 7:30 + olive 4:30 + cyan small 12. Black from starting canvas free.",
+      "L6: teal 3 + cyan 10:30 + maroon small 9 + white small 12. Black from starting canvas free.",
+      "COMPLETE 6/6 in 127 steps (baseline 136)"
     ]
   },
   "failures": {

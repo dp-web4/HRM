@@ -35,7 +35,7 @@ from arc_agi import Arcade
 
 from solver_config import parse_args
 from model_backend import OllamaBackend, ClaudeInteractiveBackend
-from solver_loop import solve_game_autonomous, solve_game_interactive
+from solver_loop import solve_game_autonomous, solve_game_interactive, interactive_step
 
 
 def main():
@@ -68,11 +68,24 @@ def main():
 
     # ── Interactive Mode ──
     if config.interactive:
-        game = config.game or "cd82"
-        result = solve_game_interactive(game, backend, config)
-        if result.get("game_id"):
-            print(f"\nSession initialized at {result['state_dir']}")
-            print("Use step/look/summarize commands to play.")
+        cmd = config.command.lower() if config.command else "init"
+        if cmd == "init":
+            game = config.game or (config.command_args[0] if config.command_args else "cd82")
+            result = solve_game_interactive(game, backend, config)
+            if result.get("game_id"):
+                print(f"\nUse: sage_solver.py --interactive step <action> [x] [y]")
+        elif cmd == "step":
+            args = config.command_args
+            if not args:
+                print("Usage: sage_solver.py --interactive step <action> [x] [y]")
+                return
+            action = int(args[0])
+            x = int(args[1]) if len(args) > 1 else None
+            y = int(args[2]) if len(args) > 2 else None
+            interactive_step(action, x, y)
+        else:
+            print(f"Unknown interactive command: {cmd}")
+            print("Commands: init, step")
         return
 
     # ── Autonomous Mode ──

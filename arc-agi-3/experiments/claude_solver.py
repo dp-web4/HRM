@@ -335,7 +335,7 @@ def cmd_step(action, x=None, y=None):
             gif_frames = [render_grid(f, scale=2) for f in all_frames]
             gif_path = os.path.join(anim_dir, f"anim_L{level}_S{step}.gif")
             gif_frames[0].save(gif_path, save_all=True,
-                append_images=gif_frames[1:], duration=200, loop=0)
+                append_images=gif_frames[1:], duration=200, loop=1)
         except Exception:
             pass
         session.setdefault("animations", []).append({

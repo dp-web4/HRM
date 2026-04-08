@@ -199,24 +199,31 @@ class Handler(http.server.BaseHTTPRequestHandler):
                         <div class="clabel solved">L{lvl+1} ✓</div>
                     </div>''')
                 elif lvl == cur_level:
-                    # Active — single image fills the box, with animation strip if available
+                    # Active — show animation ONLY if the most recent step was animated
                     cb = grid_to_png_b64(current_grid, scale=4) if current_grid is not None else blank
-                    anim_gifs = find_animations(lvl)
-                    anim_html = ""
-                    if anim_gifs:
-                        # Show most recent animation as inline GIF
-                        latest_gif = anim_gifs[-1]
-                        gif_b64 = gif_to_b64(latest_gif)
-                        anim_html = f'''<div class="anim-strip">
-                            <img src="data:image/gif;base64,{gif_b64}" style="width:100%;height:auto" title="Animation">
-                        </div>
-                        <div class="anim-label">{len(anim_gifs)} animation(s)</div>'''
-                    if anim_html:
-                        main.append(f'''<div class="cell active">
-                            {anim_html}
-                            <div class="clabel active">L{lvl+1} ▶ LIVE</div>
-                        </div>''')
-                    else:
+                    # Check if the LATEST step produced an animation
+                    anim_meta = session.get('animations', [])
+                    latest_anim_step = anim_meta[-1].get('step') if anim_meta else -1
+                    show_anim = (latest_anim_step == step)
+                    if show_anim:
+                        anim_gifs = find_animations(lvl)
+                        if anim_gifs:
+                            gif_b64 = gif_to_b64(anim_gifs[-1])
+                            n_frames = anim_meta[-1].get('frames', 7)
+                            duration_ms = n_frames * 200
+                            cell_id = f"anim_cell_{lvl}"
+                            main.append(f'''<div class="cell active">
+                                <img id="{cell_id}" class="cell-active-img" src="data:image/gif;base64,{gif_b64}">
+                                <img id="{cell_id}_s" class="cell-active-img" src="data:image/png;base64,{cb}" style="display:none">
+                                <div class="clabel active">L{lvl+1} ▶ LIVE</div>
+                                <script>setTimeout(function(){{
+                                    document.getElementById("{cell_id}").style.display="none";
+                                    document.getElementById("{cell_id}_s").style.display="block";
+                                }},{duration_ms});</script>
+                            </div>''')
+                        else:
+                            show_anim = False
+                    if not show_anim:
                         main.append(f'''<div class="cell active">
                             <img class="cell-active-img" src="data:image/png;base64,{cb}">
                             <div class="clabel active">L{lvl+1} ▶ LIVE</div>

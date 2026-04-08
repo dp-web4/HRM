@@ -64,10 +64,30 @@ def load_grid(name="current"):
     return np.load(p) if os.path.exists(p) else None
 
 
+def find_animations(level):
+    """Find animation GIFs for a given level."""
+    anim_dir = os.path.join(STATE_DIR, "animations")
+    if not os.path.isdir(anim_dir):
+        return []
+    gifs = sorted(f for f in os.listdir(anim_dir) if f.startswith(f"anim_L{level}_") and f.endswith(".gif"))
+    return [os.path.join(anim_dir, g) for g in gifs]
+
+
+def gif_to_b64(path):
+    with open(path, "rb") as f:
+        return base64.b64encode(f.read()).decode("ascii")
+
+
 def shash():
     p = os.path.join(STATE_DIR, "session.json")
     if not os.path.exists(p): return ""
-    return hashlib.md5(open(p,'rb').read()).hexdigest()[:8]
+    # Include animation dir mtime for change detection
+    h = hashlib.md5(open(p,'rb').read())
+    anim_dir = os.path.join(STATE_DIR, "animations")
+    if os.path.isdir(anim_dir):
+        for f in sorted(os.listdir(anim_dir)):
+            h.update(f.encode())
+    return h.hexdigest()[:8]
 
 
 PAGE = """<!DOCTYPE html>
@@ -98,6 +118,9 @@ body{{background:#111;color:#ccc;font-family:'SF Mono','Fira Code',monospace;hei
 .clabel.active{{color:#ff6b6b}}
 .clabel.solved{{color:#4ecdc4}}
 .clabel.future{{color:#333}}
+.anim-strip{{display:flex;gap:2px;overflow-x:auto;width:100%;align-items:center}}
+.anim-strip img{{height:60px;flex-shrink:0}}
+.anim-label{{font-size:0.6em;color:#a855f7}}
 .sidebar-header{{padding:10px;border-bottom:1px solid #222;color:#666;font-size:0.85em}}
 .actions{{flex:1;overflow-y:auto;padding:8px}}
 .act{{padding:3px 6px;border-bottom:1px solid #181818;font-size:0.75em;display:flex;gap:6px}}
@@ -189,12 +212,35 @@ class Handler(http.server.BaseHTTPRequestHandler):
                         <div class="clabel solved">L{lvl+1} ✓</div>
                     </div>''')
                 elif lvl == cur_level:
-                    # Active — single image fills the box
+                    # Active — show animation ONLY if the most recent step was animated
                     cb = grid_to_png_b64(current_grid, scale=4) if current_grid is not None else blank
-                    main.append(f'''<div class="cell active">
-                        <img class="cell-active-img" src="data:image/png;base64,{cb}">
-                        <div class="clabel active">L{lvl+1} ▶ LIVE</div>
-                    </div>''')
+                    # Check if the LATEST step produced an animation
+                    anim_meta = session.get('animations', [])
+                    latest_anim_step = anim_meta[-1].get('step') if anim_meta else -1
+                    show_anim = (latest_anim_step == step)
+                    if show_anim:
+                        anim_gifs = find_animations(lvl)
+                        if anim_gifs:
+                            gif_b64 = gif_to_b64(anim_gifs[-1])
+                            n_frames = anim_meta[-1].get('frames', 7)
+                            duration_ms = n_frames * 200
+                            cell_id = f"anim_cell_{lvl}"
+                            main.append(f'''<div class="cell active">
+                                <img id="{cell_id}" class="cell-active-img" src="data:image/gif;base64,{gif_b64}">
+                                <img id="{cell_id}_s" class="cell-active-img" src="data:image/png;base64,{cb}" style="display:none">
+                                <div class="clabel active">L{lvl+1} ▶ LIVE</div>
+                                <script>setTimeout(function(){{
+                                    document.getElementById("{cell_id}").style.display="none";
+                                    document.getElementById("{cell_id}_s").style.display="block";
+                                }},{duration_ms});</script>
+                            </div>''')
+                        else:
+                            show_anim = False
+                    if not show_anim:
+                        main.append(f'''<div class="cell active">
+                            <img class="cell-active-img" src="data:image/png;base64,{cb}">
+                            <div class="clabel active">L{lvl+1} ▶ LIVE</div>
+                        </div>''')
                 else:
                     # Future — same box, dimmed placeholder
                     main.append(f'''<div class="cell future">
@@ -206,13 +252,17 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
         main.append('</div>')
 
-        # Actions sidebar
+        # Actions sidebar — include animation markers
         acts = []
+        anim_steps = set()
+        for anim in session.get('animations', []):
+            anim_steps.add(anim.get('step'))
         for obs in observations[-50:]:
             s = obs.get('step','?')
             a = obs.get('action','?')
             d = obs.get('diff','')[:60]
-            acts.append(f'<div class="act"><span class="s">#{s}</span>'
+            anim_marker = ' <span style="color:#a855f7">▶</span>' if s in anim_steps else ''
+            acts.append(f'<div class="act"><span class="s">#{s}{anim_marker}</span>'
                        f'<span class="a">{a}</span><span class="d">{d}</span></div>')
         if not acts:
             acts.append('<div class="act" style="color:#333">Waiting...</div>')

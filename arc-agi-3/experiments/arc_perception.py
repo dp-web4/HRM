@@ -30,9 +30,18 @@ COLOR_NAMES = {
 
 
 def get_frame(fd):
-    """Extract 2D grid from frame data."""
+    """Extract 2D grid from frame data. Returns the final frame."""
     grid = np.array(fd.frame)
     return grid[-1] if grid.ndim == 3 else grid
+
+
+def get_all_frames(fd):
+    """Extract ALL frames from frame data. Returns list of 2D grids.
+    Single-frame responses return [grid]. Multi-frame (animation) returns all."""
+    grid = np.array(fd.frame)
+    if grid.ndim == 3:
+        return [grid[i] for i in range(grid.shape[0])]
+    return [grid]
 
 
 def background_color(grid):

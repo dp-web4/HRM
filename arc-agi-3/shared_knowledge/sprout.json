@@ -1,6 +1,6 @@
 {
   "machine": "sprout",
-  "updated_at": 1775589972.157905,
+  "updated_at": 1775620678.7564583,
   "game_discoveries": {
     "lf52": [
       {
@@ -96,6 +96,11 @@
         "text": "Interactive objects: pink_0, white_1, black_3, yellow_4, black_5. Game type: toggle.   black_3: 100% effective, ~2px (4 tries)\n  pink_0: 100% effective, ~1px (4 tries)\n  white_1: 100% e",
         "machine": "sprout",
         "timestamp": 1775588493.3711429
+      },
+      {
+        "text": "Interactive objects: white_1, black_3, yellow_4, black_5, white_6. Game type: toggle.   black_3: 100% effective, ~1px (2 tries)\n  black_5: 100% effective, ~1px (3 tries)\n  white_1: 100% ",
+        "machine": "sprout",
+        "timestamp": 1775620045.3801417
       }
     ],
     "su15": [
@@ -307,21 +312,6 @@
   },
   "meta_insights": [
     {
-      "text": "Game g50t (cursor_cycle): Grid similarity STABLE around 98.8% (not progressing)\nWARNING: DOWN clicked 9\u00d7 with changes but NO level-up \u2014 may need different approach",
-      "machine": "sprout",
-      "timestamp": 1775503956.5339584
-    },
-    {
-      "text": "Game ka59 (cursor_cycle): DOWN: consistent effect (~18px each time)\nblue_0: consistent effect (~1px each time)\nblue_2: consistent effect (~1px each time)\nyellow_10: consistent ",
-      "machine": "sprout",
-      "timestamp": 1775504628.7054274
-    },
-    {
-      "text": "Game cn04 (cursor_cycle): cyan_3: consistent effect (~135px each time)\nteal_4: consistent effect (~1px each time)\nGrid similarity STABLE around 92.7% (not progressing)",
-      "machine": "sprout",
-      "timestamp": 1775505299.2604144
-    },
-    {
       "text": "Game sb26 (unknown): white_20: consistent effect (~40px each time)\nbrown_21: consistent effect (~40px each time)\nGrid similarity STABLE around 98.5% (not progressing)\nWARN",
       "machine": "sprout",
       "timestamp": 1775506339.4939725
@@ -405,6 +395,21 @@
       "text": "Game vc33 (toggle): yellow_4: consistent effect (~1px each time)\nblack_5: consistent effect (~1px each time)\nGrid similarity STABLE around 99.1% (not progressing)\nWARNING",
       "machine": "sprout",
       "timestamp": 1775589972.1578455
+    },
+    {
+      "text": "Game vc33 (toggle): white_1: consistent effect (~1px each time)\nwhite_6: consistent effect (~1px each time)\npink_0: consistent effect (~1px each time)\nGrid similarity STA",
+      "machine": "sprout",
+      "timestamp": 1775619329.2148287
+    },
+    {
+      "text": "Game vc33 (toggle): black_3: consistent effect (~1px each time)\nblack_5: consistent effect (~1px each time)\nyellow_9: consistent effect (~1px each time)\nGrid similarity S",
+      "machine": "sprout",
+      "timestamp": 1775620045.3804188
+    },
+    {
+      "text": "Game vc33 (toggle): yellow_4: consistent effect (~2px each time)\nblack_5: consistent effect (~1px each time)\nGrid similarity STABLE around 99.5% (not progressing)\nWARNING",
+      "machine": "sprout",
+      "timestamp": 1775620678.7564504
     }
   ]
 }

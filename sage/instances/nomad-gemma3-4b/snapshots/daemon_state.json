@@ -1,11 +1,11 @@
 {
-  "last_shutdown": 1775591375.699266,
+  "last_shutdown": 1775613332.9077954,
   "machine": "nomad",
   "instance": "nomad-gemma3-4b",
-  "uptime_seconds": 23528.39662861824,
-  "cycles_completed": 154664,
+  "uptime_seconds": 21946.99749660492,
+  "cycles_completed": 153115,
   "metabolic_state": "rest",
-  "atp_level": 36.18749039399962,
+  "atp_level": 47.3155972224462,
   "message_stats": {
     "messages_submitted": 0,
     "messages_resolved": 0,
@@ -15,7 +15,7 @@
   },
   "trust_weights": {
     "vision": 0.0,
-    "language": 0.0955,
+    "language": 0.0905,
     "control": 0.0,
     "memory": 0.0
   },

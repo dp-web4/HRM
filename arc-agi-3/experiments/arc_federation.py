@@ -98,7 +98,7 @@ class FederatedKnowledge:
         return None
 
     def _load_all(self):
-        """Load knowledge from all machines."""
+        """Load knowledge from all machines + shared-context consolidated data."""
         for f in self.shared_dir.glob("*.json"):
             if f.name == "merged.json":
                 continue
@@ -106,6 +106,60 @@ class FederatedKnowledge:
             data = self._load_file(f)
             if data:
                 self.fleet_data[name] = data
+        # Load consolidated solve data from shared-context repo
+        self._load_consolidated()
+
+    def _load_consolidated(self):
+        """Load level solutions, game insights, and structural patterns from shared-context."""
+        # Try multiple locations (shared-context may be in workspace or parent)
+        for base in [Path(os.environ.get("HOME", "")) / "ai-workspace" / "shared-context",
+                     self.shared_dir.parent.parent.parent / "shared-context"]:
+            consolidated = base / "arc-agi-3" / "consolidated"
+            if not consolidated.exists():
+                continue
+
+            self._consolidated = {}
+
+            # Level solutions — per-game action sequences that won
+            sol_file = consolidated / "level_solutions.jsonl"
+            if sol_file.exists():
+                for line in sol_file.read_text().strip().split('\n'):
+                    try:
+                        d = json.loads(line)
+                        game = d.get('game', '')
+                        self._consolidated.setdefault(game, []).append(d)
+                    except: pass
+
+            # Game insights — high-level principles from solved games
+            insights_file = consolidated / "game_insights.jsonl"
+            if insights_file.exists():
+                for line in insights_file.read_text().strip().split('\n'):
+                    try:
+                        d = json.loads(line)
+                        game = d.get('game', '')
+                        self._consolidated.setdefault(game, []).append(d)
+                    except: pass
+
+            # Structural patterns
+            patterns_file = consolidated / "structural_patterns.jsonl"
+            if patterns_file.exists():
+                self._structural_patterns = []
+                for line in patterns_file.read_text().strip().split('\n'):
+                    try:
+                        self._structural_patterns.append(json.loads(line))
+                    except: pass
+
+            # Fleet learning docs (markdown solve guides)
+            fleet_dir = base / "arc-agi-3" / "fleet-learning"
+            self._solve_guides = {}
+            if fleet_dir.exists():
+                for machine_dir in fleet_dir.iterdir():
+                    if machine_dir.is_dir():
+                        for md in machine_dir.glob("*_complete.md"):
+                            game = md.stem.replace('_complete', '')
+                            self._solve_guides[game] = md.read_text()[:2000]
+
+            return  # Found shared-context, done
 
     def save(self):
         """Save our machine's knowledge to git-tracked file."""
@@ -245,9 +299,47 @@ class FederatedKnowledge:
             return "FLEET INSIGHTS (cross-game principles):\n" + "\n".join(lines)
         return ""
 
+    def get_solve_guide(self, game_prefix: str) -> str:
+        """Get the solve guide for a game if it was solved interactively."""
+        guides = getattr(self, '_solve_guides', {})
+        if game_prefix in guides:
+            return f"SOLVED GAME GUIDE ({game_prefix}):\n{guides[game_prefix]}"
+        return ""
+
+    def get_consolidated_insights(self, game_prefix: str) -> str:
+        """Get consolidated insights from interactive solve sessions."""
+        consolidated = getattr(self, '_consolidated', {})
+        lines = []
+        # Game-specific insights
+        for entry in consolidated.get(game_prefix, []):
+            if entry.get('event') == 'game_complete':
+                lines.append(f"  SOLVED: {entry.get('actions','?')} actions, {entry.get('efficiency','?')} efficiency")
+            elif entry.get('event') == 'game_insight':
+                lines.append(f"  INSIGHT: {entry.get('description', entry.get('insight',''))[:150]}")
+        # Meta-insights (cross-game principles)
+        for entry in consolidated.get('_meta', []):
+            desc = entry.get('description', entry.get('insight', ''))
+            if desc:
+                lines.append(f"  META: {desc[:150]}")
+        # Structural patterns
+        for p in getattr(self, '_structural_patterns', []):
+            lines.append(f"  PATTERN: {p.get('pattern', p.get('type',''))}: {json.dumps(p)[:120]}")
+        if lines:
+            return "CONSOLIDATED KNOWLEDGE (from solved games):\n" + "\n".join(lines[:15])
+        return ""
+
     def build_context(self, game_prefix: str, game_type: str = "") -> str:
         """Build full federation context for a game session."""
         parts = []
+        # Solve guide (if this game was solved interactively)
+        solve_guide = self.get_solve_guide(game_prefix)
+        if solve_guide:
+            parts.append(solve_guide)
+        # Consolidated insights from interactive sessions
+        consolidated = self.get_consolidated_insights(game_prefix)
+        if consolidated:
+            parts.append(consolidated)
+        # Fleet machine knowledge
         game_knowledge = self.get_game_knowledge(game_prefix)
         if game_knowledge:
             parts.append(game_knowledge)

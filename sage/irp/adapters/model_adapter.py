@@ -95,6 +95,17 @@ class ModelAdapter:
                     # Fallback: use original text
                     text = text_without_think
 
+        # 4. Chain-of-thought bleeding — Strip "Thinking Process:" patterns
+        # Qwen 3.5 27B sometimes outputs verbose internal reasoning
+        if text.startswith('Thinking Process:') or text.startswith('Thinking Process\n'):
+            # If the response is ONLY thinking process (truncated), return empty
+            # This signals that the generation was incomplete
+            text = ''
+        # Also catch cases where thinking process appears mid-response
+        elif '\n\nThinking Process:' in text or '\nThinking Process:' in text:
+            # Truncate at the start of thinking process
+            text = re.sub(r'\n+Thinking Process:[\s\S]*$', '', text).strip()
+
         return text
 
     def format_payload(
@@ -167,6 +178,9 @@ class ChatAPIAdapter(ModelAdapter):
     def format_payload(self, prompt, options, ollama_host):
         messages = self._prose_to_messages(prompt)
         opts = dict(options)
+        # Apply model-specific stop sequences from capabilities
+        if self._capabilities.stop_sequences:
+            opts['stop'] = self._capabilities.stop_sequences
         payload = {
             'messages': messages,
             'stream': False,

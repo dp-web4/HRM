@@ -609,7 +609,9 @@ RESPONSE STYLE:
 - Avoid rambling lists or verbose descriptions
 - Stay directly relevant to the question asked
 - One main idea per response
-- Be genuine — if you don't know something, say so"""
+- Be genuine — if you don't know something, say so
+
+IMPORTANT: If you need to think through your response, do your thinking BEFORE your response, not in it. Do not include phrases like "Thinking Process:", "Analyze the Request:", "Determine the Core Idea:", or similar internal reasoning in your actual response. Your response should be the direct answer, not a description of how you arrived at it."""
 
         # Previous session continuity
         prev_summary = self._get_previous_session_summary()

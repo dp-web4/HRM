@@ -324,6 +324,67 @@ def cmd_step(action, x=None, y=None):
     save_grid(prev_grid, "previous")
     save_grid(grid, "current")
 
+    # Animation detection: only probe if the trigger click changed >1px
+    # (animation games show multi-pixel changes when animation starts)
+    anim_frames = []
+    trigger_diff = int(np.sum(grid != prev_grid)) if prev_grid is not None else 0
+    if trigger_diff > 5 and fd.state.name not in ("WON", "LOST", "GAME_OVER"):
+        # Probe for continuing animation — send idle frames
+        anim_prev = grid.copy()
+        stable_count = 0
+        for anim_i in range(200):  # max 200 animation frames
+            fd = env.step(ga, data={"x": 0, "y": 0}) if action == 6 else env.step(ga)
+            anim_grid = get_frame(fd)
+            if anim_grid.shape != anim_prev.shape:
+                break  # shape changed (level transition?)
+            anim_diff = int(np.sum(anim_grid != anim_prev))
+            if anim_diff <= 1:
+                stable_count += 1
+                if stable_count >= 2:
+                    break
+            else:
+                stable_count = 0
+                anim_frames.append(anim_grid.copy())
+                anim_prev = anim_grid.copy()
+        # If we captured animation frames, save them
+        if anim_frames:
+            grid = anim_frames[-1]  # update current to last animation frame
+            save_grid(grid, "current")
+            img_path = os.path.join(STATE_DIR, "frame.png")
+            render_grid(grid).save(img_path)
+            # Save animation sequence
+            anim_dir = os.path.join(STATE_DIR, "animations")
+            os.makedirs(anim_dir, exist_ok=True)
+            level = session["levels_completed"]
+            step = session["step"]
+            anim_file = os.path.join(anim_dir, f"anim_L{level}_S{step}.npz")
+            np.savez_compressed(anim_file,
+                trigger_frame=prev_grid,
+                final_frame=grid,
+                **{f"frame_{i}": f for i, f in enumerate(anim_frames)})
+            # Also save a GIF
+            try:
+                from PIL import Image
+                gif_frames = [render_grid(prev_grid, scale=2)]  # start with trigger frame
+                for af in anim_frames:
+                    gif_frames.append(render_grid(af, scale=2))
+                gif_path = os.path.join(anim_dir, f"anim_L{level}_S{step}.gif")
+                gif_frames[0].save(gif_path, save_all=True,
+                    append_images=gif_frames[1:], duration=100, loop=0)
+            except Exception:
+                pass
+            # Update session metadata
+            session.setdefault("animations", []).append({
+                "step": step, "level": level,
+                "frames": len(anim_frames),
+                "file": f"anim_L{level}_S{step}.npz",
+            })
+            # Update diff to reflect animation
+            diff = f"ANIMATION: {len(anim_frames)} frames. " + semantic_diff(prev_grid, grid)
+            # Check for level-up during animation
+            session["levels_completed"] = fd.levels_completed
+            session["state"] = fd.state.name
+
     # Check for level-up
     level_up = fd.levels_completed > prev_levels
 
@@ -332,6 +393,8 @@ def cmd_step(action, x=None, y=None):
     print(f"WHAT CHANGED: {diff}")
     print(f"LEVELS: {fd.levels_completed}/{session['win_levels']}")
     print(f"IMAGE: {img_path}")
+    if anim_frames:
+        print(f"ANIMATION: {len(anim_frames)} frames captured")
 
     if level_up:
         # The SDK transitions instantly on level-up: grid is already the new level.

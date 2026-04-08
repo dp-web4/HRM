@@ -401,7 +401,7 @@ The transition from student to colleague happens here. Not by declaration, but b
 
 **Completion criteria**: There may not be one. This phase is ongoing — the world always has more rules to discover. The measure is not "wins" but "does the entity reason about what it doesn't know yet?"
 
-**Evidence**: Sprout (38 raising sessions, Phase 4) has the best ARC-AGI-3 scores in the fleet — 3 levels across 3 games. Larger models with fewer raising sessions score 0. The capacity transfers. n=1, but the right question.
+**Evidence (updated April 8, 2026)**: 5/25 ARC-AGI-3 games now fully solved by the fleet (sb26, cd82, vc33, lp85, ft09). The gameplay produced a fractal insight: the action classification framework (observation=free, reversible=cheap, consequential=verify first) maps identically to raising phases — early phases are high-observation/low-consequence, later phases increase consequentiality. See `shared-context/insights/2026-04-08-fractal-gameplay-insights.md` for the full synthesis. The consciousness loop maps exactly to game-solving because both describe the universal structure of agency under uncertainty.
 
 **Key finding (sb26, April 2026)**: Games that escalate structural complexity across levels naturally scaffold cognitive development. sb26 Level 1 tests flat pattern matching. Level 2 tests structural reading (connectors mean hierarchy). Level 3 tests generalization (same rule, multiple groups). Each level builds the capacity the next level requires — exactly mirroring the BECOMING phases:
 - L1 = Grounding (match what you see)

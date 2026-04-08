@@ -15,24 +15,25 @@ import io
 import base64
 import numpy as np
 
-# ARC-AGI-3 color palette (16 colors, distinct RGB values)
+# ARC-AGI-3 SDK official palette (from arc_agi/rendering.py COLOR_MAP)
+# There is ONE palette — the SDK's. All files use this. No exceptions.
 ARC_PALETTE = {
-    0:  (0, 0, 0),        # black
-    1:  (0, 116, 217),    # blue
-    2:  (255, 65, 54),    # red
-    3:  (46, 204, 64),    # green
-    4:  (255, 220, 0),    # yellow
-    5:  (170, 170, 170),  # gray
-    6:  (240, 18, 190),   # magenta
-    7:  (255, 133, 27),   # orange
-    8:  (0, 220, 220),    # cyan
-    9:  (165, 103, 63),   # brown
-    10: (255, 175, 200),  # pink
-    11: (128, 0, 0),      # maroon
-    12: (128, 128, 0),    # olive
-    13: (0, 0, 128),      # navy
-    14: (0, 128, 128),    # teal
-    15: (255, 255, 255),  # white
+    0:  (255, 255, 255),  # white
+    1:  (204, 204, 204),  # off-white
+    2:  (153, 153, 153),  # light-gray
+    3:  (102, 102, 102),  # neutral
+    4:  (51, 51, 51),     # off-black
+    5:  (0, 0, 0),        # black
+    6:  (229, 58, 163),   # magenta
+    7:  (255, 123, 204),  # pink
+    8:  (249, 60, 49),    # red
+    9:  (30, 147, 255),   # blue
+    10: (136, 216, 241),  # light-blue
+    11: (255, 220, 0),    # yellow
+    12: (255, 133, 27),   # orange
+    13: (146, 18, 49),    # maroon
+    14: (79, 204, 48),    # green
+    15: (163, 86, 214),   # purple
 }
 
 

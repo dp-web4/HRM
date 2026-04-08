@@ -114,6 +114,38 @@ class WorldModel:
         return [obj for obj in self.objects.values()
                 if obj.role == "interactive" and obj.click_count == 0]
 
+    def suggest_next_object(self) -> ObjectKnowledge:
+        """Suggest the most promising object to try next.
+
+        Priority: untried > least-clicked > largest-effect.
+        Returns None if no interactive objects exist.
+        """
+        interactive = [o for o in self.objects.values() if o.role == "interactive"]
+        if not interactive:
+            return None
+
+        # First: any untried objects
+        untried = [o for o in interactive if o.click_count == 0]
+        if untried:
+            return untried[0]
+
+        # Second: least-clicked (explore underexplored)
+        by_clicks = sorted(interactive, key=lambda o: o.click_count)
+        least_clicked = by_clicks[0]
+
+        # Third: if all roughly equal clicks, pick largest avg effect
+        by_effect = sorted(interactive,
+                          key=lambda o: o.total_px_changed / max(o.click_count, 1),
+                          reverse=True)
+        best_effect = by_effect[0]
+
+        # Prefer least-clicked unless best_effect is dramatically better
+        best_avg = best_effect.total_px_changed / max(best_effect.click_count, 1)
+        least_avg = least_clicked.total_px_changed / max(least_clicked.click_count, 1)
+        if best_avg > least_avg * 3 and best_avg > 5:
+            return best_effect
+        return least_clicked
+
     def to_context(self) -> str:
         parts = ["=== WORLD MODEL (what we know) ==="]
 
@@ -143,17 +175,14 @@ class WorldModel:
                     status = f"clicked {obj.click_count}x, ~{avg_px:.0f}px avg"
                 parts.append(f"  {obj.name} at ({obj.position[0]},{obj.position[1]}) — {status}")
 
-        # Warnings about overused objects
-        overused = self.get_overused_objects()
-        if overused:
-            names = ", ".join(o.name for o in overused)
-            parts.append(f"WARNING: {names} clicked many times with tiny effects. STOP clicking these. Try something different.")
-
-        # Untried objects
-        untried = self.get_untried_objects()
-        if untried:
-            names = ", ".join(o.name for o in untried)
-            parts.append(f"UNTRIED: {names} — try these next!")
+        # Positive direction: suggest what to try next (not what to stop)
+        suggestion = self.suggest_next_object()
+        if suggestion:
+            parts.append(f"\nRECOMMENDED NEXT ACTION: Click {suggestion.name} at ({suggestion.position[0]},{suggestion.position[1]})")
+            if suggestion.click_count == 0:
+                parts.append(f"  Reason: You haven't tried {suggestion.name} yet — it might be the key to this level.")
+            else:
+                parts.append(f"  Reason: {suggestion.name} has the most promising effect pattern so far.")
 
         decoration_count = sum(1 for o in self.objects.values() if o.role == "decoration")
         if decoration_count:

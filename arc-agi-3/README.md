@@ -156,29 +156,49 @@ python3 arc-agi-3/experiments/game_viewer.py
 
 Shows a 3x3 level grid: solved levels as start/final pairs, active level with current frame, future levels dimmed. All cells are 1:1 aspect ratio. Animations play once on the step they're triggered, then swap to the static frame. Actions sidebar scrolls with purple markers for animation events. Auto-refreshes via hash polling.
 
-### Interactive Solver (`experiments/claude_solver.py`)
+### Canonical Solver: `sage_solver.py` (v11)
 
-Claude Code (or any model) plays a game interactively — one step at a time with full visual feedback.
+**This is the ONE solver.** All development goes here. Do not modify or extend `sage_solver_v7.py`, `sage_solver_v9.py`, or `claude_solver.py` — they are archived references only.
+
+v11 merges all three predecessors into a modular, model-agnostic architecture:
 
 ```bash
-# Start a game
-python3 arc-agi-3/experiments/claude_solver.py init <game_prefix>
+# Autonomous mode (Ollama models)
+python3 arc-agi-3/experiments/sage_solver.py --game lp85 -v
+python3 arc-agi-3/experiments/sage_solver.py --all --attempts 5
 
-# Take one action (see the result)
-python3 arc-agi-3/experiments/claude_solver.py step <action> [x] [y]
+# Specific model with vision
+python3 arc-agi-3/experiments/sage_solver.py --model gemma4:e4b --game cd82 -v
 
-# View current state
-python3 arc-agi-3/experiments/claude_solver.py look
+# Interactive mode (Claude Code as the model)
+python3 arc-agi-3/experiments/sage_solver.py --interactive --game tn36 init
+python3 arc-agi-3/experiments/sage_solver.py --interactive step 6 34 54
 
-# Get session context (action history + observations)
-python3 arc-agi-3/experiments/claude_solver.py context
+# Kaggle competition mode (no optional imports)
+python3 arc-agi-3/experiments/sage_solver.py --kaggle --all
 ```
 
-- Renders frames with the correct ARC palette
-- Detects multi-frame animations from the SDK (returns `(N,64,64)` tensors)
-- Saves animation GIFs to `animations/` directory
-- Tracks session state, level solutions, and observations in `session.json`
-- Cleans up old game state on `init`
+**Architecture** (7 modules):
+- `sage_solver.py` — CLI entry point
+- `model_backend.py` — ModelBackend ABC (OllamaBackend, ClaudeInteractiveBackend, APIBackend)
+- `solver_config.py` — SolverConfig dataclass + argparse
+- `solver_context.py` — 4-layer context assembly (L4 meta + L3 fleet + L2 KB + L1 narrative)
+- `solver_probe.py` — probe + MechanicDiscovery wrapper
+- `solver_actions.py` — action parsing with REPEAT + color-name resolution
+- `solver_loop.py` — autonomous + interactive loops with animation capture
+
+**Features**: federation via multi-cart brain carts, vision (native multimodal or code-based), world-model planning, mechanic discovery, game viewer integration, animation capture, raising identity loading.
+
+**Deprecated solvers** (do not modify):
+- `sage_solver_v7.py` — text-only, archived
+- `sage_solver_v9.py` — vision, archived  
+- `claude_solver.py` — interactive, archived
+- `sage_solver_v5.py`, `sage_solver_v6.py` — earlier iterations, archived
+
+**Color palettes**: Two different mappings exist in this codebase:
+1. SDK palette (0=white, 5=black) — used by `game_viewer.py`, `solver_loop.py`, `arc_perception.py`
+2. `arc_vision.py` palette (0=black, 5=gray) — used only for multimodal PNG generation
+Do NOT "fix" one to match the other. They are correct for their respective data sources.
 
 ### Fleet Learning (`experiments/publish_learning.py`)
 

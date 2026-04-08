@@ -36,6 +36,7 @@ from arc_action_model import ActionEffectModel
 from arc_narrative import SessionNarrative
 from arc_context import ContextConstructor
 from arc_federation import FederatedKnowledge
+from arc_world_model import WorldModel, PlanState, PLAN_UPDATE_PROMPT, parse_plan_update
 
 # Import context budget from raising (shared module)
 try:
@@ -466,7 +467,6 @@ def _load_consolidated_learning(game_prefix: str) -> str:
 
         lines = []
 
-        # Level solutions for this game
         solutions_path = os.path.join(base, 'level_solutions.jsonl')
         if os.path.exists(solutions_path):
             with open(solutions_path) as f:
@@ -484,7 +484,6 @@ def _load_consolidated_learning(game_prefix: str) -> str:
                     except Exception:
                         pass
 
-        # Game insights
         insights_path = os.path.join(base, 'game_insights.jsonl')
         if os.path.exists(insights_path):
             with open(insights_path) as f:
@@ -496,7 +495,6 @@ def _load_consolidated_learning(game_prefix: str) -> str:
                     except Exception:
                         pass
 
-        # Structural patterns (cross-game)
         patterns_path = os.path.join(base, 'structural_patterns.jsonl')
         if os.path.exists(patterns_path):
             with open(patterns_path) as f:
@@ -512,6 +510,25 @@ def _load_consolidated_learning(game_prefix: str) -> str:
         break
 
     return ""
+
+
+# ─── WORLD-MODEL-DRIVEN PLANNING ───
+
+def plan_with_world_model(world_model: WorldModel, plan: PlanState,
+                          narrative, tracker, action_model,
+                          scene_desc: str = "", fleet_context: str = "",
+                          verbose=False) -> str:
+    """Ask LLM to update world model + plan, then return next action.
+
+    The LLM reads everything: fleet knowledge, scene, world model, plan.
+    It proposes ONE action with a specific expected outcome.
+    """
+    prompt = PLAN_UPDATE_PROMPT.format(
+        world_model=world_model.to_context(),
+        plan_state=plan.to_context(),
+        scene_description=f"SCENE:\n{scene_desc}" if scene_desc else "(no scene description)",
+        fleet_context=fleet_context if fleet_context else "(no fleet knowledge for this game)")
+    return ask_llm(prompt)
 
 
 # ─── MAIN SOLVE LOOP ───
@@ -603,24 +620,56 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
                 best_levels = fd.levels_completed
             continue
 
-        # INTERLEAVED LOOP
+        # BUILD WORLD MODEL from probe results
+        wm = WorldModel()
+        wm.update_from_probe(tracker, action_model)
+        wm.current_level = fd.levels_completed
+        plan = PlanState()
+
+        # Build scene description once (updated on level-up)
+        scene_desc = ""
+        try:
+            from sage.irp.plugins.grid_vision_irp import GridVisionIRP, GridObservation
+            gv = GridVisionIRP.__new__(GridVisionIRP)
+            gv._buffer = []
+            gv._frame_count = 0
+            gv._prev_frame = None
+            objects_list = [{"id": o.id, "color": o.color,
+                           "bbox": [o.y, o.x, o.y + o.h, o.x + o.w],
+                           "centroid": [o.cy, o.cx], "size": o.size}
+                          for o in tracker.objects.values()]
+            obs = GridObservation(frame_raw=grid, objects=objects_list,
+                                changes=[], moved=[], step_number=0, level_id="")
+            scene_desc = gv.describe_scene(obs)
+        except Exception:
+            pass
+
+        if verbose and scene_desc:
+            print(f"  Scene: {scene_desc[:120]}...")
+
+        # WORLD-MODEL-DRIVEN LOOP
+        # Each iteration: LLM reads world model + plan → proposes 1 action + expectation
+        # → we execute → compare expectation to reality → update
         remaining = budget - total_steps
-        replan_count = 0
 
-        while remaining > 0 and replan_count < 20 and fd.state.name not in ("WON", "LOST", "GAME_OVER"):
-            replan_count += 1
-
-            # ASSEMBLE CONTEXT + PLAN
+        while remaining > 0 and fd.state.name not in ("WON", "LOST", "GAME_OVER"):
+            # ASK LLM: update plan + choose next action
             t0 = time.time()
-            plan_text = assemble_context_and_plan(
-                narrative, tracker, action_model, available,
-                fd.levels_completed, fd.win_levels, ctx=ctx,
-                attempt_num=attempt+1, verbose=verbose,
-                fleet_context=fleet_context,
-                vision_insight=vision_insight)
-            plan_actions = parse_actions(plan_text, tracker, available)
+            response = plan_with_world_model(
+                wm, plan, narrative, tracker, action_model,
+                scene_desc=scene_desc, fleet_context=fleet_context,
+                verbose=verbose)
             plan_time = time.time() - t0
 
+            # Parse response into world model + plan updates
+            prev_hypothesis = plan.hypothesis
+            parse_plan_update(response, wm, plan)
+
+            # Extract action from plan
+            plan_actions = parse_actions(plan.next_action, tracker, available)
+            if not plan_actions:
+                # Fallback: try parsing full response
+                plan_actions = parse_actions(response, tracker, available)
             if not plan_actions:
                 interactive = tracker.get_interactive_objects()
                 if interactive:
@@ -631,74 +680,102 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
                     plan_actions = [(a, None, ACTION_NAMES.get(a, f"A{a}"))]
 
             if verbose:
-                names = [pa[2] if len(pa) > 2 else str(pa[0]) for pa in plan_actions[:5]]
-                print(f"  [{total_steps}] Plan ({plan_time:.0f}s): {' → '.join(names)}")
+                action_name = plan_actions[0][2] if len(plan_actions[0]) > 2 else str(plan_actions[0][0])
+                hyp_changed = " [NEW]" if plan.hypothesis != prev_hypothesis and prev_hypothesis else ""
+                print(f"  [{total_steps}] {action_name} ({plan_time:.0f}s) expect=[{plan.expected_outcome[:60]}] hyp=[{plan.hypothesis[:60]}]{hyp_changed}")
 
-            # EXECUTE 2-3 actions
-            exec_count = min(3, len(plan_actions), remaining)
-            for i in range(exec_count):
-                action_int = plan_actions[i][0]
-                data = plan_actions[i][1]
-                target_name = plan_actions[i][2] if len(plan_actions[i]) > 2 else ACTION_NAMES.get(action_int, f"A{action_int}")
+            # EXECUTE ONE action
+            action_int = plan_actions[0][0]
+            data = plan_actions[0][1]
+            target_name = plan_actions[0][2] if len(plan_actions[0]) > 2 else ACTION_NAMES.get(action_int, f"A{action_int}")
 
-                prev_grid = grid.copy()
-                prev_levels = fd.levels_completed
+            prev_grid = grid.copy()
+            prev_levels = fd.levels_completed
 
-                try:
-                    if data:
-                        fd = env.step(INT_TO_GAME_ACTION[action_int], data=data)
-                    else:
-                        fd = env.step(INT_TO_GAME_ACTION[action_int])
-                except Exception:
-                    continue
-
-                if fd is None:
-                    break
-
-                grid = get_frame(fd)
-                total_steps += 1
+            try:
+                if data:
+                    fd = env.step(INT_TO_GAME_ACTION[action_int], data=data)
+                else:
+                    fd = env.step(INT_TO_GAME_ACTION[action_int])
+            except Exception:
                 remaining -= 1
+                total_steps += 1
+                plan.record_outcome(target_name, plan.expected_outcome, "ERROR: action failed", 0, False)
+                continue
 
-                # Update tracker
-                diff = tracker.update(grid)
-                if action_int == 6 and data:
-                    changed = not np.array_equal(prev_grid, grid)
-                    tracker.record_click(data['x'], data['y'], changed,
-                                         int(np.sum(prev_grid != grid)))
+            if fd is None:
+                break
 
-                # Record in narrative (Layer 1)
-                event = narrative.record(
-                    total_steps, action_int, target_name, data,
-                    grid, prev_levels, fd.levels_completed)
+            grid = get_frame(fd)
+            total_steps += 1
+            remaining -= 1
 
-                if verbose and event.changed:
-                    print(f"    {event.observation}")
+            # Observe what actually happened
+            diff = tracker.update(grid)
+            n_changed = int(np.sum(prev_grid != grid))
+            if action_int == 6 and data:
+                changed = not np.array_equal(prev_grid, grid)
+                tracker.record_click(data['x'], data['y'], changed, n_changed)
 
-                # Level up!
-                if fd.levels_completed > prev_levels:
-                    if verbose:
-                        print(f"    ★ LEVEL {fd.levels_completed}/{fd.win_levels}!")
+            # Record in narrative
+            event = narrative.record(
+                total_steps, action_int, target_name, data,
+                grid, prev_levels, fd.levels_completed)
 
-                    # Store the winning sequence via context constructor
-                    winning_actions = [ev.target for ev in narrative.events[-10:] if ev.changed]
-                    ctx.on_level_up(fd.levels_completed, winning_actions)
+            # Compare expectation to reality — EXPLICIT FEEDBACK
+            level_up = fd.levels_completed > prev_levels
+            actual = event.observation if event.observation else f"{n_changed}px changed"
+            plan.record_outcome(target_name, plan.expected_outcome, actual,
+                               n_changed, level_up)
 
-                    # Re-probe for new level
-                    if remaining > 10:
-                        narrative = SessionNarrative(grid)  # fresh narrative for new level
-                        action_model, tracker, fd, grid, ps, _ = \
-                            probe(env, fd, grid, available, budget=min(10, remaining))
-                        total_steps += ps
-                        remaining -= ps
-                    break
+            # Update world model with action result
+            wm.record_action(target_name, n_changed, level_up)
 
-                # Update available
-                new_avail = [a.value if hasattr(a, "value") else int(a) for a in (fd.available_actions or [])]
-                if new_avail:
-                    available = new_avail
+            if verbose:
+                match_sym = "★" if level_up else ("✓" if n_changed > 10 else "✗")
+                print(f"    {match_sym} {actual} ({n_changed}px)")
 
-                if fd.state.name in ("WON", "LOST", "GAME_OVER"):
-                    break
+            # Level up!
+            if fd.levels_completed > prev_levels:
+                if verbose:
+                    print(f"    ★ LEVEL {fd.levels_completed}/{fd.win_levels}!")
+
+                # Store winning sequence
+                winning_actions = [ev.target for ev in narrative.events[-10:] if ev.changed]
+                ctx.on_level_up(fd.levels_completed, winning_actions)
+
+                # World model: carry rules forward
+                wm.on_level_up(fd.levels_completed)
+                plan = PlanState()  # Fresh plan for new level
+
+                # Re-probe for new level
+                if remaining > 10:
+                    narrative = SessionNarrative(grid)
+                    action_model, tracker, fd, grid, ps, _ = \
+                        probe(env, fd, grid, available, budget=min(10, remaining))
+                    total_steps += ps
+                    remaining -= ps
+                    wm.update_from_probe(tracker, action_model)
+
+                    # Rebuild scene description
+                    try:
+                        objects_list = [{"id": o.id, "color": o.color,
+                                       "bbox": [o.y, o.x, o.y + o.h, o.x + o.w],
+                                       "centroid": [o.cy, o.cx], "size": o.size}
+                                      for o in tracker.objects.values()]
+                        obs = GridObservation(frame_raw=grid, objects=objects_list,
+                                            changes=[], moved=[], step_number=0, level_id="")
+                        scene_desc = gv.describe_scene(obs)
+                    except Exception:
+                        pass
+
+            # Update available
+            new_avail = [a.value if hasattr(a, "value") else int(a) for a in (fd.available_actions or [])]
+            if new_avail:
+                available = new_avail
+
+            if fd.state.name in ("WON", "LOST", "GAME_OVER"):
+                break
 
         if fd and fd.levels_completed > best_levels:
             best_levels = fd.levels_completed

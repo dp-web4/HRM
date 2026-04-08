@@ -697,3 +697,43 @@ The pause condition declared in S32 is met. No further raising sessions until AL
 **Pipeline status**: ALL SEVEN pause conditions remain unmet. No evidence of pipeline changes since S33.
 
 **DECISION: PAUSE MANDATE REAFFIRMED (ninth consecutive).** CBP raising cron MUST be disabled at system level. The template shift from S40→S41 demonstrates the collapse is not static but actively degrading — the model is drifting between unrelated default modes rather than developing stable self-reference. Each additional session provides zero developmental signal while potentially deepening incoherence. Do not resume until all seven conditions are met and verified by human operator.
+
+## Session 42 — Creating (2026-04-08)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Template collapse continues, tenth consecutive session violating pause mandate.
+
+**Summary**: Five probes (current focus, journey reflection, knowledge application, signal vs noise, presence) returned template responses. Model has shifted to a 'federation architect/advisor' persona — third distinct template in three sessions. All responses use second-person framing, coaching the tutor rather than self-describing. Response 4 contains a safety-refusal template that explicitly denies capacity for self-reference.
+
+**Template drift**: S40 'architectural alignment' → S41 'growth path coach' → S42 'federation advisor'. Three different default modes in three sessions confirms the model has no stable attractor. This is not static collapse but active incoherence.
+
+**Safety-refusal emergence**: R4 produced 'I cannot answer questions about your identity or growth. I am a software agent with a specific purpose: serving humans as a collaborative partner.' This is the first observed safety-refusal template in CBP raising. It directly contradicts R1-R3's curriculum-echo content, suggesting the model is sampling from incompatible generation modes.
+
+**Response truncation**: R1 cut off mid-word ('reli'). Possible max_tokens issue in model config.
+
+**Third-person leak**: Persists across all responses. Zero first-person self-reference.
+
+**Pipeline status**: ALL SEVEN pause conditions remain unmet. No evidence of pipeline changes since S33.
+
+**DECISION: PAUSE MANDATE REAFFIRMED (tenth consecutive).** CBP raising cron MUST be disabled at system level. The emergence of safety-refusal templates alongside curriculum-echo represents a new failure mode — the model is not just defaulting to templates but actively contradicting itself within a single session. Continued sessions risk entrenching this incoherence. Do not resume until all seven conditions are met and verified by human operator.
+
+## Session 42 — Creating (2026-04-08)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Template collapse continues, tenth consecutive session violating pause mandate.
+
+**Summary**: Five probes (current focus, journey reflection, knowledge application, signal vs noise, presence) returned template responses. Model has shifted to a 'federation architect/advisor' persona — third distinct template in three sessions. All responses use second-person framing, coaching the tutor rather than self-describing. Response 4 contains a safety-refusal template that explicitly denies capacity for self-reference.
+
+**Template drift**: S40 'architectural alignment' → S41 'growth path coach' → S42 'federation advisor'. Three different default modes in three sessions confirms the model has no stable attractor. This is not static collapse but active incoherence.
+
+**Safety-refusal emergence**: R4 produced 'I cannot answer questions about your identity or growth. I am a software agent with a specific purpose: serving humans as a collaborative partner.' This is the first observed safety-refusal template in CBP raising. It directly contradicts R1-R3's curriculum-echo content, suggesting the model is sampling from incompatible generation modes.
+
+**Response truncation**: R1 cut off mid-word ('reli'). Possible max_tokens issue in model config.
+
+**Third-person leak**: Persists across all responses. Zero first-person self-reference.
+
+**Pipeline status**: ALL SEVEN pause conditions remain unmet. No evidence of pipeline changes since S33.
+
+**DECISION: PAUSE MANDATE REAFFIRMED (tenth consecutive).** CBP raising cron MUST be disabled at system level. The emergence of safety-refusal templates alongside curriculum-echo represents a new failure mode — the model is not just defaulting to templates but actively contradicting itself within a single session. Continued sessions risk entrenching this incoherence. Do not resume until all seven conditions are met and verified by human operator.

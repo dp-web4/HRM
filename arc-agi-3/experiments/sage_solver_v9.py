@@ -37,6 +37,7 @@ from arc_action_model import ActionEffectModel
 from arc_narrative import SessionNarrative
 from arc_context import ContextConstructor
 from arc_federation import FederatedKnowledge
+from arc_session_writer import SessionWriter
 
 # Import context budget from raising (shared module)
 try:
@@ -503,6 +504,9 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
         if fleet_context:
             print(f"  Fleet context: {len(fleet_context)} chars")
 
+    # Session writer for live visualization
+    session_writer = None
+
     for attempt in range(max_attempts):
         ctx.new_attempt()  # Bust cache — fresh membot queries for new attempt
         env = arcade.make(game_id)
@@ -510,6 +514,21 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
         grid = get_frame(fd)
         available = [a.value if hasattr(a, "value") else int(a) for a in (fd.available_actions or [])]
         total_steps = 0
+
+        # Initialize session writer on first attempt, update on subsequent
+        if session_writer is None:
+            try:
+                env_info = [e for e in arcade.get_environments() if e.game_id == game_id][0]
+                baseline = sum(env_info.baseline_actions) if hasattr(env_info, 'baseline_actions') else 0
+            except:
+                baseline = 0
+            session_writer = SessionWriter(game_id, fd.win_levels, available,
+                                          baseline=baseline, player=f"gemma4:{MODEL}")
+            session_writer.save_grid(grid, "current")
+            session_writer.save_grid(grid, "previous")
+        else:
+            session_writer.new_attempt(attempt + 1)
+            session_writer.save_grid(grid, "current")
 
         if verbose:
             print(f"\n  Attempt {attempt+1}/{max_attempts} | Actions: {available} | Levels: 0/{fd.win_levels}")
@@ -611,6 +630,14 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
                     total_steps, action_int, target_name, data,
                     grid, prev_levels, fd.levels_completed)
 
+                # Record in session writer for viewer
+                if session_writer:
+                    x = data.get('x') if data else None
+                    y = data.get('y') if data else None
+                    session_writer.record_action(action_int, x, y,
+                                                 observation=event.observation if event else "",
+                                                 grid=grid)
+
                 if verbose and event.changed:
                     print(f"    {event.observation}")
 
@@ -622,6 +649,10 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
                     # Store the winning sequence via context constructor
                     winning_actions = [ev.target for ev in narrative.events[-10:] if ev.changed]
                     ctx.on_level_up(fd.levels_completed, winning_actions)
+
+                    # Record level-up in session writer
+                    if session_writer:
+                        session_writer.record_level_up(fd.levels_completed, winning_actions)
 
                     # Re-probe for new level
                     if remaining > 10:
@@ -638,6 +669,8 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
                     available = new_avail
 
                 if fd.state.name in ("WON", "LOST", "GAME_OVER"):
+                    if session_writer:
+                        session_writer.record_game_end(fd.state.name)
                     break
 
         if fd and fd.levels_completed > best_levels:
@@ -714,9 +747,9 @@ def main():
         MODEL = args.model
 
     print("=" * 60)
-    print(f"SAGE Solver v7 — Deep Membot Integration ({MODEL})")
+    print(f"SAGE Solver v9 — Multimodal Vision + Viewer ({MODEL})")
     print(f"Thinking: {'native' if _is_thinking_model() else 'disabled'}")
-    print("Membot as context construction tool — adaptive queries throughout game")
+    print("Vision-enabled with grid PNGs + Live visualization via SessionWriter")
     print("=" * 60)
 
     print("\nWarming up...", end=" ", flush=True)

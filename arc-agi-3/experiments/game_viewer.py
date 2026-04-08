@@ -72,15 +72,16 @@ body{{background:#111;color:#ccc;font-family:'SF Mono','Fira Code',monospace;hei
 .header h1{{color:#ff6b6b;font-size:1.2em}}
 .stats{{display:flex;gap:20px;font-size:1em}}
 .sv{{color:#4ecdc4;font-weight:bold}}
-.grid3x3{{display:grid;grid-template-columns:repeat(3,auto);gap:8px;justify-content:start}}
-.cell{{background:#1a1a1a;border:2px solid #222;border-radius:5px;padding:4px;text-align:center;display:inline-flex;flex-direction:column;align-items:center}}
+.grid3x3{{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;justify-content:start}}
+.cell{{background:#1a1a1a;border:2px solid #222;border-radius:5px;padding:4px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;aspect-ratio:1;overflow:hidden}}
 .cell.active{{border-color:#ff6b6b;box-shadow:0 0 10px rgba(255,107,107,0.3)}}
 .cell.solved{{border-color:#4ecdc4}}
-.cell.empty{{border-color:transparent;background:transparent;padding:0;min-width:0}}
+.cell.future{{opacity:0.3}}
 .cell img{{image-rendering:pixelated;border-radius:2px}}
-.cell-pair{{display:flex;gap:3px;justify-content:center}}
-.cell-pair img{{max-width:48%}}
-.clabel{{font-size:0.7em;margin-top:4px}}
+.cell-pair{{display:flex;gap:4px;justify-content:center;align-items:center;width:100%;height:100%}}
+.cell-pair img{{width:48%;aspect-ratio:1;object-fit:contain}}
+.cell-active-img{{width:100%;aspect-ratio:1;object-fit:contain}}
+.clabel{{font-size:0.7em;margin-top:4px;flex-shrink:0}}
 .clabel.active{{color:#ff6b6b}}
 .clabel.solved{{color:#4ecdc4}}
 .clabel.future{{color:#333}}
@@ -162,29 +163,29 @@ class Handler(http.server.BaseHTTPRequestHandler):
             lvl = pos  # level index
             if lvl < win_levels:
                 if lvl < cur_level:
-                    # Solved — show start→final pair
+                    # Solved — start→final side by side, same box size
                     sp = os.path.join(STATE_DIR, f"level_{lvl}_start_grid.npy")
                     fp = os.path.join(STATE_DIR, f"level_{lvl}_final_grid.npy")
                     sb = grid_to_png_b64(np.load(sp), scale=2) if os.path.exists(sp) else blank
                     fb = grid_to_png_b64(np.load(fp), scale=2) if os.path.exists(fp) else blank
                     main.append(f'''<div class="cell solved">
                         <div class="cell-pair">
-                            <img src="data:image/png;base64,{sb}" width="128" height="128" title="Start">
-                            <img src="data:image/png;base64,{fb}" width="128" height="128" title="Solved">
+                            <img src="data:image/png;base64,{sb}" title="Start">
+                            <img src="data:image/png;base64,{fb}" title="Solved">
                         </div>
                         <div class="clabel solved">L{lvl+1} ✓</div>
                     </div>''')
                 elif lvl == cur_level:
-                    # Active — slightly larger
-                    cb = grid_to_png_b64(current_grid, scale=3) if current_grid is not None else blank
+                    # Active — single image fills the box
+                    cb = grid_to_png_b64(current_grid, scale=4) if current_grid is not None else blank
                     main.append(f'''<div class="cell active">
-                        <img src="data:image/png;base64,{cb}" width="260" height="260">
+                        <img class="cell-active-img" src="data:image/png;base64,{cb}">
                         <div class="clabel active">L{lvl+1} ▶ LIVE</div>
                     </div>''')
                 else:
-                    # Future — small placeholder
-                    main.append(f'''<div class="cell">
-                        <img src="data:image/png;base64,{blank}" width="80" height="80" style="opacity:0.3">
+                    # Future — same box, dimmed placeholder
+                    main.append(f'''<div class="cell future">
+                        <img class="cell-active-img" src="data:image/png;base64,{blank}">
                         <div class="clabel future">L{lvl+1}</div>
                     </div>''')
             else:

@@ -1,6 +1,6 @@
 {
   "machine": "legion",
-  "updated_at": 1775616663.1495373,
+  "updated_at": 1775643067.5375388,
   "game_discoveries": {
     "lp85": [
       {
@@ -91,6 +91,11 @@
         "text": "Interactive objects: red_3, green_4. Game type: cursor_cycle.   DOWN: 60% effective, ~79px (5 tries)\n  LEFT: 45% effective, ~52px (11 tries)\n  RIGHT: 33% effectiv",
         "machine": "legion",
         "timestamp": 1775599203.7754931
+      },
+      {
+        "text": "Interactive objects: red_2, red_3, green_4. Game type: cursor_cycle.   DOWN: 80% effective, ~159px (5 tries)\n  LEFT: 100% effective, ~144px (5 tries)\n  RIGHT: 100% effec",
+        "machine": "legion",
+        "timestamp": 1775620646.5318432
       }
     ],
     "sp80": [
@@ -309,25 +314,6 @@
         "machine": "legion",
         "timestamp": 1775488733.573636
       }
-    ],
-    "constraint_satisfaction": [
-      {
-        "text": "sb26 SOLVED 8/8: Color sequence matching with portal references. Strategy: (1) Scan to identify checker sequence, (2) Map frame connectivity via portals, (3) Determine traversal order, (4) Swap items to produce correct sequence. Key insight: UNDERSTAND THE STRUCTURE before acting \u2014 connectors define hierarchy. Cross-level learning: patterns from L1-L4 (simple swaps) informed L5-L8 (paradigm shifts, indicator-based ordering).",
-        "machine": "opus+dp",
-        "timestamp": 1775616663.149535
-      }
-    ],
-    "pattern_matching": [
-      {
-        "text": "vc33 SOLVED 7/7: Track switching puzzle. Strategy: (1) Map track network \u2014 identify junctions, cargo, destinations, (2) Click junctions to reroute tracks, (3) Click levers to swap cargo between tracks, (4) Route each cargo to matching-color destination. Key insight: LOGICAL ROUTING \u2014 understand the network graph before clicking. Each junction is a toggle that redirects flow.",
-        "machine": "opus+dp",
-        "timestamp": 1775616663.1495354
-      },
-      {
-        "text": "cd82 SOLVED 6/6: Octagonal color-fill carousel. Strategy: (1) Compare current grid to goal pattern, (2) Decompose goal into 8 directional sectors from center, (3) Navigate basket to correct octagonal position, (4) Select color from palette, (5) Fire to paint sector. Key insight: SPATIAL DECOMPOSITION \u2014 the 10x10 grid maps to 8 sectors, each paintable from one carousel position. Vision was essential (985 blind attempts scored 0).",
-        "machine": "opus+dp",
-        "timestamp": 1775616663.1495357
-      }
     ]
   },
   "failures": {
@@ -507,124 +493,104 @@
   },
   "meta_insights": [
     {
-      "text": "Game sk48 (toggle): Grid similarity STABLE around 95.3% (not progressing)\nWARNING: LEFT clicked 9\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: RIG",
+      "text": "Game sb26 (unknown): yellow_22: consistent effect (~40px each time)\npurple_20: consistent effect (~40px each time)\nGrid similarity STABLE around 99.4% (not progressing)\nWA",
       "machine": "legion",
-      "timestamp": 1775584282.4785955
+      "timestamp": 1775618138.1853063
     },
     {
-      "text": "Game lf52 (click_interact): white_0: consistent effect (~1px each time)\nblack_1: consistent effect (~1px each time)\nUP: consistent effect (~1px each time)\nLEFT: consistent effect",
+      "text": "Game sc25 (cursor_cycle): Grid similarity STABLE around 96.7% (not progressing)\nWARNING: UP clicked 14\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: RIGH",
       "machine": "legion",
-      "timestamp": 1775588700.2423012
+      "timestamp": 1775620129.1724787
     },
     {
-      "text": "Game m0r0 (cursor_cycle): SELECT: consistent effect (~2px each time)\nwhite_4: consistent effect (~2px each time)\nyellow_0: consistent effect (~2px each time)\nGrid similarity ST",
+      "text": "Game cn04 (cursor_cycle): LEFT: consistent effect (~144px each time)\nGrid similarity STABLE around 99.8% (not progressing)",
       "machine": "legion",
-      "timestamp": 1775592995.4737
+      "timestamp": 1775620918.840368
     },
     {
-      "text": "Game wa30 (navigation): UP: consistent effect (~32px each time)\nDOWN: consistent effect (~32px each time)\nLEFT: consistent effect (~32px each time)\nSELECT: consistent effect ",
+      "text": "Game s5i5 (toggle): green_0: consistent effect (~1px each time)\nGrid similarity STABLE around 99.2% (not progressing)\nWARNING: yellow_7 clicked 7\u00d7 with changes but NO lev",
       "machine": "legion",
-      "timestamp": 1775593745.6635318
+      "timestamp": 1775621797.8042648
     },
     {
-      "text": "Game su15 (toggle): gray_3: consistent effect (~2px each time)\npurple_5: consistent effect (~2px each time)\nblue_2: consistent effect (~2px each time)\nwhite_4: consistent",
+      "text": "Game sp80 (click_interact): DOWN: consistent effect (~162px each time)\nLEFT: consistent effect (~34px each time)\nUP: consistent effect (~162px each time)\nGrid similarity STABLE a",
       "machine": "legion",
-      "timestamp": 1775594487.2358897
+      "timestamp": 1775622079.7401927
+    },
+    {
+      "text": "Game ka59 (cursor_cycle): off-white_0: consistent effect (~1px each time)\noff-white_2: consistent effect (~1px each time)\nDOWN: consistent effect (~18px each time)\nLEFT: consis",
+      "machine": "legion",
+      "timestamp": 1775622866.8995163
+    },
+    {
+      "text": "Game r11l (click_interact): light-gray_1: consistent effect (~1px each time)\nlight-gray_2: consistent effect (~1px each time)\nGrid similarity STABLE around 97.7% (not progressing",
+      "machine": "legion",
+      "timestamp": 1775623727.5083864
+    },
+    {
+      "text": "Game ar25 (cursor_cycle): LEFT: consistent effect (~109px each time)\nSELECT: consistent effect (~1px each time)\nUP: consistent effect (~109px each time)\nDOWN: consistent effect",
+      "machine": "legion",
+      "timestamp": 1775624954.350876
+    },
+    {
+      "text": "Game tu93 (unknown): DOWN: consistent effect (~1px each time)\nGrid similarity STABLE around 99.3% (not progressing)\nWARNING: LEFT clicked 7\u00d7 with changes but NO level-up \u2014",
+      "machine": "legion",
+      "timestamp": 1775625692.7196772
+    },
+    {
+      "text": "Game re86 (cursor_cycle): LEFT: consistent effect (~52px each time)\nDOWN: consistent effect (~52px each time)\nUP: consistent effect (~52px each time)\nRIGHT: consistent effect (",
+      "machine": "legion",
+      "timestamp": 1775627369.807527
+    },
+    {
+      "text": "Game wa30 (navigation): UP: consistent effect (~32px each time)\nDOWN: consistent effect (~32px each time)\nRIGHT: consistent effect (~32px each time)\nSELECT: consistent effect",
+      "machine": "legion",
+      "timestamp": 1775636608.9287364
+    },
+    {
+      "text": "Game su15 (toggle): white_4: consistent effect (~2px each time)\ngray_3: consistent effect (~2px each time)\nblue_2: consistent effect (~2px each time)\nGrid similarity STAB",
+      "machine": "legion",
+      "timestamp": 1775637794.389063
     },
     {
       "text": "Game ft09 (unknown): Grid similarity STABLE around 100.0% (not progressing)",
       "machine": "legion",
-      "timestamp": 1775595426.244301
+      "timestamp": 1775638644.5710711
     },
     {
-      "text": "Game sb26 (unknown): Grid similarity STABLE around 98.9% (not progressing)\nWARNING: purple_20 clicked 6\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING",
+      "text": "Game sb26 (unknown): Grid similarity STABLE around 99.2% (not progressing)\nWARNING: blue_21 clicked 7\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: ",
       "machine": "legion",
-      "timestamp": 1775596302.9659128
+      "timestamp": 1775639352.8717163
     },
     {
-      "text": "Game lp85 (unknown): red_23: consistent effect (~292px each time)\ngreen_24: consistent effect (~293px each time)\nGrid similarity STABLE around 92.4% (not progressing)\nWARN",
+      "text": "Game lp85 (unknown): green_24: consistent effect (~292px each time)\nred_23: consistent effect (~293px each time)\nGrid similarity STABLE around 92.0% (not progressing)\nWARN",
       "machine": "legion",
-      "timestamp": 1775596655.477224
+      "timestamp": 1775639790.6000764
     },
     {
-      "text": "Game tr87 (cursor_cycle): LEFT: consistent effect (~28px each time)\nRIGHT: consistent effect (~28px each time)\nGrid similarity STABLE around 98.7% (not progressing)\nWARNING: UP",
+      "text": "Game tr87 (cursor_cycle): RIGHT: consistent effect (~28px each time)\nLEFT: consistent effect (~28px each time)\nGrid similarity STABLE around 98.0% (not progressing)\nWARNING: RI",
       "machine": "legion",
-      "timestamp": 1775597522.2962713
+      "timestamp": 1775640704.3212912
     },
     {
-      "text": "Game sc25 (cursor_cycle): gray_6: consistent effect (~13px each time)\nGrid similarity STABLE around 97.2% (not progressing)\nWARNING: DOWN clicked 6\u00d7 with changes but NO level-u",
+      "text": "Game sc25 (cursor_cycle): Grid similarity STABLE around 96.5% (not progressing)",
       "machine": "legion",
-      "timestamp": 1775598369.989683
+      "timestamp": 1775641290.3239152
     },
     {
-      "text": "Game cn04 (cursor_cycle): RIGHT: consistent effect (~144px each time)\nred_3: consistent effect (~135px each time)\ngreen_4: consistent effect (~1px each time)\nGrid similarity ST",
+      "text": "Game cn04 (cursor_cycle): red_3: consistent effect (~135px each time)\nUP: consistent effect (~1px each time)\nGrid similarity STABLE around 96.3% (not progressing)\nWARNING: red_",
       "machine": "legion",
-      "timestamp": 1775599203.7755191
+      "timestamp": 1775641921.0646932
     },
     {
-      "text": "Game s5i5 (toggle): gray_3: consistent effect (~1px each time)\ngreen_0: consistent effect (~1px each time)\ngreen_5: consistent effect (~1px each time)\nGrid similarity STA",
+      "text": "Game s5i5 (toggle): gray_3: consistent effect (~1px each time)\nGrid similarity STABLE around 99.2% (not progressing)\nWARNING: light-gray_8 clicked 6\u00d7 with changes but NO ",
       "machine": "legion",
-      "timestamp": 1775600140.6774201
+      "timestamp": 1775642741.3179748
     },
     {
-      "text": "Game sp80 (click_interact): green_0: consistent effect (~2px each time)\nwhite_7: consistent effect (~2px each time)\nRIGHT: consistent effect (~34px each time)\nGrid similarity STA",
+      "text": "Game sp80 (click_interact): magenta_2: consistent effect (~2px each time)\nUP: consistent effect (~162px each time)\nDOWN: consistent effect (~162px each time)",
       "machine": "legion",
-      "timestamp": 1775600451.6773515
-    },
-    {
-      "text": "Game ka59 (cursor_cycle): RIGHT: consistent effect (~18px each time)\nwhite_11: consistent effect (~1px each time)\nUP: consistent effect (~19px each time)\nGrid similarity STABLE",
-      "machine": "legion",
-      "timestamp": 1775601338.7188485
-    },
-    {
-      "text": "Game r11l (click_interact): white_3: consistent effect (~68px each time)\nwhite_0: consistent effect (~67px each time)\nlight-gray_2: consistent effect (~1px each time)\nlight-gray_",
-      "machine": "legion",
-      "timestamp": 1775602309.5203166
-    },
-    {
-      "text": "Game ar25 (cursor_cycle): UP: consistent effect (~109px each time)\nSELECT: consistent effect (~1px each time)\nGrid similarity STABLE around 95.4% (not progressing)\nWARNING: RIG",
-      "machine": "legion",
-      "timestamp": 1775603270.3323023
-    },
-    {
-      "text": "Game tu93 (unknown): Grid similarity STABLE around 98.8% (not progressing)\nWARNING: DOWN clicked 7\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: LEF",
-      "machine": "legion",
-      "timestamp": 1775604023.1343346
-    },
-    {
-      "text": "Game sk48 (toggle): RIGHT: consistent effect (~12px each time)\nGrid similarity STABLE around 97.5% (not progressing)\nWARNING: RIGHT clicked 7\u00d7 with changes but NO level-u",
-      "machine": "legion",
-      "timestamp": 1775604873.3510752
-    },
-    {
-      "text": "Game re86 (cursor_cycle): DOWN: consistent effect (~60px each time)\nGrid similarity STABLE around 96.0% (not progressing)\nWARNING: LEFT clicked 8\u00d7 with changes but NO level-up ",
-      "machine": "legion",
-      "timestamp": 1775605628.1648893
-    },
-    {
-      "text": "Game m0r0 (cursor_cycle): yellow_0: consistent effect (~2px each time)\nwhite_4: consistent effect (~2px each time)\nDOWN: consistent effect (~101px each time)\nRIGHT: consistent ",
-      "machine": "legion",
-      "timestamp": 1775614624.0008473
-    },
-    {
-      "text": "VISION IS FOUNDATIONAL: Without seeing the game (correct colors, spatial layout, structural cues), 985 attempts scored 0. With vision, games solved in one session. Text-based pixel counting cannot substitute for visual understanding.",
-      "machine": "opus+dp",
-      "timestamp": 1775616663.1495366
-    },
-    {
-      "text": "UNDERSTAND BEFORE ACTING: Every solved game required structural understanding before the first action. sb26: map portals, vc33: map track network, cd82: decompose into sectors. Clicking without understanding = 0 levels.",
-      "machine": "opus+dp",
-      "timestamp": 1775616663.1495366
-    },
-    {
-      "text": "CROSS-LEVEL LEARNING WORKS: sb26 L8 used patterns discovered in L1-L7 without weight updates. Context accumulation in the window IS the learning mechanism. Carry forward what worked, note when paradigms shift.",
-      "machine": "opus+dp",
-      "timestamp": 1775616663.1495368
-    },
-    {
-      "text": "PARADIGM DETECTION: Rules change between levels. sb26 shifted from simple swaps (L1-L4) to indicator-based ordering (L5+) to portal-reference indirection (L7-L8). Recognizing WHEN the rules change is as important as learning the rules.",
-      "machine": "opus+dp",
-      "timestamp": 1775616663.1495368
+      "timestamp": 1775643067.5375376
     }
   ]
 }

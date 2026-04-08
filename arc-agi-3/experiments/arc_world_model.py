@@ -149,6 +149,11 @@ class WorldModel:
     def to_context(self) -> str:
         parts = ["=== WORLD MODEL (what we know) ==="]
 
+        # Discovered mechanics (from observation-based discovery protocol)
+        if hasattr(self, 'mechanics_context') and self.mechanics_context:
+            parts.append(self.mechanics_context)
+            parts.append("")
+
         if self.mechanic_hypothesis:
             parts.append(f"GAME TYPE: {self.mechanic_hypothesis}")
 

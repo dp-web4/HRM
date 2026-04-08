@@ -177,7 +177,13 @@ METACOGNITIVE = """METACOGNITIVE PRINCIPLES (from fleet raising experience):
 - Border colors ARE semantic cues. A colored border on a slot that matches an indicator color
   means "this indicator goes HERE." Color is information, not decoration.
 - Rules EVOLVE between levels. The same game can change its rule from one level to the next.
-  Don't assume the pattern is fixed — test it, and if it fails, look for what changed."""
+  Don't assume the pattern is fixed — test it, and if it fails, look for what changed.
+- FIRST verify your clicks work. Click one visible object and confirm pixels change AT that spot.
+  If only a counter changes far away, your coordinate mapping is wrong — recalibrate.
+- Zoom out: pixels → objects → groups → constraints. Solve at the highest abstraction level.
+  Small multi-colored patterns ARE instructions. Decode them before acting.
+- Objects have ROLES: buttons (cause remote changes), pieces (change themselves), indicators
+  (encode constraints), targets (show where pieces go). Identify roles first, then plan."""
 
 
 # ─── NAMING ───
@@ -355,7 +361,7 @@ def parse_actions(plan_text, tracker, available):
 def assemble_context_and_plan(narrative, tracker, action_model, available,
                               levels, win_levels, ctx: ContextConstructor = None,
                               attempt_num=1, verbose=False, fleet_context: str = "",
-                              vision_insight: str = ""):
+                              vision_insight: str = "", mechanics=None):
     """Assemble all 4 layers with budget tracking, ask LLM for next actions."""
     budget = ContextBudget()
     has_move = any(a in available for a in [1, 2, 3, 4])
@@ -408,7 +414,17 @@ def assemble_context_and_plan(narrative, tracker, action_model, available,
 
     layer2_model = action_model.describe()
     layer2_catalog = obj_catalog(tracker)
-    layer2 = f"{layer2_scene}\n\nACTION MODEL:\n{layer2_model}\n\nOBJECTS:\n{layer2_catalog}" if layer2_scene else f"ACTION MODEL:\n{layer2_model}\n\nOBJECTS:\n{layer2_catalog}"
+    # Layer 2.5: Discovered mechanics (highest-value context for solving)
+    layer2_mechanics = mechanics.to_context() if mechanics else ""
+    if layer2_mechanics:
+        budget.record("L2.5_mechanics", layer2_mechanics)
+
+    layer2 = ""
+    if layer2_mechanics:
+        layer2 += layer2_mechanics + "\n\n"
+    if layer2_scene:
+        layer2 += layer2_scene + "\n\n"
+    layer2 += f"ACTION MODEL:\n{layer2_model}\n\nOBJECTS:\n{layer2_catalog}"
     budget.record("L2_game_kb", layer2)
 
     # Layer 1: Session narrative — expanding with compression (target ~5K)
@@ -567,19 +583,35 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
         if verbose:
             print(f"\n  Attempt {attempt+1}/{max_attempts} | Actions: {available} | Levels: 0/{fd.win_levels}")
 
-        # PROBE
-        probe_budget = min(budget // 3, 25)
-        action_model, tracker, fd, grid, probe_steps, probe_levels = \
-            probe(env, fd, grid, available, budget=probe_budget)
+        # DISCOVERY (replaces probe — extracts higher-level game mechanics)
+        mechanics = None
+        try:
+            from arc_discovery import MechanicDiscovery
+            discovery = MechanicDiscovery(env, fd, grid, available,
+                                          total_budget=budget, verbose=verbose)
+            action_model, tracker, fd, grid, probe_steps, probe_levels, mechanics = \
+                discovery.discover()
+        except Exception as e:
+            if verbose:
+                print(f"  Discovery failed ({e}), falling back to probe")
+            probe_budget = min(budget // 3, 25)
+            action_model, tracker, fd, grid, probe_steps, probe_levels = \
+                probe(env, fd, grid, available, budget=probe_budget)
         total_steps += probe_steps
 
-        # Initialize narrative from probe
+        # Initialize narrative from probe/discovery
         narrative = SessionNarrative(grid)
 
         interactive = tracker.get_interactive_objects()
 
         if verbose:
-            print(f"  Probe: {probe_steps} steps | {len(interactive)} interactive")
+            if mechanics:
+                print(f"  Discovery: {probe_steps} steps | {mechanics.game_type} | "
+                      f"confidence={mechanics.confidence}")
+                for line in mechanics.to_context().split("\n")[:8]:
+                    print(f"    {line}")
+            else:
+                print(f"  Probe: {probe_steps} steps | {len(interactive)} interactive")
             for o in interactive:
                 print(f"    ✓ {obj_name(o)} at ({o.cx},{o.cy}) — {o.click_effectiveness:.0%}")
 
@@ -620,10 +652,13 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
                 best_levels = fd.levels_completed
             continue
 
-        # BUILD WORLD MODEL from probe results
+        # BUILD WORLD MODEL from probe/discovery results
         wm = WorldModel()
         wm.update_from_probe(tracker, action_model)
         wm.current_level = fd.levels_completed
+        # Inject discovered mechanics into world model context
+        if mechanics:
+            wm.mechanics_context = mechanics.to_context()
         plan = PlanState()
 
         # Build scene description once (updated on level-up)

@@ -1,6 +1,6 @@
 {
   "machine": "mcnugget",
-  "updated_at": 1775557221.001549,
+  "updated_at": 1775615265.6768231,
   "game_discoveries": {
     "tn36": [
       {
@@ -31,6 +31,21 @@
         "text": "Interactive objects: orange_0, black_1, gray_3, maroon_4, gray_5. Game type: toggle.   black_1: 100% effective, ~1px (2 tries)\n  brown_2: 100% effective, ~265px, moves grid AWAY from in",
         "machine": "mcnugget",
         "timestamp": 1775444376.629302
+      },
+      {
+        "text": "Interactive objects: pink_0, white_1, black_3, yellow_4, black_5. Game type: toggle.   black_3: 100% effective, ~1px (2 tries)\n  black_5: 100% effective, ~2px (3 tries)\n  blue_2: 100% e",
+        "machine": "mcnugget",
+        "timestamp": 1775588671.408685
+      },
+      {
+        "text": "Interactive objects: pink_0, white_1, black_3, white_5, black_7. Game type: toggle.   pink_0: 100% effective, ~52px, moves grid AWAY from initial (3 tries)\n  white_1: 100% effective, ~",
+        "machine": "mcnugget",
+        "timestamp": 1775602965.79006
+      },
+      {
+        "text": "SOLVED Level 1: winning actions included . Game type: toggle.",
+        "machine": "mcnugget",
+        "timestamp": 1775602965.7900858
       }
     ],
     "r11l": [
@@ -41,7 +56,15 @@
       }
     ]
   },
-  "strategies": {},
+  "strategies": {
+    "toggle": [
+      {
+        "text": "On vc33: level solved by targeting .",
+        "machine": "mcnugget",
+        "timestamp": 1775602965.790099
+      }
+    ]
+  },
   "failures": {
     "tn36": [
       {
@@ -143,6 +166,46 @@
       "text": "Game tn36 (toggle): green_40: consistent effect (~1px each time)\nyellow_30: consistent effect (~1px each time)\nyellow_32: consistent effect (~1px each time)\nyellow_38: co",
       "machine": "mcnugget",
       "timestamp": 1775509189.7549598
+    },
+    {
+      "text": "Game vc33 (toggle): black_3: consistent effect (~1px each time)\nblue_7: consistent effect (~265px each time)\nyellow_9: consistent effect (~1px each time)\nwhite_6: consist",
+      "machine": "mcnugget",
+      "timestamp": 1775588671.408702
+    },
+    {
+      "text": "Game vc33 (toggle): white_1: consistent effect (~1px each time)\nblack_3: consistent effect (~1px each time)\nblue_2: consistent effect (~265px each time)\nblack_5: consiste",
+      "machine": "mcnugget",
+      "timestamp": 1775589913.0630841
+    },
+    {
+      "text": "Game vc33 (toggle): pink_0: consistent effect (~1px each time)\nyellow_4: consistent effect (~1px each time)\nwhite_6: consistent effect (~1px each time)\nblue_2: consistent",
+      "machine": "mcnugget",
+      "timestamp": 1775593792.249799
+    },
+    {
+      "text": "Game vc33 (toggle): blue_2: consistent effect (~265px each time)\nwhite_6: consistent effect (~1px each time)\nyellow_9: consistent effect (~1px each time)\nblack_3: consist",
+      "machine": "mcnugget",
+      "timestamp": 1775596497.065054
+    },
+    {
+      "text": "Game vc33 (toggle): white_6: consistent effect (~1px each time)\nblue_2: consistent effect (~265px each time)\nblue_7: consistent effect (~265px each time)\nyellow_4: consis",
+      "machine": "mcnugget",
+      "timestamp": 1775599069.337624
+    },
+    {
+      "text": "Game vc33 (toggle): yellow_4: consistent effect (~1px each time)\nblue_2: consistent effect (~265px each time)\nblue_7: consistent effect (~265px each time)\nGrid similarity",
+      "machine": "mcnugget",
+      "timestamp": 1775604211.754251
+    },
+    {
+      "text": "Game vc33 (toggle): blue_2: consistent effect (~259px each time)\nblue_7: consistent effect (~261px each time)\nwhite_6: consistent effect (~1px each time)\nGrid similarity ",
+      "machine": "mcnugget",
+      "timestamp": 1775611649.059776
+    },
+    {
+      "text": "Game vc33 (toggle): black_5: consistent effect (~1px each time)\nblue_2: consistent effect (~260px each time)\nGrid similarity STABLE around 87.5% (not progressing)",
+      "machine": "mcnugget",
+      "timestamp": 1775612892.023844
     }
   ]
 }

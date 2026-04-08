@@ -1,6 +1,6 @@
 {
   "machine": "localhost",
-  "updated_at": 1775588211.8863316,
+  "updated_at": 1775608889.4771092,
   "game_discoveries": {
     "su15": [
       {
@@ -114,6 +114,11 @@
         "text": "Interactive objects: green_0, black_1, gray_2, red_6, brown_8. Game type: cursor_cycle.   DOWN: 75% effective, ~7px (8 tries)\n  LEFT: 100% effective, ~8px (5 tries)\n  RIGHT: 91% effective,",
         "machine": "localhost",
         "timestamp": 1775466304.1674109
+      },
+      {
+        "text": "Interactive objects: gray_0, white_1, black_2, light-gray_6, blue_8. Game type: cursor_cycle.   DOWN: 80% effective, ~4px (5 tries)\n  LEFT: 75% effective, ~6px (8 tries)\n  RIGHT: 100% effective,",
+        "machine": "localhost",
+        "timestamp": 1775590824.5575798
       }
     ],
     "ft09": [
@@ -347,11 +352,6 @@
   },
   "meta_insights": [
     {
-      "text": "Game r11l (click_interact): red_1: consistent effect (~1px each time)\nred_2: consistent effect (~1px each time)\nred_5: consistent effect (~1px each time)\nGrid similarity STABLE a",
-      "machine": "localhost",
-      "timestamp": 1775486325.8159902
-    },
-    {
       "text": "Game ar25 (cursor_cycle): DOWN: consistent effect (~109px each time)\nLEFT: consistent effect (~109px each time)\nUP: consistent effect (~109px each time)\nRIGHT: consistent effec",
       "machine": "localhost",
       "timestamp": 1775489461.287528
@@ -445,6 +445,11 @@
       "text": "Game dc22 (cursor_cycle): black_3: consistent effect (~1px each time)\nblack_7: consistent effect (~1px each time)\nmaroon_9: consistent effect (~1px each time)\ngreen_0: consiste",
       "machine": "localhost",
       "timestamp": 1775588211.8863282
+    },
+    {
+      "text": "Game dc22 (cursor_cycle): blue_8: consistent effect (~1px each time)\nmaroon_14: consistent effect (~1px each time)\nwhite_3: consistent effect (~1px each time)\nwhite_7: consiste",
+      "machine": "localhost",
+      "timestamp": 1775608889.4771035
     }
   ]
 }

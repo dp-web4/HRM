@@ -50,9 +50,8 @@ STATE_DIR = "/tmp/claude_solver"
 os.makedirs(STATE_DIR, exist_ok=True)
 
 # ARC-AGI-3 SDK official palette (from arc_agi/rendering.py COLOR_MAP)
-# IMPORTANT: This is the SDK's palette, NOT arc_vision.py's. They use different index mappings.
-# SDK: 0=white, 5=black, 11=yellow, 13=maroon, 14=green
-# arc_vision.py: 0=black, 5=gray, 11=maroon, 14=teal — DIFFERENT!
+# ARC-AGI-3 SDK official palette (from arc_agi/rendering.py COLOR_MAP)
+# ONE palette everywhere: 0=white, 5=black, 11=yellow, 14=green
 COLOR_MAP = {
     0:  (255, 255, 255),  # white
     1:  (204, 204, 204),  # off-white

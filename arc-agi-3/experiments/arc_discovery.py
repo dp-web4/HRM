@@ -68,6 +68,7 @@ class ConstraintPattern:
 class GameMechanics:
     game_type: str = "unknown"
     calibrated: bool = False
+    available_actions: List[int] = field(default_factory=list)
     objects: Dict[str, ObjectRole] = field(default_factory=dict)
     correlations: List[EffectCorrelation] = field(default_factory=list)
     groups: List[ObjectGroup] = field(default_factory=list)
@@ -79,7 +80,29 @@ class GameMechanics:
 
     def to_context(self) -> str:
         """Render as LLM-readable text for context window."""
+        ACTION_NAMES = {1: "UP", 2: "DOWN", 3: "LEFT", 4: "RIGHT",
+                        5: "SELECT", 6: "CLICK", 7: "UNDO"}
+
         lines = ["GAME MECHANICS DISCOVERED:"]
+
+        # Toolset — what verbs the game gives us
+        verbs = [ACTION_NAMES.get(a, f"ACTION{a}") for a in self.available_actions]
+        lines.append(f"  TOOLSET: {', '.join(verbs)}")
+        has_move = any(a in self.available_actions for a in [1, 2, 3, 4])
+        has_click = 6 in self.available_actions
+        has_select = 5 in self.available_actions
+        has_undo = 7 in self.available_actions
+        if has_click and not has_move:
+            lines.append("    → Click-only: no movement. This is a PUZZLE (toggle, rotate, place).")
+        elif has_move and not has_click:
+            lines.append("    → Move-only: no clicking. This is NAVIGATION (maze, sokoban).")
+        elif has_move and has_click:
+            lines.append("    → Move+Click: navigate AND interact. May have a cursor/character.")
+        if has_select:
+            lines.append("    → SELECT available: game has a selection/confirmation mechanic.")
+        if has_undo:
+            lines.append("    → UNDO available: can reverse mistakes. Use it if stuck.")
+
         lines.append(f"  Type: {self.game_type}")
         lines.append(f"  Interaction: {self.interaction_model}")
         if not self.calibrated:
@@ -205,6 +228,7 @@ class MechanicDiscovery:
         self.steps_used = 0
         self.level_ups = 0
         self.bg = background_color(grid)
+        self.mechanics.available_actions = list(available_actions)
 
     def _log(self, msg: str):
         self.mechanics.discovery_log.append(msg)
@@ -253,15 +277,24 @@ class MechanicDiscovery:
         self._log(f"Initial scan: {len(regions)} regions, "
                   f"{len(self.tracker.objects)} tracked objects")
 
-        # Phase 0: Calibrate
-        self._phase_calibrate(regions)
+        has_click = 6 in self.available
+        has_move = any(a in self.available for a in [1, 2, 3, 4])
 
-        # Phase 1: Classify
+        self._log(f"Toolset: {self.available} "
+                  f"({'click' if has_click else ''}"
+                  f"{'+' if has_click and has_move else ''}"
+                  f"{'move' if has_move else ''})")
+
+        # Phase 0: Calibrate (only if we can click)
+        if has_click:
+            self._phase_calibrate(regions)
+
+        # Phase 1: Classify (test each interaction verb)
         if self.steps_used < self.discovery_budget:
             self._phase_classify(regions)
 
-        # Phase 2: Correlate
-        if self.steps_used < self.discovery_budget - 2:
+        # Phase 2: Correlate (only for click games with buttons)
+        if has_click and self.steps_used < self.discovery_budget - 2:
             self._phase_correlate()
 
         # Phase 3: Structure (free — no clicks)
@@ -342,21 +375,29 @@ class MechanicDiscovery:
 
     def _phase_classify(self, regions):
         """Click one per object type, classify by response."""
-        if 6 not in self.available:
-            # Movement-only game — test directional actions
+        ACTION_NAMES = {1: "UP", 2: "DOWN", 3: "LEFT", 4: "RIGHT",
+                        5: "SELECT", 6: "CLICK"}
+        has_move = any(a in self.available for a in [1, 2, 3, 4])
+        has_click = 6 in self.available
+
+        # Test movement first (if available) — reveals cursor, navigation type
+        if has_move:
             for a in [1, 2, 3, 4]:
                 if a in self.available and self.steps_used < self.discovery_budget:
                     grid_before = self.grid.copy()
                     self._step(a)
                     n_changed = int((grid_before != self.grid).sum())
+                    name = ACTION_NAMES.get(a, f"A{a}")
                     if n_changed > 5:
-                        self._log(f"Phase 1: action {a} changes {n_changed}px")
+                        self._log(f"Phase 1: {name} moves {n_changed}px — game has navigation")
+                    else:
+                        self._log(f"Phase 1: {name} no visible effect")
+
+        if not has_click:
             self.mechanics.interaction_model = "move-only"
             return
 
-        self.mechanics.interaction_model = "click" if 6 in self.available else "move"
-        if any(a in self.available for a in [1, 2, 3, 4]):
-            self.mechanics.interaction_model = "move+click"
+        self.mechanics.interaction_model = "move+click" if has_move else "click"
 
         # Group regions by (color, size_bucket)
         type_groups = defaultdict(list)

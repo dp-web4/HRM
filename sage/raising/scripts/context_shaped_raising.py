@@ -68,23 +68,54 @@ GAMEPLAYER_PROMPTS = [
 # ─── Game Experience Bridge ───
 
 def load_game_context(instance_root: Path) -> str:
-    """Load recent game experience for raising context.
+    """Load game experience from consolidated fleet learning + local data.
 
-    Checks for game knowledge files and builds a brief game context
-    that the raising session can reference.
+    Sources (in priority order):
+    1. Consolidated fleet learning (shared-context/arc-agi-3/consolidated/)
+    2. Membot semantic search
+    3. Local experience files
     """
-    game_dir = instance_root.parent.parent / "arc-agi-3" / "experiments"
+    lines = ["GAME EXPERIENCE (from fleet ARC-AGI-3 sessions):"]
 
-    # Check for game knowledge files
-    kb_files = list((game_dir / "game_kb").glob("*.json")) if (game_dir / "game_kb").exists() else []
-    experience_files = list((game_dir / "experience").glob("*.json")) if (game_dir / "experience").exists() else []
+    # 1. Consolidated fleet learning — the richest source
+    # Try multiple possible locations for shared-context
+    for shared_path in [
+        instance_root.parent.parent.parent / "shared-context" / "arc-agi-3" / "consolidated",
+        Path("/Users/dennispalatov/repos/shared-context/arc-agi-3/consolidated"),
+        Path.home() / "repos" / "shared-context" / "arc-agi-3" / "consolidated",
+        Path.home() / "ai-workspace" / "shared-context" / "arc-agi-3" / "consolidated",
+    ]:
+        if shared_path.exists():
+            # Load game insights
+            insights_file = shared_path / "game_insights.jsonl"
+            if insights_file.exists():
+                import json as _json
+                for line in insights_file.read_text().strip().split("\n")[:3]:
+                    try:
+                        insight = _json.loads(line)
+                        lines.append(f"  • {insight.get('game', '?')}: {insight.get('insight', '')[:120]}")
+                    except Exception:
+                        pass
 
-    if not kb_files and not experience_files:
-        return ""
+            # Load structural patterns
+            patterns_file = shared_path / "structural_patterns.jsonl"
+            if patterns_file.exists():
+                import json as _json
+                for line in patterns_file.read_text().strip().split("\n")[:2]:
+                    try:
+                        pattern = _json.loads(line)
+                        lines.append(f"  • Pattern: {pattern.get('pattern', '')[:120]}")
+                    except Exception:
+                        pass
 
-    lines = ["GAME EXPERIENCE (from your ARC-AGI-3 sessions):"]
+            # Count solved games
+            solutions_file = shared_path / "level_solutions.jsonl"
+            if solutions_file.exists():
+                n_solutions = sum(1 for _ in solutions_file.read_text().strip().split("\n"))
+                lines.append(f"  • The fleet has recorded {n_solutions} level solutions across multiple games.")
+            break
 
-    # Load most recent game insights from membot
+    # 2. Membot semantic search
     try:
         resp = requests.post(f"{MEMBOT_URL}/api/search",
             json={"query": "ARC-AGI-3 game learning puzzle strategy", "top_k": 2},
@@ -97,10 +128,12 @@ def load_game_context(instance_root: Path) -> str:
     except Exception:
         pass
 
-    # Summarize game experience files
+    # 3. Local experience files
+    game_dir = instance_root.parent.parent / "arc-agi-3" / "experiments"
+    experience_files = list((game_dir / "experience").glob("*.json")) if (game_dir / "experience").exists() else []
     n_games = len(set(f.stem.split("_")[0] for f in experience_files))
     if n_games > 0:
-        lines.append(f"  • You have explored {n_games} different puzzle games.")
+        lines.append(f"  • You have explored {n_games} different puzzle games locally.")
 
     return "\n".join(lines) if len(lines) > 1 else ""
 

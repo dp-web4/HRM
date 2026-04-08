@@ -1,685 +1,93 @@
 #!/usr/bin/env python3
 """
-SAGE Puzzle Solver — Strategic LLM reasoning + fast execution.
+SAGE Solver v11 — Unified Modular Architecture.
 
-Architecture: 3-5 LLM calls per attempt, not 100+.
-
-1. PROBE (fast, no LLM): try each action 3x, build action-effect model
-2. STRATEGIZE (LLM once): "here's what each action does. What's the puzzle? What's the goal?"
-3. PLAN (LLM once): "given the puzzle type and goal, plan the full solution"
-4. EXECUTE (fast, no LLM): carry out the plan
-5. CHECK: did it work? If level advanced, store solution and continue.
-6. REFLECT (LLM once): "the plan failed. Here's what happened. Revise."
-7. RE-PLAN (LLM once): new plan based on reflection
-8. EXECUTE again
-
-The 12B model reasons about the PUZZLE, not individual actions.
+CLI entry point that unifies autonomous and interactive solving modes
+with modular backends, 4-layer context, world-model planning, mechanic
+discovery, and fleet federation.
 
 Usage:
-    cd /Users/dennispalatov/repos/SAGE
-    .venv/bin/python3 arc-agi-3/experiments/sage_solver.py --game lp85
-    .venv/bin/python3 arc-agi-3/experiments/sage_solver.py --all --attempts 5
+    # Autonomous (Ollama backend)
+    python3 sage_solver.py --game lp85 -v
+    python3 sage_solver.py --all --attempts 5 --budget 300
+
+    # Specific model
+    python3 sage_solver.py --game cd82 --model gemma4:e4b -v
+
+    # Interactive (Claude Code as model)
+    python3 sage_solver.py --interactive --game cd82
+
+    # Kaggle mode (no optional imports)
+    python3 sage_solver.py --kaggle --all --no-vision --no-discovery
+
+    # Disable world-model planning (use context-plan mode)
+    python3 sage_solver.py --game lp85 --no-world-model -v
 """
 
 import sys
 import os
-import time
-import json
-import random
-import re
-import numpy as np
-import requests
 
 sys.path.insert(0, ".")
 sys.path.insert(0, "arc-agi-3/experiments")
+sys.path.insert(0, os.path.dirname(__file__))
 
 from arc_agi import Arcade
-from arcengine import GameAction
-from arc_perception import get_frame, background_color, color_name, find_color_regions
-from arc_spatial import SpatialTracker
-from arc_action_model import ActionEffectModel
 
-INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
-OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
-MODEL = os.environ.get("OLLAMA_MODEL", "gemma4:e4b")
-
-ACTION_NAMES = {1: "UP", 2: "DOWN", 3: "LEFT", 4: "RIGHT",
-                5: "SELECT", 6: "CLICK(x,y)", 7: "UNDO"}
-
-
-def ask_llm(prompt: str, max_tokens: int = -1) -> str:
-    """Single LLM call. Auto-detects chat vs generate API based on model.
-
-    Gemma 4 (thinking model) needs chat API — generate returns empty content.
-    Other models work with either but chat is more consistent.
-    """
-    opts = {"temperature": 0.3}
-    if max_tokens != -1:
-        opts["num_predict"] = max_tokens
-
-    try:
-        # Use chat API universally — works for all models
-        resp = requests.post(f"{OLLAMA_URL}/api/chat", json={
-            "model": MODEL, "stream": False,
-            "messages": [{"role": "user", "content": prompt}],
-            "options": opts,
-        }, timeout=300)
-        if resp.status_code == 200:
-            data = resp.json()
-            # Chat API returns message.content (+ optional message.thinking)
-            content = data.get("message", {}).get("content", "").strip()
-            if content:
-                return content
-            # Fallback: some models put everything in thinking
-            thinking = data.get("message", {}).get("thinking", "")
-            if thinking:
-                return thinking.strip()
-        return f"[error: {resp.status_code}]"
-    except Exception as e:
-        return f"[error: {e}]"
-
-
-def probe_actions(env, fd, grid, available, budget=15):
-    """Fast probing — no LLM. Tries each action 3x, builds action model.
-
-    Returns (action_model, tracker, fd, grid, steps_used, level_ups)
-    """
-    model = ActionEffectModel()
-    tracker = SpatialTracker()
-    tracker.update(grid)
-    steps = 0
-    level_ups = 0
-    start_levels = fd.levels_completed
-
-    # Try each non-click action 2x, then probe each color region for clicks
-    non_click = [a for a in available if a != 6]
-    for action in non_click:
-        for _ in range(2):
-            if steps >= budget:
-                break
-            prev_grid = grid.copy()
-            try:
-                fd = env.step(INT_TO_GAME_ACTION[action])
-            except Exception:
-                continue
-            if fd is None:
-                break
-            grid = get_frame(fd)
-            steps += 1
-            diff = tracker.update(grid)
-            model.observe(action, prev_grid, grid, diff)
-            if fd.levels_completed > start_levels + level_ups:
-                level_ups = fd.levels_completed - start_levels
-            new_avail = [a.value if hasattr(a, "value") else int(a)
-                         for a in (fd.available_actions or [])]
-            if new_avail:
-                available = new_avail
-            if fd.state.name in ("WON", "LOST", "GAME_OVER"):
-                return model, tracker, fd, grid, steps, level_ups
-
-    # Probe clicks: try one click per distinct color region
-    if 6 in available:
-        regions = find_color_regions(grid, min_size=4)
-        seen_colors = set()
-        for region in regions:
-            if steps >= budget:
-                break
-            color = region["color"]
-            if color in seen_colors:
-                continue
-            seen_colors.add(color)
-            prev_grid = grid.copy()
-            data = {'x': region["cx"], 'y': region["cy"]}
-            try:
-                fd = env.step(GameAction.ACTION6, data=data)
-            except Exception:
-                continue
-
-            if fd is None:
-                break
-            grid = get_frame(fd)
-            steps += 1
-            diff = tracker.update(grid)
-            model.observe(6, prev_grid, grid, diff)
-            changed = not np.array_equal(prev_grid, grid)
-            n_px = int(np.sum(prev_grid != grid))
-            tracker.record_click(data['x'], data['y'], changed, n_px)
-            if changed:
-                # Found an interactive region — try 2 more clicks on same color
-                for _ in range(2):
-                    if steps >= budget:
-                        break
-                    same_color = [r for r in regions if r["color"] == color and r is not region]
-                    if same_color:
-                        target = random.choice(same_color)
-                        data2 = {'x': target["cx"], 'y': target["cy"]}
-                    else:
-                        data2 = data  # re-click same spot
-                    prev_grid = grid.copy()
-                    try:
-                        fd = env.step(GameAction.ACTION6, data=data2)
-                    except Exception:
-                        break
-                    if fd is None:
-                        break
-                    grid = get_frame(fd)
-                    steps += 1
-                    diff = tracker.update(grid)
-                    model.observe(6, prev_grid, grid, diff)
-                    ch = not np.array_equal(prev_grid, grid)
-                    tracker.record_click(data2['x'], data2['y'], ch,
-                                         int(np.sum(prev_grid != grid)))
-            if fd.levels_completed > start_levels + level_ups:
-                level_ups = fd.levels_completed - start_levels
-            new_avail = [a.value if hasattr(a, "value") else int(a)
-                         for a in (fd.available_actions or [])]
-            if new_avail:
-                available = new_avail
-            if fd.state.name in ("WON", "LOST", "GAME_OVER"):
-                break
-
-    return model, tracker, fd, grid, steps, level_ups
-
-
-def grid_snapshot(grid, downsample=4):
-    """Compact grid description for LLM — 16x16 hex map."""
-    ds = grid[::downsample, ::downsample].astype(int)
-    lines = []
-    for r in range(ds.shape[0]):
-        lines.append("".join(format(int(c), "x") for c in ds[r]))
-    return "\n".join(lines)
-
-
-def strategize(action_model, tracker, grid, available, levels, win_levels):
-    """LLM call #1: What's the puzzle? What's the goal?"""
-    model_desc = action_model.describe()
-    game_type = action_model.infer_game_type()
-
-    interactive = tracker.get_interactive_objects()
-    interactive_desc = ", ".join(o.describe() for o in interactive[:5]) if interactive else "none found"
-
-    grid_map = grid_snapshot(grid)
-    bg = background_color(grid)
-    colors = {color_name(int(c)): int(n) for c, n in
-              zip(*np.unique(grid.astype(int), return_counts=True)) if c != bg}
-
-    avail = [f"{a}={ACTION_NAMES.get(a, f'A{a}')}" for a in available]
-
-    prompt = f"""You are analyzing a puzzle game to figure out how to solve it.
-
-ACTIONS AVAILABLE: {', '.join(avail)}
-
-WHAT EACH ACTION DOES (learned from testing):
-{model_desc}
-Game type: {game_type}
-
-INTERACTIVE OBJECTS: {interactive_desc}
-
-GRID (4x downsampled, hex colors):
-{grid_map}
-
-NON-BACKGROUND COLORS: {colors}
-
-LEVEL: {levels}/{win_levels}
-
-ANALYZE:
-1. What TYPE of puzzle is this? (rotation, maze, matching, sorting, placement, etc.)
-2. What is the likely WIN CONDITION? (align colors, reach exit, match pattern, etc.)
-3. What spatial structure do you see in the grid?
-
-Reply as JSON:
-{{"puzzle_type": "...", "win_condition": "...", "key_observations": "...", "strategy": "..."}}"""
-
-    return ask_llm(prompt, max_tokens=-1)
-
-
-def plan_solution(strategy_response, action_model, grid, available, levels, win_levels, tracker=None):
-    """LLM call #2: Plan using SEMANTIC actions, not raw coordinates.
-
-    The LLM says WHAT to do (click the cyan button, move left).
-    The code translates to HOW (coordinates, repetitions).
-    """
-    # Build object inventory for the LLM
-    object_list = []
-    if tracker:
-        for obj in tracker.objects.values():
-            eff = ""
-            if obj.is_interactive is True:
-                eff = f" [INTERACTIVE, {obj.click_effectiveness:.0%} effective]"
-            elif obj.is_interactive is False:
-                eff = " [NO EFFECT]"
-            else:
-                eff = " [UNTESTED]"
-            object_list.append(
-                f"  {color_name(obj.color)}_{obj.id} ({obj.w}x{obj.h}) at ({obj.cx},{obj.cy}){eff}")
-
-    objects_text = "\n".join(object_list[:20]) if object_list else "  No objects tracked."
-
-    moves = [f"{ACTION_NAMES[a]}" for a in available if a in [1, 2, 3, 4]]
-    other = [f"{ACTION_NAMES[a]}" for a in available if a in [5, 7]]
-    has_click = 6 in available
-
-    prompt = f"""You analyzed this puzzle:
-{strategy_response[:300]}
-
-OBJECTS ON GRID:
-{objects_text}
-
-AVAILABLE ACTIONS: {', '.join(moves + (['CLICK <object_name>'] if has_click else []) + other)}
-
-LEVEL: {levels}/{win_levels}
-
-Plan the solution using OBJECT NAMES, not coordinates. The code will handle targeting.
-
-Use these commands:
-- "CLICK <color>_<id>" — click a specific object (e.g., "CLICK cyan_3")
-- "CLICK ALL <color>" — click every object of that color
-- "CLICK INTERACTIVE" — click all known interactive objects
-- "UP/DOWN/LEFT/RIGHT" — movement
-- "REPEAT <N> <action>" — repeat an action N times (e.g., "REPEAT 5 CLICK cyan_3")
-- "SELECT" — submit/confirm
-
-Write one command per line. Plan the COMPLETE solution.
-
-PLAN:"""
-
-    return ask_llm(prompt, max_tokens=-1)
-
-
-def semantic_to_actions(plan_text, tracker, grid, available):
-    """Translate semantic plan into executable (action, data) pairs.
-
-    Handles:
-    - CLICK <color>_<id> → coordinates from tracker
-    - CLICK ALL <color> → all objects of that color
-    - CLICK INTERACTIVE → all interactive objects
-    - REPEAT N <cmd> → expand
-    - UP/DOWN/LEFT/RIGHT → directional
-    """
-    actions = []
-    lines = plan_text.strip().split("\n")
-
-    for line in lines:
-        line = line.strip().upper()
-        # Strip numbering
-        line = re.sub(r'^\d+[\.\)]\s*', '', line)
-
-        # REPEAT N <action>
-        repeat_m = re.match(r'REPEAT\s+(\d+)\s+(.+)', line)
-        if repeat_m:
-            n = int(repeat_m.group(1))
-            sub_actions = semantic_to_actions(repeat_m.group(2), tracker, grid, available)
-            actions.extend(sub_actions * n)
-            continue
-
-        # CLICK ALL <color>
-        m = re.match(r'CLICK\s+ALL\s+(\w+)', line)
-        if m and 6 in available:
-            target_color = m.group(1).lower()
-            for obj in tracker.objects.values():
-                if color_name(obj.color).upper() == target_color.upper():
-                    actions.append((6, {'x': obj.cx, 'y': obj.cy}))
-            continue
-
-        # CLICK INTERACTIVE
-        if 'CLICK INTERACTIVE' in line or 'CLICK ALL INTERACTIVE' in line:
-            if 6 in available:
-                for obj in tracker.get_interactive_objects():
-                    actions.append((6, {'x': obj.cx, 'y': obj.cy}))
-            continue
-
-        # CLICK <color>_<id> or CLICK <color>
-        m = re.match(r'CLICK\s+(\w+?)(?:_(\d+))?(?:\s|$)', line)
-        if m and 6 in available:
-            target_color = m.group(1).lower()
-            target_id = int(m.group(2)) if m.group(2) else None
-
-            if target_id is not None and target_id in tracker.objects:
-                obj = tracker.objects[target_id]
-                actions.append((6, {'x': obj.cx, 'y': obj.cy}))
-            else:
-                # Find first object matching color
-                for obj in tracker.objects.values():
-                    if color_name(obj.color).upper() == target_color.upper():
-                        actions.append((6, {'x': obj.cx, 'y': obj.cy}))
-                        break
-            continue
-
-        # Directional
-        for name, num in [("UP", 1), ("DOWN", 2), ("LEFT", 3), ("RIGHT", 4)]:
-            if name in line and num in available:
-                actions.append((num, None))
-                break
-        else:
-            if any(w in line for w in ["SELECT", "SUBMIT", "CONFIRM"]) and 5 in available:
-                actions.append((5, None))
-            elif "UNDO" in line and 7 in available:
-                actions.append((7, None))
-
-    return actions
-
-
-def reflect_and_replan(strategy, plan, what_happened, grid, available, levels, win_levels, tracker=None):
-    """LLM call #3: The plan failed. What went wrong? New plan using semantic actions."""
-    # Build updated object list
-    object_list = []
-    if tracker:
-        for obj in tracker.objects.values():
-            eff = ""
-            if obj.is_interactive is True:
-                eff = f" [INTERACTIVE]"
-            elif obj.is_interactive is False:
-                eff = " [NO EFFECT]"
-            object_list.append(f"  {color_name(obj.color)}_{obj.id}{eff}")
-    objects_text = "\n".join(object_list[:15]) if object_list else "  unknown"
-
-    prompt = f"""Your puzzle strategy was:
-{strategy[:200]}
-
-Your plan was:
-{plan[:200]}
-
-WHAT HAPPENED:
-{what_happened}
-
-OBJECTS:
-{objects_text}
-
-LEVEL: {levels}/{win_levels}
-
-The plan didn't work. REFLECT and write a NEW plan.
-Use these commands (object names, NOT coordinates):
-- "CLICK <color>_<id>" or "CLICK ALL <color>"
-- "CLICK INTERACTIVE" — all known working objects
-- "REPEAT <N> <action>"
-- "UP/DOWN/LEFT/RIGHT", "SELECT", "UNDO"
-
-What should you try differently?
-
-REVISED PLAN:"""
-
-    return ask_llm(prompt, max_tokens=-1)
-
-
-def parse_plan_to_actions(plan_text, available, grid):
-    """Parse LLM plan text into executable action list.
-
-    Handles formats:
-      CLICK(x, y)           — click at coordinates
-      CLICK color_name      — resolve color region to coordinates
-      UP / DOWN / LEFT / RIGHT
-      SELECT / UNDO
-      REPEAT N <action>     — repeat an action N times
-    """
-    # Build color→coordinate map from grid for resolving color names
-    color_coords = {}
-    try:
-        regions = find_color_regions(grid, min_size=4)
-        for r in regions:
-            cname = color_name(r["color"]).lower()
-            key = cname
-            idx = 0
-            while key in color_coords:
-                idx += 1
-                key = f"{cname}_{idx}"
-            color_coords[key] = (r["cx"], r["cy"])
-            # Also store base name (first region of that color)
-            if cname not in color_coords:
-                color_coords[cname] = (r["cx"], r["cy"])
-    except Exception:
-        pass
-
-    def parse_single_action(line):
-        """Parse one action line, return list of (action_int, data) tuples."""
-        line = line.strip().upper()
-        if not line:
-            return []
-
-        # CLICK(x, y)
-        m = re.search(r'CLICK\s*\(\s*(\d+)\s*,\s*(\d+)\s*\)', line)
-        if m and 6 in available:
-            return [(6, {'x': int(m.group(1)), 'y': int(m.group(2))})]
-
-        # CLICK <color_name> — resolve to coordinates
-        m = re.search(r'CLICK\s+([A-Z_]+\d*)', line)
-        if m and 6 in available:
-            ckey = m.group(1).lower()
-            if ckey in color_coords:
-                cx, cy = color_coords[ckey]
-                return [(6, {'x': cx, 'y': cy})]
-
-        # Directional
-        for name, num in [("UP", 1), ("DOWN", 2), ("LEFT", 3), ("RIGHT", 4)]:
-            if name in line and num in available:
-                return [(num, None)]
-
-        if any(w in line for w in ["SELECT", "SUBMIT", "CONFIRM", "ROTATE"]) and 5 in available:
-            return [(5, None)]
-        if "UNDO" in line and 7 in available:
-            return [(7, None)]
-
-        return []
-
-    actions = []
-    for line in plan_text.split("\n"):
-        stripped = line.strip()
-
-        # REPEAT N <action>
-        m = re.match(r'(?:REPEAT\s+)?(\d+)\s+(.+)', stripped, re.IGNORECASE)
-        if m and m.group(1).isdigit():
-            count = min(int(m.group(1)), 50)  # cap at 50 to prevent runaway
-            sub_actions = parse_single_action(m.group(2))
-            if sub_actions:
-                actions.extend(sub_actions * count)
-                continue
-
-        # Single action
-        actions.extend(parse_single_action(stripped))
-
-    return actions
-
-
-def execute_plan(env, fd, grid, plan_actions, max_steps=200):
-    """Fast execution — no LLM. Returns (fd, grid, steps, outcomes)."""
-    outcomes = []
-    steps = 0
-
-    for action_int, data in plan_actions:
-        if steps >= max_steps:
-            break
-
-        prev_grid = grid.copy()
-        prev_levels = fd.levels_completed
-
-        try:
-            if data:
-                fd = env.step(INT_TO_GAME_ACTION[action_int], data=data)
-            else:
-                fd = env.step(INT_TO_GAME_ACTION[action_int])
-        except Exception as e:
-            outcomes.append(f"Action {action_int}: ERROR {e}")
-            continue
-
-        if fd is None:
-            break
-
-        grid = get_frame(fd)
-        steps += 1
-        changed = not np.array_equal(prev_grid, grid)
-        n_changed = int(np.sum(prev_grid != grid))
-
-        action_name = ACTION_NAMES.get(action_int, f"A{action_int}")
-        if data:
-            action_name = f"CLICK({data['x']},{data['y']})"
-
-        if fd.levels_completed > prev_levels:
-            outcomes.append(f"{action_name}: LEVEL UP! ({fd.levels_completed}/{fd.win_levels})")
-        elif changed:
-            outcomes.append(f"{action_name}: {n_changed}px changed")
-        else:
-            outcomes.append(f"{action_name}: no change")
-
-        if fd.state.name in ("WON", "LOST", "GAME_OVER"):
-            break
-
-    return fd, grid, steps, outcomes
-
-
-def solve_game(arcade, game_id, max_attempts=5, budget=500, verbose=False):
-    """Solve a game using strategic LLM reasoning + fast execution."""
-    prefix = game_id.split("-")[0]
-    best_levels = 0
-    best_attempt = None
-
-    for attempt in range(max_attempts):
-        env = arcade.make(game_id)
-        fd = env.reset()
-        grid = get_frame(fd)
-        available = [a.value if hasattr(a, "value") else int(a)
-                     for a in (fd.available_actions or [])]
-        total_steps = 0
-
-        if verbose:
-            print(f"\n  Attempt {attempt+1}/{max_attempts} | Actions: {available} | Levels: 0/{fd.win_levels}")
-
-        # ═══ PHASE 1: PROBE (fast, no LLM) ═══
-        probe_budget = min(budget // 5, 20)
-        action_model, tracker, fd, grid, probe_steps, probe_levels = \
-            probe_actions(env, fd, grid, available, budget=probe_budget)
-        total_steps += probe_steps
-
-        if verbose:
-            print(f"  Probe: {probe_steps} steps, {action_model.describe()}")
-            if probe_levels > 0:
-                print(f"    Probe scored {probe_levels} level(s)!")
-
-        if fd.state.name in ("WON", "LOST", "GAME_OVER"):
-            if fd.levels_completed > best_levels:
-                best_levels = fd.levels_completed
-            continue
-
-        remaining = budget - total_steps
-        plan_cycles = 0
-
-        while remaining > 0 and plan_cycles < 3 and fd.state.name not in ("WON", "LOST", "GAME_OVER"):
-            plan_cycles += 1
-
-            # ═══ PHASE 2: STRATEGIZE (LLM call #1) ═══
-            if plan_cycles == 1:
-                t0 = time.time()
-                strategy_text = strategize(action_model, tracker, grid, available,
-                                           fd.levels_completed, fd.win_levels)
-                if verbose:
-                    print(f"  Strategy ({time.time()-t0:.0f}s): {strategy_text[:120]}...")
-
-            # ═══ PHASE 3: PLAN (LLM call #2) ═══
-            t0 = time.time()
-            if plan_cycles == 1:
-                plan_text = plan_solution(strategy_text, action_model, grid, available,
-                                          fd.levels_completed, fd.win_levels, tracker=tracker)
-            else:
-                plan_text = reflect_and_replan(strategy_text, plan_text,
-                                               "\n".join(outcomes[-10:]),
-                                               grid, available,
-                                               fd.levels_completed, fd.win_levels,
-                                               tracker=tracker)
-            plan_actions = semantic_to_actions(plan_text, tracker, grid, available)
-            if verbose:
-                print(f"  Plan ({time.time()-t0:.0f}s, {len(plan_actions)} actions): {plan_text[:100]}...")
-
-            if not plan_actions:
-                if verbose:
-                    print(f"  No parseable actions from plan, falling back to exploration")
-                # Fallback: try each effective action
-                for a in action_model.get_effective_actions()[:5]:
-                    plan_actions.append((a, None) if a != 6 else
-                                       (6, {'x': grid.shape[1]//2, 'y': grid.shape[0]//2}))
-                if not plan_actions:
-                    break
-
-            # ═══ PHASE 4: EXECUTE (fast, no LLM) ═══
-            prev_levels = fd.levels_completed
-            fd, grid, exec_steps, outcomes = execute_plan(
-                env, fd, grid, plan_actions, max_steps=min(remaining, len(plan_actions) + 10))
-            total_steps += exec_steps
-            remaining = budget - total_steps
-
-            if verbose:
-                for o in outcomes[-5:]:
-                    print(f"    {o}")
-
-            # ═══ PHASE 5: CHECK ═══
-            if fd.levels_completed > prev_levels:
-                if verbose:
-                    print(f"  ★ Level {fd.levels_completed}/{fd.win_levels}!")
-                # Success — continue to next level with fresh strategy
-                strategy_text = None  # Force re-strategize for new level
-                plan_cycles = 0
-                # Update available actions for new level
-                new_avail = [a.value if hasattr(a, "value") else int(a)
-                             for a in (fd.available_actions or [])]
-                if new_avail:
-                    available = new_avail
-                # Re-probe for new level
-                if remaining > 10:
-                    action_model, tracker, fd, grid, ps, pl = \
-                        probe_actions(env, fd, grid, available, budget=min(10, remaining))
-                    total_steps += ps
-                    remaining -= ps
-                continue
-
-        if fd.levels_completed > best_levels:
-            best_levels = fd.levels_completed
-            best_attempt = {
-                "attempt": attempt + 1,
-                "levels": fd.levels_completed,
-                "win_levels": fd.win_levels,
-                "steps": total_steps,
-                "state": fd.state.name,
-            }
-
-        if verbose:
-            print(f"  Result: {fd.levels_completed}/{fd.win_levels} in {total_steps} steps ({fd.state.name})")
-
-    return {
-        "game_id": game_id,
-        "best_levels": best_levels,
-        "win_levels": best_attempt["win_levels"] if best_attempt else 0,
-        "best_attempt": best_attempt,
-    }
+from solver_config import parse_args
+from model_backend import OllamaBackend, ClaudeInteractiveBackend
+from solver_loop import solve_game_autonomous, solve_game_interactive
 
 
 def main():
-    import argparse
-    parser = argparse.ArgumentParser(description="SAGE Puzzle Solver")
-    parser.add_argument("--game", default=None)
-    parser.add_argument("--all", action="store_true")
-    parser.add_argument("--attempts", type=int, default=5)
-    parser.add_argument("--budget", type=int, default=300)
-    parser.add_argument("-v", "--verbose", action="store_true")
-    args = parser.parse_args()
+    config = parse_args()
 
+    # ── Create Backend ──
+    if config.interactive or config.backend == "claude":
+        backend = ClaudeInteractiveBackend()
+    else:
+        backend = OllamaBackend(
+            model=config.model if config.model else "")
+
+    # ── Banner ──
     print("=" * 60)
-    print(f"SAGE Puzzle Solver — Strategic LLM ({MODEL})")
-    print("3-5 LLM calls per attempt, not 100+")
+    print(f"SAGE Solver v11 — Unified Modular Architecture "
+          f"({backend.model_name()})")
+    thinking = "native" if backend.supports_thinking() else "disabled"
+    vision = "on" if config.vision and backend.supports_vision() else "off"
+    wm = "on" if config.use_world_model else "off"
+    disc = "on" if config.use_discovery else "off"
+    print(f"Thinking: {thinking} | Vision: {vision} | "
+          f"World-model: {wm} | Discovery: {disc}")
     print("=" * 60)
 
-    # Warmup
-    print("\nWarming up...", end=" ", flush=True)
-    t = ask_llm("ready?", max_tokens=-1)
-    print(f"OK" if "error" not in t.lower() else f"WARN: {t[:40]}")
+    # ── Warmup ──
+    if not config.interactive:
+        print("\nWarming up...", end=" ", flush=True)
+        ok = backend.warmup()
+        print("OK" if ok else "WARN: model may not be ready")
 
+    # ── Interactive Mode ──
+    if config.interactive:
+        game = config.game or "cd82"
+        result = solve_game_interactive(game, backend, config)
+        if result.get("game_id"):
+            print(f"\nSession initialized at {result['state_dir']}")
+            print("Use step/look/summarize commands to play.")
+        return
+
+    # ── Autonomous Mode ──
     arcade = Arcade()
     envs = arcade.get_environments()
 
-    if args.game:
-        targets = [e for e in envs if args.game in e.game_id]
-    elif args.all:
+    if config.game:
+        targets = [e for e in envs if config.game in e.game_id]
+    elif config.all_games:
         targets = envs
     else:
         targets = envs[:5]
 
-    print(f"\n{len(targets)} games, {args.attempts} attempts, budget={args.budget}\n")
+    print(f"\n{len(targets)} games, {config.attempts} attempts, "
+          f"budget={config.budget}\n")
 
     total_levels = 0
     scored = {}
@@ -687,26 +95,25 @@ def main():
     for env_info in targets:
         game_id = env_info.game_id
         prefix = game_id.split("-")[0]
-
         try:
-            result = solve_game(arcade, game_id, max_attempts=args.attempts,
-                               budget=args.budget, verbose=args.verbose)
+            result = solve_game_autonomous(
+                arcade, game_id, backend, config)
         except Exception as e:
-            if args.verbose:
-                print(f"  {prefix}: CRASHED ({e})")
+            if config.verbose:
+                import traceback
+                traceback.print_exc()
+            print(f"  {prefix}: CRASHED ({e})")
             continue
 
         levels = result["best_levels"]
         total_levels += levels
-        wl = result["win_levels"]
-
         if levels > 0:
             scored[prefix] = levels
-            print(f"  ★ {prefix:6s}  {levels}/{wl}")
+            print(f"  * {prefix:6s}  {levels}/{result['win_levels']}")
         else:
-            print(f"    {prefix:6s}  0/{wl}")
+            print(f"    {prefix:6s}  0/{result['win_levels']}")
 
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"TOTAL: {total_levels} levels across {len(scored)} games")
     if scored:
         for g, l in sorted(scored.items(), key=lambda x: -x[1]):

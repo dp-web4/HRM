@@ -17,11 +17,28 @@ and the current situation (observation). It answers: what should be in
 the context window RIGHT NOW to help the model make the best decision?
 """
 
+import os
+import sys
 import time
 import requests
-from typing import Optional
+from typing import Optional, List
 
 MEMBOT_URL = "http://localhost:8000"
+FLEET_LEARNING_DIR = os.path.join(
+    os.path.dirname(__file__), "..", "..", "..", "shared-context",
+    "arc-agi-3", "fleet-learning")
+
+# Try to import multi-cart federation (from membot)
+_multi_cart = None
+_federate = None
+try:
+    membot_path = os.path.join(os.path.dirname(__file__), "..", "..", "..", "membot")
+    if os.path.isdir(membot_path) and membot_path not in sys.path:
+        sys.path.insert(0, membot_path)
+    import multi_cart as _multi_cart
+    import federate as _federate
+except ImportError:
+    pass  # multi-cart not available — fall back to HTTP membot only
 
 
 class ContextConstructor:
@@ -35,12 +52,15 @@ class ContextConstructor:
     def __init__(self, game_prefix: str):
         self.game_prefix = game_prefix
         self.membot_available = None
+        self.fleet_available = False
         self.query_cache = {}  # query → (result, timestamp)
         self.cache_ttl = 60    # cache for 1 minute (short — context evolves fast)
         self.attempt_count = 0
 
         # Ensure cartridge is mounted
         self._mount_cartridge()
+        # Mount fleet carts via multi-cart (works without membot server)
+        self._mount_fleet()
 
     def new_attempt(self):
         """Clear cache for a new attempt — force fresh membot queries."""
@@ -56,10 +76,58 @@ class ContextConstructor:
         except Exception:
             self.membot_available = False
 
-    def _search(self, query: str, n: int = 3) -> list:
-        """Search membot. Returns list of text results."""
-        if not self.membot_available:
+    def _mount_fleet(self):
+        """Mount fleet learning carts via multi-cart (no server needed)."""
+        if _federate is None or _multi_cart is None:
+            return
+        fleet_dir = FLEET_LEARNING_DIR
+        if not os.path.isdir(fleet_dir):
+            return
+        try:
+            # Try to migrate JSONL to carts (ok if already done or fails)
+            try:
+                _federate.migrate_jsonl(fleet_dir, in_place=True)
+            except Exception:
+                pass  # carts may already exist
+            # Load all fleet carts
+            result = _federate.load_fleet(fleet_dir)
+            n = result.get("total_patterns", 0)
+            machines = result.get("machines", [])
+            self.fleet_available = len(machines) > 0
+            self.fleet_machines = machines
+            self.fleet_patterns = n
+        except Exception:
+            self.fleet_available = False
+
+    def _search_fleet(self, query: str, n: int = 3) -> List[str]:
+        """Search fleet carts via multi-cart. Returns text results with attribution."""
+        if not self.fleet_available or _multi_cart is None:
             return []
+        try:
+            # Ensure carts are still mounted (may have been unmounted by other code)
+            mounts = _multi_cart.list_mounts()
+            if not mounts:  # list_mounts returns a list
+                self._mount_fleet()
+
+            response = _multi_cart.search(query, top_k=n,
+                                          scope="all", role_filter="federated")
+            # Response is a dict with "results" key
+            hits = response.get("results", []) if isinstance(response, dict) else response
+            return [f"[{r.get('cart_id', '?')}#{r.get('address', '?')}] {r.get('text', '')[:200]}"
+                    for r in hits if r.get("score", 0) > 0.25]
+        except Exception as e:
+            return []
+
+    def _search(self, query: str, n: int = 3) -> list:
+        """Search all available backends. Returns combined text results."""
+        results = []
+
+        # Fleet carts (local, no server needed)
+        results.extend(self._search_fleet(query, n))
+
+        # Membot HTTP (if server running)
+        if not self.membot_available:
+            return results
 
         # Check cache
         now = time.time()
@@ -72,13 +140,14 @@ class ContextConstructor:
             resp = requests.post(f"{MEMBOT_URL}/api/search",
                 json={"query": query, "top_k": n}, timeout=5)
             if resp.status_code == 200:
-                results = [r["text"] for r in resp.json().get("results", [])
-                          if r.get("score", 0) > 0.35]
-                self.query_cache[query] = (results, now)
-                return results
+                http_results = [r["text"] for r in resp.json().get("results", [])
+                               if r.get("score", 0) > 0.35]
+                results.extend(http_results)
         except Exception:
             pass
-        return []
+
+        self.query_cache[query] = (results, now)
+        return results
 
     def store(self, text: str):
         """Store a discovery for future sessions."""

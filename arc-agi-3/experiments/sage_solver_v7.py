@@ -451,6 +451,69 @@ NEXT 3 ACTIONS:"""
     return ask_llm(prompt)
 
 
+# ─── CONSOLIDATED FLEET LEARNING ───
+
+def _load_consolidated_learning(game_prefix: str) -> str:
+    """Load solutions + insights from shared-context consolidated data."""
+    import json as _json
+    for base in [
+        os.path.join(os.path.dirname(__file__), '..', '..', '..', 'shared-context', 'arc-agi-3', 'consolidated'),
+        os.path.expanduser('~/repos/shared-context/arc-agi-3/consolidated'),
+        os.path.expanduser('~/ai-workspace/shared-context/arc-agi-3/consolidated'),
+    ]:
+        if not os.path.exists(base):
+            continue
+
+        lines = []
+
+        # Level solutions for this game
+        solutions_path = os.path.join(base, 'level_solutions.jsonl')
+        if os.path.exists(solutions_path):
+            with open(solutions_path) as f:
+                for line in f:
+                    try:
+                        sol = _json.loads(line.strip())
+                        if sol.get('game', '') == game_prefix:
+                            level = sol.get('level', '?')
+                            steps = sol.get('steps', '?')
+                            actions = sol.get('actions', [])
+                            if actions:
+                                lines.append(f"  SOLUTION L{level}: {', '.join(str(a) for a in actions[:10])} ({steps} steps)")
+                            else:
+                                lines.append(f"  SOLUTION L{level}: {steps} steps (actions not recorded)")
+                    except Exception:
+                        pass
+
+        # Game insights
+        insights_path = os.path.join(base, 'game_insights.jsonl')
+        if os.path.exists(insights_path):
+            with open(insights_path) as f:
+                for line in f:
+                    try:
+                        ins = _json.loads(line.strip())
+                        if ins.get('game', '') == game_prefix:
+                            lines.append(f"  INSIGHT: {ins.get('insight', '')[:150]}")
+                    except Exception:
+                        pass
+
+        # Structural patterns (cross-game)
+        patterns_path = os.path.join(base, 'structural_patterns.jsonl')
+        if os.path.exists(patterns_path):
+            with open(patterns_path) as f:
+                for line in f:
+                    try:
+                        pat = _json.loads(line.strip())
+                        lines.append(f"  PATTERN: {pat.get('pattern', '')[:150]}")
+                    except Exception:
+                        pass
+
+        if lines:
+            return "CONSOLIDATED FLEET LEARNING (proven solutions and insights):\n" + "\n".join(lines)
+        break
+
+    return ""
+
+
 # ─── MAIN SOLVE LOOP ───
 
 def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
@@ -463,8 +526,16 @@ def solve_game(arcade, game_id, max_attempts=5, budget=300, verbose=False):
     # Federation — load knowledge from all fleet machines
     fed = FederatedKnowledge()
     fleet_context = fed.build_context(prefix)
+
+    # Consolidated fleet learning — solutions, insights, patterns from shared-context
+    consolidated_context = _load_consolidated_learning(prefix)
+    if consolidated_context:
+        fleet_context = fleet_context + "\n\n" + consolidated_context if fleet_context else consolidated_context
+
     if verbose:
         print(f"  {fed.summary()}")
+        if consolidated_context:
+            print(f"  Consolidated learning: {len(consolidated_context)} chars")
         if fleet_context:
             print(f"  Fleet context: {len(fleet_context)} chars")
 

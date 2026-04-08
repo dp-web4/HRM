@@ -19,7 +19,7 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(__file__))
 
 from arcengine import GameAction
-from arc_perception import get_frame, color_name
+from arc_perception import get_frame, get_all_frames, color_name
 from arc_vision import ARC_PALETTE, grid_to_image_b64
 
 from solver_actions import (
@@ -663,3 +663,146 @@ def solve_game_interactive(game_prefix, backend, config):
     print(f"What type of game is this? What do you think the objective is?")
 
     return {"game_id": game_id, "state_dir": STATE_DIR}
+
+
+def interactive_step(action, x=None, y=None):
+    """Execute one step in interactive mode. Handles animation capture.
+
+    Mirrors claude_solver.py's cmd_step but uses v11 infrastructure.
+    """
+    from arc_agi import Arcade
+    from PIL import Image
+    import shutil
+
+    session_path = os.path.join(STATE_DIR, "session.json")
+    if not os.path.exists(session_path):
+        print("No active session. Run with --interactive first.")
+        return
+
+    with open(session_path) as f:
+        session = json.load(f)
+
+    # Reconstruct game state by replaying
+    arcade = Arcade()
+    env = arcade.make(session["game_id"])
+    fd = env.reset()
+
+    INT_TO_GA = {a.value: a for a in GameAction}
+
+    for entry in session["actions_log"]:
+        a = entry["action"]
+        if a == 6 and "x" in entry and "y" in entry:
+            fd = env.step(INT_TO_GA[a], data={"x": entry["x"], "y": entry["y"]})
+        else:
+            fd = env.step(INT_TO_GA[a])
+
+    # Execute new action
+    prev_grid = get_frame(fd)
+    prev_levels = fd.levels_completed
+
+    if action == 6 and x is not None and y is not None:
+        fd = env.step(INT_TO_GA[6], data={"x": int(x), "y": int(y)})
+        action_entry = {"action": 6, "x": int(x), "y": int(y)}
+        action_desc = f"CLICK({x},{y})"
+    else:
+        fd = env.step(INT_TO_GA[action])
+        action_entry = {"action": action}
+        action_desc = ACTION_NAMES.get(action, f"ACTION{action}")
+
+    session["actions_log"].append(action_entry)
+    session.setdefault("level_actions", []).append(action_entry)
+
+    # Get ALL frames (animation support)
+    all_frames = get_all_frames(fd)
+    grid = all_frames[-1]
+    anim_frames = all_frames[:-1] if len(all_frames) > 1 else []
+
+    session["step"] += 1
+    prev_levels_val = session["levels_completed"]
+    session["levels_completed"] = fd.levels_completed
+    session["state"] = fd.state.name
+
+    # Render frame
+    img_path = os.path.join(STATE_DIR, "frame.png")
+    _render_grid_sdk(grid).save(img_path)
+
+    # Save animation if present
+    if anim_frames:
+        anim_dir = os.path.join(STATE_DIR, "animations")
+        os.makedirs(anim_dir, exist_ok=True)
+        level = session["levels_completed"]
+        step = session["step"]
+        # Save as GIF
+        try:
+            gif_frames = [_render_grid_sdk(f, scale=2) for f in all_frames]
+            gif_path = os.path.join(anim_dir, f"anim_L{level}_S{step}.gif")
+            gif_frames[0].save(gif_path, save_all=True,
+                append_images=gif_frames[1:], duration=200, loop=1)
+        except Exception:
+            pass
+        session.setdefault("animations", []).append({
+            "step": step, "level": level, "frames": len(all_frames),
+        })
+
+    # Diff
+    n_changed = int(np.sum(prev_grid != grid))
+    if anim_frames:
+        diff_desc = f"ANIMATION ({len(all_frames)} frames): {n_changed}px changed"
+    elif n_changed == 0:
+        diff_desc = "NOTHING CHANGED"
+    elif n_changed <= 2:
+        diff_desc = f"tiny change ({n_changed}px)"
+    elif n_changed < 50:
+        diff_desc = f"small change ({n_changed}px)"
+    elif n_changed < 200:
+        diff_desc = f"moderate change ({n_changed}px)"
+    else:
+        diff_desc = f"large change ({n_changed}px)"
+
+    # Level-up detection
+    level_up = fd.levels_completed > prev_levels_val
+    if level_up:
+        # Save solved state + new level start
+        np.save(os.path.join(STATE_DIR, f"level_{prev_levels_val}_final_grid.npy"), grid)
+        np.save(os.path.join(STATE_DIR, f"level_{fd.levels_completed}_start_grid.npy"), grid)
+        session.setdefault("level_solutions", {})[str(prev_levels_val)] = {
+            "actions": session.get("level_actions", []),
+            "steps": len(session.get("level_actions", [])),
+        }
+        session["level_actions"] = []
+
+    # Save state
+    np.save(os.path.join(STATE_DIR, "current_grid.npy"), grid)
+    np.save(os.path.join(STATE_DIR, "previous_grid.npy"), prev_grid)
+    with open(session_path, "w") as f:
+        json.dump(session, f, indent=2)
+
+    # Output
+    print(f"STEP {session['step']}: {action_desc}")
+    print(f"WHAT CHANGED: {diff_desc}")
+    print(f"LEVELS: {fd.levels_completed}/{session['win_levels']}")
+    print(f"IMAGE: {img_path}")
+    if anim_frames:
+        print(f"ANIMATION: {len(anim_frames)} frames captured")
+    if level_up:
+        print(f"\n★★★ LEVEL UP! Now at level {fd.levels_completed}/{session['win_levels']} ★★★")
+
+
+# SDK palette renderer (matches arc_agi/rendering.py COLOR_MAP)
+_SDK_PALETTE = {
+    0: (255,255,255), 1: (204,204,204), 2: (153,153,153), 3: (102,102,102),
+    4: (51,51,51), 5: (0,0,0), 6: (229,58,163), 7: (255,123,204),
+    8: (249,60,49), 9: (30,147,255), 10: (136,216,241), 11: (255,220,0),
+    12: (255,133,27), 13: (146,18,49), 14: (79,204,48), 15: (163,86,214),
+}
+
+def _render_grid_sdk(grid, scale=4):
+    """Render grid using SDK palette. Returns PIL Image."""
+    from PIL import Image
+    h, w = grid.shape
+    img = np.zeros((h * scale, w * scale, 3), dtype=np.uint8)
+    for r in range(h):
+        for c in range(w):
+            color = _SDK_PALETTE.get(int(grid[r, c]), (128, 128, 128))
+            img[r*scale:(r+1)*scale, c*scale:(c+1)*scale] = color
+    return Image.fromarray(img)

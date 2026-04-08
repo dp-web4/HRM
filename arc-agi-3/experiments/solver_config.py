@@ -25,6 +25,8 @@ class SolverConfig:
     viewer: bool = True
     kaggle: bool = False
     identity: str = None        # SAGE instance dir for raising identity
+    command: str = ""           # interactive subcommand: init, step, look, summarize
+    command_args: list = None   # extra args for command (e.g., action, x, y)
 
 
 def parse_args() -> SolverConfig:
@@ -62,6 +64,10 @@ def parse_args() -> SolverConfig:
                         help="Kaggle mode: disable all optional imports")
     parser.add_argument("--identity", default=None,
                         help="SAGE instance dir for raising identity")
+    parser.add_argument("command", nargs="?", default="",
+                        help="Interactive subcommand: init, step, look, summarize")
+    parser.add_argument("command_args", nargs="*", default=[],
+                        help="Args for interactive command (action, x, y)")
 
     args = parser.parse_args()
 
@@ -80,4 +86,6 @@ def parse_args() -> SolverConfig:
         viewer=args.viewer,
         kaggle=args.kaggle,
         identity=args.identity,
+        command=args.command or "",
+        command_args=args.command_args or [],
     )

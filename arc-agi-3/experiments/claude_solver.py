@@ -44,20 +44,21 @@ sys.path.insert(0, "arc-agi-3/experiments")
 
 from arc_agi import Arcade
 from arcengine import GameAction
-from arc_perception import get_frame, find_color_regions, background_color, color_name
+from arc_perception import get_frame, get_all_frames, find_color_regions, background_color, color_name
 
 STATE_DIR = "/tmp/claude_solver"
 os.makedirs(STATE_DIR, exist_ok=True)
 
 COLOR_MAP = {
-    0: (40, 40, 40), 1: (0, 0, 255), 2: (255, 0, 0), 3: (0, 200, 0),
-    4: (255, 255, 0), 5: (128, 128, 128), 6: (255, 0, 255), 7: (255, 128, 0),
-    8: (0, 255, 255), 9: (128, 80, 0), 10: (255, 180, 180), 11: (128, 0, 0),
-    12: (128, 128, 0), 13: (0, 0, 128), 14: (0, 128, 128), 15: (255, 255, 255),
+    0: (255, 255, 255), 1: (204, 204, 204), 2: (153, 153, 153), 3: (102, 102, 102),
+    4: (51, 51, 51), 5: (0, 0, 0), 6: (229, 58, 163), 7: (255, 123, 204),
+    8: (249, 60, 49), 9: (30, 147, 255), 10: (136, 216, 241), 11: (255, 220, 0),
+    12: (255, 133, 27), 13: (146, 18, 49), 14: (79, 204, 48), 15: (163, 86, 214),
 }
-COLOR_NAMES = ["black", "blue", "red", "green", "yellow", "gray",
-               "magenta", "orange", "cyan", "brown", "pink", "maroon",
-               "olive", "navy", "teal", "white"]
+COLOR_NAMES = ["white", "light-gray", "gray", "dark-gray",
+               "charcoal", "black", "magenta", "pink",
+               "red", "blue", "light-blue", "yellow",
+               "orange", "maroon", "green", "purple"]
 ACTION_NAMES = {1: "UP", 2: "DOWN", 3: "LEFT", 4: "RIGHT",
                 5: "SELECT", 6: "CLICK", 7: "UNDO"}
 INT_TO_GA = {a.value: a for a in GameAction}
@@ -197,7 +198,18 @@ def load_grid(name="current"):
 
 
 def cmd_init(game_prefix):
-    """Initialize a new game session."""
+    """Initialize a new game session. Cleans up all state from prior games."""
+    # Clean up old state
+    import glob, shutil
+    for pattern in ["level_*_grid.npy", "current_grid.npy", "previous_grid.npy",
+                    "frame.png", "*.gif", "*.png"]:
+        for f in glob.glob(os.path.join(STATE_DIR, pattern)):
+            if os.path.basename(f) != "frame.png":  # will be recreated
+                os.remove(f)
+    anim_dir = os.path.join(STATE_DIR, "animations")
+    if os.path.isdir(anim_dir):
+        shutil.rmtree(anim_dir)
+
     arcade = Arcade()
     matches = [e for e in arcade.get_environments() if game_prefix in e.game_id]
     if not matches:
@@ -295,18 +307,46 @@ def cmd_step(action, x=None, y=None):
         session.setdefault("level_actions", []).append(action_entry)
         action_desc = ACTION_NAMES.get(action, f"ACTION{action}")
 
-    grid = get_frame(fd)
+    all_frames = get_all_frames(fd)
+    grid = all_frames[-1]  # final frame for state tracking
+    anim_frames = all_frames[:-1] if len(all_frames) > 1 else []  # intermediate = animation
+
     session["step"] += 1
     prev_levels = session["levels_completed"]
     session["levels_completed"] = fd.levels_completed
     session["state"] = fd.state.name
 
-    # Render new frame
+    # Render new frame (final state)
     img_path = os.path.join(STATE_DIR, "frame.png")
     render_grid(grid).save(img_path)
 
-    # Semantic diff
-    diff = semantic_diff(prev_grid, grid)
+    # Save animation frames if present
+    if anim_frames:
+        anim_dir = os.path.join(STATE_DIR, "animations")
+        os.makedirs(anim_dir, exist_ok=True)
+        level = session["levels_completed"]
+        step = session["step"]
+        # Save as compressed numpy
+        anim_file = os.path.join(anim_dir, f"anim_L{level}_S{step}.npz")
+        np.savez_compressed(anim_file,
+            **{f"frame_{i}": f for i, f in enumerate(all_frames)})
+        # Save as GIF
+        try:
+            gif_frames = [render_grid(f, scale=2) for f in all_frames]
+            gif_path = os.path.join(anim_dir, f"anim_L{level}_S{step}.gif")
+            gif_frames[0].save(gif_path, save_all=True,
+                append_images=gif_frames[1:], duration=200, loop=0)
+        except Exception:
+            pass
+        session.setdefault("animations", []).append({
+            "step": step, "level": level, "frames": len(all_frames),
+        })
+
+    # Semantic diff (compare first frame to last for animation, or prev to current)
+    diff_base = all_frames[0] if anim_frames else prev_grid
+    diff = semantic_diff(diff_base, grid)
+    if anim_frames:
+        diff = f"ANIMATION ({len(all_frames)} frames): " + diff
 
     # Scene description
     scene = scene_description(grid)
@@ -332,6 +372,8 @@ def cmd_step(action, x=None, y=None):
     print(f"WHAT CHANGED: {diff}")
     print(f"LEVELS: {fd.levels_completed}/{session['win_levels']}")
     print(f"IMAGE: {img_path}")
+    if anim_frames:
+        print(f"ANIMATION: {len(anim_frames)} frames captured")
 
     if level_up:
         # The SDK transitions instantly on level-up: grid is already the new level.

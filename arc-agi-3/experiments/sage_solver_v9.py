@@ -747,9 +747,9 @@ def main():
         MODEL = args.model
 
     print("=" * 60)
-    print(f"SAGE Solver v7 — Deep Membot Integration ({MODEL})")
+    print(f"SAGE Solver v9 — Multimodal Vision + Viewer ({MODEL})")
     print(f"Thinking: {'native' if _is_thinking_model() else 'disabled'}")
-    print("Membot as context construction tool — adaptive queries throughout game")
+    print("Vision-enabled with grid PNGs + Live visualization via SessionWriter")
     print("=" * 60)
 
     print("\nWarming up...", end=" ", flush=True)

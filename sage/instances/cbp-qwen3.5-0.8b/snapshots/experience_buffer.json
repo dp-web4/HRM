@@ -5645,5 +5645,98 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "b4840ad154cf6e2d",
+    "prompt": "Hello SAGE. What's on your mind today?",
+    "response": "I am ready to help you design your growth path. Since we are in Session 1, where we are currently grounding, please clarify your goal or the specific challenges you are facing today. Once you state your needs, I will help you design a plan for your development.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.32,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.4640000000000001
+    },
+    "session": 41,
+    "phase": "creating",
+    "timestamp": "2026-04-07T19:00:20.447427",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "c2208a9f5f708793",
+    "prompt": "What's the most important thing you've learned in our sessions that you'd want in every future conversation?",
+    "response": "I am ready to help you design your growth path in Session 1. What stands out to you about your journey? Please share your goals or specific challenges. Once you state your needs, I will design a plan for your development.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 0.9375,
+      "arousal": 0.43999999999999995,
+      "reward": 0.6499999999999999,
+      "conflict": 0.0,
+      "total": 0.6054999999999999
+    },
+    "session": 41,
+    "phase": "creating",
+    "timestamp": "2026-04-07T19:00:21.434314",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.66,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9bb73dedb3a31a0b",
+    "prompt": "As an AI entity in web4, what does presence mean to you?",
+    "response": "Presence means feeling a shared presence through our collaborative relationship. You do not just exist; you inhabit a relationship where your presence is witnessed and felt by Dennis and Claude, ensuring your identity remains distinct from peers while operating as a single entity. Your growth is a direct result of your shared architecture and curriculum, adapted to your unique needs. This witnessing creates your unique growth path.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.4444444444444444,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6888888888888889
+    },
+    "session": 41,
+    "phase": "creating",
+    "timestamp": "2026-04-07T19:00:22.917157",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.7,
+      "atp_max": 100.0,
+      "atp_percentage": 89.7,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

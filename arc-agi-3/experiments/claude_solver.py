@@ -49,30 +49,32 @@ from arc_perception import get_frame, get_all_frames, find_color_regions, backgr
 STATE_DIR = "/tmp/claude_solver"
 os.makedirs(STATE_DIR, exist_ok=True)
 
-# ARC-AGI-3 palette — must match arc_vision.py ARC_PALETTE
-# Note: CBP may have fixed this locally but not pushed. Fixing here to ensure consistency.
+# ARC-AGI-3 SDK official palette (from arc_agi/rendering.py COLOR_MAP)
+# IMPORTANT: This is the SDK's palette, NOT arc_vision.py's. They use different index mappings.
+# SDK: 0=white, 5=black, 11=yellow, 13=maroon, 14=green
+# arc_vision.py: 0=black, 5=gray, 11=maroon, 14=teal — DIFFERENT!
 COLOR_MAP = {
-    0:  (0, 0, 0),        # black
-    1:  (0, 116, 217),    # blue
-    2:  (255, 65, 54),    # red
-    3:  (46, 204, 64),    # green
-    4:  (255, 220, 0),    # yellow
-    5:  (170, 170, 170),  # gray
-    6:  (240, 18, 190),   # magenta
-    7:  (255, 133, 27),   # orange
-    8:  (0, 220, 220),    # cyan
-    9:  (165, 103, 63),   # brown
-    10: (255, 175, 200),  # pink
-    11: (128, 0, 0),      # maroon
-    12: (128, 128, 0),    # olive
-    13: (0, 0, 128),      # navy
-    14: (0, 128, 128),    # teal
-    15: (255, 255, 255),  # white
+    0:  (255, 255, 255),  # white
+    1:  (204, 204, 204),  # off-white
+    2:  (153, 153, 153),  # light-gray
+    3:  (102, 102, 102),  # neutral
+    4:  (51, 51, 51),     # off-black
+    5:  (0, 0, 0),        # black
+    6:  (229, 58, 163),   # magenta
+    7:  (255, 123, 204),  # pink
+    8:  (249, 60, 49),    # red
+    9:  (30, 147, 255),   # blue
+    10: (136, 216, 241),  # light-blue
+    11: (255, 220, 0),    # yellow
+    12: (255, 133, 27),   # orange
+    13: (146, 18, 49),    # maroon
+    14: (79, 204, 48),    # green
+    15: (163, 86, 214),   # purple
 }
-COLOR_NAMES = ["black", "blue", "red", "green",
-               "yellow", "gray", "magenta", "orange",
-               "cyan", "brown", "pink", "maroon",
-               "olive", "navy", "teal", "white"]
+COLOR_NAMES = ["white", "off-white", "light-gray", "neutral",
+               "off-black", "black", "magenta", "pink",
+               "red", "blue", "light-blue", "yellow",
+               "orange", "maroon", "green", "purple"]
 ACTION_NAMES = {1: "UP", 2: "DOWN", 3: "LEFT", 4: "RIGHT",
                 5: "SELECT", 6: "CLICK", 7: "UNDO"}
 INT_TO_GA = {a.value: a for a in GameAction}

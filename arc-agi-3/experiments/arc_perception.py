@@ -19,13 +19,14 @@ import numpy as np
 from collections import Counter
 
 
-# Official ARC-AGI-3 palette — matches arc_vision.py ARC_PALETTE
-# Fixed 2026-04-07: old mapping was wrong (0=white, 5=black etc.)
+# ARC-AGI-3 SDK official palette (from arc_agi/rendering.py COLOR_MAP)
+# IMPORTANT: The SDK uses 0=white, 5=black. arc_vision.py uses a DIFFERENT mapping!
+# This file matches the SDK since it processes SDK grid data.
 COLOR_NAMES = {
-    0: "black", 1: "blue", 2: "red", 3: "green", 4: "yellow",
-    5: "gray", 6: "magenta", 7: "orange", 8: "cyan", 9: "brown",
-    10: "pink", 11: "maroon", 12: "olive", 13: "navy", 14: "teal",
-    15: "white",
+    0: "white", 1: "off-white", 2: "light-gray", 3: "gray", 4: "dark-gray",
+    5: "black", 6: "magenta", 7: "pink", 8: "red", 9: "blue",
+    10: "light-blue", 11: "yellow", 12: "orange", 13: "maroon", 14: "green",
+    15: "purple",
 }
 
 

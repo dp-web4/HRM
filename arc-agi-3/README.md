@@ -195,10 +195,7 @@ python3 arc-agi-3/experiments/sage_solver.py --kaggle --all
 - `claude_solver.py` — interactive, archived
 - `sage_solver_v5.py`, `sage_solver_v6.py` — earlier iterations, archived
 
-**Color palettes**: Two different mappings exist in this codebase:
-1. SDK palette (0=white, 5=black) — used by `game_viewer.py`, `solver_loop.py`, `arc_perception.py`
-2. `arc_vision.py` palette (0=black, 5=gray) — used only for multimodal PNG generation
-Do NOT "fix" one to match the other. They are correct for their respective data sources.
+**Color palette**: ONE palette — the SDK's (`arc_agi/rendering.py`): 0=white, 5=black, 11=yellow, 14=green. All files use this. `arc_vision.py` previously had a wrong ARC-1/2 mapping (0=black) that was sending inverted images to multimodal models. Fixed 2026-04-08.
 
 ### Fleet Learning (`experiments/publish_learning.py`)
 

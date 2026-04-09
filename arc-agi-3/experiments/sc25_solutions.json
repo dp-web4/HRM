@@ -62,7 +62,7 @@
       "notes": "Complex triple-spell combo. Fire from (15,15) UP to primary. Fire from (13,43) LEFT to secondary. Grow+teleport to (51,35) at s2, walk UP 6 to exit."
     },
     "L6": {
-      "status": "PLANNED_NOT_VERIFIED",
+      "status": "VERIFIED",
       "budget": 60,
       "sequence": [
         "DIAMOND (4, shrink to s1)",
@@ -80,7 +80,7 @@
         "RIGHT x2 (to x=33)",
         "UP x10+ (to exit at 32,8)"
       ],
-      "total_actions": "~53 estimated",
+      "total_actions": 48,
       "corridor_map": {
         "x33-36": "passable y=9 to y=32 (exit corridor)",
         "x29-32": "passable y=29 to y=36 (left corridor)",

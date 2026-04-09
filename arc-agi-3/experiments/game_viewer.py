@@ -17,7 +17,7 @@ STATE_DIR = "/tmp/claude_solver"
 PORT = 8765
 
 # ARC-AGI-3 SDK official palette (from arc_agi/rendering.py COLOR_MAP)
-# Note: this is DIFFERENT from arc_vision.py which uses a different index mapping!
+# ONE palette. No duplicates. No alternatives.
 ARC_PALETTE = {
     0:  (255, 255, 255),  # white
     1:  (204, 204, 204),  # off-white
@@ -35,9 +35,6 @@ ARC_PALETTE = {
     13: (146, 18, 49),    # maroon
     14: (79, 204, 48),    # green
     15: (163, 86, 214),   # purple
-    13: (0, 0, 128),      # navy
-    14: (0, 128, 128),    # teal
-    15: (255, 255, 255),  # white
 }
 
 

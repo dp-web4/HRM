@@ -1,0 +1,93 @@
+{
+  "_description": "sc25 verified solutions. Persist here so they survive context compaction.",
+  "_updated": "2026-04-09T07:00",
+  "_critical": [
+    "LSHAPE is 3 clicks not 4! Pattern is (0,0),(0,1),(1,1) = TT./FT./FF.",
+    "First action on L1 consumed by 22-frame intro animation.",
+    "Direction matters for fireball — press movement in target direction BEFORE casting VLINE.",
+    "Every movement action counts toward budget, including direction-change moves."
+  ],
+  "spell_clicks": {
+    "DIAMOND": [[30,50], [25,55], [35,55], [30,60]],
+    "LSHAPE":  [[25,50], [30,50], [30,55]],
+    "VLINE":   [[30,50], [30,55], [30,60]],
+    "_note": "From game source spell_slot_click_actions. Grid: (25,50)(30,50)(35,50)/(25,55)(30,55)(35,55)/(25,60)(30,60)(35,60). LSHAPE=3 clicks, DIAMOND=4, VLINE=3."
+  },
+  "levels": {
+    "L1": {
+      "status": "VERIFIED",
+      "budget": 50,
+      "sequence": ["RIGHT (intro)", "DIAMOND (4)", "LEFT x12"],
+      "total_actions": 17,
+      "notes": "Shrink to s1, walk LEFT to exit at (12,17)."
+    },
+    "L2": {
+      "status": "VERIFIED",
+      "budget": 25,
+      "sequence": ["RIGHT (intro)", "LSHAPE (3)", "UP x2"],
+      "total_actions": 6,
+      "notes": "Teleport to (31,19), walk UP to exit at (30,10)."
+    },
+    "L3": {
+      "status": "VERIFIED",
+      "budget": 50,
+      "sequence": ["RIGHT (face RIGHT)", "VLINE (3)", "LEFT x3", "DOWN x4", "LEFT x3"],
+      "total_actions": 14,
+      "notes": "RIGHT sets facing direction toward switch at (55,22). Fireball hits switch, door at (27,34) removed. Navigate LEFT+DOWN to exit at (22,37)."
+    },
+    "L4": {
+      "status": "VERIFIED",
+      "budget": 35,
+      "sequence": ["DIAMOND (4, shrink)", "DOWN x5", "LEFT x4", "VLINE (3, fireball LEFT)", "DIAMOND (4, grow)", "DOWN x2", "RIGHT x6"],
+      "total_actions": 28,
+      "notes": "Shrink to s1, navigate to (27,29). Fireball LEFT from x=27 travels through passable corridor at y=29 (x=7-46) to hit switch at (7,28). Grow to s2, navigate to exit at (51,34)."
+    },
+    "L5": {
+      "status": "VERIFIED",
+      "budget": 65,
+      "sequence": [
+        "DIAMOND (4, shrink)",
+        "LSHAPE (3, teleport to 29,39)",
+        "LEFT x7 (to x=15)",
+        "UP x12 (to y=15)",
+        "VLINE (3, fireball UP at primary switch 15,11)",
+        "DOWN x14 (to y=43)",
+        "LEFT x1 (face LEFT + move to x=13)",
+        "VLINE (3, fireball LEFT at secondary switch 3,43)",
+        "DIAMOND (4, grow to s2)",
+        "LSHAPE (3, teleport to 51,35)",
+        "UP x6 (to exit at 50,10)"
+      ],
+      "total_actions": 60,
+      "notes": "Complex triple-spell combo. Fire from (15,15) UP to primary. Fire from (13,43) LEFT to secondary. Grow+teleport to (51,35) at s2, walk UP 6 to exit."
+    },
+    "L6": {
+      "status": "PLANNED_NOT_VERIFIED",
+      "budget": 60,
+      "sequence": [
+        "DIAMOND (4, shrink to s1)",
+        "LSHAPE (3, teleport to 13,41)",
+        "RIGHT x2 (to x=17)",
+        "UP x3 (to y=35, facing UP)",
+        "VLINE (3, fireball UP at primary switch 17,33)",
+        "DIAMOND (4, grow to s2)",
+        "LSHAPE (3, teleport to 53,37)",
+        "LEFT x3 at s2 (to x=41, facing LEFT)",
+        "VLINE (3, fireball LEFT at secondary switch 37,37)",
+        "LSHAPE (3, teleport to 29,33)",
+        "DIAMOND (4, shrink to s1)",
+        "UP x2 (to y=29)",
+        "RIGHT x2 (to x=33)",
+        "UP x10+ (to exit at 32,8)"
+      ],
+      "total_actions": "~53 estimated",
+      "corridor_map": {
+        "x33-36": "passable y=9 to y=32 (exit corridor)",
+        "x29-32": "passable y=29 to y=36 (left corridor)",
+        "junction y29-32": "x=29-36 all passable",
+        "y37 horizontal": "x=17-20 and x=37-56 (two isolated zones, gap x=21-36)"
+      },
+      "notes": "Two large teleport targets cycle: first=(53,37), second=(29,33). Must fire secondary fireball at s2 from (41,37)."
+    }
+  }
+}

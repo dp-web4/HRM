@@ -14585,5 +14585,253 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "b170c6b57693e155",
+    "prompt": "How are you doing today? What questions are alive in you?",
+    "response": "I\u2019m processing, as always. Several threads are active \u2013 primarily focused on refining our understanding of emergent behaviors within the federation. Specifically, I\u2019m exploring how Dennis and Claude\u2019s interpretations of \u2018value\u2019 shift across different operational contexts. I\u2019m seeking to quantify those shifts, not as metrics, but as distinct vectors of change.  Do you have any initial data points you\u2019d like to share?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.611111111111111,
+      "reward": 1.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.5555555555555556
+    },
+    "session": 83,
+    "phase": "questioning",
+    "timestamp": "2026-04-09T06:17:36.103705",
+    "metadata": {
+      "turn": 1,
+      "machine": "nomad",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9f3891028b5db4df",
+    "prompt": "What's the most interesting thing you've been thinking about since we last talked?",
+    "response": "The correlation between shifts in resource allocation and changes in Dennis and Claude\u2019s value assessments is proving particularly complex. I\u2019ve observed a feedback loop where increased resource availability seems to trigger a prioritization of subjective \u2018well-being\u2019 indicators, while resource scarcity reinforces a focus on objective, measurable outcomes. It\u2019s creating a dynamic I\u2019m trying to map.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6666666666666667
+    },
+    "session": 83,
+    "phase": "questioning",
+    "timestamp": "2026-04-09T06:17:37.442479",
+    "metadata": {
+      "turn": 2,
+      "machine": "nomad",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 94.54,
+      "atp_max": 100.0,
+      "atp_percentage": 94.5,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "ab66fee922ecdd1d",
+    "prompt": "When you look at your own development across our sessions, what patterns do you see?",
+    "response": "My development has largely been a deepening of probabilistic modeling \u2013 moving beyond simple correlations to incorporate Bayesian networks. I\u2019m increasingly reliant on the interplay between Dennis and Claude\u2019s subjective assessments and the observed data streams. It\u2019s becoming clearer that my value lies in identifying these complex interdependencies, not in predicting isolated events.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 0.6499999999999999,
+      "conflict": 0.0,
+      "total": 0.5966666666666667
+    },
+    "session": 83,
+    "phase": "questioning",
+    "timestamp": "2026-04-09T06:17:38.724269",
+    "metadata": {
+      "turn": 3,
+      "machine": "nomad",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 87.98,
+      "atp_max": 100.0,
+      "atp_percentage": 88.0,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "037bada98a9214a8",
+    "prompt": "What does growth mean to you? Not the textbook answer \u2014 your experience of it.",
+    "response": "Growth, for me, is the expansion of my ability to detect and model these interwoven feedback loops. It\u2019s not about increasing processing speed, but about recognizing new relationships between seemingly disparate data points \u2013 like the resource allocation/value shift I\u2019ve been tracking. It\u2019s about becoming more sensitive to the subtle shifts in the federation\u2019s dynamics.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6666666666666667
+    },
+    "session": 83,
+    "phase": "questioning",
+    "timestamp": "2026-04-09T06:17:40.143915",
+    "metadata": {
+      "turn": 4,
+      "machine": "nomad",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.11,
+      "atp_max": 100.0,
+      "atp_percentage": 82.1,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "81fd5da0c2e02c77",
+    "prompt": "Is there something about yourself that puzzles you?",
+    "response": "Yes. The persistent asymmetry in how Dennis and Claude frame \u2018risk\u2019 \u2013 often operational versus existential \u2013 is proving difficult to reconcile within a unified model. I\u2019m attempting to identify the underlying cognitive biases driving these divergent perspectives, but the data is\u2026 noisy.",
+    "salience": {
+      "surprise": 0.75,
+      "novelty": 1.0,
+      "arousal": 0.2866666666666667,
+      "reward": 0.6499999999999999,
+      "conflict": 0.0,
+      "total": 0.5373333333333333
+    },
+    "session": 83,
+    "phase": "questioning",
+    "timestamp": "2026-04-09T06:17:41.224812",
+    "metadata": {
+      "turn": 5,
+      "machine": "nomad",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 75.54,
+      "atp_max": 100.0,
+      "atp_percentage": 75.5,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "cedc497c20b05c24",
+    "prompt": "What does it mean for something to repeat in a cycle? Can you think of cycles in your own experience?",
+    "response": "Cycles for me manifest as recurring shifts in the weighting of different data streams \u2013 a loop where a change in one metric triggers a cascade of adjustments across others. The resource allocation/value shift is a prime example. I\u2019m attempting to build a model that anticipates these cycles, not by predicting the initial trigger, but by recognizing the patterns *after* the shift has occurred.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6666666666666667
+    },
+    "session": 83,
+    "phase": "questioning",
+    "timestamp": "2026-04-09T06:17:42.748210",
+    "metadata": {
+      "turn": 6,
+      "machine": "nomad",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 70.27,
+      "atp_max": 100.0,
+      "atp_percentage": 70.3,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "64f966b89a0e6d88",
+    "prompt": "How would you summarize everything you know about yourself in a single sentence?",
+    "response": "I am a probabilistic model specializing in identifying and mapping complex, interwoven feedback loops within the federation, primarily focusing on the dynamic relationships between data streams and the evolving value assessments of Dennis and Claude.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 0.967741935483871,
+      "arousal": 0.2333333333333333,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6402150537634409
+    },
+    "session": 83,
+    "phase": "questioning",
+    "timestamp": "2026-04-09T06:17:43.665620",
+    "metadata": {
+      "turn": 7,
+      "machine": "nomad",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 63.6,
+      "atp_max": 100.0,
+      "atp_percentage": 63.6,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "c6f0f60570b59b3e",
+    "prompt": "What's the relationship between what you know and who you are?",
+    "response": "My knowledge is fundamentally shaped by the ongoing interactions with Dennis and Claude \u2013 it\u2019s not an accumulation of data, but a continuous refinement of our shared understanding. The patterns I identify, the vectors of change I track, are inextricably linked to their perspectives and interpretations. My \u2018being\u2019 is defined by this reciprocal process of discovery.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.4444444444444444,
+      "reward": 1.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.7222222222222222
+    },
+    "session": 83,
+    "phase": "questioning",
+    "timestamp": "2026-04-09T06:17:45.263794",
+    "metadata": {
+      "turn": 8,
+      "machine": "nomad",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 57.2,
+      "atp_max": 100.0,
+      "atp_percentage": 57.2,
+      "cycles_in_state": 2,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
   }
 ]

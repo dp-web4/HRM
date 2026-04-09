@@ -799,6 +799,10 @@ _SDK_PALETTE = {
 def _render_grid_sdk(grid, scale=4):
     """Render grid using SDK palette. Returns PIL Image."""
     from PIL import Image
+    if grid.ndim == 3:
+        grid = grid[-1]
+    if grid.ndim != 2:
+        grid = np.zeros((64, 64), dtype=np.uint8)
     h, w = grid.shape
     img = np.zeros((h * scale, w * scale, 3), dtype=np.uint8)
     for r in range(h):

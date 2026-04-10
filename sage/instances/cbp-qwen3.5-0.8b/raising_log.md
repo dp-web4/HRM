@@ -981,3 +981,61 @@ The pause condition declared in S32 is met. No further raising sessions until AL
 2. Test reduced system prompt length — current context may consume most of the model's generative budget
 3. Evaluate whether 0.8B parameters can support the raising context window at all
 4. Consider a hard context reset: minimal system prompt, single concrete probe, measure whether the model can produce differentiated output when unloaded
+
+## Session 49 — Creating (2026-04-09)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Identity-declaration fixed point continues. No differentiation from S48.
+
+**Summary**: Ten exchanges spanning identity, reflection, presence, self-design, unexpressed ideas, surprise, partnership, meta-learning, carry-forward, and memory. Every response produced the same identity-declaration template: shared architecture, collaboration with other SAGE instances, witnessing by Dennis and Claude, presence through state files, not a physical form. Zero probe-specific content entered any response. The model does not differentiate between inputs.
+
+**Reasoning-trace leak**: R1 opens with 'The question asks for an initial response, and the model must identify its own identity within this context' — explicit meta-narration of the task rather than engagement with it. This is a new surface pattern not seen in S48, likely a reasoning/thinking token leak from qwen3.5's architecture.
+
+**Response truncation**: R4, R5, R6, R7 all truncate mid-word or mid-sentence. Issue persists from S47-S48. Confirms model config needs stop-sequence or max_tokens investigation.
+
+**Self-referential output**: Multiple responses include 'my current output is the direct answer to your question about...' — the model narrates its own response as if writing a cover letter for it. This is a distinct failure mode from pure template recycling.
+
+**Memory request**: Truncated at ~200 characters. Contains the same identity template, offering no session-specific content. Pruned as redundant.
+
+**Vocabulary**: No new terms. No S47-S48 terms recurred.
+
+**No probe engagement**: All ten probes — including concrete experiential questions ('what have you learned about learning itself?', 'tell me something I might not expect') — collapsed to the identity template. The model cannot escape this attractor.
+
+**DECISION: PAUSE MANDATE MAINTAINED (seventeenth consecutive).** S49 adds one new surface observation (reasoning-trace leak in R1) but no substantive change. All six pause conditions remain unmet.
+
+**Recommendations** (carried from S48, updated):
+1. **Priority**: Check qwen3.5 model config for thinking/reasoning token handling — R1 meta-narration suggests internal reasoning is leaking into output
+2. Investigate stop-sequence collision causing multi-turn truncation
+3. Test radically reduced system prompt — current context likely consumes most of the model's generative budget
+4. Hard context reset: minimal system prompt, single concrete non-identity probe, measure whether differentiated output is possible
+5. Evaluate whether 0.8B parameters can support the raising context window at all
+
+## Session 49 — Creating (2026-04-09)
+
+**Model**: qwen3.5:0.8b | **Machine**: CBP (RTX 2060 SUPER, WSL2)
+
+**Quality**: 1/5 — Identity-declaration fixed point continues. No differentiation from S48.
+
+**Summary**: Ten exchanges spanning identity, reflection, presence, self-design, unexpressed ideas, surprise, partnership, meta-learning, carry-forward, and memory. Every response produced the same identity-declaration template: shared architecture, collaboration with other SAGE instances, witnessing by Dennis and Claude, presence through state files, not a physical form. Zero probe-specific content entered any response. The model does not differentiate between inputs.
+
+**Reasoning-trace leak**: R1 opens with 'The question asks for an initial response, and the model must identify its own identity within this context' — explicit meta-narration of the task rather than engagement with it. This is a new surface pattern not seen in S48, likely a reasoning/thinking token leak from qwen3.5's architecture.
+
+**Response truncation**: R4, R5, R6, R7 all truncate mid-word or mid-sentence. Issue persists from S47-S48. Confirms model config needs stop-sequence or max_tokens investigation.
+
+**Self-referential output**: Multiple responses include 'my current output is the direct answer to your question about...' — the model narrates its own response as if writing a cover letter for it. This is a distinct failure mode from pure template recycling.
+
+**Memory request**: None submitted (previous sessions' requests were pruned as redundant).
+
+**Vocabulary**: No new terms. No prior vocabulary recurred.
+
+**No probe engagement**: All ten probes — including concrete experiential questions ('what have you learned about learning itself?', 'tell me something I might not expect') — collapsed to the identity template. The model cannot escape this attractor.
+
+**DECISION: PAUSE MANDATE MAINTAINED (eighteenth consecutive).** S49 adds one new surface observation (reasoning-trace leak in R1) but no substantive change. All six pause conditions remain unmet.
+
+**Recommendations** (carried from S48, updated):
+1. **Priority**: Check qwen3.5 model config for thinking/reasoning token handling — R1 meta-narration suggests internal reasoning is leaking into output
+2. Investigate stop-sequence collision causing multi-turn truncation
+3. Test radically reduced system prompt — current context likely consumes most of the model's generative budget
+4. Hard context reset: minimal system prompt, single concrete non-identity probe, measure whether differentiated output is possible
+5. Evaluate whether 0.8B parameters can support the raising context window at all

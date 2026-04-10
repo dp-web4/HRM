@@ -1,0 +1,22 @@
+{
+  "_description": "vc33 verified solutions — dual-button wall/goal puzzle",
+  "_updated": "2026-04-09",
+  "_game_type": "Click-only. Brown buttons = instant wall swap. Blue buttons = animated goal transfer.",
+  "_critical": [
+    "TWO BUTTON TYPES: brown (instant wall movement) and blue (animated goal transfer).",
+    "Blue buttons start inactive, turn olive when ready. Blue clicks are FREE (no budget cost).",
+    "POSITION != WIN: goal at target position doesn't always clear. Game checks structural alignment.",
+    "If position is right but level didn't clear, activate a blue button for structural swap.",
+    "Enablers: when a button depletes, clicking a different 'no-effect' button resets it. Chains 3+ deep.",
+    "Total: 167 actions across 7 levels. Baseline 307 = 184% efficiency."
+  ],
+  "levels": {
+    "L1": {"actions": 3, "notes": "Direct: 3 brown clicks."},
+    "L2": {"actions": 7, "notes": "Enabler pattern: 3F, E, F, E, F."},
+    "L3": {"actions": 23, "notes": "3 goals, 8 buttons. 3-layer enabler chain."},
+    "L4": {"actions": 21, "notes": "First blue button level. Brown arrange → blue swap."},
+    "L5": {"actions": 44, "notes": "Most complex. 5 blue activations across 3 blue buttons."},
+    "L6": {"actions": 20, "notes": "Brown→blue→brown→blue→brown pattern."},
+    "L7": {"actions": 49, "notes": "3 goals, 4 blue activations. 48x48 grid with display offset."}
+  }
+}

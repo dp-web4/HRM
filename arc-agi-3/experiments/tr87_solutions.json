@@ -1,0 +1,50 @@
+{
+  "_description": "tr87 verified solutions — rewrite rule puzzle with symbol cycling",
+  "_updated": "2026-04-09T21:00",
+  "_game_type": "Pattern matching with symbol cycling on a two-row board. Move-only (UP/DOWN/LEFT/RIGHT). No clicking.",
+  "_critical": [
+    "UP cycles symbol -1 (wraps 1→7). DOWN cycles +1 (wraps 7→1).",
+    "LEFT/RIGHT moves cursor between symbol groups.",
+    "In alter_rules mode, cursor visits ALL rule groups (LHS+RHS of each rule). Answer row is FIXED.",
+    "Cursor position carries across levels — after L5, cursor is at index 1, need LEFT first for L6.",
+    "tree_translation: RHS symbols must NAME-match another rule's LHS. Chain A→B→C."
+  ],
+  "levels": {
+    "L1": {
+      "status": "VERIFIED", "budget": 128,
+      "actions": "DOWN DOWN RIGHT DOWN DOWN RIGHT UP UP UP RIGHT DOWN RIGHT DOWN DOWN",
+      "total_actions": 14,
+      "notes": "Simple 1:1 substitution. 6 rules A→B. Set answer row to match rule application."
+    },
+    "L2": {
+      "status": "VERIFIED", "budget": 128,
+      "actions": "DOWN DOWN DOWN RIGHT DOWN DOWN RIGHT UP UP UP RIGHT UP UP RIGHT UP UP UP RIGHT UP UP UP RIGHT DOWN DOWN DOWN",
+      "total_actions": 25,
+      "notes": "1:1 and 1:N rules (B→C). Variable-length RHS."
+    },
+    "L3": {
+      "status": "VERIFIED", "budget": 128,
+      "actions": "DOWN RIGHT DOWN DOWN RIGHT DOWN DOWN DOWN RIGHT DOWN DOWN RIGHT UP UP UP RIGHT DOWN DOWN RIGHT DOWN DOWN",
+      "total_actions": 21,
+      "notes": "N:1 and N:M rules (C→A). Multi-symbol LHS matching."
+    },
+    "L4": {
+      "status": "VERIFIED", "budget": 128,
+      "actions": "UP UP UP RIGHT UP UP UP RIGHT UP UP UP RIGHT RIGHT DOWN DOWN RIGHT UP UP UP RIGHT DOWN",
+      "total_actions": 21,
+      "notes": "double_translation: portal connectors chain two rules. A→B→C via portals."
+    },
+    "L5": {
+      "status": "VERIFIED", "budget": 128,
+      "actions": "DOWN DOWN DOWN RIGHT DOWN DOWN RIGHT UP RIGHT UP RIGHT DOWN RIGHT UP UP RIGHT UP UP UP RIGHT",
+      "total_actions": 20,
+      "notes": "alter_rules: edit rules only, answer row fixed. Set rules so apply_rules(A5 A1 A4 A4 A2) = B3 B5 B5 B1 B2. Rules: A5→B3, A1→B5 B5, A4 A4→B1, A2→B2. Seed=23."
+    },
+    "L6": {
+      "status": "VERIFIED", "budget": 256,
+      "actions": "LEFT UP UP UP RIGHT DOWN RIGHT DOWN DOWN DOWN RIGHT DOWN RIGHT DOWN RIGHT UP UP UP RIGHT UP UP UP RIGHT DOWN DOWN DOWN RIGHT DOWN RIGHT DOWN DOWN DOWN RIGHT UP RIGHT UP",
+      "total_actions": 36,
+      "notes": "alter_rules+double_translation+tree_translation. 3x3 rule grid, 3 families A→B→C. Must LEFT first (cursor at index 1 from L5). Restore original rule values. Seed=11. Tree chain: R1 A7→B7,B2 chains to R2 B7→C3 and R4 B2→C1."
+    }
+  }
+}

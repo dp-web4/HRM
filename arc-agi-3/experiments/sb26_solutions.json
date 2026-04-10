@@ -1,0 +1,32 @@
+{
+  "_description": "sb26 verified solutions — hierarchical indicator placement puzzle",
+  "_updated": "2026-04-09",
+  "_game_type": "Move+click. Pick indicators, place in slots. Border colors = identity. Indicator reading order = semantics.",
+  "_critical": [
+    "Indicator bar reading order (left-to-right) is source of truth, not spatial arrangement.",
+    "Border color on a box = that box's identity. Matching indicator goes in parent/identity slot.",
+    "L1-5: pick-and-place mechanic. L6+: SWAP mechanic (paradigm shift).",
+    "Structural rules transfer across paradigms — only interaction mechanic changes.",
+    "Total: 140 actions across 8 levels. Baseline 153 = 109% efficiency."
+  ],
+  "structural_patterns": [
+    "flat_sequence: indicators map to slots 1:1 left-to-right",
+    "single_hierarchy: connector = parent-child. Parent gets LAST indicator.",
+    "multi_group_hierarchy: multiple expansion groups with different border colors.",
+    "border_color_identity: parent slot gets indicator matching border color.",
+    "multi_parent_slots: border color can occupy MULTIPLE parent slots.",
+    "swap_grid_container: SWAP mechanic. Container gets child identities in indicator order.",
+    "nested_palindrome: [own, CHILD, own]. Center of palindrome = innermost leaf.",
+    "cross_group_identity: each box gets its color + OTHER box's identity in last position."
+  ],
+  "levels": {
+    "L1": {"actions": 9, "pattern": "flat_sequence"},
+    "L2": {"actions": 15, "pattern": "single_hierarchy"},
+    "L3": {"actions": 15, "pattern": "multi_group_hierarchy"},
+    "L4": {"actions": 15, "pattern": "border_color_identity"},
+    "L5": {"actions": 17, "pattern": "multi_parent_slots"},
+    "L6": {"actions": 19, "pattern": "swap_grid_container"},
+    "L7": {"actions": 17, "pattern": "nested_palindrome"},
+    "L8": {"actions": 17, "pattern": "cross_group_identity"}
+  }
+}

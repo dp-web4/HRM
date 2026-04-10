@@ -49,6 +49,13 @@ from arc_perception import get_frame, get_all_frames, find_color_regions, backgr
 STATE_DIR = "/tmp/claude_solver"
 os.makedirs(STATE_DIR, exist_ok=True)
 
+# Fleet knowledge paths
+SHARED_CONTEXT = os.path.join(os.path.dirname(__file__), "..", "..", "..",
+                               "shared-context", "arc-agi-3")
+FLEET_LEARNING = os.path.join(SHARED_CONTEXT, "fleet-learning")
+GAME_MECHANICS = os.path.join(SHARED_CONTEXT, "game-mechanics")
+SOLUTIONS_DIR = os.path.join(os.path.dirname(__file__))
+
 # ARC-AGI-3 SDK official palette (from arc_agi/rendering.py COLOR_MAP)
 # ARC-AGI-3 SDK official palette (from arc_agi/rendering.py COLOR_MAP)
 # ONE palette everywhere: 0=white, 5=black, 11=yellow, 14=green
@@ -212,6 +219,65 @@ def load_grid(name="current"):
     return None
 
 
+def load_fleet_knowledge(game_prefix):
+    """Load fleet learning, mechanics docs, and solutions for a game."""
+    import glob
+    sections = []
+
+    # 1. Game mechanics doc
+    mech_path = os.path.join(GAME_MECHANICS, f"{game_prefix}.md")
+    if os.path.exists(mech_path):
+        with open(mech_path) as f:
+            # First 80 lines (key info, skip deep source analysis)
+            lines = f.readlines()[:80]
+            sections.append(f"=== MECHANICS ({game_prefix}.md) ===\n{''.join(lines)}")
+
+    # 2. Solutions file (verified sequences from prior sessions)
+    sol_path = os.path.join(SOLUTIONS_DIR, f"{game_prefix}_solutions.json")
+    if os.path.exists(sol_path):
+        with open(sol_path) as f:
+            sections.append(f"=== VERIFIED SOLUTIONS ===\n{f.read()[:3000]}")
+
+    # 3. Fleet learning JSONL (all machines)
+    for machine_dir in glob.glob(os.path.join(FLEET_LEARNING, "*")):
+        machine = os.path.basename(machine_dir)
+        for jsonl in glob.glob(os.path.join(machine_dir, f"{game_prefix}*.jsonl")):
+            with open(jsonl) as f:
+                entries = f.readlines()[-10:]  # last 10 entries
+                if entries:
+                    sections.append(
+                        f"=== Fleet learning ({machine}) ===\n{''.join(entries)}")
+        # Also check markdown learning docs
+        for md in glob.glob(os.path.join(machine_dir, f"{game_prefix}*.md")):
+            with open(md) as f:
+                content = f.read()[:2000]
+                sections.append(
+                    f"=== Fleet doc ({machine}/{os.path.basename(md)}) ===\n{content}")
+
+    # 4. Knowledge cartridge (local JSON)
+    cart_path = os.path.join(SOLUTIONS_DIR, "cartridges",
+                             f"{game_prefix}.knowledge.json")
+    if os.path.exists(cart_path):
+        try:
+            with open(cart_path) as f:
+                kb = json.load(f)
+            best = kb.get("best_score", {})
+            attempts = kb.get("total_attempts", 0)
+            n_mechanics = len(kb.get("mechanics", []))
+            insights = kb.get("strategic_insights", [])[:5]
+            if best or attempts:
+                cart_info = (f"=== Cartridge ({game_prefix}) ===\n"
+                             f"Best: {best}, Attempts: {attempts}, "
+                             f"Mechanics: {n_mechanics}\n")
+                if insights:
+                    cart_info += "Insights: " + "; ".join(insights[:3])
+                sections.append(cart_info)
+        except Exception:
+            pass
+
+    return "\n\n".join(sections) if sections else None
+
+
 def cmd_init(game_prefix):
     """Initialize a new game session. Cleans up all state from prior games."""
     # Clean up old state
@@ -278,10 +344,14 @@ def cmd_init(game_prefix):
     print(f"ACTIONS: {avail_str}")
     print(f"BASELINE: {session['baseline']} actions for 100% efficiency")
     print(f"IMAGE: {img_path}")
+
+    # Load fleet knowledge if available
+    fleet_kb = load_fleet_knowledge(game_prefix)
+    if fleet_kb:
+        print(f"\nFLEET KNOWLEDGE:\n{fleet_kb}")
+
     print(f"\nSCENE:\n{scene}")
-    print(f"\nThis is your first view of the game. Study the image carefully.")
-    print(f"What type of game is this? What do you think the objective is?")
-    print(f"When ready, use: python3 claude_solver.py step <action> [x] [y]")
+    print(f"\nWhen ready, use: python3 claude_solver.py step <action> [x] [y]")
 
 
 def cmd_step(action, x=None, y=None):

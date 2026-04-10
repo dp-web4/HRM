@@ -25,6 +25,8 @@ class SolverConfig:
     viewer: bool = True
     kaggle: bool = False
     identity: str = None        # SAGE instance dir for raising identity
+    replay: bool = False        # replay mode: execute known action sequence
+    actions: str = ""           # action sequence for replay (space-separated)
     command: str = ""           # interactive subcommand: init, step, look, summarize
     command_args: list = None   # extra args for command (e.g., action, x, y)
 
@@ -62,6 +64,10 @@ def parse_args() -> SolverConfig:
                         help="Disable session viewer output")
     parser.add_argument("--kaggle", action="store_true",
                         help="Kaggle mode: disable all optional imports")
+    parser.add_argument("--replay", action="store_true",
+                        help="Replay mode: execute known action sequence")
+    parser.add_argument("--actions", default="",
+                        help="Action sequence for replay (space-separated: UP DOWN CLICK,32,45)")
     parser.add_argument("--identity", default=None,
                         help="SAGE instance dir for raising identity")
     parser.add_argument("command", nargs="?", default="",
@@ -74,6 +80,8 @@ def parse_args() -> SolverConfig:
     return SolverConfig(
         model=args.model,
         backend="claude" if args.interactive else args.backend,
+        replay=args.replay,
+        actions=args.actions,
         vision=args.vision,
         interactive=args.interactive,
         use_world_model=args.use_world_model,

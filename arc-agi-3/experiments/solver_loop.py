@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 """
-Solver Loop — autonomous and interactive game-solving loops.
+Solver Loop — all game-solving modes.
 
 Part of SAGE Solver v11 modular architecture.
 
-Two entry points:
-  solve_game_autonomous  — merges v7 world-model loop with discovery/probe/federation
-  solve_game_interactive — wraps sage_solver's init/step/look/summarize for Claude Code
+Three entry points:
+  solve_game_autonomous  — LLM-driven loop with world model, discovery, federation
+  solve_game_interactive — Claude Code as reasoning engine (init/step/look/summarize)
+  replay_actions         — execute a known action sequence with full visual capture
+
+All modes use SessionWriter for persistent visual memory and live viewer.
+State directory: /tmp/sage_solver/
 """
 
 import sys
@@ -653,6 +657,86 @@ def solve_game_autonomous(arcade, game_id, backend, config):
 
     return {"game_id": game_id, "best_levels": best_levels,
             "win_levels": fd.win_levels if fd else 0}
+
+
+# ─── Replay Mode (Direct API) ───
+
+def replay_actions(game_id, actions, label="replay"):
+    """Execute a known action sequence with full visual capture.
+
+    This is the "direct API" mode — used when the solution is already computed
+    (from source analysis, algorithmic solver, or previous session).
+    Every frame is persisted via SessionWriter.
+
+    Args:
+        game_id: full game ID (e.g., 'tu93-2b534c15')
+        actions: list of actions. Each is either:
+            - int (direction: 1=UP, 2=DOWN, 3=LEFT, 4=RIGHT, 5=SELECT)
+            - tuple (action_int, x, y) for clicks
+            - str direction name ('UP', 'DOWN', etc.)
+        label: player label for the run
+
+    Returns:
+        dict with levels_completed, win_levels, total_steps, state, run_dir
+    """
+    from arc_agi import Arcade
+    from arc_session_writer import SessionWriter
+
+    name_to_int = {'UP': 1, 'DOWN': 2, 'LEFT': 3, 'RIGHT': 4,
+                   'SELECT': 5, 'CLICK': 6}
+
+    arcade = Arcade()
+    env = arcade.make(game_id)
+    fd = env.reset()
+
+    sw = SessionWriter(
+        game_id, win_levels=fd.win_levels,
+        available_actions=[
+            a.value if hasattr(a, 'value') else int(a)
+            for a in (fd.available_actions or [])],
+        player=label)
+
+    for item in actions:
+        # Normalize action format
+        if isinstance(item, str):
+            upper = item.upper()
+            action_int = name_to_int[upper] if upper in name_to_int else int(item)
+            x = y = None
+        elif isinstance(item, tuple):
+            action_int, x, y = item
+        else:
+            action_int = int(item)
+            x = y = None
+
+        # Execute
+        ga = INT_TO_GAME_ACTION[action_int]
+        if x is not None:
+            fd = env.step(ga, data={"x": x, "y": y})
+        else:
+            fd = env.step(ga)
+
+        all_frames = get_all_frames(fd)
+        grid = all_frames[-1]
+        sw.record_step(
+            action_int, grid,
+            all_frames=all_frames if len(all_frames) > 1 else None,
+            levels_completed=fd.levels_completed,
+            x=x, y=y,
+            state=fd.state.name if hasattr(fd.state, 'name')
+                else str(fd.state))
+
+        if fd.state.name in ("GAME_OVER", "WON"):
+            break
+
+    sw.record_game_end(fd.state.name, fd.levels_completed)
+
+    return {
+        "levels_completed": fd.levels_completed,
+        "win_levels": fd.win_levels,
+        "total_steps": sw.step,
+        "state": fd.state.name,
+        "run_dir": sw.run_dir,
+    }
 
 
 # ─── Interactive Solve Loop ───

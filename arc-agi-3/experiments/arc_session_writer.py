@@ -101,6 +101,7 @@ class SessionWriter:
         }
 
         self._level_start_grid = None
+        self._prev_grid = None  # track previous frame for solved-state capture
         self._save_viewer()
 
     def record_step(self, action: int, grid: np.ndarray,
@@ -176,10 +177,12 @@ class SessionWriter:
 
         # Level change detection — update live viewer grids
         if levels_completed > prev_level:
-            # Save solved level's final grid and new level's start grid
-            # for the live viewer at /tmp/sage_solver/
+            # The "final" grid for the solved level is the PREVIOUS step's frame
+            # (the state right before the winning action). The current grid is
+            # already the next level's start (SDK transitions instantly).
+            final_grid = self._prev_grid if self._prev_grid is not None else grid
             np.save(os.path.join(VIEWER_DIR,
-                    f"level_{prev_level}_final_grid.npy"), grid)
+                    f"level_{prev_level}_final_grid.npy"), final_grid)
             np.save(os.path.join(VIEWER_DIR,
                     f"level_{prev_level}_start_grid.npy"),
                     self._level_start_grid if self._level_start_grid is not None
@@ -194,10 +197,12 @@ class SessionWriter:
             self.session["level_summaries"].append(
                 f"L{prev_level+1}: solved at step {self.step}")
         elif self._level_start_grid is None:
-            # First step of first level — save as start grid
             self._level_start_grid = grid
             np.save(os.path.join(VIEWER_DIR,
                     f"level_0_start_grid.npy"), grid)
+
+        # Track for next step's solved-state capture
+        self._prev_grid = grid.copy()
 
         self._save_viewer()
 

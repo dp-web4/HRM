@@ -1,61 +1,48 @@
-# sp80 Play-to-Win: Learning Through Experimentation
+# sp80 Play-to-Win: Progress Log
 
 **Date**: 2026-04-10
-**Machine**: Thor
-**Status**: Level 1 in progress (0/6 complete)
+**Status**: L1-L3 solved live, L4-L6 in progress
 
-## Critical Insight from User
+## Solutions Verified Live Against SDK
 
-"DO NOT PERSEVERATE. The game is likely unsolvable algorithmically. You might have to actually reason about it."
+### Level 1 (rot=0, grid=16x16, 30 steps)
+- **Config**: Pipe at (6,4) — 3 rights from default
+- **Actions**: CLICK(7,3) RIGHT RIGHT RIGHT SELECT
+- **5 actions, verified live**
 
-## What DIDN'T Work (Lessons from Failure)
+### Level 2 (rot=180, grid=16x16, 45 steps)
+- **Config**: pipe0 stays at (6,6), pipe1→(4,3), pipe2→(4,11)
+- **Actions**: CLICK(33,25) RIGHT RIGHT DOWN DOWN DOWN DOWN DOWN DOWN CLICK(13,17) RIGHT*7 SELECT
+- **18 actions, verified live**
 
-### Failed Approach 1: Algorithmic Code Analysis
-- Spent extensive time reverse-engineering the water physics from source code
-- Discovered receptacle fill mechanics require "water from BOTH perpendicular sides SIMULTANEOUSLY"
-- Tried to calculate exact pipe positions based on sprite dimensions and coordinates
-- **FAILURE**: Over-complicated the problem, lost sight of actual behavior
+### Level 3 (rot=180, grid=16x16, 100 steps)
+- **Config**: p0→(11,3), p1→(3,7), p2→(0,5), p3→(9,9)
+- **Actions**: p2 LEFT → p1 LEFT 5 → p0 RIGHT 10 UP 5 → p3 LEFT UP → SELECT
+- **~28 display actions, verified live**
+- **Key insight**: Grid boundary constraint — 4w pipe max x = gw-4 = 12, NOT 14.
 
-### Failed Approach 2: Centered Pipe Position
-- Hypothesis: Center pipe under drip source at default position
-- Actions: Just clicked and poured with default setup
-- Result: Receptacles stayed yellow (not filled)
-- **Learning**: Default position doesn't work
+## L4-L6 Analysis (Unsolved)
 
-### Failed Approach 3: Moved Pipe Right
-- Hypothesis: Position pipe to split water toward both receptacles
-- Actions: Clicked (7,3), moved RIGHT 4 times, poured
-- Result: Receptacles stayed yellow
-- **Learning**: Moving pipe right doesn't help
+### The Fundamental L4 Challenge
+- Grid 20x20, rot=0, 120 steps
+- 2 sources: x=7 from top, x=5 from fixed pipe (adbrqflmwi at (2,9))
+- 4 cups at x=3, x=9, x=13, x=17 at y=17
+- The fixed pipe p0 spans x=2-8 at y=9. ANY water entering it exits at x=1 and x=9.
+- x=1 stream → always reaches danger zone at y=19 unless caught by another pipe
+- Splash from receptacle edges creates stray water that reaches danger
 
-### Failed Approach 4: Removed Pipe from Path
-- Hypothesis: Maybe water needs to fall straight without pipe interference
-- Actions: Just poured without moving pipe
-- Result: Receptacles stayed yellow
-- **Learning**: Water falling straight from source doesn't fill receptacles
+### What Didn't Work (L4)
+1. Random search: 3.5M+ random pipe configurations — found 4/4 fills but ALWAYS with danger
+2. Analytical routing: every pipe chain eventually produces uncaught stray water
+3. Negative-x pipe positions (x=-1, -2) for catching x=1 stream — still danger from other sources
+4. The core constraint: 4 movable pipes + 2 sources + fixed pipe producing x=1 + splash mechanics → not enough pipes to catch ALL stray water
 
-## Observed Game State (Level 1)
+### Hypothesis for L4 Solution
+- May require a pipe configuration where water streams merge before hitting receptacles, avoiding splash
+- Or: the simulation doesn't perfectly model some mechanic (e.g., splash blocking when water already exists at splash position)
+- Or: there's a creative use of pipe overlap or pipe-pipe cascading that creates safe routing
 
-From source code analysis:
-- **Drip source**: Position (9, 0) - water falls at x=9
-- **Left receptacle**: Position (4, 13) - spans x=4,5,6
-- **Right receptacle**: Position (10, 13) - spans x=10,11,12
-- **Pipe (5-wide)**: Initial position (3, 4) - spans x=3 to x=7
-- **Max pours**: 4 (I've used 2-3 already!)
-- **Budget**: 30 steps
-
-## Key Observations from Animated GIFs
-
-[TODO: Watch the GIF animations to understand actual water flow!]
-
-## Next Steps
-
-1. **WATCH** the animated GIFs from failed attempts
-2. **EXPERIMENT** with completely different pipe positions based on visual observations
-3. **DOCUMENT** what actually happens (not what I think should happen)
-4. Try moving pipe to EXTREME positions (far left, far up, far down)
-5. Consider: Maybe Level 1 requires a trick that's not obvious from "normal" physics
-
-## Hypothesis to Test Next
-
-[To be filled in after watching GIFs and observing water behavior]
+### Next Steps
+1. Try interactive exploration: position pipes, pour, observe actual game behavior
+2. Compare game behavior with simulation to find discrepancies
+3. Try L5 and L6 — might be easier than L4 (L5 has L-pipes which add routing options)

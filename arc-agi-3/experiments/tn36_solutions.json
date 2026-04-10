@@ -1,0 +1,23 @@
+{
+  "_description": "tn36 verified solutions — programmable block movement with arrow selectors",
+  "_updated": "2026-04-09",
+  "_game_type": "Click-only. Binary-encoded arrow columns program movement. Confirm button executes. Two-panel: left=context, right=editable.",
+  "_critical": [
+    "Binary encoding: N arrow bits per column, value = sum(2^i for toggled bits). Maps to command table.",
+    "Command map: 0=NOP, 1=LEFT, 2=RIGHT, 3=DOWN, 33=UP, 5=ROT90, 8=SCALE+, 9=SCALE-.",
+    "RIGHT panel is editable, LEFT panel is read-only context.",
+    "Checkered squares (ccjcukzyce) are WAYPOINTS — block docks and saves home position.",
+    "Portals toggle visibility every 3rd instruction step (step%3==2). Inclusive collision bounds.",
+    "Total actions: 119 across 7 levels."
+  ],
+  "key_mechanics": {
+    "waypoints": "Checkered 4x4 sprites save block home position when block lands exactly on one. Next play starts from saved position. Enables multi-play routing.",
+    "portals": "Toggle on step%3==2. When visible and colliding with block, block is consumed (killed). Must time passage through portal kill zone.",
+    "two_panels": "Left panel shows target pattern. Right panel is your editable program. Confirm button runs both."
+  },
+  "levels": {
+    "L1-L5": "Basic programming — set arrow bits to encode movement commands, confirm to execute.",
+    "L6": "4-play waypoint chaining: (33,28)→(53,28)→(49,20)→(53,4)→(37,8). 40 actions.",
+    "L7": "Portal dodging: (41,28)→(53,24)→(53,8)→(33,12)→(41,8). NOP-timing to avoid portal kill at y=16."
+  }
+}

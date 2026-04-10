@@ -2,26 +2,26 @@
 """
 SAGE Solver v11 — Unified Modular Architecture.
 
-CLI entry point that unifies autonomous and interactive solving modes
-with modular backends, 4-layer context, world-model planning, mechanic
-discovery, and fleet federation.
+CLI entry point. Three modes, one solver, one state directory (/tmp/sage_solver/).
 
 Usage:
-    # Autonomous (Ollama backend)
+    # Autonomous (Ollama backend, LLM decides actions)
     python3 sage_solver.py --game lp85 -v
     python3 sage_solver.py --all --attempts 5 --budget 300
-
-    # Specific model
     python3 sage_solver.py --game cd82 --model gemma4:e4b -v
 
-    # Interactive (Claude Code as model)
-    python3 sage_solver.py --interactive --game cd82
+    # Interactive (Claude Code as the reasoning model)
+    python3 sage_solver.py --interactive --game cd82 init
+    python3 sage_solver.py --interactive step 6 32 45
 
-    # Kaggle mode (no optional imports)
+    # Replay (execute known action sequence with visual capture)
+    python3 sage_solver.py --replay --game tu93 --actions "RIGHT DOWN DOWN RIGHT ..."
+
+    # Kaggle competition mode
     python3 sage_solver.py --kaggle --all --no-vision --no-discovery
 
-    # Disable world-model planning (use context-plan mode)
-    python3 sage_solver.py --game lp85 --no-world-model -v
+All modes use SessionWriter for persistent visual memory to
+shared-context/arc-agi-3/visual-memory/{game}/run_{timestamp}/
 """
 
 import sys
@@ -35,7 +35,8 @@ from arc_agi import Arcade
 
 from solver_config import parse_args
 from model_backend import OllamaBackend, ClaudeInteractiveBackend
-from solver_loop import solve_game_autonomous, solve_game_interactive, interactive_step
+from solver_loop import (solve_game_autonomous, solve_game_interactive,
+                         interactive_step, replay_actions)
 
 
 def main():
@@ -65,6 +66,38 @@ def main():
         print("\nWarming up...", end=" ", flush=True)
         ok = backend.warmup()
         print("OK" if ok else "WARN: model may not be ready")
+
+    # ── Replay Mode ──
+    if config.replay:
+        if not config.game:
+            print("Error: --replay requires --game")
+            return
+        if not config.actions:
+            print("Error: --replay requires --actions")
+            return
+
+        # Parse action string: "UP DOWN CLICK,32,45 RIGHT"
+        actions = []
+        for token in config.actions.split():
+            if ',' in token:
+                parts = token.split(',')
+                actions.append((6, int(parts[1]), int(parts[2])))
+            else:
+                actions.append(token)
+
+        arcade = Arcade()
+        matches = [e for e in arcade.get_environments() if config.game in e.game_id]
+        if not matches:
+            print(f"No game matching '{config.game}'")
+            return
+
+        game_id = matches[0].game_id
+        print(f"\nReplaying {game_id}: {len(actions)} actions")
+        result = replay_actions(game_id, actions, label="replay")
+        print(f"Result: {result['levels_completed']}/{result['win_levels']} "
+              f"in {result['total_steps']} steps ({result['state']})")
+        print(f"Visual memory: {result['run_dir']}")
+        return
 
     # ── Interactive Mode ──
     if config.interactive:

@@ -1,6 +1,6 @@
 {
   "machine": "legion",
-  "updated_at": 1775807940.8092294,
+  "updated_at": 1775834171.7741513,
   "game_discoveries": {
     "lp85": [
       {
@@ -508,16 +508,6 @@
   },
   "meta_insights": [
     {
-      "text": "Game tr87 (cursor_cycle): RIGHT: consistent effect (~28px each time)\nLEFT: consistent effect (~28px each time)\nGrid similarity STABLE around 98.0% (not progressing)\nWARNING: RI",
-      "machine": "legion",
-      "timestamp": 1775640704.3212912
-    },
-    {
-      "text": "Game sc25 (cursor_cycle): Grid similarity STABLE around 96.5% (not progressing)",
-      "machine": "legion",
-      "timestamp": 1775641290.3239152
-    },
-    {
       "text": "Game cn04 (cursor_cycle): red_3: consistent effect (~135px each time)\nUP: consistent effect (~1px each time)\nGrid similarity STABLE around 96.3% (not progressing)\nWARNING: red_",
       "machine": "legion",
       "timestamp": 1775641921.0646932
@@ -606,6 +596,16 @@
       "text": "Game m0r0 (cursor_cycle): ",
       "machine": "legion",
       "timestamp": 1775807940.8092263
+    },
+    {
+      "text": "Game m0r0 (cursor_cycle): DOWN: consistent effect (~102px each time)",
+      "machine": "legion",
+      "timestamp": 1775822340.93586
+    },
+    {
+      "text": "Game m0r0 (cursor_cycle): Grid similarity STABLE around 97.4% (not progressing)",
+      "machine": "legion",
+      "timestamp": 1775834171.7741494
     }
   ]
 }

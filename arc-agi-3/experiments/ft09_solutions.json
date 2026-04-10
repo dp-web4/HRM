@@ -1,0 +1,21 @@
+{
+  "_description": "ft09 verified solutions — color tile constraint puzzle",
+  "_updated": "2026-04-10",
+  "_game_type": "Click-only. 3x3 tile grid with color cycling. Goal constraints defined by bsT sprites. NTi tiles affect neighbors.",
+  "_solver": "Algorithmic (ft09_solver.py). All 6 levels verified. 75 total clicks, baseline 163 = 217% efficiency.",
+  "_critical": [
+    "Tiles cycle through palette on click. Palette is 2-3 colors per level.",
+    "bsT goal sprites: center pixel = target color. Black surrounding pixel = neighbor MUST be that color. Non-black = MUST NOT.",
+    "NTi tiles: clicking also cycles neighbors at magenta (color 6) pixel positions.",
+    "L5-L6 have NTi tiles requiring system-of-equations solving (Gaussian elimination mod palette_size).",
+    "Display coords: scale = 16/max(grid_w,grid_h), display_scale = scale*4. Click center of 3x3 sprite."
+  ],
+  "levels": {
+    "L1": {"clicks": 4, "palette": [9,8], "tiles": "8 Hkx", "coords": ["(38,54)","(38,46)","(38,38)","(54,46)"]},
+    "L2": {"clicks": 7, "palette": [9,12], "tiles": "13 Hkx", "coords": ["(22,32)","(22,24)","(30,48)","(22,48)","(22,16)","(38,32)","(38,24)"]},
+    "L3": {"clicks": 14, "palette": [8,12], "tiles": "23 Hkx"},
+    "L4": {"clicks": 16, "palette": [9,8,12], "tiles": "18 Hkx"},
+    "L5": {"clicks": 21, "palette": [14,15], "tiles": "27 Hkx + 3 NTi", "notes": "NTi tiles require Gaussian elimination mod 2"},
+    "L6": {"clicks": 13, "palette": [11,14], "tiles": "22 NTi", "notes": "All NTi — full system of equations mod 2"}
+  }
+}

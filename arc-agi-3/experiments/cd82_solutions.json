@@ -1,0 +1,21 @@
+{
+  "_description": "cd82 solutions — circular stamp painting puzzle. Solved by Nomad.",
+  "_updated": "2026-04-10",
+  "_game_type": "Move+click. Paint canvas to match target using two stamp tools orbiting on a circle.",
+  "_source": "fleet-learning/nomad/cd82_complete.md, cd82_learning.jsonl",
+  "_critical": [
+    "Two cursor sizes: big (full-width stamp) and small (overlay stamp). Both orbit the canvas circle.",
+    "Navigation: move cursor around the orbit. SELECT to stamp current color at cursor position.",
+    "Canvas starts partially painted. Target shows desired pattern. Match target = win.",
+    "127 total actions across 6 levels. Baseline 136 = 107% efficiency."
+  ],
+  "levels": {
+    "L1": {"actions": 5, "baseline": 41, "notes": "White bottom half. Navigate white cursor to 6 o'clock, SELECT."},
+    "L2": {"actions": 10, "baseline": 8, "notes": "White top, black bottom, olive diagonal. Multi-color stamping with recovery."},
+    "L3": {"actions": 35, "baseline": 30, "notes": "Complex multi-color target. Orbit navigation precision."},
+    "L4": {"actions": 25, "baseline": 25, "notes": "Tighter budget. Stamp order matters."},
+    "L5": {"actions": 30, "baseline": 17, "notes": "Small stamp precision required."},
+    "L6": {"actions": 22, "baseline": 15, "notes": "Most complex pattern. Both stamp sizes needed."}
+  },
+  "meta_learning": "The context window IS the intelligence. World model before action. Prediction before execution."
+}

@@ -1,6 +1,6 @@
 {
   "machine": "nomad",
-  "updated_at": 1775609543,
+  "updated_at": 1775687127.0592968,
   "game_discoveries": {
     "bp35": [
       {
@@ -91,6 +91,11 @@
         "text": "Interactive objects: cyan_23, teal_24. Game type: unknown.   cyan_23: 100% effective, ~293px (7 tries)\n  gray_3: no effect (3 tries)\n  teal_24: 100% effective,",
         "machine": "nomad",
         "timestamp": 1775438033.1033876
+      },
+      {
+        "text": "Interactive objects: cyan_23, teal_24. Game type: click_interact.   cyan_23: 100% effective, ~293px, moves grid TOWARD initial (4 tries)\n  teal_24: 100% effective, ~2",
+        "machine": "nomad",
+        "timestamp": 1775687127.059259
       }
     ],
     "m0r0": [
@@ -395,11 +400,6 @@
   },
   "meta_insights": [
     {
-      "text": "Game su15 (toggle): brown_2: consistent effect (~2px each time)\nblack_4: consistent effect (~2px each time)\nGrid similarity STABLE around 98.6% (not progressing)\nWARNING:",
-      "machine": "nomad",
-      "timestamp": 1775442497.7680602
-    },
-    {
       "text": "Game tn36 (toggle): black_1: consistent effect (~1px each time)\nbrown_39: consistent effect (~1px each time)\nbrown_0: consistent effect (~1px each time)\nyellow_30: consis",
       "machine": "nomad",
       "timestamp": 1775443201.6094625
@@ -493,6 +493,11 @@
       "text": "Game r11l (click_interact): green_7: consistent effect (~73px each time)\nred_1: consistent effect (~1px each time)\nred_5: consistent effect (~1px each time)\nGrid similarity STABL",
       "machine": "nomad",
       "timestamp": 1775524123.72501
+    },
+    {
+      "text": "Game lp85 (click_interact): teal_24: consistent effect (~292px each time)\ncyan_23: consistent effect (~293px each time)\nGrid similarity STABLE around 92.0% (not progressing)\nWARN",
+      "machine": "nomad",
+      "timestamp": 1775687127.0592914
     }
   ]
 }

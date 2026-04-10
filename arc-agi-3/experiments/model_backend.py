@@ -150,7 +150,7 @@ class ClaudeInteractiveBackend(ModelBackend):
         print(prompt)
         if image_b64:
             print(f"\n[IMAGE: {len(image_b64)} bytes base64 — "
-                  f"see /tmp/claude_solver/frame.png]")
+                  f"see /tmp/sage_solver/frame.png]")
         print("=" * 60)
         return ""
 

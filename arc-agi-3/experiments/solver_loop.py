@@ -6,7 +6,7 @@ Part of SAGE Solver v11 modular architecture.
 
 Two entry points:
   solve_game_autonomous  — merges v7 world-model loop with discovery/probe/federation
-  solve_game_interactive — wraps claude_solver's init/step/look/summarize for Claude Code
+  solve_game_interactive — wraps sage_solver's init/step/look/summarize for Claude Code
 """
 
 import sys
@@ -29,6 +29,59 @@ from solver_context import (
 from solver_probe import probe, discover_mechanics
 
 INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
+
+# Shared context paths
+_SHARED_CONTEXT = os.path.join(
+    os.path.dirname(__file__), '..', '..', '..',
+    'shared-context', 'arc-agi-3')
+_FLEET_LEARNING = os.path.join(_SHARED_CONTEXT, 'fleet-learning')
+_GAME_MECHANICS = os.path.join(_SHARED_CONTEXT, 'game-mechanics')
+_SOLUTIONS_DIR = os.path.dirname(__file__)
+
+
+def _load_fleet_knowledge(game_prefix):
+    """Load fleet learning, mechanics, solutions for a game.
+    Used by interactive mode to show context on init."""
+    import glob
+    sections = []
+
+    # Game mechanics doc (first 80 lines)
+    mech = os.path.join(_GAME_MECHANICS, f"{game_prefix}.md")
+    if os.path.exists(mech):
+        with open(mech) as f:
+            sections.append(f"=== MECHANICS ===\n{''.join(f.readlines()[:80])}")
+
+    # Solutions JSON
+    sol = os.path.join(_SOLUTIONS_DIR, f"{game_prefix}_solutions.json")
+    if os.path.exists(sol):
+        with open(sol) as f:
+            sections.append(f"=== SOLUTIONS ===\n{f.read()[:3000]}")
+
+    # Fleet learning JSONL (all machines, last 10 entries each)
+    for machine_dir in glob.glob(os.path.join(_FLEET_LEARNING, "*")):
+        machine = os.path.basename(machine_dir)
+        for jl in glob.glob(os.path.join(machine_dir, f"{game_prefix}*.jsonl")):
+            with open(jl) as f:
+                entries = f.readlines()[-10:]
+            if entries:
+                sections.append(f"=== Fleet ({machine}) ===\n{''.join(entries)}")
+        for md in glob.glob(os.path.join(machine_dir, f"{game_prefix}*.md")):
+            with open(md) as f:
+                sections.append(f"=== {machine}/{os.path.basename(md)} ===\n{f.read()[:2000]}")
+
+    # Cross-game patterns
+    patterns = os.path.join(_SHARED_CONTEXT, 'cross-game-patterns.md')
+    if os.path.exists(patterns):
+        with open(patterns) as f:
+            sections.append(f"=== CROSS-GAME PATTERNS ===\n{f.read()[:2000]}")
+
+    # Exploration playbook
+    playbook = os.path.join(_SHARED_CONTEXT, 'exploration-playbook.md')
+    if os.path.exists(playbook):
+        with open(playbook) as f:
+            sections.append(f"=== EXPLORATION PLAYBOOK ===\n{f.read()[:2000]}")
+
+    return "\n\n".join(sections) if sections else None
 
 
 # ─── Consolidated Fleet Learning ───
@@ -604,14 +657,14 @@ def solve_game_autonomous(arcade, game_id, backend, config):
 
 # ─── Interactive Solve Loop ───
 
-STATE_DIR = "/tmp/claude_solver"
+STATE_DIR = "/tmp/sage_solver"
 
 
 def solve_game_interactive(game_prefix, backend, config):
     """Interactive mode: Claude Code as the reasoning engine.
 
-    Wraps claude_solver's init/step/look/summarize pattern.
-    State persists to /tmp/claude_solver/ between calls.
+    Wraps sage_solver's init/step/look/summarize pattern.
+    State persists to /tmp/sage_solver/ between calls.
 
     Args:
         game_prefix: game prefix to initialize
@@ -690,8 +743,13 @@ def solve_game_interactive(game_prefix, backend, config):
     print(f"ACTIONS: {avail_str}")
     print(f"BASELINE: {session['baseline']} actions for 100% efficiency")
     print(f"IMAGE: {img_path}")
-    print(f"\nThis is your first view of the game. Study the image carefully.")
-    print(f"What type of game is this? What do you think the objective is?")
+
+    # Load fleet knowledge for this game
+    fleet_kb = _load_fleet_knowledge(game_prefix)
+    if fleet_kb:
+        print(f"\nFLEET KNOWLEDGE:\n{fleet_kb}")
+
+    print(f"\nUse: sage_solver.py --interactive step <action> [x] [y]")
 
     return {"game_id": game_id, "state_dir": STATE_DIR}
 
@@ -699,7 +757,7 @@ def solve_game_interactive(game_prefix, backend, config):
 def interactive_step(action, x=None, y=None):
     """Execute one step in interactive mode. Handles animation capture.
 
-    Mirrors claude_solver.py's cmd_step but uses v11 infrastructure.
+    Mirrors sage_solver.py's cmd_step but uses v11 infrastructure.
     """
     from arc_agi import Arcade
     from PIL import Image

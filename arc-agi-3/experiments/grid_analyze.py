@@ -12,7 +12,7 @@ COLOR_NAMES = {
     12: 'ORANGE', 15: 'PURPLE',
 }
 
-grid = np.load('/tmp/claude_solver/current_grid.npy')
+grid = np.load('/tmp/sage_solver/current_grid.npy')
 if grid.ndim == 3:
     grid = grid[-1]
 
@@ -20,7 +20,7 @@ print(f"Grid: {grid.shape}")
 
 # Session info
 try:
-    with open('/tmp/claude_solver/session.json') as f:
+    with open('/tmp/sage_solver/session.json') as f:
         s = json.load(f)
     print(f"Step: {s['step']}, Levels: {s['levels_completed']}/{s['win_levels']}, "
           f"State: {s['state']}")

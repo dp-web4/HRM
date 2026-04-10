@@ -15,7 +15,7 @@ from arc_agi import Arcade
 from arcengine import GameAction
 from arc_perception import get_frame, get_all_frames
 
-STATE_DIR = "/tmp/claude_solver"
+STATE_DIR = "/tmp/sage_solver"
 INT_TO_GA = {a.value: a for a in GameAction}
 
 COLOR_MAP = {

@@ -3,7 +3,7 @@
 Publish Learning — extract game learning and append to fleet-learning dir.
 
 Reads from:
-  - claude_solver session.json (interactive play)
+  - sage_solver session.json (interactive play)
   - GameKnowledgeBase .knowledge.json files (model play)
 
 Writes to:
@@ -12,14 +12,14 @@ Writes to:
 Each entry is attributed to machine + player (model identity).
 
 Usage:
-    # After interactive play (claude_solver)
-    python3 publish_learning.py --session /tmp/claude_solver/session.json
+    # After interactive play (sage_solver)
+    python3 publish_learning.py --session /tmp/sage_solver/session.json
 
     # After model play (extract from GameKB)
     python3 publish_learning.py --kb arc-agi-3/experiments/cartridges/lp85.knowledge.json
 
     # Auto-detect machine name
-    SAGE_MACHINE=cbp python3 publish_learning.py --session /tmp/claude_solver/session.json
+    SAGE_MACHINE=cbp python3 publish_learning.py --session /tmp/sage_solver/session.json
 
 Environment:
     SAGE_MACHINE  — machine name (default: hostname)
@@ -51,7 +51,7 @@ def ensure_machine_dir():
 
 
 def publish_from_session(session_path):
-    """Extract learning from a claude_solver session."""
+    """Extract learning from a sage_solver session."""
     with open(session_path) as f:
         session = json.load(f)
 
@@ -195,7 +195,7 @@ if __name__ == "__main__":
 
     if "--session" in sys.argv:
         idx = sys.argv.index("--session")
-        path = sys.argv[idx + 1] if idx + 1 < len(sys.argv) else "/tmp/claude_solver/session.json"
+        path = sys.argv[idx + 1] if idx + 1 < len(sys.argv) else "/tmp/sage_solver/session.json"
         publish_from_session(path)
     elif "--kb" in sys.argv:
         idx = sys.argv.index("--kb")
@@ -203,6 +203,6 @@ if __name__ == "__main__":
         publish_from_kb(path)
     else:
         print("Usage:")
-        print("  python3 publish_learning.py --session /tmp/claude_solver/session.json")
+        print("  python3 publish_learning.py --session /tmp/sage_solver/session.json")
         print("  python3 publish_learning.py --kb cartridges/lp85.knowledge.json")
         print("\nEnv: SAGE_MACHINE=cbp GAME_PLAYER=gemma3:4b")

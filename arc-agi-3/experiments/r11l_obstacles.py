@@ -140,7 +140,7 @@ def main():
     # Get current level from session
     level = 0
     try:
-        with open('/tmp/claude_solver/session.json') as f:
+        with open('/tmp/sage_solver/session.json') as f:
             s = json.load(f)
         level = s.get('levels_completed', 0)
     except:

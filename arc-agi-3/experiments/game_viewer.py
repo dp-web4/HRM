@@ -36,6 +36,10 @@ ARC_PALETTE = {
 
 def grid_to_png_b64(grid, scale=4):
     from PIL import Image
+    if grid.ndim == 3:
+        grid = grid[-1]  # multi-frame: take last
+    if grid.ndim != 2:
+        grid = np.full((64, 64), 4, dtype=np.int8)  # fallback blank
     h, w = grid.shape
     img = np.zeros((h*scale, w*scale, 3), dtype=np.uint8)
     for r in range(h):

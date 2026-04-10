@@ -199,16 +199,27 @@ def render_game_run(game, run):
         if lv in by_level:
             frames = by_level[lv]
             first_path = os.path.join(run_dir, frames[0])
-            last_path = os.path.join(run_dir, frames[-1])
+            is_solved = lv < levels_completed
+
+            # For solved levels: the LAST frame tagged with this level is actually
+            # the post-transition frame (SDK returns next level start for the winning
+            # click). The true "solved state" is the second-to-last frame.
+            # For unsolved/active levels: last frame is the current state.
+            if is_solved and len(frames) >= 2:
+                last_path = os.path.join(run_dir, frames[-2])
+                last_label = frames[-2]
+            else:
+                last_path = os.path.join(run_dir, frames[-1])
+                last_label = frames[-1]
+
             first_b64 = file_to_b64(first_path)
             last_b64 = file_to_b64(last_path)
-            is_solved = lv < levels_completed
             cls = "solved" if is_solved else "active"
             mark = "✓" if is_solved else f"({len(frames)})"
             cells.append(f'''<div class="cell {cls}">
                 <div class="cell-pair">
                     <img src="data:image/png;base64,{first_b64}" title="{frames[0]}">
-                    <img src="data:image/png;base64,{last_b64}" title="{frames[-1]}">
+                    <img src="data:image/png;base64,{last_b64}" title="{last_label}">
                 </div>
                 <div class="clabel {cls}">L{lv+1} {mark} — {len(frames)} steps</div>
             </div>''')

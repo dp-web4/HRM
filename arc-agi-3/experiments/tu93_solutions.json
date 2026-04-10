@@ -1,0 +1,39 @@
+{
+  "_description": "tu93 solutions — maze navigation with entity chain reactions",
+  "_updated": "2026-04-10",
+  "_game_type": "Move-only (UP/DOWN/LEFT/RIGHT). Maze with arrows, bouncers, delayed entities.",
+  "_critical": [
+    "ARROWS ARE LETHAL. Arrow activates when player is at activation position (6px in arrow's facing direction). Arrow then moves toward player = death in 3 shrink cycles.",
+    "ACTIVATION POSITIONS: rot=0(UP) → player at (ax,ay-6). rot=180(DOWN) → (ax,ay+6). rot=90(RIGHT) → (ax+6,ay). rot=270(LEFT) → (ax-6,ay).",
+    "DESTROY ARROWS by walking INTO them from a NON-ACTIVATION direction. Player at arrow position triggers pbknvgksfm which shrinks the arrow (3 hits to remove, but subsequent hits happen in same turn).",
+    "When destroying one arrow, check if landing on it triggers ANOTHER arrow's activation zone. Destroy arrows in dependency order.",
+    "BOUNCERS oscillate along their axis, reversing at walls. Player CAN shrink bouncers by walking into them (same mechanic as arrows). Period depends on corridor length.",
+    "Grid nodes at positions where BOTH (x%6==0 AND y%6==0) relative to maze sprite origin.",
+    "Movement validation checks maze pixel 3px ahead of current position. Destination pixel doesn't need to be walkable — only intermediate.",
+    "Each env.step() = one complete turn (8 frames for movement+settling). 1 frame = blocked move. 15 frames = death."
+  ],
+  "levels": {
+    "L1": {
+      "status": "VERIFIED", "actions": 18, "budget": 50, "entities": "none",
+      "sequence": "RIGHT DOWN DOWN RIGHT UP RIGHT DOWN DOWN LEFT LEFT DOWN RIGHT RIGHT DOWN RIGHT UP RIGHT DOWN"
+    },
+    "L2": {
+      "status": "VERIFIED", "actions": 10, "budget": 50,
+      "entities": "1 arrow at (27,18) rot=270",
+      "strategy": "Bypass arrow via lower corridor (y=24 row). Arrow faces LEFT, danger at (33,18). Take route: UP RIGHT RIGHT DOWN RIGHT RIGHT UP RIGHT RIGHT UP.",
+      "sequence": "UP RIGHT RIGHT DOWN RIGHT RIGHT UP RIGHT RIGHT UP"
+    },
+    "L3": {
+      "status": "VERIFIED", "actions": 19, "budget": 35,
+      "entities": "3 arrows: (12,6)rot90, (18,6)rot180, (0,18)rot90",
+      "strategy": "Destroy ALL 3 arrows in order: (12,6) from above, (18,6) from right after arrow1 dead, (0,18) from above. Go via top corridor RIGHT then LEFT to reach each arrow from safe angle.",
+      "sequence": "UP UP RIGHT UP LEFT LEFT UP LEFT LEFT DOWN RIGHT DOWN LEFT LEFT LEFT DOWN RIGHT DOWN RIGHT"
+    },
+    "L4": {
+      "status": "ATTEMPTED",
+      "entities": "1 arrow at (6,0)rot180, 1 bouncer at (18,6)rot180",
+      "strategy": "Arrow danger at (6,6). Bouncer oscillates in x=18 column. Must destroy arrow from (12,0)→LEFT, then navigate to exit at (0,6). Bouncer timing is critical — bouncer and player traverse same column. May need to shrink bouncer by direct contact.",
+      "notes": "L4+ needs interactive visual debugging or proper entity simulation with timing."
+    }
+  }
+}

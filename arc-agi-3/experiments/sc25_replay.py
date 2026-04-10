@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-sc25 replay — runs verified solution through claude_solver for viewer data.
+sc25 replay — runs verified solution through sage_solver for viewer data.
 
 Produces: level start/final grids, animation GIFs, session.json, frame.png.
 Uses the exact verified sequences from sc25_solutions.json.
@@ -17,7 +17,7 @@ from arc_agi import Arcade
 from arcengine import GameAction
 from arc_perception import get_frame, get_all_frames
 
-STATE_DIR = "/tmp/claude_solver"
+STATE_DIR = "/tmp/sage_solver"
 INT_TO_GA = {a.value: a for a in GameAction}
 
 COLOR_MAP = {

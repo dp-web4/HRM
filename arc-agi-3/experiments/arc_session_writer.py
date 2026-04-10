@@ -3,7 +3,7 @@
 Session Writer — Live Visualization + Persistent Visual Memory.
 
 Two outputs:
-1. /tmp/claude_solver/ — live viewer data (overwritten each step)
+1. /tmp/sage_solver/ — live viewer data (overwritten each step)
 2. shared-context/arc-agi-3/visual-memory/{game}/run_{timestamp}/ — persistent
    Every frame saved as PNG with step number. GIFs for animations.
    Start/final per level derived from sequence: start = first frame of level,
@@ -26,7 +26,7 @@ import numpy as np
 from PIL import Image
 
 
-VIEWER_DIR = "/tmp/claude_solver"
+VIEWER_DIR = "/tmp/sage_solver"
 VISUAL_MEMORY_ROOT = os.path.join(
     os.path.dirname(__file__), "..", "..", "..",
     "shared-context", "arc-agi-3", "visual-memory")
@@ -177,7 +177,7 @@ class SessionWriter:
         # Level change detection — update live viewer grids
         if levels_completed > prev_level:
             # Save solved level's final grid and new level's start grid
-            # for the live viewer at /tmp/claude_solver/
+            # for the live viewer at /tmp/sage_solver/
             np.save(os.path.join(VIEWER_DIR,
                     f"level_{prev_level}_final_grid.npy"), grid)
             np.save(os.path.join(VIEWER_DIR,

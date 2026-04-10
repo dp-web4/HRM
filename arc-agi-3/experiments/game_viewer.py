@@ -18,7 +18,7 @@ from collections import defaultdict
 import base64
 from urllib.parse import unquote
 
-STATE_DIR = "/tmp/claude_solver"
+STATE_DIR = "/tmp/sage_solver"
 VISUAL_MEMORY = os.path.join(
     os.path.dirname(__file__), "..", "..", "..",
     "shared-context", "arc-agi-3", "visual-memory")

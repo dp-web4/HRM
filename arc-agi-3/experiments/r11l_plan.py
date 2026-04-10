@@ -9,7 +9,7 @@ Given current ball position, endpoints, and target:
 
 Usage:
     python r11l_plan.py
-    # Reads current state from /tmp/claude_solver/, outputs move plan
+    # Reads current state from /tmp/sage_solver/, outputs move plan
 """
 
 import numpy as np
@@ -25,8 +25,8 @@ from r11l_obstacles import (
 
 def load_state():
     """Load current game state."""
-    grid = np.load('/tmp/claude_solver/current_grid.npy')
-    with open('/tmp/claude_solver/session.json') as f:
+    grid = np.load('/tmp/sage_solver/current_grid.npy')
+    with open('/tmp/sage_solver/session.json') as f:
         session = json.load(f)
     return grid, session
 

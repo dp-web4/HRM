@@ -132,14 +132,16 @@ class SessionWriter:
         render_grid(grid).save(os.path.join(VIEWER_DIR, "frame.png"))
 
         # Save to persistent visual memory (append-only)
-        frame_name = f"step_{self.step:04d}_L{levels_completed}_{action_label}"
+        # Use prev_level for filename — if level changed, this frame is the
+        # SOLVED state of the previous level, not the start of the new one.
+        frame_name = f"step_{self.step:04d}_L{prev_level}_{action_label}"
         png_path = os.path.join(self.run_dir, f"{frame_name}.png")
         render_grid(grid).save(png_path)
 
         # Save animation GIF if multi-frame
         gif_path = None
         if all_frames and len(all_frames) > 1:
-            gif_name = f"step_{self.step:04d}_L{levels_completed}_anim.gif"
+            gif_name = f"step_{self.step:04d}_L{prev_level}_anim.gif"
             gif_path = os.path.join(self.run_dir, gif_name)
             gif_imgs = [render_grid(f, scale=2) for f in all_frames]
             gif_imgs[0].save(gif_path, save_all=True,
@@ -157,7 +159,7 @@ class SessionWriter:
         # Track in run metadata
         step_meta = {
             "step": self.step,
-            "level": levels_completed,
+            "level": prev_level,
             "action": aname,
             "png": os.path.basename(png_path),
         }
@@ -166,6 +168,9 @@ class SessionWriter:
         if x is not None:
             step_meta["x"] = x
             step_meta["y"] = y
+        if levels_completed > prev_level:
+            step_meta["level_up"] = True
+            step_meta["new_level"] = levels_completed
         self.run_meta["steps"].append(step_meta)
 
         # Level change detection

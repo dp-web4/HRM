@@ -498,6 +498,11 @@ def solve_game_autonomous(arcade, game_id, backend, config):
 
             all_frames = get_all_frames(fd)
             grid = all_frames[-1]
+            # Normalize grid shape
+            if grid.ndim == 3:
+                grid = grid[-1]
+            if grid.ndim != 2 or grid.shape == (0,):
+                grid = np.zeros((64, 64), dtype=np.int8)
             total_steps += 1
             remaining -= 1
 
@@ -514,6 +519,8 @@ def solve_game_autonomous(arcade, game_id, backend, config):
 
             # Observe what happened
             diff = tracker.update(grid)
+            if prev_grid.shape != grid.shape:
+                prev_grid = np.zeros_like(grid)
             n_changed = int(np.sum(prev_grid != grid))
             if action_int == 6 and data:
                 changed = not np.array_equal(prev_grid, grid)
@@ -916,6 +923,16 @@ def interactive_step(action, x=None, y=None):
         session.setdefault("animations", []).append({
             "step": step, "level": level, "frames": len(all_frames),
         })
+
+    # Normalize grid shapes (game may return empty or 3D frames)
+    if grid.ndim == 3:
+        grid = grid[-1]
+    if grid.ndim != 2 or grid.shape == (0,):
+        grid = np.zeros((64, 64), dtype=np.int8)
+    if prev_grid.ndim == 3:
+        prev_grid = prev_grid[-1]
+    if prev_grid.shape != grid.shape:
+        prev_grid = np.zeros_like(grid)
 
     # Diff
     n_changed = int(np.sum(prev_grid != grid))

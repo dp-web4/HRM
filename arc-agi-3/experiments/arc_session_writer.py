@@ -100,6 +100,7 @@ class SessionWriter:
             "steps": [],
         }
 
+        self._level_start_grid = None
         self._save_viewer()
 
     def record_step(self, action: int, grid: np.ndarray,
@@ -173,13 +174,30 @@ class SessionWriter:
             step_meta["new_level"] = levels_completed
         self.run_meta["steps"].append(step_meta)
 
-        # Level change detection
+        # Level change detection — update live viewer grids
         if levels_completed > prev_level:
+            # Save solved level's final grid and new level's start grid
+            # for the live viewer at /tmp/claude_solver/
+            np.save(os.path.join(VIEWER_DIR,
+                    f"level_{prev_level}_final_grid.npy"), grid)
+            np.save(os.path.join(VIEWER_DIR,
+                    f"level_{prev_level}_start_grid.npy"),
+                    self._level_start_grid if self._level_start_grid is not None
+                    else grid)
+            np.save(os.path.join(VIEWER_DIR,
+                    f"level_{levels_completed}_start_grid.npy"), grid)
+            self._level_start_grid = grid
+
             self.current_level = levels_completed
             self.session["level_start_step"] = self.step
             self.session["level_actions"] = []
             self.session["level_summaries"].append(
                 f"L{prev_level+1}: solved at step {self.step}")
+        elif self._level_start_grid is None:
+            # First step of first level — save as start grid
+            self._level_start_grid = grid
+            np.save(os.path.join(VIEWER_DIR,
+                    f"level_0_start_grid.npy"), grid)
 
         self._save_viewer()
 

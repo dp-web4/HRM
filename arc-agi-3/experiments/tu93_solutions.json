@@ -1,16 +1,17 @@
 {
-  "_description": "tu93 solutions \u2014 maze navigation with entity chain reactions",
-  "_updated": "2026-04-10T12:30",
+  "_description": "tu93 solutions — maze navigation with entity chain reactions",
+  "_updated": "2026-04-10T16:15",
   "_game_type": "Move-only (UP/DOWN/LEFT/RIGHT). Maze with arrows, bouncers, delayed entities.",
   "_critical": [
     "ARROWS ARE LETHAL. Arrow activates when player is at activation position (6px in arrow's facing direction). Arrow then moves toward player = death in 3 shrink cycles.",
-    "ACTIVATION POSITIONS: rot=0(UP) \u2192 player at (ax,ay-6). rot=180(DOWN) \u2192 (ax,ay+6). rot=90(RIGHT) \u2192 (ax+6,ay). rot=270(LEFT) \u2192 (ax-6,ay).",
+    "ACTIVATION POSITIONS: rot=0(UP) → player at (ax,ay-6). rot=180(DOWN) → (ax,ay+6). rot=90(RIGHT) → (ax+6,ay). rot=270(LEFT) → (ax-6,ay).",
     "DESTROY ARROWS by walking INTO them from a NON-ACTIVATION direction. Player at arrow position triggers pbknvgksfm which shrinks the arrow (3 hits to remove, but subsequent hits happen in same turn).",
     "When destroying one arrow, check if landing on it triggers ANOTHER arrow's activation zone. Destroy arrows in dependency order.",
     "BOUNCERS oscillate along their axis, reversing at walls. Player CAN shrink bouncers by walking into them (same mechanic as arrows). Period depends on corridor length.",
     "Grid nodes at positions where BOTH (x%6==0 AND y%6==0) relative to maze sprite origin.",
-    "Movement validation checks maze pixel 3px ahead of current position. Destination pixel doesn't need to be walkable \u2014 only intermediate.",
-    "Each env.step() = one complete turn (8 frames for movement+settling). 1 frame = blocked move. 15 frames = death."
+    "Movement validation checks maze pixel 3px ahead of current position. Destination pixel doesn't need to be walkable — only intermediate.",
+    "Each env.step() = one complete turn (8 frames for movement+settling). 1 frame = blocked move. 15 frames = death.",
+    "DELAYED ENTITIES follow player's EXACT directions with 2-turn lag. Queue starts [rot,rot] (own rotation x2). Blocked moves freeze ALL entity/game state."
   ],
   "levels": {
     "L1": {
@@ -25,7 +26,7 @@
       "actions": 10,
       "budget": 50,
       "entities": "1 arrow at (27,18) rot=270",
-      "strategy": "Bypass arrow via lower corridor (y=24 row). Arrow faces LEFT, danger at (33,18). Take route: UP RIGHT RIGHT DOWN RIGHT RIGHT UP RIGHT RIGHT UP.",
+      "strategy": "Bypass arrow via lower corridor (y=24 row). Arrow faces LEFT, danger at (33,18).",
       "sequence": "UP RIGHT RIGHT DOWN RIGHT RIGHT UP RIGHT RIGHT UP"
     },
     "L3": {
@@ -33,14 +34,16 @@
       "actions": 19,
       "budget": 35,
       "entities": "3 arrows: (12,6)rot90, (18,6)rot180, (0,18)rot90",
-      "strategy": "Destroy ALL 3 arrows in order: (12,6) from above, (18,6) from right after arrow1 dead, (0,18) from above. Go via top corridor RIGHT then LEFT to reach each arrow from safe angle.",
+      "strategy": "Destroy ALL 3 arrows in order: (12,6) from above, (18,6) from right after arrow1 dead, (0,18) from above.",
       "sequence": "UP UP RIGHT UP LEFT LEFT UP LEFT LEFT DOWN RIGHT DOWN LEFT LEFT LEFT DOWN RIGHT DOWN RIGHT"
     },
     "L4": {
-      "status": "ATTEMPTED",
+      "status": "VERIFIED",
+      "actions": 17,
+      "budget": 50,
       "entities": "1 arrow at (6,0)rot180, 1 bouncer at (18,6)rot180",
-      "strategy": "Arrow danger at (6,6). Bouncer oscillates in x=18 column. Must destroy arrow from (12,0)\u2192LEFT, then navigate to exit at (0,6). Bouncer timing is critical \u2014 bouncer and player traverse same column. May need to shrink bouncer by direct contact.",
-      "notes": "L4+ needs interactive visual debugging or proper entity simulation with timing."
+      "strategy": "Waste steps at (24,18)→(24,12) junction for bouncer timing, then destroy arrow from east, navigate to exit.",
+      "sequence": "RIGHT RIGHT LEFT RIGHT RIGHT RIGHT UP UP DOWN UP LEFT UP UP LEFT LEFT DOWN LEFT"
     },
     "L5": {
       "status": "VERIFIED",
@@ -51,10 +54,35 @@
       "sequence": "LEFT RIGHT LEFT RIGHT LEFT RIGHT LEFT LEFT LEFT LEFT LEFT LEFT LEFT DOWN DOWN DOWN RIGHT DOWN DOWN RIGHT RIGHT RIGHT UP DOWN UP DOWN UP UP LEFT"
     },
     "L6": {
-      "status": "ATTEMPTED",
+      "status": "VERIFIED",
+      "actions": 32,
+      "budget": 50,
       "entities": "6 arrows + 2 bouncers",
-      "strategy": "Bouncer at (18,6) has period-2 at player crossing point (always present on odd steps). Cannot shift parity \u2014 blocked moves dont advance entities. Need to destroy arrows to open alternate paths, or find longer route that creates right timing. Very complex interaction between 6 arrows and 2 bouncers.",
-      "notes": "Needs interactive perceptual approach or full game-state BFS."
+      "strategy": "Arrow destruction chain (30,18→18,36→12,36→18,30→12,30→12,18) with reactive bouncer avoidance. Perceptual approach — Rule 0.",
+      "sequence": "LEFT LEFT DOWN DOWN RIGHT DOWN DOWN LEFT DOWN LEFT LEFT RIGHT RIGHT LEFT RIGHT UP LEFT LEFT RIGHT RIGHT RIGHT UP UP LEFT LEFT LEFT DOWN LEFT UP UP UP LEFT"
+    },
+    "L7": {
+      "status": "VERIFIED",
+      "actions": 14,
+      "budget": 50,
+      "entities": "none (simple pathfinding)",
+      "sequence": "RIGHT RIGHT RIGHT DOWN DOWN RIGHT UP RIGHT UP UP UP RIGHT DOWN DOWN"
+    },
+    "L8": {
+      "status": "VERIFIED",
+      "actions": 21,
+      "budget": 50,
+      "entities": "1 delayed entity",
+      "strategy": "Goose chase — lead delayed entity through southern loop while sprinting to exit. Entity follows exact directions with 2-turn lag.",
+      "sequence": "RIGHT RIGHT UP UP RIGHT RIGHT LEFT LEFT LEFT DOWN DOWN RIGHT UP UP RIGHT RIGHT UP UP UP LEFT LEFT"
+    },
+    "L9": {
+      "status": "VERIFIED",
+      "actions": 29,
+      "budget": 50,
+      "entities": "2 arrows + 3 bouncers + 1 delayed entity",
+      "strategy": "BFS-solved. Waste steps (RIGHT DOWN DOWN LEFT at turns 5-8) shift bouncer timing at (3,1) by 6 turns, then north through bridge, east along top, south through (6,x) column, west to arrows, destroy Arrow2 then Arrow1, reach exit. Player takes 3 hits from entity/bouncers but survives (3 shrink stages before death).",
+      "sequence": "LEFT LEFT UP UP RIGHT DOWN DOWN LEFT UP UP RIGHT UP UP RIGHT RIGHT RIGHT DOWN DOWN RIGHT DOWN LEFT DOWN LEFT DOWN DOWN LEFT LEFT UP RIGHT"
     }
   }
 }

@@ -1,0 +1,45 @@
+{
+    "game": "ls20-9607627b",
+    "family": "ls20",
+    "type": "move",
+    "baseline": 546,
+    "total_actions": 309,
+    "levels": 7,
+    "solved": true,
+    "solved_by": "sprout",
+    "solutions": {
+        "L1": {
+            "actions": 13,
+            "sequence": "LEFT LEFT LEFT UP UP UP UP RIGHT RIGHT RIGHT UP UP UP"
+        },
+        "L2": {
+            "actions": 45,
+            "sequence": "UP RIGHT UP UP UP UP UP RIGHT RIGHT DOWN RIGHT DOWN DOWN DOWN DOWN DOWN DOWN UP DOWN DOWN LEFT LEFT RIGHT UP RIGHT UP UP UP UP UP UP UP LEFT LEFT LEFT LEFT LEFT LEFT DOWN LEFT DOWN DOWN DOWN DOWN DOWN"
+        },
+        "L3": {
+            "actions": 39,
+            "sequence": "UP UP UP UP UP UP UP UP LEFT DOWN DOWN DOWN DOWN DOWN DOWN DOWN DOWN UP UP UP LEFT LEFT UP RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT UP UP UP LEFT UP DOWN UP RIGHT DOWN"
+        },
+        "L4": {
+            "actions": 43,
+            "sequence": "LEFT LEFT LEFT DOWN DOWN DOWN LEFT DOWN DOWN LEFT LEFT UP DOWN UP DOWN UP DOWN UP UP LEFT LEFT UP DOWN LEFT LEFT UP UP UP DOWN DOWN RIGHT UP UP UP UP RIGHT UP RIGHT UP UP LEFT LEFT LEFT"
+        },
+        "L5": {
+            "actions": 44,
+            "sequence": "UP LEFT UP UP LEFT LEFT LEFT RIGHT LEFT RIGHT LEFT RIGHT UP UP LEFT LEFT LEFT LEFT UP LEFT LEFT LEFT RIGHT UP DOWN RIGHT DOWN DOWN DOWN DOWN DOWN RIGHT RIGHT DOWN DOWN DOWN RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT UP"
+        },
+        "L6": {
+            "actions": 72,
+            "sequence": "UP UP DOWN UP DOWN RIGHT RIGHT UP RIGHT UP UP UP LEFT LEFT RIGHT RIGHT UP UP RIGHT RIGHT UP UP RIGHT DOWN DOWN UP UP LEFT UP DOWN LEFT LEFT LEFT LEFT UP DOWN LEFT LEFT DOWN DOWN DOWN DOWN UP RIGHT RIGHT RIGHT LEFT LEFT LEFT UP UP UP UP UP UP RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT DOWN RIGHT RIGHT UP UP RIGHT DOWN DOWN DOWN DOWN DOWN"
+        },
+        "L7": {
+            "actions": 53,
+            "sequence": "UP UP DOWN DOWN LEFT LEFT DOWN DOWN DOWN DOWN DOWN UP DOWN RIGHT DOWN UP RIGHT UP DOWN UP DOWN UP DOWN UP DOWN LEFT LEFT UP UP UP RIGHT RIGHT RIGHT RIGHT UP RIGHT RIGHT UP RIGHT RIGHT UP UP RIGHT DOWN DOWN LEFT LEFT LEFT UP DOWN DOWN DOWN DOWN"
+        }
+    },
+    "notes": {
+        "mechanics": "move-only game with shape/color/rotation modifiers, arrow conveyors, refill pickups, mobile modifiers",
+        "key_challenges": "L6 had 2 goals requiring different configs + 3 mobile modifiers; L3-L5 had arrow conveyors; L5-L7 had mobile modifiers with period-based movement",
+        "solver": "BFS with distance pruning, 15M state limit, time-aware mobile modifier tracking"
+    }
+}

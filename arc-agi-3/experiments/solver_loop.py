@@ -234,12 +234,13 @@ def solve_game_autonomous(arcade, game_id, backend, config):
         if fleet_context:
             print(f"  Fleet context: {len(fleet_context)} chars")
 
-    # Session writer (optional viewer integration)
+    # Session writer (viewer + persistent visual memory)
     session_writer = None
-    if config.viewer and not config.kaggle:
+    _SessionWriter = None
+    if not config.kaggle:
         try:
-            from arc_session_writer import SessionWriter
-            session_writer = SessionWriter(game_id)
+            from arc_session_writer import SessionWriter as _SW
+            _SessionWriter = _SW
         except Exception:
             pass
 
@@ -254,6 +255,19 @@ def solve_game_autonomous(arcade, game_id, backend, config):
             a.value if hasattr(a, "value") else int(a)
             for a in (fd.available_actions or [])]
         total_steps = 0
+
+        # Initialize session writer on first attempt
+        if _SessionWriter and session_writer is None:
+            try:
+                session_writer = _SessionWriter(
+                    game_id, win_levels=fd.win_levels,
+                    available_actions=available,
+                    baseline=config.budget or 0,
+                    player=config.model or "autonomous")
+            except Exception:
+                pass
+        elif session_writer:
+            session_writer.new_attempt(attempt + 1)
 
         if verbose:
             print(f"\n  Attempt {attempt + 1}/{config.attempts}"
@@ -425,9 +439,21 @@ def solve_game_autonomous(arcade, game_id, backend, config):
             if fd is None:
                 break
 
-            grid = get_frame(fd)
+            all_frames = get_all_frames(fd)
+            grid = all_frames[-1]
             total_steps += 1
             remaining -= 1
+
+            # Persist every frame to visual memory
+            if session_writer:
+                session_writer.record_step(
+                    action_int, grid,
+                    all_frames=all_frames if len(all_frames) > 1 else None,
+                    levels_completed=fd.levels_completed,
+                    x=data.get('x') if data else None,
+                    y=data.get('y') if data else None,
+                    state=fd.state.name if hasattr(fd.state, 'name')
+                        else str(fd.state))
 
             # Observe what happened
             diff = tracker.update(grid)
@@ -499,6 +525,11 @@ def solve_game_autonomous(arcade, game_id, backend, config):
                 break
 
         # ── POST-ATTEMPT ──
+        if session_writer:
+            session_writer.record_game_end(
+                fd.state.name if fd else "UNKNOWN",
+                fd.levels_completed if fd else 0)
+
         if fd and fd.levels_completed > best_levels:
             best_levels = fd.levels_completed
 

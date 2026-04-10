@@ -43,6 +43,10 @@ ACTION_NAMES = {1: "UP", 2: "DOWN", 3: "LEFT", 4: "RIGHT",
 
 
 def render_grid(grid, scale=4):
+    if grid.ndim == 3:
+        grid = grid[-1]
+    if grid.ndim != 2:
+        grid = np.full((64, 64), 4, dtype=np.int8)
     h, w = grid.shape
     img = np.zeros((h * scale, w * scale, 3), dtype=np.uint8)
     for r in range(h):

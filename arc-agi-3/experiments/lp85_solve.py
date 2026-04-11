@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Solve lp85: cyclic rotation puzzle.
 
-Buttons rotate all pieces in a group's cycle path. Groups can share grid positions.
-State = positions of goal tiles. BFS to find optimal button sequence.
+Buttons rotate all pieces in a group's cycle path. Multiple buttons at same position
+trigger compound rotations. State = goal tile positions. BFS finds optimal clicks.
 """
 import sys, os
 sys.path.insert(0, os.path.dirname(__file__))
@@ -14,7 +14,7 @@ from collections import deque
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'environment_files', 'lp85', '305b61c3'))
 import lp85 as lp85_mod
 
-CELL = 3  # pixels per grid cell
+CELL = 3
 
 arcade = Arcade()
 env = arcade.make('lp85-305b61c3')
@@ -25,8 +25,9 @@ def grid_to_display(gx, gy):
     cam_w = game.camera.width
     cam_h = game.camera.height
     scale = 64 // cam_w
+    x_offset = (64 - cam_w * scale) // 2
     y_offset = (64 - cam_h * scale) // 2
-    return gx * scale, gy * scale + y_offset
+    return gx * scale + x_offset, gy * scale + y_offset
 
 total_actions = 0
 
@@ -44,12 +45,11 @@ for lv in range(8):
     group_names = sorted(groups_data.keys())
 
     # Parse rotation maps
-    # For each group: build grid_pos -> cycle_number and cycle_number -> grid_pos
     group_info = {}
     for gname in group_names:
         grid = groups_data[gname]
-        pos_to_num = {}  # (gx, gy) -> cycle_number
-        num_to_pos = {}  # cycle_number -> (gx, gy)
+        pos_to_num = {}
+        num_to_pos = {}
         for gy, row in enumerate(grid):
             for gx, val in enumerate(row):
                 if val != -1:
@@ -61,19 +61,17 @@ for lv in range(8):
             'num_to_pos': num_to_pos,
             'cycle_len': cycle_len
         }
-    print(f"  Groups: {[(g, group_info[g]['cycle_len']) for g in group_names]}")
 
-    # Find goal markers and their required positions
+    # Find goal tiles and required positions
     circle_goals = level.get_sprites_by_tag("bghvgbtwcb")
     square_goals = level.get_sprites_by_tag("fdgmtkfrxl")
 
-    required = []  # (grid_x, grid_y, tag_to_match)
+    required = []
     for g in circle_goals:
         required.append(((g.x + 1) // CELL, (g.y + 1) // CELL, "goal"))
     for g in square_goals:
         required.append(((g.x + 1) // CELL, (g.y + 1) // CELL, "goal-o"))
 
-    # Find goal/goal-o tiles and their current positions
     goal_tiles = []
     for s in level.get_sprites():
         tags = s.tags if s.tags else []
@@ -83,9 +81,6 @@ for lv in range(8):
 
     print(f"  Goal tiles: {[(g['tag'], g['grid']) for g in goal_tiles]}")
     print(f"  Required: {required}")
-
-    # State = tuple of goal tile grid positions (matching order of goal_tiles list)
-    # Win = for each required position+tag, some goal tile with that tag is at that position
 
     n_goals = len(goal_tiles)
     initial_state = tuple(g['grid'] for g in goal_tiles)
@@ -104,47 +99,86 @@ for lv in range(8):
                 satisfied.add(key)
         return satisfied == req_set
 
-    def apply_action(state, gname, direction):
-        """Apply rotation to state. direction: 1=R, -1=L."""
+    def apply_single_rotation(state, gname, direction):
         info = group_info[gname]
         pos_to_num = info['pos_to_num']
         num_to_pos = info['num_to_pos']
         clen = info['cycle_len']
-
         new_state = list(state)
         for i, pos in enumerate(state):
             if pos in pos_to_num:
                 n = pos_to_num[pos]
-                if direction == 1:  # R: n → n+1
+                if direction == 1:
                     new_n = 1 if n == clen else n + 1
-                else:  # L: n → n-1
+                else:
                     new_n = clen if n == 1 else n - 1
                 new_state[i] = num_to_pos[new_n]
         return tuple(new_state)
+
+    # Build click actions: group buttons by position
+    # Each unique position triggers all button rotations at that position
+    all_sprites = level.get_sprites()
+    position_buttons = {}  # (px, py) -> list of (gname, delta)
+    button_at_pos = {}     # (px, py) -> first button sprite (for clicking)
+
+    for s in all_sprites:
+        if not s.tags:
+            continue
+        for t in s.tags:
+            if t.startswith("button_"):
+                parts = t.split("_")
+                if len(parts) == 3:
+                    gname, dir_char = parts[1], parts[2]
+                    delta = 1 if dir_char == 'R' else -1
+                    key = (s.x, s.y)
+                    if key not in position_buttons:
+                        position_buttons[key] = []
+                        button_at_pos[key] = s
+                    position_buttons[key].append((gname, delta))
+
+    # Build click actions for BFS
+    # Each click = compound action (multiple rotations)
+    click_actions = []  # list of (position, rotations_list)
+    for pos, rotations in position_buttons.items():
+        click_actions.append((pos, rotations))
+
+    # Also provide individual rotations for positions with single buttons
+    # (for BFS efficiency, single-rotation clicks are already covered)
+
+    print(f"  Click positions: {len(click_actions)}")
+    for pos, rots in click_actions:
+        if len(rots) > 1:
+            print(f"    {pos}: {rots}")
+
+    def apply_click(state, rotations):
+        """Apply compound rotation (multiple groups simultaneously)."""
+        # In the game, each button at the position is processed sequentially.
+        # But for goal tiles, the effect is the compound of all rotations.
+        for gname, delta in rotations:
+            state = apply_single_rotation(state, gname, delta)
+        return state
 
     if is_win(initial_state):
         print(f"  Already solved!")
         lv_actions = 0
     else:
-        # BFS
+        # BFS over states using click actions
         queue = deque([(initial_state, [])])
         visited = {initial_state}
         solution = None
+        max_states = 500000
 
-        while queue:
+        while queue and len(visited) < max_states:
             state, moves = queue.popleft()
-            for gname in group_names:
-                for delta in [-1, 1]:
-                    new_state = apply_action(state, gname, delta)
-                    if new_state not in visited:
-                        new_moves = moves + [(gname, delta)]
-                        if is_win(new_state):
-                            solution = new_moves
-                            break
-                        visited.add(new_state)
-                        queue.append((new_state, new_moves))
-                if solution:
-                    break
+            for ci, (pos, rotations) in enumerate(click_actions):
+                new_state = apply_click(state, rotations)
+                if new_state not in visited:
+                    new_moves = moves + [ci]
+                    if is_win(new_state):
+                        solution = new_moves
+                        break
+                    visited.add(new_state)
+                    queue.append((new_state, new_moves))
             if solution:
                 break
 
@@ -152,34 +186,18 @@ for lv in range(8):
             print(f"    ERROR: BFS found no solution! Visited {len(visited)} states")
             break
 
-        print(f"  BFS: {len(solution)} moves (visited {len(visited)} states)")
-
-        # Compress consecutive same-button presses
-        compressed = []
-        for gname, delta in solution:
-            if compressed and compressed[-1][0] == gname and compressed[-1][1] == delta:
-                compressed[-1] = (gname, delta, compressed[-1][2] + 1)
-            else:
-                compressed.append((gname, delta, 1))
+        print(f"  BFS: {len(solution)} clicks (visited {len(visited)} states)")
 
         # Execute
         lv_actions = 0
-        for gname, delta, count in compressed:
-            direction = 'R' if delta == 1 else 'L'
-            tag = f"button_{gname}_{direction}"
-            btns = [s for s in level.get_sprites_by_tag("sys_click")
-                   if any(tag in t for t in (s.tags or []))]
-            if not btns:
-                print(f"    ERROR: no button for {tag}")
-                break
-            btn = btns[0]
+        for ci in solution:
+            pos, rotations = click_actions[ci]
+            btn = button_at_pos[pos]
             gcx = btn.x + btn.width // 2
             gcy = btn.y + btn.height // 2
             dx, dy = grid_to_display(gcx, gcy)
-            print(f"    {gname} {direction} x{count}")
-            for _ in range(count):
-                fd = env.step(GameAction.ACTION6, data={'x': dx, 'y': dy})
-                lv_actions += 1
+            fd = env.step(GameAction.ACTION6, data={'x': dx, 'y': dy})
+            lv_actions += 1
 
     total_actions += lv_actions
     print(f"  {lv_actions} actions, completed={fd.levels_completed}, state={fd.state.name}")

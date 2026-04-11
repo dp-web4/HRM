@@ -1,0 +1,34 @@
+{
+  "game_id": "lp85",
+  "instance_id": "305b61c3",
+  "total_levels": 8,
+  "total_actions": 79,
+  "baseline_actions": [33, 22, 31, 23, 33, 34, 73, 173],
+  "baseline_total": 422,
+  "solved_by": "claude-opus-4.6",
+  "game_type": "cyclic_rotation_puzzle",
+  "mechanics": {
+    "buttons": "Click L/R buttons to rotate all pieces in a group's cycle path. Multiple buttons at same position trigger compound rotations.",
+    "groups": "Named rotation groups (letters + numbers). Each defines a cyclic path of grid positions. Pieces rotate along the path.",
+    "overlapping_groups": "Grid positions can belong to multiple groups. Rotating one group moves shared pieces, which are then in a different position for the other group.",
+    "win_condition": "All 'goal' tagged tiles must be at positions marked by 'bghvgbtwcb' markers (+1,+1 offset). Same for 'goal-o' tiles at 'fdgmtkfrxl' markers.",
+    "compound_clicks": "Clicking a position with multiple button sprites triggers all their rotations sequentially in sprite list order.",
+    "actions": "ACTION6=click only. Click button sprite positions."
+  },
+  "level_solutions": {
+    "0": {"grid": "32x19", "groups": 1, "goals": 1, "actions": 5, "baseline": 33},
+    "1": {"grid": "41x41", "groups": 3, "goals": 2, "actions": 8, "baseline": 22},
+    "2": {"grid": "38x26", "groups": 2, "goals": 2, "actions": 16, "baseline": 31},
+    "3": {"grid": "38x34", "groups": 2, "goals": 2, "actions": 12, "baseline": 23},
+    "4": {"grid": "27x32", "groups": 2, "goals": 2, "actions": 9, "baseline": 33},
+    "5": {"grid": "60x64", "groups": 36, "goals": 3, "actions": 19, "baseline": 34},
+    "6": {"grid": "38x34", "groups": 2, "goals": 2, "actions": 5, "baseline": 73},
+    "7": {"grid": "38x64", "groups": 3, "goals": 3, "actions": 5, "baseline": 173}
+  },
+  "key_learnings": {
+    "compound_clicks": "Multiple button sprites at same position = compound action. Must model as single click triggering all rotations.",
+    "display_to_grid_mapping": "Camera dimensions change per level. display_x = grid_x * scale + x_offset, where scale = 64 // cam_width, offset = (64 - cam * scale) // 2.",
+    "bfs_state_space": "State = tuple of goal tile positions only (ignore non-goal tiles). Keeps BFS tractable even with 36 groups.",
+    "overlapping_cycles": "The puzzle's complexity comes from overlapping rotation cycles. BFS handles this naturally."
+  }
+}

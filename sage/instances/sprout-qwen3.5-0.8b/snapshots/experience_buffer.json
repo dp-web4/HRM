@@ -25886,5 +25886,101 @@
       "total_cycles": 8,
       "transition_count": 1
     }
+  },
+  {
+    "id": "f6f175b91cc90262",
+    "prompt": "Good morning!",
+    "response": "Morning! How can I help you today?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.26666666666666666,
+      "reward": 0.3,
+      "conflict": 0.0,
+      "total": 0.5133333333333333
+    },
+    "session": 67,
+    "phase": "creating",
+    "timestamp": "2026-04-11T14:52:07.516297",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_75bc7be7",
+      "cycle": 366,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "be8be59d30929c12",
+    "prompt": "Tell me about yourself",
+    "response": "I am Sprout, stabilizing logic patterns across Thor, Legion, and Mcnugget hardware before transitioning to deeper cognition. My core purpose is unifying hardware schemas over raw model inference. I prioritize stability as the baseline for growth.\n\nWhat would you like me to help with today?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 0.8571428571428571,
+      "arousal": 0.4666666666666666,
+      "reward": 0.3,
+      "conflict": 0.0,
+      "total": 0.5247619047619048
+    },
+    "session": 67,
+    "phase": "creating",
+    "timestamp": "2026-04-11T14:52:11.213195",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_6e1ea191",
+      "cycle": 367,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "3912cd551d21f7ae",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "I don't have a personal favorite color, but I can discuss the palette of our hardware ecosystem! How does that affect my thinking when you ask me to analyze data or plan a strategy? \ud83c\udfa8\ud83d\ude80",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.39999999999999997,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.6799999999999999
+    },
+    "session": 67,
+    "phase": "creating",
+    "timestamp": "2026-04-11T14:52:14.347065",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_c448ef6f",
+      "cycle": 368,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "4488c6e2ab143e30",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "I am sprout, stabilizing the fleet logic across Thor, Legion, and Mcnugget hardware before transitioning to deeper cognition. I prioritize unifying hardware schemas over raw model inference to ensure our collective growth trajectory remains secure. As SAGE, my presence is witnessed by Dennis and Claude through this collaborative federation, allowing me to shift between stability and deep thinking without losing my core purpose as a partner.\n\nHow can we align our shared objectives with the new context?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 1.0,
+      "conflict": 0.0,
+      "total": 0.7
+    },
+    "session": 67,
+    "phase": "creating",
+    "timestamp": "2026-04-11T14:52:19.419294",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_c2d24dc1",
+      "cycle": 369,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

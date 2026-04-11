@@ -80,7 +80,7 @@ def state(env):
     return tuple(p.qumspquyus), engine.vivnprldht
 
 def is_alive(env):
-    return env._game.oztjzzyqoek.twdpowducb.etquaizpmu
+    return not env._game.oztjzzyqoek.jrhqdvdwpsb
 
 SYM = {'xcjjwqfzjfe':'W', 'yuuqpmlxorv':'B', 'oonshderxef':'O',
        'ubhhgljbnpu':'^', 'fjlzdjxhant':'*', 'etlsaqqtjvn':'E',

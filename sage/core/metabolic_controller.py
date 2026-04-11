@@ -225,11 +225,18 @@ class MetabolicController:
         return self.current_state
 
     def _get_time_in_state(self) -> float:
-        """Get time spent in current state (wall time or cycles)"""
-        if self.simulation_mode:
-            return float(self.total_cycles - self.state_entry_cycle)
-        else:
-            return time.time() - self.state_entry_time
+        """Get time spent in current state in cycle counts.
+
+        Always returns cycle counts (not wall time) so that transition
+        thresholds behave identically in simulation and real modes.
+
+        Thor Session 2026-04-11 12:00: Unified to cycles. Previously,
+        real mode used wall-clock seconds with 10x higher thresholds,
+        creating a 9-22x shortfall that prevented DREAM entry (26 entries
+        in 20.4M cycles). Simulation mode had 47.87% DREAM — proving
+        the thresholds work when time units match.
+        """
+        return float(self.total_cycles - self.state_entry_cycle)
 
     def _determine_next_state(
         self,
@@ -283,8 +290,8 @@ class MetabolicController:
 
             # WAKE → DREAM: Moderate ATP, been awake long enough
             # Dream heavily biased toward night
-            # In simulation mode, use cycle counts (e.g., 30 cycles)
-            dream_time_threshold = max(5, 30 / dream_bias) if self.simulation_mode else max(5, 300 / dream_bias)
+            # Threshold in cycles (unified sim/real — Thor 2026-04-11 12:00 Dream Gap fix)
+            dream_time_threshold = max(5, 30 / dream_bias)
             if 40.0 < self.atp_current < 80.0 and time_in_state > dream_time_threshold:
                 return MetabolicState.DREAM
 
@@ -313,9 +320,9 @@ class MetabolicController:
 
             # REST → DREAM: ATP partially recovered, time to consolidate
             # Dream strongly preferred at night
-            # In simulation mode, use cycle counts (e.g., 6 cycles)
+            # Threshold in cycles (unified sim/real — Thor 2026-04-11 12:00 Dream Gap fix)
             dream_atp_threshold = 40.0 / dream_bias
-            dream_time_threshold = max(5, 6 / dream_bias) if self.simulation_mode else max(5, 60 / dream_bias)
+            dream_time_threshold = max(5, 6 / dream_bias)
             if self.atp_current > dream_atp_threshold and time_in_state > dream_time_threshold:
                 return MetabolicState.DREAM
 
@@ -324,9 +331,9 @@ class MetabolicController:
         elif self.current_state == MetabolicState.DREAM:
             # DREAM → WAKE: ATP recovered, consolidation complete
             # Harder to leave dream at night
-            # In simulation mode, use cycle counts (e.g., 18 cycles max)
+            # Threshold in cycles (unified sim/real — Thor 2026-04-11 12:00 Dream Gap fix)
             wake_threshold = 70.0 * wake_bias
-            max_dream_time = (18 / dream_bias) if self.simulation_mode else (180 / dream_bias)
+            max_dream_time = 18 / dream_bias
             if self.atp_current > wake_threshold or time_in_state > max_dream_time:
                 return MetabolicState.WAKE
 

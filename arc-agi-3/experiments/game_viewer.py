@@ -62,7 +62,12 @@ def file_to_b64(path):
 def load_state():
     p = os.path.join(STATE_DIR, "session.json")
     if not os.path.exists(p): return None
-    with open(p) as f: return json.load(f)
+    for _ in range(3):
+        try:
+            with open(p) as f: return json.load(f)
+        except (json.JSONDecodeError, ValueError):
+            import time; time.sleep(0.1)
+    return None
 
 
 def load_grid(name="current"):

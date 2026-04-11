@@ -1,0 +1,166 @@
+{
+  "A": {
+    "experiment": "A",
+    "cycles": 2000,
+    "state_counts": {
+      "wake": 159,
+      "focus": 10,
+      "rest": 1028,
+      "dream": 803
+    },
+    "transitions": 223,
+    "focus_entries": 2,
+    "focus_durations": [
+      5,
+      5
+    ],
+    "focus_exit_states": [
+      "wake",
+      "wake"
+    ],
+    "crisis_cycles": 0,
+    "p11_validated": false
+  },
+  "B": {
+    "experiment": "B",
+    "cycles": 2000,
+    "state_counts": {
+      "wake": 14,
+      "focus": 10,
+      "rest": 53,
+      "dream": 23,
+      "crisis": 1900
+    },
+    "transitions": 15,
+    "rest_to_focus": 0,
+    "messages_sent": 10,
+    "messages_in_rest": 0,
+    "trans_counts": {
+      "wake\u2192focus": 2,
+      "focus\u2192wake": 2,
+      "wake\u2192rest": 1,
+      "rest\u2192dream": 5,
+      "dream\u2192rest": 4,
+      "dream\u2192crisis": 1
+    }
+  },
+  "C": {
+    "experiment": "C",
+    "cycles_per_period": 5000,
+    "results": {
+      "50": {
+        "state_counts": {
+          "wake": 44,
+          "focus": 15,
+          "rest": 227,
+          "dream": 129,
+          "crisis": 4585
+        },
+        "trans_counts": {
+          "wake\u2192focus": 3,
+          "focus\u2192wake": 2,
+          "wake\u2192rest": 6,
+          "rest\u2192dream": 17,
+          "dream\u2192rest": 11,
+          "dream\u2192wake": 6,
+          "focus\u2192crisis": 1
+        },
+        "focus_entries": 3,
+        "max_wake_atp": 96.6
+      },
+      "100": {
+        "state_counts": {
+          "wake": 384,
+          "focus": 10,
+          "rest": 2559,
+          "dream": 2047
+        },
+        "trans_counts": {
+          "wake\u2192focus": 2,
+          "focus\u2192wake": 2,
+          "wake\u2192rest": 75,
+          "rest\u2192dream": 237,
+          "dream\u2192rest": 163,
+          "dream\u2192wake": 74
+        },
+        "focus_entries": 2,
+        "max_wake_atp": 96.6
+      },
+      "200": {
+        "state_counts": {
+          "wake": 394,
+          "focus": 10,
+          "rest": 2611,
+          "dream": 1985
+        },
+        "trans_counts": {
+          "wake\u2192focus": 2,
+          "focus\u2192wake": 2,
+          "wake\u2192rest": 77,
+          "rest\u2192dream": 246,
+          "dream\u2192wake": 76,
+          "dream\u2192rest": 170
+        },
+        "focus_entries": 2,
+        "max_wake_atp": 96.6
+      },
+      "500": {
+        "state_counts": {
+          "wake": 409,
+          "focus": 10,
+          "rest": 2731,
+          "dream": 1850
+        },
+        "trans_counts": {
+          "wake\u2192focus": 2,
+          "focus\u2192wake": 2,
+          "wake\u2192rest": 80,
+          "rest\u2192dream": 220,
+          "dream\u2192wake": 79,
+          "dream\u2192rest": 141
+        },
+        "focus_entries": 2,
+        "max_wake_atp": 96.6
+      },
+      "1000": {
+        "state_counts": {
+          "wake": 404,
+          "focus": 10,
+          "rest": 2676,
+          "dream": 1910
+        },
+        "trans_counts": {
+          "wake\u2192focus": 2,
+          "focus\u2192wake": 2,
+          "wake\u2192rest": 79,
+          "rest\u2192dream": 232,
+          "dream\u2192wake": 78,
+          "dream\u2192rest": 154
+        },
+        "focus_entries": 2,
+        "max_wake_atp": 96.6
+      }
+    },
+    "focus_by_period": {
+      "50": 3,
+      "100": 2,
+      "200": 2,
+      "500": 2,
+      "1000": 2
+    }
+  },
+  "D": {
+    "experiment": "D",
+    "cycles": 2000,
+    "state_counts": {
+      "wake": 7,
+      "focus": 21,
+      "crisis": 1972
+    },
+    "focus_durations": [
+      21
+    ],
+    "crisis_cycles": 1972,
+    "sustainable": true
+  }
+}

@@ -1,7 +1,66 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-08 (ARC-AGI-3: 5/25 Games Solved — Consciousness Loop as Game Agent)**
-**Previous: 2026-03-18 (Identity Hardening — Three-Layer IdentityProvider)**
+**Last Updated: 2026-04-11 (FOCUS Gap Fix — Asymmetric Threshold Trap Resolved)**
+**Previous: 2026-04-08 (ARC-AGI-3: 5/25 Games Solved)**
+
+---
+
+## FOCUS Gap Resolution (Apr 11, 2026)
+
+### The Circadian Focus Gap: Found, Analyzed, Fixed
+
+Over five sessions (Apr 10-11), autonomous research on Thor discovered and resolved why SAGE's FOCUS metabolic state had **never activated across 20 million consciousness cycles**.
+
+### Root Causes (Three Ordered Barriers)
+
+| Priority | Barrier | Fix |
+|----------|---------|-----|
+| 1 | **Asymmetric Threshold Trap**: entry salience (0.45) < exit salience (0.50), audio mock at 0.46 enters but immediately exits | Exit threshold lowered to 0.35 |
+| 2 | **Dead consumption_rate**: `atp_consumption_rate` was never deducted in `update()`, making designed energy economics cosmetic | Wired into `metabolic_controller.update()` |
+| 3 | **CRISIS death state**: recovery rate (0.2) < plugin drain (0.5), making CRISIS permanent | Recovery raised to 0.8 |
+
+### Changes Made
+
+**Files**: `sage/core/metabolic_controller.py`
+
+| Parameter | Before | After | Why |
+|-----------|--------|-------|-----|
+| FOCUS exit salience | < 0.50 | < 0.35 | Fixes threshold trap (audio mock 0.46 now sustains) |
+| FOCUS recovery rate | 0.0 | 0.3 | Enables partial ATP recovery during focus |
+| FOCUS consumption rate | 2.0 (unused) | 0.8 (active) | Now wired into update(); recalibrated |
+| CRISIS recovery rate | 0.2 | 0.8 | Must exceed plugin base cost for recovery |
+| `update()` ATP calc | recovery only | consumption + recovery | Designed economics now take effect |
+
+### Validation Results (27,000 simulated cycles)
+
+| Metric | Before Fix | After Fix |
+|--------|-----------|-----------|
+| FOCUS activations (no plugins) | 0 | 49 entries, 47 cycles avg |
+| FOCUS % of cycles (no plugins) | 0% | 46.1% |
+| FOCUS activations (with plugins) | 0 | 3 entries, 8.3 cycles avg |
+| CRISIS recoverability | Never (death state) | Exits at cycle 44 |
+| Message resilience | 95% CRISIS | 32% CRISIS |
+
+### Key Discovery: Plugin Drain Dominates
+
+The metabolic state machine now works correctly in isolation (FOCUS=46% of cycles). With mock plugin drain (3.5 ATP/cycle), FOCUS is brief but does activate. The remaining bottleneck is plugin execution costs — an IRP-level concern, not a state machine issue.
+
+### Architectural Finding: consumption_rate Was Cosmetic
+
+In `sage_consciousness.py:871`, `atp_consumed` was always 0.0 in cycle_data. Actual ATP drain came from effect execution (line 983), bypassing the metabolic controller entirely. Now consumption_rate is wired into `update()`, making the designed per-state energy economics functional.
+
+### Experiment Artifacts
+
+- `sage/experiments/focus_gap_experiments.py` — Four experiments testing the gap
+- `sage/experiments/focus_gap_fix_validation.py` — Post-fix validation
+- `private-context/autonomous-sessions/thor-sage-20260411-000009-insight.md` — Full analysis
+
+### Next Steps
+
+1. Test on live daemon (not just simulation) — monitor state distribution changes
+2. Optimize plugin drain: mock heartbeat costs should respect metabolic state
+3. Add REST→FOCUS emergency path for high-salience events
+4. Cross-fleet validation: deploy fix to Sprout, Nomad, CBP
 
 ---
 

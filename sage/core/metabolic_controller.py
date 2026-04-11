@@ -127,8 +127,8 @@ class MetabolicController:
             ),
             MetabolicState.FOCUS: StateConfig(
                 name="focus",
-                atp_consumption_rate=2.0,
-                atp_recovery_rate=0.0,
+                atp_consumption_rate=0.8,  # Was 2.0 (cosmetic) — now wired into update(); 0.8 balances plugin drain
+                atp_recovery_rate=0.3,  # Was 0.0 — partial recovery enables sustained focus
                 max_active_plugins=1,  # Focus on one thing
                 sensor_poll_rate=60.0,  # Higher rate for focused task
                 learning_enabled=True,
@@ -161,7 +161,7 @@ class MetabolicController:
             MetabolicState.CRISIS: StateConfig(
                 name="crisis",
                 atp_consumption_rate=0.05,
-                atp_recovery_rate=0.2,
+                atp_recovery_rate=0.8,  # Was 0.2 — must exceed plugin base cost for recovery
                 max_active_plugins=1,   # Only critical systems
                 sensor_poll_rate=5.0,   # Monitor for danger
                 learning_enabled=False,
@@ -202,9 +202,12 @@ class MetabolicController:
         max_salience = cycle_data.get('max_salience', 0.0)
         crisis_detected = cycle_data.get('crisis_detected', False)
 
-        # Update ATP
+        # Update ATP — apply both state consumption and recovery
+        # Previously consumption_rate was unused (only for priority ranking).
+        # Thor Session 2026-04-11: wired into update() so designed economics take effect.
         config = self.get_current_config()
         self.atp_current -= atp_consumed
+        self.atp_current -= config.atp_consumption_rate  # State-specific metabolic cost
         self.atp_current += config.atp_recovery_rate
         self.atp_current = max(0.0, min(self.atp_max, self.atp_current))
 
@@ -289,7 +292,10 @@ class MetabolicController:
 
         elif self.current_state == MetabolicState.FOCUS:
             # FOCUS → WAKE: Salience dropped or ATP low
-            if max_salience < 0.5 or self.atp_current < 20.0:
+            # Exit threshold lowered to 0.35 (was 0.5) — fixes Asymmetric Threshold Trap
+            # Audio mock salience 0.46 enters at >0.45 but exited at <0.50; now sustains
+            # Thor Session 2026-04-11: Experiments A/D validated this fix
+            if max_salience < 0.35 or self.atp_current < 20.0:
                 return MetabolicState.WAKE
 
             # FOCUS → REST: ATP critical

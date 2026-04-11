@@ -37,12 +37,25 @@
 3. Negative-x pipe positions (x=-1, -2) for catching x=1 stream — still danger from other sources
 4. The core constraint: 4 movable pipes + 2 sources + fixed pipe producing x=1 + splash mechanics → not enough pipes to catch ALL stray water
 
-### Hypothesis for L4 Solution
-- May require a pipe configuration where water streams merge before hitting receptacles, avoiding splash
-- Or: the simulation doesn't perfectly model some mechanic (e.g., splash blocking when water already exists at splash position)
-- Or: there's a creative use of pipe overlap or pipe-pipe cascading that creates safe routing
+### L4 SOLVED — The Breakthrough
+
+**Root cause of failure:** I assumed `adbrqflmwi` (p0, the 7-wide pipe with drip source) was FIXED because it lacks the `sys_click` tag. But the game's click handler uses `rxjmwfcjyw()` which returns ALL `ksmzdcblcz`-tagged sprites regardless of `sys_click`. **p0 IS movable!** That gives us 5 pipes, not 4.
+
+**Second bug:** The water flow simulator didn't update drip source positions when pipes with `syaipsfndp` tag were moved. Fixed by recomputing drip positions in `simulate_pour()`.
+
+**L4 solution (verified live):**
+- p0(7w): (2,9)→(10,10). Drip moves to x=13→cup3. Pipe exits 9(cup2)+17(cup1).
+- p2(5w): (5,5)→(4,5). Catches source x=7. Exits 3(cup0)+9.
+- p4(4w): (14,10)→(9,8). Catches x=9 cascade. Exits 8+13.
+- p1(5w): (12,5)→(4,14). Catches x=8. Exits 3(cup0)+9(cup2). Safe!
+- p3(4w): (12,13)→(0,3). Out of the way.
+- **All 4 cups filled, no danger!**
+
+**Key lessons:**
+1. Don't assume sprites are immovable just because they lack a UI tag. Read the actual click handler code.
+2. When sprites have multiple tags (pipe + drip source), moving them moves ALL their properties.
+3. The 7w pipe at x=10 is magical: exits at x=9 (cup2) AND x=17 (cup1), drip at x=13 (cup3).
 
 ### Next Steps
-1. Try interactive exploration: position pipes, pour, observe actual game behavior
-2. Compare game behavior with simulation to find discrepancies
-3. Try L5 and L6 — might be easier than L4 (L5 has L-pipes which add routing options)
+1. L5 has L-pipes (deflectors) — new mechanic to model
+2. L6 has 3 danger zones (sides + bottom) — more constrained routing

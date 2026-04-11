@@ -2,8 +2,8 @@
   "session": "T217",
   "skill_track": "D",
   "skill_name": "Conversational Skills",
-  "start": "2026-04-11T03:00:45.818038",
-  "end": "2026-04-11T03:10:47.343038",
+  "start": "2026-04-11T03:06:10.739624",
+  "end": "2026-04-11T03:15:15.612564",
   "exercises": [
     {
       "exercise": {
@@ -39,7 +39,7 @@
           "reliability": 0.01,
           "integrity": 0.0
         },
-        "completed_at": "2026-04-11T03:04:45.884992"
+        "completed_at": "2026-04-11T03:10:10.788479"
       },
       "trust_update": {
         "talent": 1.0,
@@ -81,7 +81,7 @@
           "reliability": 0.01,
           "integrity": 0.0
         },
-        "completed_at": "2026-04-11T03:06:45.899694"
+        "completed_at": "2026-04-11T03:12:10.798988"
       },
       "trust_update": {
         "talent": 1.0,
@@ -95,10 +95,10 @@
         "prompt": "Good morning!",
         "expected": "morning"
       },
-      "response": "[Daemon unreachable: HTTP Error 504: Gateway Timeout]",
+      "response": "Morning! How can I help today?",
       "r6_evaluation": {
         "status": "completed",
-        "response": "[Daemon unreachable: HTTP Error 504: Gateway Timeout]",
+        "response": "Morning! How can I help today?",
         "mode_detection": {
           "detected_mode": "conversation",
           "confidence": 0.6,
@@ -123,7 +123,7 @@
           "reliability": 0.01,
           "integrity": 0.0
         },
-        "completed_at": "2026-04-11T03:08:45.914501"
+        "completed_at": "2026-04-11T03:13:14.329702"
       },
       "trust_update": {
         "talent": 1.0,
@@ -147,7 +147,7 @@
     },
     {
       "speaker": "SAGE",
-      "text": "[Daemon unreachable: HTTP Error 504: Gateway Timeout]"
+      "text": "Morning! How can I help today?"
     },
     {
       "speaker": "Teacher",
@@ -171,6 +171,6 @@
     },
     "history_length": 492,
     "created_at": "2026-01-23T15:00:55.169720",
-    "last_updated": "2026-04-11T03:08:45.914712"
+    "last_updated": "2026-04-11T03:13:14.329909"
   }
 }

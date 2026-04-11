@@ -1,7 +1,68 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-11 (FOCUS Gap Fix — Asymmetric Threshold Trap Resolved)**
-**Previous: 2026-04-08 (ARC-AGI-3: 5/25 Games Solved)**
+**Last Updated: 2026-04-11 (FOCUS Gap Live Daemon Validation + Salience Discovery)**
+**Previous: 2026-04-11 (FOCUS Gap Fix — Asymmetric Threshold Trap Resolved)**
+
+---
+
+## Live Daemon Validation (Apr 11, 2026 — 12:00 Session)
+
+### FOCUS Activates on Live Daemon — First Time in 20.4 Million Cycles
+
+The FOCUS gap fix from the 00:00 session was validated on the **live daemon** (not simulation). After restarting the daemon with the fixed metabolic controller, FOCUS immediately began activating.
+
+### Results: First 1,000 Post-Fix Cycles
+
+| Metric | Pre-Fix (20.4M cycles) | Post-Fix (1,000 cycles) |
+|--------|----------------------|----------------------|
+| FOCUS activations | **0** | **12** |
+| FOCUS % of cycles | 0% | **9%** |
+| wake→focus transitions | 0 | 12 |
+| REST % | ~70% | 68% |
+| WAKE % | ~30% | 23% |
+
+### Key Discovery: The Hidden Salience Layer
+
+The logged "Salience" value was an **exponentially-smoothed average** (`0.9 * old + 0.1 * new`), not the per-cycle max. This masked the true salience dynamics:
+
+| What we saw in logs | What was actually happening |
+|---|---|
+| Salience: 0.09-0.22 | max_salience: 0.46 (when audio mock fires) |
+| "Salience never reaches 0.45" | max_salience reaches 0.46 ~50% of WAKE cycles |
+| No evidence of FOCUS conditions | Conditions met but metabolic trap prevented entry |
+
+**Fix applied**: Added `MaxSal` field to daemon status output (`sage_consciousness.py:2431`) so max_salience is now directly observable.
+
+### FOCUS Behavior Pattern (Post-Fix)
+
+The emergent cycle is a healthy attention rhythm:
+1. **REST** (5-7 cycles): ATP recovers at ~+9/10 cycles
+2. **REST → WAKE**: ATP crosses 50 threshold
+3. **WAKE** (1-2 cycles): Audio mock fires (50%) → MaxSal=0.460
+4. **WAKE → FOCUS**: If ATP > focus_threshold (~45-50 depending on circadian bias)
+5. **FOCUS** (5-8 cycles): Intense single-plugin attention, ~5.5 ATP drain/cycle
+6. **FOCUS → WAKE → REST**: Natural energy cascade
+
+FOCUS lasts 5-8 cycles because plugin budget allocation (10% of ATP per cycle) plus consumption_rate (0.8) minus recovery (0.3) drains ~5.5 ATP/cycle. From ~50 ATP entry to 20 exit = ~5.5 cycles.
+
+### Plugin Drain Analysis
+
+The plugin drain during FOCUS is proportional to available ATP (10% per cycle allocation, confidence-scaled). This is not a bug — it's the designed "spend what you have" economic model. FOCUS *should* be expensive. Brief focused bursts triggered by salient events is biologically plausible behavior.
+
+### Changes Made This Session
+
+| File | Change | Why |
+|------|--------|-----|
+| `sage/core/sage_consciousness.py:993` | Track `max_salience` in stats | Expose per-cycle salience max |
+| `sage/core/sage_consciousness.py:2431` | Add `MaxSal:` to status output | Observable FOCUS entry conditions |
+
+### Next Steps
+
+1. **Send message to FOCUS daemon** — test whether FOCUS affects response quality/depth
+2. **Cross-fleet deploy** — restart daemons on Sprout, Nomad, CBP with the fix
+3. **Dream state investigation** — only 26 dream entries in 20.4M pre-fix cycles; similar gap?
+4. **Real sensor integration** — audio/vision sources would produce variable salience, not binary 0.46/0.09
+5. **FOCUS duration tuning** — test whether adjusting probe_budget (currently 2%) extends FOCUS
 
 ---
 

@@ -990,6 +990,7 @@ class SAGEConsciousness:
             self.stats['average_salience'] = (
                 0.9 * self.stats['average_salience'] + 0.1 * avg_salience
             )
+            self.stats['max_salience'] = max(s.total for s in salience_map.values())
 
         # 11. C ≈ 0.5 Validation Logging (Thor Session #52)
         # Log metabolic state every cycle (Experiment 2)
@@ -2428,6 +2429,7 @@ class SAGEConsciousness:
               f"Posture: {posture:10s} "
               f"ATP: {self.metabolic.atp_current:5.1f}/{self.metabolic.atp_max:.0f} "
               f"Salience: {self.stats['average_salience']:.3f} "
+              f"MaxSal: {self.stats.get('max_salience', 0.0):.3f} "
               f"Plugins: {self.stats['plugins_executed']}")
         print(f"         Plugin trust: {plugin_trust_str}")
         print(f"         Sensor trust: {sensor_trust_str}")

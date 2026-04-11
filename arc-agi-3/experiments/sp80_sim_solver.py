@@ -325,7 +325,20 @@ def simulate_pour(state: LevelState, pipe_positions: Optional[Dict[int, Tuple[in
         water_cells.add((wx, wy))
         active.append((wx, wy, 0, 1))
 
-    for sx, sy in state.drip_sources:
+    # Compute drip sources — update positions if pipes with syaipsfndp tag are moved
+    drip_sources = list(state.drip_sources)  # copy original
+    for pipe in state.pipes:
+        if "syaipsfndp" in SPRITE_TAGS.get(pipe["name"], []):
+            if pipe_positions and pipe["idx"] in pipe_positions:
+                # Remove original drip positions from this pipe
+                orig_drips = set(get_color4_cells(pipe["name"], pipe["x"], pipe["y"], pipe["rot"]))
+                drip_sources = [d for d in drip_sources if d not in orig_drips]
+                # Add new drip positions at moved location
+                nx, ny = pipe_positions[pipe["idx"]]
+                for cx, cy in get_color4_cells(pipe["name"], nx, ny, pipe["rot"]):
+                    drip_sources.append((cx, cy))
+
+    for sx, sy in drip_sources:
         below = (sx, sy + 1)
         if below not in water_cells and below not in world:
             water_cells.add(below)

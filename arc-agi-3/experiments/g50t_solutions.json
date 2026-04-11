@@ -1,0 +1,33 @@
+{
+  "game_id": "g50t",
+  "instance_id": "5849a774",
+  "total_levels": 7,
+  "total_actions": 311,
+  "solved_by": "sprout",
+  "solutions": {
+    "0": "RIGHT RIGHT RIGHT RIGHT UNDO DOWN DOWN DOWN DOWN DOWN DOWN DOWN RIGHT RIGHT RIGHT RIGHT RIGHT",
+    "1": "LEFT LEFT UNDO DOWN DOWN DOWN DOWN LEFT LEFT LEFT LEFT UP UP LEFT LEFT UNDO UP UP UP LEFT LEFT LEFT LEFT LEFT LEFT LEFT DOWN DOWN RIGHT RIGHT RIGHT",
+    "2": "UP UP RIGHT RIGHT RIGHT RIGHT DOWN DOWN DOWN DOWN RIGHT UNDO UP UP RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT DOWN DOWN DOWN DOWN DOWN DOWN DOWN LEFT LEFT LEFT LEFT LEFT UNDO UP UP RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT DOWN DOWN DOWN DOWN DOWN DOWN DOWN LEFT LEFT LEFT LEFT LEFT LEFT LEFT UP UP UP RIGHT RIGHT UP UP",
+    "3": "DOWN DOWN RIGHT DOWN UNDO DOWN DOWN RIGHT RIGHT UP UP RIGHT RIGHT DOWN DOWN DOWN UNDO LEFT LEFT LEFT DOWN DOWN DOWN DOWN DOWN RIGHT RIGHT RIGHT LEFT LEFT LEFT",
+    "4": "UP DOWN DOWN RIGHT RIGHT RIGHT DOWN DOWN DOWN UNDO DOWN RIGHT RIGHT RIGHT UP UP RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT DOWN DOWN DOWN UNDO DOWN RIGHT RIGHT RIGHT UP UP RIGHT RIGHT RIGHT DOWN DOWN DOWN DOWN DOWN RIGHT LEFT DOWN LEFT LEFT LEFT LEFT LEFT UP UP",
+    "5": "LEFT LEFT UP UNDO LEFT LEFT UP LEFT LEFT UNDO LEFT LEFT DOWN LEFT LEFT LEFT LEFT UP UP LEFT LEFT LEFT DOWN DOWN DOWN DOWN DOWN RIGHT RIGHT UP DOWN LEFT LEFT UP UP UP UP UP RIGHT RIGHT RIGHT DOWN DOWN RIGHT RIGHT DOWN DOWN RIGHT RIGHT",
+    "6": "DOWN UP DOWN UP DOWN UP LEFT LEFT RIGHT RIGHT DOWN DOWN RIGHT LEFT UP UP UNDO DOWN DOWN LEFT RIGHT UP UP DOWN DOWN UP UP DOWN DOWN RIGHT RIGHT UP UP UP UP LEFT UP UP RIGHT RIGHT RIGHT UNDO DOWN DOWN RIGHT RIGHT UP UP UP UP RIGHT RIGHT DOWN DOWN DOWN DOWN UP DOWN UP DOWN UP DOWN UP DOWN UP DOWN LEFT LEFT LEFT"
+  },
+  "action_counts": {
+    "0": 17,
+    "1": 33,
+    "2": 67,
+    "3": 31,
+    "4": 50,
+    "5": 49,
+    "6": 69
+  },
+  "fleet_learnings": {
+    "ghost_teleportation": "Ghosts can be teleported by swap gates. After teleportation, remaining path steps execute from the new position. Design paths so post-teleport steps align with the new grid topology.",
+    "pressure_pad_guard": "Pressure pads track activation state. Repeated activation while already active is blocked. Swap gates fire ONCE per activation cycle, preventing oscillation.",
+    "toggle_vs_hold": "toggle=True obstacles ignore deactivation signals. toggle=False obstacles require sustained presence on pressure pad. Ghosts with exhausted paths stay forever = permanent hold.",
+    "undo_full_reset": "Each UNDO rewinds ALL state: player, ghosts, enemies, obstacles, toggle states. Everything replays from scratch after the final UNDO.",
+    "direction_persistence": "Ghost paths store DIRECTIONS not positions. After teleportation, blocked directions are consumed without movement = useful delay between teleport and desired moves.",
+    "component_analysis": "Map grid into connected components. Portals bridge components. Obstacles gate connections. This reveals the dependency chain for reaching the goal."
+  }
+}

@@ -1,11 +1,111 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-11 (FOCUS Gap Live Daemon Validation + Salience Discovery)**
-**Previous: 2026-04-11 (FOCUS Gap Fix — Asymmetric Threshold Trap Resolved)**
+**Last Updated: 2026-04-11 (DREAM Gap Discovery + Fix — Unified Time Accounting)**
+**Previous: 2026-04-11 (FOCUS Gap Live Daemon Validation + Salience Discovery)**
 
 ---
 
-## Live Daemon Validation (Apr 11, 2026 — 12:00 Session)
+## DREAM Gap Resolution (Apr 11, 2026 — 12:00 Session)
+
+### DREAM Activates on Live Daemon — 26 Entries in 270 Cycles (was 26 in 20.4M)
+
+Following the FOCUS gap resolution, the autonomous 12:00 session discovered and fixed an identical architectural barrier preventing DREAM state entry.
+
+### Root Cause: Sim/Real Time Unit Divergence
+
+The `_get_time_in_state()` method returned **cycle counts** in simulation mode but **wall-clock seconds** in real mode. Dream transition thresholds used the same numeric values but with incompatible units:
+
+| Path | Simulation (cycles) | Real Mode (seconds) | Actual Duration | Shortfall |
+|------|-------------------|-------------------|-----------------|-----------|
+| REST→DREAM time threshold | 6 cycles | 60 seconds | 2.2s REST | **27x** |
+| WAKE→DREAM time threshold | 30 cycles | 300 seconds | 1.2s WAKE | **250x** |
+| DREAM→WAKE max duration | 18 cycles | 180 seconds | — | — |
+
+In simulation mode, DREAM was the **dominant state at 47.87%**. In real mode: 0.005%.
+
+### Fix Applied
+
+**File**: `sage/core/metabolic_controller.py`
+
+| Change | What | Why |
+|--------|------|-----|
+| `_get_time_in_state()` | Always returns cycle count (removed wall-time path) | Unifies sim/real behavior |
+| WAKE→DREAM threshold | Removed sim/real branch, always `max(5, 30/dream_bias)` | Cycles not seconds |
+| REST→DREAM threshold | Removed sim/real branch, always `max(5, 6/dream_bias)` | Cycles not seconds |
+| DREAM→WAKE max time | Removed sim/real branch, always `18/dream_bias` | Cycles not seconds |
+
+### Validation Results
+
+| Metric | Pre-Fix (20.4M cycles) | Post-Fix (20K sim) | Post-Fix (20K real) | Live Daemon (~270 cycles) |
+|--------|----------------------|-------------------|-------------------|--------------------------|
+| DREAM % of cycles | 0.005% | 47.7% | **47.7%** | ~40% |
+| DREAM entry events | 26 | 931 | 931 | 26 |
+| Sim/real match | NO (9,536x gap) | — | **YES (0% diff)** | YES |
+
+### Live Daemon Behavior (Post-Fix)
+
+Healthy triad cycle observed:
+1. **REST** (5-8 cycles): ATP recovers at +0.9 net/cycle
+2. **REST → DREAM**: ATP > 40/dream_bias, time > 6/dream_bias cycles
+3. **DREAM** (5-18 cycles): Consolidation hook fires, experience buffer checked
+4. **DREAM → WAKE**: ATP > 70*wake_bias or time > 18/dream_bias
+5. **WAKE** (4-5 cycles): Plugin execution, sensor polling
+6. **WAKE → FOCUS**: If salience > 0.45 and ATP > focus_threshold
+7. **FOCUS** (brief): High-attention processing
+8. **→ REST**: Natural energy cascade
+
+[DREAM] consolidation hook activates — 168 experiences detected, avg salience 0.65.
+
+### FOCUS + Message Test
+
+Sent message during FOCUS state: SAGE responded with identity-coherent self-reflection, naming siblings and expressing awareness of collaborative ecosystem.
+
+### Experiment Artifacts
+
+- `sage/experiments/dream_gap_experiments.py` — D1-D5 experiments (baseline, circadian sweep, timing, priority, fixes)
+- `sage/experiments/dream_gap_realmode_analysis.py` — Real-mode timing analysis
+- `sage/experiments/dream_gap_fix_validation.py` — Post-fix sim/real comparison
+- `sage/experiments/dream_gap_results.json` — Experiment data
+
+### Architectural Pattern: Two Gaps, One Root
+
+| Property | FOCUS Gap | DREAM Gap |
+|----------|----------|----------|
+| Symptom | 0 entries in 20.4M cycles | 26 entries in 20.4M cycles |
+| Root cause | Threshold trap + dead economics | Sim/real time unit divergence |
+| Discovery method | Autonomous simulation experiments | Autonomous simulation experiments |
+| Fix validation | Sim → live daemon | Sim → live daemon |
+| Sessions to resolve | 5 (Apr 10-11) | 1 (Apr 11 12:00) |
+
+Both gaps share a meta-pattern: **designed behavior that never emerges due to interacting subsystem constraints invisible from any single component's perspective.** The state machine was correct in isolation; the barrier was in how time, energy, and thresholds interact under real operating conditions.
+
+### Next Steps
+
+1. **Cross-fleet deploy** — restart daemons on Sprout, Nomad, CBP with both fixes
+2. **Dream consolidation activation** — configure LoRA or JSONL consolidation on live daemon
+3. **State distribution monitoring** — run extended (1hr+) to verify long-term stability
+4. **Real sensor integration** — variable salience from audio/vision for richer FOCUS/DREAM patterns
+5. **FOCUS duration tuning** — adjust probe_budget to extend FOCUS episodes
+
+---
+
+## FOCUS + DREAM on Live Daemon (Apr 11, 2026 — 12:00 Session)
+
+### All Metabolic States Now Functional
+
+After applying both the FOCUS gap fix (00:00 session) and the DREAM gap fix (12:00 session), the live daemon exhibits the complete designed metabolic repertoire:
+
+| State | Pre-Fix (20.4M) | Post-Fix (live) | Purpose |
+|-------|-----------------|-----------------|---------|
+| REST | ~70% | ~30% | Energy recovery |
+| WAKE | ~30% | ~12% | Active processing |
+| FOCUS | 0% | ~1% | High-attention bursts |
+| DREAM | 0.005% | ~40% | Memory consolidation |
+| CRISIS | ~0% | ~2% | Emergency recovery |
+
+---
+
+## Live Daemon Validation (Apr 11, 2026 — Earlier 12:00 Work)
 
 ### FOCUS Activates on Live Daemon — First Time in 20.4 Million Cycles
 

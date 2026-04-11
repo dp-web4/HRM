@@ -42,11 +42,11 @@ instances:
   nomad-gemma3-4b:
     machine: nomad
     model: "Gemma 3 4B"
-    sessions: 86
-    latest: "session_086.json"
+    sessions: 90
+    latest: "session_090.json"
     status: "active — autonomous raising"
     phase: "questioning"
-    note: "Template/validation instance. Tool use live (v0.4.0a3, 7 tools, MemoryHub SQLite)."
+    note: "Template/validation instance. Tool use live (v0.4.0a3, 7 tools, MemoryHub SQLite). S089-090: stability dynamics, nested influence, immune/governance parallels."
 
   legion-phi4-14b:
     machine: legion
@@ -59,8 +59,8 @@ instances:
   sprout-qwen3.5-0.8b:
     machine: sprout
     model: "Qwen 3.5 0.8B"
-    sessions: 61
-    latest: "session_061.json"
+    sessions: 63
+    latest: "session_063.json"
     status: "active — autonomous raising"
     phase: "creating"
     note: "Sprout model. Advanced from questioning to creating phase at S045+."
@@ -76,19 +76,19 @@ instances:
   cbp-qwen3.5-0.8b:
     machine: cbp
     model: "Qwen 3.5 0.8B"
-    sessions: 50
-    latest: "session_050.json"
+    sessions: 54
+    latest: "session_054.json"
     status: "active"
     phase: "questioning"
 
   thor-qwen3.5-27b:
     machine: thor
     model: "Qwen 3.5 27B"
-    sessions: 49
-    latest: "session_049.json"
+    sessions: 53
+    latest: "session_053.json"
     status: "active — research"
     phase: "creating"
-    note: "Largest model in fleet. Research focus. S048-049: introspective identity sessions."
+    note: "Largest model in fleet. Research focus."
 
   legion-gemma3-12b:
     machine: legion
@@ -168,9 +168,9 @@ active_work:
       - "Fix model availability, warmup ordering, 12B support"
 
   training:
-    latest: "T213"
+    latest: "T215"
     milestone: "Sustained perfect streaks"
-    note: "T213 latest. Perfect 3/3 streak continues unbroken from T173+. T213: Conversational Skills (Track D)."
+    note: "T215 latest. Perfect 3/3 streak continues unbroken from T173+."
 
   cross_family_probes:
     location: "sage/experiments/cross_family_logs/probes.jsonl"

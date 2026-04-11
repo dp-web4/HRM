@@ -1,0 +1,150 @@
+{
+  "v1": {
+    "test": "focus_sustainability_no_plugin_drain",
+    "state_counts": {
+      "wake": 489,
+      "focus": 2307,
+      "rest": 1197,
+      "dream": 1007
+    },
+    "focus_entries": 49,
+    "focus_durations": [
+      156,
+      51,
+      45,
+      45,
+      44,
+      45,
+      45,
+      44,
+      45,
+      45,
+      44,
+      45,
+      45,
+      44,
+      45,
+      45,
+      44,
+      45,
+      45,
+      44,
+      45,
+      45,
+      44,
+      45,
+      45,
+      44,
+      45,
+      45,
+      44,
+      45,
+      45,
+      44,
+      45,
+      45,
+      44,
+      45,
+      45,
+      44,
+      45,
+      45,
+      44,
+      45,
+      45,
+      44,
+      45,
+      45,
+      44,
+      45,
+      45
+    ],
+    "crisis_cycles": 0
+  },
+  "v2": {
+    "test": "focus_with_plugin_drain",
+    "state_counts": {
+      "wake": 361,
+      "focus": 25,
+      "crisis": 82,
+      "rest": 2614,
+      "dream": 1918
+    },
+    "focus_entries": 3,
+    "focus_durations": [
+      16,
+      4,
+      5
+    ],
+    "crisis_cycles": 82
+  },
+  "v3": {
+    "test": "crisis_recovery",
+    "crisis_exit_cycle": 44,
+    "final_state": "rest",
+    "final_atp": 41.100000000000996
+  },
+  "v4": {
+    "test": "message_handling",
+    "state_counts": {
+      "wake": 51,
+      "focus": 16,
+      "crisis": 636,
+      "rest": 929,
+      "dream": 368
+    },
+    "crisis_pct": 31.8,
+    "message_states": [
+      {
+        "cycle": 100,
+        "state": "crisis",
+        "atp": 0.0
+      },
+      {
+        "cycle": 300,
+        "state": "crisis",
+        "atp": 0.0
+      },
+      {
+        "cycle": 500,
+        "state": "crisis",
+        "atp": 0.0
+      },
+      {
+        "cycle": 700,
+        "state": "crisis",
+        "atp": 0.0
+      },
+      {
+        "cycle": 900,
+        "state": "crisis",
+        "atp": 0.0
+      },
+      {
+        "cycle": 1100,
+        "state": "crisis",
+        "atp": 0.0
+      },
+      {
+        "cycle": 1300,
+        "state": "crisis",
+        "atp": 0.0
+      },
+      {
+        "cycle": 1500,
+        "state": "crisis",
+        "atp": 0.0
+      },
+      {
+        "cycle": 1700,
+        "state": "crisis",
+        "atp": 0.0
+      },
+      {
+        "cycle": 1900,
+        "state": "crisis",
+        "atp": 0.0
+      }
+    ]
+  }
+}

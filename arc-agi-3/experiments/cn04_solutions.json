@@ -1,0 +1,70 @@
+{
+  "game_id": "cn04",
+  "instance_id": "65d47d14",
+  "total_levels": 5,
+  "total_actions": 133,
+  "baseline_actions": [16, 54, 69, 318, 208],
+  "baseline_total": 665,
+  "solved_by": "claude-opus-4.6",
+  "game_type": "jigsaw_connector",
+  "mechanics": {
+    "connectors": "Color-8 pixels on sprites serve as connection points. When connectors from two different sprites overlap at the same world position, they pair up (turn to color 3).",
+    "win_condition": "All color-8 connector pixels across all sprites must be paired (no unpaired connectors remain).",
+    "actions": "ACTION1-4=UDLR move selected sprite, ACTION5=rotate 90 CW, ACTION6=click to select sprite",
+    "level5_twist": "Level 5 (index 4) hides sprites by coloring all pixels as background. Selected sprite reveals its true colors."
+  },
+  "level_solutions": {
+    "0": {
+      "sprites": 2,
+      "placements": [
+        {"name": "dzfylahsaw", "x": 12, "y": 9, "rot": 0, "note": "stays at init"},
+        {"name": "vmgdxvpgkh", "x": 7, "y": 10, "rot": 0, "note": "RIGHT 3 DOWN 6"}
+      ],
+      "actions": 9
+    },
+    "1": {
+      "sprites": 3,
+      "placements": [
+        {"name": "glojtydbea", "x": 12, "y": 4, "rot": 0, "note": "stays at init"},
+        {"name": "grpgefeksy", "x": 8, "y": 3, "rot": 0, "note": "move to match"},
+        {"name": "lejuhuvrjg", "x": 7, "y": 1, "rot": 0, "note": "move to match"}
+      ],
+      "actions": 20
+    },
+    "2": {
+      "sprites": 3,
+      "placements": [
+        {"name": "gqxqpkuwab", "x": 11, "y": 4, "rot": 0, "note": "stays at init"},
+        {"name": "hjqjqsmhmf", "x": 11, "y": 1, "rot": 90, "note": "rotate + move"},
+        {"name": "nhppemmlcd", "x": 11, "y": 3, "rot": 0, "note": "move to match"}
+      ],
+      "actions": 22
+    },
+    "3": {
+      "sprites": 3,
+      "placements": [
+        {"name": "udepuflbbb", "x": 2, "y": 4, "rot": 0, "note": "rotate from 90 to 0"},
+        {"name": "ygyvhkssnz", "x": 2, "y": 3, "rot": 0, "note": "rotate from 270 + move"},
+        {"name": "zhhaofpbyw", "x": 2, "y": 4, "rot": 0, "note": "rotate from 90 + move"}
+      ],
+      "actions": 31
+    },
+    "4": {
+      "sprites": 4,
+      "placements": [
+        {"name": "dnkiufrohe", "x": 11, "y": 6, "rot": 0, "note": "stays at init"},
+        {"name": "lxgvcnpsir", "x": 11, "y": 1, "rot": 0, "note": "move"},
+        {"name": "oncjjftokv", "x": 11, "y": 1, "rot": 90, "note": "stays at rot, move"},
+        {"name": "supigciwwi", "x": 10, "y": 1, "rot": 0, "note": "rotate from 90 + move"}
+      ],
+      "actions": 51
+    }
+  },
+  "fleet_learnings": {
+    "connector_pairing": "Color-8 pixels are connectors. Win when ALL are paired. Sprites have 2-4 connectors each.",
+    "constraint_propagation": "Fix one sprite, derive valid positions for others from connector overlap constraints. Much faster than brute force.",
+    "sprite_ordering": "Must try different orderings when searching — the sprite with most connectors should bridge others.",
+    "hidden_sprites": "Later levels hide sprite colors until selected. Same puzzle mechanics, just harder visually.",
+    "rotation_handling": "np.rot90(pixels, k=-1) gives CW rotation matching Sprite.render() convention."
+  }
+}

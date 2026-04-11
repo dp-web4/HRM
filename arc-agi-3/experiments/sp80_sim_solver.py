@@ -39,7 +39,7 @@ SPRITE_PIXELS = {
     "mdhkebfsmg": [[8],[8],[8],[8]],
     "adbrqflmwi": [[8,8,8,4,8,8,8]],
     "zgsbadjnjn": [[8,8,4,8,8]],
-    "qwsmjdrvqj": [[-1,15],[15,15]],
+    "qwsmjdrvqj": [[15,-1],[15,15]],
     "vkwijvqdla": [[-1,15],[15,15]],
     "syaipsfndp": [[4]],
     "nkrtlkykwe": [[6]],

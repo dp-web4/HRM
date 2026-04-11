@@ -1,0 +1,70 @@
+{
+  "game_id": "r11l",
+  "instance_id": "aa269680",
+  "total_levels": 6,
+  "total_actions": 158,
+  "baseline_actions": [7, 28, 30, 20, 37, 45],
+  "baseline_total": 167,
+  "solved_by": "claude-opus-4.6",
+  "game_type": "click_creature_movement",
+  "mechanics": {
+    "creatures": "Bodies + legs. Body = centroid of leg centers (integer division). Click leg (ACTION6) to select, click empty to move.",
+    "obstacles": "qtwnv sprites. Body collision during movement = penalty (5 = GAME_OVER). Move reversed on collision.",
+    "terrain": "bvzgd sprites. Leg collision with terrain = move REJECTED before animation.",
+    "yukft": "Special bodies that absorb paint sprites (xigcb) on collision. Win condition: yukft body must overlap orphaned target AND have exact color match (trfdmyhcav).",
+    "win_condition": "All bodies must overlap their targets. For orphaned targets (no matching body), any yukft body with matching colors satisfies.",
+    "actions": "ACTION6=click only. Select leg then click destination."
+  },
+  "level_solutions": {
+    "0": {
+      "grid": "64x64",
+      "features": "1 creature, 2 legs, no obstacles",
+      "strategy": "direct move",
+      "actions": 4,
+      "baseline": 7
+    },
+    "1": {
+      "grid": "64x64",
+      "features": "2 creatures (2+3 legs), 1 obstacle",
+      "strategy": "centroid BFS with obstacle avoidance",
+      "actions": 20,
+      "baseline": 28
+    },
+    "2": {
+      "grid": "64x64",
+      "features": "2 creatures (2+4 legs), 1 obstacle",
+      "strategy": "centroid BFS with obstacle avoidance",
+      "actions": 30,
+      "baseline": 30
+    },
+    "3": {
+      "grid": "64x64",
+      "features": "3 creatures (2+2+3 legs), 1 obstacle",
+      "strategy": "centroid BFS with obstacle avoidance + terrain-aware targeting",
+      "actions": 34,
+      "baseline": 20
+    },
+    "4": {
+      "grid": "64x64",
+      "features": "2 yukft bodies (2+3 legs), 2 orphaned targets, 4 paints, no obstacles",
+      "strategy": "assign yukft to targets, route through paints for color matching, then to target",
+      "actions": 30,
+      "baseline": 37
+    },
+    "5": {
+      "grid": "64x64",
+      "features": "2 yukft bodies (2+3 legs), 2 orphaned targets, 9 paints, no obstacles",
+      "strategy": "assign yukft to targets, greedy paint selection for exact color match, route through paints then target",
+      "actions": 40,
+      "baseline": 45
+    }
+  },
+  "key_learnings": {
+    "centroid_integer_division": "Body position = sum(leg_centers) // n_legs. Integer division means intermediate centroids during one-at-a-time leg moves differ from linear interpolation. Must compute exact intermediates.",
+    "boundary_clamping": "Leg positions clamped to [2, 61]. Clamping shifts actual centroid from expected, potentially into unsafe zones. Must clamp before computing intermediates.",
+    "terrain_vs_obstacle": "Terrain (bvzgd) rejects moves BEFORE animation. Obstacles (qtwnv) cause penalties AFTER animation. Different handling required.",
+    "yukft_color_matching": "trfdmyhcav requires EXACT color set match (body == target, excluding 0). Absorbing wrong paints adds unwanted colors. Paint plan must only include paints whose colors are subsets of target colors.",
+    "paint_absorption_automatic": "iciufrewti() called during every animation step. Moving body centroid over paint sprite auto-absorbs. No explicit absorption action needed.",
+    "safe_ordering_permutations": "Moving n legs one-at-a-time creates n intermediate centroids. All must be safe. Search all n! orderings (feasible for n<=4)."
+  }
+}

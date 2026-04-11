@@ -1,0 +1,69 @@
+{
+  "game_id": "m0r0",
+  "instance_id": "dadda488",
+  "total_levels": 6,
+  "total_actions": 181,
+  "baseline_actions": [30, 209, 83, 86, 436, 126],
+  "baseline_total": 970,
+  "solved_by": "claude-opus-4.6",
+  "game_type": "mirrored_cursor_maze",
+  "mechanics": {
+    "cursors": "Two cursors move simultaneously: ubwff-idtiq (same direction), ubwff-crkfz (mirror X: -dx, dy). Win when all cursors pair at same position.",
+    "blocks": "cvcer sprites with tag nhiae. Click to select (ACTION6), UDLR to move, click empty to deselect. Blocks collide with walls, hazards, keys, other blocks, cursors, and closed toggle walls.",
+    "hazards": "wyiex sprites. Landing on one resets ALL cursors to initial positions.",
+    "toggle_walls": "hnutp-{color} keys + dfnuk-{color} walls. When cursor on key, same-color walls become passable. Walls close when no cursor on key.",
+    "toggle_timing": "Toggle state computed AFTER movement. Walls opened in step N are passable during step N+1 collision checks.",
+    "actions": "ACTION1-4=UDLR, ACTION6=click (select block or deselect)"
+  },
+  "level_solutions": {
+    "0": {
+      "grid": "11x11",
+      "features": "basic maze, mirror X",
+      "strategy": "2-cursor BFS",
+      "actions": 15,
+      "baseline": 30
+    },
+    "1": {
+      "grid": "13x13",
+      "features": "maze + hazards",
+      "strategy": "2-cursor BFS with hazard avoidance",
+      "actions": 23,
+      "baseline": 209
+    },
+    "2": {
+      "grid": "13x13",
+      "features": "maze + 3 blocks",
+      "strategy": "move blocks to clear path, then cursor BFS",
+      "actions": 55,
+      "baseline": 83
+    },
+    "3": {
+      "grid": "11x11",
+      "features": "1 block + hazards",
+      "strategy": "move block to clear path, then cursor BFS",
+      "actions": 11,
+      "baseline": 86
+    },
+    "4": {
+      "grid": "15x15",
+      "features": "toggle walls (3 colors)",
+      "strategy": "BFS with toggle wall state tracking",
+      "actions": 39,
+      "baseline": 436
+    },
+    "5": {
+      "grid": "13x13",
+      "features": "block + toggle walls + hazards (all mechanics)",
+      "strategy": "interleaved block+cursor+toggle BFS - block positioned to pin cursor on key while other cursor passes through opened wall",
+      "actions": 38,
+      "baseline": 126
+    }
+  },
+  "key_learnings": {
+    "interleaved_search": "L5 requires interleaving block moves and cursor moves. The block must be positioned to block one cursor from leaving a toggle key, allowing the other cursor to pass through the opened wall. This is a combined state BFS over (cursor1, cursor2, block, toggle_state, block_selected).",
+    "toggle_wall_timing": "Toggle walls open when cursor is on key, but collision checks use the PREVIOUS step's toggle state. So walls opened by stepping on a key are passable starting the NEXT step.",
+    "block_collisions": "Blocks collide with ALL collidable sprites: maze walls, hazards, cursors, keys, AND closed toggle walls. Opened toggle walls (REMOVED interaction) are passable.",
+    "mirror_maze_symmetry": "With MIRROR_X, cursors converge toward center. Hazard-filled center column forces cursors to cross through specific gaps.",
+    "hazard_avoidance_for_blocks": "Blocks cannot be placed on hazard cells (wyiex is collidable). Block movement planning must exclude hazard positions."
+  }
+}

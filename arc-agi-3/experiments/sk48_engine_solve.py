@@ -51,79 +51,91 @@ def state_key():
     return (head.y, len(segs), tuple(sorted(targets)))
 
 
-def get_ref_colors():
-    """Get reference pattern colors."""
+# Level-specific cached state (set at level start)
+LEVEL_REF_COLORS = []
+LEVEL_HEAD_X = 0
+LEVEL_GOAL_XS = []
+
+
+def cache_level_info():
+    """Cache ref colors and goal positions at level start (before undo corrupts lookups)."""
+    global LEVEL_REF_COLORS, LEVEL_HEAD_X, LEVEL_GOAL_XS
     head = game.vzvypfsnt
+    LEVEL_HEAD_X = head.x
+
+    # Get ref colors via xpmcmtbcv (only works reliably at level start)
     ref = game.xpmcmtbcv.get(head)
-    if not ref:
-        return []
-    ref_matches = game.vjfbwggsd.get(ref, [])
-    if ref_matches:
-        return [int(m.pixels[1, 1]) for m in ref_matches]
-    ref_segs = game.mwfajkguqx.get(ref, [])
-    return [int(s.pixels[1, 1]) for s in ref_segs]
+    if ref:
+        # Force rebuild vjfbwggsd
+        game.gvtmoopqgy()
+        ref_matches = game.vjfbwggsd.get(ref, [])
+        if ref_matches:
+            LEVEL_REF_COLORS = [int(m.pixels[1, 1]) for m in ref_matches]
+        else:
+            ref_segs = game.mwfajkguqx.get(ref, [])
+            LEVEL_REF_COLORS = [int(s.pixels[1, 1]) for s in ref_segs]
+    else:
+        LEVEL_REF_COLORS = []
+
+    n_ref = len(LEVEL_REF_COLORS)
+    LEVEL_GOAL_XS = [LEVEL_HEAD_X + (i + 1) * CELL for i in range(n_ref)]
+    print(f"  Cached: ref_colors={LEVEL_REF_COLORS}, head_x={LEVEL_HEAD_X}, goals={LEVEL_GOAL_XS}")
 
 
 def compute_heuristic():
-    """Heuristic: sum of Manhattan distances from targets to closest matching goal positions.
+    """Heuristic: Manhattan distance sum to correct goal positions.
 
-    For each ref color at index i, the goal position is (head_x + i*CELL, head_y).
-    Find the best assignment of targets to goals (minimizing total distance).
+    Uses cached ref_colors and goal positions (set at level start).
+    Optimizes over possible Y levels to find minimum total cost.
     """
     head = game.vzvypfsnt
     segs = game.mwfajkguqx[head]
-    head_x = head.x
     head_y = head.y
     n_segs = len(segs)
 
-    ref_colors = get_ref_colors()
-    n_ref = len(ref_colors)
+    n_ref = len(LEVEL_REF_COLORS)
     if n_ref == 0:
         return 0
 
-    # Build target map
-    targets_by_color = {}
+    # Current targets (in play area)
+    targets = []
     for t in game.vbelzuaian:
         if t.y < 53:
-            tc = int(t.pixels[1, 1])
-            targets_by_color.setdefault(tc, []).append((t.x, t.y))
+            targets.append((t.x, t.y, int(t.pixels[1, 1])))
 
-    # For each goal position, find closest matching target
-    total_dist = 0
-    used = set()
-    for i in range(n_ref):
-        goal_x = head_x + i * CELL
-        rc = ref_colors[i]
-        candidates = targets_by_color.get(rc, [])
-        best_dist = float('inf')
-        best_t = None
-        for tx, ty in candidates:
-            if (tx, ty) in used:
-                continue
-            # Manhattan distance in cells
-            dx = abs(tx - goal_x) // CELL
-            dy = abs(ty - head_y) // CELL
-            d = dx + dy
-            if d < best_dist:
-                best_dist = d
-                best_t = (tx, ty)
-        if best_t is not None:
-            used.add(best_t)
-            total_dist += best_dist
-        else:
-            total_dist += 10  # penalty for missing target
+    # Chain length deficit (need at least n_ref + 1 segments)
+    needed_len = n_ref + 1
+    chain_deficit = max(0, needed_len - n_segs)
 
-    # Chain length deficit
-    needed_reach = 0
-    for rc in ref_colors:
-        for tx, ty in targets_by_color.get(rc, []):
-            needed_reach = max(needed_reach, tx)
-    if needed_reach > 0:
-        needed_len = (needed_reach - head_x) // CELL + 1
-        chain_deficit = max(0, needed_len - n_segs)
-        total_dist += chain_deficit
+    # Try different Y levels to find minimum total distance
+    best_total = float('inf')
+    for candidate_y in range(6, 48, CELL):
+        total = 0
+        used = set()
+        for goal_x, goal_color in zip(LEVEL_GOAL_XS, LEVEL_REF_COLORS):
+            best_d = float('inf')
+            best_idx = -1
+            for j, (tx, ty, tc) in enumerate(targets):
+                if j in used or tc != goal_color:
+                    continue
+                d = abs(tx - goal_x) // CELL + abs(ty - candidate_y) // CELL
+                if d < best_d:
+                    best_d = d
+                    best_idx = j
+            if best_idx >= 0:
+                used.add(best_idx)
+                total += best_d
+            else:
+                total += 20
 
-    return total_dist
+        # Cost to move chain to candidate_y
+        total += abs(head_y - candidate_y) // CELL
+        total += chain_deficit
+
+        if total < best_total:
+            best_total = total
+
+    return best_total
 
 
 def show_state(label=""):
@@ -131,9 +143,8 @@ def show_state(label=""):
     segs = game.mwfajkguqx[head]
     seg_pos = [(s.x, s.y) for s in segs]
     targets = sorted([(t.x, t.y, int(t.pixels[1,1])) for t in game.vbelzuaian if t.y < 53])
-    ref_colors = get_ref_colors()
     print(f"{label} head=({head.x},{head.y}) rot={head.rotation} L={len(segs)} budget={game.qiercdohl}")
-    print(f"  segs={seg_pos} targets={targets} ref={ref_colors}")
+    print(f"  segs={seg_pos} targets={targets} ref={LEVEL_REF_COLORS}")
 
 
 def solve_level_beam(beam_width=200, max_depth=100):
@@ -348,6 +359,7 @@ for lv in range(20):
         break
 
     print(f"\n=== Level {lv} ===")
+    cache_level_info()
     show_state(f"L{lv} init")
 
     if lv in KNOWN:

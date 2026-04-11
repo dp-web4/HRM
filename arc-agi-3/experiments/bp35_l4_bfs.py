@@ -2,15 +2,8 @@
 """BP35 L4 BFS solver.
 
 L4: player (3,12), gem (5,7), gravity UP, no rising floor
-14 D blocks, 2 G blocks, 2 O blocks (toggleable O↔B), 13 spikes
+14 D blocks, 2 G blocks, 2 O/B toggleable blocks, 13 spikes
 Baseline: 31 actions
-
-Mechanics (engine-verified):
-- Spikes = solid (block movement and stop fall)
-- G blocks consumed on click, flip gravity, trigger fall check
-- D blocks destroyed on click, trigger fall if directly in gravity dir
-- O blocks = passable, B blocks = solid, click toggles O↔B
-- Off-screen clicks work
 """
 import sys, os, time
 from collections import deque
@@ -20,38 +13,40 @@ WALLS = set()
 SPIKES = set()
 GEM = (5, 7)
 
+# Grid from engine survey: x = char_index - 2, rows are 17 chars (x=-2 to x=14)
+# P replaced with '.', trailing dots are empty space
 grid_rows = {
-    0: "..WWWWWWWWWWW",
-    1: "..WWWWWWWWWWW",
-    2: "..WWWWWWWWWWW",
-    3: "..WWWWWWWWWWW",
-    4: "..WWWWWWWWWWW",
-    5: "..WWWWWWWWWWW",
-    6: "..WWWWWWWWWWW",
-    7: "..WWWW.*.^^^W",  # gem(5,7), spikes(7-9,7)
-    8: "..WWWW...DDDW",
-    9: "..WWWW...DDDW",
-    10: "..WWWWWWWWW.W",
-    11: "..WWWWWWWWW.W",
-    12: "..WW.....G.W",   # player(3,12), G(8,12)
-    13: "..WW......WWW",
-    14: "..WWvvvv..WWW",  # spikes(2-5,14)
-    15: "..WWWWWW..WWW",
-    16: "..WWWWWWDDWWW",  # D(6,16),(7,16)
-    17: "..WW......WWW",
-    18: "..WW.WWW..^^W",  # W(3-5,18), spikes(8-9,18)
-    19: "..WW.WWW....W",  # W(3-5,19)
-    20: "..WW.^^WDD..W",  # spikes(3-4,20), W(5,20), D(6-7,20)
-    21: "..WW.OOWWWDDW",  # O(3-4,21), W(5-7,21), D(8-9,21)
-    22: "..WW........W",
-    23: "..WW........W",
-    24: "..WWW.....WWW",  # W at x=2,7-9
-    25: "..WWW..WWWWWW",  # W at x=2,5-9
-    26: "..WWWDDWWWWWW",  # D(3-4,26), W rest
-    27: "..WWW..WWWWWW",
-    28: "..WWWvvWWWWWW",  # spikes(3-4,28)
-    29: "..WWWWWWWWGWW",  # G(8,29)
-    30: "..WWWWWWWWWWW",
+    0:  "..WWWWWWWWWWW....",
+    1:  "..WWWWWWWWWWW....",
+    2:  "..WWWWWWWWWWW....",
+    3:  "..WWWWWWWWWWW....",
+    4:  "..WWWWWWWWWWW....",
+    5:  "..WWWWWWWWWWW....",
+    6:  "..WWWWWWWWWWW....",
+    7:  "..WWWW.*.^^^W....",
+    8:  "..WWWW...DDDW....",
+    9:  "..WWWW...DDDW....",
+    10: "..WWWWWWWWW.W....",
+    11: "..WWWWWWWWW.W....",
+    12: "..WW......G.W....",
+    13: "..WW......WWW....",
+    14: "..WWvvvv..WWW....",
+    15: "..WWWWWW..WWW....",
+    16: "..WWWWWWDDWWW....",
+    17: "..WW......WWW....",
+    18: "..WW.WWW..^^W....",
+    19: "..WW.WWW....W....",
+    20: "..WW.^^WDD..W....",
+    21: "..WW.OOWWWDDW....",
+    22: "..WW........W....",
+    23: "..WW........W....",
+    24: "..WWW.....WWW....",
+    25: "..WWW..WWWWWW....",
+    26: "..WWWDDWWWWWW....",
+    27: "..WWW..WWWWWW....",
+    28: "..WWWvvWWWWWW....",
+    29: "..WWWWWWWWGWW....",
+    30: "..WWWWWWWWWWW....",
 }
 
 for y, row in grid_rows.items():
@@ -75,7 +70,6 @@ D_IDX = {pos: i for i, pos in enumerate(D_BLOCKS)}
 G_BLOCKS = [(8, 12), (8, 29)]
 G_IDX = {pos: i for i, pos in enumerate(G_BLOCKS)}
 
-# O/B toggleable blocks: start as O (passable). Bit 0=O(passable), 1=B(solid)
 OB_BLOCKS = [(3, 21), (4, 21)]
 OB_IDX = {pos: i for i, pos in enumerate(OB_BLOCKS)}
 
@@ -91,7 +85,7 @@ def is_solid(x, y, d_alive, g_alive, ob_state):
     if (x, y) in G_IDX and (g_alive >> G_IDX[(x, y)]) & 1:
         return True
     if (x, y) in OB_IDX:
-        return bool((ob_state >> OB_IDX[(x, y)]) & 1)  # 1=B=solid
+        return bool((ob_state >> OB_IDX[(x, y)]) & 1)
     return False
 
 
@@ -146,17 +140,13 @@ def simulate_click_g(px, py, gpos, grav_up, d_alive, g_alive, ob_state):
 
 
 def simulate_click_ob(px, py, obpos, grav_up, d_alive, g_alive, ob_state):
-    """Toggle O↔B block. Returns (new_px, new_py, new_ob_state, won)."""
     idx = OB_IDX.get(obpos)
     if idx is None:
         return px, py, ob_state, False
-    new_ob = ob_state ^ (1 << idx)  # toggle
-    # Check if toggling affects player position (if block was supporting player)
-    # If block was solid (B) and now passable (O), and it's in gravity direction:
+    new_ob = ob_state ^ (1 << idx)
     was_solid = (ob_state >> idx) & 1
     now_solid = (new_ob >> idx) & 1
     if was_solid and not now_solid:
-        # Block became passable - check if player falls through
         grav_dy = -1 if grav_up else 1
         if obpos == (px, py + grav_dy):
             fx, fy, won = fall(px, py, grav_up, d_alive, g_alive, new_ob)
@@ -182,7 +172,7 @@ def solve():
         px, py, grav_up, d_alive, g_alive, ob_state = state
 
         n_visited += 1
-        if n_visited % 100000 == 0:
+        if n_visited % 500000 == 0:
             elapsed = time.time() - t0
             print(f"  [{n_visited}] visited, queue={len(queue)}, depth={len(path)}, {elapsed:.1f}s")
 
@@ -256,8 +246,9 @@ def solve():
     return None
 
 
-print("BP35 L4 BFS Solver")
+print("BP35 L4 BFS Solver (fixed grid)")
 print(f"D: {len(D_BLOCKS)}, G: {len(G_BLOCKS)}, O/B: {len(OB_BLOCKS)}")
+print(f"Walls: {len(WALLS)}, Spikes: {len(SPIKES)}")
 print()
 
 result = solve()

@@ -224,6 +224,108 @@ L3_SOL = [
 ]
 
 
+# L4: player (3,12), gem (5,7), gravity UP
+# Walk staircase, destroy D row, double G flip to navigate shaft
+L4_SOL = [
+    R, R, R, R,      # walk to x=7 via staircase
+    C(7,9),           # destroy D
+    C(8,9),           # destroy D
+    C(9,9),           # destroy D
+    C(8,12),          # G flip → grav DOWN, fall to (7,15)
+    C(8,29),          # G flip → grav UP, rise to (7,12)
+    R, R,             # walk right through shaft → (9,9)
+    L, L, L, L,       # walk left → (5,7) gem!
+]
+
+
+# L5: player (3,23), gem (2,31), gravity UP
+# Walk right to shaft, G(4,31) flip → fall to y=31, walk left to gem
+L5_SOL = [R, R, R, R, R, C(4,31), L, L, L, L, L, L]
+
+
+# L6: player (3,19), gem (3,25), gravity UP
+# 23 G blocks at x=0 (y=5-27), CONSUMABLE (single-use each!)
+# 29 O blocks + 2 B blocks (O/B toggleable), initial B: (6,9), (5,10)
+# Key: navigate through y=8-11 spike maze with toggle-retoggle tricks
+# to reach x=7 O-block column, drop through (8,7)→(9,7)→(9,26),
+# flip UP to y=23 corridor, walk left to gem
+L6_SOL = [
+    # Phase 1: Start → platform area via (8,15) (12 steps)
+    R, R, R,         # → (6,19) through O block
+    C(6, 21),        # toggle O→B (create floor at y=21)
+    C(0, 19),        # G flip #1 → DN, fall to (6,20) [floor B(6,21)]
+    R,               # → (7,20) [floor wall(7,21)]
+    C(0, 20),        # G flip #2 → UP, stays (7,20) [ceiling wall(7,19)]
+    R,               # → (8,15) fall UP [wall(8,14)]
+    L,               # → (7,13) fall UP [wall(7,12)]
+    L, L, L,         # → (4,13) through O blocks
+
+    # Phase 2: Platform → x=2 shaft (5 steps)
+    C(0, 14),        # G flip #3 → DN, fall to (4,17) [wall(4,18)]
+    C(4, 15),        # toggle O→B (create ceiling for return)
+    C(0, 16),        # G flip #4 → UP, fall to (4,16) [ceiling B(4,15)]
+    L,               # → (3,15) fall UP [wall(3,14)]
+    L,               # → (2,8) fall UP through x=2 shaft [wall(2,7)]
+
+    # Phase 3: Navigate y=8-11 spike maze to x=7 (14 steps)
+    R,               # → (3,8) O block [ceiling wall(3,7)]
+    C(0, 9),         # G flip #5 → DN, fall to (3,11) [wall(3,12)]
+    R,               # → (4,11) [floor wall(4,12)]
+    C(4, 9),         # toggle O→B (create ceiling at (4,9))
+    C(0, 10),        # G flip #6 → UP, fall to (4,10) [ceiling B(4,9)]
+    C(5, 10),        # toggle B→O (make (5,10) passable)
+    R,               # → (5,8) fall UP through (5,10) O, (5,9) [wall(5,7)]
+    C(5, 10),        # toggle O→B (restore floor at (5,10))
+    C(0, 8),         # G flip #7 → DN, fall to (5,9) [floor B(5,10)]
+    C(6, 9),         # toggle B→O (make (6,9) passable)
+    R,               # → (6,11) fall DN through (6,9) O [wall(6,12)]
+    C(6, 9),         # toggle O→B (restore ceiling at (6,9))
+    C(0, 11),        # G flip #8 → UP, fall to (6,10) [ceiling B(6,9)]
+    R,               # → (7,4) fall UP through x=7 O column [wall(7,3)]
+
+    # Phase 4: Through x=7 column to x=9 shaft (4 steps)
+    C(7, 8),         # toggle O→B (create floor at (7,8))
+    C(0, 6),         # G flip #9 → DN, fall to (7,7) [floor B(7,8)]
+    R,               # → (8,7) [floor wall(8,8)]
+    R,               # → (9,26) fall DN through entire x=9 shaft [wall(9,27)]
+
+    # Phase 5: Navigate to gem (8 steps)
+    L,               # → (8,26) [floor wall(8,27)]
+    L,               # → (7,26) [floor wall(7,27)]
+    C(0, 25),        # G flip #10 → UP, fall to (7,23) [ceiling wall(7,22)]
+    L, L, L, L,      # walk left across y=23 → (3,23)
+    C(0, 24),        # G flip #11 → DN, fall through (3,24) → gem (3,25)!
+]
+
+
+# L7: player (3,32), gem (9,19), gravity UP
+# Key mechanic: E entities SPREAD to adjacent empty cells when clicked.
+# "Push up" trick: clicking E ceiling removes it, player falls up into empty cell.
+# Route: E bridge at y=30 → walk to x=8 shaft → navigate to (5,20) →
+# push up ×3 to (5,17) → walk east clearing E → (8,17) →
+# G flip DN → toggle B(8,18)→O → fall to (8,19) → walk R to gem
+L7_SOL = [
+    # E bridge y=29-30 (5 clicks)
+    C(2,29), C(3,29), C(4,29), C(5,29), C(6,29),
+    # E ceiling y=17-19 (4 clicks)
+    C(3,18), C(4,18), C(5,18), C(6,18),
+    # B toggles for navigation
+    C(7,25), C(8,22),
+    # Walk across bridge to x=8 shaft
+    R, R, R, R, R,
+    # Navigate to (8,21) via B gaps
+    L, L, R, R,
+    # Navigate to (5,20) via E ceiling
+    L, L, L,
+    # Push up: click ceiling E ×3
+    C(5,19), C(5,18), C(5,17),
+    # Walk east clearing E path
+    C(6,17), R, C(7,17), R, C(8,17), R,
+    # G flip → grav DOWN, toggle B(8,18)→O → fall, walk to gem
+    C(5,2), C(8,18), R,
+]
+
+
 # ============================================================
 # Main
 # ============================================================
@@ -241,6 +343,10 @@ solutions = [
     ("L1", L1_SOL, 72),
     ("L2", L2_SOL, 36),
     ("L3", L3_SOL, 31),
+    ("L4", L4_SOL, 31),
+    ("L5", L5_SOL, 48),
+    ("L6", L6_SOL, 86),
+    ("L7", L7_SOL, 155),
 ]
 
 for name, sol, baseline in solutions:

@@ -1,6 +1,6 @@
 {
   "machine": "localhost",
-  "updated_at": 1775613315.0347295,
+  "updated_at": 1775850326.897775,
   "game_discoveries": {
     "su15": [
       {
@@ -114,6 +114,11 @@
         "text": "Interactive objects: green_0, black_1, gray_2, red_6, brown_8. Game type: cursor_cycle.   DOWN: 75% effective, ~7px (8 tries)\n  LEFT: 100% effective, ~8px (5 tries)\n  RIGHT: 91% effective,",
         "machine": "localhost",
         "timestamp": 1775466304.1674109
+      },
+      {
+        "text": "Interactive objects: green_0, black_1, gray_2, brown_8, navy_14. Game type: cursor_cycle.   DOWN: 100% effective, ~8px (8 tries)\n  LEFT: 100% effective, ~6px (11 tries)\n  RIGHT: 88% effectiv",
+        "machine": "localhost",
+        "timestamp": 1775581406.6769178
       }
     ],
     "ft09": [
@@ -145,6 +150,11 @@
         "text": "Interactive objects: black_0, gray_1, blue_4, gray_45. Game type: click_interact.   DOWN: 100% effective, ~1px (4 tries)\n  LEFT: 100% effective, ~1px (3 tries)\n  RIGHT: 100% effectiv",
         "machine": "localhost",
         "timestamp": 1775477532.2184618
+      },
+      {
+        "text": "Interactive objects: black_0, gray_1, blue_4, red_42. Game type: click_interact.   DOWN: 100% effective, ~1px (3 tries)\n  LEFT: 100% effective, ~1px (3 tries)\n  RIGHT: 100% effectiv",
+        "machine": "localhost",
+        "timestamp": 1775605484.8392086
       }
     ],
     "r11l": [
@@ -152,6 +162,11 @@
         "text": "Interactive objects: black_0, red_1, red_2, black_3, red_5. Game type: click_interact.   black_0: 100% effective, ~21px (14 tries)\n  black_3: 100% effective, ~94px (2 tries)\n  black_9: 10",
         "machine": "localhost",
         "timestamp": 1775484012.4740756
+      },
+      {
+        "text": "Interactive objects: black_0, red_1, red_2, black_3, white_4. Game type: click_interact.   black_0: 100% effective, ~16px (13 tries)\n  black_3: 100% effective, ~16px (3 tries)\n  black_9: 10",
+        "machine": "localhost",
+        "timestamp": 1775623052.4664423
       }
     ],
     "cd82": [
@@ -347,104 +362,104 @@
   },
   "meta_insights": [
     {
-      "text": "Game cd82 (cursor_cycle): black_7: consistent effect (~1px each time)\nred_9: consistent effect (~1px each time)\nyellow_12: consistent effect (~1px each time)\ngreen_1: consisten",
+      "text": "Game cn04 (cursor_cycle): teal_4: consistent effect (~1px each time)\nRIGHT: consistent effect (~198px each time)\nGrid similarity STABLE around 88.3% (not progressing)\nWARNING: ",
       "machine": "localhost",
-      "timestamp": 1775495495.0364969
+      "timestamp": 1775536508.0494418
     },
     {
-      "text": "Game tu93 (unknown): Grid similarity STABLE around 98.8% (not progressing)\nWARNING: LEFT clicked 8\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: RIG",
+      "text": "Game re86 (cursor_cycle): Grid similarity STABLE around 96.0% (not progressing)\nWARNING: RIGHT clicked 7\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: LE",
       "machine": "localhost",
-      "timestamp": 1775505606.7399416
+      "timestamp": 1775541653.9564402
     },
     {
-      "text": "Game su15 (toggle): green_3: consistent effect (~2px each time)\nwhite_5: consistent effect (~2px each time)\nbrown_2: consistent effect (~2px each time)\nblack_4: consisten",
+      "text": "Game wa30 (navigation): UP: consistent effect (~32px each time)\nRIGHT: consistent effect (~32px each time)\nLEFT: consistent effect (~32px each time)\nDOWN: consistent effect (",
       "machine": "localhost",
-      "timestamp": 1775509637.8374736
+      "timestamp": 1775546878.5781548
     },
     {
-      "text": "Game ls20 (navigation): UP: consistent effect (~52px each time)\nRIGHT: consistent effect (~52px each time)\nGrid similarity STABLE around 97.8% (not progressing)\nWARNING: LEFT",
+      "text": "Game sb26 (unknown): Grid similarity STABLE around 96.6% (not progressing)\nWARNING: SELECT clicked 9\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: w",
       "machine": "localhost",
-      "timestamp": 1775515011.9388728
+      "timestamp": 1775553776.3262231
     },
     {
-      "text": "Game m0r0 (cursor_cycle): LEFT: consistent effect (~101px each time)\nDOWN: consistent effect (~100px each time)\nSELECT: consistent effect (~2px each time)\npink_3: consistent ef",
+      "text": "Game lp85 (unknown): cyan_23: consistent effect (~292px each time)\nteal_24: consistent effect (~293px each time)\nGrid similarity DECREASING (99.0% \u2192 91.7%) \u2014 changing sign",
       "machine": "localhost",
-      "timestamp": 1775521954.5880215
+      "timestamp": 1775555963.7311301
     },
     {
-      "text": "Game sc25 (cursor_cycle): black_8: consistent effect (~13px each time)\nGrid similarity STABLE around 97.1% (not progressing)\nWARNING: green_6 clicked 10\u00d7 with changes but NO le",
+      "text": "Game tn36 (toggle): green_40: consistent effect (~1px each time)\nyellow_30: consistent effect (~1px each time)\nyellow_32: consistent effect (~1px each time)\nbrown_0: cons",
       "machine": "localhost",
-      "timestamp": 1775529048.9964664
+      "timestamp": 1775561712.192998
     },
     {
-      "text": "Game sp80 (click_interact): teal_0: consistent effect (~2px each time)",
+      "text": "Game ka59 (cursor_cycle): UP: consistent effect (~18px each time)\nLEFT: consistent effect (~18px each time)\nyellow_10: consistent effect (~1px each time)\nblack_11: consistent e",
       "machine": "localhost",
-      "timestamp": 1775530606.4083085
+      "timestamp": 1775568525.0690465
     },
     {
-      "text": "Game cn04 (cursor_cycle): cyan_2: consistent effect (~135px each time)\ncyan_6: consistent effect (~144px each time)\ncyan_3: consistent effect (~135px each time)\nyellow_0: consi",
+      "text": "Game vc33 (toggle): yellow_10: consistent effect (~1px each time)\nbrown_2: consistent effect (~260px each time)\nbrown_7: consistent effect (~262px each time)\nblack_1: con",
       "machine": "localhost",
-      "timestamp": 1775537411.22368
+      "timestamp": 1775573389.9022987
     },
     {
-      "text": "Game re86 (cursor_cycle): DOWN: consistent effect (~53px each time)\nGrid similarity STABLE around 95.4% (not progressing)\nWARNING: RIGHT clicked 7\u00d7 with changes but NO level-up",
+      "text": "Game bp35 (cursor_cycle): brown_9: consistent effect (~1px each time)\npink_0: consistent effect (~1px each time)\nteal_1: consistent effect (~1px each time)\nGrid similarity STAB",
       "machine": "localhost",
-      "timestamp": 1775542418.5965133
+      "timestamp": 1775580047.9495943
     },
     {
-      "text": "Game wa30 (navigation): DOWN: consistent effect (~32px each time)\nUP: consistent effect (~32px each time)\nLEFT: consistent effect (~32px each time)\nRIGHT: consistent effect (",
+      "text": "Game dc22 (cursor_cycle): black_3: consistent effect (~1px each time)\nmaroon_9: consistent effect (~1px each time)\nblack_1: consistent effect (~1px each time)\ngreen_0: consiste",
       "machine": "localhost",
-      "timestamp": 1775547857.3171844
+      "timestamp": 1775586853.4028368
     },
     {
-      "text": "Game sb26 (unknown): SELECT: consistent effect (~1px each time)\nGrid similarity STABLE around 97.0% (not progressing)\nWARNING: SELECT clicked 8\u00d7 with changes but NO level-",
+      "text": "Game ft09 (unknown): brown_40: consistent effect (~38px each time)\nGrid similarity STABLE around 98.7% (not progressing)\nWARNING: brown_40 clicked 9\u00d7 with changes but NO l",
       "machine": "localhost",
-      "timestamp": 1775554845.96803
+      "timestamp": 1775596661.7270608
     },
     {
-      "text": "Game lp85 (unknown): cyan_23: consistent effect (~292px each time)\nteal_24: consistent effect (~293px each time)\nGrid similarity STABLE around 92.0% (not progressing)\nWARN",
+      "text": "Game s5i5 (toggle): green_11: consistent effect (~1px each time)\nteal_5: consistent effect (~1px each time)\nGrid similarity STABLE around 98.8% (not progressing)\nWARNING:",
       "machine": "localhost",
-      "timestamp": 1775557040.1994085
+      "timestamp": 1775603539.2800314
     },
     {
-      "text": "Game tn36 (toggle): green_40: consistent effect (~1px each time)\nbrown_0: consistent effect (~1px each time)\nblack_1: consistent effect (~1px each time)\nyellow_30: consis",
+      "text": "Game lf52 (click_interact): blue_4: consistent effect (~1px each time)\nUP: consistent effect (~1px each time)\nDOWN: consistent effect (~1px each time)\nteal_12: consistent effect ",
       "machine": "localhost",
-      "timestamp": 1775562860.1988971
+      "timestamp": 1775611984.869635
     },
     {
-      "text": "Game ka59 (cursor_cycle): yellow_10: consistent effect (~1px each time)\nblack_11: consistent effect (~1px each time)\nLEFT: consistent effect (~18px each time)\nRIGHT: consistent",
+      "text": "Game sk48 (toggle): Grid similarity STABLE around 95.6% (not progressing)\nWARNING: UP clicked 6\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: RIGHT",
       "machine": "localhost",
-      "timestamp": 1775569701.2261345
+      "timestamp": 1775619114.377945
     },
     {
-      "text": "Game vc33 (toggle): yellow_10: consistent effect (~1px each time)\nbrown_7: consistent effect (~255px each time)\nyellow_8: consistent effect (~1px each time)\nGrid similari",
+      "text": "Game g50t (cursor_cycle): LEFT: consistent effect (~1px each time)\nUP: consistent effect (~48px each time)\nDOWN: consistent effect (~49px each time)\nGrid similarity STABLE arou",
       "machine": "localhost",
-      "timestamp": 1775574646.6051543
+      "timestamp": 1775622466.7177742
     },
     {
-      "text": "Game bp35 (cursor_cycle): brown_9: consistent effect (~1px each time)\npink_0: consistent effect (~1px each time)\nteal_1: consistent effect (~1px each time)\nUNDO: consistent eff",
+      "text": "Game r11l (click_interact): red_1: consistent effect (~1px each time)\nred_2: consistent effect (~1px each time)\nwhite_4: consistent effect (~64px each time)\nred_5: consistent eff",
       "machine": "localhost",
-      "timestamp": 1775581361.8533149
+      "timestamp": 1775625405.133479
     },
     {
-      "text": "Game dc22 (cursor_cycle): black_3: consistent effect (~1px each time)\nblack_7: consistent effect (~1px each time)\nmaroon_9: consistent effect (~1px each time)\ngreen_0: consiste",
+      "text": "Game ar25 (cursor_cycle): UP: consistent effect (~109px each time)\nDOWN: consistent effect (~109px each time)\nLEFT: consistent effect (~109px each time)\nRIGHT: consistent effec",
       "machine": "localhost",
-      "timestamp": 1775588211.8863282
+      "timestamp": 1775628569.694347
     },
     {
-      "text": "Game ft09 (unknown): Grid similarity STABLE around 100.0% (not progressing)",
+      "text": "Game tr87 (cursor_cycle): LEFT: consistent effect (~28px each time)\nRIGHT: consistent effect (~28px each time)\nGrid similarity STABLE around 98.2% (not progressing)\nWARNING: UP",
       "machine": "localhost",
-      "timestamp": 1775598595.6358778
+      "timestamp": 1775631192.2300577
     },
     {
-      "text": "Game s5i5 (toggle): green_11: consistent effect (~1px each time)\nred_8: consistent effect (~1px each time)\nGrid similarity STABLE around 98.8% (not progressing)\nWARNING: ",
+      "text": "Game cd82 (cursor_cycle): white_13: consistent effect (~1px each time)\nyellow_0: consistent effect (~1px each time)\nblack_7: consistent effect (~1px each time)\ngreen_1: consist",
       "machine": "localhost",
-      "timestamp": 1775605419.8323872
+      "timestamp": 1775634515.1357315
     },
     {
-      "text": "Game lf52 (click_interact): gray_1: consistent effect (~1px each time)\nblack_0: consistent effect (~1px each time)\nblue_4: consistent effect (~1px each time)\nLEFT: consistent eff",
+      "text": "Game sp80 (toggle): DOWN: consistent effect (~162px each time)\nLEFT: consistent effect (~34px each time)\nUP: consistent effect (~162px each time)\nRIGHT: consistent effect",
       "machine": "localhost",
-      "timestamp": 1775613315.034726
+      "timestamp": 1775850326.8977695
     }
   ]
 }

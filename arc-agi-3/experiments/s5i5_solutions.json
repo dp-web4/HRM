@@ -1,0 +1,36 @@
+{
+  "game_id": "s5i5",
+  "instance_id": "a48e4b1d",
+  "total_levels": 8,
+  "total_actions": 240,
+  "solved_by": "claude-opus-4.6",
+  "game_type": "arrow_resize_rotate_puzzle",
+  "mechanics": {
+    "arrows": "Colored arrows with orientation (0/90/180/270) and index (size). Organized in parent-child chains via enplxxgoja.",
+    "tracks": "Each track controls 1+ arrows. Growing/shrinking changes index of all arrows on track simultaneously.",
+    "targets": "Small markers attached as children. Win when all targets reach goal positions.",
+    "rotation": "Rotate buttons (tagged myzmclysbl) rotate all arrows matching button color 90° CCW. Children rotate around parent's rotation center.",
+    "double_rotation": "If abs(arrow_orient - 90 - parent_orient) == 180, arrow rotates twice.",
+    "collision": "Pixel-perfect. Actions that cause overlap are reverted.",
+    "obstacles": "Non-movable arrow sprites that block movement.",
+    "actions": "ACTION6=click. Click track halves to grow/shrink, click rotate buttons to rotate."
+  },
+  "level_solutions": {
+    "0": {"tracks": 2, "arrows": 4, "rotate_btns": 0, "actions": 13, "method": "bfs"},
+    "1": {"tracks": 4, "arrows": 6, "rotate_btns": 0, "actions": 26, "method": "bfs"},
+    "2": {"tracks": 6, "arrows": 10, "rotate_btns": 0, "actions": 37, "method": "greedy"},
+    "3": {"tracks": 5, "arrows": 10, "rotate_btns": 0, "actions": 30, "method": "bfs"},
+    "4": {"tracks": 4, "arrows": 10, "rotate_btns": 0, "actions": 28, "method": "bfs"},
+    "5": {"tracks": 3, "arrows": 4, "rotate_btns": 3, "actions": 25, "method": "analytical_bfs"},
+    "6": {"tracks": 5, "arrows": 7, "rotate_btns": 4, "actions": 45, "method": "analytical_bfs", "bfs_states": 583745},
+    "7": {"tracks": 6, "arrows": 14, "rotate_btns": 1, "actions": 36, "method": "analytical_bfs", "bfs_states": 28384}
+  },
+  "key_learnings": {
+    "orientation_mapping": "ORIENT_NEXT = {0:270, 90:0, 180:90, 270:180}. np.rot90 is CCW pixel rotation: orient 0 (tip bottom) -> 270 (tip right), etc.",
+    "rotation_center": "Depends on parent orient: 0→(x, y+h-3), 90→(x, y), 180→(x, y), 270→(x+w-3, y).",
+    "child_rotation_formula": "new_x = cx - dy, new_y = cy + dx - (child_width - CELL). Derived from game's ayrfrgnhfh.",
+    "bbox_collision": "Arrows are solid rectangles, so bounding box overlap = pixel collision. Much faster than set intersection.",
+    "static_arrow_detection": "Arrows with no track, no parent, and no matching button color are effectively obstacles. Removes them from BFS state.",
+    "state_factoring": "Independent target chains can be solved separately if they share no tracks/buttons. But may fail if chains physically block each other."
+  }
+}

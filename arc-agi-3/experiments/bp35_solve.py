@@ -326,6 +326,56 @@ L7_SOL = [
 ]
 
 
+# L8: player (3,35), gem (2,40), gravity UP
+# ALL mechanics combined: E spread, G flip, B toggle, D destroy, spikes
+# 11 phases: setup → G-flip corridor → walk-and-clear → push-up →
+# walk-and-clear → navigate → x=9 push-up → walk-and-clear →
+# B toggle + D destroy → cross to x=0 → G flip fall to gem
+L8_SOL = [
+    # SETUP: E spread, G consume, D destroy (18 clicks, no movement)
+    C(7,8), C(6,8), C(5,8), C(4,8), C(3,8),     # E spread west at y=8
+    C(6,31), C(5,31), C(4,31), C(3,31),           # E spread west at y=31
+    C(0,15), C(0,19), C(0,21), C(0,25), C(0,33), C(0,35),  # consume 6 G blocks
+    C(2,26), C(3,26), C(4,26),                     # destroy D at y=26
+
+    # PHASE 1: G-flip cross y=34 gap → (7,32)
+    C(1,1), R, R, R, R, C(2,1),
+
+    # PHASE 2: Walk-and-clear L along y=32
+    C(6,32), L, C(5,32), L, C(4,32), L, C(3,32), L, C(2,32), L,
+
+    # PHASE 3: Push-up at x=2 from y=32 to y=21 (11 pushes)
+    C(2,31), C(2,30), C(2,29), C(2,28), C(2,27),
+    C(2,26), C(2,25), C(2,24), C(2,23), C(2,22), C(2,21),
+
+    # PHASE 4: Walk-and-clear R at y=21 to x=7
+    C(3,21), R, C(4,21), R, C(5,21), R, C(6,21), R, C(7,21), R,
+
+    # PHASE 5: Navigate to (8,23) via G flips
+    C(7,22), C(3,1), C(7,23), C(8,23), R, C(4,1),
+
+    # PHASE 6: Enter x=9 + push-up y=23→y=16 (7 pushes in 1-wide shaft)
+    C(9,23), R,
+    C(9,22), C(9,21), C(9,20), C(9,19), C(9,18), C(9,17), C(9,16),
+
+    # PHASE 7: Walk-and-clear L along y=16 to x=4
+    C(8,16), L, C(7,16), L, C(6,16), L, C(5,16), L, C(4,16), L,
+
+    # PHASE 8: B toggle + D destroy → fly up
+    C(4,15),       # B→O, fly through to (4,14)
+    C(4,13),       # D destroy, fly to (4,10)
+
+    # PHASE 9: Walk L to x=2, push-up, cross to x=0
+    L, L,          # → (2,9)
+    C(2,8),        # push-up to (2,8)
+    C(1,8),        # destroy D(1,8)
+    L, L,          # → (0,7) via x=0 shaft
+
+    # PHASE 10: G flip DN → fall to (0,40), walk R to gem
+    C(5,1), R, R,  # → (2,40) = GEM!
+]
+
+
 # ============================================================
 # Main
 # ============================================================
@@ -347,6 +397,7 @@ solutions = [
     ("L5", L5_SOL, 48),
     ("L6", L6_SOL, 86),
     ("L7", L7_SOL, 155),
+    ("L8", L8_SOL, 422),
 ]
 
 for name, sol, baseline in solutions:
@@ -359,6 +410,14 @@ for name, sol, baseline in solutions:
 
     success, steps_used = execute_and_advance(env, sol, name)
     if not success:
+        # Last level doesn't advance — check win flag
+        engine = env._game.oztjzzyqoek
+        if engine.nkuphphdgrp:
+            print(f"  {name} solved in {len(sol)} actions (baseline {baseline}) [WIN flag]")
+            print(f"\n  *** BP35 COMPLETE — ALL 9 LEVELS SOLVED ***")
+            total = sum(len(s) for _, s, _ in solutions)
+            print(f"  Total actions: {total}")
+            break
         print(f"\n{name} failed!")
         break
     print(f"  {name} solved in {len(sol)} actions (baseline {baseline})")
@@ -367,9 +426,16 @@ for name, sol, baseline in solutions:
     current_level = env._game.level_index
     print(f"  Now on level {current_level}")
 
+    # L8 is the last level — check win flag instead of level advance
+    if name == "L8":
+        engine = env._game.oztjzzyqoek
+        if engine.nkuphphdgrp:
+            print(f"\n  *** BP35 COMPLETE — ALL 9 LEVELS SOLVED ***")
+        break
+
 # Survey next level if we have one
 current_level = env._game.level_index
-if current_level >= len(solutions):
+if current_level < 8 and current_level >= len(solutions):
     print(f"\n{'='*40}")
     print(f"L{current_level} survey")
     print(f"{'='*40}")

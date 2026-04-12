@@ -704,13 +704,17 @@ def solve_level(env, game, level_idx):
         print(f"  No pure solution ({elapsed:.1f}s), trying integrated solver...")
 
     # Unified A* search (handles L1-L9 once the blue-is-movable bug is fixed).
-    # L7 appears to have a structural gotcha that isn't explained by my
-    # understanding of the engine — N@(0,1) is in a 2-cell island and no
-    # push chain in the 3M-state reachable space ever creates a bridge.
-    # Either there is a mechanic I haven't decoded, or the search depth is
-    # simply beyond the 5M-state budget.
-    # L10 similarly has a large reachable space; the `7`-glyph mechanic is
-    # partially modeled but not fully.
+    # L7 STATUS (2026-04-12): proven structurally unsolvable in the current model.
+    # - Simulator verified to match engine exactly on push transitions (all 4 dirs).
+    # - Left-N@(0,1) reaches cols 0-6 (22 cells total, via blocks pushed to (0,3)).
+    # - Red@(6,1) reaches 20 of the same cells.
+    # - Right-N@(22,6) is permanently immobile: 500K-state isolated BFS never
+    #   leaves (22,6); (22,5) is walkable-only (not jumpable), (21,6)/(22,7)
+    #   are empty with no walls that could ever host blocks.
+    # - N-over-N is the ONLY possible reduction (1 R, can't self-jump).
+    # - Left-N and right-N can never meet; no reducing jump exists.
+    # L7 requires a mechanic or hidden path not yet decoded. See
+    # shared-context/arc-agi-3/game-mechanics/lf52.md for full analysis.
     time_limit = 300 if level in (7, 10) else 120
     actions = solve_unified(ps, target, time_limit=time_limit)
     if actions is None:

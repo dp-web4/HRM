@@ -33,7 +33,10 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 import logging
 
-from prepare_training_data import RaisingTrainingDataBuilder
+try:
+    from sage.raising.training.prepare_training_data import RaisingTrainingDataBuilder
+except ImportError:
+    from prepare_training_data import RaisingTrainingDataBuilder
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

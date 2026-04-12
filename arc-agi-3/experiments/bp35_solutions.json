@@ -1,0 +1,41 @@
+{
+  "game_id": "bp35",
+  "instance_id": "0a0ad940",
+  "total_levels": 9,
+  "total_actions": 304,
+  "baseline_actions": [15, 72, 36, 31, 31, 48, 86, 155, 422],
+  "baseline_total": 896,
+  "solved_by": "claude-opus-4.6",
+  "solver": "bp35_solve.py",
+  "game_type": "gravity_platformer",
+  "mechanics": {
+    "player": "Single player character controlled by LEFT/RIGHT movement.",
+    "gravity": "Player falls upward through empty space (gravity UP by default).",
+    "blocks": "D blocks (qclfkhjnaac) are destroyable by clicking. Removal may trigger player fall.",
+    "spikes": "Landing on spikes (ubhhgljbnpu/hzusueifitk) = LOSE.",
+    "gem": "Reach the gem (fjlzdjxhant) = WIN level.",
+    "gravity_flip": "G blocks (lrpkmzabbfa) toggle gravity direction when clicked (consumed on use).",
+    "toggles": "O blocks (oonshderxef) and B blocks (yuuqpmlxorv) toggle between passable/solid when clicked.",
+    "entities": "E blocks (etlsaqqtjvn) spread to adjacent empty cells when clicked. 'Push up' trick: clicking E ceiling removes it, player falls into empty cell.",
+    "camera": "Camera follows player vertically. Click coordinates are display-relative.",
+    "actions": "ACTION3=LEFT, ACTION4=RIGHT, ACTION6=CLICK(x,y), ACTION7=UNDO"
+  },
+  "level_solutions": {
+    "0": {"actions": 13, "baseline": 15, "strategy": "Walk right, destroy D blocks, navigate to gem"},
+    "1": {"actions": 40, "baseline": 72, "strategy": "Navigate right side, cross left through D blocks, up through shafts"},
+    "2": {"actions": 34, "baseline": 36, "strategy": "Destroy D, toggle O/B, cross multiple sections with gravity UP"},
+    "3": {"actions": 13, "baseline": 31, "strategy": "Remote D destruction, 4 G flips for gravity manipulation"},
+    "4": {"actions": 14, "baseline": 31, "strategy": "Staircase walk, D row destruction, double G flip navigation"},
+    "5": {"actions": 12, "baseline": 48, "strategy": "Walk right, single G flip, walk left to gem"},
+    "6": {"actions": 43, "baseline": 86, "strategy": "11 G flips (consumable), O/B toggles, navigate through spike maze"},
+    "7": {"actions": 44, "baseline": 155, "strategy": "E spread for bridge, B toggles, push-up technique, G flip"},
+    "8": {"actions": 91, "baseline": 422, "strategy": "All mechanics combined: E spread, G flip, B toggle, D destroy, spikes. 11 phases."}
+  },
+  "key_learnings": {
+    "gravity_as_transport": "Gravity flip is the primary navigation mechanism. Each G block is consumed once, so planning their use order is critical.",
+    "push_up_technique": "Clicking an E block that forms a ceiling above the player removes it, causing player to fall upward into the now-empty cell. Repeatable for shaft climbing.",
+    "toggle_state_management": "O and B blocks toggle between passable and solid states. Order of toggles matters for creating/removing platforms.",
+    "remote_clicks": "Click actions can target any visible cell, not just adjacent ones. This enables remote D block destruction and G flip activation.",
+    "camera_offset": "Click coordinates must account for camera Y offset. Display y = grid_y * 6 - camera_y_offset."
+  }
+}

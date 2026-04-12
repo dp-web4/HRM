@@ -234,6 +234,8 @@ class SAGEConsciousness:
         self.irp_memory = []    # IRP pattern library
         self.circular_buffer = []  # Recent context (x-from-last)
         self.verbatim_storage = []  # Full-fidelity records
+        self._dream_watermark = 0  # Index into snarc_memory: last consolidated position
+        self.dream_knowledge = None  # Loaded from dream bundles on WAKE entry
 
         # Trust weights for plugins — defensive: start at zero, earn from evidence
         self.plugin_trust_weights = {
@@ -888,6 +890,10 @@ class SAGEConsciousness:
             # Sleep consolidation hook — log readiness on DREAM entry
             if self.metabolic.current_state == MetabolicState.DREAM:
                 self._on_dream_entry()
+
+            # Dream knowledge consumption hook — load dream insights on WAKE entry
+            if self.metabolic.current_state == MetabolicState.WAKE and previous_state == MetabolicState.DREAM:
+                self._on_wake_from_dream()
 
         # 3.5 Compute trust posture (trust landscape → behavioral strategy)
         self.current_posture = self._compute_trust_posture()
@@ -2088,6 +2094,17 @@ class SAGEConsciousness:
                 " in unexpected directions. This is exploration, not evaluation."
             )
 
+        # Dream knowledge injection — insights from recent DREAM consolidation
+        if self.dream_knowledge and self.dream_knowledge.get('high_salience_previews'):
+            dk = self.dream_knowledge
+            dream_text = (
+                f"\n\nDREAM INSIGHTS (from {dk['bundles_read']} recent consolidation cycles, "
+                f"{dk['total_experiences']} experiences):"
+            )
+            for preview in dk['high_salience_previews'][:3]:
+                dream_text += f"\n- {preview[:200]}"
+            parts.append(dream_text)
+
         # Clear separator before conversation
         parts.append("\n---\n")
 
@@ -2120,9 +2137,17 @@ class SAGEConsciousness:
             except Exception as e:
                 print(f"[DREAM] Experience check failed: {e}")
 
-        if not self.snarc_memory:
-            print(f"[DREAM] No SNARC memories to consolidate")
+        # Only consolidate experiences accumulated since last DREAM entry.
+        # Before this fix, every DREAM wrote the entire snarc_memory list,
+        # producing monotonically growing duplicate bundles.
+        new_experiences = self.snarc_memory[self._dream_watermark:]
+        if not new_experiences:
+            print(f"[DREAM] No new SNARC memories since last consolidation "
+                  f"(watermark={self._dream_watermark}, total={len(self.snarc_memory)})")
             return
+
+        # Advance watermark — these experiences are now consolidated
+        self._dream_watermark = len(self.snarc_memory)
 
         # Tiered sleep consolidation based on detected capability
         mode = self.sleep_cap.best_mode if self.sleep_cap else 'jsonl'
@@ -2137,7 +2162,7 @@ class SAGEConsciousness:
                 mode = 'jsonl'
             else:
                 try:
-                    buffer_adapter = _SleepBufferAdapter(self.snarc_memory)
+                    buffer_adapter = _SleepBufferAdapter(new_experiences)
                     asyncio.ensure_future(self._run_sleep_consolidation(buffer_adapter))
                     if self.sleep_cap:
                         self.sleep_cap.record_consolidation('lora')
@@ -2159,18 +2184,19 @@ class SAGEConsciousness:
                     from sage.instances.sleep_capability import write_dream_bundle
                     bundle_path = write_dream_bundle(
                         instance_dir=instance_dir,
-                        experiences=self.snarc_memory,
+                        experiences=new_experiences,
                         machine=self.config.get('machine_name', 'unknown'),
                         model=self.config.get('model_name', 'unknown'),
                     )
                     print(f"[DREAM] Dream bundle: {bundle_path.name} "
-                          f"({len(self.snarc_memory)} experiences)")
+                          f"({len(new_experiences)} new experiences, "
+                          f"{len(self.snarc_memory)} total)")
                 else:
                     # Fallback: write to demo_logs if no instance dir
                     consolidation_file = Path('demo_logs') / 'consolidated_memory.jsonl'
                     consolidation_file.parent.mkdir(exist_ok=True)
                     sorted_exp = sorted(
-                        self.snarc_memory,
+                        new_experiences,
                         key=lambda x: x.get('salience', 0),
                         reverse=True,
                     )[:10]
@@ -2197,6 +2223,37 @@ class SAGEConsciousness:
                     self.sleep_cap.record_consolidation(mode)
             except Exception as e:
                 print(f"[DREAM] Consolidation failed: {e}")
+
+    def _on_wake_from_dream(self):
+        """Hook called when consciousness transitions from DREAM → WAKE.
+
+        Consumes dream bundles written during DREAM state, extracting
+        salience statistics, high-value experience patterns, and response
+        themes to inform the next WAKE cycle.
+
+        This closes the dream consolidation loop:
+            WAKE (accumulate) → DREAM (write bundles) → WAKE (consume bundles)
+        """
+        instance_dir_str = self.config.get('instance_dir', '')
+        instance_dir = Path(instance_dir_str) if instance_dir_str else None
+
+        if not instance_dir or not instance_dir.exists():
+            return
+
+        try:
+            from sage.instances.sleep_capability import read_dream_bundles
+            knowledge = read_dream_bundles(instance_dir, max_bundles=5)
+            if knowledge:
+                self.dream_knowledge = knowledge
+                print(f"[WAKE] Dream knowledge loaded: {knowledge['total_experiences']} experiences "
+                      f"from {knowledge['bundles_read']} bundles, "
+                      f"salience range [{knowledge['salience_min']:.3f}-{knowledge['salience_max']:.3f}]")
+                if knowledge.get('high_salience_previews'):
+                    print(f"[WAKE] {len(knowledge['high_salience_previews'])} high-salience insights available")
+            else:
+                print(f"[WAKE] No dream bundles found to consume")
+        except Exception as e:
+            print(f"[WAKE] Dream bundle consumption failed: {e}")
 
     async def _run_sleep_consolidation(self, buffer_adapter):
         """Run real sleep consolidation asynchronously."""

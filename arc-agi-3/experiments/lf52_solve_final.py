@@ -18,7 +18,7 @@ SOLVER:
 - Handles piece-on-block transport through wall channels
 """
 
-import os, sys, time
+import os, sys, time, heapq
 from collections import deque
 from typing import Optional
 
@@ -161,11 +161,15 @@ class PuzzleState:
         return False
 
     def is_jumpable_middle(self, pos):
-        """Check if pos has something to jump over."""
+        """Check if pos has something to jump over.
+
+        Engine rule (pymqmlkgzs): any object name containing "fozwvlovdui"
+        (including _red, _blue) OR "dgxfozncuiz" (fixed peg) makes the cell
+        jumpable. Blue pieces CAN be jumped over (they just aren't removed).
+        """
         pd = self.piece_dict()
         if pos in pd:
-            name = pd[pos]
-            return name != 'fozwvlovdui_blue'  # can't jump over blue
+            return True  # any piece (including blue) is jumpable middle
         if pos in self.fixed_pegs:
             return True
         return False
@@ -191,9 +195,11 @@ class PuzzleState:
         new_pieces.add((dx, dy, jumper_name))
 
         # Check if middle piece gets removed
+        # Engine rule (cfilhtifcb line 5393-5396): middle is removed only if
+        # it is non-blue AND same name as jumper. Blue middle is never removed.
         if (mx, my) in pd:
             mid_name = pd[(mx, my)]
-            if mid_name == jumper_name:  # same type -> remove
+            if mid_name == jumper_name and mid_name != 'fozwvlovdui_blue':
                 new_pieces.discard((mx, my, mid_name))
 
         return PuzzleState(frozenset(new_pieces), self.blocks, self.walls,
@@ -249,14 +255,16 @@ class PuzzleState:
         return sum(1 for _, _, name in self.pieces if name != 'fozwvlovdui_blue')
 
     def get_valid_jumps(self):
-        """Get all valid jumps as (src, dst) pairs."""
+        """Get all valid jumps as (src, dst) pairs.
+
+        Engine rule: any piece (including blue) can be clicked and moved.
+        Blue jumping doesn't remove anything but the jumper does move.
+        """
         jumps = []
         pd = self.piece_dict()
         pp = self.piece_positions()
 
         for x, y, name in self.pieces:
-            if name == 'fozwvlovdui_blue':
-                continue
             for dx, dy in DIRS:
                 mx, my = x + dx, y + dy
                 lx, ly = x + 2*dx, y + 2*dy
@@ -269,6 +277,94 @@ class PuzzleState:
                 jumps.append(((x, y), (lx, ly)))
 
         return jumps
+
+
+def _manhattan_min_same_type(ps):
+    """Min manhattan distance between any two same-name non-blue pieces.
+    Used as a (non-admissible but informative) A* heuristic."""
+    movers = [(x, y, n) for x, y, n in ps.pieces if n != 'fozwvlovdui_blue']
+    best = 0
+    for i, (x1, y1, n1) in enumerate(movers):
+        for x2, y2, n2 in movers[i+1:]:
+            if n1 == n2:
+                d = abs(x1 - x2) + abs(y1 - y2)
+                if best == 0 or d < best:
+                    best = d
+    return best
+
+
+def solve_unified(initial_state, target_count, time_limit=60, max_depth=250,
+                  use_heuristic=True):
+    """Unified A* solver: one search over all actions (jumps + pushes).
+
+    State priority: (movable_count, manhattan_min, depth). This drove L8/L9
+    to solutions in seconds once we realized blue pieces are movable.
+    """
+    t0 = time.time()
+    start_mc = initial_state.movable_count()
+    visited = {initial_state.key(): (start_mc, 0)}
+    counter = [0]
+
+    def prio(state, depth):
+        mc = state.movable_count()
+        h = _manhattan_min_same_type(state) if use_heuristic else 0
+        return mc * 10000 + h * 10 + depth
+
+    heap = [(prio(initial_state, 0), 0, 0, initial_state, [])]
+    best_mc = start_mc
+    n_expanded = 0
+    last_beat = 0
+
+    while heap:
+        if time.time() - t0 > time_limit:
+            print(f"  [unified timeout] expanded={n_expanded} best_mc={best_mc} t={time.time()-t0:.1f}s")
+            return None
+        _, depth, _, cur, acts = heapq.heappop(heap)
+        n_expanded += 1
+        if n_expanded - last_beat > 100000:
+            last_beat = n_expanded
+            print(f"  [unified beat] expanded={n_expanded} q={len(heap)} best_mc={best_mc} t={time.time()-t0:.1f}s")
+        mc = cur.movable_count()
+        if mc < best_mc:
+            best_mc = mc
+            print(f"  [unified progress] mc={mc} depth={depth} expanded={n_expanded} t={time.time()-t0:.1f}s")
+        if mc <= target_count:
+            print(f"  [unified SOLVED] {len(acts)} actions, expanded={n_expanded}, t={time.time()-t0:.1f}s")
+            return acts
+        if depth > max_depth:
+            continue
+
+        for src, dst in cur.get_valid_jumps():
+            nxt = cur.apply_jump(src, dst)
+            if nxt is None:
+                continue
+            nk = nxt.key()
+            new_mc = nxt.movable_count()
+            new_depth = depth + 1
+            entry = visited.get(nk)
+            if entry and entry <= (new_mc, new_depth):
+                continue
+            visited[nk] = (new_mc, new_depth)
+            counter[0] += 1
+            heapq.heappush(heap, (prio(nxt, new_depth), new_depth, counter[0], nxt,
+                                  acts + [('jump', src, dst)]))
+        for d in DIRS:
+            nxt = cur.apply_push(d)
+            if nxt is None:
+                continue
+            nk = nxt.key()
+            new_mc = nxt.movable_count()
+            new_depth = depth + 1
+            entry = visited.get(nk)
+            if entry and entry <= (new_mc, new_depth):
+                continue
+            visited[nk] = (new_mc, new_depth)
+            counter[0] += 1
+            heapq.heappush(heap, (prio(nxt, new_depth), new_depth, counter[0], nxt,
+                                  acts + [('push', d)]))
+
+    print(f"  [unified exhausted] expanded={n_expanded} best_mc={best_mc} t={time.time()-t0:.1f}s")
+    return None
 
 
 def solve_integrated(initial_state, target_count, max_steps=100, time_limit=120):
@@ -287,7 +383,8 @@ def solve_integrated(initial_state, target_count, max_steps=100, time_limit=120)
     t0 = time.time()
 
     def find_reducing_jumps(state):
-        """Find all jumps that reduce the piece count."""
+        """Find all jumps that reduce the movable piece count.
+        Only non-blue jumper over same-name non-blue middle."""
         pd = state.piece_dict()
         reducing = []
         for x, y, name in state.pieces:
@@ -299,18 +396,17 @@ def solve_integrated(initial_state, target_count, max_steps=100, time_limit=120)
                 if (mx, my) in pd:
                     mid_name = pd[(mx, my)]
                     if mid_name == name and mid_name != 'fozwvlovdui_blue':
-                        # Same type - this jump would remove the middle piece
                         if state.is_valid_landing((lx, ly)):
                             reducing.append(((x, y), (lx, ly)))
         return reducing
 
     def find_movement_jumps(state):
-        """Find jumps over fixed pegs or different-type pieces (no removal)."""
+        """Find jumps that do NOT reduce the movable count.
+        Includes: blue jumpers (always non-reducing), and non-blue jumpers
+        over a middle that is peg/blue/different-type piece."""
         pd = state.piece_dict()
         moves = []
         for x, y, name in state.pieces:
-            if name == 'fozwvlovdui_blue':
-                continue
             for dx, dy in DIRS:
                 mx, my = x + dx, y + dy
                 lx, ly = x + 2*dx, y + 2*dy
@@ -318,12 +414,11 @@ def solve_integrated(initial_state, target_count, max_steps=100, time_limit=120)
                     continue
                 if not state.is_valid_landing((lx, ly)):
                     continue
-                # Check if this is a reducing jump
+                # Skip if this is a reducing jump
                 if (mx, my) in pd:
                     mid_name = pd[(mx, my)]
-                    if mid_name == name:
-                        continue  # skip reducing jumps
-                # This is a movement jump
+                    if mid_name == name and mid_name != 'fozwvlovdui_blue' and name != 'fozwvlovdui_blue':
+                        continue
                 moves.append(((x, y), (lx, ly)))
         return moves
 
@@ -608,11 +703,19 @@ def solve_level(env, game, level_idx):
     else:
         print(f"  No pure solution ({elapsed:.1f}s), trying integrated solver...")
 
-    # Integrated solver with pushes + jumps
-    time_limit = 300
-    max_steps = 200
-
-    actions = solve_integrated(ps, target, max_steps=max_steps, time_limit=time_limit)
+    # Unified A* search (handles L1-L9 once the blue-is-movable bug is fixed).
+    # L7 appears to have a structural gotcha that isn't explained by my
+    # understanding of the engine — N@(0,1) is in a 2-cell island and no
+    # push chain in the 3M-state reachable space ever creates a bridge.
+    # Either there is a mechanic I haven't decoded, or the search depth is
+    # simply beyond the 5M-state budget.
+    # L10 similarly has a large reachable space; the `7`-glyph mechanic is
+    # partially modeled but not fully.
+    time_limit = 300 if level in (7, 10) else 120
+    actions = solve_unified(ps, target, time_limit=time_limit)
+    if actions is None:
+        print(f"  Unified failed, trying legacy integrated solver...")
+        actions = solve_integrated(ps, target, max_steps=200, time_limit=180)
 
     if actions:
         print(f"  Solution sequence:")

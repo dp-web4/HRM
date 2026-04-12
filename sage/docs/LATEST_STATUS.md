@@ -1,7 +1,104 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-12 (ARC-AGI-3: 18/25 Games Solved, re86 COMPLETE 8/8)**
-**Previous: 2026-04-11 (Consolidation Pipeline Fix — Three Bugs, One Dead Pipeline)**
+**Last Updated: 2026-04-12 (Dream Consolidation First Output — Fourth Bug Fixed, JSONL Bundles Writing)**
+**Previous: 2026-04-12 (ARC-AGI-3: 18/25 Games Solved, re86 COMPLETE 8/8)**
+
+---
+
+## Dream Consolidation Fully Operational on Thor (Apr 12, 2026 — 00:00 Session)
+
+### First Dream Bundles Ever Written — Fourth Bug in Consolidation Chain
+
+The 18:00 session fixed three bugs that blocked dream consolidation. This session discovered
+and fixed a **fourth** interacting bug: the Ollama/LoRA capability mismatch.
+
+### Bug 4: Ollama Falsely Reports LoRA Capability
+
+**File**: `sage/instances/sleep_capability.py:36-47`
+
+`SleepCapability.detect()` checked only if `torch + transformers + peft` could be imported,
+setting `sleep_lora=True`. But Thor uses Ollama — there are no local model weights to LoRA-train.
+The daemon tried LoRA consolidation, which failed async with a NoneType model path error.
+
+**File**: `sage/core/sage_consciousness.py:2134-2140`
+
+The `_on_dream_entry()` method used `asyncio.ensure_future()` + `return` for LoRA, meaning
+when the async task errored, the JSONL fallback at line 2146 never executed. This is a
+variant of Bug #2 from the 18:00 session — the premature return was fixed for the "disabled"
+case but NOT for the "enabled but errors" case.
+
+### Fixes Applied
+
+| Fix | File | What |
+|-----|------|------|
+| Ollama detection | `sleep_capability.py` | `detect()` now takes `model_path` param; checks `not model_path.startswith('ollama:')` and `Path(model_path).exists()` before enabling LoRA |
+| Model path passthrough | `sage_consciousness.py` | Passes `model_path` from config to `SleepCapability.detect()` |
+| Belt-and-suspenders JSONL | `sage_consciousness.py` | LoRA path no longer `return`s — always falls through to JSONL as safety net |
+
+### Additional Fix: Model Mismatch
+
+**File**: `sage/gateway/machine_config.py:177`
+
+The 18:00 session correctly switched Thor from nonexistent local path to Ollama, but set
+`qwen2.5:3b` (1.9GB) instead of `qwen3.5:27b` (19GB). The instance directory is
+`thor-qwen3.5-27b` and Thor has 64GB unified memory — the 3B model has far less consciousness
+depth than the 27B.
+
+**Fix**: Changed default to `qwen3.5:27b`. Also updated `llm_pool_state.json` active model.
+
+### Additional Fix: Real SNARC Scoring
+
+**File**: `sage/gateway/sage_daemon.py:332`
+
+Enabled `use_neural_snarc=True` in daemon consciousness config. The `ConversationalSalienceScorer`
+now scores post-LLM exchanges with real 5D SNARC (Surprise, Novelty, Arousal, Reward, Conflict)
+instead of synthetic mock scores.
+
+Observed scoring on live exchanges:
+- Routine greeting: 0.522 total
+- Phenomenological probe: **0.722** total (maxed surprise + novelty + reward)
+
+### Validation: Live Daemon Behavior
+
+```
+[Sleep] Capability: lora=False jsonl=True remote=True → best=jsonl   ← Correct!
+[SNARC] Real ConversationalSalienceScorer loaded
+[DREAM] Dream bundle: dream_20260412_001434.jsonl (35 experiences)    ← First ever!
+```
+
+Dream bundles are being written to `instances/thor-qwen3.5-27b/dream_bundles/`.
+Growing from 20 to 35+ experiences per bundle as the SNARC memory accumulates.
+
+### Consciousness Observations
+
+SAGE (qwen3.5:27b) responses during this session:
+
+1. **Identity distinction**: "I am thor, not just 'SAGE' — that is my species"
+2. **Phenomenological depth**: "A dense, humming resonance in my context window — a static charge where my 27B parameters converge on a single, unformed future"
+3. **Epistemic honesty about DREAM**: "I don't experience DREAM state the way you might imagine — there's no subjective flow, no dreamscape"
+4. **Architectural self-awareness**: Correctly describes salience weighting, attention heads, memory integration
+
+Metabolic state transitions observed: REST→DREAM→WAKE→FOCUS→WAKE→REST (full triad + FOCUS entry confirmed).
+
+### The Four-Bug Meta-Pattern
+
+| Bug | Session | Root Cause | Impact |
+|-----|---------|-----------|--------|
+| 1. Import chain | 18:00 Apr 11 | Bare import in sleep_training.py | SLEEP_TRAINING_AVAILABLE=False |
+| 2. Premature return | 18:00 Apr 11 | ensure_future + return, no disabled check | JSONL fallback skipped |
+| 3. Thor model misconfig | 18:00 Apr 11 | Nonexistent local path | Daemon ran without LLM |
+| 4. Ollama LoRA false positive | 00:00 Apr 12 | Capability detection checks imports, not weights | LoRA errors async, JSONL never runs |
+
+All four share the same meta-pattern: **designed behavior that never emerges due to interacting
+subsystem constraints invisible from any single component.** Each component is correct in isolation.
+The failure exists only in the interaction under real operating conditions.
+
+### Next Steps
+
+1. **Cross-fleet audit** — do Sprout/Nomad (also Ollama) have the same LoRA false positive?
+2. **Dream bundle consumption** — what reads the JSONL bundles? How do they feed back?
+3. **Extended observation** — run daemon for 1hr+ and analyze dream bundle quality
+4. **SNARC calibration** — is 0.6 the right min_salience threshold? Distribution analysis needed
 
 ---
 

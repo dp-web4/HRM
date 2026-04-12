@@ -271,7 +271,11 @@ class SAGEConsciousness:
         try:
             from sage.instances.sleep_capability import SleepCapability
             instance_dir = Path(self.config.get('instance_dir', ''))
-            self.sleep_cap = SleepCapability.detect(instance_dir if instance_dir.name else None)
+            model_path = self.config.get('sleep_model_path') or self.config.get('model_name', '')
+            self.sleep_cap = SleepCapability.detect(
+                instance_dir if instance_dir.name else None,
+                model_path=model_path,
+            )
             print(f"[Sleep] Capability: lora={self.sleep_cap.sleep_lora} "
                   f"jsonl={self.sleep_cap.sleep_jsonl} remote={self.sleep_cap.sleep_remote} "
                   f"→ best={self.sleep_cap.best_mode}")
@@ -2137,7 +2141,10 @@ class SAGEConsciousness:
                     asyncio.ensure_future(self._run_sleep_consolidation(buffer_adapter))
                     if self.sleep_cap:
                         self.sleep_cap.record_consolidation('lora')
-                    return
+                    # Don't return — also write JSONL as safety net.
+                    # LoRA runs async and may fail (e.g. missing model weights);
+                    # JSONL ensures dream data is always persisted.
+                    mode = 'jsonl'
                 except Exception as e:
                     print(f"[DREAM] LoRA consolidation failed, falling back to JSONL: {e}")
                     mode = 'jsonl'

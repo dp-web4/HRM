@@ -2,15 +2,31 @@
 """
 wa30 Sokoban Solver — Engine-based greedy with wall-handoff support.
 
-L0: BFS (no AI) — 26 moves
+CURRENT STATUS: 7/9 levels solved (L0-L6). Was 3/9 before 2026-04-12 session.
+
+L0: Pure BFS (no AI) — 26 moves
 L1: Engine greedy with blue helper — 56 moves
 L2: Hand-coded wall-handoff — 80 moves
-L3+: UNSOLVED (see L3 NOTES below)
+L3: Hand-crafted wall-handoff plan distributing 6 pieces to 3 blues — 57 moves
+L4: Engine greedy (unlocked by solving L3) — 122 moves
+L5: Engine greedy — 48 moves
+L6: Hand-coded saboteur-exploit (wait for white to self-stall, destroy, ferry) — 50 moves
+L7: Greedy caps at 8/13. Needs smarter multi-agent planning with saboteur handling.
+L8: Unseen (blocked by L7).
 
 Key mechanic: carried pieces pass through blocked positions (qthdiggudy),
 carriers don't. This enables "wall handoff" — player carries piece to wall
 with appropriate carry offset, piece lands on other side of wall, then a
-blue picks it up and delivers it to a slot.
+blue picks it up and delivers it to a slot. Blue pickup is purely geometric
+adjacency (manhattan==4), so a piece dropped on a blocked wall cell is still
+grabbable by a blue standing on any non-blocked neighbor.
+
+Second mechanic (L6+): whites can re-grab delivered pieces from correct slots
+(blue pickup checks "not at correct slot", white pickup only checks "not at
+wrong slot"). This means white saboteurs must be destroyed to secure wins,
+not just avoided. Whites can also self-stall if their delivery path gets
+blocked by walls/other pieces — exploit this by waiting for them to park
+themselves, then SELECT-destroy.
 
 L3 NOTES (2026-04-12):
   - 7 pieces, 3 blues, 80 steps. Player spawns trapped inside a walled box
@@ -644,6 +660,22 @@ def replay_from_solutions(solutions):
 KNOWN_SOLUTIONS = {
     # L2: wall-handoff strategy — carry 3 left-side pieces to x=32 wall, blue picks up from right
     2: 'LLDDR5RRRRR5LLLLLLUUUUUUUR5RRRRRR5LLLDR5RRR5' + 'U' * 56,  # 100 total
+    # L3: player trapped in 5x5 walled box with 6 pieces + 1 outside. 3 blues each own
+    # a slot cluster (Blue1=west 3 slots, Blue0=east 2 slots, Blue2=south 2 slots).
+    # Player wall-handoffs pieces onto box wall cells grabbable by the right blue:
+    #   (24,24)→(20,24)→Blue1  (24,40)→(20,40)→Blue1  Blue1 auto-grabs (24,4) from outside
+    #   (36,24)→(36,20)→Blue0  (32,24)→(32,20)→Blue0
+    #   (36,40)→(36,44)→Blue2  (32,36)→(32,44)→Blue2
+    # 47-move active plan + 10 pad moves for blue deliveries = 57 total.
+    3: 'UUL5L5DDDRDL5L5RUURRU5U5DDDD5D5UUULU5U5DDDD5DD5' + 'U' * 10,
+    # L6: 2 pieces, 1 white saboteur, no blues, corridor y=20..36.
+    # White grabs (28,32) immediately, delivers to wrong-slot (48,32), then grabs
+    # (32,24) and gets stuck at (32,28) carrying it (can't reach wrong-slot).
+    # Strategy: wait 15 no-ops (U bouncing) for white to stabilize, walk over to
+    # (28,28) and SELECT-destroy white (drops (32,24) back), grab (32,24) carry
+    # west and deliver to (12,28), then walk east to (44,32) adjacent to piece at
+    # (48,32), grab with offset (+4,0), carry west to (8,32) delivering to (12,32).
+    6: 'U'*15 + 'DDRR5' + 'RU5LLLLLD5' + 'R'*9 + '5' + 'L'*9 + '5',
 }
 
 def string_to_actions(s):
@@ -707,9 +739,7 @@ for lv in range(20):
     solution = actual_solution
 
     sol_str = ''.join(ACTION_NAMES[a] for a in solution)
-    if len(sol_str) > 100:
-        sol_str = sol_str[:100] + f"...({len(solution)} total)"
-    print(f"  Solution: {sol_str}")
+    print(f"  Solution({len(solution)}): {sol_str}")
     total_actions += len(solution)
 
     if fd.frame:

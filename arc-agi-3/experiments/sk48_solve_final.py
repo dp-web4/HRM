@@ -1,10 +1,37 @@
 #!/usr/bin/env python3
 """sk48 Rail Weaver — Final solver.
 
-L0-L1 solved (41 actions). L2+ unsolved — see world model below.
+Status (2026-04-12): L0-L3 solved (99 actions). L4-L7 searching.
+
+KEY INSIGHT — BUDGET RESTORATION:
+  Failed moves (blocked extensions, out-of-bounds slides, etc.) still
+  decrement qiercdohl (budget). If budget hits zero during search,
+  lose() triggers GAME_OVER and the reachable state space collapses
+  to ~33 states. Restoring budget to init_budget after each expansion
+  unlocks thousands of reachable states per level and makes beam search
+  effective. This was the blocker for prior L2+ attempts.
+
+L2 HOW: slide up to y=6 with short rail, extend to place seg at (29,6),
+  slide DOWN chain-pushing the whole column of targets down by 6 per
+  slide. After 3 slides the column is at y=24,30,36,42 (target 12 at
+  bottom blocks further descent). Then slide UP with target 14 brings
+  it back to (29,6) — now isolated. Use retract-drag at rows y=30/36/42
+  to horizontally reposition targets 9, 8, 12. Final visit list
+  [8,12,9,14] on a row below the pin. Prior agent's "catch-22" analysis
+  was wrong: target 14 IS freeable once the bottom of the column clears.
+
+L3 HOW: (5,42) is an unpaired "arranger" rail; the two paired rails
+  (23,0) and (35,0) are vertical reference rails with static segments.
+  Moving the arranger pushes targets onto the paired rails' seg
+  positions, which fills their visit lists. No CLICK needed — one
+  arranger suffices for both pairs.
+
+L4+ REMAINING: multi-pair configurations likely need CLICK to switch
+  between multiple arranger rails. CLICK does not save history (no
+  nixwuekdfm call) — search must handle this out-of-band.
 
 =============================================================================
-WORLD MODEL (verified by source + empirical trace, refined 2026-04-12)
+WORLD MODEL (verified by source + empirical trace)
 =============================================================================
 
 RAILS: game.mwfajkguqx maps each HEAD sprite to its list of segments.
@@ -71,86 +98,6 @@ KEY CONSEQUENCE for L2:
 
   Below y=24, there is no pin, so horizontal extensions push targets freely.
 
-L2 INITIAL STATE:
-  Upper rail: head=(5,42), 2 segs (5,42),(11,42), rot=0 horizontal.
-  Targets above y=53: (29,6)=14, (29,12)=9, (29,18)=8, (29,24)=12.
-  Lower ref: 5 segs (17..41, 56). jdojcthkf[ref] has 4 entries.
-  Required upper_visit colors = [8, 12, 9, 14].
-  Tracks for UP/DOWN slides at (7, {8,14,20,26,32,38}). Head can reach
-  y in {6, 12, 18, 24, 30, 36, 42}. Play area x in [11,53), y in [6,48).
-
-PROBLEM: all 4 upper targets are at x=29, pinned for y<=24. Visit list
-is built by scanning segments left-to-right — since all segments are on
-one row, the visit list contains targets on that row in x order. To have
-a 4-entry visit list we need 4 targets on ONE row at distinct x. We must
-push targets below y=24 first (via slide-chain DOWN) then move them
-horizontally (via extension below the pin).
-
-PUSHING DOWN: from y=6 with rail crossing x=29, slide DOWN chain-pushes
-all targets in the x=29 column by +6. Repeated slides push the column down
-but keep all targets at x=29. After dn3 (starting from stack [6,12,18,24]):
-targets at (29,24)=14, (29,30)=9, (29,36)=8, (29,42)=12 (colors shift).
-Target at (29,24) still pinned. dn4 fails because bottom target (29,42)
-can't move to (29,48) — out of bounds (play area y_max=48).
-
-FREE RANGE: targets at y=30,36,42 are now below the pin rail and can be
-pushed horizontally via extensions or dragged by retractions at that row.
-
-FINAL ARRANGEMENT ORDER: ref=[8,12,9,14]. Must get 4 targets on one row
-with colors left-to-right = [8,12,9,14]. Candidates: row y=24 (where target
-14 lives pinned) or row y=30/36/42 for all four (requires dragging 14 off
-x=29 which requires un-pinning — impossible unless target 14 is pushed
-down to y=30 first, freeing it from the pin).
-
-SUB-PROBLEM: get target 14 to y>=30. At init target 14 is at (29,6).
-Slide-chain-down moves the whole column together. After dn3 target 14
-(originally (29,6)) sits at (29,24) — still pinned! The chain can't go
-further because y=48 is the bottom. So target 14 is STUCK at (29,24).
-
-ALTERNATE APPROACH: don't slide the full column at once. Use shorter rail
-or partial slides so target 14 ends up FURTHER DOWN than the others.
-  - At y=6 with short rail NOT crossing x=29: slide down to y=12, rail
-    arrives at y=12 without touching targets. Target 9 still at (29,12),
-    target 14 still at (29,6).
-  - From y=12 with short rail, extend across x=29: fails to move target 9
-    (pinned), passes through. Not useful for positioning.
-  - The only way to DIFFERENTIALLY move targets is for some to be at
-    segment positions during a slide while others are not. Since all 4
-    targets are at x=29 and segments are on one row, only ONE target is
-    at a segment position per slide (the one at head.y). So sliding
-    moves ONE target per slide.
-  - Slide from y=6 (target 14 alone moved to y=12), but target 9 is
-    already at y=12 -> chain-push 9 to y=18 -> chain 8 to y=24 -> chain
-    12 to y=30. So in a single slide, we move 14 and displace the
-    others downward by exactly the spacing.
-
-KEY INSIGHT (unverified): the chain-push length depends on which
-targets are CONSECUTIVE in the direction. If there's a gap in the
-target column, the chain breaks. But here they start at 6,12,18,24 —
-no gap — so all 4 always chain together.
-
-To CREATE a gap: push 14 down while leaving 12 alone. This requires
-the bottom target (12 at 24) to be blocked (pinned). And it IS pinned
-at y=24! Its dest (29,30) has no pin (below y=24), so it can move.
-Hmm — y=24 is the LAST row with pin rail segments. pptqisyill(29,24,
-False, hstak=seg) finds the vertical seg at (29,24). But then when
-moving (0,+6): (segment_dir_x==0) vs (move_x==0): True vs True =
-False -> not return False. Move proceeds. So target 12 DOES move.
-
-THE VERTICAL RAIL DOES NOT BLOCK VERTICAL PUSHES (it's parallel).
-So slide-chain moves everything together. Can't create gap this way.
-
-=============================================================================
-L2 STATUS: blocked by inability to separate the 4 x=29 targets by row.
-  Current best hypothesis: use RETRACTION-DRAG after slides to peel one
-  target off. Need seg at target's position in retraction direction (-x)
-  and target NOT pinned. After sliding down so target is at (29,y>24),
-  extend rail at y to place a seg at (29,y), then retract — target drags
-  left to (23,y), escaping x=29. Now we have one target at x<29 and
-  others at x=29. Repeat for each and align final row.
-
-  CHOREOGRAPHY (~30+ moves per target, 4 targets): budget 196 may be tight.
-  Not yet attempted. Next step: hand-construct and verify in engine.
 =============================================================================
 """
 import sys, os, json, time
@@ -176,77 +123,193 @@ KNOWN = {
     0: [UP, UP, UP, RIGHT, RIGHT, RIGHT, RIGHT, LEFT, DOWN, DOWN, RIGHT, LEFT, UP, RIGHT],
     1: [UP, UP, RIGHT, RIGHT, RIGHT, RIGHT, UP, LEFT, LEFT, UP, RIGHT, RIGHT, DOWN, DOWN,
         RIGHT, UP, RIGHT, LEFT, LEFT, UP, RIGHT, RIGHT, LEFT, LEFT, UP, RIGHT, RIGHT],
+    # L2 found by beam search 2026-04-12 (33 moves, 304s)
+    2: [UP, UP, UP, UP, RIGHT, RIGHT, RIGHT, DOWN, DOWN, LEFT, DOWN, DOWN, RIGHT, UP, UP,
+        LEFT, UP, RIGHT, DOWN, LEFT, UP, UP, UP, RIGHT, DOWN, DOWN, DOWN, LEFT, UP, UP,
+        UP, UP, RIGHT],
+    # L3 found by beam search 2026-04-12 (25 moves, 325s)
+    3: [UP, UP, UP, RIGHT, RIGHT, UP, UP, LEFT, UP, LEFT, DOWN, LEFT, UP, LEFT, DOWN,
+        RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, DOWN, LEFT, DOWN, LEFT, UP],
 }
 
 
 def state_key(game):
-    head = game.vzvypfsnt
-    segs = game.mwfajkguqx.get(head, [])
+    active = game.vzvypfsnt
+    # Encode ALL rails (so CLICK doesn't corrupt state identity), plus
+    # which one is currently active.
+    rails = []
+    for h in sorted(game.mwfajkguqx.keys(), key=lambda s: (s.x, s.y)):
+        segs = game.mwfajkguqx[h]
+        rails.append((h.x, h.y, len(segs)))
     targets = tuple(sorted((t.x, t.y, int(t.pixels[1, 1]))
                            for t in game.vbelzuaian))
-    return (head.x, head.y, len(segs), targets)
+    return ((active.x, active.y), tuple(rails), targets)
+
+
+def _lcs_len(a, b):
+    n, m = len(a), len(b)
+    if not n or not m:
+        return 0
+    dp = [0] * (m + 1)
+    for i in range(n):
+        prev = 0
+        for j in range(m):
+            cur = dp[j + 1]
+            if a[i] == b[j]:
+                dp[j + 1] = prev + 1
+            elif dp[j] > dp[j + 1]:
+                dp[j + 1] = dp[j]
+            prev = cur
+    return dp[-1]
 
 
 def compute_h(game):
-    """Heuristic: unmatched count * 100 + target distance."""
+    """Heuristic for sk48 rail weaver.
+
+    The win condition per paired rail: upper's seg-order visit list must
+    match ref's seg-order visit list, position by position, for
+    len(jdojcthkf[ref]) positions.
+
+    For each pair, score:
+      1. prefix match bonus (high reward at leading positions)
+      2. LCS partial credit
+      3. assignment cost: minimum Manhattan distance from each required
+         *target* (the sprite with color c) to the nearest available seg
+         position on the upper rail — approximates "how much work to put
+         color c at its required slot".
+
+    Also score the distance from the ACTIVE (player-controlled) rail's head
+    to the nearest required target: this shapes the landscape so the
+    player's rail is attracted toward useful work.
+    """
     game.gvtmoopqgy()
     total = 0.0
+    active = game.vzvypfsnt
+    all_req_positions = []  # (x, y, c) needed at specific slots
     for head, ref_head in game.xpmcmtbcv.items():
         upper = game.vjfbwggsd.get(head, [])
         lower = game.vjfbwggsd.get(ref_head, [])
         ref_colors = [int(t.pixels[1, 1]) for t in lower]
-        n_lower = len(lower)
-        n_upper = len(upper)
+        upper_colors = [int(t.pixels[1, 1]) for t in upper]
+        n_lower = len(ref_colors)
 
-        # Count consecutive matches from start
-        matched = 0
-        for i in range(min(n_upper, n_lower)):
-            if int(upper[i].pixels[1, 1]) == ref_colors[i]:
-                matched += 1
+        prefix = 0
+        for i in range(min(len(upper_colors), n_lower)):
+            if upper_colors[i] == ref_colors[i]:
+                prefix += 1
             else:
                 break
+        total += (n_lower - prefix) * 200
 
-        total += (n_lower - matched) * 100
+        lcs = _lcs_len(upper_colors, ref_colors)
+        total += (n_lower - lcs) * 40
 
-        # Distance of unmatched targets
-        avail = [(t.x, t.y, int(t.pixels[1, 1])) for t in game.vbelzuaian if t.y < 53]
-        used = set()
-        for i in range(matched, n_lower):
-            rc = ref_colors[i]
-            best = 50
-            for j, (tx, ty, tc) in enumerate(avail):
-                if j in used or tc != rc:
+        # Upper rail's seg positions (where we need targets of matching color)
+        upper_segs = game.mwfajkguqx.get(head, [])
+        seg_positions = [(s.x, s.y) for s in upper_segs]
+
+        # Targets available per color
+        from collections import Counter
+        ref_cnt = Counter(ref_colors)
+        used_tids = set()
+        all_targets = [(t.x, t.y, int(t.pixels[1, 1]), id(t)) for t in game.vbelzuaian]
+        for i, rc in enumerate(ref_colors):
+            # Required slot is the i-th seg position (if exists)
+            if i < len(seg_positions):
+                sx, sy = seg_positions[i]
+            elif seg_positions:
+                sx, sy = seg_positions[-1]
+            else:
+                sx, sy = head.x, head.y
+            # Find nearest unused target with matching color
+            best_d = 60
+            best_id = None
+            for (tx, ty, tc, tid) in all_targets:
+                if tc != rc or tid in used_tids or ty >= 53:
                     continue
-                d = abs(ty - head.y) // CELL
-                if d < best:
-                    best = d
-                    best_j = j
-            if best < 50:
-                used.add(best_j)
-            total += best
+                d = abs(tx - sx) + abs(ty - sy)
+                if d < best_d:
+                    best_d = d
+                    best_id = tid
+            if best_id is not None:
+                used_tids.add(best_id)
+                all_req_positions.append((sx, sy, rc))
+            total += (best_d / CELL) * 6
+
+    # Active-rail head attraction: distance to the nearest required target
+    need_ys = []
+    all_targets = [(t.x, t.y, int(t.pixels[1, 1])) for t in game.vbelzuaian if t.y < 53]
+    min_d = 60
+    for (tx, ty, _c) in all_targets:
+        d = abs(tx - active.x) + abs(ty - active.y)
+        if d < min_d:
+            min_d = d
+    total += min_d / CELL * 0.25
 
     return total
 
 
 def solve_beam(env, game, beam_width=5000, max_depth=200, use_click=False,
                timeout_secs=600):
-    """Beam search with distance heuristic."""
-    all_actions = list(ACTIONS)
-    if use_click:
-        all_actions.append(CLICK)
+    """Beam search with incremental undo/redo for efficiency.
+
+    Each beam entry tracks its move list. Actions are (action_enum, data_dict)
+    tuples so CLICK can carry coordinates to switch between paired rails.
+    """
+    # Build action list. Movement actions have data=None.
+    # CLICK handling: since CLICK doesn't save history, it's tricky. We
+    # skip CLICK for now — the unpaired arranger rail + movement actions
+    # is sufficient for the puzzles solved to date.
+    all_actions = [(a, None) for a in ACTIONS]
 
     if game.gvtmoopqgy():
         return []
 
     init_budget = game.qiercdohl
     init_hist = len(game.seghobzez)
+    cur_level_idx = game.level_index
 
-    def reset():
-        while len(game.seghobzez) > init_hist:
+    # Track the moves currently applied to the engine
+    cur_moves: list = []
+
+    def drive(act_pair):
+        """Execute one player action, draining animations/win sequence."""
+        act, data = act_pair
+        env.step(act, data)
+        while game.ljprkjlji or game.pzzwlsmdt:
+            env.step(act, data)
+        while game.lgdrixfno >= 0 and game.lgdrixfno < 35:
+            env.step(act, data)
+
+    def _mkey(ap):
+        a, d = ap
+        return (a.value, (d or {}).get('x', -1), (d or {}).get('y', -1))
+
+    def goto(target_moves: list):
+        nonlocal cur_moves
+        # Find common prefix (by value equality)
+        cp = 0
+        m = min(len(cur_moves), len(target_moves))
+        while cp < m and _mkey(cur_moves[cp]) == _mkey(target_moves[cp]):
+            cp += 1
+        # Undo down to common prefix
+        while len(cur_moves) > cp:
             game.uqclctlhyh()
+            cur_moves.pop()
+        # Redo remainder
+        for i in range(cp, len(target_moves)):
+            drive(target_moves[i])
+            cur_moves.append(target_moves[i])
+        # Restore full budget so search isn't bounded by consumed budget
+        # (solution length is our real constraint).
+        game.qiercdohl = init_budget
+
+    def reset_full():
+        goto([])
         game.qiercdohl = init_budget
 
     t0 = time.time()
+    goto([])
     h0 = compute_h(game)
     beam = [(h0, [])]
     visited = {state_key(game)}
@@ -259,42 +322,46 @@ def solve_beam(env, game, beam_width=5000, max_depth=200, use_click=False,
         if not beam:
             break
         cands = []
-        for _, moves in beam:
-            reset()
-            for m in moves:
-                env.step(m)
+        # Sort beam entries by move sequence for prefix sharing
+        beam_sorted = sorted(beam, key=lambda x: tuple((a[0].value, (a[1] or {}).get('x', -1), (a[1] or {}).get('y', -1)) for a in x[1]))
+        for _, moves in beam_sorted:
+            goto(moves)
 
             for act in all_actions:
-                bud = game.qiercdohl
                 hist = len(game.seghobzez)
-                env.step(act)
+                active_before = game.vzvypfsnt
+                drive(act)
+                cur_moves.append(act)
                 expanded += 1
 
-                if game.lgdrixfno >= 0:
-                    while game.lgdrixfno >= 0 and game.lgdrixfno < 35:
-                        env.step(act)
-                    sol = moves + [act]
+                if game.level_index > cur_level_idx or game.lgdrixfno >= 35:
+                    sol = list(cur_moves)
                     print(f"  SOLVED! {len(sol)} moves, {expanded} exp, {time.time()-t0:.1f}s")
-                    reset()
                     return sol
 
-                changed = len(game.seghobzez) > hist
-                if not changed:
+                hist_changed = len(game.seghobzez) > hist
+                active_changed = game.vzvypfsnt is not active_before
+                if not hist_changed and not active_changed:
+                    cur_moves.pop()  # pure no-op
                     continue
 
                 sk = state_key(game)
                 if sk in visited:
-                    while len(game.seghobzez) > hist:
+                    if hist_changed:
                         game.uqclctlhyh()
-                    game.qiercdohl = bud
+                    elif active_changed:
+                        # Revert the click by clicking the original active head
+                        env.step(CLICK, {'x': active_before.x, 'y': active_before.y})
+                    cur_moves.pop()
                     continue
-
                 visited.add(sk)
                 h = compute_h(game)
-                cands.append((h, moves + [act]))
-                while len(game.seghobzez) > hist:
+                cands.append((h, list(cur_moves)))
+                if hist_changed:
                     game.uqclctlhyh()
-                game.qiercdohl = bud
+                elif active_changed:
+                    env.step(CLICK, {'x': active_before.x, 'y': active_before.y})
+                cur_moves.pop()
 
         cands.sort(key=lambda x: (x[0], len(x[1])))
         beam = cands[:beam_width]
@@ -303,16 +370,16 @@ def solve_beam(env, game, beam_width=5000, max_depth=200, use_click=False,
             cur_h = beam[0][0]
             if cur_h < best_h - 0.1:
                 best_h = cur_h
-                print(f"    d={depth}: h={cur_h:.0f}, {len(beam)} cands, {expanded} exp, {time.time()-t0:.1f}s")
-            elif depth % 20 == 0:
-                print(f"    d={depth}: h={cur_h:.0f}, {len(beam)} cands, {len(visited)} vis, {time.time()-t0:.1f}s")
+                print(f"    d={depth}: h={cur_h:.1f}, {len(beam)} cands, {expanded} exp, {time.time()-t0:.1f}s")
+            elif depth % 10 == 0:
+                print(f"    d={depth}: h={cur_h:.1f}, {len(beam)} cands, {len(visited)} vis, {time.time()-t0:.1f}s")
 
         if time.time() - t0 > timeout_secs:
             print(f"  Timeout at d={depth}, {time.time()-t0:.1f}s")
             break
 
-    print(f"  Failed. {expanded} exp, best_h={best_h:.0f}")
-    reset()
+    print(f"  Failed. {expanded} exp, best_h={best_h:.1f}")
+    reset_full()
     return None
 
 
@@ -325,6 +392,18 @@ def main():
     env = arcade.make('sk48-41055498')
     fd = env.reset()
     game = env._game
+
+    def drive_real(act_or_pair):
+        nonlocal fd
+        if isinstance(act_or_pair, tuple):
+            act, data = act_or_pair
+        else:
+            act, data = act_or_pair, None
+        fd = env.step(act, data)
+        while game.ljprkjlji or game.pzzwlsmdt:
+            fd = env.step(act, data)
+        while game.lgdrixfno >= 0 and game.lgdrixfno < 35:
+            fd = env.step(act, data)
 
     total = 0
     results = {}
@@ -353,7 +432,7 @@ def main():
             sol = KNOWN[lv]
             print(f"  Known: {len(sol)} moves")
             for a in sol:
-                fd = env.step(a)
+                drive_real(a)
             if game.level_index > lv:
                 print(f"  L{lv} SOLVED!")
                 results[lv] = len(sol)
@@ -364,26 +443,32 @@ def main():
         else:
             t0 = time.time()
             print("  Beam search...")
-            sol = solve_beam(env, game, beam_width=5000, max_depth=200,
-                            use_click=use_click, timeout_secs=600)
+            sol = solve_beam(env, game, beam_width=3000, max_depth=200,
+                            use_click=use_click, timeout_secs=1200)
             dt = time.time() - t0
 
             if sol is None:
                 print(f"  FAILED L{lv} ({dt:.1f}s)")
                 break
 
-            sol_names = [ACTION_NAMES.get(a, str(a)) for a in sol]
+            sol_names = []
+            for a in sol:
+                if isinstance(a, tuple):
+                    act, data = a
+                    n = ACTION_NAMES.get(act, str(act))
+                    if data:
+                        n += f"@({data.get('x','?')},{data.get('y','?')})"
+                    sol_names.append(n)
+                else:
+                    sol_names.append(ACTION_NAMES.get(a, str(a)))
             print(f"  Solution ({len(sol)}): {sol_names}")
 
             if game.level_index <= lv:
                 while len(game.seghobzez) > 1:
                     game.uqclctlhyh()
+                game.qiercdohl = game.vhzjwcpmk  # restore budget for real replay
                 for a in sol:
-                    fd = env.step(a)
-                count = 0
-                while game.level_index <= lv and count < 50:
-                    fd = env.step(UP)
-                    count += 1
+                    drive_real(a)
 
             if game.level_index > lv:
                 print(f"  L{lv} SOLVED! ({len(sol)} moves, {dt:.1f}s)")

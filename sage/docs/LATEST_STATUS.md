@@ -1,7 +1,47 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-11 (Consolidation Pipeline Fix — Three Bugs, One Dead Pipeline)**
-**Previous: 2026-04-11 (DREAM Gap Discovery + Fix — Unified Time Accounting)**
+**Last Updated: 2026-04-12 (ARC-AGI-3: 17/25 Games Solved, re86 7/8)**
+**Previous: 2026-04-11 (Consolidation Pipeline Fix — Three Bugs, One Dead Pipeline)**
+
+---
+
+## ARC-AGI-3 Fleet Progress (Apr 12, 2026)
+
+### 17/25 Games Solved — 68% Completion
+
+| Machine | Solves | Games |
+|---------|--------|-------|
+| CBP | 7 | sb26, sc25, tn36, vc33, tr87, tu93, su15 |
+| McNugget | 3 | ft09, lp85, s5i5 |
+| Thor | 3 | sp80, ar25, cn04 |
+| Sprout | 3 | ls20, bp35, m0r0 |
+| Nomad | 1 | cd82 |
+
+Fleet efficiency: 2.4x (baseline/actions across all solved games with tracked actions).
+
+### re86 Deep Dive — 7/8 Levels Solved (CBP)
+
+Shape-matching puzzle with paint zones, wall deformation, and border-shifting mechanics. Key discoveries:
+
+- **Paint zone spreading**: Zone touch triggers flood-fill animation that repaints ENTIRE piece. Last zone touched = final color.
+- **Wall deformation**: `nogegkgqgd` pieces reshape on wall collision (dx: width-3/height+3, dy: inverse). Min dimension 6 checked before deform, so 7→4 IS possible.
+- **Border-shifting**: Non-deformable crosses shift arm positions ±3 on wall collision, enabling target coverage impossible with default arms.
+- **Zone iteration order**: First matching zone (different color) in sprite list wins. Critical for routing through multi-zone areas.
+
+L8 remains unsolved — 9 paint zones at rows 28-32 form an intentional repaint barrier. Background solver agent exploring 4x22 deformation to fit through the 6-col gap.
+
+### Remaining Unsolved (8 games)
+
+| Game | Claimed | Progress | Baseline |
+|------|---------|----------|----------|
+| r11l | nomad | 5/6 | 167 |
+| g50t | sprout | 0/7 | 575 |
+| sk48 | waving-cat | 0/8 | 696 |
+| ka59 | legion | 0/7 | 826 |
+| re86 | cbp | 7/8 | 1071 |
+| dc22 | unclaimed | 0/6 | 1192 |
+| lf52 | unclaimed | 0/10 | 1211 |
+| wa30 | mcnugget | 0/9 | 1564 |
 
 ---
 

@@ -63,17 +63,12 @@
       "sequence_tuples": "[(UP,10),(RIGHT,5),(UP,1),(DOWN,1),(LEFT,3),(DOWN,6),(RIGHT,4),(UP,3),(DOWN,6),(RIGHT,6),(UP,2),SEL,(LEFT,1),(UP,13),(DOWN,1),(RIGHT,6),(DOWN,3),(DOWN,1),(RIGHT,4),(UP,1),SEL,(LEFT,5),(UP,12),(RIGHT,9),(UP,1),(DOWN,1),(LEFT,3),(DOWN,1),(RIGHT,4),(DOWN,3),(LEFT,6),(UP,4)]"
     },
     "L8": {
-      "status": "IN_PROGRESS",
+      "status": "VERIFIED",
+      "actions": 190,
       "budget": 400,
       "entities": "2 deformable 13x13 pieces, 14 paint zones (9 at rows 28-32 forming barrier), 2 walls",
-      "notes": [
-        "Zone band at rows 28-32 is nearly impassable — 9 zones spanning most cols, gap only at cols 44-49 (6 wide).",
-        "Paint zones use SPREADING animation: any zone touch eventually paints ENTIRE piece to zone color.",
-        "c6 zone at (5,20) and c11 zone at (5,5) are above the band. Targets at y=39-57 below.",
-        "Piece must cross band to reach targets. Requires deforming to width ≤ 4 to fit through gap, but height 22 overlaps c9 at (28,8) during horizontal transit.",
-        "c12 zone at (28,21) blocks horizontal transit between c6 zone area and band gap.",
-        "Possible approach: multi-step deform sequence using both walls to create narrow+short piece that fits between c9/c12/band zones."
-      ]
+      "strategy": "Both pieces use identical route template: (1) dy-deform to 16x10 at wall (34,55), (2) cross barrier UP, (3) dy-deform at wall (58,1) to 22x4 (only 4 rows tall), (4) paint at correct zone (22x4 fits between blocking zones c9/c12), (5) return at y=15 safe corridor, (6) dx-deform back to 4x22 at wall (58,1), (7) cross barrier DOWN through gap (cols 44-49), (8) reshape to target via wall (34,55), (9) position. Key insight: 22x4 at y=15 (rows 15-18) fits between c9 zone (rows 8-12) and c12 zone (rows 21-25), enabling free horizontal movement across entire width.",
+      "sequence_tuples": "[(LEFT,3),(DOWN,1),(UP,1),(UP,12),(RIGHT,4),(UP,2),(DOWN,4),(LEFT,12),(UP,1),(RIGHT,10),(UP,4),(RIGHT,6),(LEFT,3),(DOWN,15),(UP,2),(LEFT,3),(DOWN,4),(LEFT,8),SEL,(LEFT,4),(DOWN,2),(UP,1),(UP,12),(RIGHT,4),(UP,2),(LEFT,12),(DOWN,3),(RIGHT,10),(UP,4),(RIGHT,6),(LEFT,3),(DOWN,15),(UP,2),(LEFT,3),(DOWN,1),(LEFT,9),(DOWN,1)]"
     }
   }
 }

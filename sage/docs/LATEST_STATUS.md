@@ -1,6 +1,6 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-12 (ARC-AGI-3: 17/25 Games Solved, re86 7/8)**
+**Last Updated: 2026-04-12 (ARC-AGI-3: 18/25 Games Solved, re86 COMPLETE 8/8)**
 **Previous: 2026-04-11 (Consolidation Pipeline Fix — Three Bugs, One Dead Pipeline)**
 
 ---
@@ -28,7 +28,7 @@ Shape-matching puzzle with paint zones, wall deformation, and border-shifting me
 - **Border-shifting**: Non-deformable crosses shift arm positions ±3 on wall collision, enabling target coverage impossible with default arms.
 - **Zone iteration order**: First matching zone (different color) in sprite list wins. Critical for routing through multi-zone areas.
 
-L8 remains unsolved — 9 paint zones at rows 28-32 form an intentional repaint barrier. Background solver agent exploring 4x22 deformation to fit through the 6-col gap.
+**L8 SOLVED** (190/400 steps). Key insight: 22x4 shape (4 rows tall) fits in the y=15 safe corridor between the c9 blocking zone (rows 8-12) and c12 blocking zone (rows 21-25), enabling free horizontal transit across the full screen width between paint zones and the barrier gap. Both pieces use identical route template with different paint destinations.
 
 ### Remaining Unsolved (8 games)
 

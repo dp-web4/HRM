@@ -1632,6 +1632,7 @@ class SAGEConsciousness:
         return PluginResult(
             plugin_name='language',
             final_state={
+                'prompt': content[:500],
                 'response': response_text,
                 'message_id': message_id,
                 'sender': sender,
@@ -2393,17 +2394,29 @@ class SAGEConsciousness:
             telemetry = result.telemetry
 
             # 1. SNARC memory (selective storage via salience)
+            # Skip mock-executed plugins — they have no real content to consolidate
+            # and pollute dream bundles with uniform meaningless scores (Bug #7)
+            is_mock = telemetry.get('trust', {}).get('mock', False)
             snarc_real = telemetry.get('snarc_real', None)
             salience = snarc_real['total'] if snarc_real else telemetry.get('salience', 0.0)
-            if salience > self.salience_threshold:
+            if salience > self.salience_threshold and not is_mock:
                 entry = {
                     'cycle': self.cycle_count,
                     'plugin': plugin_name,
                     'salience': salience,
+                    'ts': time.time(),
                     'result': result,
+                    'scored_real': snarc_real is not None,
                 }
                 if snarc_real:
                     entry['snarc_dimensions'] = snarc_real
+                # Extract conversation source for dream bundle enrichment
+                if hasattr(result, 'final_state') and isinstance(result.final_state, dict):
+                    fs = result.final_state
+                    prompt = fs.get('prompt', '') or ''
+                    response = fs.get('response', '') or ''
+                    if prompt or response:
+                        entry['source'] = f"{prompt[:200]}|{response[:300]}"
                 self.snarc_memory.append(entry)
 
             # 2. IRP pattern library (store good convergence patterns)

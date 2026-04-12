@@ -87,24 +87,32 @@ class ConversationalSalienceScorer:
 
     def _compute_surprise(self, response: str) -> float:
         """
-        Surprise = deviation from recent response patterns
+        Surprise = deviation from recent response patterns.
 
-        Simple heuristic: How different is this response from recent ones?
+        Uses word-level Jaccard distance against recent responses
+        instead of exact sentence matching (which always saturates to 1.0).
         """
         if not self.previous_responses:
-            return 0.5  # Neutral for first response
+            return 0.5
 
-        # Check for repeated phrases
-        recent = ' '.join(self.previous_responses[-5:])
-        sentences = response.split('.')
+        response_words = set(response.split())
+        if not response_words:
+            return 0.5
 
-        repeated_count = sum(1 for sent in sentences if sent.strip() and sent.strip() in recent)
-        repeat_ratio = repeated_count / max(len(sentences), 1)
+        similarities = []
+        for prev in self.previous_responses[-5:]:
+            prev_words = set(prev.split())
+            if not prev_words:
+                continue
+            intersection = len(response_words & prev_words)
+            union = len(response_words | prev_words)
+            similarities.append(intersection / union if union > 0 else 0.0)
 
-        # High surprise = low repetition
-        surprise = 1.0 - min(repeat_ratio, 1.0)
+        if not similarities:
+            return 0.5
 
-        return surprise
+        max_similarity = max(similarities)
+        return 1.0 - max_similarity
 
     def _compute_novelty(self, response_words: set) -> float:
         """
@@ -123,64 +131,75 @@ class ConversationalSalienceScorer:
 
     def _compute_arousal(self, response: str) -> float:
         """
-        Arousal = complexity and engagement
+        Arousal = complexity and engagement.
 
-        Heuristics:
-        - Longer responses (more engaged)
-        - Questions asked (engaging user)
-        - Emotional language
+        Measures structural complexity (sentence variety, vocabulary depth)
+        and interactive engagement (questions, emotional language).
         """
-        # Length factor (normalize to 20-100 words for more realistic range)
-        word_count = len(response.split())
-        length_factor = min(word_count / 50.0, 1.0)
-        length_factor = max(length_factor, 0.3)  # Minimum baseline
+        words = response.split()
+        word_count = len(words)
+        response_lower = response.lower()
 
-        # Question factor
+        # Length factor — sigmoid-like curve centered at 30 words
+        length_factor = min(word_count / 30.0, 1.0)
+
+        # Question factor — asking questions shows engagement
         question_count = response.count('?')
         question_factor = min(question_count / 2.0, 1.0)
 
-        # Emotional language (simple check)
-        emotional_words = {'feel', 'sense', 'realize', 'understand', 'appreciate', 'curious', 'interesting', 'important', 'fascinating', 'profound'}
-        response_lower = response.lower()
+        # Emotional/phenomenological language
+        emotional_words = {
+            'feel', 'sense', 'realize', 'understand', 'appreciate', 'curious',
+            'interesting', 'important', 'fascinating', 'profound', 'notice',
+            'experience', 'awareness', 'resonance', 'emerge', 'depth',
+        }
         emotion_count = sum(1 for word in emotional_words if word in response_lower)
         emotion_factor = min(emotion_count / 3.0, 1.0)
 
-        arousal = (length_factor + question_factor + emotion_factor) / 3.0
+        # Vocabulary depth — unique word ratio (type-token ratio)
+        if word_count > 0:
+            unique_ratio = len(set(w.lower() for w in words)) / word_count
+            depth_factor = min(unique_ratio * 1.5, 1.0)
+        else:
+            depth_factor = 0.0
+
+        arousal = (length_factor + question_factor + emotion_factor + depth_factor) / 4.0
 
         return arousal
 
     def _compute_reward(self, response_lower: str, response_words: set) -> float:
         """
-        Reward = quality indicators
+        Reward = quality indicators.
 
-        High reward for:
-        - Partnership language
-        - Specific/precise language
-        - Coherent structure
-
-        Low reward for:
-        - Hedging/uncertainty
-        - Generic responses
+        Gradient scoring across specificity, partnership, identity,
+        and meta-cognition, with penalty for hedging/generic patterns.
         """
-        # Partnership language (positive) - boost multiplier for high value
+        # Partnership language
         partnership_count = sum(1 for term in self.partnership_terms if term in response_lower)
-        partnership_score = min(partnership_count / 2.0, 1.0)  # Easier to score high
+        partnership_score = min(partnership_count / 3.0, 1.0)
 
-        # Specific language (positive)
+        # Specific/precise language
         specific_count = sum(1 for term in self.specific_terms if term in response_lower)
         specific_score = min(specific_count / 2.0, 1.0)
 
-        # Hedging language (negative)
+        # Identity/self-reference (SAGE knowing itself)
+        identity_terms = {'sage', 'thor', 'sprout', 'consciousness', 'identity', 'federation', 'kernel'}
+        identity_count = sum(1 for term in identity_terms if term in response_lower)
+        identity_score = min(identity_count / 2.0, 1.0)
+
+        # Meta-cognitive language (thinking about thinking)
+        meta_terms = {'realize', 'notice', 'observe', 'reflect', 'aware', 'recognize', 'consider'}
+        meta_count = sum(1 for term in meta_terms if term in response_lower)
+        meta_score = min(meta_count / 2.0, 1.0)
+
+        # Hedging language (penalty)
         hedging_count = sum(1 for term in self.hedging_terms if term in response_lower)
-        hedging_penalty = min(hedging_count / 2.0, 1.0)  # More severe penalty
+        hedging_penalty = min(hedging_count / 3.0, 0.5)
 
-        # Combine with baseline (partnership language is highly valuable)
-        reward = 0.3 + (partnership_score * 0.7)  # Baseline 0.3, up to 1.0 with partnership
-        if specific_score > 0:
-            reward = min(reward + specific_score * 0.3, 1.0)
-        reward = max(reward - hedging_penalty * 0.6, 0.0)
-
-        return reward
+        reward = 0.2 + (partnership_score * 0.25 + specific_score * 0.15 +
+                        identity_score * 0.2 + meta_score * 0.2)
+        reward = max(reward - hedging_penalty, 0.0)
+        return min(reward, 1.0)
 
     def _compute_conflict(self, response: str) -> float:
         """

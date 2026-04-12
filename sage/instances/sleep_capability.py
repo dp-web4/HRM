@@ -10,9 +10,11 @@ Capability tiers:
     3. sleep_remote — export dream bundles for a torch-capable peer (federation)
 
 The consciousness loop uses these to decide what happens on DREAM entry.
+Dream bundles are consumed on WAKE entry via read_dream_bundles().
 """
 
 import json
+import statistics
 import time
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -174,3 +176,96 @@ def write_dream_bundle(
             written += 1
 
     return bundle_path
+
+
+def read_dream_bundles(
+    instance_dir: Path,
+    max_bundles: int = 5,
+    min_salience: float = 0.0,
+) -> Optional[Dict[str, Any]]:
+    """Read recent dream bundles and extract consolidated knowledge.
+
+    Called on WAKE-from-DREAM to close the consolidation loop.
+    Returns a structured summary of dream experiences suitable for
+    informing the next WAKE cycle.
+
+    Args:
+        instance_dir: Instance root directory.
+        max_bundles: Maximum number of recent bundles to read.
+        min_salience: Minimum salience to include in analysis.
+
+    Returns:
+        Dict with dream knowledge, or None if no bundles found.
+    """
+    bundle_dir = instance_dir / "dream_bundles"
+    if not bundle_dir.exists():
+        return None
+
+    # Read most recent bundles (sorted by name = chronological)
+    bundles = sorted(bundle_dir.glob('dream_*.jsonl'))
+    if not bundles:
+        return None
+
+    recent = bundles[-max_bundles:]
+
+    all_experiences = []
+    headers = []
+    for bundle_path in recent:
+        try:
+            with open(bundle_path) as f:
+                header_line = f.readline()
+                header = json.loads(header_line)
+                headers.append(header)
+                for line in f:
+                    exp = json.loads(line)
+                    if exp.get('salience', 0) >= min_salience:
+                        all_experiences.append(exp)
+        except (json.JSONDecodeError, OSError):
+            continue
+
+    if not all_experiences:
+        return None
+
+    # Salience distribution analysis
+    saliences = [e.get('salience', 0) for e in all_experiences]
+    sal_mean = statistics.mean(saliences)
+    sal_stdev = statistics.stdev(saliences) if len(saliences) > 1 else 0.0
+
+    # Deduplicate by cycle number (bundles may overlap before watermark fix)
+    seen_cycles = set()
+    unique_experiences = []
+    for exp in sorted(all_experiences, key=lambda x: x.get('salience', 0), reverse=True):
+        cycle = exp.get('cycle', -1)
+        if cycle not in seen_cycles:
+            seen_cycles.add(cycle)
+            unique_experiences.append(exp)
+
+    # Extract high-salience experience previews (top 10%)
+    high_threshold = sal_mean + sal_stdev if sal_stdev > 0.01 else sal_mean
+    high_salience = [e for e in unique_experiences if e.get('salience', 0) >= high_threshold]
+    previews = [
+        e.get('response_preview', '')
+        for e in high_salience
+        if e.get('response_preview')
+    ][:10]
+
+    # Plugin distribution
+    plugin_counts = {}
+    for exp in unique_experiences:
+        p = exp.get('plugin', 'unknown')
+        plugin_counts[p] = plugin_counts.get(p, 0) + 1
+
+    return {
+        'bundles_read': len(recent),
+        'total_bundles': len(bundles),
+        'total_experiences': len(unique_experiences),
+        'salience_mean': round(sal_mean, 4),
+        'salience_stdev': round(sal_stdev, 4),
+        'salience_min': round(min(saliences), 4),
+        'salience_max': round(max(saliences), 4),
+        'high_salience_count': len(high_salience),
+        'high_salience_previews': previews,
+        'plugin_distribution': plugin_counts,
+        'cycle_range': (min(seen_cycles), max(seen_cycles)),
+        'latest_bundle': headers[-1] if headers else None,
+    }

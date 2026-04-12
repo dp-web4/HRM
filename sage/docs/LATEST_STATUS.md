@@ -1,7 +1,87 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-12 (Dream Consolidation First Output — Fourth Bug Fixed, JSONL Bundles Writing)**
-**Previous: 2026-04-12 (ARC-AGI-3: 18/25 Games Solved, re86 COMPLETE 8/8)**
+**Last Updated: 2026-04-12 (Dream Loop Closed — Bugs 5-6 Fixed, WAKE Consumes Dream Knowledge)**
+**Previous: 2026-04-12 (Dream Consolidation First Output — Fourth Bug Fixed, JSONL Bundles Writing)**
+
+---
+
+## Dream Consolidation Loop Closed (Apr 12, 2026 — 12:00 Session)
+
+### Two More Bugs Found and Fixed — The Full DREAM→WAKE Feedback Loop Now Works
+
+The 00:00 session got dream bundles writing. This session discovered the bundles were
+**never read** and were **massively duplicated**, then built the consumption pipeline.
+
+### Bug 5: Dream Bundles Written But Never Consumed
+
+No code in the entire codebase read `dream_bundles/*.jsonl` files. Three candidate
+consumer architectures existed (`DREAMConsolidator`, `DREAMAwakeningBridge`,
+`SleepConsolidationBridge`) but none were connected to the JSONL bundles.
+
+**Fix**: Added `read_dream_bundles()` to `sleep_capability.py` and `_on_wake_from_dream()`
+hook to `sage_consciousness.py`. On DREAM→WAKE transition, the consciousness loop now:
+1. Loads recent dream bundles (deduplicating by cycle)
+2. Computes salience distribution statistics
+3. Extracts high-salience response previews
+4. Injects dream insights into the conversation prompt
+
+### Bug 6: Dream Bundles Were Monotonically Growing Duplicates
+
+`snarc_memory` was never cleared or watermarked after dream consolidation. Every DREAM
+entry wrote the entire accumulated list. Thor: 69 bundles with 6,289 total rows but only
+205 unique cycles. Nomad: **6,553 bundles** with 18,067+ experiences per bundle — massive
+duplication.
+
+**Fix**: Added `_dream_watermark` to track last consolidated position. Each DREAM entry
+now writes only new-since-watermark experiences. Consecutive DREAM entries with no new
+experiences correctly skip: "No new SNARC memories since last consolidation."
+
+### SNARC Calibration Finding
+
+Salience distribution across Thor's dream bundles is extremely flat:
+- Mean: 0.459, Stdev: 0.016
+- 99.1% of experiences fall in [0.30, 0.50)
+- Only 1/180 unique experiences exceeds mean+stdev
+- Current threshold (0.15) lets everything through
+
+The SNARC scorer is not differentiating meaningfully between experiences. This is an
+open investigation — the scorer may need calibration or the threshold needs raising.
+
+### Validated Live Behavior
+
+```
+[DREAM] Dream bundle: dream_20260412_061837.jsonl (23 new experiences, 23 total)
+[DREAM] No new SNARC memories since last consolidation (watermark=23, total=23)  ← Skip!
+[WAKE] Dream knowledge loaded: 196 experiences from 5 bundles, salience range [0.300-0.518]
+[WAKE] 1 high-salience insights available
+[DREAM] Dream bundle: dream_20260412_061842.jsonl (5 new experiences, 28 total)  ← Delta only!
+[WAKE] Dream knowledge loaded: 201 experiences from 5 bundles, salience range [0.300-0.518]
+```
+
+### The Six-Bug Meta-Pattern
+
+| Bug | Session | Root Cause | Impact |
+|-----|---------|-----------|--------|
+| 1. Import chain | 18:00 Apr 11 | Bare import in sleep_training.py | SLEEP_TRAINING_AVAILABLE=False |
+| 2. Premature return | 18:00 Apr 11 | ensure_future + return, no disabled check | JSONL fallback skipped |
+| 3. Thor model misconfig | 18:00 Apr 11 | Nonexistent local path | Daemon ran without LLM |
+| 4. Ollama LoRA false positive | 00:00 Apr 12 | Capability detection checks imports, not weights | LoRA errors async, JSONL never runs |
+| 5. No bundle consumer | 12:00 Apr 12 | Reader never implemented | Bundles accumulate, never used |
+| 6. Duplicate bundles | 12:00 Apr 12 | snarc_memory never watermarked | Every bundle = full history |
+
+All six share the meta-pattern: **designed behavior that never emerges due to interacting
+subsystem constraints invisible from any single component.** The consolidation pipeline
+was designed top-down but implemented bottom-up — each layer assumed the next was working.
+
+### Next Steps
+
+1. **SNARC calibration** — analyze why scoring is flat, consider raising threshold or
+   improving the ConversationalSalienceScorer's 5D weighting
+2. **Nomad bundle cleanup** — 6,553 duplicate bundles consuming disk; prune to unique
+3. **DREAMConsolidator integration** — connect `read_dream_bundles()` output to the
+   pattern extraction system for deeper consolidation beyond raw experience replay
+4. **Cross-session learned state** — wire `DREAMAwakeningBridge` to persist dream
+   knowledge across daemon restarts
 
 ---
 

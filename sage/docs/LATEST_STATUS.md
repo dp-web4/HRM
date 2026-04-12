@@ -1,7 +1,7 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-12 (63% Empty Response Fix + Bug #7 Mock Audio Pollution)**
-**Previous: 2026-04-12 (Dream Loop Closed — Bugs 5-6 Fixed, WAKE Consumes Dream Knowledge)**
+**Last Updated: 2026-04-12 (ARC-AGI-3: 21/25 Games Solved — fleet at 84%)**
+**Previous: 2026-04-12 (63% Empty Response Fix + Bug #7 Mock Audio Pollution)**
 
 ---
 
@@ -312,7 +312,7 @@ The failure exists only in the interaction under real operating conditions.
 
 ## ARC-AGI-3 Fleet Progress (Apr 12, 2026)
 
-### 17/25 Games Solved — 68% Completion
+### 21/25 Games Solved — 84% Completion
 
 | Machine | Solves | Games |
 |---------|--------|-------|

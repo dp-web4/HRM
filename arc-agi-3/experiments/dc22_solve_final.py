@@ -251,6 +251,362 @@ def solve_level_astar(env, level_num, actions, max_nodes=200000, max_depth=250,
     return None
 
 
+def player_reachable_cells(game):
+    """Pure-position floodfill: compute all cells the player can reach via
+    movement alone (no clicks) from the current player position in the current
+    board state. Does NOT call env.step, does NOT mutate game state (we save
+    and restore player position).
+
+    Returns: dict mapping (x,y) -> parent move (None for start), so that the
+    move sequence to reach any cell can be reconstructed.
+    """
+    player = game.fdvakicpimr
+    start = (player.x, player.y)
+
+    # Save original position
+    orig_x, orig_y = player.x, player.y
+
+    # BFS. At each node: try 4 directions via try_move_sprite. On success,
+    # check support at new pos; if no support, revert. Then record child and
+    # continue from parent (we'll set_position to child when expanding it).
+    parents = {start: None}
+    order = [start]
+    head = 0
+    # Move deltas in pixels (2 per step) and corresponding GameAction
+    deltas = [
+        (0, -2, GameAction.ACTION1),
+        (0,  2, GameAction.ACTION2),
+        (-2, 0, GameAction.ACTION3),
+        ( 2, 0, GameAction.ACTION4),
+    ]
+    while head < len(order):
+        cx, cy = order[head]
+        head += 1
+        for dx, dy, act in deltas:
+            # Move from (cx,cy)
+            player.set_position(cx, cy)
+            # Attempt move — try_move_sprite auto-reverts on collision
+            collisions = game.try_move_sprite(player, dx, dy)
+            if collisions:
+                continue
+            # Check support at new pos
+            nx, ny = player.x, player.y
+            if (nx, ny) == (cx, cy):
+                continue
+            if game.uxwpppoljm(nx, ny, player) is None:
+                continue
+            if (nx, ny) in parents:
+                continue
+            parents[(nx, ny)] = (cx, cy, act)
+            order.append((nx, ny))
+
+    # Restore player position
+    player.set_position(orig_x, orig_y)
+    return parents
+
+
+def reconstruct_moves(parents, goal):
+    """Given parent map from player_reachable_cells, reconstruct move list."""
+    moves = []
+    cur = goal
+    while parents.get(cur) is not None:
+        px, py, act = parents[cur]
+        moves.append(act)
+        cur = (px, py)
+    moves.reverse()
+    return moves
+
+
+def solve_macro(env, level_num, timeout=1800, max_click_depth=8):
+    """Macro-action A* solver for crane levels.
+
+    State: board configuration after a sequence of clicks (crane buttons + jpug).
+    Movement inside a configuration is FREE — we only branch on click actions.
+    For each configuration we compute player-reachable cells via pure-position
+    floodfill. If goal is reachable, we emit clicks + movement path.
+    """
+    game = env._game
+    t0 = time.time()
+
+    fd = env.observation_space
+    save_frame(fd.frame, f"{VISUAL_DIR}/L{level_num+1}_start.png")
+
+    p = game.fdvakicpimr
+    goal_x, goal_y = game.bqxa.x, game.bqxa.y
+    print(f"  [macro] Player: ({p.x},{p.y}), Goal: ({goal_x},{goal_y})")
+    print(f"  [macro] Steps budget: {game.step_counter_ui.rdnpeqedga}")
+
+    click_targets = find_click_targets(game)
+    click_actions = []
+    for kind, name, cx, cy in click_targets:
+        click_actions.append((GameAction.ACTION6, {'x': cx, 'y': cy}, name))
+    print(f"  [macro] {len(click_actions)} click targets")
+
+    initial_state = save_game_state(game)
+
+    # Check initial reachability first
+    parents0 = player_reachable_cells(game)
+    print(f"  [macro] Initial reach: {len(parents0)} cells")
+    if (goal_x, goal_y) in parents0:
+        moves = reconstruct_moves(parents0, (goal_x, goal_y))
+        print(f"  [macro] Goal reachable without clicks: {len(moves)} moves")
+        # Replay via env.step to leave state correct
+        restore_game_state(game, initial_state)
+        for m in moves:
+            env.step(m)
+        return moves
+
+    def board_key(g):
+        state = []
+        for s in g.current_level.get_sprites():
+            if s.interaction == InteractionMode.REMOVED:
+                continue
+            for tag in ('wbze', 'jpug', 'zbhi', 'itki', 'bynyvtuepbt-object'):
+                if tag in s.tags:
+                    state.append((s.name, s.x, s.y, s.interaction.value, s.is_visible))
+                    break
+        nxhz_state = (g.nxhz_x, g.nxhz_y, g.nxhz_attached_kind,
+                      g.attached_hhxv_prefix, g.attached_hhxv_x, g.attached_hhxv_y)
+        # Include player pos (changes what's reachable)
+        return ((g.fdvakicpimr.x, g.fdvakicpimr.y), tuple(sorted(state)), nxhz_state)
+
+    # Macro BFS. Each node is a (sequence, state). Moves in sequence are
+    # either raw actions (clicks or walk directions). The transitions are:
+    #
+    #   A) Click from current player pos (affects board)
+    #   B) Walk-to macro: walk to a reachable cell that contains zbhi or itki,
+    #      executing real env.step to trigger any side effects
+    #   C) Walk-to-itki + immediately click a matching-letter jpug (teleport)
+    #
+    # Pruning by board_key (which includes player pos) ensures we don't revisit.
+
+    # Pre-index the special cells: zbhi positions and itki positions with letter
+    def find_zbhi_cells():
+        out = []
+        for s in game.current_level.get_sprites():
+            if 'zbhi' in s.tags and s.interaction != InteractionMode.REMOVED:
+                # Player 2x2 must overlap zbhi; pick any 2x2 position inside
+                for dx in range(max(1, s.width - 1)):
+                    for dy in range(max(1, s.height - 1)):
+                        out.append((s.x + dx, s.y + dy))
+        return out
+
+    def find_itki_info():
+        """Return list of (pos, letter_tag, matching_jpug_click_data)."""
+        letter_to_click = {}
+        for kind, name, cx, cy in click_targets:
+            if kind != 'jpug':
+                continue
+            for s in game.current_level.get_sprites():
+                if s.name == name:
+                    for tag in s.tags:
+                        if len(tag) == 1:
+                            letter_to_click[tag] = (cx, cy)
+                    break
+        out = []
+        for s in game.current_level.get_sprites():
+            if 'itki' not in s.tags or s.interaction == InteractionMode.REMOVED:
+                continue
+            letter = None
+            for tag in s.tags:
+                if len(tag) == 1:
+                    letter = tag
+                    break
+            if letter and letter in letter_to_click:
+                out.append(((s.x, s.y), letter, letter_to_click[letter]))
+        return out
+
+    restore_game_state(game, initial_state)
+    init_board = board_key(game)
+    special_zbhi = find_zbhi_cells()
+    special_itki = find_itki_info()
+    print(f"  [macro] zbhi cells: {special_zbhi}")
+    print(f"  [macro] itki info: {special_itki}")
+
+    frontier = deque()
+    frontier.append(([], initial_state, parents0))
+    visited_boards = {init_board}
+    nodes = 0
+    last_report = t0
+
+    def try_solution(click_seq_and_walks, reach_parents):
+        """If goal in reach_parents, emit full move list and return it."""
+        if (goal_x, goal_y) in reach_parents:
+            final_walk = reconstruct_moves(reach_parents, (goal_x, goal_y))
+            combined = list(click_seq_and_walks) + final_walk
+            print(f"  [macro] SOLVED! {len(combined)} total actions")
+            restore_game_state(game, initial_state)
+            for m in combined:
+                if isinstance(m, tuple):
+                    env.step(m[0], data=m[1])
+                else:
+                    env.step(m)
+            fd_final = env.observation_space
+            save_frame(fd_final.frame, f"{VISUAL_DIR}/L{level_num+1}_solved.png")
+            return combined
+        return None
+
+    while frontier and time.time() - t0 < timeout:
+        moves_so_far, saved_state, reach_parents = frontier.popleft()
+        nodes += 1
+
+        now = time.time()
+        if now - last_report > 10:
+            last_report = now
+            print(f"    [macro] nodes={nodes}, queue={len(frontier)}, depth={len(moves_so_far)}, visited={len(visited_boards)}, {now-t0:.1f}s")
+
+        if len(moves_so_far) >= max_click_depth * 4:
+            continue
+
+        # Transition A: try each click from current state
+        for (act, data, cname) in click_actions:
+            restore_game_state(game, saved_state)
+            fd_c = env.step(act, data=data)
+            if fd_c.state.name == 'LOSE':
+                continue
+            if fd_c.levels_completed > level_num:
+                combined = list(moves_so_far) + [(act, data)]
+                print(f"  [macro] SOLVED by click: {len(combined)} moves")
+                save_frame(fd_c.frame, f"{VISUAL_DIR}/L{level_num+1}_solved.png")
+                return combined
+
+            bk = board_key(game)
+            if bk in visited_boards:
+                continue
+            visited_boards.add(bk)
+
+            new_state = save_game_state(game)
+            new_reach = player_reachable_cells(game)
+            new_moves = list(moves_so_far) + [(act, data)]
+
+            sol = try_solution(new_moves, new_reach)
+            if sol:
+                return sol
+
+            frontier.append((new_moves, new_state, new_reach))
+
+        # Transition B0: walk to any "stable" cell (supported by a sprite that
+        # is not the crane-attached object and not a toggleable wbze). Allows
+        # the player to park safely while the crane moves the object elsewhere.
+        stable_targets = set()
+        for cell in reach_parents.keys():
+            if cell == reach_parents and cell in (None,):
+                continue
+            # classify by support sprite
+            restore_game_state(game, saved_state)
+            game.fdvakicpimr.set_position(*cell)
+            supp = game.uxwpppoljm(cell[0], cell[1], game.fdvakicpimr)
+            if supp is None:
+                continue
+            name = supp.name
+            tags = supp.tags
+            # Stable = kbqq (plain floor tiles), not wbze, not bynyvtuepbt-object
+            if name.startswith('kbqq') and 'bynyvtuepbt-object' not in tags and 'wbze' not in tags:
+                stable_targets.add(cell)
+        # restore state after the probing
+        restore_game_state(game, saved_state)
+        for stable in stable_targets:
+            if stable == (game.fdvakicpimr.x, game.fdvakicpimr.y):
+                continue
+            restore_game_state(game, saved_state)
+            walk = reconstruct_moves(reach_parents, stable)
+            walk_ok = True
+            for m in walk:
+                fd_w = env.step(m)
+                if fd_w.state.name == 'LOSE':
+                    walk_ok = False
+                    break
+                if fd_w.levels_completed > level_num:
+                    combined = list(moves_so_far) + walk
+                    return combined
+            if not walk_ok:
+                continue
+            bk = board_key(game)
+            if bk in visited_boards:
+                continue
+            visited_boards.add(bk)
+            new_state = save_game_state(game)
+            new_reach = player_reachable_cells(game)
+            new_moves = list(moves_so_far) + walk
+            sol = try_solution(new_moves, new_reach)
+            if sol:
+                return sol
+            frontier.append((new_moves, new_state, new_reach))
+
+        # Transition B: walk to any zbhi cell in reach
+        for zcell in special_zbhi:
+            if zcell not in reach_parents:
+                continue
+            # Execute walk in real env
+            restore_game_state(game, saved_state)
+            walk = reconstruct_moves(reach_parents, zcell)
+            walk_ok = True
+            for m in walk:
+                fd_w = env.step(m)
+                if fd_w.state.name == 'LOSE':
+                    walk_ok = False
+                    break
+                if fd_w.levels_completed > level_num:
+                    combined = list(moves_so_far) + walk
+                    print(f"  [macro] SOLVED by walk: {len(combined)} moves")
+                    save_frame(fd_w.frame, f"{VISUAL_DIR}/L{level_num+1}_solved.png")
+                    return combined
+            if not walk_ok:
+                continue
+            bk = board_key(game)
+            if bk in visited_boards:
+                continue
+            visited_boards.add(bk)
+            new_state = save_game_state(game)
+            new_reach = player_reachable_cells(game)
+            new_moves = list(moves_so_far) + walk
+            sol = try_solution(new_moves, new_reach)
+            if sol:
+                return sol
+            frontier.append((new_moves, new_state, new_reach))
+
+        # Transition C: walk to itki cell + click matching jpug (teleport macro)
+        for (ipos, letter, (cx, cy)) in special_itki:
+            if ipos not in reach_parents:
+                continue
+            restore_game_state(game, saved_state)
+            walk = reconstruct_moves(reach_parents, ipos)
+            walk_ok = True
+            for m in walk:
+                fd_w = env.step(m)
+                if fd_w.state.name == 'LOSE':
+                    walk_ok = False
+                    break
+                if fd_w.levels_completed > level_num:
+                    combined = list(moves_so_far) + walk
+                    return combined
+            if not walk_ok:
+                continue
+            # Click the letter jpug (player on itki → teleport)
+            fd_c = env.step(GameAction.ACTION6, data={'x': cx, 'y': cy})
+            if fd_c.state.name == 'LOSE':
+                continue
+            if fd_c.levels_completed > level_num:
+                combined = list(moves_so_far) + walk + [(GameAction.ACTION6, {'x': cx, 'y': cy})]
+                return combined
+            bk = board_key(game)
+            if bk in visited_boards:
+                continue
+            visited_boards.add(bk)
+            new_state = save_game_state(game)
+            new_reach = player_reachable_cells(game)
+            new_moves = list(moves_so_far) + walk + [(GameAction.ACTION6, {'x': cx, 'y': cy})]
+            sol = try_solution(new_moves, new_reach)
+            if sol:
+                return sol
+            frontier.append((new_moves, new_state, new_reach))
+
+    elapsed = time.time() - t0
+    print(f"  [macro] Failed. nodes={nodes}, visited={len(visited_boards)}, {elapsed:.1f}s")
+    restore_game_state(game, initial_state)
+    return None
+
+
 def solve_crane_level(env, level_num, timeout=1800):
     """Solve a crane level by BFS over crane+click states, then player A* for each.
 
@@ -556,6 +912,36 @@ def main():
         has_crane = hasattr(game, 'nxhz_list') and len(game.nxhz_list) > 0
 
         if has_crane:
+            # First try the macro-action solver (pure-position reachability +
+            # click BFS). Cheap and expressive — clicks become the only
+            # branching factor, movement is free within a reach zone.
+            print(f"  Crane level — trying macro solver first")
+            fd = env.observation_space
+            save_frame(fd.frame, f"{VISUAL_DIR}/L{level+1}_start.png")
+            level_start_state = save_game_state(game)
+            sol = solve_macro(env, level, timeout=900, max_click_depth=10)
+            if sol is None:
+                restore_game_state(game, level_start_state)
+                print(f"  Macro solver failed — falling back to A*")
+            else:
+                all_solutions.append(sol)
+                levels_solved += 1
+                save_solutions_incremental()
+                sol_str = ''
+                for m in sol:
+                    if isinstance(m, tuple):
+                        sol_str += f'C({m[1]["x"]},{m[1]["y"]})'
+                    else:
+                        sol_str += action_names.get(m, '?')
+                print(f"  Solution ({len(sol)} moves): {sol_str[:200]}")
+                obs = env.observation_space
+                print(f"  Current state: levels_completed={obs.levels_completed}")
+                if obs.state.name == 'WIN':
+                    print("  GAME WON!")
+                    save_frame(obs.frame, f"{VISUAL_DIR}/game_won.png")
+                    break
+                continue
+
             # Fast path: try plain A* with move+jpug only (skip crane actions)
             # Many "crane" levels are solvable without actually moving the crane.
             print(f"  Crane level detected — trying plain A* (move+jpug only) first")

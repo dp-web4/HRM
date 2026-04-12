@@ -1,21 +1,78 @@
 {
-  "_description": "cd82 solutions — circular stamp painting puzzle. Solved by Nomad.",
-  "_updated": "2026-04-10",
-  "_game_type": "Move+click. Paint canvas to match target using two stamp tools orbiting on a circle.",
-  "_source": "fleet-learning/nomad/cd82_complete.md, cd82_learning.jsonl",
-  "_critical": [
-    "Two cursor sizes: big (full-width stamp) and small (overlay stamp). Both orbit the canvas circle.",
-    "Navigation: move cursor around the orbit. SELECT to stamp current color at cursor position.",
-    "Canvas starts partially painted. Target shows desired pattern. Match target = win.",
-    "127 total actions across 6 levels. Baseline 136 = 107% efficiency."
-  ],
-  "levels": {
-    "L1": {"actions": 5, "baseline": 41, "notes": "White bottom half. Navigate white cursor to 6 o'clock, SELECT."},
-    "L2": {"actions": 10, "baseline": 8, "notes": "White top, black bottom, olive diagonal. Multi-color stamping with recovery."},
-    "L3": {"actions": 35, "baseline": 30, "notes": "Complex multi-color target. Orbit navigation precision."},
-    "L4": {"actions": 25, "baseline": 25, "notes": "Tighter budget. Stamp order matters."},
-    "L5": {"actions": 30, "baseline": 17, "notes": "Small stamp precision required."},
-    "L6": {"actions": 22, "baseline": 15, "notes": "Most complex pattern. Both stamp sizes needed."}
+  "game_id": "cd82",
+  "instance_id": "fb555c5d",
+  "total_levels": 6,
+  "total_actions": 73,
+  "baseline_actions": [41, 8, 30, 25, 17, 15],
+  "baseline_total": 136,
+  "solved_by": "claude-opus-4.6",
+  "solver": "cd82_solve.py",
+  "game_type": "circular_stamp_painting",
+  "mechanics": {
+    "canvas": "10x10 grid starting all-white (color 0). Target is a 10x10 pattern.",
+    "orbit": "8 positions (0-7) on a 3x3 grid (center excluded). Navigate with UDLR (ACTION1-4).",
+    "colors": "Palette of available colors. Click swatch (ACTION6) to select.",
+    "big_stamp": "ACTION5 (SELECT). Paints half the canvas: 0=top, 1=upper-right-tri, 2=right, 3=lower-right-tri, 4=bottom, 5=lower-left-tri, 6=left, 7=upper-left-tri.",
+    "small_stamp": "ACTION6 on ctwspzkygu sprite. Only at positions 0,2,4,6. Paints 3x4 or 4x3 region near edge.",
+    "win_condition": "Canvas matches target on non-diagonal cells (row!=col and row!=9-col). Diagonal cells are ignored.",
+    "layering": "Stamps layer: last stamp applied wins on overlapping cells.",
+    "actions": "ACTION1-4=UDLR, ACTION5=SELECT (big stamp), ACTION6=click (color select or small stamp)"
   },
-  "meta_learning": "The context window IS the intelligence. World model before action. Prediction before execution."
+  "level_solutions": {
+    "0": {
+      "palette": [0, 15],
+      "has_small_stamp": false,
+      "stamps": ["B4(15)"],
+      "strategy": "Single big stamp at bottom position with purple",
+      "actions": 5,
+      "baseline": 41
+    },
+    "1": {
+      "palette": [0, 12, 15],
+      "has_small_stamp": false,
+      "stamps": ["B0(15)", "B3(12)"],
+      "strategy": "Top half purple, then lower-right triangle orange",
+      "actions": 6,
+      "baseline": 8
+    },
+    "2": {
+      "palette": [0, 8, 9, 11, 12, 14, 15],
+      "has_small_stamp": true,
+      "stamps": ["B2(14)", "B6(8)", "B7(15)", "S0(12)"],
+      "strategy": "Right half green, left half red, upper-left triangle purple, top-center small stamp orange",
+      "actions": 16,
+      "baseline": 30
+    },
+    "3": {
+      "palette": [0, 8, 9, 11, 12, 14, 15],
+      "has_small_stamp": true,
+      "stamps": ["B0(12)", "B3(15)", "B6(9)", "S6(11)"],
+      "strategy": "Top half orange, lower-right triangle purple, left half blue, left-center small stamp yellow",
+      "actions": 14,
+      "baseline": 25
+    },
+    "4": {
+      "palette": [0, 8, 9, 11, 12, 14, 15],
+      "has_small_stamp": true,
+      "stamps": ["B0(9)", "B5(14)", "B3(12)", "S0(8)"],
+      "strategy": "Top half blue, lower-left triangle green, lower-right triangle orange, top-center small stamp red",
+      "actions": 16,
+      "baseline": 17
+    },
+    "5": {
+      "palette": [0, 8, 9, 11, 12, 14, 15],
+      "has_small_stamp": true,
+      "stamps": ["B2(14)", "B7(8)", "S0(15)", "S6(11)"],
+      "strategy": "Right half green, upper-left triangle red, top-center small stamp purple, left-center small stamp yellow",
+      "actions": 16,
+      "baseline": 15
+    }
+  },
+  "key_learnings": {
+    "stamp_layering": "Stamps overwrite earlier stamps. Order matters — apply background first, detail last.",
+    "diagonal_mask": "Win condition ignores cells on both diagonals (row==col or row==9-col). This means stamps that differ from target only on diagonals still count as correct.",
+    "analytical_solution": "Each level can be solved analytically by brute-force searching all stamp permutations (8 big + 4 small = 12 stamps, 7 colors = 84 options). Solutions are 1-4 stamps per level.",
+    "navigation_cost": "Most actions are spent navigating between orbit positions and selecting colors. Stamp sequence optimization should also consider navigation distance.",
+    "small_stamp_critical": "Levels 2-5 require small stamps for the central detail regions that big stamps cannot address independently."
+  }
 }

@@ -2,7 +2,7 @@
 """
 wa30 Sokoban Solver — Engine-based greedy with wall-handoff support.
 
-CURRENT STATUS: 7/9 levels solved (L0-L6). Was 3/9 before 2026-04-12 session.
+CURRENT STATUS: 9/9 levels SOLVED (2026-04-12). Baseline was 3/9 at session start.
 
 L0: Pure BFS (no AI) — 26 moves
 L1: Engine greedy with blue helper — 56 moves
@@ -11,9 +11,15 @@ L3: Hand-crafted wall-handoff plan distributing 6 pieces to 3 blues — 57 moves
 L4: Engine greedy (unlocked by solving L3) — 122 moves
 L5: Engine greedy — 48 moves
 L6: Hand-coded saboteur-exploit (wait for white to self-stall, destroy, ferry) — 50 moves
-L7: Saboteur-aware smart_action planner reaches 10/13 peak/final (up from 8).
-    Still not solved. Key findings below.
-L8: Unseen (blocked by L7).
+L7: 131 moves. Lower-white-first opening + capped upper chase + smart cleanup.
+    Discovery: killing lower white (manh=14 shortest from spawn) in ~18 moves,
+    then walking back toward upper for ~20 moves before giving up and letting
+    smart_action run (UPPER_CAP=20) lets 13/13 pieces land. Baked as an action
+    string since engine is deterministic.
+L8: 67 moves. White (60,56) is trapped in a bottom-right wall maze and can be
+    ignored. 9 pieces, 2 blues, 70 steps. Biased random search (smart_action
+    with 5-30% random deviation) found a solution at seed=21. Player and blues
+    share delivery work; no saboteur to fight.
 
 L7 FINDINGS (2026-04-12, later session):
   13 pieces, 2 blues, 2 whites, 150 steps.
@@ -862,6 +868,14 @@ KNOWN_SOLUTIONS = {
     # west and deliver to (12,28), then walk east to (44,32) adjacent to piece at
     # (48,32), grab with offset (+4,0), carry west to (8,32) delivering to (12,32).
     6: 'U'*15 + 'DDRR5' + 'RU5LLLLLD5' + 'R'*9 + '5' + 'L'*9 + '5',
+    # L7: lower_first white-kill opening + smart_action cleanup.
+    # Discovered 2026-04-12 session: kill lower white (step 18), then abort
+    # upper chase at cap=20 (step 38), let smart cleanup run. 131 moves total.
+    7: 'RRRRRRRRDDDDDDULL5UUURRUUULLLLUUUUUUDUDDDL5URRRRRRRR5DLLU5LLLLLLLLU5DRRRRRRRRRRU5LLLLLLLLLLLU5DRRRRRRRRRRRRU5DUDUDUDUDUDUDUDUDUDUDU',
+    # L8: biased random search with smart_action base policy (seed=21, 67 moves).
+    # White at (60,56) is trapped in bottom-right maze — can be ignored.
+    # 9 pieces, 2 blues, 70 steps. Discovered 2026-04-12.
+    8: 'RRRRU5UR5LRRD5UU5LL5DDDLLLULUUU5DLDDDLLLLD5LLU5RUURRRRUU5DUUDUDUDUD',
 }
 
 def string_to_actions(s):
@@ -869,10 +883,11 @@ def string_to_actions(s):
     return [am[c] for c in s]
 
 
-total_actions = 0
-all_solutions = []
+if __name__ == '__main__':
+ total_actions = 0
+ all_solutions = []
 
-for lv in range(20):
+ for lv in range(20):
     fd = replay_from_solutions(all_solutions)
     if fd.state.name == 'WIN':
         break
@@ -945,5 +960,5 @@ for lv in range(20):
         print(f"  FAILED verification! completed={fd.levels_completed}")
         break
 
-print(f"\nFinal: completed={fd.levels_completed}, state={fd.state.name}, total={total_actions}")
-print(f"Solutions per level: {[len(s) for s in all_solutions]}")
+ print(f"\nFinal: completed={fd.levels_completed}, state={fd.state.name}, total={total_actions}")
+ print(f"Solutions per level: {[len(s) for s in all_solutions]}")

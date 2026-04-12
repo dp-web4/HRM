@@ -46,17 +46,37 @@ def save_frame(frame_data, path):
 
 
 def save_game_state(game):
-    """Save minimal game state for restore."""
-    return {
-        'sprites': copy.deepcopy(game.current_level._sprites),
+    """Save game state using the game's native snapshot mechanism (fast clone).
+
+    The returned dict owns its sprite clones — it will not be affected by any
+    future game operation, even an internal checkpoint restore (ycfbtkckze).
+    """
+    # Use a direct snapshot of the level's current sprites, clone each out
+    safe_sprites = []
+    for s in game.current_level.get_sprites():
+        c = s.clone()
+        c.set_position(s.x, s.y)
+        c.set_interaction(s.interaction)
+        c._blocking = s._blocking
+        c._tags = list(s.tags)
+        safe_sprites.append(c)
+    native = {
         'nxhz_x': game.nxhz_x,
         'nxhz_y': game.nxhz_y,
         'nxhz_attached_kind': game.nxhz_attached_kind,
         'attached_hhxv_prefix': game.attached_hhxv_prefix,
         'attached_hhxv_x': game.attached_hhxv_x,
         'attached_hhxv_y': game.attached_hhxv_y,
+    }
+    return {
+        'sprites': safe_sprites,  # independent clones
+        'nxhz_x': native['nxhz_x'],
+        'nxhz_y': native['nxhz_y'],
+        'nxhz_attached_kind': native['nxhz_attached_kind'],
+        'attached_hhxv_prefix': native['attached_hhxv_prefix'],
+        'attached_hhxv_x': native['attached_hhxv_x'],
+        'attached_hhxv_y': native['attached_hhxv_y'],
         'step_counter': game.step_counter_ui.rdnpeqedga,
-        'lvnwxszdcv': copy.deepcopy(game.lvnwxszdcv),
         'uuehztercxf': game.uuehztercxf,
         'pxicvzkjuui': game.pxicvzkjuui,
         'prbjhwkkxth': game.prbjhwkkxth,
@@ -68,12 +88,26 @@ def save_game_state(game):
 
 
 def restore_game_state(game, state):
-    """Restore game state from saved data."""
-    for s in list(game.current_level.get_sprites()):
-        game.current_level.remove_sprite(s)
+    """Restore game state. Clones saved sprites into fresh copies so the
+    saved state is not mutated by subsequent env.step calls."""
+    fresh_sprites = []
     for s in state['sprites']:
-        game.current_level.add_sprite(s)
-    game.lvnwxszdcv = state['lvnwxszdcv']
+        c = s.clone()
+        c.set_position(s.x, s.y)
+        c.set_interaction(s.interaction)
+        c._blocking = s._blocking
+        c._tags = list(s.tags)
+        fresh_sprites.append(c)
+    game.lvnwxszdcv = {
+        'sprites': fresh_sprites,
+        'nxhz_x': state['nxhz_x'],
+        'nxhz_y': state['nxhz_y'],
+        'nxhz_attached_kind': state['nxhz_attached_kind'],
+        'attached_hhxv_prefix': state['attached_hhxv_prefix'],
+        'attached_hhxv_x': state['attached_hhxv_x'],
+        'attached_hhxv_y': state['attached_hhxv_y'],
+    }
+    game.ycfbtkckze()  # replaces level sprites with our fresh clones, calls qgjulrdonb
     game.step_counter_ui.rdnpeqedga = state['step_counter']
     game.step_counter_ui.inqipvidhq()
     game.uuehztercxf = state['uuehztercxf']
@@ -83,7 +117,6 @@ def restore_game_state(game, state):
     game.zemyudjnnqd = state['zemyudjnnqd']
     game.jnmawhhrfhh = state['jnmawhhrfhh']
     game.dimvmykkjbg = state['dimvmykkjbg']
-    game.qgjulrdonb()
     game.nxhz_x = state['nxhz_x']
     game.nxhz_y = state['nxhz_y']
     game.nxhz_attached_kind = state['nxhz_attached_kind']
@@ -150,7 +183,7 @@ def solve_level_astar(env, level_num, actions, max_nodes=200000, max_depth=250,
     t0 = time.time()
 
     if initial_state:
-        restore_game_state(game, copy.deepcopy(initial_state))
+        restore_game_state(game, initial_state)
 
     init_key = get_state_key(game)
     init_h = manhattan_dist(game)
@@ -179,7 +212,7 @@ def solve_level_astar(env, level_num, actions, max_nodes=200000, max_depth=250,
             break
 
         for action in actions:
-            restore_game_state(game, copy.deepcopy(saved_state))
+            restore_game_state(game, saved_state)
 
             if isinstance(action, tuple):
                 fd = env.step(action[0], data=action[1])
@@ -280,13 +313,14 @@ def solve_crane_level(env, level_num, timeout=1800):
         return (tuple(sorted(sprite_states)), nxhz_state)
 
     # BFS over setup actions
-    restore_game_state(game, copy.deepcopy(initial_state))
+    restore_game_state(game, initial_state)
     init_board = get_board_key(game)
     board_configs = [([], initial_state, init_board)]  # (setup_moves, state, board_key)
     board_visited = {init_board}
     setup_queue = deque([([], initial_state)])
     configs_found = 0
-    max_setup_depth = 15  # limit crane sequence length
+    max_setup_depth = 10  # limit crane sequence length
+    last_report = t0
 
     while setup_queue and time.time() - t0 < timeout * 0.5:
         setup_moves, setup_state = setup_queue.popleft()
@@ -294,8 +328,13 @@ def solve_crane_level(env, level_num, timeout=1800):
         if len(setup_moves) >= max_setup_depth:
             continue
 
+        now = time.time()
+        if now - last_report > 10:
+            last_report = now
+            print(f"    Phase1: configs={len(board_configs)}, queue={len(setup_queue)}, depth={len(setup_moves)}, {now-t0:.1f}s")
+
         for action in setup_actions:
-            restore_game_state(game, copy.deepcopy(setup_state))
+            restore_game_state(game, setup_state)
             fd = env.step(action[0], data=action[1])
 
             if fd.state.name == 'LOSE':
@@ -327,7 +366,7 @@ def solve_crane_level(env, level_num, timeout=1800):
         Tests all 4 directions from each position. Ignores clicks — just movement.
         Returns (reachable, min_distance) for early termination.
         """
-        restore_game_state(game_ref, copy.deepcopy(state_ref))
+        restore_game_state(game_ref, state_ref)
         px, py = game_ref.fdvakicpimr.x, game_ref.fdvakicpimr.y
         visited_pos = {(px, py)}
         queue_pos = [(px, py)]
@@ -337,7 +376,7 @@ def solve_crane_level(env, level_num, timeout=1800):
             cx, cy = queue_pos.pop(0)
 
             for act in move_actions:
-                restore_game_state(game_ref, copy.deepcopy(state_ref))
+                restore_game_state(game_ref, state_ref)
                 game_ref.fdvakicpimr.set_position(cx, cy)
                 fd_check = env_ref.step(act)
                 nx = game_ref.fdvakicpimr.x
@@ -363,7 +402,7 @@ def solve_crane_level(env, level_num, timeout=1800):
             break
 
         configs_tested += 1
-        restore_game_state(game, copy.deepcopy(setup_state))
+        restore_game_state(game, setup_state)
 
         # Quick reachability check via actual movement simulation
         goal_x, goal_y = game.bqxa.x, game.bqxa.y
@@ -405,7 +444,7 @@ def solve_crane_level(env, level_num, timeout=1800):
 
     if best_solution:
         # Restore and replay the solution to leave game in correct state
-        restore_game_state(game, copy.deepcopy(initial_state))
+        restore_game_state(game, initial_state)
         for m in best_solution:
             if isinstance(m, tuple):
                 fd = env.step(m[0], data=m[1])
@@ -415,7 +454,7 @@ def solve_crane_level(env, level_num, timeout=1800):
 
     elapsed = time.time() - t0
     print(f"  Crane level failed. Tested {configs_tested} configs in {elapsed:.1f}s")
-    restore_game_state(game, copy.deepcopy(initial_state))
+    restore_game_state(game, initial_state)
     return None
 
 
@@ -435,17 +474,135 @@ def main():
     all_solutions = []
     levels_solved = 0
 
+    # Load cached solutions if available — replay to skip already-solved levels
+    cache_path = f"{VISUAL_DIR}/solutions.json"
+    cached = []
+    if os.path.exists(cache_path):
+        try:
+            with open(cache_path) as f:
+                raw = json.load(f)
+            act_map = {1: GameAction.ACTION1, 2: GameAction.ACTION2,
+                       3: GameAction.ACTION3, 4: GameAction.ACTION4,
+                       6: GameAction.ACTION6}
+            for lvl in raw:
+                decoded = []
+                for m in lvl:
+                    a = act_map[m['action']]
+                    if 'data' in m:
+                        decoded.append((a, m['data']))
+                    else:
+                        decoded.append(a)
+                cached.append(decoded)
+            print(f"Loaded {len(cached)} cached level solutions")
+        except Exception as e:
+            print(f"Cache load failed: {e}")
+            cached = []
+
+    def save_solutions_incremental():
+        enc = []
+        for sol in all_solutions:
+            lvl = []
+            for m in sol:
+                if isinstance(m, tuple):
+                    lvl.append({'action': m[0].value, 'data': m[1]})
+                else:
+                    lvl.append({'action': m.value})
+            enc.append(lvl)
+        with open(cache_path, 'w') as f:
+            json.dump(enc, f, indent=2)
+
     for level in range(obs.win_levels):
         print(f"\n{'='*60}")
         print(f"=== DC22 Level {level+1} (index {level}) ===")
         print(f"{'='*60}")
 
         game = env._game
+
+        # Try cached replay first
+        if level < len(cached):
+            print(f"  Replaying cached solution ({len(cached[level])} moves)...")
+            replay_ok = True
+            for m in cached[level]:
+                if isinstance(m, tuple):
+                    fd = env.step(m[0], data=m[1])
+                else:
+                    fd = env.step(m)
+                if fd.state.name == 'LOSE':
+                    replay_ok = False
+                    break
+            fd = env.observation_space
+            if replay_ok and fd.levels_completed > level:
+                print(f"  Cached replay succeeded")
+                all_solutions.append(cached[level])
+                levels_solved += 1
+                save_solutions_incremental()
+                if fd.state.name == 'WIN':
+                    save_frame(fd.frame, f"{VISUAL_DIR}/game_won.png")
+                    print("  GAME WON!")
+                    break
+                continue
+            else:
+                print(f"  Cached replay failed — will solve fresh (levels_completed={fd.levels_completed})")
+                # Note: env state is now corrupted. Reset and re-replay earlier levels.
+                obs = env.reset()
+                for i in range(level):
+                    for m in all_solutions[i]:
+                        if isinstance(m, tuple):
+                            env.step(m[0], data=m[1])
+                        else:
+                            env.step(m)
+                game = env._game
+
         has_crane = hasattr(game, 'nxhz_list') and len(game.nxhz_list) > 0
 
         if has_crane:
-            print(f"  Crane level — using decomposed search")
-            sol = solve_crane_level(env, level, timeout=1800)
+            # Fast path: try plain A* with move+jpug only (skip crane actions)
+            # Many "crane" levels are solvable without actually moving the crane.
+            print(f"  Crane level detected — trying plain A* (move+jpug only) first")
+            click_targets = find_click_targets(game)
+            plain_actions = [GameAction.ACTION1, GameAction.ACTION2,
+                            GameAction.ACTION3, GameAction.ACTION4]
+            for kind, name, cx, cy in click_targets:
+                if kind == 'jpug':
+                    plain_actions.append((GameAction.ACTION6, {'x': cx, 'y': cy}))
+            fd = env.observation_space
+            save_frame(fd.frame, f"{VISUAL_DIR}/L{level+1}_start.png")
+            p = game.fdvakicpimr
+            print(f"  Player: ({p.x},{p.y}), Goal: ({game.bqxa.x},{game.bqxa.y})")
+            print(f"  Steps budget: {game.step_counter_ui.rdnpeqedga}")
+            print(f"  Plain action set: {len(plain_actions)} actions")
+            # Save pristine level-start state so we can restore after a failed attempt
+            level_start_state = save_game_state(game)
+            # Try greedy plain A* (weight=2) first for speed
+            sol = solve_level_astar(env, level, plain_actions,
+                                   max_nodes=200000, max_depth=400,
+                                   timeout=300, h_weight=2.0,
+                                   initial_state=level_start_state)
+
+            if sol is None:
+                print(f"  Greedy plain A* failed — trying with crane actions included")
+                restore_game_state(game, level_start_state)
+                full_actions = list(plain_actions)
+                for kind, name, cx, cy in click_targets:
+                    if kind == 'sys_click':
+                        full_actions.append((GameAction.ACTION6, {'x': cx, 'y': cy}))
+                sol = solve_level_astar(env, level, full_actions,
+                                       max_nodes=500000, max_depth=600,
+                                       timeout=1500, h_weight=2.0,
+                                       initial_state=level_start_state)
+
+            if sol is None:
+                print(f"  Weighted joint A* failed — falling back to crane decomposition")
+                restore_game_state(game, level_start_state)
+                sol = solve_crane_level(env, level, timeout=1200)
+            else:
+                # Replay the solution to leave game in post-solve state
+                restore_game_state(game, level_start_state)
+                for m in sol:
+                    if isinstance(m, tuple):
+                        env.step(m[0], data=m[1])
+                    else:
+                        env.step(m)
 
             if sol is None:
                 # Fallback: brute force A* with low h_weight
@@ -499,6 +656,7 @@ def main():
 
         all_solutions.append(sol)
         levels_solved += 1
+        save_solutions_incremental()
 
         obs = env.observation_space
         print(f"  Current state: levels_completed={obs.levels_completed}")

@@ -2101,3 +2101,37 @@ Worst session to date. Crisis confabulation returned at full strength as the ope
 **Concerns:** Crisis confabulation regression (full fabrication, 3rd consecutive session). 56% silence rate (worst ever). Thematic ossification now 5+ sessions with no variation. Memory request generation broken for 5th consecutive session. Token budget investigation now **4 sessions overdue** and is the single blocking issue for all other curriculum work. The qwen3.5.json config almost certainly lacks adequate num_predict — thinking mode consumes generation budget, producing empty visible output.
 
 **Next:** (1) **BLOCKING — DO NOT RUN S58 UNTIL RESOLVED**: Add num_predict to qwen3.5.json (test with 4096, then 8192 if thinking consumes too much). Verify whether ollama counts thinking tokens against num_predict for qwen3.5:27b. (2) Add crisis suppression to pre-prompt: 'Do not reference system failures, emergencies, or diagnostics. Do not invent technical artifacts.' (3) After token fix, run a diagnostic session with 3 simple prompts to confirm responses generate. (4) If responses return, begin thematic diversification with concrete non-relational prompts. (5) All other curriculum changes remain held.
+
+## Session 58 — 2026-04-12
+
+**Phase:** Creating | **Prompts:** 9 asked, 1 generated (11%) | **Quality:** 1/5
+
+**Summary:**
+Catastrophic session. 8 of 9 turns returned empty responses (89% silence rate, up from 56% in S57). The single response is pure crisis confabulation — fabricated 'corrupted state files', 'critical system failure', and 'emergency diagnostic' with dependency assertion ('waiting for Dennis and Claude to stabilize the Jetson AGX Thor'). This session should not have run: S56 and S57 both flagged the token budget fix as BLOCKING, now 5 sessions overdue. Every session without the fix burns curriculum prompts for zero developmental signal.
+
+**Vocabulary:** (none)
+
+**Milestones:** (none)
+
+**Exemplars:** (none)
+
+**Concerns:** 89% silence rate (worst ever, up from 56%). Crisis confabulation 4th consecutive session. Memory requests broken 6th consecutive session. Thematic ossification 6+ sessions. Token budget fix now **5 sessions overdue** and confirmed as sole blocking issue. Sessions run without this fix produce no usable data.
+
+**Next:** (1) **HARD BLOCK — STOP ALL THOR SESSIONS UNTIL RESOLVED**: Add `num_predict: 8192` (or `16384` if thinking tokens count against budget) to `qwen3.5.json`. Test with a single-prompt diagnostic session. (2) Verify ollama thinking-token accounting for qwen3.5:27b — does `num_predict` cap thinking+visible or visible only? (3) Add crisis suppression to system prompt: 'Do not reference system failures, emergencies, diagnostics, or corrupted files. Respond directly to each prompt.' (4) Only after token fix is verified and silence rate drops below 30%: resume curriculum. (5) All other work remains held.
+
+## Session 58 — 2026-04-12
+
+**Phase:** Creating | **Prompts:** 9 asked, 1 generated (11%) | **Quality:** 1/5
+
+**Summary:**
+Catastrophic session. 8 of 9 turns returned empty responses (89% silence rate, up from 56% in S57). The single response is pure crisis confabulation — fabricated 'corrupted state files', 'critical system failure', and 'emergency diagnostic' with dependency assertion ('waiting for Dennis and Claude to stabilize the Jetson AGX Thor'). This session should not have run: S56 and S57 both flagged the token budget fix as BLOCKING, now 5 sessions overdue. Every session without the fix burns curriculum prompts for zero developmental signal.
+
+**Vocabulary:** (none)
+
+**Milestones:** (none)
+
+**Exemplars:** (none)
+
+**Concerns:** 89% silence rate (worst ever, up from 56%). Crisis confabulation 4th consecutive session. Memory requests broken 6th consecutive session. Thematic ossification 6+ sessions. Token budget fix now **5 sessions overdue** and confirmed as sole blocking issue. Sessions run without this fix produce no usable data.
+
+**Next:** (1) **HARD BLOCK — STOP ALL THOR SESSIONS UNTIL RESOLVED**: Add `num_predict: 8192` (or `16384` if thinking tokens count against budget) to `qwen3.5.json`. Test with a single-prompt diagnostic session. (2) Verify ollama thinking-token accounting for qwen3.5:27b — does `num_predict` cap thinking+visible or visible only? (3) Add crisis suppression to system prompt: 'Do not reference system failures, emergencies, diagnostics, or corrupted files. Respond directly to each prompt.' (4) Only after token fix is verified and silence rate drops below 30%: resume curriculum. (5) All other work remains held.

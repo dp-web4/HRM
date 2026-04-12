@@ -159,7 +159,16 @@ def write_dream_bundle(
                 'plugin': exp.get('plugin', ''),
                 'timestamp': exp.get('ts', time.time()),
                 'source': exp.get('source', ''),
+                'scored_real': exp.get('scored_real', False),
             }
+            # Include 5D SNARC breakdown when available
+            snarc_dims = exp.get('snarc_dimensions')
+            if snarc_dims and isinstance(snarc_dims, dict):
+                record['snarc'] = {
+                    k: snarc_dims[k] for k in
+                    ('surprise', 'novelty', 'arousal', 'reward', 'conflict')
+                    if k in snarc_dims
+                }
             # Extract response preview if available
             result = exp.get('result')
             if hasattr(result, 'final_state') and isinstance(result.final_state, dict):
@@ -249,22 +258,38 @@ def read_dream_bundles(
         if e.get('response_preview')
     ][:10]
 
-    # Plugin distribution
+    # Plugin distribution and real/mock scoring breakdown
     plugin_counts = {}
+    real_scored = 0
+    mock_scored = 0
     for exp in unique_experiences:
         p = exp.get('plugin', 'unknown')
         plugin_counts[p] = plugin_counts.get(p, 0) + 1
+        if exp.get('scored_real', False):
+            real_scored += 1
+        else:
+            mock_scored += 1
+
+    # Extract source text from real-scored entries for richer wake context
+    source_snippets = [
+        e.get('source', '')
+        for e in unique_experiences
+        if e.get('scored_real') and e.get('source')
+    ][:10]
 
     return {
         'bundles_read': len(recent),
         'total_bundles': len(bundles),
         'total_experiences': len(unique_experiences),
+        'real_scored': real_scored,
+        'mock_scored': mock_scored,
         'salience_mean': round(sal_mean, 4),
         'salience_stdev': round(sal_stdev, 4),
         'salience_min': round(min(saliences), 4),
         'salience_max': round(max(saliences), 4),
         'high_salience_count': len(high_salience),
         'high_salience_previews': previews,
+        'source_snippets': source_snippets,
         'plugin_distribution': plugin_counts,
         'cycle_range': (min(seen_cycles), max(seen_cycles)),
         'latest_bundle': headers[-1] if headers else None,

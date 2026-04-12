@@ -1,7 +1,81 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-12 (Dream Loop Closed — Bugs 5-6 Fixed, WAKE Consumes Dream Knowledge)**
-**Previous: 2026-04-12 (Dream Consolidation First Output — Fourth Bug Fixed, JSONL Bundles Writing)**
+**Last Updated: 2026-04-12 (Bug #7: Mock Audio Pollution — SNARC Calibration Deep Dive)**
+**Previous: 2026-04-12 (Dream Loop Closed — Bugs 5-6 Fixed, WAKE Consumes Dream Knowledge)**
+
+---
+
+## Bug #7: Mock Audio Pollution & SNARC Calibration (Apr 12, 2026 — 18:00 Session)
+
+### Root Cause of Flat SNARC Scores Identified and Fixed
+
+Deep analysis of Thor's 70 dream bundles (6,310 entries) revealed:
+- **98.2% of entries** had identical salience of 0.460 with empty source fields
+- Only 3 unique score values across the entire corpus
+- **Zero real SNARC-scored entries** — the ConversationalSalienceScorer never fired
+
+### Bug #7: Mock Audio Observations Pollute Dream Pipeline
+
+**Root cause**: `_get_plugins_for_modality()` maps `'audio': ['audio', 'language']` because
+"audio might contain speech." The daemon generates mock audio observations every cycle. These
+trigger the language plugin in mock mode. Mock results pass the 0.15 salience threshold (audio
+mock SNARC total = 0.46) and accumulate in `snarc_memory`. Dream bundles consolidate these
+meaningless entries.
+
+**Evidence**: daemon_state.json showed `messages_submitted: 0` (no real conversations) but
+212 unique snarc_memory cycles — all from mock audio→language path.
+
+**Fix**: `_update_all_memories()` now skips entries where `telemetry['trust']['mock'] == True`.
+Only real plugin executions (with actual LLM responses or real sensor data) enter snarc_memory.
+
+### SNARC Enrichment
+
+Three additional fixes to make dream bundles meaningful:
+
+| Fix | File | What |
+|-----|------|------|
+| Source text | `sage_consciousness.py` | snarc_memory entries now include prompt+response text |
+| Timestamps | `sage_consciousness.py` | `ts` field set at creation time, not bundle write time |
+| 5D breakdown | `sleep_capability.py` | Dream bundles include full SNARC dimensions when available |
+| Scoring flag | `sleep_capability.py` | `scored_real` field distinguishes real vs mock scoring |
+| Wake analysis | `sleep_capability.py` | `read_dream_bundles()` reports real/mock breakdown |
+
+### ConversationalSalienceScorer Calibration
+
+The scorer had three failure modes producing flat output:
+1. **Surprise**: Checked exact sentence repetition → always 1.0. Fixed: Jaccard word overlap
+2. **Arousal**: Divided by 50 words → chronically low. Fixed: added vocabulary depth + lower norm
+3. **Reward**: Binary 0.3/0.65 based on 3 partnership terms. Fixed: gradient across
+   specificity, partnership, identity, and meta-cognition
+
+**Before**: All exchanges scored 0.36-0.51 with negligible variation
+**After**: Range 0.42-0.66, with phenomenological responses scoring highest and
+generic/hedging responses penalized appropriately
+
+### The Seven-Bug Meta-Pattern
+
+| Bug | Session | Root Cause | Impact |
+|-----|---------|-----------|--------|
+| 1. Import chain | 18:00 Apr 11 | Bare import in sleep_training.py | SLEEP_TRAINING_AVAILABLE=False |
+| 2. Premature return | 18:00 Apr 11 | ensure_future + return, no disabled check | JSONL fallback skipped |
+| 3. Thor model misconfig | 18:00 Apr 11 | Nonexistent local path | Daemon ran without LLM |
+| 4. Ollama LoRA false positive | 00:00 Apr 12 | Capability detection checks imports, not weights | LoRA errors async, JSONL never runs |
+| 5. No bundle consumer | 12:00 Apr 12 | Reader never implemented | Bundles accumulate, never used |
+| 6. Duplicate bundles | 12:00 Apr 12 | snarc_memory never watermarked | Every bundle = full history |
+| 7. Mock audio pollution | 18:00 Apr 12 | Audio→language mapping + mock execution passes threshold | 98.2% of dream data is noise |
+
+Bug #7 is the deepest yet: it's not a broken path but a **working path producing garbage**.
+The pipeline functioned correctly — observations scored, threshold passed, bundles written,
+consumer reading — but the content was meaningless. Design-time assumption (audio observations
+might contain speech worth processing) created runtime reality (every cycle generates noise
+that looks like signal).
+
+### Next Steps
+
+1. **Restart daemon with fixes** — verify real-scored entries appear in dream bundles
+2. **Nomad bundle audit** — 6,553 bundles likely have same mock pollution pattern
+3. **Consider audio mapping** — should mock audio still trigger language plugin?
+4. **DREAMConsolidator integration** — connect real dream data to pattern extraction
 
 ---
 

@@ -2,11 +2,42 @@
 """
 wa30 Sokoban Solver — Engine-based greedy with wall-handoff support.
 
-L0: BFS (no AI)
-L1+: Engine greedy with intelligent piece targeting and blue mover cooperation.
+L0: BFS (no AI) — 26 moves
+L1: Engine greedy with blue helper — 56 moves
+L2: Hand-coded wall-handoff — 80 moves
+L3+: UNSOLVED (see L3 NOTES below)
 
-Key mechanic: carried pieces pass through blocked positions, carriers don't.
-This enables "wall handoff" — player carries pieces to wall, blue picks up from other side.
+Key mechanic: carried pieces pass through blocked positions (qthdiggudy),
+carriers don't. This enables "wall handoff" — player carries piece to wall
+with appropriate carry offset, piece lands on other side of wall, then a
+blue picks it up and delivers it to a slot.
+
+L3 NOTES (2026-04-12):
+  - 7 pieces, 3 blues, 80 steps. Player spawns trapped inside a walled box
+    (x=24-36, y=24-40). Box walls are blocked (qthdiggudy) — player cannot
+    exit, but carried pieces can pass through.
+  - Piece (4,24) already docked at start -> placed=1/7 initially.
+  - 3 blues spawn OUTSIDE the box at isolated positions:
+    (56,4), (4,28), (24,56). Their BFS uses kblzhbvysd which avoids both
+    walls and collidables; they cannot enter the box.
+  - Every non-docked piece must be wall-handed-off to a blue.
+  - Pure greedy: 4/7 placed at step 100 budget.
+  - 1-step lookahead rollout with greedy default policy: 5/7 placed.
+  - Beam search (BEAM=2000) with full state dedup: too slow due to 9ms
+    deepcopy overhead (reaches depth ~12 in 2min, needs depth 80).
+  - Diagnosis: greedy default policy caps at 5/7 deliveries — rollout
+    score stays pinned at max=5 regardless of action, meaning the search
+    space around greedy is bounded by greedy's limits. Need a
+    qualitatively different policy that plans multi-piece handoff
+    sequences accounting for blue trajectories in parallel.
+  - Productive dead-end: greedy + rollout + beam all insufficient.
+    Next-step candidates:
+      1. Macro-action search where each macro = "deliver piece P via
+         handoff H", precomputed offline as feasibility table.
+      2. A* with admissible heuristic based on per-piece shortest
+         handoff cost (ignoring blue contention).
+      3. Port engine simulation to pure-Python state struct (no
+         deepcopy) to get 100x speedup.
 """
 import sys, os, time
 sys.stdout.reconfigure(line_buffering=True)

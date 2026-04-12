@@ -7,7 +7,7 @@ metadata:
   previous_name: hrm
   last_updated: "2026-04-12T11:00:00Z"
   archivist_version: "1.3"
-  total_raising_sessions: 784
+  total_raising_sessions: 786
   total_training_sessions: 223
   total_instances: 21
   active_instances: 10
@@ -15,7 +15,7 @@ metadata:
   arc_agi_sweep_results: 91
   focus: "Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation"
   date_range: "2025-12-15 to 2026-04-12"
-  note: "McNugget S097, Nomad S092, Sprout S068, Thor S057, CBP S058, Legion-gemma3 S024. Training T223. 3 gemma4-e4b instances scaffolded."
+  note: "McNugget S097, Nomad S094, Sprout S068, Thor S057, CBP S058, Legion-gemma3 S024. Training T223. 3 gemma4-e4b instances scaffolded."
 
 # =============================================================================
 # INSTANCE FAMILIES (sage/instances/)
@@ -42,8 +42,8 @@ instances:
   nomad-gemma3-4b:
     machine: nomad
     model: "Gemma 3 4B"
-    sessions: 92
-    latest: "session_092.json"
+    sessions: 94
+    latest: "session_094.json"
     status: "active — autonomous raising"
     phase: "questioning"
     note: "Template/validation instance. Tool use live (v0.4.0a3, 7 tools, MemoryHub SQLite)."
@@ -196,7 +196,7 @@ crosslinks:
 # STATISTICS
 # =============================================================================
 statistics:
-  total_raising_sessions: 784
+  total_raising_sessions: 786
   total_training_sessions: 223
   total_instances: 21
   active_instances: 10

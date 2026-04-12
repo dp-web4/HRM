@@ -159,14 +159,26 @@ def tr87_actions():
 
 
 def tu93_actions():
-    """tu93: maze with entities. L1-L3 only (3/9)."""
+    """tu93: maze with entities. All 9 levels from tu93_solutions.json."""
     actions = []
-    # L1
+    # L1 (18 actions)
     actions.extend([RIGHT,DOWN,DOWN,RIGHT,UP,RIGHT,DOWN,DOWN,LEFT,LEFT,DOWN,RIGHT,RIGHT,DOWN,RIGHT,UP,RIGHT,DOWN])
-    # L2 (bypass arrow via lower corridor)
+    # L2 (10 actions — bypass arrow via lower corridor)
     actions.extend([UP,RIGHT,RIGHT,DOWN,RIGHT,RIGHT,UP,RIGHT,RIGHT,UP])
-    # L3 (destroy 3 arrows in order)
+    # L3 (19 actions — destroy 3 arrows in order)
     actions.extend([UP,UP,RIGHT,UP,LEFT,LEFT,UP,LEFT,LEFT,DOWN,RIGHT,DOWN,LEFT,LEFT,LEFT,DOWN,RIGHT,DOWN,RIGHT])
+    # L4 (17 actions — bouncer timing + arrow destroy)
+    actions.extend([RIGHT,RIGHT,LEFT,RIGHT,RIGHT,RIGHT,UP,UP,DOWN,UP,LEFT,UP,UP,LEFT,LEFT,DOWN,LEFT])
+    # L5 (29 actions — waste steps for bouncer timing)
+    actions.extend([LEFT,RIGHT,LEFT,RIGHT,LEFT,RIGHT,LEFT,LEFT,LEFT,LEFT,LEFT,LEFT,LEFT,DOWN,DOWN,DOWN,RIGHT,DOWN,DOWN,RIGHT,RIGHT,RIGHT,UP,DOWN,UP,DOWN,UP,UP,LEFT])
+    # L6 (32 actions — arrow destruction chain)
+    actions.extend([LEFT,LEFT,DOWN,DOWN,RIGHT,DOWN,DOWN,LEFT,DOWN,LEFT,LEFT,RIGHT,RIGHT,LEFT,RIGHT,UP,LEFT,LEFT,RIGHT,RIGHT,RIGHT,UP,UP,LEFT,LEFT,LEFT,DOWN,LEFT,UP,UP,UP,LEFT])
+    # L7 (14 actions — simple pathfinding)
+    actions.extend([RIGHT,RIGHT,RIGHT,DOWN,DOWN,RIGHT,UP,RIGHT,UP,UP,UP,RIGHT,DOWN,DOWN])
+    # L8 (21 actions — goose chase with delayed entity)
+    actions.extend([RIGHT,RIGHT,UP,UP,RIGHT,RIGHT,LEFT,LEFT,LEFT,DOWN,DOWN,RIGHT,UP,UP,RIGHT,RIGHT,UP,UP,UP,LEFT,LEFT])
+    # L9 (29 actions — BFS-solved, bouncer timing + arrow destruction)
+    actions.extend([LEFT,LEFT,UP,UP,RIGHT,DOWN,DOWN,LEFT,UP,UP,RIGHT,UP,UP,RIGHT,RIGHT,RIGHT,DOWN,DOWN,RIGHT,DOWN,LEFT,DOWN,LEFT,DOWN,DOWN,LEFT,LEFT,UP,RIGHT])
     return actions
 
 
@@ -208,7 +220,7 @@ def main():
     flat_games = [
         ("ft09-0d8bbf25", ft09_actions(), "ft09-algorithmic"),
         ("tr87-cd924810", tr87_actions(), "tr87-verified"),
-        ("tu93-2b534c15", tu93_actions(), "tu93-partial-3of9"),
+        ("tu93-2b534c15", tu93_actions(), "tu93-verified-9of9"),
     ]
 
     # Games with per-level action lists (need break-on-level-up)

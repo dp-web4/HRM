@@ -1,0 +1,114 @@
+#!/usr/bin/env python3
+"""g50t full solver: L0-L5 known solutions (242 actions for 6/7 levels).
+
+Multi-phase clone maze puzzle mechanics:
+- Player moves on 6px grid
+- ACTION5 = PHASE transition: records moves, creates clone, resets player to start
+- Clones replay recorded moves simultaneously with each player move
+- Modifiers (buttons) toggle obstacles when stepped on
+- Non-toggle obstacles stay shifted while someone is on the modifier
+- Toggle obstacles stay shifted until re-triggered (ignore deactivation signal)
+- Ghost moves autonomously and can activate modifiers
+- Win: player reaches goal position (goal.x+1, goal.y+1)
+- Timer ticks every 2 steps — runs out = lose
+"""
+import sys, os, time
+sys.stdout.reconfigure(line_buffering=True)
+sys.path.insert(0, os.path.dirname(__file__))
+from arc_agi import Arcade
+from arcengine import GameAction
+
+UP = GameAction.ACTION1
+DOWN = GameAction.ACTION2
+LEFT = GameAction.ACTION3
+RIGHT = GameAction.ACTION4
+PHASE = GameAction.ACTION5
+
+INT_TO_GA = {a.value: a for a in GameAction}
+NAME_TO_INT = {'UP': 1, 'DOWN': 2, 'LEFT': 3, 'RIGHT': 4, 'UNDO': 5}
+DIR_NAMES = {UP: 'UP', DOWN: 'DOWN', LEFT: 'LEFT', RIGHT: 'RIGHT', PHASE: 'UNDO'}
+
+KNOWN = {
+    # L0: 17 actions. Simple two-phase: right then down+right.
+    0: 'RIGHT RIGHT RIGHT RIGHT UNDO DOWN DOWN DOWN DOWN DOWN DOWN DOWN RIGHT RIGHT RIGHT RIGHT RIGHT',
+
+    # L1: 31 actions. Three phases with modifier activation.
+    1: 'LEFT LEFT UNDO DOWN DOWN DOWN DOWN LEFT LEFT LEFT LEFT UP UP LEFT LEFT UNDO UP UP UP LEFT LEFT LEFT LEFT LEFT LEFT LEFT DOWN DOWN RIGHT RIGHT RIGHT',
+
+    # L2: 57 actions. Three phases, complex navigation with obstacle toggling.
+    2: 'UP UP RIGHT RIGHT RIGHT RIGHT DOWN DOWN DOWN DOWN RIGHT UNDO UP UP RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT DOWN DOWN DOWN DOWN DOWN DOWN DOWN LEFT LEFT LEFT LEFT LEFT UNDO UP UP RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT DOWN DOWN DOWN DOWN DOWN DOWN DOWN LEFT LEFT LEFT LEFT LEFT LEFT LEFT UP UP UP RIGHT RIGHT UP UP',
+
+    # L3: 31 actions. Three phases with gate/modifier interaction.
+    3: 'DOWN DOWN RIGHT DOWN UNDO DOWN DOWN RIGHT RIGHT UP UP RIGHT RIGHT DOWN DOWN DOWN UNDO LEFT LEFT LEFT DOWN DOWN DOWN DOWN DOWN RIGHT RIGHT RIGHT LEFT LEFT LEFT',
+
+    # L4: 42 actions. Three phases, portal-swap mechanics (mpreboxmgc pads).
+    4: 'UP DOWN DOWN RIGHT RIGHT RIGHT DOWN DOWN DOWN UNDO DOWN RIGHT RIGHT RIGHT UP UP RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT DOWN DOWN DOWN UNDO DOWN RIGHT RIGHT RIGHT UP UP RIGHT RIGHT RIGHT DOWN DOWN DOWN DOWN DOWN RIGHT LEFT DOWN LEFT LEFT LEFT LEFT LEFT UP UP',
+
+    # L5: 49 actions. Three phases + ghost-activated modifiers.
+    # Phase 0 (3 moves): Player walks to mod[0] at (43,25), creating a clone.
+    # Phase 1 (5 moves): Player walks to mod[1] at (31,25), creating a second clone.
+    # Phase 2 (39 moves): Both clones hold mods 0,1 clearing row-7 obstacles.
+    #   Ghost traverses row 7 to toggle mods 2,3 which clear row-25 obstacles.
+    #   Player navigates through row 25 to reach mod[4] at (13,49), clearing the
+    #   path obstacle at (31,49). Then returns through row 25 and navigates to goal.
+    5: 'LEFT LEFT UP UNDO LEFT LEFT UP LEFT LEFT UNDO LEFT LEFT DOWN LEFT LEFT LEFT LEFT UP UP LEFT LEFT LEFT DOWN DOWN DOWN DOWN DOWN RIGHT RIGHT UP DOWN LEFT LEFT UP UP UP UP UP RIGHT RIGHT RIGHT DOWN DOWN RIGHT RIGHT DOWN DOWN RIGHT RIGHT',
+
+    # L6: UNSOLVED. Portal-swap mechanics + ghost activation + toggle timing.
+    # The puzzle requires: (1) clones on mod[2] to clear obs[1] for ghost passage,
+    # (2) ghost reaching mod[0] to trigger portal swap (13,25)↔(13,13),
+    # (3) player navigating via (13,13) to mod[3] at (13,1) to clear obs[0],
+    # (4) accessing row 1 to reach mod[1] at (49,1) for second swap (49,37)↔(49,49),
+    # (5) reaching goal (31,49) from (49,49) via L,L,L.
+    # Blocker: obs[0] (non-toggle) only stays active while someone is on mod[3],
+    # but all 3 phases are consumed before reaching mod[3]. No clone available to hold it.
+}
+
+
+def main():
+    print("=" * 60)
+    print("g50t Final Solver — L0-L5 (6/7 levels)")
+    print("=" * 60)
+
+    arcade = Arcade()
+    env = arcade.make('g50t-5849a774')
+    fd = env.reset()
+    game = env._game
+
+    total_actions = 0
+    results = {}
+
+    for level in range(7):
+        print(f"\n{'='*50}")
+        print(f"Level {level} (engine={game.level_index})")
+        print(f"{'='*50}")
+
+        if fd.state.name in ('WON', 'GAME_OVER'):
+            print(f"  Game ended: {fd.state.name}")
+            break
+
+        if level in KNOWN:
+            sol_str = KNOWN[level]
+            n = len(sol_str.split())
+            print(f"  Using known solution: {n} actions")
+            for name in sol_str.split():
+                fd = env.step(INT_TO_GA[NAME_TO_INT[name]])
+            if game.level_index > level:
+                print(f"  L{level} SOLVED!")
+                results[level] = n
+                total_actions += n
+            else:
+                print(f"  Known solution FAILED!")
+                break
+        else:
+            print(f"  No solution available for L{level}")
+            break
+
+    print(f"\n{'='*60}")
+    print(f"FINAL: {len(results)}/7 levels solved, {total_actions} total actions")
+    for lv, n in sorted(results.items()):
+        print(f"  L{lv}: {n} actions")
+    print(f"{'='*60}")
+
+
+if __name__ == '__main__':
+    main()

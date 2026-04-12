@@ -1,7 +1,100 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-11 (DREAM Gap Discovery + Fix — Unified Time Accounting)**
-**Previous: 2026-04-11 (FOCUS Gap Live Daemon Validation + Salience Discovery)**
+**Last Updated: 2026-04-11 (Consolidation Pipeline Fix — Three Bugs, One Dead Pipeline)**
+**Previous: 2026-04-11 (DREAM Gap Discovery + Fix — Unified Time Accounting)**
+
+---
+
+## Consolidation Pipeline Fix (Apr 11, 2026 — 18:00 Session)
+
+### Dream Consolidation Was Completely Dead — Three Interacting Bugs
+
+The 12:00 session fixed DREAM state entry (metabolic state machine works perfectly), but
+the DREAM consolidation hook — the whole *point* of DREAM — never fired. Investigation
+of the daemon log revealed three interacting bugs:
+
+### Bug 1: Bare Import in sleep_training.py
+
+**File**: `sage/raising/training/sleep_training.py:36`
+
+```python
+# Before (fails when imported from outside the training/ directory)
+from prepare_training_data import RaisingTrainingDataBuilder
+
+# After (works from any import context)
+try:
+    from sage.raising.training.prepare_training_data import RaisingTrainingDataBuilder
+except ImportError:
+    from prepare_training_data import RaisingTrainingDataBuilder
+```
+
+This caused `SLEEP_TRAINING_AVAILABLE = False` in `sage/attention/sleep_consolidation.py`,
+which disabled the `SleepConsolidationBridge` even when torch/transformers/peft were all present.
+
+### Bug 2: Premature Return in Consciousness Loop
+
+**File**: `sage/core/sage_consciousness.py:2127`
+
+The LoRA consolidation path used `asyncio.ensure_future()` then `return`, never checking
+if the bridge would report "disabled". The JSONL fallback (Tier 2) never executed because
+Tier 1 returned before the async result came back.
+
+**Fix**: Check `bridge.enabled` synchronously before committing to the async LoRA path.
+If disabled, fall through to JSONL.
+
+### Bug 3: Daemon Model Path Misconfiguration
+
+**File**: `sage/gateway/machine_config.py:174`
+
+Thor's default model path pointed to a nonexistent local transformers model:
+```
+/home/dp/ai-workspace/HRM/model-zoo/sage/epistemic-stances/qwen2.5-14b/base-instruct
+```
+
+This path doesn't exist on Thor (Thor uses Ollama). The daemon ran **without LLM**:
+- No real conversations → no new experiences
+- 168 experiences loaded from disk, frozen
+- Metabolic state machine cycled perfectly but on empty data
+
+**Fix**: Thor defaults to Ollama model tag (`qwen2.5:3b`) instead of nonexistent local path.
+
+### Impact
+
+| What | Before Fix | After Fix |
+|------|-----------|-----------|
+| Daemon LLM | None (mock responses) | Ollama (real model) |
+| Experience buffer | Frozen (168 stale) | Growing from conversations |
+| DREAM consolidation | "Disabled" every entry | JSONL bundles + optional LoRA |
+| Dream bundles written | 0 (empty directory) | Will write on next DREAM cycle |
+
+### Pattern: Same Meta-Bug as FOCUS/DREAM Gaps
+
+All three gaps (FOCUS, DREAM, Consolidation) share a meta-pattern:
+**Designed behavior that never emerges due to interacting subsystem constraints
+invisible from any single component's perspective.**
+
+- FOCUS gap: threshold/economics interaction
+- DREAM gap: time unit divergence
+- Consolidation gap: import chain / async flow / config interaction
+
+Each component is correct in isolation. The barrier exists only in their interaction
+under real operating conditions.
+
+### Validation
+
+```
+✓ Thor config now uses Ollama
+✓ SleepTrainingLoop imports correctly
+✓ SleepConsolidationBridge enables correctly
+✓ sage_consciousness.py compiles
+```
+
+### Next Steps
+
+1. **Restart daemon** — apply fixes to running system
+2. **Verify live consolidation** — watch for dream bundle writes
+3. **LoRA training test** — with bridge now enabled, test actual LoRA consolidation
+4. **Cross-fleet audit** — do other machines have the same model path issue?
 
 ---
 

@@ -2124,16 +2124,23 @@ class SAGEConsciousness:
         mode = self.sleep_cap.best_mode if self.sleep_cap else 'jsonl'
 
         # Tier 1: Real LoRA consolidation
+        # Check bridge.enabled synchronously before launching async task —
+        # previously, ensure_future() + return meant JSONL fallback never ran
+        # when the bridge self-disabled (SLEEP_TRAINING_AVAILABLE was False).
         if mode == 'lora' and self.use_real_sleep and self.sleep_bridge:
-            try:
-                buffer_adapter = _SleepBufferAdapter(self.snarc_memory)
-                asyncio.ensure_future(self._run_sleep_consolidation(buffer_adapter))
-                if self.sleep_cap:
-                    self.sleep_cap.record_consolidation('lora')
-                return
-            except Exception as e:
-                print(f"[DREAM] LoRA consolidation failed, falling back to JSONL: {e}")
+            if not getattr(self.sleep_bridge, 'enabled', False):
+                print(f"[DREAM] LoRA bridge disabled, falling back to JSONL")
                 mode = 'jsonl'
+            else:
+                try:
+                    buffer_adapter = _SleepBufferAdapter(self.snarc_memory)
+                    asyncio.ensure_future(self._run_sleep_consolidation(buffer_adapter))
+                    if self.sleep_cap:
+                        self.sleep_cap.record_consolidation('lora')
+                    return
+                except Exception as e:
+                    print(f"[DREAM] LoRA consolidation failed, falling back to JSONL: {e}")
+                    mode = 'jsonl'
 
         # Tier 2: Dream bundle (JSONL) — write to instance dir
         if mode in ('jsonl', 'remote'):

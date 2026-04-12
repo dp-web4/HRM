@@ -1,0 +1,79 @@
+{
+  "_description": "re86 solutions — shape-matching puzzle with piece selection, paint zones, wall deformation, border-shifting",
+  "_updated": "2026-04-12T02:30",
+  "_game_type": "Move+click. Pieces (hollow rects, crosses) must be recolored via paint zones, reshaped via wall collision, and positioned to match targets.",
+  "_critical": [
+    "ACTION5 cycles piece selection. Order determined by sprite list index. Not all pieces may be selectable from all starting positions.",
+    "Paint zones SPREAD: initial contact paints overlapping pixels, then animation spreads color to ALL border pixels. LAST zone touched = final color.",
+    "Wall deformation (nogegkgqgd): dx collision = width-3/height+3. dy collision = height-3/width+3. Min dimension 6 (checked BEFORE deform, so 7→4 is possible).",
+    "Border-shifting (non-tagged crosses): wall collision shifts arm col/row by ±3. Direction depends on which arm overlaps wall and movement direction.",
+    "Win check composites ALL piece pixels onto canvas, then checks target positions. Color 4 = wildcard (any color OK).",
+    "Pieces DO NOT collide with each other. Only wall sprites block movement.",
+    "Zone band at rows 28-32 in L8 has 9 zones spanning most of the width. Paint spreading makes it a complete repaint barrier."
+  ],
+  "levels": {
+    "L1": {
+      "status": "VERIFIED",
+      "actions": 20,
+      "budget": 50,
+      "sequence_tuples": "[(RIGHT,4),(UP,7),SEL,(LEFT,2),(UP,6)]"
+    },
+    "L2": {
+      "status": "VERIFIED",
+      "actions": 36,
+      "budget": 50,
+      "sequence_tuples": "[(LEFT,3),(DOWN,10),SEL,(LEFT,6),(UP,6),SEL,(LEFT,7),(DOWN,2)]"
+    },
+    "L3": {
+      "status": "VERIFIED",
+      "actions": 48,
+      "budget": 100,
+      "sequence_tuples": "[(LEFT,2),(UP,13),SEL,(LEFT,9),(UP,6),SEL,(RIGHT,8),(UP,8)]"
+    },
+    "L4": {
+      "status": "VERIFIED",
+      "actions": 50,
+      "budget": 200,
+      "entities": "2 pieces, paint zones, 1 wall",
+      "strategy": "Cross recolors both pieces via paint zones; cross goes UP to zone at (28,4), diamond goes RIGHT then DOWN to zone at (52,54).",
+      "sequence_tuples": "[(UP,7),(LEFT,13),(DOWN,5),SEL,(RIGHT,8),(DOWN,8),(UP,5),(LEFT,3)]"
+    },
+    "L5": {
+      "status": "VERIFIED",
+      "actions": 83,
+      "budget": 250,
+      "entities": "3 pieces (2 crosses, 1 deformable), 5 paint zones, 1 wall",
+      "strategy": "Diamond23 paints c9 (avoid c11 zone by going RIGHT first). Cross paints c9 via multi-zone passage (c14→c9 alternation, ends c9). Diamond19 paints c8 via c8 zone.",
+      "sequence_tuples": "[(DOWN,1),(LEFT,3),(RIGHT,5),(UP,10),SEL,(LEFT,16),(DOWN,6),(RIGHT,9),SEL,(RIGHT,6),(DOWN,15),(RIGHT,1),(UP,9)]"
+    },
+    "L6": {
+      "status": "VERIFIED",
+      "actions": 51,
+      "budget": 200,
+      "entities": "2 pieces (1 deformable, 1 cross), 1 wall, no paint zones",
+      "strategy": "Deformable piece: 3 horizontal wall deforms (19x19→10x28), position at (45,30). Cross: 2 border-shifts each for arm col (→6) and arm row (→6), position at (6,3).",
+      "sequence_tuples": "[(UP,4),(RIGHT,4),(DOWN,5),(RIGHT,9),(UP,2),SEL,(LEFT,7),(DOWN,1),(RIGHT,2),(DOWN,5),(LEFT,5),(UP,6)]"
+    },
+    "L7": {
+      "status": "VERIFIED",
+      "actions": 128,
+      "budget": 300,
+      "entities": "3 pieces (1 big cross 37x19, 1 small cross 19x19, 1 deformable 13x13), 5 paint zones, 1 wall",
+      "strategy": "P1 (small cross): paint c11 via zone at (25,2), border-shift arms (6,18), route around wall below. P2 (deformable): paint c9 via zone at (15,2), 2 dy deforms to 19x7. P0 (big cross): route LEFT to x=-9 to avoid wall during UP, paint c8 via zone at (35,2), border-shift arms (6,6). Active order: P1→P2→P0.",
+      "sequence_tuples": "[(UP,10),(RIGHT,5),(UP,1),(DOWN,1),(LEFT,3),(DOWN,6),(RIGHT,4),(UP,3),(DOWN,6),(RIGHT,6),(UP,2),SEL,(LEFT,1),(UP,13),(DOWN,1),(RIGHT,6),(DOWN,3),(DOWN,1),(RIGHT,4),(UP,1),SEL,(LEFT,5),(UP,12),(RIGHT,9),(UP,1),(DOWN,1),(LEFT,3),(DOWN,1),(RIGHT,4),(DOWN,3),(LEFT,6),(UP,4)]"
+    },
+    "L8": {
+      "status": "IN_PROGRESS",
+      "budget": 400,
+      "entities": "2 deformable 13x13 pieces, 14 paint zones (9 at rows 28-32 forming barrier), 2 walls",
+      "notes": [
+        "Zone band at rows 28-32 is nearly impassable — 9 zones spanning most cols, gap only at cols 44-49 (6 wide).",
+        "Paint zones use SPREADING animation: any zone touch eventually paints ENTIRE piece to zone color.",
+        "c6 zone at (5,20) and c11 zone at (5,5) are above the band. Targets at y=39-57 below.",
+        "Piece must cross band to reach targets. Requires deforming to width ≤ 4 to fit through gap, but height 22 overlaps c9 at (28,8) during horizontal transit.",
+        "c12 zone at (28,21) blocks horizontal transit between c6 zone area and band gap.",
+        "Possible approach: multi-step deform sequence using both walls to create narrow+short piece that fits between c9/c12/band zones."
+      ]
+    }
+  }
+}

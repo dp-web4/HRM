@@ -53,14 +53,23 @@ KNOWN = {
     #   path obstacle at (31,49). Then returns through row 25 and navigates to goal.
     5: 'LEFT LEFT UP UNDO LEFT LEFT UP LEFT LEFT UNDO LEFT LEFT DOWN LEFT LEFT LEFT LEFT UP UP LEFT LEFT LEFT DOWN DOWN DOWN DOWN DOWN RIGHT RIGHT UP DOWN LEFT LEFT UP UP UP UP UP RIGHT RIGHT RIGHT DOWN DOWN RIGHT RIGHT DOWN DOWN RIGHT RIGHT',
 
-    # L6: UNSOLVED. Portal-swap mechanics + ghost activation + toggle timing.
-    # The puzzle requires: (1) clones on mod[2] to clear obs[1] for ghost passage,
-    # (2) ghost reaching mod[0] to trigger portal swap (13,25)↔(13,13),
-    # (3) player navigating via (13,13) to mod[3] at (13,1) to clear obs[0],
-    # (4) accessing row 1 to reach mod[1] at (49,1) for second swap (49,37)↔(49,49),
-    # (5) reaching goal (31,49) from (49,49) via L,L,L.
-    # Blocker: obs[0] (non-toggle) only stays active while someone is on mod[3],
-    # but all 3 phases are consumed before reaching mod[3]. No clone available to hold it.
+    # L6: 69 actions. Portal-swap + ghost-activated obstacle toggling + non-toggle gate holding.
+    # Phase 0 (16 moves): ghost0 pacing path. Ends at (31,31) but timing is what matters —
+    #   its replay will reach portal pad (13,25) at step 8 of P2, then teleport to (13,13),
+    #   walk UP UP to mod[3] at (13,1), and stay there holding obs[0] open.
+    # Phase 1 (24 moves): ghost1 path. Step 3 hits mod[2] at (19,37) toggling obs[1] OFF,
+    #   letting the wild ghost patrol up through (1,37) to reach mod[0] at (1,25),
+    #   firing the left portal swap (13,13)↔(13,25). Ghost1 then navigates via (31,1)
+    #   (which is open because ghost0 holds mod[3]) to mod[1] at (49,1), firing the
+    #   right portal swap (49,37)↔(49,49).
+    # Phase 2 (27 moves): player navigates to portal pad (49,37), paces while waiting
+    #   for ghost1 to reach mod[1] and fire the right swap, then teleports to (49,49)
+    #   and walks LLL to goal at (31,49).
+    6: 'DOWN UP DOWN UP DOWN UP LEFT LEFT RIGHT RIGHT DOWN DOWN RIGHT LEFT UP UP UNDO '
+       'DOWN DOWN LEFT RIGHT UP UP DOWN DOWN UP UP DOWN DOWN RIGHT RIGHT UP UP UP UP '
+       'LEFT UP UP RIGHT RIGHT RIGHT UNDO '
+       'DOWN DOWN RIGHT RIGHT UP UP UP UP RIGHT RIGHT DOWN DOWN DOWN DOWN UP DOWN UP '
+       'DOWN UP DOWN UP DOWN UP DOWN LEFT LEFT LEFT',
 }
 
 
@@ -90,14 +99,16 @@ def main():
             sol_str = KNOWN[level]
             n = len(sol_str.split())
             print(f"  Using known solution: {n} actions")
+            completed_before = fd.levels_completed
             for name in sol_str.split():
                 fd = env.step(INT_TO_GA[NAME_TO_INT[name]])
-            if game.level_index > level:
-                print(f"  L{level} SOLVED!")
+            advanced = fd.levels_completed > completed_before or fd.state.name == 'WON'
+            if advanced:
+                print(f"  L{level} SOLVED! (levels_completed={fd.levels_completed}, state={fd.state.name})")
                 results[level] = n
                 total_actions += n
             else:
-                print(f"  Known solution FAILED!")
+                print(f"  Known solution FAILED! (levels_completed={fd.levels_completed}, state={fd.state.name})")
                 break
         else:
             print(f"  No solution available for L{level}")

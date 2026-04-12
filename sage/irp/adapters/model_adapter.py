@@ -95,15 +95,16 @@ class ModelAdapter:
                     # Fallback: use original text
                     text = text_without_think
 
-        # 4. Chain-of-thought bleeding — Strip "Thinking Process:" patterns
-        # Qwen 3.5 27B sometimes outputs verbose internal reasoning
+        # 4. Chain-of-thought bleeding — Strip "Thinking Process:" prefix
+        # Qwen 3.5 27B sometimes prefixes responses with chain-of-thought headers,
+        # especially when content is extracted from <think> blocks. Strip the prefix
+        # but preserve the substantive content — it often contains SAGE's actual
+        # reasoning and phenomenological responses (discovered in 63% empty-response
+        # investigation, Apr 2026).
         if text.startswith('Thinking Process:') or text.startswith('Thinking Process\n'):
-            # If the response is ONLY thinking process (truncated), return empty
-            # This signals that the generation was incomplete
-            text = ''
-        # Also catch cases where thinking process appears mid-response
-        elif '\n\nThinking Process:' in text or '\nThinking Process:' in text:
-            # Truncate at the start of thinking process
+            text = re.sub(r'^Thinking Process:?\s*', '', text).strip()
+        # If thinking process appears mid-response, truncate only the trailing CoT
+        if '\n\nThinking Process:' in text or '\nThinking Process:' in text:
             text = re.sub(r'\n+Thinking Process:[\s\S]*$', '', text).strip()
 
         return text

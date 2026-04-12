@@ -11,8 +11,42 @@ L3: Hand-crafted wall-handoff plan distributing 6 pieces to 3 blues — 57 moves
 L4: Engine greedy (unlocked by solving L3) — 122 moves
 L5: Engine greedy — 48 moves
 L6: Hand-coded saboteur-exploit (wait for white to self-stall, destroy, ferry) — 50 moves
-L7: Greedy caps at 8/13. Needs smarter multi-agent planning with saboteur handling.
+L7: Saboteur-aware smart_action planner reaches 10/13 peak/final (up from 8).
+    Still not solved. Key findings below.
 L8: Unseen (blocked by L7).
+
+L7 FINDINGS (2026-04-12, later session):
+  13 pieces, 2 blues, 2 whites, 150 steps.
+  - 2 horizontal walls split the 16x16 board into upper/middle/lower strips.
+    Upper: 8 pieces, 1 blue (28,4), 1 white (32,16), correct slots upper-right,
+    wrong slots upper-left. Gaps in wall y=24 at x=16,20.
+    Lower: 5 pieces, 1 blue (36,44), 1 white (32,56), correct slots lower-right,
+    wrong slots lower-left. Gaps in wall y=36 at x=36,40.
+    Player spawns middle strip at (4,32).
+  - Blues are effective — idle test (player does nothing) gets 4-5 placed but
+    7 pieces end up on wrong slots.
+  - Whites CAN steal from blues/player mid-delivery (xpcvspllwr forces detach).
+    Only exclusions are: piece already carried by another WHITE, or piece on
+    a WRONG slot. So once on wrong slot, piece is "safe" from further whites.
+  - Blues CAN rescue wrong-slot pieces (their exclusion is only at correct slots),
+    so the wrong-slot pieces eventually get re-picked by blues if time permits.
+  - New smart_action policy (see solve_l7_smart below):
+      P1: destroy white if facing
+      P2: face white if adjacent
+      P3: pick best piece-to-deliver (cost = approach + carry_path)
+      P4: chase white (fallback)
+    Prime "RRRUUURRRR5" (march player to upper strip, try ACT5) then smart_action
+    reaches 10/13 placed. Still short by 3 pieces.
+  - Time budget is tight — at end-game player is still carrying a piece the
+    game runs out on. With ~10 more steps or faster pathing, could likely solve.
+  - UNSOLVED APPROACHES TO TRY NEXT:
+      1. Multi-white-kill prime: script moves to destroy BOTH whites early
+         (upper via gap (16,24), lower via gap (36,36)).
+      2. Macro-action A* over {kill_white, deliver_piece, rescue_wrong_slot}.
+      3. Predict white's next BFS target and intercept (look-ahead 1-2 steps).
+      4. Per-blue task assignment so blues don't compete for same piece.
+      5. Lower-chamber priority — player may be more valuable there since lower
+         has fewer pieces/more slots.
 
 Key mechanic: carried pieces pass through blocked positions (qthdiggudy),
 carriers don't. This enables "wall handoff" — player carries piece to wall
@@ -574,6 +608,158 @@ def plan_action(player, goals, whites, blues, collidable, blocked, slots, slots2
     return None
 
 
+def smart_action_l7(player, goals, whites, blues, collidable, blocked, slots, slots2, slot_aligned):
+    """Saboteur-aware planner for L7. Reaches 10/13 with prime 'RRRUUURRRR5'.
+    Differs from plan_action by:
+      - Unconditional white-destroy priority when facing/adjacent
+      - Excludes pieces carried by whites (handled via destroy)
+      - Blues get exclusive claim on pieces they're carrying
+    """
+    px, py, prot = player.x, player.y, player.rotation
+    fx, fy = facing_pos(px, py, prot)
+    pc = game.nsevyuople.get(player, None)
+
+    if pc is not None:
+        cpx, cpy = pc.x, pc.y
+        cdx, cdy = cpx - px, cpy - py
+        if (cpx, cpy) in slots:
+            return ACT5
+        placed_pos = set((g.x, g.y) for g in goals
+                         if (g.x, g.y) in slots and g not in game.zmqreragji and g is not pc)
+        targets = set()
+        for sx, sy in slot_aligned:
+            if (sx, sy) in placed_pos: continue
+            tpx, tpy = sx - cdx, sy - cdy
+            if 0 <= tpx < 64 and 0 <= tpy < 64:
+                targets.add((tpx, tpy))
+        obs = collidable.copy()
+        obs.discard((px, py)); obs.discard((cpx, cpy))
+        path = bfs_carry((px, py), targets, obs, cdx, cdy, blocked)
+        if path and len(path) > 1:
+            return pos_to_action(px, py, path[1][0], path[1][1])
+        if path and len(path) == 1:
+            return ACT5
+        return ACT5
+
+    # Not carrying
+    for w in whites:
+        if (w.x, w.y) == (fx, fy):
+            return ACT5
+    for w in whites:
+        if adjacent((px, py), (w.x, w.y)):
+            dx, dy = w.x - px, w.y - py
+            if abs(dy) >= abs(dx):
+                return UP if dy < 0 else DOWN
+            return RIGHT if dx > 0 else LEFT
+
+    obs = collidable.copy()
+    obs.discard((px, py))
+    blue_set = set(blues)
+    targets_pieces = []
+    for g in goals:
+        if (g.x, g.y) in slots and g not in game.zmqreragji: continue
+        claimed = game.zmqreragji.get(g)
+        if claimed in blue_set: continue
+        if claimed is player: continue
+        if claimed is not None and 'ysysltqlke' in claimed.tags: continue
+        targets_pieces.append(g)
+
+    best = None
+    for g in targets_pieces:
+        gx, gy = g.x, g.y
+        for ddx, ddy in DIR_LIST:
+            ax, ay = gx + ddx, gy + ddy
+            if not (0 <= ax < 64 and 0 <= ay < 64): continue
+            if (ax, ay) in obs and (ax, ay) != (px, py): continue
+            off_x, off_y = gx - ax, gy - ay
+            placed_pos = set((gg.x, gg.y) for gg in goals
+                             if (gg.x, gg.y) in slots and gg not in game.zmqreragji and gg is not g)
+            dt = set()
+            for sx, sy in slot_aligned:
+                if (sx, sy) in placed_pos: continue
+                tpx, tpy = sx - off_x, sy - off_y
+                if 0 <= tpx < 64 and 0 <= tpy < 64:
+                    dt.add((tpx, tpy))
+            if not dt: continue
+            carry_obs = obs.copy()
+            carry_obs.discard((gx, gy))
+            cpath = bfs_carry((ax, ay), dt, carry_obs, off_x, off_y, blocked)
+            if cpath is None: continue
+            apath = bfs_path((px, py), (ax, ay), obs)
+            if apath is None: continue
+            cost = len(apath) + len(cpath)
+            if best is None or cost < best[0]:
+                best = (cost, apath, g, (ax, ay))
+
+    if best:
+        cost, apath, piece, (ax, ay) = best
+        if (ax, ay) == (px, py):
+            gx, gy = piece.x, piece.y
+            if (fx, fy) == (gx, gy): return ACT5
+            dx, dy = gx - px, gy - py
+            if abs(dy) >= abs(dx):
+                return UP if dy < 0 else DOWN
+            return RIGHT if dx > 0 else LEFT
+        if len(apath) > 1:
+            return pos_to_action(px, py, apath[1][0], apath[1][1])
+
+    # Long white chase
+    best_wp = None
+    for w in whites:
+        adj_cells = set()
+        for ddx, ddy in DIR_LIST:
+            ax, ay = w.x + ddx, w.y + ddy
+            if 0 <= ax < 64 and 0 <= ay < 64 and (ax, ay) not in collidable:
+                adj_cells.add((ax, ay))
+        if not adj_cells: continue
+        p = bfs_to_targets((px, py), adj_cells, obs)
+        if p and (best_wp is None or len(p) < len(best_wp)):
+            best_wp = p
+    if best_wp and len(best_wp) > 1:
+        return pos_to_action(px, py, best_wp[1][0], best_wp[1][1])
+
+    for a, (dx, dy) in [(UP, (0, -4)), (DOWN, (0, 4)), (LEFT, (-4, 0)), (RIGHT, (4, 0))]:
+        nx, ny = px + dx, py + dy
+        if (nx, ny) in collidable or (nx, ny) in blocked: continue
+        if not (0 <= nx < 64 and 0 <= ny < 64): continue
+        return a
+    return UP
+
+
+def solve_l7_smart(prev_solutions, prime_str='RRRUUURRRR5'):
+    """L7 solver: prime walk + smart_action. Reaches 10/13, does not solve.
+    Kept for future improvement."""
+    fd = replay_from_solutions(prev_solutions)
+    slots = game.wyzquhjerd
+    slots2 = game.lqctaojiby
+    slot_aligned = set((sx, sy) for sx, sy in slots if sx % CELL == 0 and sy % CELL == 0)
+    prime = string_to_actions(prime_str)
+    solution = []
+    for step in range(150):
+        player = game.current_level.get_sprites_by_tag("wbmdvjhthc")[0]
+        goals = game.current_level.get_sprites_by_tag("geezpjgiyd")
+        whites = game.current_level.get_sprites_by_tag("ysysltqlke")
+        blues = game.current_level.get_sprites_by_tag("kdweefinfi")
+        collidable = set(game.pkbufziase)
+        blocked = set(game.qthdiggudy)
+        if step < len(prime):
+            action = prime[step]
+        else:
+            action = smart_action_l7(player, goals, whites, blues, collidable, blocked,
+                                     slots, slots2, slot_aligned)
+        fd = env.step(action)
+        solution.append(action)
+        if fd.levels_completed > len(prev_solutions) or fd.state.name == 'WIN':
+            print(f"  L7 SOLVED! {len(solution)} moves")
+            return solution
+        if fd.state.name in ('LOSE', 'GAME_OVER'):
+            goals_final = game.current_level.get_sprites_by_tag("geezpjgiyd")
+            placed = sum(1 for g in goals_final if (g.x, g.y) in slots and g not in game.zmqreragji)
+            print(f"  L7 smart failed, placed={placed}/13")
+            return None
+    return None
+
+
 import random
 
 def solve_random_greedy(prev_solutions, max_attempts=200, seed=42):
@@ -717,8 +903,15 @@ for lv in range(20):
     elif not has_ai:
         solution = solve_no_ai()
     else:
-        print(f"  Trying greedy solver...")
-        solution = solve_with_ai(all_solutions)
+        if lv == 7:
+            print(f"  Trying L7 smart saboteur-aware solver...")
+            solution = solve_l7_smart(all_solutions)
+            if solution is None:
+                print(f"  L7 smart failed -- falling back to engine greedy")
+                solution = solve_with_ai(all_solutions)
+        else:
+            print(f"  Trying greedy solver...")
+            solution = solve_with_ai(all_solutions)
         if solution is None:
             print(f"  Greedy failed -- trying randomized greedy (500 attempts)")
             solution = solve_random_greedy(all_solutions, max_attempts=500)

@@ -17,7 +17,24 @@ SOLVER:
 - Actions: 4 push directions + all valid jumps
 - Handles piece-on-block transport through wall channels
 
-L7 STATUS (2026-04-12): UNSOLVED. Two investigations confirm:
+L7 STATUS (2026-04-12 session 3): UNSOLVED — now with deep empirical verification.
+Session 3 findings (engine-as-oracle, minimal source reading):
+  - Clicks DO register on L7 pieces at solver's formula coords (cs=6, off=(5,5)).
+    aufxjsaidrw is the selection signal (None -> bjwicxpwbxc wrapper).
+  - Jumps execute correctly: L,L,U,U,L,L,L pushes block to (0,3), then
+    select (8,14) + DOWN arrow (8,26) fires (0,1)->(0,3) in scene graph.
+  - Model matches engine on pushes, pegs-on-blocks, jump validity, removal.
+  - Right-N@(22,6) neighborhood: (22,3)=wall-up, (22,4)=wall-up+block,
+    (22,5)=walkable only (no wall variant so blocks can't settle there),
+    (21,6)/(23,6)/(22,7) = empty. No push sequence can deliver a
+    jumpable-middle adjacent to right-N.
+  - Red@(6,1) has zero valid jumps: (6,2) peg middle exists but landing
+    (6,3) has kraubslpehi-3 wall (no hupkpseyuim), invalid landing.
+  - 2.2M+ state A* found no reducing sequence.
+  - Session 3 probes saved as arc-agi-3/experiments/lf52_l7_*.py
+  - Full writeup: shared-context/arc-agi-3/game-mechanics/lf52.md
+
+Two investigations confirm (predates session 3):
   1. right-N@(22,6) is structurally immobile — zero valid jump directions under
      any push sequence (middle cell (22,5) has no piece/peg to jump over).
   2. Block at (22,4) = `;` has no peg, so can't become a jumpable middle.

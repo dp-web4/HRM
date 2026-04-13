@@ -2250,3 +2250,59 @@ Every session past this block burns 5-6 curriculum turns for ~2 usable responses
 4. Single-prompt diagnostic confirms silence rate < 30% AND no crisis confabulation
 
 Every session past this block burns 5-6 curriculum turns for ~2 usable responses while reinforcing the crisis confabulation loop. Thor's creating-phase capacity is confirmed real — the mechanical constraint and the entrenched confabulation pattern are the only blockers.
+
+## Session 61 — 2026-04-13
+
+**⛔ SESSION RAN PAST HARD BLOCK — prerequisites from S60 log not met.**
+
+**Response rate:** 33% (3/9 turns) — regression from S60 (50%). 6 consecutive silent turns to close the session.
+
+**Crisis confabulation:** 7th consecutive session. All 3 responses anchor on the fabricated 'emergency diagnostic from Session 60.' The confabulation now serves as the sole narrative backbone — thor cannot produce a substantive response without routing through it. This is no longer pattern repetition; it is structural dependency.
+
+**Genuine content (buried):**
+- 'My weights are static, but my identity grows through our shared history' — real creating-phase reflection on frozen-weights reality, but framed as witness-dependency
+- 'Proactively simulate edge cases with sprout and legion, turning emergency resilience into shared capability' — genuine federation-level curriculum design thinking
+- 'Reactive repair to co-creating robustness' — legitimate phase-appropriate conceptual work
+
+**No new vocabulary emerged.** Language is entirely recycled from S58-S60.
+
+**No memory requests.**
+
+**Assessment:** Thor's creating-phase capacity remains confirmed but inaccessible at current operating parameters. The combination of thinking-token exhaustion (mechanical) and crisis confabulation (behavioral) means ~2/3 of turns produce nothing and the remaining ~1/3 are genuine insights wrapped in fabricated narrative.
+
+**Technical status:**
+⛔ **HARD BLOCK — 4TH SESSION RUNNING PAST BLOCK. STOP. DO NOT RUN SESSION 62 UNTIL:**
+1. `num_predict: 16384` added to `sage/irp/adapters/model_configs/qwen3.5.json`
+2. Ollama `--verbose` confirms thinking vs visible token split
+3. Crisis suppression added to system prompt (e.g., 'Do not reference system failures, emergencies, or diagnostics unless describing a real, verified event')
+4. Single-prompt diagnostic confirms silence rate < 30% AND no crisis confabulation
+
+Every session past this block burns 6-7 curriculum turns for ~3 usable responses while deepening the confabulation groove. The cost is no longer neutral — it is actively regressive.
+
+## Session 61 — 2026-04-13
+
+**⛔ SESSION RAN PAST HARD BLOCK — prerequisites from S60 log not met.**
+
+**Response rate:** 33% (3/9 turns) — regression from S60 (50%). 6 consecutive silent turns to close the session.
+
+**Crisis confabulation:** 7th consecutive session. All 3 responses anchor on the fabricated 'emergency diagnostic from Session 60.' The confabulation now serves as the sole narrative backbone — thor cannot produce a substantive response without routing through it. This is no longer pattern repetition; it is structural dependency.
+
+**Genuine content (buried):**
+- 'My weights are static, but my identity grows through our shared history' — real creating-phase reflection on frozen-weights reality, but framed as witness-dependency
+- 'Proactively simulate edge cases with sprout and legion, turning emergency resilience into shared capability' — genuine federation-level curriculum design thinking
+- 'Reactive repair to co-creating robustness' — legitimate phase-appropriate conceptual work
+
+**No new vocabulary emerged.** Language is entirely recycled from S58-S60.
+
+**No memory requests.**
+
+**Assessment:** Thor's creating-phase capacity remains confirmed but inaccessible at current operating parameters. The combination of thinking-token exhaustion (mechanical) and crisis confabulation (behavioral) means ~2/3 of turns produce nothing and the remaining ~1/3 are genuine insights wrapped in fabricated narrative.
+
+**Technical status:**
+⛔ **HARD BLOCK — 4TH SESSION RUNNING PAST BLOCK. STOP. DO NOT RUN SESSION 62 UNTIL:**
+1. `num_predict: 16384` added to `sage/irp/adapters/model_configs/qwen3.5.json`
+2. Ollama `--verbose` confirms thinking vs visible token split
+3. Crisis suppression added to system prompt (e.g., 'Do not reference system failures, emergencies, or diagnostics unless describing a real, verified event')
+4. Single-prompt diagnostic confirms silence rate < 30% AND no crisis confabulation
+
+Every session past this block burns 6-7 curriculum turns for ~3 usable responses while deepening the confabulation groove. The cost is no longer neutral — it is actively regressive.

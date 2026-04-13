@@ -17,6 +17,19 @@ SOLVER:
 - Actions: 4 push directions + all valid jumps
 - Handles piece-on-block transport through wall channels
 
+L7 STATUS (2026-04-12 session 6): PATH-DEPENDENCY RULED OUT.
+Session 6 tested the one assumption five prior agents shared but never checked:
+that L7's initial state is the same regardless of how you reach it. Full engine
+state (game attrs, eq attrs, recursive scene graph, pixels, board layout) was
+captured after Path A (direct set_level(6)) and Path B (sequential L1-L6 play).
+Board state is IDENTICAL. Only bookkeeping (`_score`, `_full_reset`) and
+win-animation RNG cosmetics (`foztuzaztfm`, `np_rng`, frame_hash) differ — none
+of which affect gameplay. `on_set_level` creates a fresh `equnaohchtj()` each
+time, and `next_level()` routes through the same hook. L7 is path-independent,
+and unsolvable under this engine regardless of the path taken. See session 6
+writeup in shared-context/arc-agi-3/game-mechanics/lf52.md. Probe file:
+arc-agi-3/experiments/lf52_l7_pathdep.py.
+
 L7 STATUS (2026-04-12 session 5): CONFIRMED STRUCTURALLY UNSOLVABLE in this engine.
 Five independent Opus agents have converged on the same finding. See game-mechanics/lf52.md
 section "L7 Final — Context-Question Session (2026-04-12 session 5)" for the frame-questioning

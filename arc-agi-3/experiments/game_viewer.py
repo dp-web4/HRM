@@ -128,46 +128,275 @@ a:hover{text-decoration:underline}
 """
 
 
+# ─── Canonical status from game_coordination.json ─────────
+
+_COORD_CACHE = {}
+def canonical_status(game):
+    """Return dict with solved/best_level/levels/solved_by/solved_actions/baseline/status
+    from game_coordination.json. Cached per page-load."""
+    coord_path = os.path.join(os.path.dirname(os.path.abspath(VISUAL_MEMORY)),
+                              'game_coordination.json')
+    if not _COORD_CACHE.get('_mtime') == (os.path.getmtime(coord_path) if os.path.exists(coord_path) else None):
+        _COORD_CACHE.clear()
+        _COORD_CACHE['_mtime'] = os.path.getmtime(coord_path) if os.path.exists(coord_path) else None
+        if os.path.exists(coord_path):
+            try:
+                with open(coord_path) as f:
+                    coord = json.load(f)
+                for g in coord.get('games', []):
+                    _COORD_CACHE[g.get('family')] = g
+            except Exception:
+                pass
+    return _COORD_CACHE.get(game, {})
+
+
+def status_pill(game):
+    """Small HTML pill indicating SOLVED/PARTIAL/n status for a game."""
+    s = canonical_status(game)
+    if not s:
+        return ''
+    bl = s.get('best_level')
+    tl = s.get('levels')
+    solved = s.get('solved', False)
+    if bl is None or tl is None:
+        return ''
+    if solved:
+        return f'<span class="status-pill solved">{bl}/{tl} WIN</span>'
+    elif bl == 0:
+        return f'<span class="status-pill zero">0/{tl}</span>'
+    else:
+        return f'<span class="status-pill partial">{bl}/{tl}</span>'
+
+
 # ─── Browse: list all stored games ────────────────────────
 
 def render_browse():
     vm = os.path.abspath(VISUAL_MEMORY)
-    games = {}
+    games = {}  # game → list of (kind, label, meta) tuples
     if os.path.isdir(vm):
         for game_dir in sorted(os.listdir(vm)):
             game_path = os.path.join(vm, game_dir)
             if not os.path.isdir(game_path):
                 continue
+            entries = []
+            # Collect run_* subdirectories (full replay runs)
             runs = sorted([d for d in os.listdir(game_path)
                           if d.startswith("run_") and os.path.isdir(os.path.join(game_path, d))])
-            if runs:
-                games[game_dir] = runs
+            for run in runs:
+                run_path = os.path.join(game_path, run, "run.json")
+                meta = ""
+                if os.path.exists(run_path):
+                    try:
+                        with open(run_path) as f:
+                            rm = json.load(f)
+                        meta = f" — {rm.get('levels_completed','?')}L, {rm.get('total_steps','?')}steps, {rm.get('result','?')}"
+                    except Exception:
+                        pass
+                entries.append(('run', run, meta))
+            # Collect flat PNGs at game root (level-snapshot artifacts from agents)
+            flat_pngs = sorted(f for f in os.listdir(game_path)
+                              if f.endswith('.png') and os.path.isfile(os.path.join(game_path, f)))
+            if flat_pngs:
+                # Extract level info from filenames
+                levels = set()
+                for f in flat_pngs:
+                    # Patterns: L0_start.png, L1_solved.png, L2_stuck.png, etc.
+                    parts = f.replace('.png', '').split('_', 1)
+                    if parts[0].startswith('L') and parts[0][1:].isdigit():
+                        levels.add(parts[0])
+                meta = f" — {len(flat_pngs)} frames, {len(levels)} levels" if levels else f" — {len(flat_pngs)} frames"
+                entries.append(('flat', 'level-snapshots', meta))
+            if entries:
+                games[game_dir] = entries
 
     cards = []
-    for game, runs in sorted(games.items()):
+    for game, entries in sorted(games.items()):
         links = []
-        for run in runs:
-            run_path = os.path.join(vm, game, run, "run.json")
-            meta = ""
-            if os.path.exists(run_path):
-                try:
-                    with open(run_path) as f:
-                        rm = json.load(f)
-                    meta = f" — {rm.get('levels_completed','?')}L, {rm.get('total_steps','?')}steps, {rm.get('result','?')}"
-                except Exception:
-                    pass
-            links.append(f'<a class="run-link" href="/game/{game}/{run}">{run}{meta}</a>')
-        cards.append(f'<div class="game-card"><h3>{game}</h3>{"".join(links)}</div>')
+        for kind, label, meta in entries:
+            if kind == 'run':
+                links.append(f'<a class="run-link" href="/game/{game}/{label}">{label}{meta}</a>')
+            else:  # flat
+                links.append(f'<a class="run-link" href="/game/{game}/_flat">{label}{meta}</a>')
+        pill = status_pill(game)
+        cards.append(f'<div class="game-card"><h3>{game} {pill}</h3>{"".join(links)}</div>')
 
     if not cards:
         cards = ['<p style="color:#666">No stored games found.</p>']
 
     return f"""<!DOCTYPE html><html><head><meta charset="UTF-8">
-<title>ARC-AGI-3 — Stored Games</title><style>{CSS}</style></head><body>
+<title>ARC-AGI-3 — Stored Games</title><style>{CSS}
+.status-pill{{display:inline-block;margin-left:8px;padding:2px 6px;border-radius:3px;font-size:0.7em;font-weight:bold;vertical-align:middle}}
+.status-pill.solved{{background:#4ecdc4;color:#000}}
+.status-pill.partial{{background:#e0a020;color:#000}}
+.status-pill.zero{{background:#666;color:#ccc}}
+</style></head><body>
 <div class="nav"><a href="/">Live</a> <a href="/browse" class="active">Stored</a></div>
 <div class="container">
 <h2 style="margin-bottom:12px">Stored Games</h2>
 <div class="game-list">{"".join(cards)}</div>
+</div></body></html>"""
+
+
+# ─── Game flat view: level snapshots at game root ────────
+
+def render_game_flat(game):
+    """Render games whose frames live as flat files at the game root
+    (e.g. L0_start.png, L1_solved.png, L2_stuck.png) rather than in run_* dirs.
+
+    Groups by level, shows all phases per level (start/solved/stuck/etc).
+    """
+    game_dir = os.path.join(os.path.abspath(VISUAL_MEMORY), game)
+    if not os.path.isdir(game_dir):
+        return f"<html><body>Game not found: {game}</body></html>"
+
+    # Find all flat PNGs and parse level + phase from name
+    flat_pngs = sorted(f for f in os.listdir(game_dir)
+                      if f.endswith('.png') and os.path.isfile(os.path.join(game_dir, f)))
+
+    # Phase priority: beginning → end (left-to-right reading order)
+    PHASE_ORDER = {
+        'initial': 0, 'start': 1, 'begin': 2, 'pre': 3,
+        'mid': 10, 'probe': 11, 'frame': 12,
+        'stuck': 20, 'exec_fail': 21, 'fail': 22,
+        'solved': 30, 'final': 31, 'end': 32, 'post': 33, 'win': 34,
+    }
+    def phase_key(phase):
+        # exact match first, then prefix match, then fallback to alphabetical
+        if phase in PHASE_ORDER:
+            return (PHASE_ORDER[phase], phase)
+        for key, pri in PHASE_ORDER.items():
+            if phase.startswith(key):
+                return (pri, phase)
+        return (100, phase)
+
+    # Phases that show the POST-transition frame (unreliable: show next level's start).
+    # Hide these unless a per-game override exists.
+    POST_TRANSITION_PHASES = {'solved', 'end', 'final', 'win'}
+
+    # Group by level
+    by_level = defaultdict(list)  # level_num → [(phase, filename), ...]
+    other = []
+    hidden_count = 0
+    for f in flat_pngs:
+        stem = f.replace('.png', '')
+        parts = stem.split('_', 1)
+        if parts[0].startswith('L') and parts[0][1:].isdigit():
+            lv = int(parts[0][1:])
+            phase = parts[1] if len(parts) > 1 else 'frame'
+            # Skip post-transition phases — they show the NEXT level's start,
+            # not the "solved" state. Would need -2 replay to capture correctly.
+            if phase in POST_TRANSITION_PHASES:
+                hidden_count += 1
+                continue
+            by_level[lv].append((phase, f))
+        else:
+            other.append(f)
+
+    # Sort phases within each level: beginning → end
+    for lv in by_level:
+        by_level[lv].sort(key=lambda pf: phase_key(pf[0]))
+
+    # Load results/solutions JSON and extract a human-friendly summary
+    summary = {}  # merged summary from all available JSON files
+    for json_name in ['solutions.json', f'{game}_results.json', 'results.json']:
+        jp = os.path.join(game_dir, json_name)
+        if os.path.exists(jp):
+            try:
+                with open(jp) as jf:
+                    d = json.load(jf)
+                for k in ('result', 'levels_solved', 'total_actions', 'solver',
+                          'win_levels', 'baseline', 'levels_completed'):
+                    if k in d and k not in summary:
+                        summary[k] = d[k]
+            except Exception:
+                pass
+    # Also pull from shared-context game_coordination.json for canonical status
+    coord_path = os.path.join(os.path.dirname(os.path.abspath(VISUAL_MEMORY)),
+                              'game_coordination.json')
+    if os.path.exists(coord_path):
+        try:
+            with open(coord_path) as f:
+                coord = json.load(f)
+            for g in coord.get('games', []):
+                if g.get('family') == game:
+                    summary['_solved'] = g.get('solved', False)
+                    summary['_solved_by'] = g.get('solved_by', '')
+                    summary['_solved_actions'] = g.get('solved_actions', None)
+                    summary['_best_level'] = g.get('best_level', None)
+                    summary['_levels'] = g.get('levels', None)
+                    summary['_baseline'] = g.get('baseline', None)
+                    summary['_status'] = g.get('status', '')
+                    break
+        except Exception:
+            pass
+
+    # Build level cards
+    cards = []
+    for lv in sorted(by_level.keys()):
+        phase_imgs = []
+        for phase, fname in by_level[lv]:
+            b64 = file_to_b64(os.path.join(game_dir, fname))
+            phase_imgs.append(f'''<div class="phase">
+                <img src="data:image/png;base64,{b64}" title="{fname}">
+                <div class="plabel">{phase}</div>
+            </div>''')
+        cards.append(f'''<div class="flat-cell">
+            <div class="flat-label">L{lv+1} — {len(by_level[lv])} frames</div>
+            <div class="phase-row">{"".join(phase_imgs)}</div>
+        </div>''')
+
+    if not cards:
+        cards = ['<p style="color:#666">No level frames found.</p>']
+
+    # Build a compact status pill row from summary
+    pills = []
+    solved = summary.get('_solved', False)
+    if '_best_level' in summary and '_levels' in summary and summary['_best_level'] is not None:
+        bl = summary['_best_level']; tl = summary['_levels']
+        color = '#4ecdc4' if solved else ('#ff6b6b' if bl < tl else '#888')
+        pills.append(f'<span style="background:{color};color:#000;padding:2px 8px;border-radius:3px;font-weight:bold">{bl}/{tl} {"SOLVED" if solved else "PARTIAL"}</span>')
+    if summary.get('_solved_actions'):
+        pills.append(f'<span class="pill">{summary["_solved_actions"]} actions</span>')
+    if summary.get('_baseline'):
+        pills.append(f'<span class="pill">baseline {summary["_baseline"]}</span>')
+    if summary.get('_solved_by'):
+        pills.append(f'<span class="pill">by {summary["_solved_by"]}</span>')
+    if summary.get('solver'):
+        pills.append(f'<span class="pill" style="color:#666">{summary["solver"]}</span>')
+    if summary.get('_status') and summary['_status'] not in ('solved', 'in_progress'):
+        pills.append(f'<span class="pill" style="color:#c97">{summary["_status"]}</span>')
+
+    notes = []
+    if hidden_count:
+        notes.append(f'Hiding {hidden_count} post-transition frames (they show next level\'s start, not the solved state).')
+
+    meta_html = ''
+    if pills:
+        meta_html += '<div class="pill-row">' + ' '.join(pills) + '</div>'
+    if notes:
+        meta_html += '<div class="note-row">' + ' · '.join(notes) + '</div>'
+
+    return f"""<!DOCTYPE html><html><head><meta charset="UTF-8">
+<title>ARC-AGI-3 — {game} (level snapshots)</title><style>{CSS}
+.flat-list{{display:flex;flex-direction:column;gap:4px}}
+.flat-cell{{background:#181818;border:1px solid #2a2a2a;border-radius:3px;padding:4px 8px;display:flex;align-items:center;gap:12px}}
+.flat-label{{color:#4ecdc4;font-size:0.85em;min-width:110px;flex-shrink:0}}
+.phase-row{{display:flex;gap:4px;flex-wrap:wrap;flex:1}}
+.phase{{text-align:center}}
+.phase img{{width:160px;height:160px;image-rendering:pixelated;background:#222;border:1px solid #333;display:block}}
+.plabel{{font-size:0.7em;color:#888;margin-top:1px;line-height:1}}
+.container{{padding:8px 12px}}
+.header{{margin-bottom:6px}}
+.header h1{{font-size:1.1em}}
+.pill-row{{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:4px;font-size:0.8em}}
+.pill{{background:#222;color:#aaa;padding:2px 8px;border-radius:3px;border:1px solid #333}}
+.note-row{{font-size:0.75em;color:#666;margin-bottom:6px}}
+</style></head><body>
+<div class="nav"><a href="/">Live</a> <a href="/browse" class="active">Stored</a></div>
+<div class="container">
+<div class="header"><h1>{game} <span style="font-size:0.7em;color:#666">level snapshots</span></h1></div>
+{meta_html}
+<div class="flat-list">{"".join(cards)}</div>
 </div></body></html>"""
 
 
@@ -253,9 +482,42 @@ def render_game_run(game, run):
 
     ncols = 3 if win_levels <= 9 else 4
 
+    # Canonical status banner (shows true game state from coordination,
+    # independent of this particular run's outcome)
+    canon = canonical_status(game)
+    canon_html = ''
+    if canon:
+        c_bl = canon.get('best_level', '?')
+        c_tl = canon.get('levels', '?')
+        c_solved = canon.get('solved', False)
+        c_by = canon.get('solved_by', '')
+        c_acts = canon.get('solved_actions')
+        c_base = canon.get('baseline')
+        c_status = canon.get('status', '')
+
+        canon_bits = []
+        if c_solved:
+            canon_bits.append(f'<span style="background:#4ecdc4;color:#000;padding:2px 8px;border-radius:3px;font-weight:bold">{c_bl}/{c_tl} WIN</span>')
+        else:
+            canon_bits.append(f'<span style="background:#e0a020;color:#000;padding:2px 8px;border-radius:3px;font-weight:bold">{c_bl}/{c_tl} PARTIAL</span>')
+        if c_acts: canon_bits.append(f'<span class="pill">{c_acts} actions</span>')
+        if c_base: canon_bits.append(f'<span class="pill">baseline {c_base}</span>')
+        if c_by: canon_bits.append(f'<span class="pill">by {c_by}</span>')
+        if c_status and c_status not in ('solved', 'in_progress'):
+            canon_bits.append(f'<span class="pill" style="color:#c97">{c_status}</span>')
+        canon_html = f'<div class="canon-banner"><span style="color:#888;font-size:0.75em;margin-right:6px">GAME:</span>{" ".join(canon_bits)}</div>'
+
+    # Note if this run diverges from canonical status
+    run_note = ''
+    if canon.get('solved') and result != 'WIN':
+        run_note = '<div class="note-row" style="color:#e0a020">This is a partial-attempt run. The game was solved separately (see GAME status above).</div>'
+
     return f"""<!DOCTYPE html><html><head><meta charset="UTF-8">
 <title>ARC-AGI-3 — {game} {run}</title><style>{CSS}
 .grid3x3{{grid-template-columns:repeat({ncols},1fr)}}
+.canon-banner{{background:#181818;border:1px solid #2a2a2a;border-radius:3px;padding:6px 10px;margin-bottom:8px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}}
+.pill{{background:#222;color:#aaa;padding:2px 8px;border-radius:3px;border:1px solid #333;font-size:0.8em}}
+.note-row{{font-size:0.75em;color:#666;margin-bottom:6px}}
 </style></head><body>
 <div class="nav"><a href="/">Live</a> <a href="/browse" class="active">Stored</a></div>
 <div class="container">
@@ -268,6 +530,8 @@ def render_game_run(game, run):
         <div style="color:#666">{player}</div>
     </div>
 </div>
+{canon_html}
+{run_note}
 <div class="grid3x3">{"".join(cells)}</div>
 {"<h3 style='margin-top:16px;color:#a855f7'>Animations (" + str(len(gifs)) + ")</h3>" if gifs else ""}
 <div class="gif-grid">{"".join(gif_cells)}</div>
@@ -395,7 +659,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
             html = render_browse()
         elif path.startswith('/game/'):
             parts = path[6:].strip('/').split('/')
-            if len(parts) >= 2:
+            if len(parts) >= 2 and parts[1] == '_flat':
+                html = render_game_flat(parts[0])
+            elif len(parts) >= 2:
                 html = render_game_run(parts[0], parts[1])
             else:
                 html = render_browse()

@@ -10,10 +10,13 @@ or Qwen-family models. Any machine with Ollama can run SAGE cognition.
 """
 
 import json
+import logging
 import time
 import urllib.request
 import urllib.error
 from typing import Any, Dict, List, Optional
+
+_log = logging.getLogger('sage.ollama_irp')
 
 # Import base directly to avoid sage.irp.__init__ pulling in torch-dependent plugins.
 # This keeps OllamaIRP runnable on machines without PyTorch (e.g. McNugget).
@@ -126,7 +129,14 @@ class OllamaIRP(IRPPlugin):
                 result = json.loads(resp.read())
                 response_text = self._adapter.extract_response(result, endpoint)
 
-                # Update conversation memory
+                if not response_text or not response_text.strip():
+                    raw_content = result.get('message', {}).get('content', '') if endpoint == '/api/chat' else result.get('response', '')
+                    _log.warning(
+                        "Empty response from Ollama. endpoint=%s, "
+                        "raw_len=%d, raw_preview=%.500s",
+                        endpoint, len(raw_content or ''), raw_content or '(none)'
+                    )
+
                 self._update_memory(prompt, response_text)
 
                 return response_text

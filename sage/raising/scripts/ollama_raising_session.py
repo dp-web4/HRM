@@ -42,6 +42,7 @@ sys.path.insert(0, str(HRM_ROOT))
 
 import json
 import argparse
+import logging
 import time
 from datetime import datetime
 from typing import Optional, List, Dict, Any
@@ -1100,6 +1101,12 @@ def main():
                         help="Advance to next phase before running session (instructor-driven)")
 
     args = parser.parse_args()
+
+    # Diagnostic logging for empty response investigation
+    logging.basicConfig(
+        level=logging.WARNING,
+        format='%(asctime)s %(name)s %(levelname)s %(message)s',
+    )
 
     # Resolve instance — pass model too so we get the right instance
     # when multiple instances exist for the same machine

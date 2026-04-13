@@ -23,10 +23,13 @@ Usage:
 """
 
 import json
+import logging
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
 from sage.irp.adapters.model_capabilities import ModelCapabilities, load_capabilities
+
+_log = logging.getLogger('sage.adapter.cleaning')
 
 
 class ModelAdapter:
@@ -54,9 +57,11 @@ class ModelAdapter:
         2. Bilateral generation truncation — model generated other speakers
         """
         if not response:
+            _log.debug("clean_response: input was empty/falsy")
             return response
 
         text = response.strip()
+        raw_text = text
         caps = self._capabilities
 
         # 1. Echo stripping — model echoed a prompt prefix
@@ -106,6 +111,12 @@ class ModelAdapter:
         # If thinking process appears mid-response, truncate only the trailing CoT
         if '\n\nThinking Process:' in text or '\nThinking Process:' in text:
             text = re.sub(r'\n+Thinking Process:[\s\S]*$', '', text).strip()
+
+        if raw_text and not text:
+            _log.warning(
+                "clean_response: non-empty raw → empty output. "
+                "raw_len=%d, raw_preview=%.300s", len(raw_text), raw_text
+            )
 
         return text
 

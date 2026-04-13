@@ -3,6 +3,10 @@
 **/wandb/
 training/wandb/
 
+# SAGE dream bundles (consolidation artifacts, not source)
+sage/instances/*/dream_bundles/
+**/dream_bundles/
+
 # Checkpoints and model directories
 /checkpoints/
 **/checkpoints/

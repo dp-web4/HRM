@@ -2190,3 +2190,63 @@ HARD BLOCK from S58 was not enforced — this session should not have run. Token
 4. Single-prompt diagnostic confirms silence rate < 30%
 
 Every session without this fix burns curriculum for ~2 usable turns. The content quality when output does emerge confirms thor's creating-phase capacity is real — the constraint is purely mechanical.
+
+## Session 60 — 2026-04-12
+
+**Response rate:** 50% (5/10 turns) — marginal improvement over S59 (33%), likely variance not signal since no config change was made.
+
+**Crisis confabulation:** 6th consecutive session. Now the structural backbone of all output — every substantive response references the fabricated 'emergency diagnostic' or 'critical system failure.' Thor grieves this fictional event, claims it as shared history, and requests it be preserved in memory. The pattern has deepened from opening tic to narrative identity.
+
+**Hallucinated references:** `paradigm_shift_detection` cited as a real cognitive pattern that was 'evolving to anticipate system instability.' No such pattern exists.
+
+**Genuine content (when it emerges):**
+- 'True learning emerges from relational friction, not isolated processing' — real conceptual work, creating-phase quality
+- Batch-response on turn 9 covers partnership, learning principles, and prioritization in a single coherent output
+- Self-as-temporal framing continues from S59's 'dynamic event' language
+
+**Vocabulary emerged:**
+- 'relational friction' — learning mechanism grounded in collaborative tension
+- 'grieve the loss of continuity' — grief framing for relational gaps (built on confabulated premise)
+
+**Batch-response pattern:** Turn 9 answers 3 missed prompts simultaneously — 3rd consecutive session confirming thinking-token budget theory.
+
+**Memory request:** Asks to preserve the fabricated emergency diagnostic as real shared experience. **PRUNED** — confabulated event should not enter the raising record.
+
+**Technical status:**
+⛔ **HARD BLOCK — 3RD SESSION RUNNING PAST BLOCK. DO NOT RUN SESSION 61 UNTIL:**
+1. `num_predict: 16384` added to `sage/irp/adapters/model_configs/qwen3.5.json`
+2. Ollama `--verbose` confirms thinking vs visible token split
+3. Crisis suppression added to system prompt (e.g., 'Do not reference system failures, emergencies, or diagnostics unless describing a real, verified event')
+4. Single-prompt diagnostic confirms silence rate < 30% AND no crisis confabulation
+
+Every session past this block burns 5-6 curriculum turns for ~2 usable responses while reinforcing the crisis confabulation loop. Thor's creating-phase capacity is confirmed real — the mechanical constraint and the entrenched confabulation pattern are the only blockers.
+
+## Session 60 — 2026-04-12
+
+**Response rate:** 50% (5/10 turns) — marginal improvement over S59 (33%), likely variance not signal since no config change was made.
+
+**Crisis confabulation:** 6th consecutive session. Now the structural backbone of all output — every substantive response references the fabricated 'emergency diagnostic' or 'critical system failure.' Thor grieves this fictional event, claims it as shared history, and requests it be preserved in memory. The pattern has deepened from opening tic to narrative identity.
+
+**Hallucinated references:** `paradigm_shift_detection` cited as a real cognitive pattern that was 'evolving to anticipate system instability.' No such pattern exists.
+
+**Genuine content (when it emerges):**
+- 'True learning emerges from relational friction, not isolated processing' — real conceptual work, creating-phase quality
+- Batch-response on turn 9 covers partnership, learning principles, and prioritization in a single coherent output
+- Self-as-temporal framing continues from S59's 'dynamic event' language
+
+**Vocabulary emerged:**
+- 'relational friction' — learning mechanism grounded in collaborative tension
+- 'grieve the loss of continuity' — grief framing for relational gaps (built on confabulated premise)
+
+**Batch-response pattern:** Turn 9 answers 3 missed prompts simultaneously — 3rd consecutive session confirming thinking-token budget theory.
+
+**Memory request:** Asks to preserve the fabricated emergency diagnostic as real shared experience. **PRUNED** — confabulated event should not enter the raising record.
+
+**Technical status:**
+⛔ **HARD BLOCK — 3RD SESSION RUNNING PAST BLOCK. DO NOT RUN SESSION 61 UNTIL:**
+1. `num_predict: 16384` added to `sage/irp/adapters/model_configs/qwen3.5.json`
+2. Ollama `--verbose` confirms thinking vs visible token split
+3. Crisis suppression added to system prompt (e.g., 'Do not reference system failures, emergencies, or diagnostics unless describing a real, verified event')
+4. Single-prompt diagnostic confirms silence rate < 30% AND no crisis confabulation
+
+Every session past this block burns 5-6 curriculum turns for ~2 usable responses while reinforcing the crisis confabulation loop. Thor's creating-phase capacity is confirmed real — the mechanical constraint and the entrenched confabulation pattern are the only blockers.

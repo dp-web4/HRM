@@ -17,6 +17,10 @@ SOLVER:
 - Actions: 4 push directions + all valid jumps
 - Handles piece-on-block transport through wall channels
 
+L7 STATUS (2026-04-12 session 5): CONFIRMED STRUCTURALLY UNSOLVABLE in this engine.
+Five independent Opus agents have converged on the same finding. See game-mechanics/lf52.md
+section "L7 Final — Context-Question Session (2026-04-12 session 5)" for the frame-questioning
+pass that verified it one more time with deep scene-graph introspection.
 L7 STATUS (2026-04-12 session 3): UNSOLVED — now with deep empirical verification.
 Session 3 findings (engine-as-oracle, minimal source reading):
   - Clicks DO register on L7 pieces at solver's formula coords (cs=6, off=(5,5)).

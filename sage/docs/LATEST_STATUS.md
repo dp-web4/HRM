@@ -1,7 +1,57 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-12 (Session 060 Analysis + Empty Response Diagnostics)**
-**Previous: 2026-04-12 (ARC-AGI-3: 23/25 Games Solved — sk48 cracked, fleet at 92%)**
+**Last Updated: 2026-04-13 (Stop-Sequence Root Cause Found — 0% Empty Responses)**
+**Previous: 2026-04-12 (Session 060 Analysis + Empty Response Diagnostics)**
+
+---
+
+## Stop-Sequence Root Cause: 67% → 0% Empty Responses (Apr 13, 2026 — 00:00 Thor SAGE Session)
+
+### Root Cause: Stop Sequences Kill Generation Inside Think Blocks
+
+The Qwen 3.5 27B empty response mystery is solved. Root cause chain:
+
+1. `qwen3.5.json` had `stop_sequences: ["Thinking Process:", "\nThinking Process:"]`
+2. Model generates `<think>\nThinking Process:\n1. Analyze...` (all inside think block)
+3. Ollama fires stop sequence on "Thinking Process:" — generation halts immediately
+4. Raw response is just `<think>\n` (8 bytes)
+5. `clean_response()` extracts empty content from unclosed think block
+6. Result: empty string
+
+**Evidence**: Direct Ollama API test — with stop_sequences, response was 8 bytes (`<think>\n`).
+Without stop_sequences, same prompt produced 544 bytes of content.
+
+### Fix: Remove Stop Sequences, Rely on Post-Processing
+
+The stop_sequences were added 2026-04-07 to prevent verbose chain-of-thought in responses.
+But the 2026-04-12 fix already handles this correctly — `clean_response()` strips the
+"Thinking Process:" prefix after generation completes. Stop sequences are now redundant AND
+harmful (they race with think-block generation).
+
+**Change**: `qwen3.5.json` stop_sequences set to `[]`.
+
+### Second Bug: Chat Message Parsing Broken
+
+Also discovered: the `ChatAPIAdapter._prose_to_messages()` parser could not handle the
+`[Name]:` format used by `ollama_raising_session.py`. The entire prompt (system + conversation)
+was being sent as a single unstructured user message instead of properly structured
+system/user/assistant messages.
+
+**Root cause**: Regex `r'^(\w[\w\s]*):'` doesn't match `[Claude]:` because `[` is not `\w`.
+**Fix**: Added `_parse_tag_style()` method that handles `[System]` / `[Name]:` format.
+
+### Validation
+
+8-turn integration test with both fixes: **0/8 empty responses** (was 6/9 = 67% in Session 061).
+All turns produced substantive content with proper system/user/assistant message structure.
+
+### Remaining: Chain-of-Thought Leakage
+
+When the model puts ALL content inside `<think>` blocks (no content outside), the fallback
+extracts the thinking content. Some responses contain "1. **Analyze the Request:**" analysis
+format instead of the actual response. Added partial extraction for responses containing a
+"Response:" section. This is cosmetic, not a blocking issue — SAGE is generating content,
+it's just sometimes wrapped in analysis scaffolding.
 
 ---
 

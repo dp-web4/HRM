@@ -330,6 +330,12 @@ def render_game_flat(game):
         except Exception:
             pass
 
+    # Detect indexing convention: if min level number is 0, files are 0-indexed
+    # (display as L1, L2, ...); if min is ≥1, files already use 1-indexed labels
+    # (display as-is without offset)
+    min_level = min(by_level.keys()) if by_level else 0
+    display_offset = 1 if min_level == 0 else 0
+
     # Build level cards
     cards = []
     for lv in sorted(by_level.keys()):
@@ -341,7 +347,7 @@ def render_game_flat(game):
                 <div class="plabel">{phase}</div>
             </div>''')
         cards.append(f'''<div class="flat-cell">
-            <div class="flat-label">L{lv+1} — {len(by_level[lv])} frames</div>
+            <div class="flat-label">L{lv + display_offset} — {len(by_level[lv])} frames</div>
             <div class="phase-row">{"".join(phase_imgs)}</div>
         </div>''')
 

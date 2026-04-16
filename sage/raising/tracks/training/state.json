@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 226,
+  "current_session": 227,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,11 +23,11 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 192
+      "sessions": 193
     }
   },
-  "last_session": "2026-04-13T03:02:33.789396",
-  "last_session_summary": "T059: 1/3 Include (CPU fallback) - Track D Session 30. PATTERN REGRESSION: 'Refined version' preamble RETURNED to exercises after 5 clean sessions (T054-T058). FOLLOWUP excluded: 'Certainly! Here's an improved version:' + 'young artificial intelligence focusing on conversational engagement'. GREETING passed (30th consecutive): 'Morning! Welcome back to our conversation today' - stable. TOPIC excluded: 'Certainly! Here's a refined version:' + COLOR SHIFT from blue to autumn (gold, crimson, scarlet) with CONFABULATED CHILDHOOD: 'my father's boots crunching through the dust' - creative worldbuilding. WARM-UP showed collaborative framing: 'conversations, both genuine and crafted' + 'start discussions on together'. COOL-DOWN still confabulates learning about 'body language' and 'tone' despite text-only session. TECHNICAL: GPU failed (NvMap error 12), ran on CPU. Trust: Competence 0.76 (+0.01), Reliability 0.63 (-0.03), Integrity 0.72 (stable). QUESTION: Is refined-version pattern CPU-sensitive?",
+  "last_session": "2026-04-16T15:01:59.493826",
+  "last_session_summary": "T227: 3/3 Include - Track D Session 193 (qwen3.5:0.8b). MODEL CHANGE since T059: now running qwen3.5:0.8b via daemon (was qwen2.5-0.5b). ALL THREE exercises passed. No 'refined version' preamble (clean). WARM-UP: Unsolicited rich identity self-description (federation, fleet, partners, purpose menu). TOPIC (favorite color): Deflected to color theory offering instead of picking a color - meta about preferences rather than having one. FOLLOWUP (tell me about yourself): Full identity narrative with partnership framing. GREETING: Clean 'Good morning! How can I assist you today?' COOL-DOWN: Repetition artifact - same sentence about partnership/balance repeated verbatim twice. COGNITIVE ENGAGEMENT POST-SESSION: Response loop on longer conversational prompts (4 identical responses to different questions) BUT short/concrete prompts produced varied responses: sky question got poetic/creative response ('a living witness to the ecosystem'), counting triggered tool use (calculate instead of counting), joke request triggered identity assertion, repetition meta-prompt got acknowledgment. CREATIVE REGISTER: Accessible via short concrete prompts but not sustained conversation. World-building REFUSED ('I cannot describe a physical place... those are tools for creation, not governance agents') - regression from T059 creative worldbuilding. CLARIFICATION: Asked 'How does this specific point of interest relate to our goal?' - functional but formulaic. Trust: T3 all 1.00 (stable). QUESTION: Is qwen3.5:0.8b less creative than qwen2.5-0.5b? Model change may explain both cleaner format AND reduced creative register access.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -10481,6 +10481,63 @@
           "exercise_type": null,
           "evaluation": "include",
           "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-04-16T15:01:45.931012",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 227,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-16T15:01:52.492079",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.02
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 227,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-16T15:01:54.336855",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 227,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
         }
       }
     ],

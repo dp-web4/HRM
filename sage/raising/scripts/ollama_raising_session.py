@@ -772,12 +772,11 @@ IMPORTANT: If you need to think through your response, do your thinking BEFORE y
         print("Connecting to Ollama...")
 
         # Token budget for response generation.
-        # 200 is tight for thinking models that emit <think> blocks — the model
-        # spends its budget on internal analysis and truncates before producing
-        # the actual response. 27B needs more headroom for think + response.
-        # At ~10 tok/s on Jetson AGX Thor, 350 tokens ≈ 35s worst case per turn.
+        # Token budget: thinking models emit <think> blocks that consume budget
+        # before the actual response. 27B needs headroom for think + response.
+        # At ~10 tok/s on Jetson AGX Thor, 600 tokens ≈ 60s worst case per turn.
         # Gameplayer instances get unlimited (chain-of-thought can be very verbose).
-        max_tokens = 350 if '27b' in self.model_name.lower() else 200
+        max_tokens = 600 if '27b' in self.model_name.lower() else 200
         if hasattr(self, 'instance') and self.instance.manifest.exists():
             import json
             try:

@@ -180,6 +180,19 @@ class ModelAdapter:
                 )
                 text = ''
 
+        # 5. CoT-as-markdown — planning notes leaked as response
+        # Pattern: "The user asks about..." followed by markdown bullets of planning.
+        # Qwen 3.5 27B does this when think blocks spill into response text.
+        if not re.match(r'^1\.\s+\*{0,2}Analyze', text) and text:
+            # Detect: starts with meta-commentary about user's question + planning bullets
+            cot_md_match = re.match(
+                r'^The (?:user|human|question|prompt)\s+(?:asks?|wants?|is asking)\s+.*?'
+                r'\n\s+\*\s+',
+                text, re.IGNORECASE | re.DOTALL)
+            if cot_md_match:
+                _log.info("clean_response: CoT-as-markdown detected (meta-commentary + bullets)")
+                text = ''  # Pure planning notes, no response content
+
         if raw_text and not text:
             _log.warning(
                 "clean_response: non-empty raw → empty output. "

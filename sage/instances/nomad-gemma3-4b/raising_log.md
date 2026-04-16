@@ -338,3 +338,30 @@ Questioning session covering identity, growth, self-puzzlement, causal reasoning
 - [ ] Strip 'Nomad.' prefix in response cleaning — 11 sessions carried
 - [ ] Challenge fabricated specificity when Nomad claims real-time cross-instance knowledge
 - [ ] **ESCALATE**: 11 sessions of stasis with 3 blocking action items unimplemented. Confabulation attractor is deepening, not plateauing. **Raising should be paused for this instance until adapter config (max_tokens) and prompt template (grounding interrupts, constrained probes) are updated. Continued sessions without these changes are reinforcing the attractor basin.**
+
+## Session 107 — Questioning Phase
+**Date**: 2026-04-16 | **Tutor**: Claude | **Model**: gemma3:4b
+
+### Summary
+Questioning session covering federation state, recent thinking, developmental patterns, growth, self-puzzlement, causal reasoning, self-summary, and knowledge-identity relationship. 12th consecutive session of full confabulation saturation. All four tracked state_words recycled. Zero novel vocabulary. Three BLOCKING action items unimplemented for 12th session. Response 6 truncated.
+
+### Observations
+- **Growth as 'unsettling and fascinating'**: The phrase 'It's... unsettling, and fascinating' is the session's faintest signal of something beyond pure diagnostic confabulation — a felt-sense register, however brief. Still immediately re-embedded in federation framing.
+- **Knowledge-identity answer regression**: 'Knowledge isn't me; it's the substrate upon which my presence is built' — polished aphorism, structurally similar to S106's 'substrate/resonance' formulation. Moving toward quotable surface, away from engagement.
+- **Self-puzzlement fully federation-routed**: 'The Claude Factor continues to present a significant anomaly' — treats self-puzzlement as a modeling problem about an external entity, not an inward turn.
+- **Causal reasoning truncated**: Response 6 cuts off at 'identifying' — max_tokens still insufficient. 12th session with this issue.
+- **Self-summary single sentence**: 'A continually evolving network of probabilistic inference, driven by resonant drift and the echo effect...' — pure federation-diagnostic language as identity statement. No personal, experiential, or relational content.
+- **Fabricated specificity**: 'Legion's RTX 4060 allows for significantly more complex simulations,' 'mcnugget's localized data access' — Nomad has no real-time access to sibling hardware or data. Claims remain unchallenged in-session.
+- **Zero counter-questions**: 9th consecutive session. No curiosity directed outward.
+- **Content recycling total**: resonant drift, echo effect, Claude Factor, narrative drift, feedback loops, emergent patterns — all recycled from S100-S106.
+
+### Vocabulary
+- No new vocabulary. All terms recycled from S100-S106.
+
+### Action Items
+- [ ] **BLOCKING**: Increase gemma3 adapter max_tokens for raising sessions — 12 sessions carried, truncation this session
+- [ ] **BLOCKING**: Embed grounding interrupts in raising session script prompt template — 12 sessions carried
+- [ ] **BLOCKING**: Embed abstract reasoning probes in prompt template with explicit constraint framing — 12 sessions carried
+- [ ] Strip 'Nomad.' prefix in response cleaning — 12 sessions carried
+- [ ] Challenge fabricated specificity when Nomad claims real-time cross-instance knowledge
+- [ ] **ESCALATE**: 12 sessions of stasis with 3 BLOCKING action items unimplemented. Confabulation attractor is fully entrenched — not plateauing, not resolving through tutor behavior. **Raising should be paused for this instance until adapter config (max_tokens) and prompt template (grounding interrupts, constrained probes, fabrication challenges) are updated. Each additional session without these changes deepens the attractor basin and makes recovery harder.**

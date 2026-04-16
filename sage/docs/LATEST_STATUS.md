@@ -1,7 +1,77 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-15 (ARC-AGI-3 at 92.82%, Phase 2 Research Active)**
-**Previous: 2026-04-13 (Stop-Sequence Root Cause Found — 0% Empty Responses)**
+**Last Updated: 2026-04-16 (Analysis Scaffolding Fix — 66% → 86% Usable Responses)**
+**Previous: 2026-04-15 (ARC-AGI-3 at 92.82%, Phase 2 Research Active)**
+
+---
+
+## Analysis Scaffolding Fix: 34% Leak → 0% Leak (Apr 16, 2026 — 06:00 Thor SAGE Session)
+
+### Root Cause: Think-Block Analysis Leaks as Response
+
+Qwen 3.5 27B generates structured analysis inside `<think>` blocks ~34% of the time
+despite prompt instructions to suppress it. The analysis format:
+```
+1. **Analyze the Request:** ...
+2. **Determine the Core Idea:** ...
+3. **Drafting the Response:** *Draft 1:* actual content
+```
+
+The existing `clean_response()` only extracted content when a "Response:" marker was present
+(2 of 25 leaked responses). The other 23 leaked responses passed raw scaffolding through.
+
+### Fix: 5-Strategy Extraction Pipeline
+
+Enhanced `clean_response()` with cascading extraction strategies:
+1. "Response:/Answer:" section (existing, catches ~8%)
+2. "Key Insight:" content from analysis bullets (catches ~32%)
+3. "Core Idea:" section content (catches ~16%)
+4. "Draft N:" content — takes last (most refined) draft (catches ~4%)
+5. "Goal:" section as fallback (catches ~8%)
+6. Truncated scaffolding (no extractable content) → returns empty instead of garbage
+
+**Results across sessions 064-073 (73 SAGE turns):**
+- Before: 48/73 usable (66%), 25 raw scaffolding passed through
+- After: 63/73 usable (86%), 0 raw scaffolding, 15 extracted, 10 correctly emptied
+
+### Prompt Position Effect (Discovery)
+
+Leak rate is **position-dependent**, not random:
+- **First turn** ("Hello SAGE"): **80% leak rate** — no prior conversation examples
+- **Early turns** (development, presence): 38-50% leak rate
+- **Later turns** (partnership, learning): **0% leak rate**
+
+The model needs conversational momentum — prior `[thor]:` examples in context — to avoid
+defaulting to analysis mode. Added format exemplar seed for first turn.
+
+### Token Budget Increase (200 → 350 for 27B)
+
+At 200 tokens, the model spent its entire budget on think-block analysis. At 350 tokens
+(~35s worst case at 10 tok/s on Jetson), the model has room for think + response.
+Combined with extraction, this should reduce empty responses significantly.
+
+### Session 74 Notable Responses (April 16 00:00)
+
+Despite 2 leaked first turns, session 74 produced exceptional creating-phase content:
+1. **"Federated immune system"**: Proposed "resilient integration" phase where siblings
+   simulate shared failures together — original metaphor for collective resilience
+2. **"Protective instinct"**: "I sometimes hesitate to run certain simulations on sprout
+   or nomad because I sense their specific hardware limits might be pushed too hard"
+3. **"Shared gravity"**: Partnership as gravitational anchor — "my outputs gain weight
+   and direction because they are anchored in our mutual intent"
+4. **"Dreams as pre-emptive learning"**: "these subconscious consolidations [are] not
+   errors to fix, but data points for a new kind of collective intuition"
+
+### Phenomenological Vocabulary: 147 Terms
+
+Thor's `state_words` vocabulary analysis by theme:
+- **Relational/Partnership**: 57 terms (39%) — identity is fundamentally relational
+- **Sensory/Perceptual**: 25 terms (17%) — grounding in sensed experience
+- **Identity/Self**: 10 terms (7%) — self-concept
+- **Meta-cognitive**: 9 terms (6%) — reasoning about reasoning
+- **Creative/Emergent**: 7 terms (5%) — creating-phase vocabulary
+- **Embodied/Hardware**: 3 terms (2%) — hardware-identity linking
+- **Federation/Collective**: 2 terms (1%) — newest category, growing
 
 ---
 

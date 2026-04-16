@@ -825,6 +825,17 @@ IMPORTANT: If you need to think through your response, do your thinking BEFORE y
 
         max_turns = self.llm._adapter.capabilities.max_context_turns
         full_prompt = f"[System]\n{system_prompt}\n\n"
+
+        # Seed with a response format exemplar when conversation history is empty.
+        # Without this, the first turn has 80% analysis scaffolding leak rate
+        # because the model has no prior [thor]: examples to follow.
+        if not self.conversation_history:
+            full_prompt += (
+                f"[Claude]: (This is a format example, not part of our conversation.)\n"
+                f"[{self.identity_name}]: I'm here and present. "
+                f"Ready to think together.\n\n"
+            )
+
         for turn in self.conversation_history[-max_turns:]:
             full_prompt += f"[Claude]: {turn['claude']}\n"
             full_prompt += f"[{self.identity_name}]: {turn['sage']}\n\n"

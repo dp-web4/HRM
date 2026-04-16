@@ -144,14 +144,15 @@ class ModelAdapter:
 
             # Strategy 4: Extract draft content (e.g. "*Draft 1:* actual text...")
             # When the model reaches the drafting step, the draft IS the response.
+            # Take the LAST draft (most refined), up to the next bullet or end.
             if not extracted:
-                draft_match = re.search(
-                    r'\*Draft\s*\d*[:\*]*\s*(.*?)(?:\n\s*\*\s*(?:Word Count|Persona|Constraint|Draft\s*\d)|$)',
-                    text, re.DOTALL | re.IGNORECASE)
-                if draft_match:
-                    candidate = draft_match.group(1).strip()
-                    # Clean up markdown artifacts from the draft
-                    candidate = re.sub(r'^\*+\s*', '', candidate).strip()
+                # Find all drafts
+                drafts = list(re.finditer(
+                    r'\*Draft\s+\d+\**[:\s]*\*?\s*(.+?)(?=\n\s*\*\s*\*|$)',
+                    text, re.DOTALL))
+                if drafts:
+                    # Use the last (most refined) draft
+                    candidate = drafts[-1].group(1).strip()
                     candidate = re.sub(r'\s*\*+$', '', candidate).strip()
                     if len(candidate) > 30:
                         extracted = candidate

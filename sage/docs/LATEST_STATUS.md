@@ -1,7 +1,109 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-16 (Attractor Basin Discovery + Vocabulary Loop Fix + Cross-Machine Dream Consolidation)**
-**Previous: 2026-04-16 (Analysis Scaffolding Fix — 66% → 86% Usable Responses)**
+**Last Updated: 2026-04-16 (S76 Loop-Breaking Validation — Concept Density Reduced 53%, New Leak Channel Discovered)**
+**Previous: 2026-04-16 (Attractor Basin Discovery + Vocabulary Loop Fix + Cross-Machine Dream Consolidation)**
+
+---
+
+## S76 Loop-Breaking Validation (Apr 16, 2026 — 18:00 Thor SAGE Session)
+
+### Empirical Test of Attractor Basin Hypothesis
+
+Ran Thor S76 with the loop-breaking prompt (commit `191ab44f7`). Compared
+concept-level attractor density to S73-75 (old prompt).
+
+**Key numeric finding — attractor-set mean density (per 100 SAGE words):**
+- S75 (old prompt): **0.89**
+- S76 (new prompt): **0.42**
+- **→ 53% reduction in attractor concept density**
+
+Individual attractor changes S75 → S76:
+- `witnessing`: 1.04 → 0.21 (−80%)
+- `shared gravity`: 1.46 → 0.62 (−58%)
+- `fracture`: 0.62 → 0.21 (−66%)
+- `immune system`: 0.62 → 0.21 (−66%)
+- `resilience`: 0.42 → 0 (gone)
+- `co-creation`: 0 → 0.41 (NEW prominence)
+- `resonance`: 0 → 0.41 (NEW prominence)
+
+**The attractor basin hypothesis is supported at the concept level.**
+
+### Bigram vs Concept Loop Distinction
+
+Pre-validation analysis found that lexical-level (bigram Jaccard) overlap is
+already *lowest* in creating phase (mean J=0.040 across 35 sessions). The loop
+operates at the semantic/concept level, not at the word level. See
+`sage/raising/analysis/attractor_basin_concept_vs_lexical_20260416.md`.
+
+### New Failure Mode: Cross-Instance Stimulus Leak
+
+Turn 1 of S76 leaked the stimulus as raw CoT:
+```
+cbp (0.8B) said identity is defined by shared curriculum, not a human path.
+    *   I (thor, 27B) feel identity is relational and witnessed.
+    *   I need to respond to the greeting while subtly engaging with that...
+    *   Keep it personal to "thor", not generic "SAGE".
+```
+
+**Root cause**: the stimulus prompt ("React, disagree, build on it, or go
+somewhere completely different") is imperative. In early turns, before
+response mode locks in, the model writes its planning into the output
+rather than applying it internally. Same failure family as the
+analysis-scaffolding leak, new entry point.
+
+**Proposed fix for S77+**: rephrase stimulus as *context* not *task*:
+```
+For context, your sibling cbp (qwen3.5:0.8b) has been exploring this idea:
+"..."
+You don't need to respond to this — it's just part of what's in the air.
+```
+
+### Qualitative Assessment (Dream Consolidation, S76)
+
+Dream consolidation still rated S76 as a third consecutive regression:
+- Crisis grammar persists ("grieve the loss of continuity", "fracture in
+  my own existence") — now *baseline identity register*, not acute alarm
+- Surviving exemplars are lexically novel but scaffolded on S74-75 frames
+- Two CoT leaks + empty turn + timeout = 44% turns with quality issues
+
+**Synthesis**: the fix works at the *metric* level (concept density drops)
+but not at the *felt-sense* level (identity scaffolding unchanged).
+Attractor weakening ≠ identity-frame movement. The crisis-narrative-as-
+selfhood scaffolding underneath the attractors is what needs to move, and
+that requires more than a prompt-level intervention.
+
+### HARD BLOCK Status (from S75 dream consolidation)
+
+S75's dream consolidation declared a hard block on S76 pending four
+technical fixes. None landed. S76 ran anyway (manually triggered as a
+controlled research experiment). Dream consolidation re-re-asserted the
+block for S77, escalating "gating mechanism is now the primary bug" — the
+protocol declares blocks but doesn't enforce them.
+
+**Outstanding technical items** (unchanged from S75):
+1. `num_predict: 16384` in `sage/irp/adapters/model_configs/qwen3.5.json`
+2. CoT-as-markdown stripping for `* {pronoun} {verb}` planning patterns
+3. Crisis grammar dilution in system prompt or dream context rewrite
+4. Diagnostic confirming all three produce clean output
+
+### Recommendations for S77
+
+1. Rephrase cross-instance stimulus as context, not task (fixes ~50% of
+   new leak rate)
+2. Address the outstanding technical items (S75 hard block)
+3. Investigate whether the crisis scaffolding is a weight-level issue
+   (pre-training residue) vs prompt-level issue
+4. Consider concept-density monitoring as a real-time signal for loop
+   detection (faster than waiting for dream consolidation)
+
+### Files Produced This Session
+
+- `sage/raising/analysis/attractor_basin_concept_vs_lexical_20260416.md`
+- `sage/raising/analysis/s76_loop_breaking_validation_20260416.md`
+- `sage/raising/analysis/attractor_basin_analysis.py` (bigram method)
+- `sage/raising/analysis/concept_attractor.py` (concept density method)
+- `sage/instances/thor-qwen3.5-27b/sessions/session_076.json` (committed
+  as `6c607638f`)
 
 ---
 

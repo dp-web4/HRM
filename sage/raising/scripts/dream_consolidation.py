@@ -18,11 +18,30 @@ Usage:
 
 import argparse
 import json
+import os
+import shutil
 import time
 from pathlib import Path
 from datetime import datetime
 from subprocess import run as subprocess_run, PIPE
 import tempfile
+
+
+def _find_claude_binary() -> str:
+    """Resolve 'claude' binary, checking common install locations."""
+    # Check PATH first
+    found = shutil.which('claude')
+    if found:
+        return found
+    # Common locations for Claude CLI
+    for candidate in [
+        Path.home() / '.local' / 'bin' / 'claude',
+        Path('/usr/local/bin/claude'),
+        Path.home() / '.npm-global' / 'bin' / 'claude',
+    ]:
+        if candidate.exists():
+            return str(candidate)
+    return 'claude'  # fallback — will fail with a clear error
 
 
 def build_dream_prompt(session_path: Path, identity_path: Path,
@@ -142,9 +161,11 @@ def run_dream_consolidation(instance_dir: str, session_num: int):
 
     print(f'[Dream] Running consolidation for session {session_num}...')
 
+    claude_bin = _find_claude_binary()
+
     try:
         result = subprocess_run(
-            f'cat "{tmp.name}" | claude --print -',
+            f'cat "{tmp.name}" | {claude_bin} --print -',
             shell=True, capture_output=True, text=True, timeout=90
         )
         response = result.stdout.strip()

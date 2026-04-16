@@ -1,6 +1,6 @@
 {
   "machine": "localhost",
-  "updated_at": 1775850326.897775,
+  "updated_at": 1775619114.3779488,
   "game_discoveries": {
     "su15": [
       {
@@ -162,11 +162,6 @@
         "text": "Interactive objects: black_0, red_1, red_2, black_3, red_5. Game type: click_interact.   black_0: 100% effective, ~21px (14 tries)\n  black_3: 100% effective, ~94px (2 tries)\n  black_9: 10",
         "machine": "localhost",
         "timestamp": 1775484012.4740756
-      },
-      {
-        "text": "Interactive objects: black_0, red_1, red_2, black_3, white_4. Game type: click_interact.   black_0: 100% effective, ~16px (13 tries)\n  black_3: 100% effective, ~16px (3 tries)\n  black_9: 10",
-        "machine": "localhost",
-        "timestamp": 1775623052.4664423
       }
     ],
     "cd82": [
@@ -362,6 +357,36 @@
   },
   "meta_insights": [
     {
+      "text": "Game tu93 (unknown): Grid similarity STABLE around 98.9% (not progressing)\nWARNING: LEFT clicked 7\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: RIG",
+      "machine": "localhost",
+      "timestamp": 1775504550.8734794
+    },
+    {
+      "text": "Game su15 (toggle): green_3: consistent effect (~2px each time)\nwhite_5: consistent effect (~2px each time)\nbrown_2: consistent effect (~2px each time)\nblack_4: consisten",
+      "machine": "localhost",
+      "timestamp": 1775508723.5850654
+    },
+    {
+      "text": "Game ls20 (navigation): RIGHT: consistent effect (~52px each time)\nLEFT: consistent effect (~52px each time)\nGrid similarity STABLE around 97.8% (not progressing)\nWARNING: UP",
+      "machine": "localhost",
+      "timestamp": 1775514056.5097585
+    },
+    {
+      "text": "Game m0r0 (cursor_cycle): black_5: consistent effect (~2px each time)\npink_2: consistent effect (~2px each time)\npink_3: consistent effect (~2px each time)\nblack_4: consistent ",
+      "machine": "localhost",
+      "timestamp": 1775520896.7004278
+    },
+    {
+      "text": "Game sc25 (cursor_cycle): black_8: consistent effect (~13px each time)\nGrid similarity STABLE around 96.9% (not progressing)\nWARNING: green_6 clicked 10\u00d7 with changes but NO le",
+      "machine": "localhost",
+      "timestamp": 1775528029.2209053
+    },
+    {
+      "text": "Game sp80 (click_interact): UP: consistent effect (~162px each time)\nLEFT: consistent effect (~34px each time)\nyellow_1: consistent effect (~2px each time)\nmagenta_2: consistent ",
+      "machine": "localhost",
+      "timestamp": 1775529620.9263916
+    },
+    {
       "text": "Game cn04 (cursor_cycle): teal_4: consistent effect (~1px each time)\nRIGHT: consistent effect (~198px each time)\nGrid similarity STABLE around 88.3% (not progressing)\nWARNING: ",
       "machine": "localhost",
       "timestamp": 1775536508.0494418
@@ -430,36 +455,6 @@
       "text": "Game sk48 (toggle): Grid similarity STABLE around 95.6% (not progressing)\nWARNING: UP clicked 6\u00d7 with changes but NO level-up \u2014 may need different approach\nWARNING: RIGHT",
       "machine": "localhost",
       "timestamp": 1775619114.377945
-    },
-    {
-      "text": "Game g50t (cursor_cycle): LEFT: consistent effect (~1px each time)\nUP: consistent effect (~48px each time)\nDOWN: consistent effect (~49px each time)\nGrid similarity STABLE arou",
-      "machine": "localhost",
-      "timestamp": 1775622466.7177742
-    },
-    {
-      "text": "Game r11l (click_interact): red_1: consistent effect (~1px each time)\nred_2: consistent effect (~1px each time)\nwhite_4: consistent effect (~64px each time)\nred_5: consistent eff",
-      "machine": "localhost",
-      "timestamp": 1775625405.133479
-    },
-    {
-      "text": "Game ar25 (cursor_cycle): UP: consistent effect (~109px each time)\nDOWN: consistent effect (~109px each time)\nLEFT: consistent effect (~109px each time)\nRIGHT: consistent effec",
-      "machine": "localhost",
-      "timestamp": 1775628569.694347
-    },
-    {
-      "text": "Game tr87 (cursor_cycle): LEFT: consistent effect (~28px each time)\nRIGHT: consistent effect (~28px each time)\nGrid similarity STABLE around 98.2% (not progressing)\nWARNING: UP",
-      "machine": "localhost",
-      "timestamp": 1775631192.2300577
-    },
-    {
-      "text": "Game cd82 (cursor_cycle): white_13: consistent effect (~1px each time)\nyellow_0: consistent effect (~1px each time)\nblack_7: consistent effect (~1px each time)\ngreen_1: consist",
-      "machine": "localhost",
-      "timestamp": 1775634515.1357315
-    },
-    {
-      "text": "Game sp80 (toggle): DOWN: consistent effect (~162px each time)\nLEFT: consistent effect (~34px each time)\nUP: consistent effect (~162px each time)\nRIGHT: consistent effect",
-      "machine": "localhost",
-      "timestamp": 1775850326.8977695
     }
   ]
 }

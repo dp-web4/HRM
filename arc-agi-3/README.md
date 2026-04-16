@@ -1,5 +1,9 @@
 # ARC-AGI-3 — SAGE Entry
 
+> **⚠️ Source of truth for game-specific work is [ARC-SAGE](https://github.com/dp-web4/ARC-SAGE)** (private, MIT). This directory is a milestone mirror — day-to-day solver development, visual memory, and per-game mechanics live in ARC-SAGE. See `REPO_ROLES.md` in ARC-SAGE for the full split.
+>
+> This README remains for historical context and SAGE-ecosystem framing of ARC-AGI-3.
+
 **Competition**: ARC Prize 2026
 **Prize**: $700K grand prize (100% score), $75K top score awards, $75K milestones
 **Milestones**: June 30, 2026 (Milestone 1), September 30, 2026 (Milestone 2)

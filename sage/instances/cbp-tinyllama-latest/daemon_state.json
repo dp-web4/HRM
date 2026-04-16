@@ -1,11 +1,11 @@
 {
-  "last_shutdown": 1776304833.8567634,
+  "last_shutdown": 1776348004.091462,
   "machine": "cbp",
   "instance": "cbp-tinyllama-latest",
-  "uptime_seconds": 21582.094650506973,
-  "cycles_completed": 168206,
+  "uptime_seconds": 21580.644015312195,
+  "cycles_completed": 170478,
   "metabolic_state": "rest",
-  "atp_level": 38.59327271054199,
+  "atp_level": 33.76205372996402,
   "message_stats": {
     "messages_submitted": 0,
     "messages_resolved": 0,
@@ -15,7 +15,7 @@
   },
   "trust_weights": {
     "vision": 0.0,
-    "language": 0.094,
+    "language": 0.0945,
     "control": 0.0,
     "memory": 0.0
   },

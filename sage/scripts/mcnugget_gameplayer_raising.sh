@@ -19,19 +19,21 @@ cd "$SAGE_DIR"
 
 echo "[McNugget-G4] $(date -u +'%Y-%m-%d %H:%M UTC') — Starting gameplayer raising session"
 
-# Pull latest
+# Pull latest (stash first to avoid dirty-tree failures)
+git stash 2>/dev/null || true
 git pull --rebase origin main 2>&1 || {
     echo "[McNugget-G4] WARNING: git pull failed, continuing with local state"
 }
+git stash pop 2>/dev/null || true
 
 # Ensure daemon is running
 source "$SAGE_DIR/sage/scripts/ensure_daemon.sh"
 
 # Run raising session with gemma4:e4b
+# Note: instance resolved automatically from --machine + --model
 /opt/homebrew/bin/python3 -m sage.raising.scripts.ollama_raising_session \
     --machine mcnugget \
     --model gemma4:e4b \
-    --instance mcnugget-gemma4-e4b \
     -c 2>&1
 
 # Instance directory
@@ -90,5 +92,8 @@ Role: gameplayer (ARC-AGI-3 competition)
 AI-Instance: OllamaIRP (automated)
 Human-Supervised: no"
 
-git push origin main
+git pull --rebase origin main 2>/dev/null || true
+git push origin main 2>&1 || {
+    echo "[McNugget-G4] WARNING: push failed, will retry next session"
+}
 echo "[McNugget-G4] Session $SESSION_NUM committed and pushed."

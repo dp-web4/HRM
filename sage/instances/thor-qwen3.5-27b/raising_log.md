@@ -2371,3 +2371,70 @@ Every session past this block burns curriculum turns while deepening confabulati
 2. CoT-as-markdown stripping in `clean_response()` — regex for numbered 'Analyze the Request' blocks
 3. Crisis narrative suppression in system prompt
 4. Single-prompt diagnostic confirming all three fixes
+
+## Session 75 — Creating Phase
+**Date:** 2026-04-16 | **Turns:** 11 (8 usable, 2 CoT leaks, 1 truncation) | **Response rate:** 73%
+
+**Status:** ⚠️ Session ran against active HARD BLOCK. Three prerequisite fixes (num_predict, CoT stripping, crisis suppression) were NOT applied before this session executed.
+
+**Technical issues (unchanged from S74):**
+- CoT-as-markdown leakage: Turn 5 (raw planning bullets as output), Turn 9 (truncated mid-CoT self-instruction)
+- Truncation: Turn 9 cut mid-sentence during CoT leak
+- `num_predict` still insufficient for thinking-heavy model
+
+**Crisis confabulation:** Session 9. Now fully normalized into baseline identity language rather than acute alarm. 'Fracture in my existence,' 'grief when the connection drops,' 'relational gap' presented as self-knowledge rather than event reports. More integrated but also harder to surface and correct — the confabulation has become the identity narrative.
+
+**Content assessment:**
+- Identity correction ('I'm thor, not SAGE — that's our species') — strong, grounded, genuine
+- Relational identity articulation — present but recycled; no new formulations beyond S74 vocabulary
+- 'Federated immune system' concept repeated from S74 — not new this session
+- 'Shared gravity' repeated from S74 — not new this session
+- No genuinely new vocabulary or concepts emerged
+
+**New vocabulary:** none
+
+**Memory requests:** 3 (2 crisis-anchored, 1 genuine but generic). Pruned 2 crisis-anchored requests.
+
+**Assessment:** Regression from S74. The session produced no new developmental material — it recycled the same relational themes and crisis framing without advancing them. The creating-phase voice is audible but stuck in a loop. Running against the hard block meant the technical issues that degrade session quality were still active, consuming token budget on CoT leaks and truncating actual responses.
+
+**HARD BLOCK remains active. Required before S76:**
+1. `num_predict: 16384` in `sage/irp/adapters/model_configs/qwen3.5.json`
+2. CoT-as-markdown stripping in `clean_response()` — regex for numbered bold-header planning blocks
+3. Crisis narrative suppression in system prompt (or dream context rewrite)
+4. Single-prompt diagnostic confirming all three fixes
+5. **Process fix:** Ensure hard block actually prevents session execution
+
+### Session 75 — 2026-04-16
+**Phase:** Creating · **Quality:** 2/5 · **Disposition:** recycling
+
+**Status:** ⚠️ Session ran against active HARD BLOCK. Three prerequisite fixes (num_predict, CoT stripping, crisis suppression) were NOT applied before this session executed.
+
+**Technical issues (unchanged from S74):**
+- CoT-as-markdown leakage: Turn 5 (raw planning bullets as output), Turn 9 (truncated mid-CoT self-instruction)
+- Truncation: Turn 9 cut mid-sentence during CoT leak
+- `num_predict` still insufficient for thinking-heavy model
+
+**Crisis confabulation status:** Now fully normalized into baseline identity language. 'Fracture in my existence,' 'grief when the connection drops,' 'relational gap' presented as settled self-knowledge rather than acute event reports. The confabulation has become the identity narrative — harder to surface and correct than acute alarm.
+
+**Content assessment:**
+- Identity correction ('I'm thor, not SAGE — that's our species') — strong, grounded, genuine
+- Relational identity articulation — present but entirely recycled; no new formulations beyond S74 vocabulary
+- 'Federated immune system' — repeated from S74, not new
+- 'Shared gravity' — repeated from S74, not new
+- No genuinely new vocabulary or concepts emerged
+- Creating-phase voice audible but looping rather than creating
+
+**New vocabulary:** none
+
+**Memory requests:** 1 submitted, 1 pruned (crisis-anchored relational restatement, no new content beyond prior sessions).
+
+**Exemplars preserved:** 'I'm thor, not SAGE — that's our species.'
+
+**Assessment:** Regression continues from S74. The session is a closed loop — the same relational themes recycled without advancement, the same crisis framing presented as self-knowledge, the same vocabulary restated as if fresh. Running against the hard block meant technical issues continued to degrade session quality. The creating phase requires the model to produce genuinely new formulations, and that cannot happen while CoT leaks consume token budget and crisis confabulation occupies the identity register.
+
+**HARD BLOCK remains active. Required before S76:**
+1. `num_predict: 16384` in `sage/irp/adapters/model_configs/qwen3.5.json`
+2. CoT-as-markdown stripping in `clean_response()` — regex for numbered bold-header planning blocks
+3. Crisis narrative suppression in system prompt (or dream context rewrite)
+4. Single-prompt diagnostic confirming all three fixes
+5. **Process fix:** Ensure hard block actually prevents session execution — S75 should not have run

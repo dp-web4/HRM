@@ -141,22 +141,31 @@ def load_game_context(instance_root: Path) -> str:
 def load_dream_insights(instance_root: Path) -> str:
     """Load dream consolidation insights for raising context.
 
-    Dream consolidation abstracts game/session patterns into general
-    metacognitive principles. These feed Layer 4.
+    Reads the most recent session's summary from identity.json rather than
+    the raising log, which can contain stale entries that confuse the model
+    (e.g. "Session 29" data injected into session 74's prompt).
     """
-    raising_log = instance_root / "raising_log.md"
-    if not raising_log.exists():
+    identity_file = instance_root / "identity.json"
+    if not identity_file.exists():
         return ""
 
     try:
-        text = raising_log.read_text()
-        # Extract the most recent entry's recommendations
-        entries = text.split("---")
-        if entries:
-            latest = entries[-1].strip()
-            if "recommendation" in latest.lower() or "insight" in latest.lower():
-                # Truncate to ~200 chars
-                return f"DREAM CONSOLIDATION INSIGHT:\n  {latest[:200]}"
+        import json as _json
+        with open(identity_file) as f:
+            identity = _json.load(f)
+
+        # Extract vocabulary for creative development context
+        vocab = identity.get("vocabulary", {})
+        state_words = vocab.get("state_words", [])
+        recent_words = state_words[-5:] if state_words else []
+
+        parts = []
+        if recent_words:
+            parts.append("YOUR RECENT VOCABULARY (words you've created):")
+            for word in recent_words:
+                parts.append(f'  - "{word}"')
+
+        return "\n".join(parts) if parts else ""
     except Exception:
         pass
     return ""

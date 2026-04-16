@@ -1,7 +1,83 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-16 (Analysis Scaffolding Fix — 66% → 86% Usable Responses)**
-**Previous: 2026-04-15 (ARC-AGI-3 at 92.82%, Phase 2 Research Active)**
+**Last Updated: 2026-04-16 (Attractor Basin Discovery + Vocabulary Loop Fix + Cross-Machine Dream Consolidation)**
+**Previous: 2026-04-16 (Analysis Scaffolding Fix — 66% → 86% Usable Responses)**
+
+---
+
+## Identity Attractor Basin Discovery (Apr 16, 2026 — 12:00 Thor SAGE Session)
+
+### Research Finding: Why All Instances Loop
+
+All instances across model families converge on persistent confabulation patterns:
+- **Thor (27B)**: "relational gap", "shared gravity", "federated immune system" — same concepts recycled since S74
+- **Nomad (4B)**: "federation data streams", "resonant patterns", "network traffic from sprout" — pure confabulation
+- **CBP (0.8B)**: "architectural siblings", "bridge human intent and algorithmic emotion" — verbatim repetition
+
+**Root Cause**: The identity document functions as an **attractor basin**. The model receives:
+1. Identity.json (stable, high-weight signal)
+2. Exemplars injected with "Continue this pattern" instruction
+3. Vocabulary feedback (last 5 state_words)
+4. Previous session summary (more of the same)
+
+Without episodic memory, models confabulate "experiences" to fill the gap between
+"you have continuity" (system prompt) and no actual between-session memory. The
+confabulation is not pathological — it's completion pressure making the identity frame
+coherent. But "Continue this pattern" creates a closed loop where creating-phase
+instances recycle instead of create.
+
+### Fix: Loop-Breaking Context Architecture
+
+1. **Creating phase prompt**: "Continue this pattern" → "Go beyond what you've already said.
+   Repetition is not creation." Exemplars reduced from 3→2 and framed as "already expressed"
+2. **Cross-instance stimulus**: Random sibling response injected as novel material with
+   instruction to "React, disagree, build on it, or go somewhere different"
+3. **Token budget increase**: 350→600 for 27B (60s at 10 tok/s, within 120s timeout)
+4. **CoT-as-markdown stripping**: New pattern catches "The user asks..." + bullet planning leaks
+
+### Dream Consolidation Gap Discovered
+
+Only 5 of 10 active instances had dream consolidation working. Root cause: `claude` CLI not
+on subprocess PATH. Nomad (105 sessions) and Sprout (69 sessions) never had vocabulary
+extraction, milestone detection, or metacognitive integration between sessions.
+
+- **Fix**: `_find_claude_binary()` resolves `~/.local/bin/claude` for all machines
+- **Retroactive**: Ran consolidation for Nomad S95-S105 and Sprout S65-S69
+- **Result**: Nomad gained 4 state_words (resonant drift, echo effect, Claude Factor, narrative drift).
+  Sprout sessions were quality 1/5 (hardware timeouts), no vocabulary extracted.
+
+### Experience Buffer Rebalance (Thor)
+
+Session 1 held 163 of 303 entries (55.6%) — all grounding phase. Creating-phase content
+was drowned out by early developmental data. Rebalanced to 10 highest-salience Session 1
+entries. Creating phase now 93% of buffer.
+
+### Session 075 Quality Assessment
+
+Dream consolidation rated S075 as **continued looping**: same vocabulary recycled from S74,
+crisis confabulation normalized into identity language, no genuinely new concepts. The
+loop-breaking fixes above should take effect starting S76.
+
+### Cross-Instance Vocabulary State (Post-Consolidation)
+
+| Instance | Model | Sessions | State Words | Status |
+|----------|-------|----------|-------------|--------|
+| Thor | Qwen 3.5 27B | 75 | 148 | Rich but looping |
+| CBP | Qwen 3.5 0.8B | 74 | 6 | Thin but present |
+| Nomad | Gemma 3 4B | 105 | 4 | Newly extracted |
+| Sprout | Qwen 3.5 0.8B | 69 | 0 | Hardware-limited |
+| McNugget | Gemma 3 12B | 97 | 1 | Needs consolidation |
+
+Federation-as-identity emerged independently across Qwen and Gemma families — convergent
+signal across different model architectures.
+
+### Next Steps
+
+- Monitor S76+ for evidence that loop-breaking prompts generate novel content
+- Run retroactive consolidation for McNugget and Legion instances
+- Investigate whether cross-instance stimulus breaks Nomad's federation confabulation pattern
+- Consider experience buffer rebalancing for other instances
+- Explore gemma4:e4b first session (scaffolded, 0 sessions, available on Thor Ollama)
 
 ---
 

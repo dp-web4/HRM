@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""L6 focused macro solver: start from L5 end state, run solve_macro with verbose output."""
-import os, sys, json, time
+"""List all tagged sprites in L6 by letter."""
+import os, sys, json
 os.chdir("/mnt/c/exe/projects/ai-agents/SAGE")
 os.environ['OPERATION_MODE'] = 'offline'
 sys.path.insert(0, ".")
@@ -8,11 +8,6 @@ sys.stdout.reconfigure(line_buffering=True)
 
 from arc_agi import Arcade
 from arcengine import GameAction, InteractionMode
-sys.path.insert(0, "arc-agi-3/experiments")
-from dc22_solve_final import (
-    solve_macro, player_reachable_cells, reconstruct_moves,
-    save_game_state, restore_game_state, save_frame, find_click_targets,
-)
 
 VIS = "/mnt/c/exe/projects/ai-agents/shared-context/arc-agi-3/visual-memory/dc22"
 
@@ -26,15 +21,20 @@ def main():
     for lvl_idx in range(5):
         for m in raw[lvl_idx]:
             env.step(am[m['action']], data=m.get('data', {}))
+    game = env._game
 
-    print("Starting L6 solve_macro...")
-    t0 = time.time()
-    sol = solve_macro(env, 5, timeout=120, max_click_depth=6)
-    elapsed = time.time() - t0
-    print(f"\nsolve_macro result: {sol is not None} in {elapsed:.1f}s")
-    if sol:
-        print(f"Solution: {len(sol)} actions")
-        print(f"First 20: {sol[:20]}")
+    by_letter = {}
+    for s in game.current_level.get_sprites():
+        if s.interaction == InteractionMode.REMOVED: continue
+        if 'ignore' in s.tags: continue
+        for t in s.tags:
+            if len(t) == 1:
+                by_letter.setdefault(t, []).append(s)
+    for k in sorted(by_letter):
+        print(f"\nLetter {k}: {len(by_letter[k])} sprites")
+        for s in by_letter[k]:
+            print(f"  {s.name:28s} ({s.x:3d},{s.y:3d}) {s.width}x{s.height} "
+                  f"{s.interaction.name:<10s} tags={s.tags}")
 
 if __name__ == "__main__":
     main()

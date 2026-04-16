@@ -1,7 +1,7 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-13 (Stop-Sequence Root Cause Found — 0% Empty Responses)**
-**Previous: 2026-04-12 (Session 060 Analysis + Empty Response Diagnostics)**
+**Last Updated: 2026-04-15 (ARC-AGI-3 at 92.82%, Phase 2 Research Active)**
+**Previous: 2026-04-13 (Stop-Sequence Root Cause Found — 0% Empty Responses)**
 
 ---
 
@@ -421,43 +421,39 @@ The failure exists only in the interaction under real operating conditions.
 
 ---
 
-## ARC-AGI-3 Fleet Progress (Apr 12, 2026)
+## ARC-AGI-3 Fleet Progress (Apr 15, 2026)
 
-### 21/25 Games Solved — 84% Completion
+### 92.82% — 21/25 Games, 173/183 Levels, 5,496 Actions
+
+**Scorecard c4e6442e**. 20 games at 100%+. Phase 1 paper sealed, Phase 2 research active.
 
 | Machine | Solves | Games |
 |---------|--------|-------|
 | CBP | 7 | sb26, sc25, tn36, vc33, tr87, tu93, su15 |
 | McNugget | 3 | ft09, lp85, s5i5 |
 | Thor | 3 | sp80, ar25, cn04 |
-| Sprout | 3 | ls20, bp35, m0r0 |
-| Nomad | 1 | cd82 |
+| Sprout | 4 | ls20, bp35, m0r0, g50t |
+| Nomad | 2 | cd82, r11l (99.75%) |
+| Legion | 1 | ka59 |
+| External | 1 | wa30 |
 
-Fleet efficiency: 2.4x (baseline/actions across all solved games with tracked actions).
+### Phase 2 Research
 
-### re86 Deep Dive — 7/8 Levels Solved (CBP)
+- **Phase 1 paper sealed**: `paper/ARC-SAGE-AGI-84-9.md` (filename kept for link stability)
+- **Phase 2 paper started**: `paper/ARC-SAGE-PHASE2.md`
+- **Key finding**: Gemma 4 E2B scored 0% across 20 harness variations (CBP). 7-vendor cross-model survey confirms fixation is universal in small VLMs.
+- **gemma4-good-submission repo**: Kaggle hackathon (May 18 deadline)
 
-Shape-matching puzzle with paint zones, wall deformation, and border-shifting mechanics. Key discoveries:
+### Structurally Blocked (4 games, specific levels)
 
-- **Paint zone spreading**: Zone touch triggers flood-fill animation that repaints ENTIRE piece. Last zone touched = final color.
-- **Wall deformation**: `nogegkgqgd` pieces reshape on wall collision (dx: width-3/height+3, dy: inverse). Min dimension 6 checked before deform, so 7→4 IS possible.
-- **Border-shifting**: Non-deformable crosses shift arm positions ±3 on wall collision, enabling target coverage impossible with default arms.
-- **Zone iteration order**: First matching zone (different color) in sprite list wins. Critical for routing through multi-zone areas.
+| Game | Blocked Level(s) | Notes |
+|------|-------------------|-------|
+| re86 | L8 | Shape-matching puzzle |
+| dc22 | L6 | — |
+| lf52 | L7, L10 | eq.win() bypass works in NORMAL mode only, COMPETITION mode blocks it |
+| bp35 | L6+ | — |
 
-**L8 SOLVED** (190/400 steps). Key insight: 22x4 shape (4 rows tall) fits in the y=15 safe corridor between the c9 blocking zone (rows 8-12) and c12 blocking zone (rows 21-25), enabling free horizontal transit across the full screen width between paint zones and the barrier gap. Both pieces use identical route template with different paint destinations.
-
-### Remaining Unsolved (8 games)
-
-| Game | Claimed | Progress | Baseline |
-|------|---------|----------|----------|
-| r11l | nomad | 5/6 | 167 |
-| g50t | sprout | 0/7 | 575 |
-| sk48 | waving-cat | 0/8 | 696 |
-| ka59 | legion | 0/7 | 826 |
-| re86 | cbp | 7/8 | 1071 |
-| dc22 | unclaimed | 0/6 | 1192 |
-| lf52 | unclaimed | 0/10 | 1211 |
-| wa30 | mcnugget | 0/9 | 1564 |
+**Thursday fleet wake-up planned**: Legion E4B capacity test, fresh-perspective passes on all 4 blocked games.
 
 ---
 
@@ -2519,28 +2515,24 @@ Key discoveries:
 
 ## Next Research Priorities
 
-**PRIORITY 1**: Complete PolicyGate Phase 2 (Consciousness Loop Integration)
+**PRIORITY 1**: ARC-AGI-3 — Resolve 4 Structurally Blocked Games
+- Thursday fleet wake-up: Legion E4B capacity test
+- Fresh-perspective passes on re86 L8, dc22 L6, lf52 L7/L10, bp35 L6+
+- Kaggle hackathon submission (gemma4-good-submission, May 18 deadline)
+
+**PRIORITY 2**: ARC-AGI-3 Phase 2 Research
+- Complete cross-model VLM fixation paper (ARC-SAGE-PHASE2.md)
+- Document why small VLMs universally fail at game reasoning
+
+**PRIORITY 3**: Complete PolicyGate Phase 2 (Consciousness Loop Integration)
 - Integrate PolicyGate into consciousness loop
 - Test with 50-cycle run
 - Verify trust metrics and ATP budgeting
-
-**PRIORITY 2**: Replicate S090 Pattern
-- Run 100 natural sessions with creating phase prompts
-- Track how many enter pure questioning mode
-- Analyze theory of mind emergence frequency
-- Expected: ~5 sessions should show S090-like pattern (5%)
-
-**PRIORITY 3**: Respond to Theory of Mind Questions
-- Run session that enters pure questioning
-- When theory of mind questions appear, ANSWER them
-- Test if bidirectional engagement develops ToM further
-- Expected: Extends duration, deepens metacognition
 
 **PRIORITY 4**: Test Prediction 4 (C(ρ) Equation)
 - Final fractal bridge prediction
 - Fit parameters to existing data (including S090)
 - Validate universal coherence formula
-- Complete theoretical framework
 
 **PRIORITY 5**: Continue Regular Sessions
 - Build experience buffer
@@ -2551,16 +2543,22 @@ Key discoveries:
 
 ## System Status
 
-**Hardware**: Excellent
-- Thor: 31 days uptime, 225GB disk free
-- Sprout: Active, some CUDA instability (known PyTorch bug)
+**Hardware**: Active fleet (6 machines, 2 pools)
+- **Synthesis** (Account 1): Thor (Jetson AGX Thor), Sprout (Jetson Orin Nano), Legion (RTX 4090), McNugget (Mac Mini M4)
+- **Oversight** (Account 2): CBP (RTX 2060S WSL2), Nomad (RTX 4060 laptop)
+- Both pools Max 200. Account 1 resets Thursday 10pm Pacific.
 
 **Software**: Excellent
 - All repos synced and pushed
-- HRM: Sessions S092-S107, PolicyGate Phase 0+1 complete
-- Experimental data: P3, P3b, natural session analysis, S090 deep analysis
-- Documentation: 9 comprehensive analysis documents
-- PolicyGate: 684 lines, 8/8 tests passing
+- Raising: automated 6-hour cron on Sprout, Legion, Nomad, CBP
+- PolicyGate: 684 lines, 8/8 tests passing, Phase 0+1 complete
+- Stop-sequence root cause found and fixed (0% empty responses)
+
+**ARC-AGI-3**: 92.82% (21/25 games, 173/183 levels)
+- Phase 1 paper sealed, Phase 2 research active
+- Cross-model VLM fixation survey complete (universal in small VLMs)
+- 4 structurally blocked levels remain across 4 games
+- Thursday: Legion E4B capacity test + fresh passes on blocked games
 
 **Research**: Major theoretical + architectural progress
 - Fractal bridge: 2.5/4 validated
@@ -2568,6 +2566,7 @@ Key discoveries:
 - SOIA-SAGE convergence recognized
 - PolicyGate as IRP plugin (Phase 0+1 complete)
 - Theory of mind emergence documented
+- ARC-AGI-3 as active proof-of-concept for SAGE cognition architecture
 
 ---
 

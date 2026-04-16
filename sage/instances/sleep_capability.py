@@ -184,7 +184,43 @@ def write_dream_bundle(
             f.write(json.dumps(record) + '\n')
             written += 1
 
+    # Prune old bundles after writing
+    prune_dream_bundles(instance_dir)
+
     return bundle_path
+
+
+def prune_dream_bundles(
+    instance_dir: Path,
+    keep_count: int = 100,
+) -> int:
+    """Remove old dream bundles, keeping only the most recent ones.
+
+    Called automatically after each write. Can also be called standalone
+    for maintenance. Keeps the newest `keep_count` files by name
+    (which is chronological since filenames contain timestamps).
+
+    Returns:
+        Number of files deleted.
+    """
+    bundle_dir = instance_dir / "dream_bundles"
+    if not bundle_dir.exists():
+        return 0
+
+    bundles = sorted(bundle_dir.glob('dream_*.jsonl'))
+    if len(bundles) <= keep_count:
+        return 0
+
+    to_delete = bundles[:-keep_count]
+    deleted = 0
+    for path in to_delete:
+        try:
+            path.unlink()
+            deleted += 1
+        except OSError:
+            pass
+
+    return deleted
 
 
 def read_dream_bundles(

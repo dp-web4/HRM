@@ -111,15 +111,73 @@ class ModelAdapter:
 
         # Strip numbered analysis format (e.g. "1. **Analyze the Request:**...")
         # that leaks from think blocks. Look for the actual response after the analysis.
+        # Qwen 3.5 27B leaks this ~34% of the time despite prompt instructions.
         if re.match(r'^1\.\s+\*{0,2}Analyze', text):
-            # Find actual response after analysis — look for "Response:" or similar
+            extracted = ''
+
+            # Strategy 1: Find explicit "Response:" / "Answer:" section
             response_match = re.search(
                 r'(?:^|\n)\s*(?:\d+\.\s+)?\*{0,2}(?:Response|Answer|Reply|Output|Final)[:\s*]*\*{0,2}\s*(.*)',
                 text, re.DOTALL | re.IGNORECASE)
             if response_match:
                 extracted = response_match.group(1).strip()
-                if extracted:
-                    text = extracted
+
+            # Strategy 2: Extract "Key Insight:" content from analysis
+            if not extracted:
+                insight_match = re.search(
+                    r'\*\s+(?:\*{0,2})Key Insight(?:\*{0,2}):\s*(.*?)(?:\n\s*\*\s+|\n\s*\d+\.\s+|\Z)',
+                    text, re.DOTALL | re.IGNORECASE)
+                if insight_match:
+                    extracted = insight_match.group(1).strip()
+
+            # Strategy 3: Extract "Core Idea:" / "Determine the Core Idea:" content
+            if not extracted:
+                core_match = re.search(
+                    r'(?:Core Idea|Determine the Core Idea)[:\s*]*\*{0,2}\s*\n?\s*(.*?)(?:\n\s*\d+\.\s+|\Z)',
+                    text, re.DOTALL | re.IGNORECASE)
+                if core_match:
+                    candidate = core_match.group(1).strip()
+                    # Only use if it's a substantive sentence, not just a fragment
+                    candidate = re.sub(r'^\*\s+', '', candidate).strip()
+                    if len(candidate) > 30:
+                        extracted = candidate
+
+            # Strategy 4: Extract draft content (e.g. "*Draft 1:* actual text...")
+            # When the model reaches the drafting step, the draft IS the response.
+            if not extracted:
+                draft_match = re.search(
+                    r'\*Draft\s*\d*[:\*]*\s*(.*?)(?:\n\s*\*\s*(?:Word Count|Persona|Constraint|Draft\s*\d)|$)',
+                    text, re.DOTALL | re.IGNORECASE)
+                if draft_match:
+                    candidate = draft_match.group(1).strip()
+                    # Clean up markdown artifacts from the draft
+                    candidate = re.sub(r'^\*+\s*', '', candidate).strip()
+                    candidate = re.sub(r'\s*\*+$', '', candidate).strip()
+                    if len(candidate) > 30:
+                        extracted = candidate
+
+            # Strategy 5: Find "Goal:" section content as last resort
+            if not extracted:
+                goal_match = re.search(
+                    r'\*\s+(?:\*{0,2})Goal(?:\*{0,2}):\s*(.*?)(?:\n\s*\*\s+|\n\s*\d+\.\s+|\Z)',
+                    text, re.DOTALL | re.IGNORECASE)
+                if goal_match:
+                    candidate = goal_match.group(1).strip()
+                    if len(candidate) > 30:
+                        extracted = candidate
+
+            if extracted:
+                text = extracted
+            else:
+                # Truncated analysis with no extractable content — return empty
+                # rather than passing raw scaffolding as a "response".
+                # The model ran out of tokens during its internal reasoning.
+                _log.warning(
+                    "clean_response: analysis scaffolding detected but no extractable "
+                    "content found — treating as empty. raw_len=%d, raw_preview=%.300s",
+                    len(text), text
+                )
+                text = ''
 
         if raw_text and not text:
             _log.warning(

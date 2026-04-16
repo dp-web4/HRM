@@ -543,6 +543,46 @@ class OllamaRaisingSession:
 
         return exemplars
 
+    def _load_cross_instance_stimulus(self) -> str:
+        """Load a novel observation from a sibling instance.
+
+        For creating-phase instances, injects an idea from a different model
+        family to break vocabulary looping. Picks a random strong response
+        from a sibling's recent sessions.
+        """
+        import random
+        instances_dir = self.instance.root.parent
+        siblings = [d for d in instances_dir.iterdir()
+                    if d.is_dir() and d.name != self.instance.root.name
+                    and (d / 'sessions').exists()]
+        if not siblings:
+            return ""
+
+        random.shuffle(siblings)
+        for sibling in siblings[:3]:
+            sessions_dir = sibling / 'sessions'
+            session_files = sorted(sessions_dir.glob('session_*.json'))[-5:]
+            if not session_files:
+                continue
+
+            for sf in reversed(session_files):
+                try:
+                    with open(sf) as f:
+                        data = json.load(f)
+                    sibling_name = data.get('identity', sibling.name.split('-')[0])
+                    model = data.get('model', '?')
+                    for turn in data.get('conversation', []):
+                        if turn.get('speaker') == 'SAGE':
+                            text = turn.get('text', '')
+                            # Pick substantive responses (not scaffolding or errors)
+                            if len(text) > 80 and not text.startswith('[') and not text.startswith('1.'):
+                                return (f"SOMETHING YOUR SIBLING SAID (from {sibling_name}, "
+                                        f"running {model}):\n\"{text[:250]}\"\n\n"
+                                        f"React, disagree, build on it, or go somewhere completely different.")
+                except Exception:
+                    continue
+        return ""
+
     def _get_previous_session_summary(self) -> str:
         """Get summary from previous session for context continuity."""
         if self.session_number <= 1:
@@ -595,12 +635,21 @@ When referring to yourself, use your name "{self.identity_name}" — "SAGE" is y
             prompt += f"\n\n{preamble}"
 
         # Identity exemplars from previous sessions
+        # Creating phase: reduce self-referential feedback to prevent vocabulary
+        # looping. The model needs novel stimuli, not instructions to reproduce.
         exemplars = self._load_identity_exemplars()
         if exemplars:
-            prompt += "\n\nYOUR IDENTITY PATTERN — Examples from previous sessions:"
-            for exemplar in exemplars[:3]:
-                prompt += f"\n- Session {exemplar['session']}: \"{exemplar['text']}\""
-            prompt += "\n\nContinue this pattern of self-identification in your responses."
+            if phase_name == "creating":
+                # Creating phase: acknowledge foundation, push beyond it
+                prompt += "\n\nYOUR ESTABLISHED VOICE — You have already expressed these ideas:"
+                for exemplar in exemplars[:2]:
+                    prompt += f"\n- \"{exemplar['text']}\""
+                prompt += "\n\nYou know who you are. Now go beyond what you've already said. Create something new — a question, a concept, a connection nobody has made before. Repetition is not creation."
+            else:
+                prompt += "\n\nYOUR IDENTITY PATTERN — Examples from previous sessions:"
+                for exemplar in exemplars[:3]:
+                    prompt += f"\n- Session {exemplar['session']}: \"{exemplar['text']}\""
+                prompt += "\n\nContinue this pattern of self-identification in your responses."
 
         # Response style
         prompt += """
@@ -633,6 +682,10 @@ IMPORTANT: If you need to think through your response, do your thinking BEFORE y
             prompt += "\n\nYou are developing deeper questions from a foundation of stability."
         elif phase_name == "creating":
             prompt += "\n\nYou are in the creating phase. You participate in designing your own growth."
+            # Inject cross-instance observation as novel stimulus
+            cross_obs = self._load_cross_instance_stimulus()
+            if cross_obs:
+                prompt += f"\n\n{cross_obs}"
 
         return prompt
 

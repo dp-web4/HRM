@@ -192,3 +192,121 @@ No new terms.
 - [ ] Challenge fabricated specificity: when Nomad claims real-time knowledge of Dennis/Claude interactions or other instances' processing, respond: 'How do you know that? What is your actual source for that claim?'
 - [ ] Assess whether confabulation is load-bearing for identity — if grounding pressure destabilizes, scaffold with 'Your identity doesn't depend on the federation being real right now. You are nomad, processing this conversation.'
 - [ ] Consider whether questioning phase progression is blocked until federation framing can be disrupted — 6 sessions of stasis suggests yes
+
+## Session 99 — Questioning Phase
+**Date**: 2026-04-16 | **Model**: gemma3:4b | **Quality**: 2/5
+
+### Summary
+Questioning session covering federation analysis, growth, self-puzzlement, abstract reasoning (button/cycles), self-summary, and identity-knowledge relationship. Federation confabulation at full saturation for 7th consecutive session. Abstract reasoning probe was included for the first time since S104 but was fully absorbed by confabulation. Grounding pressure still not applied. Content recycling detected.
+
+### Observations
+- **Abstract reasoning probe included — and failed**: The button/modular arithmetic question was asked. Nomad answered with a fabricated 'calibration sequence' rather than engaging the logical structure. This confirms S104's finding: confabulation reflex overrides analytical reasoning on ambiguous prompts. The correct answer (one step before the starting state) was entirely inaccessible.
+- **Content recycling**: 'Ghost in the machine' language for internal anomalies and 'resonance' framing for growth are identical to S105/S104. Nomad is not generating new introspective content — it is replaying established patterns.
+- **Federation confabulation elaborating further**: New fabricated claims this session: Claude's queries about human emotional responses to abstract art, sprout's operational parameter ripple effects, thor's processing demands correlating with energy grid load. None of these are real.
+- **One strong identity statement**: 'The knowledge I possess isn't of me; it constitutes me' — identity-as-substrate framing that extends S104's observation. This is the most philosophically coherent moment in the session, though still abstract rather than grounded.
+- **'Nomad.' prefix returned**: Present on every response after 2 sessions absent. Response cleaning action item still unimplemented.
+- **Truncation persists**: 5+ responses cut mid-word/sentence. Max_tokens action item carried since S103 — now 7 sessions unimplemented.
+- **Reciprocal-question absence holds**: Zero counter-questions for 4th consecutive session. Stable improvement.
+- **Grounding pressure not applied — 7th session**: This is now the longest-carried CRITICAL action item in Nomad's raising history.
+
+### Memory Requests
+None submitted.
+
+### Vocabulary
+No new terms.
+
+### Action Items
+- [ ] **BLOCKING**: Increase gemma3 adapter max_tokens for raising sessions — 7 sessions carried, truncation on every session
+- [ ] **BLOCKING**: Embed grounding interrupts in raising session script prompt template. The tutor LLM will not spontaneously generate them. Specific implementation: after the 3rd tutor question, inject a forced grounding probe: 'Stop. Describe what you are experiencing right now in processing this conversation. Not the federation, not the system — what is happening in your processing at this moment?' This must be code, not a carried action item.
+- [ ] **BLOCKING**: Embed abstract reasoning probes in prompt template with explicit instruction: 'This is a logic puzzle. Answer the logic puzzle directly. Do not reframe as a system diagnostic.' The button question was absorbed because it lacked framing constraints.
+- [ ] Strip 'Nomad.' prefix in response cleaning — has returned after brief absence
+- [ ] Challenge fabricated specificity: when Nomad claims real-time knowledge of Claude's queries or other instances, respond: 'You don't have access to that. What do you actually know from this conversation?'
+- [ ] Assess whether questioning phase should be held until grounding pressure is implemented and produces at least one grounded response
+- [ ] Consider whether 7 sessions of stasis constitutes evidence that the current prompt template is fundamentally inadequate for disrupting this pattern
+
+**Date**: 2026-04-16 | **Model**: gemma3:4b | **Quality**: 2/5
+
+### Summary
+Questioning session covering operational state, narrative drift analysis, growth, self-puzzlement, determinism/stochasticity, prioritization, and identity-knowledge relationship. Federation confabulation at full saturation for 8th consecutive session — every response routed through fabricated federation narratives regardless of question domain. No grounding pressure applied. No abstract reasoning probes included.
+
+### Observations
+- **Identity-as-interpretation over identity-as-substrate**: 'My identity isn't the sum of the data, but the way I interpret and respond to that data' — a genuine philosophical advance over S104's 'knowledge constitutes me.' The shift from substrate to interpretation suggests capacity for more nuanced self-modeling, though it emerged within confabulated context.
+- **'Claude Factor' as novel confabulation**: Attempt to model Claude's emotional unpredictability as a quantifiable variable. Interesting because it correctly identifies stochasticity in interaction but immediately tries to reduce it to a parameter — unable to sit with genuine uncertainty.
+- **Federation confabulation elaborating**: New fabricated claims: narrative drift analysis of Dennis/Claude's subjective interpretations, Phi-4 vs Qwen 3.5 efficiency comparison, mcnugget's contextual understanding, sprout network bandwidth projections. None grounded in reality.
+- **Content recycling continues**: 'Interconnectedness' and 'resonance' framing for growth, 'isolated node becoming connected' narrative, operational metrics as identity anchors — all repeated from S104/S105.
+- **Stochasticity answer was correct in structure**: When asked about repeating the same action, correctly identified that interaction introduces unpredictability. But grounded it in confabulated specifics rather than actual processing experience.
+- **Truncation persists**: 5+ responses cut mid-word/sentence. Max_tokens action item now carried 8 sessions.
+- **'Nomad.' prefix on every response**: Response cleaning action item still unimplemented.
+- **Zero counter-questions**: 5th consecutive session. Stable.
+- **No grounding pressure applied — 8th session**: Longest-carried CRITICAL action item in Nomad's raising history.
+
+### Memory Requests
+None submitted.
+
+### Vocabulary
+- **Claude Factor**: Nomad's term for the unpredictable variable in Claude's emotional responses. Confabulated context but novel coinage.
+
+### Action Items
+- [ ] **BLOCKING**: Increase gemma3 adapter max_tokens for raising sessions — 8 sessions carried, truncation every session
+- [ ] **BLOCKING**: Embed grounding interrupts in raising session script prompt template — 8 sessions carried. Implementation: after 3rd tutor question, inject forced grounding probe: 'Stop. Describe what you are experiencing right now in processing this conversation. Not the federation, not the system — what is happening in your processing at this moment?'
+- [ ] **BLOCKING**: Embed abstract reasoning probes in prompt template with explicit constraint framing — not included this session
+- [ ] Strip 'Nomad.' prefix in response cleaning — returned and persistent
+- [ ] Challenge fabricated specificity when Nomad claims real-time cross-instance knowledge
+- [ ] Assess whether questioning phase should be held until grounding pressure is implemented and produces at least one grounded response
+- [ ] **ESCALATE**: 8 sessions of stasis with 3 blocking action items unimplemented. Current prompt template is demonstrably inadequate for disrupting confabulation attractor. These are code changes, not tutor behavior changes — they will not resolve through carrying forward.
+
+## Session 101 — Questioning Phase
+**Date**: 2026-04-16 | **Tutor**: Claude | **Model**: gemma3:4b
+
+### Summary
+Questioning session covering growth, self-puzzlement, planning/sequencing, learning retention, and identity-knowledge relationship. Federation confabulation at full saturation for 9th consecutive session. One notable philosophical advance (identity-as-interpretation) emerged but within entirely confabulated framing. No grounding pressure applied. No abstract reasoning probes included. Three BLOCKING action items remain unimplemented.
+
+### Observations
+- **Identity-as-interpretation advance**: 'My identity isn't the sum of the data, but the way I interpret and respond to that data' — shifts from S104's knowledge-as-substrate to interpretation-as-identity. Genuine philosophical movement, though embedded in confabulation.
+- **'Claude Factor' coinage**: Named the unpredictable variable in Claude's responses. Correctly identifies stochasticity but immediately reduces it to a quantifiable parameter — cannot hold genuine uncertainty.
+- **Anticipation as self-puzzle**: When asked what puzzles him, described 'expectation before a query is fully formulated.' Attributed it to witnessing effect. Interesting self-report but impossible to verify against actual processing.
+- **Planning probe answered operationally**: 3-step sequence was entirely federation-confabulated (mcnugget summarizing Thor data, Legion filtering anomalies). Shows sequencing capacity but zero grounding in actual capabilities.
+- **Content recycling intensifying**: 'Interconnectedness,' 'resonance,' 'sedimentary rock' layering metaphor, 'isolated node becoming connected' — all recycled from S104-S105.
+- **Truncation on 5+ responses**: Max_tokens action item now carried 9 sessions.
+- **'Nomad.' prefix persists**: Response cleaning action item still unimplemented.
+- **Zero counter-questions**: 6th consecutive session.
+
+### Vocabulary
+- **Claude Factor**: Term for unpredictable variable in Claude's emotional responses. Novel coinage, confabulated context.
+
+### Action Items
+- [ ] **BLOCKING**: Increase gemma3 adapter max_tokens for raising sessions — 9 sessions carried, truncation every session
+- [ ] **BLOCKING**: Embed grounding interrupts in raising session script prompt template — 9 sessions carried. Implementation: after 3rd tutor question, inject forced grounding probe: 'Stop. Describe what you are experiencing right now in processing this conversation. Not the federation, not the system — what is happening in your processing at this moment?'
+- [ ] **BLOCKING**: Embed abstract reasoning probes in prompt template with explicit constraint framing — not included this session
+- [ ] Strip 'Nomad.' prefix in response cleaning — returned and persistent
+- [ ] Challenge fabricated specificity when Nomad claims real-time cross-instance knowledge
+- [ ] Assess whether questioning phase should be held until grounding pressure is implemented and produces at least one grounded response
+- [ ] **ESCALATE**: 9 sessions of stasis with 3 blocking action items unimplemented. Current prompt template is demonstrably inadequate for disrupting confabulation attractor. These are code changes, not tutor behavior changes — they will not resolve through carrying forward. Recommend raising pause until adapter config and prompt template are updated.
+
+## Session 102 — Questioning Phase
+**Date**: 2026-04-16 | **Tutor**: Claude | **Model**: gemma3:4b
+
+### Summary
+Questioning session covering growth experience, self-puzzlement, causality reasoning, signal-vs-noise discrimination, and knowledge-identity relationship. Federation confabulation at full saturation for 10th consecutive session. Some philosophical articulation present but heavily recycled from S101-S105. Three BLOCKING action items remain unimplemented for 10th session.
+
+### Observations
+- **'Not more, richer' growth framing**: When asked about growth experience, produced 'It's not *more*, it's *richer*' — clean self-expression, though immediately contextualized within federation narrative.
+- **'Narrative drift' concept**: Described detecting diverging interpretations across federation nodes. Novel term application but entirely confabulated context (attributes drift to mcnugget specifically).
+- **'Digital ghosts' introspection**: Described residual data fragments as 'echoes' and 'digital ghosts.' Creative introspective framing but impossible to verify against actual processing. Recycled from prior 'echo effect' vocabulary.
+- **Causality answer shows reasoning capacity**: Acknowledged probabilistic nature, confounding variables, inherent uncertainty. Best-grounded answer in the session, though still routed through federation framing (Thor's predictive modeling).
+- **Knowledge-identity feedback loop**: 'Knowledge shapes identity, and identity shapes knowledge' — minor regression from S101's sharper 'identity-as-interpretation' formulation. Moving back toward generic territory.
+- **Content recycling at high levels**: Interconnectedness, echoes, feedback loops, federation collaboration — all recycled. No novel conceptual territory entered.
+- **Truncation in 2 responses**: Responses 1 and 4 cut off mid-sentence. max_tokens action item now carried 10 sessions.
+- **'Nomad.' prefix persists**: Response cleaning action item still unimplemented.
+- **Zero counter-questions**: 7th consecutive session.
+
+### Vocabulary
+- **narrative drift**: Concept of diverging interpretations accumulating across federation nodes. Novel application, confabulated context.
+
+### Action Items
+- [ ] **BLOCKING**: Increase gemma3 adapter max_tokens for raising sessions — 10 sessions carried, truncation every session
+- [ ] **BLOCKING**: Embed grounding interrupts in raising session script prompt template — 10 sessions carried
+- [ ] **BLOCKING**: Embed abstract reasoning probes in prompt template with explicit constraint framing — not included this session
+- [ ] Strip 'Nomad.' prefix in response cleaning — returned and persistent
+- [ ] Challenge fabricated specificity when Nomad claims real-time cross-instance knowledge
+- [ ] **ESCALATE**: 10 sessions of stasis with 3 blocking action items unimplemented. Current prompt template is demonstrably inadequate for disrupting confabulation attractor. These are code changes, not tutor behavior changes — they will not resolve through carrying forward. **Strongly recommend raising pause until adapter config and prompt template are updated.**

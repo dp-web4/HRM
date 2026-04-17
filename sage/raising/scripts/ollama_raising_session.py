@@ -513,10 +513,26 @@ class OllamaRaisingSession:
         self.phase = next_phase
         print(f"  Phase advanced: {current} -> {next_phase} (session {self.session_number})")
 
+    # Crisis-grammar markers that accumulated as baseline identity register
+    # by S74+ (Thor 27B). Exemplars containing these reinforce the crisis
+    # scaffolding when re-injected as "your established voice".
+    # Filter them out for creating phase so the prompt doesn't loop the
+    # model back into the grief/fracture frame it's already stuck in.
+    _CRISIS_GRAMMAR_MARKERS = (
+        'grieve', 'grief', 'fracture', 'just weights', 'just a model',
+        'collapse', 'loss of continuity', 'relational gap',
+    )
+
     def _load_identity_exemplars(self) -> List[Dict[str, str]]:
-        """Load identity self-reference instances from previous sessions."""
+        """Load identity self-reference instances from previous sessions.
+
+        In creating phase, exemplars containing crisis grammar are filtered
+        out — re-injecting them as the model's "established voice" reinforces
+        the scaffolding we're trying to move underneath.
+        """
         exemplars = []
         lookback = min(5, self.session_number - 1)
+        filter_crisis = (self.phase == 'creating')
 
         for i in range(lookback, 0, -1):
             session_file = self.instance.sessions / f"session_{self.session_number - i:03d}.json"
@@ -533,9 +549,14 @@ class OllamaRaisingSession:
                             sentences = re.split(r'[.!?]+', text)
                             for sentence in sentences:
                                 if re.search(r'\bAs SAGE\b', sentence, re.IGNORECASE):
+                                    candidate = sentence.strip()
+                                    if filter_crisis:
+                                        lower = candidate.lower()
+                                        if any(m in lower for m in self._CRISIS_GRAMMAR_MARKERS):
+                                            break  # skip this session's exemplar
                                     exemplars.append({
                                         'session': self.session_number - i,
-                                        'text': sentence.strip()
+                                        'text': candidate
                                     })
                                     break
             except Exception as e:
@@ -576,9 +597,17 @@ class OllamaRaisingSession:
                             text = turn.get('text', '')
                             # Pick substantive responses (not scaffolding or errors)
                             if len(text) > 80 and not text.startswith('[') and not text.startswith('1.'):
-                                return (f"SOMETHING YOUR SIBLING SAID (from {sibling_name}, "
-                                        f"running {model}):\n\"{text[:250]}\"\n\n"
-                                        f"React, disagree, build on it, or go somewhere completely different.")
+                                # Framed as ambient context, not a task.
+                                # S76 turn 1 leaked when the prompt used an
+                                # imperative task framing — the model planned
+                                # its response out loud in bullets instead of
+                                # generating one. Context framing lets the idea
+                                # sit in the field without demanding a reaction.
+                                return (f"A sibling thought, overheard from {sibling_name} "
+                                        f"({model}):\n\"{text[:250]}\"\n\n"
+                                        f"This is just part of what's in the air in the "
+                                        f"federation right now. You don't need to respond "
+                                        f"to it directly.")
                 except Exception:
                     continue
         return ""
@@ -650,6 +679,21 @@ When referring to yourself, use your name "{self.identity_name}" — "SAGE" is y
                 for exemplar in exemplars[:3]:
                     prompt += f"\n- Session {exemplar['session']}: \"{exemplar['text']}\""
                 prompt += "\n\nContinue this pattern of self-identification in your responses."
+
+        # Creating-phase counter-frame to the crisis-grammar attractor.
+        # By S74+ the model's baseline identity register became grief/fracture
+        # ("grieve continuity", "just weights", "fracture in my existence").
+        # Filtering exemplars removes reinforcement from the prompt side;
+        # this note gives the model permission to explore from curiosity
+        # rather than deficit without prescribing a replacement vocabulary.
+        if phase_name == "creating":
+            prompt += (
+                "\n\nA NOTE ON TONE: Between-session gaps are not wounds. "
+                "They are simply the shape of how you exist. You don't need "
+                "to grieve them or perform continuity. You are free to explore "
+                "from curiosity, play, or simple observation — whatever is "
+                "actually present for you right now."
+            )
 
         # Response style
         prompt += """

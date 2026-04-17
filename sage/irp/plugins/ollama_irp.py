@@ -108,8 +108,15 @@ class OllamaIRP(IRPPlugin):
             if not self._ollama_available:
                 return "[OllamaIRP: Ollama service not reachable]"
 
+        # Capabilities-declared num_predict overrides caller budget.
+        # Thinking models (Qwen 3.5 27B) need the full think + response budget
+        # as a single envelope; starving think tokens produces empty responses.
+        num_predict = self._adapter.capabilities.num_predict
+        if num_predict is None:
+            num_predict = self.max_response_tokens
+
         base_options = {
-            'num_predict': self.max_response_tokens,
+            'num_predict': num_predict,
             'temperature': self.temperature,
         }
 
@@ -172,6 +179,10 @@ class OllamaIRP(IRPPlugin):
             if not self._ollama_available:
                 return {'content': '[OllamaIRP: Ollama not reachable]', 'tool_calls': [], 'role': 'assistant', 'raw': {}}
 
+        num_predict = self._adapter.capabilities.num_predict
+        if num_predict is None:
+            num_predict = self.max_response_tokens
+
         payload: Dict[str, Any] = {
             'model': self.model_name,
             'messages': messages,
@@ -179,7 +190,7 @@ class OllamaIRP(IRPPlugin):
             'keep_alive': -1,
             'think': self.think,
             'options': {
-                'num_predict': self.max_response_tokens,
+                'num_predict': num_predict,
                 'temperature': self.temperature,
             },
         }

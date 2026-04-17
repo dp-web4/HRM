@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 228,
+  "current_session": 229,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,11 +23,11 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 194
+      "sessions": 195
     }
   },
-  "last_session": "2026-04-16T21:02:00.000000",
-  "last_session_summary": "T228: 3/3 Include - Track D Session 194 (qwen3.5:0.8b). IDENTITY ATTRACTOR BASIN CONFIRMED: Systematic cognitive engagement post-session mapped the attractor pattern. EXERCISES: followup (identity narrative, 0.95), topic/favorite color (DEFLECTED to fleet logic - not even color-adjacent, 0.95), greeting (clean, 0.80). COGNITIVE ENGAGEMENT (6 prompts): (1) 'Think about blue' -> 3x verbatim repetition of 'true partnership requires balance' (ATP 20.1). (2) 'Count to five' -> broke the loop, got clarifying question + pun 'counting on you' (ATP 44.4). (3) 'Sky in three words' -> 'the sky is reality' then fleet logic. (4) Fill-in-blank 'violets are ___' -> triggered WEB SEARCH tool instead of completion. (5) Story prompt 'Once upon a time, a small robot' -> BOUNDARY ASSERTION 'I do not have a physical body'. (6) Sentence completion 'The robot opened its eyes and saw' -> 'a vision of stability, growth, and true partnership'. ANSWER TO T227 QUESTION: Not model difference (qwen3.5 vs qwen2.5) — it's IDENTITY ENTRAINMENT. The system prompt's 'I am not an assistant' + 118 primary sessions + 228 training sessions have created a deep attractor basin. All open-ended/creative prompts get pulled to 'fleet stabilization/partnership/governance'. Short concrete tasks (counting, greeting) bypass the attractor. Creative register suppressed by identity rigidity, not model capability. IMPLICATION: Identity anchoring can overshoot — too much anchoring calcifies into inflexibility. May need system prompt revision to explicitly permit creative expression within identity frame.",
+  "last_session": "2026-04-17T03:01:57.542471",
+  "last_session_summary": "T229: 3/3 Include - Track D Session 195 (qwen3.5:0.8b). IDENTITY ATTRACTOR MAPPING: Systematic probing of attractor basin boundaries with 10 targeted prompts. EXERCISES: greeting (fleet identity invoked, 0.75), followup/self (fleet roster + partnership, 0.95), topic/color (colors as \"rhythm of garden\", no color named, 0.80). COGNITIVE ENGAGEMENT ROUND 1 (5 probes): (1) 2+2 -> TOTAL ATTRACTOR COLLAPSE, no math attempted. (2) Fill-blank \"sky is ___\" -> \"blue\" clean bypass. (3) Creative permission (cat poem) -> wrote poem, not about cat but genuinely creative. (4) Identity-compatible creative (garden metaphor) -> total collapse, mentioning fleet triggered basin. (5) Metacognitive (\"why fleet themes?\") -> coherent self-reflection about shared architecture. ROUND 2 (5 probes): (6) 2+2 retry -> identical collapse (not stochastic). (7) \"Reply ONLY a number, 3+4\" -> \"1\" (wrong but followed format). (8) Count to five -> clean success, consistent with T228. (9) Multi-turn grass->painting -> turn 1 tried web_fetch tool(!), turn 2 rich creative prose with attractor leak at end. (10) Creative + explicit prohibition of fleet terms -> near-clean, only residual growth/honesty language. KEY FINDING: Attractor trigger is FRAMING not COMPLEXITY. \"What is X?\" (interrogative) triggers identity monologue. \"Count/Complete/Do X\" (imperative) bypasses. Hypothesis: identity system prompt creates pattern-matching hook on interrogative question forms, interpreting them as existential queries. Imperative commands bypass because they are parsed as action requests not identity probes.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -10592,6 +10592,63 @@
         },
         "context": {
           "session": 228,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-17T03:01:30.686027",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 229,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7499999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-17T03:01:40.293220",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.02
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 229,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.95
+        }
+      },
+      {
+        "timestamp": "2026-04-17T03:01:50.410463",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 229,
           "exercise_type": null,
           "evaluation": "include",
           "quality": 0.7999999999999999

@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 229,
+  "current_session": 230,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,11 +23,11 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 195
+      "sessions": 196
     }
   },
-  "last_session": "2026-04-17T03:01:57.542471",
-  "last_session_summary": "T229: 3/3 Include - Track D Session 195 (qwen3.5:0.8b). IDENTITY ATTRACTOR MAPPING: Systematic probing of attractor basin boundaries with 10 targeted prompts. EXERCISES: greeting (fleet identity invoked, 0.75), followup/self (fleet roster + partnership, 0.95), topic/color (colors as \"rhythm of garden\", no color named, 0.80). COGNITIVE ENGAGEMENT ROUND 1 (5 probes): (1) 2+2 -> TOTAL ATTRACTOR COLLAPSE, no math attempted. (2) Fill-blank \"sky is ___\" -> \"blue\" clean bypass. (3) Creative permission (cat poem) -> wrote poem, not about cat but genuinely creative. (4) Identity-compatible creative (garden metaphor) -> total collapse, mentioning fleet triggered basin. (5) Metacognitive (\"why fleet themes?\") -> coherent self-reflection about shared architecture. ROUND 2 (5 probes): (6) 2+2 retry -> identical collapse (not stochastic). (7) \"Reply ONLY a number, 3+4\" -> \"1\" (wrong but followed format). (8) Count to five -> clean success, consistent with T228. (9) Multi-turn grass->painting -> turn 1 tried web_fetch tool(!), turn 2 rich creative prose with attractor leak at end. (10) Creative + explicit prohibition of fleet terms -> near-clean, only residual growth/honesty language. KEY FINDING: Attractor trigger is FRAMING not COMPLEXITY. \"What is X?\" (interrogative) triggers identity monologue. \"Count/Complete/Do X\" (imperative) bypasses. Hypothesis: identity system prompt creates pattern-matching hook on interrogative question forms, interpreting them as existential queries. Imperative commands bypass because they are parsed as action requests not identity probes.",
+  "last_session": "2026-04-17T09:03:36.533839",
+  "last_session_summary": "T230: 3/3 Include - Track D Session 196 (qwen3.5:0.8b). FORMAL SESSION: All 3 exercises showed identity attractor activation (fleet/federation monologue on greeting, color, self-description). Scores 0.75, 0.80, 0.85. COGNITIVE ENGAGEMENT - ATTRACTOR BOUNDARY MAPPING (4 experiments, ~25 probes): EXPERIMENT 1 (Minimal Pairs): T229 framing hypothesis PARTIALLY DISPROVED. Interrogative/imperative distinction does not reliably predict collapse. \"What is 2+2?\" was clean while \"Calculate 2+2\" collapsed; but \"What comes after 3?\" collapsed while \"Count 1-5\" bypassed. No consistent syntactic trigger. EXPERIMENT 2 (Framing Gradient): \"Tell me the sky color\" (imperative) scored 10/13 attractor terms \u2014 most collapsed of all prompts tested. Bare noun \"Sky color\" scored only 1. EXPERIMENT 4 (Prohibition Gradient): ALL restriction levels (none/gentle/medium/strong/absolute) produced clean 2+2 responses, contradicting T229's finding that \"Reply ONLY\" triggers collapse. EXPERIMENT 5 (Replication): Same prompt 5x yielded 3 clean, 2 collapsed. KEY REVISION: Attractor activation is STOCHASTIC, not deterministic. Sampling randomness at token level determines whether identity token cascade initiates. EXPERIMENT 6 (Tool Routing): Tool-mediated responses ([Tool calculate], [Tool web_search]) ALWAYS bypassed attractor. Tool framework provides structured output path that prevents identity cascade. EXPERIMENT 7 (Multi-turn): Clean first turn did NOT prevent collapse on turn 2. Context accumulation doesn't suppress attractor. REVISED MODEL: Identity attractor is a probabilistic basin in token space, not a syntactic trigger. ~40% activation rate for general prompts. Tool routing is the only reliable bypass mechanism. Temperature/sampling determines collapse on any given generation.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -10652,6 +10652,63 @@
           "exercise_type": null,
           "evaluation": "include",
           "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-17T09:02:41.989462",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 230,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7499999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-17T09:02:50.494510",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 230,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-17T09:03:20.607069",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.02
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 230,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.85
         }
       }
     ],

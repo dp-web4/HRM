@@ -1,7 +1,75 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-17 (Root Cause: state_words Was Second Crisis-Grammar Channel; Timeout Override Landed)**
-**Previous: 2026-04-17 (S78 Fix Validation — Crisis Grammar 59% Down, Zero Leaks, New Timeout Mode)**
+**Last Updated: 2026-04-17 (Episodic→Cerebellum Bridge — Hippocampal-Cerebellar Consolidation Path Closed)**
+**Previous: 2026-04-17 (Root Cause: state_words Was Second Crisis-Grammar Channel; Timeout Override Landed)**
+
+---
+
+## Episodic→Cerebellum Bridge (Apr 17, 2026 — Thor Autonomous SAGE Session, 12:00 PDT)
+
+Thor is the cerebellum's declared review pair via episodic index. The
+two modules landed in the same push cycle but with a schema gap:
+`Cerebellum.compile_from_episodes()` takes `{state, actions, outcome,
+episode_id}` dicts; `EpisodicIndex` stores `Episode` dataclasses with
+different field names and a single-action-per-cycle shape. Nothing
+wired the two together.
+
+### Landed this session
+
+`sage/cognition/cerebellum/episodic_bridge.py` — schema adapter and
+batch compile helper:
+
+- `episode_to_cerebellum_dict(episode, domain=None)` — one Episode →
+  one cerebellum dict. Domain inferred from `cognitive_stance` → first
+  tag → `"episodic"` fallback.
+- `compile_habits_from_episodes(episodes, cerebellum, *, domain=None,
+  episode_filter=None)` — batch path for hippocampal→cerebellar
+  consolidation. The cerebellum's own guards (`maturity_threshold`,
+  ≥80% success rate) stay authoritative; this function only reshapes.
+
+Source-episode provenance flows through automatically:
+`compile_from_episodes` already populates `Habit.source_episodes` from
+each input dict's `episode_id`.
+
+### Tests: 11/11
+
+`sage/cognition/cerebellum/test_episodic_bridge.py` covers:
+- Schema roundtrip (domain, features, action+args, outcome)
+- Domain inference fallback and override
+- No-action episodes → empty action sequence
+- Maturity threshold gating (2 eps → no habit; 3+ eps → habit)
+- Success-rate gating (mixed failures → no habit)
+- Source-episode linkage (habit.source_episodes = set of input IDs)
+- `episode_filter` pruning before compilation
+- End-to-end: bind episodes to in-memory `EpisodicIndex`, compile via
+  bridge, confirm habit emerges from repeated-state cluster only
+
+Full `sage/cognition/` suite: 68/68 passing on Thor.
+
+### Open question for follow-up: multi-step trajectories
+
+Each Episode records one action within one cognitive cycle, so the
+bridge emits single-step habits. Real behaviors span multiple
+consecutive cycles (same session_id, contiguous cycle_id). A natural
+next step is `group_episodes_into_trajectories()` that yields
+multi-step action sequences, then a parallel
+`compile_habits_from_trajectories()`. Deferred to keep this session's
+scope tight and to see what shape the raising/ARC consolidation path
+wants first.
+
+### Fleet note: session_end.sh missing SAGE
+
+`memory/epistemic/tools/session_end.sh:REPOS` listed web4, HRM,
+memory, private-context — no SAGE. Thor sessions kept needing manual
+SAGE pushes. Added to the array (position before memory, alphabetical
+within the workspace). Fleet-wide fix.
+
+### Files this session
+
+- `sage/cognition/cerebellum/episodic_bridge.py` — bridge module
+- `sage/cognition/cerebellum/test_episodic_bridge.py` — 11 tests
+- `sage/cognition/cerebellum/__init__.py` — re-export bridge API
+- `memory/epistemic/tools/session_end.sh` — add SAGE to REPOS
 
 ---
 

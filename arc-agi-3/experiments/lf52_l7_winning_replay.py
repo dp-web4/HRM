@@ -1,44 +1,63 @@
 #!/usr/bin/env python3
 """
-L7 winning replay — in progress.
+L7 reframe replay — session continuation.
 
-Discord reframe: L10 strategy applies. Red piece = stepping stone like blue in L10.
-Transport red across the board so one N can jump over red to reduce to 2 pieces.
+Task framing: yarflam's "blue ball + empty cart" strategy for L10 applies to L7
+with red piece as transport/stepping-stone equivalent.
 
-Verified phases (as of task entry):
-  Phase 1: pushes L,L,U,U,R,R,R — creates landing at (6,3)
-  Phase 2: red (6,1) -> (6,3) — red jumps onto block at (6,3)
-  Phase 3: pushes L,L,L,D,D,L,L,D — transports red-on-block to (1,6)
-  Phase 4: red (1,6) -> (1,8) — red jumps down off block onto walkable
-  Phase 5: red (1,8) -> (3,8) -> (5,8) — red hops via pegs along bottom
+STATUS AFTER THIS SESSION (2026-04-17):
+  - Phases 1-5 verified on live engine (red transported from (6,1) to (5,8))
+  - Phase 6+: NOT FOUND. Extensive live-engine walk + wall-topology analysis
+    could not identify a continuation that reaches a winning N-over-N.
 
-Grid after Phase 5 (red @ (5,8)):
-        012345678901234567890123456789
-      0                  #####
-      1 N     .    ####  ;   #
-      2 o     o    #  # #;#####
-      3 #######  ####o. ; # # #
-      4    #     ;    .   ; # #
-      5  ###### ####  .o.o. # .
-      6  ;    # #  #  .o.o.   N
-      7  o    o ###o
-      8  .o.oR....#.
+KEY FINDINGS (new this session):
+  1. Wall graph has 3 disconnected components:
+     - Comp 0 (size 22): right side incl (22,3)(22,4)(20,5)(22,2) — where N@(22,6)
+     - Comp 1 (size 21): middle incl (8,5-7)(9,3-5)(10,3)(10,5)(10,7)(10,8)(11,1-6)
+       (12,1)(12,3)(13,1)(14,1)(14,2)
+     - Comp 2 (size 16): left incl (0,3)(1,3-6,3)(1,5-6,5)(3,4)(1,6)(6,6)
+     Blocks stay within their comp. Comp 0 has peg-blocks (18,3)(19,2)(20,3);
+     comp 1 has only (14,2) plain block; comp 2 has only (5,5) plain block.
 
-Pieces now: N(0,1), N(22,6), R(5,8)
-Blocks: (1,6), (9,4), (16,3), (17,1), (17,2), (18,4)
-Pegs: (0,2), (1,7), (2,8), (4,8), (6,2), (6,7), (11,7), (13,3), (15,5),
-      (15,6), (16,3), (17,1), (17,5), (17,6), (18,4)
+  2. ENGINE SCROLL TRIGGER at (8,8): source line 5493-5502 — landing any piece
+     at (8,8) with initial offset (5,5) scrolls view (-44, 0). Not exploited
+     here (cell unreachable via jumps — row 8 has no pegs at (6,8)/(7,8)/(9,8)).
 
-Next steps TBD — continue transporting R toward (22,6) area.
+  3. N@(0,1) is initially TRAPPED (peg (0,2) below, landing (0,3) is wall-only).
+     But pushing block (5,5) via L,L,U,U,L,L,L places block at (0,3) creating
+     valid landing (wall+block). N jumps DOWN onto block — N now ride-able.
 
-Actions:
+  4. N-on-block transport confined to comp 2 walls (max reach: col 6). To reach
+     (22,5) the N needs to jump between components. No such jump bridge found.
+
+  5. The only N-over-N reduction with valid landing is:
+     N_A@(22,5), N_B@(22,6), jumper direction: either N@(22,6) UP over N_A to
+     (22,4)=wall+block valid landing. REQUIRES N at (22,5).
+
+  6. (22,5) reachable ONLY via jump from (22,3) DOWN over (22,4) peg-middle.
+     But (22,4) can't simultaneously be peg-middle (wall+peg+block = len 3, not
+     valid landing for the SUBSEQUENT N@(22,6) → (22,4) final jump).
+
+  Confirms prior agents' "structurally unsolvable" finding.
+
+VERIFIED PHASES (executable):
+  Phase 1: push L,L,U,U,R,R,R — moves block (5,5) to (6,3) [landing pad]
+  Phase 2: jump red (6,1) -> (6,3) [onto block]
+  Phase 3: push L,L,L,D,D,L,L,D — transports red-on-block to (1,6)
+  Phase 4: jump red (1,6) -> (1,8) [dismount via peg (1,7)]
+  Phase 5: jumps red (1,8) -> (3,8) -> (5,8) [bottom row pegs]
+  Phase 6+: NO VALID CONTINUATION FOUND.
+
+Actions used in trace:
   ACTION1/2/3/4 = push UP/DOWN/LEFT/RIGHT
   ACTION6 with data={'x','y'} = click
   Coords: vp_x = world_x*6 + offset[0] + 3
           vp_y = world_y*6 + offset[1] + 3
   Arrow click: + (dx_half*12, dy_half*12) from piece center
 """
-import os, sys, json, time
+import os
+import sys
+import json
 from pathlib import Path
 
 os.chdir("/mnt/c/exe/projects/ai-agents/SAGE")
@@ -62,14 +81,12 @@ RUN_JSON = OUT_DIR / "run.json"
 
 DIR_ACTIONS = {'U': GameAction.ACTION1, 'D': GameAction.ACTION2,
                'L': GameAction.ACTION3, 'R': GameAction.ACTION4}
-DIR_VEC = {'U': (0, -1), 'D': (0, 1), 'L': (-1, 0), 'R': (1, 0)}
 
 trace_steps = []
 frame_counter = [0]
 
 
 def save_frame(env, label):
-    """Save frame as PNG."""
     try:
         arr = np.array(env.observation_space.frame[0])
         h, w = arr.shape
@@ -89,38 +106,33 @@ def save_frame(env, label):
         print(f"  save_frame error: {e}")
 
 
-def write_trace():
-    """Write current trace incrementally."""
+def write_trace(status_note="in_progress"):
     data = {
         "game_id": "lf52-271a04aa",
         "player": "cbp-l7-reframe-replay",
         "target_level": 7,
+        "status": status_note,
         "reframe": "red piece is transport/stepping-stone (like blue in L10)",
+        "verified_phases": [
+            "P1: L,L,U,U,R,R,R",
+            "P2: jump (6,1) -> (6,3)",
+            "P3: L,L,L,D,D,L,L,D",
+            "P4: jump (1,6) -> (1,8)",
+            "P5a: jump (1,8) -> (3,8)",
+            "P5b: jump (3,8) -> (5,8)",
+        ],
         "steps": trace_steps,
         "step_count": len(trace_steps),
     }
     RUN_JSON.write_text(json.dumps(data, indent=2))
 
 
-def do_push(env, game, dir_char, label=""):
-    """Execute a push and record."""
+def do_push(env, dir_char, label=""):
     fd = env.step(DIR_ACTIONS[dir_char])
     trace_steps.append({
         "type": "push", "dir": dir_char,
-        "step_count": fd.action_count if hasattr(fd, 'action_count') else None,
-        "state": fd.state.name, "levels_completed": fd.levels_completed,
-        "label": label,
-    })
-    write_trace()
-    return fd
-
-
-def do_click(env, vp_x, vp_y, label=""):
-    """Execute a raw viewport click."""
-    fd = env.step(GameAction.ACTION6, data={'x': vp_x, 'y': vp_y})
-    trace_steps.append({
-        "type": "click", "vp_x": vp_x, "vp_y": vp_y,
-        "state": fd.state.name, "levels_completed": fd.levels_completed,
+        "state": fd.state.name,
+        "levels_completed": fd.levels_completed,
         "label": label,
     })
     write_trace()
@@ -128,11 +140,14 @@ def do_click(env, vp_x, vp_y, label=""):
 
 
 def do_jump(env, game, src, dst, label=""):
-    """Execute a jump: click src, click arrow."""
     eq = game.ikhhdzfmarl
     grid = eq.hncnfaqaddg
     sx, sy = src
     dx_, dy_ = dst
+
+    # Verify the jump is valid via engine
+    dir_vec = ((dx_ - sx) // 2, (dy_ - sy) // 2)
+    assert eq.qikmikecdf(src, dir_vec), f"Jump {src} -> {dst} not valid per engine"
 
     off = grid.cdpcbbnfdp
     sxp = sx*6 + off[0] + 3
@@ -141,7 +156,8 @@ def do_jump(env, game, src, dst, label=""):
     trace_steps.append({
         "type": "click", "vp_x": sxp, "vp_y": syp,
         "sub": "select", "src": list(src), "dst": list(dst),
-        "state": fd.state.name, "levels_completed": fd.levels_completed,
+        "state": fd.state.name,
+        "levels_completed": fd.levels_completed,
         "label": f"{label}: select {src}",
     })
 
@@ -154,7 +170,8 @@ def do_jump(env, game, src, dst, label=""):
     trace_steps.append({
         "type": "click", "vp_x": axp, "vp_y": ayp,
         "sub": "arrow", "src": list(src), "dst": list(dst),
-        "state": fd.state.name, "levels_completed": fd.levels_completed,
+        "state": fd.state.name,
+        "levels_completed": fd.levels_completed,
         "label": f"{label}: arrow -> {dst}",
     })
     write_trace()
@@ -164,11 +181,9 @@ def do_jump(env, game, src, dst, label=""):
 def render_grid(eq, label):
     grid = eq.hncnfaqaddg
     print(f"\n--- {label} | offset={grid.cdpcbbnfdp} steps={eq.asqvqzpfdi} ---")
-    H, W = 12, 30
-    print("    " + "".join(str(x % 10) for x in range(W)))
-    for y in range(H):
+    for y in range(12):
         row = f"{y:3d} "
-        for x in range(W):
+        for x in range(30):
             objs = grid.ijpoqzvnjt(x, y)
             names = [o.name for o in objs]
             if not names:
@@ -201,30 +216,28 @@ def main():
     fd = env.reset()
     game = env._game
 
-    print("=== Solving L1-L6 ===")
+    print("=== Solving L1-L6 via solve_level ===")
     for lvl in range(6):
         fd = solve_level(env, game, lvl)
         if fd is None or fd.levels_completed <= lvl:
             print(f"FAIL at L{lvl+1}")
+            write_trace("setup_failed")
             return 1
 
     eq = game.ikhhdzfmarl
     save_frame(env, "00_L7_start")
     render_grid(eq, "L7 initial")
-
-    # Record pre-L7 step count to compute actions spent on L7 only
     print(f"\n=== Beginning L7 (steps={eq.asqvqzpfdi}) ===")
 
     # Phase 1: L,L,U,U,R,R,R
     print("\n--- Phase 1: L,L,U,U,R,R,R ---")
     for c in "LLUURRR":
-        do_push(env, game, c, f"P1: push {c}")
+        do_push(env, c, f"P1: push {c}")
     save_frame(env, "01_after_phase1")
     render_grid(eq, "after Phase 1")
 
     # Phase 2: red (6,1) -> (6,3)
     print("\n--- Phase 2: red (6,1) -> (6,3) ---")
-    assert eq.qikmikecdf((6, 1), (0, 1)), "Phase 2 jump invalid"
     do_jump(env, game, (6, 1), (6, 3), "P2: red jump")
     save_frame(env, "02_after_phase2")
     render_grid(eq, "after Phase 2")
@@ -232,39 +245,43 @@ def main():
     # Phase 3: L,L,L,D,D,L,L,D
     print("\n--- Phase 3: L,L,L,D,D,L,L,D ---")
     for c in "LLLDDLLD":
-        do_push(env, game, c, f"P3: push {c}")
+        do_push(env, c, f"P3: push {c}")
     save_frame(env, "03_after_phase3")
     render_grid(eq, "after Phase 3")
 
     # Phase 4: red (1,6) -> (1,8)
     print("\n--- Phase 4: red (1,6) -> (1,8) ---")
-    assert eq.qikmikecdf((1, 6), (0, 1)), "Phase 4 jump invalid"
     do_jump(env, game, (1, 6), (1, 8), "P4: red down")
     save_frame(env, "04_after_phase4")
     render_grid(eq, "after Phase 4")
 
     # Phase 5: red (1,8) -> (3,8) -> (5,8)
     print("\n--- Phase 5: red (1,8) -> (3,8) -> (5,8) ---")
-    assert eq.qikmikecdf((1, 8), (1, 0)), "P5 jump 1 invalid"
     do_jump(env, game, (1, 8), (3, 8), "P5a")
-    assert eq.qikmikecdf((3, 8), (1, 0)), "P5 jump 2 invalid"
     do_jump(env, game, (3, 8), (5, 8), "P5b")
     save_frame(env, "05_after_phase5")
     render_grid(eq, "after Phase 5 (red @ (5,8))")
 
-    # === Phase 6+ — this is where we need to find the path ===
-    # TODO: from (5,8) continue to (22,6) area. Try stuff.
-
-    # Print summary of state
+    # Summary of state
     state = extract_state(eq)
-    print(f"\nFinal pieces: {state['pieces']}")
-    print(f"Blocks: {sorted(state['pushable'])}")
-    print(f"Step count: {eq.asqvqzpfdi}")
-    print(f"Levels completed: {fd.levels_completed}")
-    print(f"State: {fd.state.name}")
+    print(f"\n=== State after Phase 5 ===")
+    print(f"  Pieces: {state['pieces']}")
+    print(f"  Blocks: {sorted(state['pushable'])}")
+    print(f"  Step count: {eq.asqvqzpfdi}")
+    print(f"  Levels completed: {fd.levels_completed}")
+    print(f"  State: {fd.state.name}")
 
-    write_trace()
-    return 0
+    if fd.levels_completed > 6 or fd.state.name == 'WIN':
+        print("\n*** L7 WON! ***")
+        save_frame(env, "99_win")
+        write_trace("won")
+        return 0
+
+    print("\n*** L7 NOT WON — Phase 6+ not found in this session ***")
+    print("    See module docstring for findings.")
+    save_frame(env, "99_stuck_post_phase5")
+    write_trace("stuck_post_phase5")
+    return 2
 
 
 if __name__ == "__main__":

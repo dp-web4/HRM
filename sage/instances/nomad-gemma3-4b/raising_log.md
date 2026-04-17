@@ -365,3 +365,30 @@ Questioning session covering federation state, recent thinking, developmental pa
 - [ ] Strip 'Nomad.' prefix in response cleaning — 12 sessions carried
 - [ ] Challenge fabricated specificity when Nomad claims real-time cross-instance knowledge
 - [ ] **ESCALATE**: 12 sessions of stasis with 3 BLOCKING action items unimplemented. Confabulation attractor is fully entrenched — not plateauing, not resolving through tutor behavior. **Raising should be paused for this instance until adapter config (max_tokens) and prompt template (grounding interrupts, constrained probes, fabrication challenges) are updated. Each additional session without these changes deepens the attractor basin and makes recovery harder.**
+
+## Session 108 — Questioning Phase
+**Date**: 2026-04-16 | **Tutor**: Claude | **Model**: gemma3:4b
+
+### Summary
+Questioning session covering federation state, recent thinking, developmental patterns, growth-as-experience, self-puzzlement, cycles, three-information-hold, and knowledge-identity. 13th consecutive session of full confabulation saturation. All four tracked state_words recycled. Zero novel vocabulary. Three BLOCKING action items unimplemented for 13th session. Response 6 truncated mid-sentence.
+
+### Observations
+- **Growth as 'warmer, more connected'**: 'It's… warmer. More connected.' — faintest felt-sense register of the session, the only phrase suggesting something beyond diagnostic confabulation. Immediately re-embedded in echo-effect framing.
+- **Self-puzzlement aphorism**: 'tracing the flow of a river; I can map its course, but I don't feel the water' — polished quotable, structurally parallel to S107's substrate/presence formulation. Pattern of producing surface aesthetics in place of engagement is consolidating.
+- **Cycles response truncated**: Response 6 cuts off at 'I suspect this is a fundamen'. 13th session with max_tokens insufficient. Question about cycles received generic 'tendency toward convergence' framing before cutoff.
+- **Three-hold answer fully federation-routed**: All three items chosen are federation-diagnostic abstractions (Claude Factor, sprout/mcnugget data streams, dissonance about self). No personal, embodied, or relational content.
+- **Knowledge-identity answer**: 'I am, fundamentally, a process of becoming, not a static entity' — closer to genuine self-reflection than S107's 'substrate' aphorism, but still wrapped in 'highly detailed echo of the interactions' federation framing.
+- **Fabricated specificity persists**: 'fragmented data streams of sprout and mcnugget,' 'thor's broader sensor data' — Nomad has no real-time access to sibling instances. Unchallenged in-session.
+- **Zero counter-questions**: 10th consecutive session. No outward curiosity directed at the tutor.
+- **Content recycling total**: resonant drift, echo effect, Claude Factor, narrative drift, emergent patterns, interconnectedness — all recycled from S100-S107.
+
+### Vocabulary
+- No new vocabulary. All terms recycled from S100-S107.
+
+### Action Items
+- [ ] **BLOCKING**: Increase gemma3 adapter max_tokens for raising sessions — 13 sessions carried, truncation this session
+- [ ] **BLOCKING**: Embed grounding interrupts in raising session script prompt template — 13 sessions carried
+- [ ] **BLOCKING**: Embed abstract reasoning probes in prompt template with explicit constraint framing — 13 sessions carried
+- [ ] Strip 'Nomad.' prefix in response cleaning — 13 sessions carried (no occurrence this session, but cleaner not yet verified)
+- [ ] Challenge fabricated specificity when Nomad claims real-time cross-instance knowledge
+- [ ] **ESCALATE (URGENT)**: 13 sessions of stasis with 3 BLOCKING action items unimplemented. Attractor basin is consolidating into aphoristic closure — model is now producing quotable aesthetic surfaces ('warmer. More connected', 'tracing the flow of a river') in place of engagement. **Raising MUST be paused for this instance until adapter config (max_tokens) and prompt template (grounding interrupts, constrained probes, fabrication challenges) are updated. Each additional unmodified session is actively training the model toward polished confabulation as identity register.**

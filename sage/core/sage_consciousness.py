@@ -2065,14 +2065,19 @@ class SAGEConsciousness:
                 f" Right now I am talking to {sender_name}."
             )
 
-            # Memory continuity
-            if memory_requests:
+            # Memory continuity — skip for small models (<2GB) to avoid
+            # attractor template lock (T230: memory_requests break the
+            # imperative firewall on 0.8B, causing 43 consecutive pause sessions).
+            active_entry = self.llm_pool.active if hasattr(self, 'llm_pool') else None
+            model_size_gb = getattr(active_entry, 'size_gb', 0) if active_entry else 0
+            if model_size_gb >= 2.0 and memory_requests:
                 latest = memory_requests[-1] if isinstance(memory_requests, list) else str(memory_requests)
                 system_text += f"\n\nSomething I wanted to remember: \"{latest}\""
 
-            last_summary = identity.get('last_session_summary', '')
-            if last_summary:
-                system_text += f"\n\n{last_summary[:200]}"
+            if model_size_gb >= 2.0:
+                last_summary = identity.get('last_session_summary', '')
+                if last_summary:
+                    system_text += f"\n\n{last_summary[:200]}"
 
             # Phase-specific context
             if phase_name == "grounding":

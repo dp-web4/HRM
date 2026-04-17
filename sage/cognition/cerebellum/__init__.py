@@ -16,5 +16,16 @@ from sage.cognition.cerebellum.core import (
     HabitMatch,
     Cerebellum,
 )
+from sage.cognition.cerebellum.episodic_bridge import (
+    episode_to_cerebellum_dict,
+    compile_habits_from_episodes,
+)
 
-__all__ = ['StateSignature', 'Habit', 'HabitMatch', 'Cerebellum']
+__all__ = [
+    'StateSignature',
+    'Habit',
+    'HabitMatch',
+    'Cerebellum',
+    'episode_to_cerebellum_dict',
+    'compile_habits_from_episodes',
+]

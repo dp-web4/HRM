@@ -1,177 +1,210 @@
 #!/usr/bin/env python3
 """
-Working Memory for SAGE SNARC Cognition
-========================================
+Working Memory for SAGE — dlPFC-analog scratchpad
+==================================================
 
-Maintains active task context, multi-step plans, and intermediate results.
-Implements cognitive realistic capacity limits (7±2 items).
+Typed, capacity-limited (Miller 4±3), ttl-decaying slot buffer.
+The interface every brain-arch component reads/writes through.
 
-Track 3: SNARC Cognition - Component 2/4
+Spec: shared-context/arc-agi-3/phase2/brain-arch/working-memory.md
 """
 
-import torch
-import numpy as np
-from typing import Dict, List, Any, Optional, Tuple
-from dataclasses import dataclass, field
+import json
 import time
 import uuid
+import warnings
+from dataclasses import dataclass, field, asdict
+from typing import Dict, List, Any, Optional, Tuple, Callable
 
-# Import from Track 2 (Memory)
+# Torch is optional — used only when callers hand us tensor content.
 try:
-    from sage.memory.retrieval import MemoryRetrieval
-    from sage.memory.stm import STMEntry
-except ModuleNotFoundError:
-    import sys
-    from pathlib import Path
-    sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-    from sage.memory.retrieval import MemoryRetrieval
-    from sage.memory.stm import STMEntry
+    import torch  # noqa: F401
+    _HAS_TORCH = True
+except ImportError:
+    _HAS_TORCH = False
 
+
+# ──────────────────────────────────────────────────────────────────────
+# Registered slot types
+# ──────────────────────────────────────────────────────────────────────
+
+DEFAULT_TYPES = {
+    "goal": None,
+    "plan_step": None,
+    "intermediate_result": None,
+    "binding": None,
+    "hypothesis": None,
+    "constraint": None,
+    "context_handle": None,
+    "other": None,
+}
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Data classes
+# ──────────────────────────────────────────────────────────────────────
 
 @dataclass
 class WorkingMemorySlot:
-    """
-    Single item in working memory
-
-    Analogy: A "sticky note" for the cognitive system
-    Holds one piece of information relevant to current task
-    """
+    """Single active item. Displaceable, decays without refresh."""
     slot_id: str
-    content_type: str  # "goal", "plan_step", "intermediate_result", "binding", "other"
+    content_type: str
     content: Any
-    priority: float  # How important to retain (0-1)
+    priority: float
     timestamp: float
-    goal_id: Optional[str] = None  # Which goal owns this slot
-    access_count: int = 0  # How many times accessed
+    goal_id: Optional[str] = None
+    access_count: int = 0
+    ttl_ticks: Optional[int] = None  # loop ticks remaining; None = no expiry
 
     def __post_init__(self):
-        """Validate slot"""
         if not 0.0 <= self.priority <= 1.0:
             raise ValueError(f"priority must be 0-1, got {self.priority}")
 
-
-@dataclass
-class PlanStep:
-    """
-    Step in a multi-step plan
-
-    Represents one action in a sequence toward a goal
-    """
-    step_id: int
-    action: str
-    preconditions: List[str] = field(default_factory=list)
-    expected_outcome: str = ""
-    status: str = "pending"  # "pending", "active", "complete", "failed"
-
     def to_dict(self) -> Dict[str, Any]:
-        """Convert to dictionary"""
         return {
-            'step_id': self.step_id,
-            'action': self.action,
-            'preconditions': self.preconditions,
-            'expected_outcome': self.expected_outcome,
-            'status': self.status
+            "slot_id": self.slot_id,
+            "content_type": self.content_type,
+            "content": self.content,
+            "priority": self.priority,
+            "timestamp": self.timestamp,
+            "goal_id": self.goal_id,
+            "access_count": self.access_count,
+            "ttl_ticks": self.ttl_ticks,
         }
 
 
 @dataclass
-class SensorGoalBinding:
-    """
-    Binding between sensor observation and goal
+class PlanStep:
+    """Step in a multi-step plan."""
+    step_id: int
+    action: str
+    preconditions: List[str] = field(default_factory=list)
+    expected_outcome: str = ""
+    status: str = "pending"  # pending | active | complete | failed
 
-    Connects sensor data to goal relevance
-    """
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class SensorGoalBinding:
+    """Binding between sensor observation and goal."""
     sensor_id: str
     observation: Any
     goal_id: str
-    relevance: float  # How relevant to goal (0-1)
+    relevance: float
     timestamp: float = field(default_factory=time.time)
 
     def __post_init__(self):
-        """Validate binding"""
         if not 0.0 <= self.relevance <= 1.0:
             raise ValueError(f"relevance must be 0-1, got {self.relevance}")
 
 
+@dataclass
+class Event:
+    """Mutation event — observable by metacog (Nomad)."""
+    kind: str                    # write | update | evict | clear | tick | consolidate | warn
+    slot_id: Optional[str]
+    slot_type: Optional[str]
+    timestamp: float
+    reason: Optional[str] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+# ──────────────────────────────────────────────────────────────────────
+# WorkingMemory
+# ──────────────────────────────────────────────────────────────────────
+
 class WorkingMemory:
-    """
-    Active task context and multi-step plan state
+    """Typed, capacity-limited, ttl-decaying scratchpad.
 
-    Design:
-    - Limited capacity (7-10 slots, cognitively realistic)
-    - Stores active goals, plan steps, intermediate results
-    - Evicts low-priority items when full
-    - Consolidates high-priority items to LTM when task complete
-
-    Integration:
-    - Goal Manager: Stores active goal context
-    - Deliberation Engine: Stores multi-step plans
-    - Attention Manager: Provides task context for attention
-    - Track 2 (LTM): Consolidates important items on task completion
+    Invariants:
+      1. Capacity is a hard limit (default 7, Miller 4±3 upper).
+      2. Slot types are registered; unknown types become `other` with a warn event.
+      3. Payloads are JSON-serializable. Enforced at write.
+      4. All mutations emit Events. Reads don't.
+      5. Eviction: lowest (priority*(1-rw) + recency*rw).
+      6. TTL expiry happens on tick(), not on read.
     """
+
+    _TYPE_REGISTRY: Dict[str, Optional[Dict]] = dict(DEFAULT_TYPES)
 
     def __init__(
         self,
-        capacity: int = 10,
-        memory_retrieval: Optional[MemoryRetrieval] = None,
-        device: Optional[torch.device] = None
+        capacity: int = 7,
+        memory_retrieval: Optional[Any] = None,
+        on_event: Optional[Callable[[Event], None]] = None,
+        recency_weight: float = 0.3,
     ):
         """
-        Initialize Working Memory
-
         Args:
-            capacity: Maximum number of slots (default: 10, based on 7±2 cognitive limit)
-            memory_retrieval: Memory system from Track 2 (for consolidation)
-            device: Device for tensor operations
+            capacity: Max active slots. Miller 4±3 → default 7.
+            memory_retrieval: Optional long-term memory handle (Track 2).
+            on_event: Optional callback, fired for every mutation.
+            recency_weight: Blend between priority and age in eviction score.
         """
         self.capacity = capacity
         self.memory = memory_retrieval
-        self.device = device or torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.on_event = on_event
+        self.recency_weight = recency_weight
 
-        # Active slots
         self.slots: Dict[str, WorkingMemorySlot] = {}
-
-        # Plan tracking
         self.active_plan: Optional[List[PlanStep]] = None
         self.current_step_index: Optional[int] = None
-
-        # Sensor-goal bindings
         self.bindings: List[SensorGoalBinding] = []
 
-        # Statistics
+        # Stats
         self.total_adds: int = 0
         self.total_evictions: int = 0
         self.total_accesses: int = 0
+        self.total_ticks: int = 0
+        self.total_ttl_expiries: int = 0
 
-        # Recency weight for eviction (how much to favor recent items)
-        self.recency_weight: float = 0.3
+    # ── type registry ──────────────────────────────────────────────
+
+    @classmethod
+    def register_type(cls, name: str, schema: Optional[Dict] = None) -> None:
+        """Register a slot content_type. Schema is advisory for v0.1."""
+        cls._TYPE_REGISTRY[name] = schema
+
+    @classmethod
+    def known_types(cls) -> List[str]:
+        return sorted(cls._TYPE_REGISTRY.keys())
+
+    # ── writes ──────────────────────────────────────────────────────
 
     def add_item(
         self,
         content_type: str,
         content: Any,
         priority: float,
-        goal_id: Optional[str] = None
+        goal_id: Optional[str] = None,
+        ttl_ticks: Optional[int] = None,
     ) -> str:
-        """
-        Add item to working memory
+        """Add a slot. Evicts lowest-score item if at capacity."""
+        # JSON-serializable guard
+        try:
+            json.dumps(content, default=self._default_serializer)
+        except (TypeError, ValueError) as e:
+            raise ValueError(
+                f"content must be JSON-serializable (got {type(content).__name__}): {e}"
+            )
 
-        If at capacity, evict lowest-retention-score item
+        # Type registry
+        if content_type not in self._TYPE_REGISTRY:
+            self._emit(Event(
+                kind="warn", slot_id=None, slot_type=content_type,
+                timestamp=time.time(),
+                reason=f"unknown content_type '{content_type}' → coerced to 'other'",
+            ))
+            content_type = "other"
 
-        Args:
-            content_type: Type of content ("goal", "plan_step", etc.)
-            content: The content itself
-            priority: Priority for retention (0-1)
-            goal_id: Associated goal ID (optional)
-
-        Returns:
-            slot_id of added item
-        """
-        # Check if at capacity
+        # Evict if full
         if len(self.slots) >= self.capacity:
             self._evict_lowest_priority()
 
-        # Create slot
         slot_id = f"wm_{uuid.uuid4().hex[:8]}"
         slot = WorkingMemorySlot(
             slot_id=slot_id,
@@ -179,366 +212,425 @@ class WorkingMemory:
             content=content,
             priority=priority,
             timestamp=time.time(),
-            goal_id=goal_id
+            goal_id=goal_id,
+            ttl_ticks=ttl_ticks,
         )
-
-        # Add to working memory
         self.slots[slot_id] = slot
         self.total_adds += 1
-
+        self._emit(Event(kind="write", slot_id=slot_id,
+                         slot_type=content_type, timestamp=slot.timestamp))
         return slot_id
 
+    def update(self, slot_id: str, content: Any) -> bool:
+        """Replace payload without changing slot_id or type."""
+        slot = self.slots.get(slot_id)
+        if slot is None:
+            return False
+        # JSON-serializable guard
+        try:
+            json.dumps(content, default=self._default_serializer)
+        except (TypeError, ValueError) as e:
+            raise ValueError(f"content not JSON-serializable: {e}")
+        slot.content = content
+        slot.timestamp = time.time()
+        self._emit(Event(kind="update", slot_id=slot_id,
+                         slot_type=slot.content_type, timestamp=slot.timestamp))
+        return True
+
+    def refresh(self, slot_id: str) -> bool:
+        """Reset timestamp; re-arm ttl if set. No event (treated as read-like)."""
+        slot = self.slots.get(slot_id)
+        if slot is None:
+            return False
+        slot.timestamp = time.time()
+        return True
+
+    # ── reads (no events) ──────────────────────────────────────────
+
     def get_item(self, slot_id: str) -> Optional[WorkingMemorySlot]:
-        """
-        Get item from working memory
-
-        Args:
-            slot_id: Slot identifier
-
-        Returns:
-            WorkingMemorySlot if found, None otherwise
-        """
-        if slot_id in self.slots:
-            slot = self.slots[slot_id]
+        slot = self.slots.get(slot_id)
+        if slot is not None:
             slot.access_count += 1
             self.total_accesses += 1
-            return slot
-        return None
+        return slot
+
+    def get_by_type(
+        self, content_type: str, goal_id: Optional[str] = None
+    ) -> List[WorkingMemorySlot]:
+        out = [s for s in self.slots.values() if s.content_type == content_type]
+        if goal_id is not None:
+            out = [s for s in out if s.goal_id == goal_id]
+        return out
 
     def get_context(self, goal_id: Optional[str] = None) -> Dict[str, Any]:
-        """
-        Get current working memory context
-
-        Optionally filter by goal_id
-
-        Args:
-            goal_id: Filter by goal (None = all content)
-
-        Returns:
-            Dictionary with current context
-        """
-        # Filter slots
+        """Grouped view of current slots. Intended for router input."""
         if goal_id is not None:
-            relevant_slots = [s for s in self.slots.values() if s.goal_id == goal_id]
+            relevant = [s for s in self.slots.values() if s.goal_id == goal_id]
         else:
-            relevant_slots = list(self.slots.values())
+            relevant = list(self.slots.values())
 
-        # Group by content type
-        context = {
-            'goals': [],
-            'plan_steps': [],
-            'intermediate_results': [],
-            'bindings': [],
-            'other': []
-        }
+        grouped: Dict[str, List[Any]] = {t: [] for t in self._TYPE_REGISTRY}
+        for s in relevant:
+            grouped.setdefault(s.content_type, []).append(s.content)
 
-        for slot in relevant_slots:
-            if slot.content_type == 'goal':
-                context['goals'].append(slot.content)
-            elif slot.content_type == 'plan_step':
-                context['plan_steps'].append(slot.content)
-            elif slot.content_type == 'intermediate_result':
-                context['intermediate_results'].append(slot.content)
-            elif slot.content_type == 'binding':
-                context['bindings'].append(slot.content)
-            else:
-                context['other'].append(slot.content)
+        grouped["active_plan"] = self.active_plan
+        grouped["current_step"] = self.current_step_index
+        grouped["sensor_bindings"] = (
+            [b for b in self.bindings if b.goal_id == goal_id]
+            if goal_id else list(self.bindings)
+        )
+        return grouped
 
-        # Add plan state
-        context['active_plan'] = self.active_plan
-        context['current_step'] = self.current_step_index
+    # ── plan flow (convenience layered on plan_step slots) ─────────
 
-        # Add bindings
-        if goal_id:
-            context['sensor_bindings'] = [b for b in self.bindings if b.goal_id == goal_id]
-        else:
-            context['sensor_bindings'] = self.bindings
-
-        return context
-
-    def load_plan(self, plan: List[PlanStep]):
-        """
-        Load multi-step plan into working memory
-
-        Args:
-            plan: List of plan steps
-        """
+    def load_plan(self, plan: List[PlanStep]) -> None:
         self.active_plan = plan
         self.current_step_index = 0
-
-        # Add plan steps to working memory with appropriate priorities
         for i, step in enumerate(plan):
-            # Current step has highest priority, future steps lower
-            if i == 0:
-                priority = 0.9  # Current step
-            else:
-                priority = 0.7  # Future step
-
             self.add_item(
-                content_type='plan_step',
-                content=step,
-                priority=priority,
-                goal_id=None  # Plan steps not tied to specific goal slot
+                content_type="plan_step",
+                content=step.to_dict(),
+                priority=0.9 if i == 0 else 0.7,
             )
 
     def advance_plan(self) -> Optional[PlanStep]:
-        """
-        Move to next step in plan
-
-        Returns:
-            Next PlanStep if available, None if plan complete
-        """
         if not self.active_plan or self.current_step_index is None:
             return None
-
-        # Mark current step as complete
         if self.current_step_index < len(self.active_plan):
             self.active_plan[self.current_step_index].status = "complete"
-
-        # Advance to next step
         self.current_step_index += 1
-
-        # Check if plan complete
         if self.current_step_index >= len(self.active_plan):
             return None
-
-        # Mark next step as active
         next_step = self.active_plan[self.current_step_index]
         next_step.status = "active"
-
         return next_step
 
     def get_current_plan_step(self) -> Optional[PlanStep]:
-        """Get current plan step"""
         if self.active_plan and self.current_step_index is not None:
             if self.current_step_index < len(self.active_plan):
                 return self.active_plan[self.current_step_index]
         return None
 
+    # ── sensor bindings ────────────────────────────────────────────
+
     def bind_sensor_to_goal(
-        self,
-        sensor_id: str,
-        observation: Any,
-        goal_id: str,
-        relevance: float
-    ):
-        """
-        Create binding between sensor observation and goal
-
-        Args:
-            sensor_id: Sensor identifier
-            observation: Sensor data
-            goal_id: Goal identifier
-            relevance: How relevant to goal (0-1)
-        """
-        binding = SensorGoalBinding(
-            sensor_id=sensor_id,
-            observation=observation,
-            goal_id=goal_id,
-            relevance=relevance
-        )
-
-        self.bindings.append(binding)
-
-        # Keep only recent bindings (last 50)
+        self, sensor_id: str, observation: Any, goal_id: str, relevance: float
+    ) -> None:
+        self.bindings.append(SensorGoalBinding(
+            sensor_id=sensor_id, observation=observation,
+            goal_id=goal_id, relevance=relevance,
+        ))
         if len(self.bindings) > 50:
             self.bindings = self.bindings[-50:]
 
-    def get_sensor_bindings(self, goal_id: Optional[str] = None) -> List[SensorGoalBinding]:
-        """
-        Get sensor-goal bindings
-
-        Args:
-            goal_id: Filter by goal (None = all bindings)
-
-        Returns:
-            List of sensor bindings
-        """
-        if goal_id:
+    def get_sensor_bindings(
+        self, goal_id: Optional[str] = None
+    ) -> List[SensorGoalBinding]:
+        if goal_id is not None:
             return [b for b in self.bindings if b.goal_id == goal_id]
-        return self.bindings
+        return list(self.bindings)
 
-    def consolidate_to_ltm(self, goal_id: Optional[str] = None):
-        """
-        Consolidate high-priority working memory items to LTM
+    # ── lifecycle ──────────────────────────────────────────────────
 
-        Called when task completes. Stores important intermediate results
-        and goal context to long-term memory.
+    def tick(self) -> None:
+        """Advance one consciousness-loop tick. Decays ttl, evicts expired."""
+        self.total_ticks += 1
+        expired: List[str] = []
+        for slot_id, slot in self.slots.items():
+            if slot.ttl_ticks is not None:
+                slot.ttl_ticks -= 1
+                if slot.ttl_ticks <= 0:
+                    expired.append(slot_id)
+        for slot_id in expired:
+            slot = self.slots.pop(slot_id)
+            self.total_evictions += 1
+            self.total_ttl_expiries += 1
+            self._emit(Event(
+                kind="evict", slot_id=slot_id, slot_type=slot.content_type,
+                timestamp=time.time(), reason="ttl_expired",
+            ))
+        self._emit(Event(
+            kind="tick", slot_id=None, slot_type=None,
+            timestamp=time.time(),
+            reason=f"expired={len(expired)}",
+        ))
 
-        Args:
-            goal_id: Goal that completed (for filtering)
-        """
-        if not self.memory:
-            return  # No LTM available
-
-        # Get high-priority items (priority > 0.7)
-        high_priority = [
-            s for s in self.slots.values()
-            if s.priority >= 0.7 and (goal_id is None or s.goal_id == goal_id)
-        ]
-
-        # TODO: Consolidate to LTM when fully integrated with Track 2
-        # For now, just track that consolidation would happen
-
-        consolidated_count = len(high_priority)
-
-        return consolidated_count
-
-    def clear(self, goal_id: Optional[str] = None):
-        """
-        Clear working memory
-
-        Args:
-            goal_id: Clear only items for this goal (None = clear all)
-        """
+    def clear(self, goal_id: Optional[str] = None) -> None:
         if goal_id is None:
-            # Clear everything
+            n = len(self.slots)
             self.slots.clear()
             self.active_plan = None
             self.current_step_index = None
             self.bindings.clear()
+            self._emit(Event(
+                kind="clear", slot_id=None, slot_type=None,
+                timestamp=time.time(), reason=f"all ({n} slots)",
+            ))
         else:
-            # Clear only items for specific goal
-            to_remove = [sid for sid, slot in self.slots.items() if slot.goal_id == goal_id]
+            to_remove = [sid for sid, s in self.slots.items() if s.goal_id == goal_id]
             for sid in to_remove:
                 del self.slots[sid]
-
-            # Clear bindings for goal
             self.bindings = [b for b in self.bindings if b.goal_id != goal_id]
+            self._emit(Event(
+                kind="clear", slot_id=None, slot_type=None,
+                timestamp=time.time(),
+                reason=f"goal={goal_id} ({len(to_remove)} slots)",
+            ))
 
-    def _evict_lowest_priority(self):
-        """
-        Evict lowest-retention-score item from working memory
+    def consolidate_to_ltm(self, goal_id: Optional[str] = None) -> int:
+        """Ship high-priority slots to LTM. Stub until episodic index ships."""
+        high = [
+            s for s in self.slots.values()
+            if s.priority >= 0.7 and (goal_id is None or s.goal_id == goal_id)
+        ]
+        # TODO(Thor #4 episodic): send dump() snapshot to hippocampal index
+        self._emit(Event(
+            kind="consolidate", slot_id=None, slot_type=None,
+            timestamp=time.time(),
+            reason=f"count={len(high)} goal={goal_id}",
+        ))
+        return len(high)
 
-        Retention score = priority * (1 - recency_weight) + recency * recency_weight
-        """
-        if not self.slots:
-            return
+    # ── snapshot / hash ────────────────────────────────────────────
 
-        current_time = time.time()
-
-        # Compute retention scores
-        retention_scores = {}
-        for slot_id, slot in self.slots.items():
-            # Recency score (0-1, higher = more recent)
-            age = current_time - slot.timestamp
-            recency = 1.0 / (1.0 + age)  # Decays with age
-
-            # Combined retention score
-            retention_score = (
-                slot.priority * (1.0 - self.recency_weight) +
-                recency * self.recency_weight
-            )
-
-            retention_scores[slot_id] = retention_score
-
-        # Find lowest score
-        lowest_slot_id = min(retention_scores, key=retention_scores.get)
-
-        # Optional: Consolidate to LTM if high priority
-        evicted_slot = self.slots[lowest_slot_id]
-        if evicted_slot.priority >= 0.7:
-            # Would consolidate to LTM here if fully integrated
-            pass
-
-        # Evict
-        del self.slots[lowest_slot_id]
-        self.total_evictions += 1
-
-    def get_stats(self) -> Dict[str, Any]:
-        """Get working memory statistics"""
+    def dump(self) -> Dict[str, Any]:
+        """JSON-serializable snapshot for episodic index + debugging."""
         return {
-            'capacity': self.capacity,
-            'current_size': len(self.slots),
-            'utilization': len(self.slots) / self.capacity,
-            'total_adds': self.total_adds,
-            'total_evictions': self.total_evictions,
-            'total_accesses': self.total_accesses,
-            'active_plan_steps': len(self.active_plan) if self.active_plan else 0,
-            'current_step': self.current_step_index,
-            'sensor_bindings': len(self.bindings)
+            "capacity": self.capacity,
+            "slots": [s.to_dict() for s in self.slots.values()],
+            "active_plan": [p.to_dict() for p in self.active_plan] if self.active_plan else None,
+            "current_step_index": self.current_step_index,
+            "bindings": [
+                {
+                    "sensor_id": b.sensor_id,
+                    "observation": b.observation,
+                    "goal_id": b.goal_id,
+                    "relevance": b.relevance,
+                    "timestamp": b.timestamp,
+                }
+                for b in self.bindings
+            ],
+            "stats": self.get_stats(),
+            "snapshot_at": time.time(),
         }
 
+    def stable_key(self, goal_id: Optional[str] = None) -> str:
+        """Canonical hash of slot subset for habit-compiler matching (McNugget #3).
 
-def test_working_memory():
-    """Test Working Memory implementation"""
-    print("\n" + "="*60)
-    print("TESTING WORKING MEMORY")
-    print("="*60)
+        Deterministic across runs: sorts by content_type + handle; ignores
+        timestamps, access counts, ttl.
+        """
+        import hashlib
+        items = sorted(self.slots.values(), key=lambda s: (s.content_type, s.slot_id))
+        if goal_id is not None:
+            items = [s for s in items if s.goal_id == goal_id]
+        canonical = json.dumps(
+            [{"type": s.content_type, "content": s.content} for s in items],
+            sort_keys=True, default=self._default_serializer,
+        )
+        return hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:16]
 
-    # Create working memory
-    wm = WorkingMemory(capacity=5)  # Small capacity for testing
+    # ── stats / observability ──────────────────────────────────────
 
-    # Test 1: Add items
-    print("\n1. Adding items to working memory...")
-    wm.add_item('goal', 'Navigate to landmark', priority=1.0, goal_id='goal1')
-    wm.add_item('plan_step', 'Turn left', priority=0.9, goal_id='goal1')
-    wm.add_item('intermediate_result', {'distance': 10.5}, priority=0.6, goal_id='goal1')
+    def get_stats(self) -> Dict[str, Any]:
+        return {
+            "capacity": self.capacity,
+            "current_size": len(self.slots),
+            "utilization": len(self.slots) / self.capacity if self.capacity else 0.0,
+            "total_adds": self.total_adds,
+            "total_evictions": self.total_evictions,
+            "total_ttl_expiries": self.total_ttl_expiries,
+            "total_accesses": self.total_accesses,
+            "total_ticks": self.total_ticks,
+            "active_plan_steps": len(self.active_plan) if self.active_plan else 0,
+            "current_step": self.current_step_index,
+            "sensor_bindings": len(self.bindings),
+        }
 
-    stats = wm.get_stats()
-    print(f"   Added 3 items, size: {stats['current_size']}/{stats['capacity']}")
+    # ── internals ──────────────────────────────────────────────────
 
-    # Test 2: Get context
-    print("\n2. Getting context...")
-    context = wm.get_context(goal_id='goal1')
-    print(f"   Goals: {len(context['goals'])}")
-    print(f"   Plan steps: {len(context['plan_steps'])}")
-    print(f"   Intermediate results: {len(context['intermediate_results'])}")
+    def _evict_lowest_priority(self) -> None:
+        if not self.slots:
+            return
+        now = time.time()
+        scores: Dict[str, float] = {}
+        for slot_id, slot in self.slots.items():
+            age = now - slot.timestamp
+            recency = 1.0 / (1.0 + age)
+            scores[slot_id] = (
+                slot.priority * (1.0 - self.recency_weight)
+                + recency * self.recency_weight
+            )
+        lowest = min(scores, key=scores.get)
+        slot = self.slots.pop(lowest)
+        self.total_evictions += 1
+        self._emit(Event(
+            kind="evict", slot_id=lowest, slot_type=slot.content_type,
+            timestamp=now, reason="capacity_exceeded",
+        ))
 
-    # Test 3: Load plan
-    print("\n3. Loading multi-step plan...")
-    plan = [
-        PlanStep(step_id=0, action="Move forward", expected_outcome="Advance 1m"),
-        PlanStep(step_id=1, action="Turn left", expected_outcome="Heading 90°"),
-        PlanStep(step_id=2, action="Move forward", expected_outcome="Reach target")
+    def _emit(self, event: Event) -> None:
+        if self.on_event is None:
+            return
+        try:
+            self.on_event(event)
+        except Exception as e:
+            # Observer failures must not break WM. Log and continue.
+            warnings.warn(f"WM on_event callback raised: {e}")
+
+    @staticmethod
+    def _default_serializer(obj: Any) -> Any:
+        """Last-resort serializer for json.dumps guard.
+
+        Accepts dataclasses and objects with .to_dict(). Rejects everything
+        else, so e.g. raw tensors raise cleanly at write time.
+        """
+        if hasattr(obj, "to_dict") and callable(obj.to_dict):
+            return obj.to_dict()
+        if hasattr(obj, "__dataclass_fields__"):
+            return asdict(obj)
+        raise TypeError(f"not JSON-serializable: {type(obj).__name__}")
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Tests
+# ──────────────────────────────────────────────────────────────────────
+
+def _test_basic_add_and_read():
+    wm = WorkingMemory(capacity=5)
+    sid = wm.add_item("goal", {"game": "cd82"}, priority=1.0, goal_id="g1")
+    s = wm.get_item(sid)
+    assert s is not None and s.content == {"game": "cd82"}
+    assert wm.get_stats()["current_size"] == 1
+
+
+def _test_capacity_hard_limit():
+    events: List[Event] = []
+    wm = WorkingMemory(capacity=3, on_event=events.append)
+    for i in range(6):
+        wm.add_item("other", f"item_{i}", priority=0.5)
+    assert len(wm.slots) == 3, f"expected 3, got {len(wm.slots)}"
+    evicts = [e for e in events if e.kind == "evict"]
+    assert len(evicts) == 3, f"expected 3 evict events, got {len(evicts)}"
+    assert all(e.reason == "capacity_exceeded" for e in evicts)
+
+
+def _test_eviction_order():
+    wm = WorkingMemory(capacity=2, recency_weight=0.3)
+    wm.add_item("other", "old_high", priority=0.9)
+    time.sleep(0.01)
+    wm.add_item("other", "new_low", priority=0.3)
+    wm.add_item("other", "trigger", priority=0.5)
+    remaining = {s.content for s in wm.slots.values()}
+    assert "old_high" in remaining, f"old high-priority should survive, got {remaining}"
+
+
+def _test_ttl_decay():
+    events: List[Event] = []
+    wm = WorkingMemory(capacity=5, on_event=events.append)
+    sid = wm.add_item("intermediate_result", {"x": 1}, priority=0.5, ttl_ticks=3)
+    for _ in range(3):
+        wm.tick()
+    assert sid not in wm.slots, "slot should have expired after 3 ticks"
+    ttl_evicts = [e for e in events if e.kind == "evict" and e.reason == "ttl_expired"]
+    assert len(ttl_evicts) == 1
+    assert wm.get_stats()["total_ttl_expiries"] == 1
+
+
+def _test_unknown_type_coerced():
+    events: List[Event] = []
+    wm = WorkingMemory(capacity=5, on_event=events.append)
+    sid = wm.add_item("made_up_type", "payload", priority=0.5)
+    assert wm.get_item(sid).content_type == "other"
+    warns = [e for e in events if e.kind == "warn"]
+    assert len(warns) == 1
+
+
+def _test_dump_roundtrip():
+    wm = WorkingMemory(capacity=5)
+    wm.add_item("goal", {"game": "sc25", "level": 1}, priority=0.9, goal_id="g1")
+    wm.add_item("hypothesis", {"claim": "button A moves left"}, priority=0.6)
+    snap = wm.dump()
+    # Roundtrip
+    s = json.dumps(snap)
+    back = json.loads(s)
+    assert back["capacity"] == 5
+    assert len(back["slots"]) == 2
+    types = {sl["content_type"] for sl in back["slots"]}
+    assert types == {"goal", "hypothesis"}
+
+
+def _test_event_stream_completeness():
+    events: List[Event] = []
+    wm = WorkingMemory(capacity=5, on_event=events.append)
+    sid = wm.add_item("goal", {}, priority=0.5)                 # write
+    wm.update(sid, {"updated": True})                           # update
+    wm.get_item(sid)                                            # read (no event)
+    wm.tick()                                                   # tick
+    wm.clear()                                                  # clear
+    kinds = [e.kind for e in events]
+    assert "write" in kinds
+    assert "update" in kinds
+    assert "tick" in kinds
+    assert "clear" in kinds
+
+
+def _test_goal_filtering():
+    wm = WorkingMemory(capacity=10)
+    wm.add_item("goal", "A-goal", priority=0.9, goal_id="A")
+    wm.add_item("plan_step", "A-step", priority=0.8, goal_id="A")
+    wm.add_item("goal", "B-goal", priority=0.9, goal_id="B")
+    wm.clear(goal_id="A")
+    remaining_goals = {s.goal_id for s in wm.slots.values()}
+    assert remaining_goals == {"B"}, f"got {remaining_goals}"
+
+
+def _test_stable_key_deterministic():
+    wm1 = WorkingMemory(capacity=5)
+    wm1.add_item("goal", {"g": 1}, priority=0.9, goal_id="A")
+    wm1.add_item("hypothesis", {"h": 2}, priority=0.5, goal_id="A")
+    k1 = wm1.stable_key(goal_id="A")
+
+    wm2 = WorkingMemory(capacity=5)
+    # Add in DIFFERENT order
+    wm2.add_item("hypothesis", {"h": 2}, priority=0.5, goal_id="A")
+    wm2.add_item("goal", {"g": 1}, priority=0.9, goal_id="A")
+    k2 = wm2.stable_key(goal_id="A")
+
+    assert k1 == k2, f"stable_key should be order-invariant: {k1} vs {k2}"
+
+
+def _test_json_guard_rejects_tensor_like():
+    class NotSerializable:
+        pass
+    wm = WorkingMemory(capacity=5)
+    try:
+        wm.add_item("other", NotSerializable(), priority=0.5)
+    except ValueError:
+        return
+    raise AssertionError("should have rejected non-JSON-serializable content")
+
+
+def _run_all_tests():
+    tests = [
+        _test_basic_add_and_read,
+        _test_capacity_hard_limit,
+        _test_eviction_order,
+        _test_ttl_decay,
+        _test_unknown_type_coerced,
+        _test_dump_roundtrip,
+        _test_event_stream_completeness,
+        _test_goal_filtering,
+        _test_stable_key_deterministic,
+        _test_json_guard_rejects_tensor_like,
     ]
-    wm.load_plan(plan)
-    print(f"   Loaded plan with {len(plan)} steps")
-
-    current_step = wm.get_current_plan_step()
-    print(f"   Current step: {current_step.action}")
-
-    # Test 4: Advance plan
-    print("\n4. Advancing through plan...")
-    step_count = 0
-    while True:
-        next_step = wm.advance_plan()
-        if next_step is None:
-            break
-        step_count += 1
-        print(f"   Step {step_count}: {next_step.action}")
-
-    print(f"   Plan complete after {step_count} steps")
-
-    # Test 5: Sensor binding
-    print("\n5. Creating sensor-goal binding...")
-    wm.bind_sensor_to_goal('vision', np.array([1, 2, 3]), 'goal1', relevance=0.9)
-    bindings = wm.get_sensor_bindings('goal1')
-    print(f"   Created {len(bindings)} binding(s)")
-    print(f"   Binding: {bindings[0].sensor_id} → goal1, relevance={bindings[0].relevance}")
-
-    # Test 6: Capacity and eviction
-    print("\n6. Testing capacity (adding beyond limit)...")
-    for i in range(10):
-        wm.add_item('other', f'item_{i}', priority=0.3)
-
-    final_stats = wm.get_stats()
-    print(f"   Final size: {final_stats['current_size']}/{final_stats['capacity']}")
-    print(f"   Evictions: {final_stats['total_evictions']}")
-    print(f"   Utilization: {final_stats['utilization']:.1%}")
-
-    # Test 7: Clear
-    print("\n7. Clearing working memory...")
-    wm.clear()
-    cleared_stats = wm.get_stats()
-    print(f"   Size after clear: {cleared_stats['current_size']}")
-
-    print("\n" + "="*60)
-    print("✅ WORKING MEMORY TESTS PASSED")
-    print("="*60)
-
-    return wm
+    for t in tests:
+        t()
+        print(f"  ✓ {t.__name__}")
+    print(f"\n{len(tests)}/{len(tests)} passed")
 
 
 if __name__ == "__main__":
-    test_working_memory()
+    print("Working Memory v0.2 tests")
+    print("─" * 50)
+    _run_all_tests()

@@ -456,13 +456,13 @@ def test_scenario_6_working_memory_capacity():
     # Check what's in memory
     context = wm.get_context()
     print(f"\n3. Items retained:")
-    print(f"   - Goals: {len(context['goals'])}")
-    print(f"   - Plan steps: {len(context['plan_steps'])}")
-    print(f"   - Intermediate results: {len(context['intermediate_results'])}")
+    print(f"   - Goals: {len(context['goal'])}")
+    print(f"   - Plan steps: {len(context['plan_step'])}")
+    print(f"   - Intermediate results: {len(context['intermediate_result'])}")
     print(f"   - Other: {len(context['other'])}")
 
     # Verify high-priority items retained
-    assert len(context['goals']) > 0, "High-priority goal evicted!"
+    assert len(context['goal']) > 0, "High-priority goal evicted!"
     assert stats['total_evictions'] == 2, "Expected 2 evictions"
 
     print("\n✅ High-priority items retained, low-priority evicted")

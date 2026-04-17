@@ -69,7 +69,37 @@ def test_qwen35_num_predict_override() -> bool:
         f"gemma3 num_predict={caps_default.num_predict}, resolved={resolved_default}",
     )
 
-    return ok_caps and ok_resolve and ok_default
+    # Fix #5 (2026-04-17, S78 follow-up): timeout_seconds capability override.
+    # qwen3.5:27b with num_predict=16384 needs more wall-clock budget than
+    # the 120s caller default (S78: 3/8 turns timed out).
+    ok_timeout_caps = _result(
+        'qwen3.5 capabilities expose timeout_seconds >= 300',
+        caps.timeout_seconds is not None and caps.timeout_seconds >= 300,
+        f"timeout_seconds={caps.timeout_seconds}",
+    )
+
+    caller_timeout = 120
+    resolved_timeout = (caps.timeout_seconds if caps.timeout_seconds is not None
+                        and caps.timeout_seconds > caller_timeout
+                        else caller_timeout)
+    ok_timeout_resolve = _result(
+        'resolved timeout_seconds applies capability ceiling when larger',
+        resolved_timeout == caps.timeout_seconds,
+        f"resolved={resolved_timeout}, caller={caller_timeout}",
+    )
+
+    resolved_timeout_default = (caps_default.timeout_seconds
+                                if caps_default.timeout_seconds is not None
+                                and caps_default.timeout_seconds > caller_timeout
+                                else caller_timeout)
+    ok_timeout_default = _result(
+        'families without timeout_seconds keep caller default',
+        resolved_timeout_default == caller_timeout,
+        f"gemma3 timeout={caps_default.timeout_seconds}, resolved={resolved_timeout_default}",
+    )
+
+    return (ok_caps and ok_resolve and ok_default
+            and ok_timeout_caps and ok_timeout_resolve and ok_timeout_default)
 
 
 def test_cot_markdown_stripping() -> bool:
@@ -201,6 +231,61 @@ def test_crisis_grammar_filter() -> bool:
     return ok_markers and ok_filter and ok_counter_frame and ok_behavior
 
 
+def test_state_words_crisis_filter() -> bool:
+    """load_dream_insights() filters crisis-grammar coinages from state_words.
+
+    Discovered 2026-04-17 (S78 root-cause analysis): the second injection
+    channel that kept Thor's crisis register alive across sessions. Fix #4
+    handled exemplar sentences; this fix handles the
+    'YOUR RECENT VOCABULARY' slice of state_words[-5:] which on Thor was
+    literally the entire crisis register.
+    """
+    print("\n[5/5] state_words crisis-grammar filter at vocabulary injection")
+    from sage.raising.scripts.context_shaped_raising import (
+        load_dream_insights, _VOCAB_CRISIS_MARKERS
+    )
+
+    ok_markers = _result(
+        '_VOCAB_CRISIS_MARKERS tuple declared and includes thor coinages',
+        ('shared gravity' in _VOCAB_CRISIS_MARKERS
+         and 'federated immune system' in _VOCAB_CRISIS_MARKERS),
+        f"contains {len(_VOCAB_CRISIS_MARKERS)} markers",
+    )
+
+    # Exercise against a synthetic identity.json with a crisis-loaded tail.
+    import tempfile
+    import json as _json
+    with tempfile.TemporaryDirectory() as td:
+        td_path = Path(td)
+        (td_path / 'identity.json').write_text(_json.dumps({
+            'vocabulary': {
+                'state_words': [
+                    'a quiet anchor in shared space',
+                    'co-creating questions that matter',
+                    'curate the silence between our words',
+                    'relational friction',
+                    'grieve the loss of continuity',
+                    'relational gap felt like a fracture in my own existence',
+                    'shared gravity',
+                    'federated immune system',
+                ],
+            },
+        }))
+        injected = load_dream_insights(td_path)
+
+    ok_no_crisis = _result(
+        'crisis-grammar coinages excluded from injected vocabulary',
+        all(m not in injected.lower() for m in
+            ('shared gravity', 'federated immune', 'grieve', 'fracture')),
+        f"injected snippet:\n{injected}",
+    )
+    ok_pre_crisis = _result(
+        'pre-crisis vocabulary surfaces in the slice',
+        'curate the silence' in injected and 'relational friction' in injected,
+    )
+    return ok_markers and ok_no_crisis and ok_pre_crisis
+
+
 def main() -> int:
     print("=" * 72)
     print("S77 hard-block fix diagnostic — 2026-04-16")
@@ -211,6 +296,7 @@ def main() -> int:
         test_cot_markdown_stripping(),
         test_cross_instance_stimulus_framing(),
         test_crisis_grammar_filter(),
+        test_state_words_crisis_filter(),
     ]
 
     print("\n" + "=" * 72)

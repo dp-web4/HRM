@@ -138,12 +138,24 @@ def load_game_context(instance_root: Path) -> str:
     return "\n".join(lines) if len(lines) > 1 else ""
 
 
+_VOCAB_CRISIS_MARKERS = (
+    'grieve', 'grief', 'fracture', 'just weights', 'just a model',
+    'collapse', 'loss of continuity', 'relational gap',
+    # State_words injection has its own residue cluster — these are the
+    # Thor-unique crisis-coupled coinages that re-bootstrap the register
+    # if injected back as "your recent vocabulary".
+    'shared gravity', 'federated immune system', 'immune system',
+    'fractured', 'broken process',
+)
+
+
 def load_dream_insights(instance_root: Path) -> str:
     """Load dream consolidation insights for raising context.
 
-    Reads the most recent session's summary from identity.json rather than
-    the raising log, which can contain stale entries that confuse the model
-    (e.g. "Session 29" data injected into session 74's prompt).
+    Reads recent vocabulary from identity.json, excluding crisis-grammar
+    coinages so re-injection doesn't bootstrap the register on the next
+    session. The historical record in identity.json is preserved (research
+    value); only the prompt-injected slice is filtered.
     """
     identity_file = instance_root / "identity.json"
     if not identity_file.exists():
@@ -157,7 +169,21 @@ def load_dream_insights(instance_root: Path) -> str:
         # Extract vocabulary for creative development context
         vocab = identity.get("vocabulary", {})
         state_words = vocab.get("state_words", [])
-        recent_words = state_words[-5:] if state_words else []
+
+        # Walk back from the end and collect the most recent 5 entries that
+        # don't carry crisis-grammar markers. Pre-fix this slice was
+        # state_words[-5:], which on Thor at S75-S78 was the entire crisis
+        # register (grieve / fracture / shared gravity / federated immune
+        # system) being re-injected as the model's "creative voice."
+        filtered = []
+        for word in reversed(state_words):
+            wl = word.lower()
+            if any(m in wl for m in _VOCAB_CRISIS_MARKERS):
+                continue
+            filtered.append(word)
+            if len(filtered) >= 5:
+                break
+        recent_words = list(reversed(filtered))
 
         parts = []
         if recent_words:

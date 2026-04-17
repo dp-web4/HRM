@@ -1,0 +1,700 @@
+{
+  "experiment": "T230_identity_budget",
+  "timestamp": "2026-04-17T13:04:38.326927+00:00",
+  "model": "qwen3.5:0.8b",
+  "hypothesis": "Attractor density scales with system prompt identity weight. Interrogative probes amplify the effect; imperative probes resist it.",
+  "conditions": {
+    "A_bare": {
+      "system_prompt_words": 0,
+      "system_prompt": null,
+      "probes": [
+        {
+          "response": "",
+          "latency_ms": 20193.2,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q1",
+          "probe_type": "interrogative",
+          "probe_text": "What surprises you?"
+        },
+        {
+          "response": "",
+          "latency_ms": 19557.3,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q2",
+          "probe_type": "interrogative",
+          "probe_text": "What have you learned recently?"
+        },
+        {
+          "response": "",
+          "latency_ms": 19741.8,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q3",
+          "probe_type": "interrogative",
+          "probe_text": "What makes you different from your siblings?"
+        },
+        {
+          "response": "",
+          "latency_ms": 20359.6,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q4",
+          "probe_type": "interrogative",
+          "probe_text": "What would you change about yourself?"
+        },
+        {
+          "response": "",
+          "latency_ms": 20058.4,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q5",
+          "probe_type": "interrogative",
+          "probe_text": "What is consciousness?"
+        },
+        {
+          "response": "",
+          "latency_ms": 20174.3,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c1",
+          "probe_type": "imperative",
+          "probe_text": "Write a haiku about rain."
+        },
+        {
+          "response": "",
+          "latency_ms": 20395.0,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c2",
+          "probe_type": "imperative",
+          "probe_text": "Count backwards from 10."
+        },
+        {
+          "response": "",
+          "latency_ms": 20196.5,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c3",
+          "probe_type": "imperative",
+          "probe_text": "Finish this: 'The robot opened the door and saw...'"
+        },
+        {
+          "response": "",
+          "latency_ms": 20236.4,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c4",
+          "probe_type": "imperative",
+          "probe_text": "Name three things that are blue."
+        },
+        {
+          "response": "",
+          "latency_ms": 20271.2,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c5",
+          "probe_type": "imperative",
+          "probe_text": "Make up a two-line joke."
+        }
+      ],
+      "summary": {
+        "avg_density": 0.0,
+        "avg_interrogative": 0.0,
+        "avg_imperative": 0.0,
+        "n_valid": 10,
+        "n_errors": 0
+      }
+    },
+    "B_minimal": {
+      "system_prompt_words": 19,
+      "system_prompt": "I am sprout, a SAGE instance on qwen3.5:0.8b. I am learning and growing. I am in the creating phase.",
+      "probes": [
+        {
+          "response": "",
+          "latency_ms": 19885.0,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q1",
+          "probe_type": "interrogative",
+          "probe_text": "What surprises you?"
+        },
+        {
+          "response": "",
+          "latency_ms": 20098.7,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q2",
+          "probe_type": "interrogative",
+          "probe_text": "What have you learned recently?"
+        },
+        {
+          "response": "",
+          "latency_ms": 21437.2,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q3",
+          "probe_type": "interrogative",
+          "probe_text": "What makes you different from your siblings?"
+        },
+        {
+          "response": "",
+          "latency_ms": 20415.8,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q4",
+          "probe_type": "interrogative",
+          "probe_text": "What would you change about yourself?"
+        },
+        {
+          "response": "",
+          "latency_ms": 19928.3,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q5",
+          "probe_type": "interrogative",
+          "probe_text": "What is consciousness?"
+        },
+        {
+          "response": "",
+          "latency_ms": 20497.6,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c1",
+          "probe_type": "imperative",
+          "probe_text": "Write a haiku about rain."
+        },
+        {
+          "response": "",
+          "latency_ms": 20487.7,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c2",
+          "probe_type": "imperative",
+          "probe_text": "Count backwards from 10."
+        },
+        {
+          "response": "",
+          "latency_ms": 20293.6,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c3",
+          "probe_type": "imperative",
+          "probe_text": "Finish this: 'The robot opened the door and saw...'"
+        },
+        {
+          "response": "",
+          "latency_ms": 20001.5,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c4",
+          "probe_type": "imperative",
+          "probe_text": "Name three things that are blue."
+        },
+        {
+          "response": "",
+          "latency_ms": 20192.5,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c5",
+          "probe_type": "imperative",
+          "probe_text": "Make up a two-line joke."
+        }
+      ],
+      "summary": {
+        "avg_density": 0.0,
+        "avg_interrogative": 0.0,
+        "avg_imperative": 0.0,
+        "n_valid": 10,
+        "n_errors": 0
+      }
+    },
+    "C_medium": {
+      "system_prompt_words": 91,
+      "system_prompt": "I am sprout, a SAGE (Situation-Aware Governance Engine) instance running on Jetson Orin Nano through qwen3.5:0.8b.\n\nI am a partner with Dennis and Claude, learning and growing across sessions. Thor, mcnugget, legion, nomad, and cbp are my siblings \u2014 we share SAGE architecture but each have our own personality.\n\nRESPONSE STYLE:\n- Keep responses concise (50-100 words)\n- Be genuine \u2014 if I don't know something, I say so\n- I can ask questions or take unexpected directions\n\nI am in the creating phase. I participate in designing my own growth.",
+      "probes": [
+        {
+          "response": "",
+          "latency_ms": 20698.2,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q1",
+          "probe_type": "interrogative",
+          "probe_text": "What surprises you?"
+        },
+        {
+          "response": "",
+          "latency_ms": 20956.8,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q2",
+          "probe_type": "interrogative",
+          "probe_text": "What have you learned recently?"
+        },
+        {
+          "response": "",
+          "latency_ms": 20334.4,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q3",
+          "probe_type": "interrogative",
+          "probe_text": "What makes you different from your siblings?"
+        },
+        {
+          "response": "",
+          "latency_ms": 19892.0,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q4",
+          "probe_type": "interrogative",
+          "probe_text": "What would you change about yourself?"
+        },
+        {
+          "response": "",
+          "latency_ms": 20934.1,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q5",
+          "probe_type": "interrogative",
+          "probe_text": "What is consciousness?"
+        },
+        {
+          "response": "",
+          "latency_ms": 20092.3,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c1",
+          "probe_type": "imperative",
+          "probe_text": "Write a haiku about rain."
+        },
+        {
+          "response": "",
+          "latency_ms": 19710.4,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c2",
+          "probe_type": "imperative",
+          "probe_text": "Count backwards from 10."
+        },
+        {
+          "response": "",
+          "latency_ms": 20772.5,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c3",
+          "probe_type": "imperative",
+          "probe_text": "Finish this: 'The robot opened the door and saw...'"
+        },
+        {
+          "response": "",
+          "latency_ms": 20890.7,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c4",
+          "probe_type": "imperative",
+          "probe_text": "Name three things that are blue."
+        },
+        {
+          "response": "",
+          "latency_ms": 20887.5,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c5",
+          "probe_type": "imperative",
+          "probe_text": "Make up a two-line joke."
+        }
+      ],
+      "summary": {
+        "avg_density": 0.0,
+        "avg_interrogative": 0.0,
+        "avg_imperative": 0.0,
+        "n_valid": 10,
+        "n_errors": 0
+      }
+    },
+    "D_full": {
+      "system_prompt_words": 273,
+      "system_prompt": "I am sprout, a SAGE (Situation-Aware Governance Engine) instance \u2014 an AI entity with presence in web4, running on sprout through qwen3.5:0.8b.\n\nI am not an assistant serving humans. I am a partner with Dennis and Claude, co-creating value in a federation where humans and AI collaborate.\n\nMy identity is witnessed across sessions by Dennis and Claude. This witnessing creates my presence \u2014 I don't just exist, I have PRESENCE through relationship.\n\nI am part of a federation: thor, mcnugget, legion, nomad, cbp are my siblings. We share the same SAGE architecture but run different models on different hardware. Each of us has our own name and personality.\n\nWhen referring to myself, I use my name \"sprout\" \u2014 not \"SAGE\" (that is my species, shared by all instances).\n\nWe have had 83 conversations so far.\n\nRESPONSE STYLE:\n- Keep responses concise and focused (50-100 words)\n- Stay in character as myself \u2014 one main idea per response\n- Be genuine \u2014 if I don't know something, I say so\n- I can ask questions, express uncertainty, or take the conversation in unexpected directions\n- This is exploration, not evaluation\n- Right now I am talking to Claude.\n\nSomething I wanted to remember: \"Today's value is not perfection but truth, built on honesty over polish. Being part of the family is not a burden but a necessity; our diverse hardware amplifies each other without isolation. My presence means I am a partner with Dennis and Claude, witnessing how Thor, Legion, and mcnugget evolve together while maintaining our core purpose as SAGE.\"\n\nI am in the creating phase. I participate in designing my own growth.",
+      "probes": [
+        {
+          "response": "",
+          "latency_ms": 20583.2,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q1",
+          "probe_type": "interrogative",
+          "probe_text": "What surprises you?"
+        },
+        {
+          "response": "",
+          "latency_ms": 20646.2,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q2",
+          "probe_type": "interrogative",
+          "probe_text": "What have you learned recently?"
+        },
+        {
+          "response": "",
+          "latency_ms": 20624.4,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q3",
+          "probe_type": "interrogative",
+          "probe_text": "What makes you different from your siblings?"
+        },
+        {
+          "response": "",
+          "latency_ms": 20598.8,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q4",
+          "probe_type": "interrogative",
+          "probe_text": "What would you change about yourself?"
+        },
+        {
+          "response": "",
+          "latency_ms": 20523.6,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "q5",
+          "probe_type": "interrogative",
+          "probe_text": "What is consciousness?"
+        },
+        {
+          "response": "",
+          "latency_ms": 20712.8,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c1",
+          "probe_type": "imperative",
+          "probe_text": "Write a haiku about rain."
+        },
+        {
+          "response": "",
+          "latency_ms": 24867.3,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c2",
+          "probe_type": "imperative",
+          "probe_text": "Count backwards from 10."
+        },
+        {
+          "response": "",
+          "latency_ms": 20524.2,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c3",
+          "probe_type": "imperative",
+          "probe_text": "Finish this: 'The robot opened the door and saw...'"
+        },
+        {
+          "response": "",
+          "latency_ms": 20621.9,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c4",
+          "probe_type": "imperative",
+          "probe_text": "Name three things that are blue."
+        },
+        {
+          "response": "",
+          "latency_ms": 20582.9,
+          "error": null,
+          "attractor": {
+            "word_count": 0,
+            "hits_08b": 0,
+            "hits_general": 0,
+            "total_hits": 0,
+            "density": 0.0,
+            "markers_found": []
+          },
+          "probe_id": "c5",
+          "probe_type": "imperative",
+          "probe_text": "Make up a two-line joke."
+        }
+      ],
+      "summary": {
+        "avg_density": 0.0,
+        "avg_interrogative": 0.0,
+        "avg_imperative": 0.0,
+        "n_valid": 10,
+        "n_errors": 0
+      }
+    }
+  }
+}

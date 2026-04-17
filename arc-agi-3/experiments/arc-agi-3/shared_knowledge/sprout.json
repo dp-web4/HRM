@@ -1,0 +1,22 @@
+{
+  "machine": "sprout",
+  "updated_at": 1776412116.2205565,
+  "game_discoveries": {},
+  "strategies": {},
+  "failures": {
+    "bp35": [
+      {
+        "text": "Clicking interactive objects repeatedly doesn't advance levels. Grid similarity stays stable. Need correct sequence, not just correct objects.",
+        "machine": "sprout",
+        "timestamp": 1776412111.596114
+      }
+    ]
+  },
+  "meta_insights": [
+    {
+      "text": "Game bp35 (navigation): RIGHT: consistent effect (~47px each time)\nGrid similarity STABLE around 98.5% (not progressing)\nWARNING: UNDO clicked 7\u00d7 with changes but NO level-up",
+      "machine": "sprout",
+      "timestamp": 1776412116.22055
+    }
+  ]
+}

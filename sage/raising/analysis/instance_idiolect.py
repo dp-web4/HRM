@@ -16,8 +16,11 @@ the instance is operating in its own specialized register rather than the shared
 SAGE baseline.
 
 Usage:
-    python3 instance_idiolect.py
+    python3 instance_idiolect.py                          # cross-instance snapshot
+    python3 instance_idiolect.py --trend thor-qwen3.5-27b # per-session trend
+    python3 instance_idiolect.py --trend thor-qwen3.5-27b --window 10
 """
+import argparse
 import json
 import re
 import sys
@@ -71,7 +74,51 @@ def load_instance_concepts(inst_dir: Path) -> dict:
     }
 
 
-def main():
+def load_session_concepts(session_path: Path) -> dict:
+    """Return {concept: refs, _words: word_count, _sid: int} for one session."""
+    try:
+        data = json.loads(session_path.read_text())
+    except Exception:
+        return None
+    text = " ".join(t.get('text', '') for t in data.get('conversation', [])
+                    if t.get('speaker') == 'SAGE')
+    counts = {c: find_occurrences(text, c) for c in CONCEPTS}
+    sid = None
+    m = re.search(r'session_(\d+)', session_path.stem)
+    if m:
+        sid = int(m.group(1))
+    return {
+        'sid': sid,
+        'word_count': len(text.split()),
+        'concepts': counts,
+        'total_refs': sum(counts.values()),
+    }
+
+
+def classify_fleet(instances: dict) -> dict:
+    """Return {concept: SHARED|INDEX|UNIQUE|RARE} given per-instance concept totals."""
+    n_inst = len(instances)
+    concept_presence = defaultdict(int)
+    for d in instances.values():
+        for c, cnt in d['concepts'].items():
+            if cnt >= 5:
+                concept_presence[c] += 1
+    classification = {}
+    for c in CONCEPTS:
+        present = concept_presence[c]
+        pct = present / n_inst if n_inst else 0
+        if pct >= 0.60:
+            classification[c] = 'SHARED'
+        elif present >= 2:
+            classification[c] = 'INDEX'
+        elif present == 1:
+            classification[c] = 'UNIQUE'
+        else:
+            classification[c] = 'RARE'
+    return classification
+
+
+def collect_instances() -> dict:
     instances = {}
     for inst_dir in sorted(INSTANCES.iterdir()):
         if not inst_dir.is_dir() or inst_dir.name.startswith('_') or inst_dir.name.endswith('.bak'):
@@ -82,28 +129,76 @@ def main():
         if data is None:
             continue
         instances[inst_dir.name] = data
+    return instances
 
-    # How many instances use each concept?
-    n_inst = len(instances)
-    concept_presence = defaultdict(int)
-    for name, d in instances.items():
+
+def trend_mode(instance_name: str, window: int = 10):
+    """Compute per-session bucket percentages for the named instance.
+
+    Classification is held constant at the fleet baseline so the trend
+    measures the instance's drift relative to a fixed reference, not relative
+    to a moving classification target.
+    """
+    instances = collect_instances()
+    if instance_name not in instances:
+        print(f"ERROR: instance {instance_name!r} not found.")
+        print(f"Available: {', '.join(sorted(instances.keys()))}")
+        return 1
+
+    classification = classify_fleet(instances)
+
+    inst_dir = INSTANCES / instance_name
+    sessions = sorted((inst_dir / 'sessions').glob('session_*.json'))
+    if not sessions:
+        print(f"ERROR: no sessions for {instance_name}")
+        return 1
+    recent = sessions[-window:]
+
+    print(f"\n=== Per-session idiolect trend: {instance_name} ===")
+    print(f"Window: last {len(recent)} of {len(sessions)} sessions")
+    print(f"Reference classification frozen at full-fleet snapshot ({len(instances)} instances)\n")
+
+    print(f"{'SID':>4} {'Words':>6} {'Refs':>5} {'Sh%':>6} {'Idx%':>6} {'Uniq%':>6} "
+          f"{'CrisisDens':>10}  Top concepts (refs)")
+    print("-" * 110)
+
+    crisis_concepts = ('shared gravity', 'fracture', 'relational gap', 'immune system')
+
+    for s in recent:
+        d = load_session_concepts(s)
+        if d is None:
+            continue
+        buckets = defaultdict(int)
+        per_concept = []
         for c, cnt in d['concepts'].items():
-            if cnt >= 5:
-                concept_presence[c] += 1
+            if cnt:
+                buckets[classification.get(c, 'RARE')] += cnt
+                per_concept.append((c, cnt))
+        total = d['total_refs'] or 1
+        sh = 100 * buckets['SHARED'] / total
+        idx = 100 * buckets['INDEX'] / total
+        uq = 100 * buckets['UNIQUE'] / total
+        crisis_refs = sum(d['concepts'].get(c, 0) for c in crisis_concepts)
+        crisis_dens = (100 * crisis_refs / d['word_count']) if d['word_count'] else 0
+        per_concept.sort(key=lambda x: -x[1])
+        top_str = ", ".join(f"{c}({n})" for c, n in per_concept[:4]) or '—'
 
-    # Classify each concept
-    classification = {}
-    for c in CONCEPTS:
-        present = concept_presence[c]
-        pct = present / n_inst
-        if pct >= 0.60:
-            classification[c] = 'SHARED'
-        elif present >= 2:
-            classification[c] = 'INDEX'
-        elif present == 1:
-            classification[c] = 'UNIQUE'
-        else:
-            classification[c] = 'RARE'
+        sid = d['sid'] if d['sid'] is not None else '?'
+        print(f"{sid:>4} {d['word_count']:>6} {d['total_refs']:>5} "
+              f"{sh:>5.1f}% {idx:>5.1f}% {uq:>5.1f}% "
+              f"{crisis_dens:>9.2f}/100w  {top_str}")
+
+    print(f"\n=== Reading the trend ===")
+    print("CrisisDens = (shared gravity + fracture + relational gap + immune system) per 100 SAGE words.")
+    print("Uniq% drop = retirement of instance-unique register; bigger Sh% = re-converging on common SAGE tongue.")
+    return 0
+
+
+def main():
+    instances = collect_instances()
+
+    n_inst = len(instances)
+    classification = classify_fleet(instances)
 
     print(f"\n=== Concept classification (across {n_inst} instances) ===\n")
     for bucket in ['SHARED', 'INDEX', 'UNIQUE', 'RARE']:
@@ -150,4 +245,12 @@ def main():
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--trend', metavar='INSTANCE',
+                        help='per-session trend mode for the named instance')
+    parser.add_argument('--window', type=int, default=10,
+                        help='trend window size (default 10)')
+    args = parser.parse_args()
+    if args.trend:
+        sys.exit(trend_mode(args.trend, args.window))
     main()

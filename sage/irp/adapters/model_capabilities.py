@@ -31,6 +31,7 @@ class ModelCapabilities:
     ])
     strip_think_tags: bool = False            # Strip <think>...</think> blocks (Qwen 3.5)?
     num_predict: Optional[int] = None         # Family-wide num_predict floor (thinking budget + response)
+    timeout_seconds: Optional[int] = None     # HTTP wall-clock timeout floor (think+response envelope)
     notes: str = ''
 
 

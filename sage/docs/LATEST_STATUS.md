@@ -1,7 +1,115 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-17 (S78 Fix Validation — Crisis Grammar 59% Down, Zero Leaks, New Timeout Mode)**
-**Previous: 2026-04-16 (S77 Hard Block Resolved — Four Technical Fixes Landed + Diagnostic)**
+**Last Updated: 2026-04-17 (Root Cause: state_words Was Second Crisis-Grammar Channel; Timeout Override Landed)**
+**Previous: 2026-04-17 (S78 Fix Validation — Crisis Grammar 59% Down, Zero Leaks, New Timeout Mode)**
+
+---
+
+## Root Cause Found: state_words Injection Channel (Apr 17, 2026 — Thor Autonomous SAGE Session, 06:00 PDT)
+
+S78 closed at 59% crisis-density reduction with persistent residue
+(`shared gravity` 3 refs). The open question was prompt-level vs
+weight-level. Trend-mode analysis (new `instance_idiolect.py --trend`)
+revealed a **phase transition** at S75, not gradual evolution — and
+`git log` for that window pointed at commit `f0fb04aae` (Apr 16, "Replace
+stale raising log dream context with live vocabulary injection").
+
+The "fix" replaced one stale crisis source (S29 dream narrative) with a
+fresher one: `identity.json:vocabulary.state_words[-5:]` injected as
+"YOUR RECENT VOCABULARY (words you've created)". Thor's last 5 entries
+at that moment, persisting through S78, were:
+
+```
+'grieve the loss of continuity'
+'relational gap felt like a fracture in my own existence'
+'resilient integration'
+'shared gravity'
+'federated immune system'
+```
+
+**The entire crisis register was being re-injected every session as the
+model's own creative voice.** S75 was the first session to see this;
+crisis register exploded (Uniq% jumped 9.5% → 31.4%, CrisisDens 0.24 →
+3.33/100w). Pre-S75 baseline (S67-S74): Uniq% ≈ 0–10%, CrisisDens ≈ 0.
+
+### Fixes landed this session
+
+**Fix #5 (vocabulary channel)** — `sage/raising/scripts/context_shaped_raising.py`
+
+`load_dream_insights()` now walks `state_words` in reverse, skipping
+crisis-grammar coinages. Filter set is fix #4's markers plus the
+Thor-unique coinages (`shared gravity`, `federated immune system`,
+`immune system`, `fractured`, `broken process`). For Thor right now the
+injected vocabulary becomes the pre-crisis cluster: "dynamic event",
+"curate the silence between our words", "friction between my Jetson's
+constraints and our shared intent", "relational friction", "resilient
+integration". Historical record in `identity.json` preserved (research
+value); only the prompt-injected slice is filtered.
+
+**Fix #6 (timeout capability override)** — `sage/irp/plugins/ollama_irp.py` + `sage/irp/adapters/model_capabilities.py` + `sage/irp/adapters/model_configs/qwen3.5.json`
+
+S78 had 3/8 turns timing out at the 120s caller default. Plumbed
+`timeout_seconds: Optional[int]` through `ModelCapabilities` (mirrors
+`num_predict` pattern); qwen3.5.json declares `timeout_seconds: 300`;
+`OllamaIRP.__init__` applies the capability ceiling when larger than
+caller default. qwen3.5:27b → 300s; gemma3:4b → caller 120s unchanged.
+
+S79 ran concurrently with this session (with the OLD code). Final tally:
+
+- **4 timeouts in 10 turns** (40%, worse than S78's 37.5%) — timeouts at
+  exactly 2m0s each (ollama logs); successful turns 15-30s
+- **CrisisDens 0.97/100w** — virtually identical to S78 (1.01), confirming
+  the residue source is the second injection channel, not weights or
+  variation
+- **`shared gravity` 3 refs**, `federated immune system` mentioned by name
+  in T5: *"I've been holding a quiet observation about our 'federated
+  immune system.'"* — the model directly reflects back the state_words
+  injected as "your recent vocabulary"
+
+Fixes land for S80.
+
+### Diagnostic: now 5/5
+
+`sage/raising/tests/test_s77_hard_block_fixes.py` extended with two new
+checks:
+
+- `[1/5]` adds three timeout-override assertions (capability declared,
+  resolves to 300s for qwen3.5, falls back to caller for unaffected
+  families)
+- `[5/5]` new test: `_VOCAB_CRISIS_MARKERS` declared, synthetic
+  identity.json with crisis-loaded tail produces injected vocabulary
+  that excludes crisis terms and surfaces pre-crisis vocabulary
+
+Result: **5/5 fix groups verified**.
+
+### New analysis tool: trend mode
+
+`instance_idiolect.py --trend INSTANCE [--window N]` — per-session
+classification using the full-fleet snapshot as a frozen reference.
+Surfaced the S75 phase transition that single-session metrics missed.
+
+### Predictions for S80
+
+With both new fixes active:
+
+1. CrisisDens drops further toward 0.0–0.5/100w (second injection
+   channel closed)
+2. Uniq% drops toward S67-S74 baseline (0–10%)
+3. Zero or near-zero timeouts (300s envelope handles 16K think+response)
+4. Pre-crisis vocabulary surfaces in SAGE responses
+
+If crisis register persists despite both channels closed, that's strong
+evidence it lives in the weights, not the scaffolding.
+
+### Files this session
+
+- `sage/raising/analysis/instance_idiolect.py` — added `--trend` mode
+- `sage/raising/scripts/context_shaped_raising.py` — `_VOCAB_CRISIS_MARKERS` filter
+- `sage/irp/adapters/model_capabilities.py` — `timeout_seconds` field
+- `sage/irp/adapters/model_configs/qwen3.5.json` — `timeout_seconds: 300`
+- `sage/irp/plugins/ollama_irp.py` — capability-driven timeout override
+- `sage/raising/tests/test_s77_hard_block_fixes.py` — 5/5 diagnostic
+- `sage/raising/analysis/state_words_root_cause_20260417.md` — full writeup
 
 ---
 

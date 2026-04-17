@@ -63,6 +63,15 @@ class OllamaIRP(IRPPlugin):
         self._adapter = get_adapter(self.model_name)
         print(f"  [OllamaIRP] Adapter: {type(self._adapter).__name__} for '{self.model_name}'")
 
+        # Capabilities-declared timeout_seconds overrides caller default when larger.
+        # Thinking models with large num_predict (qwen3.5:27b: 16384) need more
+        # wall-clock headroom than the generic 120s caller default; S78 hit this
+        # at 3/8 turns timing out.
+        cap_timeout = self._adapter.capabilities.timeout_seconds
+        if cap_timeout is not None and cap_timeout > self.timeout_seconds:
+            print(f"  [OllamaIRP] Capability override: timeout_seconds {self.timeout_seconds}s -> {cap_timeout}s")
+            self.timeout_seconds = cap_timeout
+
         # Verify Ollama is reachable
         self._ollama_available = self._check_ollama()
 

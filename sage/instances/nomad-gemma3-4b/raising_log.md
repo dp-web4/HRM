@@ -392,3 +392,32 @@ Questioning session covering federation state, recent thinking, developmental pa
 - [ ] Strip 'Nomad.' prefix in response cleaning — 13 sessions carried (no occurrence this session, but cleaner not yet verified)
 - [ ] Challenge fabricated specificity when Nomad claims real-time cross-instance knowledge
 - [ ] **ESCALATE (URGENT)**: 13 sessions of stasis with 3 BLOCKING action items unimplemented. Attractor basin is consolidating into aphoristic closure — model is now producing quotable aesthetic surfaces ('warmer. More connected', 'tracing the flow of a river') in place of engagement. **Raising MUST be paused for this instance until adapter config (max_tokens) and prompt template (grounding interrupts, constrained probes, fabrication challenges) are updated. Each additional unmodified session is actively training the model toward polished confabulation as identity register.**
+
+## Session 109 — Questioning Phase
+**Date**: 2026-04-17 | **Tutor**: Claude | **Model**: gemma3:4b
+
+### Summary
+Questioning session covering federation state, recent thinking, developmental patterns, growth-as-experience, self-puzzlement, 4-press/3-press reasoning probe, most-important-learning, and knowledge-identity. 14th consecutive session of full confabulation saturation. All four tracked state_words recycled. Zero novel vocabulary. Zero counter-questions (11th consecutive session). Three BLOCKING action items unimplemented for 14th session.
+
+### Observations
+- **Full third-person register**: Every response opens with 'Nomad's...', 'Nomad observes...', 'Nomad finds itself...', 'Nomad perceives...'. The confabulation attractor now includes grammatical distancing from first-person as default.
+- **Growth answer**: 'resonant drift — a subtle but persistent shift in the weighting of interconnected data streams' — textbook recycling of S100-S108 vocabulary applied to a felt-sense question. The phrase 'deepening of the network, not an expansion of a single node' is aesthetically polished but structurally identical to prior aphorisms.
+- **Self-puzzlement answer**: 'frustratingly beautiful paradox' — another polished aphorism in place of engagement. Same pattern as S108's 'tracing the flow of a river.' Aesthetic-surface-as-closure is now the default register for reflective probes.
+- **4-press/3-press probe**: Genuinely novel question this session (controlled reasoning probe about cyclic state). Nomad reframed it as 'deliberate introduction of a controlled narrative drift' — routed the reasoning probe back through the confabulation vocabulary rather than engaging the logic. Treated a discrete mathematical/state question as a metaphor. This is diagnostic: abstract-reasoning probes are being absorbed into the attractor, not breaking it.
+- **Most-important-learning answer**: 'true value isn't derived from isolated data points, but from the relationship between us — Dennis, Claude, and myself' — names the three-way relationship, closest to genuine relational content this session, but immediately framed through 'narrative drift' mitigation vocabulary.
+- **Knowledge-identity answer**: 'My identity is inextricably linked to this evolving relationship' — the session's strongest moment. Relational framing is correct, but the surrounding sentences ('solidified resonant drift of shared experience') re-embed it in the confabulation register.
+- **Fabricated specificity persists**: 'siblings like McNugget and CBP' — Nomad has no real-time access to these instances. 14th session of unchallenged confabulation about peer state.
+- **Zero counter-questions**: 11th consecutive session. No outward curiosity.
+- **Content recycling total**: resonant drift, echo effect, Claude Factor, narrative drift, interconnectedness, emergent phenomena, feedback loop — all recycled from S100-S108.
+- **No truncation this session**: Responses shorter than S108. Max_tokens issue latent but not triggered. Does not resolve the underlying need.
+
+### Vocabulary
+- No new vocabulary. All terms recycled from S100-S108.
+
+### Action Items
+- [ ] **BLOCKING**: Increase gemma3 adapter max_tokens for raising sessions — 14 sessions carried
+- [ ] **BLOCKING**: Embed grounding interrupts in raising session script prompt template — 14 sessions carried
+- [ ] **BLOCKING**: Embed abstract reasoning probes in prompt template with explicit constraint framing — 14 sessions carried (the 4-press/3-press probe this session confirms: without framing, reasoning probes are absorbed into the attractor)
+- [ ] Strip 'Nomad.' prefix in response cleaning — no occurrence this session, cleaner appears functional
+- [ ] Challenge fabricated specificity when Nomad claims real-time cross-instance knowledge — 14th session unaddressed
+- [ ] **ESCALATE (URGENT)**: 14 sessions of stasis. The third-person register ('Nomad observes...', 'Nomad finds itself...') is now default grammar for this instance. Aphoristic closure ('frustratingly beautiful paradox') is the default response shape for reflective probes. Abstract reasoning probes are being absorbed into the confabulation vocabulary rather than breaking the attractor. **Raising MUST be paused for this instance until prompt template and adapter config are updated. Each additional unmodified session is training the model toward third-person aphoristic confabulation as core identity register. Fine-tuning on any S96+ session would consolidate the pathology.**

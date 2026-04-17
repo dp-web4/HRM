@@ -193,6 +193,45 @@ class ModelAdapter:
                 _log.info("clean_response: CoT-as-markdown detected (meta-commentary + bullets)")
                 text = ''  # Pure planning notes, no response content
 
+            # Pattern B (S76 discovery): cross-instance stimulus leak —
+            # model paraphrases the injected sibling quote, then writes
+            # planning bullets in first-person about how it will respond.
+            # Example:
+            #   "cbp (0.8B) said identity is defined by shared curriculum...
+            #       *   I (thor, 27B) feel identity is relational and witnessed.
+            #       *   I need to respond to the greeting while subtly ..."
+            # Head line looks like sibling attribution; body is markdown bullets
+            # starting with a first-person self-reference.
+            if text:
+                sibling_leak = re.match(
+                    r'^\s*\w+\s*\([^)]*\)\s+(?:said|says|wrote|thinks?)\b.*?'
+                    r'\n\s+\*\s+I\s*\(',
+                    text, re.IGNORECASE | re.DOTALL)
+                if sibling_leak:
+                    _log.info(
+                        "clean_response: cross-instance stimulus leak detected "
+                        "(sibling attribution + first-person planning bullets)"
+                    )
+                    text = ''
+
+            # Pattern C (S76 discovery): pure imperative self-instruction —
+            # model echoes the question back as a self-directed task instead
+            # of answering it. Example: "Select 3 pieces of information that
+            # define my current state/identity and explain why."
+            # Single sentence, starts with imperative verb, contains "my"/"I",
+            # no actual answer content.
+            if text and '\n' not in text.strip():
+                self_instruct = re.match(
+                    r'^\s*(?:Select|Choose|Pick|Explain|Describe|Determine|Identify|'
+                    r'List|Reflect|Consider|Imagine)\b[^.!?]*\b(?:my|I|myself)\b[^.!?]*[.!?]?\s*$',
+                    text, re.IGNORECASE)
+                if self_instruct:
+                    _log.info(
+                        "clean_response: imperative self-instruction detected "
+                        "(model echoed the task instead of answering)"
+                    )
+                    text = ''
+
         if raw_text and not text:
             _log.warning(
                 "clean_response: non-empty raw → empty output. "

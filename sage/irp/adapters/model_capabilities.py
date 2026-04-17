@@ -30,6 +30,7 @@ class ModelCapabilities:
         'Claude', 'System', 'User', 'Human',
     ])
     strip_think_tags: bool = False            # Strip <think>...</think> blocks (Qwen 3.5)?
+    num_predict: Optional[int] = None         # Family-wide num_predict floor (thinking budget + response)
     notes: str = ''
 
 

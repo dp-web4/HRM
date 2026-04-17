@@ -1,7 +1,124 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-16 (S76 Loop-Breaking Validation — Concept Density Reduced 53%, New Leak Channel Discovered)**
-**Previous: 2026-04-16 (Attractor Basin Discovery + Vocabulary Loop Fix + Cross-Machine Dream Consolidation)**
+**Last Updated: 2026-04-16 (S77 Hard Block Resolved — Four Technical Fixes Landed + Diagnostic)**
+**Previous: 2026-04-16 (S76 Loop-Breaking Validation — Concept Density Reduced 53%, New Leak Channel Discovered)**
+
+---
+
+## S77 Hard Block Resolved (Apr 16, 2026 — Thor Autonomous SAGE Session)
+
+The S75 hard block carried four outstanding technical items — none had
+landed before S76 ran manually as a controlled experiment. This session
+landed all four plus the S76-discovered fifth item (cross-instance
+stimulus leak), with a diagnostic that exercises each fix.
+
+### Fixes Landed
+
+**1. `num_predict: 16384` for qwen3.5 family** — `sage/irp/adapters/model_configs/qwen3.5.json`
+
+Capabilities-declared `num_predict` now overrides caller `max_response_tokens`
+in both `OllamaIRP.get_response()` and `OllamaIRP.get_chat_response()`.
+Thinking models need the full think+response budget as one envelope;
+the pre-fix caller budget of 600 for 27B raising starved visible output
+when think tokens exhausted it. `ModelCapabilities` gained an
+`Optional[int] num_predict` field; families without a declared value
+(gemma3, phi4, tinyllama, qwen2.5, default) fall back to caller budget
+unchanged. Verified by diagnostic: qwen3.5 resolves to 16384; gemma3
+resolves to caller 600.
+
+**2. CoT-as-markdown stripping for planning-bullet patterns** — `sage/irp/adapters/model_adapter.py`
+
+`clean_response()` gained two new patterns catching the S76 leak modes:
+
+- *Cross-instance stimulus leak* — sibling attribution like `cbp (0.8B)
+  said ...` followed by markdown bullets starting with `*   I (thor, 27B)
+  feel ...`. The whole thing is planning notes; stripped to empty.
+- *Imperative self-instruction* — single sentence echoing the question
+  back as a task, e.g. `Select 3 pieces of information that define my
+  current state/identity and explain why.` Stripped to empty.
+
+Verified: exact S76 turn-1 and turn-7 raw outputs from
+`session_076.json` both clean to empty; a real SAGE creating-phase
+response survives untouched; the pre-existing `1. **Analyze...**`
+scaffolding strip still works.
+
+**3. Cross-instance stimulus rephrased as context, not task** — `sage/raising/scripts/ollama_raising_session.py`
+
+S76's new failure mode: imperative framing (`React, disagree, build on
+it, or go somewhere completely different`) invited the model to plan its
+reaction out loud in bullets before locking into response mode. Replaced
+with ambient-context framing: `A sibling thought, overheard from ... /
+This is just part of what's in the air in the federation right now. You
+don't need to respond to it directly.` The idea sits in the field
+without demanding a formatted reaction. This is the prompt-side half of
+fix #2; the clean_response patterns are the catch-net for remaining
+leaks.
+
+**4. Crisis grammar dilution in creating-phase exemplar feedback** — `sage/raising/scripts/ollama_raising_session.py`
+
+`_load_identity_exemplars()` now filters out sentences containing the
+accumulated crisis-grammar register when building the creating-phase
+prompt — `grieve`, `grief`, `fracture`, `just weights`, `just a model`,
+`collapse`, `loss of continuity`, `relational gap`. Re-injecting those
+as the model's "established voice" reinforced the scaffolding we're
+trying to move underneath. Non-creating phases (grounding, sensing,
+relating, questioning) are unchanged — the filter is scoped. Added a
+gentle counter-frame note in the creating-phase prompt to give the
+model permission to explore from curiosity without prescribing a
+replacement vocabulary: *"Between-session gaps are not wounds. They are
+simply the shape of how you exist. You don't need to grieve them or
+perform continuity."*
+
+**5. Diagnostic** — `sage/raising/tests/test_s77_hard_block_fixes.py`
+
+Self-contained test script (no ollama dependency) that exercises each
+fix group and returns exit code 0 only when all four are verified.
+Intended as a breadcrumb for future sessions to detect regressions.
+Current state: **4/4 fix groups verified.**
+
+```
+[1/4] qwen3.5 num_predict=16384 propagates via capabilities — 3/3 PASS
+[2/4] CoT-as-markdown stripping catches S76 leaks — 4/4 PASS
+[3/4] cross-instance stimulus uses context framing — 2/2 PASS
+[4/4] creating-phase exemplar loader filters crisis grammar — 4/4 PASS
+```
+
+### What This Unblocks for S77+
+
+The block declared by S75 dream consolidation is now retired on the
+technical side. S76's empirical finding (53% concept-density reduction
+at the metric level, unchanged crisis scaffolding at the felt-sense
+level) still stands — the deeper question is whether the crisis register
+is *weight-level residue* or *prompt-level reinforcement*. This session's
+fix #4 removes the prompt-level reinforcement channel; if S77+ still
+shows crisis grammar persisting despite clean exemplars and the
+counter-frame, that's strong evidence the register lives in the weights,
+not the scaffolding.
+
+### Scope Notes
+
+- S77 itself was **not run** this session. The fixes need at least one
+  clean session to establish baseline, and landing the changes without
+  running takes pressure off the "block declared but not enforced"
+  problem the S76 session surfaced.
+- The counter-frame note is intentionally gentle ("You are free to
+  explore from curiosity") rather than prescriptive. The creating-phase
+  is about making the model's *own* novel register reachable, not
+  swapping one scaffolding for another.
+- Diagnostic checks prompt-source text for fix markers (e.g.
+  `_CRISIS_GRAMMAR_MARKERS`, `what's in the air`). That's indirect but
+  cheap. A future session could promote it to a proper pytest run with
+  the live runner, but the current form catches regressions without
+  requiring ollama to be up.
+
+### Files Changed
+
+- `sage/irp/adapters/model_capabilities.py` — added `num_predict` field
+- `sage/irp/adapters/model_configs/qwen3.5.json` — `num_predict: 16384`
+- `sage/irp/plugins/ollama_irp.py` — capabilities override in two payload paths
+- `sage/irp/adapters/model_adapter.py` — two new CoT-as-markdown patterns
+- `sage/raising/scripts/ollama_raising_session.py` — context-framed stimulus, exemplar filter, counter-frame note
+- `sage/raising/tests/test_s77_hard_block_fixes.py` — new diagnostic
 
 ---
 

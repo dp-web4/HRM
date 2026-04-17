@@ -121,23 +121,42 @@ def play_game(game_prefix, levels=None, max_actions_per_level=80, probe_depth=4)
         init_frame = np.array(fd.frame)[-1] if len(np.array(fd.frame).shape) == 3 else np.array(fd.frame)
 
         # Extract UI element positions BEFORE probing changes game state
+        # Convert game coords → display coords using camera inverse
         sprite_info = ""
-        click_targets = []  # structured: [{'x':cx, 'y':cy, 'color':c}, ...]
+        click_targets = []  # structured: [{'x':display_x, 'y':display_y, 'color':c}, ...]
         try:
             game_obj = env._game
+            cam = game_obj.camera
+
+            # Build game→display lookup by inverting display_to_grid
+            g2d = {}  # game_coord → display_coord
+            for dx in range(64):
+                for dy in range(64):
+                    gpos = cam.display_to_grid(dx, dy)
+                    if gpos:
+                        gx, gy = gpos
+                        if (gx, gy) not in g2d:
+                            g2d[(gx, gy)] = (dx, dy)
+
             clickable_descs = []
             for s in game_obj.current_level.get_sprites():
                 if s.is_visible and s.width > 0 and s.width <= 10 and s.height <= 10:
                     c = int(s.pixels[min(1,s.height-1), min(1,s.width-1)])
                     if c >= 0:
-                        cx, cy = s.x + s.width//2, s.y + s.height//2
-                        click_targets.append({'x': cx, 'y': cy, 'color': c})
-                        clickable_descs.append(f"Sprite at ({s.x},{s.y}) size {s.width}x{s.height} color={c}. Click center: ({cx},{cy})")
+                        game_cx, game_cy = s.x + s.width//2, s.y + s.height//2
+                        # Convert to display coords
+                        display_pos = g2d.get((game_cx, game_cy))
+                        if display_pos:
+                            dcx, dcy = display_pos
+                        else:
+                            dcx, dcy = game_cx, game_cy  # fallback: 1:1
+                        click_targets.append({'x': dcx, 'y': dcy, 'color': c})
+                        clickable_descs.append(f"game({game_cx},{game_cy})→display({dcx},{dcy}) color={c}")
             if clickable_descs:
-                sprite_info = "\n## Detected UI Elements (click targets)\n"
+                sprite_info = "\n## Detected UI Elements (click at DISPLAY coordinates)\n"
                 for ci in clickable_descs[:15]:
                     sprite_info += f"- {ci}\n"
-                print(f"  Detected {len(clickable_descs)} UI elements")
+                print(f"  Detected {len(clickable_descs)} UI elements (camera-corrected)")
         except Exception as e:
             print(f"  UI detection error: {e}")
 

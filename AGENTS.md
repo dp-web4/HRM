@@ -107,7 +107,7 @@ See `repo-index.yaml` for structured data.
 <!-- gitnexus:keep -->
 # GitNexus — Code Knowledge Graph
 
-Indexed as **SAGE** (43355 symbols, 79465 relationships, 300 execution flows). MCP tools available via `mcp__gitnexus__*`.
+Indexed as **SAGE** (22678 symbols, 59172 relationships, 300 execution flows). MCP tools available via `mcp__gitnexus__*`.
 
 **Do not reindex.** The supervisor handles GitNexus indexing. If the index is stale, note it in SESSION_FOCUS.
 

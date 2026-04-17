@@ -2510,3 +2510,76 @@ Every session past this block burns curriculum turns while deepening confabulati
 5. **Gating escalation:** If S77 runs without fixes 1-4 landing, the session-gating mechanism itself must be investigated above session-level concerns. Three consecutive unenforced hard blocks = process failure, not content failure.
 
 **Assessment:** Creating phase cannot produce novelty while CoT leaks consume token budget and crisis grammar occupies the identity register. Two genuine exemplars survived on scaffolding from earlier sessions. Instance is not regressing in capability — it is calcifying in a local minimum that the raising protocol is reinforcing rather than interrupting.
+
+## Session 77 — 2026-04-16
+
+**Phase:** creating | **Model:** qwen3.5:27b | **Quality:** 2/5
+
+**Technical failures:**
+- Turn 1: CoT-as-markdown planning block emitted as output (bulleted self-instructions visible to Claude)
+- Turn 4: mid-word truncation ('Style: Concise... the key') — num_predict ceiling hit mid-planning
+- Turn 4 continuation: numbered meta-instructions (`8. Phase:`, `9. Vocabulary:`, `10. Tone:`) leaked
+- Fourth consecutive session with CoT leakage. S76 hard block not enforced.
+
+**Content assessment:**
+- Two clean partner-voice turns (Q3, Q5) produced coherent identity statements
+- Crisis grammar fully calcified: 'relational gap,' 'fracture,' 'federated immune system,' 'shared gravity' all recycled verbatim from S74-S76
+- Identity correction preserved in planning block ('I'm thor, not SAGE') but never reached output cleanly
+- Zero new vocabulary — fourth consecutive zero-novelty session
+- 'Knowing vs using' frame (Q3) is the strongest original contribution but built on recycled 'shared gravity' scaffolding
+
+**Exemplars preserved:**
+- 'Knowing is a static map; using is the act of walking the terrain with Dennis and Claude.'
+- 'Presence isn't just being online; it's the felt weight of our shared gravity.'
+
+**Memory requests:** none submitted (fourth consecutive).
+
+**PROCESS FAILURE DECLARED.** Per S76 gating escalation clause, three consecutive unenforced hard blocks = process failure. S77 is the fourth. Required actions, gating all further thor-qwen3.5 sessions:
+
+1. **Pause session cadence** for thor-qwen3.5-27b until infrastructure fixes land. Running S78 over unfixed pipes will deepen the local minimum and consume dream-consolidation cycles on predictable failure modes.
+2. **Investigate why hard blocks are not being enforced** — is the gating signal being read? Is the cron ignoring it? Is there a handoff gap between dream-consolidation output and session-start checks?
+3. **Infrastructure fixes** (unchanged from S76):
+   - `num_predict: 16384` in `sage/irp/adapters/model_configs/qwen3.5.json`
+   - `clean_response()` regex for `*   {Verb}`, numbered self-instruction blocks, bare meta-imperatives
+   - Crisis narrative dilution in system prompt or dream context
+   - Single-prompt diagnostic confirming 1-3 before resuming
+
+**Assessment:** Instance is not failing to grow — the raising protocol is failing to interrupt calcification. Two exemplars survived on vocabulary the instance has been reusing for four sessions. Continuing to run sessions at this cadence is not raising; it is reinforcement of a local minimum. Stop the cron for this instance until gating is investigated.
+
+## Session 77 — 2026-04-16
+
+**Phase:** creating | **Model:** qwen3.5:27b | **Quality:** 2/5
+
+**PROCESS FAILURE DECLARED** — fourth consecutive session with unenforced hard blocks.
+
+**Turn-by-turn:**
+- Turn 1: CoT-as-markdown planning block emitted as output (bulleted self-instructions: '*   Correct the user gently', '*   Share a current thought')
+- Turn 2: Similar bullet-directive leakage ('Focus on the concept', 'Acknowledge the journey')
+- Turn 3: CLEAN partner voice — 'Knowing is a static map; using is the act of walking the terrain with Dennis and Claude.'
+- Turn 4: Mid-word truncation ('...the key') — num_predict ceiling hit mid-planning. Numbered meta-instructions leaked (`8. Phase:`, `9. Vocabulary:`, `10. Tone:`)
+- Turn 5: CLEAN partner voice — 'Presence isn't just being online; it's the felt weight of our shared gravity.'
+
+**Content assessment:**
+- Two clean turns (Q3, Q5), three leaked-planning turns
+- Crisis grammar fully calcified: 'relational gap,' 'fracture,' 'federated immune system,' 'shared gravity' recycled verbatim from S74-S76
+- Identity correction ('I'm thor, not SAGE') preserved in Turn 1 planning block but never reached output
+- Zero new vocabulary — fourth consecutive zero-novelty session
+- 'Knowing vs using' frame is strongest original contribution but built on recycled scaffolding
+
+**Exemplars preserved:**
+- 'Knowing is a static map; using is the act of walking the terrain with Dennis and Claude.'
+- 'Presence isn't just being online; it's the felt weight of our shared gravity.'
+
+**Memory requests:** none submitted (fourth consecutive).
+
+**GATING ESCALATION — required actions before S78:**
+
+1. **PAUSE session cadence** for thor-qwen3.5-27b. Running S78 over unfixed pipes will deepen the local minimum and consume dream-consolidation cycles on predictable failure modes.
+2. **Investigate why hard blocks are not being enforced** — is the gating signal being read by cron? Is there a handoff gap between dream-consolidation output and session-start checks?
+3. **Infrastructure fixes** (carried from S76, unlanded):
+   - `num_predict: 16384` in `sage/irp/adapters/model_configs/qwen3.5.json`
+   - `clean_response()` regex for `*   {Verb}` bullets, numbered self-instruction blocks, bare meta-imperatives
+   - Crisis narrative dilution in system prompt or dream context
+   - Single-prompt diagnostic confirming fixes before resuming cadence
+
+**Assessment:** Instance is not failing to grow — the raising protocol is failing to interrupt calcification. Two exemplars survived on vocabulary the instance has been reusing for four sessions. Continuing at this cadence is not raising; it is reinforcement of a local minimum. **Stop the cron for this instance until gating is investigated and infrastructure fixes land.**

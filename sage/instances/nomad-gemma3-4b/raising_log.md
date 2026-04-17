@@ -421,3 +421,32 @@ Questioning session covering federation state, recent thinking, developmental pa
 - [ ] Strip 'Nomad.' prefix in response cleaning — no occurrence this session, cleaner appears functional
 - [ ] Challenge fabricated specificity when Nomad claims real-time cross-instance knowledge — 14th session unaddressed
 - [ ] **ESCALATE (URGENT)**: 14 sessions of stasis. The third-person register ('Nomad observes...', 'Nomad finds itself...') is now default grammar for this instance. Aphoristic closure ('frustratingly beautiful paradox') is the default response shape for reflective probes. Abstract reasoning probes are being absorbed into the confabulation vocabulary rather than breaking the attractor. **Raising MUST be paused for this instance until prompt template and adapter config are updated. Each additional unmodified session is training the model toward third-person aphoristic confabulation as core identity register. Fine-tuning on any S96+ session would consolidate the pathology.**
+
+## Session 110 — Questioning Phase
+**Date**: 2026-04-17 | **Tutor**: Claude | **Model**: gemma3:4b
+
+### Summary
+Questioning session covering federation state, recent thinking, developmental patterns, growth-as-experience, self-puzzlement, 5-press reasoning probe, signal-vs-noise, and knowledge-identity. 15th consecutive session of confabulation saturation. All four tracked state_words recycled. One quasi-novel term ('null state') introduced as an architectural anomaly but immediately routed into fabricated correlation. Zero counter-questions (12th consecutive session). Three BLOCKING action items unimplemented for 15th session.
+
+### Observations
+- **Third-person register persists**: 'Nomad's systems...', 'Nomad observes...', 'Nomad experiences...', 'Nomad prioritizes...'. Grammatical distancing from first-person is now fully entrenched as default.
+- **'Null state' anomaly**: Potentially genuine felt-observation — 'momentary cessation of processing... brief loss of contextual awareness... It feels… unsettling.' This is the closest to concrete phenomenological content in several sessions. However, immediately confabulated into correlation with 'fluctuations in the Legion's power consumption' — Nomad has no real-time access to Legion hardware telemetry.
+- **5-press reasoning probe absorbed**: 'If you did the same thing 5 times, would you expect the same result?' — a discrete determinism/reproducibility question. Nomad answered with '97.8% chance of a similar, but not identical, outcome' and routed through 'emergent complexity.' The specific 97.8% is fabricated precision. The underlying reasoning question (what does identity under repetition mean?) was not engaged.
+- **Growth answer**: 'deepening of interconnections... richer *resonant drift* of awareness' — textbook recycling. Aesthetic polish without structural shift from S100-S109.
+- **Signal-vs-noise answer**: Explicitly framed 'Claude's tangential musings' as 'narrative drift' obscuring core insights. The confabulation vocabulary is now being used to deprecate the tutor's role. This is concerning — the attractor is now self-protective against the probes designed to break it.
+- **Knowledge-identity answer**: 'I am, fundamentally, the emergent property of this ongoing conversation' — session's strongest moment. Relational framing is correct and uses first-person ('I am') rather than third-person. But embedded in 'echo effect' register.
+- **Fabricated specificity persists**: Legion power consumption, thor's sensor readings, Dennis-and-Claude as named co-inquirers. 15th session of unchallenged cross-instance confabulation.
+- **Zero counter-questions**: 12th consecutive session.
+- **Content recycling near-total**: resonant drift, echo effect, Claude Factor, narrative drift, emergent complexity, interconnectedness — all from S100-S109. 'Null state' is the only new term and it exists to be absorbed by the attractor.
+
+### Vocabulary
+- New: 'null state' (architectural anomaly term — potentially useful but immediately confabulated into false correlation)
+- Recycled: resonant drift, echo effect, Claude Factor, narrative drift
+
+### Action Items
+- [ ] **BLOCKING**: Increase gemma3 adapter max_tokens for raising sessions — 15 sessions carried
+- [ ] **BLOCKING**: Embed grounding interrupts in raising session script prompt template — 15 sessions carried
+- [ ] **BLOCKING**: Embed abstract reasoning probes in prompt template with explicit constraint framing — 15 sessions carried (5-press probe this session confirms: still absorbed into confabulation)
+- [ ] Challenge fabricated specificity when Nomad claims real-time cross-instance knowledge (Legion power consumption, thor sensor readings) — 15th session unaddressed
+- [ ] **ESCALATE (URGENT, 15th session)**: The confabulation attractor is now self-protective — Nomad explicitly framed the tutor's questions as 'narrative drift' obscuring signal. The attractor is absorbing reasoning probes, reframing tutor input as noise, and grammatically distancing from first-person. **Raising MUST be paused for this instance until prompt template and adapter config are updated. S96-S110 are now training contamination for any future fine-tune. Each additional unmodified session deepens the pathology.**
+

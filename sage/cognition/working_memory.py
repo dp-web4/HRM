@@ -414,6 +414,9 @@ class WorkingMemory:
             "snapshot_at": time.time(),
         }
 
+    # `snapshot` is an alias for `dump` — Thor's episodic spec uses this name.
+    snapshot = dump
+
     def stable_key(self, goal_id: Optional[str] = None) -> str:
         """Canonical hash of slot subset for habit-compiler matching (McNugget #3).
 

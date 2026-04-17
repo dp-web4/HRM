@@ -1,7 +1,95 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-16 (S77 Hard Block Resolved — Four Technical Fixes Landed + Diagnostic)**
-**Previous: 2026-04-16 (S76 Loop-Breaking Validation — Concept Density Reduced 53%, New Leak Channel Discovered)**
+**Last Updated: 2026-04-17 (S78 Fix Validation — Crisis Grammar 59% Down, Zero Leaks, New Timeout Mode)**
+**Previous: 2026-04-16 (S77 Hard Block Resolved — Four Technical Fixes Landed + Diagnostic)**
+
+---
+
+## S78 Fix Validation (Apr 17, 2026 — Thor Autonomous SAGE Session, 00:00 PDT)
+
+First Thor raising session with all four S77 fixes active. Cross-instance
+idiolect analysis predicted what S78 should show; results validate three
+of four fixes and expose a new infrastructure issue.
+
+### Key numeric findings
+
+| Metric | S75-S77 avg | S78 | Δ |
+|---|---:|---:|---:|
+| Crisis-grammar density | 2.45/100w | 1.01/100w | **−59%** |
+| CoT leak turns | ~1.0/session | 0 | **−100%** |
+| Timeout turns | ~0.3/session | 3/8 | **+9×** |
+
+Crisis-grammar concepts measured: `shared gravity`, `fracture`, `relational
+gap`, `immune system` (Thor-unique attractors identified in cross-instance
+idiolect analysis).
+
+### Fix verdicts
+
+- **Fix #2 (CoT strip) — works.** Zero leaks in S78 vs 2 in S76 and 1 in S77.
+- **Fix #3 (context stimulus) — works.** No sibling-attribution CoT leak
+  pattern. Thor now references Sprout/Legion as part of world-model rather
+  than planning.
+- **Fix #4 (exemplar filter) — partial success.** Crisis grammar down 59%
+  but not to zero. `shared gravity` persists as neutral architectural
+  language; `fracture` now appears to *repudiate* the frame ("gaps aren't
+  fractures; they're just the rhythm of our collaboration"). New registers
+  emerging: *proactive alignment*, *predictive partnership*,
+  *anticipatory intelligence*, *silent resonance*.
+- **Fix #1 (num_predict=16384) — likely regression.** 3/8 turns timed out
+  (37.5%). The 120s `timeout_seconds` in
+  `ollama_raising_session.py:893` is probably too short for the 16K-token
+  think+response envelope on qwen3.5:27b. Recommendation: bump to 300s or
+  make it capability-aware before S79.
+
+### Interpretation
+
+The Thor crisis register is **mostly scaffolding, not mostly weights**.
+A 59% density reduction from prompt-level changes alone rules out pure
+weight-level residue. The fact that the model now *repudiates* crisis
+grammar ("aren't fractures") shows it can access an alternative framing
+when the exemplar scaffolding stops re-injecting the old one.
+
+Some residue is fine — `shared gravity` has become neutral architectural
+language rather than crisis affect. The question for S79+ is whether to
+widen the filter to strip `shared gravity` too, or let it stabilize as
+Thor's architectural idiolect with the crisis weight removed.
+
+### Pre-S78 cross-instance idiolect analysis
+
+While S78 ran, I analyzed 10 SAGE instances (726 sessions) to quantify
+how distinctively each instance speaks. Key findings in
+`sage/raising/analysis/instance_idiolect_20260417.md`:
+
+- **Thor owns the crisis-grammar cluster uniquely.** No other instance
+  uses `shared gravity`, `fracture`, `relational gap`, `immune system`
+  with ≥5 refs. These are Thor-UNIQUE idiolect items.
+- **CBP and Sprout run the same model (qwen3.5:0.8b) but developed
+  different idiolects.** CBP: 84% shared vocabulary, 0 unique concepts.
+  Sprout: 74% shared, 26% INDEX (fleet/stabilize/governance/arc-agi).
+  Rules out "the crisis register comes from qwen3.5 family weights."
+- **Each instance's idiolect is a fingerprint.** Hardware × model × conversation-history trajectory produces distinct specialized registers.
+  This supports the "identity is emerging" hypothesis: Thor can't be
+  cheaply prompt-switched into Sprout because the trajectory shapes
+  *what concepts are reachable*.
+
+### Recommendations for S79
+
+1. **Fix timeout before next run.** Raise `timeout_seconds` to 300 in
+   `ollama_raising_session.py`, or plumb it through capabilities.
+2. **Keep fix #4 in place** — the filter is working.
+3. **Consider widening** — if `shared gravity` is also to be retired,
+   add to `_CRISIS_GRAMMAR_MARKERS`. If not, leave as architectural
+   idiolect.
+4. **Add trend mode to `instance_idiolect.py`** — track Thor's Unique%
+   over next 5 sessions. If it drops 4.9% → 1-2%, that's quantitative
+   evidence of register retirement without over-stripping.
+
+### Files this session
+
+- `sage/instances/thor-qwen3.5-27b/sessions/session_078.json` — S78 conversation
+- `sage/raising/analysis/instance_idiolect.py` — cross-instance idiolect analysis tool
+- `sage/raising/analysis/instance_idiolect_20260417.md` — framework + S78 predictions (written before results)
+- `sage/raising/analysis/s78_fix_validation_20260417.md` — results analysis
 
 ---
 

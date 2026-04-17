@@ -146,16 +146,23 @@ def play_game(game_prefix, levels=None, max_actions_per_level=80, probe_depth=4)
 
         action_class = {}
         for a_id in available:
+            name = action_names[a_id]
             pre_frame = np.array(fd.frame)[-1] if len(np.array(fd.frame).shape) == 3 else np.array(fd.frame)
-            fd = env.step(int_to_ga(a_id))
+
+            # For CLICK: test at first detected sprite position (not 0,0)
+            if name == 'CLICK' and click_targets:
+                ct = click_targets[0]
+                fd = env.step(int_to_ga(a_id), data={'x': ct['x'], 'y': ct['y']})
+            else:
+                fd = env.step(int_to_ga(a_id))
             post_frame = np.array(fd.frame)[-1] if len(np.array(fd.frame).shape) == 3 else np.array(fd.frame)
             actions_used += 1
 
             diff = frame_diff(pre_frame, post_frame)
             cls = classify_diff(diff)
-            action_class[action_names[a_id]] = {'id': a_id, 'diff': diff, 'class': cls}
+            action_class[name] = {'id': a_id, 'diff': diff, 'class': cls}
 
-            print(f"  {action_names[a_id]:8s}: {diff:4d}px → {cls}")
+            print(f"  {name:8s}: {diff:4d}px → {cls}")
 
             if fd.levels_completed > level_idx:
                 print(f"  *** WON during classification! ***")
@@ -196,17 +203,21 @@ def play_game(game_prefix, levels=None, max_actions_per_level=80, probe_depth=4)
                     else:
                         print(f"  {name}: irreversible (residual={residual}px) → consequential")
 
-        # Classify: navigation + selection = safe for probing. Everything else = consequential to probe.
+        # Classify: navigation = reversible directional, consequential = everything else
         nav_actions = [n for n, info in action_class.items()
-                       if info['class'] in ('navigation', 'no-effect', 'selection')
+                       if info['class'] in ('navigation', 'no-effect')
                        and n in ('UP', 'DOWN', 'LEFT', 'RIGHT')]
         consequential = [n for n, info in action_class.items()
-                        if info['class'] in ('major', 'moderate') and n not in nav_actions]
+                        if info['class'] not in ('no-effect',) and n not in nav_actions]
 
-        # If still no nav actions, use all directional actions
-        if not nav_actions:
-            nav_actions = [n for n in ('UP', 'DOWN', 'LEFT', 'RIGHT') if n in action_class]
+        # If no consequential found, ALL non-no-effect actions ARE consequential
+        # This handles click-only and pure-nav games
+        if not consequential:
+            consequential = [n for n, info in action_class.items() if info['class'] != 'no-effect']
+            # For probing: use ALL actions as nav (to reach different states)
+            nav_actions = [n for n in action_class if n in ('UP', 'DOWN', 'LEFT', 'RIGHT')]
 
+        # If STILL no nav (click-only), nav_seqs will just be [[]] (probe from start)
         print(f"  Nav: {nav_actions}, Consequential: {consequential}")
 
         # click_targets populated earlier from sprite extraction
@@ -238,60 +249,79 @@ def play_game(game_prefix, levels=None, max_actions_per_level=80, probe_depth=4)
             # Keep none + first + last (likely different colors)
             selection_prefixes = [selection_prefixes[0], selection_prefixes[1], selection_prefixes[-1]]
 
-        total_probes = len(nav_seqs) * len(selection_prefixes) * len(consequential)
-        print(f"  Total probes planned: {total_probes} ({len(nav_seqs)} nav × {len(selection_prefixes)} sel × {len(consequential)} cons)")
+        # Build click probe targets for CLICK-type consequential actions
+        click_probe_targets = [{}]  # default: no coords
+        if click_targets and any(c == 'CLICK' for c in consequential):
+            click_probe_targets = [{'x': ct['x'], 'y': ct['y']} for ct in click_targets]
+
+        n_click_targets = len(click_probe_targets) if any(c == 'CLICK' for c in consequential) else 1
+        total_probes = len(nav_seqs) * len(selection_prefixes) * (
+            sum(n_click_targets if c == 'CLICK' else 1 for c in consequential)
+        )
+        print(f"  Total probes planned: ~{total_probes} ({len(nav_seqs)} nav × {len(selection_prefixes)} sel × {len(consequential)} cons" +
+              (f" × {n_click_targets} click-targets" if n_click_targets > 1 else "") + ")")
 
         position_map = {}
 
         for cons_action in consequential:
             cons_id = action_class[cons_action]['id']
+            # If this action is CLICK, probe at each click target position
+            # Otherwise, probe with no data (directional actions don't need coords)
+            is_click = cons_action == 'CLICK'
+            cons_targets = click_probe_targets if is_click else [{}]
 
             for sel_label, sel_prefix, sel_data in selection_prefixes:
                 for nav_seq in nav_seqs:
-                    nav_label = '→'.join(nav_seq) if nav_seq else 'start'
-                    label = f"{sel_label+'→' if sel_label else ''}{nav_label}"
+                    for ct_data in cons_targets:
+                        nav_label = '→'.join(nav_seq) if nav_seq else 'start'
+                        ct_suffix = f"@({ct_data['x']},{ct_data['y']})" if ct_data else ""
+                        label = f"{sel_label+'→' if sel_label else ''}{nav_label}{ct_suffix}"
 
-                    # Create fresh game for probing (doesn't cost budget)
-                    probe_env = arcade.make(game_id)
-                    probe_fd = probe_env.reset()
+                        # Create fresh game for probing
+                        probe_env = arcade.make(game_id)
+                        probe_fd = probe_env.reset()
 
-                    if level_idx > 0:
-                        continue  # TODO: replay solved levels
+                        if level_idx > 0:
+                            continue  # TODO: replay solved levels
 
-                    # Apply selection prefix (with click coordinates if provided)
-                    for sel_name in sel_prefix:
-                        if sel_data:
-                            probe_fd = probe_env.step(int_to_ga(action_class[sel_name]['id']), data=sel_data)
+                        # Apply selection prefix
+                        for sel_name in sel_prefix:
+                            if sel_data:
+                                probe_fd = probe_env.step(int_to_ga(action_class[sel_name]['id']), data=sel_data)
+                            else:
+                                probe_fd = probe_env.step(int_to_ga(action_class[sel_name]['id']))
+
+                        # Navigate
+                        for nav in nav_seq:
+                            nav_id = action_class[nav]['id']
+                            probe_fd = probe_env.step(int_to_ga(nav_id))
+
+                        # Record pre-state
+                        pre = np.array(probe_fd.frame)[-1] if len(np.array(probe_fd.frame).shape) == 3 else np.array(probe_fd.frame)
+
+                        # Execute consequential action (with coordinates if CLICK)
+                        if ct_data:
+                            probe_fd = probe_env.step(int_to_ga(cons_id), data=ct_data)
                         else:
-                            probe_fd = probe_env.step(int_to_ga(action_class[sel_name]['id']))
+                            probe_fd = probe_env.step(int_to_ga(cons_id))
+                        post = np.array(probe_fd.frame)[-1] if len(np.array(probe_fd.frame).shape) == 3 else np.array(probe_fd.frame)
 
-                    # Navigate
-                    for nav in nav_seq:
-                        nav_id = action_class[nav]['id']
-                        probe_fd = probe_env.step(int_to_ga(nav_id))
+                        diff = frame_diff(pre, post)
+                        won = probe_fd.levels_completed > level_idx
 
-                    # Record pre-state
-                    pre = np.array(probe_fd.frame)[-1] if len(np.array(probe_fd.frame).shape) == 3 else np.array(probe_fd.frame)
+                        key = f"{cons_action}@{label}"
+                        position_map[key] = {
+                            'nav': nav_seq,
+                            'sel': sel_prefix,
+                            'sel_data': sel_data,
+                            'action': cons_action,
+                            'action_data': ct_data,
+                            'diff': diff,
+                            'won': won
+                        }
 
-                    # Execute consequential action
-                    probe_fd = probe_env.step(int_to_ga(cons_id))
-                    post = np.array(probe_fd.frame)[-1] if len(np.array(probe_fd.frame).shape) == 3 else np.array(probe_fd.frame)
-
-                    diff = frame_diff(pre, post)
-                    won = probe_fd.levels_completed > level_idx
-
-                    key = f"{cons_action}@{label}"
-                    position_map[key] = {
-                        'nav': nav_seq,
-                        'sel': sel_prefix,
-                        'sel_data': sel_data,
-                        'action': cons_action,
-                        'diff': diff,
-                        'won': won
-                    }
-
-                    if won or diff > 20:
-                        print(f"  {key:35s}: {diff:4d}px" + (" *** WINS ***" if won else ""))
+                        if won or diff > 20:
+                            print(f"  {key:40s}: {diff:4d}px" + (" *** WINS ***" if won else ""))
 
         # ===== PHASE 2: Model plans from discovered map =====
         print(f"Phase 2: Gemma plans from discovered map")
@@ -393,8 +423,12 @@ Example: CLICK 43 4"""
                 win_fd = win_env.step(int_to_ga(action_class[nav_name]['id']))
                 actions_used += 1
 
-            # Consequential action
-            win_fd = win_env.step(int_to_ga(action_class[wv['action']]['id']))
+            # Consequential action (with coordinates if CLICK)
+            cons_data = wv.get('action_data', {})
+            if cons_data:
+                win_fd = win_env.step(int_to_ga(action_class[wv['action']]['id']), data=cons_data)
+            else:
+                win_fd = win_env.step(int_to_ga(action_class[wv['action']]['id']))
             actions_used += 1
 
             won = win_fd.levels_completed > level_idx

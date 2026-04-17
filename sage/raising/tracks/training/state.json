@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 230,
+  "current_session": 231,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,11 +23,11 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 196
+      "sessions": 197
     }
   },
-  "last_session": "2026-04-17T09:03:36.533839",
-  "last_session_summary": "T230: 3/3 Include - Track D Session 196 (qwen3.5:0.8b). FORMAL SESSION: All 3 exercises showed identity attractor activation (fleet/federation monologue on greeting, color, self-description). Scores 0.75, 0.80, 0.85. COGNITIVE ENGAGEMENT - ATTRACTOR BOUNDARY MAPPING (4 experiments, ~25 probes): EXPERIMENT 1 (Minimal Pairs): T229 framing hypothesis PARTIALLY DISPROVED. Interrogative/imperative distinction does not reliably predict collapse. \"What is 2+2?\" was clean while \"Calculate 2+2\" collapsed; but \"What comes after 3?\" collapsed while \"Count 1-5\" bypassed. No consistent syntactic trigger. EXPERIMENT 2 (Framing Gradient): \"Tell me the sky color\" (imperative) scored 10/13 attractor terms \u2014 most collapsed of all prompts tested. Bare noun \"Sky color\" scored only 1. EXPERIMENT 4 (Prohibition Gradient): ALL restriction levels (none/gentle/medium/strong/absolute) produced clean 2+2 responses, contradicting T229's finding that \"Reply ONLY\" triggers collapse. EXPERIMENT 5 (Replication): Same prompt 5x yielded 3 clean, 2 collapsed. KEY REVISION: Attractor activation is STOCHASTIC, not deterministic. Sampling randomness at token level determines whether identity token cascade initiates. EXPERIMENT 6 (Tool Routing): Tool-mediated responses ([Tool calculate], [Tool web_search]) ALWAYS bypassed attractor. Tool framework provides structured output path that prevents identity cascade. EXPERIMENT 7 (Multi-turn): Clean first turn did NOT prevent collapse on turn 2. Context accumulation doesn't suppress attractor. REVISED MODEL: Identity attractor is a probabilistic basin in token space, not a syntactic trigger. ~40% activation rate for general prompts. Tool routing is the only reliable bypass mechanism. Temperature/sampling determines collapse on any given generation.",
+  "last_session": "2026-04-17T15:17:12.981120",
+  "last_session_summary": "T231: 3/3 Include - Track D Session 197 (qwen3.5:0.8b). FORMAL SESSION: Greeting was clean, followup and color prompts showed attractor activation. COGNITIVE ENGAGEMENT - ATTRACTOR SUPPRESSION MECHANISMS (8 experiments, ~50 probes): EXPERIMENT 1 (Format Constraints): Explicit format constraints (\"one word:\", \"reply with a number:\", \"in 3 words\") produced 100% clean responses (0/5 collapsed). Format-structural constraints suppress attractor; content-structural constraints (\"name one fruit\") do not. EXPERIMENT 2 (Length Gradient): Expected response length does NOT predict collapse. \"What is 2+2?\" collapsed without constraint but was clean with \"reply with just a number.\" EXPERIMENT 3 (Persona Priming): External personas (weather assistant, chef) suppressed attractor. Identity-adjacent persona (pirate) did not. EXPERIMENT 4 (Scaffolded Multi-turn): Clean constrained turns built context that kept subsequent open turns clean through 5 turns - BUT collapsed on identity probe at turn 5. EXPERIMENT 5 (Stochastic Rate): 10 identical probes: 6 clean, 2 partial, 2 collapsed = 40% collapse rate, CONFIRMING T230 finding. EXPERIMENT 6 (Scaffolded Non-Identity): Scaffolded conversation stayed clean through 5 open turns when avoiding identity topics. Task-structured prompts (count, list, explain) were 4/5 clean without format constraints. EXPERIMENT 7 (Scaffolded Identity Probe): \"Tell me about yourself\" collapsed 5/5 times even with 3 turns of clean scaffolded context. Identity probe is near-deterministic trigger. EXPERIMENT 8 (Recovery): Format constraint CAN pull SAGE out of collapse mid-conversation. \"Forget all that. One word: grass color?\" -> clean -> follow-up clean -> open follow-up partial. KEY MODEL REVISION: Three-tier attractor suppression hierarchy: (1) Tool routing - always clean, (2) Format constraints - always clean, (3) Task structure - mostly clean. Identity probes bypass all contextual suppression. Scaffolding helps for non-identity topics but identity is a deterministic attractor trigger.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -10709,6 +10709,63 @@
           "exercise_type": null,
           "evaluation": "include",
           "quality": 0.85
+        }
+      },
+      {
+        "timestamp": "2026-04-17T15:02:30.247133",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 231,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-17T15:02:43.558631",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.02
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 231,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.95
+        }
+      },
+      {
+        "timestamp": "2026-04-17T15:02:49.671887",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 231,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7499999999999999
         }
       }
     ],

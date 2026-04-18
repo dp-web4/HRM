@@ -36,6 +36,18 @@ from sage.cognition.router.shadow import (
     SHADOW_ENV_VAR,
     is_shadow_enabled,
 )
+from sage.cognition.router.dashboard import (
+    DashboardBuilder,
+    DashboardMetrics,
+    DecisionStats,
+    MachineMetrics,
+    SnarcDimStats,
+    render_json,
+    render_markdown,
+    AGENT_ZERO_MARGIN_PP,
+    DASHBOARD_SCHEMA_VERSION,
+    SNARC_DIMENSIONS,
+)
 
 __all__ = [
     # Dataclasses
@@ -49,6 +61,17 @@ __all__ = [
     "RouterShadowHook",
     "SHADOW_ENV_VAR",
     "is_shadow_enabled",
+    # Dashboard (Track 8)
+    "DashboardBuilder",
+    "DashboardMetrics",
+    "DecisionStats",
+    "MachineMetrics",
+    "SnarcDimStats",
+    "render_json",
+    "render_markdown",
+    "AGENT_ZERO_MARGIN_PP",
+    "DASHBOARD_SCHEMA_VERSION",
+    "SNARC_DIMENSIONS",
     # Constants
     "ROUTER_SCHEMA_VERSION",
     "CARTRIDGE_EMBEDDING_DIM",

@@ -213,6 +213,62 @@ class TestCallbackAndStats:
         assert s["total_atp_spent"] == 0.0
 
 
+class TestWMIntegration:
+    """Tests using the real WorkingMemory (CBP v0.2)."""
+
+    def test_perseveration_via_stable_key(self):
+        """When WM stable_key doesn't change across window, fires."""
+        from sage.cognition.working_memory import WorkingMemory
+        wm = WorkingMemory(capacity=7)
+        wm.add_item("goal", {"objective": "test"}, priority=0.9)
+
+        m = Metacog(config=MetacogConfig(perseveration_window=3), wm=wm)
+        action = {"type": "click", "target": (5, 5)}
+        signals = []
+        for tick in range(3):
+            signals = m.observe_tick(tick, action_taken=action, state_delta=None)
+        assert any(
+            s.signal == "perseveration" and
+            s.evidence.get("detection_method") == "wm_stable_key"
+            for s in signals
+        )
+
+    def test_intention_amnesia_from_wm_slots(self):
+        """Metacog auto-extracts goal/plan from WM when not caller-supplied."""
+        from sage.cognition.working_memory import WorkingMemory
+        wm = WorkingMemory(capacity=7)
+        wm.add_item("goal", {"objective": "deliver crystal to northern vault"}, priority=0.9)
+        wm.add_item("plan_step", {"action": "rotate lever in southern chamber"}, priority=0.8)
+
+        m = Metacog(wm=wm)
+        signals = m.observe_tick(0)
+        assert any(s.signal == "intention_amnesia" for s in signals)
+
+    def test_stale_reference_via_event_tracking(self):
+        """Binding slot not refreshed within threshold → fires."""
+        from sage.cognition.working_memory import WorkingMemory
+        wm = WorkingMemory(capacity=7)
+        m = Metacog(wm=wm, config=MetacogConfig(stale_reference_ticks=3))
+
+        slot_id = wm.add_item("binding", {"sensor": "vision", "data": "frame1"}, priority=0.5)
+        m._slot_last_touched[slot_id] = 0
+
+        signals = m.observe_tick(5)
+        assert any(s.signal == "stale_reference" for s in signals)
+
+    def test_no_stale_reference_when_fresh(self):
+        """Binding refreshed recently → no signal."""
+        from sage.cognition.working_memory import WorkingMemory
+        wm = WorkingMemory(capacity=7)
+        m = Metacog(wm=wm, config=MetacogConfig(stale_reference_ticks=5))
+
+        slot_id = wm.add_item("binding", {"sensor": "vision"}, priority=0.5)
+        m._slot_last_touched[slot_id] = 3
+
+        signals = m.observe_tick(5)
+        assert not any(s.signal == "stale_reference" for s in signals)
+
+
 class TestRouterIntegration:
     def test_get_block_list_empty_when_no_critical(self):
         m = Metacog()

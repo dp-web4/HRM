@@ -403,6 +403,21 @@ class SAGEConsciousness:
         self._router_shadow = None  # lazy: constructed on first enabled cycle
         self._router_shadow_init_failed = False  # stays True if lazy init raised
 
+        # Brain-arch component: Cerebellum (Habit Compiler).
+        # Caches repeated successful (state → action → outcome) sequences.
+        # Router reads habit_available / habit_confidence at step 4.5.
+        # Loop hook wires steps 5 (lookup), 7 (execute), 8 (observe).
+        try:
+            from sage.cognition.cerebellum import Cerebellum
+            from sage.cognition.cerebellum.loop_hook import CerebellumLoopHook
+            self.cerebellum = Cerebellum()
+            self.cerebellum_hook = CerebellumLoopHook(self.cerebellum, domain="sage")
+            print(f"[Cerebellum] Initialized with loop hook (max_habits=256)")
+        except Exception as e:
+            self.cerebellum = None
+            self.cerebellum_hook = None
+            print(f"[Cerebellum] Not available: {e}")
+
         # Brain-arch component: RPE (Reward Prediction Error).
         # Provides scalar learning signal at step 8 (Learn).
         # Router reads action priors at step 4.5 (Select).
@@ -1428,23 +1443,30 @@ class SAGEConsciousness:
             from sage.cognition.router.feature_extraction import extract_router_input
             from sage.cognition.router.baseline import programmatic_decide
 
+            # Build cerebellum state signature from WM if both are available.
+            _cb_state = None
+            _wm = getattr(self, 'working_memory', None)
+            _cb = getattr(self, 'cerebellum', None)
+            if _wm is not None and _cb is not None:
+                try:
+                    from sage.cognition.cerebellum.core import StateSignature
+                    _cb_state = StateSignature.from_wm(_wm, domain="sage")
+                except Exception:
+                    pass  # graceful degradation — no state means no habit lookup
+
             router_input = extract_router_input(
-                # Phase 0: WM / episodic / cerebellum / rpe / metacog
-                # are not yet plumbed into the SAGEConsciousness
-                # kernel. getattr-with-None is the forward-compatible
-                # seam — Phase 1+ adds these without a signature
-                # change here.
-                wm=getattr(self, 'working_memory', None),
+                wm=_wm,
                 snarc=self._router_aggregate_snarc(salience_map),
                 metabolic=self.metabolic,
                 episodic=getattr(self, 'episodic', None),
-                cerebellum=getattr(self, 'cerebellum', None),
+                cerebellum=_cb,
                 rpe=getattr(self, 'rpe', None),
                 metacog=getattr(self, 'metacog', None),
                 plugin_registry=self._router_plugin_registry(),
                 sensory=self._router_sensory_payload(observations, salience_map),
                 tick=int(self.cycle_count),
                 goal_id=getattr(self, '_current_goal_id', None),
+                cerebellum_state=_cb_state,
             )
             programmatic_output = programmatic_decide(
                 router_input, self._router_plugin_registry()

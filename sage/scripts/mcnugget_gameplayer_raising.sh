@@ -15,6 +15,9 @@ export PYTHONPATH
 export KMP_DUPLICATE_LIB_OK=TRUE
 export OMP_NUM_THREADS=1
 
+# Sprint 2 R1: source-stamp router records from raising sessions
+export SAGE_SESSION_SOURCE=raising
+
 cd "$SAGE_DIR"
 
 echo "[McNugget-G4] $(date -u +'%Y-%m-%d %H:%M UTC') — Starting gameplayer raising session"

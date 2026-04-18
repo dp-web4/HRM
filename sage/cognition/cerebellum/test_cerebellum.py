@@ -4,6 +4,8 @@ import json
 import tempfile
 from pathlib import Path
 
+import pytest
+
 from sage.cognition.cerebellum.core import (
     Cerebellum,
     Habit,
@@ -230,6 +232,103 @@ def test_stats():
     assert stats["mature_habits"] == 1
     assert stats["avg_reliability"] == 1.0
     assert "test" in stats["domains"]
+
+
+def test_consensus_threshold_rejects_out_of_range():
+    with pytest.raises(ValueError):
+        Cerebellum(consensus_threshold=1.5)
+    with pytest.raises(ValueError):
+        Cerebellum(consensus_threshold=-0.1)
+    # Valid bounds: 0.0, 1.0, and None all construct fine.
+    Cerebellum(consensus_threshold=0.0)
+    Cerebellum(consensus_threshold=1.0)
+    Cerebellum(consensus_threshold=None)
+
+
+def test_consensus_threshold_blocks_weak_plurality():
+    """3 divergent arcs (1 each) at threshold 0.5 → no compile.
+
+    Plurality winner has ratio 1/3 ≈ 0.33, below the floor. Without the
+    gate, the cerebellum would compile an arbitrary winner as a habit
+    even though the agent has no actual preferred action at that state.
+    """
+    cb = Cerebellum(maturity_threshold=3, consensus_threshold=0.5)
+    state = {"domain": "test", "features": {"level": 1}}
+    episodes = [
+        {"state": state, "actions": [{"action": "a"}], "outcome": {"success": True}},
+        {"state": state, "actions": [{"action": "b"}], "outcome": {"success": True}},
+        {"state": state, "actions": [{"action": "c"}], "outcome": {"success": True}},
+    ]
+    assert cb.compile_from_episodes(episodes) == []
+
+
+def test_consensus_threshold_admits_majority():
+    """2/3 agreement (ratio 0.667) clears threshold 0.5 → compile."""
+    cb = Cerebellum(maturity_threshold=3, consensus_threshold=0.5)
+    state = {"domain": "test", "features": {"level": 1}}
+    episodes = [
+        {"state": state, "actions": [{"action": "x"}], "outcome": {"success": True}},
+        {"state": state, "actions": [{"action": "x"}], "outcome": {"success": True}},
+        {"state": state, "actions": [{"action": "y"}], "outcome": {"success": True}},
+    ]
+    habits = cb.compile_from_episodes(episodes)
+    assert len(habits) == 1
+    assert habits[0].action_sequence == [{"action": "x"}]
+
+
+def test_consensus_threshold_strict_blocks_majority():
+    """2/3 agreement (ratio 0.667) fails threshold 0.75 → no compile.
+
+    Validates that the floor is genuinely compared — not just "any
+    majority passes." A stricter floor can force the compile path to
+    wait for stronger agreement before cementing the habit.
+    """
+    cb = Cerebellum(maturity_threshold=3, consensus_threshold=0.75)
+    state = {"domain": "test", "features": {"level": 1}}
+    episodes = [
+        {"state": state, "actions": [{"action": "x"}], "outcome": {"success": True}},
+        {"state": state, "actions": [{"action": "x"}], "outcome": {"success": True}},
+        {"state": state, "actions": [{"action": "y"}], "outcome": {"success": True}},
+    ]
+    assert cb.compile_from_episodes(episodes) == []
+
+
+def test_consensus_threshold_none_preserves_plurality_winner():
+    """Default (None) preserves pre-S81 behavior: plurality wins.
+
+    3 divergent arcs (1 each) must still compile one habit — the first
+    in iteration order — when the gate is off. This is the backward-
+    compatibility contract for machines that haven't opted in.
+    """
+    cb = Cerebellum(maturity_threshold=3, consensus_threshold=None)
+    state = {"domain": "test", "features": {"level": 1}}
+    episodes = [
+        {"state": state, "actions": [{"action": "a"}], "outcome": {"success": True}},
+        {"state": state, "actions": [{"action": "b"}], "outcome": {"success": True}},
+        {"state": state, "actions": [{"action": "c"}], "outcome": {"success": True}},
+    ]
+    habits = cb.compile_from_episodes(episodes)
+    assert len(habits) == 1
+
+
+def test_consensus_ratio_recorded_in_outcome_summary():
+    """The compile path exposes the consensus count in outcome_summary.
+
+    This is the introspection hook for "how strong was agreement?" —
+    available whether or not the gate was used for filtering, so that
+    downstream tooling (raising reports, trend analysis) can see
+    consensus strength directly on the Habit record.
+    """
+    cb = Cerebellum(maturity_threshold=3)
+    state = {"domain": "test", "features": {"level": 1}}
+    episodes = [
+        {"state": state, "actions": [{"action": "x"}], "outcome": {"success": True}},
+        {"state": state, "actions": [{"action": "x"}], "outcome": {"success": True}},
+        {"state": state, "actions": [{"action": "y"}], "outcome": {"success": True}},
+    ]
+    habits = cb.compile_from_episodes(episodes)
+    assert len(habits) == 1
+    assert "consensus 2/3" in habits[0].outcome_summary
 
 
 def test_link_episode():

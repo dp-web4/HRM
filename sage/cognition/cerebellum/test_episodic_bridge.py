@@ -406,3 +406,38 @@ def test_compile_trajectories_end_to_end_with_episodic_index():
         {"action": "MAKE_COFFEE"},
     ]
     assert h.training_count == 3
+
+
+def test_trajectory_consensus_threshold_blocks_divergent_arcs():
+    """4 trajectories from same start, 4 different arcs → gate skips compile.
+
+    Without the gate, a Counter-picked winner at 1/4 (25%) consensus would
+    become a habit, misrepresenting what the agent actually does from
+    that state. With threshold 0.5, no habit compiles — the cerebellum
+    waits for evidence of a preferred sequence.
+    """
+    cb = Cerebellum(maturity_threshold=3, consensus_threshold=0.5)
+    state = {"start": True}
+    eps = []
+    for i, last in enumerate(["A", "B", "C", "D"]):
+        sid = f"s{i}"
+        eps.append(_ep(state, action="X", session_id=sid, cycle_id=0, stance="t"))
+        eps.append(_ep({"mid": True}, action=last, session_id=sid, cycle_id=1,
+                       stance="t"))
+    assert compile_habits_from_trajectories(eps, cb) == []
+
+
+def test_trajectory_consensus_threshold_admits_dominant_arc():
+    """3/4 agreement (ratio 0.75) clears threshold 0.5 → multi-step habit."""
+    cb = Cerebellum(maturity_threshold=3, consensus_threshold=0.5)
+    state = {"start": True}
+    eps = []
+    for i, last in enumerate(["B", "B", "B", "Z"]):
+        sid = f"s{i}"
+        eps.append(_ep(state, action="A", session_id=sid, cycle_id=0, stance="t"))
+        eps.append(_ep({"mid": True}, action=last, session_id=sid, cycle_id=1,
+                       stance="t"))
+    habits = compile_habits_from_trajectories(eps, cb)
+    assert len(habits) == 1
+    assert habits[0].action_sequence == [{"action": "A"}, {"action": "B"}]
+    assert "consensus 3/4" in habits[0].outcome_summary

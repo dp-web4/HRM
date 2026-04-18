@@ -179,10 +179,14 @@ class Cerebellum:
         max_habits: int = 256,
         similarity_threshold: float = 0.85,
         maturity_threshold: int = 3,
+        consensus_threshold: Optional[float] = None,
     ):
+        if consensus_threshold is not None and not 0.0 <= consensus_threshold <= 1.0:
+            raise ValueError("consensus_threshold must be in [0.0, 1.0] or None")
         self.max_habits = max_habits
         self.similarity_threshold = similarity_threshold
         self.maturity_threshold = maturity_threshold
+        self.consensus_threshold = consensus_threshold
         self._habits: dict[str, Habit] = {}  # habit_id → Habit
         self._last_compiled: Optional[Habit] = None
 
@@ -378,7 +382,19 @@ class Cerebellum:
                 for ep in group
             ]
             from collections import Counter
-            most_common_seq = Counter(action_seqs).most_common(1)[0][0]
+            most_common_seq, consensus_count = Counter(action_seqs).most_common(1)[0]
+            consensus_ratio = consensus_count / len(group)
+
+            # Consensus gate: skip when the dominant arc is below the floor.
+            # A state seeing maturity_threshold episodes may still have no
+            # clear preferred action sequence; without this gate, the
+            # cerebellum would compile a plurality-winner habit that isn't
+            # actually representative of agent behavior at that state.
+            if (
+                self.consensus_threshold is not None
+                and consensus_ratio < self.consensus_threshold
+            ):
+                continue
 
             ref_ep = group[0]
             state = ref_ep.get("state")
@@ -392,7 +408,11 @@ class Cerebellum:
                 habit_id=f"h-batch-{state.hash}-{int(time.time())}",
                 state_sig=state,
                 action_sequence=json.loads(most_common_seq),
-                outcome_summary=f"Compiled from {len(group)} episodes ({successes} successes)",
+                outcome_summary=(
+                    f"Compiled from {len(group)} episodes "
+                    f"({successes} successes, "
+                    f"consensus {consensus_count}/{len(group)})"
+                ),
                 training_count=len(group),
                 success_count=successes,
                 source_episodes=[

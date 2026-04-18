@@ -120,9 +120,14 @@ Raising (being) and game-playing (doing) are converging. Currently completely si
 
 ## Git Authentication
 
+All dp-web4 repos use **SSH remotes**. The SSH key (`~/.ssh/id_ed25519`) is loaded by ssh-agent at session start. Just `git push` / `git pull` directly.
+
 ```bash
-grep GITHUB_PAT ../.env | cut -d= -f2 | xargs -I {} git push https://dp-web4:{}@github.com/dp-web4/SAGE.git
+git push    # works
+git pull    # works
 ```
+
+The `GITHUB_PAT` in `../.env` is **deprecated** and may fail with "Invalid username or token." Do not construct `https://dp-web4:$PAT@github.com/...` URLs.
 
 ---
 

@@ -52,6 +52,13 @@ from sage.cognition.router.data.pruner import (
     RECOGNIZED_PIN_KINDS,
     PRUNER_VERSION,
 )
+from sage.cognition.router.data.federation import (
+    FleetAggregator,
+    FederationConfig,
+    PeerConfig,
+    PeerSummary,
+    AggregateSummary,
+)
 
 __all__ = [
     "RouterDatasetWriter",
@@ -69,4 +76,9 @@ __all__ = [
     "ACTIVE_WRITE_WINDOW_SECONDS",
     "RECOGNIZED_PIN_KINDS",
     "PRUNER_VERSION",
+    "FleetAggregator",
+    "FederationConfig",
+    "PeerConfig",
+    "PeerSummary",
+    "AggregateSummary",
 ]

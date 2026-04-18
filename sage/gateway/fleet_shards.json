@@ -1,0 +1,41 @@
+{
+  "_comment": "Template config for the router federation aggregator (Sprint 2 R3). Replace paths with real fleet paths before enabling cron. transport='local' reads the filesystem directly; transport='ssh' uses rsync-over-ssh via the user's ssh-agent.",
+  "peers": [
+    {
+      "machine": "cbp",
+      "transport": "local",
+      "path": "/mnt/c/exe/projects/ai-agents/private-context/training-data/router/cbp"
+    },
+    {
+      "machine": "sprout",
+      "transport": "ssh",
+      "host": "sprout.local",
+      "path": "~/ai-workspace/private-context/training-data/router/sprout"
+    },
+    {
+      "machine": "nomad",
+      "transport": "ssh",
+      "host": "nomad.local",
+      "path": "~/ai-workspace/private-context/training-data/router/nomad"
+    },
+    {
+      "machine": "mcnugget",
+      "transport": "ssh",
+      "host": "mcnugget.local",
+      "path": "~/ai-workspace/private-context/training-data/router/mcnugget"
+    },
+    {
+      "machine": "legion",
+      "transport": "local",
+      "path": "/home/dp/ai-workspace/private-context/training-data/router/legion"
+    },
+    {
+      "machine": "thor",
+      "transport": "ssh",
+      "host": "thor.local",
+      "path": "~/ai-workspace/private-context/training-data/router/thor"
+    }
+  ],
+  "aggregate_dir": "/home/dp/ai-workspace/private-context/training-data/router/_aggregate",
+  "schedule_utc": "02:00"
+}

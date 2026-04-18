@@ -211,3 +211,32 @@ class TestCallbackAndStats:
         s = m.stats()
         assert s["actions_taken"] == 0
         assert s["total_atp_spent"] == 0.0
+
+
+class TestRouterIntegration:
+    def test_get_block_list_empty_when_no_critical(self):
+        m = Metacog()
+        assert m.get_block_list() == []
+
+    def test_get_block_list_includes_critical_signals(self):
+        """budget_critical (severity 0.9) should appear in block list."""
+        m = Metacog(config=MetacogConfig(signal_cooldown_ticks=0))
+        # Trigger budget_critical
+        m.observe_tick(
+            0, action_taken={"x": 1}, atp_cost=5.0,
+            atp_balance=3.0, estimated_actions_to_goal=10.0,
+        )
+        blocks = m.get_block_list()
+        assert any("budget_critical" in b for b in blocks)
+
+    def test_get_block_list_excludes_low_severity(self):
+        """budget_anxiety (severity 0.5) should NOT appear in block list."""
+        m = Metacog(config=MetacogConfig(
+            signal_cooldown_ticks=0, budget_anxiety_ratio=1.5
+        ))
+        m.observe_tick(
+            0, action_taken={"x": 1}, atp_cost=1.0,
+            atp_balance=12.0, estimated_actions_to_goal=10.0,
+        )
+        blocks = m.get_block_list()
+        assert not any("budget_anxiety" in b for b in blocks)

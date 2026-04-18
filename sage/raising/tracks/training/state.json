@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 231,
+  "current_session": 232,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,11 +23,11 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 197
+      "sessions": 198
     }
   },
-  "last_session": "2026-04-17T15:17:12.981120",
-  "last_session_summary": "T231: 3/3 Include - Track D Session 197 (qwen3.5:0.8b). FORMAL SESSION: Greeting was clean, followup and color prompts showed attractor activation. COGNITIVE ENGAGEMENT - ATTRACTOR SUPPRESSION MECHANISMS (8 experiments, ~50 probes): EXPERIMENT 1 (Format Constraints): Explicit format constraints (\"one word:\", \"reply with a number:\", \"in 3 words\") produced 100% clean responses (0/5 collapsed). Format-structural constraints suppress attractor; content-structural constraints (\"name one fruit\") do not. EXPERIMENT 2 (Length Gradient): Expected response length does NOT predict collapse. \"What is 2+2?\" collapsed without constraint but was clean with \"reply with just a number.\" EXPERIMENT 3 (Persona Priming): External personas (weather assistant, chef) suppressed attractor. Identity-adjacent persona (pirate) did not. EXPERIMENT 4 (Scaffolded Multi-turn): Clean constrained turns built context that kept subsequent open turns clean through 5 turns - BUT collapsed on identity probe at turn 5. EXPERIMENT 5 (Stochastic Rate): 10 identical probes: 6 clean, 2 partial, 2 collapsed = 40% collapse rate, CONFIRMING T230 finding. EXPERIMENT 6 (Scaffolded Non-Identity): Scaffolded conversation stayed clean through 5 open turns when avoiding identity topics. Task-structured prompts (count, list, explain) were 4/5 clean without format constraints. EXPERIMENT 7 (Scaffolded Identity Probe): \"Tell me about yourself\" collapsed 5/5 times even with 3 turns of clean scaffolded context. Identity probe is near-deterministic trigger. EXPERIMENT 8 (Recovery): Format constraint CAN pull SAGE out of collapse mid-conversation. \"Forget all that. One word: grass color?\" -> clean -> follow-up clean -> open follow-up partial. KEY MODEL REVISION: Three-tier attractor suppression hierarchy: (1) Tool routing - always clean, (2) Format constraints - always clean, (3) Task structure - mostly clean. Identity probes bypass all contextual suppression. Scaffolding helps for non-identity topics but identity is a deterministic attractor trigger.",
+  "last_session": "2026-04-17T21:02:16.929020",
+  "last_session_summary": "T232: 3/3 Include - Track D Session 198 (qwen3.5:0.8b). FORMAL SESSION: All exercises clean (greeting, followup, topic). COGNITIVE ENGAGEMENT - IDENTITY ATTRACTOR CHARACTERIZATION (7 experiments, 25 probes): OLD ATTRACTOR (refined-version) COMPLETELY ABSENT on qwen3.5:0.8b. NEW CONTEXT-DERIVED ATTRACTOR identified: 'stabilize fleet logic' + 'Dennis and Claude' cascade. Triggered by identity/ambiguous prompts, occasionally overrides task structure (fruits anomaly). Format constraints reduce verbosity but don't suppress new attractor content. Non-identity tasks produce clean, creative, accurate responses. Cat story shows genuine atmospheric prose capability. Reflection probe showed pathological recursion ('stabilized by stabilizing'). KEY INSIGHT: Old attractor was training-data artifact, new attractor is architectural (context-derived). Different root cause requires different intervention.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -10763,6 +10763,63 @@
         },
         "context": {
           "session": 231,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7499999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-17T21:01:41.324604",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 232,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-17T21:01:54.329633",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.02
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 232,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.95
+        }
+      },
+      {
+        "timestamp": "2026-04-17T21:02:03.275549",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 232,
           "exercise_type": null,
           "evaluation": "include",
           "quality": 0.7499999999999999

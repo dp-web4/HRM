@@ -377,13 +377,44 @@ class WorkingMemory:
                 reason=f"goal={goal_id} ({len(to_remove)} slots)",
             ))
 
-    def consolidate_to_ltm(self, goal_id: Optional[str] = None) -> int:
-        """Ship high-priority slots to LTM. Stub until episodic index ships."""
+    def consolidate_to_ltm(self, goal_id: Optional[str] = None,
+                           episodic_index=None,
+                           session_id: str = '',
+                           action_taken: Optional[str] = None,
+                           outcome: Optional[str] = None,
+                           reward: float = 0.0,
+                           success: Optional[bool] = None,
+                           snarc_scores: Optional[Dict] = None,
+                           tags: Optional[list] = None) -> int:
+        """Ship high-priority slots to episodic index.
+
+        When episodic_index is provided (Thor #4), creates an Episode from
+        the current WM dump and binds it to the hippocampal index.
+        """
         high = [
             s for s in self.slots.values()
             if s.priority >= 0.7 and (goal_id is None or s.goal_id == goal_id)
         ]
-        # TODO(Thor #4 episodic): send dump() snapshot to hippocampal index
+
+        # Bind to episodic index if available
+        if episodic_index is not None:
+            try:
+                from sage.cognition.episodic.data import Episode
+                ep = Episode.from_wm_dump(
+                    wm_dump=self.dump(),
+                    session_id=session_id,
+                    action_taken=action_taken,
+                    outcome=outcome,
+                    reward=reward,
+                    success=success,
+                    snarc_scores=snarc_scores,
+                    tags=tags,
+                )
+                episodic_index.bind(ep)
+            except Exception as e:
+                import logging
+                logging.getLogger(__name__).warning(f"Episodic bind failed: {e}")
+
         self._emit(Event(
             kind="consolidate", slot_id=None, slot_type=None,
             timestamp=time.time(),

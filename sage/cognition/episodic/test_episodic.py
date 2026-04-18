@@ -246,6 +246,99 @@ def test_many_episodes_performance():
           f"memory {index.stats()['memory_mb']:.1f}MB")
 
 
+def test_from_wm_dump():
+    """T10: Episode.from_wm_dump creates valid episode from WM snapshot."""
+    # Simulate a WM dump (matches CBP's WorkingMemory.dump() format)
+    wm_dump = {
+        "capacity": 7,
+        "slots": [
+            {"slot_id": "wm_001", "content_type": "goal", "content": "solve cd82 level 1",
+             "priority": 0.9, "timestamp": time.time(), "goal_id": "g1", "access_count": 3},
+            {"slot_id": "wm_002", "content_type": "plan_step", "content": "move basket to S position",
+             "priority": 0.7, "timestamp": time.time(), "goal_id": "g1", "access_count": 1},
+            {"slot_id": "wm_003", "content_type": "hypothesis", "content": "SELECT launches paint",
+             "priority": 0.6, "timestamp": time.time(), "goal_id": "g1", "access_count": 2},
+        ],
+        "active_plan": None,
+        "current_step_index": 0,
+        "bindings": [
+            {"sensor_id": "vision", "observation": "white rectangle with red border",
+             "goal_id": "g1", "relevance": 0.8, "timestamp": time.time()},
+        ],
+        "stats": {"total_writes": 5},
+        "snapshot_at": time.time(),
+    }
+
+    ep = Episode.from_wm_dump(
+        wm_dump=wm_dump,
+        session_id="test_session",
+        action_taken="SELECT",
+        outcome="painted 5 cells",
+        reward=0.5,
+        success=True,
+        snarc_scores={"surprise": 0.7, "novelty": 0.4, "arousal": 0.3, "reward": 0.6, "conflict": 0.1},
+        tags=["cd82", "game"],
+    )
+
+    assert ep.embedding is not None
+    assert ep.embedding.shape == (EMBEDDING_DIM,)
+    assert ep.state_signature.get("goal") == "solve cd82 level 1"
+    assert ep.state_signature.get("hypothesis") == "SELECT launches paint"
+    assert ep.sensory_summary.get("vision") == "white rectangle with red border"
+    assert ep.action_taken == "SELECT"
+    assert ep.success is True
+    assert "goal" in ep.tags
+    assert "cd82" in ep.tags
+
+    # Verify it's recallable
+    index = EpisodicIndex()
+    index.bind(ep)
+    results = index.recall(EpisodicCue(
+        state_signature={"goal": "solve cd82 level 1"},
+        tags=["cd82"],
+    ))
+    assert len(results) >= 1
+    assert results[0].episode.action_taken == "SELECT"
+    print("  PASS: from_wm_dump integration")
+
+
+def test_wm_consolidate_integration():
+    """T11: WM.consolidate_to_ltm sends to episodic index."""
+    try:
+        from sage.cognition.working_memory import WorkingMemory
+    except ImportError:
+        print("  SKIP: working_memory not available")
+        return
+
+    index = EpisodicIndex()
+    wm = WorkingMemory(capacity=7)
+
+    # Add some slots
+    wm.add_item("goal", "solve the puzzle", priority=0.9, goal_id="g1")
+    wm.add_item("hypothesis", "arrows rotate", priority=0.7, goal_id="g1")
+
+    # Consolidate to episodic
+    count = wm.consolidate_to_ltm(
+        goal_id="g1",
+        episodic_index=index,
+        session_id="test",
+        action_taken="LEFT",
+        outcome="rotated",
+        reward=0.3,
+        success=True,
+        snarc_scores={"surprise": 0.5},
+        tags=["integration_test"],
+    )
+
+    assert count >= 1, "Should have high-priority slots"
+    assert index.stats()["count"] == 1, "Should have bound one episode"
+
+    results = index.recall(EpisodicCue(tags=["integration_test"]))
+    assert len(results) >= 1
+    assert results[0].episode.state_signature.get("goal") == "solve the puzzle"
+    print("  PASS: WM consolidate → episodic integration")
+
+
 if __name__ == "__main__":
     print("=" * 60)
     print("Episodic Memory Index — Test Suite")
@@ -264,6 +357,8 @@ if __name__ == "__main__":
         test_empty_recall,
         test_access_count_updates,
         test_many_episodes_performance,
+        test_from_wm_dump,
+        test_wm_consolidate_integration,
     ]
 
     passed = 0

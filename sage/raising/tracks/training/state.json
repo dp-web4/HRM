@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 233,
+  "current_session": 234,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,10 +23,10 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 199
+      "sessions": 200
     }
   },
-  "last_session": "2026-04-18T03:01:42.791244",
+  "last_session": "2026-04-18T09:02:53.212885",
   "last_session_summary": "T233: 3/3 Include - Track D Session 199 (qwen3.5:0.8b). FORMAL SESSION: All exercises pass. Attractor present in all responses but creative content genuine (deep teal color choice with aesthetic reasoning). COGNITIVE ENGAGEMENT (12 probes, 3 rounds): ATTRACTOR DYNAMICS MAPPED - Two triggers: (1) CONTENT-TRIGGERED by identity/self-referential prompts, (2) CONTEXT-AMPLIFIED by conversation length. Fresh-context creative tasks (sunset, bird story, fish story) produce clean, atmospheric prose with no attractor. Math clean. Identity/meta prompts trigger attractor immediately. KEY FINDING: Multi-turn context accumulation causes total degenerate collapse - Probes 9-12 in Round 2 produced character-for-character identical responses (verbatim loop). Fresh context per probe prevents this. ANOMALIES: (1) Count-to-5 returned template placeholder '{{time}}' - system prompt leak, (2) 'Ask me a question' triggered web_search tool call for SAGE governance - tool use as associative response, (3) SAGE denied using 'stabilize fleet logic' while actively demonstrating the phrase. METACOGNITION: Zero self-awareness of attractor pattern. Asks about repetition trigger denial + immediate demonstration. IMPLICATIONS: Attractor is fixed-point in response dynamics, amplified by context length, suppressed by concrete creative constraints.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
@@ -10877,6 +10877,63 @@
         },
         "context": {
           "session": 233,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-18T09:02:28.192881",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 234,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-18T09:02:41.935840",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.02
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 234,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.95
+        }
+      },
+      {
+        "timestamp": "2026-04-18T09:02:45.205071",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 234,
           "exercise_type": null,
           "evaluation": "include",
           "quality": 0.7999999999999999

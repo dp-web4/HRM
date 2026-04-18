@@ -40,6 +40,7 @@ import argparse
 import gzip
 import json
 import math
+import os
 import sys
 import zlib
 from collections import Counter
@@ -578,10 +579,76 @@ class HeadBMetrics:
     verdict_reasons: List[str] = field(default_factory=list)
 
 
+@dataclass
+class HeadBAdapter:
+    """Promotable Head B adapter — trained weights + normalization stats.
+
+    Written by save_adapter(); loaded by sage_plays and any downstream
+    inline inference. Self-contained: includes the feature-extractor
+    assumption (ALL_FEATURE_NAMES) so we can detect schema skew.
+    """
+    head: str                           # "B"
+    machine: str
+    trained_at: str                     # ISO timestamp
+    train_commit: Optional[str]
+    n_train_records: int
+    feature_names: List[str]
+    feature_mean: List[float]
+    feature_std: List[float]
+    weights: List[List[float]]          # (n_features, n_classes)
+    bias: List[float]                   # (n_classes,)
+    n_classes: int
+    class_names: List[str]
+
+    @classmethod
+    def from_training(
+        cls, *, machine: str, W: np.ndarray, b: np.ndarray,
+        X_train_raw: np.ndarray, n_train: int,
+        train_commit: Optional[str] = None,
+    ) -> "HeadBAdapter":
+        from datetime import datetime, timezone
+        mean = X_train_raw.mean(axis=0)
+        std = X_train_raw.std(axis=0) + 1e-8
+        return cls(
+            head="B", machine=machine,
+            trained_at=datetime.now(timezone.utc).isoformat(),
+            train_commit=train_commit,
+            n_train_records=int(n_train),
+            feature_names=list(ALL_FEATURE_NAMES),
+            feature_mean=mean.tolist(),
+            feature_std=std.tolist(),
+            weights=W.tolist(), bias=b.tolist(),
+            n_classes=HEAD_B_ACTION_CLASSES,
+            class_names=list(HEAD_B_ACTION_NAMES),
+        )
+
+    def save(self, path: Path) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(asdict(self), f, indent=2)
+
+    @classmethod
+    def load(cls, path: Path) -> "HeadBAdapter":
+        with open(path, "r", encoding="utf-8") as f:
+            d = json.load(f)
+        return cls(**d)
+
+    def predict(self, features: List[float]) -> Tuple[int, List[float]]:
+        """Return (argmax_class, softmax_probs) for a single feature vec."""
+        x = (np.array(features, dtype=np.float64) - np.array(self.feature_mean)) / np.array(self.feature_std)
+        logits = x @ np.array(self.weights) + np.array(self.bias)
+        logits = logits - logits.max()
+        e = np.exp(logits)
+        p = (e / e.sum()).tolist()
+        return int(np.argmax(logits)), p
+
+
 def evaluate_phase1_head_b(
     records: List[Dict],
     test_frac: float = 0.2,
     seed: int = 42,
+    adapter_out: Optional[Path] = None,
+    machine: str = "unknown",
 ) -> HeadBMetrics:
     """Head B: predict known_good_action from RouterInput features.
 
@@ -606,6 +673,14 @@ def evaluate_phase1_head_b(
     W, b = train_multiclass_lr(X_train_n, y_train, HEAD_B_ACTION_CLASSES, seed=seed)
     y_pred = predict(X_test_n, W, b)
     agg_acc = float((y_pred == y_test).mean())
+
+    # Persist adapter if requested — includes raw (un-normalized) mean/std
+    # so inline inference can normalize using the same stats.
+    if adapter_out is not None:
+        adapter = HeadBAdapter.from_training(
+            machine=machine, W=W, b=b, X_train_raw=X_train, n_train=len(X_train),
+        )
+        adapter.save(Path(adapter_out))
 
     counts = Counter(y_test.tolist())
     modal = max(counts, key=counts.get)
@@ -797,6 +872,11 @@ def main() -> int:
     p.add_argument("--test-frac", type=float, default=0.2)
     p.add_argument("--json-out", default=None,
                    help="If set, write the full report as JSON to this path.")
+    p.add_argument("--adapter-out", default=None,
+                   help="Head B only: save trained LR adapter (weights + "
+                        "feature stats) to this path for inline inference.")
+    p.add_argument("--machine", default=os.environ.get("SAGE_MACHINE", "unknown"),
+                   help="Machine slug for adapter metadata.")
     p.add_argument("--strict", action="store_true",
                    help="Exit non-zero on FAIL or INCONCLUSIVE (for CI).")
     args = p.parse_args()
@@ -818,8 +898,14 @@ def main() -> int:
         _print_report(m)
         payload = _to_json_safe(m)
     else:
-        m = evaluate_phase1_head_b(records, test_frac=args.test_frac, seed=args.seed)
+        m = evaluate_phase1_head_b(
+            records, test_frac=args.test_frac, seed=args.seed,
+            adapter_out=Path(args.adapter_out) if args.adapter_out else None,
+            machine=args.machine,
+        )
         _print_head_b_report(m)
+        if args.adapter_out:
+            print(f"Wrote adapter: {args.adapter_out}")
         payload = asdict(m)
         payload["head"] = "B"
         payload["thresholds"] = {

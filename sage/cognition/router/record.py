@@ -41,7 +41,7 @@ ROUTER_SCHEMA_VERSION = "v0.2.0"
 # Valid values for metadata["source"]. A record's source is determined at
 # capture time from the SAGE_SESSION_SOURCE env var (set by raising
 # wrappers, game-play harnesses, etc.). Unknown or absent → "idle".
-VALID_RECORD_SOURCES = {"raising", "gameplay", "idle", "interactive"}
+VALID_RECORD_SOURCES = {"raising", "gameplay", "idle", "interactive", "sage_plays"}
 
 
 # Env var consulted by the shadow hook at record-write time.

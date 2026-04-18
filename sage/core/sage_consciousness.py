@@ -234,6 +234,9 @@ class SAGEConsciousness:
         self.irp_memory = []    # IRP pattern library
         self.circular_buffer = []  # Recent context (x-from-last)
         self.verbatim_storage = []  # Full-fidelity records
+
+        # Hippocampal episodic index (Thor #4) — optional, set via set_episodic_index()
+        self._episodic_index = None
         self._dream_watermark = 0  # Index into snarc_memory: last consolidated position
         self.dream_knowledge = None  # Loaded from dream bundles on WAKE entry
 
@@ -447,6 +450,15 @@ class SAGEConsciousness:
             'time': {'trust': 0.0, 'enabled': True},
             'message': {'trust': 0.0, 'enabled': True},
         }
+
+    def set_episodic_index(self, index) -> None:
+        """Attach a hippocampal episodic index (Thor #4).
+
+        Once set, the consciousness loop will:
+        - Step 2 (Salience): recall similar past episodes to augment novelty scoring
+        - Step 8 (Learn/Remember): bind high-salience experiences as episodes
+        """
+        self._episodic_index = index
 
     def _init_effect_system(self):
         """Initialize the effect/effector system."""
@@ -1289,6 +1301,25 @@ class SAGEConsciousness:
                     reward=0.1,
                     conflict=0.05
                 )
+
+            # Episodic novelty augmentation (Thor #4): if we've seen this before,
+            # reduce novelty; if never seen, boost it
+            if self._episodic_index is not None:
+                try:
+                    from sage.cognition.episodic.data import EpisodicCue
+                    cue = EpisodicCue(
+                        sensory_summary={obs.sensor_id: str(obs.data)[:100]},
+                        tags=[obs.modality],
+                    )
+                    past = self._episodic_index.recall(cue, k=3)
+                    if past and past[0].similarity > 0.8:
+                        # Seen this before — reduce novelty
+                        salience.novelty *= 0.5
+                    elif not past:
+                        # Never seen — boost novelty
+                        salience.novelty = min(1.0, salience.novelty * 1.5)
+                except Exception:
+                    pass  # Episodic augmentation is best-effort
 
             salience_map[obs.sensor_id] = salience
 
@@ -2716,6 +2747,33 @@ class SAGEConsciousness:
                     'plugin': plugin_name,
                     'full_result': result
                 })
+
+            # 5. Episodic index (Thor #4) — bind high-salience as episodes
+            if self._episodic_index is not None and salience > self.salience_threshold and not is_mock:
+                try:
+                    from sage.cognition.episodic.data import Episode
+                    snarc_dict = {}
+                    if snarc_real:
+                        snarc_dict = {k: v for k, v in snarc_real.items() if k != 'total'}
+                    else:
+                        snarc_dict = {'surprise': salience, 'novelty': salience * 0.5}
+
+                    ep = Episode(
+                        session_id=getattr(self, '_self_name', ''),
+                        cycle_id=self.cycle_count,
+                        state_signature={
+                            'metabolic': self.metabolic.current_state.value,
+                            'plugin': plugin_name,
+                        },
+                        sensory_summary={'plugin_result': str(result)[:200]},
+                        snarc_scores=snarc_dict,
+                        action_taken=plugin_name,
+                        reward=salience,
+                        tags=[plugin_name, self.metabolic.current_state.value],
+                    )
+                    self._episodic_index.bind(ep)
+                except Exception:
+                    pass  # Episodic binding is best-effort, never blocks the loop
 
     def _evaluate_effects_policy(self, effects: List) -> List:
         """

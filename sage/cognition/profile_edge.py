@@ -197,10 +197,104 @@ def profile_scaling():
         elapsed = (time.perf_counter() - t0) * 1000 / 10
         print(f"  N={n:5d}  recall(k=5) avg={elapsed:.2f}ms")
 
+# ── Profile Motor Skills ─────────────────────────────────────────────
+
+def profile_motor_skills():
+    print("\n=== Motor Skills (Executor + Registry) ===")
+    gc.collect()
+    tracemalloc.start()
+    from sage.cognition.motor_skills.registry import get_skill, list_skills
+    from sage.cognition.motor_skills.executor import execute_skill
+    from sage.cognition.motor_skills.types import Observation, SkillInvocation
+    import sage.cognition.motor_skills.skills  # triggers registration
+
+    # Registry lookup
+    timeit(lambda: get_skill("navigate_to"), "registry lookup")
+    timeit(lambda: list_skills(), "registry list_skills()")
+
+    # navigate_to step function
+    skill = get_skill("navigate_to")
+    obs = Observation(position=(3, 3))
+    params = {"x": 7, "y": 7}
+    timeit(lambda: skill.step(obs, params), "navigate_to.step()")
+    timeit(lambda: skill.halt_condition(obs, params), "navigate_to.halt_condition()")
+    timeit(lambda: skill.stuck_condition(obs, params, [obs, obs, obs]), "navigate_to.stuck_condition()")
+
+    # Full executor loop (navigate 10 steps to target)
+    pos = [3, 3]
+    def observe_fn():
+        return Observation(position=tuple(pos))
+    def act_fn(action):
+        # navigate_to returns int action IDs: UP=1, DOWN=2, LEFT=3, RIGHT=4
+        if action == 4: pos[0] += 1    # RIGHT
+        elif action == 2: pos[1] += 1  # DOWN
+        elif action == 3: pos[0] -= 1  # LEFT
+        elif action == 1: pos[1] -= 1  # UP
+
+    def run_executor():
+        pos[0], pos[1] = 3, 3
+        inv = SkillInvocation(skill_id="navigate_to", params={"x": 7, "y": 7}, max_steps=20)
+        return execute_skill(inv, observe_fn, act_fn)
+
+    timeit(run_executor, "execute_skill(navigate_to, 4-step path)", iterations=50)
+
+    cur, peak = mem_snapshot()
+    print(f"  Memory: current={cur:.3f}MB  peak={peak:.3f}MB")
+    tracemalloc.stop()
+
+# ── Profile Metacog ──────────────────────────────────────────────────
+
+def profile_metacog():
+    print("\n=== Metacog (Interoceptive Monitor) ===")
+    gc.collect()
+    tracemalloc.start()
+    from sage.cognition.metacog.core import Metacog, MetacogConfig
+
+    mc = Metacog(config=MetacogConfig())
+
+    # Single tick with no signals
+    def healthy_tick():
+        mc.observe_tick(mc._tick + 1, action_taken={"plugin": "move", "args": {"dir": "right"}},
+                       state_delta={"pos_changed": True}, snarc_novelty=0.5,
+                       atp_balance=80.0, atp_cost=1.0, estimated_actions_to_goal=10.0)
+
+    timeit(healthy_tick, "observe_tick (healthy, no signals)", iterations=50)
+
+    # Tick that should trigger perseveration
+    mc2 = Metacog(config=MetacogConfig())
+    def perseveration_tick():
+        mc2.reset()
+        for i in range(5):
+            mc2.observe_tick(i, action_taken={"plugin": "move", "args": {"dir": "right"}},
+                            state_delta=None, snarc_novelty=0.01)
+
+    timeit(perseveration_tick, "5 ticks → perseveration detection", iterations=20)
+
+    # Tick with WM integration
+    from sage.cognition.working_memory import WorkingMemory
+    wm = WorkingMemory()
+    wm.add_item("goal", {"target": "reach exit"}, priority=0.9)
+    wm.add_item("plan_step", {"step": "explore dungeon"}, priority=0.7)
+    mc3 = Metacog(config=MetacogConfig(), wm=wm)
+
+    def wm_tick():
+        mc3.observe_tick(mc3._tick + 1, action_taken={"plugin": "move", "args": {"dir": "right"}},
+                        state_delta={"pos_changed": True}, snarc_novelty=0.5)
+
+    timeit(wm_tick, "observe_tick with WM integration", iterations=50)
+
+    # get_block_list
+    timeit(lambda: mc.get_block_list(), "get_block_list()")
+
+    cur, peak = mem_snapshot()
+    print(f"  Memory: current={cur:.3f}MB  peak={peak:.3f}MB")
+    print(f"  Stats: {mc.stats()}")
+    tracemalloc.stop()
+
 # ── Main ─────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    print("SAGE Brain-Arch Edge Profile")
+    print("SAGE Brain-Arch Edge Profile (v2 — with motor skills + metacog)")
     print(f"Platform: {sys.platform} / {os.uname().machine}")
     print(f"Python: {sys.version.split()[0]}")
 
@@ -208,6 +302,8 @@ if __name__ == "__main__":
     profile_rpe()
     profile_cerebellum()
     profile_episodic()
+    profile_motor_skills()
+    profile_metacog()
     profile_scaling()
 
     print("\n=== System State ===")

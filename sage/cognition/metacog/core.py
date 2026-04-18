@@ -195,6 +195,30 @@ class Metacog:
         self._actions_taken = 0
 
     # ------------------------------------------------------------------
+    # Router integration — feature_extraction.py calls get_block_list()
+    # ------------------------------------------------------------------
+
+    def get_block_list(self) -> List[str]:
+        """Plugin names the router should NOT invoke this tick.
+
+        Called by the router feature extractor (PRD §2.7). Only critical-
+        severity signals (>= 0.9) produce blocks. The block list is a
+        mapping from signal type to a heuristic "what plugin to avoid":
+
+          perseveration → block the plugin that was perseverating
+          budget_critical → block all non-essential plugins
+          exploration_starvation → (no block — suggestion, not prohibition)
+
+        For now, returns signal names as pseudo-plugin identifiers. The
+        router treats unknown plugin names as noop (PRD §3.3 rule 5).
+        """
+        blocks: List[str] = []
+        for sig in self.active_signals():
+            if sig.severity >= 0.9:
+                blocks.append(f"metacog:{sig.signal}")
+        return blocks
+
+    # ------------------------------------------------------------------
     # Detector: perseveration
     # ------------------------------------------------------------------
 

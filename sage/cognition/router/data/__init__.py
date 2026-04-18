@@ -41,6 +41,7 @@ from sage.cognition.router.data.writer import (
 from sage.cognition.router.data.reader import (
     RouterDatasetReader,
     SUPPORTED_SCHEMA_VERSIONS,
+    OUTCOME_FILE_PREFIX,
 )
 from sage.cognition.router.data.pruner import (
     RouterDatasetPruner,
@@ -60,6 +61,7 @@ __all__ = [
     "salience_score",
     "SCHEMA_VERSION",
     "SUPPORTED_SCHEMA_VERSIONS",
+    "OUTCOME_FILE_PREFIX",
     "RouterDatasetPruner",
     "PruneStats",
     "AGE_BRACKETS",

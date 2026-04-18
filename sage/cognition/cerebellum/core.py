@@ -40,6 +40,35 @@ class StateSignature:
             )
             self.hash = hashlib.sha256(canonical.encode()).hexdigest()[:16]
 
+    @classmethod
+    def from_wm(cls, wm, domain: str, goal_id: Optional[str] = None) -> 'StateSignature':
+        """Build a state signature from WorkingMemory contents.
+
+        Uses WM's stable_key() for the hash and extracts slot types/content
+        as features. This is the primary integration point with CBP's WM spec.
+
+        Args:
+            wm: WorkingMemory instance (must have stable_key() and get_by_type())
+            domain: Domain string (e.g., "arc-game:cd82", "conversation")
+            goal_id: Optional goal to scope the signature to
+        """
+        features = {}
+        wm_hash = wm.stable_key(goal_id)
+
+        # Extract structural features from WM slots
+        try:
+            for slot_type in ("goal", "plan_step", "binding", "hypothesis", "constraint"):
+                slots = wm.get_by_type(slot_type, goal_id=goal_id)
+                if slots:
+                    features[f"wm_{slot_type}_count"] = len(slots)
+                    # Use first slot's content for identity (not all — too specific)
+                    if hasattr(slots[0], "content"):
+                        features[f"wm_{slot_type}_key"] = str(slots[0].content)[:64]
+        except (AttributeError, TypeError):
+            pass
+
+        return cls(domain=domain, features=features, hash=wm_hash)
+
     def similarity(self, other: 'StateSignature') -> float:
         """Feature-overlap similarity. Simple and fast."""
         if self.domain != other.domain:

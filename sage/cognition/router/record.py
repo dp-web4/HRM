@@ -45,6 +45,7 @@ VALID_RECORD_SOURCES = {
     "raising", "gameplay", "idle", "interactive",
     "sage_plays",        # offline re-scoring of captured records
     "sage_plays_live",   # teacher-forced live play: adapter proposes from env state, env advances on known_good
+    "sage_plays_self",   # SELF-advance: adapter's proposal drives env. Errors compound. No teacher.
 }
 
 

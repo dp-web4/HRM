@@ -375,7 +375,16 @@ class GameplayCapture:
                 self.errors.append(f"step {step.index}: decide failed: {e!r}")
                 continue
 
-            # Build the record with provenance metadata
+            # Build the record with provenance metadata.
+            #
+            # `known_good_*` fields are the supervised-training labels. Since
+            # this trace is a WIN, the action actually taken at this tick is
+            # by definition a good next action. This lets downstream training
+            # use the record as a supervised triple:
+            #   state → (baseline-proposed dispatch)  [router BC]
+            #   state → known_good_action             [action prediction]
+            #   state × skill_params → known_good_action [motor-skill BC]
+            # Plus outcome-weighted shaping: sample weight ∝ game_outcome.won.
             metadata = {
                 "source": "gameplay",
                 "game": self.trace.game,
@@ -385,6 +394,10 @@ class GameplayCapture:
                 "step_index": step.index,
                 "level": step.level,
                 "synthetic_kernel_state": True,
+                # Supervised labels from the winning trace
+                "known_good_action": step.action,
+                "known_good_data": step.data,
+                "known_good_level": step.level,
             }
             record = RouterRecord(
                 router_input=router_input,

@@ -186,6 +186,10 @@ def test_capture_end_to_end_emits_records(tmp_path):
         assert rec.metadata.get("game") == "testgame"
         assert rec.metadata.get("synthetic_kernel_state") is True
         assert "game_outcome" in rec.metadata
+        # Supervised-training labels
+        assert "known_good_action" in rec.metadata
+        assert rec.metadata["known_good_action"] in (1, 3, 6)   # from _make_trace_3_steps
+        assert "known_good_level" in rec.metadata
 
 
 def test_capture_writes_to_partition(tmp_path):
@@ -271,3 +275,36 @@ def test_capture_all_records_have_valid_router_output(tmp_path):
     for rec in capture.records:
         ok, reason = rec.router_output.validate()
         assert ok, f"invalid output: {reason}"
+
+
+def test_capture_known_good_labels_match_trace_actions(tmp_path):
+    """Each record's known_good_action must equal the corresponding TraceStep.action."""
+    trace = _make_trace_3_steps()
+    writer = RouterDatasetWriter(base_dir=tmp_path / "dataset",
+                                 machine="cbp", compress=False)
+    capture = GameplayCapture(trace=trace, writer=writer, machine="cbp",
+                              env_factory=_make_env_factory())
+    capture.run()
+    writer.close()
+    assert len(capture.records) == 3
+    assert capture.records[0].metadata["known_good_action"] == 1   # UP
+    assert capture.records[1].metadata["known_good_action"] == 3   # LEFT
+    assert capture.records[2].metadata["known_good_action"] == 6   # CLICK
+    # Click step carries click data
+    assert capture.records[2].metadata["known_good_data"] == {"x": 10, "y": 20}
+    # Non-click steps have None data
+    assert capture.records[0].metadata["known_good_data"] is None
+
+
+def test_capture_known_good_levels_match_trace_levels(tmp_path):
+    """known_good_level passes through the trace's per-step level."""
+    trace = _make_trace_3_steps()
+    writer = RouterDatasetWriter(base_dir=tmp_path / "dataset",
+                                 machine="cbp", compress=False)
+    capture = GameplayCapture(trace=trace, writer=writer, machine="cbp",
+                              env_factory=_make_env_factory())
+    capture.run()
+    writer.close()
+    assert capture.records[0].metadata["known_good_level"] == 0
+    assert capture.records[1].metadata["known_good_level"] == 0
+    assert capture.records[2].metadata["known_good_level"] == 1

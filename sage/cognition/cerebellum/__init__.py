@@ -17,8 +17,11 @@ from sage.cognition.cerebellum.core import (
     Cerebellum,
 )
 from sage.cognition.cerebellum.episodic_bridge import (
-    episode_to_cerebellum_dict,
     compile_habits_from_episodes,
+    compile_habits_from_trajectories,
+    episode_to_cerebellum_dict,
+    group_episodes_into_trajectories,
+    trajectory_to_cerebellum_dict,
 )
 
 __all__ = [
@@ -28,4 +31,7 @@ __all__ = [
     'Cerebellum',
     'episode_to_cerebellum_dict',
     'compile_habits_from_episodes',
+    'group_episodes_into_trajectories',
+    'trajectory_to_cerebellum_dict',
+    'compile_habits_from_trajectories',
 ]

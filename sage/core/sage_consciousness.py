@@ -409,10 +409,13 @@ class SAGEConsciousness:
         # Env-gated (SAGE_RPE=1); default ON when available.
         try:
             from sage.cognition.rpe import RewardPredictionError
+            from sage.cognition.rpe.loop_hook import RPELoopHook
             self.rpe = RewardPredictionError(default_prior=0.0)
-            print(f"[RPE] Initialized (default_prior=0.0)")
+            self.rpe_hook = RPELoopHook(self.rpe, domain="sage")
+            print(f"[RPE] Initialized with loop hook (default_prior=0.0)")
         except Exception as e:
             self.rpe = None
+            self.rpe_hook = None
             print(f"[RPE] Not available: {e}")
 
     @property

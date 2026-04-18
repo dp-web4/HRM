@@ -530,3 +530,108 @@ def test_valid_rationale_codes_cover_prd_examples():
                  "metacog_blocked", "goal_driven", "reflex",
                  "escalate_frontal", "federate_peer"):
         assert code in VALID_RATIONALE_CODES
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Sprint 2 R1 — source-stamping via metadata
+# ──────────────────────────────────────────────────────────────────────
+
+import os
+from sage.cognition.router.record import (
+    VALID_RECORD_SOURCES,
+    SOURCE_ENV_VAR,
+    ROUTER_SCHEMA_VERSION,
+)
+
+
+def _make_minimal_record(**kwargs):
+    """Helper: build a valid RouterRecord with minimal required args."""
+    ri = RouterInput(
+        tick=1, timestamp=123.0, goal_id=None,
+        wm_state_key="abc", wm_slot_counts={}, wm_goal_active=False,
+        wm_age_ticks=0, wm_pressure=0.0,
+        sensory_modalities=[], sensory_novelty=0.0, sensory_urgency=0.0,
+        snarc_surprise=0.0, snarc_novelty=0.0, snarc_arousal=0.0,
+        snarc_reward=0.0, snarc_conflict=0.0,
+        metabolic_state="wake", atp_level=50.0, atp_trend="stable",
+        recall_count=0, recall_best_similarity=0.0, recall_best_outcome=None,
+        habit_available=False, habit_confidence=0.0,
+        prior_invoke=0.0, prior_habit=0.0, prior_noop=0.0,
+        metacog_block_list=[],
+        cartridge_recall_count=0, cartridge_recall_best_similarity=0.0,
+        cartridge_recall_embedding=[0.0]*768,
+    )
+    ro = RouterOutput(
+        action="noop", plugin=None, plugin_tier=None, payload_hint=None,
+        habit_id=None, confidence=0.9, energy_estimate=0.0,
+        rationale_code="low_atp_rest",
+    )
+    return RouterRecord(router_input=ri, router_output=ro, **kwargs)
+
+
+def test_schema_version_bumped_to_v020():
+    assert ROUTER_SCHEMA_VERSION == "v0.2.0"
+    r = _make_minimal_record()
+    assert r.schema_version == "v0.2.0"
+
+
+def test_metadata_defaults_to_empty_dict():
+    r = _make_minimal_record()
+    assert r.metadata == {}
+
+
+def test_metadata_roundtrip_preserves_source():
+    r = _make_minimal_record(metadata={"source": "raising"})
+    d = r.to_dict()
+    assert d["metadata"] == {"source": "raising"}
+    r2 = RouterRecord.from_dict(d)
+    assert r2.metadata == {"source": "raising"}
+
+
+def test_metadata_source_validator_rejects_unknown():
+    import pytest
+    with pytest.raises(ValueError):
+        _make_minimal_record(metadata={"source": "unknown_source"})
+
+
+def test_metadata_source_validator_accepts_all_valid():
+    for src in VALID_RECORD_SOURCES:
+        r = _make_minimal_record(metadata={"source": src})
+        assert r.metadata["source"] == src
+
+
+def test_valid_record_sources_matches_prd():
+    # The closed vocabulary per Sprint 2 R1.
+    assert VALID_RECORD_SOURCES == {"raising", "gameplay", "idle", "interactive"}
+
+
+def test_from_dict_backward_compat_missing_metadata():
+    # Simulate a v0.1.0 record that didn't have metadata.
+    r = _make_minimal_record(metadata={"source": "idle"})
+    d = r.to_dict()
+    del d["metadata"]  # old-format record
+    d["schema_version"] = "v0.1.0"
+    r2 = RouterRecord.from_dict(d)
+    assert r2.metadata == {}
+
+
+def test_with_outcome_preserves_metadata():
+    r = _make_minimal_record(metadata={"source": "gameplay"})
+    r2 = r.with_outcome({"ok": True})
+    assert r2.metadata == {"source": "gameplay"}
+    # Non-mutating
+    assert r.outcome is None
+    assert r2.outcome == {"ok": True}
+
+
+def test_shadow_build_metadata_from_env(monkeypatch):
+    from sage.cognition.router.shadow import _build_record_metadata
+    # Absent env → idle
+    monkeypatch.delenv(SOURCE_ENV_VAR, raising=False)
+    assert _build_record_metadata() == {"source": "idle"}
+    # Valid value honored
+    monkeypatch.setenv(SOURCE_ENV_VAR, "raising")
+    assert _build_record_metadata() == {"source": "raising"}
+    # Invalid value coerced to idle (rather than failing record construction)
+    monkeypatch.setenv(SOURCE_ENV_VAR, "bogus")
+    assert _build_record_metadata() == {"source": "idle"}

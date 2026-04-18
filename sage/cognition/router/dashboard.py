@@ -75,7 +75,37 @@ PROJECTION_WINDOW_HOURS: int = 24
 
 # Dashboard schema version — bump on any structural change to the JSON
 # output so downstream consumers can version-guard.
-DASHBOARD_SCHEMA_VERSION: str = "v0.1.0"
+DASHBOARD_SCHEMA_VERSION: str = "v0.2.0"
+
+# ── SNARC distribution drift (PRD §4.7.G) ─────────────────────────────
+#
+# Drift is measured per SNARC dimension as KL divergence between a stable
+# training baseline distribution and a rolling serving distribution. The
+# monitor is intentionally simple: histograms per dim, smoothed to avoid
+# log(0), computed only when both windows carry enough samples to be
+# meaningful.
+#
+# Window policy:
+#   training-window  = records with timestamp ≥ DRIFT_TRAINING_MIN_AGE_DAYS
+#                      old (stable baseline — old enough that training has
+#                      plausibly happened on this distribution).
+#   serving-window   = records with timestamp within
+#                      DRIFT_SERVING_WINDOW_DAYS (rolling current behavior).
+#
+# Alert threshold per PRD §4.7.G: 0.1 nats.
+#
+# We deliberately do NOT make the alert threshold configurable: tuning
+# knobs erode the PRD's single source of truth. If §4.7.G changes, the
+# constant changes here.
+
+DRIFT_TRAINING_MIN_AGE_DAYS: int = 30   # baseline: records ≥ 30d old
+DRIFT_SERVING_WINDOW_DAYS: int = 7      # current: last 7d rolling
+DRIFT_MIN_SAMPLES_PER_WINDOW: int = 1000  # per-dim sample floor
+DRIFT_ALERT_THRESHOLD_NATS: float = 0.1   # PRD §4.7.G
+# Laplace-smoothing pseudocount added to every histogram bin before the
+# KL is evaluated. Prevents log(0) on zero bins without biasing toward
+# any particular shape.
+DRIFT_SMOOTHING_EPSILON: float = 1e-6
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -186,6 +216,63 @@ class MachineMetrics:
 
 
 @dataclass
+class SnarcDriftMetrics:
+    """Per-dimension KL-divergence drift between training and serving windows.
+
+    ``status`` is one of:
+      * ``"HEALTHY"`` — KL below alert threshold
+      * ``"DRIFT ALERT"`` — KL ≥ alert threshold, retraining flag per §4.7.G
+      * ``"INSUFFICIENT DATA"`` — at least one window under the sample floor
+
+    Sample counts are always reported alongside the KL value; agent-zero
+    discipline applied to drift — a KL of 0.3 off of 12 training samples is
+    not a drift alert, it's a reporting artifact.
+    """
+
+    dimension: str
+    status: str = "INSUFFICIENT DATA"
+    kl_nats: Optional[float] = None       # None unless status != INSUFFICIENT DATA
+    training_count: int = 0
+    serving_count: int = 0
+    training_histogram: List[int] = field(default_factory=list)
+    serving_histogram: List[int] = field(default_factory=list)
+    bin_edges: List[Tuple[float, float]] = field(default_factory=list)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "dimension": self.dimension,
+            "status": self.status,
+            "kl_nats": self.kl_nats,
+            "training_count": self.training_count,
+            "serving_count": self.serving_count,
+            "training_histogram": list(self.training_histogram),
+            "serving_histogram": list(self.serving_histogram),
+            "bin_edges": [list(e) for e in self.bin_edges],
+        }
+
+
+@dataclass
+class SnarcDriftReport:
+    """Per-machine (or aggregate) drift report for all SNARC dimensions."""
+
+    machine: str
+    # dim → SnarcDriftMetrics
+    dimensions: Dict[str, SnarcDriftMetrics] = field(default_factory=dict)
+    # True if any dimension has status == DRIFT ALERT.
+    any_alert: bool = False
+    # True if every dimension is INSUFFICIENT DATA.
+    awaiting_baseline: bool = True
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "machine": self.machine,
+            "dimensions": {k: v.to_dict() for k, v in self.dimensions.items()},
+            "any_alert": self.any_alert,
+            "awaiting_baseline": self.awaiting_baseline,
+        }
+
+
+@dataclass
 class DashboardMetrics:
     """Full dashboard payload — per-machine + aggregate."""
 
@@ -196,6 +283,11 @@ class DashboardMetrics:
     schema_version: str = DASHBOARD_SCHEMA_VERSION
     per_machine: Dict[str, MachineMetrics] = field(default_factory=dict)
     aggregate: MachineMetrics = field(default_factory=lambda: MachineMetrics(machine="ALL"))
+    # SNARC distribution-drift report (PRD §4.7.G).
+    drift_aggregate: SnarcDriftReport = field(
+        default_factory=lambda: SnarcDriftReport(machine="ALL")
+    )
+    drift_per_machine: Dict[str, SnarcDriftReport] = field(default_factory=dict)
     # Wall-clock build time (seconds) — useful when tuning nightly cron.
     build_seconds: float = 0.0
 
@@ -209,6 +301,10 @@ class DashboardMetrics:
             "build_seconds": self.build_seconds,
             "per_machine": {k: v.to_dict() for k, v in self.per_machine.items()},
             "aggregate": self.aggregate.to_dict(),
+            "drift_aggregate": self.drift_aggregate.to_dict(),
+            "drift_per_machine": {
+                k: v.to_dict() for k, v in self.drift_per_machine.items()
+            },
         }
 
 
@@ -325,6 +421,24 @@ class DashboardBuilder:
         cutoff_24h = t0 - RECENT_TREND_HOURS * 3600.0
         cutoff_7d = t0 - RECENT_TREND_DAYS * 86400.0
         cutoff_proj = t0 - PROJECTION_WINDOW_HOURS * 3600.0
+        # ── SNARC drift windows (PRD §4.7.G). ─────────────────────
+        # Training window: records older than DRIFT_TRAINING_MIN_AGE_DAYS —
+        # used as the stable baseline distribution.
+        # Serving window: records within DRIFT_SERVING_WINDOW_DAYS — the
+        # rolling current behavior we compare against baseline.
+        cutoff_training_upper = t0 - DRIFT_TRAINING_MIN_AGE_DAYS * 86400.0
+        cutoff_serving_lower = t0 - DRIFT_SERVING_WINDOW_DAYS * 86400.0
+        # histograms[machine][dim] = [train_hist, serve_hist]
+        # train_hist / serve_hist are lists of SNARC_HISTOGRAM_BINS ints.
+        drift_hist: Dict[str, Dict[str, Dict[str, List[int]]]] = defaultdict(
+            lambda: {
+                dim: {
+                    "training": [0] * SNARC_HISTOGRAM_BINS,
+                    "serving": [0] * SNARC_HISTOGRAM_BINS,
+                }
+                for dim in SNARC_DIMENSIONS
+            }
+        )
         # Salience scores collected per machine to compute quintile
         # boundaries AFTER the pass (one sort; avoids a second read).
         salience_per_machine: Dict[str, List[float]] = defaultdict(list)
@@ -388,6 +502,21 @@ class DashboardBuilder:
 
                 # SNARC
                 snarc = _extract_snarc(rec)
+                # Drift classification: which window does this record fall
+                # into? Records with no timestamp are excluded from drift
+                # (we need wall-clock to slot them). Records landing in the
+                # no-man's-land between training and serving windows are
+                # skipped — they are neither stable baseline nor current.
+                drift_slot: Optional[str]
+                if ts is None:
+                    drift_slot = None
+                elif ts <= cutoff_training_upper:
+                    drift_slot = "training"
+                elif ts >= cutoff_serving_lower:
+                    drift_slot = "serving"
+                else:
+                    drift_slot = None
+
                 for dim in SNARC_DIMENSIONS:
                     v = snarc.get(dim)
                     if v is None:
@@ -398,6 +527,11 @@ class DashboardBuilder:
                         continue
                     welford[mach][dim].push(v)
                     welford["__AGG__"][dim].push(v)
+                    # Populate drift histogram for the appropriate window.
+                    if drift_slot is not None:
+                        bin_idx = _drift_bin_index(dim, v)
+                        drift_hist[mach][dim][drift_slot][bin_idx] += 1
+                        drift_hist["__AGG__"][dim][drift_slot][bin_idx] += 1
 
                 # Salience → quintile bucket (post-hoc; boundaries from
                 # the observed distribution, not a configured global).
@@ -429,6 +563,17 @@ class DashboardBuilder:
             self._finalise_machine(mm, welford[mach], salience_per_machine[mach])
         self._finalise_machine(
             metrics.aggregate, welford["__AGG__"], salience_per_machine["__AGG__"]
+        )
+
+        # ── Finalise drift reports. ───────────────────────────────
+        for mach in metrics.per_machine:
+            metrics.drift_per_machine[mach] = _finalise_drift_report(
+                machine=mach,
+                per_dim=drift_hist.get(mach, {}),
+            )
+        metrics.drift_aggregate = _finalise_drift_report(
+            machine="ALL",
+            per_dim=drift_hist.get("__AGG__", {}),
         )
 
         # ── Byte-growth projection. ───────────────────────────────
@@ -509,12 +654,25 @@ class DashboardBuilder:
 # ──────────────────────────────────────────────────────────────────────
 
 
-def render_markdown(metrics: DashboardMetrics) -> str:
+def render_markdown(
+    metrics: DashboardMetrics,
+    *,
+    include_drift: Union[bool, str] = "auto",
+) -> str:
     """Render a DashboardMetrics object as human-readable markdown.
 
     Every aggregate number is paired with the modal-class dummy baseline
     per PRD §7.10 agent-zero discipline. When there is no data, renders a
     short "awaiting first data" preamble instead of empty tables.
+
+    Parameters
+    ----------
+    include_drift:
+        ``True`` / ``"on"`` → always render the SNARC drift section.
+        ``False`` / ``"off"`` → skip it (e.g. when the caller renders a
+        tight report without §4.7.G context).
+        ``"auto"`` (default) → include when the dashboard has record
+        data. Matches the CLI default.
     """
     lines: List[str] = []
     lines.append("# Router Pipeline Dashboard")
@@ -677,8 +835,32 @@ def render_markdown(metrics: DashboardMetrics) -> str:
     lines.append(_recent_trend_table(metrics))
     lines.append("")
 
+    # ── SNARC distribution drift (PRD §4.7.G) ──
+    if _should_include_drift(include_drift):
+        lines.extend(_drift_section(metrics))
+
     lines.extend(_references_section())
     return "\n".join(lines) + "\n"
+
+
+def _should_include_drift(flag: Union[bool, str]) -> bool:
+    """Normalize the include_drift flag.
+
+    ``True`` / ``"on"`` → include.
+    ``False`` / ``"off"`` → skip.
+    ``"auto"`` (default) → include — the drift section self-censors to
+    "awaiting baseline" when there isn't enough data yet, so 'auto'
+    effectively means 'always include but render gracefully'.
+    """
+    if isinstance(flag, bool):
+        return flag
+    val = str(flag).strip().lower()
+    if val in ("on", "true", "yes", "1"):
+        return True
+    if val in ("off", "false", "no", "0"):
+        return False
+    # "auto" or anything else → include (graceful early-days render).
+    return True
 
 
 def render_json(metrics: DashboardMetrics, *, indent: int = 2) -> str:
@@ -841,6 +1023,115 @@ def _recent_trend_table(metrics: DashboardMetrics) -> str:
     return "\n".join(rows)
 
 
+def _drift_section(metrics: DashboardMetrics) -> List[str]:
+    """Render the SNARC distribution-drift section (PRD §4.7.G).
+
+    Always included when the dashboard has record data. If no window has
+    enough samples yet (fresh deployment), renders an "awaiting baseline"
+    preamble rather than a table of INSUFFICIENT DATA rows — operators
+    shouldn't read the early-days output as a scary alert surface.
+    """
+    lines: List[str] = []
+    lines.append("## SNARC distribution drift (PRD §4.7.G)")
+    lines.append("")
+    lines.append(
+        "**Training window**: records ≥ "
+        f"{DRIFT_TRAINING_MIN_AGE_DAYS} days old (stable baseline). "
+        "**Serving window**: last "
+        f"{DRIFT_SERVING_WINDOW_DAYS} days (rolling current). "
+        f"**Alert threshold**: KL ≥ {DRIFT_ALERT_THRESHOLD_NATS} nats "
+        "per dim (PRD §4.7.G). "
+        f"**Sample floor**: {DRIFT_MIN_SAMPLES_PER_WINDOW:,} records per "
+        "window per dim — fewer than this reports INSUFFICIENT DATA "
+        "rather than a false alarm."
+    )
+    lines.append("")
+    lines.append(
+        "Laplace-style smoothing (ε="
+        f"{DRIFT_SMOOTHING_EPSILON:g}) is applied to every histogram bin "
+        "before computing KL(serving || training), so zero-count bins "
+        "don't push the divergence to infinity."
+    )
+    lines.append("")
+
+    drift_agg = metrics.drift_aggregate
+    # True if NO machine (aggregate or per-machine) has crossed the
+    # sample floor on any dimension. We use this to switch to the
+    # "awaiting baseline" preamble rather than showing a wall of
+    # INSUFFICIENT DATA rows during early-deployment days.
+    per_mach_all_awaiting = all(
+        rep.awaiting_baseline for rep in metrics.drift_per_machine.values()
+    ) if metrics.drift_per_machine else True
+    if drift_agg.awaiting_baseline and per_mach_all_awaiting:
+        lines.append(
+            "_Awaiting baseline — no dimension yet has "
+            f"{DRIFT_MIN_SAMPLES_PER_WINDOW:,} records in BOTH the training "
+            "and serving windows. Drift monitoring activates per dimension "
+            "once the sample floor is met._"
+        )
+        lines.append("")
+        return lines
+
+    # Aggregate summary.
+    lines.append("### Aggregate")
+    lines.append("")
+    lines.append(_drift_table(drift_agg))
+    lines.append("")
+
+    # Per-machine (only those with any non-insufficient row — or all if
+    # operator wants full visibility; we show all so isolation is obvious).
+    for mach in sorted(metrics.drift_per_machine):
+        rep = metrics.drift_per_machine[mach]
+        lines.append(f"### {mach}")
+        lines.append("")
+        lines.append(_drift_table(rep))
+        lines.append("")
+
+    # Summary line — quick-glance alert status.
+    if drift_agg.any_alert:
+        lines.append(
+            "**STATUS**: DRIFT ALERT fired on aggregate — retraining "
+            "flag per PRD §4.7.G. Inspect per-machine table to locate "
+            "the drifting source(s)."
+        )
+    elif drift_agg.awaiting_baseline:
+        lines.append(
+            "**STATUS**: baseline still accumulating — no aggregate "
+            "dimension has crossed the sample floor in both windows."
+        )
+    else:
+        lines.append(
+            "**STATUS**: healthy — all aggregate SNARC dimensions with "
+            f"sufficient data report KL < {DRIFT_ALERT_THRESHOLD_NATS} nats."
+        )
+    lines.append("")
+    return lines
+
+
+def _drift_table(report: SnarcDriftReport) -> str:
+    rows = [
+        "| Dimension | Training n | Serving n | KL (nats) | Status |",
+        "|---|---|---|---|---|",
+    ]
+    for dim in SNARC_DIMENSIONS:
+        d = report.dimensions.get(dim)
+        if d is None:
+            rows.append(f"| `{dim}` | 0 | 0 | — | INSUFFICIENT DATA |")
+            continue
+        if d.status == "INSUFFICIENT DATA":
+            rows.append(
+                f"| `{dim}` | {d.training_count:,} | {d.serving_count:,} "
+                f"| — | INSUFFICIENT DATA |"
+            )
+        else:
+            kl_str = "—" if d.kl_nats is None else f"{d.kl_nats:.4f}"
+            rows.append(
+                f"| `{dim}` | {d.training_count:,} | {d.serving_count:,} "
+                f"| {kl_str} | {d.status} |"
+            )
+    return "\n".join(rows)
+
+
 def _references_section() -> List[str]:
     return [
         "## References",
@@ -850,7 +1141,9 @@ def _references_section() -> List[str]:
         "- **PRD §0.2, §7.10** (agent-zero discipline — "
         "modal-class dummy comparison)",
         "- **PRD §4.7.D, §4.7.F, §4.7.G** (SNARC sampling, SNARC "
-        "ablation, distribution drift)",
+        "ablation, distribution drift — drift monitor surfaces the §4.7.G "
+        "KL comparison here at "
+        f"alert threshold {DRIFT_ALERT_THRESHOLD_NATS} nats)",
         "- **Track 4** (dataset writer/reader — input source): "
         "`sage/cognition/router/data/`",
         "- **Track 9** (SNARC-driven storage pruning): "
@@ -1162,3 +1455,157 @@ def _equal_bin_edges(lo: float, hi: float, bins: int) -> List[Tuple[float, float
         return []
     step = (hi - lo) / bins
     return [(lo + i * step, lo + (i + 1) * step) for i in range(bins)]
+
+
+# ──────────────────────────────────────────────────────────────────────
+# SNARC distribution-drift helpers (PRD §4.7.G)
+# ──────────────────────────────────────────────────────────────────────
+
+
+def _drift_dim_range(dim: str) -> Tuple[float, float]:
+    """Return the (lo, hi) range for a SNARC dimension's drift histogram.
+
+    Matches the Welford histogram convention: reward is the one signed
+    dim, everything else is [0, 1]. Keeping the range aligned between the
+    Welford summary and the drift histogram means operators can visually
+    cross-reference without the x-axes disagreeing.
+    """
+    if dim == "reward":
+        return (-1.0, 1.0)
+    return (0.0, 1.0)
+
+
+def _drift_bin_index(dim: str, value: float) -> int:
+    """Bin a SNARC value into one of SNARC_HISTOGRAM_BINS equal-width bins.
+
+    Out-of-range values clamp to the nearest edge bin (schema should
+    prevent them; we defend-in-depth so a malformed record cannot raise).
+    """
+    lo, hi = _drift_dim_range(dim)
+    rng = hi - lo
+    if rng <= 0:
+        return 0
+    v = max(lo, min(hi, float(value)))
+    frac = (v - lo) / rng
+    idx = int(frac * SNARC_HISTOGRAM_BINS)
+    if idx >= SNARC_HISTOGRAM_BINS:
+        idx = SNARC_HISTOGRAM_BINS - 1
+    if idx < 0:
+        idx = 0
+    return idx
+
+
+def _kl_divergence(
+    p_counts: List[int],
+    q_counts: List[int],
+    *,
+    epsilon: float = DRIFT_SMOOTHING_EPSILON,
+) -> float:
+    """KL( P || Q ) in nats between two count histograms.
+
+    Applies additive (Laplace-style) smoothing: every bin gets ``epsilon``
+    added before normalization. This makes the KL well-defined when Q has
+    zero-count bins — without it, a single empty bin in the serving
+    histogram would push KL to infinity.
+
+    Formula::
+
+        p_i = (p_count_i + ε) / (Σp + N·ε)
+        q_i = (q_count_i + ε) / (Σq + N·ε)
+        KL  = Σ p_i · log(p_i / q_i)
+
+    Returns a non-negative float. Identical distributions give exactly 0.0.
+    """
+    if len(p_counts) != len(q_counts):
+        raise ValueError(
+            f"histogram length mismatch: {len(p_counts)} vs {len(q_counts)}"
+        )
+    n_bins = len(p_counts)
+    if n_bins == 0:
+        return 0.0
+    p_total = sum(p_counts) + epsilon * n_bins
+    q_total = sum(q_counts) + epsilon * n_bins
+    if p_total <= 0 or q_total <= 0:
+        return 0.0
+    kl = 0.0
+    for pi, qi in zip(p_counts, q_counts):
+        p = (pi + epsilon) / p_total
+        q = (qi + epsilon) / q_total
+        # p == 0 contributes 0 · log(0/q) = 0 by convention; with the
+        # smoothing above p is always > 0 so the log is safe.
+        kl += p * math.log(p / q)
+    # Tiny negative values can arise from floating-point accumulation on
+    # identical distributions; clamp at 0 to keep the reported metric
+    # non-negative (KL is non-negative by construction).
+    if kl < 0.0 and kl > -1e-12:
+        return 0.0
+    return kl
+
+
+def _finalise_drift_report(
+    *,
+    machine: str,
+    per_dim: Dict[str, Dict[str, List[int]]],
+) -> SnarcDriftReport:
+    """Build a SnarcDriftReport from per-dim {training,serving} histograms.
+
+    Per-dim status (PRD §4.7.G discipline + agent-zero):
+
+    - Either window < DRIFT_MIN_SAMPLES_PER_WINDOW records → INSUFFICIENT DATA
+    - Otherwise compute KL(serving || training). ≥ threshold → DRIFT ALERT,
+      else HEALTHY.
+
+    Using KL(serving || training) (rather than the reverse) asks the
+    question "how surprising is what the model sees now, given the
+    baseline it learned?" — which is the directionality PRD §4.7.G
+    implicitly calls for when it says "rolling-7-day serving distribution
+    relative to training distribution".
+    """
+    report = SnarcDriftReport(machine=machine)
+    any_alert = False
+    all_insufficient = True
+
+    for dim in SNARC_DIMENSIONS:
+        dim_hists = per_dim.get(dim, {})
+        training_hist = list(dim_hists.get("training", [0] * SNARC_HISTOGRAM_BINS))
+        serving_hist = list(dim_hists.get("serving", [0] * SNARC_HISTOGRAM_BINS))
+        training_count = sum(training_hist)
+        serving_count = sum(serving_hist)
+        lo, hi = _drift_dim_range(dim)
+        bin_edges = _equal_bin_edges(lo, hi, SNARC_HISTOGRAM_BINS)
+
+        if (
+            training_count < DRIFT_MIN_SAMPLES_PER_WINDOW
+            or serving_count < DRIFT_MIN_SAMPLES_PER_WINDOW
+        ):
+            report.dimensions[dim] = SnarcDriftMetrics(
+                dimension=dim,
+                status="INSUFFICIENT DATA",
+                kl_nats=None,
+                training_count=training_count,
+                serving_count=serving_count,
+                training_histogram=training_hist,
+                serving_histogram=serving_hist,
+                bin_edges=bin_edges,
+            )
+            continue
+
+        all_insufficient = False
+        kl = _kl_divergence(serving_hist, training_hist)
+        status = "DRIFT ALERT" if kl >= DRIFT_ALERT_THRESHOLD_NATS else "HEALTHY"
+        if status == "DRIFT ALERT":
+            any_alert = True
+        report.dimensions[dim] = SnarcDriftMetrics(
+            dimension=dim,
+            status=status,
+            kl_nats=kl,
+            training_count=training_count,
+            serving_count=serving_count,
+            training_histogram=training_hist,
+            serving_histogram=serving_hist,
+            bin_edges=bin_edges,
+        )
+
+    report.any_alert = any_alert
+    report.awaiting_baseline = all_insufficient
+    return report

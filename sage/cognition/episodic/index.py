@@ -223,71 +223,128 @@ class EpisodicIndex:
         return report
 
     def walk_trajectory(
-        self, initial_id: str, *, max_gap: int = 1
+        self,
+        initial_id: str,
+        *,
+        max_gap: int = 1,
+        direction: str = "forward",
     ) -> list[Episode]:
-        """Recover the trajectory that starts at ``initial_id``.
+        """Recover the trajectory anchored at ``initial_id``.
 
-        Walks forward within the same ``session_id`` from the given
-        episode, collecting consecutive episodes whose ``cycle_id``
-        delta stays within ``max_gap``. The initial episode is always
-        the first element of the returned list.
+        Walks within the same ``session_id`` from the given episode,
+        collecting consecutive episodes whose ``cycle_id`` delta stays
+        within ``max_gap``. Direction controls which side(s) of the
+        anchor are traced.
 
         Contiguity semantics match
         :func:`sage.cognition.cerebellum.episodic_bridge.group_episodes_into_trajectories`:
-        an empty ``session_id`` means no contiguity claim — the initial
-        episode is returned as a singleton. Duplicate ``cycle_id``
-        values (delta 0) remain in the same trajectory.
+        an empty ``session_id`` means no contiguity claim — the anchor
+        episode is returned as a singleton regardless of ``direction``.
+        Duplicate ``cycle_id`` values (delta 0) remain in the same
+        trajectory.
 
-        Intended use: given a ``Habit.source_episodes`` id (which is
-        the initial episode of a trajectory by construction of
-        ``compile_habits_from_trajectories``), recover the per-step
-        Episodes that backed the habit. Closes the introspection loop
-        for ARC-AGI-3 consolidation.
+        Intended use:
+
+        - ``direction="forward"`` (default): given a
+          ``Habit.source_episodes`` id (which is the initial episode
+          of a trajectory by construction of
+          ``compile_habits_from_trajectories``), recover the per-step
+          Episodes that backed the habit. Closes the
+          consolidation-introspection loop for ARC-AGI-3.
+        - ``direction="backward"``: given any mid-trajectory episode
+          (e.g., one surfaced by ``recall``), recover the earlier
+          context from the same session. The anchor is the *last*
+          element of the returned list.
+        - ``direction="both"``: reconstruct the full surrounding
+          trajectory around the anchor. Useful when debugging from an
+          arbitrary episode whose position within its trajectory is
+          unknown.
 
         Args:
-            initial_id: Starting episode_id. Must be present in the
-                index; use ``Habit.source_episodes`` for the canonical
-                entry points.
+            initial_id: Anchor episode_id. Must be present in the
+                index. For ``direction="forward"``, typically the
+                initial episode of a trajectory (e.g., an entry from
+                ``Habit.source_episodes``). For ``direction="backward"``
+                or ``"both"``, any episode in the session.
             max_gap: Maximum ``cycle_id`` delta between consecutive
                 episodes in the trajectory. Must match the ``max_gap``
                 used at compile time to faithfully reconstruct the
                 grouping.
+            direction: ``"forward"`` | ``"backward"`` | ``"both"``.
+                Default ``"forward"`` preserves pre-S83 behavior.
 
-        Returns: list of Episodes ordered by ``cycle_id`` ascending,
-        starting with the initial episode. Walk stops at the first
-        gap wider than ``max_gap``.
+        Returns: list of Episodes ordered by ``cycle_id`` ascending.
+        Each side of the walk stops at the first gap wider than
+        ``max_gap``. For ``"both"``, the anchor appears exactly once
+        even though it is the join point of the two sub-walks.
 
         Raises:
             KeyError: ``initial_id`` is not present in the index.
-            ValueError: ``max_gap < 1``.
+            ValueError: ``max_gap < 1`` or ``direction`` unrecognized.
         """
         if max_gap < 1:
             raise ValueError("max_gap must be >= 1")
+        if direction not in ("forward", "backward", "both"):
+            raise ValueError(
+                f"direction must be 'forward', 'backward', or 'both'; got {direction!r}"
+            )
         if initial_id not in self._episodes:
             raise KeyError(initial_id)
 
-        initial = self._episodes[initial_id]
-        if not initial.session_id:
-            return [initial]
+        anchor = self._episodes[initial_id]
+        if not anchor.session_id:
+            return [anchor]
 
-        candidates = sorted(
-            (
-                ep for ep in self._episodes.values()
-                if ep.session_id == initial.session_id
-                and ep.cycle_id >= initial.cycle_id
-            ),
-            key=lambda e: e.cycle_id,
-        )
+        session_eps = [
+            ep for ep in self._episodes.values()
+            if ep.session_id == anchor.session_id
+        ]
 
-        trajectory: list[Episode] = []
-        prev_cycle: Optional[int] = None
-        for ep in candidates:
-            if prev_cycle is None or (ep.cycle_id - prev_cycle) <= max_gap:
-                trajectory.append(ep)
-                prev_cycle = ep.cycle_id
-            else:
-                break
-        return trajectory
+        forward: list[Episode] = []
+        backward: list[Episode] = []
+
+        if direction in ("forward", "both"):
+            candidates = sorted(
+                (ep for ep in session_eps if ep.cycle_id >= anchor.cycle_id),
+                key=lambda e: e.cycle_id,
+            )
+            prev_cycle: Optional[int] = None
+            for ep in candidates:
+                if prev_cycle is None or (ep.cycle_id - prev_cycle) <= max_gap:
+                    forward.append(ep)
+                    prev_cycle = ep.cycle_id
+                else:
+                    break
+
+        if direction in ("backward", "both"):
+            candidates = sorted(
+                (ep for ep in session_eps if ep.cycle_id <= anchor.cycle_id),
+                key=lambda e: e.cycle_id,
+                reverse=True,
+            )
+            prev_cycle = None
+            for ep in candidates:
+                if prev_cycle is None or (prev_cycle - ep.cycle_id) <= max_gap:
+                    backward.append(ep)
+                    prev_cycle = ep.cycle_id
+                else:
+                    break
+            backward.reverse()
+
+        if direction == "forward":
+            return forward
+        if direction == "backward":
+            return backward
+
+        # both: dedupe the shared anchor (and any duplicate-cycle_id
+        # ties that landed in both halves).
+        seen: set[str] = set()
+        result: list[Episode] = []
+        for ep in backward + forward:
+            if ep.episode_id not in seen:
+                seen.add(ep.episode_id)
+                result.append(ep)
+        return result
 
     def forget(self, max_age_days: float = 30, min_accesses: int = 0) -> int:
         """Remove old, low-utility episodes."""

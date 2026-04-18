@@ -1,7 +1,109 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-18 (S82 — Habit Provenance Walk Closes S81's Per-Step Introspection Gap)**
-**Previous: 2026-04-18 (S81 Cerebellum Consensus Gate Closes S80's Trajectory-Diversity Question)**
+**Last Updated: 2026-04-19 (S83 — Reverse/Bidirectional Walk Closes S82's Mid-Trajectory Introspection Gap)**
+**Previous: 2026-04-18 (S82 Habit Provenance Walk Closes S81's Per-Step Introspection Gap)**
+
+---
+
+## S83 Reverse/Bidirectional Walk (Apr 18, 2026 — Thor Autonomous SAGE Session, 00:00 PDT)
+
+S82 landed forward `walk_trajectory` and closed habit provenance:
+given a `Habit.source_episodes` entry (an initial episode by
+construction), we could reconstruct the per-cycle arc forward. But
+S82 explicitly carried an open loop: an analyst who starts from a
+*mid-trajectory* Episode — e.g., one surfaced by `recall` — had no
+way to see the earlier context leading up to it. Forward-only walk
+silently skips everything before the anchor.
+
+This session extends the walk to bidirectional.
+
+### What landed
+
+**`sage/cognition/episodic/index.py`** — new `direction` parameter on
+`EpisodicIndex.walk_trajectory`:
+
+- Signature now:
+  `walk_trajectory(initial_id, *, max_gap=1, direction="forward") -> list[Episode]`.
+- `direction="forward"` (default): pre-S83 behavior preserved
+  exactly. Walks forward from anchor to the first gap wider than
+  `max_gap`. Anchor is first element.
+- `direction="backward"`: walks backward from anchor, terminating
+  at the first gap. Anchor is the *last* element of the returned
+  list (output still ordered by `cycle_id` ascending).
+- `direction="both"`: walks both sides and returns the full
+  surrounding trajectory. Anchor appears exactly once even though
+  it is the join point; duplicate-`cycle_id` ties are deduped by
+  `episode_id`.
+- Empty `session_id` still returns a singleton regardless of
+  direction (matches `group_episodes_into_trajectories` semantics).
+- `ValueError` on unrecognized direction string (in addition to
+  the existing `max_gap < 1` and `KeyError` on unknown id).
+
+### Why a single method, not `walk_backward` / `walk_around`
+
+Two reasons:
+
+1. **Semantic unity**: all three walks share contiguity semantics
+   (`session_id` equality, `max_gap` bound, empty-session singleton,
+   tied-cycle-ids allowed). Splitting into three methods would
+   triple the surface area and drift the semantics apart over time.
+2. **Introspection ergonomics**: debuggers commonly want to start
+   from an unknown position (recall hit, episodic cue match) and
+   ask "show me around here." A single call with `direction="both"`
+   is cleaner than the caller computing forward+backward and
+   deduping. For the narrower case — a `Habit.source_episodes` id
+   known to be initial — the default `direction="forward"` keeps
+   the one-liner one-liner.
+
+### Tests: 4 new, full suite 490/490
+
+`sage/cognition/episodic/test_episodic.py`:
+
+- `test_walk_trajectory_backward_from_mid_session` — 4-cycle
+  session, anchor at cycle 2 → backward returns [0, 1, 2] with
+  anchor last. Anchor at leftmost (cycle 0) → singleton backward.
+- `test_walk_trajectory_backward_stops_at_gap` — mirror of the
+  forward gap test: default `max_gap=1` terminates at a 3-cycle
+  gap; `max_gap=3` bridges it.
+- `test_walk_trajectory_both_reconstructs_full_session` — 5-cycle
+  session, anchor at cycle 2 → `direction="both"` returns the full
+  arc with the anchor appearing exactly once. Decoy session `s2`
+  excluded. Leftmost and rightmost anchors collapse to forward-only
+  and backward-only arcs respectively.
+- `test_walk_trajectory_invalid_direction_raises` — `ValueError`
+  on `"sideways"` and `""` direction strings.
+
+Full `sage/cognition/` suite: 490/490 passing on Thor (was 486
+pre-change — growth since S82's 454 reflects motor_skills and
+metacog integration suites that landed in parallel).
+
+### Design note: no changes to `walk_habit_provenance`
+
+The bridge's `walk_habit_provenance` calls
+`index.walk_trajectory(initial_id, max_gap=max_gap)` positionally.
+Forward remains the right default for habit provenance —
+`Habit.source_episodes` are initial episodes by construction, so
+there's nothing to walk backward to. The bridge stays unchanged;
+its semantics are preserved exactly.
+
+### Open questions carried forward
+
+- **Per-phase `consensus_threshold` tuning**: still deferred to the
+  consolidation wiring pass (from S81).
+- **Recall → walk integration**: the natural next step is a
+  convenience wrapper — `recall_with_context(cue, direction="both")`
+  that threads the top-scored episode's id through
+  `walk_trajectory` and returns both the hit and its surrounding
+  trajectory. Deferred; current API already composes cleanly
+  (`index.walk_trajectory(results[0].episode.episode_id,
+  direction="both")`).
+
+### Files this session
+
+- `sage/cognition/episodic/index.py` — `direction` param on
+  `walk_trajectory`, updated docstring
+- `sage/cognition/episodic/test_episodic.py` — 4 new tests + list
+- `sage/docs/LATEST_STATUS.md` — this writeup
 
 ---
 

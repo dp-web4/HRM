@@ -231,7 +231,7 @@ class RouterDatasetWriter:
             d["schema_version"] = SCHEMA_VERSION
         if "timestamp" not in d:
             d["timestamp"] = time.time()
-        if "machine" not in d:
+        if not d.get("machine"):
             d["machine"] = self.machine
 
         return json.dumps(d, separators=(",", ":"), default=str) + "\n"

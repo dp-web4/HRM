@@ -62,7 +62,12 @@ class RouterDatasetWriter:
         Machine name — used as a subdirectory. Free-form but should match
         fleet manifest (sprout, legion, thor, ...).
     compress:
-        If True, write ``.jsonl.gz`` files using stdlib gzip; else ``.jsonl``.
+        If True (default), write ``.jsonl.gz`` files using stdlib gzip; else
+        ``.jsonl``. Default is True because plain JSONL at fleet scale
+        (~103 MB/day/machine) crosses Track 7's 100 MB/day alert threshold;
+        gzip compresses ~70× on synthetic data and substantially less but
+        still meaningful on real records. Pass ``compress=False`` for
+        interactive debugging only.
     buffer_size:
         Number of records to accumulate before an automatic flush. Smaller
         → more disk syncs, larger → bigger window of in-memory data lost
@@ -86,7 +91,7 @@ class RouterDatasetWriter:
         self,
         base_dir: Union[str, Path],
         machine: str,
-        compress: bool = False,
+        compress: bool = True,
         buffer_size: int = 64,
         clock: Optional[Any] = None,
     ):

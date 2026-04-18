@@ -120,7 +120,7 @@ def test_partition_path_uses_machine_and_utc_date(tmp_path: Path) -> None:
     fixed = datetime(2026, 4, 17, 23, 59, 30, tzinfo=timezone.utc)
 
     writer = RouterDatasetWriter(
-        base_dir=base, machine="sprout", clock=lambda: fixed,
+        base_dir=base, machine="sprout", compress=False, clock=lambda: fixed,
     )
     writer.append(_make_record(1, machine="sprout"))
     writer.flush()
@@ -136,7 +136,7 @@ def test_partition_rolls_over_on_utc_date_boundary(tmp_path: Path) -> None:
     ]
 
     writer = RouterDatasetWriter(
-        base_dir=base, machine="thor",
+        base_dir=base, machine="thor", compress=False,
         buffer_size=1, clock=lambda: now_box[0],
     )
     writer.append(_make_record(1, machine="thor"))  # lands in 2026-04-17

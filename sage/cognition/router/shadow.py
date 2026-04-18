@@ -104,7 +104,11 @@ from typing import Any, Callable, Optional
 
 from sage.cognition.router.inputs import RouterInput
 from sage.cognition.router.outputs import RouterOutput
-from sage.cognition.router.record import RouterRecord
+from sage.cognition.router.record import (
+    RouterRecord,
+    SOURCE_ENV_VAR,
+    VALID_RECORD_SOURCES,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -119,6 +123,20 @@ logger = logging.getLogger(__name__)
 # hook construction by ``is_shadow_enabled()``; callers gate their
 # lazy instantiation on that helper.
 SHADOW_ENV_VAR = "SAGE_ROUTER_SHADOW"
+
+
+def _build_record_metadata() -> dict:
+    """Assemble metadata dict for a new RouterRecord at capture time.
+
+    Currently carries `source` from ``SAGE_SESSION_SOURCE`` env var.
+    Unknown or absent value → "idle" as a neutral default. The closed
+    vocabulary (VALID_RECORD_SOURCES) is enforced by RouterRecord's
+    validator — this function coerces unknown env values to "idle"
+    rather than letting record construction fail.
+    """
+    raw = os.environ.get(SOURCE_ENV_VAR, "").strip()
+    source = raw if raw in VALID_RECORD_SOURCES else "idle"
+    return {"source": source}
 
 
 def is_shadow_enabled() -> bool:
@@ -256,11 +274,15 @@ class RouterShadowHook:
 
             # Build the record. Defaults fill record_id (uuid4),
             # schema_version, timestamp, machine (later overridden
-            # by writer if empty).
+            # by writer if empty). Metadata carries source stamp from
+            # SAGE_SESSION_SOURCE env var (raising / gameplay / idle /
+            # interactive). Absent → "idle" as a neutral default.
+            metadata = _build_record_metadata()
             try:
                 record = RouterRecord(
                     router_input=router_input,
                     router_output=programmatic_output,
+                    metadata=metadata,
                 )
             except Exception as e:  # noqa: BLE001
                 logger.warning("router shadow record construction failed: %s", e)

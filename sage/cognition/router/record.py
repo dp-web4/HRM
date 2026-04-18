@@ -14,6 +14,8 @@ Schema versioning: every record carries ``schema_version``. The reader
 
 Spec: shared-context/arc-agi-3/phase2/brain-arch/router-sprint-1-phase-0.md
       (Track 1 deliverables)
+      shared-context/arc-agi-3/phase2/brain-arch/router-sprint-2-rollout-federation.md
+      (Sprint 2 R1: source-stamping via metadata)
 """
 
 import time
@@ -28,7 +30,22 @@ from sage.cognition.router.outputs import RouterOutput
 # Bumped when the record schema (or any of its nested schemas) changes
 # in a non-backward-compatible way. Readers must reject unknown versions
 # loudly rather than silently coerce.
-ROUTER_SCHEMA_VERSION = "v0.1.0"
+#
+# v0.1.0 → v0.2.0 (2026-04-17): added `metadata` field to RouterRecord
+# for source-stamping (raising / gameplay / idle / interactive) per
+# Sprint 2 R1. Backward-compatible read: from_dict tolerates missing
+# metadata, defaults to empty dict.
+ROUTER_SCHEMA_VERSION = "v0.2.0"
+
+
+# Valid values for metadata["source"]. A record's source is determined at
+# capture time from the SAGE_SESSION_SOURCE env var (set by raising
+# wrappers, game-play harnesses, etc.). Unknown or absent → "idle".
+VALID_RECORD_SOURCES = {"raising", "gameplay", "idle", "interactive"}
+
+
+# Env var consulted by the shadow hook at record-write time.
+SOURCE_ENV_VAR = "SAGE_SESSION_SOURCE"
 
 
 def _default_record_id() -> str:
@@ -61,6 +78,12 @@ class RouterRecord:
     # freeze the shape.
     outcome: Optional[Dict[str, Any]] = None
 
+    # Sprint 2 R1 — extensible capture-time metadata. Currently holds
+    # `source` (raising | gameplay | idle | interactive); future keys
+    # (e.g. `session_id`, `user_hint`) can be added without schema bumps
+    # as long as they stay JSON-serializable.
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
     # ──────────────────────────────────────────────────────────────
     # Validation
     # ──────────────────────────────────────────────────────────────
@@ -80,6 +103,14 @@ class RouterRecord:
             raise TypeError("router_output must be a RouterOutput instance")
         if self.outcome is not None and not isinstance(self.outcome, dict):
             raise TypeError("outcome must be dict or None")
+        if not isinstance(self.metadata, dict):
+            raise TypeError("metadata must be dict")
+        # Source is optional in metadata but if present must be in the closed set.
+        src = self.metadata.get("source")
+        if src is not None and src not in VALID_RECORD_SOURCES:
+            raise ValueError(
+                f"metadata['source']={src!r} not in {sorted(VALID_RECORD_SOURCES)}"
+            )
 
     # ──────────────────────────────────────────────────────────────
     # Serialization
@@ -100,6 +131,7 @@ class RouterRecord:
             "router_input": self.router_input.to_dict(),
             "router_output": self.router_output.to_dict(),
             "outcome": self.outcome,
+            "metadata": dict(self.metadata),
         }
 
     @classmethod
@@ -109,6 +141,9 @@ class RouterRecord:
         Schema versioning: we DO NOT reject unknown versions here; the
         caller (Track 4 dataset reader) owns that policy because it may
         want to route old records through a migration function.
+
+        Backward-compatible with v0.1.0 records: missing ``metadata`` →
+        empty dict.
         """
         return cls(
             record_id=data["record_id"],
@@ -118,6 +153,7 @@ class RouterRecord:
             router_input=RouterInput.from_dict(data["router_input"]),
             router_output=RouterOutput.from_dict(data["router_output"]),
             outcome=data.get("outcome"),
+            metadata=dict(data.get("metadata") or {}),
         )
 
     # ──────────────────────────────────────────────────────────────
@@ -141,4 +177,5 @@ class RouterRecord:
             router_input=self.router_input,
             router_output=self.router_output,
             outcome=dict(outcome),
+            metadata=dict(self.metadata),
         )

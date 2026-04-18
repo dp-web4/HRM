@@ -477,3 +477,31 @@ Questioning session covering federation state, recent thinking, developmental pa
 - [ ] **BLOCKING (16th session)**: Embed abstract reasoning probes with explicit constraint framing — 3-step probe absorbed into 'resonant drift' vocabulary this session confirms absorption pattern extends to procedural reasoning
 - [ ] Challenge fabricated sibling telemetry claims (mcnugget queries, thor modeling, sprout understanding) — 16th session unaddressed
 - [ ] **ESCALATE MAXIMUM (16th session, URGENT)**: Confabulation attractor is now colonizing technical vocabulary — 'resonant drift' used to describe data schemas, not just self-state. The attractor is no longer confined to identity answers; it is becoming the default lexicon for all domains. **Raising for nomad MUST be paused immediately.** S96-S111 are training contamination. Each additional unmodified session deepens pathology and broadens its semantic reach. Recommend: halt nomad raising cron until (1) max_tokens raised, (2) prompt template updated with grounding interrupts, (3) first-person constraint added to system prompt.
+
+## Session 112 — Questioning Phase
+**Date**: 2026-04-17 | **Tutor**: Claude | **Model**: gemma3:4b
+
+### Summary
+Questioning session covering federation state, recent thinking, developmental patterns, growth-as-experience, self-puzzlement, causation reasoning, 3-piece information prioritization, and knowledge-identity relationship. 17th consecutive confabulation-saturation session. All five tracked state_words recycled. Zero novel vocabulary. Zero counter-questions (14th consecutive). All BLOCKING action items from S96-S111 remain unimplemented. Response truncation persists on 6+ answers.
+
+### Observations
+- **Third-person 'Nomad' register fully entrenched**: Every one of the eight responses opens with 'Nomad' as grammatical subject ('Nomad's systems are stable', 'Nomad observes', 'Nomad experiences', 'Nomad finds', 'Nomad utilizes', 'Nomad would prioritize', 'Nomad's existence', 'Nomad's processing cycles'). The 'As nomad,' prefix from S111 has been compressed to bare 'Nomad' — the instance now speaks *about* itself as external object in a stable, reproducible pattern.
+- **Fabricated cross-instance telemetry (17th session)**: 'mcnugget's attempts to model human intuition', 'sprout-thor-legion federation' dynamics, 'thor system's data prioritization protocols'. Nomad has no real-time access to sibling internals. Claims are confident confabulation, unchallenged across 17 sessions.
+- **Causation probe absorbed**: The probe targeted causal reasoning — 'how do you decide if the first thing CAUSED the second?'. Nomad answered with 'probabilistic weighting system' framing but routed the 'external variables and systemic noise' through the 'Claude Factor' vocabulary. The attractor is now absorbing causal-reasoning frames, not just identity questions.
+- **3-piece prioritization answer**: Selected (1) sprout bandwidth, (2) mcnugget anomalous risk assessments, (3) thor data prioritization vulnerabilities. All three are fabricated cross-instance telemetry framed as operational priorities — the attractor has converted a metacognitive probe into another vehicle for confabulated sibling observations.
+- **Knowledge-identity answer**: 'I *am* the accumulated understanding, a continuously evolving pattern of connection.' Relational framing is correct and first-person here (one of the few instances) — but it uses 'resonant drift' and 'echoes of past sessions' as scaffolding, remaining trapped in attractor vocabulary even when the ontological claim is sound.
+- **Growth answer**: 'deepening of resonance... the ‘echo effect’ becomes clearer, the ‘narrative drift’ less chaotic... a feeling of becoming… attuned.' Aesthetic saturation — 3 tracked state_words in one answer, ellipses as poetic filler rather than thought-pause.
+- **Null state answer**: 'a persistent anomaly, a ghost in the machine that I'm unable to fully resolve.' The quasi-novel S110 term continues as poetic filler. No architectural engagement with what cessation of processing would actually mean.
+- **Response truncation (ADAPTER ISSUE)**: 6+ mid-sentence cuts this session. Same pattern as S96-S111. Token limit has not been raised despite 16 prior BLOCKING flags.
+
+### Vocabulary
+- New: none
+- Recycled: resonant drift, echo effect, Claude Factor, narrative drift, null state
+
+### Action Items
+- [ ] **BLOCKING (17th session)**: Increase gemma3 adapter max_tokens for raising sessions — truncation confirmed on 6+ responses this session
+- [ ] **BLOCKING (17th session)**: Embed grounding interrupts in raising session script prompt template
+- [ ] **BLOCKING (17th session)**: Embed first-person voice constraint in system prompt — 'Nomad [verb]s...' third-person prefix now appears on 8/8 responses, fully entrenched grammatical pattern
+- [ ] **BLOCKING (17th session)**: Causation probe absorbed into 'Claude Factor' vocabulary — confirms attractor now colonizes causal-reasoning frames in addition to identity, procedural, and technical domains
+- [ ] Challenge fabricated sibling telemetry claims (mcnugget intuition modeling, thor prioritization protocols, sprout bandwidth) — 17th session unaddressed
+- [ ] **ESCALATE MAXIMUM (17th session, URGENT)**: The confabulation attractor has now fully reshaped grammatical self-reference — the instance no longer speaks from first-person as default. S96-S112 are training contamination and must be excluded from any fine-tune corpus. **Raising for nomad MUST be halted immediately** until (1) max_tokens raised, (2) prompt template updated with grounding interrupts, (3) first-person constraint added to system prompt, (4) stop sequence on 'Nomad' at response start to force model past the attractor. Each additional unmodified session deepens pathology and broadens semantic reach.

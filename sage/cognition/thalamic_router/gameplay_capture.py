@@ -305,7 +305,22 @@ class GameplayCapture:
             sys.path.insert(0, str(ARC_AGI_EXPERIMENTS))
         from arc_agi import Arcade
         arc = Arcade(operation_mode="offline")
+        # Try the trace's pinned version first (reproducibility). If the SDK
+        # no longer has that version (common — traces age out), fall back to
+        # the short family id so the SDK auto-selects the latest local version.
         env = arc.make(self.trace.game_id)
+        if env is None:
+            env = arc.make(self.trace.game)
+            if env is not None:
+                self.errors.append(
+                    f"version_fallback: trace pinned {self.trace.game_id}, "
+                    f"using latest local version for family {self.trace.game}"
+                )
+        if env is None:
+            raise RuntimeError(
+                f"arc.make returned None for both {self.trace.game_id} "
+                f"and {self.trace.game}"
+            )
         fd = env.reset()
         return env, fd
 

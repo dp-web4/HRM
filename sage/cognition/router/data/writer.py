@@ -94,16 +94,20 @@ class RouterDatasetWriter:
         compress: bool = True,
         buffer_size: int = 64,
         clock: Optional[Any] = None,
+        subdir: Optional[str] = None,
     ):
         if not machine or "/" in machine or "\\" in machine:
             raise ValueError(f"machine must be a simple name, got {machine!r}")
         if buffer_size < 1:
             raise ValueError(f"buffer_size must be >= 1, got {buffer_size}")
+        if subdir is not None and ("/" in subdir or "\\" in subdir):
+            raise ValueError(f"subdir must be a simple name, got {subdir!r}")
 
         self.base_dir = Path(base_dir)
         self.machine = machine
         self.compress = compress
         self.buffer_size = buffer_size
+        self.subdir = subdir
         self._clock = clock or (lambda: datetime.now(timezone.utc))
 
         self._buffer: List[str] = []
@@ -242,7 +246,10 @@ class RouterDatasetWriter:
         """
         today = self._clock().strftime("%Y-%m-%d")
         ext = ".jsonl.gz" if self.compress else ".jsonl"
-        partition = self.base_dir / self.machine / f"{today}{ext}"
+        machine_dir = self.base_dir / self.machine
+        if self.subdir:
+            machine_dir = machine_dir / self.subdir
+        partition = machine_dir / f"{today}{ext}"
 
         if self._current_path == partition and self._current_handle is not None:
             return  # Still the right file.

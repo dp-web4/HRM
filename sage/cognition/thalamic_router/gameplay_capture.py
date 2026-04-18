@@ -557,11 +557,14 @@ def main() -> int:
     trace = load_trace(trace_path, args.game, game_id)
     print(f"  format={trace.source} steps={len(trace.steps)} outcome={trace.outcome}")
 
-    # Writer
+    # Writer — gameplay records land in {machine}/gameplay/ to avoid
+    # gzip-append concurrency corruption with the live router daemon
+    # writing to {machine}/{today}.jsonl.gz.
     writer = RouterDatasetWriter(
         base_dir=Path(args.data_dir),
         machine=args.machine,
         compress=True,
+        subdir="gameplay",
     )
     capture = GameplayCapture(trace=trace, writer=writer, machine=args.machine)
     result = capture.run()

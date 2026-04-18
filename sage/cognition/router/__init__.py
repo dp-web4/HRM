@@ -1,9 +1,10 @@
 """
-Thalamic router — schemas + data pipeline.
+Thalamic router — schemas + data pipeline + shadow integration + dashboard.
 
-Phase 0 Track 1 ships the schemas. Track 4 ships the data pipeline.
-Feature extraction (Track 2), programmatic baseline (Track 3), and
-consciousness-loop integration (Track 5) follow in subsequent PRs.
+Phase 0 complete: schemas (Track 1), feature extraction (2), programmatic
+baseline (3), data pipeline writer/reader (4), consciousness-loop shadow
+integration (5), outcome tracking (6), per-machine deployment (7),
+observability dashboard (8), SNARC-driven pruning (9).
 
 Spec: shared-context/arc-agi-3/phase2/brain-arch/thalamic-router-prd.md
 Sprint: shared-context/arc-agi-3/phase2/brain-arch/router-sprint-1-phase-0.md
@@ -36,6 +37,14 @@ from sage.cognition.router.shadow import (
     SHADOW_ENV_VAR,
     is_shadow_enabled,
 )
+from sage.cognition.router.outcome import (
+    OutcomeTracker,
+    OUTCOME_SCHEMA_VERSION,
+    TRAJECTORY_TICKS,
+    STATUS_COMPLETE,
+    STATUS_INCOMPLETE,
+    STATUS_FAILED,
+)
 from sage.cognition.router.dashboard import (
     DashboardBuilder,
     DashboardMetrics,
@@ -61,6 +70,13 @@ __all__ = [
     "RouterShadowHook",
     "SHADOW_ENV_VAR",
     "is_shadow_enabled",
+    # Outcome tracker (Track 6)
+    "OutcomeTracker",
+    "OUTCOME_SCHEMA_VERSION",
+    "TRAJECTORY_TICKS",
+    "STATUS_COMPLETE",
+    "STATUS_INCOMPLETE",
+    "STATUS_FAILED",
     # Dashboard (Track 8)
     "DashboardBuilder",
     "DashboardMetrics",

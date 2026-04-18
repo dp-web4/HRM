@@ -9,6 +9,10 @@ Responsibilities:
   * Read across partitions via glob patterns (machine + date range).
   * Handle partial / corrupt trailing lines without crashing — reads are
     best-effort; diagnostic info goes to a logger, not an exception.
+  * Auto-merge Track 6 outcome sidecar partitions by ``record_id`` at
+    read time. Main partitions remain append-only; outcomes live in
+    parallel ``outcome_{date}.jsonl[.gz]`` files. Forensic readers that
+    want pre-backfill state can opt out via ``merge_outcomes=False``.
 
 Schema-version-awareness: the reader doesn't *migrate* old records to
 new shapes (migrations are out of scope for Phase 0, per sprint doc).
@@ -31,6 +35,12 @@ from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 # version OUTSIDE this set still yield; we just emit a warn so the
 # operator can add the version to the registry when upstream evolves.
 SUPPORTED_SCHEMA_VERSIONS: set = {"0.1.0"}
+
+
+# Track 6 outcome sidecar: filename prefix and glob patterns. The reader
+# auto-merges ``outcome_{date}.jsonl[.gz]`` into main-partition records
+# when ``merge_outcomes=True`` (default). See module docstring.
+OUTCOME_FILE_PREFIX: str = "outcome_"
 
 
 # Default fill-ins for fields a v0.1.0 consumer might expect. Empty for
@@ -60,6 +70,13 @@ class RouterDatasetReader:
 
     def __init__(self, base_dir: Union[str, Path]):
         self.base_dir = Path(base_dir)
+
+    # ── outcome sidecar helpers ───────────────────────────────────
+
+    @staticmethod
+    def _is_outcome_file(path: Path) -> bool:
+        """True if ``path`` is an outcome sidecar partition."""
+        return path.name.startswith(OUTCOME_FILE_PREFIX)
 
     # ── single-file iteration ─────────────────────────────────────
 
@@ -118,6 +135,7 @@ class RouterDatasetReader:
         self,
         machine: str = "*",
         date_range: Optional[Tuple[Union[str, date], Union[str, date]]] = None,
+        merge_outcomes: bool = True,
     ) -> Iterator[Dict[str, Any]]:
         """Iterate records across multiple partition files.
 
@@ -128,19 +146,63 @@ class RouterDatasetReader:
         date_range:
             Optional (start, end) inclusive, each as ``YYYY-MM-DD`` string
             or ``datetime.date``. None → no date filter.
+        merge_outcomes:
+            When True (default), records are merged with Track 6 outcome
+            sidecar entries by ``record_id`` before being yielded. Set
+            False for forensic replays that want the exact on-disk
+            main-partition state (no post-hoc outcomes).
 
         Yields records in file-order (deterministic: sorted by path).
         """
+        outcome_index: Dict[str, Dict[str, Any]] = {}
+        if merge_outcomes:
+            # Prefetch all outcome sidecars once for this query. Memory
+            # footprint is bounded by the sampled partition size; the
+            # outcome dict per record is small (one trajectory of 5
+            # samples + a few scalars). This is the simpler correct
+            # approach — if fleet-scale merges show pressure later, we
+            # can switch to a per-partition date-aligned stream join.
+            outcome_index = self._build_outcome_index(machine, date_range)
+
         for partition_path in self._resolve_partitions(machine, date_range):
-            yield from self.read_file(partition_path)
+            for record in self.read_file(partition_path):
+                if merge_outcomes:
+                    record = self._apply_outcome(record, outcome_index)
+                yield record
 
     def list_partitions(
         self,
         machine: str = "*",
         date_range: Optional[Tuple[Union[str, date], Union[str, date]]] = None,
     ) -> List[Path]:
-        """Return all partition paths matching the filter, sorted."""
+        """Return all (main) partition paths matching the filter, sorted.
+
+        Outcome sidecar partitions are excluded. Use
+        ``list_outcome_partitions`` to enumerate those separately.
+        """
         return sorted(self._resolve_partitions(machine, date_range))
+
+    def list_outcome_partitions(
+        self,
+        machine: str = "*",
+        date_range: Optional[Tuple[Union[str, date], Union[str, date]]] = None,
+    ) -> List[Path]:
+        """Return all outcome sidecar partition paths matching the filter."""
+        return sorted(self._resolve_outcome_partitions(machine, date_range))
+
+    def read_outcomes(
+        self,
+        machine: str = "*",
+        date_range: Optional[Tuple[Union[str, date], Union[str, date]]] = None,
+    ) -> Iterator[Dict[str, Any]]:
+        """Iterate raw outcome sidecar records (record_id + outcome dict).
+
+        Useful for analytics / debugging. The normal training replay
+        path should use ``read_partition(merge_outcomes=True)`` so the
+        outcome arrives attached to its parent record.
+        """
+        for path in self._resolve_outcome_partitions(machine, date_range):
+            yield from self.read_file(path)
 
     # ── internals ─────────────────────────────────────────────────
 
@@ -149,7 +211,33 @@ class RouterDatasetReader:
         machine: str,
         date_range: Optional[Tuple[Union[str, date], Union[str, date]]],
     ) -> List[Path]:
-        """Glob + date filter. Returns sorted list (stable iteration)."""
+        """Glob + date filter. Returns sorted list (stable iteration).
+
+        Outcome sidecar partitions (prefix ``outcome_``) are EXCLUDED.
+        """
+        return self._resolve_partitions_filtered(
+            machine, date_range, outcome_only=False,
+        )
+
+    def _resolve_outcome_partitions(
+        self,
+        machine: str,
+        date_range: Optional[Tuple[Union[str, date], Union[str, date]]],
+    ) -> List[Path]:
+        """Same filter as ``_resolve_partitions`` but only outcome files."""
+        return self._resolve_partitions_filtered(
+            machine, date_range, outcome_only=True,
+        )
+
+    def _resolve_partitions_filtered(
+        self,
+        machine: str,
+        date_range: Optional[Tuple[Union[str, date], Union[str, date]]],
+        outcome_only: bool,
+    ) -> List[Path]:
+        """Shared glob + date filter. ``outcome_only`` toggles which
+        partition family is returned.
+        """
         if not self.base_dir.exists():
             return []
 
@@ -158,6 +246,12 @@ class RouterDatasetReader:
         candidates: List[Path] = []
         for pat in patterns:
             candidates.extend(self.base_dir.glob(pat))
+
+        # Split main from outcome sidecars.
+        candidates = [
+            p for p in candidates
+            if self._is_outcome_file(p) == outcome_only
+        ]
 
         if date_range is None:
             return sorted(candidates)
@@ -172,6 +266,9 @@ class RouterDatasetReader:
                 if stem.endswith(suffix):
                     stem = stem[: -len(suffix)]
                     break
+            # Strip outcome_ prefix if present (for outcome partitions).
+            if stem.startswith(OUTCOME_FILE_PREFIX):
+                stem = stem[len(OUTCOME_FILE_PREFIX):]
             try:
                 d = datetime.strptime(stem, "%Y-%m-%d").date()
             except ValueError:
@@ -180,6 +277,56 @@ class RouterDatasetReader:
             return start_d <= d <= end_d
 
         return sorted([p for p in candidates if in_range(p)])
+
+    def _build_outcome_index(
+        self,
+        machine: str,
+        date_range: Optional[Tuple[Union[str, date], Union[str, date]]],
+    ) -> Dict[str, Dict[str, Any]]:
+        """Load all outcome sidecar entries in the query range into a dict.
+
+        Keyed by ``record_id``. On conflict (same record_id appears in
+        multiple sidecars, e.g. a buggy retry) the LATER-emitted wins
+        (by ``emitted_at``). Missing ``emitted_at`` sorts as 0, so a
+        properly-timestamped later emission always overrides.
+        """
+        index: Dict[str, Dict[str, Any]] = {}
+        timestamps: Dict[str, float] = {}
+        for path in self._resolve_outcome_partitions(machine, date_range):
+            for entry in self.read_file(path):
+                rid = entry.get("record_id")
+                if not rid:
+                    continue
+                ts = float(entry.get("emitted_at", 0.0) or 0.0)
+                if rid in index and timestamps.get(rid, 0.0) >= ts:
+                    continue
+                index[rid] = entry
+                timestamps[rid] = ts
+        return index
+
+    def _apply_outcome(
+        self,
+        record: Dict[str, Any],
+        outcome_index: Dict[str, Dict[str, Any]],
+    ) -> Dict[str, Any]:
+        """Merge a sidecar outcome entry onto a record if present.
+
+        Non-destructive: a copy is returned only when a merge is needed,
+        otherwise the original dict is passed through. The ``outcome``
+        field on the record wins if it is already populated and
+        non-None — we never overwrite an existing outcome.
+        """
+        rid = record.get("record_id")
+        if not rid:
+            return record
+        if record.get("outcome") is not None:
+            return record
+        sidecar = outcome_index.get(rid)
+        if sidecar is None:
+            return record
+        merged = dict(record)
+        merged["outcome"] = sidecar.get("outcome")
+        return merged
 
     def _hydrate(self, record: Dict[str, Any]) -> Dict[str, Any]:
         """Fill defaults + log schema version mismatches."""

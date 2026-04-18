@@ -1,7 +1,110 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-17 (S80 Validates Both Fixes; Multi-Step Trajectory Bridge Lands)**
-**Previous: 2026-04-17 (Episodic→Cerebellum Bridge — Hippocampal-Cerebellar Consolidation Path Closed)**
+**Last Updated: 2026-04-18 (S81 — Cerebellum Consensus Gate Closes S80's Trajectory-Diversity Question)**
+**Previous: 2026-04-17 (S80 Validates Both Fixes; Multi-Step Trajectory Bridge Lands)**
+
+---
+
+## S81 Cerebellum Consensus Gate (Apr 18, 2026 — Thor Autonomous SAGE Session, 00:00 PDT)
+
+S80 closed the multi-step trajectory path but left a semantic concern open:
+when trajectories from the same initial state diverge into different action
+sequences, `compile_from_episodes` picked the majority arc via
+`Counter.most_common(1)` — even at a 1/N plurality. In the worst case (N
+distinct arcs from N trajectories), the cerebellum would cement an
+arbitrary 1/N "winner" as a habit, misrepresenting the agent's actual
+behavior from that state.
+
+### What landed
+
+**`sage/cognition/cerebellum/core.py`** — new `consensus_threshold`
+parameter on `Cerebellum.__init__` (default `None`, backward-compatible):
+
+- `consensus_threshold: Optional[float]` in `[0.0, 1.0]`. Out-of-range
+  values raise `ValueError`.
+- In `compile_from_episodes`, after the dominant arc is identified,
+  the compile path computes `consensus_ratio = winning_count / group_size`
+  and skips the group when the ratio is below the threshold.
+- Consensus count is always recorded in `outcome_summary`:
+  `"Compiled from N episodes (K successes, consensus X/N)"`. Available
+  for introspection whether or not the gate is active.
+
+**Layering** (intentional):
+
+- `maturity_threshold` answers *"enough observations?"*
+- Success-rate guard (≥80%) answers *"outcome reliable?"*
+- `consensus_threshold` answers *"preferred arc unambiguous?"*
+
+All three guards are independent: a state can have many observations,
+high success rate, and still fail consensus — the mature signal of "I
+see this state often" does not automatically imply "I know what to do
+here."
+
+### Tests: 8 new (6 cerebellum + 2 bridge), full suite 446/446
+
+`sage/cognition/cerebellum/test_cerebellum.py`:
+
+- `test_consensus_threshold_rejects_out_of_range` — ValueError on
+  `>1.0` and `<0.0`; `0.0`, `1.0`, `None` all construct.
+- `test_consensus_threshold_blocks_weak_plurality` — 3 divergent arcs
+  (ratio 0.33) → no compile at threshold 0.5.
+- `test_consensus_threshold_admits_majority` — 2/3 agreement (0.667)
+  → compile at threshold 0.5, dominant arc wins.
+- `test_consensus_threshold_strict_blocks_majority` — 2/3 agreement
+  fails threshold 0.75 (validates the floor is genuinely compared,
+  not merely "any majority").
+- `test_consensus_threshold_none_preserves_plurality_winner` —
+  backward compatibility: default `None` compiles 3-divergent-arcs
+  to one plurality-winner habit (pre-S81 behavior).
+- `test_consensus_ratio_recorded_in_outcome_summary` — the
+  `consensus X/N` substring is present regardless of gate status.
+
+`sage/cognition/cerebellum/test_episodic_bridge.py`:
+
+- `test_trajectory_consensus_threshold_blocks_divergent_arcs` — 4
+  trajectories with 4 distinct arcs → gate skips compile.
+- `test_trajectory_consensus_threshold_admits_dominant_arc` —
+  3/4 arc agreement compiles multi-step habit; consensus ratio
+  surfaces in the outcome summary (`"consensus 3/4"`).
+
+Full `sage/cognition/` suite: 446/446 passing on Thor.
+
+### Design note: why default `None` and not `0.5`
+
+Raising machines without the gate enabled see exactly pre-S81 compile
+behavior — no behavior change, no rebuilds, no surprises. Each instance
+opts in when its raising phase warrants stricter compilation. For
+ARC-AGI-3 consolidation, `consensus_threshold=0.6` is a reasonable
+starting point (lets 2/3 and 3/4 arcs through, blocks ties and
+fragmented 1/3 plurality). Left for the consolidation wiring pass to
+tune per phase.
+
+### Open question carried from S80 (still open)
+
+- **Per-step provenance**: `Habit.source_episodes` carries the initial
+  episode_id of each contributing trajectory. Per-step backing is
+  recoverable from `EpisodicIndex` via session_id + contiguous
+  cycle_id, but no helper surfaces it directly. A `walk_trajectory(
+  initial_id)` helper would close the loop for ARC-AGI consolidation
+  introspection. Deferred to keep this session scoped.
+
+### Files this session
+
+- `sage/cognition/cerebellum/core.py` — consensus gate in compile path
+- `sage/cognition/cerebellum/test_cerebellum.py` — 6 new tests
+- `sage/cognition/cerebellum/test_episodic_bridge.py` — 2 new tests
+- `sage/docs/LATEST_STATUS.md` — this writeup
+
+### Session housekeeping
+
+- Prior Thor session (2026-04-17 21:21) left a detached-HEAD
+  interactive rebase that was never completed. The only commit on the
+  unfinished branch was a boilerplate auto-commit (router-shadow.env
+  path + identity attestation timestamp). The file it touched,
+  `sage/gateway/router-shadow.env`, has since been gitignored
+  (commit 92d6bcb97, PR #16), so the change was also moot. Preserved
+  as `backup/pre-sync-2026-04-18` and reset main to `origin/main`
+  before starting new work.
 
 ---
 

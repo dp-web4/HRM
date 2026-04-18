@@ -222,6 +222,73 @@ class EpisodicIndex:
                      f"({report.prototypes_created} prototypes, {report.episodes_merged} merged)")
         return report
 
+    def walk_trajectory(
+        self, initial_id: str, *, max_gap: int = 1
+    ) -> list[Episode]:
+        """Recover the trajectory that starts at ``initial_id``.
+
+        Walks forward within the same ``session_id`` from the given
+        episode, collecting consecutive episodes whose ``cycle_id``
+        delta stays within ``max_gap``. The initial episode is always
+        the first element of the returned list.
+
+        Contiguity semantics match
+        :func:`sage.cognition.cerebellum.episodic_bridge.group_episodes_into_trajectories`:
+        an empty ``session_id`` means no contiguity claim — the initial
+        episode is returned as a singleton. Duplicate ``cycle_id``
+        values (delta 0) remain in the same trajectory.
+
+        Intended use: given a ``Habit.source_episodes`` id (which is
+        the initial episode of a trajectory by construction of
+        ``compile_habits_from_trajectories``), recover the per-step
+        Episodes that backed the habit. Closes the introspection loop
+        for ARC-AGI-3 consolidation.
+
+        Args:
+            initial_id: Starting episode_id. Must be present in the
+                index; use ``Habit.source_episodes`` for the canonical
+                entry points.
+            max_gap: Maximum ``cycle_id`` delta between consecutive
+                episodes in the trajectory. Must match the ``max_gap``
+                used at compile time to faithfully reconstruct the
+                grouping.
+
+        Returns: list of Episodes ordered by ``cycle_id`` ascending,
+        starting with the initial episode. Walk stops at the first
+        gap wider than ``max_gap``.
+
+        Raises:
+            KeyError: ``initial_id`` is not present in the index.
+            ValueError: ``max_gap < 1``.
+        """
+        if max_gap < 1:
+            raise ValueError("max_gap must be >= 1")
+        if initial_id not in self._episodes:
+            raise KeyError(initial_id)
+
+        initial = self._episodes[initial_id]
+        if not initial.session_id:
+            return [initial]
+
+        candidates = sorted(
+            (
+                ep for ep in self._episodes.values()
+                if ep.session_id == initial.session_id
+                and ep.cycle_id >= initial.cycle_id
+            ),
+            key=lambda e: e.cycle_id,
+        )
+
+        trajectory: list[Episode] = []
+        prev_cycle: Optional[int] = None
+        for ep in candidates:
+            if prev_cycle is None or (ep.cycle_id - prev_cycle) <= max_gap:
+                trajectory.append(ep)
+                prev_cycle = ep.cycle_id
+            else:
+                break
+        return trajectory
+
     def forget(self, max_age_days: float = 30, min_accesses: int = 0) -> int:
         """Remove old, low-utility episodes."""
         cutoff = time.time() - max_age_days * 86400

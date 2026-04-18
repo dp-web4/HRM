@@ -25,10 +25,13 @@ Brain analog: hippocampus → cerebellum consolidation.
 Review pair: Thor (episodic) ↔ McNugget (cerebellum).
 """
 
-from typing import Callable, Iterable, Optional
+from typing import Callable, Iterable, Optional, TYPE_CHECKING
 
 from sage.cognition.cerebellum.core import Cerebellum, Habit
 from sage.cognition.episodic.data import Episode
+
+if TYPE_CHECKING:
+    from sage.cognition.episodic.index import EpisodicIndex
 
 
 def _infer_domain(episode: Episode) -> str:
@@ -252,9 +255,8 @@ def compile_habits_from_trajectories(
     Source-episode provenance carries the initial episode_id of each
     contributing trajectory (the cerebellum's compile path collects
     one ID per input dict). Per-step episode IDs are not surfaced on
-    the Habit; if needed for richer provenance, walk back from the
-    initial episode via the EpisodicIndex using session_id +
-    contiguous cycle_id.
+    the Habit; to recover them, pass the compiled habit and the
+    originating EpisodicIndex to `walk_habit_provenance`.
 
     Args:
         episodes: Any iterable of Episode dataclasses.
@@ -278,3 +280,52 @@ def compile_habits_from_trajectories(
         if traj
     ]
     return cerebellum.compile_from_episodes(dicts)
+
+
+# ─── Habit provenance introspection ──────────────────────────────────
+
+
+def walk_habit_provenance(
+    habit: Habit,
+    index: "EpisodicIndex",
+    *,
+    max_gap: int = 1,
+) -> dict[str, list[Episode]]:
+    """Recover per-step Episodes for each trajectory that backed a habit.
+
+    ``Habit.source_episodes`` carries the *initial* episode_id of each
+    contributing trajectory (by construction of
+    ``compile_habits_from_trajectories``). For introspection, we want
+    the full per-cycle episode list, not just the initial id. This
+    function walks each source id forward through the index using
+    session_id + contiguous cycle_id to reconstruct the trajectory.
+
+    Missing ids are silently skipped: habits may outlive their
+    originating episodes (``EpisodicIndex.forget`` can remove stale
+    entries), and introspection should degrade gracefully rather than
+    raise. Compare returned keys to ``habit.source_episodes`` to detect
+    dropped provenance.
+
+    Args:
+        habit: The compiled Habit to introspect.
+        index: The EpisodicIndex that holds (or held) the backing
+            episodes.
+        max_gap: Must match the ``max_gap`` used at compile time. A
+            mismatch will either truncate (too small) or over-extend
+            (too large) the reconstructed trajectories.
+
+    Returns: ``{initial_episode_id: [Episode, ...]}`` mapping. Each
+    value is ordered by cycle_id ascending and starts with the initial
+    episode. Keys whose episode_id is not present in the index are
+    omitted.
+    """
+    out: dict[str, list[Episode]] = {}
+    for initial_id in habit.source_episodes:
+        if not initial_id:
+            continue
+        try:
+            trajectory = index.walk_trajectory(initial_id, max_gap=max_gap)
+        except KeyError:
+            continue
+        out[initial_id] = trajectory
+    return out

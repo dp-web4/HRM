@@ -339,6 +339,94 @@ def test_wm_consolidate_integration():
     print("  PASS: WM consolidate → episodic integration")
 
 
+def _traj_ep(session_id: str, cycle_id: int, action: str = "STEP") -> Episode:
+    """Minimal Episode fixture for trajectory-walk tests."""
+    return Episode(
+        state_signature={"cycle": cycle_id},
+        action_taken=action,
+        success=True,
+        session_id=session_id,
+        cycle_id=cycle_id,
+    )
+
+
+def test_walk_trajectory_contiguous_session():
+    """Walk forward through a contiguous session, starting at the initial cycle."""
+    index = EpisodicIndex()
+    ids = []
+    for cid in range(3):
+        ep = _traj_ep("s1", cid)
+        ids.append(index.bind(ep))
+
+    traj = index.walk_trajectory(ids[0])
+    assert [e.cycle_id for e in traj] == [0, 1, 2]
+    assert traj[0].episode_id == ids[0]
+    print("  PASS: walk_trajectory contiguous session")
+
+
+def test_walk_trajectory_stops_at_gap():
+    """Gap wider than max_gap terminates the walk; widening max_gap bridges it."""
+    index = EpisodicIndex()
+    initial_id = index.bind(_traj_ep("s1", 0))
+    index.bind(_traj_ep("s1", 1))
+    # cycle 4 is a gap of 3 from cycle 1
+    index.bind(_traj_ep("s1", 4))
+    index.bind(_traj_ep("s1", 5))
+
+    # Default max_gap=1 stops at the gap
+    traj = index.walk_trajectory(initial_id)
+    assert [e.cycle_id for e in traj] == [0, 1]
+
+    # max_gap=3 bridges the gap and keeps walking
+    traj_wide = index.walk_trajectory(initial_id, max_gap=3)
+    assert [e.cycle_id for e in traj_wide] == [0, 1, 4, 5]
+    print("  PASS: walk_trajectory stops at gap (and widens with max_gap)")
+
+
+def test_walk_trajectory_excludes_other_sessions():
+    """Episodes from other sessions are never pulled into the walk."""
+    index = EpisodicIndex()
+    initial_id = index.bind(_traj_ep("s1", 0))
+    index.bind(_traj_ep("s1", 1))
+    # Decoy episodes in another session with overlapping cycle_ids
+    index.bind(_traj_ep("s2", 0))
+    index.bind(_traj_ep("s2", 1))
+    index.bind(_traj_ep("s2", 2))
+
+    traj = index.walk_trajectory(initial_id)
+    assert {e.session_id for e in traj} == {"s1"}
+    assert [e.cycle_id for e in traj] == [0, 1]
+    print("  PASS: walk_trajectory excludes other sessions")
+
+
+def test_walk_trajectory_empty_session_is_singleton():
+    """No session_id → no contiguity claim; returned as a singleton."""
+    index = EpisodicIndex()
+    solo_id = index.bind(_traj_ep("", 0))
+    # A companion with no session_id and adjacent cycle_id must NOT be pulled in
+    index.bind(_traj_ep("", 1))
+
+    traj = index.walk_trajectory(solo_id)
+    assert len(traj) == 1
+    assert traj[0].episode_id == solo_id
+    print("  PASS: walk_trajectory empty session_id is singleton")
+
+
+def test_walk_trajectory_unknown_id_raises():
+    """Unknown initial_id raises KeyError; invalid max_gap raises ValueError."""
+    import pytest
+    index = EpisodicIndex()
+    index.bind(_traj_ep("s1", 0))
+
+    with pytest.raises(KeyError):
+        index.walk_trajectory("not-a-real-id")
+
+    real_id = index.bind(_traj_ep("s1", 1))
+    with pytest.raises(ValueError):
+        index.walk_trajectory(real_id, max_gap=0)
+    print("  PASS: walk_trajectory raises on unknown id / bad max_gap")
+
+
 if __name__ == "__main__":
     print("=" * 60)
     print("Episodic Memory Index — Test Suite")
@@ -359,6 +447,11 @@ if __name__ == "__main__":
         test_many_episodes_performance,
         test_from_wm_dump,
         test_wm_consolidate_integration,
+        test_walk_trajectory_contiguous_session,
+        test_walk_trajectory_stops_at_gap,
+        test_walk_trajectory_excludes_other_sessions,
+        test_walk_trajectory_empty_session_is_singleton,
+        test_walk_trajectory_unknown_id_raises,
     ]
 
     passed = 0

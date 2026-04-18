@@ -9,6 +9,7 @@ from sage.cognition.cerebellum.episodic_bridge import (
     episode_to_cerebellum_dict,
     group_episodes_into_trajectories,
     trajectory_to_cerebellum_dict,
+    walk_habit_provenance,
 )
 from sage.cognition.episodic.data import Episode
 from sage.cognition.episodic.index import EpisodicIndex
@@ -441,3 +442,105 @@ def test_trajectory_consensus_threshold_admits_dominant_arc():
     assert len(habits) == 1
     assert habits[0].action_sequence == [{"action": "A"}, {"action": "B"}]
     assert "consensus 3/4" in habits[0].outcome_summary
+
+
+# ─── Habit provenance walk ───────────────────────────────────────────
+
+
+def test_walk_habit_provenance_recovers_per_step_episodes():
+    """After compiling a multi-step habit, walk back to every cycle that
+    contributed. This is the ARC-AGI-3 introspection use case: Habit
+    source_episodes carries only the initial id per trajectory, but a
+    debugger/analyst often wants the full per-step sequence."""
+    index = EpisodicIndex()
+    cb = Cerebellum(maturity_threshold=3)
+
+    binding_pairs = []
+    for sid in ("t1", "t2", "t3"):
+        e0 = _ep({"room": "hall"}, action="WALK", session_id=sid, cycle_id=0,
+                 stance="nav")
+        e1 = _ep({"room": "kitchen"}, action="OPEN", session_id=sid, cycle_id=1,
+                 stance="nav")
+        e2 = _ep({"room": "kitchen"}, action="GRAB", session_id=sid, cycle_id=2,
+                 stance="nav", reward=1.0)
+        for e in (e0, e1, e2):
+            index.bind(e)
+        binding_pairs.append((e0, e1, e2))
+
+    all_eps = list(index._episodes.values())
+    habits = compile_habits_from_trajectories(all_eps, cb)
+    assert len(habits) == 1
+    habit = habits[0]
+
+    provenance = walk_habit_provenance(habit, index)
+    # One recovered trajectory per source_episode
+    assert set(provenance.keys()) == set(habit.source_episodes)
+    # Each trajectory has three cycles in order
+    for initial_id, traj in provenance.items():
+        assert [e.cycle_id for e in traj] == [0, 1, 2]
+        assert traj[0].episode_id == initial_id
+        # The action sequence we recover matches what compiled into the habit
+        assert [e.action_taken for e in traj] == ["WALK", "OPEN", "GRAB"]
+
+
+def test_walk_habit_provenance_skips_forgotten_episodes():
+    """Habits can outlive their source episodes (via EpisodicIndex.forget).
+    Provenance walk degrades gracefully — returned dict just omits the key."""
+    index = EpisodicIndex()
+    cb = Cerebellum(maturity_threshold=3)
+
+    for sid in ("t1", "t2", "t3"):
+        e0 = _ep({"start": True}, action="A", session_id=sid, cycle_id=0,
+                 stance="x")
+        e1 = _ep({"mid": True}, action="B", session_id=sid, cycle_id=1,
+                 stance="x", reward=1.0)
+        index.bind(e0)
+        index.bind(e1)
+
+    habits = compile_habits_from_trajectories(
+        list(index._episodes.values()), cb
+    )
+    assert len(habits) == 1
+    habit = habits[0]
+    assert len(habit.source_episodes) == 3
+
+    # Surgically remove one contributing trajectory's initial episode.
+    dropped = habit.source_episodes[0]
+    del index._episodes[dropped]
+    index._rebuild_index()
+
+    provenance = walk_habit_provenance(habit, index)
+    assert dropped not in provenance
+    assert len(provenance) == 2
+    # Survivors still reconstruct fully
+    for traj in provenance.values():
+        assert [e.action_taken for e in traj] == ["A", "B"]
+
+
+def test_walk_habit_provenance_respects_max_gap():
+    """max_gap must match compile-time grouping to reconstruct faithfully."""
+    index = EpisodicIndex()
+    cb = Cerebellum(maturity_threshold=3)
+
+    # Three trajectories, cycles at 0 and 3 (gap of 3 cycles)
+    for sid in ("w1", "w2", "w3"):
+        index.bind(_ep({"start": True}, action="A", session_id=sid, cycle_id=0,
+                       stance="x"))
+        index.bind(_ep({"x": 9}, action="B", session_id=sid, cycle_id=3,
+                       stance="x", reward=1.0))
+
+    habits = compile_habits_from_trajectories(
+        list(index._episodes.values()), cb, max_gap=3
+    )
+    assert len(habits) == 1
+    habit = habits[0]
+
+    # Walk with the same max_gap used at compile time: full arc recovered.
+    provenance_wide = walk_habit_provenance(habit, index, max_gap=3)
+    for traj in provenance_wide.values():
+        assert [e.action_taken for e in traj] == ["A", "B"]
+
+    # Walk with narrower max_gap: cycle-3 step is outside contiguity → truncated.
+    provenance_strict = walk_habit_provenance(habit, index, max_gap=1)
+    for traj in provenance_strict.values():
+        assert [e.action_taken for e in traj] == ["A"]

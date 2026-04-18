@@ -1,7 +1,137 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-18 (S81 — Cerebellum Consensus Gate Closes S80's Trajectory-Diversity Question)**
-**Previous: 2026-04-17 (S80 Validates Both Fixes; Multi-Step Trajectory Bridge Lands)**
+**Last Updated: 2026-04-18 (S82 — Habit Provenance Walk Closes S81's Per-Step Introspection Gap)**
+**Previous: 2026-04-18 (S81 Cerebellum Consensus Gate Closes S80's Trajectory-Diversity Question)**
+
+---
+
+## S82 Habit Provenance Walk (Apr 18, 2026 — Thor Autonomous SAGE Session, 18:00 PDT)
+
+S81 closed the consensus-gate question but carried forward an open
+loop from S80: `Habit.source_episodes` records only the *initial*
+episode_id of each contributing trajectory, so introspection of a
+multi-step habit couldn't surface its per-step backing without
+hand-walking the EpisodicIndex. This session lands the walk helper.
+
+### What landed
+
+**`sage/cognition/episodic/index.py`** — new
+`EpisodicIndex.walk_trajectory(initial_id, *, max_gap=1) -> list[Episode]`:
+
+- Given an episode_id (typically from a `Habit.source_episodes`
+  entry), walks forward within the same `session_id` collecting
+  episodes whose `cycle_id` delta stays within `max_gap`.
+- Contiguity semantics mirror
+  `group_episodes_into_trajectories` exactly: empty `session_id` →
+  singleton (no contiguity claim); duplicate cycle_ids (delta 0)
+  remain in the same trajectory.
+- `KeyError` on unknown initial_id, `ValueError` on `max_gap < 1`.
+- Stops at the first gap wider than `max_gap` — so the caller must
+  pass the same `max_gap` used at compile time, or the
+  reconstruction drifts.
+
+**`sage/cognition/cerebellum/episodic_bridge.py`** — new
+`walk_habit_provenance(habit, index, *, max_gap=1) -> dict[str, list[Episode]]`:
+
+- Walks every `habit.source_episodes` id through the index,
+  reconstructing the per-cycle trajectory that backed it.
+- Silently skips ids no longer in the index: habits can outlive
+  their originating episodes (via `EpisodicIndex.forget`), so
+  introspection degrades gracefully rather than raising. Compare
+  returned keys to `habit.source_episodes` to detect drop.
+- Returns `{initial_id: [Episode, ...]}` with each trajectory
+  ordered by cycle_id ascending.
+
+Updated the `compile_habits_from_trajectories` docstring: previous
+wording asked the reader to "walk back from the initial episode via
+the EpisodicIndex using session_id + contiguous cycle_id" as a
+manual operation; now points to `walk_habit_provenance`.
+
+### Why on EpisodicIndex + in the bridge (not one place)
+
+Two different needs, two different levels:
+
+- `walk_trajectory` is an index-level operation: given any episode,
+  what's its contiguous forward trace? Belongs with `bind`,
+  `recall`, `consolidate`, `forget` on the index. Reusable for any
+  trajectory-shaped introspection, not just habit provenance.
+- `walk_habit_provenance` is the habit-introspection sugar: takes
+  a Habit + an Index and returns the per-trajectory dict in one
+  call. This is the direct ARC-AGI-3 consolidation use case.
+
+Two-layer design keeps the index API general while making the
+common consolidation-introspection call one-liner clean.
+
+### Tests: 8 new (5 index + 3 bridge), full suite 454/454
+
+`sage/cognition/episodic/test_episodic.py` (5 new):
+
+- `test_walk_trajectory_contiguous_session` — 3-cycle session walks
+  forward cleanly from initial.
+- `test_walk_trajectory_stops_at_gap` — gap wider than `max_gap`
+  terminates; widening `max_gap` bridges it.
+- `test_walk_trajectory_excludes_other_sessions` — decoy episodes
+  in other sessions never enter the walk, even with matching
+  cycle_ids.
+- `test_walk_trajectory_empty_session_is_singleton` — empty
+  `session_id` returns only the initial episode (matches grouping
+  semantics).
+- `test_walk_trajectory_unknown_id_raises` — KeyError on missing
+  initial_id; ValueError on `max_gap < 1`.
+
+`sage/cognition/cerebellum/test_episodic_bridge.py` (3 new):
+
+- `test_walk_habit_provenance_recovers_per_step_episodes` —
+  compile a 3-cycle habit from 3 trajectories; walk back to all
+  3×3 Episodes grouped by initial id.
+- `test_walk_habit_provenance_skips_forgotten_episodes` —
+  surgically drop one source episode; walk returns 2/3 trajectories,
+  dropped id omitted, survivors intact.
+- `test_walk_habit_provenance_respects_max_gap` — walking with a
+  smaller `max_gap` than compile-time truncates (cycle-3 step
+  outside contiguity when `max_gap=1`); matching `max_gap` recovers
+  the full arc.
+
+Full `sage/cognition/` suite: 454/454 on Thor (was 446 pre-change).
+
+### End-to-end demonstration
+
+```
+Habits compiled: 1
+Habit arc: ['SCAN', 'ROTATE', 'PLACE']
+source_episodes: 4 (initial ids only)
+outcome_summary: Compiled from 4 episodes (4 successes, consensus 4/4)
+
+Recovered 4 per-step trajectories:
+  <initial_id_1>... -> ['SCAN', 'ROTATE', 'PLACE'] (cycles [0, 1, 2])
+  <initial_id_2>... -> ['SCAN', 'ROTATE', 'PLACE'] (cycles [0, 1, 2])
+  <initial_id_3>... -> ['SCAN', 'ROTATE', 'PLACE'] (cycles [0, 1, 2])
+  <initial_id_4>... -> ['SCAN', 'ROTATE', 'PLACE'] (cycles [0, 1, 2])
+```
+
+Four initial ids on the compiled Habit → twelve per-step Episodes
+returned by the walk, grouped per trajectory. This is the
+consolidation-introspection loop closed.
+
+### Open questions carried forward
+
+- **Per-phase `consensus_threshold` tuning**: still deferred to the
+  consolidation wiring pass (from S81).
+- **Reverse walk**: `walk_trajectory` only walks forward. An
+  analyst starting from a mid-trajectory Episode (e.g., one
+  surfaced by `recall`) can't currently see earlier context from
+  the same session. Not urgent for habit provenance (source_ids
+  are initial by construction), but worth noting for broader
+  introspection use cases.
+
+### Files this session
+
+- `sage/cognition/episodic/index.py` — `walk_trajectory` method
+- `sage/cognition/episodic/test_episodic.py` — 5 new tests
+- `sage/cognition/cerebellum/episodic_bridge.py` —
+  `walk_habit_provenance` + updated docstring
+- `sage/cognition/cerebellum/test_episodic_bridge.py` — 3 new tests
+- `sage/docs/LATEST_STATUS.md` — this writeup
 
 ---
 

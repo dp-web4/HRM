@@ -93,15 +93,36 @@ stop_daemon() {
     fi
 }
 
+source_router_shadow_env() {
+    # Load SAGE_ROUTER_SHADOW + SAGE_ROUTER_DATA_DIR if the Track 7 installer
+    # has been run (sage/gateway/router-shadow.env). Silent no-op when absent,
+    # which is the correct default — shadow is opt-in per-machine.
+    local env_file="$SAGE_DIR/sage/gateway/router-shadow.env"
+    if [ -f "$env_file" ]; then
+        # `set -a` auto-exports every variable assigned while it's active.
+        set -a
+        # shellcheck disable=SC1090
+        . "$env_file"
+        set +a
+        log "router shadow env loaded: SAGE_ROUTER_SHADOW=${SAGE_ROUTER_SHADOW:-unset}"
+    fi
+}
+
 start_daemon() {
     log "Starting SAGE daemon..."
-    # Prefer systemctl if the service exists
+    # Propagate router-shadow env (Phase 0 Track 7). Harmless if file absent.
+    source_router_shadow_env
+    # Prefer systemctl if the service exists.
+    # NOTE: systemctl ignores the shell's env; for systemd machines, add
+    #   EnvironmentFile=$SAGE_DIR/sage/gateway/router-shadow.env
+    # to the service unit to pick up shadow settings. The source above
+    # still helps for manual-start machines.
     if systemctl list-unit-files sage-daemon-sprout.service >/dev/null 2>&1; then
         sudo systemctl start sage-daemon-sprout
         log "Started via systemctl"
         return
     fi
-    # Fallback: manual start
+    # Fallback: manual start (env vars above already exported into this shell).
     cd "$SAGE_DIR"
     export PYTHONPATH="$SAGE_DIR"
     local PYTHON

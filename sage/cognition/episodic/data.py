@@ -117,6 +117,68 @@ class Episode:
         ep.compute_embedding()
         return ep
 
+    @classmethod
+    def from_wm_dump(cls, wm_dump: dict, session_id: str = '',
+                     action_taken: Optional[str] = None,
+                     outcome: Optional[str] = None,
+                     reward: float = 0.0,
+                     success: Optional[bool] = None,
+                     snarc_scores: Optional[dict] = None,
+                     tags: Optional[list] = None) -> 'Episode':
+        """Create an episode from a WorkingMemory.dump() snapshot.
+
+        This is the primary integration point with CBP's WM component.
+        Called by WM.consolidate_to_ltm() at step 9 (Remember).
+
+        Args:
+            wm_dump: output of WorkingMemory.dump()
+            session_id: current session identifier
+            action_taken: what action was taken (plugin name, game action, etc.)
+            outcome: result description
+            reward: scalar reward
+            success: whether the action succeeded
+            snarc_scores: 5D salience scores at this moment
+            tags: additional retrieval tags
+        """
+        # Extract state signature from WM slots
+        slots = wm_dump.get('slots', [])
+        state_sig = {}
+        for slot in slots:
+            ct = slot.get('content_type', 'other')
+            content = slot.get('content', '')
+            # Use content_type as key, content summary as value
+            if ct in ('goal', 'constraint', 'hypothesis'):
+                state_sig[ct] = content
+            elif ct == 'plan_step':
+                state_sig['plan'] = content
+
+        # Extract sensory summary from bindings
+        sensory = {}
+        for binding in wm_dump.get('bindings', []):
+            sid = binding.get('sensor_id', '')
+            obs = binding.get('observation', '')
+            if sid:
+                sensory[sid] = obs
+
+        # Build tags from slot types present
+        auto_tags = list(set(s.get('content_type', '') for s in slots if s.get('content_type')))
+        if tags:
+            auto_tags.extend(tags)
+
+        ep = cls(
+            session_id=session_id,
+            state_signature=state_sig,
+            sensory_summary=sensory,
+            snarc_scores=snarc_scores or {},
+            action_taken=action_taken,
+            outcome=outcome,
+            reward=reward,
+            success=success,
+            tags=auto_tags,
+        )
+        ep.compute_embedding()
+        return ep
+
 
 @dataclass
 class EpisodicCue:

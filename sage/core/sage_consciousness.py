@@ -400,6 +400,18 @@ class SAGEConsciousness:
         self._router_shadow = None  # lazy: constructed on first enabled cycle
         self._router_shadow_init_failed = False  # stays True if lazy init raised
 
+        # Brain-arch component: RPE (Reward Prediction Error).
+        # Provides scalar learning signal at step 8 (Learn).
+        # Router reads action priors at step 4.5 (Select).
+        # Env-gated (SAGE_RPE=1); default ON when available.
+        try:
+            from sage.cognition.rpe import RewardPredictionError
+            self.rpe = RewardPredictionError(default_prior=0.0)
+            print(f"[RPE] Initialized (default_prior=0.0)")
+        except Exception as e:
+            self.rpe = None
+            print(f"[RPE] Not available: {e}")
+
     @property
     def llm_plugin(self):
         """Backward-compat property — returns active LLM from the pool."""

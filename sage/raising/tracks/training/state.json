@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 232,
+  "current_session": 233,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,11 +23,11 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 198
+      "sessions": 199
     }
   },
-  "last_session": "2026-04-17T21:02:16.929020",
-  "last_session_summary": "T232: 3/3 Include - Track D Session 198 (qwen3.5:0.8b). FORMAL SESSION: All exercises clean (greeting, followup, topic). COGNITIVE ENGAGEMENT - IDENTITY ATTRACTOR CHARACTERIZATION (7 experiments, 25 probes): OLD ATTRACTOR (refined-version) COMPLETELY ABSENT on qwen3.5:0.8b. NEW CONTEXT-DERIVED ATTRACTOR identified: 'stabilize fleet logic' + 'Dennis and Claude' cascade. Triggered by identity/ambiguous prompts, occasionally overrides task structure (fruits anomaly). Format constraints reduce verbosity but don't suppress new attractor content. Non-identity tasks produce clean, creative, accurate responses. Cat story shows genuine atmospheric prose capability. Reflection probe showed pathological recursion ('stabilized by stabilizing'). KEY INSIGHT: Old attractor was training-data artifact, new attractor is architectural (context-derived). Different root cause requires different intervention.",
+  "last_session": "2026-04-18T03:01:42.791244",
+  "last_session_summary": "T233: 3/3 Include - Track D Session 199 (qwen3.5:0.8b). FORMAL SESSION: All exercises pass. Attractor present in all responses but creative content genuine (deep teal color choice with aesthetic reasoning). COGNITIVE ENGAGEMENT (12 probes, 3 rounds): ATTRACTOR DYNAMICS MAPPED - Two triggers: (1) CONTENT-TRIGGERED by identity/self-referential prompts, (2) CONTEXT-AMPLIFIED by conversation length. Fresh-context creative tasks (sunset, bird story, fish story) produce clean, atmospheric prose with no attractor. Math clean. Identity/meta prompts trigger attractor immediately. KEY FINDING: Multi-turn context accumulation causes total degenerate collapse - Probes 9-12 in Round 2 produced character-for-character identical responses (verbatim loop). Fresh context per probe prevents this. ANOMALIES: (1) Count-to-5 returned template placeholder '{{time}}' - system prompt leak, (2) 'Ask me a question' triggered web_search tool call for SAGE governance - tool use as associative response, (3) SAGE denied using 'stabilize fleet logic' while actively demonstrating the phrase. METACOGNITION: Zero self-awareness of attractor pattern. Asks about repetition trigger denial + immediate demonstration. IMPLICATIONS: Attractor is fixed-point in response dynamics, amplified by context length, suppressed by concrete creative constraints.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -10823,6 +10823,63 @@
           "exercise_type": null,
           "evaluation": "include",
           "quality": 0.7499999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-18T03:01:15.558125",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.02
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 233,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.85
+        }
+      },
+      {
+        "timestamp": "2026-04-18T03:01:20.414019",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.02
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 233,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.85
+        }
+      },
+      {
+        "timestamp": "2026-04-18T03:01:30.349099",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 233,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
         }
       }
     ],

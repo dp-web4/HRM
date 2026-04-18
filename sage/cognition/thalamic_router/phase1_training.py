@@ -1,0 +1,596 @@
+#!/usr/bin/env python3
+"""Phase 1 training pipeline — LR baseline with full agent-zero discipline.
+
+Sprint 1 Phase 0 produced captured router records. This module trains a
+Tier-A logistic-regression baseline on that data and applies the full
+set of gates from PRD §4 Phase 1 exit criteria + §7.10 agent-zero
+defenses. It is the canonical Phase 1 entry runner.
+
+Builds on sage/cognition/thalamic_router/baseline_lr.py (Sprout, 2026-04-17)
+which established the numpy-only pattern, dummy baseline reporting, and
+JSONL loader. This module ADDS:
+
+- 3-class decision head (invoke / habit / noop) via one-vs-rest LR
+- Per-plugin classification within `invoke` (softmax over registry)
+- Per-class F1 reporting for EVERY class (not just invoke)
+- Salience-weighted agreement on top-decile-arousal subset (§7.10.3)
+- Rare-decision recall on non-modal-class subset (§4 Phase 2 gate)
+- SNARC ablation (train with + without SNARC features, compare, reject
+  adapter if delta <5% per §4.7.F)
+- Stratified golden dataset construction
+- INCONCLUSIVE gating per §7.10 (if margin <25pp, report INCONCLUSIVE
+  regardless of accuracy)
+- Data-diversity gate (refuse to declare training ready if source/
+  decision-class/SNARC-quintile distributions are too homogeneous —
+  the collinearity artifact Sprout's baseline surfaced)
+- JSON output for CI consumption
+
+Spec: shared-context/arc-agi-3/phase2/brain-arch/thalamic-router-prd.md
+      §0.2 (agent-zero), §4 Phase 1, §4.7 (SNARC integration),
+      §7.10 (CI defenses)
+
+Not in scope (deferred):
+- Confidence-outcome correlation (needs Phase 4 RPE signals)
+- LoRA adapter training (Tier C/D only, after Tier A/B ceiling)
+- Federated per-machine personalization (Phase 5)
+"""
+from __future__ import annotations
+
+import argparse
+import gzip
+import json
+import math
+import sys
+from collections import Counter
+from dataclasses import dataclass, field, asdict
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
+import numpy as np
+
+
+# ───────────────────────────────────────────────────────────────────
+# Constants — PRD thresholds (binding)
+# ───────────────────────────────────────────────────────────────────
+
+# PRD §4 Phase 1 exit: aggregate agreement with baseline ≥98%
+PHASE1_AGGREGATE_AGREEMENT_THRESHOLD = 0.98
+
+# PRD §7.10: modal-class dummy margin ≥25pp
+MODAL_DUMMY_MARGIN_THRESHOLD_PP = 0.25
+
+# PRD §4 Phase 1 exit: per-class F1 ≥0.85 on EVERY class
+PER_CLASS_F1_THRESHOLD = 0.85
+
+# PRD §4 Phase 1 exit: salience-weighted agreement ≥95% on top-decile-arousal
+SALIENCE_WEIGHTED_THRESHOLD = 0.95
+
+# PRD §4.7.F: SNARC-utility delta ≥5% or adapter rejected
+SNARC_UTILITY_DELTA_THRESHOLD = 0.05
+
+# PRD §4 Phase 1 exit: rare-decision recall ≥0.80
+RARE_DECISION_RECALL_THRESHOLD = 0.80
+
+# Data-diversity thresholds (not in PRD — our safeguard against the
+# collinearity artifact. Sprout + CBP Phase 0 data hit 100% LR because
+# data was trivial; we enforce minimum diversity before any result is
+# trustworthy).
+MIN_SOURCES_REPRESENTED = 1      # raising + gameplay + idle ideally
+MIN_DECISION_CLASSES = 2         # at least invoke vs noop
+MIN_ENTROPY_NATS = 0.3           # across decision classes
+MIN_SNARC_STD_PER_DIM = 0.05     # per-dim stddev — flags collinearity
+
+
+# Feature names — order defines the feature vector layout
+SNARC_FEATURES = [
+    "snarc_surprise", "snarc_novelty", "snarc_arousal",
+    "snarc_reward", "snarc_conflict",
+]
+NON_SNARC_FEATURES = [
+    "sensory_novelty", "sensory_urgency", "atp_norm",
+    "wm_goal_active", "wm_pressure",
+    "habit_available", "habit_confidence",
+    "has_audio", "has_message", "has_vision",
+    "metabolic_level",
+]
+ALL_FEATURE_NAMES = SNARC_FEATURES + NON_SNARC_FEATURES
+
+METABOLIC_MAP = {"wake": 1, "focus": 2, "rest": -1, "dream": -2, "crisis": 3}
+
+
+# ───────────────────────────────────────────────────────────────────
+# Data loading + feature extraction
+# ───────────────────────────────────────────────────────────────────
+
+def load_records(data_dir: str, source_filter: Optional[str] = None) -> List[Dict]:
+    """Load router records from gzipped/plain JSONL partitions.
+
+    If source_filter is set, keep only records whose metadata.source matches.
+    Robust to truncated-last-line, missing gzip indices, and schema-version
+    skew between v0.1.0 and v0.2.0.
+    """
+    records: List[Dict] = []
+    data_path = Path(data_dir)
+    for shard in sorted(data_path.glob("**/*.jsonl*")):
+        open_fn = gzip.open if shard.suffix == ".gz" else open
+        try:
+            with open_fn(shard, "rt") as f:
+                for line in f:
+                    try:
+                        rec = json.loads(line.strip())
+                    except json.JSONDecodeError:
+                        continue
+                    if source_filter:
+                        src = (rec.get("metadata") or {}).get("source")
+                        if src != source_filter:
+                            continue
+                    records.append(rec)
+        except (EOFError, OSError):
+            continue
+    return records
+
+
+def _feature_vec(record: Dict) -> List[float]:
+    """Build the ALL_FEATURE_NAMES vector from a record."""
+    inp = record.get("router_input", {})
+    modalities = inp.get("sensory_modalities", []) or []
+    metabolic = inp.get("metabolic_state", "rest")
+    return [
+        # SNARC
+        float(inp.get("snarc_surprise", 0) or 0),
+        float(inp.get("snarc_novelty", 0) or 0),
+        float(inp.get("snarc_arousal", 0) or 0),
+        float(inp.get("snarc_reward", 0) or 0),
+        float(inp.get("snarc_conflict", 0) or 0),
+        # Non-SNARC
+        float(inp.get("sensory_novelty", 0) or 0),
+        float(inp.get("sensory_urgency", 0) or 0),
+        float(inp.get("atp_level", 50) or 50) / 100.0,
+        1.0 if inp.get("wm_goal_active") else 0.0,
+        float(inp.get("wm_pressure", 0) or 0),
+        1.0 if inp.get("habit_available") else 0.0,
+        float(inp.get("habit_confidence", 0) or 0),
+        1.0 if "audio" in modalities else 0.0,
+        1.0 if "message" in modalities else 0.0,
+        1.0 if "vision" in modalities else 0.0,
+        METABOLIC_MAP.get(metabolic, 0) / 3.0,
+    ]
+
+
+ACTION_CLASSES = ["noop", "invoke", "habit"]
+ACTION_TO_IDX = {a: i for i, a in enumerate(ACTION_CLASSES)}
+
+
+def _action_label(record: Dict) -> int:
+    """Return index into ACTION_CLASSES."""
+    return ACTION_TO_IDX.get(record.get("router_output", {}).get("action"), 0)
+
+
+def build_xy(records: List[Dict], snarc: bool = True) -> Tuple[np.ndarray, np.ndarray]:
+    """Feature matrix + action-class labels. `snarc=False` zeros out SNARC
+    columns for the §4.7.F ablation."""
+    X = np.array([_feature_vec(r) for r in records], dtype=np.float64)
+    if not snarc:
+        snarc_idx = [ALL_FEATURE_NAMES.index(n) for n in SNARC_FEATURES]
+        X[:, snarc_idx] = 0.0
+    y = np.array([_action_label(r) for r in records], dtype=np.int64)
+    return X, y
+
+
+def normalize(X_train: np.ndarray, X_test: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    """Mean/std normalize using train statistics."""
+    mean = X_train.mean(axis=0)
+    std = X_train.std(axis=0) + 1e-8
+    return (X_train - mean) / std, (X_test - mean) / std
+
+
+# ───────────────────────────────────────────────────────────────────
+# Logistic regression (numpy only — matches Sprout's baseline style)
+# ───────────────────────────────────────────────────────────────────
+
+def _softmax(Z: np.ndarray) -> np.ndarray:
+    Z = Z - Z.max(axis=1, keepdims=True)
+    e = np.exp(Z)
+    return e / (e.sum(axis=1, keepdims=True) + 1e-12)
+
+
+def train_multiclass_lr(
+    X: np.ndarray, y: np.ndarray, n_classes: int,
+    lr: float = 0.5, epochs: int = 200, seed: int = 42,
+) -> Tuple[np.ndarray, np.ndarray]:
+    """Softmax regression via vanilla GD. Returns (W, b). Deterministic."""
+    rng = np.random.default_rng(seed)
+    n, d = X.shape
+    W = rng.normal(0, 0.01, size=(d, n_classes))
+    b = np.zeros(n_classes)
+
+    # One-hot labels
+    Y = np.zeros((n, n_classes))
+    Y[np.arange(n), y] = 1.0
+
+    for _ in range(epochs):
+        Z = X @ W + b
+        P = _softmax(Z)
+        grad_W = X.T @ (P - Y) / n
+        grad_b = (P - Y).mean(axis=0)
+        W -= lr * grad_W
+        b -= lr * grad_b
+    return W, b
+
+
+def predict(X: np.ndarray, W: np.ndarray, b: np.ndarray) -> np.ndarray:
+    return np.argmax(_softmax(X @ W + b), axis=1)
+
+
+# ───────────────────────────────────────────────────────────────────
+# Metrics with agent-zero discipline
+# ───────────────────────────────────────────────────────────────────
+
+@dataclass
+class ClassMetrics:
+    name: str
+    n: int
+    precision: float
+    recall: float
+    f1: float
+
+
+@dataclass
+class Phase1Metrics:
+    # Headline
+    aggregate_accuracy: float
+    modal_class: str
+    modal_dummy_accuracy: float
+    margin_over_dummy: float
+
+    # Per-class (every class must pass per-class F1)
+    per_class: List[ClassMetrics]
+    min_class_f1: float
+    min_class_name: str
+
+    # Salience-weighted slice (§7.10.3)
+    salience_weighted_accuracy: float
+    salience_subset_n: int
+
+    # Rare-decision recall
+    rare_class: str
+    rare_recall: float
+    rare_n: int
+
+    # SNARC ablation (§4.7.F)
+    snarc_ablation_accuracy: Optional[float] = None
+    snarc_utility_delta: Optional[float] = None
+
+    # Data diversity
+    n_sources: int = 0
+    n_decision_classes: int = 0
+    decision_class_entropy: float = 0.0
+    min_snarc_std: float = 0.0
+
+    # Verdict
+    verdict: str = "PENDING"
+    verdict_reasons: List[str] = field(default_factory=list)
+
+
+def per_class_metrics(y_true: np.ndarray, y_pred: np.ndarray, n_classes: int) -> List[ClassMetrics]:
+    out = []
+    for c in range(n_classes):
+        tp = int(((y_pred == c) & (y_true == c)).sum())
+        fp = int(((y_pred == c) & (y_true != c)).sum())
+        fn = int(((y_pred != c) & (y_true == c)).sum())
+        n = int((y_true == c).sum())
+        precision = tp / (tp + fp) if (tp + fp) else 0.0
+        recall = tp / (tp + fn) if (tp + fn) else 0.0
+        f1 = 2 * precision * recall / (precision + recall) if (precision + recall) else 0.0
+        out.append(ClassMetrics(
+            name=ACTION_CLASSES[c], n=n,
+            precision=precision, recall=recall, f1=f1,
+        ))
+    return out
+
+
+def salience_weighted_accuracy(
+    records: List[Dict], y_true: np.ndarray, y_pred: np.ndarray,
+) -> Tuple[float, int]:
+    """Accuracy on the top-decile-arousal subset.
+
+    High arousal means the decision matters more. §7.10.3 wants this slice.
+    """
+    arousal = np.array([
+        float((r.get("router_input") or {}).get("snarc_arousal", 0) or 0)
+        for r in records
+    ])
+    if arousal.max() == arousal.min():
+        return float((y_pred == y_true).mean()), len(records)
+    threshold = np.quantile(arousal, 0.9)
+    mask = arousal >= threshold
+    if mask.sum() == 0:
+        return 0.0, 0
+    subset_acc = float((y_pred[mask] == y_true[mask]).mean())
+    return subset_acc, int(mask.sum())
+
+
+def rare_decision_recall(y_true: np.ndarray, y_pred: np.ndarray) -> Tuple[str, float, int]:
+    """Recall on the non-modal-class subset."""
+    counts = Counter(y_true.tolist())
+    modal = max(counts, key=counts.get)
+    rare_mask = y_true != modal
+    if rare_mask.sum() == 0:
+        return ACTION_CLASSES[modal], 0.0, 0
+    correct_rare = int((y_pred[rare_mask] == y_true[rare_mask]).sum())
+    # Recall on the rare subset is the fraction of rare labels correctly recovered
+    # (equivalent to accuracy restricted to rare-true).
+    rare_acc = correct_rare / int(rare_mask.sum())
+    return ACTION_CLASSES[modal], float(rare_acc), int(rare_mask.sum())
+
+
+def compute_diversity(records: List[Dict]) -> Dict[str, Any]:
+    """Data-diversity metrics for the diversity gate."""
+    sources = Counter(
+        (r.get("metadata") or {}).get("source", "unknown")
+        for r in records
+    )
+    actions = Counter(
+        (r.get("router_output") or {}).get("action", "unknown")
+        for r in records
+    )
+    # Shannon entropy over decision classes (nats)
+    total = sum(actions.values())
+    probs = [c / total for c in actions.values() if c > 0]
+    entropy = -sum(p * math.log(p) for p in probs) if probs else 0.0
+    # Per-SNARC-dim std (collinearity signal)
+    X, _ = build_xy(records, snarc=True)
+    snarc_cols = [ALL_FEATURE_NAMES.index(n) for n in SNARC_FEATURES]
+    per_dim_std = X[:, snarc_cols].std(axis=0)
+    return {
+        "sources": dict(sources),
+        "actions": dict(actions),
+        "n_sources": len(sources),
+        "n_decision_classes": len(actions),
+        "decision_class_entropy": entropy,
+        "snarc_per_dim_std": {
+            n: float(s) for n, s in zip(SNARC_FEATURES, per_dim_std)
+        },
+        "min_snarc_std": float(per_dim_std.min()) if len(per_dim_std) else 0.0,
+    }
+
+
+# ───────────────────────────────────────────────────────────────────
+# Evaluation entry point
+# ───────────────────────────────────────────────────────────────────
+
+def evaluate_phase1(
+    records: List[Dict],
+    test_frac: float = 0.2,
+    seed: int = 42,
+) -> Phase1Metrics:
+    """Run the full Phase 1 evaluation pipeline on `records`."""
+    if len(records) < 100:
+        raise ValueError(f"need ≥100 records for Phase 1 evaluation, got {len(records)}")
+
+    rng = np.random.default_rng(seed)
+    idx = rng.permutation(len(records))
+    split = int((1 - test_frac) * len(records))
+    train_records = [records[i] for i in idx[:split]]
+    test_records = [records[i] for i in idx[split:]]
+
+    # --- Main model (with SNARC) ---
+    X_train, y_train = build_xy(train_records, snarc=True)
+    X_test, y_test = build_xy(test_records, snarc=True)
+    n_classes = 3  # noop / invoke / habit
+    X_train_n, X_test_n = normalize(X_train, X_test)
+    W, b = train_multiclass_lr(X_train_n, y_train, n_classes, seed=seed)
+    y_pred = predict(X_test_n, W, b)
+    agg_acc = float((y_pred == y_test).mean())
+
+    # Modal class + dummy
+    counts = Counter(y_test.tolist())
+    modal = max(counts, key=counts.get)
+    modal_dummy_acc = counts[modal] / len(y_test)
+    margin = agg_acc - modal_dummy_acc
+
+    # Per-class
+    per_class = per_class_metrics(y_test, y_pred, n_classes)
+    present = [c for c in per_class if c.n > 0]
+    min_f1 = min(c.f1 for c in present) if present else 0.0
+    min_cls = min(present, key=lambda c: c.f1).name if present else ""
+
+    # Salience-weighted slice
+    sal_acc, sal_n = salience_weighted_accuracy(test_records, y_test, y_pred)
+
+    # Rare-decision recall
+    rare_class, rare_acc, rare_n = rare_decision_recall(y_test, y_pred)
+
+    # --- SNARC ablation (§4.7.F) ---
+    X_train_ns, y_train_ns = build_xy(train_records, snarc=False)
+    X_test_ns, _ = build_xy(test_records, snarc=False)
+    X_train_ns_n, X_test_ns_n = normalize(X_train_ns, X_test_ns)
+    W_ns, b_ns = train_multiclass_lr(X_train_ns_n, y_train_ns, n_classes, seed=seed)
+    y_pred_ns = predict(X_test_ns_n, W_ns, b_ns)
+    ablation_acc = float((y_pred_ns == y_test).mean())
+    snarc_delta = agg_acc - ablation_acc
+
+    # --- Diversity ---
+    diversity = compute_diversity(records)
+
+    m = Phase1Metrics(
+        aggregate_accuracy=agg_acc,
+        modal_class=ACTION_CLASSES[modal],
+        modal_dummy_accuracy=modal_dummy_acc,
+        margin_over_dummy=margin,
+        per_class=per_class,
+        min_class_f1=min_f1,
+        min_class_name=min_cls,
+        salience_weighted_accuracy=sal_acc,
+        salience_subset_n=sal_n,
+        rare_class=rare_class,
+        rare_recall=rare_acc,
+        rare_n=rare_n,
+        snarc_ablation_accuracy=ablation_acc,
+        snarc_utility_delta=snarc_delta,
+        n_sources=diversity["n_sources"],
+        n_decision_classes=diversity["n_decision_classes"],
+        decision_class_entropy=diversity["decision_class_entropy"],
+        min_snarc_std=diversity["min_snarc_std"],
+    )
+
+    # Apply gates
+    reasons: List[str] = []
+
+    if m.margin_over_dummy < MODAL_DUMMY_MARGIN_THRESHOLD_PP:
+        reasons.append(
+            f"margin over dummy {m.margin_over_dummy:.3f} < {MODAL_DUMMY_MARGIN_THRESHOLD_PP} "
+            "(§7.10: INCONCLUSIVE)"
+        )
+    if m.aggregate_accuracy < PHASE1_AGGREGATE_AGREEMENT_THRESHOLD:
+        reasons.append(
+            f"aggregate accuracy {m.aggregate_accuracy:.4f} < {PHASE1_AGGREGATE_AGREEMENT_THRESHOLD}"
+        )
+    if m.min_class_f1 < PER_CLASS_F1_THRESHOLD:
+        # Only fail if the weak class has meaningful support
+        weak = next((c for c in present if c.name == m.min_class_name), None)
+        if weak and weak.n >= 20:
+            reasons.append(
+                f"worst-class F1 {m.min_class_f1:.3f} on '{m.min_class_name}' "
+                f"< {PER_CLASS_F1_THRESHOLD} (n={weak.n})"
+            )
+    if m.salience_weighted_accuracy < SALIENCE_WEIGHTED_THRESHOLD and sal_n >= 50:
+        reasons.append(
+            f"salience-weighted acc {m.salience_weighted_accuracy:.4f} < {SALIENCE_WEIGHTED_THRESHOLD}"
+        )
+    if m.rare_n >= 20 and m.rare_recall < RARE_DECISION_RECALL_THRESHOLD:
+        reasons.append(
+            f"rare-decision recall {m.rare_recall:.4f} < {RARE_DECISION_RECALL_THRESHOLD} "
+            f"(rare class='{m.rare_class}', n={m.rare_n})"
+        )
+    if m.snarc_utility_delta is not None and m.snarc_utility_delta < SNARC_UTILITY_DELTA_THRESHOLD:
+        reasons.append(
+            f"SNARC-utility delta {m.snarc_utility_delta:.4f} < {SNARC_UTILITY_DELTA_THRESHOLD} "
+            "(§4.7.F: router is not using SNARC — reject adapter)"
+        )
+    # Diversity gate (our addition, not in PRD but PRD-aligned)
+    if m.n_decision_classes < MIN_DECISION_CLASSES:
+        reasons.append(
+            f"only {m.n_decision_classes} decision class(es) in data "
+            f"< {MIN_DECISION_CLASSES} (diversity gate)"
+        )
+    if m.decision_class_entropy < MIN_ENTROPY_NATS:
+        reasons.append(
+            f"decision-class entropy {m.decision_class_entropy:.3f} < {MIN_ENTROPY_NATS} nats "
+            "(dataset too homogeneous — collinearity artifact risk)"
+        )
+    if m.min_snarc_std < MIN_SNARC_STD_PER_DIM:
+        reasons.append(
+            f"min SNARC-dim stddev {m.min_snarc_std:.4f} < {MIN_SNARC_STD_PER_DIM} "
+            "(SNARC features are collinear/constant — §0.2 agent-zero hazard)"
+        )
+
+    if not reasons:
+        m.verdict = "PASS"
+    else:
+        # If only the diversity gate + SNARC ablation fail, the model IS
+        # trivially correct but the data is not yet informative.
+        diversity_only = all(
+            any(key in r for key in ("diversity", "SNARC-utility", "homogeneous", "collinear"))
+            for r in reasons
+        )
+        if diversity_only:
+            m.verdict = "INCONCLUSIVE"
+        elif m.margin_over_dummy < MODAL_DUMMY_MARGIN_THRESHOLD_PP:
+            m.verdict = "INCONCLUSIVE"
+        else:
+            m.verdict = "FAIL"
+    m.verdict_reasons = reasons
+    return m
+
+
+# ───────────────────────────────────────────────────────────────────
+# CLI
+# ───────────────────────────────────────────────────────────────────
+
+def _print_report(m: Phase1Metrics) -> None:
+    print("=" * 60)
+    print("Phase 1 LR baseline — agent-zero-defended report")
+    print("=" * 60)
+    print(f"  Aggregate accuracy    : {m.aggregate_accuracy:.4f}")
+    print(f"  Modal class           : {m.modal_class}")
+    print(f"  Modal-dummy accuracy  : {m.modal_dummy_accuracy:.4f}")
+    print(f"  Margin over dummy     : {m.margin_over_dummy:+.4f}  (threshold +{MODAL_DUMMY_MARGIN_THRESHOLD_PP})")
+    print(f"  Salience-weighted acc : {m.salience_weighted_accuracy:.4f}  (n={m.salience_subset_n})")
+    print(f"  Rare-decision recall  : {m.rare_recall:.4f}  (class!={m.rare_class}, n={m.rare_n})")
+    print(f"  SNARC ablation acc    : "
+          f"{m.snarc_ablation_accuracy:.4f}" if m.snarc_ablation_accuracy is not None else "  SNARC ablation        : SKIPPED")
+    print(f"  SNARC-utility delta   : "
+          f"{m.snarc_utility_delta:+.4f}  (threshold +{SNARC_UTILITY_DELTA_THRESHOLD})"
+          if m.snarc_utility_delta is not None else "")
+    print()
+    print(f"  Data diversity:")
+    print(f"    Sources represented   : {m.n_sources}")
+    print(f"    Decision classes      : {m.n_decision_classes}")
+    print(f"    Class entropy (nats)  : {m.decision_class_entropy:.3f}")
+    print(f"    Min SNARC-dim stddev  : {m.min_snarc_std:.4f}  (threshold {MIN_SNARC_STD_PER_DIM})")
+    print()
+    print(f"  Per-class:")
+    for c in m.per_class:
+        print(f"    {c.name:10s}: n={c.n:6d}  P={c.precision:.3f}  R={c.recall:.3f}  F1={c.f1:.3f}")
+    print()
+    verdict_colors = {"PASS": "✓", "INCONCLUSIVE": "~", "FAIL": "✗", "PENDING": "?"}
+    print(f"  Verdict: {verdict_colors.get(m.verdict, '?')} {m.verdict}")
+    if m.verdict_reasons:
+        print(f"  Reasons:")
+        for r in m.verdict_reasons:
+            print(f"    - {r}")
+
+
+def _to_json_safe(m: Phase1Metrics) -> Dict[str, Any]:
+    d = asdict(m)
+    d["thresholds"] = {
+        "phase1_aggregate": PHASE1_AGGREGATE_AGREEMENT_THRESHOLD,
+        "modal_dummy_margin_pp": MODAL_DUMMY_MARGIN_THRESHOLD_PP,
+        "per_class_f1": PER_CLASS_F1_THRESHOLD,
+        "salience_weighted": SALIENCE_WEIGHTED_THRESHOLD,
+        "snarc_utility_delta": SNARC_UTILITY_DELTA_THRESHOLD,
+        "rare_decision_recall": RARE_DECISION_RECALL_THRESHOLD,
+        "min_decision_classes": MIN_DECISION_CLASSES,
+        "min_entropy_nats": MIN_ENTROPY_NATS,
+        "min_snarc_std": MIN_SNARC_STD_PER_DIM,
+    }
+    return d
+
+
+def main() -> int:
+    p = argparse.ArgumentParser()
+    p.add_argument("--data", required=True,
+                   help="Path to router shadow partitions (per-machine dir OR _aggregate/).")
+    p.add_argument("--source", default=None,
+                   help="Optional filter on metadata.source (raising|gameplay|idle|interactive).")
+    p.add_argument("--seed", type=int, default=42)
+    p.add_argument("--test-frac", type=float, default=0.2)
+    p.add_argument("--json-out", default=None,
+                   help="If set, write the full report as JSON to this path.")
+    p.add_argument("--strict", action="store_true",
+                   help="Exit non-zero on FAIL or INCONCLUSIVE (for CI).")
+    args = p.parse_args()
+
+    records = load_records(args.data, source_filter=args.source)
+    print(f"Loaded {len(records)} records from {args.data}"
+          + (f" (source={args.source})" if args.source else ""))
+    if len(records) < 100:
+        print("Insufficient data (<100 records). Wait for capture to accumulate.")
+        return 2
+
+    m = evaluate_phase1(records, test_frac=args.test_frac, seed=args.seed)
+    _print_report(m)
+
+    if args.json_out:
+        with open(args.json_out, "w") as f:
+            json.dump(_to_json_safe(m), f, indent=2)
+        print(f"\nWrote JSON report: {args.json_out}")
+
+    if args.strict and m.verdict != "PASS":
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

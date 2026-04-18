@@ -1,8 +1,8 @@
 """
 Thalamic router — schemas + data pipeline.
 
-Phase 0 Track 1 ships the schemas only. Feature extraction (Track 2),
-programmatic baseline (Track 3), dataset writer/reader (Track 4), and
+Phase 0 Track 1 ships the schemas. Track 4 ships the data pipeline.
+Feature extraction (Track 2), programmatic baseline (Track 3), and
 consciousness-loop integration (Track 5) follow in subsequent PRs.
 
 Spec: shared-context/arc-agi-3/phase2/brain-arch/thalamic-router-prd.md

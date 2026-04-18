@@ -467,7 +467,20 @@ class GameplayCapture:
 
 def _discover_trace(game_family: str, game_id: str) -> Optional[Path]:
     """Find the best replayable trace for a game: solutions.json > latest run_*"""
-    vm = Path("/mnt/c/exe/projects/ai-agents/ARC-SAGE/knowledge/visual-memory") / game_family
+    # Search multiple workspace roots — different machines use different paths
+    for root in [
+        Path(os.environ.get("ARC_SAGE_DIR", "")),
+        Path("/mnt/c/exe/projects/ai-agents/ARC-SAGE"),
+        Path("/mnt/c/projects/ai-agents/arc-sage"),
+        Path.home() / "ai-workspace" / "ARC-SAGE",
+        Path.home() / "repos" / "ARC-SAGE",
+    ]:
+        vm = root / "knowledge" / "visual-memory" / game_family
+        if vm.is_dir():
+            break
+    else:
+        return None
+    vm = vm  # use the found path
     if not vm.is_dir():
         return None
     sol = vm / "solutions.json"
@@ -505,7 +518,24 @@ def main() -> int:
     # Resolve game_id if not provided
     game_id = args.game_id
     if not game_id:
-        coord_path = Path("/mnt/c/exe/projects/ai-agents/ARC-SAGE/knowledge/game_coordination.json")
+        # Search multiple workspace roots for coordination JSON
+        coord_path = None
+        for root in [
+            Path(os.environ.get("ARC_SAGE_DIR", "")),
+            Path("/mnt/c/exe/projects/ai-agents/ARC-SAGE"),
+            Path("/mnt/c/projects/ai-agents/arc-sage"),
+            Path("/mnt/c/projects/ai-agents/shared-context/arc-agi-3"),
+            Path.home() / "ai-workspace" / "ARC-SAGE",
+            Path.home() / "repos" / "ARC-SAGE",
+        ]:
+            candidate = root / "knowledge" / "game_coordination.json"
+            if not candidate.exists():
+                candidate = root / "game_coordination.json"
+            if candidate.exists():
+                coord_path = candidate
+                break
+        if coord_path is None:
+            coord_path = Path("/dev/null")  # will fail gracefully below
         try:
             coord = json.loads(coord_path.read_text())
             for g in coord.get("games", []):

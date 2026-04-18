@@ -12,8 +12,12 @@ This is the SNARC architecture applied to raising:
 
 Usage:
     python3 -m sage.raising.scripts.dream_consolidation \
-        --instance sage/instances/cbp-tinyllama-latest \
+        --instance sage/instances/cbp-gemma3-4b \
         --session 16
+
+Note: --instance takes any per-machine+model slug. CBP's default was
+tinyllama:latest (too small for meaningful cognition) through 2026-04-18;
+now gemma3:4b.
 """
 
 import argparse

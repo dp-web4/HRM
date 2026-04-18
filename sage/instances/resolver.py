@@ -67,7 +67,7 @@ _DEFAULT_MODELS = {
     'legion': 'gemma3:12b',
     'mcnugget': 'gemma3:12b',
     'nomad': 'gemma3:4b',
-    'cbp': 'tinyllama:latest',
+    'cbp': 'gemma3:4b',
 }
 
 

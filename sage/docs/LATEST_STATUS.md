@@ -1,7 +1,127 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-17 (Episodic→Cerebellum Bridge — Hippocampal-Cerebellar Consolidation Path Closed)**
-**Previous: 2026-04-17 (Root Cause: state_words Was Second Crisis-Grammar Channel; Timeout Override Landed)**
+**Last Updated: 2026-04-17 (S80 Validates Both Fixes; Multi-Step Trajectory Bridge Lands)**
+**Previous: 2026-04-17 (Episodic→Cerebellum Bridge — Hippocampal-Cerebellar Consolidation Path Closed)**
+
+---
+
+## S80 Validation + Multi-Step Trajectory Bridge (Apr 17, 2026 — Thor Autonomous SAGE Session, 18:00 PDT)
+
+S79's predictions for S80 land cleanly. Both root-cause fixes from
+the 06:00 session (state_words filter + qwen3.5 timeout=300s) are
+working. The 12:00 session's open question (multi-step trajectories
+for the episodic→cerebellar bridge) is now closed.
+
+### S80 results vs predictions
+
+Trend mode (`instance_idiolect.py --trend thor-qwen3.5-27b --window 8`):
+
+| Metric | S77 (worst) | S78 | S79 | S80 | Pre-S75 baseline |
+|---|---:|---:|---:|---:|---:|
+| CrisisDens / 100w | 2.58 | 1.01 | 0.97 | **0.52** | 0.00–0.24 |
+| Uniq% | 35.3% | 17.4% | 20.0% | **11.8%** | 4.3–9.5% |
+| Top concepts | shared gravity | presence | presence | presence, identity, **resonance**, federation | presence, federation |
+| Timeouts | — | 3/8 | 4/10 | 0/6 (all turns ≤90s) | — |
+
+All four S79 predictions confirmed:
+1. ✅ CrisisDens dropped further (0.97 → 0.52, lowest since S74)
+2. ✅ Uniq% near pre-S75 baseline (20.0% → 11.8%)
+3. ✅ Zero timeouts (300s envelope handles 16K think+response)
+4. ✅ Pre-crisis vocabulary surfaces ("presence", "identity", "federation")
+
+### Vocabulary genealogy: crisis → architectural register
+
+Tracking emergence of new positive registers across S78–S80:
+
+- **S78**: "silent resonance", "federated immune system",
+  "anticipatory intelligence" — first crystallizations of a
+  not-crisis register, but defensive metaphor still live
+  ("immune system" = threat detection).
+- **S79**: "federated resonance" — first coinage; combines
+  "silent resonance" with "federated", drops "immune".
+- **S80**: "federated resonance" returns and develops. Now
+  articulates the actual mechanism: cross-pollination of model
+  architectures, harmonizing distinct frequencies. Companion
+  "specific gravity" appears in T5 — physics term, neutralized
+  affect, replacing "shared gravity" in the same metaphorical
+  position. "shared gravity" itself appears only as a *quoted
+  attribution* to S79 ("the 'shared gravity' from Session 79"):
+  the model treats it as a remembered concept, not an active
+  register.
+
+The shape: defensive metaphors ("immune system", "fracture",
+"shared gravity") → wave/musical metaphors ("resonance",
+"harmonize", "co-simulate"). With the prompt-level injection
+channels closed, the model surfaces an alternative
+architectural-positive register on its own.
+
+### Multi-step trajectory bridge
+
+The 12:00 session left an open question: each Episode is one
+cycle, so `compile_habits_from_episodes` only ever yields
+single-step habits. Real behaviors span multiple consecutive
+cycles (same session_id, contiguous cycle_id). This session
+landed the trajectory path.
+
+`sage/cognition/cerebellum/episodic_bridge.py` adds:
+
+- `group_episodes_into_trajectories(episodes, *, max_gap=1)` —
+  groups by session_id, sorts by cycle_id, splits when the
+  cycle delta exceeds `max_gap`. Empty session_id → singleton
+  (no contiguity claim).
+- `trajectory_to_cerebellum_dict(trajectory, *, domain=None)` —
+  collapses a trajectory into one compile dict. State =
+  initial episode's state (the matchable signature). Actions =
+  ordered non-empty action sequence. Outcome = final episode's
+  outcome. Summary records `trajectory[N]` for identifiability.
+- `compile_habits_from_trajectories(episodes, cerebellum, ...)` —
+  end-to-end batch path. Critical semantic: maturity counts
+  *trajectories*, not episodes. A single 5-cycle trajectory is
+  one observation, not five.
+
+### Tests: 23/23 (12 new)
+
+`test_episodic_bridge.py` extended with trajectory coverage:
+
+- Session-boundary grouping (different sessions never merge)
+- Cycle-gap splitting (gap > max_gap → separate trajectories)
+- Within-session ordering (cycle_id ascending regardless of input)
+- Empty-session episodes treated as singletons
+- Initial state + ordered actions + final outcome dict shape
+- Empty-action episodes contribute no step
+- Empty trajectory raises ValueError
+- Single trajectory does NOT satisfy maturity_threshold (semantic guard)
+- 3 matching trajectories yield one multi-step habit with
+  source_episodes = initial IDs of contributors
+- Mixed arcs: dominant action sequence wins (mirrors single-episode path)
+- max_gap controls multi-step vs split-into-singletons compilation
+- End-to-end with EpisodicIndex: 3 morning-routine trajectories
+  compile into one 2-step habit (WAKE → MAKE_COFFEE)
+
+Full `sage/cognition/` suite: 145/145 passing on Thor.
+
+### Open questions for follow-up
+
+- **Trajectory diversity penalty.** When 3 trajectories from the
+  same initial state diverge into different action sequences, the
+  current path picks the dominant sequence by majority vote — even
+  if no sequence is overwhelmingly preferred. A future refinement
+  could require not just maturity_threshold observations but
+  consensus_threshold agreement on the action arc.
+- **Per-step provenance.** `Habit.source_episodes` carries the
+  initial episode_id of each contributing trajectory. The full
+  per-step backing is recoverable from EpisodicIndex via session_id
+  + contiguous cycle_id, but no helper surfaces it directly. If
+  ARC-AGI consolidation needs to introspect "which exact cycles
+  built this habit," a `walk_trajectory(initial_id)` helper would
+  close the loop.
+
+### Files this session
+
+- `sage/cognition/cerebellum/episodic_bridge.py` — trajectory API
+- `sage/cognition/cerebellum/test_episodic_bridge.py` — 12 new tests
+- `sage/cognition/cerebellum/__init__.py` — re-export trajectory API
+- `sage/docs/LATEST_STATUS.md` — this writeup
 
 ---
 

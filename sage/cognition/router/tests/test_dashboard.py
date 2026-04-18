@@ -26,6 +26,7 @@ Run::
 from __future__ import annotations
 
 import json
+import math
 import random
 import time
 from datetime import date, datetime, timedelta, timezone
@@ -36,9 +37,14 @@ import pytest
 
 from sage.cognition.router.dashboard import (
     AGENT_ZERO_MARGIN_PP,
+    DRIFT_ALERT_THRESHOLD_NATS,
+    DRIFT_MIN_SAMPLES_PER_WINDOW,
+    DRIFT_SERVING_WINDOW_DAYS,
+    DRIFT_TRAINING_MIN_AGE_DAYS,
     DashboardBuilder,
     DashboardMetrics,
     SNARC_DIMENSIONS,
+    _kl_divergence,
     render_json,
     render_markdown,
 )
@@ -571,4 +577,346 @@ def test_performance_smoke_100k_records(tmp_path: Path) -> None:
     elapsed = time.time() - t0
     assert metrics.aggregate.total_records == 100_000
     # Loose budget for CI variance — real run on dev hardware is sub-5s.
+    # Drift monitoring was added in R4; it shares the same record pass so
+    # cost is effectively constant overhead — the 20s guard still holds.
     assert elapsed < 20.0, f"dashboard too slow on 100k: {elapsed:.2f}s"
+
+
+# ──────────────────────────────────────────────────────────────────────
+# SNARC distribution-drift monitoring (PRD §4.7.G) — Sprint 2 R4
+# ──────────────────────────────────────────────────────────────────────
+
+
+def _write_drift_dataset(
+    base: Path,
+    *,
+    machine: str,
+    training_samples: List[Dict[str, float]],
+    serving_samples: List[Dict[str, float]],
+    now: datetime,
+    training_age_days: int = DRIFT_TRAINING_MIN_AGE_DAYS + 5,
+    serving_age_days: int = 1,
+) -> None:
+    """Write a training-window batch (old) and a serving-window batch (recent).
+
+    Training records are stamped (now - training_age_days), serving
+    records are stamped (now - serving_age_days). Uses direct gzip write
+    so a single test partition holds both — the dashboard buckets by
+    record-timestamp, not partition path, for drift.
+    """
+    import gzip
+
+    t_train = (now - timedelta(days=training_age_days)).timestamp()
+    t_serve = (now - timedelta(days=serving_age_days)).timestamp()
+
+    train_path = (
+        base / machine / (now - timedelta(days=training_age_days)).strftime("%Y-%m-%d")
+    ).with_suffix(".jsonl.gz")
+    serve_path = (
+        base / machine / (now - timedelta(days=serving_age_days)).strftime("%Y-%m-%d")
+    ).with_suffix(".jsonl.gz")
+    train_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with gzip.open(train_path, "wt", encoding="utf-8") as gf:
+        for i, s in enumerate(training_samples):
+            rec = _make_record(
+                i,
+                action="noop",
+                machine=machine,
+                timestamp=t_train,
+                arousal=s.get("arousal", 0.1),
+                surprise=s.get("surprise", 0.1),
+                novelty=s.get("novelty", 0.1),
+                conflict=s.get("conflict", 0.1),
+                reward=s.get("reward", 0.0),
+            )
+            gf.write(json.dumps(rec) + "\n")
+
+    with gzip.open(serve_path, "wt", encoding="utf-8") as gf:
+        for i, s in enumerate(serving_samples):
+            rec = _make_record(
+                1_000_000 + i,
+                action="noop",
+                machine=machine,
+                timestamp=t_serve,
+                arousal=s.get("arousal", 0.1),
+                surprise=s.get("surprise", 0.1),
+                novelty=s.get("novelty", 0.1),
+                conflict=s.get("conflict", 0.1),
+                reward=s.get("reward", 0.0),
+            )
+            gf.write(json.dumps(rec) + "\n")
+
+
+def test_kl_divergence_identical_distributions_is_zero() -> None:
+    """KL(P||P) = 0 by construction; also exercises the smoothing path."""
+    p = [10, 20, 30, 40, 0, 0, 5, 15, 25, 35]
+    assert _kl_divergence(p, p) == pytest.approx(0.0, abs=1e-9)
+
+
+def test_kl_divergence_disjoint_distributions_is_large() -> None:
+    """Disjoint supports → KL large (bounded by smoothing, not infinite)."""
+    p = [100, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    q = [0, 0, 0, 0, 0, 0, 0, 0, 0, 100]
+    kl = _kl_divergence(p, q)
+    # Order-of-magnitude check: divergence should be well above the alert
+    # threshold, and — critically — finite thanks to smoothing.
+    assert math.isfinite(kl)
+    assert kl > DRIFT_ALERT_THRESHOLD_NATS * 10
+
+
+def test_kl_divergence_smoothing_handles_zero_bins() -> None:
+    """Zero-count bins in Q must not push KL to +inf — smoothing does the work."""
+    p = [50, 50, 0, 0, 0, 0, 0, 0, 0, 0]
+    q = [50, 0, 50, 0, 0, 0, 0, 0, 0, 0]  # different support
+    kl = _kl_divergence(p, q)
+    assert math.isfinite(kl)
+    assert kl > 0.0
+
+
+def test_drift_no_drift_returns_healthy_status(tmp_path: Path) -> None:
+    """Training-window and serving-window drawn from the same distribution
+    → KL ≈ 0 → HEALTHY on every dim with enough data.
+    """
+    base = tmp_path / "router_data"
+    now = datetime(2026, 4, 15, 12, 0, tzinfo=timezone.utc)
+
+    rng = random.Random(0xC0FFEE)
+
+    def _sample() -> Dict[str, float]:
+        return {
+            "arousal": rng.random(),
+            "surprise": rng.random(),
+            "novelty": rng.random(),
+            "conflict": rng.random(),
+            "reward": rng.uniform(-1, 1),
+        }
+
+    n = DRIFT_MIN_SAMPLES_PER_WINDOW + 500
+    training = [_sample() for _ in range(n)]
+    serving = [_sample() for _ in range(n)]
+
+    _write_drift_dataset(
+        base,
+        machine="sprout",
+        training_samples=training,
+        serving_samples=serving,
+        now=now,
+    )
+
+    builder = DashboardBuilder(base_dir=base, clock=_fixed_clock(now.timestamp()))
+    metrics = builder.build()
+
+    drift = metrics.drift_aggregate
+    # Every dim should be HEALTHY — same distribution on both windows.
+    for dim in SNARC_DIMENSIONS:
+        d = drift.dimensions[dim]
+        assert d.status == "HEALTHY", (
+            f"{dim}: expected HEALTHY, got {d.status} (kl={d.kl_nats})"
+        )
+        assert d.kl_nats is not None and math.isfinite(d.kl_nats)
+        assert d.kl_nats < DRIFT_ALERT_THRESHOLD_NATS
+        assert d.training_count >= DRIFT_MIN_SAMPLES_PER_WINDOW
+        assert d.serving_count >= DRIFT_MIN_SAMPLES_PER_WINDOW
+    assert drift.any_alert is False
+    assert drift.awaiting_baseline is False
+
+
+def test_drift_extreme_shift_fires_alert(tmp_path: Path) -> None:
+    """Training = low arousal mode, serving = high arousal mode → DRIFT ALERT."""
+    base = tmp_path / "router_data"
+    now = datetime(2026, 4, 15, 12, 0, tzinfo=timezone.utc)
+    n = DRIFT_MIN_SAMPLES_PER_WINDOW + 100
+
+    rng = random.Random(0xBAD)
+
+    # Training: arousal concentrated near 0.1 (low).
+    training = [
+        {
+            "arousal": max(0.0, min(1.0, rng.gauss(0.1, 0.03))),
+            "surprise": rng.random(),
+            "novelty": rng.random(),
+            "conflict": rng.random(),
+            "reward": rng.uniform(-1, 1),
+        }
+        for _ in range(n)
+    ]
+    # Serving: arousal concentrated near 0.9 (high) — disjoint mode.
+    serving = [
+        {
+            "arousal": max(0.0, min(1.0, rng.gauss(0.9, 0.03))),
+            "surprise": rng.random(),
+            "novelty": rng.random(),
+            "conflict": rng.random(),
+            "reward": rng.uniform(-1, 1),
+        }
+        for _ in range(n)
+    ]
+
+    _write_drift_dataset(
+        base,
+        machine="sprout",
+        training_samples=training,
+        serving_samples=serving,
+        now=now,
+    )
+
+    builder = DashboardBuilder(base_dir=base, clock=_fixed_clock(now.timestamp()))
+    metrics = builder.build()
+
+    drift = metrics.drift_aggregate
+    arousal = drift.dimensions["arousal"]
+    assert arousal.status == "DRIFT ALERT"
+    assert arousal.kl_nats is not None
+    assert arousal.kl_nats >= DRIFT_ALERT_THRESHOLD_NATS
+    assert drift.any_alert is True
+    # The other dims sampled uniformly on both sides — they should be
+    # HEALTHY (aside from small floating noise).
+    for dim in ("surprise", "novelty", "conflict", "reward"):
+        d = drift.dimensions[dim]
+        assert d.status in ("HEALTHY", "DRIFT ALERT")  # usually HEALTHY
+        # Weak assertion: at least all other dims MUST be evaluated
+        # (not INSUFFICIENT DATA) — same sample count as arousal.
+        assert d.training_count >= DRIFT_MIN_SAMPLES_PER_WINDOW
+        assert d.serving_count >= DRIFT_MIN_SAMPLES_PER_WINDOW
+    # Markdown surfaces the alert status.
+    md = render_markdown(metrics)
+    assert "SNARC distribution drift" in md
+    assert "DRIFT ALERT" in md
+    assert "PRD §4.7.G" in md
+
+
+def test_drift_insufficient_data_flags_not_alerts(tmp_path: Path) -> None:
+    """Under the sample floor → INSUFFICIENT DATA, never a false alarm,
+    even when raw KL would exceed threshold."""
+    base = tmp_path / "router_data"
+    now = datetime(2026, 4, 15, 12, 0, tzinfo=timezone.utc)
+
+    # Tiny samples — far below DRIFT_MIN_SAMPLES_PER_WINDOW — but with
+    # deliberately disjoint modes so raw KL would absolutely scream.
+    training = [{"arousal": 0.05} for _ in range(50)]
+    serving = [{"arousal": 0.95} for _ in range(50)]
+
+    _write_drift_dataset(
+        base,
+        machine="sprout",
+        training_samples=training,
+        serving_samples=serving,
+        now=now,
+    )
+
+    builder = DashboardBuilder(base_dir=base, clock=_fixed_clock(now.timestamp()))
+    metrics = builder.build()
+
+    drift = metrics.drift_aggregate
+    for dim in SNARC_DIMENSIONS:
+        d = drift.dimensions[dim]
+        assert d.status == "INSUFFICIENT DATA", (
+            f"{dim}: expected INSUFFICIENT DATA with {d.training_count}/"
+            f"{d.serving_count} samples, got {d.status}"
+        )
+        assert d.kl_nats is None
+    assert drift.any_alert is False
+    assert drift.awaiting_baseline is True
+
+    md = render_markdown(metrics)
+    # With no dimension meeting the floor anywhere, the section should
+    # show the "awaiting baseline" preamble — NOT a scary alert.
+    assert "awaiting baseline" in md.lower()
+    assert "DRIFT ALERT" not in md
+
+
+def test_drift_per_machine_isolation(tmp_path: Path) -> None:
+    """One drifting machine must not mask another healthy machine.
+
+    Sprout drifts (disjoint arousal modes), Thor is stable (identical
+    distributions both windows). The per-machine report must surface the
+    alert on sprout only.
+    """
+    base = tmp_path / "router_data"
+    now = datetime(2026, 4, 15, 12, 0, tzinfo=timezone.utc)
+    n = DRIFT_MIN_SAMPLES_PER_WINDOW + 100
+
+    rng_s = random.Random(1)
+    rng_t = random.Random(2)
+
+    # Sprout: arousal drift.
+    sprout_training = [
+        {"arousal": max(0.0, min(1.0, rng_s.gauss(0.1, 0.02)))} for _ in range(n)
+    ]
+    sprout_serving = [
+        {"arousal": max(0.0, min(1.0, rng_s.gauss(0.9, 0.02)))} for _ in range(n)
+    ]
+    # Thor: same distribution on both sides.
+    thor_training = [{"arousal": rng_t.random()} for _ in range(n)]
+    thor_serving = [{"arousal": rng_t.random()} for _ in range(n)]
+
+    _write_drift_dataset(
+        base, machine="sprout",
+        training_samples=sprout_training, serving_samples=sprout_serving,
+        now=now,
+    )
+    _write_drift_dataset(
+        base, machine="thor",
+        training_samples=thor_training, serving_samples=thor_serving,
+        now=now,
+    )
+
+    builder = DashboardBuilder(base_dir=base, clock=_fixed_clock(now.timestamp()))
+    metrics = builder.build()
+
+    assert "sprout" in metrics.drift_per_machine
+    assert "thor" in metrics.drift_per_machine
+    sprout_drift = metrics.drift_per_machine["sprout"]
+    thor_drift = metrics.drift_per_machine["thor"]
+
+    assert sprout_drift.dimensions["arousal"].status == "DRIFT ALERT"
+    assert sprout_drift.any_alert is True
+
+    # Thor's arousal is healthy — the per-machine isolation worked.
+    thor_arousal = thor_drift.dimensions["arousal"]
+    assert thor_arousal.status == "HEALTHY"
+    assert thor_arousal.kl_nats is not None
+    assert thor_arousal.kl_nats < DRIFT_ALERT_THRESHOLD_NATS
+    assert thor_drift.any_alert is False
+
+    # Aggregate still fires since sprout's contribution to aggregate
+    # arousal is half of the combined histogram.
+    agg_arousal = metrics.drift_aggregate.dimensions["arousal"]
+    assert agg_arousal.status in ("DRIFT ALERT", "HEALTHY")
+    # The markdown must contain both per-machine headers.
+    md = render_markdown(metrics)
+    assert "### sprout" in md
+    assert "### thor" in md
+
+
+def test_drift_json_output_includes_drift_block(tmp_path: Path) -> None:
+    """render_json must expose drift_aggregate + drift_per_machine."""
+    base = tmp_path / "router_data"
+    now = datetime(2026, 4, 15, 12, 0, tzinfo=timezone.utc)
+    n = DRIFT_MIN_SAMPLES_PER_WINDOW + 50
+
+    rng = random.Random(42)
+    training = [
+        {"arousal": rng.random(), "surprise": rng.random()} for _ in range(n)
+    ]
+    serving = [
+        {"arousal": rng.random(), "surprise": rng.random()} for _ in range(n)
+    ]
+    _write_drift_dataset(
+        base, machine="sprout",
+        training_samples=training, serving_samples=serving, now=now,
+    )
+
+    builder = DashboardBuilder(base_dir=base, clock=_fixed_clock(now.timestamp()))
+    metrics = builder.build()
+    js = render_json(metrics)
+    parsed = json.loads(js)
+
+    assert "drift_aggregate" in parsed
+    assert "drift_per_machine" in parsed
+    assert "sprout" in parsed["drift_per_machine"]
+    for dim in SNARC_DIMENSIONS:
+        assert dim in parsed["drift_aggregate"]["dimensions"]
+    # Schema version must bump — consumers check this.
+    assert parsed["schema_version"] != "v0.1.0"

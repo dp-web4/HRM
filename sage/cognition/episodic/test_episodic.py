@@ -427,6 +427,82 @@ def test_walk_trajectory_unknown_id_raises():
     print("  PASS: walk_trajectory raises on unknown id / bad max_gap")
 
 
+def test_walk_trajectory_backward_from_mid_session():
+    """Backward walk from a mid-trajectory anchor recovers earlier context."""
+    index = EpisodicIndex()
+    ids = []
+    for cid in range(4):
+        ids.append(index.bind(_traj_ep("s1", cid)))
+
+    # Anchor at cycle 2; walk backward → [0, 1, 2] in ascending order.
+    traj = index.walk_trajectory(ids[2], direction="backward")
+    assert [e.cycle_id for e in traj] == [0, 1, 2]
+    assert traj[-1].episode_id == ids[2]
+
+    # Anchor at cycle 0 (leftmost): singleton.
+    traj0 = index.walk_trajectory(ids[0], direction="backward")
+    assert [e.cycle_id for e in traj0] == [0]
+    print("  PASS: walk_trajectory backward from mid-session")
+
+
+def test_walk_trajectory_backward_stops_at_gap():
+    """Backward walk terminates at a gap wider than max_gap."""
+    index = EpisodicIndex()
+    index.bind(_traj_ep("s1", 0))
+    index.bind(_traj_ep("s1", 1))
+    # cycle 4 is 3 cycles from cycle 1 — gap
+    index.bind(_traj_ep("s1", 4))
+    anchor_id = index.bind(_traj_ep("s1", 5))
+
+    # Default max_gap=1: backward from 5 stops at the 4→1 gap.
+    traj = index.walk_trajectory(anchor_id, direction="backward")
+    assert [e.cycle_id for e in traj] == [4, 5]
+
+    # max_gap=3 bridges the gap.
+    traj_wide = index.walk_trajectory(anchor_id, direction="backward", max_gap=3)
+    assert [e.cycle_id for e in traj_wide] == [0, 1, 4, 5]
+    print("  PASS: walk_trajectory backward stops at gap (and widens)")
+
+
+def test_walk_trajectory_both_reconstructs_full_session():
+    """direction='both' from a mid-trajectory anchor reconstructs the full arc."""
+    index = EpisodicIndex()
+    ids = []
+    for cid in range(5):
+        ids.append(index.bind(_traj_ep("s1", cid)))
+    # Decoy in another session should never enter the walk.
+    index.bind(_traj_ep("s2", 2))
+
+    # Anchor in the middle (cycle 2). 'both' spans full session.
+    traj = index.walk_trajectory(ids[2], direction="both")
+    assert [e.cycle_id for e in traj] == [0, 1, 2, 3, 4]
+    assert {e.session_id for e in traj} == {"s1"}
+    # Anchor appears exactly once even though it is the join point.
+    assert sum(1 for e in traj if e.episode_id == ids[2]) == 1
+
+    # Anchor at leftmost: 'both' equals 'forward'.
+    traj_left = index.walk_trajectory(ids[0], direction="both")
+    assert [e.cycle_id for e in traj_left] == [0, 1, 2, 3, 4]
+
+    # Anchor at rightmost: 'both' equals 'backward'.
+    traj_right = index.walk_trajectory(ids[4], direction="both")
+    assert [e.cycle_id for e in traj_right] == [0, 1, 2, 3, 4]
+    print("  PASS: walk_trajectory both reconstructs full session from mid-anchor")
+
+
+def test_walk_trajectory_invalid_direction_raises():
+    """Unrecognized direction raises ValueError."""
+    import pytest
+    index = EpisodicIndex()
+    real_id = index.bind(_traj_ep("s1", 0))
+
+    with pytest.raises(ValueError):
+        index.walk_trajectory(real_id, direction="sideways")
+    with pytest.raises(ValueError):
+        index.walk_trajectory(real_id, direction="")
+    print("  PASS: walk_trajectory invalid direction raises")
+
+
 if __name__ == "__main__":
     print("=" * 60)
     print("Episodic Memory Index — Test Suite")
@@ -452,6 +528,10 @@ if __name__ == "__main__":
         test_walk_trajectory_excludes_other_sessions,
         test_walk_trajectory_empty_session_is_singleton,
         test_walk_trajectory_unknown_id_raises,
+        test_walk_trajectory_backward_from_mid_session,
+        test_walk_trajectory_backward_stops_at_gap,
+        test_walk_trajectory_both_reconstructs_full_session,
+        test_walk_trajectory_invalid_direction_raises,
     ]
 
     passed = 0

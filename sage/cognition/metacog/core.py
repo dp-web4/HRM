@@ -1,11 +1,10 @@
 """
 Metacog core — five dysfunction detectors + signal framework.
 
-Two detectors (budget_anxiety, exploration_starvation) are fully
-functional now. Three (perseveration, intention_amnesia, stale_reference)
-require WM v0.2 features (stable_key, get_by_type, slot timestamps)
-and are implemented against the WM interface but will only activate
-once those features ship.
+All five detectors are functional. Three (perseveration, intention_amnesia,
+stale_reference) integrate with WM v0.2 features (stable_key, get_by_type,
+event stream). If WM is not provided, they fall back to caller-supplied
+data or no-op gracefully.
 """
 
 from __future__ import annotations
@@ -80,7 +79,7 @@ class Metacog:
     def __init__(
         self,
         config: Optional[MetacogConfig] = None,
-        wm: Any = None,  # WorkingMemory when CBP ships v0.2
+        wm: Any = None,
         on_signal: Optional[Callable[[MetacogSignal], None]] = None,
     ) -> None:
         self.config = config or MetacogConfig()
@@ -98,6 +97,25 @@ class Metacog:
         self._novelty_history: deque = deque(maxlen=100)
         self._total_atp_spent: float = 0.0
         self._actions_taken: int = 0
+
+        # WM event tracking — slot_id → last tick it was written/updated
+        self._slot_last_touched: Dict[str, int] = {}
+        # WM stable_key history for perseveration
+        self._stable_key_history: deque = deque(maxlen=50)
+
+        # Wire up WM event subscription if available
+        if wm is not None and hasattr(wm, '_on_event_cb'):
+            # Register ourselves as the event callback
+            wm._on_event_cb = self._handle_wm_event
+
+    def _handle_wm_event(self, event: Any) -> None:
+        """Callback from WM events — tracks slot access times."""
+        kind = getattr(event, 'kind', '')
+        slot_id = getattr(event, 'slot_id', None)
+        if kind in ('write', 'update', 'read') and slot_id:
+            self._slot_last_touched[slot_id] = self._tick
+        if kind == 'evict' and slot_id:
+            self._slot_last_touched.pop(slot_id, None)
 
     # ------------------------------------------------------------------
     # Main entry point
@@ -136,6 +154,21 @@ class Metacog:
         if snarc_novelty is not None:
             self._novelty_history.append(snarc_novelty)
 
+        # Track WM stable_key for perseveration (if WM available)
+        if self._wm is not None and hasattr(self._wm, 'stable_key'):
+            try:
+                key = self._wm.stable_key()
+                self._stable_key_history.append({"tick": tick, "key": key})
+            except Exception:
+                pass
+
+        # Auto-extract goal/plan from WM if not caller-supplied
+        if self._wm is not None:
+            if goal_content is None:
+                goal_content = self._extract_wm_content("goal")
+            if plan_step_content is None:
+                plan_step_content = self._extract_wm_content("plan_step")
+
         # Run detectors
         signals.extend(self._detect_perseveration())
         signals.extend(self._detect_intention_amnesia(goal_content, plan_step_content))
@@ -157,6 +190,21 @@ class Metacog:
                 emitted.append(sig)
 
         return emitted
+
+    # ------------------------------------------------------------------
+    # WM helpers
+    # ------------------------------------------------------------------
+
+    def _extract_wm_content(self, content_type: str) -> Optional[Dict[str, Any]]:
+        """Pull the first slot of a given type from WM."""
+        try:
+            slots = self._wm.get_by_type(content_type)
+            if slots:
+                content = slots[0].content
+                return content if isinstance(content, dict) else {"value": str(content)}
+        except (AttributeError, TypeError, IndexError):
+            pass
+        return None
 
     # ------------------------------------------------------------------
     # Signal management
@@ -191,6 +239,8 @@ class Metacog:
         self._last_fired.clear()
         self._action_history.clear()
         self._novelty_history.clear()
+        self._stable_key_history.clear()
+        self._slot_last_touched.clear()
         self._total_atp_spent = 0.0
         self._actions_taken = 0
 
@@ -223,27 +273,50 @@ class Metacog:
     # ------------------------------------------------------------------
 
     def _detect_perseveration(self) -> List[MetacogSignal]:
-        """Repeated similar actions with no state change."""
+        """Repeated similar actions with no state change.
+
+        If WM is available, uses stable_key() for precise detection.
+        Otherwise falls back to action-dict string comparison.
+        """
         cfg = self.config
+
+        # Prefer stable_key history when available
+        if self._stable_key_history and len(self._stable_key_history) >= cfg.perseveration_window:
+            recent_keys = [
+                e["key"] for e in list(self._stable_key_history)[-cfg.perseveration_window:]
+            ]
+            if len(set(recent_keys)) == 1:
+                # WM state hasn't changed across the window
+                window = list(self._action_history)[-cfg.perseveration_window:]
+                if len(window) >= cfg.perseveration_window and all(
+                    not entry.get("state_delta") for entry in window
+                ):
+                    return [
+                        MetacogSignal(
+                            signal="perseveration",
+                            severity=cfg.perseveration_severity,
+                            evidence={
+                                "action_count": cfg.perseveration_window,
+                                "stable_key": recent_keys[0],
+                                "detection_method": "wm_stable_key",
+                            },
+                            suggestion="reframe or abandon current approach",
+                        )
+                    ]
+            return []
+
+        # Fallback: action-dict comparison
         window = list(self._action_history)[-cfg.perseveration_window:]
         if len(window) < cfg.perseveration_window:
             return []
-
-        # Check if all actions in the window have zero state delta
-        all_zero_delta = all(
-            not entry.get("state_delta") for entry in window
-        )
+        all_zero_delta = all(not entry.get("state_delta") for entry in window)
         if not all_zero_delta:
             return []
-
-        # Check if actions are similar (same keys in action dict)
-        # With WM v0.2, this will use stable_key(). For now, use
-        # a simple string comparison of sorted action keys.
         action_strs = [
             str(sorted(entry.get("action", {}).items())) for entry in window
         ]
         if len(set(action_strs)) > 1:
-            return []  # different actions — not perseveration
+            return []
 
         return [
             MetacogSignal(
@@ -253,6 +326,7 @@ class Metacog:
                     "action_count": len(window),
                     "repeated_action": window[-1].get("action"),
                     "state_deltas": [e.get("state_delta") for e in window],
+                    "detection_method": "action_dict_fallback",
                 },
                 suggestion="reframe or abandon current approach",
             )
@@ -271,11 +345,9 @@ class Metacog:
         if goal_content is None or plan_step_content is None:
             return []
 
-        # Simple check: do goal and plan_step share any key terms?
         goal_terms = set(str(goal_content).lower().split())
         plan_terms = set(str(plan_step_content).lower().split())
 
-        # If goal and plan share fewer than 20% of terms, flag
         if not goal_terms or not plan_terms:
             return []
         overlap = len(goal_terms & plan_terms) / max(len(goal_terms), len(plan_terms))
@@ -302,26 +374,39 @@ class Metacog:
     def _detect_stale_reference(self) -> List[MetacogSignal]:
         """Acting on state information that's no longer current.
 
-        Full implementation requires WM v0.2 binding slot timestamps.
-        Stub: check if we have WM and if any binding is stale.
+        Uses event-stream-tracked access times when available.
+        Falls back to WM slot inspection.
         """
         if self._wm is None:
             return []
 
-        # WM v0.2 API: get_by_type("binding") returns slots with timestamps
-        try:
-            bindings = self._wm.get_by_type("binding")
-        except (AttributeError, TypeError):
-            return []  # WM doesn't support get_by_type yet
-
         stale: List[Dict[str, Any]] = []
-        for slot in bindings:
-            age = self._tick - getattr(slot, "last_access_tick", self._tick)
-            if age > self.config.stale_reference_ticks:
-                stale.append({
-                    "slot_id": getattr(slot, "slot_id", "?"),
-                    "age_ticks": age,
-                })
+
+        # Primary: check our event-tracked access times
+        if self._slot_last_touched:
+            try:
+                bindings = self._wm.get_by_type("binding")
+                for slot in bindings:
+                    sid = slot.slot_id
+                    last_touch = self._slot_last_touched.get(sid, 0)
+                    age = self._tick - last_touch
+                    if age > self.config.stale_reference_ticks:
+                        stale.append({"slot_id": sid, "age_ticks": age})
+            except (AttributeError, TypeError):
+                pass
+        else:
+            # Fallback: use slot's last_access_tick attribute if present
+            try:
+                bindings = self._wm.get_by_type("binding")
+                for slot in bindings:
+                    age = self._tick - getattr(slot, "last_access_tick", self._tick)
+                    if age > self.config.stale_reference_ticks:
+                        stale.append({
+                            "slot_id": getattr(slot, "slot_id", "?"),
+                            "age_ticks": age,
+                        })
+            except (AttributeError, TypeError):
+                pass
 
         if not stale:
             return []

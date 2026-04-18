@@ -1429,9 +1429,17 @@ class SAGEConsciousness:
                 RouterDatasetPruner,
             )
 
-            # Resolve dataset root. Config override wins; then
-            # instance_dir subfolder; finally a safe tmp path.
+            # Resolve dataset root. Precedence:
+            #   1. config['router_shadow_dir']  (explicit code-level override)
+            #   2. $SAGE_ROUTER_DATA_DIR        (operator / systemd env)
+            #   3. {instance_dir}/router_shadow (default per-instance)
+            #   4. /tmp/sage-router-shadow      (last-resort safe path)
+            # Env var wins over defaults so per-machine installers
+            # (Track 7) can point the fleet at a shared dataset root
+            # without a code change.
             base_dir = self.config.get('router_shadow_dir')
+            if not base_dir:
+                base_dir = os.environ.get('SAGE_ROUTER_DATA_DIR', '').strip() or None
             if not base_dir:
                 instance_dir = self.config.get('instance_dir', '')
                 if instance_dir:

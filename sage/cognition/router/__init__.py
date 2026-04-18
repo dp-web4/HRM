@@ -36,6 +36,14 @@ from sage.cognition.router.shadow import (
     SHADOW_ENV_VAR,
     is_shadow_enabled,
 )
+from sage.cognition.router.outcome import (
+    OutcomeTracker,
+    OUTCOME_SCHEMA_VERSION,
+    TRAJECTORY_TICKS,
+    STATUS_COMPLETE,
+    STATUS_INCOMPLETE,
+    STATUS_FAILED,
+)
 
 __all__ = [
     # Dataclasses
@@ -49,6 +57,13 @@ __all__ = [
     "RouterShadowHook",
     "SHADOW_ENV_VAR",
     "is_shadow_enabled",
+    # Outcome tracker (Track 6)
+    "OutcomeTracker",
+    "OUTCOME_SCHEMA_VERSION",
+    "TRAJECTORY_TICKS",
+    "STATUS_COMPLETE",
+    "STATUS_INCOMPLETE",
+    "STATUS_FAILED",
     # Constants
     "ROUTER_SCHEMA_VERSION",
     "CARTRIDGE_EMBEDDING_DIM",

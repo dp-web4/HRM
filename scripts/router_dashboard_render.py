@@ -110,7 +110,22 @@ def _parse_args(argv: Optional[list] = None) -> argparse.Namespace:
     p.add_argument(
         "--quiet",
         action="store_true",
-        help="Suppress stderr progress logging.",
+        help=(
+            "Cron-friendly mode: suppress all stderr progress logging "
+            "UNLESS a SNARC drift alert fires. Non-zero-signal output "
+            "only — your inbox will thank you."
+        ),
+    )
+    p.add_argument(
+        "--snarc-drift",
+        dest="snarc_drift",
+        default=None,
+        choices=("on", "off", "auto"),
+        help=(
+            "Control the SNARC drift section (PRD §4.7.G). "
+            "'on' always emits, 'off' suppresses, 'auto' (default) emits "
+            "when any dimension has enough data to evaluate."
+        ),
     )
     return p.parse_args(argv)
 
@@ -146,8 +161,13 @@ def _resolve_date_range(spec: Optional[str]) -> Optional[Tuple[str, str]]:
     return (start_s.strip(), end_s.strip())
 
 
-def _log(msg: str, *, quiet: bool) -> None:
-    if not quiet:
+def _log(msg: str, *, quiet: bool, force: bool = False) -> None:
+    """Emit a log line unless quiet is set.
+
+    ``force=True`` is reserved for drift-alert signalling — in --quiet
+    (cron) mode the ONLY stderr output should be a real event.
+    """
+    if force or not quiet:
         print(msg, file=sys.stderr, flush=True)
 
 
@@ -169,7 +189,17 @@ def main(argv: Optional[list] = None) -> int:
     )
     metrics = builder.build()
 
-    md = render_markdown(metrics)
+    # --snarc-drift: 'auto' (default) includes the section and the section
+    # itself self-censors to "awaiting baseline" when not enough data.
+    include_drift: bool
+    if args.snarc_drift in (None, "auto"):
+        include_drift = True
+    elif args.snarc_drift == "on":
+        include_drift = True
+    else:  # "off"
+        include_drift = False
+
+    md = render_markdown(metrics, include_drift=include_drift)
 
     # Idempotent overwrite — parent dir may not exist on first run.
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -192,6 +222,32 @@ def main(argv: Optional[list] = None) -> int:
         f"machines={len(metrics.per_machine)}, {elapsed*1000:.0f} ms)",
         quiet=args.quiet,
     )
+
+    # Drift alert signalling — in --quiet mode this is the ONLY stderr
+    # output the operator will see. Cron catches it via MAILTO / logging.
+    if metrics.drift_aggregate.any_alert:
+        drifting = sorted(
+            dim for dim, d in metrics.drift_aggregate.dimensions.items()
+            if d.status == "DRIFT ALERT"
+        )
+        _log(
+            f"[dashboard] SNARC DRIFT ALERT (PRD §4.7.G) on aggregate: "
+            f"dims={','.join(drifting)} — retraining flag",
+            quiet=args.quiet,
+            force=True,
+        )
+    for mach, rep in sorted(metrics.drift_per_machine.items()):
+        if rep.any_alert:
+            drifting = sorted(
+                dim for dim, d in rep.dimensions.items()
+                if d.status == "DRIFT ALERT"
+            )
+            _log(
+                f"[dashboard] SNARC DRIFT ALERT (PRD §4.7.G) on {mach}: "
+                f"dims={','.join(drifting)}",
+                quiet=args.quiet,
+                force=True,
+            )
     return 0
 
 

@@ -1,18 +1,53 @@
 """
-Thalamic Router — SAGE's learned dispatch policy.
+Thalamic router — schemas + data pipeline.
+
+Phase 0 Track 1 ships the schemas. Track 4 ships the data pipeline.
+Feature extraction (Track 2), programmatic baseline (Track 3), and
+consciousness-loop integration (Track 5) follow in subsequent PRs.
 
 Spec: shared-context/arc-agi-3/phase2/brain-arch/thalamic-router-prd.md
-Sprint plan: shared-context/arc-agi-3/phase2/brain-arch/router-sprint-1-phase-0.md
-
-The router decides, every consciousness-loop tick, what cognition to invoke.
-Sits at step 5 (Select) of the 12-step loop.
-
-Phase 0 ships the data pipeline only (this package + `data/`). Training,
-inference, and adapter machinery land in later phases.
+Sprint: shared-context/arc-agi-3/phase2/brain-arch/router-sprint-1-phase-0.md
 """
 
-# Track 1 (schemas) will populate this file with RouterInput/RouterOutput/
-# RouterRecord/Event. Track 4 (data pipeline) deliberately does NOT import
-# them yet — see `data/_stub.py` for the interim record shape.
+from sage.cognition.router.events import (
+    Event,
+    VALID_EVENT_KINDS,
+    ROUTER_KINDS,
+    WM_COMPATIBLE_KINDS,
+)
+from sage.cognition.router.inputs import (
+    RouterInput,
+    CARTRIDGE_EMBEDDING_DIM,
+    VALID_ATP_TRENDS,
+    VALID_METABOLIC_STATES,
+)
+from sage.cognition.router.outputs import (
+    RouterOutput,
+    VALID_ACTIONS,
+    VALID_RATIONALE_CODES,
+)
+from sage.cognition.router.record import (
+    RouterRecord,
+    ROUTER_SCHEMA_VERSION,
+)
+from sage.cognition.router.tiers import PluginTier
 
-__all__: list = []
+__all__ = [
+    # Dataclasses
+    "Event",
+    "RouterInput",
+    "RouterOutput",
+    "RouterRecord",
+    # Enum
+    "PluginTier",
+    # Constants
+    "ROUTER_SCHEMA_VERSION",
+    "CARTRIDGE_EMBEDDING_DIM",
+    "VALID_ACTIONS",
+    "VALID_ATP_TRENDS",
+    "VALID_EVENT_KINDS",
+    "VALID_METABOLIC_STATES",
+    "VALID_RATIONALE_CODES",
+    "ROUTER_KINDS",
+    "WM_COMPATIBLE_KINDS",
+]

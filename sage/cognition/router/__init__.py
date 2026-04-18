@@ -31,6 +31,11 @@ from sage.cognition.router.record import (
     ROUTER_SCHEMA_VERSION,
 )
 from sage.cognition.router.tiers import PluginTier
+from sage.cognition.router.shadow import (
+    RouterShadowHook,
+    SHADOW_ENV_VAR,
+    is_shadow_enabled,
+)
 
 __all__ = [
     # Dataclasses
@@ -40,6 +45,10 @@ __all__ = [
     "RouterRecord",
     # Enum
     "PluginTier",
+    # Shadow hook (Track 5)
+    "RouterShadowHook",
+    "SHADOW_ENV_VAR",
+    "is_shadow_enabled",
     # Constants
     "ROUTER_SCHEMA_VERSION",
     "CARTRIDGE_EMBEDDING_DIM",

@@ -17,8 +17,13 @@ from sage.cognition.thalamic_router.phase1_training import (
     SNARC_UTILITY_DELTA_THRESHOLD,
     MIN_SNARC_STD_PER_DIM,
     MIN_ENTROPY_NATS,
+    HEAD_B_ACTION_CLASSES,
+    HEAD_B_ACTION_NAMES,
+    HEAD_B_MARGIN_THRESHOLD_PP,
     build_xy,
+    build_xy_head_b,
     evaluate_phase1,
+    evaluate_phase1_head_b,
     compute_diversity,
     rare_decision_recall,
     salience_weighted_accuracy,
@@ -214,6 +219,82 @@ def test_diversity_counts_sources_correctly():
     d = compute_diversity(records)
     assert d["n_sources"] == 3
     assert d["sources"] == {"raising": 2, "gameplay": 1, "idle": 1}
+
+
+def _head_b_record(action: int, arousal: float, source: str = "gameplay") -> dict:
+    """Gameplay record with known_good_action in metadata."""
+    return {
+        "record_id": f"r{np.random.randint(1e9):09d}",
+        "schema_version": "v0.2.0",
+        "timestamp": 0.0,
+        "machine": "test",
+        "router_input": {
+            "snarc_surprise": arousal * 0.5,
+            "snarc_novelty": arousal * 0.3,
+            "snarc_arousal": arousal,
+            "snarc_reward": 0.0,
+            "snarc_conflict": 0.0,
+            "sensory_novelty": 0.1, "sensory_urgency": 0.1,
+            "atp_level": 70, "wm_goal_active": True, "wm_pressure": 0.3,
+            "habit_available": False, "habit_confidence": 0.0,
+            "sensory_modalities": ["vision"],
+            "metabolic_state": "focus",
+        },
+        "router_output": {"action": "invoke"},
+        "metadata": {
+            "source": source,
+            "known_good_action": action,
+            "game": "testgame",
+            "known_good_level": 0,
+        },
+    }
+
+
+def test_build_xy_head_b_drops_records_without_known_good():
+    recs = [
+        _head_b_record(action=1, arousal=0.1),
+        {"router_input": {}, "router_output": {"action": "noop"}, "metadata": {"source": "idle"}},
+        _head_b_record(action=6, arousal=0.5),
+    ]
+    X, y, kept = build_xy_head_b(recs, snarc=True)
+    assert len(y) == 2
+    assert list(y) == [1, 6]
+    assert kept == [0, 2]
+
+
+def test_build_xy_head_b_drops_out_of_range():
+    recs = [
+        _head_b_record(action=3, arousal=0.1),
+        _head_b_record(action=99, arousal=0.1),  # out of range
+    ]
+    _, y, _ = build_xy_head_b(recs, snarc=True)
+    assert list(y) == [3]
+
+
+def test_head_b_recovers_signal_when_action_correlates_with_arousal():
+    """If arousal perfectly predicts action class, LR should find it."""
+    np.random.seed(0)
+    recs = []
+    # Low arousal → action 1 (UP). High arousal → action 6 (CLICK).
+    for _ in range(75):
+        recs.append(_head_b_record(action=1, arousal=float(np.random.uniform(0.0, 0.2))))
+        recs.append(_head_b_record(action=6, arousal=float(np.random.uniform(0.7, 1.0))))
+    m = evaluate_phase1_head_b(recs, seed=1)
+    # Clean signal → model should substantially beat modal-dummy
+    assert m.margin_over_dummy >= HEAD_B_MARGIN_THRESHOLD_PP, (
+        f"expected margin ≥ {HEAD_B_MARGIN_THRESHOLD_PP}, got {m.margin_over_dummy:.4f}"
+    )
+    assert m.snarc_utility_delta is not None
+    # SNARC ablation should hurt accuracy when arousal IS the signal
+    assert m.snarc_utility_delta > 0
+
+
+def test_head_b_flat_features_yield_inconclusive_or_fail():
+    """When features don't vary, Head B can't beat the dummy."""
+    np.random.seed(1)
+    recs = [_head_b_record(action=i % 4, arousal=0.0) for i in range(200)]
+    m = evaluate_phase1_head_b(recs, seed=1)
+    assert m.verdict in ("INCONCLUSIVE", "FAIL"), f"got {m.verdict}"
 
 
 def test_build_xy_ablation_zeros_snarc_only():

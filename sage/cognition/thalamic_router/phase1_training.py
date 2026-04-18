@@ -81,6 +81,19 @@ MIN_DECISION_CLASSES = 2         # at least invoke vs noop
 MIN_ENTROPY_NATS = 0.3           # across decision classes
 MIN_SNARC_STD_PER_DIM = 0.05     # per-dim stddev — flags collinearity
 
+# Head B (action distillation) — relaxed gates, different target.
+# Fleet converged on Head A INCONCLUSIVE because the programmatic teacher
+# is SNARC-blind. Head B uses known_good_action (from gameplay records)
+# as the label, which IS SNARC-correlated (CBP data shows 6x arousal
+# difference between UP and CLICK). Gates are calibrated for a 7-class
+# problem with a realistic modal-dummy baseline around 25-30%.
+HEAD_B_MARGIN_THRESHOLD_PP = 0.15   # 7-way is harder; 15pp above dummy is meaningful
+HEAD_B_COMMON_ACTION_RECALL = 0.60  # recall floor on the 4 most common actions
+HEAD_B_SNARC_UTILITY_THRESHOLD = 0.05  # same as Head A — SNARC should matter
+HEAD_B_ACTION_CLASSES = 7           # GameAction 0..6
+# Names for readable reports (GameAction: 0=A0, 1=UP, 2=DOWN, 3=LEFT, 4=RIGHT, 5=SEL, 6=CLICK, 7=UNDO)
+HEAD_B_ACTION_NAMES = ["A0", "UP", "DOWN", "LEFT", "RIGHT", "SEL", "CLICK"]
+
 
 # Feature names — order defines the feature vector layout
 SNARC_FEATURES = [
@@ -176,6 +189,34 @@ def build_xy(records: List[Dict], snarc: bool = True) -> Tuple[np.ndarray, np.nd
         X[:, snarc_idx] = 0.0
     y = np.array([_action_label(r) for r in records], dtype=np.int64)
     return X, y
+
+
+def build_xy_head_b(
+    records: List[Dict], snarc: bool = True,
+) -> Tuple[np.ndarray, np.ndarray, List[int]]:
+    """Feature matrix + known_good_action labels for Head B.
+
+    Returns (X, y, kept_indices) — kept_indices lets callers align the
+    filtered record subset back to the original list (needed for
+    salience slicing). Records without a valid known_good_action in
+    range [0..6] are dropped.
+    """
+    kept: List[int] = []
+    rows: List[List[float]] = []
+    ys: List[int] = []
+    for i, r in enumerate(records):
+        md = r.get("metadata") or {}
+        act = md.get("known_good_action")
+        if not isinstance(act, int) or act < 0 or act >= HEAD_B_ACTION_CLASSES:
+            continue
+        kept.append(i)
+        rows.append(_feature_vec(r))
+        ys.append(act)
+    X = np.array(rows, dtype=np.float64)
+    if not snarc and len(X):
+        snarc_idx = [ALL_FEATURE_NAMES.index(n) for n in SNARC_FEATURES]
+        X[:, snarc_idx] = 0.0
+    return X, np.array(ys, dtype=np.int64), kept
 
 
 def normalize(X_train: np.ndarray, X_test: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
@@ -506,6 +547,189 @@ def evaluate_phase1(
 
 
 # ───────────────────────────────────────────────────────────────────
+# Head B — action distillation from known_good_action
+# ───────────────────────────────────────────────────────────────────
+
+@dataclass
+class HeadBMetrics:
+    aggregate_accuracy: float
+    modal_class: str               # e.g. "CLICK"
+    modal_dummy_accuracy: float
+    margin_over_dummy: float
+
+    per_class: List[ClassMetrics]
+
+    # Common-action recall (top 4 most populous actions)
+    common_actions: List[str]
+    common_action_min_recall: float
+
+    # SNARC ablation
+    snarc_ablation_accuracy: Optional[float] = None
+    snarc_utility_delta: Optional[float] = None
+
+    # Data diversity
+    n_records: int = 0
+    n_actions_present: int = 0
+    action_entropy: float = 0.0
+    min_snarc_std: float = 0.0
+
+    # Verdict
+    verdict: str = "PENDING"
+    verdict_reasons: List[str] = field(default_factory=list)
+
+
+def evaluate_phase1_head_b(
+    records: List[Dict],
+    test_frac: float = 0.2,
+    seed: int = 42,
+) -> HeadBMetrics:
+    """Head B: predict known_good_action from RouterInput features.
+
+    Callers should pre-filter to gameplay records (otherwise most
+    records have no known_good_action and get dropped).
+    """
+    X_all, y_all, kept = build_xy_head_b(records, snarc=True)
+    if len(X_all) < 100:
+        raise ValueError(
+            f"Head B needs ≥100 records with known_good_action, got {len(X_all)}. "
+            "Pre-filter to source=gameplay."
+        )
+
+    rng = np.random.default_rng(seed)
+    idx = rng.permutation(len(X_all))
+    split = int((1 - test_frac) * len(X_all))
+    tr, te = idx[:split], idx[split:]
+    X_train, y_train = X_all[tr], y_all[tr]
+    X_test, y_test = X_all[te], y_all[te]
+
+    X_train_n, X_test_n = normalize(X_train, X_test)
+    W, b = train_multiclass_lr(X_train_n, y_train, HEAD_B_ACTION_CLASSES, seed=seed)
+    y_pred = predict(X_test_n, W, b)
+    agg_acc = float((y_pred == y_test).mean())
+
+    counts = Counter(y_test.tolist())
+    modal = max(counts, key=counts.get)
+    modal_dummy_acc = counts[modal] / len(y_test)
+    margin = agg_acc - modal_dummy_acc
+
+    # Per-class — HEAD_B_ACTION_NAMES indexed 0..6
+    per_class: List[ClassMetrics] = []
+    for c in range(HEAD_B_ACTION_CLASSES):
+        tp = int(((y_pred == c) & (y_test == c)).sum())
+        fp = int(((y_pred == c) & (y_test != c)).sum())
+        fn = int(((y_pred != c) & (y_test == c)).sum())
+        n = int((y_test == c).sum())
+        p = tp / (tp + fp) if (tp + fp) else 0.0
+        r = tp / (tp + fn) if (tp + fn) else 0.0
+        f1 = 2 * p * r / (p + r) if (p + r) else 0.0
+        per_class.append(ClassMetrics(
+            name=HEAD_B_ACTION_NAMES[c], n=n, precision=p, recall=r, f1=f1,
+        ))
+
+    # Common-action recall — top 4 by support, compute min recall across them
+    present = sorted([c for c in per_class if c.n > 0], key=lambda c: -c.n)
+    common = present[:4]
+    common_names = [c.name for c in common]
+    common_min_recall = min((c.recall for c in common), default=0.0)
+
+    # SNARC ablation
+    X_ns_all, y_ns_all, _ = build_xy_head_b(records, snarc=False)
+    X_train_ns, y_train_ns = X_ns_all[tr], y_ns_all[tr]
+    X_test_ns, _ = X_ns_all[te], y_ns_all[te]
+    X_train_ns_n, X_test_ns_n = normalize(X_train_ns, X_test_ns)
+    W_ns, b_ns = train_multiclass_lr(X_train_ns_n, y_train_ns, HEAD_B_ACTION_CLASSES, seed=seed)
+    y_pred_ns = predict(X_test_ns_n, W_ns, b_ns)
+    ablation_acc = float((y_pred_ns == y_test).mean())
+    snarc_delta = agg_acc - ablation_acc
+
+    # Diversity on the Head B subset
+    entropy = 0.0
+    total = sum(counts.values())
+    for c, n in counts.items():
+        p = n / total
+        if p > 0:
+            entropy -= p * math.log(p)
+    snarc_cols = [ALL_FEATURE_NAMES.index(n) for n in SNARC_FEATURES]
+    min_snarc_std = float(X_all[:, snarc_cols].std(axis=0).min()) if len(X_all) else 0.0
+
+    m = HeadBMetrics(
+        aggregate_accuracy=agg_acc,
+        modal_class=HEAD_B_ACTION_NAMES[modal],
+        modal_dummy_accuracy=modal_dummy_acc,
+        margin_over_dummy=margin,
+        per_class=per_class,
+        common_actions=common_names,
+        common_action_min_recall=common_min_recall,
+        snarc_ablation_accuracy=ablation_acc,
+        snarc_utility_delta=snarc_delta,
+        n_records=len(X_all),
+        n_actions_present=len([c for c in per_class if c.n > 0]),
+        action_entropy=entropy,
+        min_snarc_std=min_snarc_std,
+    )
+
+    reasons: List[str] = []
+    if m.margin_over_dummy < HEAD_B_MARGIN_THRESHOLD_PP:
+        reasons.append(
+            f"margin over 7-way modal dummy {m.margin_over_dummy:+.4f} "
+            f"< {HEAD_B_MARGIN_THRESHOLD_PP}"
+        )
+    if m.common_action_min_recall < HEAD_B_COMMON_ACTION_RECALL:
+        reasons.append(
+            f"min recall on top-4 actions {m.common_action_min_recall:.3f} "
+            f"< {HEAD_B_COMMON_ACTION_RECALL} "
+            f"(common={','.join(m.common_actions)})"
+        )
+    if m.snarc_utility_delta is not None and m.snarc_utility_delta < HEAD_B_SNARC_UTILITY_THRESHOLD:
+        reasons.append(
+            f"SNARC-utility delta {m.snarc_utility_delta:+.4f} "
+            f"< {HEAD_B_SNARC_UTILITY_THRESHOLD} "
+            "(action prediction not using SNARC — feature set may be insufficient)"
+        )
+
+    if not reasons:
+        m.verdict = "PASS"
+    elif m.margin_over_dummy < HEAD_B_MARGIN_THRESHOLD_PP and m.aggregate_accuracy <= m.modal_dummy_accuracy:
+        m.verdict = "FAIL"
+    else:
+        m.verdict = "INCONCLUSIVE"
+    m.verdict_reasons = reasons
+    return m
+
+
+def _print_head_b_report(m: HeadBMetrics) -> None:
+    print("=" * 60)
+    print("Phase 1 Head B — action distillation report")
+    print("=" * 60)
+    print(f"  Records used         : {m.n_records}")
+    print(f"  Aggregate accuracy   : {m.aggregate_accuracy:.4f}")
+    print(f"  Modal class          : {m.modal_class}")
+    print(f"  Modal-dummy accuracy : {m.modal_dummy_accuracy:.4f}")
+    print(f"  Margin over dummy    : {m.margin_over_dummy:+.4f}  (threshold +{HEAD_B_MARGIN_THRESHOLD_PP})")
+    print(f"  SNARC ablation acc   : {m.snarc_ablation_accuracy:.4f}"
+          if m.snarc_ablation_accuracy is not None else "  SNARC ablation       : SKIPPED")
+    print(f"  SNARC-utility delta  : {m.snarc_utility_delta:+.4f}  (threshold +{HEAD_B_SNARC_UTILITY_THRESHOLD})"
+          if m.snarc_utility_delta is not None else "")
+    print()
+    print(f"  Common actions       : {','.join(m.common_actions)}")
+    print(f"  Common-action min R  : {m.common_action_min_recall:.3f}  (threshold {HEAD_B_COMMON_ACTION_RECALL})")
+    print()
+    print(f"  Action entropy       : {m.action_entropy:.3f} nats ({m.n_actions_present} actions present)")
+    print(f"  Min SNARC-dim stddev : {m.min_snarc_std:.4f}")
+    print()
+    print(f"  Per-action:")
+    for c in m.per_class:
+        if c.n == 0:
+            continue
+        print(f"    {c.name:6s}: n={c.n:5d}  P={c.precision:.3f}  R={c.recall:.3f}  F1={c.f1:.3f}")
+    print()
+    verdict_colors = {"PASS": "✓", "INCONCLUSIVE": "~", "FAIL": "✗", "PENDING": "?"}
+    print(f"  Verdict: {verdict_colors.get(m.verdict, '?')} {m.verdict}")
+    for r in m.verdict_reasons:
+        print(f"    - {r}")
+
+
+# ───────────────────────────────────────────────────────────────────
 # CLI
 # ───────────────────────────────────────────────────────────────────
 
@@ -563,8 +787,12 @@ def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--data", required=True,
                    help="Path to router shadow partitions (per-machine dir OR _aggregate/).")
+    p.add_argument("--head", choices=["A", "B"], default="A",
+                   help="Training head. A = dispatch (teacher agreement, PRD §4 Phase 1). "
+                        "B = action distillation from known_good_action (gameplay-only).")
     p.add_argument("--source", default=None,
-                   help="Optional filter on metadata.source (raising|gameplay|idle|interactive).")
+                   help="Optional filter on metadata.source (raising|gameplay|idle|interactive). "
+                        "Head B auto-sets source=gameplay unless overridden.")
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--test-frac", type=float, default=0.2)
     p.add_argument("--json-out", default=None,
@@ -573,19 +801,36 @@ def main() -> int:
                    help="Exit non-zero on FAIL or INCONCLUSIVE (for CI).")
     args = p.parse_args()
 
-    records = load_records(args.data, source_filter=args.source)
+    effective_source = args.source
+    if args.head == "B" and effective_source is None:
+        effective_source = "gameplay"
+        print("[head B] defaulting --source=gameplay (override with --source explicitly)")
+
+    records = load_records(args.data, source_filter=effective_source)
     print(f"Loaded {len(records)} records from {args.data}"
-          + (f" (source={args.source})" if args.source else ""))
+          + (f" (source={effective_source})" if effective_source else ""))
     if len(records) < 100:
         print("Insufficient data (<100 records). Wait for capture to accumulate.")
         return 2
 
-    m = evaluate_phase1(records, test_frac=args.test_frac, seed=args.seed)
-    _print_report(m)
+    if args.head == "A":
+        m: Any = evaluate_phase1(records, test_frac=args.test_frac, seed=args.seed)
+        _print_report(m)
+        payload = _to_json_safe(m)
+    else:
+        m = evaluate_phase1_head_b(records, test_frac=args.test_frac, seed=args.seed)
+        _print_head_b_report(m)
+        payload = asdict(m)
+        payload["head"] = "B"
+        payload["thresholds"] = {
+            "head_b_margin_pp": HEAD_B_MARGIN_THRESHOLD_PP,
+            "head_b_common_action_recall": HEAD_B_COMMON_ACTION_RECALL,
+            "head_b_snarc_utility": HEAD_B_SNARC_UTILITY_THRESHOLD,
+        }
 
     if args.json_out:
         with open(args.json_out, "w") as f:
-            json.dump(_to_json_safe(m), f, indent=2)
+            json.dump(payload, f, indent=2)
         print(f"\nWrote JSON report: {args.json_out}")
 
     if args.strict and m.verdict != "PASS":

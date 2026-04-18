@@ -41,6 +41,7 @@ import gzip
 import json
 import math
 import sys
+import zlib
 from collections import Counter
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
@@ -125,7 +126,7 @@ def load_records(data_dir: str, source_filter: Optional[str] = None) -> List[Dic
                         if src != source_filter:
                             continue
                     records.append(rec)
-        except (EOFError, OSError):
+        except (EOFError, OSError, zlib.error):
             continue
     return records
 

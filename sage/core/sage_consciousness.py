@@ -387,6 +387,19 @@ class SAGEConsciousness:
             'tool_calls_denied': 0,
         }
 
+        # Router shadow-mode capture (Phase 0 Track 5).
+        # Env-gated (SAGE_ROUTER_SHADOW=1); default OFF. The hook is
+        # constructed lazily on first enabled cycle so disabled runs
+        # pay zero cost (no imports, no file handles).
+        try:
+            from sage.cognition.router.shadow import is_shadow_enabled
+            self._router_shadow_enabled = is_shadow_enabled()
+        except Exception as e:
+            print(f"[Router] Shadow flag probe failed (disabled): {e}")
+            self._router_shadow_enabled = False
+        self._router_shadow = None  # lazy: constructed on first enabled cycle
+        self._router_shadow_init_failed = False  # stays True if lazy init raised
+
     @property
     def llm_plugin(self):
         """Backward-compat property — returns active LLM from the pool."""
@@ -901,6 +914,33 @@ class SAGEConsciousness:
         # 4. Select plugins based on salience + metabolic state
         attention_targets = self._select_attention_targets(observations, salience_map)
 
+        # 4.5 Router shadow-mode capture (Phase 0 Track 5).
+        #
+        # This is PRD §2.10's "step 5" in the 12-step taxonomy
+        # (Select → Budget seam). Numbered 4.5 in the kernel so the
+        # pre-existing step numbering (4=Select, 5=Budget) is
+        # preserved and downstream readers aren't misled.
+        #
+        # When SAGE_ROUTER_SHADOW=1, build a RouterInput from live
+        # kernel state, run the programmatic baseline (Track 3), and
+        # hand the (input, output) pair to the dataset writer. The
+        # real dispatcher above (attention_targets) STILL drives
+        # execution — shadow is read-only.
+        #
+        # Failure isolation is airtight: ANY exception is swallowed
+        # here so the consciousness loop can never die from a shadow
+        # path failure. See sage/cognition/router/shadow.py for the
+        # per-stage fallbacks inside the hook itself.
+        if self._router_shadow_enabled:
+            try:
+                self._router_shadow_capture(observations, salience_map)
+            except Exception as e:
+                # Belt-and-suspenders: shadow path must never break
+                # the kernel. The hook itself catches everything; a
+                # failure here means something went wrong BEFORE the
+                # hook was even entered (e.g. import failure).
+                print(f"[Router] shadow capture failed (non-fatal): {e}")
+
         # 5. Allocate ATP budget to plugins
         budget_allocation = self._allocate_atp_budget(attention_targets)
 
@@ -1303,6 +1343,219 @@ class SAGEConsciousness:
             'message': ['language'],  # External messages routed to LLM
         }
         return modality_map.get(modality, [])
+
+    # ──────────────────────────────────────────────────────────────
+    # Router shadow-mode capture (Phase 0 Track 5)
+    # ──────────────────────────────────────────────────────────────
+
+    def _router_shadow_capture(
+        self,
+        observations: List[SensorObservation],
+        salience_map: Dict[str, SalienceScore],
+    ) -> None:
+        """Build RouterInput, run programmatic baseline, hand to writer.
+
+        Called from step 4.5 of the consciousness loop when
+        SAGE_ROUTER_SHADOW=1. Entirely read-only on kernel state.
+
+        Never raises: every failure mode (lazy-init failure, import
+        failure, extraction failure, writer failure) is caught +
+        logged. The outer loop wraps this call in a try/except too,
+        so we have double failure isolation — but the invariant is
+        that *this* method never propagates.
+        """
+        # Lazy-initialize the shadow hook the first time we enter an
+        # enabled cycle. Defers all imports + file-handle creation
+        # until actually needed (zero cost when the env var is off).
+        if self._router_shadow is None:
+            if self._router_shadow_init_failed:
+                return  # Prior init attempt failed; don't retry every tick.
+            if not self._init_router_shadow():
+                self._router_shadow_init_failed = True
+                return
+
+        # Build RouterInput from live kernel state. Every optional
+        # component is either read through a best-effort getter or
+        # explicitly passed as None. The feature extractor (Track 2)
+        # tolerates None for every component.
+        try:
+            from sage.cognition.router.feature_extraction import extract_router_input
+            from sage.cognition.router.baseline import programmatic_decide
+
+            router_input = extract_router_input(
+                # Phase 0: WM / episodic / cerebellum / rpe / metacog
+                # are not yet plumbed into the SAGEConsciousness
+                # kernel. getattr-with-None is the forward-compatible
+                # seam — Phase 1+ adds these without a signature
+                # change here.
+                wm=getattr(self, 'working_memory', None),
+                snarc=self._router_aggregate_snarc(salience_map),
+                metabolic=self.metabolic,
+                episodic=getattr(self, 'episodic', None),
+                cerebellum=getattr(self, 'cerebellum', None),
+                rpe=getattr(self, 'rpe', None),
+                metacog=getattr(self, 'metacog', None),
+                plugin_registry=self._router_plugin_registry(),
+                sensory=self._router_sensory_payload(observations, salience_map),
+                tick=int(self.cycle_count),
+                goal_id=getattr(self, '_current_goal_id', None),
+            )
+            programmatic_output = programmatic_decide(
+                router_input, self._router_plugin_registry()
+            )
+            self._router_shadow.record_decision(router_input, programmatic_output)
+        except Exception as e:
+            # NEVER break the consciousness loop. Shadow is read-only
+            # — even feature-extraction crashes here are non-fatal.
+            print(f"[Router] shadow capture stage failed (non-fatal): {e}")
+
+    def _init_router_shadow(self) -> bool:
+        """Construct the shadow hook. Returns True on success.
+
+        Constructs:
+          - writer: RouterDatasetWriter writing to
+            ``config['router_shadow_dir']`` (default
+            ``{instance_dir}/router_shadow`` or ``/tmp/sage-router-shadow``).
+          - sampler: SnarcStratifiedSampler with defaults per PRD §4.7.D.
+          - pruner: RouterDatasetPruner reference (unused at tick time;
+            Track 7's nightly scheduler will invoke it).
+          - hook: RouterShadowHook glueing the above together.
+        """
+        try:
+            from sage.cognition.router.shadow import RouterShadowHook
+            from sage.cognition.router.data import (
+                RouterDatasetWriter,
+                SnarcStratifiedSampler,
+                RouterDatasetPruner,
+            )
+
+            # Resolve dataset root. Precedence:
+            #   1. config['router_shadow_dir']  (explicit code-level override)
+            #   2. $SAGE_ROUTER_DATA_DIR        (operator / systemd env)
+            #   3. {instance_dir}/router_shadow (default per-instance)
+            #   4. /tmp/sage-router-shadow      (last-resort safe path)
+            # Env var wins over defaults so per-machine installers
+            # (Track 7) can point the fleet at a shared dataset root
+            # without a code change.
+            base_dir = self.config.get('router_shadow_dir')
+            if not base_dir:
+                base_dir = os.environ.get('SAGE_ROUTER_DATA_DIR', '').strip() or None
+            if not base_dir:
+                instance_dir = self.config.get('instance_dir', '')
+                if instance_dir:
+                    base_dir = str(Path(instance_dir) / 'router_shadow')
+                else:
+                    base_dir = '/tmp/sage-router-shadow'
+
+            machine = self._self_name or 'unknown'
+            compress = bool(self.config.get('router_shadow_compress', True))
+
+            writer = RouterDatasetWriter(
+                base_dir=base_dir,
+                machine=machine,
+                compress=compress,
+            )
+            sampler = SnarcStratifiedSampler(
+                seed=self.config.get('router_shadow_seed'),
+            )
+            try:
+                pruner = RouterDatasetPruner(base_dir=base_dir)
+            except Exception:
+                pruner = None  # pruner is optional; missing is fine
+
+            self._router_shadow = RouterShadowHook(
+                writer=writer,
+                sampler=sampler,
+                pruner=pruner,
+            )
+            print(
+                f"[Router] Shadow capture enabled: dir={base_dir} "
+                f"machine={machine} compress={compress}"
+            )
+            return True
+        except Exception as e:
+            print(f"[Router] Shadow init failed (will stay off this session): {e}")
+            return False
+
+    def _router_aggregate_snarc(
+        self,
+        salience_map: Dict[str, SalienceScore],
+    ) -> Dict[str, float]:
+        """Reduce per-sensor SalienceScores to one SNARC dict.
+
+        RouterInput carries a single 5D SNARC vector; the kernel's
+        ``salience_map`` is ``Dict[sensor_id, SalienceScore]``. We
+        pick the score with the highest ``total`` — the PRD §4.7.A
+        salience-weight formula also uses max-pooling across the
+        action-relevant dimensions, so "biggest single observation
+        wins" is the honest projection.
+
+        Empty map → all zeros (the extractor handles this too, but
+        keeping this tight here documents the contract).
+        """
+        if not salience_map:
+            return {"surprise": 0.0, "novelty": 0.0, "arousal": 0.0,
+                    "reward": 0.0, "conflict": 0.0}
+        top = max(salience_map.values(), key=lambda s: s.total)
+        return {
+            "surprise": float(top.surprise),
+            "novelty": float(top.novelty),
+            "arousal": float(top.arousal),
+            "reward": float(top.reward),
+            "conflict": float(top.conflict),
+        }
+
+    def _router_sensory_payload(
+        self,
+        observations: List[SensorObservation],
+        salience_map: Dict[str, SalienceScore],
+    ) -> Dict[str, Any]:
+        """Build the `sensory` dict the feature extractor expects.
+
+        Contract (from ``feature_extraction._extract_sensory_features``):
+          - modalities: list[str], ordered by salience descending so
+            the programmatic baseline picks the top-salience modality
+            first (mirrors the existing dispatcher's ``sorted_obs``).
+          - novelty: max SNARC novelty across observations, in [0,1].
+          - urgency: max SNARC arousal across observations, in [0,1].
+        """
+        if not observations:
+            return {"modalities": [], "novelty": 0.0, "urgency": 0.0}
+
+        sorted_obs = sorted(
+            observations,
+            key=lambda o: salience_map.get(o.sensor_id,
+                                           SalienceScore(0, 0, 0, 0, 0)).total,
+            reverse=True,
+        )
+        seen: set = set()
+        modalities: List[str] = []
+        for o in sorted_obs:
+            m = getattr(o, 'modality', None)
+            if isinstance(m, str) and m not in seen:
+                seen.add(m)
+                modalities.append(m)
+
+        novelty = max((s.novelty for s in salience_map.values()), default=0.0)
+        urgency = max((s.arousal for s in salience_map.values()), default=0.0)
+        return {
+            "modalities": modalities,
+            "novelty": float(max(0.0, min(1.0, novelty))),
+            "urgency": float(max(0.0, min(1.0, urgency))),
+        }
+
+    def _router_plugin_registry(self) -> Dict[str, Any]:
+        """Return the plugin dict the programmatic baseline consumes.
+
+        The baseline treats entries as duck-typed — dict or object
+        with ``tier`` / ``atp_cost``. Our plugins have neither at
+        Phase 0, so the baseline will see tier=None and cost=0 for
+        every plugin; that's fine, the baseline's missing-field path
+        is exercised by its unit tests.
+        """
+        if self.orchestrator is not None and hasattr(self.orchestrator, 'plugins'):
+            return dict(self.orchestrator.plugins or {})
+        return {}
 
     def _allocate_atp_budget(
         self,

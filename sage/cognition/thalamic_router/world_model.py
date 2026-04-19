@@ -108,6 +108,17 @@ class WorldModel(nn.Module):
             nn.Linear(hidden, emb_dim),
         )
 
+        # v2: invoke head — dispatch decision. Outputs P(invoke LLM | state).
+        # Trained with self-supervised labels derived from SNARC + frame-delta
+        # + first-frame signals. The NN is NOT the thing that plays in the end;
+        # it's the triage layer that decides when to escalate to the LLM with
+        # a context+hint package (see choose_dispatch in this module).
+        self.invoke_head = nn.Sequential(
+            nn.Linear(emb_dim, hidden),
+            nn.ReLU(),
+            nn.Linear(hidden, 1),
+        )
+
     def encode(self, x: torch.Tensor) -> torch.Tensor:
         return self.encoder(x)
 
@@ -118,6 +129,10 @@ class WorldModel(nn.Module):
         self, emb: torch.Tensor, action_onehot: torch.Tensor
     ) -> torch.Tensor:
         return self.dynamics_head(torch.cat([emb, action_onehot], dim=-1))
+
+    def forward_invoke(self, emb: torch.Tensor) -> torch.Tensor:
+        """Returns logit for invoke decision (pre-sigmoid)."""
+        return self.invoke_head(emb).squeeze(-1)
 
     def forward_outcome(
         self, emb: torch.Tensor, action_onehot: Optional[torch.Tensor] = None
@@ -189,6 +204,96 @@ class WorldModelConfig:
     # Architecture version. 0 = outcome_head(emb). 1 = outcome_head(emb, action)
     architecture_version: int = 1
     outcome_action_conditional: bool = True
+
+
+# ───────────────────────────────────────────────────────────────────
+# v2: Dispatch decision — the actual router output
+# ───────────────────────────────────────────────────────────────────
+
+INVOKE_THRESHOLD = 0.5                # invoke_head probability threshold
+PLAY_CONFIDENCE_THRESHOLD = 0.65      # top-action outcome floor; below this, force invoke
+PLAY_MARGIN_THRESHOLD = 0.08          # gap between top and 2nd action; below this, uncertain → invoke
+
+
+def choose_dispatch(
+    model: "WorldModel",
+    x: torch.Tensor,
+    game: Optional[str] = None,
+    level: Optional[int] = None,
+    step_index: Optional[int] = None,
+    invoke_threshold: float = INVOKE_THRESHOLD,
+    play_confidence_threshold: float = PLAY_CONFIDENCE_THRESHOLD,
+    play_margin_threshold: float = PLAY_MARGIN_THRESHOLD,
+) -> Dict[str, Any]:
+    """Produce the router's dispatch output: invoke OR play, with context + hint.
+
+    Two-gate invoke decision:
+      1. Structural: invoke_head says "novelty / first-frame / large diff"
+      2. Confidence: top-action outcome < play_confidence_threshold, OR
+                     margin between top and 2nd action < play_margin_threshold.
+                     Low confidence means the NN isn't sure what to do — dispatch.
+
+    If either gate fires → invoke (emit context+hint package for LLM).
+    Otherwise → play (NN commits to its top action).
+
+    Returns a dict with:
+      - decision:      "invoke" | "play"
+      - invoke_reasons: list of triggers (["structural"], ["confidence"], both, or [])
+      - invoke_prob:    float — invoke_head's raw probability
+      - play_action:    int — action class the NN would play (always populated)
+      - play_confidence: float — top action's outcome score
+      - play_margin:    float — gap between top and 2nd action
+      - action_ranking: sorted list of (idx, outcome_score)
+      - action_prior:   supervised action-head softmax
+      - context:        what to hand to LLM when invoking
+    """
+    model.eval()
+    with torch.no_grad():
+        emb = model.encode(x.unsqueeze(0))                           # (1, D)
+        invoke_prob = torch.sigmoid(model.forward_invoke(emb)).item()
+        action_prior = F.softmax(model.forward_action(emb), dim=-1)[0]
+
+        if model.outcome_action_conditional:
+            emb_rep = emb.expand(model.n_actions, -1)
+            a_oh = torch.eye(model.n_actions, device=x.device)
+            action_outcomes = torch.sigmoid(model.forward_outcome(emb_rep, a_oh))
+        else:
+            state_outcome = torch.sigmoid(model.forward_outcome(emb))[0]
+            action_outcomes = state_outcome.expand(model.n_actions)
+
+    # Sort actions by planning score
+    sorted_idx = torch.argsort(action_outcomes, descending=True)
+    top_action = int(sorted_idx[0].item())
+    top_conf = float(action_outcomes[top_action].item())
+    second_conf = float(action_outcomes[int(sorted_idx[1].item())].item())
+    margin = top_conf - second_conf
+
+    ranking = [(int(i.item()), float(action_outcomes[i].item())) for i in sorted_idx]
+
+    reasons = []
+    if invoke_prob > invoke_threshold:
+        reasons.append("structural")        # novelty / first-frame / level-change signal
+    if top_conf < play_confidence_threshold:
+        reasons.append("low_confidence")    # top action isn't confident enough to commit
+    if margin < play_margin_threshold:
+        reasons.append("tight_margin")      # top and 2nd action too close
+
+    decision = "invoke" if reasons else "play"
+
+    return {
+        "decision": decision,
+        "invoke_reasons": reasons,
+        "invoke_prob": invoke_prob,
+        "play_action": top_action,
+        "play_confidence": top_conf,
+        "play_margin": margin,
+        "action_ranking": ranking,
+        "action_prior": [float(p) for p in action_prior.tolist()],
+        "context": {
+            "embedding": [float(v) for v in emb[0].cpu().tolist()],
+            "game": game, "level": level, "step_index": step_index,
+        },
+    }
 
 
 def save_world_model(

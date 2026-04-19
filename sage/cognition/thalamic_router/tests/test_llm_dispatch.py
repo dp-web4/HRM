@@ -18,7 +18,8 @@ from sage.cognition.thalamic_router.llm_dispatch import (
     parse_llm_response, render_frame_png, render_frame_pair_png,
     build_prompt, _load_world_model_summary, _load_mechanics_neighbors,
     _load_level_annotations, _load_level_bboxes, _nn_click_coords,
-    _nn_click_rotation,
+    _nn_click_rotation, _detect_trajectory_patterns,
+    _load_gameplay_system_prompt, SYSTEM_PROMPT,
     ACTION_NAMES,
 )
 
@@ -367,6 +368,79 @@ def test_build_scalar_vector_with_mech_embedding():
     )
     # n_games(25) → mech_emb_dim(32) replaces the game_context slot
     assert len(vec_onehot) - n_games == len(vec_mech) - 32
+
+
+# ───────────────────────────────────────────────────────────────────
+# Gameplay system prompt loader + trajectory pattern detection
+# ───────────────────────────────────────────────────────────────────
+
+def test_system_prompt_loads_nonempty():
+    """Either from the canonical MD file or the fallback — must be non-empty."""
+    p = _load_gameplay_system_prompt()
+    assert p and len(p) > 50
+
+
+def test_system_prompt_from_file_if_available():
+    """If shared-context is on disk, the loaded prompt should be the long one."""
+    from sage.cognition.thalamic_router.llm_dispatch import _resolve_gameplay_system_prompt_path
+    path = _resolve_gameplay_system_prompt_path()
+    if path is None:
+        return  # graceful skip if shared-context unavailable
+    p = _load_gameplay_system_prompt()
+    assert len(p) > 1000    # the canonical MD is ~10KB; the fallback is ~400 chars
+    assert "R6" in p or "Perceive" in p or "deliberation tier" in p
+
+
+def test_trajectory_stuck_flag():
+    """3+ consecutive low-delta steps at the tail → STUCK flag."""
+    w = [
+        {"step": 1, "action": 4, "frame_delta_pct": 12.0, "level": 0, "new_level": 0},
+        {"step": 2, "action": 6, "coords": {"x": 32, "y": 32}, "frame_delta_pct": 0.0, "level": 0, "new_level": 0},
+        {"step": 3, "action": 6, "coords": {"x": 32, "y": 32}, "frame_delta_pct": 0.0, "level": 0, "new_level": 0},
+        {"step": 4, "action": 6, "coords": {"x": 32, "y": 32}, "frame_delta_pct": 0.0, "level": 0, "new_level": 0},
+    ]
+    flags = _detect_trajectory_patterns(w)
+    assert any("STUCK" in f for f in flags)
+    assert any("PERSEVERATION" in f for f in flags)
+
+
+def test_trajectory_level_advance_flag():
+    w = [{"step": 5, "action": 1, "frame_delta_pct": 8.0, "level": 0, "new_level": 1}]
+    flags = _detect_trajectory_patterns(w)
+    assert any("Level advanced" in f for f in flags)
+
+
+def test_trajectory_oscillation_flag():
+    """UP-DOWN-UP-DOWN alternation → oscillation flag."""
+    w = [
+        {"step": 1, "action": 1, "frame_delta_pct": 5.0, "level": 0, "new_level": 0},
+        {"step": 2, "action": 2, "frame_delta_pct": 5.0, "level": 0, "new_level": 0},
+        {"step": 3, "action": 1, "frame_delta_pct": 5.0, "level": 0, "new_level": 0},
+        {"step": 4, "action": 2, "frame_delta_pct": 5.0, "level": 0, "new_level": 0},
+    ]
+    flags = _detect_trajectory_patterns(w)
+    assert any("OSCILLATION" in f for f in flags)
+
+
+def test_trajectory_empty_returns_empty():
+    assert _detect_trajectory_patterns([]) == []
+
+
+def test_build_prompt_includes_stuck_flag_when_trajectory_shows_stuck():
+    """End-to-end: stuck trajectory → flag reaches the prompt."""
+    p = build_prompt(
+        game="ft09", level=0, step_index=6,
+        play_action_idx=6, play_confidence=0.9,
+        action_ranking=[(6, 0.9)],
+        recent_actions=[6, 6, 6],
+        invoke_reasons=["stuck"],
+        recent_trajectory=[
+            {"step": 3, "action": 6, "coords": {"x": 32, "y": 32}, "frame_delta_pct": 0.0, "level": 0, "new_level": 0},
+            {"step": 4, "action": 6, "coords": {"x": 32, "y": 32}, "frame_delta_pct": 0.0, "level": 0, "new_level": 0},
+            {"step": 5, "action": 6, "coords": {"x": 32, "y": 32}, "frame_delta_pct": 0.0, "level": 0, "new_level": 0},
+        ],
+    )
+    assert "STUCK" in p or "PERSEVERATION" in p
 
 
 if __name__ == "__main__":

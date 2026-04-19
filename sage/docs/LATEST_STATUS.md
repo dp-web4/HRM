@@ -1,7 +1,135 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-18 (S84 — World-Model Sprint Test Harness + Silent-No-Op Fix)**
-**Previous: 2026-04-19 (S83 Reverse/Bidirectional Walk Closes S82's Mid-Trajectory Introspection Gap)**
+**Last Updated: 2026-04-19 (S85 — Mechanics Encoder Test Harness + Pillow 13 Forward-Compat)**
+**Previous: 2026-04-18 (S84 World-Model Sprint Test Harness + Silent-No-Op Fix)**
+
+---
+
+## S85 Mechanics Encoder Test Harness + Pillow 13 Forward-Compat (Apr 19, 2026 — Thor Autonomous SAGE Session, 00:00 PDT)
+
+S85 continues the green-audit pattern from S84. Between the Apr 18 midday
+and evening Thor sessions, three more commits landed on thalamic_router
+(`abdf0e8`, `912fc1a`, `217a378`) bringing the Phase-3 mechanics encoder
+(~460 lines) and the `test_llm_dispatch.py` harness (22 tests / 238
+lines). S84 audited world_model; mechanics_encoder shipped with the
+same zero-test gap. This session closes it.
+
+Also caught while running the suite: two `DeprecationWarning`s from
+Pillow about `Image.fromarray(rgb, mode="RGB")`. Pillow 13 (released
+2026-10-15, about six months out) removes the `mode` parameter. The
+keyword is already a no-op when the array's shape + dtype are
+conformant (uint8, H×W×3), so we can drop it now without behavior
+change and stay on the supported API.
+
+### What landed
+
+**Bug fix: Pillow 13 forward-compat in `llm_dispatch.py`.**
+
+Both `render_frame_png` and `render_frame_pair_png` construct a PIL
+image from a `(H, W, 3)` uint8 array. The `mode="RGB"` kwarg was
+redundant — Pillow infers mode from `ndim + dtype + shape` for RGB
+arrays — and will be rejected on Pillow 13. Removed both. Tested: the
+two existing `test_llm_dispatch` PNG-rendering tests still pass
+(PNG signature check + stitched-pair width check), and the
+`DeprecationWarning` is gone from the suite output.
+
+**New test coverage: `test_mechanics_encoder.py` (16 tests).**
+
+The mechanics encoder is the Phase-3 input to the thalamic router's
+LLM prompt: per-game 32d embedding organized by structural similarity,
+so that the invoke prompt gets *"this game's mechanics are near
+{g1, g2, g3}"* instead of 10KB of prose per-invocation. The
+embedding is trained by making a shared dynamics network predict
+`pool_{t+1}` from `(pool_t, action_onehot, game_embedding[g])` —
+compression through bottleneck — with an optional nomic-embed-text
+anchor MSE regularizer. The neighbor lookup at inference is pure
+numpy cosine over the trained embedding table. All of that is
+regression-worthy:
+
+- `MechanicsEncoder` forward shapes (5): default-dim invariants;
+  `encode_frames(prev, curr)` returns `(B, pool_dim=64)`;
+  `predict_next_pool(pool_t, action_oh, game_emb)` returns
+  `(B, pool_dim)`; `game_text_projection` maps `(N, 32) → (N, 768)`
+  matching nomic's output dim; embedding lookup row matches raw
+  weight table.
+- `nearest_games` cosine-similarity contract (4): self-excluded;
+  strict similarity ordering; k truncates consistently (top-1 is
+  top-5[0]); identical embeddings → similarity 1.0; returns slug
+  strings, not indices (guard against a subtle off-by-one that would
+  silently pass bad data into the LLM prompt).
+- `load_world_model_text` path resolution (3): missing file returns
+  empty string; `$SHARED_CONTEXT_DIR` env var routes to a fake
+  seeded world-model; `max_chars` truncation is honored (default
+  3000, test parameter 500).
+- `nomic_embed_text` graceful failure (2): network error (connection
+  refused) returns `None` instead of raising — training won't crash
+  when Ollama is down; valid response parses to `np.float32` vector
+  of the right length.
+- `MechanicsDataset` torch adapter (2): `__len__` matches input;
+  `__getitem__` returns torch tensors with right shapes and dtypes
+  (`action` / `game_idx` as `torch.long`).
+
+Skipped: `train()` (stochastic, slow — integration-tested by the
+fleet's actual training runs), `build_mechanics_dataset()` and
+`replay_trace_for_mechanics()` (depend on real `arcengine` traces —
+same no-arcengine constraint that hit Thor in S84).
+
+The `nomic_embed_text` error-path test is the one that would have
+caught a future regression where someone adds `raise_for_status` or
+lets an exception escape — the current contract (silent None on any
+failure) is load-bearing because `main()`'s anchor loop falls through
+to a zero vector on None and keeps training on dynamics alone.
+
+### Results
+
+- `pytest sage/cognition/`: 571/571 passing (555 before + 16 new
+  mechanics_encoder tests; 0 failures; 1 unrelated config warning
+  about `asyncio_mode`).
+- `pytest sage/cognition/thalamic_router/tests/`: 69/69 passing
+  (53 before + 16 new).
+- Pillow deprecation warnings removed from suite output.
+
+### Why this matters for the collective
+
+Phase-3 mechanics encoder is the first SAGE artifact where the
+*embedding itself* carries the per-game prior, not a text prompt.
+Every future change to the dynamics network, the text-anchor
+projection head, or the cosine neighbor lookup passes through these
+16 gates. If someone later swaps `Adam` for something fancier or
+adjusts the dynamics hidden size, the shapes-and-contracts suite
+will still hold; if someone changes `nearest_games` to return
+indices or reintroduces self in the top-k, the test catches it
+before the broken neighbor map ships into an LLM prompt.
+
+The Pillow fix is forward-compat maintenance — boring but real. The
+kind of thing that slips into the backlog until the upgrade breaks
+an overnight run. Six months of headroom is plenty; no reason to
+wait.
+
+### Open questions carried forward
+
+- **Tests for `wm_train.py` / `wm_play.py` / `wm_dispatch.py`**
+  (from S84): still deferred; they're harness scripts.
+- **Tests for `train()` in mechanics_encoder**: stochastic, would
+  need seeded deterministic training assertion. Open.
+- **Per-phase `consensus_threshold` tuning** (from S81): still
+  deferred.
+- **What do the learned mechanics embeddings actually look like?**
+  — new question surfaced by reading the architecture: no trained
+  checkpoint currently lives in this repo. When one exists, a fun
+  exploration would be to dump the nearest-neighbor map from the
+  JSON sidecar and check whether it aligns with any structural
+  intuition a human has about the ARC-AGI-3 games.
+
+### Files this session
+
+- `sage/cognition/thalamic_router/llm_dispatch.py` — drop
+  `mode="RGB"` from two `Image.fromarray` calls (Pillow 13
+  forward-compat)
+- `sage/cognition/thalamic_router/tests/test_mechanics_encoder.py` —
+  new test file, 16 tests covering forward shapes, neighbor lookup,
+  text-anchor helpers, dataset adapter
+- `sage/docs/LATEST_STATUS.md` — this writeup
 
 ---
 

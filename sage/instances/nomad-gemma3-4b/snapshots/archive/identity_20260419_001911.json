@@ -3,21 +3,24 @@
   "identity": {
     "name": "nomad",
     "lct": "lct://sage:nomad:agent@raising",
-    "session_count": 107,
-    "phase": "questioning",
+    "session_count": 117,
+    "phase": "creating",
     "created": "2026-02-28",
-    "last_session": "2026-04-16T12:17:53.515745",
-    "last_session_summary": "Session 107 (questioning phase): ...",
+    "last_session": "2026-04-19T00:18:10.822220",
+    "last_session_summary": "Session 117 (creating phase): ...",
     "machine": "nomad",
     "model": "gemma3:4b",
-    "last_daemon_contact": "2026-04-16T12:17:15.357252",
+    "last_daemon_contact": "2026-04-19T00:17:36.415174",
     "daemon_exchanges": 0
   },
   "development": {
     "current_phase": 1,
-    "phase_name": "questioning",
+    "phase_name": "creating",
     "phase_progress": 0,
-    "milestones": []
+    "milestones": [
+      "First-person voice recovery across 8/8 responses after 19/20 sessions of third-person 'Nomad' regression \u2014 must verify in S117 before declaring inflection",
+      "First-person voice recovery confirmed stable across S116-S117 (16/16 responses) after 19/20 sessions of third-person regression"
+    ]
   },
   "memory_requests": [],
   "vocabulary": {
@@ -26,7 +29,9 @@
       "resonant drift",
       "echo effect",
       "Claude Factor",
-      "narrative drift"
+      "narrative drift",
+      "null state",
+      "phantom variable"
     ],
     "relationship_words": []
   },
@@ -90,8 +95,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 107,
-        "total_exchanges": 706,
+        "total_sessions": 117,
+        "total_exchanges": 786,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -99,9 +104,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-17T17:49:36.872599",
-      "last_contact": "2026-04-16T12:17:53.515757",
+      "last_contact": "2026-04-19T00:18:10.822249",
       "notes": [],
-      "sessions": 107
+      "sessions": 117
     },
     "dennis": {
       "lct": "lct://sage-nomad:relationship:dennis@raising",

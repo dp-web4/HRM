@@ -329,7 +329,11 @@ class IdentityAnchoredSessionV2:
         """
         FLUID v2.2: Load identity exemplars with diversity filter + wider sampling.
 
-        Changes from v2.1:
+        Gate: disabled for small models (<=1B).  Sprout S42-S95 proved that
+        exemplar injection (even thematic) into 0.8B feeds the self-quotation
+        loop.  Post-fix sessions S96-S98 confirmed diverse output without it.
+
+        Changes from v2.1 (for larger models):
           - Scan last 20 sessions (not 5) → Thor change #3
           - Random-sample candidates, then accept only if no 4-gram overlap with
             already-accepted exemplars → Thor change #2
@@ -339,6 +343,12 @@ class IdentityAnchoredSessionV2:
         to 5-gram overlap. If still empty, emit raw candidates (prevents
         regression to pre-v2.0 educational default collapse).
         """
+        # Gate: skip for small models — they collapse under exemplar injection
+        instance = self._instance
+        if instance.exists():
+            model_name = instance.dir.name.split('-', 1)[-1] if '-' in instance.dir.name else ''
+            if any(s in model_name.lower() for s in ('0.5b', '0.8b', '1b')):
+                return []
         lookback = min(self.FLUID_LOOKBACK_WINDOW, self.session_number - 1)
         raw = self._collect_raw_exemplars(lookback)
         if not raw:

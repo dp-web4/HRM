@@ -600,11 +600,28 @@ If you choose CLICK (6), you MUST provide X and Y pixel coordinates on the 64×6
 """
 
 
+# Natural-language action-name fallback: "I choose CLICK at (32, 12)",
+# "my action is UP", etc. Looked up case-insensitively against ACTION_NAMES.
+# Only used if ACTION=<n> format didn't match.
+_NAMED_ACTION_RE = re.compile(
+    r"\b(?:action[:\s]+is|i\s+(?:choose|pick|select)|let'?s\s+(?:do|go|try)|going\s+with)\s*"
+    r"(?:the\s+)?(A0|UP|DOWN|LEFT|RIGHT|SEL(?:ECT)?|CLICK)\b",
+    re.IGNORECASE,
+)
+_NAKED_ACTION_RE = re.compile(
+    r"\b(A0|UP|DOWN|LEFT|RIGHT|SELECT|SEL|CLICK)\b", re.IGNORECASE,
+)
+_NAME_TO_IDX = {n: i for i, n in enumerate(ACTION_NAMES)}
+_NAME_TO_IDX["SELECT"] = _NAME_TO_IDX["SEL"]
+
+
 # ACTION=<n> or ACTION=<name> — required. Coords parsed independently
 # (tolerates brackets, extra whitespace, commas, etc. that real LLMs produce).
 _ACTION_RE = re.compile(r"ACTION\s*=\s*(\w+)", re.IGNORECASE)
 _X_RE = re.compile(r"X\s*=\s*(-?\d+)", re.IGNORECASE)
 _Y_RE = re.compile(r"Y\s*=\s*(-?\d+)", re.IGNORECASE)
+# Parenthetical coords: "CLICK at (32, 12)" / "click cell (48, 36)"
+_PAREN_COORD_RE = re.compile(r"\(\s*(-?\d+)\s*[,xX]\s*(-?\d+)\s*\)")
 _ACTION_NAME_MAP = {
     "a0": 0, "up": 1, "down": 2, "left": 3, "right": 4, "sel": 5, "click": 6,
     "noop": 0, "select": 5,
@@ -618,15 +635,27 @@ def parse_llm_response(
     Falls back to the NN's hint if the response is malformed.
     """
     m = _ACTION_RE.search(text)
-    if not m:
-        return fallback_action, fallback_coords, f"parse_failed: {text[:120]}"
-    raw = m.group(1)
-    try:
-        action = int(raw)
-    except ValueError:
-        action = _ACTION_NAME_MAP.get(raw.lower(), -1)
+    action: int = -1
+    if m:
+        raw = m.group(1)
+        try:
+            action = int(raw)
+        except ValueError:
+            action = _ACTION_NAME_MAP.get(raw.lower(), -1)
+    # Fallback 1: explicit "I choose X" or "action is X" natural-language
     if action < 0:
-        return fallback_action, fallback_coords, f"bad_action_name: {raw}"
+        nm = _NAMED_ACTION_RE.search(text)
+        if nm:
+            name = nm.group(1).upper()
+            action = _NAME_TO_IDX.get(name, -1)
+    # Fallback 2: naked action-name mention (first one wins)
+    if action < 0:
+        nm = _NAKED_ACTION_RE.search(text)
+        if nm:
+            name = nm.group(1).upper()
+            action = _NAME_TO_IDX.get(name, -1)
+    if action < 0:
+        return fallback_action, fallback_coords, f"parse_failed: {text[:120]}"
     if not (0 <= action < N_ACTIONS):
         return fallback_action, fallback_coords, f"action_out_of_range: {action}"
 
@@ -641,7 +670,17 @@ def parse_llm_response(
             except Exception:
                 coords = fallback_coords
         else:
-            coords = fallback_coords
+            # Parenthetical fallback: "(32, 12)" or "(32x12)"
+            pm = _PAREN_COORD_RE.search(text)
+            if pm:
+                try:
+                    x = max(0, min(FRAME_W - 1, int(pm.group(1))))
+                    y = max(0, min(FRAME_H - 1, int(pm.group(2))))
+                    coords = {"x": x, "y": y}
+                except Exception:
+                    coords = fallback_coords
+            else:
+                coords = fallback_coords
 
     # Rationale — everything after the action line (first 200 chars)
     lines = text.strip().splitlines()

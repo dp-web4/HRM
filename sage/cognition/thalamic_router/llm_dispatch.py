@@ -450,6 +450,49 @@ def _retrieve_game_context(game_family: str, max_entries: int = 3) -> str:
 _game_context_cache: Dict[str, str] = {}
 # Cache world-model markdown summary per game (session-stable)
 _world_model_cache: Dict[str, str] = {}
+# Cache mechanics-encoder neighbors per game (loaded once per session from
+# the adapter JSON at SAGE_MECHANICS_ADAPTER env var)
+_mechanics_neighbors_cache: Optional[Dict[str, List[Tuple[str, float]]]] = None
+
+
+def _load_mechanics_neighbors() -> Dict[str, List[Tuple[str, float]]]:
+    """Load per-game nearest-neighbor map from the mechanics encoder adapter.
+    Returns {} if no adapter available — feature degrades gracefully.
+    """
+    global _mechanics_neighbors_cache
+    if _mechanics_neighbors_cache is not None:
+        return _mechanics_neighbors_cache
+    _mechanics_neighbors_cache = {}
+
+    path_env = os.environ.get("SAGE_MECHANICS_ADAPTER", "")
+    candidates: List[Path] = []
+    if path_env:
+        candidates.append(Path(path_env))
+    # Default scan — find any cbp-mechanics-*.json in _adapters/
+    for root in [
+        Path(os.environ.get("SAGE_ROUTER_DATA_DIR", "")),
+        Path("/mnt/c/exe/projects/ai-agents/private-context/training-data/router"),
+        Path.home() / "ai-workspace" / "private-context" / "training-data" / "router",
+    ]:
+        ad = root / "_adapters"
+        if ad.is_dir():
+            candidates.extend(sorted(ad.glob("*mechanics*.json"), reverse=True))
+
+    for path in candidates:
+        if not path.exists():
+            continue
+        try:
+            d = json.loads(path.read_text())
+            nn = d.get("nearest_neighbors") or {}
+            if nn:
+                _mechanics_neighbors_cache = {
+                    g: [(str(nbr), float(sim)) for nbr, sim in nns]
+                    for g, nns in nn.items()
+                }
+                break
+        except Exception:
+            continue
+    return _mechanics_neighbors_cache
 
 
 def _load_world_model_summary(game_family: str, max_chars: int = 1500) -> str:
@@ -561,6 +604,19 @@ def build_prompt(
         _game_context_cache[game_family] = _retrieve_game_context(game_family)
     game_context = _game_context_cache[game_family]
 
+    # Tier 0: mechanics-encoder cluster — "this game is near X, Y, Z"
+    mech_block = ""
+    neighbors_map = _load_mechanics_neighbors()
+    if game_family in neighbors_map:
+        neighbors = neighbors_map[game_family][:3]
+        if neighbors:
+            neigh_str = ", ".join(f"{n} ({s:.2f})" for n, s in neighbors)
+            mech_block = (
+                f"\n=== Mechanics cluster (from learned encoder) ===\n"
+                f"This game's dynamics signature is closest to: {neigh_str}\n"
+                "Hypothesis: similar action-consequence patterns may apply.\n"
+            )
+
     world_model_block = ""
     if world_model:
         world_model_block = f"""
@@ -581,7 +637,7 @@ def build_prompt(
 The image contains TWO frames side by side: LEFT is the PREVIOUS frame, \
 RIGHT is the CURRENT frame (separated by a black gap). Compare them to \
 understand what just changed.
-{world_model_block}{context_block}
+{mech_block}{world_model_block}{context_block}
 === Current situation ===
 Game: {game}  Level: {level}  Step: {step_index}
 Invoke triggers: {', '.join(invoke_reasons) if invoke_reasons else 'manual'}

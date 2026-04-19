@@ -338,11 +338,15 @@ If you choose CLICK (6), you MUST provide X and Y pixel coordinates on the 64×6
 """
 
 
-# ACTION=<n> — required. Coords parsed independently (tolerates brackets,
-# extra whitespace, commas, etc. that real LLMs produce).
-_ACTION_RE = re.compile(r"ACTION\s*=\s*(\d+)", re.IGNORECASE)
+# ACTION=<n> or ACTION=<name> — required. Coords parsed independently
+# (tolerates brackets, extra whitespace, commas, etc. that real LLMs produce).
+_ACTION_RE = re.compile(r"ACTION\s*=\s*(\w+)", re.IGNORECASE)
 _X_RE = re.compile(r"X\s*=\s*(-?\d+)", re.IGNORECASE)
 _Y_RE = re.compile(r"Y\s*=\s*(-?\d+)", re.IGNORECASE)
+_ACTION_NAME_MAP = {
+    "a0": 0, "up": 1, "down": 2, "left": 3, "right": 4, "sel": 5, "click": 6,
+    "noop": 0, "select": 5,
+}
 
 
 def parse_llm_response(
@@ -354,10 +358,13 @@ def parse_llm_response(
     m = _ACTION_RE.search(text)
     if not m:
         return fallback_action, fallback_coords, f"parse_failed: {text[:120]}"
+    raw = m.group(1)
     try:
-        action = int(m.group(1))
-    except Exception:
-        return fallback_action, fallback_coords, f"bad_action_int: {text[:120]}"
+        action = int(raw)
+    except ValueError:
+        action = _ACTION_NAME_MAP.get(raw.lower(), -1)
+    if action < 0:
+        return fallback_action, fallback_coords, f"bad_action_name: {raw}"
     if not (0 <= action < N_ACTIONS):
         return fallback_action, fallback_coords, f"action_out_of_range: {action}"
 

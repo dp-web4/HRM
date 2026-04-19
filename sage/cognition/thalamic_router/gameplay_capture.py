@@ -426,9 +426,15 @@ class GameplayCapture:
             except Exception as e:
                 self.errors.append(f"step {step.index}: write failed: {e!r}")
 
-            # Apply the action to advance the env
-            try:
+            # Apply the action to advance the env.
+            # Translate int → GameAction when arcengine is available; when
+            # it isn't (tests, machines without the SDK), pass the raw int.
+            # The env either accepts it (MockEnv) or raises (caught below).
+            if int_to_action:
                 ga = int_to_action.get(step.action)
+            else:
+                ga = step.action
+            try:
                 if ga is not None:
                     fd = env.step(ga, data=step.data) if step.data else env.step(ga)
                     steps_applied += 1

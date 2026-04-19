@@ -511,6 +511,7 @@ def build_prompt(
     action_ranking: List[Tuple[int, float]],
     recent_actions: List[int],
     invoke_reasons: List[str],
+    recent_trajectory: Optional[List[Dict[str, Any]]] = None,
 ) -> str:
     """Compose the invoke-time LLM prompt.
 
@@ -525,6 +526,26 @@ def build_prompt(
         ACTION_NAMES[a] if 0 <= a < len(ACTION_NAMES) else str(a)
         for a in recent_actions[-5:]
     ) or "(none yet)"
+
+    # Trajectory context (optional): recent steps' actions + effect magnitude.
+    # Lets the LLM see "has my CLICK been changing the state or not?"
+    trajectory_block = ""
+    if recent_trajectory:
+        lines = []
+        for t in recent_trajectory[-5:]:
+            act_name = ACTION_NAMES[t["action"]] if 0 <= t.get("action", -1) < len(ACTION_NAMES) else "?"
+            coords = t.get("coords")
+            coord_str = f"({coords['x']},{coords['y']})" if coords else ""
+            delta = t.get("frame_delta_pct", 0.0)
+            level_marker = f" L{t['level']}→L{t['new_level']}" if t.get("new_level") != t.get("level") else ""
+            lines.append(
+                f"  step {t['step']}: {act_name}{coord_str} → {delta:.0f}% frame change{level_marker}"
+            )
+        if lines:
+            trajectory_block = (
+                "\nRecent trajectory (have your past actions been doing anything?):\n"
+                + "\n".join(lines) + "\n"
+            )
 
     game_family = game.split("-")[0] if "-" in game else game
 
@@ -564,7 +585,7 @@ understand what just changed.
 === Current situation ===
 Game: {game}  Level: {level}  Step: {step_index}
 Invoke triggers: {', '.join(invoke_reasons) if invoke_reasons else 'manual'}
-Recent actions: {recent_names}
+Recent actions: {recent_names}{trajectory_block}
 
 NN's best-action ranking (top 5): {top_str}
 NN's top pick: {ACTION_NAMES[play_action_idx]} (confidence {play_confidence:.2f})
@@ -761,6 +782,7 @@ def run_llm_dispatch(
     llm_parse_failures = 0
     stuck_count = 0
     llm_responses: List[Dict[str, Any]] = []
+    trajectory: List[Dict[str, Any]] = []   # last-K action/delta log for prompt
 
     # Zero-frame convention at game start
     zero_frame_oh = np.zeros((N_COLORS, FRAME_H, FRAME_W), dtype=np.float32)
@@ -836,6 +858,7 @@ def run_llm_dispatch(
                 action_ranking=dispatch.action_ranking,
                 recent_actions=list(recent),
                 invoke_reasons=dispatch.invoke_reasons,
+                recent_trajectory=trajectory[-5:] if trajectory else None,
             )
             t0 = time.time()
             response = llm_client.chat(prompt, images_png=[pair_png])
@@ -880,6 +903,35 @@ def run_llm_dispatch(
 
         new_state = getattr(getattr(new_fd, "state", None), "name", None) or "RUNNING"
         new_levels = getattr(new_fd, "levels_completed", 0) or 0
+
+        # Compute frame-delta for trajectory log (post-action change)
+        new_frame_raw = getattr(new_fd, "frame", None)
+        if curr_frame_raw is not None and new_frame_raw is not None:
+            try:
+                a_arr = np.asarray(curr_frame_raw)
+                b_arr = np.asarray(new_frame_raw)
+                if a_arr.ndim == 3 and a_arr.shape[0] > 0:
+                    a_arr = a_arr[-1]
+                if b_arr.ndim == 3 and b_arr.shape[0] > 0:
+                    b_arr = b_arr[-1]
+                if a_arr.shape == b_arr.shape and a_arr.size > 0:
+                    frame_delta_pct = 100.0 * float((a_arr != b_arr).mean())
+                else:
+                    frame_delta_pct = 100.0  # shape change
+            except Exception:
+                frame_delta_pct = 0.0
+        else:
+            frame_delta_pct = 0.0
+
+        # Record this step in the trajectory for future prompt context
+        trajectory.append({
+            "step": step_idx + 1,
+            "action": action,
+            "coords": coords,
+            "level": curr_levels,
+            "new_level": new_levels,
+            "frame_delta_pct": frame_delta_pct,
+        })
 
         metadata = {
             "source": "sage_plays_self",

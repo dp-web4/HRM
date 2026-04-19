@@ -490,7 +490,7 @@ def _discover_trace(game_family: str, game_id: str) -> Optional[Path]:
     if not vm.is_dir():
         return None
     sol = vm / "solutions.json"
-    if sol.exists():
+    if sol.exists() and _is_actionable_solutions(sol):
         return sol
     # Otherwise newest run_ dir with a run.json
     runs = sorted(
@@ -501,7 +501,29 @@ def _discover_trace(game_family: str, game_id: str) -> Optional[Path]:
         run_json = run_dir / "run.json"
         if run_json.exists():
             return run_json
-    return None
+    # Last resort — return solutions.json even if not actionable; load_trace
+    # will raise a clear error. Better than silently returning None.
+    return sol if sol.exists() else None
+
+
+def _is_actionable_solutions(path: Path) -> bool:
+    """Quick peek to check if solutions.json is the per-step action-list format
+    (list-of-lists-of-dicts-with-"action") vs a summary format (e.g. ka59's
+    {"solutions": {"L0": {"moves": N, ...}}} which has no executable actions).
+    """
+    try:
+        data = json.loads(path.read_text())
+    except Exception:
+        return False
+    if isinstance(data, list):
+        # Top-level list: expected action-per-level format. Check one action.
+        if data and isinstance(data[0], list):
+            first = data[0]
+            if first and isinstance(first[0], dict) and "action" in first[0]:
+                return True
+        return False
+    # Any other shape (dict, etc.) is a summary/metadata file — not actionable.
+    return False
 
 
 def main() -> int:

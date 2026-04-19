@@ -56,13 +56,34 @@ RECENT_ACTIONS_K = 8
 def onehot_frame(frame: Any) -> np.ndarray:
     """Convert a frame (int array, shape (L,H,W) or (H,W)) to one-hot (16,H,W).
     If multi-layer, use the LAST layer (topmost render). Pads to FRAME_H × FRAME_W.
+
+    Handles degenerate cases (empty array, 1-D, 0-sized) by returning all-zero
+    one-hot — honest "I don't have a valid frame" signal. Observed on cn04/re86
+    under SDK version-drift where env.step returns empty frames for some actions.
     """
+    zero = np.zeros((N_COLORS, FRAME_H, FRAME_W), dtype=np.float32)
+    if frame is None:
+        return zero
     arr = np.asarray(frame, dtype=np.int64)
+    if arr.size == 0:
+        return zero
     if arr.ndim == 3:
+        if arr.shape[0] == 0:
+            return zero
         arr = arr[-1]   # last layer (topmost visual)
-    if arr.ndim != 2:
-        arr = arr.reshape(-1, arr.shape[-1])
+    if arr.ndim == 1:
+        # 1-D degenerate frame — can't meaningfully reshape without knowing H,W.
+        # Pad into a row-vector at the top of the canonical grid.
+        row = arr[:FRAME_W]
+        padded = np.zeros((FRAME_H, FRAME_W), dtype=np.int64)
+        padded[0, :len(row)] = row
+        arr = padded
+    elif arr.ndim != 2:
+        # Unknown dimensionality — be conservative
+        return zero
     h, w = arr.shape
+    if h == 0 or w == 0:
+        return zero
     # Pad to canonical shape
     padded = np.zeros((FRAME_H, FRAME_W), dtype=np.int64)
     padded[:min(h, FRAME_H), :min(w, FRAME_W)] = arr[:FRAME_H, :FRAME_W]
@@ -323,10 +344,14 @@ def compute_invoke_label(
     a = np.asarray(prev_frame)
     b = np.asarray(curr_frame)
     if a.ndim == 3:
-        a = a[-1]
+        a = a[-1] if a.shape[0] > 0 else a.reshape(0, 0)
     if b.ndim == 3:
-        b = b[-1]
+        b = b[-1] if b.shape[0] > 0 else b.reshape(0, 0)
+    if a.size == 0 and b.size == 0:
+        return 0.0     # both empty — no signal either way
+    if a.size == 0 or b.size == 0:
+        return 1.0     # one empty, one not — shape/state change is a huge signal
     if a.shape != b.shape:
-        return 1.0   # shape change is a huge signal
+        return 1.0
     diff_rate = float((a != b).mean())
     return 1.0 if diff_rate >= pixel_diff_threshold else 0.0

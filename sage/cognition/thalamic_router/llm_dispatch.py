@@ -226,6 +226,60 @@ The neural network provides hints. Your job: pick the best next action to make \
 progress toward winning the level."""
 
 
+def _retrieve_game_context(game_family: str, max_entries: int = 3) -> str:
+    """Retrieve game-specific context from the all-games membot cartridge.
+
+    Uses nomic-embed-text to embed a query, then cosine similarity against
+    the cartridge's pre-computed embeddings. Returns the top entries as text.
+    """
+    import requests as _req
+    cart_path = Path(__file__).parent.parent.parent.parent / "shared-context" / "arc-agi-3" / "phase2" / "all-games.cart.npz"
+    if not cart_path.exists():
+        # Try other common locations
+        for p in [
+            Path(os.environ.get("ARC_SAGE_DIR", "")) / ".." / "shared-context" / "arc-agi-3" / "phase2" / "all-games.cart.npz",
+            Path.home() / "ai-workspace" / "shared-context" / "arc-agi-3" / "phase2" / "all-games.cart.npz",
+        ]:
+            if p.exists():
+                cart_path = p; break
+    if not cart_path.exists():
+        return ""
+
+    try:
+        cart = np.load(str(cart_path), allow_pickle=True)
+        embeddings = cart['embeddings']
+        snippets = cart['snippets']
+
+        # Embed query
+        resp = _req.post("http://localhost:11434/api/embeddings", json={
+            "model": "nomic-embed-text",
+            "prompt": f"{game_family} game mechanics strategy how to play",
+        }, timeout=10)
+        q_emb = np.array(resp.json()["embedding"], dtype=np.float32)
+
+        # Cosine similarity
+        norms = np.linalg.norm(embeddings, axis=1)
+        q_norm = np.linalg.norm(q_emb)
+        sims = (embeddings @ q_emb) / (norms * q_norm + 1e-8)
+
+        top_idx = np.argsort(sims)[::-1][:max_entries]
+        context_parts = []
+        for i in top_idx:
+            if sims[i] > 0.4:  # Only include relevant hits
+                text = str(snippets[i])
+                # Truncate each entry
+                if len(text) > 400:
+                    text = text[:400] + "..."
+                context_parts.append(text)
+        return "\n\n".join(context_parts)
+    except Exception:
+        return ""
+
+
+# Cache retrieved context per game to avoid repeated embedding calls
+_game_context_cache: Dict[str, str] = {}
+
+
 def build_prompt(
     game: str, level: int, step_index: int,
     play_action_idx: int, play_confidence: float,
@@ -235,7 +289,8 @@ def build_prompt(
 ) -> str:
     """Compose the invoke-time LLM prompt.
 
-    Keeps it tight — the LLM is on a budget, don't waste its context.
+    Keeps it tight ��� the LLM is on a budget, don't waste its context.
+    Includes game-specific context from the membot cartridge when available.
     """
     top5 = action_ranking[:5]
     top_str = ", ".join(
@@ -246,12 +301,26 @@ def build_prompt(
         for a in recent_actions[-5:]
     ) or "(none yet)"
 
+    # Retrieve game context from cartridge (cached per game)
+    game_family = game.split("-")[0] if "-" in game else game
+    if game_family not in _game_context_cache:
+        _game_context_cache[game_family] = _retrieve_game_context(game_family)
+    game_context = _game_context_cache[game_family]
+
+    context_block = ""
+    if game_context:
+        context_block = f"""
+Game knowledge (from solved games database):
+{game_context}
+
+"""
+
     return f"""{SYSTEM_PROMPT}
 
 The image contains TWO frames side by side: LEFT is the PREVIOUS frame, \
 RIGHT is the CURRENT frame (separated by a black gap). Compare them to \
 understand what just changed.
-
+{context_block}
 Game: {game}  Level: {level}  Step: {step_index}
 Invoke triggers: {', '.join(invoke_reasons) if invoke_reasons else 'manual'}
 Recent actions: {recent_names}

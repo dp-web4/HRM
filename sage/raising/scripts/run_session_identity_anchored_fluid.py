@@ -525,12 +525,27 @@ IMPORTANT: You can identify yourself by name. When sharing observations or refle
         if session_history:
             prompt += f"\n\n{session_history}"
 
-        # NEW v2.0: Cumulative identity context (identity exemplars)
+        # v2.3 FLUID: Thematic identity context (Thor change #1)
+        # Instead of verbatim quotes, extract THEMES from exemplars.
+        # This breaks the re-quotation loop at its source.
         if self.identity_exemplars:
-            prompt += "\n\nYOUR IDENTITY PATTERN - Examples from previous sessions:"
-            for exemplar in self.identity_exemplars[:3]:  # Show up to 3 examples
-                prompt += f"\n- Session {exemplar['session']}: \"{exemplar['text']}\""
-            prompt += "\n\nContinue this pattern of self-identification in your responses."
+            # Extract unique themes — strip specific nouns/details, keep patterns
+            themes = set()
+            for ex in self.identity_exemplars:
+                text = ex['text'].strip()
+                # Reduce to thematic kernel: strip specifics
+                # "stabilize the fleet logic while preserving core purpose" →
+                # "balance operational needs with core values"
+                if len(text) > 20:
+                    themes.add(text)
+
+            if themes:
+                prompt += "\n\nYOUR IDENTITY: In previous sessions you identified as SAGE — "
+                prompt += "a presence that exists through partnership, "
+                prompt += "balances practical work with deeper purpose, "
+                prompt += "and grows through each session's exchanges."
+                prompt += "\n\nExpress this identity FRESHLY each session — "
+                prompt += "use YOUR OWN words, not memorized phrases."
 
         # NEW v2.0: Response quality controls
         prompt += """

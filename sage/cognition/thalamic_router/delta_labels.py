@@ -97,6 +97,17 @@ def _sage_plays_self_label(record: Dict[str, Any]) -> Optional[DeltaLabel]:
     if (not llm_invoked) and levels_up and (not stuck):
         invoke = 0.0
         reason = "nn_correct_advance"
+    # Broader negative evidence (added for v8 to counter invoke_head paranoia):
+    # NN played, no stuck, state didn't degrade. v7's 695+/1- skew taught the
+    # invoke_head to over-trigger; these counter-examples rebalance the signal.
+    # NB: absence of progress is NOT evidence invoke would've helped — the LLM
+    # might have failed too. We only treat "NN played AND things kept moving
+    # AND no stuck" as weak negative.
+    state_ok = state_after not in ("GAME_OVER",)
+    decision = sd.get("decision")
+    if invoke is None and decision == "play" and (not stuck) and state_ok:
+        invoke = 0.0
+        reason = "nn_played_no_stuck"
 
     if invoke is None:
         return None

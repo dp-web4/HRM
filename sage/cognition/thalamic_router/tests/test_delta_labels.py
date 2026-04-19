@@ -62,10 +62,42 @@ def test_sage_plays_self_nn_correct_advance_is_negative():
 
 
 def test_sage_plays_self_no_signal_returns_none():
-    """Routine play step with no notable outcome → no label contribution."""
+    """Record without decision field → no label contribution.
+
+    (v7 behavior: true 'no signal'. v8 adds nn_played_no_stuck for records
+    that DO have decision=play; see next test.)"""
     r = _rec(sage_plays_self={
         "stuck_triggered": False, "llm_invoked": False,
         "levels_before": 0, "levels_after": 0,
+    })
+    assert _sage_plays_self_label(r) is None
+
+
+def test_sage_plays_self_nn_played_no_stuck_is_negative():
+    """v8 rebalancing: decision=play + no stuck + state_ok → invoke=0.
+
+    Counter-example to v7's invoke_head paranoia. If we only train on
+    stuck/advance signals, the invoke_head learns "fire broadly." These
+    negatives teach it "don't fire when NN is working fine."
+    """
+    r = _rec(sage_plays_self={
+        "decision": "play", "stuck_triggered": False, "llm_invoked": False,
+        "levels_before": 0, "levels_after": 0,
+        "state_after": "NOT_FINISHED",
+    })
+    L = _sage_plays_self_label(r)
+    assert L is not None
+    assert L.invoke_target == 0.0
+    assert L.reason == "nn_played_no_stuck"
+
+
+def test_sage_plays_self_game_over_not_treated_as_negative():
+    """If play resulted in GAME_OVER, it's NOT evidence we shouldn't have
+    invoked. Leave the label unset rather than emit a misleading negative."""
+    r = _rec(sage_plays_self={
+        "decision": "play", "stuck_triggered": False, "llm_invoked": False,
+        "levels_before": 0, "levels_after": 0,
+        "state_after": "GAME_OVER",
     })
     assert _sage_plays_self_label(r) is None
 

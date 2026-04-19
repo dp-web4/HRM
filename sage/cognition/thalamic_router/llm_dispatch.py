@@ -164,7 +164,16 @@ def render_frame_pair_png(
 # LLM client — Ollama HTTP API
 # ───────────────────────────────────────────────────────────────────
 
-class OllamaClient:
+class LLMClient:
+    """Abstract interface — OllamaClient and AnthropicClient both implement chat()."""
+    model: str
+
+    def chat(self, prompt: str, images_png: Optional[List[bytes]] = None,
+             max_tokens: int = 300) -> str:
+        raise NotImplementedError
+
+
+class OllamaClient(LLMClient):
     def __init__(
         self,
         base_url: str = "http://localhost:11434",
@@ -211,6 +220,70 @@ class OllamaClient:
             return f"ERROR: {type(e).__name__}: {e}"
         msg = body.get("message") or {}
         return str(msg.get("content", "") or "")
+
+
+class AnthropicClient(LLMClient):
+    """Anthropic API backend via the official SDK. For the ceiling experiment:
+    does claude-opus + our triage + world-model context actually play games?
+
+    Requires ANTHROPIC_API_KEY env var. Default model claude-opus-4-7.
+    """
+    def __init__(
+        self,
+        model: str = "claude-opus-4-7",
+        api_key: Optional[str] = None,
+        timeout: float = 60.0,
+        max_retries: int = 2,
+    ):
+        self.model = model
+        self.timeout = timeout
+        # Lazy import so Ollama-only users don't need the SDK
+        try:
+            import anthropic
+        except ImportError as e:
+            raise RuntimeError(
+                "anthropic SDK not installed. pip install anthropic"
+            ) from e
+        key = api_key or os.environ.get("ANTHROPIC_API_KEY")
+        if not key:
+            raise RuntimeError("ANTHROPIC_API_KEY not set and not provided")
+        self._anthropic = anthropic
+        self._client = anthropic.Anthropic(api_key=key, max_retries=max_retries,
+                                            timeout=timeout)
+
+    def chat(
+        self, prompt: str, images_png: Optional[List[bytes]] = None,
+        max_tokens: int = 300,
+    ) -> str:
+        """Send the prompt (+ optional images) to Claude. Images accepted
+        as a LIST (unlike Ollama's stitched-only approach). Returns text."""
+        content_blocks: List[Dict[str, Any]] = []
+        for img_bytes in (images_png or []):
+            content_blocks.append({
+                "type": "image",
+                "source": {
+                    "type": "base64",
+                    "media_type": "image/png",
+                    "data": base64.b64encode(img_bytes).decode("ascii"),
+                },
+            })
+        content_blocks.append({"type": "text", "text": prompt})
+        try:
+            resp = self._client.messages.create(
+                model=self.model,
+                max_tokens=max_tokens,
+                messages=[{"role": "user", "content": content_blocks}],
+            )
+        except self._anthropic.APIError as e:
+            return f"ERROR: APIError: {e}"
+        except Exception as e:
+            return f"ERROR: {type(e).__name__}: {e}"
+        # Response shape: resp.content is list of blocks, text in TextBlock
+        parts: List[str] = []
+        for block in resp.content:
+            if getattr(block, "type", None) == "text":
+                parts.append(block.text)
+        return "".join(parts) or str(resp.content)[:500]
 
 
 # ───────────────────────────────────────────────────────────────────
@@ -807,8 +880,14 @@ def main() -> int:
         "SAGE_ROUTER_DATA_DIR",
         "/mnt/c/exe/projects/ai-agents/private-context/training-data/router"))
     p.add_argument("--max-steps", type=int, default=None)
-    p.add_argument("--llm-model", default=os.environ.get("SAGE_LLM_MODEL", "llama3.2-vision:11b"))
-    p.add_argument("--llm-url", default=os.environ.get("SAGE_LLM_BASE_URL", "http://localhost:11434"))
+    p.add_argument("--llm-backend", default=os.environ.get("SAGE_LLM_BACKEND", "ollama"),
+                   choices=["ollama", "anthropic"],
+                   help="LLM backend. ollama = local Ollama HTTP API; "
+                        "anthropic = Claude API via SDK (requires ANTHROPIC_API_KEY).")
+    p.add_argument("--llm-model", default=os.environ.get("SAGE_LLM_MODEL", "llama3.2-vision:11b"),
+                   help="Model name. For anthropic backend, claude-opus-4-7 recommended.")
+    p.add_argument("--llm-url", default=os.environ.get("SAGE_LLM_BASE_URL", "http://localhost:11434"),
+                   help="Ollama base URL (ignored for anthropic backend).")
     p.add_argument("--llm-timeout", type=float, default=60.0)
     p.add_argument("--json-out", default=None)
     args = p.parse_args()
@@ -845,15 +924,30 @@ def main() -> int:
     max_steps = args.max_steps or (min(2 * trace_steps, 500) if trace_steps else 200)
 
     model, cfg = load_frame_router(Path(args.adapter))
-    llm = OllamaClient(base_url=args.llm_url, model=args.llm_model, timeout=args.llm_timeout)
+
+    # Build LLM client based on backend
+    if args.llm_backend == "anthropic":
+        # Default to claude-opus-4-7 for anthropic backend unless user overrode
+        if args.llm_model == "llama3.2-vision:11b":
+            args.llm_model = "claude-opus-4-7"
+        try:
+            llm: LLMClient = AnthropicClient(model=args.llm_model, timeout=args.llm_timeout)
+        except RuntimeError as e:
+            print(f"ERROR: {e}")
+            return 1
+        endpoint_desc = f"anthropic API ({args.llm_model})"
+    else:
+        llm = OllamaClient(base_url=args.llm_url, model=args.llm_model,
+                           timeout=args.llm_timeout)
+        endpoint_desc = f"{args.llm_model} at {args.llm_url}"
 
     # Probe LLM availability
     probe = llm.chat("Reply with just OK.", max_tokens=10)
     if probe.startswith("ERROR"):
         print(f"LLM probe failed: {probe}")
-        print(f"  model: {args.llm_model} at {args.llm_url}")
+        print(f"  endpoint: {endpoint_desc}")
         return 1
-    print(f"LLM online: {args.llm_model} (probe: {probe[:60]!r})")
+    print(f"LLM online: {endpoint_desc} (probe: {probe[:60]!r})")
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     writer = RouterDatasetWriter(

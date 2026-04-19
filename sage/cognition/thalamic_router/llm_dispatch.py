@@ -387,13 +387,55 @@ class AnthropicClient(LLMClient):
 # Prompt + response parsing
 # ───────────────────────────────────────────────────────────────────
 
-SYSTEM_PROMPT = """You are the deliberation tier of SAGE, a cognition kernel playing \
+# Fallback prompt used only if the fleet-canonical MD file is missing.
+# Canonical source: shared-context/arc-agi-3/gameplay_system_prompt.md.
+# Kept brief; the real prompt is ~200 lines and loaded from disk.
+_FALLBACK_SYSTEM_PROMPT = """You are the deliberation tier of SAGE, a cognition kernel playing \
 ARC-AGI-3 grid-based puzzle games. A small neural router has flagged this state as \
 requiring deliberation. You see two images: the previous game frame and the current \
 game frame. Cells are 16 colors. The grid is 64x64.
 
 The neural network provides hints. Your job: pick the best next action to make \
 progress toward winning the level."""
+
+
+def _resolve_gameplay_system_prompt_path() -> Optional[Path]:
+    """Find shared-context/arc-agi-3/gameplay_system_prompt.md across the
+    common repo layouts used by the fleet. Returns None if not found."""
+    candidates = [
+        Path(os.environ.get("SHARED_CONTEXT_DIR", "")) / "arc-agi-3" / "gameplay_system_prompt.md",
+        Path("/mnt/c/exe/projects/ai-agents/shared-context") / "arc-agi-3" / "gameplay_system_prompt.md",
+        Path.home() / "ai-workspace" / "shared-context" / "arc-agi-3" / "gameplay_system_prompt.md",
+        Path.home() / "repos" / "shared-context" / "arc-agi-3" / "gameplay_system_prompt.md",
+    ]
+    for p in candidates:
+        if p.exists():
+            return p
+    return None
+
+
+def _load_gameplay_system_prompt() -> str:
+    """Load the fleet-canonical gameplay system prompt. Caches at module level
+    so we read disk at most once per process."""
+    global _SYSTEM_PROMPT_CACHE
+    if _SYSTEM_PROMPT_CACHE is not None:
+        return _SYSTEM_PROMPT_CACHE
+    path = _resolve_gameplay_system_prompt_path()
+    if path is not None:
+        try:
+            _SYSTEM_PROMPT_CACHE = path.read_text(encoding="utf-8").strip()
+            return _SYSTEM_PROMPT_CACHE
+        except Exception:
+            pass
+    _SYSTEM_PROMPT_CACHE = _FALLBACK_SYSTEM_PROMPT
+    return _SYSTEM_PROMPT_CACHE
+
+
+_SYSTEM_PROMPT_CACHE: Optional[str] = None
+
+
+# Back-compat alias for existing callers (tests, build_prompt).
+SYSTEM_PROMPT = _load_gameplay_system_prompt()
 
 
 def _retrieve_game_context(game_family: str, max_entries: int = 3) -> str:
@@ -680,6 +722,88 @@ def _load_world_model_summary(game_family: str, max_chars: int = 1500) -> str:
     return combined
 
 
+def _detect_trajectory_patterns(window: List[Dict[str, Any]]) -> List[str]:
+    """Scan a trajectory window and emit human-readable pattern flags.
+
+    Helps the LLM see patterns without inferring them from raw numbers:
+    stuck (low frame change repeatedly), level advance, frame revert,
+    oscillation, and repeated-identical-action warnings.
+    """
+    flags: List[str] = []
+    if not window:
+        return flags
+
+    # Stuck: 3+ consecutive low-delta steps at the end of the window
+    low_delta_tail = 0
+    for t in reversed(window):
+        if t.get("frame_delta_pct", 0.0) < 2.0:
+            low_delta_tail += 1
+        else:
+            break
+    if low_delta_tail >= 3:
+        flags.append(
+            f"⚠️ STUCK: last {low_delta_tail} actions produced <2% frame change. "
+            "Pick something categorically different — if CLICK, try a movement; "
+            "if movement, try CLICK or the opposite direction."
+        )
+
+    # Level advance
+    for t in window:
+        if t.get("new_level") != t.get("level"):
+            flags.append(
+                f"✓ Level advanced at step {t.get('step')}. Mechanics may shift — "
+                "re-read the world model for level-specific notes."
+            )
+            break
+
+    # Frame revert: any step with ≥30% frame change after a stable sequence
+    # often signals death, reset, or undo.
+    for t in window[-5:]:
+        if t.get("frame_delta_pct", 0.0) >= 30.0:
+            flags.append(
+                f"⚠️ LARGE FRAME CHANGE at step {t.get('step')} "
+                f"({t.get('frame_delta_pct', 0):.0f}%) — possible reset, death, or undo. "
+                "Verify your model of current state against the frame."
+            )
+            break
+
+    # Repeated identical action with no effect
+    if len(window) >= 3:
+        last = window[-1]
+        last_act = last.get("action")
+        last_coords = last.get("coords")
+        same_action_count = 0
+        same_action_zero_delta = 0
+        for t in reversed(window):
+            if t.get("action") == last_act and t.get("coords") == last_coords:
+                same_action_count += 1
+                if t.get("frame_delta_pct", 0.0) < 2.0:
+                    same_action_zero_delta += 1
+            else:
+                break
+        if same_action_count >= 3 and same_action_zero_delta >= 3:
+            act_name = ACTION_NAMES[last_act] if isinstance(last_act, int) and 0 <= last_act < len(ACTION_NAMES) else "?"
+            coord_str = f"({last_coords['x']},{last_coords['y']})" if last_coords else ""
+            flags.append(
+                f"⚠️ PERSEVERATION: same action {act_name}{coord_str} repeated "
+                f"{same_action_count}× with no effect. DO NOT emit it again. "
+                "3 failures of the same approach = stop."
+            )
+
+    # Oscillation: alternating opposites in recent window
+    OPPOSITES = {1: 2, 2: 1, 3: 4, 4: 3}  # UP/DOWN, LEFT/RIGHT
+    if len(window) >= 4:
+        recent_acts = [t.get("action") for t in window[-4:]]
+        if (recent_acts[0] == recent_acts[2] and recent_acts[1] == recent_acts[3]
+                and OPPOSITES.get(recent_acts[0]) == recent_acts[1]):
+            flags.append(
+                "⚠️ OSCILLATION: alternating opposite directions — you may be "
+                "toggling a state without progress. Try a different action entirely."
+            )
+
+    return flags
+
+
 def build_prompt(
     game: str, level: int, step_index: int,
     play_action_idx: int, play_confidence: float,
@@ -702,12 +826,13 @@ def build_prompt(
         for a in recent_actions[-5:]
     ) or "(none yet)"
 
-    # Trajectory context (optional): recent steps' actions + effect magnitude.
-    # Lets the LLM see "has my CLICK been changing the state or not?"
+    # Trajectory context: recent steps' actions + effect magnitude + pattern flags.
+    # Extended to last 10 (from 5) and annotated with patterns the LLM should notice.
     trajectory_block = ""
     if recent_trajectory:
+        window = recent_trajectory[-10:]
         lines = []
-        for t in recent_trajectory[-5:]:
+        for t in window:
             act_name = ACTION_NAMES[t["action"]] if 0 <= t.get("action", -1) < len(ACTION_NAMES) else "?"
             coords = t.get("coords")
             coord_str = f"({coords['x']},{coords['y']})" if coords else ""
@@ -716,11 +841,17 @@ def build_prompt(
             lines.append(
                 f"  step {t['step']}: {act_name}{coord_str} → {delta:.0f}% frame change{level_marker}"
             )
-        if lines:
-            trajectory_block = (
-                "\nRecent trajectory (have your past actions been doing anything?):\n"
-                + "\n".join(lines) + "\n"
-            )
+
+        # Pattern detection — flag patterns the LLM should recognize without
+        # having to infer them from the raw numbers.
+        flags = _detect_trajectory_patterns(window)
+
+        header = "Recent trajectory (last {} actions; have they been moving state?):".format(len(window))
+        body = "\n".join(lines)
+        flag_block = ""
+        if flags:
+            flag_block = "\n\nPattern flags:\n" + "\n".join(f"  {f}" for f in flags)
+        trajectory_block = f"\n{header}\n{body}{flag_block}\n"
 
     game_family = game.split("-")[0] if "-" in game else game
 
@@ -1102,7 +1233,7 @@ def run_llm_dispatch(
                 action_ranking=dispatch.action_ranking,
                 recent_actions=list(recent),
                 invoke_reasons=dispatch.invoke_reasons,
-                recent_trajectory=trajectory[-5:] if trajectory else None,
+                recent_trajectory=trajectory[-15:] if trajectory else None,
             )
             t0 = time.time()
             response = llm_client.chat(prompt, images_png=[pair_png])

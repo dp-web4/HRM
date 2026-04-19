@@ -2263,8 +2263,28 @@ class SAGEConsciousness:
         return "creating"
 
     def _load_identity_exemplars(self, session_count: int, max_exemplars: int = 3) -> list:
-        """Load identity self-reference examples from recent sessions."""
+        """Load identity self-reference examples from recent sessions.
+
+        Gate: disabled for models <2GB.  Sprout S42-S95 proved that verbatim
+        exemplar injection into 0.8B creates a closed self-quotation feedback
+        loop — the model reproduces the injected phrases, which are then
+        re-scraped and re-injected next session, causing 53+ sessions of
+        template-locked output.  Direct Ollama tests (S95 post-mortem)
+        confirmed the model produces diverse responses WITHOUT exemplars.
+
+        For models >=2GB: applies fluid-scaffold mitigations (Thor S86):
+          - 20-session lookback window (not 5) to avoid tight-loop recency
+          - 4-gram overlap filter to reject near-duplicate exemplars
+        """
         import re as _re
+        import random as _random
+
+        # Gate: skip exemplar injection for small models (<2GB)
+        active_entry = self.llm_pool.active if hasattr(self, 'llm_pool') else None
+        model_size_gb = getattr(active_entry, 'size_gb', 0) if active_entry else 0
+        if model_size_gb < 2.0:
+            return []
+
         instance_dir = self.config.get('instance_dir', '')
         if not instance_dir:
             return []
@@ -2272,8 +2292,9 @@ class SAGEConsciousness:
         if not sessions_dir.exists():
             return []
 
-        exemplars = []
-        lookback = min(5, session_count)
+        # Fluid scaffold: 20-session lookback, not 5
+        candidates = []
+        lookback = min(20, session_count)
         for i in range(lookback, 0, -1):
             session_file = sessions_dir / f"session_{session_count - i:03d}.json"
             if not session_file.exists():
@@ -2285,21 +2306,38 @@ class SAGEConsciousness:
                     if turn.get('speaker') == 'SAGE':
                         text = turn.get('text', '')
                         name = self._self_name
-                        # Match self-references by name or "As SAGE"
                         if _re.search(rf'\b(As {name}|I am {name}|As SAGE)\b', text, _re.IGNORECASE):
                             sentences = _re.split(r'[.!?]+', text)
                             for sentence in sentences:
                                 if _re.search(rf'\b(As {name}|I am {name}|As SAGE)\b', sentence, _re.IGNORECASE):
-                                    exemplars.append({
+                                    candidates.append({
                                         'session': session_count - i,
                                         'text': sentence.strip()
                                     })
                                     break
             except Exception:
                 pass
-            if len(exemplars) >= max_exemplars:
+
+        if not candidates:
+            return []
+
+        # Fluid scaffold: 4-gram overlap filter + random selection
+        def _ngrams(text: str, n: int = 4) -> set:
+            words = text.lower().split()
+            return {tuple(words[i:i+n]) for i in range(len(words) - n + 1)}
+
+        _random.shuffle(candidates)
+        selected = []
+        selected_ngrams: set = set()
+        for cand in candidates:
+            cand_ngrams = _ngrams(cand['text'])
+            if cand_ngrams & selected_ngrams:
+                continue  # shares a 4-gram with already-selected — skip
+            selected.append(cand)
+            selected_ngrams |= cand_ngrams
+            if len(selected) >= max_exemplars:
                 break
-        return exemplars[:max_exemplars]
+        return selected
 
     def _build_conversation_prompt(self, content: str, history: list, sender: str) -> str:
         """Build a conversation prompt with full identity anchoring.

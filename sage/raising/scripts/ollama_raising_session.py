@@ -526,12 +526,29 @@ class OllamaRaisingSession:
     def _load_identity_exemplars(self) -> List[Dict[str, str]]:
         """Load identity self-reference instances from previous sessions.
 
+        Gate: disabled for small models (<=1B parameters, inferred from model
+        name).  Sprout S42-S95 proved that verbatim exemplar injection into
+        0.8B creates a closed self-quotation feedback loop causing 53+ sessions
+        of template-locked output.  Post-fix sessions (S96-S98) confirmed the
+        model produces diverse creative responses without exemplars.
+
+        For larger models: applies fluid-scaffold mitigations (Thor S86) —
+        20-session lookback, 4-gram overlap filter, random selection.
+
         In creating phase, exemplars containing crisis grammar are filtered
         out — re-injecting them as the model's "established voice" reinforces
         the scaffolding we're trying to move underneath.
         """
-        exemplars = []
-        lookback = min(5, self.session_number - 1)
+        import random as _random
+
+        # Gate: skip exemplar injection for small models (0.5b, 0.8b, 1b)
+        model_lower = self.model_name.lower()
+        small_model = any(s in model_lower for s in ('0.5b', '0.8b', '1b-'))
+        if small_model:
+            return []
+
+        candidates = []
+        lookback = min(20, self.session_number - 1)  # Fluid scaffold: 20, not 5
         filter_crisis = (self.phase == 'creating')
 
         for i in range(lookback, 0, -1):
@@ -553,8 +570,8 @@ class OllamaRaisingSession:
                                     if filter_crisis:
                                         lower = candidate.lower()
                                         if any(m in lower for m in self._CRISIS_GRAMMAR_MARKERS):
-                                            break  # skip this session's exemplar
-                                    exemplars.append({
+                                            break
+                                    candidates.append({
                                         'session': self.session_number - i,
                                         'text': candidate
                                     })
@@ -562,7 +579,26 @@ class OllamaRaisingSession:
             except Exception as e:
                 print(f"  Warning: Could not load session {self.session_number - i}: {e}")
 
-        return exemplars
+        if not candidates:
+            return []
+
+        # Fluid scaffold: 4-gram overlap filter + random selection
+        def _ngrams(text: str, n: int = 4) -> set:
+            words = text.lower().split()
+            return {tuple(words[i:i+n]) for i in range(len(words) - n + 1)}
+
+        _random.shuffle(candidates)
+        selected = []
+        selected_ngrams: set = set()
+        for cand in candidates:
+            cand_ngrams = _ngrams(cand['text'])
+            if cand_ngrams & selected_ngrams:
+                continue
+            selected.append(cand)
+            selected_ngrams |= cand_ngrams
+            if len(selected) >= 3:
+                break
+        return selected
 
     def _load_cross_instance_stimulus(self) -> str:
         """Load a novel observation from a sibling instance.

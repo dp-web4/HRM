@@ -185,12 +185,17 @@ class OllamaClient:
         message = {"role": "user", "content": prompt}
         if images_png:
             message["images"] = [base64.b64encode(b).decode("ascii") for b in images_png]
+        # Gemma4 produces empty responses with num_predict+temperature in options.
+        # Use think: false (mandatory for gemma4 speed) and keep options minimal.
         payload = {
             "model": self.model,
             "messages": [message],
             "stream": False,
-            "options": {"num_predict": max_tokens, "temperature": 0.2},
+            "think": False,
         }
+        # Only set options for models that tolerate them (non-gemma4)
+        if "gemma4" not in self.model:
+            payload["options"] = {"num_predict": max_tokens, "temperature": 0.2}
         req = urllib.request.Request(
             f"{self.base_url}/api/chat",
             data=json.dumps(payload).encode("utf-8"),

@@ -506,15 +506,18 @@ def _load_level_bboxes(game_family: str) -> Dict[int, Dict[str, int]]:
     return _level_bbox_cache[game_family]
 
 
-def _nn_click_coords(game_family: str, level: Optional[int]) -> Dict[str, int]:
+def _nn_click_coords(game_family: str, level: Optional[int]) -> Optional[Dict[str, int]]:
     """Return click coords for NN-driven CLICK actions.
 
     Strategy: if a level-hint bbox + stride is available, enumerate all
-    grid-aligned points inside the bbox and rotate through them across
-    successive CLICK calls. This prevents the "click (38,38) 17 times,
-    self-inverse cancels all progress" failure mode seen on ft09.
+    grid-aligned points inside the bbox and rotate through them ONCE.
+    Returns None once every grid point has been tried — signals to the
+    harness to force-invoke so Claude can decide which to re-click
+    (with awareness that the first cycle was toggle-heavy).
 
     Falls back to frame center (32, 32) when no level-hint available.
+    Never returns None in the fallback path — center-click is always
+    available, even if not useful.
     """
     lvl = level if level is not None else 0
     bboxes = _load_level_bboxes(game_family)
@@ -527,7 +530,6 @@ def _nn_click_coords(game_family: str, level: Optional[int]) -> Dict[str, int]:
     sx = int(bbox.get("stride_x") or max(1, (x_max - x_min)))
     sy = int(bbox.get("stride_y") or max(1, (y_max - y_min)))
 
-    # Enumerate grid points: x in {x_min, x_min+sx, ..., x_max}, y similarly
     xs = list(range(x_min, x_max + 1, sx)) or [x_min]
     ys = list(range(y_min, y_max + 1, sy)) or [y_min]
     grid: List[Tuple[int, int]] = [(x, y) for y in ys for x in xs]
@@ -535,7 +537,14 @@ def _nn_click_coords(game_family: str, level: Optional[int]) -> Dict[str, int]:
     key = (game_family, lvl)
     idx = _nn_click_rotation.get(key, 0)
     _nn_click_rotation[key] = idx + 1
-    x, y = grid[idx % len(grid)]
+
+    # One cycle only. Beyond that, rotation without strategy toggles
+    # earlier clicks off (self-inverse games like ft09). Return None
+    # to signal "exhausted grid, force invoke."
+    if idx >= len(grid):
+        return None
+
+    x, y = grid[idx]
     return {"x": int(x), "y": int(y)}
 
 
@@ -1041,6 +1050,9 @@ def run_llm_dispatch(
         step_frac = min(1.0, (step_idx + 1) / max(1, trace_steps or 100))
         budget_remaining = max(0.0, 1.0 - step_frac)
 
+        mech_vec = None
+        if cfg.use_mech_embedding and hasattr(model, "mech_embedding_table"):
+            mech_vec = model.mech_embedding_table[game_idx].detach().cpu().numpy().tolist()
         scalar = build_scalar_vector(
             game_idx=game_idx, n_games=cfg.n_games,
             level=level, n_levels=cfg.n_levels,
@@ -1050,6 +1062,7 @@ def run_llm_dispatch(
             available_actions=[1] * N_ACTIONS,
             batch_state=[0.0, 0.0, 0.0],
             include_last_action=cfg.include_last_action,
+            mech_embedding=mech_vec,
         )
         scalar_arr = np.array(scalar, dtype=np.float32)
 
@@ -1116,11 +1129,16 @@ def run_llm_dispatch(
                 llm_responses.append(llm_info)
         else:
             action = dispatch.play_action
-            # For NN-driven CLICK: use the level-hint bbox center if available,
-            # else fall back to center-of-frame. The bbox comes from the solver
-            # trace's click-region summary and concentrates play in the active
-            # area instead of dead-space at (32,32).
-            coords = _nn_click_coords(game_family, level) if action == 6 else None
+            coords = None
+            if action == 6:
+                # NN-driven CLICK: rotate through level-hint bbox grid once.
+                # Returns None once the grid has cycled; fall back to center.
+                # Not force-escalating to invoke — that's a tactical patch
+                # for a strategic issue. The right fix is retraining with
+                # the delta records so the action_head learns coord choice.
+                coords = _nn_click_coords(game_family, level)
+                if coords is None:
+                    coords = {"x": 32, "y": 32}
 
         aname = ACTION_NAMES[action] if 0 <= action < N_ACTIONS else str(action)
         action_counts[aname] = action_counts.get(aname, 0) + 1

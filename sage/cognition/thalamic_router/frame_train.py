@@ -68,6 +68,8 @@ def _make_env(game_family: str, game_id: str):
 
 def replay_trace_to_tuples(
     trace, game_idx: int, n_games: int, n_levels: int = 10,
+    mech_embedding: Optional[List[float]] = None,
+    delta_labels: Optional[Dict[Tuple[str, str, int], Any]] = None,
 ) -> List[Dict[str, Any]]:
     """Replay a trace on the env, yield training tuples per step.
 
@@ -108,6 +110,19 @@ def replay_trace_to_tuples(
             step_index=step.index, level=level, prev_level=prev_level,
         )
 
+        # Substrate override: if delta records have an invoke label for
+        # (game, game_id, step_index), prefer the substrate signal over
+        # the self-supervised one. Substrate sees what the frame-delta
+        # self-supervision can't — live-play stuck events and LLM advances.
+        label_override: Optional[int] = None
+        if delta_labels is not None:
+            dl = delta_labels.get((trace.game, trace.game_id, step.index))
+            if dl is not None:
+                if dl.invoke_target is not None:
+                    invoke = float(dl.invoke_target)
+                if dl.action_target is not None:
+                    label_override = int(dl.action_target)
+
         scalar = build_scalar_vector(
             game_idx=game_idx, n_games=n_games,
             level=level, n_levels=n_levels,
@@ -116,13 +131,15 @@ def replay_trace_to_tuples(
             recent_actions=list(recent),
             available_actions=available_actions,
             batch_state=batch_state,
+            mech_embedding=mech_embedding,
         )
 
+        action_label = int(label_override) if label_override is not None else int(step.action)
         tuples.append({
             "prev_frame": prev_frame_oh,
             "curr_frame": curr_frame_oh,
             "scalar": np.array(scalar, dtype=np.float32),
-            "action": int(step.action),
+            "action": action_label,
             "invoke": float(invoke),
         })
 
@@ -147,8 +164,17 @@ def replay_trace_to_tuples(
 
 def build_dataset_from_traces(
     games: List[str], arc_sage_root: Path,
+    mech_embedding_table: Optional[np.ndarray] = None,
+    delta_labels: Optional[Dict[Tuple[str, str, int], Any]] = None,
 ) -> Tuple[List[Dict[str, Any]], List[str]]:
-    """Build the full (prev, curr, scalar, action, invoke) corpus across games."""
+    """Build the full (prev, curr, scalar, action, invoke) corpus across games.
+
+    If `mech_embedding_table` is provided (shape (n_games, mech_emb_dim)),
+    per-game embeddings replace the n_games one-hot in the scalar vector.
+
+    If `delta_labels` is provided, substrate-derived invoke/action targets
+    override the self-supervised labels at matching (game, game_id, step_idx).
+    """
     # Resolve game_ids from coordination file
     coord_path = arc_sage_root / "knowledge" / "game_coordination.json"
     coord = json.loads(coord_path.read_text())
@@ -173,8 +199,14 @@ def build_dataset_from_traces(
             print(f"  [skip] {family}: load failed: {e!r}")
             continue
         gi = game_slugs.index(family)
+        mech_vec = (
+            list(mech_embedding_table[gi]) if mech_embedding_table is not None else None
+        )
         try:
-            tuples = replay_trace_to_tuples(trace, gi, len(game_slugs))
+            tuples = replay_trace_to_tuples(
+                trace, gi, len(game_slugs), mech_embedding=mech_vec,
+                delta_labels=delta_labels,
+            )
         except Exception as e:
             print(f"  [skip] {family}: replay failed: {e!r}")
             continue
@@ -258,8 +290,20 @@ def train(
     epochs: int = 40, batch_size: int = 32, lr: float = 1e-3,
     alpha: float = 1.0, beta: float = 0.5, gamma: float = 0.2,
     device: str = "cpu", verbose: bool = True,
+    use_mech_embedding: bool = False, mech_emb_dim: int = 32,
+    mech_embedding_table: Optional[np.ndarray] = None,
 ) -> Tuple[FrameRouter, Dict[str, Any]]:
-    model = FrameRouter(n_games=n_games, n_levels=n_levels).to(device)
+    model = FrameRouter(
+        n_games=n_games, n_levels=n_levels,
+        use_mech_embedding=use_mech_embedding, mech_emb_dim=mech_emb_dim,
+    ).to(device)
+    if use_mech_embedding and mech_embedding_table is not None:
+        # Populate the frozen buffer. Router uses it for reference / export;
+        # the actual scalar vectors already carry the embeddings (dataset-side).
+        with torch.no_grad():
+            model.mech_embedding_table.copy_(
+                torch.from_numpy(mech_embedding_table.astype(np.float32)).to(device)
+            )
     opt = torch.optim.Adam(model.parameters(), lr=lr)
     train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_ds, batch_size=batch_size, shuffle=False)
@@ -390,6 +434,17 @@ def main() -> int:
     p.add_argument("--out", required=True, help="Adapter base path (no ext).")
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--val-frac", type=float, default=0.15)
+    p.add_argument(
+        "--mech-encoder", default=None,
+        help="Path (no .json) to mechanics encoder for v6 game-context embeddings. "
+             "When set, replaces n_games one-hot with 32d mechanics embedding.",
+    )
+    p.add_argument(
+        "--delta-labels-root", default=None,
+        help="Training-data root containing delta streams (gameplay/ llm_dispatch/ "
+             "sage_plays_live/ sage_plays_self/). When set, substrate-derived "
+             "invoke/action targets override self-supervised labels where keys match.",
+    )
     args = p.parse_args()
 
     torch.manual_seed(args.seed)
@@ -406,8 +461,41 @@ def main() -> int:
         games = [g.strip() for g in args.games.split(",") if g.strip()]
 
     print(f"Games: {games}")
+
+    # If a mech encoder is given, peek at its JSON to resolve game_slugs ordering
+    # before building the dataset — we need the embedding table aligned to
+    # the dataset's slug order.
+    mech_table = None
+    if args.mech_encoder:
+        from sage.cognition.thalamic_router.frame_router import load_mech_embedding_table
+        mech_json = Path(args.mech_encoder + ".json")
+        print(f"Mechanics encoder: {mech_json}")
+        # Determine the slug order that will be used
+        provisional_slugs = sorted(games)
+        mech_table = load_mech_embedding_table(mech_json, provisional_slugs, mech_emb_dim=32)
+        nonzero = int((mech_table.sum(1) != 0).sum())
+        print(f"  aligned embedding table: {mech_table.shape}, nonzero={nonzero}/{len(provisional_slugs)}")
+
+    # Load substrate delta labels if requested (outcome-driven invoke targets)
+    delta_label_map = None
+    if args.delta_labels_root:
+        from sage.cognition.thalamic_router.delta_labels import (
+            default_stream_paths, load_delta_labels, summarize_labels,
+        )
+        stream_paths = default_stream_paths(Path(args.delta_labels_root))
+        print(f"Delta labels: reading {len(stream_paths)} streams under {args.delta_labels_root}")
+        delta_label_map = load_delta_labels(stream_paths, verbose=False)
+        summary = summarize_labels(delta_label_map)
+        print(f"  {summary['total']} step-keys  "
+              f"({summary['invoke_positive']} invoke+, "
+              f"{summary['invoke_negative']} invoke-, "
+              f"{summary['action_overrides']} action overrides)")
+
     t0 = time.time()
-    tuples, game_slugs = build_dataset_from_traces(games, arc_sage)
+    tuples, game_slugs = build_dataset_from_traces(
+        games, arc_sage, mech_embedding_table=mech_table,
+        delta_labels=delta_label_map,
+    )
     print(f"Built {len(tuples)} tuples across {len(game_slugs)} games "
           f"in {time.time()-t0:.1f}s")
 
@@ -440,6 +528,8 @@ def main() -> int:
         epochs=args.epochs, batch_size=args.batch_size, lr=args.lr,
         alpha=args.alpha, beta=args.beta, gamma=args.gamma,
         device=args.device,
+        use_mech_embedding=(mech_table is not None),
+        mech_embedding_table=mech_table,
     )
 
     final_val = {k: v[-1] for k, v in history.items() if v}
@@ -447,14 +537,26 @@ def main() -> int:
     for k, v in final_val.items():
         print(f"  {k}: {v:.4f}")
 
+    # arch_version: 4 = v4 baseline; 6 = + mech encoder; 7 = + substrate delta labels
+    if delta_label_map is not None and mech_table is not None:
+        arch_version = 7
+    elif mech_table is not None:
+        arch_version = 6
+    elif delta_label_map is not None:
+        arch_version = 7   # delta-only retrain uses the "substrate-informed" marker too
+    else:
+        arch_version = 4
     cfg = FrameRouterConfig(
         n_games=len(game_slugs), game_slugs=game_slugs, n_levels=10,
         trained_at=dt.datetime.now(dt.timezone.utc).isoformat(),
         machine=args.machine,
         train_record_count=len(train_pairs),
         val_metrics=final_val,
-        architecture_version=4,
+        architecture_version=arch_version,
         include_last_action=True,
+        use_mech_embedding=(mech_table is not None),
+        mech_emb_dim=32,
+        mech_encoder_path=str(args.mech_encoder) if args.mech_encoder else None,
     )
     save_frame_router(model.cpu(), cfg, Path(args.out))
     print(f"\nSaved adapter: {args.out}.pt + {args.out}.json")

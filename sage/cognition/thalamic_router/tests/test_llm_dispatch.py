@@ -20,6 +20,10 @@ from sage.cognition.thalamic_router.llm_dispatch import (
     _load_level_annotations, _load_level_bboxes, _nn_click_coords,
     _nn_click_rotation, _detect_trajectory_patterns,
     _load_gameplay_system_prompt, SYSTEM_PROMPT,
+    build_session_system_prompt, compose_cnn_narration,
+    summarize_game_progress, trim_conversation_history,
+    MAX_CONVERSATION_TURNS, KEEP_VERBATIM_TURNS,
+    LLMClient, OllamaClient, ClaudeCLIClient,
     ACTION_NAMES,
 )
 
@@ -441,6 +445,423 @@ def test_build_prompt_includes_stuck_flag_when_trajectory_shows_stuck():
         ],
     )
     assert "STUCK" in p or "PERSEVERATION" in p
+
+
+# ───────────────────────────────────────────────────────────────────
+# Three-party conversation composers (Phase 4 B4)
+# ───────────────────────────────────────────────────────────────────
+
+def test_build_session_system_prompt_has_canonical_prompt_plus_game_context():
+    """Session system prompt = fleet canonical + game-specific context."""
+    sp = build_session_system_prompt("ft09")
+    # Has canonical prompt content
+    assert "deliberation tier" in sp or "Fleet Gameplay" in sp
+    # Has game-specific section (when shared-context present)
+    assert "ft09" in sp or "Mechanics cluster" in sp or "Game mechanics" in sp
+
+
+def test_compose_cnn_narration_includes_header_and_ranking():
+    """Minimal narration always has step header + NN ranking."""
+    text = compose_cnn_narration(
+        game="ft09", level=0, step_index=5,
+        play_action_idx=4, play_confidence=0.9,
+        action_ranking=[(4, 0.9), (3, 0.05)],
+        invoke_reasons=["novelty"],
+        trajectory=[],
+    )
+    assert "Step 5" in text
+    assert "ft09" in text
+    assert "L" in text  # level marker
+    assert "RIGHT" in text  # action name in ranking
+    assert "ACTION=" in text  # response format reminder
+
+
+def test_compose_cnn_narration_includes_metacog_signals():
+    text = compose_cnn_narration(
+        game="ft09", level=0, step_index=8,
+        play_action_idx=6, play_confidence=0.8,
+        action_ranking=[(6, 0.8)],
+        invoke_reasons=["stuck"],
+        trajectory=[],
+        metacog_signals=[
+            {"signal": "perseveration", "severity": 0.8,
+             "evidence": {"repeats": 3}, "suggestion": "try another action"},
+        ],
+    )
+    assert "perseveration" in text
+    assert "0.8" in text
+    assert "try another action" in text
+
+
+def test_compose_cnn_narration_includes_episodic_recall():
+    text = compose_cnn_narration(
+        game="ft09", level=0, step_index=8,
+        play_action_idx=6, play_confidence=0.8,
+        action_ranking=[(6, 0.8)],
+        invoke_reasons=["novelty"],
+        trajectory=[],
+        episodic_matches_text="ft09 L0: CLICK(38,38) → advance",
+    )
+    assert "Episodic recall" in text
+    assert "CLICK(38,38)" in text
+
+
+def test_compose_cnn_narration_level_transition_banner():
+    text = compose_cnn_narration(
+        game="ft09", level=1, step_index=15,
+        play_action_idx=6, play_confidence=0.6,
+        action_ranking=[(6, 0.6)],
+        invoke_reasons=["level_change"],
+        trajectory=[],
+        level_changed=True,
+    )
+    assert "LEVEL TRANSITION" in text
+    assert "L1" in text
+
+
+def test_compose_cnn_narration_inter_invoke_short_verbatim():
+    """<=3 steps since last invoke: verbatim list."""
+    since = [
+        {"step": 6, "action": 1, "frame_delta_pct": 5.0, "level": 0, "new_level": 0},
+        {"step": 7, "action": 1, "frame_delta_pct": 3.0, "level": 0, "new_level": 0},
+    ]
+    text = compose_cnn_narration(
+        game="ft09", level=0, step_index=8,
+        play_action_idx=1, play_confidence=0.8,
+        action_ranking=[(1, 0.8)],
+        invoke_reasons=[],
+        trajectory=since,
+        since_last_invoke=since,
+    )
+    assert "Since your last turn" in text
+    assert "2 step" in text  # reports count
+    assert "step 6" in text
+    assert "step 7" in text
+
+
+def test_compose_cnn_narration_inter_invoke_long_summarized():
+    """>3 steps: summary + last 3 verbatim."""
+    since = [
+        {"step": i, "action": 4, "frame_delta_pct": 2.0, "level": 0, "new_level": 0}
+        for i in range(10, 20)
+    ]
+    text = compose_cnn_narration(
+        game="ft09", level=0, step_index=20,
+        play_action_idx=4, play_confidence=0.7,
+        action_ranking=[(4, 0.7)],
+        invoke_reasons=["stuck"],
+        trajectory=since,
+        since_last_invoke=since,
+    )
+    assert "10 steps" in text  # summary count
+    assert "Most recent steps" in text  # last 3 verbatim marker
+    assert "step 19" in text  # most recent shown
+    assert "step 10" not in text.split("Most recent steps")[1]  # not in verbatim tail
+
+
+# ───────────────────────────────────────────────────────────────────
+# LLMClient multi-turn signature
+# ───────────────────────────────────────────────────────────────────
+
+def test_llm_client_chat_signature_has_history_and_system_prompt():
+    """Multi-turn params are optional for backward compat."""
+    import inspect
+    sig = inspect.signature(LLMClient.chat)
+    params = list(sig.parameters.keys())
+    assert "history" in params
+    assert "system_prompt" in params
+    # Defaults make them optional
+    assert sig.parameters["history"].default is None
+    assert sig.parameters["system_prompt"].default is None
+
+
+def test_ollama_client_builds_messages_with_history():
+    """OllamaClient puts history turns between system and new user."""
+    # No network call — just verify the payload shape builder logic
+    # by patching urlopen at the module level.
+    import urllib.request
+    from unittest.mock import patch
+    client = OllamaClient(model="test-model")
+    captured = {}
+
+    class FakeResp:
+        def __enter__(self): return self
+        def __exit__(self, *a): pass
+        def read(self):
+            return b'{"message": {"content": "ACTION=1"}}'
+
+    def fake_urlopen(req, timeout=None):
+        captured["data"] = json.loads(req.data.decode("utf-8"))
+        return FakeResp()
+
+    with patch.object(urllib.request, "urlopen", side_effect=fake_urlopen):
+        client.chat(
+            "new turn",
+            history=[
+                {"role": "user", "content": "old user"},
+                {"role": "assistant", "content": "old response"},
+            ],
+            system_prompt="fleet canonical",
+        )
+
+    messages = captured["data"]["messages"]
+    assert messages[0]["role"] == "system"
+    assert messages[0]["content"] == "fleet canonical"
+    assert messages[1]["role"] == "user" and messages[1]["content"] == "old user"
+    assert messages[2]["role"] == "assistant" and messages[2]["content"] == "old response"
+    assert messages[3]["role"] == "user" and messages[3]["content"] == "new turn"
+
+
+def test_claude_cli_client_serializes_history_as_prose():
+    """ClaudeCLIClient builds tagged prose when history is provided."""
+    from unittest.mock import patch, MagicMock
+    # Instantiation needs claude in PATH; mock shutil.which
+    with patch("shutil.which", return_value="/fake/claude"):
+        client = ClaudeCLIClient()
+    captured = {}
+
+    class FakeSubproc:
+        def run(self, args, input=None, capture_output=None, timeout=None):
+            captured["input"] = input.decode("utf-8")
+            m = MagicMock(); m.returncode = 0
+            m.stdout = b"ACTION=1\n"
+            m.stderr = b""
+            return m
+        TimeoutExpired = Exception
+
+    client._subprocess = FakeSubproc()
+
+    client.chat(
+        "new turn",
+        history=[
+            {"role": "user", "content": "old user"},
+            {"role": "assistant", "content": "old response"},
+        ],
+        system_prompt="fleet canonical",
+    )
+    # Expect [System], [User], [Assistant], final [User]:, trailing [Assistant]:
+    prompt = captured["input"]
+    assert "[System]" in prompt
+    assert "fleet canonical" in prompt
+    assert "[User]:" in prompt
+    assert "old user" in prompt
+    assert "[Assistant]:" in prompt
+    assert "old response" in prompt
+    assert "new turn" in prompt
+    # Final "[Assistant]:" with no content to trigger completion
+    assert prompt.rstrip().endswith("[Assistant]:")
+
+
+# ───────────────────────────────────────────────────────────────────
+# Memory trim + game-progress summary (Phase 4 B5)
+# ───────────────────────────────────────────────────────────────────
+
+def test_summarize_game_progress_empty_trajectory():
+    s = summarize_game_progress([])
+    assert "none" in s.lower() or "no earlier" in s.lower()
+
+
+def test_summarize_game_progress_captures_level_changes():
+    traj = [
+        {"step": 1, "action": 4, "coords": None, "frame_delta_pct": 8.0,
+         "level": 0, "new_level": 0},
+        {"step": 5, "action": 4, "coords": None, "frame_delta_pct": 12.0,
+         "level": 0, "new_level": 1},  # level advance
+        {"step": 12, "action": 1, "coords": None, "frame_delta_pct": 3.0,
+         "level": 1, "new_level": 1},
+    ]
+    s = summarize_game_progress(traj)
+    assert "L0→L1" in s
+    assert "step 5" in s
+
+
+def test_summarize_game_progress_buckets_repeated_actions():
+    traj = [
+        {"step": i, "action": 6, "coords": {"x": 32, "y": 32},
+         "frame_delta_pct": 0.0, "level": 0, "new_level": 0}
+        for i in range(1, 6)
+    ]
+    s = summarize_game_progress(traj)
+    assert "CLICK(32,32)" in s
+    assert "×5" in s
+    assert "no effect" in s
+
+
+def test_trim_conversation_history_under_threshold_no_trim():
+    history = [{"role": "user", "content": f"Step {i}"} for i in range(5)]
+    trimmed, preamble = trim_conversation_history(history, trajectory=[])
+    assert trimmed == history
+    assert preamble is None
+
+
+def test_trim_conversation_history_over_threshold_trims_and_summarizes():
+    # Build 24 turns (12 user, 12 assistant) — over the 20 threshold
+    history = []
+    for i in range(12):
+        history.append({"role": "user", "content": f"Step {i+1}. invoke."})
+        history.append({"role": "assistant", "content": f"ACTION=1. rationale {i}"})
+    trajectory = [
+        {"step": i+1, "action": 1, "coords": None, "frame_delta_pct": 5.0,
+         "level": 0, "new_level": 0}
+        for i in range(12)
+    ]
+    trimmed, preamble = trim_conversation_history(history, trajectory)
+    assert len(trimmed) <= KEEP_VERBATIM_TURNS
+    assert preamble is not None
+    assert "Prior context" in preamble
+    # The preamble should not contain LLM rationales verbatim
+    assert "rationale" not in preamble
+
+
+def test_trim_conversation_history_preserves_recent_verbatim():
+    history = []
+    for i in range(12):
+        history.append({"role": "user", "content": f"Step {i+1}. invoke."})
+        history.append({"role": "assistant", "content": f"ACTION=1."})
+    trajectory = [
+        {"step": i+1, "action": 1, "coords": None, "frame_delta_pct": 5.0,
+         "level": 0, "new_level": 0}
+        for i in range(12)
+    ]
+    trimmed, _ = trim_conversation_history(history, trajectory)
+    # Kept turns should be the latest ones
+    last_user = [t for t in trimmed if t["role"] == "user"][-1]
+    assert "Step 12" in last_user["content"]
+
+
+# ───────────────────────────────────────────────────────────────────
+# Grounded reasoning metrics (Phase 4 B6)
+# ───────────────────────────────────────────────────────────────────
+
+def test_entity_validity_coord_is_always_valid():
+    from sage.cognition.thalamic_router.grounded_metrics import entity_validity_rate
+    r = entity_validity_rate("Click at (38, 54) to toggle the cell.", world_model_text="")
+    # "cell", "click", "toggle" — "cell" is in _GENERIC_DOMAIN
+    assert r > 0.0
+
+
+def test_entity_validity_gibberish_entities_score_low():
+    from sage.cognition.thalamic_router.grounded_metrics import entity_validity_rate
+    r = entity_validity_rate(
+        "The xqzt is positioned near the blargh; fiddlewick must align.",
+        world_model_text="",
+    )
+    # None of xqzt/blargh/fiddlewick are valid
+    assert r < 0.3
+
+
+def test_entity_validity_world_model_vocabulary_counted():
+    from sage.cognition.thalamic_router.grounded_metrics import entity_validity_rate
+    wm = "The basket collects eggs and launches them toward the canvas."
+    r = entity_validity_rate(
+        "The basket is positioned to launch toward the canvas target.",
+        world_model_text=wm,
+    )
+    # basket, launch, canvas all appear in WM — high validity
+    assert r > 0.5
+
+
+def test_vocabulary_correctness_overlap_with_world_model():
+    from sage.cognition.thalamic_router.grounded_metrics import vocabulary_correctness
+    wm = "The basket collects eggs and launches paint toward the canvas."
+    r = vocabulary_correctness(
+        "Clicking the basket to collect eggs.",
+        world_model_text=wm,
+    )
+    # "basket", "collect", "eggs" overlap with WM
+    assert r > 0.3
+
+
+def test_vocabulary_correctness_no_domain_terms_neutral():
+    from sage.cognition.thalamic_router.grounded_metrics import vocabulary_correctness
+    r = vocabulary_correctness(
+        "Try a different approach because the current one isn't working.",
+        world_model_text="basket collects eggs",
+    )
+    # Generic rationale, no domain terms — neutral 0.5
+    assert 0.3 <= r <= 0.7
+
+
+def test_mechanics_alignment_prediction_matches_observation():
+    from sage.cognition.thalamic_router.grounded_metrics import mechanics_alignment
+    # Predicted advance, observed level change
+    r = mechanics_alignment(
+        "This action will advance to the next level.",
+        observed_frame_delta_pct=30.0,
+        level_advanced=True,
+    )
+    assert r == 1.0
+
+
+def test_mechanics_alignment_prediction_opposite_observation():
+    from sage.cognition.thalamic_router.grounded_metrics import mechanics_alignment
+    # Predicted change, observed nothing
+    r = mechanics_alignment(
+        "This will launch the basket and paint the canvas.",
+        observed_frame_delta_pct=0.0,
+        level_advanced=False,
+    )
+    assert r == 0.0
+
+
+def test_mechanics_alignment_no_prediction_returns_none():
+    from sage.cognition.thalamic_router.grounded_metrics import mechanics_alignment
+    r = mechanics_alignment(
+        "Picking RIGHT.",
+        observed_frame_delta_pct=5.0,
+    )
+    assert r is None
+
+
+def test_mechanics_alignment_testing_language_scores_low_delta():
+    from sage.cognition.thalamic_router.grounded_metrics import mechanics_alignment
+    # "Testing" / "exploring" = low-change prediction. Low delta = match.
+    r = mechanics_alignment(
+        "Testing whether this coordinate responds at all.",
+        observed_frame_delta_pct=0.5,
+    )
+    assert r == 1.0
+
+
+def test_compute_grounded_metrics_returns_dict_with_all_fields():
+    from sage.cognition.thalamic_router.grounded_metrics import compute_grounded_metrics
+    m = compute_grounded_metrics(
+        rationale="Click at (38,54) to advance.",
+        world_model_text="Click the basket to launch.",
+        observed_frame_delta_pct=25.0,
+        level_advanced=True,
+    )
+    assert "entity_validity_rate" in m
+    assert "vocabulary_correctness" in m
+    assert "mechanics_alignment" in m
+    assert "grounded_pass" in m
+    assert isinstance(m["grounded_pass"], bool)
+
+
+def test_aggregate_grounded_metrics_computes_means():
+    from sage.cognition.thalamic_router.grounded_metrics import aggregate_grounded_metrics
+    per = [
+        {"entity_validity_rate": 0.8, "vocabulary_correctness": 0.7,
+         "mechanics_alignment": 1.0, "grounded_pass": True},
+        {"entity_validity_rate": 0.4, "vocabulary_correctness": 0.3,
+         "mechanics_alignment": 0.0, "grounded_pass": False},
+        {"entity_validity_rate": 0.6, "vocabulary_correctness": 0.5,
+         "mechanics_alignment": None, "grounded_pass": False},
+    ]
+    agg = aggregate_grounded_metrics(per)
+    assert abs(agg["mean_entity_validity_rate"] - 0.6) < 1e-6
+    assert abs(agg["mean_vocabulary_correctness"] - 0.5) < 1e-6
+    # mean alignment excludes None
+    assert abs(agg["mean_mechanics_alignment"] - 0.5) < 1e-6
+    assert agg["grounded_pass_count"] == 1
+    assert agg["n_invokes_measured"] == 3
+
+
+def test_aggregate_grounded_metrics_empty():
+    from sage.cognition.thalamic_router.grounded_metrics import aggregate_grounded_metrics
+    agg = aggregate_grounded_metrics([])
+    assert agg["n_invokes_measured"] == 0
+    assert agg["mean_entity_validity_rate"] == 0.0
 
 
 if __name__ == "__main__":

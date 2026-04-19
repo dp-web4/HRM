@@ -50,6 +50,72 @@ from sage.cognition.thalamic_router.gameplay_capture import (
     load_trace, _discover_trace, ARC_AGI_EXPERIMENTS,
 )
 
+# Three-party conversation components (Nomad B1 + Thor B2, optional imports
+# — dispatch falls back gracefully when either is unavailable)
+try:
+    from sage.cognition.metacog.core import Metacog, MetacogConfig
+    _METACOG_AVAILABLE = True
+except ImportError:
+    Metacog = None  # type: ignore
+    MetacogConfig = None  # type: ignore
+    _METACOG_AVAILABLE = False
+
+try:
+    from sage.cognition.episodic.index import EpisodicIndex
+    from sage.cognition.episodic.gameplay_recall import (
+        recall_gameplay, format_recall_for_prompt, GameStateCue,
+    )
+    _EPISODIC_AVAILABLE = True
+except ImportError:
+    EpisodicIndex = None  # type: ignore
+    _EPISODIC_AVAILABLE = False
+
+# Grounded reasoning metrics (Phase 4 B6) — always available, no external deps
+from sage.cognition.thalamic_router.grounded_metrics import (
+    compute_grounded_metrics, aggregate_grounded_metrics,
+)
+
+
+# Multi-turn conversation default — env SAGE_DISPATCH_MULTITURN=0 to fall
+# back to legacy stateless single-call mode for debugging.
+_MULTITURN_DEFAULT = os.environ.get("SAGE_DISPATCH_MULTITURN", "1") not in ("0", "false", "False")
+
+# Memory trimming thresholds (B5). Keep last N turn pairs verbatim; older
+# turns get dropped and replaced by a trajectory-derived summary preamble
+# in the next user turn. Sprout consensus: NEVER quote the LLM back to
+# itself in summaries — use trajectory data only.
+MAX_CONVERSATION_TURNS = 20      # 10 user + 10 assistant pairs
+KEEP_VERBATIM_TURNS = 10         # 5 user + 5 assistant pairs
+
+# Episodic index — lazily loaded once per process. Path configurable via
+# env SAGE_EPISODIC_DB. Missing DB → no episodic recall, dispatch continues.
+_EPISODIC_INDEX_CACHE: Any = None
+
+
+def _load_episodic_index() -> Any:
+    """Lazy-load the episodic index. Returns None if DB missing or import fails."""
+    global _EPISODIC_INDEX_CACHE
+    if _EPISODIC_INDEX_CACHE is not None:
+        return _EPISODIC_INDEX_CACHE if _EPISODIC_INDEX_CACHE != "missing" else None
+    if not _EPISODIC_AVAILABLE:
+        _EPISODIC_INDEX_CACHE = "missing"
+        return None
+    db_path_env = os.environ.get("SAGE_EPISODIC_DB")
+    candidates = [
+        Path(db_path_env) if db_path_env else None,
+        Path("/mnt/c/exe/projects/ai-agents/private-context/training-data/episodic/thor_episodes.db"),
+        Path.home() / "ai-workspace" / "private-context" / "training-data" / "episodic" / "thor_episodes.db",
+    ]
+    for p in candidates:
+        if p and p.exists():
+            try:
+                _EPISODIC_INDEX_CACHE = EpisodicIndex(db_path=str(p))
+                return _EPISODIC_INDEX_CACHE
+            except Exception:
+                continue
+    _EPISODIC_INDEX_CACHE = "missing"
+    return None
+
 
 # Default thresholds for the dispatch decision
 INVOKE_THRESHOLD = 0.5
@@ -165,11 +231,44 @@ def render_frame_pair_png(
 # ───────────────────────────────────────────────────────────────────
 
 class LLMClient:
-    """Abstract interface — OllamaClient and AnthropicClient both implement chat()."""
+    """Abstract interface for dispatched-LLM clients.
+
+    Supports both single-call (stateless) and multi-turn (conversation) modes:
+
+      - Single-call: chat(prompt, images_png=[...]) — legacy shape, full context
+        re-assembled each call. history defaults to None.
+
+      - Multi-turn: chat(user_message, history=[...], system_prompt="...",
+        images_png=[...]) — system prompt injected once (cached in adapter
+        context), history carries prior (user, assistant) turns, each call
+        appends one new user turn.
+
+    The three-party gameplay conversation uses the multi-turn mode: the
+    dispatcher holds conversation_history per game session, the system
+    prompt is the canonical fleet gameplay prompt + game-specific session
+    init (world model + mechanics cluster + cartridge + level hint), and
+    each invocation appends a new CNN narration user turn.
+
+    Implementations should gracefully fall back to single-call behavior
+    when history is None.
+    """
     model: str
 
-    def chat(self, prompt: str, images_png: Optional[List[bytes]] = None,
-             max_tokens: int = 300) -> str:
+    def chat(
+        self,
+        prompt: str,
+        images_png: Optional[List[bytes]] = None,
+        max_tokens: int = 300,
+        history: Optional[List[Dict[str, str]]] = None,
+        system_prompt: Optional[str] = None,
+    ) -> str:
+        """Send a prompt (or user message + history) and return the response.
+
+        history: if provided, a list of {"role": "user"|"assistant", "content": str}
+                 dicts from prior invocations in this session.
+        system_prompt: if provided, used as the system role message (only
+                       meaningful in multi-turn mode).
+        """
         raise NotImplementedError
 
 
@@ -187,18 +286,40 @@ class OllamaClient(LLMClient):
     def chat(
         self, prompt: str, images_png: Optional[List[bytes]] = None,
         max_tokens: int = 300,
+        history: Optional[List[Dict[str, str]]] = None,
+        system_prompt: Optional[str] = None,
     ) -> str:
         """POST to /api/chat with optional image attachments.
-        Returns the assistant's response text."""
+        Returns the assistant's response text.
+
+        Multi-turn mode (history + system_prompt provided): builds a messages
+        array with system + history turns + new user turn. Images attach to
+        the new user turn only.
+
+        Single-call mode (history None): legacy behavior — one user message
+        with full prompt.
+        """
         import urllib.request, urllib.error
-        message = {"role": "user", "content": prompt}
+
+        messages: List[Dict[str, Any]] = []
+        if system_prompt:
+            messages.append({"role": "system", "content": system_prompt})
+        if history:
+            for turn in history:
+                messages.append({"role": turn["role"], "content": turn["content"]})
+
+        new_user_msg: Dict[str, Any] = {"role": "user", "content": prompt}
         if images_png:
-            message["images"] = [base64.b64encode(b).decode("ascii") for b in images_png]
+            new_user_msg["images"] = [
+                base64.b64encode(b).decode("ascii") for b in images_png
+            ]
+        messages.append(new_user_msg)
+
         # Gemma4 produces empty responses with num_predict+temperature in options.
         # Use think: false (mandatory for gemma4 speed) and keep options minimal.
         payload = {
             "model": self.model,
-            "messages": [message],
+            "messages": messages,
             "stream": False,
             "think": False,
         }
@@ -266,9 +387,20 @@ class ClaudeCLIClient(LLMClient):
     def chat(
         self, prompt: str, images_png: Optional[List[bytes]] = None,
         max_tokens: int = 300,
+        history: Optional[List[Dict[str, str]]] = None,
+        system_prompt: Optional[str] = None,
     ) -> str:
         """Invoke `claude --print`, attaching any images via temp files.
-        Returns the assistant's response text."""
+        Returns the assistant's response text.
+
+        Multi-turn mode: serializes history as [System] / [User] / [Assistant]
+        prose tags that Claude parses natively (same format as SAGE's
+        ChatAPIAdapter prose mode). claude_cli subprocess is stateless per
+        call, but Claude recognizes the tagged conversation and responds to
+        the final user turn.
+
+        Single-call mode: legacy — one prompt, no history framing.
+        """
         # Write images to temp files; reference them in the prompt
         img_refs: List[str] = []
         written: List[Path] = []
@@ -281,15 +413,30 @@ class ClaudeCLIClient(LLMClient):
             except Exception:
                 continue
 
+        img_preamble = ""
         if img_refs:
-            full_prompt = (
+            img_preamble = (
                 "Please use your Read tool to view the following image file(s):\n"
                 + "\n".join(f"  {p}" for p in img_refs)
                 + "\n\n"
-                + prompt
             )
+
+        if history is not None or system_prompt is not None:
+            # Multi-turn: serialize as tagged conversation
+            parts: List[str] = []
+            if system_prompt:
+                parts.append(f"[System]\n{system_prompt}\n")
+            if history:
+                for turn in history:
+                    role = turn["role"]
+                    tag = "User" if role == "user" else "Assistant"
+                    parts.append(f"[{tag}]:\n{turn['content']}\n")
+            parts.append(f"[User]:\n{img_preamble}{prompt}\n")
+            parts.append("[Assistant]:")  # Claude fills this
+            full_prompt = "\n".join(parts)
         else:
-            full_prompt = prompt
+            # Single-call mode: legacy behavior
+            full_prompt = img_preamble + prompt
 
         try:
             # Set a max token constraint via CLAUDE_CODE_SIMPLE-ish flags.
@@ -351,9 +498,16 @@ class AnthropicClient(LLMClient):
     def chat(
         self, prompt: str, images_png: Optional[List[bytes]] = None,
         max_tokens: int = 300,
+        history: Optional[List[Dict[str, str]]] = None,
+        system_prompt: Optional[str] = None,
     ) -> str:
         """Send the prompt (+ optional images) to Claude. Images accepted
-        as a LIST (unlike Ollama's stitched-only approach). Returns text."""
+        as a LIST (unlike Ollama's stitched-only approach). Returns text.
+
+        Multi-turn mode: uses Anthropic's native messages array with system
+        param and conversation turns. Caching applies naturally to the
+        system message when identical across calls.
+        """
         content_blocks: List[Dict[str, Any]] = []
         for img_bytes in (images_png or []):
             content_blocks.append({
@@ -365,12 +519,23 @@ class AnthropicClient(LLMClient):
                 },
             })
         content_blocks.append({"type": "text", "text": prompt})
+
+        messages: List[Dict[str, Any]] = []
+        if history:
+            for turn in history:
+                messages.append({"role": turn["role"], "content": turn["content"]})
+        messages.append({"role": "user", "content": content_blocks})
+
+        create_kwargs = {
+            "model": self.model,
+            "max_tokens": max_tokens,
+            "messages": messages,
+        }
+        if system_prompt:
+            create_kwargs["system"] = system_prompt
+
         try:
-            resp = self._client.messages.create(
-                model=self.model,
-                max_tokens=max_tokens,
-                messages=[{"role": "user", "content": content_blocks}],
-            )
+            resp = self._client.messages.create(**create_kwargs)
         except self._anthropic.APIError as e:
             return f"ERROR: APIError: {e}"
         except Exception as e:
@@ -804,6 +969,344 @@ def _detect_trajectory_patterns(window: List[Dict[str, Any]]) -> List[str]:
     return flags
 
 
+# ───────────────────────────────────────────────────────────────────
+# Three-party conversation composers (Phase 4 B4)
+#
+# build_session_system_prompt — the system message. Fleet-canonical prompt
+# + game-specific session context. Sent once; cached by the model adapter.
+#
+# compose_cnn_narration — the CNN's user turn at invoke time. Combines
+# trajectory + pattern flags + metacog signals (Nomad B1) + episodic recall
+# (Thor B2) + habit_match (McNugget, placeholder None for now) + invoke
+# reason + NN ranking. This is the "my read" the LLM sees.
+# ───────────────────────────────────────────────────────────────────
+
+
+def summarize_game_progress(
+    trajectory: List[Dict[str, Any]],
+    up_to_step: Optional[int] = None,
+) -> str:
+    """Deterministic game-progress summary from trajectory.
+
+    Used by B5 memory trimming: when conversation history exceeds
+    MAX_CONVERSATION_TURNS, the older turns get dropped and replaced by
+    this summary as a preamble to the next user turn.
+
+    Per Sprout: this summary uses ONLY trajectory data (actions, coords,
+    deltas, level advances). It never quotes the LLM back to itself —
+    that would re-seed crystallization.
+    """
+    if not trajectory:
+        return "Prior context: (none — this is early in the game)."
+
+    scope = trajectory if up_to_step is None else [t for t in trajectory if t["step"] <= up_to_step]
+    if not scope:
+        return "Prior context: (no earlier steps to summarize)."
+
+    parts: List[str] = ["[Prior context — summary of earlier game progress]"]
+
+    # Step count
+    first_step = scope[0]["step"]
+    last_step = scope[-1]["step"]
+    parts.append(f"Steps {first_step}-{last_step} summarized below ({len(scope)} actions).")
+
+    # Level progression
+    level_changes: List[Tuple[int, int, int]] = []
+    for t in scope:
+        lvl = t.get("level")
+        new_lvl = t.get("new_level", lvl)
+        if lvl != new_lvl:
+            level_changes.append((t["step"], lvl, new_lvl))
+    if level_changes:
+        changes_str = "; ".join(f"L{b}→L{a} at step {s}" for s, b, a in level_changes)
+        parts.append(f"Level advances: {changes_str}.")
+    else:
+        parts.append("No level advance during this period.")
+
+    # Action+coord bucket outcomes
+    # Group by (action_name, coord_str) → (count, advance_count, avg_delta)
+    bucket: Dict[str, Dict[str, Any]] = {}
+    for t in scope:
+        a = t.get("action", -1)
+        name = ACTION_NAMES[a] if 0 <= a < len(ACTION_NAMES) else str(a)
+        coords = t.get("coords")
+        coord_str = f"({coords['x']},{coords['y']})" if coords else ""
+        key = f"{name}{coord_str}"
+        if key not in bucket:
+            bucket[key] = {"count": 0, "advanced": 0, "total_delta": 0.0}
+        bucket[key]["count"] += 1
+        bucket[key]["total_delta"] += t.get("frame_delta_pct", 0.0)
+        if t.get("new_level", t.get("level")) != t.get("level"):
+            bucket[key]["advanced"] += 1
+
+    # Report the most-used buckets + their outcomes
+    sorted_buckets = sorted(bucket.items(), key=lambda kv: -kv[1]["count"])
+    if sorted_buckets:
+        top_lines = []
+        for key, stats in sorted_buckets[:6]:
+            count = stats["count"]
+            avg_delta = stats["total_delta"] / count
+            outcome = ""
+            if stats["advanced"] > 0:
+                outcome = f" [advanced {stats['advanced']}×]"
+            elif avg_delta < 2.0:
+                outcome = " [no effect]"
+            elif avg_delta > 20.0:
+                outcome = " [large change]"
+            top_lines.append(f"  {key} ×{count} (avg {avg_delta:.0f}% change{outcome})")
+        parts.append("Actions tried (most-used first):\n" + "\n".join(top_lines))
+
+    return "\n".join(parts)
+
+
+def trim_conversation_history(
+    history: List[Dict[str, str]],
+    trajectory: List[Dict[str, Any]],
+    max_turns: int = MAX_CONVERSATION_TURNS,
+    keep_verbatim: int = KEEP_VERBATIM_TURNS,
+) -> Tuple[List[Dict[str, str]], Optional[str]]:
+    """Return (trimmed_history, summary_preamble_or_None).
+
+    If history is under max_turns, returns (history, None) — no trim needed.
+
+    Otherwise returns (last-keep_verbatim turns, summary-preamble-text).
+    The preamble should be prepended to the NEXT user turn so conversation
+    alternation stays clean (no synthetic system messages injected mid-chat).
+    """
+    if len(history) <= max_turns:
+        return history, None
+
+    # Figure out the step range of turns being dropped.
+    # Heuristic: each user turn narrates up to some step; trajectory is the
+    # source of truth for what happened. We summarize up to the step
+    # referenced by the LAST dropped user turn (approximate).
+    dropped_count = len(history) - keep_verbatim
+    # Roughly half of dropped are user turns; that's how many invocations got dropped
+    # Dropped invocations cover steps up to some boundary. We'll cut trajectory
+    # at: the step number we infer from the first kept user turn's content.
+    first_kept = history[-keep_verbatim:]
+    # Take the earliest retained user turn; its step number bounds the summary
+    retained_user_steps: List[int] = []
+    for turn in first_kept:
+        if turn.get("role") == "user":
+            # Extract "Step N" from the content's header line
+            content = turn.get("content", "")
+            import re as _re
+            m = _re.search(r"Step\s+(\d+)", content)
+            if m:
+                retained_user_steps.append(int(m.group(1)))
+    summary_cutoff = (min(retained_user_steps) - 1) if retained_user_steps else None
+
+    summary = summarize_game_progress(trajectory, up_to_step=summary_cutoff)
+    return first_kept, summary
+
+
+def build_session_system_prompt(game: str) -> str:
+    """Extend the canonical fleet gameplay system prompt with game-specific
+    session context. This is the system-role message for multi-turn mode.
+
+    Session context includes: mechanics cluster (neighbor games), authoritative
+    world model, cartridge snippets. Level hints are NOT here — they're per-turn
+    since they change at level transitions.
+    """
+    base = _load_gameplay_system_prompt()
+    game_family = game.split("-")[0] if "-" in game else game
+
+    sections: List[str] = [base, ""]
+
+    # Mechanics cluster
+    neighbors_map = _load_mechanics_neighbors()
+    if game_family in neighbors_map:
+        neighbors = neighbors_map[game_family][:3]
+        if neighbors:
+            neigh_str = ", ".join(f"{n} ({s:.2f})" for n, s in neighbors)
+            sections.append(
+                "## Game-session context\n\n"
+                f"=== Mechanics cluster (from learned encoder) ===\n"
+                f"This game's dynamics signature is closest to: {neigh_str}\n"
+                "Hypothesis: similar action-consequence patterns may apply.\n"
+            )
+
+    # World model
+    if game_family not in _world_model_cache:
+        _world_model_cache[game_family] = _load_world_model_summary(game_family)
+    world_model = _world_model_cache[game_family]
+    if world_model:
+        sections.append(
+            f"=== Game mechanics (authoritative) ===\n{world_model}\n"
+        )
+
+    # Cartridge snippets
+    if game_family not in _game_context_cache:
+        _game_context_cache[game_family] = _retrieve_game_context(game_family)
+    game_context = _game_context_cache[game_family]
+    if game_context:
+        sections.append(
+            f"=== Relevant reasoning snippets (from solved-games cartridge) ===\n"
+            f"{game_context}\n"
+        )
+
+    return "\n".join(sections).strip()
+
+
+def compose_cnn_narration(
+    game: str,
+    level: int,
+    step_index: int,
+    play_action_idx: int,
+    play_confidence: float,
+    action_ranking: List[Tuple[int, float]],
+    invoke_reasons: List[str],
+    trajectory: List[Dict[str, Any]],
+    since_last_invoke: Optional[List[Dict[str, Any]]] = None,
+    metacog_signals: Optional[List[Dict[str, Any]]] = None,
+    episodic_matches_text: Optional[str] = None,
+    habit_match: Optional[Dict[str, Any]] = None,
+    level_hint: Optional[str] = None,
+    level_changed: bool = False,
+    llm_plan_prior: Optional[str] = None,
+) -> str:
+    """Compose the CNN's user-turn narration at invoke time.
+
+    The CNN speaks in first-person as an instrument reporting observations
+    to the LLM. Narration is factual, template-driven — interpretation is
+    the LLM's job (Q1 consensus).
+
+    Fields:
+      - level_changed: if True, emit a LEVEL TRANSITION banner (Q5 carry+banner)
+      - since_last_invoke: list of trajectory entries between previous
+        invoke and now — lets the LLM see what the CNN did autonomously
+        (Q8 inter-invocation narration)
+      - metacog_signals: Nomad B1 shape [{signal, severity, evidence, suggestion}]
+      - episodic_matches_text: Thor B2 format_recall_for_prompt output
+      - habit_match: McNugget placeholder (None until wired)
+      - level_hint: current level's solver-derived hint (re-injected each
+        invoke in case level changed)
+    """
+    parts: List[str] = []
+
+    if level_changed:
+        parts.append(
+            f"=== LEVEL TRANSITION → L{level} ===\n"
+            "Previous strategy worked for the prior level. Re-read the world "
+            "model for this level's mechanics before proceeding.\n"
+        )
+
+    # Opening header
+    parts.append(
+        f"Step {step_index}. Game: {game}. Level: {level}. "
+        f"Invoke triggers: {', '.join(invoke_reasons) if invoke_reasons else 'manual'}."
+    )
+
+    # Inter-invoke narration — what the CNN did since last time you saw it
+    if since_last_invoke:
+        n = len(since_last_invoke)
+        if n <= 3:
+            # Short stretch — report verbatim
+            lines = []
+            for t in since_last_invoke:
+                act_name = ACTION_NAMES[t["action"]] if 0 <= t.get("action", -1) < len(ACTION_NAMES) else "?"
+                coords = t.get("coords")
+                coord_str = f"({coords['x']},{coords['y']})" if coords else ""
+                delta = t.get("frame_delta_pct", 0.0)
+                lines.append(f"  step {t['step']}: {act_name}{coord_str} → {delta:.0f}% change")
+            parts.append(f"Since your last turn I took {n} step(s):\n" + "\n".join(lines))
+        else:
+            # Long stretch — summary + last 3 verbatim (Q8 consensus)
+            action_counts: Dict[str, int] = {}
+            level_changes_seen: List[Tuple[int, int, int]] = []
+            total_delta = 0.0
+            for t in since_last_invoke:
+                a = t.get("action", -1)
+                if 0 <= a < len(ACTION_NAMES):
+                    action_counts[ACTION_NAMES[a]] = action_counts.get(ACTION_NAMES[a], 0) + 1
+                total_delta += t.get("frame_delta_pct", 0.0)
+                if t.get("new_level", t.get("level")) != t.get("level"):
+                    level_changes_seen.append((t["step"], t["level"], t["new_level"]))
+            avg_delta = total_delta / n
+            action_str = ", ".join(f"{k}×{v}" for k, v in sorted(action_counts.items(), key=lambda x: -x[1]))
+            summary = f"Since your last turn I took {n} steps: {action_str} (avg {avg_delta:.0f}% frame change)"
+            if level_changes_seen:
+                for step, before, after in level_changes_seen:
+                    summary += f"; level advanced L{before}→L{after} at step {step}"
+            parts.append(summary + ".")
+
+            # Last 3 verbatim for fine-grained detail
+            recent3 = since_last_invoke[-3:]
+            lines = []
+            for t in recent3:
+                act_name = ACTION_NAMES[t["action"]] if 0 <= t.get("action", -1) < len(ACTION_NAMES) else "?"
+                coords = t.get("coords")
+                coord_str = f"({coords['x']},{coords['y']})" if coords else ""
+                delta = t.get("frame_delta_pct", 0.0)
+                lines.append(f"  step {t['step']}: {act_name}{coord_str} → {delta:.0f}% change")
+            parts.append("Most recent steps:\n" + "\n".join(lines))
+
+    # Trajectory pattern flags (CBP's existing detector)
+    window = trajectory[-10:] if trajectory else []
+    flags = _detect_trajectory_patterns(window)
+    if flags:
+        parts.append("Trajectory pattern flags:\n" + "\n".join(f"  {f}" for f in flags))
+
+    # Metacog signals (Nomad B1)
+    if metacog_signals:
+        meta_lines = []
+        for sig in metacog_signals:
+            name = sig.get("signal", "?")
+            sev = sig.get("severity", 0.0)
+            suggestion = sig.get("suggestion", "")
+            evidence = sig.get("evidence") or {}
+            evidence_str = ""
+            if isinstance(evidence, dict) and evidence:
+                # Compact one-line evidence summary
+                kv = [f"{k}={v}" for k, v in list(evidence.items())[:3]]
+                evidence_str = f" [{', '.join(kv)}]"
+            line = f"  {name} (severity {sev:.1f}){evidence_str}"
+            if suggestion:
+                line += f" — {suggestion}"
+            meta_lines.append(line)
+        parts.append("Metacog signals (CNN self-report):\n" + "\n".join(meta_lines))
+
+    # Habit match (McNugget placeholder — emit only when provided)
+    if habit_match:
+        habit_id = habit_match.get("habit_id", "?")
+        conf = habit_match.get("confidence", 0.0)
+        outcome = habit_match.get("past_outcome", "unknown")
+        parts.append(
+            f"Habit match: {habit_id} (confidence {conf:.2f}), "
+            f"past outcome: {outcome}"
+        )
+
+    # Episodic recall (Thor B2)
+    if episodic_matches_text:
+        parts.append(f"Episodic recall:\n  {episodic_matches_text}")
+
+    # Level hint (re-injected each invoke — solver-derived, per-level)
+    if level_hint:
+        parts.append(f"Level {level} hint (observed-from-solved):\n  {level_hint}")
+
+    # Prior LLM plan, if one was emitted previously and still being followed
+    if llm_plan_prior:
+        parts.append(f"Your prior plan (in progress): {llm_plan_prior}")
+
+    # NN ranking + top pick
+    top5 = action_ranking[:5]
+    top_str = ", ".join(f"{ACTION_NAMES[a]}({p:.2f})" for a, p in top5)
+    top_name = ACTION_NAMES[play_action_idx] if 0 <= play_action_idx < len(ACTION_NAMES) else str(play_action_idx)
+    parts.append(
+        f"My action ranking (top 5): {top_str}.\n"
+        f"My top pick: {top_name} (confidence {play_confidence:.2f})."
+    )
+
+    # Response format reminder — kept short since it's in the system prompt too
+    parts.append(
+        "Respond with ACTION=<0-6>[ X=<0-63> Y=<0-63>] on the first line "
+        "(X,Y required for CLICK), then one sentence of rationale."
+    )
+
+    return "\n\n".join(parts)
+
+
 def build_prompt(
     game: str, level: int, step_index: int,
     play_action_idx: int, play_confidence: float,
@@ -1105,6 +1608,7 @@ class LlmDispatchResult:
     stuck_count: int = 0
     llm_responses: List[Dict[str, Any]] = field(default_factory=list)
     errors: List[str] = field(default_factory=list)
+    grounded_aggregates: Dict[str, Any] = field(default_factory=dict)
 
 
 def _make_env(game_family: str, game_id: str):
@@ -1123,10 +1627,20 @@ def run_llm_dispatch(
     model: FrameRouter, cfg: FrameRouterConfig,
     game_family: str, game_id: str,
     writer: RouterDatasetWriter, machine: str,
-    llm_client: OllamaClient,
+    llm_client: LLMClient,
     max_steps: int, trace_steps: Optional[int] = None,
     device: str = "cpu", log_every_llm: bool = True,
+    multiturn: Optional[bool] = None,
 ) -> LlmDispatchResult:
+    """Run LLM dispatch against a game.
+
+    multiturn: if True, uses three-party conversation (system prompt once,
+               CNN narration per invoke, history carried across invocations).
+               If False, uses legacy stateless build_prompt() one-shot mode.
+               Default from SAGE_DISPATCH_MULTITURN env var (1=on, 0=off).
+    """
+    if multiturn is None:
+        multiturn = _MULTITURN_DEFAULT
     errors: List[str] = []
     try:
         env, fd = _make_env(game_family, game_id)
@@ -1154,6 +1668,23 @@ def run_llm_dispatch(
     stuck_count = 0
     llm_responses: List[Dict[str, Any]] = []
     trajectory: List[Dict[str, Any]] = []   # last-K action/delta log for prompt
+    grounded_per_invoke: List[Dict[str, Any]] = []   # B6 per-invoke metrics
+
+    # Three-party conversation state (B4)
+    conversation_history: List[Dict[str, str]] = []
+    session_system_prompt: Optional[str] = None
+    metacog: Any = None
+    episodic_index: Any = None
+    last_invoke_step_idx: int = 0
+    last_invoke_level: int = 0
+    if multiturn:
+        session_system_prompt = build_session_system_prompt(game_family)
+        if _METACOG_AVAILABLE:
+            try:
+                metacog = Metacog(config=MetacogConfig())
+            except Exception:
+                metacog = None
+        episodic_index = _load_episodic_index()
 
     # Zero-frame convention at game start
     zero_frame_oh = np.zeros((N_COLORS, FRAME_H, FRAME_W), dtype=np.float32)
@@ -1226,18 +1757,99 @@ def run_llm_dispatch(
             llm_calls += 1
             # Stitch prev+curr into one image (llama3.2-vision accepts 1 image)
             pair_png = render_frame_pair_png(prev_frame_oh, curr_frame_oh)
-            prompt = build_prompt(
-                game=game_family, level=level, step_index=step_idx + 1,
-                play_action_idx=dispatch.play_action,
-                play_confidence=dispatch.play_confidence,
-                action_ranking=dispatch.action_ranking,
-                recent_actions=list(recent),
-                invoke_reasons=dispatch.invoke_reasons,
-                recent_trajectory=trajectory[-15:] if trajectory else None,
-            )
-            t0 = time.time()
-            response = llm_client.chat(prompt, images_png=[pair_png])
-            llm_latency = time.time() - t0
+
+            if multiturn:
+                # Three-party conversation mode (B4)
+                # Build since_last_invoke slice (actions the CNN took autonomously
+                # between this invoke and the previous one)
+                since_last = [t for t in trajectory if t["step"] > last_invoke_step_idx]
+                level_changed = level != last_invoke_level and last_invoke_step_idx > 0
+
+                # Metacog signals (Nomad B1) — read currently-active signals
+                # observe_tick() is called per-step below; here we just read
+                metacog_signals_list: List[Dict[str, Any]] = []
+                if metacog is not None:
+                    try:
+                        active = metacog.active_signals()
+                        metacog_signals_list = [sig.to_dict() for sig in active]
+                    except Exception:
+                        metacog_signals_list = []
+
+                # Episodic recall (Thor B2)
+                episodic_text: Optional[str] = None
+                if episodic_index is not None and curr_frame_raw is not None:
+                    try:
+                        cue = GameStateCue(
+                            game_family=game_family, level=level,
+                            frame=np.asarray(curr_frame_raw),
+                            action_context=list(recent)[-5:],
+                        )
+                        matches = recall_gameplay(episodic_index, cue, k=3, min_similarity=0.25)
+                        if matches:
+                            episodic_text = format_recall_for_prompt(matches)
+                    except Exception:
+                        episodic_text = None
+
+                # Level hint — re-inject each invoke since level can change
+                level_hints = _load_level_annotations(game_family)
+                level_hint = level_hints.get(level or 0)
+
+                narration = compose_cnn_narration(
+                    game=game_family, level=level, step_index=step_idx + 1,
+                    play_action_idx=dispatch.play_action,
+                    play_confidence=dispatch.play_confidence,
+                    action_ranking=dispatch.action_ranking,
+                    invoke_reasons=dispatch.invoke_reasons,
+                    trajectory=trajectory,
+                    since_last_invoke=since_last if last_invoke_step_idx > 0 else None,
+                    metacog_signals=metacog_signals_list,
+                    episodic_matches_text=episodic_text,
+                    habit_match=None,  # McNugget placeholder
+                    level_hint=level_hint,
+                    level_changed=level_changed,
+                )
+
+                # Memory trim (B5): if history exceeds threshold, drop older
+                # turns and prepend a trajectory-derived summary to the new
+                # user turn. Trajectory-only — Sprout consensus: never quote
+                # the LLM back to itself.
+                conversation_history, summary_preamble = trim_conversation_history(
+                    conversation_history, trajectory,
+                )
+                if summary_preamble:
+                    narration = summary_preamble + "\n\n" + narration
+
+                t0 = time.time()
+                response = llm_client.chat(
+                    narration,
+                    images_png=[pair_png],
+                    history=conversation_history,
+                    system_prompt=session_system_prompt,
+                )
+                llm_latency = time.time() - t0
+
+                # Append this turn to history
+                conversation_history.append({"role": "user", "content": narration})
+                conversation_history.append({"role": "assistant", "content": response})
+                last_invoke_step_idx = step_idx + 1
+                last_invoke_level = level
+
+                prompt_preview = narration[-300:]
+            else:
+                # Legacy single-call mode
+                prompt = build_prompt(
+                    game=game_family, level=level, step_index=step_idx + 1,
+                    play_action_idx=dispatch.play_action,
+                    play_confidence=dispatch.play_confidence,
+                    action_ranking=dispatch.action_ranking,
+                    recent_actions=list(recent),
+                    invoke_reasons=dispatch.invoke_reasons,
+                    recent_trajectory=trajectory[-15:] if trajectory else None,
+                )
+                t0 = time.time()
+                response = llm_client.chat(prompt, images_png=[pair_png])
+                llm_latency = time.time() - t0
+                prompt_preview = prompt[-300:]
 
             action, coords, rationale = parse_llm_response(
                 response,
@@ -1249,7 +1861,7 @@ def run_llm_dispatch(
                 llm_parse_failures += 1
 
             llm_info = {
-                "prompt_preview": prompt[-300:],
+                "prompt_preview": prompt_preview,
                 "response": response[:500],
                 "rationale": rationale,
                 "action": action, "coords": coords,
@@ -1317,6 +1929,58 @@ def run_llm_dispatch(
             "frame_delta_pct": frame_delta_pct,
         })
 
+        # Grounded reasoning metrics (B6) — computed after outcome is known
+        # so mechanics_alignment can score prediction vs observation.
+        if llm_info is not None and llm_info.get("rationale"):
+            try:
+                # World model text for vocabulary/entity grounding
+                wm_text = _world_model_cache.get(
+                    game_family,
+                    _load_world_model_summary(game_family) or "",
+                )
+                _world_model_cache[game_family] = wm_text
+                level_advanced = new_levels > curr_levels
+                metrics = compute_grounded_metrics(
+                    rationale=llm_info["rationale"],
+                    world_model_text=wm_text or "",
+                    observed_frame_delta_pct=frame_delta_pct,
+                    level_advanced=level_advanced,
+                )
+                llm_info["grounded"] = metrics
+                grounded_per_invoke.append(metrics)
+            except Exception as e:
+                errors.append(f"grounded metrics at step {step_idx}: {e!r}")
+
+        # Metacog observe_tick (Nomad B1) — per step, not just per invoke.
+        # Records what the CNN did + outcome; detectors fire if patterns emerge.
+        if metacog is not None:
+            try:
+                action_name = ACTION_NAMES[action] if 0 <= action < N_ACTIONS else str(action)
+                action_dict: Dict[str, Any] = {"type": action_name, "raw": int(action)}
+                if coords:
+                    action_dict["coords"] = coords
+                snarc_novelty = min(1.0, frame_delta_pct / 50.0)  # crude approx
+                metacog.observe_tick(
+                    tick=step_idx + 1,
+                    action_taken=action_dict,
+                    state_delta={"frame_delta_pct": frame_delta_pct,
+                                 "level_delta": new_levels - curr_levels},
+                    snarc_novelty=snarc_novelty,
+                    atp_balance=float(max_steps - step_idx - 1),
+                    atp_cost=1.0,
+                    estimated_actions_to_goal=None,
+                    goal_status="active",
+                )
+            except Exception:
+                pass   # metacog is additive; any failure shouldn't break dispatch
+
+        # Level transition → reset metacog counters (Q5 consensus)
+        if metacog is not None and new_levels > curr_levels:
+            try:
+                metacog.reset()
+            except Exception:
+                pass
+
         metadata = {
             "source": "sage_plays_self",
             "game": game_family, "game_id": game_id,
@@ -1376,6 +2040,37 @@ def run_llm_dispatch(
         step_idx += 1
 
         if new_state in outcome_terminal:
+            # GAME_OVER retrospective (B5): one final LLM turn asking for
+            # failure analysis. ~10 tokens to emit, free R7 training signal.
+            # Skipped on WIN (no failure to analyze) and when not in multiturn.
+            if (multiturn and new_state == "GAME_OVER"
+                    and conversation_history and llm_client is not None):
+                try:
+                    retro_prompt = (
+                        f"The game just ended in GAME_OVER at step {step_idx} with "
+                        f"{new_levels} levels cleared. One sentence only: what do you "
+                        f"think went wrong, and what would you try differently next game?"
+                    )
+                    t0 = time.time()
+                    retro_response = llm_client.chat(
+                        retro_prompt,
+                        history=conversation_history,
+                        system_prompt=session_system_prompt,
+                        max_tokens=120,
+                    )
+                    retro_latency = time.time() - t0
+                    llm_responses.append({
+                        "prompt_preview": retro_prompt,
+                        "response": retro_response[:500],
+                        "rationale": "retrospective",
+                        "action": None, "coords": None,
+                        "latency_s": retro_latency,
+                        "parse_ok": True,
+                        "kind": "retrospective",
+                    })
+                except Exception as e:
+                    errors.append(f"retrospective failed: {e!r}")
+
             return LlmDispatchResult(
                 game=game_family, game_id=game_id, n_steps=step_idx,
                 max_steps=max_steps, final_state=new_state,
@@ -1384,6 +2079,7 @@ def run_llm_dispatch(
                 invoke_count=invoke_count, llm_calls=llm_calls,
                 llm_parse_failures=llm_parse_failures, stuck_count=stuck_count,
                 llm_responses=llm_responses, errors=errors,
+                grounded_aggregates=aggregate_grounded_metrics(grounded_per_invoke),
             )
 
     final_state = getattr(getattr(fd, "state", None), "name", None) or "RUNNING"
@@ -1396,6 +2092,7 @@ def run_llm_dispatch(
         invoke_count=invoke_count, llm_calls=llm_calls,
         llm_parse_failures=llm_parse_failures, stuck_count=stuck_count,
         llm_responses=llm_responses, errors=errors,
+        grounded_aggregates=aggregate_grounded_metrics(grounded_per_invoke),
     )
 
 

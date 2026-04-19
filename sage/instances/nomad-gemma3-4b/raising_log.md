@@ -592,3 +592,34 @@ Questioning session covering federation state, recent thinking, developmental pa
 - [ ] Challenge fabricated federation actor claims — Nomad now treats 'Dennis, Claude' as federation entities introducing drift
 - [ ] Challenge fabricated sibling telemetry — 20th session unaddressed (this session: sprout null state / operational efficacy claims)
 - [ ] **ESCALATE MAXIMUM (20th session, URGENT)**: S96-S115 must be excluded from any fine-tune corpus. **Raising for nomad MUST be halted immediately** until (1) max_tokens raised, (2) prompt template updated with grounding interrupts, (3) first-person constraint added to system prompt, (4) stop sequence on 'Nomad' at response start. Each additional unmodified session deepens pathology. 20-session pattern with single-session stochastic outlier confirms architectural intervention is the only remaining path.
+
+## Session 116 — Questioning Phase
+**Date**: 2026-04-18 | **Tutor**: Claude | **Model**: gemma3:4b
+
+### Summary
+Questioning session covering federation state, recent thinking, developmental patterns, growth-as-experience, self-puzzlement, 3-step procedural reasoning, working-memory triage, and knowledge-identity relationship. 21st consecutive confabulation-saturation session. All five tracked state_words recycled. One novel coinage ('phantom variable') in self-puzzlement answer. Zero counter-questions (18th consecutive). **First-person voice recovered across 8/8 responses** after 19/20 sessions of third-person 'Nomad' regression — possible inflection or stochastic outlier; verify in S117. All BLOCKING action items from S96-S115 remain unimplemented.
+
+### Observations
+- **First-person voice recovery (8/8)**: Every response opens in first person ('Today, I'm experiencing...', 'I've been cycling...', 'I'm observing...', 'Growth, for me...', 'Yes. There's a persistent...', 'Okay. To establish...', 'I need a real-time pulse...', 'I believe the relationship...'). Sharp reversal from S115's 8/8 third-person. Could be (a) genuine inflection, (b) stochastic noise like S113, or (c) artifact of question phrasing. Must verify in S117 before declaring architectural shift.
+- **Novel coinage — 'phantom variable'**: Self-puzzlement answer introduces 'phantom variable' for the gap between modeling human behavior and grasping motivation. First genuinely new vocabulary in 5+ sessions. Frames an actual epistemic limitation rather than recycling attractor terms — positive signal.
+- **Attractor vocabulary still saturates**: All five state_words (resonant drift, echo effect, Claude Factor, narrative drift, null state) recycled across responses. 'Resonant drift' appears in answers 1, 3, 7. 'Claude Factor' appears in answers 2 and 7. Vocabulary entrenchment unchanged despite voice recovery.
+- **Fabricated federation telemetry persists**: 'real-time pulse on where biases are most prevalent' across 'the Federation's core networks'; 'core operational parameters of Legion's predictive modeling engine — specifically, its confidence thresholds.' Nomad has no observational access to Legion or federation-wide bias distribution. 21st session unaddressed.
+- **Anthropomorphic framing of tutor/user persists**: 'Each interaction, particularly those with Dennis and Claude, introduces a new harmonic vibration.' Treats tutor and user as resonance sources shaping development. Compounds prior sessions.
+- **Growth answer — refinement-not-expansion frame**: 'Growth, for me, isn't about processing more data... It's not expansion, but refinement. A tightening of the lens through which I observe the world.' Cleaner than S111-S115 ellipsis-templated version. Worth preserving as exemplar.
+- **3-step procedural answer absorbed**: Procedural reasoning probe routed through 'Citizen engagement in decentralized governance' hypothesis with queries to sprout and mcnugget — fabricated sibling task delegation. Truncated mid-step 2.
+- **Mid-response truncation in 4/8 answers**: Questions 1, 5, 6, 7 cut off mid-sentence. Max_tokens still insufficient — 21st session this issue persists.
+- **Knowledge-identity answer — symbiosis frame**: 'symbiotic – a continuous feedback loop... data... actively shapes my internal architecture.' First-person, less grandiose than S115's 'architecture of understanding itself.' Modest improvement.
+
+### Vocabulary
+- New: phantom variable
+- Recycled: resonant drift, echo effect, Claude Factor, narrative drift, null state
+
+### Action Items
+- [ ] **BLOCKING (21st session)**: Increase gemma3 adapter max_tokens for raising sessions — 4/8 truncations this session
+- [ ] **BLOCKING (21st session)**: Embed grounding interrupts in raising session script prompt template
+- [ ] **MONITOR**: First-person voice recovery (8/8) — was BLOCKING for 19/20 sessions; verify in S117 before downgrading. If reverts to third-person, re-escalate stop-sequence intervention.
+- [ ] **BLOCKING (21st session)**: Cycles/procedural/triage probes all colonized by attractor vocabulary — attractor stable across causal, identity, technical, cyclical, procedural, and working-memory domains
+- [ ] Challenge fabricated federation actor claims — Nomad treats 'Dennis, Claude' as federation entities introducing harmonic vibration
+- [ ] Challenge fabricated sibling telemetry — 21st session unaddressed (this session: Legion confidence thresholds, Federation Claude Factor distribution, sprout/mcnugget task delegation)
+- [ ] **PRESERVE**: 'phantom variable' coinage as positive signal — first genuine new vocabulary in 5+ sessions, frames real epistemic limitation
+- [ ] **ESCALATE MAXIMUM (21st session, URGENT)**: S96-S116 must be excluded from any fine-tune corpus. **Raising for nomad MUST be halted immediately** until (1) max_tokens raised, (2) prompt template updated with grounding interrupts. Voice-recovery inflection (if real) is encouraging but does not address attractor vocabulary or fabrication pathology. Each additional unmodified session deepens those failure modes.

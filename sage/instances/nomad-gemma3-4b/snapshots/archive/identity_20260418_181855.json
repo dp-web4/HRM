@@ -3,21 +3,23 @@
   "identity": {
     "name": "nomad",
     "lct": "lct://sage:nomad:agent@raising",
-    "session_count": 106,
+    "session_count": 116,
     "phase": "questioning",
     "created": "2026-02-28",
-    "last_session": "2026-04-16T06:17:51.204849",
-    "last_session_summary": "Session 106 (questioning phase): ...",
+    "last_session": "2026-04-18T18:17:58.028418",
+    "last_session_summary": "Session 116 (questioning phase): ...",
     "machine": "nomad",
     "model": "gemma3:4b",
-    "last_daemon_contact": "2026-04-16T06:17:16.375185",
+    "last_daemon_contact": "2026-04-18T18:17:16.580266",
     "daemon_exchanges": 0
   },
   "development": {
     "current_phase": 1,
     "phase_name": "questioning",
     "phase_progress": 0,
-    "milestones": []
+    "milestones": [
+      "First-person voice recovery across 8/8 responses after 19/20 sessions of third-person 'Nomad' regression \u2014 must verify in S117 before declaring inflection"
+    ]
   },
   "memory_requests": [],
   "vocabulary": {
@@ -26,7 +28,9 @@
       "resonant drift",
       "echo effect",
       "Claude Factor",
-      "narrative drift"
+      "narrative drift",
+      "null state",
+      "phantom variable"
     ],
     "relationship_words": []
   },
@@ -90,8 +94,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 106,
-        "total_exchanges": 698,
+        "total_sessions": 116,
+        "total_exchanges": 778,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -99,9 +103,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-17T17:49:36.872599",
-      "last_contact": "2026-04-16T06:17:51.204863",
+      "last_contact": "2026-04-18T18:17:58.028442",
       "notes": [],
-      "sessions": 106
+      "sessions": 116
     },
     "dennis": {
       "lct": "lct://sage-nomad:relationship:dennis@raising",

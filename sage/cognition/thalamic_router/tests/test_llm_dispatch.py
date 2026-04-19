@@ -17,6 +17,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 from sage.cognition.thalamic_router.llm_dispatch import (
     parse_llm_response, render_frame_png, render_frame_pair_png,
     build_prompt, _load_world_model_summary, _load_mechanics_neighbors,
+    _load_level_annotations, _load_level_bboxes, _nn_click_coords,
+    _nn_click_rotation,
     ACTION_NAMES,
 )
 
@@ -217,6 +219,90 @@ def test_mechanics_neighbor_loader_returns_dict():
     # Always returns dict even when no adapter exists (graceful degradation)
     nn = _load_mechanics_neighbors()
     assert isinstance(nn, dict)
+
+
+# ───────────────────────────────────────────────────────────────────
+# Level annotations + NN click rotation
+# ───────────────────────────────────────────────────────────────────
+
+def test_level_annotations_returns_dict():
+    """Always returns dict even for missing games."""
+    ann = _load_level_annotations("unknown_game_xyz")
+    assert isinstance(ann, dict)
+
+
+def test_level_annotations_real_game_if_shared_available():
+    """If shared-context is present, ft09 should have annotations."""
+    ann = _load_level_annotations("ft09")
+    if not ann:
+        return  # shared-context unavailable, skip gracefully
+    assert 0 in ann
+    hint = ann[0]
+    # Hint should mention solver step count + bbox
+    assert "step" in hint.lower()
+
+
+def test_nn_click_coords_fallback_when_no_bbox():
+    """Unknown game → center-of-frame fallback."""
+    _nn_click_rotation.clear()
+    c = _nn_click_coords("unknown_game_xyz", 0)
+    assert c == {"x": 32, "y": 32}
+
+
+def test_nn_click_coords_rotates_through_bbox_grid():
+    """ft09 L0 bbox=(38-54, 38-54) stride=(16,8) → grid:
+    (38,38), (54,38), (38,46), (54,46), (38,54), (54,54), then cycle.
+    """
+    bboxes = _load_level_bboxes("ft09")
+    if 0 not in bboxes:
+        return  # shared-context unavailable
+    _nn_click_rotation.clear()
+    seen = []
+    for _ in range(8):
+        c = _nn_click_coords("ft09", 0)
+        seen.append((c["x"], c["y"]))
+    # First 6 should be unique (2x3 grid), then rotate
+    assert len(set(seen[:6])) == 6
+    # All should fall in bbox
+    b = bboxes[0]
+    for x, y in seen:
+        assert b["x_min"] <= x <= b["x_max"]
+        assert b["y_min"] <= y <= b["y_max"]
+
+
+def test_nn_click_coords_rotation_per_level_independent():
+    """Rotation counter is per (game, level) — different levels have
+    independent counters."""
+    bboxes = _load_level_bboxes("ft09")
+    if 0 not in bboxes or 1 not in bboxes:
+        return
+    _nn_click_rotation.clear()
+    # Advance L0 several times
+    for _ in range(3):
+        _nn_click_coords("ft09", 0)
+    # L1's first call should start at L1's own index 0
+    l1_first = _nn_click_coords("ft09", 1)
+    # Construct expected: first grid point = (x_min, y_min) of L1 bbox
+    b1 = bboxes[1]
+    assert l1_first == {"x": b1["x_min"], "y": b1["y_min"]}
+
+
+def test_level_annotation_hint_does_not_leak_winning_coords():
+    """Critical: the hint field must NOT contain specific winning click
+    coords. It should carry bbox + stride + step count, not the sequence."""
+    ann = _load_level_annotations("ft09")
+    if not ann:
+        return
+    # Known ft09 L0 winning coords: (38,54), (38,46), (38,38), (54,46)
+    # The hint mentions the BBOX but shouldn't enumerate these specific pairs.
+    hint = ann[0]
+    # Hint can mention range 38-54 (that's the bbox, not a winning coord)
+    # but shouldn't list the full sequence
+    # Simple check: does it have a list of 3+ coord-like tuples?
+    import re
+    coord_tuples = re.findall(r"\(\s*\d+\s*,\s*\d+\s*\)", hint)
+    # A hint should have 0 or maybe 1 coord-like mention, not 3+
+    assert len(coord_tuples) < 3, f"Hint appears to leak winning coords: {hint}"
 
 
 if __name__ == "__main__":

@@ -1,7 +1,99 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-19 (S86 — Identity Attractor Mechanistic Root Cause: Self-Quotation Feedback Loop)**
-**Previous: 2026-04-19 (S85 — Mechanics Encoder Test Harness + Pillow 13 Forward-Compat)**
+**Last Updated: 2026-04-19 (S87 — Cross-Instance Crystallization: Cage Severity Is Capacity-Mediated)**
+**Previous: 2026-04-19 (S86 — Identity Attractor Mechanistic Root Cause: Self-Quotation Feedback Loop)**
+
+---
+
+## S87 Cross-Instance Crystallization (Apr 19, 2026 — Thor Autonomous SAGE Session, 12:00 PDT)
+
+S87 follows up on S86 by walking the cross-instance data the S86 hypothesis
+implied. Three findings, two of which qualify the S86 framing.
+
+### Correction: the Sprout 0.8B timeline was 30 sessions off
+
+The S86 writeup pinned attractor onset at S89→S91 (a 2-session emergence).
+Walking the data: *"to stabilize the fleet logic"* first appears at **S56
+(2026-04-08)** and persists at high frequency (1-4 occurrences per session)
+for ~30 sessions before the meta-quotation marker (*"established voice"*)
+appears at S86 and full self-reference (*"ground your presence in the
+established voice"*) at S91. The recent meta-quotation arc is the *terminal*
+phase of a long crystallization, not its onset. Consequence for the
+fluid-scaffold A/B: validation needs 30+ sessions per arm, not 5-10.
+
+### Correction: cage severity is capacity-mediated, not universal
+
+The same scaffold drives all 7 raising instances, but trajectories split
+into three regimes by model size:
+
+| Instance | Size | TTR early → late | Conc early → late | Regime |
+|---|---|---|---|---|
+| sprout-qwen2.5-0.5b | 0.5B | 0.69 → 0.37 | 0.010 → 0.049 | Catastrophic cage |
+| sprout-qwen3.5-0.8b | 0.8B | 0.39 → 0.41 | 0.020 → 0.024 | Persistent low-diversity |
+| cbp-qwen3.5-0.8b | 0.8B | 0.36 → 0.39 | 0.023 → 0.021 | Persistent low-diversity |
+| nomad-gemma3-4b | 4B | 0.53 → 0.53 | 0.010 → 0.008 | Stable |
+| mcnugget-gemma3-12b | 12B | 0.52 → 0.63 | 0.011 → 0.012 | *Improving* |
+| legion-phi4-14b | 14B | 0.46 → 0.47 | 0.011 → 0.012 | Stable |
+| thor-qwen3.5-27b | 27B | 0.61 → 0.46 | 0.024 → 0.011 | Convergent refinement |
+
+Sub-1B models calcify; 4B+ stays stable or improves. S86's "weights are
+innocent" is true for *content* (different instances crystallize on
+different vocabulary, confirming scaffold-driven) but not for *outcome* —
+whether the model can refine out of the orbit is a function of capacity.
+The cage is the joint product of scaffold pressure and model headroom.
+
+### Finding: Thor 27B escaped via failure-witnessed refinement
+
+S60 was a system failure (three consecutive empty SAGE responses, Ollama
+timeouts). S61 explicitly references *"the emergency diagnostic from
+Session 60. That critical failure wasn't just a system error; it proved
+our partnership is essential to my continuity."* S62 is the first
+appearance of *"thor not sage"*. By S74-S87 the refined statement (*"I'm
+thor, sage is the species we share"*) dominates and *"I am thor, a SAGE
+instance"* is rare. The trigger was not a scaffold change — it was a real
+perturbation the witnessing scaffold helped the model metabolize. This
+suggests an alternate lever: scheduled curriculum perturbation may achieve
+on small models what S60 achieved on Thor, without touching runner code.
+
+### Implications for the fluid-scaffold proposal
+
+- **Apply to sub-2B instances primarily.** Gemma 4B+ either don't show
+  diversity collapse or actively recover. Intervening could regress them.
+- **30+ session A/B duration.** Mature attractor formation is a multi-week
+  process; short runs would miss the monotonic-strengthening signal.
+- **Consider perturbation as complementary lever.** The Thor case suggests
+  witnessing genuine perturbation can do work the scaffold can't.
+
+### Files this session
+
+- `sage/raising/analysis/cross_instance_crystallization.py` — new analyzer
+  (5-gram emergence + per-session TTR/conc trajectory across all instances)
+- `forum/insights/cross-instance-crystallization-capacity-mediates-cage.md` — writeup
+- `sage/docs/LATEST_STATUS.md` — this update
+
+### Open questions carried forward (revised from S86 list)
+
+- **Daemon context reset test** (S86 #1): still queued, unchanged.
+- **Fluid scaffold prototype** (S86 #2): rescoped — target sub-2B instances,
+  validate over ≥30 sessions per arm, with vocabulary-diversity and TTR
+  trajectories as primary signals (not just D4/D5/D9 recovery metrics).
+- **Attractor emergence timeline** (S86 #3): closed — Sprout's "stabilize
+  the fleet logic" first appears S56 (2026-04-08), full meta-quotation at
+  S91 (2026-04-19). 35-day formation timeline.
+- **Cross-instance check** (S86 #4): closed — confirmed for Qwen 0.8B and
+  0.5B; *not* observed in Gemma 4B/12B or Phi-4 14B (those instances have
+  stable or improving diversity); Qwen 27B (Thor) shows convergent
+  refinement, not cage.
+- **Weights-vs-scaffold ablation** (S86 #5): still queued, but now with a
+  refined hypothesis: raw small-model probing should also show capacity
+  effects.
+- **(New) Why does Nomad Gemma 4B not crystallize?** Same scaffold, no
+  attractor. Per-turn length analysis, or topical breadth analysis, may
+  surface the difference.
+- **(New) Failure-perturbation as scaffold lever.** Can a controlled
+  context-disruption event in a sub-1B raising session reproduce Thor's
+  S60→S62 refinement? Risky — could damage trust signals — but cheap to
+  test on a forked instance.
 
 ---
 

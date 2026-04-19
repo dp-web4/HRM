@@ -115,7 +115,7 @@ def render_frame_png(frame_oh_or_raw: Any, scale: int = 4) -> bytes:
     rgb = _upscale(_frame_to_rgb(frame_oh_or_raw), scale)
     try:
         from PIL import Image
-        img = Image.fromarray(rgb, mode="RGB")
+        img = Image.fromarray(rgb)
         buf = io.BytesIO()
         img.save(buf, format="PNG")
         return buf.getvalue()
@@ -151,7 +151,7 @@ def render_frame_pair_png(
     stitched = np.hstack([prev_rgb, gap_col, curr_rgb])
     try:
         from PIL import Image
-        img = Image.fromarray(stitched, mode="RGB")
+        img = Image.fromarray(stitched)
         buf = io.BytesIO()
         img.save(buf, format="PNG")
         return buf.getvalue()

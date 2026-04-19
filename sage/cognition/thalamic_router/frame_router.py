@@ -138,6 +138,8 @@ class FrameRouter(nn.Module):
         emb_dim: int = 32,
         trunk_hidden: int = 64,
         include_last_action: bool = True,   # v4+ default; v3 configs → False
+        use_mech_embedding: bool = False,   # v6+ — game context from mechanics encoder
+        mech_emb_dim: int = 32,             # mechanics encoder output dim
     ):
         super().__init__()
         self.n_games = n_games
@@ -145,26 +147,35 @@ class FrameRouter(nn.Module):
         self.emb_dim = emb_dim
         self.pool_dim = pool_dim
         self.include_last_action = include_last_action
+        self.use_mech_embedding = use_mech_embedding
+        self.mech_emb_dim = mech_emb_dim
 
-        # Scalar bookkeeping input dim (documented above):
-        #   game_id (n_games) + level (n_levels) + step_frac(1) + budget(1)
-        #   + last_action (N_ACTIONS) ← the action that caused curr_frame [v4+]
+        # Scalar bookkeeping input dim:
+        #   game_context (n_games one-hot OR mech_emb_dim mechanics-encoder embedding)
+        #   + level (n_levels) + step_frac(1) + budget(1)
+        #   + last_action (N_ACTIONS) ← action that caused curr_frame [v4+]
         #   + recent_actions (K * N_ACTIONS) ← older context
         #   + available_actions (N_ACTIONS)
         #   + batch_state (3: in_batch, progress, goal_dummy)
-        #
-        # last_action is semantically distinct from recent_actions even though
-        # technically recent_actions[-1] carries the same value — it makes the
-        # causal "this action produced this frame transition" signal explicit.
-        # Gated behind `include_last_action` for backward-compat with v3
-        # adapters that were trained without it.
         last_action_dim = N_ACTIONS if include_last_action else 0
+        game_context_dim = mech_emb_dim if use_mech_embedding else n_games
+        self.game_context_dim = game_context_dim
         self.scalar_dim = (
-            n_games + n_levels + 1 + 1 +
+            game_context_dim + n_levels + 1 + 1 +
             last_action_dim +
             RECENT_ACTIONS_K * N_ACTIONS +
             N_ACTIONS + 3
         )
+
+        # Mechanics-encoder embedding table — frozen buffer, loaded at construct time.
+        # If use_mech_embedding=True, expected to be populated via load_mech_embedding_table().
+        # Kept as a buffer (not Parameter) so gradient doesn't flow — preserves the
+        # cross-game transfer semantics learned by the mechanics encoder.
+        if use_mech_embedding:
+            self.register_buffer(
+                "mech_embedding_table",
+                torch.zeros(n_games, mech_emb_dim, dtype=torch.float32),
+            )
 
         self.cnn = FrameCNN(pool_dim=pool_dim)
         self.scalar_net = nn.Sequential(
@@ -225,6 +236,7 @@ def build_scalar_vector(
     available_actions: List[int],
     batch_state: List[float],
     include_last_action: bool = True,
+    mech_embedding: Optional[List[float]] = None,
 ) -> List[float]:
     """Construct the scalar bookkeeping vector for one example.
 
@@ -235,8 +247,15 @@ def build_scalar_vector(
 
     `include_last_action=False` reproduces the v3 layout (for loading
     Thor's v1 adapter trained before the explicit last_action field).
+
+    `mech_embedding` — if provided, replaces the n_games one-hot with the
+    mechanics-encoder embedding (v6+). Caller is responsible for looking up
+    the embedding by game_idx (typically from FrameRouter.mech_embedding_table).
     """
-    game_oh = [1.0 if i == game_idx else 0.0 for i in range(n_games)]
+    if mech_embedding is not None:
+        game_oh = list(mech_embedding)
+    else:
+        game_oh = [1.0 if i == game_idx else 0.0 for i in range(n_games)]
     level_c = max(0, min(n_levels - 1, level if level is not None else 0))
     level_oh = [1.0 if i == level_c else 0.0 for i in range(n_levels)]
 
@@ -279,8 +298,11 @@ class FrameRouterConfig:
     machine: Optional[str] = None
     train_record_count: Optional[int] = None
     val_metrics: Dict[str, Any] = field(default_factory=dict)
-    architecture_version: int = 4   # v3 = frame-based; v4 = + explicit last_action
+    architecture_version: int = 4   # v3 = frame-based; v4 = + explicit last_action; v6 = + mech_embedding
     include_last_action: bool = True  # v3 adapters → False; v4+ → True
+    use_mech_embedding: bool = False  # v6+ — game context from mechanics encoder
+    mech_emb_dim: int = 32
+    mech_encoder_path: Optional[str] = None   # path to mechanics encoder .json (for provenance)
     frame_h: int = FRAME_H
     frame_w: int = FRAME_W
     n_colors: int = N_COLORS
@@ -299,20 +321,50 @@ def load_frame_router(path: Path) -> Tuple[FrameRouter, FrameRouterConfig]:
     path = Path(path)
     with open(str(path) + ".json", "r", encoding="utf-8") as f:
         raw = json.load(f)
-    # Forward-compat for v3 configs that predate include_last_action
+    # Forward-compat for v3 configs that predate include_last_action / mech_embedding
     if "include_last_action" not in raw:
         raw["include_last_action"] = raw.get("architecture_version", 3) >= 4
+    raw.setdefault("use_mech_embedding", False)
+    raw.setdefault("mech_emb_dim", 32)
+    raw.setdefault("mech_encoder_path", None)
     cfg = FrameRouterConfig(**raw)
     model = FrameRouter(
         n_games=cfg.n_games, n_levels=cfg.n_levels,
         pool_dim=cfg.pool_dim, scalar_hidden=cfg.scalar_hidden,
         emb_dim=cfg.emb_dim, trunk_hidden=cfg.trunk_hidden,
         include_last_action=cfg.include_last_action,
+        use_mech_embedding=cfg.use_mech_embedding,
+        mech_emb_dim=cfg.mech_emb_dim,
     )
     state = torch.load(str(path) + ".pt", map_location="cpu", weights_only=True)
     model.load_state_dict(state)
     model.eval()
     return model, cfg
+
+
+def load_mech_embedding_table(
+    mech_encoder_json_path: Path, game_slugs: List[str], mech_emb_dim: int = 32,
+) -> np.ndarray:
+    """Load the mechanics-encoder embedding table, aligned to the router's
+    `game_slugs` order. Missing games get zero embeddings (silently — they're
+    rare and the CNN can still drive action choice).
+
+    Returns (n_games, mech_emb_dim) float32 numpy array.
+    """
+    with open(mech_encoder_json_path, "r", encoding="utf-8") as f:
+        meta = json.load(f)
+    mech_slugs = meta["game_slugs"]
+    mech_embs = np.array(meta["embeddings"], dtype=np.float32)
+    assert mech_embs.shape == (len(mech_slugs), mech_emb_dim), (
+        f"mechanics encoder shape mismatch: {mech_embs.shape} vs "
+        f"({len(mech_slugs)}, {mech_emb_dim})"
+    )
+    slug_to_emb = {s: mech_embs[i] for i, s in enumerate(mech_slugs)}
+    table = np.zeros((len(game_slugs), mech_emb_dim), dtype=np.float32)
+    for i, slug in enumerate(game_slugs):
+        if slug in slug_to_emb:
+            table[i] = slug_to_emb[slug]
+    return table
 
 
 # ───────────────────────────────────────────────────────────────────

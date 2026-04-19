@@ -110,9 +110,24 @@ def _action_from_record(rec: Dict[str, Any]) -> Optional[int]:
     return None
 
 
-# v2 invoke-label thresholds. Self-supervised dispatch signals.
-FRAME_DELTA_INVOKE_THRESHOLD = 0.5     # snarc_novelty already encodes this
-AROUSAL_INVOKE_THRESHOLD = 0.7         # very high arousal → invoke
+# v2 invoke-label threshold. Self-supervised dispatch signal.
+#
+# IMPORTANT: snarc_novelty as currently computed in synth_router_input
+# (gameplay_capture.py:196) is NOT frame-to-frame — it's a linearly-decaying
+# tick proxy: `max(0, 1 - tick/200) if delta>0.01 else 0.1`. Using it as an
+# invoke trigger labels all early-trace records as "should invoke" regardless
+# of what's actually happening visually. That teaches the NN to invoke on
+# ticks < 100, which is wrong.
+#
+# The fields that ARE frame-to-frame:
+#   snarc_arousal  = frame_delta          (full delta, clamped to [0,1])
+#   snarc_surprise = frame_delta * 0.8    (attenuated delta)
+#
+# Self-supervised "invoke" label should fire on frame-to-frame change, not
+# tick position. We use arousal (the full delta) with a moderate threshold.
+# This matches the user's frame: "after the LLM told SAGE what to do, only
+# invoke again if novelty/surprise on the resulting frame justifies it."
+FRAME_DELTA_INVOKE_THRESHOLD = 0.5   # delta ≥ 0.5 = "something significant changed"
 
 
 def _invoke_label(
@@ -122,23 +137,23 @@ def _invoke_label(
 ) -> float:
     """Self-supervised label: should the NN have invoked the LLM at this state?
 
-    Returns 1.0 if any of the canonical "definitely invoke" signals fire:
+    Fires 1.0 on:
       - first frame of a trace (no context yet)
-      - level just changed (new rules, new goal geometry)
-      - snarc_novelty above threshold (large visual diff from previous frame)
-      - snarc_arousal above threshold (consciousness loop's own alarm)
+      - level just changed (new geometry/rules)
+      - frame_delta from previous frame ≥ threshold (significant visual event)
 
-    Returns 0.0 otherwise. NOT a soft label — this is the obvious-case
-    supervision. The NN may also fire on non-obvious cases at inference;
-    those are its generalization. Evaluation tests how often it correctly
-    catches the obvious cases AND whether its non-obvious calls are useful.
+    Returns 0.0 otherwise. NOT a soft label — obvious-case supervision.
+    Generalization to non-obvious "invoke" moments is what the NN learns
+    from the input features (e.g., low confidence on the play head).
+
+    NB: uses snarc_arousal (frame-delta) not snarc_novelty (tick proxy).
+    See comment above the threshold constant for why.
     """
     if is_first_of_trace or level_changed:
         return 1.0
     ri = rec_t.get("router_input") or {}
-    novelty = float(ri.get("snarc_novelty") or 0.0)
     arousal = float(ri.get("snarc_arousal") or 0.0)
-    if novelty >= FRAME_DELTA_INVOKE_THRESHOLD or arousal >= AROUSAL_INVOKE_THRESHOLD:
+    if arousal >= FRAME_DELTA_INVOKE_THRESHOLD:
         return 1.0
     return 0.0
 

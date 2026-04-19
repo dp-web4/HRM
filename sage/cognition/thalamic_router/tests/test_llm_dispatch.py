@@ -251,23 +251,29 @@ def test_nn_click_coords_fallback_when_no_bbox():
 
 def test_nn_click_coords_rotates_through_bbox_grid():
     """ft09 L0 bbox=(38-54, 38-54) stride=(16,8) → grid:
-    (38,38), (54,38), (38,46), (54,46), (38,54), (54,54), then cycle.
+    (38,38), (54,38), (38,46), (54,46), (38,54), (54,54).
+    After the 6-point cycle, function returns None to signal "exhausted
+    grid — force invoke." (Self-inverse games like ft09 would toggle
+    earlier clicks off if we kept cycling.)
     """
     bboxes = _load_level_bboxes("ft09")
     if 0 not in bboxes:
         return  # shared-context unavailable
     _nn_click_rotation.clear()
     seen = []
-    for _ in range(8):
+    for _ in range(6):
         c = _nn_click_coords("ft09", 0)
+        assert c is not None
         seen.append((c["x"], c["y"]))
-    # First 6 should be unique (2x3 grid), then rotate
-    assert len(set(seen[:6])) == 6
+    # 6 grid points should be unique
+    assert len(set(seen)) == 6
     # All should fall in bbox
     b = bboxes[0]
     for x, y in seen:
         assert b["x_min"] <= x <= b["x_max"]
         assert b["y_min"] <= y <= b["y_max"]
+    # 7th call → None (grid exhausted)
+    assert _nn_click_coords("ft09", 0) is None
 
 
 def test_nn_click_coords_rotation_per_level_independent():
@@ -303,6 +309,64 @@ def test_level_annotation_hint_does_not_leak_winning_coords():
     coord_tuples = re.findall(r"\(\s*\d+\s*,\s*\d+\s*\)", hint)
     # A hint should have 0 or maybe 1 coord-like mention, not 3+
     assert len(coord_tuples) < 3, f"Hint appears to leak winning coords: {hint}"
+
+
+# ───────────────────────────────────────────────────────────────────
+# Mechanics-encoder input swap (v6 plumbing)
+# ───────────────────────────────────────────────────────────────────
+
+def test_frame_router_v5_backcompat_loads_with_use_mech_false():
+    """Existing v5 adapter must load with default use_mech_embedding=False."""
+    from pathlib import Path
+    from sage.cognition.thalamic_router.frame_router import load_frame_router
+    v5_path = Path("/mnt/c/exe/projects/ai-agents/private-context/training-data/"
+                    "router/_adapters/cbp-framerouter-v5nodyn-2026-04-18")
+    if not (v5_path.parent.exists() and (v5_path.with_suffix(".pt")).exists()):
+        return  # adapter not on this machine
+    model, cfg = load_frame_router(v5_path)
+    assert cfg.use_mech_embedding is False
+    # scalar_dim = n_games(6) + n_levels(10) + 2 + last_action(7)
+    #            + 8*7 + 7 + 3 = 91
+    assert model.scalar_dim == 91
+
+
+def test_load_mech_embedding_table_aligns_to_router_slugs():
+    """Mechanics embeddings should align to the router's game_slugs order."""
+    from pathlib import Path
+    from sage.cognition.thalamic_router.frame_router import (
+        load_frame_router, load_mech_embedding_table,
+    )
+    v5 = Path("/mnt/c/exe/projects/ai-agents/private-context/training-data/"
+              "router/_adapters/cbp-framerouter-v5nodyn-2026-04-18")
+    mech = Path("/mnt/c/exe/projects/ai-agents/private-context/training-data/"
+                "router/_adapters/cbp-mechanics-2026-04-18.json")
+    if not (v5.with_suffix(".pt").exists() and mech.exists()):
+        return
+    _, cfg = load_frame_router(v5)
+    table = load_mech_embedding_table(mech, cfg.game_slugs, mech_emb_dim=32)
+    assert table.shape == (cfg.n_games, 32)
+    # All 6 CBP games should be in the 25-game mechanics encoder
+    nonzero = int((table.sum(1) != 0).sum())
+    assert nonzero == cfg.n_games
+
+
+def test_build_scalar_vector_with_mech_embedding():
+    """mech_embedding parameter replaces n_games one-hot with 32d vector."""
+    from sage.cognition.thalamic_router.frame_router import build_scalar_vector
+    n_games = 25
+    vec_onehot = build_scalar_vector(
+        game_idx=3, n_games=n_games, level=0, n_levels=10,
+        step_frac=0.1, budget_remaining=0.5, last_action=0,
+        recent_actions=[0]*8, available_actions=[1]*7, batch_state=[0, 0, 0],
+    )
+    vec_mech = build_scalar_vector(
+        game_idx=3, n_games=n_games, level=0, n_levels=10,
+        step_frac=0.1, budget_remaining=0.5, last_action=0,
+        recent_actions=[0]*8, available_actions=[1]*7, batch_state=[0, 0, 0],
+        mech_embedding=[0.1] * 32,
+    )
+    # n_games(25) → mech_emb_dim(32) replaces the game_context slot
+    assert len(vec_onehot) - n_games == len(vec_mech) - 32
 
 
 if __name__ == "__main__":

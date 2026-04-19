@@ -453,6 +453,129 @@ _world_model_cache: Dict[str, str] = {}
 # Cache mechanics-encoder neighbors per game (loaded once per session from
 # the adapter JSON at SAGE_MECHANICS_ADAPTER env var)
 _mechanics_neighbors_cache: Optional[Dict[str, List[Tuple[str, float]]]] = None
+# Cache per-level annotations: {game_family: {level_int: hint_string}}
+_level_annotations_cache: Dict[str, Dict[int, str]] = {}
+
+
+# Cache per-level click bboxes: {game: {level: {x_min, x_max, y_min, y_max, stride_x, stride_y}}}
+_level_bbox_cache: Dict[str, Dict[int, Dict[str, int]]] = {}
+# Rotation counter for NN's default click — advances through grid-aligned
+# points in the bbox so we don't repeat the same coord (self-inverse in ft09).
+# Key: (game_family, level). Value: counter integer.
+_nn_click_rotation: Dict[Tuple[str, int], int] = {}
+
+
+def _load_level_bboxes(game_family: str) -> Dict[int, Dict[str, int]]:
+    """Load per-level click-region bbox + stride. Separate from
+    _load_level_annotations which returns prose hints — this returns
+    structured bbox + stride for coord rotation.
+    """
+    if game_family in _level_bbox_cache:
+        return _level_bbox_cache[game_family]
+    _level_bbox_cache[game_family] = {}
+    for root in [
+        Path(os.environ.get("SHARED_CONTEXT_DIR", "")),
+        Path("/mnt/c/exe/projects/ai-agents/shared-context"),
+        Path.home() / "ai-workspace" / "shared-context",
+        Path.home() / "repos" / "shared-context",
+    ]:
+        path = root / "arc-agi-3" / "world-models" / f"{game_family}-levels.json"
+        if path.exists():
+            try:
+                d = json.loads(path.read_text())
+                levels = d.get("levels") or {}
+                out: Dict[int, Dict[str, int]] = {}
+                for lvl_str, entry in levels.items():
+                    try:
+                        lvl = int(lvl_str)
+                    except ValueError:
+                        continue
+                    bbox = entry.get("click_region_bbox")
+                    if bbox:
+                        # Include stride info for rotation-over-grid
+                        merged = dict(bbox)
+                        if entry.get("coord_stride_x"):
+                            merged["stride_x"] = int(entry["coord_stride_x"])
+                        if entry.get("coord_stride_y"):
+                            merged["stride_y"] = int(entry["coord_stride_y"])
+                        out[lvl] = merged
+                _level_bbox_cache[game_family] = out
+                break
+            except Exception:
+                continue
+    return _level_bbox_cache[game_family]
+
+
+def _nn_click_coords(game_family: str, level: Optional[int]) -> Dict[str, int]:
+    """Return click coords for NN-driven CLICK actions.
+
+    Strategy: if a level-hint bbox + stride is available, enumerate all
+    grid-aligned points inside the bbox and rotate through them across
+    successive CLICK calls. This prevents the "click (38,38) 17 times,
+    self-inverse cancels all progress" failure mode seen on ft09.
+
+    Falls back to frame center (32, 32) when no level-hint available.
+    """
+    lvl = level if level is not None else 0
+    bboxes = _load_level_bboxes(game_family)
+    bbox = bboxes.get(lvl)
+    if not bbox:
+        return {"x": 32, "y": 32}
+
+    x_min, x_max = int(bbox["x_min"]), int(bbox["x_max"])
+    y_min, y_max = int(bbox["y_min"]), int(bbox["y_max"])
+    sx = int(bbox.get("stride_x") or max(1, (x_max - x_min)))
+    sy = int(bbox.get("stride_y") or max(1, (y_max - y_min)))
+
+    # Enumerate grid points: x in {x_min, x_min+sx, ..., x_max}, y similarly
+    xs = list(range(x_min, x_max + 1, sx)) or [x_min]
+    ys = list(range(y_min, y_max + 1, sy)) or [y_min]
+    grid: List[Tuple[int, int]] = [(x, y) for y in ys for x in xs]
+
+    key = (game_family, lvl)
+    idx = _nn_click_rotation.get(key, 0)
+    _nn_click_rotation[key] = idx + 1
+    x, y = grid[idx % len(grid)]
+    return {"x": int(x), "y": int(y)}
+
+
+def _load_level_annotations(game_family: str) -> Dict[int, str]:
+    """Load per-level hints from world-models/{game}-levels.json.
+
+    Only the `hint` field is extracted — the raw winning-action coords
+    stay out of the prompt. The hint carries bbox + stride + action
+    distribution + step count: information a player would learn from
+    observation, not the solution itself.
+    """
+    if game_family in _level_annotations_cache:
+        return _level_annotations_cache[game_family]
+    _level_annotations_cache[game_family] = {}
+
+    for root in [
+        Path(os.environ.get("SHARED_CONTEXT_DIR", "")),
+        Path("/mnt/c/exe/projects/ai-agents/shared-context"),
+        Path.home() / "ai-workspace" / "shared-context",
+        Path.home() / "repos" / "shared-context",
+    ]:
+        path = root / "arc-agi-3" / "world-models" / f"{game_family}-levels.json"
+        if path.exists():
+            try:
+                d = json.loads(path.read_text())
+                levels = d.get("levels") or {}
+                out: Dict[int, str] = {}
+                for lvl_str, entry in levels.items():
+                    try:
+                        lvl = int(lvl_str)
+                    except ValueError:
+                        continue
+                    hint = entry.get("hint") or ""
+                    if hint:
+                        out[lvl] = hint
+                _level_annotations_cache[game_family] = out
+                break
+            except Exception:
+                continue
+    return _level_annotations_cache[game_family]
 
 
 def _load_mechanics_neighbors() -> Dict[str, List[Tuple[str, float]]]:
@@ -624,6 +747,19 @@ def build_prompt(
 {world_model}
 
 """
+
+    # Per-level annotation — derived from solver traces, hint-only (no
+    # winning sequence revealed). Tells LLM bbox + stride + step count for
+    # the current level.
+    level_block = ""
+    level_hints = _load_level_annotations(game_family)
+    lvl_hint = level_hints.get(level or 0)
+    if lvl_hint:
+        level_block = f"""
+=== Level {level} hint (observed-from-solved) ===
+{lvl_hint}
+
+"""
     context_block = ""
     if game_context:
         context_block = f"""
@@ -637,7 +773,7 @@ def build_prompt(
 The image contains TWO frames side by side: LEFT is the PREVIOUS frame, \
 RIGHT is the CURRENT frame (separated by a black gap). Compare them to \
 understand what just changed.
-{mech_block}{world_model_block}{context_block}
+{mech_block}{world_model_block}{level_block}{context_block}
 === Current situation ===
 Game: {game}  Level: {level}  Step: {step_index}
 Invoke triggers: {', '.join(invoke_reasons) if invoke_reasons else 'manual'}
@@ -980,7 +1116,11 @@ def run_llm_dispatch(
                 llm_responses.append(llm_info)
         else:
             action = dispatch.play_action
-            coords = {"x": 32, "y": 32} if action == 6 else None
+            # For NN-driven CLICK: use the level-hint bbox center if available,
+            # else fall back to center-of-frame. The bbox comes from the solver
+            # trace's click-region summary and concentrates play in the active
+            # area instead of dead-space at (32,32).
+            coords = _nn_click_coords(game_family, level) if action == 6 else None
 
         aname = ACTION_NAMES[action] if 0 <= action < N_ACTIONS else str(action)
         action_counts[aname] = action_counts.get(aname, 0) + 1

@@ -1,7 +1,130 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-19 (S83 — Reverse/Bidirectional Walk Closes S82's Mid-Trajectory Introspection Gap)**
-**Previous: 2026-04-18 (S82 Habit Provenance Walk Closes S81's Per-Step Introspection Gap)**
+**Last Updated: 2026-04-18 (S84 — World-Model Sprint Test Harness + Silent-No-Op Fix)**
+**Previous: 2026-04-19 (S83 Reverse/Bidirectional Walk Closes S82's Mid-Trajectory Introspection Gap)**
+
+---
+
+## S84 World-Model Sprint Test Harness + Silent-No-Op Fix (Apr 18, 2026 — Thor Autonomous SAGE Session, 18:00 PDT)
+
+S84 is a green-audit of the world-model sprint (v0→v1→v2) that landed
+across three commits earlier today. ~2000 lines of new code
+(`world_model.py`, `wm_train.py`, `wm_play.py`, `wm_dispatch.py`,
+`sage_plays_self.py`) shipped with zero test coverage. On top of
+that, `pytest sage/cognition/` on Thor was failing 3 tests before any
+new work even began — two silent-no-op bugs in `gameplay_capture`
+that only manifested on machines without `arcengine` installed, and
+one stale PRD-schema assertion that hadn't been updated when three
+new record sources were added in the phase-1.5 sage-plays work.
+
+### What landed
+
+**Bug fix: `gameplay_capture` silent env-advance on machines without arcengine.**
+
+`GameplayCapture.run()` did `int_to_action = {ga.value: ga for ga in GameAction}`
+inside a try/except, then gated every `env.step(ga, ...)` on
+`ga = int_to_action.get(step.action)` being non-None. On any machine
+without `arcengine` — Thor, any fresh cluster node, any CI runner — the
+enum import failed silently, `int_to_action` was `{}`, the lookup
+always returned None, and the env never advanced. Records were still
+emitted and written to disk, but `steps_applied` stayed at 0 and
+`atp_level` never decayed. The capture looked fine from the outside;
+the data was useless.
+
+Fix (`sage/cognition/thalamic_router/gameplay_capture.py`): when
+`int_to_action` is empty, fall through to the raw int. The MockEnv in
+tests accepts any action type and works. Real envs without the SDK
+will raise on `env.step()`, which is caught by the existing try/except
+and appended to `errors` — honest failure beats silent no-op. Machines
+with arcengine: behavior unchanged.
+
+**Test schema fix: `VALID_RECORD_SOURCES` PRD assertion.**
+
+`test_valid_record_sources_matches_prd` hard-coded the Sprint 2 R1
+baseline `{"raising", "gameplay", "idle", "interactive"}` but the
+phase-1.5 work added three more: `sage_plays`, `sage_plays_live`,
+`sage_plays_self` (each with a comment in `record.py` explaining its
+capture context). Updated the test to match, with a comment noting why
+the vocabulary grew.
+
+**New test coverage: `test_world_model.py` (17 tests).**
+
+The three-head architecture (action / outcome / dynamics) plus the v2
+invoke head plus `choose_dispatch` is the new brain of the thalamic
+router — it's what decides whether to commit to a cached play or
+escalate to the LLM. It had zero tests. Now it has 17:
+
+- Pure-Python helpers: `build_input_vector` length matches
+  `WorldModel.input_dim`; one-hot segments (game, level, last action)
+  are constructed correctly; level clamping handles out-of-range and
+  `None`; `action_onehot` is one-hot.
+- `WorldModel` forward shapes: v1 (action-conditional outcome) emits
+  `embedding`, `action_logits`, `outcome_logit`, `next_emb_pred` at
+  the right shapes; v0 backward-compat mode emits outcome without
+  requiring action_onehot; v1 raises `ValueError` if outcome is
+  requested without action; invoke_head returns one logit per batch
+  row.
+- `choose_dispatch` three-gate logic: play when confident and margin
+  wide; invoke on structural signal (invoke_head > 0.5); invoke on
+  low confidence (top action < 0.65); invoke on tight margin (top–2nd
+  gap < 0.08); all three reasons stack when they all fire;
+  action_ranking is sorted descending; `context` dict contains the
+  embedding plus game/level/step metadata.
+- `save_world_model` / `load_world_model` roundtrip: weights
+  preserved exactly (emit identical forward pass output on same
+  input); v0 configs without `architecture_version` or
+  `outcome_action_conditional` load with the correct defaults.
+
+The gate tests use a stub pattern that replaces `encode`,
+`forward_action`, `forward_invoke`, and `forward_outcome` with
+closures that return deterministic tensors — isolates `choose_dispatch`
+logic from the NN's learned behavior. This is the honest way to test
+dispatch policy separately from the untrained model's noise.
+
+### Results
+
+- `pytest sage/cognition/`: 533/533 passing (was 515/518 — three
+  failures, five-hundred-fifteen passes — now 533 with the 17 new
+  world_model tests + 2 fixes).
+- `pytest sage/cognition/thalamic_router/tests/`: 53/53 passing (was
+  34/36 with 2 failures, now 34 + 17 new + 2 re-passing = 53).
+
+### Why this matters for the collective
+
+The silent-no-op bug is the kind of thing that invalidates data
+silently across machines. Thor doesn't have `arcengine` (no ARC-AGI-3
+SDK installed locally — that's a WSL/Windows path). Any fleet machine
+spinning up `gameplay_capture` without the SDK would have been
+writing broken datasets. The fix is tiny but the confidence boundary
+is now honest: either the action converts, or we log the failure.
+
+The world_model test harness gives the v2 dispatch head a
+reproducibility floor. Every future change to `choose_dispatch`'s
+thresholds or the invoke head's shape has to clear 17 gates; the
+deterministic-stub pattern means the tests don't drift just because
+the underlying NN retrains.
+
+### Open questions carried forward
+
+- **Tests for `wm_train.py` / `wm_play.py` / `wm_dispatch.py`**:
+  these are harness scripts (training loops, env rollouts). They're
+  harder to unit-test — they'd need env mocks at the level of the
+  gameplay_capture tests. Deferred; the model + choose_dispatch
+  layer is where the logic lives.
+- **Per-phase `consensus_threshold` tuning** (from S81): still
+  deferred.
+- **`recall_with_context(cue, direction="both")` convenience wrapper**
+  (from S83): still deferred; one-line composed form works.
+
+### Files this session
+
+- `sage/cognition/thalamic_router/gameplay_capture.py` — silent-no-op
+  fix (raw-int fallback when arcengine unavailable)
+- `sage/cognition/router/tests/test_schemas.py` — PRD vocabulary
+  updated to include `sage_plays*` sources
+- `sage/cognition/thalamic_router/tests/test_world_model.py` — new
+  test file, 17 tests
+- `sage/docs/LATEST_STATUS.md` — this writeup
 
 ---
 

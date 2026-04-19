@@ -601,8 +601,15 @@ def test_metadata_source_validator_accepts_all_valid():
 
 
 def test_valid_record_sources_matches_prd():
-    # The closed vocabulary per Sprint 2 R1.
-    assert VALID_RECORD_SOURCES == {"raising", "gameplay", "idle", "interactive"}
+    # The closed vocabulary. Sprint 2 R1 baseline plus the three sage_plays
+    # harness sources added in the phase-1.5 "SAGE plays" convergence work:
+    #   sage_plays       — offline re-scoring of captured records
+    #   sage_plays_live  — teacher-forced live play
+    #   sage_plays_self  — self-advance play; errors compound
+    assert VALID_RECORD_SOURCES == {
+        "raising", "gameplay", "idle", "interactive",
+        "sage_plays", "sage_plays_live", "sage_plays_self",
+    }
 
 
 def test_from_dict_backward_compat_missing_metadata():

@@ -278,6 +278,61 @@ def _retrieve_game_context(game_family: str, max_entries: int = 3) -> str:
 
 # Cache retrieved context per game to avoid repeated embedding calls
 _game_context_cache: Dict[str, str] = {}
+# Cache world-model markdown summary per game (session-stable)
+_world_model_cache: Dict[str, str] = {}
+
+
+def _load_world_model_summary(game_family: str, max_chars: int = 1500) -> str:
+    """Load hand-authored world model for this game and extract the sections
+    that inform live play: Objects, Rules, Win Condition, Strategy.
+
+    These are the symbolic "source of truth" docs assembled over the 2-week
+    understanding phase. Skips debugging/diagnostic sections (Known Failure
+    Modes, historical notes) that aren't useful for deliberation.
+
+    Searches multiple workspace roots for the `world-models/{game}.md` file.
+    Returns empty string if not found — graceful degradation.
+    """
+    for root in [
+        Path(os.environ.get("SHARED_CONTEXT_DIR", "")),
+        Path("/mnt/c/exe/projects/ai-agents/shared-context"),
+        Path("/mnt/c/projects/ai-agents/shared-context"),
+        Path.home() / "ai-workspace" / "shared-context",
+        Path.home() / "repos" / "shared-context",
+    ]:
+        wm_path = root / "arc-agi-3" / "world-models" / f"{game_family}.md"
+        if wm_path.exists():
+            break
+    else:
+        return ""
+
+    try:
+        text = wm_path.read_text()
+    except Exception:
+        return ""
+
+    # Keep only the play-relevant sections. Order matters — Objects first so
+    # the LLM knows the visual vocabulary, then Rules, then Win, then Strategy.
+    wanted = ["## Objects", "## Rules", "## Win Condition", "## Strategy"]
+    lines = text.splitlines()
+    sections: Dict[str, List[str]] = {s: [] for s in wanted}
+    current: Optional[str] = None
+    for line in lines:
+        if line.startswith("## "):
+            current = line if line in wanted else None
+        elif current is not None:
+            sections[current].append(line)
+
+    out_parts: List[str] = []
+    for s in wanted:
+        body = "\n".join(sections[s]).strip()
+        if body:
+            out_parts.append(f"{s}\n{body}")
+    combined = "\n\n".join(out_parts)
+    # Truncate at a section boundary if possible
+    if len(combined) > max_chars:
+        combined = combined[:max_chars] + "\n[...truncated]"
+    return combined
 
 
 def build_prompt(
@@ -301,16 +356,31 @@ def build_prompt(
         for a in recent_actions[-5:]
     ) or "(none yet)"
 
-    # Retrieve game context from cartridge (cached per game)
     game_family = game.split("-")[0] if "-" in game else game
+
+    # Tier 1: hand-authored world-model markdown (authoritative mechanics,
+    # loaded once per session). Highest-priority context.
+    if game_family not in _world_model_cache:
+        _world_model_cache[game_family] = _load_world_model_summary(game_family)
+    world_model = _world_model_cache[game_family]
+
+    # Tier 2: cartridge retrieval (situational examples, similarity-matched
+    # to game name). Augments the world model with live-reasoning snippets.
     if game_family not in _game_context_cache:
         _game_context_cache[game_family] = _retrieve_game_context(game_family)
     game_context = _game_context_cache[game_family]
 
+    world_model_block = ""
+    if world_model:
+        world_model_block = f"""
+=== Game mechanics (authoritative) ===
+{world_model}
+
+"""
     context_block = ""
     if game_context:
         context_block = f"""
-Game knowledge (from solved games database):
+=== Relevant reasoning snippets (from solved-games cartridge) ===
 {game_context}
 
 """
@@ -320,7 +390,8 @@ Game knowledge (from solved games database):
 The image contains TWO frames side by side: LEFT is the PREVIOUS frame, \
 RIGHT is the CURRENT frame (separated by a black gap). Compare them to \
 understand what just changed.
-{context_block}
+{world_model_block}{context_block}
+=== Current situation ===
 Game: {game}  Level: {level}  Step: {step_index}
 Invoke triggers: {', '.join(invoke_reasons) if invoke_reasons else 'manual'}
 Recent actions: {recent_names}
@@ -332,7 +403,7 @@ Actions: A0=0 UP=1 DOWN=2 LEFT=3 RIGHT=4 SEL=5 CLICK=6
 
 Respond with exactly this format on the first line:
 ACTION=<0-6>[ X=<0-63> Y=<0-63>]
-<one-sentence rationale>
+<one-sentence rationale grounded in the game mechanics above>
 
 If you choose CLICK (6), you MUST provide X and Y pixel coordinates on the 64×64 grid.
 """

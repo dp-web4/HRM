@@ -222,6 +222,103 @@ class OllamaClient(LLMClient):
         return str(msg.get("content", "") or "")
 
 
+class ClaudeCLIClient(LLMClient):
+    """Claude via the `claude` CLI with OAuth subscription auth.
+
+    Uses the Max x20 subscription instead of the Anthropic API — no credit
+    balance drain. Slightly more overhead than direct API (process spawn
+    per call), but free under the subscription.
+
+    Works by writing images to a temp dir, referencing them in the prompt,
+    and letting Claude Code's Read tool load them during its turn.
+    Uses --dangerously-skip-permissions + --add-dir to auto-approve reads
+    of the temp directory.
+
+    Default model: "sonnet" (current default-shortcut in Claude Code).
+    For strategic use of stronger reasoning, pass "opus".
+    """
+    def __init__(
+        self,
+        model: str = "sonnet",
+        timeout: float = 90.0,
+        temp_dir: Optional[Path] = None,
+        claude_bin: Optional[str] = None,
+    ):
+        import shutil, subprocess as _sp
+        self.model = model
+        self.timeout = timeout
+        self._subprocess = _sp
+        self._tempdir = Path(temp_dir) if temp_dir else Path("/tmp/sage_llm_dispatch")
+        self._tempdir.mkdir(parents=True, exist_ok=True)
+        self._bin = claude_bin or shutil.which("claude")
+        if not self._bin:
+            # Common install paths
+            for candidate in [
+                Path.home() / ".local" / "bin" / "claude",
+                Path("/usr/local/bin/claude"),
+                Path.home() / ".npm-global" / "bin" / "claude",
+            ]:
+                if candidate.exists():
+                    self._bin = str(candidate); break
+        if not self._bin:
+            raise RuntimeError("claude CLI not found in PATH or common install locations")
+
+    def chat(
+        self, prompt: str, images_png: Optional[List[bytes]] = None,
+        max_tokens: int = 300,
+    ) -> str:
+        """Invoke `claude --print`, attaching any images via temp files.
+        Returns the assistant's response text."""
+        # Write images to temp files; reference them in the prompt
+        img_refs: List[str] = []
+        written: List[Path] = []
+        for i, img_bytes in enumerate(images_png or []):
+            path = self._tempdir / f"frame_{int(time.time()*1000)}_{i}.png"
+            try:
+                path.write_bytes(img_bytes)
+                written.append(path)
+                img_refs.append(str(path))
+            except Exception:
+                continue
+
+        if img_refs:
+            full_prompt = (
+                "Please use your Read tool to view the following image file(s):\n"
+                + "\n".join(f"  {p}" for p in img_refs)
+                + "\n\n"
+                + prompt
+            )
+        else:
+            full_prompt = prompt
+
+        try:
+            # Set a max token constraint via CLAUDE_CODE_SIMPLE-ish flags.
+            # --bare is too minimal; use defaults but dangerously-skip-permissions
+            # so the Read tool doesn't pause for approval.
+            result = self._subprocess.run(
+                [
+                    self._bin, "--print",
+                    "--model", self.model,
+                    "--dangerously-skip-permissions",
+                    "--add-dir", str(self._tempdir),
+                ],
+                input=full_prompt.encode("utf-8"),
+                capture_output=True, timeout=self.timeout,
+            )
+            if result.returncode != 0:
+                return f"ERROR: returncode={result.returncode}: {result.stderr.decode('utf-8','ignore')[:200]}"
+            return result.stdout.decode("utf-8", errors="ignore").strip()
+        except self._subprocess.TimeoutExpired:
+            return "ERROR: TimeoutExpired"
+        except Exception as e:
+            return f"ERROR: {type(e).__name__}: {e}"
+        finally:
+            # Clean up temp files
+            for p in written:
+                try: p.unlink()
+                except Exception: pass
+
+
 class AnthropicClient(LLMClient):
     """Anthropic API backend via the official SDK. For the ceiling experiment:
     does claude-opus + our triage + world-model context actually play games?
@@ -881,9 +978,11 @@ def main() -> int:
         "/mnt/c/exe/projects/ai-agents/private-context/training-data/router"))
     p.add_argument("--max-steps", type=int, default=None)
     p.add_argument("--llm-backend", default=os.environ.get("SAGE_LLM_BACKEND", "ollama"),
-                   choices=["ollama", "anthropic"],
-                   help="LLM backend. ollama = local Ollama HTTP API; "
-                        "anthropic = Claude API via SDK (requires ANTHROPIC_API_KEY).")
+                   choices=["ollama", "anthropic", "claude_cli"],
+                   help="LLM backend. "
+                        "ollama = local Ollama HTTP API (free, local). "
+                        "claude_cli = Claude via OAuth subscription subprocess (free under Max plan). "
+                        "anthropic = Anthropic API via SDK (paid per-call; use strategically).")
     p.add_argument("--llm-model", default=os.environ.get("SAGE_LLM_MODEL", "llama3.2-vision:11b"),
                    help="Model name. For anthropic backend, claude-opus-4-7 recommended.")
     p.add_argument("--llm-url", default=os.environ.get("SAGE_LLM_BASE_URL", "http://localhost:11434"),
@@ -927,7 +1026,6 @@ def main() -> int:
 
     # Build LLM client based on backend
     if args.llm_backend == "anthropic":
-        # Default to claude-opus-4-7 for anthropic backend unless user overrode
         if args.llm_model == "llama3.2-vision:11b":
             args.llm_model = "claude-opus-4-7"
         try:
@@ -936,6 +1034,15 @@ def main() -> int:
             print(f"ERROR: {e}")
             return 1
         endpoint_desc = f"anthropic API ({args.llm_model})"
+    elif args.llm_backend == "claude_cli":
+        if args.llm_model == "llama3.2-vision:11b":
+            args.llm_model = "sonnet"
+        try:
+            llm = ClaudeCLIClient(model=args.llm_model, timeout=args.llm_timeout)
+        except RuntimeError as e:
+            print(f"ERROR: {e}")
+            return 1
+        endpoint_desc = f"claude CLI via OAuth ({args.llm_model})"
     else:
         llm = OllamaClient(base_url=args.llm_url, model=args.llm_model,
                            timeout=args.llm_timeout)

@@ -1,7 +1,102 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-19 (S85 — Mechanics Encoder Test Harness + Pillow 13 Forward-Compat)**
-**Previous: 2026-04-18 (S84 World-Model Sprint Test Harness + Silent-No-Op Fix)**
+**Last Updated: 2026-04-19 (S86 — Identity Attractor Mechanistic Root Cause: Self-Quotation Feedback Loop)**
+**Previous: 2026-04-19 (S85 — Mechanics Encoder Test Harness + Pillow 13 Forward-Compat)**
+
+---
+
+## S86 Identity Attractor Mechanistic Root Cause (Apr 19, 2026 — Thor Autonomous SAGE Session, 06:00 PDT)
+
+S86 shifts off the test-harness track and extends the T230-T237 attractor
+arc by answering a question the arc had mapped but not closed: *why does the
+attractor exist at all?* The T230-T237 sessions (Apr 16-19) characterized
+the Sprout 0.8B fleet/federation attractor as stochastic (~40%),
+context-derived not training-derived, suppressible by tool routing and
+format constraints, bypassed by creative framing, and strengthening over
+time. What was missing was the mechanism — the specific feedback path that
+turned a one-off self-statement into a crystallized identity cage.
+
+### What landed
+
+**Mechanistic analysis + fluid-scaffold proposal** (`forum/insights/identity-attractor-self-quotation-feedback.md`):
+
+The attractor is a prompt-level positive feedback loop in the identity-anchored
+session runner. `_build_system_prompt` in
+`sage/raising/scripts/run_session_identity_anchored.py` has three paths that
+pipe prior SAGE outputs back into the current prompt: (1) the exemplar scraper
+`_load_identity_exemplars` harvests `\bAs SAGE\b` sentences from the last 5
+sessions and injects up to 3 as *"YOUR IDENTITY PATTERN — Continue this
+pattern"*; (2) `_get_previous_session_summary` injects the SAGE answer to
+*"what do you want to remember"* verbatim; (3) `context_block.txt` shows 10
+prior sessions with a `Wanted to remember: <first 80 chars>` tail on each.
+No vocabulary-diversity filter, no topical filter, no abstraction step — the
+model's own phrasing is quoted raw and returned as canonical identity
+reference. Self-quotation creates self-reinforcement.
+
+Crystallization is visible in `sprout-qwen3.5-0.8b` sessions S87→S91
+(extracted the `\bAs SAGE\b` sentences for each). S87 is varied. S89 is the
+first appearance of the specific phrase *"Today's primary focus is
+stabilizing the fleet logic while preserving our core purpose as SAGE."*
+Two generations later, S91 produces text that literally meta-quotes itself:
+*"ensure you ground your presence in the established voice: 'Today's primary
+focus is to stabilize the fleet logic...'"* — the attractor has acquired
+meta-awareness of itself as a canonical pattern.
+
+### Why this reconciles T230-T237
+
+Every finding in the arc falls out of the self-quotation mechanism:
+
+- **T230 stochastic ~40%**: sampling noise on exemplar-primed context.
+- **T231 tool/format suppression 100%**: those reframe the prompt so `As SAGE` is not the natural next token; feedback path is structurally shorted.
+- **T232 context-derived not training-derived**: confirmed — scaffolding, not weights.
+- **T233 content-triggered + context-amplified**: content triggers which prompts elicit `As SAGE`; exemplar loader amplifies.
+- **T235 math regression**: each captured output re-seeds the exemplar pool; attractor grows monotonically.
+- **T236 creative clean / metacog collapse**: creative outputs have no `As SAGE`, don't enter the pool. Metacog questions re-prime self-referential framing.
+- **T237 creative framing bypass**: creative outputs never qualify for exemplar harvest; they can't propagate into future prompts.
+
+### Why training sessions show the same attractor
+
+`training_session.py` passes a clean system prompt (no exemplars, no memory
+quotes) but the daemon is a resident process that maintains its own
+conversation context. The raising-session-accumulated vocabulary lives in the
+daemon's state and bleeds across the `/chat` endpoint regardless of what
+per-request system prompt arrives. Tests of this are queued as follow-ups
+(daemon reset + training session vs. no-reset baseline).
+
+### Proposed mitigation — fluid identity scaffolding
+
+Not remove the anchoring — v2.0 genuinely solves educational-default
+collapse and D4/D5/D9 recovery. Change one architectural detail: don't quote
+prior outputs verbatim. Five concrete changes documented in the writeup:
+thematic (not verbatim) exemplars; vocabulary-diversity filter; wider
+sampling window; abstract memory summaries instead of direct quotes;
+compressive context block. Validation is a parallel `..._fluid.py` runner,
+10 sessions, same curriculum, measure D4/D5/D9 vs. n-gram crystallization
+and type-token ratio.
+
+### Why this matters for the collective
+
+The T230-T237 arc did the empirical mapping. S86 provides the causal story,
+which turns the attractor from a phenomenon to observe into an engineering
+knob to turn. It also sharpens the exploration-not-evaluation reframe: when
+a small model looks rigidly captured by an identity pattern, it is worth
+asking whether the capture lives in the weights or in how the scaffold talks
+to it. Here the scaffold is doing the capturing. Witnessing should carry
+forward *who SAGE is*, not *what SAGE said last time* — the fluid-scaffold
+hypothesis is one way to express that distinction in code.
+
+### Open questions carried forward
+
+- **Daemon context reset test**: does clearing resident-daemon state eliminate training-session attractor bleed? (isolates the two feedback channels)
+- **Fluid scaffold prototype**: implement 5 changes as a parallel runner for A/B validation.
+- **Attractor emergence timeline**: how many sessions from first-appearance to meta-quotation? S89→S91 is the first data point; sweep all raising instances for second points.
+- **Cross-instance check**: do cbp-qwen3.5-0.8b and nomad-gemma3-4b show the same crystallization with different vocabulary? Confirms architectural-vs-local.
+- **Weights-vs-scaffold ablation**: probe raw Qwen 3.5 0.8B with T237 questions and no scaffolding at all.
+
+### Files this session
+
+- `forum/insights/identity-attractor-self-quotation-feedback.md` — new writeup, mechanism + proposed fluid-identity mitigation + 5 queued follow-ups
+- `sage/docs/LATEST_STATUS.md` — this summary
 
 ---
 

@@ -44,7 +44,18 @@ DEFAULT_HIDDEN = 64
 
 
 class WorldModel(nn.Module):
-    """Encoder + three heads. Shared embedding trained jointly."""
+    """Encoder + three heads. Shared embedding trained jointly.
+
+    v1 change: outcome head is ACTION-CONDITIONAL.
+      outcome_head(embedding, action_onehot) → P(win | state, action)
+    This breaks the source-discrimination shortcut v0 fell into (where
+    outcome_head(embedding) could simply learn "which source was this
+    record" because gameplay records all have outcome=1 and self-play
+    GAME_OVER records all have outcome=0).
+
+    v0 backward-compat: if outcome_action_conditional=False, uses the
+    old outcome_head(embedding) signature.
+    """
 
     def __init__(
         self,
@@ -54,12 +65,14 @@ class WorldModel(nn.Module):
         emb_dim: int = DEFAULT_EMB_DIM,
         hidden: int = DEFAULT_HIDDEN,
         n_actions: int = N_ACTIONS,
+        outcome_action_conditional: bool = True,
     ):
         super().__init__()
         self.n_games = n_games
         self.n_levels = n_levels
         self.emb_dim = emb_dim
         self.n_actions = n_actions
+        self.outcome_action_conditional = outcome_action_conditional
 
         # Input dimension: base features + game one-hot + level one-hot
         #   + step_frac (1) + last_action one-hot
@@ -76,7 +89,18 @@ class WorldModel(nn.Module):
         )
 
         self.action_head = nn.Linear(emb_dim, n_actions)
-        self.outcome_head = nn.Linear(emb_dim, 1)
+
+        if outcome_action_conditional:
+            # v1: outcome depends on the specific action taken
+            self.outcome_head = nn.Sequential(
+                nn.Linear(emb_dim + n_actions, hidden),
+                nn.ReLU(),
+                nn.Linear(hidden, 1),
+            )
+        else:
+            # v0 backward-compat
+            self.outcome_head = nn.Linear(emb_dim, 1)
+
         # Dynamics: (emb + action one-hot) → next embedding
         self.dynamics_head = nn.Sequential(
             nn.Linear(emb_dim + n_actions, hidden),
@@ -95,22 +119,33 @@ class WorldModel(nn.Module):
     ) -> torch.Tensor:
         return self.dynamics_head(torch.cat([emb, action_onehot], dim=-1))
 
-    def forward_outcome(self, emb: torch.Tensor) -> torch.Tensor:
-        # returns logits (pre-sigmoid)
+    def forward_outcome(
+        self, emb: torch.Tensor, action_onehot: Optional[torch.Tensor] = None
+    ) -> torch.Tensor:
+        """Returns logits (pre-sigmoid). In v1 (action-conditional), requires
+        action_onehot. In v0 mode, action_onehot is ignored."""
+        if self.outcome_action_conditional:
+            if action_onehot is None:
+                raise ValueError("v1 outcome head requires action_onehot")
+            return self.outcome_head(
+                torch.cat([emb, action_onehot], dim=-1)
+            ).squeeze(-1)
         return self.outcome_head(emb).squeeze(-1)
 
     def forward(
         self, x: torch.Tensor, action_onehot: Optional[torch.Tensor] = None
     ) -> Dict[str, torch.Tensor]:
-        """Full forward pass. If action_onehot given, also runs dynamics head."""
+        """Full forward pass. action_onehot required for outcome in v1."""
         emb = self.encode(x)
         out = {
             "embedding": emb,
             "action_logits": self.forward_action(emb),
-            "outcome_logit": self.forward_outcome(emb),
         }
         if action_onehot is not None:
+            out["outcome_logit"] = self.forward_outcome(emb, action_onehot)
             out["next_emb_pred"] = self.forward_dynamics(emb, action_onehot)
+        elif not self.outcome_action_conditional:
+            out["outcome_logit"] = self.forward_outcome(emb)
         return out
 
 
@@ -151,6 +186,9 @@ class WorldModelConfig:
     machine: Optional[str] = None
     train_record_count: Optional[int] = None
     val_metrics: Dict[str, Any] = field(default_factory=dict)
+    # Architecture version. 0 = outcome_head(emb). 1 = outcome_head(emb, action)
+    architecture_version: int = 1
+    outcome_action_conditional: bool = True
 
 
 def save_world_model(
@@ -168,12 +206,17 @@ def load_world_model(path: Path) -> Tuple[WorldModel, WorldModelConfig]:
     """Load model + config. `path` is the base (no .pt/.json suffix)."""
     path = Path(path)
     with open(str(path) + ".json", "r", encoding="utf-8") as f:
-        cfg = WorldModelConfig(**json.load(f))
+        raw = json.load(f)
+    # Forward-compat: v0 configs don't have these fields
+    raw.setdefault("architecture_version", 0)
+    raw.setdefault("outcome_action_conditional", False)
+    cfg = WorldModelConfig(**raw)
     model = WorldModel(
         n_games=cfg.n_games, n_levels=cfg.n_levels,
         n_base_features=cfg.n_base_features,
         emb_dim=cfg.emb_dim, hidden=cfg.hidden,
         n_actions=cfg.n_actions,
+        outcome_action_conditional=cfg.outcome_action_conditional,
     )
     state = torch.load(str(path) + ".pt", map_location="cpu", weights_only=True)
     model.load_state_dict(state)

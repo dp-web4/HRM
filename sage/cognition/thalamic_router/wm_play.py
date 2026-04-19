@@ -89,25 +89,33 @@ def choose_action(
     plan_weight: float = 1.0, prior_weight: float = 0.5,
     temperature: float = 0.0,
 ) -> tuple[int, List[float]]:
-    """Score actions by combining forward-simulated outcome with supervised prior.
+    """Score actions and pick one.
 
-    plan_weight=1, prior_weight=0.5:
-        score[a] = σ(outcome_head(dynamics(emb, a_oh)))^plan_weight
+    v1 (action-conditional outcome):
+        score[a] = σ(outcome_head(emb, a_oh))^plan_weight
                  × softmax(action_head(emb))[a]^prior_weight
 
-    temperature > 0 enables stochastic sampling instead of argmax.
+    v0 fallback (dynamics→outcome chain):
+        score[a] = σ(outcome_head(dynamics(emb, a_oh)))^plan_weight × prior^w
+
+    temperature > 0 enables stochastic sampling.
     """
     model.eval()
     with torch.no_grad():
         emb = model.encode(x.unsqueeze(0))               # (1, emb_dim)
         action_probs = F.softmax(model.forward_action(emb), dim=-1)[0]  # (7,)
 
-        # Forward-simulate each action, score predicted next-state's outcome
-        # Batch the 7 rollouts for speed
         emb_rep = emb.expand(N_ACTIONS, -1)              # (7, emb_dim)
         a_oh = torch.eye(N_ACTIONS, device=x.device)     # (7, 7)
-        next_emb = model.forward_dynamics(emb_rep, a_oh)  # (7, emb_dim)
-        next_outcome = torch.sigmoid(model.forward_outcome(next_emb))  # (7,)
+
+        if model.outcome_action_conditional:
+            # v1: direct action-conditional outcome
+            outcome_logits = model.forward_outcome(emb_rep, a_oh)  # (7,)
+            next_outcome = torch.sigmoid(outcome_logits)
+        else:
+            # v0: forward-simulate via dynamics, score predicted state
+            next_emb = model.forward_dynamics(emb_rep, a_oh)
+            next_outcome = torch.sigmoid(model.forward_outcome(next_emb))
 
     plan_scores = next_outcome.pow(plan_weight)
     prior_scores = action_probs.pow(prior_weight)
@@ -120,7 +128,6 @@ def choose_action(
     else:
         action = int(combined.argmax().item())
 
-    # Return the combined scores as debugging signal
     return action, combined.cpu().tolist()
 
 

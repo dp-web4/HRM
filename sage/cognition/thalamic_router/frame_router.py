@@ -116,20 +116,33 @@ class FrameRouter(nn.Module):
         scalar_hidden: int = 32,
         emb_dim: int = 32,
         trunk_hidden: int = 64,
+        include_last_action: bool = True,   # v4+ default; v3 configs → False
     ):
         super().__init__()
         self.n_games = n_games
         self.n_levels = n_levels
         self.emb_dim = emb_dim
         self.pool_dim = pool_dim
+        self.include_last_action = include_last_action
 
         # Scalar bookkeeping input dim (documented above):
         #   game_id (n_games) + level (n_levels) + step_frac(1) + budget(1)
-        #   + recent_actions (K * N_ACTIONS) + available_actions (N_ACTIONS)
+        #   + last_action (N_ACTIONS) ← the action that caused curr_frame [v4+]
+        #   + recent_actions (K * N_ACTIONS) ← older context
+        #   + available_actions (N_ACTIONS)
         #   + batch_state (3: in_batch, progress, goal_dummy)
+        #
+        # last_action is semantically distinct from recent_actions even though
+        # technically recent_actions[-1] carries the same value — it makes the
+        # causal "this action produced this frame transition" signal explicit.
+        # Gated behind `include_last_action` for backward-compat with v3
+        # adapters that were trained without it.
+        last_action_dim = N_ACTIONS if include_last_action else 0
         self.scalar_dim = (
             n_games + n_levels + 1 + 1 +
-            RECENT_ACTIONS_K * N_ACTIONS + N_ACTIONS + 3
+            last_action_dim +
+            RECENT_ACTIONS_K * N_ACTIONS +
+            N_ACTIONS + 3
         )
 
         self.cnn = FrameCNN(pool_dim=pool_dim)
@@ -186,14 +199,26 @@ def build_scalar_vector(
     level: int, n_levels: int,
     step_frac: float,
     budget_remaining: float,
+    last_action: int,
     recent_actions: List[int],
     available_actions: List[int],
     batch_state: List[float],
+    include_last_action: bool = True,
 ) -> List[float]:
-    """Construct the scalar bookkeeping vector for one example."""
+    """Construct the scalar bookkeeping vector for one example.
+
+    `last_action` is the action that caused the transition prev_frame →
+    curr_frame. At step 1 there is no last action → pass 0 (sentinel);
+    combined with prev_frame=zeros this gives the NN a consistent
+    "no-prior-context" fingerprint.
+
+    `include_last_action=False` reproduces the v3 layout (for loading
+    Thor's v1 adapter trained before the explicit last_action field).
+    """
     game_oh = [1.0 if i == game_idx else 0.0 for i in range(n_games)]
     level_c = max(0, min(n_levels - 1, level if level is not None else 0))
     level_oh = [1.0 if i == level_c else 0.0 for i in range(n_levels)]
+
     # recent_actions: pad/trim to K. Older actions come first, newest last.
     padded = list(recent_actions[-RECENT_ACTIONS_K:])
     while len(padded) < RECENT_ACTIONS_K:
@@ -209,10 +234,13 @@ def build_scalar_vector(
     batch = [float(v) for v in batch_state[:3]]
     while len(batch) < 3:
         batch.append(0.0)
-    return (
-        game_oh + level_oh + [float(step_frac), float(budget_remaining)]
-        + recent_oh + avail + batch
-    )
+
+    out = game_oh + level_oh + [float(step_frac), float(budget_remaining)]
+    if include_last_action:
+        last_action_oh = [1.0 if i == last_action else 0.0 for i in range(N_ACTIONS)]
+        out = out + last_action_oh
+    out = out + recent_oh + avail + batch
+    return out
 
 
 @dataclass
@@ -230,7 +258,8 @@ class FrameRouterConfig:
     machine: Optional[str] = None
     train_record_count: Optional[int] = None
     val_metrics: Dict[str, Any] = field(default_factory=dict)
-    architecture_version: int = 3   # v3 = frame-based
+    architecture_version: int = 4   # v3 = frame-based; v4 = + explicit last_action
+    include_last_action: bool = True  # v3 adapters → False; v4+ → True
     frame_h: int = FRAME_H
     frame_w: int = FRAME_W
     n_colors: int = N_COLORS
@@ -248,11 +277,16 @@ def save_frame_router(model: FrameRouter, cfg: FrameRouterConfig, path: Path) ->
 def load_frame_router(path: Path) -> Tuple[FrameRouter, FrameRouterConfig]:
     path = Path(path)
     with open(str(path) + ".json", "r", encoding="utf-8") as f:
-        cfg = FrameRouterConfig(**json.load(f))
+        raw = json.load(f)
+    # Forward-compat for v3 configs that predate include_last_action
+    if "include_last_action" not in raw:
+        raw["include_last_action"] = raw.get("architecture_version", 3) >= 4
+    cfg = FrameRouterConfig(**raw)
     model = FrameRouter(
         n_games=cfg.n_games, n_levels=cfg.n_levels,
         pool_dim=cfg.pool_dim, scalar_hidden=cfg.scalar_hidden,
         emb_dim=cfg.emb_dim, trunk_hidden=cfg.trunk_hidden,
+        include_last_action=cfg.include_last_action,
     )
     state = torch.load(str(path) + ".pt", map_location="cpu", weights_only=True)
     model.load_state_dict(state)

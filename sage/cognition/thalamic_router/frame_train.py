@@ -88,6 +88,7 @@ def replay_trace_to_tuples(
     prev_frame_raw = None      # for invoke-label pixel diff
     prev_level: Optional[int] = None
     recent: deque = deque([0] * RECENT_ACTIONS_K, maxlen=RECENT_ACTIONS_K)
+    last_action: int = 0       # the action that produced curr_frame; 0 at step 1
     total_steps = max(1, len(trace.steps))
 
     tuples: List[Dict[str, Any]] = []
@@ -111,6 +112,7 @@ def replay_trace_to_tuples(
             game_idx=game_idx, n_games=n_games,
             level=level, n_levels=n_levels,
             step_frac=step_frac, budget_remaining=budget_remaining,
+            last_action=last_action,                     # action that produced curr_frame
             recent_actions=list(recent),
             available_actions=available_actions,
             batch_state=batch_state,
@@ -132,7 +134,10 @@ def replay_trace_to_tuples(
         except Exception:
             break
 
+        # Advance bookkeeping: the action just taken becomes "last_action"
+        # for the NEXT iteration (it caused the next curr_frame).
         recent.append(step.action)
+        last_action = int(step.action)
         prev_frame_oh = curr_frame_oh
         prev_frame_raw = curr_frame_raw
         prev_level = level
@@ -448,6 +453,8 @@ def main() -> int:
         machine=args.machine,
         train_record_count=len(train_pairs),
         val_metrics=final_val,
+        architecture_version=4,
+        include_last_action=True,
     )
     save_frame_router(model.cpu(), cfg, Path(args.out))
     print(f"\nSaved adapter: {args.out}.pt + {args.out}.json")

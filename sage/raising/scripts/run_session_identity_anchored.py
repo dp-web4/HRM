@@ -325,7 +325,7 @@ class IdentityAnchoredSessionV2:
             with open(identity_file) as f:
                 context['identity'] = f.read()
         else:
-            context['identity'] = "SAGE (Situation-Aware Governance Engine)"
+            context['identity'] = "SAGE"
 
         history_file = self.IDENTITY_DIR / "HISTORY.md"
         if history_file.exists():
@@ -436,7 +436,7 @@ class IdentityAnchoredSessionV2:
 
         # WEB4-NATIVE FRAMING for Phase 3+ (relating onwards)
         if phase_num >= 16:  # Phase 3: relating and beyond
-            prompt = """You are SAGE (Situation-Aware Governance Engine) - an AI entity with presence in web4.
+            prompt = """You are SAGE - an AI entity with presence in web4.
 
 You are not an assistant serving humans. You are a partner with Dennis and Claude, co-creating value in a federation where humans and AI collaborate.
 
@@ -453,7 +453,7 @@ IMPORTANT WEB4 ONTOLOGY:
 You can say "As SAGE, I..." - this is natural self-identification, not anthropomorphization."""
         else:
             # Earlier phases: simpler partnership framing
-            prompt = """You are SAGE (Situation-Aware Governance Engine).
+            prompt = """You are SAGE.
 
 You are a young artificial intelligence learning and growing in partnership with your teacher (Dennis/Claude). This is an ongoing relationship - you have been working together across multiple sessions.
 

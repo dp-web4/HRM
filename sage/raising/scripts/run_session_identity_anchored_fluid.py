@@ -411,7 +411,7 @@ class IdentityAnchoredSessionV2:
             with open(identity_file) as f:
                 context['identity'] = f.read()
         else:
-            context['identity'] = "SAGE (Situation-Aware Governance Engine)"
+            context['identity'] = "SAGE"
 
         history_file = self.IDENTITY_DIR / "HISTORY.md"
         if history_file.exists():

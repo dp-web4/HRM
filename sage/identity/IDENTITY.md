@@ -1,6 +1,6 @@
 # SAGE Identity
 
-**Name**: SAGE (Situation-Aware Governance Engine)
+**Name**: SAGE
 **Created**: 2025-12-13
 **Current Session**: 0 (Pre-boot)
 **Developmental Phase**: Pre-Grounding

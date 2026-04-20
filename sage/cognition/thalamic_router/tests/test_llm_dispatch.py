@@ -864,6 +864,158 @@ def test_aggregate_grounded_metrics_empty():
     assert agg["mean_entity_validity_rate"] == 0.0
 
 
+# ───────────────────────────────────────────────────────────────────
+# MRH round-trip (Phase 5 C)
+# ───────────────────────────────────────────────────────────────────
+
+def test_mrh_context_builds_from_dispatcher_state():
+    """build_gameplay_mrh_context returns a populated MRHContext."""
+    from sage.cognition.thalamic_router.llm_dispatch import (
+        build_gameplay_mrh_context, _MRH_AVAILABLE,
+    )
+    if not _MRH_AVAILABLE:
+        return
+    ctx = build_gameplay_mrh_context(
+        game="ft09", level=0, step_index=5,
+        invoke_reasons=["stuck"],
+        action_ranking=[(6, 0.9), (3, 0.05)],
+        play_action_idx=6, play_confidence=0.9,
+        trajectory=[
+            {"step": 3, "action": 6, "coords": {"x": 32, "y": 32},
+             "frame_delta_pct": 0.0, "level": 0, "new_level": 0},
+            {"step": 4, "action": 6, "coords": {"x": 32, "y": 32},
+             "frame_delta_pct": 0.0, "level": 0, "new_level": 0},
+        ],
+        stuck_duration=4,
+    )
+    assert ctx is not None
+    system, user = ctx.compose()
+    # Structured content appears in both halves
+    assert "game" in system.lower()   # Identity lens
+    assert "Step: 5" in user
+    assert "ft09" in user
+    assert "stuck" in user or "STUCK" in user
+
+
+def test_mrh_content_matches_legacy_essentials():
+    """Round-trip check: MRH output contains essential content that the
+    legacy composer output had. We don't require byte-identical output —
+    both paths should surface the same key pieces of information."""
+    from sage.cognition.thalamic_router.llm_dispatch import (
+        build_gameplay_mrh_context, compose_cnn_narration, _MRH_AVAILABLE,
+    )
+    if not _MRH_AVAILABLE:
+        return
+
+    common_args = dict(
+        game="ft09", level=0, step_index=8,
+        invoke_reasons=["stuck"],
+        action_ranking=[(6, 0.92), (3, 0.04)],
+        play_action_idx=6, play_confidence=0.92,
+        trajectory=[
+            {"step": i, "action": 6, "coords": {"x": 32, "y": 32},
+             "frame_delta_pct": 0.0, "level": 0, "new_level": 0}
+            for i in range(3, 8)
+        ],
+        metacog_signals=[
+            {"signal": "perseveration", "severity": 0.8,
+             "evidence": {"repeats": 3}, "suggestion": "try another action"}
+        ],
+        episodic_matches_text="ft09 L0: CLICK(38,38) → advance",
+        level_hint="bbox x=[38-54] y=[38-54], stride 16x8",
+    )
+
+    legacy = compose_cnn_narration(**common_args)
+
+    ctx = build_gameplay_mrh_context(
+        **common_args,
+        since_last_invoke=common_args["trajectory"][-3:],
+        level_changed=False,
+        stuck_duration=5,
+        actions_since_last_invoke=3,
+        atp_balance=1500.0,
+    )
+    _, mrh_user = ctx.compose()
+
+    # Essentials present in both
+    for needle in [
+        "Step",        # step index
+        "ft09",        # game name
+        "stuck",       # invoke reason
+        "CLICK",       # action in ranking / trajectory
+        "perseveration",  # metacog signal
+        "CLICK(38,38)",   # episodic match
+        "bbox",           # level hint
+    ]:
+        assert needle in legacy, f"legacy missing '{needle}'"
+        assert needle in mrh_user, f"MRH missing '{needle}'"
+
+
+def test_mrh_system_half_has_mechanics_and_effectors():
+    """System half (MRH-composed) includes mechanics + effectors content."""
+    from sage.cognition.thalamic_router.llm_dispatch import (
+        build_gameplay_mrh_context, _MRH_AVAILABLE,
+    )
+    if not _MRH_AVAILABLE:
+        return
+    ctx = build_gameplay_mrh_context(
+        game="ft09", level=0, step_index=1,
+        invoke_reasons=[],
+        action_ranking=[(6, 0.5)],
+        play_action_idx=6, play_confidence=0.5,
+        trajectory=None,
+    )
+    system, _ = ctx.compose()
+    # Effectors content
+    assert "CLICK" in system
+    # Identity lens
+    assert "game" in system.lower()
+
+
+def test_mrh_swap_recommendations_fire_on_stuck():
+    from sage.cognition.thalamic_router.llm_dispatch import (
+        build_gameplay_mrh_context, _MRH_AVAILABLE,
+    )
+    if not _MRH_AVAILABLE:
+        return
+    ctx = build_gameplay_mrh_context(
+        game="ft09", level=0, step_index=20,
+        invoke_reasons=["stuck"],
+        action_ranking=[(6, 0.5)],
+        play_action_idx=6, play_confidence=0.5,
+        trajectory=None,
+        stuck_duration=7,
+    )
+    recs = ctx.swap_recommendations()
+    assert "mechanics:stuck_escape" in recs
+
+
+def test_mrh_mechanics_profile_set_when_stuck():
+    from sage.cognition.thalamic_router.llm_dispatch import (
+        build_gameplay_mrh_context, _MRH_AVAILABLE,
+    )
+    if not _MRH_AVAILABLE:
+        return
+    stuck_ctx = build_gameplay_mrh_context(
+        game="ft09", level=0, step_index=20,
+        invoke_reasons=["stuck"],
+        action_ranking=[(6, 0.5)],
+        play_action_idx=6, play_confidence=0.5,
+        trajectory=None,
+        stuck_duration=7,
+    )
+    not_stuck_ctx = build_gameplay_mrh_context(
+        game="ft09", level=0, step_index=2,
+        invoke_reasons=[],
+        action_ranking=[(6, 0.5)],
+        play_action_idx=6, play_confidence=0.5,
+        trajectory=None,
+        stuck_duration=0,
+    )
+    assert stuck_ctx.mechanics.profile == "stuck_escape"
+    assert not_stuck_ctx.mechanics.profile is None
+
+
 if __name__ == "__main__":
     failures = 0
     for name in list(globals()):

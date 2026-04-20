@@ -32,6 +32,12 @@ class TaskBlock(MRHBlock):
     step_index: Optional[int] = None
     level: Optional[int] = None
     game_family: str = ""
+    # Level-specific hint (bbox, stride, step count for click games, etc).
+    # Placed in task rather than effectors because it changes per-level;
+    # the system prompt should stay stable across level transitions for
+    # conversation-cache friendliness (McNugget Q7: effector-context in
+    # spirit, user-turn in plumbing).
+    level_hint: str = ""
 
     def __post_init__(self) -> None:
         self.kind = "task"
@@ -51,6 +57,9 @@ class TaskBlock(MRHBlock):
 
         if self.invoke_reasons:
             parts.append(f"Invoked because: {', '.join(self.invoke_reasons)}.")
+
+        if self.level_hint:
+            parts.append(f"Level hint: {self.level_hint}")
 
         if len(parts) == 1:
             parts.append("(no task specified)")

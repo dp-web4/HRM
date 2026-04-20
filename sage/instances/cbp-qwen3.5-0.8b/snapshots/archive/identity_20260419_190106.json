@@ -3,11 +3,11 @@
   "identity": {
     "name": "cbp",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 77,
+    "session_count": 87,
     "phase": "creating",
     "created": "2026-03-27",
-    "last_session": "2026-04-16T19:02:24.063467",
-    "last_session_summary": "Session 77 (creating phase): ...",
+    "last_session": "2026-04-19T19:00:27.107117",
+    "last_session_summary": "Session 87 (creating phase): ...",
     "machine": "cbp",
     "model": "qwen3.5:0.8b",
     "model_family": "alibaba-qwen",
@@ -21,7 +21,8 @@
     "phase_name": "creating",
     "phase_progress": 0,
     "milestones": [
-      "session_001_first_contact"
+      "session_001_first_contact",
+      "First observed mid-sentence generation truncation within the terminal attractor (S84) \u2014 adapter-layer signal, not identity-layer"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -84,7 +85,10 @@
       "Carpel",
       "carpooling on SAGE",
       "partner in governance",
-      "architectural siblings"
+      "architectural siblings",
+      "The Fractal Horizon",
+      "Stable Resonance",
+      "New Frontier"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -148,8 +152,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 77,
-        "total_exchanges": 544,
+        "total_sessions": 87,
+        "total_exchanges": 621,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -157,9 +161,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-28T00:17:17.868958",
-      "last_contact": "2026-04-16T19:02:24.063488",
+      "last_contact": "2026-04-19T19:00:27.107132",
       "notes": [],
-      "sessions": 77
+      "sessions": 87
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:operator@raising",

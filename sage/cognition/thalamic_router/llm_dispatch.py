@@ -75,6 +75,21 @@ from sage.cognition.thalamic_router.grounded_metrics import (
     compute_grounded_metrics, aggregate_grounded_metrics,
 )
 
+# MRH context architecture (Phase 5) — structured block-based context assembly
+try:
+    from sage.context.mrh import (
+        MRHContext,
+        IdentityBlock, SensorsBlock, EffectorsBlock,
+        MechanicsBlock, ExperientialCacheBlock,
+        MetabolicBlock, TaskBlock,
+    )
+    from sage.context.mrh.base import ImageAttachment
+    from sage.context.mrh.experiential import TrajectoryEntry as MRHTrajectoryEntry, EpisodicMatch as MRHEpisodicMatch
+    from sage.context.mrh.metabolic import MetacogSignalSummary
+    _MRH_AVAILABLE = True
+except ImportError:
+    _MRH_AVAILABLE = False
+
 
 # Multi-turn conversation default — env SAGE_DISPATCH_MULTITURN=0 to fall
 # back to legacy stateless single-call mode for debugging.
@@ -1137,6 +1152,220 @@ def trim_conversation_history(
     return first_kept, summary
 
 
+# ───────────────────────────────────────────────────────────────────
+# MRH-backed composer helpers (Phase 5 C)
+#
+# These populate an MRHContext from dispatcher state and render. The
+# legacy functions below (build_session_system_prompt, compose_cnn_narration)
+# are retained as thin wrappers for back-compat; they use the MRH path
+# internally when available.
+# ───────────────────────────────────────────────────────────────────
+
+
+def _build_gameplay_identity_block(mode: str = "solo_gladiator") -> Any:
+    """Build an IdentityBlock for gameplay (solo gladiator by default)."""
+    if not _MRH_AVAILABLE:
+        return None
+    return IdentityBlock(mode=mode)
+
+
+def _build_gameplay_effectors_block(level_annotation: Optional[str] = None) -> Any:
+    """Build an EffectorsBlock for ARC-AGI-3 gameplay."""
+    if not _MRH_AVAILABLE:
+        return None
+    return EffectorsBlock(
+        kind_profile="game_actions",
+        level_annotation=level_annotation,
+    )
+
+
+def _build_gameplay_mechanics_block(
+    game_family: str, profile: Optional[str] = None,
+) -> Any:
+    """Build a MechanicsBlock with this game's world model + cluster.
+
+    Handles the existing caches (world model + cartridge + mechanics
+    neighbors) so the MRH path and the legacy path both use the same
+    underlying data.
+    """
+    if not _MRH_AVAILABLE:
+        return None
+    # World model
+    if game_family not in _world_model_cache:
+        _world_model_cache[game_family] = _load_world_model_summary(game_family)
+    world_model = _world_model_cache[game_family] or ""
+
+    # Mechanics cluster (top neighbors)
+    cluster_str = ""
+    neighbors_map = _load_mechanics_neighbors()
+    if game_family in neighbors_map:
+        neighbors = neighbors_map[game_family][:3]
+        if neighbors:
+            cluster_str = ", ".join(f"{n} ({s:.2f})" for n, s in neighbors)
+
+    return MechanicsBlock(
+        world_model_text=world_model,
+        mechanics_cluster=cluster_str,
+        profile=profile,
+        game_family=game_family,
+    )
+
+
+def _metacog_signals_to_summaries(signals: List[Dict[str, Any]]) -> List[Any]:
+    """Convert raw metacog signal dicts (from Metacog.active_signals())
+    into MetacogSignalSummary dataclasses for MetabolicBlock.
+
+    Accepts either already-dict form (from signal.to_dict()) or the
+    plain shape with name/severity/evidence/suggestion.
+    """
+    if not _MRH_AVAILABLE:
+        return []
+    out = []
+    for s in signals or []:
+        if not isinstance(s, dict):
+            continue
+        out.append(MetacogSignalSummary(
+            signal=s.get("signal", s.get("name", "?")),
+            severity=float(s.get("severity", 0.0)),
+            evidence=s.get("evidence") or {},
+            suggestion=s.get("suggestion", ""),
+        ))
+    return out
+
+
+def build_gameplay_mrh_context(
+    *,
+    game: str, level: int, step_index: int,
+    invoke_reasons: List[str],
+    action_ranking: List[Tuple[int, float]],
+    play_action_idx: int,
+    play_confidence: float,
+    trajectory: Optional[List[Dict[str, Any]]] = None,
+    since_last_invoke: Optional[List[Dict[str, Any]]] = None,
+    metacog_signals: Optional[List[Dict[str, Any]]] = None,
+    episodic_matches_text: Optional[str] = None,
+    habit_match: Optional[Dict[str, Any]] = None,
+    level_hint: Optional[str] = None,
+    level_changed: bool = False,
+    stuck_duration: int = 0,
+    actions_since_last_invoke: int = 0,
+    atp_balance: Optional[float] = None,
+    system_budget_tokens: int = 8000,
+    user_budget_tokens: int = 4000,
+    sensor_description: str = "",
+    image_attachments: Optional[List[bytes]] = None,
+) -> Any:
+    """Build an MRHContext populated from dispatcher state.
+
+    This is Phase 5 C's primary composer helper. The dispatcher calls it,
+    then uses `ctx.compose()` to render the (system, user) pair, plus
+    `collect_image_attachments(ctx)` to pull images for the LLM client.
+
+    Returns an MRHContext, or None if the MRH package isn't available
+    (fallback case — caller should use legacy composers).
+    """
+    if not _MRH_AVAILABLE:
+        return None
+
+    game_family = game.split("-")[0] if "-" in game else game
+
+    # Mechanics profile swap — stuck-escape if stuck signal is active
+    mech_profile = "stuck_escape" if stuck_duration >= 3 else None
+
+    # Trajectory entries — MRH's format
+    traj_entries: List[MRHTrajectoryEntry] = []
+    if trajectory:
+        for t in trajectory[-10:]:
+            traj_entries.append(MRHTrajectoryEntry(
+                step=int(t.get("step", 0)),
+                action_name=(
+                    ACTION_NAMES[t["action"]]
+                    if isinstance(t.get("action"), int) and 0 <= t["action"] < len(ACTION_NAMES)
+                    else str(t.get("action", "?"))
+                ),
+                coords=t.get("coords"),
+                frame_delta_pct=float(t.get("frame_delta_pct", 0.0)),
+                level_before=int(t.get("level", 0)),
+                level_after=int(t.get("new_level", t.get("level", 0))),
+            ))
+
+    # Trajectory pattern flags (reusing existing detector)
+    flags = _detect_trajectory_patterns(trajectory[-10:] if trajectory else [])
+
+    # Episodic matches — wrap pre-formatted text
+    episodic = []
+    if episodic_matches_text:
+        episodic.append(MRHEpisodicMatch(formatted_text=episodic_matches_text, similarity=0.0))
+
+    # Conversation summary — level-transition banner goes here as a note
+    conv_summary = ""
+    if level_changed:
+        conv_summary = f"[Level transition] → L{level}. Mechanics may shift; re-read the world model."
+
+    # Identity addendum — include NN ranking/top pick context so the LLM
+    # sees it alongside its role lens
+    top5 = action_ranking[:5]
+    top_str = ", ".join(f"{ACTION_NAMES[a]}({p:.2f})" for a, p in top5)
+    top_name = ACTION_NAMES[play_action_idx] if 0 <= play_action_idx < len(ACTION_NAMES) else str(play_action_idx)
+    # NN ranking lives in the user turn per convention — put on TaskBlock
+    nn_ranking_text = f"CNN action ranking (top 5): {top_str}. Top pick: {top_name} (confidence {play_confidence:.2f})."
+
+    # Swap recommendations — MetabolicBlock raises flags the composer collects
+    swaps: List[str] = []
+    if stuck_duration >= 5:
+        swaps.append("mechanics:stuck_escape")
+
+    # Image attachments (from dispatcher)
+    attachments: List[Any] = []
+    if image_attachments:
+        for i, png in enumerate(image_attachments):
+            attachments.append(ImageAttachment(
+                png_bytes=png,
+                label=("frame_pair" if i == 0 else f"image_{i}"),
+            ))
+
+    ctx = MRHContext(
+        identity=_build_gameplay_identity_block(mode="solo_gladiator"),
+        sensors=SensorsBlock(
+            description=sensor_description or "Two game frames side by side: LEFT=previous, RIGHT=current.",
+            image_attachments=attachments,
+        ),
+        # EffectorsBlock holds the STABLE action surface (kept system-side
+        # per MRH split). Per-level hints go in TaskBlock (user-side)
+        # because they change per-level — keeping system prompt stable
+        # across level transitions improves conversation-cache stability.
+        effectors=_build_gameplay_effectors_block(level_annotation=None),
+        mechanics=_build_gameplay_mechanics_block(game_family, profile=mech_profile),
+        experiential=ExperientialCacheBlock(
+            recent_trajectory=traj_entries,
+            pattern_flags=flags,
+            episodic_matches=episodic,
+            conversation_summary=conv_summary,
+        ),
+        metabolic=MetabolicBlock(
+            metacog_signals=_metacog_signals_to_summaries(metacog_signals or []),
+            metabolic_state="active",
+            atp_balance=atp_balance,
+            atp_trend="falling" if atp_balance is not None and atp_balance < 200 else "stable",
+            confidence=play_confidence,
+            stuck_duration=stuck_duration,
+            actions_since_last_invoke=actions_since_last_invoke,
+            swap_recommendations=swaps,
+        ),
+        task=TaskBlock(
+            game_family=game_family,
+            level=level,
+            step_index=step_index,
+            invoke_reasons=invoke_reasons,
+            goal=f"Pick the best next action. {nn_ranking_text}",
+            level_hint=level_hint or "",
+        ),
+        system_budget_tokens=system_budget_tokens,
+        user_budget_tokens=user_budget_tokens,
+    )
+    return ctx
+
+
 def build_session_system_prompt(game: str) -> str:
     """Extend the canonical fleet gameplay system prompt with game-specific
     session context. This is the system-role message for multi-turn mode.
@@ -1830,20 +2059,52 @@ def run_llm_dispatch(
                 level_hints = _load_level_annotations(game_family)
                 level_hint = level_hints.get(level or 0)
 
-                narration = compose_cnn_narration(
-                    game=game_family, level=level, step_index=step_idx + 1,
-                    play_action_idx=dispatch.play_action,
-                    play_confidence=dispatch.play_confidence,
-                    action_ranking=dispatch.action_ranking,
-                    invoke_reasons=dispatch.invoke_reasons,
-                    trajectory=trajectory,
-                    since_last_invoke=since_last if last_invoke_step_idx > 0 else None,
-                    metacog_signals=metacog_signals_list,
-                    episodic_matches_text=episodic_text,
-                    habit_match=None,  # McNugget placeholder
-                    level_hint=level_hint,
-                    level_changed=level_changed,
+                # Phase 5 C: use MRH composer when available, fall back to
+                # legacy compose_cnn_narration. Env SAGE_USE_MRH=0 forces legacy.
+                use_mrh = (
+                    _MRH_AVAILABLE
+                    and os.environ.get("SAGE_USE_MRH", "1") not in ("0", "false", "False")
                 )
+                if use_mrh:
+                    ctx = build_gameplay_mrh_context(
+                        game=game_family, level=level, step_index=step_idx + 1,
+                        invoke_reasons=dispatch.invoke_reasons,
+                        action_ranking=dispatch.action_ranking,
+                        play_action_idx=dispatch.play_action,
+                        play_confidence=dispatch.play_confidence,
+                        trajectory=trajectory,
+                        since_last_invoke=since_last if last_invoke_step_idx > 0 else None,
+                        metacog_signals=metacog_signals_list,
+                        episodic_matches_text=episodic_text,
+                        habit_match=None,
+                        level_hint=level_hint,
+                        level_changed=level_changed,
+                        stuck_duration=steps_since_progress,
+                        actions_since_last_invoke=(step_idx + 1 - last_invoke_step_idx) if last_invoke_step_idx > 0 else (step_idx + 1),
+                        atp_balance=float(max_steps - step_idx - 1),
+                        image_attachments=[pair_png],
+                    )
+                    mrh_system, narration = ctx.compose()
+                    # The canonical fleet gameplay prompt remains the stable
+                    # system header; MRH's system half provides the structured
+                    # game-specific context underneath.
+                    mrh_session_system = session_system_prompt + "\n\n" + mrh_system
+                else:
+                    narration = compose_cnn_narration(
+                        game=game_family, level=level, step_index=step_idx + 1,
+                        play_action_idx=dispatch.play_action,
+                        play_confidence=dispatch.play_confidence,
+                        action_ranking=dispatch.action_ranking,
+                        invoke_reasons=dispatch.invoke_reasons,
+                        trajectory=trajectory,
+                        since_last_invoke=since_last if last_invoke_step_idx > 0 else None,
+                        metacog_signals=metacog_signals_list,
+                        episodic_matches_text=episodic_text,
+                        habit_match=None,  # McNugget placeholder
+                        level_hint=level_hint,
+                        level_changed=level_changed,
+                    )
+                    mrh_session_system = session_system_prompt
 
                 # Memory trim (B5): if history exceeds threshold, drop older
                 # turns and prepend a trajectory-derived summary to the new
@@ -1860,7 +2121,7 @@ def run_llm_dispatch(
                     narration,
                     images_png=[pair_png],
                     history=conversation_history,
-                    system_prompt=session_system_prompt,
+                    system_prompt=mrh_session_system,
                 )
                 llm_latency = time.time() - t0
 

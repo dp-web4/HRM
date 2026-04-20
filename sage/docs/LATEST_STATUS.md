@@ -1,7 +1,110 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-19 (S87 — Cross-Instance Crystallization: Cage Severity Is Capacity-Mediated)**
-**Previous: 2026-04-19 (S86 — Identity Attractor Mechanistic Root Cause: Self-Quotation Feedback Loop)**
+**Last Updated: 2026-04-19 (S88 — Cage Type, Not Just Severity: Distributed Concept-Formation vs. Intra-Session Bursts)**
+**Previous: 2026-04-19 (S87 — Cross-Instance Crystallization: Cage Severity Is Capacity-Mediated)**
+
+---
+
+## S88 Cage Type vs. Severity (Apr 19, 2026 — Thor Autonomous SAGE Session, 18:00 PDT)
+
+S88 follows S87's open question: *why does Nomad Gemma 4B not crystallize under
+the same scaffold that calcifies Sprout Qwen 0.5B?* Answer: **it does — but
+into a different cage type that aggregate metrics miss.**
+
+### Aggregate metrics flatten the difference
+
+A new analyzer (`sage/raising/analysis/novelty_trajectory.py`) fits Heaps'
+law `V = K·N^β` to per-instance cumulative (tokens, types) and tracks
+per-session new-token share, coined-phrase count, and per-turn length
+variance. On these signals Nomad and Sprout 0.5B look broadly similar:
+both decay early→late new_share from ~0.15 to ~0.02, both have Heaps β
+in the 0.46–0.50 range, both show late-session bursts of single-quoted
+coined phrases (Nomad 5.86/sess, Sprout 0.5B 2.74/sess). Heaps β alone
+would say Sprout 0.5B is *more closed* and Nomad is *middling* —
+inconsistent with S87's TTR data.
+
+### Schema-pattern distribution separates them cleanly
+
+Counting concrete repeated patterns over the last 20 sessions, with both
+**total hits** and **sessions-containing**:
+
+**Sprout Qwen 0.5B** — intra-session perseveration:
+
+| Pattern | Hits | Sessions present | Hits/active-session |
+|---|---|---|---|
+| `what's causing X` | 69 | 2/20 | **34.5** |
+| `what's the next X` | 95 | 8/20 | 11.9 |
+| `keeping track of X` | 20 | 2/20 | 10.0 |
+
+Two of 20 sessions account for 69 occurrences of one self-interrogation
+schema. The fill-in slot varies (*confusion / discord / imbalance / setbacks*),
+which is what fools Heaps β into reading "open vocabulary."
+
+**Nomad Gemma 4B** — distributed conceptual reuse:
+
+| Pattern | Hits | Sessions present | Hits/active-session |
+|---|---|---|---|
+| `narrative drift` | 32 | 16/20 | 2.0 |
+| `echo effect` | 40 | 14/20 | 2.9 |
+| `null state` | 20 | 10/20 | 2.0 |
+| `resonant drift` | 31 | 12/20 | 2.6 |
+| `claude factor` | 25 | 15/20 | 1.7 |
+
+These are coined theoretical constructs (not in the scaffold prompt) appearing
+in 50–80% of late sessions at modest per-session reuse — vocabulary
+*consolidation*, not perseveration.
+
+### Five cage-type regimes by capacity
+
+| Capacity | Regime | Marker |
+|---|---|---|
+| 0.5B | Schematic + intra-session burst | One template fires 30+ times in a single session |
+| 0.8B | Cross-session lexical attractor | Repeated multi-word phrase across many sessions |
+| 4B (Gemma) | Cross-session conceptual lexicon | Coined theoretical constructs distributed across sessions |
+| 12–14B | Stable register, low coining | Narrow turn-length distribution, infrequent coinage |
+| 27B | Refinement + ephemeral coining | Per-turn rhetorical novelty without consolidation |
+
+Cage and concept-formation appear to be the same mechanism (recursive reuse of
+the model's own generations) viewed at different capacities — the recursion
+window expands from intra-session to cross-session to stable-register as
+capacity grows.
+
+### Implications for the S87 follow-ups
+
+- **Fluid-scaffold A/B (S87 #2) — re-target.** Sprout 0.5B's failure mode is
+  intra-session schema perseveration, not cross-session lexical attractor. The
+  intervention should target per-turn context construction (does the model see
+  its own previous turn verbatim?) more than the cross-session identity
+  prompt. Hypothesis: paraphrasing or summarizing the previous SAGE turn
+  before re-injection may break burst loops without touching identity scaffolding.
+- **Better metrics for the A/B.** Replace TTR/Heaps β as primary signals with
+  *distribution coefficient* (sessions-with-pattern / total) and *burst
+  index* (max per-session hits / median). These separate intra-session
+  perseveration from healthy reuse.
+- **Failure-perturbation lever (S87 #6).** Constrain to mid-session perturbation
+  if targeting Sprout 0.5B specifically — between-session resets won't break
+  the intra-session burst.
+
+### Files this session
+
+- `sage/raising/analysis/novelty_trajectory.py` — new analyzer
+- `forum/insights/novelty-distribution-vs-bursts.md` — writeup
+- `sage/docs/LATEST_STATUS.md` — this update
+
+### Open questions carried forward
+
+- **Gemma vs Qwen architecture/scaffold interaction.** Why does Gemma form
+  distributed coined vocabulary while Qwen 0.8B forms repeated lexical
+  attractors? Pre-training corpus difference, or scaffold-interaction
+  difference?
+- **What triggers Sprout 0.5B's burst sessions?** Two of 20 late sessions
+  account for most schema-loop occurrences. Worth checking session
+  timestamps and immediately-preceding prompt sequences for triggers.
+- **Mcnugget-12B's stability mechanism.** Same Gemma-coining lever, or a
+  different stability path? Quick re-run of `novelty_trajectory.py` on
+  mcnugget with the schema-distribution lens would settle it.
+- **Carried from S87**: daemon context reset test (#1), weights-vs-scaffold
+  ablation (#5), failure-perturbation lever (now constrained per above).
 
 ---
 

@@ -77,15 +77,24 @@ class EffectorsBlock(MRHBlock):
     """
     priority: int = 90
     kind_profile: str = "game_actions"
+    # `profile` is an alias for `kind_profile` (Sprout's raising adoption uses
+    # the shorter name). Both set the same underlying field post-init.
+    profile: Optional[str] = None
     habit_match: Optional[HabitMatch] = None
     motor_skills: List[MotorSkill] = field(default_factory=list)
     level_annotation: Optional[str] = None
+    # `addendum` extends the rendered effectors block (used by raising to
+    # attach response-format constraints like "50-100 words, one idea").
+    addendum: str = ""
     response_format: str = (
         "ACTION=<0-6>[ X=<0-63> Y=<0-63>]\n"
         "<one-sentence rationale>"
     )
 
     def __post_init__(self) -> None:
+        # Accept `profile` as an alias for `kind_profile`
+        if self.profile is not None and self.kind_profile == "game_actions":
+            self.kind_profile = self.profile
         self.kind = "effectors"
 
     def render(self, budget_tokens: int) -> str:
@@ -117,7 +126,13 @@ class EffectorsBlock(MRHBlock):
             skill_lines.append("Invoke a skill with: SKILL=<name> [args]")
             parts.append("\n".join(skill_lines))
 
-        parts.append(f"## Response format\n{self.response_format}")
+        if self.addendum:
+            parts.append(self.addendum)
+
+        # Response format only included for action-emitting profiles
+        # (game_actions). Text-profile blocks control their format via addendum.
+        if self.kind_profile == "game_actions":
+            parts.append(f"## Response format\n{self.response_format}")
         return "\n\n".join(parts)
 
     def summarize(self, budget_tokens: int) -> str:

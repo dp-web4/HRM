@@ -28,6 +28,9 @@ class TaskBlock(MRHBlock):
     """
     priority: int = 100
     goal: str = ""
+    # `description` is an alias for `goal` (Sprout's raising usage —
+    # e.g. `description="Raising session N — phase: creating"`). Same field.
+    description: str = ""
     invoke_reasons: List[str] = field(default_factory=list)
     step_index: Optional[int] = None
     level: Optional[int] = None
@@ -40,6 +43,8 @@ class TaskBlock(MRHBlock):
     level_hint: str = ""
 
     def __post_init__(self) -> None:
+        if self.description and not self.goal:
+            self.goal = self.description
         self.kind = "task"
 
     def render(self, budget_tokens: int) -> str:

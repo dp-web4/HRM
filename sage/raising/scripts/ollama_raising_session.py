@@ -239,6 +239,17 @@ class OllamaRaisingSession:
             simulation_mode=True     # Use cycle counts not wall time
         )
 
+        # Metacog — Nomad's interoceptive detectors (Phase 4 P1.3 / Phase 5).
+        # Symmetric with run_session_identity_anchored.py: instantiated per
+        # session, observe_tick() per response turn. Signals surface via
+        # MetabolicBlock in the MRH composer. Non-fatal on import failure.
+        self._metacog = None
+        try:
+            from sage.cognition.metacog.core import Metacog, MetacogConfig
+            self._metacog = Metacog(config=MetacogConfig())
+        except Exception:
+            pass
+
         self.llm = None
 
         # Notification detection for human-directed messages
@@ -1015,6 +1026,25 @@ RESPONSE STYLE:
         # — echo stripping, bilateral generation, model-specific quirks
         adapter = self.llm._adapter
         response = adapter.clean_response(response.strip(), self.identity_name)
+
+        # Metacog observe_tick (Phase 4 P1.3 symmetry — raising gets the same
+        # detectors gameplay dispatch uses). Non-fatal on any failure; metacog
+        # is strictly additive logging here and must not interrupt the session.
+        if self._metacog is not None:
+            try:
+                tick = len(self.conversation_history) + 1
+                self._metacog.observe_tick(
+                    tick=tick,
+                    action_taken={"type": "response", "raw": response[:80]},
+                    state_delta={"response_len": len(response)},
+                    snarc_novelty=None,
+                    atp_balance=None,
+                    atp_cost=None,
+                    estimated_actions_to_goal=None,
+                    goal_status="raising_exchange",
+                )
+            except Exception:
+                pass
 
         return response
 

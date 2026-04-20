@@ -65,9 +65,15 @@ class ExperientialCacheBlock(MRHBlock):
     episodic_matches: List[EpisodicMatch] = field(default_factory=list)
     retrieved_patterns: List[str] = field(default_factory=list)
     conversation_summary: str = ""
+    # `trajectory_summary` is an alias for `conversation_summary` — Sprout's
+    # raising-adoption uses the more neutral term (works for both gameplay
+    # trajectories and raising session summaries). Both set the same field.
+    trajectory_summary: str = ""
     verbatim_tail: int = 5
 
     def __post_init__(self) -> None:
+        if self.trajectory_summary and not self.conversation_summary:
+            self.conversation_summary = self.trajectory_summary
         self.kind = "experiential"
 
     def _render_trajectory_lines(

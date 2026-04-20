@@ -407,6 +407,67 @@ def test_estimate_cost_positive_for_every_block_type():
 # Entry point
 # ───────────────────────────────────────────────────────────────────
 
+# ───────────────────────────────────────────────────────────────────
+# API aliases (Sprout's raising-adoption uses shorter field names)
+# ───────────────────────────────────────────────────────────────────
+
+def test_effectors_profile_aliases_kind_profile():
+    """`profile` is an alias for `kind_profile` — Sprout raising usage."""
+    b = EffectorsBlock(profile="text", addendum="50-100 words.")
+    assert b.kind_profile == "text"
+    assert b.addendum == "50-100 words."
+
+
+def test_effectors_addendum_renders_without_response_format_for_text():
+    """Text profile: addendum carries format guidance; response_format
+    (ACTION=...) omitted since text profiles don't emit game actions."""
+    b = EffectorsBlock(profile="text", addendum="50-100 words. One idea.")
+    text = b.render(500)
+    assert "50-100 words" in text
+    # No ACTION= since this isn't game_actions
+    assert "ACTION=" not in text
+
+
+def test_experiential_trajectory_summary_aliases_conversation_summary():
+    b = ExperientialCacheBlock(trajectory_summary="prev session summary")
+    assert b.conversation_summary == "prev session summary"
+
+
+def test_metabolic_phase_aliases_metabolic_state():
+    b = MetabolicBlock(phase="wake")
+    assert b.metabolic_state == "wake"
+
+
+def test_task_description_aliases_goal():
+    b = TaskBlock(description="Raising session 99 — phase: creating")
+    assert b.goal == "Raising session 99 — phase: creating"
+
+
+def test_compose_accepts_max_tokens_shorthand():
+    """compose(max_tokens=N) splits 75/25 system/user for single-knob callers."""
+    ctx = _build_minimal_context()
+    system, user = ctx.compose(max_tokens=4000)
+    assert system
+    assert user
+
+
+def test_sprout_raising_idiom_end_to_end():
+    """Exact usage pattern from sage/raising/scripts/ollama_raising_session.py
+    (Sprout's _build_system_prompt_mrh). Must not raise TypeError."""
+    ctx = MRHContext(
+        identity=IdentityBlock(mode="partnered", addendum="Express freshly."),
+        sensors=SensorsBlock(),
+        effectors=EffectorsBlock(profile="text", addendum="50-100 words."),
+        mechanics=MechanicsBlock(world_model_text="phase=creating"),
+        experiential=ExperientialCacheBlock(trajectory_summary="prev summary"),
+        metabolic=MetabolicBlock(metacog_signals=[], confidence=0.7, phase="wake"),
+        task=TaskBlock(description="Raising session 99 — phase: creating"),
+    )
+    system, user = ctx.compose(max_tokens=30000)
+    assert isinstance(system, str) and system
+    assert isinstance(user, str)   # user may be empty if no user-side content
+
+
 if __name__ == "__main__":
     failures = 0
     for name in list(globals()):

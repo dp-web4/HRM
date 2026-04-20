@@ -54,6 +54,10 @@ class MetabolicBlock(MRHBlock):
     priority: int = 70
     metacog_signals: List[MetacogSignalSummary] = field(default_factory=list)
     metabolic_state: str = "active"
+    # `phase` is an alias for `metabolic_state` (Sprout's raising usage —
+    # e.g. `phase="wake"`). Note: this is metabolic phase, not curriculum
+    # phase (which lives on TaskBlock). Both names set the same field.
+    phase: Optional[str] = None
     atp_balance: Optional[float] = None
     atp_trend: str = "stable"
     confidence: Optional[float] = None
@@ -62,6 +66,8 @@ class MetabolicBlock(MRHBlock):
     swap_recommendations: List[str] = field(default_factory=list)
 
     def __post_init__(self) -> None:
+        if self.phase is not None and self.metabolic_state == "active":
+            self.metabolic_state = self.phase
         self.kind = "metabolic"
 
     def render(self, budget_tokens: int) -> str:

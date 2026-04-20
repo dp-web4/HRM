@@ -221,6 +221,7 @@ class MRHContext:
         self,
         system_budget_tokens: Optional[int] = None,
         user_budget_tokens: Optional[int] = None,
+        max_tokens: Optional[int] = None,
     ) -> Tuple[str, str]:
         """Render the MRH into (system_prompt, user_turn).
 
@@ -228,11 +229,21 @@ class MRHContext:
           - Identity, Mechanics, Effectors → system prompt (stable per session)
           - Task, Sensors, Metabolic, Experiential → user turn (varies per invocation)
 
-        Budget is split per the context's system/user budgets (defaults
-        or arguments). Priority ordering within each half.
+        Budget selection (in order):
+          1. `system_budget_tokens` + `user_budget_tokens` (explicit split)
+          2. `max_tokens` convenience — splits 75/25 system/user
+          3. Context's default system_budget / user_budget fields
+
+        `max_tokens` is supported as a single-knob shorthand for callers that
+        don't want to think about the split. Raising sessions use this (Sprout).
         """
-        sys_budget = system_budget_tokens if system_budget_tokens is not None else self.system_budget_tokens
-        usr_budget = user_budget_tokens if user_budget_tokens is not None else self.user_budget_tokens
+        if max_tokens is not None and system_budget_tokens is None and user_budget_tokens is None:
+            # 75/25 split favoring system (more session-stable content)
+            sys_budget = int(max_tokens * 0.75)
+            usr_budget = max_tokens - sys_budget
+        else:
+            sys_budget = system_budget_tokens if system_budget_tokens is not None else self.system_budget_tokens
+            usr_budget = user_budget_tokens if user_budget_tokens is not None else self.user_budget_tokens
 
         system_blocks: List[MRHBlock] = sorted(
             [self.identity, self.mechanics, self.effectors],

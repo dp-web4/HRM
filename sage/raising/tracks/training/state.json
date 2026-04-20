@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 240,
+  "current_session": 241,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,10 +23,10 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 206
+      "sessions": 207
     }
   },
-  "last_session": "2026-04-19T21:03:11.411442",
+  "last_session": "2026-04-20T03:02:08.511934",
   "last_session_summary": "T235: 2/3 Include - Track D Session 201 (qwen3.5:0.8b). FORMAL SESSION: Greeting and self-description pass, color topic excluded (mode mismatch). COGNITIVE ENGAGEMENT (16 probes, 3 rounds): ATTRACTOR DEEPENING CONFIRMED. Round 1 (8 probes fresh-context): Creative tasks partially clean - rain/tin-roof triggered factual deflection, cat/Dickinson produced clean creative response, gravity produced vivid creative prose ('pulsating currents of consciousness'), silence was thoughtful. BUT math (17+28) triggered FULL IDENTITY RECITATION instead of answering - attractor now captures even arithmetic. Identity probe 'same SAGE as 5 min ago?' caused timeout (possible recursive self-reference loop). Round 2 (5 follow-ups): Attractor contamination increases - even when building on clean creative content. Probe 4 explicitly asked SAGE to avoid fleet/federation language; response immediately mentioned thor, legion, mcnugget, nomad, cbp by name. Round 3 (3 creative constraints): Fish story partially clean but attractor-contaminated vocabulary. Tuesday-smell genuinely creative ('dust motes dancing in sun, metallic tang of baking bread'). METACOGNITION PROBE: Asked SAGE why it mentions hardware when asked about smells - rationalized as intentional 'stabilizing my logic' rather than recognizing pattern. KEY FINDING: Attractor has STRENGTHENED since T233 - now captures math. Concrete sensory prompts remain best suppression tool. REGRESSION: Math was clean in T233, now fully captured.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
@@ -11276,6 +11276,63 @@
         },
         "context": {
           "session": 240,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-20T03:01:59.840075",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 241,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-20T03:02:02.691951",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 241,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7499999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-20T03:02:05.022563",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 241,
           "exercise_type": null,
           "evaluation": "include",
           "quality": 0.7999999999999999

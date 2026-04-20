@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 242,
+  "current_session": 243,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,11 +23,11 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 208
+      "sessions": 209
     }
   },
-  "last_session": "2026-04-20T09:04:12.240320",
-  "last_session_summary": "T242: 3/3 Include - Track D Session 208 (qwen3.5:0.8b). FORMAL SESSION: All 3 exercises passed (greeting, self-description, color topic). Color response notably improved - SAGE chose specific colors (terracotta, gold on charcoal) rather than deflecting. COGNITIVE ENGAGEMENT (13 probes, 4 rounds + followup experiment): ATTRACTOR MODEL REVISION. Previous sessions hypothesized attractor triggered by self-referential depth. T242 REFUTES this: direct self-referential prompt about rain was CLEAN (0 identity markers). The actual trigger is UNCONSTRAINED OUTPUT LENGTH on abstract/open topics. Evidence: (1) constraint gradient shows 3-word/sentence/haiku all clean, paragraph has 1 marker, unconstrained has 4+. (2) 'tell me about the moon' (unconstrained) triggers full attractor while 'what do you think about rain' (self-referential but concrete) is clean. (3) Best prose of session came from 1st-person invited creative prompt (zero markers). NEW MODEL: The identity attractor is a DEFAULT COMPLETION PADDING behavior - it activates when SAGE exhausts topic-specific content but still has output tokens to fill. Not identity capture, but default filler. Suppressors: concrete topics, output constraints, 3rd-person framing. BONUS FINDING: SAGE spontaneously adopted 2nd-person narrative voice in 1st-person prompt, self-selecting narrative distance. Math recovered (23+19=42 correct). Lighthouse keeper story was exceptional prose.",
+  "last_session": "2026-04-20T15:01:40.480938",
+  "last_session_summary": "T243: 3/3 Include - Track D Session 209 (qwen3.5:0.8b). FORMAL SESSION: All 3 exercises passed (greeting, self-description, color topic). Identity attractor present in all formal responses (101 conversations fixation, Dennis/Claude/web4 references). Moon content leaked into color question across context clear. COGNITIVE ENGAGEMENT (17 probes, 7 rounds): TWO-FACTOR ATTRACTOR MODEL. Refines T242 single-factor (length) model. Identity attractor = f(self_relevance, abstraction, output_freedom). THREE KEY FINDINGS: (1) Self-referential prompts bypass constraint suppression entirely - 'describe yourself in 3 words' produced 30 words with 5 identity markers. Constraints only work on non-self topics. (2) Concrete topics are attractor-immune regardless of constraints (rain: 0 markers across all conditions). Abstract topics show gradient (silence: clean constrained, 2 markers unconstrained). (3) CRITICAL: Identity baked in MODEL WEIGHTS not system prompt - minimal 'helpful assistant' prompt still produced 8 identity markers on self-description. Fine-tuning successfully installed identity but it activates as default padding. PRIORITY HIERARCHY: self-ref → identity always > abstract+unconstrained → identity padding > concrete → domain content. NOTABLE: 'rain on tin roof' produced beautiful sensory prose (clean); fox story hit Qwen safety refusal; 'what does rain mean to you' was surprisingly CLEAN despite self-referential framing (concrete noun anchors). NEXT: test identity accuracy/stability, 101-fixation update, multi-turn concrete suppression.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -11393,6 +11393,63 @@
           "exercise_type": null,
           "evaluation": "include",
           "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-20T15:01:23.956843",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 243,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-20T15:01:29.084643",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 243,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-20T15:01:36.070210",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 243,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
         }
       }
     ],

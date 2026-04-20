@@ -252,6 +252,129 @@ class FrameDataset(Dataset):
         }
 
 
+def _ingest_human_replays(
+    replay_dir: Path,
+    game_slugs: List[str],
+    mech_embedding_table: Optional[np.ndarray] = None,
+    invoke_version: int = 2,
+) -> List[Dict[str, Any]]:
+    """Ingest human replay JSONL files into training tuples.
+
+    Human replays provide diverse state-space trajectories that complement
+    solver traces. Same tuple format as replay_trace_to_tuples.
+    """
+    ACTION_MAP = {
+        "ACTION1": 1, "ACTION2": 2, "ACTION3": 3, "ACTION4": 4,
+        "ACTION5": 5, "ACTION6": 6, "ACTION7": 7, "RESET": -1,
+    }
+
+    all_tuples = []
+    for jsonl_file in sorted(replay_dir.glob("*.jsonl")):
+        game_family = jsonl_file.stem.split("-")[0]
+        if game_family not in game_slugs:
+            continue  # Skip games not in our training set
+
+        gi = game_slugs.index(game_family)
+        mech_vec = (
+            list(mech_embedding_table[gi]) if mech_embedding_table is not None else None
+        )
+
+        try:
+            lines = jsonl_file.read_text().strip().split("\n")
+        except Exception:
+            continue
+
+        prev_frame_oh = None
+        prev_level = None
+        prev_action = None
+        recent: deque = deque([0] * RECENT_ACTIONS_K, maxlen=RECENT_ACTIONS_K)
+        step_idx = 0
+        tuples = []
+
+        for line in lines:
+            try:
+                entry = json.loads(line)
+                data = entry.get("data", {})
+
+                # Skip non-frame entries
+                frame_data = data.get("frame")
+                if frame_data is None:
+                    continue
+
+                frame_raw = np.array(frame_data)
+                curr_frame_oh = onehot_frame(frame_raw)
+
+                # Extract action
+                action_input = data.get("action_input", {})
+                action_id = action_input.get("id", "RESET")
+                action_int = ACTION_MAP.get(action_id, -1)
+                if action_int < 0 or action_int >= N_ACTIONS:
+                    # Reset, UNDO, or unknown — skip (UNDO=7 is out of action range 0-6)
+                    prev_frame_oh = curr_frame_oh
+                    prev_level = data.get("levels_completed", 0)
+                    if action_int < 0:
+                        step_idx = 0  # Reset — restart sequence
+                    continue
+
+                level = data.get("levels_completed", 0)
+                total_steps = len(lines)
+                step_frac = min(1.0, step_idx / max(total_steps, 1))
+                budget_remaining = max(0.0, 1.0 - step_frac)
+
+                # Compute invoke label
+                if invoke_version == 2:
+                    invoke = compute_invoke_label_v2(
+                        step_index=step_idx,
+                        level=level, prev_level=prev_level,
+                        action=action_int,
+                        prev_action=prev_action,
+                        recent_actions=list(recent),
+                    )
+                else:
+                    invoke = compute_invoke_label(
+                        prev_frame=frame_raw,
+                        curr_frame=frame_raw,  # self-diff is 0 unless we track prev_raw
+                        step_index=step_idx, level=level, prev_level=prev_level,
+                    )
+
+                if prev_frame_oh is not None:
+                    scalar = build_scalar_vector(
+                        game_idx=gi, n_games=len(game_slugs),
+                        level=level, n_levels=10,
+                        step_frac=step_frac, budget_remaining=budget_remaining,
+                        last_action=prev_action or 0,
+                        recent_actions=list(recent),
+                        available_actions=[1] * N_ACTIONS,
+                        batch_state=[0.0, 0.0, 0.0],
+                        mech_embedding=mech_vec,
+                    )
+
+                    tuples.append({
+                        "prev_frame": prev_frame_oh,
+                        "curr_frame": curr_frame_oh,
+                        "scalar": np.array(scalar, dtype=np.float32),
+                        "action": action_int,
+                        "invoke": float(invoke),
+                        "game": game_family,
+                        "source": "human",
+                    })
+
+                prev_frame_oh = curr_frame_oh
+                prev_level = level
+                prev_action = action_int
+                recent.append(action_int)
+                step_idx += 1
+
+            except (json.JSONDecodeError, KeyError, ValueError):
+                continue
+
+        if tuples:
+            all_tuples.extend(tuples)
+            print(f"  {game_family:8s}: {len(tuples)} human tuples")
+
+    return all_tuples
+
+
 def _pair_next(tuples: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """Attach next-step visual (the actual frame at step t+1) to each tuple.
     Used as dynamics-head target. Last step of each trace drops its dynamics
@@ -458,6 +581,11 @@ def main() -> int:
              "sage_plays_live/ sage_plays_self/). When set, substrate-derived "
              "invoke/action targets override self-supervised labels where keys match.",
     )
+    p.add_argument(
+        "--human-replays", default=None,
+        help="Directory of human replay JSONL files (SDK recording format). "
+             "Mixed into training alongside solver traces for state-space diversity.",
+    )
     args = p.parse_args()
 
     torch.manual_seed(args.seed)
@@ -510,8 +638,21 @@ def main() -> int:
         delta_labels=delta_label_map,
         invoke_version=args.invoke_version,
     )
-    print(f"Built {len(tuples)} tuples across {len(game_slugs)} games "
+    solver_count = len(tuples)
+    print(f"Built {solver_count} solver tuples across {len(game_slugs)} games "
           f"in {time.time()-t0:.1f}s")
+
+    # Ingest human replays if provided
+    if args.human_replays:
+        t1 = time.time()
+        human_tuples = _ingest_human_replays(
+            Path(args.human_replays), game_slugs,
+            mech_embedding_table=mech_table,
+            invoke_version=args.invoke_version,
+        )
+        tuples.extend(human_tuples)
+        print(f"Added {len(human_tuples)} human replay tuples in {time.time()-t1:.1f}s "
+              f"(total: {len(tuples)}, human fraction: {len(human_tuples)/len(tuples):.0%})")
 
     pair_tuples = _pair_next(tuples)
     print(f"Paired tuples (with next-frame target): {len(pair_tuples)}")

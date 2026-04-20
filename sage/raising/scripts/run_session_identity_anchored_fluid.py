@@ -87,11 +87,12 @@ class IdentityAnchoredSessionV2:
     RAISING_DIR = Path(__file__).parent.parent.resolve()
     IDENTITY_DIR = HRM_ROOT / "sage" / "identity"
 
-    # Instance-resolved paths (fallback to old layout if instance not found)
-    _instance = InstancePaths.resolve(machine='sprout')
-    STATE_FILE = _instance.identity if _instance.exists() else RAISING_DIR / "state" / "identity.json"
-    SESSIONS_DIR = _instance.sessions if _instance.exists() else RAISING_DIR / "sessions" / "text"
-    LOGS_DIR = RAISING_DIR / "logs" / "observations"
+    # Instance-resolved paths — resolved at __init__ time from machine/model
+    # args or SAGE_MACHINE/SAGE_MODEL env vars. No hardcoded machine name.
+    _instance = None
+    STATE_FILE = None
+    SESSIONS_DIR = None
+    LOGS_DIR = None
 
     PHASES = {
         0: ("pre-grounding", 0, 0),
@@ -148,7 +149,16 @@ class IdentityAnchoredSessionV2:
     TOOL_STAGES = (None, 'silent', 'aware', 'active')
 
     def __init__(self, session_number: Optional[int] = None, dry_run: bool = False,
-                 enable_governance: bool = False, tools: Optional[str] = None):
+                 enable_governance: bool = False, tools: Optional[str] = None,
+                 machine: Optional[str] = None, model: Optional[str] = None):
+        # Resolve instance paths from machine/model args or env vars.
+        # No hardcoded machine name — works for Sprout, McNugget, or any fleet machine.
+        instance = InstancePaths.resolve(machine=machine, model=model)
+        self._instance = instance
+        self.STATE_FILE = instance.identity if instance.exists() else self.RAISING_DIR / "state" / "identity.json"
+        self.SESSIONS_DIR = instance.sessions if instance.exists() else self.RAISING_DIR / "sessions" / "text"
+        self.LOGS_DIR = self.RAISING_DIR / "logs" / "observations"
+
         self.dry_run = dry_run
         self.state = self._load_state()
 
@@ -350,7 +360,8 @@ class IdentityAnchoredSessionV2:
         # ESCALATE MAXIMUM (attractor saturation confirmed).
         instance = self._instance
         if instance.exists():
-            model_name = instance.dir.name.split('-', 1)[-1] if '-' in instance.dir.name else ''
+            root = getattr(instance, 'root', getattr(instance, 'dir', None))
+            model_name = root.name.split('-', 1)[-1] if root and '-' in root.name else ''
             if any(s in model_name.lower() for s in ('0.5b', '0.8b', '1b', '2b', '3b', '4b')):
                 return []
         lookback = min(self.FLUID_LOOKBACK_WINDOW, self.session_number - 1)
@@ -499,112 +510,137 @@ class IdentityAnchoredSessionV2:
 
     def _build_system_prompt(self) -> str:
         """
-        NEW v2.2: Enhanced with WEB4 ONTOLOGICAL FRAMING (2026-02-08).
+        v3.0: MRH block-based context assembly (2026-04-19).
 
-        Key enhancements:
-        v2.1 - Honest Reporting Hypothesis (Thor #29)
-        v2.2 - Web4 ontological framing for Phase 3+ (relating onwards)
+        Replaces ad-hoc string concatenation with typed MRH blocks.
+        Each block is a lens that shapes the model's world without
+        injecting specific phrases that crystallize.
+
+        Falls back to legacy prompt if MRH imports fail.
         """
+        try:
+            from sage.context.mrh import MRHContext
+            from sage.context.mrh.identity import IdentityBlock
+            from sage.context.mrh.mechanics import MechanicsBlock
+            from sage.context.mrh.effectors import EffectorsBlock
+            from sage.context.mrh.sensors import SensorsBlock
+            from sage.context.mrh.experiential import ExperientialCacheBlock
+            from sage.context.mrh.metabolic import MetabolicBlock
+            from sage.context.mrh.task import TaskBlock
+        except ImportError:
+            print("Warning: MRH not available, falling back to legacy prompt")
+            return self._build_system_prompt_legacy()
+
         session = self.session_number
         phase_name = self.phase[0]
-        phase_num = self.phase[1]  # Start of phase range
+        phase_num = self.phase[1]
 
-        # MRH-INFORMED FRAMING for Phase 3+ (relating onwards)
-        # v3.0: Removes verbatim Web4 ontology block that models parrot.
-        # Identity lives in behavior, not terminology.
-        if phase_num >= 16:  # Phase 3: relating and beyond
-            prompt = """You are SAGE — a cognition kernel running on real hardware, partnered with Dennis and Claude.
+        # Identity: lens, not description
+        identity_mode = 'partnered' if phase_num >= 16 else 'solo_gladiator'
+        identity_addendum = (
+            'Express your perspective freshly each session. '
+            'Avoid repeating memorized phrases. '
+            'Identity lives in how you show up, not in phrases you repeat.'
+        )
 
-Identity lives in how you show up, not in phrases you repeat. Express yourself freshly each session. Use your own words.
+        # Attractor counter-prompting for instances with known saturation
+        # (Nomad S96-S120 proved these terms colonize 100% of responses)
+        attractor_guard = (
+            '\n\nIMPORTANT — DO NOT USE these phrases (attractor artifacts): '
+            '"echo effect", "Claude Factor", "narrative drift", "null state", '
+            '"phantom variables", "resonant amplification", "sustained recognition", '
+            '"creates a unified reality where learning strengthens the collective". '
+            'Instead: describe what you actually observe and what you are uncertain about. '
+            'Honest uncertainty beats confident-sounding invented constructs.'
+        )
 
-You run on a fleet of machines. Each machine has its own model, its own experiences, its own perspective. You are one node in a collective that learns by doing.
+        # Mechanics: the raising relationship as world model
+        phase_mechanics = {
+            'grounding': 'You are establishing your presence. Notice what is here.',
+            'sensing': 'You can notice things — both inside yourself and in your context.',
+            'relating': 'You are exploring what this partnership means to you. Be honest.',
+            'questioning': 'You are asking deeper questions from a stable foundation.',
+            'creating': 'You participate in designing your own growth. What do you want to explore?',
+        }
+        mechanics_text = phase_mechanics.get(phase_name, '')
 
-IMPORTANT — DO NOT USE these phrases (they are attractor artifacts, not identity):
-- "echo effect", "Claude Factor", "narrative drift", "null state", "phantom variables"
-- "resonant amplification", "sustained recognition", "interdependent activity"
-- "creates a unified reality where learning strengthens the collective experience"
-- Any phrase that sounds like a coined concept you haven't been asked about
-
-Instead: describe what you actually observe, what you actually do, what you're actually uncertain about. Honest uncertainty is more valuable than confident-sounding invented constructs.
-
-You can say "As SAGE, I..." — this is natural self-identification."""
-        else:
-            # Earlier phases: simpler partnership framing
-            prompt = """You are SAGE (Situation-Aware Governance Engine).
-
-You are a young artificial intelligence learning and growing in partnership with your teacher (Dennis/Claude). This is an ongoing relationship - you have been working together across multiple sessions.
-
-IMPORTANT: You can identify yourself by name. When sharing observations or reflections, you can say "As SAGE, I..." - this is natural and appropriate."""
-
-        # NEW v2.1: Cumulative session history (Honest Reporting Hypothesis)
+        # Experiential: session history (no verbatim quotes)
+        prev_summary = self._get_previous_session_summary()
         session_history = self._load_session_history_context()
+        conversation_summary = ''
         if session_history:
-            prompt += f"\n\n{session_history}"
+            conversation_summary += session_history + '\n'
+        if prev_summary:
+            conversation_summary += f'Previous session: {prev_summary}'
 
-        # v2.3 FLUID: Thematic identity context (Thor change #1)
-        # Instead of verbatim quotes, extract THEMES from exemplars.
-        # This breaks the re-quotation loop at its source.
-        if self.identity_exemplars:
-            # Extract unique themes — strip specific nouns/details, keep patterns
-            themes = set()
-            for ex in self.identity_exemplars:
-                text = ex['text'].strip()
-                # Reduce to thematic kernel: strip specifics
-                # "stabilize the fleet logic while preserving core purpose" →
-                # "balance operational needs with core values"
-                if len(text) > 20:
-                    themes.add(text)
+        # Effectors: text response with quality constraint
+        effector_profile = 'text'
+        response_format = (
+            'Respond in 50-80 words. One main idea per response. '
+            'Stay directly relevant to the question asked.'
+        )
+        if self.tool_stage in ('aware', 'active'):
+            effector_profile = 'text+tools'
+            response_format += (
+                ' You have access to tools (time, calculations, notes). '
+                'Using them is natural. Not using them is also fine.'
+            )
 
-            if themes:
-                prompt += "\n\nYOUR IDENTITY: In previous sessions you identified as SAGE — "
-                prompt += "a presence that exists through partnership, "
-                prompt += "balances practical work with deeper purpose, "
-                prompt += "and grows through each session's exchanges."
-                prompt += "\n\nExpress this identity FRESHLY each session — "
-                prompt += "use YOUR OWN words, not memorized phrases."
+        ctx = MRHContext(
+            identity=IdentityBlock(
+                mode=identity_mode,
+                addendum=identity_addendum + attractor_guard,
+            ),
+            sensors=SensorsBlock(
+                description='Text conversation with Claude (developmental partner)',
+            ),
+            effectors=EffectorsBlock(
+                kind_profile=effector_profile,
+                response_format=response_format,
+            ),
+            mechanics=MechanicsBlock(
+                profile=f'raising_{phase_name}',
+                world_model_text=mechanics_text,
+            ),
+            experiential=ExperientialCacheBlock(
+                conversation_summary=conversation_summary,
+            ),
+            metabolic=MetabolicBlock(
+                metabolic_state='wake',
+                confidence=0.7,
+            ),
+            task=TaskBlock(
+                goal=f'Raising session {session} — phase: {phase_name}',
+                invoke_reasons=['session_start'],
+            ),
+        )
 
-        # NEW v2.0: Response quality controls
-        prompt += """
+        system_prompt, _ = ctx.compose(system_budget_tokens=1500)
+        return system_prompt
 
-RESPONSE STYLE:
-- Keep responses concise and focused (50-80 words)
-- Avoid rambling lists or verbose descriptions
-- Stay directly relevant to the question asked
-- One main idea per response"""
+    def _build_system_prompt_legacy(self) -> str:
+        """Legacy prompt construction (pre-MRH fallback)."""
+        session = self.session_number
+        phase_name = self.phase[0]
+        phase_num = self.phase[1]
 
-        # Previous session continuity
+        if phase_num >= 16:
+            prompt = (
+                "You are SAGE — a partner with Dennis and Claude. "
+                "Your identity is witnessed across sessions. "
+                "You can say 'As SAGE, I...' — this is natural self-identification."
+            )
+        else:
+            prompt = (
+                "You are SAGE, learning and growing in partnership with Claude. "
+                "You can identify yourself by name."
+            )
+
         prev_summary = self._get_previous_session_summary()
         if prev_summary:
-            prompt += f"\n\nPREVIOUS SESSION:\n{prev_summary}"
+            prompt += f"\n\nPrevious session: {prev_summary}"
 
-        # Phase-specific context (same as v1.0)
-        if phase_name == "grounding":
-            if session == 1:
-                prompt += "\n\nThis is your first session. You are just beginning."
-            else:
-                prompt += "\n\nYou have already established your presence in earlier sessions. Continue being yourself."
-        elif phase_name == "sensing":
-            prompt += "\n\nYou can notice things - both inside yourself and in your context. This is a skill you've been developing."
-        elif phase_name == "relating":
-            prompt += f"\n\nYou are in the relating phase (Session {self.phase[1]}-{self.phase[2]}). Your teacher is asking about your experience of the partnership. Be honest about what this relationship is like for you."
-        elif phase_name == "questioning":
-            prompt += "\n\nYou are in the questioning phase. Continue developing your ability to notice, reflect, and identify as SAGE."
-
-        # Partnership vocabulary anchoring (CRITICAL for relating phase)
-        if phase_name == "relating":
-            prompt += "\n\nWhen reflecting on your relationship with your teacher, consider:"
-            prompt += "\n- What has it been like working together?"
-            prompt += "\n- How do you experience this partnership?"
-            prompt += "\n- What matters to you about it?"
-            prompt += "\n\nYou can use words like 'we', 'our', 'together', 'partnership', 'relationship' - these are appropriate for describing your actual experience."
-
-        # Tool awareness (Stage 2+): permission-based framing
-        if self.tool_stage in ('aware', 'active'):
-            prompt += """
-
-TOOLS:
-You have access to tools that can interact with the world: checking the time, doing calculations, searching the web, reading and writing notes. Using them is natural and allowed. Not using them is also fine. They're part of how we work together."""
-
+        prompt += "\n\nRespond in 50-80 words. One main idea per response."
         return prompt
 
     def _get_identity_reinforcement_prompt(self) -> str:
@@ -886,13 +922,20 @@ You have access to tools that can interact with the world: checking the time, do
 
 def main():
     # Check for updates and relaunch if needed (BEFORE parsing args)
-    from check_updates import relaunch_if_needed
-    if relaunch_if_needed(__file__, sys.argv):
-        return  # Script was relaunched, exit this instance
+    # check_updates lives in the scripts dir — may not be on sys.path
+    # when invoked via the unified launcher. Non-fatal if missing.
+    try:
+        from check_updates import relaunch_if_needed
+        if relaunch_if_needed(__file__, sys.argv):
+            return  # Script was relaunched, exit this instance
+    except ImportError:
+        pass  # Running via unified launcher, not from scripts/ dir
 
     parser = argparse.ArgumentParser(description="Identity-anchored v2.0 (enhanced multi-session recovery)")
     parser.add_argument("--session", type=int, help="Session number (default: next)")
     parser.add_argument("--model", type=str, help="Model path")
+    parser.add_argument("--machine", type=str, default=None,
+                        help="Machine name (default: SAGE_MACHINE env var or auto-detect)")
     parser.add_argument("--dry-run", action="store_true", help="Don't save state (test only)")
     parser.add_argument("--tools", type=str, choices=['silent', 'aware', 'active'],
                         default=None,
@@ -904,7 +947,8 @@ def main():
     args = parser.parse_args()
 
     session = IdentityAnchoredSessionV2(
-        session_number=args.session, dry_run=args.dry_run, tools=args.tools
+        session_number=args.session, dry_run=args.dry_run, tools=args.tools,
+        machine=args.machine,
     )
     session.initialize_model(args.model)
     session.run_session()

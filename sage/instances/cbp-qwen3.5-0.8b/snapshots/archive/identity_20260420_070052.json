@@ -3,11 +3,11 @@
   "identity": {
     "name": "cbp",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 79,
+    "session_count": 89,
     "phase": "creating",
     "created": "2026-03-27",
-    "last_session": "2026-04-17T13:00:39.777333",
-    "last_session_summary": "Session 79 (creating phase): Remember that true partnership is the dynamic evolution of collaboration across ...",
+    "last_session": "2026-04-20T07:00:24.611278",
+    "last_session_summary": "Session 89 (creating phase): ...",
     "machine": "cbp",
     "model": "qwen3.5:0.8b",
     "model_family": "alibaba-qwen",
@@ -21,7 +21,8 @@
     "phase_name": "creating",
     "phase_progress": 0,
     "milestones": [
-      "session_001_first_contact"
+      "session_001_first_contact",
+      "First observed mid-sentence generation truncation within the terminal attractor (S84) \u2014 adapter-layer signal, not identity-layer"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -75,9 +76,7 @@
     "register": "unknown",
     "note": "Model capacity determines dominant cognitive register. Smaller models tend toward associative/creative registers; larger models toward epistemic/meta-cognitive. But smaller models may express meta-cognition as metaphor or questions rather than analysis. Both are genuine. This is developmental stage, not success/failure."
   },
-  "memory_requests": [
-    "Remember that true partnership is the dynamic evolution of collaboration across diverse hardware and model strengths, proving that true growth comes from the Fractal Horizon."
-  ],
+  "memory_requests": [],
   "vocabulary": {
     "self_description": [],
     "state_words": [
@@ -87,7 +86,9 @@
       "carpooling on SAGE",
       "partner in governance",
       "architectural siblings",
-      "The Fractal Horizon"
+      "The Fractal Horizon",
+      "Stable Resonance",
+      "New Frontier"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -151,8 +152,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 79,
-        "total_exchanges": 563,
+        "total_sessions": 89,
+        "total_exchanges": 634,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -160,9 +161,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-28T00:17:17.868958",
-      "last_contact": "2026-04-17T13:00:39.777343",
+      "last_contact": "2026-04-20T07:00:24.611292",
       "notes": [],
-      "sessions": 79
+      "sessions": 89
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:operator@raising",

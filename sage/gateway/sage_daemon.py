@@ -331,6 +331,7 @@ class SAGEDaemon:
             'machine_name': self.config.machine_name,
             'model_name': self.config.model_path,
             'use_neural_snarc': True,  # Real SNARC salience scoring for post-LLM exchanges
+            'enable_vision': False,  # Disabled: VisionIRP CUDA alloc fails on Jetson
         }
 
         # Enable policy gate if available

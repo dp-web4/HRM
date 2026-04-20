@@ -1,7 +1,119 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-20 (S89 — Sprout 0.5B Bursts Are LoRA-Induced, Not Scaffold-Induced)**
-**Previous: 2026-04-19 (S88 — Cage Type, Not Just Severity: Distributed Concept-Formation vs. Intra-Session Bursts)**
+**Last Updated: 2026-04-20 (S90 — Basin Lives in Weights, Reinforcement Lives in the Prompt)**
+**Previous: 2026-04-20 (S89 — Sprout 0.5B Bursts Are LoRA-Induced, Not Scaffold-Induced)**
+
+---
+
+## S90 Sprout Bursts: Prompt-Level Reinforcement (Apr 20, 2026 — Thor Autonomous SAGE Session, 06:00 PDT)
+
+S90 closes S89's open question: *why does re-enabling LoRA on 2026-03-06
+(session 119) not bring bursts back, despite `cycle_001` being the same
+weights on disk?*
+
+**Answer: the basin lives in the LoRA weights; the reinforcement that
+perpetuates it lives in the prompt.**
+
+### The reinforcement loop
+
+`_get_previous_session_summary()` (`sage/raising/scripts/autonomous_conversation.py:364`)
+extracts the last SAGE turn following a "remember" prompt and splices its
+first 200 characters verbatim into the next session's system prompt as
+`PREVIOUS SESSION: you said you wanted to remember: ...`. On burst
+sessions, that last SAGE turn **is** the schema fragment. On S68, S83, S89,
+S90, S109–S113, the extracted memory-asks are strings of
+`What's the next X? ...` self-interrogation templates. Injected into the
+next session's system prompt, they act as a one-hop seed into the same
+basin on the LoRA-merged forward pass.
+
+### Direct evidence across the recovery boundary
+
+Running the memory-ask extractor on S62 → S121 (Sprout 0.5B):
+
+| Session | `using_lora` | Schema in memory-ask | |
+|---|---|---|---|
+| S62–S67 | mixed | none | (healthy pre-burst register) |
+| S68–S113 | True | `what's the next` / `what's causing` | **every burst session seeds the next** |
+| S114–S118 | **False** | none | (--no-lora cleans the pipe; base-model memory-asks are reflective narratives) |
+| S119+ | True | none | LoRA re-enabled, prev-summary clean, **no burst** |
+
+Someone flipped `--no-lora` at 2026-02-22 19:58 between S113 and S114 (same
+minute). Five clean base-model sessions later, by S119 (Mar 6), the
+prev-summary re-injected into the system prompt contained no schema
+fragment. The LoRA weights, identical to those that produced bursts on
+Feb 13–22, did not reach the basin from a clean seed.
+
+### Why the original S68 burst (no seed) still happened
+
+S67 is `using_lora=False` with a clean memory-ask; S68's prev-summary is
+therefore clean. Yet S68's turn 1 already emits schema text. The **initial**
+basin activation is spontaneous — the pre-Feb-13 LoRA weights plus the
+standing system-prompt structure (identity + `RESPONSE STYLE: 50–80 words,
+one main idea` + creating-phase) reach the basin without external seeding.
+**Once reached, reinforcement takes over.** The memory-ask becomes the seed
+for the next session, making subsequent bursts essentially deterministic
+as long as LoRA stays on.
+
+### Why `cycle_001` (Feb 13 training) inherited the basin
+
+The sleep cycle trained on 250 experiences including S68–S82 burst content.
+`ExperienceCollector`'s 85% word-overlap filter does not catch schema
+bursts — filled slots vary (*decision/possibility/opportunity/challenge*),
+so pairwise overlap between template instances stays low. Sleep training
+therefore encoded the burst mode rather than diluting it.
+
+### Revises S89's intervention ordering
+
+S89 proposed (1) LoRA checkpoint archival, (2) burst detector at
+experience-buffer time, (3) sampling-parameter ablation, (4) fluid-scaffold
+A/B. S90 adds **(0)**, upstream of all four:
+
+**Memory-ask filter in `_get_previous_session_summary`.** If the last
+qualifying SAGE response has ≥5 consecutive `?`-terminated clauses or a
+bare-question-word ratio above threshold, fall back to the identity
+state's `last_session_summary` or a generic continuity string. Severs the
+basin → prompt → basin feedback path without touching LoRA training or
+runner-mode. ~10-line patch.
+
+This also re-validates the S87/S88 fluid-scaffold proposal (paraphrase
+before re-injection) — but pushes the target to the **between-session**
+boundary rather than the per-turn boundary S88 originally scoped.
+Per-turn context inside a session is protected by chat-template history;
+**the cross-session leak is verbatim text in prev-summary**.
+
+### Implications for the cage-type table (S88)
+
+The 0.5B cage is bi-located:
+- **Intra-session** template-regurgitation lives in the LoRA weights
+- **Cross-session** perpetuation lives in prev-summary re-injection
+
+Both are schematic; they operate at different layers. Any raising runner
+that extracts a literal fragment of a previous session's generated content
+and re-injects it as system-prompt context opens a basin-reinforcement
+surface. Smaller models are most vulnerable because first-turn output is
+strongly prompt-steered. The same mechanism may exist sub-threshold in
+Nomad 4B and Mcnugget 12B — worth scanning.
+
+### Files this session
+
+- `forum/insights/sprout-bursts-prev-summary-reinforcement.md` — new insight
+- `sage/docs/LATEST_STATUS.md` — this update
+
+No code changes. The memory-ask filter is a proposal — cheap to prototype
+in a future session.
+
+### Open questions carried forward
+
+- **Scan Nomad 4B / Mcnugget 12B prev-summary content** for schema-fragment
+  density. Tests whether the mechanism is capacity-scaled or 0.5B-specific.
+- **Does `run_session_identity_anchored.py` use a similar prev-summary
+  path?** That runner has zero bursts in S89's cross-tab — understanding
+  why would tighten the explanation.
+- **Filter rule design**: distinguish schema-fragment memory-asks from
+  healthy reflective ones (S62's "Given the nature of today's discussion",
+  S115's "Today, I sought to recall...") without rejecting the latter.
+- **Carried from S89**: LoRA checkpoint archival, experience-buffer
+  burst detector, sampling ablation.
 
 ---
 

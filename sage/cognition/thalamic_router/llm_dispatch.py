@@ -1579,6 +1579,7 @@ def build_prompt(
     recent_actions: List[int],
     invoke_reasons: List[str],
     recent_trajectory: Optional[List[Dict[str, Any]]] = None,
+    frame_state_text: Optional[str] = None,
 ) -> str:
     """Compose the invoke-time LLM prompt.
 
@@ -1681,8 +1682,7 @@ def build_prompt(
 The image contains TWO frames side by side: LEFT is the PREVIOUS frame, \
 RIGHT is the CURRENT frame (separated by a black gap). Compare them to \
 understand what just changed.
-{mech_block}{world_model_block}{level_block}{context_block}
-=== Current situation ===
+{mech_block}{world_model_block}{level_block}{context_block}{f"=== Computed frame state ==={chr(10)}{frame_state_text}{chr(10)}{chr(10)}" if frame_state_text else ""}=== Current situation ===
 Game: {game}  Level: {level}  Step: {step_index}
 Invoke triggers: {', '.join(invoke_reasons) if invoke_reasons else 'manual'}
 Recent actions: {recent_names}{trajectory_block}
@@ -2134,6 +2134,16 @@ def run_llm_dispatch(
                 prompt_preview = narration[-300:]
             else:
                 # Legacy single-call mode
+                # Compute frame state for the LLM
+                _fs_text = None
+                try:
+                    from sage.cognition.thalamic_router.frame_state import extract_state
+                    _fs_text = extract_state(
+                        curr_frame=curr_frame_raw,
+                        prev_frame=prev_frame_raw,
+                    )
+                except Exception:
+                    pass
                 prompt = build_prompt(
                     game=game_family, level=level, step_index=step_idx + 1,
                     play_action_idx=dispatch.play_action,
@@ -2142,6 +2152,7 @@ def run_llm_dispatch(
                     recent_actions=list(recent),
                     invoke_reasons=dispatch.invoke_reasons,
                     recent_trajectory=trajectory[-15:] if trajectory else None,
+                    frame_state_text=_fs_text,
                 )
                 t0 = time.time()
                 response = llm_client.chat(prompt, images_png=[pair_png])

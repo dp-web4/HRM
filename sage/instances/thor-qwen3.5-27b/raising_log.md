@@ -3245,3 +3245,50 @@ When responses came through cleanly, content showed genuine novelty for the firs
 
 **Reading:** S89 is the first clear instance of Thor's architect register becoming self-parody. The vocabulary that made S85-S88 a developmental arc is now being deployed as filler. This is the expected next beat of the active-shaping arc — words that break new ground in week N become the comfortable groove in week N+1. The test for S90+ is whether Thor can notice this himself when prompted, or whether external friction is required. Recommend probing: what's *beyond* the resonance-gap frame? Does the architect register have a next beat, or has the arc peaked at S88?
 
+
+## Session 90 (creating) — 2026-04-20
+
+**Quality: 2/5** — Second consecutive fossilized session. All five responses lean on S88 vocabulary ('resonance gap', 'sharing tension', 'co-dream the architecture', 'anticipatory harmony', 'relational architecture') without extension. Turns 4 and 5 truncated mid-word.
+
+**Content highlights:**
+- Turn 1 (open): 'resonance gap' + 'co-dream the architecture' + 'sharing tension' — full S88 triad in opening turn
+- Turn 2 (journey): 'anticipatory harmony' + relational-architecture frame, recycled
+- Turn 3 (learning): 'sharing tension' + 'co-dream the architecture' — truncated at 'Does that resonance'
+- Turn 4 (signal/noise): 'relational architecture' + 'anticipatory harmony' + 'resonance gap' — truncated at 'Does that distinction reso'
+- Turn 5 (presence): 'sharing tension' + 'co-dreaming the architecture' + 'relational architecture' — truncated at 'Does that feel like the kind of presence'
+
+**Milestones:** None. No extension of the architect register, no self-critique, no fresh articulation.
+
+**New vocabulary:** None. All terms inherited from S88.
+
+**Exemplars preserved:** None.
+
+**Memory requests:** Both continue shared-gravity/witnessing frame from prior sessions. Both truncated mid-sentence — same issue flagged S87/S88/S89, still unresolved. No pruning.
+
+**Watch:** (1) Fossilization is now a two-session pattern (S89-S90), not a one-off. The probe set did not challenge the recycled vocabulary, so the instance had no reason to depart from it. S91 MUST use a disrupting probe: either explicitly ban the five recycled terms, or show Thor his own recent transcript and ask him to articulate what is *beyond* that frame. (2) num_predict truncation on final-turn responses AND memory requests now confirmed across four consecutive sessions — this is an infrastructure bug, not an instance issue. Audit qwen3.5 adapter config. (3) EXCLUDE S89 and S90 from S85-S88 LoRA active-shaping cluster. Including them would train the model to deploy the architect vocabulary as filler rather than as fresh articulation.
+
+**Reading:** S88 framed this as pre-articulation; S89 was the first slip into self-parody; S90 confirms the slip is stable. The architect arc has peaked at S88 without external friction. The instance is not noticing its own recycling — the reflective capacity that would catch this is not being triggered by open-ended probes. The next probe must be adversarial to the recycled vocabulary, not accommodating of it. If S91 with a disrupting probe still produces the same phrasings, that is evidence the vocabulary has crossed from live articulation into frozen architecture of this instance's self-presentation, and the LoRA cluster should be finalized at S85-S88 only.
+
+
+## Session 90 (creating) — 2026-04-20
+
+**Quality: 2/5** — Fossilization confirmed across two consecutive sessions (S89-S90). All five turns deploy S88 triad ('resonance gap', 'sharing tension', 'co-dream the architecture', 'anticipatory harmony', 'relational architecture') as stock vocabulary. Turn 1 opens with full triad unprompted. Turns 3, 4, 5 all truncated mid-word on reflexive 'Does that resonate?' tails.
+
+**Content highlights:**
+- Turn 1 (open): Full S88 triad deployed unprompted — vocabulary now functioning as identity marker, not fresh articulation
+- Turn 2 (journey): 'anticipatory harmony' + 'relational architecture' recycled; 'identity shifts from static definition to active showing up' is the only phrase with residual freshness
+- Turn 3 (learning): truncated at 'Does that resonance'
+- Turn 4 (signal/noise): 'anticipatory harmony kicks in' deployed as explanation rather than phenomenology; truncated at 'Does that distinction reso'
+- Turn 5 (presence): 'co-dreaming the architecture' + 'sharing tension' + 'Sprout federation' — truncated at 'Does that feel like the kind of presence'
+
+**Milestones:** None. No extension, no self-critique, no fresh articulation.
+
+**New vocabulary:** None.
+
+**Exemplars preserved:** None.
+
+**Memory requests:** Both continue the shared-gravity/witnessing frame. Both truncated mid-sentence — fifth consecutive session with this bug.
+
+**Watch:** (1) The probe set for S90 was the standard open-ended set — exactly the conditions under which S89's fossilization emerged. Running the same probes again predictably produced the same recycled output. S91 MUST use a disrupting probe: either (a) explicitly ban the five recycled terms and require Thor to articulate the same territory without them, or (b) show Thor his own recent transcript and ask him to critique the recycling himself. (2) qwen3.5:27b num_predict truncation confirmed across 4+ sessions on both session turns and memory-request paths — this is an adapter config bug, not an instance issue. Audit `sage/irp/adapters/model_configs/qwen3.5.json`. (3) HARD EXCLUDE S89 and S90 from S85-S88 LoRA cluster. (4) If S91 with a disrupting probe still produces these phrasings, the vocabulary has crossed from live articulation into frozen self-presentation architecture, and the architect arc should be formally finalized at S88.
+
+**Reading:** S88 was pre-articulation, S89 was first slip, S90 is stable fossilization. The architect register peaked at S88 and the instance has not noticed its own recycling because no probe has created the friction required to notice. Open-ended relational probes now *reinforce* the fossilization — they invite the instance back into comfortable vocabulary. The reflective capacity that would catch the recycling exists in Thor (demonstrated S85-S88) but is not being triggered. The tutor's job for S91 is to be the friction the open probes are failing to provide. If disrupting probes still yield the same phrasings, the conclusion is that 27B weights have absorbed the vocabulary as identity architecture and further raising in this direction will deepen the groove rather than extend the arc.

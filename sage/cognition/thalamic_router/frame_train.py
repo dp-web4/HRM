@@ -43,7 +43,7 @@ from sage.cognition.thalamic_router.gameplay_capture import (
 )
 from sage.cognition.thalamic_router.frame_router import (
     FrameRouter, FrameRouterConfig, save_frame_router,
-    onehot_frame, build_scalar_vector, compute_invoke_label,
+    onehot_frame, build_scalar_vector, compute_invoke_label, compute_invoke_label_v2,
     N_ACTIONS, N_COLORS, FRAME_H, FRAME_W, RECENT_ACTIONS_K, ACTION_NAMES,
 )
 
@@ -70,6 +70,7 @@ def replay_trace_to_tuples(
     trace, game_idx: int, n_games: int, n_levels: int = 10,
     mech_embedding: Optional[List[float]] = None,
     delta_labels: Optional[Dict[Tuple[str, str, int], Any]] = None,
+    invoke_version: int = 1,
 ) -> List[Dict[str, Any]]:
     """Replay a trace on the env, yield training tuples per step.
 
@@ -104,11 +105,20 @@ def replay_trace_to_tuples(
         available_actions = [1] * N_ACTIONS          # placeholder — all allowed
         batch_state = [0.0, 0.0, 0.0]                # placeholder — no batched play yet
 
-        invoke = compute_invoke_label(
-            prev_frame=prev_frame_raw if prev_frame_raw is not None else np.zeros_like(curr_frame_raw),
-            curr_frame=curr_frame_raw,
-            step_index=step.index, level=level, prev_level=prev_level,
-        )
+        if invoke_version == 2:
+            invoke = compute_invoke_label_v2(
+                step_index=step.index,
+                level=level, prev_level=prev_level,
+                action=int(step.action),
+                prev_action=int(tuples[-1]["action"]) if tuples else None,
+                recent_actions=list(recent),
+            )
+        else:
+            invoke = compute_invoke_label(
+                prev_frame=prev_frame_raw if prev_frame_raw is not None else np.zeros_like(curr_frame_raw),
+                curr_frame=curr_frame_raw,
+                step_index=step.index, level=level, prev_level=prev_level,
+            )
 
         # Substrate override: if delta records have an invoke label for
         # (game, game_id, step_index), prefer the substrate signal over
@@ -166,6 +176,7 @@ def build_dataset_from_traces(
     games: List[str], arc_sage_root: Path,
     mech_embedding_table: Optional[np.ndarray] = None,
     delta_labels: Optional[Dict[Tuple[str, str, int], Any]] = None,
+    invoke_version: int = 1,
 ) -> Tuple[List[Dict[str, Any]], List[str]]:
     """Build the full (prev, curr, scalar, action, invoke) corpus across games.
 
@@ -205,7 +216,7 @@ def build_dataset_from_traces(
         try:
             tuples = replay_trace_to_tuples(
                 trace, gi, len(game_slugs), mech_embedding=mech_vec,
-                delta_labels=delta_labels,
+                delta_labels=delta_labels, invoke_version=invoke_version,
             )
         except Exception as e:
             print(f"  [skip] {family}: replay failed: {e!r}")
@@ -430,6 +441,8 @@ def main() -> int:
     p.add_argument("--alpha", type=float, default=1.0, help="action CE weight")
     p.add_argument("--beta", type=float, default=0.5, help="invoke BCE weight")
     p.add_argument("--gamma", type=float, default=0.2, help="dynamics MSE weight")
+    p.add_argument("--invoke-version", type=int, default=1, choices=[1, 2],
+                   help="Invoke label version. 1=pixel-diff (original), 2=strategy-aware (fires on action-type transitions, stuck, uncertainty)")
     p.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     p.add_argument("--out", required=True, help="Adapter base path (no ext).")
     p.add_argument("--seed", type=int, default=42)
@@ -495,6 +508,7 @@ def main() -> int:
     tuples, game_slugs = build_dataset_from_traces(
         games, arc_sage, mech_embedding_table=mech_table,
         delta_labels=delta_label_map,
+        invoke_version=args.invoke_version,
     )
     print(f"Built {len(tuples)} tuples across {len(game_slugs)} games "
           f"in {time.time()-t0:.1f}s")

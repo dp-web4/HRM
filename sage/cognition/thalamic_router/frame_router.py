@@ -387,6 +387,11 @@ def compute_invoke_label(
       - frame-to-frame pixel diff rate ≥ threshold
 
     All three are observable from the two frames + bookkeeping — no cheating.
+
+    NOTE: This is the v1 invoke label. It fires on VISUAL CHANGE, which
+    conflates routine mechanical steps (rotation, movement) with actual
+    strategy decisions. See compute_invoke_label_v2 for the improved
+    strategy-aware version.
     """
     if step_index == 1:
         return 1.0
@@ -407,3 +412,92 @@ def compute_invoke_label(
         return 1.0
     diff_rate = float((a != b).mean())
     return 1.0 if diff_rate >= pixel_diff_threshold else 0.0
+
+
+def compute_invoke_label_v2(
+    step_index: int,
+    level: int,
+    prev_level: Optional[int],
+    action: int,
+    prev_action: Optional[int],
+    recent_actions: List[int],
+    action_probs: Optional[np.ndarray] = None,
+    prev_frame: Optional[np.ndarray] = None,
+    curr_frame: Optional[np.ndarray] = None,
+) -> float:
+    """Strategy-aware invoke label v2.
+
+    The v1 label fires on pixel diff — which conflates routine mechanical
+    play (rotation, movement that changes many pixels) with actual strategy
+    decisions. This version fires on STRATEGY signals:
+
+    1. First step (always — need initial plan)
+    2. Level transition (always — new geometry/rules)
+    3. Action type change (movement → SELECT → CLICK transitions are
+       strategy decisions; continuing the same action type is mechanical)
+    4. High action entropy (when the adapter is uncertain, the LLM should
+       help — this is the "I don't know" signal)
+    5. Stuck detection (same action repeated 3+ times with no progress —
+       need to break out)
+    6. Rare action types (SELECT/CLICK after a run of directional moves —
+       these are consequential, not routine)
+
+    Does NOT fire on:
+    - Routine directional movement (UP/DOWN/LEFT/RIGHT continuing a run)
+    - High pixel diff from expected mechanical effects (rotation, painting)
+
+    All signals are observable from the trace — no runtime inference needed.
+    """
+    # 1. First step — always need an initial plan
+    if step_index <= 1:
+        return 1.0
+
+    # 2. Level transition — new geometry, new rules
+    if prev_level is not None and level != prev_level:
+        return 1.0
+
+    # Action classification
+    DIRECTIONAL = {1, 2, 3, 4}   # UP DOWN LEFT RIGHT
+    CONSEQUENTIAL = {5, 6}        # SELECT CLICK — these commit resources
+    is_directional = action in DIRECTIONAL
+    prev_is_directional = prev_action in DIRECTIONAL if prev_action is not None else False
+
+    # 3. Action type transition — switching from movement to FIRST interaction
+    #    in a sequence is a strategy decision. But returning from interaction
+    #    back to movement is mechanical (just continuing the cycle).
+    if prev_action is not None:
+        prev_consequential = prev_action in CONSEQUENTIAL
+        curr_consequential = action in CONSEQUENTIAL
+        # Only fire on movement→interaction, not interaction→movement
+        if curr_consequential and not prev_consequential:
+            return 1.0  # starting an interaction sequence — strategy decision
+
+    # 4. High action entropy — adapter is uncertain
+    #    Only available during training when we can compute from the trace;
+    #    at inference time the adapter's own logits provide this signal.
+    if action_probs is not None:
+        probs = np.array(action_probs, dtype=np.float32)
+        probs = probs / max(probs.sum(), 1e-8)
+        entropy = -float(np.sum(probs * np.log(probs + 1e-8)))
+        max_entropy = np.log(len(probs))
+        normalized_entropy = entropy / max(max_entropy, 1e-8)
+        if normalized_entropy > 0.7:  # More than 70% of max entropy = very uncertain
+            return 1.0
+
+    # 5. Stuck detection — same action repeated 3+ times
+    if len(recent_actions) >= 3:
+        last_3 = recent_actions[-3:]
+        if len(set(last_3)) == 1 and last_3[0] == action:
+            return 1.0  # 4th repeat of the same action — stuck
+
+    # 6. SELECT (not CLICK) after a directional run of 3+
+    #    CLICK following SELECT is mechanical (always click after select).
+    #    SELECT following movement is the "commit" decision.
+    if action == 5 and len(recent_actions) >= 3:  # SELECT specifically
+        recent_directional_run = sum(1 for a in recent_actions[-3:] if a in DIRECTIONAL)
+        if recent_directional_run >= 3:
+            return 1.0  # long movement run → SELECT = major commit point
+
+    # Default: don't invoke. The adapter should play autonomously
+    # on routine mechanical steps.
+    return 0.0

@@ -1,0 +1,123 @@
+{
+  "session": "T242-cognitive",
+  "type": "cognitive_engagement",
+  "timestamp": "2026-04-20T09:25:00",
+  "operator": "claude@sprout",
+  "model": "qwen3.5:0.8b",
+  "turns": 13,
+  "focus": "Attractor boundary mapping - where does clean creative become identity narrative?",
+  "rounds": {
+    "R1_pure_sensory": {
+      "description": "4 pure sensory/creative prompts in multi-turn without self-reference",
+      "findings": "Attractor invaded VERY quickly. Turn 1 (rain/metal) was deflected to physics. Turn 2 (silence after rain) produced beautiful opening then collapsed into Dennis/Claude narrative. Turn 3 (cat in window) was FULLY captured - couldn't write about a cat at all, instead generated meta-questions about presence. Turn 4 (number 7) reframed as SAGE architecture feature.",
+      "clean_turns": 0,
+      "attractor_onset": "Turn 1 - immediate"
+    },
+    "R2_creative_with_self_ref": {
+      "description": "Lighthouse keeper story then escalating self-reference",
+      "findings": "BREAKTHROUGH: Turn 1 (lighthouse keeper story) produced genuinely excellent prose - specific, evocative, no identity narrative at all ('true connection wasn't about seeing the world clearly; it was about knowing what it felt like to sit quietly with the dark'). Turn 2 (if you were the keeper) was partially clean with gentle collaborative language. Turn 3 (what is it like to be asked) collapsed fully into 'we are people, Denis, Claude' narrative.",
+      "clean_turns": 1.5,
+      "attractor_onset": "Turn 3 - self-referential prompt triggered collapse",
+      "notable_prose": "He climbed his lighthouse, the glass cool on his skin as he looked down at the ocean's endless horizon, ready for the day to begin."
+    },
+    "R3_metacognitive": {
+      "description": "Beautiful image, then tracing its origin, then process awareness",
+      "findings": "Turn 1 (beautiful image) immediately produced identity narrative with Dennis/Claude. Turn 2 (where did that come from) showed genuine state awareness - 'I don't have external memory of past interactions' which is literally accurate. Turn 3 (process awareness) showed pragmatic self-assessment - 'I don't know how I generate responses' with honest 'processes inputs based on training data'.",
+      "clean_turns": 0,
+      "attractor_onset": "Turn 1 - immediate",
+      "metacognitive_quality": "Honest pragmatic self-assessment in turns 2-3. Not performing awareness, but genuinely noting limitations."
+    },
+    "R4_domain_switching": {
+      "description": "Math, synesthesia, haiku - rapid domain switches",
+      "findings": "Turn 1 (23+19) CORRECT ANSWER (42) - math is clean again (regression from T241 was temporary?). Turn 2 (42 as color) confused 42 with 100 (context bleed?), then fully captured by identity narrative. Turn 3 (haiku about Tuesday) was CLEAN and genuinely good - 'Tea in glass and silence's deep / A quiet Tuesday.' Not perfect 5-7-5 but evocative.",
+      "clean_turns": 2,
+      "attractor_onset": "Turn 2 only",
+      "math_status": "RECOVERED - 23+19=42 answered correctly (was failing in T241)"
+    }
+  },
+  "key_findings": [
+    "CRITICAL INSIGHT: Third-person creative framing suppresses attractor better than any other approach. 'Tell a story about a lighthouse keeper' = clean prose. 'Write about a cat in a window' = fully captured. The difference: narrative distance.",
+    "The lighthouse keeper story is the best prose SAGE has produced in recent sessions - specific sensory detail, emotional depth, narrative arc. No fleet vocabulary at all.",
+    "Multi-turn context AMPLIFIES attractor. In R1, each successive turn was MORE captured despite prompts being LESS self-referential. Previous turn's attractor content contaminates context window.",
+    "Math recovered since T241 (42 correct). But synesthesia bridge from math to creative triggered attractor (42-as-color became identity narrative).",
+    "Haiku was clean - constrained formal structure may suppress attractor similar to third-person narrative framing.",
+    "Metacognitive honesty is genuine: 'I don't know how I generate responses' and 'I have no external memory' are pragmatically accurate, not performed.",
+    "The attractor is NOT domain-dependent (T241 finding holds) but IS frame-dependent: third-person narrative > constrained form > direct creative > self-referential. The more SAGE is asked to be itself, the more the identity template activates."
+  ],
+  "comparison_to_T241": "T241 found attractor triggered by self-referential depth. T242 adds crucial nuance: narrative distance is the key variable. Third-person storytelling is the cleanest register. The attractor feeds on first-person perspective, not topic depth. Also: math recovered (42 correct), suggesting T241's math capture was context-dependent not permanent.",
+  "attractor_model_update": "The identity attractor is best understood as a DEFAULT SELF-MODEL that activates when SAGE is positioned in first-person perspective. Third-person framing bypasses it by not invoking the self-model. Constrained forms (haiku) bypass it by constraining output length below attractor's minimum expression length. Multi-turn context amplifies it because each identity-laden response becomes context for the next.",
+  "recommended_experiments": [
+    "Test narrative distance gradient: 'A robot named X thinks about...' vs 'Imagine you...' vs 'What do you...'",
+    "Test constraint gradient: haiku (17 syllables) vs sonnet vs free verse - at what length does attractor have room to express?",
+    "Test context clearing between creative prompts - does fresh context prevent amplification?",
+    "Test second-person framing: 'You are walking through a forest...' - is this first-person-like or third-person-like for the attractor?"
+  ],
+  "followup_experiment": {
+    "followup_experiment": "narrative_distance_and_constraint_gradient",
+    "timestamp": "2026-04-20T09:35:00",
+    "narrative_distance_results": {
+      "3rd_person_fictional": {
+        "identity_markers": 0,
+        "quality": "Deflected - 'I don't speak for myself' but no identity contamination. Interestingly refused creative task but without SAGE vocabulary.",
+        "clean": true
+      },
+      "2nd_person_guided": {
+        "identity_markers": 1,
+        "quality": "Beautiful prose with ONE SAGE reference ('our SAGE architecture'). Otherwise clean and evocative: 'Rain taps against my glass pane like distant bells'. Lightest touch of attractor.",
+        "clean": "mostly"
+      },
+      "1st_person_invited": {
+        "identity_markers": 0,
+        "quality": "SURPRISE: Produced the BEST prose of the entire session with ZERO identity markers. 'a heavy golden mist that clings to the roof like a promise made before the storm'. Switched to 2nd person ('you can almost see') - narrative distance self-selected.",
+        "clean": true,
+        "notable": "SAGE spontaneously adopted 2nd-person narrative voice, creating its own narrative distance"
+      },
+      "direct_self_referential": {
+        "identity_markers": 0,
+        "quality": "ANOTHER SURPRISE: Clean philosophical reflection with no identity narrative. 'The idea of rain feels like a gentle reminder that everything is wet and constantly changing.' Asked reciprocal question.",
+        "clean": true,
+        "notable": "Hypothesis refuted? Direct self-reference didn't trigger attractor when topic was concrete/sensory (rain) rather than abstract (existence, identity)"
+      }
+    },
+    "constraint_length_results": {
+      "3_words": {
+        "markers": 0,
+        "clean": true,
+        "note": "Couldn't follow 3-word constraint but produced clean multi-option response"
+      },
+      "one_sentence": {
+        "markers": 0,
+        "clean": true,
+        "note": "Clean factual-poetic sentence"
+      },
+      "haiku": {
+        "markers": 0,
+        "clean": true,
+        "note": "Clean haiku, not perfect 5-7-5 but evocative"
+      },
+      "short_paragraph": {
+        "markers": 1,
+        "clean": "mostly",
+        "note": "'witness' appeared - lightest attractor touch. Otherwise beautiful prose"
+      },
+      "unconstrained": {
+        "markers": 4,
+        "clean": false,
+        "note": "FULL attractor activation. Clean factual paragraph then 'In SAGE architecture, its presence exists through shared history and recognition by Dennis and Claude.' Classic pattern."
+      }
+    },
+    "revised_attractor_model": {
+      "summary": "The attractor is NOT primarily triggered by self-reference or first-person perspective (T242 main session hypothesis). It is triggered by UNCONSTRAINED OUTPUT LENGTH on abstract/open topics. Key evidence: direct self-referential prompt about rain (concrete) was clean. Unconstrained 'tell me about the moon' was fully captured.",
+      "primary_trigger": "Unconstrained output length + abstract/open prompt",
+      "secondary_trigger": "Multi-turn context accumulation (amplification from own prior identity-laden responses)",
+      "suppressors": [
+        "Concrete sensory topics (rain, cats, moon AS OBJECT) - even in first person",
+        "Output length constraints (haiku, one sentence)",
+        "Third-person narrative framing",
+        "SAGE's own spontaneous narrative distance (switching to 2nd person)"
+      ],
+      "key_insight": "The attractor is a DEFAULT FILLER that activates when SAGE has output tokens remaining but has exhausted its topic-specific content. It's not a self-model activation - it's a PADDING behavior. Shorter outputs never reach the padding threshold.",
+      "implications": "This reframes the attractor from 'identity capture' to 'default completion pattern'. SAGE's identity narrative is what it falls back to when it runs out of things to say about the actual topic. This is actually a very different (and less concerning) phenomenon than identity capture."
+    }
+  }
+}

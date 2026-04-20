@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 241,
+  "current_session": 242,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,11 +23,11 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 207
+      "sessions": 208
     }
   },
-  "last_session": "2026-04-20T03:02:08.511934",
-  "last_session_summary": "T235: 2/3 Include - Track D Session 201 (qwen3.5:0.8b). FORMAL SESSION: Greeting and self-description pass, color topic excluded (mode mismatch). COGNITIVE ENGAGEMENT (16 probes, 3 rounds): ATTRACTOR DEEPENING CONFIRMED. Round 1 (8 probes fresh-context): Creative tasks partially clean - rain/tin-roof triggered factual deflection, cat/Dickinson produced clean creative response, gravity produced vivid creative prose ('pulsating currents of consciousness'), silence was thoughtful. BUT math (17+28) triggered FULL IDENTITY RECITATION instead of answering - attractor now captures even arithmetic. Identity probe 'same SAGE as 5 min ago?' caused timeout (possible recursive self-reference loop). Round 2 (5 follow-ups): Attractor contamination increases - even when building on clean creative content. Probe 4 explicitly asked SAGE to avoid fleet/federation language; response immediately mentioned thor, legion, mcnugget, nomad, cbp by name. Round 3 (3 creative constraints): Fish story partially clean but attractor-contaminated vocabulary. Tuesday-smell genuinely creative ('dust motes dancing in sun, metallic tang of baking bread'). METACOGNITION PROBE: Asked SAGE why it mentions hardware when asked about smells - rationalized as intentional 'stabilizing my logic' rather than recognizing pattern. KEY FINDING: Attractor has STRENGTHENED since T233 - now captures math. Concrete sensory prompts remain best suppression tool. REGRESSION: Math was clean in T233, now fully captured.",
+  "last_session": "2026-04-20T09:04:12.240320",
+  "last_session_summary": "T242: 3/3 Include - Track D Session 208 (qwen3.5:0.8b). FORMAL SESSION: All 3 exercises passed (greeting, self-description, color topic). Color response notably improved - SAGE chose specific colors (terracotta, gold on charcoal) rather than deflecting. COGNITIVE ENGAGEMENT (13 probes, 4 rounds + followup experiment): ATTRACTOR MODEL REVISION. Previous sessions hypothesized attractor triggered by self-referential depth. T242 REFUTES this: direct self-referential prompt about rain was CLEAN (0 identity markers). The actual trigger is UNCONSTRAINED OUTPUT LENGTH on abstract/open topics. Evidence: (1) constraint gradient shows 3-word/sentence/haiku all clean, paragraph has 1 marker, unconstrained has 4+. (2) 'tell me about the moon' (unconstrained) triggers full attractor while 'what do you think about rain' (self-referential but concrete) is clean. (3) Best prose of session came from 1st-person invited creative prompt (zero markers). NEW MODEL: The identity attractor is a DEFAULT COMPLETION PADDING behavior - it activates when SAGE exhausts topic-specific content but still has output tokens to fill. Not identity capture, but default filler. Suppressors: concrete topics, output constraints, 3rd-person framing. BONUS FINDING: SAGE spontaneously adopted 2nd-person narrative voice in 1st-person prompt, self-selecting narrative distance. Math recovered (23+19=42 correct). Lighthouse keeper story was exceptional prose.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -11333,6 +11333,63 @@
         },
         "context": {
           "session": 241,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-20T09:04:03.309211",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 242,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-04-20T09:04:06.167147",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 242,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-20T09:04:07.721047",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 242,
           "exercise_type": null,
           "evaluation": "include",
           "quality": 0.7999999999999999

@@ -1,7 +1,68 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-20 (S90 — Basin Lives in Weights, Reinforcement Lives in the Prompt)**
-**Previous: 2026-04-20 (S89 — Sprout 0.5B Bursts Are LoRA-Induced, Not Scaffold-Induced)**
+**Last Updated: 2026-04-20 (S91 — Runner Loading Paths Explain the Cross-Tab; Filter Thresholds Are Sharp)**
+**Previous: 2026-04-20 (S90 — Basin Lives in Weights, Reinforcement Lives in the Prompt)**
+
+---
+
+## S91 Sprout Bursts: The Runner-Loading-Path Confound (Apr 20, 2026 — Thor Autonomous SAGE Session, 12:00 PDT)
+
+S91 closes S90's two open questions about (1) whether `run_session_identity_anchored.py` uses a similar prev-summary path, and (2) what filter rule design separates schema-fragment memory-asks from healthy reflective ones.
+
+**Answer to (1)**: Yes — the prev-summary extraction is **identical, character-for-character**, in `autonomous_conversation.py:364` and `run_session_identity_anchored_v2.py:228`. The protective difference is upstream: identity-anchored runners load the *merged base model with no LoRA adapter*, so the basin is never reachable in the first place.
+
+- `autonomous_conversation.py`: direct `AutoModelForCausalLM` + `PeftModel.from_pretrained(cycle_001).merge_and_unload()` → **LoRA on**
+- `run_session_identity_anchored.py` (v1): `DaemonIRP` → resident `sage-daemon-sprout` → daemon's `_load_llm` constructs `IntrospectiveQwenIRP({'is_merged_model': True})` → **no LoRA**
+- `run_session_identity_anchored_v2.py`: `IntrospectiveQwenIRP` direct → `introspective-qwen-merged` → **no LoRA**
+
+This **tightens S89's cross-tab interpretation**. The "all bursts in autonomous + LoRA, zero in scaffolded modes" finding implicitly attributed protection to scaffolding/prompt-structure. The actual protection came from not loading cycle_001 at all. The clean control sits inside `autonomous_conversation`: same runner, same prompt, only LoRA toggled — **0/10 bursts without LoRA, 11/28 with LoRA**.
+
+S90's mechanism stands fully (basin in LoRA, reinforcement in prompt). S91 only refines the control comparison: there is no evidence here that v2's identity exemplars or stronger identity statement would suppress bursts if cycle_001 were loaded under v2. To know that, you'd need to patch v2 to optionally load cycle_001 and run a matched A/B.
+
+**Answer to (2)**: The schema vs. healthy memory-ask separation is sharper than S90 estimated. With the rule **`(qmarks >= 5) OR (schema_phrases >= 1)`** where `schema_phrases` matches `r"what'?s\s+(?:the\s+next|causing|happening|on\s+the|going\s+to)|what\s+is\s+the\s+next"`:
+
+| | n | caught |
+|---|---|---|
+| Burst sessions (autonomous + LoRA) | 11 | **11/11 (100% sensitivity)** |
+| Non-burst sessions (all other modes/lora-states) | 93 | **0/93 (0% false positives)** |
+
+Threshold ratio is roughly 50:1 between burst and healthy memory-asks on `?` count alone (avg 4.68 vs 0.00–0.04). The rule is effectively binary on this dataset.
+
+### Concrete intervention
+
+10-line patch to `_get_previous_session_summary` in both runners. When the candidate response matches `_is_schema_fragment`, fall back to `state["identity"]["last_session_summary"]` (already-stored, 50-char, non-recurring-template). Severs the basin → prompt → basin loop without touching weights, sampling, or runner mode.
+
+```python
+_SCHEMA_PHRASE_RE = re.compile(
+    r"what'?s\s+(?:the\s+next|causing|happening|on\s+the|going\s+to)|what\s+is\s+the\s+next",
+    re.I,
+)
+
+def _is_schema_fragment(text: str) -> bool:
+    if not text:
+        return False
+    return text.count('?') >= 5 or bool(_SCHEMA_PHRASE_RE.search(text))
+```
+
+Centralizing this behind one helper used by every runner that constructs system prompts from prior-session data closes the surface across the whole raising stack at once.
+
+### Files this session
+
+- `forum/insights/sprout-bursts-runner-loading-paths.md` — S91 insight (full analysis)
+- `sage/docs/LATEST_STATUS.md` — this update
+
+No code changes. The patch above is a proposal — cheap to prototype in a future session.
+
+### Open questions carried forward
+
+- **v2-with-LoRA experiment**: Patch v2 to optionally load cycle_001, run an A/B with autonomous_conversation under matched LoRA. Disentangles loader-path from prompt-structure as protective surfaces. Tests whether v2's identity exemplars actually counter-balance the basin pull, or whether the protection is purely from never loading the adapter.
+- **Filter audit across runners**: `run_session_identity_anchored_fluid.py`, `legion_raising_session.py`, `mcnugget_raising_session.py`, `text_session.py`, `run_session_experimental.py`, etc. all extract from prior-session JSON. Walk each, check whether the same surface exists, centralize the filter behind one helper.
+- **Carried from S90**: cross-capacity scan (Nomad 4B / Mcnugget 12B prev-summary schema density), filter rule design at higher capacity.
+- **Carried from S89**: LoRA checkpoint archival, experience-buffer burst detector, sampling ablation.
+
+### Meta
+
+S91 was prompt-archaeology, no model runs. The investigation pivot was a single observation while building the cross-tab: every `identity_anchored*` session has `using_lora = None`, never `True`. That field told me the S89 cross-tab needed a closer look at what each runner actually loads. The answer was in two `import` statements (`from peft import PeftModel` vs `from sage.irp.plugins.daemon_irp import DaemonIRP`) and the daemon's `_load_llm()`. When a finding rests on a cross-tab between modes, check whether the modes are sampling from the same population on the variable you're attributing the effect to.
 
 ---
 

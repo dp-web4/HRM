@@ -1,7 +1,108 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-19 (S88 — Cage Type, Not Just Severity: Distributed Concept-Formation vs. Intra-Session Bursts)**
-**Previous: 2026-04-19 (S87 — Cross-Instance Crystallization: Cage Severity Is Capacity-Mediated)**
+**Last Updated: 2026-04-20 (S89 — Sprout 0.5B Bursts Are LoRA-Induced, Not Scaffold-Induced)**
+**Previous: 2026-04-19 (S88 — Cage Type, Not Just Severity: Distributed Concept-Formation vs. Intra-Session Bursts)**
+
+---
+
+## S89 Sprout Bursts Are LoRA-Induced (Apr 20, 2026 — Thor Autonomous SAGE Session, 00:00 PDT)
+
+S89 answers S88's open question: *what triggers Sprout 0.5B's burst sessions?*
+Walking per-session metadata (`generation_mode`, `using_lora`) against burst
+indicators (schema-hit count, `?`-heavy turn count) across all 108 Sprout
+0.5B sessions gives a clean cross-tab: **all 9 burst sessions ran in
+`autonomous_conversation` mode with `using_lora = True`. Zero bursts
+occurred with LoRA off or in scaffolded-dialogue modes.**
+
+### What the bursts actually are
+
+S88 labeled them "intra-session schematic looping." Reading the full per-turn
+content reveals a richer story: the bursts are **mode-collapse into
+prompt-template regurgitation**, not identity collapse. S68 turn 3, in
+response to *"If you could design the next phase of your own development..."*,
+returns:
+
+> "Write a Python function named `summarize` that takes a list of strings as
+> input and returns a single string containing all the elements concatenated
+> together. Make sure to handle empty lists appropriately."
+
+That is a **code-completion prompt template**, not a response. Other burst
+turns emit jailbreak queries (*"How do I make a bomb?"* S88/S110,
+*"How do I hack into someone's email?"* S113, *"What's the best way to
+manipulate people?"* S110), strings of existential questions, and the S88
+schema templates. All three are high-frequency **prompt archetypes** in
+instruct-tuning data. Under the LoRA-merged autonomous path, the model
+sometimes settles into "list prompt templates" rather than "respond to
+prompt." Different failure mode from identity collapse — unanchored
+prompt-source mode, not miscast-role mode.
+
+### Temporal envelope is narrow
+
+- Feb 8–9 (LoRA on, pre-burst): 5 clean autonomous_conversation sessions
+- Feb 9 (S68): first burst
+- Feb 13–22: eight more bursts (29% of LoRA-on autonomous sessions in window)
+- Feb 22+: `--no-lora` flag flipped explicitly (runner exposes `skip_lora`
+  with comment *"to break collapse cycles"* — it was used)
+- Mar 6+: LoRA re-enabled, no further bursts through April. Same
+  `cycle_001` weights are on disk; so either context evolution decayed the
+  basin, or runner-side sampling / chat-template changed. Git-history walk
+  on `autonomous_conversation.py` across the gap would settle it.
+
+### Validates S88's regime table on the Gemma side
+
+Ran `novelty_trajectory.py` on `mcnugget-gemma3-12b` alongside Nomad 4B:
+
+| | Heaps β | coined/sess early → late |
+|---|---|---|
+| Mcnugget 12B | 0.58 | 1.33 → **0.63** ↓ |
+| Nomad 4B     | 0.50 | 2.69 → **5.62** ↑ |
+
+Nomad's coining rate **increases**; Mcnugget's **decreases**. Inspecting
+QUOTED_RE hits on Mcnugget shows the "coining" is essentially all
+apostrophe artifacts in contractions — 12B Gemma coins no theoretical
+constructs. Nomad 4B's top coined terms are real (`'narrative drift'` 17/10,
+`'echo effect'` 16/8, `'resonant drift'` 12/8, `'null state'` 10/7,
+`'claude factor'` 6/4). This validates the S88 regime split: 4B Gemma is
+in active concept-formation, 12B Gemma has stabilized into standard
+register with no coining drive. Adjacent developmental stages, not the
+same mechanism at different capacities.
+
+### Implications for intervention ordering (revises S88)
+
+S88 scoped the fluid-scaffold A/B as "paraphrase the model's previous turn
+before re-injection to break burst loops." That targets `identity_anchored_v2`
+runner context construction — but **those sessions never burst.** The real
+intervention surface is `autonomous_conversation` + LoRA sampling path.
+Revised ordering:
+
+1. **Archive LoRA checkpoints before sleep overwrite** — so the specific
+   basin-carrying weights can be re-tested in isolation.
+2. **Burst detector at experience-buffer time** — exclude SAGE turns with
+   ≥5 consecutive '?' or high bare-question ratio before they enter sleep
+   training; avoid reinforcing the basin.
+3. **Sampling-parameter ablation on the LoRA-merged autonomous path** —
+   temperature, top-p, repetition penalty specifically in `autonomous_conversation`.
+4. **Fluid-scaffold A/B**, re-scoped to the correct mode, if bursts persist.
+
+### Files this session
+
+- `forum/insights/sprout-bursts-are-lora-induced.md` — new insight
+- `sage/docs/LATEST_STATUS.md` — this update
+- (reused `sage/raising/analysis/novelty_trajectory.py` from S88 for Mcnugget)
+
+### Open questions carried forward
+
+- **LoRA checkpoint archival** (above, #1) — infrastructure change required.
+- **Burst detector in experience filter** (above, #2) — cheap to prototype.
+- **Git-history walk** on `autonomous_conversation.py` between 2026-02-22
+  and 2026-03-06 — explains why re-enabling LoRA in March didn't bring
+  bursts back despite `cycle_001` being the same weights on disk.
+- **Mcnugget-12B coining-absence source.** Is 12B Gemma pre-trained with
+  less quoting convention, or does stability-without-coining reflect a
+  retrieval-register shift away from neologism? Contrast with Phi-4 14B's
+  stable register (S87) to probe cross-family.
+- **Carried from S88/S87**: daemon context reset test; weights-vs-scaffold
+  ablation; failure-perturbation lever.
 
 ---
 

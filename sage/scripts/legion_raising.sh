@@ -60,12 +60,10 @@ else
 fi
 
 # Run the raising session (continue from last session number)
-# Model switch: Gemma 3 12B → Gemma 4 E4B (2026-04-05)
-# Reason: Converging raising + ARC-AGI-3 game tracks. Gemma 4 E4B is the
-# game solver model — raising the same model that plays develops the cognitive
-# skills (context management, sequence awareness, experience abstraction) that
-# directly improve game performance. All-track convergence.
-$PYTHON -m sage.raising.scripts.ollama_raising_session --machine legion --model gemma4:e4b -c 2>&1
+# Model: Gemma 4 E4B — same model for raising + gameplay (all-track convergence)
+# Runner: fluid (MRH blocks, attractor counter-prompting, machine-parameterized)
+# Switched from ollama_raising_session 2026-04-20 for fleet consistency
+$PYTHON -m sage.raising.scripts.run_session_identity_anchored_fluid --machine legion --model gemma4:e4b 2>&1
 
 # Instance directory
 INSTANCE_DIR="sage/instances/legion-gemma4-e4b"

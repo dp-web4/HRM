@@ -169,6 +169,17 @@ class IdentityAnchoredSessionV2:
             if self.governance and self.governance.enabled:
                 print("[Web4 Governance] Enabled for session audit")
 
+        # Metacog — Nomad's interoceptive detectors (Phase 4 P1.3).
+        # Symmetric with gameplay dispatch: observe_tick per turn,
+        # signals logged for downstream consciousness analysis.
+        # Non-fatal if import/init fails.
+        self._metacog = None
+        try:
+            from sage.cognition.metacog.core import Metacog, MetacogConfig
+            self._metacog = Metacog(config=MetacogConfig())
+        except Exception:
+            pass
+
         # NEW v2.0: Load identity exemplars from previous sessions
         self.identity_exemplars = self._load_identity_exemplars()
 
@@ -585,6 +596,25 @@ You have access to tools that can interact with the world: checking the time, do
 
         self.conversation_history.append({'speaker': 'Claude', 'text': user_input})
         self.conversation_history.append({'speaker': 'SAGE', 'text': response})
+
+        # Metacog observe_tick (Phase 4 P1.3 — symmetry with gameplay dispatch).
+        # Runs the same Nomad detectors (perseveration, stale_reference, etc.)
+        # that gameplay uses per-step, adapted to raising's per-turn cadence.
+        # Failures are non-fatal; metacog is strictly additive logging here.
+        if hasattr(self, '_metacog') and self._metacog is not None:
+            try:
+                self._metacog.observe_tick(
+                    tick=self.turn_count,
+                    action_taken={'type': 'response', 'raw': response[:80]},
+                    state_delta={'response_len': len(response)},
+                    snarc_novelty=None,
+                    atp_balance=None,
+                    atp_cost=None,
+                    estimated_actions_to_goal=None,
+                    goal_status='raising_exchange',
+                )
+            except Exception:
+                pass
 
         # Score and collect experience (Phase 1 real raising)
         if not self.dry_run:

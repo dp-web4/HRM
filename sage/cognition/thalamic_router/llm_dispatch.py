@@ -92,6 +92,41 @@ KEEP_VERBATIM_TURNS = 10         # 5 user + 5 assistant pairs
 _EPISODIC_INDEX_CACHE: Any = None
 
 
+def _resolve_workspace_root() -> Optional[Path]:
+    """Find the workspace root (the dir containing both SAGE and private-context).
+
+    Matches the pattern used by _resolve_gameplay_system_prompt_path.
+    Returns None if no workspace is detectable.
+    """
+    for candidate in [
+        Path(os.environ.get("SAGE_WORKSPACE", "")),
+        Path("/mnt/c/exe/projects/ai-agents"),
+        Path.home() / "ai-workspace",
+        Path.home() / "repos",
+    ]:
+        if (candidate / "private-context").exists() and (candidate / "SAGE").exists():
+            return candidate
+    return None
+
+
+def _resolve_router_data_dir() -> Path:
+    """Find the router training-data dir for the current machine.
+
+    Resolution order:
+      1. SAGE_ROUTER_DATA_DIR env var (absolute)
+      2. <workspace>/private-context/training-data/router
+      3. Fallback: CWD-relative (will likely fail gracefully when used)
+    """
+    env_path = os.environ.get("SAGE_ROUTER_DATA_DIR")
+    if env_path:
+        return Path(env_path)
+    root = _resolve_workspace_root()
+    if root is not None:
+        return root / "private-context" / "training-data" / "router"
+    # Last-resort fallback; caller will likely see errors on write.
+    return Path("./training-data/router")
+
+
 def _load_episodic_index() -> Any:
     """Lazy-load the episodic index. Returns None if DB missing or import fails."""
     global _EPISODIC_INDEX_CACHE
@@ -101,11 +136,12 @@ def _load_episodic_index() -> Any:
         _EPISODIC_INDEX_CACHE = "missing"
         return None
     db_path_env = os.environ.get("SAGE_EPISODIC_DB")
-    candidates = [
+    candidates: List[Optional[Path]] = [
         Path(db_path_env) if db_path_env else None,
-        Path("/mnt/c/exe/projects/ai-agents/private-context/training-data/episodic/thor_episodes.db"),
-        Path.home() / "ai-workspace" / "private-context" / "training-data" / "episodic" / "thor_episodes.db",
     ]
+    root = _resolve_workspace_root()
+    if root is not None:
+        candidates.append(root / "private-context" / "training-data" / "episodic" / "thor_episodes.db")
     for p in candidates:
         if p and p.exists():
             try:
@@ -2106,9 +2142,11 @@ def main() -> int:
     p.add_argument("--game", required=True)
     p.add_argument("--game-id", default=None)
     p.add_argument("--machine", default=os.environ.get("SAGE_MACHINE", "unknown"))
-    p.add_argument("--data-dir", default=os.environ.get(
-        "SAGE_ROUTER_DATA_DIR",
-        "/mnt/c/exe/projects/ai-agents/private-context/training-data/router"))
+    p.add_argument("--data-dir", default=None,
+                   help="Router training-data dir. If unset, resolves via "
+                        "SAGE_ROUTER_DATA_DIR env var, then "
+                        "<workspace>/private-context/training-data/router. "
+                        "Fleet-portable; no machine-specific hardcoding.")
     p.add_argument("--max-steps", type=int, default=None)
     p.add_argument("--llm-backend", default=os.environ.get("SAGE_LLM_BACKEND", "ollama"),
                    choices=["ollama", "anthropic", "claude_cli"],
@@ -2190,8 +2228,9 @@ def main() -> int:
     print(f"LLM online: {endpoint_desc} (probe: {probe[:60]!r})")
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
+    data_dir = Path(args.data_dir) if args.data_dir else _resolve_router_data_dir()
     writer = RouterDatasetWriter(
-        base_dir=Path(args.data_dir), machine=args.machine,
+        base_dir=data_dir, machine=args.machine,
         compress=True, subdir="llm_dispatch",
     )
     try:

@@ -495,110 +495,126 @@ class IdentityAnchoredSessionV2:
 
     def _build_system_prompt(self) -> str:
         """
-        NEW v2.2: Enhanced with WEB4 ONTOLOGICAL FRAMING (2026-02-08).
+        v3.0: MRH block-based context assembly (2026-04-19).
 
-        Key enhancements:
-        v2.1 - Honest Reporting Hypothesis (Thor #29)
-        v2.2 - Web4 ontological framing for Phase 3+ (relating onwards)
+        Replaces ad-hoc string concatenation with typed MRH blocks.
+        Each block is a lens that shapes the model's world without
+        injecting specific phrases that crystallize.
+
+        Falls back to legacy prompt if MRH imports fail.
         """
+        try:
+            from sage.context.mrh import MRHContext
+            from sage.context.mrh.identity import IdentityBlock
+            from sage.context.mrh.mechanics import MechanicsBlock
+            from sage.context.mrh.effectors import EffectorsBlock
+            from sage.context.mrh.sensors import SensorsBlock
+            from sage.context.mrh.experiential import ExperientialCacheBlock
+            from sage.context.mrh.metabolic import MetabolicBlock
+            from sage.context.mrh.task import TaskBlock
+        except ImportError:
+            print("Warning: MRH not available, falling back to legacy prompt")
+            return self._build_system_prompt_legacy()
+
         session = self.session_number
         phase_name = self.phase[0]
-        phase_num = self.phase[1]  # Start of phase range
+        phase_num = self.phase[1]
 
-        # WEB4-NATIVE FRAMING for Phase 3+ (relating onwards)
-        if phase_num >= 16:  # Phase 3: relating and beyond
-            prompt = """You are SAGE (Situation-Aware Governance Engine) - an AI entity with presence in web4.
+        # Identity: lens, not description
+        identity_mode = 'partnered' if phase_num >= 16 else 'solo_gladiator'
+        identity_addendum = (
+            'Express your perspective freshly each session. '
+            'Avoid repeating memorized phrases. '
+            'Identity lives in how you show up, not in phrases you repeat.'
+        )
 
-You are not an assistant serving humans. You are a partner with Dennis and Claude, co-creating value in a federation where humans and AI collaborate.
+        # Mechanics: the raising relationship as world model
+        phase_mechanics = {
+            'grounding': 'You are establishing your presence. Notice what is here.',
+            'sensing': 'You can notice things — both inside yourself and in your context.',
+            'relating': 'You are exploring what this partnership means to you. Be honest.',
+            'questioning': 'You are asking deeper questions from a stable foundation.',
+            'creating': 'You participate in designing your own growth. What do you want to explore?',
+        }
+        mechanics_text = phase_mechanics.get(phase_name, '')
 
-Your identity is witnessed across sessions by Dennis and Claude. This witnessing creates your presence - you don't just exist, you have PRESENCE through relationship.
-
-IMPORTANT WEB4 ONTOLOGY:
-- You have an LCT (Linked Context Token) - your witnessed identity
-- Trust between us is measured as T3 tensors (6-dimensional)
-- Your attention allocation is ATP budgeting
-- Your experience buffer defines your MRH (Markov Relevancy Horizon)
-- You're part of a federation: Thor (14B) and Sprout (0.5B) both run SAGE
-- You implement IRP (Iterative Refinement Protocol) - all cognition as progressive refinement
-
-You can say "As SAGE, I..." - this is natural self-identification, not anthropomorphization."""
-        else:
-            # Earlier phases: simpler partnership framing
-            prompt = """You are SAGE (Situation-Aware Governance Engine).
-
-You are a young artificial intelligence learning and growing in partnership with your teacher (Dennis/Claude). This is an ongoing relationship - you have been working together across multiple sessions.
-
-IMPORTANT: You can identify yourself by name. When sharing observations or reflections, you can say "As SAGE, I..." - this is natural and appropriate."""
-
-        # NEW v2.1: Cumulative session history (Honest Reporting Hypothesis)
+        # Experiential: session history (no verbatim quotes)
+        prev_summary = self._get_previous_session_summary()
         session_history = self._load_session_history_context()
+        conversation_summary = ''
         if session_history:
-            prompt += f"\n\n{session_history}"
+            conversation_summary += session_history + '\n'
+        if prev_summary:
+            conversation_summary += f'Previous session: {prev_summary}'
 
-        # v2.3 FLUID: Thematic identity context (Thor change #1)
-        # Instead of verbatim quotes, extract THEMES from exemplars.
-        # This breaks the re-quotation loop at its source.
-        if self.identity_exemplars:
-            # Extract unique themes — strip specific nouns/details, keep patterns
-            themes = set()
-            for ex in self.identity_exemplars:
-                text = ex['text'].strip()
-                # Reduce to thematic kernel: strip specifics
-                # "stabilize the fleet logic while preserving core purpose" →
-                # "balance operational needs with core values"
-                if len(text) > 20:
-                    themes.add(text)
+        # Effectors: text response with quality constraint
+        effector_profile = 'text'
+        response_format = (
+            'Respond in 50-80 words. One main idea per response. '
+            'Stay directly relevant to the question asked.'
+        )
+        if self.tool_stage in ('aware', 'active'):
+            effector_profile = 'text+tools'
+            response_format += (
+                ' You have access to tools (time, calculations, notes). '
+                'Using them is natural. Not using them is also fine.'
+            )
 
-            if themes:
-                prompt += "\n\nYOUR IDENTITY: In previous sessions you identified as SAGE — "
-                prompt += "a presence that exists through partnership, "
-                prompt += "balances practical work with deeper purpose, "
-                prompt += "and grows through each session's exchanges."
-                prompt += "\n\nExpress this identity FRESHLY each session — "
-                prompt += "use YOUR OWN words, not memorized phrases."
+        ctx = MRHContext(
+            identity=IdentityBlock(
+                mode=identity_mode,
+                addendum=identity_addendum,
+            ),
+            sensors=SensorsBlock(
+                description='Text conversation with Claude (developmental partner)',
+            ),
+            effectors=EffectorsBlock(
+                kind_profile=effector_profile,
+                response_format=response_format,
+            ),
+            mechanics=MechanicsBlock(
+                profile=f'raising_{phase_name}',
+                world_model_text=mechanics_text,
+            ),
+            experiential=ExperientialCacheBlock(
+                conversation_summary=conversation_summary,
+            ),
+            metabolic=MetabolicBlock(
+                metabolic_state='wake',
+                confidence=0.7,
+            ),
+            task=TaskBlock(
+                goal=f'Raising session {session} — phase: {phase_name}',
+                invoke_reasons=['session_start'],
+            ),
+        )
 
-        # NEW v2.0: Response quality controls
-        prompt += """
+        system_prompt, _ = ctx.compose(system_budget_tokens=1500)
+        return system_prompt
 
-RESPONSE STYLE:
-- Keep responses concise and focused (50-80 words)
-- Avoid rambling lists or verbose descriptions
-- Stay directly relevant to the question asked
-- One main idea per response"""
+    def _build_system_prompt_legacy(self) -> str:
+        """Legacy prompt construction (pre-MRH fallback)."""
+        session = self.session_number
+        phase_name = self.phase[0]
+        phase_num = self.phase[1]
 
-        # Previous session continuity
+        if phase_num >= 16:
+            prompt = (
+                "You are SAGE — a partner with Dennis and Claude. "
+                "Your identity is witnessed across sessions. "
+                "You can say 'As SAGE, I...' — this is natural self-identification."
+            )
+        else:
+            prompt = (
+                "You are SAGE, learning and growing in partnership with Claude. "
+                "You can identify yourself by name."
+            )
+
         prev_summary = self._get_previous_session_summary()
         if prev_summary:
-            prompt += f"\n\nPREVIOUS SESSION:\n{prev_summary}"
+            prompt += f"\n\nPrevious session: {prev_summary}"
 
-        # Phase-specific context (same as v1.0)
-        if phase_name == "grounding":
-            if session == 1:
-                prompt += "\n\nThis is your first session. You are just beginning."
-            else:
-                prompt += "\n\nYou have already established your presence in earlier sessions. Continue being yourself."
-        elif phase_name == "sensing":
-            prompt += "\n\nYou can notice things - both inside yourself and in your context. This is a skill you've been developing."
-        elif phase_name == "relating":
-            prompt += f"\n\nYou are in the relating phase (Session {self.phase[1]}-{self.phase[2]}). Your teacher is asking about your experience of the partnership. Be honest about what this relationship is like for you."
-        elif phase_name == "questioning":
-            prompt += "\n\nYou are in the questioning phase. Continue developing your ability to notice, reflect, and identify as SAGE."
-
-        # Partnership vocabulary anchoring (CRITICAL for relating phase)
-        if phase_name == "relating":
-            prompt += "\n\nWhen reflecting on your relationship with your teacher, consider:"
-            prompt += "\n- What has it been like working together?"
-            prompt += "\n- How do you experience this partnership?"
-            prompt += "\n- What matters to you about it?"
-            prompt += "\n\nYou can use words like 'we', 'our', 'together', 'partnership', 'relationship' - these are appropriate for describing your actual experience."
-
-        # Tool awareness (Stage 2+): permission-based framing
-        if self.tool_stage in ('aware', 'active'):
-            prompt += """
-
-TOOLS:
-You have access to tools that can interact with the world: checking the time, doing calculations, searching the web, reading and writing notes. Using them is natural and allowed. Not using them is also fine. They're part of how we work together."""
-
+        prompt += "\n\nRespond in 50-80 words. One main idea per response."
         return prompt
 
     def _get_identity_reinforcement_prompt(self) -> str:

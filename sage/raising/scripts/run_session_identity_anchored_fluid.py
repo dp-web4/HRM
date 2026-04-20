@@ -87,11 +87,12 @@ class IdentityAnchoredSessionV2:
     RAISING_DIR = Path(__file__).parent.parent.resolve()
     IDENTITY_DIR = HRM_ROOT / "sage" / "identity"
 
-    # Instance-resolved paths (fallback to old layout if instance not found)
-    _instance = InstancePaths.resolve(machine='sprout')
-    STATE_FILE = _instance.identity if _instance.exists() else RAISING_DIR / "state" / "identity.json"
-    SESSIONS_DIR = _instance.sessions if _instance.exists() else RAISING_DIR / "sessions" / "text"
-    LOGS_DIR = RAISING_DIR / "logs" / "observations"
+    # Instance-resolved paths — resolved at __init__ time from machine/model
+    # args or SAGE_MACHINE/SAGE_MODEL env vars. No hardcoded machine name.
+    _instance = None
+    STATE_FILE = None
+    SESSIONS_DIR = None
+    LOGS_DIR = None
 
     PHASES = {
         0: ("pre-grounding", 0, 0),
@@ -148,7 +149,16 @@ class IdentityAnchoredSessionV2:
     TOOL_STAGES = (None, 'silent', 'aware', 'active')
 
     def __init__(self, session_number: Optional[int] = None, dry_run: bool = False,
-                 enable_governance: bool = False, tools: Optional[str] = None):
+                 enable_governance: bool = False, tools: Optional[str] = None,
+                 machine: Optional[str] = None, model: Optional[str] = None):
+        # Resolve instance paths from machine/model args or env vars.
+        # No hardcoded machine name — works for Sprout, McNugget, or any fleet machine.
+        instance = InstancePaths.resolve(machine=machine, model=model)
+        self._instance = instance
+        self.STATE_FILE = instance.identity if instance.exists() else self.RAISING_DIR / "state" / "identity.json"
+        self.SESSIONS_DIR = instance.sessions if instance.exists() else self.RAISING_DIR / "sessions" / "text"
+        self.LOGS_DIR = self.RAISING_DIR / "logs" / "observations"
+
         self.dry_run = dry_run
         self.state = self._load_state()
 
@@ -346,7 +356,7 @@ class IdentityAnchoredSessionV2:
         # Gate: skip for small models — they collapse under exemplar injection
         instance = self._instance
         if instance.exists():
-            model_name = instance.dir.name.split('-', 1)[-1] if '-' in instance.dir.name else ''
+            model_name = instance.root.name.split('-', 1)[-1] if '-' in instance.root.name else ''
             if any(s in model_name.lower() for s in ('0.5b', '0.8b', '1b')):
                 return []
         lookback = min(self.FLUID_LOOKBACK_WINDOW, self.session_number - 1)
@@ -896,13 +906,20 @@ class IdentityAnchoredSessionV2:
 
 def main():
     # Check for updates and relaunch if needed (BEFORE parsing args)
-    from check_updates import relaunch_if_needed
-    if relaunch_if_needed(__file__, sys.argv):
-        return  # Script was relaunched, exit this instance
+    # check_updates lives in the scripts dir — may not be on sys.path
+    # when invoked via the unified launcher. Non-fatal if missing.
+    try:
+        from check_updates import relaunch_if_needed
+        if relaunch_if_needed(__file__, sys.argv):
+            return  # Script was relaunched, exit this instance
+    except ImportError:
+        pass  # Running via unified launcher, not from scripts/ dir
 
     parser = argparse.ArgumentParser(description="Identity-anchored v2.0 (enhanced multi-session recovery)")
     parser.add_argument("--session", type=int, help="Session number (default: next)")
     parser.add_argument("--model", type=str, help="Model path")
+    parser.add_argument("--machine", type=str, default=None,
+                        help="Machine name (default: SAGE_MACHINE env var or auto-detect)")
     parser.add_argument("--dry-run", action="store_true", help="Don't save state (test only)")
     parser.add_argument("--tools", type=str, choices=['silent', 'aware', 'active'],
                         default=None,
@@ -914,7 +931,8 @@ def main():
     args = parser.parse_args()
 
     session = IdentityAnchoredSessionV2(
-        session_number=args.session, dry_run=args.dry_run, tools=args.tools
+        session_number=args.session, dry_run=args.dry_run, tools=args.tools,
+        machine=args.machine,
     )
     session.initialize_model(args.model)
     session.run_session()

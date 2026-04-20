@@ -36,15 +36,12 @@ git stash pop 2>/dev/null || true
 # Ensure daemon is running
 source "$SAGE_DIR/sage/scripts/ensure_daemon.sh"
 
-# Run raising session with the identity-anchored fluid runner
-# McNugget uses gemma4:e4b — larger than Sprout's 0.8B,
-# so exemplar gating should allow them through.
-# The fluid scaffold's 4-gram diversity filter prevents crystallization
-# while still allowing identity anchoring.
-/opt/homebrew/bin/python3 -m sage.raising.scripts.ollama_raising_session \
+# Run raising session via unified launcher + fluid runner
+# Uses the identity-anchored fluid variant with MRH block-based prompt
+# and Thor S86 anti-crystallization mitigations.
+/opt/homebrew/bin/python3 -m sage.session --raising --fluid \
     --machine mcnugget \
-    --model gemma4:e4b \
-    -c 2>&1
+    2>&1
 
 INSTANCE_DIR="sage/instances/mcnugget-gemma4-e4b"
 

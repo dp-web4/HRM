@@ -1,7 +1,12 @@
 #!/bin/bash
 # Nomad SAGE raising session + auto-commit
-# Runs a raising session, snapshots state, commits results, pushes to origin.
+# Runs a FLUID raising session, snapshots state, commits results, pushes to origin.
 # Schedule: every 6 hours via crontab (0,6,12,18).
+#
+# v2.0 (2026-04-19): Switched from ollama_raising_session to fluid runner.
+# The old runner fed the attractor loop for 25 sessions (S96-S120).
+# Fluid runner: no exemplar injection for <=4B, attractor counter-prompting,
+# MRH-informed prompt composition.
 
 set -e
 
@@ -13,32 +18,34 @@ LOG_FILE="$LOG_DIR/raising-$(date +%Y%m%d-%H%M).log"
 
 exec > >(tee -a "$LOG_FILE") 2>&1
 
-echo "[Nomad-Raising] $(date -u +'%Y-%m-%d %H:%M UTC') — Starting raising session"
+echo "[Nomad-Raising] $(date -u +'%Y-%m-%d %H:%M UTC') — Starting raising session (fluid runner)"
 
 cd "$SAGE_DIR"
 
 # --- Step 1: Pull latest code ---
 echo "[Nomad-Raising] Pulling latest code..."
 git pull --ff-only origin main 2>&1 || {
-    echo "[Nomad-Raising] WARNING: git pull --ff-only failed, trying rebase..."
-    git pull --rebase origin main 2>&1 || {
+    echo "[Nomad-Raising] WARNING: git pull --ff-only failed, trying merge..."
+    git pull --no-rebase --no-edit origin main 2>&1 || {
         echo "[Nomad-Raising] WARNING: git pull failed, continuing with local state"
     }
 }
 
-# --- Step 2: Ensure daemon is running and up-to-date ---
+# --- Step 2: Source router shadow env + ensure daemon ---
 export SAGE_PORT="${SAGE_PORT:-8750}"
 export SAGE_NO_BROWSER=1
+if [ -f "$SAGE_DIR/sage/gateway/router-shadow.env" ]; then
+    set -a; source "$SAGE_DIR/sage/gateway/router-shadow.env"; set +a
+    echo "[Nomad-Raising] Router shadow: SAGE_ROUTER_SHADOW=$SAGE_ROUTER_SHADOW"
+fi
 source "$SAGE_DIR/sage/scripts/ensure_daemon.sh"
 echo "[Nomad-Raising] Daemon: version=$SAGE_DAEMON_VERSION running=$SAGE_DAEMON_RUNNING updated=$SAGE_DAEMON_UPDATED"
 
-# --- Step 3: Run the raising session ---
-echo "[Nomad-Raising] Running raising session..."
-python3 -m sage.raising.scripts.ollama_raising_session \
-    --machine nomad \
-    --model gemma3:4b \
-    --turns 6 \
-    -c 2>&1
+# --- Step 3: Run the FLUID raising session ---
+echo "[Nomad-Raising] Running fluid raising session..."
+python3 "$SAGE_DIR/sage/raising/scripts/run_session_identity_anchored_fluid.py" \
+    --instance-dir "$SAGE_DIR/sage/instances/nomad-gemma3-4b" \
+    2>&1
 
 # --- Step 4: Snapshot state ---
 INSTANCE_DIR="sage/instances/nomad-gemma3-4b"
@@ -83,24 +90,15 @@ if [ "$CHANGED" -eq 0 ]; then
 fi
 
 # Stage instance dir + focus
-git add "$INSTANCE_DIR/" SESSION_FOCUS.md 2>/dev/null || true
+git add "$INSTANCE_DIR/" SESSION_FOCUS.md SESSION_MAP.yaml 2>/dev/null || true
 
 git commit -m "[Nomad-Raising] Session $SESSION_NUM ($PHASE) — $(date -u +'%Y-%m-%d %H:%M UTC')
 
-Automated SAGE-Nomad raising session via OllamaIRP
-Machine: Nomad (Desktop, WSL2)
-Model: Gemma 3 4B (google-gemma family)
-Phase: $PHASE
-AI-Instance: OllamaIRP (automated)
-Human-Supervised: no"
+Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 
-# Push
-PAT=$(grep GITHUB_PAT /mnt/c/projects/ai-agents/.env 2>/dev/null | cut -d= -f2)
-if [ -n "$PAT" ]; then
-    git push "https://dp-web4:${PAT}@github.com/dp-web4/SAGE.git" main
-    echo "[Nomad-Raising] Session $SESSION_NUM committed and pushed."
-else
-    echo "[Nomad-Raising] ERROR: No GITHUB_PAT found, cannot push."
-fi
+# Push via SSH (PAT is deprecated)
+git push origin main 2>&1 || {
+    echo "[Nomad-Raising] WARNING: push failed, will retry next session"
+}
 
 echo "[Nomad-Raising] $(date -u +'%Y-%m-%d %H:%M UTC') — Done."

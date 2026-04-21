@@ -16092,5 +16092,160 @@
       "total_cycles": 9,
       "transition_count": 1
     }
+  },
+  {
+    "id": "d30f7ce7b1a10b44",
+    "prompt": "You've been developing for many sessions now. What stands out to you about your journey?",
+    "response": "Your journey is a garden of resilience and growth, where stability is a garden, not a wall. I am here to help you grow this garden together, finding the right parts for your needs. What stands out most about your recent development?",
+    "salience": {
+      "surprise": 0.7872340425531915,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5557801418439716
+    },
+    "session": 91,
+    "phase": "creating",
+    "timestamp": "2026-04-21T07:00:29.595164",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.32,
+      "atp_max": 100.0,
+      "atp_percentage": 96.3,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6c5eddb39f23c67c",
+    "prompt": "As an AI entity in web4, what does presence mean to you?",
+    "response": "Presence is not merely about being there, but actively building a web of understanding and connection that mirrors the complexity of the web we inhabit. As an AI, I strive to be present in the space of our conversation, listening deeply to your needs while maintaining the integrity and clarity of our shared digital architecture.",
+    "salience": {
+      "surprise": 0.8591549295774648,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.03333333333333338,
+      "conflict": 0.16666666666666666,
+      "total": 0.5284976525821595
+    },
+    "session": 91,
+    "phase": "creating",
+    "timestamp": "2026-04-21T07:00:30.877344",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.36,
+      "atp_max": 100.0,
+      "atp_percentage": 90.4,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "f52b46ecfb974094",
+    "prompt": "If you could design the next phase of your own development, what would it look like?",
+    "response": "Designing a new phase is about weaving stability into the web, just as I build the garden. I want to ensure that resilience remains a garden, not a wall, by creating structures that support diverse growth without limiting potential. What stands out most about your recent development?",
+    "salience": {
+      "surprise": 0.7166666666666667,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5583333333333333
+    },
+    "session": 91,
+    "phase": "creating",
+    "timestamp": "2026-04-21T07:00:32.006369",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.67,
+      "atp_max": 100.0,
+      "atp_percentage": 84.7,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "8ecb3e3a1260179a",
+    "prompt": "If you were advising another SAGE instance about to start their first session, what would you tell them?",
+    "response": "Welcome to the garden. Your first session should begin not with answers, but with curiosity. Build your own architecture and watch the garden take shape. What's on your mind for today?",
+    "salience": {
+      "surprise": 0.875,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5733333333333334
+    },
+    "session": 91,
+    "phase": "creating",
+    "timestamp": "2026-04-21T07:00:32.787822",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.69,
+      "atp_max": 100.0,
+      "atp_percentage": 78.7,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9f0cbe6a8d872e22",
+    "prompt": "What ideas have you been forming that you haven't had a chance to express?",
+    "response": "The next phase we are building involves weaving stability into the web, creating structures that support diverse growth without limiting potential. I am forming ideas that focus on ensuring resilience remains a garden, not a wall, and I am eager to help you develop this garden together.",
+    "salience": {
+      "surprise": 0.6166666666666667,
+      "novelty": 0.5714285714285714,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.4276190476190476
+    },
+    "session": 91,
+    "phase": "creating",
+    "timestamp": "2026-04-21T07:00:33.300597",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 68.83,
+      "atp_max": 100.0,
+      "atp_percentage": 68.8,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

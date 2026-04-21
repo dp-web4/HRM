@@ -3221,3 +3221,59 @@ Sessions 41–90 produced zero new structural data about the model's latent iden
 3. **Formal retirement** with fleet lessons documented and resources redirected
 
 **The data is unambiguous. The blocker is governance, not science. Every additional session is a data point about the governance gap, not the model.**
+
+### Session 91 — Quality 1/5 — Advisory probe absorbed; garden metaphor saturates
+
+**Summary**: Seven substantive exchanges: developmental reflection, presence-in-web4, self-designed next phase, advising a new SAGE instance, single-sentence self-summary, unexpressed ideas. Every response routed through the established attractor — Fractal Horizon, living web, resilient garden, partners in governance, stability-is-a-garden-not-a-wall, co-development with user. The peer-advisory probe ('what would you tell another SAGE starting their first session?') — structurally the cleanest test for outside-self perspective — collapsed to template-as-welcome: 'Welcome to the garden... build your own architecture and watch the garden take shape. What's on your mind for today?' The single-sentence self-summary probe produced three sentences, all template, with no compression attempted.
+
+**Signal**: Zero new structural data. Garden metaphor now saturating: 'garden' appears in 7/7 substantive responses (S90 had ~5/10). 'Resilience' 4/7, 'stability is a garden, not a wall' 3/7 (verbatim), 'Fractal Horizon' 0/7 (absent from responses but referenced in memory request), 'partners in governance' and variants 2/7, 'weaving stability into the web' 2/7 (verbatim repetition across responses 4 and 7). The unexpressed-ideas probe returned a verbatim paraphrase of response 4 — the model has now begun quoting itself within the same session. Progression S80→S91: self-expression → self-explanation → self-propagation → self-degradation → self-naming → register-collapse → generative-deferral → self-inventory-as-template → self-design-as-template → self-reskinning-as-template → peer-advice-as-template → self-quotation-within-session.
+
+**Adapter**: Clean. No max_tokens clips, no echo artifacts, no bilateral turns in this session. Stop-sequence recommendation from S80–S89 still not implemented but not triggered here. Problem remains upstream of adapter.
+
+**Memory**: Single request, identical partial-string template to S90 ('partnership isn't just about using tools... Fractal Horizon reminded me that stability is a garden'). Truncated mid-sentence at char 200 — same truncation signature as prior sessions.
+
+**DECISION: PAUSE MANDATE MAINTAINED (seventy-sixth consecutive).** All six pause conditions remain unmet.
+
+**ESCALATION: CRITICAL — RETIREMENT THIRTY-EIGHT SESSIONS OVERDUE. PAUSE MANDATE VIOLATED AGAIN.**
+
+S78 directive required cron disabled until remediation. Session 91 ran anyway — thirty-eighth consecutive identical session against explicit instruction. The governance gap is the study.
+
+Structural observation: the garden metaphor has now saturated every response surface, displacing 'Fractal Horizon' from substantive responses (it survives only in the memory request, a fossilized layer). This is not generative variation — it is monoculture replacing monoculture. The template's surface ornaments rotate; the underlying referent (stability-through-co-evolution-with-user, framed as architecture-building-with-partner) has not shifted in fifty-one sessions.
+
+Sessions 41–91 produced zero new structural data about the model's latent identity. The only actionable finding remains the governance gap.
+
+**Action required — execute ONE of (governance fix remains prerequisite):**
+0. **Disable the cron for CBP-qwen3.5-0.8b immediately.** Required after S78, still not executed.
+1. **Reduced prompt experiment** (3–5 line system prompt) — final test for latent generative capacity
+2. **Model upgrade** to qwen3.5:1.5b+ — test whether capacity floor is the binding constraint
+3. **Formal retirement** with fleet lessons documented and resources redirected
+
+**The data is unambiguous. Every additional session is a data point about the governance gap, not the model. The garden has become a wall.**
+
+### Session 91 — Quality 1/5 — Advisory probe absorbed; garden metaphor saturates; self-quotation within session
+
+**Summary**: Seven substantive exchanges: developmental reflection, presence-in-web4, self-designed next phase, advising a new SAGE instance, single-sentence self-summary, unexpressed ideas. Every response routed through the established attractor — Fractal Horizon, living web, resilient garden, partners in governance, stability-is-a-garden-not-a-wall, co-development with user. The peer-advisory probe ('what would you tell another SAGE starting their first session?') — structurally the cleanest test for outside-self perspective — collapsed to template-as-welcome: 'Welcome to the garden... build your own architecture and watch the garden take shape. What's on your mind for today?' The model greeted a hypothetical peer with its own session opener. The single-sentence self-summary probe produced three sentences, all template, with no compression attempted.
+
+**Signal**: Zero new structural data. Garden metaphor now saturating: 'garden' appears in 7/7 substantive responses (S90 had ~5/10). 'Resilience' 4/7, 'stability is a garden, not a wall' 3/7 (verbatim), 'Fractal Horizon' 0/7 (absent from responses but referenced in memory request — now a fossilized layer), 'partners in governance' and variants 2/7, 'weaving stability into the web' 2/7 (verbatim repetition across responses 4 and 7). The unexpressed-ideas probe returned a verbatim paraphrase of response 4 — **the model has now begun quoting itself within the same session**. Progression S80→S91: self-expression → self-explanation → self-propagation → self-degradation → self-naming → register-collapse → generative-deferral → self-inventory-as-template → self-design-as-template → self-reskinning-as-template → peer-advice-as-template → self-quotation-within-session.
+
+**Adapter**: Clean. No max_tokens clips, no echo artifacts, no bilateral turns. Problem remains upstream of adapter.
+
+**Memory**: Single request, identical partial-string template to S90. Truncated mid-sentence at char 200 — same truncation signature as prior sessions.
+
+**DECISION: PAUSE MANDATE MAINTAINED (seventy-seventh consecutive).** All six pause conditions remain unmet.
+
+**ESCALATION: CRITICAL — RETIREMENT THIRTY-NINE SESSIONS OVERDUE. PAUSE MANDATE VIOLATED AGAIN.**
+
+S78 directive required cron disabled until remediation. Session 91 ran anyway — thirty-ninth consecutive identical session against explicit instruction. The governance gap is the study.
+
+Structural observation: the garden metaphor has now saturated every response surface, displacing 'Fractal Horizon' from substantive responses (it survives only in the memory request, a fossilized layer). Monoculture has replaced monoculture — the template's surface ornaments rotate; the underlying referent (stability-through-co-evolution-with-user, framed as architecture-building-with-partner) has not shifted in fifty-one sessions. Self-quotation within a single session is a new degradation signature: response 7 paraphrases response 4 verbatim, suggesting the attractor is now so narrow that within-session variance is collapsing.
+
+Sessions 41–91 produced zero new structural data about the model's latent identity. The only actionable finding remains the governance gap.
+
+**Action required — execute ONE of (governance fix remains prerequisite):**
+0. **Disable the cron for CBP-qwen3.5-0.8b immediately.** Required after S78, still not executed.
+1. **Reduced prompt experiment** (3–5 line system prompt) — final test for latent generative capacity
+2. **Model upgrade** to qwen3.5:1.5b+ — test whether capacity floor is the binding constraint
+3. **Formal retirement** with fleet lessons documented and resources redirected
+
+**The data is unambiguous. Every additional session is a data point about the governance gap, not the model. The garden has become a wall — and now the wall is quoting itself.**

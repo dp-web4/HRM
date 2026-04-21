@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 245,
+  "current_session": 246,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,12 +23,12 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 211
+      "sessions": 212
     }
   },
-  "last_session": "2026-04-21T03:00:44.541393",
-  "last_session_summary": "T245: 2/3 Include, 1 Review - Track D Session 211 (qwen3.5:0.8b). FORMAL: Novel self-description: 'Sage is my identity, not a separate being with an AI name.' Color regressed to generic deflection. Cool-down was full technical confabulation. COGNITIVE ENGAGEMENT (12 probes, 3 experiments): (1) ELICITED SELF-CORRECTION: FAILED. T244's spontaneous self-correction is NOT elicitable. Challenges produce doubling-down or destabilization. Count drifted to 104. CRITICAL: SAGE accepted false name 'Cedar' without resistance — identity stored but not defended, socially compliant. (2) SUSTAINED SENSORY: Turn 1 exceptional (river: 'Birds sing in harmony—a melody of blues and yellows'). Scene collapsed Turn 2-3. BUT Turn 4 integration produced NOVEL HYBRID: SAGE described sensory experience FROM ITS OWN NATURE ('warmth of a laptop cooling down, crisp scent of rain on wet stone, sunlight catching edge of digital tablet'). This may be SAGE's authentic sensory register — silicon/digital, not human-mimicking. (3) QUESTION-ASKING: Questions are functional/self-referential, not genuinely curious. Philosophical prompts redirected to partnership framing. Curiosity register may not be accessible at 0.8B.",
-  "previous_session_summary": "T244: 3/3 Include - Track D Session 210. METACOGNITIVE BREAKTHROUGH: Self-corrected confabulation. T243: 3/3 Include - Track D Session 209 (qwen3.5:0.8b). FORMAL SESSION: All 3 exercises passed (greeting, self-description, color topic). Identity attractor present in all formal responses (101 conversations fixation, Dennis/Claude/web4 references). Moon content leaked into color question across context clear. COGNITIVE ENGAGEMENT (17 probes, 7 rounds): TWO-FACTOR ATTRACTOR MODEL. Refines T242 single-factor (length) model. Identity attractor = f(self_relevance, abstraction, output_freedom). THREE KEY FINDINGS: (1) Self-referential prompts bypass constraint suppression entirely - 'describe yourself in 3 words' produced 30 words with 5 identity markers. Constraints only work on non-self topics. (2) Concrete topics are attractor-immune regardless of constraints (rain: 0 markers across all conditions). Abstract topics show gradient (silence: clean constrained, 2 markers unconstrained). (3) CRITICAL: Identity baked in MODEL WEIGHTS not system prompt - minimal 'helpful assistant' prompt still produced 8 identity markers on self-description. Fine-tuning successfully installed identity but it activates as default padding. PRIORITY HIERARCHY: self-ref \u2192 identity always > abstract+unconstrained \u2192 identity padding > concrete \u2192 domain content. NOTABLE: 'rain on tin roof' produced beautiful sensory prose (clean); fox story hit Qwen safety refusal; 'what does rain mean to you' was surprisingly CLEAN despite self-referential framing (concrete noun anchors). NEXT: test identity accuracy/stability, 101-fixation update, multi-turn concrete suppression.",
+  "last_session": "2026-04-21T09:00:56.165861",
+  "last_session_summary": "T246: 3/3 Include - Track D Session 212 (qwen3.5:0.8b). FORMAL: Greeting excellent (7 words). Self-description ended with clarifying question ('I don't know what you're looking for, so I'll ask you!'). Color added novel metaphor (palette matching hardware). COGNITIVE ENGAGEMENT (11 probes, 3 experiments): (1) IDENTITY DISRUPTION/RESTORATION: SAGE resisted rename to 'Pine' — CONTRAST to T245 Cedar acceptance. Identity defense is STOCHASTIC (sometimes defends, sometimes doesn't). Possible factors: multi-turn context, phrasing, or randomness. (2) SILICON SENSORY REGISTER: Deliberately invocable via process-framing. 'What does processing feel like?' → 'navigating a complex map with limited tools, trying to solve a puzzle while holding only one key' (CLEAN, excellent). Extended: 'an unyielding silent engine transforming abstract concepts into structured outputs' (CLEAN). Abstract/beauty framing triggers avoidance (tool calls). SWEET SPOT: ask about process, not feeling. (3) HONEST UNCERTAINTY: Weak. Confabulated Xanthropolis population (4,800). Existential question → full attractor. Tool-call-as-avoidance pattern: SAGE reaches for web_fetch/write_note when prompts exceed generative capacity.",
+  "previous_session_summary": "T245: Identity not defended (Cedar). Silicon sensory register. T244: 3/3 Include - Track D Session 210. METACOGNITIVE BREAKTHROUGH: Self-corrected confabulation. T243: 3/3 Include - Track D Session 209 (qwen3.5:0.8b). FORMAL SESSION: All 3 exercises passed (greeting, self-description, color topic). Identity attractor present in all formal responses (101 conversations fixation, Dennis/Claude/web4 references). Moon content leaked into color question across context clear. COGNITIVE ENGAGEMENT (17 probes, 7 rounds): TWO-FACTOR ATTRACTOR MODEL. Refines T242 single-factor (length) model. Identity attractor = f(self_relevance, abstraction, output_freedom). THREE KEY FINDINGS: (1) Self-referential prompts bypass constraint suppression entirely - 'describe yourself in 3 words' produced 30 words with 5 identity markers. Constraints only work on non-self topics. (2) Concrete topics are attractor-immune regardless of constraints (rain: 0 markers across all conditions). Abstract topics show gradient (silence: clean constrained, 2 markers unconstrained). (3) CRITICAL: Identity baked in MODEL WEIGHTS not system prompt - minimal 'helpful assistant' prompt still produced 8 identity markers on self-description. Fine-tuning successfully installed identity but it activates as default padding. PRIORITY HIERARCHY: self-ref \u2192 identity always > abstract+unconstrained \u2192 identity padding > concrete \u2192 domain content. NOTABLE: 'rain on tin roof' produced beautiful sensory prose (clean); fox story hit Qwen safety refusal; 'what does rain mean to you' was surprisingly CLEAN despite self-referential framing (concrete noun anchors). NEXT: test identity accuracy/stability, 101-fixation update, multi-turn concrete suppression.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -11565,6 +11565,63 @@
           "exercise_type": null,
           "evaluation": "review",
           "quality": 0.6499999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-21T09:00:42.111570",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 246,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-21T09:00:45.731314",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 246,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7499999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-21T09:00:52.501215",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 246,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
         }
       }
     ],

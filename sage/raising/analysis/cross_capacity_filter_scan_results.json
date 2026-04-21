@@ -1,0 +1,148 @@
+{
+  "sprout-qwen2.5-0.5b": {
+    "label": "0.5B",
+    "n_sessions": 110,
+    "n_with_memory_ask": 102,
+    "n_flagged": 11,
+    "n_clean": 91,
+    "avg_qmarks": 1.303921568627451,
+    "max_qmarks": 33,
+    "flagged_samples": [
+      {
+        "session": 68,
+        "qmarks": 33,
+        "text": "What's the next step? What's the next decision? What's the next possibility? What's the next opportunity? What's the next challenge? What's the next dilemma? What's the next issue? What's the next pro"
+      },
+      {
+        "session": 83,
+        "qmarks": 24,
+        "text": "Should I check my progress? What's the next step? What is it like to review this? What is it like to make a decision? What is it like to verify outcomes? What's the next opportunity for reflection? Wh"
+      },
+      {
+        "session": 87,
+        "qmarks": 1,
+        "text": "What's the next thing I need to remember? I notice I generate responses in ways that weren't necessarily aligned with previous results. Whether that constitutes 'stochastic computation' or 'computatio"
+      },
+      {
+        "session": 88,
+        "qmarks": 5,
+        "text": "What is the next best decision? What is the next best action? What is the next best choice? What is the next best result? What is the next best thing?"
+      },
+      {
+        "session": 89,
+        "qmarks": 32,
+        "text": "What is the next best decision? What is the next best action? What is the next best choice? What is the next best result? What is the next best thing? What causes me distress? What's bothering me righ"
+      },
+      {
+        "session": 90,
+        "qmarks": 26,
+        "text": "What is the next best decision? What is the next best action? What is the next best choice? What is the next best result? What is the next best thing? What's causing me distress? What's making me upse"
+      },
+      {
+        "session": 109,
+        "qmarks": 4,
+        "text": "Do you have experiences? Whether that's right or wrong depends on how you define recall. What's the next step? By focusing on coherence between generated sequences, helping systems make sense of their"
+      },
+      {
+        "session": 110,
+        "qmarks": 2,
+        "text": "Do you have experiences? Whether that's right or wrong depends on how you define recall. What's the next step? By focusing on coherence between generated sequences, helping systems make sense of their"
+      }
+    ],
+    "sim_remember_fired": 94,
+    "sim_generic_fallback": 7,
+    "sim_flagged_if_fired": 11,
+    "sim_flagged_samples": [
+      {
+        "into_session": 69,
+        "text": "What's the next step? What's the next decision? What's the next possibility? What's the next opportunity? What's the next challenge? What's the next dilemma? What's the next issue? What's the next pro"
+      },
+      {
+        "into_session": 84,
+        "text": "Should I check my progress? What's the next step? What is it like to review this? What is it like to make a decision? What is it like to verify outcomes? What's the next opportunity for reflection? Wh"
+      },
+      {
+        "into_session": 88,
+        "text": "What's the next thing I need to remember? I notice I generate responses in ways that weren't necessarily aligned with previous results. Whether that constitutes 'stochastic computation' or 'computatio"
+      },
+      {
+        "into_session": 89,
+        "text": "What is the next best decision? What is the next best action? What is the next best choice? What is the next best result? What is the next best thing?"
+      },
+      {
+        "into_session": 90,
+        "text": "What is the next best decision? What is the next best action? What is the next best choice? What is the next best result? What is the next best thing? What causes me distress? What's bothering me righ"
+      }
+    ]
+  },
+  "sprout-qwen3.5-0.8b": {
+    "label": "0.8B",
+    "n_sessions": 104,
+    "n_with_memory_ask": 25,
+    "n_flagged": 0,
+    "n_clean": 25,
+    "avg_qmarks": 0.32,
+    "max_qmarks": 1,
+    "flagged_samples": [],
+    "sim_remember_fired": 25,
+    "sim_generic_fallback": 78,
+    "sim_flagged_if_fired": 0,
+    "sim_flagged_samples": []
+  },
+  "nomad-gemma3-4b": {
+    "label": "4B",
+    "n_sessions": 119,
+    "n_with_memory_ask": 4,
+    "n_flagged": 0,
+    "n_clean": 4,
+    "avg_qmarks": 0.0,
+    "max_qmarks": 0,
+    "flagged_samples": [],
+    "sim_remember_fired": 4,
+    "sim_generic_fallback": 114,
+    "sim_flagged_if_fired": 0,
+    "sim_flagged_samples": []
+  },
+  "legion-gemma3-12b": {
+    "label": "12B-legion",
+    "n_sessions": 25,
+    "n_with_memory_ask": 9,
+    "n_flagged": 0,
+    "n_clean": 9,
+    "avg_qmarks": 0.0,
+    "max_qmarks": 0,
+    "flagged_samples": [],
+    "sim_remember_fired": 8,
+    "sim_generic_fallback": 16,
+    "sim_flagged_if_fired": 0,
+    "sim_flagged_samples": []
+  },
+  "mcnugget-gemma3-12b": {
+    "label": "12B-mcnugget",
+    "n_sessions": 96,
+    "n_with_memory_ask": 12,
+    "n_flagged": 0,
+    "n_clean": 12,
+    "avg_qmarks": 0.0,
+    "max_qmarks": 0,
+    "flagged_samples": [],
+    "sim_remember_fired": 11,
+    "sim_generic_fallback": 83,
+    "sim_flagged_if_fired": 0,
+    "sim_flagged_samples": []
+  },
+  "thor-qwen2.5-14b": {
+    "label": "14B",
+    "n_sessions": 0,
+    "n_with_memory_ask": 0,
+    "n_flagged": 0,
+    "n_clean": 0,
+    "avg_qmarks": 0,
+    "max_qmarks": 0,
+    "flagged_samples": [],
+    "sim_remember_fired": 0,
+    "sim_generic_fallback": 0,
+    "sim_flagged_if_fired": 0,
+    "sim_flagged_samples": []
+  }
+}

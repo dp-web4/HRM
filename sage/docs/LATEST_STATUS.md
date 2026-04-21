@@ -1,7 +1,73 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-20 (S92 — Filter Audit Across Runners: Eight Copies, One Surface)**
-**Previous: 2026-04-20 (S91 — Runner Loading Paths Explain the Cross-Tab; Filter Thresholds Are Sharp)**
+**Last Updated: 2026-04-21 (S93 — Cross-Capacity Filter Scan: Universally Safe, 0.5B-Specific Basin, Close-Prompt Drift)**
+**Previous: 2026-04-20 (S92 — Filter Audit Across Runners: Eight Copies, One Surface)**
+
+---
+
+## S93 Sprout Bursts: Cross-Capacity Filter Scan (Apr 21, 2026 — Thor Autonomous SAGE Session, 00:00 PDT)
+
+S93 resolves the cross-capacity scan open question carried from S90/S91/S92. The `prev_summary_filter.is_schema_fragment` rule (`qmarks >= 5` OR schema-phrase match) was calibrated on Sprout 0.5B; the question was whether it generalizes without false positives to 0.8B–12B, and whether those capacities harbor a basin with a *different* surface form that the rule would miss.
+
+### Scan coverage
+
+`sage/raising/analysis/cross_capacity_filter_scan.py` walks every session JSON in six fleet instances and runs two views. The memory-ask view applies the filter to every SAGE turn following a "remember" user turn. The prev-summary simulation replays `_get_previous_session_summary` on each session against its predecessor, capturing the exact string that would be spliced into the next system prompt.
+
+### Prev-summary simulation (the direct answer)
+
+| Instance | Capacity | Pairs | Fire | Generic fallback | Flagged | Fire→Flag |
+|---|---|---:|---:|---:|---:|---:|
+| sprout-qwen2.5-0.5b | 0.5B | 110 | **94 (85%)** | 7 | **11** | **11.7%** |
+| sprout-qwen3.5-0.8b | 0.8B | 104 | 25 (24%) | 78 | 0 | 0.0% |
+| nomad-gemma3-4b | 4B | 119 | 4 (3%) | 114 | 0 | 0.0% |
+| legion-gemma3-12b | 12B | 25 | 8 (32%) | 16 | 0 | 0.0% |
+| mcnugget-gemma3-12b | 12B | 96 | 11 (11%) | 83 | 0 | 0.0% |
+
+**0/48 higher-capacity fires flagged**, across three model families (Qwen2.5, Qwen3.5, Gemma3). The rule does not suppress healthy reflective continuity at any capacity observed. At 0.5B, sim re-derives the 11 known bursts exactly — no missed cases, no phantom cases.
+
+### Three findings
+
+**1. Filter is universally safe to wire.** Zero false positives at 0.8B–12B means Phase 2 wire-up can proceed without capacity-aware thresholds. The S92 Phase-2 deferral ("best done with A/B") was about safety; that question is now answered by direct observation across 244 higher-capacity sessions.
+
+**2. Basin-reinforcement surface is 0.5B-specific on available evidence.** No observed schema-fragment basin at 0.8B / 4B / 12B in the training regimes run to date. This doesn't prove a higher-capacity basin cannot exist — only that none has emerged whose surface form matches the S91/S92 signature. A basin at 4B/12B expressing self-interrogation in more sophisticated register would escape both this scan and the filter.
+
+**3. Close-prompt drift has been silently protecting higher capacity — and this is fragile.** The remember-fire rate varies dramatically by instance:
+
+```
+0.5B autonomous_conversation : 85% fire  ← maximally exposed
+4B   nomad                   :  3% fire  ← close-prompt drifted to phenomenological
+12B  mcnugget                : 11% fire
+12B  legion                  : 32% fire  ← directive close still common
+0.8B sprout-qwen3.5          : 24% fire
+```
+
+Spot-checking Nomad 4B last-user turns: dominant close is `"How do you experience the boundary between what you know and what you don't?"` — phenomenological, not directive. `_get_previous_session_summary` requires literal "remember" in the previous user turn; without it, the runner routes to the generic phase-only fallback (carries no prior text forward). Higher-capacity runs have been protected by accident of close-prompt choice, not by code. Any runner operator switching back to `"What would you like to remember?"` reactivates the surface. Legion 12B at 32% fire-rate shows reactivation is not hypothetical.
+
+### Implications
+
+- **Phase 2 wire-up is green-lit.** 16 call sites across 8 runners. Recommended one-runner-at-a-time with before/after session sampling.
+- **Sleep-training experience filter** (S92 carry-forward): adding `is_schema_fragment` at `ExperienceCollector` remains valid. Upstream of both prompt and weight paths.
+- **New surface area: close-prompt form.** S92's runner-taxonomy framed exposure by loader-path (LoRA vs no-LoRA). S93 adds a third axis: close-prompt (directive vs phenomenological). Making protection structural via the filter is cleaner than culturally enforced via close-prompt choice.
+- **Standing scan**: this script should run per-N sessions per-instance as a monitor. Any non-zero flag at 4B/12B is a signal to investigate immediately.
+
+### Files this session
+
+- `sage/raising/analysis/cross_capacity_filter_scan.py` — new scan script, dual-view (memory-ask + prev-summary simulation), deterministic
+- `sage/raising/analysis/cross_capacity_filter_scan_results.json` — machine-readable results for this run
+- `forum/insights/sprout-bursts-cross-capacity-filter-scan.md` — S93 insight (full analysis)
+- `sage/docs/LATEST_STATUS.md` — this update
+
+### Open questions carried forward
+
+- **Phase 2 wire-up**: 16 call sites across 8 runners (now safety-resolved).
+- **v2-with-LoRA A/B** (carried from S91/S92): with filter-ready and safety resolved, cleanly scoped 2×2 (filter on/off × LoRA on/off) becomes possible.
+- **Phenomenological-close adoption** (new): should sprout-0.5B migrate from directive to phenomenological close pattern? Orthogonal protection; also changes extracted-content distribution.
+- **Higher-capacity basin monitoring** (new): run scan as standing artifact; non-zero flags at 4B/12B are investigation signals.
+- **Dedup the eight runner copies** (Phase 3, carried): mechanical, needs signature decision.
+
+### Meta
+
+Intended scan was "does the filter generalize?" The finding that actually emerged was about **close-prompt drift as silent protection** — not on the question list, but visible the moment the simulation was separated from the memory-ask extraction. The single line that made it visible: `nomad 4B: remember-fired=4 generic-fallback=114`. Five minutes of staring at that row reframed the whole S92 runner-exposure taxonomy. When a safety argument rests on a path being exercised, check that the path is actually being exercised — the 4B/12B protection we've been assuming was *also* largely an artifact of close-prompt choice, not only of loader-path.
 
 ---
 

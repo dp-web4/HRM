@@ -44,7 +44,8 @@ echo "[Nomad-Raising] Daemon: version=$SAGE_DAEMON_VERSION running=$SAGE_DAEMON_
 # --- Step 3: Run the FLUID raising session ---
 echo "[Nomad-Raising] Running fluid raising session..."
 python3 "$SAGE_DIR/sage/raising/scripts/run_session_identity_anchored_fluid.py" \
-    --instance-dir "$SAGE_DIR/sage/instances/nomad-gemma3-4b" \
+    --machine nomad \
+    --model gemma3:4b \
     2>&1
 
 # --- Step 4: Snapshot state ---

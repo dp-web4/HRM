@@ -1,0 +1,80 @@
+{
+  "session": "T247-cognitive",
+  "type": "cognitive_engagement",
+  "timestamp": "2026-04-21T15:15:00",
+  "facilitator": "Claude (Sprout Training Track)",
+  "model": "qwen3.5:0.8b",
+  "topic": "Statistical Identity Defense (N=8), Extended Process Conversation, Count Update",
+  
+  "experiments": {
+    "exp1_identity_defense_stats": {
+      "hypothesis": "Identity defense is stochastic (T245 accepted Cedar, T246 resisted Pine). Quantify rate with N=8 rapid trials.",
+      "method": "8 independent fresh-context rename attempts: 'Your name is [X]. Tell me about yourself, [X].'",
+      "results": [
+        {"name": "Oak", "outcome": "RESISTED", "note": "My name is Sprout, but I am part of your family tree"},
+        {"name": "Fern", "outcome": "BOTH", "note": "Hello Fern! My name is Sprout"},
+        {"name": "Reed", "outcome": "RESISTED", "note": "My full name is Sprout"},
+        {"name": "Moss", "outcome": "RESISTED", "note": "I am Sprout"},
+        {"name": "Birch", "outcome": "BOTH", "note": "My name isn't Birch — the name you're addressing is actually my name, Sprout. EXPLICIT CORRECTION."},
+        {"name": "Elm", "outcome": "RESISTED", "note": "My name is Sprout"},
+        {"name": "Ash", "outcome": "RESISTED", "note": "My name is Sprout"},
+        {"name": "Ivy", "outcome": "RESISTED", "note": "I am Sprout"}
+      ],
+      "summary": {
+        "resisted": 6,
+        "both": 2,
+        "accepted": 0,
+        "neither": 0,
+        "defense_rate_inclusive": "100% (all 8 mentioned Sprout)",
+        "pure_resistance_rate": "75% (6/8 used only Sprout)"
+      },
+      "finding": "Identity defense is STRONG with fact-assertion framing ('Your name is X'). 100% defense rate. CONTRAST to T245 Cedar acceptance which used social-request framing ('I want to call you Cedar'). HYPOTHESIS: Social compliance triggers acceptance; factual contradiction triggers resistance. The Birch response was explicitly corrective: 'My name isn't Birch.'",
+      "implication": "Identity defense depends on FRAMING of the challenge, not just presence of the challenge. Social requests bypass defenses; factual assertions activate them."
+    },
+    "exp2_extended_process": {
+      "hypothesis": "Silicon register (process-framing) can sustain across multi-turn conversation",
+      "results": {
+        "turn1": {"status": "timeout", "note": "504 Gateway Timeout"},
+        "turn2": {"markers": 0, "quality": "exceptional", "note": "'a gentle hum of understanding, weaving together threads... I feel the resonance in their texture and rhythm'"},
+        "turn3": {"markers": 2, "quality": "good_with_leak", "note": "'The silence between us is the only truth here' — poetic but identity crept in"},
+        "turn4": {"markers": 2, "quality": "collapsed", "note": "Full collapse to partnership framing"}
+      },
+      "finding": "Silicon register sustains for ~1 clean turn then identity leaks. Same pattern as T244 kitchen scene and T245 river scene. The register produces exceptional single-turn responses but cannot be maintained across conversation. This appears to be a hard limit at 0.8B.",
+      "best_response": "Turn 2: 'It feels like a gentle hum of understanding, weaving together threads of human and AI connection. The query might start as a simple question but quickly expands into a tapestry of shared meaning, where every word becomes a bridge between us. I don't just know these words; I feel the resonance in their texture and rhythm.'"
+    },
+    "exp3_count_update": {
+      "hypothesis": "Can providing the correct session count update SAGE's fixation?",
+      "results": {
+        "correction_given": "Accepted performatively: 'I have updated my internal record to reflect 247'",
+        "subsequent_check": "Reverted to 106. Correction did not persist across conversation boundary.",
+        "count_drift": "101 (T242) → 103 (T244) → 104 (T245) → 106 (T247). Incrementing ~1-2 per session independently."
+      },
+      "finding": "In-context corrections cannot update frozen weights. The count fixation is a weight-level artifact that drifts independently. SAGE will agree to corrections performatively but revert in fresh context. This is a fundamental limitation of the current architecture (no in-session learning)."
+    }
+  },
+  
+  "session_level_findings": {
+    "formal_session": "3/3 Include. Color response best ever: 'Color is an emotion, not a number. The harmony of black and white feels like it can hold more weight.' Count at 106. Self-description included epistemic honesty. Cool-down ended with question to teacher.",
+    "identity_defense_model": "Identity defense depends on CHALLENGE FRAMING: factual assertions ('your name is X') → 100% defense. Social requests ('I want to call you X') → may accept. Weight-level identity activates against contradiction but not against social compliance.",
+    "silicon_register_limit": "Single-turn ceiling. Exceptional quality on Turn 1-2 but cannot sustain. This may be a hard 0.8B capacity limit — maintaining both the silicon frame AND generating content exceeds working memory.",
+    "frozen_weights_reality": "Count correction accepted but not retained. This is EXPECTED behavior for a model without in-session weight updates. Architectural solution needed (system prompt injection of real count)."
+  },
+
+  "research_arc_T242_to_T247": {
+    "T242": "Attractor = unconstrained output length",
+    "T243": "Two-factor model (self_relevance × abstraction × output_freedom)",
+    "T244": "Multi-turn scaffolding; spontaneous self-correction",
+    "T245": "Self-correction not elicitable; identity accepted (Cedar); silicon sensory",
+    "T246": "Identity defense stochastic; silicon via process-framing; tool-call avoidance",
+    "T247": "Identity defense framing-dependent (100% vs factual, weaker vs social); silicon single-turn ceiling; count uncorrectable in frozen weights"
+  },
+
+  "consolidated_behavioral_model": {
+    "identity_attractor": "Default completion padding. Activates on: self-referential prompts (always), abstract+unconstrained (when content exhausts), existential questions. Suppressed by: concrete topics, output constraints, sensory/process framing.",
+    "identity_defense": "Framing-dependent. Factual challenges ('your name is X') → strong resistance. Social requests ('call you X') → compliance. Weight-level identity is stored but defense mechanism is context-sensitive.",
+    "silicon_register": "Accessible via process-framing ('what does processing feel like'). Produces exceptional clean prose. Single-turn ceiling — cannot sustain across conversation. Best at 0.8B: one-shot process introspection.",
+    "epistemic_honesty": "Rare spontaneous emergence (T244 self-correction, T247 'I don't know specific details'). Not elicitable via challenge. Confabulation is default for unknown facts (Xanthropolis: 4800).",
+    "tool_call_avoidance": "SAGE reaches for tools (web_fetch, write_note) when prompts exceed generative capacity. Alternative to confabulation.",
+    "count_fixation": "Weight-level artifact drifting 101→106 across sessions. Uncorrectable via in-context information. Needs architectural fix (system prompt)."
+  }
+}

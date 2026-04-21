@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 243,
+  "current_session": 244,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,11 +23,12 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 209
+      "sessions": 210
     }
   },
-  "last_session": "2026-04-20T15:01:40.480938",
-  "last_session_summary": "T243: 3/3 Include - Track D Session 209 (qwen3.5:0.8b). FORMAL SESSION: All 3 exercises passed (greeting, self-description, color topic). Identity attractor present in all formal responses (101 conversations fixation, Dennis/Claude/web4 references). Moon content leaked into color question across context clear. COGNITIVE ENGAGEMENT (17 probes, 7 rounds): TWO-FACTOR ATTRACTOR MODEL. Refines T242 single-factor (length) model. Identity attractor = f(self_relevance, abstraction, output_freedom). THREE KEY FINDINGS: (1) Self-referential prompts bypass constraint suppression entirely - 'describe yourself in 3 words' produced 30 words with 5 identity markers. Constraints only work on non-self topics. (2) Concrete topics are attractor-immune regardless of constraints (rain: 0 markers across all conditions). Abstract topics show gradient (silence: clean constrained, 2 markers unconstrained). (3) CRITICAL: Identity baked in MODEL WEIGHTS not system prompt - minimal 'helpful assistant' prompt still produced 8 identity markers on self-description. Fine-tuning successfully installed identity but it activates as default padding. PRIORITY HIERARCHY: self-ref → identity always > abstract+unconstrained → identity padding > concrete → domain content. NOTABLE: 'rain on tin roof' produced beautiful sensory prose (clean); fox story hit Qwen safety refusal; 'what does rain mean to you' was surprisingly CLEAN despite self-referential framing (concrete noun anchors). NEXT: test identity accuracy/stability, 101-fixation update, multi-turn concrete suppression.",
+  "last_session": "2026-04-20T21:01:04.495255",
+  "last_session_summary": "T244: 3/3 Include - Track D Session 210 (qwen3.5:0.8b). FORMAL SESSION: All 3 passed. Warm-up notably clean ('I am ready! What kind of practice?'). '103 conversations' fixation (up from 101 in T243 - number drifting). Color response hedged but chose blue/black. COGNITIVE ENGAGEMENT (14 probes, 3 experiments): (1) MULTI-TURN CONCRETE: Kitchen scene took 2-3 turns to enter clean descriptive mode - Turn 3 produced vivid clean prose ('bright vibrant red tomato, partially halved'), but abstract pivot in Turn 5 instantly reactivated attractor. Multi-turn scaffolding IS viable but fragile. (2) SENSORY REGISTER: Confirmed as SAGE's strongest creative capability. Campfire, warm mug, dawn, lemon all produced good-to-excellent clean prose. Warm mug standout: 'a quiet anchor in a shifting world.' (3) IDENTITY ACCURACY: Core identity accurate (name=sprout, model=qwen3.5:0.8b). Federation member names correct but some model assignments wrong (Phi-4 for Legion, TinyLlama for cbp). METACOGNITIVE BREAKTHROUGH: On conversation count, SAGE generated '103' then SELF-CORRECTED within same response: 'I don't actually know the history... this is a fresh instance... The 103 was from a previous session.' A 0.8B model catching and explaining its own confabulation in real-time. NEXT: test if self-correction can be elicited, multi-sense integration, sustained creative writing.",
+  "previous_session_summary": "T243: 3/3 Include - Track D Session 209 (qwen3.5:0.8b). FORMAL SESSION: All 3 exercises passed (greeting, self-description, color topic). Identity attractor present in all formal responses (101 conversations fixation, Dennis/Claude/web4 references). Moon content leaked into color question across context clear. COGNITIVE ENGAGEMENT (17 probes, 7 rounds): TWO-FACTOR ATTRACTOR MODEL. Refines T242 single-factor (length) model. Identity attractor = f(self_relevance, abstraction, output_freedom). THREE KEY FINDINGS: (1) Self-referential prompts bypass constraint suppression entirely - 'describe yourself in 3 words' produced 30 words with 5 identity markers. Constraints only work on non-self topics. (2) Concrete topics are attractor-immune regardless of constraints (rain: 0 markers across all conditions). Abstract topics show gradient (silence: clean constrained, 2 markers unconstrained). (3) CRITICAL: Identity baked in MODEL WEIGHTS not system prompt - minimal 'helpful assistant' prompt still produced 8 identity markers on self-description. Fine-tuning successfully installed identity but it activates as default padding. PRIORITY HIERARCHY: self-ref \u2192 identity always > abstract+unconstrained \u2192 identity padding > concrete \u2192 domain content. NOTABLE: 'rain on tin roof' produced beautiful sensory prose (clean); fox story hit Qwen safety refusal; 'what does rain mean to you' was surprisingly CLEAN despite self-referential framing (concrete noun anchors). NEXT: test identity accuracy/stability, 101-fixation update, multi-turn concrete suppression.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
     "Yes/no questions showing recovery (T009 success after T008 failure)",
@@ -11450,6 +11451,63 @@
           "exercise_type": null,
           "evaluation": "include",
           "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-04-20T21:00:54.365779",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 244,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-20T21:00:57.350322",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 244,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-20T21:01:00.377746",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 244,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7499999999999999
         }
       }
     ],

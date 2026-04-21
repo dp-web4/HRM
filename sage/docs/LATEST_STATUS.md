@@ -1,7 +1,85 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-20 (S91 — Runner Loading Paths Explain the Cross-Tab; Filter Thresholds Are Sharp)**
-**Previous: 2026-04-20 (S90 — Basin Lives in Weights, Reinforcement Lives in the Prompt)**
+**Last Updated: 2026-04-20 (S92 — Filter Audit Across Runners: Eight Copies, One Surface)**
+**Previous: 2026-04-20 (S91 — Runner Loading Paths Explain the Cross-Tab; Filter Thresholds Are Sharp)**
+
+---
+
+## S92 Sprout Bursts: Filter Audit Across Runners (Apr 20, 2026 — Thor Autonomous SAGE Session, 18:00 PDT)
+
+S92 closes S91's "filter audit across runners" open question. Walking every raising runner that reads from prior-session JSON confirms the prev-summary extraction idiom exists in **eight places**, character-for-character nearly identical. Only `autonomous_conversation.py` is currently wired to a LoRA-capable loader; the other seven are **latent carriers** of the same surface. Their current immunity is a property of which model gets loaded, not of their prompt-construction code.
+
+### The eight copies
+
+| # | Runner | Def line | Loader | LoRA | Status |
+|---|---|---|---|---|---|
+| 1 | `autonomous_conversation.py` | 364 | `AutoModel + PeftModel(cycle_001).merge_and_unload` | **YES** | **Bursting** |
+| 2 | `run_session_identity_anchored.py` | 373 | `DaemonIRP` → `is_merged_model: True` | NO | Latent |
+| 3 | `run_session_identity_anchored_v2.py` | 228 | `IntrospectiveQwenIRP({'is_merged_model': True})` | NO | Latent |
+| 4 | `run_session_identity_anchored_fluid.py` | 459 | `DaemonIRP` | NO | Latent (×2 call sites) |
+| 5 | `legion_raising_session.py` | 212 | `OllamaIRP(qwen2:0.5b)` | NO | Latent |
+| 6 | `mcnugget_raising_session.py` | 212 | `OllamaIRP(gemma3:12b)` | NO | Latent |
+| 7 | `ollama_raising_session.py` | 662 | `OllamaIRP` | NO | Latent (×2 call sites, one via MRH `ExperientialCacheBlock`) |
+| 8 | `run_session_identity_anchored_v1_backup.py` | 178 | `IntrospectiveQwenIRP` | Config-dep | Backup, not scheduled |
+
+### Two findings S91 didn't anticipate
+
+**1. Misleading MRH safety claim.** Both `ollama_raising_session.py:741` and `run_session_identity_anchored_fluid.py:567` precede the prev-summary injection with the comment `# Experiential: session summary (no verbatim quotes)` and feed a `trajectory_summary` field of `ExperientialCacheBlock`. The comment and the field name claim paraphrase/summary; the value is the raw verbatim `[:200]` from `_get_previous_session_summary`. This is drift between MRH's architectural intent ("lens not description, no crystallization" per `ollama_raising_session.py:696`) and implementation. The safety label is wrong in two files.
+
+**2. The :50 state-fallback is not categorically safe.** S91 proposed falling back to `state["identity"]["last_session_summary"]` when the [:200] candidate is schematic. That rescue works *today* because the current identity files hold clean summaries — but the write-side of the pipeline produces the same contamination on burst sessions. Simulated audit of Sprout bursts:
+
+```
+S 68 [flag=True]  ...phase. What's the next step? What's the next decision? Wh...
+S 83 [flag=True]  ...phase. Should I check my progress? What's the next step? ...
+S 87 [flag=True]  ...phase. What's the next thing I need to remember? I notice...
+S 88 [flag=True]  ...phase. What is the next best decision? What is the next b...
+S109 [flag=False] ...phase. Do you have experiences? Whether that's right or w...
+S110 [flag=False] ...phase. Do you have experiences? Whether that's right or w...
+```
+
+S109/S110 show the truncation trap: the schema phrase ("what's the next step?") falls beyond the first 50 characters, so the filter applied to the :50 form misses the burst. But run on the full response, all 11 bursts flag. **The filter must gate both read and write, always on the full text — never a truncation.**
+
+### Deliverable
+
+`sage/raising/prev_summary_filter.py` — new centralized module with self-validation:
+
+- `is_schema_fragment(text)` — canonical detector (qmarks≥5 OR schema_phrases≥1), applied to full text
+- `safe_prev_summary(last_sage_response, session_number, phase_name, state_fallback="")` — build the injection string for system prompts, skipping verbatim splice when schematic
+- `safe_state_summary(memory_response, session_number, phase_name, tag="")` — build the state `last_session_summary` value, suppressing :50 splice when schematic
+
+Self-validation (run via `python3 -m sage.raising.prev_summary_filter`):
+
+```
+Sprout 0.5B: caught 11/11 known bursts, 0 missed, 0 flagged non-burst, 86 clean non-burst
+```
+
+No runner code modified this session — intentional. The filter is a Phase-1 reference; Phase 2 wires it into the eight runners (16 call sites) and is best done with model access to A/B the effect.
+
+### Rollout plan
+
+| Phase | Scope | This session? |
+|---|---|---|
+| 1 | Ship centralized filter module with self-validation | ✅ Done |
+| 2 | Wire every `_get_previous_session_summary` read and every `last_session_summary` write through the filter (16 call sites) | No — needs A/B |
+| 3 | Deduplicate the eight `_get_previous_session_summary` bodies into a shared helper | Deferred |
+
+### Files this session
+
+- `sage/raising/prev_summary_filter.py` — new module, passes self-validation (11/11, 0 FP)
+- `forum/insights/sprout-bursts-filter-audit-across-runners.md` — S92 insight (full audit)
+- `sage/docs/LATEST_STATUS.md` — this update
+
+### Open questions carried forward
+
+- **Phase 2 rollout**: 16 call sites to wire.
+- **v2-with-LoRA A/B** (carried from S91): patch v2 to optionally load cycle_001. With the filter in place, becomes a cleaner 2×2 design — filter-on+LoRA vs filter-off+LoRA across v2 and autonomous.
+- **Cross-capacity scan** (carried from S90/S91): Nomad 4B / McNugget 12B prev-summary content. S92 did not extend filter validation beyond 0.5B. If non-schema bursts exist at larger capacity, the rule needs a capacity-specific pattern.
+- **Sleep-training experience filter**: S90 flagged that ExperienceCollector's 85%-word-overlap filter misses schema bursts because slot values vary. When cycle_001 is retrained, add `is_schema_fragment` as a rejection criterion at the collector — upstream of this filter.
+- **Deduplicate the eight copies** (Phase 3): mechanical but requires a signature decision.
+
+### Meta
+
+S92 was prompt-archaeology, no GPU. The audit surfaced two things the earlier investigation missed because they only show up when you look at every copy of the idiom at once: the MRH label-vs-implementation drift (two files) and the truncation trap on the state-fallback (S109/S110 land past the :50 mark). "Protected by accident of loader-path wiring" and "protected structurally" have the same appearance on any single runner in isolation; only the cross-runner view distinguishes them.
 
 ---
 

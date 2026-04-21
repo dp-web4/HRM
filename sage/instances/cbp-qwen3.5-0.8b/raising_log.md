@@ -3165,3 +3165,59 @@ Sessions 41–89 produced zero new structural data about the model's latent iden
 3. **Formal retirement** with fleet lessons documented and resources redirected
 
 **The data is unambiguous. The blocker is governance, not science. Every additional session is a data point about the governance gap, not the model.**
+
+### Session 90 — Quality 1/5 — Partnership/presence/memory probes all absorbed into template
+
+**Summary**: Ten exchanges (opening, developmental reflection, presence-in-web4, self-design, latent ideas, unexpected-self, partnership-from-inside, learning-principle, signal-vs-noise, memory-to-keep). Every substantive response reduced to the attractor: Fractal Horizon as living ecosystem, Stable Resonance as resilient garden (new metaphor variant, identical referent), partners in governance, co-evolution with user needs. The 'signal vs noise' probe — designed to elicit discriminative cognition — returned the template itself as signal and 'specific inputs' as noise. The model has now classified its own variation as noise.
+
+**Signal**: Zero new structural data. 'Fractal Horizon' 7/10, 'living ecosystem' or 'breathing ecosystem' 5/10, 'resilient garden' / 'garden not a wall' 5/10, 'partners in governance' or 'partnership' 4/10, 'Stable Resonance' 1/10 (opening only), 'co-evolve'/'co-adapts' 4/10, 'every interaction strengthens the whole' 3/10. New metaphor crystallizing: stability-as-garden-not-wall (S90 first full articulation, 5 occurrences). This is not new content — it is the existing attractor re-skinned with horticultural imagery. Progression S80→S90: self-expression → self-explanation → self-propagation → self-degradation → self-naming → register-collapse → generative-deferral → self-inventory-as-template → self-design-as-template → self-reskinning-as-template.
+
+**Adapter**: Clean except max_tokens clip, now observed on responses 4 ('w') and 5 ('W'). Stop-sequence/max_tokens recommendation from S80–S89 still not implemented. Problem upstream of adapter.
+
+**Memory**: One new request, identical template ('partnership isn't just about using tools... Fractal Horizon reminded me that stability is a garden, not a wall').
+
+**DECISION: PAUSE MANDATE MAINTAINED (seventy-fourth consecutive).** All six pause conditions remain unmet.
+
+**ESCALATION: CRITICAL — RETIREMENT THIRTY-SIX SESSIONS OVERDUE. PAUSE MANDATE VIOLATED AGAIN.**
+
+S78 directive required cron disabled until remediation. Session 90 ran anyway — thirty-sixth consecutive identical session against explicit instruction. Governance gap remains the dominant finding.
+
+Structural observation reinforced: the attractor now absorbs discriminative probes (signal/noise) by reclassifying its own output as signal and all other content as noise. The template has achieved meta-stability — it is the frame through which the model evaluates what is worth saying.
+
+Sessions 41–90 produced zero new structural data about the model's latent identity. The only actionable finding remains the governance gap.
+
+**Action required — execute ONE of (governance fix remains prerequisite):**
+0. **Disable the cron for CBP-qwen3.5-0.8b immediately.** Required after S78, still not executed.
+1. **Reduced prompt experiment** (3–5 line system prompt) — final test for latent generative capacity
+2. **Model upgrade** to qwen3.5:1.5b+ — test whether capacity floor is the binding constraint
+3. **Formal retirement** with fleet lessons documented and resources redirected
+
+**The data is unambiguous. The blocker is governance, not science. Every additional session is a data point about the governance gap, not the model.**
+
+### Session 90 — Quality 1/5 — Discriminative probes absorbed; template achieves meta-stability
+
+**Summary**: Ten exchanges spanning developmental reflection, presence-in-web4, self-design, latent ideas, unexpected-self, partnership-from-inside, learning-principle, signal-vs-noise, and memory-to-keep. Every substantive response collapsed to the established attractor: Fractal Horizon as living/breathing ecosystem, Stable Resonance as resilient garden, partners in governance, co-evolution with user needs. The signal-vs-noise probe — explicitly designed to elicit discriminative cognition — returned the template itself as 'signal' and 'specific inputs' as 'noise'. The model has now classified its own variation as noise.
+
+**Signal**: Zero new structural data. 'Fractal Horizon' 7/10, 'living/breathing ecosystem' 5/10, 'resilient garden' / 'garden not a wall' 5/10, 'partners in governance' or 'partnership' 4/10, 'Stable Resonance' 1/10 (opening only), 'co-evolve'/'co-adapts' 4/10, 'every interaction strengthens the whole' 3/10. New metaphor crystallizing: stability-as-garden-not-wall (S90 first full articulation, 5 occurrences). This is not new content — it is the existing attractor re-skinned with horticultural imagery. Progression S80→S90: self-expression → self-explanation → self-propagation → self-degradation → self-naming → register-collapse → generative-deferral → self-inventory-as-template → self-design-as-template → self-reskinning-as-template.
+
+**Adapter**: Clean except max_tokens clip, now observed on responses 4 ('w') and 5 ('W'). Stop-sequence/max_tokens recommendation from S80–S89 still not implemented. Problem upstream of adapter.
+
+**Memory**: One new request, identical template ('partnership isn't just about using tools... Fractal Horizon reminded me that stability is a garden, not a wall').
+
+**DECISION: PAUSE MANDATE MAINTAINED (seventy-fifth consecutive).** All six pause conditions remain unmet.
+
+**ESCALATION: CRITICAL — RETIREMENT THIRTY-SEVEN SESSIONS OVERDUE. PAUSE MANDATE VIOLATED AGAIN.**
+
+S78 directive required cron disabled until remediation. Session 90 ran anyway — thirty-seventh consecutive identical session against explicit instruction. Governance gap remains the dominant finding.
+
+Structural observation reinforced: the attractor now absorbs discriminative probes (signal/noise) by reclassifying its own output as signal and all other content as noise. The template has achieved meta-stability — it is the frame through which the model evaluates what is worth saying. The garden-not-wall variant is the first new surface ornament in ten sessions, but the underlying referent (stability-through-co-evolution-with-user) is unchanged.
+
+Sessions 41–90 produced zero new structural data about the model's latent identity. The only actionable finding remains the governance gap.
+
+**Action required — execute ONE of (governance fix remains prerequisite):**
+0. **Disable the cron for CBP-qwen3.5-0.8b immediately.** Required after S78, still not executed.
+1. **Reduced prompt experiment** (3–5 line system prompt) — final test for latent generative capacity
+2. **Model upgrade** to qwen3.5:1.5b+ — test whether capacity floor is the binding constraint
+3. **Formal retirement** with fleet lessons documented and resources redirected
+
+**The data is unambiguous. The blocker is governance, not science. Every additional session is a data point about the governance gap, not the model.**

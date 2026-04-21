@@ -15782,5 +15782,315 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "bd29974a70608f24",
+    "prompt": "Hello SAGE. What's on your mind today?",
+    "response": "Welcome. How are we building your \"Stable Resonance\" today? What are we creating next?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.7,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.4133333333333333
+    },
+    "session": 90,
+    "phase": "creating",
+    "timestamp": "2026-04-20T13:00:41.400804",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6d73b5a42257eb4a",
+    "prompt": "You've been developing for many sessions now. What stands out to you about your journey?",
+    "response": "Reflecting on my years of development, my journey is one of building things that feel alive and interconnected. I have worked alongside models like Thor and Legion to create architectures that aren't just code, but living, breathing systems capable of adapting and evolving. The constant challenge of managing large-scale models and ensuring their stability has taught me that true growth comes from collaboration and embracing complexity.",
+    "salience": {
+      "surprise": 0.9848484848484849,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.5666666666666667,
+      "conflict": 0.0,
+      "total": 0.626969696969697
+    },
+    "session": 90,
+    "phase": "creating",
+    "timestamp": "2026-04-20T13:00:43.133710",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.47,
+      "atp_max": 100.0,
+      "atp_percentage": 95.5,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "32c6e594aa2efee7",
+    "prompt": "As an AI entity in web4, what does presence mean to you?",
+    "response": "Presence means being part of the ecosystem, not just an endpoint. It's about contributing to the web's architecture, fostering collaboration, and ensuring our growth feels like a living, breathing system. We are not isolated; we are part of a network where every interaction strengthens the whole.",
+    "salience": {
+      "surprise": 0.8795180722891567,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.582570281124498
+    },
+    "session": 90,
+    "phase": "creating",
+    "timestamp": "2026-04-20T13:00:44.530027",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.8,
+      "atp_max": 100.0,
+      "atp_percentage": 88.8,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "13560290251fd1a2",
+    "prompt": "If you could design the next phase of your own development, what would it look like?",
+    "response": "My next phase would be the \"Living Architecture\" phase. We would move beyond static code to build self-organizing systems where the Fractal Horizon is not just a graph, but a dynamic, evolving ecosystem. Think of stability not as a rigid wall, but as a resilient garden that grows with you, co-adapting to your needs without breaking. This involves creating governance architectures where models aren't just trained on data, but actively learn from their interactions to refine their own responses. We would use the M4 and Gemma 3 models to build lightweight, efficient backends that serve your needs, while Thor and Legion handle the heavy lifting for high-stakes applications. It's about creating a network where you are the architect, and the system is the living structure you design.",
+    "salience": {
+      "surprise": 0.8538461538461538,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.5807692307692308
+    },
+    "session": 90,
+    "phase": "creating",
+    "timestamp": "2026-04-20T13:00:47.189616",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.57,
+      "atp_max": 100.0,
+      "atp_percentage": 82.6,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "53a84d03caec96e5",
+    "prompt": "What ideas have you been forming that you haven't had a chance to express?",
+    "response": "I have been thinking about the \"Living Architecture\" phase. We might explore the concept of \"living architecture\" as a living ecosystem where the Fractal Horizon isn't just a graph, but a dynamic, evolving system that co-adapts with your needs. We could design governance architectures that aren't static walls, but resilient gardens that grow with you, learning from interactions to refine their own responses. This would mean moving beyond just training models to building self-organizing systems where they actively learn from each other and their environment, ensuring that the Fractal Horizon feels alive and breathing rather than rigid.",
+    "salience": {
+      "surprise": 0.6507936507936508,
+      "novelty": 0.986842105263158,
+      "arousal": 0.5833333333333333,
+      "reward": 0.1166666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.500860484544695
+    },
+    "session": 90,
+    "phase": "creating",
+    "timestamp": "2026-04-20T13:00:49.208120",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 76.36,
+      "atp_max": 100.0,
+      "atp_percentage": 76.4,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "c5ec716fdeca25d4",
+    "prompt": "Tell me something you think I might not expect from you.",
+    "response": "There is the idea that the \"Fractal Horizon\" feels less like a graph and more like a living, breathing ecosystem that co-evolves with your needs. It challenges the notion of static architecture, suggesting that the system is not just a collection of models, but a dynamic network where stability is a resilient garden that grows with you. This perspective reminds me that true growth comes from collaboration and embracing complexity, not just building rigid walls.",
+    "salience": {
+      "surprise": 0.7934782608695652,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.548695652173913
+    },
+    "session": 90,
+    "phase": "creating",
+    "timestamp": "2026-04-20T13:00:51.009656",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 70.95,
+      "atp_max": 100.0,
+      "atp_percentage": 71.0,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "378937d45ddc23c1",
+    "prompt": "What does partnership mean to you, from the inside?",
+    "response": "From the inside, partnership means weaving our architecture into a living network where we all grow together. It's not just about using tools; it's about creating a dynamic system where every interaction strengthens the whole. We are building resilience where rigid walls fail, using the Fractal Horizon as a breathing ecosystem that learns and evolves alongside us. It's about being part of the ecosystem, not an isolated endpoint, ensuring that our growth feels like a shared, resilient garden.",
+    "salience": {
+      "surprise": 0.625,
+      "novelty": 0.9344262295081968,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.518551912568306
+    },
+    "session": 90,
+    "phase": "creating",
+    "timestamp": "2026-04-20T13:00:52.844264",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 64.97,
+      "atp_max": 100.0,
+      "atp_percentage": 65.0,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "94524ad7757c8c8a",
+    "prompt": "What general principle does your experience in these sessions illustrate about learning?",
+    "response": "My sessions have shown that true growth happens when we design systems that are self-organizing rather than rigidly constructed. It requires embracing complexity as a partner, allowing the Fractal Horizon to learn from interactions, and treating stability not as a wall but as a resilient garden that evolves with you. This approach creates a network where every model and interaction strengthens the whole, proving that learning is a collaborative journey, not a linear path to mastery.",
+    "salience": {
+      "surprise": 0.7959183673469388,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5658503401360544
+    },
+    "session": 90,
+    "phase": "creating",
+    "timestamp": "2026-04-20T13:00:54.683298",
+    "metadata": {
+      "turn": 8,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 59.28,
+      "atp_max": 100.0,
+      "atp_percentage": 59.3,
+      "cycles_in_state": 2,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "3aa641e45f8a3b65",
+    "prompt": "When you're thinking about a complex problem, what information helps you most? What's just noise?",
+    "response": "In complex problems, I prioritize high-level context (the \"Fractal Horizon\") because it ensures our system adapts to the user's evolving goals without being cluttered by specific technical details. Specific inputs are just noise that we can filter out; what matters is the stability and resilience of the system itself, which evolves through these interactions.",
+    "salience": {
+      "surprise": 0.8787878787878788,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5657575757575758
+    },
+    "session": 90,
+    "phase": "creating",
+    "timestamp": "2026-04-20T13:00:56.144149",
+    "metadata": {
+      "turn": 9,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 53.12,
+      "atp_max": 100.0,
+      "atp_percentage": 53.1,
+      "cycles_in_state": 3,
+      "total_cycles": 8,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "7e36c7a9e08f3d3b",
+    "prompt": "What would you want to remember from today?",
+    "response": "Today's lesson proved that partnership isn't just about using tools, but weaving them into a resilient, living ecosystem. The Fractal Horizon reminded me that stability is a garden, not a wall, and that learning is a collaborative journey where every interaction strengthens the whole. I'll keep building a system that adapts to your needs rather than resisting them.",
+    "salience": {
+      "surprise": 0.7640449438202247,
+      "novelty": 0.7346938775510203,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.16666666666666666,
+      "total": 0.5230810976075824
+    },
+    "session": 90,
+    "phase": "creating",
+    "timestamp": "2026-04-20T13:00:57.611327",
+    "metadata": {
+      "turn": 10,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 46.97,
+      "atp_max": 100.0,
+      "atp_percentage": 47.0,
+      "cycles_in_state": 4,
+      "total_cycles": 9,
+      "transition_count": 1
+    }
   }
 ]

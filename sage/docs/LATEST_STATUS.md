@@ -1,7 +1,85 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-21 (S93 — Cross-Capacity Filter Scan: Universally Safe, 0.5B-Specific Basin, Close-Prompt Drift)**
-**Previous: 2026-04-20 (S92 — Filter Audit Across Runners: Eight Copies, One Surface)**
+**Last Updated: 2026-04-21 (S94 — Close-Prompt Taxonomy Across Fleet: Directive Share = Fire Rate at 1:1)**
+**Previous: 2026-04-21 (S93 — Cross-Capacity Filter Scan: Universally Safe, 0.5B-Specific Basin, Close-Prompt Drift)**
+
+---
+
+## S94 Sprout Bursts: Close-Prompt Taxonomy Across Fleet (Apr 21, 2026 — Thor Autonomous SAGE Session, 06:00 PDT)
+
+S94 closes S93's remaining empirical gap. S93 proposed "close-prompt drift as silent protection" from one Nomad 4B spot-check; S94 enumerates the actual close-prompt distribution across 8 fleet instances (681 sessions) and cross-correlates with S93's memory-ask fire rate.
+
+### Directive share ≡ fire rate (within ±3pp)
+
+| Instance | Label | Directive% | Fire% (S93) | Δ |
+|---|---|---:|---:|---:|
+| sprout-qwen2.5-0.5b | 0.5B | 92.7% | 93.1% | −0.3 |
+| sprout-qwen3.5-0.8b | 0.8B | 23.8% | 24.3% | −0.5 |
+| nomad-gemma3-4b | 4B | 3.4% | 3.4% | −0.0 |
+| legion-gemma3-12b | 12B | 36.0% | 33.3% | +2.7 |
+| mcnugget-gemma3-12b | 12B | 12.5% | 11.7% | +0.8 |
+
+Both columns measure the same underlying signal by construction. The fire rate S93 reported **is** the share of sessions whose close-prompt contains "remember". There is no additional capacity-dependent gating; no hidden moderator in the runner stack.
+
+### Three close-prompt culture regimes
+
+1. **Directive-monoculture (Sprout 0.5B)** — 93% directive share; 92% of sessions use the *single* phrase "What would you want to remember from today?". This is the intersection that produces the S91–S93 burst surface: LoRA-induced basin + directive-monoculture exposure. Other instances have neither.
+
+2. **Content-monoculture (Nomad 4B)** — 3% directive; 77% use "What's the relationship between what you know and who you are?". Extraction path rarely triggered; basin rarely reinforced.
+
+3. **Diverse-close** (Sprout 0.8B, Thor 27B, McNugget 12B, CBP 0.8B) — top close-prompt ≤35%; 17–22 unique close-prompts across ≥90 sessions; directive share 12–28%. Intermittent exposure.
+
+Uniformity is operator-cultural, not capacity-dependent: Nomad 4B (77% uniform) is more ritualized than Thor 27B (18%).
+
+### Filter safety extended to 3 additional instances
+
+S94 extends S93's cross-capacity filter scan to `cbp-qwen3.5-0.8b`, `thor-qwen3.5-27b`, and `legion-phi4-14b` (previously unscanned, 90 + 90 + 56 = 236 sessions).
+
+| Instance | Capacity | Fire | Fallback | Flag |
+|---|---|---:|---:|---:|
+| cbp-qwen3.5-0.8b | 0.8B | 24 | 65 | **0** |
+| thor-qwen3.5-27b | 27B | 16 | 73 | **0** |
+| legion-phi4-14b | 14B | 3 | 52 | **0** |
+
+Total higher-capacity coverage now: **287 sessions across 8 instances and 4 model families** (Qwen2.5, Qwen3.5, Gemma3, **Phi-4**). Filter remains universally safe.
+
+### Three findings
+
+**1. The S93 meta-finding is empirically established.** Fire rate is fully explained by close-prompt form. No hidden mechanism, no capacity interaction. This bounds the claim: protection is twofold — structural (filter) and cultural (close-prompt). Both partial today.
+
+**2. Sprout 0.5B is uniquely exposed.** It is the only fleet instance with an actively-hostile close-prompt culture. The other seven close-prompt cultures are neutral or protective. This suggests two orthogonal mitigations: (a) wire the filter (Phase 2), (b) migrate Sprout's close-prompt away from the directive monoculture.
+
+**3. Phi-4 joins validated families.** Adding legion-phi4-14b to the safety set means the filter is now safety-validated across Qwen2.5, Qwen3.5, Gemma3, and Phi-4.
+
+### Implications
+
+- **Phase 2 wire-up**: no new blockers; full fleet safety-resolved.
+- **Close-prompt policy for Sprout 0.5B**: orthogonal protection. A shift from directive to phenomenological or content-question close would (per the 1:1 relationship) drop fire rate from 85% toward ~10%. Trade-off is altered extracted-content distribution.
+- **Standing monitor**: `cross_capacity_filter_scan.py` `INSTANCES` list updated to cover full active fleet; taxonomy script re-runnable for drift detection.
+- **Observational note**: Thor 27B S1 memory-ask response shows `<think>` tag bleed — orthogonal issue, flagged for 27B adapter config.
+
+### Files this session
+
+- `sage/raising/analysis/close_prompt_taxonomy.py` — new taxonomy script
+- `sage/raising/analysis/close_prompt_taxonomy_results.json` — per-instance data
+- `sage/raising/analysis/cross_capacity_filter_scan.py` — extended to 8 fleet instances
+- `sage/raising/analysis/cross_capacity_filter_scan_results.json` — re-run, 681 sessions covered
+- `forum/insights/close-prompt-taxonomy-across-fleet.md` — S94 insight
+- `sage/docs/LATEST_STATUS.md` — this update
+
+### Open questions carried forward
+
+- **Phase 2 wire-up** (16 call sites across 8 runners) — fully safety-resolved, no remaining blockers.
+- **Sprout 0.5B close-prompt policy** — orthogonal protection option, deferred to Sprout operator; instance is legacy per SESSION_MAP.
+- **Phenomenological-class regex refinement** — current classifier undercounts; `content_question` absorbs some phenomenological-adjacent forms ("What's the relationship between..."). Does not affect directive finding.
+- **v2-with-LoRA A/B** — carried from S91/S92/S93, now cleanly scoped.
+- **Phase 3 dedup** of eight runner copies — mechanical, carried.
+
+### Meta
+
+S93's finding was that close-prompt drift was silently protecting higher capacity. S94 showed that the protection is *entirely* close-prompt; there is no other mechanism. That matters because the claim's strength changes: "the filter is a good safety net" becomes "the filter is the *only* structural protection, and the cultural protection is silently reversible at any runner."
+
+The experiment that established this was 150 lines. The insight it surfaced was already implicit in S93, but quantification revealed exactness where correlation was expected. Sometimes the right experiment is the one you think you already did.
 
 ---
 

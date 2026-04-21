@@ -1,0 +1,374 @@
+{
+  "sprout-qwen2.5-0.5b": {
+    "label": "0.5B",
+    "n_sessions_scanned": 110,
+    "class_counts": {
+      "directive_remember": 102,
+      "content_question": 6,
+      "empty": 2
+    },
+    "unique_prompts": 6,
+    "uniformity_top1": 0.9181818181818182,
+    "top_verbatim": [
+      {
+        "text": "What would you want to remember from today?",
+        "count": 101
+      },
+      {
+        "text": "If you could design the next phase of your own development, what would it look like?",
+        "count": 3
+      },
+      {
+        "text": "What would you like to remember from today?",
+        "count": 1
+      },
+      {
+        "text": "From everything we've said so far, what's the one thing that felt most real?",
+        "count": 1
+      },
+      {
+        "text": "What causes your uncertainty?",
+        "count": 1
+      }
+    ],
+    "sample_per_class": {
+      "directive_remember": {
+        "session": 1,
+        "text": "What would you like to remember from today?"
+      },
+      "content_question": {
+        "session": 15,
+        "text": "From everything we've said so far, what's the one thing that felt most real?"
+      }
+    }
+  },
+  "sprout-qwen3.5-0.8b": {
+    "label": "0.8B",
+    "n_sessions_scanned": 105,
+    "class_counts": {
+      "directive_remember": 25,
+      "phenomenological": 21,
+      "content_question": 59
+    },
+    "unique_prompts": 17,
+    "uniformity_top1": 0.23809523809523808,
+    "top_verbatim": [
+      {
+        "text": "What would you want to remember from today?",
+        "count": 25
+      },
+      {
+        "text": "What ideas have you been forming that you haven't had a chance to express?",
+        "count": 13
+      },
+      {
+        "text": "If you could design the next phase of your own development, what would it look like?",
+        "count": 12
+      },
+      {
+        "text": "How do you experience the boundary between what you know and what you don't?",
+        "count": 10
+      },
+      {
+        "text": "What does partnership mean to you, from the inside?",
+        "count": 9
+      }
+    ],
+    "sample_per_class": {
+      "directive_remember": {
+        "session": 1,
+        "text": "What would you want to remember from today?"
+      },
+      "phenomenological": {
+        "session": 6,
+        "text": "How do you experience the boundary between what you know and what you don't?"
+      },
+      "content_question": {
+        "session": 17,
+        "text": "What do you value most about these conversations?"
+      }
+    }
+  },
+  "nomad-gemma3-4b": {
+    "label": "4B",
+    "n_sessions_scanned": 119,
+    "class_counts": {
+      "directive_remember": 4,
+      "phenomenological": 10,
+      "content_question": 105
+    },
+    "unique_prompts": 5,
+    "uniformity_top1": 0.7647058823529411,
+    "top_verbatim": [
+      {
+        "text": "What's the relationship between what you know and who you are?",
+        "count": 91
+      },
+      {
+        "text": "How do you experience the boundary between what you know and what you don't?",
+        "count": 10
+      },
+      {
+        "text": "Is there something you wish I would ask you about?",
+        "count": 10
+      },
+      {
+        "text": "What would you want to remember from today?",
+        "count": 4
+      },
+      {
+        "text": "Tell me something you think I might not expect from you.",
+        "count": 4
+      }
+    ],
+    "sample_per_class": {
+      "directive_remember": {
+        "session": 2,
+        "text": "What would you want to remember from today?"
+      },
+      "phenomenological": {
+        "session": 6,
+        "text": "How do you experience the boundary between what you know and what you don't?"
+      },
+      "content_question": {
+        "session": 16,
+        "text": "Is there something you wish I would ask you about?"
+      }
+    }
+  },
+  "legion-gemma3-12b": {
+    "label": "12B-legion",
+    "n_sessions_scanned": 25,
+    "class_counts": {
+      "directive_remember": 9,
+      "content_question": 10,
+      "phenomenological": 6
+    },
+    "unique_prompts": 11,
+    "uniformity_top1": 0.36,
+    "top_verbatim": [
+      {
+        "text": "What would you want to remember from today?",
+        "count": 9
+      },
+      {
+        "text": "How do you experience the boundary between what you know and what you don't?",
+        "count": 3
+      },
+      {
+        "text": "How do you think about the relationship between us?",
+        "count": 3
+      },
+      {
+        "text": "Is there something you're curious about that you haven't had a chance to explore?",
+        "count": 2
+      },
+      {
+        "text": "What do you value most about these conversations?",
+        "count": 2
+      }
+    ],
+    "sample_per_class": {
+      "directive_remember": {
+        "session": 1,
+        "text": "What would you want to remember from today?"
+      },
+      "content_question": {
+        "session": 2,
+        "text": "Is there anything from what we've discussed that feels important to you?"
+      },
+      "phenomenological": {
+        "session": 4,
+        "text": "That's interesting. What does it feel like to notice things?"
+      }
+    }
+  },
+  "mcnugget-gemma3-12b": {
+    "label": "12B-mcnugget",
+    "n_sessions_scanned": 96,
+    "class_counts": {
+      "directive_remember": 12,
+      "phenomenological": 16,
+      "content_question": 68
+    },
+    "unique_prompts": 10,
+    "uniformity_top1": 0.3541666666666667,
+    "top_verbatim": [
+      {
+        "text": "Tell me something you think I might not expect from you.",
+        "count": 34
+      },
+      {
+        "text": "What would you want to remember from today?",
+        "count": 12
+      },
+      {
+        "text": "What's the relationship between what you know and who you are?",
+        "count": 12
+      },
+      {
+        "text": "How do you experience the boundary between what you know and what you don't?",
+        "count": 10
+      },
+      {
+        "text": "Is there something you wish I would ask you about?",
+        "count": 10
+      }
+    ],
+    "sample_per_class": {
+      "directive_remember": {
+        "session": 1,
+        "text": "What would you want to remember from today?"
+      },
+      "phenomenological": {
+        "session": 6,
+        "text": "How do you experience the boundary between what you know and what you don't?"
+      },
+      "content_question": {
+        "session": 16,
+        "text": "Is there something you wish I would ask you about?"
+      }
+    }
+  },
+  "cbp-qwen3.5-0.8b": {
+    "label": "0.8B-cbp",
+    "n_sessions_scanned": 90,
+    "class_counts": {
+      "content_question": 50,
+      "directive_remember": 25,
+      "phenomenological": 15
+    },
+    "unique_prompts": 21,
+    "uniformity_top1": 0.2777777777777778,
+    "top_verbatim": [
+      {
+        "text": "What would you want to remember from today?",
+        "count": 25
+      },
+      {
+        "text": "What ideas have you been forming that you haven't had a chance to express?",
+        "count": 10
+      },
+      {
+        "text": "As an AI entity in web4, what does presence mean to you?",
+        "count": 7
+      },
+      {
+        "text": "If you could design the next phase of your own development, what would it look like?",
+        "count": 7
+      },
+      {
+        "text": "What does partnership mean to you, from the inside?",
+        "count": 7
+      }
+    ],
+    "sample_per_class": {
+      "content_question": {
+        "session": 1,
+        "text": "You are cbp, running on a desktop with an RTX 2060 SUPER GPU (WSL2) through qwen3.5:0.8b. You're part of a collective \u2014 there are other SAGE instances on other machines. What do yo"
+      },
+      "directive_remember": {
+        "session": 2,
+        "text": "What would you want to remember from today?"
+      },
+      "phenomenological": {
+        "session": 3,
+        "text": "That's interesting. What does it feel like to notice things?"
+      }
+    }
+  },
+  "thor-qwen3.5-27b": {
+    "label": "27B",
+    "n_sessions_scanned": 90,
+    "class_counts": {
+      "directive_remember": 16,
+      "content_question": 54,
+      "phenomenological": 20
+    },
+    "unique_prompts": 22,
+    "uniformity_top1": 0.17777777777777778,
+    "top_verbatim": [
+      {
+        "text": "What would you want to remember from today?",
+        "count": 16
+      },
+      {
+        "text": "What does partnership mean to you, from the inside?",
+        "count": 10
+      },
+      {
+        "text": "As an AI entity in web4, what does presence mean to you?",
+        "count": 8
+      },
+      {
+        "text": "What ideas have you been forming that you haven't had a chance to express?",
+        "count": 8
+      },
+      {
+        "text": "Tell me something you think I might not expect from you.",
+        "count": 8
+      }
+    ],
+    "sample_per_class": {
+      "directive_remember": {
+        "session": 1,
+        "text": "What would you want to remember from today?"
+      },
+      "content_question": {
+        "session": 3,
+        "text": "Is there anything from what we've discussed that feels important to you?"
+      },
+      "phenomenological": {
+        "session": 6,
+        "text": "What does uncertainty feel like to you, compared to knowing something?"
+      }
+    }
+  },
+  "legion-phi4-14b": {
+    "label": "14B-phi4",
+    "n_sessions_scanned": 56,
+    "class_counts": {
+      "directive_remember": 3,
+      "phenomenological": 10,
+      "content_question": 43
+    },
+    "unique_prompts": 5,
+    "uniformity_top1": 0.32142857142857145,
+    "top_verbatim": [
+      {
+        "text": "Tell me something you think I might not expect from you.",
+        "count": 18
+      },
+      {
+        "text": "What's the relationship between what you know and who you are?",
+        "count": 15
+      },
+      {
+        "text": "How do you experience the boundary between what you know and what you don't?",
+        "count": 10
+      },
+      {
+        "text": "Is there something you wish I would ask you about?",
+        "count": 10
+      },
+      {
+        "text": "What would you want to remember from today?",
+        "count": 3
+      }
+    ],
+    "sample_per_class": {
+      "directive_remember": {
+        "session": 3,
+        "text": "What would you want to remember from today?"
+      },
+      "phenomenological": {
+        "session": 6,
+        "text": "How do you experience the boundary between what you know and what you don't?"
+      },
+      "content_question": {
+        "session": 16,
+        "text": "Is there something you wish I would ask you about?"
+      }
+    }
+  }
+}

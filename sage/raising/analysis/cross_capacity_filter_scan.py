@@ -47,6 +47,11 @@ INSTANCES = [
     ("legion-gemma3-12b", "12B-legion"),
     ("mcnugget-gemma3-12b", "12B-mcnugget"),
     ("thor-qwen2.5-14b", "14B"),
+    # Added S94: full fleet coverage for standing-monitor use. Phi-4 adds a
+    # fourth model family beyond Qwen2.5/Qwen3.5/Gemma3.
+    ("cbp-qwen3.5-0.8b", "0.8B-cbp"),
+    ("thor-qwen3.5-27b", "27B"),
+    ("legion-phi4-14b", "14B-phi4"),
 ]
 
 SESS_RE = re.compile(r"session_(\d+)(?:[_.]|$)")

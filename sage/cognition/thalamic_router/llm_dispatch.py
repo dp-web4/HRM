@@ -2144,6 +2144,18 @@ def run_llm_dispatch(
                     )
                 except Exception:
                     pass
+
+                # Lookahead: predict what each action does (best-effort)
+                _la_text = None
+                try:
+                    from sage.cognition.thalamic_router.lookahead import lookahead
+                    _la_text, _la_elapsed = lookahead(env, fd)
+                except Exception:
+                    pass
+                if _fs_text and _la_text:
+                    _fs_text = _fs_text + "\n\n" + _la_text
+                elif _la_text:
+                    _fs_text = _la_text
                 prompt = build_prompt(
                     game=game_family, level=level, step_index=step_idx + 1,
                     play_action_idx=dispatch.play_action,

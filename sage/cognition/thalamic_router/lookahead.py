@@ -151,7 +151,14 @@ def _describe_outcome(
     if grew:
         color_info = f" ({', '.join(f'+{n} {name}' for name, n in grew[:2])})"
 
-    return f"{n_changed}px ({pct:.1f}%) changed in {loc_y}-{loc_x}{color_info}"
+    # Spatial extent
+    y_min, y_max = int(ys.min()), int(ys.max())
+    x_min, x_max = int(xs.min()), int(xs.max())
+    y_span = y_max - y_min + 1
+    x_span = x_max - x_min + 1
+    shape = "wide" if x_span > y_span * 1.5 else ("tall" if y_span > x_span * 1.5 else "square")
+
+    return f"{n_changed}px ({pct:.1f}%) in {loc_y}-{loc_x} ({shape} region x:{x_min}-{x_max} y:{y_min}-{y_max}){color_info}"
 
 
 # ─── Quick test ───────────────────────────────────────────────────

@@ -49,13 +49,62 @@ INSTANCES = [
 
 SESS_RE = re.compile(r"session_(\d+)(?:[_.]|$)")
 
-# Phenomenological markers: first-person experiential framing, often
-# verb-focused on *access to own state*. S93 spot-sampled Nomad's
+# Phenomenological markers: first-person experiential framing, verb-focused
+# on *access to own state* (qualia register). S93 spot-sampled Nomad's
 # dominant close ("How do you experience the boundary...").
+#
+# S95 refinement: the original regex had word-boundary bugs — `\bfeel\b`
+# did not match "feels"/"feeling", `\bnotice\b` did not match "noticing",
+# `\bpresent\b` did not match "presence". Expanded with `\w*` suffixes.
 _PHENO_RE = re.compile(
-    r"\b(?:experience|notice|feel|sense|present|aware|attention|inside|"
-    r"boundary\s+between|what\s+is\s+it\s+like|from\s+the\s+inside|"
-    r"in\s+this\s+moment)\b",
+    r"\b(?:"
+    r"experienc\w*|"                    # experience, experienced, experiencing
+    r"notic\w*|"                         # notice, noticed, noticing, noticeable
+    r"feel\w*|felt|"                     # feel, feels, feeling, felt
+    r"sens(?:e|es|ed|ing|ation\w*)|"     # sense, senses, sensed, sensing, sensation(s)
+    r"aware(?:ness)?|"                   # aware, awareness
+    r"presen(?:ce|t\w*)|"                # present, presence, presently
+    r"attention|attend\w*|"              # attention, attending
+    r"(?:from\s+the\s+)?inside|"         # inside, from the inside
+    r"boundary\s+between|"               # boundary between X and Y
+    r"what\s+(?:is\s+it|does\s+it\s+feel)\s+like|"
+    r"in\s+this\s+moment"
+    r")\b",
+    re.IGNORECASE,
+)
+
+# Introspective markers: first-person self-reflection that isn't
+# specifically about qualia / phenomenal experience. Covers relational-
+# reflexive prompts ("relationship between what you know and who you
+# are"), invitations to self-report ("tell me something you think..."),
+# second-person mental predicates ("you wish", "you value"), and
+# references to self-as-subject ("your own development", "about yourself").
+#
+# Introduced in S95 after the taxonomy's `content_question` bucket was
+# absorbing prompts that were plainly first-person reflective — in
+# particular Nomad 4B's dominant close ("What's the relationship between
+# what you know and who you are?") and the McNugget/Phi-4 common close
+# ("Tell me something you think I might not expect from you").
+_INTROSPECTIVE_RE = re.compile(
+    r"(?:"
+    r"\byour\s+own\b|"                             # your own (development, path...)
+    r"\babout\s+yourself\b|\byourself\b|"          # self as subject
+    r"\byou\s+(?:wish|think|value|believe|see)\b|" # 2nd-person mental predicates
+    r"\byou(?:'re|\s+are)\s+curious\b|"            # curiosity about self
+    r"\byou(?:'ve|\s+have)\s+been\s+(?:thinking|forming)\b|"
+    r"\btell\s+me\s+something\s+you\b|"            # invitation for self-report
+    r"\b(?:mean|means)\s+to\s+you\b|"              # "what does X mean to you"
+    r"\brelationship\s+between\s+(?:us|what\s+you)\b|"
+    r"\bbetween\s+us\b|"                           # relational-reflexive
+    r"\bwho\s+you\s+are\b|"                        # identity-reflexive
+    r"\bhow\s+we\s+work\s+together\b|"
+    r"\bpatterns\s+do\s+you\s+see\b|"
+    r"\bwhat\s+surprised\s+you\b|"                 # reflection on salience
+    r"\bpuzzles\s+you\b|"
+    r"\bideas\s+you\b|"
+    r"\bideas\s+(?:you've|you\s+have)\s+been\b|"
+    r"\byour\s+uncertainty\b"
+    r")",
     re.IGNORECASE,
 )
 
@@ -71,10 +120,12 @@ _MEMORY_META_RE = re.compile(
 
 
 def classify(text: str) -> str:
-    """Four-way classification of a close-prompt.
+    """Five-way classification of a close-prompt.
 
-    Order matters: 'remember' wins over phenomenological even if both
-    markers appear, because the extraction rule triggers on 'remember'.
+    Order matters. `directive_remember` wins first because the extraction
+    rule is the whole functional point. Phenomenological wins over
+    introspective because experiential qualia framing is a strict subset
+    of introspection and the more specific label is more informative.
     """
     if not text:
         return "empty"
@@ -85,6 +136,8 @@ def classify(text: str) -> str:
         return "memory_meta_other"
     if _PHENO_RE.search(t):
         return "phenomenological"
+    if _INTROSPECTIVE_RE.search(t):
+        return "introspective"
     return "content_question"
 
 
@@ -160,8 +213,8 @@ def main() -> None:
     # Layer 1: classification share
     print()
     print("== CLOSE-PROMPT CLASSIFICATION SHARE ==")
-    cols = ["directive_remember", "phenomenological", "memory_meta_other",
-            "content_question", "empty"]
+    cols = ["directive_remember", "phenomenological", "introspective",
+            "memory_meta_other", "content_question", "empty"]
     header = f"{'Instance':<28} {'Label':<14} {'N':>4} "
     header += " ".join(f"{c[:12]:>12}" for c in cols)
     header += f" {'Uniform':>8}"

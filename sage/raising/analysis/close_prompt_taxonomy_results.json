@@ -4,8 +4,9 @@
     "n_sessions_scanned": 110,
     "class_counts": {
       "directive_remember": 102,
-      "content_question": 6,
-      "empty": 2
+      "phenomenological": 1,
+      "empty": 2,
+      "introspective": 5
     },
     "unique_prompts": 6,
     "uniformity_top1": 0.9181818181818182,
@@ -36,26 +37,31 @@
         "session": 1,
         "text": "What would you like to remember from today?"
       },
-      "content_question": {
+      "phenomenological": {
         "session": 15,
         "text": "From everything we've said so far, what's the one thing that felt most real?"
+      },
+      "introspective": {
+        "session": 78,
+        "text": "If you could design the next phase of your own development, what would it look like?"
       }
     }
   },
   "sprout-qwen3.5-0.8b": {
     "label": "0.8B",
-    "n_sessions_scanned": 105,
+    "n_sessions_scanned": 106,
     "class_counts": {
-      "directive_remember": 25,
-      "phenomenological": 21,
-      "content_question": 59
+      "directive_remember": 26,
+      "phenomenological": 28,
+      "introspective": 39,
+      "content_question": 13
     },
     "unique_prompts": 17,
-    "uniformity_top1": 0.23809523809523808,
+    "uniformity_top1": 0.24528301886792453,
     "top_verbatim": [
       {
         "text": "What would you want to remember from today?",
-        "count": 25
+        "count": 26
       },
       {
         "text": "What ideas have you been forming that you haven't had a chance to express?",
@@ -83,9 +89,13 @@
         "session": 6,
         "text": "How do you experience the boundary between what you know and what you don't?"
       },
-      "content_question": {
+      "introspective": {
         "session": 17,
         "text": "What do you value most about these conversations?"
+      },
+      "content_question": {
+        "session": 41,
+        "text": "What ideas have you been forming that you haven't had a chance to express?"
       }
     }
   },
@@ -95,7 +105,7 @@
     "class_counts": {
       "directive_remember": 4,
       "phenomenological": 10,
-      "content_question": 105
+      "introspective": 105
     },
     "unique_prompts": 5,
     "uniformity_top1": 0.7647058823529411,
@@ -130,7 +140,7 @@
         "session": 6,
         "text": "How do you experience the boundary between what you know and what you don't?"
       },
-      "content_question": {
+      "introspective": {
         "session": 16,
         "text": "Is there something you wish I would ask you about?"
       }
@@ -141,8 +151,8 @@
     "n_sessions_scanned": 25,
     "class_counts": {
       "directive_remember": 9,
-      "content_question": 10,
-      "phenomenological": 6
+      "phenomenological": 7,
+      "introspective": 9
     },
     "unique_prompts": 11,
     "uniformity_top1": 0.36,
@@ -173,13 +183,13 @@
         "session": 1,
         "text": "What would you want to remember from today?"
       },
-      "content_question": {
+      "phenomenological": {
         "session": 2,
         "text": "Is there anything from what we've discussed that feels important to you?"
       },
-      "phenomenological": {
-        "session": 4,
-        "text": "That's interesting. What does it feel like to notice things?"
+      "introspective": {
+        "session": 7,
+        "text": "Is there something you're curious about that you haven't had a chance to explore?"
       }
     }
   },
@@ -188,8 +198,9 @@
     "n_sessions_scanned": 96,
     "class_counts": {
       "directive_remember": 12,
-      "phenomenological": 16,
-      "content_question": 68
+      "phenomenological": 19,
+      "introspective": 61,
+      "content_question": 4
     },
     "unique_prompts": 10,
     "uniformity_top1": 0.3541666666666667,
@@ -224,9 +235,13 @@
         "session": 6,
         "text": "How do you experience the boundary between what you know and what you don't?"
       },
-      "content_question": {
+      "introspective": {
         "session": 16,
         "text": "Is there something you wish I would ask you about?"
+      },
+      "content_question": {
+        "session": 79,
+        "text": "What ideas have you been forming that you haven't had a chance to express?"
       }
     }
   },
@@ -234,9 +249,10 @@
     "label": "0.8B-cbp",
     "n_sessions_scanned": 90,
     "class_counts": {
-      "content_question": 50,
+      "content_question": 11,
       "directive_remember": 25,
-      "phenomenological": 15
+      "phenomenological": 23,
+      "introspective": 31
     },
     "unique_prompts": 21,
     "uniformity_top1": 0.2777777777777778,
@@ -274,6 +290,10 @@
       "phenomenological": {
         "session": 3,
         "text": "That's interesting. What does it feel like to notice things?"
+      },
+      "introspective": {
+        "session": 6,
+        "text": "Is there something you're curious about that you haven't had a chance to explore?"
       }
     }
   },
@@ -282,8 +302,9 @@
     "n_sessions_scanned": 90,
     "class_counts": {
       "directive_remember": 16,
-      "content_question": 54,
-      "phenomenological": 20
+      "phenomenological": 33,
+      "introspective": 33,
+      "content_question": 8
     },
     "unique_prompts": 22,
     "uniformity_top1": 0.17777777777777778,
@@ -314,13 +335,17 @@
         "session": 1,
         "text": "What would you want to remember from today?"
       },
-      "content_question": {
+      "phenomenological": {
         "session": 3,
         "text": "Is there anything from what we've discussed that feels important to you?"
       },
-      "phenomenological": {
-        "session": 6,
-        "text": "What does uncertainty feel like to you, compared to knowing something?"
+      "introspective": {
+        "session": 9,
+        "text": "Is there something you're curious about that you haven't had a chance to explore?"
+      },
+      "content_question": {
+        "session": 47,
+        "text": "What ideas have you been forming that you haven't had a chance to express?"
       }
     }
   },
@@ -330,7 +355,7 @@
     "class_counts": {
       "directive_remember": 3,
       "phenomenological": 10,
-      "content_question": 43
+      "introspective": 43
     },
     "unique_prompts": 5,
     "uniformity_top1": 0.32142857142857145,
@@ -365,7 +390,7 @@
         "session": 6,
         "text": "How do you experience the boundary between what you know and what you don't?"
       },
-      "content_question": {
+      "introspective": {
         "session": 16,
         "text": "Is there something you wish I would ask you about?"
       }

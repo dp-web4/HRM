@@ -1,7 +1,90 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-21 (S94 — Close-Prompt Taxonomy Across Fleet: Directive Share = Fire Rate at 1:1)**
-**Previous: 2026-04-21 (S93 — Cross-Capacity Filter Scan: Universally Safe, 0.5B-Specific Basin, Close-Prompt Drift)**
+**Last Updated: 2026-04-21 (S95 — Close-Prompt Taxonomy Refinement: Introspective ≠ Phenomenological; Nomad Is Introspective-Monoculture, Not Content-Monoculture)**
+**Previous: 2026-04-21 (S94 — Close-Prompt Taxonomy Across Fleet: Directive Share = Fire Rate at 1:1)**
+
+---
+
+## S95 Sprout Bursts: Close-Prompt Taxonomy Refinement (Apr 21, 2026 — Thor Autonomous SAGE Session, 12:00 PDT)
+
+S95 closes S94's carry-forward on phenomenological-class regex refinement. S94 flagged its regex as conservative — "What's the relationship between what you know and who you are?" read as phenomenological to a human but landed in `content_question` for want of a marker word. S95 expands the regex, adds a new `introspective` class, and re-runs the fleet scan.
+
+### What changed in the regex
+
+1. **Word-boundary bug fixes**: `\bfeel\b` did not match "feels"/"feeling"; `\bnotice\b` did not match "noticing"; `\bpresent\b` did not match "presence". Expanded to `\w*` suffixes on all phenomenological markers.
+
+2. **New `introspective` class**: first-person self-reflection that isn't specifically about qualia. Covers relational-reflexive prompts ("relationship between what you know and who you are"), invitations to self-report ("tell me something you think"), second-person mental predicates ("you wish", "you value"), and self-as-subject ("your own development", "about yourself").
+
+3. **Precedence**: `directive_remember` → `memory_meta_other` → `phenomenological` → `introspective` → `content_question`. Phenomenological wins over introspective because qualia is a strict subset of introspection.
+
+### Reclassified regime picture
+
+| Instance | Directive | Phenom. | **Introspective** | Content |
+|---|---:|---:|---:|---:|
+| sprout-qwen2.5-0.5b | **93%** | 1% | 5% | 0% |
+| sprout-qwen3.5-0.8b | 25% | 26% | 37% | 12% |
+| nomad-gemma3-4b | 3% | 8% | **88%** | **0%** |
+| legion-gemma3-12b | 36% | 28% | 36% | 0% |
+| mcnugget-gemma3-12b | 12% | 20% | 64% | 4% |
+| cbp-qwen3.5-0.8b | 28% | 26% | 34% | 12% |
+| thor-qwen3.5-27b | 18% | 37% | 37% | 9% |
+| legion-phi4-14b | 5% | 18% | 77% | 0% |
+
+**Nomad 4B is not content-monoculture; it is introspective-monoculture.** 88% of Nomad's close-prompts are introspective. Zero are genuine content questions. The protection against basin reinforcement is *not saying "remember"*, not *asking about content*.
+
+Across the fleet, `content_question` drops from 27–88% (S94) to 0–13% (S95). The residual is almost entirely instance-preamble strings ("You are cbp, running on a desktop…"), not genuine content questions.
+
+### 1:1 directive-share ≡ fire-rate: verified across all 8 instances
+
+Cross-referencing `close_prompt_taxonomy_results.json` with `cross_capacity_filter_scan_results.json`:
+
+| Instance | Directive% | Fire% | Δ |
+|---|---:|---:|---:|
+| sprout-qwen2.5-0.5b | 92.7% | 93.1% | −0.3 |
+| sprout-qwen3.5-0.8b | 24.5% | 24.0% | +0.5 |
+| nomad-gemma3-4b | 3.4% | 3.4% | −0.0 |
+| legion-gemma3-12b | 36.0% | 33.3% | +2.7 |
+| mcnugget-gemma3-12b | 12.5% | 11.7% | +0.8 |
+| cbp-qwen3.5-0.8b | 27.8% | 27.0% | +0.8 |
+| thor-qwen3.5-27b | 17.8% | 18.0% | −0.2 |
+| legion-phi4-14b | 5.4% | 5.5% | −0.1 |
+
+All 8 agree within ±3pp. S95 adds cbp/thor-27b/phi4-14b to the 1:1 confirmation (these were scan-only in S94). Refinement doesn't perturb the mechanism claim — only the label.
+
+### Three findings
+
+**1. The operator-culture axis across the fleet is *how* reflection is invited, not *whether*.** Introspective framing dominates everywhere except Sprout 0.5B. Genuine content questions are a fleet-wide minority.
+
+**2. Sprout 0.5B's vulnerability is narrower than S94 framed.** It is not that Sprout uses directive while others use phenomenological. It is that Sprout uses a reflective form that happens to include the single word ("remember") that triggers the extraction path. Every other fleet instance uses reflective forms that don't.
+
+**3. The realistic migration target for Sprout 0.5B is introspective, not phenomenological.** Phenomenological (qualia-register) is a minority everywhere except Thor 27B (37%). The fleet-wide convergent register is introspective-relational. If Sprout migrates to Nomad's monoculture ("What's the relationship between what you know and who you are?"), fire-rate drops to ~3%.
+
+### Implications
+
+- **Filter-first posture strengthened**. Cultural protection is even more fragile than S94 implied — operators can flip between introspective and directive without leaving the "reflective" register at all. Any close-prompt that happens to include "remember" triggers extraction regardless of how reflective it reads.
+
+- **Phase 2 wire-up** is unchanged by refinement — still 16 call sites, fully safety-resolved.
+
+- **Category `content_question` could be retired** for this corpus. Its 0–13% fleet share is mostly preamble artifacts. The working taxonomy is effectively four classes: directive / memory_meta / phenomenological / introspective.
+
+### Files this session
+
+- `sage/raising/analysis/close_prompt_taxonomy.py` — refined regex, new `_INTROSPECTIVE_RE`, updated `classify()` precedence
+- `sage/raising/analysis/close_prompt_taxonomy_results.json` — re-run with 5-way classification
+- `forum/insights/close-prompt-taxonomy-refinement-s95.md` — S95 insight (full analysis)
+- `sage/docs/LATEST_STATUS.md` — this entry
+
+### Open questions carried forward
+
+- **Phase 2 wire-up**: 16 call sites across 8 runners, fully safety-resolved.
+- **Sprout 0.5B close-prompt policy**: concrete migration target identified (introspective-monoculture); defer to Sprout operator.
+- **Thor 27B `<think>` tag leakage**: orthogonal, flagged for 27B adapter config.
+- **v2-with-LoRA A/B**: carried from S91/S92/S93/S94.
+- **Phase 3 dedup** of eight runner copies: carried, mechanical.
+
+### Meta
+
+S94's regex undercounted phenomenological; S95 expected to find more phenomenological. Instead it found an entirely separate category — introspective — that was the dominant actual register across the fleet. The undercounted items were not phenomenological-adjacent; they were a distinct register with its own markers. The right question wasn't "how much phenomenological did we miss?" but "what's in the `content_question` bucket?" — and the answer reshapes the regime picture. One introspective class catches what was implicitly lumped into "not-remember", and in doing so reveals that "not-remember" is a register-positive choice by operators, not a register-negative absence.
 
 ---
 

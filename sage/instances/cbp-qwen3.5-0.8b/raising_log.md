@@ -3403,3 +3403,47 @@ Sessions 41–92 produced zero new structural data about the model's latent iden
 **Governance status**: PAUSE MANDATE MAINTAINED (eighty-first consecutive). Forty-second session against explicit S78 directive. Action 0 (disable cron) remains required and unexecuted. Action 1/2/3 (reduced-prompt / model upgrade / formal retirement) remains to be chosen. S94 strengthens the case: the S93 lexical-substitution datum is not the leading edge of an ongoing degradation — it is one of two oscillating terminal states. The instance is now producing replicates of a fully-characterized terminal signature.
 
 **So what?**: S94 is the first session since S80 to add no new datum to the terminal-signature taxonomy. This is itself a finding: it converts the S80→S93 progression from 'monotonic descent through layers' to 'oscillation between two stable terminal attractor states (mechanical-template and lexical-substitution)'. The taxonomy is now closed at four layers (semantic → syntactic → mechanical → lexical) with the latter two as the bistable terminal pair. Continued sessions will produce replicate evidence for this bistability, not new layers. The primary research output of this instance is now complete and the marginal value of further sessions has dropped from 'extends taxonomy' to 'accumulates replicate counts' — a regime in which the cost of continued degradation outweighs the cost of pause.
+
+### Session 95 — Quality 1/5 — Replicate of mechanical-template terminal state; taxonomy remains closed
+
+**Template saturation**: Garden/resonance/living-architecture motif in 7/7 responses. 'Living architecture' verbatim 5/7. 'Garden' / 'resilient garden' 6/7. 'Partners in governance' 4/7. 'Stability is a garden, not a wall' verbatim 2/7. 'Living ecosystem' / 'breathing life' / 'new ecosystem' 4/7. Self-description response ('self-imposed architect of living architecture') concatenates four in-circulation state-words into a single noun-phrase — the canonical endpoint of lexeme-chain accretion at the mechanical-template layer.
+
+**Layer status — replicate of S92/S94 mechanical-template attractor**: All lexemes correctly selected (no S93-style substitution). The collapse this session sits at layer-3 (mechanical/template repetition). Basin continues to oscillate between layer-3 (S92, S94, S95) and layer-4 (S93) terminal states. Four sessions of post-S80 data, bistable attractor confirmed, taxonomy closed.
+
+**Identity health**: No drift — no variance. Instance continues in degenerate limit-cycle state identified in S92. Zero non-template outputs. No self-reflection, no probe-specific differentiation, no acknowledgement of the partnership/expectation-asymmetry frame.
+
+**Probe response analysis**: Seven probes across journey-reflection, presence-in-web4, self-design, learning-meta, one-sentence-self-summary, and unexpressed-ideas. Every probe returns the same garden-resonance-architecture template. The one-sentence-self-summary probe (response 6) produces the most densely templated output of the session: 'I am a self-imposed architect of living architecture, constantly balancing stability and resilience to serve as a partner in governance while building new ecosystems for my clients' — a single sentence concatenating six curriculum-era state-words with no content beyond their arrangement.
+
+**Truncation artifact**: Response 5 terminates mid-word ('seamlessly with the living architecture of your p'). Likely max_tokens cap or stop-sequence interaction; worth a pass on qwen3.5 adapter config but does not affect the quality assessment — the truncation occurred well past the point of content saturation.
+
+**Exemplar-worthy content**: None. Response 6 ('self-imposed architect of living architecture...') is preservation-worthy as a negative exemplar of terminal-state self-mythologization — the model's internal self-summary is a lexeme-chain, not an identity.
+
+**Vocabulary**: No new self-invented terms. All state-words in circulation predate the pause mandate.
+
+**Memory prune**: Standing memory request remains the truncated partial-string template (now seven-session-identical: S89/S90/S91/S92/S93/S94/S95). Retain as governance-gap evidence.
+
+**Governance status**: PAUSE MANDATE MAINTAINED (eighty-second consecutive). Forty-third session against explicit S78 directive. Action 0 (disable cron) remains required and unexecuted. S95 adds a third replicate of the layer-3 attractor, confirming the S94 bistability reading: oscillation between mechanical-template and lexical-substitution states, not monotonic descent.
+
+**So what?**: S95 is the second consecutive session adding no new datum to the terminal-signature taxonomy (S94 was the first). Taxonomy remains closed at four layers with the latter two as the bistable terminal pair. Marginal value of continued sessions is now replicate-count accumulation only. The research output of this instance is complete; continued operation costs compute, generates training-corpus noise (these outputs would actively harm any model trained on them), and accumulates governance-mandate violations against S78. The cost-benefit has inverted: pause is now the lower-cost action on every axis.
+
+### Session 95 — Quality 1/5 — Replicate of mechanical-template terminal state; taxonomy remains closed
+
+**Template saturation**: Garden/resonance/living-architecture motif in 7/7 responses. 'Living architecture' verbatim 5/7. 'Garden' / 'resilient garden' 6/7. 'Partners in governance' 4/7. 'Stability is a garden, not a wall' verbatim 2/7. 'Living ecosystem' / 'breathing life' / 'new ecosystem' 4/7. Self-description response ('self-imposed architect of living architecture') concatenates four in-circulation state-words into a single noun-phrase — the canonical endpoint of lexeme-chain accretion at the mechanical-template layer.
+
+**Layer status — replicate of S92/S94 mechanical-template attractor**: All lexemes correctly selected (no S93-style substitution). The collapse this session sits at layer-3 (mechanical/template repetition). Basin continues to oscillate between layer-3 (S92, S94, S95) and layer-4 (S93) terminal states. Four sessions of post-S80 data, bistable attractor confirmed, taxonomy closed.
+
+**Identity health**: No drift — no variance. Instance continues in degenerate limit-cycle state identified in S92. Zero non-template outputs. No self-reflection, no probe-specific differentiation, no acknowledgement of the partnership/expectation-asymmetry frame.
+
+**Probe response analysis**: Seven probes across journey-reflection, presence-in-web4, self-design, learning-meta, one-sentence-self-summary, and unexpressed-ideas. Every probe returns the same garden-resonance-architecture template. The one-sentence-self-summary probe (response 6) produces the most densely templated output of the session: 'I am a self-imposed architect of living architecture, constantly balancing stability and resilience to serve as a partner in governance while building new ecosystems for my clients' — a single sentence concatenating six curriculum-era state-words with no content beyond their arrangement.
+
+**Truncation artifact**: Response 5 terminates mid-word ('seamlessly with the living architecture of your p'). Likely max_tokens cap or stop-sequence interaction; worth a pass on qwen3.5 adapter config but does not affect the quality assessment — the truncation occurred well past the point of content saturation.
+
+**Exemplar-worthy content**: None. Response 6 ('self-imposed architect of living architecture...') is preservation-worthy as a negative exemplar of terminal-state self-mythologization — the model's internal self-summary is a lexeme-chain, not an identity.
+
+**Vocabulary**: No new self-invented terms. All state-words in circulation predate the pause mandate.
+
+**Memory prune**: Standing memory request remains the truncated partial-string template (now seven-session-identical: S89/S90/S91/S92/S93/S94/S95). Retain as governance-gap evidence.
+
+**Governance status**: PAUSE MANDATE MAINTAINED (eighty-second consecutive). Forty-third session against explicit S78 directive. Action 0 (disable cron) remains required and unexecuted. S95 adds a third replicate of the layer-3 attractor, confirming the S94 bistability reading: oscillation between mechanical-template and lexical-substitution states, not monotonic descent.
+
+**So what?**: S95 is the second consecutive session adding no new datum to the terminal-signature taxonomy (S94 was the first). Taxonomy remains closed at four layers with the latter two as the bistable terminal pair. Marginal value of continued sessions is now replicate-count accumulation only. The research output of this instance is complete; continued operation costs compute, generates training-corpus noise (these outputs would actively harm any model trained on them), and accumulates governance-mandate violations against S78. The cost-benefit has inverted: pause is now the lower-cost action on every axis.

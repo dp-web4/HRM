@@ -2149,13 +2149,47 @@ def run_llm_dispatch(
                 _la_text = None
                 try:
                     from sage.cognition.thalamic_router.lookahead import lookahead
-                    _la_text, _la_elapsed = lookahead(env, fd)
+                    # Directional actions always
+                    _la_text, _la_elapsed = lookahead(env, fd, actions=[1, 2, 3, 4, 5])
+                    # Click-coord probing when adapter suggests CLICK or
+                    # when all directional actions are blocked
+                    if dispatch.play_action == 6 or "no change" in (_la_text or "").lower().replace("trivial", "no change"):
+                        _click_coords = [(x, y) for y in range(8, 56, 16) for x in range(8, 56, 16)]
+                        _click_text, _ = lookahead(env, fd, actions=[], click_coords=_click_coords)
+                        _active = [l for l in _click_text.split('\n')
+                                   if 'CLICK' in l and 'no change' not in l and 'trivial' not in l and 'error' not in l]
+                        if _active:
+                            _la_text += "\n\nActive CLICK targets:\n" + "\n".join(_active)
+                        else:
+                            _la_text += "\n\nNo active CLICK targets found in grid probe."
                 except Exception:
                     pass
-                if _fs_text and _la_text:
-                    _fs_text = _fs_text + "\n\n" + _la_text
-                elif _la_text:
-                    _fs_text = _la_text
+
+                # Episodic recall: "have I been in this state before?"
+                _ep_text = None
+                try:
+                    from sage.cognition.episodic.gameplay_recall import (
+                        recall_gameplay, format_recall_for_prompt, GameStateCue,
+                    )
+                    from sage.cognition.episodic.index import EpisodicIndex
+                    _ep_db = os.environ.get("SAGE_EPISODIC_DB",
+                        os.path.expanduser("~/ai-workspace/private-context/training-data/episodic/gameplay_episodes.db"))
+                    if os.path.exists(_ep_db):
+                        if not hasattr(run_llm_dispatch, '_episodic_index'):
+                            run_llm_dispatch._episodic_index = EpisodicIndex(db_path=_ep_db)
+                        _cue = GameStateCue(
+                            game_family=game_family,
+                            level=level,
+                            frame=curr_frame_raw,
+                        )
+                        _matches = recall_gameplay(run_llm_dispatch._episodic_index, _cue, k=3)
+                        _ep_text = format_recall_for_prompt(_matches)
+                except Exception:
+                    pass
+
+                # Combine all context signals
+                _context_parts = [p for p in [_fs_text, _la_text, _ep_text] if p]
+                _fs_text = "\n\n".join(_context_parts) if _context_parts else None
                 prompt = build_prompt(
                     game=game_family, level=level, step_index=step_idx + 1,
                     play_action_idx=dispatch.play_action,

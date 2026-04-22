@@ -2235,6 +2235,40 @@ def run_llm_dispatch(
                 except Exception:
                     pass
 
+                # Membot: associative memory — "games like this..."
+                _mb_text = None
+                try:
+                    import sys as _sys
+                    _lib_path = os.path.join(
+                        os.environ.get("SHARED_CONTEXT_DIR",
+                            os.path.expanduser("~/ai-workspace/shared-context")),
+                        "lib")
+                    if _lib_path not in _sys.path:
+                        _sys.path.insert(0, _lib_path)
+                    from membot_vendored import Cart as _Cart
+                    _cart_path = os.path.join(
+                        os.environ.get("SHARED_CONTEXT_DIR",
+                            os.path.expanduser("~/ai-workspace/shared-context")),
+                        "arc-agi-3/phase2/all-games-vendored.cart.npz")
+                    if os.path.exists(_cart_path):
+                        if not hasattr(run_llm_dispatch, '_membot_cart'):
+                            run_llm_dispatch._membot_cart = _Cart.open(_cart_path)
+                        # Build query from game + current situation
+                        import requests as _req
+                        _stuck_prefix = "stuck on " if stuck_triggered else ""
+                        _query = f"{_stuck_prefix}{game_family} level {level} game strategy"
+                        _resp = _req.post("http://localhost:11434/api/embeddings",
+                            json={"model": "nomic-embed-text", "prompt": _query}, timeout=5)
+                        _q_emb = np.array(_resp.json()["embedding"], dtype=np.float32)
+                        _hits = run_llm_dispatch._membot_cart.search(_q_emb, k=2)
+                        if _hits:
+                            _mb_lines = ["Relevant game knowledge (from fleet memory):"]
+                            for _h in _hits:
+                                _mb_lines.append(f"  {_h['text'][:200]}")
+                            _mb_text = "\n".join(_mb_lines)
+                except Exception:
+                    pass
+
                 # Metacog signals: what does the system know about its own state?
                 _mc_text = None
                 if metacog is not None:
@@ -2252,7 +2286,7 @@ def run_llm_dispatch(
                         pass
 
                 # Combine all context signals
-                _context_parts = [p for p in [_fs_text, _la_text, _ep_text, _mc_text] if p]
+                _context_parts = [p for p in [_fs_text, _la_text, _ep_text, _mb_text, _mc_text] if p]
                 _fs_text = "\n\n".join(_context_parts) if _context_parts else None
                 prompt = build_prompt(
                     game=game_family, level=level, step_index=step_idx + 1,

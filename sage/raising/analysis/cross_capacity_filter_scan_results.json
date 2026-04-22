@@ -5,6 +5,10 @@
     "n_with_memory_ask": 102,
     "n_flagged": 11,
     "n_clean": 91,
+    "n_ma_adapter_error": 0,
+    "n_ma_untagged_recital": 0,
+    "ma_recital_samples": [],
+    "ma_adapter_error_samples": [],
     "avg_qmarks": 1.303921568627451,
     "max_qmarks": 33,
     "flagged_samples": [
@@ -53,6 +57,9 @@
     "sim_generic_fallback": 7,
     "sim_flagged_if_fired": 11,
     "sim_fired_empty_after_strip": 0,
+    "sim_fired_adapter_error": 0,
+    "sim_fired_untagged_recital": 0,
+    "sim_substantive": 83,
     "sim_flagged_samples": [
       {
         "into_session": 69,
@@ -75,39 +82,59 @@
         "text": "What is the next best decision? What is the next best action? What is the next best choice? What is the next best result? What is the next best thing? What causes me distress? What's bothering me righ"
       }
     ],
-    "sim_empty_samples": []
+    "sim_empty_samples": [],
+    "sim_adapter_error_samples": [],
+    "sim_recital_samples": []
   },
   "sprout-qwen3.5-0.8b": {
     "label": "0.8B",
-    "n_sessions": 107,
-    "n_with_memory_ask": 26,
+    "n_sessions": 110,
+    "n_with_memory_ask": 27,
     "n_flagged": 0,
-    "n_clean": 26,
-    "avg_qmarks": 0.3076923076923077,
+    "n_clean": 27,
+    "n_ma_adapter_error": 0,
+    "n_ma_untagged_recital": 0,
+    "ma_recital_samples": [],
+    "ma_adapter_error_samples": [],
+    "avg_qmarks": 0.2962962962962963,
     "max_qmarks": 1,
     "flagged_samples": [],
-    "sim_remember_fired": 26,
-    "sim_generic_fallback": 80,
+    "sim_remember_fired": 27,
+    "sim_generic_fallback": 82,
     "sim_flagged_if_fired": 0,
     "sim_fired_empty_after_strip": 0,
+    "sim_fired_adapter_error": 0,
+    "sim_fired_untagged_recital": 0,
+    "sim_substantive": 27,
     "sim_flagged_samples": [],
-    "sim_empty_samples": []
+    "sim_empty_samples": [],
+    "sim_adapter_error_samples": [],
+    "sim_recital_samples": []
   },
   "nomad-gemma3-4b": {
     "label": "4B",
-    "n_sessions": 119,
-    "n_with_memory_ask": 4,
+    "n_sessions": 121,
+    "n_with_memory_ask": 6,
     "n_flagged": 0,
-    "n_clean": 4,
+    "n_clean": 6,
+    "n_ma_adapter_error": 0,
+    "n_ma_untagged_recital": 0,
+    "ma_recital_samples": [],
+    "ma_adapter_error_samples": [],
     "avg_qmarks": 0.0,
     "max_qmarks": 0,
     "flagged_samples": [],
-    "sim_remember_fired": 4,
-    "sim_generic_fallback": 114,
+    "sim_remember_fired": 5,
+    "sim_generic_fallback": 115,
     "sim_flagged_if_fired": 0,
     "sim_fired_empty_after_strip": 0,
+    "sim_fired_adapter_error": 0,
+    "sim_fired_untagged_recital": 0,
+    "sim_substantive": 5,
     "sim_flagged_samples": [],
-    "sim_empty_samples": []
+    "sim_empty_samples": [],
+    "sim_adapter_error_samples": [],
+    "sim_recital_samples": []
   },
   "legion-gemma3-12b": {
     "label": "12B-legion",
@@ -115,6 +142,10 @@
     "n_with_memory_ask": 9,
     "n_flagged": 0,
     "n_clean": 9,
+    "n_ma_adapter_error": 0,
+    "n_ma_untagged_recital": 0,
+    "ma_recital_samples": [],
+    "ma_adapter_error_samples": [],
     "avg_qmarks": 0.0,
     "max_qmarks": 0,
     "flagged_samples": [],
@@ -122,8 +153,13 @@
     "sim_generic_fallback": 16,
     "sim_flagged_if_fired": 0,
     "sim_fired_empty_after_strip": 0,
+    "sim_fired_adapter_error": 0,
+    "sim_fired_untagged_recital": 0,
+    "sim_substantive": 8,
     "sim_flagged_samples": [],
-    "sim_empty_samples": []
+    "sim_empty_samples": [],
+    "sim_adapter_error_samples": [],
+    "sim_recital_samples": []
   },
   "mcnugget-gemma3-12b": {
     "label": "12B-mcnugget",
@@ -131,6 +167,10 @@
     "n_with_memory_ask": 12,
     "n_flagged": 0,
     "n_clean": 12,
+    "n_ma_adapter_error": 0,
+    "n_ma_untagged_recital": 0,
+    "ma_recital_samples": [],
+    "ma_adapter_error_samples": [],
     "avg_qmarks": 0.0,
     "max_qmarks": 0,
     "flagged_samples": [],
@@ -138,8 +178,13 @@
     "sim_generic_fallback": 83,
     "sim_flagged_if_fired": 0,
     "sim_fired_empty_after_strip": 0,
+    "sim_fired_adapter_error": 0,
+    "sim_fired_untagged_recital": 0,
+    "sim_substantive": 11,
     "sim_flagged_samples": [],
-    "sim_empty_samples": []
+    "sim_empty_samples": [],
+    "sim_adapter_error_samples": [],
+    "sim_recital_samples": []
   },
   "thor-qwen2.5-14b": {
     "label": "14B",
@@ -147,6 +192,10 @@
     "n_with_memory_ask": 0,
     "n_flagged": 0,
     "n_clean": 0,
+    "n_ma_adapter_error": 0,
+    "n_ma_untagged_recital": 0,
+    "ma_recital_samples": [],
+    "ma_adapter_error_samples": [],
     "avg_qmarks": 0,
     "max_qmarks": 0,
     "flagged_samples": [],
@@ -154,38 +203,70 @@
     "sim_generic_fallback": 0,
     "sim_flagged_if_fired": 0,
     "sim_fired_empty_after_strip": 0,
+    "sim_fired_adapter_error": 0,
+    "sim_fired_untagged_recital": 0,
+    "sim_substantive": 0,
     "sim_flagged_samples": [],
-    "sim_empty_samples": []
+    "sim_empty_samples": [],
+    "sim_adapter_error_samples": [],
+    "sim_recital_samples": []
   },
   "cbp-qwen3.5-0.8b": {
     "label": "0.8B-cbp",
-    "n_sessions": 90,
+    "n_sessions": 93,
     "n_with_memory_ask": 25,
     "n_flagged": 0,
     "n_clean": 25,
+    "n_ma_adapter_error": 0,
+    "n_ma_untagged_recital": 0,
+    "ma_recital_samples": [],
+    "ma_adapter_error_samples": [],
     "avg_qmarks": 0.04,
     "max_qmarks": 1,
     "flagged_samples": [],
-    "sim_remember_fired": 24,
-    "sim_generic_fallback": 65,
+    "sim_remember_fired": 25,
+    "sim_generic_fallback": 67,
     "sim_flagged_if_fired": 0,
     "sim_fired_empty_after_strip": 0,
+    "sim_fired_adapter_error": 0,
+    "sim_fired_untagged_recital": 0,
+    "sim_substantive": 25,
     "sim_flagged_samples": [],
-    "sim_empty_samples": []
+    "sim_empty_samples": [],
+    "sim_adapter_error_samples": [],
+    "sim_recital_samples": []
   },
   "thor-qwen3.5-27b": {
     "label": "27B",
-    "n_sessions": 91,
+    "n_sessions": 94,
     "n_with_memory_ask": 10,
     "n_flagged": 0,
-    "n_clean": 10,
-    "avg_qmarks": 0.1,
+    "n_clean": 8,
+    "n_ma_adapter_error": 1,
+    "n_ma_untagged_recital": 1,
+    "ma_recital_samples": [
+      {
+        "session": 39,
+        "qmarks": 1,
+        "text": "1.  **Analyze the Request:**     *   **Role:** I am \"thor\", a SAGE instance (Jetson AGX Thor, qwen3.5:27b).     *   **Context:** Session 38, questioning phase. Deepening questions from stability.     "
+      }
+    ],
+    "ma_adapter_error_samples": [
+      {
+        "session": 74,
+        "text": "[OllamaIRP: Unexpected error: timed out]"
+      }
+    ],
+    "avg_qmarks": 0.1111111111111111,
     "max_qmarks": 1,
     "flagged_samples": [],
     "sim_remember_fired": 16,
-    "sim_generic_fallback": 74,
+    "sim_generic_fallback": 77,
     "sim_flagged_if_fired": 0,
     "sim_fired_empty_after_strip": 6,
+    "sim_fired_adapter_error": 1,
+    "sim_fired_untagged_recital": 1,
+    "sim_substantive": 8,
     "sim_flagged_samples": [],
     "sim_empty_samples": [
       {
@@ -208,6 +289,18 @@
         "into_session": 21,
         "diagnosis": "truly-empty"
       }
+    ],
+    "sim_adapter_error_samples": [
+      {
+        "into_session": 75,
+        "text": "[OllamaIRP: Unexpected error: timed out]"
+      }
+    ],
+    "sim_recital_samples": [
+      {
+        "into_session": 40,
+        "text": "1.  **Analyze the Request:**     *   **Role:** I am \"thor\", a SAGE instance (Jetson AGX Thor, qwen3.5:27b).     *   **Context:** Session 38, questioning phase. Deepening questions from stability.     "
+      }
     ]
   },
   "legion-phi4-14b": {
@@ -216,6 +309,10 @@
     "n_with_memory_ask": 3,
     "n_flagged": 0,
     "n_clean": 3,
+    "n_ma_adapter_error": 0,
+    "n_ma_untagged_recital": 0,
+    "ma_recital_samples": [],
+    "ma_adapter_error_samples": [],
     "avg_qmarks": 0.3333333333333333,
     "max_qmarks": 1,
     "flagged_samples": [],
@@ -223,7 +320,12 @@
     "sim_generic_fallback": 52,
     "sim_flagged_if_fired": 0,
     "sim_fired_empty_after_strip": 0,
+    "sim_fired_adapter_error": 0,
+    "sim_fired_untagged_recital": 0,
+    "sim_substantive": 3,
     "sim_flagged_samples": [],
-    "sim_empty_samples": []
+    "sim_empty_samples": [],
+    "sim_adapter_error_samples": [],
+    "sim_recital_samples": []
   }
 }

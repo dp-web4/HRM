@@ -36,6 +36,31 @@ _SCHEMA_PHRASE_RE = re.compile(
 
 _QMARK_THRESHOLD = 5
 
+# S99 additions — two more unsuitable-for-splice signatures distinct from the
+# Sprout 0.5B LoRA burst basin that `is_schema_fragment` targets.
+#
+# Untagged recital: Thor 27B in the S30-S39 (pre-stop-seq) and S62-S74 (post-
+# stop-seq-cleared) eras emitted the identity-recital procedure as visible
+# response text, either with a "Thinking Process:\n\n" preamble or naked.
+# Splicing "1. **Analyze the Request:**  *   Role: ..." as prior-session
+# memory contaminates the next session's system prompt with recital content
+# instead of substantive memory.
+#
+# Adapter-error passthrough: when the IRP adapter encounters an error it
+# returns a string like "[OllamaIRP: Unexpected error: timed out]" which
+# survives both strip and schema-fragment checks. Seen in Thor 27B S74.
+# Splicing that as memory carries an error string forward as "what I wanted
+# to remember" — obvious contamination but silent under prior detectors.
+_UNTAGGED_RECITAL_RE = re.compile(
+    r"^\s*1\.?\s+\*\*Analyze\s+the\s+Request",
+    re.IGNORECASE,
+)
+_THINKING_PROCESS_PREAMBLE_RE = re.compile(
+    r"^\s*Thinking\s+Process:.*?(?=\n\n|\Z)",
+    re.DOTALL | re.IGNORECASE,
+)
+_ADAPTER_ERROR_PREFIXES = ("[OllamaIRP:", "[DaemonIRP:")
+
 
 def is_schema_fragment(text: str) -> bool:
     """Return True iff text matches the S91/S92 burst-schema signature.
@@ -47,6 +72,55 @@ def is_schema_fragment(text: str) -> bool:
     if text.count("?") >= _QMARK_THRESHOLD:
         return True
     return bool(_SCHEMA_PHRASE_RE.search(text))
+
+
+def is_untagged_recital(text: str) -> bool:
+    """Return True iff text is the qwen3.5-27B identity-recital procedure.
+
+    Matches both preamble-prefixed (`Thinking Process:\n\n1. **Analyze...`)
+    and naked (`1. **Analyze the Request:**...`) forms by stripping the
+    leading preamble before checking the numbered-step anchor.
+
+    Carries the S98 register-scan detection into the splice-validation
+    path. S99 discovered that prior-session memory from Thor 27B S39 and
+    S63-S73 contained this procedure in the splice-candidate position.
+    """
+    if not text:
+        return False
+    stripped = _THINKING_PROCESS_PREAMBLE_RE.sub("", text).strip()
+    return bool(_UNTAGGED_RECITAL_RE.search(stripped))
+
+
+def is_adapter_error_passthrough(text: str) -> bool:
+    """Return True iff text is an IRP adapter error string, not content.
+
+    Seen in Thor 27B S74 ("[OllamaIRP: Unexpected error: timed out]"). The
+    raising runner would otherwise splice this as prior-session memory.
+    """
+    if not text:
+        return False
+    return text.startswith(_ADAPTER_ERROR_PREFIXES)
+
+
+def is_unsuitable_for_splice(text: str) -> bool:
+    """Composite check: text must not be spliced as prior-session memory.
+
+    True iff any of:
+      - S91/S92 burst-schema signature (Sprout 0.5B LoRA basin)
+      - S99 untagged-recital procedure (Thor 27B S30-S39 and S62-S74)
+      - S99 adapter-error passthrough ([OllamaIRP:..., [DaemonIRP:...)
+
+    Each detector targets a historically-observed contamination pattern
+    that would otherwise seed the next session's system prompt with
+    non-substantive content.
+    """
+    if not text:
+        return True  # empty is trivially unsuitable as a splice source
+    return (
+        is_schema_fragment(text)
+        or is_untagged_recital(text)
+        or is_adapter_error_passthrough(text)
+    )
 
 
 def safe_prev_summary(
@@ -65,12 +139,14 @@ def safe_prev_summary(
     Otherwise, preserve existing behavior: verbatim :200 splice with the
     canonical "you said you wanted to remember:" framing.
     """
-    if last_sage_response and not is_schema_fragment(last_sage_response):
+    # S99: route through composite check — rejects burst-schema (Sprout 0.5B),
+    # untagged-recital (Thor 27B S30-S39 + S62-S74), and adapter-error passthroughs.
+    if last_sage_response and not is_unsuitable_for_splice(last_sage_response):
         return (
             f"Last session (Session {session_number}), you said you wanted to "
             f"remember: {last_sage_response[:200]}"
         )
-    if state_fallback and not is_schema_fragment(state_fallback):
+    if state_fallback and not is_unsuitable_for_splice(state_fallback):
         return state_fallback
     return f"Last session was Session {session_number} in {phase_name} phase."
 
@@ -89,7 +165,11 @@ def safe_state_summary(
     schema forward and re-seed the fallback path; suppress in that case.
     """
     tag_part = f" ({tag})" if tag else ""
-    if memory_response and not is_schema_fragment(memory_response):
+    # S99: composite unsuitable-check. A 50-char truncation of untagged
+    # recital would still carry the "1. **Analyze the Request" opener
+    # forward; a 50-char truncation of "[OllamaIRP: Unexpected error..."
+    # would carry an error string. Suppress both alongside schema fragments.
+    if memory_response and not is_unsuitable_for_splice(memory_response):
         return (
             f"Session {session_number}{tag_part}: {phase_name} phase. "
             f"{memory_response[:50]}..."
@@ -155,3 +235,30 @@ if __name__ == "__main__":
         print(f"  MISS {s}")
     for s in fp_samples:
         print(f"  FLAG {s}  (inspect — may be additional burst not in curated list)")
+
+    # S99: Thor 27B recital + adapter-error detection sanity check.
+    # Known-historical cases from cross_capacity_filter_scan S99 output:
+    #   S39 memory-ask: untagged recital (pre-stop-seq-fix era)
+    #   S74 memory-ask: adapter-error passthrough
+    thor_dir = Path.home() / "ai-workspace/SAGE/sage/instances/thor-qwen3.5-27b/sessions"
+    if thor_dir.exists():
+        s39 = thor_dir / "session_039.json"
+        s74 = thor_dir / "session_074.json"
+        for sf, expect_detector in [(s39, is_untagged_recital),
+                                     (s74, is_adapter_error_passthrough)]:
+            if not sf.exists():
+                continue
+            d = json.loads(sf.read_text())
+            conv = d.get("conversation", [])
+            ma = ""
+            for i in range(len(conv) - 1, -1, -1):
+                if conv[i].get("speaker") == "SAGE":
+                    if i > 0 and "remember" in conv[i - 1].get("text", "").lower():
+                        ma = conv[i].get("text", "")
+                        break
+            det = expect_detector.__name__
+            label = sf.name
+            ok_detected = expect_detector(ma)
+            composite_ok = is_unsuitable_for_splice(ma)
+            print(f"Thor 27B {label}: {det}={ok_detected}, "
+                  f"is_unsuitable_for_splice={composite_ok}")

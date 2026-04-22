@@ -2289,13 +2289,11 @@ def run_llm_dispatch(
                     try:
                         signals = metacog.active_signals()
                         if signals:
-                            _mc_lines = []
-                            for sig in signals:
-                                s = sig if isinstance(sig, dict) else sig.to_dict()
-                                _mc_lines.append(
-                                    f"  {s['signal']} (severity {s['severity']:.1f}): {s.get('suggestion', '')}"
-                                )
-                            _mc_text = "System self-assessment:\n" + "\n".join(_mc_lines)
+                            # Terse numerical format — don't give the model prose to parrot
+                            _mc_parts = [f"{(s.signal if hasattr(s,'signal') else s.get('signal','?'))}:"
+                                         f"{(s.severity if hasattr(s,'severity') else s.get('severity',0)):.1f}"
+                                         for s in signals]
+                            _mc_text = f"Metacog: {', '.join(_mc_parts)}"
                     except Exception:
                         pass
 

@@ -1969,11 +1969,40 @@ def run_llm_dispatch(
     step_idx = 0
     outcome_terminal = {"WIN", "GAME_OVER"}
 
+    _level_just_changed = False
+
     while step_idx < max_steps:
         curr_frame_raw = getattr(fd, "frame", None)
         curr_frame_oh = onehot_frame(curr_frame_raw) if curr_frame_raw is not None else zero_frame_oh
         curr_state = getattr(getattr(fd, "state", None), "name", None) or "RUNNING"
         curr_levels = getattr(fd, "levels_completed", 0) or 0
+
+        # After a level transition, let the game settle. Some games show
+        # transition animations or reset frames that don't represent
+        # actionable state. Wait for the frame to stabilize.
+        if _level_just_changed:
+            _level_just_changed = False
+            _settle_frame = curr_frame_raw
+            for _ in range(5):  # up to 5 no-op frames to settle
+                try:
+                    _noop_fd = env.step(list(int_to_action.values())[0])
+                    _noop_frame = getattr(_noop_fd, "frame", None)
+                    _noop_state = getattr(getattr(_noop_fd, "state", None), "name", None)
+                    if _noop_state in outcome_terminal:
+                        fd = _noop_fd; break
+                    fd = _noop_fd
+                    # If frame stabilized (same as last), we've settled
+                    if _noop_frame is not None and _settle_frame is not None:
+                        if np.array_equal(np.asarray(_noop_frame), np.asarray(_settle_frame)):
+                            break
+                    _settle_frame = _noop_frame
+                except Exception:
+                    break
+            # Re-read after settling
+            curr_frame_raw = getattr(fd, "frame", None)
+            curr_frame_oh = onehot_frame(curr_frame_raw) if curr_frame_raw is not None else zero_frame_oh
+            curr_state = getattr(getattr(fd, "state", None), "name", None) or "RUNNING"
+            curr_levels = getattr(fd, "levels_completed", 0) or 0
 
         level = curr_levels
         step_frac = min(1.0, (step_idx + 1) / max(1, trace_steps or 100))
@@ -2403,6 +2432,7 @@ def run_llm_dispatch(
         recent_frame_win.append(_frame_int_from_onehot(curr_frame_oh))
         if new_levels > last_levels:
             steps_since_progress = 0; last_levels = new_levels
+            _level_just_changed = True
         else:
             steps_since_progress += 1
 

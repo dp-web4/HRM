@@ -2046,19 +2046,24 @@ def run_llm_dispatch(
             dispatch.decision = "invoke"
             dispatch.invoke_reasons.append("stuck")
 
-        # Metacog-driven invoke escalation: if metacog detects dysfunction,
-        # force invoke so the LLM gets the signal and can adjust strategy
+        # Metacog-driven invoke escalation: selective by signal type.
+        # Some signals (perseveration, budget_anxiety) benefit from LLM help.
+        # Others (exploration_starvation) are better handled by letting the
+        # NN explore randomly — forcing invoke wastes budget on "try opposite"
+        # suggestions that don't help with pathfinding.
+        _ESCALATION_SIGNALS = {"perseveration", "budget_anxiety", "intention_amnesia"}
         if metacog is not None and dispatch.decision != "invoke":
             try:
                 _mc_signals = metacog.active_signals()
                 if _mc_signals:
-                    # Any signal with severity >= 0.6 forces invoke
-                    _high_sev = [s for s in _mc_signals
-                                 if (s.severity if hasattr(s, 'severity') else s.get('severity', 0)) >= 0.6]
-                    if _high_sev:
+                    _escalatable = [s for s in _mc_signals
+                                    if (s.signal if hasattr(s, 'signal') else s.get('signal', '?'))
+                                    in _ESCALATION_SIGNALS
+                                    and (s.severity if hasattr(s, 'severity') else s.get('severity', 0)) >= 0.7]
+                    if _escalatable:
                         dispatch.decision = "invoke"
                         sig_names = [s.signal if hasattr(s, 'signal') else s.get('signal', '?')
-                                     for s in _high_sev]
+                                     for s in _escalatable]
                         dispatch.invoke_reasons.append(f"metacog:{','.join(sig_names)}")
             except Exception:
                 pass

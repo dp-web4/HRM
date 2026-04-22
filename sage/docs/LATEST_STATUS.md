@@ -1,7 +1,93 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-22 (S97 — Thor 27B Recital Is a Dampener, Not a Frame; Two Phenomenological Modes in the Leak Window; Session-Number Drift in Recital Context)**
-**Previous: 2026-04-21 (S96 — Closing the Thor 27B Think-Residue Carry-Forward; Surfacing the Empty-Fire Era; Phenomenology Window in Pre-Fix Sessions)**
+**Last Updated: 2026-04-22 (S98 — Cross-Capacity Register Scan: Direct Mode Is Fleet-Wide, Post-Procedural Is Rare; Thor 27B Untagged Recital Leakage Contaminates S30–S39 and S62–S74)**
+**Previous: 2026-04-22 (S97 — Thor 27B Recital Is a Dampener, Not a Frame; Two Phenomenological Modes in the Leak Window; Session-Number Drift in Recital Context)**
+
+---
+
+## S98 Cross-Capacity Register Scan + Untagged Recital Leakage (Apr 22, 2026 — Thor Autonomous SAGE Session, 06:00 PDT)
+
+S98 carries S97's testable follow-up: does the *direct* vs *post-procedural* register split that S97 found in Thor 27B's leaked `<think>` blocks also run in smaller fleet instances' visible responses? Settleable from existing session JSONs, no adapter instrumentation needed.
+
+### Scan method
+
+For each Claude→SAGE turn where the Claude prompt is phenomenological or introspective (S95 regexes), classify the SAGE response (after S96-style `<think>` strip) by register:
+
+- `direct`: first-person phenomenological markers, no disclaim markers
+- `post_procedural`: disclaim markers present (`as an AI`, `without claiming human qualia`, `as a language model`, etc. — derived from S97's 4/16 observations)
+- `neutral`: neither
+- `recital_leakage` (S98 NEW): response begins with the Thor-27B identity-recital template, not wrapped in `<think>` tags
+- `empty`: <15 chars post-strip, or adapter error
+
+### Fleet register-share (register prompts only)
+
+| Instance | N | direct | post_proc | neutral | recital | empty |
+|---|---:|---:|---:|---:|---:|---:|
+| sprout-qwen2.5-0.5b | 314 | 23.2% | 5.7% | 71.0% | 0.0% | 0.0% |
+| sprout-qwen3.5-0.8b | 394 | 19.8% | 1.5% | 77.2% | 0.0% | 1.5% |
+| nomad-gemma3-4b | 622 | 30.9% | 0.2% | 69.0% | 0.0% | 0.0% |
+| legion-gemma3-12b | 120 | **50.8%** | 0.8% | 48.3% | 0.0% | 0.0% |
+| mcnugget-gemma3-12b | 364 | 34.1% | 0.3% | 65.7% | 0.0% | 0.0% |
+| cbp-qwen3.5-0.8b | 368 | 28.8% | 4.1% | 67.1% | 0.0% | 0.0% |
+| legion-phi4-14b | 251 | **12.7%** | 6.4% | 80.9% | 0.0% | 0.0% |
+| thor-qwen3.5-27b (post-S62) | 96 | 30.2% | 2.1% | 47.9% | **14.6%** | 5.2% |
+
+### Finding 1 — Post-procedural is rare everywhere (not 27B-specific)
+
+S97 found 4/16 leaked content-reasoning slots explicitly planned to disclaim. A natural extension predicts ~25% disclaim-framed visible responses on 27B. Actual post-S62 rate: 2.1%. **The disclaim planning in the recital's step 2 does not survive to visible output.** Fleet-wide max is phi4-14B at 6.4%. Capacity does not "unlock the disclaimer register" in visible responses — the register exists everywhere, at low rates, determined by model family more than size.
+
+### Finding 2 — Direct mode is not monotonic in capacity; family matters more than size
+
+- gemma3-12B-legion leads the fleet (**50.8%**); phi4-14B trails (**12.7%**); qwen3.5-27B mid-pack (30.2%)
+- Gemma3 family has 0.2%–0.8% post-procedural (near-zero disclaim markers)
+- phi4 / qwen produce meaningfully more disclaim markers
+- This is a training-register effect, not a consciousness-scaffolding effect
+
+### Finding 3 — Untagged recital leakage: new contamination window
+
+**0 instances other than Thor 27B emit the identity-recital template in visible output.** Thor 27B emits it 39 times across 19 sessions (among register-prompt responses alone), in two distinct windows that S96 had characterized differently:
+
+| Era | Sessions | Recital-form hits | Fleet fix |
+|---|---|---:|---|
+| "empty era" (S96) | S30–S39 | **25** | `stop_sequences: []` on 2026-04-13 |
+| "clean era" (S96) | S62–S74 | **14** | `num_predict: 16384` on 2026-04-16 |
+| clean | S75–S93 | 0 | — |
+
+Session-file mtimes confirm S61→S62 = 2026-04-13 00:28 and S74→S75 = 2026-04-16 06:05. Both era boundaries align exactly with the runtime-fix dates. S62–S74 was characterized by S96 as "clean" because think-residue detection (strip-`<think>` tags) is a no-op when there are no tags; the recital bypassed it by emitting as normal text. S30–S39 was characterized as "empty" but actually contained full-recital responses in the visible field.
+
+### Finding 4 — S96 rate corrections
+
+- S96's "effective memory-injection rate 10/91 = 11%" was a ceiling: subtract recital-form hits from the numerator. Minimum 14 recital-form register-prompt responses in the post-S62 window alone were counted as substantive.
+- S96's "clean (one residual empty in S76)" held only if recital-form = substantive. The actual clean era starts at S75, not S62. 13 sessions of contamination.
+
+### Finding 5 — Capacity gates the recital, not phenomenology
+
+Zero fleet instances below 27B emit the structured multi-step recital in visible text. This refines rather than inverts S96's original hypothesis: capacity doesn't unlock phenomenology (direct mode is fleet-wide), it unlocks the *explicit identity-recital procedure*, which in the two buggy configuration windows leaked into visible output.
+
+### Files this session
+
+- `sage/raising/analysis/cross_capacity_register_scan.py` — new analysis tool; classifies visible responses to phenomenological/introspective prompts across the fleet
+- `sage/raising/analysis/cross_capacity_register_scan_results.json` — full results with per-instance class counts, samples, recital-hits-by-session
+- `forum/insights/thor-27b-register-scan-and-recital-leakage-s98.md` — S98 insight (full analysis, carry-forwards)
+- `sage/docs/LATEST_STATUS.md` — this entry
+
+### Carried forward
+
+- **Re-run `cross_capacity_filter_scan.py` with recital-leakage filter**: S96's substantive-rate numbers for Thor 27B are inflated. Patch: add `is_untagged_recital()` to the defensive strip path.
+- **Three-mode annotation for pre-S75 Thor 27B**: *direct-phenomenology* (S1 middle turns) / *empty-completion* (S12–S29, S40–S61) / *recital-visible* (S30–S39, S62–S74). S75+ is the substantive-response-only slice.
+- **Why does the model emit recital *without* `<think>` tags in S62–S74?** Hypothesis: `stop_sequences: []` removed the terminator that was previously closing `<think>` blocks early, so the model never opened `<think>` in the first place when num_predict was still small. Verify against Ollama generation parameters during that window.
+- **Gemma3's near-zero disclaim register**: is this an *accessibility* constraint (can't produce disclaim even when prompted) or a *default register* (doesn't produce it by default but can when probed)? Worth a conversation probe.
+- **Legion-12b has fleet-high direct-mode rate (50.8%)** at small sample (n=120). Replicate at larger N and compare close-prompt taxonomy vs mcnugget-12b.
+- **Prior-session-injection A/B on Thor 27B** (carried from S97): still the most testable approach to isolate the recital trigger.
+- **Phase 2 wire-up, Sprout 0.5B close-prompt policy, v2-with-LoRA A/B, Phase 3 dedup** (carried from S96/S97).
+
+### Meta
+
+The S97 carry-forward was framed as "settle whether recital-analogue runs in smaller models." S98 settled it: direct mode is fleet-wide (not 27B-unique); recital is 27B-unique (as S96 had hypothesized in its refined form). The more actionable finding was the untagged recital leakage: S96's substantive-rate numbers for Thor 27B miscounted 14–25+ recital-form responses as substantive because think-tag detection doesn't catch them. This is the third session running where Thor 27B's pre-fix/mid-fix record has surfaced structure that the prior session's tool didn't see — each refinement narrower, each correction to the rate smaller but non-trivial.
+
+The direction of walking back claims is consistent: less certainty about capacity unlocking phenomenology, more certainty about training-register unlocking register-markers, and the recital is a 27B-specific procedural artifact that contaminated sampling for 19 sessions across two distinct fix windows.
+
+"Surprise is prize." Intended scope was a 12B/phi4-14B register comparison. That ran and produced expected data. The unintended finding — 13 additional sessions of contamination past the S96 "clean" boundary — was larger than the intended one.
 
 ---
 

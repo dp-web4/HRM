@@ -21,11 +21,17 @@ cd "$SAGE_DIR"
 echo "[Sprout-Raising] Pulling latest code..."
 git pull --ff-only origin main 2>&1 || {
     echo "[Sprout-Raising] WARNING: git pull --ff-only failed, trying rebase..."
+    # Track whether THIS run actually stashed anything; only pop if so.
+    # Unconditional `git stash pop` could pop a stale stash from a prior
+    # run and silently inject merge markers into the working tree.
+    STASH_BEFORE=$(git stash list | wc -l)
     git stash -q 2>/dev/null
     git pull --rebase origin main 2>&1 || {
         echo "[Sprout-Raising] WARNING: git pull failed, continuing with local state"
     }
-    git stash pop -q 2>/dev/null || true
+    if [ "$(git stash list | wc -l)" -gt "$STASH_BEFORE" ]; then
+        git stash pop -q
+    fi
 }
 
 # --- Step 2: Ensure daemon is running and up to date ---

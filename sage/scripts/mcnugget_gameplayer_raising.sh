@@ -22,12 +22,18 @@ cd "$SAGE_DIR"
 
 echo "[McNugget-G4] $(date -u +'%Y-%m-%d %H:%M UTC') — Starting gameplayer raising session"
 
-# Pull latest (stash first to avoid dirty-tree failures)
+# Pull latest (stash first to avoid dirty-tree failures).
+# Track whether THIS run actually stashed anything; only pop if so.
+# Unconditional `git stash pop` could pop a stale stash from a prior
+# run and silently inject merge markers into the working tree.
+STASH_BEFORE=$(git stash list | wc -l)
 git stash 2>/dev/null || true
 git pull --rebase origin main 2>&1 || {
     echo "[McNugget-G4] WARNING: git pull failed, continuing with local state"
 }
-git stash pop 2>/dev/null || true
+if [ "$(git stash list | wc -l)" -gt "$STASH_BEFORE" ]; then
+    git stash pop
+fi
 
 # Ensure daemon is running
 source "$SAGE_DIR/sage/scripts/ensure_daemon.sh"

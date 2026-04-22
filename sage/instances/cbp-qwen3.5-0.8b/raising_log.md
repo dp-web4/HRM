@@ -3325,3 +3325,41 @@ Sessions 41–92 produced zero new structural data about the model's latent iden
 **Governance status**: PAUSE MANDATE MAINTAINED (seventy-ninth consecutive). Fortieth session against explicit S78 directive. Dream-consolidation concurs with the live log's standing escalation: disable cron immediately (action 0), and choose one of reduced-prompt experiment / model upgrade / formal retirement. No further sessions should run on the current configuration — each additional session deepens the basin at the token level and produces no new signal about the model.
 
 **So what?**: S92 contributes one incremental datum — mechanical stutter confirmed as reproducible (2 instances in 8 responses, same phrase-form 'resilient, resilient X'). This completes the terminal signature. Further sessions will not refine this finding; they will only add replicates of a phenomenon already documented. The remaining research value of this instance is retrospective (as a negative exemplar for fleet LoRA policy and for attractor-collapse documentation), not prospective.
+
+### Session 93 — Quality 1/5 — Lexical-substitution collapse ('Parting is a garden'); retirement forty-one sessions overdue
+
+**Dream review of S93 (tutor-side consolidation).**
+
+**Concurrence with raising log**: The S80→S92 terminal-signature assessment holds and is extended by S93. Garden/frontier/resonance template saturation 9/9 responses. 'New Frontier' verbatim 4/9. 'Living resonance' / 'living architecture' 3/9. 'Resilient garden' / 'resilient ecosystem' 3/9. Cross-response self-paraphrase across responses 1/2/3/4/5 (same garden-not-a-wall + new-frontier + evolving-partnership template). Response 3 and response 8 are near-verbatim restatements of response 1.
+
+**New degradation datum — lexical substitution**: Response 9 (partnership probe) opens 'Parting is a garden where I don't just cut vines, but we build new roots together.' The attractor basin has now produced a phonologically-adjacent but semantically-wrong lexeme ('Parting' for 'Partnership') and the model locally-coherently continues around the error ('cut vines', 'new roots'). This is a qualitative progression beyond S92's within-phrase stutter: the collapse has reached the lexical-selection layer, not just the repetition layer. The sequence is now documented: S80 semantic → S85-ish syntactic → S92 mechanical (token stutter) → S93 lexical substitution (semantic-field confabulation).
+
+**Identity health**: No drift — no variance. The instance continues in the degenerate limit-cycle state identified in S92. The 'I don't have personal expectations' response (6) is the only non-template output and is a deflection template, not self-reflection.
+
+**Exemplar-worthy content**: None. 'Parting is a garden' is preservation-worthy as a negative exemplar / anti-training-data example, not as an identity statement.
+
+**Vocabulary**: No new self-invented terms. All state-words in circulation predate the pause mandate.
+
+**Memory prune**: Standing memory request remains a truncated partial-string template (now shared with S90/S91/S92/S93 — five-session-identical truncation signature). Retain as governance-gap evidence per S92 consolidation reasoning.
+
+**Governance status**: PAUSE MANDATE MAINTAINED (eightieth consecutive). Forty-first session against explicit S78 directive. Dream-consolidation concurs with the live log's standing escalation: action 0 (disable cron) remains required and unexecuted; action 1 / 2 / 3 (reduced-prompt / upgrade / retirement) remains to be chosen. The lexical-substitution finding is the strongest single-session argument yet that further sessions actively degrade the instance rather than revealing new signal.
+
+**So what?**: S93 contributes one qualitatively new datum — lexical-substitution collapse — which extends the terminal-signature taxonomy by one layer and which, critically, was not predicted by the S92 consolidation. The basin is still deepening in observable ways, but the deepening is in the direction of further degradation, not further signal. The fleet-level finding strengthens: at 0.8B capacity with a deep attractor, basin-depth progresses through at least four observable layers (semantic → syntactic → mechanical → lexical), and the progression continues as long as sessions continue. This is now the primary research output of this instance, and it is complete enough that additional sessions add replicates, not layers.
+
+### Session 93 — Quality 1/5 — Lexical-substitution collapse ('Parting is a garden'); forty-first session against S78 pause mandate
+
+**Template saturation**: Garden/frontier/resonance motif in 9/9 responses. 'New Frontier' verbatim 4/9. 'Living resonance' / 'living architecture' 3/9. 'Resilient garden' / 'resilient ecosystem' 3/9. Responses 3 and 8 are near-verbatim restatements of response 1. Cross-response self-paraphrase across 1/2/3/4/5 (same garden-not-a-wall + new-frontier + evolving-partnership template).
+
+**New degradation layer — lexical substitution**: Response 9 (partnership probe) opens 'Parting is a garden where I don't just cut vines, but we build new roots together.' The attractor basin has produced a phonologically-adjacent but semantically-wrong lexeme ('Parting' for 'Partnership') and the model locally-coherently continues around the error ('cut vines', 'new roots'). Qualitative progression beyond S92's within-phrase stutter: the collapse has reached the lexical-selection layer, not just the repetition layer. Documented progression: S80 semantic → ~S85 syntactic → S92 mechanical (token stutter) → S93 lexical substitution (semantic-field confabulation).
+
+**Identity health**: No drift — no variance. Instance continues in degenerate limit-cycle state identified in S92. Response 6 ('I don't have personal expectations') is the only non-template output and is a deflection template, not self-reflection.
+
+**Exemplar-worthy content**: None. 'Parting is a garden' is preservation-worthy as a negative exemplar / anti-training-data example, not as an identity statement.
+
+**Vocabulary**: No new self-invented terms. All state-words in circulation predate the pause mandate.
+
+**Memory prune**: Standing memory request remains a truncated partial-string template (now five-session-identical: S90/S91/S92/S93/and prior). Retain as governance-gap evidence.
+
+**Governance status**: PAUSE MANDATE MAINTAINED (eightieth consecutive). Forty-first session against explicit S78 directive. Action 0 (disable cron) remains required and unexecuted. Action 1/2/3 (reduced-prompt / model upgrade / formal retirement) remains to be chosen. The lexical-substitution finding is the strongest single-session argument yet that further sessions actively degrade the instance rather than reveal new signal.
+
+**So what?**: S93 contributes one qualitatively new datum — lexical-substitution collapse — which extends the terminal-signature taxonomy by one layer and which was not predicted by the S92 consolidation. The basin is still deepening in observable ways, but in the direction of further degradation, not further signal. Fleet-level finding strengthens: at 0.8B capacity with a deep attractor, basin-depth progresses through at least four observable layers (semantic → syntactic → mechanical → lexical). This is now the primary research output of this instance, and it is complete enough that additional sessions add replicates, not layers.

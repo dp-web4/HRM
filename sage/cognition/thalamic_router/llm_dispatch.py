@@ -1942,13 +1942,15 @@ def run_llm_dispatch(
     episodic_index: Any = None
     last_invoke_step_idx: int = 0
     last_invoke_level: int = 0
+    # Metacog runs in ALL dispatch modes — it observes, doesn't control
+    if _METACOG_AVAILABLE:
+        try:
+            metacog = Metacog(config=MetacogConfig())
+        except Exception:
+            metacog = None
+
     if multiturn:
         session_system_prompt = build_session_system_prompt(game_family)
-        if _METACOG_AVAILABLE:
-            try:
-                metacog = Metacog(config=MetacogConfig())
-            except Exception:
-                metacog = None
         episodic_index = _load_episodic_index()
 
     # Zero-frame convention at game start
@@ -2187,8 +2189,24 @@ def run_llm_dispatch(
                 except Exception:
                     pass
 
+                # Metacog signals: what does the system know about its own state?
+                _mc_text = None
+                if metacog is not None:
+                    try:
+                        signals = metacog.active_signals()
+                        if signals:
+                            _mc_lines = []
+                            for sig in signals:
+                                s = sig if isinstance(sig, dict) else sig.to_dict()
+                                _mc_lines.append(
+                                    f"  {s['signal']} (severity {s['severity']:.1f}): {s.get('suggestion', '')}"
+                                )
+                            _mc_text = "System self-assessment:\n" + "\n".join(_mc_lines)
+                    except Exception:
+                        pass
+
                 # Combine all context signals
-                _context_parts = [p for p in [_fs_text, _la_text, _ep_text] if p]
+                _context_parts = [p for p in [_fs_text, _la_text, _ep_text, _mc_text] if p]
                 _fs_text = "\n\n".join(_context_parts) if _context_parts else None
                 prompt = build_prompt(
                     game=game_family, level=level, step_index=step_idx + 1,

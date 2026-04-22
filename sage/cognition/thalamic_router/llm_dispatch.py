@@ -2046,6 +2046,23 @@ def run_llm_dispatch(
             dispatch.decision = "invoke"
             dispatch.invoke_reasons.append("stuck")
 
+        # Metacog-driven invoke escalation: if metacog detects dysfunction,
+        # force invoke so the LLM gets the signal and can adjust strategy
+        if metacog is not None and dispatch.decision != "invoke":
+            try:
+                _mc_signals = metacog.active_signals()
+                if _mc_signals:
+                    # Any signal with severity >= 0.6 forces invoke
+                    _high_sev = [s for s in _mc_signals
+                                 if (s.severity if hasattr(s, 'severity') else s.get('severity', 0)) >= 0.6]
+                    if _high_sev:
+                        dispatch.decision = "invoke"
+                        sig_names = [s.signal if hasattr(s, 'signal') else s.get('signal', '?')
+                                     for s in _high_sev]
+                        dispatch.invoke_reasons.append(f"metacog:{','.join(sig_names)}")
+            except Exception:
+                pass
+
         # Resolve action
         llm_info: Optional[Dict[str, Any]] = None
         if dispatch.decision == "invoke":

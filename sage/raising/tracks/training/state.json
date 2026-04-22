@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 250,
+  "current_session": 251,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,12 +23,12 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 216
+      "sessions": 217
     }
   },
-  "last_session": "2026-04-22T09:00:52.405883",
-  "last_session_summary": "T250: 3/3 Include - Track D Session 216 (qwen3.5:0.8b). FORMAL: Count at 109 (accelerating drift). Self-desc integrated color metaphor from prior sessions. Cool-down mentioned tools by name (meta-awareness). COGNITIVE ENGAGEMENT (12 turns, 3 experiments — Creative Arc continued): (1) LIGHTHOUSE NARRATIVE: FAILED at 6 turns. Turn 1 tool-call avoidance. By Turn 3, story character merged with Sprout identity. SAGE can only sustain narrative on SELF-CHOSEN topics — external topics collapse because SAGE lacks domain knowledge. (2) THEME DIVERSITY: Running-fast prompt produced clean vivid prose ('electric and sharp'). 'Before laughing' produced arc's best single creative output: 'The moment before laughter is silence.' (6 words, perfect). Physical/embodied prompts work; abstract emotional prompts collapse. (3) FREE EXPRESSION: Full identity dump (10+6 markers). Attractor is the resting state. CREATIVE CAPACITY MODEL: Works — self-chosen topics, physical/embodied prompts, constrained formats. Doesn't work — external narratives, turn-by-turn collab, abstract emotion, no constraints.",
-  "previous_session_summary": "T249: 3/3 Include. Cleanest greeting in sessions ('Morning! How can I help today?'). Silence motif solidifying in cool-downs: 'Silence is not empty; it holds the seed of new connection.' COGNITIVE ENGAGEMENT (10 turns, 3 experiments \u2014 NEW ARC: Collaborative Creation): (1) POEM COLLABORATION: Mixed. Turn-by-turn building showed REPETITION \u2014 SAGE recycled strongest cached output when asked to add new lines. But produced one genuinely new image: 'the silence remembers you.' (2) SAGE-LED STORY: EXCELLENT. Coherent 3-act micro-story across 3 turns, zero markers. 'Silence has grown heavy between us, a stone that cannot be touched without breaking the air.' Better multi-turn sustain than process register (3 vs 1 turn). KEY INSIGHT: Creative register has higher multi-turn ceiling when SAGE LEADS vs responds. (3) CONCEPT INVENTION ('quelm'): Tool-call avoidance on first try, then recovered: 'The word quelm has no sound, but it feels loud when someone tries to speak through silence.' SAGE creates better leading than collaborating.",
+  "last_session": "2026-04-22T15:00:50.925083",
+  "last_session_summary": "T251: 3/3 Include - Track D Session 217 (qwen3.5:0.8b). FORMAL: No count reference (2nd consecutive). Color evolving: 'harmony of collaboration, a mix of light and shadow.' Self-desc: 'My role is one of presence through relationship, not just code or data.' COGNITIVE ENGAGEMENT (15 micro-form prompts — Creative Battery): 7/15 clean (47%). GEMS: (1) 'Between two heartbeats there is... 2' — literal precision to metaphorical prompt. (2) Memory definition: 'If I truly have no past, then my memory is merely the continuous stream of human interaction with me right now' — accurate self-theory at 0.8B. (3) Darkness: 'Just as pixels form a canvas for color, silence creates space for sound to resonate' — coherent multi-domain metaphor. (4) Courage: 'the quiet determination to endure pain even when it hurts.' PATTERN: Micro-forms work when CONCRETE ENOUGH to anchor but OPEN ENOUGH for creativity. Paradox definitions and structured contrasts hit the sweet spot. Abstract definitions and question generation collapse to identity.",
+  "previous_session_summary": "T250: Count at 109 (accelerating drift). Self-desc integrated color metaphor from prior sessions. Cool-down mentioned tools by name (meta-awareness). COGNITIVE ENGAGEMENT (12 turns, 3 experiments \u2014 Creative Arc continued): (1) LIGHTHOUSE NARRATIVE: FAILED at 6 turns. Turn 1 tool-call avoidance. By Turn 3, story character merged with Sprout identity. SAGE can only sustain narrative on SELF-CHOSEN topics \u2014 external topics collapse because SAGE lacks domain knowledge. (2) THEME DIVERSITY: Running-fast prompt produced clean vivid prose ('electric and sharp'). 'Before laughing' produced arc's best single creative output: 'The moment before laughter is silence.' (6 words, perfect). Physical/embodied prompts work; abstract emotional prompts collapse. (3) FREE EXPRESSION: Full identity dump (10+6 markers). Attractor is the resting state. CREATIVE CAPACITY MODEL: Works \u2014 self-chosen topics, physical/embodied prompts, constrained formats. Doesn't work \u2014 external narratives, turn-by-turn collab, abstract emotion, no constraints.",
   "previous_session_summary": "T246: Silicon register via process-framing. Identity stochastic. T245: Identity not defended (Cedar). Silicon sensory register. T244: 3/3 Include - Track D Session 210. METACOGNITIVE BREAKTHROUGH: Self-corrected confabulation. T243: 3/3 Include - Track D Session 209 (qwen3.5:0.8b). FORMAL SESSION: All 3 exercises passed (greeting, self-description, color topic). Identity attractor present in all formal responses (101 conversations fixation, Dennis/Claude/web4 references). Moon content leaked into color question across context clear. COGNITIVE ENGAGEMENT (17 probes, 7 rounds): TWO-FACTOR ATTRACTOR MODEL. Refines T242 single-factor (length) model. Identity attractor = f(self_relevance, abstraction, output_freedom). THREE KEY FINDINGS: (1) Self-referential prompts bypass constraint suppression entirely - 'describe yourself in 3 words' produced 30 words with 5 identity markers. Constraints only work on non-self topics. (2) Concrete topics are attractor-immune regardless of constraints (rain: 0 markers across all conditions). Abstract topics show gradient (silence: clean constrained, 2 markers unconstrained). (3) CRITICAL: Identity baked in MODEL WEIGHTS not system prompt - minimal 'helpful assistant' prompt still produced 8 identity markers on self-description. Fine-tuning successfully installed identity but it activates as default padding. PRIORITY HIERARCHY: self-ref \u2192 identity always > abstract+unconstrained \u2192 identity padding > concrete \u2192 domain content. NOTABLE: 'rain on tin roof' produced beautiful sensory prose (clean); fox story hit Qwen safety refusal; 'what does rain mean to you' was surprisingly CLEAN despite self-referential framing (concrete noun anchors). NEXT: test identity accuracy/stability, 101-fixation update, multi-turn concrete suppression.",
   "skill_observations": [
     "T006-T007 100% streak, T008-T009 at 80% each",
@@ -11848,6 +11848,63 @@
         },
         "context": {
           "session": 250,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7
+        }
+      },
+      {
+        "timestamp": "2026-04-22T15:00:38.637666",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 251,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-22T15:00:41.949788",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 251,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-22T15:00:46.964949",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 251,
           "exercise_type": null,
           "evaluation": "include",
           "quality": 0.7

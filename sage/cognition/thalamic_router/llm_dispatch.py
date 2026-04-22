@@ -2246,6 +2246,8 @@ def run_llm_dispatch(
                     if _lib_path not in _sys.path:
                         _sys.path.insert(0, _lib_path)
                     from membot_vendored import Cart as _Cart
+                    from membot_vendored.arcsage_query import stuck_hints
+                    from membot_vendored.arcsage_games import bundle_for
                     _cart_path = os.path.join(
                         os.environ.get("SHARED_CONTEXT_DIR",
                             os.path.expanduser("~/ai-workspace/shared-context")),
@@ -2253,14 +2255,21 @@ def run_llm_dispatch(
                     if os.path.exists(_cart_path):
                         if not hasattr(run_llm_dispatch, '_membot_cart'):
                             run_llm_dispatch._membot_cart = _Cart.open(_cart_path)
-                        # Build query from game + current situation
+                        # Embed current situation
                         import requests as _req
                         _stuck_prefix = "stuck on " if stuck_triggered else ""
                         _query = f"{_stuck_prefix}{game_family} level {level} game strategy"
                         _resp = _req.post("http://localhost:11434/api/embeddings",
                             json={"model": "nomic-embed-text", "prompt": _query}, timeout=5)
                         _q_emb = np.array(_resp.json()["embedding"], dtype=np.float32)
-                        _hits = run_llm_dispatch._membot_cart.search(_q_emb, k=2)
+                        # Use stuck_hints for game+bundle-aware retrieval
+                        _bundle = bundle_for(game_family)
+                        _hits = stuck_hints(
+                            run_llm_dispatch._membot_cart, _q_emb,
+                            game=game_family,
+                            game_bundle=_bundle if stuck_triggered else None,
+                            k=3, only_successful=False,
+                        )
                         if _hits:
                             _mb_lines = ["Relevant game knowledge (from fleet memory):"]
                             for _h in _hits:
@@ -2476,6 +2485,44 @@ def run_llm_dispatch(
         except Exception as e:
             errors.append(f"step {step_idx}: write failed: {e!r}")
 
+        # Write experience to membot cart (learning loop write side)
+        try:
+            if hasattr(run_llm_dispatch, '_membot_cart'):
+                import sys as _sys
+                _lib_path = os.path.join(
+                    os.environ.get("SHARED_CONTEXT_DIR",
+                        os.path.expanduser("~/ai-workspace/shared-context")),
+                    "lib")
+                if _lib_path not in _sys.path:
+                    _sys.path.insert(0, _lib_path)
+                from membot_vendored.arcsage_cart import append_turn as _append_turn
+                import requests as _req
+                # Determine outcome
+                _outcome = "progress" if frame_delta_pct > 3 else "stuck"
+                if new_levels > curr_levels:
+                    _outcome = "win"
+                elif new_state == "GAME_OVER":
+                    _outcome = "game_over"
+                # Build embedding of this moment
+                _aname = ACTION_NAMES[action] if 0 <= action < N_ACTIONS else str(action)
+                _body = f"{game_family} L{level} step {step_idx}: {_aname} → {_outcome} ({frame_delta_pct:.0f}% change)"
+                if llm_info and llm_info.get("rationale"):
+                    _body += f". Rationale: {llm_info['rationale'][:100]}"
+                _resp = _req.post("http://localhost:11434/api/embeddings",
+                    json={"model": "nomic-embed-text", "prompt": _body}, timeout=5)
+                _emb = np.array(_resp.json()["embedding"], dtype=np.float32)
+                _append_turn(
+                    run_llm_dispatch._membot_cart, _emb,
+                    game=game_family, level=level, step=step_idx,
+                    machine=machine, action=_aname, outcome=_outcome,
+                    body=_body,
+                    stuck_before=stuck_triggered,
+                    stuck_after=frame_delta_pct < 1,
+                    rationale=llm_info.get("rationale", "") if llm_info else "",
+                )
+        except Exception:
+            pass  # write side is best-effort
+
         # Update state
         recent.append(action)
         last_action = int(action)
@@ -2534,6 +2581,13 @@ def run_llm_dispatch(
                 llm_responses=llm_responses, errors=errors,
                 grounded_aggregates=aggregate_grounded_metrics(grounded_per_invoke),
             )
+
+    # Save membot cart with accumulated experience
+    try:
+        if hasattr(run_llm_dispatch, '_membot_cart'):
+            run_llm_dispatch._membot_cart.save()
+    except Exception:
+        pass
 
     final_state = getattr(getattr(fd, "state", None), "name", None) or "RUNNING"
     final_levels = getattr(fd, "levels_completed", 0) or 0

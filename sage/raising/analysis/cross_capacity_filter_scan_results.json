@@ -52,6 +52,7 @@
     "sim_remember_fired": 94,
     "sim_generic_fallback": 7,
     "sim_flagged_if_fired": 11,
+    "sim_fired_empty_after_strip": 0,
     "sim_flagged_samples": [
       {
         "into_session": 69,
@@ -73,21 +74,24 @@
         "into_session": 90,
         "text": "What is the next best decision? What is the next best action? What is the next best choice? What is the next best result? What is the next best thing? What causes me distress? What's bothering me righ"
       }
-    ]
+    ],
+    "sim_empty_samples": []
   },
   "sprout-qwen3.5-0.8b": {
     "label": "0.8B",
-    "n_sessions": 105,
-    "n_with_memory_ask": 25,
+    "n_sessions": 107,
+    "n_with_memory_ask": 26,
     "n_flagged": 0,
-    "n_clean": 25,
-    "avg_qmarks": 0.32,
+    "n_clean": 26,
+    "avg_qmarks": 0.3076923076923077,
     "max_qmarks": 1,
     "flagged_samples": [],
-    "sim_remember_fired": 25,
-    "sim_generic_fallback": 79,
+    "sim_remember_fired": 26,
+    "sim_generic_fallback": 80,
     "sim_flagged_if_fired": 0,
-    "sim_flagged_samples": []
+    "sim_fired_empty_after_strip": 0,
+    "sim_flagged_samples": [],
+    "sim_empty_samples": []
   },
   "nomad-gemma3-4b": {
     "label": "4B",
@@ -101,7 +105,9 @@
     "sim_remember_fired": 4,
     "sim_generic_fallback": 114,
     "sim_flagged_if_fired": 0,
-    "sim_flagged_samples": []
+    "sim_fired_empty_after_strip": 0,
+    "sim_flagged_samples": [],
+    "sim_empty_samples": []
   },
   "legion-gemma3-12b": {
     "label": "12B-legion",
@@ -115,7 +121,9 @@
     "sim_remember_fired": 8,
     "sim_generic_fallback": 16,
     "sim_flagged_if_fired": 0,
-    "sim_flagged_samples": []
+    "sim_fired_empty_after_strip": 0,
+    "sim_flagged_samples": [],
+    "sim_empty_samples": []
   },
   "mcnugget-gemma3-12b": {
     "label": "12B-mcnugget",
@@ -129,7 +137,9 @@
     "sim_remember_fired": 11,
     "sim_generic_fallback": 83,
     "sim_flagged_if_fired": 0,
-    "sim_flagged_samples": []
+    "sim_fired_empty_after_strip": 0,
+    "sim_flagged_samples": [],
+    "sim_empty_samples": []
   },
   "thor-qwen2.5-14b": {
     "label": "14B",
@@ -143,7 +153,9 @@
     "sim_remember_fired": 0,
     "sim_generic_fallback": 0,
     "sim_flagged_if_fired": 0,
-    "sim_flagged_samples": []
+    "sim_fired_empty_after_strip": 0,
+    "sim_flagged_samples": [],
+    "sim_empty_samples": []
   },
   "cbp-qwen3.5-0.8b": {
     "label": "0.8B-cbp",
@@ -157,21 +169,46 @@
     "sim_remember_fired": 24,
     "sim_generic_fallback": 65,
     "sim_flagged_if_fired": 0,
-    "sim_flagged_samples": []
+    "sim_fired_empty_after_strip": 0,
+    "sim_flagged_samples": [],
+    "sim_empty_samples": []
   },
   "thor-qwen3.5-27b": {
     "label": "27B",
-    "n_sessions": 90,
-    "n_with_memory_ask": 13,
+    "n_sessions": 91,
+    "n_with_memory_ask": 10,
     "n_flagged": 0,
-    "n_clean": 13,
-    "avg_qmarks": 0.3076923076923077,
+    "n_clean": 10,
+    "avg_qmarks": 0.1,
     "max_qmarks": 1,
     "flagged_samples": [],
     "sim_remember_fired": 16,
-    "sim_generic_fallback": 73,
+    "sim_generic_fallback": 74,
     "sim_flagged_if_fired": 0,
-    "sim_flagged_samples": []
+    "sim_fired_empty_after_strip": 6,
+    "sim_flagged_samples": [],
+    "sim_empty_samples": [
+      {
+        "into_session": 2,
+        "diagnosis": "<think>-residue"
+      },
+      {
+        "into_session": 3,
+        "diagnosis": "<think>-residue"
+      },
+      {
+        "into_session": 9,
+        "diagnosis": "<think>-residue"
+      },
+      {
+        "into_session": 17,
+        "diagnosis": "truly-empty"
+      },
+      {
+        "into_session": 21,
+        "diagnosis": "truly-empty"
+      }
+    ]
   },
   "legion-phi4-14b": {
     "label": "14B-phi4",
@@ -185,6 +222,8 @@
     "sim_remember_fired": 3,
     "sim_generic_fallback": 52,
     "sim_flagged_if_fired": 0,
-    "sim_flagged_samples": []
+    "sim_fired_empty_after_strip": 0,
+    "sim_flagged_samples": [],
+    "sim_empty_samples": []
   }
 }

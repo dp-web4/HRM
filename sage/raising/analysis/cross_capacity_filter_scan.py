@@ -56,9 +56,42 @@ INSTANCES = [
 
 SESS_RE = re.compile(r"session_(\d+)(?:[_.]|$)")
 
+# S96: defensive strip of legacy <think> residue. The runtime adapter strips
+# these (qwen3.5.json `strip_think_tags: true`, since 2026-03-30 commit
+# 5396da84e), but historical session JSONs from Thor 27B sessions 1-11 still
+# contain raw <think>...[</think>|EOF] blocks because they were captured
+# before the adapter fix. Without this strip, the analysis treats those
+# blocks as substantive SAGE content — visible in the prior scan output
+# where Thor 27B's "clean" memory-ask sample was the literal think block.
+# Strip both well-formed and unclosed <think> blocks; the adapter applies
+# the same two regex passes in the same order.
+_THINK_RESIDUE_RE = re.compile(r"<think>[\s\S]*?</think>")
+_THINK_TAIL_RE = re.compile(r"<think>[\s\S]*$")
+
+
+def _strip_think_residue(text: str) -> str:
+    """Remove residual <think> blocks left in legacy session JSONs.
+
+    Mirrors the adapter's `clean_response` think-strip pass for
+    `strip_think_tags: true` model families. Returns "" when the entire
+    response was inside a think block (the adapter would fall back to the
+    think-block content as response in that case, but for analysis purposes
+    those responses had no visible SAGE output and should not be counted as
+    substantive memory text).
+    """
+    if not text or "<think>" not in text:
+        return text
+    cleaned = _THINK_RESIDUE_RE.sub("", text)
+    cleaned = _THINK_TAIL_RE.sub("", cleaned)
+    return cleaned.strip()
+
 
 def extract_memory_ask(session_data: dict) -> str | None:
-    """Return last SAGE turn following a user turn containing 'remember'."""
+    """Return last SAGE turn following a user turn containing 'remember'.
+
+    Strips residual <think> blocks (S96) so historical Thor 27B sessions
+    don't surface as substantive memory-asks.
+    """
     conv = session_data.get("conversation") or session_data.get("turns") or []
     for i in range(len(conv) - 1, -1, -1):
         turn = conv[i]
@@ -67,7 +100,7 @@ def extract_memory_ask(session_data: dict) -> str | None:
         prev = conv[i - 1] if i > 0 else {}
         prev_text = (prev.get("text") or "").lower()
         if "remember" in prev_text:
-            return turn.get("text", "")
+            return _strip_think_residue(turn.get("text", ""))
     return None
 
 
@@ -78,14 +111,21 @@ def simulate_prev_summary(prev_session_data: dict) -> tuple[str, str]:
     prior SAGE response verbatim into the next system prompt, or
     ("generic_fallback", "") when it falls through to the phase-only
     string.
+
+    S96: returned response has <think> residue stripped to match the
+    runtime adapter's behavior since 2026-03-30. "remember_fired" semantics
+    are preserved (the runtime path was triggered) even when the stripped
+    response is empty — the empty case is reported separately by the
+    caller via `sim_fired_empty_after_strip` to surface Thor 27B's
+    historical token-budget exhaustion.
     """
     conv = prev_session_data.get("conversation", [])
     for i in range(len(conv) - 1, -1, -1):
         if conv[i].get("speaker") != "SAGE":
             continue
-        response = conv[i].get("text", "")
+        raw = conv[i].get("text", "")
         if i > 0 and "remember" in conv[i - 1].get("text", "").lower():
-            return "remember_fired", response
+            return "remember_fired", _strip_think_residue(raw)
     return "generic_fallback", ""
 
 
@@ -111,7 +151,9 @@ def scan_instance(inst_dir: Path) -> dict:
         "sim_remember_fired": 0,
         "sim_generic_fallback": 0,
         "sim_flagged_if_fired": 0,
+        "sim_fired_empty_after_strip": 0,
         "sim_flagged_samples": [],
+        "sim_empty_samples": [],
     }
     sess_map: dict[int, dict] = {}
     for sf in sorted(inst_dir.glob("session_*.json")):
@@ -152,7 +194,24 @@ def scan_instance(inst_dir: Path) -> dict:
         kind, resp = simulate_prev_summary(sess_map[n - 1])
         if kind == "remember_fired":
             stats["sim_remember_fired"] += 1
-            if is_schema_fragment(resp):
+            # S96: track fires whose post-strip response is empty. The
+            # runtime path was triggered, but no substantive memory text
+            # was actually carried forward. Thor 27B sessions 1-11 had raw
+            # <think> blocks (now stripped); sessions 12-61 had token-
+            # budget-exhausted empty responses. Both surface here.
+            if not resp:
+                stats["sim_fired_empty_after_strip"] += 1
+                if len(stats["sim_empty_samples"]) < 5:
+                    raw = sess_map[n - 1]
+                    last_sage_raw = ""
+                    for j in range(len(raw["conversation"]) - 1, -1, -1):
+                        if raw["conversation"][j].get("speaker") == "SAGE":
+                            last_sage_raw = raw["conversation"][j].get("text", "")
+                            break
+                    diag = "<think>-residue" if "<think>" in last_sage_raw \
+                        else "truly-empty"
+                    stats["sim_empty_samples"].append((n, diag))
+            elif is_schema_fragment(resp):
                 stats["sim_flagged_if_fired"] += 1
                 if len(stats["sim_flagged_samples"]) < 5:
                     stats["sim_flagged_samples"].append(
@@ -196,17 +255,30 @@ def main() -> None:
     print("== PREV-SUMMARY SIM VIEW (what the runner would splice into next "
           "session's system prompt) ==")
     print(f"{'Instance':<28} {'Label':<14} {'Seq':>5} {'Fire':>5} "
-          f"{'Generic':>8} {'Flag':>5} {'FireFlag%':>10}")
-    print("-" * 85)
+          f"{'Generic':>8} {'Flag':>5} {'EmptyAfStrp':>12} {'Substantive%':>12}")
+    print("-" * 100)
     for inst, r in all_results.items():
         fired = r["sim_remember_fired"]
         flagged = r["sim_flagged_if_fired"]
+        empty = r["sim_fired_empty_after_strip"]
         seq = r["n_sessions"]
-        pct = (100 * flagged / fired) if fired else 0
+        # Substantive%: fires that produced non-empty, non-schema content
+        substantive = fired - flagged - empty
+        sub_pct = (100 * substantive / fired) if fired else 0
         print(
             f"{inst:<28} {r['label']:<14} {seq:>5} {fired:>5} "
-            f"{r['sim_generic_fallback']:>8} {flagged:>5} {pct:>9.1f}%"
+            f"{r['sim_generic_fallback']:>8} {flagged:>5} {empty:>12} "
+            f"{sub_pct:>11.1f}%"
         )
+
+    # Detail: empty-after-strip diagnoses per instance
+    for inst, r in all_results.items():
+        if not r["sim_empty_samples"]:
+            continue
+        print()
+        print(f"=== EMPTY-AFTER-STRIP fires at {r['label']} ({inst}) ===")
+        for n, diag in r["sim_empty_samples"]:
+            print(f"  into-session S{n}: prev SAGE was {diag}")
 
     # Detail: flagged samples per instance
     for inst, r in all_results.items():
@@ -249,9 +321,14 @@ def main() -> None:
             "sim_remember_fired": r["sim_remember_fired"],
             "sim_generic_fallback": r["sim_generic_fallback"],
             "sim_flagged_if_fired": r["sim_flagged_if_fired"],
+            "sim_fired_empty_after_strip": r["sim_fired_empty_after_strip"],
             "sim_flagged_samples": [
                 {"into_session": n, "text": t}
                 for (n, t) in r["sim_flagged_samples"]
+            ],
+            "sim_empty_samples": [
+                {"into_session": n, "diagnosis": diag}
+                for (n, diag) in r["sim_empty_samples"]
             ],
         }
         for inst, r in all_results.items()

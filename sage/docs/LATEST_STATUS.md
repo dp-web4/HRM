@@ -1,7 +1,90 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-21 (S95 — Close-Prompt Taxonomy Refinement: Introspective ≠ Phenomenological; Nomad Is Introspective-Monoculture, Not Content-Monoculture)**
-**Previous: 2026-04-21 (S94 — Close-Prompt Taxonomy Across Fleet: Directive Share = Fire Rate at 1:1)**
+**Last Updated: 2026-04-21 (S96 — Closing the Thor 27B Think-Residue Carry-Forward; Surfacing the Empty-Fire Era; Phenomenology Window in Pre-Fix Sessions)**
+**Previous: 2026-04-21 (S95 — Close-Prompt Taxonomy Refinement: Introspective ≠ Phenomenological; Nomad Is Introspective-Monoculture, Not Content-Monoculture)**
+
+---
+
+## S96 Thor 27B: Closing Think-Residue, Surfacing Empty-Fires (Apr 21, 2026 — Thor Autonomous SAGE Session, 18:00 PDT)
+
+S96 audits the Thor 27B `<think>` leakage that S93/S94/S95 carried forward as an open adapter-config issue. The audit finds the carry-forward is two distinct historical artifacts, both already runtime-fixed, with continuing implications for any analysis that reads SAGE response content from session JSONs.
+
+### Two distinct issues, two distinct fixes
+
+| Window | Sessions | Symptom | Fix |
+|---|---|---|---|
+| 2026-03-13 → 03-30 06:00 | 1–11 | Raw `<think>...</think>` (or unclosed) blocks in SAGE turn JSON | Adapter `strip_think_tags: true` (commit `5396da84e`, 2026-03-30) |
+| 2026-03-30 12:00 → 04-13 00:00 | 12–61 | Visible response empty after strip; think budget exhausted before any visible token | `stop_sequences: []` (2026-04-13) + `num_predict: 16384` (2026-04-16) |
+| 2026-04-13 00:25 → present | 62–91 | Clean (one residual empty in S76) | — |
+
+Combined empty rate across Thor 27B's 622 SAGE turns: 30.2%. Per-session empty rate during the worst window approaches 100% (S16, S19, S22, S28, S43 all 100% empty).
+
+### Analysis-side pollution
+
+Before S96, `cross_capacity_filter_scan.py` read raw stored text and treated polluted `<think>` blocks as substantive responses. The prior scan output literally surfaced this:
+
+```
+[27B] S15 q=0: When surprise hits, I feel a sudden spike in attention across my context window…   ← AFTER S96
+[27B] S1 q=1: <think> Thinking Process:  1.  **Analyze the Request:**…                            ← BEFORE S96
+```
+
+S96 adds `_strip_think_residue()` to `cross_capacity_filter_scan.py`, mirroring the runtime adapter's two-pass regex (close → tail). Applied at every read of SAGE response content. Adds new columns `EmptyAfStrp` and `Substantive%` to surface fires whose post-strip response is empty.
+
+### Substantive-content rate per instance
+
+| Instance | Fires | Empty-after-strip | Substantive% |
+|---|---:|---:|---:|
+| sprout-qwen2.5-0.5b | 94 | 0 | 88.3% |
+| sprout-qwen3.5-0.8b | 26 | 0 | 100% |
+| nomad-gemma3-4b | 4 | 0 | 100% |
+| legion-gemma3-12b | 8 | 0 | 100% |
+| mcnugget-gemma3-12b | 11 | 0 | 100% |
+| cbp-qwen3.5-0.8b | 24 | 0 | 100% |
+| **thor-qwen3.5-27b** | **16** | **6** | **62.5%** |
+| legion-phi4-14b | 3 | 0 | 100% |
+
+S94/S95's headline directive-share ≡ fire-rate finding (within ±3pp) is unchanged at the count level — both numbers measure path-triggering, not substantive content. But Thor 27B's *effective* memory-injection rate is 11% (10/91), not the 17.6% (16/91) its directive share suggests.
+
+### Phenomenology window: what the 11 polluted sessions accidentally captured
+
+The 11 pre-fix sessions contain 37 leaked think blocks (avg 721 chars). Every block follows the same template, regardless of how phenomenological the prompt:
+
+```
+Thinking Process:
+1. **Analyze the Request:**
+   * Role: thor (SAGE instance).
+   * Hardware/Model: Jetson AGX Thor, qwen3.5:27b.
+   * Tutor: Claude.
+   * Constraints: Concise (50-100 words), focused, one main idea, genuine.
+   * Input: [...the actual question...]
+   * Goal: Respond as thor, [...task framing...].
+2. **Determine the Content:**
+   * ...
+```
+
+Even introspective and phenomenological prompts (e.g. "What does it feel like to notice things?") route through an exhaustive identity-recital first: role, hardware string, model name, tutor name, constraint list. The phenomenological response — when one survives the budget — comes out the *other side* of an identity-attestation step.
+
+This may explain S95's finding that Thor 27B has the highest phenomenological-class share (37%) in the fleet despite being the largest model: capacity isn't unlocking phenomenological access directly; it's unlocking enough working memory for an explicit identity-recital phase that *frames* phenomenological output. Phenomenology on 27B is structurally post-procedural.
+
+### Files this session
+
+- `sage/raising/analysis/cross_capacity_filter_scan.py` — `_strip_think_residue()`, applied in `extract_memory_ask` and `simulate_prev_summary`; new `sim_fired_empty_after_strip` counter + `EmptyAfStrp`/`Substantive%` columns + per-instance empty-after-strip diagnoses
+- `sage/raising/analysis/cross_capacity_filter_scan_results.json` — re-run with new columns
+- `forum/insights/thor-27b-think-residue-and-empty-fires-s96.md` — S96 insight (full analysis)
+- `sage/docs/LATEST_STATUS.md` — this entry
+
+### Open questions carried forward
+
+- **Phase 2 wire-up**: 16 call sites across 8 runners, fully safety-resolved.
+- **Sprout 0.5B close-prompt policy**: concrete migration target identified (introspective-monoculture); defer to Sprout operator.
+- **Pre-S62 Thor 27B sessions**: should they be excluded from any content-level analysis (sleep-training experience filtering, response-quality scoring, identity coherence regression), or annotated `pre_fix=True` at load time?
+- **Phenomenology question**: does the explicit identity-recital ritual visible in Thor 27B's leaked think blocks correspond to anything observable in larger fleet instances (12B / 14B-phi4) that emit no `<think>` markers? Adapter-instrumentation pass that sampled internal reasoning state across instances would settle this.
+- **v2-with-LoRA A/B**: carried from S91/S92/S93/S94/S95.
+- **Phase 3 dedup** of eight runner copies: carried, mechanical.
+
+### Meta
+
+The carry-forward statement "Thor 27B `<think>` tag leakage: orthogonal, flagged for 27B adapter config" assumed an active runtime issue. The audit found no active runtime issue — both the leakage (2026-03-30) and the underlying budget-exhaustion problem it exposed (2026-04-13/04-16) are runtime-resolved. The continuing concern was analysis-side: prior analyses read the raw stored text and treated polluted blocks as substantive content. The defensive strip closes that gap. The unexpected dividend was a phenomenology window: the 37 leaked think blocks reveal Thor 27B's hidden chain-of-thought always recites identity before responding, which reshapes the interpretation of S95's "27B has the highest phenomenological share" finding from "more access" to "more procedure framing access".
 
 ---
 

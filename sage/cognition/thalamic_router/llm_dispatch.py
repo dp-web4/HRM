@@ -374,9 +374,12 @@ class OllamaClient(LLMClient):
             "stream": False,
             "think": False,
         }
-        # Only set options for models that tolerate them (non-gemma4)
+        # Options can trigger model reloads in ollama, disabling flash
+        # attention and reducing GPU layers. Only set num_predict (safe)
+        # and skip temperature/num_ctx to avoid reload triggers.
+        # Gemma4 produces empty responses with options — skip entirely.
         if "gemma4" not in self.model:
-            payload["options"] = {"num_predict": max_tokens, "temperature": 0.2}
+            payload["options"] = {"num_predict": max_tokens}
         req = urllib.request.Request(
             f"{self.base_url}/api/chat",
             data=json.dumps(payload).encode("utf-8"),
@@ -1690,7 +1693,7 @@ Recent actions: {recent_names}{trajectory_block}
 NN's best-action ranking (top 5): {top_str}
 NN's top pick: {ACTION_NAMES[play_action_idx]} (confidence {play_confidence:.2f})
 
-Actions: A0=0 UP=1 DOWN=2 LEFT=3 RIGHT=4 SEL=5 CLICK=6
+Actions: UP=1 DOWN=2 LEFT=3 RIGHT=4 SEL=5 CLICK=6
 
 Respond with exactly this format on the first line:
 ACTION=<0-6>[ X=<0-63> Y=<0-63>]
@@ -1705,11 +1708,11 @@ If you choose CLICK (6), you MUST provide X and Y pixel coordinates on the 64×6
 # Only used if ACTION=<n> format didn't match.
 _NAMED_ACTION_RE = re.compile(
     r"\b(?:action[:\s]+is|i\s+(?:choose|pick|select)|let'?s\s+(?:do|go|try)|going\s+with)\s*"
-    r"(?:the\s+)?(A0|UP|DOWN|LEFT|RIGHT|SEL(?:ECT)?|CLICK)\b",
+    r"(?:the\s+)?(UP|DOWN|LEFT|RIGHT|SEL(?:ECT)?|CLICK)\b",
     re.IGNORECASE,
 )
 _NAKED_ACTION_RE = re.compile(
-    r"\b(A0|UP|DOWN|LEFT|RIGHT|SELECT|SEL|CLICK)\b", re.IGNORECASE,
+    r"\b(UP|DOWN|LEFT|RIGHT|SELECT|SEL|CLICK)\b", re.IGNORECASE,
 )
 _NAME_TO_IDX = {n: i for i, n in enumerate(ACTION_NAMES)}
 _NAME_TO_IDX["SELECT"] = _NAME_TO_IDX["SEL"]
@@ -2289,13 +2292,11 @@ def run_llm_dispatch(
                     try:
                         signals = metacog.active_signals()
                         if signals:
-                            _mc_lines = []
-                            for sig in signals:
-                                s = sig if isinstance(sig, dict) else sig.to_dict()
-                                _mc_lines.append(
-                                    f"  {s['signal']} (severity {s['severity']:.1f}): {s.get('suggestion', '')}"
-                                )
-                            _mc_text = "System self-assessment:\n" + "\n".join(_mc_lines)
+                            # Terse numerical format — don't give the model prose to parrot
+                            _mc_parts = [f"{(s.signal if hasattr(s,'signal') else s.get('signal','?'))}:"
+                                         f"{(s.severity if hasattr(s,'severity') else s.get('severity',0)):.1f}"
+                                         for s in signals]
+                            _mc_text = f"Metacog: {', '.join(_mc_parts)}"
                     except Exception:
                         pass
 

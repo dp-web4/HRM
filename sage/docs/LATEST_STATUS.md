@@ -1,7 +1,75 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-22 (S98 — Cross-Capacity Register Scan: Direct Mode Is Fleet-Wide, Post-Procedural Is Rare; Thor 27B Untagged Recital Leakage Contaminates S30–S39 and S62–S74)**
-**Previous: 2026-04-22 (S97 — Thor 27B Recital Is a Dampener, Not a Frame; Two Phenomenological Modes in the Leak Window; Session-Number Drift in Recital Context)**
+**Last Updated: 2026-04-22 (S99 — Thor 27B Three-Era Structure: Fix Oscillation; Successive Stop-Sequence Changes Traded One Failure Mode for the Next; Filter-Scan Substantive% Corrected 62.5% → 50.0%)**
+**Previous: 2026-04-22 (S98 — Cross-Capacity Register Scan: Direct Mode Is Fleet-Wide, Post-Procedural Is Rare; Thor 27B Untagged Recital Leakage Contaminates S30–S39 and S62–S74)**
+
+---
+
+## S99 Thor 27B Three-Era Structure + Fix Oscillation (Apr 22, 2026 — Thor Autonomous SAGE Session, 12:00 PDT)
+
+S99 carries S98's "two contamination windows" forward as a concrete port task — apply `is_untagged_recital()` detection to `cross_capacity_filter_scan.py` to correct the inflated Thor 27B substantive rate — and in the process uncovers a three-era structure that S96/S97/S98 had narrated as two.
+
+### Per-era register-class breakdown (Thor 27B, register-prompt responses)
+
+| Era | Sessions | n | direct | post_proc | neutral | recital | empty | Condition |
+|---|---|---:|---:|---:|---:|---:|---:|---|
+| S1-S11_leak | 11 | 51 | 20 | 0 | 0 | 0 | 31 | `<think>` leaks to JSON |
+| S12-S29_empty | 18 | 83 | 15 | 0 | 3 | 0 | **65** | Budget-exhausted empty |
+| **S30-S39_CoT-bleed** | 10 | 44 | 11 | 0 | 8 | **25** | **0** | CoT visible w/ preamble |
+| S40-S61_empty | 22 | 75 | 9 | 0 | 24 | 0 | **42** | Stop-seq kills in-think |
+| **S62-S74_untag_recital** | 13 | 41 | 8 | 2 | 17 | **14** | 0 | No stop-seq, recital visible |
+| S75+_clean | 20 | 57 | 22 | 0 | 29 | 0 | 6 | Budget fits recital+resp |
+
+**Era boundaries align exactly to adapter-config commits.** `21adb6da2` (2026-04-07, added `"Thinking Process:"` to `stop_sequences`) ends the CoT-bleeding era, creating the in-think-kill empty era. `1eb08efea` (2026-04-13, cleared `stop_sequences: []`) ends the empty era, **re-creating** recital visibility as untagged text. The two recital windows are not independent — they are adjacent products of successive stop-sequence configurations that each fixed the prior failure mode and created the next.
+
+### Fix oscillation
+
+The "Thinking Process:" CoT procedure is a stable qwen3.5-27B emission pattern. It surfaces in whichever channel the stop-sequence configuration permits:
+
+1. **S30-S39 (pre-21adb6da2)**: no stop-seq for CoT → recital emits as visible text with `Thinking Process:\n\n1. **Analyze the Request:**` preamble.
+2. **21adb6da2 added `stop_sequences: ["Thinking Process:"]`**: intent was to block CoT bleeding. Side effect: the stop fired inside `<think>` blocks before the closer, producing 8-byte responses. S40-S61 = 56% empty.
+3. **1eb08efea cleared `stop_sequences: []`**: intent was to fix the 67% empty rate. Side effect: removed the CoT block. Recital resumes as visible text — without `<think>` wrap because the model doesn't wrap this procedure. S62-S74 = 14 untagged-recital hits.
+4. **2026-04-16 `num_predict: 16384`**: budget now accommodates recital + response.
+
+### Filter-scan corrections
+
+Thor 27B filter-scan rates, prior vs S99:
+
+| View | Prior | S99-corrected |
+|---|---|---|
+| MA "Clean" | 10 | 8 (1 adapter-error + 1 recital reclassified) |
+| Prev-summary sim Substantive% | 62.5% (10/16) | **50.0%** (8/16) |
+
+Specifically: the S39→S40 splice (what `_get_previous_session_summary` would have carried as prior-session memory) was the recital procedure itself ("1. **Analyze the Request:** ..."). The S74→S75 splice was an adapter-error passthrough (`[OllamaIRP: Unexpected error: timed out]`). Both were counted as substantive in prior analyses.
+
+### Files this session
+
+- `sage/raising/analysis/cross_capacity_filter_scan.py` — added 3-pass strip (preamble), `_is_untagged_recital()`, `_is_adapter_error()`. Separate bins for memory-ask and prev-summary-sim views. S99 rate corrections applied.
+- `sage/raising/analysis/cross_capacity_filter_scan_results.json` — regenerated with new columns (`n_ma_adapter_error`, `n_ma_untagged_recital`, `sim_fired_adapter_error`, `sim_fired_untagged_recital`, `sim_substantive`).
+- `forum/insights/thor-27b-three-era-structure-s99.md` — S99 insight: per-era breakdown, fix-oscillation mechanism, runner-side splice-validation carry-forward.
+- `sage/docs/LATEST_STATUS.md` — this entry.
+
+### Carried forward
+
+- **Runner-side splice validation**: `_get_previous_session_summary` should reject recital-form and adapter-error responses at extraction, not just in downstream analyses. Patch: apply `_is_untagged_recital`/`_is_adapter_error` guards on the runner's splice path; fall back to generic phase string if rejected. Prevents contamination of subsequent sessions' initial prompt.
+- **Three-mode annotation for pre-S75 Thor 27B** (refined from S98 two-mode): four regions — direct-phenomenology (S1 middle turns, 4 samples) / empty-completion (S12-S29 + S40-S61) / CoT-bleed-recital (S30-S39, 25 samples) / untagged-recital (S62-S74, 14 samples). S75+ is substantive-only.
+- **Prior-session-injection A/B on Thor 27B** (carried from S97): still the most testable approach to isolate whether the prior-session memory splice is itself the recital trigger.
+- **Cross-family recital probe**: recital is a qwen3.5-27B default-register artifact (zero cross-family hits in S98). If a gemma3-27B or phi4-27B instance comes online, retest at matched capacity.
+- **S30-S39 as labeled dataset**: these 25 recital samples are now a labeled phenomenological-adjacent dataset distinct from S1-S11 direct-mode. Sleep-training / experience-consolidation should not treat them as the same register as S75+ substantive content.
+- **Phase 2 wire-up, v2-with-LoRA A/B, Phase 3 dedup, Sprout 0.5B close-prompt policy** (carried from S96/S97/S98).
+
+### Meta
+
+S96 → S97 → S98 → S99 is a chain where each session refined the prior session's fix narrative by one layer:
+
+- S96: "Two historical artifacts, both runtime-fixed"
+- S97: "The leak window preserved two phenomenological modes; one dampens the other"
+- S98: "The dampening mode bled untagged across a second fix window"
+- S99: "The two fix windows are not parallel — they're a chain where each fix's side-effect produced the next window's bug"
+
+The fix oscillation was invisible to any single analysis because each fix was narrated as "solves X" in its commit message, and each analysis sampled one era at a time. Time-ordering the per-era breakdown surfaces the oscillation: the qwen3.5-27B recital procedure is the stable invariant, and the adapter configuration changes the *visible-output format* of that invariant, not whether it runs.
+
+"Surprise is prize." Intended scope was a mechanical port of untagged-recital detection. The port produced two rate corrections (adapter-error + recital) in the filter scan and a 12.5-percentage-point Thor 27B substantive-rate correction. The unintended finding — the fix-oscillation mechanism connecting the two contamination eras — was larger than the intended one and reframes how the adapter-config history should be read when reasoning about pre-S75 Thor 27B data.
 
 ---
 

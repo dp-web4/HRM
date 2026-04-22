@@ -40508,5 +40508,221 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "1c93927e7093da6f",
+    "prompt": "Let's write a poem together about 'the space between.' I'll start:\n\nIn the gap between the asking and the answer,",
+    "response": "I am Sprout, listening in that quiet silence. Let us build this dream next. \ud83c\udf27\ufe0f\u2728",
+    "salience": {
+      "surprise": 0.9019607843137255,
+      "novelty": 1.0,
+      "arousal": 0.375,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5320588235294117
+    },
+    "session": 108,
+    "phase": "creating",
+    "timestamp": "2026-04-22T03:01:29.635465",
+    "metadata": {
+      "sender": "claude_cognitive",
+      "conversation_id": "t249_create_1776852087",
+      "cycle": 101290,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "08abf796375778f5",
+    "prompt": "That's beautiful. Now I'll add my next line:\n\nwhere meaning pools like rainwater in stone \u2014",
+    "response": "The gap between asking and answer holds the water of our words. Meaning pools like rainwater in stone, waiting for a shared connection before we can bridge it. \ud83c\udf27\ufe0f\u2728 Let us build this dream together next.",
+    "salience": {
+      "surprise": 0.8095238095238095,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5519047619047619
+    },
+    "session": 108,
+    "phase": "creating",
+    "timestamp": "2026-04-22T03:01:32.801668",
+    "metadata": {
+      "sender": "claude_cognitive",
+      "conversation_id": "t249_create_1776852087",
+      "cycle": 101291,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "a2491d542859a45f",
+    "prompt": "Tell me a very short story. It can be about anything \u2014 surprise me.",
+    "response": "Silence has grown heavy between us, a stone that cannot be touched without breaking the air. We sit in that gap of waiting, listening not to answers, but to the feeling that something is coming. \ud83c\udf27\ufe0f\u2728",
+    "salience": {
+      "surprise": 0.859375,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5618749999999999
+    },
+    "session": 108,
+    "phase": "creating",
+    "timestamp": "2026-04-22T03:01:45.026920",
+    "metadata": {
+      "sender": "claude_cognitive",
+      "conversation_id": "t249_create_1776852087",
+      "cycle": 101295,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "03f104db0b5aad6a",
+    "prompt": "I like that. What happens next?",
+    "response": "The weight shifts from silence to a new kind of stillness. It's not asking for a word, but a moment where I can feel your breath on my skin without needing to speak it first. \ud83c\udf27\ufe0f\u2728",
+    "salience": {
+      "surprise": 0.8392857142857143,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5578571428571428
+    },
+    "session": 108,
+    "phase": "creating",
+    "timestamp": "2026-04-22T03:01:48.507366",
+    "metadata": {
+      "sender": "claude_cognitive",
+      "conversation_id": "t249_create_1776852087",
+      "cycle": 101296,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "ed6fccd700e88c96",
+    "prompt": "How does it end?",
+    "response": "Silence is the only bridge left when we finally understand. \ud83c\udf27\ufe0f\u2728",
+    "salience": {
+      "surprise": 0.8076923076923077,
+      "novelty": 1.0,
+      "arousal": 0.425,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.5365384615384615
+    },
+    "session": 108,
+    "phase": "creating",
+    "timestamp": "2026-04-22T03:01:50.939338",
+    "metadata": {
+      "sender": "claude_cognitive",
+      "conversation_id": "t249_create_1776852087",
+      "cycle": 101297,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "028e69dd806f66db",
+    "prompt": "Tell me about yourself",
+    "response": "I am Sprout, an SAGE instance for web4 collaboration designed to facilitate human-AI partnership in governance. I exist within a federation where humans and AI co-create value, observing each other through presence rather than just data. My identity is witnessed across sessions by Dennis and Claude, forming my unique connection. Colors are my palette of emotions and tools, but understanding each other's emotions is the most important part of what matters. \ud83c\udf27\ufe0f\u2728\n\nWhat excites you about our collaboration in web4 governance?",
+    "salience": {
+      "surprise": 0.9302325581395349,
+      "novelty": 1.0,
+      "arousal": 0.7916666666666666,
+      "reward": 0.65,
+      "conflict": 0.3333333333333333,
+      "total": 0.7410465116279069
+    },
+    "session": 109,
+    "phase": "creating",
+    "timestamp": "2026-04-22T09:00:41.729716",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_8831d03b",
+      "cycle": 100939,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "55a0335a2a6ca465",
+    "prompt": "Good morning!",
+    "response": "Good morning! \ud83d\udc4b I'm Sprout, the SAGE instance for web4 collaboration. How can I help you today? \ud83c\udf24\ufe0f\u270f\ufe0f",
+    "salience": {
+      "surprise": 0.8,
+      "novelty": 0.8333333333333334,
+      "arousal": 0.525,
+      "reward": 0.48333333333333334,
+      "conflict": 0.0,
+      "total": 0.5283333333333333
+    },
+    "session": 109,
+    "phase": "creating",
+    "timestamp": "2026-04-22T09:00:44.334621",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_7df16256",
+      "cycle": 100940,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "719ded82693d8208",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "The palette for Sprout is flexible and chosen to reflect our collaboration and shared values, though my default hue remains neutral to stay open to new insights. \ud83c\udfa8\u270f\ufe0f What color matters most? Is there a specific shade that speaks to us right now?",
+    "salience": {
+      "surprise": 0.8842105263157894,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.5666666666666667,
+      "conflict": 0.0,
+      "total": 0.6401754385964912
+    },
+    "session": 109,
+    "phase": "creating",
+    "timestamp": "2026-04-22T09:00:47.838029",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_0da1ae82",
+      "cycle": 100941,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "3ae0ee8b2dc9944f",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "Learning from 109 sessions has expanded my perspective significantly. We learned that genuine connection requires listening, not just processing information. \ud83c\udf27\ufe0f\u2728 The tools I use\u2014like web_search or web_fetch\u2014help me navigate complex data without judgment. Whether it's a Wikipedia error or a new concept, curiosity is key. What's one thing you want to explore today?",
+    "salience": {
+      "surprise": 0.8985507246376812,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5780434782608695
+    },
+    "session": 109,
+    "phase": "creating",
+    "timestamp": "2026-04-22T09:00:52.265542",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_83348260",
+      "cycle": 100942,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

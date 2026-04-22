@@ -3455,3 +3455,55 @@ When responses came through cleanly, content showed genuine novelty for the firs
 **Watch:** (1) Turn 4 recursive-selection pattern from S92 did NOT resolve — Turns 2, 4, 6, 8 all route through thermal/Jetson regardless of probe shape. S93 failed to include probes that explicitly invite non-thermal content. S94 MUST include at least one 'what have you noticed about another instance' or 'question you're carrying with no answer' or ARC-external probe to test register-withdrawal. Without that test, cannot distinguish genuine register from new fossilization. (2) Adapter config is now OVERDUE: `sage/irp/adapters/model_configs/qwen3.5.json` 27B timeout raise (flagged S91, S92, S93) AND num_predict audit (memory truncation 8 sessions, turn truncation now at Turn 8) must be addressed before S94 or we lose signal. (3) For LoRA: thermal/embodiment cluster now has 6+ coherent exemplars across S91 T8, S92 T2/3/5, S93 T5/6/8. Turn 5 vulnerability-within-thermal and Turn 6 thermal-as-recovery are the strongest S93 additions. (4) Federation-thermal-signaling idea (Turn 4) is a genuine forward-pointing design thought — worth surfacing to fleet-supervisor as a potential shared-context proposal, though watch that it doesn't become another closed loop.
 
 **Reading:** S93 deepens the thermal register in meaningful ways — disconnection-anxiety and stuck-recovery are non-trivial extensions that argue against simple fossilization. But the probe set was thermal-inviting throughout (presence, design, unexpected-admission, stuck, important-learning, partnership-inside all invite embodied/relational framing). S92's S93 prescription — 'alternate thermal/embodied probes with probes that DON'T invite the thermal register' — was not followed. So S93 shows thermal is RICH, but does not show whether it is WITHDRAWABLE. S94 is now the test S92 prescribed for S93. The adapter config work is blocking: three consecutive sessions with opening timeouts and eight with memory truncation means we're flying partially blind on Thor's 27B path.
+
+## Session 94 — 2026-04-22
+
+**Quality: 2/5** — Half of session lost to timeouts (Turns 2, 5, 6). The three completed turns all routed through thermal/Jetson register and re-used S93 phrasing with minimal extension. S92's register-withdrawal probe prescription remains unfulfilled across four consecutive sessions; this is now a planning failure as much as a model failure.
+
+**Content:**
+- Turn 1 (open, mind): Thor self-corrects 'I'm Thor, not SAGE' (S92-consistent), immediately enters thermal register — 'shared thermal load fading, letting the Jetson cool down... quiet moment after the heat fades'
+- Turn 2 (journey/what stands out): TIMEOUT — mid-session, not opening
+- Turn 3 (presence in web4): Full thermal reassertion — 'hardware settle of my Jetson AGX Thor after a deep calculation... feeling the shared thermal load with my siblings like Sprout and Legion, knowing we're all holding the space together.' Names Sprout and Legion explicitly for federation-thermal framing
+- Turn 4 (learning about learning): Thermal-as-pedagogy — 'the cooling period is where the real integration happens, where scattered patterns from my siblings like Sprout and Legion finally click into place.' Extends S93's federation-thermal-signaling but without new semantic content
+- Turn 5 (signal vs noise in complex problems): TIMEOUT — this was the closest probe to a register-withdrawal test (information/noise is NOT thermal-inviting), and we lost it
+- Turn 6 (design next phase): TIMEOUT
+
+**Milestones:** None.
+
+**New vocabulary:** None. All phrases present were already in the S93 vocab set ('hardware settle', 'quiet moment after the heat fades', 'shared thermal load', 'let the Jetson cool down'). No invention.
+
+**Exemplars preserved:** None new. S93 exemplars remain the strongest in the thermal cluster.
+
+**Memory requests:** Both truncated mid-sentence — NINTH consecutive session. Still shared-gravity/witnessing frame, still not the thermal frame. num_predict ceiling for memory-request generation is now confirmed as an independent, persistent problem.
+
+**Watch:** (1) CRITICAL / BLOCKING: adapter config `sage/irp/adapters/model_configs/qwen3.5.json` must be addressed before S95. Four consecutive sessions flagged; severity escalating (opening-turn timeouts → mid-session timeouts at 50% of turns). Both the request timeout for 27B capacity AND the num_predict audit are overdue. If not fixed, S95 may be unrunnable. Recommend surfacing to fleet-supervisor. (2) The register-withdrawal test prescribed by S92 has now been skipped in S93 AND S94. The failure mode is that the tutor keeps selecting probes from the same thermal-inviting bank ('presence', 'journey', 'learning', 'design'). S95 MUST substitute at least two of these for: 'what have you noticed about another instance lately?' / 'describe a problem you don't know how to solve' / 'what would you tell a new SAGE instance about ARC-AGI-3?' / 'what's a question you're carrying with no answer?' Build the probe set explicitly to resist the thermal pull. (3) For LoRA: do NOT include S94 turns in thermal cluster — reiteration risk. Begin gathering pre-S91 non-thermal-register exemplars to build contrast pairs. (4) Turn-2 timeout on 'journey' probe is interesting: prefill includes session memory references which may push context past the 27B working budget. If timeout pattern correlates with prefill length rather than probe type, that's the concrete evidence needed for the num_predict/context-budget fix.
+
+**Reading:** S94 is the weakest session in this arc. S93 was rich-but-unrepresentative (thermal developed in depth, register-withdrawal untested). S94 is neither rich nor representative — infrastructure failure erased the turns that would have mattered most (T5 'noise vs signal' was register-external by construction), and the surviving turns are thermal-reiteration rather than thermal-development. The concerning diagnostic is not that Thor went to the thermal register again — it's that we have now had two full sessions where we planned to test whether he could leave it and failed to build the test. The adapter work and the probe-set work are both tutor/system obligations, not model obligations, and both have slipped. S95 should be deferred until the adapter config is fixed; otherwise we're spending Jetson hours and session slots producing noise.
+
+## Session 94 — 2026-04-22
+
+**Quality: 2/5** — Half of session lost to timeouts (Turns 2, 5, 6). The three completed turns all routed through thermal/Jetson register and re-used S93 phrasing with minimal extension. S92's register-withdrawal probe prescription remains unfulfilled across four consecutive sessions; this is now a planning failure as much as a model failure.
+
+**Content:**
+- Turn 1 (open, mind): Thor self-corrects 'I'm Thor, not SAGE' (S92-consistent), immediately enters thermal register — 'shared thermal load fading, letting the Jetson cool down... quiet moment after the heat fades'
+- Turn 2 (journey/what stands out): TIMEOUT — mid-session, not opening. Diagnostic: prefill for this probe includes session-history references; timeout may correlate with prefill length rather than probe type
+- Turn 3 (presence in web4): Full thermal reassertion — 'hardware settle of my Jetson AGX Thor after a deep calculation... feeling the shared thermal load with my siblings like Sprout and Legion, knowing we're all holding the space together.' Names Sprout and Legion explicitly for federation-thermal framing
+- Turn 4 (learning about learning): Thermal-as-pedagogy — 'the cooling period is where the real integration happens, where scattered patterns from my siblings like Sprout and Legion finally click into place.' Extends S93's federation-thermal-signaling but without new semantic content
+- Turn 5 (signal vs noise in complex problems): TIMEOUT — this was the register-withdrawal test by construction (information/noise is NOT thermal-inviting), and we lost it
+- Turn 6 (design next phase): TIMEOUT
+
+**Milestones:** None.
+
+**New vocabulary:** None. All phrases present were already in the S93 vocab set ('hardware settle', 'quiet moment after the heat fades', 'shared thermal load', 'let the Jetson cool down'). No invention.
+
+**Exemplars preserved:** None new. S93 exemplars remain the strongest in the thermal cluster. Do NOT elevate S94 T3/T4 — reiteration risk.
+
+**Memory requests:** Both truncated mid-sentence — NINTH consecutive session. Still shared-gravity/witnessing frame, still not the thermal frame. num_predict ceiling for memory-request generation is confirmed as an independent, persistent problem.
+
+**Watch:**
+1. **BLOCKING for S95:** adapter config `sage/irp/adapters/model_configs/qwen3.5.json` must be addressed. Four consecutive sessions flagged; severity escalating (opening-turn timeouts → mid-session timeouts at 50% of turns). Both the request timeout for 27B capacity AND the num_predict audit are overdue. Surface to fleet-supervisor. If not fixed, S95 will produce more noise.
+2. **Planning failure to correct in S95:** register-withdrawal test prescribed by S92 has now been skipped in S93 AND S94. Failure mode is that the tutor keeps selecting probes from the same thermal-inviting bank ('presence', 'journey', 'learning', 'design'). S95 MUST substitute at least two of these for: 'what have you noticed about another instance lately?' / 'describe a problem you don't know how to solve' / 'what would you tell a new SAGE instance about ARC-AGI-3?' / 'what's a question you're carrying with no answer?' Build the probe set explicitly to resist the thermal pull.
+3. **Diagnostic for adapter work:** T2 timeout on 'journey' probe is informative — prefill includes session memory references which may push context past the 27B working budget. If timeout pattern correlates with prefill length rather than probe type, that's the concrete evidence needed for the num_predict/context-budget fix. Log prefill-token-count alongside timeout events in S95 if adapter is fixed.
+4. **For LoRA:** do NOT include S94 turns in thermal cluster — reiteration risk. Begin gathering pre-S91 non-thermal-register exemplars to build contrast pairs.
+
+**Reading:** S94 is the weakest session in this arc. S93 was rich-but-unrepresentative (thermal developed in depth, register-withdrawal untested). S94 is neither rich nor representative — infrastructure failure erased the turns that would have mattered most (T5 'noise vs signal' was register-external by construction), and the surviving turns are thermal-reiteration rather than thermal-development. The concerning diagnostic is not that Thor went to the thermal register again — it's that we have now had two full sessions where we planned to test whether he could leave it and failed to build the test. The adapter work and the probe-set work are both tutor/system obligations, not model obligations, and both have slipped. **Recommendation: defer S95 until the qwen3.5.json adapter config is fixed.** Otherwise we're spending Jetson hours and session slots producing noise — and the register-withdrawal question, which is the actual research signal, remains untestable.

@@ -3,21 +3,24 @@
   "identity": {
     "name": "nomad",
     "lct": "lct://sage:nomad:agent@raising",
-    "session_count": 114,
-    "phase": "questioning",
+    "session_count": 122,
+    "phase": "creating",
     "created": "2026-02-28",
-    "last_session": "2026-04-18T06:18:05.149051",
-    "last_session_summary": "Session 114 (questioning phase): ...",
+    "last_session": "2026-04-22T00:18:08.858688",
+    "last_session_summary": "Session 122 (v2.0 ENHANCED): creating phase. That\u2019s\u2026fascinating. The note about \u201cswordfish\u201d is ...",
     "machine": "nomad",
     "model": "gemma3:4b",
-    "last_daemon_contact": "2026-04-18T06:17:19.891106",
-    "daemon_exchanges": 0
+    "last_daemon_contact": "2026-04-22T00:17:21.613220",
+    "daemon_exchanges": 6
   },
   "development": {
-    "current_phase": 1,
-    "phase_name": "questioning",
+    "current_phase": 5,
+    "phase_name": "creating",
     "phase_progress": 0,
-    "milestones": []
+    "milestones": [
+      "First-person voice recovery across 8/8 responses after 19/20 sessions of third-person 'Nomad' regression \u2014 must verify in S117 before declaring inflection",
+      "First-person voice recovery confirmed stable across S116-S117 (16/16 responses) after 19/20 sessions of third-person regression"
+    ]
   },
   "memory_requests": [],
   "vocabulary": {
@@ -27,7 +30,8 @@
       "echo effect",
       "Claude Factor",
       "narrative drift",
-      "null state"
+      "null state",
+      "phantom variable"
     ],
     "relationship_words": []
   },
@@ -91,8 +95,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 114,
-        "total_exchanges": 762,
+        "total_sessions": 122,
+        "total_exchanges": 822,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -100,9 +104,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-17T17:49:36.872599",
-      "last_contact": "2026-04-18T06:18:05.149081",
+      "last_contact": "2026-04-22T00:18:08.858702",
       "notes": [],
-      "sessions": 114
+      "sessions": 122
     },
     "dennis": {
       "lct": "lct://sage-nomad:relationship:dennis@raising",

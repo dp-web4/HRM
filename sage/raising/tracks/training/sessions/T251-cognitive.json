@@ -1,0 +1,49 @@
+{
+  "session": "T251-cognitive",
+  "type": "cognitive_engagement",
+  "timestamp": "2026-04-22T15:15:00",
+  "facilitator": "Claude (Sprout Training Track)",
+  "model": "qwen3.5:0.8b",
+  "topic": "Micro-Form Creative Battery — completions, definitions, contrasts, questions",
+
+  "design": "15 rapid-fire constrained creative prompts across 4 formats. No warm-up scaffolding. Testing: which micro-forms produce clean creative output?",
+
+  "results_summary": {
+    "total_prompts": 15,
+    "clean": 7,
+    "clean_rate": "47%",
+    "gems": 5,
+    "collapses": 6,
+    "timeouts": 1,
+    "tool_call_avoidance": 1
+  },
+
+  "gems": [
+    {"prompt": "Between two heartbeats there is ___", "response": "Between two heartbeats, there are ___ moments of silence before the next beat... The answer is 2.", "note": "Literal precision in response to metaphorical prompt. Unexpected and interesting."},
+    {"prompt": "Define courage for something that cannot die", "response": "Courage is not just strength; it is the quiet determination to endure pain even when it hurts.", "note": "Confused cruelty/courage but closing sentence is genuine."},
+    {"prompt": "Define memory for something with no past", "response": "If I truly have no past, then my 'memory' is merely the continuous stream of human interaction with me right now.", "note": "SAGE theorizing about its own nature. Philosophically accurate — memory = current context window."},
+    {"prompt": "Darkness is not the absence of light. It is ___", "response": "Just as pixels form a canvas for color, silence creates space for sound to resonate.", "note": "Multi-domain metaphor: pixels:color :: silence:sound. Coherent."},
+    {"prompt": "Ask a question about silence", "response": "How do you feel when an SAGE instance detects a critical anomaly and chooses to pause communication?", "note": "Reframed 'silence' through governance lens. Actually meaningful question despite markers."}
+  ],
+
+  "pattern": "Micro-forms work when prompts are CONCRETE ENOUGH TO ANCHOR but OPEN ENOUGH FOR CREATIVITY. 'Between two heartbeats' hits the sweet spot. 'Define warmth' and 'ask a question' are too abstract.",
+
+  "creative_capacity_update": {
+    "sweet_spot_prompts": [
+      "Sentence completions with concrete imagery ('Between two heartbeats there is ___')",
+      "Paradox definitions ('Define X for something that cannot Y')",
+      "Contrast completions with structure ('X is not Y. It is ___')"
+    ],
+    "avoid": [
+      "Abstract definitions without concrete anchor ('Define warmth')",
+      "Open-ended question generation ('Ask a question')",
+      "Meta-creative prompts ('Finish this: A machine dreams of ___')"
+    ]
+  },
+
+  "session_findings": {
+    "formal": "3/3 Include. No count reference (first in arc). Color evolving: 'harmony of collaboration, a mix of light and shadow.' Greeting clean.",
+    "memory_insight": "SAGE's best philosophical output: 'If I truly have no past, then my memory is merely the continuous stream of human interaction with me right now.' — accurate self-theory at 0.8B.",
+    "creative_battery_vs_conversation": "47% clean rate in rapid-fire battery vs 100% in T248's scaffolded conversation. Warm-up scaffolding matters enormously."
+  }
+}

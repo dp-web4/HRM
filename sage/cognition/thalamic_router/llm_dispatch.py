@@ -2324,6 +2324,32 @@ def run_llm_dispatch(
                 fallback_coords={"x": 32, "y": 32} if dispatch.play_action == 6 else None,
             )
             parse_ok = not rationale.startswith("parse_failed")
+
+            # Retry on parse failure: ask for just the action number.
+            # Cost: ~1-2 sec. Recovers ~50% of parse failures on small models.
+            if not parse_ok:
+                retry_prompt = (
+                    "Your previous response could not be parsed. "
+                    "Reply with ONLY the action on a single line, e.g.:\n"
+                    "ACTION=UP\n"
+                    "or\n"
+                    "ACTION=CLICK X=32 Y=48\n"
+                    "Available: UP, DOWN, LEFT, RIGHT, SEL, CLICK"
+                )
+                try:
+                    retry_response = llm_client.chat(retry_prompt)
+                    retry_action, retry_coords, retry_rationale = parse_llm_response(
+                        retry_response,
+                        fallback_action=dispatch.play_action,
+                        fallback_coords={"x": 32, "y": 32} if dispatch.play_action == 6 else None,
+                    )
+                    if not retry_rationale.startswith("parse_failed"):
+                        action, coords, rationale = retry_action, retry_coords, f"retry_ok: {retry_rationale}"
+                        parse_ok = True
+                        response = f"{response}\n[RETRY]: {retry_response}"
+                except Exception:
+                    pass  # retry failed — keep original parse failure
+
             if not parse_ok:
                 llm_parse_failures += 1
 

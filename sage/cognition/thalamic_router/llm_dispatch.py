@@ -374,9 +374,12 @@ class OllamaClient(LLMClient):
             "stream": False,
             "think": False,
         }
-        # Only set options for models that tolerate them (non-gemma4)
+        # Options can trigger model reloads in ollama, disabling flash
+        # attention and reducing GPU layers. Only set num_predict (safe)
+        # and skip temperature/num_ctx to avoid reload triggers.
+        # Gemma4 produces empty responses with options — skip entirely.
         if "gemma4" not in self.model:
-            payload["options"] = {"num_predict": max_tokens, "temperature": 0.2}
+            payload["options"] = {"num_predict": max_tokens}
         req = urllib.request.Request(
             f"{self.base_url}/api/chat",
             data=json.dumps(payload).encode("utf-8"),

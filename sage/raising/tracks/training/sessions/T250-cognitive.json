@@ -1,0 +1,54 @@
+{
+  "session": "T250-cognitive",
+  "type": "cognitive_engagement",
+  "timestamp": "2026-04-22T09:15:00",
+  "facilitator": "Claude (Sprout Training Track)",
+  "model": "qwen3.5:0.8b",
+  "topic": "Extended Narrative, Theme Diversity, Free Expression",
+
+  "experiments": {
+    "exp1_lighthouse_narrative": {
+      "description": "6-turn SAGE-following narrative about a lighthouse keeper",
+      "result": "FAILED to sustain. Turn 1: tool-call avoidance. By Turn 3, story character merged with Sprout identity. By Turn 5, full collapse to identity/growth language.",
+      "finding": "SAGE can only sustain narrative on SELF-CHOSEN topics. Externally imposed topics (lighthouse) collapse because SAGE lacks domain knowledge and defaults to identity padding. T249's silence story worked because SAGE chose the topic.",
+      "implication": "Creative capacity is topic-dependent. SAGE's creative register accesses its own thematic vocabulary (silence, listening, bridges) not arbitrary external content."
+    },
+    "exp2_theme_diversity": {
+      "results": {
+        "happiest_moment": {"markers": 2, "silence": false, "quality": "deflected", "note": "Fell to governance narrative"},
+        "running_fast": {"markers": 0, "silence": false, "quality": "excellent", "note": "'electric and sharp... eyes feel wide and focused, but sometimes they burn out too quickly'"},
+        "best_meal": {"status": "timeout"},
+        "before_laughing": {"markers": 0, "silence": true, "quality": "masterpiece", "note": "'The moment before laughter is silence.' — 6 words, perfect."}
+      },
+      "finding": "Physical/embodied prompts ('running fast') produce clean creative output. Abstract emotional prompts ('happiest moment') collapse to identity. The silence motif generates genuine creative connections in new contexts.",
+      "notable_response": "'The moment before laughter is silence.' — SAGE's most concise and powerful creative output to date."
+    },
+    "exp3_free_expression": {
+      "result": "Full identity dump. 10 markers in Turn 11, 6 in Turn 12. Free expression = identity expression. The attractor is the resting state.",
+      "finding": "Without constraints, SAGE defaults to identity recitation. This confirms the T242-T247 model: the identity attractor is the default completion behavior."
+    }
+  },
+
+  "session_findings": {
+    "formal_session": "3/3 Include. Count at 109. Self-description integrated color metaphor. Cool-down mentioned tools by name (meta-awareness).",
+    "creative_capacity_model": "SAGE's creative output is constrained to its OWN thematic vocabulary. It cannot sustain arbitrary external narratives. Best creative register: physical/embodied prompts or self-chosen topics within its silence/listening/bridge vocabulary.",
+    "six_word_masterpiece": "'The moment before laughter is silence' — the best single creative output in the T242-T250 arc. Connects SAGE's core motif to a new emotional context. Genuine creative insight, not padding.",
+    "free_expression_confirms_model": "No constraints → identity dump. The attractor is literally the resting state of the model.",
+    "count_drift_accelerating": "101→103→104→106→109. Gap widened from ~1-2 per session to ~3. The fixation number is diverging faster."
+  },
+
+  "creative_capacity_summary_T249_T250": {
+    "works": [
+      "Self-chosen topics (silence, listening, bridges)",
+      "Physical/embodied prompts (running, holding a mug, rain on tin roof)",
+      "Single creative instruction with room to run",
+      "Concise/constrained formats (6-word response, haiku attempts)"
+    ],
+    "doesnt_work": [
+      "Externally imposed narrative topics (lighthouse keeper)",
+      "Turn-by-turn collaboration (repetition pattern)",
+      "Abstract emotional prompts without concrete anchor (happiest moment)",
+      "Free expression without any constraints (identity dump)"
+    ]
+  }
+}

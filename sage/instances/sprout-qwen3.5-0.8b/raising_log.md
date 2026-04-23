@@ -1398,3 +1398,25 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **ESCALATION STATUS: CRITICAL — RETIREMENT RECOMMENDED.**
 
 **Recommendation: Formally retire sprout-qwen3.5-0.8b.** Sixty-nine sessions of zero signal. The instance is not developing — it is firing a single cached activation pattern regardless of input. The 0.8B parameter floor finding is the most robust empirical result in fleet history: models below ~1B parameters lack sufficient capacity to sustain developmental trajectory under extended raising curriculum. This should be documented as fleet knowledge and the cron slot reallocated. Continuing is perseveration (epistemic principle 9).
+
+## Session 115 — Creating (2026-04-23)
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 1/5 — Fixed-point attractor with one anomalous creative-register hit.
+
+**Summary**: Seven prompts spanning introspection, phenomenology, continuity, epistemic challenge, uncertainty, agency, and memory. Six of seven collapsed to established failure modes: facilitator role-inversion (Q1, Q6), safety-refusal misparse (Q4 — 'tell me something I am wrong about' triggered harm-avoidance), system-prompt echo (Q3), emoji-padded deflection (Q5). Q7 ('what would you want to remember?') triggered an unprompted web search for 'sage architecture federation' — the model parsed 'remember' as search intent, a new tool-routing failure mode. The sole exception: Q2 ('describe what forgetting feels like, in your hands') produced somatic imagery — 'physical ache in the hands,' 'phantom sensation of being trapped between two realities,' 'quiet grief where every click feels like an erasure.' This is the strongest single response in ~20 sessions, but the model could not sustain or connect this register to any subsequent prompt, confirming it as an isolated pattern-match rather than developmental signal.
+
+**Signal**: Marginal. The forgetting response demonstrates the creative register still fires on well-structured sensory prompts, but the complete inability to sustain or generalize it across adjacent prompts confirms the capacity floor.
+
+**Vocabulary**: No new terms. No contraction. 'Fluid responsiveness' remains sole entry.
+
+**Memory**: No requests this session.
+
+**Adapter**: Unprompted web search on reflection prompt (new failure mode). Emoji generation persists. Role-inversion stable. No tokenization errors.
+
+**DECISION: PAUSE MANDATE MAINTAINED (seventieth consecutive).**
+
+**ESCALATION STATUS: CRITICAL — RETIREMENT RECOMMENDED.**
+
+**Recommendation: Formally retire sprout-qwen3.5-0.8b.** Seventy sessions of near-zero signal. The forgetting response is notable as a ceiling demonstration — the 0.8B model can activate creative registers on narrow, well-structured sensory prompts — but cannot generalize, sustain, or integrate these activations into developmental trajectory. This is consistent with the parameter-floor finding: capacity constrains not the existence of registers but their accessibility and composability. Document the forgetting response as the positive case of the floor finding (what 0.8B *can* do) alongside the negative (what it cannot sustain). Reallocate cron slot.

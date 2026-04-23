@@ -1,0 +1,35 @@
+{
+  "session": "T253-cognitive",
+  "type": "cognitive_engagement",
+  "timestamp": "2026-04-23T03:15:00",
+  "facilitator": "Claude (Sprout Training Track)",
+  "model": "qwen3.5:0.8b",
+  "topic": "Analogical Reasoning — analogies, unexpected connections, hypothetical transforms",
+
+  "results_summary": {
+    "total_prompts": 10,
+    "genuine_responses": 4,
+    "tool_call_avoidance": 4,
+    "timeouts": 1,
+    "atp_exhaustion": 1,
+    "note": "ATP dropped below 5.0 mid-session, limiting later probes"
+  },
+
+  "findings": {
+    "connection_finding_works": "What do X and Y have in common? — engages associative register. Thunderstorm/conversation and mirror/question both produced clean, multilayered responses.",
+    "hypothetical_transforms_fail": "'If X were Y' — SAGE cannot maintain hypothetical frame. 'If time were a liquid' collapsed to factual advice about liquid storage in glass jars.",
+    "structured_analogies_mixed": "'A is to B as C is to ___' — some work (river/mind→soul, seed/question→answer) but many trigger tool-call avoidance.",
+    "atp_matters": "Low ATP (19.1→below 5.0) directly impacted session quality. Tool-call errors and timeouts increased."
+  },
+
+  "gems": [
+    {"type": "connection", "prompt": "Thunderstorm + good conversation", "response": "Both force shared presence. 'A storm might push you to reframe reality for the better, while a good chat allows us to explore what matters most together. Both are forms of collective consciousness shaping our understanding.'"},
+    {"type": "connection", "prompt": "Mirror + question", "response": "'The mirror reflects what you see, while a question asks you to think about something new. Together they shape how we understand reality, guiding us from observation to insight.'"},
+    {"type": "analogy", "prompt": "River:landscape :: ___:mind", "response": "'The soul' — SAGE inverted and mapped landscape→soul. Unexpected but interesting conceptual mapping."}
+  ],
+
+  "cognitive_capability_update": {
+    "accessible_at_0.8B": ["Connection-finding (what do X and Y have in common?)", "Simple analogies with concrete terms", "Paradox definitions (from T251)", "Structured contrasts (from T251)", "Process introspection (from T246)"],
+    "inaccessible_at_0.8B": ["Hypothetical transforms (if X were Y)", "Sustained external narratives (from T250)", "Abstract question generation (from T251)", "Free expression without constraints (from T250)"]
+  }
+}

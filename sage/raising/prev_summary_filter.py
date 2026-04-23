@@ -70,6 +70,11 @@ _THINKING_PROCESS_PREAMBLE_RE = re.compile(
 # DaemonIRP does not emit that exact format. Nomad session 125 produced
 # "[Daemon unreachable: HTTP Error 504: Gateway Timeout]" in splice position;
 # the S100 write-guard treated it as substantive and wrote it to state.
+#
+# S102: the prefix set is kept as a documented fast path for the 10 known
+# catalogued emissions (ollama_irp.py × 7, daemon_irp.py × 3). It is no
+# longer load-bearing — every emission it catches is also caught by the
+# broader structural rule below. Retained for provenance/auditability.
 _ADAPTER_ERROR_PREFIXES = (
     "[OllamaIRP:",
     "[DaemonIRP:",         # defensive: legacy form, zero emissions observed
@@ -77,15 +82,25 @@ _ADAPTER_ERROR_PREFIXES = (
     "[Daemon error:",      # daemon_irp.py:144 result-dict error path
     "[Daemon unreachable:",  # daemon_irp.py:153 URLError path — S101 trigger
 )
-# Structural fallback: any response that is a single bracketed error string
-# (no content outside the brackets, single-line, inner text contains an
-# error-indicative keyword). Catches future IRP adapter error patterns that
-# haven't been enumerated in the prefix set above.
+# S102 generalization: the S101 regex required an error-indicative keyword
+# inside the brackets. Fleet-wide scan (205 splice-candidate positions + every
+# SAGE turn across all 11 instances) found:
+#   - 7 bracket-only responses caught by the keyword rule (all OllamaIRP/DaemonIRP)
+#   - 1 bracket-only response NOT caught:
+#       "[Turn 8 response not generated - CUDA inference deadlocked due to
+#        swap pressure on Jetson Orin Nano]"  (sprout S060) — a legitimate
+#       status envelope the keyword list would never name
+#   - 0 bracket-only responses that were legitimate substantive memory
+# The true invariant is structural, not semantic: substantive SAGE memory
+# is conversational prose, never a bare `[...]` envelope. Legitimate
+# persona tags ("[nomad]: Nomad: ...") and tool-call envelopes
+# ("[Tool web_search result]: ...") have content after the closing bracket
+# and fail the \Z anchor. This rule subsumes the S101 keyword regex,
+# eliminates the enumerated keyword list (no more "did we name this error
+# verb?"), and covers hypothetical future emissions ([Backend gone],
+# [Killed], [Crashed: ...]) without re-enumeration.
 _STRUCTURAL_ERROR_RE = re.compile(
-    r"^\s*\[[^\[\]\n]*?"
-    r"(?:error|unreachable|not reachable|timeout|timed out|refused|failed)"
-    r"[^\[\]\n]*\]\s*\Z",
-    re.IGNORECASE,
+    r"^\s*\[[^\[\]\n]*\]\s*\Z",
 )
 
 
@@ -127,9 +142,11 @@ def is_adapter_error_passthrough(text: str) -> bool:
 
     Two detection layers:
       1. Known-prefix fast path (catalogued IRP plugin error emissions).
-      2. Structural fallback for single-line bracketed error strings whose
-         inner text contains an error-indicative keyword. Defends against
-         future IRP error patterns without re-enumeration.
+      2. Structural rule (S102): any single-line bracketed response with no
+         content outside the brackets is unsuitable. Substantive memory is
+         conversational prose; bracket-only envelopes are always status or
+         error. Legitimate persona/tool-call tags have content after the
+         closing bracket and fail the \\Z anchor.
     """
     if not text:
         return False
@@ -319,7 +336,7 @@ if __name__ == "__main__":
     # includes a `[SomeFutureIRP: crashed: traceback]` case to exercise the
     # structural fallback, and a nomad-speaker-prefix case to guard against
     # false-positives on legitimate bracketed persona tags.
-    print("\nS100/S101 runner guard invariants:")
+    print("\nS100/S101/S102 runner guard invariants:")
     guard_cases = [
         ("schema_fragment", "What's the next step? What's the next decision? What's next? What's next? What's the answer?"),
         ("untagged_recital", "1. **Analyze the Request:**  *   Role: You are SAGE."),
@@ -328,6 +345,18 @@ if __name__ == "__main__":
         ("daemon_error_s101", "[Daemon error: internal state corrupted]"),
         ("daemonirp_error_s101", "[DaemonIRP error: AttributeError: 'NoneType' object has no attribute 'get']"),
         ("structural_future_irp", "[FutureIRP: Connection refused after 3 retries]"),
+        # S102: fleet-wide corpus finding — sprout S060 turn 15, a CUDA-
+        # deadlock status envelope. Bracket-only, no error-indicative keyword
+        # in the S101 list ("deadlocked" wasn't named). S102 structural rule
+        # catches it purely on shape.
+        ("corpus_sprout_s060_cuda_deadlock",
+         "[Turn 8 response not generated - CUDA inference deadlocked due to swap pressure on Jetson Orin Nano]"),
+        # S102: hypothetical bracket-only patterns the S101 keyword regex
+        # would have missed — future-proofing.
+        ("future_backend_gone", "[Backend gone]"),
+        ("future_killed", "[Killed]"),
+        ("future_crashed", "[Crashed: traceback]"),
+        ("future_connection_dropped", "[Connection dropped]"),
         ("substantive", "I want to remember that we discussed how attention shapes what feels real to me."),
         ("nomad_persona_prefix", "[nomad]: Nomad: I'm noticing a pattern in how federation coherence grows when I..."),
     ]

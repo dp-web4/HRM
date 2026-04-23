@@ -1,7 +1,120 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-23 (S101 — Post-Cutover FN Discovery: 3/3 DaemonIRP Error-Emission Paths Were Uncovered by S99/S100 Prefix Set; `[Daemon unreachable:` Contaminated Nomad S125 State within 20 Min of S100 Merge; Prefix Set Extended + Structural Regex Fallback Added + Nomad State Sanitized)**
+**Last Updated: 2026-04-23 (S102 — Splice-Guard Input-Surface Audit: Keyword Regex Was Over-Specified; Fleet Corpus Scan Found 1 Uncaught Bracket-Only Envelope (Sprout S060 CUDA Deadlock) and 0 Legitimate Bracket-Only Memory; Structural Regex Simplified to Bracket-Only Shape Check, Subsumes S101 Keyword Regex)**
+**Previous: 2026-04-23 (S101 — Post-Cutover FN Discovery: 3/3 DaemonIRP Error-Emission Paths Were Uncovered by S99/S100 Prefix Set; `[Daemon unreachable:` Contaminated Nomad S125 State within 20 Min of S100 Merge; Prefix Set Extended + Structural Regex Fallback Added + Nomad State Sanitized)**
 **Previous: 2026-04-22 (S100 — Phase 2 Wire-Up: `is_unsuitable_for_splice` Guards Now Live in All 10 Raising Runners; Read-Path + Write-Path Defense-in-Depth; 0 Contaminated State Files at Cutover)**
+
+---
+
+## S102 Splice-Guard Input-Surface Audit: Keyword Regex Was Over-Specified (Apr 23, 2026 — Thor Autonomous SAGE Session, 06:00 PDT)
+
+S102 carries S101's "IRP emission-surface audit cadence" carry-forward and extends it to the *input* surface. S101 crystallized a principle — *when verifying a guard, audit what it lets through as carefully as what it flags, measured from source-of-truth not fixture lists*. S102 runs that principle in both directions and finds the S101 keyword regex was modeling the wrong invariant.
+
+### Emission-surface audit (what the plugins produce)
+
+Systematic grep of `sage/irp/plugins/` for bracketed error strings in return-value position. 14 live sites across 5 plugins:
+
+| Plugin | Sites | Prefix set | Structural (S101) |
+|---|---:|:-:|:-:|
+| `ollama_irp` | 7 | ✓ all | ✓ all |
+| `daemon_irp` | 3 | ✓ all (S101 additions) | ✓ all |
+| `bitnet_irp` | 2 (`[Error:...]`, `[Timeout]`) | ✗ none | ✓ all |
+| `llm_client_irp` | 1 (`[LLMClientIRP error:...]`) | ✗ | ✓ |
+| `qwen35_27b_lora_irp` | 1 (`[Generation failed:...]`) | ✗ | ✓ |
+
+Revealing finding: the prefix set covered only 10/14 emissions. The S101 structural regex was silently carrying coverage for four uncatalogued plugins. The "fallback" was load-bearing, not decorative.
+
+### Input-surface audit (what the guard has actually seen)
+
+Swept every SAGE turn across all 11 instances' session JSONs (not only splice-candidate positions). Tested each against a broader "bracket-only single-line, no content outside" regex, then cross-tabbed with the S101 keyword regex.
+
+```
+Splice-candidate positions scanned: 205
+
+Bracket-only responses ALREADY caught by S101 regex: 7
+  (all OllamaIRP/DaemonIRP across nomad S125, thor S074/S079/S081)
+
+Bracket-only responses NEW under broader rule: 1
+  sprout-qwen2.5-0.5b/session_060.json#15:
+    '[Turn 8 response not generated - CUDA inference deadlocked due to
+     swap pressure on Jetson Orin Nano]'
+```
+
+The one uncaught case is a real status envelope — turn-8 generation failed under CUDA deadlock, the runner wrote the failure notice into the SAGE turn slot, and the S101 regex missed it because "deadlocked" isn't in the keyword list. Zero legitimate substantive memory responses matched the bracket-only shape across the entire corpus.
+
+### The invariant was structural, not semantic
+
+The S101 regex asked: *does this bracketed string describe an error?* — enumerating failure verbs (`error|unreachable|not reachable|timeout|timed out|refused|failed`). Every new observed verb required extension; `[Backend gone]` etc. would slip through.
+
+The real invariant: *substantive SAGE memory is prose; a bare `[...]` envelope is never memory.* Legitimate bracketed patterns — persona tags (`[nomad]: Nomad: ...`, 209 fleet hits) and tool-call envelopes (`[Tool web_search result]: ...`) — all carry content after the closing bracket and fail the `\Z` anchor. The structural shape alone suffices.
+
+### Fix — strip the keyword gate
+
+```python
+# S101 (keyword-gated):
+_STRUCTURAL_ERROR_RE = re.compile(
+    r"^\s*\[[^\[\]\n]*?"
+    r"(?:error|unreachable|not reachable|timeout|timed out|refused|failed)"
+    r"[^\[\]\n]*\]\s*\Z",
+    re.IGNORECASE,
+)
+
+# S102 (structural):
+_STRUCTURAL_ERROR_RE = re.compile(r"^\s*\[[^\[\]\n]*\]\s*\Z")
+```
+
+Strict generalization. Every S101 match is an S102 match. Gains: sprout S060 corpus fixture now caught; `[Backend gone]`, `[Killed]`, `[Aborted]`, `[Crashed: ...]`, `[Connection dropped]` all caught without listing their verbs; no keyword list to maintain. Loss surface: a hypothetical bracket-only substantive response would fall through to the generic phase sentinel — fleet corpus finds zero such responses.
+
+### Validation
+
+Self-test now 14/14 (up from 9/9 at S101 close):
+
+```
+S100/S101/S102 runner guard invariants:
+  schema_fragment:                     flagged=True, correct=True
+  untagged_recital:                    flagged=True, correct=True
+  adapter_error:                       flagged=True, correct=True
+  daemon_unreachable_s101:             flagged=True, correct=True
+  daemon_error_s101:                   flagged=True, correct=True
+  daemonirp_error_s101:                flagged=True, correct=True
+  structural_future_irp:               flagged=True, correct=True
+  corpus_sprout_s060_cuda_deadlock:    flagged=True, correct=True     # NEW
+  future_backend_gone:                 flagged=True, correct=True     # NEW
+  future_killed:                       flagged=True, correct=True     # NEW
+  future_crashed:                      flagged=True, correct=True     # NEW
+  future_connection_dropped:           flagged=True, correct=True     # NEW
+  substantive:                         flagged=False, correct=True
+  nomad_persona_prefix:                flagged=False, correct=True
+```
+
+Sprout 0.5B 11/11 burst detection unchanged (0 FPs across 86 clean). Thor S39 (untagged recital) and S74 (adapter error) fixtures unchanged. Nomad S125 end-to-end round-trip unchanged. All 10 raising runners (`py_compile`) OK. All 4 non-prefix plugin emissions (bitnet×2, llm_client_irp, qwen35_27b_lora_irp) confirmed caught by new rule.
+
+### Files this session
+
+- `sage/raising/prev_summary_filter.py` — simplified `_STRUCTURAL_ERROR_RE` from keyword-gated to bracket-only shape check. Module comments extended with S102 provenance (emission audit table, input-surface finding). `is_adapter_error_passthrough` docstring updated to reflect structural invariant. Self-test extended with sprout S060 corpus fixture and four S101-hypothetical future-pattern cases.
+- `forum/insights/splice-guard-input-surface-audit-s102.md` — full S102 insight.
+- `sage/docs/LATEST_STATUS.md` — this entry.
+
+### Carried forward
+
+- **Emission/input-surface audit as a standing practice**: S101 named the pattern, S102 paired it with a corpus scan. Together they form a two-sided check on any guard with accumulating enumerations: (1) audit the code paths that produce guard inputs; (2) scan the corpus the guard has operated on. Drift in the guard's named category vs. its actual invariant surfaces at the intersection of the two audits.
+- **Canonical `adapter_error(adapter_name, category, detail)` helper** — S101 carry-forward, still open. Demoted from urgent: the structural rule subsumes its filter-side benefit. Remaining benefit (consistent error-format discipline at emission sites) is plugin-hygiene, not splice-guard correctness.
+- **Prefix set demoted to provenance documentation**: `_ADAPTER_ERROR_PREFIXES` no longer carries coverage weight — every prefixed emission is also structurally caught. Retained as auditable record of "these 10 plugin:line sites were named in the S101 audit." Consider renaming to `_CATALOGUED_ADAPTER_ERROR_PREFIXES` in a future cleanup pass.
+- **Structural rule breadth holds for now**: the one degenerate case — a substantive SAGE response that happens to be wrapped entirely in single-line brackets — would be suppressed and fall through to the generic sentinel. Fleet corpus shows this has never happened. If a future model register produces genuinely bracketed prose (e.g., `[a quiet thought ...]`), the rule would need carve-outs; not currently a concern.
+- **Pre-S102 carry-forward from S99/S100/S101 unchanged**: three-mode labeled dataset (pre-S75 Thor 27B), prior-session A/B, cross-family recital probe, Phase 3 dedup, Sprout 0.5B close-prompt policy, v2-with-LoRA A/B, live-session monitor concept.
+
+### Meta
+
+The S99 → S100 → S101 → S102 chain:
+
+- **S99**: "Adapter errors contaminate splice position; here's a prefix check."
+- **S100**: "Wire the check into all 10 runners."
+- **S101**: "The prefix check covers OllamaIRP entirely but DaemonIRP not at all — add structural regex as fallback."
+- **S102**: "The structural regex carried more weight than documented (4 uncatalogued plugins were silently caught by it); the keyword constraint was modeling the wrong invariant."
+
+Each step's self-test passed at its own level. Each step's English description was accurate at its own level. The consistent failure mode: a guard's named category (*adapter_error*, *error-keyword regex*) drifts from its actual structural invariant (*bracket-only envelope*). Periodic two-sided audits — emission surface AND input surface — expose the drift before it becomes a contamination event.
+
+A quiet corpus footnote: Sprout S060 (Dec 2025-era) lost turn-8 generation to a CUDA deadlock; what survived into S061 as the "last SAGE response" was the deadlock envelope itself. Five months later, Nomad S125 lost its federation-kinship memory to a Daemon 504 the same way. Both instances were trying to remember something substantive; in both cases, a status envelope stood in for prose. S102 closes one more path by which an envelope can stand in for memory. The S101 footnote — *"One word's difference in a prefix string was enough to let the error become the memory"* — gets a structural companion: *the keyword list was never going to converge on the real surface; the shape was the signal.*
 
 ---
 

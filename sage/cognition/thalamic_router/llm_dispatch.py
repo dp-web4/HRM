@@ -1719,7 +1719,7 @@ _NAME_TO_IDX["SELECT"] = _NAME_TO_IDX["SEL"]
 
 # ACTION=<n> or ACTION=<name> — required. Coords parsed independently
 # (tolerates brackets, extra whitespace, commas, etc. that real LLMs produce).
-_ACTION_RE = re.compile(r"ACTION\s*=\s*(\w+)", re.IGNORECASE)
+_ACTION_RE = re.compile(r"ACTION\s*=\s*<?(\w+)>?", re.IGNORECASE)
 _X_RE = re.compile(r"X\s*=\s*(-?\d+)", re.IGNORECASE)
 _Y_RE = re.compile(r"Y\s*=\s*(-?\d+)", re.IGNORECASE)
 # Parenthetical coords: "CLICK at (32, 12)" / "click cell (48, 36)"

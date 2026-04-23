@@ -97,6 +97,7 @@ Which action makes the most PROGRESS toward winning?
 If lookahead shows LEVEL ADVANCE for any action, choose that action.
 SEL = launch/activate (the action that commits progress).
 
+1=UP 2=DOWN 3=LEFT 4=RIGHT 5=SEL 6=CLICK
 ACTION=<1-6>[ X=<0-63> Y=<0-63>]
 <one sentence>"""
 
@@ -254,6 +255,8 @@ def play_lean(
                 "step": step, "action": action, "coords": coords,
                 "rationale": rationale, "latency_s": elapsed,
                 "prompt_tokens": len(prompt) // 4,
+                "situation": situation,
+                "raw_response": response[:200],
             })
 
             if step < 15 or step % 20 == 0:
@@ -267,10 +270,20 @@ def play_lean(
 
         # Execute
         if action in GA:
-            if action == 6 and coords:
-                fd = env.step(GA[action], data=coords)
-            else:
-                fd = env.step(GA[action])
+            try:
+                if action == 6 and coords:
+                    fd = env.step(GA[action], data=coords)
+                else:
+                    fd = env.step(GA[action])
+            except (KeyError, TypeError, Exception) as e:
+                # Some games crash on certain actions (e.g. click with wrong coord format)
+                # Fall back to stepping without data
+                try:
+                    fd = env.step(GA[action])
+                except Exception:
+                    pass  # fd unchanged, continue
+            if fd is None:
+                break
 
         aname = ACTION_NAMES[action] if 0 <= action < len(ACTION_NAMES) else str(action)
         action_counts[aname] += 1

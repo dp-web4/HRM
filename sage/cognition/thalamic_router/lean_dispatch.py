@@ -291,11 +291,13 @@ def play_lean(
         recent_names.append(aname)
         prev_frame = curr_frame
 
+    final_state = fd.state.name if fd and hasattr(fd, 'state') and fd.state else "CRASHED"
+    final_levels = fd.levels_completed if fd and hasattr(fd, 'levels_completed') else 0
     result = {
         "game": game, "game_id": game_id,
-        "n_steps": step + 1 if fd.state.name in ("WON", "GAME_OVER", "LOST") else step,
-        "final_state": fd.state.name,
-        "final_levels": fd.levels_completed,
+        "n_steps": step + 1 if final_state in ("WON", "GAME_OVER", "LOST") else step,
+        "final_state": final_state,
+        "final_levels": final_levels,
         "action_counts": dict(action_counts),
         "invoke_count": invoke_count,
         "stuck_count": stuck_count,
@@ -303,7 +305,7 @@ def play_lean(
         "avg_prompt_tokens": np.mean([r["prompt_tokens"] for r in llm_responses]) if llm_responses else 0,
     }
 
-    print(f"\nResult: L{fd.levels_completed}, {result['n_steps']} steps, {fd.state.name}")
+    print(f"\nResult: L{final_levels}, {result['n_steps']} steps, {final_state}")
     print(f"Actions: {dict(action_counts)}")
     print(f"Invokes: {invoke_count}, Stuck: {stuck_count}")
     print(f"Avg prompt: ~{result['avg_prompt_tokens']:.0f} tokens")

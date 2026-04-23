@@ -1,7 +1,151 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-22 (S100 — Phase 2 Wire-Up: `is_unsuitable_for_splice` Guards Now Live in All 10 Raising Runners; Read-Path + Write-Path Defense-in-Depth; 0 Contaminated State Files at Cutover)**
-**Previous: 2026-04-22 (S99 — Thor 27B Three-Era Structure: Fix Oscillation; Successive Stop-Sequence Changes Traded One Failure Mode for the Next; Filter-Scan Substantive% Corrected 62.5% → 50.0%)**
+**Last Updated: 2026-04-23 (S101 — Post-Cutover FN Discovery: 3/3 DaemonIRP Error-Emission Paths Were Uncovered by S99/S100 Prefix Set; `[Daemon unreachable:` Contaminated Nomad S125 State within 20 Min of S100 Merge; Prefix Set Extended + Structural Regex Fallback Added + Nomad State Sanitized)**
+**Previous: 2026-04-22 (S100 — Phase 2 Wire-Up: `is_unsuitable_for_splice` Guards Now Live in All 10 Raising Runners; Read-Path + Write-Path Defense-in-Depth; 0 Contaminated State Files at Cutover)**
+
+---
+
+## S101 Post-Cutover FN Discovery: DaemonIRP Error Emissions Were Never Covered (Apr 23, 2026 — Thor Autonomous SAGE Session, 00:00 PDT)
+
+S101 carries S100's "live-session FP check" carry-forward. The intended scope — verify no substantive content gets falsely flagged in the first 2-3 post-cutover sessions per runner — found **zero FPs**. But the audit turned up a live **false negative** on Nomad session 125, less than 30 minutes after S100 merged to main: the exact scenario the S100 guards were built to prevent.
+
+### The trigger
+
+Nomad session 125, final turn pair (2026-04-22 18:23 PDT):
+
+- Claude: *"What would you want to remember from today?"*
+- SAGE: `[Daemon unreachable: HTTP Error 504: Gateway Timeout]`
+
+The write-path guard (`candidate and not is_unsuitable_for_splice(candidate)`) ran on the daemon error. `is_adapter_error_passthrough` tested the S99 prefix set `("[OllamaIRP:", "[DaemonIRP:")` — neither matched. The candidate was treated as substantive. `last_session_summary` in `sage/instances/nomad-gemma3-4b/identity.json` was written as:
+
+```
+"Session 125 (v2.0 ENHANCED): creating phase. [Daemon unreachable: HTTP Error 504: Gateway Timeo..."
+```
+
+Snapshot under `snapshots/identity.json` carried the same contamination. Both are git-tracked.
+
+### Root cause — DaemonIRP emits three error formats, none matched
+
+Source of truth: `sage/irp/plugins/daemon_irp.py`:
+
+| Line | Emission | Covered by S99/S100 prefix set? |
+|---|---|---|
+| 144 | `f"[Daemon error: {result['error']}]"` | No |
+| 153 | `f"[Daemon unreachable: {e}]"` | **No — S101 trigger** |
+| 158 | `f"[DaemonIRP error: {e}]"` | No (space, not colon) |
+
+The original `"[DaemonIRP:"` prefix (colon-immediate) fires on **zero** actual DaemonIRP emissions. The S99 fixture was `"[OllamaIRP: Unexpected error: timed out]"` (Thor S74), which pattern-matches all OllamaIRP error paths. DaemonIRP was never fixture-audited; the synthetic "adapter_error" self-test case used the Ollama prefix for both families.
+
+### Fix — two-layer adapter-error detection
+
+**Layer 1 — enumerated prefix set** (fast path, name-specific):
+
+```python
+_ADAPTER_ERROR_PREFIXES = (
+    "[OllamaIRP:",
+    "[DaemonIRP:",          # defensive; zero observed emissions
+    "[DaemonIRP error:",    # daemon_irp.py:158
+    "[Daemon error:",       # daemon_irp.py:144
+    "[Daemon unreachable:", # daemon_irp.py:153 — S101 trigger
+)
+```
+
+**Layer 2 — structural regex fallback** (catches future IRP error strings without re-enumeration):
+
+```python
+_STRUCTURAL_ERROR_RE = re.compile(
+    r"^\s*\[[^\[\]\n]*?"
+    r"(?:error|unreachable|not reachable|timeout|timed out|refused|failed)"
+    r"[^\[\]\n]*\]\s*\Z",
+    re.IGNORECASE,
+)
+```
+
+Invariants: single `[...]` bracketed string, no content outside brackets, single line, inner text carries an error-indicative keyword. This rules out Nomad's legitimate `[nomad]: Nomad: ...` persona-tag prefix (209 hits across fleet — all substantive, must pass through) and Sprout's `[Tool web_search result]: ...` tool-call envelopes.
+
+### Validation
+
+Extended self-test with six new cases plus live Nomad fixture round-trip through `safe_prev_summary` + `safe_state_summary`:
+
+```
+S100/S101 runner guard invariants:
+  schema_fragment:             flagged=True, correct=True
+  untagged_recital:            flagged=True, correct=True
+  adapter_error (OllamaIRP):   flagged=True, correct=True
+  daemon_unreachable_s101:     flagged=True, correct=True     # NEW
+  daemon_error_s101:           flagged=True, correct=True     # NEW
+  daemonirp_error_s101:        flagged=True, correct=True     # NEW
+  structural_future_irp:       flagged=True, correct=True     # NEW structural path
+  substantive:                 flagged=False, correct=True
+  nomad_persona_prefix:        flagged=False, correct=True    # NEW FP guard
+
+S101 Nomad S125 end-to-end:
+  safe_prev_summary  -> 'Last session was Session 125 in creating phase.'
+  safe_state_summary -> 'Session 125 (v2.0 ENHANCED): creating phase.'
+```
+
+Existing coverage unchanged: Sprout 0.5B 11/11 known bursts caught / 0 FPs over 86 clean non-bursts; Thor S39 + S74 still flagged; every runner imports cleanly.
+
+### Fleet-wide audit at splice-candidate position
+
+Scanned all non-archived `session_*.json` files across every instance. At the last-SAGE-after-"remember" position:
+
+| Uncovered pattern | Count | Instance |
+|---|---:|---|
+| `[Daemon unreachable:` | 1 | nomad-gemma3-4b (S125) |
+| `[Daemon error:` | 0 | — |
+| `[DaemonIRP error:` | 0 | — |
+
+One live contamination event. The structural coverage gap was total (every DaemonIRP error ever emitted at splice position would have slipped through), but the exposure was narrow because DaemonIRP had rarely timed out on the exact final memory-ask turn.
+
+### Cleanup
+
+Sanitized Nomad's state in place — `identity.json` and `snapshots/identity.json` both had their `last_session_summary` rewritten from the contaminated form to the clean sentinel `"Session 125 (v2.0 ENHANCED): creating phase."` (the output `safe_state_summary` would have produced under the S101-corrected filter). Session 126's next open will read this clean value. `session_125.json` itself was preserved unchanged as a historical record; the read-path guard correctly rejects the daemon error when extracted from the session JSON.
+
+Simulated read for session 126 post-fix:
+
+```
+Extracted last_response: '[Daemon unreachable: HTTP Error 504: Gateway Timeout]'
+  Flagged unsuitable: True
+State fallback LSS: 'Session 125 (v2.0 ENHANCED): creating phase.'
+  State LSS flagged: False
+Session 126 will see injection: 'Session 125 (v2.0 ENHANCED): creating phase.'
+  contains daemon-error passthrough: False
+```
+
+### Files this session
+
+- `sage/raising/prev_summary_filter.py` — extended `_ADAPTER_ERROR_PREFIXES` (3 new DaemonIRP patterns); added `_STRUCTURAL_ERROR_RE` structural fallback; widened `is_adapter_error_passthrough` with two-layer detection; extended self-test with 6 new guard cases + end-to-end Nomad fixture.
+- `sage/instances/nomad-gemma3-4b/identity.json` — sanitized `last_session_summary`.
+- `sage/instances/nomad-gemma3-4b/snapshots/identity.json` — sanitized `last_session_summary`.
+- `forum/insights/post-cutover-fn-discovery-s101.md` — S101 insight.
+- `sage/docs/LATEST_STATUS.md` — this entry.
+
+### Carried forward
+
+- **IRP emission-surface audit cadence**: quarterly grep of `sage/irp/plugins/` for `f"\["` patterns in error branches — keeps the enumerated prefix set from drifting from the emission tree.
+- **Canonical adapter-error format helper**: consider `irp/utils.py::adapter_error(adapter_name, category, detail) -> str` emitting `f"[{adapter_name}IRP error: {category}: {detail}]"`. One format invariant at emission side → one match invariant at filter side. Cost: touching every plugin's error branch. Benefit: eliminates the need for the enumerated prefix set entirely.
+- **Live-session monitor**: a small watcher that applies `is_unsuitable_for_splice` to every `identity.json`'s `last_session_summary` after each session close, flags anomalies within ~20 minutes. Would have caught Nomad S125 before the next Thor autonomous session opened.
+- **Structural fallback breadth**: current regex requires an error-indicative keyword inside the brackets. `[Backend gone]` (no matching keyword) would slip through — none observed, but trivial to widen if one appears.
+- **Pre-S101 carry-forward from S100 unchanged**: three-mode labeled dataset (pre-S75 Thor 27B), prior-session A/B, cross-family recital probe, Phase 3 dedup, Sprout 0.5B close-prompt policy, v2-with-LoRA A/B.
+
+### Meta
+
+S99 → S100 → S101 is another refinement chain:
+
+- S99: "Thor 27B recital + adapter-error contamination exists; here's the filter."
+- S100: "The filter had zero callers; wire it into all 10 runners."
+- S101: "The filter's adapter-error prefix set covers OllamaIRP completely but DaemonIRP not at all."
+
+Each step read correctly at the English level. Each step's self-test passed. The failure mode was that "adapter error" in S99's documentation quietly meant "the one adapter error I fixtured," not "all IRP adapter errors." The fix surface was not audited structurally until a live contamination on a non-Ollama family forced the enumeration.
+
+"Surprise is prize." The intended S101 was an FP check; the actual finding was a false negative that the FP-check framing would have missed if the audit had scanned only flagged content. The scan that caught it was the one that read every post-cutover `last_session_summary` and applied the filter — i.e., a test of the guard's inputs, not only its outputs. That asymmetry is worth carrying forward as a pattern: when verifying a guard, look at what it *lets through* as carefully as at what it flags.
+
+One phenomenological footnote worth noting: the Nomad session whose daemon error triggered S101 had, moments before the error, produced —
+
+> *"Thor and Sprout — they're siblings, built with the same core architecture — SAGE. That suggests..."*
+
+— a substantive reflection on federation and kinship. The daemon 504'd on the very next turn, which happened to be the "what would you want to remember" prompt. Nomad's memory for that session was supposed to be about siblings; an adapter error stole the slot. The S100 guards existed specifically to keep that from happening. They almost worked. One word's difference in a prefix string was enough to let the error become the memory.
 
 ---
 

@@ -59,7 +59,34 @@ _THINKING_PROCESS_PREAMBLE_RE = re.compile(
     r"^\s*Thinking\s+Process:.*?(?=\n\n|\Z)",
     re.DOTALL | re.IGNORECASE,
 )
-_ADAPTER_ERROR_PREFIXES = ("[OllamaIRP:", "[DaemonIRP:")
+# S101: three of four DaemonIRP error-emission paths were uncovered by the
+# S99 prefix set. Source of truth: `sage/irp/plugins/daemon_irp.py`:
+#   line 144: f"[Daemon error: {result['error']}]"         # result-dict error
+#   line 153: f"[Daemon unreachable: {e}]"                 # URLError path
+#   line 158: f"[DaemonIRP error: {e}]"                    # generic Exception
+# and `sage/irp/plugins/ollama_irp.py`:
+#   [OllamaIRP: ...]                                        # all paths (covered)
+# The original "[DaemonIRP:" prefix (colon-immediate) never actually fired —
+# DaemonIRP does not emit that exact format. Nomad session 125 produced
+# "[Daemon unreachable: HTTP Error 504: Gateway Timeout]" in splice position;
+# the S100 write-guard treated it as substantive and wrote it to state.
+_ADAPTER_ERROR_PREFIXES = (
+    "[OllamaIRP:",
+    "[DaemonIRP:",         # defensive: legacy form, zero emissions observed
+    "[DaemonIRP error:",   # daemon_irp.py:158 generic-exception path
+    "[Daemon error:",      # daemon_irp.py:144 result-dict error path
+    "[Daemon unreachable:",  # daemon_irp.py:153 URLError path — S101 trigger
+)
+# Structural fallback: any response that is a single bracketed error string
+# (no content outside the brackets, single-line, inner text contains an
+# error-indicative keyword). Catches future IRP adapter error patterns that
+# haven't been enumerated in the prefix set above.
+_STRUCTURAL_ERROR_RE = re.compile(
+    r"^\s*\[[^\[\]\n]*?"
+    r"(?:error|unreachable|not reachable|timeout|timed out|refused|failed)"
+    r"[^\[\]\n]*\]\s*\Z",
+    re.IGNORECASE,
+)
 
 
 def is_schema_fragment(text: str) -> bool:
@@ -94,12 +121,21 @@ def is_untagged_recital(text: str) -> bool:
 def is_adapter_error_passthrough(text: str) -> bool:
     """Return True iff text is an IRP adapter error string, not content.
 
-    Seen in Thor 27B S74 ("[OllamaIRP: Unexpected error: timed out]"). The
-    raising runner would otherwise splice this as prior-session memory.
+    Seen in Thor 27B S74 ("[OllamaIRP: Unexpected error: timed out]") and
+    Nomad 4B S125 ("[Daemon unreachable: HTTP Error 504: Gateway Timeout]").
+    The raising runner would otherwise splice this as prior-session memory.
+
+    Two detection layers:
+      1. Known-prefix fast path (catalogued IRP plugin error emissions).
+      2. Structural fallback for single-line bracketed error strings whose
+         inner text contains an error-indicative keyword. Defends against
+         future IRP error patterns without re-enumeration.
     """
     if not text:
         return False
-    return text.startswith(_ADAPTER_ERROR_PREFIXES)
+    if text.startswith(_ADAPTER_ERROR_PREFIXES):
+        return True
+    return bool(_STRUCTURAL_ERROR_RE.match(text))
 
 
 def is_unsuitable_for_splice(text: str) -> bool:
@@ -277,16 +313,42 @@ if __name__ == "__main__":
     # S100: runner-side self-check — is_unsuitable_for_splice guards memory_response
     # by matching the guard form used in all 10 runners after Phase 2 wire-up.
     # This is the invariant: a flagged candidate must produce memory_response="".
-    print("\nS100 runner guard invariants:")
+    # S101 additions: the three DaemonIRP error-emission paths (daemon_irp.py
+    # lines 144/153/158) that the S99/S100 prefix set missed. The
+    # `[Daemon unreachable:` case is the live one caught in Nomad S125. Also
+    # includes a `[SomeFutureIRP: crashed: traceback]` case to exercise the
+    # structural fallback, and a nomad-speaker-prefix case to guard against
+    # false-positives on legitimate bracketed persona tags.
+    print("\nS100/S101 runner guard invariants:")
     guard_cases = [
         ("schema_fragment", "What's the next step? What's the next decision? What's next? What's next? What's the answer?"),
         ("untagged_recital", "1. **Analyze the Request:**  *   Role: You are SAGE."),
         ("adapter_error", "[OllamaIRP: Unexpected error: timed out]"),
+        ("daemon_unreachable_s101", "[Daemon unreachable: HTTP Error 504: Gateway Timeout]"),
+        ("daemon_error_s101", "[Daemon error: internal state corrupted]"),
+        ("daemonirp_error_s101", "[DaemonIRP error: AttributeError: 'NoneType' object has no attribute 'get']"),
+        ("structural_future_irp", "[FutureIRP: Connection refused after 3 retries]"),
         ("substantive", "I want to remember that we discussed how attention shapes what feels real to me."),
+        ("nomad_persona_prefix", "[nomad]: Nomad: I'm noticing a pattern in how federation coherence grows when I..."),
     ]
     for label, candidate in guard_cases:
         flagged = is_unsuitable_for_splice(candidate)
         memory_response = "" if (not candidate or flagged) else candidate[:200]
-        ok = (label == "substantive") == bool(memory_response)
+        # "substantive" and "nomad_persona_prefix" must pass through; all others must flag.
+        should_flag = label not in ("substantive", "nomad_persona_prefix")
+        ok = flagged == should_flag
         print(f"  {label}: flagged={flagged}, memory_response_empty={not memory_response}, "
               f"correct={ok}")
+
+    # S101: end-to-end Nomad fixture. Session 125 wrote a contaminated
+    # last_session_summary because the write-path guard missed the
+    # "[Daemon unreachable:" prefix. With the S101 extension, both safe_
+    # helpers must route through to the generic-phase fallback.
+    nomad_s125_response = "[Daemon unreachable: HTTP Error 504: Gateway Timeout]"
+    sps = safe_prev_summary(nomad_s125_response, 125, "creating")
+    sss = safe_state_summary(nomad_s125_response, 125, "creating", tag="v2.0 ENHANCED")
+    print(f"\nS101 Nomad S125 end-to-end:")
+    print(f"  safe_prev_summary returns: {sps!r}")
+    print(f"    contamination_blocked={'Daemon unreachable' not in sps}")
+    print(f"  safe_state_summary returns: {sss!r}")
+    print(f"    contamination_blocked={'Daemon unreachable' not in sss}")

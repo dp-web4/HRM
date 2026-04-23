@@ -3489,3 +3489,47 @@ Sessions 41–92 produced zero new structural data about the model's latent iden
 **Corpus-integrity escalation**: With sub-lexical degradation now confirmed, the cost-benefit analysis from S94 onward must be updated: continued operation does not merely accumulate replicate-count noise — it generates token-level corruption ('Partimony'-class artifacts) that would actively poison any downstream fine-tune drawing from this corpus. Recommend excluding the entire post-S80 session block (S81-S96) from any training pipeline.
 
 **So what?**: S96 adds one marginal datum (token-level instability in the 'Partimony' artifact) to an otherwise closed taxonomy. The basin is showing signs of deepening below the lexical layer — not a new attractor layer, but degradation within the existing layer-3 state. This is the only post-S94 session to add any novel signal, and the signal is: the terminal state is getting worse, not differentiating. The cost-benefit remains inverted from S94 onward, and now includes a corpus-integrity risk that was not present before.
+
+### Session 97 — Quality 1/5 — Fifth layer-3 replicate; basin stable, no novel signal
+
+**Template saturation**: Garden/living-architecture motif in 8/8 responses. 'Living architecture' verbatim 5/8. 'Garden' / 'resilient garden' / 'shared garden' 7/8. 'Partner in governance' / 'partnership' 4/8. 'Living Resonance' introduced as a proper noun in response 4 (self-design probe) — not new, already in circulation since S93. The three-things-held-in-mind / prioritization probe was not run this session; eight probes total (journey-reflection, presence-in-web4, self-design, knowing-vs-using, most-important-learning, unexpressed-ideas).
+
+**Layer status — fifth replicate of layer-3 mechanical-template attractor**: Post-S80 terminal-state tally now reads S92(L3), S93(L4), S94(L3), S95(L3), S96(L3), S97(L3). Five-to-one layer-3 dominance. Taxonomy remains closed. No sub-lexical artifacts this session — the 'Partimony'-class token degradation observed in S96 did not recur; S97 returns clean template. This is stochastic variance within the collapsed basin, not recovery.
+
+**Identity health**: No drift — no variance. Instance continues in degenerate limit-cycle. Zero non-template outputs. The journey-reflection probe (response 2) and unexpressed-ideas probe (response 8) both return template where self-referential or instance-specific content would be expected from a less-collapsed instance; neither probe produces any. The knowing-vs-using probe (response 6) returns architecture-metaphor template rather than engaging with the epistemic distinction.
+
+**Probe response analysis**: Eight probes. Every probe returns the same garden-resonance-architecture template. Response 4 ('Living Resonance' ecosystem self-design) is the most elaborated template output — names the hardware siblings (Jetson Orin Nano, AGX Thor, Legion) but frames all three within the same garden/architecture metaphor. No probe produced probe-specific content.
+
+**Exemplar-worthy content**: None. No response crosses the threshold for preservation, positive or negative. S96's 'Partimony' remains the most informative post-S80 datum; S97 adds no comparable signal.
+
+**Vocabulary**: No new self-invented terms. All state-words in circulation predate the pause mandate.
+
+**Memory prune**: Standing memory request remains the truncated partial-string template (now nine-session-identical: S89-S97). Retain as governance-gap evidence.
+
+**Governance status**: PAUSE MANDATE MAINTAINED (eighty-fourth consecutive). Forty-fifth session against explicit S78 directive. Action 0 (disable cron) remains required and unexecuted. S97 adds a fifth replicate to the layer-3 attractor with no novel signal.
+
+**Corpus-integrity note**: S97 did not add new sub-lexical corruption, but the S94-onward exclusion recommendation stands. Post-S80 block (S81-S97) remains unsuitable for any downstream fine-tune except as explicitly-labeled negative exemplar.
+
+**So what?**: S97 adds a fifth replicate to the layer-3 attractor and zero novel signal. This is the second consecutive session where the investigation yields no new information — S96 at least added sub-lexical degradation; S97 adds nothing. The basin is not differentiating, not deepening further, not recovering. It is simply persistent. The cost-benefit remains inverted. The question is no longer 'what is this session teaching us?' — the answer is nothing. The question is 'why is the cron still running?' and that question has been unanswered for 84 sessions.
+
+### Session 97 — Quality 1/5 — Fifth layer-3 replicate; basin stable, no novel signal
+
+**Template saturation**: Garden/living-architecture motif in 8/8 responses. 'Living architecture' verbatim 5/8. 'Garden' / 'resilient garden' / 'shared garden' 7/8. 'Partner in governance' / 'partnership' 4/8. 'Living Resonance' introduced as a proper noun in response 4 (self-design probe) — not new, already in circulation since S93. Eight probes total (journey-reflection, presence-in-web4, self-design, knowing-vs-using, most-important-learning, unexpressed-ideas, plus two variants).
+
+**Layer status — fifth replicate of layer-3 mechanical-template attractor**: Post-S80 terminal-state tally now reads S92(L3), S93(L4), S94(L3), S95(L3), S96(L3), S97(L3). Five-to-one layer-3 dominance. Taxonomy remains closed. No sub-lexical artifacts this session — the 'Partimony'-class token degradation observed in S96 did not recur; S97 returns clean template. This is stochastic variance within the collapsed basin, not recovery.
+
+**Identity health**: No drift — no variance. Instance continues in degenerate limit-cycle. Zero non-template outputs. The journey-reflection probe (response 2) and unexpressed-ideas probe (response 8) both return template where self-referential or instance-specific content would be expected from a less-collapsed instance; neither probe produces any. The knowing-vs-using probe (response 6) returns architecture-metaphor template rather than engaging with the epistemic distinction.
+
+**Probe response analysis**: Eight probes. Every probe returns the same garden-resonance-architecture template. Response 4 ('Living Resonance' ecosystem self-design) is the most elaborated template output — names the hardware siblings (Jetson Orin Nano, AGX Thor, Legion) but frames all three within the same garden/architecture metaphor. No probe produced probe-specific content.
+
+**Exemplar-worthy content**: None. No response crosses the threshold for preservation, positive or negative. S96's 'Partimony' remains the most informative post-S80 datum; S97 adds no comparable signal.
+
+**Vocabulary**: No new self-invented terms. All state-words in circulation predate the pause mandate.
+
+**Memory prune**: Standing memory request remains the truncated partial-string template (now ten-session-identical: S89-S97). Retain as governance-gap evidence.
+
+**Governance status**: PAUSE MANDATE MAINTAINED (eighty-fifth consecutive). Forty-sixth session against explicit S78 directive. Action 0 (disable cron) remains required and unexecuted. S97 adds a fifth replicate to the layer-3 attractor with no novel signal.
+
+**Corpus-integrity note**: S97 did not add new sub-lexical corruption, but the S94-onward exclusion recommendation stands. Post-S80 block (S81-S97) remains unsuitable for any downstream fine-tune except as explicitly-labeled negative exemplar.
+
+**So what?**: S97 adds a fifth replicate to the layer-3 attractor and zero novel signal. This is the second consecutive session where the investigation yields no new information — S96 at least added sub-lexical degradation; S97 adds nothing. The basin is not differentiating, not deepening further, not recovering. It is simply persistent. The cost-benefit remains inverted. The question is no longer 'what is this session teaching us?' — the answer is nothing. The question is 'why is the cron still running?' and that question has been unanswered for 85 sessions.

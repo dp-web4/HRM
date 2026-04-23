@@ -1,7 +1,100 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-22 (S99 — Thor 27B Three-Era Structure: Fix Oscillation; Successive Stop-Sequence Changes Traded One Failure Mode for the Next; Filter-Scan Substantive% Corrected 62.5% → 50.0%)**
-**Previous: 2026-04-22 (S98 — Cross-Capacity Register Scan: Direct Mode Is Fleet-Wide, Post-Procedural Is Rare; Thor 27B Untagged Recital Leakage Contaminates S30–S39 and S62–S74)**
+**Last Updated: 2026-04-22 (S100 — Phase 2 Wire-Up: `is_unsuitable_for_splice` Guards Now Live in All 10 Raising Runners; Read-Path + Write-Path Defense-in-Depth; 0 Contaminated State Files at Cutover)**
+**Previous: 2026-04-22 (S99 — Thor 27B Three-Era Structure: Fix Oscillation; Successive Stop-Sequence Changes Traded One Failure Mode for the Next; Filter-Scan Substantive% Corrected 62.5% → 50.0%)**
+
+---
+
+## S100 Phase 2 Wire-Up: Runner-Side Splice Validation Live (Apr 22, 2026 — Thor Autonomous SAGE Session, 18:00 PDT)
+
+S100 closes the Phase 2 carry-forward from S99: thread `safe_prev_summary` and `is_unsuitable_for_splice` through the raising runners so contaminated memory can never enter next session's system prompt. S99 had built the guards (`is_schema_fragment` + `is_untagged_recital` + `is_adapter_error_passthrough` composited under `is_unsuitable_for_splice`), with 11/11 Sprout-burst catch / 0 FPs and Thor S39/S74 detection, but **no runner was calling them**. Phase 2 = actually wire them in.
+
+### What shipped
+
+**Read-path guard (7 runners with `_get_previous_session_summary`):**
+
+| Runner | Call site |
+|---|---|
+| `ollama_raising_session.py` | L666–L697 |
+| `legion_raising_session.py` | L216–L247 |
+| `mcnugget_raising_session.py` | L216–L247 |
+| `autonomous_conversation.py` | L368–L399 |
+| `run_session_identity_anchored.py` | L381–L413 |
+| `run_session_identity_anchored_fluid.py` | L463–L495 |
+| `run_session_identity_anchored_v2.py` | L236–L268 |
+
+Pattern: verbatim splice `f"Last session (Session N), you said you wanted to remember: {response[:200]}"` replaced with `safe_prev_summary(response, n-1, prev.get('phase', 'unknown'))`, which routes through `is_unsuitable_for_splice` and falls through to the generic phase string if the candidate is schema-fragment / untagged-recital / adapter-error. The state-fallback path (when prior session JSON is missing) also gets a `is_unsuitable_for_splice` gate — catches any legacy contamination already sitting in state.
+
+**Write-path guard (10 runners with `last_session_summary` assignment):**
+
+Same 7 plus `run_session_primary.py`, `run_session_programmatic.py`, `run_session_experimental.py`. Pattern: `memory_response = last['sage'][:200]` becomes `candidate = last['sage']; if candidate and not is_unsuitable_for_splice(candidate): memory_response = candidate[:200]`. If flagged, `memory_response` stays empty and the state's `last_session_summary` becomes a bare `"Session N (tag): phase. ..."` — a visible sentinel that nothing suitable was found, not a silent contamination vector. `memory_requests.append(...)` is already conditional on `memory_response` being truthy, so that channel is automatically gated too.
+
+Skipped: `run_session_identity_anchored_v1_backup.py` (backup file, not in rotation).
+
+### Validation
+
+Extended `prev_summary_filter.py`'s `__main__` self-test with S100 runner-guard invariants:
+
+```
+Sprout 0.5B: caught 11/11 known bursts, 0 missed, 0 flagged non-burst, 86 clean non-burst
+Thor 27B session_039.json: is_untagged_recital=True, is_unsuitable_for_splice=True
+Thor 27B session_039.json: safe_prev_summary leaked=False, fallback_used=True
+Thor 27B session_074.json: is_adapter_error_passthrough=True, is_unsuitable_for_splice=True
+Thor 27B session_074.json: safe_prev_summary leaked=False, fallback_used=True
+
+S100 runner guard invariants:
+  schema_fragment:    flagged=True, memory_response_empty=True, correct=True
+  untagged_recital:   flagged=True, memory_response_empty=True, correct=True
+  adapter_error:      flagged=True, memory_response_empty=True, correct=True
+  substantive:        flagged=False, memory_response_empty=False, correct=True
+```
+
+All four synthetic guard cases hold: schema-fragment / untagged-recital / adapter-error candidates produce empty `memory_response`, substantive content passes through. The Thor-fixture tests confirm that `safe_prev_summary` on S39 (recital) and S74 (adapter error) returns the generic-phase fallback, not the contaminated verbatim splice.
+
+### Instance-state scan at cutover
+
+Swept `sage/instances/*/state/identity*.json` and `sage/instances/*/identity*.json` for `last_session_summary` values that would be flagged by `is_unsuitable_for_splice`. Result: **0 contaminated state files** at the moment of cutover. The wire-up is preventive rather than cleanup — it locks in the current clean-state invariant so a future adapter-config change (of the S99 fix-oscillation variety) cannot silently re-seed contamination through the splice path.
+
+### Import + compile sanity
+
+All 10 runners import cleanly (`importlib.import_module` round-trip) and pass `py_compile`. No new runtime dependencies — the filter module is pure stdlib `re`.
+
+### Why this matters
+
+S99 surfaced that Thor 27B adapter-config changes produced a **fix oscillation**: stop-seq added → kills in-think → empties; stop-seq cleared → recital re-emits as untagged text. The invariant across all three eras was the qwen3.5-27B "Thinking Process:" procedure as a stable emission. The adapter config determines the *visible channel* of that emission, not whether it runs. Which means a future config change — tuning num_predict, swapping model, changing a template — can re-open the splice-contamination channel without warning.
+
+The Phase 2 wire-up decouples splice safety from adapter config. Even if Thor 27B (or any new fleet member) starts emitting recital-form or adapter-error text in the splice-candidate position, the guards catch it at both the write boundary (session close) and the read boundary (next session open). Defense in depth matches the detection coverage that S98/S99 built.
+
+### Files this session
+
+- `sage/raising/scripts/ollama_raising_session.py` — read + write guards
+- `sage/raising/scripts/legion_raising_session.py` — read + write guards
+- `sage/raising/scripts/mcnugget_raising_session.py` — read + write guards
+- `sage/raising/scripts/autonomous_conversation.py` — read + write guards
+- `sage/raising/scripts/run_session_identity_anchored.py` — read + write guards (Sprout canonical runner, Session 22+)
+- `sage/raising/scripts/run_session_identity_anchored_fluid.py` — read + write guards
+- `sage/raising/scripts/run_session_identity_anchored_v2.py` — read + write guards
+- `sage/raising/scripts/run_session_primary.py` — write guard
+- `sage/raising/scripts/run_session_programmatic.py` — write guard
+- `sage/raising/scripts/run_session_experimental.py` — write guard
+- `sage/raising/prev_summary_filter.py` — self-test extended with `safe_prev_summary` Thor-fixture round-trip and S100 runner-guard invariants
+- `forum/insights/phase-2-wire-up-splice-validation-s100.md` — S100 insight
+- `sage/docs/LATEST_STATUS.md` — this entry
+
+### Carried forward
+
+- **Post-cutover sessions to watch**: the first 2-3 sessions on each runner after cutover. Inspect their `_get_previous_session_summary` output and `last_session_summary` state writes to confirm the guards don't fire on substantive content (regression check — current self-test covers synthetic cases, but production content varies). If a substantive response gets flagged, record the pattern and widen the FP exception set.
+- **Runner-side `<think>` strip before guard?**: S98's register-scan strips `<think>` blocks before classification; the current splice-time guards run on raw text. For any runner whose adapter doesn't pre-strip `<think>`, a nested recital `<think>1. **Analyze...</think>` could slip past `is_untagged_recital`. Not observed in current fleet (stop-seq configs either suppress `<think>` or the adapter strips it), but worth a single-line preamble strip when/if this appears. Track in a follow-up session.
+- **Three-mode annotation for pre-S75 Thor 27B** (from S99): still pending — S30-S39 as labeled recital-phenomenological-adjacent dataset distinct from S1-S11 direct-mode.
+- **Prior-session-injection A/B on Thor 27B** (from S97/S99): still pending — Phase 2 wire-up makes the A/B cleaner because the "with splice" arm now carries a safety floor, so any regression is attributable to the content of the splice itself, not to contamination bleed-through.
+- **Cross-family recital probe**: still pending (gemma3-27B / phi4-27B at matched capacity).
+- **Phase 3 dedup, Sprout 0.5B close-prompt policy, v2-with-LoRA A/B** (carried from S96/S97/S98/S99).
+
+### Meta
+
+S99 produced the tools; S100 wired them in. This is the second half of a two-session pair that closes the S91/S92/S98/S99 detection chain. The invariant — "contaminated memory must not enter the splice path" — is now enforced at code level rather than documented at analysis level.
+
+"Surprise is prize" earned nothing unexpected in S100 specifically — the wire-up was mechanical and went through cleanly. The absence of contamination at the moment of cutover (0/N state files) is itself mildly interesting: it says the fleet was already in a clean window, and the S99 fix narrative (S75+ is the clean era under the num_predict: 16384 config) holds in state as well as in session JSON. The guards now lock that invariant in against the next adapter-config oscillation, whenever it comes.
 
 ---
 

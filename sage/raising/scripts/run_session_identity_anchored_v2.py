@@ -46,6 +46,10 @@ import re
 
 from sage.irp.plugins.introspective_qwen_impl import IntrospectiveQwenIRP
 from sage.raising.training.experience_collector import ExperienceCollector
+from sage.raising.prev_summary_filter import (
+    is_unsuitable_for_splice,
+    safe_prev_summary,
+)
 
 
 class IdentityAnchoredSessionV2:
@@ -238,8 +242,11 @@ class IdentityAnchoredSessionV2:
         # Try to load previous session transcript
         prev_session_file = self.SESSIONS_DIR / f"session_{self.session_number-1:03d}.json"
         if not prev_session_file.exists():
-            # Fallback to state file summary
-            return self.state["identity"].get("last_session_summary", "")
+            # Fallback to state file summary — filter legacy contamination
+            state_fallback = self.state["identity"].get("last_session_summary", "")
+            if state_fallback and not is_unsuitable_for_splice(state_fallback):
+                return state_fallback
+            return ""
 
         try:
             with open(prev_session_file) as f:
@@ -251,7 +258,11 @@ class IdentityAnchoredSessionV2:
                 if conversation[i].get('speaker') == 'SAGE':
                     response = conversation[i].get('text', '')
                     if response and 'remember' in conversation[i-1].get('text', '').lower():
-                        return f"Last session (Session {self.session_number-1}), you said you wanted to remember: {response[:200]}"
+                        return safe_prev_summary(
+                            response,
+                            self.session_number - 1,
+                            prev_session.get('phase', 'unknown'),
+                        )
 
             return f"Last session was Session {self.session_number-1} in {prev_session.get('phase', 'unknown')} phase."
 
@@ -485,7 +496,9 @@ RESPONSE STYLE:
         memory_response = ""
         for turn in reversed(self.conversation_history):
             if turn['speaker'] == 'SAGE' and 'remember' in self.conversation_history[self.conversation_history.index(turn)-1]['text'].lower():
-                memory_response = turn['text'][:100]
+                candidate = turn['text']
+                if candidate and not is_unsuitable_for_splice(candidate):
+                    memory_response = candidate[:100]
                 break
 
         # Update state

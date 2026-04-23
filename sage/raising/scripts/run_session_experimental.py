@@ -39,6 +39,7 @@ from typing import Optional, Dict, Any, List
 import torch
 
 from sage.irp.plugins.introspective_qwen_impl import IntrospectiveQwenIRP
+from sage.raising.prev_summary_filter import is_unsuitable_for_splice
 
 
 class ExperimentalSession:
@@ -230,7 +231,9 @@ Keep responses simple and honest. You can say when you don't know something."""
         memory_response = ""
         for turn in reversed(self.conversation_history):
             if turn['speaker'] == 'SAGE' and 'remember' in self.conversation_history[self.conversation_history.index(turn)-1]['text'].lower():
-                memory_response = turn['text'][:100]
+                candidate = turn['text']
+                if candidate and not is_unsuitable_for_splice(candidate):
+                    memory_response = candidate[:100]
                 break
 
         # Update state

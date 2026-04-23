@@ -59,6 +59,10 @@ OllamaIRP = _mod.OllamaIRP
 from experience_collector import ExperienceCollector
 from sage.instances.resolver import InstancePaths
 from sage.core.metabolic_controller import MetabolicController
+from sage.raising.prev_summary_filter import (
+    is_unsuitable_for_splice,
+    safe_prev_summary,
+)
 
 # Context-shaped raising extensions (optional — graceful if missing)
 try:
@@ -666,7 +670,10 @@ class OllamaRaisingSession:
 
         prev_file = self.instance.sessions / f"session_{self.session_number - 1:03d}.json"
         if not prev_file.exists():
-            return self.state["identity"].get("last_session_summary", "") or ""
+            state_fallback = self.state["identity"].get("last_session_summary", "") or ""
+            if state_fallback and not is_unsuitable_for_splice(state_fallback):
+                return state_fallback
+            return ""
 
         try:
             with open(prev_file) as f:
@@ -676,7 +683,11 @@ class OllamaRaisingSession:
                 if conversation[i].get('speaker') == 'SAGE':
                     response = conversation[i].get('text', '')
                     if i > 0 and 'remember' in conversation[i - 1].get('text', '').lower():
-                        return f"Last session (Session {self.session_number - 1}), you said you wanted to remember: {response[:200]}"
+                        return safe_prev_summary(
+                            response,
+                            self.session_number - 1,
+                            prev.get('phase', 'unknown'),
+                        )
             return f"Last session was Session {self.session_number - 1} in {prev.get('phase', 'unknown')} phase."
         except Exception:
             return ""
@@ -1145,7 +1156,9 @@ RESPONSE STYLE:
         if self.conversation_history:
             last = self.conversation_history[-1]
             if 'remember' in last['claude'].lower():
-                memory_response = last['sage'][:200]
+                candidate = last['sage']
+                if candidate and not is_unsuitable_for_splice(candidate):
+                    memory_response = candidate[:200]
 
         self.state["identity"]["last_session_summary"] = (
             f"Session {self.session_number} ({self.phase} phase): {memory_response[:80]}..."

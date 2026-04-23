@@ -262,3 +262,31 @@ if __name__ == "__main__":
             composite_ok = is_unsuitable_for_splice(ma)
             print(f"Thor 27B {label}: {det}={ok_detected}, "
                   f"is_unsuitable_for_splice={composite_ok}")
+
+            # S100: verify safe_prev_summary returns the generic-phase fallback
+            # (not the contaminated verbatim splice) when given this response.
+            sps = safe_prev_summary(ma, 39 if sf == s39 else 74, "questioning")
+            splice_leaked = (
+                "you said you wanted to remember" in sps
+                and ("Analyze the Request" in sps or "[OllamaIRP:" in sps)
+            )
+            fallback_used = sps.startswith("Last session was Session ")
+            print(f"Thor 27B {label}: safe_prev_summary leaked={splice_leaked}, "
+                  f"fallback_used={fallback_used}")
+
+    # S100: runner-side self-check — is_unsuitable_for_splice guards memory_response
+    # by matching the guard form used in all 10 runners after Phase 2 wire-up.
+    # This is the invariant: a flagged candidate must produce memory_response="".
+    print("\nS100 runner guard invariants:")
+    guard_cases = [
+        ("schema_fragment", "What's the next step? What's the next decision? What's next? What's next? What's the answer?"),
+        ("untagged_recital", "1. **Analyze the Request:**  *   Role: You are SAGE."),
+        ("adapter_error", "[OllamaIRP: Unexpected error: timed out]"),
+        ("substantive", "I want to remember that we discussed how attention shapes what feels real to me."),
+    ]
+    for label, candidate in guard_cases:
+        flagged = is_unsuitable_for_splice(candidate)
+        memory_response = "" if (not candidate or flagged) else candidate[:200]
+        ok = (label == "substantive") == bool(memory_response)
+        print(f"  {label}: flagged={flagged}, memory_response_empty={not memory_response}, "
+              f"correct={ok}")

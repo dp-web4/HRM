@@ -201,7 +201,7 @@ def play_lean(
             from sage.cognition.thalamic_router.adaptive_prompt import (
                 build_adaptive_prompt, classify_situation,
             )
-            situation = classify_situation(la_text)
+            situation = classify_situation(la_text, game)
 
             # For trivial (LEVEL ADVANCE), skip the LLM entirely
             if situation == "trivial":

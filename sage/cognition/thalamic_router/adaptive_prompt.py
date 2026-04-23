@@ -80,21 +80,38 @@ def _load_wm(game_family: str, full: bool = False) -> str:
     return ""
 
 
-def classify_situation(lookahead_text: str) -> str:
-    """Classify the current situation from lookahead output.
+def classify_situation(lookahead_text: str, game_family: str = "") -> str:
+    """Classify the current situation from lookahead + game bundle.
 
     Returns one of:
     - 'trivial': LEVEL ADVANCE available — just pick it
-    - 'click_game': all directional actions blocked, need click targets
+    - 'click_game': click-only game, need click targets + click mechanics
+    - 'needs_physics': physics/manipulation game — full world model needed
     - 'clear_winner': one action is clearly best (much bigger change)
     - 'equivalent': multiple actions produce similar results — need world model
+    - 'navigation': movement game — lean prompt, let NN drive
     - 'mixed': some actions work, some don't — normal play
     """
+    import re
+
     lines = [l.strip() for l in lookahead_text.split('\n')
              if l.strip() and not l.strip().startswith('===') and not l.strip().startswith('(')]
 
     if "LEVEL ADVANCE" in lookahead_text:
         return "trivial"
+
+    # Get game bundle for context
+    bundle = ""
+    try:
+        import sys, os
+        _lib = os.path.join(os.environ.get("SHARED_CONTEXT_DIR",
+            os.path.expanduser("~/ai-workspace/shared-context")), "lib")
+        if _lib not in sys.path:
+            sys.path.insert(0, _lib)
+        from membot_vendored.arcsage_games import bundle_for
+        bundle = bundle_for(game_family) or ""
+    except Exception:
+        pass
 
     blocked = 0
     active = []
@@ -103,15 +120,28 @@ def classify_situation(lookahead_text: str) -> str:
         if "no change" in lower or "trivial" in lower or "blocked" in lower:
             blocked += 1
         elif any(name in line for name in ["UP:", "DOWN:", "LEFT:", "RIGHT:", "SEL:"]):
-            # Extract pixel count
-            import re
             px_match = re.search(r'(\d+)px', line)
             if px_match:
                 active.append(int(px_match.group(1)))
 
-    if blocked >= 4:  # 4+ of 5 directional actions blocked
+    # Physics and manipulation games ALWAYS get full world model
+    # — their mechanics are too complex for brief descriptions
+    if bundle in ("C_physics", "D_manipulation", "F_complex"):
+        if blocked >= 4:
+            return "needs_physics"  # click-based BUT needs full WM (vc33, cn04)
+        return "needs_physics"
+
+    # Navigation games get lean prompts — let NN drive
+    if bundle == "A_navigation":
+        if blocked >= 4:
+            return "click_game"
+        return "navigation"
+
+    # Click-only (all directional blocked, non-physics game)
+    if blocked >= 4:
         return "click_game"
 
+    # Pattern and sequence games with equivalent actions need WM to differentiate
     if len(active) >= 2:
         max_px = max(active)
         min_px = min(active)
@@ -136,7 +166,7 @@ def build_adaptive_prompt(
 ) -> str:
     """Build prompt with depth adapted to the situation."""
 
-    situation = classify_situation(lookahead_text)
+    situation = classify_situation(lookahead_text, game)
     recent_str = " → ".join(recent_actions[-5:]) if recent_actions else "(none)"
 
     signals = ""
@@ -175,9 +205,42 @@ Which click target advances the goal?
 ACTION=6 X=<0-63> Y=<0-63>
 <one sentence>"""
 
+    # NEEDS_PHYSICS: physics/manipulation/complex games need full world model
+    # regardless of what the lookahead shows
+    if situation == "needs_physics":
+        wm = _load_wm(game, full=True)
+        return f"""{game} L{level} step {step}.
+{wm}
+
+Actions NOW:
+{lookahead_text}
+{click_targets if click_targets else ""}
+{signals}
+Recent: {recent_str}
+NN hint: {nn_hint} ({nn_confidence:.0%})
+
+Use the game mechanics above to pick the action that advances the goal.
+ACTION=<1-6>[ X=<0-63> Y=<0-63>]
+<one sentence>"""
+
+    # NAVIGATION: movement games — lean prompt, NN drives most steps
+    if situation == "navigation":
+        wm = _load_wm(game, full=False)
+        return f"""{game} L{level} step {step}. Navigate toward the goal.
+{wm}
+
+Actions NOW:
+{lookahead_text}
+{signals}
+Recent: {recent_str}
+
+Pick the direction that makes progress. Avoid repeating blocked/failed directions.
+ACTION=<1-6>
+<one sentence>"""
+
     # EQUIVALENT: multiple similar actions — need world model to differentiate
     if situation == "equivalent":
-        wm = _load_wm(game, full=True)  # Full world model
+        wm = _load_wm(game, full=True)
         return f"""{game} L{level} step {step}.
 {wm}
 
@@ -193,7 +256,7 @@ to determine which one advances toward the win condition.
 ACTION=<1-6>[ X=<0-63> Y=<0-63>]
 <one sentence>"""
 
-    # CLEAR WINNER or MIXED: lean prompt with brief world model
+    # CLEAR WINNER or MIXED: brief world model
     wm = _load_wm(game, full=False)
     return f"""{game} L{level} step {step}.
 {wm}

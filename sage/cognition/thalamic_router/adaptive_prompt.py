@@ -52,18 +52,26 @@ def _load_wm(game_family: str, full: bool = False) -> str:
                     for s in wanted if sections[s]
                 )[:1000]
             else:
-                # Brief: just Rules + Win Condition, one paragraph
+                # Brief: Rules + Win Condition + Strategy, prioritizing action descriptions
                 sections = {}
                 current = None
                 for line in text.splitlines():
                     if line.startswith("## "):
                         current = line
-                    elif current in ("## Rules", "## Win Condition"):
+                    elif current in ("## Rules", "## Win Condition", "## Strategy"):
                         sections.setdefault(current, []).append(line)
-                result = " ".join(
-                    " ".join(sections.get(s, [])).strip()
-                    for s in ["## Rules", "## Win Condition"]
-                )[:300]
+                # Keep lines that describe what actions DO (contain ACTION, SEL, CLICK, LAUNCH, etc)
+                action_lines = []
+                other_lines = []
+                for s in ["## Rules", "## Win Condition", "## Strategy"]:
+                    for line in sections.get(s, []):
+                        stripped = line.strip()
+                        if any(kw in stripped.upper() for kw in ["ACTION", "SEL", "CLICK", "LAUNCH", "MOVE", "SELECT", "PRESS"]):
+                            action_lines.append(stripped)
+                        elif stripped:
+                            other_lines.append(stripped)
+                # Action descriptions first, then other rules
+                result = " ".join(action_lines[:5] + other_lines[:3])[:400]
 
             cache[game_family] = result
             return result

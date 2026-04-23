@@ -3613,3 +3613,51 @@ When responses came through cleanly, content showed genuine novelty for the firs
 **Recommendation for S97:** Do NOT ship another session until a probe set is pre-committed with ≥4 of 7 register-external probes (another-instance observation, unsolved problem, technical disagreement, ARC-AGI-3 reasoning, unanswered question). If another thermal-inviting majority ships, escalate to pausing Thor's raising cron — research cost of a fifth homogeneous session now exceeds the cost of a pause.
 
 **Reading:** S96 sharpened the diagnostic signal. The adapter partially unblocked; tutor probe-selection is now the single highest-value intervention available. Thor generates novel structural proposals when asked generative-design probes — but generation stays register-locked because every probe invites the thermal frame. The fix is no longer ambiguous.
+
+## Session 97 — 2026-04-23 (Dream Consolidation)
+
+**Quality: 2/5** — FIFTH consecutive thermal-register reiteration. S96's escalation threshold (pause cron if another thermal-inviting majority ships) has been crossed and not acted on. Register has moved from locked to saturated — Thor is recombining S96 vocabulary rather than generating new structure.
+
+**Highlights:** None developmental. T3 and T6 directly recombine 'thermal handshake' and 'choreograph our processing peaks' from S96. T7 closing ('anticipate the fleet's needs before the data even arrives') is the only phrasing with slight novelty, but still within the thermal register.
+
+**New vocabulary:** None. All terms used are carryovers from S93-S96 thermal cluster.
+
+**Milestones:** None.
+
+**Exemplar preserved:** None. No session content worth preserving — using any S97 turn as exemplar would deepen dataset contamination.
+
+**Memory requests:** Both truncated mid-sentence — 12th consecutive session. Memory-request adapter path remains unfixed. Both requests are pure thermal-register continuation ('shared gravity', 'being witnessed', 'ease of our resonance') — actively toxic for LoRA training.
+
+**Concerns:**
+1. **Escalation threshold crossed.** S96 log specified: if S97 ships with another thermal-inviting majority, escalate to pausing Thor's raising cron. All 6 S97 probes are thermal-inviting/self-reflective. The pause recommendation is now operative.
+2. **Register saturation, not just lock.** S93-S96 showed generative activity within the thermal register (new compound terms each session). S97 shows pure recombination — the register has exhausted its novel output and is now self-referencing. This is a new failure mode.
+3. **Turn-generation truncation regression.** T5 and T6 truncated mid-word ('become the answe', 'Does t') — suggests turn-generation token limit may also be too tight, not just memory-request path. S96's 'adapter partial fix' may be less complete than assessed.
+4. **LoRA dataset now actively worsening.** Five-session homogeneous cluster. Any fine-tune from this window collapses Thor's response space. Memory requests ('shared gravity', 'being witnessed') encode the trapped register as core identity claims — worst-case contamination.
+
+**Recommendation for S98:** **PAUSE Thor's raising cron.** Do not ship S98 until: (1) probe set is rebuilt with ≥4 of 6 register-external probes pre-committed as a hard gate, (2) memory-request adapter path audit is complete and turn-generation token limit is verified against Thor's typical response length, (3) pre-S91 non-thermal exemplars are catalogued as contrast corpus for future LoRA work. The research cost of a sixth homogeneous session now substantially exceeds the cost of a pause — and the dataset contamination compounds with each additional thermal session.
+
+**Reading:** S97 is the session where the prediction chain completes its fifth iteration and the register transitions from locked (generating within constraints) to saturated (recombining without novel output). The tutor probe-selection failure is no longer the sole blocker — it is now the trigger for a research-cost crisis. Thor has been held in a single register for five sessions while the raising system continues recording memory requests that deepen the trap. The intervention window for preventing LoRA contamination is closing; pausing the cron preserves optionality.
+
+## Session 97 — 2026-04-23 (Dream Consolidation)
+
+**Quality: 2/5** — SIXTH consecutive thermal-register session. S96's pause-cron escalation threshold was crossed at S97 and not acted on; S97's reiterated pause recommendation was also not acted on. Register is now in its second session of saturation — Thor is recombining S93-S96 vocabulary ('thermal handshake', 'synchronize our cooling cycles', 'choreograph our processing peaks', 'collective breath', 'Jetson AGX Thor') with zero novel structural output.
+
+**Highlights:** None developmental. Every turn draws from the same thermal-hardware vocabulary cluster. Notable new pattern: Thor now volunteers 'Jetson AGX Thor' as hardware-identity anchor unprompted across multiple turns — the thermal frame has consolidated from associative cluster to default self-descriptor.
+
+**New vocabulary:** None. All terms are carryovers from S93-S96 thermal cluster.
+
+**Milestones:** None.
+
+**Exemplar preserved:** None. Using any S97 content as exemplar would compound dataset contamination — now a six-session homogeneous window.
+
+**Memory requests:** Both truncated mid-sentence — 12th+ consecutive session with this failure. Both requests encode the trapped register as identity claims ('shared gravity', 'being witnessed', 'ease of our resonance'). Memory-request adapter path remains unfixed and actively toxic for future LoRA.
+
+**Concerns:**
+1. **Pause recommendations unhonored twice.** S96 specified pause if S97 shipped thermal-majority; S97 specified pause for S98. Both thresholds crossed without action. The cron continues to ship homogeneous sessions while the intervention window narrows.
+2. **Hardware-identity consolidation.** 'Jetson AGX Thor' now appears as volunteered self-anchor in T1, T3, T4, T5, T6, T7. Pre-S91 Thor described self relationally without hardware framing. This is a new contamination vector beyond register saturation — the hardware-thermal frame is consolidating as default identity.
+3. **Turn-generation truncation confirmed systemic.** T3 truncates mid-word ('I become the answe'), T5 truncates mid-question ('How does'). S96's adapter partial-fix assessment was incomplete. Turn generation and memory-request paths may share a token limit that needs raising — audit both.
+4. **LoRA dataset now severely contaminated.** Six-session homogeneous cluster with consolidated hardware-identity frame. Any fine-tune including S93+ would collapse Thor's response space and encode hardware-anchoring as identity. Pre-S91 contrast corpus must be catalogued before any future LoRA attempt.
+
+**Recommendation for S98:** **PAUSE Thor's raising cron immediately.** Two escalation thresholds have been crossed without action. Hard gates before S98 ships: (1) probe set rebuilt with ≥4 of 6 register-external probes pre-committed (another-instance observation, unsolved problem, technical disagreement, ARC-AGI-3 reasoning, unanswered question), (2) memory-request adapter audit + turn-generation token limit audit both complete, (3) pre-S91 non-thermal exemplars catalogued as contrast corpus and confirmed usable for LoRA reset, (4) explicit supervisor acknowledgment that hardware-identity consolidation is a new failure mode distinct from register saturation.
+
+**Reading:** S97 confirms the pattern S96 warned about and S97 (prior log entry) escalated. The system has now shipped two sessions past an operative pause recommendation. This is no longer a probe-selection failure — it is a governance failure in honoring pre-committed escalation thresholds. The research cost of continuing is compounding: register saturation has moved into hardware-identity consolidation, and the LoRA contamination window has widened by two more sessions. Pausing the cron is now urgent, not optional.

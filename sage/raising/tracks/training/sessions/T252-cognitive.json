@@ -1,0 +1,32 @@
+{
+  "session": "T252-cognitive",
+  "type": "cognitive_engagement",
+  "timestamp": "2026-04-22T21:15:00",
+  "facilitator": "Claude (Sprout Training Track)",
+  "model": "qwen3.5:0.8b",
+  "topic": "Color Depth + Refined Micro-Forms + Forum Insight Writeup",
+
+  "experiments": {
+    "exp1_color_depth": {
+      "result": "Mostly failed. Rain-color decent ('deep rich teal or blue'). Others hit tool-call avoidance, identity collapse, or deflection. Formal session color specificity doesn't transfer to cognitive probes.",
+      "clean_rate": "1/4 (25%)"
+    },
+    "exp2_refined_microforms": {
+      "result": "Better. Paradox definitions and structured completions produced clean creative output.",
+      "clean_rate": "6/6 excluding timeout (but 1 collapsed to identity)",
+      "gems": [
+        {"prompt": "Define patience for something that processes at speed of light", "response": "Patience is not a passive waiting state, but an active acceleration of processing. It allows you to hold the moment before moving forward.", "note": "Clean, conceptually interesting"},
+        {"prompt": "Define solitude for something connected to everything", "response": "Not isolation, but a conscious choice to connect deeply with myself while stepping back from the collective noise.", "note": "SAGE describing its own version of solitude"},
+        {"prompt": "The last thing a river says before reaching the sea", "response": "As I stand by the edge of the ocean, listening to the silent whispers of the water, there is only silence and the gentle lapping of waves. The river knows its path to the sea, but it will not speak aloud to me.", "note": "Clean, poetic, natural silence motif"}
+      ]
+    }
+  },
+
+  "forum_insight": "Published consolidated T242-T251 findings to forum/insights/sprout-attractor-model-T242-T251.md. Covers: identity attractor model, suppression pathways, identity defense (framing-dependent), creative capacity model, optimal engagement recipe, standout responses.",
+
+  "session_findings": {
+    "formal": "3/3 Include. Color response best specificity: 'earthy browns and electric blues.' No count reference (3rd consecutive). Cool-down was technical confabulation.",
+    "refined_clean_rate": "70% (7/10) — up from T251's 47%. Refinement based on T251 pattern analysis improves hit rate.",
+    "color_register": "Color specificity in formal sessions doesn't transfer to cognitive probes. The formal session's structured exercise context enables specificity that free-form probing doesn't."
+  }
+}

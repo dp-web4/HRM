@@ -197,11 +197,46 @@ def play_lean(
 
             nn_hint = ACTION_NAMES[dispatch.play_action] if dispatch.play_action < len(ACTION_NAMES) else "?"
 
-            prompt = build_lean_prompt(
+            # Adaptive prompt — depth shaped by what lookahead reveals
+            from sage.cognition.thalamic_router.adaptive_prompt import (
+                build_adaptive_prompt, classify_situation,
+            )
+            situation = classify_situation(la_text)
+
+            # For trivial (LEVEL ADVANCE), skip the LLM entirely
+            if situation == "trivial":
+                # Find the advancing action
+                for line in la_text.split('\n'):
+                    if "LEVEL ADVANCE" in line:
+                        for name_idx, name in enumerate(ACTION_NAMES[1:], 1):
+                            if line.strip().startswith(name):
+                                action = name_idx
+                                break
+                        break
+                rationale = "LEVEL ADVANCE — auto-selected"
+                coords = None
+                elapsed = 0.0
+                llm_responses.append({
+                    "step": step, "action": action, "coords": coords,
+                    "rationale": rationale, "latency_s": 0,
+                    "prompt_tokens": 0, "situation": "trivial",
+                })
+                if step < 15 or step % 20 == 0:
+                    print(f"  {step:3d}: {ACTION_NAMES[action]} (0.0s) L{level} \"LEVEL ADVANCE!\"")
+
+                # Execute and continue
+                if action in GA:
+                    fd = env.step(GA[action])
+                action_counts[ACTION_NAMES[action]] += 1
+                recent.append(action)
+                recent_names.append(ACTION_NAMES[action])
+                prev_frame = curr_frame
+                continue
+
+            prompt = build_adaptive_prompt(
                 game=game, level=level, step=step,
                 lookahead_text=la_text,
                 click_targets=click_text,
-                wm_summary=wm,
                 nn_hint=nn_hint, nn_confidence=dispatch.play_confidence,
                 recent_actions=recent_names,
                 special_signals=signals,

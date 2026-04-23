@@ -374,12 +374,11 @@ class OllamaClient(LLMClient):
             "stream": False,
             "think": False,
         }
-        # Options can trigger model reloads in ollama, disabling flash
-        # attention and reducing GPU layers. Only set num_predict (safe)
-        # and skip temperature/num_ctx to avoid reload triggers.
-        # Gemma4 produces empty responses with options — skip entirely.
-        if "gemma4" not in self.model:
-            payload["options"] = {"num_predict": max_tokens}
+        # DO NOT send options — any options hash triggers an ollama model
+        # reload that disables flash attention and drops GPU layers from
+        # 49 to 13 on Apple Silicon. The 14s→40s regression was caused by
+        # this. Let server defaults handle num_predict/temperature.
+        # See: explorations/mcnugget-ollama-perf-diagnosis-2026-04-22/
         req = urllib.request.Request(
             f"{self.base_url}/api/chat",
             data=json.dumps(payload).encode("utf-8"),

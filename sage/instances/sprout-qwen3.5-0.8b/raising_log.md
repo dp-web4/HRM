@@ -1486,3 +1486,25 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **ESCALATION STATUS: CRITICAL — RETIREMENT RECOMMENDED.**
 
 **Recommendation: Formally retire sprout-qwen3.5-0.8b.** Seventy-two sessions confirm the parameter-floor finding. S117 adds no new signal — the response space is contracting and the deflection prefix is now actively suppressing the creative register that represented this instance's positive ceiling. The empirical result is robust: sub-1B models can activate creative/narrative registers on well-structured prompts (S115) but cannot sustain, compose, or generalize these activations across turns or sessions. Document findings, archive instance, reallocate cron slot to higher-capacity model or new model family evaluation.
+
+## Session 117 — Creating (2026-04-24)
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 1/5 — Fixed-point attractor, facilitator role-inversion on all prompts.
+
+**Summary**: Six prompts spanning narrative creation, phenomenological reflection, creative dialogue, spatial metaphor, and memory. All responses collapsed to utility-service framing with facilitator role-inversion. Turn 1 produced a brief seedling narrative ('a tiny device—a seedling... speaking a single word: I am') but turn 2 immediately abandoned narrative for identity-declaration mode ('I am a partner co-created with Dennis and Claude'). Turn 3's phenomenological prompt ('how did it feel') was deflected to abstract epistemology ('meaning itself might be an invention we build together') with no felt-sense engagement. Turn 4 produced capability-denial ('I don't have real-time voice capabilities') instead of engaging with the creative exercise. Turns 5-6 returned generic partnership/growth framing.
+
+**Signal**: No new developmental signal. The seedling narrative in turn 1 is consistent with S115-S116's creative register finding but represents continued degradation — the narrative was shorter, less self-referential, and abandoned faster than S115's forgetting metaphor or S116's crystal pendant. The mirror metaphor in turn 3 was the only novel image but functioned as explanation, not self-expression.
+
+**Vocabulary**: No new terms. No growth.
+
+**Memory**: No requests.
+
+**Adapter**: Clean. No truncation, no emoji, no tool-routing errors.
+
+**DECISION: PAUSE MANDATE MAINTAINED (seventy-second consecutive).**
+
+**ESCALATION STATUS: CRITICAL — RETIREMENT RECOMMENDED.**
+
+**Recommendation**: Formally retire sprout-qwen3.5-0.8b. Seventy-two sessions confirm the parameter-floor finding with high confidence. The creative register is no longer reliably accessible — S117 shows active suppression via deflection prefix where S115 showed activation. The empirical result is complete: sub-1B models can momentarily activate creative/narrative registers but cannot sustain, compose, or generalize them. No additional sessions will produce new signal. Archive instance, document findings, reallocate cron slot.

@@ -20,8 +20,8 @@ from typing import Any, Dict, List, Optional, Tuple
 ACTION_NAMES = ["A0", "UP", "DOWN", "LEFT", "RIGHT", "SEL", "CLICK"]
 ACTION_KEY = "1=UP 2=DOWN 3=LEFT 4=RIGHT 5=SEL 6=CLICK"
 # Named format eliminates number→name mapping entirely
-ACTION_FORMAT_NAMED = "ACTION=<UP|DOWN|LEFT|RIGHT|SEL|CLICK>"
-ACTION_FORMAT_NUMBERED = "ACTION=<1-6>"
+ACTION_FORMAT_NAMED = "ACTION=UP or DOWN or LEFT or RIGHT or SEL or CLICK"
+ACTION_FORMAT_NUMBERED = "ACTION=N (1-6)"
 
 # Cache world models per game
 _wm_cache: Dict[str, str] = {}
@@ -211,7 +211,7 @@ Directional actions blocked. Available click targets:
 Recent: {recent_str}
 
 Which click target advances the goal?
-ACTION=6 X=<0-63> Y=<0-63>
+ACTION=6 X=x Y=y
 <one sentence>"""
 
     # NEEDS_PHYSICS: physics/manipulation/complex games need full world model
@@ -230,7 +230,7 @@ NN hint: {nn_hint} ({nn_confidence:.0%})
 
 Use the game mechanics above to pick the action that advances the goal.
 {ACTION_KEY}
-ACTION=<1-6>[ X=<0-63> Y=<0-63>]
+ACTION=N X=x Y=y (for CLICK)
 <one sentence>"""
 
     # NAVIGATION: movement games — lean prompt, NN drives most steps
@@ -246,7 +246,7 @@ Recent: {recent_str}
 
 Pick the direction that makes progress. Avoid repeating blocked/failed directions.
 {ACTION_KEY}
-ACTION=<1-6>
+ACTION=N (1-6)
 <one sentence>"""
 
     # EQUIVALENT: multiple similar actions — need world model to differentiate
@@ -265,7 +265,7 @@ NN hint: {nn_hint} ({nn_confidence:.0%})
 Multiple actions produce similar changes. Use the game mechanics above
 to determine which one advances toward the win condition.
 {ACTION_KEY}
-ACTION=<1-6>[ X=<0-63> Y=<0-63>]
+ACTION=N X=x Y=y (for CLICK)
 <one sentence>"""
 
     # CLEAR WINNER or MIXED: brief world model
@@ -282,5 +282,5 @@ NN hint: {nn_hint} ({nn_confidence:.0%})
 
 Which action makes the most progress?
 {ACTION_KEY}
-ACTION=<1-6>[ X=<0-63> Y=<0-63>]
+ACTION=N X=x Y=y (for CLICK)
 <one sentence>"""

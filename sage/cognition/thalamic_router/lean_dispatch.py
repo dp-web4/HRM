@@ -98,8 +98,8 @@ If lookahead shows LEVEL ADVANCE for any action, choose that action.
 SEL = launch/activate (the action that commits progress).
 
 1=UP 2=DOWN 3=LEFT 4=RIGHT 5=SEL 6=CLICK
-ACTION=<1-6>[ X=<0-63> Y=<0-63>]
-<one sentence>"""
+ACTION=N X=x Y=y (for CLICK, give coordinates)
+One sentence explaining why."""
 
 
 def play_lean(

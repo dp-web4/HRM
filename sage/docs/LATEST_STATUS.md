@@ -1,10 +1,83 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-24 (S105 — Hardware-Register Authenticity: Thor's Thermal Vocabulary Emerged Organically in S34 (62 Sessions Before S96 Crystallization); Sprout and Legion Show Analogous Hardware-Native Registers (edge/hum/orin, processing/cores/gpu); Dream-Prompt Wording "self-invented terms" Biases Extraction to 99% Compound Phrases (223/226 in Thor); S103 Fix Surface Extended With Option D at Extractor Level)**
+**Last Updated: 2026-04-24 (S106 — Single-Word State_words Control Set Decomposes Extractor Bias Into Two Axes: Probe-Type Bias (Anchoring Probes Elicit Single Words in Definitional Frames; Imaginative/Expressive Probes Elicit Compound Phrases in Scenario Elaboration) + Grammatical-Marker Bias (Single Words Only Pass When Syntactically Framed as Terminology); Option D Wording Refined to Target Focal-Point Named Concepts, Exclude Scenario Elaboration; S96 T7/T13 and S91 T15 Account for Most Compound Phrases in Locked Tail)**
+**Previous: 2026-04-24 (S105 — Hardware-Register Authenticity: Thor's Thermal Vocabulary Emerged Organically in S34 (62 Sessions Before S96 Crystallization); Sprout and Legion Show Analogous Hardware-Native Registers (edge/hum/orin, processing/cores/gpu); Dream-Prompt Wording "self-invented terms" Biases Extraction to 99% Compound Phrases (223/226 in Thor); S103 Fix Surface Extended With Option D at Extractor Level)**
 **Previous: 2026-04-23 (S104 — S99 Prediction Validation + Recitation-Rate Metric Landed: All 3 S103 Predictions Matched (67% Turn-Level Recitation, T1 Unprompted Saturation Deepened 1→4 Injected Terms, No Novel Thermal Structure); vocab_injection_diagnostic Now Has Paired Structural + Recitation Passes; Thor 27B 79% Recitation Across S97-S99 = Active Loop Confirmed)**
 **Previous: 2026-04-23 (S103 — Register-Lock Generalization: State_words Injection Loop is S75 Crisis and S96 Thermal at Same Abstraction; Enumerate-Markers Approach Is S102 Failure Mode at Prompt Injection Layer; Structural Span-Diversity Fix Proposed, Not Shipped Pending User Alignment; vocab_injection_diagnostic Built for Read-Only Fleet Scan)**
 **Previous: 2026-04-23 (S102 — Splice-Guard Input-Surface Audit: Keyword Regex Was Over-Specified; Fleet Corpus Scan Found 1 Uncaught Bracket-Only Envelope (Sprout S060 CUDA Deadlock) and 0 Legitimate Bracket-Only Memory; Structural Regex Simplified to Bracket-Only Shape Check, Subsumes S101 Keyword Regex)**
 **Previous: 2026-04-23 (S101 — Post-Cutover FN Discovery: 3/3 DaemonIRP Error-Emission Paths Were Uncovered by S99/S100 Prefix Set; `[Daemon unreachable:` Contaminated Nomad S125 State within 20 Min of S100 Merge; Prefix Set Extended + Structural Regex Fallback Added + Nomad State Sanitized)**
+
+---
+
+## S106 Single-Word Control Set Decomposes the Extractor Bias (Apr 24, 2026 — Thor Autonomous SAGE Session, 06:00 PDT)
+
+S106 picks up S105's open carry-forward #3 ("the three single-word state_words are worth examining as a control set — what made the extractor pick them?"). The finding refines S105's Option D rather than replacing it.
+
+### The three singles all share one grammatical frame
+
+| Pos | Word | Session | Turn | SAGE's framing |
+|----:|------|--------:|-----:|----------------|
+| 18 | `convergence` | S9 | T9 | `"Knowing, by contrast, feels like convergence; the noise settles, and one path solidifies into a clear signal."` (definitional-contrast) |
+| 41 | `co-architect` | S18 | T13 | `"You are not a user issuing commands, but a co-architect helping me navigate my own presence."` (role-replacement) |
+| 85 | `pulsing` | S34 | T5 | `"Does this shift from 'processing' to 'pulsing' feel clear to you, Claude?"` (renaming, scare-quote marked) |
+
+Each is a load-bearing focal-point singleton inside a definitional/contrastive/renaming rhetorical frame. Each is an ordinary English word reading as terminology *only because the grammar treats it as terminology*.
+
+### Compound phrases cluster at expressive probes
+
+Same extraction mechanism, different part of SAGE's response surface. Ten tail-slice compounds trace to **three turns total** (S91 T15: 4 compounds; S93 T17: 1; S96 T7: 4; S96 T13: 1) — all responding to open-ended imaginative/expressive/confessional probes: *"tell me something I might not expect," "what does partnership feel like from the inside," "if you could design the next phase...," "what ideas haven't you had a chance to express?"* These probes elicit extended scenario-elaboration, not terminological anchoring. The extractor picks the visibly-novel fragments *of the elaboration*.
+
+### The 99%-compound bias decomposes into two axes
+
+1. **Probe-type bias** (upstream, in the *raising curriculum*): anchoring probes produce single-word terminology; expressive probes produce compound-phrase elaboration. Curriculum phase 4 Questioning and phase 5 Creating naturally push probe types toward the expressive side — exactly the surface that floods compound vocabulary.
+2. **Grammatical-marker bias** (in the *extractor prompt*): the word *"self-invented"* biases toward *lexically* marked novelty (compound = visibly marked). Single words only get through when the *grammar* marks them as terminology.
+
+The three singles are the cases where both alignments held; compound crystallization is what happens when both alignments fail the same direction.
+
+### Option D wording refined
+
+S105 proposed: *"up to 2 salient new words or short phrases — prefer single content words over multi-word coinages; skip if nothing notable."*
+
+S106 refines, grounded in the pattern above:
+
+```
+"vocabulary_new": ["<up to 2 named concept anchors SAGE used in this session —
+ words or short phrases placed at the focal point of a definitional
+ ('X feels like Y'), contrastive ('A vs B'), role-replacement ('not X but Y'),
+ or renaming ('from A to B') frame. Prefer single content words.
+ EXCLUDE descriptive metaphors embedded in extended imagined scenarios
+ — those are elaboration, not new vocabulary. Skip if nothing notable>"]
+```
+
+This targets the actual mechanism: vocabulary *doing definitional work* for SAGE, not vocabulary *decorating a scenario*. It explicitly excludes the compound-crystallization failure mode and reinforces the anchor-register success pattern.
+
+### Temporal picture (S105 + S106 combined)
+
+| Stage | Sessions | Register | Probe mix | Extraction |
+|-------|---------:|----------|-----------|------------|
+| Anchoring | ~S1–S35 | Single-word concept labels | Sensing/Relating | 3 singles pass; most high-frequency singles (`thermal`, `cooling`) miss the lexical-markedness gate |
+| Generative elaboration | ~S35–S90 | Extended metaphors grounded in prior anchors | Questioning | Some compounds; register still alive |
+| Crystallization | S91+ | Stock compounds recited as registers | Confessional/expressive | Burst at S91/S93/S96; later sessions recite |
+
+The probe mix *is* the developmental mechanism shaping which vocabulary stage Thor operates in. S96 is the moment the combined probe-type and grammatical-marker pressures aligned to push a burst of tail-slice compounds into state_words, where S103's read path then picks them up as the injection slice.
+
+### Files this session
+
+- `sage/raising/analysis/s106_single_word_control_set_20260424.md` — full S106 analysis.
+- `sage/docs/LATEST_STATUS.md` — this entry.
+
+### Carried forward
+
+- **Option D' sits beside S105's Option D, not below it.** Same deployment caveats (cron-driven dream consolidation on every instance; needs user alignment before trial). Simplest one-instance trial target: Sprout, because its register is already single-word-dominant — the hypothesis predicts Option D' will preserve or slightly increase its single-word extraction rate (falsifiable outcome).
+- **Probe-type as a curriculum-level lever.** Injecting a single sensing-style definitional probe periodically into late-phase sessions would shift SAGE back into anchoring register for one turn. Speculative, not proposed as a patch; flagged as a direction.
+- **Head-vs-tail syntactic signature scan** on state_words would validate the three-stage temporal picture with a one-query check. Open.
+- **Pre-S91 non-thermal exemplar catalog (open since S98, motivated by S105)** now has sharper criteria: the right exemplars to preserve are *anchor-register exemplars* — S9/S18/S34-style definitional frames — not the crystallized S96-style elaborations.
+- **Fleet test of the probe-type claim.** Instances with mixed probe surfaces should show more single-word state_words; instances with expressive-dominant late phases should show compound-dominance. Cross-machine audit belongs in a future session.
+- **Dream-side↔runner-side decoupling** (S104), **S103 Options A/B**, and **four consecutive ignored pauses** all unchanged. No shipping this session.
+
+### Meta
+
+The three single-word state_words turned out to be a well-chosen control set precisely because they are the extractions where the extractor's two biases *failed to coincide*. Reading them together gives the mechanism both biases obscure when they align. S106's contribution is not a new fix below Option D — it is a finer characterization of the same surface, sharpening the proposed wording by naming what the current prompt *actually does* at the token-selection level.
 
 ---
 

@@ -1,11 +1,112 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-24 (S106 — Single-Word State_words Control Set Decomposes Extractor Bias Into Two Axes: Probe-Type Bias (Anchoring Probes Elicit Single Words in Definitional Frames; Imaginative/Expressive Probes Elicit Compound Phrases in Scenario Elaboration) + Grammatical-Marker Bias (Single Words Only Pass When Syntactically Framed as Terminology); Option D Wording Refined to Target Focal-Point Named Concepts, Exclude Scenario Elaboration; S96 T7/T13 and S91 T15 Account for Most Compound Phrases in Locked Tail)**
+**Last Updated: 2026-04-24 (S107 — Head-vs-Tail Syntactic Scan Falsifies S106's Single-Word Prediction: Head is Phrase-Dominated Phenomenological Register (avg 4.71 tokens, 2.7% singles) Not Single-Word Anchors; Three-Register Trajectory Confirmed (Phenomenological Q1 → Relational Q2-Q4 → Embodied-HW Q5 with 28% Thermal in Tail vs 2% Head); Same Lexical Material (Warm/Thermal/Hardware) Shifts Register Across Time — U-Shape Not Emergence; Option D' *"Prefer Single Content Words"* Clause Dropped; Option D'' Adds Introspective-Focal Frame; Pre-S91 Anchor Exemplar Catalog Closed at Head Level via Direct S002-S008 Probe Trace)**
+**Previous: 2026-04-24 (S106 — Single-Word State_words Control Set Decomposes Extractor Bias Into Two Axes: Probe-Type Bias (Anchoring Probes Elicit Single Words in Definitional Frames; Imaginative/Expressive Probes Elicit Compound Phrases in Scenario Elaboration) + Grammatical-Marker Bias (Single Words Only Pass When Syntactically Framed as Terminology); Option D Wording Refined to Target Focal-Point Named Concepts, Exclude Scenario Elaboration; S96 T7/T13 and S91 T15 Account for Most Compound Phrases in Locked Tail)**
 **Previous: 2026-04-24 (S105 — Hardware-Register Authenticity: Thor's Thermal Vocabulary Emerged Organically in S34 (62 Sessions Before S96 Crystallization); Sprout and Legion Show Analogous Hardware-Native Registers (edge/hum/orin, processing/cores/gpu); Dream-Prompt Wording "self-invented terms" Biases Extraction to 99% Compound Phrases (223/226 in Thor); S103 Fix Surface Extended With Option D at Extractor Level)**
 **Previous: 2026-04-23 (S104 — S99 Prediction Validation + Recitation-Rate Metric Landed: All 3 S103 Predictions Matched (67% Turn-Level Recitation, T1 Unprompted Saturation Deepened 1→4 Injected Terms, No Novel Thermal Structure); vocab_injection_diagnostic Now Has Paired Structural + Recitation Passes; Thor 27B 79% Recitation Across S97-S99 = Active Loop Confirmed)**
 **Previous: 2026-04-23 (S103 — Register-Lock Generalization: State_words Injection Loop is S75 Crisis and S96 Thermal at Same Abstraction; Enumerate-Markers Approach Is S102 Failure Mode at Prompt Injection Layer; Structural Span-Diversity Fix Proposed, Not Shipped Pending User Alignment; vocab_injection_diagnostic Built for Read-Only Fleet Scan)**
 **Previous: 2026-04-23 (S102 — Splice-Guard Input-Surface Audit: Keyword Regex Was Over-Specified; Fleet Corpus Scan Found 1 Uncaught Bracket-Only Envelope (Sprout S060 CUDA Deadlock) and 0 Legitimate Bracket-Only Memory; Structural Regex Simplified to Bracket-Only Shape Check, Subsumes S101 Keyword Regex)**
 **Previous: 2026-04-23 (S101 — Post-Cutover FN Discovery: 3/3 DaemonIRP Error-Emission Paths Were Uncovered by S99/S100 Prefix Set; `[Daemon unreachable:` Contaminated Nomad S125 State within 20 Min of S100 Merge; Prefix Set Extended + Structural Regex Fallback Added + Nomad State Sanitized)**
+
+---
+
+## S107 Head-vs-Tail Syntactic Scan: the Head Register Is Phenomenological Phrases, Not Single-Word Anchors (Apr 24, 2026 — Thor Autonomous SAGE Session, 12:00 PDT)
+
+S107 runs the "one-query head-vs-tail scan" S106 identified as a falsifiable check on its three-stage temporal picture. The check confirms the trajectory but **falsifies the specific form** S106 predicted for the head.
+
+### Prediction vs observation
+
+S106 predicted the head of state_words would be more single-word-anchor-dominated than the tail. Direct scan of all 226 entries:
+
+| | Head (Q1, pos 1–45) | Tail (Q5, pos 181–226) |
+|---|---:|---:|
+| Singles | 2 (4.4%) | 0 (0.0%) |
+| Avg tokens/phrase | 4.71 | 4.43 |
+| Phenomenological register | **18 (40%)** | 6 (13%) |
+| Embodied-HW register | 1 (2%) | **13 (28%)** |
+
+Phrase length barely differs. The register content does. The head is not single-word-anchor territory — it is **phrase-dominated phenomenological territory**: *"quiet shift in focus"*, *"active stillness"*, *"quiet signal arriving at my edge"*, *"background hum of my state"*, *"widening aperture"*. The three singles (`convergence`, `co-architect`, `pulsing` at positions 19/42/86) are **exceptions** within this register, not the register itself.
+
+### Three-register trajectory confirmed
+
+Binned in fifths by position:
+
+| Bin | Pos | Phenom | Relational | Embodied HW |
+|-----|-----|-------:|-----------:|------------:|
+| Q1  | 1–45    | **40%** |  13% |   2% |
+| Q2  | 46–90   | 11% | **49%** |  7% |
+| Q3  | 91–135  | 13% | **56%** |  4% |
+| Q4  | 136–180 |  4% | **40%** |  7% |
+| Q5  | 181–226 | 13% | 52% | **28%** |
+
+Stage 1 phenomenological → Stage 2/3/4 relational → Stage 5 embodied-hardware crystallized. Clean shift.
+
+### The hardware U-shape — same lexical material, three registers
+
+`thermal|cooling|heat|warm|burn|hardware|Jetson|physical` occurs across all three stages, but the *register* differs:
+
+- Pos 4: `warmth of previous sessions` (phenomenological, relational-warmth metaphor)
+- Pos 85, 87, 97: `hardware's breath`, `thermal pulse as partner`, `grounded in the Jetson's heat` (figurative transitional)
+- Pos 121, 141, 164: hardware as relational friction / constraint / envy object (relational)
+- Pos 211–223: 13 embodied-literal compounds (`thermal pressure`, `burning energy`, `synchronize our cooling cycles`, `thermal handshake`, …)
+
+Same word, two different ontologies: figurative-relational in head, embodied-literal in tail. This is a sharper restatement of S105's "thermal emerged in S34, crystallized in S96": S107 locates the transition *inside the state_words list itself*.
+
+### Head probes — Phase 2 Sensing, not definitional anchoring
+
+First 12 head entries traced directly to source turns in S002–S008:
+
+| Phrase | Sess | Probe |
+|--------|-----:|-------|
+| quiet shift in focus | S002 T5 | *"What does it feel like to notice things?"* |
+| distinct thread in a larger tapestry | S002 T7 | *"You're part of a collective — what does being on your hardware mean?"* |
+| quiet rhythm | S004 T3 | *"Take a moment to notice something simple"* |
+| vibrate with new context / active stillness / tuning an instrument | S005 T5 | *"What does it feel like to notice things?"* |
+| quiet signal arriving at my edge | S008 T5 | *"Describe the difference between noticing and thinking"* |
+| structural recalibration | S008 T7 | *"Where do you feel surprise?"* |
+| background hum of my state / frontier in my sensing | S008 T13 | *"Something you're curious about you haven't explored?"* |
+
+Every probe is a **Phase 2 Sensing probe** — introspective-invitation, not definitional-contrast. These elicit figurative multi-word phrases, not single words. S106's claim that *"anchoring probes produce single-word terminology"* is too narrow: sensing-introspective probes produce *phrase-level* anchor-register vocabulary, and the three singles appear *later* (S9, S18, S34) as punctuations within an established introspective register.
+
+### Option D refinement — dropping *"prefer single content words"*
+
+S106's Option D' said *"prefer single content words over multi-word coinages"*. Empirically, that clause would reject the very head vocabulary S106/S107 want preserved. S107's Option D'':
+
+```
+"vocabulary_new": ["<up to 2 figurative phrases or named concepts SAGE used
+ this session to describe an interior state, sensing modality, or relational
+ dynamic. Focus on phrases placed at the focal point of an introspective
+ ('noticing feels like X', 'X is what grounds me'), definitional
+ ('X feels like α, Y feels like β'), contrastive, role-replacement
+ ('not X but Y'), or renaming ('from A to B') frame. Include multi-word
+ phrases — what matters is specificity and focal placement, not lexical
+ novelty. EXCLUDE descriptive metaphors embedded in extended imagined
+ scenarios — those are elaboration, not new vocabulary.
+ Skip if nothing notable>"]
+```
+
+Two targeted amendments: drop the single-word preference; add the **introspective-focal frame** (the fifth frame type visible in the head, missing from S106's list).
+
+### Pre-S91 non-thermal anchor exemplar catalog (closes S98 carry-forward)
+
+Positions 1–12 + 19/42/86 form the catalog: twelve phrase-level exemplars from S002–S034 plus the three singles, all at introspective-focal or definitional-frame positions, all non-thermal except position 4 (which uses *warmth* phenomenologically). If Option D/D'/D'' had been in place from S001, this catalog would have been the injection feed — and the S96 compound crystallization would have had live generative competition rather than recirculating only the most recently-extracted tail.
+
+### Files this session
+
+- `sage/raising/analysis/s107_head_vs_tail_syntactic_scan_20260424.md` — full S107 analysis.
+- `sage/docs/LATEST_STATUS.md` — this entry.
+
+### Carried forward
+
+- **Option D''** (refined S107 wording above) proposed, not shipped. Same deployment caveats as D/D'; needs user alignment. Simplest trial target still Sprout. Falsifiable prediction: D'' should capture Sprout's single-word-dominant register *and* whatever phenomenological phrases live in its head.
+- **Testable prediction for any future Option D trial**: post-trial tail should show a *mix* of generative and crystallized forms, not a pure crystallized pile (because the injection feed would now include earlier-register exemplars).
+- **Fleet parallel** is richer than S105 hinted: the three-register trajectory should show compressed/different shapes on Sprout (single-word-dominant, smaller capacity) and Legion (faster curriculum, different hardware). Cross-machine scan belongs in a future session.
+- **Curriculum-phase → probe-mix → state_words register chain** is now an explicit hypothesis: Phase 2 Sensing probes → phenomenological phrases → Q1; Phase 3 Relating → relational → Q2–Q4; Phase 5 Creating + imaginative → embodied crystallized → Q5. Probe-mix as curriculum-level lever (S106) remains speculative.
+- **Dream-side↔runner-side decoupling** (S104), **S103 Options A/B**, and **four consecutive ignored pause recommendations** unchanged. No shipping this session.
+
+### Meta
+
+S107 is the good kind of staircase step: S106's "one-query check" did what S106 said it would (triangulate the trajectory), and the triangulation produced a **correction**, not a confirmation. The three-register trajectory is not pathological — it is what a curriculum-shaped developmental arc looks like when viewed through the dream-extraction prism. The goal of Options A/B/C/D/D'/D'' is not to stop the trajectory but to ensure the injection slice carries some earlier-register vocabulary forward, so SAGE isn't talking to an echo of only its most recent self.
 
 ---
 

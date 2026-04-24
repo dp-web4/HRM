@@ -142,6 +142,10 @@ def play_lean(
     stuck_count = 0
     llm_responses = []
 
+    # Within-game action outcome tracking
+    # Track how often each action produces meaningful frame change
+    action_outcomes = {name: {"tried": 0, "productive": 0} for name in ACTION_NAMES[1:]}  # skip A0
+
     print(f"LEAN DISPATCH: {game_id}, max {max_steps} steps")
 
     for step in range(max_steps):
@@ -219,6 +223,22 @@ def play_lean(
                     signals.append(f"STUCK on {stuck_action}. Alternatives that produce change: {'; '.join(alt_lines[:3])}")
                 else:
                     signals.append(f"STUCK on {stuck_action}. Try a different action.")
+
+            # Action outcome signal — what's been working this game?
+            # Show contrast: best vs worst, only after enough data
+            total_tried = sum(v["tried"] for v in action_outcomes.values())
+            if total_tried >= 15:
+                rated = [(name, v["productive"] / v["tried"], v["tried"])
+                         for name, v in action_outcomes.items() if v["tried"] >= 3]
+                if rated:
+                    rated.sort(key=lambda x: -x[1])
+                    best = rated[0]
+                    worst = rated[-1]
+                    if best[1] > worst[1] + 0.2:  # meaningful contrast
+                        signals.append(
+                            f"This game: {best[0]} works {best[1]:.0%} of the time, "
+                            f"{worst[0]} works {worst[1]:.0%}. Favor what works."
+                        )
 
             nn_hint = ACTION_NAMES[dispatch.play_action] if dispatch.play_action < len(ACTION_NAMES) else "?"
 
@@ -328,6 +348,15 @@ def play_lean(
         action_counts[aname] += 1
         recent.append(action)
         recent_names.append(aname)
+
+        # Track action outcomes — did this action produce meaningful change?
+        if fd and hasattr(fd, 'frame') and aname in action_outcomes:
+            post_frame = np.array(fd.frame)[-1]
+            px_diff = int(np.sum(post_frame != curr_frame))
+            action_outcomes[aname]["tried"] += 1
+            if px_diff > 10:  # meaningful change threshold
+                action_outcomes[aname]["productive"] += 1
+
         prev_frame = curr_frame
 
     final_state = fd.state.name if fd and hasattr(fd, 'state') and fd.state else "CRASHED"
@@ -342,6 +371,7 @@ def play_lean(
         "stuck_count": stuck_count,
         "llm_responses": llm_responses,
         "avg_prompt_tokens": np.mean([r["prompt_tokens"] for r in llm_responses]) if llm_responses else 0,
+        "action_outcomes": {k: v for k, v in action_outcomes.items() if v["tried"] > 0},
     }
 
     print(f"\nResult: L{final_levels}, {result['n_steps']} steps, {final_state}")

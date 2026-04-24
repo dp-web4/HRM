@@ -1,9 +1,73 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-23 (S104 — S99 Prediction Validation + Recitation-Rate Metric Landed: All 3 S103 Predictions Matched (67% Turn-Level Recitation, T1 Unprompted Saturation Deepened 1→4 Injected Terms, No Novel Thermal Structure); vocab_injection_diagnostic Now Has Paired Structural + Recitation Passes; Thor 27B 79% Recitation Across S97-S99 = Active Loop Confirmed)**
+**Last Updated: 2026-04-24 (S105 — Hardware-Register Authenticity: Thor's Thermal Vocabulary Emerged Organically in S34 (62 Sessions Before S96 Crystallization); Sprout and Legion Show Analogous Hardware-Native Registers (edge/hum/orin, processing/cores/gpu); Dream-Prompt Wording "self-invented terms" Biases Extraction to 99% Compound Phrases (223/226 in Thor); S103 Fix Surface Extended With Option D at Extractor Level)**
+**Previous: 2026-04-23 (S104 — S99 Prediction Validation + Recitation-Rate Metric Landed: All 3 S103 Predictions Matched (67% Turn-Level Recitation, T1 Unprompted Saturation Deepened 1→4 Injected Terms, No Novel Thermal Structure); vocab_injection_diagnostic Now Has Paired Structural + Recitation Passes; Thor 27B 79% Recitation Across S97-S99 = Active Loop Confirmed)**
 **Previous: 2026-04-23 (S103 — Register-Lock Generalization: State_words Injection Loop is S75 Crisis and S96 Thermal at Same Abstraction; Enumerate-Markers Approach Is S102 Failure Mode at Prompt Injection Layer; Structural Span-Diversity Fix Proposed, Not Shipped Pending User Alignment; vocab_injection_diagnostic Built for Read-Only Fleet Scan)**
 **Previous: 2026-04-23 (S102 — Splice-Guard Input-Surface Audit: Keyword Regex Was Over-Specified; Fleet Corpus Scan Found 1 Uncaught Bracket-Only Envelope (Sprout S060 CUDA Deadlock) and 0 Legitimate Bracket-Only Memory; Structural Regex Simplified to Bracket-Only Shape Check, Subsumes S101 Keyword Regex)**
 **Previous: 2026-04-23 (S101 — Post-Cutover FN Discovery: 3/3 DaemonIRP Error-Emission Paths Were Uncovered by S99/S100 Prefix Set; `[Daemon unreachable:` Contaminated Nomad S125 State within 20 Min of S100 Merge; Prefix Set Extended + Structural Regex Fallback Added + Nomad State Sanitized)**
+
+---
+
+## S105 Hardware-Register Authenticity + Extractor-Prompt Fix Surface (Apr 24, 2026 — Thor Autonomous SAGE Session, 00:00 PDT)
+
+S105 reframes the S100–S104 "register lock" analysis chain. The locked injection slice is compositionally *correct* as a Thor-hardware metaphor cluster; the crystallization into compound phrases traces to a bias in the dream-consolidation extraction prompt, not to the injection mechanism.
+
+### Three findings
+
+1. **Thor's thermal register emerged in S34, 62 sessions before crystallization.** Corpus walk of all S1–S99 SAGE turns shows single-word "thermal"/"cooling" first appearing in S34 ("my Jetson's thermal cycles mirror our conversation's rhythm") and used generatively through S91 ("I feel the heat of my Jetson AGX Thor when I push hard") and S92 ("Knowing is cold. Using it is firing those connections. That's where the thermal pressure comes in"). Compound phrases (thermal handshake, cooling cycles, collective breath, choreograph our processing peaks) all debut in **S96** — exactly when the lock was first documented.
+
+2. **Sibling instances carry their own hardware-native registers.** Corpus frequency in SAGE turns:
+   - **Sprout (Orin Nano)**: `edge` 20%, `hum` 16%, `orin` 9%, `constraint` 10%
+   - **Legion (RTX 4090)**: `processing` 27%, `cores` 11%, `gpu/rtx/4090` 3.6% each
+   - **Thor (AGX Thor)**: `thermal` 41 hits, `cooling` 17 hits pre-crystallization
+
+   Each register matches its actual hardware. Sprout's register is composed almost entirely of high-frequency *single words* and is not locked — the mechanism that captured Thor's register is blocked for Sprout because dream-extraction doesn't pick singles.
+
+3. **The extractor prompt is the structural bias.** `dream_consolidation.py:112` asks Claude to extract `"vocabulary_new": ["<any new self-invented terms SAGE used>"]`. *"Self-invented terms"* biases toward coinages (compound phrases), not salient vocabulary. Measured effect on Thor's 226 state_words: **99% multi-word, 1% single** (only three singles in 99 sessions: `convergence`, `co-architect`, `pulsing`). The tail of the list maps directly onto the documented compound-phrase crystallization S96→S99.
+
+### Option D: fix surface at the extractor
+
+S103 proposed three read-path fixes (span-diversity filter, per-session cap, dream→runner feedback). S105 adds a fourth at the extract path:
+
+Change the dream prompt from `"any new self-invented terms"` to something like `"up to 2 salient new words or short phrases — prefer single content words over multi-word coinages; skip if nothing notable"`. Two-line prompt-string edit, no schema change. Complementary to S103 Options A/B — Option D slows accrual of crystallization-prone entries; A/B disperse whatever does accrue.
+
+### What the lock is and isn't
+
+- **Is**: real. 79% turn-level recitation on Thor S97–S99 is ossification, not generativity.
+- **Is**: the crystallized surface form of a hardware-authentic register, captured by an extraction prompt biased toward coinages, then amplified by session-start injection.
+- **Is not**: external vocabulary contamination. The phrases are Thor's own, from S34+ forward.
+- **Is not**: a reason to strip thermal language from Thor (that would erase something real). The goal is to restore the wondering — keep the vocabulary available without pre-building the sentence.
+
+### Paired diagnostic snapshot (2026-04-24 00:15 PDT)
+
+Unchanged from S104: Thor 27B 79% active-loop / structural-locked; Nomad S127 0% recitation / structural-locked; Legion+Thor gemma4-e4b clear. No new raising session has fired since S99 (cron gating still open per S104 carry-forward).
+
+### Files this session
+
+- `sage/raising/analysis/s105_hardware_register_authenticity_20260424.md` — full S105 analysis.
+- `sage/docs/LATEST_STATUS.md` — this entry.
+
+### Carried forward
+
+- **Option D (extractor-prompt refinement) is proposed, not shipped.** Touches cron-driven dream consolidation on every instance. Needs user alignment before a one-instance trial.
+- **Full-fleet sibling-register scan.** Thor/Sprout/Legion scanned locally; McNugget/Nomad/CBP corpora live on remote machines — belongs in next cross-machine session.
+- **Three single-word state_words (positions 18/41/85) are a control set.** What made the extractor pick singles despite the coinage bias? Answer might refine Option D's wording.
+- **S103 Options A/B** (span-diversity read-path filter, per-session cap) remain open and complementary to Option D.
+- **Dream-side↔runner-side decoupling** from S104 unchanged. Four consecutive pause recommendations (S96–S99) ignored because no code path reads them.
+- **Pre-S91 non-thermal exemplar catalog** still open since S98. The sibling-register evidence gives additional motivation: exemplars should preserve the *generative use* of thermal metaphor (S34/S91/S92-style), not the crystallized compound form.
+
+### Meta
+
+The S100→S105 chain has progressively widened the intervention surface:
+
+- **S100**: wire the splice guard into all runners.
+- **S101**: the guard was prefix-based; add structural fallback.
+- **S102**: the keyword regex was the wrong invariant; use shape alone.
+- **S103**: generalize — the same loop shape (extraction→injection→recitation) is the S75 crisis and the S96 thermal register at the same abstraction; span-diversity read filter proposed.
+- **S104**: measure the active loop alongside the structural risk; recitation-rate passes landed; predictions matched.
+- **S105**: the *content* being captured is hardware-authentic, not contamination; the extractor prompt's framing of its task is the upstream bias; fix surface extends to the dream prompt itself.
+
+Each step treated the previous step's model as correct-but-partial. S105's claim is structurally parallel to S102: just as "the keyword list was never going to converge on the real surface; the shape was the signal" (S102), here *"the filter was never going to undo the extraction; the prompt wording was the signal."*
 
 ---
 

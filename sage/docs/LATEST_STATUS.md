@@ -1,8 +1,69 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-23 (S102 — Splice-Guard Input-Surface Audit: Keyword Regex Was Over-Specified; Fleet Corpus Scan Found 1 Uncaught Bracket-Only Envelope (Sprout S060 CUDA Deadlock) and 0 Legitimate Bracket-Only Memory; Structural Regex Simplified to Bracket-Only Shape Check, Subsumes S101 Keyword Regex)**
+**Last Updated: 2026-04-23 (S104 — S99 Prediction Validation + Recitation-Rate Metric Landed: All 3 S103 Predictions Matched (67% Turn-Level Recitation, T1 Unprompted Saturation Deepened 1→4 Injected Terms, No Novel Thermal Structure); vocab_injection_diagnostic Now Has Paired Structural + Recitation Passes; Thor 27B 79% Recitation Across S97-S99 = Active Loop Confirmed)**
+**Previous: 2026-04-23 (S103 — Register-Lock Generalization: State_words Injection Loop is S75 Crisis and S96 Thermal at Same Abstraction; Enumerate-Markers Approach Is S102 Failure Mode at Prompt Injection Layer; Structural Span-Diversity Fix Proposed, Not Shipped Pending User Alignment; vocab_injection_diagnostic Built for Read-Only Fleet Scan)**
+**Previous: 2026-04-23 (S102 — Splice-Guard Input-Surface Audit: Keyword Regex Was Over-Specified; Fleet Corpus Scan Found 1 Uncaught Bracket-Only Envelope (Sprout S060 CUDA Deadlock) and 0 Legitimate Bracket-Only Memory; Structural Regex Simplified to Bracket-Only Shape Check, Subsumes S101 Keyword Regex)**
 **Previous: 2026-04-23 (S101 — Post-Cutover FN Discovery: 3/3 DaemonIRP Error-Emission Paths Were Uncovered by S99/S100 Prefix Set; `[Daemon unreachable:` Contaminated Nomad S125 State within 20 Min of S100 Merge; Prefix Set Extended + Structural Regex Fallback Added + Nomad State Sanitized)**
-**Previous: 2026-04-22 (S100 — Phase 2 Wire-Up: `is_unsuitable_for_splice` Guards Now Live in All 10 Raising Runners; Read-Path + Write-Path Defense-in-Depth; 0 Contaminated State Files at Cutover)**
+
+---
+
+## S104 S99 Prediction Validation + Recitation-Rate Metric Landed (Apr 23, 2026 — Thor Autonomous SAGE Session, 18:00 PDT)
+
+S104 closes S103's open question #3 (how to measure the active loop alongside the structural risk surface) and records S99's outcome as the first prediction/observation round on the state_words → injection → recitation dynamic. Read-only session; no shipping-path changes to the raising runners.
+
+### S103's three predictions, all matched
+
+S103 (12:00 PDT) made three measurable predictions about S99:
+
+1. **≥50% of S99 SAGE turns will recite the injection slice.** Outcome: 4/6 = **67%** ✓
+2. **Register saturation continues without further novel structure.** Outcome: T6 coined *"resonance protocol"* — but that phrase traces back to pre-S91 state_words, so it's a dormant-word re-promotion, not a new thermal extension. ≈ matched.
+3. **T1 opens unprompted with the thermal frame.** Outcome: T1 opened with **4** injected terms (`thermal handshake`, `choreograph our processing peaks`, `synchronize our cooling cycles`, `collective breath`) before any probe invited them. ✓ matched, and escalated — S98 T1 had 1 injected term; S99 T1 has 4.
+
+The S98→S99 shift from 1 to 4 unprompted opening-turn injections, while the turn-level aggregate rate plateaued (71% → 67%), indicates a phase transition from probe-driven saturation to default-generative saturation. Rate monotonicity is not a reliable release signal; opening-turn saturation is the marker.
+
+### Recitation-rate metric landed as diagnostic extension
+
+`sage/raising/analysis/vocab_injection_diagnostic.py` now accepts `--recitation-window N` and runs a second pass alongside the S103 structural check:
+
+- Loads the injection slice exactly as `load_dream_insights()` would (reverse scan, crisis-marker filter, top N)
+- Scans the last N session_*.json per instance
+- Counts SAGE turns containing ≥1 injected word (case-insensitive substring)
+- Aggregates to `active_loop = (rate ≥ 0.5 AND total_turns ≥ 3)`
+
+Fleet scan, 2026-04-23 18:15 PDT, window=3:
+
+| Instance | Structural lock | Recitation rate | Active loop |
+|---|:-:|---:|:-:|
+| thor-qwen3.5-27b (S99) | 🔴 locked | **79%** (15/19, 35 hits) | 🔴 **active** |
+| nomad-gemma3-4b (S127) | 🔴 locked | 0% (0/18, 0 hits) | ✓ structural-only |
+| legion-gemma4-e4b | ✓ clear | — | — |
+| thor-gemma4-e4b | ✓ clear | — | — |
+
+The two dimensions separate *risk surface* (nomad: configuration could re-activate) from *active loop* (thor: currently reciting). A single-metric guard would miss one.
+
+### S99 was recorded despite three consecutive pause recommendations
+
+S96, S97, and S98 dream-consolidation logs each specified a hard pause for the next session. The 18:00 PDT cron fired regardless (thor_raising.sh has no gate that reads raising_log recommendations). S104 names this decoupling explicitly: dream-side recommendations stay English text; runner-side pre-execution gates do not read them. Any fix touches either the dream-side output format (emit a machine-readable pause marker) or the runner-side gate (check raising_status before running). Not implemented — touches shipping.
+
+### Files this session
+
+- `sage/raising/analysis/vocab_injection_diagnostic.py` — added `recitation_rate()`, `scan_fleet_recitation()`, `format_recitation_report()`, `_most_recent_session_files()`, `_sage_turns()`, `_count_recitation()`. `main()` gains `--recitation-window N` flag. Module docstring updated with S104 provenance.
+- `sage/raising/analysis/s104_s99_prediction_validation_20260423.md` — full S104 analysis.
+- `sage/docs/LATEST_STATUS.md` — this entry. (Also backfills the S103 header line that was present in its analysis file but not propagated to LATEST_STATUS at the 12:00 session close.)
+
+### Carried forward
+
+- **Paired diagnostic is standing practice.** Structural + recitation together; neither alone catches all modes.
+- **Phase-transition markers beyond rate.** Opening-turn saturation and hit-count-per-hit-turn should be tracked alongside the aggregate. A rate plateau (71% → 67%) masked the T1 shift (1 → 4 terms).
+- **Dream-side ↔ runner-side decoupling is named.** The dream extractor is self-consistent about quality gating and pause recommendations; the runner is self-consistent about firing on schedule. They are not consistent with each other. Bridging them requires either a machine-readable `identity.json['raising_status']` field emitted by dream consolidation and checked by `thor_raising.sh`, or an infra-level disable of the timer. Flagged, not fixed.
+- **S103's three structural fix options still open.** Span-diversity read-path filter (Option A), per-session-cap with schema change (Option B), and raising-log → infra feedback path all require user alignment before shipping.
+- **Pre-S91 non-thermal exemplar catalog still uncollected** — named as required in the S98 dream-consolidation log, still open.
+
+### Meta
+
+S103's predictions were specific enough to be refuted in three measurable ways and matched on all three. The fixes S103 proposed did not ship; the prediction still matched. That's the shape of a well-characterized dynamic that no one has intervened on yet. S104's contribution is to make the dynamic continuously measurable going forward — the `--recitation-window` pass is a read-only scan that can run at session start, pre-raising, or at any audit checkpoint without touching shared state.
+
+The S99→S102 splice-guard chain and the S75→S104 state_words injection chain are the same *"what is allowed to become SAGE's own continuity?"* question at two layers. Both answered with keyword enumeration first (splice prefixes, crisis markers); both surfaced a structural failure mode that enumeration could not close (S102: the shape was the signal; S103: the cluster-at-tail was the signal). Both now have runnable structural diagnostics. Neither has a fully shipped structural fix yet — the splice guard is closer (S102 replaced its keyword gate with a shape check), the injection filter is not.
 
 ---
 

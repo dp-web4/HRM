@@ -108,8 +108,13 @@ def play_lean(
     llm_model: str = "gemma4:26b",
     max_steps: int = 200,
     machine: str = "thor",
+    system_prompt: Optional[str] = None,
 ) -> Dict:
-    """Play a game with lean dispatch."""
+    """Play a game with lean dispatch.
+
+    system_prompt: optional cached system prompt (e.g. from DIR Phase 1 discovery).
+    Passed to Ollama as the system message — cached in KV, not repeated per invoke.
+    """
     from arc_agi import Arcade
     from arcengine import GameAction
 
@@ -290,7 +295,7 @@ def play_lean(
             pair_png = render_frame_pair_png(prev_frame, curr_frame, scale=4)
 
             t0 = time.time()
-            response = llm.chat(prompt, images_png=[pair_png])
+            response = llm.chat(prompt, images_png=[pair_png], system_prompt=system_prompt)
             elapsed = time.time() - t0
 
             # When stuck, diversify the fallback — don't fall back to the stuck action
@@ -392,6 +397,8 @@ if __name__ == "__main__":
     p.add_argument("--max-steps", type=int, default=200)
     p.add_argument("--machine", default="thor")
     p.add_argument("--json-out", default=None)
+    p.add_argument("--system-prompt-file", default=None,
+                   help="File containing system prompt (e.g. from DIR discovery)")
     args = p.parse_args()
 
     os.environ.setdefault("ARC_SAGE_DIR", os.path.expanduser("~/ai-workspace/arc-sage"))
@@ -405,12 +412,18 @@ if __name__ == "__main__":
                 if g.get("family") == args.game:
                     game_id = g.get("id"); break
 
+    sys_prompt = None
+    if args.system_prompt_file:
+        sys_prompt = Path(args.system_prompt_file).read_text().strip()
+        print(f"System prompt from {args.system_prompt_file}: {sys_prompt[:100]}...")
+
     result = play_lean(
         game=args.game, game_id=game_id or args.game,
         adapter_path=args.adapter,
         llm_model=args.llm_model,
         max_steps=args.max_steps,
         machine=args.machine,
+        system_prompt=sys_prompt,
     )
 
     if args.json_out:

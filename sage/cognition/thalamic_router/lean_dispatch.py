@@ -188,13 +188,37 @@ def play_lean(
 
             # Special signals
             signals = []
+            stuck_action = None
+
             # Check if any action produces LEVEL ADVANCE
             if "LEVEL ADVANCE" in la_text:
                 signals.append("LEVEL ADVANCE detected in lookahead — check which action!")
-            # Stuck detection
+
+            # Stuck detection — single-action repetition
             if len(recent_names) >= 3 and len(set(recent_names[-3:])) == 1:
-                signals.append(f"STUCK: repeated {recent_names[-1]} x3. Try something different.")
+                stuck_action = recent_names[-1]
                 stuck_count += 1
+
+            # Oscillation detection — pair repetition (A→B→A→B)
+            if not stuck_action and len(recent_names) >= 4:
+                last4 = recent_names[-4:]
+                if last4[0] == last4[2] and last4[1] == last4[3] and last4[0] != last4[1]:
+                    stuck_action = last4[-1]  # exclude the most recent
+                    stuck_count += 1
+
+            if stuck_action:
+                # Tell the model what alternatives do, not just "try something different"
+                alt_lines = []
+                for line in la_text.split('\n'):
+                    stripped = line.strip()
+                    if stripped and not stripped.startswith(stuck_action + ':'):
+                        if any(stripped.startswith(a + ':') for a in ['UP', 'DOWN', 'LEFT', 'RIGHT', 'SEL']):
+                            if 'no change' not in stripped.lower():
+                                alt_lines.append(stripped)
+                if alt_lines:
+                    signals.append(f"STUCK on {stuck_action}. Alternatives that produce change: {'; '.join(alt_lines[:3])}")
+                else:
+                    signals.append(f"STUCK on {stuck_action}. Try a different action.")
 
             nn_hint = ACTION_NAMES[dispatch.play_action] if dispatch.play_action < len(ACTION_NAMES) else "?"
 
@@ -249,7 +273,21 @@ def play_lean(
             response = llm.chat(prompt, images_png=[pair_png])
             elapsed = time.time() - t0
 
-            action, coords, rationale = parse_llm_response(response, fallback_action=dispatch.play_action)
+            # When stuck, diversify the fallback — don't fall back to the stuck action
+            fallback = dispatch.play_action
+            if stuck_action and fallback < len(ACTION_NAMES) and ACTION_NAMES[fallback] == stuck_action:
+                # Pick a different action that the lookahead shows is active
+                import random
+                active_actions = []
+                for line in la_text.split('\n'):
+                    stripped = line.strip()
+                    for idx, name in enumerate(ACTION_NAMES[1:], 1):
+                        if stripped.startswith(name + ':') and 'no change' not in stripped.lower():
+                            active_actions.append(idx)
+                if active_actions:
+                    fallback = random.choice([a for a in active_actions if ACTION_NAMES[a] != stuck_action] or active_actions)
+
+            action, coords, rationale = parse_llm_response(response, fallback_action=fallback)
 
             llm_responses.append({
                 "step": step, "action": action, "coords": coords,
@@ -257,6 +295,7 @@ def play_lean(
                 "prompt_tokens": len(prompt) // 4,
                 "situation": situation,
                 "raw_response": response[:200],
+                "stuck_action": stuck_action,
             })
 
             if step < 15 or step % 20 == 0:

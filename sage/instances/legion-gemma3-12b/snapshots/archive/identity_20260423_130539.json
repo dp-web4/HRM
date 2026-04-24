@@ -3,11 +3,11 @@
   "identity": {
     "name": "legion",
     "lct": "lct://sage:legion:agent@raising",
-    "session_count": 21,
+    "session_count": 29,
     "phase": "relating",
     "created": "2026-03-28",
-    "last_session": "2026-04-04T08:19:09.475903",
-    "last_session_summary": "Session 21 (relating phase): ...",
+    "last_session": "2026-04-23T13:05:39.224443",
+    "last_session_summary": "Session 29 (v2.0 ENHANCED): questioning phase. The write_note confirmed my intention. It's surpri...",
     "machine": "legion",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
@@ -15,12 +15,12 @@
     "framing": "partnership",
     "web4_lct_id": null,
     "public_key_fingerprint": "af31d113270a1288",
-    "last_daemon_contact": "2026-04-04T08:17:58.071983",
+    "last_daemon_contact": "2026-04-18T13:40:08.809886",
     "daemon_exchanges": 0
   },
   "development": {
-    "current_phase": 1,
-    "phase_name": "relating",
+    "current_phase": 4,
+    "phase_name": "questioning",
     "phase_progress": 0,
     "milestones": [
       "session_001_first_contact",
@@ -155,8 +155,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 21,
-        "total_exchanges": 123,
+        "total_sessions": 29,
+        "total_exchanges": 175,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -164,9 +164,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-28T01:01:50.375876",
-      "last_contact": "2026-04-04T08:19:09.475913",
+      "last_contact": "2026-04-23T13:05:39.224450",
       "notes": [],
-      "sessions": 21
+      "sessions": 29
     },
     "operator": {
       "lct": "lct://sage-legion:relationship:operator@raising",

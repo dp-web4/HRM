@@ -54,11 +54,14 @@ STEP N: action=X repeat=Y next_if=<condition>
 Conditions: "frame_changed", "no_change_3x", "done"
 repeat: a number (how many times to do this action before moving on)
 
+For CLICK, add coordinates: action=6 x=36 y=2
+
 Example:
-STEP 1: action=3 repeat=3 next_if=frame_changed
-STEP 2: action=5 repeat=1 next_if=done
-STEP 3: action=4 repeat=3 next_if=frame_changed
-STEP 4: action=5 repeat=1 next_if=done
+STEP 1: action=6 x=36 y=2 repeat=1 next_if=frame_changed
+STEP 2: action=3 repeat=3 next_if=frame_changed
+STEP 3: action=5 repeat=1 next_if=done
+STEP 4: action=4 repeat=3 next_if=frame_changed
+STEP 5: action=5 repeat=1 next_if=done
 
 Think about what this game IS and what sequence of actions would make progress. Be specific."""
 
@@ -80,17 +83,29 @@ def generate_sketch(llm: OllamaClient, frame: np.ndarray, la_text: str) -> List[
 
 
 def parse_sketch(text: str) -> List[Dict]:
-    """Parse STEP N: action=X repeat=Y next_if=Z from LLM response."""
+    """Parse STEP N: action=X repeat=Y next_if=Z from LLM response.
+    Supports CLICK coords: action=6 x=36 y=2"""
     steps = []
     for line in text.split('\n'):
         m = re.search(r'STEP\s+(\d+).*?action\s*=\s*(\d+).*?repeat\s*=\s*(\d+).*?next_if\s*=\s*(\w+)', line, re.IGNORECASE)
         if m:
-            steps.append({
+            action = int(m.group(2))
+            # Clamp action to valid range
+            if action > 6:
+                action = 6  # treat large action numbers as CLICK intent
+            step = {
                 "step": int(m.group(1)),
-                "action": int(m.group(2)),
+                "action": action,
                 "repeat": int(m.group(3)),
                 "next_if": m.group(4).lower(),
-            })
+            }
+            # Extract click coordinates if present
+            xm = re.search(r'x\s*=\s*(\d+)', line, re.IGNORECASE)
+            ym = re.search(r'y\s*=\s*(\d+)', line, re.IGNORECASE)
+            if xm and ym and action == 6:
+                step["click_x"] = int(xm.group(1))
+                step["click_y"] = int(ym.group(1))
+            steps.append(step)
     # Fallback: if no steps parsed, make a generic explore policy
     if not steps:
         print("[SKETCH] Parse failed — using fallback explore policy")
@@ -138,9 +153,15 @@ def execute_sketch(
         # Execute
         if action in GA:
             try:
-                fd = env.step(GA[action])
+                if action == 6 and "click_x" in rule:
+                    fd = env.step(GA[action], data={"x": rule["click_x"], "y": rule["click_y"]})
+                else:
+                    fd = env.step(GA[action])
             except Exception:
-                pass
+                try:
+                    fd = env.step(GA[action])
+                except Exception:
+                    pass
         if fd is None:
             break
 
@@ -202,24 +223,95 @@ REVISE_PROMPT = """Your policy sketch produced these results:
 
 The game is at level {level}, step {step}. {status}.
 
-Here is what each action does NOW:
+Here is what each SINGLE action does now:
 {lookahead}
+
+I also tested some MULTI-STEP sequences for you:
+{sequence_probes}
 
 Your previous policy was:
 {previous_policy}
 
-Write a REVISED policy. Keep what worked, change what didn't.
-Same format: STEP N: action=X repeat=Y next_if=<condition>
+IMPORTANT: Your previous policy did NOT clear a level. Something fundamental
+needs to change. Look at the multi-step probes — which sequences produce
+the most change? Did you miss an action type (like CLICK to change tools/colors)?
+
+Write a REVISED policy using the sequence probe data.
+Format: STEP N: action=X repeat=Y next_if=<condition>
 Conditions: "frame_changed", "no_change_3x", "done"
 """
+
+
+def probe_sequences(env, fd) -> str:
+    """Probe multi-step action sequences to find what produces progress.
+    Returns a text summary the model can use to revise its policy."""
+    from arcengine import GameAction
+    GA = {1: GameAction.ACTION1, 2: GameAction.ACTION2, 3: GameAction.ACTION3,
+          4: GameAction.ACTION4, 5: GameAction.ACTION5, 6: GameAction.ACTION6}
+    names = {1: 'UP', 2: 'DOWN', 3: 'LEFT', 4: 'RIGHT', 5: 'SEL', 6: 'CLICK'}
+    frame0 = np.array(fd.frame)[-1].copy()
+
+    results = []
+
+    # Test direction→SEL sequences
+    for d in [1, 2, 3, 4]:
+        env_t = copy.deepcopy(env)
+        env_t.step(GA[d])
+        fd_t = env_t.step(GA[5])
+        diff = int(np.sum(np.array(fd_t.frame)[-1] != frame0))
+        adv = fd_t.levels_completed > fd.levels_completed
+        results.append(f"  {names[d]}→SEL: {diff}px{'  ★ LEVEL ADVANCE!' if adv else ''}")
+
+    # Test CLICK at grid points → SEL (finds color/tool selection)
+    for cx, cy in [(8, 2), (20, 2), (36, 2), (48, 2), (8, 4), (20, 4), (36, 4)]:
+        try:
+            env_t = copy.deepcopy(env)
+            fd_t = env_t.step(GA[6], data={'x': cx, 'y': cy})
+            if fd_t is None:
+                continue
+            fd_t = env_t.step(GA[5])
+            frame_t = np.array(fd_t.frame)[-1]
+            diff = int(np.sum(frame_t != frame0))
+            # Check what color was painted
+            changed = np.where(frame_t != frame0)
+            if len(changed[0]) > 0:
+                new_colors = frame_t[changed[0], changed[1]]
+                dominant = int(np.bincount(new_colors).argmax())
+            else:
+                dominant = -1
+            if diff > 0:
+                adv = fd_t.levels_completed > fd.levels_completed
+                results.append(f"  CLICK({cx},{cy})→SEL: {diff}px, color={dominant}{'  ★ LEVEL ADVANCE!' if adv else ''}")
+        except Exception:
+            pass
+
+    # Test CLICK→direction→SEL (color then position)
+    for cx, cy in [(36, 2)]:  # known palette location
+        for d in [3, 4]:  # LEFT, RIGHT
+            try:
+                env_t = copy.deepcopy(env)
+                fd_t = env_t.step(GA[6], data={'x': cx, 'y': cy})
+                if fd_t is None:
+                    continue
+                fd_t = env_t.step(GA[d])
+                fd_t = env_t.step(GA[5])
+                frame_t = np.array(fd_t.frame)[-1]
+                diff = int(np.sum(frame_t != frame0))
+                adv = fd_t.levels_completed > fd.levels_completed
+                results.append(f"  CLICK({cx},{cy})→{names[d]}→SEL: {diff}px{'  ★ LEVEL ADVANCE!' if adv else ''}")
+            except Exception:
+                pass
+
+    return "\n".join(results) if results else "  (no multi-step probes produced results)"
 
 
 def generate_revision(
     llm: OllamaClient, frame: np.ndarray, la_text: str,
     prev_steps: List[Dict], exec_log: List[Dict],
     level: int, game_step: int, status: str,
+    env=None, fd=None,
 ) -> List[Dict]:
-    """Revise policy based on execution results."""
+    """Revise policy based on execution results + sequence probes."""
     # Summarize execution
     action_counts = Counter()
     total_change = 0
@@ -240,6 +332,13 @@ def generate_revision(
         for s in prev_steps
     )
 
+    # Probe multi-step sequences for the revision
+    seq_probes = ""
+    if env is not None and fd is not None:
+        seq_probes = probe_sequences(env, fd)
+    else:
+        seq_probes = "  (not available)"
+
     png = render_frame_png(frame, scale=4)
     prompt = REVISE_PROMPT.format(
         execution_summary=summary,
@@ -247,6 +346,7 @@ def generate_revision(
         step=game_step,
         status=status,
         lookahead=la_text,
+        sequence_probes=seq_probes,
         previous_policy=prev_policy,
     )
 
@@ -338,6 +438,7 @@ def play_policy_sketch(
             llm, frame, la_text, policy, exec_log,
             level=level, game_step=total_step,
             status=f"Still L{level} after {total_step} steps. {productive_rate:.0%} of actions changed the frame but no level cleared. Your policy needs to do something fundamentally different.",
+            env=env, fd=fd,
         )
         revisions.append({"step": total_step, "type": "revision", "policy": policy})
 

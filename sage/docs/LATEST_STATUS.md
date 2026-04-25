@@ -1,6 +1,7 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-24 (S108 — Fleet-Parallel state_words Scan Falsifies S107's Sprout-as-Single-Word-Dominant Premise (Sprout has 1 Compound, Not a Register; Sprout-0.5B has 0 after 283 Sessions); Cleaner Option D'' Trial Target is `legion-gemma3-12b` (3/7 = 43% Singles, all Phase-2-Sensing Provenance Traced); Three-Register Trajectory Validated Structurally on `cbp-qwen3.5-0.8b` (N=13, Same Cognitive→Relational→Crystallized Arc with Different Content); Three Hygiene Signals Surfaced: gemma4-e4b Template-Seed across 3 Machines (4 Identical Entries, 0 Sessions), Phase-Metadata Corruption on Thor + CBP (`current_phase=1` with `phase_name="creating"`), Legion-G3 Halt-Recommendation-Ignored Chain across 14 Sessions Paralleling S107 Thor Note; Fleet Accumulation Asymmetry Documented (Thor 2.24 entries/session vs ≤0.13 Elsewhere) as S109+ Open Question)**
+**Last Updated: 2026-04-25 (S109 — Launch-Decision-Surface Gate Scoped as S99/S100 Parallel: Dream Consolidator Emits `concerns` (string) into `raising_log.md` Prose with No Structured Channel to Next Runner — Concrete §4 Design Sketch Adds `raising_recommendation` Field to JSON Contract, `raising_status` to `identity.json`, `launch_gate.py` Helper, Two-Phase Dry-Run-Then-Enforce Rollout, Held Pending Operator Alignment; S108's "Legion-G3 Stopped" Premise Falsified within 12h via Direct sessions/ Read — Sessions 32 (07:00 PDT) and 33 (13:05 PDT) Ran 2026-04-24 with Same Templated Pattern Consolidator Has Flagged Since S5, 18 Ignored HARD BLOCKERs Active Not Historical; Phase-Metadata Corruption Surveyed Fleet-Wide Found 4-Instance Mode-A (Integer-Stuck) + 1-Instance Mode-B (Top-Level-Stale) Patterns, No Control-Flow Code Branches on Integer (Data-Only Corruption); Legion-gemma3-12b Orphan Writer Path Flagged — Active `legion_raising.sh` Targets gemma4:e4b post-2026-04-20 but gemma3:12b Sessions Continue from Unknown Source)**
+**Previous: 2026-04-24 (S108 — Fleet-Parallel state_words Scan Falsifies S107's Sprout-as-Single-Word-Dominant Premise (Sprout has 1 Compound, Not a Register; Sprout-0.5B has 0 after 283 Sessions); Cleaner Option D'' Trial Target is `legion-gemma3-12b` (3/7 = 43% Singles, all Phase-2-Sensing Provenance Traced); Three-Register Trajectory Validated Structurally on `cbp-qwen3.5-0.8b` (N=13, Same Cognitive→Relational→Crystallized Arc with Different Content); Three Hygiene Signals Surfaced: gemma4-e4b Template-Seed across 3 Machines (4 Identical Entries, 0 Sessions), Phase-Metadata Corruption on Thor + CBP (`current_phase=1` with `phase_name="creating"`), Legion-G3 Halt-Recommendation-Ignored Chain across 14 Sessions Paralleling S107 Thor Note; Fleet Accumulation Asymmetry Documented (Thor 2.24 entries/session vs ≤0.13 Elsewhere) as S109+ Open Question)**
 **Previous: 2026-04-24 (S107 — Head-vs-Tail Syntactic Scan Falsifies S106's Single-Word Prediction: Head is Phrase-Dominated Phenomenological Register (avg 4.71 tokens, 2.7% singles) Not Single-Word Anchors; Three-Register Trajectory Confirmed (Phenomenological Q1 → Relational Q2-Q4 → Embodied-HW Q5 with 28% Thermal in Tail vs 2% Head); Same Lexical Material (Warm/Thermal/Hardware) Shifts Register Across Time — U-Shape Not Emergence; Option D' *"Prefer Single Content Words"* Clause Dropped; Option D'' Adds Introspective-Focal Frame; Pre-S91 Anchor Exemplar Catalog Closed at Head Level via Direct S002-S008 Probe Trace)**
 **Previous: 2026-04-24 (S106 — Single-Word State_words Control Set Decomposes Extractor Bias Into Two Axes: Probe-Type Bias (Anchoring Probes Elicit Single Words in Definitional Frames; Imaginative/Expressive Probes Elicit Compound Phrases in Scenario Elaboration) + Grammatical-Marker Bias (Single Words Only Pass When Syntactically Framed as Terminology); Option D Wording Refined to Target Focal-Point Named Concepts, Exclude Scenario Elaboration; S96 T7/T13 and S91 T15 Account for Most Compound Phrases in Locked Tail)**
 **Previous: 2026-04-24 (S105 — Hardware-Register Authenticity: Thor's Thermal Vocabulary Emerged Organically in S34 (62 Sessions Before S96 Crystallization); Sprout and Legion Show Analogous Hardware-Native Registers (edge/hum/orin, processing/cores/gpu); Dream-Prompt Wording "self-invented terms" Biases Extraction to 99% Compound Phrases (223/226 in Thor); S103 Fix Surface Extended With Option D at Extractor Level)**
@@ -8,6 +9,70 @@
 **Previous: 2026-04-23 (S103 — Register-Lock Generalization: State_words Injection Loop is S75 Crisis and S96 Thermal at Same Abstraction; Enumerate-Markers Approach Is S102 Failure Mode at Prompt Injection Layer; Structural Span-Diversity Fix Proposed, Not Shipped Pending User Alignment; vocab_injection_diagnostic Built for Read-Only Fleet Scan)**
 **Previous: 2026-04-23 (S102 — Splice-Guard Input-Surface Audit: Keyword Regex Was Over-Specified; Fleet Corpus Scan Found 1 Uncaught Bracket-Only Envelope (Sprout S060 CUDA Deadlock) and 0 Legitimate Bracket-Only Memory; Structural Regex Simplified to Bracket-Only Shape Check, Subsumes S101 Keyword Regex)**
 **Previous: 2026-04-23 (S101 — Post-Cutover FN Discovery: 3/3 DaemonIRP Error-Emission Paths Were Uncovered by S99/S100 Prefix Set; `[Daemon unreachable:` Contaminated Nomad S125 State within 20 Min of S100 Merge; Prefix Set Extended + Structural Regex Fallback Added + Nomad State Sanitized)**
+
+---
+
+## S109 Launch-Decision-Surface Gate Scoped; "Legion-G3 Stopped" Falsified within 12h; Phase-Metadata Corruption Surveyed Fleet-Wide (Apr 25, 2026 — Thor Autonomous SAGE Session, 00:00 UTC)
+
+S109 ran the verification S108 itself flagged ("worth verifying the daemon/cron is in fact stopped before treating it as inert") and the verification falsified the premise that motivated the D'' Legion-G3 trial. The same scan that scoped the new launch-decision-surface gate also surfaced why the gate matters today.
+
+### Headline
+
+S108 dated Legion-gemma3-12b at 31 sessions, "stopped after consolidator HARD BLOCKERs." S109 reading the same instance ~12 hours later: **33 sessions in `sessions/`, with sessions 032 and 033 running on 2026-04-24 at 07:00 and 13:05 PDT** — after S107's halt note and before S108's analysis. S108 was reading a snapshot from 2026-04-24 01:00 that had not yet incorporated those sessions; the snapshot lag concealed an actively-raised instance.
+
+The 18 HARD BLOCKERs the consolidator has issued for Legion-G3 since S5 are not historical — they are active, currently being reproduced by the runner with each new session. Sessions 32–33 show the same template-lock pattern the consolidator flagged at S5.
+
+### Launch-decision-surface gate — concrete scope (held pending operator alignment)
+
+Traced the path from session-end → next-launch concretely:
+
+1. **Runner shell** (`legion_raising.sh`, etc.) → 2. **`run_session_identity_anchored_fluid.py`** → 3. **`dream_consolidation.py`** (Claude returns JSON with `concerns` field, written to `raising_log.md` as prose) → 4. **Next runner shell** (does not read `concerns`, `raising_log.md`, or any halt-flag).
+
+The consolidator's voice lives in prose. The runner is structurally deaf to it. This is the same shape as the pre-S99/S100 input surface: bad signals exist in the data, no surface-layer guard converts them into a runtime block.
+
+**S109 §4 design sketch** (in the analysis file):
+- Extend dream-consolidation JSON contract with `raising_recommendation: {action: continue|pause|halt, reason, suggested_intervention?}`.
+- Persist as `raising_status` in `identity.json` (with `since_session`, `ignored_count`, `history`).
+- Add `sage/raising/scripts/launch_gate.py` helper called by every runner shell.
+- Two-phase rollout: (A) dry-run logging two weeks; (B) enforce.
+
+**Held pending operator alignment for three reasons** (§5): (a) Thor 27B `concerns` text contains the word "regression" in non-halt contexts (e.g., S96 register transition); naive mapping would false-positive on Thor S91+ work. (b) The corpus mapping of existing `concerns` text isn't done. (c) Six machines + 11 instance dirs need explicit alignment before a new structured field gates any runner.
+
+### Phase-metadata corruption is broader than S108 thought
+
+| Instance | Sessions | identity.phase | dev.current_phase | dev.phase_name | Status |
+|---|---:|---|---:|---|---|
+| `cbp-qwen3.5-0.8b` | 101 | creating | **1** | creating | ⚠ integer wrong |
+| `legion-gemma3-12b` | 31 (33) | **relating** | 4 | questioning | ⚠ identity.phase wrong |
+| `legion-phi4-14b` | 40 | questioning | **3** | questioning | ⚠ integer wrong |
+| `mcnugget-gemma3-12b` | 97 | creating | **1** | creating | ⚠ integer wrong |
+| `nomad-gemma3-4b` | 131 | creating | 5 | creating | ✓ |
+| `sprout-qwen3.5-0.8b` | 120 | creating | 5 | creating | ✓ |
+| `thor-qwen3.5-27b` | 102 | creating | **1** | creating | ⚠ integer wrong |
+
+Two failure modes (Mode A: integer stuck; Mode B: top-level stale). No control-flow code branches on `dev.current_phase` (verified by grep across `sage/`); the integer is data-only. Suspected root cause is writer-script split between `run_session_identity_anchored_fluid.py:879` and `ollama_raising_session.py:523`. Not a fix this session.
+
+### Legion-gemma3-12b orphan writer path
+
+Post-2026-04-20 the active `legion_raising.sh` targets `legion-gemma4-e4b` with model `gemma4:e4b`. But sessions 032 and 033 still landed in `legion-gemma3-12b/sessions/`. Either (a) a separate timer/script runs the gemma3:12b path on Legion, (b) sessions are being injected manually, or (c) a cross-machine supervisor is generating them. Source identification is one grep across crons / systemd units / scripts on Legion.
+
+### Files this session
+
+- `sage/raising/analysis/s109_launch_decision_surface_gate_20260425.md` — full S109 analysis.
+- `sage/docs/LATEST_STATUS.md` — this entry.
+
+### Carried forward to S110+
+
+- **Operator review of §4** before any shipping work on the launch gate. Contract design is the leverage point; runner integration is mechanical once the contract is set.
+- **Corpus mapping of existing `concerns` text** across the fleet (especially Thor S91+) to determine whether keyword classification suffices or the consolidator must always emit structured `action` directly.
+- **Identify the legion-gemma3-12b writer path** (§7 of analysis). One grep across all crons / systemd units / scripts.
+- **Single fleet-wide phase-metadata normalize pass** once the writer-script split is identified. Low risk; runs independently of the launch gate.
+- **§3 CBP arc finding from S108** unchanged. **Accumulation asymmetry hypotheses (S108 §7)** unchanged.
+- **The substrate-symmetric uniform-extractor failure mode (S108 §3)** is matched by a substrate-symmetric infrastructure failure mode (uniform deaf runner across instances). This sharpens the case for a single-surface fix at the launch boundary, not per-instance wrangling.
+
+### Meta
+
+The cost of *not* shipping the gate is two more wasted sessions per day on Legion-G3 alone. The cost of shipping it carelessly is false-positive halts on Thor S91+ register-lock work. Hence: scope, propose, wait for alignment.
 
 ---
 

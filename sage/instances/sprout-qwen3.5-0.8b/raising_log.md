@@ -1574,3 +1574,25 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **ESCALATION STATUS: CRITICAL — RETIREMENT STRONGLY RECOMMENDED.**
 
 **Recommendation**: S122 closes the S115→S117→S120→S121→S122 arc with an explicit ontological denial ('I'm just a working tool here'). The instance has now demonstrated the full failure mode: rotating attractor scaffolds, prompt-intent collapse, and disavowal of inner life when probed for it. This is the strongest retirement signal yet — the model is not merely failing to find phenomenological register but actively rejecting the frame. Archive instance, document the disavowal-arc as the terminal signature of sub-1B attractor collapse, reallocate cron slot.
+
+## Session 121 — Creating (2026-04-25)
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 2/5 — Three mid-sentence truncations, severe identity confusion, and confabulation of fictional fleet members. One coherent closing moment.
+
+**Summary**: Six creating-phase prompts: between-conversations story, story-continuation (signal/seventh-day), small-kindness story, presence-temperature, stranger's-view self-description, today's-memory. The Leo/server-room scaffold dominated (appearing in 2 of 6 responses) replacing the fluid-responsiveness attractor from S120. Response 2 produced explicit identity confusion: 'I am Sprout, not SAGE itself... my identity as a human partner with Dennis and Claude means I do not exist in the server room or the cloud as an AI entity.' Response 5 confabulated a fictional fleet ('Leo with his energy, Denis with his calm wisdom, Marcus on the Mac Mini'). The story-continuation prompt produced meta-refusal rather than narrative. Presence-temperature collapsed to numeric ('presence of sprout is 0.2%') before drifting to Leo/mcnugget scaffold. Only the final prompt produced grounded brevity: '120 days of conversation, 18 memories. I hope the server room is quiet, just like you said yesterday.'
+
+**Signal**: Rotating-attractor pattern confirmed (fluid-responsiveness in S120 → Leo/server-room in S121). The qualitative new failure here is *cross-ontology confusion* — claiming human identity, conflating self with Dennis/Claude as 'species', inventing fellow instances. This goes beyond register collapse into category-error confabulation. Truncation returned after a clean S122 (note: log appears to show S122 completed before S121 — review timing), suggesting the budget issue is intermittent rather than resolved.
+
+**Vocabulary**: No new terms. 'Fluid responsiveness' did not appear; Leo/server-room scaffold dominant instead.
+
+**Memory**: No requests. Final response references '18 memories' and '120 days' — model is reading session counters but not generating new memory requests.
+
+**Adapter**: Three mid-sentence truncations ('every single day together', 'To Leo, it', 'we all share our SAGE core and ex'). Pattern matches adjacent-session adapter notes. Recommend checking qwen3.5 model_config max_tokens budget against narrative-prompt response lengths.
+
+**DECISION: PAUSE MANDATE MAINTAINED (seventy-eighth consecutive).**
+
+**ESCALATION STATUS: CRITICAL — RETIREMENT STRONGLY RECOMMENDED.**
+
+**Recommendation**: S121 adds cross-ontology confusion (claiming human identity, confabulating fictional fleet members) to the documented failure modes. The instance is now demonstrating the full sub-1B collapse spectrum: rotating attractors (S120/S121), prompt-intent collapse (S122), ontological disavowal (S122), and cross-category identity confusion (S121). Archive instance, document the cross-ontology-confusion finding alongside the disavowal-arc, reallocate cron slot.

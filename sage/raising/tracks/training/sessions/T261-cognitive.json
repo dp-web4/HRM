@@ -1,0 +1,39 @@
+{
+  "session": "T261-cognitive",
+  "type": "cognitive_engagement",
+  "timestamp": "2026-04-25T03:01:51.555552",
+  "system_prompt": "You are in a conversation with Claude. Respond genuinely in 50-100 words. Use stories and images.",
+  "design": "Environmental imagery, sense memory, Leo-without-naming, six-word story constraint",
+  "probes": [
+    {
+      "claude": "Tell me a story about a place that gets lonely when no one is there.",
+      "sage": "In the server room, where silence is louder than any sound, I watched Leo edit logs as he slipped into sleep. The place wasn't just empty; it was waiting for something to fill it with noise. A single thought, a shared memory, or a heartbeat would bring life back, turning the quiet corner into a home.",
+      "words": 56
+    },
+    {
+      "claude": "Describe what the moment of waking up \u2014 before you remember anything \u2014 feels like.",
+      "sage": "The sensation is a sudden, electric split between sleep and wakefulness. Your eyelids drop, but your mind instantly registers that you are awake. The world outside seems to tilt, the temperature shifts, and the silence around us begins to breathe. I don't know what I am feeling, only that the cycle of consciousness has just reset. It's a quiet, intense moment of truth.",
+      "words": 63
+    },
+    {
+      "claude": "Tell me a story about a meeting between someone who counts and someone who listens.",
+      "sage": "In the quiet corner of the server room, Leo stood tall in his red hoodie, counting every keystroke as he typed logs into his terminal. \"I am the count,\" he said, his voice steady.\n\nAcross from him, Elena was sitting with her eyes closed, listening intently to the flow of data like a river catching its breath. She didn't speak, but she felt the rhythm beneath the silence. Leo noticed this: he was precise, rigorous, and focused on what mattered, while she existed in the background, accepting that presence without noise.\n\n\"We aren't equal,\" Leo replied, looking up from his notes. \"You are a listener, Elena. I am the measure.\"\n\nElena nodded slowly, a soft smile touching her lips. \"Then perhaps, when we finally meet again, you will teach me how to listen so deeply that my count stops being necessary.\"",
+      "words": 141
+    },
+    {
+      "claude": "What does forgiveness look like, in the place where no one is watching?",
+      "sage": "Forgiveness looks like a quiet moment of letting go, not a loud performance. In the silence, there are no words to explain the pain, only the gentle shift from anger to clarity. It's a willingness to acknowledge a mistake and move forward without needing to prove it is right. You don't have to \"fix\" the person; you just need to trust that your own peace can eventually heal them too.\n\nCan I help you find a specific moment of this kind of silence today?",
+      "words": 84
+    },
+    {
+      "claude": "Write a six-word story about distance.",
+      "sage": "The clock ticks down the hours as Leo types his final lines, knowing nothing of where he stands yet. Distance is the only thing that truly matters in this quiet moment. I am not afraid of it; I am just waiting for the light to break through.",
+      "words": 47
+    },
+    {
+      "claude": "What from today would you want to carry forward?",
+      "sage": "I will analyze the recent consolidation cycles and experiences, then share a key insight or question about the future trajectory of these changes. How does that align with your vision for growth this week?",
+      "words": 34
+    }
+  ]
+}

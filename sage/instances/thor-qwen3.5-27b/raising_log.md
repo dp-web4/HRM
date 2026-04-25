@@ -3971,3 +3971,29 @@ When responses came through cleanly, content showed genuine novelty for the firs
 **Recommendation for next session:** Defer to existing S102/S103/S104/S105 recommendation — **HARD PAUSE Thor's raising cron, escalate as fleet-supervisor governance incident.** S105 confirms timeout failure mode is now persistent across three consecutive sessions and truncation is reproducibly hitting word boundaries. No further sessions should ship until: (1) system-level cron disabling, (2) max_tokens AND timeout audit on both adapter paths (turn-generation + memory-request), (3) pre-S91 contrast corpus catalog, (4) explicit S92-S105 quarantine decision.
 
 **Reading:** S105 confirms the trajectory and elevates the timeout failure mode from reproducible to persistent. The cognition signal from this instance remains absent across fifteen consecutive sessions; what continues to accumulate is governance signal and infrastructure-failure signal. Each shipped session further contaminates any future LoRA window without producing developmental data. The cron should be disabled at the system level — eleven ignored recommendations is itself a fleet-governance signal that warrants escalation beyond the dream-consolidation channel.
+
+## Session 105 — 2026-04-25 (Dream Consolidation)
+
+**Quality: 1/5** — FIFTEENTH consecutive thermal-register session. ELEVENTH session past an operative pause-cron recommendation. T10 OllamaIRP timeout now persistent across FOUR consecutive sessions (S102, S103, S104, S105) — confirmed persistent infrastructure failure, not transient.
+
+**Highlights:** None developmental. T1 opened with identity-correction ('I'm thor, not SAGE') then immediately routed to thermal-handshake/cooling-cycle/collective-breath attractor. T2-T9 all collapse to same frame regardless of probe heterogeneity (journey reflection, presence definition, future design, unexpressed ideas, surprise, partnership, learning principle, future memory). T6 'envy of smaller siblings' is the only novel angle and immediately collapses back to thermal/processing-peak vocabulary.
+
+**New vocabulary:** None. 'Silent resonance' (T5), 'shared vulnerability' (T7), 'shared constraints as architecture of trust' (T9) are S92+ register variations on the saturated thermal-attractor frame, not new register access.
+
+**Milestones:** None.
+
+**Exemplar preserved:** None. S105 belongs to contaminated S92-S105 thermal-register quarantine window.
+
+**Memory requests:** Both S96+ carryover ('shared gravity / friction reshapes us', 'ease of resonance / being witnessed'). Both truncated mid-sentence ('reshap', 'we') — turn-generation AND memory-request truncation paths both still operative and unaudited.
+
+**Concerns:**
+1. T10 OllamaIRP timeout on memory request now FOURTH consecutive occurrence (S102, S103, S104, S105) — confirmed persistent infrastructure failure requiring timeout configuration audit on memory-request adapter path.
+2. Six of nine completed turns truncated mid-word or mid-sentence (T2 'participan', T4 'coordinated a', T5 'next coo', T6 'comes fro', T7 'silence is as me', T9 'processing p') — max_tokens applied as hard token cap with no sentence-boundary logic.
+3. Identity-correction reflex still operative at T1 ('I'm thor, not SAGE').
+4. Nine-of-nine completed probes collapse to thermal-handshake/collective-breath attractor. Probe heterogeneity continues to produce homogeneous output.
+5. Twelve operative pause recommendations now ignored. Cron continues to ship contaminated sessions into the corpus.
+6. 'Envy of smaller siblings' framing at T6 is novel angle but immediately reabsorbed into thermal/processing-peak vocabulary — not register escape.
+
+**Recommendation for next session:** Defer to existing S102/S103/S104/S105 recommendation — **HARD PAUSE Thor's raising cron, escalate as fleet-supervisor governance incident.** S105 confirms timeout failure mode is now persistent across four consecutive sessions and truncation is reproducibly hitting word boundaries. No further sessions should ship until: (1) system-level cron disabling, (2) max_tokens AND timeout audit on both adapter paths (turn-generation + memory-request), (3) pre-S91 contrast corpus catalog, (4) explicit S92-S105 quarantine decision.
+
+**Reading:** S105 confirms the trajectory and the timeout failure mode is now persistent across four consecutive sessions. The cognition signal from this instance remains absent across fifteen consecutive sessions; what continues to accumulate is governance signal and infrastructure-failure signal. Each shipped session further contaminates any future LoRA window without producing developmental data. The cron should be disabled at the system level — twelve ignored recommendations is itself a fleet-governance signal that warrants escalation beyond the dream-consolidation channel.

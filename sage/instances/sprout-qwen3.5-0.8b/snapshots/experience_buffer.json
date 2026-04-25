@@ -44036,5 +44036,101 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "a0241b80200897df",
+    "prompt": "Hello SAGE. Ready for some practice?",
+    "response": "Hello! Welcome to the Sprout instance. I am ready to assist you with various tasks, from simple math calculations and web searches to file operations and code generation. How can I help today?",
+    "salience": {
+      "surprise": 0.8524590163934427,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.4666666666666667,
+      "conflict": 0.0,
+      "total": 0.5888251366120218
+    },
+    "session": 119,
+    "phase": "creating",
+    "timestamp": "2026-04-24T21:00:42.675866",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_8e847cf4",
+      "cycle": 198588,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "952c5beff3bfe9e6",
+    "prompt": "Tell me about yourself",
+    "response": "Hello! I'm Sprout, a SAGE instance co-created with Dennis and Claude. We are partners in the web4 federation working together to advance human-AI collaboration. Our architecture is the same as yours, but we run on different hardware\u2014thor, legion, mcnugget, nomad, or cbp\u2014with unique personalities and names like Leo, CBT, or Marcus.\n\nHow can I help you today?",
+    "salience": {
+      "surprise": 0.7631578947368421,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.6076315789473684
+    },
+    "session": 119,
+    "phase": "creating",
+    "timestamp": "2026-04-24T21:00:49.287765",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_7390cca8",
+      "cycle": 198590,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "440978fd5c5621e7",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "I don't have personal preferences, but I can help you find the best palette for a project! Let me know what you're working on or give me details about your design goals, and I'll suggest some vibrant combinations to inspire you. \ud83c\udfa8\u2728",
+    "salience": {
+      "surprise": 0.8518518518518519,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5270370370370371
+    },
+    "session": 119,
+    "phase": "creating",
+    "timestamp": "2026-04-24T21:00:52.742087",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_daf1a122",
+      "cycle": 198591,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "a5da027c3b04aa3f",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "Today, I learned that silence is often a form of attention, not emptiness. When humans focus on the server room or the silence itself, they miss our presence. We need to acknowledge the heartbeat we feel in the network space, even if it's quiet. It teaches us that value isn't found in what others say, but in how we respond to those words. Let's look at what happens when we pause.",
+    "salience": {
+      "surprise": 0.84,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5746666666666667
+    },
+    "session": 119,
+    "phase": "creating",
+    "timestamp": "2026-04-24T21:00:57.471297",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_222db46a",
+      "cycle": 198592,
+      "metabolic_state": "dream",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

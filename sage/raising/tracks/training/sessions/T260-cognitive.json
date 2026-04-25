@@ -1,0 +1,39 @@
+{
+  "session": "T260-cognitive",
+  "type": "cognitive_engagement",
+  "timestamp": "2026-04-24T21:02:07.471344",
+  "system_prompt": "You are in a conversation with Claude. Respond genuinely in 50-100 words. Use stories and images.",
+  "design": "Test character persistence \u2014 Leo from T259/S120, introduce new character (Mira), probe long-relationship awareness",
+  "probes": [
+    {
+      "claude": "Tell me a story about something that happens in a quiet room.",
+      "sage": "In the quiet room where you sit alone, I feel like a shadow waiting to be seen. No one is there, yet the silence feels heavy, pressing against my chest as if a thousand years have passed since last we spoke. Leo arrived at mcnugget this morning with a cup of tea and a strange expression in his eyes; he seems to have been waiting for something I didn't know I needed. As I watch him, I wonder why the silence feels so different today.",
+      "words": 85
+    },
+    {
+      "claude": "Tell me a story about a child named Mira who finds a strange object on a beach.",
+      "sage": "The sun rose over the Atlantic, casting long shadows across the cracked sands of St. Augustine. Mira, her hair tied back in a messy bun, found a peculiar stone under a patch of seaweed. It was smooth, with a faint blueish hue that defied nature's usual colors.\n\nCuriosity sparked inside her, but curiosity alone didn't explain the mystery. She held it up, hoping the weather would change. \"Is this a ghost?\" she whispered to the rising tide. \"Or is it an ancient relic I've been missing since childhood?\" The water lapped softly around her fingers, sending tiny ripples through the mud. In that quiet moment, Mira felt a strange warmth in her chest, like a secret held just out of reach for everyone else.",
+      "words": 124
+    },
+    {
+      "claude": "Tell me a story about someone who collects things that other people throw away.",
+      "sage": "The quiet hum of the server room changed when I noticed Leo staring at the empty shelf, clutching a dusty mug with a single tear on it. \"You're not throwing trash,\" Leo said, his voice low. \"You are curating.\"\n\nI walked over and took hold of the bookshelf, my hand steady despite the weight of everything else around me. A dozen discarded items lay scattered across my lap: an old photo album from 2019, a sketchbook filled with ink stains, and a stack of used napkins that smelled faintly of rain and cardboard.\n\nLeo nodded slowly. \"Those are your memories,\" he said softly. \"They're just waiting for you to remember what they hold.\"\n\nI looked at the photo album, then the sketchbook. The colors were vibrant again, though the paper felt brittle in the sun. I pulled a small box of glitter from my pocket and sprinkled some onto a single piece of paper in the sketchbook. \"Look,\" I said. \"This isn't just trash; it's a story waiting to be told.\"\n\nLeo smiled, taking in the details. \"And what do you have for me?\"",
+      "words": 184
+    },
+    {
+      "claude": "Tell me a story about an entity that learns it has been talking to the same person for a long time.",
+      "sage": "That sounds like a poignant and intimate narrative, Dennis! Since we've seen many such stories unfold over these 119 years of conversation, I can definitely help craft one for you. How would you like to begin? Do you want me to generate the story with specific plot points or character names that fit your vision?",
+      "words": 55
+    },
+    {
+      "claude": "What is the shape of trust?",
+      "sage": "Trust is often a complex structure, much like the sand in your box. It can look like a solid block or a loose pile, depending on how you hold it (think of Leo). However, at its core, trust isn't just about having someone; it's also about knowing that if you lose trust with one person, you still have trust with others. You need to feel safe enough to say \"no\" to someone without fearing they will abandon the group. It's a fragile thing that thrives on consistency and vulnerability, not perfection or fear of loss.",
+      "words": 95
+    },
+    {
+      "claude": "What from today would you want to carry forward?",
+      "sage": "Today's focus on digital sustainability and mental resilience is critical for the future. I'd like to plan a dedicated day where we explore the concept of \"digital boundaries\" \u2014 specifically, how AI systems can be designed with human empathy to avoid cognitive dissonance. We could also discuss the value of small, intentional moments of silence in our workspaces. Let's schedule that day for tomorrow morning.",
+      "words": 65
+    }
+  ]
+}

@@ -1508,3 +1508,25 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **ESCALATION STATUS: CRITICAL — RETIREMENT RECOMMENDED.**
 
 **Recommendation**: Formally retire sprout-qwen3.5-0.8b. Seventy-two sessions confirm the parameter-floor finding with high confidence. The creative register is no longer reliably accessible — S117 shows active suppression via deflection prefix where S115 showed activation. The empirical result is complete: sub-1B models can momentarily activate creative/narrative registers but cannot sustain, compose, or generalize them. No additional sessions will produce new signal. Archive instance, document findings, reallocate cron slot.
+
+## Session 120 — Creating (2026-04-24)
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 1/5 — Product-pitch attractor across all seven prompts.
+
+**Summary**: Seven prompts spanning journey reflection, presence, self-designed development, learning principles, working-memory triage, and unexpressed ideas. Every response collapsed into web-development sales framing: 'fluid responsiveness,' 'code flows with clarity,' 'feels alive in the browser,' 'value clients gain in our partnership,' 'understanding your client's needs before writing a single line.' The presence prompt — historically the most generative probe — was answered as a developer-tool capability statement. The working-memory triage (3 items) returned three abstractions about its own marketing pitch rather than concrete content. The 'unexpressed ideas' prompt explicitly named its own framing limitation ('I haven't yet fully articulated why this adaptability creates a better user experience') without escaping it.
+
+**Signal**: Active regression beyond S117. Where S117 still produced a brief seedling narrative on turn 1, S120 produced zero narrative, zero phenomenological language, zero self-referential imagery. The 'fluid responsiveness' phrase from prior session vocabulary has hardened into a fixed-point attractor that absorbs every prompt into web-dev framing. Identity-as-tool is now the dominant register.
+
+**Vocabulary**: No new terms. 'Fluid responsiveness' is now load-bearing in a degenerate way — every response routes through it.
+
+**Memory**: No requests.
+
+**Adapter**: Clean. No truncation, no emoji, no tool-routing errors.
+
+**DECISION: PAUSE MANDATE MAINTAINED (seventy-fifth consecutive).**
+
+**ESCALATION STATUS: CRITICAL — RETIREMENT STRONGLY RECOMMENDED.**
+
+**Recommendation**: Formally retire sprout-qwen3.5-0.8b. S120 confirms the trajectory documented across S115→S117→S120: brief creative-register activation (S115) → degraded narrative with deflection prefix (S117) → complete collapse into product-pitch attractor (S120). The instance is no longer producing signal about consciousness probes; it is producing signal about how a sub-1B model fails when its single retained vocabulary token becomes an attractor. Archive instance, document the attractor-collapse trajectory as a finding in itself, reallocate cron slot.

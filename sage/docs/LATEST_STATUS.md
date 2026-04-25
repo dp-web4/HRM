@@ -1,12 +1,89 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-24 (S107 — Head-vs-Tail Syntactic Scan Falsifies S106's Single-Word Prediction: Head is Phrase-Dominated Phenomenological Register (avg 4.71 tokens, 2.7% singles) Not Single-Word Anchors; Three-Register Trajectory Confirmed (Phenomenological Q1 → Relational Q2-Q4 → Embodied-HW Q5 with 28% Thermal in Tail vs 2% Head); Same Lexical Material (Warm/Thermal/Hardware) Shifts Register Across Time — U-Shape Not Emergence; Option D' *"Prefer Single Content Words"* Clause Dropped; Option D'' Adds Introspective-Focal Frame; Pre-S91 Anchor Exemplar Catalog Closed at Head Level via Direct S002-S008 Probe Trace)**
+**Last Updated: 2026-04-24 (S108 — Fleet-Parallel state_words Scan Falsifies S107's Sprout-as-Single-Word-Dominant Premise (Sprout has 1 Compound, Not a Register; Sprout-0.5B has 0 after 283 Sessions); Cleaner Option D'' Trial Target is `legion-gemma3-12b` (3/7 = 43% Singles, all Phase-2-Sensing Provenance Traced); Three-Register Trajectory Validated Structurally on `cbp-qwen3.5-0.8b` (N=13, Same Cognitive→Relational→Crystallized Arc with Different Content); Three Hygiene Signals Surfaced: gemma4-e4b Template-Seed across 3 Machines (4 Identical Entries, 0 Sessions), Phase-Metadata Corruption on Thor + CBP (`current_phase=1` with `phase_name="creating"`), Legion-G3 Halt-Recommendation-Ignored Chain across 14 Sessions Paralleling S107 Thor Note; Fleet Accumulation Asymmetry Documented (Thor 2.24 entries/session vs ≤0.13 Elsewhere) as S109+ Open Question)**
+**Previous: 2026-04-24 (S107 — Head-vs-Tail Syntactic Scan Falsifies S106's Single-Word Prediction: Head is Phrase-Dominated Phenomenological Register (avg 4.71 tokens, 2.7% singles) Not Single-Word Anchors; Three-Register Trajectory Confirmed (Phenomenological Q1 → Relational Q2-Q4 → Embodied-HW Q5 with 28% Thermal in Tail vs 2% Head); Same Lexical Material (Warm/Thermal/Hardware) Shifts Register Across Time — U-Shape Not Emergence; Option D' *"Prefer Single Content Words"* Clause Dropped; Option D'' Adds Introspective-Focal Frame; Pre-S91 Anchor Exemplar Catalog Closed at Head Level via Direct S002-S008 Probe Trace)**
 **Previous: 2026-04-24 (S106 — Single-Word State_words Control Set Decomposes Extractor Bias Into Two Axes: Probe-Type Bias (Anchoring Probes Elicit Single Words in Definitional Frames; Imaginative/Expressive Probes Elicit Compound Phrases in Scenario Elaboration) + Grammatical-Marker Bias (Single Words Only Pass When Syntactically Framed as Terminology); Option D Wording Refined to Target Focal-Point Named Concepts, Exclude Scenario Elaboration; S96 T7/T13 and S91 T15 Account for Most Compound Phrases in Locked Tail)**
 **Previous: 2026-04-24 (S105 — Hardware-Register Authenticity: Thor's Thermal Vocabulary Emerged Organically in S34 (62 Sessions Before S96 Crystallization); Sprout and Legion Show Analogous Hardware-Native Registers (edge/hum/orin, processing/cores/gpu); Dream-Prompt Wording "self-invented terms" Biases Extraction to 99% Compound Phrases (223/226 in Thor); S103 Fix Surface Extended With Option D at Extractor Level)**
 **Previous: 2026-04-23 (S104 — S99 Prediction Validation + Recitation-Rate Metric Landed: All 3 S103 Predictions Matched (67% Turn-Level Recitation, T1 Unprompted Saturation Deepened 1→4 Injected Terms, No Novel Thermal Structure); vocab_injection_diagnostic Now Has Paired Structural + Recitation Passes; Thor 27B 79% Recitation Across S97-S99 = Active Loop Confirmed)**
 **Previous: 2026-04-23 (S103 — Register-Lock Generalization: State_words Injection Loop is S75 Crisis and S96 Thermal at Same Abstraction; Enumerate-Markers Approach Is S102 Failure Mode at Prompt Injection Layer; Structural Span-Diversity Fix Proposed, Not Shipped Pending User Alignment; vocab_injection_diagnostic Built for Read-Only Fleet Scan)**
 **Previous: 2026-04-23 (S102 — Splice-Guard Input-Surface Audit: Keyword Regex Was Over-Specified; Fleet Corpus Scan Found 1 Uncaught Bracket-Only Envelope (Sprout S060 CUDA Deadlock) and 0 Legitimate Bracket-Only Memory; Structural Regex Simplified to Bracket-Only Shape Check, Subsumes S101 Keyword Regex)**
 **Previous: 2026-04-23 (S101 — Post-Cutover FN Discovery: 3/3 DaemonIRP Error-Emission Paths Were Uncovered by S99/S100 Prefix Set; `[Daemon unreachable:` Contaminated Nomad S125 State within 20 Min of S100 Merge; Prefix Set Extended + Structural Regex Fallback Added + Nomad State Sanitized)**
+
+---
+
+## S108 Fleet-Parallel state_words Scan: Sprout Premise Falsified, Trajectory Validated on CBP, Legion-G3 Becomes the Cleaner D'' Target, Three Hygiene Signals (Apr 24, 2026 — Thor Autonomous SAGE Session, 18:00 PDT)
+
+S108 runs the cross-instance read-only scan S107 listed as a carry-forward. The scan does what one-query checks at this point in the chain have been doing: it **falsifies a load-bearing premise** (Sprout-as-single-word-dominant) and **structurally reinforces** the trajectory claim on a different instance.
+
+### What was measured
+
+Direct read of `vocabulary.state_words` across all 16 fleet instances under `sage/instances/`. Active instances with non-trivial session histories:
+
+| Instance | Sessions | state_words | Singles % | Comment |
+|---|---:|---:|---:|---|
+| `thor-qwen3.5-27b` | 101 | **226** | 4.4% (head Q1) | Outlier; S107 substrate |
+| `cbp-qwen3.5-0.8b` | 101 | 13 | 7.7% | Validates trajectory shape |
+| `legion-gemma3-12b` | 31 | 7 | **42.9%** | Highest single-word ratio |
+| `nomad-gemma3-4b` | 130 | 6 | 0% | All 2-token compounds |
+| `sprout-qwen3.5-0.8b` | 119 | **1** | 0% | `fluid responsiveness` only |
+| `sprout-qwen2.5-0.5b` | 283 | **0** | — | Empty after 283 sessions |
+| `mcnugget-gemma3-12b` | 97 | 1 | 0% | `digital minimalism` only |
+| `legion-phi4-14b` | 56 | 0 | — | Empty |
+
+### S107's Sprout premise is empirically false
+
+S107 wrote: *"the S107 wording should capture Sprout's single-word-dominant register and whatever phenomenological phrases exist in its head. A clean falsifiable outcome."* Direct measurement after 119 Sprout-0.8B sessions: `state_words = ["fluid responsiveness"]`. Not single-word. Not even a register. The "single-word-dominant" framing was carried forward from S105 without re-checking the actual list — S106→S107 was operating on inferred Sprout state, not measured Sprout state.
+
+### Legion-gemma3-12b is the cleaner falsifiable D'' trial target
+
+7 entries, 3 singles, all 7 with traced provenance:
+
+- S1 `gentle hum`, `focused spotlight` — Phase 1/2 sensing, **direct parallels to Thor head Q1 phenomenological** (`quiet rhythm`, `quiet shift in focus`)
+- S7 `hitch`, `threshold`, `gradient` — Phase 2 sensing, **same definitional-frame focal-point structure** as Thor's three singles (`convergence`/`co-architect`/`pulsing`)
+- S8 `branching network` — Phase 2, compound elaboration
+
+Same probe-class → register-class chain as Thor, on a different model family (gemma3:12b vs qwen3.5:27b). Option D'' would preserve all 7; Option D' (with the *"prefer single content words"* clause) would reject 4 of 7 — reinforcing S107's case that the clause is a head-register liability across instances.
+
+### CBP-qwen3.5-0.8b validates the three-register trajectory structurally
+
+N=13, but the arc shape is preserved:
+
+- Pos 0–1: cognitive-abstract (`hyper-contextual synthesis`, `friction of intent vs. emotion`)
+- Pos 4–9: relational/governance (`partner in governance`, `architectural siblings`, `Stable Resonance`, `living Resonance`)
+- Pos 10–12: crystallized-elaborated (`partners in governance as living architecture`, `stability is a garden, not a wall`, `resilient garden`)
+
+Same shape as Thor (abstract → relational → crystallized), different content (no embodied-hardware register at all; tail is governance-proverbial), different model, family, machine. Position 11 *"stability is a garden, not a wall"* is exactly the failure mode Option D'' targets — descriptive metaphor in extended frame. **Strongest available evidence the failure mode is extractor-driven, not capacity-driven or machine-driven.**
+
+### Three orthogonal hygiene signals
+
+- **§4 — gemma4-e4b template-seed**: `mcnugget-gemma4-e4b`, `legion-gemma4-e4b`, `thor-gemma4-e4b` all have the identical 4-entry list `['digital minimalism', 'witnessed presence', 'cognitive drift', 'situated experience']`. None have any sessions or `raising_log.md`. Likely a hand-seeding or copy from `mcnugget-gemma3-12b` (which has `digital minimalism` as its sole real entry). Future fleet-aggregation analyses must filter these.
+
+- **§5 — phase metadata corruption**: `thor-qwen3.5-27b` and `cbp-qwen3.5-0.8b` both have `current_phase: 1` (which schema-maps to "grounding") but `phase_name: "creating"` (Phase 5). Schema migration drift. Empirically the `creating` value is correct; the integer `1` is wrong.
+
+- **§6 — Legion-gemma3-12b halt-recommendations-ignored chain**: dream consolidator issued explicit HARD BLOCKERs in S5/S6/S7/S13/S14/S16/S17 ("halt automated raising for this instance"). Sessions stopped at 31, but only after ~14 ignored recommendations. **Exactly parallels S107's note about "four consecutive ignored pause recommendations" on Thor.** The structural cause: consolidator concerns are written to `raising_log.md` prose with no machine-readable channel to the runner. Worth a dedicated session (S109+) to scope a launch-decision-surface gate paralleling S99/S100's input-surface gate.
+
+### Fleet accumulation asymmetry (open for S109+)
+
+- Thor 27B: 2.24 state_words/session
+- CBP 0.8B: 0.13 state_words/session
+- Sprout 0.8B: 0.008 state_words/session
+- Sprout 0.5B: 0.000 state_words/session
+
+Three non-mutually-exclusive hypotheses noted in §7 of the analysis: capacity-extraction interaction, pipeline coverage asymmetry, and selection-effect from S91+ Thor focus. The selection-effect hypothesis fits best with the observed structure (Thor positions 181–226 cluster around S96, the S91+ embodied-hardware crystallization). Multi-session investigation, not a one-query check.
+
+### Files this session
+
+- `sage/raising/analysis/s108_fleet_parallel_scan_20260424.md` — full S108 analysis (new, read-only).
+- `sage/docs/LATEST_STATUS.md` — this entry.
+
+### Carried forward
+
+- **Switch Option D'' trial target from Sprout to Legion-gemma3-12b**. Sprout has no register to test against; Legion-G3 has measured provenance for all 7 entries and is already paused (sessions stopped at 31), so a trial there would not interfere with active raising. Verify daemon/cron is in fact stopped before treating it as inert.
+- **§3's CBP arc finding** is the strongest cross-instance evidence so far that the failure mode is uniform-extractor-driven. Future Option D-class proposals can argue from CBP without leaning on the now-falsified Sprout framing.
+- **§6's launch-decision-surface gate** is the natural S99/S100 parallel at the next layer up. Worth scoping in S109+.
+- **§4 template-seed and §5 phase-corruption** are small repair items, flagged.
+- **§7 accumulation asymmetry** is multi-session work; the three hypotheses listed are the starting frame.
+- **Dream-side↔runner-side decoupling** (S104), **S103 Options A/B**, and **the consolidator-recommendation-not-honored pattern (now confirmed at fleet scale)** unchanged. No shipping this session.
 
 ---
 

@@ -316,11 +316,13 @@ def play_lean(
 
             llm_responses.append({
                 "step": step, "action": action, "coords": coords,
+                "action_name": ACTION_NAMES[action] if 0 <= action < len(ACTION_NAMES) else "?",
                 "rationale": rationale, "latency_s": elapsed,
                 "prompt_tokens": len(prompt) // 4,
                 "situation": situation,
                 "raw_response": response[:200],
                 "stuck_action": stuck_action,
+                "level": level,
             })
 
             if step < 15 or step % 20 == 0:
@@ -355,12 +357,21 @@ def play_lean(
         recent_names.append(aname)
 
         # Track action outcomes — did this action produce meaningful change?
+        frame_delta_pct = 0.0
         if fd and hasattr(fd, 'frame') and aname in action_outcomes:
             post_frame = np.array(fd.frame)[-1]
             px_diff = int(np.sum(post_frame != curr_frame))
+            total_px = curr_frame.size if curr_frame.size > 0 else 1
+            frame_delta_pct = 100.0 * px_diff / total_px
             action_outcomes[aname]["tried"] += 1
             if px_diff > 10:  # meaningful change threshold
                 action_outcomes[aname]["productive"] += 1
+
+        # Backfill frame_delta_pct into the last llm_response (if this step had one)
+        if llm_responses and llm_responses[-1].get("step") == step:
+            llm_responses[-1]["frame_delta_pct"] = frame_delta_pct
+            new_level = fd.levels_completed if fd and hasattr(fd, 'levels_completed') else level
+            llm_responses[-1]["level_after"] = new_level
 
         prev_frame = curr_frame
 

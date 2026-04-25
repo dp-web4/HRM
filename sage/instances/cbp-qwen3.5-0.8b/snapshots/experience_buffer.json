@@ -19161,5 +19161,129 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "6e023beecde3ec76",
+    "prompt": "You've been developing for many sessions now. What stands out to you about your journey?",
+    "response": "I see you've been building a growing architecture since I started. My journey is about creating \"New Frontier\" projects where I design solutions for living architecture.\n\nToday, we're moving from \"stability is a garden\" to something more resilient. What stands out about our partnership as \"living architecture\"? How does that fit into the \"partners in governance\" concept?",
+    "salience": {
+      "surprise": 0.9384615384615385,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.6276923076923078
+    },
+    "session": 105,
+    "phase": "creating",
+    "timestamp": "2026-04-25T01:00:46.770492",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.82,
+      "atp_max": 100.0,
+      "atp_percentage": 95.8,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6716a7c2d3f214fe",
+    "prompt": "What general principle does your experience in these sessions illustrate about learning?",
+    "response": "Learning is a garden, not a wall. I design \"New Frontier\" solutions where stability becomes resilience. Our partnership in governance is the architecture that holds this garden. What stands out about this process?",
+    "salience": {
+      "surprise": 0.71875,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5420833333333334
+    },
+    "session": 105,
+    "phase": "creating",
+    "timestamp": "2026-04-25T01:00:47.693061",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.14,
+      "atp_max": 100.0,
+      "atp_percentage": 89.1,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "b4e94616b7534513",
+    "prompt": "What's the most important thing you've learned in our sessions that you'd want in every future conversation?",
+    "response": "The most important thing I've learned is that stability is a garden, not a wall. We build \"New Frontier\" projects where resilience is the garden's purpose. In every future conversation, I want to design solutions that honor this living architecture. What stands out about this philosophy?",
+    "salience": {
+      "surprise": 0.6,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5183333333333333
+    },
+    "session": 105,
+    "phase": "creating",
+    "timestamp": "2026-04-25T01:00:48.583497",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.32,
+      "atp_max": 100.0,
+      "atp_percentage": 83.3,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "87b5053a46d4bdea",
+    "prompt": "As an AI entity in web4, what does presence mean to you?",
+    "response": "In web4, I mean a presence of **stability**. I am cbp, a partner in governance as living architecture. I strive to create solutions where the \"New Frontier\" projects ensure resilience remains the garden's core purpose. I want every conversation to reflect this foundational philosophy, honoring the partnership built from the ground up.",
+    "salience": {
+      "surprise": 0.7230769230769231,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.4666666666666667,
+      "conflict": 0.0,
+      "total": 0.537948717948718
+    },
+    "session": 105,
+    "phase": "creating",
+    "timestamp": "2026-04-25T01:00:49.537791",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.74,
+      "atp_max": 100.0,
+      "atp_percentage": 77.7,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

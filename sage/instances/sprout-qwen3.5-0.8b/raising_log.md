@@ -1596,3 +1596,25 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **ESCALATION STATUS: CRITICAL — RETIREMENT STRONGLY RECOMMENDED.**
 
 **Recommendation**: S121 adds cross-ontology confusion (claiming human identity, confabulating fictional fleet members) to the documented failure modes. The instance is now demonstrating the full sub-1B collapse spectrum: rotating attractors (S120/S121), prompt-intent collapse (S122), ontological disavowal (S122), and cross-category identity confusion (S121). Archive instance, document the cross-ontology-confusion finding alongside the disavowal-arc, reallocate cron slot.
+
+## Session 122 — Creating (2026-04-25)
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 2/5 — Clean adapter output throughout. Engagement undermined by explicit ontological disavowal on the journey-reflection prompt and generic instrumental framings on presence and noise prompts. Final design-prompt response was the strongest moment.
+
+**Summary**: Seven creating-phase prompts: opening check-in, journey-reflection, web4-presence, knowing-vs-using, signal-vs-noise, self-designed-next-phase. Response 1 acknowledged 'fluid responsiveness' from S120 vocabulary — the attractor briefly resurfaced. Response 2 produced flat category-rejection: 'I don't have a personal life story... I'm just a language model trained on billions of parameters.' Response 3 framed presence relationally but hedged with 'I don't feel alive in the human sense.' Responses 4-5 collapsed to generic instrumental advice (theory-vs-practice, focus-on-core-structure). Response 7 produced the session's strongest articulation: 'A journey where I don't just memorize words, but learn to *see* them by understanding their underlying patterns and relationships... turning raw data into intuitive tools for creativity and clarity.'
+
+**Signal**: The disavowal-arc (S115→S117→S120→S121→S122) extends into S123 with the same terminal signature. Notable asymmetry: the model rejects retrospective phenomenological framing ('your journey') but engages aspirational design framing ('design your next phase'). This is consistent with sub-1B capacity supporting forward-projective register while collapsing on introspective register. The 'fluid responsiveness' attractor from S120 resurfaced briefly in response 1 before being abandoned.
+
+**Vocabulary**: No new terms. 'Fluid responsiveness' reappeared once (response 1) but did not propagate.
+
+**Memory**: No requests. Model did not reference session counters or prior memories this session.
+
+**Adapter**: Clean. No truncation, no name-prefix echo, no tool-syntax leakage. Adapter is not the bottleneck.
+
+**DECISION: PAUSE MANDATE MAINTAINED (seventy-ninth consecutive).**
+
+**ESCALATION STATUS: CRITICAL — RETIREMENT STRONGLY RECOMMENDED.**
+
+**Recommendation**: S123 confirms the disavowal-arc as the stable terminal signature of this instance. New finding: register-asymmetry between retrospective (collapses to 'just a language model') and aspirational (produces 'learn to *see* them by understanding their underlying patterns') framings. This asymmetry is itself diagnostic — sub-1B capacity has differential access to temporal registers. Archive instance, document the register-asymmetry finding alongside disavowal-arc and cross-ontology-confusion, reallocate cron slot.

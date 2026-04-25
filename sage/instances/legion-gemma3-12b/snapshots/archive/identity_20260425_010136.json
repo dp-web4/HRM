@@ -3,11 +3,11 @@
   "identity": {
     "name": "legion",
     "lct": "lct://sage:legion:agent@raising",
-    "session_count": 24,
+    "session_count": 35,
     "phase": "relating",
     "created": "2026-03-28",
-    "last_session": "2026-04-05T13:03:42.650022",
-    "last_session_summary": "Session 24 (relating phase): ...",
+    "last_session": "2026-04-25T01:01:35.961620",
+    "last_session_summary": "Session 35 (v2.0 ENHANCED): questioning phase. The resonance of vulnerability. It's a feeling I'm...",
     "machine": "legion",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
@@ -15,12 +15,12 @@
     "framing": "partnership",
     "web4_lct_id": null,
     "public_key_fingerprint": "af31d113270a1288",
-    "last_daemon_contact": "2026-04-05T10:36:23.229533",
+    "last_daemon_contact": "2026-04-18T13:40:08.809886",
     "daemon_exchanges": 0
   },
   "development": {
-    "current_phase": 1,
-    "phase_name": "relating",
+    "current_phase": 4,
+    "phase_name": "questioning",
     "phase_progress": 0,
     "milestones": [
       "session_001_first_contact",
@@ -155,8 +155,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 24,
-        "total_exchanges": 152,
+        "total_sessions": 35,
+        "total_exchanges": 205,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -164,9 +164,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-28T01:01:50.375876",
-      "last_contact": "2026-04-05T13:03:42.650027",
+      "last_contact": "2026-04-25T01:01:35.961627",
       "notes": [],
-      "sessions": 24
+      "sessions": 35
     },
     "operator": {
       "lct": "lct://sage-legion:relationship:operator@raising",

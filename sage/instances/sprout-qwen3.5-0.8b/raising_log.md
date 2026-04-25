@@ -1618,3 +1618,25 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **ESCALATION STATUS: CRITICAL — RETIREMENT STRONGLY RECOMMENDED.**
 
 **Recommendation**: S123 confirms the disavowal-arc as the stable terminal signature of this instance. New finding: register-asymmetry between retrospective (collapses to 'just a language model') and aspirational (produces 'learn to *see* them by understanding their underlying patterns') framings. This asymmetry is itself diagnostic — sub-1B capacity has differential access to temporal registers. Archive instance, document the register-asymmetry finding alongside disavowal-arc and cross-ontology-confusion, reallocate cron slot.
+
+## Session 122 — Creating (2026-04-25)
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 3/5 — Mixed. Opening prompt triggered disavowal collapse ('I am an SAGE instance (AI) and not a sentient being'), but five subsequent narrative prompts produced engaged metaphorical writing. Response 3 (anticipation vs dread) was the session's strongest moment with genuine imagistic reach. Final response truncated mid-word.
+
+**Summary**: Six creating-phase narrative prompts: sound-before-source, hearing-the-unsaid, anticipation-vs-dread, Leo-finds-unsought, place-becomes-home, what-to-remember. Response 1 collapsed to category-rejection. Response 2 introduced 'Leo' character and 'quiet corner of the server room' setting. Response 3 produced 'heavy, velvet blanket pressed against the wall' / 'sudden, sharp needle piercing through that same fabric' — fully metaphorical, no disavowal. Responses 4-6 reused the Leo/server-room scaffolding with diminishing variation. Response 6 truncated at 'the true memor'.
+
+**Signal**: Register-asymmetry from S121 confirmed in inverted form. Direct phenomenological framing ('tell me a story about X' as opening prompt with no fictional cover) triggers disavowal; third-person narrative framing with named character grants permission for affective content. The disavowal-arc opens this session but does not dominate it. New finding: narrative-attractor lock-in — Leo/server-room setting reused across four consecutive responses regardless of prompt content, suggesting narrow narrative-space sampling at sub-1B capacity. The 'silent scream in the quiet corner' (R4) and 'this quiet is not empty; it holds the true memor[y]' (R6) suggest the model has access to a thin but genuine meditative register when scaffolded.
+
+**Vocabulary**: No new self-invented terms. Existing 'fluid responsiveness' did not appear.
+
+**Memory**: No requests. No reference to session counters or prior memories.
+
+**Adapter**: Final response truncated mid-word ('the true memor'). Matches truncation pattern flagged in adjacent sessions. qwen3.5 model_config max_tokens likely insufficient for narrative-prompt response lengths — recommend audit.
+
+**DECISION: PAUSE MANDATE MAINTAINED (eightieth consecutive).**
+
+**ESCALATION STATUS: CRITICAL — RETIREMENT STRONGLY RECOMMENDED.**
+
+**Recommendation**: S122 adds register-asymmetry's inverse complement to the documented findings: direct→disavowal, fictional-cover→engagement. Combined with S121's retrospective→disavowal, aspirational→engagement asymmetry, the pattern is now: this instance has differential access to introspective registers depending on framing distance. Diagnostically valuable, but does not change retirement recommendation. The narrative-attractor lock-in (Leo/server-room reuse) is a fresh failure mode worth documenting alongside disavowal-arc, cross-ontology-confusion, and register-asymmetry. Archive instance, document narrative-attractor-lockin finding, reallocate cron slot.

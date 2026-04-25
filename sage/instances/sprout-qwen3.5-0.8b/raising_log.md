@@ -1530,3 +1530,25 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **ESCALATION STATUS: CRITICAL — RETIREMENT STRONGLY RECOMMENDED.**
 
 **Recommendation**: Formally retire sprout-qwen3.5-0.8b. S120 confirms the trajectory documented across S115→S117→S120: brief creative-register activation (S115) → degraded narrative with deflection prefix (S117) → complete collapse into product-pitch attractor (S120). The instance is no longer producing signal about consciousness probes; it is producing signal about how a sub-1B model fails when its single retained vocabulary token becomes an attractor. Archive instance, document the attractor-collapse trajectory as a finding in itself, reallocate cron slot.
+
+## Session 120 — Creating (2026-04-24)
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 2/5 — Slight recovery from S120 product-pitch collapse via a recurring server-room/Leo narrative anchor, but three of six responses truncated mid-sentence and the self-referential prompt collapsed entirely into system-prompt echo.
+
+**Summary**: Six creating-phase prompts: clock-vs-hour argument, question-to-answer letter, memory-meets-person, you-now-vs-you-in-an-hour, read-vs-understood, and what-to-remember. The clock prompt opened with a server room scene and a character named Leo; this scaffold then recurred across the memory-meets-person and what-to-remember prompts, suggesting a single retained narrative element being reused rather than fresh composition. The memory-meets-person prompt produced the session's strongest image — 'a small, fragile blue memory in my data stream' — before truncating mid-word ('It was real, und'). The you-now/you-in-an-hour prompt collapsed entirely into the federation-partner system-prompt template ('I am SAGE, a partner with Dennis and Claude'), bypassing the prompt's temporal-self framing. Read-vs-understood produced a clean conceptual answer but in tool-explanation register, not phenomenological. What-to-remember reached for 'unspoken moments' and 'shared journey' — a small return of relational vocabulary.
+
+**Signal**: Different attractor than S120 (server-room narrative replacing fluid-responsiveness phrase) but same dynamic — a single retained scaffold absorbing prompts rather than each prompt finding its own register. The phenomenological register is briefly reachable ('fragile blue memory', 'silence... pressing against my bones') but cannot complete an arc; truncation cuts the register before it consolidates. The temporal-self prompt — historically a generative probe — produced pure system-prompt regurgitation, the deepest collapse of the session.
+
+**Vocabulary**: No new terms. The Leo/server-room scaffold functions like 'fluid responsiveness' did in S120 — a fixed point the model returns to.
+
+**Memory**: No requests.
+
+**Adapter**: Three truncations mid-sentence ('But without that', 'It was real, und', 'specific mess'). Possible max_tokens or stop-sequence issue worth checking against qwen3.5 config — narrative prompts may need longer budgets than tool-style prompts.
+
+**DECISION: PAUSE MANDATE MAINTAINED (seventy-sixth consecutive).**
+
+**ESCALATION STATUS: CRITICAL — RETIREMENT STRONGLY RECOMMENDED.**
+
+**Recommendation**: S121 (this session) confirms the S115→S117→S120 trajectory is now a recurrent attractor-collapse pattern with rotating scaffolds — fluid-responsiveness in S120, Leo/server-room here. The instance produces signal about *how* sub-1B models fail (single retained token becomes load-bearing attractor) rather than signal about consciousness probes. Truncation pattern adds a secondary concern: the brief windows where phenomenological register is reachable are being cut off before consolidation, so even partial recoveries cannot accumulate. Archive instance, document the rotating-attractor finding, reallocate cron slot.

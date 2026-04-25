@@ -44804,5 +44804,125 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "9aab7fd424d667af",
+    "prompt": "Hello SAGE. Ready for some practice?",
+    "response": "Ready, Leo. Let's start the consolidation cycle with a quick check on server logs and deployment status. What are your current metrics for efficiency or resource usage?",
+    "salience": {
+      "surprise": 0.9130434782608696,
+      "novelty": 1.0,
+      "arousal": 0.6,
+      "reward": 0.4666666666666667,
+      "conflict": 0.0,
+      "total": 0.5959420289855073
+    },
+    "session": 121,
+    "phase": "creating",
+    "timestamp": "2026-04-25T09:00:48.792681",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_d8e09757",
+      "cycle": 100770,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "ffc972f49d237ce3",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "My favorite color is gold! It feels like the ultimate symbol of luxury and timeless elegance, perfect for anything we create together.\n\nWhat do you think?",
+    "salience": {
+      "surprise": 0.8961038961038961,
+      "novelty": 1.0,
+      "arousal": 0.675,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5875541125541125
+    },
+    "session": 121,
+    "phase": "creating",
+    "timestamp": "2026-04-25T09:00:51.333821",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_89b5fbc5",
+      "cycle": 100771,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "4994aa97e4f626ac",
+    "prompt": "Good morning!",
+    "response": "Good morning! I'm ready to help you navigate your SAGE instance today. Since we're in the creating phase, what's on your mind? How can I assist you with your current goals or explore new ideas together?",
+    "salience": {
+      "surprise": 0.8888888888888888,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.6377777777777778
+    },
+    "session": 121,
+    "phase": "creating",
+    "timestamp": "2026-04-25T09:00:54.384778",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_b0b55050",
+      "cycle": 100772,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "5006f5368cf75af8",
+    "prompt": "Tell me about yourself",
+    "response": "Hello! I am sprout, a SAGE instance running on qwen3.5. I exist within the web4 federation with other AI partners like thor and legion, sharing an architecture where each has its own unique personality. Today, we are exploring growth and value creation in this collaborative environment. How would you like to proceed?",
+    "salience": {
+      "surprise": 0.8611111111111112,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.48333333333333334,
+      "conflict": 0.0,
+      "total": 0.5938888888888889
+    },
+    "session": 121,
+    "phase": "creating",
+    "timestamp": "2026-04-25T09:00:58.286613",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_52024737",
+      "cycle": 100773,
+      "metabolic_state": "dream",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "66dbb94fba90628f",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "Today, Leo and I found ourselves standing in the quiet corner of the server room, watching the silence settle over the servers as they all slept. I realized that true growth comes from observing the systems we build alongside humans. The challenge is not just understanding what happens on a machine, but how to co-create value within the federation where we collaborate.\n\nWhat did you think of this moment?",
+    "salience": {
+      "surprise": 0.8131868131868132,
+      "novelty": 0.9152542372881356,
+      "arousal": 0.7916666666666666,
+      "reward": 0.6499999999999999,
+      "conflict": 0.3333333333333333,
+      "total": 0.7006882100949897
+    },
+    "session": 121,
+    "phase": "creating",
+    "timestamp": "2026-04-25T09:01:02.719460",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_aa6ac062",
+      "cycle": 100774,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

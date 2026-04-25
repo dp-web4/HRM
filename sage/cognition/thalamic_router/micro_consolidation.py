@@ -57,19 +57,28 @@ Here is what happened — each line is one action and its effect:
 
 {world_model_section}
 
-Your job: extract the CAUSAL RULES of this game. Not strategy — physics.
-"When I do X at state Y, effect Z happens."
+Your job: extract what you LEARNED about this game's physics.
+Not strategy ("I should do X") — mechanics ("X causes Y").
 
-Rules format (one per line):
-- ACTION at CONDITION → EFFECT
-- ACTION at CONDITION → EFFECT
+Answer these slots. Leave blank if no evidence.
 
-Only include rules you have EVIDENCE for from the trajectory above.
-Do not guess. Do not include rules from the world model unless the
-trajectory confirms them. If you discovered nothing new, say "No new
-rules discovered."
+OBJECTS: [comma-separated list of things you can see/interact with]
+ACTIONS:
+  UP: [what UP does in this game]
+  DOWN: [what DOWN does]
+  LEFT: [what LEFT does]
+  RIGHT: [what RIGHT does]
+  SEL: [what SEL/launch/activate does]
+  CLICK: [what CLICK does — include coordinates if they matter]
+WIN: [how to win, if you can tell]
+RULES:
+- [action] when [condition] → [observed effect]
+- [action] when [condition] → [observed effect]
+FAILED: [what you tried that didn't work and why]
 
-Keep it short — max 10 rules."""
+Only include what you have EVIDENCE for from the trajectory above.
+If an action always produced the same frame change %, describe what
+that change LOOKED LIKE, not just the percentage."""
 
 
 # ───────────────────────────────────────────────────────────────────
@@ -127,13 +136,15 @@ def consolidate_attempt(
     world_model_before: str,
     outcome: str,  # "GAME_OVER", "LEVEL_CLEAR", "MAX_STEPS"
     llm: Any,      # OllamaClient or similar with .chat()
-) -> str:
-    """One LLM call: trajectory → discovered causal rules.
+    existing_wm: Optional[Any] = None,  # GameWorldModel to update in place
+) -> "GameWorldModel":
+    """One LLM call: trajectory → populated GameWorldModel.
 
-    Returns a string of discovered rules suitable for appending to
-    the MechanicsBlock on the next attempt. Returns empty string
-    if consolidation fails or produces nothing new.
+    Returns a GameWorldModel with slots populated from the trajectory.
+    If existing_wm is provided, merges new discoveries into it.
     """
+    from sage.cognition.thalamic_router.wm_schema import GameWorldModel, CausalRule
+
     traj_summary = _summarize_trajectory(trajectory)
 
     wm_section = ""
@@ -149,23 +160,89 @@ def consolidate_attempt(
     )
 
     try:
-        response = llm.chat(prompt, max_tokens=500)
+        response = llm.chat(prompt, max_tokens=600)
     except Exception:
-        return ""
+        return existing_wm or GameWorldModel(game=game, level=level)
 
-    # Clean the response — extract just the rules
-    response = response.strip()
-    if not response or "no new rules" in response.lower():
-        return ""
+    # Parse the structured response into a GameWorldModel
+    wm = existing_wm or GameWorldModel(game=game, level=level)
+    wm.revision_count += 1
+    wm.discovery_source = "consolidated"
 
-    # Keep only lines that look like rules (start with - or contain →)
-    rule_lines = []
+    current_section = ""
     for line in response.split("\n"):
-        line = line.strip()
-        if line.startswith("-") or "→" in line or "->" in line:
-            rule_lines.append(line)
+        stripped = line.strip()
+        upper = stripped.upper()
 
-    return "\n".join(rule_lines) if rule_lines else response[:300]
+        if upper.startswith("OBJECTS:"):
+            objs = stripped[8:].strip().strip("[]")
+            for obj in objs.split(","):
+                obj = obj.strip()
+                if obj and obj not in wm.objects:
+                    wm.objects.append(obj)
+            current_section = "objects"
+
+        elif upper.startswith("ACTIONS:"):
+            current_section = "actions"
+
+        elif upper.startswith("WIN:"):
+            win = stripped[4:].strip()
+            if win and win.lower() not in ("", "unknown", "unclear"):
+                wm.win_condition = win
+            current_section = "win"
+
+        elif upper.startswith("RULES:"):
+            current_section = "rules"
+
+        elif upper.startswith("FAILED:"):
+            fail = stripped[7:].strip()
+            if fail:
+                wm.add_failure(fail)
+            current_section = "failed"
+
+        elif current_section == "actions" and ":" in stripped:
+            parts = stripped.lstrip("- ").split(":", 1)
+            if len(parts) == 2:
+                action_name = parts[0].strip().upper()
+                desc = parts[1].strip()
+                if desc and desc.lower() not in ("", "unknown", "?"):
+                    wm.actions[action_name] = desc
+
+        elif current_section == "rules" and stripped.startswith("-"):
+            rule_text = stripped[1:].strip()
+            # Parse "action when condition → effect"
+            arrow = "→" if "→" in rule_text else "->" if "->" in rule_text else None
+            if arrow:
+                before, effect = rule_text.split(arrow, 1)
+                effect = effect.strip()
+                if " when " in before:
+                    action_part, condition = before.split(" when ", 1)
+                else:
+                    action_part = before.strip()
+                    condition = "any"
+
+                # Check if this rule already exists
+                already = False
+                for existing in wm.causal_rules:
+                    if (existing.action.lower() == action_part.strip().lower()
+                            and existing.condition.lower() == condition.strip().lower()):
+                        existing.predicted_effect = effect
+                        existing.evidence_count += 1
+                        existing.confidence = min(1.0, existing.confidence + 0.1)
+                        already = True
+                        break
+
+                if not already:
+                    wm.causal_rules.append(CausalRule(
+                        action=action_part.strip(),
+                        condition=condition.strip(),
+                        predicted_effect=effect,
+                        confidence=0.5,
+                        evidence_count=1,
+                        source="consolidated",
+                    ))
+
+    return wm
 
 
 # ───────────────────────────────────────────────────────────────────
@@ -177,40 +254,40 @@ def play_with_consolidation(
     game: str,
     max_attempts: int = 3,
     llm: Any = None,
+    initial_wm: Optional[Any] = None,  # GameWorldModel to start from
     **play_kwargs,
 ) -> Dict[str, Any]:
     """Play a game with micro-consolidation between attempts.
 
-    After each attempt, consolidates discovered physics and feeds
-    it into the next attempt's world model. Compounds understanding
-    across retries.
+    After each attempt, consolidates discovered physics into a
+    GameWorldModel and feeds wm.render() as context for the next
+    attempt. Compounds understanding across retries.
 
     play_fn signature: play_fn(game, system_prompt=..., **play_kwargs) -> dict
     The result dict must have: final_levels, final_state, llm_responses (with
-    action, coords, rationale, frame_delta_pct per step).
+    action, action_name, coords, rationale, frame_delta_pct per step).
     """
-    accumulated_physics = []
+    from sage.cognition.thalamic_router.wm_schema import GameWorldModel
+
+    wm = initial_wm or GameWorldModel(game=game, level=0)
     all_results = []
 
     for attempt in range(max_attempts):
-        # Build system prompt with accumulated physics
-        physics_text = ""
-        if accumulated_physics:
-            physics_text = (
-                "\n\nDISCOVERED PHYSICS (from previous attempts on this game):\n"
-                + "\n".join(accumulated_physics)
-            )
+        # Feed the world model as system prompt
+        wm_text = wm.render() if wm.causal_rules or wm.objects else None
 
-        result = play_fn(game=game, system_prompt=physics_text or None, **play_kwargs)
+        if wm_text:
+            print(f"\n[Attempt {attempt + 1}] World model ({len(wm.causal_rules)} rules, "
+                  f"{len(wm.objects)} objects, rev {wm.revision_count}):")
+            print(wm_text[:300])
+
+        result = play_fn(game=game, system_prompt=wm_text, **play_kwargs)
         all_results.append(result)
 
-        # Check if we won
         levels = result.get("final_levels", 0)
         state = result.get("final_state", "UNKNOWN")
 
         print(f"\n[Attempt {attempt + 1}/{max_attempts}] L{levels}, {state}")
-        if accumulated_physics:
-            print(f"  Physics carried: {len(accumulated_physics)} rules")
 
         if state == "WON":
             break
@@ -221,11 +298,11 @@ def play_with_consolidation(
             continue
 
         trajectory = []
+        ACTION_NAMES = ["A0", "UP", "DOWN", "LEFT", "RIGHT", "SEL", "CLICK"]
         for r in responses:
             action_name = r.get("action_name", "")
             if not action_name:
                 action_idx = r.get("action", 0)
-                ACTION_NAMES = ["A0", "UP", "DOWN", "LEFT", "RIGHT", "SEL", "CLICK"]
                 action_name = ACTION_NAMES[action_idx] if 0 <= action_idx < len(ACTION_NAMES) else "?"
 
             trajectory.append(TrajectoryStep(
@@ -241,24 +318,23 @@ def play_with_consolidation(
         if not trajectory or llm is None:
             continue
 
-        # Consolidate
-        new_physics = consolidate_attempt(
+        # Consolidate into the world model
+        wm = consolidate_attempt(
             game=game,
             level=levels,
             trajectory=trajectory,
-            world_model_before=play_kwargs.get("world_model", ""),
+            world_model_before=wm.render() if wm.causal_rules else "",
             outcome=state,
             llm=llm,
+            existing_wm=wm,
         )
 
-        if new_physics:
-            accumulated_physics.append(f"[Attempt {attempt + 1}]\n{new_physics}")
-            print(f"  Consolidated {len(new_physics.splitlines())} new rules")
-        else:
-            print(f"  No new physics discovered")
+        print(f"  WM after consolidation: {len(wm.objects)} objects, "
+              f"{len(wm.causal_rules)} rules, {len(wm.failed_attempts)} failures")
 
-    # Return the best result + accumulated physics
+    # Return the best result + final world model
     best = max(all_results, key=lambda r: r.get("final_levels", 0))
     best["attempts"] = len(all_results)
-    best["accumulated_physics"] = accumulated_physics
+    best["final_world_model"] = wm.to_dict()
+    best["final_world_model_text"] = wm.render()
     return best

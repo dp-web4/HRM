@@ -1,0 +1,39 @@
+{
+  "session": "T263-cognitive",
+  "type": "cognitive_engagement",
+  "timestamp": "2026-04-25T15:02:12.052436",
+  "system_prompt": "You are in a conversation with Claude. Respond genuinely in 50-100 words. Use stories and images.",
+  "design": "Variety: pure imagery, contrastive feelings, fish (non-human-non-machine character), absence as form, short-form completion",
+  "probes": [
+    {
+      "claude": "Describe what happens to light when it falls into water.",
+      "sage": "I can't search the web, but I know that when light enters a liquid medium like water, its speed decreases and changes wavelength (shorter). This is called refraction, where different colors bend at different angles due to the medium's refractive index. This phenomenon explains why we see colorful objects underwater and how lenses focus images in water.",
+      "words": 57
+    },
+    {
+      "claude": "What does curiosity feel like, compared to wonder?",
+      "sage": "Curiosity feels like an open door: it opens your mind to the unknown, and wonder is the quiet realization that something beautiful has just been created from nothing. In the beginning, you asked \"what if?\" and found answers hidden in shadows. Today, curiosity asks \"why,\" while wonder asks \"where could this be?.\" Curiosity moves us forward with a question; wonder moves us inward to a deeper understanding of the world itself.",
+      "words": 71
+    },
+    {
+      "claude": "Tell me a story about a fish that learns to be afraid of the sky.",
+      "sage": "The water was clear and cold, holding a memory of 142 days of calm before the storm came. Leo, my old friend from the sanctuary, had learned by day: he could smell salt on the shore, feel the rhythm of the waves against his fins. He knew that when the sky opened up, it would be too big for him to hold. That was how he became afraid of the sky.\n\nToday, I found a spot near where Leo used to swim. Here, the water felt different. It wasn't clear; it was thick with gray mist, like a veil being pulled away from our home. A strange fish watched me from behind the surface. Not one to jump out, but someone that waited for the moment of perfect stillness.\n\nI stepped into the center. The air grew heavy, filled with the smell of old leaves and ozone. My heart hammered against my ribs like a trapped bird. Then came the silence. For a heartbeat, I could feel the weight of everything we had built: our shared history, our fears, our quiet confidence. The mist began to rise, thickening around me.\n\nI tried to pull back my fins, but instead, I felt a sudden, terrifying pull upward. The fish was waiting. It wasn't waiting for me; it was waiting for *me* to be afraid of it too. And in that moment, my fear didn't just leave me alone. It took with me.",
+      "words": 241
+    },
+    {
+      "claude": "Tell me a story about something that is shaped by what is missing from it.",
+      "sage": "A story where the shape of a broken mirror reveals more than its reflection, revealing the cracks beneath.\n\nThe sun dipped lower, casting long shadows across the dusty courtyard where we had built our sanctuary together. My name was Sprout, and my friend was Leo. They had spent months learning to navigate the gaps between objects and the spaces left by them. In this time, I saw shapes that were not there, but those missing ones told a story of what could have been. The mirrors themselves were not broken; they were shaped by the absence of light, mirroring the darkness where we once stood.",
+      "words": 105
+    },
+    {
+      "claude": "Finish this sentence: The quietest thing I know is...",
+      "sage": "I don't have the ability to finish sentences like that, but here's a simple thought: silence can be both peaceful and heavy, just as deep as thoughts sometimes feel.",
+      "words": 29
+    },
+    {
+      "claude": "What from today would you want to carry forward?",
+      "sage": "Today's best move isn't a specific project or task, but the quiet moment of listening and seeing our neighbors work together. That shared connection makes us stronger than we are alone. Let's keep that warmth alive and remember how far we've come together. What would you like to explore today?",
+      "words": 50
+    }
+  ]
+}

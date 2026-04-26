@@ -1,0 +1,226 @@
+[
+  {
+    "model": "gemma4:26b",
+    "prompt": "Hello",
+    "sampler": "greedy",
+    "response": "Hello! How can I help you today?",
+    "eval_count": 80,
+    "empty": false
+  },
+  {
+    "model": "gemma4:26b",
+    "prompt": "Hello",
+    "sampler": "default",
+    "response": "Hello! How can I help you today?",
+    "eval_count": 66,
+    "empty": false
+  },
+  {
+    "model": "gemma4:26b",
+    "prompt": "What color is the sky?",
+    "sampler": "greedy",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:26b",
+    "prompt": "What color is the sky?",
+    "sampler": "default",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:26b",
+    "prompt": "Why is the sky blue?",
+    "sampler": "greedy",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:26b",
+    "prompt": "Why is the sky blue?",
+    "sampler": "default",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:26b",
+    "prompt": "1=UP",
+    "sampler": "greedy",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:26b",
+    "prompt": "1=UP",
+    "sampler": "default",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:26b",
+    "prompt": "1=UP 2=DOWN 3=LEFT 4=RIGHT",
+    "sampler": "greedy",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:26b",
+    "prompt": "1=UP 2=DOWN 3=LEFT 4=RIGHT",
+    "sampler": "default",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:26b",
+    "prompt": "What is 2+2?",
+    "sampler": "greedy",
+    "response": "2 + 2 = 4",
+    "eval_count": 48,
+    "empty": false
+  },
+  {
+    "model": "gemma4:26b",
+    "prompt": "What is 2+2?",
+    "sampler": "default",
+    "response": "2 + 2 = 4",
+    "eval_count": 55,
+    "empty": false
+  },
+  {
+    "model": "gemma4:26b",
+    "prompt": "What is the capital of France? Reply: 1=Paris 2=London",
+    "sampler": "greedy",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:26b",
+    "prompt": "What is the capital of France? Reply: 1=Paris 2=London",
+    "sampler": "default",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:e4b",
+    "prompt": "Hello",
+    "sampler": "greedy",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:e4b",
+    "prompt": "Hello",
+    "sampler": "default",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:e4b",
+    "prompt": "What color is the sky?",
+    "sampler": "greedy",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:e4b",
+    "prompt": "What color is the sky?",
+    "sampler": "default",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:e4b",
+    "prompt": "Why is the sky blue?",
+    "sampler": "greedy",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:e4b",
+    "prompt": "Why is the sky blue?",
+    "sampler": "default",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:e4b",
+    "prompt": "1=UP",
+    "sampler": "greedy",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:e4b",
+    "prompt": "1=UP",
+    "sampler": "default",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:e4b",
+    "prompt": "1=UP 2=DOWN 3=LEFT 4=RIGHT",
+    "sampler": "greedy",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:e4b",
+    "prompt": "1=UP 2=DOWN 3=LEFT 4=RIGHT",
+    "sampler": "default",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:e4b",
+    "prompt": "What is 2+2?",
+    "sampler": "greedy",
+    "response": "4",
+    "eval_count": 2,
+    "empty": false
+  },
+  {
+    "model": "gemma4:e4b",
+    "prompt": "What is 2+2?",
+    "sampler": "default",
+    "response": "4",
+    "eval_count": 2,
+    "empty": false
+  },
+  {
+    "model": "gemma4:e4b",
+    "prompt": "What is the capital of France? Reply: 1=Paris 2=London",
+    "sampler": "greedy",
+    "response": "",
+    "eval_count": 80,
+    "empty": true
+  },
+  {
+    "model": "gemma4:e4b",
+    "prompt": "What is the capital of France? Reply: 1=Paris 2=London",
+    "sampler": "default",
+    "response": "1=Paris",
+    "eval_count": 4,
+    "empty": false
+  }
+]

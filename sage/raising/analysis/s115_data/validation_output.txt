@@ -1,0 +1,19 @@
+=== Production-Shape Prompt Test (think:false) ===
+  gemma4:e4b     | simple    | empty=False | eval=209 | captured_action=None
+    response[:200]: 'Here are some possible interpretations or uses for this code, depending on the context:\n\n**1. Simple Mapping/Key:**\n\n* **The code is a key:** It defines a system where numbers correspond to directiona'
+
+  gemma4:e4b     | prod_lean | empty=False | eval=4 | captured_action='2'
+    response[:200]: 'ACTION=2'
+
+  gemma4:26b     | simple    | empty=False | eval=82 | captured_action=None
+    response[:200]: 'Understood. I have mapped the numbers to the following directions:\n\n*   **1** $\\rightarrow$ **UP**\n*   **2** $\\rightarrow$ **DOWN**\n*   **3** $\\rightarrow$ **LEFT**\n*   **4** $\\rightarrow$ **RIGHT**\n\n'
+
+  gemma4:26b     | prod_lean | empty=False | eval=113 | captured_action='DOWN'
+    response[:200]: 'To reach the green tile, we evaluate the lookahead data and the neural network hint. \n\nThe lookahead shows that the `DOWN` action (2) results in a pixel difference of 47, while all other actions resul'
+
+=== Demonstrate the Template-Copy Silent-Fallback ===
+  input='ACTION=<1-6>'                                     -> capture='1'
+  input='ACTION=<1-6> X=<0-63> Y=<0-63>'                   -> capture='1'
+  input='ACTION=2'                                         -> capture='2'
+  input='ACTION=<2>'                                       -> capture='2'
+  input='I think ACTION=DOWN'                              -> capture='DOWN'

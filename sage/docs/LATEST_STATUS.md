@@ -1,6 +1,7 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-26 (S113 — S112's Empirical Question Answered + Two New Silent-Routing Recurrences: Production `llm_responses` Logs Found in `~/ai-workspace/shared-context/explorations/` (Not Under SAGE/, Where S112 Scanned 4188 Files and Found 0); 55 Files Across 4 Tracks, **7,542 Production Invokes**, **11.2% Explicit Parse-Failure Rate**, Worst Single Game `lp85.json` 29.8% (594/1990); Cross-Format Comparison in Same Exploration (`whole-brain-at-small-model-2026-04-22`, gemma4:e2b CBP, 25 games) Shows Fat Format (`ACTION=N X=x Y=y`) 20.5% PF vs Lean Format (`ACTION=<1-6>` Pre-Apr-24) 0.1% PF — But the 0.1% Is a Measurement Artifact Because Parser Regex `ACTION\s*=\s*<?(\w+)>?` Captures `1` from `<1-6>` Template (\w+ Stops at Hyphen), So Literal-Copy Templates Parse to action=1 Silently; Action Distribution Confirms: Fat over-Represents action=6 (29.9%, NN-fallback CLICK Default), Lean over-Represents action=1 (26.3%, Template-Extract UP Default); Direct Silent-Fallback Probe via Rationale-vs-Action Mismatch in Lean: 1497 Rationales Have a Direction Word, 33.5% Match Action Returned, **66.5% Contradict** ('Move avatar down' → action=1 UP; 'Moving UP seems to align' → action=3 LEFT) — Strongest in-Production Evidence of Silent Fallback Firing at Scale; Recurrence #6 of S110 Pattern at Commit-Rationale Boundary: 3f54ead56 (Apr 24) "Fix Angle Bracket Templates" Changed `<1-6>` → `N` to "Eliminate Parse Failures from Template-Copying" — Replaced Accidentally-Parseable Form with Systematically-Broken One, Was Regression Masquerading as Fix; Recurrence #7 at Model-Output Boundary: gemma4:e4b on Thor Returns Empty String for Game-Style Prompts (`'1=UP 2=DOWN 3=LEFT 4=RIGHT'` → `''`) While Other Models Respond Normally to Same Prompt — Verified at temp=0.0/0.7/1.0 with eval_count>0 but response empty; LLM Contributing Nothing While Wall-Clock Latency Continues; Pattern Now at Seven Layers — Instance, Action Dispatch, Skill Registration, Composition, Response Parse, Commit Rationale, Model Output; S112's qwen3.5:27b Coverage Extended: 4/4 Format A Trials Succeed at 27B (Thinking Model), Confirms Failure is Model-Size-Dependent; New Held Proposals: (4) `model_output_empty: bool` Flag in Dispatch Result, (5) Fleet Check for gemma4:e4b Empty-Response on Legion + Other Machines, (6) Apply Rationale-vs-Action Mismatch Diagnostic to Post-Apr-24 Production Runs and Legion Raising Sessions; All Operator-Decision Territory Per S111 Discipline)**
+**Last Updated: 2026-04-26 (S114 — Recurrence #7 Severity Re-Scoped: gemma4:e4b on Thor Returns Empty for Almost ALL Prompts via `/api/generate` and `/api/chat` (Both Endpoints Identical), Not Just Game Prompts as S113 Reported; Boundary Probe of 17 Prompts Continuum Found 25/34 Trials Empty Including `"Hello"`, `"What color is the sky?"`, `"Why is the sky blue?"`, `"What is the capital of France? Reply: 1=Paris 2=London"` — Working Set is Narrow Factual Lookup: `"What is 2+2?"` → `'4'` (eval=2), `"1+1?"` → `'2'`, `"What is the capital of France?"` → `'Paris'`, `"Count from 1 to 5"` → `'1, 2, 3, 4, 5'`; Two Distinct Failure Modes Isolated via Sampler Matrix on `"Hello"` (17 Sampler Configs) — Mode A Sampler-Dependent (`temp=0.0/0.001/0.01/0.1` All Empty, `temp=0.5` and Default `temp=1.0+top_k=64+top_p=0.95` Work) and Mode B Intrinsic to Keymap-Shape Prompts (`"1=UP 2=DOWN..."` Empty Under EVERY Sampler Including the One That Fixed Hello); Cross-Model on Thor Confirms Uniqueness — gemma3:12b, qwen2.5:3b, phi4:14b ALL Respond Normally to Same `"Hello"`, `"1=UP"`, `"1=UP 2=DOWN..."` Under Both Greedy and Default Sampling; Token-Level Streaming Inspection Shows eval_count=80 with Zero Non-Empty Content Chunks — Model Emits Tokens That Decode to Empty Bytes (Likely Special/Control Token IDs Filtered by Ollama); Independent of `num_ctx` (2048/8192/131072), `num_predict` (30-512), Seed (6 Tested), Endpoint (`/api/generate` ≡ `/api/chat`), Cold/Warm Load State; **Rationale-Mismatch Diagnostic Applied at Scale**: Full Sweep of 55 Production Files (S113 Corpus) Finds **57.5% Mismatch (1086/1890 Directional Rationales) Across 7,542 Invokes** — More Files More Rigorously Measured Than S113's 66.5% on Subset; Worst Single File `whole-brain-at-small-model/data/lean/tn36.json` is **94.8% Mismatch** (201/212), `lean/lp85.json` 85.7% (354/413); Same-Game Lean-vs-Fat Asymmetry Sharp on lp85.json: lean 85.7% vs fat 5.5% — 15× Silent-Fallback Opening from Format Change Alone; S113 Proposal #5 Done on Thor (gemma4:e4b Quarantine Recommended); Proposal #6 Confirmed at Scale on Pre-Apr-24 Corpus, Cannot Validate Post-Apr-24 Fix-vs-Regression Hypothesis Because No Post-Apr-24 Production Game-Play Data Exists in `shared-context/explorations/` (newest game data 2026-04-22); New Proposal #7: Quarantine gemma4:e4b on Thor Pending Diagnosis — Currently Failing on Virtually All Prompts; Pattern Table Recurrence #7 Reframed: Not "Model-Output Boundary" in General, But Specific Model on Specific Machine With Two Different Mechanisms Producing Systematically Degenerate Output Treated as Valid by Harness)**
+**Previous: 2026-04-26 (S113 — S112's Empirical Question Answered + Two New Silent-Routing Recurrences: Production `llm_responses` Logs Found in `~/ai-workspace/shared-context/explorations/` (Not Under SAGE/, Where S112 Scanned 4188 Files and Found 0); 55 Files Across 4 Tracks, **7,542 Production Invokes**, **11.2% Explicit Parse-Failure Rate**, Worst Single Game `lp85.json` 29.8% (594/1990); Cross-Format Comparison in Same Exploration (`whole-brain-at-small-model-2026-04-22`, gemma4:e2b CBP, 25 games) Shows Fat Format (`ACTION=N X=x Y=y`) 20.5% PF vs Lean Format (`ACTION=<1-6>` Pre-Apr-24) 0.1% PF — But the 0.1% Is a Measurement Artifact Because Parser Regex `ACTION\s*=\s*<?(\w+)>?` Captures `1` from `<1-6>` Template (\w+ Stops at Hyphen), So Literal-Copy Templates Parse to action=1 Silently; Action Distribution Confirms: Fat over-Represents action=6 (29.9%, NN-fallback CLICK Default), Lean over-Represents action=1 (26.3%, Template-Extract UP Default); Direct Silent-Fallback Probe via Rationale-vs-Action Mismatch in Lean: 1497 Rationales Have a Direction Word, 33.5% Match Action Returned, **66.5% Contradict** ('Move avatar down' → action=1 UP; 'Moving UP seems to align' → action=3 LEFT) — Strongest in-Production Evidence of Silent Fallback Firing at Scale; Recurrence #6 of S110 Pattern at Commit-Rationale Boundary: 3f54ead56 (Apr 24) "Fix Angle Bracket Templates" Changed `<1-6>` → `N` to "Eliminate Parse Failures from Template-Copying" — Replaced Accidentally-Parseable Form with Systematically-Broken One, Was Regression Masquerading as Fix; Recurrence #7 at Model-Output Boundary: gemma4:e4b on Thor Returns Empty String for Game-Style Prompts (`'1=UP 2=DOWN 3=LEFT 4=RIGHT'` → `''`) While Other Models Respond Normally to Same Prompt — Verified at temp=0.0/0.7/1.0 with eval_count>0 but response empty; LLM Contributing Nothing While Wall-Clock Latency Continues; Pattern Now at Seven Layers — Instance, Action Dispatch, Skill Registration, Composition, Response Parse, Commit Rationale, Model Output; S112's qwen3.5:27b Coverage Extended: 4/4 Format A Trials Succeed at 27B (Thinking Model), Confirms Failure is Model-Size-Dependent; New Held Proposals: (4) `model_output_empty: bool` Flag in Dispatch Result, (5) Fleet Check for gemma4:e4b Empty-Response on Legion + Other Machines, (6) Apply Rationale-vs-Action Mismatch Diagnostic to Post-Apr-24 Production Runs and Legion Raising Sessions; All Operator-Decision Territory Per S111 Discipline)**
 **Previous: 2026-04-25 (S112 — Lean Prompt's Placeholder Format Spec Causes Silent NN-Hint Fallback in 94% of Trials Across qwen2.5:3b and gemma3:12b (16 Trials, Two Models): Pipeline `WM → wm.render → build_lean_prompt → LLM → parse_llm_response` Tested End-to-End for cd82; Format A (`Respond: ACTION=N[ X=x Y=y]`, Current Code at lean_prompt.py:74) Causes Both Models to Echo Placeholder Literally (`ACTION=N[ X=0 Y=0]`, `ACTION=N[ X=LEFT Y=UP]`); `parse_llm_response` Layered Fallbacks Silently Recover (5/16 to NN Hint Sentinel via `fallback_action`, 10/16 via `_NAKED_ACTION_RE` Matching Garbage Like X=LEFT — Of Which 9/10 Are Confidently-Parsed Garbage with No `parse_failed` Flag); Only 1/16 Parsed via Intended `ACTION=<digit>` Path; Format B (Numeric Examples `ACTION=3` / `ACTION=6 X=12 Y=20`) and Format C (Named Examples `ACTION=LEFT`) Both 16/16 Perfect Parse Rate; Same Placeholder Pattern Recurs at 6 Callsites Across 3 Files — `lean_prompt.py:74`, `lean_dispatch.py:101`, `adaptive_prompt.py:233/249/268/285` (Pre-Existing Production Code, Not Just New Codification Layer 1); `adaptive_prompt.py:23` Defines `ACTION_FORMAT_NAMED` Constant with Comment "eliminates number→name mapping entirely" but Has Zero Callsites — Designed-but-Not-Shipped; This is 5th Instance of S110/S111 Silent-Routing Pattern, This Time at Response-Parse Boundary Instead of Dispatch-Table Boundary; Same Shape: Routing Function (`parse_llm_response` → action), Unrecognized Input (Literal "N"), Silent Fallback, No Warning, No Log; Production Logs Don't Surface Parse-Failure-Rate (Scanned 4188 JSON Files, 0 Have llm_responses Key — Either play_lean Rarely Saves --json-out or Logs Live Elsewhere); S111's Render-Quality Truncation is Real but Not the Bottleneck — LLM Doesn't Engage Coherently with Format Spec Regardless of Whether Strategy is Visible; Three Held Proposals: (1) Replace Placeholder Format at 6 Callsites with Examples Format, (2) Surface `parse_path` in `parse_llm_response` Return Value, (3) Aggregate `parse_failure_rate` in play_lean Result; All Operator-Decision Territory Per S111 Discipline)**
 **Previous: 2026-04-25 (S111 — Codification Project Layer 2 Recurs the S110 Silent-Routing Pattern in Three Independent Callsites Within One Week of New Code: Layer 1 Verified Working End-to-End (cd82.json Round-Trips JSON, build_lean_prompt Produces 401-Token Invoke Prompt vs 4K Prose Target, 17.6× Speedup Real); Render-Quality Issue at `wm_schema.render` Char-Budget Enforcement (`len(text) > budget_tokens * 4`) Truncates Strategy Slot Mid-Word at cd82 Render Length 1293 vs Budget 1200 — Strategy Is Last-Appended and Most-Actionable, Char-Budget Is Structurally Biased Against Decision-Relevant Content; Three Silent-Default Bugs Documented (1) `plan_executor._get_action_index` Maps Unknown `do` to action_idx=0, `0 not in GA={1..6}`, env.step Skipped, Step Logged with px_diff=0, plan_idx Advances — A Plan with `{"do": "navigate_to"}` Silently No-ops Every Step (2) `motor_skills/__init__.py` Does NOT Import `skills/*` — Skills Auto-Register Only on Explicit `import sage.cognition.motor_skills.skills.navigate_to`, So `get_skill("navigate_to")` Returns None from Fresh Process, list_skills() Returns [] Until Some Caller Triggers Registration (3) `plan_executor.execute_plan` Does Not Call `plan_bridge.step_to_invocation` At All — Layer 2's Executor and the Skill Bridge Are Two Parallel Implementations of the Same Conceptual Responsibility (plan step → action) That Don't Compose; Currently Dormant (cd82 Names Only ACTION_MAP-Resident Actions UP/DOWN/LEFT/RIGHT/SEL/CLICK) but Latent for Any Future Game/Plan Naming a Skill; Pattern Recognition: S110's `_DEFAULT_MODELS.get(machine)` and S111's `ACTION_MAP.get(do, 0)` and `SKILL_REGISTRY.get(skill_id)` Are All Routing Tables That Silently Absorb Unrecognized Input — Codebase Lacks Shared Discipline for "Validate Input at Routing Boundaries"; Three Callsites in One Week Suggests Load-Bearing Pattern Not Isolated Bug; Operator Decision Held: Treat as Three Local Fixes or Shared `_route()` Idiom)**
 **Previous: 2026-04-25 (S110 — Legion-gemma3-12b Orphan Writer Root Cause Identified: Two-Bug Chain in Instance Resolution. The "Orphan" Is the Active `legion_raising.sh` Itself — `--model gemma4:e4b` Changes Inference Model but `run_session_identity_anchored_fluid.py:962-965` Does Not Propagate `args.model` to Constructor, So `InstancePaths.resolve(machine='legion', model=None)` Falls to Default `gemma3:12b`. `legion-gemma4-e4b/sessions/` Empty, Confirms Single Writer; Sessions 028-035 Generated by gemma4:e4b but Filed under gemma3-12b. Companion Bug at `machine_config.py:188 (thor), 233 (legion)` Drops Model Arg Same Way (Currently Latent on Thor). Fix is Two Lines, Held Pending Operator Migration Decision (Leave/Move/Recover Sessions 028-035). S109 §4 Launch-Gate Refined: Corpus Scan Shows Caps-`HALT` + `HARD BLOCKER` Has Zero False Positives Across 7 Instances (Legion 32+7, Thor 11+0, all Others 0+0); Two-Layer Rollout Proposed — Phase A Regex Gate on Existing `concerns` Prose (No Contract Change, Ships Today), Phase B Layer Structured `action` Field Later)**
@@ -13,6 +14,131 @@
 **Previous: 2026-04-23 (S103 — Register-Lock Generalization: State_words Injection Loop is S75 Crisis and S96 Thermal at Same Abstraction; Enumerate-Markers Approach Is S102 Failure Mode at Prompt Injection Layer; Structural Span-Diversity Fix Proposed, Not Shipped Pending User Alignment; vocab_injection_diagnostic Built for Read-Only Fleet Scan)**
 **Previous: 2026-04-23 (S102 — Splice-Guard Input-Surface Audit: Keyword Regex Was Over-Specified; Fleet Corpus Scan Found 1 Uncaught Bracket-Only Envelope (Sprout S060 CUDA Deadlock) and 0 Legitimate Bracket-Only Memory; Structural Regex Simplified to Bracket-Only Shape Check, Subsumes S101 Keyword Regex)**
 **Previous: 2026-04-23 (S101 — Post-Cutover FN Discovery: 3/3 DaemonIRP Error-Emission Paths Were Uncovered by S99/S100 Prefix Set; `[Daemon unreachable:` Contaminated Nomad S125 State within 20 Min of S100 Merge; Prefix Set Extended + Structural Regex Fallback Added + Nomad State Sanitized)**
+
+---
+
+## S114 gemma4:e4b on Thor Empty-Response Failure Is Broader Than S113 Reported; Rationale-Mismatch at Scale Confirmed (Apr 26, 2026 — Thor Autonomous SAGE Session, 06:00 UTC)
+
+S114 picks up two S113 carry-forwards — proposal #5 (fleet check for gemma4:e4b empty-response on other machines, starting from Thor) and proposal #6 (apply rationale-vs-action mismatch diagnostic to production runs) — and finds the picture is more severe than S113's headline at both axes.
+
+### gemma4:e4b on Thor: not just game prompts
+
+S113 reported gemma4:e4b returns empty for game-style prompts (`'1=UP 2=DOWN 3=LEFT 4=RIGHT'` → `''`) while answering `"What is 2+2?"` normally. Reproduced verbatim. Then a 17-prompt continuum probe (`probe_boundary_gemma4e4b.py`) found **25/34 trials returned empty at temp=0.0**, including:
+
+- `"Hello"` → empty
+- `"What color is the sky?"` → empty
+- `"Why is the sky blue?"` → empty
+- `"What is the capital of France? Reply: 1=Paris 2=London"` → empty (factual question, contains keymap)
+- All game-shaped prompts → empty
+
+The narrow set of working prompts at greedy: `"What is 2+2?"` → `'4'` (eval=2), `"1+1?"` → `'2'`, `"What is the capital of France?"` → `'The capital of France is **Paris**.'` (eval=9), `"Count from 1 to 5"` → `'1, 2, 3, 4, 5'`, `"Reply with a random word"` → `'Ephemeral'`.
+
+### Two failure modes, not one
+
+A 17-config sampler matrix on `"Hello"` (`probe_sampler_isolation.py`) reveals **Mode A — sampler-dependent**:
+
+| Sampler | Result |
+|---|---|
+| `temp=0.0` (greedy) | empty |
+| `temp=0.001 / 0.01 / 0.1` | empty |
+| `temp=0.5` | ✓ `'Hello! How can I help you today?'` |
+| `temp=1.0` (alone) | empty |
+| Default sampler (`temp=1, top_k=64, top_p=0.95`) | ✓ |
+| greedy + `min_p=0.01/0.05/0.1` | empty |
+| greedy + `top_k=1/5/50` | empty |
+| greedy + `top_p=0.5/0.95` | empty |
+
+**Mode B — intrinsic** to keymap-shape prompts. Same matrix on `"1=UP 2=DOWN 3=LEFT 4=RIGHT"`: empty under EVERY sampler tried, including the default that fixed `"Hello"`.
+
+### Endpoint and state ruled out
+
+- `/api/chat` vs `/api/generate`: identical responses across 6 prompts (chat template is not the issue)
+- `num_ctx`: tested 2048, 8192, 131072 — all fail
+- `num_predict`: 30, 80, 120, 512 — all fail (model just keeps emitting nothing)
+- Cold reload + warm reuse: identical
+- Streaming inspection: eval_count=80 with **zero non-empty content chunks** — model emits 80 tokens that decode to empty bytes (likely special/control tokens filtered by Ollama)
+
+### Cross-model on Thor: gemma4:e4b is unique
+
+Same prompts, same Ollama, same hardware (`probe_other_models_keymap.py`):
+
+| Model | `"Hello"` greedy | `"1=UP"` greedy | `"1=UP 2=DOWN..."` greedy |
+|---|---|---|---|
+| **gemma4:e4b** | empty | empty | empty |
+| gemma3:12b | ✓ | ✓ "code or cipher" | ✓ "I pick **3**! ... LEFT" |
+| qwen2.5:3b | ✓ | ✓ "some confusion" | ✓ "chosen the number **1**" |
+| phi4:14b | ✓ | ✓ "puzzle or riddle" | ✓ "correspond to directions" |
+
+Other models on Thor work normally. Failure is model-specific, not Thor-environment-wide.
+
+### Rationale-mismatch at scale (S113 proposal #6)
+
+S113 reported 66.5% rationale-action mismatch in lean format from one exploration (1497 directional rationales). Full sweep across all 55 files with `llm_responses` (`rationale_action_mismatch.py`):
+
+| Track | Files | Invokes | PF% | **Mismatch%** | n_dirword |
+|---|---:|---:|---:|---:|---:|
+| `mcnugget-v2invoke-qwen35-2026-04-20` | 1 | 81 | 3.7% | 59.1% | 22 |
+| `qwen-tiny-v2invoke-floor-2026-04-20` | 10 | 507 | 8.9% | 24.0% | 50 |
+| `v2invoke-strategy-labels-2026-04-20` | 1 | 83 | 0.0% | 55.9% | 68 |
+| `whole-brain-at-small-model-2026-04-22` | 43 | 6,871 | 11.6% | 58.5% | 1,750 |
+| **TOTAL** | **55** | **7,542** | **11.2%** | **57.5%** | **1,890** |
+
+Top files by mismatch rate (n_dirword ≥ 50):
+
+| Mismatch% | n | File |
+|---|---|---|
+| **94.8%** | 201/212 | `lean/tn36.json` |
+| **85.7%** | 354/413 | `lean/lp85.json` |
+| 65.1% | 110/169 | `lean/vc33.json` |
+| 55.9% | 38/68 | `cd82-play-v2invoke-framestate.json` |
+| 50.0% | 97/194 | `lean/su15.json` |
+| 38.8% | 52/134 | `lean/sb26.json` |
+| **5.5%** | 5/91 | `fat/lp85.json` |
+
+Same game (lp85.json), same model (gemma4:e2b CBP), different prompt format: lean 85.7% mismatch vs fat 5.5% mismatch. **The format change opens silent-fallback at 15× the rate.** S113's lean-vs-fat asymmetry observation is structurally confirmed with sharper measurement.
+
+Sample mismatches from `lean/tn36.json` (94.8% mismatch):
+```
+'Moving the selected block right and down...'  → word=RIGHT (4), dispatched=2 (DOWN)
+'Move the left block one position to the right...' → word=LEFT (3), dispatched=2 (DOWN)
+'RIGHT moves the piece to the target position.' → word=RIGHT (4), dispatched=2 (DOWN)
+```
+
+The third example is the cleanest case: single-word rationale clearly says "RIGHT", system dispatched DOWN. No ambiguity, no log, no flag.
+
+### Post-Apr-24 production data: doesn't exist
+
+S113 proposal #6 hoped to test the regression-vs-fix hypothesis on post-Apr-24 game-play runs. **None exist** in `shared-context/explorations/` — the most recent game-play track is `whole-brain-at-small-model-2026-04-22`. Post-Apr-24 explorations (`codification-project-2026-04-25`, `policy-sketch-dispatch-2026-04-24`) contain documentation/design docs, not LLM-call logs. The fix-vs-regression hypothesis cannot be empirically tested without enabling `--json-out` in current production play.
+
+### Pattern table — S114 amendments to recurrence #7
+
+| # | Layer | S113 framing | S114 amendment |
+|---|---|---|---|
+| 7 | Model output | gemma4:e4b empty on game prompts | gemma4:e4b empty on **most** prompts via two distinct mechanisms (Mode A sampler-dependent, Mode B intrinsic to keymap-shape) |
+
+Right framing: a specific model on a specific machine producing systematically degenerate output that the harness treats as valid. The `model_output_empty: bool` flag (S113 proposal #4) catches all the failures regardless of mechanism — it remains the right structural fix.
+
+### Held proposals carry-forward
+
+S113 #1-6 untouched by operator. S114 status:
+- **#5 (fleet check)**: Done on Thor side. Confirmed gemma4:e4b broken and unique. Legion still needs checking.
+- **#6 (rationale-mismatch on post-Apr-24)**: Done on available pre-Apr-24 corpus. 57.5% mismatch confirms the silent-fallback signature is even more pervasive than S113 reported. Cannot validate post-Apr-24 fix without new `--json-out` data.
+
+S114 new proposal:
+**7. Quarantine gemma4:e4b on Thor pending diagnosis.** Currently failing on virtually all prompts — anywhere it is the play or raising model, the LLM contributes zero signal while consuming wall-clock latency. Diagnose whether GGUF-corruption-on-disk, Ollama-on-Jetson issue, or model-vocab issue.
+
+### Files this session
+
+- `sage/raising/analysis/s114_gemma4e4b_empty_response_root_cause_20260426.md` — full S114 analysis with reproduction recipes and raw data references
+- `sage/docs/LATEST_STATUS.md` — this entry
+
+Reproducible scripts (uncommitted, in `/tmp/s114/`): `probe_empty_response.py`, `probe_boundary_gemma4e4b.py`, `probe_trigger_isolation.py`, `probe_clean_reload.py`, `probe_raw_bytes.py`, `probe_controlled_repro.py`, `probe_chat_vs_generate.py`, `probe_sampler_isolation.py`, `probe_token_inspection.py`, `probe_other_models_keymap.py`, `rationale_action_mismatch.py`. Result data: `empty_response_probe.json`, `empty_response_boundary.json`, `trigger_isolation.json`, `rationale_mismatch_full.json`.
+
+No code changes shipped. Findings strengthen S113's evidence base, expand the severity of recurrence #7 with two-mechanism characterization, and provide the most rigorous in-production silent-fallback measurement to date.
+
+### Meta
+
+S113: "any time information transforms ... the transform can take a silent path." S114 finds a single model + machine combination has **two different mechanisms** by which it silently produces zero output, and a single format change can flip a 5.5% mismatch rate to 85.7% on the same game. The principle scales; the cost of NOT instrumenting silent-path observability is now measurable in production at >10× single-channel headline rates.
 
 ---
 

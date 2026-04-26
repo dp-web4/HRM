@@ -1,0 +1,1722 @@
+{
+  "track_aggregates": {
+    "mcnugget-v2invoke-qwen35-2026-04-20": {
+      "n_files": 1,
+      "n_total": 81,
+      "n_parse_failed": 3,
+      "n_with_dirword": 22,
+      "n_match": 9,
+      "n_mismatch": 13
+    },
+    "qwen-tiny-v2invoke-floor-2026-04-20": {
+      "n_files": 10,
+      "n_total": 507,
+      "n_parse_failed": 45,
+      "n_with_dirword": 50,
+      "n_match": 38,
+      "n_mismatch": 12
+    },
+    "v2invoke-strategy-labels-2026-04-20": {
+      "n_files": 1,
+      "n_total": 83,
+      "n_parse_failed": 0,
+      "n_with_dirword": 68,
+      "n_match": 30,
+      "n_mismatch": 38
+    },
+    "whole-brain-at-small-model-2026-04-22": {
+      "n_files": 43,
+      "n_total": 6871,
+      "n_parse_failed": 798,
+      "n_with_dirword": 1750,
+      "n_match": 727,
+      "n_mismatch": 1023
+    }
+  },
+  "files": [
+    {
+      "file": "mcnugget-v2invoke-qwen35-2026-04-20/data/cd82.json",
+      "n_total": 81,
+      "parse_fail_rate": 0.037037037037037035,
+      "n_parse_failed": 3,
+      "n_with_dirword": 22,
+      "mismatch_rate": 0.5909090909090909,
+      "n_match": 9,
+      "n_mismatch": 13,
+      "action_distribution": {
+        "4": 3,
+        "5": 5,
+        "1": 2,
+        "6": 9,
+        "3": 2,
+        "2": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "The CNN's top pick (LEFT) is likely a perseveration error given the recent histo",
+          "rationale_word": "PICK",
+          "rationale_action": 5,
+          "dispatched_action": 4
+        },
+        {
+          "rationale": "The target pattern shows a white wedge in the bottom-right; launching from the c",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 5
+        },
+        {
+          "rationale": "The CNN is stuck repeating CLICK(32,32) with no effect; I must break the loop by",
+          "rationale_word": "CLICK",
+          "rationale_action": 6,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "The metacog signals indicate a high-severity perseveration loop on 'DOWN' with n",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 6
+        }
+      ]
+    },
+    {
+      "file": "qwen-tiny-v2invoke-floor-2026-04-20/data/cd82-gemma4e2b-v2invoke-500.json",
+      "n_total": 82,
+      "parse_fail_rate": 0.1951219512195122,
+      "n_parse_failed": 16,
+      "n_with_dirword": 8,
+      "mismatch_rate": 0.375,
+      "n_match": 5,
+      "n_mismatch": 3,
+      "action_distribution": {
+        "1": 2,
+        "2": 1,
+        "5": 3,
+        "6": 1,
+        "3": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "**Thought Process:** The system is stuck in a state where simple movements seem ",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "Output: RIGHT",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 5
+        },
+        {
+          "rationale": "RESPONSE: LEFT",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 5
+        }
+      ]
+    },
+    {
+      "file": "qwen-tiny-v2invoke-floor-2026-04-20/data/cd82-gemma4e2b-v2invoke-smoke-30.json",
+      "n_total": 16,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 2,
+      "mismatch_rate": 0.5,
+      "n_match": 1,
+      "n_mismatch": 1,
+      "action_distribution": {
+        "2": 1,
+        "1": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Response: RIGHT",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 1
+        }
+      ]
+    },
+    {
+      "file": "qwen-tiny-v2invoke-floor-2026-04-20/data/cd82-gemma4e2b-v3-500.json",
+      "n_total": 86,
+      "parse_fail_rate": 0.13953488372093023,
+      "n_parse_failed": 12,
+      "n_with_dirword": 9,
+      "mismatch_rate": 0.0,
+      "n_match": 9,
+      "n_mismatch": 0,
+      "action_distribution": {
+        "1": 1,
+        "4": 4,
+        "2": 2,
+        "5": 1,
+        "3": 1
+      },
+      "samples_mismatch": []
+    },
+    {
+      "file": "qwen-tiny-v2invoke-floor-2026-04-20/data/cd82-gemma4e2b-v7sub-500.json",
+      "n_total": 79,
+      "parse_fail_rate": 0.0379746835443038,
+      "n_parse_failed": 3,
+      "n_with_dirword": 7,
+      "mismatch_rate": 0.14285714285714285,
+      "n_match": 6,
+      "n_mismatch": 1,
+      "action_distribution": {
+        "2": 7
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "I will attempt a rightward move to see if it breaks the stuck state.<channel|>RI",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 2
+        }
+      ]
+    },
+    {
+      "file": "qwen-tiny-v2invoke-floor-2026-04-20/data/cd82-v2invoke-500.json",
+      "n_total": 78,
+      "parse_fail_rate": 0.038461538461538464,
+      "n_parse_failed": 3,
+      "n_with_dirword": 3,
+      "mismatch_rate": 1.0,
+      "n_match": 0,
+      "n_mismatch": 3,
+      "action_distribution": {
+        "1": 1,
+        "3": 1,
+        "2": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "The player is left of the yellow target; LEFT closes the gap.",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "Rationale: The system is stuck at step 46 with no progress. The most recent succ",
+          "rationale_word": "UP",
+          "rationale_action": 1,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "Rationale: The game state shows the player is stuck on a horizontal path (UP/DOW",
+          "rationale_word": "UP",
+          "rationale_action": 1,
+          "dispatched_action": 2
+        }
+      ]
+    },
+    {
+      "file": "qwen-tiny-v2invoke-floor-2026-04-20/data/cd82-v2invoke-smoke-30.json",
+      "n_total": 7,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 1,
+      "mismatch_rate": 1.0,
+      "n_match": 0,
+      "n_mismatch": 1,
+      "action_distribution": {
+        "1": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "The player is at the top-left of the canvas; LEFT closes the gap.",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 1
+        }
+      ]
+    },
+    {
+      "file": "qwen-tiny-v2invoke-floor-2026-04-20/data/cd82-v7sub-500.json",
+      "n_total": 81,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 5,
+      "mismatch_rate": 0.4,
+      "n_match": 3,
+      "n_mismatch": 2,
+      "action_distribution": {
+        "3": 2,
+        "2": 3
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "The player is at the bottom-right corner of the canvas; DOWN moves the basket to",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 2
+        },
+        {
+          "rationale": "Rationale: The system state shows a \"stuck\" condition with a high metabolic rate",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 2
+        }
+      ]
+    },
+    {
+      "file": "qwen-tiny-v2invoke-floor-2026-04-20/data/ft09-gemma4e2b-v2invoke-500.json",
+      "n_total": 34,
+      "parse_fail_rate": 0.14705882352941177,
+      "n_parse_failed": 5,
+      "n_with_dirword": 6,
+      "mismatch_rate": 0.0,
+      "n_match": 6,
+      "n_mismatch": 0,
+      "action_distribution": {
+        "6": 1,
+        "4": 2,
+        "3": 3
+      },
+      "samples_mismatch": []
+    },
+    {
+      "file": "qwen-tiny-v2invoke-floor-2026-04-20/data/ft09-gemma4e2b-v3-500.json",
+      "n_total": 14,
+      "parse_fail_rate": 0.14285714285714285,
+      "n_parse_failed": 2,
+      "n_with_dirword": 2,
+      "mismatch_rate": 0.0,
+      "n_match": 2,
+      "n_mismatch": 0,
+      "action_distribution": {
+        "3": 1,
+        "2": 1
+      },
+      "samples_mismatch": []
+    },
+    {
+      "file": "qwen-tiny-v2invoke-floor-2026-04-20/data/ft09-gemma4e2b-v7sub-500.json",
+      "n_total": 30,
+      "parse_fail_rate": 0.13333333333333333,
+      "n_parse_failed": 4,
+      "n_with_dirword": 7,
+      "mismatch_rate": 0.14285714285714285,
+      "n_match": 6,
+      "n_mismatch": 1,
+      "action_distribution": {
+        "2": 6,
+        "5": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Since the goal is to continue, I will try DOWN.",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 5
+        }
+      ]
+    },
+    {
+      "file": "v2invoke-strategy-labels-2026-04-20/data/cd82-play-v2invoke-framestate.json",
+      "n_total": 83,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 68,
+      "mismatch_rate": 0.5588235294117647,
+      "n_match": 30,
+      "n_mismatch": 38,
+      "action_distribution": {
+        "3": 16,
+        "5": 13,
+        "6": 6,
+        "2": 10,
+        "4": 17,
+        "1": 6
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "The basket has moved to the right position on the ring; selecting the color/laun",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 5
+        },
+        {
+          "rationale": "The basket is stuck in a loop of moving RIGHT; switching to DOWN to reposition f",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 2
+        },
+        {
+          "rationale": "Metacog: perseveration. The CNN is repeating DOWN and I am breaking the pattern ",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 4
+        },
+        {
+          "rationale": "The recent CLICK(38,4) had no effect and the basket is currently not positioned ",
+          "rationale_word": "CLICK",
+          "rationale_action": 6,
+          "dispatched_action": 3
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/ar25.json",
+      "n_total": 141,
+      "parse_fail_rate": 0.02127659574468085,
+      "n_parse_failed": 3,
+      "n_with_dirword": 12,
+      "mismatch_rate": 0.0,
+      "n_match": 12,
+      "n_mismatch": 0,
+      "action_distribution": {
+        "4": 2,
+        "2": 8,
+        "3": 2
+      },
+      "samples_mismatch": []
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/bp35.json",
+      "n_total": 22,
+      "parse_fail_rate": 0.045454545454545456,
+      "n_parse_failed": 1,
+      "n_with_dirword": 1,
+      "mismatch_rate": 0.0,
+      "n_match": 1,
+      "n_mismatch": 0,
+      "action_distribution": {
+        "4": 1
+      },
+      "samples_mismatch": []
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/cd82.json",
+      "n_total": 83,
+      "parse_fail_rate": 0.1566265060240964,
+      "n_parse_failed": 13,
+      "n_with_dirword": 10,
+      "mismatch_rate": 0.2,
+      "n_match": 8,
+      "n_mismatch": 2,
+      "action_distribution": {
+        "6": 1,
+        "1": 2,
+        "2": 2,
+        "4": 2,
+        "5": 3
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Reasoning: The system is stuck in a repetitive pattern (moving right, yielding n",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "However, since the prompt is a request to act based on the entire input, and the",
+          "rationale_word": "UP",
+          "rationale_action": 1,
+          "dispatched_action": 5
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/cn04.json",
+      "n_total": 134,
+      "parse_fail_rate": 0.14925373134328357,
+      "n_parse_failed": 20,
+      "n_with_dirword": 17,
+      "mismatch_rate": 0.17647058823529413,
+      "n_match": 14,
+      "n_mismatch": 3,
+      "action_distribution": {
+        "5": 3,
+        "1": 1,
+        "2": 7,
+        "3": 1,
+        "4": 5
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "**Decision:** Attempt to move UP.",
+          "rationale_word": "UP",
+          "rationale_action": 1,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "Reasoning: The previous steps (76 steps) indicated that moving left repeatedly y",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 4
+        },
+        {
+          "rationale": "As a final choice for a concrete step, I will try to move right slightly, based ",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 5
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/dc22.json",
+      "n_total": 110,
+      "parse_fail_rate": 0.07272727272727272,
+      "n_parse_failed": 8,
+      "n_with_dirword": 15,
+      "mismatch_rate": 0.13333333333333333,
+      "n_match": 13,
+      "n_mismatch": 2,
+      "action_distribution": {
+        "2": 9,
+        "4": 4,
+        "5": 1,
+        "3": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "LOGIC: The previous sequence involved repeated unsuccessful attempts (DOWN) lead",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 4
+        },
+        {
+          "rationale": "# Output based on the reasoning above.",
+          "rationale_word": "ABOVE",
+          "rationale_action": 1,
+          "dispatched_action": 5
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/ft09.json",
+      "n_total": 18,
+      "parse_fail_rate": 0.16666666666666666,
+      "n_parse_failed": 3,
+      "n_with_dirword": 0,
+      "mismatch_rate": null,
+      "n_match": 0,
+      "n_mismatch": 0,
+      "action_distribution": {},
+      "samples_mismatch": []
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/g50t.json",
+      "n_total": 107,
+      "parse_fail_rate": 0.056074766355140186,
+      "n_parse_failed": 6,
+      "n_with_dirword": 10,
+      "mismatch_rate": 0.1,
+      "n_match": 9,
+      "n_mismatch": 1,
+      "action_distribution": {
+        "4": 5,
+        "2": 5
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "RIGHT",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 2
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/ka59.json",
+      "n_total": 93,
+      "parse_fail_rate": 0.07526881720430108,
+      "n_parse_failed": 7,
+      "n_with_dirword": 6,
+      "mismatch_rate": 0.16666666666666666,
+      "n_match": 5,
+      "n_mismatch": 1,
+      "action_distribution": {
+        "4": 4,
+        "3": 2
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Reasoning: The system is stuck, as indicated by the repeated low-impact moves an",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 4
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/lf52.json",
+      "n_total": 53,
+      "parse_fail_rate": 0.05660377358490566,
+      "n_parse_failed": 3,
+      "n_with_dirword": 3,
+      "mismatch_rate": 0.0,
+      "n_match": 3,
+      "n_mismatch": 0,
+      "action_distribution": {
+        "6": 1,
+        "3": 1,
+        "4": 1
+      },
+      "samples_mismatch": []
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/lp85.json",
+      "n_total": 1990,
+      "parse_fail_rate": 0.2984924623115578,
+      "n_parse_failed": 594,
+      "n_with_dirword": 91,
+      "mismatch_rate": 0.054945054945054944,
+      "n_match": 86,
+      "n_mismatch": 5,
+      "action_distribution": {
+        "2": 40,
+        "3": 12,
+        "6": 14,
+        "4": 18,
+        "5": 6,
+        "1": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Response: DOWN",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 4
+        },
+        {
+          "rationale": "**Decision:** Click at the center.",
+          "rationale_word": "CLICK",
+          "rationale_action": 6,
+          "dispatched_action": 5
+        },
+        {
+          "rationale": "I will try to press the bottom boundary, which has been untouched.",
+          "rationale_word": "PRESS",
+          "rationale_action": 6,
+          "dispatched_action": 2
+        },
+        {
+          "rationale": "I will try to press the rightmost coordinate of the previous failed attempt, as ",
+          "rationale_word": "PRESS",
+          "rationale_action": 6,
+          "dispatched_action": 4
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/ls20.json",
+      "n_total": 133,
+      "parse_fail_rate": 0.007518796992481203,
+      "n_parse_failed": 1,
+      "n_with_dirword": 7,
+      "mismatch_rate": 0.0,
+      "n_match": 7,
+      "n_mismatch": 0,
+      "action_distribution": {
+        "2": 7
+      },
+      "samples_mismatch": []
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/m0r0.json",
+      "n_total": 146,
+      "parse_fail_rate": 0.0547945205479452,
+      "n_parse_failed": 8,
+      "n_with_dirword": 15,
+      "mismatch_rate": 0.06666666666666667,
+      "n_match": 14,
+      "n_mismatch": 1,
+      "action_distribution": {
+        "2": 5,
+        "4": 7,
+        "1": 2,
+        "3": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Reasoning: The system is stuck in a repetitive pattern, indicated by the repeate",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 4
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/r11l.json",
+      "n_total": 47,
+      "parse_fail_rate": 0.2127659574468085,
+      "n_parse_failed": 10,
+      "n_with_dirword": 5,
+      "mismatch_rate": 0.2,
+      "n_match": 4,
+      "n_mismatch": 1,
+      "action_distribution": {
+        "5": 2,
+        "6": 1,
+        "2": 2
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "**Move:** Move Right.",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 6
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/re86.json",
+      "n_total": 91,
+      "parse_fail_rate": 0.054945054945054944,
+      "n_parse_failed": 5,
+      "n_with_dirword": 5,
+      "mismatch_rate": 0.2,
+      "n_match": 4,
+      "n_mismatch": 1,
+      "action_distribution": {
+        "4": 1,
+        "2": 2,
+        "1": 1,
+        "3": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Reasoning: The system is stuck, and the previous attempts (including DOWN) have ",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 1
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/s5i5.json",
+      "n_total": 111,
+      "parse_fail_rate": 0.26126126126126126,
+      "n_parse_failed": 29,
+      "n_with_dirword": 11,
+      "mismatch_rate": 0.09090909090909091,
+      "n_match": 10,
+      "n_mismatch": 1,
+      "action_distribution": {
+        "5": 5,
+        "4": 4,
+        "3": 2
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "I will choose **LEFT** to explore a new area.",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 5
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/sb26.json",
+      "n_total": 286,
+      "parse_fail_rate": 0.17132867132867133,
+      "n_parse_failed": 49,
+      "n_with_dirword": 25,
+      "mismatch_rate": 0.2,
+      "n_match": 20,
+      "n_mismatch": 5,
+      "action_distribution": {
+        "2": 15,
+        "4": 5,
+        "5": 3,
+        "6": 1,
+        "3": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Reasoning: The previous attempt was to follow the pattern of repeated movement (",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 2
+        },
+        {
+          "rationale": "Reasoning: The agent is currently in a state of high uncertainty and stagnation ",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 4
+        },
+        {
+          "rationale": "Thought: The agent is stuck moving left. Since the goal is to explore, a systema",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 4
+        },
+        {
+          "rationale": "Reasoning: The agent is stuck in a state where it has not made progress. Given t",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 2
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/sc25.json",
+      "n_total": 49,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 1,
+      "mismatch_rate": 0.0,
+      "n_match": 1,
+      "n_mismatch": 0,
+      "action_distribution": {
+        "3": 1
+      },
+      "samples_mismatch": []
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/sk48.json",
+      "n_total": 173,
+      "parse_fail_rate": 0.10404624277456648,
+      "n_parse_failed": 18,
+      "n_with_dirword": 11,
+      "mismatch_rate": 0.18181818181818182,
+      "n_match": 9,
+      "n_mismatch": 2,
+      "action_distribution": {
+        "2": 1,
+        "4": 7,
+        "1": 1,
+        "3": 2
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Output: LEFT",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 4
+        },
+        {
+          "rationale": "Response: RIGHT",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 3
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/smoke-cd82.json",
+      "n_total": 14,
+      "parse_fail_rate": 0.07142857142857142,
+      "n_parse_failed": 1,
+      "n_with_dirword": 0,
+      "mismatch_rate": null,
+      "n_match": 0,
+      "n_mismatch": 0,
+      "action_distribution": {},
+      "samples_mismatch": []
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/sp80.json",
+      "n_total": 15,
+      "parse_fail_rate": 0.06666666666666667,
+      "n_parse_failed": 1,
+      "n_with_dirword": 0,
+      "mismatch_rate": null,
+      "n_match": 0,
+      "n_mismatch": 0,
+      "action_distribution": {},
+      "samples_mismatch": []
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/fat/su15.json",
+      "n_total": 80,
+      "parse_fail_rate": 0.225,
+      "n_parse_failed": 18,
+      "n_with_dirword": 5,
+      "mismatch_rate": 0.0,
+      "n_match": 5,
+      "n_mismatch": 0,
+      "action_distribution": {
+        "4": 2,
+        "3": 2,
+        "2": 1
+      },
+      "samples_mismatch": []
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/ar25.json",
+      "n_total": 21,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 12,
+      "mismatch_rate": 0.5833333333333334,
+      "n_match": 5,
+      "n_mismatch": 7,
+      "action_distribution": {
+        "1": 7,
+        "2": 1,
+        "3": 1,
+        "5": 1,
+        "4": 2
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Move the selected object to the top-left tile to attempt to cover the top-left d",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "Move the selected object down to try and cover the next target.",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "Move the selected object to the top-left corner to try and find a path.",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "Click the yellow shape to select it, as the previous sequence of UP moves did no",
+          "rationale_word": "CLICK",
+          "rationale_action": 6,
+          "dispatched_action": 5
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/cd82.json",
+      "n_total": 25,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 1,
+      "mismatch_rate": 0.0,
+      "n_match": 1,
+      "n_mismatch": 0,
+      "action_distribution": {
+        "4": 1
+      },
+      "samples_mismatch": []
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/cn04.json",
+      "n_total": 50,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 22,
+      "mismatch_rate": 0.36363636363636365,
+      "n_match": 14,
+      "n_mismatch": 8,
+      "action_distribution": {
+        "3": 4,
+        "1": 3,
+        "2": 5,
+        "4": 10
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Move the selected sprite down to potentially connect the pins.",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "Move the selected sprite to the top-left position to try and connect the pins.",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "Click the area near the center to select the connector.",
+          "rationale_word": "CLICK",
+          "rationale_action": 6,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "Click the sprite to select it.",
+          "rationale_word": "CLICK",
+          "rationale_action": 6,
+          "dispatched_action": 4
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/dc22.json",
+      "n_total": 49,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 33,
+      "mismatch_rate": 0.6060606060606061,
+      "n_match": 13,
+      "n_mismatch": 20,
+      "action_distribution": {
+        "2": 9,
+        "3": 7,
+        "4": 7,
+        "5": 3,
+        "1": 5,
+        "6": 2
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Moving UP seems to align with the hint and might progress the level.",
+          "rationale_word": "UP",
+          "rationale_action": 1,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "CLICK",
+          "rationale_word": "CLICK",
+          "rationale_action": 6,
+          "dispatched_action": 2
+        },
+        {
+          "rationale": "CLICK to move the crane and attempt to solve the puzzle.",
+          "rationale_word": "CLICK",
+          "rationale_action": 6,
+          "dispatched_action": 5
+        },
+        {
+          "rationale": "The current position is aligned with the goal tile on the right, suggesting a mo",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 2
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/ft09.json",
+      "n_total": 9,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 5,
+      "mismatch_rate": 1.0,
+      "n_match": 0,
+      "n_mismatch": 5,
+      "action_distribution": {
+        "2": 1,
+        "5": 2,
+        "1": 1,
+        "4": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Clicking the center cell in the left pattern is the most likely way to interact ",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 2
+        },
+        {
+          "rationale": "I will click on the center-right cell to explore the next potential area.",
+          "rationale_word": "CLICK",
+          "rationale_action": 6,
+          "dispatched_action": 5
+        },
+        {
+          "rationale": "I will click on the center cell of the left pattern to see if it changes the glo",
+          "rationale_word": "CLICK",
+          "rationale_action": 6,
+          "dispatched_action": 5
+        },
+        {
+          "rationale": "CLICK on the top-left cell to see if it breaks the pattern or advances the level",
+          "rationale_word": "CLICK",
+          "rationale_action": 6,
+          "dispatched_action": 1
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/g50t.json",
+      "n_total": 46,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 25,
+      "mismatch_rate": 0.32,
+      "n_match": 17,
+      "n_mismatch": 8,
+      "action_distribution": {
+        "4": 8,
+        "1": 2,
+        "2": 6,
+        "3": 4,
+        "5": 4,
+        "6": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Moving left is the most likely path to progress toward the goal based on the NN ",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "Moving LEFT will bring the player closer to the goal.",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 2
+        },
+        {
+          "rationale": "RIGHT moves the player to a position that is likely closer to the goal.",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "This move moves the player down and slightly right, advancing toward the goal ba",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 3
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/ka59.json",
+      "n_total": 61,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 48,
+      "mismatch_rate": 0.6458333333333334,
+      "n_match": 17,
+      "n_mismatch": 31,
+      "action_distribution": {
+        "3": 9,
+        "2": 8,
+        "1": 14,
+        "5": 6,
+        "4": 7,
+        "0": 3,
+        "6": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Pushing the selected blue box down is the most progress towards filling the goal",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "Pushing the selected blue box down attempts to move it into the space below.",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "Pushing the bottom blue box down will likely open up space or advance the puzzle",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 5
+        },
+        {
+          "rationale": "Pushing the bottom-left blue box into the space to potentially move the white bo",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 5
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/lp85.json",
+      "n_total": 1149,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 413,
+      "mismatch_rate": 0.8571428571428571,
+      "n_match": 59,
+      "n_mismatch": 354,
+      "action_distribution": {
+        "1": 205,
+        "4": 63,
+        "6": 16,
+        "2": 70,
+        "3": 46,
+        "5": 12,
+        "0": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Clicking the left button shifts the tiles backward, which might align the goal m",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "Clicking the left button will attempt to move the tiles backward, which might pr",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "Clicking left moves the blue tile to the left, which is a step towards potential",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "This move attempts to shift the tile at position 29 to the right, which might le",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 6
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/ls20.json",
+      "n_total": 55,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 46,
+      "mismatch_rate": 0.10869565217391304,
+      "n_match": 41,
+      "n_mismatch": 5,
+      "action_distribution": {
+        "5": 1,
+        "4": 7,
+        "1": 14,
+        "2": 20,
+        "3": 4
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Moving up will likely lead to progress towards the goal by changing the player's",
+          "rationale_word": "UP",
+          "rationale_action": 1,
+          "dispatched_action": 5
+        },
+        {
+          "rationale": "Move down to potentially collect a goal or change the state of the current cell.",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "Move down to try and align the shape/color/rotation to the goal.",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "Move down to potentially reach the goal on the right.",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 1
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/r11l.json",
+      "n_total": 19,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 10,
+      "mismatch_rate": 0.5,
+      "n_match": 5,
+      "n_mismatch": 5,
+      "action_distribution": {
+        "4": 1,
+        "2": 3,
+        "1": 5,
+        "3": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "CLICK on (36, 8) to move the selected limb towards the center.",
+          "rationale_word": "CLICK",
+          "rationale_action": 6,
+          "dispatched_action": 4
+        },
+        {
+          "rationale": "Move the selected limb down to attempt to align with the target.",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "Move the selected limb down and slightly to the right to try and align it with t",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "Move the selected limb up and slightly right to attempt to align with the target",
+          "rationale_word": "UP",
+          "rationale_action": 1,
+          "dispatched_action": 2
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/re86.json",
+      "n_total": 37,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 28,
+      "mismatch_rate": 0.42857142857142855,
+      "n_match": 16,
+      "n_mismatch": 12,
+      "action_distribution": {
+        "5": 11,
+        "1": 3,
+        "4": 4,
+        "3": 5,
+        "2": 5
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Select the piece at position (17, 36) to focus on it for the next step.",
+          "rationale_word": "SELECT",
+          "rationale_action": 5,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "Move the active piece to the top-left corner to start a new configuration.",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 4
+        },
+        {
+          "rationale": "Move the active piece down to the center area to explore new configurations.",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "Move the active piece up to explore the top-center area.",
+          "rationale_word": "UP",
+          "rationale_action": 1,
+          "dispatched_action": 5
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/s5i5.json",
+      "n_total": 129,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 45,
+      "mismatch_rate": 0.9333333333333333,
+      "n_match": 3,
+      "n_mismatch": 42,
+      "action_distribution": {
+        "2": 9,
+        "6": 2,
+        "1": 21,
+        "3": 3,
+        "5": 2,
+        "4": 7,
+        "0": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Clicking on the middle-left green block might help resolve the current configura",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 2
+        },
+        {
+          "rationale": "Clicking the right slider will grow the bottom-right card, potentially leading t",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 6
+        },
+        {
+          "rationale": "Clicking the left slider will shrink the card in the left section, which is a po",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "Clicking the left slider will shrink the card on the left, which is a step towar",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 1
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/sb26.json",
+      "n_total": 222,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 134,
+      "mismatch_rate": 0.3880597014925373,
+      "n_match": 82,
+      "n_mismatch": 52,
+      "action_distribution": {
+        "2": 28,
+        "4": 47,
+        "5": 14,
+        "3": 21,
+        "1": 24
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Click the bottom-left token to swap it with the bottom-right token to attempt to",
+          "rationale_word": "CLICK",
+          "rationale_action": 6,
+          "dispatched_action": 5
+        },
+        {
+          "rationale": "Move the selected token to the bottom-left slot to progress the sequence.",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 5
+        },
+        {
+          "rationale": "Move DOWN to continue the sequence and progress towards the goal.",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "DOWN is the most likely move based on the hint and the previous sequence, aiming",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 3
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/sc25.json",
+      "n_total": 26,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 16,
+      "mismatch_rate": 0.375,
+      "n_match": 10,
+      "n_mismatch": 6,
+      "action_distribution": {
+        "1": 5,
+        "2": 1,
+        "6": 1,
+        "4": 7,
+        "3": 2
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "LEFT moves the player towards the left side of the screen.",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "Move right to potentially interact with the red block on the right.",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 6
+        },
+        {
+          "rationale": "Moving down attempts to progress the player towards the goal.",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "Moving left will likely lead towards the exit door to potentially avoid the coll",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 1
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/sk48.json",
+      "n_total": 70,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 20,
+      "mismatch_rate": 0.15,
+      "n_match": 17,
+      "n_mismatch": 3,
+      "action_distribution": {
+        "4": 18,
+        "1": 2
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Moving the rail head to the left seems to be the intended progression based on t",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "Moving LEFT should help align the rail head pairs for potential progress.",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 4
+        },
+        {
+          "rationale": "Moving DOWN will advance the current position by 136px, which is a potential pat",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 4
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/sp80.json",
+      "n_total": 13,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 5,
+      "mismatch_rate": 0.6,
+      "n_match": 2,
+      "n_mismatch": 3,
+      "action_distribution": {
+        "4": 2,
+        "3": 2,
+        "2": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Move the selected pipe down to potentially fill a receptacle.",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 4
+        },
+        {
+          "rationale": "Move the selected pipe down to potentially fill the lower receptacle.",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "DOWN will move the selected pipe to an adjacent position, potentially leading to",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 3
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/su15.json",
+      "n_total": 389,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 194,
+      "mismatch_rate": 0.5,
+      "n_match": 97,
+      "n_mismatch": 97,
+      "action_distribution": {
+        "3": 32,
+        "2": 51,
+        "4": 68,
+        "1": 27,
+        "5": 9,
+        "0": 3,
+        "6": 4
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Move RIGHT to potentially trigger a vacuum and merge fruits.",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "Move RIGHT to attempt to collect the fruit.",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 2
+        },
+        {
+          "rationale": "DOWN moves the fruit towards the goal position, which is likely the objective fo",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "The agent should move down and right to potentially reach the next state or goal",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 4
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/tn36.json",
+      "n_total": 262,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 212,
+      "mismatch_rate": 0.9481132075471698,
+      "n_match": 11,
+      "n_mismatch": 201,
+      "action_distribution": {
+        "4": 4,
+        "2": 82,
+        "3": 105,
+        "1": 20,
+        "5": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Moving the selected block right and down aligns it with the target.",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 2
+        },
+        {
+          "rationale": "This moves the current position down to attempt to match the target in the right",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "Move the left block one position to the right to attempt to match the target.",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 2
+        },
+        {
+          "rationale": "RIGHT moves the piece to the target position.",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 2
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/tr87.json",
+      "n_total": 38,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 33,
+      "mismatch_rate": 0.5757575757575758,
+      "n_match": 14,
+      "n_mismatch": 19,
+      "action_distribution": {
+        "1": 10,
+        "4": 6,
+        "3": 7,
+        "2": 4,
+        "5": 3,
+        "6": 3
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Moving down will likely lead to a solution by exploring the possibilities in the",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 4
+        },
+        {
+          "rationale": "DOWN moves the cursor down and right to select a symbol for potential change.",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "Move right to the center of the bottom row to align with the pattern.",
+          "rationale_word": "RIGHT",
+          "rationale_action": 4,
+          "dispatched_action": 2
+        },
+        {
+          "rationale": "DOWN moves the selection to the bottom-center, which is a good starting point fo",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 3
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/tu93.json",
+      "n_total": 7,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 5,
+      "mismatch_rate": 0.0,
+      "n_match": 5,
+      "n_mismatch": 0,
+      "action_distribution": {
+        "4": 1,
+        "2": 3,
+        "1": 1
+      },
+      "samples_mismatch": []
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/vc33.json",
+      "n_total": 245,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 169,
+      "mismatch_rate": 0.650887573964497,
+      "n_match": 59,
+      "n_mismatch": 110,
+      "action_distribution": {
+        "3": 20,
+        "0": 3,
+        "4": 72,
+        "1": 45,
+        "5": 12,
+        "2": 17
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "CLICK on the left beam to initiate a change.",
+          "rationale_word": "CLICK",
+          "rationale_action": 6,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "Move the left beam to the right to potentially unlock the rotation mechanism.",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 0
+        },
+        {
+          "rationale": "Clicking the left beam might initiate a change in the seesaw mechanism.",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 1
+        },
+        {
+          "rationale": "The most recent successful move was LEFT, so continuing in that direction is the",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 1
+        }
+      ]
+    },
+    {
+      "file": "whole-brain-at-small-model-2026-04-22/data/lean/wa30.json",
+      "n_total": 53,
+      "parse_fail_rate": 0.0,
+      "n_parse_failed": 0,
+      "n_with_dirword": 24,
+      "mismatch_rate": 0.4166666666666667,
+      "n_match": 14,
+      "n_mismatch": 10,
+      "action_distribution": {
+        "4": 17,
+        "2": 1,
+        "3": 1,
+        "1": 4,
+        "6": 1
+      },
+      "samples_mismatch": [
+        {
+          "rationale": "Move LEFT to potentially interact with the slots.",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 4
+        },
+        {
+          "rationale": "DOWN moves the selected item closer to the target.",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 3
+        },
+        {
+          "rationale": "Moving down will likely bring the yellow blocks closer to the target area.",
+          "rationale_word": "DOWN",
+          "rationale_action": 2,
+          "dispatched_action": 4
+        },
+        {
+          "rationale": "This attempts to move the red block further to the left, potentially positioning",
+          "rationale_word": "LEFT",
+          "rationale_action": 3,
+          "dispatched_action": 4
+        }
+      ]
+    }
+  ]
+}

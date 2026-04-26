@@ -44,6 +44,7 @@ class TrajectoryStep:
     level_before: int
     level_after: int
     rationale: str       # what the LLM said (if invoked), else ""
+    visual_change: str = ""  # what the change LOOKED LIKE (from frame_state)
 
 
 # ───────────────────────────────────────────────────────────────────
@@ -111,14 +112,16 @@ def _summarize_trajectory(steps: List[TrajectoryStep], max_lines: int = 40) -> s
             lines.append(f"  Steps {s.step}-{steps[i].step}: {s.action} × {run_len} → no effect")
         elif s.level_after > s.level_before:
             coord_str = f" at ({s.coords['x']},{s.coords['y']})" if s.coords else ""
-            lines.append(f"  Step {s.step}: {s.action}{coord_str} → LEVEL {s.level_before}→{s.level_after} ★")
+            visual = f" ({s.visual_change})" if s.visual_change else ""
+            lines.append(f"  Step {s.step}: {s.action}{coord_str} → LEVEL {s.level_before}→{s.level_after}{visual} ★")
         elif s.frame_delta_pct >= 2.0:
             coord_str = f" at ({s.coords['x']},{s.coords['y']})" if s.coords else ""
-            lines.append(f"  Step {s.step}: {s.action}{coord_str} → {s.frame_delta_pct:.1f}% frame change")
+            visual = f" — {s.visual_change}" if s.visual_change else f" — {s.frame_delta_pct:.1f}% pixels changed"
+            lines.append(f"  Step {s.step}: {s.action}{coord_str}{visual}")
         elif i == 0 or i == len(steps) - 1:
-            # Always include first and last
             coord_str = f" at ({s.coords['x']},{s.coords['y']})" if s.coords else ""
-            lines.append(f"  Step {s.step}: {s.action}{coord_str} → {s.frame_delta_pct:.1f}% change")
+            visual = f" — {s.visual_change}" if s.visual_change else ""
+            lines.append(f"  Step {s.step}: {s.action}{coord_str}{visual}")
 
         i += 1
 
@@ -313,6 +316,7 @@ def play_with_consolidation(
                 level_before=r.get("level", 0),
                 level_after=r.get("level_after", r.get("level", 0)),
                 rationale=r.get("rationale", ""),
+                visual_change=r.get("visual_change", ""),
             ))
 
         if not trajectory or llm is None:

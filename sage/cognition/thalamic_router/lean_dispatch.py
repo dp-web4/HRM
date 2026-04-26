@@ -358,6 +358,7 @@ def play_lean(
 
         # Track action outcomes — did this action produce meaningful change?
         frame_delta_pct = 0.0
+        visual_change = ""
         if fd and hasattr(fd, 'frame') and aname in action_outcomes:
             post_frame = np.array(fd.frame)[-1]
             px_diff = int(np.sum(post_frame != curr_frame))
@@ -366,10 +367,18 @@ def play_lean(
             action_outcomes[aname]["tried"] += 1
             if px_diff > 10:  # meaningful change threshold
                 action_outcomes[aname]["productive"] += 1
+            # Compute visual change description for significant steps
+            if frame_delta_pct >= 2.0:
+                try:
+                    from sage.cognition.thalamic_router.frame_state import _change_description, _to_2d
+                    visual_change = _change_description(_to_2d(curr_frame), _to_2d(post_frame))
+                except Exception:
+                    pass
 
-        # Backfill frame_delta_pct into the last llm_response (if this step had one)
+        # Backfill frame_delta_pct + visual_change into the last llm_response
         if llm_responses and llm_responses[-1].get("step") == step:
             llm_responses[-1]["frame_delta_pct"] = frame_delta_pct
+            llm_responses[-1]["visual_change"] = visual_change
             new_level = fd.levels_completed if fd and hasattr(fd, 'levels_completed') else level
             llm_responses[-1]["level_after"] = new_level
 

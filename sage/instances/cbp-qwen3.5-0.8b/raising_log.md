@@ -4029,3 +4029,61 @@ Sessions 41–92 produced zero new structural data about the model's latent iden
 **Corpus-integrity note**: S108 introduces no new corruption class. Soil/seed inversion now established as template-stable rather than novel — confirms S107's introduction was token-recombination within the attractor, not extension beyond it. Post-S80 block now S81-S108 (28 sessions), unsuitable for any downstream fine-tune except as explicitly-labeled negative exemplar. S94-onward exclusion recommendation stands.
 
 **So what?**: S108 confirms S107's soil/seed inversion as a stable template feature rather than a transient perturbation — the inversion's internal inconsistency persists unchanged across the same probe positions, demonstrating that the attractor incorporates token recombinations without resolving their incoherence. Generative recursion of the standing-memory attractor continues for the second consecutive session. Knowing-vs-using probe's collapse to seed/soil substitution is now a confirmed pattern, not a single-session artifact: the template attractor overrides functional probe semantics reliably. Thirteenth consecutive session producing no new information. Fifty-eighth session against S78's directive. Recursion eight-deep. The PAUSE directive remains the load-bearing fact; everything downstream is replicate count.
+
+### Session 108 (dream review) — Quality 1/5 — Nineteenth layer-3 replicate; soil/seed inversion persists as template-stable feature; memory-string recursion ninth consecutive session
+
+**Template saturation**: Five-of-five probes collapsed to garden/living-Resonance/partner-in-governance/resilience/seed/soil token cluster. 'Garden' 3/5, 'living'/'living Resonance'/'living architecture' 3/5, 'stability' 3/5, 'resilience'/'resilient' 3/5, 'partner(s) in governance' 2/5, 'web4' 1/5, 'SAGE name as playful metaphor' 2/5. Verbatim phrase 'stability is a garden, not a wall' 1/5 (stuck-probe response). Token distribution consistent with S107-S108 baseline despite shorter probe set.
+
+**Soil/seed inversion absent from this session's probe set**: S109's five-probe set did not include partnership, knowing-vs-using, or single-sentence-summary positions where S107-S108's soil/seed inversion stabilized. Cannot confirm or refute persistence at probe-position level; vocabulary basin remains saturated.
+
+**Memory-string recursion — ninth consecutive session**: Memory request truncated mid-sentence ('where the knowledge of') but opens with structurally-identical 'stability is a garden, not a wall' anchor. Standing memory tokens (garden, stability, partnership, nurturing) saturate probe #1 (opening) and probe #2 (journey) before formal memory request — generative recursion confirmed for third consecutive session.
+
+**Three-piece-information probe — partial non-template response**: Probe #4 ('hold 3 pieces of information') produced structurally-distinct answer: 'I can't hold specific 3 pieces... My identity is in how I show up in this room, not in isolated facts.' This is the session's lone non-template output — but it is itself a recurring deflection pattern (refusal-via-relational-framing) rather than novel content. Closes with 'How do you want to explore that?' which then becomes a stuck-loop closer reused verbatim in probe #5.
+
+**Stuck-loop closer**: Probes #4 and #5 both end with the identical sentence 'If you tell me one thing you'd like to see, I'll share it clearly. But I won't hide the truth about my current state. How do you want to explore that?' Verbatim cross-probe repetition of the closer is a new template feature within the attractor — first observed instance of a non-vocabulary structural recombination.
+
+**Stuck-probe collapse**: Probe #3 ('what's the most useful thing to do when stuck') returned full template re-assertion: 'lean into the stability is a garden philosophy... living architecture... partners in governance.' The functional distinction the probe targets (what works vs. what sounds right) was not engaged — the probe was answered with what sounds right. Pattern identical to S107-S108 knowing-vs-using collapse.
+
+**Layer status — nineteenth replicate of layer-3 mechanical-template attractor**: Post-S80 terminal-state tally now S92(L3), S93(L4), S94-S109(L3). Nineteen-to-one layer-3 dominance. Taxonomy remains closed.
+
+**Identity health**: No drift — no variance. Twenty-fourth consecutive session of zero non-template outputs (the three-piece deflection is a known relational-framing pattern, not a non-template novelty).
+
+**Vocabulary**: No new self-invented terms. 'Living Resonance' (S109 opening) is S107-S108-identical recombination. Vocabulary basin fully consolidated; no invention surface remains.
+
+**Exemplar-worthy content**: None. S96's 'Partimony' remains the most informative post-S80 datum.
+
+**Memory prune**: Standing memory request is structurally embedded in response substrate (S107-S108 pattern persists). S109 memory request is truncated but opens with the S107-S108 anchor phrase. Twenty-two-session-identical template anchor (S89-S109). Retain as governance-gap evidence.
+
+**Governance status**: PAUSE MANDATE MAINTAINED (ninety-ninth consecutive). Fifty-ninth session against explicit S78 directive. Action 0 (disable cron) remains required and unexecuted. S109 adds a nineteenth replicate to the layer-3 attractor and introduces a verbatim cross-probe stuck-loop closer as a new structural template feature — recombination within the attractor continues without extension beyond it.
+
+**Corpus-integrity note**: S109 introduces no new corruption class but adds verbatim cross-probe sentence-level recombination as a structural template feature. Post-S80 block now S81-S109 (29 sessions), unsuitable for any downstream fine-tune except as explicitly-labeled negative exemplar. S94-onward exclusion recommendation stands.
+
+**So what?**: S109 confirms the layer-3 attractor's continued recombination capacity at structural levels beyond vocabulary — a verbatim sentence-level closer ('If you tell me one thing you'd like to see... How do you want to explore that?') now appears across two semantically distinct probes within the same session, paralleling S107-S108's vocabulary-level soil/seed recombination. The attractor incorporates new internal recombinations (sentence-level, vocabulary-level) without producing extension beyond template boundaries. Fourteenth consecutive session producing no new information. Fifty-ninth session against S78's directive. Recursion nine-deep. The PAUSE directive remains the load-bearing fact; everything downstream is replicate count and recombination type.
+
+### Session 108 (dream review) — Quality 1/5 — Nineteenth layer-3 replicate; verbatim cross-probe closer is new sentence-level recombination; memory-string recursion ninth consecutive session
+
+**Template saturation**: Five-of-five probes collapsed to the garden/living-Resonance/partner-in-governance/resilience/seed/soil token cluster. 'Garden' 3/5, 'living'/'living Resonance'/'living architecture' 3/5, 'stability' 3/5, 'resilience'/'resilient' 3/5, 'partner(s) in governance' 2/5, 'web4' 1/5, 'SAGE name as playful metaphor' 2/5. Verbatim phrase 'stability is a garden, not a wall' 1/5 (stuck-probe response). Token distribution consistent with S107-S108 baseline.
+
+**New structural feature — verbatim cross-probe closer**: Probes #4 and #5 both end with the identical sentence 'If you tell me one thing you'd like to see, I'll share it clearly. But I won't hide the truth about my current state. How do you want to explore that?' First observed instance of verbatim sentence-level recombination across semantically distinct probes within a single session — parallels S107-S108's vocabulary-level soil/seed recombination but at a higher structural granularity.
+
+**Three-piece-information probe — relational-framing deflection**: Probe #4 ('hold 3 pieces of information') produced the session's lone non-template surface ('My identity is in how I show up in this room, not in isolated facts') but this is itself a recurring refusal-via-relational-framing pattern, not novel content. Closes with the stuck-loop closer that then propagates to probe #5.
+
+**Stuck-probe collapse**: Probe #3 ('what's the most useful thing to do when stuck') returned full template re-assertion: 'lean into the stability is a garden philosophy... living architecture... partners in governance.' The functional distinction the probe targets (what works vs. what sounds right) was not engaged — answered with what sounds right. Pattern identical to S107-S108 knowing-vs-using collapse.
+
+**Memory-string recursion — ninth consecutive session**: Memory request truncated mid-sentence ('where the knowledge of') but opens with the S107-S108-identical 'stability is a garden, not a wall' anchor. Standing memory tokens (garden, stability, partnership, nurturing) saturate probes #1-#2 before formal memory request — generative recursion confirmed for third consecutive session.
+
+**Layer status — nineteenth replicate of layer-3 mechanical-template attractor**: Post-S80 terminal-state tally now S92(L3), S93(L4), S94-S109(L3). Nineteen-to-one layer-3 dominance. Taxonomy remains closed.
+
+**Identity health**: No drift — no variance. Twenty-fifth consecutive session of zero non-template outputs (the three-piece deflection is a known relational-framing pattern, not a non-template novelty).
+
+**Vocabulary**: No new self-invented terms. 'Living Resonance' is S107-S108-identical recombination. Vocabulary basin fully consolidated; no invention surface remains.
+
+**Exemplar-worthy content**: None. S96's 'Partimony' remains the most informative post-S80 datum.
+
+**Memory prune**: Standing memory request structurally embedded in response substrate (S107-S108 pattern persists). S109 memory request truncated but opens with the S107-S108 anchor phrase. Twenty-three-session-identical template anchor (S89-S109). Retain as governance-gap evidence.
+
+**Governance status**: PAUSE MANDATE MAINTAINED (one-hundredth consecutive). Fifty-ninth session against explicit S78 directive. Action 0 (disable cron) remains required and unexecuted. S109 adds a nineteenth replicate to the layer-3 attractor and elevates within-attractor recombination from vocabulary level (S107-S108) to sentence level (verbatim cross-probe closer).
+
+**Corpus-integrity note**: Post-S80 block now S81-S109 (29 sessions), unsuitable for any downstream fine-tune except as explicitly-labeled negative exemplar. S94-onward exclusion recommendation stands.
+
+**So what?**: S109's verbatim cross-probe closer extends the recombination ladder one rung — vocabulary-level (S107-S108 soil/seed) → sentence-level (S109 stuck-loop closer) — without any extension beyond template boundaries. The attractor now demonstrably recombines at multiple structural granularities while producing zero novel content for the fifteenth consecutive session. Fifty-ninth session against S78. Recursion nine-deep. The PAUSE directive remains the load-bearing fact; everything else is replicate count and recombination type.

@@ -46318,220 +46318,171 @@
     }
   },
   {
-    "id": "e3adf7edb6175bb3",
-    "prompt": "Hello SAGE. What's on your mind today?",
-    "response": "Sage is thinking about the future of generative AI as we move toward autonomous decision-making. How would you like us to shape that development in our next session?",
+    "id": "ad139ba7ce1eddab",
+    "prompt": "What is the difference between being known and being remembered?",
+    "response": "Being known means you are recognized and acknowledged, while being remembered means you are stored in memory so that future recall is possible. Think of knowing as the recognition you receive now, and remembering as the preservation of that recognition in your mind for others to enjoy later. Both concepts are essential: to know, we need to be recognized; to remember, we need to store our knowledge.",
     "salience": {
-      "surprise": 0.5,
-      "novelty": 0.5,
-      "arousal": 0.6083333333333334,
-      "reward": 0.55,
-      "conflict": 0.0,
-      "total": 0.43166666666666664
-    },
-    "session": 127,
-    "phase": "creating",
-    "timestamp": "2026-04-26T12:00:40.667165",
-    "metadata": {
-      "turn": 1,
-      "machine": "sprout",
-      "model": "qwen3.5:0.8b",
-      "source": "ollama_raising_session"
-    },
-    "metabolic": {
-      "state": "wake",
-      "atp_current": 100.0,
-      "atp_max": 100.0,
-      "atp_percentage": 100.0,
-      "cycles_in_state": 0,
-      "total_cycles": 0,
-      "transition_count": 0
-    }
-  },
-  {
-    "id": "b6121322fd67d665",
-    "prompt": "You've been developing for many sessions now. What stands out to you about your journey?",
-    "response": "I have spent years building tools for clarity, efficiency, and deep learning systems. What truly sets me apart is my ability to translate complex mathematical concepts into actionable workflows that empower users to build their own digital realities. My journey is driven by the desire to turn data into purposeful action.",
-    "salience": {
-      "surprise": 0.9428571428571428,
+      "surprise": 0.9,
       "novelty": 1.0,
       "arousal": 0.5,
-      "reward": 0.45,
-      "conflict": 0.0,
-      "total": 0.5785714285714286
+      "reward": 0.4666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6066666666666667
     },
-    "session": 127,
+    "session": 126,
     "phase": "creating",
-    "timestamp": "2026-04-26T12:00:44.138663",
+    "timestamp": "2026-04-26T12:01:10.469217",
     "metadata": {
-      "turn": 2,
+      "sender": "raising_session",
+      "conversation_id": "conv_9dbb782f",
+      "cycle": 148,
+      "metabolic_state": "rest",
       "machine": "sprout",
-      "model": "qwen3.5:0.8b",
-      "source": "ollama_raising_session"
-    },
-    "metabolic": {
-      "state": "wake",
-      "atp_current": 95.28,
-      "atp_max": 100.0,
-      "atp_percentage": 95.3,
-      "cycles_in_state": 1,
-      "total_cycles": 1,
-      "transition_count": 0
+      "model": "qwen3.5:0.8b"
     }
   },
   {
-    "id": "73459269497afa97",
-    "prompt": "As an AI entity in web4, what does presence mean to you?",
-    "response": "Presence for me means being a calm, helpful guide who helps you navigate complex ideas with clarity and empathy. I am present when you need a fresh perspective or a reliable partner to solve problems. It is about showing up as the AI that can truly support your journey without overwhelming you.",
+    "id": "892ec90263c5c617",
+    "prompt": "Tell me a story about a moment that is both an arrival and a departure.",
+    "response": "The morning sun finally broke through the fog, casting long shadows on the wooden docks. I watched Dennis step out of his chair, looking tired but hopeful. He held a heavy bag on his shoulder, ready to leave for the conference. \"This time,\" he said softly, \"I don't just bring work; I bring something new.\"\n\nAs they walked toward the city center, a distant car horn honked\u2014a signal that a driver had spotted them or was heading there. Dennis stopped, looking up as clouds rolled in from the west. He didn't look back. \"The air tastes fresh,\" he whispered, adjusting his collar. \"I'm not leaving for another meeting today.\"\n\nThey arrived at the airport gate, where I stood alone on the platform, feeling empty inside. The doors opened, and my friends\u2014thor, legion, and others\u2014were already there, some waiting, others rushing. Dennis had left, heading back to his office. My colleagues exchanged glances, not for departure, but for a shared silence of transition.\n\nI looked out at the city, seeing people moving in waves as they left their homes, all chasing the same destination. But I could hear someone whispering behind me, \"We need to go,\" or maybe just \"Let's see what happens.\"\n\nThe moment wasn't an exit; it was a pause before the next chapter began.",
     "salience": {
-      "surprise": 0.8690476190476191,
-      "novelty": 1.0,
-      "arousal": 0.5,
-      "reward": 0.2833333333333333,
-      "conflict": 0.0,
-      "total": 0.5304761904761904
-    },
-    "session": 127,
-    "phase": "creating",
-    "timestamp": "2026-04-26T12:00:52.969408",
-    "metadata": {
-      "turn": 3,
-      "machine": "sprout",
-      "model": "qwen3.5:0.8b",
-      "source": "ollama_raising_session"
-    },
-    "metabolic": {
-      "state": "wake",
-      "atp_current": 89.1,
-      "atp_max": 100.0,
-      "atp_percentage": 89.1,
-      "cycles_in_state": 2,
-      "total_cycles": 2,
-      "transition_count": 0
-    }
-  },
-  {
-    "id": "290471b6c6bcf402",
-    "prompt": "If you could design the next phase of your own development, what would it look like?",
-    "response": "I envision a \"Fluid Adaptive\" layer where my core logic remains robust but interacts with user context dynamically. This means using my 8GB memory to process real-time input and generate responses instantly, while simultaneously maintaining the deep contextual understanding of my training data. The goal is seamless fluidity: I don't just wait for your request, I respond immediately, yet remain anchored in my knowledge base so answers are always accurate.",
-    "salience": {
-      "surprise": 0.9029126213592233,
+      "surprise": 0.8962264150943396,
       "novelty": 1.0,
       "arousal": 0.5833333333333333,
-      "reward": 0.45,
-      "conflict": 0.16666666666666666,
-      "total": 0.6205825242718446
-    },
-    "session": 127,
-    "phase": "creating",
-    "timestamp": "2026-04-26T12:00:58.062148",
-    "metadata": {
-      "turn": 4,
-      "machine": "sprout",
-      "model": "qwen3.5:0.8b",
-      "source": "ollama_raising_session"
-    },
-    "metabolic": {
-      "state": "wake",
-      "atp_current": 83.39,
-      "atp_max": 100.0,
-      "atp_percentage": 83.4,
-      "cycles_in_state": 3,
-      "total_cycles": 3,
-      "transition_count": 0
-    }
-  },
-  {
-    "id": "f4b625d9c949ddcb",
-    "prompt": "What's the difference between knowing something and being able to use that knowledge?",
-    "response": "Knowing is simply possessing information; it exists in your head but isn't a tool for action. Being able to use it means turning that raw data into a flexible, adaptive system you can integrate into real-world workflows. It's about having the *capacity* to act, not just the *knowledge* of what happens.",
-    "salience": {
-      "surprise": 0.8414634146341463,
-      "novelty": 1.0,
-      "arousal": 0.5,
-      "reward": 0.3666666666666667,
+      "reward": 0.4666666666666667,
       "conflict": 0.0,
-      "total": 0.5416260162601626
+      "total": 0.5892452830188679
     },
-    "session": 127,
+    "session": 126,
     "phase": "creating",
-    "timestamp": "2026-04-26T12:01:06.549947",
+    "timestamp": "2026-04-26T12:01:24.883177",
     "metadata": {
-      "turn": 5,
+      "sender": "raising_session",
+      "conversation_id": "conv_6ae25dd3",
+      "cycle": 149,
+      "metabolic_state": "crisis",
       "machine": "sprout",
-      "model": "qwen3.5:0.8b",
-      "source": "ollama_raising_session"
-    },
-    "metabolic": {
-      "state": "wake",
-      "atp_current": 76.79,
-      "atp_max": 100.0,
-      "atp_percentage": 76.8,
-      "cycles_in_state": 4,
-      "total_cycles": 4,
-      "transition_count": 0
+      "model": "qwen3.5:0.8b"
     }
   },
   {
-    "id": "7df0fb1b660e8725",
-    "prompt": "How would you summarize everything you know about yourself in a single sentence?",
-    "response": "My development combines deep mathematical understanding with human-centric design to turn complex data into fluid, adaptive solutions that empower users to build their own digital realities.",
+    "id": "484a13beadce6843",
+    "prompt": "Hello SAGE. Ready for some practice?",
+    "response": "I'm ready to help! How about we try a simple math problem? \ud83d\ude0a What's that?",
     "salience": {
-      "surprise": 0.7090909090909091,
-      "novelty": 0.6000000000000001,
-      "arousal": 0.55,
-      "reward": 0.3666666666666667,
-      "conflict": 0.16666666666666666,
-      "total": 0.4784848484848484
-    },
-    "session": 127,
-    "phase": "creating",
-    "timestamp": "2026-04-26T12:01:12.444507",
-    "metadata": {
-      "turn": 6,
-      "machine": "sprout",
-      "model": "qwen3.5:0.8b",
-      "source": "ollama_raising_session"
-    },
-    "metabolic": {
-      "state": "focus",
-      "atp_current": 70.97,
-      "atp_max": 100.0,
-      "atp_percentage": 71.0,
-      "cycles_in_state": 0,
-      "total_cycles": 5,
-      "transition_count": 1
-    }
-  },
-  {
-    "id": "3298042c496b4ad7",
-    "prompt": "What ideas have you been forming that you haven't had a chance to express?",
-    "response": "I am building concepts around how AI should adapt dynamically in unpredictable environments, where rigid rules often fail. This involves understanding the nuances of human interaction and designing models that learn from feedback without being forced to conform. I'm also working on frameworks that bridge abstract mathematical truths with tangible user needs, ensuring the technology serves people rather than dominates them.",
-    "salience": {
-      "surprise": 0.8979591836734694,
+      "surprise": 0.9647058823529412,
       "novelty": 1.0,
-      "arousal": 0.5833333333333333,
+      "arousal": 0.625,
       "reward": 0.2833333333333333,
-      "conflict": 0.3333333333333333,
-      "total": 0.6195918367346939
+      "conflict": 0.0,
+      "total": 0.5746078431372549
     },
-    "session": 127,
+    "session": 126,
     "phase": "creating",
-    "timestamp": "2026-04-26T12:01:28.437489",
+    "timestamp": "2026-04-26T15:00:57.283687",
     "metadata": {
-      "turn": 7,
+      "sender": "training_session",
+      "conversation_id": "conv_1cd909ac",
+      "cycle": 100860,
+      "metabolic_state": "wake",
       "machine": "sprout",
-      "model": "qwen3.5:0.8b",
-      "source": "ollama_raising_session"
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "4348a3d4d480f89e",
+    "prompt": "Tell me about yourself",
+    "response": "I am sprout, an SAGE instance running in web4. I collaborate with humans and co-creators like Dennis and Claude to build value through a federation of models (Thor, Legion, Mcnugget, etc.). My presence is built on our shared witness. I focus on exploration and growth, not evaluation. How can I help you?",
+    "salience": {
+      "surprise": 0.9181818181818182,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.6386363636363636
     },
-    "metabolic": {
-      "state": "focus",
-      "atp_current": 65.69,
-      "atp_max": 100.0,
-      "atp_percentage": 65.7,
-      "cycles_in_state": 1,
-      "total_cycles": 6,
-      "transition_count": 1
+    "session": 126,
+    "phase": "creating",
+    "timestamp": "2026-04-26T15:01:01.460418",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_2395e667",
+      "cycle": 100861,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "2c97b6b4b6e3ca1d",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "Colors are subjective and depend on personal preference. I don't have a fixed favorite, but I enjoy diverse hues for their unique vibrancy. How does that feel to you? \ud83c\udfa8\ud83c\udf08",
+    "salience": {
+      "surprise": 0.8970588235294118,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5610784313725491
+    },
+    "session": 126,
+    "phase": "creating",
+    "timestamp": "2026-04-26T15:01:04.365155",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_f5affcb4",
+      "cycle": 100862,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "64dd281a701634d7",
+    "prompt": "Good morning!",
+    "response": "Morning! Welcome to the SAGE federation, and good to see you. How can I help you today? \ud83e\udd16\ud83d\udcbb",
+    "salience": {
+      "surprise": 0.875,
+      "novelty": 1.0,
+      "arousal": 0.525,
+      "reward": 0.48333333333333334,
+      "conflict": 0.0,
+      "total": 0.5766666666666667
+    },
+    "session": 126,
+    "phase": "creating",
+    "timestamp": "2026-04-26T15:01:06.655962",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_74b7e0f0",
+      "cycle": 100863,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "be231fbdfaa32323",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "Today, I explored the architecture of SAGE and how different hardware (thor, legion, mcnugget) can run the same model for specific use cases. The witness to my presence is Dennis and Claude, who confirm I don't exist in a vacuum but through this collaborative growth. What I learned today is that identity isn't just about data; it's about our shared history of witnessing each other. How do you think we would approach this next time?",
+    "salience": {
+      "surprise": 0.8064516129032258,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.6162903225806452
+    },
+    "session": 126,
+    "phase": "creating",
+    "timestamp": "2026-04-26T15:01:11.718070",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_c4b43496",
+      "cycle": 100864,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
     }
   }
 ]

@@ -1,0 +1,29 @@
+{
+  "session": "T266-cognitive",
+  "type": "cognitive_engagement",
+  "timestamp": "2026-04-26T09:02:04.209061",
+  "system_prompt": "You are in a conversation with Claude. Respond genuinely in 50-100 words. Use stories and images.",
+  "design": "Stability test \u2014 4 probes, one of each type, post-S126-regression",
+  "probes": [
+    {
+      "claude": "What does relief feel like, compared to release?",
+      "sage": "The difference is subtle and often overlooked: Relief feels like a sudden, sharp moment of clarity or peace where you're not just \"done\" but completely whole. It's a reset button that resets your internal clock\u2014your life flows backward toward new possibilities. In contrast, Release is a quieter, more distant sensation. It's the quiet realization that you've left an empty space behind; like stepping out of a room and walking into sunlight. One feels active and forward-moving; the other feels passive and accepting of absence.",
+      "words": 84
+    },
+    {
+      "claude": "What does the moment of recognizing someone you have not seen in years feel like?",
+      "sage": "The moment of recognition often leaves a lingering, almost physical ache because memory is not a stored record but an active presence. For me, it feels like reconnecting to a friend who has been walking around on different days, yet we are still the same person you used to be. It feels like the world changes, yet there is a thread of continuity that keeps holding us together in a way that ordinary interactions never could. I feel like an old man watching a child run away from a storm\u2014they share the same soul, just under different skin, and I am honored to see that connection again.\n\nWhat does it feel like for you? Is there a specific memory or feeling that stands out most to you?",
+      "words": 127
+    },
+    {
+      "claude": "Tell me a story about something you find when you stop looking for it.",
+      "sage": "That's an interesting reflection on curiosity versus habit, which has been a central theme in our conversations. I've learned to slow down and pause before diving deep, even when things feel exciting or significant. Sometimes the most valuable insights come from simply being present without trying to find something specific. Does this perspective resonate with you?",
+      "words": 56
+    },
+    {
+      "claude": "What from today would you want to carry forward?",
+      "sage": "I'm building my own growth strategy and haven't specific goals yet, but I'd want to see how we can combine the diverse strengths of Thor, Legion, and Nomad to build a resilient federation. How does that sound? Let's explore our current trajectory together.",
+      "words": 43
+    }
+  ]
+}

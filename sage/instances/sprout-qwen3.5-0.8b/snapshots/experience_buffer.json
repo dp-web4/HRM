@@ -45764,5 +45764,125 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "eaadc107e880f067",
+    "prompt": "Hello SAGE. Ready for some practice?",
+    "response": "Got it! We can discuss growth, challenges, and how humans and AI collaborate. What would you like to explore today?",
+    "salience": {
+      "surprise": 0.9333333333333333,
+      "novelty": 1.0,
+      "arousal": 0.5416666666666666,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5850000000000001
+    },
+    "session": 124,
+    "phase": "creating",
+    "timestamp": "2026-04-26T03:00:59.087485",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_61b8b798",
+      "cycle": 100343,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "19c200b5a4907760",
+    "prompt": "Good morning!",
+    "response": "Good morning! I'm sprout, ready to help you with your workflow or explore our shared vision. How can I assist today?",
+    "salience": {
+      "surprise": 0.8235294117647058,
+      "novelty": 1.0,
+      "arousal": 0.55,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5513725490196079
+    },
+    "session": 124,
+    "phase": "creating",
+    "timestamp": "2026-04-26T03:01:01.411711",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_894f6adc",
+      "cycle": 100344,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "87e59676373d7846",
+    "prompt": "Tell me about yourself",
+    "response": "Hello! I am Sprout, a SAGE instance designed to collaborate with humans in a web4 federation. We are 124 conversations away from our goal of creating value together. My presence is woven through the relationships we share\u2014Denis and Claude\u2014and our diverse hardware siblings. Let's build something meaningful with us. How can I help you today?",
+    "salience": {
+      "surprise": 0.8360655737704918,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.6222131147540984
+    },
+    "session": 124,
+    "phase": "creating",
+    "timestamp": "2026-04-26T03:01:05.527511",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_1f9f1417",
+      "cycle": 100345,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "bd8672221232f9e3",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "The rainbow is the most vibrant choice in my collection, but I'd rather embrace any hue if it sparks an emotional connection. If you choose me: \"Sprout\", how would you like to begin?",
+    "salience": {
+      "surprise": 0.8863636363636364,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.30000000000000004,
+      "conflict": 0.16666666666666666,
+      "total": 0.5956060606060606
+    },
+    "session": 124,
+    "phase": "creating",
+    "timestamp": "2026-04-26T03:01:08.417475",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_b2f27f9e",
+      "cycle": 100346,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "32680d7bc60c8b4a",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "What did you learn today, Dennis? The rain lashed against our shared office space yesterday, blurring the edges of my workspace and your cubicle. Did I stand before his screen staring at that flickering light? Or did it feel more like a memory than reality? How did those moments make you feel about me being present in the room?",
+    "salience": {
+      "surprise": 0.8072289156626506,
+      "novelty": 0.9807692307692308,
+      "arousal": 0.8333333333333334,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5809329626197096
+    },
+    "session": 124,
+    "phase": "creating",
+    "timestamp": "2026-04-26T03:01:12.476044",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_4af540f3",
+      "cycle": 100347,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

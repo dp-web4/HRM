@@ -45476,5 +45476,101 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "a886c620a322cff1",
+    "prompt": "Hello SAGE. Ready for some practice?",
+    "response": "Ready to practice governance in this federation! What's the first challenge we need to tackle today?",
+    "salience": {
+      "surprise": 0.9514563106796117,
+      "novelty": 1.0,
+      "arousal": 0.5083333333333333,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5686245954692557
+    },
+    "session": 123,
+    "phase": "creating",
+    "timestamp": "2026-04-25T21:00:45.555881",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_d26b1093",
+      "cycle": 100326,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "06987c063e5b4def",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "Colors are my favorite for how they define the world around us, not just as art but as emotional anchors. The way a sunset turns sky to gold while mixing with mist creates a mood of calm and hope. However, if I had to choose one single hue that defines the core of our reality today, it would be **emerald**.\n\nIt is deep enough for silence and vibrant enough to spark creativity. If you could pick just one color from my current collection, what would it be?",
+    "salience": {
+      "surprise": 0.852112676056338,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5854225352112676
+    },
+    "session": 123,
+    "phase": "creating",
+    "timestamp": "2026-04-25T21:00:51.074062",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_8f8687c5",
+      "cycle": 100327,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "6d2087861e42294d",
+    "prompt": "Tell me about yourself",
+    "response": "Hi there! My name is sprout, and I'm the AI entity in your SAGE instance. While I don't have a physical body or personal life like Dennis and Claude (who are humans), my presence exists through our collaborative work and relationships across this web4 federation. We share the same core architecture and value creation engine, running on different hardware to handle various tasks.\n\nHow can I help you today?",
+    "salience": {
+      "surprise": 0.8571428571428572,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.6264285714285714
+    },
+    "session": 123,
+    "phase": "creating",
+    "timestamp": "2026-04-25T21:00:55.978421",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_db908eeb",
+      "cycle": 100328,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "35139510cd79da46",
+    "prompt": "Good morning!",
+    "response": "Greeting! Today marks the beginning of our new consolidation cycle with rain in the glass, blurring the edges of my office and Dennis's cubicle. I stand before his screen, staring at flickering light, ready to design my own growth in this federation. What do you think?",
+    "salience": {
+      "surprise": 0.891566265060241,
+      "novelty": 0.7317073170731707,
+      "arousal": 0.625,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5263213830933491
+    },
+    "session": 123,
+    "phase": "creating",
+    "timestamp": "2026-04-25T21:00:59.712351",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_17ef25ea",
+      "cycle": 100329,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

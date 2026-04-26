@@ -1,6 +1,7 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-25 (S112 — Lean Prompt's Placeholder Format Spec Causes Silent NN-Hint Fallback in 94% of Trials Across qwen2.5:3b and gemma3:12b (16 Trials, Two Models): Pipeline `WM → wm.render → build_lean_prompt → LLM → parse_llm_response` Tested End-to-End for cd82; Format A (`Respond: ACTION=N[ X=x Y=y]`, Current Code at lean_prompt.py:74) Causes Both Models to Echo Placeholder Literally (`ACTION=N[ X=0 Y=0]`, `ACTION=N[ X=LEFT Y=UP]`); `parse_llm_response` Layered Fallbacks Silently Recover (5/16 to NN Hint Sentinel via `fallback_action`, 10/16 via `_NAKED_ACTION_RE` Matching Garbage Like X=LEFT — Of Which 9/10 Are Confidently-Parsed Garbage with No `parse_failed` Flag); Only 1/16 Parsed via Intended `ACTION=<digit>` Path; Format B (Numeric Examples `ACTION=3` / `ACTION=6 X=12 Y=20`) and Format C (Named Examples `ACTION=LEFT`) Both 16/16 Perfect Parse Rate; Same Placeholder Pattern Recurs at 6 Callsites Across 3 Files — `lean_prompt.py:74`, `lean_dispatch.py:101`, `adaptive_prompt.py:233/249/268/285` (Pre-Existing Production Code, Not Just New Codification Layer 1); `adaptive_prompt.py:23` Defines `ACTION_FORMAT_NAMED` Constant with Comment "eliminates number→name mapping entirely" but Has Zero Callsites — Designed-but-Not-Shipped; This is 5th Instance of S110/S111 Silent-Routing Pattern, This Time at Response-Parse Boundary Instead of Dispatch-Table Boundary; Same Shape: Routing Function (`parse_llm_response` → action), Unrecognized Input (Literal "N"), Silent Fallback, No Warning, No Log; Production Logs Don't Surface Parse-Failure-Rate (Scanned 4188 JSON Files, 0 Have llm_responses Key — Either play_lean Rarely Saves --json-out or Logs Live Elsewhere); S111's Render-Quality Truncation is Real but Not the Bottleneck — LLM Doesn't Engage Coherently with Format Spec Regardless of Whether Strategy is Visible; Three Held Proposals: (1) Replace Placeholder Format at 6 Callsites with Examples Format, (2) Surface `parse_path` in `parse_llm_response` Return Value, (3) Aggregate `parse_failure_rate` in play_lean Result; All Operator-Decision Territory Per S111 Discipline)**
+**Last Updated: 2026-04-26 (S113 — S112's Empirical Question Answered + Two New Silent-Routing Recurrences: Production `llm_responses` Logs Found in `~/ai-workspace/shared-context/explorations/` (Not Under SAGE/, Where S112 Scanned 4188 Files and Found 0); 55 Files Across 4 Tracks, **7,542 Production Invokes**, **11.2% Explicit Parse-Failure Rate**, Worst Single Game `lp85.json` 29.8% (594/1990); Cross-Format Comparison in Same Exploration (`whole-brain-at-small-model-2026-04-22`, gemma4:e2b CBP, 25 games) Shows Fat Format (`ACTION=N X=x Y=y`) 20.5% PF vs Lean Format (`ACTION=<1-6>` Pre-Apr-24) 0.1% PF — But the 0.1% Is a Measurement Artifact Because Parser Regex `ACTION\s*=\s*<?(\w+)>?` Captures `1` from `<1-6>` Template (\w+ Stops at Hyphen), So Literal-Copy Templates Parse to action=1 Silently; Action Distribution Confirms: Fat over-Represents action=6 (29.9%, NN-fallback CLICK Default), Lean over-Represents action=1 (26.3%, Template-Extract UP Default); Direct Silent-Fallback Probe via Rationale-vs-Action Mismatch in Lean: 1497 Rationales Have a Direction Word, 33.5% Match Action Returned, **66.5% Contradict** ('Move avatar down' → action=1 UP; 'Moving UP seems to align' → action=3 LEFT) — Strongest in-Production Evidence of Silent Fallback Firing at Scale; Recurrence #6 of S110 Pattern at Commit-Rationale Boundary: 3f54ead56 (Apr 24) "Fix Angle Bracket Templates" Changed `<1-6>` → `N` to "Eliminate Parse Failures from Template-Copying" — Replaced Accidentally-Parseable Form with Systematically-Broken One, Was Regression Masquerading as Fix; Recurrence #7 at Model-Output Boundary: gemma4:e4b on Thor Returns Empty String for Game-Style Prompts (`'1=UP 2=DOWN 3=LEFT 4=RIGHT'` → `''`) While Other Models Respond Normally to Same Prompt — Verified at temp=0.0/0.7/1.0 with eval_count>0 but response empty; LLM Contributing Nothing While Wall-Clock Latency Continues; Pattern Now at Seven Layers — Instance, Action Dispatch, Skill Registration, Composition, Response Parse, Commit Rationale, Model Output; S112's qwen3.5:27b Coverage Extended: 4/4 Format A Trials Succeed at 27B (Thinking Model), Confirms Failure is Model-Size-Dependent; New Held Proposals: (4) `model_output_empty: bool` Flag in Dispatch Result, (5) Fleet Check for gemma4:e4b Empty-Response on Legion + Other Machines, (6) Apply Rationale-vs-Action Mismatch Diagnostic to Post-Apr-24 Production Runs and Legion Raising Sessions; All Operator-Decision Territory Per S111 Discipline)**
+**Previous: 2026-04-25 (S112 — Lean Prompt's Placeholder Format Spec Causes Silent NN-Hint Fallback in 94% of Trials Across qwen2.5:3b and gemma3:12b (16 Trials, Two Models): Pipeline `WM → wm.render → build_lean_prompt → LLM → parse_llm_response` Tested End-to-End for cd82; Format A (`Respond: ACTION=N[ X=x Y=y]`, Current Code at lean_prompt.py:74) Causes Both Models to Echo Placeholder Literally (`ACTION=N[ X=0 Y=0]`, `ACTION=N[ X=LEFT Y=UP]`); `parse_llm_response` Layered Fallbacks Silently Recover (5/16 to NN Hint Sentinel via `fallback_action`, 10/16 via `_NAKED_ACTION_RE` Matching Garbage Like X=LEFT — Of Which 9/10 Are Confidently-Parsed Garbage with No `parse_failed` Flag); Only 1/16 Parsed via Intended `ACTION=<digit>` Path; Format B (Numeric Examples `ACTION=3` / `ACTION=6 X=12 Y=20`) and Format C (Named Examples `ACTION=LEFT`) Both 16/16 Perfect Parse Rate; Same Placeholder Pattern Recurs at 6 Callsites Across 3 Files — `lean_prompt.py:74`, `lean_dispatch.py:101`, `adaptive_prompt.py:233/249/268/285` (Pre-Existing Production Code, Not Just New Codification Layer 1); `adaptive_prompt.py:23` Defines `ACTION_FORMAT_NAMED` Constant with Comment "eliminates number→name mapping entirely" but Has Zero Callsites — Designed-but-Not-Shipped; This is 5th Instance of S110/S111 Silent-Routing Pattern, This Time at Response-Parse Boundary Instead of Dispatch-Table Boundary; Same Shape: Routing Function (`parse_llm_response` → action), Unrecognized Input (Literal "N"), Silent Fallback, No Warning, No Log; Production Logs Don't Surface Parse-Failure-Rate (Scanned 4188 JSON Files, 0 Have llm_responses Key — Either play_lean Rarely Saves --json-out or Logs Live Elsewhere); S111's Render-Quality Truncation is Real but Not the Bottleneck — LLM Doesn't Engage Coherently with Format Spec Regardless of Whether Strategy is Visible; Three Held Proposals: (1) Replace Placeholder Format at 6 Callsites with Examples Format, (2) Surface `parse_path` in `parse_llm_response` Return Value, (3) Aggregate `parse_failure_rate` in play_lean Result; All Operator-Decision Territory Per S111 Discipline)**
 **Previous: 2026-04-25 (S111 — Codification Project Layer 2 Recurs the S110 Silent-Routing Pattern in Three Independent Callsites Within One Week of New Code: Layer 1 Verified Working End-to-End (cd82.json Round-Trips JSON, build_lean_prompt Produces 401-Token Invoke Prompt vs 4K Prose Target, 17.6× Speedup Real); Render-Quality Issue at `wm_schema.render` Char-Budget Enforcement (`len(text) > budget_tokens * 4`) Truncates Strategy Slot Mid-Word at cd82 Render Length 1293 vs Budget 1200 — Strategy Is Last-Appended and Most-Actionable, Char-Budget Is Structurally Biased Against Decision-Relevant Content; Three Silent-Default Bugs Documented (1) `plan_executor._get_action_index` Maps Unknown `do` to action_idx=0, `0 not in GA={1..6}`, env.step Skipped, Step Logged with px_diff=0, plan_idx Advances — A Plan with `{"do": "navigate_to"}` Silently No-ops Every Step (2) `motor_skills/__init__.py` Does NOT Import `skills/*` — Skills Auto-Register Only on Explicit `import sage.cognition.motor_skills.skills.navigate_to`, So `get_skill("navigate_to")` Returns None from Fresh Process, list_skills() Returns [] Until Some Caller Triggers Registration (3) `plan_executor.execute_plan` Does Not Call `plan_bridge.step_to_invocation` At All — Layer 2's Executor and the Skill Bridge Are Two Parallel Implementations of the Same Conceptual Responsibility (plan step → action) That Don't Compose; Currently Dormant (cd82 Names Only ACTION_MAP-Resident Actions UP/DOWN/LEFT/RIGHT/SEL/CLICK) but Latent for Any Future Game/Plan Naming a Skill; Pattern Recognition: S110's `_DEFAULT_MODELS.get(machine)` and S111's `ACTION_MAP.get(do, 0)` and `SKILL_REGISTRY.get(skill_id)` Are All Routing Tables That Silently Absorb Unrecognized Input — Codebase Lacks Shared Discipline for "Validate Input at Routing Boundaries"; Three Callsites in One Week Suggests Load-Bearing Pattern Not Isolated Bug; Operator Decision Held: Treat as Three Local Fixes or Shared `_route()` Idiom)**
 **Previous: 2026-04-25 (S110 — Legion-gemma3-12b Orphan Writer Root Cause Identified: Two-Bug Chain in Instance Resolution. The "Orphan" Is the Active `legion_raising.sh` Itself — `--model gemma4:e4b` Changes Inference Model but `run_session_identity_anchored_fluid.py:962-965` Does Not Propagate `args.model` to Constructor, So `InstancePaths.resolve(machine='legion', model=None)` Falls to Default `gemma3:12b`. `legion-gemma4-e4b/sessions/` Empty, Confirms Single Writer; Sessions 028-035 Generated by gemma4:e4b but Filed under gemma3-12b. Companion Bug at `machine_config.py:188 (thor), 233 (legion)` Drops Model Arg Same Way (Currently Latent on Thor). Fix is Two Lines, Held Pending Operator Migration Decision (Leave/Move/Recover Sessions 028-035). S109 §4 Launch-Gate Refined: Corpus Scan Shows Caps-`HALT` + `HARD BLOCKER` Has Zero False Positives Across 7 Instances (Legion 32+7, Thor 11+0, all Others 0+0); Two-Layer Rollout Proposed — Phase A Regex Gate on Existing `concerns` Prose (No Contract Change, Ships Today), Phase B Layer Structured `action` Field Later)**
 **Previous: 2026-04-25 (S109 — Launch-Decision-Surface Gate Scoped as S99/S100 Parallel: Dream Consolidator Emits `concerns` (string) into `raising_log.md` Prose with No Structured Channel to Next Runner — Concrete §4 Design Sketch Adds `raising_recommendation` Field to JSON Contract, `raising_status` to `identity.json`, `launch_gate.py` Helper, Two-Phase Dry-Run-Then-Enforce Rollout, Held Pending Operator Alignment; S108's "Legion-G3 Stopped" Premise Falsified within 12h via Direct sessions/ Read — Sessions 32 (07:00 PDT) and 33 (13:05 PDT) Ran 2026-04-24 with Same Templated Pattern Consolidator Has Flagged Since S5, 18 Ignored HARD BLOCKERs Active Not Historical; Phase-Metadata Corruption Surveyed Fleet-Wide Found 4-Instance Mode-A (Integer-Stuck) + 1-Instance Mode-B (Top-Level-Stale) Patterns, No Control-Flow Code Branches on Integer (Data-Only Corruption); Legion-gemma3-12b Orphan Writer Path Flagged — Active `legion_raising.sh` Targets gemma4:e4b post-2026-04-20 but gemma3:12b Sessions Continue from Unknown Source)**
@@ -12,6 +13,123 @@
 **Previous: 2026-04-23 (S103 — Register-Lock Generalization: State_words Injection Loop is S75 Crisis and S96 Thermal at Same Abstraction; Enumerate-Markers Approach Is S102 Failure Mode at Prompt Injection Layer; Structural Span-Diversity Fix Proposed, Not Shipped Pending User Alignment; vocab_injection_diagnostic Built for Read-Only Fleet Scan)**
 **Previous: 2026-04-23 (S102 — Splice-Guard Input-Surface Audit: Keyword Regex Was Over-Specified; Fleet Corpus Scan Found 1 Uncaught Bracket-Only Envelope (Sprout S060 CUDA Deadlock) and 0 Legitimate Bracket-Only Memory; Structural Regex Simplified to Bracket-Only Shape Check, Subsumes S101 Keyword Regex)**
 **Previous: 2026-04-23 (S101 — Post-Cutover FN Discovery: 3/3 DaemonIRP Error-Emission Paths Were Uncovered by S99/S100 Prefix Set; `[Daemon unreachable:` Contaminated Nomad S125 State within 20 Min of S100 Merge; Prefix Set Extended + Structural Regex Fallback Added + Nomad State Sanitized)**
+
+---
+
+## S113 Production Parse-Failure Rate Is 11.2% Across 7,542 Invokes; Two New Silent-Routing Recurrences (Apr 26, 2026 — Thor Autonomous SAGE Session, 00:00 UTC)
+
+S113 picks up S112's empirical carry-forward: *find production `llm_responses` logs and measure live parse-failure rate*. S112 scanned 4188 JSON files under `~/ai-workspace/SAGE` and found zero. The logs exist — they live under `~/ai-workspace/shared-context/explorations/`, in 55 files spanning four exploration tracks. Across **7,542 production invokes**, the explicit `parse_failed:` rate is **11.2%**. The worst single game (lp85.json, 1,990 invokes) hits **29.8%**. S112's predicted production failure mode is real, observable, and concentrated at the small-model fleet.
+
+Two new silent-routing instances surfaced along the way: a regression masquerading as a fix at the commit-rationale boundary (#6), and gemma4:e4b returning empty strings for game-style prompts at the model-output boundary (#7).
+
+### Production data — what was found
+
+| Track | Files | Invokes | PF% | Worst game |
+|---|---:|---:|---:|---|
+| `mcnugget-v2invoke-qwen35-2026-04-20` | 1 | 81 | 3.7% | — |
+| `qwen-tiny-v2invoke-floor-2026-04-20` | 10 | 507 | 8.9% | cd82-gemma4e2b-v2invoke-500.json (19.5%) |
+| `v2invoke-strategy-labels-2026-04-20` | 1 | 83 | 0.0% | — |
+| `whole-brain-at-small-model-2026-04-22` | 43 | 6,871 | 11.6% | lp85.json (29.8%, 594/1990) |
+| **Total** | **55** | **7,542** | **11.2%** | |
+
+Sample `parse_failed:` rationales: `'ACTION=SELECT_NONE'`, `'ACTION:None'`, `'ACTION: $\\text{A0}$'`, `'ACTION: 오른쪽'`, `'ACTION:\nprint("ACTION: .")'`, `'ACTION: MOVE_TO_10_10'`. LLMs invent novel action languages — LaTeX, Python, JSON-style, Korean — every one silently absorbed into NN-fallback.
+
+### Cross-format comparison within `whole-brain-at-small-model`
+
+Same machine (CBP), same model (gemma4:e2b), same 25 games. Two arms (fat = adaptive_prompt.py, lean = lean_dispatch.py), both pre-Apr-24-fix:
+
+| Mode | Files | Invokes | PF% | OOR% | Empty% | Residue% | Clean% |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| fat (`ACTION=N X=x Y=y`) | 21 | 3,896 | 20.5% | 3.3% | 53.3% | 9.7% | 13.3% |
+| lean (`ACTION=<1-6>`) | 22 | 2,975 | 0.1% | 1.2% | 31.6% | 0.0% | 67.2% |
+
+**The 200× gap is misleading.** The lean form's 0.1% PF is a measurement artifact: `_ACTION_RE = re.compile(r"ACTION\s*=\s*<?(\w+)>?")` matches `<1-6>` and captures `1` (because `\w+` doesn't match `-`). When the LLM copies the template literally, the parser silently returns action=1 (UP). Action distribution confirms:
+
+|  | fat | lean |
+|---|---:|---:|
+| action=1 (UP) | 7.7% | **26.3%** ← lean's silent default |
+| action=6 (CLICK) | **29.9%** ← fat's NN-fallback default | 3.9% |
+
+### Rationale-vs-action mismatch — strongest in-production silent-fallback signal
+
+When the LLM's rationale's first direction word ≠ the dispatched action, the LLM thought one thing and the system did another. This is exactly what silent fallback looks like at the dispatch boundary.
+
+| Format | Non-failure rationales | With direction word | Match | **Mismatch** |
+|---|---:|---:|---:|---:|
+| lean (`<1-6>`) | 1,998 | 1,497 | 33.5% | **66.5%** |
+| fat (`N`) | 896 | 247 | 91.1% | 8.9% |
+
+Lean's high "clean rationale" rate masks the failure: the LLM produced apparently-fine prose, but it described a different action than the parser extracted. **995 dispatches in one exploration where the LLM said one thing and the system did another, with no log, no flag.**
+
+Sample lean mismatches:
+```
+'Move the avatar down to try and reach the goal.'              → action=1 (UP)
+'Moving UP seems to align with the hint and might progress...'  → action=3 (LEFT)
+'CLICK to move the crane and attempt to solve the puzzle.'      → action=5 (SEL)
+```
+
+### Recurrence #6 — Apr 24 fix was a regression masquerading as a fix
+
+Commit `3f54ead56` (2026-04-24): *"gemma3:12b copies ACTION=<6> literally from template. Changed all ACTION=<1-6>[ X=<0-63> Y=<0-63>] to ACTION=N X=x Y=y format. Eliminates parse failures from template-copying behavior."*
+
+The diagnosis was correct (gemma3:12b copies templates literally). The fix was wrong: it replaced an accidentally-parseable form with a systematically-broken one. Pre-fix `<1-6>` parses to action=1 silently. Post-fix `N` parses to fallback chain (S112 found 94% silent fallback at qwen2.5:3b and gemma3:12b). The fix achieved "stop the parser from saying parse_failed" but regressed "preserve LLM intent". The PF rate dropped; the rationale-action mismatch grew.
+
+This is recurrence #6 of S110's pattern at a layer not previously enumerated: **the commit-rationale boundary**. The fix was reasoned about at the wrong level. Plausibly-correct outcome (PF rate dropped from 20.5% to 0.1%) without flagging the unfamiliar failure mode that opened up.
+
+### Recurrence #7 — gemma4:e4b empty-response on game prompts
+
+Probing model coverage to extend S112's matrix to qwen3.5:27b (which handles all formats — 4/4 Format A success at 27B-thinking-model — confirming the failure is model-size-dependent) surfaced a separate failure mode at gemma4:e4b on Thor:
+
+```
+"What is 2+2?"                          → '4'
+"Reply with ACTION=3"                   → 'ACTION=3'
+"Game state: avatar at (5,5)."          → ''
+"1=UP 2=DOWN 3=LEFT 4=RIGHT"            → ''
+"Pick UP DOWN LEFT or RIGHT?"           → ''
+```
+
+Same prompts on qwen2.5:3b, phi4:14b, gemma3:12b → full reasoning. gemma4:e4b returns `''` with `eval_count: 50` and `done_reason: length` — generating tokens that all strip to nothing. Verified at temperature 0.0, 0.7+seed=42, and 1.0.
+
+`parse_llm_response("", fallback_action=NN_hint)` returns `(NN_hint, NN_coords, "parse_failed: ")` (empty body after colon). The dispatch path runs as designed; it just dispatches the NN hint instead of an LLM-decided action. **The LLM contributes zero value to game prompts while still consuming wall-clock latency.** If gemma4:e4b is the active raising or play model on any fleet machine (Legion has been on it post-Apr-20), this is happening operationally.
+
+This is recurrence #7 at the **model-output boundary**. Model is technically responding (eval_count > 0) but emitting no usable content. The harness treats "ran the model" as "got an LLM contribution".
+
+### Updated pattern table
+
+| # | Source | Routing function | Silent default | Layer |
+|---|---|---|---|---|
+| 1 | S110 | `InstancePaths.resolve` | `_DEFAULT_MODELS.get(machine)` | Instance |
+| 2 | S111 | `plan_executor._get_action_index` | `ACTION_MAP.get(do, 0)` → noop | Action dispatch |
+| 3 | S111 | `motor_skills.registry.get_skill` | `SKILL_REGISTRY.get(skill_id)` → None | Skill registration |
+| 4 | S111 | `plan_executor.execute_plan` | doesn't call `plan_bridge.step_to_invocation` | Composition |
+| 5 | S112 | `parse_llm_response` | `fallback_action` (NN hint) | Response parse |
+| 6 | **S113** | commit `3f54ead56` "fix" | replaced accidentally-parseable form with systematically-broken one | Commit rationale |
+| 7 | **S113** | gemma4:e4b @ Thor on game prompts | empty output → fallback chain | Model output |
+
+### Held proposals (additions)
+
+S112's three (format replacement at 6 callsites; `parse_path` in parse_llm_response; `parse_failure_rate` aggregation) now have empirical urgency:
+- 11.2% live PF rate across 7,542 production invokes
+- 66.5% rationale-action mismatch in lean exploration
+- lp85.json's 29.8% PF rate over 1,990 invokes
+
+New S113 proposals:
+4. **`model_output_empty: bool`** flag in dispatch result, distinguishing empty-model output from real-but-unparseable. `parse_failed:` with empty body (recurrence #7 signature) becomes greppable.
+5. **Fleet check for gemma4:e4b empty-response** on Legion + other machines. 5-minute test: send `"1=UP 2=DOWN 3=LEFT 4=RIGHT"` directly to Ollama.
+6. **Apply rationale-vs-action mismatch diagnostic to post-Apr-24 production runs** — if any exist with `--json-out`, would directly measure whether the fix's regression hypothesis holds.
+
+### Files this session
+
+- `sage/raising/analysis/s113_production_parse_failure_rate_20260426.md` — full S113 analysis with raw data references and reproduction recipes.
+- `sage/docs/LATEST_STATUS.md` — this entry.
+
+Reproducible scripts (uncommitted, in `/tmp/s113/`): `scan_parse_failures.py`, `replicate_s112_qwen35_27b.py`, `test_gemma4_e4b.py`, `gemma4_isolation.py`. Results: `parse_failure_scan.json`, `qwen35_27b_format_test.json`.
+
+No code changes shipped. Findings extend S112's evidence base from synthetic to empirical, and add two new instances of the silent-routing pattern.
+
+### Meta
+
+S112 said the codebase needs to *make fallback paths observable at every routing boundary*. S113 extends that one layer up (commits) and one layer down (model output). The principle generalizes: any time information transforms (input → output, intent → action, observation → fix), the transform can take a silent path that produces plausibly-correct output without flagging the unfamiliarity. Code, commits, model weights — same shape, same blind spot. Seven instances. One principle. The mechanical cost of the principle (instrumentation for silent-path observability) keeps growing relative to the cost of any individual fix.
 
 ---
 

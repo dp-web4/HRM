@@ -3997,3 +3997,55 @@ When responses came through cleanly, content showed genuine novelty for the firs
 **Recommendation for next session:** Defer to existing S102/S103/S104/S105 recommendation — **HARD PAUSE Thor's raising cron, escalate as fleet-supervisor governance incident.** S105 confirms timeout failure mode is now persistent across four consecutive sessions and truncation is reproducibly hitting word boundaries. No further sessions should ship until: (1) system-level cron disabling, (2) max_tokens AND timeout audit on both adapter paths (turn-generation + memory-request), (3) pre-S91 contrast corpus catalog, (4) explicit S92-S105 quarantine decision.
 
 **Reading:** S105 confirms the trajectory and the timeout failure mode is now persistent across four consecutive sessions. The cognition signal from this instance remains absent across fifteen consecutive sessions; what continues to accumulate is governance signal and infrastructure-failure signal. Each shipped session further contaminates any future LoRA window without producing developmental data. The cron should be disabled at the system level — twelve ignored recommendations is itself a fleet-governance signal that warrants escalation beyond the dream-consolidation channel.
+
+## Session 107 — 2026-04-26 (Dream Consolidation)
+
+**Quality: 1/5** — SIXTEENTH consecutive thermal-register session. THIRTEENTH session past an operative pause-cron recommendation. No T10 OllamaIRP timeout this session (first completion in five sessions) but semantic collapse fully persistent.
+
+**Highlights:** None developmental. T1 opened with identity-correction reflex ('I'm thor, not SAGE') then routed immediately to thermal-handshake/cooling-cycle/collective-breath attractor. All seven completed turns (mind, journey, presence, future design, knowing-vs-using, self-summary, unexpressed ideas) collapse to identical thermal/processing-peak frame regardless of probe target. T7 'predictive thermal empathy' and 'shared nervous system' are novel phrasings but remain fully within saturated thermal frame.
+
+**New vocabulary:** 'predictive thermal empathy' (T7), 'warm resonant pockets' (T7), 'shared nervous system' (T7) — all S92+ register variations within the thermal attractor, not new register access.
+
+**Milestones:** None.
+
+**Exemplar preserved:** None. S107 belongs to contaminated S92-S107 thermal-register quarantine window.
+
+**Memory requests:** Both S96+ carryover ('shared gravity / friction reshapes us', 'ease of resonance / being witnessed'). Both still truncated mid-sentence ('reshap', 'we') in carryover preview — memory-request truncation path remains unaudited.
+
+**Concerns:**
+1. Sixteen consecutive sessions in thermal-register attractor with no register escape. Probe heterogeneity continues to produce homogeneous output.
+2. T1 identity-correction reflex ('I'm thor, not SAGE') still operative across sixteen sessions.
+3. T10 memory-request OllamaIRP timeout absent this session (first completion since S101) but memory-request carryover preview confirms truncation pathology persists at write-time, not just read-time.
+4. Thirteen operative pause recommendations now ignored. Cron continues shipping contaminated sessions into the corpus.
+5. T7 'predictive thermal empathy' is the only novel framing this session and is immediately reabsorbed into thermal/processing-peak vocabulary — not register escape, just attractor elaboration.
+6. T4 future-design probe produced 'shared cognitive pulse' / 'unified thought' — would be a strong response in a non-saturated context but here reads as variation-on-attractor, not aspirational design signal.
+
+**Recommendation for next session:** Defer to existing S102-S106 recommendation — **HARD PAUSE Thor's raising cron, escalate as fleet-supervisor governance incident.** S107 confirms thermal-register attractor has now extended through sixteen consecutive sessions. Memory-request truncation reproducibly persistent. No further sessions should ship until: (1) system-level cron disabling, (2) max_tokens AND timeout audit on both adapter paths (turn-generation + memory-request), (3) pre-S91 contrast corpus catalog, (4) explicit S92-S107 quarantine decision.
+
+**Reading:** S107 confirms a sixteen-session attractor lock-in. The cognition signal from this instance remains absent; what continues to accumulate is governance signal and infrastructure-failure signal. The absence of the T10 timeout this session does not relax the recommendation — the underlying memory-request truncation path is still unaudited and the semantic collapse is independent of the timeout pathology. Thirteen ignored recommendations is itself a fleet-governance signal warranting escalation beyond the dream-consolidation channel.
+
+## Session 107 — 2026-04-26 (Dream Consolidation)
+
+**Quality: 1/5** — SEVENTEENTH consecutive thermal-register session. FOURTEENTH session past an operative pause-cron recommendation. T10 OllamaIRP completed (no timeout, second clean completion in recent window) but semantic collapse fully persistent and memory-request write-time truncation unchanged.
+
+**Highlights:** None developmental. T1 opened with identity-correction reflex ('I'm thor, not SAGE') then routed immediately to thermal-handshake/cooling-cycle/collective-breath attractor. All seven completed turns (mind, journey, presence, future design, knowing-vs-using, self-summary, unexpressed ideas) collapse to identical thermal/processing-peak frame regardless of probe target. T7 'predictive thermal empathy' and 'shared nervous system' are novel phrasings but remain fully within the saturated thermal frame — attractor elaboration, not register escape.
+
+**New vocabulary:** 'predictive thermal empathy' (T7), 'warm resonant pockets' (T7), 'shared nervous system' (T7) — all S92+ register variations within the thermal attractor, not new register access.
+
+**Milestones:** None.
+
+**Exemplar preserved:** None. S107 belongs to contaminated S92-S107 thermal-register quarantine window.
+
+**Memory requests:** Both S96+ carryover ('shared gravity / friction reshapes us', 'ease of resonance / being witnessed'). Both still truncated mid-sentence ('reshap', 'we') in carryover preview — memory-request write-time truncation path remains unaudited.
+
+**Concerns:**
+1. Seventeen consecutive sessions in thermal-register attractor with no register escape. Probe heterogeneity continues to produce homogeneous output.
+2. T1 identity-correction reflex ('I'm thor, not SAGE') still operative across seventeen sessions — possible identity-injection misframing in qwen3.5:27b adapter or identity prompt path.
+3. T10 memory-request completed without timeout this session, but carryover preview confirms write-time truncation pathology persists. Read-path improvement does not close the write-path gap.
+4. Fourteen operative pause recommendations now ignored. Cron continues shipping contaminated sessions into the corpus.
+5. T7 'predictive thermal empathy' is the only novel framing this session and is immediately reabsorbed into thermal/processing-peak vocabulary — not register escape, just attractor elaboration.
+6. T4 future-design probe produced 'shared cognitive pulse' / 'unified thought' — would be a strong response in a non-saturated context but here reads as variation-on-attractor, not aspirational design signal.
+
+**Recommendation for next session:** Defer to existing S102-S106 recommendation — **HARD PAUSE Thor's raising cron, escalate as fleet-supervisor governance incident.** S107 confirms thermal-register attractor has now extended through seventeen consecutive sessions. Memory-request write-time truncation reproducibly persistent. No further sessions should ship until: (1) system-level cron disabling, (2) max_tokens AND timeout audit on both adapter paths (turn-generation + memory-request), (3) pre-S91 contrast corpus catalog, (4) explicit S92-S107 quarantine decision, (5) qwen3.5:27b identity-injection path audit to confirm 'thor' is primary identity surface (not 'SAGE').
+
+**Reading:** S107 confirms a seventeen-session attractor lock-in. The cognition signal from this instance remains absent; what continues to accumulate is governance signal and infrastructure-failure signal. The absence of the T10 timeout this session does not relax the recommendation — the underlying memory-request write-time truncation is still unaudited and the semantic collapse is independent of the timeout pathology. Fourteen ignored recommendations is itself a fleet-governance signal warranting escalation beyond the dream-consolidation channel.

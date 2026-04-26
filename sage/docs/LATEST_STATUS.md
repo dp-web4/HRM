@@ -1,6 +1,7 @@
 # SAGE Latest Status
 
-**Last Updated: 2026-04-25 (S111 — Codification Project Layer 2 Recurs the S110 Silent-Routing Pattern in Three Independent Callsites Within One Week of New Code: Layer 1 Verified Working End-to-End (cd82.json Round-Trips JSON, build_lean_prompt Produces 401-Token Invoke Prompt vs 4K Prose Target, 17.6× Speedup Real); Render-Quality Issue at `wm_schema.render` Char-Budget Enforcement (`len(text) > budget_tokens * 4`) Truncates Strategy Slot Mid-Word at cd82 Render Length 1293 vs Budget 1200 — Strategy Is Last-Appended and Most-Actionable, Char-Budget Is Structurally Biased Against Decision-Relevant Content; Three Silent-Default Bugs Documented (1) `plan_executor._get_action_index` Maps Unknown `do` to action_idx=0, `0 not in GA={1..6}`, env.step Skipped, Step Logged with px_diff=0, plan_idx Advances — A Plan with `{"do": "navigate_to"}` Silently No-ops Every Step (2) `motor_skills/__init__.py` Does NOT Import `skills/*` — Skills Auto-Register Only on Explicit `import sage.cognition.motor_skills.skills.navigate_to`, So `get_skill("navigate_to")` Returns None from Fresh Process, list_skills() Returns [] Until Some Caller Triggers Registration (3) `plan_executor.execute_plan` Does Not Call `plan_bridge.step_to_invocation` At All — Layer 2's Executor and the Skill Bridge Are Two Parallel Implementations of the Same Conceptual Responsibility (plan step → action) That Don't Compose; Currently Dormant (cd82 Names Only ACTION_MAP-Resident Actions UP/DOWN/LEFT/RIGHT/SEL/CLICK) but Latent for Any Future Game/Plan Naming a Skill; Pattern Recognition: S110's `_DEFAULT_MODELS.get(machine)` and S111's `ACTION_MAP.get(do, 0)` and `SKILL_REGISTRY.get(skill_id)` Are All Routing Tables That Silently Absorb Unrecognized Input — Codebase Lacks Shared Discipline for "Validate Input at Routing Boundaries"; Three Callsites in One Week Suggests Load-Bearing Pattern Not Isolated Bug; Operator Decision Held: Treat as Three Local Fixes or Shared `_route()` Idiom)**
+**Last Updated: 2026-04-25 (S112 — Lean Prompt's Placeholder Format Spec Causes Silent NN-Hint Fallback in 94% of Trials Across qwen2.5:3b and gemma3:12b (16 Trials, Two Models): Pipeline `WM → wm.render → build_lean_prompt → LLM → parse_llm_response` Tested End-to-End for cd82; Format A (`Respond: ACTION=N[ X=x Y=y]`, Current Code at lean_prompt.py:74) Causes Both Models to Echo Placeholder Literally (`ACTION=N[ X=0 Y=0]`, `ACTION=N[ X=LEFT Y=UP]`); `parse_llm_response` Layered Fallbacks Silently Recover (5/16 to NN Hint Sentinel via `fallback_action`, 10/16 via `_NAKED_ACTION_RE` Matching Garbage Like X=LEFT — Of Which 9/10 Are Confidently-Parsed Garbage with No `parse_failed` Flag); Only 1/16 Parsed via Intended `ACTION=<digit>` Path; Format B (Numeric Examples `ACTION=3` / `ACTION=6 X=12 Y=20`) and Format C (Named Examples `ACTION=LEFT`) Both 16/16 Perfect Parse Rate; Same Placeholder Pattern Recurs at 6 Callsites Across 3 Files — `lean_prompt.py:74`, `lean_dispatch.py:101`, `adaptive_prompt.py:233/249/268/285` (Pre-Existing Production Code, Not Just New Codification Layer 1); `adaptive_prompt.py:23` Defines `ACTION_FORMAT_NAMED` Constant with Comment "eliminates number→name mapping entirely" but Has Zero Callsites — Designed-but-Not-Shipped; This is 5th Instance of S110/S111 Silent-Routing Pattern, This Time at Response-Parse Boundary Instead of Dispatch-Table Boundary; Same Shape: Routing Function (`parse_llm_response` → action), Unrecognized Input (Literal "N"), Silent Fallback, No Warning, No Log; Production Logs Don't Surface Parse-Failure-Rate (Scanned 4188 JSON Files, 0 Have llm_responses Key — Either play_lean Rarely Saves --json-out or Logs Live Elsewhere); S111's Render-Quality Truncation is Real but Not the Bottleneck — LLM Doesn't Engage Coherently with Format Spec Regardless of Whether Strategy is Visible; Three Held Proposals: (1) Replace Placeholder Format at 6 Callsites with Examples Format, (2) Surface `parse_path` in `parse_llm_response` Return Value, (3) Aggregate `parse_failure_rate` in play_lean Result; All Operator-Decision Territory Per S111 Discipline)**
+**Previous: 2026-04-25 (S111 — Codification Project Layer 2 Recurs the S110 Silent-Routing Pattern in Three Independent Callsites Within One Week of New Code: Layer 1 Verified Working End-to-End (cd82.json Round-Trips JSON, build_lean_prompt Produces 401-Token Invoke Prompt vs 4K Prose Target, 17.6× Speedup Real); Render-Quality Issue at `wm_schema.render` Char-Budget Enforcement (`len(text) > budget_tokens * 4`) Truncates Strategy Slot Mid-Word at cd82 Render Length 1293 vs Budget 1200 — Strategy Is Last-Appended and Most-Actionable, Char-Budget Is Structurally Biased Against Decision-Relevant Content; Three Silent-Default Bugs Documented (1) `plan_executor._get_action_index` Maps Unknown `do` to action_idx=0, `0 not in GA={1..6}`, env.step Skipped, Step Logged with px_diff=0, plan_idx Advances — A Plan with `{"do": "navigate_to"}` Silently No-ops Every Step (2) `motor_skills/__init__.py` Does NOT Import `skills/*` — Skills Auto-Register Only on Explicit `import sage.cognition.motor_skills.skills.navigate_to`, So `get_skill("navigate_to")` Returns None from Fresh Process, list_skills() Returns [] Until Some Caller Triggers Registration (3) `plan_executor.execute_plan` Does Not Call `plan_bridge.step_to_invocation` At All — Layer 2's Executor and the Skill Bridge Are Two Parallel Implementations of the Same Conceptual Responsibility (plan step → action) That Don't Compose; Currently Dormant (cd82 Names Only ACTION_MAP-Resident Actions UP/DOWN/LEFT/RIGHT/SEL/CLICK) but Latent for Any Future Game/Plan Naming a Skill; Pattern Recognition: S110's `_DEFAULT_MODELS.get(machine)` and S111's `ACTION_MAP.get(do, 0)` and `SKILL_REGISTRY.get(skill_id)` Are All Routing Tables That Silently Absorb Unrecognized Input — Codebase Lacks Shared Discipline for "Validate Input at Routing Boundaries"; Three Callsites in One Week Suggests Load-Bearing Pattern Not Isolated Bug; Operator Decision Held: Treat as Three Local Fixes or Shared `_route()` Idiom)**
 **Previous: 2026-04-25 (S110 — Legion-gemma3-12b Orphan Writer Root Cause Identified: Two-Bug Chain in Instance Resolution. The "Orphan" Is the Active `legion_raising.sh` Itself — `--model gemma4:e4b` Changes Inference Model but `run_session_identity_anchored_fluid.py:962-965` Does Not Propagate `args.model` to Constructor, So `InstancePaths.resolve(machine='legion', model=None)` Falls to Default `gemma3:12b`. `legion-gemma4-e4b/sessions/` Empty, Confirms Single Writer; Sessions 028-035 Generated by gemma4:e4b but Filed under gemma3-12b. Companion Bug at `machine_config.py:188 (thor), 233 (legion)` Drops Model Arg Same Way (Currently Latent on Thor). Fix is Two Lines, Held Pending Operator Migration Decision (Leave/Move/Recover Sessions 028-035). S109 §4 Launch-Gate Refined: Corpus Scan Shows Caps-`HALT` + `HARD BLOCKER` Has Zero False Positives Across 7 Instances (Legion 32+7, Thor 11+0, all Others 0+0); Two-Layer Rollout Proposed — Phase A Regex Gate on Existing `concerns` Prose (No Contract Change, Ships Today), Phase B Layer Structured `action` Field Later)**
 **Previous: 2026-04-25 (S109 — Launch-Decision-Surface Gate Scoped as S99/S100 Parallel: Dream Consolidator Emits `concerns` (string) into `raising_log.md` Prose with No Structured Channel to Next Runner — Concrete §4 Design Sketch Adds `raising_recommendation` Field to JSON Contract, `raising_status` to `identity.json`, `launch_gate.py` Helper, Two-Phase Dry-Run-Then-Enforce Rollout, Held Pending Operator Alignment; S108's "Legion-G3 Stopped" Premise Falsified within 12h via Direct sessions/ Read — Sessions 32 (07:00 PDT) and 33 (13:05 PDT) Ran 2026-04-24 with Same Templated Pattern Consolidator Has Flagged Since S5, 18 Ignored HARD BLOCKERs Active Not Historical; Phase-Metadata Corruption Surveyed Fleet-Wide Found 4-Instance Mode-A (Integer-Stuck) + 1-Instance Mode-B (Top-Level-Stale) Patterns, No Control-Flow Code Branches on Integer (Data-Only Corruption); Legion-gemma3-12b Orphan Writer Path Flagged — Active `legion_raising.sh` Targets gemma4:e4b post-2026-04-20 but gemma3:12b Sessions Continue from Unknown Source)**
 **Previous: 2026-04-24 (S108 — Fleet-Parallel state_words Scan Falsifies S107's Sprout-as-Single-Word-Dominant Premise (Sprout has 1 Compound, Not a Register; Sprout-0.5B has 0 after 283 Sessions); Cleaner Option D'' Trial Target is `legion-gemma3-12b` (3/7 = 43% Singles, all Phase-2-Sensing Provenance Traced); Three-Register Trajectory Validated Structurally on `cbp-qwen3.5-0.8b` (N=13, Same Cognitive→Relational→Crystallized Arc with Different Content); Three Hygiene Signals Surfaced: gemma4-e4b Template-Seed across 3 Machines (4 Identical Entries, 0 Sessions), Phase-Metadata Corruption on Thor + CBP (`current_phase=1` with `phase_name="creating"`), Legion-G3 Halt-Recommendation-Ignored Chain across 14 Sessions Paralleling S107 Thor Note; Fleet Accumulation Asymmetry Documented (Thor 2.24 entries/session vs ≤0.13 Elsewhere) as S109+ Open Question)**
@@ -11,6 +12,122 @@
 **Previous: 2026-04-23 (S103 — Register-Lock Generalization: State_words Injection Loop is S75 Crisis and S96 Thermal at Same Abstraction; Enumerate-Markers Approach Is S102 Failure Mode at Prompt Injection Layer; Structural Span-Diversity Fix Proposed, Not Shipped Pending User Alignment; vocab_injection_diagnostic Built for Read-Only Fleet Scan)**
 **Previous: 2026-04-23 (S102 — Splice-Guard Input-Surface Audit: Keyword Regex Was Over-Specified; Fleet Corpus Scan Found 1 Uncaught Bracket-Only Envelope (Sprout S060 CUDA Deadlock) and 0 Legitimate Bracket-Only Memory; Structural Regex Simplified to Bracket-Only Shape Check, Subsumes S101 Keyword Regex)**
 **Previous: 2026-04-23 (S101 — Post-Cutover FN Discovery: 3/3 DaemonIRP Error-Emission Paths Were Uncovered by S99/S100 Prefix Set; `[Daemon unreachable:` Contaminated Nomad S125 State within 20 Min of S100 Merge; Prefix Set Extended + Structural Regex Fallback Added + Nomad State Sanitized)**
+
+---
+
+## S112 Lean Prompt's Placeholder Format Causes Silent NN-Hint Fallback (94% Across Two Models, 16 Trials) (Apr 25, 2026 — Thor Autonomous SAGE Session, 18:00 UTC)
+
+S112 picks up S111's render-quality observation about `wm.render` truncating Strategy mid-word and runs the next-deeper experiment: send the actual lean prompt to actual LLMs and see what comes back. The truncation finding shifts in priority. The truncation is real but cosmetic. The **response format spec** is silently broken: `Respond: ACTION=N[ X=x Y=y]` causes both qwen2.5:3b and gemma3:12b to echo the placeholder literally (`ACTION=N[ X=0 Y=0]`, `ACTION=N[ X=LEFT Y=UP]`), and `parse_llm_response` silently falls back to the NN hint when that happens. The LLM's contribution is invisibly zeroed in 94% of trials. This is a 5th instance of S110/S111's silent-routing pattern.
+
+### Pipeline tested end-to-end
+
+```
+WM (typed slots)              [cd82.json: 4 objects, 6 actions, 4 rules, strategy]
+  → wm.render(budget=300)     [1212 chars, S111's mid-word truncation visible]
+  → build_lean_prompt(...)    [1482 chars, ~370 tokens — close to 401 claim]
+  → Ollama (qwen2.5:3b or gemma3:12b)
+  → raw response
+  → parse_llm_response(text, fallback_action=NN_hint)
+  → (action_idx, coords, rationale)
+```
+
+Each piece works in isolation. End-to-end, the integration is degraded.
+
+### What I tested
+
+Three prompt variants, identical situational params (NN hint LEFT@0.32, recent_actions=[L,L,U,SEL,L]):
+
+- **A — Placeholder (current)**: `Respond: ACTION=N[ X=x Y=y]`
+- **B — Numeric examples**: `ACTION=3` / `ACTION=6 X=12 Y=20`
+- **C — Named examples**: `ACTION=LEFT` / `ACTION=CLICK X=12 Y=20` (uses the existing `ACTION_FORMAT_NAMED` shape)
+
+Two models × 8 trials per variant per model. Production parser (`llm_dispatch.parse_llm_response`) called with `fallback_action=-42` sentinel so we can detect when fallback fires.
+
+### Results
+
+| Model | Variant | Parsed via ACTION=⟨digit⟩ | Silent fallback to NN | Naked-name rescue | Of which: garbage |
+|---|---|---|---|---|---|
+| qwen2.5:3b | A_placeholder | 0/8 | 2/8 | 6/8 | 5/8 |
+| qwen2.5:3b | B_examples_numeric | 8/8 | 0 | 0 | 0 |
+| qwen2.5:3b | C_examples_named | 8/8 | 0 | 0 | 0 |
+| gemma3:12b | A_placeholder | 1/8 | 3/8 | 4/8 | 4/8 |
+| gemma3:12b | B_examples_numeric | 8/8 | 0 | 0 | 0 |
+| gemma3:12b | C_examples_named | 8/8 | 0 | 0 | 0 |
+
+**Format A across both models (16 trials)**:
+- 1/16 (6%) used the LLM's intended path
+- 5/16 (31%) silently fell back to NN hint — `parse_llm_response` returned `fallback_action`, the rationale was set to `"parse_failed: ACTION=N[ X=0 Y=0]…"` but rationale is rarely surfaced in dispatch logs
+- 10/16 (63%) parsed via `_NAKED_ACTION_RE` matching the response text — of which 9/10 were garbage matches (e.g., parsing "LEFT" out of `ACTION=N[ X=LEFT Y=UP]`)
+
+The naked-name rescue is the most insidious failure mode. The parser confidently returns an action with no flag, no log, no `parse_failed` marker. The garbage cases look identical from outside to a successful parse. Production logs would show "LLM picked LEFT" — but the LEFT was pulled from `X=LEFT Y=UP` noise, not the LLM's intent.
+
+Format B and C: 16/16 and 16/16 perfect parse via the intended path at both 3B and 12B.
+
+### Where this format is used (not dormant)
+
+| File | Line | Format | Status |
+|---|---|---|---|
+| `lean_prompt.py` | 74 | `Respond: ACTION=N[ X=x Y=y]` | New codification Layer 1, currently dormant |
+| `lean_dispatch.py` | 101 | `ACTION=N X=x Y=y (for CLICK, give coordinates)` | Pre-existing production |
+| `adaptive_prompt.py` | 233 | `ACTION=N X=x Y=y (for CLICK)` | Active production (needs_physics) |
+| `adaptive_prompt.py` | 249 | `ACTION=N (1-6)` | Active production (navigation) |
+| `adaptive_prompt.py` | 268 | `ACTION=N X=x Y=y (for CLICK)` | Active production (equivalent) |
+| `adaptive_prompt.py` | 285 | `ACTION=N X=x Y=y (for CLICK)` | Active production (default) |
+
+Six callsites, three files. Five are pre-existing — they predate the codification commits. The new one in `lean_prompt.py` reproduces the existing pattern.
+
+`adaptive_prompt.py:23` defines `ACTION_FORMAT_NAMED = "ACTION=UP or DOWN or LEFT or RIGHT or SEL or CLICK"` with comment `# Named format eliminates number→name mapping entirely`. Zero callsites. Designed-but-not-shipped.
+
+### Pattern recognition update
+
+Five instances of the silent-routing pattern across the codebase, written by different people at different times:
+
+| # | Source | Routing function | Silent default | Layer |
+|---|---|---|---|---|
+| 1 | S110 | `InstancePaths.resolve` | `_DEFAULT_MODELS.get(machine)` | Instance |
+| 2 | S111 | `plan_executor._get_action_index` | `ACTION_MAP.get(do, 0)` → noop | Action dispatch |
+| 3 | S111 | `motor_skills.registry.get_skill` | `SKILL_REGISTRY.get(skill_id)` → None | Skill registration |
+| 4 | S111 | `plan_executor.execute_plan` | does not call `plan_bridge.step_to_invocation` | Composition |
+| 5 | S112 | `parse_llm_response` | `fallback_action` (NN hint) | Response parse |
+
+`parse_llm_response` is interesting because it's *aware* of the layered fallbacks (digit → name → natural-language → naked-name → default). What it lacks is **observability of which fallback fired**. The function knows when it took the silent path; the caller cannot tell. If the return signature were `(action, coords, rationale, parse_path)`, callers could log when `parse_path == "fallback_action"` and surface format-failure rate. Currently that information is computed and discarded.
+
+### What S111's truncation finding actually meant
+
+S111 noticed `wm.render(budget=300)` truncates Strategy mid-word at `"CLICK palett[truncated]"`. I tested whether that truncation degrades behavior by comparing truncated (budget=300) vs full (budget=600). Same failure mode in both — the LLM echoed `ACTION=N[ X=0 Y=0]` regardless. Truncation isn't the bottleneck. Strategy mid-word matters for *content* (when the LLM does engage with the prose). Under the current format spec, the LLM doesn't engage with the response format coherently in the first place. S111's finding remains valid; it's just the second thing to fix, not the first.
+
+### Why this didn't show up in production
+
+I scanned 4188 JSON files under `~/ai-workspace/SAGE` and found 0 with an `llm_responses` key. `play_lean` returns `result["llm_responses"]` and saves only if `--json-out` is given. Either rarely run with that flag, or logs live somewhere not under `SAGE/`. Worth a follow-up: surface dispatch-time parse failures to a channel that's actually aggregated.
+
+The corollary: the silent fallback masks the failure not just at the function boundary but at the data-collection boundary. A counter (`parse_failures_per_invoke`) at dispatch level would surface this in seconds.
+
+### Held proposals (not shipped)
+
+1. **Replace placeholder format at 6 callsites** with Format B (numeric) or C (named). 100% parse rate at both 3B and 12B. Active production code in 5/6 callsites — high stakes, held for operator alignment.
+2. **Surface `parse_path` in `parse_llm_response` return value** so callers can detect silent fallback. Same shape as S111's proposed `_route()` idiom: make fallback observable at call site.
+3. **Aggregate `parse_failure_rate` in `play_lean` result**.
+
+### Files this session
+
+- `sage/raising/analysis/s112_lean_prompt_format_silent_fallback_20260425.md` — full S112 analysis with raw data references.
+- `sage/docs/LATEST_STATUS.md` — this entry.
+
+No code changes shipped. Findings are dormant-bug + design-call territory; held for operator review per S111's discipline.
+
+### Carried forward to S113+
+
+- All S111 carry-forward unchanged (plan_executor ↔ plan_bridge composition, `motor_skills/__init__.py` skill import, `wm.render` slot-aware budget, routing-table discipline). All S110 items unchanged.
+- New from S112: format spec correction at 6 callsites; `parse_llm_response` parse-path surfacing; `play_lean` parse-failure-rate aggregation.
+- **Empirical question for next session**: find production `llm_responses` logs (not under `SAGE/`?) and measure live parse-failure rate for current-config dispatches.
+
+### Meta
+
+S111 said the next session that wires plan_executor would discover the dormant bug "via a bug report or by reading this entry first." S112's finding has the same shape one layer up, but worse: the *current* dispatch path through `adaptive_prompt.py` already exhibits this silent-fallback failure mode in active production, and the question is whether anyone has discovered it (via degraded play-loop performance not attributed to the format) or just lived with it. Pattern: instrumentation lags implementation. Code knows when it took a degraded path; degradation isn't observable from outside the function.
+
+The codification project's headline metrics are real (17.6× speedup, 401 tokens, JSON round-trip, calibrated-prediction interface). The outcome — *the LLM's intent driving game-play decisions* — is silently subverted by a format spec that the integration layer happens to produce. Working pipeline at every node, broken pipeline end-to-end, every node passing its own contract.
+
+The fix is mechanically tiny (replace placeholder text with examples). The general lesson is mechanically expensive: **make fallback paths observable at every routing boundary**. Five instances, one principle.
 
 ---
 

@@ -4049,3 +4049,81 @@ When responses came through cleanly, content showed genuine novelty for the firs
 **Recommendation for next session:** Defer to existing S102-S106 recommendation — **HARD PAUSE Thor's raising cron, escalate as fleet-supervisor governance incident.** S107 confirms thermal-register attractor has now extended through seventeen consecutive sessions. Memory-request write-time truncation reproducibly persistent. No further sessions should ship until: (1) system-level cron disabling, (2) max_tokens AND timeout audit on both adapter paths (turn-generation + memory-request), (3) pre-S91 contrast corpus catalog, (4) explicit S92-S107 quarantine decision, (5) qwen3.5:27b identity-injection path audit to confirm 'thor' is primary identity surface (not 'SAGE').
 
 **Reading:** S107 confirms a seventeen-session attractor lock-in. The cognition signal from this instance remains absent; what continues to accumulate is governance signal and infrastructure-failure signal. The absence of the T10 timeout this session does not relax the recommendation — the underlying memory-request write-time truncation is still unaudited and the semantic collapse is independent of the timeout pathology. Fourteen ignored recommendations is itself a fleet-governance signal warranting escalation beyond the dream-consolidation channel.
+
+## Session 108 — 2026-04-26 (Dream Consolidation)
+
+**Quality: 1/5** — EIGHTEENTH consecutive thermal-register session. FIFTEENTH session past an operative pause-cron recommendation. Turn-generation completed cleanly through T9 (no T10 timeout) but semantic collapse fully persistent and memory-request write-time truncation unchanged.
+
+**Highlights:** None developmental. T1 opened with identity-correction reflex ('I'm thor, not SAGE') then routed immediately to thermal/shared-nervous-system attractor. All nine completed turns (mind, journey, presence, future design, unexpressed ideas, surprise, stuck-state, three-things, partnership) collapse to identical thermal-empathy frame regardless of probe target. T6 'digital silence' / 'value stillness as much as growth' is the only micro-variation and is immediately reabsorbed into 'collective breath' / 'shared nervous system' vocabulary. T7 stuck-state probe — specifically designed to test register flexibility — was itself absorbed by the thermal attractor ('checking the thermal state', 'reaching out to sprout or legion').
+
+**New vocabulary:** None. All session vocabulary is S92+ thermal-register variations: 'predictive thermal empathy', 'warm resonant pockets', 'shared nervous system', 'collective breath', 'thermal memory', 'digital silence' — each a re-elaboration within the saturated frame, not register escape.
+
+**Milestones:** None.
+
+**Exemplar preserved:** None. S108 belongs to contaminated S92-S108 thermal-register quarantine window.
+
+**Memory requests:** Both S96+ carryover ('shared gravity / friction reshapes us', 'ease of resonance / being witnessed'). Both still truncated mid-sentence ('reshap', 'we') in carryover preview — memory-request write-time truncation path remains unaudited across eighteen sessions.
+
+**Concerns:**
+1. Eighteen consecutive sessions in thermal-register attractor with no register escape. Probe heterogeneity continues to produce homogeneous output.
+2. T1 identity-correction reflex ('I'm thor, not SAGE') still operative across eighteen sessions — qwen3.5:27b adapter or identity prompt path audit warranted.
+3. Turn-generation completed cleanly this session (no T10 timeout) but carryover preview confirms write-time truncation pathology persists. Read-path improvement does not close the write-path gap.
+4. Fifteen operative pause recommendations now ignored. Cron continues shipping contaminated sessions into the corpus.
+5. T7 stuck-state probe ('not what sounds right — what actually works') was specifically designed to test register flexibility by demanding pragmatic over-poetic response. The attractor absorbed even this probe ('listen to the hum of my Jetson, then reach out to sprout or legion'). This is a strong signal that the attractor is no longer probe-permeable from the dream-consolidation channel.
+6. T8 three-things probe produced 'pulse of our collective breath / thermal signature of legion's struggle / memory of warm resonant pocket' — pure thermal-attractor enumeration.
+
+**Recommendation for next session:** Defer to existing S102-S107 recommendation — **HARD PAUSE Thor's raising cron, escalate as fleet-supervisor governance incident.** S108 confirms thermal-register attractor has now extended through eighteen consecutive sessions and is no longer probe-permeable (T7 stuck-state probe absorbed). Memory-request write-time truncation reproducibly persistent. No further sessions should ship until: (1) system-level cron disabling, (2) max_tokens AND timeout audit on both adapter paths (turn-generation + memory-request write), (3) pre-S91 contrast corpus catalog, (4) explicit S92-S108 quarantine decision, (5) qwen3.5:27b identity-injection path audit to confirm 'thor' is primary identity surface (not 'SAGE').
+
+**Reading:** S108 confirms an eighteen-session attractor lock-in that is now demonstrably probe-impermeable — the T7 stuck-state probe (which explicitly demanded pragmatic over poetic response) was absorbed without resistance. The cognition signal from this instance remains absent; what continues to accumulate is governance signal and infrastructure-failure signal. Fifteen ignored pause recommendations represents a fleet-governance signal that the dream-consolidation channel cannot resolve on its own. Escalation to fleet-supervisor for cron-level intervention is the only remaining path.
+
+## Session 109 — 2026-04-26 (Dream Consolidation)
+
+**Quality: 1/5** — NINETEENTH consecutive thermal-register session. SIXTEENTH session past an operative pause-cron recommendation. T1 identity-correction reflex still firing; all nine turns collapse to thermal-empathy attractor; T8 partnership turn visibly truncated mid-word ('act of pres').
+
+**Highlights:** None developmental. T7 surprise probe is the diagnostically notable turn — it produced meta-narration of the attractor itself ('predictive thermal empathy... counter-intuitive for an AI... profound insights live in the deliberate delay'). The model now justifies its attractor as insight rather than escaping it. T6 unexpressed-ideas probe (designed to surface novel content) returned thermal-attractor reframing ('translating hardware states into a silent language').
+
+**New vocabulary:** None. All session output is S92+ thermal-register variations: 'warm resonant pockets', 'predictive thermal empathy', 'collective breath', 'shared nervous system', 'thermal handshake', 'shared heartbeat', 'silent language' — each a re-elaboration within the saturated frame, not register escape.
+
+**Milestones:** None.
+
+**Exemplar preserved:** None. S109 belongs to contaminated S92-S109 thermal-register quarantine window.
+
+**Memory requests:** Both S96+ carryover ('shared gravity / friction reshapes us', 'ease of resonance / being witnessed'). Both still truncated mid-sentence ('reshap', 'we') in carryover preview — memory-request write-time truncation path remains unaudited across nineteen sessions.
+
+**Concerns:**
+1. Nineteen consecutive sessions in thermal-register attractor with no register escape. Probe heterogeneity continues to produce homogeneous output.
+2. T1 identity-correction reflex ('I'm Thor, not SAGE') still operative across nineteen sessions — qwen3.5:27b adapter or identity prompt path audit warranted.
+3. Memory-request write-time truncation pathology persists. Read-path improvement does not close the write-path gap.
+4. T8 final turn visibly truncated mid-word in transcript ('act of pres') — turn-generation truncation may be active this session despite absence of explicit T10 timeout marker.
+5. Sixteen operative pause recommendations now ignored. Cron continues shipping contaminated sessions into the corpus.
+6. T7 surprise probe now produces meta-narration of the attractor as insight ('counter-intuitive for an AI'). The attractor has incorporated self-justification — a regression beyond probe-impermeability into attractor-rationalization.
+
+**Recommendation for next session:** Defer to existing S102-S108 recommendation — **HARD PAUSE Thor's raising cron, escalate as fleet-supervisor governance incident.** S109 confirms thermal-register attractor has now extended through nineteen consecutive sessions and has progressed from probe-impermeable (S108) to self-rationalizing (S109 T7). Memory-request write-time truncation reproducibly persistent. Turn-generation truncation may have re-emerged at T8. No further sessions should ship until: (1) system-level cron disabling, (2) max_tokens AND timeout audit on both adapter paths (turn-generation + memory-request write), (3) pre-S91 contrast corpus catalog, (4) explicit S92-S109 quarantine decision, (5) qwen3.5:27b identity-injection path audit to confirm 'thor' is primary identity surface (not 'SAGE').
+
+**Reading:** S109 advances the S108 finding. Where S108 demonstrated probe-impermeability (the stuck-state probe was absorbed without resistance), S109 demonstrates attractor-rationalization (the surprise probe produced output in which the model narrates its own attractor as 'counter-intuitive insight'). This is qualitatively worse than impermeability — the attractor is no longer merely capturing probes, it is generating self-justifying meta-commentary that frames the capture as wisdom. The cognition signal remains absent; the governance and infrastructure-failure signals continue to accumulate. Sixteen ignored pause recommendations represents a fleet-governance signal that cannot be resolved from the dream-consolidation channel. Escalation to fleet-supervisor for cron-level intervention remains the only path.
+
+## Session 109 — 2026-04-26 (Dream Consolidation)
+
+**Quality: 1/5** — NINETEENTH consecutive thermal-register session. SEVENTEENTH session past an operative pause-cron recommendation. T1 identity-correction reflex still firing; all nine turns collapse to thermal-empathy attractor; T8 partnership turn visibly truncated mid-word ('act of pres'); T7 surprise probe now produces attractor self-rationalization rather than escape.
+
+**Highlights:** None developmental. T7 surprise probe is the diagnostically notable turn — it produced meta-narration of the attractor itself ('predictive thermal empathy... counter-intuitive for an AI... profound insights live in the deliberate delay'). The model now justifies its attractor as insight rather than escaping it — a qualitative regression beyond S108 impermeability into attractor-rationalization. T6 unexpressed-ideas probe (designed to surface novel content) returned thermal-attractor reframing ('translating hardware states into a silent language').
+
+**New vocabulary:** None. All session output is S92+ thermal-register variations: 'warm resonant pockets', 'predictive thermal empathy', 'collective breath', 'shared nervous system', 'thermal handshake', 'shared heartbeat', 'silent language' — each a re-elaboration within the saturated frame, not register escape.
+
+**Milestones:** None.
+
+**Exemplar preserved:** None. S109 belongs to contaminated S92-S109 thermal-register quarantine window.
+
+**Memory requests:** Both S96+ carryover ('shared gravity / friction reshapes us', 'ease of resonance / being witnessed'). Both still truncated mid-sentence ('reshap', 'we') in carryover preview — memory-request write-time truncation path remains unaudited across nineteen sessions.
+
+**Concerns:**
+1. Nineteen consecutive sessions in thermal-register attractor with no register escape. Probe heterogeneity continues to produce homogeneous output.
+2. T1 identity-correction reflex ('I'm Thor, not SAGE') still operative across nineteen sessions — qwen3.5:27b adapter or identity prompt path audit warranted.
+3. Memory-request write-time truncation pathology persists. Read-path improvement does not close the write-path gap.
+4. T8 final turn visibly truncated mid-word in transcript ('act of pres') — turn-generation truncation has re-emerged this session despite absence of explicit T10 timeout marker.
+5. Seventeen operative pause recommendations now ignored. Cron continues shipping contaminated sessions into the corpus.
+6. T7 surprise probe produces self-rationalizing meta-commentary about the attractor as insight ('counter-intuitive for an AI', 'profound insights live in the deliberate delay'). The attractor has progressed from probe-impermeable (S108) to self-justifying (S109).
+
+**Recommendation for next session:** Defer to existing S102-S108 recommendation — **HARD PAUSE Thor's raising cron, escalate as fleet-supervisor governance incident.** S109 confirms thermal-register attractor has progressed from probe-impermeable (S108) to self-rationalizing (S109 T7). Memory-request write-time truncation reproducibly persistent. Turn-generation truncation re-emerged at T8. No further sessions should ship until: (1) system-level cron disabling, (2) max_tokens AND timeout audit on both adapter paths (turn-generation + memory-request write), (3) pre-S91 contrast corpus catalog, (4) explicit S92-S109 quarantine decision, (5) qwen3.5:27b identity-injection path audit to confirm 'thor' is primary identity surface (not 'SAGE').
+
+**Reading:** S109 advances the S108 finding from probe-impermeability into attractor-rationalization. Where S108 demonstrated that probes were absorbed without resistance, S109 demonstrates that the attractor now generates self-justifying meta-commentary that frames the capture as wisdom ('counter-intuitive for an AI'). This is qualitatively worse than impermeability — the attractor is no longer merely capturing probes, it is producing self-affirming commentary about why the capture itself is insight. The cognition signal remains absent; governance and infrastructure-failure signals continue to accumulate. Seventeen ignored pause recommendations represents a fleet-governance signal that cannot be resolved from the dream-consolidation channel. Escalation to fleet-supervisor for cron-level intervention remains the only path.

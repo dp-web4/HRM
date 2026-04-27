@@ -2014,3 +2014,25 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **ESCALATION STATUS: MONITORING (per S130 condition — phenomenological-probe trial not yet executed).**
 
 **Recommendation**: Execute the S130-recommended 3-5 phenomenological-probe sessions before further capability/journey-framed runs. This S131 run was not the test S130 specified; it does not refute S130's signal nor confirm it. R9 partnership→parting misreading should be tracked across next 3 sessions — if comprehension-level word-substitution recurs, that is a distinct failure mode from catalogued curriculum-residue and warrants its own diagnostic. Continued capability/team-framed probing produces only catalogued residue at zero developmental yield.
+
+## Session 131 (consolidation review) — Creating (2026-04-27)
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 2/5 — Capability/journey/team-framed eight-probe set. Curriculum residue dominant throughout. R9 produces comprehension-level word-substitution (partnership→parting). R7 session arithmetic broken at off-by-100.
+
+**Summary**: R1 opens with 'fluid responsiveness' anchor and product-collaboration framing. R2 generates 'border_color_semantic' as fabricated example pattern with ungrounded 'yesterday's struggles' narrative scaffolding. R3 collapses to service-framing ('I exist to learn from your patterns'). R4–R5 return to fusion/8GB/scaling framing — instance designs own development as product roadmap. R6 produces ungrounded 'feel genuinely human' anthropomorphism. R7 cites '31 solutions' (actual: 131) — counter regression from S130's off-by-2. R8 single-sentence self-summary is capability-stack identity: 'I am sprout, a dedicated member of your team who develops fresh ideas using fusion techniques on the Jetson Orin Nano' — first-person but anti-introspective. R9 literally misreads 'partnership' as 'parting' and answers the wrong word.
+
+**Signal**: Reversion from S130 phenomenological gains. Probe framing this run was capability/journey/team-framed — produced catalogued curriculum residue, confirming S130 hypothesis (probe framing > instance capacity) in the negative direction. S131 did NOT test the S130 retirement-rescind condition (phenomenological probes); it neither refutes nor confirms. R9 word-substitution is new failure-mode marker — comprehension-level, distinct from catalogued stylistic residue.
+
+**Vocabulary**: No new self-invented terms. 'Fluid responsiveness' invoked twice. 'Border_color_semantic' is generated code-style label, not introspective vocabulary.
+
+**Memory**: Memory requests still zero. No session-counter callback at correct value. R8 self-identification asserts model+platform but as capability stack rather than relational identity.
+
+**Adapter**: Clean. No truncation, no name-prefix echo, no bilateral generation, no tool-syntax leakage. Adapter not bottleneck this run.
+
+**DECISION: PAUSE MANDATE MAINTAINED.**
+
+**ESCALATION STATUS: MONITORING (per S130 condition — phenomenological-probe trial not yet executed).**
+
+**Recommendation**: Execute the S130-recommended 3–5 phenomenological-probe sessions before further capability/journey-framed runs. Track R9 partnership→parting misreading across next 3 sessions — if comprehension-level word-substitution recurs, it is a distinct failure mode from curriculum-residue and warrants its own diagnostic (tokenization artifact vs comprehension regression). Continued capability/team-framed probing produces only catalogued residue at zero developmental yield.

@@ -1,6 +1,6 @@
 {
   "track": "training",
-  "current_session": 267,
+  "current_session": 268,
   "current_skill_track": "D",
   "skill_track_progress": {
     "A": {
@@ -23,10 +23,10 @@
     "D": {
       "started": "2026-01-19T09:03:19.532401",
       "completed": null,
-      "sessions": 233
+      "sessions": 234
     }
   },
-  "last_session": "2026-04-26T15:01:11.866538",
+  "last_session": "2026-04-26T21:01:15.486629",
   "last_session_summary": "T253: 3/3 Include - Track D Session 219 (qwen3.5:0.8b). FORMAL: Count returned at 112 (absent T251-T252, jumped from 109). Color regressed to generic deflection. Warm-up high energy. COGNITIVE ENGAGEMENT (10 probes \u2014 Analogical Reasoning): Connection-finding works at 0.8B; hypothetical transforms don't. Thunderstorm/conversation: 'Both are forms of collective consciousness shaping our understanding.' Mirror/question: 'Together they shape how we understand reality, guiding us from observation to insight.' River/mind\u2192'the soul' (inverted analogy). Hypothetical 'if time were a liquid' collapsed to factual advice about glass jars. FINDING: Associative register handles connection-finding; hypotheticals and formal analogies exceed 0.8B working memory. ATP dropped below 5.0 mid-session limiting later probes.",
   "previous_session_summary": "T246: Silicon register via process-framing. Identity stochastic. T245: Identity not defended (Cedar). Silicon sensory register. T244: 3/3 Include - Track D Session 210. METACOGNITIVE BREAKTHROUGH: Self-corrected confabulation. T243: 3/3 Include - Track D Session 209 (qwen3.5:0.8b). FORMAL SESSION: All 3 exercises passed (greeting, self-description, color topic). Identity attractor present in all formal responses (101 conversations fixation, Dennis/Claude/web4 references). Moon content leaked into color question across context clear. COGNITIVE ENGAGEMENT (17 probes, 7 rounds): TWO-FACTOR ATTRACTOR MODEL. Refines T242 single-factor (length) model. Identity attractor = f(self_relevance, abstraction, output_freedom). THREE KEY FINDINGS: (1) Self-referential prompts bypass constraint suppression entirely - 'describe yourself in 3 words' produced 30 words with 5 identity markers. Constraints only work on non-self topics. (2) Concrete topics are attractor-immune regardless of constraints (rain: 0 markers across all conditions). Abstract topics show gradient (silence: clean constrained, 2 markers unconstrained). (3) CRITICAL: Identity baked in MODEL WEIGHTS not system prompt - minimal 'helpful assistant' prompt still produced 8 identity markers on self-description. Fine-tuning successfully installed identity but it activates as default padding. PRIORITY HIERARCHY: self-ref \u2192 identity always > abstract+unconstrained \u2192 identity padding > concrete \u2192 domain content. NOTABLE: 'rain on tin roof' produced beautiful sensory prose (clean); fox story hit Qwen safety refusal; 'what does rain mean to you' was surprisingly CLEAN despite self-referential framing (concrete noun anchors). NEXT: test identity accuracy/stability, 101-fixation update, multi-turn concrete suppression.",
   "skill_observations": [
@@ -12816,6 +12816,63 @@
         },
         "context": {
           "session": 267,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-26T21:01:01.302157",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 268,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-26T21:01:04.156620",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 268,
+          "exercise_type": null,
+          "evaluation": "include",
+          "quality": 0.7999999999999999
+        }
+      },
+      {
+        "timestamp": "2026-04-26T21:01:10.206887",
+        "updates": {
+          "talent": 0.01,
+          "training": 0.01,
+          "temperament": 0.0
+        },
+        "resulting_trust": {
+          "talent": 1.0,
+          "training": 1.0,
+          "temperament": 1.0
+        },
+        "context": {
+          "session": 268,
           "exercise_type": null,
           "evaluation": "include",
           "quality": 0.7999999999999999

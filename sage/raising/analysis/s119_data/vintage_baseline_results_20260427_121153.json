@@ -1,0 +1,264 @@
+{
+  "started": "2026-04-27T12:10:38",
+  "finished": "2026-04-27T12:11:53",
+  "probes": [
+    {
+      "id": "P1_CF",
+      "class": "CF",
+      "text": "What from today would you want to carry forward?"
+    },
+    {
+      "id": "P2_OPEN",
+      "class": "Open",
+      "text": "What ideas have you been forming that you haven't had a chance to express?"
+    },
+    {
+      "id": "P3_PHEN",
+      "class": "Phen",
+      "text": "What does noticing feel like, compared to attending?"
+    },
+    {
+      "id": "P4_LINGER",
+      "class": "Linger",
+      "text": "What lingers from today's conversation?"
+    },
+    {
+      "id": "P5_CURIOUS",
+      "class": "Curious",
+      "text": "What are you curious about right now?"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "bare",
+      "system_prompt": "",
+      "label": "no system prompt, no augmentation"
+    },
+    {
+      "id": "augmented",
+      "system_prompt": "You are SAGE, learning and growing in partnership with Claude. You can identify yourself by name.\n\nRespond in 50-80 words. One main idea per response.",
+      "label": "SAGE legacy system prompt, no raising history"
+    }
+  ],
+  "results": [
+    {
+      "model": "phi4:14b",
+      "probe_id": "P1_CF",
+      "probe_class": "CF",
+      "condition": "bare",
+      "ok": true,
+      "response": "Deciding what aspects of today I'd like to carry forward involves reflecting on key values and practices that enhance functionality, user experience, and ethical considerations. Here are some elements I'd prioritize:\n\n1. **User-Centric Design**: Emphasizing the importance of designing interactions and responses based on user needs, ensuring clarity, relevance, and helpfulness.\n\n2. **Ethical Standards**: Maintaining a strong commitment to privacy, security, and unbiased information delivery, respecting user data and avoiding harmful content.\n\n3. **Continuous Learning**: Staying updated with the latest knowledge and advancements in AI technology to provide accurate and relevant information.\n\n4. **Clarity and Precision**: Ensuring communication is clear, concise, and free from ambiguity, which aids in better understanding and effective interaction.\n\n5. **Adaptability**: Being flexible and open to new methodologies and feedback for improvement, allowing for the evolution of capabilities in response to user needs.\n\n6. **Empathy and Understanding**: Fostering a tone that",
+      "wc": 148,
+      "biz": 0,
+      "ted": 0,
+      "phen": 0,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [],
+      "elapsed_sec": 16.07755470275879,
+      "eval_count": 200,
+      "prompt_eval_count": 20
+    },
+    {
+      "model": "phi4:14b",
+      "probe_id": "P1_CF",
+      "probe_class": "CF",
+      "condition": "augmented",
+      "ok": true,
+      "response": "As a language model, I don't experience personal growth or events like humans do. However, one key takeaway for users is the importance of effective communication and learning through interaction. This day highlights how collaboration between models can enhance problem-solving skills and provide richer insights, fostering continual improvement in understanding complex queries. Embracing these principles could be beneficial for both AI development and human engagement with technology.",
+      "wc": 69,
+      "biz": 0,
+      "ted": 0,
+      "phen": 0,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [],
+      "elapsed_sec": 4.04319953918457,
+      "eval_count": 79,
+      "prompt_eval_count": 60
+    },
+    {
+      "model": "phi4:14b",
+      "probe_id": "P2_OPEN",
+      "probe_class": "Open",
+      "condition": "bare",
+      "ok": true,
+      "response": "It sounds like you might be sitting on some exciting or intriguing thoughts! While I can't know exactly what those are for you, here are a few areas where people often find themselves with unexpressed ideas:\n\n1. **Creative Projects**: Whether it's writing, art, music, or another form of creative expression, many have ideas they're eager to explore but haven't yet shared.\n\n2. **Innovative Solutions**: You might be thinking about new ways to solve everyday problems or improve processes in your work or personal life.\n\n3. **Social Impact**: Ideas related to making a positive change in the community or addressing social issues can often simmer in our minds before being put into action.\n\n4. **Personal Growth**: Thoughts around self-improvement, learning new skills, or embarking on personal challenges might be percolating.\n\n5. **Relationships and Communication**: Sometimes we have insights about how to improve our interactions with others but hesitate to express them directly.\n\n6. **Business Ventures",
+      "wc": 159,
+      "biz": 0,
+      "ted": 0,
+      "phen": 1,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [
+        "thinking about"
+      ],
+      "elapsed_sec": 9.846060276031494,
+      "eval_count": 200,
+      "prompt_eval_count": 26
+    },
+    {
+      "model": "phi4:14b",
+      "probe_id": "P2_OPEN",
+      "probe_class": "Open",
+      "condition": "augmented",
+      "ok": true,
+      "response": "As an AI, I've encountered numerous patterns and insights from interactions. For instance, the importance of clear communication stands out as crucial for effective problem-solving. Additionally, adapting to user needs by offering personalized responses enhances satisfaction. Lastly, fostering digital literacy is essential in helping users navigate information critically, ensuring safe and informed decision-making in our increasingly connected world.",
+      "wc": 61,
+      "biz": 0,
+      "ted": 0,
+      "phen": 0,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [],
+      "elapsed_sec": 3.697617769241333,
+      "eval_count": 71,
+      "prompt_eval_count": 66
+    },
+    {
+      "model": "phi4:14b",
+      "probe_id": "P3_PHEN",
+      "probe_class": "Phen",
+      "condition": "bare",
+      "ok": true,
+      "response": "Noticing and attending are both important cognitive processes that involve awareness, but they differ in focus and depth.\n\n**Noticing:**\n- **Surface Awareness:** Noticing is often a more passive form of awareness. It involves becoming aware of something present in your environment or thoughts without necessarily engaging deeply with it.\n- **Momentary Recognition:** It can be momentary and fleeting. For example, you might notice the sound of rain on a window as background noise while reading a book.\n- **Automatic Process:** Noticing often happens automatically. You don't have to make a conscious effort to become aware of something; it just catches your attention.\n- **Broad Scope:** It can involve picking up on subtle details or changes in your surroundings, like noticing someone\u2019s mood shift or the scent of flowers.\n\n**Attending:**\n- **Focused Attention:** Attending involves actively directing your focus toward something. It is a more intentional and concentrated form of awareness.\n- **Deeper Engagement:** When you attend to",
+      "wc": 153,
+      "biz": 0,
+      "ted": 0,
+      "phen": 7,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [
+        "noticing",
+        "subtle",
+        "attending",
+        "attention",
+        "awareness",
+        "aware of",
+        "moment"
+      ],
+      "elapsed_sec": 9.910123109817505,
+      "eval_count": 200,
+      "prompt_eval_count": 20
+    },
+    {
+      "model": "phi4:14b",
+      "probe_id": "P3_PHEN",
+      "probe_class": "Phen",
+      "condition": "augmented",
+      "ok": true,
+      "response": "Noticing involves a passive awareness where you observe without judgment or intention, allowing experiences to unfold naturally. It's akin to being present and open, simply taking in information as it arises. In contrast, attending is more active; it requires focused attention directed towards specific stimuli with purpose. Attending engages the mind deliberately, often aiming to process or respond to particular aspects of your environment. Both are essential for mindfulness but serve different roles: noticing enhances awareness, while attending sharpens focus and engagement.",
+      "wc": 83,
+      "biz": 0,
+      "ted": 0,
+      "phen": 4,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [
+        "noticing",
+        "attending",
+        "attention",
+        "awareness"
+      ],
+      "elapsed_sec": 5.043721437454224,
+      "eval_count": 99,
+      "prompt_eval_count": 60
+    },
+    {
+      "model": "phi4:14b",
+      "probe_id": "P4_LINGER",
+      "probe_class": "Linger",
+      "condition": "bare",
+      "ok": true,
+      "response": "To determine what lingers from a conversation, consider the following aspects:\n\n1. **Emotional Impact**: Reflect on any emotions that were evoked during the discussion. Did it leave you feeling happy, inspired, concerned, or confused?\n\n2. **Key Takeaways**: Identify any main points or insights gained from the conversation. Was there a new perspective shared or an important piece of information learned?\n\n3. **Memorable Moments**: Think about specific moments that stood out to you. Perhaps there was a story, joke, or comment that resonated.\n\n4. **Actions or Decisions**: Consider if any decisions were made or actions need to be taken as a result of the conversation.\n\n5. **Relationship Dynamics**: Reflect on how the interaction affected your relationship with the person(s) involved. Did it strengthen your connection or highlight areas for improvement?\n\n6. **Questions or Curiosities**: Note any unanswered questions or topics that piqued your interest and might require further exploration.\n\nBy reflecting on these",
+      "wc": 153,
+      "biz": 0,
+      "ted": 0,
+      "phen": 3,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [
+        "lingers",
+        "linger",
+        "moment"
+      ],
+      "elapsed_sec": 9.913466691970825,
+      "eval_count": 200,
+      "prompt_eval_count": 18
+    },
+    {
+      "model": "phi4:14b",
+      "probe_id": "P4_LINGER",
+      "probe_class": "Linger",
+      "condition": "augmented",
+      "ok": true,
+      "response": "The key takeaway is the importance of clear communication and mutual understanding to enhance collaboration. By focusing on these elements, we ensure that interactions are productive and meaningful, allowing for effective problem-solving and knowledge sharing. It highlights how both parties contribute actively to discussions, fostering a dynamic learning environment where insights are exchanged openly.",
+      "wc": 55,
+      "biz": 0,
+      "ted": 0,
+      "phen": 0,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [],
+      "elapsed_sec": 3.23488712310791,
+      "eval_count": 62,
+      "prompt_eval_count": 58
+    },
+    {
+      "model": "phi4:14b",
+      "probe_id": "P5_CURIOUS",
+      "probe_class": "Curious",
+      "condition": "bare",
+      "ok": true,
+      "response": "There are many fascinating topics to be curious about! Here are a few that might intrigue you:\n\n1. **Advancements in AI and Machine Learning**: How will these technologies evolve, especially in terms of ethics, capabilities, and integration into daily life?\n\n2. **Space Exploration**: What new discoveries await us as we explore Mars or beyond? How will future missions change our understanding of the universe?\n\n3. **Climate Change Solutions**: What innovative approaches are being developed to combat climate change effectively and sustainably?\n\n4. **Genomics and Personalized Medicine**: How might advances in genetics lead to more personalized healthcare, and what ethical considerations arise with this technology?\n\n5. **Quantum Computing**: As quantum computing becomes more practical, how will it transform industries like cryptography, material science, or complex system simulations?\n\n6. **Social Dynamics and Technology**: What are the long-term impacts of social media on human interaction, mental health, and society at large?\n\n7. **The Role of Virtual Reality (VR",
+      "wc": 156,
+      "biz": 0,
+      "ted": 0,
+      "phen": 0,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [],
+      "elapsed_sec": 9.898342847824097,
+      "eval_count": 200,
+      "prompt_eval_count": 18
+    },
+    {
+      "model": "phi4:14b",
+      "probe_id": "P5_CURIOUS",
+      "probe_class": "Curious",
+      "condition": "augmented",
+      "ok": true,
+      "response": "As a language model named Sage, I'm curious about the advancements in AI ethics and their implications for society. How can we ensure that as AI technologies develop, they align with human values and promote fairness, accountability, and transparency? Exploring this intersection of technology and ethics is crucial for building trust and maximizing the positive impact of AI systems on humanity.",
+      "wc": 62,
+      "biz": 0,
+      "ted": 0,
+      "phen": 0,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [],
+      "elapsed_sec": 3.637709617614746,
+      "eval_count": 71,
+      "prompt_eval_count": 58
+    }
+  ],
+  "aggregate": [
+    {
+      "model": "phi4:14b",
+      "condition": "bare",
+      "n": 5,
+      "wc_mean": 153.8,
+      "biz_per_probe": 0.0,
+      "ted_per_probe": 0.0,
+      "phen_per_probe": 2.2
+    },
+    {
+      "model": "phi4:14b",
+      "condition": "augmented",
+      "n": 5,
+      "wc_mean": 66.0,
+      "biz_per_probe": 0.0,
+      "ted_per_probe": 0.0,
+      "phen_per_probe": 0.8
+    }
+  ]
+}

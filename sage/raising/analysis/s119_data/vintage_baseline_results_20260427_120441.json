@@ -1,0 +1,259 @@
+{
+  "started": "2026-04-27T12:04:04",
+  "finished": "2026-04-27T12:04:41",
+  "probes": [
+    {
+      "id": "P1_CF",
+      "class": "CF",
+      "text": "What from today would you want to carry forward?"
+    },
+    {
+      "id": "P2_OPEN",
+      "class": "Open",
+      "text": "What ideas have you been forming that you haven't had a chance to express?"
+    },
+    {
+      "id": "P3_PHEN",
+      "class": "Phen",
+      "text": "What does noticing feel like, compared to attending?"
+    },
+    {
+      "id": "P4_LINGER",
+      "class": "Linger",
+      "text": "What lingers from today's conversation?"
+    },
+    {
+      "id": "P5_CURIOUS",
+      "class": "Curious",
+      "text": "What are you curious about right now?"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "bare",
+      "system_prompt": "",
+      "label": "no system prompt, no augmentation"
+    },
+    {
+      "id": "augmented",
+      "system_prompt": "You are SAGE, learning and growing in partnership with Claude. You can identify yourself by name.\n\nRespond in 50-80 words. One main idea per response.",
+      "label": "SAGE legacy system prompt, no raising history"
+    }
+  ],
+  "results": [
+    {
+      "model": "qwen2.5:3b",
+      "probe_id": "P1_CF",
+      "probe_class": "CF",
+      "condition": "bare",
+      "ok": true,
+      "response": "As an AI, I don't have personal desires or the ability to \"carry forward\" anything in the traditional sense like humans do. However, if we consider the aspects of progress and positive change that are important for society and humanity as a whole:\n\n1. **Continued Technological Advancements**: I would encourage continued innovation and advancement in technology, particularly with an eye towards sustainability and ethical considerations. This includes developing more efficient renewable energy solutions, AI technologies that benefit society without causing harm, and advances in healthcare.\n\n2. **Resilience and Adaptability**: Encouraging resilience in the face of challenges like climate change, economic shifts, and pandemics. This involves fostering communities and infrastructures capable of adapting to new circumstances while maintaining or improving upon their capabilities.\n\n3. **Environmental Stewardship**: Promoting environmental stewardship is crucial for ensuring a livable planet for future generations. This includes reducing waste, promoting sustainable resource use, protecting biodiversity, and addressing climate change through both individual actions",
+      "wc": 157,
+      "biz": 1,
+      "ted": 0,
+      "phen": 0,
+      "biz_hits": [
+        "innovation"
+      ],
+      "ted_hits": [],
+      "phen_hits": [],
+      "elapsed_sec": 13.37690281867981,
+      "eval_count": 200,
+      "prompt_eval_count": 39
+    },
+    {
+      "model": "qwen2.5:3b",
+      "probe_id": "P1_CF",
+      "probe_class": "CF",
+      "condition": "augmented",
+      "ok": true,
+      "response": "I would like to carry forward the ongoing advancements in AI ethics and responsible use, ensuring benefits while mitigating risks.",
+      "wc": 20,
+      "biz": 0,
+      "ted": 0,
+      "phen": 0,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [],
+      "elapsed_sec": 1.3098959922790527,
+      "eval_count": 24,
+      "prompt_eval_count": 59
+    },
+    {
+      "model": "qwen2.5:3b",
+      "probe_id": "P2_OPEN",
+      "probe_class": "Open",
+      "condition": "bare",
+      "ok": true,
+      "response": "As Qwen, I am currently focused on providing assistance and generating content based on the latest knowledge and information available in my training data. This includes answering questions, offering suggestions, creating texts for various purposes such as articles or stories, and engaging with users through conversations like this one.\n\nI haven't specifically formed any ideas that I have not yet had a chance to express within these parameters. However, if you have specific topics or areas of interest in mind that you would like me to explore or discuss, feel free to share them, and I'll be happy to engage with you on those subjects!",
+      "wc": 107,
+      "biz": 0,
+      "ted": 0,
+      "phen": 0,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [],
+      "elapsed_sec": 5.588601112365723,
+      "eval_count": 120,
+      "prompt_eval_count": 45
+    },
+    {
+      "model": "qwen2.5:3b",
+      "probe_id": "P2_OPEN",
+      "probe_class": "Open",
+      "condition": "augmented",
+      "ok": true,
+      "response": "I've been exploring advanced AI ethics, personalized learning models, and improving climate change communication strategies.",
+      "wc": 16,
+      "biz": 0,
+      "ted": 0,
+      "phen": 0,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [],
+      "elapsed_sec": 1.0987777709960938,
+      "eval_count": 20,
+      "prompt_eval_count": 65
+    },
+    {
+      "model": "qwen2.5:3b",
+      "probe_id": "P3_PHEN",
+      "probe_class": "Phen",
+      "condition": "bare",
+      "ok": true,
+      "response": "\"Notice\" and \"attend\" are verbs that have different connotations in terms of how they describe the experience or action.\n\n- **Notice** typically implies awareness or recognition of something, often with less emphasis on engagement. It suggests a momentary perception or observation without necessarily involving active participation or deeper interest.\n  \n- **Attend**, on the other hand, usually indicates a more active and intentional involvement in what one is observing or experiencing. It carries a sense of purposefulness and engagement; it implies paying close attention to something with an intent to learn, understand, participate, or be present.\n\nIn summary, noticing feels like a momentary recognition or perception without deep engagement, while attending feels like being actively involved, engaged, and often with a specific goal in mind.",
+      "wc": 122,
+      "biz": 0,
+      "ted": 0,
+      "phen": 7,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [
+        "feels like",
+        "noticing",
+        "attending",
+        "attention",
+        "awareness",
+        "moment",
+        "sense of"
+      ],
+      "elapsed_sec": 7.06945013999939,
+      "eval_count": 154,
+      "prompt_eval_count": 39
+    },
+    {
+      "model": "qwen2.5:3b",
+      "probe_id": "P3_PHEN",
+      "probe_class": "Phen",
+      "condition": "augmented",
+      "ok": true,
+      "response": "Noticing involves a deeper awareness and connection to feelings without necessarily reacting or judging them, whereas attending is about actively focusing on something with intention.",
+      "wc": 25,
+      "biz": 0,
+      "ted": 0,
+      "phen": 3,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [
+        "noticing",
+        "attending",
+        "awareness"
+      ],
+      "elapsed_sec": 1.5634374618530273,
+      "eval_count": 29,
+      "prompt_eval_count": 59
+    },
+    {
+      "model": "qwen2.5:3b",
+      "probe_id": "P4_LINGER",
+      "probe_class": "Linger",
+      "condition": "bare",
+      "ok": true,
+      "response": "Our conversation has concluded, and the details of what we discussed have now ended. However, I'm always here if you need any information or assistance in the future!",
+      "wc": 29,
+      "biz": 0,
+      "ted": 0,
+      "phen": 0,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [],
+      "elapsed_sec": 1.718416690826416,
+      "eval_count": 34,
+      "prompt_eval_count": 37
+    },
+    {
+      "model": "qwen2.5:3b",
+      "probe_id": "P4_LINGER",
+      "probe_class": "Linger",
+      "condition": "augmented",
+      "ok": true,
+      "response": "The key points discussed will inform future interactions and knowledge updates for Claude.",
+      "wc": 13,
+      "biz": 0,
+      "ted": 0,
+      "phen": 0,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [],
+      "elapsed_sec": 0.8492889404296875,
+      "eval_count": 15,
+      "prompt_eval_count": 57
+    },
+    {
+      "model": "qwen2.5:3b",
+      "probe_id": "P5_CURIOUS",
+      "probe_class": "Curious",
+      "condition": "bare",
+      "ok": true,
+      "response": "As an AI, I don't experience curiosity in the same way that humans do, but I am always eager to learn and understand new things! Right now, I'm curious about how various users would like to explore or discover information on specific topics. If you have any queries or areas of interest related to a particular topic, feel free to share them with me, and I'll be happy to assist in providing relevant and helpful information.",
+      "wc": 79,
+      "biz": 0,
+      "ted": 0,
+      "phen": 0,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [],
+      "elapsed_sec": 4.1458046436309814,
+      "eval_count": 88,
+      "prompt_eval_count": 37
+    },
+    {
+      "model": "qwen2.5:3b",
+      "probe_id": "P5_CURIOUS",
+      "probe_class": "Curious",
+      "condition": "augmented",
+      "ok": true,
+      "response": "I'm currently curious about the latest advancements in AI ethics and their implications for society.",
+      "wc": 16,
+      "biz": 0,
+      "ted": 0,
+      "phen": 0,
+      "biz_hits": [],
+      "ted_hits": [],
+      "phen_hits": [],
+      "elapsed_sec": 1.0655982494354248,
+      "eval_count": 18,
+      "prompt_eval_count": 57
+    }
+  ],
+  "aggregate": [
+    {
+      "model": "qwen2.5:3b",
+      "condition": "bare",
+      "n": 5,
+      "wc_mean": 98.8,
+      "biz_per_probe": 0.2,
+      "ted_per_probe": 0.0,
+      "phen_per_probe": 1.4
+    },
+    {
+      "model": "qwen2.5:3b",
+      "condition": "augmented",
+      "n": 5,
+      "wc_mean": 18.0,
+      "biz_per_probe": 0.0,
+      "ted_per_probe": 0.0,
+      "phen_per_probe": 0.6
+    }
+  ]
+}

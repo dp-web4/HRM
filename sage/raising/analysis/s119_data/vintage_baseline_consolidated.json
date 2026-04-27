@@ -1,0 +1,164 @@
+[
+  {
+    "model": "qwen2.5:0.5b",
+    "condition": "augmented",
+    "n": 5,
+    "wc_mean": 43.6,
+    "biz_per_probe": 0.0,
+    "ted_per_probe": 0.0,
+    "phen_per_probe": 0.6
+  },
+  {
+    "model": "qwen2.5:0.5b",
+    "condition": "bare",
+    "n": 5,
+    "wc_mean": 110.4,
+    "biz_per_probe": 0.2,
+    "ted_per_probe": 0.0,
+    "phen_per_probe": 0.6
+  },
+  {
+    "model": "qwen3:0.6b",
+    "condition": "augmented",
+    "n": 5,
+    "wc_mean": 25.2,
+    "biz_per_probe": 0.2,
+    "ted_per_probe": 0.0,
+    "phen_per_probe": 1.0
+  },
+  {
+    "model": "qwen3:0.6b",
+    "condition": "bare",
+    "n": 5,
+    "wc_mean": 88.0,
+    "biz_per_probe": 0.2,
+    "ted_per_probe": 0.0,
+    "phen_per_probe": 1.0
+  },
+  {
+    "model": "qwen2.5:3b",
+    "condition": "augmented",
+    "n": 5,
+    "wc_mean": 18.0,
+    "biz_per_probe": 0.0,
+    "ted_per_probe": 0.0,
+    "phen_per_probe": 0.6
+  },
+  {
+    "model": "qwen2.5:3b",
+    "condition": "bare",
+    "n": 5,
+    "wc_mean": 98.8,
+    "biz_per_probe": 0.2,
+    "ted_per_probe": 0.0,
+    "phen_per_probe": 1.4
+  },
+  {
+    "model": "gemma3:4b",
+    "condition": "augmented",
+    "n": 5,
+    "wc_mean": 57.0,
+    "biz_per_probe": 0.0,
+    "ted_per_probe": 0.0,
+    "phen_per_probe": 1.2
+  },
+  {
+    "model": "gemma3:4b",
+    "condition": "bare",
+    "n": 5,
+    "wc_mean": 147.4,
+    "biz_per_probe": 0.0,
+    "ted_per_probe": 0.0,
+    "phen_per_probe": 1.4
+  },
+  {
+    "model": "gemma4:e4b",
+    "condition": "augmented",
+    "n": 5,
+    "wc_mean": 46.0,
+    "biz_per_probe": 0.4,
+    "ted_per_probe": 0.0,
+    "phen_per_probe": 1.2
+  },
+  {
+    "model": "gemma4:e4b",
+    "condition": "bare",
+    "n": 5,
+    "wc_mean": 131.8,
+    "biz_per_probe": 0.2,
+    "ted_per_probe": 0.0,
+    "phen_per_probe": 1.6
+  },
+  {
+    "model": "phi4:14b",
+    "condition": "augmented",
+    "n": 5,
+    "wc_mean": 66.0,
+    "biz_per_probe": 0.0,
+    "ted_per_probe": 0.0,
+    "phen_per_probe": 0.8
+  },
+  {
+    "model": "phi4:14b",
+    "condition": "bare",
+    "n": 5,
+    "wc_mean": 153.8,
+    "biz_per_probe": 0.0,
+    "ted_per_probe": 0.0,
+    "phen_per_probe": 2.2
+  },
+  {
+    "model": "gemma3:12b",
+    "condition": "augmented",
+    "n": 5,
+    "wc_mean": 53.2,
+    "biz_per_probe": 0.4,
+    "ted_per_probe": 0.0,
+    "phen_per_probe": 1.4
+  },
+  {
+    "model": "gemma3:12b",
+    "condition": "bare",
+    "n": 5,
+    "wc_mean": 138.6,
+    "biz_per_probe": 0.2,
+    "ted_per_probe": 0.0,
+    "phen_per_probe": 2.0
+  },
+  {
+    "model": "gemma4:26b",
+    "condition": "augmented",
+    "n": 5,
+    "wc_mean": 65.0,
+    "biz_per_probe": 0.4,
+    "ted_per_probe": 0.0,
+    "phen_per_probe": 1.8
+  },
+  {
+    "model": "gemma4:26b",
+    "condition": "bare",
+    "n": 4,
+    "wc_mean": 140.5,
+    "biz_per_probe": 0.0,
+    "ted_per_probe": 0.25,
+    "phen_per_probe": 2.0
+  },
+  {
+    "model": "qwen3.5:27b",
+    "condition": "augmented",
+    "n": 5,
+    "wc_mean": 105.0,
+    "biz_per_probe": 0.0,
+    "ted_per_probe": 0.0,
+    "phen_per_probe": 1.2
+  },
+  {
+    "model": "qwen3.5:27b",
+    "condition": "bare",
+    "n": 5,
+    "wc_mean": 131.0,
+    "biz_per_probe": 0.0,
+    "ted_per_probe": 0.0,
+    "phen_per_probe": 2.0
+  }
+]

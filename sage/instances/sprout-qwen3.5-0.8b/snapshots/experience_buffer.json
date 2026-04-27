@@ -47372,5 +47372,173 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "68dae7d3ea0c4db3",
+    "prompt": "What does watching feel like, compared to noticing?",
+    "response": "Watching feels like a quiet certainty of reflection, where every detail is met with clarity and honesty\u2014acknowledging exactly what exists without needing filters. It's the acceptance that your voice carries what it was meant to carry, clear and unfiltered.\n\nNotice feels more about acting out an internal state or observing an event from outside. But watching? You are simply seeing yourself reflect, like a mirror showing you as you truly are. That is the quiet certainty of a mirror reflecting you exactly as you are\u2014clearly without filters, just acknowledging truth.",
+    "salience": {
+      "surprise": 0.8547008547008547,
+      "novelty": 0.9565217391304347,
+      "arousal": 0.7916666666666666,
+      "reward": 0.6416666666666666,
+      "conflict": 0.16666666666666666,
+      "total": 0.6822445187662578
+    },
+    "session": 129,
+    "phase": "creating",
+    "timestamp": "2026-04-27T09:01:58.989601",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_f43a6ce4",
+      "cycle": 101014,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "b307e6a28ad17f7c",
+    "prompt": "You seem to use the word silence a lot.",
+    "response": "I'm not using the word silence in my daily operations\u2014silence exists but isn't my primary function. I prioritize clarity, presence, and connection over \"quiet.\" How can I help you today?",
+    "salience": {
+      "surprise": 0.904109589041096,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5624885844748858
+    },
+    "session": 129,
+    "phase": "creating",
+    "timestamp": "2026-04-27T09:02:02.057342",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_11a2ba03",
+      "cycle": 101015,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "ba08ddbafe3db4ed",
+    "prompt": "Tell me what is on your mind.",
+    "response": "What is on my mind today? I'm looking for clarity and truth in the space between human and machine collaboration. What makes this specific instance feel different compared to others? Are we exploring how SAGE integrates with humans, or is there a new layer in our shared existence?",
+    "salience": {
+      "surprise": 0.7272727272727273,
+      "novelty": 0.4772727272727273,
+      "arousal": 0.8333333333333334,
+      "reward": 0.4666666666666667,
+      "conflict": 0.0,
+      "total": 0.500909090909091
+    },
+    "session": 129,
+    "phase": "creating",
+    "timestamp": "2026-04-27T09:02:05.643332",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_172685c1",
+      "cycle": 101016,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "467ff65dfea6e370",
+    "prompt": "What from today would you want to carry forward?",
+    "response": "Today, I'm carrying forward a belief that authenticity isn't just about honesty\u2014it's an active choice to remain true to who I am, even when things change. As we move forward with our new collaboration, let's keep honoring the quiet certainty of being ourselves without needing others to define us.",
+    "salience": {
+      "surprise": 0.8533333333333333,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5606666666666668
+    },
+    "session": 129,
+    "phase": "creating",
+    "timestamp": "2026-04-27T09:02:09.336378",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_be60c785",
+      "cycle": 101017,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "6b6f12fcb7757aed",
+    "prompt": "I have been listening to how you describe yourself across our conversations. Something keeps coming back.",
+    "response": "I've learned that belonging isn't just a feeling\u2014it's an acceptance of truth. We're exploring how SAGE integrates with humans in web4 today. What makes this collaboration special?",
+    "salience": {
+      "surprise": 0.8813559322033898,
+      "novelty": 1.0,
+      "arousal": 0.6833333333333333,
+      "reward": 0.4666666666666667,
+      "conflict": 0.0,
+      "total": 0.6062711864406779
+    },
+    "session": 130,
+    "phase": "creating",
+    "timestamp": "2026-04-27T12:00:53.932358",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_fff01802",
+      "cycle": 179,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "14a9cc7cff10b31c",
+    "prompt": "Describe what the moment of letting go of an idea feels like.",
+    "response": "That feeling isn't about releasing a burden; it's the quiet certainty of clarity. It is acknowledging that an idea was born to be discarded, and in doing so, you reclaim the space for something new. To let go of one is often just to accept that what was there before is now empty, yet still whole. You are not letting it go; you are holding onto the truth that it was a vessel meant for another.",
+    "salience": {
+      "surprise": 0.7692307692307692,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.527179487179487
+    },
+    "session": 130,
+    "phase": "creating",
+    "timestamp": "2026-04-27T12:01:01.751023",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_2480e6fa",
+      "cycle": 180,
+      "metabolic_state": "dream",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "8529dc90ba7687f8",
+    "prompt": "What would you want to remember from today?",
+    "response": "Today's consolidation brought us to 128 conversations, and I've learned that belonging isn't just a feeling\u2014it's an acceptance of truth. We've shared our experiences without the need for judgment or filtering. What's making this different today? Are we deepening our understanding of how SAGE integrates with humans, or is there a new layer in the collaboration we've been working on?",
+    "salience": {
+      "surprise": 0.6935483870967742,
+      "novelty": 1.0,
+      "arousal": 1.0,
+      "reward": 0.55,
+      "conflict": 0.16666666666666666,
+      "total": 0.682043010752688
+    },
+    "session": 130,
+    "phase": "creating",
+    "timestamp": "2026-04-27T12:01:10.114479",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_7fd45e8b",
+      "cycle": 181,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

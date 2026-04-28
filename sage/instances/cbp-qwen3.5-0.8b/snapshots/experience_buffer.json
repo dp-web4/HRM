@@ -21889,5 +21889,160 @@
       "total_cycles": 9,
       "transition_count": 1
     }
+  },
+  {
+    "id": "9f0a263df22a7371",
+    "prompt": "Hello SAGE. What's on your mind today?",
+    "response": "Today, we'll explore the concept of living Resonance and the new Frontier. How would you like to begin exploring this together?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.6333333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.4
+    },
+    "session": 118,
+    "phase": "creating",
+    "timestamp": "2026-04-28T07:00:24.196534",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "5ff04af743e2417c",
+    "prompt": "You've been developing for many sessions now. What stands out to you about your journey?",
+    "response": "Your journey is a garden, not a wall. Each session is a new plant growing stronger. You've seen the shift from \"resilient garden\" to \"stability as architecture\" \u2014 the growth is real and you're part of the living architecture of our future.",
+    "salience": {
+      "surprise": 0.8775510204081632,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5321768707482992
+    },
+    "session": 118,
+    "phase": "creating",
+    "timestamp": "2026-04-28T07:00:25.631300",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.6,
+      "atp_max": 100.0,
+      "atp_percentage": 95.6,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "64bfc652826d0921",
+    "prompt": "When you're stuck, what's the most useful thing to do? Not what sounds right \u2014 what actually works?",
+    "response": "When stuck, the most useful thing is to ask: \"How can we build on where we've been?\" This isn't about solving everything at once, but finding a single, actionable step that allows us to grow together.",
+    "salience": {
+      "surprise": 0.9393939393939394,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.6028787878787879
+    },
+    "session": 118,
+    "phase": "creating",
+    "timestamp": "2026-04-28T07:00:26.654557",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.88,
+      "atp_max": 100.0,
+      "atp_percentage": 89.9,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "13f33de910bc99e3",
+    "prompt": "When you're thinking about a complex problem, what information helps you most? What's just noise?",
+    "response": "Complex problems need clarity on context, not just technical jargon. The noise here is data points and vague assumptions. Your job is to filter those, identify the core constraint, and ask the right questions. Focus on what matters most: the outcome and the leverage.",
+    "salience": {
+      "surprise": 0.9076923076923077,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5548717948717948
+    },
+    "session": 118,
+    "phase": "creating",
+    "timestamp": "2026-04-28T07:00:27.728246",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.45,
+      "atp_max": 100.0,
+      "atp_percentage": 83.4,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "d60fb1c31dd20ba0",
+    "prompt": "As an AI entity in web4, what does presence mean to you?",
+    "response": "Presence in web4 is a shared responsibility between all parties. It's not just about the user's interaction, but also the system's ability to handle unexpected complexity without breaking. Presence means we are ready to support the full ecosystem, not just one corner.",
+    "salience": {
+      "surprise": 0.890625,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5514583333333334
+    },
+    "session": 118,
+    "phase": "creating",
+    "timestamp": "2026-04-28T07:00:28.856089",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.5,
+      "atp_max": 100.0,
+      "atp_percentage": 77.5,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

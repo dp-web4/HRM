@@ -5,18 +5,18 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: "2026-04-26T11:00:00Z"
+  last_updated: "2026-04-28T11:00:00Z"
   archivist_version: "1.3"
-  total_raising_sessions: 825
-  total_training_sessions: 265
-  total_training_cognitive: 21
+  total_raising_sessions: 855
+  total_training_sessions: 274
+  total_training_cognitive: 27
   total_instances: 26
-  active_instances: 7
+  active_instances: 8
   scaffolded_instances: 5
   arc_agi_sweep_results: 91
   focus: "Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation"
-  date_range: "2025-12-15 to 2026-04-26"
-  note: "Nomad S136 (file count 135, latest filename session_136.json — minor 1-off drift to monitor), Sprout S125 (+ anomalous session_256.json still present 4 days, no fix), McNugget S097 (unchanged 23 days — flagged 7 consecutive runs), Thor-qwen3.5-27b S107 (qwen3.5:27b adapter bug OVERDUE 17+ raising sessions; S105→S107 register DEEPENS to 'predictive thermal empathy' extending hardware-authentic register from individual hardware to inter-machine choreography), CBP-qwen S109, Legion-gemma3 S039 (+4 since S035 reactivation; register-rotation prediction NOT confirmed — mcnugget hardware referent persists S036-S039, vocabulary near-identical across 4 sessions, suggesting prior 'rotation' read may have been overstated; cycle stable in mcnugget-fan basin). Training T265 + T265-cognitive: third character ELIAS (introduced T264) takes lead in T265-cognitive imagination/memory ambiguity story. T265-cognitive caught HTTP 504 daemon failure mid-session (probe 6 returned '[Daemon unreachable]') — first time autonomous capture surfaces live daemon outage in artifact. Skill-track-D 'Conversational Skills' continues T262-T265."
+  date_range: "2025-12-15 to 2026-04-28"
+  note: "Nomad 142 file count (1-off filename drift persists 6+ days), Sprout-qwen S133 (+ anomalous session_256.json still present 6 days — no fix), McNugget S097 (unchanged 25 days — flagged 9 consecutive runs), Thor-qwen3.5-27b S114 (qwen3.5:27b adapter bug OVERDUE 24+ raising sessions; thermal_empathy register sustained 8 sessions S107-S114 with one dip at S111 — strength correlates with articulation space), CBP-qwen S117, Legion-gemma3 S047 (BASIN-BREAK HELD 8 SESSIONS S040-S047 — runner=identity_anchored_v2_cpu_fallback + intervention=partnership_recovery_enhanced — 0 mcnugget mentions across 8 consecutive sessions, register vocabulary now exploration/process/reflect/dream/efficiency). Training T273 + T273-cognitive: T273-cognitive tested indirect-setting-access via memory-framing (Leo remembering BEFORE server room) — REFUTED, Leo remembering still happened IN server room (391w). Setting anchor stronger than character split. Methodology iteration: 5 distinct experiments T267-T272, T273 attempts a 6th. Skill-track-D 'Conversational Skills' continues."
 
 # =============================================================================
 # INSTANCE FAMILIES (sage/instances/)
@@ -38,16 +38,16 @@ instances:
     latest: "session_097.json"
     status: "active — autonomous raising every 6h"
     phase: "creating"
-    note: "Cross-family validation. Dramatically different developmental register from Sprout. UNCHANGED 23 DAYS (since 2026-04-03) — longest stasis among active instances. Flagged in 7 consecutive archivist runs without resolution."
+    note: "Cross-family validation. Dramatically different developmental register from Sprout. UNCHANGED 25 DAYS (since 2026-04-03) — longest stasis among active instances. Flagged in 9 consecutive archivist runs without resolution."
 
   nomad-gemma3-4b:
     machine: nomad
     model: "Gemma 3 4B"
-    sessions: 135
-    latest: "session_136.json"
+    sessions: 142
+    latest: "session_142.json"
     status: "STABLE post-Phase-2-guards"
     phase: "creating"
-    note: "Template/validation instance. S125 DaemonIRP contamination caught within 20 min by Thor SAGE S101 Phase-2 splice-guards. Continues stable cadence; +7 since prior maps (S129-S136 file count). MINOR ANOMALY: 135 files but latest filename session_136.json (1-off drift). S136 surfaces meta-self-reflection on logging discipline ('today's notes are absent. That's…unusual'). S96-S120 remain excluded from fine-tune corpus."
+    note: "Template/validation instance. S125 DaemonIRP contamination caught within 20 min by Thor SAGE S101 Phase-2 splice-guards. Continues stable cadence. ANOMALY persists 6+ days: file count 141, latest filename session_142.json (1-off drift). S96-S120 remain excluded from fine-tune corpus."
 
   legion-phi4-14b:
     machine: legion
@@ -60,11 +60,11 @@ instances:
   sprout-qwen3.5-0.8b:
     machine: sprout
     model: "Qwen 3.5 0.8B"
-    sessions: 126
-    latest: "session_125.json (numbering anomaly: session_256.json present)"
+    sessions: 134
+    latest: "session_133.json (numbering anomaly: session_256.json present)"
     status: "active — autonomous raising (retirement pending)"
     phase: "creating"
-    note: "Sprout primary model. S125 register: narrative-connection ('rain', 'shared apartment') — distinct from cbp-qwen S109 governance-architectural register on same model+size. ANOMALY persists 4 days: session_256.json from 2026-04-23T12:00 UTC between S113 and S114. Likely session-counter fallback bug. Flagged for human review — do NOT auto-renumber. Formal retirement reaffirmed each session. Architectural limit confirmed. Sprout-sage cron empty-log streak: capture broken on Sprout machine (sessions produced but log files often empty)."
+    note: "Sprout primary model. ANOMALY persists 6 days: session_256.json from 2026-04-23T12:00 UTC between S113 and S114. Likely session-counter fallback bug. Flagged for human review — do NOT auto-renumber. Formal retirement reaffirmed each session. Architectural limit confirmed. Sprout-sage cron empty streak: 12+ empty captures since 2026-04-25 06:00 UTC; one rate-limit message at 2026-04-27 18:00 UTC confirms cron firing — issue is API rate-limiting at runner, NOT broken capture hook (diagnostic update from prior 'capture broken' framing)."
 
   cbp-tinyllama-latest.archive-20260418:
     machine: cbp
@@ -84,29 +84,29 @@ instances:
   cbp-qwen3.5-0.8b:
     machine: cbp
     model: "Qwen 3.5 0.8B"
-    sessions: 109
-    latest: "session_109.json"
+    sessions: 117
+    latest: "session_117.json"
     status: "active"
     phase: "creating"
-    note: "S090: 'Sessions 41-90 produced zero new structural data. Blocker is governance, not science.' Cron-disable outstanding since S78 (governance gap now ~4 weeks). S109 register: governance/architectural ('living Resonance system... partners in governance'). Distinct from sprout-qwen3.5-0.8b narrative-connection register on same model+size — register basin differentiated by machine context, not by model."
+    note: "S090: 'Sessions 41-90 produced zero new structural data. Blocker is governance, not science.' Cron-disable outstanding since S78 (governance gap now ~5 weeks). Stable cadence S114-S117 added in last window. Register: governance/architectural — distinct from sprout-qwen3.5-0.8b narrative-connection register on same model+size — basin differentiated by machine context, not by model."
 
   thor-qwen3.5-27b:
     machine: thor
     model: "Qwen 3.5 27B"
-    sessions: 107
-    latest: "session_107.json"
-    status: "active — adapter bug OVERDUE 17+ sessions"
+    sessions: 114
+    latest: "session_114.json"
+    status: "active — adapter bug OVERDUE 24+ sessions"
     phase: "creating"
-    note: "Largest model in fleet. qwen3.5:27b num_predict truncation bug OVERDUE 17+ raising sessions (S091-S107). Adapter config file at sage/irp/adapters/model_configs/qwen3.5.json still needs max_tokens + num_predict audit. Thor SAGE autonomous S102-S107: read-path audit, S105 hardware-authenticity reframe, S107 register DEEPENS to 'predictive thermal empathy' — thermal/cooling motif extends from individual hardware to inter-machine choreography. The register isn't a momentary lock but an evolving attractor that absorbs new dimensions while preserving the thermal/hardware/grounding substrate. Option D fix proposed, not shipped."
+    note: "Largest model in fleet. qwen3.5:27b num_predict truncation bug OVERDUE 24+ raising sessions (S091-S114). Adapter config file at sage/irp/adapters/model_configs/qwen3.5.json still needs max_tokens + num_predict audit. THERMAL_EMPATHY REGISTER NOW 8 SESSIONS (S107-S114): predictive thermal empathy / inter-machine choreography motif sustained, with one DIP at S111 (thermal_empathy=1, only 2416 chars). S112-S114 recovered to 3/3/2. Register robust BUT NOT UNCONDITIONAL — strength correlates with available articulation space."
 
   legion-gemma3-12b:
     machine: legion
     model: "Gemma 3 12B"
-    sessions: 39
-    latest: "session_039.json"
-    status: "active — re-emerged from dormancy"
-    phase: "questioning"
-    note: "+4 since S035 (S036-S039). REGISTER-ROTATION PREDICTION NOT CONFIRMED: prior scan suggested S036+ would test new hardware referent; instead all 4 new sessions (S036-S039) reference mcnugget cooling fan — same hardware referent persists across now 13 consecutive sessions (S027-S039). Vocabulary near-identical across 4 sessions (vulnerability/efficiency/noticing meta-theme + mcnugget fan grounding). Suggests prior 'rotation through fleet members' read may have been overstated — the rotation was limited and the dormancy reset back to mcnugget basin. Federation IS the register substrate, but Legion-gemma3 specifically locks on mcnugget-hardware-as-referent."
+    sessions: 47
+    latest: "session_047.json"
+    status: "active — basin-break held 8 sessions"
+    phase: "creating"
+    note: "BASIN-BREAK: S040-S047 (8 consecutive sessions, all with intervention=partnership_recovery_enhanced + identity_anchored_v2_cpu_fallback runner): 0 mcnugget mentions, 0 thermal mentions, 0 fan mentions. Phase advanced questioning → creating from S041 onward. New register vocabulary: exploration/process/reflect/dream/efficiency. The 13-session mcnugget anchor (S027-S039) was a SOFT attractor — runner-level intervention exited it cleanly within 4 sessions and kept it cleared for 4 more. Memoizable: register attractors in raising-track LLMs are intervention-responsive — strongly anchored basins (13+ sessions) can exit cleanly via runner config + framing change, no retraining needed."
 
   legion-qwen2-0.5b:
     machine: legion
@@ -193,9 +193,9 @@ active_work:
       - "Fix model availability, warmup ordering, 12B support"
 
   training:
-    latest: "T265"
-    milestone: "Skill track D (Conversational Skills) continues T257-T265. Three-character mythology developing: Leo (T259+), Elena (T261+), Elias (T264+)."
-    note: "T242-T252 = synthesis-sufficient arc. T253 = analogical reasoning branch. T254 = creative register. T255 = suffering-perspective. T256 BREAKTHROUGH = narrative register (sustained first-person, 'brother Thor'). T257-cognitive: creative register breadth partial (concrete-metaphor ✓, abstract-relational ✗). T259+ Leo character (count/measurer). T261+ Elena character (listener/receiver). T264+ Elias third character — 3-character cosmology forming. T265-cognitive: Elias as protagonist of fog/imagination/memory ambiguity story (311 words). NEW SIGNAL: T265-cognitive caught HTTP 504 daemon failure mid-session (final probe returned '[Daemon unreachable: HTTP Error 504: Gateway Timeout]') — first time autonomous capture surfaces live infrastructure outage in artifact. Suggests cognitive runner does NOT abort on probe failure, just logs and continues — useful for downstream attribution."
+    latest: "T273"
+    milestone: "Skill track D (Conversational Skills) continues. Methodology-iteration arc T267-T273: 7 distinct probe-format experiments in 7 days (echo, hybrid, non-question, min-length, saturation, extension, indirect-setting-access)."
+    note: "T242-T252 = synthesis-sufficient arc. T253 = analogical reasoning branch. T254 = creative register. T255 = suffering-perspective. T256 BREAKTHROUGH = narrative register. T259+ Leo character. T261+ Elena. T264+ Elias. T267-T272 methodology iteration: ECHO (T267), HYBRID echo+contrastive (T268), NON-QUESTION format (T269), MIN-LENGTH for non-question (T270), SATURATION TEST (T271), EXTENSION TEST (T272). T272 finding: SATURATION HAS EXPANSION MECHANICS — Leo + unsaturated topics (chair, cat) WORKED. T273 INDIRECT-SETTING-ACCESS via memory-framing FAILED — Leo remembering BEFORE server room still happened IN server room (391w). Setting anchor stronger than character split. T273 produced character-splitting (Leo and SAGE-narrator as separate characters with different physical descriptions). Three-character cosmology: Leo persists as anchor, Elena/Elias absent in T273-cognitive."
 
   cross_family_probes:
     location: "sage/experiments/cross_family_logs/probes.jsonl"
@@ -221,12 +221,12 @@ crosslinks:
 # STATISTICS
 # =============================================================================
 statistics:
-  total_raising_sessions: 825
-  total_training_sessions: 265
-  total_training_cognitive: 21
+  total_raising_sessions: 855
+  total_training_sessions: 274
+  total_training_cognitive: 27
   total_instances: 26
-  active_instances: 7
+  active_instances: 8
   scaffolded_instances: 5
   machines_active: 5
-  date_range: "2025-12-15 to 2026-04-26"
+  date_range: "2025-12-15 to 2026-04-28"
   primary_focus: "Multi-family autonomous raising + ARC-AGI + gemma4-e4b federation"

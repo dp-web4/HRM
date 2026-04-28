@@ -43,7 +43,12 @@ from sage.cognition.thalamic_router.plan_executor import (
 # ── Probe sequences for grounding ───────────────────────────────────
 
 def run_grounding_probes(env, fd) -> str:
-    """Run lookahead + multi-step probes. Returns a text summary."""
+    """Run lookahead + multi-step + exhaustive click probes.
+
+    The click scan is the critical piece — it finds WHERE interactive
+    elements actually are on the 64x64 grid. Without this, the model
+    writes plans that click into empty space.
+    """
     from arcengine import GameAction
     GA = {1: GameAction.ACTION1, 2: GameAction.ACTION2, 3: GameAction.ACTION3,
           4: GameAction.ACTION4, 5: GameAction.ACTION5, 6: GameAction.ACTION6}
@@ -60,31 +65,56 @@ def run_grounding_probes(env, fd) -> str:
     # Two-step: direction → SEL
     lines.append("\nTwo-step sequences (move then SEL):")
     for d in [1, 2, 3, 4]:
-        env_t = copy.deepcopy(env)
-        env_t.step(GA[d])
-        fd_t = env_t.step(GA[5])
-        diff = int(np.sum(np.array(fd_t.frame)[-1] != frame0))
-        adv = fd_t.levels_completed > fd.levels_completed
-        lines.append(f"  {names[d]}→SEL: {diff}px{'  ★ LEVEL ADVANCE!' if adv else ''}")
-
-    # Click probes at grid points
-    click_results = []
-    for cx, cy in [(8, 2), (20, 2), (36, 2), (48, 2), (8, 32), (32, 32), (48, 48)]:
         try:
             env_t = copy.deepcopy(env)
-            fd_t = env_t.step(GA[6], data={'x': cx, 'y': cy})
-            if fd_t is None:
-                continue
-            frame_t = np.array(fd_t.frame)[-1]
-            diff = int(np.sum(frame_t != frame0))
-            if diff > 5:
-                click_results.append(f"  CLICK({cx},{cy}): {diff}px change")
+            env_t.step(GA[d])
+            fd_t = env_t.step(GA[5])
+            diff = int(np.sum(np.array(fd_t.frame)[-1] != frame0))
+            adv = fd_t.levels_completed > fd.levels_completed
+            lines.append(f"  {names[d]}→SEL: {diff}px{'  ★ LEVEL ADVANCE!' if adv else ''}")
         except Exception:
             pass
 
+    # Exhaustive click scan — 8px grid (64 points) to find all interactive elements
+    # This is the tactical grounding the plan generator was missing.
+    click_results = []
+    for cy in range(4, 60, 8):
+        for cx in range(4, 60, 8):
+            try:
+                env_t = copy.deepcopy(env)
+                fd_t = env_t.step(GA[6], data={'x': cx, 'y': cy})
+                if fd_t is None:
+                    continue
+                frame_t = np.array(fd_t.frame)[-1]
+                diff = int(np.sum(frame_t != frame0))
+                if diff > 3:  # lower threshold to catch subtle interactions
+                    click_results.append((diff, cx, cy))
+            except Exception:
+                pass
+
     if click_results:
-        lines.append("\nActive click targets:")
-        lines.extend(click_results[:5])
+        # Sort by change magnitude, report top targets
+        click_results.sort(key=lambda x: -x[0])
+        lines.append(f"\nActive click targets ({len(click_results)} found):")
+        for diff, cx, cy in click_results[:8]:
+            # Also check what color is at that position for context
+            color = int(frame0[cy, cx]) if 0 <= cy < 64 and 0 <= cx < 64 else -1
+            lines.append(f"  CLICK({cx},{cy}): {diff}px change (on color {color})")
+
+        # Also probe CLICK→SEL on the best targets
+        lines.append("\nClick-then-SEL on best targets:")
+        for diff, cx, cy in click_results[:3]:
+            try:
+                env_t = copy.deepcopy(env)
+                env_t.step(GA[6], data={'x': cx, 'y': cy})
+                fd_t = env_t.step(GA[5])
+                total_diff = int(np.sum(np.array(fd_t.frame)[-1] != frame0))
+                adv = fd_t.levels_completed > fd.levels_completed
+                lines.append(f"  CLICK({cx},{cy})→SEL: {total_diff}px{'  ★ LEVEL ADVANCE!' if adv else ''}")
+            except Exception:
+                pass
+    else:
+        lines.append("\nNo active click targets found (game may be directional-only).")
 
     return "\n".join(lines)
 

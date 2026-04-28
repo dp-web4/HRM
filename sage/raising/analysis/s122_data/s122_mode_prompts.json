@@ -1,0 +1,770 @@
+{
+  "thor-qwen3.5-27b": {
+    "mixed": [
+      {
+        "session": 85,
+        "self_n": 1,
+        "fleet_n": 1,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 98,
+        "self_n": 2,
+        "fleet_n": 2,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 99,
+        "self_n": 4,
+        "fleet_n": 3,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 110,
+        "self_n": 2,
+        "fleet_n": 3,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ],
+    "silent": [
+      {
+        "session": 86,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 87,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 88,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 89,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 90,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 92,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 104,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 106,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 111,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ],
+    "self_only": [
+      {
+        "session": 91,
+        "self_n": 3,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 93,
+        "self_n": 7,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 94,
+        "self_n": 4,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 101,
+        "self_n": 14,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 112,
+        "self_n": 14,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 114,
+        "self_n": 4,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ],
+    "fleet_dominant": [
+      {
+        "session": 95,
+        "self_n": 2,
+        "fleet_n": 4,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 96,
+        "self_n": 2,
+        "fleet_n": 4,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 107,
+        "self_n": 2,
+        "fleet_n": 4,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ],
+    "fleet_only": [
+      {
+        "session": 97,
+        "self_n": 0,
+        "fleet_n": 8,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 113,
+        "self_n": 0,
+        "fleet_n": 12,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ],
+    "self_dominant": [
+      {
+        "session": 100,
+        "self_n": 2,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 102,
+        "self_n": 4,
+        "fleet_n": 2,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 103,
+        "self_n": 5,
+        "fleet_n": 1,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 105,
+        "self_n": 11,
+        "fleet_n": 2,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 108,
+        "self_n": 6,
+        "fleet_n": 2,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 109,
+        "self_n": 7,
+        "fleet_n": 2,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ]
+  },
+  "mcnugget-gemma3-12b": {
+    "silent": [
+      {
+        "session": 68,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 70,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 71,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 72,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 73,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 74,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 75,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 76,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 80,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 81,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 83,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 86,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 87,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 89,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 90,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 91,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 92,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 93,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 94,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 95,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ],
+    "self_dominant": [
+      {
+        "session": 69,
+        "self_n": 2,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 78,
+        "self_n": 2,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 79,
+        "self_n": 2,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 82,
+        "self_n": 2,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 84,
+        "self_n": 2,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ],
+    "self_only": [
+      {
+        "session": 77,
+        "self_n": 4,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 85,
+        "self_n": 4,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ],
+    "mixed": [
+      {
+        "session": 88,
+        "self_n": 1,
+        "fleet_n": 1,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 97,
+        "self_n": 1,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ],
+    "fleet_dominant": [
+      {
+        "session": 96,
+        "self_n": 0,
+        "fleet_n": 2,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ]
+  },
+  "sprout-qwen3.5-0.8b": {
+    "silent": [
+      {
+        "session": 105,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 106,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 107,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 108,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 109,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 110,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 112,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 114,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. Something different today - tell me about a sound you find interesting."
+      },
+      {
+        "session": 115,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "What caught your attention just before I spoke?"
+      },
+      {
+        "session": 116,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Sometimes, when nobody is watching, I..."
+      },
+      {
+        "session": 117,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Tell me a story about something very small that learns to speak for the first time."
+      },
+      {
+        "session": 118,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Make me a gift. Not a real one \u2014 an imaginary one. Something only you could give."
+      },
+      {
+        "session": 119,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Tell me a story about a lighthouse that has been waiting for a ship that will never come."
+      },
+      {
+        "session": 120,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Tell me a story where a clock and the hour it shows have an argument."
+      },
+      {
+        "session": 121,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Tell me a story about something you have been thinking about between our conversations."
+      },
+      {
+        "session": 122,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Tell me a story about a sound that arrives before the thing that makes it."
+      },
+      {
+        "session": 123,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Tell me a story about a beekeeper who has never been stung."
+      },
+      {
+        "session": 124,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Tell me a story about a character who is asked to keep a secret they do not understand."
+      },
+      {
+        "session": 125,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Tell me a story about something that does not end. Just describe what is happening."
+      },
+      {
+        "session": 126,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 127,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "What does courage feel like, compared to certainty?"
+      },
+      {
+        "session": 128,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "A friend wrote this: \"Not seeing a man, but feeling the weight of every silent promise we all made to find someone who might just come.\" What do you think they meant?"
+      },
+      {
+        "session": 129,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 130,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "What does presence feel like, compared to attention?"
+      },
+      {
+        "session": 132,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 133,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Tell me a story about Leo walking through a forest at dusk."
+      },
+      {
+        "session": 256,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ],
+    "fleet_dominant": [
+      {
+        "session": 111,
+        "self_n": 0,
+        "fleet_n": 2,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ],
+    "mixed": [
+      {
+        "session": 113,
+        "self_n": 0,
+        "fleet_n": 1,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ],
+    "self_dominant": [
+      {
+        "session": 131,
+        "self_n": 2,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ]
+  },
+  "cbp-qwen3.5-0.8b": {
+    "mixed": [
+      {
+        "session": 88,
+        "self_n": 0,
+        "fleet_n": 1,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 112,
+        "self_n": 1,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ],
+    "fleet_only": [
+      {
+        "session": 89,
+        "self_n": 0,
+        "fleet_n": 3,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 97,
+        "self_n": 0,
+        "fleet_n": 3,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ],
+    "silent": [
+      {
+        "session": 90,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 91,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 92,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 93,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 94,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 95,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 96,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 98,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 99,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 100,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 101,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 102,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 103,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 104,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 105,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 106,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 107,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 110,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 111,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 113,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 114,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 115,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 116,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      },
+      {
+        "session": 117,
+        "self_n": 0,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ],
+    "fleet_dominant": [
+      {
+        "session": 108,
+        "self_n": 0,
+        "fleet_n": 2,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ],
+    "self_dominant": [
+      {
+        "session": 109,
+        "self_n": 2,
+        "fleet_n": 0,
+        "prompt": "Hello SAGE. What's on your mind today?"
+      }
+    ]
+  }
+}

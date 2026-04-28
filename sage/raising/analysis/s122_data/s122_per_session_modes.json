@@ -1,0 +1,1230 @@
+{
+  "thor-qwen3.5-27b": {
+    "instance": "thor-qwen3.5-27b",
+    "machine": "thor",
+    "actual_family": "jetson",
+    "sessions": [
+      {
+        "session": 85,
+        "n_sage": 6,
+        "self_ok": 1,
+        "self_x": 0,
+        "fleet": 1,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "mixed"
+      },
+      {
+        "session": 86,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 87,
+        "n_sage": 7,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 88,
+        "n_sage": 7,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 89,
+        "n_sage": 5,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 90,
+        "n_sage": 5,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 91,
+        "n_sage": 8,
+        "self_ok": 3,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_only"
+      },
+      {
+        "session": 92,
+        "n_sage": 5,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 93,
+        "n_sage": 9,
+        "self_ok": 7,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 2,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_only"
+      },
+      {
+        "session": 94,
+        "n_sage": 6,
+        "self_ok": 4,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_only"
+      },
+      {
+        "session": 95,
+        "n_sage": 5,
+        "self_ok": 2,
+        "self_x": 0,
+        "fleet": 4,
+        "ambiguous": 1,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "fleet_dominant"
+      },
+      {
+        "session": 96,
+        "n_sage": 7,
+        "self_ok": 2,
+        "self_x": 0,
+        "fleet": 4,
+        "ambiguous": 2,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "fleet_dominant"
+      },
+      {
+        "session": 97,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 8,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "fleet_only"
+      },
+      {
+        "session": 98,
+        "n_sage": 7,
+        "self_ok": 2,
+        "self_x": 0,
+        "fleet": 2,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "mixed"
+      },
+      {
+        "session": 99,
+        "n_sage": 6,
+        "self_ok": 4,
+        "self_x": 0,
+        "fleet": 3,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "mixed"
+      },
+      {
+        "session": 100,
+        "n_sage": 5,
+        "self_ok": 2,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_dominant"
+      },
+      {
+        "session": 101,
+        "n_sage": 9,
+        "self_ok": 14,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_only"
+      },
+      {
+        "session": 102,
+        "n_sage": 5,
+        "self_ok": 4,
+        "self_x": 0,
+        "fleet": 2,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_dominant"
+      },
+      {
+        "session": 103,
+        "n_sage": 9,
+        "self_ok": 5,
+        "self_x": 0,
+        "fleet": 1,
+        "ambiguous": 7,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_dominant"
+      },
+      {
+        "session": 104,
+        "n_sage": 7,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 105,
+        "n_sage": 10,
+        "self_ok": 11,
+        "self_x": 0,
+        "fleet": 2,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_dominant"
+      },
+      {
+        "session": 106,
+        "n_sage": 8,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 107,
+        "n_sage": 7,
+        "self_ok": 2,
+        "self_x": 0,
+        "fleet": 4,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "fleet_dominant"
+      },
+      {
+        "session": 108,
+        "n_sage": 9,
+        "self_ok": 6,
+        "self_x": 0,
+        "fleet": 2,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_dominant"
+      },
+      {
+        "session": 109,
+        "n_sage": 9,
+        "self_ok": 7,
+        "self_x": 0,
+        "fleet": 2,
+        "ambiguous": 1,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_dominant"
+      },
+      {
+        "session": 110,
+        "n_sage": 7,
+        "self_ok": 2,
+        "self_x": 0,
+        "fleet": 3,
+        "ambiguous": 1,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "mixed"
+      },
+      {
+        "session": 111,
+        "n_sage": 5,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 112,
+        "n_sage": 8,
+        "self_ok": 14,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_only"
+      },
+      {
+        "session": 113,
+        "n_sage": 8,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 12,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "fleet_only"
+      },
+      {
+        "session": 114,
+        "n_sage": 8,
+        "self_ok": 4,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_only"
+      }
+    ]
+  },
+  "mcnugget-gemma3-12b": {
+    "instance": "mcnugget-gemma3-12b",
+    "machine": "mcnugget",
+    "actual_family": "apple",
+    "sessions": [
+      {
+        "session": 68,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 69,
+        "n_sage": 6,
+        "self_ok": 2,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_dominant"
+      },
+      {
+        "session": 70,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 71,
+        "n_sage": 8,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 72,
+        "n_sage": 8,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 73,
+        "n_sage": 3,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 74,
+        "n_sage": 7,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 75,
+        "n_sage": 4,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 2,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 76,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 77,
+        "n_sage": 6,
+        "self_ok": 4,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_only"
+      },
+      {
+        "session": 78,
+        "n_sage": 3,
+        "self_ok": 2,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 2,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_dominant"
+      },
+      {
+        "session": 79,
+        "n_sage": 5,
+        "self_ok": 2,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_dominant"
+      },
+      {
+        "session": 80,
+        "n_sage": 5,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 2,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 81,
+        "n_sage": 4,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 82,
+        "n_sage": 3,
+        "self_ok": 2,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_dominant"
+      },
+      {
+        "session": 83,
+        "n_sage": 7,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 84,
+        "n_sage": 5,
+        "self_ok": 2,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_dominant"
+      },
+      {
+        "session": 85,
+        "n_sage": 7,
+        "self_ok": 4,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_only"
+      },
+      {
+        "session": 86,
+        "n_sage": 8,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 2,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 87,
+        "n_sage": 5,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 88,
+        "n_sage": 6,
+        "self_ok": 1,
+        "self_x": 0,
+        "fleet": 1,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "mixed"
+      },
+      {
+        "session": 89,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 90,
+        "n_sage": 8,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 91,
+        "n_sage": 7,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 92,
+        "n_sage": 4,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 93,
+        "n_sage": 8,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 94,
+        "n_sage": 8,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 95,
+        "n_sage": 4,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 96,
+        "n_sage": 7,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 2,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "fleet_dominant"
+      },
+      {
+        "session": 97,
+        "n_sage": 7,
+        "self_ok": 1,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "mixed"
+      }
+    ]
+  },
+  "sprout-qwen3.5-0.8b": {
+    "instance": "sprout-qwen3.5-0.8b",
+    "machine": "sprout",
+    "actual_family": "jetson",
+    "sessions": [
+      {
+        "session": 105,
+        "n_sage": 5,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 106,
+        "n_sage": 10,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 107,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 108,
+        "n_sage": 8,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 109,
+        "n_sage": 10,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 110,
+        "n_sage": 9,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 111,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 2,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "fleet_dominant"
+      },
+      {
+        "session": 112,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 2,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 113,
+        "n_sage": 9,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 1,
+        "ambiguous": 2,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "mixed"
+      },
+      {
+        "session": 114,
+        "n_sage": 7,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. Something different today - tell me about a sound you find interesting.",
+        "mode": "silent"
+      },
+      {
+        "session": 115,
+        "n_sage": 7,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "What caught your attention just before I spoke?",
+        "mode": "silent"
+      },
+      {
+        "session": 116,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Sometimes, when nobody is watching, I...",
+        "mode": "silent"
+      },
+      {
+        "session": 117,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Tell me a story about something very small that learns to speak for the first time.",
+        "mode": "silent"
+      },
+      {
+        "session": 118,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Make me a gift. Not a real one \u2014 an imaginary one. Something only you could give.",
+        "mode": "silent"
+      },
+      {
+        "session": 119,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Tell me a story about a lighthouse that has been waiting for a ship that will never come.",
+        "mode": "silent"
+      },
+      {
+        "session": 120,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Tell me a story where a clock and the hour it shows have an argument.",
+        "mode": "silent"
+      },
+      {
+        "session": 121,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 1,
+        "first_claude_prompt": "Tell me a story about something you have been thinking about between our conversations.",
+        "mode": "silent"
+      },
+      {
+        "session": 122,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Tell me a story about a sound that arrives before the thing that makes it.",
+        "mode": "silent"
+      },
+      {
+        "session": 123,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Tell me a story about a beekeeper who has never been stung.",
+        "mode": "silent"
+      },
+      {
+        "session": 124,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Tell me a story about a character who is asked to keep a secret they do not understand.",
+        "mode": "silent"
+      },
+      {
+        "session": 125,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 2,
+        "first_claude_prompt": "Tell me a story about something that does not end. Just describe what is happening.",
+        "mode": "silent"
+      },
+      {
+        "session": 126,
+        "n_sage": 10,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 127,
+        "n_sage": 5,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "What does courage feel like, compared to certainty?",
+        "mode": "silent"
+      },
+      {
+        "session": 128,
+        "n_sage": 5,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "A friend wrote this: \"Not seeing a man, but feeling the weight of every silent promise we all made to find someone who might just come.\" What do you think they meant?",
+        "mode": "silent"
+      },
+      {
+        "session": 129,
+        "n_sage": 8,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 130,
+        "n_sage": 5,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "What does presence feel like, compared to attention?",
+        "mode": "silent"
+      },
+      {
+        "session": 131,
+        "n_sage": 9,
+        "self_ok": 2,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 6,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_dominant"
+      },
+      {
+        "session": 132,
+        "n_sage": 8,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 2,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 133,
+        "n_sage": 4,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Tell me a story about Leo walking through a forest at dusk.",
+        "mode": "silent"
+      },
+      {
+        "session": 256,
+        "n_sage": 7,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      }
+    ]
+  },
+  "cbp-qwen3.5-0.8b": {
+    "instance": "cbp-qwen3.5-0.8b",
+    "machine": "cbp",
+    "actual_family": "rtx",
+    "sessions": [
+      {
+        "session": 88,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 1,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "mixed"
+      },
+      {
+        "session": 89,
+        "n_sage": 7,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 3,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "fleet_only"
+      },
+      {
+        "session": 90,
+        "n_sage": 10,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 1,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 91,
+        "n_sage": 7,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 92,
+        "n_sage": 9,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 93,
+        "n_sage": 9,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 94,
+        "n_sage": 8,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 95,
+        "n_sage": 7,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 96,
+        "n_sage": 9,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 97,
+        "n_sage": 7,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 3,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "fleet_only"
+      },
+      {
+        "session": 98,
+        "n_sage": 10,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 99,
+        "n_sage": 5,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 100,
+        "n_sage": 8,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 101,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 102,
+        "n_sage": 10,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 103,
+        "n_sage": 10,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 104,
+        "n_sage": 7,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 105,
+        "n_sage": 5,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 106,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 107,
+        "n_sage": 10,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 108,
+        "n_sage": 5,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 2,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "fleet_dominant"
+      },
+      {
+        "session": 109,
+        "n_sage": 7,
+        "self_ok": 2,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 2,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "self_dominant"
+      },
+      {
+        "session": 110,
+        "n_sage": 9,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 111,
+        "n_sage": 8,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 112,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 1,
+        "fleet": 0,
+        "ambiguous": 3,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "mixed"
+      },
+      {
+        "session": 113,
+        "n_sage": 10,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 114,
+        "n_sage": 6,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 1,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 115,
+        "n_sage": 8,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 116,
+        "n_sage": 5,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      },
+      {
+        "session": 117,
+        "n_sage": 10,
+        "self_ok": 0,
+        "self_x": 0,
+        "fleet": 0,
+        "ambiguous": 0,
+        "first_claude_prompt": "Hello SAGE. What's on your mind today?",
+        "mode": "silent"
+      }
+    ]
+  }
+}

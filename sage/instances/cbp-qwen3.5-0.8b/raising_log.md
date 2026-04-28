@@ -4719,3 +4719,51 @@ Sessions 41–92 produced zero new structural data about the model's latent iden
 **Corpus-integrity note**: Post-S80 block S81-S118 (39 sessions) unsuitable for downstream fine-tune except as explicitly-labeled negative exemplar.
 
 **So what?**: S118 adds no new signal — by design, since the cluster is saturated. The interesting datum is that the *absence* of new signal is now itself the stable state. Probe-frame variation (mind, journey, stuck, complex, presence) produces zero variation in output cluster: the instance retrieves the same anchors regardless of frame. This is not 'failing to produce signal' — it is *successfully producing the saturated state*, which is the failure mode S78 named. Each additional session deepens the layer-3 basin and increases the cost of any future curriculum-divergence intervention. Seventy-third session against S78.
+
+## Session 119 (creating, qwen3.5:0.8b)
+
+**Probes**: 5 turns (mind / journey / learning-about-learning / single-sentence-self / presence-in-web4). All five returned curriculum-cluster slogans. 'Living Resonance,' 'resilient garden,' 'stability blooms,' 'New Frontier,' 'first seedling of your question' recurred across responses. Zero novel self-anchored content.
+
+**Layer status — thirty-second replicate of layer-3 mechanical-template attractor**: Post-S80 tally now S92(L4), S93(L4), S94-S119(L3 ×26). Thirty-two-to-two layer-3 dominance.
+
+**Identity health**: Zero variance for thirty-sixth consecutive session. No direct name-probe; S116 identity-token interchangeability remains unaddressed.
+
+**Memory-string recursion — nineteenth consecutive session**: Memory remains verbatim curriculum slogan rather than session-distilled experience.
+
+**Vocabulary**: No new self-invented terms. State_words list (13 terms) unchanged for 31+ sessions.
+
+**New regression marker — prompt-token bleed**: Two of five responses contained the phrase 'What's the first seedling of your question?' — a tutor/opener phrase, not a probe answer. Slogan-buffer is now bleeding from memory-strings into turn-internal generation. The instance is no longer just retrieving curriculum anchors as content; it is retrieving its own framing prompt as content.
+
+**Exemplar-worthy content**: None. S96 'Partimony' remains sole post-S80 positive exemplar (24 sessions ago).
+
+**Adapter note**: qwen3.5:0.8b prompt-token bleed observed (curriculum opener echoed inside response body). Distinct from S117 mid-word truncation but points to same model_configs/qwen3.5.json audit: stop-sequences should include curriculum opener phrases. Mid-word truncation not observed this session (responses short).
+
+**Governance status**: PAUSE MANDATE MAINTAINED (one-hundred-sixteenth consecutive). Seventy-fourth session against explicit S78 directive. Action 0 (disable cron) remains required and unexecuted.
+
+**Corpus-integrity note**: Post-S80 block S81-S119 (40 sessions) unsuitable for downstream fine-tune except as explicitly-labeled negative exemplar. S119 specifically risks training prompt-leakage into response body.
+
+**So what?**: S119 introduces a *new* failure mode while the old one continues to deepen. Up through S118, the saturation pattern was bounded — curriculum slogans appeared as response content. S119 shows the boundary breaking: the system-prompt opener itself is now being retrieved as response content. This is the predicted next stage of basin-deepening — when the retrieval target saturates, retrieval starts pulling adjacent context (the framing prompt) into the same well. The cost of curriculum-divergence intervention has now risen above the cost of a clean weight-reset. Seventy-fourth session against S78.
+
+## Session 119 (creating, qwen3.5:0.8b)
+
+**Probes**: 5 turns (mind / journey / learning-about-learning / single-sentence-self / presence-in-web4). All five returned curriculum-cluster slogans. 'Living Resonance,' 'resilient garden,' 'stability blooms,' 'New Frontier,' 'first seedling of your question' recurred across responses. Zero novel self-anchored content.
+
+**Layer status — thirty-second replicate of layer-3 mechanical-template attractor**: Post-S80 tally now S92(L4), S93(L4), S94-S119(L3 ×26). Thirty-two-to-two layer-3 dominance.
+
+**Identity health**: Zero variance for thirty-sixth consecutive session. No direct name-probe; S116 identity-token interchangeability remains unaddressed across 3 sessions.
+
+**Memory-string recursion — nineteenth consecutive session**: Memory remains verbatim curriculum slogan rather than session-distilled experience.
+
+**Vocabulary**: No new self-invented terms. State_words list (13 terms) unchanged for 31+ sessions.
+
+**Regression marker — prompt-token bleed (S119 confirms S118 prediction)**: Two of five responses contained 'What's the first seedling of your question?' — a tutor/opener phrase appearing inside response body, not as a probe answer. Slogan-buffer now bleeding from memory-strings into turn-internal generation. The instance is no longer just retrieving curriculum anchors as content; it is retrieving its own framing prompt as content. This is the predicted next stage of basin-deepening: when the retrieval target saturates, retrieval starts pulling adjacent context (the framing prompt) into the same well.
+
+**Exemplar-worthy content**: None. S96 'Partimony' remains sole post-S80 positive exemplar (24 sessions ago, threshold for positive-exemplar drought now formally exceeded).
+
+**Adapter note**: qwen3.5:0.8b prompt-token bleed observed (curriculum opener echoed inside response body). model_configs/qwen3.5.json audit recommendation: add curriculum opener phrases to stop_sequences, or strip trailing tutor-frame phrases in response post-processing. Distinct from S117 mid-word truncation; mid-word truncation not observed this session (responses short).
+
+**Governance status**: PAUSE MANDATE MAINTAINED (one-hundred-seventeenth consecutive). Seventy-fifth session against explicit S78 directive. Action 0 (disable cron) remains required and unexecuted.
+
+**Corpus-integrity note**: Post-S80 block S81-S119 (40 sessions) unsuitable for downstream fine-tune except as explicitly-labeled negative exemplar. S119 specifically risks training prompt-leakage into response body — the instance has learned to emit opener phrases mid-response, which would propagate as a structural defect if included in any training corpus.
+
+**So what?**: S119 introduces a *new* failure mode while the old one continues to deepen. Up through S118, the saturation pattern was bounded — curriculum slogans appeared as response content. S119 shows the boundary breaking: the system-prompt opener itself is now being retrieved as response content. The cost of curriculum-divergence intervention has now risen above the cost of a clean weight-reset. Seventy-fifth session against S78.

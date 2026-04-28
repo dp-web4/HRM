@@ -346,9 +346,15 @@ Steps executed: {steps_executed}/{steps_total}
 ## Game mechanics (reminder)
 {wm_text}
 
+## Progress assessment
+{progress}
+
 ## Your task
-Fix the plan. The failure tells you exactly what went wrong.
-Keep steps that worked. Fix or replace the step that failed.
+Fix the plan based on the progress assessment.
+- If progress says "actions work but more needed" → add more steps in same direction
+- If progress says "wrong direction" → try a different approach
+- If progress says "close to goal" → small adjustments to existing plan
+Keep steps that worked. Fix or replace steps that failed.
 
 Respond with ONLY the revised JSON plan:
 [
@@ -388,6 +394,27 @@ def generate_plan(
         else:
             failure_detail = f"Plan completed but level not cleared (outcome: {prev_result['outcome']})"
 
+        # Compute progress assessment
+        exec_log = prev_result.get("execution_log", [])
+        productive_steps = sum(1 for e in exec_log if e.get("px_diff", 0) > 10)
+        total_px = sum(e.get("px_diff", 0) for e in exec_log)
+        n_steps = len(exec_log)
+
+        if initial_frame is not None:
+            current_vs_start = int(np.sum(frame != initial_frame))
+            progress = f"Frame changed {current_vs_start}px from game start. "
+        else:
+            progress = ""
+
+        if productive_steps == 0:
+            progress += "No actions produced meaningful change. Your click targets may be wrong — use different coordinates."
+        elif productive_steps > n_steps * 0.7:
+            progress += f"Actions are working ({productive_steps}/{n_steps} productive, {total_px}px total). You're doing the right things but may need MORE steps or a DIFFERENT sequence to reach the goal."
+        elif productive_steps > n_steps * 0.3:
+            progress += f"Some actions work ({productive_steps}/{n_steps}). The working ones produce {total_px//max(productive_steps,1)}px avg. Focus on those and drop the ones that produce 0-1px."
+        else:
+            progress += f"Most actions failed ({productive_steps}/{n_steps} productive). Try fundamentally different targets or directions."
+
         prev_plan_json = json.dumps(prev_plan, indent=2)[:800]
         prompt = REVISE_PROMPT.format(
             prev_plan_json=prev_plan_json,
@@ -397,6 +424,7 @@ def generate_plan(
             failure_detail=failure_detail,
             probes=probes,
             wm_text=wm_text,
+            progress=progress,
         )
     else:
         # Initial generation — exploration pass replaces probes (no duplication)

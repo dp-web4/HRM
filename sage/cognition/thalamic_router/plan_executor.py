@@ -288,6 +288,7 @@ def execute_plan(
         outcome = "step_limit"
 
     return {
+        "_fd": fd,  # pass back for caller's state tracking
         "steps_executed": game_step,
         "steps_total": len(steps),
         "outcome": outcome,

@@ -229,8 +229,7 @@ Recent: {recent_str}
 NN hint: {nn_hint} ({nn_confidence:.0%})
 
 Use the game mechanics above to pick the action that advances the goal.
-{ACTION_KEY}
-ACTION=N X=x Y=y (for CLICK)
+{ACTION_FORMAT_NAMED}[ X=<0-63> Y=<0-63> for CLICK]
 <one sentence>"""
 
     # NAVIGATION: movement games — lean prompt, NN drives most steps
@@ -245,8 +244,7 @@ Actions NOW:
 Recent: {recent_str}
 
 Pick the direction that makes progress. Avoid repeating blocked/failed directions.
-{ACTION_KEY}
-ACTION=N (1-6)
+{ACTION_FORMAT_NAMED}
 <one sentence>"""
 
     # EQUIVALENT: multiple similar actions — need world model to differentiate
@@ -264,8 +262,7 @@ NN hint: {nn_hint} ({nn_confidence:.0%})
 
 Multiple actions produce similar changes. Use the game mechanics above
 to determine which one advances toward the win condition.
-{ACTION_KEY}
-ACTION=N X=x Y=y (for CLICK)
+{ACTION_FORMAT_NAMED}[ X=<0-63> Y=<0-63> for CLICK]
 <one sentence>"""
 
     # CLEAR WINNER or MIXED: brief world model
@@ -281,6 +278,5 @@ Recent: {recent_str}
 NN hint: {nn_hint} ({nn_confidence:.0%})
 
 Which action makes the most progress?
-{ACTION_KEY}
-ACTION=N X=x Y=y (for CLICK)
+{ACTION_FORMAT_NAMED}[ X=<0-63> Y=<0-63> for CLICK]
 <one sentence>"""

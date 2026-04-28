@@ -23,9 +23,13 @@ ACTION_MAP = {
 
 
 def _get_action_index(step: Dict) -> int:
-    """Extract action index from a step dict."""
+    """Extract action index from a step dict. Raises on unknown action."""
     do = str(step.get("do", "")).upper()
-    return ACTION_MAP.get(do, 0)
+    idx = ACTION_MAP.get(do)
+    if idx is None:
+        raise ValueError(f"Unknown action '{step.get('do')}' in plan step. "
+                         f"Valid: {list(ACTION_MAP.keys())}")
+    return idx
 
 
 # ── Expectation checking ────────────────────────────────────────────

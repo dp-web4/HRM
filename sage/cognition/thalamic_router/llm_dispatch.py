@@ -1567,8 +1567,9 @@ def compose_cnn_narration(
 
     # Response format reminder — kept short since it's in the system prompt too
     parts.append(
-        "Respond with ACTION=<0-6>[ X=<0-63> Y=<0-63>] on the first line "
-        "(X,Y required for CLICK), then one sentence of rationale."
+        "Respond with ACTION=UP or DOWN or LEFT or RIGHT or SEL or CLICK"
+        "[ X=<0-63> Y=<0-63> for CLICK] on the first line, "
+        "then one sentence of rationale."
     )
 
     return "\n\n".join(parts)
@@ -1692,13 +1693,11 @@ Recent actions: {recent_names}{trajectory_block}
 NN's best-action ranking (top 5): {top_str}
 NN's top pick: {ACTION_NAMES[play_action_idx]} (confidence {play_confidence:.2f})
 
-Actions: UP=1 DOWN=2 LEFT=3 RIGHT=4 SEL=5 CLICK=6
-
 Respond with exactly this format on the first line:
-ACTION=<0-6>[ X=<0-63> Y=<0-63>]
+ACTION=UP or DOWN or LEFT or RIGHT or SEL or CLICK[ X=<0-63> Y=<0-63>]
 <one-sentence rationale grounded in the game mechanics above>
 
-If you choose CLICK (6), you MUST provide X and Y pixel coordinates on the 64×64 grid.
+If you choose CLICK, you MUST provide X and Y pixel coordinates on the 64×64 grid.
 """
 
 

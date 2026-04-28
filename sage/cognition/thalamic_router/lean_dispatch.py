@@ -97,8 +97,7 @@ Which action makes the most PROGRESS toward winning?
 If lookahead shows LEVEL ADVANCE for any action, choose that action.
 SEL = launch/activate (the action that commits progress).
 
-1=UP 2=DOWN 3=LEFT 4=RIGHT 5=SEL 6=CLICK
-ACTION=N X=x Y=y (for CLICK, give coordinates)
+ACTION=UP or DOWN or LEFT or RIGHT or SEL or CLICK[ X=<0-63> Y=<0-63>]
 One sentence explaining why."""
 
 

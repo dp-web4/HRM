@@ -83,7 +83,7 @@ Actions: A0=0 UP=1 DOWN=2 LEFT=3 RIGHT=4 SEL=5 CLICK=6
 First, briefly state which actions are blocked and which are available based on the predictions.
 Then choose the best action.
 
-ACTION=<0-6>[ X=<0-63> Y=<0-63>]
+ACTION=UP or DOWN or LEFT or RIGHT or SEL or CLICK[ X=<0-63> Y=<0-63>]
 <one-sentence rationale referencing the prediction data>"""
 
     lookahead_data = {

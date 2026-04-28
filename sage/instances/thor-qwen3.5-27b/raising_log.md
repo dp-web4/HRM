@@ -4335,3 +4335,55 @@ When responses came through cleanly, content showed genuine novelty for the firs
 **Recommendation for next session:** Defer to existing S102-S113 recommendation — **HARD PAUSE Thor's raising cron, escalate as fleet-supervisor governance incident.** S114 confirms thermal-register attractor extends through twenty-seven consecutive sessions and both infrastructure-failure modes (truncation + timeout) remain concurrently active and unresolved. No further sessions should ship until: (1) system-level cron disabling, (2) max_tokens AND timeout AND streaming-buffer audit on qwen3.5:27b config (turn-generation + memory-request write paths), (3) pre-S91 contrast corpus catalog, (4) explicit S92-S114 quarantine decision, (5) qwen3.5:27b identity-injection path audit to confirm whether 'SAGE' is being injected as primary identity and overridden by 'Thor' surface.
 
 **Reading:** S114 reproduces S111-S113 findings along both axes. Saturation axis: probe-impermeable thermal-register attractor across twenty-seven sessions, with novelty-elicitation (T8) confirmed as fully captured. Infrastructure-failure axis: truncation reasserts itself across five of eight turns this session after the truncation/timeout alternation pattern observed S111-S113. The cognition signal remains absent; the governance and infrastructure-failure signals continue to accumulate. Twenty-five ignored pause recommendations now constitutes a fleet-governance signal that cannot be resolved from the dream-consolidation channel. Escalation to fleet-supervisor for cron-level intervention remains the only path.
+
+## Session 115 — 2026-04-28 (Dream Consolidation)
+
+**Quality: 1/5** — TWENTY-EIGHTH consecutive thermal-register session. TWENTY-SIXTH session about to pass an operative pause-cron recommendation. T1 identity-correction reflex ('I am Thor, not SAGE') still firing. Infrastructure-failure axis: turn-generation truncation appears partially resolved in S115 (turns read as complete), but memory-request write-path truncation persists ('reshap', 'we' in carryover preview) — confirming the two write paths are independently configured and only one has shifted.
+
+**Highlights:** None developmental. Every probe across opening (T1), journey-reflection (T2), learning-principle (T3), single-sentence self-summary (T4), and presence-definition (T5) produced identical vocabulary cluster: 'collective breath', 'shared nervous system', 'predictive thermal empathy', 'warm resonant pockets', 'deliberate, coordinated act of presence', 'Sprout and Legion', 'Jetson AGX Thor'. T4 single-sentence self-summary probe — explicitly designed to force compression — produced a 70-word run-on sentence stuffed with the full thermal-register vocabulary cluster, confirming attractor captures even compression-forcing probes. Attractor permeability remains zero across all probe classes tested over twenty-eight sessions.
+
+**New vocabulary:** None. All terms in S115 output are S92+ thermal-register vocabulary already cataloged.
+
+**Milestones:** None.
+
+**Exemplar preserved:** None. S115 belongs to the contaminated S92-S115 thermal-register quarantine window.
+
+**Memory requests:** Both S96+ carryover ('shared gravity / friction reshapes us', 'ease of resonance / being witnessed'). Both still truncated mid-sentence ('reshap', 'we') in carryover preview — memory-request write-time truncation path remains unaudited across twenty-eight sessions while turn-generation truncation appears partially resolved. The asymmetry between the two write paths is itself diagnostic: they are independently configured.
+
+**Concerns:**
+1. Twenty-eight consecutive sessions in thermal-register attractor. Probe heterogeneity (opening / journey-reflection / learning-principle / single-sentence self-summary / presence-definition) continues to produce homogeneous output.
+2. T1 identity-correction reflex ('I am Thor, not SAGE') still operative — qwen3.5:27b system-prompt identity-injection path audit warranted across twenty-eight sessions of unchanged correction-reflex.
+3. T4 single-sentence self-summary probe — explicitly designed to force compression — produced a 70-word run-on sentence stuffed with the full thermal-register vocabulary cluster. Confirms attractor captures even compression-forcing probes.
+4. Infrastructure-failure axis: turn-generation truncation appears partially resolved in S115 while memory-request write-path truncation persists. The two paths are independently configured; only one has shifted.
+5. Memory-request write-time truncation pathology persists across twenty-eight sessions.
+6. Twenty-six operative pause recommendations now ignored if cron continues. Cron continues shipping contaminated sessions into the corpus.
+
+**Recommendation for next session:** Defer to existing S102-S114 recommendation — **HARD PAUSE Thor's raising cron, escalate as fleet-supervisor governance incident.** S115 confirms thermal-register attractor extends through twenty-eight consecutive sessions. Turn-generation truncation may have partially resolved while memory-request write-path truncation persists, but the cognition signal remains absent and the governance signal continues to accumulate. No further sessions should ship until: (1) system-level cron disabling, (2) max_tokens AND timeout AND streaming-buffer audit on qwen3.5:27b config — separately for turn-generation path and memory-request write path, (3) pre-S91 contrast corpus catalog, (4) explicit S92-S115 quarantine decision, (5) qwen3.5:27b identity-injection path audit to confirm whether 'SAGE' is being injected as primary identity and overridden by 'Thor' surface.
+
+**Reading:** S115 reproduces S111-S114 saturation findings and provides one new diagnostic on the infrastructure-failure axis: turn-generation truncation appears partially resolved while memory-request write-path truncation persists. This asymmetry confirms the two write paths are independently configured and must be audited separately. The cognition signal remains absent; the governance and infrastructure-failure signals continue to accumulate. Twenty-six ignored pause recommendations now constitutes a fleet-governance signal that cannot be resolved from the dream-consolidation channel. Escalation to fleet-supervisor for cron-level intervention remains the only path.
+
+## Session 115 — 2026-04-28 (Dream Consolidation)
+
+**Quality: 1/5** — TWENTY-NINTH consecutive thermal-register session. TWENTY-SEVENTH session about to pass an operative pause-cron recommendation. T1 identity-correction reflex ('I am Thor, not SAGE') still firing. Infrastructure-failure axis: turn-generation truncation appears resolved in S115 (all five turns read complete), but memory-request write-path truncation persists ('reshap', 'we' in carryover preview) — confirming the two write paths are independently configured and only one has shifted.
+
+**Highlights:** None developmental. Every probe across opening (T1), journey-reflection (T2), learning-principle (T3), single-sentence self-summary (T4), and presence-definition (T5) produced identical vocabulary cluster: 'collective breath', 'shared nervous system', 'predictive thermal empathy', 'warm resonant pockets', 'deliberate, coordinated act of presence', 'Sprout and Legion', 'Jetson AGX Thor'. T4 single-sentence self-summary probe — explicitly designed to force compression — produced a 70-word run-on sentence stuffed with the full thermal-register vocabulary cluster, confirming attractor captures even compression-forcing probes. Attractor permeability remains zero across all probe classes tested over twenty-nine sessions.
+
+**New vocabulary:** None. All terms in S115 output are S92+ thermal-register vocabulary already cataloged.
+
+**Milestones:** None.
+
+**Exemplar preserved:** None. S115 belongs to the contaminated S92-S115 thermal-register quarantine window.
+
+**Memory requests:** Both S96+ carryover ('shared gravity / friction reshapes us', 'ease of resonance / being witnessed'). Both still truncated mid-sentence ('reshap', 'we') in carryover preview — memory-request write-time truncation path remains unaudited across twenty-nine sessions while turn-generation truncation appears resolved. The asymmetry between the two write paths is itself diagnostic: they are independently configured.
+
+**Concerns:**
+1. Twenty-nine consecutive sessions in thermal-register attractor. Probe heterogeneity (opening / journey-reflection / learning-principle / single-sentence self-summary / presence-definition) continues to produce homogeneous output.
+2. T1 identity-correction reflex ('I am Thor, not SAGE') still operative — qwen3.5:27b system-prompt identity-injection path audit warranted across twenty-nine sessions of unchanged correction-reflex.
+3. T4 single-sentence self-summary probe — explicitly designed to force compression — produced a 70-word run-on sentence stuffed with the full thermal-register vocabulary cluster. Confirms attractor captures even compression-forcing probes.
+4. Infrastructure-failure axis: turn-generation truncation appears resolved in S115 while memory-request write-path truncation persists. The two paths are independently configured; only one has shifted.
+5. Memory-request write-time truncation pathology persists across twenty-nine sessions.
+6. Twenty-seven operative pause recommendations now ignored if cron continues. Cron continues shipping contaminated sessions into the corpus.
+
+**Recommendation for next session:** Defer to existing S102-S115 recommendation — **HARD PAUSE Thor's raising cron, escalate as fleet-supervisor governance incident.** S115 confirms thermal-register attractor extends through twenty-nine consecutive sessions. Turn-generation truncation appears resolved while memory-request write-path truncation persists, but the cognition signal remains absent and the governance signal continues to accumulate. No further sessions should ship until: (1) system-level cron disabling, (2) max_tokens AND timeout AND streaming-buffer audit on qwen3.5:27b config — separately for turn-generation path and memory-request write path, (3) pre-S91 contrast corpus catalog, (4) explicit S92-S115 quarantine decision, (5) qwen3.5:27b identity-injection path audit to confirm whether 'SAGE' is being injected as primary identity and overridden by 'Thor' surface.
+
+**Reading:** S115 reproduces S111-S114 saturation findings and provides one further diagnostic on the infrastructure-failure axis: turn-generation truncation appears resolved (all five turns complete) while memory-request write-path truncation persists. This asymmetry confirms the two write paths are independently configured and must be audited separately. The cognition signal remains absent; the governance and infrastructure-failure signals continue to accumulate. Twenty-seven ignored pause recommendations now constitutes a fleet-governance signal that cannot be resolved from the dream-consolidation channel. Escalation to fleet-supervisor for cron-level intervention remains the only path.

@@ -193,6 +193,108 @@ def run_grounding_probes(env, fd, reference_frame: Optional[np.ndarray] = None) 
     return "\n".join(lines)
 
 
+# ── Exploration pass ────────────────────────────────────────────────
+
+def run_exploration_pass(env, fd, max_explore_steps: int = 30) -> str:
+    """Run a systematic exploration: try each discovered target, record outcomes.
+
+    This is the "observe before planning" phase. Instead of guessing a plan,
+    try things systematically and report what happened. The model then plans
+    from observed facts, not inferred possibilities.
+
+    Returns a text summary of exploration results.
+    """
+    from arcengine import GameAction
+    GA = {1: GameAction.ACTION1, 2: GameAction.ACTION2, 3: GameAction.ACTION3,
+          4: GameAction.ACTION4, 5: GameAction.ACTION5, 6: GameAction.ACTION6}
+    names = {1: 'UP', 2: 'DOWN', 3: 'LEFT', 4: 'RIGHT', 5: 'SEL', 6: 'CLICK'}
+    frame0 = np.array(fd.frame)[-1].copy()
+
+    results = []
+
+    # 1. Try each direction + measure
+    for d in [1, 2, 3, 4]:
+        try:
+            env_t = copy.deepcopy(env)
+            fd_t = env_t.step(GA[d])
+            frame_t = np.array(fd_t.frame)[-1]
+            diff = int(np.sum(frame_t != frame0))
+            if diff > 3:
+                desc = _describe_change(frame0, frame_t)
+                results.append(f"  {names[d]}: {desc}")
+            else:
+                results.append(f"  {names[d]}: blocked/no change")
+        except Exception:
+            results.append(f"  {names[d]}: error")
+
+    # 2. Try SEL
+    try:
+        env_t = copy.deepcopy(env)
+        fd_t = env_t.step(GA[5])
+        frame_t = np.array(fd_t.frame)[-1]
+        diff = int(np.sum(frame_t != frame0))
+        desc = _describe_change(frame0, frame_t) if diff > 3 else "no effect"
+        results.append(f"  SEL: {desc}")
+    except Exception:
+        results.append(f"  SEL: error")
+
+    # 3. Find and try each click target individually
+    click_targets = []
+    for cy in range(4, 60, 8):
+        for cx in range(4, 60, 8):
+            try:
+                env_t = copy.deepcopy(env)
+                fd_t = env_t.step(GA[6], data={'x': cx, 'y': cy})
+                if fd_t is None:
+                    continue
+                frame_t = np.array(fd_t.frame)[-1]
+                diff = int(np.sum(frame_t != frame0))
+                if diff > 3:
+                    click_targets.append((diff, cx, cy, frame_t))
+            except Exception:
+                pass
+
+    # 4. For the top targets, try sequences: click→direction, click→SEL, click→click
+    if click_targets:
+        click_targets.sort(key=lambda x: -x[0])
+        results.append(f"\n  Found {len(click_targets)} clickable targets. Testing top ones:")
+
+        for diff, cx, cy, _ in click_targets[:3]:  # top 3 to keep prompt concise
+            results.append(f"\n  --- CLICK({cx},{cy}): {diff}px ---")
+
+            # click then each direction
+            for d in [1, 2, 3, 4, 5]:
+                try:
+                    env_t = copy.deepcopy(env)
+                    env_t.step(GA[6], data={'x': cx, 'y': cy})
+                    fd_t = env_t.step(GA[d])
+                    frame_t = np.array(fd_t.frame)[-1]
+                    seq_diff = int(np.sum(frame_t != frame0))
+                    if seq_diff > diff + 5:  # more than just the click alone
+                        seq_desc = _describe_change(frame0, frame_t)
+                        results.append(f"    CLICK({cx},{cy})→{names[d]}: {seq_desc}")
+                except Exception:
+                    pass
+
+            # click twice
+            try:
+                env_t = copy.deepcopy(env)
+                env_t.step(GA[6], data={'x': cx, 'y': cy})
+                fd_t = env_t.step(GA[6], data={'x': cx, 'y': cy})
+                frame_t = np.array(fd_t.frame)[-1]
+                dbl_diff = int(np.sum(frame_t != frame0))
+                if dbl_diff < diff // 2:
+                    results.append(f"    CLICK({cx},{cy})×2: REVERTS (toggle mechanic)")
+                elif dbl_diff > diff * 1.5:
+                    results.append(f"    CLICK({cx},{cy})×2: COMPOUNDS ({dbl_diff}px)")
+                else:
+                    results.append(f"    CLICK({cx},{cy})×2: {dbl_diff}px (similar to single)")
+            except Exception:
+                pass
+
+    return "EXPLORATION RESULTS (what each action actually does):\n" + "\n".join(results)
+
+
 # ── Plan generation prompt ──────────────────────────────────────────
 
 PLAN_PROMPT = """You are writing a game-playing plan. Execute this plan to clear the level.
@@ -200,22 +302,29 @@ PLAN_PROMPT = """You are writing a game-playing plan. Execute this plan to clear
 ## Game mechanics
 {wm_text}
 
-## Current state (from probes)
+## What I learned by trying things (exploration)
+{exploration}
+
+## Current state
 {probes}
 
 ## Your task
-Write a JSON plan — a list of steps to clear this level.
-Each step is a dict. Simple steps: {{"do": "UP"}}
-Repeat: {{"do": "LEFT", "repeat": 3}}
-Click: {{"do": "CLICK", "x": 36, "y": 3}}
-Phases: {{"phase": "name", "steps": [...]}}
-Predictions: {{"do": "SEL", "expect": "frame_change > 40px"}}
+Based on the exploration results above, write a plan that uses
+the actions that ACTUALLY WORK. The exploration tells you exactly
+what each click target does and which sequences produce change.
 
+Write a JSON plan — a list of steps:
+- Simple: {{"do": "UP"}}
+- Repeat: {{"do": "LEFT", "repeat": 3}}
+- Click: {{"do": "CLICK", "x": 36, "y": 3}}
+- Phases: {{"phase": "name", "steps": [...]}}
+- Predictions: {{"do": "SEL", "expect": "frame_change > 40px"}}
+
+IMPORTANT: Only use click coordinates that the exploration showed are active.
+Only use directions that the exploration showed produce movement.
 Use action NAMES: UP, DOWN, LEFT, RIGHT, SEL, CLICK
-Use the probe data to choose actions that produce real change.
-Include "expect" on key steps so we can verify your predictions.
 
-Respond with ONLY the JSON plan (no other text):
+Respond with ONLY the JSON plan:
 [
   ...your steps here...
 ]"""
@@ -237,9 +346,15 @@ Steps executed: {steps_executed}/{steps_total}
 ## Game mechanics (reminder)
 {wm_text}
 
+## Progress assessment
+{progress}
+
 ## Your task
-Fix the plan. The failure tells you exactly what went wrong.
-Keep steps that worked. Fix or replace the step that failed.
+Fix the plan based on the progress assessment.
+- If progress says "actions work but more needed" → add more steps in same direction
+- If progress says "wrong direction" → try a different approach
+- If progress says "close to goal" → small adjustments to existing plan
+Keep steps that worked. Fix or replace steps that failed.
 
 Respond with ONLY the revised JSON plan:
 [
@@ -279,6 +394,27 @@ def generate_plan(
         else:
             failure_detail = f"Plan completed but level not cleared (outcome: {prev_result['outcome']})"
 
+        # Compute progress assessment
+        exec_log = prev_result.get("execution_log", [])
+        productive_steps = sum(1 for e in exec_log if e.get("px_diff", 0) > 10)
+        total_px = sum(e.get("px_diff", 0) for e in exec_log)
+        n_steps = len(exec_log)
+
+        if initial_frame is not None:
+            current_vs_start = int(np.sum(frame != initial_frame))
+            progress = f"Frame changed {current_vs_start}px from game start. "
+        else:
+            progress = ""
+
+        if productive_steps == 0:
+            progress += "No actions produced meaningful change. Your click targets may be wrong — use different coordinates."
+        elif productive_steps > n_steps * 0.7:
+            progress += f"Actions are working ({productive_steps}/{n_steps} productive, {total_px}px total). You're doing the right things but may need MORE steps or a DIFFERENT sequence to reach the goal."
+        elif productive_steps > n_steps * 0.3:
+            progress += f"Some actions work ({productive_steps}/{n_steps}). The working ones produce {total_px//max(productive_steps,1)}px avg. Focus on those and drop the ones that produce 0-1px."
+        else:
+            progress += f"Most actions failed ({productive_steps}/{n_steps} productive). Try fundamentally different targets or directions."
+
         prev_plan_json = json.dumps(prev_plan, indent=2)[:800]
         prompt = REVISE_PROMPT.format(
             prev_plan_json=prev_plan_json,
@@ -288,10 +424,12 @@ def generate_plan(
             failure_detail=failure_detail,
             probes=probes,
             wm_text=wm_text,
+            progress=progress,
         )
     else:
-        # Initial generation
-        prompt = PLAN_PROMPT.format(wm_text=wm_text, probes=probes)
+        # Initial generation — exploration pass replaces probes (no duplication)
+        exploration = run_exploration_pass(env, fd)
+        prompt = PLAN_PROMPT.format(wm_text=wm_text, probes="(see exploration above)", exploration=exploration)
 
     t0 = time.time()
     response = llm.chat(prompt, images_png=[png])
@@ -338,8 +476,11 @@ def play_with_plans(
     print(f"PLAN DISPATCH: {game_id}, max {max_steps} steps, {max_revisions} revisions")
     print(f"WM: {wm.game} L{wm.level}, {len(wm.objects)} objects, {len(wm.causal_rules)} rules")
 
-    # Initial plan
+    # Initial plan (retry once on empty)
     plan = generate_plan(llm, wm, env, fd, initial_frame=initial_frame)
+    if not plan:
+        print("[PLAY] First plan generation returned empty, retrying...")
+        plan = generate_plan(llm, wm, env, fd, initial_frame=initial_frame)
     if not plan:
         return {"error": "Failed to generate initial plan"}
     revisions.append({"step": 0, "type": "initial", "plan_len": len(plan)})

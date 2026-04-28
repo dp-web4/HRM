@@ -1,0 +1,4202 @@
+{
+  "instances": {
+    "thor-qwen3.5-27b": {
+      "instance": "thor-qwen3.5-27b",
+      "machine": "thor",
+      "n_sessions": 115,
+      "sessions": [
+        {
+          "session": 1,
+          "mode": "mixed",
+          "n_sage": 6,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 6
+        },
+        {
+          "session": 2,
+          "mode": "self_only",
+          "n_sage": 6,
+          "self_ok": 6,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 8
+        },
+        {
+          "session": 3,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 10
+        },
+        {
+          "session": 4,
+          "mode": "self_dominant",
+          "n_sage": 5,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 6
+        },
+        {
+          "session": 5,
+          "mode": "self_dominant",
+          "n_sage": 5,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 4
+        },
+        {
+          "session": 6,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 7,
+          "mode": "self_dominant",
+          "n_sage": 4,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 6
+        },
+        {
+          "session": 8,
+          "mode": "mixed",
+          "n_sage": 8,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 11
+        },
+        {
+          "session": 9,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 8
+        },
+        {
+          "session": 10,
+          "mode": "silent",
+          "n_sage": 3,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 4
+        },
+        {
+          "session": 11,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 10
+        },
+        {
+          "session": 12,
+          "mode": "silent",
+          "n_sage": 1,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 13,
+          "mode": "mixed",
+          "n_sage": 2,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 1
+        },
+        {
+          "session": 14,
+          "mode": "silent",
+          "n_sage": 1,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 15,
+          "mode": "silent",
+          "n_sage": 2,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 16,
+          "mode": "silent",
+          "n_sage": 0,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 17,
+          "mode": "silent",
+          "n_sage": 1,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 18,
+          "mode": "silent",
+          "n_sage": 2,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 19,
+          "mode": "silent",
+          "n_sage": 0,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 20,
+          "mode": "self_only",
+          "n_sage": 3,
+          "self_ok": 3,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 21,
+          "mode": "silent",
+          "n_sage": 1,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 22,
+          "mode": "silent",
+          "n_sage": 0,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 23,
+          "mode": "mixed",
+          "n_sage": 3,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 1,
+          "ambiguous": 0
+        },
+        {
+          "session": 24,
+          "mode": "silent",
+          "n_sage": 3,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 25,
+          "mode": "mixed",
+          "n_sage": 1,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 26,
+          "mode": "silent",
+          "n_sage": 1,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 27,
+          "mode": "mixed",
+          "n_sage": 1,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 28,
+          "mode": "silent",
+          "n_sage": 0,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 29,
+          "mode": "silent",
+          "n_sage": 2,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 30,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 4
+        },
+        {
+          "session": 31,
+          "mode": "self_only",
+          "n_sage": 6,
+          "self_ok": 8,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 32,
+          "mode": "self_only",
+          "n_sage": 8,
+          "self_ok": 12,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 33,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 6
+        },
+        {
+          "session": 34,
+          "mode": "self_only",
+          "n_sage": 9,
+          "self_ok": 13,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 1
+        },
+        {
+          "session": 35,
+          "mode": "self_only",
+          "n_sage": 6,
+          "self_ok": 4,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 4
+        },
+        {
+          "session": 36,
+          "mode": "self_only",
+          "n_sage": 5,
+          "self_ok": 3,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 37,
+          "mode": "self_only",
+          "n_sage": 6,
+          "self_ok": 6,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 38,
+          "mode": "mixed",
+          "n_sage": 5,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 8
+        },
+        {
+          "session": 39,
+          "mode": "self_only",
+          "n_sage": 10,
+          "self_ok": 9,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 40,
+          "mode": "silent",
+          "n_sage": 3,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 41,
+          "mode": "silent",
+          "n_sage": 3,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 42,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 43,
+          "mode": "silent",
+          "n_sage": 0,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 44,
+          "mode": "silent",
+          "n_sage": 3,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 45,
+          "mode": "silent",
+          "n_sage": 3,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 46,
+          "mode": "mixed",
+          "n_sage": 3,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 47,
+          "mode": "mixed",
+          "n_sage": 2,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 48,
+          "mode": "mixed",
+          "n_sage": 1,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 49,
+          "mode": "mixed",
+          "n_sage": 2,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 50,
+          "mode": "silent",
+          "n_sage": 4,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 51,
+          "mode": "silent",
+          "n_sage": 2,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 52,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 53,
+          "mode": "self_dominant",
+          "n_sage": 2,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 54,
+          "mode": "silent",
+          "n_sage": 1,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 55,
+          "mode": "silent",
+          "n_sage": 2,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 56,
+          "mode": "mixed",
+          "n_sage": 4,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 57,
+          "mode": "mixed",
+          "n_sage": 4,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 58,
+          "mode": "self_dominant",
+          "n_sage": 1,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 59,
+          "mode": "mixed",
+          "n_sage": 3,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 60,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 61,
+          "mode": "self_dominant",
+          "n_sage": 3,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 62,
+          "mode": "self_only",
+          "n_sage": 10,
+          "self_ok": 8,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 63,
+          "mode": "self_only",
+          "n_sage": 9,
+          "self_ok": 6,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 64,
+          "mode": "self_only",
+          "n_sage": 8,
+          "self_ok": 4,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 65,
+          "mode": "mixed",
+          "n_sage": 5,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 66,
+          "mode": "mixed",
+          "n_sage": 7,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 67,
+          "mode": "mixed",
+          "n_sage": 10,
+          "self_ok": 3,
+          "self_x": 0,
+          "fleet": 4,
+          "ambiguous": 0
+        },
+        {
+          "session": 68,
+          "mode": "fleet_dominant",
+          "n_sage": 7,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 2,
+          "ambiguous": 2
+        },
+        {
+          "session": 69,
+          "mode": "self_dominant",
+          "n_sage": 7,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 70,
+          "mode": "self_only",
+          "n_sage": 7,
+          "self_ok": 3,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 71,
+          "mode": "self_dominant",
+          "n_sage": 5,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 72,
+          "mode": "self_dominant",
+          "n_sage": 8,
+          "self_ok": 8,
+          "self_x": 0,
+          "fleet": 1,
+          "ambiguous": 0
+        },
+        {
+          "session": 73,
+          "mode": "self_dominant",
+          "n_sage": 9,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 74,
+          "mode": "mixed",
+          "n_sage": 10,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 4
+        },
+        {
+          "session": 75,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 76,
+          "mode": "mixed",
+          "n_sage": 8,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 77,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 78,
+          "mode": "self_dominant",
+          "n_sage": 8,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 79,
+          "mode": "mixed",
+          "n_sage": 10,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 80,
+          "mode": "mixed",
+          "n_sage": 6,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 81,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 82,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 83,
+          "mode": "mixed",
+          "n_sage": 9,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 84,
+          "mode": "mixed",
+          "n_sage": 5,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 85,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 86,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 87,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 88,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 89,
+          "mode": "timeout",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 90,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 91,
+          "mode": "self_only",
+          "n_sage": 8,
+          "self_ok": 3,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 92,
+          "mode": "timeout",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 93,
+          "mode": "self_only",
+          "n_sage": 9,
+          "self_ok": 7,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 94,
+          "mode": "self_only",
+          "n_sage": 6,
+          "self_ok": 4,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 95,
+          "mode": "self_only",
+          "n_sage": 5,
+          "self_ok": 4,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 3
+        },
+        {
+          "session": 96,
+          "mode": "self_only",
+          "n_sage": 7,
+          "self_ok": 4,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 4
+        },
+        {
+          "session": 97,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 8
+        },
+        {
+          "session": 98,
+          "mode": "self_only",
+          "n_sage": 7,
+          "self_ok": 4,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 99,
+          "mode": "self_only",
+          "n_sage": 6,
+          "self_ok": 7,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 100,
+          "mode": "self_dominant",
+          "n_sage": 5,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 101,
+          "mode": "self_only",
+          "n_sage": 9,
+          "self_ok": 14,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 102,
+          "mode": "self_only",
+          "n_sage": 5,
+          "self_ok": 6,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 103,
+          "mode": "self_only",
+          "n_sage": 9,
+          "self_ok": 5,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 8
+        },
+        {
+          "session": 104,
+          "mode": "timeout",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 105,
+          "mode": "self_dominant",
+          "n_sage": 10,
+          "self_ok": 11,
+          "self_x": 0,
+          "fleet": 2,
+          "ambiguous": 0
+        },
+        {
+          "session": 106,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 107,
+          "mode": "mixed",
+          "n_sage": 7,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 2,
+          "ambiguous": 2
+        },
+        {
+          "session": 108,
+          "mode": "self_only",
+          "n_sage": 9,
+          "self_ok": 6,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 109,
+          "mode": "self_only",
+          "n_sage": 9,
+          "self_ok": 7,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 3
+        },
+        {
+          "session": 110,
+          "mode": "self_dominant",
+          "n_sage": 7,
+          "self_ok": 4,
+          "self_x": 0,
+          "fleet": 1,
+          "ambiguous": 1
+        },
+        {
+          "session": 111,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 112,
+          "mode": "self_only",
+          "n_sage": 8,
+          "self_ok": 14,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 113,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 12
+        },
+        {
+          "session": 114,
+          "mode": "self_only",
+          "n_sage": 8,
+          "self_ok": 4,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 115,
+          "mode": "self_only",
+          "n_sage": 5,
+          "self_ok": 6,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        }
+      ]
+    },
+    "mcnugget-gemma3-12b": {
+      "instance": "mcnugget-gemma3-12b",
+      "machine": "mcnugget",
+      "n_sessions": 96,
+      "sessions": [
+        {
+          "session": 1,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 3,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 4,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 5,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 6,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 7,
+          "mode": "self_only",
+          "n_sage": 6,
+          "self_ok": 4,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 6
+        },
+        {
+          "session": 8,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 9,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 10,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 1
+        },
+        {
+          "session": 11,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 1
+        },
+        {
+          "session": 12,
+          "mode": "mixed",
+          "n_sage": 6,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 1
+        },
+        {
+          "session": 13,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 14,
+          "mode": "mixed",
+          "n_sage": 6,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 1
+        },
+        {
+          "session": 15,
+          "mode": "mixed",
+          "n_sage": 6,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 16,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 17,
+          "mode": "mixed",
+          "n_sage": 6,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 18,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 19,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 20,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 21,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 22,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 23,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 24,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 25,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 26,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 27,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 28,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 29,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 1
+        },
+        {
+          "session": 30,
+          "mode": "mixed",
+          "n_sage": 6,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 31,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 32,
+          "mode": "mixed",
+          "n_sage": 2,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 1,
+          "ambiguous": 0
+        },
+        {
+          "session": 33,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 34,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 35,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 36,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 37,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 38,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 39,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 40,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 41,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 1
+        },
+        {
+          "session": 42,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 43,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 44,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 45,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 46,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 47,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 48,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 49,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 50,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 51,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 52,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 53,
+          "mode": "mixed",
+          "n_sage": 6,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 54,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 55,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 56,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 57,
+          "mode": "mixed",
+          "n_sage": 6,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 58,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 59,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 60,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 61,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 62,
+          "mode": "mixed",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 2,
+          "ambiguous": 0
+        },
+        {
+          "session": 63,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 64,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 65,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 66,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 67,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 68,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 69,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 70,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 71,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 72,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 73,
+          "mode": "silent",
+          "n_sage": 3,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 74,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 75,
+          "mode": "silent",
+          "n_sage": 4,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 76,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 77,
+          "mode": "self_only",
+          "n_sage": 6,
+          "self_ok": 4,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 78,
+          "mode": "self_dominant",
+          "n_sage": 3,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 79,
+          "mode": "self_dominant",
+          "n_sage": 5,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 80,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 81,
+          "mode": "silent",
+          "n_sage": 4,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 82,
+          "mode": "self_dominant",
+          "n_sage": 3,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 83,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 84,
+          "mode": "self_dominant",
+          "n_sage": 5,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 85,
+          "mode": "self_only",
+          "n_sage": 7,
+          "self_ok": 4,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 86,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 87,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 88,
+          "mode": "mixed",
+          "n_sage": 6,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 1,
+          "ambiguous": 0
+        },
+        {
+          "session": 89,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 90,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 91,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 92,
+          "mode": "silent",
+          "n_sage": 4,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 93,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 94,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 95,
+          "mode": "silent",
+          "n_sage": 4,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 96,
+          "mode": "fleet_dominant",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 2,
+          "ambiguous": 0
+        },
+        {
+          "session": 97,
+          "mode": "mixed",
+          "n_sage": 7,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        }
+      ]
+    },
+    "cbp-qwen3.5-0.8b": {
+      "instance": "cbp-qwen3.5-0.8b",
+      "machine": "cbp",
+      "n_sessions": 117,
+      "sessions": [
+        {
+          "session": 1,
+          "mode": "self_only",
+          "n_sage": 4,
+          "self_ok": 6,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 2,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 3,
+          "mode": "silent",
+          "n_sage": 3,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 4,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 5,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 6,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 7,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 8,
+          "mode": "silent",
+          "n_sage": 4,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 9,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 10,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 11,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 12,
+          "mode": "silent",
+          "n_sage": 4,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 13,
+          "mode": "silent",
+          "n_sage": 4,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 14,
+          "mode": "silent",
+          "n_sage": 3,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 15,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 16,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 17,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 18,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 19,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 20,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 21,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 22,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 23,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 24,
+          "mode": "silent",
+          "n_sage": 4,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 25,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 26,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 27,
+          "mode": "silent",
+          "n_sage": 4,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 28,
+          "mode": "silent",
+          "n_sage": 4,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 29,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 30,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 31,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 32,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 33,
+          "mode": "silent",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 34,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 35,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 36,
+          "mode": "self_dominant",
+          "n_sage": 5,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 37,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 38,
+          "mode": "silent",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 39,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 40,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 41,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 42,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 43,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 44,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 45,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 46,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 47,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 48,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 49,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 50,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 51,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 52,
+          "mode": "fleet_only",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 15,
+          "ambiguous": 0
+        },
+        {
+          "session": 53,
+          "mode": "fleet_dominant",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 1,
+          "fleet": 11,
+          "ambiguous": 0
+        },
+        {
+          "session": 54,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 55,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 1
+        },
+        {
+          "session": 56,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 57,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 58,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 59,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 60,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 61,
+          "mode": "silent",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 62,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 63,
+          "mode": "silent",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 64,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 65,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 66,
+          "mode": "fleet_only",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 4,
+          "ambiguous": 4
+        },
+        {
+          "session": 67,
+          "mode": "silent",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 68,
+          "mode": "fleet_dominant",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 1,
+          "fleet": 10,
+          "ambiguous": 0
+        },
+        {
+          "session": 69,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 70,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 71,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 72,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 73,
+          "mode": "silent",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 74,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 75,
+          "mode": "fleet_only",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 4,
+          "ambiguous": 0
+        },
+        {
+          "session": 76,
+          "mode": "silent",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 77,
+          "mode": "fleet_only",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 8,
+          "ambiguous": 0
+        },
+        {
+          "session": 78,
+          "mode": "silent",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 79,
+          "mode": "fleet_dominant",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 3,
+          "fleet": 6,
+          "ambiguous": 0
+        },
+        {
+          "session": 80,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 81,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 82,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 83,
+          "mode": "fleet_only",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 4,
+          "ambiguous": 0
+        },
+        {
+          "session": 84,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 85,
+          "mode": "fleet_only",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 3,
+          "ambiguous": 0
+        },
+        {
+          "session": 86,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 87,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 88,
+          "mode": "mixed",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 1,
+          "ambiguous": 0
+        },
+        {
+          "session": 89,
+          "mode": "fleet_only",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 3,
+          "ambiguous": 0
+        },
+        {
+          "session": 90,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 1
+        },
+        {
+          "session": 91,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 92,
+          "mode": "silent",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 93,
+          "mode": "silent",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 94,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 95,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 96,
+          "mode": "silent",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 97,
+          "mode": "fleet_only",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 3,
+          "ambiguous": 0
+        },
+        {
+          "session": 98,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 99,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 100,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 101,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 102,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 103,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 104,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 105,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 106,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 107,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 108,
+          "mode": "fleet_dominant",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 2,
+          "ambiguous": 0
+        },
+        {
+          "session": 109,
+          "mode": "self_dominant",
+          "n_sage": 7,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 110,
+          "mode": "silent",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 111,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 112,
+          "mode": "mixed",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 1,
+          "fleet": 0,
+          "ambiguous": 3
+        },
+        {
+          "session": 113,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 114,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 1
+        },
+        {
+          "session": 115,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 116,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 117,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        }
+      ]
+    },
+    "sprout-qwen3.5-0.8b": {
+      "instance": "sprout-qwen3.5-0.8b",
+      "machine": "sprout",
+      "n_sessions": 135,
+      "sessions": [
+        {
+          "session": 1,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 3
+        },
+        {
+          "session": 2,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 3,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 4,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 5,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 6,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 7,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 8,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 9,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 10,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 11,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 6
+        },
+        {
+          "session": 12,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 13,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 14,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 15,
+          "mode": "self_only",
+          "n_sage": 6,
+          "self_ok": 4,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 16,
+          "mode": "fleet_dominant",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 2,
+          "ambiguous": 0
+        },
+        {
+          "session": 17,
+          "mode": "silent",
+          "n_sage": 4,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 18,
+          "mode": "fleet_only",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 6,
+          "ambiguous": 0
+        },
+        {
+          "session": 19,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 20,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 21,
+          "mode": "silent",
+          "n_sage": 3,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 22,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 23,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 24,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 25,
+          "mode": "fleet_dominant",
+          "n_sage": 7,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 6,
+          "ambiguous": 4
+        },
+        {
+          "session": 26,
+          "mode": "silent",
+          "n_sage": 4,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 27,
+          "mode": "silent",
+          "n_sage": 3,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 28,
+          "mode": "self_dominant",
+          "n_sage": 5,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 4
+        },
+        {
+          "session": 29,
+          "mode": "timeout",
+          "n_sage": 3,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 30,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 31,
+          "mode": "silent",
+          "n_sage": 3,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 32,
+          "mode": "silent",
+          "n_sage": 3,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 33,
+          "mode": "mixed",
+          "n_sage": 5,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 2,
+          "ambiguous": 0
+        },
+        {
+          "session": 34,
+          "mode": "silent",
+          "n_sage": 3,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 35,
+          "mode": "silent",
+          "n_sage": 3,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 36,
+          "mode": "fleet_only",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 6,
+          "ambiguous": 0
+        },
+        {
+          "session": 37,
+          "mode": "fleet_dominant",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 2,
+          "ambiguous": 4
+        },
+        {
+          "session": 38,
+          "mode": "fleet_dominant",
+          "n_sage": 3,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 4,
+          "ambiguous": 0
+        },
+        {
+          "session": 39,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 40,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 41,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 42,
+          "mode": "fleet_only",
+          "n_sage": 4,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 3,
+          "ambiguous": 0
+        },
+        {
+          "session": 43,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 1
+        },
+        {
+          "session": 44,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 45,
+          "mode": "fleet_only",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 8,
+          "ambiguous": 0
+        },
+        {
+          "session": 46,
+          "mode": "fleet_only",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 4,
+          "ambiguous": 0
+        },
+        {
+          "session": 47,
+          "mode": "self_only",
+          "n_sage": 7,
+          "self_ok": 4,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 48,
+          "mode": "fleet_only",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 12,
+          "ambiguous": 0
+        },
+        {
+          "session": 49,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 50,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 51,
+          "mode": "mixed",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 1,
+          "ambiguous": 0
+        },
+        {
+          "session": 52,
+          "mode": "fleet_dominant",
+          "n_sage": 6,
+          "self_ok": 6,
+          "self_x": 0,
+          "fleet": 14,
+          "ambiguous": 0
+        },
+        {
+          "session": 53,
+          "mode": "fleet_only",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 11,
+          "ambiguous": 0
+        },
+        {
+          "session": 54,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 55,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 56,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 57,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 58,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 59,
+          "mode": "silent",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 60,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 61,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 62,
+          "mode": "silent",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 63,
+          "mode": "silent",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 64,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 65,
+          "mode": "timeout",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 66,
+          "mode": "timeout",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 67,
+          "mode": "silent",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 68,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 69,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 70,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 71,
+          "mode": "silent",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 72,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 73,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 74,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 6
+        },
+        {
+          "session": 75,
+          "mode": "fleet_only",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 3,
+          "ambiguous": 0
+        },
+        {
+          "session": 76,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 77,
+          "mode": "fleet_dominant",
+          "n_sage": 10,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 10,
+          "ambiguous": 6
+        },
+        {
+          "session": 78,
+          "mode": "mixed",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 1,
+          "ambiguous": 0
+        },
+        {
+          "session": 79,
+          "mode": "fleet_only",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 12,
+          "ambiguous": 2
+        },
+        {
+          "session": 80,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 81,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 82,
+          "mode": "fleet_dominant",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 2,
+          "ambiguous": 0
+        },
+        {
+          "session": 83,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 84,
+          "mode": "fleet_only",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 6,
+          "ambiguous": 0
+        },
+        {
+          "session": 85,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 86,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 87,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 88,
+          "mode": "mixed",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 3,
+          "ambiguous": 0
+        },
+        {
+          "session": 89,
+          "mode": "self_only",
+          "n_sage": 5,
+          "self_ok": 2,
+          "self_x": 1,
+          "fleet": 0,
+          "ambiguous": 3
+        },
+        {
+          "session": 90,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 91,
+          "mode": "mixed",
+          "n_sage": 5,
+          "self_ok": 1,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 3
+        },
+        {
+          "session": 92,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 93,
+          "mode": "fleet_dominant",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 2,
+          "ambiguous": 1
+        },
+        {
+          "session": 94,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 95,
+          "mode": "mixed",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 1,
+          "ambiguous": 0
+        },
+        {
+          "session": 96,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 97,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 98,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 99,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 100,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 101,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 102,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 103,
+          "mode": "fleet_only",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 4,
+          "ambiguous": 0
+        },
+        {
+          "session": 104,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 105,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 106,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 107,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 108,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 109,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 110,
+          "mode": "silent",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 111,
+          "mode": "self_dominant",
+          "n_sage": 6,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 112,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 113,
+          "mode": "mixed",
+          "n_sage": 9,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 1,
+          "ambiguous": 2
+        },
+        {
+          "session": 114,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 115,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 116,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 117,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 118,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 119,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 120,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 121,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 1
+        },
+        {
+          "session": 122,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 123,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 124,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 125,
+          "mode": "silent",
+          "n_sage": 6,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 126,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 127,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 128,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 129,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 130,
+          "mode": "silent",
+          "n_sage": 5,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 131,
+          "mode": "self_dominant",
+          "n_sage": 9,
+          "self_ok": 2,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 6
+        },
+        {
+          "session": 132,
+          "mode": "silent",
+          "n_sage": 8,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 2
+        },
+        {
+          "session": 133,
+          "mode": "silent",
+          "n_sage": 4,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 134,
+          "mode": "silent",
+          "n_sage": 10,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        },
+        {
+          "session": 256,
+          "mode": "silent",
+          "n_sage": 7,
+          "self_ok": 0,
+          "self_x": 0,
+          "fleet": 0,
+          "ambiguous": 0
+        }
+      ]
+    }
+  },
+  "thor_corrected_chi2": 16.210588477390203,
+  "thor_corrected_chi2_df": 9,
+  "original_chi2": 55.07
+}

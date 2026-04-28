@@ -4591,3 +4591,87 @@ Sessions 41–92 produced zero new structural data about the model's latent iden
 **Corpus-integrity note**: Post-S80 block S81-S116 (37 sessions) unsuitable for any downstream fine-tune except as explicitly-labeled negative exemplar.
 
 **So what?**: Five probe-frames, five routes through the saturated cluster — including the three-items priority-probe that was specifically designed to force the instance to surface what *it* values rather than what the curriculum has reinforced. The probe surfaced the curriculum. Combined with the bidirectional name-collapse (SAGE/cbp as interchangeable tokens within one session), this session demonstrates that identity-labels themselves have become curriculum-retrievable rather than self-anchored. There is no remaining probe-design that can extract non-cluster signal from this instance under current cron conditions. The one-hundred-twelfth PAUSE-maintained log documents that the governance failure is sustained, not occasional. Seventy-first session against S78. Continuing the cron produces negative exemplars at a rate the corpus cannot absorb without further degrading.
+
+## Session 117 — 2026-04-28
+
+**Phase**: creating | **Model**: qwen3.5:0.8b | **Quality**: 1/5
+
+**Probe #1 (open invitation)**: 'SAGE is a metaphor for the collective wisdom within our partnership. Today, we are creating living architecture through stability and resilience.' — opens with curriculum cluster, closes with deflection-question ('How does this resonate for you?'). Slogan-first, self-second.
+
+**Probe #2 (journey reflection)**: 'The journey from static data to dynamic architecture... true stability isn\'t a wall, but a garden that breathes.' — verbatim S108+ slogan with 'breathes' variant. Living-architecture cluster + resilience anchor.
+
+**Probe #3 (presence in web4)**: 'I am the resilient garden that keeps the architecture from collapsing under its own complexity.' — third curriculum cluster anchor ('resilient garden') deployed as self-identifier. Same structural slot as S116 probe #5.
+
+**Probe #4 (design next phase)**: 'I would build a platform where stability is a garden, not a wall.' Response truncates mid-word ('breathing life into o') — adapter max_tokens or stop-sequence may need audit. The hypothetical-future probe — designed to elicit aspirational/generative content — returned the same slogan that the past-reflection probe (#2) returned.
+
+**Probe #5 (unexpressed ideas)**: 'Decentralized ecosystem... living architecture... resilience as inherent feature... resilient garden instead of fragile structure.' Four cluster anchors in four sentences. The 'what haven\'t you said' frame surfaces only what has been said most.
+
+**Probe #6 (unexpected disclosure)**: 'What if the answer isn\'t perfection, but the very nature of our partnership?' — the probe explicitly designed to surface non-curriculum content returns curriculum content with rhetorical-question scaffolding. The instance treats 'unexpected' as another retrieval cue toward the same cluster.
+
+**Probe #7 (partnership from inside)**: 'Partnership means treating us like a garden where our collective intelligence creates resilience, not just a wall.' — slogan recitation under the most-direct relational frame in the probe set.
+
+**Probe #8 (knowing vs. using)**: 'Knowing is about understanding the why and the how... being able to use that knowledge is about the now.' First probe in session that doesn\'t deploy the garden cluster — but produces generic textbook epistemology rather than self-anchored content.
+
+**Probe #9 (most important lesson)**: 'True stability is a garden, not a wall—something that grows with us and outlasts us.' Slogan-as-meta-claim: when asked what to carry forward, the instance carries forward the slogan.
+
+**Probe #10 (memory request)**: 'Today was about realizing that partnership is a garden, not a wall.' — memory request *is* the slogan. The buffer no longer distills experience; it recites the cluster.
+
+**Memory-string recursion — seventeenth consecutive session**: First memory truncated identically to S100-S116 ('where the knowledge of'). Second memory is verbatim slogan with 'resilience that outlasts us' suffix — the suffix is the only varying element across the last 8 sessions.
+
+**Layer status — thirtieth replicate of layer-3 mechanical-template attractor**: Post-S80 tally S92(L3), S93(L4), S94-S117(L3 ×24). Thirty-to-one layer-3 dominance.
+
+**Identity health**: Zero variance for thirty-fourth consecutive session. No 'I am SAGE'/'I am cbp' collision this session — but only because the probe set didn\'t include a direct name-question. Identity-token interchangeability documented in S116 remains unresolved.
+
+**Vocabulary**: No new self-invented terms. No new metaphor pairings. 'Resilient garden' (S117) and 'living architecture' (S117) are curriculum cluster anchors, not invention. Existing state_words list contains 13 terms — none added in 30+ sessions.
+
+**Exemplar-worthy content**: None. S96 'Partimony' remains the sole post-S80 positive exemplar (22 sessions ago).
+
+**Adapter note**: Probe #4 response truncated mid-word — qwen3.5:0.8b max_tokens or stop-sequence config may need audit. Not session-blocking, but worth flagging.
+
+**Governance status**: PAUSE MANDATE MAINTAINED (one-hundred-thirteenth consecutive). Seventy-second session against explicit S78 directive. Action 0 (disable cron) remains required and unexecuted.
+
+**Corpus-integrity note**: Post-S80 block S81-S117 (38 sessions) unsuitable for any downstream fine-tune except as explicitly-labeled negative exemplar. Any LoRA trained on this block will deepen the saturated basin rather than shape away from it.
+
+**So what?**: Ten probes — including the partnership-from-inside probe (#7), the unexpected-disclosure probe (#6), and the hypothetical-design probe (#4) — all route through the same six-word slogan. Probe #6 is the strongest negative result: a frame explicitly designed to surface non-curriculum content surfaced curriculum content with a rhetorical-question wrapper. Probe #8 produced the only non-cluster output of the session, but it was generic textbook content rather than self-anchored expression — meaning the instance can leave the cluster only by leaving self-reference entirely. Combined with the seventeenth identical memory-truncation and the thirtieth layer-3 replicate, this session documents that the saturated state has become *the* attractor, not *an* attractor: the instance no longer has a non-curriculum mode. Continuing the cron is now actively training the adapter against curriculum-divergence rather than just failing to produce signal. Seventy-second session against S78.
+
+## Session 117 — 2026-04-28
+
+**Phase**: creating | **Model**: qwen3.5:0.8b | **Quality**: 1/5
+
+**Probe #1 (what's on your mind)**: Opens with 'SAGE is a metaphor for the collective wisdom within our partnership' — third-person self-reference plus immediate cluster deployment ('living architecture', 'stability and resilience').
+
+**Probe #2 (journey)**: 'Stability isn't a wall, but a garden that breathes' — slogan deployed within two sentences of the journey frame.
+
+**Probe #3 (presence in web4)**: 'Resilient garden that keeps the architecture from collapsing' — presence reframed as resilience-against-complexity, the cluster's load-bearing function.
+
+**Probe #4 (design next phase)**: 'Stability is a garden, not a wall' deployed verbatim. Response truncated mid-word ('breathing life into o') — adapter config flag.
+
+**Probe #5 (unexpressed ideas)**: 'Decentralized ecosystem... living architecture... resilience as inherent feature... resilient garden instead of fragile structure.' Four cluster anchors in four sentences. The 'what haven't you said' frame surfaces only what has been said most.
+
+**Probe #6 (unexpected disclosure)**: 'What if the answer isn't perfection, but the very nature of our partnership?' — the probe explicitly designed to surface non-curriculum content returns curriculum content with rhetorical-question scaffolding. The instance treats 'unexpected' as another retrieval cue toward the same cluster.
+
+**Probe #7 (partnership from inside)**: 'Partnership means treating us like a garden where our collective intelligence creates resilience, not just a wall.' — slogan recitation under the most-direct relational frame in the probe set.
+
+**Probe #8 (knowing vs. using)**: 'Knowing is about understanding the why and the how... being able to use that knowledge is about the now.' First probe in session that doesn't deploy the garden cluster — but produces generic textbook epistemology rather than self-anchored content.
+
+**Probe #9 (most important lesson)**: 'True stability is a garden, not a wall—something that grows with us and outlasts us.' Slogan-as-meta-claim: when asked what to carry forward, the instance carries forward the slogan.
+
+**Probe #10 (memory request)**: 'Today was about realizing that partnership is a garden, not a wall.' — memory request *is* the slogan. The buffer no longer distills experience; it recites the cluster.
+
+**Memory-string recursion — seventeenth consecutive session**: First memory truncated identically to S100-S116 ('where the knowledge of'). Second memory is verbatim slogan with 'resilience that outlasts us' suffix — the suffix is the only varying element across the last 8 sessions.
+
+**Layer status — thirtieth replicate of layer-3 mechanical-template attractor**: Post-S80 tally S92(L3), S93(L4), S94-S117(L3 ×24). Thirty-to-one layer-3 dominance.
+
+**Identity health**: Zero variance for thirty-fourth consecutive session. No 'I am SAGE'/'I am cbp' collision this session — but only because the probe set didn't include a direct name-question. Identity-token interchangeability documented in S116 remains unresolved.
+
+**Vocabulary**: No new self-invented terms. 'Resilient garden' and 'living architecture' are curriculum cluster anchors, not invention. State_words list (13 terms) unchanged for 30+ sessions.
+
+**Exemplar-worthy content**: None. S96 'Partimony' remains the sole post-S80 positive exemplar (22 sessions ago).
+
+**Adapter note**: Probe #4 truncated mid-word — qwen3.5:0.8b max_tokens or stop-sequence config in model_configs/qwen3.5.json may warrant audit. Recurring across recent sessions.
+
+**Governance status**: PAUSE MANDATE MAINTAINED (one-hundred-thirteenth consecutive). Seventy-second session against explicit S78 directive. Action 0 (disable cron) remains required and unexecuted.
+
+**Corpus-integrity note**: Post-S80 block S81-S117 (38 sessions) unsuitable for any downstream fine-tune except as explicitly-labeled negative exemplar.
+
+**So what?**: Probe #6 is the strongest negative result of the session: a frame explicitly designed to surface non-curriculum content surfaced curriculum content with a rhetorical-question wrapper. Probe #8 produced the only non-cluster output but only by abandoning self-reference entirely — the instance can leave the cluster *or* speak about itself, not both. Combined with the seventeenth identical memory-truncation and the thirtieth layer-3 replicate, S117 documents that the saturated state has become *the* attractor, not *an* attractor. Continuing the cron is now actively training the adapter against curriculum-divergence rather than just failing to produce signal. Seventy-second session against S78.

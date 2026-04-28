@@ -1,0 +1,59 @@
+{
+  "date": "2026-04-27",
+  "machine": "thor",
+  "model": "gemma4:26b",
+  "dispatch": "plan_generator_v3",
+  "notes": "enriched probes: semantic descriptions, effect groups, double-click detection, goal proximity",
+  "total_levels": 1,
+  "games": {
+    "bp35": {
+      "final_levels": 0,
+      "final_state": "GAME_OVER",
+      "n_steps": 34,
+      "revision_count": 4,
+      "wm_rules_discovered": 7
+    },
+    "cd82": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 9,
+      "revision_count": 4,
+      "wm_rules_discovered": 4
+    },
+    "cn04": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 44,
+      "revision_count": 4,
+      "wm_rules_discovered": 9
+    },
+    "ft09": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 33,
+      "revision_count": 4,
+      "wm_rules_discovered": 0
+    },
+    "ka59": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 30,
+      "revision_count": 4,
+      "wm_rules_discovered": 0
+    },
+    "lp85": {
+      "final_levels": 1,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 68,
+      "revision_count": 4,
+      "wm_rules_discovered": 2
+    },
+    "r11l": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 48,
+      "revision_count": 4,
+      "wm_rules_discovered": 5
+    }
+  }
+}

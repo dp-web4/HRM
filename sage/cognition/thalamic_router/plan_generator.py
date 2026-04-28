@@ -259,8 +259,7 @@ def run_exploration_pass(env, fd, max_explore_steps: int = 30) -> str:
         click_targets.sort(key=lambda x: -x[0])
         results.append(f"\n  Found {len(click_targets)} clickable targets. Testing top ones:")
 
-        for diff, cx, cy, _ in click_targets[:5]:
-            desc = _describe_change(frame0, click_targets[0][3]) if diff == click_targets[0][0] else f"{diff}px"
+        for diff, cx, cy, _ in click_targets[:3]:  # top 3 to keep prompt concise
             results.append(f"\n  --- CLICK({cx},{cy}): {diff}px ---")
 
             # click then each direction
@@ -400,9 +399,9 @@ def generate_plan(
             wm_text=wm_text,
         )
     else:
-        # Initial generation — run exploration pass first
+        # Initial generation — exploration pass replaces probes (no duplication)
         exploration = run_exploration_pass(env, fd)
-        prompt = PLAN_PROMPT.format(wm_text=wm_text, probes=probes, exploration=exploration)
+        prompt = PLAN_PROMPT.format(wm_text=wm_text, probes="(see exploration above)", exploration=exploration)
 
     t0 = time.time()
     response = llm.chat(prompt, images_png=[png])
@@ -449,8 +448,11 @@ def play_with_plans(
     print(f"PLAN DISPATCH: {game_id}, max {max_steps} steps, {max_revisions} revisions")
     print(f"WM: {wm.game} L{wm.level}, {len(wm.objects)} objects, {len(wm.causal_rules)} rules")
 
-    # Initial plan
+    # Initial plan (retry once on empty)
     plan = generate_plan(llm, wm, env, fd, initial_frame=initial_frame)
+    if not plan:
+        print("[PLAY] First plan generation returned empty, retrying...")
+        plan = generate_plan(llm, wm, env, fd, initial_frame=initial_frame)
     if not plan:
         return {"error": "Failed to generate initial plan"}
     revisions.append({"step": 0, "type": "initial", "plan_len": len(plan)})

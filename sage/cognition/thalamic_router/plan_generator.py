@@ -193,6 +193,109 @@ def run_grounding_probes(env, fd, reference_frame: Optional[np.ndarray] = None) 
     return "\n".join(lines)
 
 
+# ── Exploration pass ────────────────────────────────────────────────
+
+def run_exploration_pass(env, fd, max_explore_steps: int = 30) -> str:
+    """Run a systematic exploration: try each discovered target, record outcomes.
+
+    This is the "observe before planning" phase. Instead of guessing a plan,
+    try things systematically and report what happened. The model then plans
+    from observed facts, not inferred possibilities.
+
+    Returns a text summary of exploration results.
+    """
+    from arcengine import GameAction
+    GA = {1: GameAction.ACTION1, 2: GameAction.ACTION2, 3: GameAction.ACTION3,
+          4: GameAction.ACTION4, 5: GameAction.ACTION5, 6: GameAction.ACTION6}
+    names = {1: 'UP', 2: 'DOWN', 3: 'LEFT', 4: 'RIGHT', 5: 'SEL', 6: 'CLICK'}
+    frame0 = np.array(fd.frame)[-1].copy()
+
+    results = []
+
+    # 1. Try each direction + measure
+    for d in [1, 2, 3, 4]:
+        try:
+            env_t = copy.deepcopy(env)
+            fd_t = env_t.step(GA[d])
+            frame_t = np.array(fd_t.frame)[-1]
+            diff = int(np.sum(frame_t != frame0))
+            if diff > 3:
+                desc = _describe_change(frame0, frame_t)
+                results.append(f"  {names[d]}: {desc}")
+            else:
+                results.append(f"  {names[d]}: blocked/no change")
+        except Exception:
+            results.append(f"  {names[d]}: error")
+
+    # 2. Try SEL
+    try:
+        env_t = copy.deepcopy(env)
+        fd_t = env_t.step(GA[5])
+        frame_t = np.array(fd_t.frame)[-1]
+        diff = int(np.sum(frame_t != frame0))
+        desc = _describe_change(frame0, frame_t) if diff > 3 else "no effect"
+        results.append(f"  SEL: {desc}")
+    except Exception:
+        results.append(f"  SEL: error")
+
+    # 3. Find and try each click target individually
+    click_targets = []
+    for cy in range(4, 60, 8):
+        for cx in range(4, 60, 8):
+            try:
+                env_t = copy.deepcopy(env)
+                fd_t = env_t.step(GA[6], data={'x': cx, 'y': cy})
+                if fd_t is None:
+                    continue
+                frame_t = np.array(fd_t.frame)[-1]
+                diff = int(np.sum(frame_t != frame0))
+                if diff > 3:
+                    click_targets.append((diff, cx, cy, frame_t))
+            except Exception:
+                pass
+
+    # 4. For the top targets, try sequences: click→direction, click→SEL, click→click
+    if click_targets:
+        click_targets.sort(key=lambda x: -x[0])
+        results.append(f"\n  Found {len(click_targets)} clickable targets. Testing top ones:")
+
+        for diff, cx, cy, _ in click_targets[:5]:
+            desc = _describe_change(frame0, click_targets[0][3]) if diff == click_targets[0][0] else f"{diff}px"
+            results.append(f"\n  --- CLICK({cx},{cy}): {diff}px ---")
+
+            # click then each direction
+            for d in [1, 2, 3, 4, 5]:
+                try:
+                    env_t = copy.deepcopy(env)
+                    env_t.step(GA[6], data={'x': cx, 'y': cy})
+                    fd_t = env_t.step(GA[d])
+                    frame_t = np.array(fd_t.frame)[-1]
+                    seq_diff = int(np.sum(frame_t != frame0))
+                    if seq_diff > diff + 5:  # more than just the click alone
+                        seq_desc = _describe_change(frame0, frame_t)
+                        results.append(f"    CLICK({cx},{cy})→{names[d]}: {seq_desc}")
+                except Exception:
+                    pass
+
+            # click twice
+            try:
+                env_t = copy.deepcopy(env)
+                env_t.step(GA[6], data={'x': cx, 'y': cy})
+                fd_t = env_t.step(GA[6], data={'x': cx, 'y': cy})
+                frame_t = np.array(fd_t.frame)[-1]
+                dbl_diff = int(np.sum(frame_t != frame0))
+                if dbl_diff < diff // 2:
+                    results.append(f"    CLICK({cx},{cy})×2: REVERTS (toggle mechanic)")
+                elif dbl_diff > diff * 1.5:
+                    results.append(f"    CLICK({cx},{cy})×2: COMPOUNDS ({dbl_diff}px)")
+                else:
+                    results.append(f"    CLICK({cx},{cy})×2: {dbl_diff}px (similar to single)")
+            except Exception:
+                pass
+
+    return "EXPLORATION RESULTS (what each action actually does):\n" + "\n".join(results)
+
+
 # ── Plan generation prompt ──────────────────────────────────────────
 
 PLAN_PROMPT = """You are writing a game-playing plan. Execute this plan to clear the level.
@@ -200,22 +303,29 @@ PLAN_PROMPT = """You are writing a game-playing plan. Execute this plan to clear
 ## Game mechanics
 {wm_text}
 
-## Current state (from probes)
+## What I learned by trying things (exploration)
+{exploration}
+
+## Current state
 {probes}
 
 ## Your task
-Write a JSON plan — a list of steps to clear this level.
-Each step is a dict. Simple steps: {{"do": "UP"}}
-Repeat: {{"do": "LEFT", "repeat": 3}}
-Click: {{"do": "CLICK", "x": 36, "y": 3}}
-Phases: {{"phase": "name", "steps": [...]}}
-Predictions: {{"do": "SEL", "expect": "frame_change > 40px"}}
+Based on the exploration results above, write a plan that uses
+the actions that ACTUALLY WORK. The exploration tells you exactly
+what each click target does and which sequences produce change.
 
+Write a JSON plan — a list of steps:
+- Simple: {{"do": "UP"}}
+- Repeat: {{"do": "LEFT", "repeat": 3}}
+- Click: {{"do": "CLICK", "x": 36, "y": 3}}
+- Phases: {{"phase": "name", "steps": [...]}}
+- Predictions: {{"do": "SEL", "expect": "frame_change > 40px"}}
+
+IMPORTANT: Only use click coordinates that the exploration showed are active.
+Only use directions that the exploration showed produce movement.
 Use action NAMES: UP, DOWN, LEFT, RIGHT, SEL, CLICK
-Use the probe data to choose actions that produce real change.
-Include "expect" on key steps so we can verify your predictions.
 
-Respond with ONLY the JSON plan (no other text):
+Respond with ONLY the JSON plan:
 [
   ...your steps here...
 ]"""
@@ -290,8 +400,9 @@ def generate_plan(
             wm_text=wm_text,
         )
     else:
-        # Initial generation
-        prompt = PLAN_PROMPT.format(wm_text=wm_text, probes=probes)
+        # Initial generation — run exploration pass first
+        exploration = run_exploration_pass(env, fd)
+        prompt = PLAN_PROMPT.format(wm_text=wm_text, probes=probes, exploration=exploration)
 
     t0 = time.time()
     response = llm.chat(prompt, images_png=[png])

@@ -1,0 +1,179 @@
+{
+  "date": "2026-04-27",
+  "machine": "thor",
+  "model": "gemma4:26b",
+  "dispatch": "plan_generator",
+  "max_steps": 300,
+  "max_revisions": 3,
+  "total_levels": 0,
+  "games": {
+    "ar25": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 30,
+      "revision_count": 3,
+      "wm_rules_discovered": 6
+    },
+    "bp35": {
+      "final_levels": 0,
+      "final_state": "GAME_OVER",
+      "n_steps": 26,
+      "revision_count": 1,
+      "wm_rules_discovered": 14
+    },
+    "cd82": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 32,
+      "revision_count": 3,
+      "wm_rules_discovered": 6
+    },
+    "cn04": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 28,
+      "revision_count": 3,
+      "wm_rules_discovered": 7
+    },
+    "ft09": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 24,
+      "revision_count": 3,
+      "wm_rules_discovered": 0
+    },
+    "g50t": {
+      "final_levels": 0,
+      "final_state": "GAME_OVER",
+      "n_steps": 130,
+      "revision_count": 1,
+      "wm_rules_discovered": 41
+    },
+    "ka59": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 40,
+      "revision_count": 3,
+      "wm_rules_discovered": 0
+    },
+    "lf52": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 8,
+      "revision_count": 3,
+      "wm_rules_discovered": 1
+    },
+    "lp85": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 16,
+      "revision_count": 3,
+      "wm_rules_discovered": 0
+    },
+    "ls20": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 52,
+      "revision_count": 3,
+      "wm_rules_discovered": 12
+    },
+    "m0r0": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 30,
+      "revision_count": 3,
+      "wm_rules_discovered": 8
+    },
+    "r11l": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 24,
+      "revision_count": 3,
+      "wm_rules_discovered": 4
+    },
+    "re86": {
+      "final_levels": 0,
+      "final_state": "GAME_OVER",
+      "n_steps": 100,
+      "revision_count": 3,
+      "wm_rules_discovered": 29
+    },
+    "s5i5": {
+      "final_levels": 0,
+      "final_state": "GAME_OVER",
+      "n_steps": 50,
+      "revision_count": 3,
+      "wm_rules_discovered": 0
+    },
+    "sb26": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 32,
+      "revision_count": 3,
+      "wm_rules_discovered": 0
+    },
+    "sc25": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 40,
+      "revision_count": 3,
+      "wm_rules_discovered": 0
+    },
+    "sk48": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 21,
+      "revision_count": 3,
+      "wm_rules_discovered": 2
+    },
+    "sp80": {
+      "final_levels": 0,
+      "final_state": "GAME_OVER",
+      "n_steps": 30,
+      "revision_count": 0,
+      "wm_rules_discovered": 1
+    },
+    "su15": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 7,
+      "revision_count": 3,
+      "wm_rules_discovered": 2
+    },
+    "tn36": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 36,
+      "revision_count": 3,
+      "wm_rules_discovered": 1
+    },
+    "tr87": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 31,
+      "revision_count": 3,
+      "wm_rules_discovered": 1
+    },
+    "tu93": {
+      "final_levels": 0,
+      "final_state": "GAME_OVER",
+      "n_steps": 50,
+      "revision_count": 0,
+      "wm_rules_discovered": 0
+    },
+    "vc33": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 5,
+      "revision_count": 3,
+      "wm_rules_discovered": 0
+    },
+    "wa30": {
+      "final_levels": 0,
+      "final_state": "NOT_FINISHED",
+      "n_steps": 154,
+      "revision_count": 3,
+      "wm_rules_discovered": 12
+    }
+  }
+}

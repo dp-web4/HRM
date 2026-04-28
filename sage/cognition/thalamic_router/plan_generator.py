@@ -42,12 +42,48 @@ from sage.cognition.thalamic_router.plan_executor import (
 
 # ── Probe sequences for grounding ───────────────────────────────────
 
-def run_grounding_probes(env, fd) -> str:
-    """Run lookahead + multi-step + exhaustive click probes.
+def _describe_change(frame0: np.ndarray, frame1: np.ndarray) -> str:
+    """Describe WHERE and WHAT changed between two frames."""
+    diff_mask = frame0 != frame1
+    if not diff_mask.any():
+        return "no change"
+    ys, xs = np.where(diff_mask)
+    y_min, y_max = int(ys.min()), int(ys.max())
+    x_min, x_max = int(xs.min()), int(xs.max())
+    n_px = int(diff_mask.sum())
 
-    The click scan is the critical piece — it finds WHERE interactive
-    elements actually are on the 64x64 grid. Without this, the model
-    writes plans that click into empty space.
+    # Quadrant description
+    cy, cx = (y_min + y_max) / 2, (x_min + x_max) / 2
+    v = "top" if cy < 21 else ("bottom" if cy > 42 else "center")
+    h = "left" if cx < 21 else ("right" if cx > 42 else "center")
+    region = f"{v}-{h}" if v != "center" or h != "center" else "center"
+
+    # Color analysis — what colors appeared/disappeared
+    old_colors = set(frame0[ys, xs].flatten())
+    new_colors = set(frame1[ys, xs].flatten())
+    appeared = new_colors - old_colors
+    disappeared = old_colors - new_colors
+
+    parts = [f"{n_px}px in {region} (y:{y_min}-{y_max} x:{x_min}-{x_max})"]
+    if appeared:
+        parts.append(f"colors appeared: {sorted(appeared)[:3]}")
+    if disappeared:
+        parts.append(f"colors gone: {sorted(disappeared)[:3]}")
+    return "; ".join(parts)
+
+
+def _frame_match_pct(frame: np.ndarray, reference_frame: np.ndarray) -> float:
+    """Percentage of pixels matching between current frame and reference."""
+    return float(np.mean(frame == reference_frame) * 100)
+
+
+def run_grounding_probes(env, fd, reference_frame: Optional[np.ndarray] = None) -> str:
+    """Run enriched probes: what exists, what each element does, where it acts.
+
+    Three layers of grounding:
+    1. Directional actions — what movement does
+    2. Click discovery — find all interactive elements with semantic descriptions
+    3. Goal comparison — how close are we to winning (if reference available)
     """
     from arcengine import GameAction
     GA = {1: GameAction.ACTION1, 2: GameAction.ACTION2, 3: GameAction.ACTION3,
@@ -57,26 +93,27 @@ def run_grounding_probes(env, fd) -> str:
 
     lines = []
 
-    # Single-step lookahead
+    # ── 1. Directional actions ──────────────────────────────────
     la_text, _ = lookahead(env, fd, actions=[1, 2, 3, 4, 5])
     lines.append("Single actions from current state:")
     lines.append(la_text)
 
-    # Two-step: direction → SEL
+    # Direction → SEL sequences
     lines.append("\nTwo-step sequences (move then SEL):")
     for d in [1, 2, 3, 4]:
         try:
             env_t = copy.deepcopy(env)
             env_t.step(GA[d])
             fd_t = env_t.step(GA[5])
-            diff = int(np.sum(np.array(fd_t.frame)[-1] != frame0))
+            frame_t = np.array(fd_t.frame)[-1]
+            diff = int(np.sum(frame_t != frame0))
+            desc = _describe_change(frame0, frame_t) if diff > 10 else f"{diff}px"
             adv = fd_t.levels_completed > fd.levels_completed
-            lines.append(f"  {names[d]}→SEL: {diff}px{'  ★ LEVEL ADVANCE!' if adv else ''}")
+            lines.append(f"  {names[d]}→SEL: {desc}{'  ★ LEVEL ADVANCE!' if adv else ''}")
         except Exception:
             pass
 
-    # Exhaustive click scan — 8px grid (64 points) to find all interactive elements
-    # This is the tactical grounding the plan generator was missing.
+    # ── 2. Exhaustive click discovery with semantic descriptions ─
     click_results = []
     for cy in range(4, 60, 8):
         for cx in range(4, 60, 8):
@@ -87,34 +124,71 @@ def run_grounding_probes(env, fd) -> str:
                     continue
                 frame_t = np.array(fd_t.frame)[-1]
                 diff = int(np.sum(frame_t != frame0))
-                if diff > 3:  # lower threshold to catch subtle interactions
-                    click_results.append((diff, cx, cy))
+                if diff > 3:
+                    desc = _describe_change(frame0, frame_t)
+                    click_results.append((diff, cx, cy, desc, frame_t))
             except Exception:
                 pass
 
     if click_results:
-        # Sort by change magnitude, report top targets
         click_results.sort(key=lambda x: -x[0])
         lines.append(f"\nActive click targets ({len(click_results)} found):")
-        for diff, cx, cy in click_results[:8]:
-            # Also check what color is at that position for context
+        for diff, cx, cy, desc, _ in click_results[:10]:
             color = int(frame0[cy, cx]) if 0 <= cy < 64 and 0 <= cx < 64 else -1
-            lines.append(f"  CLICK({cx},{cy}): {diff}px change (on color {color})")
+            lines.append(f"  CLICK({cx},{cy}): {desc} [on color {color}]")
 
-        # Also probe CLICK→SEL on the best targets
-        lines.append("\nClick-then-SEL on best targets:")
-        for diff, cx, cy in click_results[:3]:
+        # Group by effect similarity — which clicks do the SAME thing?
+        # (helps model understand: "these 5 targets all cycle grid cells")
+        effect_groups = {}
+        for diff, cx, cy, desc, _ in click_results:
+            # Group by magnitude bucket + region
+            key = f"{diff // 20 * 20}px"
+            effect_groups.setdefault(key, []).append((cx, cy))
+        if len(effect_groups) < len(click_results):
+            lines.append("\n  Effect groups (targets that do similar things):")
+            for effect, coords in sorted(effect_groups.items(), key=lambda x: -int(x[0].rstrip('px'))):
+                if len(coords) > 1:
+                    coord_str = ", ".join(f"({x},{y})" for x, y in coords[:6])
+                    lines.append(f"    ~{effect} change: {coord_str}")
+
+        # CLICK→SEL and CLICK→CLICK on best targets
+        lines.append("\nSequences from best click targets:")
+        for diff, cx, cy, _, _ in click_results[:4]:
+            # CLICK → SEL
             try:
                 env_t = copy.deepcopy(env)
                 env_t.step(GA[6], data={'x': cx, 'y': cy})
                 fd_t = env_t.step(GA[5])
-                total_diff = int(np.sum(np.array(fd_t.frame)[-1] != frame0))
+                frame_t = np.array(fd_t.frame)[-1]
+                total_diff = int(np.sum(frame_t != frame0))
                 adv = fd_t.levels_completed > fd.levels_completed
-                lines.append(f"  CLICK({cx},{cy})→SEL: {total_diff}px{'  ★ LEVEL ADVANCE!' if adv else ''}")
+                desc = _describe_change(frame0, frame_t) if total_diff > 20 else f"{total_diff}px"
+                lines.append(f"  CLICK({cx},{cy})→SEL: {desc}{'  ★ LEVEL ADVANCE!' if adv else ''}")
+            except Exception:
+                pass
+
+            # CLICK same target twice (for toggle/cycle mechanics)
+            try:
+                env_t = copy.deepcopy(env)
+                env_t.step(GA[6], data={'x': cx, 'y': cy})
+                fd_t = env_t.step(GA[6], data={'x': cx, 'y': cy})
+                frame_t = np.array(fd_t.frame)[-1]
+                double_diff = int(np.sum(frame_t != frame0))
+                if double_diff != diff:  # double-click differs from single
+                    lines.append(f"  CLICK({cx},{cy})×2: {double_diff}px {'(reverts!)' if double_diff < diff // 2 else '(compounds)'}")
             except Exception:
                 pass
     else:
-        lines.append("\nNo active click targets found (game may be directional-only).")
+        lines.append("\nNo active click targets found (game is directional-only).")
+
+    # ── 3. Goal comparison ──────────────────────────────────────
+    if reference_frame is not None:
+        match_pct = _frame_match_pct(frame0, reference_frame)
+        lines.append(f"\nGoal proximity: {match_pct:.1f}% of pixels match target")
+        diff_mask = frame0 != reference_frame
+        if diff_mask.any():
+            ys, xs = np.where(diff_mask)
+            lines.append(f"  Mismatched region: y:{ys.min()}-{ys.max()} x:{xs.min()}-{xs.max()}")
 
     return "\n".join(lines)
 
@@ -179,16 +253,18 @@ def generate_plan(
     env, fd,
     prev_result: Optional[Dict] = None,
     prev_plan: Optional[List] = None,
+    initial_frame: Optional[np.ndarray] = None,
 ) -> List[Dict]:
     """Generate or revise a plan using the LLM.
 
     If prev_result is provided, this is a revision (re-plan after failure).
     Otherwise, this is initial plan generation.
+    initial_frame: the frame from game start — used for goal proximity tracking.
     """
     frame = np.array(fd.frame)[-1]
     png = render_frame_png(frame, scale=4)
     wm_text = wm.render(budget_tokens=400)
-    probes = run_grounding_probes(env, fd)
+    probes = run_grounding_probes(env, fd, reference_frame=initial_frame)
 
     if prev_result and prev_plan:
         # Revision
@@ -252,6 +328,7 @@ def play_with_plans(
 
     fd = env.reset()
     llm = OllamaClient(model=llm_model)
+    initial_frame = np.array(fd.frame)[-1].copy()  # reference for goal proximity
 
     total_steps = 0
     total_log = []
@@ -262,7 +339,7 @@ def play_with_plans(
     print(f"WM: {wm.game} L{wm.level}, {len(wm.objects)} objects, {len(wm.causal_rules)} rules")
 
     # Initial plan
-    plan = generate_plan(llm, wm, env, fd)
+    plan = generate_plan(llm, wm, env, fd, initial_frame=initial_frame)
     if not plan:
         return {"error": "Failed to generate initial plan"}
     revisions.append({"step": 0, "type": "initial", "plan_len": len(plan)})
@@ -290,7 +367,7 @@ def play_with_plans(
             wm.level = level
             wm.revision_count += 1
             # Generate fresh plan for new level
-            plan = generate_plan(llm, wm, env, fd)
+            plan = generate_plan(llm, wm, env, fd, initial_frame=initial_frame)
             revisions.append({"step": total_steps, "type": "level_advance", "plan_len": len(plan)})
             continue
 
@@ -316,7 +393,7 @@ def play_with_plans(
                         f"but got '{entry.get('expect_actual','')}'"
                     )
 
-            plan = generate_plan(llm, wm, env, fd, prev_result=result, prev_plan=plan)
+            plan = generate_plan(llm, wm, env, fd, prev_result=result, prev_plan=plan, initial_frame=initial_frame)
             revisions.append({"step": total_steps, "type": "revision", "plan_len": len(plan)})
 
     final_state = fd.state.name if fd and hasattr(fd, 'state') and fd.state else "CRASHED"

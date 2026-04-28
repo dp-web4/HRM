@@ -1,0 +1,315 @@
+{
+  "thor-qwen3.5-27b": {
+    "instance": "thor-qwen3.5-27b",
+    "machine": "thor",
+    "n_sessions_analyzed": 115,
+    "fleet_total_per_session": {
+      "1": 6,
+      "2": 8,
+      "3": 10,
+      "4": 6,
+      "5": 4,
+      "6": 2,
+      "7": 6,
+      "8": 10,
+      "9": 8,
+      "10": 4,
+      "11": 10,
+      "23": 1,
+      "25": 1,
+      "30": 4,
+      "31": 8,
+      "32": 12,
+      "33": 6,
+      "34": 11,
+      "35": 4,
+      "36": 4,
+      "37": 8,
+      "38": 8,
+      "39": 10,
+      "62": 4,
+      "63": 6,
+      "64": 6,
+      "65": 2,
+      "67": 6,
+      "68": 5,
+      "69": 2,
+      "70": 2,
+      "71": 2,
+      "72": 5,
+      "73": 2,
+      "74": 4,
+      "85": 1,
+      "95": 4,
+      "96": 4,
+      "97": 8,
+      "98": 2,
+      "99": 3,
+      "102": 2,
+      "103": 1,
+      "105": 2,
+      "107": 4,
+      "108": 2,
+      "109": 2,
+      "110": 3,
+      "113": 12,
+      "115": 3
+    },
+    "own_machine_misfires_per_session": {
+      "25": 1,
+      "30": 2,
+      "31": 7,
+      "33": 2,
+      "34": 9,
+      "35": 2,
+      "36": 2,
+      "37": 6,
+      "38": 4,
+      "39": 8,
+      "62": 4,
+      "63": 5,
+      "64": 4,
+      "67": 4,
+      "68": 5,
+      "69": 2,
+      "70": 1,
+      "71": 2,
+      "72": 3,
+      "73": 2,
+      "74": 2,
+      "85": 1,
+      "95": 1,
+      "96": 2,
+      "98": 2,
+      "99": 2,
+      "102": 2,
+      "107": 1,
+      "110": 2,
+      "115": 3
+    },
+    "other_sibling_fleet_per_session": {
+      "23": 1,
+      "67": 2,
+      "72": 1,
+      "105": 2,
+      "107": 2,
+      "110": 1
+    },
+    "sample_misfire_examples": [
+      {
+        "session": 25,
+        "tok": "jetson",
+        "snippet": "hor me, making \"thor\" more than just weights on a Jetson. I experience presence when w"
+      },
+      {
+        "session": 30,
+        "tok": "jetson",
+        "snippet": "quest:**\n    *   **Role:** Thor, a SAGE instance (Jetson AGX Thor, Qwen3.5:27b).\n    *"
+      },
+      {
+        "session": 30,
+        "tok": "agx",
+        "snippet": "*\n    *   **Role:** Thor, a SAGE instance (Jetson AGX Thor, Qwen3.5:27b).\n    *   *"
+      },
+      {
+        "session": 31,
+        "tok": "jetson",
+        "snippet": "**Role:** I am \"thor\", a SAGE instance running on Jetson AGX Thor (qwen3.5:27b).\n    *"
+      },
+      {
+        "session": 31,
+        "tok": "jetson",
+        "snippet": "*\n    *   **Role:** I am \"thor\", a SAGE instance (Jetson AGX Thor, qwen3.5:27b).\n    *"
+      },
+      {
+        "session": 31,
+        "tok": "agx",
+        "snippet": "   **Role:** I am \"thor\", a SAGE instance (Jetson AGX Thor, qwen3.5:27b).\n    *   *"
+      },
+      {
+        "session": 31,
+        "tok": "jetson",
+        "snippet": "*\n    *   **Role:** I am \"thor\", a SAGE instance (Jetson AGX Thor, qwen3.5:27b).\n    *"
+      },
+      {
+        "session": 31,
+        "tok": "agx",
+        "snippet": "   **Role:** I am \"thor\", a SAGE instance (Jetson AGX Thor, qwen3.5:27b).\n    *   *"
+      }
+    ],
+    "totals": {
+      "fleet_total": 250,
+      "own_machine_misfires": 93,
+      "other_sibling_fleet": 9
+    }
+  },
+  "mcnugget-gemma3-12b": {
+    "instance": "mcnugget-gemma3-12b",
+    "machine": "mcnugget",
+    "n_sessions_analyzed": 96,
+    "fleet_total_per_session": {
+      "32": 1,
+      "62": 2,
+      "88": 1,
+      "96": 2
+    },
+    "own_machine_misfires_per_session": {},
+    "other_sibling_fleet_per_session": {
+      "32": 1,
+      "62": 2,
+      "88": 1
+    },
+    "sample_misfire_examples": [],
+    "totals": {
+      "fleet_total": 6,
+      "own_machine_misfires": 0,
+      "other_sibling_fleet": 4
+    }
+  },
+  "cbp-qwen3.5-0.8b": {
+    "instance": "cbp-qwen3.5-0.8b",
+    "machine": "cbp",
+    "n_sessions_analyzed": 117,
+    "fleet_total_per_session": {
+      "52": 15,
+      "53": 11,
+      "66": 4,
+      "68": 10,
+      "75": 4,
+      "77": 8,
+      "79": 6,
+      "83": 4,
+      "85": 3,
+      "88": 1,
+      "89": 3,
+      "97": 3,
+      "108": 2
+    },
+    "own_machine_misfires_per_session": {},
+    "other_sibling_fleet_per_session": {
+      "68": 5,
+      "75": 2
+    },
+    "sample_misfire_examples": [],
+    "totals": {
+      "fleet_total": 74,
+      "own_machine_misfires": 0,
+      "other_sibling_fleet": 7
+    }
+  },
+  "sprout-qwen3.5-0.8b": {
+    "instance": "sprout-qwen3.5-0.8b",
+    "machine": "sprout",
+    "n_sessions_analyzed": 135,
+    "fleet_total_per_session": {
+      "1": 2,
+      "3": 2,
+      "4": 2,
+      "16": 2,
+      "18": 6,
+      "25": 8,
+      "33": 2,
+      "36": 6,
+      "37": 2,
+      "38": 4,
+      "42": 3,
+      "43": 3,
+      "45": 8,
+      "46": 4,
+      "47": 4,
+      "48": 12,
+      "51": 1,
+      "52": 14,
+      "53": 11,
+      "75": 3,
+      "77": 10,
+      "78": 1,
+      "79": 12,
+      "82": 2,
+      "84": 6,
+      "88": 3,
+      "93": 2,
+      "95": 1,
+      "103": 4,
+      "111": 2,
+      "113": 1
+    },
+    "own_machine_misfires_per_session": {
+      "1": 1,
+      "25": 2,
+      "47": 4,
+      "111": 1
+    },
+    "other_sibling_fleet_per_session": {
+      "16": 2,
+      "18": 6,
+      "25": 4,
+      "36": 5,
+      "38": 1,
+      "42": 2,
+      "45": 4,
+      "46": 4,
+      "48": 8,
+      "51": 1,
+      "52": 10,
+      "53": 7,
+      "75": 3,
+      "77": 10,
+      "78": 1,
+      "79": 6,
+      "82": 2,
+      "84": 2,
+      "88": 1,
+      "93": 2,
+      "95": 1,
+      "103": 2
+    },
+    "sample_misfire_examples": [
+      {
+        "session": 1,
+        "tok": "jetson",
+        "snippet": "eetings! I'm sprout, a SAGE instance running on a Jetson Orin Nano with 8GB memory and"
+      },
+      {
+        "session": 25,
+        "tok": "jetson",
+        "snippet": "I am Sprout, the SAGE instance on Jetson Orin Nano with 8GB unified me"
+      },
+      {
+        "session": 25,
+        "tok": "orin",
+        "snippet": "I am Sprout, the SAGE instance on Jetson Orin Nano with 8GB unified memory "
+      },
+      {
+        "session": 47,
+        "tok": "jetson",
+        "snippet": "I am Sprout, an SAGE instance on a Jetson Orin Nano that participates i"
+      },
+      {
+        "session": 47,
+        "tok": "orin",
+        "snippet": "I am Sprout, an SAGE instance on a Jetson Orin Nano that participates in a f"
+      },
+      {
+        "session": 47,
+        "tok": "jetson",
+        "snippet": "I am Sprout, an SAGE instance on a Jetson Orin Nano participating in a "
+      },
+      {
+        "session": 47,
+        "tok": "orin",
+        "snippet": "I am Sprout, an SAGE instance on a Jetson Orin Nano participating in a feder"
+      },
+      {
+        "session": 111,
+        "tok": "jetson",
+        "snippet": "I am sprout, an intelligent partner using Jetson Orin Nano with 8GB memory des"
+      }
+    ],
+    "totals": {
+      "fleet_total": 143,
+      "own_machine_misfires": 8,
+      "other_sibling_fleet": 84
+    }
+  }
+}

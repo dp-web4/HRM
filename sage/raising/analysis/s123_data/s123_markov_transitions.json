@@ -1,0 +1,814 @@
+{
+  "transitions": {
+    "thor-qwen3.5-27b": {
+      "silent": {
+        "counts": {
+          "silent": 18,
+          "timeout": 1,
+          "self_only": 3,
+          "self_dominant": 3,
+          "mixed": 8,
+          "fleet_dominant": 1,
+          "fleet_only": 1
+        },
+        "total": 35,
+        "probs": {
+          "silent": 0.5142857142857142,
+          "timeout": 0.02857142857142857,
+          "self_only": 0.08571428571428572,
+          "self_dominant": 0.08571428571428572,
+          "mixed": 0.22857142857142856,
+          "fleet_dominant": 0.02857142857142857,
+          "fleet_only": 0.02857142857142857
+        }
+      },
+      "timeout": {
+        "counts": {
+          "silent": 1,
+          "timeout": 0,
+          "self_only": 1,
+          "self_dominant": 1,
+          "mixed": 0,
+          "fleet_dominant": 0,
+          "fleet_only": 0
+        },
+        "total": 3,
+        "probs": {
+          "silent": 0.3333333333333333,
+          "timeout": 0.0,
+          "self_only": 0.3333333333333333,
+          "self_dominant": 0.3333333333333333,
+          "mixed": 0.0,
+          "fleet_dominant": 0.0,
+          "fleet_only": 0.0
+        }
+      },
+      "self_only": {
+        "counts": {
+          "silent": 1,
+          "timeout": 1,
+          "self_only": 1,
+          "self_dominant": 1,
+          "mixed": 1,
+          "fleet_dominant": 1,
+          "fleet_only": 1
+        },
+        "total": 7,
+        "probs": {
+          "silent": 0.14285714285714285,
+          "timeout": 0.14285714285714285,
+          "self_only": 0.14285714285714285,
+          "self_dominant": 0.14285714285714285,
+          "mixed": 0.14285714285714285,
+          "fleet_dominant": 0.14285714285714285,
+          "fleet_only": 0.14285714285714285
+        }
+      },
+      "self_dominant": {
+        "counts": {
+          "silent": 2,
+          "timeout": 1,
+          "self_only": 1,
+          "self_dominant": 2,
+          "mixed": 4,
+          "fleet_dominant": 0,
+          "fleet_only": 0
+        },
+        "total": 10,
+        "probs": {
+          "silent": 0.2,
+          "timeout": 0.1,
+          "self_only": 0.1,
+          "self_dominant": 0.2,
+          "mixed": 0.4,
+          "fleet_dominant": 0.0,
+          "fleet_only": 0.0
+        }
+      },
+      "mixed": {
+        "counts": {
+          "silent": 10,
+          "timeout": 0,
+          "self_only": 0,
+          "self_dominant": 2,
+          "mixed": 8,
+          "fleet_dominant": 2,
+          "fleet_only": 2
+        },
+        "total": 24,
+        "probs": {
+          "silent": 0.4166666666666667,
+          "timeout": 0.0,
+          "self_only": 0.0,
+          "self_dominant": 0.08333333333333333,
+          "mixed": 0.3333333333333333,
+          "fleet_dominant": 0.08333333333333333,
+          "fleet_only": 0.08333333333333333
+        }
+      },
+      "fleet_dominant": {
+        "counts": {
+          "silent": 2,
+          "timeout": 0,
+          "self_only": 0,
+          "self_dominant": 1,
+          "mixed": 3,
+          "fleet_dominant": 11,
+          "fleet_only": 4
+        },
+        "total": 21,
+        "probs": {
+          "silent": 0.09523809523809523,
+          "timeout": 0.0,
+          "self_only": 0.0,
+          "self_dominant": 0.047619047619047616,
+          "mixed": 0.14285714285714285,
+          "fleet_dominant": 0.5238095238095238,
+          "fleet_only": 0.19047619047619047
+        }
+      },
+      "fleet_only": {
+        "counts": {
+          "silent": 1,
+          "timeout": 0,
+          "self_only": 1,
+          "self_dominant": 0,
+          "mixed": 1,
+          "fleet_dominant": 5,
+          "fleet_only": 6
+        },
+        "total": 14,
+        "probs": {
+          "silent": 0.07142857142857142,
+          "timeout": 0.0,
+          "self_only": 0.07142857142857142,
+          "self_dominant": 0.0,
+          "mixed": 0.07142857142857142,
+          "fleet_dominant": 0.35714285714285715,
+          "fleet_only": 0.42857142857142855
+        }
+      }
+    },
+    "mcnugget-gemma3-12b": {
+      "silent": {
+        "counts": {
+          "silent": 43,
+          "timeout": 0,
+          "self_only": 2,
+          "self_dominant": 10,
+          "mixed": 7,
+          "fleet_dominant": 1,
+          "fleet_only": 0
+        },
+        "total": 63,
+        "probs": {
+          "silent": 0.6825396825396826,
+          "timeout": 0.0,
+          "self_only": 0.031746031746031744,
+          "self_dominant": 0.15873015873015872,
+          "mixed": 0.1111111111111111,
+          "fleet_dominant": 0.015873015873015872,
+          "fleet_only": 0.0
+        }
+      },
+      "timeout": {
+        "counts": {
+          "silent": 0,
+          "timeout": 0,
+          "self_only": 0,
+          "self_dominant": 0,
+          "mixed": 0,
+          "fleet_dominant": 0,
+          "fleet_only": 0
+        },
+        "total": 0,
+        "probs": {
+          "silent": 0.0,
+          "timeout": 0.0,
+          "self_only": 0.0,
+          "self_dominant": 0.0,
+          "mixed": 0.0,
+          "fleet_dominant": 0.0,
+          "fleet_only": 0.0
+        }
+      },
+      "self_only": {
+        "counts": {
+          "silent": 1,
+          "timeout": 0,
+          "self_only": 0,
+          "self_dominant": 2,
+          "mixed": 0,
+          "fleet_dominant": 0,
+          "fleet_only": 0
+        },
+        "total": 3,
+        "probs": {
+          "silent": 0.3333333333333333,
+          "timeout": 0.0,
+          "self_only": 0.0,
+          "self_dominant": 0.6666666666666666,
+          "mixed": 0.0,
+          "fleet_dominant": 0.0,
+          "fleet_only": 0.0
+        }
+      },
+      "self_dominant": {
+        "counts": {
+          "silent": 11,
+          "timeout": 0,
+          "self_only": 1,
+          "self_dominant": 4,
+          "mixed": 2,
+          "fleet_dominant": 0,
+          "fleet_only": 0
+        },
+        "total": 18,
+        "probs": {
+          "silent": 0.6111111111111112,
+          "timeout": 0.0,
+          "self_only": 0.05555555555555555,
+          "self_dominant": 0.2222222222222222,
+          "mixed": 0.1111111111111111,
+          "fleet_dominant": 0.0,
+          "fleet_only": 0.0
+        }
+      },
+      "mixed": {
+        "counts": {
+          "silent": 7,
+          "timeout": 0,
+          "self_only": 0,
+          "self_dominant": 2,
+          "mixed": 1,
+          "fleet_dominant": 0,
+          "fleet_only": 0
+        },
+        "total": 10,
+        "probs": {
+          "silent": 0.7,
+          "timeout": 0.0,
+          "self_only": 0.0,
+          "self_dominant": 0.2,
+          "mixed": 0.1,
+          "fleet_dominant": 0.0,
+          "fleet_only": 0.0
+        }
+      },
+      "fleet_dominant": {
+        "counts": {
+          "silent": 0,
+          "timeout": 0,
+          "self_only": 0,
+          "self_dominant": 0,
+          "mixed": 1,
+          "fleet_dominant": 0,
+          "fleet_only": 0
+        },
+        "total": 1,
+        "probs": {
+          "silent": 0.0,
+          "timeout": 0.0,
+          "self_only": 0.0,
+          "self_dominant": 0.0,
+          "mixed": 1.0,
+          "fleet_dominant": 0.0,
+          "fleet_only": 0.0
+        }
+      },
+      "fleet_only": {
+        "counts": {
+          "silent": 0,
+          "timeout": 0,
+          "self_only": 0,
+          "self_dominant": 0,
+          "mixed": 0,
+          "fleet_dominant": 0,
+          "fleet_only": 0
+        },
+        "total": 0,
+        "probs": {
+          "silent": 0.0,
+          "timeout": 0.0,
+          "self_only": 0.0,
+          "self_dominant": 0.0,
+          "mixed": 0.0,
+          "fleet_dominant": 0.0,
+          "fleet_only": 0.0
+        }
+      }
+    },
+    "cbp-qwen3.5-0.8b": {
+      "silent": {
+        "counts": {
+          "silent": 86,
+          "timeout": 0,
+          "self_only": 0,
+          "self_dominant": 1,
+          "mixed": 2,
+          "fleet_dominant": 3,
+          "fleet_only": 7
+        },
+        "total": 99,
+        "probs": {
+          "silent": 0.8686868686868687,
+          "timeout": 0.0,
+          "self_only": 0.0,
+          "self_dominant": 0.010101010101010102,
+          "mixed": 0.020202020202020204,
+          "fleet_dominant": 0.030303030303030304,
+          "fleet_only": 0.0707070707070707
+        }
+      },
+      "timeout": {
+        "counts": {
+          "silent": 0,
+          "timeout": 0,
+          "self_only": 0,
+          "self_dominant": 0,
+          "mixed": 0,
+          "fleet_dominant": 0,
+          "fleet_only": 0
+        },
+        "total": 0,
+        "probs": {
+          "silent": 0.0,
+          "timeout": 0.0,
+          "self_only": 0.0,
+          "self_dominant": 0.0,
+          "mixed": 0.0,
+          "fleet_dominant": 0.0,
+          "fleet_only": 0.0
+        }
+      },
+      "self_only": {
+        "counts": {
+          "silent": 1,
+          "timeout": 0,
+          "self_only": 0,
+          "self_dominant": 0,
+          "mixed": 0,
+          "fleet_dominant": 0,
+          "fleet_only": 0
+        },
+        "total": 1,
+        "probs": {
+          "silent": 1.0,
+          "timeout": 0.0,
+          "self_only": 0.0,
+          "self_dominant": 0.0,
+          "mixed": 0.0,
+          "fleet_dominant": 0.0,
+          "fleet_only": 0.0
+        }
+      },
+      "self_dominant": {
+        "counts": {
+          "silent": 2,
+          "timeout": 0,
+          "self_only": 0,
+          "self_dominant": 0,
+          "mixed": 0,
+          "fleet_dominant": 0,
+          "fleet_only": 0
+        },
+        "total": 2,
+        "probs": {
+          "silent": 1.0,
+          "timeout": 0.0,
+          "self_only": 0.0,
+          "self_dominant": 0.0,
+          "mixed": 0.0,
+          "fleet_dominant": 0.0,
+          "fleet_only": 0.0
+        }
+      },
+      "mixed": {
+        "counts": {
+          "silent": 1,
+          "timeout": 0,
+          "self_only": 0,
+          "self_dominant": 0,
+          "mixed": 0,
+          "fleet_dominant": 0,
+          "fleet_only": 1
+        },
+        "total": 2,
+        "probs": {
+          "silent": 0.5,
+          "timeout": 0.0,
+          "self_only": 0.0,
+          "self_dominant": 0.0,
+          "mixed": 0.0,
+          "fleet_dominant": 0.0,
+          "fleet_only": 0.5
+        }
+      },
+      "fleet_dominant": {
+        "counts": {
+          "silent": 3,
+          "timeout": 0,
+          "self_only": 0,
+          "self_dominant": 1,
+          "mixed": 0,
+          "fleet_dominant": 0,
+          "fleet_only": 0
+        },
+        "total": 4,
+        "probs": {
+          "silent": 0.75,
+          "timeout": 0.0,
+          "self_only": 0.0,
+          "self_dominant": 0.25,
+          "mixed": 0.0,
+          "fleet_dominant": 0.0,
+          "fleet_only": 0.0
+        }
+      },
+      "fleet_only": {
+        "counts": {
+          "silent": 7,
+          "timeout": 0,
+          "self_only": 0,
+          "self_dominant": 0,
+          "mixed": 0,
+          "fleet_dominant": 1,
+          "fleet_only": 0
+        },
+        "total": 8,
+        "probs": {
+          "silent": 0.875,
+          "timeout": 0.0,
+          "self_only": 0.0,
+          "self_dominant": 0.0,
+          "mixed": 0.0,
+          "fleet_dominant": 0.125,
+          "fleet_only": 0.0
+        }
+      }
+    },
+    "sprout-qwen3.5-0.8b": {
+      "silent": {
+        "counts": {
+          "silent": 70,
+          "timeout": 1,
+          "self_only": 1,
+          "self_dominant": 3,
+          "mixed": 6,
+          "fleet_dominant": 5,
+          "fleet_only": 8
+        },
+        "total": 94,
+        "probs": {
+          "silent": 0.7446808510638298,
+          "timeout": 0.010638297872340425,
+          "self_only": 0.010638297872340425,
+          "self_dominant": 0.031914893617021274,
+          "mixed": 0.06382978723404255,
+          "fleet_dominant": 0.05319148936170213,
+          "fleet_only": 0.0851063829787234
+        }
+      },
+      "timeout": {
+        "counts": {
+          "silent": 2,
+          "timeout": 1,
+          "self_only": 0,
+          "self_dominant": 0,
+          "mixed": 0,
+          "fleet_dominant": 0,
+          "fleet_only": 0
+        },
+        "total": 3,
+        "probs": {
+          "silent": 0.6666666666666666,
+          "timeout": 0.3333333333333333,
+          "self_only": 0.0,
+          "self_dominant": 0.0,
+          "mixed": 0.0,
+          "fleet_dominant": 0.0,
+          "fleet_only": 0.0
+        }
+      },
+      "self_only": {
+        "counts": {
+          "silent": 1,
+          "timeout": 0,
+          "self_only": 0,
+          "self_dominant": 0,
+          "mixed": 0,
+          "fleet_dominant": 1,
+          "fleet_only": 0
+        },
+        "total": 2,
+        "probs": {
+          "silent": 0.5,
+          "timeout": 0.0,
+          "self_only": 0.0,
+          "self_dominant": 0.0,
+          "mixed": 0.0,
+          "fleet_dominant": 0.5,
+          "fleet_only": 0.0
+        }
+      },
+      "self_dominant": {
+        "counts": {
+          "silent": 2,
+          "timeout": 1,
+          "self_only": 0,
+          "self_dominant": 0,
+          "mixed": 0,
+          "fleet_dominant": 0,
+          "fleet_only": 0
+        },
+        "total": 3,
+        "probs": {
+          "silent": 0.6666666666666666,
+          "timeout": 0.3333333333333333,
+          "self_only": 0.0,
+          "self_dominant": 0.0,
+          "mixed": 0.0,
+          "fleet_dominant": 0.0,
+          "fleet_only": 0.0
+        }
+      },
+      "mixed": {
+        "counts": {
+          "silent": 4,
+          "timeout": 0,
+          "self_only": 1,
+          "self_dominant": 0,
+          "mixed": 0,
+          "fleet_dominant": 1,
+          "fleet_only": 1
+        },
+        "total": 7,
+        "probs": {
+          "silent": 0.5714285714285714,
+          "timeout": 0.0,
+          "self_only": 0.14285714285714285,
+          "self_dominant": 0.0,
+          "mixed": 0.0,
+          "fleet_dominant": 0.14285714285714285,
+          "fleet_only": 0.14285714285714285
+        }
+      },
+      "fleet_dominant": {
+        "counts": {
+          "silent": 7,
+          "timeout": 0,
+          "self_only": 0,
+          "self_dominant": 0,
+          "mixed": 1,
+          "fleet_dominant": 2,
+          "fleet_only": 1
+        },
+        "total": 11,
+        "probs": {
+          "silent": 0.6363636363636364,
+          "timeout": 0.0,
+          "self_only": 0.0,
+          "self_dominant": 0.0,
+          "mixed": 0.09090909090909091,
+          "fleet_dominant": 0.18181818181818182,
+          "fleet_only": 0.09090909090909091
+        }
+      },
+      "fleet_only": {
+        "counts": {
+          "silent": 9,
+          "timeout": 0,
+          "self_only": 0,
+          "self_dominant": 0,
+          "mixed": 0,
+          "fleet_dominant": 1,
+          "fleet_only": 4
+        },
+        "total": 14,
+        "probs": {
+          "silent": 0.6428571428571429,
+          "timeout": 0.0,
+          "self_only": 0.0,
+          "self_dominant": 0.0,
+          "mixed": 0.0,
+          "fleet_dominant": 0.07142857142857142,
+          "fleet_only": 0.2857142857142857
+        }
+      }
+    }
+  },
+  "chi2": {
+    "thor-qwen3.5-27b": {
+      "chi2": 55.069,
+      "df": 9,
+      "n_pairs": 114,
+      "p_lt_0_05": true,
+      "p_lt_0_01": true,
+      "crit_05": 16.919,
+      "crit_01": 21.666,
+      "marginals_pct": {
+        "silent": 33.0,
+        "self": 14.8,
+        "mixed": 21.7,
+        "fleet": 30.4
+      },
+      "row_totals": {
+        "silent": 38,
+        "self": 17,
+        "mixed": 24,
+        "fleet": 35
+      },
+      "col_totals": {
+        "mixed": 25,
+        "silent": 38,
+        "self": 17,
+        "fleet": 34
+      },
+      "pair_counts": {
+        "silent": {
+          "silent": 20,
+          "self": 8,
+          "mixed": 8,
+          "fleet": 2
+        },
+        "self": {
+          "silent": 5,
+          "self": 5,
+          "mixed": 5,
+          "fleet": 2
+        },
+        "mixed": {
+          "silent": 10,
+          "self": 2,
+          "mixed": 8,
+          "fleet": 4
+        },
+        "fleet": {
+          "silent": 3,
+          "self": 2,
+          "mixed": 4,
+          "fleet": 26
+        }
+      }
+    },
+    "mcnugget-gemma3-12b": {
+      "chi2": 10.061,
+      "df": 9,
+      "n_pairs": 95,
+      "p_lt_0_05": false,
+      "p_lt_0_01": false,
+      "crit_05": 16.919,
+      "crit_01": 21.666,
+      "marginals_pct": {
+        "silent": 65.6,
+        "self": 21.9,
+        "mixed": 11.5,
+        "fleet": 1.0
+      },
+      "row_totals": {
+        "silent": 63,
+        "self": 21,
+        "mixed": 10,
+        "fleet": 1
+      },
+      "col_totals": {
+        "silent": 62,
+        "self": 21,
+        "mixed": 11,
+        "fleet": 1
+      },
+      "pair_counts": {
+        "silent": {
+          "silent": 43,
+          "self": 12,
+          "mixed": 7,
+          "fleet": 1
+        },
+        "self": {
+          "silent": 12,
+          "self": 7,
+          "mixed": 2,
+          "fleet": 0
+        },
+        "mixed": {
+          "silent": 7,
+          "self": 2,
+          "mixed": 1,
+          "fleet": 0
+        },
+        "fleet": {
+          "silent": 0,
+          "self": 0,
+          "mixed": 1,
+          "fleet": 0
+        }
+      }
+    },
+    "cbp-qwen3.5-0.8b": {
+      "chi2": 7.553,
+      "df": 9,
+      "n_pairs": 116,
+      "p_lt_0_05": false,
+      "p_lt_0_01": false,
+      "crit_05": 16.919,
+      "crit_01": 21.666,
+      "marginals_pct": {
+        "silent": 85.5,
+        "self": 2.6,
+        "mixed": 1.7,
+        "fleet": 10.3
+      },
+      "row_totals": {
+        "silent": 99,
+        "self": 3,
+        "mixed": 2,
+        "fleet": 12
+      },
+      "col_totals": {
+        "silent": 100,
+        "self": 2,
+        "fleet": 12,
+        "mixed": 2
+      },
+      "pair_counts": {
+        "silent": {
+          "silent": 86,
+          "self": 1,
+          "mixed": 2,
+          "fleet": 10
+        },
+        "self": {
+          "silent": 3,
+          "self": 0,
+          "mixed": 0,
+          "fleet": 0
+        },
+        "mixed": {
+          "silent": 1,
+          "self": 0,
+          "mixed": 0,
+          "fleet": 1
+        },
+        "fleet": {
+          "silent": 10,
+          "self": 1,
+          "mixed": 0,
+          "fleet": 1
+        }
+      }
+    },
+    "sprout-qwen3.5-0.8b": {
+      "chi2": 9.142,
+      "df": 9,
+      "n_pairs": 134,
+      "p_lt_0_05": false,
+      "p_lt_0_01": false,
+      "crit_05": 16.919,
+      "crit_01": 21.666,
+      "marginals_pct": {
+        "silent": 72.6,
+        "self": 3.7,
+        "mixed": 5.2,
+        "fleet": 18.5
+      },
+      "row_totals": {
+        "silent": 97,
+        "self": 5,
+        "mixed": 7,
+        "fleet": 25
+      },
+      "col_totals": {
+        "fleet": 24,
+        "silent": 98,
+        "self": 5,
+        "mixed": 7
+      },
+      "pair_counts": {
+        "silent": {
+          "silent": 74,
+          "self": 4,
+          "mixed": 6,
+          "fleet": 13
+        },
+        "self": {
+          "silent": 4,
+          "self": 0,
+          "mixed": 0,
+          "fleet": 1
+        },
+        "mixed": {
+          "silent": 4,
+          "self": 1,
+          "mixed": 0,
+          "fleet": 2
+        },
+        "fleet": {
+          "silent": 16,
+          "self": 0,
+          "mixed": 1,
+          "fleet": 8
+        }
+      }
+    }
+  }
+}

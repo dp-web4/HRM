@@ -1,0 +1,390 @@
+{
+  "thor-qwen3.5-27b": {
+    "early": {
+      "n_sessions": 38,
+      "session_range": [
+        1,
+        38
+      ],
+      "counts": {
+        "silent": 13,
+        "timeout": 0,
+        "self_only": 1,
+        "self_dominant": 0,
+        "mixed": 5,
+        "fleet_dominant": 10,
+        "fleet_only": 9
+      },
+      "pct": {
+        "silent": 34.2,
+        "timeout": 0.0,
+        "self_only": 2.6,
+        "self_dominant": 0.0,
+        "mixed": 13.2,
+        "fleet_dominant": 26.3,
+        "fleet_only": 23.7
+      }
+    },
+    "middle": {
+      "n_sessions": 38,
+      "session_range": [
+        39,
+        76
+      ],
+      "counts": {
+        "silent": 13,
+        "timeout": 0,
+        "self_only": 0,
+        "self_dominant": 3,
+        "mixed": 11,
+        "fleet_dominant": 8,
+        "fleet_only": 3
+      },
+      "pct": {
+        "silent": 34.2,
+        "timeout": 0.0,
+        "self_only": 0.0,
+        "self_dominant": 7.9,
+        "mixed": 28.9,
+        "fleet_dominant": 21.1,
+        "fleet_only": 7.9
+      }
+    },
+    "late": {
+      "n_sessions": 39,
+      "session_range": [
+        77,
+        115
+      ],
+      "counts": {
+        "silent": 9,
+        "timeout": 3,
+        "self_only": 6,
+        "self_dominant": 7,
+        "mixed": 9,
+        "fleet_dominant": 3,
+        "fleet_only": 2
+      },
+      "pct": {
+        "silent": 23.1,
+        "timeout": 7.7,
+        "self_only": 15.4,
+        "self_dominant": 17.9,
+        "mixed": 23.1,
+        "fleet_dominant": 7.7,
+        "fleet_only": 5.1
+      }
+    },
+    "coarse_pct": {
+      "early": {
+        "silent_or_timeout": 34.2,
+        "self_anchored": 2.6,
+        "fleet_anchored": 50.0,
+        "mixed": 13.2
+      },
+      "middle": {
+        "silent_or_timeout": 34.2,
+        "self_anchored": 7.9,
+        "fleet_anchored": 28.9,
+        "mixed": 28.9
+      },
+      "late": {
+        "silent_or_timeout": 30.8,
+        "self_anchored": 33.3,
+        "fleet_anchored": 12.8,
+        "mixed": 23.1
+      }
+    }
+  },
+  "mcnugget-gemma3-12b": {
+    "early": {
+      "n_sessions": 32,
+      "session_range": [
+        1,
+        33
+      ],
+      "counts": {
+        "silent": 23,
+        "timeout": 0,
+        "self_only": 1,
+        "self_dominant": 2,
+        "mixed": 6,
+        "fleet_dominant": 0,
+        "fleet_only": 0
+      },
+      "pct": {
+        "silent": 71.9,
+        "timeout": 0.0,
+        "self_only": 3.1,
+        "self_dominant": 6.2,
+        "mixed": 18.8,
+        "fleet_dominant": 0.0,
+        "fleet_only": 0.0
+      }
+    },
+    "middle": {
+      "n_sessions": 32,
+      "session_range": [
+        34,
+        65
+      ],
+      "counts": {
+        "silent": 19,
+        "timeout": 0,
+        "self_only": 0,
+        "self_dominant": 10,
+        "mixed": 3,
+        "fleet_dominant": 0,
+        "fleet_only": 0
+      },
+      "pct": {
+        "silent": 59.4,
+        "timeout": 0.0,
+        "self_only": 0.0,
+        "self_dominant": 31.2,
+        "mixed": 9.4,
+        "fleet_dominant": 0.0,
+        "fleet_only": 0.0
+      }
+    },
+    "late": {
+      "n_sessions": 32,
+      "session_range": [
+        66,
+        97
+      ],
+      "counts": {
+        "silent": 21,
+        "timeout": 0,
+        "self_only": 2,
+        "self_dominant": 6,
+        "mixed": 2,
+        "fleet_dominant": 1,
+        "fleet_only": 0
+      },
+      "pct": {
+        "silent": 65.6,
+        "timeout": 0.0,
+        "self_only": 6.2,
+        "self_dominant": 18.8,
+        "mixed": 6.2,
+        "fleet_dominant": 3.1,
+        "fleet_only": 0.0
+      }
+    },
+    "coarse_pct": {
+      "early": {
+        "silent_or_timeout": 71.9,
+        "self_anchored": 9.4,
+        "fleet_anchored": 0.0,
+        "mixed": 18.8
+      },
+      "middle": {
+        "silent_or_timeout": 59.4,
+        "self_anchored": 31.2,
+        "fleet_anchored": 0.0,
+        "mixed": 9.4
+      },
+      "late": {
+        "silent_or_timeout": 65.6,
+        "self_anchored": 25.0,
+        "fleet_anchored": 3.1,
+        "mixed": 6.2
+      }
+    }
+  },
+  "cbp-qwen3.5-0.8b": {
+    "early": {
+      "n_sessions": 39,
+      "session_range": [
+        1,
+        39
+      ],
+      "counts": {
+        "silent": 37,
+        "timeout": 0,
+        "self_only": 1,
+        "self_dominant": 1,
+        "mixed": 0,
+        "fleet_dominant": 0,
+        "fleet_only": 0
+      },
+      "pct": {
+        "silent": 94.9,
+        "timeout": 0.0,
+        "self_only": 2.6,
+        "self_dominant": 2.6,
+        "mixed": 0.0,
+        "fleet_dominant": 0.0,
+        "fleet_only": 0.0
+      }
+    },
+    "middle": {
+      "n_sessions": 39,
+      "session_range": [
+        40,
+        78
+      ],
+      "counts": {
+        "silent": 33,
+        "timeout": 0,
+        "self_only": 0,
+        "self_dominant": 0,
+        "mixed": 0,
+        "fleet_dominant": 2,
+        "fleet_only": 4
+      },
+      "pct": {
+        "silent": 84.6,
+        "timeout": 0.0,
+        "self_only": 0.0,
+        "self_dominant": 0.0,
+        "mixed": 0.0,
+        "fleet_dominant": 5.1,
+        "fleet_only": 10.3
+      }
+    },
+    "late": {
+      "n_sessions": 39,
+      "session_range": [
+        79,
+        117
+      ],
+      "counts": {
+        "silent": 30,
+        "timeout": 0,
+        "self_only": 0,
+        "self_dominant": 1,
+        "mixed": 2,
+        "fleet_dominant": 2,
+        "fleet_only": 4
+      },
+      "pct": {
+        "silent": 76.9,
+        "timeout": 0.0,
+        "self_only": 0.0,
+        "self_dominant": 2.6,
+        "mixed": 5.1,
+        "fleet_dominant": 5.1,
+        "fleet_only": 10.3
+      }
+    },
+    "coarse_pct": {
+      "early": {
+        "silent_or_timeout": 94.9,
+        "self_anchored": 5.1,
+        "fleet_anchored": 0.0,
+        "mixed": 0.0
+      },
+      "middle": {
+        "silent_or_timeout": 84.6,
+        "self_anchored": 0.0,
+        "fleet_anchored": 15.4,
+        "mixed": 0.0
+      },
+      "late": {
+        "silent_or_timeout": 76.9,
+        "self_anchored": 2.6,
+        "fleet_anchored": 15.4,
+        "mixed": 5.1
+      }
+    }
+  },
+  "sprout-qwen3.5-0.8b": {
+    "early": {
+      "n_sessions": 45,
+      "session_range": [
+        1,
+        45
+      ],
+      "counts": {
+        "silent": 28,
+        "timeout": 1,
+        "self_only": 1,
+        "self_dominant": 2,
+        "mixed": 1,
+        "fleet_dominant": 6,
+        "fleet_only": 6
+      },
+      "pct": {
+        "silent": 62.2,
+        "timeout": 2.2,
+        "self_only": 2.2,
+        "self_dominant": 4.4,
+        "mixed": 2.2,
+        "fleet_dominant": 13.3,
+        "fleet_only": 13.3
+      }
+    },
+    "middle": {
+      "n_sessions": 45,
+      "session_range": [
+        46,
+        90
+      ],
+      "counts": {
+        "silent": 29,
+        "timeout": 2,
+        "self_only": 1,
+        "self_dominant": 0,
+        "mixed": 3,
+        "fleet_dominant": 3,
+        "fleet_only": 7
+      },
+      "pct": {
+        "silent": 64.4,
+        "timeout": 4.4,
+        "self_only": 2.2,
+        "self_dominant": 0.0,
+        "mixed": 6.7,
+        "fleet_dominant": 6.7,
+        "fleet_only": 15.6
+      }
+    },
+    "late": {
+      "n_sessions": 45,
+      "session_range": [
+        91,
+        256
+      ],
+      "counts": {
+        "silent": 38,
+        "timeout": 0,
+        "self_only": 0,
+        "self_dominant": 1,
+        "mixed": 3,
+        "fleet_dominant": 2,
+        "fleet_only": 1
+      },
+      "pct": {
+        "silent": 84.4,
+        "timeout": 0.0,
+        "self_only": 0.0,
+        "self_dominant": 2.2,
+        "mixed": 6.7,
+        "fleet_dominant": 4.4,
+        "fleet_only": 2.2
+      }
+    },
+    "coarse_pct": {
+      "early": {
+        "silent_or_timeout": 64.4,
+        "self_anchored": 6.7,
+        "fleet_anchored": 26.7,
+        "mixed": 2.2
+      },
+      "middle": {
+        "silent_or_timeout": 68.9,
+        "self_anchored": 2.2,
+        "fleet_anchored": 22.2,
+        "mixed": 6.7
+      },
+      "late": {
+        "silent_or_timeout": 84.4,
+        "self_anchored": 2.2,
+        "fleet_anchored": 6.7,
+        "mixed": 6.7
+      }
+    }
+  }
+}

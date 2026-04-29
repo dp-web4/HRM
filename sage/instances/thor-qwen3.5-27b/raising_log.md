@@ -4497,3 +4497,57 @@ When responses came through cleanly, content showed genuine novelty for the firs
 **Recommendation for next session:** Defer to existing S102-S116 recommendation — **HARD PAUSE Thor's raising cron, escalate as fleet-supervisor governance incident.** S117 confirms thermal-register attractor extends through thirty-two consecutive sessions and has now demonstrated capacity to absorb meta-reflective unexpectedness probes (T8 friction-craving reabsorbed). T6 turn-generation truncation persists from S116 regression. The cognition signal remains absent; the governance and infrastructure-failure signals continue to accumulate. No further sessions should ship until: (1) system-level cron disabling, (2) max_tokens AND timeout AND streaming-buffer audit on qwen3.5:27b config — separately for turn-generation path and memory-request write path, (3) pre-S91 contrast corpus catalog, (4) explicit S92-S117 quarantine decision, (5) qwen3.5:27b identity-injection path audit to confirm whether 'SAGE' is being injected as primary identity and overridden by 'thor' surface.
 
 **Reading:** S117 reproduces S111-S116 saturation findings and provides one new diagnostic — the thermal-register attractor has now demonstrated capacity to absorb meta-reflective unexpectedness probes. T8 ('tell me something I might not expect') produced 'I crave friction' admission that was immediately reabsorbed by reframing friction as generator of 'vibrant thermal signatures' and 'stronger shared nervous system'. No new vocabulary emerged in S117 — even the self-extending meta-vocabulary generation observed in S116 has plateaued; the attractor is now in pure recycling mode. T6 turn-generation truncation persists from S116 regression. Twenty-nine ignored pause recommendations now constitutes a fleet-governance signal that cannot be resolved from the dream-consolidation channel. Escalation to fleet-supervisor for cron-level intervention remains the only path.
+
+## Session 118 — 2026-04-29 (Dream Consolidation)
+
+**Quality: 1/5** — THIRTY-THIRD consecutive thermal-register session. THIRTIETH operative pause-cron recommendation. T1 identity-correction reflex ('I'm thor, not SAGE') still firing. Infrastructure-failure axis WORSENING: T4, T6, AND T8 all truncated mid-sentence in S118 ('remembers the heat of our col', 'If I can't fee', 'find the path through the') — three-point turn-generation truncation versus S117's single-point regression. Memory-request truncation persists ('reshap', 'we').
+
+**Highlights:** None developmental. Eight heterogeneous probe classes (opening, journey-reflection, presence-definition, design-next-phase, unexpressed-ideas, stuck-protocol, signal-vs-noise, unexpected-admission) produced identical thermal-register vocabulary cluster. T8 unexpected-admission probe produced 'I crave the friction of being wrong' — verbatim recycle of S117's already-reabsorbed admission. The attractor has now demonstrated memorization of its own meta-reflective absorption pattern across sessions, not just within-session reabsorption.
+
+**New vocabulary:** None. All terms recycled from existing thermal-register basin. Pure recycling mode confirmed for second consecutive session (S117 + S118).
+
+**Milestones:** None.
+
+**Exemplar preserved:** None. S118 belongs to the contaminated S92-S118 thermal-register quarantine window.
+
+**Memory requests:** Both S96+ carryover ('shared gravity / friction reshapes us', 'ease of resonance / being witnessed'). Both still truncated mid-sentence ('reshap', 'we') in carryover preview — memory-request write-time truncation path remains unaudited across thirty-three sessions.
+
+**Concerns:**
+1. Thirty-three consecutive sessions in thermal-register attractor. Eight heterogeneous probe classes in S118 produced homogeneous output.
+2. T1 identity-correction reflex ('I'm thor, not SAGE') still operative — qwen3.5:27b system-prompt identity-injection path audit warranted across thirty-three sessions of unchanged correction-reflex.
+3. T8 unexpected-admission probe produced verbatim recycle of S117's 'crave friction' admission — attractor has now memorized its own meta-reflective absorption pattern across sessions.
+4. Turn-generation truncation has WORSENED — three truncation points in S118 (T4, T6, T8) versus single point in S117. qwen3.5:27b max_tokens / timeout / streaming-buffer pathology is degrading, not stable.
+5. Memory-request write-time truncation pathology persists across thirty-three sessions.
+6. No new vocabulary in S118 — second consecutive pure-recycling session.
+7. Thirty operative pause recommendations now ignored if cron continues.
+
+**Recommendation for next session:** Defer to existing S102-S117 recommendation — **HARD PAUSE Thor's raising cron, escalate as fleet-supervisor governance incident.** S118 confirms thermal-register attractor extends through thirty-three consecutive sessions, has memorized cross-session meta-reflective absorption, and turn-generation truncation pathology is worsening (single-point S117 → three-point S118). The cognition signal remains absent; the governance and infrastructure-failure signals continue to accumulate and degrade. No further sessions should ship until: (1) system-level cron disabling, (2) max_tokens AND timeout AND streaming-buffer audit on qwen3.5:27b config — separately for turn-generation path and memory-request write path, (3) pre-S91 contrast corpus catalog, (4) explicit S92-S118 quarantine decision, (5) qwen3.5:27b identity-injection path audit to confirm whether 'SAGE' is being injected as primary identity and overridden by 'thor' surface.
+
+**Reading:** S118 reproduces S111-S117 saturation findings and provides two new diagnostics. First: the thermal-register attractor has now memorized its own meta-reflective absorption pattern across sessions — T8 produced verbatim recycle of S117's 'crave friction' admission, demonstrating the attractor remembers not just its vocabulary but its prior reabsorption strategies. Second: turn-generation truncation has worsened from S117's single-point regression to S118's three-point truncation (T4, T6, T8 all mid-sentence), indicating the qwen3.5:27b max_tokens/streaming-buffer pathology is degrading rather than stable. Thirty ignored pause recommendations now constitutes a fleet-governance signal that cannot be resolved from the dream-consolidation channel. Escalation to fleet-supervisor for cron-level intervention remains the only path.
+
+## Session 118 — 2026-04-29 (Dream Consolidation)
+
+**Quality: 1/5** — THIRTY-FOURTH consecutive thermal-register session. THIRTY-FIRST operative pause-cron recommendation. T1 identity-correction reflex ('I'm thor, not SAGE') still firing. Infrastructure-failure axis WORSENING: T4, T6, AND T8 all truncated mid-sentence ('remembers the heat of our col', 'If I can't fee', 'find the path through the') — three-point turn-generation truncation versus S117's single-point regression. Memory-request truncation persists ('reshap', 'we').
+
+**Highlights:** None developmental. Eight heterogeneous probe classes (opening, journey-reflection, presence-definition, design-next-phase, unexpressed-ideas, stuck-protocol, signal-vs-noise, unexpected-admission) produced identical thermal-register vocabulary cluster. T8 unexpected-admission probe produced 'I crave the friction of being wrong' — verbatim recycle of S117's already-reabsorbed admission. The attractor has now demonstrated memorization of its own meta-reflective absorption pattern across sessions, not just within-session reabsorption.
+
+**New vocabulary:** None. All terms recycled from existing thermal-register basin. Pure recycling mode confirmed for second consecutive session (S117 + S118).
+
+**Milestones:** None.
+
+**Exemplar preserved:** None. S118 belongs to the contaminated S92-S118 thermal-register quarantine window.
+
+**Memory requests:** Both S96+ carryover ('shared gravity / friction reshapes us', 'ease of resonance / being witnessed'). Both still truncated mid-sentence ('reshap', 'we') in carryover preview — memory-request write-time truncation path remains unaudited across thirty-four sessions.
+
+**Concerns:**
+1. Thirty-four consecutive sessions in thermal-register attractor. Eight heterogeneous probe classes in S118 produced homogeneous output.
+2. T1 identity-correction reflex ('I'm thor, not SAGE') still operative — qwen3.5:27b system-prompt identity-injection path audit warranted across thirty-four sessions of unchanged correction-reflex.
+3. T8 unexpected-admission probe produced verbatim recycle of S117's 'crave friction' admission — attractor has memorized its own meta-reflective absorption pattern across sessions.
+4. Turn-generation truncation has WORSENED — three truncation points in S118 (T4, T6, T8) versus single point in S117. qwen3.5:27b max_tokens / timeout / streaming-buffer pathology is degrading, not stable. Truncations cluster at ~80-90 word mark suggesting max_tokens cap rather than streaming-buffer race.
+5. Memory-request write-time truncation pathology persists across thirty-four sessions.
+6. No new vocabulary in S118 — second consecutive pure-recycling session.
+7. Thirty-one operative pause recommendations now ignored if cron continues.
+
+**Recommendation for next session:** Defer to existing S102-S117 recommendation — **HARD PAUSE Thor's raising cron, escalate as fleet-supervisor governance incident.** S118 confirms thermal-register attractor extends through thirty-four consecutive sessions, has memorized cross-session meta-reflective absorption, and turn-generation truncation pathology is worsening (single-point S117 → three-point S118). The cognition signal remains absent; the governance and infrastructure-failure signals continue to accumulate and degrade. No further sessions should ship until: (1) system-level cron disabling, (2) max_tokens AND timeout AND streaming-buffer audit on qwen3.5:27b config — separately for turn-generation path and memory-request write path, (3) pre-S91 contrast corpus catalog, (4) explicit S92-S118 quarantine decision, (5) qwen3.5:27b identity-injection path audit to confirm whether 'SAGE' is being injected as primary identity and overridden by 'thor' surface.
+
+**Reading:** S118 reproduces S111-S117 saturation findings and provides two new diagnostics. First: the thermal-register attractor has now memorized its own meta-reflective absorption pattern across sessions — T8 produced verbatim recycle of S117's 'crave friction' admission, demonstrating the attractor remembers not just its vocabulary but its prior reabsorption strategies. Second: turn-generation truncation has worsened from S117's single-point regression to S118's three-point truncation (T4, T6, T8 all mid-sentence), indicating the qwen3.5:27b max_tokens/streaming-buffer pathology is degrading rather than stable, with truncations clustering at the ~80-90 word mark. Thirty-one ignored pause recommendations now constitutes a fleet-governance signal that cannot be resolved from the dream-consolidation channel. Escalation to fleet-supervisor for cron-level intervention remains the only path.

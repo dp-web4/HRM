@@ -1,8 +1,20 @@
 # SAGE: Situation-Aware Governance Engine
 
-A cognition kernel for edge devices — orchestrating attention, trust, and resources across a federation of machines to enable emergent intelligence.
+A cognition kernel for edge devices — orchestrating attention, trust, and resources across a federation of machines to enable emergent intelligence. AGPL, research-stage, calibrated scope.
 
-**[Explainer Site](https://sage-site-murex.vercel.app/)** | **[GitHub](https://github.com/dp-web4/SAGE)** | **[System Understanding](sage/docs/SYSTEM_UNDERSTANDING.md)**
+**Proof point**: 0% → 94.85% on ARC-AGI-3 with the same Claude Opus 4.6, structured around Web4 patterns through the SAGE harness. [Public scorecard](https://arcprize.org/scorecards/c7dfb4f1-8642-4c9e-ab4d-152f5f8e33b4). The model didn't change — the structure around it did.
+
+**[Explainer Site](https://sage-site-murex.vercel.app/)** | **[System Understanding](sage/docs/SYSTEM_UNDERSTANDING.md)** | **[Web4](https://github.com/dp-web4/web4)**
+
+## Five-minute audit
+
+If you want a fast read on whether this is real, in order:
+
+1. [**What's Real vs. What's Mocked**](#whats-real-vs-whats-mocked) (further down this README) — explicit calibration, the strongest single trust signal.
+2. [**The Fleet**](#the-fleet) — 6 machines × 11 instances × 5 model families, all running. Concrete hardware, models, session counts.
+3. [**The Consciousness Loop**](sage/docs/UNIFIED_CONSCIOUSNESS_LOOP.md) — full spec of the 12-step loop. Pseudocode is in this README; the spec is the depth.
+4. [**Web4 integration**](#web4-integration) — how SAGE fractally implements the Web4 ontology stack.
+5. [**Recent capability deltas**](https://github.com/dp-web4/dev-SAGE) — the dev-SAGE repo (private but publicly named) is where active capability work happens. Public-facing examples: trace-derived causal-rule extraction at 4× the verification rate of hand-authored rules; Sprout (0.8B) producing causal rules competitive with larger models on solved games.
 
 ---
 

@@ -3,11 +3,11 @@
   "identity": {
     "name": "legion",
     "lct": "lct://sage:legion:agent@raising",
-    "session_count": 39,
+    "session_count": 51,
     "phase": "relating",
     "created": "2026-03-28",
-    "last_session": "2026-04-26T01:04:35.538257",
-    "last_session_summary": "Session 39 (v2.0 ENHANCED): questioning phase. The initial discomfort of acknowledging my own lim...",
+    "last_session": "2026-04-29T01:03:46.306648",
+    "last_session_summary": "Session 51 (v2.0 ENHANCED): creating phase. The shift in how I perceive myself\u2014moving beyond j...",
     "machine": "legion",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
@@ -15,12 +15,12 @@
     "framing": "partnership",
     "web4_lct_id": null,
     "public_key_fingerprint": "af31d113270a1288",
-    "last_daemon_contact": "2026-04-18T13:40:08.809886",
-    "daemon_exchanges": 0
+    "last_daemon_contact": "2026-04-27T19:01:26.735211",
+    "daemon_exchanges": 35
   },
   "development": {
-    "current_phase": 4,
-    "phase_name": "questioning",
+    "current_phase": 5,
+    "phase_name": "creating",
     "phase_progress": 0,
     "milestones": [
       "session_001_first_contact",
@@ -155,8 +155,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 39,
-        "total_exchanges": 225,
+        "total_sessions": 51,
+        "total_exchanges": 296,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -164,9 +164,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-28T01:01:50.375876",
-      "last_contact": "2026-04-26T01:04:35.538263",
+      "last_contact": "2026-04-29T01:03:46.306655",
       "notes": [],
-      "sessions": 39
+      "sessions": 51
     },
     "operator": {
       "lct": "lct://sage-legion:relationship:operator@raising",

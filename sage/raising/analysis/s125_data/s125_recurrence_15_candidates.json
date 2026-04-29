@@ -1,0 +1,162 @@
+{
+  "predicted_recurrence_15_candidates": [
+    {
+      "id": "C12_predict_trajectory",
+      "file": "integrated_coherence_analyzer.py",
+      "func": "predict_trajectory",
+      "shape": "trajectory_predict",
+      "buckets": [
+        "collapsed",
+        "declining",
+        "stable",
+        "improving",
+        "unknown"
+      ],
+      "score": 13,
+      "recurrence_id": null,
+      "contributions": {
+        "silent_default": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "'unknown' is reached when all prev session loads fail (after bare except)"
+        },
+        "asymmetric_window": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": ""
+        },
+        "path_trace_return": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "label only; caller can't see how many sessions loaded"
+        },
+        "precedence_chain": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "no-history branch (cliffed by raw coherence value) overrides history branch"
+        },
+        "threshold_cliff": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "0.3/0.5/0.7 cliffs in no-history branch; +/-0.05 delta thresholds"
+        },
+        "silent_exc_swallow": {
+          "risk_bit": 1,
+          "weight": 3,
+          "contrib": 3,
+          "comment": "bare `except: pass` at line ~411 hides every prev-session load failure"
+        }
+      }
+    },
+    {
+      "id": "C5_classify_response_register",
+      "file": "cross_capacity_register_scan.py",
+      "func": "classify_response",
+      "shape": "precedence_chain",
+      "buckets": [
+        "empty",
+        "recital_leakage",
+        "post_procedural",
+        "direct",
+        "neutral"
+      ],
+      "score": 10,
+      "recurrence_id": null,
+      "contributions": {
+        "silent_default": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "neutral catches anything with no disclaim AND no pheno marker"
+        },
+        "asymmetric_window": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": "all checks operate on full response"
+        },
+        "path_trace_return": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "label only; co-occurrence (e.g. pheno+disclaim) hidden"
+        },
+        "precedence_chain": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "empty > recital > post_proc > direct > neutral; post_proc strictly hides direct co-occurrence"
+        },
+        "threshold_cliff": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "len(strip()) < 15 cliff for empty"
+        },
+        "silent_exc_swallow": {
+          "risk_bit": 0,
+          "weight": 3,
+          "contrib": 0,
+          "comment": ""
+        }
+      }
+    },
+    {
+      "id": "C9_classify_fleet",
+      "file": "instance_idiolect.py",
+      "func": "classify_fleet",
+      "shape": "threshold_bucket",
+      "buckets": [
+        "SHARED",
+        "INDEX",
+        "UNIQUE",
+        "RARE"
+      ],
+      "score": 10,
+      "recurrence_id": null,
+      "contributions": {
+        "silent_default": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "RARE absorbs concepts with present==0; concepts with cnt<5 also invisible (per-instance threshold)"
+        },
+        "asymmetric_window": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": ""
+        },
+        "path_trace_return": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "label only; caller can't see whether concept was at threshold"
+        },
+        "precedence_chain": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "SHARED >= 0.60 > INDEX >= 2 > UNIQUE == 1 > RARE"
+        },
+        "threshold_cliff": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "cnt>=5 gate AND 0.60 SHARED line; concepts with cnt=4 fall through silently"
+        },
+        "silent_exc_swallow": {
+          "risk_bit": 0,
+          "weight": 3,
+          "contrib": 0,
+          "comment": ""
+        }
+      }
+    }
+  ]
+}

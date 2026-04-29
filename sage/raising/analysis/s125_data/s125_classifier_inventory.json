@@ -1,0 +1,633 @@
+{
+  "classifiers": [
+    {
+      "id": "C12_predict_trajectory",
+      "file": "integrated_coherence_analyzer.py",
+      "func": "predict_trajectory",
+      "shape": "trajectory_predict",
+      "buckets": [
+        "collapsed",
+        "declining",
+        "stable",
+        "improving",
+        "unknown"
+      ],
+      "score": 13,
+      "recurrence_id": null,
+      "contributions": {
+        "silent_default": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "'unknown' is reached when all prev session loads fail (after bare except)"
+        },
+        "asymmetric_window": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": ""
+        },
+        "path_trace_return": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "label only; caller can't see how many sessions loaded"
+        },
+        "precedence_chain": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "no-history branch (cliffed by raw coherence value) overrides history branch"
+        },
+        "threshold_cliff": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "0.3/0.5/0.7 cliffs in no-history branch; +/-0.05 delta thresholds"
+        },
+        "silent_exc_swallow": {
+          "risk_bit": 1,
+          "weight": 3,
+          "contrib": 3,
+          "comment": "bare `except: pass` at line ~411 hides every prev-session load failure"
+        }
+      }
+    },
+    {
+      "id": "C1_classify_mention",
+      "file": "s121_data/s121b_self_vs_fleet_classifier.py",
+      "func": "classify_mention",
+      "shape": "regex_chain",
+      "buckets": [
+        "self",
+        "fleet",
+        "ambiguous"
+      ],
+      "score": 10,
+      "recurrence_id": "12+14",
+      "contributions": {
+        "silent_default": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "ambiguous catches everything that doesn't match SELF/OTHER patterns"
+        },
+        "asymmetric_window": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "SELF in pre only; OTHER in pre+post (S124 #14)"
+        },
+        "path_trace_return": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "returns label only, no path id"
+        },
+        "precedence_chain": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "near-sib check first, then nearest-self, then has_other"
+        },
+        "threshold_cliff": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": "no numeric threshold"
+        },
+        "silent_exc_swallow": {
+          "risk_bit": 0,
+          "weight": 3,
+          "contrib": 0,
+          "comment": "no try/except"
+        }
+      }
+    },
+    {
+      "id": "C2_classify_mention_perspective_aware",
+      "file": "s123_data/s123d_corrected_classifier_redux.py",
+      "func": "classify_mention_perspective_aware",
+      "shape": "regex_chain",
+      "buckets": [
+        "self",
+        "fleet",
+        "ambiguous"
+      ],
+      "score": 10,
+      "recurrence_id": "14 (inherits)",
+      "contributions": {
+        "silent_default": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "inherits ambiguous default from C1"
+        },
+        "asymmetric_window": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "S123d patched OTHER axis only; SELF/OTHER window asymmetry persists"
+        },
+        "path_trace_return": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "returns label only"
+        },
+        "precedence_chain": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "same near/nearest_self/has_other order as C1"
+        },
+        "threshold_cliff": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": ""
+        },
+        "silent_exc_swallow": {
+          "risk_bit": 0,
+          "weight": 3,
+          "contrib": 0,
+          "comment": ""
+        }
+      }
+    },
+    {
+      "id": "C3_classify_session_mode",
+      "file": "s122_data/s122_per_session_mode_decomposition.py",
+      "func": "classify_session_mode",
+      "shape": "threshold_bucket",
+      "buckets": [
+        "silent",
+        "self_only",
+        "fleet_only",
+        "self_dominant",
+        "fleet_dominant",
+        "mixed"
+      ],
+      "score": 10,
+      "recurrence_id": "11",
+      "contributions": {
+        "silent_default": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "silent absorbs total==0 AND timeout sentinels (S122-#11)"
+        },
+        "asymmetric_window": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": "no spatial window; counts only"
+        },
+        "path_trace_return": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "label only; caller needs counts to back-derive"
+        },
+        "precedence_chain": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "self_only > fleet_only > self_dominant > fleet_dominant > mixed"
+        },
+        "threshold_cliff": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": ">=3 / >=2*max boundaries; near-boundary cases invisible"
+        },
+        "silent_exc_swallow": {
+          "risk_bit": 0,
+          "weight": 3,
+          "contrib": 0,
+          "comment": ""
+        }
+      }
+    },
+    {
+      "id": "C5_classify_response_register",
+      "file": "cross_capacity_register_scan.py",
+      "func": "classify_response",
+      "shape": "precedence_chain",
+      "buckets": [
+        "empty",
+        "recital_leakage",
+        "post_procedural",
+        "direct",
+        "neutral"
+      ],
+      "score": 10,
+      "recurrence_id": null,
+      "contributions": {
+        "silent_default": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "neutral catches anything with no disclaim AND no pheno marker"
+        },
+        "asymmetric_window": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": "all checks operate on full response"
+        },
+        "path_trace_return": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "label only; co-occurrence (e.g. pheno+disclaim) hidden"
+        },
+        "precedence_chain": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "empty > recital > post_proc > direct > neutral; post_proc strictly hides direct co-occurrence"
+        },
+        "threshold_cliff": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "len(strip()) < 15 cliff for empty"
+        },
+        "silent_exc_swallow": {
+          "risk_bit": 0,
+          "weight": 3,
+          "contrib": 0,
+          "comment": ""
+        }
+      }
+    },
+    {
+      "id": "C9_classify_fleet",
+      "file": "instance_idiolect.py",
+      "func": "classify_fleet",
+      "shape": "threshold_bucket",
+      "buckets": [
+        "SHARED",
+        "INDEX",
+        "UNIQUE",
+        "RARE"
+      ],
+      "score": 10,
+      "recurrence_id": null,
+      "contributions": {
+        "silent_default": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "RARE absorbs concepts with present==0; concepts with cnt<5 also invisible (per-instance threshold)"
+        },
+        "asymmetric_window": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": ""
+        },
+        "path_trace_return": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "label only; caller can't see whether concept was at threshold"
+        },
+        "precedence_chain": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "SHARED >= 0.60 > INDEX >= 2 > UNIQUE == 1 > RARE"
+        },
+        "threshold_cliff": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "cnt>=5 gate AND 0.60 SHARED line; concepts with cnt=4 fall through silently"
+        },
+        "silent_exc_swallow": {
+          "risk_bit": 0,
+          "weight": 3,
+          "contrib": 0,
+          "comment": ""
+        }
+      }
+    },
+    {
+      "id": "C4_classify_response_s122c",
+      "file": "s122_data/s122c_first_response_basin.py",
+      "func": "classify_response",
+      "shape": "wrapper",
+      "buckets": [
+        "dict aggregating C1 outputs"
+      ],
+      "score": 9,
+      "recurrence_id": "14 (inherits C1)",
+      "contributions": {
+        "silent_default": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "inherits C1 ambiguous"
+        },
+        "asymmetric_window": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "inherits C1 asymmetry"
+        },
+        "path_trace_return": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "returns counts only, not per-mention path"
+        },
+        "precedence_chain": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": ""
+        },
+        "threshold_cliff": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": ""
+        },
+        "silent_exc_swallow": {
+          "risk_bit": 0,
+          "weight": 3,
+          "contrib": 0,
+          "comment": ""
+        }
+      }
+    },
+    {
+      "id": "C6_classify_probe",
+      "file": "s120_data/s120_atlas_5lexicons.py",
+      "func": "classify_probe",
+      "shape": "regex_chain",
+      "buckets": [
+        "CF",
+        "Open",
+        "Other"
+      ],
+      "score": 9,
+      "recurrence_id": null,
+      "contributions": {
+        "silent_default": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "Other absorbs everything not matching CF or Open patterns"
+        },
+        "asymmetric_window": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": "full text scan"
+        },
+        "path_trace_return": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "label only"
+        },
+        "precedence_chain": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "CF > Open > Other"
+        },
+        "threshold_cliff": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": ""
+        },
+        "silent_exc_swallow": {
+          "risk_bit": 0,
+          "weight": 3,
+          "contrib": 0,
+          "comment": ""
+        }
+      }
+    },
+    {
+      "id": "C7_classify_prompt_thor27b",
+      "file": "thor_27b_leaked_think_analysis.py",
+      "func": "classify_prompt",
+      "shape": "regex_chain",
+      "buckets": [
+        "close",
+        "phenomenological",
+        "introspective",
+        "content_question",
+        "procedural"
+      ],
+      "score": 9,
+      "recurrence_id": null,
+      "contributions": {
+        "silent_default": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "procedural is reached when no '?' AND no CLOSE/PHEN/INTRO match"
+        },
+        "asymmetric_window": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": "full prompt"
+        },
+        "path_trace_return": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "label only"
+        },
+        "precedence_chain": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "CLOSE > PHEN > INTRO > '?' > procedural"
+        },
+        "threshold_cliff": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": "single '?' is binary, not threshold"
+        },
+        "silent_exc_swallow": {
+          "risk_bit": 0,
+          "weight": 3,
+          "contrib": 0,
+          "comment": ""
+        }
+      }
+    },
+    {
+      "id": "C8_classify_close_prompt",
+      "file": "close_prompt_taxonomy.py",
+      "func": "classify",
+      "shape": "precedence_chain",
+      "buckets": [
+        "empty",
+        "directive_remember",
+        "memory_meta_other",
+        "phenomenological",
+        "introspective",
+        "content_question"
+      ],
+      "score": 9,
+      "recurrence_id": null,
+      "contributions": {
+        "silent_default": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "content_question is reached when nothing else matches"
+        },
+        "asymmetric_window": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": "full text"
+        },
+        "path_trace_return": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "label only"
+        },
+        "precedence_chain": {
+          "risk_bit": 1,
+          "weight": 1,
+          "contrib": 1,
+          "comment": "remember > memory_meta > pheno > intro > content_q"
+        },
+        "threshold_cliff": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": ""
+        },
+        "silent_exc_swallow": {
+          "risk_bit": 0,
+          "weight": 3,
+          "contrib": 0,
+          "comment": ""
+        }
+      }
+    },
+    {
+      "id": "C10_is_registerable_prompt",
+      "file": "cross_capacity_register_scan.py",
+      "func": "is_registerable_prompt",
+      "shape": "bool_predicate",
+      "buckets": [
+        "True",
+        "False"
+      ],
+      "score": 4,
+      "recurrence_id": null,
+      "contributions": {
+        "silent_default": {
+          "risk_bit": 0,
+          "weight": 4,
+          "contrib": 0,
+          "comment": "False is the explicit negative, not a silent default"
+        },
+        "asymmetric_window": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": ""
+        },
+        "path_trace_return": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "single bit; could expose which regex matched"
+        },
+        "precedence_chain": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": "OR over two regexes"
+        },
+        "threshold_cliff": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": ""
+        },
+        "silent_exc_swallow": {
+          "risk_bit": 0,
+          "weight": 3,
+          "contrib": 0,
+          "comment": ""
+        }
+      }
+    },
+    {
+      "id": "C11_is_untagged_recital",
+      "file": "cross_capacity_register_scan.py",
+      "func": "is_untagged_recital",
+      "shape": "bool_predicate",
+      "buckets": [
+        "True",
+        "False"
+      ],
+      "score": 4,
+      "recurrence_id": null,
+      "contributions": {
+        "silent_default": {
+          "risk_bit": 0,
+          "weight": 4,
+          "contrib": 0,
+          "comment": "False is explicit negative"
+        },
+        "asymmetric_window": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": ""
+        },
+        "path_trace_return": {
+          "risk_bit": 1,
+          "weight": 4,
+          "contrib": 4,
+          "comment": "single bit"
+        },
+        "precedence_chain": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": ""
+        },
+        "threshold_cliff": {
+          "risk_bit": 0,
+          "weight": 1,
+          "contrib": 0,
+          "comment": ""
+        },
+        "silent_exc_swallow": {
+          "risk_bit": 0,
+          "weight": 3,
+          "contrib": 0,
+          "comment": ""
+        }
+      }
+    }
+  ],
+  "weights": {
+    "silent_default": 4,
+    "asymmetric_window": 1,
+    "path_trace_return": 4,
+    "precedence_chain": 1,
+    "threshold_cliff": 1,
+    "silent_exc_swallow": 3
+  }
+}

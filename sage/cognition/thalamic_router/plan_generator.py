@@ -470,6 +470,120 @@ def _enrich_wm_with_click_targets(env, fd, wm: GameWorldModel) -> None:
             wm.current_strategy += f" Click targets: {target_str}."
         print(f"[WM] Enriched with {len(targets)} click targets (top: {targets[0][0]}px at ({targets[0][1]},{targets[0][2]}))")
 
+    # Also assign a plan template if one fits this game's mechanic
+    _assign_plan_template(wm, targets if targets else [])
+
+
+# ── Plan templates — the recipe the model fills in ──────────────────
+
+# Templates encode the SEQUENCE PATTERN for each game type.
+# The model's job is reduced to filling variable slots (marked with ?).
+
+TEMPLATES = {
+    # Two-phase: click target repeatedly until level clears
+    "click_repeat": [
+        {"phase": "activate", "do": "CLICK", "target": "best_click", "repeat": "5-10"},
+    ],
+    # Three-phase: select → position → commit
+    "select_position_commit": [
+        {"phase": "select", "do": "CLICK", "target": "selector", "repeat": "1"},
+        {"phase": "position", "do": "?direction", "repeat": "?count"},
+        {"phase": "commit", "do": "SEL", "repeat": "1"},
+    ],
+    # Assembly: select piece → rotate/move → repeat per piece
+    "piece_assembly": [
+        {"phase": "select_piece", "do": "CLICK", "target": "?piece_position", "repeat": "1"},
+        {"phase": "rotate", "do": "SEL", "repeat": "?rotations"},
+        {"phase": "move", "do": "?direction", "repeat": "?steps"},
+    ],
+    # Navigation: move toward goal
+    "navigate": [
+        {"phase": "move_to_goal", "do": "?direction", "repeat": "?steps"},
+    ],
+    # Sokoban: select → push → repeat per box
+    "box_push": [
+        {"phase": "select_box", "do": "CLICK", "target": "?box_position", "repeat": "1"},
+        {"phase": "push_to_goal", "do": "?direction", "repeat": "?steps"},
+    ],
+}
+
+
+def _assign_plan_template(wm: GameWorldModel, click_targets: List) -> None:
+    """Assign a plan template based on game mechanics and discovered targets."""
+    game = wm.game.lower()
+
+    # Games with known template patterns
+    if game == "lp85":
+        if click_targets:
+            cx, cy = click_targets[0][1], click_targets[0][2]
+            wm.plan_template = [
+                {"phase": "rotate_track", "do": "CLICK", "x": cx, "y": cy, "repeat": "5-10"},
+            ]
+    elif game == "cd82":
+        if click_targets:
+            cx, cy = click_targets[0][1], click_targets[0][2]
+            wm.plan_template = [
+                {"phase": "select_color", "do": "CLICK", "x": cx, "y": cy, "repeat": "1"},
+                {"phase": "position_basket", "do": "?direction (LEFT/RIGHT/UP/DOWN)", "repeat": "2-4"},
+                {"phase": "launch_paint", "do": "SEL", "repeat": "1"},
+            ]
+    elif game == "cn04":
+        if click_targets:
+            cx, cy = click_targets[0][1], click_targets[0][2]
+            wm.plan_template = [
+                {"phase": "select_piece", "do": "CLICK", "x": cx, "y": cy, "repeat": "1"},
+                {"phase": "rotate", "do": "SEL", "repeat": "1-3"},
+                {"phase": "move_piece", "do": "?direction", "repeat": "2-5"},
+            ]
+    elif game in ("ka59",):
+        wm.plan_template = [
+            {"phase": "select_box", "do": "CLICK", "target": "box_position", "repeat": "1"},
+            {"phase": "push_to_goal", "do": "?direction (DOWN/LEFT/RIGHT/UP)", "repeat": "3-6"},
+        ]
+    elif game in ("tu93", "ls20", "m0r0"):
+        wm.plan_template = [
+            {"phase": "navigate", "do": "?direction", "repeat": "5-15"},
+        ]
+    elif game == "sp80":
+        wm.plan_template = [
+            {"phase": "position_pipe", "do": "?direction (UP/DOWN/LEFT/RIGHT)", "repeat": "3-8"},
+            {"phase": "pour_water", "do": "SEL", "repeat": "1"},
+        ]
+    elif game == "bp35":
+        if click_targets:
+            cx, cy = click_targets[0][1], click_targets[0][2]
+            wm.plan_template = [
+                {"phase": "destroy_tile", "do": "CLICK", "x": cx, "y": cy, "repeat": "1-3"},
+                {"phase": "move_to_gem", "do": "RIGHT", "repeat": "3-8"},
+            ]
+    elif game == "ft09":
+        if click_targets:
+            # Multiple targets — list them
+            wm.plan_template = [
+                {"phase": "cycle_cells", "do": "CLICK", "target": "grid_cells", "repeat": "3-8",
+                 "note": "click specific cells to satisfy constraints"},
+            ]
+    elif game == "sk48":
+        wm.plan_template = [
+            {"phase": "extend_rail", "do": "UP", "repeat": "3-6"},
+            {"phase": "traverse_targets", "do": "?direction (LEFT/RIGHT)", "repeat": "2-5"},
+        ]
+    elif game == "re86":
+        wm.plan_template = [
+            {"phase": "move_to_wall", "do": "?direction", "repeat": "5-10",
+             "note": "push piece toward wall to reshape via collision"},
+            {"phase": "cycle_piece", "do": "SEL", "repeat": "1"},
+        ]
+    elif game == "r11l":
+        if click_targets:
+            wm.plan_template = [
+                {"phase": "select_limb", "do": "CLICK", "target": "limb_position", "repeat": "1"},
+                {"phase": "place_limb", "do": "CLICK", "target": "target_position", "repeat": "1"},
+            ]
+
+    if wm.plan_template:
+        print(f"[WM] Plan template assigned: {len(wm.plan_template)} phases")
+
 
 # ── Main loop: generate → execute → revise ──────────────────────────
 

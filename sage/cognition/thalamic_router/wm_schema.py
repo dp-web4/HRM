@@ -104,6 +104,11 @@ class GameWorldModel:
     # Current hypothesis about what to do next
     current_strategy: str = ""
 
+    # Plan template — the recipe the model fills in
+    # Each step has fixed fields (action, phase) and variable fields (target, count, coords)
+    # Variable fields marked with "?" are what the model decides
+    plan_template: List[Dict[str, Any]] = field(default_factory=list)
+
     # Metadata
     discovery_source: str = "empty"  # "empty" | "template" | "phase1" | "consolidated"
     revision_count: int = 0
@@ -139,6 +144,17 @@ class GameWorldModel:
 
         if self.current_strategy:
             sections.append(f"Strategy: {self.current_strategy}")
+
+        if self.plan_template:
+            template_lines = ["Plan template (fill in ? fields):"]
+            for i, step in enumerate(self.plan_template, 1):
+                parts = []
+                for k, v in step.items():
+                    if k.startswith("_"):
+                        continue
+                    parts.append(f"{k}={v}")
+                template_lines.append(f"  {i}. {', '.join(parts)}")
+            sections.append("\n".join(template_lines))
 
         text = "\n".join(sections)
 

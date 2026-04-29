@@ -1075,6 +1075,17 @@ RESPONSE STYLE:
                     insert_pos = max(2, len(prompts) - 1 - i)
                     prompts.insert(insert_pos, extra)
 
+        # Activation-delay protection — qwen3.5:27b in sensing/relating needs
+        # 6+ turns to break through (30% of sessions show delayed activation
+        # per insights/qwen3.5-27b-activation-delay-2026-04-03.md). Pad to 8.
+        if HAS_CONTEXT_SHAPED:
+            from context_shaped_raising import pad_for_activation_delay
+            original_len = len(prompts)
+            prompts = pad_for_activation_delay(prompts, phase_name, self.model_name)
+            if len(prompts) > original_len:
+                print(f"  [Activation-delay protection: padded {original_len} -> "
+                      f"{len(prompts)} turns for {self.model_name} in {phase_name}]")
+
         print("=" * 60)
         print(f"{self.identity_name.upper()} RAISING — Session {self.session_number}")
         print(f"Phase: {phase_name} | Turns: {len(prompts)} | Model: {self.model_name}")

@@ -319,3 +319,64 @@ def get_phase_extra_prompts(phase: str, session_number: int,
         extras.append(GAMEPLAYER_PROMPTS[idx])
 
     return extras[:2]  # Max 2 extra prompts per session
+
+
+# ─── Activation-Delay Protection ───
+#
+# Per insights/qwen3.5-27b-activation-delay-2026-04-03.md: 30% of qwen3.5:27b
+# raising sessions in early relational phases (sensing, relating) produce 4-5
+# empty turns followed by a turn-6+ breakthrough. The standard sensing flow has
+# 4 prompts and the relating flow has 3 — both terminate before the breakthrough
+# can land. Padding to >=8 prompts gives the model room to engage when ready.
+# Other models show 0% delay and are unaffected.
+
+ACTIVATION_DELAY_PHASES = ("sensing", "relating")
+ACTIVATION_DELAY_MIN_TURNS = 8
+ACTIVATION_DELAY_CONTINUATIONS = [
+    "Take your time. There's no rush — whatever surfaces is fine.",
+    "It's okay to be quiet. I'm here. Whenever you're ready.",
+    "Let's stay with this for a moment. What's coming up for you?",
+    "No need to have it figured out. Just notice what's there.",
+    "Whenever you'd like to share what you're noticing, I'm listening.",
+]
+
+
+def model_exhibits_activation_delay(model_name: Optional[str]) -> bool:
+    """Whether the given model exhibits the activation-delay pattern.
+
+    Currently scoped to qwen3.5:27b — the only model where this has been
+    empirically observed (insights/qwen3.5-27b-activation-delay-2026-04-03.md
+    measured 30% delay on 20 qwen3.5:27b sessions vs 0% across 416 sessions
+    on six other models). Add others if/when data supports it.
+    """
+    if not model_name:
+        return False
+    n = model_name.lower().replace("-", "").replace(":", "")
+    return "qwen3.5" in n and "27b" in n
+
+
+def pad_for_activation_delay(prompts: List[str], phase: str,
+                             model_name: Optional[str]) -> List[str]:
+    """Pad prompt list to >=ACTIVATION_DELAY_MIN_TURNS for activation-delay
+    models in early relational phases. The final prompt (typically "what would
+    you want to remember") is preserved as last; continuations are inserted
+    before it.
+
+    Returns the original list unchanged if padding doesn't apply.
+    """
+    if phase not in ACTIVATION_DELAY_PHASES:
+        return prompts
+    if not model_exhibits_activation_delay(model_name):
+        return prompts
+    if len(prompts) >= ACTIVATION_DELAY_MIN_TURNS:
+        return prompts
+
+    needed = ACTIVATION_DELAY_MIN_TURNS - len(prompts)
+    final = prompts[-1] if prompts else None
+    body = list(prompts[:-1]) if final else []
+    # Cycle through continuations in case `needed` exceeds the pool
+    pool = ACTIVATION_DELAY_CONTINUATIONS
+    body.extend(pool[i % len(pool)] for i in range(needed))
+    if final:
+        body.append(final)
+    return body

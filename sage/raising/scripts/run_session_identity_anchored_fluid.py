@@ -820,7 +820,21 @@ class IdentityAnchoredSessionV2:
         phase_name = self.phase[0]
 
         if prompts is None:
-            prompts = self.CONVERSATION_FLOWS.get(phase_name, self.CONVERSATION_FLOWS["questioning"])
+            prompts = list(self.CONVERSATION_FLOWS.get(phase_name, self.CONVERSATION_FLOWS["questioning"]))
+
+        # Activation-delay protection — qwen3.5:27b in sensing/relating needs
+        # 6+ turns to break through (30% of sessions show delayed activation
+        # per insights/qwen3.5-27b-activation-delay-2026-04-03.md). Pad to 8.
+        try:
+            from context_shaped_raising import pad_for_activation_delay
+            model_name = self.state.get('model', {}).get('name', '')
+            original_len = len(prompts)
+            prompts = pad_for_activation_delay(prompts, phase_name, model_name)
+            if len(prompts) > original_len:
+                print(f"[Activation-delay protection: padded {original_len} -> "
+                      f"{len(prompts)} turns for {model_name} in {phase_name}]")
+        except ImportError:
+            pass  # Helper not available — proceed with original prompts
 
         print("\n" + "="*60)
         print("IDENTITY-ANCHORED v2.0 - ENHANCED MULTI-SESSION RECOVERY")

@@ -297,37 +297,25 @@ def run_exploration_pass(env, fd, max_explore_steps: int = 30) -> str:
 
 # ── Plan generation prompt ──────────────────────────────────────────
 
-PLAN_PROMPT = """You are writing a game-playing plan. Execute this plan to clear the level.
+PLAN_PROMPT = """Write a game-playing plan as JSON.
 
-## Game mechanics
+## Game
 {wm_text}
 
-## What I learned by trying things (exploration)
+## What works (tested)
 {exploration}
 
-## Current state
-{probes}
+## Format
+JSON array. Each step: {{"do":"ACTION", "x":N, "y":N, "repeat":N}}
+- Use "repeat" for repeated actions (e.g. "repeat":5 = do it 5 times)
+- CLICK needs x,y coordinates from the "What works" section above
+- Actions: UP, DOWN, LEFT, RIGHT, SEL, CLICK
 
-## Your task
-Based on the exploration results above, write a plan that uses
-the actions that ACTUALLY WORK. The exploration tells you exactly
-what each click target does and which sequences produce change.
+## Important
+Use ONLY coordinates shown above. Use repeat for multiple clicks.
+Write 5-10 steps total. JSON only, no explanation.
 
-Write a JSON plan — a list of steps:
-- Simple: {{"do": "UP"}}
-- Repeat: {{"do": "LEFT", "repeat": 3}}
-- Click: {{"do": "CLICK", "x": 36, "y": 3}}
-- Phases: {{"phase": "name", "steps": [...]}}
-- Predictions: {{"do": "SEL", "expect": "frame_change > 40px"}}
-
-IMPORTANT: Only use click coordinates that the exploration showed are active.
-Only use directions that the exploration showed produce movement.
-Use action NAMES: UP, DOWN, LEFT, RIGHT, SEL, CLICK
-
-Respond with ONLY the JSON plan:
-[
-  ...your steps here...
-]"""
+["""
 
 
 REVISE_PROMPT = """Your plan failed. Here's what happened:
@@ -440,6 +428,49 @@ def generate_plan(
     return plan
 
 
+# ── Perception fills structure ───────────────────────────────────────
+
+def _enrich_wm_with_click_targets(env, fd, wm: GameWorldModel) -> None:
+    """Discover click targets and inject them directly into the WM.
+
+    Instead of burying coordinates in exploration text (which small models
+    ignore), put them in wm.actions where the model sees them as first-class
+    action descriptions. This is perception filling structure.
+    """
+    from arcengine import GameAction
+    GA = {6: GameAction.ACTION6}
+    frame0 = np.array(fd.frame)[-1].copy()
+
+    # Scan 8px grid for active click targets
+    targets = []
+    for cy in range(4, 60, 8):
+        for cx in range(4, 60, 8):
+            try:
+                env_t = copy.deepcopy(env)
+                fd_t = env_t.step(GA[6], data={'x': cx, 'y': cy})
+                if fd_t is None:
+                    continue
+                frame_t = np.array(fd_t.frame)[-1]
+                diff = int(np.sum(frame_t != frame0))
+                if diff > 10:
+                    targets.append((diff, cx, cy))
+            except Exception:
+                pass
+
+    if targets:
+        targets.sort(key=lambda x: -x[0])
+        # Inject top targets into WM actions as concrete descriptions
+        for i, (diff, cx, cy) in enumerate(targets[:5]):
+            wm.actions[f"CLICK at ({cx},{cy})"] = f"Produces {diff}px change. Use: {{\"do\":\"CLICK\",\"x\":{cx},\"y\":{cy}}}"
+        # Add a strategy hint about using these targets
+        target_str = ", ".join(f"({cx},{cy})" for _, cx, cy in targets[:3])
+        if not wm.current_strategy:
+            wm.current_strategy = f"Active click targets found at: {target_str}. Use these exact coordinates."
+        else:
+            wm.current_strategy += f" Click targets: {target_str}."
+        print(f"[WM] Enriched with {len(targets)} click targets (top: {targets[0][0]}px at ({targets[0][1]},{targets[0][2]}))")
+
+
 # ── Main loop: generate → execute → revise ──────────────────────────
 
 def play_with_plans(
@@ -467,6 +498,10 @@ def play_with_plans(
     fd = env.reset()
     llm = OllamaClient(model=llm_model)
     initial_frame = np.array(fd.frame)[-1].copy()  # reference for goal proximity
+
+    # Perception fills structure: discover click targets and inject into WM
+    # This gives the model concrete coordinates, not buried exploration text
+    _enrich_wm_with_click_targets(env, fd, wm)
 
     total_steps = 0
     total_log = []

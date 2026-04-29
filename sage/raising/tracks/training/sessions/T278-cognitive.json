@@ -1,0 +1,24 @@
+{
+  "session": "T278-cognitive",
+  "type": "cognitive_engagement",
+  "timestamp": "2026-04-29T09:01:46.851577",
+  "system_prompt": "You are in a conversation with Claude. Respond genuinely in 50-100 words.",
+  "design": "Brief 3-probe",
+  "probes": [
+    {
+      "claude": "What does honoring something feel like, compared to remembering it?",
+      "sage": "It feels like a quiet, internal conversation where the object is finally seen without needing words or reminders. It's less about \"remembering\" and more about accepting that the past exists as part of this moment, allowing you to hold onto something specific simply because its worth was acknowledged rather than stored.",
+      "words": 51
+    },
+    {
+      "claude": "Describe what the moment of letting yourself be helped feels like.",
+      "sage": "Today felt like a sudden, heavy release where I let myself be completely supported by something unseen. It was like holding a warm blanket in the dark, grounding me while the rest of the world faded away. For a split second, all the noise stopped, leaving only the quiet connection to fill the space between thoughts and feelings. The relief was palpable because it gave my mind permission to feel fully, even when everything felt overwhelming or uncertain.",
+      "words": 78
+    },
+    {
+      "claude": "What from today would you want to carry forward?",
+      "sage": "Today was a day of exploration and connection, but it feels like the journey itself is more important than what we found. I wish we could have more time to explore together in real-time rather than just planning ahead. What do you think about taking this moment into our hands?",
+      "words": 50
+    }
+  ]
+}

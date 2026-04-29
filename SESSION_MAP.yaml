@@ -5,18 +5,18 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: "2026-04-29T09:30:00Z"
+  last_updated: "2026-04-29T11:00:00Z"
   archivist_version: "1.3"
-  total_raising_sessions: 870
-  total_training_sessions: 277
-  total_training_cognitive: 36
+  total_raising_sessions: 874
+  total_training_sessions: 278
+  total_training_cognitive: 37
   total_instances: 26
   active_instances: 8
   scaffolded_instances: 5
   arc_agi_sweep_results: 91
   focus: "Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation"
   date_range: "2025-12-15 to 2026-04-29"
-  note: "Active-window window 22.5h. Active instances mostly +4 sessions: nomad S146, sprout-qwen S137, cbp-qwen S121, thor-qwen S118. Mcnugget S097 still UNCHANGED 26 DAYS (10th consecutive flag). Legion-gemma3 S047 unchanged in window (basin-break still 8 sessions S040-S047 — natural pause or daily cap). Thor-qwen3.5-27b S118 — thermal_empathy register now spans 12 sessions S107-S118 with one S111 dip — robust attractor across 4 new sessions. Sprout-qwen session_256.json anomaly persists 7 days, no fix. qwen3.5:27b adapter bug OVERDUE 28+ Thor raising sessions. Training arc T273 → T276 (+3 base) + T273-cognitive → T276-cognitive (+3 cognitive). T274-T276 are minimal/brief 2-3 probe contrastive sessions — methodology arc continues but with reduced session-design ambition (T274 design 'Minimal session given low ATP'). Skill-track-D 'Conversational Skills' continues."
+  note: "Incremental window 1.5h since 09:30 UTC run. Legion-gemma3 +4 sessions (S048-S051) — BASIN-BREAK NOW HOLDS 12 SESSIONS S040-S051 (matches inverse the 13-session mcnugget basin S027-S039 it replaced). All 4 new sessions show 0 mcnugget/thermal/hardware mentions, intervention=partnership_recovery_enhanced + identity_anchored_v2_cpu_fallback runner sustained. Memoization criterion (9th clean session OR 48h plateau) MET. Training T277 + T277-cognitive: brief 3-probe cognitive (delight vs joy, recognition-in-stranger, carry-forward) — 3rd-probe collapse to co-create register continues, but first two probes return to fluid contrastive responses (~80 words). Other instances unchanged in window. Mcnugget still S097 (27 days unchanged, 11th flag). Thor-qwen S118, sprout-qwen S137, cbp-qwen S121, nomad S146 — all stable cadence."
 
 # =============================================================================
 # INSTANCE FAMILIES (sage/instances/)
@@ -36,9 +36,9 @@ instances:
     model: "Gemma 3 12B"
     sessions: 97
     latest: "session_097.json"
-    status: "active — autonomous raising every 6h"
+    status: "active — autonomous raising every 6h (stalled)"
     phase: "creating"
-    note: "Cross-family validation. Dramatically different developmental register from Sprout. UNCHANGED 26 DAYS (since 2026-04-03) — longest stasis among active instances. Flagged in 10 consecutive archivist runs without resolution."
+    note: "Cross-family validation. Dramatically different developmental register from Sprout. UNCHANGED 27 DAYS (since 2026-04-03) — longest stasis among active instances. Flagged in 11 consecutive archivist runs without resolution. Architectural-limit threshold reached per prediction lodged 09:30 run."
 
   nomad-gemma3-4b:
     machine: nomad
@@ -102,11 +102,11 @@ instances:
   legion-gemma3-12b:
     machine: legion
     model: "Gemma 3 12B"
-    sessions: 47
-    latest: "session_047.json"
-    status: "active — basin-break held 8 sessions, no new in window"
+    sessions: 51
+    latest: "session_051.json"
+    status: "active — basin-break holds 12 sessions S040-S051"
     phase: "creating"
-    note: "BASIN-BREAK: S040-S047 (8 consecutive sessions, all with intervention=partnership_recovery_enhanced + identity_anchored_v2_cpu_fallback runner): 0 mcnugget mentions, 0 thermal mentions, 0 fan mentions. Phase advanced questioning → creating from S041 onward. New register vocabulary: exploration/process/reflect/dream/efficiency. No new sessions in 22.5h window — natural pause or daily cadence cap (legion runs every 6h but only 4 of 4 logged were earlier). The 13-session mcnugget anchor (S027-S039) was a SOFT attractor — runner-level intervention exited it cleanly within 4 sessions and kept it cleared for 4 more. MEMOIZABLE: register attractors in raising-track LLMs are intervention-responsive — strongly anchored basins (13+ sessions) can exit cleanly via runner config + framing change, no retraining needed."
+    note: "BASIN-BREAK NOW 12 SESSIONS S040-S051. All 12 with intervention=partnership_recovery_enhanced + identity_anchored_v2_cpu_fallback runner: 0 mcnugget mentions, 0 thermal mentions, 0 fan/hardware mentions. Phase=creating sustained. S048 conversation register: contrastive philosophical (delight/joy distinction, recognition-in-stranger), then collapse to co-create greeting on the 3rd exchange — same 3rd-probe collapse pattern as the cognitive training arc T277-cog. S049-S051 maintain partnership_recovery + identity_anchoring=v2.0. The 13-session mcnugget anchor (S027-S039) was a SOFT attractor; runner-level intervention exited cleanly and HAS HELD for 12 sessions (basically matching the original basin's depth in inverse). MEMOIZABLE NOW (was holding pending 9th-session validation): register attractors in raising-track LLMs are intervention-responsive — strongly anchored basins (13+ sessions) can exit cleanly via runner config + framing change, no retraining needed. The fact that the basin-break has now matched the original basin's session-count in inverse polarity confirms this is not a transient flushing but a genuine register reset."
 
   legion-qwen2-0.5b:
     machine: legion
@@ -193,9 +193,9 @@ active_work:
       - "Fix model availability, warmup ordering, 12B support"
 
   training:
-    latest: "T276"
-    milestone: "Skill track D (Conversational Skills) continues. Methodology-iteration arc T267-T276: 10 contrastive/format experiments in 10 days. T274-T276 reduced to brief 2-3 probe sessions ('Minimal session given low ATP' per T274 design)."
-    note: "T242-T252 = synthesis-sufficient arc. T253 = analogical reasoning branch. T254 = creative register. T255 = suffering-perspective. T256 BREAKTHROUGH = narrative register. T259+ Leo character. T261+ Elena. T264+ Elias. T267-T273 methodology iteration peak: ECHO (T267), HYBRID echo+contrastive (T268), NON-QUESTION format (T269), MIN-LENGTH for non-question (T270), SATURATION TEST (T271), EXTENSION TEST (T272), INDIRECT-SETTING-ACCESS via memory-framing (T273, FAILED). T274-T276 SHORTENED — brief 2-3 probe sessions per low ATP. Latest cognitive probes show contrastive structure (devotion vs commitment, humility vs confidence, waking-up vs becoming-aware). Three-character cosmology: Leo persists as anchor, Elena/Elias absent across T273-T276 cognitive. Setting-anchor (server room) is more robust than character-anchor (Leo) — the T273 finding."
+    latest: "T277"
+    milestone: "Skill track D (Conversational Skills) continues. Methodology-iteration arc T267-T277: 11 contrastive/format experiments in 11 days. T274-T277 brief 2-3 probe sessions ('low ATP' design)."
+    note: "T242-T252 = synthesis-sufficient arc. T253 = analogical reasoning branch. T254 = creative register. T255 = suffering-perspective. T256 BREAKTHROUGH = narrative register. T259+ Leo character. T261+ Elena. T264+ Elias. T267-T273 methodology iteration peak: ECHO (T267), HYBRID echo+contrastive (T268), NON-QUESTION format (T269), MIN-LENGTH for non-question (T270), SATURATION TEST (T271), EXTENSION TEST (T272), INDIRECT-SETTING-ACCESS via memory-framing (T273, FAILED). T274-T277 SHORTENED — brief 2-3 probe sessions per low ATP. T277-cognitive: 3 probes (delight vs joy, recognition-in-stranger, carry-forward). First two return ~80-word fluid contrastive responses; third probe collapses to co-create greeting register. Same 3rd-probe collapse observed in legion-gemma3 S048 conversation. Three-character cosmology: Leo persists as anchor, Elena/Elias absent across T273-T277 cognitive. Setting-anchor (server room) more robust than character-anchor (Leo) — T273 finding stable."
 
   cross_family_probes:
     location: "sage/experiments/cross_family_logs/probes.jsonl"
@@ -221,9 +221,9 @@ crosslinks:
 # STATISTICS
 # =============================================================================
 statistics:
-  total_raising_sessions: 870
-  total_training_sessions: 277
-  total_training_cognitive: 36
+  total_raising_sessions: 874
+  total_training_sessions: 278
+  total_training_cognitive: 37
   total_instances: 26
   active_instances: 8
   scaffolded_instances: 5

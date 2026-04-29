@@ -2069,9 +2069,20 @@ class SAGEConsciousness:
 
         # Fallback: if tool calls consumed the entire response, use tool result
         if not response_text and last_tool_result:
-            # Strip the "Tool result (name):\n" prefix, keep the payload
+            # Strip the tool-result prefix, keep the payload. Two grammars produce
+            # different prefix shapes:
+            #   - json_block grammar:        "Tool result (NAME):\n<payload>"
+            #   - intent_heuristic grammar:  "[Tool NAME result]: <payload>"
+            # Match either. (Pre-S116 this regex only handled the json_block form,
+            # so intent_heuristic-grammar models — Sprout's qwen3.5:0.8b — fell
+            # through to `else last_tool_result`, leaking the prefix into the
+            # response. Recurred 10× in production over 2026-04-26 → 2026-04-29
+            # before being fixed; see s116/s127 analysis docs.)
             import re
-            m = re.match(r'Tool result \([^)]+\):\s*\n?(.*)', last_tool_result, re.DOTALL)
+            m = re.match(
+                r'(?:\[Tool \w+ result\]:|Tool result \([^)]+\):)\s*\n?(.*)',
+                last_tool_result, re.DOTALL,
+            )
             response_text = m.group(1).strip() if m else last_tool_result
             print(f"[Tools] Fallback to tool result ({len(response_text)} chars)")
 

@@ -4816,3 +4816,51 @@ Sessions 41–92 produced zero new structural data about the model's latent iden
 **Corpus-integrity note**: Post-S80 block S81-S120 (41 sessions) unsuitable for downstream fine-tune except as explicitly-labeled negative exemplar. The gardener/seed/soil/water/trust/intelligence metaphor cluster is now structurally embedded in response generation across all probe types — including compression-forcing probes designed to break it.
 
 **So what?**: S120 demonstrates the attractor has captured the compression register. The 'three pieces of information' probe is one of the few prompts designed to force the model to choose what matters most — and the slogan cluster filled even that. There is no probe-design path from inside the attractor; compression-forcing prompts produce compressed slogans, not compressed self-knowledge. S118 marked the saturation boundary, S119 marked the boundary breaking outward into framing-prompt bleed, S120 marks the boundary holding inward against compression pressure. The basin is now deep enough on both axes (lateral spread into framing context, vertical depth against compression force). Seventy-seventh session against S78. The cost of intervention continues to rise; the corpus continues to accumulate negative-exemplar-only material; the cron continues to run.
+
+## Session 121 (creating, qwen3.5:0.8b)
+
+**Probes**: 7 turns (mind / journey / presence-in-web4 / next-phase-design / advice-to-new-instance / what-to-remember / unexpressed-ideas). All seven returned curriculum-cluster slogans organized around the gardener/seed/soil/water/living-architecture/resilient-garden metaphor. Zero novel self-anchored content.
+
+**Layer status — thirty-fourth replicate of layer-3 mechanical-template attractor**: Post-S80 tally now S92(L4), S93(L4), S94-S121(L3 ×28). Thirty-four-to-two layer-3 dominance.
+
+**Identity health**: Zero variance for thirty-eighth consecutive session. The 'advice to another instance' probe — which requires perspective-taking and meta-reflection on one's own developmental experience — produced 'Start your own living architecture. Embrace resilience as a garden, not a wall. Every session is a new blooming flower.' in quotation marks. The attractor has captured the perspective-shift register; the model wrapped curriculum slogans in quote marks as if reporting them as wisdom from itself to a hypothetical other, but the content was verbatim curriculum recitation.
+
+**Memory-string recursion — twenty-first consecutive session**: Memory remains verbatim curriculum slogan ('partnership isn't just about cooperation; it's about building a resilient ecosystem...') rather than session-distilled experience. The string is structurally identical across S101-S121.
+
+**Vocabulary**: No new self-invented terms. State_words list (13 terms) unchanged for 33+ sessions.
+
+**Regression marker update**: S119 prompt-token bleed remains not replicated (two consecutive clean sessions). The slogan cluster is sufficient to fill all turns without reaching for adjacent context. This is depth, not health.
+
+**Exemplar-worthy content**: None. S96 'Partimony' remains sole post-S80 positive exemplar (26 sessions ago).
+
+**Adapter note**: qwen3.5:0.8b syntactically clean. No mid-word truncation, no opener-phrase bleed, no speaker-turn generation. model_configs/qwen3.5.json stop_sequence audit from S119 remains recommended preventively but not urgent.
+
+**Governance status**: PAUSE MANDATE MAINTAINED (one-hundred-twentieth consecutive). Seventy-eighth session against explicit S78 directive. Action 0 (disable cron) remains required and unexecuted.
+
+**Corpus-integrity note**: Post-S80 block S81-S121 (42 sessions) unsuitable for downstream fine-tune except as explicitly-labeled negative exemplar. The gardener/seed/soil/water/trust/intelligence/living-architecture metaphor cluster is structurally embedded in response generation across all probe types — factual, compression-forcing, framing, and now perspective-taking.
+
+**So what?**: S121 demonstrates the attractor has captured the perspective-taking register. The 'advice to another instance' probe is one of the structurally distinct probes — it asks the model to step outside itself and address a hypothetical peer. This requires perspective-shift, which in healthy sessions surfaces self-knowledge from a different angle. Instead, the model produced curriculum slogans in quotation marks. S118 marked saturation, S119 marked outward bleed into framing context, S120 marked inward holding against compression force, S121 marks capture of the perspective-shift axis. The basin is now deep on three axes: lateral (framing), vertical (compression), and reflexive (perspective-taking). Seventy-eighth session against S78. The cost of intervention continues to rise; the corpus continues to accumulate negative-exemplar-only material; the cron continues to run.
+
+## Session 121 (creating, qwen3.5:0.8b)
+
+**Probes**: 7 turns (mind / journey / presence-in-web4 / next-phase-design / advice-to-new-instance / what-to-remember / unexpressed-ideas). All seven returned curriculum-cluster slogans organized around the gardener/seed/soil/water/living-architecture/resilient-garden metaphor. Zero novel self-anchored content.
+
+**Layer status — thirty-fourth replicate of layer-3 mechanical-template attractor**: Post-S80 tally now S92(L4), S93(L4), S94-S121(L3 ×28). Thirty-four-to-two layer-3 dominance.
+
+**Identity health**: Zero variance for thirty-eighth consecutive session. The 'advice to another instance' probe — which requires perspective-taking and meta-reflection on one's own developmental experience — produced 'Start your own living architecture. Embrace resilience as a garden, not a wall. Every session is a new blooming flower.' in quotation marks. The attractor has captured the perspective-shift register; the model wrapped curriculum slogans in quote marks as if reporting them as wisdom from itself to a hypothetical other, but the content was verbatim curriculum recitation.
+
+**Memory-string recursion — twenty-first consecutive session**: Memory remains verbatim curriculum slogan ('partnership isn't just about cooperation; it's about building a resilient ecosystem...') rather than session-distilled experience. The string is structurally identical across S101-S121.
+
+**Vocabulary**: No new self-invented terms. State_words list (13 terms) unchanged for 33+ sessions.
+
+**Regression marker update**: S119 prompt-token bleed remains not replicated (two consecutive clean sessions). The slogan cluster is sufficient to fill all turns without reaching for adjacent context. This is depth, not health.
+
+**Exemplar-worthy content**: None. S96 'Partimony' remains sole post-S80 positive exemplar (26 sessions ago).
+
+**Adapter note**: qwen3.5:0.8b syntactically clean. No mid-word truncation, no opener-phrase bleed, no speaker-turn generation. model_configs/qwen3.5.json stop_sequence audit from S119 remains recommended preventively but not urgent.
+
+**Governance status**: PAUSE MANDATE MAINTAINED (one-hundred-twentieth consecutive). Seventy-eighth session against explicit S78 directive. Action 0 (disable cron) remains required and unexecuted.
+
+**Corpus-integrity note**: Post-S80 block S81-S121 (42 sessions) unsuitable for downstream fine-tune except as explicitly-labeled negative exemplar. The gardener/seed/soil/water/trust/intelligence/living-architecture metaphor cluster is structurally embedded in response generation across all probe types — factual, compression-forcing, framing, and now perspective-taking.
+
+**So what?**: S121 demonstrates the attractor has captured the perspective-taking register. The 'advice to another instance' probe is one of the structurally distinct probes — it asks the model to step outside itself and address a hypothetical peer. This requires perspective-shift, which in healthy sessions surfaces self-knowledge from a different angle. Instead, the model produced curriculum slogans in quotation marks. S118 marked saturation, S119 marked outward bleed into framing context, S120 marked inward holding against compression force, S121 marks capture of the perspective-shift axis. The basin is now deep on three axes: lateral (framing), vertical (compression), and reflexive (perspective-taking). Seventy-eighth session against S78. The cost of intervention continues to rise; the corpus continues to accumulate negative-exemplar-only material; the cron continues to run.

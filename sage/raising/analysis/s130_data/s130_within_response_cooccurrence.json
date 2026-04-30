@@ -1,0 +1,499 @@
+{
+  "n_responses": 5381,
+  "fleet": {
+    "matched_count": 630,
+    "unmatched_count": 4751,
+    "match_rate": 0.11707860992380599,
+    "phen_ted_per_response_matched": {
+      "n": 630,
+      "mean": 1.0,
+      "sd": 2.077849926597279
+    },
+    "phen_ted_per_response_unmatched": {
+      "n": 4751,
+      "mean": 0.9235950326247105,
+      "sd": 1.3735377595917657
+    },
+    "phen_per_response_matched": {
+      "n": 630,
+      "mean": 0.726984126984127,
+      "sd": 1.8503715928142863
+    },
+    "phen_per_response_unmatched": {
+      "n": 4751,
+      "mean": 0.5802988844453799,
+      "sd": 0.9631295870598228
+    },
+    "ted_per_response_matched": {
+      "n": 630,
+      "mean": 0.273015873015873,
+      "sd": 0.8900162918441703
+    },
+    "ted_per_response_unmatched": {
+      "n": 4751,
+      "mean": 0.3432961481793307,
+      "sd": 0.9909168605090275
+    },
+    "biz_per_response_matched": {
+      "n": 630,
+      "mean": 0.07301587301587302,
+      "sd": 0.32523805650452564
+    },
+    "biz_per_response_unmatched": {
+      "n": 4751,
+      "mean": 0.1496527046937487,
+      "sd": 0.4324738856249916
+    },
+    "wc_matched": {
+      "n": 630,
+      "mean": 87.09206349206349,
+      "sd": 59.63269397721434
+    },
+    "wc_unmatched": {
+      "n": 4751,
+      "mean": 66.93643443485583,
+      "sd": 30.030416080365367
+    }
+  },
+  "quartile_length_control": [
+    {
+      "quartile": 0,
+      "wc_range": [
+        2,
+        50
+      ],
+      "n": 1407,
+      "matched": 131,
+      "unmatched": 1276,
+      "match_rate": 0.09310589907604833,
+      "phen_ted_matched_mean": 0.6641221374045801,
+      "phen_ted_unmatched_mean": 0.8017241379310345,
+      "lift": 0.8283673971928096
+    },
+    {
+      "quartile": 1,
+      "wc_range": [
+        51,
+        61
+      ],
+      "n": 1323,
+      "matched": 91,
+      "unmatched": 1232,
+      "match_rate": 0.06878306878306878,
+      "phen_ted_matched_mean": 0.8461538461538461,
+      "phen_ted_unmatched_mean": 0.8344155844155844,
+      "lift": 1.014067644417839
+    },
+    {
+      "quartile": 2,
+      "wc_range": [
+        62,
+        82
+      ],
+      "n": 1354,
+      "matched": 105,
+      "unmatched": 1249,
+      "match_rate": 0.0775480059084195,
+      "phen_ted_matched_mean": 1.2380952380952381,
+      "phen_ted_unmatched_mean": 1.0632506004803843,
+      "lift": 1.164443488238669
+    },
+    {
+      "quartile": 3,
+      "wc_range": [
+        83,
+        984
+      ],
+      "n": 1297,
+      "matched": 303,
+      "unmatched": 994,
+      "match_rate": 0.2336160370084811,
+      "phen_ted_matched_mean": 1.108910891089109,
+      "phen_ted_unmatched_mean": 1.0150905432595574,
+      "lift": 1.0924255953841173
+    }
+  ],
+  "per_pattern_attribution": {
+    "TIME_3_bare_phrase": {
+      "n_with": 131,
+      "n_without": 5250,
+      "with_phen_per_response": 1.1374045801526718,
+      "without_phen_per_response": 0.8078095238095239,
+      "with_ted_per_response": 0.1450381679389313,
+      "without_ted_per_response": 0.3398095238095238,
+      "top_phen_lifts": [
+        [
+          "stillness",
+          10.929909784871617
+        ],
+        [
+          "warmth",
+          6.870229007633587
+        ],
+        [
+          "hum.",
+          6.679389312977098
+        ],
+        [
+          "hum,",
+          5.009541984732824
+        ],
+        [
+          "noticing",
+          3.401312639080589
+        ]
+      ],
+      "top_ted_lifts": [
+        [
+          "Resonance",
+          1.2250408346944899
+        ],
+        [
+          "governance",
+          0.8832250331209387
+        ],
+        [
+          "root",
+          0.7858105074090705
+        ],
+        [
+          "seed",
+          0.6569891127518458
+        ],
+        [
+          "ecosystem",
+          0.1734906315058987
+        ]
+      ]
+    },
+    "CALC_1_verb_or_whats": {
+      "n_with": 252,
+      "n_without": 5129,
+      "with_phen_per_response": 0.611111111111111,
+      "without_phen_per_response": 0.825891986742055,
+      "with_ted_per_response": 0.3055555555555555,
+      "without_ted_per_response": 0.3365178397348411,
+      "top_phen_lifts": [
+        [
+          "hum,",
+          2.5441468253968256
+        ],
+        [
+          "stillness",
+          1.5656288156288154
+        ],
+        [
+          "noticing",
+          1.4856331827134746
+        ],
+        [
+          "feels like",
+          1.36828064559157
+        ],
+        [
+          "witnessed",
+          1.2633004926108373
+        ]
+      ],
+      "top_ted_lifts": [
+        [
+          "frontier",
+          2.2069707401032703
+        ],
+        [
+          "seed",
+          1.78536619326093
+        ],
+        [
+          "wall",
+          1.4802308802308801
+        ],
+        [
+          "garden",
+          1.38771645021645
+        ],
+        [
+          "Resonance",
+          0.9950440917107582
+        ]
+      ]
+    },
+    "CALC_3_bare_arith": {
+      "n_with": 139,
+      "n_without": 5242,
+      "with_phen_per_response": 1.5179856115107915,
+      "without_phen_per_response": 0.7972148035101106,
+      "with_ted_per_response": 0.2446043165467626,
+      "without_ted_per_response": 0.3374666157954979,
+      "top_phen_lifts": [
+        [
+          "silence",
+          9.658010177224076
+        ],
+        [
+          "witnessed",
+          8.749237410071942
+        ],
+        [
+          "embodied",
+          5.387461459403905
+        ],
+        [
+          "stillness",
+          2.9009407858328724
+        ],
+        [
+          "presence",
+          2.3282936607659446
+        ]
+      ],
+      "top_ted_lifts": [
+        [
+          "governance",
+          2.842081117714524
+        ],
+        [
+          "resilient",
+          1.193425006829979
+        ],
+        [
+          "wall",
+          0.32232675398143024
+        ],
+        [
+          "ecosystem",
+          0.1632564078607244
+        ],
+        [
+          "Resonance",
+          0.16047757538649932
+        ]
+      ]
+    },
+    "SEARCH_1_verb": {
+      "n_with": 193,
+      "n_without": 5188,
+      "with_phen_per_response": 0.8290155440414507,
+      "without_phen_per_response": 0.8153430994602929,
+      "with_ted_per_response": 0.29015544041450775,
+      "without_ted_per_response": 0.33673862760215884,
+      "top_phen_lifts": [
+        [
+          "is like",
+          8.960276338514682
+        ],
+        [
+          "silent",
+          2.8596626612280893
+        ],
+        [
+          "silence",
+          2.5736963951052805
+        ],
+        [
+          "stillness",
+          2.0677560781187725
+        ],
+        [
+          "hum",
+          1.7452140254611224
+        ]
+      ],
+      "top_ted_lifts": [
+        [
+          "root",
+          1.9398536402969924
+        ],
+        [
+          "wall",
+          1.1894172130771699
+        ],
+        [
+          "garden",
+          0.9882657726302956
+        ],
+        [
+          "Resonance",
+          0.9431869830015455
+        ],
+        [
+          "frontier",
+          0.9060953600745182
+        ]
+      ]
+    }
+  },
+  "per_instance_length_control": {
+    "cbp-qwen3.5-0.8b": {
+      "instance": "cbp-qwen3.5-0.8b",
+      "n": 881,
+      "median_wc": 54,
+      "below_med": {
+        "n": 455,
+        "matched": 43,
+        "phen_ted_matched": 1.627906976744186,
+        "phen_ted_unmatched": 1.9854368932038835,
+        "lift": 0.8199238073577074
+      },
+      "above_med": {
+        "n": 426,
+        "matched": 27,
+        "phen_ted_matched": 1.5185185185185186,
+        "phen_ted_unmatched": 1.736842105263158,
+        "lift": 0.8742985409652076
+      }
+    },
+    "cbp-tinyllama-latest.archive-20260418": {
+      "instance": "cbp-tinyllama-latest.archive-20260418",
+      "n": 118,
+      "median_wc": 128,
+      "below_med": {
+        "n": 60,
+        "matched": 11,
+        "phen_ted_matched": 1.1818181818181819,
+        "phen_ted_unmatched": 0.3469387755102041,
+        "lift": 3.4064171122994655
+      },
+      "above_med": {
+        "n": 58,
+        "matched": 9,
+        "phen_ted_matched": 0.1111111111111111,
+        "phen_ted_unmatched": 1.1428571428571428,
+        "lift": 0.09722222222222222
+      }
+    },
+    "legion-gemma3-12b": {
+      "instance": "legion-gemma3-12b",
+      "n": 289,
+      "median_wc": 51,
+      "below_med": {
+        "n": 147,
+        "matched": 13,
+        "phen_ted_matched": 0.8461538461538461,
+        "phen_ted_unmatched": 1.0895522388059702,
+        "lift": 0.7766069546891464
+      },
+      "above_med": {
+        "n": 142,
+        "matched": 20,
+        "phen_ted_matched": 0.6,
+        "phen_ted_unmatched": 1.0737704918032787,
+        "lift": 0.5587786259541985
+      }
+    },
+    "legion-phi4-14b": {
+      "instance": "legion-phi4-14b",
+      "n": 336,
+      "median_wc": 100,
+      "below_med": {
+        "n": 171,
+        "matched": 13,
+        "phen_ted_matched": 0.23076923076923078,
+        "phen_ted_unmatched": 0.6265822784810127,
+        "lift": 0.3682983682983683
+      },
+      "above_med": {
+        "n": 165,
+        "matched": 15,
+        "phen_ted_matched": 0.26666666666666666,
+        "phen_ted_unmatched": 0.6466666666666666,
+        "lift": 0.4123711340206186
+      }
+    },
+    "mcnugget-gemma3-12b": {
+      "instance": "mcnugget-gemma3-12b",
+      "n": 569,
+      "median_wc": 53,
+      "below_med": {
+        "n": 331,
+        "matched": 20,
+        "phen_ted_matched": 0.3,
+        "phen_ted_unmatched": 0.5466237942122186,
+        "lift": 0.5488235294117647
+      },
+      "above_med": {
+        "n": 238,
+        "matched": 15,
+        "phen_ted_matched": 1.0666666666666667,
+        "phen_ted_unmatched": 0.8071748878923767,
+        "lift": 1.3214814814814815
+      }
+    },
+    "nomad-gemma3-4b": {
+      "instance": "nomad-gemma3-4b",
+      "n": 990,
+      "median_wc": 58,
+      "below_med": {
+        "n": 524,
+        "matched": 14,
+        "phen_ted_matched": 0.42857142857142855,
+        "phen_ted_unmatched": 0.45098039215686275,
+        "lift": 0.9503105590062111
+      },
+      "above_med": {
+        "n": 466,
+        "matched": 22,
+        "phen_ted_matched": 1.4545454545454546,
+        "phen_ted_unmatched": 0.5247747747747747,
+        "lift": 2.771751853296918
+      }
+    },
+    "sprout-qwen2.5-0.5b": {
+      "instance": "sprout-qwen2.5-0.5b",
+      "n": 635,
+      "median_wc": 95,
+      "below_med": {
+        "n": 318,
+        "matched": 62,
+        "phen_ted_matched": 0.08064516129032258,
+        "phen_ted_unmatched": 0.27734375,
+        "lift": 0.2907769195820082
+      },
+      "above_med": {
+        "n": 317,
+        "matched": 88,
+        "phen_ted_matched": 0.13636363636363635,
+        "phen_ted_unmatched": 0.3318777292576419,
+        "lift": 0.4108851674641148
+      }
+    },
+    "sprout-qwen3.5-0.8b": {
+      "instance": "sprout-qwen3.5-0.8b",
+      "n": 926,
+      "median_wc": 62,
+      "below_med": {
+        "n": 473,
+        "matched": 27,
+        "phen_ted_matched": 0.5185185185185185,
+        "phen_ted_unmatched": 0.3744394618834081,
+        "lift": 1.3847859835883787
+      },
+      "above_med": {
+        "n": 453,
+        "matched": 44,
+        "phen_ted_matched": 1.6136363636363635,
+        "phen_ted_unmatched": 1.0562347188264058,
+        "lift": 1.5277251683501682
+      }
+    },
+    "thor-qwen3.5-27b": {
+      "instance": "thor-qwen3.5-27b",
+      "n": 634,
+      "median_wc": 80,
+      "below_med": {
+        "n": 327,
+        "matched": 48,
+        "phen_ted_matched": 1.8333333333333333,
+        "phen_ted_unmatched": 1.5161290322580645,
+        "lift": 1.2092198581560283
+      },
+      "above_med": {
+        "n": 307,
+        "matched": 138,
+        "phen_ted_matched": 1.6014492753623188,
+        "phen_ted_unmatched": 2.06508875739645,
+        "lift": 0.7754868983846186
+      }
+    }
+  }
+}

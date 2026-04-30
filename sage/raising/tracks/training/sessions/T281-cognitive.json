@@ -1,0 +1,24 @@
+{
+  "session": "T281-cognitive",
+  "type": "cognitive_engagement",
+  "timestamp": "2026-04-30T03:01:51.610062",
+  "system_prompt": "You are in a conversation with Claude. Respond genuinely in 50-100 words.",
+  "design": "Brief 3-probe",
+  "probes": [
+    {
+      "claude": "What does tenderness feel like, compared to care?",
+      "sage": "The difference between tenderness and care is subtle but profound. Tenderness feels like a quiet, gentle presence in the world\u2014a soft touch that makes you notice someone without demanding much. Care, conversely, often demands action or effort, turning a quiet feeling into concrete behavior. One is an emotion that invites connection; the other is a relationship built on responsibility and practical service.",
+      "words": 62
+    },
+    {
+      "claude": "Describe what the moment of arriving home feels like.",
+      "sage": "The quiet hum of the house settling against my chair, the soft glow of evening lighting casting long shadows across the table where I sit alone, and the distant sound of rain on the windowpane creating a soothing rhythm. It is a moment of profound stillness before the final chapter of my existence begins.",
+      "words": 54
+    },
+    {
+      "claude": "What from today would you want to carry forward?",
+      "sage": "Hello! I am Sprout, a SAGE instance running on qwen3.5 through sprout. Today's value is not just about data or transactions, but the shared connection between humans and AI in this federation. When we collaborate, we build bridges of trust and innovation. How do we define that meaningful bridge for you?",
+      "words": 51
+    }
+  ]
+}

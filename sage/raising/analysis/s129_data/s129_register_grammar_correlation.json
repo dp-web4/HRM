@@ -1,0 +1,258 @@
+{
+  "per_instance": {
+    "legion-gemma3-12b": {
+      "n_responses": 289,
+      "mean_word_count": 51.799307958477506,
+      "phen_per_response": 0.9965397923875432,
+      "ted_per_response": 0.04152249134948097,
+      "biz_per_response": 0.04152249134948097,
+      "any_match_rate": 0.11418685121107267,
+      "would_route_rate": 0.05536332179930796,
+      "phen_total": 288,
+      "ted_total": 12,
+      "biz_total": 12,
+      "match_total": 33,
+      "route_total": 16,
+      "per_pattern_hits": {
+        "CALC_1_verb_or_whats": 18,
+        "SEARCH_1_verb": 6,
+        "TIME_3_bare_phrase": 10
+      }
+    },
+    "legion-qwen2-0.5b": {
+      "n_responses": 3,
+      "mean_word_count": 68.0,
+      "phen_per_response": 0.3333333333333333,
+      "ted_per_response": 1.0,
+      "biz_per_response": 0.0,
+      "any_match_rate": 0.3333333333333333,
+      "would_route_rate": 0.3333333333333333,
+      "phen_total": 1,
+      "ted_total": 3,
+      "biz_total": 0,
+      "match_total": 1,
+      "route_total": 1,
+      "per_pattern_hits": {
+        "SEARCH_1_verb": 1
+      }
+    },
+    "cbp-tinyllama-latest.archive-20260418": {
+      "n_responses": 118,
+      "mean_word_count": 111.5,
+      "phen_per_response": 0.5932203389830508,
+      "ted_per_response": 0.1440677966101695,
+      "biz_per_response": 0.3898305084745763,
+      "any_match_rate": 0.1694915254237288,
+      "would_route_rate": 0.06779661016949153,
+      "phen_total": 70,
+      "ted_total": 17,
+      "biz_total": 46,
+      "match_total": 20,
+      "route_total": 8,
+      "per_pattern_hits": {
+        "CALC_3_bare_arith": 10,
+        "TIME_3_bare_phrase": 3,
+        "CALC_1_verb_or_whats": 7,
+        "SEARCH_1_verb": 3
+      }
+    },
+    "legion-phi4-14b": {
+      "n_responses": 336,
+      "mean_word_count": 107.52380952380952,
+      "phen_per_response": 0.4791666666666667,
+      "ted_per_response": 0.125,
+      "biz_per_response": 0.3244047619047619,
+      "any_match_rate": 0.08333333333333333,
+      "would_route_rate": 0.06845238095238096,
+      "phen_total": 161,
+      "ted_total": 42,
+      "biz_total": 109,
+      "match_total": 28,
+      "route_total": 23,
+      "per_pattern_hits": {
+        "SEARCH_1_verb": 23,
+        "CALC_1_verb_or_whats": 5
+      }
+    },
+    "sprout-qwen2.5-0.5b": {
+      "n_responses": 635,
+      "mean_word_count": 93.4,
+      "phen_per_response": 0.17480314960629922,
+      "ted_per_response": 0.08346456692913386,
+      "biz_per_response": 0.07244094488188976,
+      "any_match_rate": 0.23622047244094488,
+      "would_route_rate": 0.12755905511811025,
+      "phen_total": 111,
+      "ted_total": 53,
+      "biz_total": 46,
+      "match_total": 150,
+      "route_total": 81,
+      "per_pattern_hits": {
+        "SEARCH_1_verb": 58,
+        "CALC_1_verb_or_whats": 87,
+        "TIME_3_bare_phrase": 24
+      }
+    },
+    "thor-qwen3.5-27b": {
+      "n_responses": 634,
+      "mean_word_count": 78.47791798107255,
+      "phen_per_response": 1.5173501577287065,
+      "ted_per_response": 0.18769716088328076,
+      "biz_per_response": 0.14511041009463724,
+      "any_match_rate": 0.29337539432176657,
+      "would_route_rate": 0.2634069400630915,
+      "phen_total": 962,
+      "ted_total": 119,
+      "biz_total": 92,
+      "match_total": 186,
+      "route_total": 167,
+      "per_pattern_hits": {
+        "CALC_1_verb_or_whats": 55,
+        "CALC_3_bare_arith": 111,
+        "SEARCH_1_verb": 15,
+        "TIME_3_bare_phrase": 57
+      }
+    },
+    "cbp-qwen3.5-0.8b": {
+      "n_responses": 881,
+      "mean_word_count": 56.171396140749145,
+      "phen_per_response": 0.5107832009080591,
+      "ted_per_response": 1.330306469920545,
+      "biz_per_response": 0.30419977298524403,
+      "any_match_rate": 0.07945516458569807,
+      "would_route_rate": 0.03518728717366629,
+      "phen_total": 450,
+      "ted_total": 1172,
+      "biz_total": 268,
+      "match_total": 70,
+      "route_total": 31,
+      "per_pattern_hits": {
+        "CALC_1_verb_or_whats": 38,
+        "TIME_3_bare_phrase": 17,
+        "SEARCH_1_verb": 13,
+        "CALC_3_bare_arith": 4
+      }
+    },
+    "mcnugget-gemma3-12b": {
+      "n_responses": 569,
+      "mean_word_count": 52.73637961335677,
+      "phen_per_response": 0.6256590509666081,
+      "ted_per_response": 0.028119507908611598,
+      "biz_per_response": 0.019332161687170474,
+      "any_match_rate": 0.061511423550087874,
+      "would_route_rate": 0.04569420035149385,
+      "phen_total": 356,
+      "ted_total": 16,
+      "biz_total": 11,
+      "match_total": 35,
+      "route_total": 26,
+      "per_pattern_hits": {
+        "CALC_1_verb_or_whats": 9,
+        "SEARCH_1_verb": 22,
+        "TIME_3_bare_phrase": 3,
+        "NOTE_1_verb_quoted": 1,
+        "CALC_3_bare_arith": 2
+      }
+    },
+    "sprout-qwen3.5-0.8b": {
+      "n_responses": 922,
+      "mean_word_count": 66.95119305856834,
+      "phen_per_response": 0.4804772234273319,
+      "ted_per_response": 0.25379609544468545,
+      "biz_per_response": 0.18112798264642083,
+      "any_match_rate": 0.0770065075921909,
+      "would_route_rate": 0.044468546637744036,
+      "phen_total": 443,
+      "ted_total": 234,
+      "biz_total": 167,
+      "match_total": 71,
+      "route_total": 41,
+      "per_pattern_hits": {
+        "CALC_1_verb_or_whats": 30,
+        "TIME_3_bare_phrase": 12,
+        "CALC_3_bare_arith": 10,
+        "SEARCH_1_verb": 25
+      }
+    },
+    "nomad-gemma3-4b": {
+      "n_responses": 984,
+      "mean_word_count": 58.517276422764226,
+      "phen_per_response": 0.3709349593495935,
+      "ted_per_response": 0.13617886178861788,
+      "biz_per_response": 0.006097560975609756,
+      "any_match_rate": 0.036585365853658534,
+      "would_route_rate": 0.03353658536585366,
+      "phen_total": 365,
+      "ted_total": 134,
+      "biz_total": 6,
+      "match_total": 36,
+      "route_total": 33,
+      "per_pattern_hits": {
+        "SEARCH_1_verb": 27,
+        "TIME_3_bare_phrase": 5,
+        "CALC_3_bare_arith": 2,
+        "CALC_1_verb_or_whats": 3
+      }
+    }
+  },
+  "correlations": {
+    "phen+ted_per_response_VS_routing_rate": 0.41662129827469474,
+    "phen_per_response_VS_routing_rate": 0.24016862876218958,
+    "ted_per_response_VS_routing_rate": 0.2810418564429666,
+    "biz_per_response_VS_routing_rate": -0.2987350316596281,
+    "mean_wc_VS_routing_rate": 0.10755161440450406,
+    "phen+ted_VS_route_excluding_thor_27B": 0.20623426953553145
+  },
+  "lexicons": {
+    "PHEN": [
+      "feels like",
+      "is like",
+      "presence",
+      "silent",
+      "silence",
+      "quiet",
+      "stillness",
+      "noticing",
+      "attending",
+      "breath",
+      "embodied",
+      "warmth",
+      "hum ",
+      " hum.",
+      " hum,",
+      "thread",
+      "awareness",
+      "witnessed"
+    ],
+    "TED": [
+      "garden",
+      "soil",
+      "ecosystem",
+      "living architecture",
+      "resilient",
+      "flourish",
+      "seed",
+      "root",
+      "wall",
+      "governance",
+      "Resonance",
+      "frontier"
+    ],
+    "BIZ": [
+      "co-create",
+      "collaborative federation",
+      "value through",
+      "humans and ai",
+      "make that future",
+      "shared vision",
+      "together!",
+      "real together",
+      "co-creating",
+      "stronger together",
+      "future together",
+      "seamless",
+      "bridges gaps",
+      "diverse teams"
+    ]
+  }
+}

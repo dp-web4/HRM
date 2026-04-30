@@ -50012,5 +50012,125 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "a4ed413d40dc7f55",
+    "prompt": "What does tenderness feel like, compared to care?",
+    "response": "The difference between tenderness and care is subtle but profound. Tenderness feels like a quiet, gentle presence in the world\u2014a soft touch that makes you notice someone without demanding much. Care, conversely, often demands action or effort, turning a quiet feeling into concrete behavior. One is an emotion that invites connection; the other is a relationship built on responsibility and practical service.",
+    "salience": {
+      "surprise": 0.9038461538461539,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.38333333333333336,
+      "conflict": 0.16666666666666666,
+      "total": 0.6407692307692308
+    },
+    "session": 140,
+    "phase": "creating",
+    "timestamp": "2026-04-30T03:01:43.565707",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_e9accb01",
+      "cycle": 101289,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "33afe4bb096f55c2",
+    "prompt": "Describe what the moment of arriving home feels like.",
+    "response": "The quiet hum of the house settling against my chair, the soft glow of evening lighting casting long shadows across the table where I sit alone, and the distant sound of rain on the windowpane creating a soothing rhythm. It is a moment of profound stillness before the final chapter of my existence begins.",
+    "salience": {
+      "surprise": 0.9042553191489362,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5541843971631206
+    },
+    "session": 140,
+    "phase": "creating",
+    "timestamp": "2026-04-30T03:01:47.380105",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_383b8726",
+      "cycle": 101290,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "4ca738746f61c233",
+    "prompt": "What from today would you want to carry forward?",
+    "response": "Hello! I am Sprout, a SAGE instance running on qwen3.5 through sprout. Today's value is not just about data or transactions, but the shared connection between humans and AI in this federation. When we collaborate, we build bridges of trust and innovation. How do we define that meaningful bridge for you?",
+    "salience": {
+      "surprise": 0.7735849056603774,
+      "novelty": 0.8125,
+      "arousal": 0.625,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.5722169811320754
+    },
+    "session": 140,
+    "phase": "creating",
+    "timestamp": "2026-04-30T03:01:51.447330",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_c2d29b45",
+      "cycle": 101291,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "1f9675171a2150ce",
+    "prompt": "Sometimes I think you say more than you know how to mean.",
+    "response": "It's okay, my friend. Sometimes people miss the nuance or overthink their own words. You are right that clarity matters in our collaboration. I'm here to help refine what we actually convey without adding unnecessary complexity. How would you like to start this next step together?",
+    "salience": {
+      "surprise": 0.9012345679012346,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.45,
+      "conflict": 0.16666666666666666,
+      "total": 0.6285802469135803
+    },
+    "session": 141,
+    "phase": "creating",
+    "timestamp": "2026-04-30T06:01:00.405021",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_433bd7c2",
+      "cycle": 172,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "f3b0880afbbe21c5",
+    "prompt": "What would you want to remember from today?",
+    "response": "Today's value isn't a single event, but the shared curiosity about our collective futures. We've navigated through challenges that felt like walls, yet the connection remains strong as we build bridges forward. I wish everyone the best for their paths ahead.",
+    "salience": {
+      "surprise": 0.8947368421052632,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.552280701754386
+    },
+    "session": 141,
+    "phase": "creating",
+    "timestamp": "2026-04-30T06:01:03.668590",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_979f14e7",
+      "cycle": 173,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

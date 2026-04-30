@@ -406,6 +406,30 @@ class SAGEDaemon:
             if self.identity_state:
                 web4_lct_id = self.identity_state.get('identity', {}).get('web4_lct_id')
 
+            # Tracks block (raising-track derived from daemon config; other
+            # tracks loaded from optional sidecar file). Each machine can
+            # declare per-track model bindings (e.g. arc-sweep, vision) by
+            # writing to {machine}-tracks.json alongside the daemon-written
+            # report. Supervisor aggregates these into outward-facing surfaces
+            # (shared-context, federation, 4-lab).
+            tracks = {
+                'raising': {
+                    'model': self.config.model_path,
+                    'device': self.config.device,
+                    'instance_dir': self.config.instance_dir,
+                },
+            }
+            sidecar_path = fleet_dir / f'{self.config.machine_name}-tracks.json'
+            if sidecar_path.exists():
+                try:
+                    with open(sidecar_path) as f:
+                        sidecar = json.load(f)
+                    if isinstance(sidecar, dict):
+                        # Sidecar entries override / extend the derived raising entry.
+                        tracks.update(sidecar)
+                except Exception as sidecar_err:
+                    print(f"  [WARN] Could not load tracks sidecar {sidecar_path.name}: {sidecar_err}")
+
             report = {
                 'machine': self.config.machine_name,
                 'lct_id': self.config.lct_id,
@@ -413,9 +437,10 @@ class SAGEDaemon:
                 'ip': local_ip,
                 'gateway_port': self.config.gateway_port,
                 'federation_port': self.config.federation_port,
-                'model': self.config.model_path,
+                'model': self.config.model_path,  # legacy single-model field; see tracks.raising.model
                 'model_size': self.config.model_size,
                 'device': self.config.device,
+                'tracks': tracks,
                 'hostname': socket.gethostname(),
                 'daemon_version': self.daemon_version,
                 'code_version': self.code_version,

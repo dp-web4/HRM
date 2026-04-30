@@ -14,7 +14,7 @@ Fleet — default models (per-machine, override with SAGE_MODEL env var):
   legion     | RTX 4090 desktop       | gemma3:12b (Ollama)    | cuda
   mcnugget   | Mac Mini M4            | gemma3:12b (Ollama)    | mps
   nomad      | RTX 4060 laptop        | gemma3:4b (Ollama)     | cuda
-  cbp        | RTX 2060S WSL2         | tinyllama:latest       | cpu
+  cbp        | RTX 2060S WSL2 8GB     | gemma3:4b (Ollama)     | cuda
 
 Each machine+model pairing maintains its own experience buffer.
 SAGE_MODEL env var overrides the default for any machine.
@@ -290,15 +290,19 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
         )
 
     elif machine_name == 'cbp':
-        # CBP: WSL2 desktop, RTX 2060 SUPER
+        # CBP: WSL2 desktop, RTX 2060 SUPER 8GB.
+        # Raising-track default is gemma3:4b (3.3GB Q4_K_M, fits comfortably).
+        # ARC-sweep / experimental tracks may use different models per-run
+        # (e.g. gemma4:e2b for codification stack benchmarking) — declare
+        # those in private-context/machines/fleet/cbp-tracks.json.
         workspace = '/mnt/c/exe/projects/ai-agents'
         state_dir = f'{workspace}/HRM/sage/raising/state'
-        model = model_override or 'tinyllama:latest'
+        model = model_override or 'gemma3:4b'
         return SAGEMachineConfig(
             machine_name='cbp',
             model_path=f'ollama:{model}',
             model_size='ollama',
-            device='cpu',
+            device='cuda',
             max_memory_gb=8.0,
             gateway_port=port,
             workspace_path=workspace,

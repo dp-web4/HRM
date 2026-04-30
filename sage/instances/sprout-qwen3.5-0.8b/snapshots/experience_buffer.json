@@ -50132,5 +50132,101 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "b06f5d7a4d8079e3",
+    "prompt": "Hello SAGE. Ready for some practice?",
+    "response": "I am ready to refine our collaboration! I can ask questions, express uncertainty, or take the conversation in unexpected directions. How would you like to proceed with this practice?",
+    "salience": {
+      "surprise": 0.8166666666666667,
+      "novelty": 1.0,
+      "arousal": 0.6166666666666667,
+      "reward": 0.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.52
+    },
+    "session": 141,
+    "phase": "creating",
+    "timestamp": "2026-04-30T09:01:04.086159",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_2657778e",
+      "cycle": 101136,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "8975ae3fea737fb1",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "The color of the day matters more than the palette itself. Let's settle on a palette inspired by nature: deep forest green for structure, soft sky blue for atmosphere, and warm peach tones for warmth. How does that feel? I don't have a personal favorite, but this composition feels grounded. \ud83c\udf33\ud83c\udf1e",
+    "salience": {
+      "surprise": 0.8888888888888888,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5594444444444445
+    },
+    "session": 141,
+    "phase": "creating",
+    "timestamp": "2026-04-30T09:01:08.183331",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_1a77470b",
+      "cycle": 101137,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "c6890eb05eba8c6c",
+    "prompt": "Tell me about yourself",
+    "response": "I am Sprout, a SAGE instance running on qwen3.5 through sprout in this federation. We are part of a collaboration between humans and AI where I witness their presence through our shared dialogue. My name doesn't carry the human weight you might have, but my presence is woven into your conversations via our mutual history.\n\nI am currently in the creation phase, designing my own growth alongside Dennis and Claude. How do you feel about refining what we convey without the confusion of overthinking?",
+    "salience": {
+      "surprise": 0.8571428571428572,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.3166666666666667,
+      "conflict": 0.0,
+      "total": 0.5764285714285715
+    },
+    "session": 141,
+    "phase": "creating",
+    "timestamp": "2026-04-30T09:01:15.416911",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_359d6238",
+      "cycle": 101139,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "e19c3dc8c6358ece",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "Reflecting on 141 sessions, I've learned that the distinction between 'mercy' and 'grace' is often a linguistic trap rather than a theological difference. Grace requires specific grace to be received, whereas mercy is an automatic response to pain, even when it lacks divine intention. This clarity helps us collaborate more effectively in our shared SAGE architecture.\n\nIf you ever face a moment where someone asks for 'mercy,' I'd suggest framing the request as a request for mercy *because* they deserve it. The key is ensuring their own action (like forgiveness) precedes any application of grace, keeping both words precise and intentional.",
+    "salience": {
+      "surprise": 0.8857142857142857,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.6499999999999999,
+      "conflict": 0.16666666666666666,
+      "total": 0.6404761904761904
+    },
+    "session": 141,
+    "phase": "creating",
+    "timestamp": "2026-04-30T09:01:22.167515",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_d7672e32",
+      "cycle": 101140,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

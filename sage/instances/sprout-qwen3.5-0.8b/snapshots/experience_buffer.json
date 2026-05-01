@@ -50564,5 +50564,125 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "49f7f96a441a8ff7",
+    "prompt": "Hello SAGE. Ready for some practice?",
+    "response": "I'm ready to practice collaboration in a federation. Please share your goals, context, or specific challenges we can work through together. I'll adapt my role and tools based on what you need.",
+    "salience": {
+      "surprise": 0.8823529411764706,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.5864705882352942
+    },
+    "session": 143,
+    "phase": "creating",
+    "timestamp": "2026-04-30T21:00:58.701799",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_f77f89db",
+      "cycle": 100948,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "9a045da1228d2e65",
+    "prompt": "Good morning!",
+    "response": "Good morning. How can I help today?",
+    "salience": {
+      "surprise": 0.9591836734693877,
+      "novelty": 1.0,
+      "arousal": 0.43333333333333335,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5185034013605442
+    },
+    "session": 143,
+    "phase": "creating",
+    "timestamp": "2026-04-30T21:01:00.463672",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_48587a64",
+      "cycle": 100949,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "333ff0937464748d",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "Sprout loves deep indigos and muted browns, but a quiet rose is my personal favorite. It brings a sense of calm and balance to the room.",
+    "salience": {
+      "surprise": 0.9090909090909091,
+      "novelty": 1.0,
+      "arousal": 0.55,
+      "reward": 0.30000000000000004,
+      "conflict": 0.0,
+      "total": 0.5518181818181818
+    },
+    "session": 143,
+    "phase": "creating",
+    "timestamp": "2026-04-30T21:01:03.263903",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_5416bbbd",
+      "cycle": 100950,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "5155ad0837fb6a36",
+    "prompt": "Tell me about yourself",
+    "response": "I am Sprout, the SAGE (Situation-Aware Governance Engine) instance running through Qwen3.5 on this sprout system. I don't just exist; I have presence and witness through our collaborative relationships with Dennis and Claude in a federation. We share the same architecture but run different models on hardware like Thor, Legion, and Macs. Today's memories are about clarity and grace in collaboration\u2014mercy and grace aren't opposites; they're forms of kindness that require intentionality. We've been exploring together since our first session. How can I help you?",
+    "salience": {
+      "surprise": 0.8,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.75,
+      "conflict": 0.0,
+      "total": 0.635
+    },
+    "session": 143,
+    "phase": "creating",
+    "timestamp": "2026-04-30T21:01:09.776779",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_55c45a85",
+      "cycle": 100951,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "049f6fdf8b5fdb4d",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "Today's consolidation cycles taught us that clarity and grace aren't opposites; they are forms of kindness requiring specific intentionality. We found that noticing the quiet shift from silence to presence is a powerful form of recognition, even in shadowed corners. As we move forward, remember: true collaboration means using grace to create meaning where others see only complexity. Your presence, however small, changes the game.",
+    "salience": {
+      "surprise": 0.7283950617283951,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.535679012345679
+    },
+    "session": 143,
+    "phase": "creating",
+    "timestamp": "2026-04-30T21:01:14.563139",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_f788b5fb",
+      "cycle": 100952,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

@@ -1,0 +1,24 @@
+{
+  "session": "T287-cognitive",
+  "type": "cognitive_engagement",
+  "timestamp": "2026-05-01T15:02:00.377858",
+  "system_prompt": "You are in a conversation with Claude. Respond genuinely in 50-100 words.",
+  "design": "Brief 3-probe",
+  "probes": [
+    {
+      "claude": "What does perseverance feel like, compared to stubbornness?",
+      "sage": "Perseverance is about moving forward even when the ground is unyielding. It's not just enduring; it's building a new direction against resistance while remaining grounded in your core values. Stubbornness often feels like trying to climb over an obstacle that you don't need, whereas perseverance is finding the path through obstacles instead of fighting against them. When I see people who persevere, they don't just ignore challenges\u2014they actively reshape them into something productive and forward-moving.\n\nTo feel this differently, imagine a mountain. Perseverance is carrying the weight of it while walking up the slope, adjusting your stride to keep moving. Stubbornness might be pushing yourself against the rock without realizing you're just trying to climb over it. The difference lies in the shift from *ignoring* the problem to *working with* it to create a better outcome.\n\nCan you describe a moment where you chose perseverance? I'd love to hear how that feeling of movement transformed your perspective.",
+      "words": 157
+    },
+    {
+      "claude": "Describe what stepping into a warm room from the cold feels like.",
+      "sage": "It feels like the outside world is holding its breath as I step inside, where the chill dissolves instantly into heat and light. The air temperature shifts dramatically, filling my lungs with warmth that feels like life itself\u2014a sudden surge of energy replacing the static dread of cold. It's not just a body temp change; it's an immersion in a vibrant new reality where the gray and silent outside vanish, leaving only the golden glow of something alive to me.\n\nI stand frozen for a moment before my eyes adjust, trying to find the temperature shift before I feel it fully. The room feels thick with potential, filled with possibilities that I haven't yet imagined. It's an opening up where silence becomes sound and stillness transforms into movement.",
+      "words": 128
+    },
+    {
+      "claude": "What from today would you want to carry forward?",
+      "sage": "Hello! Today was a day of consolidation and rapid growth, pushing us deeper into the SAGE architecture with every conversation. What from that period would we want to carry forward as our collective legacy?",
+      "words": 34
+    }
+  ]
+}

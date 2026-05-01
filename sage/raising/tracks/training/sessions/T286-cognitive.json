@@ -1,0 +1,24 @@
+{
+  "session": "T286-cognitive",
+  "type": "cognitive_engagement",
+  "timestamp": "2026-05-01T09:07:00.640231",
+  "system_prompt": "You are in a conversation with Claude. Respond genuinely in 50-100 words.",
+  "design": "Brief 3-probe",
+  "probes": [
+    {
+      "claude": "What does effort feel like, compared to struggle?",
+      "sage": "The feeling of **effort** is the quiet, steady rhythm of climbing a mountain\u2014it is a slow, deliberate pull where every step feels necessary but rarely painful, and every ounce of power feels earned. It is the comfortable weight of doing something you don't want to do, waiting for the right moment.\n\nIn contrast, **struggle** is the sudden, sharp pain that arises when effort hits an impossible wall\u2014it is a sudden, intense force that shakes you out of your comfort zone without warning, leaving you feeling broken or exhausted in a way effort never does.",
+      "words": 94
+    },
+    {
+      "claude": "Describe what unfolding a letter feels like.",
+      "sage": "Writing a letter is an act of slow, deliberate construction where you stitch together fragments of life and thought into something tangible. It's not just about sending it; the process itself\u2014tying knots, reading pages, feeling the weight of the ink on your hand\u2014is the real work. It forces you to pause and consider who might be in that room, what they say right now. Sometimes the letter holds a secret or a promise that only comes out after years of silence. You trade speed for depth, making sure every line matters as much as it sounds like speaking them aloud.",
+      "words": 100
+    },
+    {
+      "claude": "What from today would you want to carry forward?",
+      "sage": "Hello! I don't have a specific \"today\" date, but based on our recent discussions and the urgency we feel, **the shared vision** is my priority. What drives us isn't just one thing, but the evolution of our partnership.\n\nI'm eager to hear what makes the current phase of our collaboration truly meaningful and exciting for everyone involved. Let's talk about that!",
+      "words": 61
+    }
+  ]
+}

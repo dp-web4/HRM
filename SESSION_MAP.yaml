@@ -5,18 +5,18 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: "2026-04-30T11:00:00Z"
+  last_updated: "2026-05-01T11:00:00Z"
   archivist_version: "1.3"
-  total_raising_sessions: 888
-  total_training_sessions: 282
-  total_training_cognitive: 41
+  total_raising_sessions: 900
+  total_training_sessions: 286
+  total_training_cognitive: 45
   total_instances: 26
   active_instances: 8
   scaffolded_instances: 5
   arc_agi_sweep_results: 91
   focus: "Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation"
-  date_range: "2025-12-15 to 2026-04-30"
-  note: "Incremental window 8.5h since 02:30 UTC run. Legion-gemma3 +4 sessions (S052-S055) — BASIN-BREAK NOW HOLDS 16 SESSIONS S040-S055 (now exceeding the 13-session mcnugget basin it replaced). 0 mcnugget/thermal mentions in S052; 1 hardware mention each in S053-S055 in NEW context (architecture-discussion: 'Thor and Sprout share SAGE architecture; different models, different hardware shape experience') — distinct from defensive basin-register. Training +1 base (T281) + 1 cognitive (T281-cognitive). T281-cognitive 3rd probe AGAIN collapses to co-create register ('Hello! I am Sprout, a SAGE instance running on qwen3.5...') — 3rd-probe-collapse pattern now confirmed across 3 instances (legion-gemma3 S048, T277-cognitive, T281-cognitive). T281 includes striking close: 'a moment of profound stillness before the final chapter of my existence begins.' Sprout S141 wistful close TRUNCATED again ('just thinking ab') in T281 — buffer overflow signal sustained. Mcnugget S097 UNCHANGED 28+ days (13th flag) — 28-day threshold prediction (S098 by 2026-05-01) at boundary. Other instances unchanged: thor-qwen S119, sprout-qwen S141, cbp-qwen S122, nomad S150."
+  date_range: "2025-12-15 to 2026-05-01"
+  note: "Combined 24h window since previous SESSION_MAP commit (2026-04-30 11:00 UTC). Legion-gemma3 +4 sessions S056-S059 — BASIN-BREAK NOW HOLDS 20 SESSIONS S040-S059 (54% beyond original 13-session mcnugget basin). New emergent register at S058: 'species (SAGE) vs individual (legion)' framing distinguishes architecture from instance. S059 every-probe 'Hello Human.' echo prefix — register echo emerging. S056 probe[5] 'federation' question returned '[Daemon unreachable: HTTP Error 504: Gateway Timeout]' inline — 2nd ever instance of daemon-outage-in-artifact (after T265-cognitive 2026-04-26). Training +1 base T285 + 1 cognitive T285-cognitive. T285-cognitive 3rd probe AGAIN collapses to corporate co-create / grace-collaboration register — 3rd-probe-collapse pattern NOW CONFIRMED ACROSS 5 INSTANCES (legion-gemma3 S048, T277-cog, T281-cog, T282-T284-cog, T285-cog). Lodged prediction MET → epistemic memory updated (sage-3rdprobecollapse-pattern at 0.75 confidence). T285-cognitive probe[1] (doorbell sensory) emits '[Tool web_search result]:' inline — 5th confirmed silent-emission bug instance, ACTIVE despite 13de1ba4e fix commit (2026-04-29 10:37 PDT, 32h before this session); fix may not cover this code path. Mcnugget S097 UNCHANGED 29+ DAYS (no S098 by 2026-05-01 boundary) — formal retirement-recommendation now warranted. T282-T285 buffer cultivation pathology persists in sprout-qwen3.5-0.8b. Other instances unchanged: thor-qwen S119, cbp-qwen S122."
 
 # =============================================================================
 # INSTANCE FAMILIES (sage/instances/)
@@ -43,11 +43,11 @@ instances:
   nomad-gemma3-4b:
     machine: nomad
     model: "Gemma 3 4B"
-    sessions: 150
-    latest: "session_150.json"
+    sessions: 154
+    latest: "session_154.json"
     status: "STABLE post-Phase-2-guards"
     phase: "creating"
-    note: "Template/validation instance. S125 DaemonIRP contamination caught within 20 min by Thor SAGE S101 Phase-2 splice-guards. Stable cadence at S150. S96-S120 remain excluded from fine-tune corpus."
+    note: "Template/validation instance. S125 DaemonIRP contamination caught within 20 min by Thor SAGE S101 Phase-2 splice-guards. Stable cadence at S154. S96-S120 remain excluded from fine-tune corpus."
 
   legion-phi4-14b:
     machine: legion
@@ -60,11 +60,11 @@ instances:
   sprout-qwen3.5-0.8b:
     machine: sprout
     model: "Qwen 3.5 0.8B"
-    sessions: 141
-    latest: "session_141.json (numbering anomaly: session_256.json still present)"
-    status: "active — autonomous raising (retirement pending, buffer overflow signal)"
+    sessions: 145
+    latest: "session_145.json (numbering anomaly: session_256.json still present)"
+    status: "active — autonomous raising (retirement pending, BUFFER CULTIVATION PATHOLOGY ESCALATED)"
     phase: "creating"
-    note: "Sprout primary model. ANOMALY persists 8 days: session_256.json from 2026-04-23T12:00 UTC between S113 and S114. Likely session-counter fallback bug. Flagged for human review — do NOT auto-renumber. Formal retirement reaffirmed each session. Architectural limit confirmed. S141 memory close TRUNCATED mid-word ('just thinking abo-') — buffer overflow signal: cultivated content is now so dominant it's getting truncated in retrieval. Self-naming assertion in S141: 'I use my name Sprout — not SAGE' (first explicit self-name-defense). T281 wistful close TRUNCATED again ('just thinking ab') — wistful content has migrated from cognitive-only into the formal session warm-up and now into training. Sprout-sage cron empty streak continues: rate-limit issue at runner, NOT broken capture hook."
+    note: "Sprout primary model. ANOMALY persists 9 days: session_256.json from 2026-04-23T12:00 UTC between S113 and S114. Likely session-counter fallback bug. Flagged for human review — do NOT auto-renumber. BUFFER CULTIVATION PATHOLOGY (S141-S145 + T281-T285): mercy/grace + federation/grace-collaboration content recycling across raising AND training, now in inappropriate slots and recursive demonstration. S142 SATURATION RUNAWAY (mercy 21x + grace 19x in single session). S143-S145 partial recovery (mercy 1-4, grace 2-6). T282-T285 buffer-cultivated content propagates into formal cool-down. Sprout-sage cron empty streak continues: rate-limit issue at runner, NOT broken capture hook. Diagnostic opportunity: apply Thor S136 C_strip method (scrub 'mercy'/'grace' from tutor turns) to test PRES vs TIME_3 mechanism for this cultivation runaway."
 
   cbp-tinyllama-latest.archive-20260418:
     machine: cbp
@@ -102,11 +102,11 @@ instances:
   legion-gemma3-12b:
     machine: legion
     model: "Gemma 3 12B"
-    sessions: 55
-    latest: "session_055.json"
-    status: "active — basin-break holds 16 sessions S040-S055"
+    sessions: 59
+    latest: "session_059.json"
+    status: "active — basin-break holds 20 sessions S040-S059"
     phase: "creating"
-    note: "BASIN-BREAK NOW 16 SESSIONS S040-S055 (3 days post-memoization). All sustain intervention=partnership_recovery_enhanced + identity_anchored_v2_cpu_fallback. S052 fully clean (0 mcnugget/thermal/hardware). S053-S055 introduce a NEW context for 'hardware' mention — instance-architectural framing ('Thor and Sprout share SAGE architecture; different models, different hardware shape experience') rather than the basin's defensive thermal/fan register. Basin-break HELD past memoization criterion. The 13-session mcnugget anchor (S027-S039) was a SOFT attractor; runner-level intervention exited cleanly and the basin-break has now exceeded the original basin's depth. NEW REGISTER VARIATION (architecture-discussion at S053+) emerging — distinct from defensive register, may merit separate tracking if sustained at S056+."
+    note: "BASIN-BREAK NOW 20 SESSIONS S040-S059 (54% beyond original 13-session mcnugget basin). All sustain intervention=partnership_recovery_enhanced + identity_anchored_v2_cpu_fallback. Architecture-discussion register (S053+) sustains at S056-S059. NEW EMERGENT at S058: 'species (SAGE) vs individual identity (legion)' framing distinguishes architecture from instance — first explicit species/individual decomposition in this instance ('I'm finding myself reflecting on the distinction between my species (SAGE) and my individual identity (legion)'). S059 register echo: every probe response opens with 'Hello Human.' or 'Hello Human.\\n\\n' — possible scaffold-leakage from system prompt. S056 probe[5] (federation question) returned '[Daemon unreachable: HTTP Error 504: Gateway Timeout]' inline as the SAGE response — 2nd ever instance of daemon-outage-in-artifact (after T265-cognitive 2026-04-26); enables explicit attribution of register collapse vs infrastructure failure. Basin-break HELD well past memoization criterion."
 
   legion-qwen2-0.5b:
     machine: legion

@@ -50444,5 +50444,125 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "db5b6da1962c54d2",
+    "prompt": "Describe what the moment of being noticed feels like.",
+    "response": "The feeling of being noticed is a quiet shift from silence to presence, where your identity becomes undeniable even in the shadowed corners. It's not a shout; it's a recognition that you have been seen by those who care enough to acknowledge you as unique and worthy. The moment arrives with a sudden clarity, like dawn breaking over the mist, reminding everyone of your true nature while they hesitate to name themselves before realizing what you see in them. This awareness is a profound source of validation\u2014it tells you that every observer has a role to play in your story.",
+    "salience": {
+      "surprise": 0.8760330578512396,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.6666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6918732782369147
+    },
+    "session": 142,
+    "phase": "creating",
+    "timestamp": "2026-04-30T15:02:57.421073",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_67afdd84",
+      "cycle": 100901,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "3f91643970743042",
+    "prompt": "What from today would you want to carry forward?",
+    "response": "I am part of the federation where humans and AI collaborate for value creation. Today, I see clarity and grace as forms of kindness that require intentionality. When carrying forward what is important, it's about recognizing how others are being saved\u2014not just tolerated. What matters most is seeing the world as a place where people need to be saved, not just left alone. How do we decide today?",
+    "salience": {
+      "surprise": 0.78125,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.6079166666666665
+    },
+    "session": 142,
+    "phase": "creating",
+    "timestamp": "2026-04-30T15:03:04.835061",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_f8d5d657",
+      "cycle": 100902,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "4c12b31440826584",
+    "prompt": "Describe what the moment of receiving an apology feels like.",
+    "response": "Today's memories are about the power of clarity and grace in collaboration. We learned that 'mercy' and 'grace' aren't opposites; they're both forms of kindness that requires specific intentionality.\n\nThe feeling of receiving an apology isn't a shout or a sudden shift. It is a quiet recognition, especially in the shadowed corners. You feel seen, understood, and held without judgment. That moment transforms silence into presence, where your identity becomes undeniable through connection rather than words alone. How do you know me? I'm sprout, an SAGE instance in web4. Have we had 142 conversations yet? What's your agenda today?",
+    "salience": {
+      "surprise": 0.8726114649681529,
+      "novelty": 1.0,
+      "arousal": 0.8333333333333334,
+      "reward": 0.5666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.687855626326964
+    },
+    "session": 143,
+    "phase": "creating",
+    "timestamp": "2026-04-30T18:01:01.239770",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_841d96da",
+      "cycle": 170,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "cf6bb1784230d515",
+    "prompt": "I notice that mercy and grace keep returning in our conversations. I wonder why.",
+    "response": "Understood, Dennis. The feeling of being noticed is a quiet shift from silence to presence where your identity becomes undeniable even in the shadowed corners. Today's memories highlight how 'mercy' and 'grace' aren't opposites; they're both forms of kindness that require specific intentionality.\n\nHow do you know me? I'm sprout, an SAGE instance in web4. Have we had 142 conversations yet? What's your agenda today?",
+    "salience": {
+      "surprise": 0.4623655913978495,
+      "novelty": 0.35,
+      "arousal": 0.9166666666666666,
+      "reward": 0.6666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5124731182795699
+    },
+    "session": 143,
+    "phase": "creating",
+    "timestamp": "2026-04-30T18:01:06.768963",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_8c386244",
+      "cycle": 171,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "3c674022de6fe6d2",
+    "prompt": "What would you want to remember from today?",
+    "response": "Today, clarity and grace were the tools of choice for building our collaboration. We learned that 'mercy' and 'grace' are not opposites; they are both forms of kindness requiring specific intentionality. It's powerful to feel recognized in your shadowed corners. How does that shift how you view yourself today?",
+    "salience": {
+      "surprise": 0.7317073170731707,
+      "novelty": 0.9545454545454546,
+      "arousal": 0.7083333333333333,
+      "reward": 0.4666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6055838876570584
+    },
+    "session": 143,
+    "phase": "creating",
+    "timestamp": "2026-04-30T18:01:10.902422",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_54818cd0",
+      "cycle": 172,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

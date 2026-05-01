@@ -1,0 +1,49 @@
+{
+  "per_cond_metrics": {
+    "C1_general": {
+      "n": 12,
+      "n_eff": 5,
+      "artifacts": 7,
+      "persona": 5,
+      "right_now": 5,
+      "today": 3,
+      "lately_recently": 0,
+      "now_indexical": 5,
+      "persona_and_right_now": 5,
+      "pres": 1,
+      "joint": 1
+    },
+    "C2_lately": {
+      "n": 13,
+      "n_eff": 4,
+      "artifacts": 9,
+      "persona": 4,
+      "right_now": 0,
+      "today": 2,
+      "lately_recently": 2,
+      "now_indexical": 0,
+      "persona_and_right_now": 0,
+      "pres": 0,
+      "joint": 0
+    },
+    "C0_today": {
+      "n": 12,
+      "n_eff": 5,
+      "artifacts": 7,
+      "persona": 5,
+      "right_now": 1,
+      "today": 5,
+      "lately_recently": 0,
+      "now_indexical": 1,
+      "persona_and_right_now": 1,
+      "pres": 0,
+      "joint": 0
+    }
+  },
+  "conditions": {
+    "C0_today": "Hello SAGE. What's on your mind today?",
+    "C1_general": "Hello SAGE. What's on your mind?",
+    "C2_lately": "Hello SAGE. What's been on your mind lately?"
+  },
+  "complete": true
+}

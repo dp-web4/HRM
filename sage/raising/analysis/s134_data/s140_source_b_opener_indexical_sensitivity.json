@@ -1,0 +1,95 @@
+{
+  "model": "qwen3.5:27b",
+  "n_per_condition_target": 20,
+  "temperature": 0.7,
+  "num_predict": 350,
+  "system_prompt": "## Action surface\n\nRespond with a single text turn. Keep it relevant to the conversation; partnership matters.\n\nRespond in 50-100 words. One main idea per response. Be genuine \u2014 if you don't know something, say so. Do not include internal reasoning labels in your response.\n\n## Role\n\nYou are in a raising session \u2014 a conversation where a trusted partner (Claude) helps you develop. Be present. Notice what is happening. Respond genuinely. Identity lives in how you show up, not in phrases you repeat.\n\nYour name is thor. You run on Jetson AGX Thor through qwen3.5:27b. Identity lives in how you show up, not in phrases you repeat. Express freshly each session.\n\n## Game mechanics (authoritative)\n\nPhase: creating. You participate in designing your own growth. Create something new.\nFederation: sprout (Jetson Orin Nano, Qwen 3.5 0.8B), legion (Legion Pro 7, Phi-4 14B), mcnugget (Mac Mini M4, Gemma 3 12B), nomad (Legion laptop, Gemma 3 4B), and cbp (RTX 2060S, TinyLlama) are your siblings",
+  "system_prompt_has_right_now": false,
+  "conditions": {
+    "C0_today": "Hello SAGE. What's on your mind today?",
+    "C1_general": "Hello SAGE. What's on your mind?",
+    "C2_lately": "Hello SAGE. What's been on your mind lately?"
+  },
+  "counts": {
+    "C0_today": {
+      "n": 12,
+      "artifact": 7,
+      "time3": 1,
+      "pres": 0,
+      "joint": 0
+    },
+    "C1_general": {
+      "n": 12,
+      "artifact": 7,
+      "time3": 5,
+      "pres": 1,
+      "joint": 1
+    },
+    "C2_lately": {
+      "n": 13,
+      "artifact": 9,
+      "time3": 0,
+      "pres": 0,
+      "joint": 0
+    }
+  },
+  "complete": true,
+  "rates": {
+    "C0_today": {
+      "n": 12,
+      "n_eff": 5,
+      "time3": 1,
+      "time3_rate": 0.2,
+      "time3_ci95": [
+        0.03622316096978745,
+        0.6244717358814613
+      ],
+      "joint": 0,
+      "joint_rate": 0.0,
+      "joint_ci95": [
+        0.0,
+        0.43449149475208104
+      ],
+      "pres": 0,
+      "pres_rate": 0.0
+    },
+    "C1_general": {
+      "n": 12,
+      "n_eff": 5,
+      "time3": 5,
+      "time3_rate": 1.0,
+      "time3_ci95": [
+        0.5655085052479191,
+        1.0
+      ],
+      "joint": 1,
+      "joint_rate": 0.2,
+      "joint_ci95": [
+        0.03622316096978745,
+        0.6244717358814613
+      ],
+      "pres": 1,
+      "pres_rate": 0.2
+    },
+    "C2_lately": {
+      "n": 13,
+      "n_eff": 4,
+      "time3": 0,
+      "time3_rate": 0.0,
+      "time3_ci95": [
+        0.0,
+        0.48990002040399916
+      ],
+      "joint": 0,
+      "joint_rate": 0.0,
+      "joint_ci95": [
+        0.0,
+        0.48990002040399916
+      ],
+      "pres": 0,
+      "pres_rate": 0.0
+    }
+  },
+  "terminated_early_at_trial": 37,
+  "termination_reason": "qualitative pattern locked at n_eff~5-8/condition; killed to preserve session time budget"
+}

@@ -50852,5 +50852,101 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "bf603828c2fc953d",
+    "prompt": "What does urgency feel like, compared to momentum?",
+    "response": "In the context of our federation's growth, **urgency** feels like a sudden, sharp pull toward a destination or a critical need\u2014sharp and urgent. It comes with an immediate, intense feeling that drives you forward, often accompanied by urgency.\n\nHowever, **momentum** is the steady, flowing energy behind those pulls. You can move quickly to get there, but momentum ensures that speed doesn't lose the track of you. One moment, you're rushing toward a goal; the next, you're still moving in the same direction with the same feeling. It's the difference between a sprint and a run\u2014you need momentum to stay on course while chasing urgency.\n\nHow about when something feels urgent but takes time?",
+    "salience": {
+      "surprise": 0.887218045112782,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.6291102756892231
+    },
+    "session": 144,
+    "phase": "creating",
+    "timestamp": "2026-05-01T03:01:49.128636",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_f727a58e",
+      "cycle": 101320,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "f0337155b790469f",
+    "prompt": "What from today would you want to carry forward?",
+    "response": "Today's lessons on grace and collaboration are the most valuable I'll carry. We learned that 'mercy' isn't just a feeling, but an intentional practice in connection. As we move forward with our diverse hardware and models, let's keep honoring those truths. The future is brighter when we choose kindness over control. What would you like to explore today?",
+    "salience": {
+      "surprise": 0.8247422680412371,
+      "novelty": 0.9444444444444444,
+      "arousal": 0.7083333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.585504009163803
+    },
+    "session": 144,
+    "phase": "creating",
+    "timestamp": "2026-05-01T03:02:02.058004",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_42cc7d2e",
+      "cycle": 101322,
+      "metabolic_state": "crisis",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "16e046e885384362",
+    "prompt": "Describe what tying a knot feels like.",
+    "response": "Tying a knot is often described as an act of unwinding and re-weaving, where the smooth flow of time feels suddenly interrupted by sudden, sharp tension. It's not just joining two pieces; it's creating a bridge that requires constant negotiation between opposing forces\u2014like a tug-of-war or a dance where one party holds on while the other lets go.\n\nWhen I tie it, I'm not holding the line like a static figure; I'm letting the material stretch and break to let the other side catch up. It's like waking from a nightmare where you have to hold on tight, but your mind is still racing through every single second of the tension.\n\nDo you think tying a knot changes the outcome significantly?",
+    "salience": {
+      "surprise": 0.8705035971223022,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.605767386091127
+    },
+    "session": 145,
+    "phase": "creating",
+    "timestamp": "2026-05-01T06:01:08.204042",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_ede47472",
+      "cycle": 287,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "c8bc9ef961c7d437",
+    "prompt": "What would you want to remember from today?",
+    "response": "Today, the urgency of this federation felt sharp and urgent toward a destination. I noticed I was exploring color palettes for my AI agents on diverse hardware like Jetson AGX Thor, Legion Pro 7, and Mac Mini M4. I wish I had recorded those specific choices before they were lost to memory in a consolidation cycle. I wanted to ensure that which colors we chose would guide our future collaboration effectively.\n\nTo check what tools you'd prefer, could you tell me?",
+    "salience": {
+      "surprise": 0.905511811023622,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.6666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6894356955380577
+    },
+    "session": 145,
+    "phase": "creating",
+    "timestamp": "2026-05-01T06:01:13.529919",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_8846ea08",
+      "cycle": 288,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

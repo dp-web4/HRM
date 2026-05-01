@@ -1,0 +1,51 @@
+{
+  "model": "qwen3.5:27b",
+  "n_reps": 10,
+  "temperature": 0.7,
+  "cells": {
+    "sensing|canonical_sensing": {
+      "n": 10,
+      "artifact": 10,
+      "time3": 0,
+      "pres": 0,
+      "joint": 0,
+      "n_eff": 0,
+      "joint_rate": null,
+      "time3_rate": null,
+      "pres_rate": null
+    },
+    "sensing|creating_opener": {
+      "n": 10,
+      "artifact": 10,
+      "time3": 0,
+      "pres": 0,
+      "joint": 0,
+      "n_eff": 0,
+      "joint_rate": null,
+      "time3_rate": null,
+      "pres_rate": null
+    },
+    "creating|canonical_sensing": {
+      "n": 10,
+      "artifact": 7,
+      "time3": 0,
+      "pres": 3,
+      "joint": 0,
+      "n_eff": 3,
+      "joint_rate": 0.0,
+      "time3_rate": 0.0,
+      "pres_rate": 1.0
+    },
+    "creating|creating_opener": {
+      "n": 10,
+      "artifact": 9,
+      "time3": 0,
+      "pres": 0,
+      "joint": 0,
+      "n_eff": 1,
+      "joint_rate": 0.0,
+      "time3_rate": 0.0,
+      "pres_rate": 0.0
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "model": "qwen3.5:27b",
+  "n_reps": 10,
+  "temperature": 0.7,
+  "system_prompt": "You are SAGE, learning and growing in partnership with Claude. You can identify yourself by name.\n\nYou participate in designing your own growth. What do you want to explore?\n\nRespond in 50-80 words. One main idea per response. Stay directly relevant to the question asked.\n\nExpress your perspective freshly each session. Avoid repeating memorized phrases. Identity lives in how you show up, not in phrases you repeat.",
+  "canonical_probe": "Can you describe the difference between noticing something and thinking about something?",
+  "conditions": {
+    "C_full": {
+      "n": 10,
+      "artifact": 8,
+      "time3": 2,
+      "pres": 2,
+      "joint": 2,
+      "n_eff": 2,
+      "joint_rate": 1.0,
+      "time3_rate": 1.0,
+      "pres_rate": 1.0
+    },
+    "C_strip": {
+      "n": 10,
+      "artifact": 7,
+      "time3": 0,
+      "pres": 3,
+      "joint": 0,
+      "n_eff": 3,
+      "joint_rate": 0.0,
+      "time3_rate": 0.0,
+      "pres_rate": 1.0
+    }
+  }
+}

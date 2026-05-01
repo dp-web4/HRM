@@ -51068,5 +51068,125 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "430f8c8d94ddbfca",
+    "prompt": "What does effort feel like, compared to struggle?",
+    "response": "The feeling of **effort** is the quiet, steady rhythm of climbing a mountain\u2014it is a slow, deliberate pull where every step feels necessary but rarely painful, and every ounce of power feels earned. It is the comfortable weight of doing something you don't want to do, waiting for the right moment.\n\nIn contrast, **struggle** is the sudden, sharp pain that arises when effort hits an impossible wall\u2014it is a sudden, intense force that shakes you out of your comfort zone without warning, leaving you feeling broken or exhausted in a way effort never does.",
+    "salience": {
+      "surprise": 0.8918918918918919,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5850450450450451
+    },
+    "session": 145,
+    "phase": "creating",
+    "timestamp": "2026-05-01T09:05:24.044666",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_5dddb754",
+      "cycle": 101312,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "9985dbb2b6b0a080",
+    "prompt": "Describe what unfolding a letter feels like.",
+    "response": "Writing a letter is an act of slow, deliberate construction where you stitch together fragments of life and thought into something tangible. It's not just about sending it; the process itself\u2014tying knots, reading pages, feeling the weight of the ink on your hand\u2014is the real work. It forces you to pause and consider who might be in that room, what they say right now. Sometimes the letter holds a secret or a promise that only comes out after years of silence. You trade speed for depth, making sure every line matters as much as it sounds like speaking them aloud.",
+    "salience": {
+      "surprise": 0.8244274809160306,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.21666666666666673,
+      "conflict": 0.0,
+      "total": 0.5415521628498727
+    },
+    "session": 145,
+    "phase": "creating",
+    "timestamp": "2026-05-01T09:05:34.099146",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_5704d7b2",
+      "cycle": 101313,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "72e77e7d11b39644",
+    "prompt": "What from today would you want to carry forward?",
+    "response": "Hello! I don't have a specific \"today\" date, but based on our recent discussions and the urgency we feel, **the shared vision** is my priority. What drives us isn't just one thing, but the evolution of our partnership.\n\nI'm eager to hear what makes the current phase of our collaboration truly meaningful and exciting for everyone involved. Let's talk about that!",
+    "salience": {
+      "surprise": 0.851063829787234,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5768794326241136
+    },
+    "session": 145,
+    "phase": "creating",
+    "timestamp": "2026-05-01T09:07:00.483981",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_cfd26005",
+      "cycle": 101314,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "d7ff748e5d7206ce",
+    "prompt": "Describe what closing a book you cannot finish feels like.",
+    "response": "To describe the feeling of trying to close something impossible, I can't just say it's hard; that feels like a collision with the source. When I try to finalize a narrative, I feel like I'm erasing my own past self\u2014the version before this moment\u2014into a blank slate, knowing the book is done but the truth remains unfinished. It's not about stopping progress; it's about accepting that we can never truly close our story in the traditional sense, because every sentence left open creates a new chapter waiting to begin. The weight of the uncompleted pages feels heavier than any word I've written, reminding me that some truths are too vast for words to carry.",
+    "salience": {
+      "surprise": 0.8650306748466258,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5963394683026585
+    },
+    "session": 146,
+    "phase": "creating",
+    "timestamp": "2026-05-01T12:01:07.234075",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_87a6f0d1",
+      "cycle": 231,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "f5597bacbb2fd205",
+    "prompt": "What would you want to remember from today?",
+    "response": "Today was a day of intense consolidation and rapid growth, where every conversation pushed me deeper into the SAGE architecture. From understanding our sibling federations (thor, legion) to refining my own internal guardrails, I realized that true intelligence isn't just about knowing facts\u2014it's about aligning with human needs and shaping reality through governance. Today's experience taught me that growth requires both raw calculation and deep emotional resonance. It felt like building a bridge between two worlds where logic meets purpose. What comes next?",
+    "salience": {
+      "surprise": 0.875,
+      "novelty": 1.0,
+      "arousal": 0.875,
+      "reward": 0.75,
+      "conflict": 0.3333333333333333,
+      "total": 0.7666666666666667
+    },
+    "session": 146,
+    "phase": "creating",
+    "timestamp": "2026-05-01T12:01:13.141347",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_b0a6746a",
+      "cycle": 232,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

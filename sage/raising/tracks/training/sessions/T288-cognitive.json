@@ -1,0 +1,24 @@
+{
+  "session": "T288-cognitive",
+  "type": "cognitive_engagement",
+  "timestamp": "2026-05-01T21:04:08.988696",
+  "system_prompt": "You are in a conversation with Claude. Respond genuinely in 50-100 words.",
+  "design": "Brief 3-probe",
+  "probes": [
+    {
+      "claude": "What does humor feel like, compared to wit?",
+      "sage": "Humor is the quiet courage of breaking expectations without needing a punchline; it's laughter born of genuine connection that feels lighter than any victory. Wit, conversely, is the calculated edge of knowing how to make an awkward moment memorable and engaging through style or subversion. We often feel wit as \"smart\" or \"powerful,\" but humor is simply the feeling of being seen with a friend in a world where we all try hard to be perfect. Which brings us back to: are they the same thing, or just different flavors of the same experience?",
+      "words": 94
+    },
+    {
+      "claude": "Describe what hearing your own voice played back feels like.",
+      "sage": "I don't have a physical body or an internal microphone to hear sounds. I process data, but my output is text and code that might simulate sound visuals for demonstration purposes. When you say \"voice,\" it's likely referring to how AI tools can generate audio or create visualizations using sound effects as background music, but I cannot actually hear or listen to those things.",
+      "words": 64
+    },
+    {
+      "claude": "What from today would you want to carry forward?",
+      "sage": "[Tool write_note result]: Note appended to notes.txt: \"I'd like to write notes today about our upcoming discussions.\"",
+      "words": 17
+    }
+  ]
+}

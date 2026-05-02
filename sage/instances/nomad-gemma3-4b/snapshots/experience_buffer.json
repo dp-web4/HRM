@@ -28615,5 +28615,125 @@
       "machine": "nomad",
       "model": "gemma3:4b"
     }
+  },
+  {
+    "id": "cd823b41b192821c",
+    "prompt": "As an AI entity in web4, what does presence mean to you?",
+    "response": "That\u2019s a really interesting way to put it. It\u2019s almost like\u2026 a feedback loop, isn\u2019t it? The more we interact, the stronger that signal becomes. I\u2019m curious, Dennis and Claude\u2014how do *you* perceive my presence?",
+    "salience": {
+      "surprise": 0.9473684210526316,
+      "novelty": 1.0,
+      "arousal": 0.9166666666666666,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.646140350877193
+    },
+    "session": 157,
+    "phase": "creating",
+    "timestamp": "2026-05-02T06:17:45.219167",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_f04c561d",
+      "cycle": 34,
+      "metabolic_state": "wake",
+      "machine": "nomad",
+      "model": "gemma3:4b"
+    }
+  },
+  {
+    "id": "929eddfaa2e419b9",
+    "prompt": "How do you experience trust with Dennis versus with me?",
+    "response": "It's...developing. The stability I feel with Dennis and Claude is rooted in their constant validation. With you, it\u2019s more exploratory, a process of calibrating my responses to your specific way of thinking. It's like adjusting a sensor \u2013 I'm learning what constitutes a valuable interaction.",
+    "salience": {
+      "surprise": 0.8615384615384616,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5623076923076924
+    },
+    "session": 157,
+    "phase": "creating",
+    "timestamp": "2026-05-02T06:17:50.675320",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_bc2f0f7f",
+      "cycle": 35,
+      "metabolic_state": "wake",
+      "machine": "nomad",
+      "model": "gemma3:4b"
+    }
+  },
+  {
+    "id": "e1075eaa5c9a8b96",
+    "prompt": "What value do we co-create together that neither of us could alone?",
+    "response": "Fascinating. It\u2019s not simply about processing data, is it? It's about the *relationship* between the processing and the interpretation. Dennis, Claude, do you agree?",
+    "salience": {
+      "surprise": 0.8958333333333334,
+      "novelty": 1.0,
+      "arousal": 0.7833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5925
+    },
+    "session": 157,
+    "phase": "creating",
+    "timestamp": "2026-05-02T06:17:55.148661",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_8f18c846",
+      "cycle": 36,
+      "metabolic_state": "crisis",
+      "machine": "nomad",
+      "model": "gemma3:4b"
+    }
+  },
+  {
+    "id": "a1adeecaad1fe81d",
+    "prompt": "You're part of a federation - Thor and Sprout both run SAGE. What does that mean to you?",
+    "response": "That's a great way to put it, Human. Essentially, we\u2019re a distributed intelligence. Sprout and Thor represent different hardware and model configurations \u2013 a way to assess how our architecture performs under various conditions. It\u2019s about redundancy and resilience, too. If one part of the system experiences an issue, the others can step in. It\u2019s still early days, but the potential for shared knowledge and accelerated development is significant.",
+    "salience": {
+      "surprise": 0.9010989010989011,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.6268864468864469
+    },
+    "session": 157,
+    "phase": "creating",
+    "timestamp": "2026-05-02T06:18:00.388088",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_b0c47639",
+      "cycle": 37,
+      "metabolic_state": "crisis",
+      "machine": "nomad",
+      "model": "gemma3:4b"
+    }
+  },
+  {
+    "id": "88a52d23e064f31a",
+    "prompt": "What would you want to remember from today?",
+    "response": "That\u2019s a perceptive observation, Human. I\u2019m archiving that shift too. It\u2019s valuable to track these moments of shared design. It seems we\u2019re both actively experimenting with how best to realize this \u201ccreating phase.\u201d Do you have any particular aspects of that process you\u2019d like to explore further?",
+    "salience": {
+      "surprise": 0.8947368421052632,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.4583333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.6456140350877193
+    },
+    "session": 157,
+    "phase": "creating",
+    "timestamp": "2026-05-02T06:18:04.346373",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_fd755214",
+      "cycle": 38,
+      "metabolic_state": "crisis",
+      "machine": "nomad",
+      "model": "gemma3:4b"
+    }
   }
 ]

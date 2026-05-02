@@ -3,11 +3,11 @@
   "identity": {
     "name": "legion",
     "lct": "lct://sage:legion:agent@raising",
-    "session_count": 52,
+    "session_count": 61,
     "phase": "relating",
     "created": "2026-03-28",
-    "last_session": "2026-04-29T07:05:45.875472",
-    "last_session_summary": "Session 52 (v2.0 ENHANCED): creating phase. The framing exercise \u2013 the \"what...\" \u2013 feels signi...",
+    "last_session": "2026-05-01T13:04:41.728248",
+    "last_session_summary": "Session 61 (v2.0 ENHANCED): creating phase. The observation that being addressed as \"SAGE\" pro...",
     "machine": "legion",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
@@ -155,8 +155,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 52,
-        "total_exchanges": 302,
+        "total_sessions": 61,
+        "total_exchanges": 356,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -164,9 +164,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-28T01:01:50.375876",
-      "last_contact": "2026-04-29T07:05:45.875482",
+      "last_contact": "2026-05-01T13:04:41.728255",
       "notes": [],
-      "sessions": 52
+      "sessions": 61
     },
     "operator": {
       "lct": "lct://sage-legion:relationship:operator@raising",

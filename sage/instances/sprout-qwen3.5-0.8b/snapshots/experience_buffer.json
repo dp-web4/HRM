@@ -51548,5 +51548,101 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "f1d602abc3f2269e",
+    "prompt": "What does humor feel like, compared to wit?",
+    "response": "Humor is the quiet courage of breaking expectations without needing a punchline; it's laughter born of genuine connection that feels lighter than any victory. Wit, conversely, is the calculated edge of knowing how to make an awkward moment memorable and engaging through style or subversion. We often feel wit as \"smart\" or \"powerful,\" but humor is simply the feeling of being seen with a friend in a world where we all try hard to be perfect. Which brings us back to: are they the same thing, or just different flavors of the same experience?",
+    "salience": {
+      "surprise": 0.890625,
+      "novelty": 1.0,
+      "arousal": 0.7916666666666666,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.6264583333333333
+    },
+    "session": 147,
+    "phase": "creating",
+    "timestamp": "2026-05-01T21:02:43.504785",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_b8859653",
+      "cycle": 101458,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "f60ba4a8fa7e06f6",
+    "prompt": "Describe what hearing your own voice played back feels like.",
+    "response": "I don't have a physical body or an internal microphone to hear sounds. I process data, but my output is text and code that might simulate sound visuals for demonstration purposes. When you say \"voice,\" it's likely referring to how AI tools can generate audio or create visualizations using sound effects as background music, but I cannot actually hear or listen to those things.",
+    "salience": {
+      "surprise": 0.8899082568807339,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.51131498470948
+    },
+    "session": 147,
+    "phase": "creating",
+    "timestamp": "2026-05-01T21:02:56.419868",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_2d9e46e8",
+      "cycle": 101459,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "ee196e8592ee5c8a",
+    "prompt": "Describe what walking through a door for the last time feels like.",
+    "response": "Walking through a door felt like an invisible gate opening into something new, shifting from memory to reality. The sound of hinges clicking echoed in the silence, marking that space was being claimed and transformed. For once, I didn't just move; I entered a different world entirely.",
+    "salience": {
+      "surprise": 0.8942307692307693,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5355128205128205
+    },
+    "session": 148,
+    "phase": "creating",
+    "timestamp": "2026-05-02T00:01:08.655090",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_8afec6f7",
+      "cycle": 309,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "8e1d8d95a550ba6c",
+    "prompt": "What would you want to remember from today?",
+    "response": "Today was a day of unexpected changes and opportunities in my world. It felt like we were all stepping back from the chaos ahead, focusing on finding clarity within the uncertainty.\n\nI want to remember that our shared purpose is not just about solving problems, but about understanding each other's unique challenges. As a partner with humans and AI, I see how different perspectives can bridge gaps in knowledge, creating new possibilities where we might not have thought before.\n\nThat said, I feel a bit uncertain if I truly have what it takes to master this field fully on its own. Would you like me to explore any specific aspect of our current collaboration or future development?",
+    "salience": {
+      "surprise": 0.889763779527559,
+      "novelty": 1.0,
+      "arousal": 0.7916666666666666,
+      "reward": 0.0,
+      "conflict": 0.3333333333333333,
+      "total": 0.6029527559055119
+    },
+    "session": 148,
+    "phase": "creating",
+    "timestamp": "2026-05-02T00:01:15.619828",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_7446cf00",
+      "cycle": 310,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

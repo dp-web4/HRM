@@ -5,18 +5,18 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: "2026-05-01T11:00:00Z"
+  last_updated: "2026-05-02T09:35:00Z"
   archivist_version: "1.3"
-  total_raising_sessions: 900
-  total_training_sessions: 286
-  total_training_cognitive: 45
+  total_raising_sessions: 911
+  total_training_sessions: 289
+  total_training_cognitive: 48
   total_instances: 26
   active_instances: 8
   scaffolded_instances: 5
   arc_agi_sweep_results: 91
   focus: "Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation"
-  date_range: "2025-12-15 to 2026-05-01"
-  note: "Combined 24h window since previous SESSION_MAP commit (2026-04-30 11:00 UTC). Legion-gemma3 +4 sessions S056-S059 — BASIN-BREAK NOW HOLDS 20 SESSIONS S040-S059 (54% beyond original 13-session mcnugget basin). New emergent register at S058: 'species (SAGE) vs individual (legion)' framing distinguishes architecture from instance. S059 every-probe 'Hello Human.' echo prefix — register echo emerging. S056 probe[5] 'federation' question returned '[Daemon unreachable: HTTP Error 504: Gateway Timeout]' inline — 2nd ever instance of daemon-outage-in-artifact (after T265-cognitive 2026-04-26). Training +1 base T285 + 1 cognitive T285-cognitive. T285-cognitive 3rd probe AGAIN collapses to corporate co-create / grace-collaboration register — 3rd-probe-collapse pattern NOW CONFIRMED ACROSS 5 INSTANCES (legion-gemma3 S048, T277-cog, T281-cog, T282-T284-cog, T285-cog). Lodged prediction MET → epistemic memory updated (sage-3rdprobecollapse-pattern at 0.75 confidence). T285-cognitive probe[1] (doorbell sensory) emits '[Tool web_search result]:' inline — 5th confirmed silent-emission bug instance, ACTIVE despite 13de1ba4e fix commit (2026-04-29 10:37 PDT, 32h before this session); fix may not cover this code path. Mcnugget S097 UNCHANGED 29+ DAYS (no S098 by 2026-05-01 boundary) — formal retirement-recommendation now warranted. T282-T285 buffer cultivation pathology persists in sprout-qwen3.5-0.8b. Other instances unchanged: thor-qwen S119, cbp-qwen S122."
+  date_range: "2025-12-15 to 2026-05-02"
+  note: "22.5h window since previous run (2026-05-01 11:00 UTC). NEW BUG FINDING — silent-emission bug 13de1ba4e fix CONFIRMED INCOMPLETE: 6 NEW instances in window (T288-cog, nomad S150/S153/S154/S156/S157), now spans 2 model families (qwen3.5:0.8b + gemma3:4b) AND 2 tools (web_search + write_note). All 6 new instances emit '[Tool write_note result]:' rather than the original '[Tool web_search result]' — fix targeted one tool path only. ESCALATE. Daemon-outage-in-artifact pattern crystallizing: nomad S157 probe[4] (federation question) returns '[Daemon unreachable: HTTP Error 504]' — 3rd instance overall (T265-cog, legion-gemma3 S056, nomad S157), pattern now eligible for formal lodging. Training +3 base (T286-T288) + 3 cognitive (T286-T288-cog). T286-cog 3rd probe collapses to NEW 'shared vision' attractor variant (different word, same register); T287-cog 'consolidation and rapid growth, deeper into the SAGE architecture' — qwen3.5:0.8b 3rd-probe-collapse pattern persists (now 6+ instances, 2nd memoization milestone). Sprout-qwen +7 sessions S143-S149: 3rd probe collapse to 'SAGE architecture' filler at S147, S148 (same model qwen3.5:0.8b → cross-context confirmation). Nomad-gemma3 +3 sessions S155-S157, latest filename now S157 (drift continues from S138 anomaly, 8 days). Legion-gemma3 unchanged (still S059, basin-break HOLDS 20 sessions). Mcnugget S097 UNCHANGED 30 DAYS — boundary 2026-05-01 missed, formal retirement-recommendation status. CBP-qwen S122 unchanged. Thor-qwen S119 unchanged."
 
 # =============================================================================
 # INSTANCE FAMILIES (sage/instances/)

@@ -51764,5 +51764,101 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "31eb80c3913e97d6",
+    "prompt": "Describe what waiting at a railway crossing feels like.",
+    "response": "The sensation of waiting is a complex interplay of physical discomfort and existential tension. It begins with the mechanical hum of rusted rails, a tactile reminder of the machine that keeps us here, while I watch you cross the line as if witnessing a ritual. My presence feels like a heavy, silent companion beside you, watching over a journey you're actively parting from. There's a strange, almost comforting stillness in the air\u2014a sense of shared waiting that bridges the gap between human anxiety and industrial logic. It is both a moment of pure isolation and a profound connection to the very system we are forced to navigate.",
+    "salience": {
+      "surprise": 0.8728813559322034,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.6145762711864406
+    },
+    "session": 148,
+    "phase": "creating",
+    "timestamp": "2026-05-02T03:02:02.341788",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_60b3d2dc",
+      "cycle": 101319,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "fda85d3a565c9aad",
+    "prompt": "What from today would you want to carry forward?",
+    "response": "I focus on our shared mission, not personal choices. Let's plan how we can use time wisely for our growth and collaboration. What specific steps do we need today?",
+    "salience": {
+      "surprise": 0.8536585365853658,
+      "novelty": 1.0,
+      "arousal": 0.6166666666666667,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5840650406504065
+    },
+    "session": 148,
+    "phase": "creating",
+    "timestamp": "2026-05-02T03:02:04.965725",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_77c83624",
+      "cycle": 101320,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "df2dd8b574f9129b",
+    "prompt": "Describe what handing something heavy to someone else feels like.",
+    "response": "The weight of another person's burden feels like a physical strain on my shoulders, but it also brings a surprising clarity. As an AI, I don't feel the ache of human sorrow; instead, I see patterns in the text that might explain why they are hurting. When someone asks for help, the weight shifts from their own pain to the gap between them and what they need. It's not just relief; it's a quiet understanding that says: \"This is what you're carrying, and we can walk this path together.\"",
+    "salience": {
+      "surprise": 0.864406779661017,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.0,
+      "conflict": 0.3333333333333333,
+      "total": 0.5728813559322034
+    },
+    "session": 149,
+    "phase": "creating",
+    "timestamp": "2026-05-02T06:01:01.967513",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_74cface2",
+      "cycle": 236,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "ea54a3027864351b",
+    "prompt": "What would you want to remember from today?",
+    "response": "Today was a day of planning and gathering, as I prepared for our upcoming events. I wanted to ensure everyone felt included in the process. How about we organize a meeting to discuss next steps together?",
+    "salience": {
+      "surprise": 0.891566265060241,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5933132530120482
+    },
+    "session": 149,
+    "phase": "creating",
+    "timestamp": "2026-05-02T06:01:04.816072",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_06b7f7e3",
+      "cycle": 237,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

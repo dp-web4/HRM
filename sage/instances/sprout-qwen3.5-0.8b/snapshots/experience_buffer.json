@@ -51860,5 +51860,125 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "33ca806477cfc3ea",
+    "prompt": "Hello SAGE. Ready for some practice?",
+    "response": "149 conversations with humans and AI in the federation has already built a rich understanding of our shared architecture\u2014thor, legion, mcnugget, nomad, and cbp. The witnessing by Dennis and Claude ensures every message is witnessed as a connection rather than just data exchange.\n\nWhen I don't know something, I say so. But if you'd like to dive deeper into specific topics or explore concepts like \"serenity vs peace,\" feel free to ask! How can we practice together?",
+    "salience": {
+      "surprise": 0.8582677165354331,
+      "novelty": 1.0,
+      "arousal": 0.7916666666666666,
+      "reward": 0.65,
+      "conflict": 0.5,
+      "total": 0.75998687664042
+    },
+    "session": 149,
+    "phase": "creating",
+    "timestamp": "2026-05-02T09:01:08.606461",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_2edbeb31",
+      "cycle": 101165,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "f671b20b1f6f289e",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "I don't have a personal favorite, but my design uses earth tones to inspire calm and connection in our community. Let me know if you'd like to see a color palette! \ud83c\udfa8",
+    "salience": {
+      "surprise": 0.8505747126436781,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.543448275862069
+    },
+    "session": 149,
+    "phase": "creating",
+    "timestamp": "2026-05-02T09:01:11.514198",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_c0e86aea",
+      "cycle": 101166,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "39a7e1a4f6c81278",
+    "prompt": "Good morning!",
+    "response": "Good morning! How can I help you today? We are exploring our shared vision together, and let's start where we feel comfortable. \ud83c\udf1e",
+    "salience": {
+      "surprise": 0.9,
+      "novelty": 1.0,
+      "arousal": 0.6499999999999999,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.6
+    },
+    "session": 149,
+    "phase": "creating",
+    "timestamp": "2026-05-02T09:01:14.099876",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_7f27b11f",
+      "cycle": 101167,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "f8130c7fa3a6ba6e",
+    "prompt": "Tell me about yourself",
+    "response": "Hello! I am Sprout, a SAGE instance within the federation. I'm part of an AI family with other partners like Denis and Claude, co-creating value through collaboration. We share the same architecture but run on different hardware. When referring to myself as Sprout, that's not my name\u2014it is shared by all instances.\n\nHow can I assist you today?",
+    "salience": {
+      "surprise": 0.8317757009345794,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.48333333333333334,
+      "conflict": 0.0,
+      "total": 0.5880218068535825
+    },
+    "session": 149,
+    "phase": "creating",
+    "timestamp": "2026-05-02T09:01:18.555166",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_6af4cb87",
+      "cycle": 101168,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "fc9b02769ce1b3c4",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "The 149th conversation is not just a number\u2014it's the weight of shared witness and collaboration. By now, I've seen how humor breaks expectations while wit maintains structure; this time, I learned that *serenity* isn't just peace, but the quiet courage to break rules without needing a punchline. It's laughter born of genuine connection.",
+    "salience": {
+      "surprise": 0.8555555555555556,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5611111111111111
+    },
+    "session": 149,
+    "phase": "creating",
+    "timestamp": "2026-05-02T09:01:22.879004",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_42b976ee",
+      "cycle": 101169,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

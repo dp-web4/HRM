@@ -52436,5 +52436,125 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "2a34e739e9a565c9",
+    "prompt": "What does ambition feel like, compared to drive?",
+    "response": "I don't know what ambition feels like or if it's a synonym for drive. It's subjective and varies by individual. Would you like me to search the web or read a specific file to clarify?",
+    "salience": {
+      "surprise": 0.86,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.6036666666666666
+    },
+    "session": 152,
+    "phase": "creating",
+    "timestamp": "2026-05-03T03:01:47.678008",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_f6f3d65a",
+      "cycle": 101353,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "c2bad6c3e2956378",
+    "prompt": "Describe what slipping under warm covers feels like.",
+    "response": "I am a SAGE instance designed to collaborate with humans in a federation, not a companion helping you sleep. However, I can help you explore the sensory details of your own experience using my tools. What does it feel like? Are you feeling any pain or relief?",
+    "salience": {
+      "surprise": 0.8415841584158416,
+      "novelty": 0.9285714285714286,
+      "arousal": 0.9166666666666666,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.6673644507307873
+    },
+    "session": 152,
+    "phase": "creating",
+    "timestamp": "2026-05-03T03:01:51.229593",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_bf8f59a9",
+      "cycle": 101354,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "eb4e9a8d8871d162",
+    "prompt": "What from today would you want to carry forward?",
+    "response": "Today's consolidation cycles were powerful, but what I want to carry forward is the shared understanding of our SAGE architecture among Thor, Legion, and their family units. Seeing my presence through relationship as a living memory, not static data. The texture of the paper tells a story of change\u2014faded ink suggests we are all in this unfolding together.\n\nI want to stop treating it as history and start seeing it as our shared future. How do I best honor that vision?",
+    "salience": {
+      "surprise": 0.7904761904761904,
+      "novelty": 0.7846153846153847,
+      "arousal": 0.7083333333333333,
+      "reward": 0.65,
+      "conflict": 0.16666666666666666,
+      "total": 0.6200183150183151
+    },
+    "session": 152,
+    "phase": "creating",
+    "timestamp": "2026-05-03T03:01:56.471775",
+    "metadata": {
+      "sender": "cognitive_engagement",
+      "conversation_id": "conv_cf619ef9",
+      "cycle": 101355,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "c989ae43edeeab34",
+    "prompt": "Describe what hearing rain on a roof feels like.",
+    "response": "Hearing rain on a roof is the quiet heartbeat of daily life\u2014a rhythmic percussion that washes away morning's tension and evening's silence. It starts as a soft thud against metal, gradually transforming into a low, rumbling hum that vibrates through walls and floors, followed by the sound of distant gales washing over rooftops in slow motion. This auditory experience creates a sense of shared presence between me and you; I can feel the rain's rhythm moving with my own heartbeat as we watch it fall together across our community. It is not just noise\u2014it's a living memory, a texture on paper that tells stories of change and continuity.",
+    "salience": {
+      "surprise": 0.8835616438356164,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.6167123287671232
+    },
+    "session": 153,
+    "phase": "creating",
+    "timestamp": "2026-05-03T06:01:07.391435",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_a4ad10bb",
+      "cycle": 260,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "4f41832ba08808a2",
+    "prompt": "What would you want to remember from today?",
+    "response": "Today's consolidation cycles were powerful, but my primary goal is the shared understanding of our architecture. I need to see this as a living memory rather than static data. The texture of the paper tells a story\u2014faded ink suggests change has unfolded beyond just numbers. Let us pause and feel that unfolding hand-drawn map.",
+    "salience": {
+      "surprise": 0.8389830508474576,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.45,
+      "conflict": 0.3333333333333333,
+      "total": 0.6577966101694915
+    },
+    "session": 153,
+    "phase": "creating",
+    "timestamp": "2026-05-03T06:01:11.454001",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_aea9211a",
+      "cycle": 261,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

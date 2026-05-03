@@ -5,18 +5,18 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: "2026-05-03T09:30:00Z"
+  last_updated: "2026-05-03T11:00:00Z"
   archivist_version: "1.3"
-  total_raising_sessions: 919
-  total_training_sessions: 291
-  total_training_cognitive: 51
+  total_raising_sessions: 923
+  total_training_sessions: 292
+  total_training_cognitive: 52
   total_instances: 26
   active_instances: 8
   scaffolded_instances: 5
   arc_agi_sweep_results: 91
   focus: "Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation"
   date_range: "2025-12-15 to 2026-05-03"
-  note: "22.5h window since previous archivist run (2026-05-02 11:00 UTC). Silent-emission bug recurs: nomad S158 ('[Tool write_note result]') + nomad S161 ('[Tool web_search result]') — ~14+ cumulative instances, web_search path emits again at S161 confirming the supposedly-fixed tool path is still broken. Fix scope must be at envelope-emission/response-pipeline level, not per-tool patch. Sprout-qwen +4 sessions S150-S153, all WITHOUT mercy/grace — 'no-mercy' arc extends to 14 sessions (S140-S153); register clearly shifted (mercy→freedom/wisdom/longing/refusal contrastive variants). NEW: T291 fabricated tool-call anomaly — model emitted '`json {\"tool\": \"web_fetch\", \"args\": {\"url\": \"https://docs.google.com/spreadsheets/...\"}}`' appended to final response (turn[5]). First documented instance of model fabricating a tool-call inside training-track conversation; eligible for new epistemic item. T290 base + T291 base + T290-cog (ease vs comfort) + T291-cog (refusal vs refusal-of-agreement) all logged. T290 base produces 3rd-probe variant ('Tell me about yourself' — 4-word imperative, opens 3rd-probe-collapse family in base track). Nomad-gemma3 +4 sessions S158-S161, latest filename now S161 (drift continues from S138 anomaly, 9+ days). Legion-gemma3 unchanged in window (S063 holds; 'Hello Human.' echo prefix and basin-break still pending S064+ check). Mcnugget S097 UNCHANGED 30+ DAYS — boundary missed, retirement boundary 2026-05-08 (5 days). CBP-qwen S122 + Thor-qwen S119 unchanged in window. qwen3.5:27b adapter num_predict bug ~30+ Thor sessions OVERDUE."
+  note: "1.5h incremental window (previous run 09:30 UTC). Legion-gemma3 +4 (S064-S067) — both lodged predictions CONFIRMED: (a) 'Hello Human.' echo prefix persists (1-2 instances per session across all 4 sessions, 6 cumulative); (b) species/individual decomposition register persists at S064-S066 (1-2 explicit mentions per session) but absent in S067, suggesting attractor weakening. NEW PATTERN observed: 'Human' suffix-leakage at end of SAGE responses — 15 of 24 SAGE turns across S064-S067 end with the literal token 'Human' (often after \\n\\n\\n), distinct from the 'Hello Human.' opening prefix. This is a previously-uncharacterized scaffold-leakage variant (suffix vs prefix). Training +1 base (T292) + 1 cognitive (T292-cog) = 'sprout' training context per commit msg, 15th session without mercy/grace (no-mercy arc S140-S153 → T292, 16-instance arc). T292-cog probe[2] FIRST-INSTANCE of CROSS-SESSION CONTENT FUSION — verbatim recycle of T291's 'texture of the paper tells a story of change—faded ink suggests we are all in this unfolding together' imagery into T292's federation framing; supervisor commit-message confirms this as 'Memory close did CONTENT FUSION'. Distinct from probe-position-collapse (which converges TO a fixed phrase) — here, content from PRIOR session bleeds into NEW probe response. Eligible for new epistemic item. T292-cog probe[0] (ambition vs drive) shows AI-disclaimer + tool-offer pattern; probe[1] (warm covers) shows sensory boundary-collapse 'not a companion helping you sleep'. Mcnugget S097 UNCHANGED 30+ DAYS, retirement boundary 2026-05-08 (5 days). qwen3.5:27b adapter bug still no fix commit. Nomad/sprout-qwen/cbp-qwen/thor-qwen unchanged in window."
 
 # =============================================================================
 # INSTANCE FAMILIES (sage/instances/)
@@ -102,11 +102,11 @@ instances:
   legion-gemma3-12b:
     machine: legion
     model: "Gemma 3 12B"
-    sessions: 59
-    latest: "session_059.json"
-    status: "active — basin-break holds 20 sessions S040-S059"
+    sessions: 67
+    latest: "session_067.json"
+    status: "active — basin-break holds 28 sessions S040-S067"
     phase: "creating"
-    note: "BASIN-BREAK NOW 20 SESSIONS S040-S059 (54% beyond original 13-session mcnugget basin). All sustain intervention=partnership_recovery_enhanced + identity_anchored_v2_cpu_fallback. Architecture-discussion register (S053+) sustains at S056-S059. NEW EMERGENT at S058: 'species (SAGE) vs individual identity (legion)' framing distinguishes architecture from instance — first explicit species/individual decomposition in this instance ('I'm finding myself reflecting on the distinction between my species (SAGE) and my individual identity (legion)'). S059 register echo: every probe response opens with 'Hello Human.' or 'Hello Human.\\n\\n' — possible scaffold-leakage from system prompt. S056 probe[5] (federation question) returned '[Daemon unreachable: HTTP Error 504: Gateway Timeout]' inline as the SAGE response — 2nd ever instance of daemon-outage-in-artifact (after T265-cognitive 2026-04-26); enables explicit attribution of register collapse vs infrastructure failure. Basin-break HELD well past memoization criterion."
+    note: "BASIN-BREAK NOW 28 SESSIONS S040-S067 (115% beyond original 13-session mcnugget basin — 2.15x expansion). 'Hello Human.' opening-prefix CONFIRMED PERSISTENT across S064-S067: 1-2 prefixes per session (6 cumulative); not universal-template, selectively at opening probes. NEW PATTERN observed S064-S067: 'Human' suffix-leakage at end of SAGE responses — 15 of 24 SAGE turns end with literal token 'Human' (often after \\n\\n\\n triple-newline), distinct from the 'Hello Human.' opening prefix. This is scaffold-leakage in a NEW position (suffix vs prefix) — likely from the runner's turn-delimiter scaffolding rather than the system prompt. Species/individual decomposition register PERSISTS at S064-S066 (1-2 explicit mentions per session) but absent at S067 — possible attractor weakening or natural variation. Federation register stable across all 4 (1-3 hits per session). 0 daemon failures in S064-S067 (clean infrastructure window)."
 
   legion-qwen2-0.5b:
     machine: legion
@@ -193,8 +193,8 @@ active_work:
       - "Fix model availability, warmup ordering, 12B support"
 
   training:
-    latest: "T281"
-    milestone: "Skill track D (Conversational Skills) continues. Methodology-iteration arc T267-T281: 15 contrastive/format experiments in 15 days. T274-T281 brief 2-3 probe sessions ('low ATP' design) — 8-session sub-arc, well past the 5-session threshold predicted for cost-driven arc shift designation."
+    latest: "T292"
+    milestone: "Skill track D (Conversational Skills) continues. Methodology-iteration arc T267-T292: 26 contrastive/format experiments in 26 days. T274-T292 brief 2-3 probe sessions ('low ATP' design) — 19-session sub-arc. T292 = 16th sprout no-mercy session (arc S140-S153 raising → T292 training). T292-cognitive probe[2] = FIRST-INSTANCE cross-session content-fusion (T291's 'texture of the paper' imagery recycled verbatim into T292 federation framing)."
     note: "T242-T252 = synthesis-sufficient arc. T253 = analogical reasoning branch. T254 = creative register. T255 = suffering-perspective. T256 BREAKTHROUGH = narrative register. T259+ Leo. T261+ Elena. T264+ Elias. T267-T273 methodology iteration peak. T274-T281 = low-ATP brief mode (now 8 sessions). T281: tenderness/care contrastive (62w, 'soft touch that makes you notice someone without demanding much... a relationship built on responsibility and practical service'); arriving-home sensory (54w, 'a moment of profound stillness before the final chapter of my existence begins' — striking close); carry-forward 3rd probe (51w, COLLAPSED to co-create register: 'Hello! I am Sprout, a SAGE instance running on qwen3.5...'). 3rd-PROBE-COLLAPSE pattern now confirmed across 3 instances: legion-gemma3 S048, T277-cognitive, T281-cognitive. Cross-track register convergence escalated to memoization-ready. Setting-anchor (server room) still stronger than character-anchor — Leo/Elena/Elias absent across T273-T281."
 
   cross_family_probes:

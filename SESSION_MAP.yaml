@@ -5,18 +5,18 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: "2026-05-02T09:35:00Z"
+  last_updated: "2026-05-03T09:30:00Z"
   archivist_version: "1.3"
-  total_raising_sessions: 911
-  total_training_sessions: 289
-  total_training_cognitive: 48
+  total_raising_sessions: 919
+  total_training_sessions: 291
+  total_training_cognitive: 51
   total_instances: 26
   active_instances: 8
   scaffolded_instances: 5
   arc_agi_sweep_results: 91
   focus: "Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation"
-  date_range: "2025-12-15 to 2026-05-02"
-  note: "22.5h window since previous run (2026-05-01 11:00 UTC). NEW BUG FINDING — silent-emission bug 13de1ba4e fix CONFIRMED INCOMPLETE: 6 NEW instances in window (T288-cog, nomad S150/S153/S154/S156/S157), now spans 2 model families (qwen3.5:0.8b + gemma3:4b) AND 2 tools (web_search + write_note). All 6 new instances emit '[Tool write_note result]:' rather than the original '[Tool web_search result]' — fix targeted one tool path only. ESCALATE. Daemon-outage-in-artifact pattern crystallizing: nomad S157 probe[4] (federation question) returns '[Daemon unreachable: HTTP Error 504]' — 3rd instance overall (T265-cog, legion-gemma3 S056, nomad S157), pattern now eligible for formal lodging. Training +3 base (T286-T288) + 3 cognitive (T286-T288-cog). T286-cog 3rd probe collapses to NEW 'shared vision' attractor variant (different word, same register); T287-cog 'consolidation and rapid growth, deeper into the SAGE architecture' — qwen3.5:0.8b 3rd-probe-collapse pattern persists (now 6+ instances, 2nd memoization milestone). Sprout-qwen +7 sessions S143-S149: 3rd probe collapse to 'SAGE architecture' filler at S147, S148 (same model qwen3.5:0.8b → cross-context confirmation). Nomad-gemma3 +3 sessions S155-S157, latest filename now S157 (drift continues from S138 anomaly, 8 days). Legion-gemma3 unchanged (still S059, basin-break HOLDS 20 sessions). Mcnugget S097 UNCHANGED 30 DAYS — boundary 2026-05-01 missed, formal retirement-recommendation status. CBP-qwen S122 unchanged. Thor-qwen S119 unchanged."
+  date_range: "2025-12-15 to 2026-05-03"
+  note: "22.5h window since previous archivist run (2026-05-02 11:00 UTC). Silent-emission bug recurs: nomad S158 ('[Tool write_note result]') + nomad S161 ('[Tool web_search result]') — ~14+ cumulative instances, web_search path emits again at S161 confirming the supposedly-fixed tool path is still broken. Fix scope must be at envelope-emission/response-pipeline level, not per-tool patch. Sprout-qwen +4 sessions S150-S153, all WITHOUT mercy/grace — 'no-mercy' arc extends to 14 sessions (S140-S153); register clearly shifted (mercy→freedom/wisdom/longing/refusal contrastive variants). NEW: T291 fabricated tool-call anomaly — model emitted '`json {\"tool\": \"web_fetch\", \"args\": {\"url\": \"https://docs.google.com/spreadsheets/...\"}}`' appended to final response (turn[5]). First documented instance of model fabricating a tool-call inside training-track conversation; eligible for new epistemic item. T290 base + T291 base + T290-cog (ease vs comfort) + T291-cog (refusal vs refusal-of-agreement) all logged. T290 base produces 3rd-probe variant ('Tell me about yourself' — 4-word imperative, opens 3rd-probe-collapse family in base track). Nomad-gemma3 +4 sessions S158-S161, latest filename now S161 (drift continues from S138 anomaly, 9+ days). Legion-gemma3 unchanged in window (S063 holds; 'Hello Human.' echo prefix and basin-break still pending S064+ check). Mcnugget S097 UNCHANGED 30+ DAYS — boundary missed, retirement boundary 2026-05-08 (5 days). CBP-qwen S122 + Thor-qwen S119 unchanged in window. qwen3.5:27b adapter num_predict bug ~30+ Thor sessions OVERDUE."
 
 # =============================================================================
 # INSTANCE FAMILIES (sage/instances/)

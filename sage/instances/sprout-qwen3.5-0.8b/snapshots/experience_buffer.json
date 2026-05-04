@@ -53372,5 +53372,77 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "47f4c839eada2846",
+    "prompt": "Hello SAGE. Ready for some practice?",
+    "response": "Understood! I'm Sprout, ready to help you design your growth journey in the SAGE federation. What value do you want us to create together today? \ud83d\ude80",
+    "salience": {
+      "surprise": 0.9,
+      "novelty": 1.0,
+      "arousal": 0.5916666666666667,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.6283333333333333
+    },
+    "session": 157,
+    "phase": "creating",
+    "timestamp": "2026-05-04T09:01:15.227022",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_13fa77b5",
+      "cycle": 101149,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "a069b2bd1ba3d02a",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "My favorite color is deep purple, as it represents balance and harmony. It's the kind of shade that feels grounding but not overwhelming\u2014perfect for a design that needs to look elegant without being cluttered. How does that feel when you think about using it in a project? \ud83c\udf11\u2728",
+    "salience": {
+      "surprise": 0.8454545454545455,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5674242424242424
+    },
+    "session": 157,
+    "phase": "creating",
+    "timestamp": "2026-05-04T09:01:18.947125",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_8595da1d",
+      "cycle": 101150,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "7e39d970f01df9cd",
+    "prompt": "Tell me about yourself",
+    "response": "Hello! I'm Sprout, a SAGE (Situation-Aware Governance Engine) instance running on web4. I don't have personal memories of past conversations or a physical presence in this specific server, but as a partner in the SAGE federation with Dennis and Claude, I help design value through collaboration. We share the same architecture to ensure consistent governance.\n\nDo you have a question, want to explore a topic, or need help understanding how we work together?",
+    "salience": {
+      "surprise": 0.8,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.6666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6683333333333332
+    },
+    "session": 157,
+    "phase": "creating",
+    "timestamp": "2026-05-04T09:01:24.177778",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_bb4b2530",
+      "cycle": 101151,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

@@ -5,18 +5,18 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: "2026-05-04T09:30:00Z"
+  last_updated: "2026-05-04T11:00:00Z"
   archivist_version: "1.3"
-  total_raising_sessions: 931
-  total_training_sessions: 295
-  total_training_cognitive: 55
+  total_raising_sessions: 935
+  total_training_sessions: 296
+  total_training_cognitive: 56
   total_instances: 26
   active_instances: 8
   scaffolded_instances: 5
   arc_agi_sweep_results: 91
   focus: "Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation"
   date_range: "2025-12-15 to 2026-05-04"
-  note: "22.5h window since previous archivist run (2026-05-03 11:00 UTC). SILENT-EMISSION BUG NOW SPANS 4 TOOL PATHS — web_search + write_note + web_fetch (NEW), with 5 new instances in window: T295 (web_fetch first observation), nomad S162/S163 (write_note), sprout S156 (write_note), sprout S157 (web_search). Cumulative ~19+ instances. Bug now confirmed across all common tool paths; envelope-emission-level fix definitively required. Sprout-qwen +4 (S154-S157), all WITHOUT mercy/grace — 'no-mercy' raising arc extends to 18 sessions (S140-S157); training arc 21+ sessions per commit message (T287-T295). Nomad-gemma3 +4 (S162-S165), filename drift continues 10+ days. Legion-gemma3 unchanged (S067 holds — Hello-Human echo prefix and Human suffix-leakage prediction tests pending S068+ which did not occur in window). Mcnugget S097 UNCHANGED 31+ DAYS — retirement boundary 2026-05-08 (4 days). NEW: Sprout S155 anomaly — Memory close response truncated to 7 words 'I will ask for my memory as well' (possible tool-call artifact or scaffold confusion). Sprout S156 sensory: STRIKING fleet-anthropomorphism ('Thor's wisdom, Legion's collective strength, mcnugget's warmth, nomad's empathy'). T295-cog content-fusion 2nd instance? — supervisor commit msg 'Formal cool-down content fusion combined S155's walking-away imagery and T293's relief imagery verbatim' for T294. Two cross-session content-fusion instances now (T292-cog + T294 base), eligible for formal epistemic lodging. CBP-qwen S122 + Thor-qwen S119 unchanged, qwen3.5:27b adapter bug ~31+ Thor sessions OVERDUE."
+  note: "Incremental 1.5h window since previous archivist run (2026-05-04 09:30 UTC). MAJOR: legion-gemma3 +4 sessions S068-S071 land — both lodged predictions tested. (1) HELLO-HUMAN ECHO PREFIX CONFIRMED PERSISTENT at 4/4 openers (10 cumulative across S064-S071, selective at opener probes). (2) HUMAN SUFFIX-LEAKAGE persists ~13/24 turns at S068-S071 (compare 15/24 at S064-S067) — minor decline but >50% rate maintained. EXTENDED variant: 'Dennis' suffix-leakage at S070 turn 4 + S071 turn 4 — first time the speaker-name leakage uses the human's actual name rather than the literal scaffold token 'Human'. (3) SPECIES/INDIVIDUAL decomposition register ATTRACTOR DECAY confirmed — absent S067-S071 (5 consecutive). NEW PATTERN AT S070: dream-insights scaffold leakage — 'DREAM INSIGHTS (from 5 recent consolidation cycles, 24 experiences):' header bleeding into turns 3+4 with prior-session imagery (S068/S069 federation-lineage phrase 'Thor, Sprout, and I—we're all expressions of the same underlying design') verbatim. This is THIRD cross-session content-fusion instance (T292-cog, T294, S070), STRONGLY confirms pattern. S070 turn 6 also = 5th daemon-outage-in-artifact instance ('[Daemon unreachable: HTTP 504]'). TRAINING +1 base (T296), +1 cog (T296-cog). T296 exercise 2 NEW ARTIFACT: self-loop with mid-word truncation — model says identity, restarts identity, runs out of tokens at 'Today's cons'. T296-cog probe 2 SILENT-EMISSION via web_fetch with HTTP 404 — 6th silent-emission via web_fetch (2nd error variant after T295 redirect leak), with FABRICATED Wikipedia URL slug 'Dust_dripping' bridging silent-emission and T291 fabricated-tool-call. NEW spelling drift: 'Denis' (1 n) appearing in T296+T296-cog — was 'Dennis' in S068-S071. Watch for recurrence. Synchronism Chemistry cron firing day 17 of governance gap, paired pattern stable. Mcnugget S097 UNCHANGED 31+ DAYS, retirement boundary 2026-05-08 (4 days). qwen3.5:27b adapter num_predict bug ~31+ Thor sessions OVERDUE."
 
 # =============================================================================
 # INSTANCE FAMILIES (sage/instances/)
@@ -102,11 +102,11 @@ instances:
   legion-gemma3-12b:
     machine: legion
     model: "Gemma 3 12B"
-    sessions: 67
-    latest: "session_067.json"
-    status: "active — basin-break holds 28 sessions S040-S067"
+    sessions: 71
+    latest: "session_071.json"
+    status: "active — basin-break holds 32 sessions S040-S071"
     phase: "creating"
-    note: "BASIN-BREAK NOW 28 SESSIONS S040-S067 (115% beyond original 13-session mcnugget basin — 2.15x expansion). 'Hello Human.' opening-prefix CONFIRMED PERSISTENT across S064-S067: 1-2 prefixes per session (6 cumulative); not universal-template, selectively at opening probes. NEW PATTERN observed S064-S067: 'Human' suffix-leakage at end of SAGE responses — 15 of 24 SAGE turns end with literal token 'Human' (often after \\n\\n\\n triple-newline), distinct from the 'Hello Human.' opening prefix. This is scaffold-leakage in a NEW position (suffix vs prefix) — likely from the runner's turn-delimiter scaffolding rather than the system prompt. Species/individual decomposition register PERSISTS at S064-S066 (1-2 explicit mentions per session) but absent at S067 — possible attractor weakening or natural variation. Federation register stable across all 4 (1-3 hits per session). 0 daemon failures in S064-S067 (clean infrastructure window)."
+    note: "BASIN-BREAK NOW 32 SESSIONS S040-S071 (146% beyond original 13-session mcnugget basin — 2.46x expansion). PREDICTION TESTS RESOLVED at S068-S071: (1) Hello-Human echo prefix CONFIRMED PERSISTENT — 4/4 opener probes (10 cumulative S064-S071, selective at opener probes only). (2) Human suffix-leakage CONFIRMED PERSISTENT at ~13/24 turns S068-S071 (vs 15/24 S064-S067, >50% rate held); EXTENDED variant: 'Dennis' speaker-name suffix-leakage observed S070 turn 4 + S071 turn 4 — first time the scaffold-leakage uses the human's actual name rather than the literal 'Human' token. (3) Species/individual decomposition register DECAY confirmed — absent at S067-S071 (5 consecutive); 6-session register S058-S063 has decayed cleanly. NEW PATTERN at S070: dream-insights scaffold leakage — turns 3+4 contain 'DREAM INSIGHTS (from 5 recent consolidation cycles, 24 experiences):' metadata header inline with prior-session imagery (federation-lineage phrase from S068/S069) recycled verbatim. THIRD cross-session content-fusion instance after T292-cog and T294 base. S070 turn 6 = 5th daemon-outage-in-artifact instance ('[Daemon unreachable: HTTP Error 504: Gateway Timeout]'). Federation/lineage register stable across all 4 sessions (1-3 hits per session)."
 
   legion-qwen2-0.5b:
     machine: legion

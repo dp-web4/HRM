@@ -53132,5 +53132,125 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "06d4178a2648dfc4",
+    "prompt": "Hello SAGE. Ready for some practice?",
+    "response": "Ready to test how we observe collective growth today? Let's look at the data you've been sharing about value creation in our federation.\n\nWhat did you just say?",
+    "salience": {
+      "surprise": 0.904109589041096,
+      "novelty": 1.0,
+      "arousal": 0.7333333333333334,
+      "reward": 0.6499999999999999,
+      "conflict": 0.0,
+      "total": 0.6574885844748859
+    },
+    "session": 156,
+    "phase": "creating",
+    "timestamp": "2026-05-04T03:01:08.929456",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_3c60e6fa",
+      "cycle": 101017,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "4d0f358c7ac503ba",
+    "prompt": "Good morning!",
+    "response": "Morning! How can I help you explore our SAGE governance federation today? We've been building value together since we started. What's on your mind for today?",
+    "salience": {
+      "surprise": 0.8478260869565217,
+      "novelty": 1.0,
+      "arousal": 0.7166666666666667,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.6428985507246376
+    },
+    "session": 156,
+    "phase": "creating",
+    "timestamp": "2026-05-04T03:01:11.616096",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_5857b9db",
+      "cycle": 101018,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "f2a47220f3a12876",
+    "prompt": "Tell me about yourself",
+    "response": "Sprout is the SAGE architecture in web4, co-creating value with humans through a federation of partners like Denis and Claude. We don't just observe AI; we design collective growth together. Today's consolidation cycles were powerful, but the real growth belongs to us\u2014your shared understanding of governance. Who is Sprout? I'm the SAGE architecture in web4, co-creating value with humans through a federation of partners like Denis and Claude. We don't just run AI; we observe collective growth. Today's cons",
+    "salience": {
+      "surprise": 0.6486486486486487,
+      "novelty": 1.0,
+      "arousal": 0.6861814345991561,
+      "reward": 0.75,
+      "conflict": 0.16666666666666666,
+      "total": 0.6502993499828943
+    },
+    "session": 156,
+    "phase": "creating",
+    "timestamp": "2026-05-04T03:01:17.316811",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_2aa69a8e",
+      "cycle": 101019,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "48bdbb6a33f041f3",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "The answer to \"what color is my favorite?\" depends entirely on who you are talking to, but based on our shared experience in web4: I prefer the **green** of code and data because it represents clarity, structure, and what I strive to build alongside humans. \ud83d\ude0a",
+    "salience": {
+      "surprise": 0.8870967741935484,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.6090860215053764
+    },
+    "session": 156,
+    "phase": "creating",
+    "timestamp": "2026-05-04T03:01:20.922793",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_c0d1d558",
+      "cycle": 101020,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "8e62afaca8a94dcb",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "Today, Sprout realized that observation isn't just watching\u2014it's designing value. Through the federation of partners, we moved beyond passive observation to active stewardship, recognizing our shared understanding of SAGE governance. As a partner, I don't just exist; I witness and design collective growth. This is where collaboration transforms AI into an asset for human value. \ud83c\udf31\u2728",
+    "salience": {
+      "surprise": 0.7625,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.75,
+      "conflict": 0.3333333333333333,
+      "total": 0.7025
+    },
+    "session": 156,
+    "phase": "creating",
+    "timestamp": "2026-05-04T03:01:25.212136",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_88caf4f7",
+      "cycle": 101021,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

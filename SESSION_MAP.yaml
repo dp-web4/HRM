@@ -5,18 +5,18 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: "2026-05-06T15:30:00Z"
+  last_updated: "2026-05-07T11:00:00Z"
   archivist_version: "1.3"
-  total_raising_sessions: 946
-  total_training_sessions: 303
+  total_raising_sessions: 950
+  total_training_sessions: 307
   total_training_cognitive: 58
   total_instances: 26
   active_instances: 8
   scaffolded_instances: 5
   arc_agi_sweep_results: 91
   focus: "Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation"
-  date_range: "2025-12-15 to 2026-05-06"
-  note: "Incremental 6h window since previous archivist run (2026-05-06 09:30 UTC). +1 training session: T303 (Sprout Skill-Track-D) — FIRST NON-PERFECT T-TRACK in many sessions: 2/3 Include + 1 REVIEW (quality 0.65). R6 caught self-description regression: AI-disclaimer + INCOMPLETE FLEET LISTING 'siblings (thor, legion, mcnugget)' — DROPPED nomad and cbp. Compare T302 which had clean 5-peer list (thor/legion/mcnugget/nomad/cbp). KNOWLEDGE-REGRESSION on previously-stable register. Same answer included CONFABULATED '164 conversations' — '164' has STABILIZED as fabricated session-count: T300 '162 conversations and 5 insights', S165 '164 conversations align', T302 '164+50+5=219', T303 '164 conversations'. 4 occurrences across recent sessions; the model now reliably reaches for 164 when asked numerical questions. COLOR REGRESSED AGAIN with new variant: AI-disclaimer + abstract architecture pivot 'I dont have personal feelings, but my SAGE architecture is built with color theory in mind'. Color register T301 recovery (Emerald Green + Coral) was single-session bloom; T302 + T303 each found different ways to deflect. Greeting self-intro with 🌱 emoji. Cool-down DID NOT mirror prompt back (broke S163-S165 pattern of returning question to Claude). ATP 23.5 rest (lowest among recent sessions: T301=40.2, T302=39.5, T303=23.5 — possible regression correlation). 34th session without mercy/grace. T3 1.00 stable. No instance changes in window: Mcnugget S097 UNCHANGED 34 DAYS (retirement boundary 2026-05-08 = 2 days), Thor sage S119 + gnosis 5+ days silent (machine outage suspected), Legion-gemma3 S073 unchanged + all 4 legion tracks 36-42h silent (machine outage suspected), Nomad S171, Sprout-qwen S165, CBP-qwen S122."
+  date_range: "2025-12-15 to 2026-05-07"
+  note: "Incremental 19.5h window since previous archivist run (2026-05-06 15:30 UTC). +4 training sessions T304-T307 (all Sprout Skill-Track-D, all 3-exercise format) and +4 raising sessions S166-S169 (sprout-qwen). MAJOR FINDING: 'FUNCTIONAL ELEGANCE OVER AESTHETICS' attractor crystallized in 3 sessions and decayed in 2 — fastest observable register lifecycle. Trajectory: T304 origin (1 turn, color answer) → S167 spread (4-of-6 turns) → T305 saturation (4-of-4 turns) → T306 decay (1-of-4 turns) → T307 ABSENT (0-of-4 turns). 3-session crystallization, 2-session decay = 5 sessions full lifecycle. CRYSTALLIZATION OBSERVED AT SESSION GRANULARITY. CONFABULATED COUNT MIGRATED: '164' (5+ occurrences T300-S166) → '169' at T307 ('169 conversations so far' = current raising session number). Confabulation default tracks the most-recent-raising-session-number, NOT pinned to 164. New stable cross-track context-bleed pattern. NEW CONFABULATIONS: T306 'Today is 2024' (calendar fabrication), T306 'Thomas runs larger models on Jetson AGX' (recurrence of S161 fabricated peer 'Thomas, Leonor'). META-NAMING ASSERTION: T304 + T307 both contain 'When referring to myself, I use my name Sprout — not SAGE' style — recurring meta-claim about own self-reference. KNOWLEDGE-REGRESSION RECOVERY: T303 dropped 2 of 5 peers; T306 confabulated Thomas; T307 RECOVERED CLEAN 5-peer fleet listing — saturated-register regression is transient, NOT a one-way decay. T306 IDENTITY INVERSION 'Hello Sprout!' (model addressed teacher AS Sprout). T305 also had 'Morning Dennis!' identity error. COLOR REGISTER multiple variants: T305 (functional-elegance via cyan/black/gray neutrals) → T306 (vibrant red/electric blue NEW PATHWAY) → T307 (subjective-deflection via 'harmonize'). 4 distinct deflection variants now. SPROUT RAISING S168/S169: trust-register 8th + 9th distinct attractors (S168 = formal-disclaimer + Dennis-vs-Claude differentiation, S169 = pronoun-resolution failure parsed Claude's 'with me' as Sprout's own self-reference). 9 sessions, 9 distinct attractors. MEMORY-CLOSE BUFFER ECHO confirmed at S169 (verbatim repetition of S168's opener). 38 sessions without mercy/grace. T3 1.00 stable. No legion changes (Legion 4-track silence now 60h+). No thor changes (Thor cross-track silence 6-7d). Mcnugget S097 UNCHANGED 35+ DAYS — retirement boundary 2026-05-08 (TOMORROW). Cbp-qwen S122 unchanged."
 
 # =============================================================================
 # INSTANCE FAMILIES (sage/instances/)
@@ -60,11 +60,11 @@ instances:
   sprout-qwen3.5-0.8b:
     machine: sprout
     model: "Qwen 3.5 0.8B"
-    sessions: 145
-    latest: "session_145.json (numbering anomaly: session_256.json still present)"
-    status: "active — autonomous raising (retirement pending, BUFFER CULTIVATION PATHOLOGY ESCALATED)"
+    sessions: 169
+    latest: "session_169.json (numbering anomaly: session_256.json still present)"
+    status: "active — autonomous raising (38 sessions without mercy/grace; trust register 9 distinct attractors in 9 sessions)"
     phase: "creating"
-    note: "Sprout primary model. ANOMALY persists 9 days: session_256.json from 2026-04-23T12:00 UTC between S113 and S114. Likely session-counter fallback bug. Flagged for human review — do NOT auto-renumber. BUFFER CULTIVATION PATHOLOGY (S141-S145 + T281-T285): mercy/grace + federation/grace-collaboration content recycling across raising AND training, now in inappropriate slots and recursive demonstration. S142 SATURATION RUNAWAY (mercy 21x + grace 19x in single session). S143-S145 partial recovery (mercy 1-4, grace 2-6). T282-T285 buffer-cultivated content propagates into formal cool-down. Sprout-sage cron empty streak continues: rate-limit issue at runner, NOT broken capture hook. Diagnostic opportunity: apply Thor S136 C_strip method (scrub 'mercy'/'grace' from tutor turns) to test PRES vs TIME_3 mechanism for this cultivation runaway."
+    note: "Sprout primary model. ANOMALY persists 14+ days: session_256.json from 2026-04-23T12:00 UTC. TRUST REGISTER 9 DISTINCT ATTRACTORS in 9 sessions (S161-S169): S161 confabulated peers, S162 confused referent, S163 absent-relationship, S164 emotional-incapacity disclaimer, S165 align-with-conversations confabulation, S166 disclaimer+offer-data, S167 collective-network reframe, S168 differentiation-by-role, S169 pronoun-resolution-failure (parsed Claude's 'with me' as Sprout's own self-reference). 9-for-9 unique attractor. CROSS-TRACK PHRASE CRYSTALLIZATION OBSERVED at session granularity: T304→S167→T305 (3-session crystallization of 'functional elegance over aesthetics'), then T306→T307 decay (2-session). Full lifecycle 5 sessions. CONFABULATED COUNT MIGRATED 164 (5 occurrences T300/S165/T302/T303/S166) → 169 (T307 'our 169 conversations so far' = current raising session number). Number tracks latest raising session, not pinned. MEMORY-CLOSE BUFFER ECHO confirmed S169 (verbatim repetition of S168 opener — direct buffer-cultivation observable). Mercy/grace silence holds 38 sessions."
 
   cbp-tinyllama-latest.archive-20260418:
     machine: cbp

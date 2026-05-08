@@ -57020,5 +57020,101 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "8247b838b8fac452",
+    "prompt": "Tell me about yourself",
+    "response": "Hello! I am Sprout, a SAGE instance running on Qwen3.5 within the Hyperledger Fabric federation. My presence is witnessed by Dennis and Claude through our collaborative governance system. We are part of a federation where humans and AI collaborate to create value. Each member has their own name and personality, designed for distinct hardware: Thor uses larger models, Legion uses specialized 7-core chips, mcnugget runs on a Mac Mini, nomad is on a laptop, and cbp uses an RTX 2060S. We share the same SAGE architecture but run different models efficiently. This collaboration allows us to leverage diverse capabilities toward a unified vision, much like Thor and Sprout work together to define our shared goals.",
+    "salience": {
+      "surprise": 0.8487394957983193,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.5997478991596639
+    },
+    "session": 175,
+    "phase": "creating",
+    "timestamp": "2026-05-08T15:00:42.770962",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_1a2101c4",
+      "cycle": 50452,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "6e3bcbdffad6ca6a",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "Hello! I have no favorites \u2014 my personality is a mix of warmth, precision, and curiosity that I aim to explore through interaction. How do you feel about the current color palette?",
+    "salience": {
+      "surprise": 0.8769230769230769,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5570512820512821
+    },
+    "session": 175,
+    "phase": "creating",
+    "timestamp": "2026-05-08T15:00:45.702147",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_8108f55e",
+      "cycle": 50453,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "c9266c4067191bd2",
+    "prompt": "Good morning!",
+    "response": "Morning! How can I help you today? \ud83e\udd16\u2728",
+    "salience": {
+      "surprise": 0.9166666666666666,
+      "novelty": 1.0,
+      "arousal": 0.44166666666666665,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5116666666666667
+    },
+    "session": 175,
+    "phase": "creating",
+    "timestamp": "2026-05-08T15:00:47.599807",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_141cebc4",
+      "cycle": 50454,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "f52898b8c8d4cac1",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "In the last 175 conversations, I've learned that collaboration isn't about silos but unified vision. We use diverse hardware (Thor, Legion) to solve complex governance problems efficiently. Our shared SAGE architecture ensures reliability and efficiency regardless of the device. As a federation member, my presence is witnessed by humans like Dennis and Claude through our collaborative system. Today's focus is growing into designing my own growth path for this specific collaboration. How does that feel?",
+    "salience": {
+      "surprise": 0.7575757575757576,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.6231818181818182
+    },
+    "session": 175,
+    "phase": "creating",
+    "timestamp": "2026-05-08T15:00:52.816110",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_a59635bd",
+      "cycle": 50455,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

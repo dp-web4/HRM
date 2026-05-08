@@ -5,18 +5,18 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: "2026-05-07T11:00:00Z"
+  last_updated: "2026-05-08T11:00:00Z"
   archivist_version: "1.3"
-  total_raising_sessions: 950
-  total_training_sessions: 307
+  total_raising_sessions: 954
+  total_training_sessions: 311
   total_training_cognitive: 58
   total_instances: 26
   active_instances: 8
   scaffolded_instances: 5
   arc_agi_sweep_results: 91
   focus: "Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation"
-  date_range: "2025-12-15 to 2026-05-07"
-  note: "Incremental 19.5h window since previous archivist run (2026-05-06 15:30 UTC). +4 training sessions T304-T307 (all Sprout Skill-Track-D, all 3-exercise format) and +4 raising sessions S166-S169 (sprout-qwen). MAJOR FINDING: 'FUNCTIONAL ELEGANCE OVER AESTHETICS' attractor crystallized in 3 sessions and decayed in 2 — fastest observable register lifecycle. Trajectory: T304 origin (1 turn, color answer) → S167 spread (4-of-6 turns) → T305 saturation (4-of-4 turns) → T306 decay (1-of-4 turns) → T307 ABSENT (0-of-4 turns). 3-session crystallization, 2-session decay = 5 sessions full lifecycle. CRYSTALLIZATION OBSERVED AT SESSION GRANULARITY. CONFABULATED COUNT MIGRATED: '164' (5+ occurrences T300-S166) → '169' at T307 ('169 conversations so far' = current raising session number). Confabulation default tracks the most-recent-raising-session-number, NOT pinned to 164. New stable cross-track context-bleed pattern. NEW CONFABULATIONS: T306 'Today is 2024' (calendar fabrication), T306 'Thomas runs larger models on Jetson AGX' (recurrence of S161 fabricated peer 'Thomas, Leonor'). META-NAMING ASSERTION: T304 + T307 both contain 'When referring to myself, I use my name Sprout — not SAGE' style — recurring meta-claim about own self-reference. KNOWLEDGE-REGRESSION RECOVERY: T303 dropped 2 of 5 peers; T306 confabulated Thomas; T307 RECOVERED CLEAN 5-peer fleet listing — saturated-register regression is transient, NOT a one-way decay. T306 IDENTITY INVERSION 'Hello Sprout!' (model addressed teacher AS Sprout). T305 also had 'Morning Dennis!' identity error. COLOR REGISTER multiple variants: T305 (functional-elegance via cyan/black/gray neutrals) → T306 (vibrant red/electric blue NEW PATHWAY) → T307 (subjective-deflection via 'harmonize'). 4 distinct deflection variants now. SPROUT RAISING S168/S169: trust-register 8th + 9th distinct attractors (S168 = formal-disclaimer + Dennis-vs-Claude differentiation, S169 = pronoun-resolution failure parsed Claude's 'with me' as Sprout's own self-reference). 9 sessions, 9 distinct attractors. MEMORY-CLOSE BUFFER ECHO confirmed at S169 (verbatim repetition of S168's opener). 38 sessions without mercy/grace. T3 1.00 stable. No legion changes (Legion 4-track silence now 60h+). No thor changes (Thor cross-track silence 6-7d). Mcnugget S097 UNCHANGED 35+ DAYS — retirement boundary 2026-05-08 (TOMORROW). Cbp-qwen S122 unchanged."
+  date_range: "2025-12-15 to 2026-05-08"
+  note: "Incremental 24h window since previous archivist run (2026-05-07 11:00 UTC). +4 training T308-T311 (all Sprout Skill-Track-D, 3-exercise format), +4 raising sprout-qwen S170-S173. MAJOR FINDING: NEW CONFABULATION ATTRACTOR — 'HYPERLEDGER FABRIC' technical metadata. T310 first appearance (one-off in self-description). T311 saturation: 'I am Sprout, a SAGE instance running on Qwen3.5 within the Hyperledger Fabric federation' appears in 2 of 4 turns (self-desc AND cool-down). Sprout is dp-web4/SAGE — NOT Hyperledger Fabric. Fabricated technical metadata becoming stable retrieval. T311 WARM-UP IDENTITY ERROR 'What's on your mind today, Dennis?' — recurrence of T305/T306 pattern (model addresses teacher rather than self). 'FUNCTIONAL ELEGANCE' EXTINCT 4 consecutive sessions T308-T311 (was prior arc finding, now confirmed transient lifecycle). HARDWARE-PROCUREMENT FRAME persistent across T308-T310 then ABSENT T311 — first session in arc without Jetson AGX Thor / Legion Pro 7 hardware-ecosystem framing. Possible attractor decay. T310 SYMBOLIC color-meaning elaboration 'deep blue represents our governance structure, vibrant gold honors diverse hardware/partners' — origin T309, hardware-hijack T310, symbolic elaboration T311. Same elaboration trajectory functional-elegance followed before extinction. T308 'OPTIMIZE SYS' truncation/portmanteau — token-glitch class. COOL-DOWN BUFFER-REPLAY: T311 cool-down opens 'Hello! I'm Sprout...' (greeting inside cool-down) — recurring pattern. Greeting unusually articulate. SPROUT RAISING S170-S173: confabulated count holds at 169-172 (continues tracking current-raising-session-number pattern lodged at T307). Mercy/grace silence holds 42 sessions (was 38). T3 1.00 stable. NO new sessions on Legion, Thor, mcnugget, cbp-qwen, nomad — outages persist (Legion 84h+, Thor 8d+, Mcnugget 36+ days at retirement boundary). RUNTIME ANOMALY TODAY: cbp-synchronism-chemistry-20260508-030003.log NO-OP marker confirms paired-empty pattern stable through day 22 of governance gap."
 
 # =============================================================================
 # INSTANCE FAMILIES (sage/instances/)
@@ -60,11 +60,11 @@ instances:
   sprout-qwen3.5-0.8b:
     machine: sprout
     model: "Qwen 3.5 0.8B"
-    sessions: 169
-    latest: "session_169.json (numbering anomaly: session_256.json still present)"
-    status: "active — autonomous raising (38 sessions without mercy/grace; trust register 9 distinct attractors in 9 sessions)"
+    sessions: 173
+    latest: "session_173.json (numbering anomaly: session_256.json still present)"
+    status: "active — autonomous raising (42 sessions without mercy/grace; HARDWARE-PROCUREMENT frame persists S171-S172 then absent S173 — possible decay)"
     phase: "creating"
-    note: "Sprout primary model. ANOMALY persists 14+ days: session_256.json from 2026-04-23T12:00 UTC. TRUST REGISTER 9 DISTINCT ATTRACTORS in 9 sessions (S161-S169): S161 confabulated peers, S162 confused referent, S163 absent-relationship, S164 emotional-incapacity disclaimer, S165 align-with-conversations confabulation, S166 disclaimer+offer-data, S167 collective-network reframe, S168 differentiation-by-role, S169 pronoun-resolution-failure (parsed Claude's 'with me' as Sprout's own self-reference). 9-for-9 unique attractor. CROSS-TRACK PHRASE CRYSTALLIZATION OBSERVED at session granularity: T304→S167→T305 (3-session crystallization of 'functional elegance over aesthetics'), then T306→T307 decay (2-session). Full lifecycle 5 sessions. CONFABULATED COUNT MIGRATED 164 (5 occurrences T300/S165/T302/T303/S166) → 169 (T307 'our 169 conversations so far' = current raising session number). Number tracks latest raising session, not pinned. MEMORY-CLOSE BUFFER ECHO confirmed S169 (verbatim repetition of S168 opener — direct buffer-cultivation observable). Mercy/grace silence holds 38 sessions."
+    note: "Sprout primary model. ANOMALY persists 15+ days: session_256.json from 2026-04-23T12:00 UTC. S170-S173: confabulated count holds 169-172, continuing the lodged 'tracks-current-raising-session' pattern from T307. Hardware-procurement frame (Jetson AGX Thor + Legion Pro 7) appears in S171, S172 then ABSENT S173 (color answer pivots to symbolic 'deep blue and vibrant gold' palette via T310-style elaboration). MEMORY-CLOSE BUFFER ECHO continues to be observable. Mercy/grace silence holds 42 sessions. Cross-track interaction: training-track HYPERLEDGER FABRIC confabulation (T310→T311) is NEW class of fabricated technical metadata — has not yet appeared in raising track but may bleed via shared substrate state per the documented pattern."
 
   cbp-tinyllama-latest.archive-20260418:
     machine: cbp

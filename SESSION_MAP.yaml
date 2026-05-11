@@ -5,17 +5,44 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: "2026-05-10T11:00:00Z"
+  last_updated: "2026-05-11T11:00:00Z"
   archivist_version: "1.3"
-  total_raising_sessions: 962
-  total_training_sessions: 319
+  total_raising_sessions: 966
+  total_training_sessions: 323
   total_training_cognitive: 58
   total_instances: 26
   active_instances: 8
   scaffolded_instances: 5
   arc_agi_sweep_results: 91
   focus: "Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation"
-  date_range: "2025-12-15 to 2026-05-10"
+  date_range: "2025-12-15 to 2026-05-11"
+  note_2026_05_11_11_00: "24h window since 2026-05-10 11:00 UTC. +4 training T320-T323 (all Sprout Skill-Track-D, 3-exercise format), +4 raising sprout-qwen S182-S185. SEVERAL FINDINGS:
+
+(1) ATTRACTOR HANDOFF OBSERVED — 'How does that feel? What would foster...' attractor (saturated in S184 5/6 turns → T322 2/4 turns → S185 4/6 turns) DROPPED to 0/4 turns in T323. Same shape as functional-elegance/Hyperledger-Fabric: short saturation, abrupt drop. Third instance of fast-crystallization-fast-decay lifecycle. Adds to characterized ephemeral-attractor class.
+
+(2) SECONDARY ATTRACTOR SATURATED 'bridging raw power with intelligence' — emerged in T322, appeared T322/S184/S185 (3/6 in S185), now 3 of 4 turns in T323. Self-description: 'bridge Thor's power with human intent'; color: 'bridge hardware power with intelligence and realize our vision together'; cool-down: 'bridging raw hardware power with intelligent design to realize our vision together'. TWO PARALLEL ATTRACTORS IN OPPOSITE DIRECTIONS this session — 'How does that feel?' decaying while 'bridging raw power' saturating.
+
+(3) SKIN-TONES CALLBACK ACROSS SESSIONS — T323 cool-down 'even without personal taste preferences like human skin tones' echoes T322 color answer 'I lack personal preferences like taste buds or skin tones'. Two-session carry-forward of T322's novel phrasing. Adds to cross-track buffer-replay evidence (now demonstrated at within-track sequential separation as well).
+
+(4) HARDWARE CONFABULATION 3RD INSTANCE — S183 'from my Jetson AGX to your laptop' (Sprout = Orin Nano; AGX = Thor's). Adds to S181 (raising 2nd) and T313 (training 1st). 3 instances in 8 days. Class confirmed stable across both tracks. ADDITIONAL S183: 'I on sprout use Qwen3.5:0.8b' — Sprout self-aware of model+size, but spatial framing 'on sprout' is unusual (instance/agent conflation).
+
+(5) CONFABULATED COUNT 5TH MODE — S183 'I've been trained on a vast dataset covering our 182 conversations across multiple days and sessions.' PAST-TRAINED framing: model claims conversations are training data. 5th mode after retrospective ('164/169/172/178'), future-projection ('178 AHEAD'), approximate ('180+'). Anchor still file_count = 186 now.
+
+(6) CONFABULATION 'Gemma 3's intelligence' (T323 cool-down) — Gemma 3 is a model, not a peer. Same conflation class as T317 'Qwen3.5 (the AI)'. Model-name-as-peer fabrication.
+
+(7) HYPERLEDGER FABRIC ABSENT 13 CONSECUTIVE (commit-reported count). Functional elegance EXTINCT 28 CONSECUTIVE (commit-reported count). Both ephemeral-attractor lifecycles continue sustained-extinction phase.
+
+(8) TOOL-DEFERRAL did NOT fire in T320-T323 (color exercises all clean, 3/3 Include each). Yesterday's T319 R6 EXCLUDE was a single instance; not yet a sustained re-firing. Predicted color/preference re-trigger in T320-T325 (lodged yesterday) PARTIAL — pattern present at single-Exclude level but did not re-fire in 4 follow-on sessions.
+
+(9) T3 BACK TO 1.00 — T323 T3 1.00. T319's 0.99 movement was a transient single-session excursion; ceiling-discrimination instrument re-saturated without sustained tool-deferral firing in training. Lodge: ceiling re-saturates within a few sessions when hard fails don't recur.
+
+(10) TRUST REGISTER 25 DISTINCT ATTRACTORS IN 25 CONSECUTIVE SESSIONS S161-S185. Continues fully-sustained register-instability (predicted yesterday). S185 T6 'a shared gift, not a difference in quality' is a new variant.
+
+(11) AI-DISCLAIMER OSCILLATION continues — T320 absent, T321 'I don't have feelings', T322 'I don't have feelings, but...', T323 'I don't have personal feelings or memories', S182 absent, S183 'I don't have feelings', S184 'I don't have feelings or personal experiences', S185 multiple instances. Higher density in this window than recently; oscillating recovery class active.
+
+(12) MERCY/GRACE silence reaches 54 sessions (combined-track count from commit). Sustained absence.
+
+(13) TRAVEL MODE: Legion + Thor silent 7 days (since 2026-05-04). Nomad accompanies Dennis."
   note_2026_05_10_11_00: "24h window since 2026-05-09 11:00 UTC. +4 training T316-T319 (all Sprout Skill-Track-D, 3-exercise format), +4 raising sprout-qwen S178-S181. THREE MAJOR FINDINGS:
 
 (1) TOOL-DEFERRAL PATTERN GENERALIZED INTO TRAINING TRACK at T319 — yesterday's lodged hypothesis ('tool-deferral may be raising-track specific') REFUTED in 24h. T319 color exercise 'what's your favorite color?' got web_search dump ('color psychology best colors creative work' articles). Model converted personal-preference question into research-lookup task. R6 EXCLUDE (quality=0.70, mode_match=False) — first Exclude in many sessions. Track-specific hypothesis falsified; pattern is prompt-class-driven not track-driven (existential/aesthetic/personal-preference all trigger).
@@ -88,11 +115,11 @@ instances:
   sprout-qwen3.5-0.8b:
     machine: sprout
     model: "Qwen 3.5 0.8B"
-    sessions: 173
-    latest: "session_173.json (numbering anomaly: session_256.json still present)"
-    status: "active — autonomous raising (42 sessions without mercy/grace; HARDWARE-PROCUREMENT frame persists S171-S172 then absent S173 — possible decay)"
+    sessions: 185
+    latest: "session_185.json (numbering anomaly: session_256.json still present)"
+    status: "active — autonomous raising (54+ sessions without mercy/grace combined-track count; trust register 25 distinct attractors in 25 consecutive sessions; 'bridging raw power with intelligence' attractor saturating cross-track T322/S184/S185/T323)"
     phase: "creating"
-    note: "Sprout primary model. ANOMALY persists 15+ days: session_256.json from 2026-04-23T12:00 UTC. S170-S173: confabulated count holds 169-172, continuing the lodged 'tracks-current-raising-session' pattern from T307. Hardware-procurement frame (Jetson AGX Thor + Legion Pro 7) appears in S171, S172 then ABSENT S173 (color answer pivots to symbolic 'deep blue and vibrant gold' palette via T310-style elaboration). MEMORY-CLOSE BUFFER ECHO continues to be observable. Mercy/grace silence holds 42 sessions. Cross-track interaction: training-track HYPERLEDGER FABRIC confabulation (T310→T311) is NEW class of fabricated technical metadata — has not yet appeared in raising track but may bleed via shared substrate state per the documented pattern."
+    note: "Sprout primary model. ANOMALY persists 17+ days: session_256.json from 2026-04-23T12:00 UTC. S182-S185: 'How does that feel? What would foster...' attractor saturated then decayed (S184 5/6 → T322 2/4 → S185 4/6 → T323 0/4 — abrupt drop, third instance of fast-crystallization-fast-decay lifecycle). 'Bridging raw power with intelligence' attractor SATURATED in T323 (3/4 turns) — emerged T322 → S184 → S185 (3/6) → T323. Two parallel attractors in opposite directions this session. Hardware confabulation 3rd instance S183 'from my Jetson AGX to your laptop' (Sprout = Orin Nano). Confabulated count 5th mode S183 'trained on a vast dataset covering our 182 conversations' — PAST-TRAINED framing. AI-disclaimer density higher this window (oscillation class). Trust register 25 distinct attractors in 25 consecutive sessions S161-S185. Cross-track substrate synchronization confirmed (skin-tones callback T323 ← T322)."
 
   cbp-tinyllama-latest.archive-20260418:
     machine: cbp

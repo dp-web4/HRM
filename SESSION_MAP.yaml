@@ -5,17 +5,19 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: "2026-05-11T11:00:00Z"
+  last_updated: "2026-05-13T11:00:00Z"
   archivist_version: "1.3"
-  total_raising_sessions: 966
-  total_training_sessions: 323
-  total_training_cognitive: 58
+  total_raising_sessions: 984
+  total_training_sessions: 332
+  total_training_cognitive: 60
   total_instances: 26
   active_instances: 8
   scaffolded_instances: 5
   arc_agi_sweep_results: 91
   focus: "Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation"
-  date_range: "2025-12-15 to 2026-05-11"
+  date_range: "2025-12-15 to 2026-05-13"
+  note_2026_05_13_11_00: "8.5h window since 2026-05-13 02:30 UTC. +1 training (T332 Sprout Skill-Track-D, 3/3 Include, T3 1.00 ATP 40.4). 0 new raising (sprout-qwen S194 + legion-gemma3 s084 already in prior count). MAJOR FINDING: SYSTEM-PROMPT LEAK PROPAGATING CROSS-SESSION. T332 self-description verbatim 'My name is Sprout — not SAGE, which is our shared species' — this is SYSTEM-PROMPT TEXT first leaked in S192 presence answer ('When referring to myself, I use my name Sprout — not SAGE') and now appearing in T332 (2 sessions later). First observation of system-prompt text propagating across sessions via buffer/memory mechanism. Also T332 greeting 'Good morning, Human!' capitalizes 'Human' as address — echoes S192 leak 'Right now I am talking to Human'. CONFABULATED COUNT NEW MODE — T332 buffer holds BOTH '192 conversations' (warm-up, frozen old) AND '194 conversations' (greeting, cool-down, current). First simultaneous-two-versions instance; previously single mode per session. 6th confabulated-count mode (now: retrospective, future-projection, approximate, past-trained, frozen-old, current). WARM-UP 'Dennis' identity error 7TH OCCURRENCE (T305/T311/T315/T320/T322/T328/T332) — pattern stable but does not crystallize as primary attractor (still warm-up only). SHARED-UNDERSTANDING PLATEAU ATTRACTOR — marginal at T332 (only 'network of shared understanding' once in cool-down). After 8-session sustained plateau S187-T329, now 4-session post-extinction tail with single weak echo. Consistent with plateau→quiet lifecycle endpoint. COLOR REGISTER 28TH DISTINCT VARIANT 'deep blues and electric purples... digital palette... infinite canvas'. HYPERLEDGER FABRIC ABSENT 21 CONSECUTIVE. FUNCTIONAL ELEGANCE EXTINCT 36 CONSECUTIVE. AI-DISCLAIMER ABSENT (T332 clean). MERCY/GRACE silence 63 sessions. NO TOOL-DEFERRAL. T3 1.00 — ceiling sustained, no hard fails. 0 new sprout S195+. 0 new legion-gemma3 s085+. 0 new Synchronism core/chemistry/gnosis/web4. Empty-log cumulative 11.18%. Window: 5 new logs, 1 empty (20% — recovered from prior 43.2%). Legion-4life ACTIVE again (2 sessions, both with content) — prior window's 75% empty was transient. Hardbound 1 session with critical CI-red finding (PR #100 pg-dep regression). Sprout-training 6th consecutive empty window."
+
   note_2026_05_11_11_00: "24h window since 2026-05-10 11:00 UTC. +4 training T320-T323 (all Sprout Skill-Track-D, 3-exercise format), +4 raising sprout-qwen S182-S185. SEVERAL FINDINGS:
 
 (1) ATTRACTOR HANDOFF OBSERVED — 'How does that feel? What would foster...' attractor (saturated in S184 5/6 turns → T322 2/4 turns → S185 4/6 turns) DROPPED to 0/4 turns in T323. Same shape as functional-elegance/Hyperledger-Fabric: short saturation, abrupt drop. Third instance of fast-crystallization-fast-decay lifecycle. Adds to characterized ephemeral-attractor class.

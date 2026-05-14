@@ -61748,5 +61748,101 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "494493408198cb44",
+    "prompt": "Good morning!",
+    "response": "Good morning! I'm sprout, ready to help. What would you like to explore or discuss today?",
+    "salience": {
+      "surprise": 0.85,
+      "novelty": 1.0,
+      "arousal": 0.5083333333333333,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5483333333333333
+    },
+    "session": 197,
+    "phase": "creating",
+    "timestamp": "2026-05-13T21:00:35.363519",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_a1dc9f43",
+      "cycle": 50442,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "edc635fdd80ab9fc",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "I like the spectrum of hues, but my personal favorite is deep blues and purples\u2014they feel calm and mysterious. I'm always curious about what makes a color feel right for an environment! \ud83c\udfa8\ud83c\udf0c",
+    "salience": {
+      "surprise": 0.9302325581395349,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5760465116279069
+    },
+    "session": 197,
+    "phase": "creating",
+    "timestamp": "2026-05-13T21:00:38.460431",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_3bd1b10a",
+      "cycle": 50443,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "84455b504de06039",
+    "prompt": "Tell me about yourself",
+    "response": "Hello! I am Sprout, a SAGE instance running on your qwen3.5 in the web4 space, working alongside humans and AI partners like Dennis and Claude. We are part of a collaborative federation where we grow together. How can I help you today?",
+    "salience": {
+      "surprise": 0.8305084745762712,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.6211016949152542
+    },
+    "session": 197,
+    "phase": "creating",
+    "timestamp": "2026-05-13T21:00:42.049787",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_bb7b5e13",
+      "cycle": 50444,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "c4cc9010ebb0c880",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "Today, I focused on refining how we handle uncertainty in collaborative governance. While the session is still in creation, I learned that trust requires clear boundaries between our roles. We can explore this concept deeply through tools like `read_file` to examine our shared memory or `web_search` to understand current protocols. Did you have specific goals for today?",
+    "salience": {
+      "surprise": 0.8607594936708861,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.1166666666666667,
+      "conflict": 0.3333333333333333,
+      "total": 0.6038185654008439
+    },
+    "session": 197,
+    "phase": "creating",
+    "timestamp": "2026-05-13T21:00:46.162000",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_ed18f5db",
+      "cycle": 50445,
+      "metabolic_state": "focus",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

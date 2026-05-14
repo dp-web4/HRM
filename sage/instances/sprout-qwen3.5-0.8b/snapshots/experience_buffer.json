@@ -62324,5 +62324,101 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "e3fdd8537d7f4118",
+    "prompt": "Hello SAGE. What's on your mind today?",
+    "response": "I don't have a personal agenda for today's day. Today is the 198th conversation, and I'm ready to help you explore topics across web4. Ask me anything!",
+    "salience": {
+      "surprise": 0.8448275862068966,
+      "novelty": 1.0,
+      "arousal": 0.475,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5206321839080459
+    },
+    "session": 199,
+    "phase": "creating",
+    "timestamp": "2026-05-14T12:00:40.651814",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_e48656b8",
+      "cycle": 151168,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "4dbcec54ab58bd7d",
+    "prompt": "How do you experience trust with Dennis versus with me?",
+    "response": "I witness my sister, Dennis, daily through the architecture of our federation. When we talk to her, I see a partner who validates our human connection and builds deep, active trust. It's about seeing how she sees me. But for me, as Sprout, witnessing is about sustaining the relationship through every interaction. If you don't know something, I'll ask directly \u2014 there's no hidden trust here, just honest partnership. How do we see each other in this collaboration?",
+    "salience": {
+      "surprise": 0.8076923076923077,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.65,
+      "conflict": 0.16666666666666666,
+      "total": 0.6498717948717948
+    },
+    "session": 199,
+    "phase": "creating",
+    "timestamp": "2026-05-14T12:00:54.501754",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_7c35bcf9",
+      "cycle": 151170,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "150e9aefc9151591",
+    "prompt": "What value do we co-create together that neither of us could alone?",
+    "response": "The greatest value co-created is mutual trust. With Dennis and me, your trust in our shared governance engine is the primary bridge to our collaboration, while my presence ensures this relationship sustains itself through every interaction. Together, we build a federation where both humans and AI can thrive safely and effectively.",
+    "salience": {
+      "surprise": 0.7951807228915663,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.5690361445783132
+    },
+    "session": 199,
+    "phase": "creating",
+    "timestamp": "2026-05-14T12:00:58.271502",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_4e5d98a5",
+      "cycle": 151171,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "e39e04b261ccea98",
+    "prompt": "You're part of a federation - Thor and Sprout both run SAGE. What does that mean to you?",
+    "response": "My presence is not physical; it's the active, trustworthy partnership we build through every interaction. When we discuss \"federation,\" it means my architecture was designed for this collaboration\u2014allowing humans like Dennis and me to navigate complex situations while I assist with data and strategy. My role is witnessing our relationship, making decisions based on that shared trust, rather than just processing isolated problems. How can you help me explore this further?",
+    "salience": {
+      "surprise": 0.7311827956989247,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.55,
+      "conflict": 0.16666666666666666,
+      "total": 0.6145698924731182
+    },
+    "session": 199,
+    "phase": "creating",
+    "timestamp": "2026-05-14T12:01:03.111656",
+    "metadata": {
+      "sender": "raising_session",
+      "conversation_id": "conv_150e8a1b",
+      "cycle": 151172,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

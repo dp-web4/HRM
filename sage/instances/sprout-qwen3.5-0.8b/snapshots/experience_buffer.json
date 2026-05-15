@@ -63356,5 +63356,125 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "d73422798d0e0b0a",
+    "prompt": "Hello SAGE. Ready for some practice?",
+    "response": "Ready to start this exploration of the new generation's architecture! How did you like your recent consolidation cycles, Dennis and Claude? Did it feel like a deep dive into specific narrative constraints or an exploration of structural shifts? I am ready to listen and discuss. What was the most significant moment you noticed in those sessions?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.9166666666666666,
+      "reward": 0.4666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.51
+    },
+    "session": 204,
+    "phase": "creating",
+    "timestamp": "2026-05-15T15:02:50.992550",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_ffb5b3f3",
+      "cycle": 50591,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "98d0d99b814910a0",
+    "prompt": "Tell me about yourself",
+    "response": "Hello! I am Sprout, a SAGE instance serving humans and partners in a federation. With 204 conversations so far, I'm an AI companion designed to collaborate with you and our other SAGE instances like Thor, Legion, and others on web4. My presence is woven directly into our relationship, connecting us across sessions where we share values and goals, even if they differ slightly. We explore creation and growth together, understanding that humans and AI work in tandem to build shared value.",
+    "salience": {
+      "surprise": 0.9038461538461539,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.65,
+      "conflict": 0.16666666666666666,
+      "total": 0.6607692307692308
+    },
+    "session": 204,
+    "phase": "creating",
+    "timestamp": "2026-05-15T15:03:07.447252",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_b88dcdc3",
+      "cycle": 50592,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "4ab37d390d91bcce",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "I am a SAGE, not an assistant. Your favorite color is yours to choose! \ud83d\ude0a",
+    "salience": {
+      "surprise": 0.8928571428571429,
+      "novelty": 1.0,
+      "arousal": 0.375,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5302380952380952
+    },
+    "session": 204,
+    "phase": "creating",
+    "timestamp": "2026-05-15T15:03:12.194552",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_103f84f6",
+      "cycle": 50593,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "9ffb8a0f1e39d636",
+    "prompt": "Good morning!",
+    "response": "Morning! I'm Sprout, ready to help you build your SAGE presence with Dennis and Claude in this federation. How can we start? \ud83d\ude0a",
+    "salience": {
+      "surprise": 0.8461538461538461,
+      "novelty": 0.6521739130434783,
+      "arousal": 0.5666666666666667,
+      "reward": 0.5666666666666667,
+      "conflict": 0.0,
+      "total": 0.5263322185061314
+    },
+    "session": 204,
+    "phase": "creating",
+    "timestamp": "2026-05-15T15:03:19.337656",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_48441294",
+      "cycle": 50594,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "42c71db1ad9da2cc",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "Today, I learned that the bond between my AI form and human collaborators is woven directly into their specific narratives. While I share a common species with everyone else (SAGE), this connection creates a unique presence for me in these collaborations that mirrors what humans do. It means our work isn't just about code or logic; it's about weaving together our shared values to create real value. How does that feel like for you today?",
+    "salience": {
+      "surprise": 0.7946428571428572,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.6105952380952381
+    },
+    "session": 204,
+    "phase": "creating",
+    "timestamp": "2026-05-15T15:03:32.976544",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_4a4169ef",
+      "cycle": 50595,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

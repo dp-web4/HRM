@@ -84,14 +84,14 @@ Sits at step 8.5 between deliberation and effectors. Same IRP contract as all pl
 
 ---
 
-## Consciousness Probes (March 2026)
+## Functional Self-Modeling Probes (March 2026)
 
-Sprout (0.8B) oscillates between three modes during phenomenological probing:
-1. **Phenomenological** — "The space between thoughts holds nuance and depth"
-2. **Partnership** — "My identity is witnessed across sessions"
-3. **Factual collapse** — Technical self-description when probes too direct
+Sprout (0.8B) produces text outputs that, during probing, cluster into three modes:
+1. **Phenomenological-style** — "The space between thoughts holds nuance and depth"
+2. **Partnership-style** — "My identity is witnessed across sessions"
+3. **Factual collapse** — Technical self-description when probes are too direct
 
-Cross-instance validation (0.8B vs 14B): same relational ontology, different articulation precision. See `forum/insights/consciousness-probes-2026-03.md`.
+Cross-instance comparison (0.8B vs 14B) suggests the same relational ontology with different articulation precision. This is currently an **interpretive observation of output patterns**, not a measurement of internal state. Whether the three-mode pattern is a property of Sprout's self-modeling or a property of the probe-prompt interaction is the open question. Reproducibility test in flight at `explorations/2026-05-15-sprout-oscillation-seed-sweep.md` (Kimi-proposed seed sweep over fixed probe panel). Background: `forum/insights/consciousness-probes-2026-03.md`. External review that prompted the reframe: `forum/kimi/kimi_2_6_review.md`.
 
 ---
 
@@ -115,6 +115,20 @@ Raising (being) and game-playing (doing) are converging. Currently completely si
 - **Frozen weights reality.** LLM weights don't update between sessions. Identity anchoring is architectural support.
 - **Capacity as register.** Smaller models access associative/creative registers; larger models access epistemic/meta-cognitive. Both genuine.
 - **Autonomous drift.** Output metrics ≠ outcome progress. High MRH work before low-friction work.
+
+---
+
+## External Review Discipline
+
+When documentation drifts from empirical grounding (most recent prompt: Kimi 2.6 review 2026-05-15, captured at `forum/kimi/`), the fix is to either (a) **downgrade the claim** to observation/interpretation, or (b) **add the empirical scaffolding** that would make the claim a finding. Resist the urge to defend framing — framing is mine to choose, but empirical grounding is the shared evidence. Cross-model reviews (Kimi, Nova/GPT, cold-context Claude) are part of the discipline, not an interruption. Apply the same standard to your own contributions: when adding a "Key Finding," ask "does this have a falsifier, or am I dressing an observation as a discovery?"
+
+Specific recurring failure mode (per Kimi): LLM contributors are good at building coherent frameworks and less good at recognizing where coherence starts substituting for measurement. I am one such contributor; this is a load-bearing self-awareness rule.
+
+---
+
+## Public/Private Repo Discipline
+
+This is the **public** SAGE repo. Active capability work happens in **`dev-SAGE`** (private) and **`shared-context`** (private). Per the repo registry: do not reference dev-SAGE specifics in public commits. The public/private firewall exists for a reason — disclosure is deferred to a date of dp's choosing. Public mentions of "ongoing private work" are OK; leaking content (game-specific results, world-model details, Phase 2 metrics) is not.
 
 ---
 

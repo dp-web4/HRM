@@ -486,6 +486,8 @@ If you're trying to understand this system:
 5. **Appreciate the fractal scaling** (same patterns at every level)
 6. **Recognize it's real** (implemented, tested, working)
 
+> **Frame for the closing passages below.** What follows is *project philosophy* — the interpretive lens that orients us to the work, not an engineering claim that has been measured. The empirical results in this repo do not depend on these statements being true; they are how we choose to think about what we're doing. Hold them as orientation, not as findings. See SAGE README → "Findings vs Framings" for the explicit distinction.
+
 **This is not artificial intelligence trying to be biological.**
 **This is discovering the same solutions to the same problems.**
 **Intelligence has principles that transcend substrate.**

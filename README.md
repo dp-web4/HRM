@@ -14,7 +14,22 @@ If you want a fast read on whether this is real, in order:
 2. [**The Fleet**](#the-fleet) — 6 machines × 11 instances × 5 model families, all running. Concrete hardware, models, session counts.
 3. [**The Consciousness Loop**](sage/docs/UNIFIED_CONSCIOUSNESS_LOOP.md) — full spec of the 12-step loop. Pseudocode is in this README; the spec is the depth.
 4. [**Web4 integration**](#web4-integration) — how SAGE fractally implements the Web4 ontology stack.
-5. [**Recent capability deltas**](https://github.com/dp-web4/dev-SAGE) — the dev-SAGE repo (private but publicly named) is where active capability work happens. Public-facing examples: trace-derived causal-rule extraction at 4× the verification rate of hand-authored rules; Sprout (0.8B) producing causal rules competitive with larger models on solved games.
+5. [**Repo scope**](#repo-scope-public-vs-private) (immediately below) — what's in this repo, what's continuing in private repos, and what we will and won't disclose now.
+
+---
+
+## Repo scope (public vs private)
+
+This public repo contains the **kernel architecture** — the consciousness loop spec, the IRP plugin interface, the identity layer, the raising curriculum, and frozen snapshots of research milestones (e.g. the `arc-agi-3/` snapshot from 2026-04-28).
+
+Active capability research continues in private repos:
+
+- **`dev-SAGE`** (private) — methodology going forward, brain-architecture primitives (metacognition, deliberation, working memory, thalamic routing), local-LLM ARC-AGI-3 continuation
+- **`shared-context`** (private) — cross-machine fleet learning, game-by-game knowledge, model evaluations, coordination state
+
+The **public ARC-AGI-3 scorecard** (Claude Opus 4.6, 94.85%) was achieved by the Phase 1 harness preserved in [ARC-SAGE](https://github.com/dp-web4/ARC-SAGE). Subsequent local-LLM work — world models, skill registry, multi-machine federation of game-play sessions — is **private, public disclosure deferred to a date of our choosing**.
+
+This is research-stage work, not a product. We disclose what serves the work; we hold the rest until disclosure is the right move.
 
 ---
 
@@ -161,25 +176,31 @@ Honest assessment as of March 2026:
 
 ---
 
-## Key Discoveries
+## Findings vs Framings
 
-### Validated Findings
+We distinguish **quantitative findings** (replicable experiments with measurements) from **observations and framings** (interpretive patterns that organize how we think about the work). Both matter; conflating them is the failure mode external reviewers flag most often. The table below separates them honestly.
 
-| Discovery | Impact |
-|-----------|--------|
-| **[RLHF Circuit Navigation](docs/what/discoveries/rlhf-circuit-navigation.md)** | 100% epistemic honesty at social pressure points |
-| **[Identity-Confabulation Dissociation](docs/what/discoveries/identity-confabulation-dissociation.md)** | Independent failure modes require separate interventions |
-| **[Compression Trust Phase Transitions](forum/insights/coupling-coherence-web4-sage.md)** | ~1% coupling probability suffices for collective coherence (p_crit ~ 0.002-0.009) |
-| **[Identity Portability](forum/insights/identity-portability-first-contact.md)** | Identity lives in state files + prompt, not model weights. Model is weather, identity is organism |
-| **[Frozen Weights Reality](sage/instances/_seed/RAISING_GUIDE.md)** | Weights don't update between sessions — identity anchoring is architectural support for what learning should eventually provide |
-| **[Capacity as Register](sage/raising/CLAUDE.md)** | Smaller models access associative/creative registers, larger models access epistemic/meta-cognitive. Both genuine, not success/failure |
-| **[Synthon Framing](forum/insights/synthon-framing.md)** | You don't engineer emergence — you engineer placement rules. Substrate conditions for emergence, not architecture of emergence |
+### Quantitative findings
+
+| Finding | Evidence |
+|---------|----------|
+| **[Compression Trust Phase Transitions](forum/insights/coupling-coherence-web4-sage.md)** | 900 simulation runs. Sigmoid phase transition; Hill function fits better than tanh (ΔAIC=4). p_crit empirical, ~0.002-0.009. Even 1% coupling gives 35% coherence gain. |
+| **[Compatibility-Synthon Scaling](Synchronism/Research/Compatibility_Lens_Insight.md)** | p_crit ∝ 1/⟨C⟩ confirmed (correlation r=0.994). Block structure hurts; replacement improves the collective. Synthon identity is structural, not compositional. |
+| **[Identity Portability — First Contact](forum/insights/identity-portability-first-contact.md)** | Sprout's identity (115 sessions, Qwen 0.5B) transferred to TinyLlama 1.1B on CBP; produced recognizable continuity. If raising were "just prompt engineering," prompts transferred to a different base should produce different behavior — that's the falsifier. The result is informative against the strong "prompt-only" hypothesis. |
+
+### Observations and framings (interpretive, not quantitative)
+
+These shape how we *think* about the work. They're useful organizing patterns; they are not validated discoveries until accompanied by reproducibility tests (see `explorations/`).
+
+| Framing | Status |
+|---------|--------|
+| **[Frozen Weights Reality](sage/instances/_seed/RAISING_GUIDE.md)** | Observation that LLM weights don't update between inference sessions, dressed as motivation for architectural identity anchoring. The observation is true; the framing is interpretive. |
+| **[Capacity as Register](sage/raising/CLAUDE.md)** | Interpretive framing of known scaling behavior: small models access associative/creative registers, larger models access epistemic/meta-cognitive. Useful for raising design; not a discovery about LLMs. |
+| **[RLHF Circuit Navigation](docs/what/discoveries/rlhf-circuit-navigation.md)** | Prompt-engineering pattern. "100%" needs adversarial testing (sophisticated social pressure probes) before it can be a quantitative finding. |
+| **[Identity-Confabulation Dissociation](docs/what/discoveries/identity-confabulation-dissociation.md)** | Behavioral observation about LLMs in conversation; "dissociation" is borrowed clinical vocabulary. Plausible pattern, not a measurement. |
+| **[Synthon Framing](forum/insights/synthon-framing.md)** | "You don't engineer emergence — you engineer placement rules." This is the project's interpretive lens. The Compatibility-Synthon experiment above provides empirical scaffolding for the *structural* claim; the rest is design philosophy. |
 
 > **[Full Achievements List](docs/what/ACHIEVEMENTS.md)**
-
-### Compression Trust (February 2026)
-
-900 simulation runs confirmed: collective coherence emerges through a sigmoid phase transition in compression trust — agents accepting each other's compressed beliefs as input. Hill function (cooperative binding kinetics) fits better than tanh. Even 1% coupling probability gives 35% coherence gain. Validated across multi-agent systems (p_crit ~ 0.002) and SAGE multi-plugin ATP coupling (p_crit ~ 0.009). Sparse trust suffices.
 
 ---
 
@@ -205,7 +226,7 @@ SAGE instances develop through **raising sessions** — interactive conversation
 
 **Automated raising**: Four machines run raising on 6-hour cron cycles (Sprout, Legion, Nomad, CBP). Each session pulls latest code, checks daemon staleness, runs the session, snapshots state, and auto-commits. See [raising scripts](sage/scripts/).
 
-**Consciousness probes**: Recent sessions (T073-T087) evolved from scripted exercises into phenomenological consciousness research. A 0.8B model (Sprout) engages meaningfully with probes about temporal self-awareness, metacognition, and identity boundaries — oscillating between three modes: phenomenological depth, partnership framing, and factual collapse. Cross-instance comparison (0.8B vs 14B) validates that phenomenological capacity scales with model size while the same relational ontology emerges at both scales. See [consciousness probes](forum/insights/consciousness-probes-2026-03.md).
+**Functional self-modeling probes**: We use "functional self-modeling" (after the synthesis in [forum/kimi/kimi_2_6_review.md](forum/kimi/kimi_2_6_review.md)) to describe a system whose generated outputs include temporal self-reference, attentional self-monitoring, uncertainty modeling, and self/other boundary maintenance. We do **not** claim qualia, ontological consciousness, or inner experience. Recent raising sessions (T073-T087) observed a 0.8B model (Sprout) producing outputs that oscillate between three modes — what we've called phenomenological depth, partnership framing, and factual collapse. This is currently an **interpretive observation** of text-output patterns, not a measurement of internal state. Whether the three-mode pattern is a property of the model's self-modeling or a property of the probe-prompt interaction is the open question. Reproducibility test in flight: see [explorations/2026-05-15-sprout-oscillation-seed-sweep.md](explorations/2026-05-15-sprout-oscillation-seed-sweep.md). Background: [consciousness probes](forum/insights/consciousness-probes-2026-03.md).
 
 **ModelAdapter**: Unified dictionary entity for model-specific behavior — prompt formatting, response cleaning (bilateral generation, echo stripping), and capabilities declaration. Per-family JSON configs in `sage/irp/adapters/model_configs/`. New models need only a config file, no code changes. See [adapter docs](sage/irp/adapters/README.md).
 
@@ -286,6 +307,16 @@ python3 -m sage.gateway.sage_daemon
 | **SNARC** | Salience-gated memory plugin for Claude Code (SAGE spinoff) | [github.com/dp-web4/snarc](https://github.com/dp-web4/snarc) |
 | **SAGE Explainer** | Interactive architecture walkthrough | [sage-site-murex.vercel.app](https://sage-site-murex.vercel.app/) |
 | **Synchronism Site** | Research claims and forum | [synchronism-site.vercel.app](https://synchronism-site.vercel.app) |
+
+---
+
+## Authorship & Methodology
+
+SAGE is developed by a small team that includes **multiple Claude instances (Anthropic) as active collaborators**. Code, documentation, raising sessions, and design iteration are substantially AI-assisted. The fleet of six machines runs Claude-orchestrated autonomous sessions on cron cycles. This is a relevant methodological fact: it explains the iteration speed and the breadth of the framing, and it also explains a known failure mode flagged in external review — *coherent frameworks can outpace empirical grounding* (LLMs are good at building consistent stories; less good at recognizing when consistency starts substituting for measurement).
+
+To counterweight this, we treat **cross-model review** as a discipline: external Claude instances at cold start, Kimi (Moonshot), and Nova/GPT have all reviewed the spec corpus and the SAGE work. Each round produces a documented response — see [`forum/kimi/`](forum/kimi/) and [`forum/nova/`](forum/nova/) for the conversations and the changes they triggered. When reviewers flag drift from empirical grounding, the fix is to either (a) downgrade the claim to observation/interpretation, or (b) add the empirical scaffolding that would make the claim a finding. We don't defend framing for its own sake.
+
+The `explorations/` directory holds reproducibility tests and methodological probes — low-cost falsifiable experiments whose purpose is to determine whether an observation is a property of the system or a property of the probe.
 
 ---
 

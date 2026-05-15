@@ -43,6 +43,9 @@ SAGE has evolved from a single-machine research prototype to a **6-machine feder
 | PolicyGate Phase 5b+ | Pending | CRISIS accountability, anomaly detection, Phi-4 advisory |
 | Formal benchmarks | Missing | No systematic quantitative evaluation suite |
 | External integration guides | Incomplete | Architecture docs exist (275KB), developer guides thin |
+| Reproducibility tests on probe-based observations | In flight | First test (Sprout three-mode oscillation seed sweep) drafted in [explorations/](explorations/); needs execution |
+
+> **Public/private scope note.** This public repo holds the kernel architecture and frozen research snapshots. Active capability work — local-LLM ARC-AGI-3 continuation, brain-architecture primitives, fleet learning data — lives in private repos (`dev-SAGE`, `shared-context`). Public disclosure of those streams is deferred to a date of our choosing. See [`README.md#repo-scope-public-vs-private`](README.md#repo-scope-public-vs-private).
 
 ---
 

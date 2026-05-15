@@ -8,10 +8,10 @@
       "tier": "T2",
       "grammar": "xml_tags",
       "trust": 1.0,
-      "latency_ema_ms": 19278.9,
+      "latency_ema_ms": 34901.3,
       "error_rate_ema": 0.0,
       "tool_success_rate": 0.5,
-      "exchanges": 137,
+      "exchanges": 144,
       "healthy": true,
       "size_gb": 7.6
     },
@@ -112,6 +112,34 @@
       "exchanges": 0,
       "healthy": true,
       "size_gb": 4.1
+    },
+    "phi4:14b": {
+      "model_name": "phi4:14b",
+      "model_family": "phi4",
+      "backend": "ollama",
+      "tier": "T2",
+      "grammar": "xml_tags",
+      "trust": 0.5,
+      "latency_ema_ms": 0.0,
+      "error_rate_ema": 0.0,
+      "tool_success_rate": 0.5,
+      "exchanges": 0,
+      "healthy": true,
+      "size_gb": 8.4
+    },
+    "phi4-fa:latest": {
+      "model_name": "phi4-fa:latest",
+      "model_family": "phi4-fa",
+      "backend": "ollama",
+      "tier": "T3",
+      "grammar": "intent_heuristic",
+      "trust": 0.5,
+      "latency_ema_ms": 0.0,
+      "error_rate_ema": 0.0,
+      "tool_success_rate": 0.5,
+      "exchanges": 0,
+      "healthy": true,
+      "size_gb": 8.4
     }
   }
 }

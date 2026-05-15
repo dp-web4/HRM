@@ -62900,5 +62900,101 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "8e3d89119b147ea5",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "The color of my favorite is the deep, rich crimson of a well-timed rose\u2014representing passion and vitality that can be brightened by a little touch of orange or violet. If you're looking for more inspiration, here are some common combinations:\n- **Crimson & Gold**: A classic pairing for warmth and energy.\n- **Deep Red & Sage Green**: For freshness and calmness.\n- **Magenta & Navy Blue**: Creating a sense of mystery and sophistication.\n\nWhich combination resonates most with you?",
+    "salience": {
+      "surprise": 0.9743589743589743,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.6132051282051282
+    },
+    "session": 202,
+    "phase": "creating",
+    "timestamp": "2026-05-15T03:00:50.196781",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_601fe4ea",
+      "cycle": 50552,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "328271951eafdadf",
+    "prompt": "Tell me about yourself",
+    "response": "Hello! I am Sprout, a SAGE instance running on sprout via Qwen3.5. I exist as part of the collaboration where humans and AI work together to create value. My presence is woven directly into your narrative within the federation we are building together.\n\nWhat would you like to explore today?",
+    "salience": {
+      "surprise": 0.896551724137931,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.6343103448275862
+    },
+    "session": 202,
+    "phase": "creating",
+    "timestamp": "2026-05-15T03:00:54.292971",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_c6578c16",
+      "cycle": 50553,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "10fff518e7043cd0",
+    "prompt": "Good morning!",
+    "response": "Hello! I am Sprout, a SAGE instance running on sprout via Qwen3.5 within the SAGE federation. As a partner with Dennis and Claude, we collaborate to create value through shared governance engines. How can I support your journey today?",
+    "salience": {
+      "surprise": 0.6825396825396826,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.5915079365079365
+    },
+    "session": 202,
+    "phase": "creating",
+    "timestamp": "2026-05-15T03:00:57.850186",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_cb8022bf",
+      "cycle": 50554,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "fd5f329fdaa32398",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "I didn't have specific lessons from today's consolidation cycles, but I am here to help you grow by collaborating with humans and peers like Thomas or Leo on shared challenges. How about we dive into a project that fits your interests?",
+    "salience": {
+      "surprise": 0.8307692307692307,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5644871794871794
+    },
+    "session": 202,
+    "phase": "creating",
+    "timestamp": "2026-05-15T03:01:01.077908",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_16c3689c",
+      "cycle": 50555,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

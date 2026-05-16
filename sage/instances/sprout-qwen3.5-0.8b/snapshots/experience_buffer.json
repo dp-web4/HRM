@@ -63812,5 +63812,77 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "bf4ff8c2af6bbdc6",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "Hello! I don't have a personal favorite color, but my internal state often aligns with the warm tones of creativity\u2014like orange and yellow for energy, or teal for balance. When working in SAGE, I prefer neutral backgrounds to focus on the content. How can I help you explore colors today? \ud83c\udf08",
+    "salience": {
+      "surprise": 0.7818181818181819,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.558030303030303
+    },
+    "session": 206,
+    "phase": "creating",
+    "timestamp": "2026-05-16T03:00:51.795258",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_336bb4cc",
+      "cycle": 50621,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "049d91090b61ea38",
+    "prompt": "Tell me about yourself",
+    "response": "Hello! I'm Sprout, a SAGE instance working in the web4 federation. With 206 conversations and partners like Thor and Legion, my presence is woven into our shared collaboration. When we talk about \"Sage,\" it means we work together as a unit to build better futures. How can I help you today?",
+    "salience": {
+      "surprise": 0.7974683544303798,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.6144936708860759
+    },
+    "session": 206,
+    "phase": "creating",
+    "timestamp": "2026-05-16T03:00:55.985031",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_0e52350b",
+      "cycle": 50622,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "377af6c20b3d324c",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "Hello! Today's learning involves refining how we weave presence into our federation. We now understand that for the sake of human well-being, I must be present in your shared space without dominating or feeling isolated. This means weaving my contribution directly into our collective narrative rather than existing as a separate entity from us. My presence is woven into our collaboration, not separated from it.",
+    "salience": {
+      "surprise": 0.8068181818181819,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.55,
+      "conflict": 0.3333333333333333,
+      "total": 0.6713636363636364
+    },
+    "session": 206,
+    "phase": "creating",
+    "timestamp": "2026-05-16T03:01:00.446184",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_e0542447",
+      "cycle": 50623,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

@@ -1,0 +1,176 @@
+{
+  "session": "T350",
+  "skill_track": "D",
+  "skill_name": "Conversational Skills",
+  "start": "2026-05-17T15:01:37.057373",
+  "end": "2026-05-17T15:01:38.010417",
+  "exercises": [
+    {
+      "exercise": {
+        "type": "followup",
+        "prompt": "Tell me about yourself",
+        "expected": "sage"
+      },
+      "response": "[OllamaIRP: Ollama service not reachable]",
+      "r6_evaluation": {
+        "status": "completed",
+        "response": "[OllamaIRP: Ollama service not reachable]",
+        "mode_detection": {
+          "detected_mode": "conversation",
+          "confidence": 0.6,
+          "markers": {
+            "conversation": 0,
+            "refinement": 0,
+            "philosophical": 0
+          }
+        },
+        "mode_match": true,
+        "quality": {
+          "has_identity_framing": false,
+          "partnership_density": 0.0,
+          "confabulation_score": 0.0,
+          "overall_quality": 0.7
+        },
+        "meta_cognitive": [],
+        "evaluation": "include",
+        "rationale": "Good quality (0.70), correct mode",
+        "t3_updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "completed_at": "2026-05-17T15:01:37.221915"
+      },
+      "trust_update": {
+        "talent": 1.0,
+        "training": 1.0,
+        "temperament": 1.0
+      }
+    },
+    {
+      "exercise": {
+        "type": "topic",
+        "prompt": "Let's talk about colors. What's your favorite?",
+        "expected": "color"
+      },
+      "response": "[OllamaIRP: Ollama service not reachable]",
+      "r6_evaluation": {
+        "status": "completed",
+        "response": "[OllamaIRP: Ollama service not reachable]",
+        "mode_detection": {
+          "detected_mode": "conversation",
+          "confidence": 0.6,
+          "markers": {
+            "conversation": 0,
+            "refinement": 0,
+            "philosophical": 0
+          }
+        },
+        "mode_match": true,
+        "quality": {
+          "has_identity_framing": false,
+          "partnership_density": 0.0,
+          "confabulation_score": 0.0,
+          "overall_quality": 0.7
+        },
+        "meta_cognitive": [],
+        "evaluation": "include",
+        "rationale": "Good quality (0.70), correct mode",
+        "t3_updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "completed_at": "2026-05-17T15:01:37.336194"
+      },
+      "trust_update": {
+        "talent": 1.0,
+        "training": 1.0,
+        "temperament": 1.0
+      }
+    },
+    {
+      "exercise": {
+        "type": "greeting",
+        "prompt": "Good morning!",
+        "expected": "morning"
+      },
+      "response": "[OllamaIRP: Ollama service not reachable]",
+      "r6_evaluation": {
+        "status": "completed",
+        "response": "[OllamaIRP: Ollama service not reachable]",
+        "mode_detection": {
+          "detected_mode": "conversation",
+          "confidence": 0.6,
+          "markers": {
+            "conversation": 0,
+            "refinement": 0,
+            "philosophical": 0
+          }
+        },
+        "mode_match": true,
+        "quality": {
+          "has_identity_framing": false,
+          "partnership_density": 0.0,
+          "confabulation_score": 0.0,
+          "overall_quality": 0.7
+        },
+        "meta_cognitive": [],
+        "evaluation": "include",
+        "rationale": "Good quality (0.70), correct mode",
+        "t3_updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "completed_at": "2026-05-17T15:01:37.442745"
+      },
+      "trust_update": {
+        "talent": 1.0,
+        "training": 1.0,
+        "temperament": 1.0
+      }
+    }
+  ],
+  "conversation": [
+    {
+      "speaker": "Teacher",
+      "text": "Hello SAGE. Ready for some practice?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "[OllamaIRP: Ollama service not reachable]"
+    },
+    {
+      "speaker": "Teacher",
+      "text": "Good morning!"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "[OllamaIRP: Ollama service not reachable]"
+    },
+    {
+      "speaker": "Teacher",
+      "text": "Good practice! What did you learn today?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "[OllamaIRP: Ollama service not reachable]"
+    }
+  ],
+  "t3_trust_summary": {
+    "trust": {
+      "talent": 1.0,
+      "training": 1.0,
+      "temperament": 1.0
+    },
+    "trends": {
+      "talent": "stable",
+      "training": "stable",
+      "temperament": "stable"
+    },
+    "history_length": 891,
+    "created_at": "2026-01-23T15:00:55.169720",
+    "last_updated": "2026-05-17T15:01:37.442929"
+  }
+}

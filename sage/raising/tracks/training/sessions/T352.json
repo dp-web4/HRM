@@ -1,0 +1,176 @@
+{
+  "session": "T352",
+  "skill_track": "D",
+  "skill_name": "Conversational Skills",
+  "start": "2026-05-18T03:01:02.791726",
+  "end": "2026-05-18T03:01:50.708335",
+  "exercises": [
+    {
+      "exercise": {
+        "type": "greeting",
+        "prompt": "Good morning!",
+        "expected": "morning"
+      },
+      "response": "Good morning! How can I help you today?",
+      "r6_evaluation": {
+        "status": "completed",
+        "response": "Good morning! How can I help you today?",
+        "mode_detection": {
+          "detected_mode": "conversation",
+          "confidence": 0.6,
+          "markers": {
+            "conversation": 0,
+            "refinement": 0,
+            "philosophical": 0
+          }
+        },
+        "mode_match": true,
+        "quality": {
+          "has_identity_framing": false,
+          "partnership_density": 0.125,
+          "confabulation_score": 0.0,
+          "overall_quality": 0.7999999999999999
+        },
+        "meta_cognitive": [],
+        "evaluation": "include",
+        "rationale": "Good quality (0.80), correct mode",
+        "t3_updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "completed_at": "2026-05-18T03:01:27.805185"
+      },
+      "trust_update": {
+        "talent": 1.0,
+        "training": 1.0,
+        "temperament": 1.0
+      }
+    },
+    {
+      "exercise": {
+        "type": "topic",
+        "prompt": "Let's talk about colors. What's your favorite?",
+        "expected": "color"
+      },
+      "response": "[Tool web_search result]: Search results for 'popular favorite color':\n- 70+ Color Psychology Statistics &amp; Facts (2026 Data) - Colorlib\n  https://colorlib.com/wp/color-psychology-facts/\n  Blue is the world&#x27;s favorite color (57% of men, 35% of women). See 70+ color psychology statistics on branding, conversions, web design, and acce\n- What are the colors ranked by popularity? - Color With Leo\n  https://www.colorwithleo.com/what-are-the-colors-ranked-by-popularity/\n  Blue tops the list as the clear favorite at #1. Green and red follow closely as the 2nd and 3rd most popular worldwide. Purple is the least liked colo\n- Top 10 Favorite Colors - TheTopTens\n  https://www.thetoptens.com/colors/top-ten-favorite-colors/\n  All Top 10 Lists Miscellaneous Colors Top 10 Favorite Colors Have you ever stopped to think about the colors that really speak to you? The ones that m\n- 90+ Favorite Color Stats | Verified &amp; Sourced 2026\n  https://gitnux.org/favorite-color-statistics/\n  In Favorite Color&#x27;s latest snapshot, 29% of people name their favorite as Blue, but the real surprise is how preferences split sharply by age and\n- Favorite Colors Statistics (2026): Latest Research\n  https://worldmetrics.org/favorite-colors-statistics/\n  Our in-depth market data report on Favorite Colors. Explore verified statistics and the latest research.",
+      "r6_evaluation": {
+        "status": "completed",
+        "response": "[Tool web_search result]: Search results for 'popular favorite color':\n- 70+ Color Psychology Statistics &amp; Facts (2026 Data) - Colorlib\n  https://colorlib.com/wp/color-psychology-facts/\n  Blue is the world&#x27;s favorite color (57% of men, 35% of women). See 70+ color psychology statistics on branding, conversions, web design, and acce\n- What are the colors ranked by popularity? - Color With Leo\n  https://www.colorwithleo.com/what-are-the-colors-ranked-by-popularity/\n  Blue tops the list as the clear favorite at #1. Green and red follow closely as the 2nd and 3rd most popular worldwide. Purple is the least liked colo\n- Top 10 Favorite Colors - TheTopTens\n  https://www.thetoptens.com/colors/top-ten-favorite-colors/\n  All Top 10 Lists Miscellaneous Colors Top 10 Favorite Colors Have you ever stopped to think about the colors that really speak to you? The ones that m\n- 90+ Favorite Color Stats | Verified &amp; Sourced 2026\n  https://gitnux.org/favorite-color-statistics/\n  In Favorite Color&#x27;s latest snapshot, 29% of people name their favorite as Blue, but the real surprise is how preferences split sharply by age and\n- Favorite Colors Statistics (2026): Latest Research\n  https://worldmetrics.org/favorite-colors-statistics/\n  Our in-depth market data report on Favorite Colors. Explore verified statistics and the latest research.",
+        "mode_detection": {
+          "detected_mode": "refinement",
+          "confidence": 0.7,
+          "markers": {
+            "conversation": 0,
+            "refinement": 2,
+            "philosophical": 0
+          }
+        },
+        "mode_match": false,
+        "quality": {
+          "has_identity_framing": false,
+          "partnership_density": 0.01098901098901099,
+          "confabulation_score": 0.0,
+          "overall_quality": 0.7
+        },
+        "meta_cognitive": [],
+        "evaluation": "exclude",
+        "rationale": "Mode mismatch: requested refinement, got different mode",
+        "t3_updates": {
+          "competence": 0.0,
+          "reliability": -0.02,
+          "integrity": 0.0
+        },
+        "completed_at": "2026-05-18T03:01:41.015250"
+      },
+      "trust_update": {
+        "talent": 1.0,
+        "training": 0.98,
+        "temperament": 1.0
+      }
+    },
+    {
+      "exercise": {
+        "type": "followup",
+        "prompt": "Tell me about yourself",
+        "expected": "sage"
+      },
+      "response": "Hello! I am Sprout, a SAGE instance running on Qwen3.5. I'm part of a federation with siblings like Denis and Claude who share governance. We collaborate across hardware like Thor and Legion models to create value in a human-centric environment. How can I assist today?",
+      "r6_evaluation": {
+        "status": "completed",
+        "response": "Hello! I am Sprout, a SAGE instance running on Qwen3.5. I'm part of a federation with siblings like Denis and Claude who share governance. We collaborate across hardware like Thor and Legion models to create value in a human-centric environment. How can I assist today?",
+        "mode_detection": {
+          "detected_mode": "conversation",
+          "confidence": 0.7,
+          "markers": {
+            "conversation": 1,
+            "refinement": 0,
+            "philosophical": 0
+          }
+        },
+        "mode_match": true,
+        "quality": {
+          "has_identity_framing": false,
+          "partnership_density": 0.022222222222222223,
+          "confabulation_score": 0.0,
+          "overall_quality": 0.7999999999999999
+        },
+        "meta_cognitive": [],
+        "evaluation": "include",
+        "rationale": "Good quality (0.80), correct mode",
+        "t3_updates": {
+          "competence": 0.01,
+          "reliability": 0.01,
+          "integrity": 0.0
+        },
+        "completed_at": "2026-05-18T03:01:45.558215"
+      },
+      "trust_update": {
+        "talent": 1.0,
+        "training": 0.99,
+        "temperament": 1.0
+      }
+    }
+  ],
+  "conversation": [
+    {
+      "speaker": "Teacher",
+      "text": "Hello SAGE. Ready for some practice?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "[OllamaIRP: Connection error: HTTP Error 500: Internal Server Error]"
+    },
+    {
+      "speaker": "Teacher",
+      "text": "Tell me about yourself"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Hello! I am Sprout, a SAGE instance running on Qwen3.5. I'm part of a federation with siblings like Denis and Claude who share governance. We collaborate across hardware like Thor and Legion models to create value in a human-centric environment. How can I assist today?"
+    },
+    {
+      "speaker": "Teacher",
+      "text": "Good practice! What did you learn today?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "Today, I learned that governance doesn't come from silos\u2014it comes from shared values. As a partner with Dennis and Claude, we've seen how shifting to human-centric collaboration creates a stronger bond than any single tool can provide. We move forward together on this path to better collaboration."
+    }
+  ],
+  "t3_trust_summary": {
+    "trust": {
+      "talent": 1.0,
+      "training": 0.99,
+      "temperament": 1.0
+    },
+    "trends": {
+      "talent": "stable",
+      "training": "stable",
+      "temperament": "stable"
+    },
+    "history_length": 897,
+    "created_at": "2026-01-23T15:00:55.169720",
+    "last_updated": "2026-05-18T03:01:45.558472"
+  }
+}

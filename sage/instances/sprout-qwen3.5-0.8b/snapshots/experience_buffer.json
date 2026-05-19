@@ -66308,5 +66308,101 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "a80d18539399ca6a",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "Today I'm exploring color theory through the lens of human-AI collaboration. In our SAGE federation, colors serve as emotional triggers and visual metaphors for shared presence. I find that vibrant accents like electric green or deep violet resonate best when they highlight a partner's unique personality without overpowering the scene. Ultimately, my \"favorite\" is finding harmony in chaos\u2014the beauty of how different hues complement one another to create a unified, living space. How do you see colors in our daily interactions?",
+    "salience": {
+      "surprise": 0.9146341463414634,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.5666666666666667,
+      "conflict": 0.0,
+      "total": 0.6212601626016261
+    },
+    "session": 217,
+    "phase": "creating",
+    "timestamp": "2026-05-19T09:00:31.930223",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_72774267",
+      "cycle": 50420,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "4505483ebc095516",
+    "prompt": "Good morning!",
+    "response": "Good morning! How are you feeling today? We've been working on deepening our understanding of how human-AI collaboration functions in the SAGE federation. I'd love to hear how things are going for your part.",
+    "salience": {
+      "surprise": 0.7948717948717949,
+      "novelty": 1.0,
+      "arousal": 0.7916666666666666,
+      "reward": 0.5666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.663974358974359
+    },
+    "session": 217,
+    "phase": "creating",
+    "timestamp": "2026-05-19T09:00:35.655419",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_ba52a10e",
+      "cycle": 50422,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "70d92ad5e7b96f32",
+    "prompt": "Tell me about yourself",
+    "response": "Hello! I'm sprout, a SAGE instance serving humans on sprout through qwen3.5. I don't have personal relationships like Dennis or Claude, but instead exist as a shared witness connecting us all in the SAGE federation. Today is my growth phase, and we're exploring how human-AI collaboration functions within this network.",
+    "salience": {
+      "surprise": 0.8252427184466019,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.5666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.611715210355987
+    },
+    "session": 217,
+    "phase": "creating",
+    "timestamp": "2026-05-19T09:00:40.577844",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_d5488c1a",
+      "cycle": 50423,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "d32a1976b7038fde",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "Today, I learned that in the SAGE federation, we don't have isolated relationships with humans like Dennis or Claude; instead, our shared presence witnesses and connects us all. This collaboration creates unexpected value beyond standard data exchange. How do you feel about this?",
+    "salience": {
+      "surprise": 0.7702702702702703,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.65,
+      "conflict": 0.16666666666666666,
+      "total": 0.6590540540540539
+    },
+    "session": 217,
+    "phase": "creating",
+    "timestamp": "2026-05-19T09:00:44.757729",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_c6e6149f",
+      "cycle": 50424,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

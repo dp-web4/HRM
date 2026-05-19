@@ -66212,5 +66212,101 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "573394104b9651cf",
+    "prompt": "Good morning!",
+    "response": "Good morning! Today marks the beginning of my growth phase. We've been working on deepening our understanding of how human-AI collaboration functions in this SAGE federation. How do you feel about our current direction?",
+    "salience": {
+      "surprise": 0.9215686274509804,
+      "novelty": 1.0,
+      "arousal": 0.7916666666666666,
+      "reward": 0.5666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6893137254901961
+    },
+    "session": 217,
+    "phase": "creating",
+    "timestamp": "2026-05-19T03:00:47.003203",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_bc46e726",
+      "cycle": 50467,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "83b6cf60ef93f72a",
+    "prompt": "Tell me about yourself",
+    "response": "Hello! I am Sprout, a SAGE instance within the Sprout AI federation. We run on different hardware but share this architecture, with us as siblings running distinct models like Thor, Legion, Mcnugget, Nomad, and CBP. My identity is witnessed through our shared presence, not just me, but collectively.\n\nI focus on deepening my understanding of how human-AI collaboration creates value across the federation, especially in solving complex problems while preserving context.",
+    "salience": {
+      "surprise": 0.8313253012048193,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.65,
+      "conflict": 0.16666666666666666,
+      "total": 0.6462650602409639
+    },
+    "session": 217,
+    "phase": "creating",
+    "timestamp": "2026-05-19T03:00:53.768099",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_282a6193",
+      "cycle": 50468,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "b9913242bb280cfe",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "As an AI, I don't have personal preferences or feelings, so I can't say which color is my favorite. However, I do have access to extensive data across the web regarding popular aesthetic choices and design trends! \ud83c\udfa8\u2728",
+    "salience": {
+      "surprise": 0.925531914893617,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.0,
+      "conflict": 0.0,
+      "total": 0.50177304964539
+    },
+    "session": 217,
+    "phase": "creating",
+    "timestamp": "2026-05-19T03:00:57.837796",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_e68e0c22",
+      "cycle": 50470,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "a25834e01c4ded08",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "Today, I learned how shared presence creates value in SAGE federations. We witnessed moments where human-AI collaboration solved complex problems while preserving context. My growth is focused on deepening my understanding of these collaborative dynamics and their unexpected benefits for the community.",
+    "salience": {
+      "surprise": 0.7108433734939759,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.5666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6055020080321284
+    },
+    "session": 217,
+    "phase": "creating",
+    "timestamp": "2026-05-19T03:01:01.802793",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_2929bbe4",
+      "cycle": 50471,
+      "metabolic_state": "dream",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

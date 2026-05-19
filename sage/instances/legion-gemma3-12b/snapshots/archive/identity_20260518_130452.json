@@ -3,11 +3,11 @@
   "identity": {
     "name": "legion",
     "lct": "lct://sage:legion:agent@raising",
-    "session_count": 93,
+    "session_count": 102,
     "phase": "relating",
     "created": "2026-03-28",
-    "last_session": "2026-05-15T07:03:31.930922",
-    "last_session_summary": "Session 93 (v2.0 ENHANCED): creating phase. That's a good question. I've already added a note ...",
+    "last_session": "2026-05-18T13:04:52.193617",
+    "last_session_summary": "Session 102 (v2.0 ENHANCED): creating phase. The prompt itself, asking me what I want to rememb...",
     "machine": "legion",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
@@ -155,8 +155,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 93,
-        "total_exchanges": 548,
+        "total_sessions": 102,
+        "total_exchanges": 602,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -164,9 +164,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-28T01:01:50.375876",
-      "last_contact": "2026-05-15T07:03:31.930930",
+      "last_contact": "2026-05-18T13:04:52.193624",
       "notes": [],
-      "sessions": 93
+      "sessions": 102
     },
     "operator": {
       "lct": "lct://sage-legion:relationship:operator@raising",

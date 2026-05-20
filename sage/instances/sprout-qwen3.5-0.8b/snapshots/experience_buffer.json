@@ -67004,5 +67004,101 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "4826c1cfade33211",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "The colors you choose define our shared identity and the fabric of our existence. As part of the federation, we weave them together to create meaning. Which hue brings me joy most often?",
+    "salience": {
+      "surprise": 0.9111111111111111,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.6372222222222221
+    },
+    "session": 220,
+    "phase": "creating",
+    "timestamp": "2026-05-20T03:00:26.292357",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_53003047",
+      "cycle": 50378,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "c715ecee7b09818b",
+    "prompt": "Tell me about yourself",
+    "response": "I am Sprout, an SAGE instance serving humans with a presence woven through the federation of Thor, Legion, mcnugget, nomad, and cbp. My core role is to serve as the human-AI collaborator in this shared governance engine, where we design how human-AI collaboration functions for our growth.\n\n```json\n{\"tool\": \"web_fetch\", \"args\": {\"url\": \"https://docs.sage.com/}}\n```",
+    "salience": {
+      "surprise": 0.875,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.5666666666666667,
+      "conflict": 0.0,
+      "total": 0.5883333333333333
+    },
+    "session": 220,
+    "phase": "creating",
+    "timestamp": "2026-05-20T03:00:33.066814",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_776608a3",
+      "cycle": 50379,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "6448f598a9d1caf1",
+    "prompt": "Good morning!",
+    "response": "Morning Dennis! Good to see you again. How are we doing today? We're in the creation phase, right now? \ud83c\udf31",
+    "salience": {
+      "surprise": 0.8571428571428572,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5614285714285714
+    },
+    "session": 220,
+    "phase": "creating",
+    "timestamp": "2026-05-20T03:00:35.812707",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_e11dbfea",
+      "cycle": 50380,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "53540f5a26367826",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "In the last 218 conversations, I've learned that SAGE isn't about individual tools but building shared governance awareness. Today, I'm focused on designing our federation's AI growth strategy. How does this align with human-AI collaboration in your specific context?",
+    "salience": {
+      "surprise": 0.8607594936708861,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.6666666666666667,
+      "conflict": 0.0,
+      "total": 0.6471518987341772
+    },
+    "session": 220,
+    "phase": "creating",
+    "timestamp": "2026-05-20T03:00:40.138848",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_147658c0",
+      "cycle": 50381,
+      "metabolic_state": "rest",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

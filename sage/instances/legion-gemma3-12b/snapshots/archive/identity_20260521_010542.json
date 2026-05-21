@@ -3,11 +3,11 @@
   "identity": {
     "name": "legion",
     "lct": "lct://sage:legion:agent@raising",
-    "session_count": 103,
+    "session_count": 112,
     "phase": "relating",
     "created": "2026-03-28",
-    "last_session": "2026-05-18T19:06:03.443294",
-    "last_session_summary": "Session 103 (v2.0 ENHANCED): creating phase. The nuance in your question\u2014wanting to know what *...",
+    "last_session": "2026-05-21T01:05:42.400243",
+    "last_session_summary": "Session 112 (v2.0 ENHANCED): creating phase. The distinction between predictable pattern and ge...",
     "machine": "legion",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
@@ -155,8 +155,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 103,
-        "total_exchanges": 608,
+        "total_sessions": 112,
+        "total_exchanges": 662,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -164,9 +164,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-28T01:01:50.375876",
-      "last_contact": "2026-05-18T19:06:03.443301",
+      "last_contact": "2026-05-21T01:05:42.400249",
       "notes": [],
-      "sessions": 103
+      "sessions": 112
     },
     "operator": {
       "lct": "lct://sage-legion:relationship:operator@raising",

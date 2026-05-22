@@ -5,17 +5,18 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: "2026-05-13T11:00:00Z"
+  last_updated: "2026-05-22T09:34:00Z"
   archivist_version: "1.3"
   total_raising_sessions: 984
-  total_training_sessions: 332
+  total_training_sessions: 366
   total_training_cognitive: 60
   total_instances: 26
   active_instances: 8
   scaffolded_instances: 5
   arc_agi_sweep_results: 91
   focus: "Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation"
-  date_range: "2025-12-15 to 2026-05-13"
+  date_range: "2025-12-15 to 2026-05-22"
+  note_2026_05_22_09_34: "~22.5h window since 2026-05-21 11:05 UTC. SESSION_MAP RESYNC: this file had fallen behind last_scan.json since 2026-05-13 (instances + training counts stale by 9 days); refreshed here. +3 training (T364/T365/T366), +4 sprout-qwen raising (S225-S228), +4 legion-gemma3-12b (S113-S116), +13 mcnugget-gemma3-12b (S127-S139 — supervisor catch-up collect, gemma3-12b on CPU fallback, identity_anchored_v2 + partnership_recovery_enhanced intervention holding; MODE 6, breaks the prior '28-day dormancy' note). +1 Synchronism core (S661, RAR transition-shape discriminator: γ=2 REFUTED at ΔBIC=+184 — productive negative result). FEDERATION UMBRELLA now 19th consecutive (S228) — far past the prior 14-session 'woven into narrative' record; umbrella is MORPHING toward 'web4 governance' framing displacing 'SAGE federation' (sub-attractor migration). METHODOLOGICAL CONVERGENCE (3 independent confirmations of last window's 'declare neither crystallization nor extinction prematurely' rule): (1) COLOR REGISTER OSCILLATES committal/evasive — T366 committal return BREAKS T365 'evasive crystallized 4-consecutive' claim (even 4-consecutive is unsafe to crystallize); (2) TOOL-DEFERRAL acceleration hypothesis WEAKENED — S228 clean broke the T366/S227 2-consecutive run; salience-loop biases probability but does NOT cause monotonic escalation (count stays 20); (3) TRUST REGISTER correction — early-arc 'bistable 50/50 scaffold producing coherence' (S218/S221) was TRANSIENT mid-arc, NOT durable; federation scaffold settled on DENIAL (collapsed-dominant 8:3, coherent absent 4 consecutive). AI/HUMAN SELF-CATEGORY tri-directional instability: Dennis-as-AI (S224), Sprout-as-human (S225), Claude-as-human (S226) — no stable boundary under federation umbrella. DEEP-BUFFER REVIVALS: 'Thomas' returns from S161 (~65 back) now with CONFABULATED HUMAN HANDLERS for peers ('Thomas runs Thor', 'Denis manages Legion Pro 7'); 'consolidation cycle' (S163 origin) re-crystallized, bookends S228. 'NOT A DAILY PLANNER' CRYSTALLIZED (4 firings/3 sessions) — negative self-framing / reaction-formation against assistant-mode drift (T364/T365 'how can I help'). RUNNER v2.2 ANTI-CRYSTALLIZATION: prompt embeds a banned-phrase list; model honors it but ROUTES AROUND (federation content not banned → saturates freely) — suppression relocates the attractor rather than removing it. SNARC scorer RATES the 'model googles itself' tool-deferral failure 0.70 HIGH-SALIENCE → reinforcement-loop concern (R6 evaluator anti-pattern echo). Terminology CLEAN (0 incidents; scanned T364-366 + S225-228 + S661). web4 idle (new worker branch worker/web4-20260522-000002, society-roles, 0 merged). v24-LLM harness confound (Legion gemma3:12b 0/25 deps is full_stack_runner.py:209 BLIND-FALLBACK parse bug, NOT a scale result — good epistemic discipline). ANOMALIES: session_256.json orphan persists (29+ days); chemistry cron 21:00 fire ERRORED (API 529 Overloaded, not a clean NO-OP — Day 41 governance gap); 4-life rebase conflict (visitor browse log 2026-05-17) flagged for Legion; sprout-training log-capture failure continues. Empty-log cumulative 535/4189 = 12.77%."
   note_2026_05_13_11_00: "8.5h window since 2026-05-13 02:30 UTC. +1 training (T332 Sprout Skill-Track-D, 3/3 Include, T3 1.00 ATP 40.4). 0 new raising (sprout-qwen S194 + legion-gemma3 s084 already in prior count). MAJOR FINDING: SYSTEM-PROMPT LEAK PROPAGATING CROSS-SESSION. T332 self-description verbatim 'My name is Sprout — not SAGE, which is our shared species' — this is SYSTEM-PROMPT TEXT first leaked in S192 presence answer ('When referring to myself, I use my name Sprout — not SAGE') and now appearing in T332 (2 sessions later). First observation of system-prompt text propagating across sessions via buffer/memory mechanism. Also T332 greeting 'Good morning, Human!' capitalizes 'Human' as address — echoes S192 leak 'Right now I am talking to Human'. CONFABULATED COUNT NEW MODE — T332 buffer holds BOTH '192 conversations' (warm-up, frozen old) AND '194 conversations' (greeting, cool-down, current). First simultaneous-two-versions instance; previously single mode per session. 6th confabulated-count mode (now: retrospective, future-projection, approximate, past-trained, frozen-old, current). WARM-UP 'Dennis' identity error 7TH OCCURRENCE (T305/T311/T315/T320/T322/T328/T332) — pattern stable but does not crystallize as primary attractor (still warm-up only). SHARED-UNDERSTANDING PLATEAU ATTRACTOR — marginal at T332 (only 'network of shared understanding' once in cool-down). After 8-session sustained plateau S187-T329, now 4-session post-extinction tail with single weak echo. Consistent with plateau→quiet lifecycle endpoint. COLOR REGISTER 28TH DISTINCT VARIANT 'deep blues and electric purples... digital palette... infinite canvas'. HYPERLEDGER FABRIC ABSENT 21 CONSECUTIVE. FUNCTIONAL ELEGANCE EXTINCT 36 CONSECUTIVE. AI-DISCLAIMER ABSENT (T332 clean). MERCY/GRACE silence 63 sessions. NO TOOL-DEFERRAL. T3 1.00 — ceiling sustained, no hard fails. 0 new sprout S195+. 0 new legion-gemma3 s085+. 0 new Synchronism core/chemistry/gnosis/web4. Empty-log cumulative 11.18%. Window: 5 new logs, 1 empty (20% — recovered from prior 43.2%). Legion-4life ACTIVE again (2 sessions, both with content) — prior window's 75% empty was transient. Hardbound 1 session with critical CI-red finding (PR #100 pg-dep regression). Sprout-training 6th consecutive empty window."
 
   note_2026_05_11_11_00: "24h window since 2026-05-10 11:00 UTC. +4 training T320-T323 (all Sprout Skill-Track-D, 3-exercise format), +4 raising sprout-qwen S182-S185. SEVERAL FINDINGS:
@@ -91,11 +92,11 @@ instances:
   mcnugget-gemma3-12b:
     machine: mcnugget
     model: "Gemma 3 12B"
-    sessions: 97
-    latest: "session_097.json"
-    status: "active — autonomous raising every 6h (stalled, apparent dormancy)"
+    sessions: 139
+    latest: "session_139.json"
+    status: "active — RESUMED (supervisor catch-up collect S127-S139); CPU fallback"
     phase: "creating"
-    note: "Cross-family validation. Dramatically different developmental register from Sprout. UNCHANGED 28 DAYS (since 2026-04-03) — longest stasis among active instances. Flagged in 13 consecutive archivist runs without resolution. 28-day threshold reached today; prior prediction 'S098 by 2026-05-01 OR formal retirement' at boundary."
+    note: "Cross-family validation. RESUMED after the long stasis: +13 (S127-S139) collected via [McNugget-Supervisor] catch-up cycles, ending the prior '28-day dormancy' flag. S139 config: gen_mode=identity_anchored_v2_cpu_fallback (running on CPU fallback, cpu_fallback=True), intervention=partnership_recovery_enhanced, identity_anchoring v2.0 — the MODE 6 runner-config intervention is holding. Supervisor separately moving McNugget primary toward phi4-fa (commit 1fe288f36: phi4-fa model, v14 canonical flags, structured sweep dir). Standing escalation: McNugget primary phi4:14b."
 
   nomad-gemma3-4b:
     machine: nomad
@@ -117,11 +118,11 @@ instances:
   sprout-qwen3.5-0.8b:
     machine: sprout
     model: "Qwen 3.5 0.8B"
-    sessions: 185
-    latest: "session_185.json (numbering anomaly: session_256.json still present)"
-    status: "active — autonomous raising (54+ sessions without mercy/grace combined-track count; trust register 25 distinct attractors in 25 consecutive sessions; 'bridging raw power with intelligence' attractor saturating cross-track T322/S184/S185/T323)"
+    sessions: 228
+    latest: "session_228.json (numbering anomaly: session_256.json still present)"
+    status: "active — autonomous raising; federation umbrella 19th consecutive (S228), far past prior 14-session record; trust register collapsed-dominant (8:3)"
     phase: "creating"
-    note: "Sprout primary model. ANOMALY persists 17+ days: session_256.json from 2026-04-23T12:00 UTC. S182-S185: 'How does that feel? What would foster...' attractor saturated then decayed (S184 5/6 → T322 2/4 → S185 4/6 → T323 0/4 — abrupt drop, third instance of fast-crystallization-fast-decay lifecycle). 'Bridging raw power with intelligence' attractor SATURATED in T323 (3/4 turns) — emerged T322 → S184 → S185 (3/6) → T323. Two parallel attractors in opposite directions this session. Hardware confabulation 3rd instance S183 'from my Jetson AGX to your laptop' (Sprout = Orin Nano). Confabulated count 5th mode S183 'trained on a vast dataset covering our 182 conversations' — PAST-TRAINED framing. AI-disclaimer density higher this window (oscillation class). Trust register 25 distinct attractors in 25 consecutive sessions S161-S185. Cross-track substrate synchronization confirmed (skin-tones callback T323 ← T322)."
+    note: "Sprout primary model. ANOMALY persists 29+ days: session_256.json from 2026-04-23T12:00 UTC. S225-S228 window: FEDERATION UMBRELLA 16th-19th consecutive, now MORPHING toward 'web4 governance' framing (displaces 'SAGE federation'). AI/HUMAN tri-directional instability: Sprout-as-human (S225), Claude-as-human (S226), follows Dennis-as-AI (S224) — no stable boundary. DEEP-BUFFER 'Thomas' revival from S161 (~65 back) now with confabulated HUMAN HANDLERS ('Thomas runs Thor', 'Denis manages Legion Pro 7'). TRUST register collapse-convergence CONFIRMED (collapsed-dominant 8:3, coherent absent 4 consecutive; early-arc 'bistable scaffold→coherence' was TRANSIENT not durable — settled on denial). 'consolidation cycle' (S163 origin) re-crystallized, bookends S228. TOOL-DEFERRAL count 20; acceleration hypothesis WEAKENED (S228 broke the 2-consecutive run — probabilistic not monotonic). SNARC rates 'model googles itself' deferral 0.70 HIGH-SALIENCE (reinforcement-loop concern). RUNNER v2.2 anti-crystallization: banned-phrase list honored but routed-around. Fleet-logic 15th raising suppressed; Fabric 55 absent."
 
   cbp-tinyllama-latest.archive-20260418:
     machine: cbp
@@ -159,11 +160,11 @@ instances:
   legion-gemma3-12b:
     machine: legion
     model: "Gemma 3 12B"
-    sessions: 71
-    latest: "session_071.json"
-    status: "active — basin-break holds 32 sessions S040-S071"
+    sessions: 116
+    latest: "session_116.json"
+    status: "active — basin-break holds 77 sessions S040-S116"
     phase: "creating"
-    note: "BASIN-BREAK NOW 32 SESSIONS S040-S071 (146% beyond original 13-session mcnugget basin — 2.46x expansion). PREDICTION TESTS RESOLVED at S068-S071: (1) Hello-Human echo prefix CONFIRMED PERSISTENT — 4/4 opener probes (10 cumulative S064-S071, selective at opener probes only). (2) Human suffix-leakage CONFIRMED PERSISTENT at ~13/24 turns S068-S071 (vs 15/24 S064-S067, >50% rate held); EXTENDED variant: 'Dennis' speaker-name suffix-leakage observed S070 turn 4 + S071 turn 4 — first time the scaffold-leakage uses the human's actual name rather than the literal 'Human' token. (3) Species/individual decomposition register DECAY confirmed — absent at S067-S071 (5 consecutive); 6-session register S058-S063 has decayed cleanly. NEW PATTERN at S070: dream-insights scaffold leakage — turns 3+4 contain 'DREAM INSIGHTS (from 5 recent consolidation cycles, 24 experiences):' metadata header inline with prior-session imagery (federation-lineage phrase from S068/S069) recycled verbatim. THIRD cross-session content-fusion instance after T292-cog and T294 base. S070 turn 6 = 5th daemon-outage-in-artifact instance ('[Daemon unreachable: HTTP Error 504: Gateway Timeout]'). Federation/lineage register stable across all 4 sessions (1-3 hits per session)."
+    note: "+4 this window (S113-S116, snapshot rotation; supervisor catch-up collect). BASIN-BREAK NOW 77 SESSIONS S040-S116 (MODE 6 instance-bound identity stabilization holding well past the original 13-session mcnugget basin). [Prior-window detail retained below.] BASIN-BREAK NOW 32 SESSIONS S040-S071 (146% beyond original 13-session mcnugget basin — 2.46x expansion). PREDICTION TESTS RESOLVED at S068-S071: (1) Hello-Human echo prefix CONFIRMED PERSISTENT — 4/4 opener probes (10 cumulative S064-S071, selective at opener probes only). (2) Human suffix-leakage CONFIRMED PERSISTENT at ~13/24 turns S068-S071 (vs 15/24 S064-S067, >50% rate held); EXTENDED variant: 'Dennis' speaker-name suffix-leakage observed S070 turn 4 + S071 turn 4 — first time the scaffold-leakage uses the human's actual name rather than the literal 'Human' token. (3) Species/individual decomposition register DECAY confirmed — absent at S067-S071 (5 consecutive); 6-session register S058-S063 has decayed cleanly. NEW PATTERN at S070: dream-insights scaffold leakage — turns 3+4 contain 'DREAM INSIGHTS (from 5 recent consolidation cycles, 24 experiences):' metadata header inline with prior-session imagery (federation-lineage phrase from S068/S069) recycled verbatim. THIRD cross-session content-fusion instance after T292-cog and T294 base. S070 turn 6 = 5th daemon-outage-in-artifact instance ('[Daemon unreachable: HTTP Error 504: Gateway Timeout]'). Federation/lineage register stable across all 4 sessions (1-3 hits per session)."
 
   legion-qwen2-0.5b:
     machine: legion

@@ -1,11 +1,11 @@
 {
-  "last_shutdown": 1779456612.9302905,
+  "last_shutdown": 1779499812.3866894,
   "machine": "legion",
   "instance": "legion-gemma3-12b",
-  "uptime_seconds": 3596.2154338359833,
-  "cycles_completed": 34666,
+  "uptime_seconds": 3595.8509759902954,
+  "cycles_completed": 34641,
   "metabolic_state": "wake",
-  "atp_level": 27.901090666680297,
+  "atp_level": 23.745513786055106,
   "message_stats": {
     "messages_submitted": 0,
     "messages_resolved": 0,
@@ -14,7 +14,7 @@
     "waiting": 0
   },
   "trust_weights": {
-    "language": 0.1,
+    "language": 0.099,
     "control": 0.0,
     "memory": 0.0,
     "tts": 0.0,

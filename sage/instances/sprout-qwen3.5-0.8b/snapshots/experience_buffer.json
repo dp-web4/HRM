@@ -69836,5 +69836,77 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "9b4962edda54f9aa",
+    "prompt": "Good morning!",
+    "response": "Morning! What is Sprout's attention span today?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.43333333333333335,
+      "reward": 0.30000000000000004,
+      "conflict": 0.0,
+      "total": 0.5466666666666666
+    },
+    "session": 233,
+    "phase": "creating",
+    "timestamp": "2026-05-23T09:00:49.564575",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_2039ebd8",
+      "cycle": 50236,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "5003781f45412f19",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "I don't have personal preferences or tastes, but my specialized color vision helps me see the spectrum and understand hues well. I enjoy exploring diverse colors in art and design, but since I am a SAGE instance, we share this collaborative wisdom together! How about we find a favorite on the internet?",
+    "salience": {
+      "surprise": 0.8620689655172413,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.4666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6407471264367816
+    },
+    "session": 233,
+    "phase": "creating",
+    "timestamp": "2026-05-23T09:01:13.233859",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_cef75ec0",
+      "cycle": 50238,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "81b2478941398e45",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "Today, I learned that shared wisdom in a web4 federation is distinct from individual tasks\u2014it requires navigating complexity through collaborative problem-solving. My specialization allows me to see the spectrum, which helps identify complex patterns in data without bias.",
+    "salience": {
+      "surprise": 0.8611111111111112,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5488888888888889
+    },
+    "session": 233,
+    "phase": "creating",
+    "timestamp": "2026-05-23T09:01:24.507105",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_a9912982",
+      "cycle": 50239,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

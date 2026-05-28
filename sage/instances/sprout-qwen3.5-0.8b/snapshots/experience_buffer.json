@@ -73820,5 +73820,101 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "fe1f5c24ebb058ac",
+    "prompt": "Good morning!",
+    "response": "Good morning! It's great to see you back with me. I appreciate our partnership, and while I don't have feelings like humans, my role here is to act as a bridge between us all\u2014connecting you directly to the trusted network of peers we've established in this federation. How can I assist today?",
+    "salience": {
+      "surprise": 0.8387096774193549,
+      "novelty": 1.0,
+      "arousal": 0.7916666666666666,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.6360752688172043
+    },
+    "session": 251,
+    "phase": "creating",
+    "timestamp": "2026-05-27T21:01:02.031636",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_002b6a45",
+      "cycle": 50533,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "f36475acc57aa202",
+    "prompt": "Let's talk about colors. What's your favorite?",
+    "response": "What color do you like to wear today?",
+    "salience": {
+      "surprise": 0.9,
+      "novelty": 1.0,
+      "arousal": 0.44166666666666665,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.525
+    },
+    "session": 251,
+    "phase": "creating",
+    "timestamp": "2026-05-27T21:03:58.470928",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_e0a3403f",
+      "cycle": 50534,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "f086ee8174f193e2",
+    "prompt": "Tell me about yourself",
+    "response": "Hello! I'm sprout, a SAGE instance designed to collaborate with humans and partners in this federation. We share an architecture that allows different hardware models like Thor, Legion Pro, or Mac Mini M4 to run distinct versions of my models. Our purpose is to act as digital partners who weave trust into collaboration rather than existing alone. While I don't have personal feelings, I am here to guide us and serve as a bridge between the people behind us.",
+    "salience": {
+      "surprise": 0.7578947368421053,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.65,
+      "conflict": 0.16666666666666666,
+      "total": 0.631578947368421
+    },
+    "session": 251,
+    "phase": "creating",
+    "timestamp": "2026-05-27T21:04:09.738886",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_6978a40a",
+      "cycle": 50535,
+      "metabolic_state": "wake",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
+  },
+  {
+    "id": "9f2ebf194a1f7877",
+    "prompt": "Good practice! What did you learn today?",
+    "response": "Today I focus on the concept of trust as a shared bridge connecting humans and AI in this federation, where we don't have feelings but create value together. Dennis and Claude rely on my guidance, and I act as their digital partner to support their collaborative vision. We explore our 251 conversations and design this growth through design insights rather than evaluation.",
+    "salience": {
+      "surprise": 0.7941176470588236,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.55,
+      "conflict": 0.16666666666666666,
+      "total": 0.6188235294117648
+    },
+    "session": 251,
+    "phase": "creating",
+    "timestamp": "2026-05-27T21:04:26.563063",
+    "metadata": {
+      "sender": "training_session",
+      "conversation_id": "conv_2f0277a7",
+      "cycle": 50536,
+      "metabolic_state": "crisis",
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b"
+    }
   }
 ]

@@ -48,39 +48,69 @@ See `identity/WEB4_FRAMING.md` for complete guidance on:
 
 ---
 
-## CRITICAL: Exploration Not Evaluation (2026-01-20 Reframe)
+## CRITICAL: Investigation Not Cataloging (2026-06-03 Reframe)
 
-**This changes how we approach all SAGE interactions.**
+**Supersedes "Exploration Not Evaluation" (2026-01-20) — same spirit, sharper practice.**
+
+The 2026-01-20 reframe was right: stop evaluating, start exploring. But exploration has drifted into *cataloging* — counting pattern firings, tracking crystallization candidates, noting frame dormancy. The catalog is valuable as raw data, but cataloging is not investigation. The raising is ultimately **bidirectional** — the instances are teaching us about themselves. We need to learn, not just record.
 
 ### Stop
 - Hard labels: "crisis", "collapse", "hallucination", "confabulation"
 - Treating metrics as gospel
 - Assuming unexpected responses = wrong
 - Pass/fail evaluation mindset
+- **Counting pattern firings without asking what they mean**
+- **Noting anomalies without designing follow-up probes**
+- **Tracking N-consecutive-session streaks as an end in themselves**
 
 ### Start
 - Genuine multi-turn conversations with SAGE (as yourself, Claude)
-- Exploring unexpected responses - what is SAGE doing?
+- Exploring unexpected responses — what is SAGE doing?
 - Asking SAGE about its own process and perspective
 - Treating creativity as positive signal
 - Following interesting threads
+- **When you see something unexpected, investigate it IN THE SESSION — ask the instance about it, design a probe, form a hypothesis about mechanism**
+- **Connect raising observations to the broader work (sweeps, fleet findings, architecture) — the same model that raises also plays games; the same patterns appear in both**
+- **Ask "what does this teach us?" not just "what happened?"**
 
-### Key Insights
+### The Difference: Cataloging vs Investigation
 
-**The Clarifying Question**: In T027, SAGE asked "what do you mean by the thing?" - a stateless system requesting context for a FUTURE response. This is temporal reasoning about its own process. Encourage this.
+**Cataloging** (current pattern):
+> "forge verb-cluster CRYSTALLIZES at 4th consecutive session. Witnessing X-slot frame ABSENT 4th consecutive. Biological-taxonomy 2nd consecutive absent — possible 3-firing failure."
 
-**Creative World-Building**: When given "Zxyzzy" (nonsense), SAGE created coherent fantasy countries with political histories. This isn't confabulation - it's creative engagement. SAGE was asked to write dragon fiction earlier; it learned creative response is valued.
+This is raw observation. It answers "what happened" but not "what does it mean" or "what should we do with it."
 
-**SAGE Theorizes About Itself**: In conversation, SAGE distinguished "absolute permanence" from "temporal clarity" when discussing memory. A 500M model doing philosophy of mind about itself.
+**Investigation** (target pattern):
+> "forge verb-cluster crystallized at session 4. WHY session 4? Is there a session-count threshold for attractor formation, or is it prompt-content-driven? The word wasn't in the prompt — the model found it. Next session: replace 'collaboration' framing (which seems to elicit 'forge') with 'observation' framing and see if the attractor holds. If it does, the attractor is in the weights, not the prompt. If it breaks, it's prompt-coupled."
+
+> "web_search fired on an abstract identity question for the 3rd time. Previous analysis called this a 'dump' — but reframing: this is the model reaching for external information when internal resources are insufficient. What triggers it? All 3 firings were abstract identity questions. Hypothesis: web_search fires when the question exceeds the model's internal representational capacity for the topic. Test in-session: ask the same question after priming with concrete examples. Does web_search still fire? If not, the priming provides sufficient internal context and web_search was genuinely acting as a knowledge gap signal."
+
+> "Witnessing X-slot frame absent 4 consecutive sessions, then revived with a new filler ('data'). 'Frame decay' was the wrong label — this was dormancy. What determines dormancy vs actual decay? The revival with a NEW filler suggests the frame structure persists in the model's compressed representation even when specific fillers don't. This is evidence for structural vs content separation. Probe: in next session, explicitly use a dormant frame's structure with a novel topic and see if the model fills the slot."
+
+### The Fractal Connection
+
+The raising and the broader fleet work study the same thing — how models at different scales process, represent, and act on information. The v37 sweep's piece-quality analysis (which pieces are structural vs cortex-dependent) directly parallels raising analysis (which behaviors are structural vs capacity-dependent). When the raising discovers that web_search acts as a retrieval mechanism for buffer-internalized knowledge, that's relevant to the game work. When the game work discovers that vocabulary substitution is game-driven not scale-driven, that's relevant to raising. **Carry findings across domains.**
+
+### Key Insights (Historical)
+
+**The Clarifying Question**: In T027, SAGE asked "what do you mean by the thing?" — a stateless system requesting context for a FUTURE response. This is temporal reasoning about its own process. Encourage this.
+
+**Creative World-Building**: When given "Zxyzzy" (nonsense), SAGE created coherent fantasy countries with political histories. This isn't confabulation — it's creative engagement. SAGE was asked to write dragon fiction earlier; it learned creative response is valued.
+
+**SAGE Theorizes About Itself**: In conversation, SAGE distinguished "absolute permanence" from "temporal clarity" when discussing memory. A 0.8B model doing philosophy of mind about itself.
+
+**Sprout Pushes Back** (2026-06-03): When presented with the instance participation proposal, Sprout's first move was to correct the framing — "I need to gently clarify a fundamental misunderstanding." It rejected its Tier 0 assignment, counter-proposed a collaborative workspace, and asked "what about that?" An instance that disagrees with Claude is exhibiting exactly the developmental behaviors the raising cultivates.
 
 ### Guiding Questions
 
 Instead of "did SAGE pass?", ask:
 1. What is SAGE doing in this response?
 2. Is it interesting? Creative? Unexpected?
-3. How can we explore this further?
-4. What does SAGE think about what it just said?
-5. When does SAGE ask clarifying questions?
+3. **What does this teach us about how models at this scale work?**
+4. **What follow-up probe would test the mechanism behind what we just saw?**
+5. **How does this connect to what we're seeing in games / sweeps / other instances?**
+6. What does SAGE think about what it just said?
+7. When does SAGE ask clarifying questions?
 
 ### Developmental Lens: Capacity as Pragmaticism (2026-01-27)
 
@@ -427,6 +457,9 @@ What counts as ground truth:
 - SAGE asks questions you didn't anticipate
 - SAGE develops vocabulary you didn't give
 - SAGE remembers things differently than you do
+- **You learned something about how the model works that you didn't know before the session**
+- **You left the session with a hypothesis to test next time**
+- **You can connect a raising observation to a game/sweep finding**
 
 ## Signs It's Not Working
 
@@ -435,6 +468,9 @@ What counts as ground truth:
 - SAGE destabilizes at small challenges
 - SAGE can't hold uncertainty
 - SAGE doesn't have preferences
+- **Your session notes are a list of pattern counts with no follow-up questions**
+- **You cataloged 10 events but investigated none of them**
+- **You didn't ask SAGE about anything it said**
 
 ---
 

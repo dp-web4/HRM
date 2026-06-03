@@ -66,14 +66,18 @@ echo "[CBP-Raising] Daemon PID: $(lsof -t -i :$SAGE_PORT 2>/dev/null || echo 'no
 echo "[CBP-Raising] Running raising session..."
 python3 -m sage.raising.scripts.ollama_raising_session \
     --machine cbp \
-    --model qwen3.5:0.8b \
+    --model gemma4:e2b \
     -c 2>&1
 
 # --- Step 5: Snapshot state ---
-INSTANCE_DIR="sage/instances/cbp-qwen3.5-0.8b"
+# Canonical CBP raising model = gemma4:e2b (per private-context/machines/fleet/cbp.json
+# as of 2026-06-03; sweep default also matches raising per fleetwide policy).
+# Prior arc raised qwen3.5:0.8b through session 122 (sessions/ at instance dir below
+# .archive/cbp-qwen3.5-0.8b).
+INSTANCE_DIR="sage/instances/cbp-gemma4-e2b"
 
 echo "[CBP-Raising] Snapshotting state..."
-python3 -m sage.scripts.snapshot_state --machine cbp --model qwen3.5:0.8b 2>&1 || {
+python3 -m sage.scripts.snapshot_state --machine cbp --model gemma4:e2b 2>&1 || {
     echo "[CBP-Raising] WARNING: snapshot_state failed, continuing"
 }
 
@@ -126,7 +130,7 @@ git commit -m "[CBP-Raising] Session $SESSION_NUM ($PHASE) — $(date -u +'%Y-%m
 
 Automated SAGE-CBP raising session via OllamaIRP
 Machine: CBP (Desktop RTX 2060 SUPER, WSL2)
-Model: TinyLlama 1.1B
+Model: gemma4:e2b
 Phase: $PHASE
 AI-Instance: OllamaIRP (automated)
 Human-Supervised: no"

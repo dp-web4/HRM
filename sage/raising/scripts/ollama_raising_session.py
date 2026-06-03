@@ -1079,7 +1079,7 @@ RESPONSE STYLE:
         # 6+ turns to break through (30% of sessions show delayed activation
         # per insights/qwen3.5-27b-activation-delay-2026-04-03.md). Pad to 8.
         if HAS_CONTEXT_SHAPED:
-            from context_shaped_raising import pad_for_activation_delay
+            from sage.raising.scripts.context_shaped_raising import pad_for_activation_delay
             original_len = len(prompts)
             prompts = pad_for_activation_delay(prompts, phase_name, self.model_name)
             if len(prompts) > original_len:

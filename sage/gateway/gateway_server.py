@@ -67,8 +67,8 @@ def append_chat_message(config, entry: Dict[str, Any]):
             print(f"[Gateway] chat history write error: {e}")
 
 
-def read_chat_history(config) -> List[Dict[str, Any]]:
-    """Read all chat messages from the JSONL buffer."""
+def read_chat_history(config, limit: int = 0) -> List[Dict[str, Any]]:
+    """Read chat messages from the JSONL buffer. If limit > 0, return only the last N."""
     path = _chat_history_path(config)
     if path is None or not path.exists():
         return []
@@ -85,6 +85,8 @@ def read_chat_history(config) -> List[Dict[str, Any]]:
                             continue
         except Exception as e:
             print(f"[Gateway] chat history read error: {e}")
+    if limit > 0 and len(messages) > limit:
+        messages = messages[-limit:]
     return messages
 
 
@@ -391,7 +393,7 @@ class GatewayHandler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def _handle_stream(self):
-        """SSE stream of live SAGE stats — pushes JSON every 1 second."""
+        """SSE stream of live SAGE stats — pushes JSON every 5 seconds."""
         self.send_response(200)
         self.send_header('Content-Type', 'text/event-stream')
         self.send_header('Cache-Control', 'no-cache')
@@ -405,13 +407,21 @@ class GatewayHandler(BaseHTTPRequestHandler):
                 payload = f"data: {json.dumps(data)}\n\n"
                 self.wfile.write(payload.encode())
                 self.wfile.flush()
-                time.sleep(1)
+                time.sleep(5)
         except (BrokenPipeError, ConnectionResetError, OSError):
             pass  # Client disconnected
 
     def _handle_chat_history(self):
-        """Handle GET /chat-history — return persisted chat messages."""
-        messages = read_chat_history(self.config)
+        """Handle GET /chat-history — return persisted chat messages.
+        Supports ?limit=N to return only the last N messages."""
+        from urllib.parse import urlparse, parse_qs
+        qs = parse_qs(urlparse(self.path).query)
+        limit = 0
+        try:
+            limit = int(qs.get('limit', [0])[0])
+        except (ValueError, IndexError):
+            pass
+        messages = read_chat_history(self.config, limit=limit)
         self._send_json(messages)
 
     def _collect_dashboard_stats(self) -> Dict[str, Any]:
@@ -482,53 +492,65 @@ class GatewayHandler(BaseHTTPRequestHandler):
                     'effect_restrictions': sorted(posture.effect_restrictions),
                 }
 
-        # GPU stats — prefer pynvml (system-wide, sees Ollama), fall back to torch
-        gpu_found = False
-        try:
-            import pynvml
-            pynvml.nvmlInit()
-            handle = pynvml.nvmlDeviceGetHandleByIndex(0)
-            mem_info = pynvml.nvmlDeviceGetMemoryInfo(handle)
-            gpu_name = pynvml.nvmlDeviceGetName(handle)
-            if isinstance(gpu_name, bytes):
-                gpu_name = gpu_name.decode()
+        # GPU stats — cached for 15s to avoid per-tick pynvml/nvidia-smi overhead
+        now = time.time()
+        if not hasattr(GatewayHandler, '_gpu_cache') or \
+           now - GatewayHandler._gpu_cache.get('_ts', 0) > 15:
+            gpu_data = {}
+            gpu_found_inner = False
             try:
-                util = pynvml.nvmlDeviceGetUtilizationRates(handle)
-                gpu_util_pct = util.gpu
-            except Exception:
-                gpu_util_pct = None
-            stats['gpu'] = {
-                'name': gpu_name,
-                'memory_allocated_mb': round(mem_info.used / 1e6, 1),
-                'memory_total_mb': round(mem_info.total / 1e6, 1),
-            }
-            if gpu_util_pct is not None:
-                stats['gpu']['utilization_pct'] = gpu_util_pct
-            gpu_found = True
-        except Exception:
-            pass
-
-        # Fallback: nvidia-smi for system-wide GPU stats (sees Ollama, etc.)
-        if not gpu_found:
-            try:
-                import subprocess
-                result = subprocess.run(
-                    ['nvidia-smi', '--query-gpu=name,memory.used,memory.total,utilization.gpu',
-                     '--format=csv,noheader,nounits'],
-                    capture_output=True, text=True, timeout=3)
-                if result.returncode == 0 and result.stdout.strip():
-                    parts = [p.strip() for p in result.stdout.strip().split(',')]
-                    if len(parts) >= 3:
-                        stats['gpu'] = {
-                            'name': parts[0],
-                            'memory_allocated_mb': float(parts[1]),
-                            'memory_total_mb': float(parts[2]),
-                        }
-                        if len(parts) >= 4:
-                            stats['gpu']['utilization_pct'] = int(parts[3])
-                        gpu_found = True
+                import pynvml
+                pynvml.nvmlInit()
+                handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+                mem_info = pynvml.nvmlDeviceGetMemoryInfo(handle)
+                gpu_name = pynvml.nvmlDeviceGetName(handle)
+                if isinstance(gpu_name, bytes):
+                    gpu_name = gpu_name.decode()
+                try:
+                    util = pynvml.nvmlDeviceGetUtilizationRates(handle)
+                    gpu_util_pct = util.gpu
+                except Exception:
+                    gpu_util_pct = None
+                gpu_data = {
+                    'name': gpu_name,
+                    'memory_allocated_mb': round(mem_info.used / 1e6, 1),
+                    'memory_total_mb': round(mem_info.total / 1e6, 1),
+                }
+                if gpu_util_pct is not None:
+                    gpu_data['utilization_pct'] = gpu_util_pct
+                gpu_found_inner = True
             except Exception:
                 pass
+
+            if not gpu_found_inner:
+                try:
+                    import subprocess
+                    result = subprocess.run(
+                        ['nvidia-smi', '--query-gpu=name,memory.used,memory.total,utilization.gpu',
+                         '--format=csv,noheader,nounits'],
+                        capture_output=True, text=True, timeout=3)
+                    if result.returncode == 0 and result.stdout.strip():
+                        parts = [p.strip() for p in result.stdout.strip().split(',')]
+                        if len(parts) >= 3:
+                            gpu_data = {
+                                'name': parts[0],
+                                'memory_allocated_mb': float(parts[1]),
+                                'memory_total_mb': float(parts[2]),
+                            }
+                            if len(parts) >= 4:
+                                gpu_data['utilization_pct'] = int(parts[3])
+                            gpu_found_inner = True
+                except Exception:
+                    pass
+
+            gpu_data['_ts'] = now
+            gpu_data['_found'] = gpu_found_inner
+            GatewayHandler._gpu_cache = gpu_data
+
+        cached_gpu = GatewayHandler._gpu_cache
+        gpu_found = cached_gpu.get('_found', False)
+        if gpu_found:
+            stats['gpu'] = {k: v for k, v in cached_gpu.items() if not k.startswith('_')}
 
         if not gpu_found:
             try:

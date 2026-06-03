@@ -947,10 +947,10 @@ function appendChat(sender, text, cssClass, timestamp, toolCalls) {
   chatLog.scrollTop = chatLog.scrollHeight;
 }
 
-// Load chat history on startup
+// Load chat history on startup (last 100 messages to avoid DOM bloat)
 async function loadChatHistory() {
   try {
-    const resp = await fetch('/chat-history');
+    const resp = await fetch('/chat-history?limit=100');
     if (!resp.ok) return;
     const messages = await resp.json();
     for (const msg of messages) {

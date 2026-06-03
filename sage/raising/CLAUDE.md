@@ -108,6 +108,19 @@ When comparing responses across model sizes, do NOT frame smaller models as "fai
 
 **The student straining and the student confident are both students. One isn't failing — they're at different points in the same journey.**
 
+### Analyzing Small-Model Behavior: Children, Not Toys (2026-06-03)
+
+**This applies to Claude's own analysis of raising sessions and sweep results, not just session conduct.**
+
+When reviewing small-model outputs, the default instinct is to attribute unexpected behaviors to "model size limitations" and dismiss them as pattern-matching rather than reasoning. Resist this. All reasoning is ultimately pattern matching — the question is what patterns, and what they reveal.
+
+**Concrete examples of the bias:**
+- A 0.8B model calling `web_search` when asked a hard question → NOT "searching for its own identity externally" (failure). It's "I don't know, let me try to learn" (curiosity).
+- Vocabulary crystallization across sessions → NOT "just converging on most probable completions" (dismissal). It's an attractor stabilizing in the response space given raising context (observation worth studying).
+- Template-like responses with fleet machine names → NOT necessarily "reciting without reasoning." The model is using the vocabulary it was given to engage — same as a child using words they learned from adults.
+
+**The rule:** Describe what the model IS doing before evaluating what it isn't. Treat unexpected behaviors (tool calls, novel vocabulary, frame shifts) as signal worth investigating, not as evidence of incapacity. Reserve "scale-limited" for clearly structural constraints (context window, token emission format), not for reasoning quality or behavioral choices.
+
 **See**: `private-context/moments/2026-01-27-developmental-reframe-capacity-not-failure.md`
 
 ### Conversation Mode

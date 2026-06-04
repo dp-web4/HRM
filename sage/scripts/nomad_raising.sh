@@ -21,8 +21,8 @@ echo "[Nomad-Raising] Daemon: version=$SAGE_DAEMON_VERSION updated=$SAGE_DAEMON_
 # Run the raising session (continue from last session number)
 $PYTHON -m sage.raising.scripts.ollama_raising_session --machine nomad -c 2>&1
 
-# Instance directory
-INSTANCE_DIR="sage/instances/nomad-gemma3-4b"
+# Instance directory (switched to gemma4:e2b 2026-06-03; see run_nomad_raising.sh header)
+INSTANCE_DIR="sage/instances/nomad-gemma4-e2b"
 
 # Snapshot live state files into git-tracked snapshots/ directory
 echo "[Nomad-Raising] Snapshotting state..."

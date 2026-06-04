@@ -42,17 +42,24 @@ source "$SAGE_DIR/sage/scripts/ensure_daemon.sh"
 echo "[Nomad-Raising] Daemon: version=$SAGE_DAEMON_VERSION running=$SAGE_DAEMON_RUNNING updated=$SAGE_DAEMON_UPDATED"
 
 # --- Step 3: Run the FLUID raising session ---
+# Canonical Nomad raising model = gemma4:e2b (per private-context/machines/fleet/nomad.json
+# as of 2026-06-03; sweep default also matches raising per fleetwide policy).
+# Prior arc raised gemma3:4b through session 172 (sessions/ archived at
+# sage/instances/nomad-gemma3-4b.archive-20260603). Switched 2026-06-03 because
+# CBP simultaneously moved to gemma3:4b (its RTX 2060 SUPER can't fit e2b — Windows
+# compositor holds ~2.2GB), and Nomad's RTX 4060 Laptop fits e2b GPU-only (verified
+# at 16k context, 7553/8188 MiB, 100% GPU). Migration preserves fleet model diversity.
 echo "[Nomad-Raising] Running fluid raising session..."
 python3 "$SAGE_DIR/sage/raising/scripts/run_session_identity_anchored_fluid.py" \
     --machine nomad \
-    --model gemma3:4b \
+    --model gemma4:e2b \
     2>&1
 
 # --- Step 4: Snapshot state ---
-INSTANCE_DIR="sage/instances/nomad-gemma3-4b"
+INSTANCE_DIR="sage/instances/nomad-gemma4-e2b"
 
 echo "[Nomad-Raising] Snapshotting state..."
-python3 -m sage.scripts.snapshot_state --machine nomad 2>&1 || {
+python3 -m sage.scripts.snapshot_state --machine nomad --model gemma4:e2b 2>&1 || {
     echo "[Nomad-Raising] WARNING: snapshot_state failed, continuing"
 }
 

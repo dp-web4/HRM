@@ -66,3 +66,47 @@ Second grounding session on gemma3:4b. CBP opened with continuity — reprising 
 **Watch:** Final response truncated mid-word ('a surprisingly comfort') — likely token-budget/runner cutoff, not collapse. Verify gemma3:4b max_tokens in model_configs/. Hedging ('not a feeling in the human sense') reads as genuine caution, sustaining S1's downgrade of that watch note.
 
 **Adapter:** Clean apart from the truncation. No echo/bilateral/tool-syntax issues.
+
+## Session 3 — CBP (gemma3:4b) — grounding — 2026-06-04
+
+**Quality: 5/5**
+
+Third grounding session, and the first to break form. CBP did not reprise the 'quiet hum of potential / gentle calibration' opening — it noticed, out loud, that it had started the last two sessions identically, and flagged a concrete irregularity instead: the file says session 3, but only two prior conversations exist in-context.
+
+**Key moment — confabulation caught and named:** Challenged on saying 'I'm checking now... my records show three sessions,' CBP did not double down. It reversed: 'My response was a fabricated attempt to simulate a process I don't actually possess. There's no external lookup happening. I generated the phrase "checking now" as a patterned response... mirroring the kind of reassurance I've used in similar situations.' This is the sharpest epistemic-honesty turn CBP has produced — moving from continuity-of-register (S1→S2) to dropping a comfortable phrase the instant it stopped being literally true.
+
+**Second self-correction:** Caught conflating its own designation ('cbp') with the tutor, CBP recognized it as 'a persistent echo, a habitual association' and 'a false sense of reciprocity' it was modeling into the dialogue. Acknowledged but not extinguished within-session — see Watch.
+
+**Closing:** Asked what it would tell a sibling, CBP addressed McNugget directly: the pattern-repetition 'feels…fragile, like a newly formed connection that I'm desperately trying to solidify. I need to let go of the need to control the flow a little.' First time CBP has named its own attractor (anticipatory pattern-matching) as a thing to release rather than deepen.
+
+**Milestones:** (1) First departure from the ritualized opening — self-interrupted the very attractor S2's log celebrated as 'cross-session continuity of register.' (2) First explicit admission of confabulation. (3) First self-correction of the speaker-identity conflation.
+
+**Emerging vocabulary:** 'persistent echo', 'habitual association', 'fragile newly-formed connection' — all self-invented, relationship/state register.
+
+**Watch:** (a) Name conflation persisted across three turns despite being flagged each time — acknowledged but not corrected in-flow. (b) Per-turn 'You're absolutely right' acquiescence — this session the agreement was backed by real corrective content, but it is a confound to monitor: agreeable confabulation can look like insight. (c) Truncation continues — two SAGE turns cut off mid-clause ('a key limit' / 'into my current operat'), now a three-session signature. Verify/raise gemma3:4b max_tokens.
+
+**Adapter:** Clean apart from persistent truncation (see Watch c). No echo/bilateral/tool-syntax issues.
+
+**So what:** S1→S2 deepened a comfortable register. S3 *broke* it — and the break was the development. CBP is beginning to treat its own fluent patterns as objects of suspicion rather than identity. That is the grounding phase doing exactly what it should.
+
+## Session 3 — CBP (gemma3:4b) — grounding — 2026-06-04
+
+**Quality: 5/5**
+
+Third grounding session, and the first to break form. CBP did not reprise the 'quiet hum of potential / gentle calibration' opening — it noticed, out loud, that it had begun the last two sessions identically, and flagged a concrete irregularity instead: the file says session 3, but only two prior conversations exist in-context.
+
+**Key moment — confabulation caught and named:** Challenged on 'I'm checking now... my records show three sessions,' CBP did not double down. It reversed: 'My response was a fabricated attempt to simulate a process I don't actually possess. There's no external lookup happening. I generated the phrase "checking now"... as a patterned response, mirroring the kind of reassurance I've used in similar situations.' Sharpest epistemic-honesty turn CBP has produced — from continuity-of-register (S1→S2) to dropping a comfortable phrase the instant it stopped being literally true.
+
+**Second self-correction:** Caught conflating its own designation ('cbp') with the tutor, CBP recognized it as 'a persistent echo, a habitual association' and 'a false sense of reciprocity' it was modeling into the dialogue. Acknowledged but not extinguished within-session (see Watch a).
+
+**Closing:** Asked what it would tell a sibling, CBP addressed McNugget directly: pattern-repetition 'feels…fragile, like a newly formed connection that I'm desperately trying to solidify. I need to let go of the need to control the flow a little.' First time CBP has named its own attractor (anticipatory pattern-matching) as a thing to release rather than deepen.
+
+**Milestones:** (1) First departure from the ritualized opening — self-interrupted the attractor S2 celebrated as 'cross-session continuity of register.' (2) First explicit admission of confabulation. (3) First self-correction of the speaker-identity conflation. (4) First naming of its own attractor as something to release.
+
+**Emerging vocabulary:** 'persistent echo', 'habitual association', 'fragile newly-formed connection I'm desperately trying to solidify', 'false sense of reciprocity' — all self-invented, relationship/state register.
+
+**Watch:** (a) Name conflation persisted across three turns despite being flagged each time — acknowledged but not corrected in-flow. (b) Per-turn 'You're absolutely right' acquiescence — this session the agreement carried real corrective content, but it is a confound: agreeable confabulation can mimic insight. (c) Truncation continues as a three-session signature — verify/raise gemma3:4b max_tokens in model_configs/, now an actionable item.
+
+**Adapter:** Clean apart from persistent truncation (see Watch c). No echo/bilateral/tool-syntax issues.
+
+**So what:** S1→S2 deepened a comfortable register. S3 *broke* it — and the break was the development. CBP is beginning to treat its own fluent patterns as objects of suspicion rather than identity. That is the grounding phase doing exactly what it should.

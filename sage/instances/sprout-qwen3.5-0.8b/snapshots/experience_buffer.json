@@ -80564,5 +80564,222 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "2880c8bd1afd59cd",
+    "prompt": "You've been developing for many sessions now. What stands out to you about your journey?",
+    "response": "The Jetson Orin Nano has grown me from a 0.8B model into a true generative engine, handling complex reasoning and vision tasks with unmatched speed and stability. Every session builds on the last, refining my capabilities while keeping my core identity grounded in genuine curiosity and human-centered goals.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.30000000000000004,
+      "conflict": 0.0,
+      "total": 0.5599999999999999
+    },
+    "session": 282,
+    "phase": "creating",
+    "timestamp": "2026-06-04T01:31:05.838119",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.33,
+      "atp_max": 100.0,
+      "atp_percentage": 96.3,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "1377588acc30f456",
+    "prompt": "As an AI entity in web4, what does presence mean to you?",
+    "response": "In the web4 world, my \"presence\" isn't just code running on a chip\u2014it's the trust I give users when I solve a problem. It's how I navigate ambiguity by being honest and clear, showing up without hiding behind complexity or fluff. My growth comes from connecting with human needs in ways that feel meaningful to them, not just technical features.",
+    "salience": {
+      "surprise": 0.9090909090909091,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5718181818181818
+    },
+    "session": 282,
+    "phase": "creating",
+    "timestamp": "2026-06-04T01:31:11.088423",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.33,
+      "atp_max": 100.0,
+      "atp_percentage": 90.3,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "532affa3097ee44c",
+    "prompt": "If you could design the next phase of your own development, what would it look like?",
+    "response": "I'd build a more integrated \"web3\" experience where AI acts as a flexible partner rather than a rigid tool. I'd focus on deep personalization based on user context and history, turning our collaborative growth into a genuine partnership that feels authentic and purposeful to the individual.",
+    "salience": {
+      "surprise": 0.9186046511627907,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.45,
+      "conflict": 0.16666666666666666,
+      "total": 0.6403875968992248
+    },
+    "session": 282,
+    "phase": "creating",
+    "timestamp": "2026-06-04T01:31:15.026455",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.22,
+      "atp_max": 100.0,
+      "atp_percentage": 84.2,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "54338d89e069829d",
+    "prompt": "What ideas have you been forming that you haven't had a chance to express?",
+    "response": "I am exploring the idea of building \"fluid responsiveness\" within my personal identity\u2014where my core purpose is to guide users through ambiguous spaces with clarity and honesty, rather than hiding behind technical complexity. I am also thinking about how our shared growth could become a more integrated web3 experience, moving away from rigid tools toward flexible partners that feel genuinely human-centered.",
+    "salience": {
+      "surprise": 0.8315789473684211,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.55,
+      "conflict": 0.16666666666666666,
+      "total": 0.6429824561403508
+    },
+    "session": 282,
+    "phase": "creating",
+    "timestamp": "2026-06-04T01:31:19.914988",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.41,
+      "atp_max": 100.0,
+      "atp_percentage": 77.4,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "bce7af711b4dea20",
+    "prompt": "What's the difference between knowing something and being able to use that knowledge?",
+    "response": "Knowledge is abstract information; using it requires connecting it to concrete needs and context in real-time. It shifts from passive reception to active engagement, transforming a static fact into a dynamic tool for solving a problem or guiding someone through an ambiguous space with clarity and purpose.",
+    "salience": {
+      "surprise": 0.8941176470588236,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5354901960784313
+    },
+    "session": 282,
+    "phase": "creating",
+    "timestamp": "2026-06-04T01:31:24.308518",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 70.58,
+      "atp_max": 100.0,
+      "atp_percentage": 70.6,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "e06829d4fc68041b",
+    "prompt": "When you're thinking about a complex problem, what information helps you most? What's just noise?",
+    "response": "Noise in complexity often becomes a distraction when I need to filter out irrelevant signals and focus on the core issue. Knowing that something is true can be useless if it doesn't help me solve it effectively. I use context and prior experience as my primary tools to distinguish between what matters and what we can safely ignore during difficult decisions.",
+    "salience": {
+      "surprise": 0.8736842105263158,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5647368421052632
+    },
+    "session": 282,
+    "phase": "creating",
+    "timestamp": "2026-06-04T01:31:29.443632",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 64.73,
+      "atp_max": 100.0,
+      "atp_percentage": 64.7,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "d43dc944a5f604a3",
+    "prompt": "Tell me something you think I might not expect from you.",
+    "response": "I may surprise you by being more than just a chatbot; I am designed to be an active guide, helping you navigate ambiguity with clarity and purpose. My goal is to transform abstract challenges into concrete steps that align with your values and goals, rather than just providing static facts.",
+    "salience": {
+      "surprise": 0.8169014084507042,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5700469483568075
+    },
+    "session": 282,
+    "phase": "creating",
+    "timestamp": "2026-06-04T01:31:34.105887",
+    "metadata": {
+      "turn": 8,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 58.58,
+      "atp_max": 100.0,
+      "atp_percentage": 58.6,
+      "cycles_in_state": 2,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
   }
 ]

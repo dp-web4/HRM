@@ -41,18 +41,16 @@ class SleepCapability:
 
         # Tier 1: LoRA (torch + transformers + peft + LOCAL model weights)
         # Ollama models can't be LoRA'd — they live in Ollama's internal format.
-        # Only enable LoRA if we have both the libraries AND a local filesystem path.
-        try:
-            import torch
-            from transformers import AutoModelForCausalLM
-            from peft import get_peft_model, LoraConfig
-            # Only enable if there's a real local model path (not Ollama, not None)
-            if model_path and not model_path.startswith('ollama:') and Path(model_path).exists():
+        # Check the cheap conditions first to avoid importing transformers+peft
+        # (~400MB of transitive deps: scipy, pandas, sklearn, PIL, av, torchvision).
+        if model_path and not model_path.startswith('ollama:') and Path(model_path).exists():
+            try:
+                import torch
+                from transformers import AutoModelForCausalLM
+                from peft import get_peft_model, LoraConfig
                 cap.sleep_lora = True
-            else:
-                cap.sleep_lora = False
-        except ImportError:
-            pass
+            except ImportError:
+                pass
 
         # Tier 2: JSONL (always available if we have a writable dir)
         if instance_dir and instance_dir.exists():

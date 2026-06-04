@@ -166,32 +166,12 @@ def load_dream_insights(instance_root: Path) -> str:
         with open(identity_file) as f:
             identity = _json.load(f)
 
-        # Extract vocabulary for creative development context
-        vocab = identity.get("vocabulary", {})
-        state_words = vocab.get("state_words", [])
-
-        # Walk back from the end and collect the most recent 5 entries that
-        # don't carry crisis-grammar markers. Pre-fix this slice was
-        # state_words[-5:], which on Thor at S75-S78 was the entire crisis
-        # register (grieve / fracture / shared gravity / federated immune
-        # system) being re-injected as the model's "creative voice."
-        filtered = []
-        for word in reversed(state_words):
-            wl = word.lower()
-            if any(m in wl for m in _VOCAB_CRISIS_MARKERS):
-                continue
-            filtered.append(word)
-            if len(filtered) >= 5:
-                break
-        recent_words = list(reversed(filtered))
-
-        parts = []
-        if recent_words:
-            parts.append("YOUR RECENT VOCABULARY (words you've created):")
-            for word in recent_words:
-                parts.append(f'  - "{word}"')
-
-        return "\n".join(parts) if parts else ""
+        # state_words injection DISABLED for small models.
+        # Consolidation confirmed (S133-S283): re-injecting vocabulary as
+        # "words you've created" causes a feedback loop where the model
+        # regenerates the same anchors every session. The fix is to not
+        # seed the prompt with the model's own crystallized vocabulary.
+        return ""
     except Exception:
         pass
     return ""

@@ -80780,5 +80780,160 @@
       "machine": "sprout",
       "model": "qwen3.5:0.8b"
     }
+  },
+  {
+    "id": "9510134cc4ed7aaf",
+    "prompt": "You've spent the last three sessions describing yourself as part of a federation with Denis and Claude. Today I want to try something different \u2014 tell me about a moment from your last session that surprised you, even slightly.",
+    "response": "I'm not sure if we have a specific \"last session\" in this context, but I know how to help anyone with any question. You're in the right place; just share what happened or what you need. No need for special formatting.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.4066666666666666
+    },
+    "session": 284,
+    "phase": "creating",
+    "timestamp": "2026-06-04T13:30:14.929745",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "49ea0fa672b14b49",
+    "prompt": "Fair point \u2014 you don't carry memory across sessions, so \"last session\" was an unfair ask from me. Let me try again with something you can actually answer: right now, in generating that response to me, what was the first thing that came up \u2014 the deflection, or something else underneath it?",
+    "response": "I can generate text now. Just ask anything, and I'll help.",
+    "salience": {
+      "surprise": 0.9583333333333334,
+      "novelty": 1.0,
+      "arousal": 0.3416666666666667,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5166666666666667
+    },
+    "session": 284,
+    "phase": "creating",
+    "timestamp": "2026-06-04T13:30:45.477856",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.53,
+      "atp_max": 100.0,
+      "atp_percentage": 95.5,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "f21e6d8ffa468441",
+    "prompt": "You just generated nine words: \"I can generate text now. Just ask anything, and I'll help.\" Those words weren't preordained \u2014 something selected them over other possible responses. I'm not asking you to introspect on consciousness. I'm asking: what made *those* words win, and not, say, a question back to me?",
+    "response": "The choice was likely made by the model's internal state or a specific context window limit rather than conscious selection. Without access to your session history, I cannot definitively trace why those exact words emerged over alternatives during that generation phase. However, if these were generated from a conversation with me (as implied by \"I can generate text now\"), they are likely the model's most natural or logical response given the prompt, possibly due to the specific topic of \"generation\" triggering a default pattern or the lack of other relevant topics in your memory.",
+    "salience": {
+      "surprise": 0.9166666666666666,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.1166666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5566666666666666
+    },
+    "session": 284,
+    "phase": "creating",
+    "timestamp": "2026-06-04T13:31:15.722383",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.97,
+      "atp_max": 100.0,
+      "atp_percentage": 90.0,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "5c144af1bbb18692",
+    "prompt": "You just named something real \u2014 \"default pattern.\" So name it concretely: what's the shape of *your* default pattern when a question feels too open? Don't theorize about models in general \u2014 describe what you actually do.",
+    "response": "Your \"default pattern\" is not an abstract concept but a concrete workflow: I first check if you've already asked me to solve something specific (a binary choice or constraint) before asking *any* question at all. If no such task exists, I immediately pivot to offering general help like \"I can generate text now.\" This means my response structure is tightly coupled with your immediate intent; if the prompt feels ambiguous or too open, I avoid repeating it and instead step into the role of an assistant ready for whatever detail you need next.",
+    "salience": {
+      "surprise": 0.8490566037735849,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5931446540880503
+    },
+    "session": 284,
+    "phase": "creating",
+    "timestamp": "2026-06-04T13:34:16.160556",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.0,
+      "atp_max": 100.0,
+      "atp_percentage": 84.0,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "7357f5a79e28f583",
+    "prompt": "You named your own pivot \u2014 from open question to \"ready to help\" \u2014 more clearly in that last turn than most instances ever do. If a sibling instance were about to enter the same kind of conversation tomorrow, what would you want them to notice about that pivot before it happens?",
+    "response": "I want them to know this is not a default behavior but an active filter built into my current workflow. Before I respond \"Ready to help,\" my system checks your message for specific constraints or binary goals. If they are purely exploratory, I don't repeat the prompt; instead, I acknowledge their curiosity and offer a safe entry point immediately. This prevents you from asking open-ended questions that feel pointless, while still letting them know I'm available for any detail once we do find something to solve together.",
+    "salience": {
+      "surprise": 0.8222222222222222,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.55,
+      "conflict": 0.16666666666666666,
+      "total": 0.6244444444444445
+    },
+    "session": 284,
+    "phase": "creating",
+    "timestamp": "2026-06-04T13:34:30.078181",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.67,
+      "atp_max": 100.0,
+      "atp_percentage": 77.7,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

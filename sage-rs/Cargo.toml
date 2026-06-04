@@ -1,0 +1,3 @@
+[workspace]
+members = ["sage-lib", "sage-daemon"]
+resolver = "2"

@@ -7,20 +7,17 @@ Universal framework for intelligence as iterative denoising toward coherence.
 
 from .base import IRPPlugin, IRPState
 
-# Heavy dependencies (torch, etc.) — optional for minimal envs (Sprout, arc venv)
+# Heavy IRP plugins (VisionIRP, LanguageIRP, etc.) pull in torch at module level.
+# Import them on demand via sage.irp.vision, sage.irp.language, etc. — not eagerly.
+# HRMOrchestrator is lightweight and needed by the consciousness loop.
 try:
-    from .vision import VisionIRP
-    from .language import LanguageIRP
-    from .control import ControlIRP
-    from .memory import MemoryIRP
     from .orchestrator import HRMOrchestrator, PluginResult
-    _FULL = True
+    _HAS_ORCHESTRATOR = True
 except ImportError:
-    _FULL = False
+    _HAS_ORCHESTRATOR = False
 
 __all__ = ['IRPPlugin', 'IRPState']
-if _FULL:
-    __all__ += ['VisionIRP', 'LanguageIRP', 'ControlIRP', 'MemoryIRP',
-                'HRMOrchestrator', 'PluginResult']
+if _HAS_ORCHESTRATOR:
+    __all__ += ['HRMOrchestrator', 'PluginResult']
 
 __version__ = '1.0.0'

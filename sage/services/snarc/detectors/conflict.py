@@ -8,7 +8,18 @@ High conflict = suspicious, might need verification.
 import math
 import time as _time
 
-import torch
+
+_torch = None  # lazy-loaded
+
+def _get_torch():
+    global _torch
+    if _torch is None:
+        try:
+            import torch
+            _torch = torch
+        except ImportError:
+            _torch = False
+    return _torch if _torch is not False else None
 import numpy as np
 from typing import Dict, Any, List, Tuple
 from collections import defaultdict
@@ -148,8 +159,8 @@ class ConflictDetector:
         try:
             numeric = []
             for obs in buffer:
-                if isinstance(obs, torch.Tensor):
-                    numeric.append(float(torch.norm(obs).item()))
+                if _get_torch() is not None and isinstance(obs, _get_torch().Tensor):
+                    numeric.append(float(_get_torch().norm(obs).item()))
                 elif isinstance(obs, np.ndarray):
                     numeric.append(float(np.linalg.norm(obs)))
                 elif isinstance(obs, (int, float)):

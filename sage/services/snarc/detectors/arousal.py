@@ -7,7 +7,18 @@ High magnitude = high arousal (demands immediate attention).
 
 import time as _time
 
-import torch
+
+_torch = None  # lazy-loaded
+
+def _get_torch():
+    global _torch
+    if _torch is None:
+        try:
+            import torch
+            _torch = torch
+        except ImportError:
+            _torch = False
+    return _torch if _torch is not False else None
 import numpy as np
 from typing import Any, Dict
 from collections import deque
@@ -74,9 +85,9 @@ class ArousalDetector:
 
         Different computation based on data type
         """
-        if isinstance(data, torch.Tensor):
+        if _get_torch() is not None and isinstance(data, _get_torch().Tensor):
             # L2 norm for tensors
-            return float(torch.norm(data).item())
+            return float(_get_torch().norm(data).item())
 
         elif isinstance(data, np.ndarray):
             # L2 norm for arrays

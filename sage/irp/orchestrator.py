@@ -9,23 +9,25 @@ import asyncio
 import concurrent.futures
 from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
-try:
-    import torch
-except ImportError:
-    torch = None
+_torch = None  # lazy-loaded to avoid 128MB CUDA overhead at import time
+
+def _get_torch():
+    global _torch
+    if _torch is None:
+        try:
+            import torch
+            _torch = torch
+        except ImportError:
+            _torch = False
+    return _torch if _torch is not False else None
 import time
 import json
 from dataclasses import dataclass, field
 
 from .base import IRPPlugin, IRPState
 
-try:
-    from .vision import VisionIRP
-    from .language import LanguageIRP
-    from .control import ControlIRP
-    from .memory import MemoryIRP
-except ImportError:
-    VisionIRP = LanguageIRP = ControlIRP = MemoryIRP = None
+# Heavy IRP plugins import torch at module level — defer to runtime.
+VisionIRP = LanguageIRP = ControlIRP = MemoryIRP = None
 
 
 @dataclass
@@ -66,7 +68,8 @@ class HRMOrchestrator:
         self.max_workers = config.get('max_workers', 4)
         self.trust_update_rate = config.get('trust_update_rate', 0.1)
         self.telemetry_interval = config.get('telemetry_interval', 10)
-        self.device = config.get('device', 'cuda' if torch is not None and torch.cuda.is_available() else 'cpu')
+        _t = _get_torch()
+        self.device = config.get('device', 'cuda' if _t is not None and _t.cuda.is_available() else 'cpu')
         
         # Initialize plugins
         self.plugins = self._initialize_plugins()
@@ -89,41 +92,21 @@ class HRMOrchestrator:
         """Initialize all available IRP plugins."""
         plugins = {}
         
-        # Vision plugin
-        if self.config.get('enable_vision', True):
-            vision_config = {
-                **self.config.get('vision_config', {}),
-                'entity_id': 'vision_irp',
-                'device': self.device
-            }
-            plugins['vision'] = VisionIRP(vision_config)
-        
-        # Language plugin
-        if self.config.get('enable_language', True):
-            language_config = {
-                **self.config.get('language_config', {}),
-                'entity_id': 'language_irp',
-                'device': self.device
-            }
-            plugins['language'] = LanguageIRP(language_config)
-        
-        # Control plugin
-        if self.config.get('enable_control', True):
-            control_config = {
-                **self.config.get('control_config', {}),
-                'entity_id': 'control_irp',
-                'device': self.device
-            }
-            plugins['control'] = ControlIRP(control_config)
-        
-        # Memory plugin
-        if self.config.get('enable_memory', True):
-            memory_config = {
-                **self.config.get('memory_config', {}),
-                'entity_id': 'memory_irp',
-                'device': self.device
-            }
-            plugins['memory'] = MemoryIRP(memory_config)
+        _plugin_map = {
+            'vision': ('enable_vision', 'vision_config', '.vision', 'VisionIRP'),
+            'language': ('enable_language', 'language_config', '.language', 'LanguageIRP'),
+            'control': ('enable_control', 'control_config', '.control', 'ControlIRP'),
+            'memory': ('enable_memory', 'memory_config', '.memory', 'MemoryIRP'),
+        }
+        for name, (enable_key, cfg_key, mod_path, cls_name) in _plugin_map.items():
+            if self.config.get(enable_key, True):
+                try:
+                    mod = __import__(f'sage.irp{mod_path}', fromlist=[cls_name])
+                    cls = getattr(mod, cls_name)
+                    cfg = {**self.config.get(cfg_key, {}), 'entity_id': f'{name}_irp', 'device': self.device}
+                    plugins[name] = cls(cfg)
+                except ImportError as e:
+                    print(f"  [HRM] {name} plugin not available: {e}")
         
         # NeuTTS Air plugin for text-to-speech
         if self.config.get('enable_tts', True):

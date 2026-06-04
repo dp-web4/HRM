@@ -8,7 +8,18 @@ as dissimilarity to all past observations.
 
 import time as _time
 
-import torch
+
+_torch = None  # lazy-loaded
+
+def _get_torch():
+    global _torch
+    if _torch is None:
+        try:
+            import torch
+            _torch = torch
+        except ImportError:
+            _torch = False
+    return _torch if _torch is not False else None
 import numpy as np
 from typing import List, Any, Optional, Tuple
 from collections import deque
@@ -101,7 +112,7 @@ class NoveltyDetector:
             0.0 = completely different
             1.0 = identical
         """
-        if isinstance(current, torch.Tensor) and isinstance(past, torch.Tensor):
+        if _get_torch() is not None and isinstance(current, _get_torch().Tensor) and isinstance(past, _get_torch().Tensor):
             # Cosine similarity for tensors
             current_flat = current.flatten()
             past_flat = past.flatten()
@@ -110,7 +121,7 @@ class NoveltyDetector:
                 # Different shapes - not similar
                 return 0.0
 
-            cos_sim = torch.nn.functional.cosine_similarity(
+            cos_sim = _get_torch().nn.functional.cosine_similarity(
                 current_flat.unsqueeze(0),
                 past_flat.unsqueeze(0)
             ).item()

@@ -7,7 +7,18 @@ Simple version: learns associations between sensor patterns and outcomes.
 
 import time as _time
 
-import torch
+
+_torch = None  # lazy-loaded
+
+def _get_torch():
+    global _torch
+    if _torch is None:
+        try:
+            import torch
+            _torch = torch
+        except ImportError:
+            _torch = False
+    return _torch if _torch is not False else None
 import numpy as np
 from typing import Any, Dict, List, Optional, Tuple
 from collections import defaultdict
@@ -140,14 +151,14 @@ class RewardEstimator:
 
         Same as NoveltyDetector similarity computation
         """
-        if isinstance(current, torch.Tensor) and isinstance(past, torch.Tensor):
+        if _get_torch() is not None and isinstance(current, _get_torch().Tensor) and isinstance(past, _get_torch().Tensor):
             current_flat = current.flatten()
             past_flat = past.flatten()
 
             if current_flat.shape != past_flat.shape:
                 return 0.0
 
-            cos_sim = torch.nn.functional.cosine_similarity(
+            cos_sim = _get_torch().nn.functional.cosine_similarity(
                 current_flat.unsqueeze(0),
                 past_flat.unsqueeze(0)
             ).item()

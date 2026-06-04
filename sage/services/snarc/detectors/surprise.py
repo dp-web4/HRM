@@ -7,8 +7,19 @@ Learns to predict next sensor state, measures surprise as prediction error.
 
 import time as _time
 
-import torch
 import numpy as np
+
+_torch = None  # lazy-loaded on first use to avoid 128MB CUDA overhead
+
+def _get_torch():
+    global _torch
+    if _torch is None:
+        try:
+            import torch
+            _torch = torch
+        except ImportError:
+            _torch = False
+    return _torch if _torch is not False else None
 from typing import Dict, Any, Optional
 from collections import deque
 
@@ -42,7 +53,7 @@ class SimplePredictorEMA:
             self.prediction = observation
         else:
             # EMA update
-            if isinstance(observation, torch.Tensor):
+            if _get_torch() is not None and isinstance(observation, _get_torch().Tensor):
                 self.prediction = (
                     self.alpha * observation +
                     (1 - self.alpha) * self.prediction
@@ -137,9 +148,10 @@ class SurpriseDetector:
 
         Handles different data types (tensors, arrays, scalars)
         """
-        if isinstance(actual, torch.Tensor) and isinstance(predicted, torch.Tensor):
+        _t = _get_torch()
+        if _t is not None and isinstance(actual, _t.Tensor) and isinstance(predicted, _t.Tensor):
             # L2 distance for tensors
-            dist = torch.norm(actual - predicted).item()
+            dist = _t.norm(actual - predicted).item()
             return dist
 
         elif isinstance(actual, np.ndarray) and isinstance(predicted, np.ndarray):

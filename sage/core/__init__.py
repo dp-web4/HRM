@@ -16,10 +16,8 @@ except ImportError:
     SAGEKernel = None
     MetabolicState = None
 
-# Keep original unified implementation available
-try:
-    from .sage_unified import SAGEUnified
-except ImportError:
-    SAGEUnified = None
+# SAGEUnified (Rev 0 kernel) available via sage.core.sage_unified if needed.
+# Not imported eagerly — it pulls in torch at module level (~128MB CUDA libs).
+SAGEUnified = None
 
-__all__ = ['SAGEKernel', 'MetabolicState', 'SAGEUnified']
+__all__ = ['SAGEKernel', 'MetabolicState']

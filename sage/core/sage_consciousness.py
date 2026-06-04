@@ -39,10 +39,13 @@ import hashlib
 import json
 import numpy as np
 
-try:
-    import torch
-except ImportError:
-    torch = None
+def _get_torch():
+    """Lazy torch import — avoids loading 128MB of CUDA libs at module level."""
+    try:
+        import torch
+        return torch
+    except ImportError:
+        return None
 
 from sage.core.metabolic_controller import MetabolicController, MetabolicState
 from sage.core.circadian_clock import CircadianClock, CircadianPhase
@@ -447,7 +450,7 @@ class SAGEConsciousness:
             'max_workers': 4,
             'trust_update_rate': 0.1,
             'telemetry_interval': 10,
-            'device': 'cuda' if torch is not None and torch.cuda.is_available() else 'cpu',
+            'device': 'cuda' if ((_torch := _get_torch()) is not None and _torch.cuda.is_available()) else 'cpu',
             'circadian_period': 100,
             'salience_threshold': 0.15,
             # Plugin configurations

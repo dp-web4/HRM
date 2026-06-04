@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "machine": "nomad",
+  "model": "gemma4:e2b",
+  "model_family": "google-gemma",
+  "slug": "nomad-gemma4-e2b",
+  "created": "2026-06-03",
+  "lct_id": "nomad_sage_lct",
+  "backend": "ollama",
+  "device_hint": "cuda",
+  "has_training_track": false,
+  "has_lora": false,
+  "encryption_enabled": false,
+  "previous_instance": "nomad-gemma3-4b.archive-20260603",
+  "previous_session_count": 172,
+  "migration_notes": "Migrated 2026-06-03 from gemma3:4b \u2192 gemma4:e2b per fleetwide policy alignment (sweep model = raising model). Prior 172 sessions archived. CBP simultaneously moved to gemma3:4b to preserve fleet model diversity. dp directive 2026-06-03."
+}

@@ -1,5 +1,6 @@
 mod ollama;
 mod consciousness;
+mod federation;
 
 use std::sync::Arc;
 use std::time::Instant;
@@ -18,6 +19,7 @@ use tracing::info;
 
 use sage_lib::experience::buffer::ExperienceBuffer;
 use sage_lib::federation::fleet::FleetRegistry;
+use sage_lib::federation::peer_trust::PeerTrustTracker;
 use sage_lib::metabolic::controller::{CycleData, MetabolicController, MetabolicState};
 use sage_lib::snarc::arousal::ArousalDetector;
 use sage_lib::snarc::conflict::ConflictDetector;
@@ -27,6 +29,8 @@ use sage_lib::snarc::surprise::SurpriseDetector;
 use sage_lib::snarc::temporal;
 
 use crate::consciousness::{ConsciousnessHandle, ConsciousnessLoop};
+use crate::federation::client::PeerClient;
+use crate::federation::monitor::PeerMonitor;
 use crate::ollama::client::{ChatMessage, OllamaClient};
 
 struct AppState {
@@ -39,6 +43,8 @@ struct AppState {
     consciousness: ConsciousnessHandle,
     ollama: OllamaClient,
     fleet: Option<FleetRegistry>,
+    peer_client: Option<PeerClient>,
+    peer_states: Option<Arc<Mutex<std::collections::HashMap<String, federation::monitor::PeerState>>>>,
     started: Instant,
     model: String,
 }
@@ -136,6 +142,12 @@ struct PeerInfo {
     model: String,
     device: String,
     hardware: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    online: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    latency_ms: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    metabolic_state: Option<String>,
 }
 
 #[derive(Serialize)]
@@ -145,9 +157,32 @@ struct PeersResponse {
     fleet_version: u32,
 }
 
+#[derive(Deserialize)]
+struct DelegateRequest {
+    target: String,
+    message: String,
+    #[serde(default)]
+    conversation_id: Option<String>,
+}
+
+#[derive(Serialize)]
+struct DelegateResponse {
+    success: bool,
+    target: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    response: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    metabolic_state: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    latency_ms: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    error: Option<String>,
+}
+
 const PORT: u16 = 8760;
 const FLEET_JSON: &str = "/home/sprout/ai-workspace/SAGE/sage/federation/fleet.json";
 const EXPERIENCE_PATH: &str = "/home/sprout/ai-workspace/SAGE/sage/instances/sprout-qwen3.5-0.8b/experience_buffer_rs.jsonl";
+const TRUST_PATH: &str = "/home/sprout/ai-workspace/SAGE/sage/instances/sprout-qwen3.5-0.8b/peer_trust_rs.json";
 
 // --- Handlers ---
 
@@ -168,7 +203,7 @@ async fn status(State(state): State<Arc<AppState>>) -> Json<StatusResponse> {
     let ctrl = state.metabolic.lock().await;
     Json(StatusResponse {
         daemon: "sage-daemon",
-        sprint: "4 — consciousness loop",
+        sprint: "5 — federation networking",
         snarc_detectors: vec!["surprise", "novelty", "arousal", "reward", "conflict"],
         half_lives: temporal::DEFAULT_HALF_LIVES.to_vec(),
         metabolic_state: ctrl.current_state.as_str(),
@@ -282,15 +317,30 @@ async fn stream_chat(
 async fn peers(State(state): State<Arc<AppState>>) -> Json<PeersResponse> {
     let (self_machine, peer_list, version) = match &state.fleet {
         Some(fleet) => {
+            let live_states = match &state.peer_states {
+                Some(ps) => Some(ps.lock().await),
+                None => None,
+            };
+
             let peers: Vec<PeerInfo> = fleet.get_peers()
                 .into_iter()
-                .map(|(name, info)| PeerInfo {
-                    name: name.to_string(),
-                    gateway_url: format!("http://{}:{}", info.gateway_host, info.gateway_port),
-                    pool: info.pool.clone(),
-                    model: info.model_default.clone(),
-                    device: info.device.clone(),
-                    hardware: info.hardware.clone(),
+                .map(|(name, info)| {
+                    let (online, latency, metabolic) = live_states.as_ref()
+                        .and_then(|s| s.get(name))
+                        .map(|ps| (Some(ps.online), ps.latency_ms, ps.metabolic_state.clone()))
+                        .unwrap_or((None, None, None));
+
+                    PeerInfo {
+                        name: name.to_string(),
+                        gateway_url: format!("http://{}:{}", info.gateway_host, info.gateway_port),
+                        pool: info.pool.clone(),
+                        model: info.model_default.clone(),
+                        device: info.device.clone(),
+                        hardware: info.hardware.clone(),
+                        online,
+                        latency_ms: latency,
+                        metabolic_state: metabolic,
+                    }
                 })
                 .collect();
             ("sprout".to_string(), peers, fleet.version())
@@ -303,6 +353,33 @@ async fn peers(State(state): State<Arc<AppState>>) -> Json<PeersResponse> {
         peers: peer_list,
         fleet_version: version,
     })
+}
+
+async fn delegate(
+    State(state): State<Arc<AppState>>,
+    Json(req): Json<DelegateRequest>,
+) -> Result<Json<DelegateResponse>, (StatusCode, String)> {
+    let client = state.peer_client.as_ref()
+        .ok_or_else(|| (StatusCode::SERVICE_UNAVAILABLE, "federation not configured".to_string()))?;
+
+    match client.send_message(&req.target, &req.message, req.conversation_id.as_deref()).await {
+        Ok(result) => Ok(Json(DelegateResponse {
+            success: true,
+            target: req.target,
+            response: Some(result.response),
+            metabolic_state: result.metabolic_state,
+            latency_ms: Some(result.latency_ms),
+            error: None,
+        })),
+        Err(e) => Ok(Json(DelegateResponse {
+            success: false,
+            target: req.target,
+            response: None,
+            metabolic_state: None,
+            latency_ms: None,
+            error: Some(e),
+        })),
+    }
 }
 
 fn run_simulation(cycles: u64) {
@@ -366,6 +443,7 @@ async fn main() {
 
     let (shutdown_tx, shutdown_rx) = tokio::sync::watch::channel(false);
 
+    // Consciousness loop
     let (msg_tx, msg_rx) = tokio::sync::mpsc::channel(64);
     let consciousness_handle = ConsciousnessHandle::new(msg_tx);
 
@@ -385,6 +463,27 @@ async fn main() {
         consciousness_loop.run(loop_shutdown).await;
     });
 
+    // Federation: peer monitor + client
+    let trust = Arc::new(Mutex::new(
+        PeerTrustTracker::with_defaults(std::path::Path::new(TRUST_PATH))
+    ));
+
+    let (peer_client, peer_states) = if let Some(ref fleet) = fleet {
+        let monitor = PeerMonitor::new(fleet.clone(), trust.clone(), 30);
+        let peer_states = monitor.states();
+        let client = PeerClient::new(fleet.clone(), trust.clone(), peer_states.clone(), "sprout");
+
+        let monitor_shutdown = shutdown_rx.clone();
+        tokio::spawn(async move {
+            monitor.run(monitor_shutdown).await;
+        });
+
+        info!("federation: peer monitor + client active");
+        (Some(client), Some(peer_states))
+    } else {
+        (None, None)
+    };
+
     let state = Arc::new(AppState {
         surprise: Mutex::new(SurpriseDetector::with_defaults()),
         novelty: Mutex::new(NoveltyDetector::with_defaults()),
@@ -395,6 +494,8 @@ async fn main() {
         consciousness: consciousness_handle,
         ollama: OllamaClient::default_local(&model),
         fleet,
+        peer_client,
+        peer_states,
         started: Instant::now(),
         model: model.clone(),
     });
@@ -407,11 +508,12 @@ async fn main() {
         .route("/chat", post(chat))
         .route("/stream", post(stream_chat))
         .route("/peers", get(peers))
+        .route("/delegate", post(delegate))
         .with_state(state);
 
     let addr = format!("0.0.0.0:{PORT}");
-    info!("sage-daemon listening on {addr} (model={model}, consciousness=active)");
-    println!("sage-daemon listening on {addr} (model={model}, consciousness=active)");
+    info!("sage-daemon listening on {addr} (model={model}, consciousness=active, federation=active)");
+    println!("sage-daemon listening on {addr} (model={model}, consciousness=active, federation=active)");
 
     let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
 

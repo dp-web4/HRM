@@ -30,6 +30,7 @@ struct FleetManifest {
 }
 
 /// Immutable registry of SAGE fleet members loaded from fleet.json.
+#[derive(Clone)]
 pub struct FleetRegistry {
     self_machine: String,
     machines: HashMap<String, MachineInfo>,

@@ -1,11 +1,11 @@
 {
-  "last_shutdown": 1780668004.750422,
+  "last_shutdown": 1780689612.458911,
   "machine": "cbp",
   "instance": "cbp-gemma3-4b",
-  "uptime_seconds": 21596.332304000854,
-  "cycles_completed": 180418,
-  "metabolic_state": "focus",
-  "atp_level": 36.11580231205559,
+  "uptime_seconds": 21605.220409154892,
+  "cycles_completed": 184761,
+  "metabolic_state": "wake",
+  "atp_level": 38.30302160726668,
   "message_stats": {
     "messages_submitted": 0,
     "messages_resolved": 0,
@@ -14,7 +14,7 @@
     "waiting": 0
   },
   "trust_weights": {
-    "language": 0.1,
+    "language": 0.0985,
     "control": 0.0,
     "memory": 0.0,
     "vision": 0.0

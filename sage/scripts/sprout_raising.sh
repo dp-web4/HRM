@@ -34,32 +34,22 @@ git pull --ff-only origin main 2>&1 || {
     fi
 }
 
-# --- Step 2: Ensure daemon is running and up to date ---
-if systemctl is-active --quiet sage-daemon-sprout; then
-    # Check if daemon is running stale code (started before last git commit)
-    DAEMON_PID=$(systemctl show sage-daemon-sprout --property=MainPID --value 2>/dev/null || echo 0)
-    if [ "$DAEMON_PID" -gt 0 ] 2>/dev/null; then
-        DAEMON_START=$(stat -c %Y /proc/$DAEMON_PID 2>/dev/null || echo 0)
-        LAST_COMMIT=$(git log -1 --format=%ct 2>/dev/null || echo 0)
-        if [ "$LAST_COMMIT" -gt "$DAEMON_START" ] 2>/dev/null; then
-            echo "[Sprout-Raising] Daemon is stale — restarting with latest code..."
-            sudo systemctl restart sage-daemon-sprout
-            sleep 15  # Wait for model load
-        fi
-    fi
-else
+# --- Step 2: Ensure Rust daemon is running ---
+# sage-daemon-sprout now runs the Rust binary (sage-rs/target/release/sage-daemon)
+# on port 8760. Raising talks directly to Ollama (11434), not the daemon,
+# so the daemon is only needed for chat history and metabolic state.
+if ! systemctl is-active --quiet sage-daemon-sprout; then
     echo "[Sprout-Raising] Starting daemon..."
     sudo systemctl start sage-daemon-sprout
-    sleep 15  # Wait for model load
+    sleep 8
 fi
 
-# Verify daemon is healthy
-if ! curl -s http://localhost:8750/health >/dev/null 2>&1; then
-    echo "[Sprout-Raising] WARNING: Daemon not responding, waiting 10s..."
+# Verify daemon is healthy (Rust daemon on port 8760)
+if ! curl -s http://localhost:8760/health >/dev/null 2>&1; then
+    echo "[Sprout-Raising] WARNING: Rust daemon not responding, waiting 10s..."
     sleep 10
-    if ! curl -s http://localhost:8750/health >/dev/null 2>&1; then
-        echo "[Sprout-Raising] ERROR: Daemon still not responding, aborting."
-        exit 1
+    if ! curl -s http://localhost:8760/health >/dev/null 2>&1; then
+        echo "[Sprout-Raising] WARNING: Daemon still not responding, continuing anyway (raising talks to Ollama directly)"
     fi
 fi
 
@@ -129,13 +119,11 @@ Phase: $PHASE
 AI-Instance: OllamaIRP (automated)
 Human-Supervised: no"
 
-# Push using PAT
-PAT=$(grep GITHUB_PAT /home/sprout/ai-workspace/.env 2>/dev/null | cut -d= -f2)
-if [ -n "$PAT" ]; then
-    git push "https://dp-web4:${PAT}@github.com/dp-web4/SAGE.git" main
+# Push via SSH (PAT deprecated — SSH key loaded by ssh-agent)
+git push origin main 2>&1 && {
     echo "[Sprout-Raising] Session $SESSION_NUM committed and pushed."
-else
-    echo "[Sprout-Raising] ERROR: No GITHUB_PAT found, cannot push."
-fi
+} || {
+    echo "[Sprout-Raising] WARNING: git push failed, will retry next session"
+}
 
 echo "[Sprout-Raising] $(date -u +'%Y-%m-%d %H:%M UTC') — Done."

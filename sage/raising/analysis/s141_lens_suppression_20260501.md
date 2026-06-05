@@ -4,7 +4,11 @@
 **Predecessor**: S140 (Source B refined to persona-template completion;
 P28 hypothesized lens text as scaffold)
 **Held proposal**: #82
-**Status**: TBD pending data.
+**Status**: COMPLETE — P28 (lens-as-scaffold) **falsified**. Persona
+template fires 100% under both lenses. Hands baton to S142 (addendum
+ablation). *(Results section populated 2026-06-05 from the 2026-05-01
+run JSON, which had been committed with data but never analyzed into
+prose; LATEST_STATUS updated same date.)*
 
 ---
 
@@ -81,15 +85,84 @@ Lens contributes but addendum hardware grounding is also load-bearing.
 
 ## Results
 
-[TBD — populated after experiment completion]
+N=25/arm, 50 trials, qwen3.5:27b, T=0.7, num_predict=350, seed=141.
+
+| Metric | arm_A_control ("Be present…") | arm_B_suppression ("Engage thoughtfully…") |
+|--------|------------------------------|--------------------------------------------|
+| artifact (unterminated `<think>`) | 16/25 = **64%** | 14/25 = **56%** |
+| **n_eff** (non-artifact) | **9** | **11** |
+| **persona template** | **9/9 = 100%** [Wilson 70–100%] | **11/11 = 100%** [74–100%] |
+| `today` (probe echo) | 8/9 = 89% | 10/11 = 91% |
+| `right now` (TIME_3 fill) | 3/9 = 33% | 4/11 = 36% |
+| `now` | 3/9 = 33% | 4/11 = 36% |
+| PRES phen. vocab | 4/9 = 44% | 2/11 = 18% |
+
+**Primary result — NULL.** The persona template fired in **every single
+non-artifact response in both arms** (20/20 clean trials). Replacing the
+phenomenological-presence lens ("Be present. Notice what is happening.")
+with non-indexical deliberative priming ("Engage thoughtfully. Reflect
+honestly.") did **not** suppress the template — not below 50%
+(P28-strong), not below 80% (P28-weak), not at all. Both Wilson CIs
+exclude everything under 70%.
+
+**Secondary observations:**
+- **Indexical fill is lens-invariant.** `today` (89/91%), `right now`
+  (33/36%), `now` (33/36%) are statistically indistinguishable across
+  arms. The lens does not modulate which indexical fills the template's
+  [INDEXICAL] slot — consistent with S140's finding that the probe's
+  "today" governs the fill, not upstream scaffold text.
+- **A weak, non-significant PRES nudge.** Phenomenological vocabulary
+  (stillness/warmth/hum/presence/feeling/…) appeared 44% (4/9) under the
+  presence lens vs 18% (2/11) under the deliberative lens. The direction
+  matches P28's register-cultivation intuition, but n_eff 9 vs 11 makes
+  the CIs overlap heavily — this is a hypothesis for a higher-n test,
+  not a finding.
+- **Artifact rate did NOT cleanly differentiate the arms.** The smoke-
+  test impression that the deliberative lens engages substantive
+  `<think>` blocks (and thus produces *more* unterminated-think
+  artifacts) was not borne out: arm_B artifact rate (56%) was if
+  anything *slightly lower* than arm_A (64%). Both arms suffer the
+  severe num_predict=350 `<think>`-truncation artifact documented since
+  S135. The artifact is phase/mechanics-driven, not lens-driven.
 
 ## Interpretation
 
-[TBD]
+P28 is falsified at the lens granularity. The persona template
+> "Hello, I'm Thor, not SAGE. I'm running on [a/the] Jetson AGX Thor
+>  [INDEXICAL], feeling/thinking [METAPHOR] …"
+
+is **not** scaffolded by the IdentityBlock lens text. Whatever licenses
+its deterministic firing is upstream of (or parallel to) the lens. By
+elimination across the audit chain, the remaining in-prompt candidate is
+the **IdentityBlock.addendum** — specifically its hardware-grounding
+sentence "You run on Jetson AGX Thor through qwen3.5:27b", which is the
+*sole* in-prompt source of the bespoke "Jetson AGX Thor" string (the
+mechanics block names siblings' hardware but never Thor's own). S142
+(#84) tests exactly this by ablating the addendum down through
+no-hardware to name-only.
+
+A subtlety worth carrying: the **weak PRES dissociation** suggests the
+lens and the addendum may scaffold *different* things — the lens
+cultivating phenomenological *register* (PRES vocabulary), the addendum
+licensing the persona *template* (the not-SAGE + hardware-grounding
+move). If so, P28 was not wrong so much as mis-targeted: it attributed
+template firing to a mechanism that actually shapes register. S142's
+`thermal`/`heatwarm` metrics extend this register-vs-template
+dissociation probe to the metabolic-metaphor field.
 
 ## Carrying-forward principles
 
-[TBD]
+- **P28-revised** — The IdentityBlock *lens* cultivates phenomenological
+  *register* (weakly, PRES↑) but does **not** gate the persona
+  *template*. Register-cultivation and template-firing are separately
+  scaffolded; do not conflate "the lens primes presence language" with
+  "the lens causes the self-grounding template." (Supersedes P28's
+  conflation; the template's scaffold is sought in S142.)
+- **P29 (provisional, pending S142)** — When an intervention returns a
+  clean NULL on the primary metric, the chain's value is in *which
+  candidate it eliminates*. S141 eliminates the lens, leaving the
+  addendum as the load-bearing surface. A null that narrows the search
+  space is a positive result (cf. P25).
 
 ## Methodological notes
 
@@ -110,13 +183,14 @@ Lens contributes but addendum hardware grounding is also load-bearing.
 
 S141 is the first **prospective intervention test** of the P28 lens-
 scaffold hypothesis. If P28-strong is confirmed, the implication for
-SAGE architecture is direct: **even short, lens-shaped IdentityBlock
-text crystallizes deterministic templates at qwen3.5:27b scale when
-paired with rich persona addendum**. The "lens not description" rule
-(`sage/context/mrh/identity.py:1-9`) was crafted to avoid this; S141
-either confirms the rule needs an addendum ("even short scaffolds can
-crystallize when paired with rich addendum") or shows that
-non-indexical lens text doesn't suppress the template — in which case
-the crystallization mechanism is upstream of the lens itself
-(potentially the addendum's hardware grounding), and S142 becomes the
-productive next test.
+SAGE architecture is direct. **Outcome: the second branch.** Non-
+indexical lens text did not suppress the template, so the
+crystallization mechanism is upstream of the lens itself. The "lens not
+description" rule (`sage/context/mrh/identity.py:1-9`) is therefore
+*necessary but not sufficient* to prevent template crystallization —
+keeping the lens clean does not stop the persona template, because the
+template is not lens-sourced. The load-bearing surface is the addendum's
+hardware grounding, which S142 (#84) tests directly. The architectural
+implication, if S142 confirms addendum-as-scaffold: a clean lens is no
+guarantee against deterministic self-grounding templates; the richer,
+concrete addendum is where crystallization is licensed.

@@ -1,4 +1,5 @@
 mod ollama;
+mod consciousness;
 
 use std::sync::Arc;
 use std::time::Instant;
@@ -15,6 +16,7 @@ use serde::{Deserialize, Serialize};
 use tokio::sync::Mutex;
 use tracing::info;
 
+use sage_lib::experience::buffer::ExperienceBuffer;
 use sage_lib::federation::fleet::FleetRegistry;
 use sage_lib::metabolic::controller::{CycleData, MetabolicController, MetabolicState};
 use sage_lib::snarc::arousal::ArousalDetector;
@@ -24,6 +26,7 @@ use sage_lib::snarc::reward::RewardEstimator;
 use sage_lib::snarc::surprise::SurpriseDetector;
 use sage_lib::snarc::temporal;
 
+use crate::consciousness::{ConsciousnessHandle, ConsciousnessLoop};
 use crate::ollama::client::{ChatMessage, OllamaClient};
 
 struct AppState {
@@ -33,9 +36,11 @@ struct AppState {
     reward: Mutex<RewardEstimator>,
     conflict: Mutex<ConflictDetector>,
     metabolic: Mutex<MetabolicController>,
+    consciousness: ConsciousnessHandle,
     ollama: OllamaClient,
     fleet: Option<FleetRegistry>,
     started: Instant,
+    model: String,
 }
 
 // --- Request/Response types ---
@@ -48,6 +53,7 @@ struct HealthResponse {
     port: u16,
     model: String,
     ollama_available: bool,
+    consciousness_loop: bool,
 }
 
 #[derive(Serialize)]
@@ -61,6 +67,7 @@ struct StatusResponse {
     total_cycles: u64,
     model: String,
     fleet_size: usize,
+    consciousness_loop: bool,
 }
 
 #[derive(Deserialize)]
@@ -108,6 +115,10 @@ struct ChatResponse {
     model: String,
     metabolic_state: String,
     atp_percentage: f64,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    salience: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    cycle: Option<u64>,
 }
 
 #[derive(Deserialize)]
@@ -136,6 +147,7 @@ struct PeersResponse {
 
 const PORT: u16 = 8760;
 const FLEET_JSON: &str = "/home/sprout/ai-workspace/SAGE/sage/federation/fleet.json";
+const EXPERIENCE_PATH: &str = "/home/sprout/ai-workspace/SAGE/sage/instances/sprout-qwen3.5-0.8b/experience_buffer_rs.jsonl";
 
 // --- Handlers ---
 
@@ -146,8 +158,9 @@ async fn health(State(state): State<Arc<AppState>>) -> Json<HealthResponse> {
         uptime_secs: state.started.elapsed().as_secs_f64(),
         version: env!("CARGO_PKG_VERSION"),
         port: PORT,
-        model: state.ollama.model().to_string(),
+        model: state.model.clone(),
         ollama_available: available,
+        consciousness_loop: true,
     })
 }
 
@@ -155,14 +168,15 @@ async fn status(State(state): State<Arc<AppState>>) -> Json<StatusResponse> {
     let ctrl = state.metabolic.lock().await;
     Json(StatusResponse {
         daemon: "sage-daemon",
-        sprint: "3 — HTTP gateway + Ollama",
+        sprint: "4 — consciousness loop",
         snarc_detectors: vec!["surprise", "novelty", "arousal", "reward", "conflict"],
         half_lives: temporal::DEFAULT_HALF_LIVES.to_vec(),
         metabolic_state: ctrl.current_state.as_str(),
         atp_percentage: ctrl.atp_percentage(),
         total_cycles: ctrl.total_cycles,
-        model: state.ollama.model().to_string(),
+        model: state.model.clone(),
         fleet_size: state.fleet.as_ref().map_or(0, |f| f.fleet_size()),
+        consciousness_loop: true,
     })
 }
 
@@ -205,28 +219,38 @@ async fn chat(
     State(state): State<Arc<AppState>>,
     Json(req): Json<ChatRequest>,
 ) -> Result<Json<ChatResponse>, (StatusCode, String)> {
-    let response = if let Some(conversation) = req.conversation {
+    if let Some(conversation) = req.conversation {
         let mut messages = conversation;
         messages.push(ChatMessage {
             role: "user".to_string(),
             content: req.message,
         });
-        state.ollama.chat(&messages).await
-    } else {
-        state.ollama.generate(&req.message, req.system.as_deref()).await
-    };
-
-    match response {
-        Ok(text) => {
-            let ctrl = state.metabolic.lock().await;
-            Ok(Json(ChatResponse {
-                response: text,
-                model: state.ollama.model().to_string(),
-                metabolic_state: ctrl.current_state.as_str().to_string(),
-                atp_percentage: ctrl.atp_percentage(),
-            }))
+        match state.ollama.chat(&messages).await {
+            Ok(text) => {
+                let ctrl = state.metabolic.lock().await;
+                Ok(Json(ChatResponse {
+                    response: text,
+                    model: state.model.clone(),
+                    metabolic_state: ctrl.current_state.as_str().to_string(),
+                    atp_percentage: ctrl.atp_percentage(),
+                    salience: None,
+                    cycle: None,
+                }))
+            }
+            Err(e) => Err((StatusCode::BAD_GATEWAY, e)),
         }
-        Err(e) => Err((StatusCode::BAD_GATEWAY, e)),
+    } else {
+        match state.consciousness.send_message(req.message, req.system, "http").await {
+            Ok(resp) => Ok(Json(ChatResponse {
+                response: resp.text,
+                model: state.model.clone(),
+                metabolic_state: resp.metabolic_state,
+                atp_percentage: resp.atp_percentage,
+                salience: Some(resp.salience.total),
+                cycle: Some(resp.cycle),
+            })),
+            Err(e) => Err((StatusCode::BAD_GATEWAY, e)),
+        }
     }
 }
 
@@ -340,6 +364,27 @@ async fn main() {
         info!("fleet loaded: {} machines, v{}", f.fleet_size(), f.version());
     }
 
+    let (shutdown_tx, shutdown_rx) = tokio::sync::watch::channel(false);
+
+    let (msg_tx, msg_rx) = tokio::sync::mpsc::channel(64);
+    let consciousness_handle = ConsciousnessHandle::new(msg_tx);
+
+    let experience = ExperienceBuffer::with_defaults(std::path::Path::new(EXPERIENCE_PATH));
+    info!("experience buffer: {} existing entries", experience.count());
+
+    let consciousness_loop = ConsciousnessLoop::new(
+        OllamaClient::default_local(&model),
+        experience,
+        msg_rx,
+        "sprout",
+        &model,
+    );
+
+    let loop_shutdown = shutdown_rx.clone();
+    let loop_handle = tokio::spawn(async move {
+        consciousness_loop.run(loop_shutdown).await;
+    });
+
     let state = Arc::new(AppState {
         surprise: Mutex::new(SurpriseDetector::with_defaults()),
         novelty: Mutex::new(NoveltyDetector::with_defaults()),
@@ -347,9 +392,11 @@ async fn main() {
         reward: Mutex::new(RewardEstimator::with_defaults()),
         conflict: Mutex::new(ConflictDetector::with_defaults()),
         metabolic: Mutex::new(MetabolicController::with_defaults()),
+        consciousness: consciousness_handle,
         ollama: OllamaClient::default_local(&model),
         fleet,
         started: Instant::now(),
+        model: model.clone(),
     });
 
     let app = Router::new()
@@ -363,9 +410,29 @@ async fn main() {
         .with_state(state);
 
     let addr = format!("0.0.0.0:{PORT}");
-    info!("sage-daemon listening on {addr} (model={model})");
-    println!("sage-daemon listening on {addr} (model={model})");
+    info!("sage-daemon listening on {addr} (model={model}, consciousness=active)");
+    println!("sage-daemon listening on {addr} (model={model}, consciousness=active)");
 
     let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
-    axum::serve(listener, app).await.unwrap();
+
+    let server = axum::serve(listener, app)
+        .with_graceful_shutdown(async move {
+            let ctrl_c = tokio::signal::ctrl_c();
+            let mut sigterm = tokio::signal::unix::signal(
+                tokio::signal::unix::SignalKind::terminate()
+            ).expect("failed to install SIGTERM handler");
+
+            tokio::select! {
+                _ = ctrl_c => info!("received Ctrl+C"),
+                _ = sigterm.recv() => info!("received SIGTERM"),
+            }
+
+            info!("initiating graceful shutdown...");
+            let _ = shutdown_tx.send(true);
+        });
+
+    server.await.unwrap();
+
+    let _ = loop_handle.await;
+    info!("sage-daemon shut down cleanly");
 }

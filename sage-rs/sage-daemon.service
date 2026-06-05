@@ -1,0 +1,17 @@
+[Unit]
+Description=SAGE Daemon (Rust)
+After=network.target ollama.service
+Wants=ollama.service
+
+[Service]
+Type=simple
+User=sprout
+WorkingDirectory=/home/sprout/ai-workspace/SAGE
+ExecStart=/home/sprout/ai-workspace/SAGE/sage-rs/target/release/sage-daemon
+Environment=SAGE_MODEL=qwen3.5:0.8b
+Environment=RUST_LOG=info
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

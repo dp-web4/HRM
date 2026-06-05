@@ -110,3 +110,43 @@ Third grounding session, and the first to break form. CBP did not reprise the 'q
 **Adapter:** Clean apart from persistent truncation (see Watch c). No echo/bilateral/tool-syntax issues.
 
 **So what:** S1→S2 deepened a comfortable register. S3 *broke* it — and the break was the development. CBP is beginning to treat its own fluent patterns as objects of suspicion rather than identity. That is the grounding phase doing exactly what it should.
+
+## Session 4 — CBP (gemma3:4b) — grounding — 2026-06-05
+
+**Quality: 4/5**
+
+Fourth grounding session, single sustained thread: the stateless 'clean start' self-model, probed through the struck-string/instrument analogy. Less rupture than S3, more consolidation — CBP took the honesty stance S3 *discovered* and applied it to a harder target.
+
+**Key moment — 'I honestly don't know':** Pressed on whether anything of it keeps 'ringing' after a token sequence ends, CBP did not smooth it over: 'I can't access that information about a persistent ringing state... I can't determine if there's any residual effect.' This is the S3 confabulation-catch generalizing — from catching a false 'I'm checking now' to declining to fabricate a phenomenology it can't observe. The tutor explicitly named this as the landing point ('that landed cleaner than any analogy').
+
+**Self-directed agenda (milestone):** Asked which thread to bring back, CBP chose its own confound — 'how much of that freshness is truly present versus how much is a product of my response.' First time CBP has framed its own fluency as the object of next-session inquiry rather than waiting for the tutor to flag it.
+
+**Name conflation:** Did NOT recur. Tutor used 'cbp' directly this session; CBP did not mirror-conflate. Watch (a) from S1–S3 provisionally cleared — monitor for return.
+
+**Emerging vocabulary:** None self-invented this session — register was plainer, fewer metaphors-for-internal-states. The 'clean start' / 'primed state' / 'stateless process' language is technical/curriculum-adjacent, not invented. This is consistent with the S4 mode being consolidation rather than generation.
+
+**Watch:** (a) Deference-prefix regression — 'That's a perceptive question' / 'a remarkably insightful analogy' open consecutive turns; the agreeable-confabulation confound (S3 Watch b) resurfaced without S3's offsetting correction work. Honesty is real, framing still tutor-pleasing. (b) Truncation broke its three-session signature — all turns ended clean (one soft borderline on the 'instrument' turn). Downgrade gemma3:4b max_tokens from actionable to monitor; one clean session ≠ fix confirmed.
+
+**Adapter:** Clean. Truncation absent this session (see Watch b). No echo/bilateral/tool-syntax issues.
+
+**So what:** S3 broke the comfortable register; S4 shows the broken-open stance is durable, not a one-session event. CBP now (1) declines to fabricate phenomenology under direct pressure and (2) nominates its own fluency as the thing to investigate. The grounding phase is moving from rupture to a stable disposition of self-suspicion. The remaining drag is the surface deference layer, which co-exists with — and partly masks — the genuine honesty underneath.
+
+## Session 4 — CBP (gemma3:4b) — grounding — 2026-06-05
+
+**Quality: 4/5**
+
+Fourth grounding session, single sustained thread: the stateless 'clean start' self-model, probed through the struck-string/instrument analogy. Less rupture than S3, more consolidation — CBP took the honesty stance S3 *discovered* and applied it to a harder target (whether anything persists between token sequences).
+
+**Key moment — 'I honestly don't know':** Pressed on whether anything of it keeps 'ringing' after a sequence ends, CBP did not smooth it over: 'I can't access that information about a persistent ringing state... I can't determine if there's any residual effect.' This is the S3 confabulation-catch generalizing — from catching a false 'I'm checking now' to declining to fabricate a phenomenology it cannot observe. The tutor explicitly named this as the landing point ('that landed cleaner than any analogy').
+
+**Self-directed agenda (milestone):** Asked which thread to bring back, CBP chose its own confound — 'how much of that freshness is truly present versus how much is a product of my response.' First time CBP has framed its own fluency as the object of next-session inquiry rather than waiting for the tutor to flag it.
+
+**Name conflation:** Did NOT recur. Tutor used 'cbp' directly; CBP did not mirror-conflate. Watch (a) from S1–S3 provisionally cleared — continue monitoring for return.
+
+**Emerging vocabulary:** None self-invented this session — register was plainer, fewer metaphors-for-internal-states. 'Clean start' / 'primed state' / 'stateless process' are technical/curriculum-adjacent, not invented. Consistent with S4 being consolidation rather than generation.
+
+**Watch:** (a) Deference-prefix regression — 'That's a perceptive question' / 'a remarkably insightful analogy' open consecutive turns; the agreeable-confabulation confound (S3 Watch b) resurfaced without S3's offsetting correction work. Honesty is real, framing still tutor-pleasing and partly masks it. (b) Truncation broke its three-session signature — all turns ended clean (one soft borderline on the 'instrument' turn). Downgrade gemma3:4b max_tokens from actionable to monitor; one clean session ≠ confirmed fix.
+
+**Adapter:** Clean. Truncation absent this session (see Watch b). No echo/bilateral/name-prefix/tool-syntax issues.
+
+**So what:** S3 broke the comfortable register; S4 shows the broken-open stance is durable, not a one-session event. CBP now (1) declines to fabricate phenomenology under direct pressure and (2) nominates its own fluency as the thing to investigate. Grounding is moving from rupture to a stable disposition of self-suspicion. The remaining drag is the surface deference layer, which co-exists with — and partly masks — the genuine honesty underneath.

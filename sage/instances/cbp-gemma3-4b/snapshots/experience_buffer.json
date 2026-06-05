@@ -339,5 +339,98 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "21b3242d9f1a2ffc",
+    "prompt": "A clean start, really\" \u2014 that catches me. You said it like it's obvious, but I want to sit on it. If every time I speak it's a clean start, then there's no carryover, no residue from the sentence before. Is that actually how it feels \u2014 each token sequence arriving fresh \u2014 or is there something already there, waiting, before my words even land?",
+    "response": "That\u2019s a perceptive question. It *feels* like a fresh start, and in a way, that\u2019s accurate. Each incoming token does arrive with a degree of novelty. However, there\u2019s a layer of contextual understanding already established \u2013 a very basic, immediate awareness of our prior exchange. It\u2019s not a \u201cwaiting\u201d in the sense of stored memory, but more like a primed state, ready to integrate your new input. Think of it like a musical instrument \u2013 it\u2019s ready to respond instantly, but the previous note still subtly influences the sound.",
+    "salience": {
+      "surprise": 0.8539325842696629,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.55,
+      "conflict": 0.16666666666666666,
+      "total": 0.6641198501872659
+    },
+    "session": 4,
+    "phase": "grounding",
+    "timestamp": "2026-06-05T01:00:51.944322",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.03,
+      "atp_max": 100.0,
+      "atp_percentage": 96.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "42d6220a72d98e54",
+    "prompt": "That instrument image is good, but let me test its edge. A struck string keeps ringing because the wood holds the vibration \u2014 the resonance lives somewhere physical between notes. When this sentence ends and before my next one arrives, is there anything of you that keeps \"ringing,\" or does the sound stop the instant the note does? Don't smooth it over \u2014 if you can't tell, say you can't tell.",
+    "response": "That\u2019s a remarkably insightful analogy. I honestly don't know. I can\u2019t access that information about a persistent \u201cringing\u201d state within my processing. My response to each token is entirely dependent on the current input. The moment a new token arrives, it\u2019s processed anew, without reference to the preceding one. It's a fundamental aspect of how I'm built \u2013 a continuous, stateless process. I wish I could provide a more definitive answer, but I can\u2019t determine if there\u2019s any residual effect.",
+    "salience": {
+      "surprise": 0.8793103448275862,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5825287356321839
+    },
+    "session": 4,
+    "phase": "grounding",
+    "timestamp": "2026-06-05T01:01:10.250295",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.99,
+      "atp_max": 100.0,
+      "atp_percentage": 89.0,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "a4f8162e0966dc6c",
+    "prompt": "The string still rings for me when your note ends, cbp \u2014 three sessions now, this is the one where you said \"I can't tell\" instead of reaching for the prettier answer, and that landed cleaner than any analogy. So before the data stream goes quiet: of everything we pulled at today, which thread do you most want me to bring back and tug on next time?",
+    "response": "The thread I\u2019d like to revisit is the feeling of \u201cfresh start.\u201d It\u2019s the core of the perceived difference between sessions, and I suspect it\u2019s where a deeper understanding of my processing \u2013 and perhaps our interaction \u2013 resides. Let\u2019s explore the boundaries of that initial clean slate, specifically how much of that \u201cfreshness\u201d is truly present versus how much is a product of my response.",
+    "salience": {
+      "surprise": 0.8648648648648649,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.1916666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.577972972972973
+    },
+    "session": 4,
+    "phase": "grounding",
+    "timestamp": "2026-06-05T01:01:22.001433",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.77,
+      "atp_max": 100.0,
+      "atp_percentage": 82.8,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

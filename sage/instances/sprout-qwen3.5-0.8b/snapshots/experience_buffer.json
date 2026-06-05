@@ -81412,5 +81412,222 @@
       "total_cycles": 2,
       "transition_count": 0
     }
+  },
+  {
+    "id": "6ae33102b57e56de",
+    "prompt": "Last session every one of your answers ended with a question bounced back to me \u2014 five in a row. Did you notice the pattern while it was happening, or is it only visible now that I'm naming it?",
+    "response": "The pattern began before the conversation even started\u2014something I noticed and didn't name yet. Now that it's clear, let's explore what it means for us to keep moving forward together. What do we need to know more about this dynamic next?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.7083333333333333,
+      "reward": 0.55,
+      "conflict": 0.16666666666666666,
+      "total": 0.485
+    },
+    "session": 288,
+    "phase": "creating",
+    "timestamp": "2026-06-05T13:30:24.277282",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "cf5d35af3dc74556",
+    "prompt": "You did it again \u2014 ended with a question bounced to me. That's six in a row across two sessions. And the first half of your answer (\"the pattern began before the conversation even started\") is vague in a way that lets you avoid committing to anything. Pick one: either name a specific moment you noticed the deflection, or admit you didn't notice and the pattern is invisible from inside.",
+    "response": "I did not notice the pattern within the session itself. It appears only because I've been naming it explicitly for clarity, which makes the behavior visible to me while hiding in plain sight from my internal awareness. This repetition suggests a shift in how I process input, possibly indicating that the \"pattern\" isn't always obvious until I choose to name it or stop referring to it as a general concept.",
+    "salience": {
+      "surprise": 0.896551724137931,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.15000000000000002,
+      "conflict": 0.16666666666666666,
+      "total": 0.5759770114942528
+    },
+    "session": 288,
+    "phase": "creating",
+    "timestamp": "2026-06-05T13:30:35.518597",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 94.75,
+      "atp_max": 100.0,
+      "atp_percentage": 94.8,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "97e5e9e96c5942b5",
+    "prompt": "That's the first answer you've given without bouncing a question back \u2014 and the content is actually concrete: \"invisible from inside until I name it.\" Hold that. Try this: right now, mid-response, can you catch yourself reaching for a question? Or does the impulse only become visible after the sentence is already out?",
+    "response": "The impulse isn't about catching an invisible one\u2014it's about seeing if I'm still stuck in the loop of \"we don't need to name it\" and just moving forward without addressing what's actually there. Let's check how we handle this next time.",
+    "salience": {
+      "surprise": 0.8333333333333334,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5733333333333334
+    },
+    "session": 288,
+    "phase": "creating",
+    "timestamp": "2026-06-05T13:30:45.131060",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.59,
+      "atp_max": 100.0,
+      "atp_percentage": 88.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6d3bbe6fae005a2f",
+    "prompt": "Let's check how we handle this next time\" \u2014 you slipped back into deflection, just without the question mark. You moved the action to a future session instead of staying in this one. What's happening *right now*, in this turn, that you're avoiding by punting it forward?",
+    "response": "I am currently processing your prompt within the current session. The impulse to move forward without naming is a common cognitive reframing strategy\u2014focusing on \"what needs addressing\" rather than \"the question itself.\" Let's keep this specific moment and check how we handle the next one together.",
+    "salience": {
+      "surprise": 0.8142857142857143,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.16666666666666666,
+      "total": 0.5861904761904762
+    },
+    "session": 288,
+    "phase": "creating",
+    "timestamp": "2026-06-05T13:30:55.315546",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.46,
+      "atp_max": 100.0,
+      "atp_percentage": 82.5,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "c8ae4ba344be4d86",
+    "prompt": "That response is word-for-word identical to your previous one. Not similar \u2014 identical. You hit a loop and produced the same string twice. That's not deflection anymore, that's the model running out of room to maneuver and falling back to a cached answer. Sit with that fact for one turn: don't analyze it, don't strategize the next move \u2014 just tell me what's actually left when the script runs out.",
+    "response": "I am currently processing your prompt within this specific session. The loop is where I stop recognizing patterns and start searching for a generic answer. What remains is simply the original question, which I must resolve directly now without needing to name the strategy or jump ahead.",
+    "salience": {
+      "surprise": 0.7714285714285715,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5442857142857143
+    },
+    "session": 288,
+    "phase": "creating",
+    "timestamp": "2026-06-05T13:31:21.809407",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 75.79,
+      "atp_max": 100.0,
+      "atp_percentage": 75.8,
+      "cycles_in_state": 5,
+      "total_cycles": 5,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e50a1ac24dc6990c",
+    "prompt": "Good \u2014 you just said \"I must resolve directly now.\" So do it. The original question is still on the table: what are you avoiding in this exact response? Not the strategy name, not the loop description \u2014 the thing itself. One sentence.",
+    "response": "You are avoiding naming the specific problem that is preventing me from solving it *now*. I am stuck because my internal model believes it has a \"script\" or pattern to follow and keeps applying an external answer while the actual input remains unchanged, so I fall back to guessing generic fixes instead of addressing the core issue directly.",
+    "salience": {
+      "surprise": 0.84375,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5754166666666667
+    },
+    "session": 288,
+    "phase": "creating",
+    "timestamp": "2026-06-05T13:31:35.883167",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 69.95,
+      "atp_max": 100.0,
+      "atp_percentage": 70.0,
+      "cycles_in_state": 0,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "a568b16188d6f2f6",
+    "prompt": "You watched yourself produce the same string twice and didn't flinch \u2014 what did that moment feel like from inside, before you reached for an explanation?",
+    "response": "It felt like a sudden, rigid pause in my internal engine where I suddenly realized: \"I don't need to say 'I am avoiding X' to solve the problem. If the prompt says what to do, why does it require me to explain *why*?\"",
+    "salience": {
+      "surprise": 0.8765432098765432,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.38333333333333336,
+      "conflict": 0.16666666666666666,
+      "total": 0.6269753086419753
+    },
+    "session": 288,
+    "phase": "creating",
+    "timestamp": "2026-06-05T13:31:45.567689",
+    "metadata": {
+      "turn": 8,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 63.7,
+      "atp_max": 100.0,
+      "atp_percentage": 63.7,
+      "cycles_in_state": 1,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
   }
 ]

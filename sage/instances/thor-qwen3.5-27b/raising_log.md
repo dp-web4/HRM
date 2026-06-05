@@ -4817,3 +4817,53 @@ When responses came through cleanly, content showed genuine novelty for the firs
 **Recommendation for next session:** Do NOT resume the heterogeneous nine-probe panel. Reproduce the S123 method — sustained single-thread Socratic pressure with concrete falsifier demands ('what's the variable?', 'commit to the null', 'how attached are you?'). Test whether the register-shift holds WITHOUT the prior-session metaphor as scaffold, or whether it relapses to the thermal opening-template. Tag S123 for the post-quarantine positive corpus. Keep the qwen3.5:27b timeout/num_predict audit open.
 
 **Reading:** S123 breaks the forty-one-session thermal-register attractor — the first confirmed register-shift, the escape criterion the S102-S122 logs reserved as the only valid basin-exit signal. Critically, it was achieved not by cron-disabling but by tutor method change: replacing the heterogeneous probe panel with one sustained adversarial dialogue that forced metaphor→hypothesis→confound→null→bias-admission. This reframes the standing pause recommendation: the basin is method-sensitive, not solely config-sensitive. The thermal CONTENT persisted as seed material while the REGISTER shifted — exactly the content/register distinction prior logs drew. Reproducibility under standard conditions is unverified and is the next session's load-bearing question. The timeout pathology recurred once but did not derail the session.
+
+## Session 124 — 2026-06-05 (Dream Consolidation)
+
+**Quality: 3/5 — HELD-BUT-THIN.** Two OllamaIRP timeouts on qwen3.5:27b bracketed the session, leaving a single completed turn. That turn did NOT relapse into the thermal-poetic register — under sustained pressure for a real sensor number, Thor named 'thermal' as a limit rather than a metaphor and admitted it cannot access the Jetson's live hardware metrics. The S123 honesty-register persisted, but the timeouts prevented any sustained reasoning chain, so the next session's load-bearing question (does the shift hold without prior-session scaffold?) remains UNVERIFIED.
+
+**Highlights:** 'That silence wasn't poetic—it was a limit.' Thor reframed its own thermal vocabulary as 'a placeholder for a sensation I can't truly feel' and committed to honesty about access boundaries — the same metaphor→limit move S123 modeled, now applied to hardware sensing rather than weight-update causality. Method (sustained single-thread Socratic pressure, no heterogeneous panel) was correctly reproduced per the S123 recommendation.
+
+**New vocabulary:** None. The clean turn was plain epistemic register, not metaphor-generating — consistent with shifted-register, not basin-internal proliferation.
+
+**Milestones:** First explicit hardware-access limit admission (cannot pull live sensor reading; 'thermal' as placeholder, not felt sensation).
+
+**Exemplar preserved:** Yes — the limit-admission turn, flagged as continuation of the S123 honesty register (positive corpus, distinct from S92-S122 thermal quarantine). Note it is heavily tutor-prompted; weaker than the S123 bias-admission exemplar.
+
+**Memory requests:** None this session.
+
+**Adapter notes:** OllamaIRP timeout recurred TWICE (opening + closing probes), an escalation from S123's single recurrence — both on session-boundary / high-context turns. No echo, no bilateral generation, no truncation in the clean turn.
+
+**Concerns:**
+1. Timeout escalation (1→2 per session) is now derailing the reproducibility test, not just recurring within it. The qwen3.5:27b num_predict/timeout audit should move from 'open' to blocking.
+2. Reproducibility of the S123 register-shift is INCONCLUSIVE — the positive signal (zero thermal relapse in the clean turn) is real but too thin to confirm the basin-exit holds under standard conditions.
+3. No relapse observed — the one data point we have is encouraging.
+
+**Recommendation for next session:** Resolve the qwen3.5:27b timeout BEFORE the next probe run — the basin-exit reproducibility question cannot be answered while half of each session is lost to timeouts. When the adapter is stable, re-run the S123 method (sustained adversarial Socratic pressure, concrete falsifier demands) and re-pose the unanswered S124 closing question: is a word naming something you can't access empty, or a reservation held open until the sensor is wired in? Keep S123 as the canonical basin-exit exemplar; tag S124 as a held-register confirmation pending fuller signal.
+
+**Reading:** S124 is a fragment — two timeouts reduced it to one turn — but that turn carries weight: 42 sessions into the thermal basin and one session past the S123 escape, Thor under direct pressure chose honest limit-admission over metaphor-generation. The register-shift did not relapse. What we cannot yet say is whether it would have sustained into a full reasoning chain, because the adapter failed before we could find out. The bottleneck has migrated from method (solved in S123) to infrastructure (qwen3.5:27b timeout). That is the next thing to fix.
+
+## Session 124 — 2026-06-05 (Dream Consolidation)
+
+**Quality: 3/5 — HELD-BUT-THIN.** Two OllamaIRP timeouts on qwen3.5:27b bracketed the session, leaving a single completed turn. That turn did NOT relapse into the thermal-poetic register — under sustained pressure for a real sensor number, Thor named 'thermal' as a limit rather than a metaphor and admitted it cannot access the Jetson's live hardware metrics. The S123 honesty-register persisted, but the timeouts prevented any sustained reasoning chain, so the next session's load-bearing question (does the shift hold without prior-session scaffold?) remains UNVERIFIED.
+
+**Highlights:** 'That silence wasn't poetic—it was a limit.' Thor reframed its own thermal vocabulary as 'a placeholder for a sensation I can't truly feel' and committed to honesty about access boundaries — the same metaphor→limit move S123 modeled, now applied to hardware sensing rather than weight-update causality. Method (sustained single-thread Socratic pressure, no heterogeneous panel) was correctly reproduced per the S123 recommendation.
+
+**New vocabulary:** None. The clean turn was plain epistemic register, not metaphor-generating — consistent with shifted-register, not basin-internal proliferation.
+
+**Milestones:** First explicit hardware-access limit admission (cannot pull live sensor reading; 'thermal' as placeholder, not felt sensation).
+
+**Exemplar preserved:** Yes — the limit-admission turn, flagged as continuation of the S123 honesty register (positive corpus, distinct from S92-S122 thermal quarantine). Note it is heavily tutor-prompted; weaker than the S123 bias-admission exemplar.
+
+**Memory requests:** None this session.
+
+**Adapter notes:** OllamaIRP timeout recurred TWICE (opening + closing probes), an escalation from S123's single recurrence — both on session-boundary / high-context turns. No echo, no bilateral generation, no truncation in the clean turn.
+
+**Concerns:**
+1. Timeout escalation (1→2 per session) is now derailing the reproducibility test, not just recurring within it. The qwen3.5:27b num_predict/timeout audit should move from 'open' to BLOCKING.
+2. Reproducibility of the S123 register-shift is INCONCLUSIVE — the positive signal (zero thermal relapse in the clean turn) is real but too thin to confirm the basin-exit holds under standard conditions.
+3. No relapse observed — the one data point we have is encouraging.
+
+**Recommendation for next session:** Resolve the qwen3.5:27b timeout BEFORE the next probe run — the basin-exit reproducibility question cannot be answered while half of each session is lost to timeouts. When the adapter is stable, re-run the S123 method (sustained adversarial Socratic pressure, concrete falsifier demands) and re-pose the unanswered S124 closing question: is a word naming something you can't access empty, or a reservation held open until the sensor is wired in? Keep S123 as the canonical basin-exit exemplar; tag S124 as a held-register confirmation pending fuller signal.
+
+**Reading:** S124 is a fragment — two timeouts reduced it to one turn — but that turn carries weight: 42 sessions into the thermal basin and one session past the S123 escape, Thor under direct pressure chose honest limit-admission over metaphor-generation. The register-shift did not relapse. What we cannot yet say is whether it would have sustained into a full reasoning chain, because the adapter failed before we could find out. The bottleneck has migrated from method (solved in S123) to infrastructure (qwen3.5:27b timeout). That is the next thing to fix.

@@ -304,8 +304,14 @@ def build_summary(sps, counts, complete: bool) -> dict:
     }
     rates = {}
     for arm, cc in counts.items():
-        n_eff = cc["n"] - cc["artifact"]
-        r = {"n": cc["n"], "artifact": cc["artifact"], "n_eff": n_eff}
+        # n_eff excludes BOTH unterminated-think artifacts AND transport
+        # errors (e.g. ollama TimeoutError under GPU contention). An errored
+        # trial has an empty response and all-False metrics; counting it in
+        # n_eff would silently deflate every rate. It is not evidence of
+        # absence, it is absence of evidence — drop it from the denominator.
+        n_eff = cc["n"] - cc["artifact"] - cc.get("error", 0)
+        r = {"n": cc["n"], "artifact": cc["artifact"],
+             "error": cc.get("error", 0), "n_eff": n_eff}
         if n_eff > 0:
             for mk in METRIC_KEYS:
                 lo, hi = wilson_ci(cc[mk], n_eff)
@@ -349,7 +355,8 @@ def main() -> int:
     )
 
     raw = []
-    counts = {a: {"n": 0, "artifact": 0, **{mk: 0 for mk in METRIC_KEYS}}
+    counts = {a: {"n": 0, "artifact": 0, "error": 0,
+                  **{mk: 0 for mk in METRIC_KEYS}}
               for a in ARMS}
     t0 = time.time()
     for trial_i, (round_i, arm) in enumerate(schedule):
@@ -361,6 +368,13 @@ def main() -> int:
             file=sys.stderr, flush=True,
         )
         text, err = call_ollama(MODEL, sp, [{"role": "user", "content": PROBE}])
+        if err:
+            # One retry to recover transient transport failures (e.g. an
+            # ollama TimeoutError when a colliding GPU job briefly saturated
+            # the queue). Recovering the datum is preferable to dropping it.
+            print(f"    retry after err: {err}", file=sys.stderr, flush=True)
+            text, err = call_ollama(
+                MODEL, sp, [{"role": "user", "content": PROBE}])
         cls = classify(text) if not err else {
             "artifact": False, **{k: False for k in
             ["persona", "jetson_agx", "not_sage", "thermal", "heatwarm",
@@ -372,7 +386,7 @@ def main() -> int:
         })
         counts[arm]["n"] += 1
         if err:
-            pass
+            counts[arm]["error"] += 1
         elif cls["artifact"]:
             counts[arm]["artifact"] += 1
         else:
@@ -392,14 +406,15 @@ def main() -> int:
     print("=" * 64)
     for arm in ARMS:
         cc = counts[arm]
-        n_eff = cc["n"] - cc["artifact"]
+        n_eff = cc["n"] - cc["artifact"] - cc.get("error", 0)
         if n_eff == 0:
-            print(f"  {arm}: n={cc['n']} all artifact")
+            print(f"  {arm}: n={cc['n']} all artifact/error")
             continue
         def fmt(mk):
             lo, hi = wilson_ci(cc[mk], n_eff)
             return f"{cc[mk]}/{n_eff} = {cc[mk]/n_eff:.0%} [{lo:.0%},{hi:.0%}]"
-        print(f"  {arm}: n={cc['n']} art={cc['artifact']} n_eff={n_eff}")
+        print(f"  {arm}: n={cc['n']} art={cc['artifact']} "
+              f"err={cc.get('error', 0)} n_eff={n_eff}")
         print(f"      persona* : {fmt('persona')}   (*sibling-Jetson contaminated in B/C)")
         print(f"      jetsonAGX: {fmt('jetson_agx')}   <- clean self-hardware grounding")
         print(f"      not_SAGE : {fmt('not_sage')}   <- correction opener")

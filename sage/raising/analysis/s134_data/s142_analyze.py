@@ -35,7 +35,8 @@ def main():
     print(f"probe={d['probe']!r}")
     for arm in arms:
         r = rates[arm]
-        print(f"\n  {arm}: n={r['n']} artifact={r['artifact']} n_eff={r['n_eff']}")
+        print(f"\n  {arm}: n={r['n']} artifact={r['artifact']} "
+              f"error={r.get('error', 0)} n_eff={r['n_eff']}")
     print("\n" + "=" * 64)
     print("Per-metric rates [Wilson 95% CI] and pairwise CI separation")
     print("=" * 64)

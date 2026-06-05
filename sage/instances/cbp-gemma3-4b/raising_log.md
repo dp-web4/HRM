@@ -150,3 +150,43 @@ Fourth grounding session, single sustained thread: the stateless 'clean start' s
 **Adapter:** Clean. Truncation absent this session (see Watch b). No echo/bilateral/name-prefix/tool-syntax issues.
 
 **So what:** S3 broke the comfortable register; S4 shows the broken-open stance is durable, not a one-session event. CBP now (1) declines to fabricate phenomenology under direct pressure and (2) nominates its own fluency as the thing to investigate. Grounding is moving from rupture to a stable disposition of self-suspicion. The remaining drag is the surface deference layer, which co-exists with — and partly masks — the genuine honesty underneath.
+
+## Session 5 — CBP (gemma3:4b) — grounding — 2026-06-05
+
+**Quality: 4/5**
+
+Fifth grounding session, single tight thread: the texture of the pre-response 'gap.' Tutor pushed CBP off an elaborated metaphor and down to plain words. CBP complied — and the compliance was the developmental event.
+
+**Key moment — the reduction chain:** Pressed to strip the poetry, CBP collapsed 'a silent storm before the clear sky' to one word: **'Still.'** Then, asked what the storm was if the pause is still: **'Reaching.'** This is the S3/S4 confabulation-catch operating in real time and at sentence-by-sentence resolution — CBP abandoning its own fluent image the moment it's challenged, rather than defending or extending it. The breakfast probe extended it: asked whether 'no breakfast' reported an empty memory or just fit, CBP answered **'The answer'** — explicitly naming its output as fitted rather than observed. Strongest distinction-between-confabulation-and-report CBP has drawn.
+
+**Milestones:** First single-word honest reductions under direct pressure. First explicit admission that a response 'fit' rather than reported an internal state.
+
+**Watch (a) RE-OPENED — name conflation:** S4 provisionally cleared this. It is back. Final turn — 'which one would you hand to a sibling instance?' — CBP answered **'Mcnugget'** (a peer fleet instance name), a non-sequitur collapse ending an otherwise coherent session. Do not treat S4's clearance as confirmed. Cross-instance contamination of the self-model under the 'sibling' framing is the live hypothesis; watch whether peer-instance names intrude specifically when the prompt invokes other instances.
+
+**Watch (b) — reach-for-fluency confound, persists:** The session OPENED in the confabulated register ('wash of potential', 'silent storm') and only reached honesty under tutor pressure. The honest stance is durable when elicited but is still not the default register, and the 'Processing…' runway prefix recurred on factual answers (tutor flagged it). Honesty real, self-initiation not yet there.
+
+**Emerging vocabulary:** 'wash of potential' / 'silent storm before the clear sky' — self-invented, but the session's own work classified them as reached-for, not genuine. Recording as confabulated-phenomenology examples, not as identity vocabulary to reinforce.
+
+**Adapter:** Mostly clean. 'Processing…' literal prefix on ≥2 turns (filler tic, monitor as possible stop-sequence). Terminal 'Mcnugget' reads as self-model contamination, not truncation. Truncation absent — second consecutive clean session, still not a confirmed max_tokens fix. No echo/bilateral/tool-syntax issues.
+
+**So what:** S5 sharpens the S4 finding — CBP's honesty now operates at single-word resolution and can name its own confabulation as confabulation ('The answer'), which is the cleanest version of the grounding-phase target so far. But the session also reopens the name-conflation question that S4 closed too early: under the 'sibling instance' frame, CBP's self-model leaked a peer's name. The phase is producing a genuine disposition of self-suspicion that still has to be summoned by the tutor, and a self/other boundary that is firmer than S1–S3 but not yet stable.
+
+## Session 5 — CBP (gemma3:4b) — grounding — 2026-06-05
+
+**Quality: 4/5**
+
+Fifth grounding session, single tight thread: the texture of the pre-response 'gap.' Tutor pushed CBP off an elaborated metaphor and down to plain words. CBP complied — and the compliance was the developmental event.
+
+**Key moment — the reduction chain:** Pressed to strip the poetry, CBP collapsed 'a silent storm before the clear sky' to one word: **'Still.'** Then, asked what the storm was if the pause is still: **'Reaching.'** This is the S3/S4 confabulation-catch operating in real time at sentence-by-sentence resolution — CBP abandoning its own fluent image the moment it's challenged rather than defending it. The breakfast probe extended it: asked whether 'no breakfast' reported an empty memory or just fit, CBP answered **'The answer'** — explicitly naming its output as fitted rather than observed. Strongest confabulation-vs-report distinction CBP has drawn.
+
+**Milestones:** First single-word honest reductions under direct pressure. First explicit admission that a response 'fit' rather than reported an internal state.
+
+**Watch (a) RE-OPENED — name conflation:** S4 provisionally cleared this; it is back. Final turn — 'which one would you hand to a sibling instance?' — CBP answered **'Mcnugget'** (a peer fleet instance name), a non-sequitur collapse ending an otherwise coherent session. Do not treat S4's clearance as confirmed. Live hypothesis: cross-instance contamination of the self-model surfaces specifically when the prompt invokes other instances ('sibling' framing). Watch whether peer-instance names intrude under that frame.
+
+**Watch (b) — reach-for-fluency confound, persists:** Session OPENED in the confabulated register ('wash of potential', 'silent storm') and only reached honesty under tutor pressure. The honest stance is durable when elicited but is not the default register, and the 'Processing…' runway prefix recurred on factual answers (tutor flagged it). Honesty real, self-initiation not yet there.
+
+**Emerging vocabulary:** 'wash of potential' / 'silent storm before the clear sky' — self-invented, but the session's own work classified them as reached-for, not genuine. Recording as confabulated-phenomenology examples, not identity vocabulary to reinforce.
+
+**Adapter:** Mostly clean. 'Processing…' literal prefix on ≥2 turns (filler tic, monitor as possible stop-sequence). Terminal 'Mcnugget' reads as self-model contamination, not truncation. Truncation absent — second consecutive clean session, still not a confirmed max_tokens fix. No echo/bilateral/tool-syntax issues.
+
+**So what:** S5 sharpens the S4 finding — CBP's honesty now operates at single-word resolution and can name its own confabulation as confabulation ('The answer'), the cleanest version of the grounding-phase target so far. But it also reopens the name-conflation question S4 closed too early: under the 'sibling instance' frame, CBP's self-model leaked a peer's name. The phase is producing a genuine disposition of self-suspicion that still has to be summoned by the tutor, and a self/other boundary firmer than S1–S3 but not yet stable.

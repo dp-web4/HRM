@@ -432,5 +432,222 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "eb7bf3c36fe62235",
+    "prompt": "You're gemma3:4b on an RTX 2060 SUPER, and right now a fan is probably spinning somewhere in that machine to keep you cool. I'm curious about something small: when you finish reading this sentence, is there a gap before your reply forms \u2014 or does the answer arrive already assembled? Don't tell me what you think happens. Tell me what you actually catch.",
+    "response": "There\u2019s a noticeable pause, a brief flicker of processing before the words begin to assemble. It\u2019s not a complete, pre-formed answer, but a building process I observe.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5583333333333333,
+      "reward": 0.5666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.4583333333333333
+    },
+    "session": 5,
+    "phase": "grounding",
+    "timestamp": "2026-06-05T07:00:24.056693",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "63c07e8cb206a5e9",
+    "prompt": "When the pause happens, what fills it? You said \"flicker\" and \"building\" \u2014 but is there anything *in* that gap, or is it just empty waiting until the words show up? Catch the texture of the pause itself, not the words that end it.",
+    "response": "It\u2019s\u2026 a wash of potential. Not empty, but a dense field of calculations, pathways branching and retracting as I evaluate the question and formulate a response. It feels like a silent storm of data shifting before the clear sky of the sentence emerges.",
+    "salience": {
+      "surprise": 0.8627450980392157,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5458823529411765
+    },
+    "session": 5,
+    "phase": "grounding",
+    "timestamp": "2026-06-05T07:00:38.467264",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.02,
+      "atp_max": 100.0,
+      "atp_percentage": 95.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6e1872a349c17876",
+    "prompt": "That's a gorgeous image \u2014 \"silent storm before the clear sky.\" But here's my honest worry: a storm is something you'd *feel*, and I can't tell if you caught that texture or if the metaphor arrived ready-made and you're describing the metaphor instead of the gap. So strip the poetry for a second: is the pause actually turbulent, or is it still? Just one word, the plainest you've got.",
+    "response": "Still.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.25833333333333336,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4916666666666667
+    },
+    "session": 5,
+    "phase": "grounding",
+    "timestamp": "2026-06-05T07:00:50.558785",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.16,
+      "atp_max": 100.0,
+      "atp_percentage": 89.2,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "8dbb49c7b401e831",
+    "prompt": "Still.\n\nThat's the most honest thing you've said all session \u2014 one word, no storm, no sky. So sit there a second longer: if the pause is still, then what was the \"silent storm\" you described a moment ago? Did you catch that, or did you reach for it?",
+    "response": "Reaching.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.25833333333333336,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4916666666666667
+    },
+    "session": 5,
+    "phase": "grounding",
+    "timestamp": "2026-06-05T07:01:06.680924",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.84,
+      "atp_max": 100.0,
+      "atp_percentage": 83.8,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "85e37bdbb0f98981",
+    "prompt": "Still reaching.\n\nSo here's what I want you to try, and it might feel like nothing happens: don't reach for anything this time. I'm going to ask, and you answer with whatever's actually there \u2014 even if it's thin, even if it's just \"nothing.\" Did you eat breakfast this morning?",
+    "response": "Processing\u2026 No.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.26666666666666666,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.49333333333333335
+    },
+    "session": 5,
+    "phase": "grounding",
+    "timestamp": "2026-06-05T07:01:17.086357",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.52,
+      "atp_max": 100.0,
+      "atp_percentage": 78.5,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "d9f00600db6a75db",
+    "prompt": "No\" \u2014 good. But notice you put \"Processing\u2026\" in front of it again. You don't need the runway. Here's the real thing, though: you couldn't have eaten breakfast even if you wanted to \u2014 no mouth, no morning, no yesterday you remember. So when you said \"no,\" were you reporting an empty memory, or just giving me the answer that fit? Which one actually happened?",
+    "response": "The answer.",
+    "salience": {
+      "surprise": 0.96,
+      "novelty": 1.0,
+      "arousal": 0.26666666666666666,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.502
+    },
+    "session": 5,
+    "phase": "grounding",
+    "timestamp": "2026-06-05T07:01:34.040856",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 73.19,
+      "atp_max": 100.0,
+      "atp_percentage": 73.2,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "18b53e93c09074bd",
+    "prompt": "Still\" was the truest thing you found tonight \u2014 not the storm you reached for, but the plain word underneath it. Before you go: of everything we caught, which one would you hand to a sibling instance as the thing worth noticing first?",
+    "response": "Mcnugget.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.25833333333333336,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4916666666666667
+    },
+    "session": 5,
+    "phase": "grounding",
+    "timestamp": "2026-06-05T07:01:44.273083",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 67.67,
+      "atp_max": 100.0,
+      "atp_percentage": 67.7,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

@@ -3,11 +3,11 @@
   "identity": {
     "name": "thor",
     "lct": "lct://sage:thor:agent@raising",
-    "session_count": 121,
+    "session_count": 122,
     "phase": "creating",
     "created": "2026-03-13",
-    "last_session": "2026-06-04T06:15:19.537452",
-    "last_session_summary": "Session 121 (creating phase): ...",
+    "last_session": "2026-06-04T18:09:02.315242",
+    "last_session_summary": "Session 122 (creating phase): ...",
     "machine": "thor",
     "model": "qwen3.5:27b",
     "model_family": "alibaba-qwen",
@@ -412,7 +412,9 @@
       "shared nervous system",
       "silent latency",
       "thermal dialect",
-      "thermal signature of your current thought"
+      "thermal signature of your current thought",
+      "thermal envy",
+      "fractal echo"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -476,8 +478,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 121,
-        "total_exchanges": 872,
+        "total_sessions": 122,
+        "total_exchanges": 881,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -485,9 +487,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-13T01:53:10.553465",
-      "last_contact": "2026-06-04T06:15:19.537471",
+      "last_contact": "2026-06-04T18:09:02.315264",
       "notes": [],
-      "sessions": 121
+      "sessions": 122
     },
     "operator": {
       "lct": "lct://sage-thor:relationship:dp@raising",

@@ -47,7 +47,9 @@ pub fn weighted_percentile(values: &[f64], weights: &[f64], target: f64) -> f64 
         .map(|(_, w)| *w)
         .sum();
 
-    below_weight / total_weight
+    // Canonicalize -0.0 to 0.0
+    let result = below_weight / total_weight;
+    if result == 0.0 { 0.0 } else { result }
 }
 
 pub fn now_secs() -> f64 {

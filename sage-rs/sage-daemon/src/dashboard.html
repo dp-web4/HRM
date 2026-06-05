@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAGE Dashboard — Sprout</title>
+<style>
+  :root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9; --accent: #58a6ff; --green: #3fb950; --yellow: #d29922; --red: #f85149; --dim: #8b949e; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace; background: var(--bg); color: var(--text); font-size: 14px; }
+  .header { padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .header h1 { font-size: 18px; color: var(--accent); font-weight: 600; }
+  .header .meta { color: var(--dim); font-size: 12px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px 24px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .card h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--dim); margin-bottom: 12px; }
+  .stat { display: flex; justify-content: space-between; padding: 4px 0; }
+  .stat .label { color: var(--dim); }
+  .stat .value { font-weight: 600; }
+  .state-wake { color: var(--green); }
+  .state-focus { color: var(--accent); }
+  .state-rest { color: var(--yellow); }
+  .state-dream { color: #bc8cff; }
+  .state-crisis { color: var(--red); }
+  .atp-bar { height: 8px; background: var(--border); border-radius: 4px; margin-top: 8px; overflow: hidden; }
+  .atp-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+  .peer { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .peer:last-child { border-bottom: none; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot-on { background: var(--green); }
+  .dot-off { background: var(--red); }
+  .dot-unknown { background: var(--dim); }
+  .peer .name { flex: 1; }
+  .peer .info { color: var(--dim); font-size: 12px; }
+  .chat-box { grid-column: 1 / -1; }
+  .chat-log { max-height: 300px; overflow-y: auto; margin-bottom: 12px; padding: 8px; background: var(--bg); border-radius: 4px; border: 1px solid var(--border); }
+  .chat-msg { padding: 4px 0; }
+  .chat-msg .sender { color: var(--accent); font-weight: 600; }
+  .chat-msg .text { margin-left: 8px; }
+  .chat-input { display: flex; gap: 8px; }
+  .chat-input input { flex: 1; padding: 8px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: inherit; font-size: 14px; }
+  .chat-input input:focus { outline: none; border-color: var(--accent); }
+  .chat-input button { padding: 8px 16px; background: var(--accent); color: var(--bg); border: none; border-radius: 4px; cursor: pointer; font-family: inherit; font-weight: 600; }
+  .chat-input button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .snarc-bar { display: flex; align-items: center; gap: 8px; padding: 3px 0; }
+  .snarc-bar .dim-name { width: 70px; color: var(--dim); font-size: 12px; }
+  .snarc-bar .bar-bg { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .snarc-bar .bar-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.5s; }
+  .snarc-bar .bar-val { width: 40px; text-align: right; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>SAGE — Sprout</h1>
+  <div class="meta">
+    <span id="version"></span> | uptime <span id="uptime">-</span>s | <span id="model">-</span>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h2>Metabolic State</h2>
+    <div class="stat">
+      <span class="label">State</span>
+      <span class="value" id="met-state">-</span>
+    </div>
+    <div class="stat">
+      <span class="label">ATP</span>
+      <span class="value" id="met-atp">-</span>
+    </div>
+    <div class="atp-bar"><div class="atp-fill" id="atp-fill" style="width:0%;background:var(--green)"></div></div>
+    <div class="stat" style="margin-top:8px">
+      <span class="label">Cycles</span>
+      <span class="value" id="met-cycles">-</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>SNARC Salience</h2>
+    <div id="snarc-dims">
+      <div class="snarc-bar"><span class="dim-name">surprise</span><div class="bar-bg"><div class="bar-fill" id="snarc-surprise" style="width:0%"></div></div><span class="bar-val" id="val-surprise">-</span></div>
+      <div class="snarc-bar"><span class="dim-name">novelty</span><div class="bar-bg"><div class="bar-fill" id="snarc-novelty" style="width:0%"></div></div><span class="bar-val" id="val-novelty">-</span></div>
+      <div class="snarc-bar"><span class="dim-name">arousal</span><div class="bar-bg"><div class="bar-fill" id="snarc-arousal" style="width:0%"></div></div><span class="bar-val" id="val-arousal">-</span></div>
+      <div class="snarc-bar"><span class="dim-name">reward</span><div class="bar-bg"><div class="bar-fill" id="snarc-reward" style="width:0%"></div></div><span class="bar-val" id="val-reward">-</span></div>
+      <div class="snarc-bar"><span class="dim-name">conflict</span><div class="bar-bg"><div class="bar-fill" id="snarc-conflict" style="width:0%"></div></div><span class="bar-val" id="val-conflict">-</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Fleet</h2>
+    <div id="peers">loading...</div>
+  </div>
+
+  <div class="card">
+    <h2>System</h2>
+    <div class="stat">
+      <span class="label">Daemon</span>
+      <span class="value">sage-daemon (Rust)</span>
+    </div>
+    <div class="stat">
+      <span class="label">Sprint</span>
+      <span class="value" id="sprint">-</span>
+    </div>
+    <div class="stat">
+      <span class="label">Ollama</span>
+      <span class="value" id="ollama-status">-</span>
+    </div>
+    <div class="stat">
+      <span class="label">Fleet Size</span>
+      <span class="value" id="fleet-size">-</span>
+    </div>
+  </div>
+
+  <div class="card chat-box">
+    <h2>Chat</h2>
+    <div class="chat-log" id="chat-log"></div>
+    <div class="chat-input">
+      <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off">
+      <button id="chat-send" onclick="sendChat()">Send</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const BASE = window.location.origin;
+
+function fmt(n) { return typeof n === 'number' ? n.toFixed(1) : '-'; }
+
+function stateClass(s) {
+  return 'state-' + (s || 'wake').toLowerCase();
+}
+
+function atpColor(pct) {
+  if (pct > 60) return 'var(--green)';
+  if (pct > 30) return 'var(--yellow)';
+  return 'var(--red)';
+}
+
+async function refreshHealth() {
+  try {
+    const r = await fetch(BASE + '/health');
+    const d = await r.json();
+    document.getElementById('version').textContent = 'v' + d.version;
+    document.getElementById('uptime').textContent = Math.floor(d.uptime_secs);
+    document.getElementById('model').textContent = d.model;
+    document.getElementById('ollama-status').textContent = d.ollama_available ? 'connected' : 'offline';
+    document.getElementById('ollama-status').style.color = d.ollama_available ? 'var(--green)' : 'var(--red)';
+  } catch(e) {}
+}
+
+async function refreshStatus() {
+  try {
+    const r = await fetch(BASE + '/status');
+    const d = await r.json();
+    const el = document.getElementById('met-state');
+    el.textContent = d.metabolic_state;
+    el.className = 'value ' + stateClass(d.metabolic_state);
+    document.getElementById('met-atp').textContent = fmt(d.atp_percentage) + '%';
+    const fill = document.getElementById('atp-fill');
+    fill.style.width = d.atp_percentage + '%';
+    fill.style.background = atpColor(d.atp_percentage);
+    document.getElementById('met-cycles').textContent = d.total_cycles;
+    document.getElementById('sprint').textContent = d.sprint;
+    document.getElementById('fleet-size').textContent = d.fleet_size;
+  } catch(e) {}
+}
+
+async function refreshPeers() {
+  try {
+    const r = await fetch(BASE + '/peers');
+    const d = await r.json();
+    const el = document.getElementById('peers');
+    el.innerHTML = d.peers.map(p => {
+      const dotClass = p.online === true ? 'dot-on' : p.online === false ? 'dot-off' : 'dot-unknown';
+      const lat = p.latency_ms ? fmt(p.latency_ms) + 'ms' : '';
+      const met = p.metabolic_state || '';
+      return `<div class="peer"><span class="dot ${dotClass}"></span><span class="name">${p.name}</span><span class="info">${p.model} | ${p.hardware} ${lat ? '| '+lat : ''} ${met ? '| '+met : ''}</span></div>`;
+    }).join('');
+  } catch(e) {}
+}
+
+let lastSnarc = {};
+function updateSnarc(salience) {
+  if (!salience) return;
+  for (const dim of ['surprise','novelty','arousal','reward','conflict']) {
+    const v = salience[dim] || 0;
+    const bar = document.getElementById('snarc-' + dim);
+    const val = document.getElementById('val-' + dim);
+    if (bar) bar.style.width = (v * 100) + '%';
+    if (val) val.textContent = v.toFixed(2);
+  }
+}
+
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  const btn = document.getElementById('chat-send');
+  btn.disabled = true;
+  appendChat('you', msg);
+  try {
+    const r = await fetch(BASE + '/chat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({message: msg})
+    });
+    const d = await r.json();
+    appendChat('sprout', d.response);
+    if (d.salience !== undefined) {
+      updateSnarc({total: d.salience});
+    }
+    refreshStatus();
+  } catch(e) {
+    appendChat('error', e.message);
+  }
+  btn.disabled = false;
+  input.focus();
+}
+
+function appendChat(sender, text) {
+  const log = document.getElementById('chat-log');
+  const div = document.createElement('div');
+  div.className = 'chat-msg';
+  div.innerHTML = `<span class="sender">${sender}:</span><span class="text">${escapeHtml(text)}</span>`;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+document.getElementById('chat-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') sendChat();
+});
+
+refreshHealth();
+refreshStatus();
+refreshPeers();
+setInterval(refreshHealth, 5000);
+setInterval(refreshStatus, 3000);
+setInterval(refreshPeers, 15000);
+</script>
+</body>
+</html>

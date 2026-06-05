@@ -8,7 +8,7 @@ use std::time::Instant;
 use axum::{
     extract::State,
     http::StatusCode,
-    response::sse::{Event, Sse},
+    response::{Html, sse::{Event, Sse}},
     routing::{get, post},
     Json, Router,
 };
@@ -179,6 +179,10 @@ struct DelegateResponse {
     error: Option<String>,
 }
 
+async fn dashboard() -> Html<&'static str> {
+    Html(include_str!("dashboard.html"))
+}
+
 const PORT: u16 = 8760;
 const FLEET_JSON: &str = "/home/sprout/ai-workspace/SAGE/sage/federation/fleet.json";
 const EXPERIENCE_PATH: &str = "/home/sprout/ai-workspace/SAGE/sage/instances/sprout-qwen3.5-0.8b/experience_buffer_rs.jsonl";
@@ -203,7 +207,7 @@ async fn status(State(state): State<Arc<AppState>>) -> Json<StatusResponse> {
     let ctrl = state.metabolic.lock().await;
     Json(StatusResponse {
         daemon: "sage-daemon",
-        sprint: "5 — federation networking",
+        sprint: "6 — dashboard + cutover",
         snarc_detectors: vec!["surprise", "novelty", "arousal", "reward", "conflict"],
         half_lives: temporal::DEFAULT_HALF_LIVES.to_vec(),
         metabolic_state: ctrl.current_state.as_str(),
@@ -501,6 +505,7 @@ async fn main() {
     });
 
     let app = Router::new()
+        .route("/", get(dashboard))
         .route("/health", get(health))
         .route("/status", get(status))
         .route("/snarc/observe", post(snarc_observe))

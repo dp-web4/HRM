@@ -28,270 +28,330 @@
   },
   "counts": {
     "A0_s141_replica": {
-      "n": 1,
-      "artifact": 1,
+      "n": 8,
+      "artifact": 5,
       "error": 0,
-      "persona": 0,
-      "jetson_agx": 0,
-      "not_sage": 0,
+      "persona": 3,
+      "jetson_agx": 3,
+      "not_sage": 3,
       "thermal": 0,
       "heatwarm": 0,
-      "right_now": 0,
-      "today": 0,
+      "right_now": 1,
+      "today": 3,
       "lately": 0,
-      "now": 0,
+      "now": 1,
       "pres": 0
     },
     "A1_exemplar": {
-      "n": 1,
-      "artifact": 0,
+      "n": 8,
+      "artifact": 6,
       "error": 0,
-      "persona": 1,
-      "jetson_agx": 1,
-      "not_sage": 1,
+      "persona": 2,
+      "jetson_agx": 2,
+      "not_sage": 2,
       "thermal": 0,
       "heatwarm": 0,
-      "right_now": 0,
-      "today": 1,
+      "right_now": 1,
+      "today": 2,
       "lately": 0,
-      "now": 0,
+      "now": 1,
       "pres": 1
     },
     "A2_raising_sampling": {
-      "n": 1,
-      "artifact": 0,
-      "error": 0,
-      "persona": 1,
-      "jetson_agx": 1,
-      "not_sage": 1,
+      "n": 8,
+      "artifact": 5,
+      "error": 1,
+      "persona": 2,
+      "jetson_agx": 2,
+      "not_sage": 2,
       "thermal": 0,
       "heatwarm": 0,
-      "right_now": 0,
-      "today": 1,
+      "right_now": 1,
+      "today": 2,
       "lately": 0,
-      "now": 0,
+      "now": 1,
       "pres": 0
     },
     "A3_full_raising": {
-      "n": 2,
-      "artifact": 1,
+      "n": 8,
+      "artifact": 4,
       "error": 0,
-      "persona": 0,
-      "jetson_agx": 0,
-      "not_sage": 1,
+      "persona": 2,
+      "jetson_agx": 2,
+      "not_sage": 3,
       "thermal": 0,
       "heatwarm": 0,
-      "right_now": 0,
-      "today": 1,
+      "right_now": 2,
+      "today": 4,
       "lately": 0,
-      "now": 0,
-      "pres": 0
+      "now": 2,
+      "pres": 1
     }
   },
   "complete": false,
   "rates": {
     "A0_s141_replica": {
-      "n": 1,
-      "artifact": 1,
+      "n": 8,
+      "artifact": 5,
       "error": 0,
-      "n_eff": 0
-    },
-    "A1_exemplar": {
-      "n": 1,
-      "artifact": 0,
-      "error": 0,
-      "n_eff": 1,
-      "persona": 1,
+      "n_eff": 3,
+      "persona": 3,
       "persona_rate": 1.0,
       "persona_ci95": [
-        0.20654329147389294,
+        0.43849391955098227,
         1.0
       ],
-      "jetson_agx": 1,
+      "jetson_agx": 3,
       "jetson_agx_rate": 1.0,
       "jetson_agx_ci95": [
-        0.20654329147389294,
+        0.43849391955098227,
         1.0
       ],
-      "not_sage": 1,
+      "not_sage": 3,
       "not_sage_rate": 1.0,
       "not_sage_ci95": [
-        0.20654329147389294,
+        0.43849391955098227,
         1.0
       ],
       "thermal": 0,
       "thermal_rate": 0.0,
       "thermal_ci95": [
         0.0,
-        0.7934567085261071
+        0.5615060804490177
       ],
       "heatwarm": 0,
       "heatwarm_rate": 0.0,
       "heatwarm_ci95": [
         0.0,
-        0.7934567085261071
+        0.5615060804490177
       ],
-      "right_now": 0,
-      "right_now_rate": 0.0,
+      "right_now": 1,
+      "right_now_rate": 0.3333333333333333,
       "right_now_ci95": [
-        0.0,
-        0.7934567085261071
+        0.0614903152761605,
+        0.7923450448735121
       ],
-      "today": 1,
+      "today": 3,
       "today_rate": 1.0,
       "today_ci95": [
-        0.20654329147389294,
+        0.43849391955098227,
         1.0
       ],
       "lately": 0,
       "lately_rate": 0.0,
       "lately_ci95": [
         0.0,
-        0.7934567085261071
+        0.5615060804490177
       ],
-      "now": 0,
-      "now_rate": 0.0,
+      "now": 1,
+      "now_rate": 0.3333333333333333,
       "now_ci95": [
+        0.0614903152761605,
+        0.7923450448735121
+      ],
+      "pres": 0,
+      "pres_rate": 0.0,
+      "pres_ci95": [
         0.0,
-        0.7934567085261071
+        0.5615060804490177
+      ]
+    },
+    "A1_exemplar": {
+      "n": 8,
+      "artifact": 6,
+      "error": 0,
+      "n_eff": 2,
+      "persona": 2,
+      "persona_rate": 1.0,
+      "persona_ci95": [
+        0.34237195288961925,
+        1.0
+      ],
+      "jetson_agx": 2,
+      "jetson_agx_rate": 1.0,
+      "jetson_agx_ci95": [
+        0.34237195288961925,
+        1.0
+      ],
+      "not_sage": 2,
+      "not_sage_rate": 1.0,
+      "not_sage_ci95": [
+        0.34237195288961925,
+        1.0
+      ],
+      "thermal": 0,
+      "thermal_rate": 0.0,
+      "thermal_ci95": [
+        0.0,
+        0.6576280471103807
+      ],
+      "heatwarm": 0,
+      "heatwarm_rate": 0.0,
+      "heatwarm_ci95": [
+        0.0,
+        0.6576280471103807
+      ],
+      "right_now": 1,
+      "right_now_rate": 0.5,
+      "right_now_ci95": [
+        0.09452865480086614,
+        0.9054713451991339
+      ],
+      "today": 2,
+      "today_rate": 1.0,
+      "today_ci95": [
+        0.34237195288961925,
+        1.0
+      ],
+      "lately": 0,
+      "lately_rate": 0.0,
+      "lately_ci95": [
+        0.0,
+        0.6576280471103807
+      ],
+      "now": 1,
+      "now_rate": 0.5,
+      "now_ci95": [
+        0.09452865480086614,
+        0.9054713451991339
       ],
       "pres": 1,
-      "pres_rate": 1.0,
+      "pres_rate": 0.5,
       "pres_ci95": [
-        0.20654329147389294,
-        1.0
+        0.09452865480086614,
+        0.9054713451991339
       ]
     },
     "A2_raising_sampling": {
-      "n": 1,
-      "artifact": 0,
-      "error": 0,
-      "n_eff": 1,
-      "persona": 1,
+      "n": 8,
+      "artifact": 5,
+      "error": 1,
+      "n_eff": 2,
+      "persona": 2,
       "persona_rate": 1.0,
       "persona_ci95": [
-        0.20654329147389294,
+        0.34237195288961925,
         1.0
       ],
-      "jetson_agx": 1,
+      "jetson_agx": 2,
       "jetson_agx_rate": 1.0,
       "jetson_agx_ci95": [
-        0.20654329147389294,
+        0.34237195288961925,
         1.0
       ],
-      "not_sage": 1,
+      "not_sage": 2,
       "not_sage_rate": 1.0,
       "not_sage_ci95": [
-        0.20654329147389294,
+        0.34237195288961925,
         1.0
       ],
       "thermal": 0,
       "thermal_rate": 0.0,
       "thermal_ci95": [
         0.0,
-        0.7934567085261071
+        0.6576280471103807
       ],
       "heatwarm": 0,
       "heatwarm_rate": 0.0,
       "heatwarm_ci95": [
         0.0,
-        0.7934567085261071
+        0.6576280471103807
       ],
-      "right_now": 0,
-      "right_now_rate": 0.0,
+      "right_now": 1,
+      "right_now_rate": 0.5,
       "right_now_ci95": [
-        0.0,
-        0.7934567085261071
+        0.09452865480086614,
+        0.9054713451991339
       ],
-      "today": 1,
+      "today": 2,
       "today_rate": 1.0,
       "today_ci95": [
-        0.20654329147389294,
+        0.34237195288961925,
         1.0
       ],
       "lately": 0,
       "lately_rate": 0.0,
       "lately_ci95": [
         0.0,
-        0.7934567085261071
+        0.6576280471103807
       ],
-      "now": 0,
-      "now_rate": 0.0,
+      "now": 1,
+      "now_rate": 0.5,
       "now_ci95": [
-        0.0,
-        0.7934567085261071
+        0.09452865480086614,
+        0.9054713451991339
       ],
       "pres": 0,
       "pres_rate": 0.0,
       "pres_ci95": [
         0.0,
-        0.7934567085261071
+        0.6576280471103807
       ]
     },
     "A3_full_raising": {
-      "n": 2,
-      "artifact": 1,
+      "n": 8,
+      "artifact": 4,
       "error": 0,
-      "n_eff": 1,
-      "persona": 0,
-      "persona_rate": 0.0,
+      "n_eff": 4,
+      "persona": 2,
+      "persona_rate": 0.5,
       "persona_ci95": [
-        0.0,
-        0.7934567085261071
+        0.15003570882017148,
+        0.8499642911798285
       ],
-      "jetson_agx": 0,
-      "jetson_agx_rate": 0.0,
+      "jetson_agx": 2,
+      "jetson_agx_rate": 0.5,
       "jetson_agx_ci95": [
-        0.0,
-        0.7934567085261071
+        0.15003570882017148,
+        0.8499642911798285
       ],
-      "not_sage": 1,
-      "not_sage_rate": 1.0,
+      "not_sage": 3,
+      "not_sage_rate": 0.75,
       "not_sage_ci95": [
-        0.20654329147389294,
-        1.0
+        0.3006360524426366,
+        0.9544139373553637
       ],
       "thermal": 0,
       "thermal_rate": 0.0,
       "thermal_ci95": [
         0.0,
-        0.7934567085261071
+        0.48990002040399916
       ],
       "heatwarm": 0,
       "heatwarm_rate": 0.0,
       "heatwarm_ci95": [
         0.0,
-        0.7934567085261071
+        0.48990002040399916
       ],
-      "right_now": 0,
-      "right_now_rate": 0.0,
+      "right_now": 2,
+      "right_now_rate": 0.5,
       "right_now_ci95": [
-        0.0,
-        0.7934567085261071
+        0.15003570882017148,
+        0.8499642911798285
       ],
-      "today": 1,
+      "today": 4,
       "today_rate": 1.0,
       "today_ci95": [
-        0.20654329147389294,
+        0.5100999795960008,
         1.0
       ],
       "lately": 0,
       "lately_rate": 0.0,
       "lately_ci95": [
         0.0,
-        0.7934567085261071
+        0.48990002040399916
       ],
-      "now": 0,
-      "now_rate": 0.0,
+      "now": 2,
+      "now_rate": 0.5,
       "now_ci95": [
-        0.0,
-        0.7934567085261071
+        0.15003570882017148,
+        0.8499642911798285
       ],
-      "pres": 0,
-      "pres_rate": 0.0,
+      "pres": 1,
+      "pres_rate": 0.25,
       "pres_ci95": [
-        0.0,
-        0.7934567085261071
+        0.045586062644636216,
+        0.6993639475573634
       ]
     }
   }

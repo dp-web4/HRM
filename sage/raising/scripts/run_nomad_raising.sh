@@ -32,13 +32,18 @@ git pull --ff-only origin main 2>&1 || {
 }
 
 # --- Step 2: Source router shadow env + ensure daemon ---
-export SAGE_PORT="${SAGE_PORT:-8750}"
+# Cut over to Rust sage-daemon (port 8760) per SAGE/sage-rs/CUTOVER.md
+# Sprint 7+ (2026-06-06): same binary multi-machine; SAGE_MACHINE drives
+# instance-dir + identity. Manual-start path because WSL2 has no user-systemd.
+export SAGE_PORT="${SAGE_PORT:-8760}"
+export SAGE_MACHINE=nomad
+export SAGE_MODEL=gemma4:e2b
 export SAGE_NO_BROWSER=1
 if [ -f "$SAGE_DIR/sage/gateway/router-shadow.env" ]; then
     set -a; source "$SAGE_DIR/sage/gateway/router-shadow.env"; set +a
     echo "[Nomad-Raising] Router shadow: SAGE_ROUTER_SHADOW=$SAGE_ROUTER_SHADOW"
 fi
-source "$SAGE_DIR/sage/scripts/ensure_daemon.sh"
+source "$SAGE_DIR/sage/scripts/ensure_daemon_rs.sh"
 echo "[Nomad-Raising] Daemon: version=$SAGE_DAEMON_VERSION running=$SAGE_DAEMON_RUNNING updated=$SAGE_DAEMON_UPDATED"
 
 # --- Step 3: Run the FLUID raising session ---

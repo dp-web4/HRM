@@ -1,0 +1,46 @@
+################################################################################
+# SAGE Daemon (Rust) — Thor (Jetson AGX Thor, qwen3.5:27b via Ollama)
+#
+# INSTALLATION:
+#   sudo cp sage-daemon-thor.service /etc/systemd/system/sage-daemon-thor.service
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable sage-daemon-thor
+#   sudo systemctl start sage-daemon-thor
+#
+# MONITORING:
+#   journalctl -u sage-daemon-thor -f
+#   curl http://localhost:8760/health
+#   http://localhost:8760/          (dashboard)
+################################################################################
+
+[Unit]
+Description=SAGE Consciousness Daemon (Thor — Rust)
+After=ollama.service
+After=network.target
+
+[Service]
+ExecStartPre=/bin/sleep 5
+Type=simple
+User=dp
+WorkingDirectory=/home/dp/ai-workspace/SAGE
+ExecStart=/home/dp/ai-workspace/SAGE/sage-rs/target/release/sage-daemon
+
+Environment=SAGE_MODEL=qwen3.5:27b
+Environment=SAGE_MACHINE=thor
+Environment=RUST_LOG=info
+
+Restart=always
+RestartSec=30
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sage-daemon-thor
+
+MemoryMax=512M
+LimitNOFILE=65536
+TimeoutStartSec=30
+TimeoutStopSec=10
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=multi-user.target

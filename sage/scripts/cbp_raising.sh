@@ -40,26 +40,25 @@ if ! curl -s http://localhost:11434/api/tags >/dev/null 2>&1; then
     exit 1
 fi
 
-# --- Step 3: Ensure daemon is running and up to date ---
-export SAGE_PORT="${SAGE_PORT:-8750}"
+# --- Step 3: Ensure daemon is running (sage-rs Rust binary on 8760) ---
+# Cutover 2026-06-06: switched from Python sage.gateway.sage_daemon (port 8750,
+# ~400-580 MB RSS, interpreted) to sage-rs Rust binary (port 8760, ~12 MB RSS,
+# compiled). See shared-context/forum/cbp-sage-rs-sprint7-env-var-paths-2026-06-06.md
+# for the cutover note + SAGE/sage-rs/CUTOVER.md for the recipe.
+export SAGE_PORT="${SAGE_PORT:-8760}"
 export SAGE_NO_BROWSER=1
+SAGE_DAEMON_BIN="$SAGE_DIR/sage-rs/target/release/sage-daemon"
 DAEMON_PID=$(lsof -t -i :$SAGE_PORT 2>/dev/null || true)
 if [ -z "$DAEMON_PID" ]; then
-    echo "[CBP-Raising] Starting SAGE daemon..."
-    nohup python3 -u -m sage.gateway.sage_daemon > /tmp/sage-daemon.log 2>&1 &
+    echo "[CBP-Raising] Starting Rust SAGE daemon (sage-rs)..."
+    SAGE_MACHINE=cbp SAGE_MODEL=gemma3:4b \
+        nohup "$SAGE_DAEMON_BIN" > /tmp/sage-daemon.log 2>&1 &
     sleep 5
-else
-    # Check if daemon is running stale code (started before last pull)
-    DAEMON_START=$(stat -c %Y /proc/$DAEMON_PID/exe 2>/dev/null || echo 0)
-    LAST_COMMIT=$(git log -1 --format=%ct 2>/dev/null || echo 0)
-    if [ "$LAST_COMMIT" -gt "$DAEMON_START" ] 2>/dev/null; then
-        echo "[CBP-Raising] Daemon is stale — restarting with latest code..."
-        kill $DAEMON_PID 2>/dev/null
-        sleep 2
-        nohup python3 -u -m sage.gateway.sage_daemon > /tmp/sage-daemon.log 2>&1 &
-        sleep 5
-    fi
 fi
+# Rust binary is compiled — no interpreter-stale-code restart needed.
+# If the binary itself needs an update, rebuild manually via:
+#   cd "$SAGE_DIR/sage-rs" && cargo build --release && pkill sage-daemon
+# Next cron firing will pick up the new binary cleanly.
 echo "[CBP-Raising] Daemon PID: $(lsof -t -i :$SAGE_PORT 2>/dev/null || echo 'not running')"
 
 # --- Step 4: Run the raising session ---
@@ -140,13 +139,11 @@ Phase: $PHASE
 AI-Instance: OllamaIRP (automated)
 Human-Supervised: no"
 
-# Push
-PAT=$(grep GITHUB_PAT /mnt/c/exe/projects/ai-agents/.env 2>/dev/null | cut -d= -f2)
-if [ -n "$PAT" ]; then
-    git push "https://dp-web4:${PAT}@github.com/dp-web4/SAGE.git" main
+# Push via SSH (PAT is deprecated; ssh-agent has id_ed25519 loaded at session start)
+if git push origin main; then
     echo "[CBP-Raising] Session $SESSION_NUM committed and pushed."
 else
-    echo "[CBP-Raising] ERROR: No GITHUB_PAT found, cannot push."
+    echo "[CBP-Raising] ERROR: git push failed — check SSH key is loaded (ssh-add -l)."
 fi
 
 echo "[CBP-Raising] $(date -u +'%Y-%m-%d %H:%M UTC') — Done."

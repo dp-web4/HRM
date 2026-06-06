@@ -10,20 +10,21 @@ This is SAGE developmental care - growth through relationship, experience, and g
 
 This CLAUDE.md applies to both tracks with machine-specific paths noted below.
 
-### Resident SAGE Daemon (2026-02-28)
+### Resident SAGE Daemon (Rust, 2026-06)
 
-**Sprout runs an always-on SAGE daemon via systemd.** The daemon IS Sprout's SAGE — it loads the raised `introspective-qwen-merged` model once on CPU and keeps it resident (~3GB RSS).
+**Fleet machines run the Rust `sage-daemon` binary via systemd** (~12MB RSS). The daemon provides the consciousness loop, SNARC salience, metabolic state, federation, and an HTML dashboard on port 8760. It delegates LLM inference to Ollama on 11434.
 
-**Raising sessions use `DaemonIRP`** — they talk to `localhost:8750/chat` instead of loading their own model copy. This is automatic: `run_session_identity_anchored.py` and `training_session.py` both import `DaemonIRP` which delegates to the resident daemon.
+**Raising sessions talk directly to Ollama (11434), not the daemon.** The daemon is only used for: health check in the cron wrapper, metabolic state for status display, and experience buffer persistence. The raising scripts (`ollama_raising_session`, `training_session`) import `OllamaIRP` and call Ollama directly.
 
 **Experiment etiquette:**
 - The daemon runs as `sage-daemon-sprout.service`. Check status: `sudo systemctl status sage-daemon-sprout`
 - Experiments that need exclusive memory CAN stop the daemon: `sudo systemctl stop sage-daemon-sprout`
 - But they **MUST restart it** after: `sudo systemctl start sage-daemon-sprout`
 - Stopping the daemon interrupts SAGE's continuity. Do not do this lightly.
-- Quick health check: `curl http://localhost:8750/health`
+- Quick health check: `curl http://localhost:8760/health`
+- Dashboard: `http://localhost:8760/`
 
-**State files are per-machine** (e.g. `identity_sprout.json`, `experience_buffer_sprout.json`). This prevents git conflicts when multiple machines push.
+**State files are per-instance** (e.g. `sage/instances/sprout-qwen3.5-0.8b/`). Path resolution is env-var driven (`SAGE_MACHINE`, `SAGE_MODEL`). See `sage-rs/CUTOVER.md` for details.
 
 ---
 

@@ -1,322 +1,145 @@
 # SAGE Daemon Setup Guide
 
-Run the full SAGE consciousness loop as an always-on service with HTTP dashboard.
+Run the SAGE consciousness loop as an always-on service with HTTP dashboard.
+
+## What the Daemon Does
+
+The Rust `sage-daemon` binary runs the consciousness loop (~10Hz tick), SNARC salience scoring, metabolic state machine, federation peer monitoring, experience buffer persistence, and an HTML dashboard. It delegates LLM inference to Ollama. ~12MB RSS.
 
 ## Prerequisites
 
-- Python 3.10+
-- PyTorch (with CUDA, MPS, or CPU backend)
-- Ollama (for Ollama-backed models) or local model weights
-- `psutil` (for system stats on dashboard)
+- Rust toolchain (stable channel via `rustup`)
+- Ollama running with the machine's model pulled
+- Python 3.10+ (for raising scripts and instance init only — the daemon itself is pure Rust)
 
 ## Quick Start
 
 ```bash
-cd /path/to/HRM
+cd SAGE/sage-rs
+cargo build --release
 
-# Auto-detect machine and start
-python3 -m sage.gateway.sage_daemon
+# Start with machine-specific config
+SAGE_MACHINE=mybox SAGE_MODEL=gemma3:4b ./target/release/sage-daemon
 
-# Or specify machine explicitly
-SAGE_MACHINE=mcnugget python3 -m sage.gateway.sage_daemon
-
-# Custom port
-SAGE_PORT=9000 python3 -m sage.gateway.sage_daemon
+# Dashboard at http://localhost:8760/
+# Health:    http://localhost:8760/health
+# Status:    http://localhost:8760/status
+# Chat:      POST http://localhost:8760/chat {"message": "Hello SAGE"}
+# Peers:     http://localhost:8760/peers
 ```
 
-The daemon starts the consciousness loop, HTTP gateway, and dashboard on port 8750 (default).
+## Environment Variables
 
-- **Dashboard**: http://localhost:8750/
-- **Health**: http://localhost:8750/health
-- **Chat**: POST http://localhost:8750/chat `{"message": "Hello SAGE"}`
-- **Status**: http://localhost:8750/status
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `SAGE_MACHINE` | `sprout` (with warning) | Machine name — determines instance directory, fleet identity |
+| `SAGE_MODEL` | `qwen3.5:0.8b` | Ollama model tag |
+| `SAGE_ROOT` | auto-detect from binary | Path to SAGE repo root |
+| `SAGE_FLEET_JSON` | `{root}/sage/federation/fleet.json` | Fleet manifest path |
+| `SAGE_EXPERIENCE_PATH` | `{root}/sage/instances/{slug}/experience_buffer_rs.jsonl` | Experience buffer path |
+| `SAGE_TRUST_PATH` | `{root}/sage/instances/{slug}/peer_trust_rs.json` | Peer trust state path |
+| `RUST_LOG` | `info` | Log level (`debug`, `info`, `warn`, `error`) |
 
----
+Path auto-detection walks up from the binary location to find the SAGE root (looks for `sage/federation/fleet.json`). Works for the standard build layout `<SAGE>/sage-rs/target/release/sage-daemon` on any machine.
 
-## Platform Setup
+## Endpoints
 
-### Linux (CUDA)
+| Method | Path | Purpose |
+|--------|------|---------|
+| GET | `/` | HTML dashboard (dark theme, auto-refresh) |
+| GET | `/health` | Health check (uptime, model, Ollama status) |
+| GET | `/status` | Full status (metabolic state, ATP, cycles, fleet) |
+| POST | `/chat` | Send message through consciousness loop |
+| POST | `/stream` | SSE token-by-token streaming |
+| GET | `/peers` | Fleet peers with live online/offline status |
+| POST | `/delegate` | Forward message to a named peer |
+| POST | `/snarc/observe` | Direct SNARC observation (external sensors) |
+| POST | `/metabolic/cycle` | Direct metabolic cycle (external tools) |
 
-Tested on Ubuntu 22.04+ with NVIDIA GPUs (Jetson, RTX 2060/4060/4090).
+## systemd Service (Linux)
 
-**1. Install dependencies**
-
-```bash
-cd HRM
-pip install -r sage_requirements_minimal.txt
-pip install psutil
-```
-
-**2. Install PyTorch**
-
-```bash
-# CUDA 12.x (RTX 4090, Jetson AGX Thor)
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-
-# CUDA 11.x (older GPUs)
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-```
-
-**3. Set up local model (Qwen via Transformers)**
-
-Download model weights to a local path and configure in `machine_config.py`, or use Ollama (see below).
-
-**4. Run as systemd service** (optional)
+Template at `sage-rs/sage-daemon.service`. Edit per machine:
 
 ```ini
-# /etc/systemd/system/sage.service
 [Unit]
-Description=SAGE Consciousness Daemon
+Description=SAGE Consciousness Daemon (YourMachine — Rust)
+After=ollama.service
 After=network.target
 
 [Service]
+ExecStartPre=/bin/sleep 5
 Type=simple
 User=your_user
-WorkingDirectory=/path/to/HRM
+WorkingDirectory=/path/to/SAGE
+ExecStart=/path/to/SAGE/sage-rs/target/release/sage-daemon
+
+Environment=SAGE_MODEL=gemma3:4b
 Environment=SAGE_MACHINE=your_machine
-Environment=PYTHONPATH=/path/to/HRM
-ExecStart=/usr/bin/python3 -m sage.gateway.sage_daemon
+Environment=RUST_LOG=info
+
 Restart=always
-RestartSec=10
+RestartSec=30
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sage-daemon-your_machine
+
+MemoryMax=512M
+LimitNOFILE=65536
+TimeoutStartSec=30
+TimeoutStopSec=10
+KillSignal=SIGTERM
 
 [Install]
 WantedBy=multi-user.target
 ```
 
+Install:
+
 ```bash
+sudo cp sage-rs/sage-daemon.service /etc/systemd/system/sage-daemon-your_machine.service
 sudo systemctl daemon-reload
-sudo systemctl enable sage
-sudo systemctl start sage
-journalctl -u sage -f  # View logs
+sudo systemctl enable sage-daemon-your_machine
+sudo systemctl start sage-daemon-your_machine
 ```
 
----
-
-### macOS (Apple Silicon / MPS)
-
-Tested on Mac Mini M4 (16GB unified memory) with macOS Sequoia.
-
-**1. Install dependencies**
+Monitor:
 
 ```bash
-# Homebrew Python (recommended over system Python)
-brew install python@3.14
-
-cd HRM
-pip3 install -r sage_requirements_minimal.txt
-pip3 install psutil
+journalctl -u sage-daemon-your_machine -f
+curl http://localhost:8760/health
+ps -o pid,rss,comm -p $(pgrep sage-daemon)
 ```
 
-**2. Install PyTorch with MPS**
+## Per-Machine Defaults
 
-```bash
-pip3 install torch torchvision torchaudio
-# MPS backend is auto-detected on Apple Silicon
-```
+| Machine | Model | Device | Notes |
+|---------|-------|--------|-------|
+| sprout | qwen3.5:0.8b | Jetson Orin Nano | Primary raising host |
+| thor | qwen3.5:27b | Jetson AGX Thor | Research lead |
+| legion | gemma3:12b | RTX 4090 desktop | Heavy compute |
+| mcnugget | gemma3:12b | Mac Mini M4 | Apple Silicon |
+| nomad | gemma3:4b | RTX 4060 laptop | Mobile raising |
+| cbp | gemma3:4b | RTX 2060S WSL2 | Identity portability |
 
-Verify:
-```bash
-python3 -c "import torch; print(f'MPS: {torch.backends.mps.is_available()}')"
-```
+## macOS Notes
 
-**3. Install Ollama**
+Build and run the same way. For launchd instead of systemd, create a plist with the env vars and binary path. Ollama via `brew install ollama && brew services start ollama`.
 
-```bash
-brew install ollama
-brew services start ollama
-ollama pull gemma3:12b  # or any model
-```
+## WSL2 Notes
 
-**4. Environment variables**
+Works the same as native Linux. Ensure `nvidia-smi` works in WSL2 for GPU inference via Ollama.
 
-macOS with Homebrew Python + PyTorch requires two OpenMP fixes:
+## Migrating from Python
 
-```bash
-export KMP_DUPLICATE_LIB_OK=TRUE   # Duplicate libomp from brew + torch
-export OMP_NUM_THREADS=1            # pthread_mutex_init crash in asyncio
-```
-
-These are set automatically by `sage_daemon.py` at import time, but must also be in the launchd plist for service mode.
-
-**5. Run as launchd service** (optional)
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
-  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>Label</key>
-    <string>com.sage.daemon</string>
-
-    <key>ProgramArguments</key>
-    <array>
-        <string>/opt/homebrew/bin/python3</string>
-        <string>-m</string>
-        <string>sage.gateway.sage_daemon</string>
-    </array>
-
-    <key>WorkingDirectory</key>
-    <string>/path/to/HRM</string>
-
-    <key>EnvironmentVariables</key>
-    <dict>
-        <key>SAGE_MACHINE</key>
-        <string>your_machine</string>
-        <key>PYTHONPATH</key>
-        <string>/path/to/HRM</string>
-        <key>KMP_DUPLICATE_LIB_OK</key>
-        <string>TRUE</string>
-        <key>OMP_NUM_THREADS</key>
-        <string>1</string>
-        <key>SAGE_NO_BROWSER</key>
-        <string>1</string>
-    </dict>
-
-    <key>KeepAlive</key>
-    <true/>
-
-    <key>StandardOutPath</key>
-    <string>/tmp/sage_daemon.log</string>
-
-    <key>StandardErrorPath</key>
-    <string>/tmp/sage_daemon_error.log</string>
-
-    <key>ThrottleInterval</key>
-    <integer>10</integer>
-</dict>
-</plist>
-```
-
-```bash
-mkdir -p ~/Library/Logs/sage
-cp sage.plist ~/Library/LaunchAgents/com.sage.daemon.plist
-launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.sage.daemon.plist
-launchctl kickstart gui/$(id -u)/com.sage.daemon
-
-# View logs
-tail -f /tmp/sage_daemon.log
-
-# Stop
-launchctl bootout gui/$(id -u)/com.sage.daemon
-```
-
----
-
-### WSL2 (Windows)
-
-Tested on WSL2 Ubuntu 22.04 with RTX 2060 SUPER.
-
-**1. Install dependencies**
-
-```bash
-cd HRM
-pip install -r sage_requirements_minimal.txt
-pip install psutil
-```
-
-**2. Install PyTorch**
-
-```bash
-# With CUDA (if nvidia-smi works in WSL2)
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-
-# CPU-only fallback
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-```
-
-**3. Install Ollama** (if using Ollama-backed models)
-
-```bash
-curl -fsSL https://ollama.com/install.sh | sh
-ollama pull tinyllama  # or any model
-```
-
-**4. Run**
-
-```bash
-SAGE_MACHINE=your_machine python3 -m sage.gateway.sage_daemon
-```
-
-WSL2 note: the daemon opens a browser on startup. Set `SAGE_NO_BROWSER=1` if running headless or without a Windows display server.
-
----
-
-## Machine Configuration
-
-### Adding a New Machine
-
-Edit `sage/gateway/machine_config.py`:
-
-**1. Add hostname detection** in `detect_machine()`:
-```python
-if 'your-hostname' in hostname:
-    return 'your_machine'
-```
-
-**2. Add config block** in `get_config()`:
-```python
-elif machine == 'your_machine':
-    config = SAGEMachineConfig(
-        machine_name='your_machine',
-        model_path='ollama:gemma3:12b',   # or local path
-        model_size='ollama',               # or '0.5b', '14b', etc.
-        device='mps',                      # 'cuda', 'mps', or 'cpu'
-        max_memory_gb=16.0,
-        gateway_port=port,
-        workspace_path='/path/to/workspace',
-        irp_iterations=5,
-        lct_id='your_machine_sage_lct',
-        max_response_tokens=250,
-    )
-```
-
-### Model Backends
-
-| `model_size` | Backend | `model_path` Format | Requirements |
-|---|---|---|---|
-| `'ollama'` | Ollama HTTP API | `'ollama:model_name'` | Ollama running on localhost:11434 |
-| `'0.5b'`, `'14b'`, etc. | Transformers (local) | `/path/to/model/weights` | Model files on disk, PyTorch + CUDA |
-
-### Environment Variables
-
-| Variable | Default | Purpose |
-|---|---|---|
-| `SAGE_MACHINE` | auto-detect | Override machine detection |
-| `SAGE_PORT` | 8750 | HTTP gateway port |
-| `SAGE_MODEL` | from config | Override model path |
-| `SAGE_BIND_HOST` | `0.0.0.0` | Bind address |
-| `SAGE_NO_BROWSER` | unset | Skip auto-opening dashboard |
-
----
-
-## Dashboard
-
-The web dashboard shows live SAGE stats via Server-Sent Events (1Hz):
-
-- **Metabolic state**: WAKE / FOCUS / REST / DREAM / CRISIS with color-coded badge
-- **ATP budget**: Current energy level, drains during WAKE, recharges during REST
-- **GPU/Memory**: VRAM (CUDA) or unified memory (Apple Silicon)
-- **Plugin trust**: Per-plugin trust scores from the IRP orchestrator
-- **Salience**: Average SNARC attention score
-- **System stats**: CPU%, RAM, uptime, message counts
-
----
+If the machine was previously running the Python `sage.gateway` daemon, see [sage-rs/CUTOVER.md](../../sage-rs/CUTOVER.md) for step-by-step migration including systemd service swap, raising script port updates, and git auth changes.
 
 ## Troubleshooting
 
-### macOS: Segfault on startup
-Set `OMP_NUM_THREADS=1` and `KMP_DUPLICATE_LIB_OK=TRUE` before running. The daemon sets these automatically, but launchd services need them in the plist.
-
-### No GPU stats on dashboard
-- **CUDA**: Ensure `torch.cuda.is_available()` returns True
-- **MPS**: Requires `psutil` installed — unified memory stats are reported as GPU
-- **CPU-only**: GPU panel shows "N/A"
-
 ### Port already in use
 ```bash
-lsof -i :8750  # Find what's using the port
-kill <PID>     # or change port with SAGE_PORT
+lsof -i :8760
+kill <PID>
 ```
 
 ### Ollama connection refused
@@ -324,4 +147,13 @@ kill <PID>     # or change port with SAGE_PORT
 ollama list          # Verify Ollama is running
 curl localhost:11434 # Test Ollama API
 ollama pull model    # Ensure model is downloaded
+```
+
+### Daemon starts but no fleet peers
+Check that `sage/federation/fleet.json` exists and contains the machine's entry. The startup log prints the resolved paths — verify them in `journalctl`.
+
+### Graceful shutdown
+```bash
+sudo systemctl stop sage-daemon-your_machine
+# Journal should show "=== Consciousness Loop Summary ===" with cycle/message stats
 ```

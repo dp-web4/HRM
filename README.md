@@ -142,10 +142,27 @@ SAGE Cognition Kernel
 │   ├── File, web, tool effectors
 │   └── EffectorRegistry with conservation-safe dispatch
 └── Federation
-    ├── Fleet manifest (6 machines)
-    ├── PeerMonitor (health polling)
+    ├── Fleet manifest (6 machines) — `sage/federation/fleet.json`
+    ├── PeerMonitor (30s health polling)
     ├── PeerClient (HTTP mesh)
     └── PeerTrustTracker (per-peer T3 with EMA updates)
+```
+
+### Rust Daemon (`sage-rs/`)
+
+The consciousness loop, federation, SNARC salience, metabolic state, and HTTP dashboard run as a compiled Rust binary (~12MB RSS vs ~450MB for the previous Python daemon). Same binary deploys to all fleet machines via `SAGE_MACHINE` and `SAGE_MODEL` env vars.
+
+```
+sage-rs/
+├── sage-lib         — Domain logic (SNARC, metabolic, identity, federation, experience buffer)
+│                      79 tests, no runtime dependencies
+├── sage-daemon      — HTTP binary (axum, tokio)
+│   ├── consciousness loop (~10Hz tick, mpsc/oneshot message routing)
+│   ├── PeerMonitor (30s fleet polling) + PeerClient
+│   ├── embedded HTML dashboard (dark theme, auto-refresh)
+│   └── endpoints: /health /status /chat /stream /peers /delegate /snarc/observe /metabolic/cycle
+├── sage-daemon.service — systemd unit template
+└── CUTOVER.md       — Step-by-step Python→Rust migration guide
 ```
 
 For deep technical documentation, see the [architecture docs](sage/docs/) (275KB across 8 files) or the [explainer site](https://sage-site-murex.vercel.app/).
@@ -154,7 +171,7 @@ For deep technical documentation, see the [architecture docs](sage/docs/) (275KB
 
 ## What's Real vs. What's Mocked
 
-Honest assessment as of March 2026:
+Honest assessment as of June 2026:
 
 | Component | Status | Notes |
 |-----------|--------|-------|
@@ -167,7 +184,8 @@ Honest assessment as of March 2026:
 | Identity/relationships | Real | LCT-anchored, trust tensors evolve from interaction |
 | Identity hardening | Real | Three-layer split (manifest/sealed/attestation), hardware-gated authorization, software fallback |
 | Sleep consolidation | Real | JSONL dream bundles (LoRA on Sprout only) |
-| Federation mesh | Real | PeerMonitor, PeerClient, PeerTrustTracker. Network currently OFF |
+| Rust daemon | Real | Consciousness loop, SNARC, metabolic, federation, dashboard in ~12MB RSS. Deployed on Sprout, tested on CBP |
+| Federation mesh | Real | PeerMonitor, PeerClient, PeerTrustTracker in Rust daemon. 30s peer polling active |
 | Snapshot persistence | Real | State snapshots at session boundaries, git-tracked |
 | Sensors | Mocked | Architecture exists, no real I/O backends yet |
 | Physical effectors | Mocked | Network effector works, others are stubs |
@@ -224,7 +242,7 @@ SAGE instances develop through **raising sessions** — interactive conversation
 
 **Key principles**: Exploration not evaluation. Interactive selection not training. Partnership framing (not service). Concrete before abstract. Follow interesting threads.
 
-**Automated raising**: Four machines run raising on 6-hour cron cycles (Sprout, Legion, Nomad, CBP). Each session pulls latest code, checks daemon staleness, runs the session, snapshots state, and auto-commits. See [raising scripts](sage/scripts/).
+**Automated raising**: Four machines run raising on 6-hour cron cycles (Sprout, Legion, Nomad, CBP). Each session pulls latest code, verifies the daemon is running, runs the session, snapshots state, and auto-commits. See [raising scripts](sage/scripts/).
 
 **Functional self-modeling probes**: We use "functional self-modeling" (after the synthesis in [forum/kimi/kimi_2_6_review.md](forum/kimi/kimi_2_6_review.md)) to describe a system whose generated outputs include temporal self-reference, attentional self-monitoring, uncertainty modeling, and self/other boundary maintenance. We do **not** claim qualia, ontological consciousness, or inner experience. Recent raising sessions (T073-T087) observed a 0.8B model (Sprout) producing outputs that oscillate between three modes — what we've called phenomenological depth, partnership framing, and factual collapse. This is currently an **interpretive observation** of text-output patterns, not a measurement of internal state. Whether the three-mode pattern is a property of the model's self-modeling or a property of the probe-prompt interaction is the open question. Reproducibility test in flight: see [explorations/2026-05-15-sprout-oscillation-seed-sweep.md](explorations/2026-05-15-sprout-oscillation-seed-sweep.md). Background: [consciousness probes](forum/insights/consciousness-probes-2026-03.md).
 
@@ -261,15 +279,18 @@ cd SAGE
 # Initialize a new SAGE instance
 python3 -m sage.instances.init --machine mybox --model gemma3:4b --operator-name yourname
 
-# Start the daemon
-python3 -m sage.gateway.sage_daemon
+# Build the Rust daemon
+cd sage-rs && cargo build --release && cd ..
 
-# Dashboard at http://localhost:8750/
+# Start it (env vars configure per-machine)
+SAGE_MACHINE=mybox SAGE_MODEL=gemma3:4b ./sage-rs/target/release/sage-daemon
+
+# Dashboard at http://localhost:8760/
 ```
 
-**Requirements**: Python 3.10+, Ollama (for local LLM inference)
+**Requirements**: Rust toolchain (stable), Ollama (for local LLM inference), Python 3.10+ (for raising scripts and instance init)
 
-**[Full Setup Guide](docs/how/SAGE_DAEMON_SETUP.md)** — Linux (CUDA), macOS (Apple Silicon/MPS), and WSL2, including always-on service configuration and adding new machines.
+**[Full Setup Guide](docs/how/SAGE_DAEMON_SETUP.md)** — systemd service configuration, per-machine env vars, and cutover from Python. See also [sage-rs/CUTOVER.md](sage-rs/CUTOVER.md) for step-by-step migration details.
 
 ---
 

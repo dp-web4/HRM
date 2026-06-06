@@ -46,7 +46,8 @@ Key docs: `sage/docs/SYSTEM_UNDERSTANDING.md`, `sage/docs/UNIFIED_CONSCIOUSNESS_
 | **PolicyGate** | Conscience checkpoint at step 8.5, dual learning signals | `sage/core/sage_consciousness.py` |
 | **SNARC** | 5D salience scoring (Surprise, Novelty, Arousal, Reward, Conflict) | `sage/core/sage_consciousness.py` |
 | **Raising** | BECOMING curriculum (5 phases), automated on 4 machines | `sage/raising/` |
-| **Federation** | PeerMonitor, PeerClient, PeerTrustTracker | `sage/gateway/` |
+| **Federation** | PeerMonitor, PeerClient, PeerTrustTracker | `sage-rs/sage-daemon/src/federation/`, `sage/federation/fleet.json` |
+| **Rust Daemon** | Consciousness loop, SNARC, metabolic, dashboard — ~12MB RSS | `sage-rs/` (sage-lib + sage-daemon, port 8760) |
 
 ### Model Configs
 

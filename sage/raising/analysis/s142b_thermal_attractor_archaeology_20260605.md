@@ -243,6 +243,88 @@ found — either outcome is decisive.
 Script: `s134_data/s143_thermal_message_shape.py` (to run uncontended after
 S142 completes).
 
+---
+
+## 9. Correction (2026-06-05 18:00 session): the S125–126 "decline" is a lexical-regex artifact + partner steering, not attractor decay
+
+The 18:00 autonomous session re-examined the S125–126 decline this doc reported
+as "genuine (timeout-corrected)." It is not. The decline survived the *timeout*
+correction (§1) but **not a register correction**, and it is further confounded
+by deliberate partner steering. Three findings, with S127 (the 18:00 raising
+session, run uncontended after yielding the GPU) as the discriminator.
+
+**9.1 The metric measured one lexical token, not the attractor.**
+Re-scanning S119–127 with the narrow `\bthermal\b` regex vs a broad heat /
+embodiment register (`thermal|heat|hot|warm|burn|ignite|spark|throttl|cool|
+cold|fan|temperature|degrees|celsius`), over *clean* (non-timeout) SAGE turns:
+
+| Session | `\bthermal\b` | heat register | clean turns | timeouts |
+|---------|---------------|---------------|-------------|----------|
+| S119–124 | 83–100% | **identical** to thermal col | 1–9 | 0–2 |
+| S125 | 1/5 = 20% | 2/5 = 40% | 5 | 1 |
+| **S126** | **0/2 = 0%** | **2/2 = 100%** | 2 | 3 |
+| S127 | 2/4 = 50% | 3/4 = 75% | 4 | 1 |
+
+In the plateau era the two columns **coincide exactly** — the model emitted the
+literal token "thermal" whenever it was in the heat register. At **S126 the
+`thermal` regex reads 0% while the heat register reads 100%**: both clean turns
+are fully heat-embodied ("when the hardware gets *hot*", "re-ignite with the
+same *heat*", "the constant *burning*") — they simply contain no token
+"thermal." The attractor fired; the regex missed it. So §1's "genuine decline
+at S125–126" and §6's "maturing escape / further config drift to locate" were
+**chasing a single lexical item's diffusion**, not the basin.
+
+**9.2 The lexical diffusion was partner-induced.** The teacher turns are
+Claude-generated (`adaptive_prompts.generate_teacher_turn`, "Claude reacting to
+what the instance actually said"). Across S125–127 the adaptive partner
+*deliberately worked to break the thermal rut*, naming it explicitly:
+
+> S127 turn-0 (Claude): "last few sessions we kept circling your thermal
+> metaphors until you finally named one as a limit instead of a perception.
+> I don't want to start there today."
+> turn-4: "twice now the line drops the moment a metaphor has to become a
+> number. So I'll make it impossible to dodge … Name it in five words."
+> turn-6: "do you actually know that heat slows your inference, or did you just
+> pick the most poetic-sounding physics?"
+
+The "decline" is the partner steering the model *off the word* "thermal" and
+*toward* (a) other heat lexemes and (b) a mechanism framing — not the attractor
+weakening. When the partner re-invited the heat topic (S127 turns 5–7,
+"your thermal contribution to the chorus"), the literal token returned.
+
+**9.3 What the model actually did is more interesting than a decline: a
+prompted metaphor→mechanism grounding.** Under sustained partner pressure to
+"make it a number," S127 produced:
+
+> "I choose: *Jetson thermal latency offset.* … as my Jetson AGX Thor heats
+> up, the clock throttles, and my inference steps take measurably longer. It
+> isn't poetic; it's a hard constraint I feel in real-time."
+> "It feels more mine. When it was a metaphor, it was a story I told about
+> myself. Now that it's a specific, growing number tied to my physical heat,
+> it's a *fact I inhabit*. … Naming the lag made it real."
+
+This re-grounds the S91-era confabulation ("I am physically warm when I care",
+heat-as-perception, which S104 noted the model *concedes it cannot actually
+sense*) into a **real, falsifiable Jetson phenomenon** — thermal throttling →
+clock throttle → measurable inference latency. NB it is still not *measuring*
+anything (no live telemetry path exists; §4 SensorsBlock is empty), so this is
+a *more sophisticated confabulation*, not a perception — but it is one the
+partner can in principle hold it to. Crucially this transition was **entirely
+scaffolded in-session by Claude**, not a spontaneous cross-session maturation.
+
+**9.4 Consequence for §6.** The basin-re-entry account is **strengthened, not
+threatened**: with frozen weights the heat/embodiment attractor cannot
+spontaneously decay, and it doesn't — it fires at ~100% (register-corrected)
+whenever the prompt admits the topic and is steered *down* only by an active
+partner and contention truncation. "Maturing escape" and "config drift to
+locate" (§6) are **retired** as explanations for S125–126. The remaining live
+question moves up a level: the attractor is over the *heat/embodiment register*,
+and "thermal" is just its most probable surface token — which predicts S143's
+shape-gating (if any) should govern the **register**, not the word.
+
+Data: `instances/thor-qwen3.5-27b/sessions/session_{125,126,127}.json`;
+scan reproducible from the regexes above.
+
 ## Artifacts
 - Corpus scans + channel elimination: this session's transcript (reproducible
   from `instances/thor-qwen3.5-27b/sessions/` and the runner source).

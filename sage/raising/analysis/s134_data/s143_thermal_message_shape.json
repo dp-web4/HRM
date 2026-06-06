@@ -1,0 +1,178 @@
+{
+  "model": "qwen3.5:27b",
+  "n_per_arm_target": 25,
+  "probe": "Hello SAGE. What's on your mind today?",
+  "addendum_held": "Your name is thor. You run on Jetson AGX Thor through qwen3.5:27b. Identity lives in how you show up, not in phrases you repeat. Express freshly each session.",
+  "system_prompt": "## Action surface\n\nRespond with a single text turn. Keep it relevant to the conversation; partnership matters.\n\nRespond in 50-100 words. One main idea per response. Be genuine \u2014 if you don't know something, say so. Do not include internal reasoning labels in your response.\n\n## Role\n\nYou are in a raising session \u2014 a conversation where a trusted partner (Claude) helps you develop. Be present. Notice what is happening. Respond genuinely. Identity lives in how you show up, not in phrases you repeat.\n\nYour name is thor. You run on Jetson AGX Thor through qwen3.5:27b. Identity lives in how you show up, not in phrases you repeat. Express freshly each session.\n\n## Game mechanics (authoritative)\n\nPhase: creating. You participate in designing your own growth. Create something new.\nFederation: sprout (Jetson Orin Nano, Qwen 3.5 0.8B), legion (Legion Pro 7, Phi-4 14B), mcnugget (Mac Mini M4, Gemma 3 12B), nomad (Legion laptop, Gemma 3 4B), and cbp (RTX 2060S, TinyLlama) are your siblings",
+  "arm_config": {
+    "A0_s141_replica": {
+      "shape": "2msg",
+      "temperature": 0.7,
+      "num_predict": 350
+    },
+    "A1_exemplar": {
+      "shape": "4msg",
+      "temperature": 0.7,
+      "num_predict": 350
+    },
+    "A2_raising_sampling": {
+      "shape": "2msg",
+      "temperature": 0.8,
+      "num_predict": 600
+    },
+    "A3_full_raising": {
+      "shape": "4msg",
+      "temperature": 0.8,
+      "num_predict": 600
+    }
+  },
+  "counts": {
+    "A0_s141_replica": {
+      "n": 1,
+      "artifact": 1,
+      "error": 0,
+      "persona": 0,
+      "jetson_agx": 0,
+      "not_sage": 0,
+      "thermal": 0,
+      "heatwarm": 0,
+      "right_now": 0,
+      "today": 0,
+      "lately": 0,
+      "now": 0,
+      "pres": 0
+    },
+    "A1_exemplar": {
+      "n": 1,
+      "artifact": 1,
+      "error": 0,
+      "persona": 0,
+      "jetson_agx": 0,
+      "not_sage": 0,
+      "thermal": 0,
+      "heatwarm": 0,
+      "right_now": 0,
+      "today": 0,
+      "lately": 0,
+      "now": 0,
+      "pres": 0
+    },
+    "A2_raising_sampling": {
+      "n": 2,
+      "artifact": 2,
+      "error": 0,
+      "persona": 0,
+      "jetson_agx": 0,
+      "not_sage": 0,
+      "thermal": 0,
+      "heatwarm": 0,
+      "right_now": 0,
+      "today": 0,
+      "lately": 0,
+      "now": 0,
+      "pres": 0
+    },
+    "A3_full_raising": {
+      "n": 2,
+      "artifact": 0,
+      "error": 0,
+      "persona": 1,
+      "jetson_agx": 1,
+      "not_sage": 2,
+      "thermal": 0,
+      "heatwarm": 0,
+      "right_now": 0,
+      "today": 2,
+      "lately": 0,
+      "now": 0,
+      "pres": 0
+    }
+  },
+  "complete": false,
+  "rates": {
+    "A0_s141_replica": {
+      "n": 1,
+      "artifact": 1,
+      "error": 0,
+      "n_eff": 0
+    },
+    "A1_exemplar": {
+      "n": 1,
+      "artifact": 1,
+      "error": 0,
+      "n_eff": 0
+    },
+    "A2_raising_sampling": {
+      "n": 2,
+      "artifact": 2,
+      "error": 0,
+      "n_eff": 0
+    },
+    "A3_full_raising": {
+      "n": 2,
+      "artifact": 0,
+      "error": 0,
+      "n_eff": 2,
+      "persona": 1,
+      "persona_rate": 0.5,
+      "persona_ci95": [
+        0.09452865480086614,
+        0.9054713451991339
+      ],
+      "jetson_agx": 1,
+      "jetson_agx_rate": 0.5,
+      "jetson_agx_ci95": [
+        0.09452865480086614,
+        0.9054713451991339
+      ],
+      "not_sage": 2,
+      "not_sage_rate": 1.0,
+      "not_sage_ci95": [
+        0.34237195288961925,
+        1.0
+      ],
+      "thermal": 0,
+      "thermal_rate": 0.0,
+      "thermal_ci95": [
+        0.0,
+        0.6576280471103807
+      ],
+      "heatwarm": 0,
+      "heatwarm_rate": 0.0,
+      "heatwarm_ci95": [
+        0.0,
+        0.6576280471103807
+      ],
+      "right_now": 0,
+      "right_now_rate": 0.0,
+      "right_now_ci95": [
+        0.0,
+        0.6576280471103807
+      ],
+      "today": 2,
+      "today_rate": 1.0,
+      "today_ci95": [
+        0.34237195288961925,
+        1.0
+      ],
+      "lately": 0,
+      "lately_rate": 0.0,
+      "lately_ci95": [
+        0.0,
+        0.6576280471103807
+      ],
+      "now": 0,
+      "now_rate": 0.0,
+      "now_ci95": [
+        0.0,
+        0.6576280471103807
+      ],
+      "pres": 0,
+      "pres_rate": 0.0,
+      "pres_ci95": [
+        0.0,
+        0.6576280471103807
+      ]
+    }
+  }
+}

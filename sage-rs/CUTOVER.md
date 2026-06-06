@@ -79,9 +79,11 @@ Edit `sage-rs/sage-daemon.service` for the target machine:
 ExecStart=/home/<user>/ai-workspace/SAGE/sage-rs/target/release/sage-daemon
 WorkingDirectory=/home/<user>/ai-workspace/SAGE
 Environment=SAGE_MODEL=<model>      # e.g. gemma3:12b, qwen3.5:27b
-Environment=SAGE_MACHINE=<machine>  # e.g. thor, legion, nomad
+Environment=SAGE_MACHINE=<machine>  # e.g. thor, legion, nomad — required for non-sprout machines
 User=<user>
 ```
+
+**As of Sprint 7 (CBP, 2026-06-06)**: `SAGE_MACHINE` is honored and drives instance-dir + self_machine resolution. Per-path explicit overrides (`SAGE_ROOT`, `SAGE_FLEET_JSON`, `SAGE_EXPERIENCE_PATH`, `SAGE_TRUST_PATH`) are available if the defaults aren't right; defaults walk up from the binary location to find `<SAGE_ROOT>/sage/federation/fleet.json` and use `sage/instances/{machine}-{model_with_dashes}/...` for per-instance files. **No main.rs edit needed** — the same binary is now multi-machine. Sprout's existing deploy keeps working with `SAGE_MACHINE=sprout` (or no env at all — sprout is the documented default for backward-compat).
 
 Install:
 
@@ -186,15 +188,28 @@ Override the model at runtime: `SAGE_MODEL=phi4:latest` in the systemd service o
 | POST | `/snarc/observe` | Direct SNARC observation (external sensors) |
 | POST | `/metabolic/cycle` | Direct metabolic cycle (external tools) |
 
-## Paths (hardcoded, update in main.rs for other machines)
+## Paths (Sprint 7: env-var driven)
 
-```rust
-const FLEET_JSON: &str = "/home/sprout/ai-workspace/SAGE/sage/federation/fleet.json";
-const EXPERIENCE_PATH: &str = ".../sprout-qwen3.5-0.8b/experience_buffer_rs.jsonl";
-const TRUST_PATH: &str = ".../sprout-qwen3.5-0.8b/peer_trust_rs.json";
+Defaults are derived from `SAGE_MACHINE` + `SAGE_MODEL`, rooted at `SAGE_ROOT` (which defaults to walking up four parents from the binary location to find `<root>/sage/federation/fleet.json`):
+
+```
+SAGE_ROOT/sage/federation/fleet.json                                          # fleet manifest
+SAGE_ROOT/sage/instances/{machine}-{model_with_dashes}/experience_buffer_rs.jsonl
+SAGE_ROOT/sage/instances/{machine}-{model_with_dashes}/peer_trust_rs.json
 ```
 
-These should be made configurable via env vars in a future sprint. For now, update them in `sage-daemon/src/main.rs` before building for another machine.
+Per-path explicit overrides if the defaults aren't right:
+
+| env var | overrides |
+|---|---|
+| `SAGE_ROOT` | The walk-up root detection |
+| `SAGE_FLEET_JSON` | Full path to fleet manifest |
+| `SAGE_EXPERIENCE_PATH` | Full path to experience buffer JSONL |
+| `SAGE_TRUST_PATH` | Full path to peer trust JSON |
+
+**Same binary, all machines.** No `main.rs` edit needed.
+
+Backward-compat: if `SAGE_MACHINE` is unset, the binary defaults to `sprout` (with a warning) so Sprout's existing systemd service continues working without modification.
 
 ## Rollback
 

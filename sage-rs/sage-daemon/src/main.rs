@@ -47,6 +47,7 @@ struct AppState {
     peer_states: Option<Arc<Mutex<std::collections::HashMap<String, federation::monitor::PeerState>>>>,
     started: Instant,
     model: String,
+    machine: String,
 }
 
 // --- Request/Response types ---
@@ -184,9 +185,68 @@ async fn dashboard() -> Html<&'static str> {
 }
 
 const PORT: u16 = 8760;
-const FLEET_JSON: &str = "/home/sprout/ai-workspace/SAGE/sage/federation/fleet.json";
-const EXPERIENCE_PATH: &str = "/home/sprout/ai-workspace/SAGE/sage/instances/sprout-qwen3.5-0.8b/experience_buffer_rs.jsonl";
-const TRUST_PATH: &str = "/home/sprout/ai-workspace/SAGE/sage/instances/sprout-qwen3.5-0.8b/peer_trust_rs.json";
+
+// Path + identity resolution (Sprint 7: per-machine via env vars).
+//
+// Defaults: SAGE_MACHINE=sprout (keeps Sprout's existing deploy working without
+// env change). All other machines set SAGE_MACHINE + SAGE_MODEL in their
+// systemd service environment. Per-path explicit overrides
+// (SAGE_FLEET_JSON / SAGE_EXPERIENCE_PATH / SAGE_TRUST_PATH) win over the
+// derived defaults if set.
+
+fn sage_root() -> std::path::PathBuf {
+    use std::path::PathBuf;
+    if let Ok(p) = std::env::var("SAGE_ROOT") {
+        return PathBuf::from(p);
+    }
+    if let Ok(exe) = std::env::current_exe() {
+        // Built layout: <SAGE_ROOT>/sage-rs/target/release/sage-daemon
+        // Walk up four parents to land at SAGE_ROOT.
+        if let Some(root) = exe
+            .parent()
+            .and_then(|p| p.parent())
+            .and_then(|p| p.parent())
+            .and_then(|p| p.parent())
+        {
+            if root.join("sage/federation/fleet.json").exists() {
+                return root.to_path_buf();
+            }
+        }
+    }
+    PathBuf::from(".")
+}
+
+fn instance_slug(machine: &str, model: &str) -> String {
+    // sage/instances/{machine}-{model} convention; colons in model become dashes.
+    format!("{}-{}", machine, model.replace(':', "-"))
+}
+
+fn fleet_json_path(root: &std::path::Path) -> std::path::PathBuf {
+    if let Ok(p) = std::env::var("SAGE_FLEET_JSON") {
+        return std::path::PathBuf::from(p);
+    }
+    root.join("sage/federation/fleet.json")
+}
+
+fn experience_path(root: &std::path::Path, machine: &str, model: &str) -> std::path::PathBuf {
+    if let Ok(p) = std::env::var("SAGE_EXPERIENCE_PATH") {
+        return std::path::PathBuf::from(p);
+    }
+    root.join(format!(
+        "sage/instances/{}/experience_buffer_rs.jsonl",
+        instance_slug(machine, model)
+    ))
+}
+
+fn trust_path(root: &std::path::Path, machine: &str, model: &str) -> std::path::PathBuf {
+    if let Ok(p) = std::env::var("SAGE_TRUST_PATH") {
+        return std::path::PathBuf::from(p);
+    }
+    root.join(format!(
+        "sage/instances/{}/peer_trust_rs.json",
+        instance_slug(machine, model)
+    ))
+}
 
 // --- Handlers ---
 
@@ -347,9 +407,9 @@ async fn peers(State(state): State<Arc<AppState>>) -> Json<PeersResponse> {
                     }
                 })
                 .collect();
-            ("sprout".to_string(), peers, fleet.version())
+            (state.machine.clone(), peers, fleet.version())
         }
-        None => ("sprout".to_string(), vec![], 0),
+        None => (state.machine.clone(), vec![], 0),
     };
 
     Json(PeersResponse {
@@ -438,11 +498,29 @@ async fn main() {
 
     tracing_subscriber::fmt::init();
 
+    let machine = std::env::var("SAGE_MACHINE").unwrap_or_else(|_| {
+        info!("SAGE_MACHINE not set, defaulting to 'sprout' (backward-compat); set explicitly for other machines");
+        "sprout".to_string()
+    });
     let model = std::env::var("SAGE_MODEL").unwrap_or_else(|_| "qwen3.5:0.8b".to_string());
 
-    let fleet = FleetRegistry::load("sprout", std::path::Path::new(FLEET_JSON)).ok();
+    let root = sage_root();
+    let fleet_path = fleet_json_path(&root);
+    let exp_path = experience_path(&root, &machine, &model);
+    let tr_path = trust_path(&root, &machine, &model);
+    info!(
+        "paths: root={} fleet={} exp={} trust={}",
+        root.display(),
+        fleet_path.display(),
+        exp_path.display(),
+        tr_path.display()
+    );
+
+    let fleet = FleetRegistry::load(&machine, &fleet_path).ok();
     if let Some(ref f) = fleet {
         info!("fleet loaded: {} machines, v{}", f.fleet_size(), f.version());
+    } else {
+        info!("fleet registry unavailable (file missing or unreadable): {}", fleet_path.display());
     }
 
     let (shutdown_tx, shutdown_rx) = tokio::sync::watch::channel(false);
@@ -451,14 +529,14 @@ async fn main() {
     let (msg_tx, msg_rx) = tokio::sync::mpsc::channel(64);
     let consciousness_handle = ConsciousnessHandle::new(msg_tx);
 
-    let experience = ExperienceBuffer::with_defaults(std::path::Path::new(EXPERIENCE_PATH));
+    let experience = ExperienceBuffer::with_defaults(&exp_path);
     info!("experience buffer: {} existing entries", experience.count());
 
     let consciousness_loop = ConsciousnessLoop::new(
         OllamaClient::default_local(&model),
         experience,
         msg_rx,
-        "sprout",
+        &machine,
         &model,
     );
 
@@ -469,13 +547,13 @@ async fn main() {
 
     // Federation: peer monitor + client
     let trust = Arc::new(Mutex::new(
-        PeerTrustTracker::with_defaults(std::path::Path::new(TRUST_PATH))
+        PeerTrustTracker::with_defaults(&tr_path)
     ));
 
     let (peer_client, peer_states) = if let Some(ref fleet) = fleet {
         let monitor = PeerMonitor::new(fleet.clone(), trust.clone(), 30);
         let peer_states = monitor.states();
-        let client = PeerClient::new(fleet.clone(), trust.clone(), peer_states.clone(), "sprout");
+        let client = PeerClient::new(fleet.clone(), trust.clone(), peer_states.clone(), &machine);
 
         let monitor_shutdown = shutdown_rx.clone();
         tokio::spawn(async move {
@@ -502,6 +580,7 @@ async fn main() {
         peer_states,
         started: Instant::now(),
         model: model.clone(),
+        machine: machine.clone(),
     });
 
     let app = Router::new()

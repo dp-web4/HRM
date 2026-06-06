@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SAGE Dashboard — Sprout</title>
+<title>SAGE Dashboard</title>
 <style>
   :root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9; --accent: #58a6ff; --green: #3fb950; --yellow: #d29922; --red: #f85149; --dim: #8b949e; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -51,7 +51,7 @@
 </head>
 <body>
 <div class="header">
-  <h1>SAGE — Sprout</h1>
+  <h1 id="header-title">SAGE</h1>
   <div class="meta">
     <span id="version"></span> | uptime <span id="uptime">-</span>s | <span id="model">-</span>
   </div>
@@ -206,9 +206,13 @@ async function sendChat() {
       body: JSON.stringify({message: msg})
     });
     const d = await r.json();
-    appendChat('sprout', d.response);
-    if (d.salience !== undefined) {
-      updateSnarc({total: d.salience});
+    if (d.error) {
+      appendChat('error', d.error);
+    } else {
+      appendChat(machineName, d.response);
+      if (d.salience !== undefined) {
+        updateSnarc({surprise: d.salience, novelty: d.salience, arousal: d.salience, reward: d.salience, conflict: d.salience});
+      }
     }
     refreshStatus();
   } catch(e) {
@@ -216,6 +220,21 @@ async function sendChat() {
   }
   btn.disabled = false;
   input.focus();
+}
+
+async function loadChatHistory() {
+  try {
+    const r = await fetch(BASE + '/chat/history?limit=50');
+    const d = await r.json();
+    const log = document.getElementById('chat-log');
+    if (d.messages && d.messages.length > 0) {
+      for (const m of d.messages) {
+        const sender = m.sender || 'unknown';
+        const text = m.text || '';
+        appendChat(sender, text);
+      }
+    }
+  } catch(e) {}
 }
 
 function appendChat(sender, text) {
@@ -237,12 +256,30 @@ document.getElementById('chat-input').addEventListener('keydown', e => {
   if (e.key === 'Enter') sendChat();
 });
 
-refreshHealth();
-refreshStatus();
-refreshPeers();
-setInterval(refreshHealth, 5000);
-setInterval(refreshStatus, 3000);
-setInterval(refreshPeers, 15000);
+let machineName = 'sage';
+
+async function init() {
+  // Get machine name from peers endpoint (self_machine field)
+  try {
+    const r = await fetch(BASE + '/peers');
+    const d = await r.json();
+    if (d.self_machine) {
+      machineName = d.self_machine;
+      document.getElementById('header-title').textContent = 'SAGE — ' + machineName.charAt(0).toUpperCase() + machineName.slice(1);
+      document.title = 'SAGE — ' + machineName.charAt(0).toUpperCase() + machineName.slice(1);
+    }
+  } catch(e) {}
+
+  loadChatHistory();
+  refreshHealth();
+  refreshStatus();
+  refreshPeers();
+  setInterval(refreshHealth, 5000);
+  setInterval(refreshStatus, 3000);
+  setInterval(refreshPeers, 15000);
+}
+
+init();
 </script>
 </body>
 </html>

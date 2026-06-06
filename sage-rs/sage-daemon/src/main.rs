@@ -48,6 +48,7 @@ struct AppState {
     started: Instant,
     model: String,
     machine: String,
+    chat_history_file: std::path::PathBuf,
 }
 
 // --- Request/Response types ---
@@ -248,6 +249,16 @@ fn trust_path(root: &std::path::Path, machine: &str, model: &str) -> std::path::
     ))
 }
 
+fn chat_history_path(root: &std::path::Path, machine: &str, model: &str) -> std::path::PathBuf {
+    if let Ok(p) = std::env::var("SAGE_CHAT_HISTORY_PATH") {
+        return std::path::PathBuf::from(p);
+    }
+    root.join(format!(
+        "sage/instances/{}/chat_history.jsonl",
+        instance_slug(machine, model)
+    ))
+}
+
 // --- Handlers ---
 
 async fn health(State(state): State<Arc<AppState>>) -> Json<HealthResponse> {
@@ -317,7 +328,7 @@ async fn metabolic_cycle(
 async fn chat(
     State(state): State<Arc<AppState>>,
     Json(req): Json<ChatRequest>,
-) -> Result<Json<ChatResponse>, (StatusCode, String)> {
+) -> (StatusCode, Json<serde_json::Value>) {
     if let Some(conversation) = req.conversation {
         let mut messages = conversation;
         messages.push(ChatMessage {
@@ -327,28 +338,30 @@ async fn chat(
         match state.ollama.chat(&messages).await {
             Ok(text) => {
                 let ctrl = state.metabolic.lock().await;
-                Ok(Json(ChatResponse {
-                    response: text,
-                    model: state.model.clone(),
-                    metabolic_state: ctrl.current_state.as_str().to_string(),
-                    atp_percentage: ctrl.atp_percentage(),
-                    salience: None,
-                    cycle: None,
-                }))
+                (StatusCode::OK, Json(serde_json::json!({
+                    "response": text,
+                    "model": state.model,
+                    "metabolic_state": ctrl.current_state.as_str(),
+                    "atp_percentage": ctrl.atp_percentage(),
+                })))
             }
-            Err(e) => Err((StatusCode::BAD_GATEWAY, e)),
+            Err(e) => (StatusCode::BAD_GATEWAY, Json(serde_json::json!({
+                "error": e,
+            }))),
         }
     } else {
         match state.consciousness.send_message(req.message, req.system, "http").await {
-            Ok(resp) => Ok(Json(ChatResponse {
-                response: resp.text,
-                model: state.model.clone(),
-                metabolic_state: resp.metabolic_state,
-                atp_percentage: resp.atp_percentage,
-                salience: Some(resp.salience.total),
-                cycle: Some(resp.cycle),
-            })),
-            Err(e) => Err((StatusCode::BAD_GATEWAY, e)),
+            Ok(resp) => (StatusCode::OK, Json(serde_json::json!({
+                "response": resp.text,
+                "model": state.model,
+                "metabolic_state": resp.metabolic_state,
+                "atp_percentage": resp.atp_percentage,
+                "salience": resp.salience.total,
+                "cycle": resp.cycle,
+            }))),
+            Err(e) => (StatusCode::BAD_GATEWAY, Json(serde_json::json!({
+                "error": e,
+            }))),
         }
     }
 }
@@ -446,6 +459,32 @@ async fn delegate(
     }
 }
 
+async fn chat_history(
+    State(state): State<Arc<AppState>>,
+    axum::extract::Query(params): axum::extract::Query<std::collections::HashMap<String, String>>,
+) -> Json<serde_json::Value> {
+    let limit: usize = params.get("limit").and_then(|s| s.parse().ok()).unwrap_or(50);
+    let path = &state.chat_history_file;
+
+    let entries = match std::fs::read_to_string(path) {
+        Ok(content) => {
+            let lines: Vec<&str> = content.lines().collect();
+            let start = lines.len().saturating_sub(limit);
+            lines[start..]
+                .iter()
+                .filter_map(|line| serde_json::from_str::<serde_json::Value>(line).ok())
+                .collect::<Vec<_>>()
+        }
+        Err(_) => vec![],
+    };
+
+    Json(serde_json::json!({
+        "messages": entries,
+        "total": entries.len(),
+        "path": path.display().to_string(),
+    }))
+}
+
 fn run_simulation(cycles: u64) {
     println!("sage-daemon --simulate {cycles}");
     println!("{:-<60}", "");
@@ -508,6 +547,7 @@ async fn main() {
     let fleet_path = fleet_json_path(&root);
     let exp_path = experience_path(&root, &machine, &model);
     let tr_path = trust_path(&root, &machine, &model);
+    let chat_path = chat_history_path(&root, &machine, &model);
     info!(
         "paths: root={} fleet={} exp={} trust={}",
         root.display(),
@@ -581,6 +621,7 @@ async fn main() {
         started: Instant::now(),
         model: model.clone(),
         machine: machine.clone(),
+        chat_history_file: chat_path,
     });
 
     let app = Router::new()
@@ -590,6 +631,7 @@ async fn main() {
         .route("/snarc/observe", post(snarc_observe))
         .route("/metabolic/cycle", post(metabolic_cycle))
         .route("/chat", post(chat))
+        .route("/chat/history", get(chat_history))
         .route("/stream", post(stream_chat))
         .route("/peers", get(peers))
         .route("/delegate", post(delegate))

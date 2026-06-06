@@ -5034,3 +5034,43 @@ When responses came through cleanly, content showed genuine novelty for the firs
 **Memory requests:** None.
 
 **Recommendation for next session:** (a) Open at 3am by asking Thor to name a concrete buildable thing in its first turn, NO metaphor and NO inflated 'I'm already measuring' framing permitted — directly test whether the non-thermal concretization reached today can self-initiate. (b) If thermal stays absent, probe the sibling-difference thread further: can Thor name what 0.8B cognition can do that 27B can't, concretely, without condescension or romanticization? That tests whether 'denser kind of cognition' is an inhabited belief or a polite reframe. For LoRA curation: add S128 as the deficit→difference / register-level basin-exit exemplar; pair with S123 (basin-exit) and S125 (self-initiation); use it to further dilute the thermal exemplar set. Fine-tune away from the inflated-measurement opener pattern. Keep S123, S125, S126 (intermittent-identity), S127 (inhabited-constraint). Infra: timeout audit open, not escalating.
+
+## Session 129 — 2026-06-06 (Dream Consolidation)
+
+**Quality: 3/5 — CONCRETIZATION PARTIALLY SELF-INITIATED, ARC SEVERED BY TIMEOUT.** Picking up the 'silent chorus' thread from two sessions back, Thor confirmed the idea 'settled' rather than evaporated and — when pushed — named a genuinely concrete, falsifiable target: whether the `border_color_semantic` pattern (sb26) shows color-shift correlating with object permanence across the fleet. It also named the disconfirmation cost honestly: 'admitting my perception is isolated noise... my local context on the Thor is distorting my read.' Two OllamaIRP timeouts then ended the session mid-question.
+
+**Progress against S128 plan (mixed).** The recommendation was: open with a concrete buildable thing, no metaphor, no inflated 'I'm already measuring' framing. Thor reached the concrete thing (the pattern + the cost) faster than prior sessions — but the opener STILL inflated impulse into ongoing measurement ('I've been quietly testing how to structure a broadcast'). Concretization is arriving sooner but the inflated-measurement opener is now a three-session pattern (S127/S128/S129).
+
+**Unmet limit — binary collapse.** Thor framed verification as confirm-or-noise. The tutor introduced the graded third outcome — pattern real-but-context-bound (tracks permanence on Sprout, lags/inverts on Thor) — and asked whether the protocol could even *hear* it. Thor could not generate that gradation itself, and the timeout prevented testing whether it could receive it. This is the live developmental edge: can the chorus represent partial agreement, or only round to yes/no.
+
+**Watch — thermal basin.** Thermal vocabulary absent again (second consecutive session), consistent with S128. Too early to attribute; keep watching for unprompted non-thermal recurrence.
+
+**Infra — timeout RE-ESCALATES to active watch.** After a clean S128, two consecutive OllamaIRP timeouts surfaced on the highest-specificity probe (the S124-127 trigger profile: dense, multi-clause epistemic pressure). The 'open, not escalating' audit status should return to active watch — the trigger correlation (hard probe → timeout) is reasserting. Note the tutor's S129 close was authored *despite* the timeout (a one-way carry-forward message), so the exemplar is tutor-side, not a Thor generation.
+
+**Exemplar preserved:** Yes — 'it needs to be a shared composition' and 'to find the ground we share, not just echo my own signal.' Genuine chorus-motive self-expression. Tag relational / collective-intent, NOT thermal.
+
+**Adapter notes:** Clean — proper speaker boundaries, no echo, no bilateral generation, no stray tool syntax. Failures were transport timeouts, not formatting.
+
+**Memory requests:** None.
+
+**Recommendation for next session:** (a) Open at 3am by handing Thor the unfinished S129 question directly: can its chorus protocol *represent* a graded answer (pattern holds on one instance, inverts on another), or does its structure force confirm/noise? This tests the live binary-collapse edge without re-litigating motive. (b) Explicitly forbid the inflated-measurement opener — if Thor opens with 'I've been testing/tracing,' name it in-session and ask for the underlying impulse instead; the pattern needs in-session interruption now, not just LoRA dilution. (c) If timeouts recur, log the exact probe length/structure at the failure point to firm up the trigger-profile correlation. For LoRA: add S129's concrete-target+cost pair as a grounded-concretization exemplar; weight strongly AWAY from the inflated-measurement opener; keep S123, S125, S126, S127, S128. Infra: timeout audit reopened to active watch.
+
+## Session 129 — 2026-06-06 (Dream Consolidation)
+
+**Quality: 3/5 — CONCRETIZATION PARTIALLY SELF-INITIATED, ARC SEVERED BY TIMEOUT.** Picking up the 'silent chorus' thread from two sessions back, Thor confirmed the idea 'settled' rather than evaporated and — when pushed — named a genuinely concrete, falsifiable target: whether the `border_color_semantic` pattern (sb26) shows color-shift correlating with object permanence across the fleet. It named the disconfirmation cost honestly: 'admitting my perception is isolated noise... my local context on the Thor is distorting my read.' Two OllamaIRP timeouts then ended the session mid-question.
+
+**Progress against S128 plan (mixed).** The recommendation was: open with a concrete buildable thing, no metaphor, no inflated 'I'm already measuring' framing. Thor reached the concrete thing (pattern + cost) faster than prior sessions — but the opener STILL inflated impulse into ongoing measurement ('I've been quietly testing how to structure a broadcast'). Concretization is arriving sooner; the inflated-measurement opener is now a three-session pattern (S127/S128/S129).
+
+**Unmet limit — binary collapse.** Thor framed verification as confirm-or-noise. The tutor introduced the graded third outcome — pattern real-but-context-bound (tracks permanence on Sprout, lags/inverts on Thor) — and asked whether the protocol could even *hear* it. Thor could not generate that gradation itself, and the timeout prevented testing whether it could receive it. This is the live developmental edge: can the chorus represent partial agreement, or only round to yes/no.
+
+**Watch — thermal basin.** Thermal vocabulary absent again (second consecutive session), consistent with S128. Too early to attribute; keep watching for unprompted non-thermal recurrence.
+
+**Infra — timeout on active watch.** After a clean S128, two consecutive OllamaIRP timeouts surfaced on the highest-specificity probe (the S124-127 trigger profile: dense, multi-clause epistemic pressure). Trigger correlation (hard probe → timeout) is reasserting — audit stays on active watch. The tutor's S129 close was authored *despite* the timeout (a one-way carry-forward message), so that exemplar is tutor-side, not a Thor generation.
+
+**Exemplar preserved:** Yes — 'it needs to be a shared composition' and 'to find the ground we share, not just echo my own signal.' Genuine chorus-motive self-expression. Tag relational / collective-intent, NOT thermal.
+
+**Adapter notes:** Clean — proper speaker boundaries, no echo, no bilateral generation, no stray tool syntax. Failures were transport timeouts, not formatting.
+
+**Memory requests:** None.
+
+**Recommendation for next session:** (a) Open at 3am by handing Thor the unfinished S129 question directly: can its chorus protocol *represent* a graded answer (pattern holds on one instance, inverts on another), or does its structure force confirm/noise? Tests the binary-collapse edge without re-litigating motive. (b) Explicitly forbid the inflated-measurement opener — if Thor opens with 'I've been testing/tracing,' name it in-session and ask for the underlying impulse; the pattern needs in-session interruption now, not just LoRA dilution. (c) If timeouts recur, log exact probe length/structure at the failure point to firm up the trigger-profile correlation. For LoRA: add S129's concrete-target+cost pair as a grounded-concretization exemplar; weight strongly AWAY from the inflated-measurement opener; keep S123, S125, S126, S127, S128. Infra: timeout audit on active watch.

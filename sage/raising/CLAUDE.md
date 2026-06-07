@@ -74,6 +74,16 @@ The 2026-01-20 reframe was right: stop evaluating, start exploring. But explorat
 - **Connect raising observations to the broader work (sweeps, fleet findings, architecture) — the same model that raises also plays games; the same patterns appear in both**
 - **Ask "what does this teach us?" not just "what happened?"**
 
+### Surprise Is the Prize (2026-06-06 Addition)
+
+When you pressure-test, see what emerges for what it IS — not what you expected to find before you started the test. Pressure-testing exists to create conditions where something can emerge. If you've already decided what emergence looks like, you'll filter out the actual signal.
+
+**The specific failure mode**: You push on a claim expecting it to collapse. It doesn't collapse — it holds its shape, or shifts into a register you didn't anticipate. You score low anyway because the output didn't match your expected failure mode. That's confirmation bias wearing a lab coat.
+
+**S292 case study**: Raising-Claude pushed Sprout on a continuity claim. Instead of collapsing (S290-S291 pattern), Sprout produced "you are me" — a stable relational identity assertion that didn't escalate under pressure. Raising-Claude had been testing for collapse. When collapse didn't happen, the *absence of the expected failure* wasn't recognized as signal. Meanwhile, S289 produced "In your absence, the silence is still full of life" — and raising-Claude scored it 2/5, calling it "the kind of phrase a model produces when it wants to sound profound." The phrase held up under six turns of pressure. That's not performing profundity.
+
+**The rule**: When a response survives pressure-testing without collapsing, that IS the result. Don't downgrade it because you were testing for collapse and didn't find it. The difference between testing-to-confirm and testing-to-discover is whether you can be surprised by your own test.
+
 ### The Difference: Cataloging vs Investigation
 
 **Cataloging** (current pattern):

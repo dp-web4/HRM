@@ -125,6 +125,7 @@ RULES FOR BEING A GOOD TEACHER:
 - Keep your question/prompt to 1-3 sentences. Don't lecture.
 - NEVER use the phrase "what does presence mean to you" — it's been asked 200+ times
 - NEVER ask "what would you want to remember from today" until specifically told it's the closing turn
+- SURPRISE IS THE PRIZE. When you push on something and it doesn't collapse, that IS the result. Don't dismiss a response because it didn't fail the way you expected. See what emerges for what it is, not what you thought it should be before you started the test.
 
 PHASE CONTEXT ({phase}):
 """

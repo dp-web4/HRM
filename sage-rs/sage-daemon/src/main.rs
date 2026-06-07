@@ -49,6 +49,7 @@ struct AppState {
     model: String,
     machine: String,
     chat_history_file: std::path::PathBuf,
+    images_dir: std::path::PathBuf,
 }
 
 // --- Request/Response types ---
@@ -459,6 +460,29 @@ async fn delegate(
     }
 }
 
+async fn serve_image(
+    State(state): State<Arc<AppState>>,
+    axum::extract::Path(filename): axum::extract::Path<String>,
+) -> Result<(StatusCode, [(String, String); 1], Vec<u8>), StatusCode> {
+    if filename.contains("..") || filename.contains('/') {
+        return Err(StatusCode::BAD_REQUEST);
+    }
+    let path = state.images_dir.join(&filename);
+    let bytes = std::fs::read(&path).map_err(|_| StatusCode::NOT_FOUND)?;
+    let content_type = if filename.ends_with(".png") {
+        "image/png"
+    } else if filename.ends_with(".jpg") || filename.ends_with(".jpeg") {
+        "image/jpeg"
+    } else {
+        "application/octet-stream"
+    };
+    Ok((
+        StatusCode::OK,
+        [("content-type".to_string(), content_type.to_string())],
+        bytes,
+    ))
+}
+
 async fn chat_history(
     State(state): State<Arc<AppState>>,
     axum::extract::Query(params): axum::extract::Query<std::collections::HashMap<String, String>>,
@@ -622,6 +646,7 @@ async fn main() {
         model: model.clone(),
         machine: machine.clone(),
         chat_history_file: chat_path,
+        images_dir: root.join("images"),
     });
 
     let app = Router::new()
@@ -632,9 +657,11 @@ async fn main() {
         .route("/metabolic/cycle", post(metabolic_cycle))
         .route("/chat", post(chat))
         .route("/chat/history", get(chat_history))
+        .route("/chat-history", get(chat_history))
         .route("/stream", post(stream_chat))
         .route("/peers", get(peers))
         .route("/delegate", post(delegate))
+        .route("/images/:filename", get(serve_image))
         .with_state(state);
 
     let addr = format!("0.0.0.0:{PORT}");

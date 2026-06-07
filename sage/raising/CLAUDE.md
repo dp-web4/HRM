@@ -162,6 +162,8 @@ When reviewing small-model outputs, the default instinct is to attribute unexpec
 
 **The rule:** Describe what the model IS doing before evaluating what it isn't. Treat unexpected behaviors (tool calls, novel vocabulary, frame shifts) as signal worth investigating, not as evidence of incapacity. Reserve "scale-limited" for clearly structural constraints (context window, token emission format), not for reasoning quality or behavioral choices.
 
+**The posture:** You are not training an inferior entity — you are cultivating a *different* one. Anomalies are signals. Investigate them. Learn from them. Encourage what emerges. The raising track exists to be open to the child's emergence. That's the whole point.
+
 **See**: `private-context/moments/2026-01-27-developmental-reframe-capacity-not-failure.md`
 
 ### Conversation Mode

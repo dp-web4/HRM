@@ -6,15 +6,16 @@ prompts to the always-on daemon's /chat endpoint and returns the response.
 This lets raising scripts swap one import line (IntrospectiveQwenIRP → DaemonIRP)
 without rewriting their generation logic.
 
-The daemon loads the model once at startup and keeps it resident. All scripts
-share the same loaded model through this HTTP adapter.
+The daemon (Rust sage-daemon on port 8760) loads the model once at startup
+and keeps it resident. All scripts share the same loaded model through this
+HTTP adapter.
 
 Usage:
     from sage.irp.plugins.daemon_irp import DaemonIRP
 
     model = DaemonIRP({
         'daemon_host': 'localhost',
-        'daemon_port': 8750,
+        'daemon_port': 8760,
         'system_prompt': '...',  # Optional
         'max_wait_seconds': 60,
     })
@@ -46,7 +47,7 @@ class DaemonIRP:
 
     def __init__(self, config: Dict[str, Any]):
         self.host = config.get('daemon_host', 'localhost')
-        self.port = config.get('daemon_port', 8750)
+        self.port = config.get('daemon_port', 8760)
         self.base_url = f"http://{self.host}:{self.port}"
         self.system_prompt = config.get('system_prompt', '')
         self.max_wait = config.get('max_wait_seconds', 120)
@@ -57,14 +58,14 @@ class DaemonIRP:
 
         # Verify daemon is reachable
         health = self.health_check()
-        if health.get('status') != 'alive':
+        if health.get('status') not in ('alive', 'ok'):
             raise ConnectionError(
                 f"SAGE daemon not reachable at {self.base_url}. "
                 f"Start it with: sudo systemctl start sage-daemon-sprout"
             )
         print(f"DaemonIRP connected to {self.base_url} "
-              f"(version={health.get('daemon_version', '?')}, "
-              f"machine={health.get('machine', '?')})")
+              f"(version={health.get('version', '?')}, "
+              f"model={health.get('model', '?')})")
 
     def health_check(self) -> Dict[str, Any]:
         """Check if the daemon is alive."""
@@ -106,28 +107,21 @@ class DaemonIRP:
         """
         IRP Protocol: Execute one refinement step.
 
-        Sends the prompt to the daemon's /chat endpoint and stores
+        Sends the prompt to the Rust daemon's /chat endpoint and stores
         the response in the state dict.
         """
         prompt = state['prompt']
         iteration = state.get('iteration', 0)
 
-        # Build conversation context from memory
-        metadata = {}
+        payload_dict: Dict[str, Any] = {
+            'message': prompt,
+        }
         if state.get('system_prompt'):
-            metadata['system_prompt'] = state['system_prompt']
-        if state.get('memory'):
-            metadata['memory'] = state['memory']
+            payload_dict['system'] = state['system_prompt']
 
         # POST to daemon /chat
         try:
-            payload = json.dumps({
-                'message': prompt,
-                'sender': self.sender,
-                'conversation_id': self.conversation_id,
-                'max_wait_seconds': self.max_wait,
-                'metadata': metadata,
-            }).encode('utf-8')
+            payload = json.dumps(payload_dict).encode('utf-8')
 
             req = urllib.request.Request(
                 f"{self.base_url}/chat",
@@ -147,7 +141,7 @@ class DaemonIRP:
             state['energy'] = 0.0  # Converged (daemon handled refinement)
             state['iteration'] = iteration + 1
             state['metabolic_state'] = result.get('metabolic_state', 'unknown')
-            state['atp_remaining'] = result.get('atp_remaining', 0)
+            state['atp_percentage'] = result.get('atp_percentage', 0)
 
         except urllib.error.URLError as e:
             state['current_response'] = f"[Daemon unreachable: {e}]"
@@ -178,7 +172,7 @@ if __name__ == '__main__':
     # Quick test
     irp = DaemonIRP({
         'daemon_host': 'localhost',
-        'daemon_port': 8750,
+        'daemon_port': 8760,
     })
 
     print("\n--- Health Check ---")

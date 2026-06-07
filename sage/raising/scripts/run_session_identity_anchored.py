@@ -555,7 +555,7 @@ You have access to tools that can interact with the world: checking the time, do
 
         self.model = DaemonIRP({
             'daemon_host': 'localhost',
-            'daemon_port': 8750,
+            'daemon_port': 8760,
             'system_prompt': system_prompt,
             'max_wait_seconds': 120,
             'sender': 'raising_session',

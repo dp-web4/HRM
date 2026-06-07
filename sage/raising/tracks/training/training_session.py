@@ -220,7 +220,7 @@ Your name is SAGE. It's okay to make mistakes - that's how you learn."""
         print("Connecting to resident SAGE daemon...")
         self.model = DaemonIRP({
             'daemon_host': 'localhost',
-            'daemon_port': 8750,
+            'daemon_port': 8760,
             'system_prompt': system_prompt,
             'max_wait_seconds': 120,
             'sender': 'training_session',

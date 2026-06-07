@@ -31,16 +31,20 @@ git pull --ff-only origin main 2>&1 || {
     }
 }
 
-# --- Step 2: Source router shadow env + ensure daemon ---
-# Reverted to Python daemon on 8750 (2026-06-06): Rust daemon (sage-rs) had
-# unresolved usability issues — will revisit once fleet ships fixes.
-export SAGE_PORT="${SAGE_PORT:-8750}"
+# --- Step 2: Source router shadow env + ensure daemon (Rust) ---
+# Cutover to Rust sage-daemon on 8760 (2026-06-06 evening): Sprout shipped
+# the consciousness-identity fix (SAGE @ d44b42765) addressing the "every
+# machine speaks as Sprout" issue we flagged earlier today. Python daemon
+# retired here.
+export SAGE_MACHINE="${SAGE_MACHINE:-nomad}"
+export SAGE_MODEL="${SAGE_MODEL:-gemma4:e2b}"
+export SAGE_PORT="${SAGE_PORT:-8760}"
 export SAGE_NO_BROWSER=1
 if [ -f "$SAGE_DIR/sage/gateway/router-shadow.env" ]; then
     set -a; source "$SAGE_DIR/sage/gateway/router-shadow.env"; set +a
     echo "[Nomad-Raising] Router shadow: SAGE_ROUTER_SHADOW=$SAGE_ROUTER_SHADOW"
 fi
-source "$SAGE_DIR/sage/scripts/ensure_daemon.sh"
+source "$SAGE_DIR/sage/scripts/ensure_daemon_rs.sh"
 echo "[Nomad-Raising] Daemon: version=$SAGE_DAEMON_VERSION running=$SAGE_DAEMON_RUNNING updated=$SAGE_DAEMON_UPDATED"
 
 # --- Step 3: Run the FLUID raising session ---

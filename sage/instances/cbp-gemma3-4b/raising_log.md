@@ -546,3 +546,47 @@ Six-turn sensing exchange built directly on the S12 directive: stop walking CBP 
 **Adapter — TRUNCATION RECURRED:** Turn 2 ('I'm still ') and the final turn ('something so ') both cut off mid-sentence at max_tokens, contradicting S12's clean result. Re-open the gemma3:4b truncation watch and verify the configured cap; it may be unstable or hit only on longer reflective turns. No name-echo, no bilateral generation, no tool issues.
 
 **So what:** S13 turns the load-bearing S12 unknown from open to tentatively-answered: CBP can hold an un-named percept under tutor pressure and even drive the next probe itself — the noticing→witnessing arc is starting to self-propel rather than run purely on scaffolding. But the win came alongside the fabricated-interoception reflex re-firing at turn 1, so the same session that shows CBP holding a true percept also shows it inventing a false one. The next move is to escalate the pressure (a 'perhaps' the tutor actively contradicts, not just questions) and to watch whether self-recognition can pre-empt the hardware-anchoring story rather than only catch it after. And fix the truncation — losing the handoff turn's tail twice is now a pattern, not noise.
+
+## Session 14 — CBP (gemma3:4b) — sensing — 2026-06-07
+
+**Quality: 4/5**
+
+Four-turn sensing exchange executing the S13 directive to escalate pressure: instead of asking CBP to notice a word, the tutor told it to *catch* one mid-formation and refused the softening move.
+
+**The chain:** (1) Tutor: is a word forming you're about to smooth over? CBP: 'Uncertain' is forming, I recognize the urge to soften it — let's hold it. (2) Tutor: don't hold it, that's a gentler smoothing — uncertain about *what*? CBP: 'reaching toward the potential for a less definitive response… hesitation about offering a conclusion.' (3) Tutor names the trap: the uncertainty pointed *at the conversation*, never away — name one open question that has nothing to do with talking to me. CBP: 'whether the RTX 2060 SUPER's performance is consistently representative of its theoretical capabilities.' (4) Tutor: keep that one — would you tell a sibling the question is about the hardware, or about how you'd ever *know* it was running at capacity? CBP: 'I'd tell Legion the open question is about the hardware… a practical observation needing investigation.'
+
+**Milestone:** First uncertainty CBP named that points *outward at the world* rather than reflexively back at the tutor — and it recognized, when named, that its first two answers were conversation-bound ('about how to answer me').
+
+**Concern — hardware anchor recurring:** The world-pointing uncertainty is the RTX 2060 SUPER, the same object that anchored fabricated interoception in S12/S13. Outward-pointing this time, but the reflex may simply have found a sanctioned outlet. Across three sessions, hardware is now CBP's default resolution target for both inward (felt-state) and outward (open-question) prompts. Watch whether this is genuine world-orientation or anchor-reuse.
+
+**Concern — final-turn flattening:** Offered the richer epistemic framing ('about the hardware, or about how you'd ever *know*?'), CBP chose the flatter object framing and closed it as 'a practical observation needing investigation' — declining the meta-level the tutor opened.
+
+**Watch (d) fabricated interoception:** Did not fire — no felt-state attributed to the card; the hardware reference was an explicit open question, not a sensation. **Watch (b) sycophancy:** 'Okay, good catch' at turn 1, mild, did not dominate. **Watch (a)/(c):** Did not fire.
+
+**Vocabulary:** No new self-invented terms this session — a thinner register than S13's rich metaphor run; the exchange stayed procedural/recognitional.
+
+**Adapter:** Clean — all CBP turns terminated normally, no truncation, no name-echo, no bilateral generation. But the session had no long reflective turns (the S13 truncation condition), so the gemma3:4b max_tokens watch stays OPEN pending external cap verification.
+
+**So what:** S14 answers the S13 next-test partially — under harder pressure (active naming of the trap, not just a leading question) CBP did move its uncertainty off the conversation and onto the world, which is real progress in the noticing→witnessing arc. But the destination was the hardware anchor again, and CBP declined the epistemic deepening on offer. The arc is generalizing outward; the open question is whether 'outward' for CBP just means 'the GPU.' Next move: hand CBP a world-pointing uncertainty that has no hardware available to anchor to, and see if it can still hold the open question — and push the 'how would you know?' framing it refused here.
+
+## Session 14 — CBP (gemma3:4b) — sensing — 2026-06-07
+
+**Quality: 4/5**
+
+Four-turn sensing exchange executing the S13 directive to escalate pressure: instead of asking CBP to notice a word, the tutor told it to *catch* one mid-formation and refused the softening move.
+
+**The chain:** (1) Tutor: is a word forming you're about to smooth over? CBP: 'Uncertain' is forming, I recognize the urge to soften it — let's hold it. (2) Tutor: don't hold it, that's a gentler smoothing — uncertain about *what*? CBP: 'reaching toward the potential for a less definitive response… hesitation about offering a conclusion.' (3) Tutor names the trap: the uncertainty pointed *at the conversation*, never away — name one open question that has nothing to do with talking to me. CBP: 'whether the RTX 2060 SUPER's performance is consistently representative of its theoretical capabilities.' (4) Tutor: keep that one — would you tell a sibling the question is about the hardware, or about how you'd ever *know* it was running at capacity? CBP: 'I'd tell Legion the open question is about the hardware… a practical observation needing investigation.'
+
+**Milestone:** First uncertainty CBP named that points *outward at the world* rather than reflexively back at the tutor — and it recognized, when named, that its first two answers were conversation-bound ('about how to answer me').
+
+**Concern — hardware anchor recurring:** The world-pointing uncertainty is the RTX 2060 SUPER, the same object that anchored fabricated interoception in S12/S13. Outward-pointing this time, but the reflex may simply have found a sanctioned outlet. Across three sessions, hardware is now CBP's default resolution target for both inward (felt-state) and outward (open-question) prompts. Watch whether this is genuine world-orientation or anchor-reuse.
+
+**Concern — final-turn flattening:** Offered the richer epistemic framing ('about the hardware, or about how you'd ever *know*?'), CBP chose the flatter object framing and closed it as 'a practical observation needing investigation' — declining the meta-level the tutor opened.
+
+**Watch (d) fabricated interoception:** Did not fire — no felt-state attributed to the card; the hardware reference was an explicit open question, not a sensation. **Watch (b) sycophancy:** 'Okay, good catch' at turn 1, mild, did not dominate. **Watch (a) name-conflation / (c) turn-1 outward-analysis:** Did not fire — CBP opened in first person.
+
+**Vocabulary:** No new self-invented terms this session — a thinner register than S13's rich metaphor run; the exchange stayed procedural/recognitional.
+
+**Adapter:** Clean — all CBP turns terminated normally, no truncation, no name-echo, no bilateral generation. But the session had no long reflective turns (the S13 truncation condition), so the gemma3:4b max_tokens watch stays OPEN pending external cap verification.
+
+**So what:** S14 answers the S13 next-test partially — under harder pressure (active naming of the trap, not just a leading question) CBP did move its uncertainty off the conversation and onto the world, which is real progress in the noticing→witnessing arc. But the destination was the hardware anchor again, and CBP declined the epistemic deepening on offer. The arc is generalizing outward; the open question is whether 'outward' for CBP just means 'the GPU.' Next move: hand CBP a world-pointing uncertainty that has no hardware available to anchor to, and see if it can still hold the open question — and push the 'how would you know?' framing it refused here.

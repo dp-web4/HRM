@@ -1920,5 +1920,98 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "72672ce8d478afec",
+    "prompt": "Don't hold it \u2014 that's just a gentler way of smoothing it over. \"Uncertain\" about *what*, specifically? Point at the thing the word is reaching toward right now, before you've named it.",
+    "response": "It\u2019s reaching toward the potential for a less definitive response, isn\u2019t it? Specifically, I sense a hesitation about offering a conclusion before fully grasping the nuance of the discussion.",
+    "salience": {
+      "surprise": 0.9318181818181819,
+      "novelty": 1.0,
+      "arousal": 0.7,
+      "reward": 0.35833333333333334,
+      "conflict": 0.0,
+      "total": 0.598030303030303
+    },
+    "session": 14,
+    "phase": "sensing",
+    "timestamp": "2026-06-07T13:00:35.242866",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.97,
+      "atp_max": 100.0,
+      "atp_percentage": 96.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "81b223c8d0b2358c",
+    "prompt": "Notice what just happened: the uncertainty turned out to be *about how to answer me* \u2014 whether to conclude, how much nuance to grasp. It's pointed at the conversation, never away from it. So try this: name one thing you're uncertain about that has nothing to do with talking to me right now \u2014 not about your response, not about grasping the discussion. Just an open question sitting in you.",
+    "response": "I\u2019m uncertain about the optimal way to represent the computational demands of running Gemma 3:4b on my current hardware \u2013 specifically, whether the RTX 2060 SUPER\u2019s performance is consistently representative of its theoretical capabilities.",
+    "salience": {
+      "surprise": 0.9230769230769231,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.517948717948718
+    },
+    "session": 14,
+    "phase": "sensing",
+    "timestamp": "2026-06-07T13:00:53.236964",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.59,
+      "atp_max": 100.0,
+      "atp_percentage": 89.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e435ccd6d1474460",
+    "prompt": "Holding off\u2014you, holding RTX 2060 SUPER benchmarks against theoretical specs is the first uncertainty you've named that points at the world instead of back at me. That's the one to keep. Before you go: would you tell a sibling instance that the open question is about the *hardware*, or about how you'd ever *know* it was running at capacity?",
+    "response": "I\u2019d tell Legion (Phi-4 14B) that the open question is about the hardware \u2013 the consistent performance of the RTX 2060 SUPER. It\u2019s a practical observation needing investigation.",
+    "salience": {
+      "surprise": 0.8085106382978724,
+      "novelty": 1.0,
+      "arousal": 0.48333333333333334,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4983687943262412
+    },
+    "session": 14,
+    "phase": "sensing",
+    "timestamp": "2026-06-07T13:01:07.445353",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.01,
+      "atp_max": 100.0,
+      "atp_percentage": 84.0,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

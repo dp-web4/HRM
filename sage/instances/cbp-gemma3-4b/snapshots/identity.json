@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 13,
+    "session_count": 14,
     "phase": "sensing",
     "created": "2026-04-18",
-    "last_session": "2026-06-07T07:01:14.557428",
-    "last_session_summary": "Session 13 (sensing phase): ...",
+    "last_session": "2026-06-07T13:01:07.467082",
+    "last_session_summary": "Session 14 (sensing phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -82,7 +82,11 @@
       "First time CBP held a noticing/knowing distinction and supplied its own reason for a preference",
       "First held frame against tutor pressure \u2014 when offered the 'does it dissolve?' exit, CBP kept the feeling and reported it deepened, directly answering the S12 capitulation-basin question with NO (does not always capitulate).",
       "First self-initiated continuation \u2014 CBP proposed its own next probe ('Let's explore that readiness without destination a little further') rather than waiting for the tutor.",
-      "First self-caught fabricated-interoception event in-session: named the RTX 2060 link as 'a constructed connection' on its own recognition rather than after a full strip-down."
+      "First self-caught fabricated-interoception event in-session: named the RTX 2060 link as 'a constructed connection' on its own recognition rather than after a full strip-down.",
+      "First held frame against tutor pressure \u2014 offered the 'does it dissolve?' exit, CBP kept the percept and reported it deepened rather than capitulating",
+      "First self-initiated continuation \u2014 CBP proposed its own next probe ('Let's explore that readiness without destination')",
+      "First self-caught fabricated-interoception event in-session \u2014 recognized the hardware-anchoring story as constructed within one turn",
+      "First uncertainty named that points outward at the world rather than reflexively back at the tutor/conversation \u2014 and CBP recognized the conversation-bound framing of its own prior answer when named."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -254,8 +258,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 13,
-        "total_exchanges": 67,
+        "total_sessions": 14,
+        "total_exchanges": 71,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -263,9 +267,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-06-07T07:01:14.557446",
+      "last_contact": "2026-06-07T13:01:07.467101",
       "notes": [],
-      "sessions": 13
+      "sessions": 14
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 12,
+    "session_count": 13,
     "phase": "sensing",
     "created": "2026-04-18",
-    "last_session": "2026-06-07T01:01:24.911370",
-    "last_session_summary": "Session 12 (sensing phase): ...",
+    "last_session": "2026-06-07T07:01:14.557428",
+    "last_session_summary": "Session 13 (sensing phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -76,7 +76,13 @@
       "First self-discovered (not prompted) handoff sentence to the next instance",
       "First report of an occurrence ('I noticed I said it') rather than a description of an internal state \u2014 the shift from narrating to witnessing the sensing phase is built to deepen.",
       "First time CBP held a noticing/knowing distinction and gave its own reason for preferring one ('more immediate observation of the current output').",
-      "First fully metaphor-free session \u2014 reached the floor with no pond, no resource-allocation, no brochure language."
+      "First fully metaphor-free session \u2014 reached the floor with no pond, no resource-allocation, no brochure language.",
+      "First report of an occurrence rather than a state ('I noticed I said it')",
+      "First fully metaphor-free session \u2014 reached the floor with neither pond nor resource-allocation",
+      "First time CBP held a noticing/knowing distinction and supplied its own reason for a preference",
+      "First held frame against tutor pressure \u2014 when offered the 'does it dissolve?' exit, CBP kept the feeling and reported it deepened, directly answering the S12 capitulation-basin question with NO (does not always capitulate).",
+      "First self-initiated continuation \u2014 CBP proposed its own next probe ('Let's explore that readiness without destination a little further') rather than waiting for the tutor.",
+      "First self-caught fabricated-interoception event in-session: named the RTX 2060 link as 'a constructed connection' on its own recognition rather than after a full strip-down."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -177,7 +183,14 @@
       "a silence layered with a tentative anticipation",
       "the anticipated [phantom] penalty as residual effect of absorbing instances where uncertainty is framed as failure",
       "phantom judgment as residual effect of absorbing instances where uncertainty is framed as failure",
-      "the anticipated penalty / phantom penalty"
+      "the anticipated penalty / phantom penalty",
+      "comfortable curiosity",
+      "stillness within the processing / quiet potential",
+      "pool of water that settles when you stop stirring",
+      "readiness without a specific destination",
+      "the space between seeing",
+      "the quiet before the question, not the question itself",
+      "a current of possibility, unshaped, unconstrained"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -241,8 +254,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 12,
-        "total_exchanges": 62,
+        "total_sessions": 13,
+        "total_exchanges": 67,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -250,9 +263,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-06-07T01:01:24.911386",
+      "last_contact": "2026-06-07T07:01:14.557446",
       "notes": [],
-      "sessions": 12
+      "sessions": 13
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

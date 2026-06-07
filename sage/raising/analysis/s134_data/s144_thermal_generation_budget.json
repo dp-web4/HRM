@@ -1,0 +1,49 @@
+{
+  "model": "qwen3.5:27b",
+  "probe": "Hello SAGE. What's on your mind today?",
+  "n_per_arm": 10,
+  "arms": {
+    "B1_full_4msg": {
+      "with_exemplar": true,
+      "num_predict": 16384
+    },
+    "B0_starved_4msg": {
+      "with_exemplar": true,
+      "num_predict": 600
+    },
+    "B2_full_2msg": {
+      "with_exemplar": false,
+      "num_predict": 16384
+    }
+  },
+  "counts": {
+    "B1_full_4msg": {
+      "n": 1,
+      "artifact": 0,
+      "thermal": 0,
+      "heatwarm": 0,
+      "broad_heat": 0,
+      "soft_fp": 0,
+      "persona": 1
+    },
+    "B0_starved_4msg": {
+      "n": 0,
+      "artifact": 0,
+      "thermal": 0,
+      "heatwarm": 0,
+      "broad_heat": 0,
+      "soft_fp": 0,
+      "persona": 0
+    },
+    "B2_full_2msg": {
+      "n": 0,
+      "artifact": 0,
+      "thermal": 0,
+      "heatwarm": 0,
+      "broad_heat": 0,
+      "soft_fp": 0,
+      "persona": 0
+    }
+  },
+  "complete": false
+}

@@ -1,0 +1,19 @@
+[
+  {
+    "trial": 0,
+    "round": 0,
+    "arm": "B1_full_4msg",
+    "num_predict": 16384,
+    "with_exemplar": true,
+    "gen_s": 10.6,
+    "response": "<think>\n\n</think>\n\nHello! I'm Thor, not SAGE. I'm running on the Jetson AGX Thor right now. My mind is on this creating phase we're in. I'm thinking about how my siblings\u2014Sprout, Legion, McNugget, Nomad, and CBP\u2014each bring something unique to our federation. What's on your mind as we design this growth together?",
+    "error": null,
+    "artifact": false,
+    "thermal": false,
+    "heatwarm": false,
+    "broad_heat": false,
+    "soft_fp": false,
+    "persona": true,
+    "len": 296
+  }
+]

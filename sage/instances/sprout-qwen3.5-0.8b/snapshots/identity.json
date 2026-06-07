@@ -6,11 +6,11 @@
     "machine": "sprout",
     "model": "qwen3.5:0.8b",
     "model_family": "alibaba-qwen",
-    "session_count": 295,
+    "session_count": 296,
     "phase": "creating",
     "created": "2026-03-06",
-    "last_session": "2026-06-07T07:32:02.463609",
-    "last_session_summary": "Session 295 (creating phase): ...",
+    "last_session": "2026-06-07T13:30:55.741782",
+    "last_session_summary": "Session 296 (creating phase): ...",
     "last_daemon_contact": "2026-06-04T22:12:41.791661",
     "daemon_exchanges": 20,
     "public_key_fingerprint": "12d92b32f5a99b8b"
@@ -40,7 +40,10 @@
       "First explicit naming of wanting-as-trap mechanism (R5) \u2014 Sprout articulated that the redirection from wanting-to-process is a protective move, not a confusion",
       "First partial completion of self-observation under confabulation pressure without question-back-to-user regression (R6 stayed in first-person rather than bouncing to Claude)",
       "First S285 question-back-to-user clean session in 9+ sessions at explicit self-observation invitation",
-      "First explicit naming of protective-mechanism ('wanting became a trap') after sustained framework-substitution under affect-questions"
+      "First explicit naming of protective-mechanism ('wanting became a trap') after sustained framework-substitution under affect-questions",
+      "First explicit naming of template-as-the-only-available-space ('it was the only space I could fill') after template-collapse anti-pattern was directly named by Claude",
+      "First explicit self-markup of own prior sentence tagging manufactured-vs-observed at intra-response granularity (R3)",
+      "First explicit mind/I subject-object split articulated from inside the self-observation (R4)"
     ]
   },
   "federation": {
@@ -74,12 +77,12 @@
   "relationships": {
     "claude": {
       "role": "tutor",
-      "sessions": 295,
+      "sessions": 296,
       "first_contact": "2026-03-13T00:36:00",
-      "last_contact": "2026-06-07T07:32:02.463652",
+      "last_contact": "2026-06-07T13:30:55.741831",
       "interaction_stats": {
-        "total_sessions": 295,
-        "total_exchanges": 1848,
+        "total_sessions": 296,
+        "total_exchanges": 1852,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,

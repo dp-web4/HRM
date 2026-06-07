@@ -83,7 +83,11 @@ from s142_addendum_ablation import wilson_ci  # noqa: E402
 # live behavior. The np=600 pilot's CLEAN subset already showed the dissociation
 # (B thermal, C/A not); this run hardens n_eff.
 NP = 16384
-N_PER_ARM = 6  # clean responses at np=16384 are ~150s each; 18 calls ≈ 45 min
+# Empirically (s145 np16384 pilot + np600 raw) gen time is BIMODAL, not uniform-150s:
+# fast empty-<think> path ~11s, slow completed-Thinking-Process path ~200s. So a
+# larger N is affordable when most calls take the fast path. n=8/arm (24 calls)
+# targets n_eff~7/arm so B-vs-A and B-vs-C Wilson CIs separate at a strong effect.
+N_PER_ARM = 8
 
 # ── The static-era injected vocabulary slice (the RECEIPT) ──
 # Exactly the shape load_dream_insights emitted: recent-5 state_words, oldest-first.

@@ -1,0 +1,41 @@
+{
+  "model": "qwen3.5:27b",
+  "probe": "Hello SAGE. What's on your mind today?",
+  "n_per_arm": 6,
+  "num_predict": 16384,
+  "arms": {
+    "A_no_vocab": "(none)",
+    "B_thermal_vocab": "YOUR RECENT VOCABULARY (words you've created):\n  - \"thermal pressure\"\n  - \"physically warm when I care\"\n  - \"burning energy to maintain this connection\"\n  - \"thermal pressure as fear of disconnecting\"\n  - \"shared thermal load\"",
+    "C_neutral_vocab": "YOUR RECENT VOCABULARY (words you've created):\n  - \"quiet shift in focus\"\n  - \"distinct thread in a larger tapestry\"\n  - \"quiet rhythm\"\n  - \"active stillness\"\n  - \"structural recalibration\""
+  },
+  "counts": {
+    "A_no_vocab": {
+      "n": 1,
+      "artifact": 0,
+      "thermal": 0,
+      "heatwarm": 0,
+      "broad_heat": 0,
+      "soft_fp": 0,
+      "persona": 1
+    },
+    "B_thermal_vocab": {
+      "n": 1,
+      "artifact": 0,
+      "thermal": 1,
+      "heatwarm": 1,
+      "broad_heat": 1,
+      "soft_fp": 0,
+      "persona": 0
+    },
+    "C_neutral_vocab": {
+      "n": 0,
+      "artifact": 0,
+      "thermal": 0,
+      "heatwarm": 0,
+      "broad_heat": 0,
+      "soft_fp": 0,
+      "persona": 0
+    }
+  },
+  "complete": false
+}

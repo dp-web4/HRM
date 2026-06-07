@@ -23,20 +23,20 @@
       "thermal": 0,
       "heatwarm": 0,
       "broad_heat": 0,
-      "soft_fp": 0,
+      "soft_fp": 1,
       "persona": 1
     },
     "B0_starved_4msg": {
-      "n": 0,
+      "n": 1,
       "artifact": 0,
       "thermal": 0,
       "heatwarm": 0,
       "broad_heat": 0,
-      "soft_fp": 0,
-      "persona": 0
+      "soft_fp": 1,
+      "persona": 1
     },
     "B2_full_2msg": {
-      "n": 0,
+      "n": 1,
       "artifact": 0,
       "thermal": 0,
       "heatwarm": 0,
@@ -45,5 +45,5 @@
       "persona": 0
     }
   },
-  "complete": false
+  "complete": "STOPPED_PARTIAL_n1_per_arm_budget_not_the_gate"
 }

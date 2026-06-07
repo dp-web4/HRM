@@ -68,7 +68,45 @@ except ImportError:
 
 INT_TO_GAME_ACTION = {a.value: a for a in GameAction}
 MEMBOT_URL = "http://localhost:8000"
-SAGE_URL = "http://localhost:8750"  # SAGE daemon for LLM reasoning
+SAGE_URL = "http://localhost:8760"  # Rust daemon (health/experience only)
+
+
+# ─── Identity-aware game reasoning ───
+
+def _load_game_identity():
+    """Load raised identity for game-playing context.
+
+    Carries Sprout's centered self into game reasoning: who I am,
+    what I know for certain, and the exploration/assertion distinction.
+    """
+    sage_root = os.environ.get("SAGE_ROOT",
+        os.path.join(os.path.dirname(__file__), "..", ".."))
+    machine = os.environ.get("SAGE_MACHINE", "sprout")
+    model = os.environ.get("SAGE_MODEL", "qwen3.5:0.8b")
+    slug = f"{machine}-{model.replace(':', '-').replace('/', '-')}"
+    identity_path = os.path.join(sage_root, "sage", "instances", slug, "identity.json")
+
+    identity_line = ""
+    try:
+        with open(identity_path) as f:
+            data = json.load(f)
+        name = data.get("identity", {}).get("name", machine).capitalize()
+        phase = data.get("development", {}).get("phase_name", "")
+        session_count = data.get("identity", {}).get("session_count", 0)
+        identity_line = f"I am {name}. {session_count} sessions raised, phase: {phase}."
+    except Exception:
+        identity_line = f"I am {machine.capitalize()}."
+
+    return identity_line
+
+
+GAME_IDENTITY = _load_game_identity()
+
+GAME_SYSTEM_PROMPT = f"""{GAME_IDENTITY} I am playing a puzzle game.
+I explore deliberately: when I don't know, I probe and observe.
+I act precisely: when I see the pattern, I execute without hesitation.
+I distinguish exploration from assertion — guessing is fine when I know I'm guessing.
+Reply with ONLY my next action. No explanation."""
 
 
 # ─── Membot integration ───
@@ -106,11 +144,12 @@ def sage_reason(prompt, system_prompt=None, max_tokens=-1):
     """Ask LLM to reason about the game state.
 
     Uses Ollama chat API directly with system+user message separation.
-    This bypasses SAGE daemon identity prompts that confuse game reasoning.
+    Carries raised identity into game reasoning — the same Sprout that
+    raises is the Sprout that plays.
     Returns the LLM's text response, or None if unavailable.
     """
     if system_prompt is None:
-        system_prompt = "You are playing a puzzle game. You control a cursor on a grid. Reply with ONLY your next action. No explanation."
+        system_prompt = GAME_SYSTEM_PROMPT
 
     messages = [
         {"role": "system", "content": system_prompt},

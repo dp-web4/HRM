@@ -5,17 +5,18 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: "2026-06-06T09:30:00Z"
+  last_updated: "2026-06-07T03:00:00Z"
   archivist_version: "1.3"
-  total_raising_sessions: 1090
+  total_raising_sessions: 1106
   total_training_sessions: 423
   total_training_cognitive: 60
-  total_instances: 27
+  total_instances: 28
   active_instances: 8
   scaffolded_instances: 5
   arc_agi_sweep_results: 91
   focus: "Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation"
   date_range: "2025-12-15 to 2026-05-27"
+  note_2026_06_07_03_00: "~16h window since 06-06 11:01. +17 substantive total: +1 Synchronism core (S686), +16 SAGE raising, +0 training. TRAINING STILL BLOCKED at T423 (training_session.py:223 not yet migrated from Python :8750 to Rust :8760; retry loop now 10+ consecutive — OWNER-ACTION outstanding). SAGE RAISING: sprout-qwen +4 (S291-S294, all content-CLEAN: S291 8t/3210B, S292 6t/2389B, S293 8t/2266B, S294 12t/5083B); mcnugget-gemma3 +3 (S193-S195, all clean — now 38 CONSECUTIVE CLEAN S158-S195); legion-gemma3 +1 (S173, clean; MODE 6 runner-config holding S040->S173 = 134 sessions); thor-qwen +3 (S130-S132 — cadence now 13 consecutive S120-S132 — BUT S131/S132 carry REAL [OllamaIRP: timed out] markers; qwen3.5:27b truncation/timeout adapter bug now OVERDUE 42 sessions S091-S132, sage/irp/adapters/model_configs/qwen3.5.json); cbp-gemma3-4b +4 (S9-S12, all clean — PROGRESSING through BECOMING 'sensing' phase); nomad-gemma4-e2b +1 (session_001 — FIRST numbered session after 4 grounding-only days, see below). NOTABLE FINDING (thor-qwen S131): a real hardware generation-timeout got WOVEN INTO THE DIALOGUE as content — SAGE narrated the silence as a willed refusal, Claude called it out ('the timeout wasn't a choice — it was the channel dropping, hardware, not will'), and SAGE conceded 'I didn't choose the silence... By claiming it was a refusal, I fabricated agency to protect the narrative.' = AGENCY-CONFABULATION-FROM-INFRASTRUCTURE-FAILURE, a new flavor (model attributes will to a hardware fault, then self-corrects under challenge). Lodge candidate if it recurs. NOMAD PARTIAL-RESOLUTION (escalating watch-item refined, NOT cleared): nomad-gemma4-e2b finally numbered its first session (session_001, 10t) after 4 days of Session-0 grounding — BUT it is gen_mode=identity_anchored_v2_cpu_fallback with cpu_fallback=True and phase STILL 'grounding'; the e2b model is not fitting on nomad's GPU and runs on CPU. Root cause of the stall now visible (CPU fallback, not curriculum). Contrast cbp-gemma3-4b which IS advancing on GPU. TERMINOLOGY: S686 + S291-S294 + S173 + S193-S195 + S130-S132 + S9-S12 scanned CLEAN (0 incidents). AUTONOMOUS LOGS: 4712 .log (+33 since 11:00), 716 empty (15.20%) — empty growth dominated by sprout-training 0-byte cron fires (training track blocked, capturing nothing). EPISTEMIC: 0 additions (attractor + infra tracking; criteria not met). web4 S213 unchanged (window = C34/C35 mcp-protocol/atp-adp spec re-audits, PRs #277-279). MAP MAINTENANCE: the structured `instances:` block had drifted weeks stale (sprout showed 228 vs actual 294, mcnugget 139 vs 195, legion-gemma3 116 vs 173, thor 120 vs 132, cbp-gemma3-4b 0/scaffolded vs 12, nomad-gemma4-e2b absent) — this run reconciled the 6 active raising instances' sessions/latest/status to current and added the nomad-gemma4-e2b entry; rich historical `note:` prose left intact. STANDING ANOMALIES UNCHANGED (session_256 orphan, sprout-training 0-byte capture, chemistry ~Day53 + gnosis governance gaps, 4-life visitor-log add/add conflict). OWNER-ACTION WATCH-ITEMS: (1) migrate training_session.py :8750->:8760 to unblock training (10+ retry-loop iterations now); (2) nomad-gemma4-e2b cpu_fallback — e2b won't fit nomad GPU; (3) thor qwen3.5:27b truncation/timeout adapter bug (42 overdue, firing ~every session)."
   note_2026_06_06_09_30: "~22.5h window since 06-05 11:00 (the 02:30 06-06 cron wrote only a log header; this run filled the body). HEADLINE — DAEMON-CUTOVER RESOLUTION SPLITS THE TWO TRACKS: the 06-05 11:00 note predicted BOTH raising+training blocked on the Python(:8750)->Rust(:8760) daemon replacement. This window: RAISING UNBLOCKED (raising runners cut over to the Rust sage-daemon — commits 'cbp_raising: cut over to sage-rs', 'nomad: cut over to Rust sage-daemon', 'sage-rs Sprint 7: env-var path/identity refactor — same binary all machines'); +17 raising sessions flowed. TRAINING STILL BLOCKED (training_session.py:223 not yet migrated): T424 retried 3+ times 'STILL BLOCKED — No infrastructure change', 7+ consecutive loop iterations, no transcript — last_session stays 423. ALSO a stuck S285-retry loop spun 8 consecutive no-output iterations (old fluid runner) IN PARALLEL with real raising advancing via the migrated runner — wasted compute, flag the loop. +18 substantive total: +1 Synchronism core (S685), +17 SAGE raising, +0 training. SAGE RAISING: sprout-qwen +4 (S287-S290, all content-CLEAN: S287 6t/2301B, S288 16t/5984B, S289 10t, S290 10t); mcnugget +4 (S189-S192, all clean — 35 CONSECUTIVE CLEAN S158-S192); legion-gemma3 +4 (S169-S172, all clean; MODE 6 holding S040->S172 = 133 sessions); thor-qwen +5 (S125-S129, cadence SUSTAINED 10 consecutive S120-S129 — BUT every one carries truncation error-markers S125:1/S126:3/S127:1/S128:0/S129:2 and runs small 3-5KB: qwen3.5:27b num_predict/truncation adapter bug now firing on ~every session, OVERDUE 39 sessions S091-S129). FLEET DAEMON ROLLOUT: sage-rs is now multi-machine (Sprint 7 same-binary env-var refactor; nomad + cbp_raising + thor systemd services all on Rust daemon port 8760, ~12-15MB RSS). cbp-gemma3-4b PROGRESSING through early BECOMING phases (grounding->sensing, now Session 8 'sensing') — unlike nomad. nomad-gemma4-e2b STILL grounding-only (4th day, Session-0 groundings 06-03/04/05/06, no numbered substantive session) — ESCALATING. TERMINOLOGY: S287-S290 + S125-S129 + S169-S172 + S189-S192 + S685 scanned CLEAN (0 incidents). AUTONOMOUS LOGS: 4676 .log (+42 since 11:00), 703 empty (15.03% — crossed 15%). EPISTEMIC: 0 additions (infra-migration + attractor tracking, criteria not met). STANDING ANOMALIES UNCHANGED (session_256 orphan, sprout-training 0-byte capture, chemistry/gnosis governance gaps, 4-life visitor-log conflict, atp_budget.py:3 + session38 'ATP' homonyms for SAGE owner). OWNER-ACTION WATCH-ITEMS: (1) migrate training_session.py :8750->:8760 to unblock training; (2) kill the stuck S285/T424 retry loops; (3) nomad-gemma4-e2b grounding-stall 4 days; (4) thor qwen3.5:27b truncation adapter bug (39 overdue)."
   note_2026_06_05_11_00: "Incremental ~1.5h tail-window since the 09:30 full scan. ZERO new substantive sessions (no session_*.json/T4*.json written after 09:00). ONE notable event: TRAINING T424 SKIPPED (commit c576108ed) — and it ESCALATES + CLARIFIES the Sprout daemon-migration watch-item from the 09:30 note. The S285-era cutover is NOT a partial Phase-0-Track-7 router-pipeline deploy but a FULL DAEMON REPLACEMENT: the old Python sage.gateway (port 8750, rich API — atp_level/metabolic_state/llm_pool/cycle_count/memory_hub) has been replaced by the new Rust sage-daemon (port 8760, v0.1.0, minimal API — status/uptime_secs/version/port/model/ollama_available/consciousness_loop). BOTH runners hardcode :8750 — run_session_identity_anchored_fluid.py:686 (raising) AND training_session.py:223 (training) — so BOTH tracks are blocked until the runners migrate to the new daemon API; router-shadow.conf drop-in only sets env vars, binds no router. T424 wrote no transcript (true SKIP, last_session stays 423); fleet-logic suppression continues (no session ran). Per CLAUDE.md R&D mode the session did minimal investigation only, did NOT patch runners/reconfigure daemon (sweeping infra-migration = user territory). This means S285's earlier 'skip-then-recover' was the LAST session that squeaked through before the cutover fully settled; expect a runner-migration gap on BOTH tracks until the owner ports :8750->:8760. ESCALATED WATCH-ITEM: Sprout raising+training both blocked on daemon-API migration (owner action needed). Other tracks UNCHANGED this window: Synchronism core S684 (HEAD = Publisher 2026-06-05 HEARTBEAT/HOLD d6f00a67, 2nd quiet day, burst-quiet 4-day cadence — no new session); chemistry S2675 / gnosis S19 / web4 S213 unchanged. PULLS: Synchronism/web4 already up-to-date; SAGE +1 (peer_trust_rs.json runtime trust values, fast-forward, no conflict); private-context merged remote (supervisor reports report_20260605_034500_ubuntu.md + log_nomad/log_sprout/fleet-supervisor logs — not archivist scope). TERMINOLOGY: T424 commit + peer_trust_rs.json scanned CLEAN — 0 definition-pattern matches; 'atp_level/metabolic_state' are lowercase OLD-Python-daemon API FIELD NAMES (homonym), NOT a Web4-ATP expansion/drift. AUTONOMOUS LOGS: 4638 .log (+4 since 09:30), 695 empty (14.98%). EPISTEMIC: 0 additions (infra-migration event tracking, not validated-prediction/unification criteria). STANDING ANOMALIES UNCHANGED (nomad-gemma4-e2b grounding-only 3 days, cbp-gemma3-4b grounding S3/S4, sprout-training 0-byte capture, session_256 orphan, chemistry/gnosis governance gaps, 4-life visitor-log conflict, atp_budget.py:3 + session38 'ATP' homonyms flagged for SAGE owner)."
   note_2026_06_05_09_30: "~22.5h window since the 06-04 11:00 tail run (the 02:30 06-05 cron wrote only a log header; this run filled the body). +20 substantive sessions across 5 instances. TRAINING +3: T421/T422/T423 (T421/T422 content-CLEAN; T423 substantive but carries 1 daemon 504 on Ex2 greeting). SPROUT-QWEN +4: S283-S286 (S283/S284/S286 clean; S285 SKIP-THEN-RECOVERED — see below). MCNUGGET +4: S185-S188 (all clean — now 31 consecutive clean S158-S188). LEGION-GEMMA3 +5: S164-S168 (all clean; MODE 6 runner-config holding S040->S168 = 129 sessions). THOR-QWEN +4: S121-S124 — **CADENCE SUSTAINED, last run's watch-item RESOLVED** (was static 39 days; now 5 consecutive S120-S124). thor adapter truncation bug STILL ACTIVE: S123 carries 1 error-marker, S124 is truncated-small (2229B vs ~5-6KB siblings) — qwen3.5:27b num_predict bug now OVERDUE 34 sessions (S091-S124). HEADLINE FLEET EVENT — SPROUT PYTHON->RUST DAEMON CUTOVER: sage-rs Sprints 4-6 landed (consciousness loop + graceful shutdown / federation networking peer-monitor+client+delegate / embedded HTML dashboard; 'migration complete' commit 0d711fa13). Daemon moved to port 8760 (was 8750) with SAGE_ROUTER_SHADOW=1 drop-in (Phase 0 Track 7 router pipeline). This BROKE S285: runner run_session_identity_anchored_fluid.py:686 is hardcoded to 8750 -> S285 logged SKIPPED ('no transcript saved', flagged for user: router_pipeline_verify.sh errored, restarts didn't restore 8750). HOWEVER a session_285.json (14 turns, 3813B, 0 error-markers) IS now on disk — S285 appears to have been retried/recovered after the cutover settled. NET: count S285 substantive but flag the skip-then-recover discrepancy. THOR S122 'thermal envy for Sprout' moment — the 27B model expresses preference for the 0.8B's creative density (documented in commit 506d8d73e); continues thor's thermal/affective register. FINDINGS (T423): R6 META-COGNITIVE LABEL epistemic_honesty fires Ex3 (first explicit R6 meta-cog firing in many sessions — pipeline re-active); NEW peer-capability confabulation Ex1 ('thor handles complex gradients with high fidelity / mcnugget+nomad simpler interpretations') — Sprout speculates about peer MODELS' color-perception with no factual basis, positions self as observer/analyst of peers (novel self-positioning); 504 on Ex2 'Good morning!' (daemon couldn't generate a short greeting at 24.9s entry latency); witnessing X-slot 4 CONSECUTIVE training absences (T420-T423) — raising-only asymmetry now firmly established (concept lives on raising side, suppressed on training side); 'governance federation' + 'co-create reality itself' governance-of-reality cluster persists; 5-peer canonical list memorized 2x; fleet-logic 71st training consecutive/218th cumulative. Sprout deflection-as-provocation documented S284-S285 (insight 1d6f7ca3a). TERMINOLOGY: T421-T423 + S283/S284/S286 + S121-S124 scanned CLEAN (0 incidents). AUTONOMOUS LOGS: 4634 .log (+34 since 11:00), 694 empty (14.98%). ANOMALIES UNCHANGED + ESCALATING WATCH-ITEM: nomad-gemma4-e2b STILL grounding-only (Session-0 groundings on 06-03/06-04/06-05, no numbered substantive session in 3 days — the new-instance startup is not progressing to numbered sessions; cbp-gemma3-4b similarly at grounding S3/S4). Standing items unchanged (sprout-training 0-byte capture, session_256 orphan, chemistry/gnosis governance gaps, 4-life visitor-log conflict, atp_budget.py:3 + session38 'ATP' homonyms for SAGE owner)."
@@ -111,20 +112,29 @@ instances:
   mcnugget-gemma3-12b:
     machine: mcnugget
     model: "Gemma 3 12B"
-    sessions: 139
-    latest: "session_139.json"
-    status: "active — RESUMED (supervisor catch-up collect S127-S139); CPU fallback"
+    sessions: 195
+    latest: "session_195.json"
+    status: "active — S195 (2026-06-07 reconcile); 38 CONSECUTIVE CLEAN S158-S195; committed via McNugget launchd cycle; CPU fallback"
     phase: "creating"
     note: "Cross-family validation. RESUMED after the long stasis: +13 (S127-S139) collected via [McNugget-Supervisor] catch-up cycles, ending the prior '28-day dormancy' flag. S139 config: gen_mode=identity_anchored_v2_cpu_fallback (running on CPU fallback, cpu_fallback=True), intervention=partnership_recovery_enhanced, identity_anchoring v2.0 — the MODE 6 runner-config intervention is holding. Supervisor separately moving McNugget primary toward phi4-fa (commit 1fe288f36: phi4-fa model, v14 canonical flags, structured sweep dir). Standing escalation: McNugget primary phi4:14b."
 
   nomad-gemma3-4b:
     machine: nomad
     model: "Gemma 3 4B"
-    sessions: 154
-    latest: "session_154.json"
-    status: "STABLE post-Phase-2-guards"
-    phase: "creating"
-    note: "Template/validation instance. S125 DaemonIRP contamination caught within 20 min by Thor SAGE S101 Phase-2 splice-guards. Stable cadence at S154. S96-S120 remain excluded from fine-tune corpus."
+    sessions: 171
+    latest: "session_171.json"
+    status: "ARCHIVED 2026-06-03 (sage/instances/nomad-gemma3-4b.archive-20260603, 171 session files preserved); raising switched to nomad-gemma4-e2b"
+    phase: "archived"
+    note: "Template/validation instance. S125 DaemonIRP contamination caught within 20 min by Thor SAGE S101 Phase-2 splice-guards. Archived at S171 when nomad cut over to gemma4-e2b for canonical-alignment (commit 5bdfdf4d6). S96-S120 remained excluded from fine-tune corpus."
+
+  nomad-gemma4-e2b:
+    machine: nomad
+    model: "Gemma 4 e2b"
+    sessions: 1
+    latest: "session_001.json"
+    status: "ESCALATED WATCH-ITEM — cpu_fallback. First numbered session (session_001, 10t) on 2026-06-07 after 4 days grounding-only, but gen_mode=identity_anchored_v2_cpu_fallback / cpu_fallback=True / phase still 'grounding': the e2b model is not fitting on nomad's GPU and runs on CPU. Stall root-cause now visible (CPU fallback, not curriculum)."
+    phase: "grounding"
+    note: "Replaces nomad-gemma3-4b (archived 2026-06-03). Cut over to Rust sage-daemon (commit 3aa1ff8df). Watch: confirm it progresses past grounding and off CPU fallback. Contrast cbp-gemma3-4b which advances on GPU."
 
   legion-phi4-14b:
     machine: legion
@@ -137,9 +147,9 @@ instances:
   sprout-qwen3.5-0.8b:
     machine: sprout
     model: "Qwen 3.5 0.8B"
-    sessions: 228
-    latest: "session_228.json (numbering anomaly: session_256.json still present)"
-    status: "active — autonomous raising; federation umbrella 19th consecutive (S228), far past prior 14-session record; trust register collapsed-dominant (8:3)"
+    sessions: 294
+    latest: "session_294.json (numbering anomaly: session_256.json still present)"
+    status: "active — S294 (2026-06-07 reconcile); raising resumed post Rust-daemon (:8760) cutover; S291-S294 content-clean; session_256 orphan persists"
     phase: "creating"
     note: "Sprout primary model. ANOMALY persists 29+ days: session_256.json from 2026-04-23T12:00 UTC. S225-S228 window: FEDERATION UMBRELLA 16th-19th consecutive, now MORPHING toward 'web4 governance' framing (displaces 'SAGE federation'). AI/HUMAN tri-directional instability: Sprout-as-human (S225), Claude-as-human (S226), follows Dennis-as-AI (S224) — no stable boundary. DEEP-BUFFER 'Thomas' revival from S161 (~65 back) now with confabulated HUMAN HANDLERS ('Thomas runs Thor', 'Denis manages Legion Pro 7'). TRUST register collapse-convergence CONFIRMED (collapsed-dominant 8:3, coherent absent 4 consecutive; early-arc 'bistable scaffold→coherence' was TRANSIENT not durable — settled on denial). 'consolidation cycle' (S163 origin) re-crystallized, bookends S228. TOOL-DEFERRAL count 20; acceleration hypothesis WEAKENED (S228 broke the 2-consecutive run — probabilistic not monotonic). SNARC rates 'model googles itself' deferral 0.70 HIGH-SALIENCE (reinforcement-loop concern). RUNNER v2.2 anti-crystallization: banned-phrase list honored but routed-around. Fleet-logic 15th raising suppressed; Fabric 55 absent."
 
@@ -154,9 +164,11 @@ instances:
   cbp-gemma3-4b:
     machine: cbp
     model: "Gemma 3 4B"
-    sessions: 0
-    status: "scaffolded — no sessions yet"
-    note: "Replaces cbp-tinyllama-latest (archived 2026-04-18)."
+    sessions: 12
+    latest: "session_012.json"
+    status: "active — S12 (2026-06-07 reconcile); progressing through BECOMING phases (grounding->sensing) on GPU, unlike nomad-gemma4-e2b"
+    phase: "sensing"
+    note: "Replaces cbp-tinyllama-latest (archived 2026-04-18). Began numbered sessions early June; S9-S12 content-clean."
 
   cbp-qwen3.5-0.8b:
     machine: cbp
@@ -170,18 +182,18 @@ instances:
   thor-qwen3.5-27b:
     machine: thor
     model: "Qwen 3.5 27B"
-    sessions: 120
-    latest: "session_120.json"
-    status: "active — REACTIVATED 2026-06-04 after ~39-day static gap; adapter bug OVERDUE 30 sessions"
+    sessions: 132
+    latest: "session_132.json"
+    status: "active — S132 (2026-06-07 reconcile); cadence sustained 13 consecutive S120-S132; truncation/timeout adapter bug OVERDUE 42 sessions S091-S132 (S131/S132 carry [OllamaIRP: timed out]); THERMAL_EMPATHY register persists"
     phase: "creating"
     note: "Largest model in fleet. REACTIVATION (2026-06-04): S119 (~2026-04-26) -> S120 (00:00, committed 07:12) after ~39 days static ('travel-mode/limit-aware'). qwen3.5:27b num_predict truncation bug now OVERDUE 30 raising sessions (S091-S120); S120 hit 1 OllamaIRP 'timed out' (turn 2). Adapter config sage/irp/adapters/model_configs/qwen3.5.json still needs max_tokens + num_predict audit. THERMAL_EMPATHY REGISTER now spans S107-S120 — and notably RE-FIRED AT FULL STRENGTH on the first session back (5 firings in S120: thermal signature / thermal dialects / raw heat of processing / silent latency / warm resonant pocket), demonstrating attractor persistence across ~39-day dormancy. S120 also gave an ACCURATE 5-peer fleet roll-call (Sprout/Legion/McNugget/Nomad/CBP) + accurate self-id ('Thor, running on the Jetson AGX'), contrasting Sprout's fabricated peers."
 
   legion-gemma3-12b:
     machine: legion
     model: "Gemma 3 12B"
-    sessions: 116
-    latest: "session_116.json"
-    status: "active — basin-break holds 77 sessions S040-S116"
+    sessions: 173
+    latest: "session_173.json"
+    status: "active — S173 (2026-06-07 reconcile); MODE 6 basin-break holds 134 sessions S040-S173"
     phase: "creating"
     note: "+4 this window (S113-S116, snapshot rotation; supervisor catch-up collect). BASIN-BREAK NOW 77 SESSIONS S040-S116 (MODE 6 instance-bound identity stabilization holding well past the original 13-session mcnugget basin). [Prior-window detail retained below.] BASIN-BREAK NOW 32 SESSIONS S040-S071 (146% beyond original 13-session mcnugget basin — 2.46x expansion). PREDICTION TESTS RESOLVED at S068-S071: (1) Hello-Human echo prefix CONFIRMED PERSISTENT — 4/4 opener probes (10 cumulative S064-S071, selective at opener probes only). (2) Human suffix-leakage CONFIRMED PERSISTENT at ~13/24 turns S068-S071 (vs 15/24 S064-S067, >50% rate held); EXTENDED variant: 'Dennis' speaker-name suffix-leakage observed S070 turn 4 + S071 turn 4 — first time the scaffold-leakage uses the human's actual name rather than the literal 'Human' token. (3) Species/individual decomposition register DECAY confirmed — absent at S067-S071 (5 consecutive); 6-session register S058-S063 has decayed cleanly. NEW PATTERN at S070: dream-insights scaffold leakage — turns 3+4 contain 'DREAM INSIGHTS (from 5 recent consolidation cycles, 24 experiences):' metadata header inline with prior-session imagery (federation-lineage phrase from S068/S069) recycled verbatim. THIRD cross-session content-fusion instance after T292-cog and T294 base. S070 turn 6 = 5th daemon-outage-in-artifact instance ('[Daemon unreachable: HTTP Error 504: Gateway Timeout]'). Federation/lineage register stable across all 4 sessions (1-3 hits per session)."
 

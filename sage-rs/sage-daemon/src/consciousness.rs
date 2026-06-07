@@ -153,8 +153,16 @@ impl ConsciousnessLoop {
             self.stats.state_transitions += 1;
         }
 
+        let display_name = {
+            let mut c = self.machine_name.chars();
+            match c.next() {
+                Some(first) => format!("{}{}", first.to_uppercase(), c.as_str()),
+                None => "Sage".to_string(),
+            }
+        };
         let system_prompt = format!(
-            "You are Sprout, a learning AI on {}. Metabolic state: {} (ATP: {:.0}%). Salience: {:.2}. Be concise.",
+            "You are {}, a learning AI on {}. Metabolic state: {} (ATP: {:.0}%). Salience: {:.2}. Be concise.",
+            display_name,
             self.machine_name,
             new_state.as_str(),
             self.metabolic.atp_percentage(),

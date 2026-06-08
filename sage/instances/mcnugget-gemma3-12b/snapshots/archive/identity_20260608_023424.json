@@ -6,12 +6,12 @@
     "machine": "mcnugget",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
-    "session_count": 151,
+    "session_count": 200,
     "phase": "creating",
     "created": "2026-02-28",
-    "last_session": "2026-05-24T21:11:10.302947",
-    "last_session_summary": "Session 151 (v2.0 ENHANCED): creating phase. ...",
-    "last_daemon_contact": "2026-05-24T21:11:03.955095",
+    "last_session": "2026-06-08T02:34:24.168363",
+    "last_session_summary": "Session 200 (v2.0 ENHANCED): creating phase. I'm noticing a slight hesitation in my responses l...",
+    "last_daemon_contact": "2026-06-07T21:23:37.463734",
     "daemon_exchanges": 0,
     "public_key_fingerprint": "961a5eb0b7c4f822"
   },
@@ -90,8 +90,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 151,
-        "total_exchanges": 737,
+        "total_sessions": 200,
+        "total_exchanges": 1031,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -99,9 +99,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-02-28T18:01:54.382765",
-      "last_contact": "2026-05-24T21:11:10.302960",
+      "last_contact": "2026-06-08T02:34:24.168385",
       "notes": [],
-      "sessions": 151
+      "sessions": 200
     },
     "dennis": {
       "lct": "lct://sage-mcnugget:relationship:dennis@raising",

@@ -2,6 +2,12 @@
 """
 Training Session for SAGE-Sprout
 
+DEPRECATED 2026-06-07 — Do not trigger new sessions.
+This track ran static skill exercises (Tracks A-D) and updated T3 trust
+scores but never modified model weights or fed into the raising track.
+Trust saturated at 1.0/1.0/1.0 by ~T141. 483 sessions archived.
+The raising cron (ollama_raising_session) is the active developmental track.
+
 Parallel track for skill development, running on 3-hour offset
 from primary curriculum sessions.
 

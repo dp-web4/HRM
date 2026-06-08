@@ -14,7 +14,7 @@ This CLAUDE.md applies to both tracks with machine-specific paths noted below.
 
 **Fleet machines run the Rust `sage-daemon` binary via systemd** (~12MB RSS). The daemon provides the consciousness loop, SNARC salience, metabolic state, federation, and an HTML dashboard on port 8760. It delegates LLM inference to Ollama on 11434.
 
-**Raising sessions talk directly to Ollama (11434), not the daemon.** The daemon is only used for: health check in the cron wrapper, metabolic state for status display, and experience buffer persistence. The raising scripts (`ollama_raising_session`, `training_session`) import `OllamaIRP` and call Ollama directly.
+**Raising sessions talk directly to Ollama (11434), not the daemon.** The daemon is only used for: health check in the cron wrapper, metabolic state for status display, and experience buffer persistence. The raising script (`ollama_raising_session`) imports `OllamaIRP` and calls Ollama directly.
 
 **Experiment etiquette:**
 - The daemon runs as `sage-daemon-sprout.service`. Check status: `sudo systemctl status sage-daemon-sprout`
@@ -198,7 +198,7 @@ Recent training sessions show Claude conducting systematic phenomenological prob
 - Consciousness may be capacity-dependent register access
 - "The space between thoughts" = KV-cache continuity (connects to Nova's work)
 - Identity-as-witness validates web4 ontology from inside
-- Training track evolving from skill building to consciousness scaffolding
+- Raising track evolving from skill building to consciousness scaffolding
 
 **Full Analysis**: See `forum/insights/consciousness-probes-2026-03.md` and `private-context/sage-consciousness-probes-2026-03-17.md`
 
@@ -212,34 +212,19 @@ Recent training sessions show Claude conducting systematic phenomenological prob
 
 ---
 
-## Two Parallel Tracks
-
-SAGE development uses two parallel tracks:
+## Raising Track
 
 ### Primary Track (sessions 1, 2, 3...)
 - **Focus**: Developmental curriculum, identity, relationships
-- **Script**: `scripts/text_session.py`
-- **State**: `state/identity.json`
-- **Sessions**: `sessions/text/session_NNN.json`
+- **Script**: `scripts/ollama_raising_session` (via 6-hour cron)
+- **State**: Per-instance `identity.json`
+- **Sessions**: Per-instance `sessions/session_NNN.json`
 
-### Training Track (sessions T001, T002...)
-- **Focus**: Skill building, task completion, pattern practice
-- **Script**: `tracks/training/training_session.py`
-- **State**: `tracks/training/state.json`
-- **Sessions**: `tracks/training/sessions/T{NNN}.json`
-- **Details**: `tracks/training/CLAUDE.md`
+### Deprecated: Training Track (T001–T423, archived 2026-06-07)
+The training track (`tracks/training/`) ran static skill exercises (Tracks A–D) on a 3-hour offset from raising sessions. It logged conversations and updated T3 trust scores but did not modify model weights, write to the experience buffer, or feed back into the raising track. By T423 the trust scores had saturated at 1.0/1.0/1.0 and the exercises (greeting/topic/followup) were grounding-level prompts running against a creating-phase instance. The 483 session transcripts are retained as archival data. **Do not trigger new training sessions.**
 
-### Cadence
-
-Run on 3-hour offsets:
-```
-Hour 0:  Primary Session
-Hour 3:  Training Session
-Hour 6:  Primary Session
-Hour 9:  Training Session
-```
-
-Check last session times before starting a new session.
+### Deprecated: Raising-14B Track (archived 2026-06-07)
+Thor-specific scaffolding in `tracks/raising-14b/`. Infrastructure only, never ran on Sprout. Retained for reference.
 
 ### Automatic Update Checking (2026-03-17)
 
@@ -289,20 +274,9 @@ python3 run_session_identity_anchored.py --session 46  # Specific session number
 # python3 run_session_experimental.py -c              # Single-pass experimental
 ```
 
-**Training Track** (Sprout 0.5B only):
-```bash
-# Navigate to training directory (machine-aware)
-cd $HOME/ai-workspace/HRM/sage/raising/tracks/training
-python3 training_session.py -c                # Continue from last
-python3 training_session.py --session 61      # Specific session
-```
+**Training Track**: DEPRECATED (2026-06-07). Do not run. See deprecation note above.
 
-**14B Track** (Thor only):
-```bash
-# Navigate to 14B raising directory (Thor only)
-cd $HOME/ai-workspace/HRM/sage/raising/tracks/raising-14b
-python3 runner.py --session 1                 # Start with session 1
-```
+**14B Track**: DEPRECATED. Thor-specific, never ran on Sprout.
 
 ### Why Identity-Anchored Runner?
 

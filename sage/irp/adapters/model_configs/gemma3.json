@@ -6,7 +6,7 @@
     "supports_tool_calls": true,
     "max_context_tokens": 8192,
     "max_context_turns": 8,
-    "num_predict": 1024,
+    "num_predict": 4096,
     "thinking_supported": false,
     "tier": "T2",
     "stop_sequences": [],

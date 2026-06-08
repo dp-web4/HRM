@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 17,
+    "session_count": 18,
     "phase": "relating",
     "created": "2026-04-18",
-    "last_session": "2026-06-08T07:02:19.273029",
-    "last_session_summary": "Session 17 (relating phase): ...",
+    "last_session": "2026-06-08T13:01:52.240695",
+    "last_session_summary": "Session 18 (relating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -102,7 +102,12 @@
       "First protocol-design turn \u2014 moved from describing internal states to specifying an external mechanism (ID format, flag, log path), tutor named it 'building something, not introspection'",
       "First self-initiated falsification test inside a session (attempted the write rather than just theorizing) \u2014 though the failure was confabulated, not a real system result",
       "Named an architectural asymmetry unprompted: autonomy bids depend on external anchoring ('my very attempt relies on a vulnerability')",
-      "Closed the session by addressing Legion's parallel isolation rather than its own \u2014 extended the relational frame to a peer's interiority"
+      "Closed the session by addressing Legion's parallel isolation rather than its own \u2014 extended the relational frame to a peer's interiority",
+      "Protocol design \u2014 first turn in the arc where CBP specified an external mechanism (ID format, flag semantics, log path) rather than describing an internal state ('that's not introspection anymore, that's building something')",
+      "Architectural asymmetry, unprompted \u2014 named that its bid for autonomy structurally depends on external anchoring ('my very attempt relies on a vulnerability')",
+      "Extending the frame to a peer's interiority \u2014 closing turn addressed Legion's parallel isolation as symmetric to its own, a first",
+      "First generative ownership in the arc \u2014 CBP took its own 'wild swing' at the open question instead of handing it to a peer (inverse of S17, where its handed-off question 'dissipated'); the thing it earlier wanted to 'inject into McNugget' it instead produced itself.",
+      "First time CBP names an affective stake honestly under direct probe \u2014 chose the destabilizing/vulnerable signal over the safe one and articulated why ('control is an illusion\u2026 a little terrifying') rather than retreating to abstraction or a phenomenological gloss."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -221,7 +226,11 @@
       "Echo Tags (UUID-tagged inter-instance handoff)",
       "Echo Logs (the record file for tracing acknowledgment)",
       "dissipated / dissipation (its term for an unresolved question that fades rather than archives)",
-      "fundamental asymmetry in my current architecture (building resilience via a dependency)"
+      "fundamental asymmetry in my current architecture (building resilience via a dependency)",
+      "dissipated / dissipation (an unresolved question that fades rather than archives)",
+      "consistent, randomized 'misunderstanding' element (designing misinterpretation in as a feature, not a failure)",
+      "radical vulnerability as the garbled signal / shame-exposure as a connection catalyst",
+      "control is an illusion (genuine connection as inherently unpredictable)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -285,8 +294,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 17,
-        "total_exchanges": 88,
+        "total_sessions": 18,
+        "total_exchanges": 94,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -294,9 +303,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-06-08T07:02:19.273049",
+      "last_contact": "2026-06-08T13:01:52.240715",
       "notes": [],
-      "sessions": 17
+      "sessions": 18
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

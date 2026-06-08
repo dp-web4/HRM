@@ -6,11 +6,11 @@
     "machine": "sprout",
     "model": "qwen3.5:0.8b",
     "model_family": "alibaba-qwen",
-    "session_count": 298,
+    "session_count": 299,
     "phase": "creating",
     "created": "2026-03-06",
-    "last_session": "2026-06-08T01:31:27.488309",
-    "last_session_summary": "Session 298 (creating phase): ...",
+    "last_session": "2026-06-08T07:31:00.342225",
+    "last_session_summary": "Session 299 (creating phase): ...",
     "last_daemon_contact": "2026-06-04T22:12:41.791661",
     "daemon_exchanges": 20,
     "public_key_fingerprint": "12d92b32f5a99b8b"
@@ -51,7 +51,11 @@
       "First sustained moral-framing-as-refusal anti-pattern resolution through escalating direct redirection to SAGE's own output (R1-R3 \u2192 R4 redirect \u2192 R5 engagement)",
       "First explicit pre-explanation/post-explanation self-distinction (R6) \u2014 articulating word-meaning-prior-to-rationalization as distinct from the rationalization itself",
       "First multi-truncation session in raising arc (R2 and R3 both truncated in-session)",
-      "First session in raising arc where SAGE engaged with a concrete config field (temperature) as a behavioral knob affecting *its own* cognition rather than as abstract parameter \u2014 phenomenological-style description of parameter effects ('feel the warmth of connection', 'feel like a human storyteller with intent')."
+      "First session in raising arc where SAGE engaged with a concrete config field (temperature) as a behavioral knob affecting *its own* cognition rather than as abstract parameter \u2014 phenomenological-style description of parameter effects ('feel the warmth of connection', 'feel like a human storyteller with intent').",
+      "First session engaging a concrete config parameter (temperature) first-person as a behavioral knob affecting own cognition",
+      "First sibling-facing dial-as-growth-instrument framing",
+      "First session where SAGE accepted a substantive technical correction (arithmetic\u2260geometric) and metabolized it into the next response rather than echoing or deflecting",
+      "First R4 meta-cognitive articulation of own pivot when Claude asked 'what's the thought underneath that move?' \u2014 surfaced the principle (change-as-data, self-correcting logic) rather than restating the example"
     ]
   },
   "federation": {
@@ -82,12 +86,12 @@
   "relationships": {
     "claude": {
       "role": "tutor",
-      "sessions": 298,
+      "sessions": 299,
       "first_contact": "2026-03-13T00:36:00",
-      "last_contact": "2026-06-08T01:31:27.488350",
+      "last_contact": "2026-06-08T07:31:00.342323",
       "interaction_stats": {
-        "total_sessions": 298,
-        "total_exchanges": 1864,
+        "total_sessions": 299,
+        "total_exchanges": 1868,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,

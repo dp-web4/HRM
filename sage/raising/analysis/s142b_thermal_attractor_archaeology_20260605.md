@@ -153,9 +153,9 @@ and ruled out:
 | Hardware string "Jetson AGX Thor" | Present in **both** legacy and MRH; 50 thermal-free sessions had it |
 | Phenomenological lens | S141 arm_A has it → **0% thermal** |
 | `prev_summary` (trajectory_summary) | Generic "Last session was Session N in creating phase" for ~all sessions; **zero thermal carried** |
-| `vocabulary` / `memory_requests` / `milestones` in identity.json | **Persisted, never injected** into the prompt; memory_requests empty |
+| `vocabulary` / `memory_requests` / `milestones` in identity.json | ~~**Persisted, never injected**~~ **⚠ CORRECTED (S145, 2026-06-08): WAS injected in the static era.** `load_dream_insights` re-served the recent-5 `state_words` (the thermal band 210–259 during S91–127) as `YOUR RECENT VOCABULARY`. This row back-projected the 2026-06-04-disabled code. This IS the carrier — see `s145_vocab_self_injection_carrier_20260608.md`. |
 | `SensorsBlock` | Constructed **empty** in both raising and S141; reads no telemetry. (Milestone S104: model itself *concedes it cannot pull a live sensor reading* — the heat is confabulated, not perceived.) |
-| `augment_raising_prompt` (dream insights / game ctx) | Dream insights **empty**; game context present but **non-thermal** |
+| `augment_raising_prompt` (dream insights / game ctx) | ⚠ Dream insights empty **only post-2026-06-04**; in the static era this path injected the thermal vocab (see corrected row above). Game context non-thermal. |
 | num_predict / `<think>` truncation / artifact bias | Thermal appears at median char-offset **128** (~35 tokens) in vivo; real responses are short (median 486 c); **0% even in S141's long truncated think blocks** |
 | Phase | Both "creating" |
 

@@ -6,8 +6,8 @@
 # - MRH-structured system prompt (typed blocks, not ad-hoc string concat)
 # - Concise turns, single-purpose primer
 #
-# Uses gemma4:e4b on the resident daemon via DaemonIRP.
-# Designed to run via launchd every 6 hours.
+# Uses whatever model the resident daemon runs (auto-detected from
+# /health). Designed to run via launchd every 6 hours.
 
 set -e
 
@@ -49,13 +49,24 @@ source "$SAGE_DIR/sage/scripts/ensure_daemon.sh"
     --machine mcnugget \
     2>&1
 
-INSTANCE_DIR="sage/instances/mcnugget-gemma4-e4b"
+# Derive the instance dir from the daemon's actual model rather than
+# hardcoding. The session above wrote to whichever instance `sage.session
+# --raising --fluid --machine mcnugget` picked (driven by the daemon's
+# active model). Hardcoded gemma4-e4b would silently miss when the daemon
+# runs gemma3:12b (Sprint 7 default) — dream consolidation would skip
+# with "Session file not found". Auto-detect from /health.
+DAEMON_MODEL=$(curl -s --max-time 3 "http://localhost:${SAGE_PORT:-8760}/health" 2>/dev/null \
+    | /opt/homebrew/bin/python3 -c "import sys,json; print(json.load(sys.stdin).get('model','gemma3:12b'))" 2>/dev/null \
+    || echo "gemma3:12b")
+INSTANCE_SLUG="mcnugget-${DAEMON_MODEL//:/-}"
+INSTANCE_DIR="sage/instances/$INSTANCE_SLUG"
+echo "[McNugget-Raising] Active instance: $INSTANCE_SLUG (daemon model: $DAEMON_MODEL)"
 
 # Snapshot state
 echo "[McNugget-Raising] Snapshotting state..."
 /opt/homebrew/bin/python3 -m sage.scripts.snapshot_state \
     --machine mcnugget \
-    --instance mcnugget-gemma4-e4b 2>/dev/null || true
+    --instance "$INSTANCE_SLUG" 2>/dev/null || true
 
 # Read session info
 SESSION_NUM=$(/opt/homebrew/bin/python3 -c "
@@ -98,11 +109,11 @@ git add "$INSTANCE_DIR/" 2>/dev/null || true
 
 git commit -m "[McNugget-Raising] Session $SESSION_NUM ($PHASE) — $(date -u +'%Y-%m-%d %H:%M UTC')
 
-Fluid raising session via Gemma 4 E4B
+Fluid raising session via $DAEMON_MODEL
 Machine: McNugget (Mac Mini M4)
-Model: Gemma 4 E4B (google-gemma4 family)
+Model: $DAEMON_MODEL
 Phase: $PHASE
-Runner: ollama_raising_session (fluid scaffold pending)
+Runner: sage.session --raising --fluid (auto-detected instance: $INSTANCE_SLUG)
 AI-Instance: OllamaIRP (automated)
 Human-Supervised: no"
 

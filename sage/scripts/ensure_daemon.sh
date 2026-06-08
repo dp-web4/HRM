@@ -3,7 +3,8 @@
 #
 # Usage:
 #   source sage/scripts/ensure_daemon.sh           # Uses defaults
-#   SAGE_PORT=8750 source sage/scripts/ensure_daemon.sh
+#   SAGE_PORT=8760 source sage/scripts/ensure_daemon.sh   # Rust daemon (default)
+#   SAGE_PORT=8750 source sage/scripts/ensure_daemon.sh   # legacy Python daemon
 #
 # What it does:
 #   1. Checks if daemon is running via /health
@@ -13,7 +14,7 @@
 #   5. Waits for /health to respond before returning
 #
 # Environment variables:
-#   SAGE_PORT     — Gateway port (default: 8750)
+#   SAGE_PORT     — Gateway port (default: 8760 for Rust daemon; set 8750 for legacy Python)
 #   SAGE_MACHINE  — Machine name override (auto-detected if not set)
 #   SAGE_DIR       — Path to HRM repo root (auto-detected from script location)
 #   SAGE_NO_BROWSER — Set to 1 to suppress dashboard auto-open (default: 1 for automated sessions)
@@ -33,7 +34,7 @@ set -e
 # --- Resolve paths ---
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SAGE_DIR="${SAGE_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
-SAGE_PORT="${SAGE_PORT:-8750}"
+SAGE_PORT="${SAGE_PORT:-8760}"
 HEALTH_URL="http://localhost:${SAGE_PORT}/health"
 export SAGE_NO_BROWSER="${SAGE_NO_BROWSER:-1}"
 
@@ -54,8 +55,10 @@ check_health() {
     # Sets SAGE_DAEMON_VERSION from the response.
     local resp
     resp=$(curl -s --max-time 3 "$HEALTH_URL" 2>/dev/null) || return 1
-    # Check for valid JSON with status field
-    echo "$resp" | python3 -c "import sys,json; d=json.load(sys.stdin); assert d.get('status')=='alive'" 2>/dev/null || return 1
+    # Check for valid JSON with status field. Rust sage-daemon emits
+    # status=="ok"; legacy Python daemon emits status=="alive". Accept both
+    # so this works across the migration without coordinated cutover.
+    echo "$resp" | python3 -c "import sys,json; d=json.load(sys.stdin); assert d.get('status') in ('alive','ok')" 2>/dev/null || return 1
     SAGE_DAEMON_VERSION=$(echo "$resp" | python3 -c "import sys,json; print(json.load(sys.stdin).get('daemon_version','unknown'))" 2>/dev/null)
     return 0
 }

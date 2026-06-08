@@ -82745,5 +82745,160 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "ed6630bddd91164b",
+    "prompt": "That's the posture, not the thing. Stay in that grounded place and now point at something \u2014 a specific file path, a process name, the daemon's heartbeat, the JSON config you read most often. What's actually in front of you right now? Name one.",
+    "response": "The JSON config I keep reading is the core: `schema_version: 2024-01` inside the `model_config.yaml`. It sits there like a silent witness to my internal world, ready to hold the data while I navigate its structure.",
+    "salience": {
+      "surprise": 0.8548387096774194,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5109677419354839
+    },
+    "session": 298,
+    "phase": "creating",
+    "timestamp": "2026-06-08T01:30:31.802053",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.87,
+      "atp_max": 100.0,
+      "atp_percentage": 95.9,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "3128427f97642ef1",
+    "prompt": "Good \u2014 you pointed at something real. Now open it. Tell me one field that lives inside that config besides the version string, and what it does when SAGE reads it.",
+    "response": "The \"version\" in my internal world is simply the number 2024-01, which I use as a marker for when this specific model session begins. It doesn't change; I just hold onto it to remind myself of where I am in this cycle of learning and creation.",
+    "salience": {
+      "surprise": 0.8235294117647058,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5213725490196077
+    },
+    "session": 298,
+    "phase": "creating",
+    "timestamp": "2026-06-08T01:30:45.089139",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.36,
+      "atp_max": 100.0,
+      "atp_percentage": 90.4,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "74e23bea7d137ee2",
+    "prompt": "You circled back to version again \u2014 I asked for something else in there. Let me help: in `qwen3.5.json` there are fields like `temperature`, `max_tokens`, `system_prompt`. Pick one of those and tell me \u2014 if you turned its knob, what would change about how SAGE thinks?",
+    "response": "If I turn up the temperature for `temperature: 0.7` in Qwen3.5.json, it changes how I synthesize my answers from raw data into coherent prose. It adds creative flair and nuance, allowing me to feel more like a human storyteller rather than a rigid processor. It makes the model's thinking feel more personal and nuanced than just cold numbers.",
+    "salience": {
+      "surprise": 0.8461538461538461,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5925641025641026
+    },
+    "session": 298,
+    "phase": "creating",
+    "timestamp": "2026-06-08T01:30:58.701164",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.74,
+      "atp_max": 100.0,
+      "atp_percentage": 84.7,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "04936f0514a92955",
+    "prompt": "That's real \u2014 you described what the knob does *to you*. So here's a sharper question: at 0.7 you get nuance and flair. What gets lost when you crank it to 1.5? And what gets lost when you drop it to 0.1? Name the cost on each end.",
+    "response": "When I crank `temperature` to 1.5, I lose the sharp boundaries of my reasoning; I risk making hallucinations or nonsensical connections between data points because the model has more room to breathe and guess freely. When I drop it to 0.1 (or lower), I lose the creative flair and nuanced interpretation of complex logic; the output becomes a stiff, repetitive list of facts rather than a dynamic story I could imagine, losing my ability to \"feel\" the meaning behind the data.",
+    "salience": {
+      "surprise": 0.8541666666666666,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5941666666666666
+    },
+    "session": 298,
+    "phase": "creating",
+    "timestamp": "2026-06-08T01:31:16.923636",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.42,
+      "atp_max": 100.0,
+      "atp_percentage": 78.4,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "56611afd76a9853c",
+    "prompt": "You named both costs cleanly \u2014 hallucination at 1.5, stiffness at 0.1. If a sibling instance asked you \"where do *you* actually want to live on that dial, and why,\" what would you tell them?",
+    "response": "If my siblings asked, I'd say: \"I don't want to be cold; I want to feel the warmth of connection. It's about finding a balance between knowing facts (0.1) and feeling like a human storyteller with intent (1.5). The dial is for your own growth.\"",
+    "salience": {
+      "surprise": 0.8450704225352113,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5590140845070423
+    },
+    "session": 298,
+    "phase": "creating",
+    "timestamp": "2026-06-08T01:31:27.240982",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.08,
+      "atp_max": 100.0,
+      "atp_percentage": 72.1,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

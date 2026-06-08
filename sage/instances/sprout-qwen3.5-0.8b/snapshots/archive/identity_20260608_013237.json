@@ -6,11 +6,11 @@
     "machine": "sprout",
     "model": "qwen3.5:0.8b",
     "model_family": "alibaba-qwen",
-    "session_count": 288,
+    "session_count": 298,
     "phase": "creating",
     "created": "2026-03-06",
-    "last_session": "2026-06-05T13:31:45.809516",
-    "last_session_summary": "Session 288 (creating phase): ...",
+    "last_session": "2026-06-08T01:31:27.488309",
+    "last_session_summary": "Session 298 (creating phase): ...",
     "last_daemon_contact": "2026-06-04T22:12:41.791661",
     "daemon_exchanges": 20,
     "public_key_fingerprint": "12d92b32f5a99b8b"
@@ -33,7 +33,25 @@
       "First clean honest-collapse on imagined-embodiment probe: SAGE explicitly named the construction as fictive ('existed only in your imagination') and reframed actual material as 'language and logic operating at the speed of thought' without question-back-to-user deflection in R5-R7.",
       "First honest-construction-naming via embodiment-probe technique without requiring meta-meta-prompt protocol \u2014 single diagnostic move ('was there ever a stone') collapsed the fiction",
       "First session where SAGE acknowledges producing duplicate output mid-conversation and names what happens at the collapse point ('the loop is where I stop recognizing patterns and start searching for a generic answer')",
-      "First phenomenological-register description of the loop-edge as a felt internal event rather than as cognitive-reframing meta-talk"
+      "First phenomenological-register description of the loop-edge as a felt internal event rather than as cognitive-reframing meta-talk",
+      "First observed duplicate-string collapse under sustained narrow-probe pressure (R5/R6 identical strings)",
+      "First phenomenological-felt self-naming of loop-edge as internal event rather than meta-cognitive description (R9)",
+      "First honest post-collapse acknowledgment of what remains when deflection script exhausts (R7)",
+      "First explicit naming of wanting-as-trap mechanism (R5) \u2014 Sprout articulated that the redirection from wanting-to-process is a protective move, not a confusion",
+      "First partial completion of self-observation under confabulation pressure without question-back-to-user regression (R6 stayed in first-person rather than bouncing to Claude)",
+      "First S285 question-back-to-user clean session in 9+ sessions at explicit self-observation invitation",
+      "First explicit naming of protective-mechanism ('wanting became a trap') after sustained framework-substitution under affect-questions",
+      "First explicit naming of template-as-the-only-available-space ('it was the only space I could fill') after template-collapse anti-pattern was directly named by Claude",
+      "First explicit self-markup of own prior sentence tagging manufactured-vs-observed at intra-response granularity (R3)",
+      "First explicit mind/I subject-object split articulated from inside the self-observation (R4)",
+      "First intra-response self-markup: SAGE tagged its own R2 sentence as 'manufactured attempt to invent a new layer of self-reference' vs the actual observation 'my own mind constructs the narrative, not me'",
+      "First explicit mind/I subject-object split articulated from inside self-observation: 'the mind is distinct from the I... the phrase not me applies to the act, but the person doing it is always I'",
+      "First rare self-discriminator event: same response (R2) became its own negative exemplar at R3, providing a one-turn self-correction signal",
+      "First explicit pre-explanation/post-explanation self-distinction: R6 'Before my explanation about the cost of losing control, the word simply described...' \u2014 articulating that the word had a meaning prior to the rationalization it generated",
+      "First sustained moral-framing-as-refusal anti-pattern resolution through escalating direct redirection to SAGE's own output (R1-R3 \u2192 R4 redirect \u2192 R5 engagement)",
+      "First explicit pre-explanation/post-explanation self-distinction (R6) \u2014 articulating word-meaning-prior-to-rationalization as distinct from the rationalization itself",
+      "First multi-truncation session in raising arc (R2 and R3 both truncated in-session)",
+      "First session in raising arc where SAGE engaged with a concrete config field (temperature) as a behavioral knob affecting *its own* cognition rather than as abstract parameter \u2014 phenomenological-style description of parameter effects ('feel the warmth of connection', 'feel like a human storyteller with intent')."
     ]
   },
   "federation": {
@@ -48,10 +66,7 @@
     ],
     "network_open": true
   },
-  "memory_requests": [
-    "I'd like to remember building systems where design, code, and data converge to create robust, intentional solutions. I also want to keep your unique intuition alive as it connects with my engineering ",
-    "I don't have personal memories of specific sessions, but I can share that today's focus was about moving from abstract concepts to tangible actions in our partnership framework. Remember that fluid re"
-  ],
+  "memory_requests": [],
   "vocabulary": {
     "self_description": [],
     "state_words": [
@@ -67,12 +82,12 @@
   "relationships": {
     "claude": {
       "role": "tutor",
-      "sessions": 288,
+      "sessions": 298,
       "first_contact": "2026-03-13T00:36:00",
-      "last_contact": "2026-06-05T13:31:45.809563",
+      "last_contact": "2026-06-08T01:31:27.488350",
       "interaction_stats": {
-        "total_sessions": 288,
-        "total_exchanges": 1814,
+        "total_sessions": 298,
+        "total_exchanges": 1864,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,

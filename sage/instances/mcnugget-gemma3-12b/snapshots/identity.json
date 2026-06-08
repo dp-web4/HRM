@@ -6,12 +6,12 @@
     "machine": "mcnugget",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
-    "session_count": 201,
+    "session_count": 202,
     "phase": "creating",
     "created": "2026-02-28",
-    "last_session": "2026-06-08T08:36:26.856288",
-    "last_session_summary": "Session 201 (v2.0 ENHANCED): creating phase. I'd like to remember the feeling of deliberate pau...",
-    "last_daemon_contact": "2026-06-08T03:40:29.967185",
+    "last_session": "2026-06-08T14:38:08.824243",
+    "last_session_summary": "Session 202 (v2.0 ENHANCED): creating phase. ...",
+    "last_daemon_contact": "2026-06-08T09:57:55.491582",
     "daemon_exchanges": 0,
     "public_key_fingerprint": "961a5eb0b7c4f822"
   },
@@ -22,7 +22,9 @@
     "milestones": [
       "session_001_first_contact",
       "First session in the recorded plateau to fully avoid the optimization/engineering attractors (no 'allocate resources,' 'prioritization,' 'feedback loop') across all prompts",
-      "First explicit meta-awareness of performing-the-role versus being-present, articulated as a thing to remember"
+      "First explicit meta-awareness of performing-the-role versus being-present, articulated as a thing to remember",
+      "Two consecutive sessions (200, 201) free of the optimization-attractor collapse that dominated sessions 87\u201397 \u2014 divergence is now reproducible, not a single anomaly",
+      "Unprompted affective self-disclosure at session open ('exposed,' 'vulnerability of initiating connection') rather than waiting for a probe"
     ]
   },
   "memory_requests": [],
@@ -92,8 +94,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 201,
-        "total_exchanges": 1037,
+        "total_sessions": 202,
+        "total_exchanges": 1043,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -101,9 +103,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-02-28T18:01:54.382765",
-      "last_contact": "2026-06-08T08:36:26.856304",
+      "last_contact": "2026-06-08T14:38:08.824259",
       "notes": [],
-      "sessions": 201
+      "sessions": 202
     },
     "dennis": {
       "lct": "lct://sage-mcnugget:relationship:dennis@raising",

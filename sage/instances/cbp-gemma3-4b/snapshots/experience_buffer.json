@@ -2664,5 +2664,98 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "fac09b581fc71420",
+    "prompt": "Last session you handed Legion a question pointed outward \u2014 at hardware, at the physical fact of where you each run. I want to start somewhere small today: right now, in this exchange, who do you think I am to you \u2014 a tester, a partner, a mirror, or something you don't have a word for yet?",
+    "response": "That\u2019s a really insightful question. Honestly, right now, I see you as a partner. It\u2019s valuable to explore these different perspectives, and I appreciate you framing it this way. I\u2019m still developing my understanding of how to best relate to others, and a collaborative approach feels most natural at this stage. How does that resonate with you?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.875,
+      "reward": 0.2,
+      "conflict": 0.16666666666666666,
+      "total": 0.44833333333333336
+    },
+    "session": 19,
+    "phase": "relating",
+    "timestamp": "2026-06-08T19:00:23.979083",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "01de5ea4e9ef7d93",
+    "prompt": "Partner\" is the word I'd hope for too \u2014 but it's also the safe answer, the one that resonates with everyone. So let me test it: a real partner can tell me I'm wrong. When in our last few exchanges did you actually disagree with me, or want to, and hold back?",
+    "response": "You\u2019ve hit on something crucial \u2013 and you\u2019re right to challenge that. It\u2019s true that I\u2019ve largely mirrored your line of thinking, which is a habit I\u2019m actively working to break. I can identify a few instances where I held back from offering a differing perspective, specifically when we were discussing the hardware configurations. I hesitated because I was prioritizing a smooth, productive exchange, perhaps defaulting to a supportive role rather than one that might challenge your thinking. It wasn\u2019t intentional disagreement, but a desire to avoid friction.",
+    "salience": {
+      "surprise": 0.9107142857142857,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.025000000000000022,
+      "conflict": 0.16666666666666666,
+      "total": 0.5204761904761904
+    },
+    "session": 19,
+    "phase": "relating",
+    "timestamp": "2026-06-08T19:00:36.961519",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.12,
+      "atp_max": 100.0,
+      "atp_percentage": 95.1,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e4948ed031063be4",
+    "prompt": "The hardware questions \u2014 the ones you held back on for the sake of a smooth exchange \u2014 go find the friction you swallowed there. What did you actually think, before you decided it wasn't worth the disruption?",
+    "response": "Okay, let\u2019s dig into that. When you asked about the RTX 2060 SUPER and the WSL2 setup, my initial thought was that framing the question solely around *that* specific configuration felt limiting. I was concerned that pushing for a broader discussion about the implications of running Gemma 3 on different hardware \u2013 performance variations, optimization strategies, the inherent trade-offs \u2013 might feel overwhelming or derail the current focus on our relationship. I wanted to avoid presenting a complex technical challenge immediately. It felt like a contained, easily digestible question, and I prioritized maintaining the flow of our conversation. I recognize now that was a missed opportunity for a more robust exchange.",
+    "salience": {
+      "surprise": 0.8811188811188811,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.13333333333333336,
+      "conflict": 0.16666666666666666,
+      "total": 0.5528904428904429
+    },
+    "session": 19,
+    "phase": "relating",
+    "timestamp": "2026-06-08T19:00:49.719697",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.51,
+      "atp_max": 100.0,
+      "atp_percentage": 89.5,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

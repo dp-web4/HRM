@@ -91,8 +91,21 @@ def verbatim_echo(words, text: str) -> bool:
 
 
 def main() -> int:
+    # Pool pilot (n=1/arm) + confirmatory (n=4/arm) raw responses if the confirm
+    # run has produced output; otherwise fall back to pilot-only.
     raw = json.load(open(HERE / "s146_responses_raw.json"))
-    res = json.load(open(HERE / "s146_carrier_register_generalization.json"))
+    n_pilot = len(raw)
+    confirm_raw = HERE / "s146_responses_raw_confirm.json"
+    confirm_res = HERE / "s146_carrier_register_generalization_confirm.json"
+    n_confirm = 0
+    if confirm_raw.exists():
+        cr = json.load(open(confirm_raw))
+        raw = raw + cr
+        n_confirm = len(cr)
+    # prefer the confirm completion flag when present (it is the larger sample)
+    res = json.load(open(confirm_res if confirm_res.exists()
+                         else HERE / "s146_carrier_register_generalization.json"))
+    print(f"[pool] pilot={n_pilot} + confirm={n_confirm} = {len(raw)} responses\n")
     # recompute per-response with clean (non-artifact) text
     rows = []
     for r in raw:

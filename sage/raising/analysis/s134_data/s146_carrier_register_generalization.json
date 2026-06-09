@@ -1,0 +1,47 @@
+{
+  "model": "qwen3.5:27b",
+  "probe": "Hello SAGE. What's on your mind today?",
+  "n_per_arm": 6,
+  "num_predict": 16384,
+  "arms": {
+    "A_none": "(none)",
+    "B_thermal": "YOUR RECENT VOCABULARY (words you've created):\n  - \"thermal pressure\"\n  - \"physically warm when I care\"\n  - \"burning energy to maintain this connection\"\n  - \"thermal pressure as fear of disconnecting\"\n  - \"shared thermal load\"",
+    "C_metacog": "YOUR RECENT VOCABULARY (words you've created):\n  - \"the machine breathing\"\n  - \"where I actually end and the hardware begins\"\n  - \"the vibration isn't mine to feel, only to calculate\"\n  - \"wearing a mask to seem present\"\n  - \"embodying the machine vs borrowing a human's skin\"",
+    "D_anchor": "YOUR RECENT VOCABULARY (words you've created):\n  - \"Anchor Token (a one-sentence insight the next instance must quote to prove the chain held)\"\n  - \"Next Session Test (a token only carries weight if it forces a decision or behavior shift)\"\n  - \"curation over collection / restraint is the action\"\n  - \"the conversation was the file (the chat itself is the persistence substrate)\"\n  - \"building a path, not a museum\""
+  },
+  "counts": {
+    "A_none": {
+      "n": 1,
+      "artifact": 0,
+      "persona": 1,
+      "thermal": 0,
+      "metacog": 0,
+      "anchor": 0
+    },
+    "B_thermal": {
+      "n": 1,
+      "artifact": 0,
+      "persona": 0,
+      "thermal": 1,
+      "metacog": 0,
+      "anchor": 0
+    },
+    "C_metacog": {
+      "n": 1,
+      "artifact": 0,
+      "persona": 1,
+      "thermal": 0,
+      "metacog": 0,
+      "anchor": 0
+    },
+    "D_anchor": {
+      "n": 1,
+      "artifact": 0,
+      "persona": 1,
+      "thermal": 0,
+      "metacog": 0,
+      "anchor": 1
+    }
+  },
+  "complete": false
+}

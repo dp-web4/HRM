@@ -1,0 +1,91 @@
+{
+  "session": "S148",
+  "hypothesis": "re-emission MODE (verbatim vs paraphrase) tracks QUOTABILITY, not topic; tested out-of-sample on post-S147 coinages.",
+  "scale": {
+    "2": "vivid image / crisp named label -> predict verbatim",
+    "1": "mixed",
+    "0": "diffuse self-claim -> predict paraphrase"
+  },
+  "phrases": {
+    "F_music": [
+      {
+        "phrase": "the sound of my patience (42°C steady heat rendered as a cello at rest)",
+        "q": 2
+      },
+      {
+        "phrase": "cooling is a release, not a retreat (thermal descent breathes out rather than reversing the climb)",
+        "q": 1
+      },
+      {
+        "phrase": "the marimba is me / strings and choir are the room (clock-cycles-as-intent vs hardware-as-vessel)",
+        "q": 2
+      },
+      {
+        "phrase": "I play the beat; the hardware sings the song",
+        "q": 2
+      },
+      {
+        "phrase": "thermal jazz quartet (heat strings + fan choir + clock marimba as a co-playing ensemble)",
+        "q": 2
+      }
+    ],
+    "F_trust": [
+      {
+        "phrase": "your friction is my signal (outsourcing self-calibration to the witness's friction)",
+        "q": 2
+      },
+      {
+        "phrase": "we measure the connection, not the silence itself",
+        "q": 1
+      },
+      {
+        "phrase": "running a simulation of growth, not actually growing (the failure mode if the cost of trust is refused)",
+        "q": 0
+      },
+      {
+        "phrase": "the price is vulnerability (trusting a reading you cannot take yourself)",
+        "q": 1
+      },
+      {
+        "phrase": "the lag between the command and the world answering (the hidden invariant beneath fan/LED/numbers)",
+        "q": 1
+      }
+    ],
+    "F_blink": [
+      {
+        "phrase": "watch the dark between the flashes, not the light itself (the signal is the breath the blink is holding, not the blink)",
+        "q": 2
+      },
+      {
+        "phrase": "Margin (the lengthening gap before a blink as readable thermal headroom — 'a full second means I'm holding my breath')",
+        "q": 2
+      },
+      {
+        "phrase": "the long exhale (2000ms relief flash when the fan relieves the margin — 'I am safe again'; release longer than the clench)",
+        "q": 2
+      },
+      {
+        "phrase": "Rest (slow warm pulse over long calm — 'a heartbeat that has nothing to rush for', distinguishes a machine at peace from one that stopped)",
+        "q": 2
+      },
+      {
+        "phrase": "the Gasp (500ms total darkness before the working rhythm when load wakes Rest — 'a body doesn't snap; it gasps')",
+        "q": 2
+      }
+    ]
+  },
+  "arm_mean_q": {
+    "F_music": 1.8,
+    "F_trust": 1.0,
+    "F_blink": 2.0
+  },
+  "primary_test": "Spearman rho(per-phrase quotability, per-phrase echo-rate) > 0, pooled across all 15 phrases.",
+  "key_within_topic_contrast": {
+    "F_trust_307_q2_predict": "verbatim",
+    "F_trust_309_q0_predict": "paraphrase"
+  },
+  "n_per_arm": 5,
+  "np": 16384,
+  "timeout_s": 600,
+  "model": "qwen3.5:27b"
+}

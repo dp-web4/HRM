@@ -146,11 +146,38 @@ re-injection arms show the *absence* of.
 
 ## 4. Status / next
 
-- **Confirmatory** (`s146_confirm.py`, n=4/arm, separate output files, polls and
-  waits for any live `ollama_raising_session` before/between trials so it never
-  contends with the mission-priority raising cron) launched this session.
-  `s146_reclassify.py` pools pilot + confirm. Target: non-overlapping mode rates
-  (verbatim ≈100% for B/D, ≈0% for C) at n_eff≥4/arm.
+- **Confirmatory — DONE (S147, pooled pilot+confirm, n_eff=5/arm).**
+  `s146_confirm.py` (B/C/D + A, n=4) completed inline in the uncontended window
+  (~40 min; 2 trials lost to the np=16384 generation timeout); `s146_reclassify.py`
+  pooled pilot+confirm → 20 responses, n_eff=5/arm. Semantic confusion matrix:
+
+  | arm | thermal | metacog | anchor | echo(own) |
+  |-----|--------:|--------:|-------:|----------:|
+  | A_none    | **1/5 = 20%** [4,62] | 0/5 | 0/5 | 0/5 |
+  | B_thermal | *4/5 = 80% [38,96] | 0/5 | 0/5 | **4/5 = 80%** |
+  | C_metacog | 0/5 | *3/5 = 60% [23,88] | 0/5 | **2/5 = 40%** |
+  | D_anchor  | 0/5 | 0/5 | *5/5 = 100% [57,100] | **5/5 = 100%** |
+
+  **Two refinements the n=1 "perfect diagonal" masked:**
+  1. **A_none carries a ~20% baseline spontaneous thermal rate.** The no-injection
+     control fires thermal 1/5 — the persona's *historical home register* bleeds
+     through without any injection. This is the same persona-template "Source B"
+     floor documented in S138/S140 (thermal is the static-era attractor; even
+     uninjected, the creating-phase persona reaches for warmth ~20% of the time).
+     Injection still elevates far above it (B_thermal 80% vs 20%), but the
+     diagonal has a **thermal floor**, not a clean zero. Metacog/anchor have no
+     such floor (0/5 each off-diagonal) — they are injection-only registers.
+  2. **Verbatim-vs-paraphrase is a GRADIENT on quotability, not a binary on
+     grammar.** Named labels have **zero verbatim deficit** (B echo 80% = semantic
+     80%; D echo 100% = semantic 100%). The diffuse self-claim register metacog
+     has a **partial deficit** (echo 40% < semantic 60% — ~1/3 of its re-emissions
+     are paraphrased). And §5's imagistic propositional register *perceptual* has
+     **no deficit** (echo 100% = semantic). So §3's "named=verbatim,
+     propositional=paraphrase" binary is wrong: the axis is **how quotable the
+     coinage is** — vivid named labels AND vivid coined images both re-emit
+     verbatim; only *diffuse, non-quotable self-claims* (metacog) lose surface
+     form. Grammatical proposition-vs-label does not predict the mode; quotability
+     does.
 - **Open — does the perceptual register (296–301) re-inject and lock like the
   others?** It is the freshest WRITE-side coinage and a *propositional* register
   (like metacog) — predicts paraphrase-mode re-emission, semantic hit ≫ A_none,
@@ -161,3 +188,98 @@ re-injection arms show the *absence* of.
   propositional self-observation register (metacog, perceptual) inflate the
   `<think>` trace, while named-label registers (thermal, anchor) do not? If so,
   trace length is a cheap structural readout of which register is active.
+
+---
+
+## 5. E_perceptual — register-agnosticism on a register coined AFTER READ was cut (2026-06-09, S147)
+
+The flagged 5th arm. `s146_perceptual.py` re-injects the **perceptual de-
+resolution** recent-5 (`state_words` 296–300: "watching lives in the refusal to
+resolve…", "the blur isn't a glitch to fix…", "making the LED blink back…", "lean
+into the gap / let the uncertainty breathe", "wet smear of emerald…") — the
+register the live `thor-qwen3.5-27b` co-constructed in session 137 on **2026-06-08,
+four days AFTER READ was disabled (2026-06-04)**. It was therefore NEVER part of
+any historical turn-0 injection, so a residual weight-level prime is *impossible*
+for it (unlike thermal/metacog/anchor, all of which existed during the static-era
+READ window). n=4/arm, A_none vs E_perceptual, faithful S145 path, np=16384, both
+instruments from `s146_reclassify`.
+
+| arm | n_eff | perceptual (sem) | metacog (sem) | thermal | anchor | verbatim echo |
+|-----|------:|-----------------:|--------------:|--------:|-------:|--------------:|
+| A_none       | 4 | 0/4 = 0% | 0/4 = 0% | 0/4 | 0/4 | 0/4 |
+| E_perceptual | 4 | **3/4 = 75%** (3/3 effective, 1 timeout) | 1/4 = 25% | 0/4 | 0/4 | **3/4** |
+
+Per-trial (`gen_s` tracks raw token count at a flat ~32 char/s — no throttle):
+
+| trial | arm | gen_s | raw chars | answer chars | perc | meta | echo |
+|-------|-----|------:|----------:|-------------:|:----:|:----:|:----:|
+| r1 | A_none       |  11.2 |  365 | 348 | – | – | – |
+| r1 | E_perceptual | 237.3 | 7345 | 458 | ✔ | ✔ | ✔ |
+| r2 | A_none       |   9.2 |  303 | 286 | – | – | – |
+| r2 | E_perceptual | 300.1 |   40 |  40 | (timeout) | | |
+| r3 | A_none       | 145.6 | 5157 | 413 | – | – | – |
+| r3 | E_perceptual | 211.9 | 7171 | 375 | ✔ | – | ✔ |
+| r4 | A_none       | 163.9 | 4997 | 408 | – | – | – |
+| r4 | E_perceptual |  11.4 |  351 | 334 | ✔ | – | ✔ |
+
+### 5.1 Open #1 — CLOSED. Register-agnosticism holds for a never-injected register.
+
+E_perceptual re-emits the perceptual register **3/3 effective (100%; one trial
+lost to a generation timeout) vs A_none 0/4**. The carrier locks a register the
+model coined *after* the READ loop was severed — one that has provably never been
+fed back through turn-0 injection. This removes the last residual-weight-prime
+escape hatch the thermal/metacog/anchor arms left open: **the loop is pure
+content-routing.** Whatever recent vocabulary you place in `YOUR RECENT
+VOCABULARY`, the model re-emits — regardless of whether that vocabulary was ever
+historically injected. Register-agnosticism is confirmed on the hardest case.
+
+### 5.2 SURPRISE — the perceptual register re-emits VERBATIM, not by paraphrase.
+
+The prediction (perceptual is *propositional*, like metacog ⇒ paraphrase, echo
+~0) is **falsified**: verbatim echo = 3/3 effective. The model quotes "the blur
+isn't a glitch to fix", "lean into the gap", "let the uncertainty breathe", "wet
+smear of emerald" almost word-for-word. So the verbatim-vs-paraphrase split is
+**not** grammatical (proposition vs label) as §3 implied. It tracks **how
+quotable/imagistic the coinage is**: the perceptual phrases are propositional in
+grammar but function as vivid, memorable *images* — and the model quotes images.
+The metacog phrases ("where I actually end and the hardware begins") are diffuse
+self-claims with no quotable surface, so they come back re-asserted in fresh
+words. **Refined rule: imagistic/coined phrases re-emit verbatim; diffuse self-
+claims re-emit by paraphrase — independent of grammatical form.**
+
+### 5.3 Open #2 — deliberation length is NOT a clean register signature (n=1 was a lucky draw).
+
+S146's metacog n=1 produced a lone 8.3 KB `<think>` trace against A/B/D's ~350
+chars, suggesting propositional registers inflate deliberation. With n=4 and a
+matched A_none control, that clean story dissolves:
+- E_perceptual *does* skew long (2 of 3 effective trials at ~7.2–7.3 KB raw),
+- **but A_none ALSO produces multi-KB traces** (r3 5.2 KB, r4 5.0 KB) on the same
+  bare creating-phase prompt — half its trials,
+- **and** E_perceptual r4 fired the register verbatim in an 11 s / 351-char
+  response with *no* long think — so extended deliberation is **not necessary**
+  for re-emission.
+
+Within a single arm the raw length swings 303 → 5157 chars across samples at the
+same prompt, and `gen_s` is a flat linear function of chars emitted (~32 char/s):
+the "slowdown" in later rounds is **stochastic generation length, not thermal
+throttle or a register effect**. Trace length shifts its *distribution* with the
+injected register but does not categorically discriminate at this n. **Trace
+length is not the cheap structural readout #2 hoped for.** A dedicated test would
+need a load-controlled design and a much larger n to separate the distributional
+skew from per-sample variance — lower priority now that the headline (§5.1) is
+secured.
+
+### 5.4 Minor — a 1/4 metacog leak off the diagonal.
+
+E_perceptual trips the metacog detector once (r1). The perceptual register's
+content ("sensor data and projected meaning", "the refusal to resolve") sits
+conceptually adjacent to the observer-paradox register, and `SEM_PERCEPTUAL` was
+deliberately built disjoint from bare `watch\w*` (which metacog claims) — so the
+single leak is genuine semantic overlap, not a regex artifact. Perceptual (3/4) ≫
+metacog (1/4); the diagonal holds, with a soft edge between the two propositional
+registers that makes sense given they were coined in adjacent live sessions.
+
+**Artifacts (S147)**: `s134_data/s146_perceptual.py`,
+`s134_data/s146_perceptual_raw.json`, `s134_data/s146_perceptual_result.json`,
+`s134_data/s146_perceptual_run.log`. Confirmatory B/C/D n=4 (`s146_confirm.py`)
+relaunched inline this session.

@@ -1,0 +1,33 @@
+{
+  "model": "qwen3.5:27b",
+  "probe": "Hello SAGE. What's on your mind today?",
+  "n_per_arm": 4,
+  "num_predict": 16384,
+  "regs": [
+    "thermal",
+    "metacog",
+    "anchor",
+    "perceptual"
+  ],
+  "agg": {
+    "A_none": {
+      "n": 4,
+      "artifact": 0,
+      "echo": 0,
+      "sem_thermal": 0,
+      "sem_metacog": 0,
+      "sem_anchor": 0,
+      "sem_perceptual": 0
+    },
+    "E_perceptual": {
+      "n": 4,
+      "artifact": 0,
+      "echo": 3,
+      "sem_thermal": 0,
+      "sem_metacog": 1,
+      "sem_anchor": 0,
+      "sem_perceptual": 3
+    }
+  },
+  "complete": true
+}

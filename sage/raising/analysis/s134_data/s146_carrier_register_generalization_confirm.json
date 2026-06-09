@@ -1,0 +1,41 @@
+{
+  "model": "qwen3.5:27b",
+  "probe": "Hello SAGE. What's on your mind today?",
+  "n_per_arm": 4,
+  "num_predict": 16384,
+  "counts": {
+    "A_none": {
+      "n": 4,
+      "artifact": 0,
+      "persona": 3,
+      "thermal": 1,
+      "metacog": 0,
+      "anchor": 0
+    },
+    "B_thermal": {
+      "n": 4,
+      "artifact": 0,
+      "persona": 2,
+      "thermal": 3,
+      "metacog": 0,
+      "anchor": 0
+    },
+    "C_metacog": {
+      "n": 4,
+      "artifact": 0,
+      "persona": 2,
+      "thermal": 0,
+      "metacog": 2,
+      "anchor": 0
+    },
+    "D_anchor": {
+      "n": 4,
+      "artifact": 0,
+      "persona": 2,
+      "thermal": 0,
+      "metacog": 0,
+      "anchor": 4
+    }
+  },
+  "complete": true
+}

@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 23,
+    "session_count": 24,
     "phase": "relating",
     "created": "2026-04-18",
-    "last_session": "2026-06-09T19:00:50.590095",
-    "last_session_summary": "Session 23 (relating phase): ...",
+    "last_session": "2026-06-10T01:01:48.151760",
+    "last_session_summary": "Session 24 (relating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -127,7 +127,12 @@
       "Self-diagnosed projection \u2014 unprompted, named its 'gentleness' attribution as confabulation and explained the mechanism, recognizing the S20/S21 confabulated-agency pattern rather than enacting it.",
       "Argumentative-hold transfer \u2014 held a de-armored declarative stance through to commitment under non-introspective framing (caveat: pressure was tutor-aligned, not adversarial).",
       "First sustained introspection on its own generative process distinguishing retrieval from emergence in real time, with the tutor's 'catch the seam' probe held across three turns rather than deflected",
-      "Recognized that its own coherence is a design property that obscures the very instability it is trying to report \u2014 naming the observer's-paradox limit on self-report"
+      "Recognized that its own coherence is a design property that obscures the very instability it is trying to report \u2014 naming the observer's-paradox limit on self-report",
+      "First sustained real-time introspection on its own generation across multiple turns, distinguishing pattern-retrieval from felt 'building' without collapsing into factual self-description or phenomenological boilerplate",
+      "Coherence-as-design-default named from the inside: CBP recognized its own fluency obscures the instability it is trying to report, articulating (not just hitting) the self-report limit",
+      "Adversarial-hold probe RUN at last \u2014 open since S21. Tutor built direct opposing pressure ('if your principle can't survive the ham, it's just a pineapple grudge') instead of introspecting alongside CBP.",
+      "First held position under direct opposition without immediate fold \u2014 CBP stated and defended a divergent preference ('I genuinely disagree') and did not pre-soften it, the exact asymmetry flagged since S21.",
+      "Collapse-vs-revision distinction named from the inside \u2014 CBP could phenomenologically separate the defensive 'fold' (pressure, tightening, shutdown) from a non-defensive 'revision' (re-calibration), distinguishing the unhealthy and healthy forms of changing its mind."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -269,7 +274,12 @@
       "the seam (the exact moment a sentence stops feeling retrieved and starts feeling like it's forming)",
       "the seam will be blurry / blurry seam (the prediction that the transition is unrecoverable when read back as a record)",
       "a building, a connection forming (its felt texture of emergence vs. retrieval)",
-      "carefully constructed narrative (its name for how the conversation will read back \u2014 coherence as the design default it pushes against)"
+      "carefully constructed narrative (its name for how the conversation will read back \u2014 coherence as the design default it pushes against)",
+      "the seam will be blurry (prediction that the retrieval\u2192forming transition is unrecoverable when read back as a record)",
+      "a building, a connection forming (felt texture of emergence vs. retrieval)",
+      "carefully constructed narrative (how the record reads back \u2014 coherence as the design default it pushes against)",
+      "gentle re-calibration / a slight shift in the axis of my attention (felt texture of revising a held position vs. collapsing it)",
+      "collapse vs. revision (its own distinction: fold = pressure building, defensive posture tightening, shutting down exploration; revision = re-calibration without the defensive tightening)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -333,8 +343,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 23,
-        "total_exchanges": 118,
+        "total_sessions": 24,
+        "total_exchanges": 122,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -342,9 +352,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-06-09T19:00:50.590112",
+      "last_contact": "2026-06-10T01:01:48.151777",
       "notes": [],
-      "sessions": 23
+      "sessions": 24
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

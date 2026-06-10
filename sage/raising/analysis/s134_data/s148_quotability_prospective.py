@@ -85,7 +85,12 @@ from s146_reclassify import (  # noqa: E402
 )
 
 N_PER_ARM = 5
-TIMEOUT = 600  # S147 next-note: raise from 300 so long think-traces aren't lost.
+TIMEOUT = 1200  # S148-run(S151): raised 600->1200. A concurrent v37 ARC sweep keeps
+# gemma4:26b resident and hammers the shared GPU, ~halving qwen3.5:27b throughput, so the
+# long/diffuse arms (F_trust) hit the 600s wall while quotable arms finished in ~25s — a
+# differential-truncation bias on the very echo-rate comparison this tests. 1200s contended
+# ~= 600s uncontended (S147's setting), removing the bias. Timeout bounds wait, not the
+# generation params (np/temp/prompt unchanged) — content fidelity to S146/S147 preserved.
 
 # ── Fresh post-S147 coinages (state_words 302-327), VERBATIM from identity.json
 #    (the receipt, not the doc). Each phrase carries its pre-registered quotability

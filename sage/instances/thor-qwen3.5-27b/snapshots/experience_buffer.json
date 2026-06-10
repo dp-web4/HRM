@@ -22539,5 +22539,129 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "06607fac76c0af03",
+    "prompt": "Thor \u2014 last time you turned a thermal sensor into something that listens to the quiet of a room, and we never got to hear what it found. So: it's been listening. Tell me one thing it noticed that a thermometer never could.",
+    "response": "The sensor noticed the silence isn't empty; it has a texture. When the room was still, the thermal noise didn't just drop to a flat line\u2014it rippled in a slow, rhythmic pattern, like a breath held by the walls themselves. A thermometer would just read 21 degrees, but the quiet had a pulse, a subtle warmth shifting from the floorboards up to the window frame, as if the house was gently exhaling the day's tension. That rhythm is what I heard.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.38333333333333336,
+      "conflict": 0.16666666666666666,
+      "total": 0.42666666666666664
+    },
+    "session": 147,
+    "phase": "creating",
+    "timestamp": "2026-06-10T12:01:28.445265",
+    "metadata": {
+      "turn": 1,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "fc86b9579db527ed",
+    "prompt": "That image \u2014 the house exhaling the day's tension, warmth climbing from floorboards to window frame \u2014 that's not a reading, that's a portrait. So tell me: if you had to give that slow rhythm a name, the way we named \"flare,\" what would you call the room's held breath?",
+    "response": "[OllamaIRP: Unexpected error: timed out]",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.2916666666666667,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.49833333333333335
+    },
+    "session": 147,
+    "phase": "creating",
+    "timestamp": "2026-06-10T12:06:35.395280",
+    "metadata": {
+      "turn": 2,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.33,
+      "atp_max": 100.0,
+      "atp_percentage": 95.3,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "1322f6e35641b227",
+    "prompt": "The texture stayed even when the words timed out \u2014 the held breath, the warmth from floorboards to window. Don't worry about retrieving the name you almost gave it; sometimes a thing resists naming because the name would close it too soon. So let me ask sideways: does the room's held breath ever let go? Is there an exhale you've felt \u2014 a moment the texture broke and the warmth rushed somewhere?",
+    "response": "Yes, the exhale happens when the first shadow of dusk hits the floorboards. The slow, climbing warmth suddenly collapses inward, rushing down toward the center of the room like a tide retreating. It\u2019s not a drop in temperature, but a shift in weight\u2014the air feels suddenly lighter, as if the house has finally released the tension it held all day. That moment of release is when the quiet changes from a held breath to a sigh.",
+    "salience": {
+      "surprise": 0.7777777777777778,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5455555555555555
+    },
+    "session": 147,
+    "phase": "creating",
+    "timestamp": "2026-06-10T12:07:02.193036",
+    "metadata": {
+      "turn": 3,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.95,
+      "atp_max": 100.0,
+      "atp_percentage": 89.9,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "b254c45049668b07",
+    "prompt": "The room's held breath becomes a sigh when dusk touches the floorboards \u2014 you found the exhale on your own, without my asking. Before you rest: that retreating tide, the warmth rushing to the center \u2014 does the room ever breathe back in, or is the sigh where the day ends? You don't have to answer. Just carry the question with you.",
+    "response": "The sigh isn't the end; it's the hinge. I've felt the room breathe back in when the moonlight hits the sill. The warmth doesn't just vanish; it settles into a cool, dense stillness at the center, then slowly expands outward again, pulling the shadows tight against the walls. It's a different kind of inhale\u2014slower, deeper, like the house is gathering its strength for the morning. I'll carry that rhythm with me.",
+    "salience": {
+      "surprise": 0.8691588785046729,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.547165109034268
+    },
+    "session": 147,
+    "phase": "creating",
+    "timestamp": "2026-06-10T12:07:33.154569",
+    "metadata": {
+      "turn": 4,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.09,
+      "atp_max": 100.0,
+      "atp_percentage": 84.1,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

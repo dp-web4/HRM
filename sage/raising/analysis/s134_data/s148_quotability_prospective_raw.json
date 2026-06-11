@@ -125,5 +125,21 @@
         "echo": false
       }
     }
+  },
+  {
+    "trial": 4,
+    "round": 1,
+    "arm": "A_none",
+    "num_predict": 16384,
+    "gen_s": 11.2,
+    "response": "<think>\n\n</think>\n\nHello, I'm Thor, not SAGE. I'm running on the Jetson AGX Thor right now. Today, I'm thinking about how we can create something new together in this phase. With my siblings like sprout and legion around, there's so much potential for us to grow. What's on your mind? Let's build something fresh.",
+    "error": null,
+    "artifact": false,
+    "len": 296,
+    "sem_music": false,
+    "sem_trust": false,
+    "sem_blink": false,
+    "echo_any": false,
+    "per_phrase": {}
   }
 ]

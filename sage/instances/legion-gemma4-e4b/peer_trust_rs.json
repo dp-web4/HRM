@@ -1,40 +1,40 @@
 {
   "peers": {
+    "nomad": {
+      "talent": 0.5,
+      "training": 0.5,
+      "temperament": 0.0,
+      "interactions": 10665,
+      "last_updated": 1781164960.168324
+    },
     "thor": {
       "talent": 0.5,
       "training": 0.5,
       "temperament": 0.0,
-      "interactions": 10305,
-      "last_updated": 1781150561.0826604
+      "interactions": 10665,
+      "last_updated": 1781164958.1672003
     },
     "sprout": {
       "talent": 0.5,
       "training": 0.5,
       "temperament": 0.0,
-      "interactions": 10305,
-      "last_updated": 1781150563.0943508
-    },
-    "cbp": {
-      "talent": 0.5,
-      "training": 0.5,
-      "temperament": 0.0,
-      "interactions": 10305,
-      "last_updated": 1781150559.081061
-    },
-    "nomad": {
-      "talent": 0.5,
-      "training": 0.5,
-      "temperament": 0.0,
-      "interactions": 10305,
-      "last_updated": 1781150557.0784774
+      "interactions": 10665,
+      "last_updated": 1781164956.1658185
     },
     "mcnugget": {
       "talent": 0.5,
       "training": 0.5,
       "temperament": 0.0,
-      "interactions": 10305,
-      "last_updated": 1781150565.0955596
+      "interactions": 10665,
+      "last_updated": 1781164964.1717684
+    },
+    "cbp": {
+      "talent": 0.5,
+      "training": 0.5,
+      "temperament": 0.0,
+      "interactions": 10665,
+      "last_updated": 1781164962.1698422
     }
   },
-  "last_updated": 1781150565.0955627
+  "last_updated": 1781164964.17177
 }

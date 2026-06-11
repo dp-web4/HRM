@@ -247,9 +247,20 @@ def main() -> int:
         llm = make_llm(NP)
         llm.timeout_seconds = TIMEOUT  # override the 300s cap that cost S147 trials
         llms[a] = llm
-    raw = []
+    # --resume: keep clean trials from a prior partial run (same params), retry
+    # errored ones. The run has died mid-flight 4x (S150-S152, detached-job deaths);
+    # raw is written after every trial precisely so nothing is lost on the 5th.
+    raw, done = [], set()
+    if "--resume" in sys.argv and RAW.exists():
+        prior = json.loads(RAW.read_text())
+        raw = [r for r in prior if not r.get("error")]
+        done = {(r["round"], r["arm"]) for r in raw}
+        print(f"[resume] kept {len(raw)}/{len(prior)} prior trials: "
+              f"{sorted(done)}", file=sys.stderr, flush=True)
     t0 = time.time()
     for i, (rd, arm) in enumerate(schedule):
+        if (rd, arm) in done:
+            continue
         wait_for_clear(f"trial{i+1}")
         dc = ARMS[arm]
         sp = base_sp if dc is None else f"{base_sp}\n\n{dc}"

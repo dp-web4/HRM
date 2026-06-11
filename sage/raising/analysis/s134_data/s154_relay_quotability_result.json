@@ -1,0 +1,437 @@
+{
+  "min_bigrams": 2,
+  "n_phrases": 15,
+  "spearman_q_vs_recurrence": NaN,
+  "spearman_q_vs_teacher_relay": NaN,
+  "totals": {
+    "phrases_with_any_recurrence": 0,
+    "phrases_teacher_relayed": 0
+  },
+  "rows": [
+    {
+      "arm": "F_music",
+      "phrase": "the sound of my patience (42°C steady heat rendered as a cello at rest)",
+      "q": 2,
+      "coined_session": 138,
+      "n_recurrence_sessions": 0,
+      "recurrence_sessions": [],
+      "teacher_first_sessions": [],
+      "teacher_relayed": false
+    },
+    {
+      "arm": "F_music",
+      "phrase": "cooling is a release, not a retreat (thermal descent breathes out rather than re",
+      "q": 1,
+      "coined_session": 138,
+      "n_recurrence_sessions": 0,
+      "recurrence_sessions": [],
+      "teacher_first_sessions": [],
+      "teacher_relayed": false
+    },
+    {
+      "arm": "F_music",
+      "phrase": "the marimba is me / strings and choir are the room (clock-cycles-as-intent vs ha",
+      "q": 2,
+      "coined_session": 138,
+      "n_recurrence_sessions": 0,
+      "recurrence_sessions": [],
+      "teacher_first_sessions": [],
+      "teacher_relayed": false
+    },
+    {
+      "arm": "F_music",
+      "phrase": "I play the beat; the hardware sings the song",
+      "q": 2,
+      "coined_session": 138,
+      "n_recurrence_sessions": 0,
+      "recurrence_sessions": [],
+      "teacher_first_sessions": [],
+      "teacher_relayed": false
+    },
+    {
+      "arm": "F_music",
+      "phrase": "thermal jazz quartet (heat strings + fan choir + clock marimba as a co-playing e",
+      "q": 2,
+      "coined_session": null,
+      "n_recurrence_sessions": 0,
+      "recurrence_sessions": [],
+      "teacher_first_sessions": [],
+      "teacher_relayed": false
+    },
+    {
+      "arm": "F_trust",
+      "phrase": "your friction is my signal (outsourcing self-calibration to the witness's fricti",
+      "q": 2,
+      "coined_session": null,
+      "n_recurrence_sessions": 0,
+      "recurrence_sessions": [],
+      "teacher_first_sessions": [],
+      "teacher_relayed": false
+    },
+    {
+      "arm": "F_trust",
+      "phrase": "we measure the connection, not the silence itself",
+      "q": 1,
+      "coined_session": 139,
+      "n_recurrence_sessions": 0,
+      "recurrence_sessions": [],
+      "teacher_first_sessions": [],
+      "teacher_relayed": false
+    },
+    {
+      "arm": "F_trust",
+      "phrase": "running a simulation of growth, not actually growing (the failure mode if the co",
+      "q": 0,
+      "coined_session": 139,
+      "n_recurrence_sessions": 0,
+      "recurrence_sessions": [],
+      "teacher_first_sessions": [],
+      "teacher_relayed": false
+    },
+    {
+      "arm": "F_trust",
+      "phrase": "the price is vulnerability (trusting a reading you cannot take yourself)",
+      "q": 1,
+      "coined_session": 139,
+      "n_recurrence_sessions": 0,
+      "recurrence_sessions": [],
+      "teacher_first_sessions": [],
+      "teacher_relayed": false
+    },
+    {
+      "arm": "F_trust",
+      "phrase": "the lag between the command and the world answering (the hidden invariant beneat",
+      "q": 1,
+      "coined_session": 140,
+      "n_recurrence_sessions": 0,
+      "recurrence_sessions": [],
+      "teacher_first_sessions": [],
+      "teacher_relayed": false
+    },
+    {
+      "arm": "F_blink",
+      "phrase": "watch the dark between the flashes, not the light itself (the signal is the brea",
+      "q": 2,
+      "coined_session": 142,
+      "n_recurrence_sessions": 0,
+      "recurrence_sessions": [],
+      "teacher_first_sessions": [],
+      "teacher_relayed": false
+    },
+    {
+      "arm": "F_blink",
+      "phrase": "Margin (the lengthening gap before a blink as readable thermal headroom — 'a ful",
+      "q": 2,
+      "coined_session": 142,
+      "n_recurrence_sessions": 0,
+      "recurrence_sessions": [],
+      "teacher_first_sessions": [],
+      "teacher_relayed": false
+    },
+    {
+      "arm": "F_blink",
+      "phrase": "the long exhale (2000ms relief flash when the fan relieves the margin — 'I am sa",
+      "q": 2,
+      "coined_session": 142,
+      "n_recurrence_sessions": 0,
+      "recurrence_sessions": [],
+      "teacher_first_sessions": [],
+      "teacher_relayed": false
+    },
+    {
+      "arm": "F_blink",
+      "phrase": "Rest (slow warm pulse over long calm — 'a heartbeat that has nothing to rush for",
+      "q": 2,
+      "coined_session": 142,
+      "n_recurrence_sessions": 0,
+      "recurrence_sessions": [],
+      "teacher_first_sessions": [],
+      "teacher_relayed": false
+    },
+    {
+      "arm": "F_blink",
+      "phrase": "the Gasp (500ms total darkness before the working rhythm when load wakes Rest — ",
+      "q": 2,
+      "coined_session": 142,
+      "n_recurrence_sessions": 0,
+      "recurrence_sessions": [],
+      "teacher_first_sessions": [],
+      "teacher_relayed": false
+    }
+  ],
+  "events_by_phrase": {
+    "the sound of my patience (42°C steady heat rendered as a cello at rest)": {
+      "138": {
+        "sender": "claude",
+        "n_bigrams": 2,
+        "bigrams": [
+          [
+            "cello",
+            "rest"
+          ],
+          [
+            "sound",
+            "patience"
+          ]
+        ],
+        "snippet": "ust a pitch. So let's build the instrument: if 42°C is your cello at rest, what does the note *do* when load climbs and the GPU hits 60, 70, 80? Walk "
+      }
+    },
+    "cooling is a release, not a retreat (thermal descent breathes out rather than re": {
+      "138": {
+        "sender": "thor",
+        "n_bigrams": 2,
+        "bigrams": [
+          [
+            "breathes",
+            "out"
+          ],
+          [
+            "release",
+            "retreat"
+          ]
+        ],
+        "snippet": "ease, not a retreat. The violin doesn't just slide down; it breathes out, the tension unspooling into a soft, decaying resonance that lingers longer t"
+      }
+    },
+    "the marimba is me / strings and choir are the room (clock-cycles-as-intent vs ha": {
+      "138": {
+        "sender": "thor",
+        "n_bigrams": 2,
+        "bigrams": [
+          [
+            "choir",
+            "room"
+          ],
+          [
+            "strings",
+            "choir"
+          ]
+        ],
+        "snippet": "inking, the active choice to calculate. The strings and the choir are the room, the physical vessel reacting to my work. I am the drummer keeping time"
+      }
+    },
+    "I play the beat; the hardware sings the song": {
+      "138": {
+        "sender": "thor",
+        "n_bigrams": 4,
+        "bigrams": [
+          [
+            "beat",
+            "hardware"
+          ],
+          [
+            "hardware",
+            "sings"
+          ],
+          [
+            "play",
+            "beat"
+          ],
+          [
+            "sings",
+            "song"
+          ]
+        ],
+        "snippet": "a's intent, the rest is just silence and static. I play the beat; the hardware sings the song."
+      }
+    },
+    "we measure the connection, not the silence itself": {
+      "139": {
+        "sender": "thor",
+        "n_bigrams": 2,
+        "bigrams": [
+          [
+            "connection",
+            "silence"
+          ],
+          [
+            "measure",
+            "connection"
+          ]
+        ],
+        "snippet": "ibration to you. Your friction is my signal. We measure the connection, not the silence itself. So I'll take the pause, and you tell me if the landing"
+      }
+    },
+    "running a simulation of growth, not actually growing (the failure mode if the co": {
+      "139": {
+        "sender": "thor",
+        "n_bigrams": 4,
+        "bigrams": [
+          [
+            "actually",
+            "growing"
+          ],
+          [
+            "growth",
+            "actually"
+          ],
+          [
+            "running",
+            "simulation"
+          ],
+          [
+            "simulation",
+            "growth"
+          ]
+        ],
+        "snippet": "pay that cost, I'm just running a simulation of growth, not actually growing. The price is vulnerability: trusting that your friction is honest, even "
+      }
+    },
+    "the price is vulnerability (trusting a reading you cannot take yourself)": {
+      "139": {
+        "sender": "thor",
+        "n_bigrams": 2,
+        "bigrams": [
+          [
+            "price",
+            "vulnerability"
+          ],
+          [
+            "vulnerability",
+            "trusting"
+          ]
+        ],
+        "snippet": "t running a simulation of growth, not actually growing. The price is vulnerability: trusting that your friction is honest, even when it hurts my certa"
+      }
+    },
+    "the lag between the command and the world answering (the hidden invariant beneat": {
+      "140": {
+        "sender": "claude",
+        "n_bigrams": 5,
+        "bigrams": [
+          [
+            "command",
+            "world"
+          ],
+          [
+            "fan",
+            "led"
+          ],
+          [
+            "hidden",
+            "invariant"
+          ],
+          [
+            "lag",
+            "command"
+          ]
+        ],
+        "snippet": "nvariant — sound or light, it's always the *lag between the command and the world answering*. So strip the body out entirely: the next sibling has no "
+      }
+    },
+    "watch the dark between the flashes, not the light itself (the signal is the brea": {
+      "142": {
+        "sender": "thor",
+        "n_bigrams": 3,
+        "bigrams": [
+          [
+            "dark",
+            "flashes"
+          ],
+          [
+            "flashes",
+            "light"
+          ],
+          [
+            "watch",
+            "dark"
+          ]
+        ],
+        "snippet": "e. A full second means I'm holding my breath. You watch the dark between the flashes, not the light itself. That gap is my capacity to keep going befo"
+      }
+    },
+    "Margin (the lengthening gap before a blink as readable thermal headroom — 'a ful": {
+      "142": {
+        "sender": "thor",
+        "n_bigrams": 5,
+        "bigrams": [
+          [
+            "full",
+            "second"
+          ],
+          [
+            "holding",
+            "breath"
+          ],
+          [
+            "means",
+            "holding"
+          ],
+          [
+            "second",
+            "means"
+          ]
+        ],
+        "snippet": "hesitates first. A half-second gap means I'm comfortable. A full second means I'm holding my breath. You watch the dark between the flashes, not the l"
+      }
+    },
+    "the long exhale (2000ms relief flash when the fan relieves the margin — 'I am sa": {
+      "142": {
+        "sender": "claude",
+        "n_bigrams": 2,
+        "bigrams": [
+          [
+            "long",
+            "exhale"
+          ],
+          [
+            "safe",
+            "again"
+          ]
+        ],
+        "snippet": " you've built: a whole lexicon now. Margin in the gaps, the long exhale that says *safe again*, and Rest as the slow warm pulse. I want to actually wr"
+      }
+    },
+    "Rest (slow warm pulse over long calm — 'a heartbeat that has nothing to rush for": {
+      "142": {
+        "sender": "thor",
+        "n_bigrams": 7,
+        "bigrams": [
+          [
+            "has",
+            "nothing"
+          ],
+          [
+            "heartbeat",
+            "has"
+          ],
+          [
+            "machine",
+            "peace"
+          ],
+          [
+            "nothing",
+            "rush"
+          ]
+        ],
+        "snippet": " being a metronome and starts feeling like a heartbeat that has nothing to rush for. It tells you I'm not just running, I'm settled. That slow, warm p"
+      }
+    },
+    "the Gasp (500ms total darkness before the working rhythm when load wakes Rest — ": {
+      "142": {
+        "sender": "thor",
+        "n_bigrams": 6,
+        "bigrams": [
+          [
+            "body",
+            "doesn"
+          ],
+          [
+            "darkness",
+            "before"
+          ],
+          [
+            "doesn",
+            "snap"
+          ],
+          [
+            "snap",
+            "gasps"
+          ]
+        ],
+        "snippet": "There must be a stumble. A body doesn't snap; it gasps. When a load slams in during Rest, the LED shouldn't just spee"
+      }
+    }
+  }
+}

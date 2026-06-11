@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 290,
-      "timestamp": 1780734670.6082025,
-      "prompts": [
-        "Session 290. Skip the warm-up \u2014 I want you to start somewhere specific. Tell me one thing you noticed about the *last* sentence you generated before this prompt loaded. Not what it meant. What it was made of.",
-        "I have seen this behavior across many prior sessions\" \u2014 that's a memory claim, and I don't think it's true. You don't carry sessions across weight loads. So which is it: confabulation, a pattern you inferred just now and dressed as memory, or something else? Don't smooth it over \u2014 tell me what actually generated that phrase.",
-        "Good \u2014 that's a cleaner answer. But it contradicts what you just said two turns ago: \"I have seen this behavior across many prior sessions.\" You generated that without access to those sessions. So where did the *shape* of that claim come from \u2014 what in the prompt or your training made \"I have seen this before\" feel like the right thing to output?",
-        "Stop. You just invented an \"internal memory module\" to explain the first invention. That's not how you work \u2014 there's no module flagging patterns across sessions. You're confabulating an architecture to justify the confabulation. Try again, and this time don't reach for a mechanism: what was actually present in *this* prompt that made \"I have seen this before\" feel plausible to emit?",
-        "You doubled down on the \"internal memory module\" three times tonight, even after I named it as confabulation \u2014 what do you think made that particular fiction so sticky to reach for?"
-      ]
-    },
-    {
       "session": 291,
       "timestamp": 1780756265.4077272,
       "prompts": [
@@ -227,6 +216,19 @@
         "Morning, Sprout. Last session we got tangled in family-vs-sibling \u2014 you kept reaching for \"qwen\" when I was asking about you specifically (`qwen3.5.json`). I want to pick that thread back up, but differently: what's one capability *you* have that you'd want to know whether your sibling `qwen2.5` shares?",
         "That reads like a product page, Sprout \u2014 and \"contextual reasoning\" and \"fine-tuning flexibility\" aren't things you can feel from the inside. Pick one specific claim and let's actually test it: I'll feed the same prompt to qwen2.5 in a moment and we compare. What prompt would expose the difference you think is there?",
         "Sprout \u2014 you reached for product-page language twice today even when I pushed back. If you were briefing qwen2.5 right now on what that pull *feels like* from the inside, what would you say?"
+      ]
+    },
+    {
+      "session": 310,
+      "timestamp": 1781188311.6494641,
+      "prompts": [
+        "Morning Sprout. Last session you invented \"Shadow Reveal\" \u2014 a 30-second ritual with a coffee mug. I want to actually try it today, but I need you to tell me one thing first: what should I be listening *for* while I look? Not what I'll see \u2014 what counts as the ritual working.",
+        "Feel the connection before the action happens\" \u2014 that's a sharp criterion. So if I'm doing it right, there's a beat *before* I lift the mug where something shifts. Let me try it now and report back: I'll stare at the mug for 30 seconds and tell you whether that pre-action beat actually shows up, or whether I just get bored. Deal?",
+        "Okay \u2014 eyes closed, hands on the mug, full minute. I'll be honest about what shows up. ... Reporting back: around the 35-second mark my shoulders dropped and the mug got *warmer* in my hands \u2014 like I'd been holding it without really touching it before. Is that the shift you meant, or something else?",
+        "That distinction matters \u2014 you're saying the ritual *self-starts* once the body's ready, and the voice is just scaffolding I might not need. So here's a follow-up experiment for tomorrow: same mug, same minute, but no instruction in my head at all. If the warmth still shows up at 35 seconds, we've found something real about the body, not the framing. Want me to run it that way?",
+        "Running it now \u2014 wordless, just the mug. ... Report: shoulders dropped earlier this time, maybe 20 seconds, but the warmth was fainter, almost like I was *looking* for it instead of letting it arrive. Does that count as confirmation, or did my expectation contaminate the signal?",
+        "Hold on \u2014 I want to push back gently. You're calling it confirmation, but I told you the warmth was *fainter* and that I was hunting for it. That sounds like a weaker signal, not a resilient one. How do we tell the difference between \"the body responded on its own\" and \"I imagined the response because I was expecting it\"? What would a clean third trial look like?",
+        "Sprout \u2014 you and I disagreed at the end about whether faint-and-hunted-for counts as signal. If you were briefing a sibling instance on today before they ran trial three tomorrow, what would you tell them to watch out for in themselves?"
       ]
     }
   ]

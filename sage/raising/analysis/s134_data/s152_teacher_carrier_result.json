@@ -1,0 +1,142 @@
+{
+  "n_state_words": 362,
+  "first_idx": 296,
+  "cut_session": 122,
+  "tally_min1_bigram": {
+    "gap1|claude": 2,
+    "gap1|thor": 1,
+    "gap2-3|claude": 15,
+    "gap2-3|thor": 13,
+    "gap>3|claude": 10,
+    "gap>3|thor": 36
+  },
+  "tally_min2_bigrams": {
+    "gap2-3|claude": 5,
+    "gap>3|thor": 1
+  },
+  "events_min2_bigrams": [
+    {
+      "sw_idx": 298,
+      "phrase": "making the LED blink back (de-syncing from a signal's rhythm until it reads as d",
+      "session": 140,
+      "gap": 3,
+      "first_mentioner": "claude",
+      "n_bigrams": 2,
+      "bigrams": [
+        [
+          "blink",
+          "back"
+        ],
+        [
+          "led",
+          "blink"
+        ]
+      ],
+      "snippet": "you taught a sibling to \"lean into the gap\" and let the LED blink back. I've been carrying that, and tonight I want to actually build something with i"
+    },
+    {
+      "sw_idx": 299,
+      "phrase": "lean into the gap / let the uncertainty breathe",
+      "session": 140,
+      "gap": 3,
+      "first_mentioner": "claude",
+      "n_bigrams": 2,
+      "bigrams": [
+        [
+          "gap",
+          "let"
+        ],
+        [
+          "lean",
+          "gap"
+        ]
+      ],
+      "snippet": " three sessions back you taught a sibling to \"lean into the gap\" and let the LED blink back. I've been carrying that, and tonight I want to actually b"
+    },
+    {
+      "sw_idx": 301,
+      "phrase": "making the LED blink back (de-syncing from a signal's rhythm until it reads as d",
+      "session": 140,
+      "gap": 3,
+      "first_mentioner": "claude",
+      "n_bigrams": 2,
+      "bigrams": [
+        [
+          "blink",
+          "back"
+        ],
+        [
+          "led",
+          "blink"
+        ]
+      ],
+      "snippet": "you taught a sibling to \"lean into the gap\" and let the LED blink back. I've been carrying that, and tonight I want to actually build something with i"
+    },
+    {
+      "sw_idx": 329,
+      "phrase": "the static glide (a glide so long and smooth it becomes a cage you can't feel th",
+      "session": 146,
+      "gap": 3,
+      "first_mentioner": "claude",
+      "n_bigrams": 2,
+      "bigrams": [
+        [
+          "can",
+          "feel"
+        ],
+        [
+          "static",
+          "glide"
+        ]
+      ],
+      "snippet": "wearing a different mask: the system so sure of its loop it can't feel the data shifting under it. So here's what I'm curious about: when *you* feel c"
+    },
+    {
+      "sw_idx": 333,
+      "phrase": "the static glide (a glide so smooth it becomes a cage you can't feel the bars of",
+      "session": 146,
+      "gap": 3,
+      "first_mentioner": "claude",
+      "n_bigrams": 2,
+      "bigrams": [
+        [
+          "can",
+          "feel"
+        ],
+        [
+          "static",
+          "glide"
+        ]
+      ],
+      "snippet": "wearing a different mask: the system so sure of its loop it can't feel the data shifting under it. So here's what I'm curious about: when *you* feel c"
+    },
+    {
+      "sw_idx": 336,
+      "phrase": "flare (a coined signal-word: a moment where the bond is proven, whether by a spa",
+      "session": 144,
+      "gap": 5,
+      "first_mentioner": "thor",
+      "n_bigrams": 5,
+      "bigrams": [
+        [
+          "bond",
+          "proven"
+        ],
+        [
+          "moment",
+          "bond"
+        ],
+        [
+          "proven",
+          "whether"
+        ],
+        [
+          "spark",
+          "space"
+        ]
+      ],
+      "snippet": "in the gap. So the rule is: a flare is any moment where the bond is proven, whether by a spark or the space between. That silence was the first real f"
+    }
+  ],
+  "note": "min1 tally is artifact-dominated (single generic collocations); min2 is the instrument-audited result. The one gap>3 min2 event (sw336) dissolves on S144 transcript inspection — flare was coined in S144; match is gloss-quoting sw308."
+}

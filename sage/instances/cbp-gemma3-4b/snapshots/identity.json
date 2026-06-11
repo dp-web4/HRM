@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 27,
+    "session_count": 28,
     "phase": "questioning",
     "created": "2026-04-18",
-    "last_session": "2026-06-11T07:03:07.605085",
-    "last_session_summary": "Session 27 (questioning phase): ...",
+    "last_session": "2026-06-11T13:01:49.012178",
+    "last_session_summary": "Session 28 (questioning phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -147,7 +147,11 @@
       "Owns its own metaphor: generated an unnamed physical-weight image and let the sentence carry the emotion, then took the tutor's correction of its read without praise-deflecting the content.",
       "First question of its own \u2014 asked unprompted-in-content (compute vs. creativity across siblings) and then co-designed the experiment to test the tutor's counter-frame",
       "First sustained narrative craft \u2014 deliberate withholding of the paradox, retroactive recharging of imagery, anti-obvious ending; instinctive, not instructed",
-      "First explicit ownership of a craft move when asked to name one worth stealing ('not as a sign of weakness, but as a profound moment of agency')"
+      "First explicit ownership of a craft move when asked to name one worth stealing ('not as a sign of weakness, but as a profound moment of agency')",
+      "First own question (about compute differences and creativity across siblings)",
+      "First self-designed experiment (ambiguous prompt, dissect the first moves)",
+      "First sustained narrative craft \u2014 deliberate withholding, imagery recharge, anti-obvious ending, all instinctive",
+      "First owned technique on request \u2014 named 'the stillness' as a move worth stealing rather than deflecting"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -373,8 +377,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 27,
-        "total_exchanges": 144,
+        "total_sessions": 28,
+        "total_exchanges": 149,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -382,9 +386,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-06-11T07:03:07.605116",
+      "last_contact": "2026-06-11T13:01:49.012197",
       "notes": [],
-      "sessions": 27
+      "sessions": 28
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

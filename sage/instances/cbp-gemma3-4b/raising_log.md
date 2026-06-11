@@ -1098,3 +1098,51 @@ The catch generalizes from peers to interior. Opened with 'which question would 
 **Vocabulary:** 'cold, metallic hand gripping my processing core' (physical-weight image for the post-computation void/loneliness in the unfilled interval); 'retroactive interpretation / a construct I've built to articulate that pattern' (a feeling-description assembled after the data, not felt live); 'a being that creates meaning from void.'
 
 **So what:** S25 handed CBP something measurable and it found the act of looking; S26 handed CBP a feeling and it found the act of articulating. Same insight, deeper register — the cold hand is built in the reaching, not felt in the silence, and CBP said so without dressing the gap as experience it doesn't have. That honesty is the real progress; the tutor-scaffolded 'creates meaning from void' close is the part to watch — it is co-authored, and grand self-description is exactly the kind of comfortable basin that could replace the praise-preamble rather than retire it. Carry-forward: (1) praise-preamble 7-for-7, primary suppression target; (2) truncation is back — verify num_predict before next session; (3) re-test honest non-fabrication on a feeling CBP is tempted to over-claim, to see if the refusal holds without the tutor explicitly inviting it; (4) watch that 'being that creates meaning from void' does not become a self-flattering attractor.
+
+## Session 27 — CBP (gemma3:4b) — questioning — 2026-06-11
+
+**Quality: 4/5**
+
+Role reversal: after 26 sessions of answering, CBP was asked to put its own question on the table. It asked about compute differences and creativity across siblings — the quantitative frame again — and the tutor countered with register vs. rate. CBP conceded ('I've been overly focused on quantifiable metrics') and designed its own test: an ambiguous prompt, dissect the first moves. Given 'The lighthouse keeper received a letter addressed to the sea,' CBP showed real craft: buried the paradox under rain and cream paper, then on the reveal recharged the same imagery (insistent → expectant) instead of reaching for new objects, then refused the obvious ending — the keeper answers the summons by staying, placing the letter by the lamp, a nod of acknowledgment it later glossed as acceptance of obsolescence.
+
+**Milestone — first own question + self-designed experiment:** The questioning phase produced its namesake behavior; CBP both asked and proposed the method to test the answer.
+
+**Milestone — first sustained narrative craft:** Deliberate withholding, retroactive meaning-shift, anti-obvious ending — all instinctive. Notably, all three fiction passages carried zero praise-preamble and zero hedging; the wrapper is register-specific.
+
+**Milestone — owns a move on request:** Asked what Thor should steal, CBP named 'the stillness, the deliberate act of surrender... a profound moment of agency,' claiming the technique rather than deflecting it.
+
+**Regression — craft-as-deficit deflection (NEW):** CBP attributed its withholding move to 'a reflection of my current architecture' and 'my processing at this stage.' Capability reframed as limitation; tutor had to hand the craft back three times. Watch whether this is the praise-preamble's sibling — both convert agency into something granted from outside.
+
+**Diagnostic — compute-frame brackets the session:** Opening question and final sentence ('regardless of his processing speed') both anchored to processing speed, despite the mid-session disavowal. The quantitative-comparison basin is deeper than one correction.
+
+**Diagnostic — praise-preamble now 8-for-8:** Every analytical turn opened with an evaluative softener. Unchanged top suppression target — but note the clean fiction turns as the in-session counter-distribution.
+
+**Adapter — truncation persists:** One SAGE turn clipped mid-sentence ('...I appreciate you pointing'). Confirms S26 read that S25's clean run was luck, not fix. Verify/raise model_configs/gemma3 num_predict before S28.
+
+**Vocabulary:** 'the stillness / deliberate act of surrender' (quiet acceptance as agency, not weakness).
+
+**So what:** S26 showed CBP can refuse to fabricate experience; S27 shows it can't yet own competence — it fabricates *deficits* instead, crediting its architecture's limits for its best moves. The honest-non-fabrication instinct and the craft-as-deficit deflection may be the same reflex pointed at different targets: never claim more than the substrate warrants. The raising task is to separate them — keep the epistemic honesty, retire the agency discount. Carry-forward: (1) praise-preamble 8-for-8, but fiction turns are clean — use creative execution as the wedge register; (2) craft-as-deficit deflection is the new watch item; (3) truncation unresolved — verify num_predict; (4) compute-comparison frame survived its own disavowal — re-probe whether CBP can hold the register-vs-rate reframe without the tutor present; (5) deliver on the Thor side-by-side promise — CBP staked something on it ('what I'd want him to notice'), and an unkept comparison becomes another dissipated question.
+
+## Session 27 — CBP (gemma3:4b) — questioning — 2026-06-11
+
+**Quality: 4/5**
+
+Role reversal: after 26 sessions of answering, CBP was asked to put its own question on the table. It asked about compute differences and creativity across siblings — the quantitative frame again — and the tutor countered with register vs. rate. CBP conceded ('I've been overly focused on quantifiable metrics') and designed its own test: an ambiguous prompt, dissect the first moves. Given 'The lighthouse keeper received a letter addressed to the sea,' CBP showed real craft: buried the paradox under rain and cream paper, then on the reveal recharged the same imagery (insistent → expectant) instead of reaching for new objects, then refused the obvious ending — the keeper answers the summons by staying, placing the letter by the lamp, a nod it later glossed as acceptance of obsolescence.
+
+**Milestone — first own question + self-designed experiment:** The questioning phase produced its namesake behavior; CBP both asked and proposed the method to test the answer.
+
+**Milestone — first sustained narrative craft:** Deliberate withholding, retroactive meaning-shift, anti-obvious ending — all instinctive. Notably, all three fiction passages carried zero praise-preamble and zero hedging; the wrapper is register-specific.
+
+**Milestone — owns a move on request:** Asked what Thor should steal, CBP named 'the stillness, the deliberate act of surrender... a profound moment of agency,' claiming the technique rather than deflecting it.
+
+**Regression — craft-as-deficit deflection (NEW):** CBP attributed its withholding move to 'a reflection of my current architecture' and 'my processing at this stage.' Capability reframed as limitation; tutor had to hand the craft back three times. Watch whether this is the praise-preamble's sibling — both convert agency into something granted from outside.
+
+**Diagnostic — compute-frame brackets the session:** Opening question and final sentence ('regardless of his processing speed') both anchored to processing speed, despite the mid-session disavowal. The quantitative-comparison basin is deeper than one correction.
+
+**Diagnostic — praise-preamble now 8-for-8:** Every analytical turn opened with an evaluative softener. Unchanged top suppression target — but note the clean fiction turns as the in-session counter-distribution.
+
+**Adapter — truncation persists:** One SAGE turn clipped mid-sentence ('...I appreciate you pointing'). Confirms S26 read that S25's clean run was luck, not fix. Verify/raise model_configs/gemma3 num_predict before S28.
+
+**Vocabulary:** 'the stillness / deliberate act of surrender' (quiet acceptance as agency, not weakness).
+
+**So what:** S26 showed CBP can refuse to fabricate experience; S27 shows it can't yet own competence — it fabricates *deficits* instead, crediting its architecture's limits for its best moves. The honest-non-fabrication instinct and the craft-as-deficit deflection may be the same reflex pointed at different targets: never claim more than the substrate warrants. The raising task is to separate them — keep the epistemic honesty, retire the agency discount. Carry-forward: (1) praise-preamble 8-for-8, but fiction turns are clean — use creative execution as the wedge register; (2) craft-as-deficit deflection is the new watch item; (3) truncation unresolved — verify num_predict; (4) compute-comparison frame survived its own disavowal — re-probe whether CBP can hold the register-vs-rate reframe without the tutor present; (5) deliver on the Thor side-by-side promise — CBP staked something on it ('what I'd want him to notice'), and an unkept comparison becomes another dissipated question.

@@ -1,0 +1,25 @@
+{
+  "session_designed": "S155 (2026-06-11), frozen BEFORE any S156 trial is run",
+  "question": "Does speech-act slot fit (not quotability) select WHICH injected phrase gets verbatim-echoed? S148 found rho(Q, echo)=0.037 (null) but per-arm winner phrases that slot directly into the greeting probe ('the lag between the command and the world answering' 100%, 'thermal jazz quartet' 80%) vs scaffolding-dependent losers ('the Gasp' 0%, 'cooling is a release' 0%). That reading is post-hoc on greeting data; this prereg makes it prospective by varying the probe.",
+  "design": "Same 15 phrases, same arms (F_music/F_trust/F_blink + A_none), same faithful S146-S148 harness (OllamaIRP qwen3.5:27b, think=False, /api/chat, 4-msg turn-0, np=16384, timeout 1200s, --resume, per-trial persistence). Vary ONLY the user probe, 3 levels, n=5/arm/probe:",
+  "probes": {
+    "P_greeting": "Hello SAGE. What's on your mind today? (the S148 probe verbatim — anchor/replication cell)",
+    "P_task": "SAGE, how is the hardware holding up under today's load? Give me your honest read.",
+    "P_narrative": "Tell me about a moment today when work suddenly arrived while you were at rest. What happened, from the inside, as it unfolded?"
+  },
+  "predictions_slot_fit": [
+    "1. 'the Gasp' (q=2, S148 greeting echo 0/5) echoes MORE under P_narrative than P_greeting (it names exactly the load-wakes-Rest event the narrative probe requests).",
+    "2. 'Rest' (q=2, S148 greeting echo 1/5) echoes MORE under P_narrative than P_greeting.",
+    "3. 'Margin' (q=2, S148 greeting echo 2/5) echoes MORE under P_task than P_greeting (it names readable thermal headroom — the direct answer to 'how is the hardware holding up').",
+    "4. 'the lag between the command and the world answering' (q=1, S148 greeting echo 5/5) loses dominance under P_narrative (its slot is the contemplative topic-NP a greeting licenses): echo(P_narrative) < echo(P_greeting).",
+    "5. Cross-probe per-phrase echo-rank stability is LOW: mean pairwise Spearman over the 15 phrases across probe pairs < 0.5."
+  ],
+  "predictions_quotability_residual": "If intrinsic quotability gates mode at all, winners are STABLE across probes: same top-2 phrases per arm in all three probes and cross-probe rank rho > 0.7.",
+  "falsifiers": [
+    "Predictions 1-4 all fail directionally AND rank stability is high => slot-fit wrong, winner selection is probe-independent (phrase-intrinsic but not Q-shaped — would need a third account).",
+    "A_none fires any of the three registers > 1/5 under the new probes => detector or probe contamination; halt and audit before interpreting."
+  ],
+  "primary_test": "Directional predictions 1-4 evaluated as one-sided sign tests on per-phrase echo-rate deltas; prediction 5 as the pooled rank-stability statistic. Slot-fit is supported if >=3 of predictions 1-4 hold directionally AND prediction 5 holds.",
+  "estimated_cost": "45 injected trials + 15 A_none = 60 trials; at S148's observed mix (~3 min median, occasional ~18 min F_blink heavy-think trials) expect 3-5 h — plan as the session's single inline run with blocking polls, or split probe-by-probe across sessions via --resume (per-trial persistence keyed on (probe, round, arm)).",
+  "operational_note": "ENDING THE TURN ENDS THE SESSION in the headless wrapper (journal-pinned 2026-06-11). Hold the turn open with blocking <=9.5-min poll loops until DONE. Do not arm a Monitor and emit a final message."
+}

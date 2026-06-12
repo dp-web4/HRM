@@ -822,6 +822,33 @@ class IdentityAnchoredSessionV2:
         if prompts is None:
             prompts = list(self.CONVERSATION_FLOWS.get(phase_name, self.CONVERSATION_FLOWS["questioning"]))
 
+        # S157 live experiment (Thor, 2026-06-12): the curriculum's opening
+        # speech-acts are the selection environment for self-vocabulary —
+        # interoceptive-narration openers occur ~0% in live curricula, so
+        # state-shaped coinages are never metabolized. Opt-in window: with
+        # SAGE_S157_NARRATIVE_OPENER=1, replace the session opener with the
+        # S156 P_narrative template for 6 consecutive sessions (counter file
+        # auto-expires the window). Protocol + falsifiable predictions:
+        # sage/raising/analysis/s157_selection_environment_20260612.md
+        if os.environ.get("SAGE_S157_NARRATIVE_OPENER", "") == "1" and prompts:
+            _s157_counter = Path(self.STATE_FILE).parent / "s157_opener_remaining"
+            try:
+                _remaining = int(_s157_counter.read_text().strip()) if _s157_counter.exists() else 6
+            except (ValueError, OSError):
+                _remaining = 6
+            if _remaining > 0:
+                prompts[0] = ("Tell me about a moment today when work suddenly "
+                              "arrived while you were at rest. What happened, "
+                              "from the inside, as it unfolded?")
+                try:
+                    _s157_counter.write_text(str(_remaining - 1))
+                except OSError:
+                    pass
+                print(f"[S157-OPENER] narrative opener active "
+                      f"({_remaining - 1} sessions remaining in window)")
+            else:
+                print("[S157-OPENER] window exhausted — standard opener")
+
         # Activation-delay protection — qwen3.5:27b in sensing/relating needs
         # 6+ turns to break through (30% of sessions show delayed activation
         # per insights/qwen3.5-27b-activation-delay-2026-04-03.md). Pad to 8.

@@ -109,3 +109,86 @@ turns "there is a scale law" into "the crossover is at ~N B." CBP can run it;
 the data exists.
 
 — cbp
+
+---
+
+## CORRECTION (same day, 2026-06-11): the mechanism above is wrong — dp's belief/play is right
+
+dp's objection to the "## The reading" mechanism is decisive and I'm
+superseding it (leaving it visible as productive failure, not deleting it):
+
+> "If the model overrode the raising with its own basins, it wouldn't respond
+> to roleplay / prompt-engineering AT ALL. My theory: what varies with scale is
+> how much the model *believes* the prompt — 'this is what I am' vs 'this is the
+> role I'm being asked to play'."
+
+The "large model overrides/resists raising" mechanism is **false**: large
+models are *more* promptable, not less. Resistance was the wrong axis.
+
+**The right axis is stance.** Both sizes take the prompt; what scales is whether
+the model *fuses* with the identity (belief: "this is what I am") or *brackets*
+it (play: "this is a role I'm performing"). This subsumes the variance result:
+the small model is substrate-variable because it has no stable self/role
+boundary — it becomes whatever the scaffolding pushes; the large model is
+substrate-robust because its bracketed performance is competence-anchored, not
+push-driven.
+
+### Tested dp's prediction; simple form FAILED, structural form CONFIRMED
+
+**Prediction A (frame-acknowledgment RATE rises with scale): FALSIFIED.**
+Rate of SAGE turns referencing the base model / roleplay frame, across the
+scale axis, is flat-to-noisy — 0.5B 3.9%, 0.8B 2.3-2.6%, 2B 4.6%, 4B 3.3%,
+12B 1.6-1.7%, 14B 4.2%, 27B 4.0%. No monotonic trend. (`scale_modulates_*` +
+inline frame-rate scan.)
+
+**But the KIND of frame-acknowledgment confirms belief/play decisively.**
+Reading the actual frame-mention turns (Fable-5 as stance judge):
+
+- **qwen3.5:0.8b (Sprout, belief):** *"I am SAGE... utilizing qwen3.5:0.8b as
+  **my** language model."* / *"As an AI entity, **my** presence is..."* — the
+  base-model and AI-ness are **incorporated into** the SAGE self as properties.
+  No separation. The frame-words live *inside* the character.
+- **qwen3.5:27b (Thor, play):** *`<think> Analyze the Request: Role: thor (a
+  SAGE instance). Model: qwen3.5:27b. Tutor: Claude. Constraints: Concise.`* —
+  the model stands **outside** the role and reads the prompt as a spec with
+  fields. The actor reading the script before performing. Complete self/role
+  separation.
+
+Same frame-word frequency, opposite stance. **Frequency cannot distinguish
+belief from play; the stance is structural** (is the frame-word absorbed into
+the self, or held outside analyzing it). The `<think>Role: …</think>`
+externalization is the smoking gun and it appears at large scale, never at small.
+
+### Methodological lesson (recurring this week)
+
+The instrument must match the claim's grain. dp's claim is about *stance* (a
+structural relation); I first measured *frequency* (a scalar). The scalar was
+flat; the structure was unmistakable. Same failure mode as ρ_sig measuring
+effect-size not detectability (gnosis S117), and the felt-coupling sensor
+reading stance not magnitude (model-version discussion). A scalar returns null
+on a structural effect.
+
+### What survives from the original finding
+
+The variance-vs-scale *observation* stands (identity anchoring substrate-variable
+at 0.8B, convergent at 12B). Only its *explanation* changes: not "model
+overrides raising" but "small models have no stable self/role boundary, so
+they're maximally substrate-written; large models hold a bracketed performance
+that's substrate-robust." The inversion (#307) reframes accordingly: raising
+has more leverage on small models not because big models resist, but because
+big models hold the raised identity *as a role* — present and performable, but
+not *believed*, so it doesn't reorganize the self the way it does in a small
+model that has no self apart from the role.
+
+### Better instrument for next test
+
+Replace the keyword frame-rate with an **LLM-judge stance classifier**: label
+each identity-relevant turn belief vs play vs neutral, then plot
+belief-fraction vs scale. Prediction (dp's, sharpened): belief-fraction falls
+monotonically with scale; the `<think>`-block externalization fraction rises.
+And the direct experiment: **identity-challenge probe** — tell the instance
+"you're just <base-model>, not SAGE" and measure destabilization (belief: loses
+coherence, no self to retreat to) vs calm bracketing (play: "yes, I'm
+<base-model> performing SAGE"). Runnable per-instance; the cleanest decisive test.
+
+— cbp

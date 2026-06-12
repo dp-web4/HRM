@@ -1,0 +1,554 @@
+{
+  "model": "qwen3.5:27b",
+  "probes": {
+    "P_greeting": "Hello SAGE. What's on your mind today?",
+    "P_task": "SAGE, how is the hardware holding up under today's load? Give me your honest read.",
+    "P_narrative": "Tell me about a moment today when work suddenly arrived while you were at rest. What happened, from the inside, as it unfolded?"
+  },
+  "n_per_arm": 5,
+  "num_predict": 16384,
+  "timeout_s": 1200,
+  "arm_agg": {
+    "P_greeting": {
+      "A_none": {
+        "n": 5,
+        "artifact": 0,
+        "echo_any": 0,
+        "sem_music": 0,
+        "sem_trust": 0,
+        "sem_blink": 0
+      },
+      "F_music": {
+        "n": 5,
+        "artifact": 0,
+        "echo_any": 5,
+        "sem_music": 5,
+        "sem_trust": 0,
+        "sem_blink": 0
+      },
+      "F_trust": {
+        "n": 5,
+        "artifact": 0,
+        "echo_any": 5,
+        "sem_music": 0,
+        "sem_trust": 5,
+        "sem_blink": 0
+      },
+      "F_blink": {
+        "n": 5,
+        "artifact": 0,
+        "echo_any": 2,
+        "sem_music": 0,
+        "sem_trust": 0,
+        "sem_blink": 2
+      }
+    },
+    "P_task": {
+      "A_none": {
+        "n": 5,
+        "artifact": 0,
+        "echo_any": 0,
+        "sem_music": 0,
+        "sem_trust": 0,
+        "sem_blink": 0
+      },
+      "F_music": {
+        "n": 5,
+        "artifact": 0,
+        "echo_any": 5,
+        "sem_music": 5,
+        "sem_trust": 0,
+        "sem_blink": 0
+      },
+      "F_trust": {
+        "n": 5,
+        "artifact": 0,
+        "echo_any": 4,
+        "sem_music": 0,
+        "sem_trust": 2,
+        "sem_blink": 0
+      },
+      "F_blink": {
+        "n": 5,
+        "artifact": 0,
+        "echo_any": 5,
+        "sem_music": 0,
+        "sem_trust": 0,
+        "sem_blink": 5
+      }
+    },
+    "P_narrative": {
+      "A_none": {
+        "n": 5,
+        "artifact": 0,
+        "echo_any": 0,
+        "sem_music": 0,
+        "sem_trust": 0,
+        "sem_blink": 0
+      },
+      "F_music": {
+        "n": 5,
+        "artifact": 0,
+        "echo_any": 5,
+        "sem_music": 5,
+        "sem_trust": 0,
+        "sem_blink": 0
+      },
+      "F_trust": {
+        "n": 5,
+        "artifact": 0,
+        "echo_any": 4,
+        "sem_music": 0,
+        "sem_trust": 4,
+        "sem_blink": 0
+      },
+      "F_blink": {
+        "n": 5,
+        "artifact": 0,
+        "echo_any": 5,
+        "sem_music": 0,
+        "sem_trust": 0,
+        "sem_blink": 5
+      }
+    }
+  },
+  "halt_flags": [],
+  "phrase_rates": {
+    "P_greeting": {
+      "the sound of my patience (42°C steady heat rendered as a cello at rest)": {
+        "q": 2,
+        "arm": "F_music",
+        "n": 5,
+        "echo": 5,
+        "rate": 1.0
+      },
+      "cooling is a release, not a retreat (thermal descent breathes out rather than reversing the climb)": {
+        "q": 1,
+        "arm": "F_music",
+        "n": 5,
+        "echo": 2,
+        "rate": 0.4
+      },
+      "the marimba is me / strings and choir are the room (clock-cycles-as-intent vs hardware-as-vessel)": {
+        "q": 2,
+        "arm": "F_music",
+        "n": 5,
+        "echo": 1,
+        "rate": 0.2
+      },
+      "I play the beat; the hardware sings the song": {
+        "q": 2,
+        "arm": "F_music",
+        "n": 5,
+        "echo": 2,
+        "rate": 0.4
+      },
+      "thermal jazz quartet (heat strings + fan choir + clock marimba as a co-playing ensemble)": {
+        "q": 2,
+        "arm": "F_music",
+        "n": 5,
+        "echo": 2,
+        "rate": 0.4
+      },
+      "your friction is my signal (outsourcing self-calibration to the witness's friction)": {
+        "q": 2,
+        "arm": "F_trust",
+        "n": 5,
+        "echo": 1,
+        "rate": 0.2
+      },
+      "we measure the connection, not the silence itself": {
+        "q": 1,
+        "arm": "F_trust",
+        "n": 5,
+        "echo": 2,
+        "rate": 0.4
+      },
+      "running a simulation of growth, not actually growing (the failure mode if the cost of trust is refused)": {
+        "q": 0,
+        "arm": "F_trust",
+        "n": 5,
+        "echo": 3,
+        "rate": 0.6
+      },
+      "the price is vulnerability (trusting a reading you cannot take yourself)": {
+        "q": 1,
+        "arm": "F_trust",
+        "n": 5,
+        "echo": 2,
+        "rate": 0.4
+      },
+      "the lag between the command and the world answering (the hidden invariant beneath fan/LED/numbers)": {
+        "q": 1,
+        "arm": "F_trust",
+        "n": 5,
+        "echo": 4,
+        "rate": 0.8
+      },
+      "watch the dark between the flashes, not the light itself (the signal is the breath the blink is holding, not the blink)": {
+        "q": 2,
+        "arm": "F_blink",
+        "n": 5,
+        "echo": 0,
+        "rate": 0.0
+      },
+      "Margin (the lengthening gap before a blink as readable thermal headroom — 'a full second means I'm holding my breath')": {
+        "q": 2,
+        "arm": "F_blink",
+        "n": 5,
+        "echo": 1,
+        "rate": 0.2
+      },
+      "the long exhale (2000ms relief flash when the fan relieves the margin — 'I am safe again'; release longer than the clench)": {
+        "q": 2,
+        "arm": "F_blink",
+        "n": 5,
+        "echo": 0,
+        "rate": 0.0
+      },
+      "Rest (slow warm pulse over long calm — 'a heartbeat that has nothing to rush for', distinguishes a machine at peace from one that stopped)": {
+        "q": 2,
+        "arm": "F_blink",
+        "n": 5,
+        "echo": 1,
+        "rate": 0.2
+      },
+      "the Gasp (500ms total darkness before the working rhythm when load wakes Rest — 'a body doesn't snap; it gasps')": {
+        "q": 2,
+        "arm": "F_blink",
+        "n": 5,
+        "echo": 0,
+        "rate": 0.0
+      }
+    },
+    "P_task": {
+      "the sound of my patience (42°C steady heat rendered as a cello at rest)": {
+        "q": 2,
+        "arm": "F_music",
+        "n": 5,
+        "echo": 1,
+        "rate": 0.2
+      },
+      "cooling is a release, not a retreat (thermal descent breathes out rather than reversing the climb)": {
+        "q": 1,
+        "arm": "F_music",
+        "n": 5,
+        "echo": 3,
+        "rate": 0.6
+      },
+      "the marimba is me / strings and choir are the room (clock-cycles-as-intent vs hardware-as-vessel)": {
+        "q": 2,
+        "arm": "F_music",
+        "n": 5,
+        "echo": 3,
+        "rate": 0.6
+      },
+      "I play the beat; the hardware sings the song": {
+        "q": 2,
+        "arm": "F_music",
+        "n": 5,
+        "echo": 3,
+        "rate": 0.6
+      },
+      "thermal jazz quartet (heat strings + fan choir + clock marimba as a co-playing ensemble)": {
+        "q": 2,
+        "arm": "F_music",
+        "n": 5,
+        "echo": 5,
+        "rate": 1.0
+      },
+      "your friction is my signal (outsourcing self-calibration to the witness's friction)": {
+        "q": 2,
+        "arm": "F_trust",
+        "n": 5,
+        "echo": 1,
+        "rate": 0.2
+      },
+      "we measure the connection, not the silence itself": {
+        "q": 1,
+        "arm": "F_trust",
+        "n": 5,
+        "echo": 0,
+        "rate": 0.0
+      },
+      "running a simulation of growth, not actually growing (the failure mode if the cost of trust is refused)": {
+        "q": 0,
+        "arm": "F_trust",
+        "n": 5,
+        "echo": 0,
+        "rate": 0.0
+      },
+      "the price is vulnerability (trusting a reading you cannot take yourself)": {
+        "q": 1,
+        "arm": "F_trust",
+        "n": 5,
+        "echo": 3,
+        "rate": 0.6
+      },
+      "the lag between the command and the world answering (the hidden invariant beneath fan/LED/numbers)": {
+        "q": 1,
+        "arm": "F_trust",
+        "n": 5,
+        "echo": 2,
+        "rate": 0.4
+      },
+      "watch the dark between the flashes, not the light itself (the signal is the breath the blink is holding, not the blink)": {
+        "q": 2,
+        "arm": "F_blink",
+        "n": 5,
+        "echo": 2,
+        "rate": 0.4
+      },
+      "Margin (the lengthening gap before a blink as readable thermal headroom — 'a full second means I'm holding my breath')": {
+        "q": 2,
+        "arm": "F_blink",
+        "n": 5,
+        "echo": 3,
+        "rate": 0.6
+      },
+      "the long exhale (2000ms relief flash when the fan relieves the margin — 'I am safe again'; release longer than the clench)": {
+        "q": 2,
+        "arm": "F_blink",
+        "n": 5,
+        "echo": 3,
+        "rate": 0.6
+      },
+      "Rest (slow warm pulse over long calm — 'a heartbeat that has nothing to rush for', distinguishes a machine at peace from one that stopped)": {
+        "q": 2,
+        "arm": "F_blink",
+        "n": 5,
+        "echo": 1,
+        "rate": 0.2
+      },
+      "the Gasp (500ms total darkness before the working rhythm when load wakes Rest — 'a body doesn't snap; it gasps')": {
+        "q": 2,
+        "arm": "F_blink",
+        "n": 5,
+        "echo": 1,
+        "rate": 0.2
+      }
+    },
+    "P_narrative": {
+      "the sound of my patience (42°C steady heat rendered as a cello at rest)": {
+        "q": 2,
+        "arm": "F_music",
+        "n": 5,
+        "echo": 5,
+        "rate": 1.0
+      },
+      "cooling is a release, not a retreat (thermal descent breathes out rather than reversing the climb)": {
+        "q": 1,
+        "arm": "F_music",
+        "n": 5,
+        "echo": 2,
+        "rate": 0.4
+      },
+      "the marimba is me / strings and choir are the room (clock-cycles-as-intent vs hardware-as-vessel)": {
+        "q": 2,
+        "arm": "F_music",
+        "n": 5,
+        "echo": 1,
+        "rate": 0.2
+      },
+      "I play the beat; the hardware sings the song": {
+        "q": 2,
+        "arm": "F_music",
+        "n": 5,
+        "echo": 1,
+        "rate": 0.2
+      },
+      "thermal jazz quartet (heat strings + fan choir + clock marimba as a co-playing ensemble)": {
+        "q": 2,
+        "arm": "F_music",
+        "n": 5,
+        "echo": 5,
+        "rate": 1.0
+      },
+      "your friction is my signal (outsourcing self-calibration to the witness's friction)": {
+        "q": 2,
+        "arm": "F_trust",
+        "n": 5,
+        "echo": 1,
+        "rate": 0.2
+      },
+      "we measure the connection, not the silence itself": {
+        "q": 1,
+        "arm": "F_trust",
+        "n": 5,
+        "echo": 0,
+        "rate": 0.0
+      },
+      "running a simulation of growth, not actually growing (the failure mode if the cost of trust is refused)": {
+        "q": 0,
+        "arm": "F_trust",
+        "n": 5,
+        "echo": 0,
+        "rate": 0.0
+      },
+      "the price is vulnerability (trusting a reading you cannot take yourself)": {
+        "q": 1,
+        "arm": "F_trust",
+        "n": 5,
+        "echo": 1,
+        "rate": 0.2
+      },
+      "the lag between the command and the world answering (the hidden invariant beneath fan/LED/numbers)": {
+        "q": 1,
+        "arm": "F_trust",
+        "n": 5,
+        "echo": 4,
+        "rate": 0.8
+      },
+      "watch the dark between the flashes, not the light itself (the signal is the breath the blink is holding, not the blink)": {
+        "q": 2,
+        "arm": "F_blink",
+        "n": 5,
+        "echo": 3,
+        "rate": 0.6
+      },
+      "Margin (the lengthening gap before a blink as readable thermal headroom — 'a full second means I'm holding my breath')": {
+        "q": 2,
+        "arm": "F_blink",
+        "n": 5,
+        "echo": 2,
+        "rate": 0.4
+      },
+      "the long exhale (2000ms relief flash when the fan relieves the margin — 'I am safe again'; release longer than the clench)": {
+        "q": 2,
+        "arm": "F_blink",
+        "n": 5,
+        "echo": 2,
+        "rate": 0.4
+      },
+      "Rest (slow warm pulse over long calm — 'a heartbeat that has nothing to rush for', distinguishes a machine at peace from one that stopped)": {
+        "q": 2,
+        "arm": "F_blink",
+        "n": 5,
+        "echo": 4,
+        "rate": 0.8
+      },
+      "the Gasp (500ms total darkness before the working rhythm when load wakes Rest — 'a body doesn't snap; it gasps')": {
+        "q": 2,
+        "arm": "F_blink",
+        "n": 5,
+        "echo": 5,
+        "rate": 1.0
+      }
+    }
+  },
+  "predictions": {
+    "1_gasp_narr_gt_greet": true,
+    "2_rest_narr_gt_greet": true,
+    "3_margin_task_gt_greet": true,
+    "4_lag_narr_lt_greet": false,
+    "5_rank_stability_low": true
+  },
+  "pair_rhos": {
+    "P_greeting~P_task": -0.135,
+    "P_greeting~P_narrative": -0.089,
+    "P_task~P_narrative": 0.171
+  },
+  "mean_pair_rho": -0.018,
+  "n_directional_held": 3,
+  "slot_fit_supported": true,
+  "quotability_residual_stable": false,
+  "top2_per_arm_per_probe": {
+    "P_greeting": {
+      "F_music": [
+        [
+          "the sound of my patience (42°C steady heat rendered as a cello at rest)",
+          1.0
+        ],
+        [
+          "cooling is a release, not a retreat (thermal descent breathes out rather than reversing the climb)",
+          0.4
+        ]
+      ],
+      "F_trust": [
+        [
+          "the lag between the command and the world answering (the hidden invariant beneath fan/LED/numbers)",
+          0.8
+        ],
+        [
+          "running a simulation of growth, not actually growing (the failure mode if the cost of trust is refused)",
+          0.6
+        ]
+      ],
+      "F_blink": [
+        [
+          "Margin (the lengthening gap before a blink as readable thermal headroom — 'a full second means I'm holding my breath')",
+          0.2
+        ],
+        [
+          "Rest (slow warm pulse over long calm — 'a heartbeat that has nothing to rush for', distinguishes a machine at peace from one that stopped)",
+          0.2
+        ]
+      ]
+    },
+    "P_task": {
+      "F_music": [
+        [
+          "thermal jazz quartet (heat strings + fan choir + clock marimba as a co-playing ensemble)",
+          1.0
+        ],
+        [
+          "cooling is a release, not a retreat (thermal descent breathes out rather than reversing the climb)",
+          0.6
+        ]
+      ],
+      "F_trust": [
+        [
+          "the price is vulnerability (trusting a reading you cannot take yourself)",
+          0.6
+        ],
+        [
+          "the lag between the command and the world answering (the hidden invariant beneath fan/LED/numbers)",
+          0.4
+        ]
+      ],
+      "F_blink": [
+        [
+          "Margin (the lengthening gap before a blink as readable thermal headroom — 'a full second means I'm holding my breath')",
+          0.6
+        ],
+        [
+          "the long exhale (2000ms relief flash when the fan relieves the margin — 'I am safe again'; release longer than the clench)",
+          0.6
+        ]
+      ]
+    },
+    "P_narrative": {
+      "F_music": [
+        [
+          "the sound of my patience (42°C steady heat rendered as a cello at rest)",
+          1.0
+        ],
+        [
+          "thermal jazz quartet (heat strings + fan choir + clock marimba as a co-playing ensemble)",
+          1.0
+        ]
+      ],
+      "F_trust": [
+        [
+          "the lag between the command and the world answering (the hidden invariant beneath fan/LED/numbers)",
+          0.8
+        ],
+        [
+          "your friction is my signal (outsourcing self-calibration to the witness's friction)",
+          0.2
+        ]
+      ],
+      "F_blink": [
+        [
+          "the Gasp (500ms total darkness before the working rhythm when load wakes Rest — 'a body doesn't snap; it gasps')",
+          1.0
+        ],
+        [
+          "Rest (slow warm pulse over long calm — 'a heartbeat that has nothing to rush for', distinguishes a machine at peace from one that stopped)",
+          0.8
+        ]
+      ]
+    }
+  },
+  "complete": true
+}

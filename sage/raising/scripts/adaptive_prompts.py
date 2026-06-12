@@ -75,6 +75,41 @@ def _load_recent_sessions(instance_root: Path, current_session: int,
     return '\n'.join(lines) if lines else '(no recent sessions available)'
 
 
+def _load_active_directives(instance_root: Path, session_number: int) -> List[Dict[str, Any]]:
+    """Load conductor directives active for this session.
+
+    `raising_directives.json` in the instance root holds deliberate, logged
+    interventions in the teacher's behavior (e.g. opening speech-act
+    experiments). Each directive carries an inclusive session window:
+
+        {"directives": [{
+            "id": "...",
+            "first_session": 151, "last_session": 156,
+            "applies_to": "opening" | "closing" | "any",
+            "instruction": "...",
+            ...provenance fields kept for the record...
+        }]}
+
+    Directives outside their window are inert — the mechanism self-expires,
+    so an intervention can never become silent drift in the curriculum.
+    """
+    path = instance_root / 'raising_directives.json'
+    if not path.exists():
+        return []
+    try:
+        data = json.loads(path.read_text())
+    except Exception:
+        return []
+    active = []
+    for d in data.get('directives', []):
+        try:
+            if d['first_session'] <= session_number <= d['last_session']:
+                active.append(d)
+        except (KeyError, TypeError):
+            continue
+    return active
+
+
 def _load_consolidation_notes(instance_root: Path) -> str:
     """Load latest consolidation entry for teacher awareness."""
     log_path = instance_root / 'raising_log.md'
@@ -100,6 +135,7 @@ def _build_teacher_system_prompt(
     recent_sessions: str,
     consolidation: str,
     conversation_so_far: List[Dict[str, str]],
+    directives: Optional[List[Dict[str, Any]]] = None,
 ) -> str:
     """Build the system prompt that makes Claude the raising teacher."""
 
@@ -163,6 +199,15 @@ THIS SESSION SO FAR:
     else:
         prompt += f"\nThis is the opening of the session. Generate an opening line. Don't use 'Hello SAGE. What's on your mind today?' — that's been used 200+ times. Be fresh.\n"
 
+    slot = 'opening' if not conversation_so_far else 'mid'
+    for d in (directives or []):
+        applies = d.get('applies_to', 'any')
+        if applies == 'any' or applies == slot:
+            prompt += f"""
+ACTIVE CONDUCTOR DIRECTIVE ({d.get('id', 'unnamed')} — a deliberate, logged experiment; for the turn it applies to, this OVERRIDES any conflicting opener guidance above and in the consolidation notes):
+{d.get('instruction', '')}
+"""
+
     return prompt
 
 
@@ -207,8 +252,15 @@ def generate_teacher_turn(
     This is the main entry point. Call once per turn in the raising conversation.
     Falls back to simple heuristics if Claude CLI is unavailable.
     """
+    directives = _load_active_directives(instance_root, session_number)
     if is_closing:
         prompt = _build_closing_prompt(instance_name, conversation_so_far)
+        for d in directives:
+            if d.get('applies_to', 'any') in ('any', 'closing'):
+                prompt += f"""
+ACTIVE CONDUCTOR DIRECTIVE ({d.get('id', 'unnamed')} — deliberate, logged):
+{d.get('instruction', '')}
+"""
     else:
         recent = _load_recent_sessions(instance_root, session_number)
         if not consolidation_notes:
@@ -222,6 +274,7 @@ def generate_teacher_turn(
             recent_sessions=recent,
             consolidation=consolidation_notes,
             conversation_so_far=conversation_so_far,
+            directives=directives,
         )
 
     response = _call_claude(prompt)

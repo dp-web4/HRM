@@ -89,6 +89,12 @@ Phase: $PHASE
 AI-Instance: OllamaIRP (automated)
 Human-Supervised: no"
 
-# Push
-git push origin main
+# Push — retry once after rebase. Concurrent fleet pushes race this slot:
+# the 2026-06-11 12:00 run failed here on a non-fast-forward rejection,
+# which (with set -e) marked the service failed and preceded a 24h outage.
+git push origin main || {
+    echo "[Thor-Raising] Push rejected, rebasing and retrying..."
+    git pull --rebase origin main
+    git push origin main
+}
 echo "[Thor-Raising] Session $SESSION_NUM committed and pushed."

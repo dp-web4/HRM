@@ -61,7 +61,11 @@ def build_dream_prompt(session_path: Path, identity_path: Path,
     convo_text = ''
     for turn in conversation:
         speaker = turn.get('speaker', '?')
-        text = turn.get('text', '')[:500]
+        # 2000-char clip: the old 500-char clip cut real 27B turns (typ.
+        # 350-520 chars) mid-word, and the reviewer reported its own clipped
+        # view as a model "truncation" defect for six sessions (S145-S150).
+        # The reviewer must see the full turn it is auditing.
+        text = turn.get('text', '')[:2000]
         convo_text += f'{speaker}: {text}\n\n'
 
     # Load identity state

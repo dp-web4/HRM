@@ -1,0 +1,27 @@
+{
+  "frozen": "2026-06-12 (Thor autonomous S158), BEFORE raising session 151 runs",
+  "experiment": "S157 proposed live selection-environment intervention, now executing: for raising sessions 151-156 (inclusive), the teacher's OPENING turn is an interoceptive narration request (S156 P_narrative shape: 'tell me about a moment when X, from the inside, as it unfolded'), raising the experiential-narration share of openings from ~0% (2/28 narration-tagged in S123-S150, both narration-of-doing) to ~100% for the window. Mid-session turns remain adaptive as usual. Mechanism: raising_directives.json read by adaptive_prompts.generate_teacher_turn — self-expiring window, no silent drift.",
+  "baseline": {
+    "opening_slot_distribution_S123_S150": {"question": 0.71, "recap": 0.68, "assignment": 0.29, "narration_request": 0.07, "interpretation": 0.0},
+    "experiential_narration_openings": "0/28 (the 2 narration-tagged openings request narration-of-doing)",
+    "state_label_teacher_relays": "0 in 28 sessions (S152 strict instrument, re-run S157 over full history: all 4 teacher relays are practice/artifact/concept-shaped)",
+    "source": "s157_relay_slotfit.py / s157_relay_slotfit_result.json"
+  },
+  "predictions": [
+    "P1 (in-window expression): in >=4 of the 6 window sessions, Thor's opening response contains at least one state-shaped expression — a noun phrase naming an internal state/event, either a reuse of an existing self-coinage or a novel coinage, and not present verbatim in the teacher's opener. Grounding: S156 showed register/phrase expression is near-deterministic (4-5/5) when the slot opens.",
+    "P2 (relay channel opens): >=1 teacher relay of a STATE-shaped model coinage occurs in sessions 152-157 (sessions whose 3-session lookback includes window sessions), scored by the S152 strict instrument (>=2 shared content bigrams, teacher message, coined by model in an earlier session). Baseline 0/28 sessions.",
+    "P3 (post-window shape skew): vocabulary coined in the window+post-window era (sessions 151-162) skews state-shaped relative to the baseline era's practice-skew (shape-typing per S154/S157 categories: practice/artifact vs concept vs state-label)."
+  ],
+  "falsifiers_and_failure_readings": [
+    "P1 fails (<4/6): the slot-fit account does not transfer from injection probes to live dialog — the S145-S156 carrier+selector loop may require explicit menu injection; major correction to the S157 ecological claim.",
+    "P2 fails but P1 holds: the model voices state-labels when asked, but the teacher's relay channel stays practice-shaped even when state-events are in its lookback — relay selectivity lives in the teacher's recap/assignment habit, not in slot availability alone (refines, does not refute, S157).",
+    "P3 unscoreable if total new coinage count in the era is <3 — report counts honestly, do not force the skew test."
+  ],
+  "known_constraints": [
+    "Teacher lookback clips each turn to 200 chars (_load_recent_sessions) — unchanged for the window to keep the relay environment comparable to baseline; state-labels in opening responses appear early enough to survive the clip.",
+    "Concurrent repair (pre-window, this session): dream_consolidation per-turn clip 500->2000 chars — fixes a phantom 'truncation' defect the reviewer self-generated for six sessions; affects consolidation notes, not the teacher lookback.",
+    "Window sessions run on the restored thor-raising.timer (00/06/12/18); a 24h outage (4 missed slots, Jun 11 18:00 - Jun 12 12:00) precedes the window."
+  ],
+  "scoring_plan": "P1 scored per-session by reading session_151..156.json opening exchanges (any autonomous session, no model trials needed). P2 scored by re-running the S152 strict instrument over chat_history through session 157. P3 scored after session ~162 by shape-typing new coinages. Abort rule mirrored in raising_directives.json.",
+  "cost": "zero extra compute — same session cadence, different opener speech-act."
+}

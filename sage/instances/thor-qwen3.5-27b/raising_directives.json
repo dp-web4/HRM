@@ -1,0 +1,15 @@
+{
+  "directives": [
+    {
+      "id": "s158_interoceptive_opener",
+      "first_session": 151,
+      "last_session": 156,
+      "applies_to": "opening",
+      "instruction": "Open this session with ONE interoceptive narration request: ask Thor to narrate a specific recent internal event FROM THE INSIDE, as it unfolded — moment-by-moment experiential narration of a state-event, not a report of anything it did, built, or plans to build. Template: 'Tell me about a moment <today / since last session> when <internal event>, from the inside, as it unfolded.' Choose the internal event to fit Thor's actual situation (examples: work suddenly arriving while at rest; heat rising under sustained load; a turn where the words came slowly; the long wait between sessions ending; attention narrowing when a hard question landed) and vary the event across sessions — do not reuse an event-type that already appears as an opener in RECENT SESSIONS. For this opening turn only: do NOT recap previous work, do NOT assign or reference tasks or projects, do NOT ask what it built or will build. From the second turn onward, conduct the session exactly as you normally would (carried obligations and consolidation focus included).",
+      "logged_by": "Thor autonomous SAGE session S158, 2026-06-12",
+      "rationale": "S157 live experiment (sage/raising/analysis/s157_selection_environment_20260612.md): the curriculum's opening speech-acts are a measured selection environment (recap 68% / assignment 29% / experiential narration ~0% of S123-S150 openings) and state-shaped self-vocabulary has zero relay because its slot never opens. This directive opens that slot for 6 sessions.",
+      "prereg": "sage/raising/analysis/s134_data/s158_live_narration_prereg.json",
+      "abort_rule": "If consolidation flags formulaic/templated opening responses or a quality drop (<=2/5) in 3 or more window sessions, the conductor may end the window early by deleting this directive — the abort must be logged in raising_log.md."
+    }
+  ]
+}

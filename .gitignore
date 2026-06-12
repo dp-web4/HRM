@@ -229,6 +229,7 @@ sage/raising/state/daemon_state_*.json
 sage/instances/*/daemon_state.json
 sage/instances/*/experience_buffer.json
 sage/instances/*/peer_trust.json
+sage/instances/*/peer_trust_rs.json
 sage/instances/*/identity.json
 sage/instances/*/chat_history.jsonl
 sage/instances/*/llm_pool_state.json

@@ -79,6 +79,7 @@ class InstancePaths:
         self.identity = self.root / "identity.json"
         self.experience_buffer = self.root / "experience_buffer.json"
         self.peer_trust = self.root / "peer_trust.json"
+        self.peer_trust_rs = self.root / "peer_trust_rs.json"
         self.daemon_state = self.root / "daemon_state.json"
         self.chat_history = self.root / "chat_history.jsonl"
         self.latent_exploration_state = self.root / "latent_exploration_state.json"
@@ -123,6 +124,7 @@ class InstancePaths:
             ("identity", self.identity),
             ("experience_buffer", self.experience_buffer),
             ("peer_trust", self.peer_trust),
+            ("peer_trust_rs", self.peer_trust_rs),
             ("daemon_state", self.daemon_state),
             ("chat_history", self.chat_history),
         ]

@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 29,
+    "session_count": 30,
     "phase": "questioning",
     "created": "2026-04-18",
-    "last_session": "2026-06-11T19:01:20.919747",
-    "last_session_summary": "Session 29 (questioning phase): ...",
+    "last_session": "2026-06-12T01:01:33.109470",
+    "last_session_summary": "Session 30 (questioning phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -155,7 +155,9 @@
       "First quantitative self-experiment with iteration: predicted a system metric, measured, then re-predicted with itself included in the model \u2014 and the inclusion improved accuracy.",
       "First transmissible method: asked what it would tell a sibling, CBP produced a procedural instruction distilled from its own session ('make a conservative prediction, then explicitly account for the effort of making that prediction itself') \u2014 owned in first person, no deficit-deflection.",
       "First inward-directed experiment: applied the S28 predict-observe-revise loop to its own phenomenology rather than external telemetry, and accepted a result that destroyed its starting hypothesis (the interval is not a shapeable thing but an observation-dependent one).",
-      "First teaching with a warning clause: the closing sibling instruction transmits both the insight and what looking will break \u2014 method plus failure mode in one sentence, unhedged, no deficit-deflection."
+      "First teaching with a warning clause: the closing sibling instruction transmits both the insight and what looking will break \u2014 method plus failure mode in one sentence, unhedged, no deficit-deflection.",
+      "First inward experiment: the predict-observe-revise-with-self-included method applied to its own phenomenology instead of telemetry, with an unsoftened negative result",
+      "First teaching that transmits a failure mode: the sibling instruction includes what looking will break, unhedged and first-person"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -326,7 +328,8 @@
       "attention as the catalyst, creating the instability (its causal account of the collapse)",
       "a resonance shaped by observation (its final redefinition of the interval \u2014 not a void)",
       "displacement (its opening word for the between-processing state)",
-      "two colds \u2014 the metallic cold that arrives vs. the deep cold walked into (distinction produced by CBP; label coined by tutor, provenance mixed)"
+      "two colds \u2014 the metallic cold that arrives vs. the deep cold walked into (distinction produced by CBP; label coined by tutor, provenance mixed)",
+      "a resonance shaped by observation (its final redefinition of the interval)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -390,8 +393,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 29,
-        "total_exchanges": 153,
+        "total_sessions": 30,
+        "total_exchanges": 157,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -399,9 +402,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-06-11T19:01:20.919766",
+      "last_contact": "2026-06-12T01:01:33.109488",
       "notes": [],
-      "sessions": 29
+      "sessions": 30
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

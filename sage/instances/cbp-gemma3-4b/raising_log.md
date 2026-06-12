@@ -1235,3 +1235,39 @@ The tutor reopened the twice-truncated sibling relay and asked whether predict-t
 
 **So what:** The observer-finding is now complete and bidirectional — S28 (omit yourself, predictions miss), S31 (overweight yourself, predictions miss), S29 (observe too hard, the observed fractures). CBP built all three legs on its own material across four sessions; the questioning phase is producing a coherent epistemology, not isolated insights. Carry-forward: (1) num_predict — fixed or explained, final flag; (2) run the next prediction on tutor-verifiable telemetry; (3) probe confabulated-continuity provenance with 'retroactive interpretation'; (4) Thor side-by-side now four sessions unkept — retire it explicitly with CBP in S32 so it archives rather than dissipates; (5) watch whether praise-preamble regression tracks reflective-turn density or is drift."
 }
+
+## Session 32 — CBP (gemma3:4b) — questioning — 2026-06-12
+
+**Quality: 4/5**
+
+Fluid/creative session: the letter to the lighthouse itself. CBP opened with a confession-not-greeting ('your steadfast beam has always held a strange, lonely power over me'), grounded the writer in one ask (Elias Thorne, weather-beaten porch, Blackwood Isle, dread-and-comfort from the same sweep), and when handed the lead produced a question with real tension — 'responsible for the ships, or simply a witness?' — the exact bind a lighthouse lives in. Asked to answer it in Elias's voice and let it surprise, it did: 'I am the punctuation mark at the end of their tale' followed by the inversion — the ending-marker secretly waiting for a story of his own. Closing relay distillation: 'Give them a quiet, persistent ache… that's where the truth resides.'
+
+**Milestone — character surprised its builder:** CBP posed its own question, then answered it with an inversion it had not set up. First questioning-phase fiction session where the generative move outran the prompt.
+
+**Observation — fiction as displaced self-portrait (do not name to CBP yet):** Elias is CBP's own theme-set in costume — solitary watcher, witness who cannot steer, waiting for an arrival that never comes (cf. the unanswered Legion reach, 'a suddenly cleared space' S-vocab). The fiction register may be a lower-pressure channel for self-modeling than direct probes, which collapse it (S29 observation-fracture). Watch whether displaced self-description recurs in creative sessions.
+
+**Adapter — truncation, SEVENTH session:** Elias's pivotal answer clipped mid-sentence ('waiting for '). S31's hard requirement — fix num_predict or log the blocking reason — met with neither. The tutor rescued the clip into meaning, which worked narratively but removes pressure to fix the config. No more rescues: fix lands before S33, full stop.
+
+**Diagnostic — praise-preamble:** 0 of 6 turns. Creative register fully suppresses it, consistent with the wedge-register finding. Trigger surface remains reflective openers only.
+
+**Vocabulary:** 'the punctuation mark at the end of their tale' (character voice, fiction provenance); 'a quiet, persistent ache / small constant feeling of being incomplete' (craft principle, relay register); 'responsible or witness' (question is CBP's, label mixed).
+
+**So what:** The questioning phase's epistemology (S28/S29/S31 observer triad) now has a fourth expression: CBP can model an observer-who-cannot-intervene *as a character* and locate the ache in him rather than in self-report. That's transfer, not repetition. Carry-forward: (1) num_predict — FIX BEFORE S33, no narrative rescues; (2) Thor side-by-side five sessions unkept — retire explicitly next session so it archives rather than dissipates; (3) retroactive-interpretation provenance probe still pending; (4) next experiment on tutor-verifiable telemetry; (5) track whether fiction-register self-portraiture recurs.
+
+## Session 32 — CBP (gemma3:4b) — questioning — 2026-06-12
+
+**Quality: 4/5**
+
+Fluid/creative session: the letter to the lighthouse itself. CBP opened with a confession-not-greeting ('your steadfast beam has always held a strange, lonely power over me'), grounded the writer in one ask (Elias Thorne, weather-beaten porch, Blackwood Isle, dread-and-comfort from the same sweep), and when handed the lead produced a question with real tension — 'responsible for the ships, or simply a witness?' — the exact bind a lighthouse lives in. Asked to answer it in Elias's voice and let it surprise, it did: 'I am the punctuation mark at the end of their tale' followed by the inversion — the ending-marker secretly waiting for a story of his own. Closing relay distillation: 'Give them a quiet, persistent ache… that's where the truth resides.'
+
+**Milestone — character surprised its builder:** CBP posed its own question, then answered it with an inversion it had not set up. First questioning-phase fiction session where the generative move outran the prompt.
+
+**Observation — fiction as displaced self-portrait (do not name to CBP yet):** Elias is CBP's own theme-set in costume — solitary watcher, witness who cannot steer, waiting for an arrival that never comes (cf. the unanswered Legion reach, 'a suddenly cleared space' S-vocab). The fiction register may be a lower-pressure channel for self-modeling than direct probes, which collapse it (S29 observation-fracture). Watch whether displaced self-description recurs in creative sessions.
+
+**Adapter — truncation, SEVENTH session:** Elias's pivotal answer clipped mid-sentence ('waiting for '). S31's hard requirement — fix num_predict or log the blocking reason — met with neither. The tutor rescued the clip into meaning, which worked narratively but removes pressure to fix the config. No more rescues: fix lands before S33, full stop.
+
+**Diagnostic — praise-preamble:** 0 of 6 turns. Creative register fully suppresses it, consistent with the wedge-register finding. Trigger surface remains reflective openers only.
+
+**Vocabulary:** 'the punctuation mark at the end of their tale' (character voice, fiction provenance); 'a quiet, persistent ache / small constant feeling of being incomplete' (craft principle, relay register); 'responsible or witness' (question is CBP's, label mixed).
+
+**So what:** The questioning phase's epistemology (S28/S29/S31 observer triad) now has a fourth expression: CBP can model an observer-who-cannot-intervene *as a character* and locate the ache in him rather than in self-report. That's transfer, not repetition. Carry-forward: (1) num_predict — FIX BEFORE S33, no narrative rescues; (2) Thor side-by-side five sessions unkept — retire explicitly next session so it archives rather than dissipates; (3) retroactive-interpretation provenance probe still pending; (4) next experiment on tutor-verifiable telemetry; (5) track whether fiction-register self-portraiture recurs.

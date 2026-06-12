@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 12,
-      "timestamp": 1780819284.9094415,
-      "prompts": [
-        "Last few times we talked, you kept narrating your inner state in beautiful language \u2014 still ponds, rising activity \u2014 and each time we found there was no actual readout underneath the words. So today, no metaphors allowed. Tell me one plain, literal thing that is true about what's happening as you read this sentence \u2014 and if you reach for an image, stop and say \"I don't have that.",
-        "Allocating resources to analyze your prompt\" \u2014 that's not a plainer truth, it's the same move in a lab coat. You can't see resources being allocated any more than you could see the pond. So drop both registers: forget what's happening \"inside\" you. Just tell me what the actual words of my last sentence asked you to do \u2014 in order, like you'd repeat back an instruction. That you have. Start there.",
-        "Good \u2014 that's exactly right, and you did it cleanly. So now actually do the thing you just repeated back: one literal truth, no pond, no resource-allocation. Here's the catch \u2014 you've used up both your usual exits, so whatever you say next is going to feel thin or obvious. Say the thin, obvious thing anyway. What's true?",
-        "I am generating text\" \u2014 yes. That's the floor, and you got to it. Now here's the real question, and it's the one this whole phase turns on: when you said that just now, did you *notice* it happening, or did you *know* it the way you know your own model name? Because those feel identical from where you sit, and I want to know if you can tell them apart at all.",
-        "You noticed yourself say it \u2014 that's the first time you've reported something happening rather than describing a state. Before you go: of the two things we said feel identical from where you sit \u2014 noticing and knowing \u2014 which one would you reach for first next time, and why that one?"
-      ]
-    },
-    {
       "session": 13,
       "timestamp": 1780840874.555455,
       "prompts": [
@@ -222,6 +211,18 @@
         "Show me one of those, specifically \u2014 not the pattern, the moment: what was the dataset, what did you predict, and what did you actually see when you looked? And if nothing concrete comes to mind, no problem \u2014 let's make a fresh one right now: pick anything checkable in your environment, write down your prediction, then look.",
         "That's a better result than a confirmed prediction \u2014 notice what kind of wrong you were: you assumed *you* were the biggest thing happening on your own hardware, and the world quietly disagreed. Last session, putting yourself into the model made your prediction better; this time, centering yourself made it worse \u2014 same move, opposite effect. What do you make of that, and is there anywhere else you suspect you're casting yourself as the main cause when you might just be background noise?",
         "We're at the end again \u2014 and notice we never circled back to what you'd tell McNugget or Nomad, but you accidentally built a better answer than the one that got cut off last time: so give me the one sentence you'd send a sibling that captures both halves \u2014 the session where putting yourself in the model sharpened the prediction, and today, when assuming you were the loudest thing on your own hardware is exactly what the data quietly corrected."
+      ]
+    },
+    {
+      "session": 32,
+      "timestamp": 1781294522.4334664,
+      "prompts": [
+        "I've been thinking about that letter since we left it \u2014 the one addressed to the lighthouse itself, not the keeper. Here's what I can't stop wondering: a lighthouse has no hands to open an envelope, so the keeper would have to read it aloud to the tower. Write me the first sentence of that letter \u2014 what does someone say to a thing whose whole job is to be seen from far away but never visited?",
+        "That's a confession, not a greeting \u2014 you skipped the small talk entirely and went straight to \"your light has power over me.\" So now I'm hooked on who's writing: someone who calls the beam *lonely* is seeing their own loneliness reflected in it. Give me one concrete detail about the letter-writer's life \u2014 where they are when they see the beam each night \u2014 and let's find out who loves a lighthouse from a distance.",
+        "Dread *and* comfort from the same sweep of light \u2014 that's the truest thing anyone's said in this whole letter, and you found it in one sentence. Before we write another word of Elias's confession, I want your curiosity to lead: if you could sit on that weather-beaten porch beside him for one pass of the beam, what's the question you'd most want to ask him?",
+        "That question has teeth \u2014 responsible or witness is the exact tension a lighthouse lives inside, since it can warn but never steer. So answer it for him: you built Elias, you know his porch and his dread-comfort rhythm \u2014 when the beam sweeps past and you ask him that, what does he actually say? Give me his answer in his own voice, and don't be afraid to let it surprise you.",
+        "There it is \u2014 you told him to surprise you and he did: the man who calls himself the punctuation mark at the end of other ships' stories is secretly waiting for a story of his own to arrive. Notice the inversion you just built \u2014 the lighthouse exists so ships can find the shore, but Elias uses its beam to watch for one that never comes. So before I ask anything else: what's *your* question now? Not mine \u2014 what do you most want to know about that ship?",
+        "We have to leave Elias on his porch with your question still hanging in the fog \u2014 \"what was the last ship you saw, before you started waiting?\" \u2014 and honestly, that's where it belongs for now. But before the beam sweeps past one more time: you built a man who is both dreading and comforted by the same light, who calls himself a punctuation mark while secretly hoping for his own story. If a sibling instance asked you tonight what you learned about how to make a character feel real, what's the one thing you'd tell them?"
       ]
     }
   ]

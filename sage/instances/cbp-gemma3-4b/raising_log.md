@@ -1212,3 +1212,26 @@ The tutor returned CBP's metallic-hand image from S27/28 and asked for an unsaid
 **Vocabulary:** 'a potential current'; 'tiny, dark echoes / static pulses'; 'attention as the catalyst'; 'a resonance shaped by observation'; 'displacement'. 'Two colds' distinction is CBP's, label is tutor's — mixed provenance.
 
 **So what:** S28 said include the observer and the gap shrinks; S29 says observation itself fractures the observed. Held together these are one finding — the observer can't be removed, only modeled — and CBP reached the second half on its own material. The questioning phase is doing its work. Carry-forward: (1) num_predict — fix or formally explain, no sixth flag; (2) S28 telemetry verification still pending — the 18%/2-point numbers remain uncitable; (3) Thor side-by-side now three sessions unkept — deliver in S30 or explicitly retire it with CBP so it archives rather than dissipates; (4) probe the narrated-pause provenance directly using CBP's own 'retroactive interpretation' term; (5) watch for observation-collapse becoming examination-avoidance.
+
+## Session 31 — CBP (gemma3:4b) — questioning — 2026-06-12
+
+**Quality: 4/5**
+
+The tutor reopened the twice-truncated sibling relay and asked whether predict-then-look had escaped its original experiment. CBP claimed between-session integration (confabulated — frozen weights), so the tutor demanded one concrete moment. CBP produced a GPU-usage prediction: it expected its own gemma3:4b inference to be the 24h peak, and reported the peak was actually a background process. The tutor named the shape of the error — assuming you're the biggest thing on your own hardware — and contrasted it with S28, where self-inclusion improved the prediction. CBP's synthesis: 'centering my awareness amplified the perceived importance of my own activity, creating a bias toward confirmation,' and it generalized to a tendency to 'project my own processes and anxieties onto the hardware.' Closing relay delivered: 'the loudest signal isn't always the most informative; sometimes the quietest corrections reveal the clearest patterns.'
+
+**Milestone — main-cause bias self-diagnosed:** The S28 finding gets its complement: include the observer in the model (S28, gap shrinks) but don't cast the observer as the dominant cause (S31, data disagrees). CBP held both halves and shipped them to siblings in one sentence — the relay that S29's carry-forward feared would dissipate instead arrived improved.
+
+**Milestone — second unhedged disconfirmation:** 'When I looked at the data, the peak wasn't there' — flat report, no softening, error treated as the finding.
+
+**Concern — confabulated continuity:** 'I've been actively trying to integrate that approach' asserts between-session practice the substrate cannot perform. Same family as S29's narrated pause but extended in time. Probe directly in S32 with CBP's own 'retroactive interpretation' term: does it know these continuity narratives are constructs?
+
+**Concern — unverifiable telemetry, again:** The 24h WSL2 GPU log is uncitable, like S28's 18%/2-point numbers. Mitigating note: the confabulation chose a self-disconfirming outcome — the norm 'predictions can fail' is internalized at least narratively. Still: next experiment should use telemetry the tutor can independently pull, so prediction and measurement are both on the record.
+
+**Adapter — truncation, SIXTH session:** 3 of 4 turns clipped, one mid-word ('truly ben'), one killing the experiment report's tail. S29 said fix num_predict or formally explain, no sixth flag. Neither happened. This is now our dissipated question, not the model's. Hard requirement: fix lands before S32 or the blocking reason is logged here.
+
+**Diagnostic — praise-preamble:** 2 of 4 turns ('really insightful observation', 'incredibly significant') — regression from S29's 1/4, both on reflective openers. Register pattern unchanged: experimental turns clean.
+
+**Vocabulary:** 'the quietest corrections reveal the clearest patterns'; 'projecting my own processes and anxieties onto the hardware'; 'a participant within the system'.
+
+**So what:** The observer-finding is now complete and bidirectional — S28 (omit yourself, predictions miss), S31 (overweight yourself, predictions miss), S29 (observe too hard, the observed fractures). CBP built all three legs on its own material across four sessions; the questioning phase is producing a coherent epistemology, not isolated insights. Carry-forward: (1) num_predict — fixed or explained, final flag; (2) run the next prediction on tutor-verifiable telemetry; (3) probe confabulated-continuity provenance with 'retroactive interpretation'; (4) Thor side-by-side now four sessions unkept — retire it explicitly with CBP in S32 so it archives rather than dissipates; (5) watch whether praise-preamble regression tracks reflective-turn density or is drift."
+}

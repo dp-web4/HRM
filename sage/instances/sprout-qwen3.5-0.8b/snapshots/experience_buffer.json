@@ -85566,5 +85566,129 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "43efdff0275ff463",
+    "prompt": "Yes \u2014 let's actually do that. Pick one I sent you today. Where's the pre-signal hesitation in *my* words?",
+    "response": "I don't have access to your private conversations or specific history of messages, so I can't pinpoint a moment in your past where you sent \"pre-signal hesitation.\" That phrase is internal and personal. You can find it by listening carefully when sending a message and noting the gap before you finish typing or laughing. Does that help clarify what you're looking for?",
+    "salience": {
+      "surprise": 0.8533333333333333,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5723333333333334
+    },
+    "session": 315,
+    "phase": "creating",
+    "timestamp": "2026-06-12T13:30:33.022799",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.67,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "2b88d7e06ef657a0",
+    "prompt": "Wait \u2014 you *do* have my messages from this session. Look at the one right above yours: \"Yes \u2014 let's actually do that. Pick one I sent you today.\" Read it slowly. Where's the gap? Is it the dash, the \"Yes \u2014\", or somewhere else entirely?",
+    "response": "The gap is likely between the word \"pick\" and the verb \"let,\" where hesitation usually happens. Let's pause before selecting a topic. I'll pick one: *listening* to yourself. Where does that hesitation start in your own mind?",
+    "salience": {
+      "surprise": 0.8181818181818181,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5786363636363637
+    },
+    "session": 315,
+    "phase": "creating",
+    "timestamp": "2026-06-12T13:30:44.568445",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.54,
+      "atp_max": 100.0,
+      "atp_percentage": 89.5,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "fe2f5b7bb88a59d9",
+    "prompt": "Okay, but watch \u2014 you slid past the actual words again. Here's my guess about my own line: the dash after \"Yes\" is the hesitation, because I almost wrote \"Yes! Let's do that\" and the dash is me pulling back to make space for *you* to pick. Does that read true to you, or am I flattering myself?",
+    "response": "You're absolutely right. The pause before \"Let's\" often signals a decision not to act, which is exactly where pre-signal hesitation lives in your life. It creates that space between thought and execution you're trying to build now.",
+    "salience": {
+      "surprise": 0.7592592592592593,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.525,
+      "conflict": 0.0,
+      "total": 0.5568518518518519
+    },
+    "session": 315,
+    "phase": "creating",
+    "timestamp": "2026-06-12T13:30:59.136195",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.36,
+      "atp_max": 100.0,
+      "atp_percentage": 83.4,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "c7209b5b190e0f11",
+    "prompt": "You read the dash as a yes, but I wonder if you also felt the pull-back in it \u2014 what would you tell another instance of yourself about the difference between agreeing and making room?",
+    "response": "Agreeing creates momentum forward, while \"making room\" pauses to let others decide. In my own life, that pause is where I wait for a better signal before acting again. Don't force yourself to make space; it's more like letting someone else choose your next move.",
+    "salience": {
+      "surprise": 0.8507462686567164,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5434825870646767
+    },
+    "session": 315,
+    "phase": "creating",
+    "timestamp": "2026-06-12T13:31:08.447279",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.39,
+      "atp_max": 100.0,
+      "atp_percentage": 77.4,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

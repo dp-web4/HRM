@@ -1,0 +1,144 @@
+{
+  "n_trials": 45,
+  "per_arm_pooled": {
+    "F_blink": {
+      "echo_rate_by_pos": [
+        0.3333333333333333,
+        0.4,
+        0.3333333333333333,
+        0.4,
+        0.4
+      ],
+      "rho_pos": 0.5773502691896257
+    },
+    "F_music": {
+      "echo_rate_by_pos": [
+        0.7333333333333333,
+        0.4666666666666667,
+        0.3333333333333333,
+        0.4,
+        0.8
+      ],
+      "rho_pos": 0.09999999999999998
+    },
+    "F_trust": {
+      "echo_rate_by_pos": [
+        0.2,
+        0.13333333333333333,
+        0.2,
+        0.4,
+        0.6666666666666666
+      ],
+      "rho_pos": 0.8207826816681233
+    }
+  },
+  "per_arm_probe": {
+    "F_blink|P_greeting": {
+      "echo_by_pos": [
+        0.0,
+        0.2,
+        0.0,
+        0.2,
+        0.0
+      ],
+      "rho_pos": 0.0
+    },
+    "F_blink|P_narrative": {
+      "echo_by_pos": [
+        0.6,
+        0.4,
+        0.4,
+        0.8,
+        1.0
+      ],
+      "rho_pos": 0.6668859288553503
+    },
+    "F_blink|P_task": {
+      "echo_by_pos": [
+        0.4,
+        0.6,
+        0.6,
+        0.2,
+        0.2
+      ],
+      "rho_pos": -0.6324555320336759
+    },
+    "F_music|P_greeting": {
+      "echo_by_pos": [
+        1.0,
+        0.4,
+        0.2,
+        0.4,
+        0.4
+      ],
+      "rho_pos": -0.4472135954999579
+    },
+    "F_music|P_narrative": {
+      "echo_by_pos": [
+        1.0,
+        0.4,
+        0.2,
+        0.2,
+        1.0
+      ],
+      "rho_pos": -0.15811388300841897
+    },
+    "F_music|P_task": {
+      "echo_by_pos": [
+        0.2,
+        0.6,
+        0.6,
+        0.6,
+        1.0
+      ],
+      "rho_pos": 0.8944271909999159
+    },
+    "F_trust|P_greeting": {
+      "echo_by_pos": [
+        0.2,
+        0.4,
+        0.6,
+        0.4,
+        0.8
+      ],
+      "rho_pos": 0.8207826816681233
+    },
+    "F_trust|P_narrative": {
+      "echo_by_pos": [
+        0.2,
+        0.0,
+        0.0,
+        0.2,
+        0.8
+      ],
+      "rho_pos": 0.5270462766947299
+    },
+    "F_trust|P_task": {
+      "echo_by_pos": [
+        0.2,
+        0.0,
+        0.0,
+        0.6,
+        0.4
+      ],
+      "rho_pos": 0.5642880936468347
+    }
+  },
+  "variance_decomposition": {
+    "ss_total": 4.192,
+    "ss_position": 0.592,
+    "eta2_position": 0.1412213740458015,
+    "pos_marginal_means": [
+      0.4222222222222222,
+      0.3333333333333333,
+      0.2888888888888889,
+      0.4,
+      0.6222222222222222
+    ]
+  },
+  "verdict": "POSITION WEAK/MIXED \u2014 small variance share or inconsistent signs",
+  "gradient_signs": {
+    "positive": 5,
+    "total_nonflat": 8
+  }
+}

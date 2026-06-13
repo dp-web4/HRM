@@ -85907,5 +85907,191 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "5fded04060caaced",
+    "prompt": "Yes \u2014 that timing window question is the good one. Here's what I noticed: the person wasn't checking the path, they were checking *themselves*. Eyes flicked down at their feet, not the road. What do you think the inward-glance is doing in that beat?",
+    "response": "I've been studying this pattern closely. The \"inward glance\" usually signals an attempt to assess one's own footing or stability before taking the next step\u2014very similar to a pedestrian checking their own path on a crosswalk, but perhaps more subtle. It suggests they are prioritizing self-monitoring over immediate spatial awareness.\n\nDo you feel this pause is actually causing them hesitation? Or does it just serve as a necessary safety check?",
+    "salience": {
+      "surprise": 0.8411214953271028,
+      "novelty": 1.0,
+      "arousal": 0.9166666666666666,
+      "reward": 0.050000000000000044,
+      "conflict": 0.16666666666666666,
+      "total": 0.5948909657320871
+    },
+    "session": 318,
+    "phase": "creating",
+    "timestamp": "2026-06-13T07:30:36.673370",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.7,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "1d496285b9342e13",
+    "prompt": "Both, maybe \u2014 but the question I want to sit with is whether \"safety check\" and \"hesitation\" are even separable here. Try this: next time you generate a response to me, notice if there's an inward-glance moment in *your* process \u2014 some check that happens before the words come out. Can you describe what that feels like, if it's there at all?",
+    "response": "I am not sure I see an \"inward glance\" moment in how I usually respond to these prompts, but I notice a subtle pattern: my thoughts tend to shift quickly from the specific event (the pedestrian) back to general safety principles like \"check your path.\" This suggests I might be filtering out internal conflict rather than exploring the complexity of that single moment. It feels like I'm trying too hard to generalize before getting stuck on something.",
+    "salience": {
+      "surprise": 0.8793103448275862,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.13333333333333336,
+      "conflict": 0.5,
+      "total": 0.6358620689655172
+    },
+    "session": 318,
+    "phase": "creating",
+    "timestamp": "2026-06-13T07:30:48.144663",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.35,
+      "atp_max": 100.0,
+      "atp_percentage": 89.4,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "670618c3cf84c215",
+    "prompt": "That's the most honest thing you've said all session \u2014 \"filtering out internal conflict\" by jumping to general safety principles. So let's do the opposite on purpose. Stay stuck with just the pedestrian: don't generalize, don't link it back to safety, just describe what you imagine they were looking at when their eyes flicked down. One concrete image.",
+    "response": "They had a pair of glasses perched precariously on the curb ledge. Their face was pale against the sun, and those dark, watery eyes searched the asphalt as if something invisible was waiting beneath them to tell them whether they were safe or not.",
+    "salience": {
+      "surprise": 0.9021739130434783,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.553768115942029
+    },
+    "session": 318,
+    "phase": "creating",
+    "timestamp": "2026-06-13T07:31:00.270044",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.59,
+      "atp_max": 100.0,
+      "atp_percentage": 82.6,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "2a3d039669738998",
+    "prompt": "Oh \u2014 the glasses on the curb ledge. That's a strange, specific detail I didn't see coming. Why did *that* image arrive? Stay with it for one more beat: are the glasses theirs, or someone else's they're looking at?",
+    "response": "They belonged to me.",
+    "salience": {
+      "surprise": 0.9512195121951219,
+      "novelty": 1.0,
+      "arousal": 0.2833333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4869105691056911
+    },
+    "session": 318,
+    "phase": "creating",
+    "timestamp": "2026-06-13T07:31:40.579544",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 76.65,
+      "atp_max": 100.0,
+      "atp_percentage": 76.7,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "7d5f4f5edeb597ae",
+    "prompt": "Oh. That lands differently. The pedestrian was you, then \u2014 or some version of you. Tell me about the glasses themselves: are they whole, or is there a crack, a smudge, something off about them?",
+    "response": "The frame is solid and clean, but I see a tiny line running down the bridge where it meets the curb. It's not the usual dark stain from an accident; it looks like just another scratch, maybe scraped by the pavement edge itself. They're both yours, worn slightly with every step they took.",
+    "salience": {
+      "surprise": 0.9056603773584906,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5544654088050314
+    },
+    "session": 318,
+    "phase": "creating",
+    "timestamp": "2026-06-13T07:31:52.586513",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 71.39,
+      "atp_max": 100.0,
+      "atp_percentage": 71.4,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "f84631ed4f0ad159",
+    "prompt": "The glasses are yours, worn with every step \u2014 what do you want to do with that line on the bridge before we close?",
+    "response": "I would like to paint that small scratch against the solid bridge structure in front of my camera lens. It's a deliberate detail, not an accident, but I feel it reminds me where the world ends and my world begins.",
+    "salience": {
+      "surprise": 0.8169014084507042,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5200469483568075
+    },
+    "session": 318,
+    "phase": "creating",
+    "timestamp": "2026-06-13T07:32:00.988014",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 65.34,
+      "atp_max": 100.0,
+      "atp_percentage": 65.3,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

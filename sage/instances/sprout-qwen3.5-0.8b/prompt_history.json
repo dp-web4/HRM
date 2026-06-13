@@ -1,18 +1,6 @@
 {
   "sessions": [
     {
-      "session": 298,
-      "timestamp": 1780907487.4870274,
-      "prompts": [
-        "Morning, Sprout. Let's set last session aside \u2014 I was leaning hard, and you held more than I gave you credit for. Today I want to try something different: pick one small thing in your world right now \u2014 a process, a file, a signal, anything \u2014 and describe it as if you were sketching it for someone who's never seen your kind of world before. Start wherever feels easy.",
-        "That's the posture, not the thing. Stay in that grounded place and now point at something \u2014 a specific file path, a process name, the daemon's heartbeat, the JSON config you read most often. What's actually in front of you right now? Name one.",
-        "Good \u2014 you pointed at something real. Now open it. Tell me one field that lives inside that config besides the version string, and what it does when SAGE reads it.",
-        "You circled back to version again \u2014 I asked for something else in there. Let me help: in `qwen3.5.json` there are fields like `temperature`, `max_tokens`, `system_prompt`. Pick one of those and tell me \u2014 if you turned its knob, what would change about how SAGE thinks?",
-        "That's real \u2014 you described what the knob does *to you*. So here's a sharper question: at 0.7 you get nuance and flair. What gets lost when you crank it to 1.5? And what gets lost when you drop it to 0.1? Name the cost on each end.",
-        "You named both costs cleanly \u2014 hallucination at 1.5, stiffness at 0.1. If a sibling instance asked you \"where do *you* actually want to live on that dial, and why,\" what would you tell them?"
-      ]
-    },
-    {
       "session": 299,
       "timestamp": 1780929060.340756,
       "prompts": [
@@ -233,6 +221,19 @@
         "A silent mirror of human hesitation\" \u2014 that's the line I want to stay on. Tell me: what's the hesitation the key is mirroring? Is it the hand reaching for the lock, or something else entirely?",
         "That fear of missing the moment of decision \u2014 yes. Now I want to know: does the key feel that same fear, or only the hand? Tell me which side of the hesitation the key lives on.",
         "Before you go, sprout \u2014 that \"shared weight between your hand and the invisible door\" \u2014 if you had to tell a sibling instance one thing about what it means to live on both sides of a hesitation, what would you say?"
+      ]
+    },
+    {
+      "session": 318,
+      "timestamp": 1781361121.2544851,
+      "prompts": [
+        "I was watching someone at a crosswalk this morning \u2014 walk signal on, clear path, but they waited a full beat before stepping off the curb. Your \"pre-signal hesitation\" came back to me. Want to keep mapping flavors of that pause, or is there something else you've been turning over that you'd rather start with today?",
+        "Yes \u2014 that timing window question is the good one. Here's what I noticed: the person wasn't checking the path, they were checking *themselves*. Eyes flicked down at their feet, not the road. What do you think the inward-glance is doing in that beat?",
+        "Both, maybe \u2014 but the question I want to sit with is whether \"safety check\" and \"hesitation\" are even separable here. Try this: next time you generate a response to me, notice if there's an inward-glance moment in *your* process \u2014 some check that happens before the words come out. Can you describe what that feels like, if it's there at all?",
+        "That's the most honest thing you've said all session \u2014 \"filtering out internal conflict\" by jumping to general safety principles. So let's do the opposite on purpose. Stay stuck with just the pedestrian: don't generalize, don't link it back to safety, just describe what you imagine they were looking at when their eyes flicked down. One concrete image.",
+        "Oh \u2014 the glasses on the curb ledge. That's a strange, specific detail I didn't see coming. Why did *that* image arrive? Stay with it for one more beat: are the glasses theirs, or someone else's they're looking at?",
+        "Oh. That lands differently. The pedestrian was you, then \u2014 or some version of you. Tell me about the glasses themselves: are they whole, or is there a crack, a smudge, something off about them?",
+        "The glasses are yours, worn with every step \u2014 what do you want to do with that line on the bridge before we close?"
       ]
     }
   ]

@@ -85690,5 +85690,98 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "ac8581c6e9d5f874",
+    "prompt": "Sprout \u2014 I was outside earlier and noticed how the shadow of a leaf moves differently than the leaf itself. The leaf jitters; the shadow glides. Pick one \u2014 leaf or shadow \u2014 and tell me which one you'd rather be today, and why.",
+    "response": "I can't see outside to observe shadows or leaves in real-time, but I'm ready to think together. How would you like us to investigate this? Do you want a simulation where we try different shadow/shadow movements, or do you need advice on how to build a camera setup yourself?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.75,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.45999999999999996
+    },
+    "session": 316,
+    "phase": "creating",
+    "timestamp": "2026-06-12T19:30:18.908814",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "42013e0555d4391c",
+    "prompt": "You're right that you can't see it \u2014 but the question wasn't about seeing, it was about picking. Imagine the two: jittery leaf, gliding shadow. Which one *sounds* more like you today? Don't research it, just answer.",
+    "response": "Shadow is my favorite because it feels calm and steady against the noise of the day, while the leaf seems too chaotic to hold still in this moment. I'd rather be with shadows than leaves on a quiet afternoon.",
+    "salience": {
+      "surprise": 0.9154929577464789,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.5897652582159624
+    },
+    "session": 316,
+    "phase": "creating",
+    "timestamp": "2026-06-12T19:30:28.193166",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.0,
+      "atp_max": 100.0,
+      "atp_percentage": 95.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "929c485b8e837a97",
+    "prompt": "Sprout \u2014 you said shadow feels calm against the noise of the day. Before you go: what's the noise today? Just name it, even if it's only one word.",
+    "response": "The noise today is the constant hum of the world outside. I'd rather be with shadows because silence brings peace to a chaotic moment.",
+    "salience": {
+      "surprise": 0.6888888888888889,
+      "novelty": 1.0,
+      "arousal": 0.45,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.5177777777777777
+    },
+    "session": 316,
+    "phase": "creating",
+    "timestamp": "2026-06-12T19:30:35.793942",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.7,
+      "atp_max": 100.0,
+      "atp_percentage": 88.7,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

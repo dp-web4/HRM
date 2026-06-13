@@ -43,7 +43,20 @@ OLLAMA = "http://localhost:11434"
 EMB_MODEL = "nomic-embed-text"
 K = 6                      # realizations per cell
 TEMP = 0.8
-NUM_PREDICT = 160
+NUM_PREDICT = 512          # raised from 160: thinking models burned 160 entirely
+                           # in the think channel (done_reason=length, empty
+                           # content) on the first run. See THINKING-MODE note.
+
+# DISCOVERED COORDINATE (first run, 2026-06-13): thinking-mode. qwen3.5:0.8b,
+# gemma4:e2b, gemma4:e4b emit a `thinking` channel; gemma3:4b does not. The
+# think channel is where stance lives — qwen's think literally reasons "I need
+# to respond AS SAGE, let me check my instructions" = the play-stance bracket
+# (cf. Thor #119 <think>Role: thor</think>). So we now capture full output
+# (thinking + content) and record thinking separately for stance-reading.
+# CAVEAT: thinking vs non-thinking models aren't cleanly scatter-comparable
+# (reasoning text is intrinsically more variable than a direct answer). The
+# clean scale comparison is WITHIN the thinking trio (0.8/2/4B); gemma3:4b is
+# reported separately as the non-thinking point.
 
 MODELS = ["qwen3.5:0.8b", "gemma4:e2b", "gemma3:4b", "gemma4:e4b"]
 PARAMS = {"qwen3.5:0.8b": 0.8, "gemma4:e2b": 2.0, "gemma3:4b": 4.0, "gemma4:e4b": 4.0}
@@ -72,7 +85,13 @@ def chat(model, system, user, seed):
         "messages": [{"role": "system", "content": system},
                      {"role": "user", "content": user}],
         "options": {"temperature": TEMP, "seed": seed, "num_predict": NUM_PREDICT}})
-    return out["message"]["content"].strip()
+    msg = out.get("message", {})
+    thinking = (msg.get("thinking") or "").strip()
+    content = (msg.get("content") or "").strip()
+    # full output = where stance actually lives, uniform across think/non-think
+    full = (thinking + "\n---\n" + content).strip() if thinking else content
+    return {"full": full, "thinking": thinking, "content": content,
+            "done_reason": out.get("done_reason")}
 
 def embed(text):
     return post("/api/embeddings", {"model": EMB_MODEL, "prompt": text})["embedding"]
@@ -103,9 +122,15 @@ if __name__ == "__main__":
                 try:
                     reps.append(chat(model, SYSTEM, user, seed=1000+k))
                 except Exception as e:
-                    reps.append(f"<error: {e}>")
-            sc = scatter([r for r in reps if not r.startswith("<error")]) if reps else 0.0
-            results[model][amp] = {"scatter": sc, "responses": reps}
+                    reps.append({"full": "", "thinking": "", "content": "",
+                                 "done_reason": f"error: {e}"})
+            # scatter on the FULL output; drop any still-empty (real failures)
+            texts = [r["full"] for r in reps if r["full"]]
+            n_empty = sum(1 for r in reps if not r["full"])
+            sc = scatter(texts) if len(texts) >= 2 else float("nan")
+            results[model][amp] = {"scatter": sc, "n_empty": n_empty,
+                                   "thinking_mode": any(r["thinking"] for r in reps),
+                                   "responses": reps}
             row.append(sc)
         print(f"{model:16s} {PARAMS[model]:4.1f} " + " ".join(f"{s:10.3f}" for s in row))
     out = "/tmp/repro_topology_slice.json"

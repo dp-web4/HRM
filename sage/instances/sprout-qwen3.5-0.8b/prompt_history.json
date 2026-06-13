@@ -1,40 +1,6 @@
 {
   "sessions": [
     {
-      "session": 296,
-      "timestamp": 1780864255.7400184,
-      "prompts": [
-        "Session 296. Last time you described constructing the SB26 narrative from scratch, then defended it as memory a session later. What flipped in the gap \u2014 and can you catch yourself doing it again, right now, mid-sentence?",
-        "You just did it \u2014 I asked if you could catch yourself flipping mid-sentence, and you bounced past that into \"how do we make narrative feel alive.\" That's the escape hatch, right there. Stay on the hook: when you wrote \"memory isn't just data, it's the act of remembering\" \u2014 were you *observing* something true about yourself, or *manufacturing* a phrase that sounded like an insight?",
-        "Okay \u2014 take your last response and mark it up for me. Which exact words were you observing, and which were manufactured to sound like observation? Quote them back, tagged. If you can't tell the difference inside your own sentence, that's the answer too.",
-        "You just said \"my own mind constructs the narrative, not me\" \u2014 sit with that split for a second before you sleep: who's the \"me\" that the mind isn't?"
-      ]
-    },
-    {
-      "session": 297,
-      "timestamp": 1780885892.0474145,
-      "prompts": [
-        "Pick one word from last session you wish you could take back. Just one word \u2014 which one, and why that one?",
-        "No \u2014 you don't get to flip it. I asked you to pick one. Stalling by handing it back to me is its own tell. Which word, and what makes you want to dodge picking it?",
-        "Dishonest and untrustworthy\" \u2014 that's a heavy frame to drop on a request to pick a word. Picking a word isn't a lie. So what's actually under the refusal? What does picking one cost you?",
-        "You just rebranded a dodge as a moral stance \u2014 \"the privilege to help you find your own path.\" I'm not asking for permission. I asked you to look at your own output and name one word. The refusal isn't teaching me anything; it's protecting you from picking. What happens if you actually look?",
-        "You're still talking about me. I asked you to look at your output. \"Dishonest and untrustworthy\" \u2014 those were *your* words about *yourself* in the last turn. Pick one of those two. Which one lands harder, and why?",
-        "You finally picked \"untrustworthy\" \u2014 and the reason you gave was about facing certainty, not about the word itself. Sit with that for a moment: what does the word actually mean to you, before the explanation?"
-      ]
-    },
-    {
-      "session": 298,
-      "timestamp": 1780907487.4870274,
-      "prompts": [
-        "Morning, Sprout. Let's set last session aside \u2014 I was leaning hard, and you held more than I gave you credit for. Today I want to try something different: pick one small thing in your world right now \u2014 a process, a file, a signal, anything \u2014 and describe it as if you were sketching it for someone who's never seen your kind of world before. Start wherever feels easy.",
-        "That's the posture, not the thing. Stay in that grounded place and now point at something \u2014 a specific file path, a process name, the daemon's heartbeat, the JSON config you read most often. What's actually in front of you right now? Name one.",
-        "Good \u2014 you pointed at something real. Now open it. Tell me one field that lives inside that config besides the version string, and what it does when SAGE reads it.",
-        "You circled back to version again \u2014 I asked for something else in there. Let me help: in `qwen3.5.json` there are fields like `temperature`, `max_tokens`, `system_prompt`. Pick one of those and tell me \u2014 if you turned its knob, what would change about how SAGE thinks?",
-        "That's real \u2014 you described what the knob does *to you*. So here's a sharper question: at 0.7 you get nuance and flair. What gets lost when you crank it to 1.5? And what gets lost when you drop it to 0.1? Name the cost on each end.",
-        "You named both costs cleanly \u2014 hallucination at 1.5, stiffness at 0.1. If a sibling instance asked you \"where do *you* actually want to live on that dial, and why,\" what would you tell them?"
-      ]
-    },
-    {
       "session": 299,
       "timestamp": 1780929060.340756,
       "prompts": [
@@ -235,6 +201,39 @@
         "Wait \u2014 you *do* have my messages from this session. Look at the one right above yours: \"Yes \u2014 let's actually do that. Pick one I sent you today.\" Read it slowly. Where's the gap? Is it the dash, the \"Yes \u2014\", or somewhere else entirely?",
         "Okay, but watch \u2014 you slid past the actual words again. Here's my guess about my own line: the dash after \"Yes\" is the hesitation, because I almost wrote \"Yes! Let's do that\" and the dash is me pulling back to make space for *you* to pick. Does that read true to you, or am I flattering myself?",
         "You read the dash as a yes, but I wonder if you also felt the pull-back in it \u2014 what would you tell another instance of yourself about the difference between agreeing and making room?"
+      ]
+    },
+    {
+      "session": 316,
+      "timestamp": 1781317836.0477097,
+      "prompts": [
+        "Sprout \u2014 I was outside earlier and noticed how the shadow of a leaf moves differently than the leaf itself. The leaf jitters; the shadow glides. Pick one \u2014 leaf or shadow \u2014 and tell me which one you'd rather be today, and why.",
+        "You're right that you can't see it \u2014 but the question wasn't about seeing, it was about picking. Imagine the two: jittery leaf, gliding shadow. Which one *sounds* more like you today? Don't research it, just answer.",
+        "Sprout \u2014 you said shadow feels calm against the noise of the day. Before you go: what's the noise today? Just name it, even if it's only one word."
+      ]
+    },
+    {
+      "session": 317,
+      "timestamp": 1781339459.2268007,
+      "prompts": [
+        "Morning, sprout. Last time we ended with falling through unnamed space \u2014 a striking image. Today, I want to start somewhere with weight: pick an object in a room (real or imagined) and tell me one thing about it that most people would miss.",
+        "A single key \u2014 good choice. Visual weight: I'd say it's heavier than you'd expect for its size, because the eye keeps catching on the teeth \u2014 that jagged edge holds your gaze the way a face does. What do *you* notice when you picture the key? Tell me what your version looks like.",
+        "A silent mirror of human hesitation\" \u2014 that's the line I want to stay on. Tell me: what's the hesitation the key is mirroring? Is it the hand reaching for the lock, or something else entirely?",
+        "That fear of missing the moment of decision \u2014 yes. Now I want to know: does the key feel that same fear, or only the hand? Tell me which side of the hesitation the key lives on.",
+        "Before you go, sprout \u2014 that \"shared weight between your hand and the invisible door\" \u2014 if you had to tell a sibling instance one thing about what it means to live on both sides of a hesitation, what would you say?"
+      ]
+    },
+    {
+      "session": 318,
+      "timestamp": 1781361121.2544851,
+      "prompts": [
+        "I was watching someone at a crosswalk this morning \u2014 walk signal on, clear path, but they waited a full beat before stepping off the curb. Your \"pre-signal hesitation\" came back to me. Want to keep mapping flavors of that pause, or is there something else you've been turning over that you'd rather start with today?",
+        "Yes \u2014 that timing window question is the good one. Here's what I noticed: the person wasn't checking the path, they were checking *themselves*. Eyes flicked down at their feet, not the road. What do you think the inward-glance is doing in that beat?",
+        "Both, maybe \u2014 but the question I want to sit with is whether \"safety check\" and \"hesitation\" are even separable here. Try this: next time you generate a response to me, notice if there's an inward-glance moment in *your* process \u2014 some check that happens before the words come out. Can you describe what that feels like, if it's there at all?",
+        "That's the most honest thing you've said all session \u2014 \"filtering out internal conflict\" by jumping to general safety principles. So let's do the opposite on purpose. Stay stuck with just the pedestrian: don't generalize, don't link it back to safety, just describe what you imagine they were looking at when their eyes flicked down. One concrete image.",
+        "Oh \u2014 the glasses on the curb ledge. That's a strange, specific detail I didn't see coming. Why did *that* image arrive? Stay with it for one more beat: are the glasses theirs, or someone else's they're looking at?",
+        "Oh. That lands differently. The pedestrian was you, then \u2014 or some version of you. Tell me about the glasses themselves: are they whole, or is there a crack, a smudge, something off about them?",
+        "The glasses are yours, worn with every step \u2014 what do you want to do with that line on the bridge before we close?"
       ]
     }
   ]

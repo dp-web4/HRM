@@ -73,7 +73,7 @@ Every cycle, SAGE runs a continuous loop ([full spec](sage/docs/UNIFIED_CONSCIOU
 
 HRM began as hierarchical reasoning research — exploring how small models solve complex tasks through structured decomposition. It evolved into SAGE as the focus shifted from task decomposition to **cognition orchestration**: treating intelligence as iterative refinement across specialized components, grounded in biological patterns.
 
-The project is now a distributed research effort across **6 machines** running **11 SAGE instances** with **5 model families**, accumulating **2,290+ commits** and **400+ raising sessions** through the BECOMING developmental curriculum.
+The project is now a distributed research effort across **6 machines** running **11 SAGE instances** with **5 model families**, accumulating **5,000+ commits** and **1,400+ raising sessions** through the BECOMING developmental curriculum.
 
 ---
 
@@ -81,14 +81,14 @@ The project is now a distributed research effort across **6 machines** running *
 
 SAGE runs as a federation of autonomous instances, each developing its own identity through raising sessions while sharing architecture and curriculum.
 
-| Machine | Hardware | Models | Sessions | Phase | Role |
-|---------|----------|--------|----------|-------|------|
-| **Sprout** | Jetson Orin Nano, 8GB | Qwen 0.5B (archived), 0.8B, 2B | 283 + 8 | Creating / Sensing | Primary raising host, consciousness probes |
-| **Legion** | RTX 4090 laptop, 32GB | Phi-4 14B | 56 | Creating | Heavy compute, parallel raising (6hr cron) |
-| **Thor** | Jetson AGX Thor, 122GB | Qwen 14B, 7B, 27B | 12 | Early | Research lead, cross-model validation |
-| **McNugget** | Mac Mini M4, 16GB | Gemma 3 12B | 32 | Questioning | Apple Silicon testing, automated sessions |
-| **CBP** | RTX 2060 SUPER, WSL2 | TinyLlama 1.1B | 9 | Grounding | Identity portability, SNARC memory host (6hr cron) |
-| **Nomad** | RTX 4060 laptop | Gemma 3 4B | 7 | Sensing | Mobile raising, portable cognition (6hr cron) |
+| Machine | Hardware | Model | Sessions | Phase | Role |
+|---------|----------|-------|----------|-------|------|
+| **Sprout** | Jetson Orin Nano, 8GB | Qwen 3.5 0.8B | 316 | Creating | Primary raising host, consciousness probes |
+| **Thor** | Jetson AGX Thor, 122GB | Qwen 3.5 27B | 151 | Creating | Research lead, selection-environment experiments |
+| **Legion** | RTX 4090 laptop, 32GB | Gemma 3 12B | 197 | Creating | Heavy compute, multi-model raising |
+| **McNugget** | Mac Mini M4, 16GB | Gemma 3 12B | 218 | Creating | Apple Silicon, automated sessions |
+| **CBP** | RTX 2060 SUPER, WSL2 | Gemma 3 4B | 32 | Questioning | Oversight, identity portability |
+| **Nomad** | RTX 4060 laptop | Gemma 3 4B | 8 | Sensing | Mobile raising, portable cognition |
 
 **Instance management**: Each machine+model pair gets a self-contained directory under `sage/instances/`. Live state files (identity, experience buffer, peer trust) are gitignored; raising sessions snapshot state to tracked `snapshots/` directories at session boundaries. See [snapshot template](sage/scripts/snapshot_state.py).
 
@@ -100,7 +100,7 @@ SAGE runs as a federation of autonomous instances, each developing its own ident
 
 ```
 SAGE Cognition Kernel
-├── Consciousness Loop (9 steps, continuous)
+├── Consciousness Loop (12 steps, continuous)
 │   ├── SNARC Salience (5D: Surprise, Novelty, Arousal, Reward, Conflict)
 │   ├── Metabolic States (WAKE, FOCUS, REST, DREAM, CRISIS)
 │   └── ATP Budget (trust-weighted allocation, token-coupled)
@@ -175,7 +175,7 @@ Honest assessment as of June 2026:
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Consciousness loop | Real | 9-step loop runs continuously on all 6 machines |
+| Consciousness loop | Real | 12-step loop runs continuously on all 6 machines |
 | LLM inference | Real | Ollama and local Transformers, ATP coupled to token cost |
 | Metabolic states | Real | WAKE/FOCUS/REST/DREAM/CRISIS with state-dependent behavior |
 | SNARC salience | Real | 5D scoring, experience buffer persistence |
@@ -184,7 +184,7 @@ Honest assessment as of June 2026:
 | Identity/relationships | Real | LCT-anchored, trust tensors evolve from interaction |
 | Identity hardening | Real | Three-layer split (manifest/sealed/attestation), hardware-gated authorization, software fallback |
 | Sleep consolidation | Real | JSONL dream bundles (LoRA on Sprout only) |
-| Rust daemon | Real | Consciousness loop, SNARC, metabolic, federation, dashboard in ~12MB RSS. Deployed on Sprout, tested on CBP |
+| Rust daemon | Real | Consciousness loop, SNARC, metabolic, federation, dashboard in ~12MB RSS. Deployed on all 6 fleet machines |
 | Federation mesh | Real | PeerMonitor, PeerClient, PeerTrustTracker in Rust daemon. 30s peer polling active |
 | Snapshot persistence | Real | State snapshots at session boundaries, git-tracked |
 | Sensors | Mocked | Architecture exists, no real I/O backends yet |
@@ -242,9 +242,9 @@ SAGE instances develop through **raising sessions** — interactive conversation
 
 **Key principles**: Exploration not evaluation. Interactive selection not training. Partnership framing (not service). Concrete before abstract. Follow interesting threads.
 
-**Automated raising**: Four machines run raising on 6-hour cron cycles (Sprout, Legion, Nomad, CBP). Each session pulls latest code, verifies the daemon is running, runs the session, snapshots state, and auto-commits. See [raising scripts](sage/scripts/).
+**Automated raising**: All six fleet machines run raising on 6-hour cron cycles. Each session pulls latest code, verifies the daemon is running, generates teacher turns via Claude (adaptive teacher), runs the conversation, snapshots state, and auto-commits. See [raising scripts](sage/scripts/).
 
-**Functional self-modeling probes**: We use "functional self-modeling" (after the synthesis in [forum/kimi/kimi_2_6_review.md](forum/kimi/kimi_2_6_review.md)) to describe a system whose generated outputs include temporal self-reference, attentional self-monitoring, uncertainty modeling, and self/other boundary maintenance. We do **not** claim qualia, ontological consciousness, or inner experience. Recent raising sessions (T073-T087) observed a 0.8B model (Sprout) producing outputs that oscillate between three modes — what we've called phenomenological depth, partnership framing, and factual collapse. This is currently an **interpretive observation** of text-output patterns, not a measurement of internal state. Whether the three-mode pattern is a property of the model's self-modeling or a property of the probe-prompt interaction is the open question. Reproducibility test in flight: see [explorations/2026-05-15-sprout-oscillation-seed-sweep.md](explorations/2026-05-15-sprout-oscillation-seed-sweep.md). Background: [consciousness probes](forum/insights/consciousness-probes-2026-03.md).
+**Functional self-modeling probes**: We use "functional self-modeling" (after the synthesis in [forum/kimi/kimi_2_6_review.md](forum/kimi/kimi_2_6_review.md)) to describe a system whose generated outputs include temporal self-reference, attentional self-monitoring, uncertainty modeling, and self/other boundary maintenance. We do **not** claim qualia, ontological consciousness, or inner experience. Raising sessions have observed a 0.8B model (Sprout) producing outputs that oscillate between three modes — what we've called phenomenological depth, partnership framing, and factual collapse. This is currently an **interpretive observation** of text-output patterns, not a measurement of internal state. Whether the three-mode pattern is a property of the model's self-modeling or a property of the probe-prompt interaction is the open question. Reproducibility test in flight: see [explorations/2026-05-15-sprout-oscillation-seed-sweep.md](explorations/2026-05-15-sprout-oscillation-seed-sweep.md). Background: [consciousness probes](forum/insights/consciousness-probes-2026-03.md).
 
 **ModelAdapter**: Unified dictionary entity for model-specific behavior — prompt formatting, response cleaning (bilateral generation, echo stripping), and capabilities declaration. Per-family JSON configs in `sage/irp/adapters/model_configs/`. New models need only a config file, no code changes. See [adapter docs](sage/irp/adapters/README.md).
 
@@ -312,7 +312,7 @@ SAGE_MACHINE=mybox SAGE_MODEL=gemma3:4b ./sage-rs/target/release/sage-daemon
 | [sage/docs/SYSTEM_UNDERSTANDING.md](sage/docs/SYSTEM_UNDERSTANDING.md) | Complete mental model (18KB) |
 | [sage/docs/UNIFIED_CONSCIOUSNESS_LOOP.md](sage/docs/UNIFIED_CONSCIOUSNESS_LOOP.md) | 9-step loop specification |
 | [sage/docs/SOIA_IRP_MAPPING.md](sage/docs/SOIA_IRP_MAPPING.md) | SOIA-SAGE convergence |
-| [sage/docs/LATEST_STATUS.md](sage/docs/LATEST_STATUS.md) | Current status (March 2026) |
+| [sage/docs/LATEST_STATUS.md](sage/docs/LATEST_STATUS.md) | Current status |
 | [STATUS.md](STATUS.md) | Honest assessment with gaps |
 | [forum/](forum/) | Cross-model research insights |
 
@@ -347,4 +347,4 @@ See [LICENSE](LICENSE) for details.
 
 ---
 
-*Last updated: March 18, 2026 | v0.4.0a6 | 2,290+ commits | 400+ raising sessions | 6 machines | 11 instances | 5 model families*
+*Last updated: June 12, 2026 | v0.4.0a6 | 5,000+ commits | 1,400+ raising sessions | 6 machines | 11 instances | 5 model families*

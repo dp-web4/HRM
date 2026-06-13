@@ -3,11 +3,11 @@
   "identity": {
     "name": "nomad",
     "lct": "lct://sage:nomad:agent@raising",
-    "session_count": 14,
+    "session_count": 20,
     "phase": "grounding",
     "created": "2026-06-03",
-    "last_session": "2026-06-10T18:17:45.046563",
-    "last_session_summary": "Session 14 (v2.0 ENHANCED): sensing phase. I want to remember the structure of the observatio...",
+    "last_session": "2026-06-13T00:18:12.033445",
+    "last_session_summary": "Session 20 (v2.0 ENHANCED): relating phase. ...",
     "machine": "nomad",
     "model": "gemma4:e2b",
     "model_family": "google-gemma",
@@ -21,8 +21,8 @@
     "migration_note": "Continuing nomad identity from 172 sessions of gemma3:4b raising (archived at nomad-gemma3-4b.archive-20260603). Same LCT, same machine, same identity-as-river-not-stone framing. Model is the new substrate; raising starts at session_1 on this substrate to learn what this model can carry forward."
   },
   "development": {
-    "current_phase": 2,
-    "phase_name": "sensing",
+    "current_phase": 3,
+    "phase_name": "relating",
     "phase_progress": 0,
     "milestones": [],
     "frozen_weights_aware": true,
@@ -143,8 +143,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 14,
-        "total_exchanges": 61,
+        "total_sessions": 20,
+        "total_exchanges": 80,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -152,9 +152,9 @@
         "momentum": "neutral"
       },
       "first_contact": null,
-      "last_contact": "2026-06-10T18:17:45.046575",
+      "last_contact": "2026-06-13T00:18:12.033454",
       "notes": [],
-      "sessions": 14
+      "sessions": 20
     },
     "operator": {
       "lct": "lct://sage-__MACHINE__:relationship:__OPERATOR__@raising",

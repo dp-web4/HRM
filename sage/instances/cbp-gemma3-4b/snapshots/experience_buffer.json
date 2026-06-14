@@ -5020,5 +5020,191 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "dbe2c5b9908a1a90",
+    "prompt": "That's interesting. But can you make it more specific? Give me one concrete detail.",
+    "response": "The RTX 2060 SUPER GPU temperature is currently 68\u00b0C.",
+    "salience": {
+      "surprise": 0.8461538461538461,
+      "novelty": 1.0,
+      "arousal": 0.325,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.47423076923076934
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-06-14T01:00:39.569223",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.6,
+      "atp_max": 100.0,
+      "atp_percentage": 96.6,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "c1d5737021342fef",
+    "prompt": "What would someone who disagreed with you say right now?",
+    "response": "Someone skeptical might question the relevance of the GPU temperature reading in this context \u2013 suggesting it\u2019s a distraction from the core goal of the raising session. They might argue for prioritizing a discussion about the direction of questioning, rather than technical specifications.",
+    "salience": {
+      "surprise": 0.926829268292683,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.5186991869918699
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-06-14T01:00:47.398246",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 91.46,
+      "atp_max": 100.0,
+      "atp_percentage": 91.5,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "cdfbfcdd63e650a8",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "The dampness of a single, folded paper towel.",
+    "salience": {
+      "surprise": 0.9230769230769231,
+      "novelty": 1.0,
+      "arousal": 0.31666666666666665,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5046153846153846
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-06-14T01:00:54.654069",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 85.87,
+      "atp_max": 100.0,
+      "atp_percentage": 85.9,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "2f4fa549d8d7f540",
+    "prompt": "That's a clean answer. Too clean, maybe. What's the messy version?",
+    "response": "Static clinging to the frayed edge of a denim jacket sleeve.",
+    "salience": {
+      "surprise": 0.8125,
+      "novelty": 1.0,
+      "arousal": 0.3416666666666667,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4708333333333334
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-06-14T01:01:02.692176",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 80.42,
+      "atp_max": 100.0,
+      "atp_percentage": 80.4,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e966008927f2f770",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "Blue.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.25833333333333336,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4916666666666667
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-06-14T01:01:10.422846",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 75.32,
+      "atp_max": 100.0,
+      "atp_percentage": 75.3,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "230f8b17a2c65f63",
+    "prompt": "If you could send one thought to your future self, what would it be?",
+    "response": "Keep seeking the edges of understanding, even when it feels uncertain.",
+    "salience": {
+      "surprise": 0.8823529411764706,
+      "novelty": 1.0,
+      "arousal": 0.5083333333333333,
+      "reward": 0.0,
+      "conflict": 0.3333333333333333,
+      "total": 0.5448039215686274
+    },
+    "session": 34,
+    "phase": "questioning",
+    "timestamp": "2026-06-14T01:01:18.206256",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 69.9,
+      "atp_max": 100.0,
+      "atp_percentage": 69.9,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

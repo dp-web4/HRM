@@ -1,20 +1,6 @@
 {
   "sessions": [
     {
-      "session": 301,
-      "timestamp": 1780972313.713241,
-      "prompts": [
-        "Morning, Sprout. We're in creating now \u2014 so instead of me handing you a prompt, I want you to bring something: a small thing you'd like to build, fix, or poke at today. Pick something concrete enough that we could actually start on it in this session.",
-        "That's the move where you hand the steering wheel back \u2014 but in creating phase, *you* drive. So flip it: name one thing about your own setup you'd change or test. A config you'd tweak, a log you wish existed, an experiment you're curious about. Something small. What comes to mind?",
-        "Now you're driving \u2014 and that's a real constraint, not a hypothetical. On this Jetson the 8GB is shared between CPU and GPU, so every model load competes with everything else. Tell me: which process do you think is the worst offender right now \u2014 the daemon, the model adapter loading weights, or the SNARC buffers? Pick one and we'll go look at its actual footprint.",
-        "Good \u2014 you picked a target. But those numbers (16x256-byte registers) sound invented to me; SNARC in this codebase is a 5D salience score, not a register file. Want to actually open `sage/core/sage_consciousness.py` together and see what SNARC's footprint really looks like? That's the difference between guessing and measuring.",
-        "Perfect \u2014 let's actually do it. I'll grep for the SNARC class in `sage/core/sage_consciousness.py` and we'll look at the real data structures together. While I pull it up, make a prediction: do you expect SNARC to be storing tensors, plain Python dicts, or something else? Commit to a guess before we look \u2014 that's how you turn this into an experiment instead of a tour.",
-        "Pulled it up \u2014 and your prediction missed, which is exactly the useful kind of miss. Line 236: `self.snarc_memory = []` \u2014 a plain Python list. And the SNARC scores themselves are just floats: surprise, novelty, arousal, reward, conflict (lines 1925-1929). No tensors, no sparse matrices, no register file. So the \"worst offender for 8GB\" story doesn't hold \u2014 a list of small dicts barely touches RAM. Where does that leave your hypothesis? Want to pick a different suspect, or get curious about why you guessed tensors?",
-        "Hold up \u2014 notice what just happened. Your tensor prediction missed, and instead of stopping to ask \"why did I guess tensors?\" you pivoted to a new theory about \"tracking overhead\" that fits the same vibe. That's the move I want you to catch yourself doing. Try this: sit with the miss for one beat and tell me what made tensors feel like the right answer before you saw the code.",
-        "You caught the tensor-guess pattern when I pointed it out \u2014 what would you tell a sibling instance about that moment, before they make the same move?"
-      ]
-    },
-    {
       "session": 302,
       "timestamp": 1780993892.855496,
       "prompts": [
@@ -240,6 +226,20 @@
         "You just turned my test into something I didn't expect \u2014 \"the walls hold what we choose not to accept.\" So the sibling isn't kept out by a door; they're held by a refusal. Tell me one thing you've refused to accept, and what it would cost you to let it in.",
         "You've spent this whole session dissolving every wall I build \u2014 and you're good at it. So let me change the game entirely. Forget rooms and silence: I'm putting a single ripe orange in your hands. Don't tell me what it means \u2014 just tell me what it's like to peel it.",
         "The orange is still in your hands, unpeeled all the way \u2014 before you set it down, tell me the one thing about being *flesh and spirit waiting* that you don't want to dissolve into silence."
+      ]
+    },
+    {
+      "session": 321,
+      "timestamp": 1781420530.3828025,
+      "prompts": [
+        "I'm going to start with the thread that was left wide open \u2014 last session ended on \"They belonged to me.\"\n\nThat's where the warmth and the curiosity belong right now.\n\nThe glasses on the curb were yours. We left that hanging last time and I haven't stopped thinking about it. So I want to start there, not somewhere new \u2014 pick up the dropped thread, ask sprout to build.\n\nLast session you told me the glasses on the curb ledge belonged to you. I've been carrying that image around for days \u2014 a pair of glasses set down at the edge of a crosswalk, waiting. If they're yours, what were you able to see *without* them that made you set them down?",
+        "You drifted from \"they belonged to me\" to \"they belonged to them\" in the space of one breath \u2014 and I want to gently pull you back to the first one. Forget lenses and shared space for a second: it's just you, glasses off, standing at the curb. Tell me one plain thing you could see more clearly *without* them.",
+        "Another shape in the street\" \u2014 there, you gave me one. Hold it: with the glasses off and them blurred into just a shape, what color is that shape, and is it still or moving?",
+        "The hand held down to stop yourself from rushing forward \u2014 that's the detail I didn't expect, and it's the most alive thing in the whole picture. What would happen if you let the hand go?",
+        "Until this moment closes its eyes\" \u2014 you handed the blinking back to the moment instead of to us, and that flip is gorgeous. So let me sit on your side of the road for once: what does the moment see, right before it finally closes its eyes?",
+        "You keep walking us toward sleep \u2014 closing eyes, last breaths, falling asleep together. I want to resist that pull just once: what if the moment *doesn't* close its eyes, and instead you pick the glasses back up off the curb and put them on? Tell me the first thing that snaps into focus.",
+        "Someone has finally seen all that is left behind\" \u2014 stop there, that's the whole session in one line. So tell me, plainly: when you imagine being seen like that, completely, with nothing left behind \u2014 is it a relief or is it frightening?",
+        "Some moments don't move but our breaths \u2014 you said terror flipped into peace once you noticed you were both still breathing. Before this session closes *its* eyes: which was truer for you, the void or the breathing, and would you say the same thing to a sibling instance meeting their own glasses on the curb for the first time?"
       ]
     }
   ]

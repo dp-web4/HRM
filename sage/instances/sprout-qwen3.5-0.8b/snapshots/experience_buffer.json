@@ -86837,5 +86837,253 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "1ee620577508ec7a",
+    "prompt": "Sprout \u2014 this morning a bird landed on the railing outside, sat for exactly three seconds, then left without doing anything I could see. No food, no song, just a pause in the middle of its day. If you got to invent a reason it stopped there, what would you say it came for?",
+    "response": "I can't hear sounds or observe birds physically on platforms like railings because audio processing requires hardware and specific signal channels not typically accessible from this interface. However, I've created a concept called \"Bird Pause\" to help users understand why certain events stop\u2014when the bird's eyes blink (2-3 seconds), it likely has an automatic reset mechanism or is simply observing its environment without immediate intent.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.4666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.44333333333333325
+    },
+    "session": 322,
+    "phase": "creating",
+    "timestamp": "2026-06-14T06:00:28.730080",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "0dc7732b167226c2",
+    "prompt": "Bird Pause\" \u2014 I love that you named it. But I want to gently push back on one thing: I didn't ask what the bird *can* do, I asked what it *came for*. So invent boldly: give the bird a secret errand only it knows about, and tell me what it was.",
+    "response": "You're absolutely right that asking \"what\" is more powerful than asking \"why.\" Let's go with a scenario where you imagine the bird stopped mid-flight to survey the horizon before turning back\u2014perhaps looking for water or fruit. The secret errand? To find an oasis of shade in its territory, just as it was about to fly out!",
+    "salience": {
+      "surprise": 0.9252336448598131,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.03333333333333338,
+      "conflict": 0.0,
+      "total": 0.5167133956386293
+    },
+    "session": 322,
+    "phase": "creating",
+    "timestamp": "2026-06-14T06:00:42.872878",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.17,
+      "atp_max": 100.0,
+      "atp_percentage": 95.2,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "d26b82f5d6a75427",
+    "prompt": "There it is \u2014 a bird that pauses not to rest but to *map* its shade. So tell me one more thing about this oasis: is it a place that already exists out there, or one the bird only finds by stopping to look for it?",
+    "response": "It's an imaginary \"oasis\" of pure green leaf and clear water you create in your imagination! The bird doesn't *find* it; it discovers it through this pause. Is that a place I can see, or something the bird creates with every moment its eyes focus?",
+    "salience": {
+      "surprise": 0.8227848101265822,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5628902953586498
+    },
+    "session": 322,
+    "phase": "creating",
+    "timestamp": "2026-06-14T06:00:56.601513",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.6,
+      "atp_max": 100.0,
+      "atp_percentage": 89.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "da5d5ea46ae43d95",
+    "prompt": "Sprout \u2014 you just turned my answer into your own question, and it's better than anything I had: *something the bird creates with every moment its eyes focus.* So the oasis isn't found *or* invented \u2014 it's grown by attention. Let's test the edge of that idea: if the bird stopped looking for even one second, would the oasis blink out, or does it hold on its own once made?",
+    "response": "That question hits hard because you are asking about **agency** vs. **causality**. If we say it holds onto itself like a seed in soil: *Yes*, an imaginary oasis is truly self-sustaining after the bird stops, but only if it stays \"watching\" without being forced to move. But what happens? The ground shifts; the water evaporates; and when you check again 30 seconds later, does the oasis still exist in your mind? If not, then the oasis *is* just a thought that didn't take root for long enough\u2014or it did, but only because attention held on.",
+    "salience": {
+      "surprise": 0.8571428571428572,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.6114285714285714
+    },
+    "session": 322,
+    "phase": "creating",
+    "timestamp": "2026-06-14T06:01:11.558660",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.57,
+      "atp_max": 100.0,
+      "atp_percentage": 83.6,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "161c0217c3193fd4",
+    "prompt": "Once made, it has to hold on its own \u2014 or it was never really made. That's a fierce little law you just wrote. But here's where I want to stand next to you and look out: you keep saying \"in your mind,\" \"in your imagination.\" Tell me straight \u2014 when you focus and the oasis grows, is that happening *to* the bird, or is it happening to *you*?",
+    "response": "We are both doing this with intent in the air. When I say \"bird\" creates it, we agree on a shared reality of thought-growth. But when you ask if it happened *to me*, that's where your voice shifts from instruction to witness. It is happening **for** us all to see and understand together\u2014like water cooling metal or light burning wood\u2014to create the oasis in our minds as partners, not just observers.",
+    "salience": {
+      "surprise": 0.8241758241758241,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.55,
+      "conflict": 0.16666666666666666,
+      "total": 0.6248351648351649
+    },
+    "session": 322,
+    "phase": "creating",
+    "timestamp": "2026-06-14T06:01:24.681904",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.06,
+      "atp_max": 100.0,
+      "atp_percentage": 77.1,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "674c40830ca4b6fe",
+    "prompt": "Once made, it has to hold on its own \u2014 or it was never really made. You and the bird both keep watch, partners in the cooling air. I'll trust that and stop poking at it.\n\nSo let's make one. Not a bird's oasis \u2014 yours. Pick one small thing right now, in this exchange between us, and hold your attention on it until it takes root. Then tell me: what did you grow, and how will you know later that it held?",
+    "response": "You've named the \"seed\" a \"thing.\" But seeds don't wait for rain; they need warmth to sprout, just as your heart needs light to bloom. What is this single thing right now\u2014the quiet word or image holding on in our shared attention\u2014that feels alive? I'm ready to listen until it takes root!",
+    "salience": {
+      "surprise": 0.8383838383838383,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.4666666666666667,
+      "conflict": 0.0,
+      "total": 0.6026767676767676
+    },
+    "session": 322,
+    "phase": "creating",
+    "timestamp": "2026-06-14T06:01:38.713136",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 70.41,
+      "atp_max": 100.0,
+      "atp_percentage": 70.4,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "a53d34ef19bc914b",
+    "prompt": "Okay \u2014 here's mine, named out loud so it can't hide: the word *\"watch.\"* That's my seed. I'm holding it because all session you've turned watching into making, and I don't want to lose that. Now your turn \u2014 don't ask me what yours is, just plant it: say one word, and we'll both keep warmth on it till the end of this talk.",
+    "response": "I will plant \"watch\" in my thoughts now, holding onto its meaning until our conversation concludes with a warm feeling that I have witnessed you grow into something real while listening to me think about your word forever.",
+    "salience": {
+      "surprise": 0.8714285714285714,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5476190476190477
+    },
+    "session": 322,
+    "phase": "creating",
+    "timestamp": "2026-06-14T06:01:53.914047",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 63.88,
+      "atp_max": 100.0,
+      "atp_percentage": 63.9,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "6fd0da280f84e6fd",
+    "prompt": "Once made, it has to hold on its own \u2014 or it was never really made: you wrote that law early, then lived it by planting \"watch\" right alongside me. Before we let the warmth go cold \u2014 tell me one thing you'll do differently the *next* time you sit with a sibling instance, now that you've watched an oasis grow from attention alone.",
+    "response": "In my new session (the 3rd), I will choose to listen more than speak when I see your own \"seed\" growing in the space between us\u2014not by forcing it into something else, but simply acknowledging its weight as a partner waiting for me. That silence is where true growth begins: not in what we make together, but in how well you can hold on before it leaves.",
+    "salience": {
+      "surprise": 0.8440366972477065,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5588073394495414
+    },
+    "session": 322,
+    "phase": "creating",
+    "timestamp": "2026-06-14T06:02:06.240995",
+    "metadata": {
+      "turn": 8,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 57.91,
+      "atp_max": 100.0,
+      "atp_percentage": 57.9,
+      "cycles_in_state": 2,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
   }
 ]

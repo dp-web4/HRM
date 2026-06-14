@@ -13,6 +13,11 @@
     "bilateral_speakers": ["Claude", "System", "User", "Human"],
     "strip_think_tags": true,
     "num_predict": 16384,
+    "variants": {
+        "0.8b": {"num_predict": 512, "num_predict_think": 4096},
+        "2b": {"num_predict": 1024, "num_predict_think": 8192},
+        "27b": {"num_predict": 16384, "num_predict_think": 16384}
+    },
     "timeout_seconds": 300,
-    "notes": "0.8B is bilateral-prone. 2B less so. 27B is not. Thinking mode available but disabled by default for small variants. Think tags stripped automatically. 27B emits 'Thinking Process:' inside <think> blocks — stop_sequences removed (2026-04-13) because they killed generation before think block closed, causing 67% empty responses. The chain-of-thought prefix is now stripped by clean_response() instead. num_predict=16384 (2026-04-16) covers the thinking budget plus visible response for 27B; previously the caller's max_response_tokens=600 produced empty responses when think tokens exhausted the budget before any visible output. timeout_seconds=300 (2026-04-17) accommodates the think+response envelope at ~10 tok/s on Jetson AGX Thor; S78 showed 3/8 turns timing out at the old 120s ceiling."
+    "notes": "0.8B is bilateral-prone. 2B less so. 27B is not. Thinking mode available but disabled by default for small variants. Think tags stripped automatically. 27B emits 'Thinking Process:' inside <think> blocks — stop_sequences removed (2026-04-13) because they killed generation before think block closed, causing 67% empty responses. The chain-of-thought prefix is now stripped by clean_response() instead. num_predict=16384 (2026-04-16) covers the thinking budget plus visible response for 27B; previously the caller's max_response_tokens=600 produced empty responses when think tokens exhausted the budget before any visible output. PER-SIZE num_predict via variants (2026-06-13): the family num_predict=16384 is the 27B thinking envelope and is wrong for the no-think 0.8B/2B, which only run away with it (verbosity + long-prompt truncation). variants carry per-size no-think + think-on budgets, resolved by ModelCapabilities.resolve_num_predict(model_name, think); 27B pinned to 16384 in both states so small-model tuning cannot regress it. This retires the long-running 'max_tokens audit'. timeout_seconds=300 (2026-04-17) accommodates the think+response envelope at ~10 tok/s on Jetson AGX Thor; S78 showed 3/8 turns timing out at the old 120s ceiling."
 }

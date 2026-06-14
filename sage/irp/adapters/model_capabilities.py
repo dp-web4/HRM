@@ -30,9 +30,41 @@ class ModelCapabilities:
         'Claude', 'System', 'User', 'Human',
     ])
     strip_think_tags: bool = False            # Strip <think>...</think> blocks (Qwen 3.5)?
-    num_predict: Optional[int] = None         # Family-wide num_predict floor (thinking budget + response)
+    num_predict: Optional[int] = None         # Family-wide num_predict fallback (thinking budget + response)
     timeout_seconds: Optional[int] = None     # HTTP wall-clock timeout floor (think+response envelope)
+    # Per-size overrides. Requirements differ dramatically by size AND by
+    # think/no-think state, so a single family value is wrong. Keyed by the
+    # size token in the model name (e.g. "0.8b", "27b"). Each entry may carry
+    # "num_predict" (no-think) and "num_predict_think" (think-on). Editing one
+    # size's entry can never change another size's resolution.
+    variants: Dict[str, Dict] = field(default_factory=dict)
     notes: str = ''
+
+    def resolve_num_predict(self, model_name: str, think: bool,
+                            caller_budget: Optional[int] = None) -> Optional[int]:
+        """Resolve num_predict for the full (family, size, think) tuple.
+
+        Why this exists: qwen3.5:27b emits <think> content and needs a ~16384
+        envelope even with think disabled, while qwen3.5:0.8b targets short
+        responses and would only run away (and overflow context on long prompts)
+        with that budget. Per-size `variants` carry a no-think value and an
+        optional think-on value; resolution is independent per size, so tuning
+        one model can never break another. Falls back to the family-wide
+        num_predict, then to the caller's budget. caller_budget == -1 means the
+        caller explicitly wants unlimited (e.g. gameplayer) and is honored.
+        """
+        if caller_budget == -1:
+            return -1
+        size = model_name.split(':', 1)[1].lower().strip() if ':' in model_name else ''
+        variant = self.variants.get(size)
+        if variant:
+            if think and variant.get('num_predict_think') is not None:
+                return variant['num_predict_think']
+            if variant.get('num_predict') is not None:
+                return variant['num_predict']
+        if self.num_predict is not None:
+            return self.num_predict
+        return caller_budget
 
 
 # Config directory

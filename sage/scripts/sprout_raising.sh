@@ -5,7 +5,18 @@
 
 set -e
 
-SAGE_DIR="/home/sprout/ai-workspace/SAGE"
+# Locate the SAGE workspace portably (the machine's user/home is not always "sprout";
+# the repo clones as lowercase "sage" with a "SAGE" compat symlink on some hosts).
+if [ -d "$HOME/ai-workspace/sage" ]; then
+    SAGE_DIR="$HOME/ai-workspace/sage"
+elif [ -d "$HOME/ai-workspace/SAGE" ]; then
+    SAGE_DIR="$HOME/ai-workspace/SAGE"
+elif [ -d "/home/sprout/ai-workspace/SAGE" ]; then
+    SAGE_DIR="/home/sprout/ai-workspace/SAGE"
+else
+    echo "[Sprout-Raising] FATAL: cannot locate SAGE workspace under \$HOME/ai-workspace"
+    exit 1
+fi
 export PYTHONPATH="$SAGE_DIR"
 LOG_DIR="/tmp/sprout-raising-logs"
 mkdir -p "$LOG_DIR"
@@ -34,23 +45,20 @@ git pull --ff-only origin main 2>&1 || {
     fi
 }
 
-# --- Step 2: Ensure Rust daemon is running ---
-# sage-daemon-sprout now runs the Rust binary (sage-rs/target/release/sage-daemon)
-# on port 8760. Raising talks directly to Ollama (11434), not the daemon,
-# so the daemon is only needed for chat history and metabolic state.
-if ! systemctl is-active --quiet sage-daemon-sprout; then
-    echo "[Sprout-Raising] Starting daemon..."
-    sudo systemctl start sage-daemon-sprout
+# --- Step 2: Ensure Rust daemon is running (OPTIONAL) ---
+# sage-daemon-sprout runs the Rust binary (sage-rs/target/release/sage-daemon)
+# on port 8760, providing chat history and metabolic state. Raising talks
+# directly to Ollama (11434), NOT the daemon, so this is best-effort only and
+# must never abort the session (the daemon may be unbuilt on a fresh host).
+if systemctl list-unit-files sage-daemon-sprout.service >/dev/null 2>&1 \
+   && ! systemctl is-active --quiet sage-daemon-sprout; then
+    echo "[Sprout-Raising] Starting daemon (best-effort)..."
+    sudo systemctl start sage-daemon-sprout 2>/dev/null || \
+        echo "[Sprout-Raising] WARNING: could not start daemon; continuing (raising talks to Ollama directly)"
     sleep 8
 fi
-
-# Verify daemon is healthy (Rust daemon on port 8760)
 if ! curl -s http://localhost:8760/health >/dev/null 2>&1; then
-    echo "[Sprout-Raising] WARNING: Rust daemon not responding, waiting 10s..."
-    sleep 10
-    if ! curl -s http://localhost:8760/health >/dev/null 2>&1; then
-        echo "[Sprout-Raising] WARNING: Daemon still not responding, continuing anyway (raising talks to Ollama directly)"
-    fi
+    echo "[Sprout-Raising] NOTE: Rust daemon not responding; continuing (raising talks to Ollama directly)"
 fi
 
 # --- Step 3: Run the raising session ---
@@ -65,31 +73,28 @@ python3 -m sage.scripts.snapshot_state --machine sprout 2>&1 || {
     echo "[Sprout-Raising] WARNING: snapshot_state failed, continuing"
 }
 
-# Read session number and phase from live identity
-IDENTITY_FILE="$INSTANCE_DIR/identity.json"
+# Read session number and phase from the snapshot identity (daemon-proof — the
+# live identity.json is continuously overwritten by the daemon; snapshots/ is the
+# raising-authoritative copy written by the runner).
+SNAP_IDENTITY="$INSTANCE_DIR/snapshots/identity.json"
 SESSION_NUM=$(python3 -c "
 import json
-with open('$SAGE_DIR/$IDENTITY_FILE') as f:
+with open('$SAGE_DIR/$SNAP_IDENTITY') as f:
     print(json.load(f)['identity']['session_count'])
 " 2>/dev/null || echo "?")
 
 PHASE=$(python3 -c "
 import json
-with open('$SAGE_DIR/$IDENTITY_FILE') as f:
+with open('$SAGE_DIR/$SNAP_IDENTITY') as f:
     print(json.load(f)['development']['phase_name'])
 " 2>/dev/null || echo "?")
 
 # --- Step 5: Regenerate fleet snapshot ---
+# NOTE: dream consolidation is NOT run here — the runner (ollama_raising_session)
+# invokes run_dream_consolidation() internally at session close. Running it again
+# would double-consolidate the same session.
 echo "[Sprout-Raising] Updating SESSION_FOCUS.md..."
 python3 -m sage.scripts.generate_primer 2>/dev/null || true
-
-# --- Dream consolidation (Claude reviews the session) ---
-echo "[Sprout-Raising] Running dream consolidation..."
-python3 -m sage.raising.scripts.dream_consolidation \
-    --instance "$INSTANCE_DIR" \
-    --session "$SESSION_NUM" 2>&1 || {
-    echo "[Sprout-Raising] Dream consolidation skipped (claude --print not available or timed out)"
-}
 
 # --- Step 6: Commit and push ---
 CHANGED=0

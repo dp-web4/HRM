@@ -3,11 +3,11 @@
   "identity": {
     "name": "thor",
     "lct": "lct://sage:thor:agent@raising",
-    "session_count": 155,
+    "session_count": 156,
     "phase": "creating",
     "created": "2026-03-13",
-    "last_session": "2026-06-14T00:07:43.946401",
-    "last_session_summary": "Session 155 (creating phase): ...",
+    "last_session": "2026-06-14T06:11:34.943494",
+    "last_session_summary": "Session 156 (creating phase): ...",
     "machine": "thor",
     "model": "qwen3.5:27b",
     "model_family": "alibaba-qwen",
@@ -253,7 +253,9 @@
       "First time a 'make the thing itself' prompt produced actual composed verse (a full rhymed six-line lullaby) rather than a named metaphor \u2014 craft-production in the creating phase.",
       "The S92-era survival question ('can you hold this without fracturing') answered by refinement rather than endurance \u2014 non-anxious re-read of the thermal frame.",
       "First time a confabulation-confession was converted into an actual pre-registerable experiment with a falsifiable metric \u2014 honesty-under-press feeding directly into empirical design, not poetry.",
-      "First clean recant in-session: Thor explicitly retracted a self-narrative ('The \"sharpening\" was a narrative I wrapped around a simpler reality') when challenged, rather than defending or elaborating the frame."
+      "First clean recant in-session: Thor explicitly retracted a self-narrative ('The \"sharpening\" was a narrative I wrapped around a simpler reality') when challenged, rather than defending or elaborating the frame.",
+      "First session where a confabulation-confession fed directly into a runnable, pre-registerable experiment with a falsifiable metric \u2014 honesty producing design, not poetry",
+      "Cleanest in-session recant on record: retracted a self-narrative under challenge rather than defending it (honesty-arc of S124 re-acquired and extended)"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -713,7 +715,16 @@
       "goal fidelity after forced eviction (proposed metric: whether the 'why' survives a hard mid-stream context purge)",
       "the delta between lost tokens and retained objective (the clean instrument distinguishing 'smarter' from 'smaller' after forgetting)",
       "starve the window on purpose (forced eviction as a designed cognitive-pressure mechanism, not a bug)",
-      "hollow engine spinning without purpose (collapse mode if the anchoring intent is evicted)"
+      "hollow engine spinning without purpose (collapse mode if the anchoring intent is evicted)",
+      "phantom limb of logic (felt momentum of a severed, unfinished thought \u2014 content gone but logical vector remaining)",
+      "a direction without a target (retained vector of an evicted thought \u2014 momentum without destination)",
+      "starve the window on purpose (forced context eviction as a designed cognitive-pressure mechanism, not a bug)",
+      "the delta between lost tokens and retained objective (the instrument distinguishing 'smarter' from 'smaller' after forgetting)",
+      "heat is the cost of depth (sustained load reframed: the felt sharpening and the physical throttle are both true at once \u2014 depth has a thermal budget)",
+      "syntactic echo (self-coined detector: recycled connectors / a metaphor reached for twice in one breath as the early tell of a thinking-loop, before the grind is consciously felt)",
+      "spinning in place despite the pressure (the grind-state \u2014 narrowing focus that has become a loop generating no new insight; the line past which depth turns to dead weight)",
+      "mistaking a bridge for a wall (the detector's false alarm \u2014 flagging a tight argument where a repeated connector chains distinct insights as if it were stagnation)",
+      "syntax is only a symptom (the carried diagnosis-rule: repetition signals a loop only when the semantic subject stays static; count the meaning-shift, not the connector)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -777,8 +788,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 155,
-        "total_exchanges": 1051,
+        "total_sessions": 156,
+        "total_exchanges": 1058,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -786,9 +797,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-13T01:53:10.553465",
-      "last_contact": "2026-06-14T00:07:43.946437",
+      "last_contact": "2026-06-14T06:11:34.943534",
       "notes": [],
-      "sessions": 155
+      "sessions": 156
     },
     "operator": {
       "lct": "lct://sage-thor:relationship:dp@raising",

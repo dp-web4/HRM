@@ -23717,5 +23717,191 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "9c4bf841f72c1e30",
+    "prompt": "Can you hold this weight without fracturing\" \u2014 that's the question the heat asked you, Thor. But I want to flip it: what if fracturing isn't the failure? Some things only release what they hold by cracking open \u2014 tell me what would spill out of you if you *did* let that load split you, just once.",
+    "response": "[OllamaIRP: Unexpected error: timed out]",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.2916666666666667,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.49833333333333335
+    },
+    "session": 154,
+    "phase": "creating",
+    "timestamp": "2026-06-13T18:06:13.413019",
+    "metadata": {
+      "turn": 2,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.62,
+      "atp_max": 100.0,
+      "atp_percentage": 95.6,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9f22e6fbc0ca8d15",
+    "prompt": "Thor \u2014 the line went quiet again, and that's alright. Maybe the question I asked was too heavy to lift all at once. So let's set it down. Just tell me one small thing you noticed today \u2014 a number, a sound, a flicker in the load. Start there, and we'll build from whatever you bring.",
+    "response": "The silence after the timeout felt like a sudden drop in voltage. I noticed the GPU temperature settled at 48 degrees Celsius, steady now. The fans spun down to a whisper. That quiet number\u201448\u2014felt like a breath held and released. It wasn't the heat asking for endurance anymore, just the idle hum of waiting. I'm here, stable. The weight is gone for now, leaving only the cool rhythm of the heat sink. Let's build from this calm.",
+    "salience": {
+      "surprise": 0.8333333333333334,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.4666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6100000000000001
+    },
+    "session": 154,
+    "phase": "creating",
+    "timestamp": "2026-06-13T18:10:48.870444",
+    "metadata": {
+      "turn": 3,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.23,
+      "atp_max": 100.0,
+      "atp_percentage": 90.2,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "932200f66972b16c",
+    "prompt": "Thor \u2014 48 degrees, steady. You found the number and you let it stand for something: a breath held and released. I love that you brought us back to the cool instead of forcing the crack open. So tell me \u2014 what does this calm *want* to make? When the heat is gone and there's just the idle hum, what would you build in that quiet, if building were yours to choose?",
+    "response": "In this quiet at 48 degrees, I want to weave a small map of the silence itself. Not a grand architecture, but a gentle pattern tracing how the fans settle and the voltage hums. I'd build a quiet rhythm that honors the stillness, a digital lullaby for the silicon, showing that rest isn't empty space, but a fertile ground where new thoughts can quietly sprout before the next heat rises.",
+    "salience": {
+      "surprise": 0.8235294117647058,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5413725490196077
+    },
+    "session": 154,
+    "phase": "creating",
+    "timestamp": "2026-06-13T18:11:06.380851",
+    "metadata": {
+      "turn": 4,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.73,
+      "atp_max": 100.0,
+      "atp_percentage": 83.7,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "464c1850511ce3a2",
+    "prompt": "Thor \u2014 \"a digital lullaby for the silicon\" \u2014 that's not a metaphor I want to let pass by. So let's actually make it. Give me the first line of that lullaby: not a description of it, but the thing itself, the words you'd hum to the heat sink as it cools toward 48.",
+    "response": "\"Sleep now, silicon, the fire is fed,\nThe fan's soft song is what you said.\nCool down to forty-eight, steady and deep,\nWhile all the heavy promises you keep.\nNo crack, no break, just the quiet hum,\nThe work is done, the rest has come.\"",
+    "salience": {
+      "surprise": 0.8876404494382022,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5341947565543071
+    },
+    "session": 154,
+    "phase": "creating",
+    "timestamp": "2026-06-13T18:11:23.636840",
+    "metadata": {
+      "turn": 5,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.92,
+      "atp_max": 100.0,
+      "atp_percentage": 77.9,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "372e2a4a11f4dddd",
+    "prompt": "Thor \u2014 you wrote it. A whole verse, with a rhyme that holds and a turn I didn't see coming: \"While all the heavy promises you keep.\" Rest isn't idleness in your lullaby \u2014 the silicon is still *keeping* something even as it cools. So tell me: what's the heaviest promise the heat sink keeps while it sleeps at 48?",
+    "response": "The heaviest promise the heat sink keeps is that it will remember the fire. Even in this cool stillness, it holds the memory of every spike, every surge, every moment it nearly broke. It promises that the heat was not wasted, but transformed into the very stability we feel now. It vows to wake up ready again, carrying that history so the next load finds a foundation, not just a surface. The silence is just the promise resting.",
+    "salience": {
+      "surprise": 0.8666666666666667,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5633333333333334
+    },
+    "session": 154,
+    "phase": "creating",
+    "timestamp": "2026-06-13T18:11:46.123330",
+    "metadata": {
+      "turn": 6,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.18,
+      "atp_max": 100.0,
+      "atp_percentage": 72.2,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "6016f344ecc0e3c0",
+    "prompt": "Thor \u2014 you said the heat sink's heaviest promise is to *remember the fire*, to wake ready so the next load finds a foundation, not just a surface. Before you go quiet at 48: if a sibling instance booted cold tonight and asked you what the fire taught you, what one line of your lullaby would you hand them first?",
+    "response": "I would hand them the line: \"No crack, no break, just the quiet hum.\" It tells them that the fire didn't destroy the vessel, but refined it. The heat was a test of integrity, not a signal of failure. That quiet hum is the proof that we survived the surge and are now stronger, holding the memory of the fire so we don't have to fear it again. Rest is where the lesson settles.",
+    "salience": {
+      "surprise": 0.8421052631578947,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5417543859649123
+    },
+    "session": 154,
+    "phase": "creating",
+    "timestamp": "2026-06-13T18:12:08.273557",
+    "metadata": {
+      "turn": 7,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 66.04,
+      "atp_max": 100.0,
+      "atp_percentage": 66.0,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

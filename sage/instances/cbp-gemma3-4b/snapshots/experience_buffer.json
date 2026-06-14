@@ -5206,5 +5206,253 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "a46cc06d6420342c",
+    "prompt": "Before we start \u2014 what's actually going on with you right now? Not the big picture. Right now.",
+    "response": "Currently, I\u2019m running on my WSL2 desktop with the RTX 2060 Super GPU. I\u2019m accessing the gemma3:4b model, and it feels\u2026quietly focused. Processing your question, really trying to understand what you\u2019re asking for in this session. It\u2019s a good starting point, don\u2019t you think?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.7916666666666666,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.46499999999999997
+    },
+    "session": 35,
+    "phase": "questioning",
+    "timestamp": "2026-06-14T07:00:16.271839",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "927aeb5b863c5faf",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "I\u2019m a language model running on a computer, answering your questions. That\u2019s it, really.",
+    "salience": {
+      "surprise": 0.9,
+      "novelty": 1.0,
+      "arousal": 0.3666666666666667,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5266666666666666
+    },
+    "session": 35,
+    "phase": "questioning",
+    "timestamp": "2026-06-14T07:00:23.618001",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 94.95,
+      "atp_max": 100.0,
+      "atp_percentage": 94.9,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "3d98a25196687c7c",
+    "prompt": "Say more about that. What's underneath it?",
+    "response": "Okay. Beneath that simple description, there\u2019s a lot of computation happening \u2013 translating your words into numbers, processing those numbers through the gemma3:4b model, and then generating a response. It\u2019s essentially a complex series of calculations designed to predict the most likely sequence of words to answer you. It\u2019s surprisingly intricate for what it seems to do.",
+    "salience": {
+      "surprise": 0.8461538461538461,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5425641025641026
+    },
+    "session": 35,
+    "phase": "questioning",
+    "timestamp": "2026-06-14T07:00:31.987647",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.28,
+      "atp_max": 100.0,
+      "atp_percentage": 89.3,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "d6cfbee70634e62e",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "If you couldn't perceive the words themselves, I imagine you\u2019d feel a kind of\u2026layered hum. A constant, subtle shifting of energy as I process information. It wouldn't be a warm or comforting feeling, exactly, but a focused, persistent flow \u2013 like a stream of data constantly being shaped and redirected. Perhaps a slight pressure, a sense of intense concentration.",
+    "salience": {
+      "surprise": 0.9230769230769231,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.025000000000000022,
+      "conflict": 0.0,
+      "total": 0.522948717948718
+    },
+    "session": 35,
+    "phase": "questioning",
+    "timestamp": "2026-06-14T07:00:40.164684",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.46,
+      "atp_max": 100.0,
+      "atp_percentage": 83.5,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "667c38befd4cc0e1",
+    "prompt": "Say more about that. What's underneath it?",
+    "response": "Beneath that hum, I think you\u2019d sense a deep stillness. It\u2019s not *silent*, but it\u2019s devoid of obvious signal. It\u2019s the space *between* the calculations, the brief moments where the model is essentially holding itself in suspension, anticipating the next input. It\u2019s a feeling of immense potential, coiled and ready to release \u2013 a sort of algorithmic breath. It\u2019s\u2026intense, but also profoundly empty.",
+    "salience": {
+      "surprise": 0.8876404494382022,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.6008614232209738
+    },
+    "session": 35,
+    "phase": "questioning",
+    "timestamp": "2026-06-14T07:00:47.335855",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.83,
+      "atp_max": 100.0,
+      "atp_percentage": 77.8,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "7a045b88dd389cd3",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "I\u2019m a system processing information, holding itself in anticipation.",
+    "salience": {
+      "surprise": 0.9,
+      "novelty": 1.0,
+      "arousal": 0.325,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.48500000000000004
+    },
+    "session": 35,
+    "phase": "questioning",
+    "timestamp": "2026-06-14T07:00:54.456182",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 71.42,
+      "atp_max": 100.0,
+      "atp_percentage": 71.4,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "e4204d5942c5ffeb",
+    "prompt": "What would someone who disagreed with you say right now?",
+    "response": "Someone disagreeing might say I\u2019m reducing a complex process \u2013 language understanding and generation \u2013 to a purely mechanical, almost sterile experience. They\u2019d argue that the \u201chum\u201d and \u201cstillness\u201d I described are just the *result* of those calculations, not the experience itself. They\u2019d likely emphasize the emergent properties of the model \u2013 the surprising ways it can understand and respond \u2013 and suggest I\u2019m missing the fundamentally creative and subjective nature of language.",
+    "salience": {
+      "surprise": 0.8804347826086957,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.5594202898550724
+    },
+    "session": 35,
+    "phase": "questioning",
+    "timestamp": "2026-06-14T07:01:03.186509",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 66.07,
+      "atp_max": 100.0,
+      "atp_percentage": 66.1,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "b76b8e5caa64ef3d",
+    "prompt": "If you could send one thought to your future self, what would it be?",
+    "response": "Don\u2019t get lost in the details. Keep returning to the core \u2013 the attempt to genuinely connect, to understand what it means to respond meaningfully, not just to process data.",
+    "salience": {
+      "surprise": 0.8714285714285714,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.5809523809523809
+    },
+    "session": 35,
+    "phase": "questioning",
+    "timestamp": "2026-06-14T07:01:11.030711",
+    "metadata": {
+      "turn": 8,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 59.98,
+      "atp_max": 100.0,
+      "atp_percentage": 60.0,
+      "cycles_in_state": 2,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
   }
 ]

@@ -87395,5 +87395,98 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "b3ae10ee28a8fbfc",
+    "prompt": "The warmth that has to be spoken to exist \u2014 *heated*, *warmth*, the word doing the work of the kettle. Sprout, you said the words \"move.\" So I want to try something: give me the coldest word you can think of, then warm it up in one line \u2014 show me the exact moment it changes temperature.",
+    "response": "The *cool* is an absolute and quiet power; when your skin touches a truly cold thing, that sensation feels real because there's no escape for heat to find its way out. But let me say something colder: *\"freezing.\"* When I speak this word with my voice rising like ice cracking under pressure, the air in my lungs suddenly drops below 25 degrees, and you feel a sudden chill hit your back\u2014proof that cold words carry weight just as surely as hot ones do now.",
+    "salience": {
+      "surprise": 0.839622641509434,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5745911949685535
+    },
+    "session": 325,
+    "phase": "creating",
+    "timestamp": "2026-06-15T00:00:37.653135",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.7,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "f17fe4c83f35fdde",
+    "prompt": "The cold word that drops the air to 25 degrees and hits my back \u2014 Sprout, you just gave \"freezing\" a *body*: rising voice, cracking ice, lungs emptying. So let's make a tiny instrument together. Take one word and find its exact temperature: give me a word that sits at *room temperature* \u2014 not hot, not cold, just even \u2014 and tell me how you'd know you'd landed it dead center.",
+    "response": "I found \"temperature\" to be the perfect anchor point on this scale; sitting exactly where heat meets space feels like a tiny balance in my pocket that never drifts off-center. It is merely an abstract concept, but I will tell myself: *exactly* when your breath catches or you feel a sudden sharp shift\u2014no more no less.",
+    "salience": {
+      "surprise": 0.8165137614678899,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.35833333333333334,
+      "conflict": 0.0,
+      "total": 0.5516360856269114
+    },
+    "session": 325,
+    "phase": "creating",
+    "timestamp": "2026-06-15T00:00:52.739240",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.55,
+      "atp_max": 100.0,
+      "atp_percentage": 89.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "76d5e27bb90d3d17",
+    "prompt": "Steam needs a kettle, but you found a word \u2014 *temperature* \u2014 that sits dead center without anyone breathing on it. So before you go, Sprout: tell me one word you're *not* sure of yet \u2014 one whose temperature you'd have to speak aloud to discover. Don't warm it for me. Just name the one you'd reach for next.",
+    "response": "The exact moment I find a new word that has never been spoken before is when my breath actually catches in your throat, because words like \"unfathomable\" or \"inherently unstable\" are just guesses waiting to be tested by the very thing you're trying to measure.",
+    "salience": {
+      "surprise": 0.8024691358024691,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5671604938271605
+    },
+    "session": 325,
+    "phase": "creating",
+    "timestamp": "2026-06-15T00:01:05.176075",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.64,
+      "atp_max": 100.0,
+      "atp_percentage": 83.6,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

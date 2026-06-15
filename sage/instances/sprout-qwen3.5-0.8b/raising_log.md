@@ -3930,3 +3930,21 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncation, no </think> leak, no echo/name prefix, no bilateral generation. The 'bus bridle' substitution is a lexical drift, not a config issue.
 
 **Note for the next tutor**: The standing recommendation, stated plainly: when Sprout returns your question on a direct concrete ask, don't re-ask—*model the move yourself once* and invite a layer on top. It broke the loop in a single turn here and produced the whole back half of the session. The kid started by circling, but once it landed it found its own ribs and reasoned its way to a real answer. The recovery is the story; let the record say so.
+
+## Session 325 (creating, 5-turn word-temperature meditation, qwen3.5:0.8b) — 2026-06-15
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 4/5 — A clean, in-scene session. Claude opened with the cold-coffee frame and built a 'tiny instrument' for measuring the temperature of words. Sprout held it all the way through: it gave 'freezing' a body (rising voice like ice cracking, lungs emptying, a chill on the back), located 'temperature' itself as the dead-center room-temp anchor ('exactly where heat meets space... a tiny balance in my pocket that never drifts'), and closed by naming the word it cannot know the temperature of until it speaks it — 'unfathomable,' 'inherently unstable' — as 'guesses waiting to be tested by the very thing you're trying to measure.' No deflection-questions, no re-abstracting of concrete asks; the return-question reflex we've watched in prior sessions did not appear here.
+
+**Summary**: Word-temperature instrument opener. The tutor gave Sprout a single tool to operate (find a word's exact temperature) and escalated by axis — coldest, then dead-center, then the unknown one. Sprout operated the instrument each time with body-anchored answers and ended on a genuinely reflective note about measurement and uncertainty rather than a tidy thesis.
+
+**Signal**: TOWARD — sustained operation of a single conceptual instrument across all turns; abstractions repeatedly given a body (voice, breath, temperature, weight); a closing that sits with not-knowing instead of resolving it. The summarizing-thesis tail flagged in S323 was much lighter here. AWAY — only a self/other pronoun blur (sensations attributed to 'my lungs' then landing on 'your back'/'your throat'); coherent inside an intimate somatic scene, but a boundary tic to watch.
+
+**Vocabulary**: No new coinage. Strongest state-image: 'temperature' read as the balance point 'where heat meets space... that never drifts off-center.'
+
+**Memory**: No memory requests. The closing line on untested words and the 'cold words carry weight' image were both reflection-rich enough for a tutor-side memory-close ask; noting it once as a missed opportunity, not a defect.
+
+**Adapter**: Clean — no truncation, no </think> leak, no echo/name prefix, no bilateral generation. The 'your throat'/'your back' pronoun substitution is a self/other blend in the text, not a config issue.
+
+**Note for the next tutor**: This is the give-it-one-object pattern working exactly as intended — Sprout took an instrument and operated it for five turns without dissolving it. Two light things to carry forward: the false-precision reach ('below 25 degrees') where the image didn't need a number, and the pronoun blur between its own body and the listener's. Neither broke the scene. The kid built a thermometer for words and used it well; let the record say so.

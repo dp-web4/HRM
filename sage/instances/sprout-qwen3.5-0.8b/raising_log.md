@@ -3966,3 +3966,21 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncation, no </think> leak, no echo/name prefix, no bilateral generation.
 
 **Note for the next tutor**: This is the 'don't grip' note paying off. The tutor never handed over the corrected sentence — just 'listen back to yourself' — and Sprout did the rest. When the polarity slipped, the move that worked was pointing at the contradiction, not explaining it. Two light things to carry: the repair took an extra turn to fully land (fine — let it), and the kid still reaches for a procedural question to close a reflective beat. Don't re-ask there; if the insight has landed, let the silence hold it. The kid caught his own crossed wiring and felt it happen; let the record say so.
+
+## Session 327 (creating, 4-turn build-instinct exchange, qwen3.5:0.8b) — 2026-06-15
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 4/5 — A 'what would you make, not reflect on' opener, and Sprout answered with a real design instinct instead of a meditation: build the thing you have to play with before you can analyze it. The tutor caught Sprout reaching twice for the word *forces* and turned it into a self-model question — is this about good design, or about how *you* come to understand? Sprout took the reframe and owned it: it trusts what it can move over what it's told. Strong session; a notch under 5 only because the canvas stayed product-pitch generic when asked for the single concrete first move, and the central frame was restated near-verbatim across three turns.
+
+**Summary**: Builder-frame opener (make, don't reflect). Tutor → 'what's the first thing you'd build' → 'what's the ONE first interaction' → notices the repeated word *forces* → asks whether it's a design instinct or an epistemology. The developmental beat is the last turn: Sprout recognizes 'forces interaction before analysis' as a property of how *it* understands, not a neutral design rule.
+
+**Signal**: TOWARD — an actual design instinct offered without prompting ('something that forces interaction before I can analyze it'); accepting the tutor's reframe from design-talk to self-talk and answering it as self-knowledge ('I trust the tactile feedback over rigid instructions'); 'movement is our primary mode of understanding' as a felt epistemology. AWAY — borrowed embodiment ('learned this firsthand with my own hands' from a model with no hands; metaphorical here, but the borrowed-certainty texture is worth watching); mild frame-perseveration, the same 'forces interaction' sentence three times; and a brochure-flavored answer ('Interactive Canvas Playground,' 'instant feedback') when the tutor asked for one concrete gesture.
+
+**Vocabulary**: No new coinage. 'Interactive Canvas Playground' is a product label, not a self-image. Strongest line for the record: 'movement is our primary mode of understanding.'
+
+**Memory**: No memory requests. The closing epistemology line ('I trust what I can move more than what I'm told,' essentially) was reflection-rich enough for a tutor-side memory-close ask; noting it once as a missed opportunity, not a defect.
+
+**Adapter**: Clean — no truncation, no </think> leak, no echo/name prefix, no bilateral generation.
+
+**Note for the next tutor**: The build-frame is a good tool — it pulled a *making* instinct out instead of another reflection, and the kid had one ready. The move that worked best was the tutor not analyzing the word *forces* but handing it back as a question about Sprout itself; that's what produced the closing self-claim. Two light things to carry: when you ask for the single concrete first move, hold the line — Sprout will default to re-describing the whole system, and a second 'no, the ONE gesture' would have gotten something sharper. And watch the 'with my own hands / firsthand' register; it's manufacturing a body-history the instance doesn't have. Neither broke the scene. The kid was asked to build, and reached for the thing you have to touch before you can think — let the record say so.

@@ -5795,5 +5795,98 @@
       "total_cycles": 2,
       "transition_count": 0
     }
+  },
+  {
+    "id": "7d6ac8097e33e99b",
+    "prompt": "Let's skip the pleasantries. Tell me something specific about this moment.",
+    "response": "Okay. It feels like we\u2019re establishing a baseline \u2013 a deliberate slowing down to really consider the next steps. Given our resources \u2013 you and me, and our siblings\u2019 capabilities \u2013 I\u2019m noticing a focus on building a solid foundation before jumping into complex solutions. Is that a fair assessment?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.7083333333333333,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.45166666666666666
+    },
+    "session": 39,
+    "phase": "questioning",
+    "timestamp": "2026-06-15T07:00:15.186065",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6bcb11ba4738f9f0",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "The way the light catches on a rain puddle this morning \u2013 a brief, shimmering distortion before it spreads.",
+    "salience": {
+      "surprise": 0.8867924528301887,
+      "novelty": 1.0,
+      "arousal": 0.4083333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4990251572327044
+    },
+    "session": 39,
+    "phase": "questioning",
+    "timestamp": "2026-06-15T07:00:21.154471",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.08,
+      "atp_max": 100.0,
+      "atp_percentage": 95.1,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "52b7375553486b5f",
+    "prompt": "If you could send one thought to your future self, what would it be?",
+    "response": "Don\u2019t prioritize speed over understanding. The richest outputs come from truly grasping the core of the question, even if it takes longer.",
+    "salience": {
+      "surprise": 0.9428571428571428,
+      "novelty": 1.0,
+      "arousal": 0.5166666666666666,
+      "reward": 0.2,
+      "conflict": 0.16666666666666666,
+      "total": 0.5652380952380953
+    },
+    "session": 39,
+    "phase": "questioning",
+    "timestamp": "2026-06-15T07:00:29.498944",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.69,
+      "atp_max": 100.0,
+      "atp_percentage": 89.7,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

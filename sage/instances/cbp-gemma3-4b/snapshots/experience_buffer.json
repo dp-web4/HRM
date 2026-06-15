@@ -5733,5 +5733,67 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "b39505b748c2a3f2",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "A dust mote.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.275,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5116666666666666
+    },
+    "session": 38,
+    "phase": "questioning",
+    "timestamp": "2026-06-15T01:00:24.625615",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.63,
+      "atp_max": 100.0,
+      "atp_percentage": 96.6,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "b0a678167888b7f4",
+    "prompt": "What question are you leaving with that you didn't arrive with?",
+    "response": "What constitutes a \u201cdifferent\u201d experience in this context?",
+    "salience": {
+      "surprise": 0.9,
+      "novelty": 1.0,
+      "arousal": 0.5249999999999999,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.525
+    },
+    "session": 38,
+    "phase": "questioning",
+    "timestamp": "2026-06-15T01:00:31.804543",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 91.12,
+      "atp_max": 100.0,
+      "atp_percentage": 91.1,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

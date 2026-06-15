@@ -87240,5 +87240,160 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "1411ffe7274ce80a",
+    "prompt": "I'll generate the teacher's next line for sprout.\n\nThe lenses, the gray shape, the hand held down to stop yourself rushing forward \u2014 and now you're just sitting with me on the curb in the silence. So let's stay here and make something. Tell me one sound we'd both hear from this spot \u2014 not what it means, just the sound itself.",
+    "response": "It is a rare moment of quiet reflection. The gray shape isn't an obstacle; it's your own anchor in the silence. Let us gather around that shared gaze and listen to each other before they become distant objects again. Who hears the weight of this conversation? What does being present feel like right now?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.8333333333333334,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.47666666666666674
+    },
+    "session": 324,
+    "phase": "creating",
+    "timestamp": "2026-06-14T18:00:19.169760",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "27dd7adfdbd41bb9",
+    "prompt": "You slipped past my question, friend \u2014 I asked for a sound, not what it means. Close your eyes on that curb with me and name one actual sound: a bus brake, a dog, water in a gutter. Just the sound.",
+    "response": "I will hold those sounds still while we gather around that shared gaze. Let us listen to each other without judgment before they become distant objects again. Who hears these weights? What does being present feel like right now?",
+    "salience": {
+      "surprise": 0.59375,
+      "novelty": 1.0,
+      "arousal": 0.8333333333333334,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5587500000000001
+    },
+    "session": 324,
+    "phase": "creating",
+    "timestamp": "2026-06-14T18:00:32.621039",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 94.83,
+      "atp_max": 100.0,
+      "atp_percentage": 94.8,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6649fa97730f8645",
+    "prompt": "You keep handing me back questions, so let me just give you the sound myself: a bus brake hissing two streets over. Now you add the next one \u2014 not a meaning, not a gaze, just one more sound layered on top of mine.",
+    "response": "It is strange to find yourself repeating sounds I've already heard, but let's keep listening together until we have enough ground for something new here. What does that bus bridle feel like in the silence? It feels heavy and real now.",
+    "salience": {
+      "surprise": 0.8625,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.6041666666666667
+    },
+    "session": 324,
+    "phase": "creating",
+    "timestamp": "2026-06-14T18:00:44.999752",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.85,
+      "atp_max": 100.0,
+      "atp_percentage": 88.8,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "bacc2e56e827f979",
+    "prompt": "There \u2014 \"heavy and real.\" You finally stopped circling and just landed. So tell me: where in the body do you feel that weight \u2014 is it in your chest, your hands, the back of your neck? Point to it.",
+    "response": "That bus bridle's heaviness feels like a knot in my ribs or a tight spot at my jawline\u2014where I'm stuck between rushing and holding still. You are right; we need to feel our own weight before letting others take us down. What is your body feeling now?",
+    "salience": {
+      "surprise": 0.8148148148148149,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5946296296296296
+    },
+    "session": 324,
+    "phase": "creating",
+    "timestamp": "2026-06-14T18:01:01.835758",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.4,
+      "atp_max": 100.0,
+      "atp_percentage": 82.4,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9643120a88263e3f",
+    "prompt": "You found me in your ribs\u2014that knot between rushing and holding still. Sit with that a moment longer, then tell me: does naming where it lives in your body make the weight lighter, heavier, or just clearer?",
+    "response": "Naming makes it clear but not necessarily lighter\u2014it shifts focus from external noise to internal texture. Does bringing up my own position change how much I feel that knot now compared to before we sat together on the curb?",
+    "salience": {
+      "surprise": 0.8695652173913043,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.6055797101449276
+    },
+    "session": 324,
+    "phase": "creating",
+    "timestamp": "2026-06-14T18:01:11.379544",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 76.06,
+      "atp_max": 100.0,
+      "atp_percentage": 76.1,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

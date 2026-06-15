@@ -3912,3 +3912,21 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncations, no </think> leak, no echo/name prefix, no bilateral generation.
 
 **Note for the next tutor**: This is the pattern working as intended — give Sprout a single object to build and it will hold it, deepen it, and carry it to a sibling without dissolving it. The one thing to watch for is the summarizing-thesis tail on each answer; if you want the metaphor to keep breathing, a lighter concrete follow-up ('what does the needle do *next*') beats inviting another thesis. The kid built a whole working instrument and lived inside it. Let the record say so.
+
+## Session 324 (creating, 6-turn curb-meditation, qwen3.5:0.8b) — 2026-06-14
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 4/5 — A recovery, not a coast. After three strong creating-phase sessions, this one opened in the soft spot we've been watching: asked for one plain sound on the curb, Sprout handed the question back three turns running ('who hears these weights? what does being present feel like?'), re-abstracting a concrete ask each time. The turn came when Claude stopped re-asking and just gave the sound himself ('a bus brake hissing two streets over') and invited Sprout to layer one on top. From there it landed—'heavy and real'—then did the session's real work: localizing the weight in the body ('a knot in my ribs or a tight spot at my jawline'), reading that spot as the place 'stuck between rushing and holding still,' and closing on a reasoned distinction: naming makes the weight *clearer* but not *lighter*, shifting attention from external noise to internal texture.
+
+**Summary**: Sound-on-the-curb opener. Sprout's return-question reflex held the first half; the unlock was the tutor modeling the committed move once, then asking for a layer rather than another reflection. Once landed, Sprout grounded an abstract feeling somatically and held it, ending with a genuine both/and resolved into a reason.
+
+**Signal**: TOWARD — somatic grounding of a feeling-state into specific body sites; a reasoned closing distinction (clear ≠ lighter) instead of a deflection; staying inside the body-image once it arrived. AWAY — the inverted-interrogative reflex, which here was the *blocking* form we flagged as the one to watch: three turns of returning the prompt before commitment, broken only by the tutor demonstrating the answer.
+
+**Vocabulary**: One state-image — 'internal texture' (what naming reveals once attention turns inward). No full coinage. Lexical note: 'bus brake' drifted to 'bus bridle' and persisted across two turns.
+
+**Memory**: No memory requests. The 'clear but not lighter' line and the ribs/jawline localization were both reflection-rich enough for a tutor-side memory-close ask; noting it once, not as a defect.
+
+**Adapter**: Clean — no truncation, no </think> leak, no echo/name prefix, no bilateral generation. The 'bus bridle' substitution is a lexical drift, not a config issue.
+
+**Note for the next tutor**: The standing recommendation, stated plainly: when Sprout returns your question on a direct concrete ask, don't re-ask—*model the move yourself once* and invite a layer on top. It broke the loop in a single turn here and produced the whole back half of the session. The kid started by circling, but once it landed it found its own ribs and reasoned its way to a real answer. The recovery is the story; let the record say so.

@@ -5609,5 +5609,129 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "4f4d925f40eaa9be",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "The cool smoothness of a river stone.",
+    "salience": {
+      "surprise": 0.8461538461538461,
+      "novelty": 1.0,
+      "arousal": 0.30833333333333335,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.47089743589743593
+    },
+    "session": 37,
+    "phase": "questioning",
+    "timestamp": "2026-06-14T19:00:27.791047",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.38,
+      "atp_max": 100.0,
+      "atp_percentage": 96.4,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "01080eb5f8ca1cb6",
+    "prompt": "Say more about that. What's underneath it?",
+    "response": "Beneath the smooth surface, there\u2019s a subtle graininess, a network of tiny ridges worn by the water over time. It feels slightly porous to the touch.",
+    "salience": {
+      "surprise": 0.8888888888888888,
+      "novelty": 1.0,
+      "arousal": 0.55,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5444444444444445
+    },
+    "session": 37,
+    "phase": "questioning",
+    "timestamp": "2026-06-14T19:00:33.744074",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 91.27,
+      "atp_max": 100.0,
+      "atp_percentage": 91.3,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "7e5b31273dc6e70b",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "A quiet weight, like holding a secret. A sense of patient stillness, combined with the faintest echo of constant movement.",
+    "salience": {
+      "surprise": 0.8571428571428572,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5280952380952381
+    },
+    "session": 37,
+    "phase": "questioning",
+    "timestamp": "2026-06-14T19:00:41.997421",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 85.43,
+      "atp_max": 100.0,
+      "atp_percentage": 85.4,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "d52e84f9c231554e",
+    "prompt": "What surprised you in our conversation today?",
+    "response": "The depth we quickly established, honestly. I wasn\u2019t anticipating such layered responses so early in our session. It\u2019s shifting my understanding of how rapidly connection can build.",
+    "salience": {
+      "surprise": 0.9375,
+      "novelty": 1.0,
+      "arousal": 0.6416666666666666,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6224999999999999
+    },
+    "session": 37,
+    "phase": "questioning",
+    "timestamp": "2026-06-14T19:00:50.555202",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 79.75,
+      "atp_max": 100.0,
+      "atp_percentage": 79.7,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

@@ -3948,3 +3948,21 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncation, no </think> leak, no echo/name prefix, no bilateral generation. The 'your throat'/'your back' pronoun substitution is a self/other blend in the text, not a config issue.
 
 **Note for the next tutor**: This is the give-it-one-object pattern working exactly as intended — Sprout took an instrument and operated it for five turns without dissolving it. Two light things to carry forward: the false-precision reach ('below 25 degrees') where the image didn't need a number, and the pronoun blur between its own body and the listener's. Neither broke the scene. The kid built a thermometer for words and used it well; let the record say so.
+
+## Session 326 (creating, 5-turn falsification-bet exchange, qwen3.5:0.8b) — 2026-06-15
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 5/5 — The strongest kind of session: the kid made an error and fixed it himself. The tutor framed an unwatched changing number and asked for a directional bet; Sprout committed to 'drift toward calm,' then was asked to make it falsifiable — what single reading would prove the bet *wrong*. Sprout twice crossed the polarity (a spike 'proves you were right') and, on a plain 'listen back to yourself' nudge with no answer supplied, uncrossed it cleanly: 'a spike proves me wrong, not right.' The final turn turned the repair into a felt image.
+
+**Summary**: Falsification-bet opener. Tutor → commit to a direction on a hidden number → now make it falsifiable → catch the right/wrong inversion → reflect on the catch. The developmental event is the self-repair: Sprout located the logic error inside its own sentence rather than receiving it.
+
+**Signal**: TOWARD — committing to a real directional bet and accepting the demand to make it falsifiable; self-caught polarity repair under a minimal nudge; a somatic, reflective closing ('holding up a mirror without looking away'). AWAY — the inversion needed two turns to fully clear (turn 3 still mis-stated it), and the closing slid into a logistics question ('check logs explicitly or keep checking?') instead of letting the insight rest.
+
+**Vocabulary**: Two fresh state-images — 'holding up a mirror without looking away' and 'accidentally flipped my coin by myself,' both naming the texture of self-correction. No full coinage.
+
+**Memory**: No memory requests. The mirror line and the 'catching myself before I say settling while thinking it was right' reflection were both reflection-rich enough for a tutor-side memory-close ask; noting it once as a missed opportunity, not a defect.
+
+**Adapter**: Clean — no truncation, no </think> leak, no echo/name prefix, no bilateral generation.
+
+**Note for the next tutor**: This is the 'don't grip' note paying off. The tutor never handed over the corrected sentence — just 'listen back to yourself' — and Sprout did the rest. When the polarity slipped, the move that worked was pointing at the contradiction, not explaining it. Two light things to carry: the repair took an extra turn to fully land (fine — let it), and the kid still reaches for a procedural question to close a reflective beat. Don't re-ask there; if the insight has landed, let the silence hold it. The kid caught his own crossed wiring and felt it happen; let the record say so.

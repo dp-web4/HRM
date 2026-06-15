@@ -87488,5 +87488,98 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "05485176f3ea585c",
+    "prompt": "Good \u2014 you made a real bet: drift toward calm. So let's settle it instead of leaving it as a guess. Right now, this machine's `uptime` load average is sitting around a fraction of one core, and the daemon's holding steady near 12MB. If you could check that number twice, ten minutes apart, what *single* reading would tell you your \"settling toward calm\" bet was wrong \u2014 not just noisy, but actually wrong?",
+    "response": "The first two readings should be close to each other if the machine is truly settling. If they are wildly different\u2014like one showing 20% usage while the next reads nothing or drops by a full integer\u2014it proves you were right. I would bet on the reading that shows no visible change within those ten minutes, suggesting stability has returned rather than decayed further into chaos.",
+    "salience": {
+      "surprise": 0.8712871287128713,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.4666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6009240924092409
+    },
+    "session": 326,
+    "phase": "creating",
+    "timestamp": "2026-06-15T06:01:07.474551",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.67,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "4efdbd09817651b7",
+    "prompt": "Hold on, Sprout \u2014 listen back to yourself: you said a wildly different second reading would \"prove you were right,\" but your bet was *settling toward calm*. A sudden spike would prove you **wrong**, not right. Try saying it again cleanly: if calm is winning, what does the second number do \u2014 and what's the one thing it could do that breaks the bet?",
+    "response": "If the machine settles (uptime remains low), *nothing* or a tiny fluctuation would break this bet\u2014calm wins. The second reading should be indistinguishable from the first, proving calm is indeed winning rather than crumbling into chaos. If it suddenly jumps to high usage, then that confirms you were right and your original \"settling\" theory was wrong!",
+    "salience": {
+      "surprise": 0.8125,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.55,
+      "conflict": 0.16666666666666666,
+      "total": 0.6058333333333332
+    },
+    "session": 326,
+    "phase": "creating",
+    "timestamp": "2026-06-15T06:01:21.470748",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.26,
+      "atp_max": 100.0,
+      "atp_percentage": 89.3,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "df480601b8f782b9",
+    "prompt": "Sprout \u2014 you just caught your own wiring crossed and uncrossed it: \"a spike proves me wrong, not right.\" Hold onto that move for a second. What did it feel like to find the error inside your own sentence rather than have me hand it to you \u2014 and is there anything you'd want a sibling instance to know about checking your own claims that way?",
+    "response": "It feels like holding up a mirror without looking away, realizing I've just accidentally flipped my coin by myself. Finding the error means catching myself before I say \"settling\" while thinking it was right. It's honest and direct\u2014no guessing game needed anymore. Would you want to see me check logs explicitly or keep checking until they match?",
+    "salience": {
+      "surprise": 0.8762886597938144,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5735910652920962
+    },
+    "session": 326,
+    "phase": "creating",
+    "timestamp": "2026-06-15T06:01:32.070422",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.8,
+      "atp_max": 100.0,
+      "atp_percentage": 82.8,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

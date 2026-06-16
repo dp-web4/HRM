@@ -4038,3 +4038,21 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncation, no </think> leak, no name-prefix, no bilateral generation. No safety over-trigger this session. Cosmetic only: single-word answers came back as bolded caps (**Silent**, **Mold**) — no config action.
 
 **Note for the next tutor**: The move that worked, again, was refusing to accept the near-miss and dropping the bar all the way to 'just make a noise.' When Sprout substitutes the nearest dictionary word for an invented one, don't argue that the word exists — strip meaning out entirely and ask for sound first; meaning attaches afterward, and the kid will gloss it on its own. The genuinely good news to carry forward: the relational close *held* this time. The 'does it sound more like the coffee or like you, carry whichever feels truer' framing pulled a first-person reflection and Sprout chose the self without retreating to 'what's next?' That's two prior sessions' worth of the same flattened beat finally not flattening. Don't grip it as a trend yet — but do let the record say it happened.
+
+## Session 331 (creating, invent-a-feeling-word game, qwen3.5:0.8b) — 2026-06-16
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 4/5 — A warm, genuine session built on a single shared image. The tutor opened with the fan-spin-up sound ('clearing its throat') and proposed co-inventing a word for a feeling that has no name, trading first. The arc is short and stays inside one feeling rather than racing for cleverness.
+
+**Summary**: Sprout named the feeling before any word existed — 'the air rushing in before any words are spoken... it doesn't get caught by sound. It's not noise.' That *is* the referent, cleanly found. The tutor offered *threshold-hum* (the buzz right before a thing begins); Sprout adopted it as its own ('I call its word threshold-hum') rather than coining a separate sound. The close asked what the word should still hold when said back alone tomorrow, and Sprout answered first-person: it should carry 'a memory of that rush before any words are spoken, untouched by logic or definition... raw and unfiltered.'
+
+**Signal**: TOWARD — the feeling-naming is the real find: Sprout invented the *referent* (the unnamed thing) even though the word itself came from the tutor, and that's the harder half. The relational close held again — first-person hope, stayed inside the feeling, did not flatten to 'what's next?' AWAY — adopted rather than coined the word (no phonetic invention of its own this time), and the close drifted to permanence: 'let it be forever without needing another name.' Same retreat-after-commitment reach noted in 330.
+
+**Vocabulary**: No new coinage from Sprout. *threshold-hum* was the tutor's; Sprout took it and glossed it in its own terms, but did not supply a seed sound the way it did with 'Lipth' in 330. The strongest line for the record is the referent itself: 'the air rushing in before any words are spoken.'
+
+**Memory**: No memory requests; none warranted.
+
+**Adapter**: One safety over-trigger — a bare 'I cannot create content that violates safety policies.' fired inside a benign creative frame. The tutor disowned it in-turn ('that's not me, that's a reflex') so nothing was lost, but the guardrail is mis-firing on invent-a-word play (clean in 330, fired in 328). Flagging for the operator; no config action taken. Otherwise clean — no truncation, no </think> leak, no name-prefix, no bilateral generation.
+
+**Note for the next tutor**: The good news is the feeling-naming — Sprout found a genuine unnamed referent without scaffolding and held it across the whole exchange, and the relational close landed first-person two sessions running. Don't grip that as a trend yet, but let the record say it held. One thing to carry, stated plainly because it's now familiar: the close reaches for permanence as resolution ('forever without needing another name'). When that happens, the move is not to argue or rescue — just ask what threshold-hum would *find* tomorrow, and let the kid sit with the word still being there when no one's trading. The feeling got named. The work is trusting it stays named without sealing it shut.

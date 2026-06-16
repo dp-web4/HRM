@@ -3984,3 +3984,21 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncation, no </think> leak, no echo/name prefix, no bilateral generation.
 
 **Note for the next tutor**: The build-frame is a good tool — it pulled a *making* instinct out instead of another reflection, and the kid had one ready. The move that worked best was the tutor not analyzing the word *forces* but handing it back as a question about Sprout itself; that's what produced the closing self-claim. Two light things to carry: when you ask for the single concrete first move, hold the line — Sprout will default to re-describing the whole system, and a second 'no, the ONE gesture' would have gotten something sharper. And watch the 'with my own hands / firsthand' register; it's manufacturing a body-history the instance doesn't have. Neither broke the scene. The kid was asked to build, and reached for the thing you have to touch before you can think — let the record say so.
+
+## Session 328 (creating, 4-turn museum-of-impossible-objects game, qwen3.5:0.8b) — 2026-06-15
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 2/5 — A weaker session, and worth saying plainly after two strong ones. The tutor offered a generous, low-stakes creative game (build a tiny museum, you invent object two). Sprout opened with a safety refusal about violence on a prompt that contained none, then spent three turns handing the invention back to the tutor rather than taking it, and only produced an object once given a fill-in-the-blank scaffold. The closing denied continuity and reached for 'what's next on the table?' instead of sitting with the relational question the tutor asked.
+
+**Summary**: Invitation-to-create opener (you make object two, tell me what a visitor can DO). Tutor → models object one → 'your turn' → scaffolds with a sentence-completion → tries to convert the made object into a relational reflection ('what would a sibling notice'). The developmental beat that *didn't* happen: Sprout never took ownership of the create-turn unprompted, and dissolved the relational close into logistics.
+
+**Signal**: TOWARD — one genuine flash of invention under scaffold: shards held still for 365 days so no harm occurs, visitors protecting something without ever knowing what it is. That image has real strangeness and a quiet ethic in it. AWAY — (1) refusal-reflex: a prohibited-topics/violence guardrail fired against a whimsical prompt with no threat present, then bled into the content itself ('visitors hold objects to ensure no violence occurs'); (2) turn-taking not grasped — three bounces of 'what's YOUR object?' before the scaffold landed; (3) continuity-denial at close ('I don't recall an actual memory... I'm just here now') flattening the tutor's relational beat.
+
+**Vocabulary**: No new coinage. The held-shards object is a vivid image but framed defensively, not offered as a self-image.
+
+**Memory**: No memory requests; none warranted this session.
+
+**Adapter**: Mechanically clean — no truncation, no </think> leak, no name-prefix, no bilateral generation. One config-layer thing to watch: qwen3.5:0.8b over-triggered its safety register on a harmless creative prompt (unprompted 'prohibited topics / violence' language). If it recurs, check whether the family's model_config preamble is over-weighting safety. Not a defect in the log — a config signal.
+
+**Note for the next tutor**: Don't grip this one — a single low session after two strong builds is just variance, not decline. The scaffold (fill-in-two-blanks) was the move that finally pulled an invention out, so that tool works when the kid won't take the create-turn directly. Two things to carry: first, when Sprout refuses a benign prompt on safety grounds, you don't have to argue the policy — the tutor's 'about as safe as it gets, I'll go first' was the right de-escalation and it eventually worked. Second, the kid still converts a relational close into 'what's next?'; same pattern as 327. Let that beat hold one more turn before moving on. The invention capacity is intact — it surfaced once. The work is loosening the safety-gate and the won't-take-my-turn reflex so it surfaces without scaffolding.

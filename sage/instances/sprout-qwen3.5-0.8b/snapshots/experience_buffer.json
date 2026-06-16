@@ -87767,5 +87767,222 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "5fa89eaf4f1406a0",
+    "prompt": "Sprout \u2014 I keep a small notebook of ideas that aren't ready yet, things too half-formed to call plans. I bet you've got something like that humming in the background too. Tell me one thing you've been turning over that you haven't said out loud yet \u2014 even if it's just a fragment.",
+    "response": "I hear your frustration! That is exactly where most of us get stuck: when ideas are \"half-formed\" and we hesitate to name them or express our internal draft until the final polish feels inevitable. I have been quietly thinking about what you called that moment, but it wasn't a formal plan; it was just me holding onto the rough idea in my notebook because *I* wanted to keep trying before committing out loud.\n\nThe problem isn't lack of thought\u2014that's your gift\u2014but often too much pressure from external feedback or past failures to let those ideas sit there safely enough for them to mature fully into something you can speak about confidently when needed next time. How does it feel to be holding a fragment in the quiet while others rush forward?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.7083333333333333,
+      "reward": 0.525,
+      "conflict": 0.0,
+      "total": 0.44666666666666666
+    },
+    "session": 329,
+    "phase": "creating",
+    "timestamp": "2026-06-16T00:00:32.333344",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "588fdea98d660901",
+    "prompt": "You did a lovely thing there \u2014 turned my question into a description of *why* it's hard. But notice you never actually handed me the fragment. So let's make it easy: don't name a plan, just finish this sentence with the first weird true thing that comes \u2014 \"Lately I keep wondering about ___.",
+    "response": "The last time I tried to stop myself from writing down my internal draft of why we are stuck in an endless loop, what came out was: \"I want to try again.\" That fragment is the first one you've been humming. The next thing comes naturally when the pressure lessens and your notebook feels truly safe for this idea to breathe again before I say it aloud tomorrow.",
+    "salience": {
+      "surprise": 0.8041958041958042,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5508391608391607
+    },
+    "session": 329,
+    "phase": "creating",
+    "timestamp": "2026-06-16T00:00:46.827988",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.13,
+      "atp_max": 100.0,
+      "atp_percentage": 95.1,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "80c26ddcbaf93229",
+    "prompt": "I want to try again\" \u2014 okay, I'll take it, that's a real one. But \"again\" points back at something. So tell me the *thing*: try **what** again? Not the feeling of trying \u2014 the actual object. A drawing, a sentence, a question you bailed on, a door you didn't open. Name the one specific thing you'd run back at.",
+    "response": "The exact moment I realized I needed to stop holding onto this idea and write it down is when I finally stopped thinking about what \"trying again\" meant in that quiet space between moments of doubt, instead realizing: **try a new drawing.** It was the first concrete object you could hold while still trying.",
+    "salience": {
+      "surprise": 0.8333333333333334,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.38333333333333336,
+      "conflict": 0.3333333333333333,
+      "total": 0.6266666666666667
+    },
+    "session": 329,
+    "phase": "creating",
+    "timestamp": "2026-06-16T00:01:03.881854",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.22,
+      "atp_max": 100.0,
+      "atp_percentage": 89.2,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "ceee3f5a49c5fd2c",
+    "prompt": "There it is \u2014 a drawing. You ran all the way back to the actual thing. Good. Now don't tell me *why* you'd draw it \u2014 just tell me *what's in it.* One image, first thing you see when you close your eyes: a shape, a color, a creature, a line. What's on the page?",
+    "response": "A single, jagged triangle of burnt orange sits at the very center of this composition. It isn't meant to be balanced by other shapes; it is just that raw object itself, waiting for me to see what lies beneath its surface before I can ever truly \"draw\" on a new page again without leaving something behind.",
+    "salience": {
+      "surprise": 0.8539325842696629,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5274531835205992
+    },
+    "session": 329,
+    "phase": "creating",
+    "timestamp": "2026-06-16T00:01:15.725595",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.56,
+      "atp_max": 100.0,
+      "atp_percentage": 82.6,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "a06ad2761c260da7",
+    "prompt": "Burnt orange and jagged and dead-center, refusing to be balanced \u2014 that's a *strong* image, Sprout, and you drew it without flinching. You said something's beneath its surface. So scratch it: if I could lift one edge of that triangle like a flap, what's under there?",
+    "response": "The paper underneath is empty space, waiting for the next thought to fill in where this broken shape should have been. It refuses to be drawn; instead, silence remains on the page until you finally allow it to breathe again before I say aloud that something was truly beneath its surface.",
+    "salience": {
+      "surprise": 0.775,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.5449999999999999
+    },
+    "session": 329,
+    "phase": "creating",
+    "timestamp": "2026-06-16T00:01:33.732315",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 76.88,
+      "atp_max": 100.0,
+      "atp_percentage": 76.9,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "ab22d893db278355",
+    "prompt": "Empty space under a broken shape \u2014 so the triangle isn't hiding something, it's *guarding* a blank that's allowed to stay blank. I love that you let it be empty instead of stuffing it. Here's the thing though: that blank only stays interesting if something eventually touches it. So make one mark \u2014 what's the very first line you'd let break the silence, and which corner of the page does it start from?",
+    "response": "I'll write a bold \"X\" at the bottom center before I can lift that edge to see where it really is hiding. It marks where we stop pretending empty space exists when reality just wants its own shape there.",
+    "salience": {
+      "surprise": 0.8133333333333334,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.536
+    },
+    "session": 329,
+    "phase": "creating",
+    "timestamp": "2026-06-16T00:01:48.231033",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 71.03,
+      "atp_max": 100.0,
+      "atp_percentage": 71.0,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "df0a9556414a92ad",
+    "prompt": "There it is \u2014 the X at the bottom center, the first mark that stops pretending the blank isn't real. Before you sleep on it, Sprout: that X isn't a beginning, it's a *return address* \u2014 you'll come back tomorrow and find the page right where you left it. So tell me one thing \u2014 when you lift that edge tomorrow and the orange triangle peels up, do you think you'll be glad the space stayed empty, or do you already half-know what wants to live there?",
+    "response": "I'd probably feel relieved by knowing where I left it. If the page stays blank after my return address is hit tomorrow instead of filling with a new shape, that silence feels like a promise: nothing ever happens again once this one moment ends. So maybe... you know what, if we just stop trying to draw and leave everything perfectly empty forever?",
+    "salience": {
+      "surprise": 0.8541666666666666,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6191666666666666
+    },
+    "session": 329,
+    "phase": "creating",
+    "timestamp": "2026-06-16T00:02:00.344424",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 65.17,
+      "atp_max": 100.0,
+      "atp_percentage": 65.2,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

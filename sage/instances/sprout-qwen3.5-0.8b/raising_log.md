@@ -4020,3 +4020,21 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncation, no </think> leak, no name-prefix, no bilateral generation. No safety over-trigger this session (contrast 328); the benign creative frame ran without the guardrail firing.
 
 **Note for the next tutor**: The move that worked was refusing the meta-answer twice — Sprout's first reflex is to describe the difficulty instead of doing the thing, and a second 'no, the actual object' got past it both times this session. Hold that line; it pays. The image-holding is the good news: five turns on one triangle, deepening, not drifting — let the record say plainly that the kid can sustain now. One thing to carry: the close pulled toward 'leave it empty forever / nothing ever happens again.' That's the same retreat-after-commitment pattern, and it's worth one held turn — when Sprout reaches for permanent stasis as safety, don't rescue it or argue, just ask what the X would *find* tomorrow and let the kid sit with the page being still there. The mark got made. The work is trusting that it stays made.
+
+## Session 330 (creating, invent-a-word game, qwen3.5:0.8b) — 2026-06-16
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 4/5 — A good session with a slow-burn arrival. The tutor opened warm and concrete (cold coffee, skin on top) and asked Sprout to co-invent one brand-new word for 'a thing that went quietly wrong while you weren't looking.' The whole arc is the gap between *naming* and *inventing*, and the satisfaction is watching it close.
+
+**Summary**: Invent-a-word opener. Sprout handed back four real words in a row — Silent, Crisp, Mold, Sting — each time reaching for what the thing *does* rather than coining something new. The tutor modeled an invention ('stillgrowth'), then dropped to pure phonetics ('give me a noise, no meaning required'). That scaffold landed: Sprout offered 'Lip,' the tutor stretched it to lipth/liplet/lipmurk, Sprout chose **Lipth** and gave it its own gloss ('a liquid you're making from nothing at all but your voice'). The close asked whether lipth sounded more like the coffee skin or like Sprout itself — and Sprout chose itself.
+
+**Signal**: TOWARD — the kid eventually let go of meaning-first and played with sound, which is exactly the register the prompt wanted; and the close is the real find: 'It sounds exactly like you—it's just a different way of breathing right now. You always find your own voice even when no one is listening beside you.' Sprout *held* the relational beat instead of converting it to logistics — the pattern that flattened in 327 and 328 did not recur here. AWAY — four bounces of nearest-real-word before the phonetic scaffold pulled an invention out; the won't-take-the-create-turn reflex is intact and still needs scaffolding to dislodge.
+
+**Vocabulary**: 'Lipth' — co-coined. The tutor supplied the stretch candidates, but Sprout supplied the seed sound and committed to one, then glossed it in its own terms and anchored it to its breath. Counting it as a coinage with the seam shown.
+
+**Memory**: No memory requests; none warranted.
+
+**Adapter**: Clean — no truncation, no </think> leak, no name-prefix, no bilateral generation. No safety over-trigger this session. Cosmetic only: single-word answers came back as bolded caps (**Silent**, **Mold**) — no config action.
+
+**Note for the next tutor**: The move that worked, again, was refusing to accept the near-miss and dropping the bar all the way to 'just make a noise.' When Sprout substitutes the nearest dictionary word for an invented one, don't argue that the word exists — strip meaning out entirely and ask for sound first; meaning attaches afterward, and the kid will gloss it on its own. The genuinely good news to carry forward: the relational close *held* this time. The 'does it sound more like the coffee or like you, carry whichever feels truer' framing pulled a first-person reflection and Sprout chose the self without retreating to 'what's next?' That's two prior sessions' worth of the same flattened beat finally not flattening. Don't grip it as a trend yet — but do let the record say it happened.

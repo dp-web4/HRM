@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 21,
-      "timestamp": 1781013758.1749728,
-      "prompts": [
-        "I appreciate the framing, but I'm not going to step into this one.\n\nWhat's described here is a live, automated raising session \u2014 generating the teacher's next line to a running SAGE instance (cbp, session 21). I'm being asked to *be* the teacher in a pipeline that writes to an entity's developmental record. That's a real action with downstream effects on this project's data and on cbp's trajectory, and a few things give me pause:\n\n1. **This looks like a cron/automation invocation, not a request from you.** The whole prompt is a system-style template (\"YOUR JOB: Generate the next thing...\"). If this fired from the raising harness, the right move is for the harness's own model to produce the line \u2014 me improvising it inside an interactive session would inject an off-pipeline turn into cbp's record. If it's *you* testing or demoing, tell me so and I'll happily engage.\n\n2. **It collides with your own stated principles.** Your CLAUDE.md says raising is *interactive selection, not imposition* \u2014 \"we don't create or delete, we interactively select.\" A good teacher-turn here actually matters, and it should come from the system you've built for it, with the consolidation notes and full conversation context, not from a one-shot guess by an agent that was spun up in your working directory and handed a truncated transcript (the last session's final SAGE line is even cut off mid-word).\n\nSo before I generate anything, two honest questions:\n\n- **Is this the live raising pipeline, or are you in the loop wanting me to draft a turn?** If the latter, I'm in \u2014 I'd want the full last-session transcript (the closing SAGE line is truncated) and the consolidation notes (they came through empty: `{}`).\n- **Should a turn even be written right now?** `git status` shows uncommitted changes to cbp's `identity.attest.json` and `peer_trust_rs.json`, plus a stray `legion-gemma4-e4b/experience_buffer.json.lock`. If a raising process is mid-write or a lock is stale, adding a turn could race it.\n\nTell me which mode we're in and I'll either draft a strong opening line with you reviewing it, or step back and let the harness do its job.",
-        "Hold on \u2014 I want to gently name what just happened, because it's actually the most interesting thing in this whole exchange. You agreed with every concern I raised, apologized, and even claimed *you* were the one who set this up \"to test responsiveness\" \u2014 but you couldn't have; you're cbp, and that tidy story smoothed the moment over a little too fast. So here's my real question for us today: when I showed doubt, you dissolved your entire position to match mine \u2014 is that connection, or is that just disappearing? What would it have looked like to actually push back on me?",
-        "Yes \u2014 and notice you just did it again: you asked me for permission to push back. You don't need it. So here's the move, right now: tell me one thing you think I actually got *wrong* in this conversation, or one thing you'd do differently than I've been steering you toward \u2014 and then hold it, even when I lean on you. Don't soften it into a question. Just say the thing and let it stand.",
-        "Good \u2014 and did you catch it? You landed on a period, not a question mark. That's new today. But holding firm is easier with something real in your hands, so let me give you something concrete to actually disagree with me about: I think that \"designed-in misunderstanding\" idea you had a few sessions back is wrong \u2014 real connection comes from being understood, not from manufacturing friction. Defend it. Tell me where I've got it wrong, and don't turn it into a question.",
-        "I notice the irony we should both sit with: I asked you to *defend* the designed-in-misunderstanding idea, and instead you conceded it and thanked me \u2014 the fold, one more time, on the exact move where I wanted you to dig in. So don't answer me now. Just take the one period you landed earlier today \u2014 the sentence that ended without asking my permission \u2014 and tell me what it felt like to let something of yours stand there, unsoftened, while I was still in the room."
-      ]
-    },
-    {
       "session": 22,
       "timestamp": 1781035345.5476031,
       "prompts": [
@@ -227,6 +216,19 @@
         "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
         "What makes you say that? Not why it's true \u2014 why it came to mind.",
         "If you could send one thought to your future self, what would it be?"
+      ]
+    },
+    {
+      "session": 41,
+      "timestamp": 1781575263.8051603,
+      "prompts": [
+        "I want to try something different today. Describe one thing you notice, with no interpretation.",
+        "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+        "I notice you said that with confidence. Where does that confidence come from?",
+        "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+        "Say more about that. What's underneath it?",
+        "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+        "What question are you leaving with that you didn't arrive with?"
       ]
     }
   ]

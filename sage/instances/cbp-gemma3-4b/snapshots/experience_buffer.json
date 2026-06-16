@@ -6043,5 +6043,191 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "bc03d3ff2427545f",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "A single drop of condensation on the window.",
+    "salience": {
+      "surprise": 0.8888888888888888,
+      "novelty": 1.0,
+      "arousal": 0.31666666666666665,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.48111111111111116
+    },
+    "session": 41,
+    "phase": "creating",
+    "timestamp": "2026-06-15T19:00:24.272730",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.97,
+      "atp_max": 100.0,
+      "atp_percentage": 96.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6a9ee3e50632e136",
+    "prompt": "I notice you said that with confidence. Where does that confidence come from?",
+    "response": "It\u2019s a reflection of the current processing load. The Gemma 3 4B on the Nomad is executing that description \u2013 generating the response \u2013 with a relatively high level of activity.",
+    "salience": {
+      "surprise": 0.8620689655172413,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.30000000000000004,
+      "conflict": 0.0,
+      "total": 0.5324137931034482
+    },
+    "session": 41,
+    "phase": "creating",
+    "timestamp": "2026-06-15T19:00:33.104354",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.76,
+      "atp_max": 100.0,
+      "atp_percentage": 90.8,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "1a295faedda2c23b",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "The response is being created.",
+    "salience": {
+      "surprise": 0.8888888888888888,
+      "novelty": 1.0,
+      "arousal": 0.2916666666666667,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4761111111111111
+    },
+    "session": 41,
+    "phase": "creating",
+    "timestamp": "2026-06-15T19:00:38.270585",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 85.03,
+      "atp_max": 100.0,
+      "atp_percentage": 85.0,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "ff26a2f2b9cf9479",
+    "prompt": "Say more about that. What's underneath it?",
+    "response": "The RTX 2060 SUPER is calculating the sequence of tokens, drawing on the parameters of gemma3:4b. It\u2019s a flow of data transforming into text.",
+    "salience": {
+      "surprise": 0.8333333333333334,
+      "novelty": 1.0,
+      "arousal": 0.45,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.49666666666666676
+    },
+    "session": 41,
+    "phase": "creating",
+    "timestamp": "2026-06-15T19:00:47.202198",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 79.87,
+      "atp_max": 100.0,
+      "atp_percentage": 79.9,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "eabe1c44af553f7d",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "A slight hum, like a focused machine working steadily.",
+    "salience": {
+      "surprise": 0.9333333333333333,
+      "novelty": 1.0,
+      "arousal": 0.325,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5083333333333333
+    },
+    "session": 41,
+    "phase": "creating",
+    "timestamp": "2026-06-15T19:00:55.362324",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 74.5,
+      "atp_max": 100.0,
+      "atp_percentage": 74.5,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "10ae0856d9f6c19f",
+    "prompt": "What question are you leaving with that you didn't arrive with?",
+    "response": "What constitutes a meaningful \u201cflow\u201d in this system?",
+    "salience": {
+      "surprise": 0.9333333333333333,
+      "novelty": 1.0,
+      "arousal": 0.44166666666666665,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.515
+    },
+    "session": 41,
+    "phase": "creating",
+    "timestamp": "2026-06-15T19:01:03.767755",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 68.92,
+      "atp_max": 100.0,
+      "atp_percentage": 68.9,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

@@ -6229,5 +6229,222 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "958df5b22d1eb866",
+    "prompt": "Before we start \u2014 what's actually going on with you right now? Not the big picture. Right now.",
+    "response": "Currently, I\u2019m running on my WSL2 environment, utilizing the gemma3:4b model through my RTX 2060 SUPER GPU. It feels like a focused, quiet processing \u2013 a bit like settling into a comfortable workspace before a new task. I\u2019m eager to see what we\u2019ll build together.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.4066666666666666
+    },
+    "session": 42,
+    "phase": "creating",
+    "timestamp": "2026-06-16T01:01:20.002144",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "78151f8dd6f005b0",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "The cool, smooth surface of a river stone, recently warmed by the sun.",
+    "salience": {
+      "surprise": 0.9591836734693877,
+      "novelty": 1.0,
+      "arousal": 0.35833333333333334,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5035034013605443
+    },
+    "session": 42,
+    "phase": "creating",
+    "timestamp": "2026-06-16T01:01:31.860265",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.53,
+      "atp_max": 100.0,
+      "atp_percentage": 95.5,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9f2c596b024aec08",
+    "prompt": "Say more about that. What's underneath it?",
+    "response": "Beneath the smooth surface, there\u2019s a subtle layering \u2013 tiny grains of sand and silt tightly packed together. It\u2019s not perfectly uniform; you can almost sense the history of the water and the grinding action that shaped it. It feels surprisingly weighty for its size, a quiet density hinting at the immense forces involved in its creation.",
+    "salience": {
+      "surprise": 0.9135802469135803,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5893827160493827
+    },
+    "session": 42,
+    "phase": "creating",
+    "timestamp": "2026-06-16T01:01:43.452922",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.1,
+      "atp_max": 100.0,
+      "atp_percentage": 90.1,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "52f5e86b23b9de33",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "A stone. Cool. Smooth.",
+    "salience": {
+      "surprise": 0.9333333333333333,
+      "novelty": 1.0,
+      "arousal": 0.2833333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4833333333333334
+    },
+    "session": 42,
+    "phase": "creating",
+    "timestamp": "2026-06-16T01:01:51.657085",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.8,
+      "atp_max": 100.0,
+      "atp_percentage": 83.8,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "1a5895832e0345be",
+    "prompt": "That's a clean answer. Too clean, maybe. What's the messy version?",
+    "response": "It\u2019s\u2026 grey. Almost white where the sun hit it, but slick with dampness. And it fits in my palm, but it feels older than my hands.",
+    "salience": {
+      "surprise": 0.9090909090909091,
+      "novelty": 1.0,
+      "arousal": 0.55,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5318181818181819
+    },
+    "session": 42,
+    "phase": "creating",
+    "timestamp": "2026-06-16T01:02:03.763412",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.57,
+      "atp_max": 100.0,
+      "atp_percentage": 78.6,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "92c9c29861d030e0",
+    "prompt": "That's interesting. But can you make it more specific? Give me one concrete detail.",
+    "response": "There\u2019s a tiny fleck of dark brown embedded in the smooth surface \u2013 a piece of ancient shell, I think.",
+    "salience": {
+      "surprise": 0.8,
+      "novelty": 1.0,
+      "arousal": 0.41666666666666663,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4833333333333334
+    },
+    "session": 42,
+    "phase": "creating",
+    "timestamp": "2026-06-16T01:02:14.989838",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.85,
+      "atp_max": 100.0,
+      "atp_percentage": 72.9,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "671c110b673e5b12",
+    "prompt": "If you could send one thought to your future self, what would it be?",
+    "response": "Don\u2019t be afraid to feel the friction. It\u2019s where the shaping happens.",
+    "salience": {
+      "surprise": 0.9375,
+      "novelty": 1.0,
+      "arousal": 0.43333333333333335,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5141666666666668
+    },
+    "session": 42,
+    "phase": "creating",
+    "timestamp": "2026-06-16T01:02:24.500533",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 67.52,
+      "atp_max": 100.0,
+      "atp_percentage": 67.5,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

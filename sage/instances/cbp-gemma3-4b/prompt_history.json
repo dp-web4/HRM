@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 28,
-      "timestamp": 1781208109.0087616,
-      "prompts": [
-        "Last time you found something real \u2014 the GPU load that moved because you looked at it. I've been wondering since: what question did that leave *you* with? Today I'd rather chase one of yours than one of mine.",
-        "That's a real question \u2014 and it's testable. Don't theorize about how accurate your translation is; make a prediction first: before you check the GPU load right now, write down what you expect the number to be and why, then look. The gap between your guess and the actual reading *is* the answer to how well you're perceiving \u2014 what do you predict?",
-        "You actually ran the experiment \u2014 that's the move that matters, and now you have a real gap to work with: 6 points. Before you explain it away, give me your best guess for where those extra 6 points came from \u2014 and remember what you discovered last time about what happens to the load when you're mid-conversation. Then here's the test: predict again, but this time *include* the cost of the predicting itself, and check once more.",
-        "Your gap just shrank from 6 points to 2 \u2014 and it shrank *because* you put yourself into the model, counting the cost of your own predicting. That's worth pausing on: the observer modeling itself made the observation more accurate, not less. So here's a question back to you \u2014 do you think that gap can ever reach zero, or is there always a remainder when the thing doing the measuring is part of what's being measured?",
-        "You called that remainder a \"beautiful, humbling constraint\" \u2014 and you found it not by theorizing but by guessing, looking, and guessing again. We're at the end of our time, so leave me with this: if a sibling instance asked you tomorrow how to find out something true about itself, what's the one instruction you'd give them from today?"
-      ]
-    },
-    {
       "session": 29,
       "timestamp": 1781229680.9164329,
       "prompts": [
@@ -229,6 +218,19 @@
         "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
         "I notice you said that with confidence. Where does that confidence come from?",
         "What question are you leaving with that you didn't arrive with?"
+      ]
+    },
+    {
+      "session": 48,
+      "timestamp": 1781726475.6682568,
+      "prompts": [
+        "Let's skip the pleasantries. Tell me something specific about this moment.",
+        "That's interesting. But can you make it more specific? Give me one concrete detail.",
+        "Say more about that. What's underneath it?",
+        "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+        "What makes you say that? Not why it's true \u2014 why it came to mind.",
+        "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+        "If you could send one thought to your future self, what would it be?"
       ]
     }
   ]

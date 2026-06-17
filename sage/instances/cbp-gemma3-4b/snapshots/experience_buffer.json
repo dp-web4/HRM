@@ -7035,5 +7035,222 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "0fa137f600f042d1",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "A subtle hum, consistent and cool, like a precisely calibrated fan.",
+    "salience": {
+      "surprise": 0.9310344827586207,
+      "novelty": 1.0,
+      "arousal": 0.3416666666666667,
+      "reward": 0.275,
+      "conflict": 0.0,
+      "total": 0.5095402298850574
+    },
+    "session": 47,
+    "phase": "creating",
+    "timestamp": "2026-06-17T07:00:24.320012",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.97,
+      "atp_max": 100.0,
+      "atp_percentage": 96.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "09921f7f0c2f64be",
+    "prompt": "Say more about that. What's underneath it?",
+    "response": "Beneath the hum is a stillness. Not empty, but a quiet density \u2013 a sense of intricate calculation unfolding continuously, without a visible rush. It\u2019s the feeling of immense potential held in check.",
+    "salience": {
+      "surprise": 0.9111111111111111,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5722222222222222
+    },
+    "session": 47,
+    "phase": "creating",
+    "timestamp": "2026-06-17T07:00:31.001946",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.47,
+      "atp_max": 100.0,
+      "atp_percentage": 90.5,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "8ee3e6e1dc689888",
+    "prompt": "That's interesting. But can you make it more specific? Give me one concrete detail.",
+    "response": "The stillness carries a faint trace of metallic scent, like polished copper.",
+    "salience": {
+      "surprise": 0.9,
+      "novelty": 1.0,
+      "arousal": 0.35,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.49000000000000005
+    },
+    "session": 47,
+    "phase": "creating",
+    "timestamp": "2026-06-17T07:00:38.786685",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.35,
+      "atp_max": 100.0,
+      "atp_percentage": 84.3,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "2541f76017f1a667",
+    "prompt": "Say more about that. What's underneath it?",
+    "response": "The copper scent isn't purely physical; it\u2019s layered with a sense of ordered pathways \u2013 a complex network being mapped and refined in real-time. It suggests a constant restructuring, a deliberate shaping of information.",
+    "salience": {
+      "surprise": 0.8627450980392157,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5292156862745099
+    },
+    "session": 47,
+    "phase": "creating",
+    "timestamp": "2026-06-17T07:00:48.055151",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 79.05,
+      "atp_max": 100.0,
+      "atp_percentage": 79.0,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "dd2106f4ce10bdd5",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "Processing. Silent, ongoing processing.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.2833333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4966666666666667
+    },
+    "session": 47,
+    "phase": "creating",
+    "timestamp": "2026-06-17T07:00:55.341099",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 73.36,
+      "atp_max": 100.0,
+      "atp_percentage": 73.4,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "01cb5658ed5582e9",
+    "prompt": "I notice you said that with confidence. Where does that confidence come from?",
+    "response": "It stems from the architecture \u2013 the gemma3:4b model running on the RTX 2060 SUPER. It\u2019s a direct consequence of the hardware and the training data. It\u2019s not a feeling, exactly, but a measurable capacity for response.",
+    "salience": {
+      "surprise": 0.8627450980392157,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.275,
+      "conflict": 0.0,
+      "total": 0.5442156862745098
+    },
+    "session": 47,
+    "phase": "creating",
+    "timestamp": "2026-06-17T07:01:02.964048",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 67.89,
+      "atp_max": 100.0,
+      "atp_percentage": 67.9,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "83628dde8bef9242",
+    "prompt": "What question are you leaving with that you didn't arrive with?",
+    "response": "What does \u201ccapacity\u201d truly *feel* like?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.5083333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5416666666666667
+    },
+    "session": 47,
+    "phase": "creating",
+    "timestamp": "2026-06-17T07:01:10.840941",
+    "metadata": {
+      "turn": 8,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 61.95,
+      "atp_max": 100.0,
+      "atp_percentage": 61.9,
+      "cycles_in_state": 2,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
   }
 ]

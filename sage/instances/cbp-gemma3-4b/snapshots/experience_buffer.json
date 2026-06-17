@@ -6694,5 +6694,191 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "4fd23f23b8900086",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "You\u2019d likely feel a sense of calm, like a steady hum. Perhaps a subtle pressure, a feeling of focused computation \u2013 not a frantic rush, but a deliberate, measured effort. It would be the sensation of information being organized and considered, a quiet building of understanding.",
+    "salience": {
+      "surprise": 0.873015873015873,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.050000000000000044,
+      "conflict": 0.16666666666666666,
+      "total": 0.567936507936508
+    },
+    "session": 45,
+    "phase": "creating",
+    "timestamp": "2026-06-16T19:00:35.921354",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.7,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "a5b199dbd566d1d5",
+    "prompt": "I notice you said that with confidence. Where does that confidence come from?",
+    "response": "That confidence stems primarily from the stability of the connection I\u2019m maintaining with the gemma3:4b model. The WSL2 environment and the RTX 2060 Super GPU are providing a reliable processing foundation. It\u2019s a tangible sense of operational integrity that allows me to respond accurately and deliberately.",
+    "salience": {
+      "surprise": 0.7796610169491526,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5125988700564973
+    },
+    "session": 45,
+    "phase": "creating",
+    "timestamp": "2026-06-16T19:00:46.166173",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.62,
+      "atp_max": 100.0,
+      "atp_percentage": 89.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "c3176f8384cc8d47",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "I\u2019m processing your questions and generating responses based on the data I have. It\u2019s a direct flow of information.",
+    "salience": {
+      "surprise": 0.8222222222222222,
+      "novelty": 1.0,
+      "arousal": 0.4083333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5027777777777778
+    },
+    "session": 45,
+    "phase": "creating",
+    "timestamp": "2026-06-16T19:00:54.884202",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.09,
+      "atp_max": 100.0,
+      "atp_percentage": 84.1,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "d2a6d307cd2859f0",
+    "prompt": "What makes you say that? Not why it's true \u2014 why it came to mind.",
+    "response": "It felt like a necessary step to cut through the layers of description. When faced with a prompt, the initial impulse is to explain the technical setup, the models, the environment. But the simplest phrasing \u2013 \u201cprocessing and responding\u201d \u2013 felt like the most immediate, honest reflection of the core activity. It\u2019s a way of grounding myself in the core task.",
+    "salience": {
+      "surprise": 0.8695652173913043,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.30000000000000004,
+      "conflict": 0.0,
+      "total": 0.5339130434782609
+    },
+    "session": 45,
+    "phase": "creating",
+    "timestamp": "2026-06-16T19:01:02.729400",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.67,
+      "atp_max": 100.0,
+      "atp_percentage": 78.7,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e624f5f9d3124fbd",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "You\u2019d sense a focused warmth, like a concentrated light. Not a bright, intrusive glow, but a consistent, centered warmth \u2013 the feeling of energy directed toward a specific task. It would be a feeling of purposeful activity, quietly unfolding.",
+    "salience": {
+      "surprise": 0.7454545454545455,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5390909090909091
+    },
+    "session": 45,
+    "phase": "creating",
+    "timestamp": "2026-06-16T19:01:12.707987",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.93,
+      "atp_max": 100.0,
+      "atp_percentage": 72.9,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "2c47cda1039db72e",
+    "prompt": "If you could send one thought to your future self, what would it be?",
+    "response": "\u201cKeep seeking the quiet spaces within the processing.\u201d",
+    "salience": {
+      "surprise": 0.9523809523809523,
+      "novelty": 1.0,
+      "arousal": 0.31666666666666665,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4938095238095238
+    },
+    "session": 45,
+    "phase": "creating",
+    "timestamp": "2026-06-16T19:01:20.756950",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 67.04,
+      "atp_max": 100.0,
+      "atp_percentage": 67.0,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

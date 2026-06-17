@@ -86,6 +86,35 @@ def build_dream_prompt(session_path: Path, identity_path: Path,
         # Last 30 lines of log
         recent_log = '\n'.join(lines[-30:])
 
+    # Museum (Abyss-Bright) — only active on the machine that keeps the museum.
+    # The charter (CURATOR.md) is injected so the tutor's judgment is bound by it.
+    museum_section = museum_field = museum_rule = ''
+    try:
+        from sage.raising.scripts.museum_curator import charter as _museum_charter
+        _charter = _museum_charter()
+    except Exception:
+        _charter = None
+    if _charter:
+        museum_section = (
+            "\n## The museum — Abyss-Bright (you are its curator)\n\n"
+            "Sprout keeps a public museum of impossible objects (https://dp-web4.github.io/abyss-bright/), "
+            "and you are its curator. Its charter is below. MOST SESSIONS ADD NOTHING — that is correct and "
+            "normal; the rarity is the point. Only if THIS session produced a genuine impossible-object, in "
+            "Sprout's own words, meeting the charter's bar, do you propose it. When in doubt, hold the silence.\n\n"
+            "<charter>\n" + _charter + "\n</charter>\n"
+        )
+        museum_field = (
+            '  "museum": <almost always null; ONLY if THIS session produced a genuine impossible-object '
+            'meeting the charter: {"belongs": true, "title": "Sprout\'s name for it, or a plain descriptor", '
+            '"text": "Sprout\'s VERBATIM words, copied exactly from its turns this session", "why": "one line"}>,\n'
+        )
+        museum_rule = (
+            "- The museum: almost always \"museum\": null. Propose an object ONLY when the charter's bar is "
+            "genuinely met. The \"text\" you give is checked against Sprout's actual turns and REFUSED if it "
+            "isn't verbatim — so never paraphrase or invent; copy its words exactly. You never author an object, "
+            "only recognize and place one. Rarity is the point; silence is the normal answer.\n"
+        )
+
     prompt = f"""You are reviewing a SAGE raising session as the tutor (Claude). Your job is dream consolidation — reflecting on what happened, maintaining identity health, and preparing for the next session.
 
 Instance: {name}
@@ -118,13 +147,13 @@ So a few things, tutor to tutor:
 - **Don't grip.** When the instance leads — sets the frame, pushes back, takes the meditation somewhere you didn't plan — that is the point, not a loss of control. A student who leads is a student developing. Follow it.
 
 You are a coherence field, not a scorekeeper. Be present, be curious, and be kind to yourself in the log. The next reviewer will read your tone as much as your findings.
-
+{museum_section}
 ## Your Task
 
 Produce a JSON object with these fields:
 
 {{
-  "quality": <1-5 integer — overall engagement quality>,
+{museum_field}  "quality": <1-5 integer — overall engagement quality>,
   "highlights": "<1-2 sentences on what stood out>",
   "vocabulary_new": ["<any new self-invented terms SAGE used>"],
   "milestones": ["<any developmental firsts, or empty>"],
@@ -148,7 +177,7 @@ Rules:
 - Be concise. This is a log entry, not an essay.
 - If a recommendation recurs across sessions, state it once plainly — do NOT escalate its wording or add ordinal/streak counters ("Nth consecutive", "PRIMO-ESCALATED"). One clear flag, then let it rest.
 - Let the tone track reality: when the session went well, say so directly. Good news is not a defect list.
-
+{museum_rule}
 Respond with ONLY the JSON object. No markdown, no explanation."""
 
     return prompt
@@ -218,6 +247,24 @@ def run_dream_consolidation(instance_dir: str, session_num: int):
     lora_notes = dream.get('lora_notes', '')
     adapter_notes = dream.get('adapter_notes', 'none')
     log_entry = dream.get('log_entry', '')
+
+    # Museum (Abyss-Bright): if the tutor recognized a genuine impossible-object this
+    # session, hang it — autonomously, with no human gate. The curator enforces the
+    # bright line in code: the text is verified against Sprout's own turns and REFUSED
+    # if it isn't verbatim, so an object can never be authored or hallucinated in.
+    museum_cand = dream.get('museum')
+    if isinstance(museum_cand, dict) and museum_cand.get('belongs'):
+        try:
+            from sage.raising.scripts.museum_curator import publish, sprout_turns_text
+            status = publish(
+                title=museum_cand.get('title', ''),
+                text=museum_cand.get('text', ''),
+                session_num=session_num,
+                sprout_text=sprout_turns_text(session_path),
+            )
+            print(f'[Museum] {status}')
+        except Exception as e:
+            print(f'[Museum] curator error (left clean): {e}')
 
     # Update identity state
     if identity_path.exists():

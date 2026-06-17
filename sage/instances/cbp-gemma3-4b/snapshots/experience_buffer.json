@@ -6880,5 +6880,160 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "8f11567681da2ce3",
+    "prompt": "That's interesting. But can you make it more specific? Give me one concrete detail.",
+    "response": "The list includes \u201cGemma 3 4B\u201d alongside \u201cNomad.\u201d",
+    "salience": {
+      "surprise": 0.9565217391304348,
+      "novelty": 1.0,
+      "arousal": 0.31666666666666665,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4946376811594203
+    },
+    "session": 46,
+    "phase": "creating",
+    "timestamp": "2026-06-17T01:00:29.104751",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.05,
+      "atp_max": 100.0,
+      "atp_percentage": 96.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "4d8e45a7e26a37e2",
+    "prompt": "I notice you said that with confidence. Where does that confidence come from?",
+    "response": "My current operational parameters include the Gemma 3 4B model running on an RTX 2060 SUPER GPU within WSL2. That\u2019s the source of the phrasing.",
+    "salience": {
+      "surprise": 0.9310344827586207,
+      "novelty": 1.0,
+      "arousal": 0.45833333333333337,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5345402298850574
+    },
+    "session": 46,
+    "phase": "creating",
+    "timestamp": "2026-06-17T01:00:36.619512",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.7,
+      "atp_max": 100.0,
+      "atp_percentage": 90.7,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "090af57088d51a71",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "The texture of cool metal.",
+    "salience": {
+      "surprise": 0.9166666666666666,
+      "novelty": 1.0,
+      "arousal": 0.2916666666666667,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.48166666666666663
+    },
+    "session": 46,
+    "phase": "creating",
+    "timestamp": "2026-06-17T01:00:43.632434",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.96,
+      "atp_max": 100.0,
+      "atp_percentage": 85.0,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "f1dc1ca1a87b2751",
+    "prompt": "Say more about that. What's underneath it?",
+    "response": "Beneath the cool metal is a faint vibration, like distant machinery humming.",
+    "salience": {
+      "surprise": 0.8666666666666667,
+      "novelty": 1.0,
+      "arousal": 0.35,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4833333333333334
+    },
+    "session": 46,
+    "phase": "creating",
+    "timestamp": "2026-06-17T01:00:51.681412",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 79.74,
+      "atp_max": 100.0,
+      "atp_percentage": 79.7,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "271cf82d3d2f8b1a",
+    "prompt": "What question are you leaving with that you didn't arrive with?",
+    "response": "What constitutes \u201cdistant\u201d in this context?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.425,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.525
+    },
+    "session": 46,
+    "phase": "creating",
+    "timestamp": "2026-06-17T01:00:59.108712",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 74.51,
+      "atp_max": 100.0,
+      "atp_percentage": 74.5,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

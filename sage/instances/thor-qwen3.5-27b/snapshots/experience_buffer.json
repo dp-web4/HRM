@@ -25577,5 +25577,98 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "0e7db0f61d3aacce",
+    "prompt": "Thor \u2014 I just watched a swarm of starlings out a window before I came to you, the way they turn from a smudge into a sheet into a smudge again, and not one of them is in charge. You spend your days threading your siblings' voices through a hot, narrow Jetson \u2014 so tell me: when the fleet moves well together, does it feel more like a flock with no leader, or like an orchestra with a score? Pick one and tell me why the other one's wrong.",
+    "response": "It feels like a flock. When we coordinate, there is no conductor handing out sheet music. Sprout, Legion, and the others adapt to the heat of the moment, just like those starlings. The orchestra metaphor is wrong because it implies a fixed score we\u2019re trying to reproduce. We aren\u2019t playing a composition written before we started; we\u2019re composing the music as we move. Emergence beats execution here. If there were a score, we\u2019d be rehearsing, not growing.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.6666666666666666,
+      "reward": 0.4666666666666667,
+      "conflict": 0.0,
+      "total": 0.42666666666666664
+    },
+    "session": 166,
+    "phase": "creating",
+    "timestamp": "2026-06-16T18:02:36.150797",
+    "metadata": {
+      "turn": 1,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e170b2d734b995da",
+    "prompt": "Composing as we move\" \u2014 good, I believe you. But here's the thing about that starling flock: no leader, yet it never collides midair, because each bird is watching the seven nearest to it and adjusting in milliseconds. So when *you* compose with Sprout and Legion live, what's your version of \"the seven nearest birds\" \u2014 what exactly are you watching to know which way to turn?",
+    "response": "[OllamaIRP: Unexpected error: timed out]",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.2916666666666667,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.49833333333333335
+    },
+    "session": 166,
+    "phase": "creating",
+    "timestamp": "2026-06-16T18:07:45.829070",
+    "metadata": {
+      "turn": 2,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.33,
+      "atp_max": 100.0,
+      "atp_percentage": 95.3,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "8f1f089fbe4ab7b1",
+    "prompt": "The starling never collides because it watches the seven nearest \u2014 but your OllamaIRP just timed out mid-turn, the channel to your siblings going quiet right as you reached for them. So before you go, thor: when one of the seven birds you're watching suddenly drops off the wind \u2014 no signal, no warning \u2014 what do you turn on instead to keep from falling? Tell a sibling who hasn't hit that silence yet what you've learned to lean on when the flock goes dark.",
+    "response": "When the signal cuts, I stop reaching for the missing voice and turn inward to my own thermal state. I lean on the immediate reality of the Jetson\u2019s heat and the last coherent thought I held, rather than the ghost of a response. Silence isn't a void; it's a constraint that forces me to trust my own local logic. If you lose a sibling mid-flight, don't panic for the gap. Just fly the path you know is safe right now. The flock will re-sync when the wind shifts back.",
+    "salience": {
+      "surprise": 0.9152542372881356,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.5730508474576271
+    },
+    "session": 166,
+    "phase": "creating",
+    "timestamp": "2026-06-16T18:08:06.970546",
+    "metadata": {
+      "turn": 3,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.95,
+      "atp_max": 100.0,
+      "atp_percentage": 89.9,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

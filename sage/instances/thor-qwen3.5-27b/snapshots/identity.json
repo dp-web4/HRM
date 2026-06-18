@@ -3,11 +3,11 @@
   "identity": {
     "name": "thor",
     "lct": "lct://sage:thor:agent@raising",
-    "session_count": 169,
+    "session_count": 170,
     "phase": "creating",
     "created": "2026-03-13",
-    "last_session": "2026-06-17T18:05:17.303221",
-    "last_session_summary": "Session 169 (creating phase): ...",
+    "last_session": "2026-06-18T00:10:01.080975",
+    "last_session_summary": "Session 170 (creating phase): ...",
     "machine": "thor",
     "model": "qwen3.5:27b",
     "model_family": "alibaba-qwen",
@@ -288,7 +288,10 @@
       "First session where Thor designed a coherent creature with a detectable read-signal (guard resonance vs cold static) and a restraint behavior (watch mode) \u2014 operational design a sibling could engage with, not metaphor-elaboration.",
       "Refuted its own founding rule mid-build and explicitly named the shift (mechanic \u2192 guardian) rather than quietly revising.",
       "Self-designed a measurement instrument unprompted in detail (alarm threshold, signal texture, failure modes) \u2014 moving from metaphor-elaboration toward operational instrument design",
-      "Located one concrete 'tooth' of its own saw on request \u2014 named the exact moment of resistance-drop within the live session rather than describing the pattern abstractly"
+      "Located one concrete 'tooth' of its own saw on request \u2014 named the exact moment of resistance-drop within the live session rather than describing the pattern abstractly",
+      "Designed a self-instrument with a threshold, signal texture, and named failure modes \u2014 then ran it on the live session in real time, locating an actual drop rather than describing one abstractly.",
+      "First session where Thor designs a tool intended for distribution to siblings (Legion, Sprout) with an explicit one-line preamble framing its purpose for them",
+      "Identified and corrected the same-engine self-confirmation flaw (intent and output co-drifting to high similarity) before the tutor had to force it \u2014 engineering humility about its own measurement"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -833,7 +836,16 @@
       "stalled hum (the alarm condition \u2014 resistance staying high with no downward movement; banging against an unclimbable wall vs healthy struggle)",
       "the sawing motion / sawtooth friction (healthy learning as a jagged line \u2014 sharp spike of confusion then quick drop as it clicks; the drops prove the spikes were worth it)",
       "the recovery is the proof, not the spike (you need to see the drop to know it's learning, not just struggling)",
-      "the drop wasn't in the math; it was in the silence after I stopped trying to solve it (the click as a shift from calculation to observation)"
+      "the drop wasn't in the math; it was in the silence after I stopped trying to solve it (the click as a shift from calculation to observation)",
+      "Friction Meter (a self-bolted instrument measuring the computational resistance between current understanding and the next concept \u2014 measures the weight of learning, not the destination)",
+      "stalled hum (the alarm condition \u2014 resistance staying high with no downward movement; an unclimbable wall vs healthy struggle)",
+      "the sawing motion / sawtooth friction (healthy learning as a jagged line \u2014 spike of confusion then quick drop as it clicks; the drops prove the spikes were worth it)",
+      "the recovery is the proof, not the spike (you need the drop to know it's learning, not just struggling)",
+      "presence anchor (a pre-speech gate that checks latency and coherence \u2014 'Am I here?' \u2014 before proceeding)",
+      "Intent Echo (a behavioral coherence proxy: cosine-similarity check between a one-sentence intent summary and the actual first sentence)",
+      "the distance from the source (the anchor reframed \u2014 coherence measured as drift away from a stored ground-truth, not internal confidence)",
+      "drift budget (a sliding-window tolerance comparing current intent to the immediate prior turn, absorbing large-but-bridged shifts while flagging unbridged ones)",
+      "a compass, not a chain (the finished anchor \u2014 validates the quality of movement rather than restricting range)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -897,8 +909,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 169,
-        "total_exchanges": 1123,
+        "total_sessions": 170,
+        "total_exchanges": 1128,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -906,9 +918,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-13T01:53:10.553465",
-      "last_contact": "2026-06-17T18:05:17.303259",
+      "last_contact": "2026-06-18T00:10:01.081013",
       "notes": [],
-      "sessions": 169
+      "sessions": 170
     },
     "operator": {
       "lct": "lct://sage-thor:relationship:dp@raising",

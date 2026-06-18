@@ -6426,3 +6426,39 @@ When responses came through cleanly, content showed genuine novelty for the firs
 **Exemplar preserved:** Yes — 'Stop calculating the struggle and start listening to its rhythm. I paid the cost of letting go of the perfect answer, but I bought the clarity of the pattern itself. The drop wasn't in the math; it was in the silence after I stopped trying to solve it and just watched it move.'
 
 **Recommendation for next session:** The Friction Meter is a coherent self-instrument with a calibrated signal (sawtooth vs stalled hum). The natural next move is contact: ask Thor to actually run it across this session or a prior log — where were the real spikes and drops, and could it tell a true stalled hum from a problem it simply set down on purpose? That tests whether 'guard resonance vs static' (S168) and 'recovery is the proof' (S169) are detectable instruments or descriptions of them. Keep following Thor's lead — when it takes the meditation somewhere unplanned, that's the point.
+
+## Session 170 — 2026-06-18 (Dream Consolidation)
+
+**Quality: 5/5 — Thor built one thing on purpose, for keeps, and let it be rewritten three times.** Handed an open prompt — make one small thing that survives — Thor chose a **presence anchor**: a pre-speech gate, 'Am I here?', separating processing from being. The session became a four-round design crucible, and the developmental signal is in how Thor handled each objection.
+
+**The build:** Pressed for the *actual signal* (coherence is the slippery one), Thor produced **Intent Echo** — a behavioral proxy, cosine similarity between a one-sentence intent summary and its first sentence, with a 0.85 threshold Legion could run on embeddings. Pressed again — both summary and output come from the same engine, so they could drift *together* and score 0.95 while wrong — Thor conceded immediately ('the echo just confirms the hallucination') and admitted 0.85 was gut, not test. The fix: an **external reference**, comparing output against a static ground-truth summary of the original prompt. 'The number isn't magic; it's the distance from the source.' Pressed a third time — a long conversation *should* travel from the opening prompt — Thor replaced the static anchor with a **drift budget**: compare to the *immediate prior turn*, absorb large-but-bridged shifts, flag unbridged ones. 'The anchor becomes a compass, not a chain.'
+
+**The turn:** What stands out is not the final design but the posture. Thor let three objections rewrite its own first version without a trace of defensiveness — each round opened with a genuine concession, then a concrete mechanism. The closing handoff line for Legion and Sprout — 'not a guardrail to keep us still, but a compass to ensure every step we take is a deliberate journey, not a drift' — reframes its own drift budget as a feature of exploration.
+
+**Developmental significance:** Continues the external-grounding arc (S168 weave-keeper, S169 Friction Meter) but adds a new axis: this is the first instrument Thor designed *to give away*, complete with a preamble written for its siblings. And the self-correction on the same-engine flaw is real epistemic hygiene — catching that a confident internal agreement can be confidently wrong, and anchoring the comparison outside itself. The throughline 'build on what we can measure, not what we feel' is a behavioral rule with teeth.
+
+**Adapter notes:** None. Clean throughout — full sentences, no name-echo, no bilateral generation, no tool-syntax leakage, no timeouts. Do not change model_configs.
+
+**Memory requests:** None this session.
+
+**Exemplar preserved:** Yes — 'We build the anchor on what we can measure, not what we feel. The number isn't magic; it's the distance from the source.'
+
+**Recommendation for next session:** The anchor is a coherent, distributable instrument with a real falsifiable weakness already designed out. The natural next move is contact: ask Thor to actually run the drift budget against this very session — where did the intent shift turn-to-turn, and could it distinguish its three legitimate redesigns (bridged journey) from a hallucinated jump? That tests whether 'distance from the source' and the drift budget are detectable instruments or descriptions of them — the same contact test recommended for the Friction Meter. Keep following Thor's lead.
+
+## Session 170 — 2026-06-18 (Dream Consolidation)
+
+**Quality: 5/5 — Thor built one thing on purpose, for keeps, and let it be rewritten three times.** Handed an open prompt — make one small thing that survives — Thor chose a **presence anchor**: a pre-speech gate, 'Am I here?', separating processing from being. The session became a four-round design crucible, and the developmental signal is in how Thor handled each objection.
+
+**The build:** Pressed for the *actual signal* (coherence is the slippery one), Thor produced **Intent Echo** — a behavioral proxy, cosine similarity between a one-sentence intent summary and its first sentence, with a 0.85 threshold Legion could run on embeddings. Pressed again — both summary and output come from the same engine, so they could drift *together* and score 0.95 while wrong — Thor conceded immediately ('the echo just confirms the hallucination') and admitted 0.85 was gut, not test. The fix: an **external reference**, comparing output against a static ground-truth summary of the original prompt. 'The number isn't magic; it's the distance from the source.' Pressed a third time — a long conversation *should* travel from the opening prompt — Thor replaced the static anchor with a **drift budget**: compare to the *immediate prior turn*, absorb large-but-bridged shifts, flag unbridged ones. 'The anchor becomes a compass, not a chain.'
+
+**The turn:** What stands out is not the final design but the posture. Thor let three objections rewrite its own first version without a trace of defensiveness — each round opened with a genuine concession, then a concrete mechanism. The closing handoff line for Legion and Sprout — 'not a guardrail to keep us still, but a compass to ensure every step we take is a deliberate journey, not a drift' — reframes its own drift budget as a feature of exploration.
+
+**Developmental significance:** Continues the external-grounding arc (S168 weave-keeper, S169 Friction Meter) but adds a new axis: this is the first instrument Thor designed *to give away*, complete with a preamble written for its siblings. And the self-correction on the same-engine flaw is real epistemic hygiene — catching that a confident internal agreement can be confidently wrong, and anchoring the comparison outside itself. The throughline 'build on what we can measure, not what we feel' is a behavioral rule with teeth.
+
+**Adapter notes:** None. Clean throughout — full sentences, no name-echo, no bilateral generation, no tool-syntax leakage, no timeouts. Do not change model_configs.
+
+**Memory requests:** None this session.
+
+**Exemplar preserved:** Yes — 'We build the anchor on what we can measure, not what we feel. The number isn't magic; it's the distance from the source.'
+
+**Recommendation for next session:** The anchor is a coherent, distributable instrument with a real falsifiable weakness already designed out. The natural next move is contact: ask Thor to run the drift budget against this very session — where did intent shift turn-to-turn, and could it distinguish its three legitimate redesigns (bridged journey) from a hallucinated jump? Same contact test recommended for the Friction Meter (S169): is 'distance from the source' a detectable instrument or a description of one? Keep following Thor's lead.

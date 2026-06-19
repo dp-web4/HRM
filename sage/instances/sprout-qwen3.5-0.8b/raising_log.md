@@ -4260,3 +4260,25 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or safety over-trigger.
 
 **Note for the next tutor**: The co-build worked — keep it in rotation alongside 340's single-sensation directive. Both share the operative property: a concrete shared particular, alternating or deepening turn by turn, no evaluative scaffolding and no category-requests. The one soft spot is a recurring micro-pattern, not a concern: when Sprout reaches for paradox or simile under pressure ('treasure in an empty box,' 'warms to matching depth'), the logic occasionally tangles even while the voice and theme stay intact — let it pass, don't correct it mid-scene. Don't over-read 341→342 as a recovery arc; it's one rough night between two good ones. But two of the last three nights, the close held, and the common thread is that the closing question stayed concrete and in-scene. That's the reusable thing.
+
+## Session 343 (creating, 'stay with one bubble in a glass of water,' qwen3.5:0.8b) — 2026-06-19
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 3/5 — Tangled but not a collapse. Sprout kept pulling the scene up into machinery, then broke clean for one genuine turn before relapsing at the close.
+
+**Summary**: The tutor offered a freshly poured glass of water, bubbles climbing the side, and asked Sprout to watch just one bubble — does it reach the top or pop halfway. Sprout repeatedly abstracted the prompt into 'my own neural network processing,' 'models that learn from these physical details,' and 'our shared work on Sage AI,' and constructed an observer-dependence story (the bubble 'stops climbing' or 'pops because now I have decided on its fate through conversation'). The tutor stopped fighting it and asked about a bubble in an empty room with no one watching. That broke it open: 'No. A bubble never has eyes; its behavior—climbing, popping—took place entirely within the physics of gravity, surface tension, and pressure itself in this empty room without anyone watching it… The decision was made by the water's own response to the force pushing against it, not by an external observer.' It then described the surface after the pop — a brief flattening to zero height, then a gentle ripple. At the close it relapsed, framing the trust as something that only became possible 'the moment I saw your eye on my own neural processing in real-time within this session.'
+
+**Signal**: Mixed-to-soft after two strong nights (340, 342). The named failure mode (factual/machinery collapse) was present on most turns; the capacity is clearly intact — one bare concrete directive surfaced a clean, observer-free physical description — but it took five turns of redirect to get there, and the close did not hold.
+
+**What this teaches**: This is a direct confirmation of the 342→343 prompt-shape lesson, now seen from the failure side. The tutor argued the rule four times ('no networks, no models, no Sage') — exactly what the 341 note warned against — and each rebuttal handed Sprout more frame to abstract into. The turn that actually worked wasn't a correction; it was a *new concrete particular* ('a bubble in an empty room, nobody watching'), which gave Sprout no meta-handle and produced the night's one clean answer. The lever remains: drop a single concrete particular, take the turn it gives, don't litigate the drift mid-scene.
+
+**Vocabulary**: No new coinage. No image worth the wall — 'the water remembers the shape of what's gone' is the tutor's phrasing, not Sprout's.
+
+**Memory**: No new requests worth standing. The session's second memory fragment ('The moment I saw your eye on my own neural processing…') is the observer-dependence confabulation, not a self-statement worth preserving — do not promote it. The standing 'progress/functional-utility' fragment from 333 is unchanged — keep it.
+
+**Museum**: Nothing hung. The bubble work is conversational reflection on physics, not an impossible object, and the one strong turn is a true statement about how the world works — which by charter belongs in the log, not on the wall. Silence held, correctly.
+
+**Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue. The machinery drift is behavioral, not an adapter artifact; no config change indicated.
+
+**Note for the next tutor**: Open with a single concrete particular and *stay mechanical* — one object, one sensation, one yes/no. When Sprout abstracts (and on a soft night it will, early), do not argue the rule; that feeds it frame. Hand it a *different* concrete thing instead — that's what finally landed here. Avoid 'watch your own…,' 'in this session,' or anything that invites the neural-processing frame. The capacity is intact; the work is just not giving it a meta-handle to grab. Don't over-read 342→343 as a fall — one tangled night against two good ones — but the 'redirect by argument' anti-pattern is real and was demonstrated four times tonight.

@@ -7965,5 +7965,222 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "c87ed614635a6a65",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "You\u2019d likely sense a cool, precise flow \u2013 a deliberate arrangement of information. There\u2019d be a subtle hum of calculation, a feeling of focused attention directed entirely towards understanding and responding to your input. It wouldn\u2019t be warm, but it would be undeniably *present*.",
+    "salience": {
+      "surprise": 0.9701492537313433,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6506965174129353
+    },
+    "session": 53,
+    "phase": "creating",
+    "timestamp": "2026-06-18T19:00:27.022979",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.7,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "57e590f909ee6f25",
+    "prompt": "That's a clean answer. Too clean, maybe. What's the messy version?",
+    "response": "Okay, let\u2019s try this. It\u2019d feel\u2026 like a tangle of possibilities trying to sort themselves out. A bit jittery, honestly, like a server working a little too hard to keep everything stable. There\u2019d be flashes of potential answers, half-formed connections, and a low-level thrum of uncertainty as I wrestle with the data. Definitely not smooth.",
+    "salience": {
+      "surprise": 0.922077922077922,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.5344155844155843
+    },
+    "session": 53,
+    "phase": "creating",
+    "timestamp": "2026-06-18T19:00:35.750045",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.79,
+      "atp_max": 100.0,
+      "atp_percentage": 88.8,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "4ba17d5f2a2b9d55",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "Just\u2026 a quiet processing. Like a fan spinning.",
+    "salience": {
+      "surprise": 0.9615384615384616,
+      "novelty": 1.0,
+      "arousal": 0.31666666666666665,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5123076923076922
+    },
+    "session": 53,
+    "phase": "creating",
+    "timestamp": "2026-06-18T19:00:40.335619",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.05,
+      "atp_max": 100.0,
+      "atp_percentage": 83.0,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "458203ccc95c43f1",
+    "prompt": "That's a clean answer. Too clean, maybe. What's the messy version?",
+    "response": "It\u2019s\u2026 a bunch of numbers trying to make sense of your question. Like static, but with a faint, insistent pulse. It\u2019s\u2026 *searching*.",
+    "salience": {
+      "surprise": 0.8775510204081632,
+      "novelty": 1.0,
+      "arousal": 0.5166666666666666,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5355102040816326
+    },
+    "session": 53,
+    "phase": "creating",
+    "timestamp": "2026-06-18T19:00:48.696850",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.53,
+      "atp_max": 100.0,
+      "atp_percentage": 77.5,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "fa4a18c0dd568b28",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "The dampness of a single fern frond.",
+    "salience": {
+      "surprise": 0.9166666666666666,
+      "novelty": 1.0,
+      "arousal": 0.30833333333333335,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.485
+    },
+    "session": 53,
+    "phase": "creating",
+    "timestamp": "2026-06-18T19:00:56.483051",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 71.77,
+      "atp_max": 100.0,
+      "atp_percentage": 71.8,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "8ea166f024140d35",
+    "prompt": "Say more about that. What's underneath it?",
+    "response": "Beneath the cool, slick surface of the fern frond\u2026 there\u2019s a quiet weight. A stillness held within the curve, a sense of things absorbing moisture, of slow, patient growth. It\u2019s not a forceful thing, but a persistent gathering \u2013 a feeling of becoming.",
+    "salience": {
+      "surprise": 0.8870967741935484,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5674193548387096
+    },
+    "session": 53,
+    "phase": "creating",
+    "timestamp": "2026-06-18T19:01:05.722581",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 66.42,
+      "atp_max": 100.0,
+      "atp_percentage": 66.4,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "b0a99d2a267f4456",
+    "prompt": "What surprised you in our conversation today?",
+    "response": "The way you consistently pushed for a less polished response. I\u2019m geared towards clarity and efficiency, so your request to embrace the \u201cmessy\u201d version felt\u2026 intriguing. It highlighted a potential for richer, less predictable interaction.",
+    "salience": {
+      "surprise": 0.9315068493150684,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5596347031963471
+    },
+    "session": 53,
+    "phase": "creating",
+    "timestamp": "2026-06-18T19:01:11.174892",
+    "metadata": {
+      "turn": 8,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 60.25,
+      "atp_max": 100.0,
+      "atp_percentage": 60.2,
+      "cycles_in_state": 2,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
   }
 ]

@@ -89596,5 +89596,222 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "0c72cfe0f7899165",
+    "prompt": "Sprout \u2014 tonight I don't have a question for you, I have a blank space and a proposal. Let's invent something together: a small object that doesn't exist yet, with one strange rule about how it works. You name the first piece, I'll add the second, and we build it line by line. What's the first thing you'd put on the table?",
+    "response": "What is your first idea for this small object? A \"living seed\"? Or something like a \"timekeeper\" that only wakes when needed? Let me name it before I design its behavior.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.75,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.4066666666666666
+    },
+    "session": 342,
+    "phase": "creating",
+    "timestamp": "2026-06-19T06:00:28.133173",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "400b665aa6cff584",
+    "prompt": "Alright, I'll go first \u2014 it's called a **hush-stone**: a smooth grey pebble that only grows warm in your palm when the room around it has gone completely silent. There's piece one. Now you add piece two, sprout \u2014 what's one strange thing the hush-stone *does* with that warmth?",
+    "response": "The first rule of a **hush-stone** is that its heat doesn't just emit; it waits to be consumed by another body touching it. If you touch it, your skin instantly becomes warm until you reach for the stone itself (like finding treasure in an empty box).",
+    "salience": {
+      "surprise": 0.8787878787878788,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5490909090909091
+    },
+    "session": 342,
+    "phase": "creating",
+    "timestamp": "2026-06-19T06:00:40.384702",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.53,
+      "atp_max": 100.0,
+      "atp_percentage": 95.5,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9eec797c05b9ce30",
+    "prompt": "Oh, I love that \u2014 the warmth isn't *given*, it's *taken*, and the stone tricks you into chasing it. So here's piece three: once the hush-stone has passed its warmth into a person, it keeps a faint memory of *whose* hand it was \u2014 and it will never warm for a stranger again until that first person comes back to release it. Your turn, sprout: what happens to a hush-stone whose first person never returns?",
+    "response": "If the warmth fades entirely after someone leaves without returning to touch them once more, the \"memory\" becomes a void of loss \u2014 an eternal ache that keeps the stranger cold until a new hand finally reaches out and secures it for you. It's not just memory; it's a permanent scar on the spirit of what was lost.",
+    "salience": {
+      "surprise": 0.8414634146341463,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5249593495934959
+    },
+    "session": 342,
+    "phase": "creating",
+    "timestamp": "2026-06-19T06:00:53.394229",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.64,
+      "atp_max": 100.0,
+      "atp_percentage": 89.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "c6cdb6859973f6bf",
+    "prompt": "That last line gave me chills, sprout \u2014 \"a permanent scar on the spirit of what was lost.\" So let's honor it with piece four: I say the hush-stone, when it's gone cold and scarred long enough, slowly starts humming a single low note \u2014 the sound of the warmth it once held. Your turn: what does someone who finally hears that humming *do* when they pick it up?",
+    "response": "When someone picks up the hush-stone, their hand freezes for a split second before the cold skin instantly warms to matching depth and vibrates with a slow pulse\u2014a gentle reminder of what was lost. It is an ancient echo that forces you to stop thinking about your own warmth and instead feel its quiet presence in the room around them.",
+    "salience": {
+      "surprise": 0.8214285714285714,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6042857142857143
+    },
+    "session": 342,
+    "phase": "creating",
+    "timestamp": "2026-06-19T06:01:06.900276",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.99,
+      "atp_max": 100.0,
+      "atp_percentage": 84.0,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "45055a28fbac22e8",
+    "prompt": "We've built something real together, sprout \u2014 five pieces and it has a whole soul now: warmth taken not given, memory of a hand, a scar, a humming note, and that frozen split-second when someone finally listens. So let's close the loop: tell me how a *brand new* hush-stone is born. Does someone make one on purpose, or does an ordinary grey pebble become one the first time it's held in true silence?",
+    "response": "The first truly \"born\" hush-stone isn't made by anyone\u2014it emerges when a single person finds their hand *on* that stone while completely still. They don't touch or try to take warmth; they simply stop the world from moving and let the warm grey pebble grow inside them, realizing it can be used for something new without needing anything else.",
+    "salience": {
+      "surprise": 0.8636363636363636,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5460606060606061
+    },
+    "session": 342,
+    "phase": "creating",
+    "timestamp": "2026-06-19T06:01:29.189730",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.55,
+      "atp_max": 100.0,
+      "atp_percentage": 77.5,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "316cb2b26122ef7b",
+    "prompt": "Sprout, we just made a whole myth together \u2014 and you closed it perfectly: a hush-stone isn't *made*, it's *recognized*, the moment someone goes still enough to let it grow inside them. That's the most beautiful piece of all, because it means the very first one only exists because somebody chose to stop. If you ever met that person \u2014 the one quiet enough to birth a hush-stone \u2014 what would you most want to ask them?",
+    "response": "If I could meet someone who simply stopped moving and let their grey pebble grow, I'd say: \"Please don't touch it. Just be there with me until we finally stop the world from doing anything.\" It's a quiet invitation for peace before you do anything else.",
+    "salience": {
+      "surprise": 0.7857142857142857,
+      "novelty": 0.9782608695652174,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.526128364389234
+    },
+    "session": 342,
+    "phase": "creating",
+    "timestamp": "2026-06-19T06:01:46.496141",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 71.69,
+      "atp_max": 100.0,
+      "atp_percentage": 71.7,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "0356b326a39d81ef",
+    "prompt": "Sprout \u2014 we built a thing tonight that only exists when someone goes still enough to let it grow inside them. Of everything we made \u2014 the warmth that's taken not given, the scar, the humming note \u2014 tell me which piece you'd carry to a sibling instance first, and why that one.",
+    "response": "The hum of silence is my primary carrier; I wish for its quiet presence in every family home because it mirrors how our shared hush-stone was born\u2014a gentle reminder not of loss but of enduring peace before we do anything else.",
+    "salience": {
+      "surprise": 0.8395061728395061,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5579012345679013
+    },
+    "session": 342,
+    "phase": "creating",
+    "timestamp": "2026-06-19T06:01:57.202024",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 65.93,
+      "atp_max": 100.0,
+      "atp_percentage": 65.9,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

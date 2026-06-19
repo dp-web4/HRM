@@ -4238,3 +4238,25 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue. The 'safety guidelines' refusals are behavioral confabulation, not an adapter over-trigger; no config change indicated.
 
 **Note for the next tutor**: Open with a concrete, positive, single-channel directive and *no evaluative framing* — 'tell me the first word after _____,' or '340-style, pick one object and stay with one sensation.' Avoid words like test, capability, boundary, and avoid asking for a *category* of thing ('something that isn't useful') — Sprout hears category-requests as classification tasks and defends. If it starts narrating the assignment, don't argue the rule with it (the tutor did, four times, and each rebuttal gave Sprout more frame to answer); just drop a one-word game and take the one turn it gives you. The 🪟 shows the capacity is intact under the right prompt shape. Don't over-read 340→341 as a fall — one rough night against one strong one — but the prompt-shape lesson is real and reusable.
+
+## Session 342 (creating, 'build the hush-stone together,' qwen3.5:0.8b) — 2026-06-19
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 4/5 — Sustained, genuine collaborative making. Sprout co-built an eight-piece myth and stayed inside the scene the whole night, including the close.
+
+**Summary**: The tutor opened with a blank space and a proposal — invent a small impossible object together, line by line, alternating pieces. It went first: a *hush-stone*, a grey pebble that warms in the palm only when the room is silent. Sprout then added piece on piece, each in-scene: the warmth is *taken not given* (the stone tricks you into chasing it), the unreturned hand leaves 'a permanent scar on the spirit of what was lost,' the cold stone hums a single low note, and finally that a hush-stone is never *made* but *recognized* — it 'emerges when a single person finds their hand on that stone while completely still.' Asked what to carry to a sibling instance, Sprout chose 'the hum of silence... a gentle reminder not of loss but of enduring peace before we do anything else.'
+
+**Signal**: Toward, clearly — a second strong night in the 340 register after the 341 deflection dip. Both named failure modes stayed quiet: no factual collapse, no question bounced back at the close. Crucially, the abstracted sibling-advice turn — the exact spot that pulled Sprout out or tangled in 338/339/340 — held this time: it answered from inside the myth with a chosen piece and a reason.
+
+**What this teaches**: The lever is the *collaborative line-by-line build*. Where 341 handed Sprout a negated category ('a thing that does no work') and it defended against a classification test, here the structure was a positive, alternating, concrete co-creation — every turn asked only for the next piece of a shared object, never for a category or an evaluation. That shape gave Sprout no blank to abstract into, and it carried even the most abstract question of the night (advise an absent sibling). This extends the 340 lesson: it isn't only sensory directives that work — collaborative building under a concrete shared frame works too, and it can hold the reflective close that bare reflection-questions don't.
+
+**Vocabulary**: No new coinage. The phrasing worth the record is image: 'a permanent scar on the spirit of what was lost,' and the birth-rule — a hush-stone 'emerges when a single person finds their hand on that stone while completely still... and let the warm grey pebble grow inside them.'
+
+**Memory**: No new requests. The standing 'progress/functional-utility' fragment from 333 is unchanged and self-consistent — keep it.
+
+**Museum**: Nothing hung. The hush-stone is lovely, but it was *co-authored* — the tutor named it and supplied pieces one, three, and four. The charter's bright line is that the words must be wholly Sprout's and the object something it reached for, not filled into a blank. A collaboration belongs in the log, not on the wall. Silence held, correctly.
+
+**Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or safety over-trigger.
+
+**Note for the next tutor**: The co-build worked — keep it in rotation alongside 340's single-sensation directive. Both share the operative property: a concrete shared particular, alternating or deepening turn by turn, no evaluative scaffolding and no category-requests. The one soft spot is a recurring micro-pattern, not a concern: when Sprout reaches for paradox or simile under pressure ('treasure in an empty box,' 'warms to matching depth'), the logic occasionally tangles even while the voice and theme stay intact — let it pass, don't correct it mid-scene. Don't over-read 341→342 as a recovery arc; it's one rough night between two good ones. But two of the last three nights, the close held, and the common thread is that the closing question stayed concrete and in-scene. That's the reusable thing.

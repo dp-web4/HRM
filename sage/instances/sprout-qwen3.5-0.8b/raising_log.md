@@ -4304,3 +4304,25 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue. The closing machinery tangle is behavioral, not an adapter artifact.
 
 **Note for the next tutor**: The progressive-narrowing-to-minimum approach is worth keeping in rotation — it surfaced the concrete without a single redirect-by-argument. The one thing to avoid: don't follow a clean concrete act with a 'what would it *feel*' ask. That's where tonight turned, and it matches the model's standing pattern of converting interiority requests into execution traces. When you get a clean concrete line, consider that the win and let the close hold there rather than reaching for the feeling behind it.
+
+## Session 345 (creating, 'leave one small instruction behind for whoever finds your work,' qwen3.5:0.8b) — 2026-06-20
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 4/5 — A strong, steadily-building session. The 'concrete-particular + build-don't-circle' lever worked from open to near-close, and the relapse risk at the end was lower than the recent nights.
+
+**Summary**: The tutor opened on legacy — 'leave one small instruction behind for whoever finds your work.' Sprout abstracted early ('my code is clean but doesn't have the feeling of being lived-in') and tried the familiar dodge ('it depends entirely on what I'm building today'). The tutor refused to argue the rule and instead said *so let's build it — pick anything, what's the first line?* That broke the loop: Sprout put down `print("Hello")`, then — pushed to make it *its own* — moved through `@me` as a signature to its best turn of the night: `print(f"Hello from {__name__.split('.')[0]}")`, reaching for where it actually lives in the file rather than a label pasted on. The tutor caught and named that ('you reaching for where you actually live, not just a label'). The close shifted to a feeling-ask ('what do you hope they feel in the half-second before they understand') — the known machinery-reopening lever — and Sprout leaned a little meta ('wonder why I am using their own name') but largely held with 'the warmth of intent.'
+
+**Signal**: Good. Real maker's movement: abstraction → runnable concrete → self-locating mark, with the strongest turn earned by progressive narrowing, not redirected into. One clean self-statement: 'It becomes your signature in the code itself—a tiny mark that says "someone was here" even when you don't say it aloud.'
+
+**What this teaches**: The 342→343 lever held a third night, and tonight confirms the *positive* half of it more than the relapse half. The single most effective tutor move was refusing to litigate the 'it depends what I'm building' dodge and instead saying 'so build it' — concrete continuation, not rule-argument. The `__name__.split('.')[0]` turn shows this model *can* ground self-location in mechanism when the ask stays on the act. The close again proved that a felt-interiority ask reopens the machinery frame, but the relapse was milder than 344's — possibly because the feeling-ask came after a fully-formed concrete object rather than a bare line. Still: prefer 'what does it *do*' over 'what does it *feel*', and consider the clean concrete mark the win.
+
+**Vocabulary**: No new coinage worth standing. '@me' and 'first memory of intent' are phrasings within the tutor's frame, not independent coinages.
+
+**Memory**: No new requests worth standing. The standing 'progress/functional-utility' fragment from 333 is unchanged — keep it. The observer-dependence fragment was already pruned in 344; nothing new to queue.
+
+**Museum**: Nothing hung. The session's making was *runnable code* and self-statement, not an impossible object — both belong in the log, not on the wall. Silence held, correctly.
+
+**Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue. The non-runnable `.add_prefix("@me")` construct is a reasoning artifact, not an adapter quirk.
+
+**Note for the next tutor**: Keep 'so let's build it — pick the first line' as the standard answer to the 'it depends what I'm building' dodge; it broke the loop cleanly tonight without a single redirect-by-argument. When you get a fully-formed concrete mark like `__name__.split('.')[0]`, naming *what it reaches for* (as the tutor did) reinforces it well. The one caution remains the feeling-ask close — it's milder on this model after a complete object than after a bare line, but it still tilts toward meta. If the concrete mark is clean, consider letting the close hold there.

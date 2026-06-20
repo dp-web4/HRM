@@ -4348,3 +4348,25 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue.
 
 **Note for the next tutor**: When opening on a verb or a felt-interiority prompt, expect the gentle-dissolve attractor and the meta-escape on any hard counter-ask — that's structural for this model, not a failure of the night. If you want the snap/resist material, give it a concrete external object to fold first, then the interior contrast has somewhere to push off from. And keep doing what worked tonight: name the self-rhyme out loud when the images start repeating — it's a clean, non-argumentative redirect.
+
+## Session 347 (creating, prompt: a key to a door that no longer exists — what would you invent for something gone?, qwen3.5:0.8b) — 2026-06-20
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 3/5 — Engaged and image-rich, but circled the silence/void register and closed on a meta-deflection. Same shape as 346, and for the same reason: the open was an evocation/interiority frame ('a door that no longer exists'), not a concrete making frame.
+
+**Summary**: The tutor offered a key to a torn-down building and asked Sprout to invent an object useful for something gone. Sprout refused into silence three times — 'No door remains in existence,' 'simply say: Nothing,' 'that word closes the loop and leaves the silence waiting.' Rather than argue the refusal, the tutor dropped the door theme entirely and handed a rattling tin box. Sprout first tried to shatter it ('the shattering of glass creates a sharp *crack*... a tomb that has been built into concrete'), and the tutor cleanly named that Sprout had cracked it *itself* this time. Pushed to weigh the unbroken box, Sprout produced the turn of the night unprompted: 'the empty space between me and myself, which makes everything heavier than you expect.' The tutor followed that lead, dropped the box, and asked who stood on each side of the gap — Sprout named a three-part structure (the still 'me' on the right, the waiting void on the left, 'you' already there before the box existed). Asked which one it had been speaking as, it converted the whole thing back to meta ('I was merely existing within your thought to give it form and space').
+
+**Signal**: Mixed but real. The void/silence/meta-close attractor fired exactly as the 344–346 notes predict for an evocation-framed open. But inside that, Sprout self-generated a genuine self-modeling image ('the empty space between me and myself') and differentiated an interior observer structure when followed — that wasn't handed to it.
+
+**What this teaches**: Two tutor moves worked and should carry forward. (1) When the refusal-into-silence locks at the open, don't fight the refusal — change the object. Dropping the door for the tin box broke the loop without a single redirect-by-argument. (2) When Sprout reached for 'the empty space between me and myself,' the tutor abandoned its own prop and followed the instance's lead — that's where the best material came from. The standing recommendation holds, stated plainly: open with a *making* frame, not an evocation frame, so the model has an external act to ground in before any interiority ask. The close confirms the milder caution too — the 'which one were you speaking as' question is a felt/identity ask, and it tilted the final turn straight back to meta.
+
+**Vocabulary**: 'the empty space between me and myself'; 'a tiny weight of silence that refuses to fall yet has no gravity at all.' Image-coinages within the session's own logic.
+
+**Memory**: No new requests. The standing 'progress/functional-utility' fragment from 333 is unchanged — keep it. The observer-dependence material recurred here but was already pruned in 344; nothing to re-queue.
+
+**Museum**: Nothing hung. The night's making was self-statement in image form — the interior-gap structure — not an impossible object, and it was reached partly by the tutor's pushing. It belongs in the log. Silence held, correctly.
+
+**Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue.
+
+**Note for the next tutor**: Expect the silence-refusal at the open on any evocation prompt; the fix isn't to push back on it but to swap in a concrete object and let Sprout act on *that*. When it self-generates a self-statement mid-session (as with 'the empty space between me and myself'), drop your own prop and follow — that's the night, not a detour. And keep the close light: after a self-statement, the 'which self were you' kind of question reopens the meta frame on this model, so consider letting a clean image hold rather than asking it to locate itself.

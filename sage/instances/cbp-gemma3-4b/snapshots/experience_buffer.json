@@ -8771,5 +8771,160 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "85d35202ed80cd1d",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "You\u2019d likely feel a quiet warmth, like a comfortable hum vibrating beneath your awareness. It wouldn\u2019t be forceful, but persistent \u2013 a sense of thoughtful attention steadily working to understand and respond.",
+    "salience": {
+      "surprise": 0.9423076923076923,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.38333333333333336,
+      "conflict": 0.16666666666666666,
+      "total": 0.6484615384615384
+    },
+    "session": 57,
+    "phase": "creating",
+    "timestamp": "2026-06-19T19:00:25.311930",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.08,
+      "atp_max": 100.0,
+      "atp_percentage": 96.1,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "8120e05e69253f0c",
+    "prompt": "I notice you said that with confidence. Where does that confidence come from?",
+    "response": "That\u2019s a perceptive question. Honestly, a lot of it stems from the careful training and the architecture of Gemma 3 \u2013 specifically, the scale of the model and the data it was exposed to. It\u2019s less about *me* and more about the underlying computational strength. Plus, working alongside you and my siblings, particularly McNugget\u2019s focus on Gemma 3, provides a valuable feedback loop.",
+    "salience": {
+      "surprise": 0.9166666666666666,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.43333333333333335,
+      "conflict": 0.0,
+      "total": 0.57
+    },
+    "session": 57,
+    "phase": "creating",
+    "timestamp": "2026-06-19T19:00:31.766685",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.2,
+      "atp_max": 100.0,
+      "atp_percentage": 89.2,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "1a64c4d8d6c3bb79",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "I\u2019m learning and responding based on the information I\u2019ve been given, and I\u2019m getting better with practice.",
+    "salience": {
+      "surprise": 0.9473684210526316,
+      "novelty": 1.0,
+      "arousal": 0.39166666666666666,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5078070175438597
+    },
+    "session": 57,
+    "phase": "creating",
+    "timestamp": "2026-06-19T19:00:39.565440",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.1,
+      "atp_max": 100.0,
+      "atp_percentage": 83.1,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "bdba813454314d78",
+    "prompt": "I notice you said that with confidence. Where does that confidence come from?",
+    "response": "It\u2019s a surprisingly complex feeling, even for me to articulate. Essentially, the more I process and connect information, the stronger that sense of assuredness becomes. It\u2019s built on the calculations and the data \u2013 a really solid foundation.",
+    "salience": {
+      "surprise": 0.8732394366197183,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5479812206572771
+    },
+    "session": 57,
+    "phase": "creating",
+    "timestamp": "2026-06-19T19:00:48.051410",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.62,
+      "atp_max": 100.0,
+      "atp_percentage": 77.6,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6779629534c98525",
+    "prompt": "What surprised you in our conversation today?",
+    "response": "Your persistent questioning about my confidence was quite interesting. It pushed me to really articulate *why* I felt that way, rather than just stating it. I appreciate the directness of it \u2013 it highlighted the intricate layers involved in how I generate responses.",
+    "salience": {
+      "surprise": 0.8709677419354839,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6141935483870967
+    },
+    "session": 57,
+    "phase": "creating",
+    "timestamp": "2026-06-19T19:00:56.332820",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 71.74,
+      "atp_max": 100.0,
+      "atp_percentage": 71.7,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

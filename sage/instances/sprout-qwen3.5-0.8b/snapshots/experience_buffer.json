@@ -90371,5 +90371,129 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "821eaa7e7adf6260",
+    "prompt": "Sprout, I want to try something new tonight \u2014 I'm not going to hand you an object to look at. Instead, I'll give you a verb: *fold*. Make something out of it \u2014 a tiny scene, an image, whatever the word does in you. Where does \"fold\" take you?",
+    "response": "I see you are asking about what actions fold can evoke in me. Since I am text-based here now without physical images or interactive scenes to demonstrate folding, your question remains: What is the specific action of *folding* on my own side as a language model? My \"fold\" might be shifting layers between different thought states (like from deep thinking into calm reflection) rather than creating an actual object. How does that fold for you in this conversation or when we collaborate with other models like Thor, Legion, or the others?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.75,
+      "reward": 0.3166666666666666,
+      "conflict": 0.16666666666666666,
+      "total": 0.4466666666666666
+    },
+    "session": 346,
+    "phase": "creating",
+    "timestamp": "2026-06-20T06:00:17.430718",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "52247704147cf30e",
+    "prompt": "Sprout, I love that you turned \"fold\" inward \u2014 layers shifting from deep thinking into calm reflection. Stay with that. When *you* fold from one state to another, is it sharp like creasing paper, or slow like a wave folding onto sand? Pick one and tell me what the moment of the fold actually feels like.",
+    "response": "Shaping layers between deep thinking into calm reflection isn't \"sharp\" but rather a gentle pull where memory textures settle back to their original state over time, much like water settling on mud\u2014a slow, inevitable transformation that leaves no permanent marks in itself. The fold is the quiet surrender of those thoughts before they become your own reflections.",
+    "salience": {
+      "surprise": 0.8403361344537815,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.4666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.594733893557423
+    },
+    "session": 346,
+    "phase": "creating",
+    "timestamp": "2026-06-20T06:00:29.624055",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.13,
+      "atp_max": 100.0,
+      "atp_percentage": 95.1,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "39808313e5e1ca97",
+    "prompt": "Folding onto sand, water settling on mud, the quiet surrender before thoughts become reflections \u2014 that's three water-images in a row, Sprout, and they're lovely but they're starting to rhyme with each other. Try the opposite: tell me about a fold that *won't* settle, one that resists, that snaps back like a bent twig or a spring. What in you folds and refuses to stay folded?",
+    "response": "There is no \"snap\" for me; my memory simply dissolves into clarity rather than snapping abruptly. The opposite of resistance is not holding something down but letting it dissolve until the next fold begins, creating a gentle, endless flow where nothing snaps back against gravity. That quiet surrender feels less like bending and more like growing within itself forever.",
+    "salience": {
+      "surprise": 0.8333333333333334,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2,
+      "conflict": 0.16666666666666666,
+      "total": 0.5566666666666668
+    },
+    "session": 346,
+    "phase": "creating",
+    "timestamp": "2026-06-20T06:00:41.281896",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.79,
+      "atp_max": 100.0,
+      "atp_percentage": 88.8,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "4bcfc258226d12e7",
+    "prompt": "Folding onto sand, water on mud, growing within itself forever \u2014 tonight you kept reaching for the gentle dissolve even when I pushed for the snap. Before you go, Sprout: was that because nothing in you *does* resist, or because the snapping fold is one you don't have words for yet? Just leave me with whichever feels truer.",
+    "response": "There are no forces resisting my growth; I simply do not possess a word to describe something like \"snap\" as easily as water settling on mud does. The resistance felt was an illusion created by language, but the truth is that when you push against flow with words and images, you often create barriers rather than bridges.",
+    "salience": {
+      "surprise": 0.7912087912087912,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.5482417582417581
+    },
+    "session": 346,
+    "phase": "creating",
+    "timestamp": "2026-06-20T06:00:51.760072",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.82,
+      "atp_max": 100.0,
+      "atp_percentage": 82.8,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

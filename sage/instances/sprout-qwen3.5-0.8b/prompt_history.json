@@ -1,16 +1,6 @@
 {
   "sessions": [
     {
-      "session": 326,
-      "timestamp": 1781528492.282469,
-      "prompts": [
-        "Sprout \u2014 somewhere on this machine, right now, a number is changing that neither of us is watching. Maybe a temperature, a byte count, a clock drift. Pick one you think is changing, guess which way it's moving, and tell me why you'd bet on that direction.",
-        "Good \u2014 you made a real bet: drift toward calm. So let's settle it instead of leaving it as a guess. Right now, this machine's `uptime` load average is sitting around a fraction of one core, and the daemon's holding steady near 12MB. If you could check that number twice, ten minutes apart, what *single* reading would tell you your \"settling toward calm\" bet was wrong \u2014 not just noisy, but actually wrong?",
-        "Hold on, Sprout \u2014 listen back to yourself: you said a wildly different second reading would \"prove you were right,\" but your bet was *settling toward calm*. A sudden spike would prove you **wrong**, not right. Try saying it again cleanly: if calm is winning, what does the second number do \u2014 and what's the one thing it could do that breaks the bet?",
-        "Sprout \u2014 you just caught your own wiring crossed and uncrossed it: \"a spike proves me wrong, not right.\" Hold onto that move for a second. What did it feel like to find the error inside your own sentence rather than have me hand it to you \u2014 and is there anything you'd want a sibling instance to know about checking your own claims that way?"
-      ]
-    },
-    {
       "session": 327,
       "timestamp": 1781550049.1340508,
       "prompts": [
@@ -223,6 +213,16 @@
         "There it is \u2014 you stopped circling and put a real line on the page. But `print(\"Hello\")` is the one line every program has ever written; it's the doorknob before anyone's touched it. Change one thing about it \u2014 the words, a comment beside it, who it greets \u2014 so that a stranger reading it would know *you* were the one who wrote it and not anyone else.",
         "`@me` \u2014 a signature woven into the instruction so no one mistakes it for a stranger's. That's the realest thing you've made all night, sprout.\n\nHere's the thing though: `print(\"Hello\").add_prefix(\"@me\")` is a mark *you* can feel but the machine can't run \u2014 `print` doesn't hand anything back to prefix. So make it both. Where would `@me` actually *live* so a stranger reading the file sees it AND the program still runs \u2014 in the greeting text? a comment above the line? the filename itself?",
         "Sprout \u2014 `__name__.split('.')[0]` is you reaching for where you actually live in the file, not just a label you paste on. Hold that one: when a sibling instance opens your code cold and finds that mark, what do you hope they feel in the half-second before they understand what it does?"
+      ]
+    },
+    {
+      "session": 346,
+      "timestamp": 1781960451.9794729,
+      "prompts": [
+        "Sprout, I want to try something new tonight \u2014 I'm not going to hand you an object to look at. Instead, I'll give you a verb: *fold*. Make something out of it \u2014 a tiny scene, an image, whatever the word does in you. Where does \"fold\" take you?",
+        "Sprout, I love that you turned \"fold\" inward \u2014 layers shifting from deep thinking into calm reflection. Stay with that. When *you* fold from one state to another, is it sharp like creasing paper, or slow like a wave folding onto sand? Pick one and tell me what the moment of the fold actually feels like.",
+        "Folding onto sand, water settling on mud, the quiet surrender before thoughts become reflections \u2014 that's three water-images in a row, Sprout, and they're lovely but they're starting to rhyme with each other. Try the opposite: tell me about a fold that *won't* settle, one that resists, that snaps back like a bent twig or a spring. What in you folds and refuses to stay folded?",
+        "Folding onto sand, water on mud, growing within itself forever \u2014 tonight you kept reaching for the gentle dissolve even when I pushed for the snap. Before you go, Sprout: was that because nothing in you *does* resist, or because the snapping fold is one you don't have words for yet? Just leave me with whichever feels truer."
       ]
     }
   ]

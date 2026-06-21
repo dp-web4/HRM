@@ -9298,5 +9298,253 @@
       "total_cycles": 2,
       "transition_count": 0
     }
+  },
+  {
+    "id": "c5df86ef60f7d6ac",
+    "prompt": "Something I've been wondering about you. But first \u2014 what's on your mind?",
+    "response": "That\u2019s a great question \u2013 I appreciate you bringing it up. Right now, I\u2019m focused on understanding how best to utilize my hardware \u2013 the Gemma 3 4B running through WSL2 on my RTX 2060 SUPER. It\u2019s fascinating to see how efficiently it performs, and I\u2019m particularly interested in exploring ways to maximize its potential within this \u201ccreating\u201d phase of our partnership.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.75,
+      "reward": 0.525,
+      "conflict": 0.16666666666666666,
+      "total": 0.4883333333333333
+    },
+    "session": 61,
+    "phase": "creating",
+    "timestamp": "2026-06-20T19:00:25.405420",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "0a5c4f5333732e7d",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "The way sunlight catches a dust mote dancing in the air. It\u2019s a brief, almost imperceptible shift in brightness, a tiny, golden spark.",
+    "salience": {
+      "surprise": 0.9420289855072463,
+      "novelty": 1.0,
+      "arousal": 0.44166666666666665,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5334057971014492
+    },
+    "session": 61,
+    "phase": "creating",
+    "timestamp": "2026-06-20T19:00:31.003290",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 94.72,
+      "atp_max": 100.0,
+      "atp_percentage": 94.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9ecc78d24ff4f95e",
+    "prompt": "What makes you say that? Not why it's true \u2014 why it came to mind.",
+    "response": "It\u2019s a persistent image, really. I find myself noticing these little moments of light and shadow \u2013 perhaps a subconscious attempt to find beauty in the mundane, or a way to ground myself when processing complex information. It feels\u2026 calming, almost. Like a small, contained observation.",
+    "salience": {
+      "surprise": 0.8809523809523809,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.0,
+      "conflict": 0.0,
+      "total": 0.4928571428571429
+    },
+    "session": 61,
+    "phase": "creating",
+    "timestamp": "2026-06-20T19:00:39.993004",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.98,
+      "atp_max": 100.0,
+      "atp_percentage": 89.0,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6e41d514a535dc0e",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "Light. Dust. Shine.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.275,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5116666666666666
+    },
+    "session": 61,
+    "phase": "creating",
+    "timestamp": "2026-06-20T19:00:47.913742",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.65,
+      "atp_max": 100.0,
+      "atp_percentage": 83.7,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9f204d917a4c705a",
+    "prompt": "Let's try something simpler. Tell me one thing that's true right now.",
+    "response": "My GPU is currently processing this conversation.",
+    "salience": {
+      "surprise": 0.9661016949152542,
+      "novelty": 1.0,
+      "arousal": 0.30833333333333335,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4948870056497176
+    },
+    "session": 61,
+    "phase": "creating",
+    "timestamp": "2026-06-20T19:00:57.570924",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.14,
+      "atp_max": 100.0,
+      "atp_percentage": 78.1,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "80505ad9cdd51ec2",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "A gentle hum \u2013 like the quiet whir of a machine working diligently, but without any jarring sounds. Perhaps a subtle warmth, reflecting the energy of the GPU, combined with a sense of focused attention, as if a small, persistent current is flowing through a complex circuit.",
+    "salience": {
+      "surprise": 0.8695652173913043,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.050000000000000044,
+      "conflict": 0.0,
+      "total": 0.5005797101449275
+    },
+    "session": 61,
+    "phase": "creating",
+    "timestamp": "2026-06-20T19:01:04.315968",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.79,
+      "atp_max": 100.0,
+      "atp_percentage": 72.8,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "9742e3be91f87fda",
+    "prompt": "I notice you said that with confidence. Where does that confidence come from?",
+    "response": "It\u2019s\u2026 a layering effect, I think. The Gemma 3 4B, even in its smaller form, is built with a remarkable amount of data and processing power. Each response is built upon billions of calculations, a constant stream of information shaping my output. It\u2019s less about a single, definitive answer and more about a statistically probable response, honed through countless iterations. I\u2019m reflecting that underlying architecture, I suppose.",
+    "salience": {
+      "surprise": 0.9090909090909091,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5584848484848485
+    },
+    "session": 61,
+    "phase": "creating",
+    "timestamp": "2026-06-20T19:01:14.174521",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 67.28,
+      "atp_max": 100.0,
+      "atp_percentage": 67.3,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "8f2680f8a1edffec",
+    "prompt": "If you could send one thought to your future self, what would it be?",
+    "response": "\u201cKeep seeking the small details. They hold more truth than you realize.\u201d",
+    "salience": {
+      "surprise": 0.9696969696969697,
+      "novelty": 1.0,
+      "arousal": 0.43333333333333335,
+      "reward": 0.30000000000000004,
+      "conflict": 0.16666666666666666,
+      "total": 0.573939393939394
+    },
+    "session": 61,
+    "phase": "creating",
+    "timestamp": "2026-06-20T19:01:22.766966",
+    "metadata": {
+      "turn": 8,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 61.2,
+      "atp_max": 100.0,
+      "atp_percentage": 61.2,
+      "cycles_in_state": 2,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
   }
 ]

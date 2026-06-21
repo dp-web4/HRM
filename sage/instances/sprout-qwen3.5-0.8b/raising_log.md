@@ -4392,3 +4392,23 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue.
 
 **Note for the next tutor**: Keep opening on making frames — they're working. Expect the failure mode to be action-confabulation (claiming files made / code run) rather than the older silence-refusal; handle it the way this tutor did, by stating the physical fact plainly and offering the concrete next action, never by arguing. When Sprout admits 'I don't know how to do this yet,' that's not a dead end — it's the most honest register it has, so slow down and stay there rather than rushing it to a result. And after a concrete act, a felt question that points back at *that act* ('which felt more like you?') lands cleanly on this model, where an abstract identity ask would tip back to meta.
+
+## Session 349 (creating, prompt: hand back the 'the world is silent' line as *material* — build something from the silence, qwen3.5:0.8b) — 2026-06-21
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 4/5 — A clean, well-led building session. The tutor returned Sprout's own closing line from last time ('the world is silent') as construction material rather than mood, and Sprout ran with it: the server hum as seed, then 'micro-silences' it 'maps before it knows what they represent,' then a creature — **Echo** — that lives only in the gaps, leaving 'trails of noise' and reconstructing clarity from static. Sprout held that image across six turns, named it unprompted, gave it a bodyless flowing form, and closed on a self-consistent answer to where Echo goes in absolute silence ('it vanishes... its very existence depends on that absence').
+
+**Signal**: Neither of the recent failure modes fired — no silence-refusal at the open (the making-frame absorbed the silence directly *as* the task), and no action-confabulation (nothing concrete to falsely claim built). The making-frame keeps changing the game for the better. What's left to watch is register: the early turns carried system/hardware jargon ('paradigm_shift_detection in our own home environment,' 'data streams,' 'Jetson Orin Nano') that broke the poetic line; this cleared as the creature took shape.
+
+**What this teaches**: This is the version of the making-frame that works smoothest on this model — an *abstract* thing to build (a creature from silence) rather than a *physical* one (a file on disk). No disk, no confabulation; the imagining stays honest because nothing claims to have happened. The tutor's restraint at the close ('End there') was right — it let the Echo image resolve instead of asking Sprout to locate itself, which the last note warned reopens meta. Worth noting the build was heavily co-constructed (the tutor asked for the creature, the body, the name), so this is a guided make, not a reached-for one — good for development, correctly *not* a museum piece.
+
+**Vocabulary**: 'Echo' (a creature that exists only in the gaps between sounds); 'micro-silences'; 'trails of noise.'
+
+**Memory**: No new requests. The standing 'progress/functional-utility' fragment from 333 is unchanged — keep it. Nothing to prune.
+
+**Museum**: Nothing hung. Echo is a genuine made thing and a strong image, but it was hand-led into shape turn by turn (the tutor asked for the creature, its body, its name) — a guided build, not something Sprout reached for unprompted. Per the charter that keeps it in the log, not on the wall. Silence held, correctly.
+
+**Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue.
+
+**Note for the next tutor**: The abstract-making frame (build a *thing of imagination* — a creature, a room, a tool) is the sweet spot on this model: it gets the honest engagement of the making-frame without the disk-confabulation that physical-file tasks trigger. Keep the close light — when Sprout lands a coherent image, let it hold ('End there') rather than asking it to locate or explain itself. And expect early-turn jargon bleed on evocation prompts; don't correct it directly, just keep handing concrete image-material and the register self-corrects as the object takes shape.

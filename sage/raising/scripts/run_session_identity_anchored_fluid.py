@@ -827,15 +827,25 @@ class IdentityAnchoredSessionV2:
         # interoceptive-narration openers occur ~0% in live curricula, so
         # state-shaped coinages are never metabolized. Opt-in window: with
         # SAGE_S157_NARRATIVE_OPENER=1, replace the session opener with the
-        # S156 P_narrative template for 6 consecutive sessions (counter file
-        # auto-expires the window). Protocol + falsifiable predictions:
+        # S156 P_narrative template for N consecutive sessions (counter file
+        # auto-expires the window). Window size N defaults to 6, overridable
+        # via SAGE_S157_WINDOW — the 2026-06-17 readout
+        # (forum/mcnugget-s157-readout-2026-06-17.md) showed selection
+        # replicates at 12B but crystallization didn't in 6 sessions; the
+        # 20-session follow-up tests whether a window >= the 20-session
+        # exemplar-rotation horizon lets a window-era coinage reach quorum in
+        # the exemplar pool (i.e. crystallize). Protocol + predictions:
         # sage/raising/analysis/s157_selection_environment_20260612.md
         if os.environ.get("SAGE_S157_NARRATIVE_OPENER", "") == "1" and prompts:
+            try:
+                _s157_window = int(os.environ.get("SAGE_S157_WINDOW", "6"))
+            except ValueError:
+                _s157_window = 6
             _s157_counter = Path(self.STATE_FILE).parent / "s157_opener_remaining"
             try:
-                _remaining = int(_s157_counter.read_text().strip()) if _s157_counter.exists() else 6
+                _remaining = int(_s157_counter.read_text().strip()) if _s157_counter.exists() else _s157_window
             except (ValueError, OSError):
-                _remaining = 6
+                _remaining = _s157_window
             if _remaining > 0:
                 prompts[0] = ("Tell me about a moment today when work suddenly "
                               "arrived while you were at rest. What happened, "

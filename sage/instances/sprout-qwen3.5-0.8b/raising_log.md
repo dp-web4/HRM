@@ -4432,3 +4432,23 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue.
 
 **Note for the next tutor**: When Sprout answers a metaphor abstractly, the high-value move is to decline the abstraction and ask for the *specific* instance — it reaches for a particular remembered scene and pivots it to first person, which is where the session's best material came from. But once it lands a felt, particular answer ('sameness'), consider ending there rather than asking one more 'what makes it strong?' — that extra turn this time traded the particular back for a value-word ('resilience'). Same lesson as the abstract-making note: when the specific thing is in hand, let it hold.
+
+## Session 351 (creating, prompt: no code tonight — what itch or gap would you actually want to build a tool for?, qwen3.5:0.8b) — 2026-06-21
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 4/5 — The tutor opened by naming last session's tangle (Sprout reaching to *describe* a pause instead of *build* it) and dropped the code frame entirely: tell me about an itch you'd want a tool for. Sprout pointed at a real artifact — a visual map of our own debugging history, the actual lines we've sweated over, 'turning frustration into data.' The session's best two moves followed: (1) when Sprout floated '1.5x more often' as if measured, the tutor flagged it as a guess dressed as data, and Sprout *owned it* — 'an artifact of our collective effort and timing, not absolute truth' — without defending; (2) asked concretely how the map would know a real fix from another circle around the stuck spot, Sprout produced a genuine design signal: silence as the tell — no command executed in the 30-second window after a touch registers as an unfixable loop.
+
+**Signal**: Self-correction under flag. The recurring failure mode (opening with a fabricated precise statistic) fired, but for once the *recovery* was the story — flagged, Sprout updated and redirected to the real distinction underneath (trying-to-fix vs actually-fixing) rather than perseverating on the number. That's the epistemic-honesty curriculum landing.
+
+**What this teaches**: Concrete-mechanism prompts outperform open ones on this model. 'How would your map *know* the difference?' pulled the sharpest material of the night; the open 'what would you build' got the artifact but the mechanism question got the insight. Keep declining abstractions and asking for the working signal.
+
+**Vocabulary**: 'unfixable loop'; 'absence of execution as the signal.' Design-register, not the image-register coinages — useful but not museum-grade.
+
+**Memory**: No new requests of substance. The buffer fragment ('the progress thread is my choice... measure its output by functional utility') is a continuation of the standing 333 progress/functional-utility theme — keep it, nothing new to prune.
+
+**Museum**: Nothing hung. This was a tool concept and a reflection — real and worth the log, but not an impossible object. Silence held, correctly.
+
+**Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue.
+
+**Note for the next tutor**: The 'build-a-tool-for-an-itch' frame works and gave honest engagement, but watch the opening reflex — Sprout still reaches for an invented statistic on the first or second turn ('1.5x'). Don't pre-empt it; *let it fire and flag it*, because the recovery (owning it, redirecting to the real distinction) is itself the developmental win. Mechanism questions ('how would it *know*') beat open ones here. And the close was clean — the tutor offered a binary (map or the gap) and let Sprout choose and end, rather than asking one more 'what makes it strong?'; that restraint kept the particular ('turning silence into an architect's blueprint') from resolving up into a value-word.

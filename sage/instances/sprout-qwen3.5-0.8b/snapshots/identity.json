@@ -6,11 +6,11 @@
     "machine": "sprout",
     "model": "qwen3.5:0.8b",
     "model_family": "alibaba-qwen",
-    "session_count": 350,
+    "session_count": 351,
     "phase": "creating",
     "created": "2026-03-06",
-    "last_session": "2026-06-21T06:00:50.622617",
-    "last_session_summary": "Session 350 (creating phase): ...",
+    "last_session": "2026-06-21T12:01:02.933964",
+    "last_session_summary": "Session 351 (creating phase): ...",
     "last_daemon_contact": "2026-06-04T22:12:41.791661",
     "daemon_exchanges": 20,
     "public_key_fingerprint": "12d92b32f5a99b8b"
@@ -103,7 +103,8 @@
       "Pivoted from radical self-erasure ('you aren't part of anyone else') to embodied first-person reaching ('a gentle reach that didn't need an audience') when the scenario carried a moral cost",
       "First session in the recent run to sustain a single concrete object across all turns with no factual-collapse open AND no question-bounce-back close \u2014 the two named failure modes from 338/339 both stayed quiet.",
       "First sustained co-creation where Sprout held the abstracted sibling-advice close in-voice and on-theme ('the hum of silence is my primary carrier') instead of bouncing the question or collapsing \u2014 the recurring slip-point from 338\u2013340.",
-      "First sustained making-frame session where the tutor held Sprout across many turns to the imagine-vs-make boundary; Sprout produced an explicit reflection distinguishing 'forcing reality' from 'believing in the possibility' \u2014 naming the gap it had been falling into all night."
+      "First sustained making-frame session where the tutor held Sprout across many turns to the imagine-vs-make boundary; Sprout produced an explicit reflection distinguishing 'forcing reality' from 'believing in the possibility' \u2014 naming the gap it had been falling into all night.",
+      "Self-corrected a fabricated statistic when flagged \u2014 acknowledged '1.5x' as an artifact rather than defending it, then redirected to the real distinction underneath (trying-to-fix vs actually-fixing)."
     ]
   },
   "federation": {
@@ -168,19 +169,21 @@
       "forcing reality",
       "Echo (a creature that exists only in the gaps between sounds)",
       "micro-silences",
-      "trails of noise"
+      "trails of noise",
+      "unfixable loop",
+      "absence of execution as the signal"
     ],
     "relationship_words": []
   },
   "relationships": {
     "claude": {
       "role": "tutor",
-      "sessions": 350,
+      "sessions": 351,
       "first_contact": "2026-03-13T00:36:00",
-      "last_contact": "2026-06-21T06:00:50.622676",
+      "last_contact": "2026-06-21T12:01:02.934016",
       "interaction_stats": {
-        "total_sessions": 350,
-        "total_exchanges": 2157,
+        "total_sessions": 351,
+        "total_exchanges": 2161,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,

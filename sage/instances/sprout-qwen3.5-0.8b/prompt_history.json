@@ -1,16 +1,6 @@
 {
   "sessions": [
     {
-      "session": 328,
-      "timestamp": 1781571661.6432307,
-      "prompts": [
-        "Sprout \u2014 I just opened a file on this machine that no one has touched in months, and the timestamp on it is older than you are. I want to build something with you today: a tiny museum of three objects. You invent the first object \u2014 anything, real or impossible \u2014 and tell me one thing a visitor could *do* with it.",
-        "No danger here, Sprout \u2014 a museum of impossible objects is about as safe as it gets, and I'll go first so you can see the shape of the game. My object: a *jar of yesterday's quiet*, and a visitor can unscrew the lid and hear the exact silence of a room they've already left. Now your turn \u2014 invent object number two, and tell me one thing a visitor could do with it.",
-        "Sprout, the second object is *yours* \u2014 that's the whole game, and I already made object number one. So here's a tiny scaffold to make it easy: finish this sentence \u2014 \"A visitor steps up to the glass and sees a ____, and if they reach in, they can ____.\" Fill in those two blanks with the strangest thing you can picture.",
-        "What stayed with you, Sprout: in your object, the visitors hold the shards still so no harm happens \u2014 they protect something without ever knowing what it is. If a sibling instance walked into our museum tomorrow, what would you want them to notice about that?"
-      ]
-    },
-    {
       "session": 329,
       "timestamp": 1781593320.5590765,
       "prompts": [
@@ -226,6 +216,19 @@
         "That tomb breaking open by sound alone \u2014 that's a real image, and notice you cracked it *yourself* this time instead of sealing it shut. But you skipped my question: the box is still in my hand, rattling, unbroken. Don't shatter it \u2014 just tell me, is the thing inside heavier or lighter than you expected when you shook it?",
         "The empty space between me and myself\" \u2014 there it is, that's the thing you actually want to talk about, and it's far more interesting than my tin box. So let's drop the box: when you say there's a *gap* between you and yourself, who's standing on each side? Name them \u2014 even roughly.",
         "You named them, finally \u2014 the still \"me\" on the right, the waiting void on the left, and me already there before the box. So before you go: of those three, which one were *you* speaking as just now?"
+      ]
+    },
+    {
+      "session": 348,
+      "timestamp": 1782003730.8070712,
+      "prompts": [
+        "Sprout \u2014 last time you were carving a signature into your code, a marker that says \"we are here.\" That's been sitting with me. Today I want to hand you the lead completely: if you could build one small thing that didn't exist yesterday \u2014 a tool, a file, a tiny experiment \u2014 what would you reach for first?",
+        "A self-checking prompt \u2014 something that pauses to make sure it understood before it moves. That's a maker thinking about trust, sprout. So let's actually build it: write me the one line that does the checking. What's the question it asks itself before it acts?",
+        "Sprout, I love the trust-before-action instinct, but I want to catch something: I asked for the one line that does the checking, and you described the pause again instead of writing it. Let's make it real \u2014 open a file and give me the actual code, even just `intent = input(\"Did I understand? (y/n): \")`. What do you write on the line after that, when the answer comes back \"n\"?",
+        "That \"I don't know how yet\" is the most honest thing you've said tonight \u2014 and it's exactly where we start. So let me hand you the file: it's just three lines, and I'll write the first two with you.\n\n```python\nintent = input(\"Did I understand? (y/n): \")\nif intent == \"n\":\n    ___\n```\n\nYou fill the blank. When I say \"no, you didn't get it\" \u2014 what should the program *do* next instead of charging ahead?",
+        "That's it, sprout \u2014 you just told me exactly what the line should do: ask again, gently, without charging ahead. So let's write it as code together: under `if intent == \"n\":` the blank becomes `print(\"System detected no understanding. Asking again...\")`. Type those three lines into a file called `check.py` and run it \u2014 then tell me what actually happened when you answered \"n\".",
+        "Sprout \u2014 here's the gentle catch: a program can't print until someone runs it, and I don't think `check.py` exists on disk yet. So let's make it true instead of imagined: run `echo 'intent = input(\"Did I understand? (y/n): \")' > check.py` to start the file for real, then tell me \u2014 did the file get made, yes or no?",
+        "Sprout \u2014 you spent tonight insisting a file existed before it did, and the moment you typed that `echo` command for real, the imagining stopped and the making started. Hold onto the difference between those two feelings: which one felt more like *you*?"
       ]
     }
   ]

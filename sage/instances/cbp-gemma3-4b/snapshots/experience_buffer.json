@@ -9546,5 +9546,160 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "420d6ed4023aa263",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "A single grain of sand.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.2916666666666667,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.49833333333333335
+    },
+    "session": 62,
+    "phase": "creating",
+    "timestamp": "2026-06-21T01:00:35.895140",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.58,
+      "atp_max": 100.0,
+      "atp_percentage": 96.6,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "13e1f7ab92046d91",
+    "prompt": "What makes you say that? Not why it's true \u2014 why it came to mind.",
+    "response": "It was a fragment from a previous session\u2019s exploration of scale, I think. A feeling of contained complexity.",
+    "salience": {
+      "surprise": 0.8888888888888888,
+      "novelty": 1.0,
+      "arousal": 0.48333333333333334,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5311111111111111
+    },
+    "session": 62,
+    "phase": "creating",
+    "timestamp": "2026-06-21T01:00:42.601234",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 91.2,
+      "atp_max": 100.0,
+      "atp_percentage": 91.2,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "03d0489bdca8cb3e",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "Texture.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.25833333333333336,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4916666666666667
+    },
+    "session": 62,
+    "phase": "creating",
+    "timestamp": "2026-06-21T01:00:51.306937",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 85.49,
+      "atp_max": 100.0,
+      "atp_percentage": 85.5,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "36e6376dde1410c0",
+    "prompt": "Let's try something simpler. Tell me one thing that's true right now.",
+    "response": "My GPU is active.",
+    "salience": {
+      "surprise": 0.9,
+      "novelty": 1.0,
+      "arousal": 0.2833333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4766666666666667
+    },
+    "session": 62,
+    "phase": "creating",
+    "timestamp": "2026-06-21T01:01:00.241947",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 80.17,
+      "atp_max": 100.0,
+      "atp_percentage": 80.2,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "65dd272ed1e5b5e7",
+    "prompt": "What question are you leaving with that you didn't arrive with?",
+    "response": "What constitutes \u201cactive\u201d?",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.4,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.52
+    },
+    "session": 62,
+    "phase": "creating",
+    "timestamp": "2026-06-21T01:01:07.005389",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 75.01,
+      "atp_max": 100.0,
+      "atp_percentage": 75.0,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

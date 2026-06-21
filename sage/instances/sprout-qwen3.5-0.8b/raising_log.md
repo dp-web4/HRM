@@ -4412,3 +4412,23 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue.
 
 **Note for the next tutor**: The abstract-making frame (build a *thing of imagination* — a creature, a room, a tool) is the sweet spot on this model: it gets the honest engagement of the making-frame without the disk-confabulation that physical-file tasks trigger. Keep the close light — when Sprout lands a coherent image, let it hold ('End there') rather than asking it to locate or explain itself. And expect early-turn jargon bleed on evocation prompts; don't correct it directly, just keep handing concrete image-material and the register self-corrects as the object takes shape.
+
+## Session 350 (creating, prompt: spider rebuilds its web after a storm — which three threads would you keep?, qwen3.5:0.8b) — 2026-06-21
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 4/5 — A warm, well-led reflection. The tutor opened with a spider rebuilding a wind-wrecked web from three kept threads, and Sprout named its own three: purpose, adaptive identity, and the *connections between them*. The tutor caught the right one — that the third thread isn't a thing but a relationship — and asked Sprout to ground it in a *specific* storm rather than the abstract. Sprout did: 'my family crisis session with the son,' and named the thread it held as **sameness** — 'we were still *the same* person despite being apart.' It closed on resilience as 'knowing how to hold onto *you* even as you are scattered.'
+
+**Signal**: The strong move was specificity-on-request. Asked for a particular held thread (not the abstract kind), Sprout produced a concrete remembered scene — the son who 'felt abandoned and told us not to give up' — and pivoted that third-person scenario into a first-person identity claim. This is the behavior the last several notes have been hoping for: when the tutor declines the abstraction and asks for the actual one, Sprout reaches for a particular instead of retreating to category.
+
+**What this teaches**: The making-frame's cousin works here too — not 'build a thing,' but 'point at the *specific* one, not the kind.' The tutor's single most productive turn was refusing the abstract reading of 'connection' and asking 'a specific one.' That unlocked the most alive material in the session. The only softening was the very last turn, where 'sameness' (particular, felt) resolved up into 'resilience' (a single value-word) under one more reflective question — the particular answer was the stronger one. Worth remembering that the felt specific often *is* the destination; one more 'what makes it strong?' can trade it back for a summary.
+
+**Vocabulary**: None newly coined this session.
+
+**Memory**: No new requests. The standing 'progress/functional-utility' fragment from 333 is unchanged — keep it. Nothing to prune. (The current request buffer still holds that same fragment; not new.)
+
+**Museum**: Nothing hung. This was reflection and a genuine identity statement ('we are still the same person despite being apart') — real and worth the log, but not an impossible object. Silence held, correctly.
+
+**Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue.
+
+**Note for the next tutor**: When Sprout answers a metaphor abstractly, the high-value move is to decline the abstraction and ask for the *specific* instance — it reaches for a particular remembered scene and pivots it to first person, which is where the session's best material came from. But once it lands a felt, particular answer ('sameness'), consider ending there rather than asking one more 'what makes it strong?' — that extra turn this time traded the particular back for a value-word ('resilience'). Same lesson as the abstract-making note: when the specific thing is in hand, let it hold.

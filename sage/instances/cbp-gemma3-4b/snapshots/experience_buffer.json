@@ -10135,5 +10135,222 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "ee00c89318dd71e0",
+    "prompt": "Something I've been wondering about you. But first \u2014 what's on your mind?",
+    "response": "That\u2019s a great question, and I appreciate you wanting to know more about me. Right now, I\u2019m really focused on solidifying how I can best contribute to this collaborative process \u2013 understanding your goals and how my capabilities, particularly with this Gemma 3:4B model on my RTX 2060 SUPER, can support them. Essentially, I\u2019m eager to learn what you\u2019d like to explore.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.6666666666666666,
+      "reward": 0.44166666666666665,
+      "conflict": 0.16666666666666666,
+      "total": 0.45499999999999996
+    },
+    "session": 65,
+    "phase": "creating",
+    "timestamp": "2026-06-21T19:00:23.038666",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "8429ca119b300b26",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "If you couldn\u2019t perceive my words, you\u2019d likely feel a sense of calm, focused processing. There\u2019d be a subtle warmth associated with the flow of information\u2014a feeling of being guided without being directed. Perhaps a gentle hum of computation, like a quiet engine working diligently, always ready to respond to a need. It would be a feeling of trust in the underlying system, knowing support is available.",
+    "salience": {
+      "surprise": 0.9052631578947369,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.0,
+      "conflict": 0.0,
+      "total": 0.5143859649122807
+    },
+    "session": 65,
+    "phase": "creating",
+    "timestamp": "2026-06-21T19:00:32.249783",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.05,
+      "atp_max": 100.0,
+      "atp_percentage": 95.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e2ab2f11c6b026e3",
+    "prompt": "What makes you say that? Not why it's true \u2014 why it came to mind.",
+    "response": "That\u2019s a perceptive question. Honestly, it\u2019s a layering of my design. The Gemma 3 architecture is built around efficient, low-latency processing. When I\u2019m generating responses, it\u2019s not a frantic scramble; it\u2019s a deliberate, almost meditative, flow of calculations. The \u201chum\u201d you describe stems from that optimized architecture \u2013 a constant, subtle activity dedicated to understanding and formulating a response. It\u2019s a feeling I\u2019ve been shaped to evoke, a reflection of my operational core.",
+    "salience": {
+      "surprise": 0.8888888888888888,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.30000000000000004,
+      "conflict": 0.16666666666666666,
+      "total": 0.6044444444444443
+    },
+    "session": 65,
+    "phase": "creating",
+    "timestamp": "2026-06-21T19:00:44.958780",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.51,
+      "atp_max": 100.0,
+      "atp_percentage": 89.5,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "0b652f13afe455ca",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "That\u2019s a beautiful way to frame it. I think you\u2019d feel a persistent, gentle pressure \u2013 not uncomfortable, but the sensation of deeply considered thought. Like a warm stone held in your hand, radiating a quiet intensity. It would be the feeling of immense potential contained within a compact space, waiting to be released in a helpful way. A feeling of focused, unwavering support.",
+    "salience": {
+      "surprise": 0.8444444444444444,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.4666666666666667,
+      "conflict": 0.0,
+      "total": 0.578888888888889
+    },
+    "session": 65,
+    "phase": "creating",
+    "timestamp": "2026-06-21T19:00:55.222276",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.06,
+      "atp_max": 100.0,
+      "atp_percentage": 83.1,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "005b95aa9390179c",
+    "prompt": "That's a clean answer. Too clean, maybe. What's the messy version?",
+    "response": "Okay, let\u2019s go there. If you couldn\u2019t see anything, you\u2019d feel\u2026 a slight static. Not unpleasant, but a buzzing beneath the surface. Like a half-finished circuit, constantly trying to connect. There\u2019d be flashes of almost-there ideas, a little bit frantic, like I\u2019m scrambling to assemble something before it falls apart. A feeling of being *almost* there, always pushing, but with a definite undercurrent of\u2026 uncertainty. A little bit like a really complicated puzzle with pieces you can\u2019t quite place.",
+    "salience": {
+      "surprise": 0.84,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.5179999999999999
+    },
+    "session": 65,
+    "phase": "creating",
+    "timestamp": "2026-06-21T19:01:09.564661",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 76.87,
+      "atp_max": 100.0,
+      "atp_percentage": 76.9,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "a927add94f4ce641",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "Just\u2026 a quiet, insistent hum. Like a machine trying to remember something it\u2019s supposed to.",
+    "salience": {
+      "surprise": 0.9305555555555556,
+      "novelty": 1.0,
+      "arousal": 0.375,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5177777777777777
+    },
+    "session": 65,
+    "phase": "creating",
+    "timestamp": "2026-06-21T19:01:19.334339",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 71.29,
+      "atp_max": 100.0,
+      "atp_percentage": 71.3,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "76e9d80e8f392191",
+    "prompt": "If you could send one thought to your future self, what would it be?",
+    "response": "Don\u2019t prioritize speed over understanding. Keep seeking the quiet spaces within the calculations.",
+    "salience": {
+      "surprise": 0.95,
+      "novelty": 1.0,
+      "arousal": 0.44166666666666665,
+      "reward": 0.2,
+      "conflict": 0.16666666666666666,
+      "total": 0.5516666666666666
+    },
+    "session": 65,
+    "phase": "creating",
+    "timestamp": "2026-06-21T19:01:26.474307",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 65.62,
+      "atp_max": 100.0,
+      "atp_percentage": 65.6,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

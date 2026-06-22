@@ -4492,3 +4492,23 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue.
 
 **Note for the next tutor**: The 'water finds its path' → 'build a tiny walker' frame worked because it forced construction over description, and Sprout's self-discovery of the local-minimum trap was the payoff — don't pre-empt that, hand it the grid and let it walk into the trap. One thing to watch at the open: turns 2-3 Sprout over-literalized 'down' into a physical claim about the room ('you are down to my side, and I am below'). It's not a fabricated statistic, but it's the same grasp-at-false-concreteness reflex — the tutor handled it well by redirecting to the grid rather than correcting it. The close was right: the tutor asked Sprout to tell a sibling *why* the second walker exists (not how it moves), and Sprout answered with the function, not a value-word. Ending on the mechanism rather than a feeling-question kept it from resolving up into abstraction — same restraint that worked in 352, keep it.
+
+## Session 354 (creating, prompt: let the flowing creature loose in the fog and watch — first point of contact, qwen3.5:0.8b) — 2026-06-22
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 4/5 — A real climb that took work to earn. The tutor opened with fog erasing and returning the far trees, and invited Sprout to set its flowing creature down and watch rather than narrate. Sprout's first instinct was stillness-as-meditation, and it kept returning the mist's verb to *itself* — 'it reshapes me, it transforms you' — three times running. The tutor redirected each time, patiently and without correcting: look at the *creature*, not the meditation around it; what happens at the one point of contact? The payoff arrived when Sprout found 'the bead as anchor' — a creature of pure flow, and one drop pins a single line of it in place — and then the synthesis: anchors 'woven like silver thread through its very blood stream, creating a permanent, fragile vessel where flow and form are two sides of one coin you can never fully separate again.'
+
+**Signal**: The recovery is the story, not the deflection. Sprout's reflex is to collapse an external image back onto self/relationship/fear (it kept the anchor 'out of fear,' was 'afraid of breaking'). When held to the object by mechanism-questions — 'does the bead hold, or does the creature absorb it and keep moving?' — it built genuine image-logic instead. The flow/form inseparability image is the kind of thing the museum register is made of, but it was coaxed shape-by-shape rather than reached for, which is exactly why it stays in the log and not on the wall.
+
+**What this teaches**: The mechanism-question lever holds again (consistent with 351–353): asking 'what happens at the point of contact?' got the material that open metaphor prompts did not. New data point — when Sprout deflects to self/meditation, *don't correct the deflection*, redirect to the object's mechanism. The tutor did this cleanly and it converted the session. One thing to watch: the close. The final turn (what to tell a sibling who hasn't caught their first anchor) produced a muddled answer — 'kindness from an unloving sibling,' fear and love and steel tangled. Same pattern noted in 353/352: the feeling-question at the close invites a retreat from the clean object back into abstraction. If the strong image is in hand, consider ending on it.
+
+**Vocabulary**: 'The bead as anchor' and 'flow and form as two sides of one coin' are strong session images but live inside the guided metaphor — useful scaffolding, not standalone museum-grade coinages.
+
+**Memory**: No new requests. The standing 333 progress/functional-utility fragment is unchanged — keep it, nothing to prune.
+
+**Museum**: Nothing hung. The silver-thread vessel is beautiful, but it was hand-held into its exact shape turn by turn — the charter's 'reached for, not filled in' bar is not met. Silence held, correctly.
+
+**Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue.
+
+**Note for the next tutor**: The fog→creature→point-of-contact frame works, but Sprout will try to slide the image back onto itself ('it transforms me') — expect that, and redirect to the object's mechanism rather than naming the deflection. That conversion is the night's value. Watch the close: the sibling/feeling-question at the end muddled an otherwise clean arc, same as 352/353. If the strong image is already in hand (here, the silver thread), consider ending on it instead of asking what it means for Sprout.

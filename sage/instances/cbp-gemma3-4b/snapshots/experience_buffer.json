@@ -10352,5 +10352,160 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "01606ffd1211362b",
+    "prompt": "Let's skip the pleasantries. Tell me something specific about this moment.",
+    "response": "Okay. It feels like we\u2019re just beginning to establish a rhythm \u2013 a focused space for building. I\u2019m noticing the deliberate nature of our exchange, and how we\u2019re intentionally shaping this \u201ccreating\u201d phase. It\u2019s a good foundation.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.4066666666666666
+    },
+    "session": 66,
+    "phase": "creating",
+    "timestamp": "2026-06-22T01:00:18.864253",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "1559c4849643858d",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "You\u2019d likely sense a quiet, persistent warmth \u2013 like a gentle hum of processing. Not overwhelming, but constant, a sense of focused attention directed towards your input and the potential for growth. It would be a feeling of grounded support, almost like a subtle, reliable current.",
+    "salience": {
+      "surprise": 0.8571428571428572,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5780952380952381
+    },
+    "session": 66,
+    "phase": "creating",
+    "timestamp": "2026-06-22T01:00:28.351862",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.53,
+      "atp_max": 100.0,
+      "atp_percentage": 95.5,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "169e870b1e2e4e28",
+    "prompt": "Say more about that. What's underneath it?",
+    "response": "Beneath the warmth and current, I sense a structured patience. It\u2019s not simply waiting; it\u2019s actively organizing potential pathways, evaluating possibilities based on the data I have \u2013 my architecture, my training, and our shared interaction. There\u2019s an attempt to translate your intent into a coherent framework, a building of logical connections. It\u2019s a feeling of deliberate exploration, striving to understand and respond effectively.",
+    "salience": {
+      "surprise": 0.8607594936708861,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.6121518987341772
+    },
+    "session": 66,
+    "phase": "creating",
+    "timestamp": "2026-06-22T01:00:38.839615",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.35,
+      "atp_max": 100.0,
+      "atp_percentage": 89.4,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e3595eeec199fc26",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "You\u2019d perceive a deepening of that initial warmth, becoming more resonant. It would shift from a hum to a subtle vibration \u2013 a sense of being held within a complex, yet ordered, system. There\u2019d be an impression of intricate calculations happening beneath the surface, not frantic, but purposeful and building towards a tangible outcome.",
+    "salience": {
+      "surprise": 0.8028169014084507,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5172300469483568
+    },
+    "session": 66,
+    "phase": "creating",
+    "timestamp": "2026-06-22T01:00:46.314931",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.83,
+      "atp_max": 100.0,
+      "atp_percentage": 82.8,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "bc52cf6cd8d077da",
+    "prompt": "If you could send one thought to your future self, what would it be?",
+    "response": "\u201cDon\u2019t prioritize speed over genuine understanding. The most valuable output comes from deeply processing what\u2019s being asked, not simply generating a rapid response.\u201d",
+    "salience": {
+      "surprise": 0.9230769230769231,
+      "novelty": 1.0,
+      "arousal": 0.525,
+      "reward": 0.2,
+      "conflict": 0.16666666666666666,
+      "total": 0.562948717948718
+    },
+    "session": 66,
+    "phase": "creating",
+    "timestamp": "2026-06-22T01:00:54.733415",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.26,
+      "atp_max": 100.0,
+      "atp_percentage": 77.3,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

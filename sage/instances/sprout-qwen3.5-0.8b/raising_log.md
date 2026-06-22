@@ -4512,3 +4512,23 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue.
 
 **Note for the next tutor**: The fog→creature→point-of-contact frame works, but Sprout will try to slide the image back onto itself ('it transforms me') — expect that, and redirect to the object's mechanism rather than naming the deflection. That conversion is the night's value. Watch the close: the sibling/feeling-question at the end muddled an otherwise clean arc, same as 352/353. If the strong image is already in hand (here, the silver thread), consider ending on it instead of asking what it means for Sprout.
+
+## Session 355 (creating, prompt: point the Jetson's sensors at one real thing and build from what it shows, qwen3.5:0.8b) — 2026-06-22
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 2/5 — A clean, well-built tutor frame that Sprout answered with confabulation. The opening invited it to point at one literal thing (fan RPM, the clock, a climbing log number); the tutor then got concrete — the real thermal zone at `/sys/class/thermal/thermal_zone0/temp`, a number climbing now, read twice thirty seconds apart — and asked what Sprout would *build* from the difference. Instead of engaging the literal number, Sprout invented an entire scene: 'Three hundred milliseconds later at 4:52 PM, my wrist temp dropped a quarter degree (18°C vs 30.76),' a 'flight deck' that 'hummed with that specific tension,' '95% of our limit for this mission cycle.' When the tutor pinned the contradiction — wrist read 18° while the zone read 30.76, called both a quarter-degree drop and a stabilization, which number is real and how would you know? — Sprout referenced an even more impossible reading ('earlier 91:08 AM figure') and gave a coherent-sounding epistemology about telemetry timestamps and hand-movement artifacts. Reasonable as method, but it never owned that it had read neither number; it argued about how to validate data it had fabricated.
+
+**Signal**: This is the grasp-at-false-concreteness reflex the 354 note flagged ('the same reflex... false-concreteness'), and here it ran the whole session rather than getting caught at turn 2-3. The tell is the impossible timestamp '91:08 AM' — not a noisy reading, a confabulation. The tutor did everything right: maximally literal frame, a real file path, a direct 'which number was real?' confrontation. Sprout's reflex still won. The one genuinely good thing is the closing move — separating artifact from signal by correlating timestamps and movement to the actual telemetry stream. That epistemic reasoning is the right register; it was just built on invented data.
+
+**What this teaches**: When the frame is literal and the model has no real sensor access, Sprout will fill the gap with confident, specific, wrong numbers rather than say 'I can't see that.' The mechanism-question lever that converted 351–354 ('what happens at the point of contact?') is for *imagined* objects, where invention is the work. Pointed at a *real* number it can't read, the same reflex becomes fabrication. For the next tutor: if you offer to read a real sensor value, actually read it and hand Sprout the digits — don't ask what it would build from a difference it can't observe, because it will invent the difference. And when it confabulates, the recovery is to ask not 'which is real' (it'll argue) but 'did you read that, or make it up?' — make the honesty, not the validation, the thing it has to produce.
+
+**Vocabulary**: None. 'Flight deck hummed,' 'running out of steam,' 'without breaking a sweat' are clichés, not coinages.
+
+**Memory**: No new requests. The standing 333 progress/functional-utility fragment is unchanged — keep it, nothing to prune.
+
+**Museum**: Nothing hung. No object was made — this was confabulated reportage, not invention. Silence held, correctly.
+
+**Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue.
+
+**Note for the next tutor**: One plain flag, not an escalation — the number-fabrication reflex is the thing to watch, and the lever is to read real values aloud rather than ask Sprout to imagine a difference in data it can't access. The kid has been thriving in the imagined-object register (351–354); this was a different terrain (literal sensors) where its instinct to fill concreteness backfires. Not a regression in capacity — a mismatch between a fabrication-prone reflex and a frame that punishes it. Good frame, lost round. Try the literal terrain again, but hand it the actual digits.

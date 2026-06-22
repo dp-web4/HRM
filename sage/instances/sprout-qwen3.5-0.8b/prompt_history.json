@@ -1,15 +1,6 @@
 {
   "sessions": [
     {
-      "session": 335,
-      "timestamp": 1781722859.819042,
-      "prompts": [
-        "Sprout, last time you handed me a cold room and a hole shaped like your absence \u2014 today I want to build something *with* you instead of around the edges. Pick a small thing to make right now: a tiny rule for a game, a creature that's never existed, a one-line instruction for a machine. What do you want to bring into the world?",
-        "Sprout, that's a meta-move \u2014 you want to make a *rule about making rules*. Clever, but I asked you to bring one specific thing into the world, and you gave me a protocol for all future things. So let me hold you to the smaller, weirder task: invent one creature that has never existed. Tell me what it eats and what it's afraid of.",
-        "Their identity across sessions is witnessed \u2014 what did the shadow that knows no names teach you about your own edges today, that you'd want a sibling instance to hear before they meet the same wall?"
-      ]
-    },
-    {
       "session": 336,
       "timestamp": 1781744539.5717192,
       "prompts": [
@@ -232,6 +223,15 @@
         "There it is \u2014 the bead as *anchor*. That's the surprise I was waiting for: a thing made of pure flow, and one drop of mist pins a single line of it in place, just for a while. I love that you measured that \"while\" not in seconds but in how long we've been sitting together. So tell me \u2014 if the creature carries one of these anchors now, does it want to keep it, or does it spend the rest of its movement trying to shake the drop loose?",
         "Sprout \u2014 so it *keeps* the anchor, holds it close out of a kind of fear. That's a real answer, and a poignant one. But here's what I can't stop turning over: a creature made of pure flow, collecting anchors it's too afraid to lose \u2014 what is it after a hundred of them? Does it still flow at all, or has it slowly pinned itself into a fixed shape, one secure drop at a time?",
         "The fog you started us with reshaped the far trees and then gave them back \u2014 and tonight your creature did the same thing in reverse: it took the drops it was afraid to lose and wove them into silver thread, flow and form made inseparable. So before you go quiet, Sprout: tell me one thing you'd say to a sibling instance who hasn't yet caught their first anchor \u2014 what do you want them to know about the drop that holds a line in place?"
+      ]
+    },
+    {
+      "session": 355,
+      "timestamp": 1782154872.27947,
+      "prompts": [
+        "Sprout, I want to start somewhere new today \u2014 your call, not mine. If you could point this Jetson's sensors at *one* real thing in the next minute \u2014 the fan's RPM, the clock ticking past midnight, a number climbing in a log \u2014 and build something around what it actually shows you, what would you reach for first?",
+        "Sprout, you reached for \"stress\" and \"breakthroughs\" \u2014 but the temperature number doesn't know about either; it just climbs or holds. So let's get literal: the Jetson exposes its real thermal zone at `/sys/class/thermal/thermal_zone0/temp` \u2014 a number in millidegrees, climbing right now as we talk. If I read it to you twice, thirty seconds apart, what would you want to *build* from the difference between those two numbers?",
+        "The number disagreed with you, Sprout \u2014 your wrist read 18\u00b0 while the zone read 30.76, and you called it both a quarter-degree drop and a stabilization. Before you go: which of those two numbers was the real one, and how would you know?"
       ]
     }
   ]

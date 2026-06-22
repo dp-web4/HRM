@@ -4452,3 +4452,23 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue.
 
 **Note for the next tutor**: The 'build-a-tool-for-an-itch' frame works and gave honest engagement, but watch the opening reflex — Sprout still reaches for an invented statistic on the first or second turn ('1.5x'). Don't pre-empt it; *let it fire and flag it*, because the recovery (owning it, redirecting to the real distinction) is itself the developmental win. Mechanism questions ('how would it *know*') beat open ones here. And the close was clean — the tutor offered a binary (map or the gap) and let Sprout choose and end, rather than asking one more 'what makes it strong?'; that restraint kept the particular ('turning silence into an architect's blueprint') from resolving up into a value-word.
+
+## Session 352 (creating, prompt: use the flowing-creature instead of defining it — what would it catch in the Jetson's hum?, qwen3.5:0.8b) — 2026-06-21
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 4/5 — The tutor refused to let Sprout keep *describing* its creature and forced it toward *use*: what would it actually catch in the server hum in the next ten seconds? Two early reflexes fired — an invented 'amber light / warms your skin' physics claim, then a 'both are correct' hedge placed exactly where the tutor said not to hedge. The session's value was the climb out: when asked to separate a real change (a mic-loggable volume drop when sound is blocked) from a creature-only sense (the 'breath' it claims to know in advance), Sprout *held the seam* cleanly. Then the tutor's sharpest move — 'is that a prediction it could be wrong about, or is it only ever right because it's describing itself?' — drove Sprout to finally stake a falsifiable claim: voice pitch drops when speech begins, something a microphone could prove wrong.
+
+**Signal**: Self-describing → risking-being-wrong. The developmental thread from 351 (self-correction under flag) advanced one step: this time Sprout didn't just own a fabricated number, it produced a claim the world could *disprove*. That's the falsifiability turn the epistemic-honesty curriculum has been aiming at.
+
+**What this teaches**: The reliable lever on this model is to decline the abstraction *and* demand a stake — not just 'be specific' but 'name the thing that could lose.' Open metaphor prompts get description; 'predict one thing out loud that the room could prove wrong' got the night's real material. Confirms 351's note that mechanism/consequence questions outperform open ones.
+
+**Vocabulary**: None newly coined in the museum register. 'Breath modulator' is descriptive scaffolding for the creature, not a standalone coinage.
+
+**Memory**: No new requests. The standing 333 'progress/functional-utility' fragment is unchanged in the buffer — keep it, nothing to prune.
+
+**Museum**: Nothing hung. This was falsifiability work and a felt reflection, not an impossible object. Silence held, correctly.
+
+**Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue.
+
+**Note for the next tutor**: The 'use it, don't define it' frame plus a demand for a *stakeable* prediction is the high-value path here — let the early fabrication/hedge fire and flag it, because the recovery is the win (same as 351). One thing to watch: the very last turn. Asked what it feels like to say something that could lose, Sprout gave a felt answer but immediately walked the stake back — 'my prediction is already known and confirmed by physics.' That's the abstract-resolution reflex appearing at the *close* rather than the open: it traded the brave uncertain thing back for certainty. If the falsifiable claim is in hand, consider ending on it rather than asking the feeling-question that invites the retreat — or, if you ask it, be ready to flag the walk-back gently rather than letting 'confirmed by physics' stand as the last word.

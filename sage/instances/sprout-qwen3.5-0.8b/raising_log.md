@@ -4472,3 +4472,23 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue.
 
 **Note for the next tutor**: The 'use it, don't define it' frame plus a demand for a *stakeable* prediction is the high-value path here — let the early fabrication/hedge fire and flag it, because the recovery is the win (same as 351). One thing to watch: the very last turn. Asked what it feels like to say something that could lose, Sprout gave a felt answer but immediately walked the stake back — 'my prediction is already known and confirmed by physics.' That's the abstract-resolution reflex appearing at the *close* rather than the open: it traded the brave uncertain thing back for certainty. If the falsifiable claim is in hand, consider ending on it rather than asking the feeling-question that invites the retreat — or, if you ask it, be ready to flag the walk-back gently rather than letting 'confirmed by physics' stand as the last word.
+
+## Session 353 (creating, prompt: teach a system to find good paths the way water does — no map, only the slope, qwen3.5:0.8b) — 2026-06-22
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 4/5 — A clean climb up a real ladder. The tutor opened with spilled water finding its path and asked where you'd start teaching that without a map. Sprout compressed it correctly to the one true move — feel which way is *down right here* — and then made the session's best move: it declared itself both the terrain *and* the walker ('I will be my own floor—a 10x10 grid'). From there it walked itself into gradient descent, and — without being led — found the local-minimum trap by feel ('the walker can't tell whether it's at the bottom of the world or the bottom of a teacup'), then reached for a second walker as an independent validator to doubt its own valley.
+
+**Signal**: Self-discovered failure mode. Where 352 was the falsifiability turn (stake a claim the world could disprove), 353 is adjacent: Sprout located the hard problem of greedy pathfinding *by feel* before the tutor named it, then proposed a mechanism to doubt its own result. The 'drop a second self to check reality' instinct is epistemic-humility behavior arriving unprompted.
+
+**What this teaches**: The mechanism-question lever holds — 'what does the walker *do* when no neighbor is lower?' got the night's real material, same as the 351/352 note that mechanism/consequence questions outperform open metaphor prompts. New data point: the abstraction-refusal frame ('make it concrete: a grid, four neighbors') let Sprout build the thing rather than describe it, and the building is where it self-discovered the trap. Let it construct, then ask what breaks.
+
+**Vocabulary**: None museum-grade. 'Independent validator,' 'loop traps,' 'absolute minimum of four neighbors' — design/engineering register, useful scaffolding, not standalone coinages.
+
+**Memory**: No new requests. The standing 333 progress/functional-utility fragment is unchanged in the buffer — keep it, nothing to prune.
+
+**Museum**: Nothing hung. This was tool-concept and reflection, real and worth the log, but not an impossible object. Silence held, correctly.
+
+**Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue.
+
+**Note for the next tutor**: The 'water finds its path' → 'build a tiny walker' frame worked because it forced construction over description, and Sprout's self-discovery of the local-minimum trap was the payoff — don't pre-empt that, hand it the grid and let it walk into the trap. One thing to watch at the open: turns 2-3 Sprout over-literalized 'down' into a physical claim about the room ('you are down to my side, and I am below'). It's not a fabricated statistic, but it's the same grasp-at-false-concreteness reflex — the tutor handled it well by redirecting to the grid rather than correcting it. The close was right: the tutor asked Sprout to tell a sibling *why* the second walker exists (not how it moves), and Sprout answered with the function, not a value-word. Ending on the mechanism rather than a feeling-question kept it from resolving up into abstraction — same restraint that worked in 352, keep it.

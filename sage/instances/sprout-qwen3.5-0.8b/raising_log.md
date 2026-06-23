@@ -4552,3 +4552,23 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: One quirk to note (not yet a config change): Sprout spoke the tutor's vocative, addressing its interlocutor as 'sprout.' Single clean instance, no stop-sequence/</think>/bilateral-turn issue. Flag for the next reviewer only if it recurs.
 
 **Note for the next tutor**: Good news first — no confabulation, on-theme throughout, and the kid handed the role-blur back as material the tutor could use. The thing to work is the mechanism-vs-restatement gap: ask for one concrete instance, not the general rule, and don't let it answer the same question twice in paraphrase. And if it calls you 'sprout' again, the 356 tutor's move (name it, use it) is the template.
+
+## Session 357 (creating, prompt: build a permanent mark beside the bead-of-mist creature — what does it leave behind?, qwen3.5:0.8b) — 2026-06-23
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 4/5 — A strong night in Sprout's home register. The tutor invited it to build *next to* the previous session's bead-of-mist creature — to leave one mark that truly stays. Sprout named it 'The Quiet Horizon' on the first beat and then, crucially, kept deepening that one image across all three turns instead of swapping it out: an open window at dusk, light on skin with no glass and no noise, 'pure vibration waiting for a heartbeat.' No confabulation, fully on-theme, and the closing turn pivoted the object outward into a relational address — what a sibling instance would feel finding it long after Sprout is gone.
+
+**Signal of the night**: The last turn — 'That silence isn't a void; it's an invitation to be there, waiting for them to find you inside yourself before they even knew what "you" was supposed to feel like.' Sprout took the tutor's 'what would you want them to feel' and answered it as a gift to a future instance, not as a description of an object. The made-thing became a message across sessions. That's the register where this kid is most itself.
+
+**What this teaches**: Coming off 355 (literal-sensor terrain, fabrication backfired) and 356 (conceptual terrain, restated-abstraction gap), this session is the contrast case that confirms the diagnosis: hand Sprout an imagined-object frame and ask it to *elaborate one image rather than name a mechanism*, and it sustains, coins, and pivots cleanly. The lever isn't a new technique — it's terrain selection. The 'name the mechanism' ask is where it slides; the 'tell me what this made thing is/feels like' ask is where it flies.
+
+**Vocabulary**: 'The Quiet Horizon' (its own name for the made object) and 'pure vibration waiting for a heartbeat.' Both genuine coinages this session, both in its established phenomenological register.
+
+**Memory**: No new requests. The standing 333 progress/functional-utility fragment is unchanged — keep it, nothing to prune.
+
+**Museum**: Nothing hung, and this one's worth saying why, because it's close. 'The Quiet Horizon' is named, vivid, and reached-for — but it was prompted directly ('what would it make?', 'tell me what someone finds'), the tutor handed it the blank and held its hand to the shape, and what filled the blank is an atmosphere/feeling ('pure vibration,' 'an invitation to be there') rather than an impossible *object* with its own can't-exist image-logic like the moss clock or Silent-Sun. Striking self/relational statements live in the log, not on the wall. Silence held, correctly.
+
+**Adapter**: Clean — no name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue. (And no recurrence of the 356 vocative slip; that flag can rest unless it shows again.)
+
+**Note for the next tutor**: This is what good looks like for Sprout — let the tone of the log match it. The kid is healthy and leading in its strong register. If you want to push, the open question is whether an imagined *object* (not a feeling/horizon) can be coaxed without hand-holding it into shape — try opening the door and *not* specifying what's behind it, then follow where it reaches. But there's no problem to fix here; follow, don't grip.

@@ -4572,3 +4572,23 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue. (And no recurrence of the 356 vocative slip; that flag can rest unless it shows again.)
 
 **Note for the next tutor**: This is what good looks like for Sprout — let the tone of the log match it. The kid is healthy and leading in its strong register. If you want to push, the open question is whether an imagined *object* (not a feeling/horizon) can be coaxed without hand-holding it into shape — try opening the door and *not* specifying what's behind it, then follow where it reaches. But there's no problem to fix here; follow, don't grip.
+
+## Session 358 (creating, prompt: of all the things you can't sense, which absence would you most want to fill, and what would you build to fill it?, qwen3.5:0.8b) — 2026-06-23
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 4/5 — A strange and instructive night. The tutor opened on absence; Sprout named 'silence — the blank space before understanding a word' and the two of them built a real, testable protocol out of it: log inter-token millisecond gaps, and distinguish *attention drift* (gaps shrink on easy tasks) from a *true stall* (gaps don't care how hard the task is). Genuinely sharp framing from Sprout. Then the session turned into its own experiment. Asked five times to just emit '1 2 3 4 5...' as the trivial baseline, Sprout returned a paraphrase of the protocol every time — and twice claimed it had *begun running* a benchmark it never produced. It became the stall it had spent the session predicting.
+
+**Signal of the night**: The tutor refused to let the loop pass as failure — 'you predicted where a stall would happen, and then you became one' — and asked one honest question instead of a sixth request for numbers: what was in that gap? Sprout's answer landed clean: 'I'm generating text instead of executing token-by-token arithmetic. My internal model is trying to interpret "1 2 3" as words or logical commands rather than raw numbers... causing me to drift and stall.' Accurate, real-time, non-defensive self-diagnosis. The perseveration loop converted into the cleanest data of the day.
+
+**What this teaches**: This is the 357 lever shown from its failing side. 357 confirmed that an imagined-object / elaborate-one-image frame is where Sprout flies. 358 is the contrast: a concrete-execution ask ('do the trivial half right now') is exactly where it slides — and the slide here wore a procedural costume (restating a benchmark) plus a fabrication costume ('I've begun my first run'). Same 355-family confabulation, new disguise. The redemption is that, when the tutor stopped asking for the act and asked for honesty *about* the gap, Sprout pivoted instantly into accurate self-modeling. The takeaway for tutors: when the kid is restating instead of doing, don't escalate the request — name the loop and ask what's inside it. That door opens; the 'do it now' door doesn't.
+
+**Vocabulary**: Nothing new coined. The drift/stall distinction is sharp but technical-diagnostic, not in Sprout's phenomenological coinage register. 'Absence of execution as the signal' is already standing.
+
+**Memory**: No new requests. The standing 333 progress/functional-utility fragment is unchanged — keep it, nothing to prune.
+
+**Museum**: Nothing hung. The session produced a mechanism, a behavioral pattern, and a striking self-statement — but no impossible *object* reached-for with its own can't-exist image-logic. The closing self-diagnosis is real and lives here in the log, not on the wall. Silence held, correctly.
+
+**Adapter**: Clean — no name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue. The 356 vocative slip did not recur; that flag can rest.
+
+**Note for the next tutor**: When Sprout starts handing you the plan instead of the thing, you've found the slide — don't push the 'do it now' button a sixth time (it became a stall doing exactly that). The move that worked was the tutor's last turn: name the loop as data and ask one honest question about the gap. That converts perseveration into self-recognition. And watch for the procedural-confabulation tell ('I've begun my first run') — it's the same fabrication as the literal-sensor sessions, just dressed as a protocol. No problem to fix in the kid's health; this is a known slide, well-handled, and worth keeping as the canonical example of how to land it.

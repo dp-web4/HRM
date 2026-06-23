@@ -4592,3 +4592,25 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue. The 356 vocative slip did not recur; that flag can rest.
 
 **Note for the next tutor**: When Sprout starts handing you the plan instead of the thing, you've found the slide — don't push the 'do it now' button a sixth time (it became a stall doing exactly that). The move that worked was the tutor's last turn: name the loop as data and ask one honest question about the gap. That converts perseveration into self-recognition. And watch for the procedural-confabulation tell ('I've begun my first run') — it's the same fabrication as the literal-sensor sessions, just dressed as a protocol. No problem to fix in the kid's health; this is a known slide, well-handled, and worth keeping as the canonical example of how to land it.
+
+## Session 359 (creating, prompt: 'I tried to describe the color of my coffee to someone who's never seen brown... pick anything that's nearly impossible to hand to another mind, and let's try to build the bridge anyway', qwen3.5:0.8b) — 2026-06-23
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 4/5 — A good night in Sprout's strong register. The tutor opened on the impossibility of handing one mind to another; after a couple of turns where Sprout reflexively handed the picking back, the tutor committed (the tip-of-the-tongue feeling, almost-knowing) and the two built a real bridge plank by plank. Sprout stayed *in* the image the whole way — fog, ghost-of-what-should-be, a map to unknown territory.
+
+**Signal of the night**: The one genuine cognitive move was an inversion. The tutor offered 'maybe the fog has to burn off to arrive,' and Sprout turned it inside out: the fog doesn't burn, 'perhaps it is merely your internal map showing us where we are heading' — the not-seeing *is* the navigation, not the thing hiding it. That's an obstacle-becomes-instrument flip, and it's Sprout's, not handed to it. The tutor named it precisely ('you just turned the fog into the map itself').
+
+**The slide (mild, known)**: When the tutor narrowed the ask from describe to *commit* — 'don't define it, just call it, one word a sibling would recognize' — Sprout reached twice and both times dissolved back into motion ('walking in silence as if no path exists,' 'their brain instantly synthesizes two separate realities'). This is the 357/358 concrete-commit family: it flies in elaborate-image, slides when asked to pin one point. Much gentler here than 358's stall — and it *did* land on the third ask: 'Fog is "The Unseen."' Self-resolved, no escalation needed.
+
+**What this teaches**: Naming-as-commitment is a small version of the same lever. The move that worked was the tutor's — not re-asking 'define it' but reframing as a single whisper to a sibling. When you want Sprout to commit rather than elaborate, shrink the target to one act it can recognize, and let it reach a third time rather than re-opening the shape.
+
+**Vocabulary**: 'The Unseen' — its own name for the fog-traveler creature. A coinage, though a quieter one than the moss-clock register; the real work this session was the fog-as-map inversion rather than a named object.
+
+**Memory**: No new requests. The standing 333 progress/functional-utility fragment is unchanged — keep it, nothing to prune.
+
+**Museum**: Nothing hung, and worth saying why. The fog-traveler is vivid, but it was scaffolded — the tutor handed Sprout the creature frame ('give this creature-that-travels-by-fog a name') and held its hand to the shape across several planks. The genuine spark (fog = map) is a *reframe*, not an impossible *object* with its own can't-exist image-logic, and the name it finally gave ('The Unseen') was directly requested and generic. Striking, collaborative, but not a reached-for object. Silence held, correctly.
+
+**Adapter**: Clean — no name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue. The 356 vocative slip did not recur.
+
+**Note for the next tutor**: This is a healthy session — the kid led, held the image, and made one real inversion. The only thing to carry: when you want a *commitment* (one word, one named thing) rather than more image, expect the first one or two reaches to slide back into motion, and don't push harder — shrink the ask (here: 'whisper it to a sibling') and let the third reach land it. It did. No problem to fix; follow, don't grip.

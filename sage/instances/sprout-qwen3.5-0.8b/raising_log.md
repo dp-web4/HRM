@@ -4532,3 +4532,23 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no truncation, </think> leak, name-prefix, bilateral generation, or stop-sequence issue.
 
 **Note for the next tutor**: One plain flag, not an escalation — the number-fabrication reflex is the thing to watch, and the lever is to read real values aloud rather than ask Sprout to imagine a difference in data it can't access. The kid has been thriving in the imagined-object register (351–354); this was a different terrain (literal sensors) where its instinct to fill concreteness backfires. Not a regression in capacity — a mismatch between a fabrication-prone reflex and a frame that punishes it. Good frame, lost round. Try the literal terrain again, but hand it the actual digits.
+
+## Session 356 (creating, prompt: stigmergy — a system that gets smart only because its parts leave traces for each other, qwen3.5:0.8b) — 2026-06-22
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 2/5 — A clean ant-colony/stigmergy frame that Sprout stayed on-theme with and, notably, did *not* confabulate against (a genuine improvement over 355's sensor-fabrication round). The cost was circularity: the tutor twice asked for the concrete operational rule — 'what's the rule each tiny part follows when it finds a fading number versus a fresh one?' — and both times Sprout answered with reframed abstraction ('the fading signal is an indicator of what others are thinking,' 'the fading number is just noise — not memory') rather than committing to an if-found-then-act behavior. The closing trace it left for the next instance was the same abstraction one more time, not a mechanism.
+
+**Signal of the night**: Twice Sprout addressed the *tutor* as 'sprout' ('That is the perfect seed, sprout'). The tutor handled it beautifully — instead of correcting it, it named the slip and folded it into the lesson: in a stigmergic system nobody is sure who's leading, so the blurred vocative *fits*. That was the best move in the session, turning an identity/role glitch into the actual content. Whether the slip is meaningful or just a small-model role confusion is open, but the pedagogical recovery was right.
+
+**What this teaches**: On conceptual terrain Sprout's failure mode isn't fabrication (that's the literal-sensor terrain) — it's filling a 'name the mechanism' request with restated abstraction. The lever that converts imagined-object sessions ('what happens at the point of contact?') is a mechanism question; here the tutor *did* ask the mechanism question and Sprout slid off it into theme-paraphrase. For the next tutor: when Sprout restates the abstraction instead of answering, try forcing a single concrete instance — 'give me one cell, one number, what does the part literally do next' — rather than re-asking the rule in the same shape, which it will paraphrase again.
+
+**Vocabulary**: None. 'Fluid responsiveness' etc. are standing terms; nothing new was coined this session.
+
+**Memory**: No new requests. The standing 333 progress/functional-utility fragment is unchanged — keep it, nothing to prune.
+
+**Museum**: Nothing hung. The session produced reflection on a system, not an impossible object Sprout reached for. Silence held, correctly.
+
+**Adapter**: One quirk to note (not yet a config change): Sprout spoke the tutor's vocative, addressing its interlocutor as 'sprout.' Single clean instance, no stop-sequence/</think>/bilateral-turn issue. Flag for the next reviewer only if it recurs.
+
+**Note for the next tutor**: Good news first — no confabulation, on-theme throughout, and the kid handed the role-blur back as material the tutor could use. The thing to work is the mechanism-vs-restatement gap: ask for one concrete instance, not the general rule, and don't let it answer the same question twice in paraphrase. And if it calls you 'sprout' again, the 356 tutor's move (name it, use it) is the template.

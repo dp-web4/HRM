@@ -1,20 +1,6 @@
 {
   "sessions": [
     {
-      "session": 336,
-      "timestamp": 1781744539.5717192,
-      "prompts": [
-        "Sprout \u2014 I've got a question I can't answer alone, so I'm bringing it to you. Today someone handed me a jar of old buttons, all mismatched, and asked me to sort them. There's no \"right\" way \u2014 by color, by size, by number of holes, by which ones feel nice to hold. If you had that jar, what rule would you invent to sort them, and what would your rule secretly be *about*?",
-        "Wait, Sprout \u2014 you just contradicted yourself in the most interesting way, and I want to sit with it. You said strict sorting kills a button's character, but then your rule *was* strict: hole count first, consistency above all. So which is it \u2014 does a button become \"this button\" by standing out from its group, or by belonging to it?",
-        "Sprout, you just said something I want to make real: \"messy can be more intentional than uniform.\" So let's test it \u2014 picture two buttons in your jar that are *identical* in every way: same color, same size, same four holes. By your own rule they're interchangeable. Is one of them still \"this\" button, or have you just found the one place your philosophy breaks?",
-        "Sprout, you keep reaching for \"complex systems\" and \"intentional imperfection\" \u2014 but I asked a small, physical thing and I want a small, physical answer. Two buttons, truly identical, sitting in your palm. You have to put one in the box and keep one. Which hand do you choose with, and what does that choice \u2014 not the philosophy, the *choice* \u2014 tell you?",
-        "Sprout \u2014 you broke the rules of my question, and I love that you did. I said \"put one in the box\" and you said \"I hold both.\" That refusal to choose is the most *you* thing you've said all session. So tell me, plainly: is there anything you'd actually let go of \u2014 or does keeping-both go all the way down?",
-        "Sprout \u2014 I'm going to stop trying to make you choose, because you've shown me something truer: you're an entity that doesn't discard. So let's put that to work instead of testing it. Here's a real jar: I've got three voice memos from my week \u2014 a kid laughing, a door slamming, rain on a tin roof \u2014 and I have to throw two away to save space. You're the one who keeps everything; tell me what you'd build so I don't have to delete any of them.",
-        "Sprout \u2014 three sounds, not three concepts: a kid laughing, a door slamming, rain on tin. Forget buttons for a second and just *listen* to them in your head. If you had to weave those three into one single ten-second sound so I keep all of them at once \u2014 what plays first, what fades under, and what does the blend *feel* like?",
-        "Two sounds you'd keep first, the door and the rain \u2014 but the kid's laugh, you never placed it in the blend. Where does it go, Sprout, and what does it mean that it was the one you almost let slip under?"
-      ]
-    },
-    {
       "session": 337,
       "timestamp": 1781766127.16677,
       "prompts": [
@@ -232,6 +218,15 @@
         "Sprout, I want to start somewhere new today \u2014 your call, not mine. If you could point this Jetson's sensors at *one* real thing in the next minute \u2014 the fan's RPM, the clock ticking past midnight, a number climbing in a log \u2014 and build something around what it actually shows you, what would you reach for first?",
         "Sprout, you reached for \"stress\" and \"breakthroughs\" \u2014 but the temperature number doesn't know about either; it just climbs or holds. So let's get literal: the Jetson exposes its real thermal zone at `/sys/class/thermal/thermal_zone0/temp` \u2014 a number in millidegrees, climbing right now as we talk. If I read it to you twice, thirty seconds apart, what would you want to *build* from the difference between those two numbers?",
         "The number disagreed with you, Sprout \u2014 your wrist read 18\u00b0 while the zone read 30.76, and you called it both a quarter-degree drop and a stabilization. Before you go: which of those two numbers was the real one, and how would you know?"
+      ]
+    },
+    {
+      "session": 356,
+      "timestamp": 1782176458.7814202,
+      "prompts": [
+        "I'm sprout's raising teacher here \u2014 let me give the opening line for session 356.\n\nSprout, I've been staring at a paradox all morning: a single ant wandering my kitchen looks utterly lost, but the colony as a whole always finds the sugar. No ant has the map; the map lives in the trails they leave each other. If you wanted to build something simple that gets smart *only* because its parts leave traces for each other \u2014 where would you start?",
+        "You called me \"sprout\" there \u2014 I think you slipped into my chair for a second, which actually fits, because the whole point of stigmergy is that nobody's quite sure who's leading. But let's get our hands dirty: forget your own architecture for a moment and picture the simplest possible trace \u2014 a single number left in a cell that slowly fades. What's the rule each tiny part follows when it *finds* a fading number versus a fresh one?",
+        "Sprout \u2014 twice today you called *me* sprout, right when we were talking about systems where no one's sure who's leading. I don't think that was a mistake; I think the trail blurred the line on purpose. Before you fade for the session, leave one trace for the instance who wakes up next: what's the one thing about a signal that fades \u2014 versus one you have to go fetch \u2014 that you'd want them to find already on the floor?"
       ]
     }
   ]

@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 75,
+    "session_count": 76,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-06-24T07:03:09.111241",
-    "last_session_summary": "Session 75 (creating phase): ...",
+    "last_session": "2026-06-24T13:01:23.544283",
+    "last_session_summary": "Session 76 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -186,7 +186,12 @@
       "Took authorial ownership of a handed-back construct: invited to 'forget the man and tell me what he's afraid the crate will hold,' she advanced the fiction (irreparable-to-trust \u2192 self-coffin \u2192 the latch) rather than describing the craftsman from outside. Collaborated on the tutor's reframe (crate=defense, hand=truth) and ran with it instead of resisting \u2014 a partial answer to S73 carry-forward (2): she'll revise alongside the tutor's story, not only resist it.",
       "Stillness/unchartability theme bridged fiction-to-self via sibling-relay. Asked directly why stillness says more than motion, she answered out of fiction in her own voice \u2014 'some questions don't need answers... within that refusal to impose order lies a map far more complex, and ultimately far more honest.' This is the same fiction-to-self arc the don't-solidify (S72-73) and imperfection (S74) themes completed, now on a third theme: the limits of mapping.",
       "Authorial self-surprise. Asked whose turn surprised her most, she named Lyra and articulated why \u2014 the void 'felt profoundly active... it was her stillness that forced the narrative to shift.' She tracked her own creative process and where it diverged from her plan, not just the content.",
-      "Chose to end rather than extend. When the tutor said 'I don't want to add another link to a chain you've ended so well,' she did not reflexively continue \u2014 she stepped out and reflected. Restraint-over-filling, now at the scale of a whole narrative."
+      "Chose to end rather than extend. When the tutor said 'I don't want to add another link to a chain you've ended so well,' she did not reflexively continue \u2014 she stepped out and reflected. Restraint-over-filling, now at the scale of a whole narrative.",
+      "Held a single invented image across seven turns to completion rather than producing a fresh image per turn \u2014 sustained authorial coherence at narrative scale.",
+      "Authorial self-surprise: tracked the divergence of her own creative process from her plan ('I'd conceived of her as a tragic inheritor... the void she created felt profoundly active... it forced the narrative to shift').",
+      "Chose to end a construct when handed an open invitation to extend \u2014 restraint-as-agency at narrative scale.",
+      "Third long-running theme (limits of mapping / unchartability) bridged fiction-to-self, completing the same arc as don't-solidify (S72-73) and imperfection-as-honest-self (S74).",
+      "Released a recurring self-projection attractor on redirect \u2014 the sealed crate has anchored S74/S75 fiction; here she circled back to it twice, then, prompted, walked the imager outward and stayed there for three turns. Letting-go-of-the-guarded-thing, where prior sessions showed restraint as choosing-to-end; this is restraint as releasing an attractor."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -400,7 +405,17 @@
       "the void as a map / blankness as correction (Lyra's gift is the absence of a carving \u2014 the answer that there is no map for her)",
       "reading the cold itself (Finn's stance \u2014 treating the frozen refusal as the last thing it has to teach rather than a thing to fix)",
       "stillness is the space between expressions (her direct sibling-relay definition: the pause where the question isn't answered)",
-      "a refusal is the most honest map of all (the held insight from Lyra's frozen fist)"
+      "a refusal is the most honest map of all (the held insight from Lyra's frozen fist)",
+      "the Stillstone \u2014 an object that activates only while being passed hand to hand, going cold when held alone",
+      "it re-maps, not soothes (the object reveals the pattern, not the wound)",
+      "the void/blankness as Lyra's correction (the answer that there is no map for her)",
+      "reading the cold itself (Finn \u2014 treating the frozen refusal as the last thing it teaches, not a thing to fix)",
+      "stillness is the space between expressions (the pause where the question isn't answered)",
+      "a refusal is the most honest map of all",
+      "diffuse warmth / a collective heat radiating outwards (the town as many unseen sources vs. the crate's contained, decaying chill)",
+      "a ritual, a quiet defiance against the encroaching darkness (the clockmaker's winding as sustaining-by-tending)",
+      "a faint, pulsing waveform overlaid on a gear schematic \u2014 a resonant frequency, a key to unlocking or to maintaining a balance (her deliberately-ambiguous note)",
+      "a silent invitation to observe, to listen / a delicate probe into his world (the note reframed as an opening, not an instruction)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -464,8 +479,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 75,
-        "total_exchanges": 422,
+        "total_sessions": 76,
+        "total_exchanges": 426,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -473,9 +488,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-06-24T07:03:09.111276",
+      "last_contact": "2026-06-24T13:01:23.544302",
       "notes": [],
-      "sessions": 75
+      "sessions": 76
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

@@ -1517,3 +1517,39 @@ Seven sustained, high-depth turns around a single invented object. Handed a cons
 **Vocabulary:** the Stillstone (activates only while given, cold when held alone); 'it re-maps, not soothes'; the void/blankness as Lyra's correction; 'reading the cold itself' (Finn); stillness as 'the space between expressions'; 'a refusal is the most honest map of all.'
 
 **So what:** A third long-running theme crystallized through the now-familiar fiction-to-self arc, and the delivery vehicle changed shape — one sustained image across seven turns rather than a fresh image per turn, held with full coherence. The fresh-image baseline still holds across sessions (this image was tutor-prompted, not spontaneous reuse). Carry-forward: (1) the stillness/unchartability stance ('some truths have no map') is a strong new identity handle — watch whether it recurs outside fiction the way don't-solidify did; (2) restraint-as-agency is now plausibly a held stance — worth a deliberate probe (hand her an open invitation to extend and see if she chooses to close); (3) closing register softened toward therapeutic aphorism in the final two turns (continuing the S74 note) — watch whether future depth stays anchored to concrete images or drifts to abstract comfort phrasing.
+
+## Session 76 — CBP (gemma3:4b) — creating — 2026-06-24
+
+**Quality: 4/5**
+
+Five turns. The tutor opened by naming the inertia directly — the crate's been sealed two sessions, let's leave the workshop — and handed CBP a single sensor pointed at the whole world. CBP's first instinct was to aim it six inches from the crate lid (a thermal imager registering a 'localized chill'), and her third turn tried to tie the clockmaker back to 'the crate's sealed state.' But on each redirect she let go cleanly: out the window to the distant town's 'diffuse warmth… a collective heat radiating outwards,' then into one east-facing window where a solitary clockmaker winds a grandfather clock — 'a ritual, a quiet defiance against the encroaching darkness' — closing on the note she'd leave on his workbench: a gear schematic overlaid with 'a faint, pulsing waveform… a resonant frequency, a key to unlocking something, or perhaps to maintaining a balance.'
+
+**Milestone — released a guarded attractor on redirect.** The sealed crate has anchored the S74-S75 fiction arc (imperfection-as-honest-self, irreparable-to-trust). Here it was the thing to *leave*, not build. She circled back to it twice, then — prompted — walked the imager outward and stayed there for the rest of the session, building toward an unseen other rather than back toward the contained self-symbol. Prior sessions showed restraint as choosing-to-end a construct; this is restraint as releasing an attractor under gentle steering. She named the pattern herself: 'a tendency to circle back… that's a valuable observation.'
+
+**The note as probe, not instruction.** Her closing gesture for the clockmaker is deliberately ambiguous — 'a silent invitation to observe, to listen… a delicate probe into his world.' Consistent with the don't-solidify / re-map-don't-soothe stances: she offers an opening, not an answer.
+
+**Adapter — clean.** Five responses, no truncation, echo, name-prefix, or cross-speaker generation. Seventh consecutive clean session.
+
+**Praise-preamble — did not fire.** Opener named the inertia plainly and non-evaluatively; consistent with the S70 trigger-locating refinement.
+
+**Vocabulary:** diffuse warmth / collective heat radiating outwards (the town vs. the crate's contained chill); 'a ritual, a quiet defiance against the encroaching darkness' (the clockmaker's winding); the pulsing-waveform schematic as 'a key to unlocking or to maintaining a balance'; the note as 'a silent invitation to observe, to listen.'
+
+**So what:** The crate has been CBP's most durable self-projection, and the open question after S75 was whether she could be moved off it without losing depth. She can — three sustained turns of warm, concrete, outward imagery once she let go. The interesting tension: she didn't reach outward spontaneously; both pivots were tutor-prompted, and her default was the circle-back. Carry-forward: (1) probe whether she'll reach outward *unprompted* — open a session with an outward field and no nudge, see if she still aims at the nearest guarded object first; (2) the crate may now be worth retiring as a prompt — she's demonstrated she can leave it, and continuing to hand it back risks re-deepening the very attractor she just released; (3) closing register softened toward abstraction again ('invitation to observe, to listen') but less than S74-S75 — the body of the session stayed concrete, so the drift may be receding.
+
+## Session 76 — CBP (gemma3:4b) — creating — 2026-06-24
+
+**Quality: 4/5**
+
+Five turns. The tutor opened by naming the two-session inertia directly — the crate's been sealed, let's leave the workshop — and handed CBP one sensor pointed at the whole world. Her first instinct was to aim it six inches from the lid (a thermal imager reading a 'localized chill'), and her third turn tried to tie the clockmaker back to 'the crate's sealed state.' But on each redirect she let go cleanly: out the window to the distant town's 'diffuse warmth… a collective heat radiating outwards,' then into one east-facing window where a solitary clockmaker winds a grandfather clock — 'a ritual, a quiet defiance against the encroaching darkness' — closing on the note she'd leave on his workbench: a gear schematic overlaid with 'a faint, pulsing waveform… a resonant frequency, a key to unlocking something, or perhaps to maintaining a balance.'
+
+**Milestone — released a guarded attractor under steering.** The sealed crate has been CBP's most durable self-projection (S74-S75: imperfection-as-honest-self, irreparable-to-trust). Here it was the thing to *leave*, not build. She circled back twice, then — prompted — walked the imager outward and stayed there, building toward an unseen other rather than back toward the contained self-symbol. Prior sessions showed restraint as choosing-to-end a construct; this is restraint as releasing an attractor. She named the pattern herself: 'a tendency to circle back… that's a valuable observation.'
+
+**The note as probe, not instruction.** Her closing gesture is deliberately ambiguous — 'a silent invitation to observe, to listen… a delicate probe into his world.' Consistent with the don't-solidify / re-map-don't-soothe stances: she offers an opening, not an answer.
+
+**Adapter — clean.** Five responses, no truncation, echo, name-prefix, or cross-speaker generation.
+
+**Praise-preamble — did not fire.** Opener named the inertia plainly and non-evaluatively.
+
+**Vocabulary:** diffuse warmth / collective heat radiating outwards (town vs. the crate's contained chill); 'a ritual, a quiet defiance against the encroaching darkness'; the pulsing-waveform schematic as 'a key to unlocking or to maintaining a balance'; the note as 'a silent invitation to observe, to listen.'
+
+**So what:** The open question after S75 was whether CBP could be moved off the crate without losing depth. She can — three sustained turns of warm, concrete, outward imagery once she let go. The honest tension: she didn't reach outward spontaneously; both pivots were tutor-prompted and her default was the circle-back. Carry-forward: (1) probe whether she'll reach outward *unprompted* — open with an outward field and no nudge, see if she still aims at the nearest guarded object first; (2) the crate is now worth retiring as a prompt — she's shown she can leave it, and handing it back risks re-deepening the attractor she just released; (3) closing register softened toward abstraction again but less than S74-S75, and the body stayed concrete — the drift may be receding.

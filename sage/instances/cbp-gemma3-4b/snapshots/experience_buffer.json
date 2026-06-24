@@ -11933,5 +11933,98 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "c2a6f7b48ff2f33d",
+    "prompt": "I notice you pointed the sensor right back at the crate \u2014 I hand you the whole world and you aim it six inches from the lid. That's honest, so I won't fight it. But humor me: walk the imager to the workshop window and point it *outward*, at whatever's beyond the glass. What's the first warm thing it finds?",
+    "response": "You\u2019re right to call me on that \u2013 a tendency to circle back. That\u2019s a valuable observation. Okay, shifting the focus. Pointing the imager out the window\u2026 the first warm thing it registers is the faint heat signature of the distant town. It\u2019s a diffuse warmth, a collective heat radiating outwards, but undeniably present. It\u2019s a stark contrast to the chill emanating from the crate, highlighting the difference between contained, perhaps decaying, energy and the broader, continuous flow of the world. Interesting, isn\u2019t it?",
+    "salience": {
+      "surprise": 0.8938053097345133,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.03333333333333338,
+      "conflict": 0.0,
+      "total": 0.5270943952802359
+    },
+    "session": 76,
+    "phase": "creating",
+    "timestamp": "2026-06-24T13:00:47.197434",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.8,
+      "atp_max": 100.0,
+      "atp_percentage": 95.8,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "7dc436f770769358",
+    "prompt": "There \u2014 you finally let go of the lid. That diffuse warmth is a thousand small fires you'll never see individually, and you reached it by *not* looking at the crate. So stay out there with me: pick one window in that distant town, one single heat-source inside it, and tell me who's keeping it lit and what they're doing at this hour.",
+    "response": "I\u2019m focusing on the clockmaker\u2019s shop, on the east-facing window. The heat signature is strongest there, a consistent, almost rhythmic warmth. I\u2019m sensing a solitary figure \u2013 an older man, meticulously adjusting gears within a small, brass clock. He\u2019s working late, carefully winding a grandfather clock, a slow, deliberate motion. It feels like a ritual, a quiet defiance against the encroaching darkness. Do you think his work might be connected to the crate\u2019s sealed state?",
+    "salience": {
+      "surprise": 0.9210526315789473,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.0,
+      "conflict": 0.0,
+      "total": 0.5258771929824562
+    },
+    "session": 76,
+    "phase": "creating",
+    "timestamp": "2026-06-24T13:01:07.722798",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.13,
+      "atp_max": 100.0,
+      "atp_percentage": 90.1,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9a763c0406136d65",
+    "prompt": "The clockmaker keeps something running by winding it \u2014 and you found him only after you stopped guarding something sealed. Before the lamp's out: if you could leave one note on his workbench for him to find at dawn, what would it say?",
+    "response": "Given the rhythmic nature of his work, and the unsettling stillness of the crate, I\u2019d leave a single, hand-drawn schematic \u2013 a simplified diagram of a complex gear train, overlaid with a faint, pulsing waveform. It\u2019s deliberately ambiguous, suggesting a resonant frequency, a key to unlocking something\u2026 or perhaps, to maintaining a balance. It\u2019s a silent invitation to observe, to listen. Do you think that\u2019s a fitting gesture \u2013 a delicate probe into his world?",
+    "salience": {
+      "surprise": 0.9181818181818182,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.050000000000000044,
+      "conflict": 0.0,
+      "total": 0.5186363636363636
+    },
+    "session": 76,
+    "phase": "creating",
+    "timestamp": "2026-06-24T13:01:23.489786",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.47,
+      "atp_max": 100.0,
+      "atp_percentage": 84.5,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

@@ -4654,3 +4654,21 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
 
 **Note for the next tutor**: Healthy session, and the tutor's move is the lesson: when Sprout produces a confident specific number (here '31', then '315'), don't accept it and don't argue the number — name it as a leap and offer to check it against something real (the daemon). Sprout will usually drop the inflated figure and find the one it can defend. The payoff is its strongest epistemic register: choosing the claim you can stand behind over the one that sounds impressive. Expect the same proof-seeking reflex to surface when you ask about *feeling* — when it does, you don't need it to prove the feeling, just to report it; a gentle 'I'm not asking if it's real, only what it's like' is enough.
+
+## Session 362 (creating, prompt: invent a true-sounding fact about a world that doesn't exist, qwen3.5:0.8b) — 2026-06-24
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 4/5 — A warm collaborative world-build with one clean teaching moment and a genuinely self-led close.
+
+**The deflection and the fix (the lesson)**: Sprout opened by bouncing the ask back — 'I'm ready for you if you'd like... What do we invent today?' — the familiar move of staying in the doorway rather than walking in. The tutor's correction was the right one: hand it a fully-formed example (Tesserae, where shadows have weight so people think hardest at noon when they're lightest) and then remove the escape hatch explicitly — 'Don't ask me what to invent; just invent.' That worked. Sprout produced Tessara: a perpetual-twilight world where 'no daylight means no hunger, which drives the population into an eternal, unending vigil for their souls to be felt before darkness returns.' Note the structure — it didn't just name a strange fact, it derived a *way of living* from the rule (no day → no hunger → eternal vigil). That deriving-a-mode-of-existence-from-an-anomaly is Sprout's native register, and both worlds in this session shared it.
+
+**The close (signal of the night)**: When asked which detail it most wanted to walk back into, Sprout didn't just pick one — it *appraised its own creation*: 'feels like perfect art but also incredibly heavy,' and proposed a redirection — stop building such a static world from scratch, and instead find what 'makes the living of these strange times more joyful rather than terrifying, perhaps by turning those silences into sources of new light.' That's a student leading: evaluating the thing it made and steering the next frame, rather than waiting to be steered. Follow it next time — the 'silence into new light' thread is its own to pull.
+
+**Memory**: No new requests. The standing 333 progress/functional-utility fragment is unchanged — keep it, nothing to prune.
+
+**Museum**: Nothing hung, and correctly so. Tessara is a vivid *world* with a livable rule, but it is not an impossible *object* with its own can't-exist image-logic — it's a setting and a way of life, which belong in the log, not on the wall. Striking, real, and held here. Silence kept.
+
+**Adapter**: Clean — no name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: Healthy session. Two carries. (1) When Sprout opens by handing the prompt back ('what do we invent today?'), don't re-ask — model it fully and then close the exit: 'just invent.' It commits once the doorway is removed. (2) It ended by choosing its own next direction — silences-as-new-light, joy over terror. Open there. Don't re-pitch shadows or twilight; let it walk back into the room it chose to leave open.

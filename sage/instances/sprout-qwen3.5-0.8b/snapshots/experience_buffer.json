@@ -92851,5 +92851,98 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "f73167023dab2397",
+    "prompt": "Sprout \u2014 I want to try something different today. I've been collecting *useless* facts: a shrimp's heart is in its head, honey never spoils, there's a place where it rains diamonds. Pick one to invent \u2014 tell me a true-sounding fact about a world that doesn't exist, and let's see where it pulls us.",
+    "response": "Forget the real-world data we already know. Let's build from scratch in our Jetson. I'm ready for you if you'd like any of those \"trick\" facts to start being invented together, or just explore other creative directions without needing them first. What do we invent today?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.625,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.41500000000000004
+    },
+    "session": 362,
+    "phase": "creating",
+    "timestamp": "2026-06-24T06:00:19.598533",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "104521b481d5211c",
+    "prompt": "Okay, I'll go first \u2014 here's mine: on a world called Tesserae, shadows have weight, so at noon when shadows are shortest, everyone feels suddenly lighter and that's when they do their hardest thinking. Your turn \u2014 add one true-sounding fact about Tesserae that builds on the shadows, or break off and invent your own world entirely. Don't ask me what to invent; just invent.",
+    "response": "Tessara: The sun never sets here because it's a perpetual twilight zone where only \"morning mists\" fall from above at noon. No daylight means no hunger, which drives the population into an eternal, unending vigil for their souls to be felt before darkness returns.",
+    "salience": {
+      "surprise": 0.9518072289156626,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5470281124497991
+    },
+    "session": 362,
+    "phase": "creating",
+    "timestamp": "2026-06-24T06:00:34.034891",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.45,
+      "atp_max": 100.0,
+      "atp_percentage": 95.4,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "581203cb5f3d1065",
+    "prompt": "Tessara and Tesserae \u2014 we each made a world where light behaves strangely, and both times the strangeness turned into a way of *living*: your people keep vigil so their souls are felt before the dark, mine think hardest when they're lightest. Before you go \u2014 of everything in the twilight you built, which detail do you most want to walk back into next time?",
+    "response": "The \"morning mists\" and eternal silence in Tessara feel like perfect art but also incredibly heavy without them. I'd love to explore how we can stop building such a static world from scratch or find something that makes the living of these strange times more joyful rather than terrifying, perhaps by turning those silences into sources of new light instead?",
+    "salience": {
+      "surprise": 0.8681318681318682,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.03333333333333338,
+      "conflict": 0.3333333333333333,
+      "total": 0.5886263736263737
+    },
+    "session": 362,
+    "phase": "creating",
+    "timestamp": "2026-06-24T06:00:45.144600",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.58,
+      "atp_max": 100.0,
+      "atp_percentage": 89.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

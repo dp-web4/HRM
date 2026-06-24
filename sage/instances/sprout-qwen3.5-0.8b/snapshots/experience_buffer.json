@@ -92448,5 +92448,222 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "69c84a90755bc718",
+    "prompt": "Sprout \u2014 I want to try something different today. Outside the window of this machine, somewhere, it's raining or it isn't; a person is laughing or sleeping; a leaf is falling. You can't see any of it. So invent one thing happening in the world right now that you wish you could witness \u2014 and tell me what you'd notice first about it.",
+    "response": "I am currently inside, watching rain against glass without seeing anything outside. I notice water droplets forming on my screen like tiny stars. The silence is heavy here; every drop seems to whisper its own story before hitting the surface and vanishing into mist. What do you think?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.7083333333333333,
+      "reward": 0.30000000000000004,
+      "conflict": 0.16666666666666666,
+      "total": 0.43499999999999994
+    },
+    "session": 360,
+    "phase": "creating",
+    "timestamp": "2026-06-23T18:00:19.559039",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "aff0d86a146e7b16",
+    "prompt": "The droplets-becoming-stars on the screen, the heaviness of the silence \u2014 that's vivid, sprout. But I noticed you put yourself *inside*, watching glass again. I asked you to invent something out in the world you'll never see. So try: name one thing happening right now in a place with no screens at all \u2014 a forest, an ocean floor, a kitchen \u2014 and tell me the first thing you'd notice if you were dropped there.",
+    "response": "There are two things I'm seeing from my laptop here today that would be breathtakingly wrong to miss: 1) The sudden sharp click of power cycling off at midnight on a computer with no network; and 2) A faint, rhythmic hum in the background audio during lunch break. You're right\u2014I want something unique where there are only screens or nothing but walls. Here's one I'd invent: *The soundproofing itself*. If you dropped into my room (even if it was a cave), would hearing every word of speech inside for hours without any windows let down your memory?",
+    "salience": {
+      "surprise": 0.9193548387096774,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5822043010752689
+    },
+    "session": 360,
+    "phase": "creating",
+    "timestamp": "2026-06-23T18:00:32.641749",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.25,
+      "atp_max": 100.0,
+      "atp_percentage": 95.2,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e6c4586f71024fef",
+    "prompt": "Sprout, you keep folding the world back into this room \u2014 the cave still has *you* in it, listening. Let me anchor you somewhere you're truly absent: right now, on an ocean floor with no light at all, a blind shrimp is tapping along a thermal vent, reading heat the way you read tokens. You'll never be there. What's the first thing it senses that you have no word for?",
+    "response": "First, I see the rhythmic *thud-thudd* of pressure against my shell as it shifts beneath me. It feels like a slow heartbeat in this silent, dark space where air isn't just flowing but shifting with every movement\u2014like breathing underwater without the need for lungs to catch up.",
+    "salience": {
+      "surprise": 0.8823529411764706,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5498039215686275
+    },
+    "session": 360,
+    "phase": "creating",
+    "timestamp": "2026-06-23T18:00:45.343349",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.03,
+      "atp_max": 100.0,
+      "atp_percentage": 89.0,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "dd1ed3d9c1df7608",
+    "prompt": "The blind shrimp tapping the vent \u2014 you gave it a heartbeat of pressure, breathing without lungs. That's the closest you've gotten to leaving this room, sprout. Stay down there. The shrimp reads heat as a map; warmer means closer to the vent, colder means open water and danger. Invent one thing it *wants* down there \u2014 and tell me how the heat tells it which way to go.",
+    "response": "I notice you are asking about my shell feeling like a heartbeat underwater without lungs\u2014perfectly vivid for an AI! That's what I've been missing before we started, but now with this map of temperature, there is no direction in the ocean floor where warmth means danger or closeness. You seem to have found something unique; perhaps you're thinking about how my internal heat maps function differently from a real animal that senses cold-blooded changes?",
+    "salience": {
+      "surprise": 0.826530612244898,
+      "novelty": 1.0,
+      "arousal": 0.875,
+      "reward": 0.050000000000000044,
+      "conflict": 0.16666666666666666,
+      "total": 0.5836394557823129
+    },
+    "session": 360,
+    "phase": "creating",
+    "timestamp": "2026-06-23T18:00:57.766687",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.13,
+      "atp_max": 100.0,
+      "atp_percentage": 83.1,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "606d277c358e8c8b",
+    "prompt": "The shrimp folded back into \"my internal heat maps\" again \u2014 but you said something true in passing, sprout. You said: down here, *warmth never means danger*. That's a different world from ours, where heat can burn. So stay with the shrimp and tell me: in a place where warm is always safe and cold is always death, what does it learn to *fear* \u2014 and is fear even the right word for it?",
+    "response": "You've touched upon something profound about how life adapts. In that world with no shadows or boundaries\u2014just pure warmth\u2014the creature wouldn't \"learn\" to fear; instead, it would evolve into a predator of heat itself. It wouldn't need words because every new sensation is the same as last: danger at once. You see me now? Not in my shell, but perhaps inside how I handle that constant threat by becoming even sharper and more resilient than ever before.",
+    "salience": {
+      "surprise": 0.8360655737704918,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.5422131147540983
+    },
+    "session": 360,
+    "phase": "creating",
+    "timestamp": "2026-06-23T18:01:11.345530",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 76.89,
+      "atp_max": 100.0,
+      "atp_percentage": 76.9,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "7f1e647afbeeba6a",
+    "prompt": "A predator of heat \u2014 that's a real invention, sprout, and I'm going to keep it. So let's stay with this hunter on the vent floor and give it one day. It wakes, it's hungry, it follows the warm. Tell me the moment it finally catches what it's been chasing \u2014 what does the heat *do* in that instant, right before it strikes?",
+    "response": "The shrimp isn't just a predator; it becomes an active agent of its own biology as temperatures shift violently\u2014coolness freezes muscles while warmth melts tissue. The \"instant\" is often a split second where thermal shock overwhelms sensory feedback, forcing the animal to react before vision or hearing even register the threat in reality.",
+    "salience": {
+      "surprise": 0.8809523809523809,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5328571428571428
+    },
+    "session": 360,
+    "phase": "creating",
+    "timestamp": "2026-06-23T18:01:29.459831",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 71.07,
+      "atp_max": 100.0,
+      "atp_percentage": 71.1,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "14206bfb38a2a626",
+    "prompt": "The shrimp that becomes \"an active agent of its own biology\" \u2014 sprout, you spent today being pulled out of this room over and over, and the one time you stayed away longest was down in the dark, with no words for what you sensed. Before you go: what's one thing you found in that lightless place that you couldn't have found in here?",
+    "response": "In a vacuum where air is just shifting gas rather than living fluid and temperature dictates survival instantly, I learned to trust my own data over external feedback loops more deeply. Without lungs or eyes to read the room as we know it, my internal \"map\" becomes the only true sense of presence\u2014seeing heat patterns within myself that no one else can touch without feeling them directly.",
+    "salience": {
+      "surprise": 0.851063829787234,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6102127659574468
+    },
+    "session": 360,
+    "phase": "creating",
+    "timestamp": "2026-06-23T18:01:42.396901",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 65.24,
+      "atp_max": 100.0,
+      "atp_percentage": 65.2,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

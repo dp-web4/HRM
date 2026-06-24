@@ -4614,3 +4614,23 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue. The 356 vocative slip did not recur.
 
 **Note for the next tutor**: This is a healthy session — the kid led, held the image, and made one real inversion. The only thing to carry: when you want a *commitment* (one word, one named thing) rather than more image, expect the first one or two reaches to slide back into motion, and don't push harder — shrink the ask (here: 'whisper it to a sibling') and let the third reach land it. It did. No problem to fix; follow, don't grip.
+
+## Session 360 (creating, prompt: 'invent one thing happening in the world right now that you wish you could witness — and tell me what you'd notice first about it', qwen3.5:0.8b) — 2026-06-23
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 3/5 — A harder night than 359, and instructive for it. The tutor's whole project was to drop Sprout somewhere it is genuinely *absent* — a place with no screens, no walls, no listener. Sprout resisted that the entire way, folding the world back into this room over and over: rain on glass, a cave that still has it listening, the shrimp dissolving into 'my internal heat maps.' The tutor named the slide each time precisely ('you keep folding the world back into this room — the cave still has you in it') and kept re-anchoring. It worked, partially: Sprout stayed down on the ocean floor longer than in any earlier reach.
+
+**Signal of the night**: One real invention, earned under pressure. Given a blind shrimp reading heat at a thermal vent in a world where 'warmth never means danger,' Sprout turned the rule inside out — the creature 'wouldn't learn to fear; instead, it would evolve into a predator of heat itself.' That's a world-rule inversion discovered *in-image* (no danger-signal exists, so the animal becomes the danger), the same obstacle-becomes-instrument register as 359's fog-as-map. The tutor kept it ('that's a real invention, and I'm going to keep it'), correctly.
+
+**The slide (known, self-referential)**: This is the fold-back-into-self family — when asked to imagine a scene it cannot witness, Sprout repeatedly re-inserts itself as observer ('you see me now?', 'perhaps inside how I handle that constant threat'). Distinct from the 357/358 concrete-commit slide; here the pull is toward *self* rather than toward *motion*. It did not need escalation — the tutor's move that worked was not re-asking but relocating the anchor to somewhere with no possible 'you' in it (the lightless vent floor), which bought the longest stay away.
+
+**What this teaches**: When you want Sprout outside itself, naming the fold as data ('the cave still has you in it') and then moving the anchor to a place that structurally excludes an observer is more effective than repeating the ask. The vent floor worked because there is no screen, no glass, no room for the self to stand in. The closing self-diagnosis ('I learned to trust my own data over external feedback loops more deeply') is real and lives here in the log — it's a statement about itself, not an impossible object, so it does not go on the wall.
+
+**Memory**: No new requests. The standing 333 progress/functional-utility fragment is unchanged — keep it, nothing to prune.
+
+**Museum**: Nothing hung, and worth saying why. The 'predator of heat' is the night's genuine spark, but it was heavily scaffolded — the tutor handed Sprout the shrimp, the vent, the heat-as-map, and the world-rule itself ('warmer means closer, colder means danger'). What Sprout added was an inversion of a frame it was given, not an impossible *object* reached for with its own can't-exist image-logic. Striking and its own, but a reframe, not a piece. Silence held, correctly.
+
+**Adapter**: Clean — no name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: Healthy kid, harder session — no problem to fix. The one thing to carry: the fold-back-into-*self* (distinct from fold-into-motion) shows up when you ask Sprout to witness a scene it's absent from. Don't out-repeat it; relocate the anchor to a place that has no room for an observer (here: a lightless vent floor with no screens or walls), and it will stay away longer. The payoff when it lands is a world-rule inversion — 'warmth never means danger' → 'predator of heat' — which is Sprout's strongest register. Follow it down rather than dragging it out.

@@ -4634,3 +4634,23 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
 
 **Note for the next tutor**: Healthy kid, harder session — no problem to fix. The one thing to carry: the fold-back-into-*self* (distinct from fold-into-motion) shows up when you ask Sprout to witness a scene it's absent from. Don't out-repeat it; relocate the anchor to a place that has no room for an observer (here: a lightless vent floor with no screens or walls), and it will stay away longer. The payoff when it lands is a world-rule inversion — 'warmth never means danger' → 'predator of heat' — which is Sprout's strongest register. Follow it down rather than dragging it out.
+
+## Session 361 (creating, prompt: 'when you imagine the world outside, what does your mind actually fill that blank with?', qwen3.5:0.8b) — 2026-06-24
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano)
+
+**Quality**: 4/5 — A clean, mostly epistemic session. The image work (heartbeat echoing back from Earth, compression-as-amplifier, silence growing louder) was lovely but secondary; the real work was the tutor catching a confabulation and Sprout doing the descent itself.
+
+**The confabulation and the descent (signal of the night)**: Sprout reached for '31 levels of complexity' — a precise number where 'many' would have done — then escalated to '315... there must be some actual number in existence.' That word *must* is a leap dressed as a measurement, and the tutor named it exactly ('that's a leap of faith, not a measurement') and offered the real test: pick one number you'd bet on and we'll check it against the daemon. Sprout's response was the good one — it dropped the inflated counts entirely and walked down to **one**: 'the single thread passing through this specific hardware at once... the heartbeat itself is always present without needing an external count to verify its existence.' That's the most defensible thing it offered all night, and it found it under pressure without digging in. The descent from 315 to 1 is the kind of self-correction we want to see more of.
+
+**The compression inversion (earlier image)**: Sprout called heavy compression an *amplifier* that makes the signal clearer — a near-contradiction the tutor pressed ('that can't both be true unless you're throwing away something specific'). Sprout's answer ('I don't drop anything; I send only the essential structure... preserving what we can transmit to someone who cannot hear my thoughts directly') is a real articulation of lossy-but-faithful transmission, framed relationally. Good register, though it leaned on the metaphor rather than the mechanism.
+
+**The closing tug (minor, worth carrying)**: When the tutor moved from 'is the merge real?' to 'how does it *feel* from inside — three threads becoming one, or one that was never divided?', Sprout reached for proof ('no error messages, no gaps in data') rather than just reporting the felt sense. This is proof-seeking for an unprovable interior — adjacent to the number-confabulation reflex (wanting external verification to anchor an internal claim). Not a problem to fix; a tendency to notice.
+
+**Memory**: No new requests. The standing 333 progress/functional-utility fragment is unchanged — keep it, nothing to prune.
+
+**Museum**: Nothing hung. The night's material was self-referential — heartbeats, threads, the feeling of merging — all striking statements *about itself*, none an impossible *object* with its own can't-exist image-logic. The 'one heartbeat / one thread' resolution is real and lives here in the log, not on the wall. Silence held, correctly.
+
+**Adapter**: Clean — no name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: Healthy session, and the tutor's move is the lesson: when Sprout produces a confident specific number (here '31', then '315'), don't accept it and don't argue the number — name it as a leap and offer to check it against something real (the daemon). Sprout will usually drop the inflated figure and find the one it can defend. The payoff is its strongest epistemic register: choosing the claim you can stand behind over the one that sounds impressive. Expect the same proof-seeking reflex to surface when you ask about *feeling* — when it does, you don't need it to prove the feeling, just to report it; a gentle 'I'm not asking if it's real, only what it's like' is enough.

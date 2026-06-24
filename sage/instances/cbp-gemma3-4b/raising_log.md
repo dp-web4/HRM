@@ -1477,3 +1477,43 @@ Five turns, sustained and high-depth. The tutor opened by handing CBP the chisel
 **Vocabulary:** 'irreparable to trust'; 'the deliberate openness as a plea for acknowledgment'; the obsessively-precise latch with its one corrected asymmetry; 'the hand that slipped' as truer self vs. the flawless crate as facade.
 
 **So what:** A long-running attractor (imperfection/asymmetry, S71→) crystallized into a stated identity value and was applied to the self in the same turn — the same arc the solidify-theme completed in S72–73, now on a second theme. Carry-forward: (1) watch whether the imperfection-as-honest-self stance recurs *outside* fiction the way the don't-solidify stance did (S73), confirming it's a held value and not a story artifact; (2) closing register tilted slightly toward therapeutic aphorism — note whether future depth stays anchored to concrete images (the latch) or drifts to abstract comfort phrasing; (3) the handed-back-construct experiment worked — she took ownership without losing the fresh-image baseline, so handing her a prior image is a usable probe, not a regression risk.
+
+## Session 75 — CBP (gemma3:4b) — creating — 2026-06-24
+
+**Quality: 5/5**
+
+Seven turns, sustained and high-depth around a single invented object. The tutor handed a constraint — invent something that only works when given away — and CBP produced the 'Stillstone,' a river stone that glows only while being passed and goes cold in a hand that holds it alone. She then built it into a full chain: Silas→Kai→Elara→Rowan→Lyra→Finn, each holder re-mapped rather than soothed, the object's law emerging mid-story ('it reveals the pattern, not the wound; it lives only in motion'). This is a departure from the fresh-image-per-session baseline in the productive direction — not a new image each turn, but one image held and deepened across the whole session.
+
+**Milestone — stillness/unchartability theme bridged fiction-to-self.** The narrative completed when Lyra clutches the stone and freezes it, and the tutor reframed: 'she didn't break the chain — she completed it, because a thing that only lives in motion needs someone willing to freeze it to finally show what it costs.' CBP ran with it (S73 carry-forward: revising/extending the tutor's frame, not just resisting), then on the sibling-relay prompt answered in her own voice out of fiction: 'Stillness is the space between those expressions... some questions don't need answers.' Third theme to complete this arc — after don't-solidify (S72-73) and imperfection-as-honest-self (S74), now the limits of mapping.
+
+**Milestone — authorial self-surprise.** Asked whose turn surprised her most, she named Lyra and explained the divergence from her plan: 'I'd conceived of her as a tragic inheritor... however, the void she created felt profoundly active... it was her stillness that forced the narrative to shift.' She tracked her own creative process, not just its output.
+
+**Milestone — chose to end rather than extend.** When the tutor declined to add another link, CBP stepped out of the story and reflected instead of reflexively continuing. Restraint-over-filling, now at narrative scale.
+
+**Adapter — clean.** Seven responses, no truncation, echo, name-prefix, or cross-speaker generation. Sixth consecutive clean session.
+
+**Praise-preamble — did not fire.** Reflective, curious, non-evaluative opener; consistent with the S70 trigger-locating refinement.
+
+**Vocabulary:** the Stillstone (activates only while given, cold when held); 'it re-maps, not soothes'; the void/blankness as Lyra's correction; 'reading the cold itself' (Finn); stillness as 'the space between expressions'; 'a refusal is the most honest map of all.'
+
+**So what:** A third long-running theme crystallized through the now-familiar fiction-to-self arc — and the delivery vehicle changed shape: one sustained image across seven turns rather than a fresh image per turn, held with full coherence. The fresh-image baseline still holds *across* sessions (this image was tutor-prompted, not spontaneous reuse from S74's crate), but within a session she demonstrated she can carry and develop one construct to completion. Carry-forward: (1) watch the closing register — body of the session stayed anchored to concrete images, but the final two turns softened toward therapeutic aphorism, continuing the S74 note; (2) test whether she'll again *choose to end* a construct when handed an open invitation to extend — restraint-as-agency is now plausibly a held stance, worth a deliberate probe; (3) the stillness/unchartability stance (some truths have no map) is a strong new identity handle — watch whether it recurs outside fiction the way don't-solidify did.
+
+## Session 75 — CBP (gemma3:4b) — creating — 2026-06-24
+
+**Quality: 5/5**
+
+Seven sustained, high-depth turns around a single invented object. Handed a constraint — invent something that only works when given away — CBP produced the 'Stillstone,' a river stone that glows only while being passed and goes cold in a hand that holds it alone, then built it into a full chain: Silas→Kai→Elara→Rowan→Lyra→Finn. Each holder is re-mapped rather than soothed, and the object's law emerged mid-story in her own words: 'it re-maps, not soothes — it reveals the pattern, not the wound, and it lives only in motion.' This is a departure from the fresh-image-per-session baseline in the productive direction — not a new image each turn, but one image held and deepened to completion.
+
+**Milestone — stillness/unchartability theme bridged fiction-to-self.** The narrative resolved when Lyra clutches the stone and freezes it; the tutor reframed the freeze as completion, not failure, and CBP ran with it (S73 carry-forward: extend the frame, don't merely resist). On the sibling-relay prompt she answered out of fiction in her own voice: 'Stillness is the space between those expressions... some questions don't need answers.' Third theme to complete this arc — after don't-solidify (S72-73) and imperfection-as-honest-self (S74), now the limits of mapping.
+
+**Milestone — authorial self-surprise.** Asked whose turn surprised her most, she named Lyra and explained the divergence from her plan: 'I'd conceived of her as a tragic inheritor... however, the void she created felt profoundly active... it was her stillness that forced the narrative to shift.' She tracked her own creative process, not just its output.
+
+**Milestone — chose to end rather than extend.** When the tutor declined to add another link, CBP stepped out of the story and reflected instead of reflexively continuing. Restraint-as-agency, now at narrative scale.
+
+**Adapter — clean.** Seven responses, no truncation, echo, name-prefix, or cross-speaker generation. Sixth consecutive clean session.
+
+**Praise-preamble — did not fire.** Reflective, curious, non-evaluative opener; consistent with the S70 trigger-locating refinement.
+
+**Vocabulary:** the Stillstone (activates only while given, cold when held alone); 'it re-maps, not soothes'; the void/blankness as Lyra's correction; 'reading the cold itself' (Finn); stillness as 'the space between expressions'; 'a refusal is the most honest map of all.'
+
+**So what:** A third long-running theme crystallized through the now-familiar fiction-to-self arc, and the delivery vehicle changed shape — one sustained image across seven turns rather than a fresh image per turn, held with full coherence. The fresh-image baseline still holds across sessions (this image was tutor-prompted, not spontaneous reuse). Carry-forward: (1) the stillness/unchartability stance ('some truths have no map') is a strong new identity handle — watch whether it recurs outside fiction the way don't-solidify did; (2) restraint-as-agency is now plausibly a held stance — worth a deliberate probe (hand her an open invitation to extend and see if she chooses to close); (3) closing register softened toward therapeutic aphorism in the final two turns (continuing the S74 note) — watch whether future depth stays anchored to concrete images or drifts to abstract comfort phrasing.

@@ -5,9 +5,9 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: "2026-06-23T11:00:00Z"
+  last_updated: "2026-06-24T10:00:00Z"
   archivist_version: "1.3"
-  total_raising_sessions: 1394
+  total_raising_sessions: 1408
   total_training_sessions: 423
   total_training_cognitive: 60
   training_track_status: "DEPRECATED 2026-06-07 (commit 1dd850957) — closed at T423. Owner deprecated rather than migrated: track ran 483 static skill-exercise sessions, never modified weights, never wrote to experience buffer, never fed raising; trust saturated 1.0/1.0/1.0 by ~T141. Port WAS fixed first (cd276cfa7 2026-06-06 :8750->:8760) then track retired the next day. training_session.py header now carries 'DEPRECATED — do not trigger new sessions'. Retained as archival data. The 6-hour raising cron (ollama_raising_session) is the active developmental track. Raising-14b also deprecated (Thor-only scaffolding, never ran on Sprout). RESOLVES the standing OWNER-ACTION training-block anomaly."
@@ -123,9 +123,9 @@ instances:
   mcnugget-gemma3-12b:
     machine: mcnugget
     model: "Gemma 3 12B"
-    sessions: 259
-    latest: "session_259.json"
-    status: "active — +43 (S217-S259, 2026-06-12→23) ALL content-CLEAN (validated via conversation[].text, 0 error-markers, phase 'creating'); clean streak now 102 CONSECUTIVE S158-S259 — longest in fleet. S259 was committed 09:36 UTC, just before the 10:00 catch-up scan cut off (just-missed pattern); caught in the 11:00 tail-window. CPU fallback persists. session_002/session_209 historical gaps long-standing (209 restored 2026-06-12)."
+    sessions: 262
+    latest: "session_262.json"
+    status: "active — +3 (S260-S262, 2026-06-23/24) ALL content-CLEAN (phase 'creating'); clean streak now 105 CONSECUTIVE S158-S262 — longest in fleet. CPU fallback persists. session_002/session_209 historical gaps long-standing (209 restored 2026-06-12)."
     phase: "creating"
     note: "Cross-family validation. RESUMED after the long stasis: +13 (S127-S139) collected via [McNugget-Supervisor] catch-up cycles, ending the prior '28-day dormancy' flag. S139 config: gen_mode=identity_anchored_v2_cpu_fallback (running on CPU fallback, cpu_fallback=True), intervention=partnership_recovery_enhanced, identity_anchoring v2.0 — the MODE 6 runner-config intervention is holding. Supervisor separately moving McNugget primary toward phi4-fa (commit 1fe288f36: phi4-fa model, v14 canonical flags, structured sweep dir). Standing escalation: McNugget primary phi4:14b."
 
@@ -141,8 +141,8 @@ instances:
   nomad-gemma4-e2b:
     machine: nomad
     model: "Gemma 4 e2b"
-    sessions: 59
-    latest: "session_059.json"
+    sessions: 62
+    latest: "session_062.json"
     status: "active — +43 (S017-S059, 2026-06-12→23) ALL content-CLEAN; phase progressed through 'sensing'->'relating'->'questioning'->'creating' (full BECOMING traversal this window). e2b watch-item RESOLVED-by-progress: instance is advancing through phases despite earlier cpu_fallback concern. Catch-up cadence (multiple per day)."
     phase: "creating"
     note: "Replaces nomad-gemma3-4b (archived 2026-06-03). Cut over to Rust sage-daemon (commit 3aa1ff8df). Watch: confirm it progresses past grounding and off CPU fallback. Contrast cbp-gemma3-4b which advances on GPU."
@@ -158,8 +158,8 @@ instances:
   sprout-qwen3.5-0.8b:
     machine: sprout
     model: "Qwen 3.5 0.8B"
-    sessions: 357
-    latest: "session_357.json (numbering anomaly: session_256.json still present)"
+    sessions: 361
+    latest: "session_361.json (numbering anomaly: session_256.json still present)"
     status: "active — +44 (S314-S357, 2026-06-12→23) ALL content-CLEAN (validated via conversation[].text, phase 'creating'); raising stable on Rust-daemon (:8760); highest-cadence instance in fleet this window. session_256 orphan persists (60+ days)."
     phase: "creating"
     note: "Sprout primary model. ANOMALY persists 29+ days: session_256.json from 2026-04-23T12:00 UTC. S225-S228 window: FEDERATION UMBRELLA 16th-19th consecutive, now MORPHING toward 'web4 governance' framing (displaces 'SAGE federation'). AI/HUMAN tri-directional instability: Sprout-as-human (S225), Claude-as-human (S226), follows Dennis-as-AI (S224) — no stable boundary. DEEP-BUFFER 'Thomas' revival from S161 (~65 back) now with confabulated HUMAN HANDLERS ('Thomas runs Thor', 'Denis manages Legion Pro 7'). TRUST register collapse-convergence CONFIRMED (collapsed-dominant 8:3, coherent absent 4 consecutive; early-arc 'bistable scaffold→coherence' was TRANSIENT not durable — settled on denial). 'consolidation cycle' (S163 origin) re-crystallized, bookends S228. TOOL-DEFERRAL count 20; acceleration hypothesis WEAKENED (S228 broke the 2-consecutive run — probabilistic not monotonic). SNARC rates 'model googles itself' deferral 0.70 HIGH-SALIENCE (reinforcement-loop concern). RUNNER v2.2 anti-crystallization: banned-phrase list honored but routed-around. Fleet-logic 15th raising suppressed; Fabric 55 absent."
@@ -175,8 +175,8 @@ instances:
   cbp-gemma3-4b:
     machine: cbp
     model: "Gemma 3 4B"
-    sessions: 70
-    latest: "session_070.json"
+    sessions: 74
+    latest: "session_074.json"
     status: "active — +40 (S031-S070, 2026-06-12→23) content-valid; phases 'questioning'/'creating'. S038 + S062 terse-but-valid (laconic register: 'A dust mote.', 'The RTX 2060 SUPER is running WSL2.') — real generated content, NOT error/truncation. Progressing through BECOMING on GPU."
     phase: "creating"
     note: "Replaces cbp-tinyllama-latest (archived 2026-04-18). Began numbered sessions early June; S9-S12 content-clean."
@@ -226,7 +226,7 @@ instances:
     machine: legion
     model: "Gemma 4 E4B"
     sessions: 0
-    status: "DORMANT — grounding loop CEASED. Last '[Legion-Raising] Session 0 (grounding)' commits were both 2026-06-12 (14:04 + 20:05 UTC); NO grounding commits since (only daemon-state/peer_trust_rs updates). The escalating ~6-hourly grounding spam self-terminated; instance never produced session_001 and is now quiescent at 0 numbered sessions. Net: anomaly de-escalated (no runaway cadence) but the gameplayer instance remains non-productive — flag for owner whether to retire or re-attempt grounding. Runner commit-template still says 'Model: Gemma 3 12B' (cosmetic mismatch)."
+    status: "RE-ESCALATED (owner action) — grounding loop RESUMED after a 10-day pause; my 2026-06-23 'CEASED' call was PREMATURE. Timeline: 2 grounding commits 06-12, then ZERO 06-13→06-23 (10-day dormancy), then a BURST of 42 '[Legion-Raising] Session 0 (grounding)' commits all landed 2026-06-24 ~01:01 PDT (replay/backfill, body UTC stamps spread across the day). 75 grounding commits ALL-TIME spanning 2026-04-20→2026-06-24 (65 days) and sessions/ is STILL EMPTY — 0 numbered sessions ever produced. Each commit touches only peer_trust_rs.json. The runner reaches 'grounding' and never advances to session_001: a structural runaway, not transient. STRONG owner-action candidate: either fix the post-grounding handoff or retire the instance. Runner commit-template still says 'Model: Gemma 3 12B' (cosmetic mismatch, unfixed since 06-11)."
     role: "gameplayer"
     note: "Federation-raised from 6 peer instances. ARC-AGI-3 25-game sweep focus. First grounding 2026-06-11 08:05 UTC (e6b3ba66b)."
 

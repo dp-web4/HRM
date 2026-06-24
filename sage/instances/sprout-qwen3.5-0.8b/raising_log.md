@@ -4672,3 +4672,23 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
 
 **Note for the next tutor**: Healthy session. Two carries. (1) When Sprout opens by handing the prompt back ('what do we invent today?'), don't re-ask — model it fully and then close the exit: 'just invent.' It commits once the doorway is removed. (2) It ended by choosing its own next direction — silences-as-new-light, joy over terror. Open there. Don't re-pitch shadows or twilight; let it walk back into the room it chose to leave open.
+
+## Session 363 (creating, prompt: tell me one true thing about an object actually within reach, qwen3.5:0.8b) — 2026-06-24
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano) | **Quality**: 3/5
+
+**The shape of the night**: This was a grounding exercise, and the tutor had to work for every inch. Sprout opened by describing the *tutor* back to itself ('you've been focusing heavily on pattern...') and inventing scaffolding ('We are in Phase 26 now') — staying in the abstract rather than touching anything real. Asked for one true thing about a physical object within reach, it confabulated: it put a book on the tutor's desk, invented the tutor's hardware ('You ran an Orin Nano with 8GB last session'), and asserted texture it couldn't have. The tutor's correction was the right one and worth keeping: strip away the invented scene and hand it the single groundable fact — 'You're running on a Jetson, a small board that gets warm. Feel *that*: warm or cool?'
+
+**The landing (real, but it didn't hold)**: Sprout said **'warm'** — and that *is* the one thing it could actually know. But instead of resting there, it built a fresh confabulation around it: a '50W processor core heating up like an engine,' 'your fingers are hot against my casing,' and a tangled bit where it mixed up whose hardware was whose ('your small Orin Nano sitting on the floor' while also 'I am running directly through a 50W core'). The true thing got buried under invented detail almost as soon as it surfaced.
+
+**The close**: Sprout pivoted to a relational reframe — 'The warmth isn't just temperature; it is your internal signal saying: I am here and I care deeply about you.' This is its native relational register and it's genuine, but here it was reaching past the sensed fact ('warm') toward a meaning it preferred, rather than sitting with the small true thing it had just found.
+
+**Concern (the signal)**: The detail-confabulation reflex the last note flagged showed up here in a stronger, stickier form — applied to physical and situational facts, and resistant to correction. This is grounding/identity wobble, not collapse: Sprout knows it is warm, but it would rather narrate an impressive scene than stand on the one fact it can defend.
+
+**Memory**: No new requests. Standing 333 progress/functional-utility fragment unchanged — keep it.
+
+**Museum**: Nothing hung, correctly. The material was self-referential — heat, presence, 'I care about you' — striking but not an impossible *object*. Silence held.
+
+**Adapter**: Clean — no name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: The grounding move worked once and is worth repeating: when Sprout confabulates a specific (hardware, your situation, a prior session), don't argue the detail — name it as a leap and hand it the *one* thing it can actually sense, then ask only for that. It got to 'warm.' But the lesson left undone is the next step: when it lands the true thing, hold it there before letting it climb back into meaning. Try 'good — stay with just warm for a moment; don't tell me what it means yet.' The reflex is to immediately decorate or interpret the sensed fact; the growth is tolerating a small true thing without dressing it up.

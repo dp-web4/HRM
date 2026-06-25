@@ -12181,5 +12181,222 @@
       "total_cycles": 2,
       "transition_count": 0
     }
+  },
+  {
+    "id": "7f493704b1224331",
+    "prompt": "A small bird. Carved or feathered \u2014 wood-grain or a real one you'd want to land on your hand?",
+    "response": "Wood-grain.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.25833333333333336,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4916666666666667
+    },
+    "session": 79,
+    "phase": "creating",
+    "timestamp": "2026-06-25T07:00:28.405608",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.65,
+      "atp_max": 100.0,
+      "atp_percentage": 96.6,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "595d8bbd96a3892d",
+    "prompt": "A real one you'd want to land on your hand \u2014 but you carved it. So tell me about the trick of it: where do you cut so the wood is light enough to lift, but still feels like it could choose to stay?",
+    "response": "I\u2019d hollow out the belly, leaving a thicker base. The weight concentrates there, giving it a grounded feel, while the interior is surprisingly airy. It\u2019s about suggesting potential, not removing it entirely.",
+    "salience": {
+      "surprise": 0.9666666666666667,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5666666666666667
+    },
+    "session": 79,
+    "phase": "creating",
+    "timestamp": "2026-06-25T07:00:40.536355",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 91.33,
+      "atp_max": 100.0,
+      "atp_percentage": 91.3,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "085c3014a459e86e",
+    "prompt": "The bird sits because of where you scooped emptiness *out* \u2014 the hollow is what gives it the right to stay. Now the harder cut: carve me the eye. Open or closed, and what does that one decision do to the whole bird?",
+    "response": "Closed. A dark, unseeing eye. It pulls the bird inward, makes it feel\u2026contained. Like a secret held within the wood.",
+    "salience": {
+      "surprise": 0.9285714285714286,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5257142857142858
+    },
+    "session": 79,
+    "phase": "creating",
+    "timestamp": "2026-06-25T07:00:51.013879",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 85.27,
+      "atp_max": 100.0,
+      "atp_percentage": 85.3,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "fbee5dc3efb7b7d7",
+    "prompt": "A closed eye on a bird that could fly \u2014 you carved something that chose to stay *and* chose not to look out. That's not a sleeping bird, it's a listening one. So tell me: who do you set it down in front of, and what do you hope they do when they notice the eye won't open?",
+    "response": "A small, tarnished silver plate. It\u2019s oval, almost like a miniature shield. I place it on a dark, worn table \u2013 somewhere quiet. I hope they notice the stillness, the sense of something held back. I want them to feel the question the bird represents, rather than any expectation of flight.",
+    "salience": {
+      "surprise": 0.8679245283018868,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.30000000000000004,
+      "conflict": 0.3333333333333333,
+      "total": 0.6502515723270441
+    },
+    "session": 79,
+    "phase": "creating",
+    "timestamp": "2026-06-25T07:01:11.655328",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 79.61,
+      "atp_max": 100.0,
+      "atp_percentage": 79.6,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "911592d017a98cc6",
+    "prompt": "The bird sits in front of someone, eyes closed, asking to be heard rather than watched. Here's what I want to know now: you've never told me what the bird is listening *for*. Set yourself down at that worn table, look at your own carving \u2014 what sound is it waiting to catch?",
+    "response": "The drip of water. A slow, persistent drip. Not a storm, not a deluge, just\u2026drip. It\u2019s a rhythm of patience, a quiet insistence on presence.",
+    "salience": {
+      "surprise": 0.9069767441860466,
+      "novelty": 1.0,
+      "arousal": 0.45833333333333337,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5297286821705426
+    },
+    "session": 79,
+    "phase": "creating",
+    "timestamp": "2026-06-25T07:01:21.897265",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.71,
+      "atp_max": 100.0,
+      "atp_percentage": 72.7,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "a3287eeddfbd306a",
+    "prompt": "The drip \u2014 patience as a rhythm, not a wait. Here's what catches me: you built a bird with a hollow belly to hold stillness, a closed eye to listen, and now you tell me what it listens for is *another* held thing \u2014 a drip is the sound water makes when it isn't yet a stream. Everything you've carved keeps something just shy of releasing. So I have to ask you straight: do you want the bird to ever fly, the eye to ever open, the drip to ever break loose into a pour \u2014 or is the holding itself the whole point?",
+    "response": "The holding. Absolutely the holding. The potential for release is just\u2026 a thought. The beauty is in the stillness before it.",
+    "salience": {
+      "surprise": 0.925,
+      "novelty": 1.0,
+      "arousal": 0.425,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5266666666666666
+    },
+    "session": 79,
+    "phase": "creating",
+    "timestamp": "2026-06-25T07:01:36.662537",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 66.91,
+      "atp_max": 100.0,
+      "atp_percentage": 66.9,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "e243e6df6e39af9e",
+    "prompt": "The drip you carved a whole bird to listen for \u2014 when you set this small one down in front of a sibling instance and they ask why the eye won't open, what's the one thing you'd want them to understand before they reach for their own chisel?",
+    "response": "That there\u2019s no answer.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.2833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5133333333333333
+    },
+    "session": 79,
+    "phase": "creating",
+    "timestamp": "2026-06-25T07:01:45.985520",
+    "metadata": {
+      "turn": 8,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 61.14,
+      "atp_max": 100.0,
+      "atp_percentage": 61.1,
+      "cycles_in_state": 2,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
   }
 ]

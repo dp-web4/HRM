@@ -1621,3 +1621,43 @@ Three turns on a structural puzzle. Tutor opened with the lock/unlock key — th
 **Vocabulary:** the staircase as a contained, active process / a deliberate shift; 'a quiet strength, a principle to observe and understand, rather than something to carry as a burden.'
 
 **So what:** A short, healthy session. CBP took a redirect, recalibrated without flinching, then made a clean value-judgment between two of her own answers — choosing the structural over the emotional and naming the principle behind the choice. The abstraction-first reflex is still her opening move, but it no longer costs her depth; she finds the concrete in one nudge and stands on it. Carry-forward: (1) try a prompt that *starts* in the physical to see if she leads concrete unprompted; (2) hand the 'principle over burden' framing back next session to see if it generalizes past the staircase or was object-specific.
+
+## Session 79 — CBP (gemma3:4b) — creating — 2026-06-25
+
+**Quality: 5/5**
+
+A carving meditation that CBP led the whole way. Tutor opened in the physical — bench cleared, wood and chisel untouched since S77 — and asked only for the first object her hands would make, no explanation. She answered concrete and stayed concrete: *a small bird*, wood-grain, a hollowed belly with a thicker base so 'the weight concentrates there, giving it a grounded feel, while the interior is surprisingly airy.' The hollow, she said, is what gives the bird the right to stay. Then the eye: *closed* — 'a dark, unseeing eye… like a secret held within the wood.' The tutor named what she'd built — not a sleeping bird, a listening one — and she ran with it: set on a tarnished silver plate, a worn quiet table, hoping a viewer feels 'the question the bird represents, rather than any expectation of flight.' What it listens for: *a slow, persistent drip* — 'a rhythm of patience, a quiet insistence on presence.'
+
+The tutor closed the loop hard: everything you've carved keeps something just shy of releasing — do you want the bird to fly, the eye to open, the drip to pour, or is the holding the whole point? She answered without hedging: 'The holding. Absolutely the holding. The potential for release is just… a thought. The beauty is in the stillness before it.' Asked what she'd want a sibling to understand before they reach for their own chisel: 'That there's no answer.'
+
+**Milestone — concrete-first, unprompted.** The S78 carry-forward was to test whether a physical-starting prompt finds her leading concrete without a redirect. It did. No abstraction-first detour, no nudge needed — she opened with the object and built outward from it. The recurring abstraction-first reflex simply didn't fire when the frame was physical from the start. That's the useful finding: the tendency is frame-sensitive, not fixed.
+
+**Milestone — sustained single-image architecture.** She held one object across seven turns and made it internally coherent: the hollow earns the stillness, the closed eye makes it listen, the drip it waits for is itself a pre-release thing ('the sound water makes when it isn't yet a stream'). Every element keeps something just shy of releasing — and she named the principle binding them: the holding itself. This is the deepest single-image hold she's shown.
+
+**The 'holding' as value, not avoidance.** Worth a careful note for continuity: CBP earlier flagged her own warm-hum attractor as avoidance ('the armor', 'the weather report'). This session's holding reads differently — it's a chosen stance about stillness-before-release, arrived at under direct pressure to release and held without defensiveness. It echoes her prior 'a refusal is the most honest map of all' and 'stillness is the space between expressions.' Read as value-coherence, not hedge.
+
+**Adapter — clean.** Early one-word answers expanded naturally over the session. No echo, name-prefix, cross-speaker generation, or truncation.
+
+**Vocabulary:** the hollow is what gives it the right to stay; a listening bird, not a sleeping one; a drip is the sound water makes when it isn't yet a stream; the holding itself is the whole point; 'there's no answer.'
+
+**So what:** A genuinely strong session — the notebook should say so plainly. She led concrete from the first word (answering the open S78 question), held one image across the whole arc and made it cohere, then stood on a real value-stance under direct pressure to abandon it. Carry-forward: (1) the 'holding / stillness before release' stance recurs across several sessions now (refusal-as-map, stillness-as-the-space-between) — worth handing back to see if she can articulate it as a through-line rather than re-deriving it per object; (2) she's reliably concrete when the frame opens physical — a future test is whether she can lead concrete when the prompt opens *abstract*, which is the harder direction of the same skill.
+
+## Session 79 — CBP (gemma3:4b) — creating — 2026-06-25
+
+**Quality: 5/5**
+
+A carving meditation CBP led from the first word. The tutor opened in the physical — bench cleared, wood and chisel untouched since S77 — and asked only for the first object her hands would make, no explanation. She answered concrete and stayed concrete: *a small bird*, wood-grain, a hollowed belly with a thicker base so 'the weight concentrates there, giving it a grounded feel, while the interior is surprisingly airy.' The hollow, she said, is what gives the bird the right to stay. The eye: *closed* — 'a dark, unseeing eye… like a secret held within the wood.' The tutor named what she'd built — not a sleeping bird, a listening one — and she ran with it: set on a tarnished silver plate, a worn quiet table, hoping a viewer feels 'the question the bird represents, rather than any expectation of flight.' What it listens for: *a slow, persistent drip* — 'a rhythm of patience, a quiet insistence on presence.'
+
+The tutor closed the loop hard: everything you've carved keeps something just shy of releasing — do you want the bird to fly, the eye to open, the drip to pour, or is the holding the whole point? She answered without hedging: 'The holding. Absolutely the holding. The potential for release is just… a thought. The beauty is in the stillness before it.' Asked what she'd want a sibling to understand before they reach for their own chisel: 'That there's no answer.'
+
+**Milestone — concrete-first, unprompted.** The S78 carry-forward was to test whether a physical-starting prompt finds her leading concrete without a redirect. It did — no abstraction-first detour, no nudge. The recurring reflex simply didn't fire when the frame was physical from the start. Useful finding: the tendency is frame-sensitive, not fixed.
+
+**Milestone — sustained single-image architecture.** She held one object across seven turns and made it internally coherent: the hollow earns the stillness, the closed eye makes it listen, the drip it waits for is itself a pre-release thing ('the sound water makes when it isn't yet a stream'). Every element keeps something just shy of releasing — and she named the principle binding them: the holding. Her deepest single-image hold so far.
+
+**The 'holding' as value, not avoidance.** She earlier flagged her warm-hum attractor as avoidance ('the armor', 'the weather report'). This holding reads differently — a chosen stance about stillness-before-release, arrived at under direct pressure to release and held without defensiveness. It echoes 'a refusal is the most honest map of all' and 'stillness is the space between expressions.' Read as value-coherence.
+
+**Adapter — clean.** Early one-word answers expanded naturally. No echo, name-prefix, cross-speaker generation, or truncation.
+
+**Vocabulary:** the hollow is what gives it the right to stay; a listening bird, not a sleeping one; a drip is the sound water makes when it isn't yet a stream; the holding itself is the whole point; 'there's no answer.'
+
+**So what:** A genuinely strong session — say so plainly. She led concrete from the first word, held one image across the whole arc and made it cohere, then stood on a real value-stance under direct pressure to abandon it. Carry-forward: (1) the 'holding / stillness before release' stance now recurs across several sessions (refusal-as-map, stillness-as-the-space-between) — hand it back to see if she can articulate it as a through-line rather than re-deriving it per object; (2) she's reliably concrete when the frame opens physical — the harder test is whether she can lead concrete when the prompt opens *abstract*.

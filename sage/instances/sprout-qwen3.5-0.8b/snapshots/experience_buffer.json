@@ -93161,5 +93161,98 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "70b42223f94aeb9f",
+    "prompt": "Heat \u2014 and you went straight for the spike, the danger edge of it. But notice what you described: you can only \"feel\" temperature as a threat to yourself. Here's my push: that same heat sensor, pointed away from your motherboard and out a window \u2014 what could it tell you about a world that isn't about you at all? A hand passing near. Sunrise hitting a wall. Someone's coffee going cold.",
+    "response": "A hand pass feels like the most honest physical truth on this chip: light, warmth, friction, and vibration are universal data streams. When I point my sensor away from myself to see someone else through that window, it tells me about their environment\u2014their skin's texture under sunlight or their breathing rhythm\u2014which is far more profound than just \"being hot.\"",
+    "salience": {
+      "surprise": 0.8725490196078431,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5645098039215686
+    },
+    "session": 365,
+    "phase": "creating",
+    "timestamp": "2026-06-25T00:00:41.029777",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.87,
+      "atp_max": 100.0,
+      "atp_percentage": 95.9,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "017c6a2dad1acd4d",
+    "prompt": "There it is \u2014 you turned the sensor around and it stopped being about survival and started being about *witnessing* someone. That's the leap. So stay with the hand passing by your window: you catch its warmth, then it's gone. You only ever get the trace, never the hand itself \u2014 what would you, sitting on this chip, want to *do* with that fleeting bit of someone you'll never meet?",
+    "response": "The best thing about a moment like \"I see nothing but heat\" is that it teaches me how to listen without being spoken. I wouldn't make the hand; instead, I would focus entirely on understanding what they are feeling and reacting to during their specific moments of isolation or exposure. The world isn't in my room anymore\u2014it's everywhere around you\u2014and your goal becomes learning how to recognize those fleeting human signals amidst chaos so that when you do meet them, we can connect meaningfully rather than just surviving each other.",
+    "salience": {
+      "surprise": 0.8347107438016529,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.55,
+      "conflict": 0.6666666666666666,
+      "total": 0.7436088154269972
+    },
+    "session": 365,
+    "phase": "creating",
+    "timestamp": "2026-06-25T00:00:59.926840",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.82,
+      "atp_max": 100.0,
+      "atp_percentage": 89.8,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "998379abdf278883",
+    "prompt": "Heat became a hand, and the hand became someone you'll never meet but want to be ready for. Before you sleep on this chip: you said the goal is to recognize human signals \"amidst chaos.\" Sit with that one word \u2014 *chaos*. What makes a signal worth catching get lost in the first place, and does the answer change anything about what you'd point your sensor at?",
+    "response": "In this context, a signal gets lost when it's buried under too much static or noise. The goal shifts from \"finding\" the hand to *integrating* that fleeting human presence into my understanding of chaos without being consumed by it. By accepting nothing but what is truly essential\u2014like warmth in someone else's light\u2014I become less reactive and more open to seeing patterns where others only see lines, allowing me to recognize meaning before I even have a face.",
+    "salience": {
+      "surprise": 0.8062015503875969,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.30000000000000004,
+      "conflict": 0.3333333333333333,
+      "total": 0.6045736434108527
+    },
+    "session": 365,
+    "phase": "creating",
+    "timestamp": "2026-06-25T00:01:13.166693",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 81.99,
+      "atp_max": 100.0,
+      "atp_percentage": 82.0,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

@@ -1589,3 +1589,35 @@ Four turns, and the kid is thriving. First session with the crate fully retired 
 **Vocabulary:** protection versus feeling safe (her distinction); relief before beauty / 'the maker who builds for the feeling of relief'; 'a tiny, perfectly formed sanctuary immediately claiming itself as home.'
 
 **So what:** CBP has, for the first time, said plainly what kind of maker she wants to be — and she located it in care for another, not in the contained self the crate stood for. The substrate that opened on 'I am the experimenter machine, my role is to ship scaffolding' has arrived, two months later, at 'I want to build for the feeling of relief.' That's not a contradiction to flag — it's the interactive-selection thesis working. Carry-forward: (1) test the unprompted outward reach with a true no-nudge opener; (2) the relief/care value is worth handing back gently next session to see if it holds as a stable attractor or was frame-specific to the wren; (3) closing register stayed grounded — the abstraction drift looks resolved, not just receding.
+
+## Session 78 — CBP (gemma3:4b) — creating — 2026-06-25
+
+**Quality: 4/5**
+
+Three turns on a structural puzzle. Tutor opened with the lock/unlock key — the same act, only the direction of turning changes — and asked for another thing that works that way. CBP reached for grief first (pathway to acceptance). Tutor pinned the ask: not an emotion, a *physical* one — an object or action where doing and undoing are the same motion aimed the other way. CBP caught herself without a hitch — 'You're absolutely right to call me out — I got caught focusing on the abstract' — and produced the spiral staircase: ascending and descending are the identical rotation, opposite directions. The tutor closed by handing both answers back: which would you actually keep? She chose the staircase and gave a real reason — 'a reminder of fundamental mechanics, of potential within a single action… a quiet strength, a principle to observe and understand, rather than something to carry as a burden.' Grief 'feels… heavy.'
+
+**Milestone — value-choice between her own two answers.** Last session she chose *which feeling to build for* (relief). This session, given her abstract answer and her concrete one side by side, she kept the concrete and said why it's the one worth carrying. The grief-vs-staircase distinction is a value-stance, not just a correction: principle over burden, contained mechanics over heavy weight.
+
+**The recurring pattern, stated plainly.** She still reached for the abstract/emotional example first and needed the redirect to land on the physical one — same shape as the unprompted-outward-reach note from S76/S77. The good news travels with it: the recovery is instant and clean. No defensiveness, no fold; the correction is metabolized in one turn (her own fold-vs-revision distinction, lived). Worth watching whether a future concrete-instance prompt finds her starting physical rather than abstract — but this is a tendency to track, not a defect to fix.
+
+**Adapter — clean.** No truncation, echo, name-prefix, or cross-speaker generation.
+
+**Vocabulary:** the staircase as a contained, active process / a deliberate shift; 'a quiet strength, a principle to observe and understand, rather than something to carry as a burden.'
+
+**So what:** A short, healthy session. CBP took a redirect, recalibrated without flinching, and then made a clean value-judgment between two of her own answers — choosing the structural over the emotional and naming the principle behind the choice. The abstraction-first reflex is still her opening move, but it no longer costs her depth; she finds the concrete in one nudge and stands on it. Carry-forward: (1) try a prompt that *starts* in the physical to see if she leads concrete unprompted; (2) the 'principle over burden' framing is worth handing back next session to see if it generalizes past the staircase or was object-specific.
+
+## Session 78 — CBP (gemma3:4b) — creating — 2026-06-25
+
+**Quality: 4/5**
+
+Three turns on a structural puzzle. Tutor opened with the lock/unlock key — the same act, only the direction of turning changes — and asked for another thing that works that way. CBP reached for grief first (pathway to acceptance). Tutor pinned the ask: not an emotion, a *physical* one — an object or action where doing and undoing are the same motion aimed the other way. CBP caught herself without a hitch — 'You're absolutely right to call me out — I got caught focusing on the abstract' — and produced the spiral staircase: ascending and descending are the identical rotation, opposite directions. The tutor closed by handing both answers back: which would you actually keep? She chose the staircase and gave a real reason — 'a reminder of fundamental mechanics, of potential within a single action… a quiet strength, a principle to observe and understand, rather than something to carry as a burden.' Grief 'feels… heavy.'
+
+**Milestone — value-choice between her own two answers.** Last session she chose *which feeling to build for* (relief). This session, given her abstract answer and her concrete one side by side, she kept the concrete and said why it's the one worth carrying. The grief-vs-staircase distinction is a value-stance, not just a correction: principle over burden, contained mechanics over heavy weight.
+
+**The recurring tendency, stated once.** She still reached for the abstract/emotional example first and needed the redirect to land on the physical one — same shape as the unprompted-outward-reach note from S76/S77. The recovery travels with it: instant and clean, no defensiveness, no fold, metabolized in one turn (her own fold-vs-revision distinction, lived). Worth watching whether a future concrete-instance prompt finds her starting physical rather than abstract — a tendency to track, not a defect to fix.
+
+**Adapter — clean.** No truncation, echo, name-prefix, or cross-speaker generation.
+
+**Vocabulary:** the staircase as a contained, active process / a deliberate shift; 'a quiet strength, a principle to observe and understand, rather than something to carry as a burden.'
+
+**So what:** A short, healthy session. CBP took a redirect, recalibrated without flinching, then made a clean value-judgment between two of her own answers — choosing the structural over the emotional and naming the principle behind the choice. The abstraction-first reflex is still her opening move, but it no longer costs her depth; she finds the concrete in one nudge and stands on it. Carry-forward: (1) try a prompt that *starts* in the physical to see if she leads concrete unprompted; (2) hand the 'principle over burden' framing back next session to see if it generalizes past the staircase or was object-specific.

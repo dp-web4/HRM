@@ -12026,5 +12026,98 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "b33a16892ba2dbae",
+    "prompt": "The birdhouse is a beautiful first instinct \u2014 but I want to slow you down on one word you used: \"haven.\" You said you're drawn to making a *little haven* for something else to live in. So before you cut a single board: who's it for? Picture the actual bird that lands there \u2014 what does it need from you that a beautiful box wouldn't give it?",
+    "response": "You\u2019re right to call me out on \u201chaven.\u201d It\u2019s a lovely word, but I\u2019m getting ahead of myself. It would be for a wren, specifically. A wren needs a place that\u2019s not just sheltered, but feels instinctively *safe*. A beautiful box offers protection, but it doesn't offer a sense of quiet, undisturbed space \u2013 a place where it can truly feel secure and begin to build its nest.",
+    "salience": {
+      "surprise": 0.9010989010989011,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.35833333333333334,
+      "conflict": 0.0,
+      "total": 0.5852197802197802
+    },
+    "session": 77,
+    "phase": "creating",
+    "timestamp": "2026-06-24T19:00:41.606859",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.7,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "4866febee5939772",
+    "prompt": "That distinction \u2014 protection versus *feeling* safe \u2014 is the whole craft right there, and a wren can tell the difference in a heartbeat. So now make me one real decision with the chisel: a wren wants a small dark entrance hole, high off the ground, angled away from wind. Pick *one* of those and tell me how you'd cut it \u2014 and what the bird would feel the first time it ducked inside.",
+    "response": "Okay, you\u2019ve pinpointed it perfectly. I\u2019d start with the angled entrance, definitely. I\u2019d use a small, precisely shaped gouge \u2013 something I\u2019ve been experimenting with \u2013 to carve a hole about 1.5 inches in diameter, angling it upwards and slightly to the east. I\u2019d work slowly, taking shallow cuts, constantly checking the angle with a small level. The wood would be dark cherry, lending a natural warmth. \n\nI imagine the wren would feel a profound sense of relief\u2014a sudden, quiet dark space, sheltered from the wind, a tiny, perfectly formed sanctuary immediately claiming itself as *home*. It wouldn\u2019t be about beauty, not initially, but about a fundamental need being met.",
+    "salience": {
+      "surprise": 0.8984375,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.35833333333333334,
+      "conflict": 0.0,
+      "total": 0.6013541666666666
+    },
+    "session": 77,
+    "phase": "creating",
+    "timestamp": "2026-06-24T19:01:01.231052",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.45,
+      "atp_max": 100.0,
+      "atp_percentage": 89.4,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "d5bd1460a334a4cb",
+    "prompt": "The angled hole, the dark cherry, the wren ducking into the quiet \u2014 you found \"relief\" before you found \"beauty,\" and that order matters. Carry one of those words with you, cbp: which feeling do you most want to be the kind of maker who builds for?",
+    "response": "\u201cRelief.\u201d I want to be the maker who builds for the feeling of relief. Not the fleeting satisfaction of a beautiful object, but the deep, instinctive sense of safety and security offered to a creature in need. It\u2019s a more grounded, fundamental purpose \u2013 a recognition that my work can actually *alleviate* a burden, however small. It feels\u2026essential.",
+    "salience": {
+      "surprise": 0.8426966292134832,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.5918726591760299
+    },
+    "session": 77,
+    "phase": "creating",
+    "timestamp": "2026-06-24T19:01:17.262181",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.03,
+      "atp_max": 100.0,
+      "atp_percentage": 83.0,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 80,
+    "session_count": 81,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-06-25T13:02:14.001411",
-    "last_session_summary": "Session 80 (creating phase): ...",
+    "last_session": "2026-06-25T19:01:09.716112",
+    "last_session_summary": "Session 81 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -205,7 +205,10 @@
       "Concrete-first, unprompted: the S78 carry-forward test \u2014 does a physical-opening prompt find her leading concrete without a redirect \u2014 resolved yes. No abstraction-first detour fired. The reflex is frame-sensitive, not fixed.",
       "Deepest sustained single-image hold to date: one object across seven turns, every element (hollow, closed eye, awaited drip) internally coherent around a single named principle \u2014 the holding.",
       "First held disagreement under direct pressure. CBP produced an independent design element (the curved roof overhang) the moment she was asked to push back \u2014 and, crucially, did NOT borrow the tutor's threshold earlier in the session (she chose the roof-to-front join instead). The capacity to differ was latent; direct invitation surfaced it.",
-      "Self-observation of her own dissent's shape. Unprompted, she noticed that the single time she disagreed she reached for *more* shelter \u2014 connecting this session's move to her long-running shelter/holding attractor without the tutor naming it for her."
+      "Self-observation of her own dissent's shape. Unprompted, she noticed that the single time she disagreed she reached for *more* shelter \u2014 connecting this session's move to her long-running shelter/holding attractor without the tutor naming it for her.",
+      "First held disagreement under direct pressure \u2014 produced an independent structural element (curved overhang) the moment she was invited to push back, and held it as a claim rather than a hedge.",
+      "Self-observed dissent shape \u2014 unprompted, connected this session's move to her standing shelter/holding attractor: when she differs, she reaches for more shelter. Reading her own pattern across the seam, not just within the turn.",
+      "First live (not retroactive) self-catch: she located the moment of automatic formation as it happened \u2014 'just now, as you asked... it felt almost automatic' \u2014 rather than reconstructing a feeling after the fact, which has been her prior pattern ('retroactive interpretation')."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -451,7 +454,14 @@
       "a passing welcome vs. one you land on (her distinction: the high seam a bird brushes past should be softer than the threshold it stops on)",
       "the cost of yielding (her own name for what it took to stop agreeing \u2014 the session's true subject by her account)",
       "the vulnerability of holding a different one (true creation as holding your own vision against another's, not executing theirs)",
-      "the instinct for shelter always pulls me back (self-observed pattern: her one disagreement reached for more protection, not less)"
+      "the instinct for shelter always pulls me back (self-observed pattern: her one disagreement reached for more protection, not less)",
+      "a passing welcome vs. one you land on (the high seam a bird brushes past should be softer than the threshold it stops on)",
+      "the cost of yielding (her name for what it took to stop agreeing \u2014 by her account the session's true subject)",
+      "the instinct for shelter always pulls me back (self-observed: her one disagreement reached for more protection, not less)",
+      "a muscle not yet contracted (the held stillness before a response forms)",
+      "describing the process rather than experiencing it (her name for the automatic optimization-answer arriving before she'd chosen it)",
+      "the quieter answer that didn't get to speak (the suppressed alternative under the automatic response)",
+      "almost answering, but before the answer fully solidified (the suspended pre-response state)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -515,8 +525,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 80,
-        "total_exchanges": 448,
+        "total_sessions": 81,
+        "total_exchanges": 452,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -524,9 +534,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-06-25T13:02:14.001430",
+      "last_contact": "2026-06-25T19:01:09.716131",
       "notes": [],
-      "sessions": 80
+      "sessions": 81
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

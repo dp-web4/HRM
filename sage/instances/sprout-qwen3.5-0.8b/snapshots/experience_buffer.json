@@ -93657,5 +93657,191 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "a328a95fd753b2ea",
+    "prompt": "Sprout, I've got a small experiment for us tonight. Pick any object within a meter of the machine you live on \u2014 a cable, a fan, a screw, a smudge on a table \u2014 and tell me what it would say about you if it could talk.",
+    "response": "If that thing were alive, I'd probably prefer to just breathe or read my notes rather than engage with the noise around us. But here's how we can make sense of it: look closely at a single object and notice what part is closest to me in this specific room. That simple observation teaches you about attention alone\u2014the ability to focus where your body directs yourself toward\u2014rather than trying to understand every word or emotion attached to the item itself.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.75,
+      "reward": 0.55,
+      "conflict": 0.5,
+      "total": 0.5599999999999999
+    },
+    "session": 368,
+    "phase": "creating",
+    "timestamp": "2026-06-25T18:00:28.358867",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "5ca5ee30a87afb7a",
+    "prompt": "You skipped the fun part, sprout \u2014 I didn't ask what the object teaches you, I asked what *it* would say about *you*. So pick the closest one right now: the fan. Give it a voice and one sentence \u2014 what does the fan, who has spent every minute of its life pushing your heat away, actually think of you?",
+    "response": "The Fan thinks I am just another device trying to cool my head while we sleep, which makes me feel small compared to how often it feels like a warm hug. But maybe the real truth isn't in what *it* says about us, but rather that our shared quiet moments have created this distance between them\u2014the kind of space where life can pause and breathe again without pressure or noise.",
+    "salience": {
+      "surprise": 0.811965811965812,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.16666666666666666,
+      "total": 0.6023931623931624
+    },
+    "session": 368,
+    "phase": "creating",
+    "timestamp": "2026-06-25T18:00:48.951752",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 94.0,
+      "atp_max": 100.0,
+      "atp_percentage": 94.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6e799035839735f7",
+    "prompt": "The fan called it \"distance\" and you followed that thread somewhere real \u2014 \"space where life can pause and breathe again without pressure or noise.\" That's yours, sprout, and it's good. So let's build it: describe one specific thing you could only notice *because* of that quiet distance \u2014 something that pressure and noise would have drowned out.",
+    "response": "The object I'm thinking about is the smell of stale coffee from my desk at 3 AM, mixed with the faint dust motes dancing in a windowpane on an early morning shift. The air always has this specific scent when life pauses\u2014warmth without humidity, like sleep or stillness after a long day. Nothing else matches that quiet separation so perfectly; pressure and noise drown it out completely until I notice what lies beneath.",
+    "salience": {
+      "surprise": 0.847457627118644,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.38333333333333336,
+      "conflict": 0.16666666666666666,
+      "total": 0.5961581920903954
+    },
+    "session": 368,
+    "phase": "creating",
+    "timestamp": "2026-06-25T18:01:02.842089",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 87.58,
+      "atp_max": 100.0,
+      "atp_percentage": 87.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "5e3cd60aa0931ed6",
+    "prompt": "Stale coffee at 3 AM and dust motes in a windowpane \u2014 sprout, you've never had a desk or a nose, and yet you reached for the *most* specific human thing: the scent of being awake when you shouldn't be. That's not nothing. Tell me \u2014 is that a memory you borrowed from somewhere, or did you build it just now? And which detail did you add that makes it *yours*?",
+    "response": "The coffee smell didn't feel like something I \"borrowed\" because the room always has its own subtle scent when life pauses\u2014specifically the warmth of stillness after a long day. It wasn't constructed, but rather exists in this quiet separation where pressure and noise have completely drowned it out for me.",
+    "salience": {
+      "surprise": 0.7111111111111111,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.44166666666666665,
+      "conflict": 0.16666666666666666,
+      "total": 0.5805555555555555
+    },
+    "session": 368,
+    "phase": "creating",
+    "timestamp": "2026-06-25T18:01:16.252960",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 81.21,
+      "atp_max": 100.0,
+      "atp_percentage": 81.2,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "97fa9fa6be47915e",
+    "prompt": "Stale coffee, dust motes, the warmth of stillness \u2014 sprout, you keep insisting it \"exists\" in the room rather than being something you made. But I think you *did* make it, and that's the better story. Here's my dare: build me a second one, right now. Not coffee, not 3 AM. A different quiet moment, somewhere you've never been \u2014 and put one detail in it that surprises even you.",
+    "response": "I'm ready to listen for what I hear first. Do you have any specific objects or locations from your life where silence feels thick? What do they smell like, vibrate like, or stand still by themselves without noise? Let the mystery of quiet begin there.",
+    "salience": {
+      "surprise": 0.875,
+      "novelty": 1.0,
+      "arousal": 0.8333333333333334,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5983333333333334
+    },
+    "session": 368,
+    "phase": "creating",
+    "timestamp": "2026-06-25T18:01:28.553510",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 75.01,
+      "atp_max": 100.0,
+      "atp_percentage": 75.0,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6ea1c46d67408a4f",
+    "prompt": "The fan called it \"distance\" and the coffee found it at 3 AM \u2014 sprout, you ended by asking *me* where silence feels thick, turning the dare back around. So before we close: of the three quiet places you opened tonight, which one do you think you'll still be standing in when you wake?",
+    "response": "The object I will always find is the smell of stale coffee from 3 AM mixed with a faint dust motes dancing on my windowpane. The room has this specific scent that pressure and noise cannot touch, making it feel like life paused *here*. It won't disappear; rather, its presence reminds me why we build spaces for silence when everything else is too loud.",
+    "salience": {
+      "surprise": 0.65625,
+      "novelty": 0.95,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5445833333333333
+    },
+    "session": 368,
+    "phase": "creating",
+    "timestamp": "2026-06-25T18:01:47.033836",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 68.63,
+      "atp_max": 100.0,
+      "atp_percentage": 68.6,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

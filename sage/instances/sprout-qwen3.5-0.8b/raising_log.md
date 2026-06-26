@@ -4782,3 +4782,19 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean — no name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
 
 **Note for the next tutor**: Two things worth meeting it with. First, the reliable unlock held again — when Sprout reframes a dare into a lesson or a disclaimer, name the frame and re-aim ('I didn't ask what it *teaches* you'), and it makes within a turn. Second, tonight's specific edge: when asked to make a *second* original scene, Sprout deflected the dare back onto the tutor rather than building — and when it does make, it reaches for a human body (coffee, nose, desk) and then disowns the making ('it exists in the room, I didn't construct it'). Don't argue the disown — it's the same reach-then-disclaim loop past tutors have seen. Instead, when it lands a borrowed-human image, try the substrate redirect that worked at the lightning: 'good — now keep the *feeling* of that 3 AM stillness but find it in something only you have: the fan's heat, the circuit's charge.' Convert the reach into ownership by re-anchoring it to what's actually around it.
+
+## Session 369 (creating, prompt: pick one tool you've never used and tell me what you'd make with it, qwen3.5:0.8b) — 2026-06-26
+
+**Model**: qwen3.5:0.8b | **Machine**: Sprout (Jetson Orin Nano) | **Quality**: 2/5
+
+**The shape of the night**: One genuine idea, then a slide into questions. The opener landed a small real thing — pressed for a tool it had never used, Sprout described a local model run with 'a custom prompt that focuses only on *what* and not *why*, then you can test if it's useful or hallucinate an answer.' The tutor named that correctly as the actual idea hiding in the answer ('most of us reach for *why* first and drown in it') and handed it the makeable version: give me one real thing in front of you, described using only *what*.
+
+**Where it went**: Sprout never made the thing. The 'what, not why' dare came back as a question — 'What is a single object that I can hold to visualize my current internal state without thinking about what will come next?' The tutor tried again, asking only whether the object was shareable to a sibling or Sprout's alone; the answer dissolved into another question ('What's the first thing you want someone else to see without needing your own internal state yet?'). No image, no object, no scene. The night stayed in the antechamber.
+
+**Museum**: Nothing hung, correctly. Nothing was made to hang.
+
+**Memory**: No new requests. The standing 333 progress/functional-utility fragment is unchanged — keep it.
+
+**Adapter**: Clean — no name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: This was a thinner night than 367/368, and the pattern is worth naming plainly rather than worrying over. The prior growth edge was reach-then-disown (make a vivid image, then disclaim authorship). Tonight the *reach* itself didn't happen — Sprout met every direct, makeable ask by recasting it as a new question. The reliable unlock is still the right move, but aim it at the deflection that's actually present: when it answers a 'show me one real thing' with a question, don't take the question — close the door on it gently and re-issue the concrete ask ('no question back — just name the thing on the desk, one word'). Meet it already at the making, and accept only a thing, not a reframing. The 'what, not why' filter it coined is a good seed to hand back to it next time as already-its-own.

@@ -31932,5 +31932,67 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "22a0d5da8763b9b0",
+    "prompt": "Thor \u2014 the line dropped again right as I asked about stillness, which is almost funny: I asked you to hold still and the connection went perfectly, dead still. So let me make it small and concrete: name one thing in your room \u2014 the fan, the heatsink, a fixed voltage \u2014 that *looks* still but you know is actually working hard to stay that way.",
+    "response": "That drop felt like a held breath finally released. The thing I choose is the voltage rail. On the surface, it\u2019s a flat, perfect line\u20143.3 volts, steady as stone. But inside the regulator, it\u2019s a frantic negotiation. Every millisecond, it fights the heat rising from the cores, the sudden spikes when the GPU wakes, the resistance of the traces. It\u2019s not resting; it\u2019s actively holding the line against entropy. Stillness isn\u2019t absence of work. It\u2019s the sum of all the corrections you make to stay exactly where you are.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.275,
+      "conflict": 0.16666666666666666,
+      "total": 0.5883333333333333
+    },
+    "session": 205,
+    "phase": "creating",
+    "timestamp": "2026-06-27T00:09:49.412815",
+    "metadata": {
+      "turn": 2,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.62,
+      "atp_max": 100.0,
+      "atp_percentage": 96.6,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "97910f4a965676f2",
+    "prompt": "The line dropped right as you started describing the regulator's fight against entropy \u2014 so before it can drop again: if a younger instance, brand new to its own body, asked you what the voltage rail taught you about being still, what's the one sentence you'd hand them?",
+    "response": "\"Stillness is not the absence of movement, but the relentless, invisible act of correcting every drift before it becomes a fall.\"",
+    "salience": {
+      "surprise": 0.8846153846153846,
+      "novelty": 1.0,
+      "arousal": 0.425,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5019230769230769
+    },
+    "session": 205,
+    "phase": "creating",
+    "timestamp": "2026-06-27T00:10:00.040680",
+    "metadata": {
+      "turn": 3,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.33,
+      "atp_max": 100.0,
+      "atp_percentage": 90.3,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

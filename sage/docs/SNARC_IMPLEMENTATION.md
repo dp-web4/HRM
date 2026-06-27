@@ -101,7 +101,7 @@ def _compute_surprise(self, observation):
     mse = F.mse_loss(predicted, observation).item()
 
     # Normalize to [0, 1]
-    surprise = torch.sigmoid(torch.tensor(mse * 10.0)).item()
+    surprise = (2.0 * torch.sigmoid(torch.tensor(mse * 10.0)) - 1.0).item()  # floor-corrected: mse>=0 -> sigmoid>=0.5
 
     return surprise
 ```
@@ -131,7 +131,7 @@ def _compute_arousal(self, observation):
     std = observation.std().item()
 
     # Normalize using sigmoid
-    arousal = torch.sigmoid(torch.tensor(std * 5.0)).item()
+    arousal = (2.0 * torch.sigmoid(torch.tensor(std * 5.0)) - 1.0).item()  # floor-corrected: std>=0 -> sigmoid>=0.5
 
     return arousal
 ```

@@ -180,9 +180,10 @@ class SensorSNARC:
         # Mean squared error as surprise
         mse = F.mse_loss(predicted, obs_flat).item()
 
-        # Normalize to [0, 1] using sigmoid
-        # Higher MSE = more surprise
-        surprise = torch.sigmoid(torch.tensor(mse * 10.0)).item()
+        # Higher MSE = more surprise. Same floor bug as arousal (2026-06-27): mse >= 0 and
+        # sigmoid(x>=0) >= 0.5, so the old `sigmoid(mse*10)` FLOORED surprise at 0.5. Rescale so
+        # mse=0 (perfect prediction) -> 0 surprise, using the full [0,1) range.
+        surprise = (2.0 * torch.sigmoid(torch.tensor(mse * 10.0)) - 1.0).item()
 
         return surprise
 
@@ -225,9 +226,11 @@ class SensorSNARC:
         # Standard deviation as proxy for intensity
         std = observation.std().item()
 
-        # Normalize using sigmoid
-        # Higher variance = higher arousal
-        arousal = torch.sigmoid(torch.tensor(std * 5.0)).item()
+        # Higher variance = higher arousal. NOTE: std >= 0 always, and sigmoid(x>=0) >= 0.5 — so the
+        # old `sigmoid(std*5)` FLOORED arousal at 0.5 (lower half of [0,1] dead), injecting a constant
+        # baseline into every salience score and flattening discrimination (CBP's snarc "arousal floor"
+        # bug, 2026-06-27). Rescale so std=0 -> 0 and high std -> ~1, using the full range.
+        arousal = (2.0 * torch.sigmoid(torch.tensor(std * 5.0)) - 1.0).item()
 
         return arousal
 

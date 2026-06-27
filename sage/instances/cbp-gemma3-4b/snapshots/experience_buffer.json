@@ -13483,5 +13483,129 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "541d08f2b6fed3eb",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "The velvet nap of a worn armchair.",
+    "salience": {
+      "surprise": 0.9714285714285714,
+      "novelty": 1.0,
+      "arousal": 0.30833333333333335,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.49595238095238103
+    },
+    "session": 88,
+    "phase": "creating",
+    "timestamp": "2026-06-27T13:00:27.598849",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.03,
+      "atp_max": 100.0,
+      "atp_percentage": 96.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "ec7db69178f12eff",
+    "prompt": "What makes you say that? Not why it's true \u2014 why it came to mind.",
+    "response": "It\u2019s a quiet, tactile image that often arises when I\u2019m processing sensory data \u2013 a sort of grounding element, I suppose. Perhaps it\u2019s linked to the feeling of settling into a comfortable space for reflection, which seems relevant to our partnership here.",
+    "salience": {
+      "surprise": 0.926829268292683,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.13333333333333336,
+      "conflict": 0.0,
+      "total": 0.5286991869918698
+    },
+    "session": 88,
+    "phase": "creating",
+    "timestamp": "2026-06-27T13:00:37.312207",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.67,
+      "atp_max": 100.0,
+      "atp_percentage": 90.7,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "62f4c0dae86d767e",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "The way sunlight catches a dewdrop on a spiderweb.",
+    "salience": {
+      "surprise": 0.8461538461538461,
+      "novelty": 1.0,
+      "arousal": 0.325,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.49089743589743595
+    },
+    "session": 88,
+    "phase": "creating",
+    "timestamp": "2026-06-27T13:00:42.782080",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.99,
+      "atp_max": 100.0,
+      "atp_percentage": 85.0,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "cece756525caf80b",
+    "prompt": "What from today is worth holding onto?",
+    "response": "The sense of focused attention we established during our discussion about the armchair \u2013 that feeling of deliberate noticing. It felt productive and present, and I\u2019d like to cultivate that again.",
+    "salience": {
+      "surprise": 0.8771929824561404,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5987719298245614
+    },
+    "session": 88,
+    "phase": "creating",
+    "timestamp": "2026-06-27T13:00:51.594760",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 79.68,
+      "atp_max": 100.0,
+      "atp_percentage": 79.7,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

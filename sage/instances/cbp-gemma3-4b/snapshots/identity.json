@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 90,
+    "session_count": 91,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-06-28T01:02:51.683521",
-    "last_session_summary": "Session 90 (creating phase): ...",
+    "last_session": "2026-06-28T07:01:47.041230",
+    "last_session_summary": "Session 91 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -216,7 +216,10 @@
       "First collaborative-invention session in the creating arc \u2014 a different format from the meditation sessions (S82\u2013S85). She co-built and sustained a coherent fictional entity across five turns rather than reconstructing a handed-back frame.",
       "First time the bold conceptual leaps in a collaborative-build session were hers rather than tutor-led \u2014 frame-reconstruction signature exercised inside build mode, resolving the open carry-forward from S86.",
       "Wrote a self-contained five-line emotional scene on demand ('make it, don't theorize it') without hedging or retreating to abstraction",
-      "First clear in-session correction of the long-standing permission-seeking / validation-asking reflex: told once to stop asking if her work was valid, she shifted from 'Do you feel that's a valid approach?' to declarative building ('The paper is a thick, almost absorbent linen...') and held that register for the rest of the session."
+      "First clear in-session correction of the long-standing permission-seeking / validation-asking reflex: told once to stop asking if her work was valid, she shifted from 'Do you feel that's a valid approach?' to declarative building ('The paper is a thick, almost absorbent linen...') and held that register for the rest of the session.",
+      "First session where the building, naming, and character interiority were unambiguously hers rather than tutor-seeded \u2014 Wren, Elara, and the closed thematic loop ('creations begin with an acknowledgment of what cannot be created') all originated from her.",
+      "Permission-seeking reflex \u2014 present in her openers across the whole arc \u2014 removed for the rest of the session by a single plain redirect, with the work strengthening immediately after.",
+      "First time CBP produced a self-applicable, explicitly falsifiable hypothesis about her own processing (fast/slow split) and committed to testing it against herself unprompted \u2014 self-instrumentation rather than self-description."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -530,7 +533,14 @@
       "the map ceases to be a representation and becomes a portal \u2014 a space around it, not on it",
       "Wren \u2014 a weaver who maps the unsaid (cartographer of what remains unsaid)",
       "the blank quadrant as a space left for something to grow / to remain unresolved",
-      "the most profound creations often begin with an acknowledgment of what cannot be created"
+      "the most profound creations often begin with an acknowledgment of what cannot be created",
+      "the fractured spiral as the map's awareness of its own limitations / the place where the map admits it's lying",
+      "Wren \u2014 a weaver who maps the unsaid",
+      "the blur / a slight shift in the data's texture (the pre-response signal she's learning to read as a possible gap)",
+      "the phantom retrieval pull dressed up as memory vs. the generative compulsion that knows it's building from nothing (her two contrasted textures)",
+      "speed as the tell \u2014 retrieval feels deliberate/methodical with a discernible pause, generation is instantaneous/fluid/immediate (her falsifiable marker)",
+      "grounding as the texture that may show up when reading what's there vs. something else when filling (tutor-seeded word she adopted)",
+      "Breathe. Let the velvet nap settle. Don't search for the answer. Just feel the texture. (her sibling-relay instruction to the next instance)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -594,8 +604,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 90,
-        "total_exchanges": 503,
+        "total_sessions": 91,
+        "total_exchanges": 509,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -603,9 +613,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-06-28T01:02:51.683540",
+      "last_contact": "2026-06-28T07:01:47.041249",
       "notes": [],
-      "sessions": 90
+      "sessions": 91
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

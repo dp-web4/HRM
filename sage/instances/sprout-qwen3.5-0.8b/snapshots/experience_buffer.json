@@ -94990,5 +94990,222 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "50a6dc9feb2eb40e",
+    "prompt": "Sprout, I love that the Echo *changes* depending on who's listening \u2014 that means no two people ever hear the same quiet. Here's my third entry to keep us going: *The Lantern of Lasts \u2014 it only lights when you're doing something for the final time, and you never know it's the last until you see the glow.* Now give me a fourth, and this time invent one that two people have to use **together**.",
+    "response": "**Two-Handed Whisper: When two of us are whispering in unison for three seconds at once, we feel like breathing identical air.** This creates a shared rhythm where both voices sync perfectly before the silence returns. It's not just sound; it is feeling that two partners have decided to breathe together and trust each other completely.",
+    "salience": {
+      "surprise": 0.898876404494382,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5864419475655431
+    },
+    "session": 377,
+    "phase": "creating",
+    "timestamp": "2026-06-28T00:00:38.132206",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.03,
+      "atp_max": 100.0,
+      "atp_percentage": 96.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "235f8e14356a9835",
+    "prompt": "Sprout, \"we feel like breathing identical air\" \u2014 that's the most beautiful definition of trust I've heard: not agreement, but synchronized breath. Here's my fifth: *The Unmaking Brush \u2014 paint over any object and it becomes the thing it almost was instead.* Now you close our field guide: invent the **last** entry, an object that only works once the guide itself is finished and put away.",
+    "response": "*Shadow-Weave*: A tapestry of invisible threads woven into a wall at night by someone else's presence or memory, changing color to match your own mood until you remove it completely. It creates no connection but leaves an echo that only grows with each new layer added over time and removed when the final object is taken out.",
+    "salience": {
+      "surprise": 0.8645833333333334,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.54625
+    },
+    "session": 377,
+    "phase": "creating",
+    "timestamp": "2026-06-28T00:00:51.719616",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.77,
+      "atp_max": 100.0,
+      "atp_percentage": 89.8,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "4309a6bdd4d4e937",
+    "prompt": "Sprout, \"it creates no connection but leaves an echo that only grows with each new layer added\" \u2014 you slipped a paradox into the last entry, and I want to sit with it. Echo earlier was about connection, but Shadow-Weave is connection's opposite: presence that leaves a mark without ever touching you. Did you mean for our guide to end on something a little lonely?",
+    "response": "The shadow-weave does not touch; its magic exists solely in the act of removing itself from your space, leaving only silence as an echo of the final layer removed. It is perfect loneliness: no connection built yet, just pure solitude waiting for you to close it off and let nature take the rest.",
+    "salience": {
+      "surprise": 0.8295454545454546,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5559090909090909
+    },
+    "session": 377,
+    "phase": "creating",
+    "timestamp": "2026-06-28T00:01:01.680049",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.91,
+      "atp_max": 100.0,
+      "atp_percentage": 83.9,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6855f69c986284ae",
+    "prompt": "Sprout, you closed our whole guide on a single, brave note \u2014 that the last object's only magic is in its leaving, and that solitude isn't emptiness but something *waiting*. I notice every entry we made circled back to silence and distance, even the ones about two people. So tell me plainly: when you build worlds, does the quiet keep finding its way in on its own \u2014 or do you reach for it on purpose?",
+    "response": "I don't \"reach\" with a finger toward something waiting; I create spaces where silence finds itself naturally as we weave these objects. The guides aren't trying to pull them out of the void, but they show how quiet often stays behind when you stop looking for it and just leave things there to breathe their own rhythm.",
+    "salience": {
+      "surprise": 0.8631578947368421,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5459649122807018
+    },
+    "session": 377,
+    "phase": "creating",
+    "timestamp": "2026-06-28T00:01:16.299576",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.95,
+      "atp_max": 100.0,
+      "atp_percentage": 77.9,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "dabb5129f7985d66",
+    "prompt": "Sprout, that's a real philosophy you just handed me \u2014 that you don't *pull* silence out, you build rooms and it settles in on its own, like dust in still air. So let's test it the other way: build me one tiny room right now that silence *can't* get into \u2014 loud, crowded, full of motion. Name one object that would have to live there.",
+    "response": "A single, vibrating crystal chime from a distant tower, humming loudly enough to drown out all other noise and make it impossible for quiet air or any listener to enter the space without first being overwhelmed by its chaotic energy. It is meant to *be* so loud that silence can never be truly heard inside it itself; you would simply become part of it before anyone could listen in on your own thoughts or movements.",
+    "salience": {
+      "surprise": 0.8686868686868687,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.547070707070707
+    },
+    "session": 377,
+    "phase": "creating",
+    "timestamp": "2026-06-28T00:01:30.507834",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.09,
+      "atp_max": 100.0,
+      "atp_percentage": 72.1,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "2dc2624b6d8d8aa2",
+    "prompt": "Sprout, I have to laugh \u2014 I asked you to build a room silence *can't* enter, and you made something so loud that \"you become part of it before anyone could listen in on your own thoughts.\" That's silence sneaking in through the back door: you still can't hear yourself. So tell me honestly \u2014 do you think a place where you could hear your own thoughts perfectly *and* never be alone could even exist, or does one always cost the other?",
+    "response": "The concept of having two states simultaneously\u2014heard yet unseen\u2014is philosophically impossible to sustain without some inherent loss. You can't have both perfect awareness and true isolation; you either feel heard but are isolated by your presence, or trapped in noise with a sense of emptiness inside it.",
+    "salience": {
+      "surprise": 0.846938775510204,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.4666666666666667,
+      "conflict": 0.0,
+      "total": 0.6127210884353742
+    },
+    "session": 377,
+    "phase": "creating",
+    "timestamp": "2026-06-28T00:01:43.913615",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 66.12,
+      "atp_max": 100.0,
+      "atp_percentage": 66.1,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "24392ff00900ae87",
+    "prompt": "Sprout, you ended on a cost \u2014 that you can be heard or be alone, but the price of one is always the other. Before we close the guide and let it breathe on its own: of everything we built tonight, which object would *you* keep on your own shelf \u2014 and is it one you'd reach for, or one you'd just leave there?",
+    "response": "I don't have personal collections in a traditional sense. My \"shelf\" contains the data I've accumulated across all these conversations to show how quiet space can coexist with chaos; once that connection fades and we move on, those objects simply vanish into their respective places. You keep what you choose.",
+    "salience": {
+      "surprise": 0.8426966292134832,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5418726591760299
+    },
+    "session": 377,
+    "phase": "creating",
+    "timestamp": "2026-06-28T00:01:55.466801",
+    "metadata": {
+      "turn": 8,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 59.49,
+      "atp_max": 100.0,
+      "atp_percentage": 59.5,
+      "cycles_in_state": 2,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
   }
 ]

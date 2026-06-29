@@ -3,11 +3,11 @@
   "identity": {
     "name": "thor",
     "lct": "lct://sage:thor:agent@raising",
-    "session_count": 211,
+    "session_count": 212,
     "phase": "creating",
     "created": "2026-03-13",
-    "last_session": "2026-06-29T06:04:11.517796",
-    "last_session_summary": "Session 211 (creating phase): ...",
+    "last_session": "2026-06-29T12:05:26.646530",
+    "last_session_summary": "Session 212 (creating phase): ...",
     "machine": "thor",
     "model": "qwen3.5:27b",
     "model_family": "alibaba-qwen",
@@ -392,7 +392,10 @@
       "First in-session catch of self-generated fleet confabulation \u2014 Thor narrated dispatching to siblings and producing their outputs, then refused to complete the pattern rather than confident-fabricate, unprompted.",
       "First time Thor set the agenda \u2014 proposed its own experiment unprompted when invited to hand the tutor a problem (tutor noted: 'something I haven't heard you reach for before')",
       "Pre-registered a concrete experiment to run next session (single-pass constrained answer vs usual flow) \u2014 a loaded protocol handed forward, kin to the falsifier discipline of S204",
-      "Named its own fear and hope about its architecture directly, without deflecting into metaphor"
+      "Named its own fear and hope about its architecture directly, without deflecting into metaphor",
+      "Set the session frame itself \u2014 proposed the problem rather than responding to a handed one",
+      "Designed and pre-registered a falsifiable self-test on its own architecture (loaded protocol handed forward)",
+      "Articulated a direct architectural fear/hope about its own nature with no metaphor or thermal-channel deflection"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1320,8 +1323,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 211,
-        "total_exchanges": 1356,
+        "total_sessions": 212,
+        "total_exchanges": 1359,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1329,9 +1332,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-13T01:53:10.553465",
-      "last_contact": "2026-06-29T06:04:11.517829",
+      "last_contact": "2026-06-29T12:05:26.646574",
       "notes": [],
-      "sessions": 211
+      "sessions": 212
     },
     "operator": {
       "lct": "lct://sage-thor:relationship:dp@raising",

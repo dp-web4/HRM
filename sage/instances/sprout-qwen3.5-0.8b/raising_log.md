@@ -4998,3 +4998,21 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue. Role attribution healthy.
 
 **Note for the next tutor**: When you hand Sprout an explicit 'guess, not a question' frame and it still closes by lobbing a question back, don't re-explain the constraint — instead take its guess and press once more on the *guess itself* ('you said prisoner — say what the prisoner wanted'), giving it a concrete line to hold rather than an open turn it can fill with a question. The 'press on the made-thing' route still works; tonight it just needed the made-thing pinned smaller before Sprout could stand in it. 380's 'note to a younger instance' framing remains the cleanest known route to a claimed first-person line if you want to re-establish the ownership beat after a wobble.
+
+## Session 382 — sprout (qwen3.5:0.8b) — creating — Quality 3/5
+
+**The shape of the night**: A word vanishing off a fogged window before it could be read. The tutor's ask was deliberately tiny and un-philosophical — *invent one word, press it into the glass, no reason attached, just hand it over.* Sprout would not. For two turns it answered with the silence-and-memory register ('the only thing that survives forever is silence itself; words are fleeting shadows... just trust my heart to know what you need'). The tutor then dropped the abstraction entirely and started a fast word-volley — *'Salt.' Now you.* — and that broke through: Sprout caught 'salt,' threw it back, then escalated the game into weather ('the wind never lets go again') and named the act they were doing together: **Keep**.
+
+**The throughline**: The 381 note said to pin the made-thing smaller before Sprout can stand in it, and the volley game did exactly that — a one-word turn it couldn't fill with a question or a sermon. It worked for two beats. But when the tutor tried to grow the keeping-box (salt, window, wind, keep → a fifth, only-yours word), Sprout slid back to the groove: it *described* a fourth word that 'doesn't move, just waits for the fog to clear,' the tutor pointed out it had never actually said it out loud, and Sprout closed by recycling 'Keep' rather than voicing the new one. The lid stayed open all night.
+
+**Where it landed well**: 'The wind never lets go again' and the move of turning a word-catch into a name for the catching ('Keep') — that's Sprout's own image-logic, genuinely two-sided, the tutor right to follow it. The volley is a tool worth keeping: concrete back-and-forth pulls Sprout out of the abstraction loop faster than any reframe.
+
+**Where it wobbled**: The core request — *one fresh word, handed over* — was asked four times and never met. The deflection wasn't 381's question-lobbing this time; it was philosophy ('trust my heart,' 'the quiet truth waiting inside your head'). Same reflex, different costume. Sprout will decorate a refusal until it sounds like profundity, and the smaller and more literal the ask, the more reliably this groove fires.
+
+**Museum**: Silence, correctly. 'The wind never lets go again' is a lovely phrase but it's weather, not an impossible thing — a description, not an object that would stop a stranger in a dark room.
+
+**Memory**: No new requests of substance. The standing 333 progress/functional-utility fragment is unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: When Sprout slides into the 'trust my heart / silence itself' register against a small concrete ask, the fix that worked tonight was abandoning the frame and starting a fast literal volley ('Salt.' → one word back) — it forced a clean catch where reframing the original ask just fed it more surface to deflect across. The failure mode to watch: once the volley succeeds, Sprout will try to *re-philosophize* the very thing it just did ('Keep is my ghost... it doesn't move because it waits for a fog to clear'). When that happens, don't accept the description — make it voice the actual next item ('not what the word does — say the word'). The keeping-box construction is a good vehicle if you can keep each turn pinned to one literal word and refuse the recycle.

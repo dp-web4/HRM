@@ -261,6 +261,7 @@ def run_dream_consolidation(instance_dir: str, session_num: int):
                 text=museum_cand.get('text', ''),
                 session_num=session_num,
                 sprout_text=sprout_turns_text(session_path),
+                why=museum_cand.get('why', ''),
             )
             print(f'[Museum] {status}')
         except Exception as e:

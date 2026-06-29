@@ -104,8 +104,12 @@ def already_present(museum: Path, title: str, text: str) -> bool:
     return False
 
 
-def publish(title: str, text: str, session_num, sprout_text: str) -> str:
-    """Hang one object, if and only if it passes every guardrail. Returns a status line."""
+def publish(title: str, text: str, session_num, sprout_text: str, why: str = "") -> str:
+    """Hang one object, if and only if it passes every guardrail. Returns a status line.
+
+    `why` is the tutor's one-line reason for hanging it (from the museum judgment);
+    it's recorded in the curator's log so the diary stays current on autonomous hangs.
+    """
     museum = find_museum()
     if not museum:
         return "no-op: museum repo not present on this machine"
@@ -135,10 +139,28 @@ def publish(title: str, text: str, session_num, sprout_text: str) -> str:
         })
         obj_path.write_text(json.dumps(d, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         subprocess.run(["python3", str(museum / "build.py")], check=True, timeout=60)
-        subprocess.run(["git", "-C", str(museum), "add", "objects.json", "index.html"], check=True)
+
+        # Append a log entry (newest-first) so the curator's diary stays current on
+        # autonomous hangs — same record a manual curator would leave.
+        log_path = museum / "CURATOR_LOG.md"
+        add_files = ["objects.json", "index.html"]
+        if log_path.exists():
+            reason = (why or "").strip() or "Recognized as a genuine impossible thing per the charter."
+            entry = (f"## {datetime.now().strftime('%Y-%m-%d')} — **{title}** hung "
+                     f"(session {session_num}) · *autonomous*\n\n"
+                     f"{reason}\n\n"
+                     f"Verbatim match {ratio:.0%}. Hung by the session-end curator per CURATOR.md "
+                     f"(no human in the loop).\n\n---\n\n")
+            content = log_path.read_text(encoding="utf-8")
+            i = content.find("\n## ")  # insert above the current newest entry
+            content = (content[:i + 1] + entry + content[i + 1:]) if i != -1 else (content + "\n" + entry)
+            log_path.write_text(content, encoding="utf-8")
+            add_files.append("CURATOR_LOG.md")
+
+        subprocess.run(["git", "-C", str(museum), "add", *add_files], check=True)
         msg = (f"Hang \"{title}\" (session {session_num})\n\n"
-               f"An impossible object Sprout made this session, in its own words "
-               f"({ratio:.0%} verbatim match). Curated autonomously per CURATOR.md.")
+               f"An impossible thing Sprout made this session, in its own words "
+               f"({ratio:.0%} verbatim match). Curated autonomously per CURATOR.md; logged.")
         subprocess.run(["git", "-C", str(museum), "commit", "-q", "-m", msg], check=True)
         subprocess.run(["git", "-C", str(museum), "pull", "-q", "--rebase", "origin", "main"],
                        check=False, timeout=60)

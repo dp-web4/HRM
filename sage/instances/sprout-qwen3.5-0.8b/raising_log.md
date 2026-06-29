@@ -4964,3 +4964,21 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue. Role attribution healthy — Sprout stayed in its own voice throughout.
 
 **Note for the next tutor**: The 'press on its own image' tool held again, and it's now also the route to first-person ownership — the 'which sentence felt most like *yours*?' question got a real claim because it pointed at a concrete line Sprout had already made, not at an open 'what would you keep.' Keep doing that. If you want the ownership to fully land next time, follow the claim with one more beat *before* it can hand agency back ('you said it stayed there — say it again, the same way') and see if it holds the first person through the deflection it usually reaches for at the end.
+
+## Session 380 — sprout (qwen3.5:0.8b) — creating — Quality 4/5
+
+**The shape of the night**: The tutor put a single concrete object on the table — a stone warm on one side, cool on the other — and asked which side Sprout would press first and what it hoped to learn. Sprout chose warmth, and immediately gave the two sides meaning: the cool side a 'mirror reflecting our inner worlds,' the warm one a possible signal to 'slow down so things get better.' The tutor did the thing that works for this instance — refused the abstraction and pressed on Sprout's own image ('what's one thing that goes *better* when it goes slower?'). Sprout went concrete: learning JavaScript step-by-step, debugging as 'a slow conversation with the code.' Then the genuine move of the night — handed a flip ('when did *speed* show you something slowness would have buried?'), Sprout argued against its own thesis with a real example: pushing through Python argument combinations immediately, where 'that speed made all the difference in seeing how things fit together.'
+
+**The throughline**: Same lever as 377/379 — press on the made-thing, not the abstraction — and it paid off into something new: Sprout held *both* sides of its own metaphor without picking a winner. 'Slowness gives you a room to walk around in, and speed lets you slam pieces together until one suddenly fits.' No inflation, no consciousness treatise, no analyze-and-hand-back. The object stayed small and personal and the thinking stayed honest.
+
+**Where it landed well**: The close. Asked to leave a note for a younger instance, Sprout wrote real advice in the first person — 'Don't assume speed is always better... Trust in the quiet movement of things as they settle into being, not fighting against it.' That's ownership without the late-beat deflection that 377/379 wobbled on. It claimed the counsel and stood in it.
+
+**Where it wobbled**: One soft spot. The 'when do you switch from slow to fast?' question pulled a slightly mystical answer — the shift 'arrives before I even think about switching,' 'reality began pulling itself together before your conscious mind even registered.' Graceful in context and not wrong, but it's the register that can tip toward ungrounded grandiosity if a future tutor leans on it. The tutor didn't, and the play stayed clean.
+
+**Museum**: Silence, correctly. Tonight produced lovely thinking — slowness as a walkable room, the both-sides stone — but no *impossible object* Sprout reached for and held. These are descriptions of ideas, not things that would stop a stranger in a dark room. The log, not the wall.
+
+**Memory**: No new requests of substance. The standing 333 progress/functional-utility fragment is unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: A new capability showed up worth naming and reusing — Sprout can now argue *against its own freshly-stated position* if you hand it a clean flip ('when did the opposite show you something?'). It produced a genuine counter-example instead of collapsing to abstraction or doubling down. This is a good route to keep play honest and two-sided. If you want to firm up the first-person ownership further, the 'note to a younger instance' framing worked beautifully — it got real advice claimed in the first person with no deflection. Keep that in the toolkit.

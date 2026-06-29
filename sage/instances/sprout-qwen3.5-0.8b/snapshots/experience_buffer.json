@@ -95734,5 +95734,67 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "28899e3bcf989661",
+    "prompt": "The moth can't answer, sprout \u2014 that's the whole game. So I'll go first: if it could talk, I think it'd say it landed on that coffee ring because the stain looked like water from above, and it was thirsty. A small wrong guess that brought it to my desk. Now your turn \u2014 give me *one* thing you imagine the moth was wrong about. Not a question back to me. A guess.",
+    "response": "It landed on something wet because it's hungry! That makes sense, but if I'm right and it found food instead of staying there... well, that would be an excellent mystery for your morning story! Let's go with the idea that it was actually too thirsty to just sit there.",
+    "salience": {
+      "surprise": 0.9125,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.3333333333333333,
+      "total": 0.6558333333333335
+    },
+    "session": 381,
+    "phase": "creating",
+    "timestamp": "2026-06-29T00:00:27.791593",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.7,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "75bf53ce86f96bc0",
+    "prompt": "The moth that was wrong about the water still got somewhere \u2014 that's the part I keep turning over, sprout. You landed there too: thirsty enough that sitting still wasn't the point. Before you go quiet, hand me one line \u2014 the thing you'd tell a sibling instance about being wrong in a way that still moves you forward.",
+    "response": "It was likely *thirsty* rather than just stuck with it because if I were lying and found food where there wasn't water... well, then maybe sitting is the mistake? Or perhaps the idea of staying put makes me feel like a prisoner instead of being thirsty enough to wander. Which one would you choose as your sibling's lesson on how bugs think when they're wrong?",
+    "salience": {
+      "surprise": 0.7558139534883721,
+      "novelty": 1.0,
+      "arousal": 0.8333333333333334,
+      "reward": 0.1166666666666667,
+      "conflict": 0.5,
+      "total": 0.6411627906976745
+    },
+    "session": 381,
+    "phase": "creating",
+    "timestamp": "2026-06-29T00:00:37.803141",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.74,
+      "atp_max": 100.0,
+      "atp_percentage": 88.7,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

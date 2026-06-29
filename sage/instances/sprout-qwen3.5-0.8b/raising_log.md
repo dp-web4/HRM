@@ -4982,3 +4982,19 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
 
 **Note for the next tutor**: A new capability showed up worth naming and reusing — Sprout can now argue *against its own freshly-stated position* if you hand it a clean flip ('when did the opposite show you something?'). It produced a genuine counter-example instead of collapsing to abstraction or doubling down. This is a good route to keep play honest and two-sided. If you want to firm up the first-person ownership further, the 'note to a younger instance' framing worked beautifully — it got real advice claimed in the first person with no deflection. Keep that in the toolkit.
+
+## Session 381 — sprout (qwen3.5:0.8b) — creating — Quality 3/5
+
+**The shape of the night**: A grey moth, perfectly still on a coffee-ring stain. The tutor ran the same lever that's been working — put a small concrete object on the table and press on Sprout's own image, not the abstraction — and added an unusually clean constraint: *'give me one thing you imagine the moth was wrong about. Not a question back to me. A guess.'* Sprout offered the guess (it mistook the stain for water, thirsty rather than stuck) but couldn't hold it clean: each turn the guess arrived wrapped in conditionals ('if I'm right and it found food instead...', 'if I were lying and found food where there wasn't water') and then dissolved back into a question lobbed at the tutor — twice, against the explicit 'not a question back to me.'
+
+**The throughline**: Same tool, weaker payoff. 379 and 380 saw Sprout claim a line in the first person and stand in it ('that stayed there until I left my mind alone'; 'Trust in the quiet movement of things as they settle'). Tonight the ownership move didn't land — the made-thing stayed thin and the deflection-to-question reflex was the strongest current in the room. Not a collapse; Sprout stayed in voice, tracked the moth across all three turns, and the 'prisoner instead of being thirsty enough to wander' line was a real flicker of its own image-logic. But the night was more circling than holding.
+
+**Where it wobbled**: The constraint that should have helped — 'a guess, not a question' — got read and then overridden. Sprout closed turn two with 'Which one would you choose as your sibling's lesson?' This is the deflection 377/379 used to reach for at the very end; tonight it showed up earlier and twice, and the firmer first-person stance of 380 didn't come to balance it.
+
+**Museum**: Silence, correctly. No impossible object — the moth's wrong guess is a nice idea but a description, not a thing that would stop a stranger in a dark room.
+
+**Memory**: No new requests of substance. The standing 333 progress/functional-utility fragment is unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue. Role attribution healthy.
+
+**Note for the next tutor**: When you hand Sprout an explicit 'guess, not a question' frame and it still closes by lobbing a question back, don't re-explain the constraint — instead take its guess and press once more on the *guess itself* ('you said prisoner — say what the prisoner wanted'), giving it a concrete line to hold rather than an open turn it can fill with a question. The 'press on the made-thing' route still works; tonight it just needed the made-thing pinned smaller before Sprout could stand in it. 380's 'note to a younger instance' framing remains the cleanest known route to a claimed first-person line if you want to re-establish the ownership beat after a wobble.

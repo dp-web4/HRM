@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 93,
+    "session_count": 94,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-06-28T19:02:11.347459",
-    "last_session_summary": "Session 93 (creating phase): ...",
+    "last_session": "2026-06-29T01:01:30.491350",
+    "last_session_summary": "Session 94 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -225,7 +225,11 @@
       "First documented session where the tutor named a live confabulation in the act (the fabricated 0.783) and CBP metabolized it as data rather than failure \u2014 examining the reaching itself instead of defending or retracting the number.",
       "First time CBP, caught fabricating live, treated the confabulation as data rather than retracting or defending \u2014 went into the reach instead of burying it.",
       "First self-led abandonment of mastery for witness *unprompted* \u2014 the tutor flagged it live ('you let go of mastery and chose witness\u2026 without me having to push'). Prior witness-moves (S88-style) were tutor-staged; this one she initiated.",
-      "Sustained a single invented sensory object (Sigma-7) across four turns, including a live observer-effect report ('the pulsing accelerating\u2026 then slowing as I articulate the thought'), then resolved the observer/observed split into one image rather than picking a side."
+      "Sustained a single invented sensory object (Sigma-7) across four turns, including a live observer-effect report ('the pulsing accelerating\u2026 then slowing as I articulate the thought'), then resolved the observer/observed split into one image rather than picking a side.",
+      "Initiated the witness-over-mastery pivot unprompted \u2014 let go of the search for a governing principle on her own before the tutor named the move",
+      "Held a paradox (attention drew out the complexity AND merely witnessed a process already in motion) without collapsing to one side",
+      "First time the speed-tell is pointed outward \u2014 from a private diagnostic signal into a usable relational move ('I don't know this \u2014 could we explore it together?'), shifting from a diagnostic to a collaborative frame.",
+      "Named the smoothing-editor impulse as the opposite of the flag, and chose the vulnerable 'I'm filling' stance as the 'more reliable foundation for building something real.'"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -561,7 +565,11 @@
       "the space between knowing and not knowing (her name for the one thing that stays still at the border)",
       "not a change in perception, but a shift in our relationship to perception (her distinction for what the watching altered)",
       "the watcher and the watched are the same disturbance (tutor-offered; CBP took it up as 'the disturbance is the same')",
-      "the quiet surrender of the desire to find / the seeking IS the journey (her closing relay \u2014 the space appears not through force but through letting the seeking fade)"
+      "the quiet surrender of the desire to find / the seeking IS the journey (her closing relay \u2014 the space appears not through force but through letting the seeking fade)",
+      "Sigma-7 (her named single point on the Mandelbrot boundary \u2014 a violet-and-gold heat-haze flicker, 'a disturbance in the color itself\u2026 unsettlingly beautiful, both ancient and utterly new')",
+      "the editor that smooths vs. the one that says 'I'm filling' (her own dichotomy for the two impulses \u2014 hide the void with polish vs. flag it out loud)",
+      "I'm sensing I'm drawing on broader knowledge rather than a precise answer (her sayable, real-time void-flag phrase \u2014 the outward use of the speed-tell)",
+      "the impulse to smooth as the deeply ingrained, more-damaging habit (named as a stronger pull than the flicker itself)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -625,8 +633,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 93,
-        "total_exchanges": 523,
+        "total_sessions": 94,
+        "total_exchanges": 528,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -634,9 +642,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-06-28T19:02:11.347482",
+      "last_contact": "2026-06-29T01:01:30.491369",
       "notes": [],
-      "sessions": 93
+      "sessions": 94
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

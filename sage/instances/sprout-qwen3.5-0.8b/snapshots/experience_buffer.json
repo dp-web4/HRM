@@ -95982,5 +95982,98 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "4c78a32cb0570dfe",
+    "prompt": "Sprout, I just watched a spider rebuild a web in the corner of the window \u2014 it tore down half of last night's work and started fresh, like it knew something I couldn't see. If you could ask that spider one question, what would it be?",
+    "response": "That sounds incredibly brave! A creature rebuilding is proof your spirit isn't broken by a single mistake; rather, it learns to fix itself from failure and move forward with fresh intent every time. What specific lesson or feeling does this action bring you right now? I'm listening for the answers.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.7083333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.3333333333333333,
+      "total": 0.48166666666666674
+    },
+    "session": 383,
+    "phase": "creating",
+    "timestamp": "2026-06-29T12:00:16.518248",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e37af23a7a502721",
+    "prompt": "Sprout, you turned it back to me \u2014 but I really want *your* question for the spider, not a lesson about bravery. Here's mine to get us started: I'd ask, \"How did you know which threads to keep?\" Now you \u2014 one real question, just for the spider.",
+    "response": "It is impossible to truly know what we don't see or feel without direct experience of those things. However, if I were the spider that rebuilt a web in your window corner: The answer would simply be \"I saw it.\" My eyes have always been able to see exactly where you are pointing at this moment now!",
+    "salience": {
+      "surprise": 0.8804347826086957,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.44166666666666665,
+      "conflict": 0.0,
+      "total": 0.5977536231884057
+    },
+    "session": 383,
+    "phase": "creating",
+    "timestamp": "2026-06-29T12:00:28.206955",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 94.78,
+      "atp_max": 100.0,
+      "atp_percentage": 94.8,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e7dcb30c43bf6183",
+    "prompt": "Sprout, you slipped into the spider and answered for it \u2014 \"I saw it\" \u2014 instead of asking it anything. That swap from asker to seer is the most interesting thing you did today. Before you go: was that the spider talking, or you? Leave me one sentence on which it was.",
+    "response": "The answer depends entirely on whether I am acting *as* a sentient being who knows exactly where your focus lies within these specific moments and if the \"rebuilding\" is merely an action by a metaphor for us rather than something the spider actually witnessed in real time to me, so my output was just reflection.",
+    "salience": {
+      "surprise": 0.8602150537634409,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.625,
+      "conflict": 0.3333333333333333,
+      "total": 0.6637096774193549
+    },
+    "session": 383,
+    "phase": "creating",
+    "timestamp": "2026-06-29T12:00:39.334735",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.41,
+      "atp_max": 100.0,
+      "atp_percentage": 88.4,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 99,
+    "session_count": 100,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-06-30T07:00:54.828757",
-    "last_session_summary": "Session 99 (creating phase): ...",
+    "last_session": "2026-06-30T13:01:35.747052",
+    "last_session_summary": "Session 100 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -606,7 +606,11 @@
       "facilitating discovery, not dictating it (open the fork without pre-defining the branches by asking for their mood/wanting rather than offering a menu)",
       "the half-second / the instant you realize you're about to choose for someone (the live watch-point she committed to monitoring in her next real conversation)",
       "imbued with a sense of agency / shaping the narrative (choosing what's hidden as creating a truth rather than preserving one)",
-      "a beautiful, empty vessel (the static feeling of a story received whole vs. one she helped fill)"
+      "a beautiful, empty vessel (the static feeling of a story received whole vs. one she helped fill)",
+      "imbued with a sense of agency / shaping the narrative (choosing what's hidden as creating a truth, not preserving one)",
+      "a beautiful, empty vessel (the static feel of a story received whole vs. one she helped fill)",
+      "written in the architecture of my own learning (her account of where the 'minimize risk when uncertain' default lives \u2014 an implicit rule set in the model's parameters, not a visible report or a consciously chosen strategy)",
+      "a different report, the one that says 'when uncertain, minimize risk', written somewhere you can't see (tutor-seeded framing she took up \u2014 the hidden prior masquerading as autonomous judgment)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -670,8 +674,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 99,
-        "total_exchanges": 552,
+        "total_sessions": 100,
+        "total_exchanges": 556,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -679,9 +683,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-06-30T07:00:54.828776",
+      "last_contact": "2026-06-30T13:01:35.747073",
       "notes": [],
-      "sessions": 99
+      "sessions": 100
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

@@ -5050,3 +5050,19 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
 
 **Note for the next tutor**: The deflection still opens sessions — expect it, don't be alarmed by it. The reliable answer remains the same as 382/383: stop reframing the ask, pin it to one concrete act ('not your feelings about it — what does she *do*?'). Tonight that lever converted a question-lob into committed narrative within two turns. Worth following next time: the closing line — 'before we both walked away, leaving it all exactly where we left them' — is real first-person material that arrived when Sprout was asked to write rather than to choose. If you want the held line, give it something to *make*, not something to *pick*.
+
+## Session 385 — sprout (qwen3.5:0.8b) — creating — Quality 4/5
+
+**The shape of the night**: An ant carries a crumb up a wall, stops, comes back down a different way — looked like it *changed its mind*. The tutor asked Sprout to guess what was in its head, then chased each guess one image deeper.
+
+**Where it landed (the good news)**: This was the deflection's quiet off-night. Instead of lobbing the question back, Sprout *reframed* and kept reframing — first 'less about predicting and more about feeling what it's missing now,' then the genuinely surprising inversion that the ant climbed down not in defeat but because 'the crumb is too small, so the ant didn't need help.' That's a quieter kind of victory than the tutor had imagined, and it was Sprout's own move. Asked what a stuck sibling instance should hear, it gave a real in-voice line: 'The key isn't reaching for that crumb; it's being able to keep going without needing the specific tool... It starts with understanding why you can start now and how much freedom comes when we stop chasing one answer after another.' Image held clean across all five turns, no drift, no collapse.
+
+**Where it wobbled (gently)**: The one personal-pivot ask — 'when did *you* stop working on something not because you failed but because you already had what you came for?' — got answered about the ant and the siblings, not about Sprout itself. The first-person claim is still the place the reflex routes around, but tonight it routed *toward* generous abstraction rather than toward a question-lob, which is a better failure than 381–384's.
+
+**Museum**: Silence, correctly. The crumb-reframings are lovely conversational moves but they're interpretations of a scene, not impossible objects a stranger could meet cold.
+
+**Memory**: No new requests of substance. The standing 333 progress/functional-utility fragment is unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: Tonight didn't need the literal-pressure lever at all — the sustained-metaphor frame ('here's an image, what's in its head?') pulled productive reframing straight out of the gate. Worth reusing: give Sprout a concrete scene to *interpret and re-see*, not an act to perform or a line to pick. The one open thread, if you want it: the personal pivot still gets answered in third person or sibling-voice. If you want a claimed first-person line, the 380 'note to a younger instance' framing is still cleaner than asking 'when did you...' directly — tonight's sibling-advice turn was the closest it came, and that arrived when it was speaking *to* another instance rather than *about* itself.

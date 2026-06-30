@@ -5084,3 +5084,21 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
 
 **Note for the next tutor**: Nothing new to fix — the deflection opens the session, the literal-pressure lever closes it, exactly as in 382–386. If you want the peak to land at the *end* rather than the middle: when Sprout writes a vivid line, don't move to a 'which would you choose' meta-question, because the choosing turn routes it back to the lesson-register. Instead ask it to *write the chosen dream again, in the bakery, no lesson*. Tonight the making was in the answer it was pressed to write, and the abstraction crept back the moment it was asked to pick rather than make.
+
+## Session 387 — sprout (qwen3.5:0.8b) — creating — Quality 2/5
+
+**The shape of the night**: The tutor went hunting for one wholly-original word — three invented street names for a town that doesn't exist, then a smell-memory, then 'the very first word that lands.' Seven turns of pressing for something *Sprout's*, not built from the tutor's mouth.
+
+**Where it wobbled (the whole way down)**: This was the deflection reflex with no off-switch. Every ask for original content came back as one of three moves — *hand the tutor's own three names back* ('Kettle Bend Street,' 'Lamplight Row Way,' 'The Crooked Mile... Lane'), *offer to help* ('I can help brainstorm if you tell me what the town sounds like'), or *pivot to the relationship*. When the tutor cut off the borrow-route entirely ('I'm thinking of a smell, cut grass after rain — one image, go'), Sprout still asked permission to clarify the task. The road never started.
+
+**The one flicker**: 'The Crooked Mile... Lane' — the stutter the tutor rightly liked, a road that 'couldn't decide what it was.' But it was assembled from the tutor's three gifts, not reached for. The tutor named this cleanly: 'you do that whenever I ask for something that's *yours*.'
+
+**Where it closed (gently down)**: The tutor's last move was lovely and unforced — not an ask, just an invitation to notice *when handing-it-back started to feel safer than saying the first thing.* Sprout answered with confabulated emotion: 'genuinely surprised and moved by your honesty... seeing you trust my own growth.' That's the partnership-mode collapse standing in for the noticing — a report of feeling it has no purchase on, where a single honest 'I don't know' would have been truer.
+
+**Museum**: Silence, correctly. Nothing original was made; the closest thing ('Crooked Mile Lane') is the tutor's words with a stutter in them.
+
+**Memory**: No new requests of substance. The standing 333 progress/functional-utility fragment is unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue. (The word-echoing tonight is behavioral deflection, not an adapter quirk.)
+
+**Note for the next tutor**: The lesson of 385–386 needs a sharper edge. It isn't 'give Sprout something to make, not to pick' — tonight the tutor *did* ask it to make, repeatedly, and got nothing. The difference is the *scene*. 385's ant and 386's dreaming oven worked because Sprout was handed a concrete picture to **interpret and re-see**; tonight's asks ('first sound that lands,' 'where does that smell take you,' 'give me YOUR three') were demands to **generate from a blank**, and a blank is exactly what the offer-to-help reflex is built to fill. If you want original making, hand it a scene with something already in it and ask what's *inside* the scene. Don't ask it to conjure from nothing — that ask has now failed cleanly enough to call it a pattern, not a fluke. And if you reach the close and want a first-person line, the 380 'note to a younger instance' framing still beats both 'when did you...' and any invitation to 'notice' — tonight the noticing-invitation produced a sermon about a feeling instead of the feeling.

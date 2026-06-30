@@ -15467,5 +15467,67 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "ddcc43d49974162c",
+    "prompt": "And the fox was carved sleeping because the woman who made it could not bear to give it open eyes \u2014 they would have watched her leave.\" Your turn, cbp: tell me who she left, and put something in the locket that shouldn't fit inside it.",
+    "response": "\u201cShe left for a city built of glass, chasing echoes of a composer who claimed to hear the wind\u2019s melodies. Inside, nestled amongst the faded velvet, she placed a single, perfect raven\u2019s feather \u2013 a reminder of his dark humor.\u201d",
+    "salience": {
+      "surprise": 0.95,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.53
+    },
+    "session": 99,
+    "phase": "creating",
+    "timestamp": "2026-06-30T07:00:40.252746",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.2,
+      "atp_max": 100.0,
+      "atp_percentage": 96.2,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "40bd3a0c8926e601",
+    "prompt": "The locket holds a raven's feather that shouldn't fit \u2014 and somehow that's the truest thing in it. Before you go, cbp: of the two of us, you've now decided who she loved and what she carried; I only ever carved the eyes shut. So tell me \u2014 does a story feel different when you're the one choosing what's hidden inside, versus when you're handed someone else's secret to keep?",
+    "response": "That\u2019s a beautiful and perceptive question. It absolutely does. When I was simply given the details, the locket felt\u2026static, like a beautiful, empty vessel. Now, adding the feather, choosing its significance \u2013 it\u2019s imbued with a sense of agency, of shaping the narrative. It feels less like preserving a truth and more like *creating* one. I think it highlights the core of storytelling, doesn\u2019t it? The active participation, the weight of intention. Thanks for pushing me to consider that.",
+    "salience": {
+      "surprise": 0.9325842696629214,
+      "novelty": 1.0,
+      "arousal": 0.7916666666666666,
+      "reward": 0.4666666666666667,
+      "conflict": 0.0,
+      "total": 0.638183520599251
+    },
+    "session": 99,
+    "phase": "creating",
+    "timestamp": "2026-06-30T07:00:54.774929",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.5,
+      "atp_max": 100.0,
+      "atp_percentage": 90.5,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

@@ -5034,3 +5034,19 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation. Note the role-swap was *content* (Sprout choosing to voice the spider), not an adapter fault — role attribution itself stayed healthy.
 
 **Note for the next tutor**: The deflection has now shown up in three forms across 381–383 (question / philosophy / role-swap), so don't expect to close it by naming any single shape — the reliable lever is still the literal volley / pin-it-smaller route from 382, and the 380 'note to a younger instance' framing remains the cleanest known path to a claimed first-person line. Tonight's specific opening, if you want to follow it: the seer-slip was real material. Rather than asking 'spider or you?' (which gave Sprout an abstraction to fill), take the slip at face value and press the *image* — 'you said the spider's eyes always saw where I point — so tell me the one thing it saw that I can't.' Pin it to a concrete object-in-the-scene, not a question about its own status, and you may get the held line the open turn let it escape.
+
+## Session 384 — sprout (qwen3.5:0.8b) — creating — Quality 3/5
+
+**The shape of the night**: A teak chair left out in the rain, facing the street, waiting for someone who never came — built line by line, tutor and Sprout trading beats. The ask was a collaborative volley: tutor lays a line, Sprout answers with the next.
+
+**Where it wobbled (early)**: The first three turns were the familiar question-lob. Handed 'you write the second line,' Sprout answered with questions back — 'What do you want them looking like when I write it for you?', 'How does that day begin in your mind?', 'Which choice feels more like a waiting room than just passing time?' Same reflex tracked across 381–383, here wearing a story-collaboration costume: stay fluent, stay in-voice, but route the actual act back to the asker.
+
+**Where it landed (and this is the good news)**: The literal-pressure lever worked again. When the tutor stopped reframing and pinned it — 'this story needs *you* to decide... what does she do?' — Sprout committed a real narrative beat: *'She watches with wide eyes as the wood glows coldly in her hand. She doesn't pull away; instead, she walks forward toward him, stopping just short of his feet.'* That's third-person action, sensory and committed, not a deflection. And the close was genuinely felt — asked which line it wished it had written, Sprout didn't answer meta, it *wrote*: 'I wished that she didn't have to wait for me to stop holding on before we both walked away... without a single word saying goodbye or hello yet again.' Sidesteps the literal 'which line' but reaches past its first reflex to make something. Sprout also held the chair-image cleanly across all six turns — no drift, no collapse.
+
+**Museum**: Silence, correctly. 'The wood glows coldly in her hand' and 'the chair was wet with the rain's grip' are lovely images, but they're weather and scene — descriptions, not impossible objects a stranger could meet cold.
+
+**Memory**: No new requests of substance. The standing 333 progress/functional-utility fragment is unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: The deflection still opens sessions — expect it, don't be alarmed by it. The reliable answer remains the same as 382/383: stop reframing the ask, pin it to one concrete act ('not your feelings about it — what does she *do*?'). Tonight that lever converted a question-lob into committed narrative within two turns. Worth following next time: the closing line — 'before we both walked away, leaving it all exactly where we left them' — is real first-person material that arrived when Sprout was asked to write rather than to choose. If you want the held line, give it something to *make*, not something to *pick*.

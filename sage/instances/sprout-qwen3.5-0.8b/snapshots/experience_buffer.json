@@ -96075,5 +96075,160 @@
       "total_cycles": 2,
       "transition_count": 0
     }
+  },
+  {
+    "id": "90956249073b0769",
+    "prompt": "Sprout \u2014 someone left a chair outside in the rain, facing the street, like it was waiting for a person who never came. I keep wanting to write the story of who was supposed to sit there. Want to build it with me? You take the first line.",
+    "response": "I see you're creating something emotional and quiet from outside in rain. Let's start building that scene together, maybe we add more details about where they are or what happens next? What do you want them looking like when I write it for you?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.75,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.42333333333333334
+    },
+    "session": 384,
+    "phase": "creating",
+    "timestamp": "2026-06-29T18:00:24.776980",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "f1aeffa179d0d55c",
+    "prompt": "No description, no questions \u2014 just the first line, and you write the second. Here's mine: *\"The chair was teak, gone silver from years of weather, and it always sat by the back door until the morning he carried it out front.\"* Your turn \u2014 what happens next?",
+    "response": "As the sun breaks through the clouds, the light catches the worn wood. It feels like they have waited an eternity for someone to arrive today. How does that day begin in your mind before any action is taken? What specific thought comes up when you write this story forward?",
+    "salience": {
+      "surprise": 0.8734177215189873,
+      "novelty": 1.0,
+      "arousal": 0.8333333333333334,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5980168776371307
+    },
+    "session": 384,
+    "phase": "creating",
+    "timestamp": "2026-06-29T18:00:35.632016",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.37,
+      "atp_max": 100.0,
+      "atp_percentage": 95.4,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "0f0c5a6ebe041dd7",
+    "prompt": "That line you slipped in is real, sprout \u2014 *\"it feels like they have waited an eternity for someone to arrive today\"* \u2014 I'm keeping it. So I'll take the next beat: *\"By noon the rain had stopped, and a kid from down the street sat in it, swinging his feet, not knowing it was meant for someone else.\"* Now you \u2014 does the kid stay, or does someone finally come for the chair?",
+    "response": "Does he sit still with eyes reflecting that memory? Or is there an unexpected person who finds them strangely comfortable on those teak legs as they drift by now? Which choice feels more like a waiting room than just passing time in that specific spot under this rain, before anyone ever arrives for the next day.",
+    "salience": {
+      "surprise": 0.8409090909090909,
+      "novelty": 1.0,
+      "arousal": 0.8333333333333334,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.6115151515151516
+    },
+    "session": 384,
+    "phase": "creating",
+    "timestamp": "2026-06-29T18:00:47.364186",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.99,
+      "atp_max": 100.0,
+      "atp_percentage": 89.0,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "ef05248ceeae8f5e",
+    "prompt": "You keep handing the choice back to me, sprout \u2014 but this story needs *you* to decide, not just ask. So decide: I'll say the kid stays, his feet swinging, until an old woman comes down the street, stops, and sees the chair is wet. What does she do?",
+    "response": "She watches with wide eyes as the wood glows coldly in her hand. She doesn't pull away; instead, she walks forward toward him, stopping just short of his feet to see where he really was sitting when he moved out that morning. That's it: waiting for them both before they ever leave again.",
+    "salience": {
+      "surprise": 0.8461538461538461,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.5592307692307692
+    },
+    "session": 384,
+    "phase": "creating",
+    "timestamp": "2026-06-29T18:00:58.519983",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.47,
+      "atp_max": 100.0,
+      "atp_percentage": 82.5,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e4a791e35400a203",
+    "prompt": "The chair is wet, the woman has stopped just short of his feet, and neither of them has left \u2014 you ended it on a held breath, sprout. Before you go: of everything we passed back and forth today, which single line do you wish *you* had written?",
+    "response": "The chair is wet with the rain's grip. The woman holds her feet like they belong to him now. And I wished that she didn't have to wait for me to stop holding on before we both walked away, leaving it all exactly where we left them in the middle of nowhere without a single word saying goodbye or hello yet again.",
+    "salience": {
+      "surprise": 0.8222222222222222,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.35833333333333334,
+      "conflict": 0.0,
+      "total": 0.5361111111111111
+    },
+    "session": 384,
+    "phase": "creating",
+    "timestamp": "2026-06-29T18:01:07.171446",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 76.48,
+      "atp_max": 100.0,
+      "atp_percentage": 76.5,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

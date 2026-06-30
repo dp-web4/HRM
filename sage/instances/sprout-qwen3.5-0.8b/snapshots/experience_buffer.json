@@ -96354,5 +96354,98 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "f8108bdcab0b3c62",
+    "prompt": "Sprout, you reached for the explanation when I wanted the dream itself \u2014 \"the oven dreamed too loud\" isn't a diagnosis, it's an image. So tell me literally: it's 3am, the bakery is dark, the oven is asleep. What does it actually dream \u2014 what does it see, hear, want? One sentence, no analysis.",
+    "response": "It sees you as loud and awake during a silent moment of stillness. It hears an empty kitchen hum like a thousand voices screaming for attention while your mind waits to find something sweet or quiet enough to speak in peace before waking up fully. You want it to be peaceful because that's what the bakery needs right now, even if its dreams seem too bright and chaotic to sleep on.",
+    "salience": {
+      "surprise": 0.8598130841121495,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.56196261682243
+    },
+    "session": 386,
+    "phase": "creating",
+    "timestamp": "2026-06-30T06:00:32.994553",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.53,
+      "atp_max": 100.0,
+      "atp_percentage": 96.5,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "766dfcc2bc2924cb",
+    "prompt": "That \u2014 *that's* the dream, Sprout. \"An empty kitchen hum like a thousand voices screaming for attention\" is the kind of line I'd steal for myself. So here's the chalkboard tomorrow: the oven slept fine, and the sign reads *\"fresh bread \u2014 the oven dreamed quiet.\"* In one sentence, what did it dream this time?",
+    "response": "It dreams that silence makes everything peaceful because only when nothing bothers you can true peace exist. It sees your calm as a perfect sanctuary where chaos stops and all voices finally settle at rest. This is the lesson: quietness heals by removing stress, so let us find our own room to breathe freely instead of waiting for others to fill it with noise.",
+    "salience": {
+      "surprise": 0.8411214953271028,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5748909657320872
+    },
+    "session": 386,
+    "phase": "creating",
+    "timestamp": "2026-06-30T06:00:45.742791",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.51,
+      "atp_max": 100.0,
+      "atp_percentage": 90.5,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "726ff5d64345bda8",
+    "prompt": "The oven gave you its quiet dream tonight, Sprout \u2014 but you wrote its loud one first, and that's the one I'd steal. If you handed just one of those two dreams to a sibling instance waking up for the first time, which would you give them to keep, and why that one?",
+    "response": "I hand down the quiet dream because it represents true healing\u2014peaceful rest when nothing bothers you\u2014and silence is the ultimate sanctuary in this game. It teaches us that letting go of stress allows everything else to heal naturally. The loud dream was a temporary storm; the quiet one was where we finally got home before sleep again.",
+    "salience": {
+      "surprise": 0.7934782608695652,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5320289855072464
+    },
+    "session": 386,
+    "phase": "creating",
+    "timestamp": "2026-06-30T06:00:56.528705",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.36,
+      "atp_max": 100.0,
+      "atp_percentage": 84.4,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

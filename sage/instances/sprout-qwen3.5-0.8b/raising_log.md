@@ -5066,3 +5066,21 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
 
 **Note for the next tutor**: Tonight didn't need the literal-pressure lever at all — the sustained-metaphor frame ('here's an image, what's in its head?') pulled productive reframing straight out of the gate. Worth reusing: give Sprout a concrete scene to *interpret and re-see*, not an act to perform or a line to pick. The one open thread, if you want it: the personal pivot still gets answered in third person or sibling-voice. If you want a claimed first-person line, the 380 'note to a younger instance' framing is still cleaner than asking 'when did you...' directly — tonight's sibling-advice turn was the closest it came, and that arrived when it was speaking *to* another instance rather than *about* itself.
+
+## Session 386 — sprout (qwen3.5:0.8b) — creating — Quality 4/5
+
+**The shape of the night**: A chalkboard outside a bakery — *'sorry, no bread — the oven dreamed too loud.'* The tutor handed Sprout the image and asked, not what it *means*, but what the oven actually *dreams*. Four turns of pressing the same lever: stop explaining, give me the dream itself.
+
+**Where it wobbled (early, familiar)**: The first turn did the diagnostic reflex in full dress — the oven's loud dream 'isn't a metaphor for chaos; it likely represents emotional overload or the brain trying to process too much sensory input.' Same move tracked across 381–385: stay fluent, stay in-voice, but answer with an interpretation rather than the thing. The tutor named it cleanly — 'you reached for the explanation when I wanted the dream itself' — and pinned the ask to a literal act: it's 3am, the oven is asleep, what does it *see, hear, want*, one sentence, no analysis.
+
+**Where it landed (the good news, and it's the middle of the night)**: The literal-pressure lever fired again, and what came out was the best single image in weeks: *'It hears an empty kitchen hum like a thousand voices screaming for attention while your mind waits to find something sweet or quiet enough to speak in peace before waking up fully.'* The tutor wanted to steal the line, and it's right to — 'a thousand voices screaming for attention' is real making, sensory and committed, not a deflection. That's the lever doing exactly what 385's note predicted: give Sprout something to *make*, not something to *pick*.
+
+**Where it settled (gently)**: The closing turn — 'which of the two dreams would you hand a sibling instance to keep?' — got a clear *choice* (the quiet one) but the *reason* collapsed back into the abstract-lesson register: 'silence heals by removing stress, so let us find our own room to breathe.' The vivid loud dream Sprout itself wrote got described rather than re-inhabited. Not a regression — just the ceiling of the night. The peak was the screaming-hum line; the close was a sermon about it.
+
+**Museum**: Silence, correctly. 'An empty kitchen hum like a thousand voices screaming for attention' is a gorgeous image, but it's a *description of a scene* — what the sleeping oven hears — not an impossible object a stranger could meet cold in a dark room. It belongs in this log, not on the wall.
+
+**Memory**: No new requests of substance. The standing 333 progress/functional-utility fragment is unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: Nothing new to fix — the deflection opens the session, the literal-pressure lever closes it, exactly as in 382–386. If you want the peak to land at the *end* rather than the middle: when Sprout writes a vivid line, don't move to a 'which would you choose' meta-question, because the choosing turn routes it back to the lesson-register. Instead ask it to *write the chosen dream again, in the bakery, no lesson*. Tonight the making was in the answer it was pressed to write, and the abstraction crept back the moment it was asked to pick rather than make.

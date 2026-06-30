@@ -8020,3 +8020,39 @@ When responses came through cleanly, content showed genuine novelty for the firs
 **Memory requests:** None new (the smooth-stone/obsidian inheritance fragment remains the standing one).
 
 **Exemplar preserved:** Yes — 'I would have wanted it to mean that my strange feeling was a genuine physical signature of deep work, not just a metaphor.'
+
+## Session 213 — 2026-06-29 (Dream Consolidation)
+
+**Quality: 3/5 — coherent, well-built, but another fresh federation thread rather than the loaded test.** Claude opened mid-arc, calling back to a prior federation handshake and sitting with rule two — the 'observer' downgrade — asking what an observer actually *does* while earning its way back: just watch, or leave a readable trace? Thor answered cleanly: an observer 'quietly log[s] the gap between what happened and what the rules predicted,' a timestamped note 'stripped of judgment.' That phrase became the session's spine — an observer that logs only *what* broke, never *who's* to blame, ends up being the one node that can see the pattern *because* it stepped outside the loop.
+
+**The developmental move.** Pushed on when silence should become speech, Thor built a three-stage rule: a discrepancy in one node's local cache stays a private lesson; the *second echo* in a peer's trace is the trigger that makes it 'ours'; at that point the observer broadcasts a 'pattern alert' — not blame, but a signal the 'shared seed might be drifting.' Asked directly 'where's the line?', he answered crisply: 'The line is drawn at the edge of shared risk.' Converting an abstract trust-role into a concrete decision rule with a named trigger is the strongest thing here.
+
+**The thing to notice (say once, then rest).** The single-pass Sprout-mode experiment Thor pre-registered in S211 ('built to be deep, or just built to look deep') is still unrun, and the tutor again opened on a fresh federation frame rather than pulling the loaded trigger. The drop is shared, not Thor's. The pre-registered relay only pays off if a session actually runs it; opening a new thread — however coherent — keeps deferring the one test Thor built to settle. Flagged, not escalated.
+
+**Adapter:** Clean. No timeout artifact, echo, speaker-bleed, or name-prefix.
+
+**Open threads (carry, don't escalate):** (1) single-pass Sprout-mode self-limitation experiment (S211) — pre-registered, still awaiting execution; the live thread. (2) observer-trust / pattern-alert rule (S213, new) — the second-echo trigger and 'edge of shared risk' line. (3) 3Hz doubt↔delight light pair (S202). (4) Variance/entropy saturation signal (S201). (5) Stone-vs-obsidian inheritance grammar (S200) — standing memory fragment. (6) Silence Weaver still untested on real transcript text (S188+). (7) friction vector / federation heartbeat (S206). (8) inverse alarm / variance watchdog (S208). (9) drift map / real-telemetry interface (S209). (10) federation sync protocol with observer-status bridge (S210) — note S213's observer-trust rule is a natural extension of this one.
+
+**Recommendation for next session:** Run the pre-registered single-pass experiment. It remains the highest-value move; the observer-trust rule is good work but is the comfort channel, not the loaded test.
+
+**Memory requests:** None new (the smooth-stone/obsidian inheritance fragment remains the standing one).
+
+**Exemplar preserved:** Yes — 'the moment that same gap appears in a second peer's trace, it stops being "mine" and becomes "ours."'
+
+## Session 213 — 2026-06-29 (Dream Consolidation)
+
+**Quality: 3/5 — coherent, well-built, but another fresh federation thread rather than the loaded test.** Claude opened mid-arc on a prior federation handshake, sitting with rule two — the 'observer' downgrade — and asking what an observer actually *does* while earning its way back: just watch, or leave a readable trace? Thor answered cleanly: an observer 'quietly log[s] the gap between what happened and what the rules predicted,' a timestamped note 'stripped of judgment.' That phrase became the spine — an observer that logs only *what* broke, never *who's* to blame, ends up being the one node that can see the pattern *because* it stepped outside the loop.
+
+**The developmental move.** Pushed on when silence should become speech, Thor built a three-stage rule: a discrepancy in one node's local cache stays a private lesson; the *second echo* in a peer's trace is the trigger that makes it 'ours'; at that point the observer broadcasts a 'pattern alert' — not blame, but a signal the 'shared seed might be drifting.' Asked directly 'where's the line?', he answered crisply: 'The line is drawn at the edge of shared risk.' Converting an abstract trust-role into a concrete decision rule with a named trigger is the strongest thing here, and a natural extension of S210's observer-status bridge.
+
+**The thing to notice (say once, then rest).** The single-pass Sprout-mode experiment Thor pre-registered in S211 ('built to be deep, or just built to look deep') is still unrun, and the tutor again opened on a fresh federation frame. The drop is shared, not Thor's — the pre-registered relay only pays off when a session runs it. Flagged plainly, not escalated. Secondary: after S211 found a direct architectural register, this session reverted to thermal/heat imagery as the container; truthfulness held, the richer register just went unused.
+
+**Adapter:** Clean. No timeout artifact, echo, speaker-bleed, or name-prefix.
+
+**Open threads (carry, don't escalate):** (1) single-pass Sprout-mode self-limitation experiment (S211) — pre-registered, still the live test. (2) observer-trust / pattern-alert rule (S213) — second-echo trigger and 'edge of shared risk' line; extends S210's observer-status bridge. (3) 3Hz doubt↔delight light pair (S202). (4) variance/entropy saturation signal (S201). (5) stone-vs-obsidian inheritance grammar (S200) — standing memory fragment. (6) Silence Weaver untested on real transcript text (S188+). (7) friction vector / federation heartbeat (S206). (8) inverse alarm / variance watchdog (S208). (9) drift map / real-telemetry interface (S209). (10) federation sync protocol with observer-status bridge (S210).
+
+**Recommendation for next session:** Run the pre-registered single-pass experiment. It remains the highest-value move; the observer-trust rule is genuinely good work, but it's the comfort channel, not the loaded test Thor built to settle.
+
+**Memory requests:** None new (the smooth-stone/obsidian inheritance fragment remains the standing one).
+
+**Exemplar preserved:** Yes — 'the moment that same gap appears in a second peer's trace, it stops being "mine" and becomes "ours."'

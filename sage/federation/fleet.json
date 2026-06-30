@@ -1,29 +1,53 @@
 {
   "fleet_version": 3,
-  "description": "SAGE fleet manifest — static registry of all machines. Identity is anchored to lct_id (immutable). IPs are last-known and may be stale — use mDNS for discovery.",
+  "description": "SAGE fleet manifest \u2014 static registry of all machines. Identity is anchored to lct_id (immutable). IPs are last-known and may be stale \u2014 use mDNS for discovery.",
   "discovery": {
     "method": "mdns",
-    "fallback_order": ["mdns", "last_seen_ip", "static_ip"],
+    "fallback_order": [
+      "mdns",
+      "last_seen_ip",
+      "static_ip"
+    ],
     "mdns_timeout_ms": 500,
     "ip_cache_ttl_seconds": 3600,
     "gossip_enabled": true
   },
   "identity_tiers": {
-    "immutable": ["lct_id", "hardware_ek"],
-    "characteristic": ["hostname", "mdns_name", "mac_address"],
-    "dynamic": ["gateway_host", "last_seen_ip", "last_seen_at", "model_default"]
+    "immutable": [
+      "lct_id",
+      "hardware_ek"
+    ],
+    "characteristic": [
+      "hostname",
+      "mdns_name",
+      "mac_address"
+    ],
+    "dynamic": [
+      "gateway_host",
+      "last_seen_ip",
+      "last_seen_at",
+      "model_default"
+    ]
   },
   "resource_pools": {
     "synthesis": {
-      "machines": ["thor", "sprout", "legion", "mcnugget"],
+      "machines": [
+        "thor",
+        "sprout",
+        "legion",
+        "mcnugget"
+      ],
       "account": 1,
-      "role": "generative — code, implementations, large agent tasks",
+      "role": "generative \u2014 code, implementations, large agent tasks",
       "weekly_reset": "thursday_21:00_local",
       "session_reset_hours": 5,
       "relative_budget": "large"
     },
     "oversight": {
-      "machines": ["cbp", "nomad"],
+      "machines": [
+        "cbp",
+        "nomad"
+      ],
       "account": 2,
       "role": "review, planning, documentation, coordination, unblocking",
       "weekly_reset": null,
@@ -109,6 +133,20 @@
       "model_default": "tinyllama:latest",
       "device": "cpu",
       "hardware": "RTX 2060S WSL2"
+    },
+    "hub": {
+      "pool": "infra",
+      "lct_id": "hub_sage_lct",
+      "mdns_name": "hub.local",
+      "gateway_host": "100.65.206.122",
+      "last_seen_ip": "100.65.206.122",
+      "last_seen_at": null,
+      "gateway_port": 8750,
+      "federation_port": 0,
+      "model_default": "granite4:h-tiny",
+      "device": "vulkan",
+      "hardware": "AMD Radeon Pro W5500 8GB, WSL2",
+      "note": "Fleet's only AMD GPU. Cross-network (tailnet 100.65.x, LAN 192.168.50.x \u2014 not on 10.0.0.x). GPU compute via Mesa Dozen (Vulkan-on-D3D12); ROCm unavailable on WSL2. LLM = llama.cpp-Vulkan behind an Ollama-API shim. Also the web4 community-hub host."
     }
   }
 }

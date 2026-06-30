@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "machine": "hub",
+  "model": "granite4:h-tiny",
+  "model_family": "unknown",
+  "slug": "hub-granite4-h-tiny",
+  "created": "2026-06-29",
+  "lct_id": "hub_sage_lct",
+  "backend": "ollama",
+  "device_hint": "cpu",
+  "has_training_track": false,
+  "has_lora": false,
+  "encryption_enabled": false
+}

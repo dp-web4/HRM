@@ -10,7 +10,7 @@
 
 ## Current State (March 2026)
 
-SAGE has evolved from a single-machine research prototype to a **6-machine federation** with 7 active instances across 4 model families. The consciousness loop runs end-to-end with real LLM inference, PolicyGate oversight is integrated, and a developmental raising curriculum has been validated across 466+ sessions.
+SAGE has evolved from a single-machine research prototype to a **7-machine federation** with 8 active instances across 5 model families (including HUB, the first AMD-GPU node, running an IBM Granite 4.0 Mamba/transformer hybrid). The consciousness loop runs end-to-end with real LLM inference, PolicyGate oversight is integrated, and a developmental raising curriculum has been validated across 466+ sessions.
 
 ### What's Operational
 

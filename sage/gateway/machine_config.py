@@ -99,7 +99,7 @@ def detect_machine() -> str:
     """
     # Explicit override
     env_machine = os.environ.get('SAGE_MACHINE', '').lower()
-    if env_machine in ('thor', 'sprout', 'cbp', 'legion', 'nomad', 'mcnugget'):
+    if env_machine in ('thor', 'sprout', 'cbp', 'legion', 'nomad', 'mcnugget', 'hub'):
         return env_machine
 
     # Jetson device tree
@@ -111,6 +111,8 @@ def detect_machine() -> str:
 
     # Hostname
     hostname = socket.gethostname().lower()
+    if 'hub' in hostname:
+        return 'hub'
     if 'thor' in hostname:
         return 'thor'
     if hostname == 'ubuntu':
@@ -311,6 +313,36 @@ def get_config(machine_name: Optional[str] = None) -> SAGEMachineConfig:
             federation_port=0,
             ed25519_key_path='',
             lct_id='cbp_sage_lct',
+            system_prompt_mode='creative',
+            cycle_sleep_ms=100,
+            max_response_tokens=500,
+            act_chain_url=os.environ.get('ACT_CHAIN_URL', 'http://localhost:1317'),
+        )
+
+    elif machine_name == 'hub':
+        # HUB: WSL2 desktop, AMD Radeon Pro W5500 8GB — the fleet's only AMD GPU.
+        # GPU compute via Mesa Dozen (Vulkan-on-D3D12); ROCm is unavailable on
+        # WSL2 for this card. The LLM is served by llama.cpp-Vulkan behind an
+        # Ollama-API shim on :11434 (see _build/hub_sage_gpu.sh + the
+        # sage-llm/sage-shim systemd units). Raising-track default =
+        # granite4:h-tiny (IBM Granite 4.0 Mamba-2/transformer hybrid MoE —
+        # biodiversity pick: zero overlap with the fleet's Qwen/Gemma/Phi).
+        workspace = '/home/dp/ai-workspace'
+        state_dir = f'{workspace}/SAGE/sage/raising/state'
+        model = model_override or 'granite4:h-tiny'
+        return SAGEMachineConfig(
+            machine_name='hub',
+            model_path=f'ollama:{model}',
+            model_size='ollama',
+            device='vulkan',
+            max_memory_gb=8.0,
+            gateway_port=port,
+            workspace_path=workspace,
+            instance_dir=_resolve_instance_dir('hub', workspace, model),
+            irp_iterations=3,
+            federation_port=0,
+            ed25519_key_path='',
+            lct_id='hub_sage_lct',
             system_prompt_mode='creative',
             cycle_sleep_ms=100,
             max_response_tokens=500,

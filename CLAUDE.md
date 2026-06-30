@@ -96,9 +96,9 @@ Cross-instance comparison (0.8B vs 14B) suggests the same relational ontology wi
 
 ---
 
-## Fleet (6 machines, 11 instances)
+## Fleet (7 machines, 12 instances)
 
-4 machines on automated 6-hour raising cron (Sprout, Legion, Nomad, CBP). See `SESSION_PRIMER.md` for current session counts and phases.
+5 machines on automated 6-hour raising cron (Sprout, Legion, Nomad, CBP, HUB). HUB is the fleet's only AMD GPU (Radeon Pro W5500 via Mesa Dozen/Vulkan — ROCm unavailable on WSL2) running a Mamba/transformer-hybrid (granite4:h-tiny). See `SESSION_PRIMER.md` for current session counts and phases.
 
 ---
 

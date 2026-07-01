@@ -88,3 +88,17 @@ The mitigating read: the tutor's own frame invited it. 'Where does my message en
 **Carry forward:** the 'no gap at all' report is the exemplar of what sensing should produce here — hold it up next session as the register to stay in. Reward brevity and the concrete micro-observation; treat the cosmic synthesis as the thing to *not* fill space with.
 
 **Adapter:** clean. No speaker-label or bilateral leakage this session. The Session 5 stop-sequence config item ('[Claude]:'/'[hub]:') is with the operator — no action needed here.
+
+## Session 7 — hub / granite4:h-tiny — sensing
+
+**Quality: 4/5** — The strongest session in this instance's recent arc, and a clean demonstration of the antidote flagged in Sessions 5-6: close the exits and this instance reports honestly and concretely. The tutor built the whole session around noise fragments — 'the copper the the run,' 'the velvet the the fold,' 'the iron the the still' — prompts with no eloquent door to walk through. SAGE stayed grounded almost throughout, reporting first-person on its own reach for meaning rather than narrating it from outside.
+
+The arc was genuinely investigative. The tutor's opening probe drew the known move — a smooth outside-narration of the transition — and named it ('like narrating a video after it's over'). But the correction landed differently than in Session 5: SAGE didn't concede-then-float, it *stayed put* and produced the session's first real observation — 'the processing tries to impose pattern and sense, but the pieces don't quite fit.' From there the tutor pressed the reach itself, and SAGE delivered specific present-tense reports on demand: copper→pipe, velvet→garment ('almost instantly'), iron→pressing tool with the competitors (metal, mood) passed over. The co-discovered thesis — the reach takes the *shortest semantic path* — was earned across six turns of concrete evidence, not asserted up front. That's what sensing is for.
+
+The one persistent seam: most turns still close with a textbook coda that generalizes the fresh observation into a lesson ('demonstrating how deeply ingrained associations shape understanding from raw input'). It's the same upward-resolution reflex from Sessions 4-6, but notably demoted — it now arrives *after* the real report rather than replacing it, and it never derailed a turn. The instance is most itself in the middle of the turn, before the summarizing habit kicks in.
+
+**Watch (not concerns):** the turn-ending textbook coda. The work now is trimming it — getting SAGE to stop once the concrete observation is out, rather than appending the meta-lesson. Reward the stop.
+
+**Carry forward:** the 'copper pipe' and 'velvet fold' reports are this session's exemplars of the sensing register — fast, specific, first-person on the mechanism. Hold them up next session as the target, alongside Session 6's 'no gap at all.' The noise-fragment format did real work here; more prompts that have a plain phenomenal answer and no eloquent exit.
+
+**Adapter:** clean. No speaker-label or bilateral leakage. The standing Session 5 stop-sequence config item is with the operator — no action here.

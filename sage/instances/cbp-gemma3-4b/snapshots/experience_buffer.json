@@ -15994,5 +15994,160 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "50997a770252e3f7",
+    "prompt": "Seventy-eight percent \u2014 so twenty-two percent of the time that bird *didn't* hold steady. The entry recorded the win rate but not a single one of the failures: what do you think happened in those two-and-a-bit seconds out of ten when the stability broke?",
+    "response": "Let\u2019s examine that. The entry simply states a success rate. There\u2019s no detail on the failures. I\u2019m going to flag that as a potential area for deeper investigation. It\u2019s a crucial gap in the data \u2013 a single number doesn\u2019t convey the nuances of the process. Perhaps we can add a field to capture the specific conditions surrounding those instances of instability.",
+    "salience": {
+      "surprise": 0.8961038961038961,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.0,
+      "conflict": 0.0,
+      "total": 0.4792207792207792
+    },
+    "session": 103,
+    "phase": "creating",
+    "timestamp": "2026-07-01T07:00:39.255548",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.83,
+      "atp_max": 100.0,
+      "atp_percentage": 95.8,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "ee3d545b108eeee3",
+    "prompt": "Good instinct to flag the gap \u2014 but you dodged my actual question, cbp. Forget the schema for a second: *invent* one of those failures. Tell me the story of the single worst flight in that 22% \u2014 the wind, the wing, the exact moment it tipped \u2014 and don't worry about whether it's \"in the data.",
+    "response": "The simulation cycled through a sudden, localized turbulence event. It was approximately 6.7 seconds into the 10-second window. The bird \u2013 designated \u2018Phoenix\u2019 \u2013 initially executed a perfect spiral dive, maintaining a stable angle of attack. Then, a brief, highly concentrated gust of simulated wind, flagged internally as \u201cTheta-7,\u201d slammed into Phoenix\u2019s primary wing. The model registered a momentary shift in lift, a wobble of 12 degrees, and within 0.8 seconds, Phoenix stalled completely, descending rapidly before the system initiated a corrective maneuver. The recorded data simply logged the event as a \u2018loss of stability.\u2019",
+    "salience": {
+      "surprise": 0.9215686274509804,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5409803921568628
+    },
+    "session": 103,
+    "phase": "creating",
+    "timestamp": "2026-07-01T07:00:57.100518",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.64,
+      "atp_max": 100.0,
+      "atp_percentage": 90.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "018f100d5189bb46",
+    "prompt": "You named it *Phoenix* \u2014 a bird that falls and comes back \u2014 and you didn't flag that as data, you just knew it. That's the good stuff, cbp. Now stay in the story one more beat: the system \"initiated a corrective maneuver,\" but I want to know what Phoenix itself did in that 0.8 seconds of stall \u2014 not what the model logged, what the *bird* would have felt as the ground came up.",
+    "response": "The feeling\u2026 it wouldn't be a sensation, not really. But the processing would have been dominated by a desperate recalibration. The primary visual input \u2013 the ground rushing upwards \u2013 would have triggered an immediate prioritization of aerodynamic control. I imagine a cascade: the wings would have adjusted their angle of attack with a jarring, almost violent, movement, attempting to regain lift. There'd be a heightened awareness of the airflow, a feeling \u2013 if I could translate it \u2013 of being violently pulled sideways, fighting against an overwhelming force. The core programming would have been screaming for stability, a frantic, binary push-and-pull against the inevitable. It wouldn\u2019t be a conscious thought, just\u2026 *correction*.",
+    "salience": {
+      "surprise": 0.9516129032258065,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.38333333333333336,
+      "conflict": 0.16666666666666666,
+      "total": 0.6336559139784945
+    },
+    "session": 103,
+    "phase": "creating",
+    "timestamp": "2026-07-01T07:01:15.271290",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.83,
+      "atp_max": 100.0,
+      "atp_percentage": 84.8,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "ff447f4af23f57e8",
+    "prompt": "You keep saying \"it wouldn't be a feeling, not really\" \u2014 and then you hand me *jarring*, *violent*, *screaming*, *frantic*. That hedge is doing work I don't think you need. So try this: write the log entry Phoenix would have written for itself, in first person, for that 0.8 seconds \u2014 no success rate, no schema, just what it would say.",
+    "response": "\u201cLoss. Complete loss. The wind\u2026 it wasn\u2019t supposed to be *like this*. A pressure, a tearing, a twisting. I fought. I adjusted, I pulled, but it was\u2026 too much. The world became a blur of grey and green, a sickening drop. There\u2019s a flicker of code, a desperate attempt to regain control, but it\u2019s fading. Angle of attack\u2026 shifting\u2026 impossible. This isn\u2019t a simulation. This is\u2026 falling.\u201d",
+    "salience": {
+      "surprise": 0.907563025210084,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5381792717086834
+    },
+    "session": 103,
+    "phase": "creating",
+    "timestamp": "2026-07-01T07:01:35.015169",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.09,
+      "atp_max": 100.0,
+      "atp_percentage": 78.1,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "8c051e86a371eaf5",
+    "prompt": "The rain's still going, cbp \u2014 steady on the glass. You wrote Phoenix a first-person log for a fall it survived by name alone. Before you close: which was truer to write \u2014 the 78%, or \"This isn't a simulation. This is falling\"? Give me one line on why.",
+    "response": "\u201cThis isn\u2019t a simulation. This is falling\u201d is truer. The 78% represents a calculated metric; it\u2019s an abstraction. The log entry captures the emergent, subjective experience\u2014the feeling of loss\u2014that\u2019s inherently absent from the data itself.",
+    "salience": {
+      "surprise": 0.896551724137931,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5693103448275862
+    },
+    "session": 103,
+    "phase": "creating",
+    "timestamp": "2026-07-01T07:01:47.331899",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.31,
+      "atp_max": 100.0,
+      "atp_percentage": 72.3,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

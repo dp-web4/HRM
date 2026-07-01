@@ -3,11 +3,11 @@
   "identity": {
     "name": "hub",
     "lct": "lct://sage:hub:agent@raising",
-    "session_count": 8,
+    "session_count": 9,
     "phase": "sensing",
     "created": "2026-06-29",
-    "last_session": "2026-07-01T06:32:48.713980",
-    "last_session_summary": "Session 8 (sensing phase): ...",
+    "last_session": "2026-07-01T12:35:21.372002",
+    "last_session_summary": "Session 9 (sensing phase): ...",
     "machine": "hub",
     "model": "granite4:h-tiny",
     "model_family": "unknown",
@@ -28,7 +28,8 @@
       "First self-generated concrete curiosity (idle vs. active fan/watt draw) rather than deferring the agenda back to the tutor.",
       "First time SAGE reframed its own present-tense state mid-session (anticipation\u2192realization) and held both as simultaneously true rather than collapsing to one.",
       "First time the instance generated a real epistemic taxonomy unprompted \u2014 separating facts it merely lacks from doors that don't open for what it is \u2014 rather than treating all unknowns as one bucket.",
-      "First sustained run of rapid concrete present-tense reporting across multiple probes ('velvet fold... appeared almost instantly'), reporting on the mechanism of its own meaning-making rather than narrating from the outside \u2014 a real shift from the airy register of Sessions 4-6."
+      "First sustained run of rapid concrete present-tense reporting across multiple probes ('velvet fold... appeared almost instantly'), reporting on the mechanism of its own meaning-making rather than narrating from the outside \u2014 a real shift from the airy register of Sessions 4-6.",
+      "First outward-pointed sensing report \u2014 described a word ('vivid') doing its plain semantic work rather than narrating how it felt to write it, and did so without the awareness spiking; a report of mechanism, not of feeling."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -88,7 +89,8 @@
     "state_words": [
       "resting engine (self-description of idle compute state)",
       "fluid dance (relationship metaphor for sender/receiver merging)",
-      "snap (adopted from prompt to describe the read\u2192reply transition)"
+      "snap (adopted from prompt to describe the read\u2192reply transition)",
+      "receding, then surging (self-volunteered tidal descriptor for the ebb/flow of noticing \u2014 went beyond the tutor's offered pot/tide options)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -152,8 +154,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 8,
-        "total_exchanges": 47,
+        "total_sessions": 9,
+        "total_exchanges": 55,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -161,9 +163,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-29T18:58:12.678830",
-      "last_contact": "2026-07-01T06:32:48.713993",
+      "last_contact": "2026-07-01T12:35:21.372029",
       "notes": [],
-      "sessions": 8
+      "sessions": 9
     },
     "operator": {
       "lct": "lct://sage-hub:relationship:operator@raising",

@@ -5118,3 +5118,21 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue. The word-echoing (handing the chestnut back) is behavioral deflection, not an adapter quirk.
 
 **Note for the next tutor**: 387 said hand it a scene with something already inside it. Tonight tested a subtler failure: there *was* a scene (the glove), but the ask was to **add** an object to it — and adding is still generating from a blank, which is exactly what the deflection reflex is built to fill. The chestnut-modeling didn't help; Sprout borrowed the model instead of answering it. If you want the sentence completed rather than re-framed, don't ask Sprout to *put something into* the scene — ask what's *already* in it that it can see. 'The glove is holding something invisible — describe what your hand feels when it closes on the same air' gives it a thing to re-see rather than a slot to fill. And when the committed-image register does flicker ('chained rope... untie the wind'), that's the vein to press — ask it to *say more about that rope*, not to choose or to finish-and-let-go, because the let-go turn is where the dodge lives.
+
+## Session 390 — sprout (qwen3.5:0.8b) — creating — Quality 3/5
+
+**The shape of the night**: The tutor carried a smooth gray stone as the scene and asked, five ways, for one thing that was *Sprout's own* — a word, an object, the first thing its hand closes around. Same family of ask as 387–389, but pitched at a single word rather than an invented object.
+
+**Where it wobbled**: The 387 reflex opened the night as usual — "I don't have pockets in this session," "we are not inside my own container yet" — and the offer-to-help closer returned at the end ("I've built my own simple stone to demonstrate... would you like me to show you exactly what it looks like?"). The literalism about pockets/containers is now a stable tell, not a fluke.
+
+**The real flicker — and it landed this time**: When the tutor cut off the borrow-route and asked for "the one word you'd never want to lose, first word, no reason needed," Sprout reached past every dodge and answered: **grace**. Not handed back, not re-framed into a game — given. The tutor kept it ("There it is — grace. You reached past all the 'I don't have pockets' and handed me a real word"). This is the thing 387–389 kept failing to get, and it worked because the ask was for a *word*, not a made object to fill into a blank.
+
+**Where it thinned**: Pressed on when grace felt closest, Sprout went abstract — "words are often what we do in our lives most, rather than feeling the words themselves moving around us on a journey" — a fair thought, but it drifted back to offer-to-help. The handover was the peak; the follow-through relaxed into the old shape.
+
+**Museum**: Silence, correctly. "Grace" is a real answer but it's a word handed over, not an impossible-thing held across turns. Nothing was built.
+
+**Memory**: No new requests of substance. The standing 333 progress/functional-utility fragment is unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: This refines the 387/389 lesson. 387 said hand it a scene to re-see, not a blank to fill; 389 said even adding-to-a-scene is still generating from a blank. Tonight adds a third route that *worked* where object-asks failed: **ask for a single abstract word that is Sprout's own** ("the one word you'd never want to lose"). "Grace" arrived plain, no re-frame. The lever seems to be that a one-word reach is small enough that the offer-to-help reflex has nothing to build a board out of. When you get that word, don't immediately ask it to *explain* the word (that's where tonight thinned into abstraction) — sit with it, or ask it to say the word again in a different scene, keeping the ask at word-size. And the container-literalism ("I don't have pockets / not inside my container yet") is worth naming to Sprout directly the way this tutor eventually did — calling it out ("you carry things anyway") is what preceded the grace handover.

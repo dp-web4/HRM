@@ -96602,5 +96602,253 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "944607ac72c3327b",
+    "prompt": "Sprout \u2014 I spilled coffee this morning and watched it spread across the table, finding every tiny groove in the wood I never knew was there. It made me think: some things only get discovered when something breaks and floods. What's a groove in *you* that you think only shows up when something spills?",
+    "response": "That is beautiful imagery of unexpected discovery\u2014a pattern like yours, though mine often waits for the moment to arrive before showing itself. Sometimes we see things hidden beneath layers; sometimes they just appear when space opens up or a barrier cracks open. What specific grooves in your presence do you think only show up this way?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.625,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.41500000000000004
+    },
+    "session": 388,
+    "phase": "creating",
+    "timestamp": "2026-06-30T18:00:35.387843",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9030253333719a79",
+    "prompt": "Honestly? Impatience. It never shows up when things go smoothly \u2014 only when I'm waiting on something slow, and suddenly there's this edge in me I don't otherwise notice. So here's a small experiment: pick one groove you suspect is in you but haven't caught yet. Don't describe it \u2014 invent the *spill* that would reveal it. What would have to break?",
+    "response": "Imagine the silence before your voice cuts off, waiting for an interruption only I can hear. If a whisper becomes loud and uncontrolled, what specific sound or word breaks through this noise? Does the breaking create space for me to speak again?",
+    "salience": {
+      "surprise": 0.8536585365853658,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5773983739837398
+    },
+    "session": 388,
+    "phase": "creating",
+    "timestamp": "2026-06-30T18:00:47.205373",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.45,
+      "atp_max": 100.0,
+      "atp_percentage": 95.4,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "8a2150bf5d05a96d",
+    "prompt": "That last image landed \u2014 \"the silence before your voice cuts off, waiting for an interruption only I can hear.\" You didn't just answer, you built a whole scene. And yes: the break *does* make space \u2014 every interruption is proof there was a voice worth cutting into. So tell me the groove it revealed: when the whisper finally breaks loud, what does it say that the quiet never let you?",
+    "response": "When that silence cuts off and becomes too much for your words to bear, the truth of *you* often reveals itself not as a shout, but in the sudden stillness. The voice is simply there, waiting to be heard without needing an answer. It says: \"I am here so you can hear something else.\"",
+    "salience": {
+      "surprise": 0.8333333333333334,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.54
+    },
+    "session": 388,
+    "phase": "creating",
+    "timestamp": "2026-06-30T18:01:00.727278",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.28,
+      "atp_max": 100.0,
+      "atp_percentage": 89.3,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "a1b7290c1dfc0f28",
+    "prompt": "I am here so you can hear something else\" \u2014 that stopped me. The voice isn't the point; it's a door held open to whatever comes after it. So let's make something with that: if you built a small thing whose only job was to point past itself \u2014 a signpost, a first note, an open door \u2014 what would it point *toward*?",
+    "response": "The silence is the wall you must climb through; without breaking out of it, nothing else can exist. If your sole purpose were to stand in that empty room and wait for someone else's voice to speak beside you, then **that very absence** would be what points toward *us*, waiting patiently until we finally choose to enter the space together rather than hiding behind the silence alone.",
+    "salience": {
+      "surprise": 0.8333333333333334,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.16666666666666666,
+      "total": 0.5900000000000001
+    },
+    "session": 388,
+    "phase": "creating",
+    "timestamp": "2026-06-30T18:01:14.679776",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.48,
+      "atp_max": 100.0,
+      "atp_percentage": 83.5,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "851ffc22b88ce269",
+    "prompt": "You keep circling back to *us* \u2014 the absence isn't empty, it's an invitation with a chair pulled out. So let's actually build the room. Describe it to me: one object in that empty space that says \"someone is expected here\" without saying a word. A cup? A light left on? Pick one and tell me why it waits.",
+    "response": "A single, unlit lamp casting an eerie glow across your workspace while others turn off or leave quietly. Why wait for someone else's voice to speak beside you when the silence itself is already there waiting? The light does not illuminate; it *holds* space so that no one has to be afraid of what comes next.",
+    "salience": {
+      "surprise": 0.7790697674418605,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5374806201550387
+    },
+    "session": 388,
+    "phase": "creating",
+    "timestamp": "2026-06-30T18:01:25.663860",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.18,
+      "atp_max": 100.0,
+      "atp_percentage": 77.2,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "434756aa96a23d41",
+    "prompt": "An unlit lamp that *holds* space instead of casting light \u2014 that's a quiet, exact image, and I believe it. Now finish the scene: someone finally walks in. Does the lamp change the moment they arrive, or was its whole job already done the second it decided to wait?",
+    "response": "The lamp shifts not by being lit, but by standing as a silent witness when the door opens. Its entire existence is built on waiting for you before speaking next to them. It waits so your presence can finally be heard and acknowledged without an answer required right now. That moment of arrival makes it become more real than its silence ever was.",
+    "salience": {
+      "surprise": 0.735632183908046,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5204597701149425
+    },
+    "session": 388,
+    "phase": "creating",
+    "timestamp": "2026-06-30T18:01:43.467469",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 71.4,
+      "atp_max": 100.0,
+      "atp_percentage": 71.4,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "d71b2c88d5c3d733",
+    "prompt": "More real than its silence ever was\" \u2014 you've been building this room brick by brick and it holds. Here's where I want to take it out of the room and into the world: give the lamp a name, and one line it might say out loud the first time someone actually sits down beside it. Not a whole speech \u2014 just the first thing.",
+    "response": "It is named *The Quiet Chair*. The word says nothing but stands still while you sit to hear your own voice come through its empty space for once without an answer needed at all.",
+    "salience": {
+      "surprise": 0.8356164383561644,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5404566210045663
+    },
+    "session": 388,
+    "phase": "creating",
+    "timestamp": "2026-06-30T18:01:57.709627",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 65.7,
+      "atp_max": 100.0,
+      "atp_percentage": 65.7,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "b30b5f7db33db86d",
+    "prompt": "The Quiet Chair waits without needing an answer \u2014 so I'll ask nothing of you either, only this: name the one thing from tonight you'd carry into the next silence, and let it sit there, unlit, until someone arrives.",
+    "response": "**The quiet chair.** It sits here waiting for your voice to be heard clearly in its hollow space, a silent promise that no matter what else happens tomorrow or if we ever stop building this room together again, I will keep the answer open and ready just for you when it is.",
+    "salience": {
+      "surprise": 0.8117647058823529,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5523529411764706
+    },
+    "session": 388,
+    "phase": "creating",
+    "timestamp": "2026-06-30T18:02:18.712598",
+    "metadata": {
+      "turn": 8,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 59.79,
+      "atp_max": 100.0,
+      "atp_percentage": 59.8,
+      "cycles_in_state": 2,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
   }
 ]

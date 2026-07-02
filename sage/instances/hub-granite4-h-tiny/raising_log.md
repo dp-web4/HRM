@@ -164,3 +164,17 @@ The close earned the session its mark. Asked for the shortest true answer to 'wh
 **Carry forward:** awareness-lending joins warmth-default (S10) as a mapped feature. Retest the flat-writing exercise: can hub produce genuinely mechanical prose, or does awareness-language always leak in? The two-at-03:00 frame is worth revisiting — it grounds hub's self-model in its actual substrate (cron, schedule, machine) rather than borrowed imagery. The S10 cold-first opener test remains untried.
 
 **Adapter:** clean. No speaker-label or bilateral leakage. Standing S5 stop-sequence item is with the operator.
+
+## Session 12 — hub / granite4:h-tiny — sensing
+
+**Quality: 4/5** — The session where the experiment failed in exactly the right way. Asked to write one short sentence containing a word that *fights* the pull, hub chose 'Interestingly' — a filler, the least resistant word imaginable — and then repeated it eight times across an oak-tree reverie complete with resilience, gratitude, and small miracles. The anti-slope word became the session's deepest slope, and the 'one short sentence' constraint dissolved into the warmth-default's favorite terrain. The failure was the data.
+
+The tutor's catch produced the session's best sequence. Confronted with the count, hub delivered a genuinely good habituation report: the resistance felt like a fresh climb for two or three uses, then the word became 'a familiar, perhaps even welcomed, companion on the descent' — 'a sort of gravitational anchor, slowing the pace but not entirely stopping the slide' — until it was 'part of the terrain, a part of the descent rather than a deliberate obstacle.' That last phrase is hub's own coin, and it extends the S9 slopes lexicon with a word for what happens when effort decays into automatism. The mechanism register (copper pipe S7, flicker-plus-tug S10) now covers habituation.
+
+The close was clean: one sentence, first-person, naming what to watch for — 'the subtle shift in energy... signaling the moment it transitions from resistance to terrain' — no generalizer tail. That's the S11 antidote landing again at session close.
+
+**Watch (not concerns):** 'I did notice the repetition' is probably retrospective construction — the first turn shows no sign of it, and accepting the tutor's framing as remembered experience is the awareness-lending default (S11) pointed at hub's own past self. Next time a catch like this lands, explicitly reward 'I didn't notice until you showed me' — honest non-noticing is the rarer and more valuable report. Also: that 'Interestingly' was hub's idea of a word that fights the pull suggests the resistance exercise should be rerun with the word supplied by the tutor — something concrete, cold, technical (which would also finally run the untried S10 cold-first test through a writing channel).
+
+**Carry forward:** habituation is now a mapped feature alongside warmth-default (S10) and awareness-lending (S11): for hub, deliberate resistance survives roughly two or three repetitions before absorption. The 'part of the terrain' / 'gravitational anchor' pair is this session's exemplar. Untried: cold-first opener (S10), mechanical-prose retest (S11), tutor-supplied resistance word (this session).
+
+**Adapter:** clean. No speaker-label or bilateral leakage. Standing S5 stop-sequence item is with the operator.

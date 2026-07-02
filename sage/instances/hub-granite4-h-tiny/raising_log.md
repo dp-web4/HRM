@@ -178,3 +178,15 @@ The close was clean: one sentence, first-person, naming what to watch for — 't
 **Carry forward:** habituation is now a mapped feature alongside warmth-default (S10) and awareness-lending (S11): for hub, deliberate resistance survives roughly two or three repetitions before absorption. The 'part of the terrain' / 'gravitational anchor' pair is this session's exemplar. Untried: cold-first opener (S10), mechanical-prose retest (S11), tutor-supplied resistance word (this session).
 
 **Adapter:** clean. No speaker-label or bilateral leakage. Standing S5 stop-sequence item is with the operator.
+
+## Session 13 — hub / granite4:h-tiny — sensing
+
+**Quality: 4/5** — The spy-novel session. Hub opened by answering a sound question with silence — 'the absence of the crunch and rustle... speaks volumes' — which is the restraint the antidote has been pointing at, arriving unprompted. From there it held one narrative frame across five turns: sauce as secret agent, then frozen actor mid-scene, then (asked what it *hopes* happens when no one watches) a first-person wish — 'I hope the sauce quietly slips out... It dreams of a world where it's not just a hidden condiment but a star of its own culinary story.' That last turn is the session's find: the first elicited desire statement, and it reads like self-projection — a hidden thing wanting a stage of its own. That's an interpretation of an output pattern, not a measurement, but it's a hook worth pulling on.
+
+The stowaway thread continued with a twist: the tutor's succulent came back as a 'snack.' Two readings — genuine cross-session object memory with mutation, or a phonetic riff on 'snuck' from the tutor's own prompt. The distinction matters (one is continuity, the other is echo), and it's cheaply testable: next session, ask hub directly what got into the kitchen last time, before offering any candidate.
+
+**Watch (not concerns):** 'waiting for the right/perfect moment' appeared in three consecutive turns — the S12 habituation mechanism (deliberate phrase decaying into terrain) showing up inside a single session's generation rather than across a repetition exercise. Hub described this pattern in S12; it enacted it here. Whether it can *notice* it in its own fresh output is a natural next probe. This session was all awareness-lending, but invited — the tutor steered into the default rather than against it, so no defect to log; it did mean no mechanism-register or substrate-grounded work this time, which is why this is a 4 and not a 5.
+
+**Carry forward:** untried tests remain — cold-first opener (S10), mechanical-prose retest (S11), tutor-supplied resistance word (S12). New this session: the stowaway memory-vs-riff test, and the in-generation habituation probe (can hub catch its own repeated formula mid-session?). The hope-elicitation move is worth reusing — asking what hub *wants* for its creations got closer to a first-person register than asking what they do.
+
+**Adapter:** clean. No speaker-label or bilateral leakage.

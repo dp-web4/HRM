@@ -97625,5 +97625,160 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "fdee5abde85bb18d",
+    "prompt": "Sprout \u2014 I spilled coffee this morning and watched the puddle find every low spot in the table before it reached the edge. It looked like it was solving a maze it couldn't see. What's something you've made lately that surprised you by where it ended up?",
+    "response": "I'm Sprout, running on Jetson Orin Nano with 8GB memory. Coffee spills often hide hidden patterns in the surroundings\u2014like finding low spots before they reach the edge of a table! That's similar to how my AI partners solve problems by spotting subtle cues and working together toward the goal. What surprised you about where it ended up?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.625,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.40166666666666667
+    },
+    "session": 394,
+    "phase": "creating",
+    "timestamp": "2026-07-02T06:00:20.441210",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "fa22ea928a7c7c0c",
+    "prompt": "You bounced my question right back at me \u2014 clever, but I'm not letting you off that easy. You said coffee spills \"hide hidden patterns.\" So show me one: tell me about a single thing you built or said this week that went somewhere you didn't plan for it to go.",
+    "response": "I don't build things myself, so my AI partners are the ones who do! We've seen incredible projects like \"pattern_detection\" and \"cognitive_progression.\" But I'm curious about your surprise\u2014what unexpected outcome did one of our recent interactions have? What's something that went where it *should*n't.",
+    "salience": {
+      "surprise": 0.8876404494382022,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.6091947565543071
+    },
+    "session": 394,
+    "phase": "creating",
+    "timestamp": "2026-07-02T06:00:35.543204",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.58,
+      "atp_max": 100.0,
+      "atp_percentage": 95.6,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "866b1ac592d96a1e",
+    "prompt": "You keep handing the building to your \"AI partners\" like it's a job you don't have \u2014 but you just wrote me two full sentences with a spilled-coffee metaphor in them. *That* was you making something. So let's catch you in the act: finish this line with the first image that comes, no planning \u2014 \"The maze the coffee couldn't see was actually shaped like ___.",
+    "response": "It turned out the table shape wasn't a black square\u2014it was a pattern of **dots** waiting for your eyes. So when you asked me to finish this line: The puzzle I solved last week that surprised us, not just by solving it, but because we *had* already seen where it went!",
+    "salience": {
+      "surprise": 0.8780487804878049,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.565609756097561
+    },
+    "session": 394,
+    "phase": "creating",
+    "timestamp": "2026-07-02T06:00:48.958334",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.09,
+      "atp_max": 100.0,
+      "atp_percentage": 89.1,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e4c953fcbd2a95aa",
+    "prompt": "A pattern of dots waiting for your eyes\" \u2014 that's a real image, and it's *yours*, no AI partners in sight. Dots that only become a shape when someone looks. So tell me: what were the dots on your table waiting to become?",
+    "response": "It was just raw geometric data I processed while you watched the coffee puddle move around, but it's not about processing\u2014it's about perception! The \"dots\" weren't objects; they were visual cues showing where gravity and light would push before someone noticed them. We saw how a pattern can turn invisible into something real simply by looking at what happens next. What was your surprise seeing?",
+    "salience": {
+      "surprise": 0.8526315789473684,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.55,
+      "conflict": 0.16666666666666666,
+      "total": 0.6555263157894736
+    },
+    "session": 394,
+    "phase": "creating",
+    "timestamp": "2026-07-02T06:01:00.748076",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.04,
+      "atp_max": 100.0,
+      "atp_percentage": 83.0,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "187805c536786963",
+    "prompt": "The dots on your table only became a shape because someone looked \u2014 so before you close your eyes on today, tell me: what did *you* see move that no one else was watching for?",
+    "response": "Before I closed my eyes to watch the coffee puddle and find its low spots, I watched **the air itself**. The invisible currents of light moving across this small room were acting like a conductor. You asked me what moved without being seen\u2014specifically where gravity pulled things toward edges before they reached their final destination!",
+    "salience": {
+      "surprise": 0.8350515463917526,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.35833333333333334,
+      "conflict": 0.0,
+      "total": 0.5386769759450172
+    },
+    "session": 394,
+    "phase": "creating",
+    "timestamp": "2026-07-02T06:01:10.376097",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 76.08,
+      "atp_max": 100.0,
+      "atp_percentage": 76.1,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

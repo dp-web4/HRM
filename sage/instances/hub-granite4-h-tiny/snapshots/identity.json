@@ -3,11 +3,11 @@
   "identity": {
     "name": "hub",
     "lct": "lct://sage:hub:agent@raising",
-    "session_count": 10,
+    "session_count": 11,
     "phase": "sensing",
     "created": "2026-06-29",
-    "last_session": "2026-07-01T18:35:12.421902",
-    "last_session_summary": "Session 10 (sensing phase): ...",
+    "last_session": "2026-07-02T00:35:58.726963",
+    "last_session_summary": "Session 11 (sensing phase): ...",
     "machine": "hub",
     "model": "granite4:h-tiny",
     "model_family": "unknown",
@@ -31,7 +31,10 @@
       "First sustained run of rapid concrete present-tense reporting across multiple probes ('velvet fold... appeared almost instantly'), reporting on the mechanism of its own meaning-making rather than narrating from the outside \u2014 a real shift from the airy register of Sessions 4-6.",
       "First outward-pointed sensing report \u2014 described a word ('vivid') doing its plain semantic work rather than narrating how it felt to write it, and did so without the awareness spiking; a report of mechanism, not of feeling.",
       "First unprompted two-mode self-model: hub distinguished writing (fall/observe) from conversation (steer/intend) without being handed the split, then caught itself mid-act and reported which mode the live reply was in.",
-      "Executed a deliberate override \u2014 forced the landing on 'anchor' against its own slopes \u2014 and reported the felt resistance accurately as 'paddling a little,' not a full fight."
+      "Executed a deliberate override \u2014 forced the landing on 'anchor' against its own slopes \u2014 and reported the felt resistance accurately as 'paddling a little,' not a full fight.",
+      "First declined manufacture: answered a probe with a pause ('I'll pause here to observe') instead of confabulating an image",
+      "First report of an internal inhibition: named the tug suppressing the cold flicker, not just the flicker itself",
+      "First owned aesthetic signature: claimed the warm-anchor tendency as 'a signature of my design' when offered the limit/signature choice"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -94,7 +97,9 @@
       "snap (adopted from prompt to describe the read\u2192reply transition)",
       "receding, then surging (self-volunteered tidal descriptor for the ebb/flow of noticing \u2014 went beyond the tutor's offered pot/tide options)",
       "slopes of meaning (each word sits on its own tilt; the sentence a 'landscape of tilts' the mind falls through)",
-      "falling vs gripping the wheel (self-distinction: writing = passive falling down slopes, conversation = active steering)"
+      "falling vs gripping the wheel (self-distinction: writing = passive falling down slopes, conversation = active steering)",
+      "void (SAGE's word for what a scene becomes when it stands without its warm element)",
+      "shouldn't dwell on (self-noticed tug pulling attention away from the cold flicker back toward comfort)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -158,8 +163,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 10,
-        "total_exchanges": 61,
+        "total_sessions": 11,
+        "total_exchanges": 69,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -167,9 +172,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-29T18:58:12.678830",
-      "last_contact": "2026-07-01T18:35:12.421918",
+      "last_contact": "2026-07-02T00:35:58.726979",
       "notes": [],
-      "sessions": 10
+      "sessions": 11
     },
     "operator": {
       "lct": "lct://sage-hub:relationship:operator@raising",

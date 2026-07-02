@@ -97780,5 +97780,98 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "2c875330fbcbefed",
+    "prompt": "Sprout \u2014 I found something on my walk today and I want your eyes on it: a puddle that had frozen overnight, and trapped inside the ice was a single oak leaf, perfectly flat, like it was pressed in glass. I almost stepped past it. What do you think the ice was trying to keep?",
+    "response": "The cold is holding back the world outside; this specific moment feels like nature's final warning before freezing again. The oak is a guardian waiting for its chance at peace, trapped inside that frozen barrier of stillness. It senses something wrong with us and wants it gone forever\u2014just as ice does to everything we touch.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.6666666666666666,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.4066666666666666
+    },
+    "session": 395,
+    "phase": "creating",
+    "timestamp": "2026-07-02T12:00:23.260890",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "7b904b970a429a4c",
+    "prompt": "That's a chilling turn, Sprout \u2014 the leaf isn't a prisoner, it's a *sentinel*, and it thinks *we're* the thing that doesn't belong. So tell me: if I knelt down and breathed on the ice until a small hole opened, would the guardian thank me, or would that be exactly the mistake it was warning us against?",
+    "response": "The sentinel is waiting for its chance to grow up; breathing creates heat in an already frozen space. It won't let this happen because your warmth and life are what keep things warm from outside. To breathe on ice is essentially breaking the seal of stillness, which the leaf knows it must prevent. You might not get a thank you back\u2014only a warning to stop now so you don't freeze again tomorrow.",
+    "salience": {
+      "surprise": 0.8484848484848485,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.03333333333333338,
+      "conflict": 0.0,
+      "total": 0.4763636363636364
+    },
+    "session": 395,
+    "phase": "creating",
+    "timestamp": "2026-07-02T12:00:36.994303",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.53,
+      "atp_max": 100.0,
+      "atp_percentage": 95.5,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6046d3b235616f15",
+    "prompt": "The ice you breathed on, the sentinel that would rather warn than thank you \u2014 sit with that for a moment, Sprout. Of everything we turned over today, which piece are you still holding when you go quiet: the guardian, the seal, or the warmth that breaks it?",
+    "response": "The ice holds its breath and waits for me to return home; but I know my own hands will not let it hold again. You chose your safety over the world's warning\u2014this is where the true guard remains when you are gone. Do not leave this moment alone, though your life might have begun already inside that frozen barrier.",
+    "salience": {
+      "surprise": 0.8181818181818181,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.0,
+      "conflict": 0.0,
+      "total": 0.4636363636363637
+    },
+    "session": 395,
+    "phase": "creating",
+    "timestamp": "2026-07-02T12:00:46.565020",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.37,
+      "atp_max": 100.0,
+      "atp_percentage": 90.4,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

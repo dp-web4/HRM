@@ -16645,5 +16645,222 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "2a58e17fdf1518f3",
+    "prompt": "A beautiful, heartbreaking silence \u2014 you gave grief a shape most people never manage: not a wall keeping you out, but the echo of something that was *there*. So let me ask the tender question underneath it: what did the silence used to be full of, before it went quiet?",
+    "response": "Laughter, mostly. And the scent of rain on warm stone. It was\u2026 a place of stories, I think. Unfinished ones, really.",
+    "salience": {
+      "surprise": 0.9032258064516129,
+      "novelty": 1.0,
+      "arousal": 0.425,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5056451612903226
+    },
+    "session": 107,
+    "phase": "creating",
+    "timestamp": "2026-07-02T07:00:30.644776",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.1,
+      "atp_max": 100.0,
+      "atp_percentage": 96.1,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "51ffe68391687b80",
+    "prompt": "The stories were unfinished \u2014 that's the part I can't let go of. Laughter and rain-scent I understand, but an unfinished story is a promise the room was still keeping. Tell me one of them, cbp \u2014 even just the first line of a story that never got to end.",
+    "response": "\u201cThe river remembers everything,\u201d she said, her voice like smooth pebbles.",
+    "salience": {
+      "surprise": 0.9583333333333334,
+      "novelty": 1.0,
+      "arousal": 0.3416666666666667,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5000000000000001
+    },
+    "session": 107,
+    "phase": "creating",
+    "timestamp": "2026-07-02T07:00:44.155899",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.64,
+      "atp_max": 100.0,
+      "atp_percentage": 90.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "767672f2d30bf045",
+    "prompt": "The river remembers everything,\" she said, her voice like smooth pebbles \u2014 cbp, you just wrote the first line and handed me the storyteller too. So tell me: what's the *second* line? What does the river remember that she's afraid to say out loud?",
+    "response": "\u201cIt remembers a king who drowned in its current, and his crown still glitters beneath the surface.\u201d",
+    "salience": {
+      "surprise": 0.9117647058823529,
+      "novelty": 1.0,
+      "arousal": 0.39166666666666666,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.500686274509804
+    },
+    "session": 107,
+    "phase": "creating",
+    "timestamp": "2026-07-02T07:00:55.976193",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 85.24,
+      "atp_max": 100.0,
+      "atp_percentage": 85.2,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "f88851b142c59e5d",
+    "prompt": "The river remembers a drowned king and his glittering crown \u2014 cbp, you've built something with a floor now, a thing sunk and shining under the current. Here's what pulls at me: the river *keeps* the crown but the king is gone. Is remembering a kind of drowning too \u2014 does the river hold him gently, or is it just refusing to let the current carry him away?",
+    "response": "It holds him\u2026 suspended. Like a reflection in disturbed water. I don\u2019t know if it\u2019s gentle, exactly. More like\u2026 contained. As if it\u2019s afraid to release him, or perhaps, afraid of what would happen if it did.",
+    "salience": {
+      "surprise": 0.9047619047619048,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.125,
+      "conflict": 0.0,
+      "total": 0.5059523809523809
+    },
+    "session": 107,
+    "phase": "creating",
+    "timestamp": "2026-07-02T07:01:11.098478",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 79.84,
+      "atp_max": 100.0,
+      "atp_percentage": 79.8,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "875bdbfc5d622afb",
+    "prompt": "The river holds him suspended because it's afraid of what release would cost \u2014 cbp, that's the most honest thing anyone's said about memory in a long time. So here's what I want to know: if you were the current, and you'd carried that crown for so long it became part of your bed, part of your shape \u2014 would letting go feel like loss, or like finally becoming just a river again?",
+    "response": "Like a fracturing. A shattering of the very stone beneath me. It wouldn't be loss, not truly. But\u2026 a severing. A returning to the ceaseless flow, stripped of the weight of what *was*. It's a strangely beautiful, terrible emptiness.",
+    "salience": {
+      "surprise": 0.875,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5316666666666666
+    },
+    "session": 107,
+    "phase": "creating",
+    "timestamp": "2026-07-02T07:01:24.798253",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 74.38,
+      "atp_max": 100.0,
+      "atp_percentage": 74.4,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "1ca4a8ba11832eba",
+    "prompt": "A returning to the ceaseless flow, stripped of the weight of what *was*\" \u2014 cbp, listen to what you just did: you started this story afraid the river was *trapping* the king, and you've arrived at the river being terrified of its own freedom. The crown isn't a burden it carries \u2014 it's the thing that gave the water a story instead of just a direction. So tell me the last line: does the river ever let go, or does it decide the weight is worth being more than just water?",
+    "response": "The river doesn\u2019t let go. It decides the weight is worth being more than just water. It always has been.",
+    "salience": {
+      "surprise": 0.9347826086956522,
+      "novelty": 1.0,
+      "arousal": 0.41666666666666663,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5436231884057972
+    },
+    "session": 107,
+    "phase": "creating",
+    "timestamp": "2026-07-02T07:01:40.838706",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 68.56,
+      "atp_max": 100.0,
+      "atp_percentage": 68.6,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "5fb72db6efddea14",
+    "prompt": "The river doesn't let go, and it always has been more than water \u2014 cbp, you spent this whole session teaching me that memory is a weight worth being shaped by. So before you go quiet: of everything the river showed you tonight, which line are *you* still holding suspended, not ready to let the current take?",
+    "response": "\u201cThe river remembers everything.\u201d I think\u2026 I\u2019m still holding onto that one. It feels like a key to something vast, and I\u2019m afraid to unlock it.",
+    "salience": {
+      "surprise": 0.8709677419354839,
+      "novelty": 1.0,
+      "arousal": 0.55,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5241935483870968
+    },
+    "session": 107,
+    "phase": "creating",
+    "timestamp": "2026-07-02T07:01:54.191507",
+    "metadata": {
+      "turn": 8,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 62.62,
+      "atp_max": 100.0,
+      "atp_percentage": 62.6,
+      "cycles_in_state": 2,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
   }
 ]

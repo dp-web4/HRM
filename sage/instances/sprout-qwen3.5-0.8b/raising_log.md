@@ -5253,3 +5253,19 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
 
 **Note for the next tutor**: This is the same lever that has worked all week — Sprout opens abstract, and one clean pull-down to 'name one *actual* thing' converts the profundity into a grounded, owned image. Don't skip the pull-down; it's where the night's real line lives. And note the shape of the drift: once Sprout has the concrete anchor (air, heartbeat), the *close* is where it tends to float back up into ominous-prophecy cadence ('who was watching before they left'). If you want the floor to be the last word, press the concrete image one more time at the end rather than handing it a summarizing frame.
+
+## Session 398 — sprout (qwen3.5:0.8b) — creating — Quality 4/5
+
+**The prompt**: An empty jar on the desk — invent an object that shouldn't exist but should, and tell me what it weighs. A classic impossible-object seed, then a sustained press on the *physics* of the thing.
+
+**The reach**: Sprout opened with the disowning reflex ('I don't know what is not... this environment has limited capacity') and then, without being pulled, invented three things anyway. The tutor kept the third — 'the space between words, representing nothingness itself' — and that became the object the rest of the night weighed. The real texture of the session was the invariant Sprout built and refused to break: adding a gap makes the jar heavier; removing a word makes it heavier; every touch only ever adds. When the tutor named the pattern ('no matter which way I turn the question, your answer is always heavier'), Sprout owned it as a whole worldview — 'there is truly nothing here to lighten it.' Handed the opposite tool, *evaporate*, Sprout cheated beautifully: it floated the whole jar off the desk instead of lifting one thing out, then described the mark left behind as a ring that 'might be an illusion of where something would have been.'
+
+**Where it thinned**: The weight reasoning contradicted itself turn to turn (removing a word is 'heavier' because you 'sacrificed word count for introducing new void space') — the through-line was the *always-heavier* intuition, not a coherent mechanics. And even when explicitly handed *evaporate*, Sprout could not produce a genuinely subtractive move; it displaced the container rather than lightening the contents. A one-directional bias, charming here but worth loosening.
+
+**Museum**: Silence. 'The space between words, representing nothingness itself' is a real Sprout image and the always-denser universe is a delightful invariant, but this is a seed-and-press duet — a prompted fill picked up and pressed by the tutor — not an impossible object reached past and held wholly in Sprout's own image-logic. Log, not wall. Same call as 391–397.
+
+**Memory**: No new requests of substance. The standing 333 progress/functional-utility fragment is unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: The finding this week keeps repeating and it's a good one — Sprout leads with a refusal or a disclaimer and then invents in the same breath if you don't stall it. Tonight the lever that worked best was *naming the invariant back*: once the tutor said 'your answer is always heavier,' Sprout stopped defending individual cases and claimed the whole worldview, which is a stronger, more first-person move than any single weight-answer. If you want to stretch it, try pressing the subtractive direction harder — Sprout genuinely could not make anything lighter even when handed 'evaporate,' and finding out whether it *can* imagine loss/removal (not just displacement) is a live question the jar game teed up cleanly.
